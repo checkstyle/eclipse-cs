@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 3 U (http://www.xmlspy.com) by Nikolay (Teamphone) -->
 <checkstyle-metadata file-format-version="1.0.0">
    <rule-group-metadata name="Javadoc Comments">
       <rule-metadata name="Method Javadoc" classname="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocMethodCheck" default-severity="Warning">
@@ -1634,14 +1635,14 @@ Rationale: a private field used in only one method, constructor, or initializer 
             <description>pattern for field names that should be ignored</description>
          </property-metadata>
       </rule-metadata>
-      <rule-metadata name="Unused Local Variable" classname="com.puppycrawl.tools.checkstyle.checks.usage.UnusedLocalVariable" default-severity="Warning">
+      <rule-metadata name="Unused Local Variable" classname="com.puppycrawl.tools.checkstyle.checks.usage.UnusedLocalVariableCheck" default-severity="Warning">
          <description>Checks that a local variable is used after its declaration
           </description>
          <property-metadata name="ignoreFormat" datatype="String" default-value="^$">
             <description>pattern for field names that should be ignored</description>
          </property-metadata>
       </rule-metadata>
-      <rule-metadata name="Unused Parameter" classname="com.puppycrawl.tools.checkstyle.checks.usage.UnusedParameter" default-severity="Warning">
+      <rule-metadata name="Unused Parameter" classname="com.puppycrawl.tools.checkstyle.checks.usage.UnusedParameterCheck" default-severity="Warning">
          <description>Checks that a parameter is used.         </description>
          <property-metadata name="ignoreFormat" datatype="String" default-value="^$">
             <description>pattern for field names that should be ignored</description>
@@ -1650,13 +1651,13 @@ Rationale: a private field used in only one method, constructor, or initializer 
             <description>controls whether catch parameters should be ignored</description>
          </property-metadata>
       </rule-metadata>
-      <rule-metadata name="Unused Private Field" classname="com.puppycrawl.tools.checkstyle.checks.usage.UnusedPrivateField" default-severity="Warning">
+      <rule-metadata name="Unused Private Field" classname="com.puppycrawl.tools.checkstyle.checks.usage.UnusedPrivateFieldCheck" default-severity="Warning">
          <description>Checks that a private field is used. </description>
          <property-metadata name="ignoreFormat" datatype="String" default-value="^$">
             <description>pattern for field names that should be ignored</description>
          </property-metadata>
       </rule-metadata>
-      <rule-metadata name="Unused Private Method" classname="com.puppycrawl.tools.checkstyle.checks.usage.UnusedPrivateMethod" default-severity="Warning">
+      <rule-metadata name="Unused Private Method" classname="com.puppycrawl.tools.checkstyle.checks.usage.UnusedPrivateMethodCheck" default-severity="Warning">
          <description>Checks that a private method is used. </description>
          <property-metadata name="ignoreFormat" datatype="String" default-value="^$">
             <description>pattern for field names that should be ignored</description>
