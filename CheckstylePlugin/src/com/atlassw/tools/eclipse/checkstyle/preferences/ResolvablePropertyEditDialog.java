@@ -60,7 +60,7 @@ public class ResolvablePropertyEditDialog extends Dialog
     // Static class variables.
     //=================================================
     
-    private static final int MAX_LENGTH = 40; 
+    private static final int MAX_LENGTH = 120; 
     
     //=================================================
     // Instance member variables.
@@ -124,7 +124,7 @@ public class ResolvablePropertyEditDialog extends Dialog
         data.widthHint = convertWidthInCharsToPixels(MAX_LENGTH);
 		mPropValueText.setLayoutData(data);
 		mPropValueText.setFont(parent.getFont());
-		mPropValueText.setTextLimit(MAX_LENGTH);
+		//mPropValueText.setTextLimit(MAX_LENGTH);
         if (mProperty.getValue() != null)
         {
 			mPropValueText.setText(mProperty.getValue());

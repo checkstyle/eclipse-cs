@@ -144,7 +144,7 @@ public class ResolvePropertyValuesDialog extends Dialog
 		table.setLinesVisible(true);
 		
 		GridData data = new GridData(GridData.FILL_BOTH);
-		data.widthHint = convertWidthInCharsToPixels(80);
+		data.widthHint = convertWidthInCharsToPixels(160);
 		data.heightHint = convertHeightInCharsToPixels(10);
 		table.setLayoutData(data);
 
@@ -154,7 +154,7 @@ public class ResolvePropertyValuesDialog extends Dialog
 		
 		TableColumn column2 = new TableColumn(table, SWT.NONE);
 		column2.setText("Value");
-		tableLayout.addColumnData(new ColumnWeightData(40));
+		tableLayout.addColumnData(new ColumnWeightData(120));
 
 		mViewer = new TableViewer(table);
 		mViewer.setLabelProvider(new ResolvablePropertyLabelProvider());
