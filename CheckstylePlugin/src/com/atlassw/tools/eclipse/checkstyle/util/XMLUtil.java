@@ -83,16 +83,15 @@ public final class XMLUtil
     // Static class variables.
     //=================================================
 
-    private static Stack                  sDocBuilderCache      = new Stack();
+    private static Stack sDocBuilderCache = new Stack();
 
-    private static DocumentBuilderFactory sDocBuilderFactory    = DocumentBuilderFactory
-                                                                        .newInstance();
+    private static DocumentBuilderFactory sDocBuilderFactory = DocumentBuilderFactory.newInstance();
 
-    private static SAXParserFactory       sSAXParserFactory     = SAXParserFactory.newInstance();
+    private static SAXParserFactory sSAXParserFactory = SAXParserFactory.newInstance();
 
-    private static TransformerFactory     sTransformerFactory   = TransformerFactory.newInstance();
+    private static TransformerFactory sTransformerFactory = TransformerFactory.newInstance();
 
-    private static final int              MAX_DOC_BUILDER_CACHE = 10;
+    private static final int MAX_DOC_BUILDER_CACHE = 10;
 
     //=================================================
     // Instance member variables.
@@ -369,7 +368,7 @@ public final class XMLUtil
      * @return String - Serialized string representation of doc
      */
     public static String serializeDocument(Document doc, boolean indent)
-            throws CheckstylePluginException
+        throws CheckstylePluginException
     {
 
         String result = null;
@@ -426,7 +425,7 @@ public final class XMLUtil
      * @throws IOException error reading the input stream
      */
     public static void parseWithSAX(InputStream in, DefaultHandler handler)
-            throws ParserConfigurationException, SAXException, IOException
+        throws ParserConfigurationException, SAXException, IOException
     {
 
         SAXParser parser = sSAXParserFactory.newSAXParser();
@@ -442,7 +441,7 @@ public final class XMLUtil
      * @throws TransformerConfigurationException error creating the transformer
      */
     public static TransformerHandler writeWithSax(OutputStream out)
-            throws TransformerConfigurationException
+        throws TransformerConfigurationException
     {
 
         SAXTransformerFactory saxFactory = (SAXTransformerFactory) sTransformerFactory;
@@ -506,7 +505,7 @@ public final class XMLUtil
     }
 
     private static synchronized DocumentBuilder createDocumentBuilder()
-            throws ParserConfigurationException
+        throws ParserConfigurationException
     {
         return sDocBuilderFactory.newDocumentBuilder();
     }

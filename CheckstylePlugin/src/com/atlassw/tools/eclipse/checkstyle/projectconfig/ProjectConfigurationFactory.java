@@ -59,7 +59,7 @@ public final class ProjectConfigurationFactory
     // Static class variables.
     //=================================================
 
-    private static final String PROJECT_CONFIGURATION_FILE  = ".checkstyle";
+    private static final String PROJECT_CONFIGURATION_FILE = ".checkstyle";
 
     private static final String CURRENT_FILE_FORMAT_VERSION = "1.1.0";
 
@@ -89,7 +89,7 @@ public final class ProjectConfigurationFactory
      * @throws CheckstylePluginException Error during processing.
      */
     public static ProjectConfiguration getConfiguration(IProject project)
-            throws CheckstylePluginException
+        throws CheckstylePluginException
     {
         return loadFromPersistence(project);
     }
@@ -104,7 +104,7 @@ public final class ProjectConfigurationFactory
      * @throws CheckstylePluginException Error during processing.
      */
     public static void setConfiguration(ProjectConfiguration config, IProject project)
-            throws CheckstylePluginException
+        throws CheckstylePluginException
     {
         storeToPersistence(config, project);
     }
@@ -149,7 +149,7 @@ public final class ProjectConfigurationFactory
      * Load the audit configurations from the persistent state storage.
      */
     private static ProjectConfiguration loadFromPersistence(IProject project)
-            throws CheckstylePluginException
+        throws CheckstylePluginException
     {
         ProjectConfiguration configuration = null;
 
@@ -202,7 +202,7 @@ public final class ProjectConfigurationFactory
      * Store the audit configurations to the persistent state storage.
      */
     private static void storeToPersistence(ProjectConfiguration config, IProject project)
-            throws CheckstylePluginException
+        throws CheckstylePluginException
     {
 
         ByteArrayOutputStream pipeOut = null;
@@ -215,7 +215,6 @@ public final class ProjectConfigurationFactory
             //Write the configuration document by pushing sax events through
             // the transformer handler
             TransformerHandler xmlOut = XMLUtil.writeWithSax(pipeOut);
-            
 
             writeProjectConfig(config, xmlOut);
 
@@ -261,7 +260,7 @@ public final class ProjectConfigurationFactory
      * @throws SAXException error writing
      */
     private static void writeProjectConfig(ProjectConfiguration config, TransformerHandler xmlOut)
-            throws SAXException
+        throws SAXException
     {
 
         xmlOut.startDocument();
@@ -301,7 +300,7 @@ public final class ProjectConfigurationFactory
      * @throws SAXException error writing
      */
     private static void writeFileSet(FileSet fileSet, TransformerHandler xmlOut)
-            throws SAXException
+        throws SAXException
     {
         AttributesImpl attr = new AttributesImpl();
         attr.addAttribute(null, null, XMLTags.NAME_TAG, null, fileSet.getName());
@@ -330,7 +329,7 @@ public final class ProjectConfigurationFactory
      * @throws SAXException error writing
      */
     private static void writeMatchPattern(FileMatchPattern pattern, TransformerHandler xmlOut)
-            throws SAXException
+        throws SAXException
     {
 
         AttributesImpl attr = new AttributesImpl();
@@ -395,21 +394,21 @@ public final class ProjectConfigurationFactory
         //
 
         /** constant list of supported file versions. */
-        private static final List    SUPPORTED_VERSIONS = Arrays.asList(new String[] { "1.0.0",
-                                                                CURRENT_FILE_FORMAT_VERSION });
+        private static final List SUPPORTED_VERSIONS = Arrays.asList(new String[] { "1.0.0",
+            CURRENT_FILE_FORMAT_VERSION });
 
         //
         // attributes
         //
 
         /** the project configuration. */
-        private ProjectConfiguration mProjectConfig     = new ProjectConfiguration();
+        private ProjectConfiguration mProjectConfig = new ProjectConfiguration();
 
         /** the file set currently built. */
-        private FileSet              mCurrentFileSet;
+        private FileSet mCurrentFileSet;
 
         /** the current filter. */
-        private IFilter              mCurrentFilter;
+        private IFilter mCurrentFilter;
 
         //
         // methods
@@ -430,7 +429,7 @@ public final class ProjectConfigurationFactory
          *      java.lang.String, java.lang.String, org.xml.sax.Attributes)
          */
         public void startElement(String uri, String localName, String qName, Attributes attributes)
-                throws SAXException
+            throws SAXException
         {
 
             try

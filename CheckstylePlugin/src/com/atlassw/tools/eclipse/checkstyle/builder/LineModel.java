@@ -45,14 +45,14 @@ public final class LineModel
     private static final char CARRIAGE_RETURN = '\r';
 
     /** Constant for the linefeed character. */
-    private static final char LINE_FEED       = '\n';
+    private static final char LINE_FEED = '\n';
 
     //
     // attributes
     //
 
     /** List containing the lines of this line model. */
-    private List              mLines          = new ArrayList();
+    private List mLines = new ArrayList();
 
     //
     // constructors
@@ -189,10 +189,10 @@ public final class LineModel
         //
 
         /** the start offset of the line. */
-        public final int mStartOffset;
+        private final int mStartOffset;
 
         /** the end offset of the line. */
-        public final int mEndOffset;
+        private final int mEndOffset;
 
         //
         // constructors
@@ -208,6 +208,22 @@ public final class LineModel
         {
             this.mStartOffset = startOffset;
             this.mEndOffset = endOffset;
+        }
+
+        /**
+         * @return returns the end offset of the line.
+         */
+        public int getEndOffset()
+        {
+            return mEndOffset;
+        }
+
+        /**
+         * @return Rreturns the start offset of the line.
+         */
+        public int getStartOffset()
+        {
+            return mStartOffset;
         }
     }
 }

@@ -20,6 +20,8 @@
 
 package com.atlassw.tools.eclipse.checkstyle.builder;
 
+import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
+
 //=================================================
 // Imports from java namespace
 //=================================================
@@ -37,31 +39,30 @@ package com.atlassw.tools.eclipse.checkstyle.builder;
 //=================================================
 
 /**
- *  Represents the Checkstyle file marker.
+ * Represents the Checkstyle file marker.
  */
 public class CheckstyleMarker
 {
     //=================================================
-	// Public static final variables.
-	//=================================================
+    // Public static final variables.
+    //=================================================
 
-	//=================================================
-	// Static class variables.
-	//=================================================
-    
-    /** ID for the CheckstyleMarker.  */
-    public static final String MARKER_ID
-        = "com.atlassw.tools.eclipse.checkstyle.CheckstyleMarker";
+    //=================================================
+    // Static class variables.
+    //=================================================
 
-	//=================================================
-	// Instance member variables.
-	//=================================================
+    /** ID for the CheckstyleMarker. */
+    public static final String MARKER_ID = CheckstylePlugin.PLUGIN_ID + ".CheckstyleMarker";
 
-	//=================================================
-	// Constructors & finalizer.
-	//=================================================
+    //=================================================
+    // Instance member variables.
+    //=================================================
 
-	//=================================================
-	// Methods.
-	//=================================================
+    //=================================================
+    // Constructors & finalizer.
+    //=================================================
+
+    //=================================================
+    // Methods.
+    //=================================================
 }

@@ -63,17 +63,17 @@ class Auditor
     // Static class variables.
     //=================================================
 
-    private static final int     MONITOR_INTERVAL = 10;
+    private static final int MONITOR_INTERVAL = 10;
 
     //=================================================
     // Instance member variables.
     //=================================================
 
-    private IProject             mProject;
+    private IProject mProject;
 
     private ProjectConfiguration mProjectConfig;
 
-    private FileSet[]            mFileSets;
+    private FileSet[] mFileSets;
 
     //=================================================
     // Constructors & finalizer.
@@ -112,7 +112,7 @@ class Auditor
      * @throws CoreException Error during processing.
      */
     void checkFiles(Collection files, ClassLoader classLoader, IProgressMonitor monitor)
-            throws CheckstylePluginException, CoreException
+        throws CheckstylePluginException, CoreException
     {
         //
         //  Delete any existing project level markers.
@@ -190,7 +190,7 @@ class Auditor
             //  Remove any markers on the file.
             //
             file.deleteMarkers(CheckstyleMarker.MARKER_ID, true, IResource.DEPTH_INFINITE);
-            
+
             //TODO optimize!!!
 
             //
@@ -249,12 +249,12 @@ class Auditor
     private static class CheckstyleAuditListener implements AuditListener
     {
         //  The file currently being checked.
-        private IFile     mFile;
+        private IFile mFile;
 
         //  Add the check rule name to the message?
-        private boolean   mAddRuleName    = false;
+        private boolean mAddRuleName = false;
 
-        private Map       mClassToNameMap = MetadataFactory.getClassToNameMap();
+        private Map mClassToNameMap = MetadataFactory.getClassToNameMap();
 
         // Contains a offset information for all lines of the file
         private LineModel mLineModel;
@@ -289,9 +289,9 @@ class Auditor
                             //annotate from the error column until the end of
                             // the line
                             int indent = error.getColumn() == 0 ? 0 : error.getColumn() - 1;
-                            MarkerUtilities.setCharStart(attributes, lineOffset.mStartOffset
+                            MarkerUtilities.setCharStart(attributes, lineOffset.getStartOffset()
                                     + indent);
-                            MarkerUtilities.setCharEnd(attributes, lineOffset.mEndOffset);
+                            MarkerUtilities.setCharEnd(attributes, lineOffset.getEndOffset());
                         }
                     }
 

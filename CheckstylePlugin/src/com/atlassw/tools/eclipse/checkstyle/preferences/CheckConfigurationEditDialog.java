@@ -129,31 +129,28 @@ public class CheckConfigurationEditDialog extends Dialog
     /**
      * Constructor.
      * 
-     * @param parent        Parent shell.
+     * @param parent Parent shell.
      * 
-     * @param checkConfig   Check configuration being edited.
+     * @param checkConfig Check configuration being edited.
      * 
-     * @param currentCheckConfigs  List of the current check configs defined.
+     * @param currentCheckConfigs List of the current check configs defined.
      * 
-     * @throws CheckstyleException  Error during processing.
+     * @throws CheckstyleException Error during processing.
      */
-    CheckConfigurationEditDialog(
-        Shell parent,
-        CheckConfiguration checkConfig,
-        List currentCheckConfigs)
-        throws CheckstylePluginException
+    CheckConfigurationEditDialog(Shell parent, CheckConfiguration checkConfig,
+            List currentCheckConfigs) throws CheckstylePluginException
     {
         super(parent);
 
         //
-        //  Remimber the list of current check configs.  These are checked to make
+        //  Remimber the list of current check configs. These are checked to make
         //  sure the check config name entered via the editor is unique.
         //
         mCurrentCheckConfigs = currentCheckConfigs;
 
         //
         //  If we were given an existing audit configuration then make a clone
-        //  of it, otherwise create a new one.  A clone is used so that the
+        //  of it, otherwise create a new one. A clone is used so that the
         //  original is not modified in case the user makes some changes and then
         //  selects the cancel button.
         //
@@ -165,7 +162,7 @@ public class CheckConfigurationEditDialog extends Dialog
         {
             try
             {
-                mCheckConfiguration = (CheckConfiguration)checkConfig.clone();
+                mCheckConfiguration = (CheckConfiguration) checkConfig.clone();
             }
             catch (CloneNotSupportedException e)
             {
@@ -203,10 +200,10 @@ public class CheckConfigurationEditDialog extends Dialog
             Iterator iter = mCheckConfiguration.getRuleConfigs().iterator();
             while (iter.hasNext())
             {
-                RuleConfiguration ruleConfig = (RuleConfiguration)iter.next();
+                RuleConfiguration ruleConfig = (RuleConfiguration) iter.next();
                 try
                 {
-                    ruleConfig = (RuleConfiguration)ruleConfig.clone();
+                    ruleConfig = (RuleConfiguration) ruleConfig.clone();
                 }
                 catch (CloneNotSupportedException e)
                 {
@@ -223,8 +220,7 @@ public class CheckConfigurationEditDialog extends Dialog
                 }
                 else
                 {
-                    String msg =
-                        "Invalid group index for check rule, ignoring rule. class="
+                    String msg = "Invalid group index for check rule, ignoring rule. class="
                             + ruleConfig.getImplClassname();
                     CheckstyleLog.warning(msg);
                 }
@@ -237,7 +233,7 @@ public class CheckConfigurationEditDialog extends Dialog
      */
     protected Control createDialogArea(Composite parent)
     {
-        Composite composite = (Composite)super.createDialogArea(parent);
+        Composite composite = (Composite) super.createDialogArea(parent);
 
         Composite dialog = new Composite(composite, SWT.NONE);
         mParentComposite = dialog;
@@ -267,10 +263,8 @@ public class CheckConfigurationEditDialog extends Dialog
         //
         if ((checkConfigName == null) || (checkConfigName.length() == 0))
         {
-            MessageDialog.openError(
-                mParentComposite.getShell(),
-                "Invalid Value",
-                "An check configuration name must be entered");
+            MessageDialog.openError(mParentComposite.getShell(), "Invalid Value",
+                    "An check configuration name must be entered");
             return;
         }
 
@@ -281,18 +275,16 @@ public class CheckConfigurationEditDialog extends Dialog
         {
             //
             //  The name was changed.
-            //  Make sure the name is not already in use by another check configuration.
+            //  Make sure the name is not already in use by another check
+            // configuration.
             //  Check configuration names must be unique within the workspace.
             //
             boolean nameInUse = isNameInUse(checkConfigName);
             if (nameInUse)
             {
-                MessageDialog.openError(
-                    mParentComposite.getShell(),
-                    "Invalid Value",
-                    "The check configuration name '"
-                        + checkConfigName
-                        + "' is already in use, please choose a different name.");
+                MessageDialog.openError(mParentComposite.getShell(), "Invalid Value",
+                        "The check configuration name '" + checkConfigName
+                                + "' is already in use, please choose a different name.");
                 return;
             }
 
@@ -301,7 +293,8 @@ public class CheckConfigurationEditDialog extends Dialog
             //
             try
             {
-                nameInUse = ProjectConfigurationFactory.isCheckConfigInUse(mCheckConfiguration.getConfigName());
+                nameInUse = ProjectConfigurationFactory.isCheckConfigInUse(mCheckConfiguration
+                        .getConfigName());
             }
             catch (CheckstylePluginException e)
             {
@@ -310,12 +303,9 @@ public class CheckConfigurationEditDialog extends Dialog
             }
             if (nameInUse)
             {
-                MessageDialog.openError(
-                    mParentComposite.getShell(),
-                    "Invalid Value",
-                    "The check configuration name '"
-                        + checkConfigName
-                        + "' is referenced by a project File Set and can not be changed.");
+                MessageDialog.openError(mParentComposite.getShell(), "Invalid Value",
+                        "The check configuration name '" + checkConfigName
+                                + "' is referenced by a project File Set and can not be changed.");
                 return;
             }
         }
@@ -326,11 +316,11 @@ public class CheckConfigurationEditDialog extends Dialog
     }
 
     /**
-     *  Get the final <code>CheckConfiguration</code> after all edits completed.
-     *  The object returned here is only valid if the <code>okPressed()</code>
-     *  method returned <code>true</code>.
+     * Get the final <code>CheckConfiguration</code> after all edits
+     * completed. The object returned here is only valid if the
+     * <code>okPressed()</code> method returned <code>true</code>.
      * 
-     *  @return  The final <code>CheckConfiguration</code> object.
+     * @return The final <code>CheckConfiguration</code> object.
      */
     CheckConfiguration getFinalConfiguration()
     {
@@ -342,7 +332,7 @@ public class CheckConfigurationEditDialog extends Dialog
             Iterator iter = mRuleConfigWorkingCopies[i].iterator();
             while (iter.hasNext())
             {
-                RuleConfigWorkingCopy workingCopy = (RuleConfigWorkingCopy)iter.next();
+                RuleConfigWorkingCopy workingCopy = (RuleConfigWorkingCopy) iter.next();
                 RuleConfiguration ruleConfig = workingCopy.getRuleConfig();
                 rules.add(ruleConfig);
             }
@@ -401,7 +391,7 @@ public class CheckConfigurationEditDialog extends Dialog
             //
             //  Set the tab label.
             //
-            RuleGroupMetadata ruleGroup = (RuleGroupMetadata)iter.next();
+            RuleGroupMetadata ruleGroup = (RuleGroupMetadata) iter.next();
             tab.setText(ruleGroup.getGroupName());
 
             //
@@ -422,10 +412,8 @@ public class CheckConfigurationEditDialog extends Dialog
         mTabFolder.addSelectionListener(new TabSelectionListener());
     }
 
-    private Composite createTabItemComposite(
-        Composite parent,
-        RuleGroupMetadata ruleGroup,
-        int index)
+    private Composite createTabItemComposite(Composite parent, RuleGroupMetadata ruleGroup,
+            int index)
     {
         Composite comp = new Composite(parent, SWT.NONE);
         GridLayout layout = new GridLayout();
@@ -480,8 +468,8 @@ public class CheckConfigurationEditDialog extends Dialog
     {
         int tabIndex = mTabFolder.getSelectionIndex();
         TableViewer viewer = mTableViewers[tabIndex];
-        IStructuredSelection selection = (IStructuredSelection)viewer.getSelection();
-        mCurrentSelection = (RuleConfigWorkingCopy)selection.getFirstElement();
+        IStructuredSelection selection = (IStructuredSelection) viewer.getSelection();
+        mCurrentSelection = (RuleConfigWorkingCopy) selection.getFirstElement();
 
         Document doc = new Document(mCurrentSelection.getRuleDescription());
         mRuleDescriptionText.setDocument(doc);
@@ -570,8 +558,8 @@ public class CheckConfigurationEditDialog extends Dialog
     private void addRule()
     {
         int groupIndex = mTabFolder.getSelectionIndex();
-        RuleGroupMetadata groupMeta =
-            (RuleGroupMetadata)MetadataFactory.getRuleGroupMetadata().get(groupIndex);
+        RuleGroupMetadata groupMeta = (RuleGroupMetadata) MetadataFactory.getRuleGroupMetadata()
+                .get(groupIndex);
         List ruleMetadataList = groupMeta.getRuleMetadata();
 
         if (ruleMetadataList.size() <= 0)
@@ -610,8 +598,7 @@ public class CheckConfigurationEditDialog extends Dialog
         RuleConfigurationEditDialog dialog = null;
         try
         {
-            dialog =
-                new RuleConfigurationEditDialog(mParentComposite.getShell(), mCurrentSelection);
+            dialog = new RuleConfigurationEditDialog(mParentComposite.getShell(), mCurrentSelection);
             dialog.open();
         }
         catch (CheckstylePluginException e)
@@ -645,10 +632,7 @@ public class CheckConfigurationEditDialog extends Dialog
             return;
         }
 
-        boolean confirm =
-            MessageDialog.openQuestion(
-                mParentComposite.getShell(),
-                "Confirm Delete",
+        boolean confirm = MessageDialog.openQuestion(mParentComposite.getShell(), "Confirm Delete",
                 "Delete rule '" + mCurrentSelection.getRuleName() + "'?");
         if (confirm)
         {
@@ -661,10 +645,10 @@ public class CheckConfigurationEditDialog extends Dialog
     }
 
     /**
-     *  Indicates if the OK button was pressed rather then the Cancel button.
+     * Indicates if the OK button was pressed rather then the Cancel button.
      * 
-     *  @return  <code>true</code> = OK button was pressed,<br>
-     *            <code>false</code> = OK was not pressed.
+     * @return <code>true</code>= OK button was pressed, <br>
+     *         <code>false</code>= OK was not pressed.
      */
     public boolean okWasPressed()
     {
@@ -672,10 +656,10 @@ public class CheckConfigurationEditDialog extends Dialog
     }
 
     /**
-     *  Over-rides method from Window to configure the 
-     *  shell (e.g. the enclosing window).
+     * Over-rides method from Window to configure the shell (e.g. the enclosing
+     * window).
      * 
-     *  @param shell  The shell to configure.
+     * @param shell The shell to configure.
      */
     protected void configureShell(Shell shell)
     {
@@ -684,7 +668,7 @@ public class CheckConfigurationEditDialog extends Dialog
     }
 
     /**
-     *  Listener for selections in the table of rules per rule group.
+     * Listener for selections in the table of rules per rule group.
      */
     private class TableSelectionListener implements SelectionListener
     {
@@ -700,7 +684,7 @@ public class CheckConfigurationEditDialog extends Dialog
     }
 
     /**
-     *  Listener for selection of a rule group tab.
+     * Listener for selection of a rule group tab.
      */
     private class TabSelectionListener implements SelectionListener
     {
@@ -725,7 +709,7 @@ public class CheckConfigurationEditDialog extends Dialog
         boolean result = false;
         for (Iterator iter = mCurrentCheckConfigs.iterator(); iter.hasNext();)
         {
-            CheckConfiguration config = (CheckConfiguration)iter.next();
+            CheckConfiguration config = (CheckConfiguration) iter.next();
             if (config.getName().equals(name))
             {
                 result = true;

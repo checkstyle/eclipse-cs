@@ -43,10 +43,10 @@ public class ConfigureDeconfigureNatureJob extends WorkspaceJob
 {
 
     /** the project to be configured/deconfigured. */
-    private IProject         mProject;
+    private IProject mProject;
 
     /** the nature to be configured/deconfigured. */
-    private String           mNatureId;
+    private String mNatureId;
 
     /** the monitor. */
     private IProgressMonitor mMonitor;
@@ -65,7 +65,8 @@ public class ConfigureDeconfigureNatureJob extends WorkspaceJob
     }
 
     /**
-     * @see org.eclipse.core.resources.WorkspaceJob#runInWorkspace(org.eclipse.core.runtime.IProgressMonitor)
+     * @see org.eclipse.core.resources.WorkspaceJob#runInWorkspace(
+     *      rg.eclipse.core.runtime.IProgressMonitor)
      */
     public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException
     {

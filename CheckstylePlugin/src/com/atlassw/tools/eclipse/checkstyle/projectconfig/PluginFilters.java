@@ -27,6 +27,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 
+import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.IFilter;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 
@@ -45,31 +46,31 @@ public final class PluginFilters
     //
 
     /** constant for the extension point id. */
-    private static final String    FILTER_EXTENSION_POINT = "com.atlassw.tools.eclipse.checkstyle.filters";
+    private static final String FILTER_EXTENSION_POINT = CheckstylePlugin.PLUGIN_ID + ".filters";
 
     /** constant for the name attribute. */
-    private static final String    ATTR_NAME              = "name";
+    private static final String ATTR_NAME = "name";
 
     /** constant for the name attribute. */
-    private static final String    ATTR_INTERNAL_NAME     = "internal-name";
+    private static final String ATTR_INTERNAL_NAME = "internal-name";
 
     /** constant for the description attribute. */
-    private static final String    ATTR_DESCRIPTION       = "description";
+    private static final String ATTR_DESCRIPTION = "description";
 
     /** constant for the class attribute. */
-    private static final String    ATTR_CLASS             = "class";
+    private static final String ATTR_CLASS = "class";
 
     /** constant for the editorClass attribute. */
-    private static final String    ATTR_EDITOR            = "editorClass";
+    private static final String ATTR_EDITOR = "editorClass";
 
     /** contant for the readonly attribute. */
-    private static final String    ATTR_READONLY          = "readonly";
+    private static final String ATTR_READONLY = "readonly";
 
     /** constant for the selected attribute. */
-    private static final String    ATTR_SELECTED          = "selected";
+    private static final String ATTR_SELECTED = "selected";
 
     /** constant for the value attribute. */
-    private static final String    ATTR_VALUE             = "value";
+    private static final String ATTR_VALUE = "value";
 
     /** the filter prototypes configured to the extension point. */
     private static final IFilter[] FILTER_PROTOTYPES;

@@ -30,7 +30,6 @@ import java.util.List;
 
 import org.eclipse.core.runtime.Preferences;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.dialogs.MessageDialogWithToggle;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -87,33 +86,33 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
     // Instance member variables.
     //=================================================
 
-    private Composite   mParentComposite;
+    private Composite mParentComposite;
 
     private TableViewer mViewer;
 
-    private Button      mAddButton;
+    private Button mAddButton;
 
-    private Button      mEditButton;
+    private Button mEditButton;
 
-    private Button      mCopyButton;
+    private Button mCopyButton;
 
-    private Button      mRemoveButton;
+    private Button mRemoveButton;
 
-    private Button      mImportPluginButton;
+    private Button mImportPluginButton;
 
-    private Button      mExportPluginButton;
+    private Button mExportPluginButton;
 
-    private Button      mImportCheckstyleButton;
+    private Button mImportCheckstyleButton;
 
-    private Button      mExportCheckstyleButton;
+    private Button mExportCheckstyleButton;
 
-    private Button      mWarnBeforeLosingFilesets;
+    private Button mWarnBeforeLosingFilesets;
 
-    private Button      mIncludeRuleNamesButton;
+    private Button mIncludeRuleNamesButton;
 
-    private List        mCheckConfigurations;
+    private List mCheckConfigurations;
 
-    private boolean     mNeedRebuild = false;
+    private boolean mNeedRebuild = false;
 
     //=================================================
     // Constructors & finalizer.

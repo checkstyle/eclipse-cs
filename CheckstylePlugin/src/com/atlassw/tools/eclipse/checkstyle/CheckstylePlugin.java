@@ -32,7 +32,6 @@ import java.util.ResourceBundle;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.jface.dialogs.MessageDialogWithToggle;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
@@ -48,23 +47,23 @@ public class CheckstylePlugin extends AbstractUIPlugin
     //=================================================
 
     /** Identifier of the plug-in. */
-    public static final String      PLUGIN_ID               = "com.atlassw.tools.eclipse.checkstyle";
+    public static final String PLUGIN_ID = "com.atlassw.tools.eclipse.checkstyle";
 
     /**
      * Preference name indicating if rule names are to be included in violation
      * messages.
      */
-    public static final String      PREF_INCLUDE_RULE_NAMES = "include.rule.names";
+    public static final String PREF_INCLUDE_RULE_NAMES = "include.rule.names";
 
     /**
      * Preference name indication if the user should be warned of possibly
      * losing fileset configurations if he switches from advanced to simple
      * fileset configuration.
      */
-    public static final String      PREF_FILESET_WARNING    = "warn.before.losing.filesets";
+    public static final String PREF_FILESET_WARNING = "warn.before.losing.filesets";
 
     /** constant for the plugin properties. */
-    private static final String     PROPERTIES              = "plugin.properties";
+    private static final String PROPERTIES = "plugin.properties";
 
     //=================================================
     // Static class variables.
@@ -74,7 +73,7 @@ public class CheckstylePlugin extends AbstractUIPlugin
     private static CheckstylePlugin sPlugin;
 
     /** Resource bundle. */
-    private static ResourceBundle   sResourceBundle;
+    private static ResourceBundle sResourceBundle;
 
     //=================================================
     // Instance member variables.

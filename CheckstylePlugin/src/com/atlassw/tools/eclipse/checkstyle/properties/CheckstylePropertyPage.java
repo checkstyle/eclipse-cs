@@ -81,32 +81,32 @@ public class CheckstylePropertyPage extends PropertyPage
     //
 
     /** button to enable checkstyle for the project. */
-    private Button               mChkEnable;
+    private Button mChkEnable;
 
     /** button to enable/disable the simple configuration. */
-    private Button               mChkSimpleConfig;
+    private Button mChkSimpleConfig;
 
     /** the container holding the file sets editor. */
-    private Composite            mFileSetsContainer;
+    private Composite mFileSetsContainer;
 
     /** the editor for the file sets. */
-    private IFileSetsEditor      mFileSetsEditor;
+    private IFileSetsEditor mFileSetsEditor;
 
     /** viewer to display the known checkstyle filters. */
-    private CheckboxTableViewer  mFilterList;
+    private CheckboxTableViewer mFilterList;
 
     /** button to open a filter editor. */
-    private Button               mBtnEditFilter;
+    private Button mBtnEditFilter;
 
     /** used to display the filter description. */
-    private Text                 mTxtFilterDescription;
+    private Text mTxtFilterDescription;
 
     //
     // other members
     //
 
     /** controller of this page. */
-    private PageController       mPageController;
+    private PageController mPageController;
 
     /** the the original project configuration. */
     private ProjectConfiguration mProjectConfigOrig;
@@ -115,9 +115,9 @@ public class CheckstylePropertyPage extends PropertyPage
     private ProjectConfiguration mProjectConfig;
 
     /** the project. */
-    private IProject             mProject;
+    private IProject mProject;
 
-    private boolean              mCheckstyleActivated;
+    private boolean mCheckstyleActivated;
 
     //
     // methods
@@ -126,7 +126,8 @@ public class CheckstylePropertyPage extends PropertyPage
     /**
      * Create the contents of this page.
      * 
-     * @see org.eclipse.jface.preference.PreferencePage#createContents(org.eclipse.swt.widgets.Composite)
+     * @see org.eclipse.jface.preference.PreferencePage#createContents(
+     *      org.eclipse.swt.widgets.Composite)
      */
     public Control createContents(Composite parent)
     {
@@ -210,7 +211,7 @@ public class CheckstylePropertyPage extends PropertyPage
      * @param fileSetsContainer the container to add the file sets area to
      */
     private Control createFileSetsArea(Composite fileSetsContainer)
-            throws CheckstylePluginException
+        throws CheckstylePluginException
     {
 
         Control[] controls = fileSetsContainer.getChildren();
@@ -449,7 +450,8 @@ public class CheckstylePropertyPage extends PropertyPage
     {
 
         /**
-         * @see org.eclipse.swt.events.SelectionListener#widgetSelected(org.eclipse.swt.events.SelectionEvent)
+         * @see org.eclipse.swt.events.SelectionListener#widgetSelected(
+         *      org.eclipse.swt.events.SelectionEvent)
          */
         public void widgetSelected(SelectionEvent e)
         {
@@ -568,7 +570,8 @@ public class CheckstylePropertyPage extends PropertyPage
         }
 
         /**
-         * @see org.eclipse.jface.viewers.IDoubleClickListener#doubleClick(org.eclipse.jface.viewers.DoubleClickEvent)
+         * @see org.eclipse.jface.viewers.IDoubleClickListener#doubleClick(
+         *      org.eclipse.jface.viewers.DoubleClickEvent)
          */
         public void doubleClick(DoubleClickEvent event)
         {

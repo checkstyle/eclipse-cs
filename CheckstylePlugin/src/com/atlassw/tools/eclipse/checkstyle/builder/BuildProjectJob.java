@@ -45,7 +45,7 @@ public class BuildProjectJob extends Job
     private IProject[] mProjects;
 
     /** the build kind. */
-    private int        mKind;
+    private int mKind;
 
     //
     // constructors
@@ -83,7 +83,8 @@ public class BuildProjectJob extends Job
     //
 
     /**
-     * @see org.eclipse.core.internal.jobs.InternalJob#run(org.eclipse.core.runtime.IProgressMonitor)
+     * @see org.eclipse.core.internal.jobs.InternalJob#run(
+     *      org.eclipse.core.runtime.IProgressMonitor)
      */
     public IStatus run(IProgressMonitor monitor)
     {

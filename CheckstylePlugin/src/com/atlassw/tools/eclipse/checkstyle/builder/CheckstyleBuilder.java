@@ -54,14 +54,14 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
     //=================================================
 
     /** Eclipse extension point ID for the builder. */
-    public static final String        BUILDER_ID   = "com.atlassw.tools.eclipse.checkstyle.CheckstyleBuilder";
+    public static final String BUILDER_ID = CheckstylePlugin.PLUGIN_ID + ".CheckstyleBuilder";
 
     //=================================================
     // Static class variables.
     //=================================================
 
     /** Java file suffix. */
-    private static final String       JAVA_SUFFIX  = ".java";
+    private static final String JAVA_SUFFIX = ".java";
 
     /** The ClassLoader to use for the checkstyle process. */
     private static ProjectClassLoader sClassLoader = new ProjectClassLoader();
@@ -83,7 +83,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
      *      java.util.Map, org.eclipse.core.runtime.IProgressMonitor)
      */
     protected final IProject[] build(int kind, Map args, IProgressMonitor monitor)
-            throws CoreException
+        throws CoreException
     {
 
         //get the associated project for this builder

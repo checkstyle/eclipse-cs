@@ -60,8 +60,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
- *  Used to manage the life cycle of <code>CheckConfiguration</code>
- *  objects.
+ * Used to manage the life cycle of <code>CheckConfiguration</code> objects.
  */
 public final class CheckConfigurationFactory
 {
@@ -80,16 +79,16 @@ public final class CheckConfigurationFactory
     private static final String VERSION_1_0_0 = "1.0.0";
 
     private static final String VERSION_3_2_0 = "3.2.0";
-    
+
     private static final String VERSION_4_0_0 = "4.0.0";
 
     private static final String CURRENT_CONFIG_FILE_FORMAT_VERSION = VERSION_4_0_0;
 
-    private static final String CLASSNAMES_V3_2_0_UPDATE =
+    private static final String CLASSNAMES_V3_2_0_UPDATE = 
         "com/atlassw/tools/eclipse/checkstyle/config/classnames_v3.2.0_update.properties";
 
-    private static final String CLASSNAMES_V4_0_0_UPDATE =
-       "com/atlassw/tools/eclipse/checkstyle/config/classnames_v4.0.0_update.properties";
+    private static final String CLASSNAMES_V4_0_0_UPDATE = 
+        "com/atlassw/tools/eclipse/checkstyle/config/classnames_v4.0.0_update.properties";
 
     //=================================================
     // Instance member variables.
@@ -107,11 +106,11 @@ public final class CheckConfigurationFactory
     //=================================================
 
     /**
-     *  Get a new <code>CheckConfiguration</code> instance.
+     * Get a new <code>CheckConfiguration</code> instance.
      * 
-     *  @return  A new instance.
+     * @return A new instance.
      * 
-     *  @throws CheckstylePluginException  Error during processing.
+     * @throws CheckstylePluginException Error during processing.
      */
     public static CheckConfiguration getNewInstance() throws CheckstylePluginException
     {
@@ -120,14 +119,14 @@ public final class CheckConfigurationFactory
     }
 
     /**
-     *  Get an <code>CheckConfiguration</code> instance by its name.
+     * Get an <code>CheckConfiguration</code> instance by its name.
      * 
-     *  @param  name  Name of the requested instance.
+     * @param name Name of the requested instance.
      * 
-     *  @return  The requested instance or <code>null</code> if the named instance
-     *            could not be found.
+     * @return The requested instance or <code>null</code> if the named
+     *         instance could not be found.
      * 
-     *  @throws  CheckstylePluginException  Error during processing.
+     * @throws CheckstylePluginException Error during processing.
      */
     public static CheckConfiguration getByName(String name) throws CheckstylePluginException
     {
@@ -138,7 +137,7 @@ public final class CheckConfigurationFactory
             Iterator iter = configurations.iterator();
             while (iter.hasNext())
             {
-                CheckConfiguration config = (CheckConfiguration)iter.next();
+                CheckConfiguration config = (CheckConfiguration) iter.next();
                 if (config.getConfigName().equals(name))
                 {
                     result = config;
@@ -150,11 +149,11 @@ public final class CheckConfigurationFactory
     }
 
     /**
-     *  Get a list of the currently defined check configurations.
+     * Get a list of the currently defined check configurations.
      * 
-     *  @return  A list containing all instances.
+     * @return A list containing all instances.
      * 
-     *  @throws  CheckstylePluginException  Error during processing.
+     * @throws CheckstylePluginException Error during processing.
      */
     public static List getCheckConfigurations() throws CheckstylePluginException
     {
@@ -162,11 +161,11 @@ public final class CheckConfigurationFactory
     }
 
     /**
-     *  Set the new collection of check configurations.
+     * Set the new collection of check configurations.
      * 
-     *  @param  configs  List of <code>CheckConfiguration</code> objects.
+     * @param configs List of <code>CheckConfiguration</code> objects.
      * 
-     *  @throws  CheckstylePluginException  Error during processing.
+     * @throws CheckstylePluginException Error during processing.
      */
     public static void setCheckConfigurations(List configs) throws CheckstylePluginException
     {
@@ -174,11 +173,11 @@ public final class CheckConfigurationFactory
     }
 
     /**
-     *  Add a new <code>CheckConfiguration</code> to the workspace.
-     *
-     *  @param  checkConfig  The check configuration to add.
+     * Add a new <code>CheckConfiguration</code> to the workspace.
      * 
-     *  @throws  CheckstylePluginException  Error during processing.
+     * @param checkConfig The check configuration to add.
+     * 
+     * @throws CheckstylePluginException Error during processing.
      */
     public static void addCheckConfiguration(CheckConfiguration checkConfig)
         throws CheckstylePluginException
@@ -189,11 +188,11 @@ public final class CheckConfigurationFactory
     }
 
     /**
-     *  Remove an <code>CheckConfiguration</code> from the workspace.
-     *
-     *  @param  checkConfig  The check configuration to remove.
+     * Remove an <code>CheckConfiguration</code> from the workspace.
      * 
-     *  @throws  CheckstylePluginException  Error during processing.
+     * @param checkConfig The check configuration to remove.
+     * 
+     * @throws CheckstylePluginException Error during processing.
      */
     public static void removeCheckConfiguration(CheckConfiguration checkConfig)
         throws CheckstylePluginException
@@ -204,13 +203,13 @@ public final class CheckConfigurationFactory
     }
 
     /**
-     *  Import check configurations from an external file in plug-in format.
+     * Import check configurations from an external file in plug-in format.
      * 
-     *  @param  file  File to load from.
+     * @param file File to load from.
      * 
-     *  @return A list containing the import configurations.
+     * @return A list containing the import configurations.
      * 
-     *  @throws  CheckstylePluginException  Error during processing.
+     * @throws CheckstylePluginException Error during processing.
      */
     public static List importPluginCheckConfigurations(File file) throws CheckstylePluginException
     {
@@ -223,13 +222,13 @@ public final class CheckConfigurationFactory
     }
 
     /**
-     *  Write check configurations to an external file in plug-in format.
+     * Write check configurations to an external file in plug-in format.
      * 
-     *  @param  file     File to write too.
+     * @param file File to write too.
      * 
-     *  @param  config   The check configuration to write out.
+     * @param config The check configuration to write out.
      * 
-     *  @throws  CheckstylePluginException  Error during processing.
+     * @throws CheckstylePluginException Error during processing.
      */
     public static void exportPluginCheckConfigurations(File file, CheckConfiguration config)
         throws CheckstylePluginException
@@ -240,14 +239,14 @@ public final class CheckConfigurationFactory
     }
 
     /**
-     *  Write check configurations to an external file in standard
-     *  Checkstyle format.
+     * Write check configurations to an external file in standard Checkstyle
+     * format.
      * 
-     *  @param  file     File to write too.
+     * @param file File to write too.
      * 
-     *  @param  config  List of check configurations to write out.
+     * @param config List of check configurations to write out.
      * 
-     *  @throws  CheckstylePluginException  Error during processing.
+     * @throws CheckstylePluginException Error during processing.
      */
     public static void exportCheckstyleCheckConfigurations(File file, CheckConfiguration config)
         throws CheckstylePluginException
@@ -256,7 +255,7 @@ public final class CheckConfigurationFactory
     }
 
     /**
-     *  Load the check configurations from the persistent state storage.
+     * Load the check configurations from the persistent state storage.
      */
     private static List loadFromPersistence() throws CheckstylePluginException
     {
@@ -286,7 +285,7 @@ public final class CheckConfigurationFactory
     }
 
     /**
-     * @return  List of default check configurations.
+     * @return List of default check configurations.
      */
     private static List loadDefaultCheckConfigs()
     {
@@ -328,7 +327,7 @@ public final class CheckConfigurationFactory
     }
 
     /**
-     *  Store the check configurations to the persistent state storage.
+     * Store the check configurations to the persistent state storage.
      */
     private static void storeToPersistence(List configurations) throws CheckstylePluginException
     {
@@ -406,11 +405,11 @@ public final class CheckConfigurationFactory
     }
 
     /**
-     *  Write a collection of check configurations to a file.
+     * Write a collection of check configurations to a file.
      * 
-     *  @param  file      The file to write too.
+     * @param file The file to write too.
      * 
-     *  @param  configs   The list of check configurations to write to the file.
+     * @param configs The list of check configurations to write to the file.
      */
     private static void writeFile(File file, List configs) throws CheckstylePluginException
     {
@@ -424,7 +423,7 @@ public final class CheckConfigurationFactory
             Iterator iter = configs.iterator();
             while (iter.hasNext())
             {
-                CheckConfiguration checkConfig = (CheckConfiguration)iter.next();
+                CheckConfiguration checkConfig = (CheckConfiguration) iter.next();
                 Node node = checkConfig.toDOMNode(configDoc);
                 root.appendChild(node);
             }
@@ -460,11 +459,11 @@ public final class CheckConfigurationFactory
     }
 
     /**
-     *  Write a collection of check configurations to a file.
+     * Write a collection of check configurations to a file.
      * 
-     *  @param  file      The file to write too.
+     * @param file The file to write too.
      * 
-     *  @param  config   The check configuration to write to the file.
+     * @param config The check configuration to write to the file.
      */
     private static void writeCSFile(File file, CheckConfiguration config)
         throws CheckstylePluginException
@@ -501,9 +500,8 @@ public final class CheckConfigurationFactory
     }
 
     /**
-     *  Checks to see if the file format version is out of date.  If it is
-     *  then the DOM is updated to the new format and the new root node if
-     *  returned.
+     * Checks to see if the file format version is out of date. If it is then
+     * the DOM is updated to the new format and the new root node if returned.
      */
     private static Node checkFileFormatVersion(Document doc) throws CheckstylePluginException
     {
@@ -514,9 +512,10 @@ public final class CheckConfigurationFactory
             //
             //  The package names of the check rules changed going from
             //  Checkstyle v3.1 (file format 1.0.0) to Checkstyle 3.2
-            //  (file format 3.2.0).  Update the check rule class names
+            //  (file format 3.2.0). Update the check rule class names
             //  to the correct version 3.2.0 names.
-            //  They have also changed from 3.2.0 to 4.0.0 this will update to the latest
+            //  They have also changed from 3.2.0 to 4.0.0 this will update to
+            // the latest
             //
             result = updateCheckClassnamesTo_Latest(result);
         }
@@ -524,13 +523,13 @@ public final class CheckConfigurationFactory
     }
 
     /**
-     *  Check to see if a check configuration is already using a given name.
+     * Check to see if a check configuration is already using a given name.
      * 
-     *  @param  name  Name of the configuration in question.
+     * @param name Name of the configuration in question.
      * 
-     *  @return  <code>true</code> = in use, <code>false</code> = not in use.
+     * @return <code>true</code>= in use, <code>false</code>= not in use.
      * 
-     *  @throws CheckstylePluginException  Error during processing.
+     * @throws CheckstylePluginException Error during processing.
      */
     public static boolean isNameInUse(String name) throws CheckstylePluginException
     {
@@ -543,54 +542,55 @@ public final class CheckConfigurationFactory
     }
 
     /**
-     * Updates check rule class names based on a package renaming that occured 
+     * Updates check rule class names based on a package renaming that occured
      * with the release of Checkstyle v3.2.0.
      * 
-     * @param  rootNode  The check configuration XML document.
+     * @param rootNode The check configuration XML document.
      * 
-     * @return  A modified check configuration XML document.
+     * @return A modified check configuration XML document.
      */
     private static Node updateCheckClassnamesTo_v3_2_0(Node rootNode)
         throws CheckstylePluginException
     {
-       return updateCheckClassnames(rootNode, CLASSNAMES_V3_2_0_UPDATE);
+        return updateCheckClassnames(rootNode, CLASSNAMES_V3_2_0_UPDATE);
     }
-    
+
     /**
-     * Updates check rule class names based on a package renaming that occured 
+     * Updates check rule class names based on a package renaming that occured
      * with the release of Checkstyle v4.0.0.
      * 
-     * @param  rootNode  The check configuration XML document.
+     * @param rootNode The check configuration XML document.
      * 
-     * @return  A modified check configuration XML document.
+     * @return A modified check configuration XML document.
      */
     private static Node updateCheckClassnamesTo_v4_0_0(Node rootNode)
         throws CheckstylePluginException
     {
-       return updateCheckClassnames(updateCheckClassnamesTo_v3_2_0(rootNode), CLASSNAMES_V4_0_0_UPDATE);
+        return updateCheckClassnames(updateCheckClassnamesTo_v3_2_0(rootNode),
+                CLASSNAMES_V4_0_0_UPDATE);
     }
 
     /**
-     * Updates check rule class names based on a package renaming that occured 
+     * Updates check rule class names based on a package renaming that occured
      * since the release of Checkstyle v3.2.0.
      * 
-     * @param  rootNode  The check configuration XML document.
+     * @param rootNode The check configuration XML document.
      * 
-     * @return  A modified check configuration XML document.
+     * @return A modified check configuration XML document.
      */
     private static Node updateCheckClassnamesTo_Latest(Node rootNode)
         throws CheckstylePluginException
     {
-       return updateCheckClassnamesTo_v4_0_0(rootNode);
+        return updateCheckClassnamesTo_v4_0_0(rootNode);
     }
 
     /**
-     * Updates check rule class names based on a package renaming that occured 
-     * based on the passed in update file
+     * Updates check rule class names based on a package renaming that occured
+     * based on the passed in update file.
      * 
-     * @param  rootNode  The check configuration XML document.
+     * @param rootNode The check configuration XML document.
      * 
-     * @return  A modified check configuration XML document.
+     * @return A modified check configuration XML document.
      */
     private static Node updateCheckClassnames(Node rootNode, String updateFile)
         throws CheckstylePluginException
@@ -644,14 +644,14 @@ public final class CheckConfigurationFactory
                     if (rule.getNodeName().equals(XMLTags.RULE_CONFIG_TAG))
                     {
                         //
-                        //  This is a rule configuration.  Get it's classname
+                        //  This is a rule configuration. Get it's classname
                         //  attribute.
                         //
                         NamedNodeMap attrMap = rule.getAttributes();
-                        Attr attr = (Attr)attrMap.getNamedItem(XMLTags.CLASSNAME_TAG);
+                        Attr attr = (Attr) attrMap.getNamedItem(XMLTags.CLASSNAME_TAG);
                         String currentClassname = attr.getValue();
-                        String newClassname =
-                            classnameMap.getProperty(currentClassname, currentClassname);
+                        String newClassname = classnameMap.getProperty(currentClassname,
+                                currentClassname);
                         if (!newClassname.equals(currentClassname))
                         {
                             attr.setValue(newClassname);

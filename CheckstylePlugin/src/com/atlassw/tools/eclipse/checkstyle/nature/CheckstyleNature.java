@@ -33,6 +33,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
+import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleBuilder;
 import com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleMarker;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
@@ -47,7 +48,7 @@ public class CheckstyleNature implements IProjectNature
     //=================================================
 
     /** ID for the Checkstyle project nature. */
-    public static final String NATURE_ID = "com.atlassw.tools.eclipse.checkstyle.CheckstyleNature";
+    public static final String NATURE_ID = CheckstylePlugin.PLUGIN_ID + ".CheckstyleNature";
 
     //=================================================
     // Static class variables.
@@ -57,7 +58,7 @@ public class CheckstyleNature implements IProjectNature
     // Instance member variables.
     //=================================================
 
-    private IProject           mProject;
+    private IProject mProject;
 
     //=================================================
     // Constructors & finalizer.

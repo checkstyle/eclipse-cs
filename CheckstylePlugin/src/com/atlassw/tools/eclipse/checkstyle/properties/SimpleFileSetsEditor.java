@@ -58,15 +58,15 @@ public class SimpleFileSetsEditor implements IFileSetsEditor
     //
 
     /** viewer to display the known checkstyle configurations. */
-    private Combo   mConfigList;
+    private Combo mConfigList;
 
     /** used to display the config description. */
-    private Text    mTxtConfigDescription;
+    private Text mTxtConfigDescription;
 
     /** button to open the check configuration preferences page. */
-    private Button  mBtnManageConfigs;
+    private Button mBtnManageConfigs;
 
-    private List    mFileSets;
+    private List mFileSets;
 
     private FileSet mDefaultFileSet;
 
@@ -86,7 +86,8 @@ public class SimpleFileSetsEditor implements IFileSetsEditor
         {
             config = ((FileSet) mFileSets.get(0)).getCheckConfig();
         }
-        else
+
+        if (config == null)
         {
             List allConfigs = CheckConfigurationFactory.getCheckConfigurations();
             if (allConfigs.size() > 0)
@@ -140,7 +141,8 @@ public class SimpleFileSetsEditor implements IFileSetsEditor
         this.mConfigList.addSelectionListener(new SelectionListener()
         {
             /**
-             * @see org.eclipse.swt.events.SelectionListener#widgetSelected(org.eclipse.swt.events.SelectionEvent)
+             * @see org.eclipse.swt.events.SelectionListener#widgetSelected(
+             *      org.eclipse.swt.events.SelectionEvent)
              */
             public void widgetSelected(SelectionEvent e)
             {
@@ -160,7 +162,8 @@ public class SimpleFileSetsEditor implements IFileSetsEditor
             }
 
             /**
-             * @see org.eclipse.swt.events.SelectionListener#widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent)
+             * @see org.eclipse.swt.events.SelectionListener#widgetDefaultSelected(
+             *      org.eclipse.swt.events.SelectionEvent)
              */
             public void widgetDefaultSelected(SelectionEvent e)
             {
