@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2003  David Schneider
+// Copyright (C) 2002-2004  David Schneider
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -87,11 +87,11 @@ public class FileMatchPatternEditDialog extends Dialog
 	/**
 	 * Constructor for SamplePropertyPage.
 	 */
-	public FileMatchPatternEditDialog(Shell parent, String  pattern)
-	{
-		super(parent);
+    FileMatchPatternEditDialog(Shell parent, String pattern)
+    {
+        super(parent);
         mPattern = pattern;
-	}
+    }
 
     //=================================================
     // Methods.
@@ -168,12 +168,12 @@ public class FileMatchPatternEditDialog extends Dialog
         super.okPressed();
     }
    
-    public boolean okWasPressed()
+    boolean okWasPressed()
     {
         return mOkWasPressed;
     }
     
-    public String getPattern()
+    String getPattern()
     {
         return mPattern;
     }

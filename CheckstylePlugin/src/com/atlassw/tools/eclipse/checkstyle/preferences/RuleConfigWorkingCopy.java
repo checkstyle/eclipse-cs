@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2003  David Schneider
+// Copyright (C) 2002-2004  David Schneider
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -84,7 +84,7 @@ public class RuleConfigWorkingCopy implements Cloneable
         }
         else
         {
-        	mRuleConfig = ruleConfig;
+            mRuleConfig = ruleConfig;
         }
     }
 
@@ -92,42 +92,42 @@ public class RuleConfigWorkingCopy implements Cloneable
 	// Methods.
 	//=================================================
     
-    public RuleConfiguration getRuleConfig()
+    RuleConfiguration getRuleConfig()
     {
         return mRuleConfig;
     }
     
-    public String getImplClassname()
+    String getImplClassname()
     {
         return mMetadata.getCheckImplClassname();
     }
     
-    public String getRuleName()
+    String getRuleName()
     {
         return mMetadata.getRuleName();
     }
     
-    public String getRuleComment()
+    String getRuleComment()
     {
         return mRuleConfig.getComment();
     }
     
-    public void setRuleComment(String comment)
+    void setRuleComment(String comment)
     {
         mRuleConfig.setComment(comment);
     }
     
-    public SeverityLevel getSeverityLevel()
+    SeverityLevel getSeverityLevel()
     {
         return mRuleConfig.getSeverityLevel();
     }
     
-    public void setSeverityLevel(SeverityLevel severity)
+    void setSeverityLevel(SeverityLevel severity)
     {
         mRuleConfig.setSeverityLevel(severity);
     }
     
-    public String getRuleDescription()
+    String getRuleDescription()
     {
         return mMetadata.getDescription();
     }
@@ -137,21 +137,24 @@ public class RuleConfigWorkingCopy implements Cloneable
      * 
      * @return A list of <code>ConfigItemMetadata</code> objects.
      */
-    public List getConfigItemMetadata()
+    List getConfigItemMetadata()
     {
         return mMetadata.getConfigItemMetadata();
     }
     
-    public ConfigProperty getConfigProperty(String name)
+    ConfigProperty getConfigProperty(String name)
     {
         return mRuleConfig.getConfigProperty(name);
     }
     
-    public void setConfigItems(HashMap items)
+    void setConfigItems(HashMap items)
     {
         mRuleConfig.setConfigProperties(items);
     }
     
+    /**
+     * {@inheritDoc}
+     */
     public Object clone() throws CloneNotSupportedException
     {
         return super.clone();

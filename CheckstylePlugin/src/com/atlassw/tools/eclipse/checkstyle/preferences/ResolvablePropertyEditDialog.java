@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2003  David Schneider
+// Copyright (C) 2002-2004  David Schneider
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -46,7 +46,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-
 /**
  *  Property page.
  */
@@ -55,39 +54,43 @@ public class ResolvablePropertyEditDialog extends Dialog
     //=================================================
     // Public static final variables.
     //=================================================
-  
+
     //=================================================
     // Static class variables.
     //=================================================
-    
-    private static final int MAX_LENGTH = 120; 
-    
+
+    private static final int MAX_LENGTH = 120;
+
     //=================================================
     // Instance member variables.
     //=================================================
-    
-    private String                  mValue;
-    
-    private Composite               mComposite;
-    
-    private Text                    mPropValueText;
-    
-    private ResolvableProperty      mProperty;
-    
-    private boolean                 mOkWasPressed = false;
+
+    private String mValue;
+
+    private Composite mComposite;
+
+    private Text mPropValueText;
+
+    private ResolvableProperty mProperty;
+
+    private boolean mOkWasPressed = false;
 
     //=================================================
     // Constructors & finalizer.
     //=================================================
 
-	/**
-	 * Constructor for SamplePropertyPage.
-	 */
-	public ResolvablePropertyEditDialog(Shell parent, ResolvableProperty  prop)
-	{
-		super(parent);
-		mProperty = prop;
-	}
+    /**
+     * Constructor for SamplePropertyPage.
+     * 
+     * @param parent  Parent shell for the dialog window.
+     * 
+     * @param prop  Property to be edited.
+     */
+    ResolvablePropertyEditDialog(Shell parent, ResolvableProperty prop)
+    {
+        super(parent);
+        mProperty = prop;
+    }
 
     //=================================================
     // Methods.
@@ -101,20 +104,20 @@ public class ResolvablePropertyEditDialog extends Dialog
         mComposite = parent;
         Composite composite = (Composite)super.createDialogArea(parent);
         Composite dialog = new Composite(composite, SWT.NONE);
-        
+
         GridLayout layout = new GridLayout();
         layout.numColumns = 2;
         dialog.setLayout(layout);
-        
-		Label label = new Label(dialog, SWT.NULL);
-		label.setText("Variable:");
-		label = new Label(dialog, SWT.NULL);
-		label.setText(mProperty.getVariableName());
-        
-		label = new Label(dialog, SWT.NULL);
-		label.setText("Value:");
 
-		mPropValueText = new Text(dialog, SWT.SINGLE | SWT.BORDER);
+        Label label = new Label(dialog, SWT.NULL);
+        label.setText("Variable:");
+        label = new Label(dialog, SWT.NULL);
+        label.setText(mProperty.getPropertyName());
+
+        label = new Label(dialog, SWT.NULL);
+        label.setText("Value:");
+
+        mPropValueText = new Text(dialog, SWT.SINGLE | SWT.BORDER);
         GridData data = new GridData();
         data.horizontalAlignment = GridData.FILL;
         data.horizontalSpan = 1;
@@ -122,39 +125,45 @@ public class ResolvablePropertyEditDialog extends Dialog
         data.verticalAlignment = GridData.CENTER;
         data.grabExcessVerticalSpace = false;
         data.widthHint = convertWidthInCharsToPixels(MAX_LENGTH);
-		mPropValueText.setLayoutData(data);
-		mPropValueText.setFont(parent.getFont());
-		//mPropValueText.setTextLimit(MAX_LENGTH);
+        mPropValueText.setLayoutData(data);
+        mPropValueText.setFont(parent.getFont());
+        //mPropValueText.setTextLimit(MAX_LENGTH);
         if (mProperty.getValue() != null)
         {
-			mPropValueText.setText(mProperty.getValue());
+            mPropValueText.setText(mProperty.getValue());
         }
-        
+
         dialog.layout();
         return composite;
     }
-    
+
     protected void okPressed()
     {
         //
         //  Get the entered value.
         //
         mValue = mPropValueText.getText();
-                
+
         mOkWasPressed = true;
         super.okPressed();
     }
-   
+    
+    /**
+     * {@inheritDoc}
+     */
     public boolean okWasPressed()
     {
         return mOkWasPressed;
     }
     
+    /**
+     * @return  The property's value.
+     */
     public String getValue()
     {
         return mValue;
     }
-        
+
     /**
      *  Over-rides method from Window to configure the 
      *  shell (e.g. the enclosing window).
@@ -164,5 +173,5 @@ public class ResolvablePropertyEditDialog extends Dialog
         super.configureShell(shell);
         shell.setText("Property Variable Value Editor");
     }
-    
+
 }

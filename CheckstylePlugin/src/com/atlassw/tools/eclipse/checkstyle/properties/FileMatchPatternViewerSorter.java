@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2003  David Schneider
+// Copyright (C) 2002-2004  David Schneider
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -66,22 +66,22 @@ public class FileMatchPatternViewerSorter extends ViewerSorter
 	/**
 	 * Default constructor.
 	 */
-	public FileMatchPatternViewerSorter()
-	{
-		super();
-	}
+    public FileMatchPatternViewerSorter()
+    {
+        super();
+    }
 
     //=================================================
     // Methods.
     //=================================================
-	
-	/**
-	 * @see ViewerSorter#compare
-	 */
-	public int compare(Viewer viewer, Object e1, Object e2)
-	{
-		int result = 0;
-		return result;
-	}
+
+    /**
+     * @see ViewerSorter#compare
+     */
+    public int compare(Viewer viewer, Object e1, Object e2)
+    {
+        int result = 0;
+        return result;
+    }
 }
 

@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2003  David Schneider
+// Copyright (C) 2002-2004  David Schneider
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -134,7 +134,7 @@ class Auditor
     	//
     	//  Delete any existing project level markers.
     	//
-		mProject.deleteMarkers(CheckstyleMarker.MARKER_ID, true, IResource.DEPTH_ZERO);
+        mProject.deleteMarkers(CheckstyleMarker.MARKER_ID, true, IResource.DEPTH_ZERO);
 
 		//
         //  Build a checkstyle checker for each file set that is enabled.
@@ -156,18 +156,19 @@ class Auditor
                     CheckConfiguration checkConfig = mFileSets[i].getCheckConfig();
                     if (checkConfig == null)
                     {
-						String msg = "Checkstyle CheckConfig '" 
-									 + mFileSets[i].getCheckConfigName() 
-									 + "' not found";
+                        String msg =
+                            "Checkstyle CheckConfig '"
+                                + mFileSets[i].getCheckConfigName()
+                                + "' not found";
 
-						IMarker marker = mProject.createMarker(CheckstyleMarker.MARKER_ID);
-						marker.setAttribute(IMarker.MESSAGE, msg);
-						marker.setAttribute(IMarker.PRIORITY, IMarker.PRIORITY_NORMAL);
-						marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
-						
-						continue;
+                        IMarker marker = mProject.createMarker(CheckstyleMarker.MARKER_ID);
+                        marker.setAttribute(IMarker.MESSAGE, msg);
+                        marker.setAttribute(IMarker.PRIORITY, IMarker.PRIORITY_NORMAL);
+                        marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
+
+                        continue;
                     }
-					checker[i].setClassloader(classLoader);
+                    checker[i].setClassloader(classLoader);
                     checker[i].configure(checkConfig);
                 }
                 catch (com.puppycrawl.tools.checkstyle.api.CheckstyleException e)
@@ -250,7 +251,7 @@ class Auditor
                     marker.setAttribute(IMarker.LINE_NUMBER, error.getLine());
                     marker.setAttribute(IMarker.PRIORITY, IMarker.PRIORITY_NORMAL);
                     marker.setAttribute(IMarker.SEVERITY, getSeverityValue(severity));
-					marker.setAttribute(IMarker.MESSAGE, getMessage(error));
+                    marker.setAttribute(IMarker.MESSAGE, getMessage(error));
                 }
             }
             catch (CoreException e)
@@ -311,24 +312,24 @@ class Auditor
         
         private String getMessage(AuditEvent error)
         {
-        	String message = error.getMessage();
-        	if (mAddRuleName)
-        	{
-        		StringBuffer buffer = new StringBuffer(getRuleName(error));
-        		buffer.append(": ").append(message);
-        		message = buffer.toString();
-        	}
-        	return message;
+            String message = error.getMessage();
+            if (mAddRuleName)
+            {
+                StringBuffer buffer = new StringBuffer(getRuleName(error));
+                buffer.append(": ").append(message);
+                message = buffer.toString();
+            }
+            return message;
         }
-        
+
         private String getRuleName(AuditEvent error)
         {
-        	String ruleName = (String)mClassToNameMap.get(error.getSourceName());
-        	if (ruleName == null)
-        	{
-        		ruleName = "Unknown";
-        	}
-        	return ruleName;
+            String ruleName = (String)mClassToNameMap.get(error.getSourceName());
+            if (ruleName == null)
+            {
+                ruleName = "Unknown";
+            }
+            return ruleName;
         }
 
         public boolean getAddRuleName()

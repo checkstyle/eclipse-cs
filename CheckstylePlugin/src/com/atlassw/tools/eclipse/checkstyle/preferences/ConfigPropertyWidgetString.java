@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2003  David Schneider
+// Copyright (C) 2002-2004  David Schneider
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -45,83 +45,83 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
-
 /**
- *  typecomment
+ *  A string property configuration widget.
  */
 public class ConfigPropertyWidgetString extends ConfigPropertyWidgetAbstractBase
 {
     //=================================================
-	// Public static final variables.
-	//=================================================
+    // Public static final variables.
+    //=================================================
 
-	//=================================================
-	// Static class variables.
-	//=================================================
+    //=================================================
+    // Static class variables.
+    //=================================================
 
     private static final int MAX_INPUT_LENGTH = 40;
 
-	//=================================================
-	// Instance member variables.
-	//=================================================
-    
-    private Text    mTextWidget;
+    //=================================================
+    // Instance member variables.
+    //=================================================
 
-	//=================================================
-	// Constructors & finalizer.
-	//=================================================
+    private Text mTextWidget;
 
-	//=================================================
-	// Methods.
-	//=================================================
-    
-    ConfigPropertyWidgetString(Composite parent, 
-                               ConfigProperty prop,
-                               ConfigPropertyMetadata metadata)
-	{
-		super(ConfigPropertyType.STRING, parent, prop, metadata);
-        
+    //=================================================
+    // Constructors & finalizer.
+    //=================================================
+
+    //=================================================
+    // Methods.
+    //=================================================
+
+    ConfigPropertyWidgetString(
+        Composite parent,
+        ConfigProperty prop,
+        ConfigPropertyMetadata metadata)
+    {
+        super(ConfigPropertyType.STRING, parent, prop, metadata);
+
         addPropertyLabel(SWT.NULL);
 
         //
-		//  Create a text entry field.
-		//
-		mTextWidget = new Text(parent, SWT.SINGLE | SWT.BORDER);
-		GridData data = new GridData();
-		data.horizontalAlignment = GridData.FILL;
-		data.horizontalSpan = 1;
-		data.grabExcessHorizontalSpace = true;
-		data.verticalAlignment = GridData.CENTER;
-		data.grabExcessVerticalSpace = false;
-        
+        //  Create a text entry field.
+        //
+        mTextWidget = new Text(parent, SWT.SINGLE | SWT.BORDER);
+        GridData data = new GridData();
+        data.horizontalAlignment = GridData.FILL;
+        data.horizontalSpan = 1;
+        data.grabExcessHorizontalSpace = true;
+        data.verticalAlignment = GridData.CENTER;
+        data.grabExcessVerticalSpace = false;
+
         GC gc = new GC(parent);
         gc.setFont(parent.getFont());
         FontMetrics fontMetrics = gc.getFontMetrics();
-		data.widthHint = fontMetrics.getAverageCharWidth() * MAX_INPUT_LENGTH;
-		data.heightHint = fontMetrics.getHeight();
-        
-		mTextWidget.setLayoutData(data);
-		mTextWidget.setFont(parent.getFont());
-        
+        data.widthHint = fontMetrics.getAverageCharWidth() * MAX_INPUT_LENGTH;
+        data.heightHint = fontMetrics.getHeight();
+
+        mTextWidget.setLayoutData(data);
+        mTextWidget.setFont(parent.getFont());
+
         String initValue = getInitValue();
-		if (initValue != null)
-		{
-			mTextWidget.setText(initValue);
-		}
-        
+        if (initValue != null)
+        {
+            mTextWidget.setText(initValue);
+        }
+
         addDescriptionButton(SWT.NULL);
-	}
-    
-	/**
-	 * @see com.atlassw.tools.eclipse.checkstyle.preferences.ConfigPropertyWidgetAbstractBase#getValue()
-	 */
-	public String getValue()
-	{
-		String result = mTextWidget.getText();
-		if (result == null)
-		{
-			result = "";
-		}
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getValue()
+    {
+        String result = mTextWidget.getText();
+        if (result == null)
+        {
+            result = "";
+        }
         return result;
-	}
+    }
 }

@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2003  David Schneider
+// Copyright (C) 2002-2004  David Schneider
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -72,7 +72,6 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.dialogs.PropertyPage;
 
-
 /**
  *  Property page.
  */
@@ -81,42 +80,42 @@ public class CheckstylePropertyPage extends PropertyPage
     //=================================================
     // Public static final variables.
     //=================================================
-  
+
     //=================================================
     // Static class variables.
     //=================================================    
-    
+
     //=================================================
     // Instance member variables.
     //=================================================
-    
-    private IProject                mProject;
-    
-    private Composite               mComposite;
 
-    private CheckboxTableViewer     mViewer;
+    private IProject mProject;
 
-    private Button                  mAddButton;
+    private Composite mComposite;
 
-    private Button                  mEditButton;
+    private CheckboxTableViewer mViewer;
 
-    private Button                  mRemoveButton;
-    
-    private List                    mFileSets;
-    
-    private boolean                mNeedRebuild = false;
+    private Button mAddButton;
+
+    private Button mEditButton;
+
+    private Button mRemoveButton;
+
+    private List mFileSets;
+
+    private boolean mNeedRebuild = false;
 
     //=================================================
     // Constructors & finalizer.
     //=================================================
 
-	/**
-	 * Constructor for SamplePropertyPage.
-	 */
-	public CheckstylePropertyPage()
-	{
-		super();
-	}
+    /**
+     * Constructor for SamplePropertyPage.
+     */
+    public CheckstylePropertyPage()
+    {
+        super();
+    }
 
     //=================================================
     // Methods.
@@ -134,7 +133,7 @@ public class CheckstylePropertyPage extends PropertyPage
         GridLayout layout = new GridLayout();
         layout.numColumns = 2;
         composite.setLayout(layout);
-        
+
         //
         //  Get the project.
         //
@@ -147,7 +146,7 @@ public class CheckstylePropertyPage extends PropertyPage
         {
             return parent;
         }
-        
+
         //
         //  Initialize the file sets for editing.
         //
@@ -156,7 +155,7 @@ public class CheckstylePropertyPage extends PropertyPage
             CheckstyleLog.internalErrorDialog();
             return null;
         }
-        
+
         //
         //  Create the table of file sets.
         //
@@ -179,7 +178,7 @@ public class CheckstylePropertyPage extends PropertyPage
 
         TableColumn column2 = new TableColumn(table, SWT.NONE);
         column2.setText("File Set");
-        
+
         tableLayout.addColumnData(new ColumnWeightData(12));
         tableLayout.addColumnData(new ColumnWeightData(48));
 
@@ -188,7 +187,7 @@ public class CheckstylePropertyPage extends PropertyPage
         mViewer.setContentProvider(new FileSetProvider());
         mViewer.setSorter(new FileSetViewerSorter());
         mViewer.setInput(mFileSets);
-                
+
         //
         //  Set checked state
         //
@@ -206,7 +205,7 @@ public class CheckstylePropertyPage extends PropertyPage
                 editFileSet();
             }
         });
-        
+
         mViewer.addCheckStateListener(new ICheckStateListener()
         {
             public void checkStateChanged(CheckStateChangedEvent event)
@@ -254,9 +253,9 @@ public class CheckstylePropertyPage extends PropertyPage
 
         return composite;
     }
-    
+
     /**
-     *  Saves the current state of the file sets.
+     *  {@inheritDoc}
      */
     public boolean performOk()
     {
@@ -269,7 +268,7 @@ public class CheckstylePropertyPage extends PropertyPage
             CheckstyleLog.error("Failed to save FileSets: " + e.getMessage(), e);
             CheckstyleLog.internalErrorDialog();
         }
-        
+
         try
         {
             addNature();
@@ -279,7 +278,7 @@ public class CheckstylePropertyPage extends PropertyPage
             CheckstyleLog.error("Failed to add project nature: " + e.getMessage(), e);
             CheckstyleLog.internalErrorDialog();
         }
-        
+
         if (mNeedRebuild)
         {
             try
@@ -292,10 +291,10 @@ public class CheckstylePropertyPage extends PropertyPage
                 CheckstyleLog.internalErrorDialog();
             }
         }
-        
+
         return true;
     }
-        
+
     /**
      * Utility method that creates a push button instance
      * and sets the default layout data.
@@ -304,7 +303,7 @@ public class CheckstylePropertyPage extends PropertyPage
      * @param label  the label for the new button
      * @return the newly-created button
      */
-    private Button createPushButton(Composite parent, String label) 
+    private Button createPushButton(Composite parent, String label)
     {
         Button button = new Button(parent, SWT.PUSH);
         button.setText(label);
@@ -314,28 +313,27 @@ public class CheckstylePropertyPage extends PropertyPage
         return button;
     }
 
-	private void addFileSet()
-	{
-		try
-		{
-			FileSetEditDialog dialog = 
-                new FileSetEditDialog(mComposite.getShell(), null, mProject);
-			dialog.open();
-			if (dialog.okWasPressed())
-			{
+    private void addFileSet()
+    {
+        try
+        {
+            FileSetEditDialog dialog = new FileSetEditDialog(mComposite.getShell(), null, mProject);
+            dialog.open();
+            if (dialog.okWasPressed())
+            {
                 FileSet fileSet = dialog.getFileSet();
                 mFileSets.add(fileSet);
                 mViewer.refresh();
                 mViewer.setChecked(fileSet, fileSet.isEnabled());
                 mNeedRebuild = true;
-			}
-		}
-		catch (CheckstylePluginException e)
-		{
+            }
+        }
+        catch (CheckstylePluginException e)
+        {
             CheckstyleLog.error("Failed to add FileSet: " + e.getMessage(), e);
             CheckstyleLog.internalErrorDialog();
-		}
-	}
+        }
+    }
 
     private void editFileSet()
     {
@@ -348,10 +346,10 @@ public class CheckstylePropertyPage extends PropertyPage
             //
             return;
         }
-        
+
         try
         {
-            FileSetEditDialog dialog = 
+            FileSetEditDialog dialog =
                 new FileSetEditDialog(mComposite.getShell(), fileSet, mProject);
             dialog.open();
             if (dialog.okWasPressed())
@@ -382,12 +380,12 @@ public class CheckstylePropertyPage extends PropertyPage
             //
             return;
         }
-        
+
         mFileSets.remove(fileSet);
         mViewer.refresh();
         mNeedRebuild = true;
     }
-    
+
     private void changeEnabledState(CheckStateChangedEvent event)
     {
         if (event.getElement() instanceof FileSet)
@@ -407,7 +405,7 @@ public class CheckstylePropertyPage extends PropertyPage
      *  Add the Checkstyle nature to the project.
      */
     private void addNature() throws CheckstylePluginException
-    {        
+    {
         try
         {
             //
@@ -420,7 +418,7 @@ public class CheckstylePropertyPage extends PropertyPage
                 //
                 return;
             }
-            
+
             //
             //  Add the nature to the project.
             //
@@ -447,15 +445,15 @@ public class CheckstylePropertyPage extends PropertyPage
 
     private class AddNature implements IRunnableWithProgress
     {
-        private IProject  mProject;
-        
+        private IProject mProject;
+
         public AddNature(IProject project)
         {
             mProject = project;
         }
-        
+
         public void run(IProgressMonitor monitor)
-             throws InvocationTargetException, InterruptedException
+            throws InvocationTargetException, InterruptedException
         {
             try
             {
@@ -476,7 +474,7 @@ public class CheckstylePropertyPage extends PropertyPage
             }
         }
     }
-    
+
     private boolean initializeFileSets()
     {
         //
@@ -509,8 +507,8 @@ public class CheckstylePropertyPage extends PropertyPage
             mFileSets = null;
             return false;
         }
-        
+
         return true;
     }
-    
+
 }

@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2003  David Schneider
+// Copyright (C) 2002-2004  David Schneider
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -48,115 +48,117 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-
 /**
  *  This class is the factory for all Checkstyle rule metadata.
  */
 public final class MetadataFactory
 {
     //=================================================
-	// Public static final variables.
-	//=================================================
+    // Public static final variables.
+    //=================================================
 
-	//=================================================
-	// Static class variables.
-	//=================================================
-    
+    //=================================================
+    // Static class variables.
+    //=================================================
+
     /**  Metadata for the rule groups.  */
-    private static List  sRuleGroupMetadata = new LinkedList();
-    
+    private static List sRuleGroupMetadata = new LinkedList();
+
     /**  Metadata for all rules, keyed by class name.  */
     private static HashMap sRuleMetadata = new HashMap();
-    
+
     /**  Map of rule class name to rule display name. */
     private static HashMap sClassToNameMap = new HashMap();
 
     /**  Name of the rules metadata XML file.  */
     private static final String METADATA_FILENAME = "/CheckstyleMetadata.xml";
-    
+
     private static int sDefaultGroupIndex = -1;
 
-	//=================================================
-	// Instance member variables.
-	//=================================================
+    //=================================================
+    // Instance member variables.
+    //=================================================
 
-	//=================================================
-	// Constructors & finalizer.
-	//=================================================
-    
+    //=================================================
+    // Constructors & finalizer.
+    //=================================================
+
     /**
      * Private constructor to prevent instantiation.
      */
     private MetadataFactory()
     {}
-    
+
     /**
      *  Static initializer.
      */
-    static
-    {
+    static {
         doInitialization();
     }
 
-	//=================================================
-	// Methods.
-	//=================================================
+    //=================================================
+    // Methods.
+    //=================================================
     
+    /**
+     *  Get a list of metadata objects for all rule groups.
+     * 
+     *  @return List of <code>RuleGroupMetadata</code> objects.
+     */
     public static List getRuleGroupMetadata()
     {
         return sRuleGroupMetadata;
     }
-    
-	private static void doInitialization()
-	{
+
+    private static void doInitialization()
+    {
         InputStream metadataStream = null;
         Document metadataDocument = null;
-		try
-		{
-			//
-			//  Get the metadata file's input stream.
-			//
-			metadataStream = 
-                MetadataFactory.class.getResourceAsStream(METADATA_FILENAME);
-			if (metadataStream == null)
-			{
-				CheckstyleLog.error("Failed to load audit rule metadata, input stream is null");
-				return;
-			}
+        try
+        {
+            //
+            //  Get the metadata file's input stream.
+            //
+            metadataStream = MetadataFactory.class.getResourceAsStream(METADATA_FILENAME);
+            if (metadataStream == null)
+            {
+                CheckstyleLog.error("Failed to load audit rule metadata, input stream is null");
+                return;
+            }
 
-			metadataDocument = XMLUtil.newDocument(metadataStream);
-			if (metadataDocument == null)
-			{
-				CheckstyleLog.error("Failed to load audit rule metadata, failed to parse XML");
-				return;
-			}
-		}
-		finally
-		{
-			try
-			{
-				metadataStream.close();
-			}
-			catch (Exception e)
-			{
-				//	We tried to be nice and close the stream.
-			}
-		}
+            metadataDocument = XMLUtil.newDocument(metadataStream);
+            if (metadataDocument == null)
+            {
+                CheckstyleLog.error("Failed to load audit rule metadata, failed to parse XML");
+                return;
+            }
+        }
+        finally
+        {
+            try
+            {
+                metadataStream.close();
+            }
+            catch (Exception e)
+            {
+                //	We tried to be nice and close the stream.
+            }
+        }
 
-		//
-		//  Find all the rule groups and load them.
-		//
-		NodeList children = metadataDocument.getDocumentElement().getChildNodes();
-		int count = children.getLength();
-		for (int i = 0; i < count; i++)
-		{
-			Node node = children.item(i);
-			if (node.getNodeName().equals(XMLTags.RULE_GROUP_METADATA_TAG))
-			{
+        //
+        //  Find all the rule groups and load them.
+        //
+        NodeList children = metadataDocument.getDocumentElement().getChildNodes();
+        int count = children.getLength();
+        for (int i = 0; i < count; i++)
+        {
+            Node node = children.item(i);
+            if (node.getNodeName().equals(XMLTags.RULE_GROUP_METADATA_TAG))
+            {
                 RuleGroupMetadata ruleGroup = null;
                 try
                 {
-				    ruleGroup = new RuleGroupMetadata(node);
+                    ruleGroup = new RuleGroupMetadata(node);
                 }
                 catch (Exception e)
                 {
@@ -164,11 +166,11 @@ public final class MetadataFactory
                 }
                 if (ruleGroup != null)
                 {
-				    sRuleGroupMetadata.add(ruleGroup);
+                    sRuleGroupMetadata.add(ruleGroup);
                 }
-			}
-		}
-        
+            }
+        }
+
         //
         //  Build the hash map of rule metadata.
         //
@@ -185,55 +187,55 @@ public final class MetadataFactory
                 sClassToNameMap.put(ruleMeta.getCheckImplClassname(), ruleMeta.getRuleName());
             }
         }
-        
+
         //
         //  Add the default group "Other".
         //
-		sDefaultGroupIndex = sRuleGroupMetadata.size();
+        sDefaultGroupIndex = sRuleGroupMetadata.size();
         RuleGroupMetadata otherGroup = new RuleGroupMetadata("Other");
-		sRuleGroupMetadata.add(otherGroup);
-	}
-    
-	/**
-	 *  Get metadata for a check rule.
-	 * 
-	 *  @param classname  The rule's implementation classname.
-	 * 
-	 *  @return  The metadata.
-	 */
-	public static RuleMetadata getRuleMetadata(String classname)
-	{
-		return (RuleMetadata)sRuleMetadata.get(classname);
-	}
-    
-	/**
-	 *  Get metadata for a check rule.  If no metadata is known for the rule
-	 *  a default set of metadata is created from the rule configuration consisting
-	 *  name/value pairs of type String.
-	 * 
-	 *  @param  ruleConfig  A <code>RuleConfiguration</code> that metadata is requested for.
-	 * 
-	 *  @return  The metadata for the rule.
-	 */
-	public static RuleMetadata getRuleMetadata(RuleConfiguration ruleConfig)
-	{
-		RuleMetadata metadata = getRuleMetadata(ruleConfig.getImplClassname());
-		if (metadata == null)
-		{
-			metadata = new RuleMetadata(ruleConfig);
-			metadata.setGroupIndex(sDefaultGroupIndex);
-		}
-		return metadata;
-	}
-	
-	/**
-	 *  Get a map from class names to rule names.
-	 * 
-	 *  @return  A map keyed by rule classname that contains <code>String</code>
-	 *           objects with the rule's display name.
-	 */
-	public static Map getClassToNameMap()
-	{
-		return Collections.unmodifiableMap(sClassToNameMap);
-	}
+        sRuleGroupMetadata.add(otherGroup);
+    }
+
+    /**
+     *  Get metadata for a check rule.
+     * 
+     *  @param classname  The rule's implementation classname.
+     * 
+     *  @return  The metadata.
+     */
+    public static RuleMetadata getRuleMetadata(String classname)
+    {
+        return (RuleMetadata)sRuleMetadata.get(classname);
+    }
+
+    /**
+     *  Get metadata for a check rule.  If no metadata is known for the rule
+     *  a default set of metadata is created from the rule configuration consisting
+     *  name/value pairs of type String.
+     * 
+     *  @param  ruleConfig  A <code>RuleConfiguration</code> that metadata is requested for.
+     * 
+     *  @return  The metadata for the rule.
+     */
+    public static RuleMetadata getRuleMetadata(RuleConfiguration ruleConfig)
+    {
+        RuleMetadata metadata = getRuleMetadata(ruleConfig.getImplClassname());
+        if (metadata == null)
+        {
+            metadata = new RuleMetadata(ruleConfig);
+            metadata.setGroupIndex(sDefaultGroupIndex);
+        }
+        return metadata;
+    }
+
+    /**
+     *  Get a map from class names to rule names.
+     * 
+     *  @return  A map keyed by rule classname that contains <code>String</code>
+     *           objects with the rule's display name.
+     */
+    public static Map getClassToNameMap()
+    {
+        return Collections.unmodifiableMap(sClassToNameMap);
+    }
 }

@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2003  David Schneider
+// Copyright (C) 2002-2004  David Schneider
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -45,40 +45,39 @@ import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-
 /**
  *  This class contains the metadata that describes a check rule.
  */
 public class RuleMetadata implements Cloneable
 {
     //=================================================
-	// Public static final variables.
-	//=================================================
+    // Public static final variables.
+    //=================================================
 
-	//=================================================
-	// Static class variables.
-	//=================================================
+    //=================================================
+    // Static class variables.
+    //=================================================
 
-	//=================================================
-	// Instance member variables.
-	//=================================================
-    
-    private String          mCheckImplClassname;
-    
-    private String          mName;
-    
-    private String          mDescription;
-    
-    private SeverityLevel   mDefaultSeverityLevel = SeverityLevel.WARNING;
-    
-    private List            mConfigPropMetadata = new LinkedList();
-    
-    private int             mGroupIndex = -1;
+    //=================================================
+    // Instance member variables.
+    //=================================================
 
-	//=================================================
-	// Constructors & finalizer.
-	//=================================================
-    
+    private String mCheckImplClassname;
+
+    private String mName;
+
+    private String mDescription;
+
+    private SeverityLevel mDefaultSeverityLevel = SeverityLevel.WARNING;
+
+    private List mConfigPropMetadata = new LinkedList();
+
+    private int mGroupIndex = -1;
+
+    //=================================================
+    // Constructors & finalizer.
+    //=================================================
+
     RuleMetadata(Node ruleNode) throws CheckstylePluginException
     {
         //
@@ -107,19 +106,19 @@ public class RuleMetadata implements Cloneable
         {
             mDefaultSeverityLevel = SeverityLevel.getInstance(temp.trim());
         }
-        
+
         //
         //  Get the description node.
         //
-		Node descNode = XMLUtil.getChildNode(ruleNode, XMLTags.DESCRIPTION_TAG);
-		if (descNode != null)
-		{
-			temp = XMLUtil.getNodeTextValue(descNode);
-			if (temp != null)
-			{
-				mDescription = temp.trim();
-			}
-		}
+        Node descNode = XMLUtil.getChildNode(ruleNode, XMLTags.DESCRIPTION_TAG);
+        if (descNode != null)
+        {
+            temp = XMLUtil.getNodeTextValue(descNode);
+            if (temp != null)
+            {
+                mDescription = temp.trim();
+            }
+        }
 
         //
         //  Find all the properties and load them.
@@ -138,8 +137,9 @@ public class RuleMetadata implements Cloneable
                 }
                 catch (CheckstylePluginException e)
                 {
-                    CheckstyleLog.warning("Failed to get configuration property metadata, " 
-                                          + e.getMessage(), e);
+                    CheckstyleLog.warning(
+                        "Failed to get configuration property metadata, " + e.getMessage(),
+                        e);
                 }
                 if (propMeta != null)
                 {
@@ -148,66 +148,66 @@ public class RuleMetadata implements Cloneable
             }
         }
     }
-    
+
     RuleMetadata(RuleConfiguration ruleConfig)
     {
-    	mCheckImplClassname = ruleConfig.getImplClassname();
-    	mName = classToRuleName(mCheckImplClassname);
-    	mDescription = "";
-		mDefaultSeverityLevel = ruleConfig.getSeverityLevel();
-		
-		String[] propNames = ruleConfig.getAttributeNames();
-		for (int i = 0; i < propNames.length; i++)
-		{
-			String name = propNames[i];
-			if (name.equals(XMLTags.SEVERITY_TAG))
-			{
-				continue;
-			}
-			
-			String value = ruleConfig.getConfigProperty(name).getValue();
-			ConfigPropertyMetadata propMetadata =
-			    new ConfigPropertyMetadata(ConfigPropertyType.STRING, name, value);
-			mConfigPropMetadata.add(propMetadata);
-		}
+        mCheckImplClassname = ruleConfig.getImplClassname();
+        mName = classToRuleName(mCheckImplClassname);
+        mDescription = "";
+        mDefaultSeverityLevel = ruleConfig.getSeverityLevel();
+
+        String[] propNames = ruleConfig.getAttributeNames();
+        for (int i = 0; i < propNames.length; i++)
+        {
+            String name = propNames[i];
+            if (name.equals(XMLTags.SEVERITY_TAG))
+            {
+                continue;
+            }
+
+            String value = ruleConfig.getConfigProperty(name).getValue();
+            ConfigPropertyMetadata propMetadata =
+                new ConfigPropertyMetadata(ConfigPropertyType.STRING, name, value);
+            mConfigPropMetadata.add(propMetadata);
+        }
     }
 
-	//=================================================
-	// Methods.
-	//=================================================
-    
-	/**
-	 * Returns the default severity level.
-     * 
-	 * @return  The severity level.
-	 */
-	public SeverityLevel getDefaultSeverityLevel()
-	{
-		return mDefaultSeverityLevel;
-	}
-
-	/**
-	 * Returns the rule's check implementation class name.
-     * 
-	 * @return Implementation class name.
-	 */
-	public String getCheckImplClassname()
-	{
-		return mCheckImplClassname;
-	}
-
-	/**
-	 * Returns the rule's description.
-     * 
-	 * @return Rule description
-	 */
-	public String getDescription()
-	{
-		return mDescription;
-	}
+    //=================================================
+    // Methods.
+    //=================================================
 
     /**
-     * Returns the rule's name
+     * Returns the default severity level.
+     * 
+     * @return  The severity level.
+     */
+    public SeverityLevel getDefaultSeverityLevel()
+    {
+        return mDefaultSeverityLevel;
+    }
+
+    /**
+     * Returns the rule's check implementation class name.
+     * 
+     * @return Implementation class name.
+     */
+    public String getCheckImplClassname()
+    {
+        return mCheckImplClassname;
+    }
+
+    /**
+     * Returns the rule's description.
+     * 
+     * @return Rule description
+     */
+    public String getDescription()
+    {
+        return mDescription;
+    }
+
+    /**
+     * Returns the rule's name.
      * @return String
      */
     public String getRuleName()
@@ -215,44 +215,47 @@ public class RuleMetadata implements Cloneable
         return mName;
     }
 
-	/**
-	 * Returns the configuration property metadata.
+    /**
+     * Returns the configuration property metadata.
      * 
-	 * @return A list of <code>ConfigPropertyMetadata</code> objects.
-	 */
-	public List getConfigItemMetadata()
-	{
-		return mConfigPropMetadata;
-	}
+     * @return A list of <code>ConfigPropertyMetadata</code> objects.
+     */
+    public List getConfigItemMetadata()
+    {
+        return mConfigPropMetadata;
+    }
     
+    /**
+     * {@inheritDoc}
+     */
     public Object clone() throws CloneNotSupportedException
     {
         return super.clone();
     }
 
-	/**
-	 * Returns the groupIndex.
-	 * @return int
-	 */
-	public int getGroupIndex()
-	{
-		return mGroupIndex;
-	}
+    /**
+     * Returns the groupIndex.
+     * @return int
+     */
+    public int getGroupIndex()
+    {
+        return mGroupIndex;
+    }
 
-	/**
-	 * Sets the groupIndex.
-	 * @param groupIndex The groupIndex to set
-	 */
-	public void setGroupIndex(int groupIndex)
-	{
-		mGroupIndex = groupIndex;
-	}
-	
-	private String classToRuleName(String classname)
-	{
-		String result = "Unknown";
-		int index = classname.lastIndexOf(".");
-		result = classname.substring(index+1, classname.length());
-		return result;
-	}
+    /**
+     * Sets the groupIndex.
+     * @param groupIndex The groupIndex to set
+     */
+    public void setGroupIndex(int groupIndex)
+    {
+        mGroupIndex = groupIndex;
+    }
+
+    private String classToRuleName(String classname)
+    {
+        String result = "Unknown";
+        int index = classname.lastIndexOf(".");
+        result = classname.substring(index + 1, classname.length());
+        return result;
+    }
 }

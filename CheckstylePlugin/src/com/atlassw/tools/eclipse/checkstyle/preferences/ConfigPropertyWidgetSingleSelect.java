@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2003  David Schneider
+// Copyright (C) 2002-2004  David Schneider
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -19,7 +19,6 @@
 //============================================================================
 
 package com.atlassw.tools.eclipse.checkstyle.preferences;
-
 
 //=================================================
 // Imports from java namespace
@@ -48,74 +47,74 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 
-
 /**
- *  typecomment
+ *  Configuration widget that allows for selecting one value from a set of values.
  */
 public class ConfigPropertyWidgetSingleSelect extends ConfigPropertyWidgetAbstractBase
 {
     //=================================================
-	// Public static final variables.
-	//=================================================
+    // Public static final variables.
+    //=================================================
 
-	//=================================================
-	// Static class variables.
-	//=================================================
+    //=================================================
+    // Static class variables.
+    //=================================================
 
-	//=================================================
-	// Instance member variables.
-	//=================================================
-    
-    private Combo    mComboItem;
+    //=================================================
+    // Instance member variables.
+    //=================================================
 
-	//=================================================
-	// Constructors & finalizer.
-	//=================================================
+    private Combo mComboItem;
 
-	//=================================================
-	// Methods.
-	//=================================================
-    
-    ConfigPropertyWidgetSingleSelect(Composite parent, 
-                                     ConfigProperty prop,
-                                     ConfigPropertyMetadata metadata)
-	{
-		super(ConfigPropertyType.SINGLE_SELECT, parent, prop, metadata);
-        
+    //=================================================
+    // Constructors & finalizer.
+    //=================================================
+
+    //=================================================
+    // Methods.
+    //=================================================
+
+    ConfigPropertyWidgetSingleSelect(
+        Composite parent,
+        ConfigProperty prop,
+        ConfigPropertyMetadata metadata)
+    {
+        super(ConfigPropertyType.SINGLE_SELECT, parent, prop, metadata);
+
         addPropertyLabel(SWT.NULL);
 
-		//
-		//  Create a combo box for selecting a value from the enumeration.
-		//
-		ConfigPropertyEnumerationMetadata enum = metadata.getPropertyEnumeration();
-		List valueList = (List)enum.getValueMetadata();
-		String[] valueLabels = new String[valueList.size()];
-		int initialIndex = 0;
+        //
+        //  Create a combo box for selecting a value from the enumeration.
+        //
+        ConfigPropertyEnumerationMetadata enum = metadata.getPropertyEnumeration();
+        List valueList = (List)enum.getValueMetadata();
+        String[] valueLabels = new String[valueList.size()];
+        int initialIndex = 0;
         String initValue = getInitValue();
-		Iterator iter = valueList.iterator();
-		for (int i = 0; iter.hasNext(); i++)
-		{
-			ConfigPropertyValueMetadata value = (ConfigPropertyValueMetadata) iter.next();
-			valueLabels[i] = value.getValue();
-			if ((initValue != null) && (initValue.equals(value.getValue())))
-			{
-				initialIndex = i;
-			}
-		}
-		mComboItem = new Combo(parent, SWT.NONE | SWT.DROP_DOWN | SWT.READ_ONLY);
-		mComboItem.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
-		mComboItem.setItems(valueLabels);
-		mComboItem.select(initialIndex);
-        
+        Iterator iter = valueList.iterator();
+        for (int i = 0; iter.hasNext(); i++)
+        {
+            ConfigPropertyValueMetadata value = (ConfigPropertyValueMetadata)iter.next();
+            valueLabels[i] = value.getValue();
+            if ((initValue != null) && (initValue.equals(value.getValue())))
+            {
+                initialIndex = i;
+            }
+        }
+        mComboItem = new Combo(parent, SWT.NONE | SWT.DROP_DOWN | SWT.READ_ONLY);
+        mComboItem.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
+        mComboItem.setItems(valueLabels);
+        mComboItem.select(initialIndex);
+
         addDescriptionButton(SWT.NULL);
-	}
-    
-	/**
-	 * @see com.atlassw.tools.eclipse.checkstyle.preferences.ConfigPropertyWidgetAbstractBase#getValue()
-	 */
-	public String getValue()
-	{
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getValue()
+    {
         String result = mComboItem.getItem(mComboItem.getSelectionIndex());
         return result;
-	}
+    }
 }

@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2003  David Schneider
+// Copyright (C) 2002-2004  David Schneider
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -80,7 +80,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
 	// Public static final variables.
 	//=================================================
     
-    /** Eclipse extension point ID for the builder */
+    /** Eclipse extension point ID for the builder. */
     public static final String BUILDER_ID 
         = "com.atlassw.tools.eclipse.checkstyle.CheckstyleBuilder";
 
@@ -88,7 +88,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
 	// Static class variables.
 	//=================================================
 
-    /** Java file suffix */
+    /** Java file suffix. */
     private static final String JAVA_SUFFIX = ".java";
 
 	//=================================================
@@ -133,6 +133,10 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
             case INCREMENTAL_BUILD :
                 doIncrementalBuild(args, monitor);
                 break;
+            
+            default:
+                doFullBuild(args, monitor);
+                break;
         }
 
 
@@ -166,25 +170,25 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
         super.setInitializationData(config, propertyName, data);
     }
         
-    private final void doAutoBuild(Map args, IProgressMonitor monitor)
+    private void doAutoBuild(Map args, IProgressMonitor monitor)
         throws CoreException
     {
         doBuild(args, monitor);
     }
     
-    private final void doFullBuild(Map args, IProgressMonitor monitor)
+    private void doFullBuild(Map args, IProgressMonitor monitor)
         throws CoreException
     {
         doBuild(args, monitor);
     }
     
-    private final void doIncrementalBuild(Map args, IProgressMonitor monitor)
+    private void doIncrementalBuild(Map args, IProgressMonitor monitor)
         throws CoreException
     {
         doBuild(args, monitor);
     }
     
-    private final void doBuild(Map args, IProgressMonitor monitor)
+    private void doBuild(Map args, IProgressMonitor monitor)
         throws CoreException
     {
         IProject project = getProject();
@@ -282,13 +286,13 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
         }
     }
     
-    private final Collection getFiles(IResourceDelta delta)
+    private Collection getFiles(IResourceDelta delta)
         throws CoreException
     {
         ArrayList files   = new ArrayList(0);
         ArrayList folders = new ArrayList(0);
         
-        IResourceDelta affectedChildren[] = delta.getAffectedChildren();
+        IResourceDelta[] affectedChildren = delta.getAffectedChildren();
         for (int i = 0; i < affectedChildren.length; i++)
         {
             IResourceDelta childDelta = affectedChildren[i];
@@ -324,13 +328,13 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
         return files;
     }
     
-    private final Collection getFiles(IContainer container)
+    private Collection getFiles(IContainer container)
         throws CoreException
     {
         ArrayList files   = new ArrayList(0);
         ArrayList folders = new ArrayList(0);
         
-        IResource children[] = container.members();
+        IResource[] children = container.members();
         for (int i = 0; i < children.length; i++)
         {
             IResource child = children[i];
@@ -361,8 +365,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
     }
 
     /**
-     * Daniel Berg jdt-dev@eclipse.org  
-     * 
+     * @author Daniel Berg jdt-dev@eclipse.org.
      * @param javaProject
      * @return
      */    
@@ -437,7 +440,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
                     {
                         IJavaProject dependentProject = 
                             (IJavaProject)(ResourcesPlugin.getWorkspace().getRoot().
-                                getProject(entries[i].getPath().segment(0))).
+                                    getProject(entries[i].getPath().segment(0))).
                                     getAdapter(IJavaElement.class);
         
                         urls.add(getClasspathURLs(dependentProject, true));
@@ -488,7 +491,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
     public static void buildAllProjects(Shell shell) throws CheckstylePluginException
     {
         IWorkspace workspace = ResourcesPlugin.getWorkspace();
-        IProject projects[] = workspace.getRoot().getProjects();
+        IProject[] projects = workspace.getRoot().getProjects();
         buildProjects(projects, shell);
     }
     
@@ -567,8 +570,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
         }
         
         public void run(IProgressMonitor monitor)
-             throws InvocationTargetException,
-                    InterruptedException
+            throws InvocationTargetException, InterruptedException
         {
             Iterator iter = mProjects.iterator();
             while (iter.hasNext())

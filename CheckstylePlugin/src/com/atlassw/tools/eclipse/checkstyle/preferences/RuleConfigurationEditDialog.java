@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2003  David Schneider
+// Copyright (C) 2002-2004  David Schneider
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -57,64 +57,65 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 
-
 /**
  * Edit dialog for property values.
  */
 public class RuleConfigurationEditDialog extends Dialog
 {
-	//=================================================
-	// Public static final variables.
-	//=================================================
+    //=================================================
+    // Public static final variables.
+    //=================================================
 
-	//=================================================
-	// Static class variables.
-	//=================================================
-    
+    //=================================================
+    // Static class variables.
+    //=================================================
+
     private static final int MAX_INPUT_LENGTH = 40;
 
     private static final String[] SEVERITY_LABELS =
-	{
-		SeverityLevel.IGNORE.getName(),
-		SeverityLevel.INFO.getName(),
-		SeverityLevel.WARNING.getName(),
-		SeverityLevel.ERROR.getName()
+    {
+            SeverityLevel.IGNORE.getName(),
+            SeverityLevel.INFO.getName(),
+            SeverityLevel.WARNING.getName(),
+            SeverityLevel.ERROR.getName()
     };
 
-	//=================================================
-	// Instance member variables.
-	//=================================================
+    //=================================================
+    // Instance member variables.
+    //=================================================
 
-    private Composite                 mParentComposite;
+    private Composite mParentComposite;
 
-    private RuleConfigWorkingCopy     mRule;
+    private RuleConfigWorkingCopy mRule;
 
-    private RuleConfigWorkingCopy     mFinalRule;
+    private RuleConfigWorkingCopy mFinalRule;
 
-    private Text                      mCommentText;
-    
-    private Combo                     mSeverityCombo;
-    
-    private IConfigPropertyWidget[]    mConfigPropertyWidgets;
-    
-    private boolean                   mOkWasPressed = false;
+    private Text mCommentText;
 
-	//=================================================
-	// Constructors & finalizer.
-	//=================================================
+    private Combo mSeverityCombo;
 
-	/**
-	 * Constructor
-	 * 
-	 * @param parent     Parent shell.
-	 * 
-	 * @param filter     Filter being edited.
-	 */
-	public RuleConfigurationEditDialog(Shell parent, RuleConfigWorkingCopy rule)
+    private IConfigPropertyWidget[] mConfigPropertyWidgets;
+
+    private boolean mOkWasPressed = false;
+
+    //=================================================
+    // Constructors & finalizer.
+    //=================================================
+
+    /**
+     * Constructor.
+     * 
+     * @param parent  Parent shell.
+     * 
+     * @param rule    Rule being edited.
+     * 
+     * @throws CheckstylePluginException  Error during processing.
+     */
+    RuleConfigurationEditDialog(Shell parent, RuleConfigWorkingCopy rule)
         throws CheckstylePluginException
-	{
-		super(parent);
-		mRule = rule;
+    {
+        super(parent);
+        mRule = rule;
         try
         {
             mFinalRule = (RuleConfigWorkingCopy)rule.clone();
@@ -124,39 +125,39 @@ public class RuleConfigurationEditDialog extends Dialog
             CheckstyleLog.error("Failed to clone RuleConfigWorkingCopy", e);
             throw new CheckstylePluginException("Failed to clone RuleConfigWorkingCopy");
         }
-	}
+    }
 
-	//=================================================
-	// Methods.
-	//=================================================
-    
-	/**
-	 * @see Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
-	 */
-	protected Control createDialogArea(Composite parent)
-	{
-		Composite composite = (Composite) super.createDialogArea(parent);
+    //=================================================
+    // Methods.
+    //=================================================
 
-		Composite dialog = new Composite(composite, SWT.NONE);
+    /**
+     * @see Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
+     */
+    protected Control createDialogArea(Composite parent)
+    {
+        Composite composite = (Composite)super.createDialogArea(parent);
+
+        Composite dialog = new Composite(composite, SWT.NONE);
         mParentComposite = dialog;
-		GridLayout layout = new GridLayout();
-		layout.numColumns = 1;
-		dialog.setLayout(layout);
-        
+        GridLayout layout = new GridLayout();
+        layout.numColumns = 1;
+        dialog.setLayout(layout);
+
         createRuleNameLable(dialog);
         createComment(dialog);
         createSeveritySelection(dialog);
         createConfigPropertyEntries(dialog);
 
-		dialog.layout();
-		return composite;
-	}
+        dialog.layout();
+        return composite;
+    }
 
-	/**
-	 *  OK button was selected.
-	 */
-	protected void okPressed()
-	{
+    /**
+     *  OK button was selected.
+     */
+    protected void okPressed()
+    {
         //
         //  Get the selected severity level.
         //
@@ -170,12 +171,12 @@ public class RuleConfigurationEditDialog extends Dialog
         {
             CheckstyleLog.warning("Invalid severity level found, using original value", e);
         }
-        
+
         //
         //  Get the comment.
         //
         String comment = mCommentText.getText();
-        
+
         //
         //  Build a new collection of configuration properties.
         //
@@ -198,9 +199,9 @@ public class RuleConfigurationEditDialog extends Dialog
                     configProps.put(property.getName(), property);
                 }
             }
-            
+
         }
-        
+
         //
         //  If we made it this far then all of the user input validated and we can
         //  update the final rule with the values the user entered.
@@ -208,25 +209,22 @@ public class RuleConfigurationEditDialog extends Dialog
         mFinalRule.setConfigItems(configProps);
         mFinalRule.setSeverityLevel(severity);
         mFinalRule.setRuleComment(comment);
-        
+
         mOkWasPressed = true;
-		super.okPressed();
-	}
-    
+        super.okPressed();
+    }
+
     private ConfigProperty buildConfigProperty(IConfigPropertyWidget widget)
     {
         String value = widget.getValue();
         boolean isValid = validatePropertyValue(value, widget.getMetadata());
         if (!isValid)
         {
-            String message = "Invalid value for property " 
-                             + widget.getMetadata().getName();
-            MessageDialog.openError(mParentComposite.getShell(), 
-                                    "Invalid Property Value",
-                                    message);
+            String message = "Invalid value for property " + widget.getMetadata().getName();
+            MessageDialog.openError(mParentComposite.getShell(), "Invalid Property Value", message);
             return null;
         }
-        
+
         ConfigProperty prop = new ConfigProperty(widget.getMetadata().getName(), value);
         return prop;
     }
@@ -265,7 +263,7 @@ public class RuleConfigurationEditDialog extends Dialog
             mCommentText.setText(comment);
         }
     }
-    
+
     private void createSeveritySelection(Composite parent)
     {
         Composite comp = new Composite(parent, SWT.NONE);
@@ -273,16 +271,16 @@ public class RuleConfigurationEditDialog extends Dialog
         layout.numColumns = 2;
         layout.marginWidth = 0;
         comp.setLayout(layout);
-        
+
         Label label = new Label(comp, SWT.NULL);
         label.setText("Severity: ");
-                    
+
         mSeverityCombo = new Combo(comp, SWT.NONE | SWT.DROP_DOWN | SWT.READ_ONLY);
         mSeverityCombo.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
         mSeverityCombo.setItems(SEVERITY_LABELS);
         mSeverityCombo.select(severityToComboPosition(mRule.getSeverityLevel()));
     }
-    
+
     private void createConfigPropertyEntries(Composite parent)
     {
         List configItemMetadata = mRule.getConfigItemMetadata();
@@ -290,7 +288,7 @@ public class RuleConfigurationEditDialog extends Dialog
         {
             return;
         }
-        
+
         Label label = new Label(parent, SWT.NULL);
         label.setText("Properties:");
 
@@ -299,27 +297,27 @@ public class RuleConfigurationEditDialog extends Dialog
         layout.numColumns = 4;
         layout.marginWidth = 0;
         comp.setLayout(layout);
-        
+
         mConfigPropertyWidgets = new IConfigPropertyWidget[configItemMetadata.size()];
         Iterator iter = configItemMetadata.iterator();
         for (int i = 0; iter.hasNext(); i++)
         {
             ConfigPropertyMetadata cfgPropMetadata = (ConfigPropertyMetadata)iter.next();
-            ConfigProperty prop = 
+            ConfigProperty prop =
                 (ConfigProperty)mRule.getConfigProperty(cfgPropMetadata.getName());
-            
-			//
+
+            //
             //  Add an input widget for the properties value.
             //
             mConfigPropertyWidgets[i] =
                 ConfigPropertyWidgetFactory.createWidget(comp, cfgPropMetadata, prop);
         }
     }
-    
+
     private int severityToComboPosition(SeverityLevel severity)
     {
         int result = 0;
-        
+
         String label = severity.getName();
         for (int i = 0; i < SEVERITY_LABELS.length; i++)
         {
@@ -329,16 +327,15 @@ public class RuleConfigurationEditDialog extends Dialog
                 break;
             }
         }
-        
+
         return result;
     }
-    
+
     RuleConfigWorkingCopy getFinalRule()
     {
         return mFinalRule;
     }
-    
-    
+
     private boolean validatePropertyValue(String value, ConfigPropertyMetadata metadata)
     {
         boolean result = true;
@@ -346,7 +343,7 @@ public class RuleConfigurationEditDialog extends Dialog
         {
             return false;
         }
-        
+
         //
         //  What datatype is this property?
         //
@@ -375,27 +372,31 @@ public class RuleConfigurationEditDialog extends Dialog
                 result = false;
             }
         }
-        else if ((type.equals(ConfigPropertyType.SINGLE_SELECT))
-		        || type.equals(ConfigPropertyType.MULTI_CHECK)
-		        || type.equals(ConfigPropertyType.BOOLEAN)
-		        || type.equals(ConfigPropertyType.HIDDEN))
+        else if (
+            (type.equals(ConfigPropertyType.SINGLE_SELECT))
+                || type.equals(ConfigPropertyType.MULTI_CHECK)
+                || type.equals(ConfigPropertyType.BOOLEAN)
+                || type.equals(ConfigPropertyType.HIDDEN))
         {
             //  Assume valid since the user can't enter a value.
-			result = true;
+            result = true;
         }
         else
         {
             CheckstyleLog.warning("Unknown property type: " + type.getLabel());
         }
-        
+
         return result;
     }
     
+    /**
+     * @return  Indicates if the OK button was pressed to close the dialog window.
+     */
     public boolean okWasPressed()
     {
         return mOkWasPressed;
     }
-    
+
     /**
      *  Over-rides method from Window to configure the 
      *  shell (e.g. the enclosing window).

@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2003  David Schneider
+// Copyright (C) 2002-2004  David Schneider
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -145,23 +145,23 @@ public class ConfigProperty implements Comparable
         mName = name;
     }
     
-	/**
-	 * Returns the value.
-	 * @return String
-	 */
-	public String getValue()
-	{
-		return mValue;
-	}
+    /**
+     * Returns the value.
+     * @return String
+     */
+    public String getValue()
+    {
+        return mValue;
+    }
 
-	/**
-	 * Sets the value.
-	 * @param value The value to set
-	 */
-	public void setValue(String value)
-	{
-		mValue = value;
-	}
+    /**
+     * Sets the value.
+     * @param value The value to set
+     */
+    public void setValue(String value)
+    {
+        mValue = value;
+    }
 
     String getConfigItemTypeTag()
     {
@@ -186,6 +186,9 @@ public class ConfigProperty implements Comparable
         return cfgPropertyNode;
     }
     
+    /**
+     * {@inheritDoc}
+     */
     public int compareTo(Object obj)
     {
         return this.mName.compareTo(((ConfigProperty)obj).mName);

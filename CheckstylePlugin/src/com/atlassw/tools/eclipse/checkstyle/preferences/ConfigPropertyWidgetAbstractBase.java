@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2003  David Schneider
+// Copyright (C) 2002-2004  David Schneider
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -53,51 +53,58 @@ import org.eclipse.swt.widgets.Listener;
 public abstract class ConfigPropertyWidgetAbstractBase implements IConfigPropertyWidget
 {
     //=================================================
-	// Public static final variables.
-	//=================================================
+    // Public static final variables.
+    //=================================================
 
-	//=================================================
-	// Static class variables.
-	//=================================================
+    //=================================================
+    // Static class variables.
+    //=================================================
 
-	//=================================================
-	// Instance member variables.
-	//=================================================
-    
-    private ConfigPropertyType       mType;
-    
-    private ConfigProperty           mProp;
-    
-    private ConfigPropertyMetadata   mMetadata;
-    
-    private Composite                mParent;
+    //=================================================
+    // Instance member variables.
+    //=================================================
 
-	//=================================================
-	// Constructors & finalizer.
-	//=================================================
-    
-    protected ConfigPropertyWidgetAbstractBase(ConfigPropertyType type,
-                                                Composite parent,
-                                                ConfigProperty prop, 
-                                                ConfigPropertyMetadata metadata)
+    private ConfigPropertyType mType;
+
+    private ConfigProperty mProp;
+
+    private ConfigPropertyMetadata mMetadata;
+
+    private Composite mParent;
+
+    //=================================================
+    // Constructors.
+    //=================================================
+
+    protected ConfigPropertyWidgetAbstractBase(
+        ConfigPropertyType type,
+        Composite parent,
+        ConfigProperty prop,
+        ConfigPropertyMetadata metadata)
     {
-        mParent   = parent;
-        mType     = type;
-        mProp     = prop;
+        mParent = parent;
+        mType = type;
+        mProp = prop;
         mMetadata = metadata;
     }
 
-	//=================================================
-	// Methods.
-	//=================================================
+    //=================================================
+    // Methods.
+    //=================================================
     
+    /**
+     * @return  The type of the configuration property.
+     */
     public ConfigPropertyType getConfigPropertyType()
     {
         return mType;
     }
     
-	public abstract String getValue();
-    
+    /**
+     * @return  The property's value.
+     */
+    public abstract String getValue();
+
     protected String getInitValue()
     {
         //
@@ -121,37 +128,43 @@ public abstract class ConfigPropertyWidgetAbstractBase implements IConfigPropert
         {
             initValue = "";
         }
-        
+
         return initValue;
     }
     
+    /**
+     * @return The configuration property.
+     */
     public ConfigProperty getConfigProperty()
     {
         return mProp;
     }
     
+    /**
+     * @return Configuration property metadata.
+     */
     public ConfigPropertyMetadata getMetadata()
     {
         return mMetadata;
     }
-    
-	protected void addPropertyLabel(int style)
-	{
-		//
-		//  Add some spaces just to indent the property configurations.
-		//
-		Label label = new Label(mParent, style);
-		label.setText("   ");
 
-		//
-		//  Add the property's name.
-		//
-		label = new Label(mParent, style);
-		label.setText(mMetadata.getName());
-	}
+    protected void addPropertyLabel(int style)
+    {
+        //
+        //  Add some spaces just to indent the property configurations.
+        //
+        Label label = new Label(mParent, style);
+        label.setText("   ");
 
-	protected void addDescriptionButton(int style)
-	{
+        //
+        //  Add the property's name.
+        //
+        label = new Label(mParent, style);
+        label.setText(mMetadata.getName());
+    }
+
+    protected void addDescriptionButton(int style)
+    {
         Button button = new Button(mParent, style | SWT.PUSH);
         button.setText("Description");
         button.addListener(SWT.Selection, new Listener()
@@ -162,11 +175,12 @@ public abstract class ConfigPropertyWidgetAbstractBase implements IConfigPropert
             }
         });
     }
-    
+
     private void propDescription(Event event)
     {
-        MessageDialog.openInformation(mParent.getShell(), 
-                                      "Description",
-                                      mMetadata.getDescription());
+        MessageDialog.openInformation(
+            mParent.getShell(),
+            "Description",
+            mMetadata.getDescription());
     }
 }

@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2003  David Schneider
+// Copyright (C) 2002-2004  David Schneider
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -41,87 +41,89 @@ import org.eclipse.swt.graphics.Image;
 
 import com.atlassw.tools.eclipse.checkstyle.config.ResolvableProperty;
 
-
 /**
  *  Provides the labels for the audit configuration list display.
  */
-class ResolvablePropertyLabelProvider
-	implements ITableLabelProvider
-{	
+class ResolvablePropertyLabelProvider implements ITableLabelProvider
+{
     //=================================================
-	// Public static final variables.
-	//=================================================
+    // Public static final variables.
+    //=================================================
 
-	//=================================================
-	// Static class variables.
-	//=================================================
+    //=================================================
+    // Static class variables.
+    //=================================================
 
-	//=================================================
-	// Instance member variables.
-	//=================================================
+    //=================================================
+    // Instance member variables.
+    //=================================================
 
-	//=================================================
-	// Constructors & finalizer.
-	//=================================================
+    //=================================================
+    // Constructors & finalizer.
+    //=================================================
 
-	//=================================================
-	// Methods.
-	//=================================================
-    
-	/**
-	 * @see IBaseLabelProvider#removeListener(ILabelProviderListener)
-	 */
-	public void removeListener(ILabelProviderListener listener) 
-	{ }
+    //=================================================
+    // Methods.
+    //=================================================
 
-	/**
-	 * @see IBaseLabelProvider#isLabelProperty(Object, String)
-	 */
-	public boolean isLabelProperty(Object element, String property) 
-	{
-		return false;
-	}
+    /**
+     * @see IBaseLabelProvider#removeListener(ILabelProviderListener)
+     */
+    public void removeListener(ILabelProviderListener listener)
+    {}
 
-	/**
-	 * @see IBaseLabelProvider#dispose()
-	 */
-	public void dispose() 
-	{ }
+    /**
+     * @see IBaseLabelProvider#isLabelProperty(Object, String)
+     */
+    public boolean isLabelProperty(Object element, String property)
+    {
+        return false;
+    }
 
-	/**
-	 * @see IBaseLabelProvider#addListener(ILabelProviderListener)
-	 */
-	public void addListener(ILabelProviderListener listener) 
-	{ }
+    /**
+     * @see IBaseLabelProvider#dispose()
+     */
+    public void dispose()
+    {}
 
-	/**
-	 * @see ITableLabelProvider#getColumnText(Object, int)
-	 */
-	public String getColumnText(Object element, int columnIndex) 
-	{
-		String result = (String)element.toString();
-		if (element instanceof ResolvableProperty)
-		{
-			ResolvableProperty prop = (ResolvableProperty)element;
-			switch (columnIndex)
-			{
-				case 0:
-				    result = prop.getVariableName();
-				    break;
-				
-				case 1:
-				    result = prop.getValue();
-				    break;
-			}
-		}
-		return result;
-	}
+    /**
+     * @see IBaseLabelProvider#addListener(ILabelProviderListener)
+     */
+    public void addListener(ILabelProviderListener listener)
+    {}
 
-	/**
-	 * @see ITableLabelProvider#getColumnImage(Object, int)
-	 */
-	public Image getColumnImage(Object element, int columnIndex) 
-	{
-		return null;
-	}
+    /**
+     * @see ITableLabelProvider#getColumnText(Object, int)
+     */
+    public String getColumnText(Object element, int columnIndex)
+    {
+        String result = (String)element.toString();
+        if (element instanceof ResolvableProperty)
+        {
+            ResolvableProperty prop = (ResolvableProperty)element;
+            switch (columnIndex)
+            {
+                case 0:
+                    result = prop.getPropertyName();
+                    break;
+
+                case 1:
+                    result = prop.getValue();
+                    break;
+                
+                default:
+                    result = "ERROR";
+                    break;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * @see ITableLabelProvider#getColumnImage(Object, int)
+     */
+    public Image getColumnImage(Object element, int columnIndex)
+    {
+        return null;
+    }
 }

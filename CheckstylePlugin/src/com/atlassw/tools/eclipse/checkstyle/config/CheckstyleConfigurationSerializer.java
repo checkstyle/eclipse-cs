@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2003  David Schneider
+// Copyright (C) 2002-2004  David Schneider
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -35,7 +35,7 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.XMLUtil;
 
-import com.puppycrawl.tools.checkstyle.api.Configuration; 
+import com.puppycrawl.tools.checkstyle.api.Configuration;
 
 //=================================================
 // Imports from org namespace
@@ -44,64 +44,61 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 
-
 /**
  * The class is responsible for managining the serializing 
- * and deserializing checkstyle of checksytle configurations
+ * and deserializing checkstyle of checksytle configurations.
  * 
  * @author dnehring
  */
 public final class CheckstyleConfigurationSerializer
 {
     //=================================================
-	// Public static final variables.
-	//=================================================
+    // Public static final variables.
+    //=================================================
 
-	//=================================================
-	// Static class variables.
-	//=================================================
-    
+    //=================================================
+    // Static class variables.
+    //=================================================
+
     private static final String DOCTYPE =
-        "<!DOCTYPE module PUBLIC " +
-        "\"-//Puppy Crawl//DTD Check Configuration 1.1//EN\" " +
-        "\"http://www.puppycrawl.com/dtds/configuration_1_1.dtd\">" +
-        System.getProperty("line.separator");
-        
-	//=================================================
-	// Instance member variables.
-	//=================================================
+        "<!DOCTYPE module PUBLIC "
+            + "\"-//Puppy Crawl//DTD Check Configuration 1.1//EN\" "
+            + "\"http://www.puppycrawl.com/dtds/configuration_1_1.dtd\">"
+            + System.getProperty("line.separator");
 
-	//=================================================
-	// Constructors & finalizer.
-	//=================================================
+    //=================================================
+    // Instance member variables.
+    //=================================================
 
-	//=================================================
-	// Methods.
-	//=================================================
+    //=================================================
+    // Constructors & finalizer.
+    //=================================================
 
-	private CheckstyleConfigurationSerializer()
-	{
-	}
-	
-	/**
-	 * Serialize a check configuration into a standard Checkstyle configuration file format.
-	 * 
-	 * @param  config  The configuration to serialize
-	 * 
-	 * @return  The XML for the standard Checkstyle configuration file.
-	 * 
-	 * @throws CheckstylePluginException  Error during processing.
-	 */
-	public static String serialize(CheckConfiguration config)
-        throws CheckstylePluginException
-	{
-		String xml = null;
-		try
+    //=================================================
+    // Methods.
+    //=================================================
+
+    private CheckstyleConfigurationSerializer()
+    {}
+
+    /**
+     * Serialize a check configuration into a standard Checkstyle configuration file format.
+     * 
+     * @param  config  The configuration to serialize
+     * 
+     * @return  The XML for the standard Checkstyle configuration file.
+     * 
+     * @throws CheckstylePluginException  Error during processing.
+     */
+    public static String serialize(CheckConfiguration config) throws CheckstylePluginException
+    {
+        String xml = null;
+        try
         {
-        	Document configDoc = XMLUtil.newDocument();
+            Document configDoc = XMLUtil.newDocument();
             Element root = configDoc.createElement(XMLTags.MODULE_TAG);
             configDoc.appendChild(root);
-            
+
             //
             //  Set the name of the root element.
             //
@@ -113,80 +110,83 @@ public final class CheckstyleConfigurationSerializer
         }
         catch (Exception e)
         {
-        	e.printStackTrace();
-            String message = "Failed to write check configuration file: " +
-                             e.getMessage();
+            e.printStackTrace();
+            String message = "Failed to write check configuration file: " + e.getMessage();
             CheckstyleLog.warning(message, e);
             throw new CheckstylePluginException(message);
         }
-        
+
         return xml;
-		
-	}
-	
-	/**
-	 * Serializes a Configuration[] into xml
-	 */
-	private static void serializeConfiguration(Configuration[] configurations, 
-	                                           Document configDoc, Node node)
-	{
-		
-		if (configurations == null || configurations.length < 1)
-		{
-			return;
-		}
-		for (int i = 0; i < configurations.length; i++)
-		{
-			Configuration configuration = configurations[i];
-			Node childNode = serializeConfiguration(configuration, configDoc, node);
-			Configuration[] childConfiguration = configuration.getChildren();
-			serializeConfiguration(childConfiguration, configDoc, childNode);
-		}
-	}
-	
-	/**
-	 * Serializes a Configuration into xml
-	 */
-	private static Node serializeConfiguration(Configuration configuration,
-                                               Document configDoc, Node node)
-	{
-		if (configuration == null)
-		{
-			return null;
-		}
-		String configurationName = configuration.getName();
-		String [] attributes = configuration.getAttributeNames();
-		Element configElement = configDoc.createElement(XMLTags.MODULE_TAG);
-		configElement.setAttribute(XMLTags.NAME_TAG, configurationName);
-		
-		for (int i = 0; i < attributes.length; i++)
-		{
-			try
-			{
-				String name = attributes[i];
-				String value = configuration.getAttribute(name);
-				Node propertyNode = toPropertyNode(configDoc, name, value);
-				configElement.appendChild(propertyNode);
-			}
-			catch (com.puppycrawl.tools.checkstyle.api.CheckstyleException cse)
-			{
-				String message = "Error serializing check attributes";
-				CheckstyleLog.warning(message, cse);
-			}
-		}
-		node.appendChild(configElement);
-		return configElement; 
-	}
-	
-	private static Node toPropertyNode(Document doc, String name, String value)
+
+    }
+
+    /**
+     * Serializes a Configuration[] into xml.
+     */
+    private static void serializeConfiguration(
+        Configuration[] configurations,
+        Document configDoc,
+        Node node)
+    {
+
+        if (configurations == null || configurations.length < 1)
+        {
+            return;
+        }
+        for (int i = 0; i < configurations.length; i++)
+        {
+            Configuration configuration = configurations[i];
+            Node childNode = serializeConfiguration(configuration, configDoc, node);
+            Configuration[] childConfiguration = configuration.getChildren();
+            serializeConfiguration(childConfiguration, configDoc, childNode);
+        }
+    }
+
+    /**
+     * Serializes a Configuration into xml.
+     */
+    private static Node serializeConfiguration(
+        Configuration configuration,
+        Document configDoc,
+        Node node)
+    {
+        if (configuration == null)
+        {
+            return null;
+        }
+        String configurationName = configuration.getName();
+        String[] attributes = configuration.getAttributeNames();
+        Element configElement = configDoc.createElement(XMLTags.MODULE_TAG);
+        configElement.setAttribute(XMLTags.NAME_TAG, configurationName);
+
+        for (int i = 0; i < attributes.length; i++)
+        {
+            try
+            {
+                String name = attributes[i];
+                String value = configuration.getAttribute(name);
+                Node propertyNode = toPropertyNode(configDoc, name, value);
+                configElement.appendChild(propertyNode);
+            }
+            catch (com.puppycrawl.tools.checkstyle.api.CheckstyleException cse)
+            {
+                String message = "Error serializing check attributes";
+                CheckstyleLog.warning(message, cse);
+            }
+        }
+        node.appendChild(configElement);
+        return configElement;
+    }
+
+    private static Node toPropertyNode(Document doc, String name, String value)
     {
         Element propertyNode = doc.createElement(XMLTags.PROPERTY_TAG);
-        propertyNode.setAttribute(XMLTags.NAME_TAG,  name);
+        propertyNode.setAttribute(XMLTags.NAME_TAG, name);
         propertyNode.setAttribute(XMLTags.VALUE_TAG, value);
-        
+
         return propertyNode;
     }
-	
+
     /**
      *  Insert the doctype into the XML string.  This has to be done this way
      *  since the DOM2 API does not provide a way to specify it.
@@ -194,14 +194,14 @@ public final class CheckstyleConfigurationSerializer
     private static String insertDocType(String xml)
     {
         String result = null;
-        
+
         //
         //  Find the close of the XML opening line.
         //
         int index = xml.indexOf("?>");
-        
-        result = xml.substring(0, index+3) + DOCTYPE + xml.substring(index+3);
-        
+
+        result = xml.substring(0, index + 3) + DOCTYPE + xml.substring(index + 3);
+
         return result;
     }
 

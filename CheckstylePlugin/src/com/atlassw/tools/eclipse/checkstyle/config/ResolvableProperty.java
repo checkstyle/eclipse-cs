@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2003  David Schneider
+// Copyright (C) 2002-2004  David Schneider
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -37,7 +37,7 @@ package com.atlassw.tools.eclipse.checkstyle.config;
 //=================================================
 
 /**
- *  Represents a configuration property who value must be resolved.
+ *  Represents a configuration property who's value must be resolved.
  */
 public class ResolvableProperty
 {
@@ -53,7 +53,7 @@ public class ResolvableProperty
     // Instance member variables.
     //=================================================
     
-    private String   mVariableName;
+    private String   mPropertyName;
     
     private String   mCorrelationTag;
     
@@ -68,7 +68,7 @@ public class ResolvableProperty
     //=================================================
 
     /**
-     * @return
+     * @return  The correlation tag for the property.
      */
     public String getCorrelationTag()
     {
@@ -76,7 +76,7 @@ public class ResolvableProperty
     }
 
     /**
-     * @return
+     * @return  The value of the property.
      */
     public String getValue()
     {
@@ -84,15 +84,15 @@ public class ResolvableProperty
     }
 
     /**
-     * @return
+     * @return  The property's name.
      */
-    public String getVariableName()
+    public String getPropertyName()
     {
-        return mVariableName;
+        return mPropertyName;
     }
 
     /**
-     * @param string
+     * @param string Correlation tag value.
      */
     public void setCorrelationTag(String string)
     {
@@ -100,7 +100,7 @@ public class ResolvableProperty
     }
 
     /**
-     * @param string
+     * @param string  Value for the property.
      */
     public void setValue(String string)
     {
@@ -108,11 +108,11 @@ public class ResolvableProperty
     }
 
     /**
-     * @param string
+     * @param string  The property's name.
      */
-    public void setVariableName(String string)
+    public void setPropertyName(String string)
     {
-        mVariableName = string;
+        mPropertyName = string;
     }
 
 }

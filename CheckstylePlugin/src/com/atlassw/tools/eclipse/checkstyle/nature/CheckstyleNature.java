@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2003  David Schneider
+// Copyright (C) 2002-2004  David Schneider
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -55,6 +55,7 @@ public class CheckstyleNature implements IProjectNature
 	// Public static final variables.
 	//=================================================
     
+    /**  ID for the Checkstyle project nature.  */
     public static final String NATURE_ID = 
         "com.atlassw.tools.eclipse.checkstyle.CheckstyleNature";
 
@@ -77,12 +78,10 @@ public class CheckstyleNature implements IProjectNature
 	//=================================================
     
 	/**
-     *  Add the nature to the project.
-     * 
-	 *  @see org.eclipse.core.resources.IProjectNature#configure()
+     *  {@inheritDoc}
 	 */
-	public void configure() throws CoreException
-	{
+    public void configure() throws CoreException
+    {
         try 
         {
             //
@@ -126,8 +125,8 @@ public class CheckstyleNature implements IProjectNature
      * 
 	 *  @see org.eclipse.core.resources.IProjectNature#deconfigure()
 	 */
-	public void deconfigure() throws CoreException
-	{
+    public void deconfigure() throws CoreException
+    {
         try 
         {
             //
@@ -166,16 +165,16 @@ public class CheckstyleNature implements IProjectNature
 	/**
 	 *  @see org.eclipse.core.resources.IProjectNature#getProject()
 	 */
-	public IProject getProject()
-	{
-		return mProject;
-	}
+    public IProject getProject()
+    {
+        return mProject;
+    }
 
-	/**
-	 *  @see org.eclipse.core.resources.IProjectNature#setProject(IProject)
-	 */
-	public void setProject(IProject project)
-	{
+    /**
+     *  @see org.eclipse.core.resources.IProjectNature#setProject(IProject)
+     */
+    public void setProject(IProject project)
+    {
         mProject = project;
     }
 

@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2003  David Schneider
+// Copyright (C) 2002-2004  David Schneider
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -67,34 +67,33 @@ public class CheckConfigurationViewerSorter extends ViewerSorter
 	/**
 	 * Default constructor.
 	 */
-	public CheckConfigurationViewerSorter()
-	{
-		super();
-	}
+    public CheckConfigurationViewerSorter()
+    {
+        super();
+    }
 
     //=================================================
     // Methods.
     //=================================================
-	
-	/**
-	 * @see ViewerSorter#compare
-	 */
-	public int compare(Viewer viewer, Object e1, Object e2)
-	{
-		int result = 0;
-		
+
+    /**
+     * @see ViewerSorter#compare
+     */
+    public int compare(Viewer viewer, Object e1, Object e2)
+    {
+        int result = 0;
+
         if ((e1 instanceof CheckConfiguration) && (e2 instanceof CheckConfiguration))
         {
             CheckConfiguration cfg1 = (CheckConfiguration)e1;
             CheckConfiguration cfg2 = (CheckConfiguration)e2;
-            
+
             String string1 = cfg1.getConfigName();
             String string2 = cfg2.getConfigName();
-            
+
             result = string1.compareToIgnoreCase(string2);
         }
-		
-		return result;
-	}
-}
 
+        return result;
+    }
+}

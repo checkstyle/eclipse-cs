@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2003  David Schneider
+// Copyright (C) 2002-2004  David Schneider
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -85,10 +85,10 @@ public class ConfigPropertyValueMetadata implements Cloneable
 	 * Returns the value.
 	 * @return String
 	 */
-	public String getValue()
-	{
-		return mValue;
-	}
+    public String getValue()
+    {
+        return mValue;
+    }
     
     /**
      *  Clone the object.

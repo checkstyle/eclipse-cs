@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2003  David Schneider
+// Copyright (C) 2002-2004  David Schneider
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -39,7 +39,6 @@ import com.atlassw.tools.eclipse.checkstyle.config.FileSet;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
 
-
 /**
  *  Sorts CheckConfiguration objects into their display order.
  */
@@ -48,53 +47,49 @@ public class FileSetViewerSorter extends ViewerSorter
     //=================================================
     // Public static final variables.
     //=================================================
-    
-    
+
     //=================================================
     // Static class variables.
     //=================================================
-    
-    
+
     //=================================================
     // Instance member variables.
     //=================================================
-    
-    
+
     //=================================================
     // Constructors & finalizer.
     //=================================================
-    
-	/**
-	 * Default constructor.
-	 */
-	public FileSetViewerSorter()
-	{
-		super();
-	}
+
+    /**
+     * Default constructor.
+     */
+    public FileSetViewerSorter()
+    {
+        super();
+    }
 
     //=================================================
     // Methods.
     //=================================================
-	
-	/**
-	 * @see ViewerSorter#compare
-	 */
-	public int compare(Viewer viewer, Object e1, Object e2)
-	{
-		int result = 0;
-		
+
+    /**
+     * @see ViewerSorter#compare
+     */
+    public int compare(Viewer viewer, Object e1, Object e2)
+    {
+        int result = 0;
+
         if ((e1 instanceof FileSet) && (e2 instanceof FileSet))
         {
             FileSet fileSet1 = (FileSet)e1;
             FileSet fileSet2 = (FileSet)e2;
-            
+
             String name1 = fileSet1.getName();
             String name2 = fileSet2.getName();
-            
+
             result = name1.compareTo(name2);
         }
-		
-		return result;
-	}
-}
 
+        return result;
+    }
+}

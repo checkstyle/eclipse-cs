@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2003  David Schneider
+// Copyright (C) 2002-2004  David Schneider
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -57,6 +57,11 @@ public class CheckstylePluginException extends Exception
 	// Constructors & finalizer.
 	//=================================================
     
+    /**
+     *  Exception for the Checkstyle plug-in.
+     * 
+     *  @param  msg Description of the error.
+     */
     public CheckstylePluginException(String msg)
     {
         super(msg);

@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2003  David Schneider
+// Copyright (C) 2002-2004  David Schneider
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -93,6 +93,8 @@ public final class FileSetFactory
      *  @param  project  The project to get <code>FileSet</code>'s for.
      * 
      *  @return  A list of <code>FileSet</code> instances.
+     * 
+     *  @throws CheckstylePluginException  Error during processing.
      */
     public static List getFileSets(IProject project) throws CheckstylePluginException
     {
@@ -106,6 +108,8 @@ public final class FileSetFactory
      *  @param fileSets  The list of <code>FileSet</code> objects to set.
      * 
      *  @param project  The project to add it too.
+     * 
+     *  @throws CheckstylePluginException  Error during processing.
      */
     public static void setFileSets(List fileSets, IProject project)
         throws CheckstylePluginException
@@ -258,6 +262,12 @@ public final class FileSetFactory
     /**
      *  Check to see if a check configuration is currently in use
      *  by any projects.
+     * 
+     *  @param configName  The configuration name to check for.
+     * 
+     *  @return  <code>true</code> = in use, <code>false</code> = not in use.
+     * 
+     *  @throws CheckstylePluginException  Error during processing.
      */
     public static boolean isCheckConfigInUse(String configName)
         throws CheckstylePluginException
@@ -270,7 +280,7 @@ public final class FileSetFactory
         }
 
         IWorkspace workspace = ResourcesPlugin.getWorkspace();
-        IProject projects[] = workspace.getRoot().getProjects();
+        IProject[] projects = workspace.getRoot().getProjects();
         for (int i = 0; (i < projects.length) && !result; i++)
         {
             List fileSets = FileSetFactory.getFileSets(projects[i]);

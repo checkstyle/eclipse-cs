@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2003  David Schneider
+// Copyright (C) 2002-2004  David Schneider
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -53,83 +53,83 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.TextViewer;
 
-
 /**
  * Edit dialog for property values.
  */
 public class RuleSelectionDialog extends Dialog
 {
-	//=================================================
-	// Public static final variables.
-	//=================================================
+    //=================================================
+    // Public static final variables.
+    //=================================================
 
-	//=================================================
-	// Static class variables.
-	//=================================================
-    
+    //=================================================
+    // Static class variables.
+    //=================================================
+
     private static final int MAX_LENGTH = 80;
 
-	//=================================================
-	// Instance member variables.
-	//=================================================
+    //=================================================
+    // Instance member variables.
+    //=================================================
 
-    private Composite     mParentComposite;
-    
-    private boolean      mOkWasPressed = false;
-    
-    private List          mMetadataList;
+    private Composite mParentComposite;
 
-	private Combo         mComboItem;
-    
-    private TextViewer    mRuleDescriptionText;
-    
-    private RuleMetadata  mFinalSelection = null;
+    private boolean mOkWasPressed = false;
 
-	//=================================================
-	// Constructors & finalizer.
-	//=================================================
+    private List mMetadataList;
 
-	/**
-	 * Constructor
-	 * 
-	 * @param parent     Parent shell.
-	 * 
-	 * @param metadata   List of <code>RuleMetadata</code> objects to select from.
-	 */
-	public RuleSelectionDialog(Shell parent, List metadata)
-        throws CheckstylePluginException
-	{
-		super(parent);
+    private Combo mComboItem;
+
+    private TextViewer mRuleDescriptionText;
+
+    private RuleMetadata mFinalSelection = null;
+
+    //=================================================
+    // Constructors & finalizer.
+    //=================================================
+
+    /**
+     * Constructor.
+     * 
+     * @param parent     Parent shell.
+     * 
+     * @param metadata   List of <code>RuleMetadata</code> objects to select from.
+     * 
+     * @throws CheckstylePluginException Error during processing.
+     */
+    RuleSelectionDialog(Shell parent, List metadata) throws CheckstylePluginException
+    {
+        super(parent);
         mMetadataList = metadata;
-	}
+    }
 
-	//=================================================
-	// Methods.
-	//=================================================
-    
-	/**
-	 * @see Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
-	 */
-	protected Control createDialogArea(Composite parent)
-	{
-		Composite composite = (Composite) super.createDialogArea(parent);
-        
-		Composite dialog = new Composite(composite, SWT.NONE);
+    //=================================================
+    // Methods.
+    //=================================================
+
+    /**
+     * @see Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
+     */
+    protected Control createDialogArea(Composite parent)
+    {
+        Composite composite = (Composite)super.createDialogArea(parent);
+
+        Composite dialog = new Composite(composite, SWT.NONE);
         mParentComposite = dialog;
-		GridLayout layout = new GridLayout();
-		layout.numColumns = 1;
-		dialog.setLayout(layout);
-        
+        GridLayout layout = new GridLayout();
+        layout.numColumns = 1;
+        dialog.setLayout(layout);
+
         createCombo(dialog);
         createRuleDescription(dialog);
-                
+
         mComboItem.select(0);
         setDescription(0);
 
-		dialog.layout();
-		return composite;
-	}
-    
+        dialog.layout();
+        return composite;
+    }
+
     private void createCombo(Composite parent)
     {
         Composite comp = new Composite(parent, SWT.NONE);
@@ -140,18 +140,18 @@ public class RuleSelectionDialog extends Dialog
 
         Label label = new Label(comp, SWT.NULL);
         label.setText("Select Rule:");
-        
+
         //
         //  Build an array of rule names.
         //
-        String labels[] = new String[mMetadataList.size()];
+        String[] labels = new String[mMetadataList.size()];
         Iterator iter = mMetadataList.iterator();
         for (int i = 0; iter.hasNext(); i++)
         {
             RuleMetadata meta = (RuleMetadata)iter.next();
             labels[i] = " " + meta.getRuleName() + " ";
         }
-        
+
         //
         //  Create a combo box for selecting the rule.
         //
@@ -160,7 +160,7 @@ public class RuleSelectionDialog extends Dialog
         mComboItem.setItems(labels);
         mComboItem.addSelectionListener(new ComboSelectionListener());
     }
-    
+
     private void createRuleDescription(Composite parent)
     {
         Composite comp = new Composite(parent, SWT.NONE);
@@ -174,9 +174,9 @@ public class RuleSelectionDialog extends Dialog
         //
         Label label = new Label(comp, SWT.NULL);
         label.setText("Rule Description");
-        
+
         mRuleDescriptionText = new TextViewer(comp, SWT.BORDER | SWT.WRAP | SWT.V_SCROLL);
-        
+
         Control control = mRuleDescriptionText.getControl();
         GridData data = new GridData(GridData.FILL_BOTH);
         data.horizontalAlignment = GridData.FILL;
@@ -189,18 +189,18 @@ public class RuleSelectionDialog extends Dialog
         control.setLayoutData(data);
     }
 
-	/**
-	 *  Notification that the OK button was selected.
-	 */
-	protected void okPressed()
-	{        
+    /**
+     *  Notification that the OK button was selected.
+     */
+    protected void okPressed()
+    {
         mOkWasPressed = true;
         int index = mComboItem.getSelectionIndex();
         mFinalSelection = (RuleMetadata)mMetadataList.get(index);
-        
-		super.okPressed();
-	}
-    
+
+        super.okPressed();
+    }
+
     /**
      *  Query after dialog is close to see if it cloased because the
      *  OK button was pressed rather then the Cancel button.
@@ -209,12 +209,12 @@ public class RuleSelectionDialog extends Dialog
     {
         return mOkWasPressed;
     }
-    
+
     RuleMetadata getSelectedRule()
     {
         return mFinalSelection;
     }
-    
+
     /**
      *  Over-rides method from Window to configure the 
      *  shell (e.g. the enclosing window).
@@ -224,14 +224,14 @@ public class RuleSelectionDialog extends Dialog
         super.configureShell(shell);
         shell.setText("Checkstyle Rule Selection");
     }
-    
+
     private void setDescription(int index)
     {
         RuleMetadata metadata = (RuleMetadata)mMetadataList.get(index);
         Document doc = new Document(metadata.getDescription());
         mRuleDescriptionText.setDocument(doc);
     }
-        
+
     /**
      *  Listener for selection of a rule.
      */

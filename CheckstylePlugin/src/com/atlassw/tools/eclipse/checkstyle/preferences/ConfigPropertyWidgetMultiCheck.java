@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2003  David Schneider
+// Copyright (C) 2002-2004  David Schneider
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -88,7 +88,7 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
     ConfigPropertyWidgetMultiCheck(Composite parent, 
                                    ConfigProperty prop,
                                    ConfigPropertyMetadata metadata)
-	{
+    {
 		super(ConfigPropertyType.MULTI_CHECK, parent, prop, metadata);
         
         addPropertyLabel(SWT.TOP);
@@ -135,13 +135,13 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
         }
         
         addDescriptionButton(SWT.TOP);
-	}
-    
-	/**
-	 * @see com.atlassw.tools.eclipse.checkstyle.preferences.ConfigPropertyWidgetAbstractBase#getValue()
-	 */
-	public String getValue()
-	{
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getValue()
+    {
         StringBuffer buffer = new StringBuffer("");
         boolean first = true;
         
@@ -164,7 +164,7 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
             }
         }
         return buffer.toString();
-	}
+    }
     
     private List getInitialValues()
     {

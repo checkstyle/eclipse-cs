@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2003  David Schneider
+// Copyright (C) 2002-2004  David Schneider
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -40,7 +40,6 @@ import org.eclipse.jface.viewers.ViewerSorter;
 
 import com.atlassw.tools.eclipse.checkstyle.config.ResolvableProperty;
 
-
 /**
  *  Sorts AuditConfiguration objects into their display order.
  */
@@ -49,50 +48,46 @@ public class ResolvablePropertyViewerSorter extends ViewerSorter
     //=================================================
     // Public static final variables.
     //=================================================
-    
-    
+
     //=================================================
     // Static class variables.
     //=================================================
-    
-    
+
     //=================================================
     // Instance member variables.
     //=================================================
-    
-    
+
     //=================================================
     // Constructors & finalizer.
     //=================================================
-    
-	/**
-	 * Default constructor.
-	 */
-	public ResolvablePropertyViewerSorter()
-	{
-		super();
-	}
+
+    /**
+     * Default constructor.
+     */
+    public ResolvablePropertyViewerSorter()
+    {
+        super();
+    }
 
     //=================================================
     // Methods.
     //=================================================
-	
-	/**
-	 * @see ViewerSorter#compare
-	 */
-	public int compare(Viewer viewer, Object e1, Object e2)
-	{
-		int result = 0;
-		
+
+    /**
+     * @see ViewerSorter#compare
+     */
+    public int compare(Viewer viewer, Object e1, Object e2)
+    {
+        int result = 0;
+
         if ((e1 instanceof ResolvableProperty) && (e2 instanceof ResolvableProperty))
         {
-            String string1 = ((ResolvableProperty)e1).getVariableName();
-            String string2 = ((ResolvableProperty)e2).getVariableName();
-            
+            String string1 = ((ResolvableProperty)e1).getPropertyName();
+            String string2 = ((ResolvableProperty)e2).getPropertyName();
+
             result = string1.compareToIgnoreCase(string2);
         }
-		
-		return result;
-	}
-}
 
+        return result;
+    }
+}

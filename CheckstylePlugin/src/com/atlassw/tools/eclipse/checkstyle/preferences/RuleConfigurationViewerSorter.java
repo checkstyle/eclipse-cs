@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2003  David Schneider
+// Copyright (C) 2002-2004  David Schneider
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -38,7 +38,6 @@ package com.atlassw.tools.eclipse.checkstyle.preferences;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
 
-
 /**
  *  Sorts RuleConfiguration objects into their display order.
  */
@@ -47,51 +46,46 @@ public class RuleConfigurationViewerSorter extends ViewerSorter
     //=================================================
     // Public static final variables.
     //=================================================
-    
-    
+
     //=================================================
     // Static class variables.
     //=================================================
-    
-    
+
     //=================================================
     // Instance member variables.
     //=================================================
-    
-    
+
     //=================================================
     // Constructors & finalizer.
     //=================================================
-    
-	/**
-	 * Default constructor.
-	 */
-	public RuleConfigurationViewerSorter()
-	{
-		super();
-	}
+
+    /**
+     * Default constructor.
+     */
+    public RuleConfigurationViewerSorter()
+    {
+        super();
+    }
 
     //=================================================
     // Methods.
     //=================================================
-	
-	/**
-	 * @see ViewerSorter#compare
-	 */
-	public int compare(Viewer viewer, Object e1, Object e2)
-	{
-		int result = 0;
-		
-        if ((e1 instanceof RuleConfigWorkingCopy) &&
-            (e2 instanceof RuleConfigWorkingCopy))
+
+    /**
+     * @see ViewerSorter#compare
+     */
+    public int compare(Viewer viewer, Object e1, Object e2)
+    {
+        int result = 0;
+
+        if ((e1 instanceof RuleConfigWorkingCopy) && (e2 instanceof RuleConfigWorkingCopy))
         {
             RuleConfigWorkingCopy rule1 = (RuleConfigWorkingCopy)e1;
             RuleConfigWorkingCopy rule2 = (RuleConfigWorkingCopy)e2;
-            
+
             result = rule1.getRuleName().compareTo(rule2.getRuleName());
         }
-		
-		return result;
-	}
-}
 
+        return result;
+    }
+}

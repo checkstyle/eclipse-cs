@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2003  David Schneider
+// Copyright (C) 2002-2004  David Schneider
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -39,63 +39,62 @@ import java.util.List;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
-
 /** 
  *  A specialized content provider to show a list of editor parts.
- */ 
-public class ResolvablePropertyProvider implements IStructuredContentProvider 
+ */
+public class ResolvablePropertyProvider implements IStructuredContentProvider
 {
     //=================================================
-	// Public static final variables.
-	//=================================================
+    // Public static final variables.
+    //=================================================
 
-	//=================================================
-	// Static class variables.
-	//=================================================
+    //=================================================
+    // Static class variables.
+    //=================================================
 
-	//=================================================
-	// Instance member variables.
-	//=================================================
+    //=================================================
+    // Instance member variables.
+    //=================================================
 
-	//=================================================
-	// Constructors & finalizer.
-	//=================================================
+    //=================================================
+    // Constructors & finalizer.
+    //=================================================
 
-	/**
-	 * Default constructor.
-	 */
-	public ResolvablePropertyProvider() 
-	{}
+    /**
+     * Default constructor.
+     */
+    public ResolvablePropertyProvider()
+    {}
 
     //=================================================
     // Methods.
     //=================================================
-	
-	/**
-	 * @see IStructuredContentProvider#getElements
-	 */
-	public Object[] getElements(Object input) 
-	{
-		Object result[] = null;
-		if (input instanceof List)
-		{
-			List props = (List)input;
+
+    /**
+     * @see IStructuredContentProvider#getElements
+     */
+    public Object[] getElements(Object input)
+    {
+        Object[] result = null;
+        if (input instanceof List)
+        {
+            List props = (List)input;
             result = props.toArray();
-		}
-		
-		return result;
-	}
+        }
 
-	/**
-	 * @see IStructuredContentProvider#inputChanged
-	 */
-	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) 
-	{}
+        return result;
+    }
 
-	/**
-	 * @see IStructuredContentProvider#dispose
-	 */
-	public void dispose() 
-	{}
-	
+    /**
+     * @see IStructuredContentProvider#inputChanged
+     */
+    public void inputChanged(Viewer viewer, Object oldInput, Object newInput)
+    {}
+
+    /**
+     * @see IStructuredContentProvider#dispose
+     */
+    public void dispose()
+    {}
+
 }

@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2003  David Schneider
+// Copyright (C) 2002-2004  David Schneider
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -74,33 +74,33 @@ public class ConfigPropertyEnumerationMetadata implements Cloneable
      * 
      *  @throws CheckstyleException  Error during processing.
      */
-	ConfigPropertyEnumerationMetadata(Node enumNode) throws CheckstylePluginException
-	{
-		NodeList children = enumNode.getChildNodes();
-		int count = children.getLength();
-		for (int i = 0; i < count; i++)
-		{
-			Node node = children.item(i);
-			if (node.getNodeName().equals(XMLTags.PROPERTY_VALUE_OPTIONS_TAG))
-			{
-				ConfigPropertyValueMetadata valueMeta = null;
-				try
-				{
-					valueMeta = new ConfigPropertyValueMetadata(node);
-				}
-				catch (CheckstylePluginException e)
-				{
-					CheckstyleLog.warning(
-						"Failed to get configuration property metadata, " + e.getMessage(),
-						e);
-				}
-				if (valueMeta != null)
-				{
-					mValueMetadata.add(valueMeta);
-				}
-			}
-		}
-	}
+    ConfigPropertyEnumerationMetadata(Node enumNode) throws CheckstylePluginException
+    {
+        NodeList children = enumNode.getChildNodes();
+        int count = children.getLength();
+        for (int i = 0; i < count; i++)
+        {
+            Node node = children.item(i);
+            if (node.getNodeName().equals(XMLTags.PROPERTY_VALUE_OPTIONS_TAG))
+            {
+                ConfigPropertyValueMetadata valueMeta = null;
+                try
+                {
+                    valueMeta = new ConfigPropertyValueMetadata(node);
+                }
+                catch (CheckstylePluginException e)
+                {
+                    CheckstyleLog.warning(
+                        "Failed to get configuration property metadata, " + e.getMessage(),
+                        e);
+                }
+                if (valueMeta != null)
+                {
+                    mValueMetadata.add(valueMeta);
+                }
+            }
+        }
+    }
 
 	//=================================================
 	// Methods.

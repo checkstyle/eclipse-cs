@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2003  David Schneider
+// Copyright (C) 2002-2004  David Schneider
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -131,10 +131,10 @@ public class FileMatchPattern implements Cloneable
      * 
 	 * @return String
 	 */
-	public String getMatchPattern()
-	{
-		return mMatchPattern;
-	}
+    public String getMatchPattern()
+    {
+        return mMatchPattern;
+    }
     
 	/**
 	 *  Sets the match pattern.
@@ -143,8 +143,8 @@ public class FileMatchPattern implements Cloneable
      * 
      *  @throws CheckstylePluginException  Error during processing
 	 */
-	public void setMatchPattern(String pattern) throws CheckstylePluginException
-	{
+    public void setMatchPattern(String pattern) throws CheckstylePluginException
+    {
         if ((pattern == null) || (pattern.trim().length() == 0))
         {
             throw new CheckstylePluginException("Empty or null pattern");
@@ -161,8 +161,8 @@ public class FileMatchPattern implements Cloneable
         }
         mProcessor     = new RE(program);
         mProgram       = program;
-		mMatchPattern  = pattern;
-	}
+        mMatchPattern  = pattern;
+    }
     
     /**
      *  Tests a file name to see if it matches the pattern.
@@ -185,19 +185,19 @@ public class FileMatchPattern implements Cloneable
 	 * Returns the isIncludePattern.
 	 * @return boolean
 	 */
-	public boolean isIncludePattern()
-	{
-		return mIsIncludePattern;
-	}
+    public boolean isIncludePattern()
+    {
+        return mIsIncludePattern;
+    }
 
-	/**
-	 * Sets the isIncludePattern.
-	 * @param isIncludePattern The isIncludePattern to set
-	 */
-	public void setIsIncludePattern(boolean isIncludePattern)
-	{
-		mIsIncludePattern = isIncludePattern;
-	}
+    /**
+     * Sets the isIncludePattern.
+     * @param isIncludePattern The isIncludePattern to set
+     */
+    public void setIsIncludePattern(boolean isIncludePattern)
+    {
+        mIsIncludePattern = isIncludePattern;
+    }
 
     /**
      *  Create an XML DOM node representation of the file set.
@@ -227,7 +227,7 @@ public class FileMatchPattern implements Cloneable
     }
     
     /**
-     *  Clone the object
+     *  Clone the object.
      * 
      *  @return  The clone
      * 

@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2003  David Schneider
+// Copyright (C) 2002-2004  David Schneider
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -43,7 +43,6 @@ import com.atlassw.tools.eclipse.checkstyle.util.XMLUtil;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-
 /**
  *  This class describes a collection of check rules 
  *  that are logicaly grouped together.
@@ -51,46 +50,46 @@ import org.w3c.dom.NodeList;
 public class RuleGroupMetadata implements Cloneable
 {
     //=================================================
-	// Public static final variables.
-	//=================================================
+    // Public static final variables.
+    //=================================================
 
-	//=================================================
-	// Static class variables.
-	//=================================================
+    //=================================================
+    // Static class variables.
+    //=================================================
 
-	//=================================================
-	// Instance member variables.
-	//=================================================
-    
-    private String    mGroupName;
-    
-    private List      mRuleMetadata = new LinkedList();
+    //=================================================
+    // Instance member variables.
+    //=================================================
 
-	//=================================================
-	// Constructors & finalizer.
-	//=================================================
-    
-	RuleGroupMetadata(Node groupNode)
-	{
-		//
-		//  Get the name attribute off of the group node.
-		//
-		mGroupName = XMLUtil.getNodeAttributeValue(groupNode, XMLTags.NAME_TAG);
+    private String mGroupName;
 
-		//
-		//  Find all the rules and load them.
-		//
-		NodeList children = groupNode.getChildNodes();
-		int count = children.getLength();
-		for (int i = 0; i < count; i++)
-		{
-			Node node = children.item(i);
-			if (node.getNodeName().equals(XMLTags.RULE_METADATA_TAG))
-			{
+    private List mRuleMetadata = new LinkedList();
+
+    //=================================================
+    // Constructors & finalizer.
+    //=================================================
+
+    RuleGroupMetadata(Node groupNode)
+    {
+        //
+        //  Get the name attribute off of the group node.
+        //
+        mGroupName = XMLUtil.getNodeAttributeValue(groupNode, XMLTags.NAME_TAG);
+
+        //
+        //  Find all the rules and load them.
+        //
+        NodeList children = groupNode.getChildNodes();
+        int count = children.getLength();
+        for (int i = 0; i < count; i++)
+        {
+            Node node = children.item(i);
+            if (node.getNodeName().equals(XMLTags.RULE_METADATA_TAG))
+            {
                 RuleMetadata rule = null;
                 try
                 {
-				    rule = new RuleMetadata(node);
+                    rule = new RuleMetadata(node);
                 }
                 catch (CheckstylePluginException e)
                 {
@@ -100,28 +99,28 @@ public class RuleGroupMetadata implements Cloneable
                 {
                     mRuleMetadata.add(rule);
                 }
-			}
-		}
-	}
-	
-	RuleGroupMetadata(String groupName)
-	{
-		mGroupName = groupName;
-	}
+            }
+        }
+    }
 
-	//=================================================
-	// Methods.
-	//=================================================
-    
-	/**
-	 * Returns the group's name.
+    RuleGroupMetadata(String groupName)
+    {
+        mGroupName = groupName;
+    }
+
+    //=================================================
+    // Methods.
+    //=================================================
+
+    /**
+     * Returns the group's name.
      * 
-	 * @return Group name
-	 */
-	public final String getGroupName()
-	{
-		return mGroupName;
-	}
+     * @return Group name
+     */
+    public final String getGroupName()
+    {
+        return mGroupName;
+    }
 
     /**
      * Returns a list of the group's rule metadata.
@@ -133,6 +132,9 @@ public class RuleGroupMetadata implements Cloneable
         return mRuleMetadata;
     }
     
+    /**
+     * {@inheritDoc}
+     */
     public Object clone() throws CloneNotSupportedException
     {
         return super.clone();

@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2003  David Schneider
+// Copyright (C) 2002-2004  David Schneider
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -40,101 +40,99 @@ import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.swt.graphics.Image;
 
-
 /**
  *  Provides the labels for the audit configuration list display.
  */
-class RuleConfigurationLabelProvider
-	implements ITableLabelProvider
-{	
+class RuleConfigurationLabelProvider implements ITableLabelProvider
+{
     //=================================================
-	// Public static final variables.
-	//=================================================
+    // Public static final variables.
+    //=================================================
 
-	//=================================================
-	// Static class variables.
-	//=================================================
+    //=================================================
+    // Static class variables.
+    //=================================================
 
-	//=================================================
-	// Instance member variables.
-	//=================================================
+    //=================================================
+    // Instance member variables.
+    //=================================================
 
-	//=================================================
-	// Constructors & finalizer.
-	//=================================================
+    //=================================================
+    // Constructors & finalizer.
+    //=================================================
 
-	//=================================================
-	// Methods.
-	//=================================================
-    
-	/**
-	 * @see IBaseLabelProvider#removeListener(ILabelProviderListener)
-	 */
-	public void removeListener(ILabelProviderListener listener) 
-	{}
+    //=================================================
+    // Methods.
+    //=================================================
 
-	/**
-	 * @see IBaseLabelProvider#isLabelProperty(Object, String)
-	 */
-	public boolean isLabelProperty(Object element, String property) 
-	{
-		return false;
-	}
+    /**
+     * @see IBaseLabelProvider#removeListener(ILabelProviderListener)
+     */
+    public void removeListener(ILabelProviderListener listener)
+    {}
 
-	/**
-	 * @see IBaseLabelProvider#dispose()
-	 */
-	public void dispose() 
-	{}
+    /**
+     * @see IBaseLabelProvider#isLabelProperty(Object, String)
+     */
+    public boolean isLabelProperty(Object element, String property)
+    {
+        return false;
+    }
 
-	/**
-	 * @see IBaseLabelProvider#addListener(ILabelProviderListener)
-	 */
-	public void addListener(ILabelProviderListener listener) 
-	{}
+    /**
+     * @see IBaseLabelProvider#dispose()
+     */
+    public void dispose()
+    {}
 
-	/**
-	 * @see ITableLabelProvider#getColumnText(Object, int)
-	 */
-	public String getColumnText(Object element, int columnIndex) 
-	{
-		String result = element.toString();
-		if (element instanceof RuleConfigWorkingCopy) 
-		{
-			RuleConfigWorkingCopy rule = (RuleConfigWorkingCopy)element;
+    /**
+     * @see IBaseLabelProvider#addListener(ILabelProviderListener)
+     */
+    public void addListener(ILabelProviderListener listener)
+    {}
+
+    /**
+     * @see ITableLabelProvider#getColumnText(Object, int)
+     */
+    public String getColumnText(Object element, int columnIndex)
+    {
+        String result = element.toString();
+        if (element instanceof RuleConfigWorkingCopy)
+        {
+            RuleConfigWorkingCopy rule = (RuleConfigWorkingCopy)element;
             switch (columnIndex)
             {
-                case 0:
+                case 0 :
                     result = rule.getSeverityLevel().getName();
                     break;
-                
-                case 1:
+
+                case 1 :
                     result = rule.getRuleName();
                     break;
-                
-                case 2:
+
+                case 2 :
                     result = rule.getRuleComment();
                     if (result == null)
                     {
                         result = "";
                     }
                     break;
-                    
-                default:
-                    CheckstyleLog.warning("Unknown column index for RuleConfigWorkingCopy, "
-                                      + columnIndex);
+
+                default :
+                    CheckstyleLog.warning(
+                        "Unknown column index for RuleConfigWorkingCopy, " + columnIndex);
                     result = "unknown";
                     break;
             }
-		}
-		return result;
-	}
+        }
+        return result;
+    }
 
-	/**
-	 * @see ITableLabelProvider#getColumnImage(Object, int)
-	 */
-	public Image getColumnImage(Object element, int columnIndex) 
-	{
-		return null;
-	}
+    /**
+     * @see ITableLabelProvider#getColumnImage(Object, int)
+     */
+    public Image getColumnImage(Object element, int columnIndex)
+    {
+        return null;
+    }
 }

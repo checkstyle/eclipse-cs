@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2003  David Schneider
+// Copyright (C) 2002-2004  David Schneider
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -59,7 +59,6 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-
 /**
  *  Used to manage the life cycle of <code>CheckConfiguration</code>
  *  objects.
@@ -67,44 +66,43 @@ import org.w3c.dom.NodeList;
 public final class CheckConfigurationFactory
 {
     //=================================================
-	// Public static final variables.
-	//=================================================
+    // Public static final variables.
+    //=================================================
 
-	//=================================================
-	// Static class variables.
-	//=================================================
-	
-	private static final String DEFAULT_CHECK_CONFIGS = "DefaultChecks.xml";
-    
+    //=================================================
+    // Static class variables.
+    //=================================================
+
+    private static final String DEFAULT_CHECK_CONFIGS = "DefaultChecks.xml";
+
     private static final String CHECKSTYLE_CONFIG_FILE = "checkstyle-config.xml";
-    
-	private static final String VERSION_1_0_0 = "1.0.0";
-    
-	private static final String VERSION_3_2_0 = "3.2.0";
-	
-	private static final String CURRENT_CONFIG_FILE_FORMAT_VERSION = VERSION_3_2_0;
-	
-	public static final String CLASSNAMES_V3_2_0_UPDATE 
-	    = "com/atlassw/tools/eclipse/checkstyle/config/classnames_v3.2.0_update.properties";
-    
-	//=================================================
-	// Instance member variables.
-	//=================================================
 
-	//=================================================
-	// Constructors & finalizer.
-	//=================================================
-    
+    private static final String VERSION_1_0_0 = "1.0.0";
+
+    private static final String VERSION_3_2_0 = "3.2.0";
+
+    private static final String CURRENT_CONFIG_FILE_FORMAT_VERSION = VERSION_3_2_0;
+
+    private static final String CLASSNAMES_V3_2_0_UPDATE =
+        "com/atlassw/tools/eclipse/checkstyle/config/classnames_v3.2.0_update.properties";
+
+    //=================================================
+    // Instance member variables.
+    //=================================================
+
+    //=================================================
+    // Constructors & finalizer.
+    //=================================================
+
     private CheckConfigurationFactory()
-    {
-    }
+    {}
 
-	//=================================================
-	// Methods.
-	//=================================================
-    
+    //=================================================
+    // Methods.
+    //=================================================
+
     /**
-     *  Get a new <CheckConfiguration</code> instance.
+     *  Get a new <code>CheckConfiguration</code> instance.
      * 
      *  @return  A new instance.
      * 
@@ -112,10 +110,10 @@ public final class CheckConfigurationFactory
      */
     public static CheckConfiguration getNewInstance() throws CheckstylePluginException
     {
-        CheckConfiguration config = new CheckConfiguration();        
+        CheckConfiguration config = new CheckConfiguration();
         return config;
     }
-    
+
     /**
      *  Get an <code>CheckConfiguration</code> instance by its name.
      * 
@@ -145,7 +143,7 @@ public final class CheckConfigurationFactory
         }
         return result;
     }
-    
+
     /**
      *  Get a list of the currently defined check configurations.
      * 
@@ -157,7 +155,7 @@ public final class CheckConfigurationFactory
     {
         return loadFromPersistence();
     }
-    
+
     /**
      *  Set the new collection of check configurations.
      * 
@@ -169,7 +167,7 @@ public final class CheckConfigurationFactory
     {
         storeToPersistence(configs);
     }
-    
+
     /**
      *  Add a new <code>CheckConfiguration</code> to the workspace.
      *
@@ -178,13 +176,13 @@ public final class CheckConfigurationFactory
      *  @throws  CheckstylePluginException  Error during processing.
      */
     public static void addCheckConfiguration(CheckConfiguration checkConfig)
-         throws CheckstylePluginException
+        throws CheckstylePluginException
     {
         List configurations = loadFromPersistence();
         configurations.add(checkConfig);
         storeToPersistence(configurations);
     }
-    
+
     /**
      *  Remove an <code>CheckConfiguration</code> from the workspace.
      *
@@ -193,13 +191,13 @@ public final class CheckConfigurationFactory
      *  @throws  CheckstylePluginException  Error during processing.
      */
     public static void removeCheckConfiguration(CheckConfiguration checkConfig)
-         throws CheckstylePluginException
+        throws CheckstylePluginException
     {
         List configurations = loadFromPersistence();
         configurations.remove(checkConfig);
         storeToPersistence(configurations);
     }
-    
+
     /**
      *  Import check configurations from an external file in plug-in format.
      * 
@@ -209,8 +207,7 @@ public final class CheckConfigurationFactory
      * 
      *  @throws  CheckstylePluginException  Error during processing.
      */
-    public static List importPluginCheckConfigurations(File file)
-        throws CheckstylePluginException
+    public static List importPluginCheckConfigurations(File file) throws CheckstylePluginException
     {
         List result = null;
         if (file.exists())
@@ -219,7 +216,7 @@ public final class CheckConfigurationFactory
         }
         return result;
     }
-    
+
     /**
      *  Write check configurations to an external file in plug-in format.
      * 
@@ -232,18 +229,18 @@ public final class CheckConfigurationFactory
     public static void exportPluginCheckConfigurations(File file, CheckConfiguration config)
         throws CheckstylePluginException
     {
-    	LinkedList configs = new LinkedList();
-    	configs.add(config);
+        LinkedList configs = new LinkedList();
+        configs.add(config);
         writeFile(file, configs);
     }
-    
+
     /**
      *  Write check configurations to an external file in standard
      *  Checkstyle format.
      * 
      *  @param  file     File to write too.
      * 
-     *  @param  configs  List of check configurations to write out.
+     *  @param  config  List of check configurations to write out.
      * 
      *  @throws  CheckstylePluginException  Error during processing.
      */
@@ -252,18 +249,18 @@ public final class CheckConfigurationFactory
     {
         writeCSFile(file, config);
     }
-        
+
     /**
      *  Load the check configurations from the persistent state storage.
      */
     private static List loadFromPersistence() throws CheckstylePluginException
     {
         List configurations = new LinkedList();
-        
+
         IPath configPath = CheckstylePlugin.getDefault().getStateLocation();
         configPath = configPath.append(CHECKSTYLE_CONFIG_FILE);
         File configFile = configPath.toFile();
-        
+
         //
         //  Make sure the files exists, it might not if this is a new workspace.
         //
@@ -276,24 +273,24 @@ public final class CheckConfigurationFactory
             //
             //  Create an empty config file for next time.
             //
-			configurations = loadDefaultCheckConfigs();
+            configurations = loadDefaultCheckConfigs();
             storeToPersistence(configurations);
         }
-        
+
         return configurations;
     }
-    
+
     /**
      * @return  List of default check configurations.
      */
     private static List loadDefaultCheckConfigs()
     {
-    	//
-		//  Empty list in coase of an error loading the defaults.
-		//
+        //
+        //  Empty list in coase of an error loading the defaults.
+        //
         List configurations = new LinkedList();
         Path defaultsPath = new Path(DEFAULT_CHECK_CONFIGS);
-		InputStream inStream = null;
+        InputStream inStream = null;
         try
         {
             inStream = CheckstylePlugin.getDefault().openStream(defaultsPath);
@@ -301,94 +298,93 @@ public final class CheckConfigurationFactory
         }
         catch (IOException e)
         {
-			CheckstyleLog.warning("Failed to load default check configurations", e);
+            CheckstyleLog.warning("Failed to load default check configurations", e);
         }
         catch (CheckstylePluginException e)
         {
-			CheckstyleLog.warning("Failed to load default check configurations", e);
+            CheckstyleLog.warning("Failed to load default check configurations", e);
         }
         finally
         {
-        	if (inStream != null)
-        	{
-        		try
-        		{
-        		    inStream.close();
-        		}
-        		catch (Exception e)
-        		{
-					CheckstyleLog.warning("Error closing default checks file", e);
-        		}
-        	}
+            if (inStream != null)
+            {
+                try
+                {
+                    inStream.close();
+                }
+                catch (Exception e)
+                {
+                    CheckstyleLog.warning("Error closing default checks file", e);
+                }
+            }
         }
-        
+
         return configurations;
     }
 
     /**
      *  Store the check configurations to the persistent state storage.
      */
-	private static void storeToPersistence(List configurations) throws CheckstylePluginException
-	{
-		IPath configPath = CheckstylePlugin.getDefault().getStateLocation();
-		configPath = configPath.append(CHECKSTYLE_CONFIG_FILE);
-		File configFile = configPath.toFile();
-		writeFile(configFile, configurations);
-	}
-    
-	private static List loadFile(File file) throws CheckstylePluginException
-	{
+    private static void storeToPersistence(List configurations) throws CheckstylePluginException
+    {
+        IPath configPath = CheckstylePlugin.getDefault().getStateLocation();
+        configPath = configPath.append(CHECKSTYLE_CONFIG_FILE);
+        File configFile = configPath.toFile();
+        writeFile(configFile, configurations);
+    }
+
+    private static List loadFile(File file) throws CheckstylePluginException
+    {
         List checkConfigs = null;
-		FileInputStream inStream = null;
-		try
-		{
-			inStream = new FileInputStream(file);
-			checkConfigs = loadInputStream(inStream);
-		}
-		catch (FileNotFoundException e)
-		{
+        FileInputStream inStream = null;
+        try
+        {
+            inStream = new FileInputStream(file);
+            checkConfigs = loadInputStream(inStream);
+        }
+        catch (FileNotFoundException e)
+        {
             String message = "Failed to read check configurations: " + e.getMessage();
             CheckstyleLog.warning(message, e);
             throw new CheckstylePluginException(message);
-		}
-		finally
-		{
-			if (inStream != null)
-			{
-				try
-				{
-					inStream.close();
-				}
-				catch (Exception e)
-				{
+        }
+        finally
+        {
+            if (inStream != null)
+            {
+                try
+                {
+                    inStream.close();
+                }
+                catch (Exception e)
+                {
                     CheckstyleLog.warning("Error closing input file", e);
                 }
-			}
-		}
-        
-        return checkConfigs;
-	}
+            }
+        }
 
-    private static List loadInputStream(InputStream inStream)
-        throws CheckstylePluginException
+        return checkConfigs;
+    }
+
+    private static List loadInputStream(InputStream inStream) throws CheckstylePluginException
     {
-		List checkConfigs = new LinkedList();
+        List checkConfigs = new LinkedList();
         Document configDoc = XMLUtil.newDocument(inStream);
         if (configDoc == null)
         {
             String message = "Failed to read and parse check configurations";
             CheckstyleLog.warning(message);
-        	throw new CheckstylePluginException(message);
+            throw new CheckstylePluginException(message);
         }
-        
+
         Node rootNode = checkFileFormatVersion(configDoc);
         NodeList children = rootNode.getChildNodes();
         int count = children.getLength();
         for (int i = 0; i < count; i++)
         {
-        	Node node = children.item(i);
-        	if (node.getNodeName().equals(XMLTags.CHECK_CONFIG_TAG))
-        	{
+            Node node = children.item(i);
+            if (node.getNodeName().equals(XMLTags.CHECK_CONFIG_TAG))
+            {
                 CheckConfiguration config = new CheckConfiguration(node);
                 if (config == null)
                 {
@@ -400,11 +396,10 @@ public final class CheckConfigurationFactory
                 }
             }
         }
-        
+
         return checkConfigs;
     }
-	
-   
+
     /**
      *  Write a collection of check configurations to a file.
      * 
@@ -420,7 +415,7 @@ public final class CheckConfigurationFactory
             Element root = configDoc.createElement(XMLTags.CHECKSTYLE_ROOT_TAG);
             configDoc.appendChild(root);
             root.setAttribute(XMLTags.FORMAT_VERSION_TAG, CURRENT_CONFIG_FILE_FORMAT_VERSION);
-            
+
             Iterator iter = configs.iterator();
             while (iter.hasNext())
             {
@@ -428,19 +423,18 @@ public final class CheckConfigurationFactory
                 Node node = checkConfig.toDOMNode(configDoc);
                 root.appendChild(node);
             }
-            
+
             String xml = XMLUtil.serializeDocument(configDoc, true);
 
             OutputStreamWriter writer = null;
             try
             {
-                writer = new OutputStreamWriter(new FileOutputStream(file),"utf-8");
+                writer = new OutputStreamWriter(new FileOutputStream(file), "utf-8");
                 writer.write(xml);
             }
             catch (Exception e)
             {
-                String message = "Failed to write check configuration file: " +
-                                 e.getMessage();
+                String message = "Failed to write check configuration file: " + e.getMessage();
                 CheckstyleLog.warning(message, e);
                 throw new CheckstylePluginException(message);
             }
@@ -454,13 +448,12 @@ public final class CheckConfigurationFactory
         }
         catch (Exception e)
         {
-            String message = "Failed to write check configuration file: " +
-                             e.getMessage();
+            String message = "Failed to write check configuration file: " + e.getMessage();
             CheckstyleLog.warning(message, e);
             throw new CheckstylePluginException(message);
         }
     }
-    
+
     /**
      *  Write a collection of check configurations to a file.
      * 
@@ -477,13 +470,12 @@ public final class CheckConfigurationFactory
             OutputStreamWriter writer = null;
             try
             {
-                writer = new OutputStreamWriter(new FileOutputStream(file),"utf-8");
+                writer = new OutputStreamWriter(new FileOutputStream(file), "utf-8");
                 writer.write(xml);
             }
             catch (Exception e)
             {
-                String message = "Failed to write check configuration file: " +
-                                 e.getMessage();
+                String message = "Failed to write check configuration file: " + e.getMessage();
                 CheckstyleLog.warning(message, e);
                 throw new CheckstylePluginException(message);
             }
@@ -497,36 +489,34 @@ public final class CheckConfigurationFactory
         }
         catch (Exception e)
         {
-            String message = "Failed to write check configuration file: " +
-                             e.getMessage();
+            String message = "Failed to write check configuration file: " + e.getMessage();
             CheckstyleLog.warning(message, e);
             throw new CheckstylePluginException(message);
         }
     }
-   
+
     /**
      *  Checks to see if the file format version is out of date.  If it is
      *  then the DOM is updated to the new format and the new root node if
      *  returned.
      */
-    private static Node checkFileFormatVersion(Document doc)
-	    throws CheckstylePluginException
+    private static Node checkFileFormatVersion(Document doc) throws CheckstylePluginException
     {
-    	Node result = doc.getDocumentElement();
-    	String fileVersion = XMLUtil.getNodeAttributeValue(result, XMLTags.FORMAT_VERSION_TAG);
-    	if (fileVersion.equals(VERSION_1_0_0));
-    	{
-    		//
-    		//  The package names of the check rules changed going from
-    		//  Checkstyle v3.1 (file format 1.0.0) to Checkstyle 3.2
-    		//  (file format 3.2.0).  Update the check rule class names
-    		//  to the correct version 3.2.0 names.
-    		//
-    		result = updateCheckClassnamesTo_v3_2_0(result);
-    	}
+        Node result = doc.getDocumentElement();
+        String fileVersion = XMLUtil.getNodeAttributeValue(result, XMLTags.FORMAT_VERSION_TAG);
+        if (fileVersion.equals(VERSION_1_0_0))
+        {
+            //
+            //  The package names of the check rules changed going from
+            //  Checkstyle v3.1 (file format 1.0.0) to Checkstyle 3.2
+            //  (file format 3.2.0).  Update the check rule class names
+            //  to the correct version 3.2.0 names.
+            //
+            result = updateCheckClassnamesTo_v3_2_0(result);
+        }
         return result;
     }
-    
+
     /**
      *  Check to see if a check configuration is already using a given name.
      * 
@@ -545,76 +535,83 @@ public final class CheckConfigurationFactory
         }
         return result;
     }
-    
+
     /**
      * Updates check rule class names based on a package renaming that occured 
      * with the release of Checkstyle v3.2.0.
      * 
-     * @param  doc  The check configuration XML document.
+     * @param  rootNode  The check configuration XML document.
      * 
      * @return  A modified check configuration XML document.
      */
     private static Node updateCheckClassnamesTo_v3_2_0(Node rootNode)
-	    throws CheckstylePluginException
+        throws CheckstylePluginException
     {
-		//
-		//  Load the classname mapping from the v3.2.0 update.
-		//
-		Properties classnameMap = new Properties();
-		ClassLoader loader = CheckConfigurationFactory.class.getClassLoader();
-		InputStream inStream = loader.getResourceAsStream(CLASSNAMES_V3_2_0_UPDATE);
-		if (inStream == null)
-		{
-			throw new CheckstylePluginException("Failed to load check classname update map");
-		}
-		
-		try
-		{
-		    classnameMap.load(inStream);
-		}
-		catch (IOException e)
-		{
-			throw new CheckstylePluginException("Failed to load check classname update map");
-		}
-		finally
-		{
-		    try {inStream.close();} catch (IOException e) {}
-		}
+        //
+        //  Load the classname mapping from the v3.2.0 update.
+        //
+        Properties classnameMap = new Properties();
+        ClassLoader loader = CheckConfigurationFactory.class.getClassLoader();
+        InputStream inStream = loader.getResourceAsStream(CLASSNAMES_V3_2_0_UPDATE);
+        if (inStream == null)
+        {
+            throw new CheckstylePluginException("Failed to load check classname update map");
+        }
 
-    	//
-    	//  Iterate through the check configurations.
-    	//
-    	NodeList checkConfigs = rootNode.getChildNodes();
-    	int numConfigs = checkConfigs.getLength();
-    	for (int i = 0; i < numConfigs; i++)
-    	{
-    		Node config = checkConfigs.item(i);
-    		if (config.getNodeName().equals(XMLTags.CHECK_CONFIG_TAG))
-    		{
-    			NodeList checkRules = config.getChildNodes();
-    			int numRules = checkRules.getLength();
-    			for (int j = 0; j < numRules; j++)
-    			{
-    				Node rule = checkRules.item(j);
-    				if (rule.getNodeName().equals(XMLTags.RULE_CONFIG_TAG))
-    				{
-    					//
-    					//  This is a rule configuration.  Get it's classname
-    					//  attribute.
-    					//
-    					NamedNodeMap attrMap = rule.getAttributes();
-    					Attr attr = (Attr)attrMap.getNamedItem(XMLTags.CLASSNAME_TAG);
-    					String currentClassname = attr.getValue();
-    					String newClassname 
-    					    = classnameMap.getProperty(currentClassname, currentClassname);
-    					if (!newClassname.equals(currentClassname))
-    					{
-    					    attr.setValue(newClassname);
-    					}
-    				}
-    			}
-    		}
-    	}
-    	return rootNode;
+        try
+        {
+            classnameMap.load(inStream);
+        }
+        catch (IOException e)
+        {
+            throw new CheckstylePluginException("Failed to load check classname update map");
+        }
+        finally
+        {
+            try
+            {
+                inStream.close();
+            }
+            catch (IOException e)
+            {
+                //  Nothing can be done about it.
+            }
+        }
+
+        //
+        //  Iterate through the check configurations.
+        //
+        NodeList checkConfigs = rootNode.getChildNodes();
+        int numConfigs = checkConfigs.getLength();
+        for (int i = 0; i < numConfigs; i++)
+        {
+            Node config = checkConfigs.item(i);
+            if (config.getNodeName().equals(XMLTags.CHECK_CONFIG_TAG))
+            {
+                NodeList checkRules = config.getChildNodes();
+                int numRules = checkRules.getLength();
+                for (int j = 0; j < numRules; j++)
+                {
+                    Node rule = checkRules.item(j);
+                    if (rule.getNodeName().equals(XMLTags.RULE_CONFIG_TAG))
+                    {
+                        //
+                        //  This is a rule configuration.  Get it's classname
+                        //  attribute.
+                        //
+                        NamedNodeMap attrMap = rule.getAttributes();
+                        Attr attr = (Attr)attrMap.getNamedItem(XMLTags.CLASSNAME_TAG);
+                        String currentClassname = attr.getValue();
+                        String newClassname =
+                            classnameMap.getProperty(currentClassname, currentClassname);
+                        if (!newClassname.equals(currentClassname))
+                        {
+                            attr.setValue(newClassname);
+                        }
+                    }
+                }
+            }
+        }
+        return rootNode;
     }
 }

@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2003  David Schneider
+// Copyright (C) 2002-2004  David Schneider
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -61,153 +61,152 @@ import org.eclipse.jface.viewers.TableViewer;
  */
 public class ResolvePropertyValuesDialog extends Dialog
 {
-	//=================================================
-	// Public static final variables.
-	//=================================================
+    //=================================================
+    // Public static final variables.
+    //=================================================
 
-	//=================================================
-	// Static class variables.
-	//=================================================
+    //=================================================
+    // Static class variables.
+    //=================================================
 
-	private static final int MAX_LENGTH = 40;
+    private static final int MAX_LENGTH = 40;
 
-	//=================================================
-	// Instance member variables.
-	//=================================================
+    //=================================================
+    // Instance member variables.
+    //=================================================
 
-    private Composite              mParentComposite;
+    private Composite mParentComposite;
 
-	private TableViewer            mViewer;
-    
-    private List                   mProperties;
-    
-    private boolean                mOkWasPressed = false;
+    private TableViewer mViewer;
 
-	//=================================================
-	// Constructors & finalizer.
-	//=================================================
+    private List mProperties;
 
-	/**
-	 * Constructor
-	 * 
-	 * @param parent        Parent shell.
-	 * 
-	 * @param checkConfig   Check configuration being edited.
+    private boolean mOkWasPressed = false;
+
+    //=================================================
+    // Constructors & finalizer.
+    //=================================================
+
+    /**
+     * Constructor.
+     * 
+     * @param parent  Parent shell.
+     * 
+     * @param props   Properties being edited.
      * 
      * @throws CheckstyleException  Error during processing.
-	 */
-	public ResolvePropertyValuesDialog(Shell parent, List props)
-		throws CheckstylePluginException
-	{
-		super(parent);
-		mProperties = props;
-	}
+     */
+    ResolvePropertyValuesDialog(Shell parent, List props) throws CheckstylePluginException
+    {
+        super(parent);
+        mProperties = props;
+    }
 
-	//=================================================
-	// Methods.
-	//=================================================
-    
-	/**
-	 * @see Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
-	 */
-	protected Control createDialogArea(Composite parent)
-	{
-		mParentComposite = parent;
-		
-		Composite composite = (Composite)super.createDialogArea(parent);
-		Composite dialog = new Composite(composite, SWT.NONE);
-        
-		GridLayout layout = new GridLayout();
-		layout.numColumns = 1;
-		dialog.setLayout(layout);
-		
-		createTablePart(dialog);
-		
-		dialog.layout();
-		return composite;
-	}
-	
-	private void createTablePart(Composite parent)
-	{
-		Composite composite = new Composite(parent, SWT.NONE);
-		GridLayout layout = new GridLayout();
-		layout.numColumns = 1;
-		composite.setLayout(layout);
+    //=================================================
+    // Methods.
+    //=================================================
 
-		Label nameLabel = new Label(composite, SWT.NULL);
-		nameLabel.setText("Double-click Variable to Edit");
+    /**
+     * @see Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
+     */
+    protected Control createDialogArea(Composite parent)
+    {
+        mParentComposite = parent;
 
-		Table table = new Table(composite, SWT.BORDER | SWT.SINGLE | SWT.FULL_SELECTION);
-		TableLayout tableLayout = new TableLayout();
-		table.setLayout(tableLayout);
-		table.setHeaderVisible(true);
-		table.setLinesVisible(true);
-		
-		GridData data = new GridData(GridData.FILL_BOTH);
-		data.widthHint = convertWidthInCharsToPixels(160);
-		data.heightHint = convertHeightInCharsToPixels(10);
-		table.setLayoutData(data);
+        Composite composite = (Composite)super.createDialogArea(parent);
+        Composite dialog = new Composite(composite, SWT.NONE);
 
-		TableColumn column1 = new TableColumn(table, SWT.NONE);
-		column1.setText("Variable");
-		tableLayout.addColumnData(new ColumnWeightData(40));
-		
-		TableColumn column2 = new TableColumn(table, SWT.NONE);
-		column2.setText("Value");
-		tableLayout.addColumnData(new ColumnWeightData(120));
+        GridLayout layout = new GridLayout();
+        layout.numColumns = 1;
+        dialog.setLayout(layout);
 
-		mViewer = new TableViewer(table);
-		mViewer.setLabelProvider(new ResolvablePropertyLabelProvider());
-		mViewer.setContentProvider(new ResolvablePropertyProvider());
-		mViewer.setSorter(new ResolvablePropertyViewerSorter());
-		mViewer.setInput(mProperties);
-		
-		mViewer.addDoubleClickListener(new IDoubleClickListener()
-		{
-			public void doubleClick(DoubleClickEvent e)
-			{
-				editValue();
-			}
-		});
-	}
-	
-	private void editValue()
-	{
-		IStructuredSelection selection = (IStructuredSelection)mViewer.getSelection();
-		ResolvableProperty prop = (ResolvableProperty)selection.getFirstElement();
-		if (prop == null)
-		{
-			//
-			//  Nothing is selected.
-			//
-			return;
-		}
-		
-		ResolvablePropertyEditDialog dialog = 
-		    new ResolvablePropertyEditDialog(mParentComposite.getShell(), prop);
-		dialog.open();
-		
-		if (dialog.okWasPressed())
-		{
-			String value = dialog.getValue();
-			if (value == null)
-			{
-				value = "";
-			}
-			prop.setValue(value);
-			mViewer.refresh();
-		}
-	}
+        createTablePart(dialog);
 
-	/**
-	 * OK button was selected.
-	 */
-	protected void okPressed()
-	{   
+        dialog.layout();
+        return composite;
+    }
+
+    private void createTablePart(Composite parent)
+    {
+        Composite composite = new Composite(parent, SWT.NONE);
+        GridLayout layout = new GridLayout();
+        layout.numColumns = 1;
+        composite.setLayout(layout);
+
+        Label nameLabel = new Label(composite, SWT.NULL);
+        nameLabel.setText("Double-click Variable to Edit");
+
+        Table table = new Table(composite, SWT.BORDER | SWT.SINGLE | SWT.FULL_SELECTION);
+        TableLayout tableLayout = new TableLayout();
+        table.setLayout(tableLayout);
+        table.setHeaderVisible(true);
+        table.setLinesVisible(true);
+
+        GridData data = new GridData(GridData.FILL_BOTH);
+        data.widthHint = convertWidthInCharsToPixels(160);
+        data.heightHint = convertHeightInCharsToPixels(10);
+        table.setLayoutData(data);
+
+        TableColumn column1 = new TableColumn(table, SWT.NONE);
+        column1.setText("Variable");
+        tableLayout.addColumnData(new ColumnWeightData(40));
+
+        TableColumn column2 = new TableColumn(table, SWT.NONE);
+        column2.setText("Value");
+        tableLayout.addColumnData(new ColumnWeightData(120));
+
+        mViewer = new TableViewer(table);
+        mViewer.setLabelProvider(new ResolvablePropertyLabelProvider());
+        mViewer.setContentProvider(new ResolvablePropertyProvider());
+        mViewer.setSorter(new ResolvablePropertyViewerSorter());
+        mViewer.setInput(mProperties);
+
+        mViewer.addDoubleClickListener(new IDoubleClickListener()
+        {
+            public void doubleClick(DoubleClickEvent e)
+            {
+                editValue();
+            }
+        });
+    }
+
+    private void editValue()
+    {
+        IStructuredSelection selection = (IStructuredSelection)mViewer.getSelection();
+        ResolvableProperty prop = (ResolvableProperty)selection.getFirstElement();
+        if (prop == null)
+        {
+            //
+            //  Nothing is selected.
+            //
+            return;
+        }
+
+        ResolvablePropertyEditDialog dialog =
+            new ResolvablePropertyEditDialog(mParentComposite.getShell(), prop);
+        dialog.open();
+
+        if (dialog.okWasPressed())
+        {
+            String value = dialog.getValue();
+            if (value == null)
+            {
+                value = "";
+            }
+            prop.setValue(value);
+            mViewer.refresh();
+        }
+    }
+
+    /**
+     * OK button was selected.
+     */
+    protected void okPressed()
+    {
         mOkWasPressed = true;
-		super.okPressed();
-	}
-        
+        super.okPressed();
+    }
+
     /**
      *  Indicates if the OK button was pressed rather then the Cancel button.
      * 
@@ -218,7 +217,7 @@ public class ResolvePropertyValuesDialog extends Dialog
     {
         return mOkWasPressed;
     }
-        
+
     /**
      *  Over-rides method from Window to configure the 
      *  shell (e.g. the enclosing window).

@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2003  David Schneider
+// Copyright (C) 2002-2004  David Schneider
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -53,7 +53,7 @@ public class CheckstylePlugin extends AbstractUIPlugin
     // Public static final variables.
     //=================================================
 
-    /** Identifier of the plug-in */
+    /** Identifier of the plug-in. */
     public static final String PLUGIN_ID = "com.atlassw.tools.eclipse.checkstyle";
     
     /** Preference name indicating if rule names are to be included in violation messages. */
@@ -158,10 +158,10 @@ public class CheckstylePlugin extends AbstractUIPlugin
     /**
      * Initialize the default preferences.
      */
-	protected void initializeDefaultPluginPreferences()
-	{
-		IPreferenceStore prefStore = getPreferenceStore();
-		
-		prefStore.setDefault(PREF_INCLUDE_RULE_NAMES, false);
-	}
+    protected void initializeDefaultPluginPreferences()
+    {
+        IPreferenceStore prefStore = getPreferenceStore();
+
+        prefStore.setDefault(PREF_INCLUDE_RULE_NAMES, false);
+    }
 }

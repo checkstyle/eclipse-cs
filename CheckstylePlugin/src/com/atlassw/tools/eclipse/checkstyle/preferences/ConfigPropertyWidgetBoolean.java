@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2003  David Schneider
+// Copyright (C) 2002-2004  David Schneider
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -19,7 +19,6 @@
 //============================================================================
 
 package com.atlassw.tools.eclipse.checkstyle.preferences;
-
 
 //=================================================
 // Imports from java namespace
@@ -44,69 +43,69 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 
-
 /**
- *  typecomment
+ *  Boolean configuration widget.
  */
 public class ConfigPropertyWidgetBoolean extends ConfigPropertyWidgetAbstractBase
 {
     //=================================================
-	// Public static final variables.
-	//=================================================
+    // Public static final variables.
+    //=================================================
 
-	//=================================================
-	// Static class variables.
-	//=================================================
+    //=================================================
+    // Static class variables.
+    //=================================================
 
-	//=================================================
-	// Instance member variables.
-	//=================================================
-    
-    private Combo    mComboItem;
+    //=================================================
+    // Instance member variables.
+    //=================================================
 
-	//=================================================
-	// Constructors & finalizer.
-	//=================================================
+    private Combo mComboItem;
 
-	//=================================================
-	// Methods.
-	//=================================================
-    
-    ConfigPropertyWidgetBoolean(Composite parent, 
-                                ConfigProperty prop,
-                                ConfigPropertyMetadata metadata)
-	{
-		super(ConfigPropertyType.BOOLEAN, parent, prop, metadata);
-        
+    //=================================================
+    // Constructors & finalizer.
+    //=================================================
+
+    //=================================================
+    // Methods.
+    //=================================================
+
+    ConfigPropertyWidgetBoolean(
+        Composite parent,
+        ConfigProperty prop,
+        ConfigPropertyMetadata metadata)
+    {
+        super(ConfigPropertyType.BOOLEAN, parent, prop, metadata);
+
         addPropertyLabel(SWT.NULL);
 
-		//
-		//  Create a combo box for selecting true or false.
-		//
-		String[] valueLabels = new String[2];
-		valueLabels[0] = Boolean.TRUE.toString();
-		valueLabels[1] = Boolean.FALSE.toString();
-		int initialIndex = 0;
+        //
+        //  Create a combo box for selecting true or false.
+        //
+        String[] valueLabels = new String[2];
+        valueLabels[0] = Boolean.TRUE.toString();
+        valueLabels[1] = Boolean.FALSE.toString();
+        int initialIndex = 0;
         String initValue = getInitValue();
-		if (initValue.equalsIgnoreCase(Boolean.FALSE.toString()))
-		{
-			initialIndex = 1;
-		}
+        if (initValue.equalsIgnoreCase(Boolean.FALSE.toString()))
+        {
+            initialIndex = 1;
+        }
 
-		mComboItem = new Combo(parent, SWT.NONE | SWT.DROP_DOWN | SWT.READ_ONLY);
-		mComboItem.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
-		mComboItem.setItems(valueLabels);
-		mComboItem.select(initialIndex);
-        
+        mComboItem = new Combo(parent, SWT.NONE | SWT.DROP_DOWN | SWT.READ_ONLY);
+        mComboItem.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
+        mComboItem.setItems(valueLabels);
+        mComboItem.select(initialIndex);
+
         addDescriptionButton(SWT.NULL);
-	}
-    
-	/**
-	 * @see com.atlassw.tools.eclipse.checkstyle.preferences.ConfigPropertyWidgetAbstractBase#getValue() $
-	 */
-	public String getValue()
-	{
-		String result = mComboItem.getItem(mComboItem.getSelectionIndex());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getValue()
+    {
+        String result = mComboItem.getItem(mComboItem.getSelectionIndex());
         return result;
-	}
+    }
 }

@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2003  David Schneider
+// Copyright (C) 2002-2004  David Schneider
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -43,7 +43,7 @@ import org.eclipse.swt.widgets.Composite;
 
 
 /**
- *  typecomment
+ *  Non-configuration property.
  */
 public class ConfigPropertyWidgetHidden extends ConfigPropertyWidgetAbstractBase
 {
@@ -76,12 +76,11 @@ public class ConfigPropertyWidgetHidden extends ConfigPropertyWidgetAbstractBase
         super(ConfigPropertyType.HIDDEN, parent, prop, metadata);
     }
     
-	/**
-	 * @see com.atlassw.tools.eclipse.checkstyle.preferences.ConfigPropertyWidgetAbstractBase#getValue()
-	 */
-	public String getValue()
-	{
-		return mValue;
-	}
-
+    /**
+     * {@inheritDoc}
+     */
+    public String getValue()
+    {
+        return mValue;
+    }
 }

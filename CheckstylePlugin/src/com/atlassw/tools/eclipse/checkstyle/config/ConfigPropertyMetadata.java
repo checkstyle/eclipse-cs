@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2003  David Schneider
+// Copyright (C) 2002-2004  David Schneider
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -40,40 +40,39 @@ import com.atlassw.tools.eclipse.checkstyle.util.XMLUtil;
 //=================================================
 import org.w3c.dom.Node;
 
-
 /**
  *  This class represents metadata about one of a rule's properties.
  */
 public class ConfigPropertyMetadata implements Cloneable
 {
     //=================================================
-	// Public static final variables.
-	//=================================================
+    // Public static final variables.
+    //=================================================
 
-	//=================================================
-	// Static class variables.
-	//=================================================
+    //=================================================
+    // Static class variables.
+    //=================================================
 
-	//=================================================
-	// Instance member variables.
-	//=================================================
-    
-    private ConfigPropertyType                 mDatatype = null;
-    
-    private String                             mName = "";
-    
-    private String                             mDefaultValue = "";
-    
-    private String                             mDescription = "";
-    
-    private boolean                            mHidden = false;
-    
-    private ConfigPropertyEnumerationMetadata  mEnumeration = null;
+    //=================================================
+    // Instance member variables.
+    //=================================================
 
-	//=================================================
-	// Constructors & finalizer.
-	//=================================================
-    
+    private ConfigPropertyType mDatatype = null;
+
+    private String mName = "";
+
+    private String mDefaultValue = "";
+
+    private String mDescription = "";
+
+    private boolean mHidden = false;
+
+    private ConfigPropertyEnumerationMetadata mEnumeration = null;
+
+    //=================================================
+    // Constructors & finalizer.
+    //=================================================
+
     /**
      *  Constructor.
      * 
@@ -91,7 +90,7 @@ public class ConfigPropertyMetadata implements Cloneable
         {
             mName = temp.trim();
         }
-        
+
         //
         //  Get the default value attribute.
         //
@@ -100,7 +99,7 @@ public class ConfigPropertyMetadata implements Cloneable
         {
             mDefaultValue = temp.trim();
         }
-        
+
         //
         //  Get the data type.
         //
@@ -109,7 +108,7 @@ public class ConfigPropertyMetadata implements Cloneable
         {
             mDatatype = ConfigPropertyType.getConfigPropertyType(temp.trim());
         }
-        
+
         //
         //  Get the description node.
         //
@@ -122,45 +121,45 @@ public class ConfigPropertyMetadata implements Cloneable
                 mDescription = temp.trim();
             }
         }
-        
-		//
-		//  Look for an enumeration node.
-		//
+
+        //
+        //  Look for an enumeration node.
+        //
         Node enumNode = XMLUtil.getChildNode(propNode, XMLTags.ENUMERATION_TAG);
         if (enumNode != null)
-		{
-			ConfigPropertyEnumerationMetadata enumMeta = null;
-			try
-			{
-				enumMeta = new ConfigPropertyEnumerationMetadata(enumNode);
-			}
-			catch (CheckstylePluginException e)
-			{
-				CheckstyleLog.warning(
-					"Failed to get configuration property metadata, " + e.getMessage(),
-					e);
-			}
-			if (enumMeta != null)
-			{
-				mEnumeration = enumMeta;
-			}
-		}
-    }
-    
-    ConfigPropertyMetadata(ConfigPropertyType type, String name, String defaultValue)
-    {
-    	mDatatype = type;
-    	mName = name;
-    	mDefaultValue = defaultValue;
-    	mDescription = "No Description Available";
+        {
+            ConfigPropertyEnumerationMetadata enumMeta = null;
+            try
+            {
+                enumMeta = new ConfigPropertyEnumerationMetadata(enumNode);
+            }
+            catch (CheckstylePluginException e)
+            {
+                CheckstyleLog.warning(
+                    "Failed to get configuration property metadata, " + e.getMessage(),
+                    e);
+            }
+            if (enumMeta != null)
+            {
+                mEnumeration = enumMeta;
+            }
+        }
     }
 
-	//=================================================
-	// Methods.
-	//=================================================
-    
+    ConfigPropertyMetadata(ConfigPropertyType type, String name, String defaultValue)
+    {
+        mDatatype = type;
+        mName = name;
+        mDefaultValue = defaultValue;
+        mDescription = "No Description Available";
+    }
+
+    //=================================================
+    // Methods.
+    //=================================================
+
     /**
-     *  Get the property's datatype
+     *  Get the property's datatype.
      * 
      *  @return  The datatype
      */
@@ -168,9 +167,9 @@ public class ConfigPropertyMetadata implements Cloneable
     {
         return mDatatype;
     }
-    
+
     /**
-     * Get the property's name
+     * Get the property's name.
      * 
      * @return  The name
      */
@@ -178,7 +177,7 @@ public class ConfigPropertyMetadata implements Cloneable
     {
         return mName;
     }
-    
+
     /**
      * Get the property's description.
      * 
@@ -188,9 +187,9 @@ public class ConfigPropertyMetadata implements Cloneable
     {
         return mDescription;
     }
-    
+
     /**
-     * Get the default value
+     * Get the default value.
      * 
      * @return  The default value
      */
@@ -198,7 +197,7 @@ public class ConfigPropertyMetadata implements Cloneable
     {
         return mDefaultValue;
     }
-    
+
     /**
      * Get the enumeration of allowable values.
      * 
@@ -208,7 +207,7 @@ public class ConfigPropertyMetadata implements Cloneable
     {
         return mEnumeration;
     }
-    
+
     /**
      * Clone the object.
      * 
@@ -220,23 +219,23 @@ public class ConfigPropertyMetadata implements Cloneable
     {
         return super.clone();
     }
-    
-	/**
-	 * Returns the hidden.
-	 * @return boolean
-	 */
-	public boolean isHidden()
-	{
-		return mHidden;
-	}
 
-	/**
-	 * Sets the hidden.
-	 * @param hidden The hidden to set
-	 */
-	public void setHidden(boolean hidden)
-	{
-		mHidden = hidden;
-	}
+    /**
+     * Returns the hidden.
+     * @return boolean
+     */
+    public boolean isHidden()
+    {
+        return mHidden;
+    }
+
+    /**
+     * Sets the hidden.
+     * @param hidden The hidden to set
+     */
+    public void setHidden(boolean hidden)
+    {
+        mHidden = hidden;
+    }
 
 }

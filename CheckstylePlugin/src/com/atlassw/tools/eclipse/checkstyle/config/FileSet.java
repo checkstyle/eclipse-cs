@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2003  David Schneider
+// Copyright (C) 2002-2004  David Schneider
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -94,7 +94,7 @@ public class FileSet implements Cloneable
         mName        = name;
         if (checkConfig != null)
         {
-        	mCheckConfigName = checkConfig.getName();
+            mCheckConfigName = checkConfig.getName();
         }
         mCheckConfig = checkConfig;
     }
@@ -131,12 +131,12 @@ public class FileSet implements Cloneable
         temp = XMLUtil.getNodeAttributeValue(node, XMLTags.CHECK_CONFIG_NAME_TAG);
         if (temp != null)
         {
-        	mCheckConfigName = temp.trim();
+            mCheckConfigName = temp.trim();
             mCheckConfig = CheckConfigurationFactory.getByName(mCheckConfigName);
         }
         else
         {
-        	String msg = "FileSet check configuration name is null";
+            String msg = "FileSet check configuration name is null";
             CheckstyleLog.warning(msg);
             throw new CheckstylePluginException(msg);
         }
@@ -176,20 +176,20 @@ public class FileSet implements Cloneable
      * 
 	 * @return boolean
 	 */
-	public boolean isEnabled()
-	{
-		return mEnabled;
-	}
+    public boolean isEnabled()
+    {
+        return mEnabled;
+    }
 
-	/**
-	 * Returns a list of <code>FileMatchPattern</code> objects.
+    /**
+     * Returns a list of <code>FileMatchPattern</code> objects.
      * 
-	 * @return List
-	 */
-	public List getFileMatchPatterns()
-	{
-		return mFileMatchPatterns;
-	}
+     * @return List
+     */
+    public List getFileMatchPatterns()
+    {
+        return mFileMatchPatterns;
+    }
     
     /**
      *  Set the list of <code>FileMatchPattern</code> objects.
@@ -208,51 +208,55 @@ public class FileSet implements Cloneable
      */
     public CheckConfiguration getCheckConfig()
     {
-		CheckConfiguration config = null;
-		try
-		{
-			config = CheckConfigurationFactory.getByName(mCheckConfigName);
-		}
-		catch (CheckstylePluginException e)
-		{}
-		
+        CheckConfiguration config = null;
+        try
+        {
+            config = CheckConfigurationFactory.getByName(mCheckConfigName);
+        }
+        catch (CheckstylePluginException e)
+        {
+            //  Just return null.
+        }
+
         return config;
     }
 
-	/**
-	 * Returns the name.
+    /**
+     * Returns the name.
      * 
-	 * @return String
-	 */
-	public String getName()
-	{
-		return mName;
-	}
+     * @return String
+     */
+    public String getName()
+    {
+        return mName;
+    }
 
 	/**
 	 * Sets the enabled flag.
      * 
 	 * @param enabled The enabled to set
 	 */
-	public void setEnabled(boolean enabled)
-	{
-		mEnabled = enabled;
-	}
+    public void setEnabled(boolean enabled)
+    {
+        mEnabled = enabled;
+    }
 
-	/**
-	 * Sets the name.
+    /**
+     * Sets the name.
      * 
-	 * @param name The name to set
-	 */
-	public void setName(String name)
-	{
-		mName = name;
-	}
-    
+     * @param name The name to set
+     */
+    public void setName(String name)
+    {
+        mName = name;
+    }
+
     /**
      *  Create an XML DOM node representation of the file set.
      * 
      *  @param  doc  The document to create the node within.
+     * 
+     *  @return The DOM node.
      */
     public Node toDOMNode(Document doc)
     {
@@ -290,6 +294,9 @@ public class FileSet implements Cloneable
         return rootNode;
     }
     
+    /**
+     * {@inheritDoc}
+     */
     public Object clone() throws CloneNotSupportedException
     {
         return super.clone();
@@ -302,6 +309,8 @@ public class FileSet implements Cloneable
      * 
      *  @return  <code>true</code> = the file is included in the file set,<p>
      *            <code>false</code> = the file is not included in the file set.
+     * 
+     *  @throws CheckstylePluginException  Error during processing.
      */
     public boolean includesFile(IFile file) throws CheckstylePluginException
     {
@@ -330,17 +339,10 @@ public class FileSet implements Cloneable
     }
 
     /**
-     * @return
+     * @return  The name of the check configuration used by the <code>FileSet</code>.
      */
     public String getCheckConfigName()
     {
-//    	String name = "";
-//    	if (mCheckConfig != null)
-//    	{
-//    		name = mCheckConfig.getConfigName();
-//    	}
-//        return name;
-
         return mCheckConfigName;
     }
 

@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2003  David Schneider
+// Copyright (C) 2002-2004  David Schneider
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -156,6 +156,8 @@ public final class CheckstyleLog
     
     /**
      *  Displays a simple error dialog indicating there was a Checkstyle internal error.
+     * 
+     *  @param shell  Shell the use for the dialog.
      */
     public static void internalErrorDialog(Shell shell)
     {
@@ -183,7 +185,9 @@ public final class CheckstyleLog
     /**
      *  Displays a simple error dialog indicating there was a Checkstyle internal error.
      * 
-     *  @param msg  Message to display.
+     *  @param shell  Shell to use for the dialog.
+     * 
+     *  @param msg    Message to display.
      */
     public static void errorDialog(Shell shell, String msg)
     {
@@ -208,7 +212,7 @@ public final class CheckstyleLog
     {
     	if (shell != null)
     	{
-    		String logMsg = msg;
+            String logMsg = msg;
     		return MessageDialog.openQuestion(shell, "Checkstyle Question", logMsg);
     	} 
     	else 

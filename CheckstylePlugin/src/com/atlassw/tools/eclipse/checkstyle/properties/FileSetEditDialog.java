@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2003  David Schneider
+// Copyright (C) 2002-2004  David Schneider
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -42,7 +42,6 @@ import com.atlassw.tools.eclipse.checkstyle.config.FileSet;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
-
 //=================================================
 // Imports from org namespace
 //=================================================
@@ -76,7 +75,6 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 
-
 /**
  *  Property page.
  */
@@ -85,66 +83,66 @@ public class FileSetEditDialog extends Dialog
     //=================================================
     // Public static final variables.
     //=================================================
-  
+
     //=================================================
     // Static class variables.
     //=================================================
-    
+
     private static final int MAX_LENGTH = 40;
-    
+
     private static final String JAVA_SUFFIX = ".java";
-    
+
     private static final String DEFAULT_PATTERN = ".java$";
-    
+
     private static final String NOTE_TEXT =
-        "Note: The last matching regular expression determines if a file is included " +
-        "or excluded from the File Set.";
-    
+        "Note: The last matching regular expression determines if a file is included "
+            + "or excluded from the File Set.";
+
     //=================================================
     // Instance member variables.
     //=================================================
-    
-    private IProject                mProject;
-    
-    private Composite               mComposite;
 
-    private CheckboxTableViewer     mViewer;
-    
-    private Text                    mFileSetNameText;
+    private IProject mProject;
 
-    private Button                  mAddButton;
+    private Composite mComposite;
 
-    private Button                  mEditButton;
+    private CheckboxTableViewer mViewer;
 
-    private Button                  mRemoveButton;
+    private Text mFileSetNameText;
 
-    private Button                  mTestButton;
+    private Button mAddButton;
 
-    private Button                  mUpButton;
+    private Button mEditButton;
 
-    private Button                  mDownButton;
-    
-    private Combo                   mAuditConfigCombo;
-    
-    private FileSet                 mFileSet;
-    
-    private CheckConfiguration[]    mAuditConfigs;
-    
-    private List                    mFileMatchPatterns = new LinkedList();
-    
-    private boolean                 mOkWasPressed = false;
+    private Button mRemoveButton;
+
+    private Button mTestButton;
+
+    private Button mUpButton;
+
+    private Button mDownButton;
+
+    private Combo mAuditConfigCombo;
+
+    private FileSet mFileSet;
+
+    private CheckConfiguration[] mAuditConfigs;
+
+    private List mFileMatchPatterns = new LinkedList();
+
+    private boolean mOkWasPressed = false;
 
     //=================================================
     // Constructors & finalizer.
     //=================================================
 
-	/**
-	 *  Constructor for SamplePropertyPage.
-	 */
-	public FileSetEditDialog(Shell parent, FileSet fileSet, IProject project)
+    /**
+     *  Constructor for SamplePropertyPage.
+     */
+    FileSetEditDialog(Shell parent, FileSet fileSet, IProject project)
         throws CheckstylePluginException
-	{
-		super(parent);
+    {
+        super(parent);
         mProject = project;
         try
         {
@@ -163,7 +161,7 @@ public class FileSetEditDialog extends Dialog
             CheckstyleLog.error("Failed to clone FileSet", e);
             throw new CheckstylePluginException("Failed to clone FileSet");
         }
-	}
+    }
 
     //=================================================
     // Methods.
@@ -175,14 +173,14 @@ public class FileSetEditDialog extends Dialog
     protected Control createDialogArea(Composite parent)
     {
         mComposite = parent;
-        
+
         Composite composite = (Composite)super.createDialogArea(parent);
         Composite dialog = new Composite(composite, SWT.NONE);
-        
+
         GridLayout layout = new GridLayout();
         layout.numColumns = 1;
         dialog.setLayout(layout);
-        
+
         createFileSetNamePart(dialog);
         createAuditConfigSelectionPart(dialog);
         createFileMatchPatternPart(dialog);
@@ -190,14 +188,14 @@ public class FileSetEditDialog extends Dialog
         dialog.layout();
         return composite;
     }
-    
+
     private void createFileSetNamePart(Composite parent)
     {
         Composite composite = new Composite(parent, SWT.NONE);
         GridLayout layout = new GridLayout();
         layout.numColumns = 2;
         composite.setLayout(layout);
-        
+
         Label nameLabel = new Label(composite, SWT.NULL);
         nameLabel.setText("File Set Name:");
 
@@ -212,7 +210,7 @@ public class FileSetEditDialog extends Dialog
         data.heightHint = convertHeightInCharsToPixels(1);
         mFileSetNameText.setLayoutData(data);
         mFileSetNameText.setFont(parent.getFont());
-        
+
         //
         //  Populate with the existing name if one exists.
         //
@@ -221,54 +219,55 @@ public class FileSetEditDialog extends Dialog
             mFileSetNameText.setText(mFileSet.getName());
         }
     }
-    
-	private void createAuditConfigSelectionPart(Composite parent)
-	{
-		Composite composite = new Composite(parent, SWT.NONE);
-		GridLayout layout = new GridLayout();
-		layout.numColumns = 2;
-		composite.setLayout(layout);
 
-		Label nameLabel = new Label(composite, SWT.NULL);
-		nameLabel.setText("Check Configuration:");
+    private void createAuditConfigSelectionPart(Composite parent)
+    {
+        Composite composite = new Composite(parent, SWT.NONE);
+        GridLayout layout = new GridLayout();
+        layout.numColumns = 2;
+        composite.setLayout(layout);
 
-		//
-		//  Create a combo box for selecting a value from the enumeration.
-		//
+        Label nameLabel = new Label(composite, SWT.NULL);
+        nameLabel.setText("Check Configuration:");
+
+        //
+        //  Create a combo box for selecting a value from the enumeration.
+        //
         List configList = null;
         try
         {
-		    configList = CheckConfigurationFactory.getCheckConfigurations();
+            configList = CheckConfigurationFactory.getCheckConfigurations();
         }
         catch (CheckstylePluginException e)
         {
-            CheckstyleLog.error("Failed to get list of CheckConfiguration objects, " 
-                                + e.getMessage(), e);
+            CheckstyleLog.error(
+                "Failed to get list of CheckConfiguration objects, " + e.getMessage(),
+                e);
             CheckstyleLog.internalErrorDialog();
             return;
         }
         Collections.sort(configList);
-		mAuditConfigs = new CheckConfiguration[configList.size()];
-        String labels[] = new String[configList.size()];
-        
+        mAuditConfigs = new CheckConfiguration[configList.size()];
+        String[] labels = new String[configList.size()];
+
         //
         //  Find the current check config to position the combo box at.
         //
-		int initialIndex = -1;
-		Iterator iter = configList.iterator();
-		for (int i = 0; iter.hasNext(); i++)
-		{
-			CheckConfiguration config = (CheckConfiguration)iter.next();
+        int initialIndex = -1;
+        Iterator iter = configList.iterator();
+        for (int i = 0; iter.hasNext(); i++)
+        {
+            CheckConfiguration config = (CheckConfiguration)iter.next();
             mAuditConfigs[i] = config;
-			labels[i] = config.getConfigName();
+            labels[i] = config.getConfigName();
             if (mFileSet != null)
             {
-            	//
-            	//  Make sure the check configuration is not null.  This can happen
-            	//  if the .checkstyle has been updated (say via a team repository)
-            	//  to reference a check configuration that has not yet been imported
-            	//  into the workspace.
-            	//
+                //
+                //  Make sure the check configuration is not null.  This can happen
+                //  if the .checkstyle has been updated (say via a team repository)
+                //  to reference a check configuration that has not yet been imported
+                //  into the workspace.
+                //
                 CheckConfiguration checkConfig = mFileSet.getCheckConfig();
                 if (checkConfig != null)
                 {
@@ -278,30 +277,30 @@ public class FileSetEditDialog extends Dialog
                     }
                 }
             }
-		}
-		mAuditConfigCombo = new Combo(composite, SWT.NONE | SWT.DROP_DOWN | SWT.READ_ONLY);
-		mAuditConfigCombo.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
-		mAuditConfigCombo.setItems(labels);
-		
-		//
-		//  Even though the Javadoc for the Combo.select() method says indecies out of range
-		//  are ignored a bug have been reported on the Mac platform showing an
-		//  IllegalArgumentException exception being thrown with a message of
-		//  "Index out of bounds" from this method.
-		//
-		if ((initialIndex >= 0) && (initialIndex < labels.length))
-		{
-		    mAuditConfigCombo.select(initialIndex);
-		}
-	} 
-      
+        }
+        mAuditConfigCombo = new Combo(composite, SWT.NONE | SWT.DROP_DOWN | SWT.READ_ONLY);
+        mAuditConfigCombo.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
+        mAuditConfigCombo.setItems(labels);
+
+        //
+        //  Even though the Javadoc for the Combo.select() method says indecies out of range
+        //  are ignored a bug have been reported on the Mac platform showing an
+        //  IllegalArgumentException exception being thrown with a message of
+        //  "Index out of bounds" from this method.
+        //
+        if ((initialIndex >= 0) && (initialIndex < labels.length))
+        {
+            mAuditConfigCombo.select(initialIndex);
+        }
+    }
+
     private void createFileMatchPatternPart(Composite parent)
     {
-        Composite composite = new Composite(parent, SWT.NONE);        
+        Composite composite = new Composite(parent, SWT.NONE);
         GridLayout layout = new GridLayout();
         layout.numColumns = 2;
         composite.setLayout(layout);
-        
+
         Table table = new Table(composite, SWT.CHECK | SWT.BORDER | SWT.FULL_SELECTION);
         TableLayout tableLayout = new TableLayout();
         table.setLayout(tableLayout);
@@ -326,13 +325,13 @@ public class FileSetEditDialog extends Dialog
         mViewer.setLabelProvider(new FileMatchPatternLabelProvider());
         mViewer.setContentProvider(new FileMatchPatternProvider());
         mViewer.setSorter(new FileMatchPatternViewerSorter());
-        
+
         //
         //  Create the table items.
         //
         Iterator iter = mFileMatchPatterns.iterator();
         mViewer.setInput(mFileMatchPatterns);
-        while(iter.hasNext())
+        while (iter.hasNext())
         {
             FileMatchPattern pattern = (FileMatchPattern)iter.next();
             mViewer.setChecked(pattern, pattern.isIncludePattern());
@@ -345,7 +344,7 @@ public class FileSetEditDialog extends Dialog
                 editFileMatchPattern();
             }
         });
-        
+
         mViewer.addCheckStateListener(new ICheckStateListener()
         {
             public void checkStateChanged(CheckStateChangedEvent event)
@@ -353,7 +352,7 @@ public class FileSetEditDialog extends Dialog
                 changeIncludeState(event);
             }
         });
-        
+
         //
         //  Build the buttons.
         //
@@ -421,7 +420,7 @@ public class FileSetEditDialog extends Dialog
         //
         //  Add the note text.
         //
-        Text noteText = new Text(composite, SWT.WRAP|SWT.READ_ONLY|SWT.MULTI);
+        Text noteText = new Text(composite, SWT.WRAP | SWT.READ_ONLY | SWT.MULTI);
         data = new GridData();
         data.horizontalAlignment = GridData.BEGINNING;
         data.grabExcessHorizontalSpace = false;
@@ -441,9 +440,10 @@ public class FileSetEditDialog extends Dialog
         String name = mFileSetNameText.getText();
         if ((name == null) || (name.trim().length() <= 0))
         {
-            MessageDialog.openError(mComposite.getShell(),
-                        "Validation Error",
-                        "A FileSet name must be provided");
+            MessageDialog.openError(
+                mComposite.getShell(),
+                "Validation Error",
+                "A FileSet name must be provided");
             return;
         }
 
@@ -453,12 +453,13 @@ public class FileSetEditDialog extends Dialog
         int index = mAuditConfigCombo.getSelectionIndex();
         if ((index < 0) || (index >= mAuditConfigs.length))
         {
-            MessageDialog.openError(mComposite.getShell(),
-                        "Validation Error",
-                        "An Audit Configuration must be selected");
+            MessageDialog.openError(
+                mComposite.getShell(),
+                "Validation Error",
+                "An Audit Configuration must be selected");
             return;
         }
-        
+
         //
         //  Create a new FileSet.
         //
@@ -470,11 +471,11 @@ public class FileSetEditDialog extends Dialog
         mFileSet = new FileSet(name, mAuditConfigs[index]);
         mFileSet.setFileMatchPatterns(mFileMatchPatterns);
         mFileSet.setEnabled(enabledState);
-        
+
         mOkWasPressed = true;
         super.okPressed();
     }
-        
+
     /**
      * Utility method that creates a push button instance
      * and sets the default layout data.
@@ -483,7 +484,7 @@ public class FileSetEditDialog extends Dialog
      * @param label  the label for the new button
      * @return the newly-created button
      */
-    private Button createPushButton(Composite parent, String label) 
+    private Button createPushButton(Composite parent, String label)
     {
         Button button = new Button(parent, SWT.PUSH);
         button.setText(label);
@@ -493,14 +494,14 @@ public class FileSetEditDialog extends Dialog
         return button;
     }
 
-	private void addFileMatchPattern()
-	{
-		FileMatchPatternEditDialog dialog = 
+    private void addFileMatchPattern()
+    {
+        FileMatchPatternEditDialog dialog =
             new FileMatchPatternEditDialog(mComposite.getShell(), null);
-		dialog.open();
-		if (dialog.okWasPressed())
-		{
-			String patternString = dialog.getPattern();
+        dialog.open();
+        if (dialog.okWasPressed())
+        {
+            String patternString = dialog.getPattern();
             try
             {
                 FileMatchPattern pattern = new FileMatchPattern(patternString);
@@ -510,12 +511,16 @@ public class FileSetEditDialog extends Dialog
             }
             catch (CheckstylePluginException e)
             {
-                CheckstyleLog.error("Failed to create FileMatchPattern object <"
-                                + patternString +">, " + e.getMessage(), e);
+                CheckstyleLog.error(
+                    "Failed to create FileMatchPattern object <"
+                        + patternString
+                        + ">, "
+                        + e.getMessage(),
+                    e);
                 CheckstyleLog.internalErrorDialog();
             }
-		}
-	}
+        }
+    }
 
     private void editFileMatchPattern()
     {
@@ -528,8 +533,8 @@ public class FileSetEditDialog extends Dialog
             //
             return;
         }
-        
-        FileMatchPatternEditDialog dialog = 
+
+        FileMatchPatternEditDialog dialog =
             new FileMatchPatternEditDialog(mComposite.getShell(), pattern.getMatchPattern());
         dialog.open();
         if (dialog.okWasPressed())
@@ -540,14 +545,18 @@ public class FileSetEditDialog extends Dialog
                 FileMatchPattern editedPattern = new FileMatchPattern(patternString);
                 editedPattern.setIsIncludePattern(pattern.isIncludePattern());
                 mFileMatchPatterns.remove(pattern);
-                mFileMatchPatterns.add(editedPattern);                
+                mFileMatchPatterns.add(editedPattern);
                 mViewer.refresh();
                 mViewer.setChecked(editedPattern, editedPattern.isIncludePattern());
             }
             catch (CheckstylePluginException e)
             {
-                CheckstyleLog.error("Failed to create FileMatchPattern object <"
-                                + patternString +">, " + e.getMessage(), e);
+                CheckstyleLog.error(
+                    "Failed to create FileMatchPattern object <"
+                        + patternString
+                        + ">, "
+                        + e.getMessage(),
+                    e);
                 CheckstyleLog.internalErrorDialog();
             }
         }
@@ -564,11 +573,11 @@ public class FileSetEditDialog extends Dialog
             //
             return;
         }
-        
+
         mFileMatchPatterns.remove(pattern);
         mViewer.refresh();
     }
-    
+
     private void changeIncludeState(CheckStateChangedEvent event)
     {
         if (event.getElement() instanceof FileMatchPattern)
@@ -579,48 +588,48 @@ public class FileSetEditDialog extends Dialog
         }
         else
         {
-            CheckstyleLog.warning("Checked element in FileMatchPattern table not"
-                              +"  a FileMatchPattern");
+            CheckstyleLog.warning(
+                "Checked element in FileMatchPattern table not" + "  a FileMatchPattern");
         }
     }
-    
+
     /**
      *  Test the file set to see what files it matches in the project.
      */
-	private void testFileMatchPattern()
-	{
-		List includedFiles = new LinkedList();
-		try
-		{
-			List files = getFiles(mProject);
-			Iterator iter = files.iterator();
+    private void testFileMatchPattern()
+    {
+        List includedFiles = new LinkedList();
+        try
+        {
+            List files = getFiles(mProject);
+            Iterator iter = files.iterator();
             FileSet temp = new FileSet(null, null);
             temp.setFileMatchPatterns(mFileMatchPatterns);
-			while (iter.hasNext())
-			{
-				IFile file = (IFile) iter.next();
-				if (temp.includesFile(file))
-				{
-					includedFiles.add(file);
-				}
-			}
-		}
-		catch (CheckstylePluginException e)
-		{
-			CheckstyleLog.error("Failed to generate FileSet test results", e);
-			CheckstyleLog.internalErrorDialog();
-            return;
-		}
-		catch (CoreException e)
-		{
+            while (iter.hasNext())
+            {
+                IFile file = (IFile)iter.next();
+                if (temp.includesFile(file))
+                {
+                    includedFiles.add(file);
+                }
+            }
+        }
+        catch (CheckstylePluginException e)
+        {
             CheckstyleLog.error("Failed to generate FileSet test results", e);
             CheckstyleLog.internalErrorDialog();
             return;
-		}
+        }
+        catch (CoreException e)
+        {
+            CheckstyleLog.error("Failed to generate FileSet test results", e);
+            CheckstyleLog.internalErrorDialog();
+            return;
+        }
 
-		TestResultsDialog dialog = new TestResultsDialog(mComposite.getShell(), includedFiles);
-		dialog.open();
-	}
+        TestResultsDialog dialog = new TestResultsDialog(mComposite.getShell(), includedFiles);
+        dialog.open();
+    }
 
     private void upFileMatchPattern()
     {
@@ -633,14 +642,14 @@ public class FileSetEditDialog extends Dialog
             //
             return;
         }
-        
+
         int index = mFileMatchPatterns.indexOf(pattern);
         if (index > 0)
         {
             mFileMatchPatterns.remove(pattern);
-            mFileMatchPatterns.add(index-1, pattern);
+            mFileMatchPatterns.add(index - 1, pattern);
             mViewer.refresh();
-        }        
+        }
     }
 
     private void downFileMatchPattern()
@@ -654,41 +663,40 @@ public class FileSetEditDialog extends Dialog
             //
             return;
         }
-        
+
         int index = mFileMatchPatterns.indexOf(pattern);
-        if ((index >= 0)  && (index < mFileMatchPatterns.size()-1))
+        if ((index >= 0) && (index < mFileMatchPatterns.size() - 1))
         {
             mFileMatchPatterns.remove(pattern);
-            if (index < mFileMatchPatterns.size()-1)
+            if (index < mFileMatchPatterns.size() - 1)
             {
-                mFileMatchPatterns.add(index+1, pattern);
+                mFileMatchPatterns.add(index + 1, pattern);
             }
             else
             {
                 mFileMatchPatterns.add(pattern);
             }
-            
+
             mViewer.refresh();
-        }        
+        }
     }
-    
-    public boolean okWasPressed()
+
+    boolean okWasPressed()
     {
         return mOkWasPressed;
     }
-    
-    public FileSet getFileSet()
+
+    FileSet getFileSet()
     {
         return mFileSet;
     }
 
-    private final List getFiles(IContainer container)
-        throws CoreException
+    private List getFiles(IContainer container) throws CoreException
     {
-        LinkedList files   = new LinkedList();
+        LinkedList files = new LinkedList();
         LinkedList folders = new LinkedList();
-        
-        IResource children[] = container.members();
+
+        IResource[] children = container.members();
         for (int i = 0; i < children.length; i++)
         {
             IResource child = children[i];
@@ -705,7 +713,7 @@ public class FileSetEditDialog extends Dialog
                 folders.add(child);
             }
         }
-        
+
         //
         //  Get the files from the sub-folders.
         //
@@ -714,17 +722,17 @@ public class FileSetEditDialog extends Dialog
         {
             files.addAll(getFiles((IContainer)iter.next()));
         }
-        
+
         return files;
     }
-    
-	/**
-	 *  Over-rides method from Window to configure the 
-	 *  shell (e.g. the enclosing window).
-	 */
-	protected void configureShell(Shell shell)
-	{
-		super.configureShell(shell);
-		shell.setText("Checkstyle File Set Editor");
-	}
+
+    /**
+     *  Over-rides method from Window to configure the 
+     *  shell (e.g. the enclosing window).
+     */
+    protected void configureShell(Shell shell)
+    {
+        super.configureShell(shell);
+        shell.setText("Checkstyle File Set Editor");
+    }
 }

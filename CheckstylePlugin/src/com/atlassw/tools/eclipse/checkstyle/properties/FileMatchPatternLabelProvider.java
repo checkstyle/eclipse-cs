@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2003  David Schneider
+// Copyright (C) 2002-2004  David Schneider
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -40,71 +40,69 @@ import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.swt.graphics.Image;
 
-
 /**
  *  Provides the labels for the FileSet list display.
  */
-class FileMatchPatternLabelProvider
-	implements ITableLabelProvider
-{	
+class FileMatchPatternLabelProvider implements ITableLabelProvider
+{
     //=================================================
-	// Public static final variables.
-	//=================================================
+    // Public static final variables.
+    //=================================================
 
-	//=================================================
-	// Static class variables.
-	//=================================================
+    //=================================================
+    // Static class variables.
+    //=================================================
 
-	//=================================================
-	// Instance member variables.
-	//=================================================
+    //=================================================
+    // Instance member variables.
+    //=================================================
 
-	//=================================================
-	// Constructors & finalizer.
-	//=================================================
+    //=================================================
+    // Constructors & finalizer.
+    //=================================================
 
-	//=================================================
-	// Methods.
-	//=================================================
-    
-	/**
-	 * @see IBaseLabelProvider#removeListener(ILabelProviderListener)
-	 */
-	public void removeListener(ILabelProviderListener listener) 
-	{}
+    //=================================================
+    // Methods.
+    //=================================================
 
-	/**
-	 * @see IBaseLabelProvider#isLabelProperty(Object, String)
-	 */
-	public boolean isLabelProperty(Object element, String property) 
-	{
-		return false;
-	}
+    /**
+     * @see IBaseLabelProvider#removeListener(ILabelProviderListener)
+     */
+    public void removeListener(ILabelProviderListener listener)
+    {}
 
-	/**
-	 * @see IBaseLabelProvider#dispose()
-	 */
-	public void dispose() 
-	{}
+    /**
+     * @see IBaseLabelProvider#isLabelProperty(Object, String)
+     */
+    public boolean isLabelProperty(Object element, String property)
+    {
+        return false;
+    }
 
-	/**
-	 * @see IBaseLabelProvider#addListener(ILabelProviderListener)
-	 */
-	public void addListener(ILabelProviderListener listener) 
-	{}
+    /**
+     * @see IBaseLabelProvider#dispose()
+     */
+    public void dispose()
+    {}
 
-	/**
-	 * @see ITableLabelProvider#getColumnText(Object, int)
-	 */
-	public String getColumnText(Object element, int columnIndex) 
-	{
-		String result = element.toString();
-		if (element instanceof FileMatchPattern) 
-		{
+    /**
+     * @see IBaseLabelProvider#addListener(ILabelProviderListener)
+     */
+    public void addListener(ILabelProviderListener listener)
+    {}
+
+    /**
+     * @see ITableLabelProvider#getColumnText(Object, int)
+     */
+    public String getColumnText(Object element, int columnIndex)
+    {
+        String result = element.toString();
+        if (element instanceof FileMatchPattern)
+        {
             FileMatchPattern pattern = (FileMatchPattern)element;
             switch (columnIndex)
             {
-                case 0:
+                case 0 :
                     if (pattern.isIncludePattern())
                     {
                         result = " Include";
@@ -114,23 +112,23 @@ class FileMatchPatternLabelProvider
                         result = " Exclude";
                     }
                     break;
-                
-                case 1:
+
+                case 1 :
                     result = pattern.getMatchPattern();
                     break;
-                
-                default:
+
+                default :
                     break;
             }
-		}
-		return result;
-	}
+        }
+        return result;
+    }
 
-	/**
-	 * @see ITableLabelProvider#getColumnImage(Object, int)
-	 */
-	public Image getColumnImage(Object element, int columnIndex) 
-	{
-		return null;
-	}
+    /**
+     * @see ITableLabelProvider#getColumnImage(Object, int)
+     */
+    public Image getColumnImage(Object element, int columnIndex)
+    {
+        return null;
+    }
 }

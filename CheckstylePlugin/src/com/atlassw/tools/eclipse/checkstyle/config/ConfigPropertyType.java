@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2003  David Schneider
+// Copyright (C) 2002-2004  David Schneider
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -48,24 +48,31 @@ public final class ConfigPropertyType
 	// Public static final variables.
 	//=================================================
     
+    /**  A String.  */
     public static final ConfigPropertyType STRING 
         = new ConfigPropertyType(10, "String");
     
+    /**  An array of strings.  */
     public static final ConfigPropertyType STRING_ARRAY 
         = new ConfigPropertyType(20, "StringArray");
-
+    
+    /**  An integer.  */
     public static final ConfigPropertyType INTEGER
         = new ConfigPropertyType(30, "Integer");
     
+    /**  Select a single items from a list.  */
     public static final ConfigPropertyType SINGLE_SELECT
         = new ConfigPropertyType(40, "SingleSelect");
     
+    /**  Boolean value.  */
     public static final ConfigPropertyType BOOLEAN
         = new ConfigPropertyType(50, "Boolean");
     
+    /**  Select multiple items from a set.  */
     public static final ConfigPropertyType MULTI_CHECK
         = new ConfigPropertyType(60, "MultiCheck");
     
+    /**  A value that is not configured.  */
     public static final ConfigPropertyType HIDDEN
         = new ConfigPropertyType(70, "Hidden");
 
@@ -134,7 +141,7 @@ public final class ConfigPropertyType
      * 
      *  @return  The  label.
      */
-    public final String getLabel()
+    public String getLabel()
     {
         return mLabel;
     }

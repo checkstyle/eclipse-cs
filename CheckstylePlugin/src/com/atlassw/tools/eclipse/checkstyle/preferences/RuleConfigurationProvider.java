@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2003  David Schneider
+// Copyright (C) 2002-2004  David Schneider
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -19,7 +19,6 @@
 //============================================================================
 
 package com.atlassw.tools.eclipse.checkstyle.preferences;
-
 
 //=================================================
 // Imports from java namespace
@@ -40,66 +39,62 @@ import java.util.List;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
-
 /** 
  *  Provides the content for the rule configuration list display.
- */ 
-public class RuleConfigurationProvider implements IStructuredContentProvider 
+ */
+public class RuleConfigurationProvider implements IStructuredContentProvider
 {
     //=================================================
     // Public static final variables.
     //=================================================
-    
-    
+
     //=================================================
     // Static class variables.
     //=================================================
-    
-    
+
     //=================================================
     // Instance member variables.
     //=================================================
-    
-    
+
     //=================================================
     // Constructors & finalizer.
     //=================================================
-    
+
     /**
      * Default constructor.
      */
-    public RuleConfigurationProvider() 
-    {}    
+    public RuleConfigurationProvider()
+    {}
 
     //=================================================
     // Methods.
     //=================================================
 
-	/**
-	 * @see IStructuredContentProvider#getElements
-	 */
-	public Object[] getElements(Object input) 
-	{
-		Object result[] = null;
-		if (input instanceof List)
-		{
+    /**
+     * @see IStructuredContentProvider#getElements
+     */
+    public Object[] getElements(Object input)
+    {
+        Object[] result = null;
+        if (input instanceof List)
+        {
             List ruleConfigs = (List)input;
             result = ruleConfigs.toArray();
-		}
-		
-		return result;
-	}
+        }
 
-	/**
-	 * @see IStructuredContentProvider#inputChanged
-	 */
-	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) 
-	{}
+        return result;
+    }
 
-	/**
-	 * @see IStructuredContentProvider#dispose
-	 */
-	public void dispose() 
-	{}
-	
+    /**
+     * @see IStructuredContentProvider#inputChanged
+     */
+    public void inputChanged(Viewer viewer, Object oldInput, Object newInput)
+    {}
+
+    /**
+     * @see IStructuredContentProvider#dispose
+     */
+    public void dispose()
+    {}
+
 }
