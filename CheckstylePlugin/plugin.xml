@@ -1,34 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
 <plugin
    id="com.atlassw.tools.eclipse.checkstyle"
    name="Checkstyle Plug-in"
-   version="3.5.0"
+   version="4.0.0-alpha"
    provider-name="David Schneider"
    class="com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin">
 
    <runtime>
       <library name="CheckstylePlugin.jar"/>
-      <library name="xercesImpl.jar">
-         <export name="*"/>
-      </library>
       <library name="checkstyle-all-3.5.jar">
          <export name="*"/>
       </library>
       <library name="checkstyle-optional-3.5.jar">
          <export name="*"/>
       </library>
-      <library name="xmlParserAPIs.jar">
-         <export name="*"/>
-      </library>
    </runtime>
    <requires>
       <import plugin="org.eclipse.core.resources"/>
       <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.ui.ide"/>
       <import plugin="org.eclipse.jface.text"/>
       <import plugin="org.eclipse.jdt.core"/>
+      <import plugin="org.eclipse.jdt.ui"/>
    </requires>
 
-
+   <!-- defines the extension point to contribute custom filters to the checkstyle plugin -->
+   <extension-point id="filters" name="Checkstyle filters" schema="schema/filters.exsd"/>
+   
    <extension
          point="org.eclipse.help.toc">
       <toc
@@ -49,7 +48,7 @@
       <page
             objectClass="org.eclipse.core.resources.IProject"
             adaptable="true"
-            name="Checkstyle"
+            name="%CheckstylePropertiesPage.name"
             nameFilter="*"
             class="com.atlassw.tools.eclipse.checkstyle.properties.CheckstylePropertyPage"
             id="com.atlassw.tools.eclipse.checkstyle.properties.samplePropertyPage">
@@ -57,7 +56,7 @@
    </extension>
    <extension
          id="CheckstyleBuilder"
-         name="CheckstyleBuilder"
+         name="%CheckstyleBuilder.name"
          point="org.eclipse.core.resources.builders">
       <builder>
          <run
@@ -67,7 +66,7 @@
    </extension>
    <extension
          id="CheckstyleNature"
-         name="CheckstyleNature"
+         name="%CheckstyleNature.name"
          point="org.eclipse.core.resources.natures">
       <runtime>
          <run
@@ -77,7 +76,7 @@
    </extension>
    <extension
          id="CheckstyleMarker"
-         name="Checkstyle Marker"
+         name="%CheckstyleMarker.name"
          point="org.eclipse.core.resources.markers">
       <super
             type="org.eclipse.core.resources.problemmarker">
@@ -87,4 +86,43 @@
       </persistent>
    </extension>
 
+
+<!-- 
+	Standard checkstyle filters
+	-->
+   <extension
+         id="checkstyle.CheckstyleFilters"
+         point="com.atlassw.tools.eclipse.checkstyle.filters">
+      <filter
+            readonly="true"
+            name="%NonJavaFilesFilter.label"
+            selected="true"
+            description="%NonJavaFilesFilter.description"
+            class="com.atlassw.tools.eclipse.checkstyle.filters.NonJavaFileFilter">
+      </filter>
+      <filter
+            name="%WriteProtectedFilter.label"
+            description="%WriteProtectedFilter.description"
+            class="com.atlassw.tools.eclipse.checkstyle.filters.WriteProtectedFilter">
+      </filter>
+      <filter
+            name="%UnOpenedFilesFilter.label"
+            description="%UnOpenedFilesFilter.description"
+            class="com.atlassw.tools.eclipse.checkstyle.filters.UnOpenedFilesFilter">
+      </filter>      
+      <filter
+            editorClass="com.atlassw.tools.eclipse.checkstyle.filters.PackageFilterEditor2"
+            name="%PackageFilter.label"
+            description="%PackageFilter.description"
+            class="com.atlassw.tools.eclipse.checkstyle.filters.PackageFilter">
+      </filter>
+      <!--
+      <filter
+            editorClass="com.atlassw.tools.eclipse.checkstyle.filters.RegexFilterEditor"
+            name="%RegexFilter.label"
+            description="%RegexFilter.description"
+            class="com.atlassw.tools.eclipse.checkstyle.filters.RegexFilter">
+      </filter>
+      -->
+   </extension>
 </plugin>
