@@ -389,7 +389,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
     private List getClasspathURLs(IJavaProject javaProject, boolean exportedOnly)
         throws JavaModelException, MalformedURLException, CoreException
     {
-        HashSet urls = new HashSet();
+        LinkedList urls = new LinkedList();
 
         IClasspathEntry[] entries = javaProject.getResolvedClasspath(true);
         boolean defaultOutputAdded = false;
@@ -509,8 +509,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
             }
         }
 
-        ArrayList urlList = new ArrayList(urls);
-        return urlList;
+        return urls;
     }
 
     /**
