@@ -26,8 +26,8 @@ public class TestMetadataFactory extends TestCase
    private static final String CHECKSTYLE_CHECKS_PACKAGE = "com.puppycrawl.tools.checkstyle.checks";
    private static final List KNOWN_PROBLEMATIC_CHECKS = Arrays.asList(new String[] {
                 CHECKSTYLE_CHECKS_PACKAGE + ".duplicates.StrictDuplicateCodeCheck",
-                CHECKSTYLE_CHECKS_PACKAGE + ".HeaderCheck",
-                CHECKSTYLE_CHECKS_PACKAGE + ".RegexpHeaderCheck",
+                CHECKSTYLE_CHECKS_PACKAGE + ".header.HeaderCheck",
+                CHECKSTYLE_CHECKS_PACKAGE + ".header.RegexpHeaderCheck",
                 CHECKSTYLE_CHECKS_PACKAGE + ".javadoc.PackageHtmlCheck",
                 CHECKSTYLE_CHECKS_PACKAGE + ".NewlineAtEndOfFileCheck",
                 CHECKSTYLE_CHECKS_PACKAGE + ".TranslationCheck",
