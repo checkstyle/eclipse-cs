@@ -83,6 +83,9 @@ class Auditor
     private IProject mProject;
     
     private FileSet[] mFileSets;
+    
+    //  Indicate that the project has at least one enabled file set.
+    private boolean mHasEnabledFileSet = false;
 
     //=================================================
     // Constructors & finalizer.
@@ -114,6 +117,7 @@ class Auditor
         for (int i = 0; iter.hasNext(); i++)
         {
             mFileSets[i] = (FileSet)iter.next();
+            mHasEnabledFileSet = mHasEnabledFileSet | mFileSets[i].isEnabled();
         }
     }
 
@@ -135,6 +139,19 @@ class Auditor
     	//  Delete any existing project level markers.
     	//
         mProject.deleteMarkers(CheckstyleMarker.MARKER_ID, true, IResource.DEPTH_ZERO);
+        
+        //
+        //  If the project does not have any enabled file sets then return without
+        //  doing anything else.
+        //
+        if (!mHasEnabledFileSet)
+        {
+            //
+            //  Remove any markers that may be present in the file.
+            //
+            mProject.deleteMarkers(CheckstyleMarker.MARKER_ID, true, IResource.DEPTH_INFINITE);
+            return;
+        }
 
 		//
         //  Build a checkstyle checker for each file set that is enabled.
