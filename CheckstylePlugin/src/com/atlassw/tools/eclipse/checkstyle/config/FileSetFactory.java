@@ -103,6 +103,31 @@ public final class FileSetFactory
     }
     
     /**
+     *  Get a list of enabled <code>FileSet</code> objects for the specified project.
+     * 
+     *  @param  project  The project to get <code>FileSet</code>'s for.
+     * 
+     *  @return  A list of enabled <code>FileSet</code> instances.
+     * 
+     *  @throws CheckstylePluginException  Error during processing.
+     */
+    public static List getEnabledFileSets(IProject project) throws CheckstylePluginException
+    {
+        List fileSets = loadFromPersistence(project);
+        List result = new LinkedList();
+        for (Iterator iter = fileSets.iterator(); iter.hasNext();)
+        {
+            FileSet fileSet = (FileSet)iter.next();
+            if (fileSet.isEnabled())
+            {
+                result.add(fileSet);
+            }
+        }
+        
+        return result;
+    }
+    
+    /**
      *  Add a <code>FileSet</code> to a project.
      * 
      *  @param fileSets  The list of <code>FileSet</code> objects to set.

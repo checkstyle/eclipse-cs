@@ -43,6 +43,7 @@ import java.util.Map;
 // Imports from com namespace
 //=================================================
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
+import com.atlassw.tools.eclipse.checkstyle.config.FileSetFactory;
 import com.atlassw.tools.eclipse.checkstyle.nature.CheckstyleNature;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
@@ -74,43 +75,42 @@ import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.widgets.Shell;
 
-
 /**
  *  Project builder for Checkstyle plug-in.
  */
 public class CheckstyleBuilder extends IncrementalProjectBuilder
 {
     //=================================================
-	// Public static final variables.
-	//=================================================
-    
-    /** Eclipse extension point ID for the builder. */
-    public static final String BUILDER_ID 
-        = "com.atlassw.tools.eclipse.checkstyle.CheckstyleBuilder";
+    // Public static final variables.
+    //=================================================
 
-	//=================================================
-	// Static class variables.
-	//=================================================
+    /** Eclipse extension point ID for the builder. */
+    public static final String BUILDER_ID =
+        "com.atlassw.tools.eclipse.checkstyle.CheckstyleBuilder";
+
+    //=================================================
+    // Static class variables.
+    //=================================================
 
     /** Java file suffix. */
     private static final String JAVA_SUFFIX = ".java";
 
-	//=================================================
-	// Instance member variables.
-	//=================================================
-    
-    private boolean mEclipse_2_1_Safe = false;
-    
-    private boolean mEclipseVersionDetermined = false;
-    
-	//=================================================
-	// Constructors & finalizer.
-	//=================================================
+    //=================================================
+    // Instance member variables.
+    //=================================================
 
-	//=================================================
-	// Methods.
-	//=================================================
-    
+    private boolean mEclipse_2_1_Safe = false;
+
+    private boolean mEclipseVersionDetermined = false;
+
+    //=================================================
+    // Constructors & finalizer.
+    //=================================================
+
+    //=================================================
+    // Methods.
+    //=================================================
+
     /**
      *  Runs Checkstyle on the project's Java source.  For incremental builds
      *  only the modified source files are checked.
@@ -125,32 +125,30 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
      * 
      *  @throws CoreException  An error occured during the build.
      */
-    protected IProject[] build(int kind, Map args, IProgressMonitor monitor)
-        throws CoreException 
+    protected IProject[] build(int kind, Map args, IProgressMonitor monitor) throws CoreException
     {
         switch (kind)
         {
             case AUTO_BUILD :
                 doAutoBuild(args, monitor);
                 break;
-            
+
             case FULL_BUILD :
                 doFullBuild(args, monitor);
                 break;
-            
+
             case INCREMENTAL_BUILD :
                 doIncrementalBuild(args, monitor);
                 break;
-            
-            default:
+
+            default :
                 doFullBuild(args, monitor);
                 break;
         }
 
-
         return null;
     }
-    
+
     /**
      *  Initializes data used to run the Checkstyle plug-in.
      * 
@@ -170,136 +168,161 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
      * 
      *  @throws CoreException  An error occured during the build.
      */
-    public void setInitializationData(IConfigurationElement config,
-                                       String propertyName,
-                                       Object data)
+    public void setInitializationData(
+        IConfigurationElement config,
+        String propertyName,
+        Object data)
         throws CoreException
     {
         super.setInitializationData(config, propertyName, data);
     }
-        
-    private void doAutoBuild(Map args, IProgressMonitor monitor)
-        throws CoreException
-    {
-        doBuild(args, monitor);
-    }
-    
-    private void doFullBuild(Map args, IProgressMonitor monitor)
-        throws CoreException
-    {
-        doBuild(args, monitor);
-    }
-    
-    private void doIncrementalBuild(Map args, IProgressMonitor monitor)
-        throws CoreException
-    {
-        doBuild(args, monitor);
-    }
-    
-    private void doBuild(Map args, IProgressMonitor monitor)
-        throws CoreException
-    {
-        IProject project = getProject();
-        if (project != null)
-        {
-            Collection files = null;
-            IResourceDelta resourceDelta = getDelta(project);
-            if (resourceDelta != null)
-            {
-                //
-                //  Get the files that have been modified.
-                //
-                files = getFiles(resourceDelta);
-            }
-            else
-            {
-                //
-                //  Get all the files in the project.
-                //
-                files = getFiles(project);
-            }
-            
-            //
-            //  If there are files to audit then audit them.
-            //
-            if (files.size() > 0)
-            {
-                monitor.beginTask("Checkstyle", files.size());
-                Auditor auditor = null;
-                try
-                {
-                    auditor = new Auditor(getProject());
-                }
-                catch (CheckstylePluginException e)
-                {
-                    String msg = e.getMessage();
-                    CheckstyleLog.error(msg, e);
-                    Status status = new Status(IStatus.ERROR,
-                                       CheckstylePlugin.PLUGIN_ID,
-                                       IStatus.ERROR,
-                                       msg,
-                                       e);
-                    throw new CoreException(status);
-                }
-                
-                //
-                // Build a classloader with which to resolve Exception
-                // classes for JavadocMethodCheck.
-                //
-                ClassLoader classLoader = null;
-                IJavaProject javaProject = (IJavaProject)project.getAdapter(IJavaElement.class);
-                try
-                {
-                    List urls = getClasspathURLs(javaProject, false);
-                    URL[] urlArray = (URL[])urls.toArray(new URL[urls.size()]);
-                    classLoader = new URLClassLoader(urlArray);
-                }
-                catch(CoreException e)
-                {
-                	//
-                    // Unexpected classpath entry type - don't want to ignore.
-                    //
-                    throw e;
-                }
-                catch(Throwable e)
-                {
-                	//
-                    // Eat this exception - not having a classloader will not prevent
-                    // checkstyle from working.
-                    //
-                    CheckstyleLog.error("Unable to create a classloader for the project", e);
-                    classLoader = null;
-                }
 
-                try
-                {
-                    auditor.checkFiles(files, classLoader, monitor);
-                }
-                catch (CheckstylePluginException e)
-                {
-                    String msg = "Error occured while checking file: " + e.getMessage();
-                    CheckstyleLog.error(msg, e);
-                    Status status = new Status(IStatus.ERROR,
-                                       CheckstylePlugin.PLUGIN_ID,
-                                       IStatus.ERROR,
-                                       msg,
-                                       e);
-                    throw new CoreException(status);
-                }
-            }
+    private void doAutoBuild(Map args, IProgressMonitor monitor) throws CoreException
+    {
+        doBuild(args, monitor);
+    }
+
+    private void doFullBuild(Map args, IProgressMonitor monitor) throws CoreException
+    {
+        doBuild(args, monitor);
+    }
+
+    private void doIncrementalBuild(Map args, IProgressMonitor monitor) throws CoreException
+    {
+        doBuild(args, monitor);
+    }
+    private void doBuild(Map args, IProgressMonitor monitor) throws CoreException
+    {
+        CheckstyleLog.info("=========  Starting a Checkstyle build  =============");
+
+        IProject project = getProject();
+        if (project == null)
+        {
+            CheckstyleLog.warning("project is null");
+            return;
+        }
+
+        //
+        //  Get the list of enabled file sets for the project.
+        //
+        List fileSets = null;
+        try
+        {
+            fileSets = FileSetFactory.getEnabledFileSets(project);
+        }
+        catch (CheckstylePluginException e)
+        {
+            String msg = e.getMessage();
+            CheckstyleLog.error(msg, e);
+            Status status =
+                new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR, msg, e);
+            throw new CoreException(status);
+        }
+
+        //
+        //  If there are no enabled file sets then remove any Checkstyle markers on the
+        //  project and return.
+        //
+        if (fileSets.size() <= 0)
+        {
+            //
+            //  Remove any markers that may be present in the project.
+            //
+            project.deleteMarkers(CheckstyleMarker.MARKER_ID, true, IResource.DEPTH_INFINITE);
+            return;
+        }
+
+        //
+        //  Get the collection of files that need to be audited.
+        //
+        Collection files = null;
+        IResourceDelta resourceDelta = getDelta(project);
+        CheckstyleLog.info("Getting files that need to be audited");
+        if (resourceDelta != null)
+        {
+            //
+            //  Get the files that have been modified.
+            //
+            files = getFiles(resourceDelta);
         }
         else
         {
-            CheckstyleLog.warning("project is null");
+            //
+            //  Get all the files in the project.
+            //
+            files = getFiles(project);
         }
-    }
-    
-    private Collection getFiles(IResourceDelta delta)
-        throws CoreException
-    {
-        ArrayList files   = new ArrayList(0);
-        ArrayList folders = new ArrayList(0);
+        CheckstyleLog.info("Found " + files.size() + " files that need to be audited");
+
+        //
+        //  If there are no files to audit then return.
+        //
+        if (files.size() <= 0)
+        {
+            return;
+        }
+
+        //
+        //  Build a classloader with which to resolve Exception
+        //  classes for JavadocMethodCheck.
+        //
+        CheckstyleLog.info("Building checkstyle classloader");
+        ClassLoader classLoader = null;
+        IJavaProject javaProject = (IJavaProject)project.getAdapter(IJavaElement.class);
+        try
+        {
+            List urls = getClasspathURLs(javaProject, false);
+            URL[] urlArray = (URL[])urls.toArray(new URL[urls.size()]);
+            classLoader = new URLClassLoader(urlArray);
+        }
+        catch (CoreException e)
+        {
+            //
+            // Unexpected classpath entry type - don't want to ignore.
+            //
+            throw e;
+        }
+        catch (Throwable e)
+        {
+            //
+            // Eat this exception - not having a classloader will not prevent
+            // checkstyle from working.
+            //
+            CheckstyleLog.error("Unable to create a classloader for the project", e);
+            classLoader = null;
+        }
+        CheckstyleLog.info("Done building checkstyle classloader");
+
         
+        //
+        //  Audit the files that need to be audited.
+        //
+        monitor.beginTask("Checkstyle", files.size());
+        CheckstyleLog.info("Creating Checkstyle auditor");
+        Auditor auditor = new Auditor(getProject(), fileSets);
+        CheckstyleLog.info("Auditor creation complete");
+        try
+        {
+            CheckstyleLog.info("Auditing source files");
+            auditor.checkFiles(files, classLoader, monitor);
+            CheckstyleLog.info("Audit of source files complete");
+        }
+        catch (CheckstylePluginException e)
+        {
+            String msg = "Error occured while checking file: " + e.getMessage();
+            CheckstyleLog.error(msg, e);
+            Status status =
+                new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR, msg, e);
+            throw new CoreException(status);
+        }
+
+        CheckstyleLog.info("=========  Checkstyle build complete  =============");
+    }
+    private Collection getFiles(IResourceDelta delta) throws CoreException
+    {
+        ArrayList files = new ArrayList(0);
+        ArrayList folders = new ArrayList(0);
+
         IResourceDelta[] affectedChildren = delta.getAffectedChildren();
         for (int i = 0; i < affectedChildren.length; i++)
         {
@@ -309,8 +332,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
             if (childType == IResource.FILE)
             {
                 int deltaKind = childDelta.getKind();
-                if ((deltaKind == IResourceDelta.ADDED) ||
-                    (deltaKind == IResourceDelta.CHANGED))
+                if ((deltaKind == IResourceDelta.ADDED) || (deltaKind == IResourceDelta.CHANGED))
                 {
                     if (child.getName().endsWith(JAVA_SUFFIX))
                     {
@@ -323,7 +345,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
                 folders.add(childDelta);
             }
         }
-        
+
         //
         //  Get the files from the sub-folders.
         //
@@ -332,16 +354,15 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
         {
             files.addAll(getFiles((IResourceDelta)iter.next()));
         }
-        
+
         return files;
     }
-    
-    private Collection getFiles(IContainer container)
-        throws CoreException
+
+    private Collection getFiles(IContainer container) throws CoreException
     {
-        ArrayList files   = new ArrayList(0);
+        ArrayList files = new ArrayList(0);
         ArrayList folders = new ArrayList(0);
-        
+
         IResource[] children = container.members();
         for (int i = 0; i < children.length; i++)
         {
@@ -359,7 +380,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
                 folders.add(child);
             }
         }
-        
+
         //
         //  Get the files from the sub-folders.
         //
@@ -368,7 +389,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
         {
             files.addAll(getFiles((IContainer)iter.next()));
         }
-        
+
         return files;
     }
 
@@ -376,123 +397,151 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
      * @author Daniel Berg jdt-dev@eclipse.org.
      * @param javaProject
      * @return
-     */    
+     */
     private List getClasspathURLs(IJavaProject javaProject, boolean exportedOnly)
-        throws JavaModelException, MalformedURLException, CoreException 
+        throws JavaModelException, MalformedURLException, CoreException
     {
-    	HashSet urls = new HashSet();
-    	
+        HashSet urls = new HashSet();
+
         IClasspathEntry[] entries = javaProject.getResolvedClasspath(true);
         boolean defaultOutputAdded = false;
-        
-        for (int i = 0; i < entries.length; i++) 
+
+        for (int i = 0; i < entries.length; i++)
         {
             //
             //  Source entries are apparently always assumed to be exported - but don't
             //  report themselves as such.
             //
-            if (!exportedOnly || entries[i].isExported() || 
-                entries[i].getEntryKind() == IClasspathEntry.CPE_SOURCE)
+            if (!exportedOnly
+                || entries[i].isExported()
+                || entries[i].getEntryKind() == IClasspathEntry.CPE_SOURCE)
             {
-                switch (entries[i].getEntryKind()) 
+                switch (entries[i].getEntryKind())
                 {
-                    case IClasspathEntry.CPE_SOURCE:
-                    {
-                        IPath outputLocation = null;
-                        
-                        if (isEclipse_2_1_Safe())
+                    case IClasspathEntry.CPE_SOURCE :
                         {
-                            outputLocation = entries[i].getOutputLocation();
-                        }
-                        if (outputLocation == null)
-                        {
-                            //
-                            //  If the output location is null then the project's
-                            //  default output location is being used.
-                            //
-                            if (!defaultOutputAdded)
+                            IPath outputLocation = null;
+
+                            if (isEclipse_2_1_Safe())
                             {
-                                defaultOutputAdded = true;
-                                outputLocation = javaProject.getOutputLocation();
+                                outputLocation = entries[i].getOutputLocation();
                             }
-                        }
-                        
-                        if (outputLocation != null)
-                        {
-                            //
-                            //  When the output location is the project itself, the project
-                            //  can't resolve the file - therefore just get the project's
-                            //  location. 
-                            //
-                            if (outputLocation.segmentCount() == 1)
-                            {
-                                outputLocation = javaProject.getProject().getLocation();
-                            }
-                            else
+                            if (outputLocation == null)
                             {
                                 //
-                                //  Output locations are always workspace relative. Do this mess
-                                //  to get a fully qualified location.
+                                //  If the output location is null then the project's
+                                //  default output location is being used.
                                 //
-                                outputLocation =
-                                    javaProject.getProject().getParent().getFile(outputLocation).
-                                        getLocation();
+                                if (!defaultOutputAdded)
+                                {
+                                    defaultOutputAdded = true;
+                                    outputLocation = javaProject.getOutputLocation();
+                                }
                             }
 
-                            urls.add(outputLocation.addTrailingSeparator().toFile().toURL());
+                            if (outputLocation != null)
+                            {
+                                //
+                                //  When the output location is the project itself, the project
+                                //  can't resolve the file - therefore just get the project's
+                                //  location. 
+                                //
+                                if (outputLocation.segmentCount() == 1)
+                                {
+                                    outputLocation = javaProject.getProject().getLocation();
+                                }
+                                else
+                                {
+                                    //
+                                    //  Output locations are always workspace relative. Do this mess
+                                    //  to get a fully qualified location.
+                                    //
+                                    outputLocation =
+                                        javaProject
+                                            .getProject()
+                                            .getParent()
+                                            .getFile(outputLocation)
+                                            .getLocation();
+                                }
+
+                                urls.add(outputLocation.addTrailingSeparator().toFile().toURL());
+                            }
+
+                            break;
                         }
-    
-                        break;
-                    }
-                    case IClasspathEntry.CPE_LIBRARY:
-                    {
-                        //
-                        //  External jars have fully specified paths, but we've no easy way to tell 
-                        //  them apart from project relative paths. So assume it's relative, and try
-                        //  and get a path.
-                        //
-                        IContainer parent = javaProject.getProject().getParent();
-                        IPath libPath = parent.getFile(entries[i].getPath()).getLocation();
-                        if (libPath == null)
+                    case IClasspathEntry.CPE_LIBRARY :
                         {
                             //
-                            //  It must be fully specified.
+                            //  External jars have fully specified paths, but we've no easy way to tell 
+                            //  them apart from project relative paths. So assume it's relative, and try
+                            //  and get a path.
                             //
-                            libPath = entries[i].getPath();
-                        }
-                        urls.add(new URL("file:/" + libPath.toOSString()));
+                            IContainer parent = javaProject.getProject().getParent();
+                            IPath libPath = parent.getFile(entries[i].getPath()).getLocation();
+                            if (libPath == null)
+                            {
+                                //
+                                //  It must be fully specified.
+                                //
+                                libPath = entries[i].getPath();
+                            }
+                            urls.add(new URL("file:/" + libPath.toOSString()));
 
-                        break;
-                    }
-                    case IClasspathEntry.CPE_PROJECT: 
-                    {
-                        IJavaProject dependentProject = 
-                            (IJavaProject)(ResourcesPlugin.getWorkspace().getRoot().
-                                    getProject(entries[i].getPath().segment(0))).
-                                    getAdapter(IJavaElement.class);
-        
-                        urls.addAll(getClasspathURLs(dependentProject, true));
-                        
-                        break;
-                    }
+                            break;
+                        }
+                    case IClasspathEntry.CPE_PROJECT :
+                        {
+                            IJavaProject dependentProject =
+                                (IJavaProject)
+                                    (
+                                        ResourcesPlugin.getWorkspace().getRoot().getProject(
+                                            entries[i].getPath().segment(0))).getAdapter(
+                                    IJavaElement.class);
+
+                            urls.addAll(getClasspathURLs(dependentProject, true));
+
+                            break;
+                        }
                     default :
-                    {
-                        String msg = "Encountered unexpected classpath entry : " + 
-                                     entries[i].getEntryKind();
-                        CheckstyleLog.error(msg);
-                        Status status = new Status(IStatus.ERROR,
-                                                   CheckstylePlugin.PLUGIN_ID,
-                                                   IStatus.ERROR,
-                                                   msg, null);
-                        throw new CoreException(status);
-                    }
+                        {
+                            String msg =
+                                "Encountered unexpected classpath entry : "
+                                    + entries[i].getEntryKind();
+                            CheckstyleLog.error(msg);
+                            Status status =
+                                new Status(
+                                    IStatus.ERROR,
+                                    CheckstylePlugin.PLUGIN_ID,
+                                    IStatus.ERROR,
+                                    msg,
+                                    null);
+                            throw new CoreException(status);
+                        }
                 }
             }
         }
-        
-        return new ArrayList(urls);
+
+        ArrayList urlList = new ArrayList(urls);
+
+        //  TODO: comment out
+        //printUrls(urlList);
+
+        return urlList;
     }
 
+    /**
+     *  Handy debug method that prints out the classpath entries.
+     * 
+     *  @param  urls  List of classpath URLs.
+     */
+    private void printUrls(List urls)
+    {
+        for (Iterator iter = urls.iterator(); iter.hasNext();)
+        {
+            URL url = (URL)iter.next();
+            System.out.println(url.toString());
+        }
+    }
     /**
      *  Runs the Checkstyle builder on a project.
      * 
@@ -508,7 +557,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
         projects[0] = project;
         buildProjects(projects, shell);
     }
-    
+
     /**
      *  Run the Checkstyle builder on all open projects in the workspace.
      * 
@@ -522,7 +571,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
         IProject[] projects = workspace.getRoot().getProjects();
         buildProjects(projects, shell);
     }
-    
+
     /**
      *  Run Checkstyle on the specified projects.
      */
@@ -533,7 +582,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
         for (int i = 0; i < projects.length; i++)
         {
             IProject project = projects[i];
-            
+
             //
             //  Make sure the project is open.
             //
@@ -561,7 +610,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
                 }
             }
         }
-        
+
         //
         //  Run the build runnable to check all of the projects.
         //
@@ -582,8 +631,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
             CheckstyleLog.error(msg, e);
             throw new CheckstylePluginException(msg);
         }
-    } 
-
+    }
 
     /**
      *  Rebuilds projects.
@@ -591,12 +639,12 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
     private static class BuildRunnable implements IRunnableWithProgress
     {
         private List mProjects = new LinkedList();
-        
+
         void addProject(IProject project)
         {
             mProjects.add(project);
         }
-        
+
         public void run(IProgressMonitor monitor)
             throws InvocationTargetException, InterruptedException
         {
@@ -604,22 +652,23 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
             while (iter.hasNext())
             {
                 IProject project = (IProject)iter.next();
-                
+
                 try
                 {
-                    project.build(IncrementalProjectBuilder.FULL_BUILD,
-                                  CheckstyleBuilder.BUILDER_ID, 
-                                  null,
-                                  monitor);
+                    project.build(
+                        IncrementalProjectBuilder.FULL_BUILD,
+                        CheckstyleBuilder.BUILDER_ID,
+                        null,
+                        monitor);
                 }
                 catch (CoreException e)
                 {
                     throw new InvocationTargetException(e);
                 }
             }
-        }          
+        }
     }
-    
+
     /**
      *  Determine if running eclipse 2.1 or newer.
      *
@@ -638,13 +687,12 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
             {
                 PluginVersionIdentifier version =
                     jdtCorePlugin.getDescriptor().getVersionIdentifier();
-                mEclipse_2_1_Safe = 
-                    version.isGreaterOrEqualTo(new PluginVersionIdentifier("2.1"));
+                mEclipse_2_1_Safe = version.isGreaterOrEqualTo(new PluginVersionIdentifier("2.1"));
             }
             mEclipseVersionDetermined = true;
             //CheckstyleLog.info("Eclipse 2.1 Safe = " + mEclipse_2_1_Safe);
         }
-        
+
         return mEclipse_2_1_Safe;
     }
 }

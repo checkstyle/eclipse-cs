@@ -83,9 +83,6 @@ class Auditor
     private IProject mProject;
     
     private FileSet[] mFileSets;
-    
-    //  Indicate that the project has at least one enabled file set.
-    private boolean mHasEnabledFileSet = false;
 
     //=================================================
     // Constructors & finalizer.
@@ -96,31 +93,18 @@ class Auditor
      *
      *  @param  project   The project the auditor is associated with.
      * 
-     *  @throws CheckstyleException  Error during processing.
+     *  @param  fileSets  The list of file sets to use in the audit.
      */
-    Auditor(IProject project) throws CheckstylePluginException
+    Auditor(IProject project, List fileSets)
     {
         mProject = project;
-        loadFileSets();
+        mFileSets = (FileSet[]) fileSets.toArray(new FileSet[fileSets.size()]);
     }
 
     //=================================================
     // Methods.
     //=================================================
     
-    private void loadFileSets() throws CheckstylePluginException
-    {
-        List fileSets = FileSetFactory.getFileSets(mProject);
-        mFileSets = new FileSet[fileSets.size()];
-
-        Iterator iter = fileSets.iterator();
-        for (int i = 0; iter.hasNext(); i++)
-        {
-            mFileSets[i] = (FileSet)iter.next();
-            mHasEnabledFileSet = mHasEnabledFileSet | mFileSets[i].isEnabled();
-        }
-    }
-
     /**
      *  Check a collection of files.
      *
@@ -144,55 +128,55 @@ class Auditor
         //  If the project does not have any enabled file sets then return without
         //  doing anything else.
         //
-        if (!mHasEnabledFileSet)
+        if (mFileSets.length <= 0)
         {
             //
-            //  Remove any markers that may be present in the file.
+            //  Remove any markers that may be present in the project.
             //
             mProject.deleteMarkers(CheckstyleMarker.MARKER_ID, true, IResource.DEPTH_INFINITE);
             return;
         }
-
-		//
-        //  Build a checkstyle checker for each file set that is enabled.
+        
         //
-        Checker[] checker = new Checker[mFileSets.length];
+        //  Build an audit listener to receive audit violations from Checkstyle.
+        //
         CheckstyleAuditListener auditListener = new CheckstyleAuditListener();
         Preferences prefs = CheckstylePlugin.getDefault().getPluginPreferences();
         boolean includeRuleNames = prefs.getBoolean(CheckstylePlugin.PREF_INCLUDE_RULE_NAMES);
         auditListener.setAddRuleName(includeRuleNames);
 
+        //
+        //  Build a checkstyle checker for each file set.
+        //
+        Checker[] checker = new Checker[mFileSets.length];
         for (int i = 0; i < checker.length; i++)
         {
-            if (mFileSets[i].isEnabled())
+            try
             {
-                try
+                checker[i] = new Checker();
+                checker[i].addListener(auditListener);
+                CheckConfiguration checkConfig = mFileSets[i].getCheckConfig();
+                if (checkConfig == null)
                 {
-                    checker[i] = new Checker();
-                    checker[i].addListener(auditListener);
-                    CheckConfiguration checkConfig = mFileSets[i].getCheckConfig();
-                    if (checkConfig == null)
-                    {
-                        String msg =
-                            "Checkstyle CheckConfig '"
-                                + mFileSets[i].getCheckConfigName()
-                                + "' not found";
+                    String msg =
+                        "Checkstyle CheckConfig '"
+                            + mFileSets[i].getCheckConfigName()
+                            + "' not found";
 
-                        IMarker marker = mProject.createMarker(CheckstyleMarker.MARKER_ID);
-                        marker.setAttribute(IMarker.MESSAGE, msg);
-                        marker.setAttribute(IMarker.PRIORITY, IMarker.PRIORITY_NORMAL);
-                        marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
+                    IMarker marker = mProject.createMarker(CheckstyleMarker.MARKER_ID);
+                    marker.setAttribute(IMarker.MESSAGE, msg);
+                    marker.setAttribute(IMarker.PRIORITY, IMarker.PRIORITY_NORMAL);
+                    marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
 
-                        continue;
-                    }
-                    checker[i].setClassloader(classLoader);
-                    checker[i].configure(checkConfig);
+                    continue;
                 }
-                catch (com.puppycrawl.tools.checkstyle.api.CheckstyleException e)
-                {
-                    CheckstyleLog.error("Failed to create Checkstyle Checker", e);
-                    throw new CheckstylePluginException("Failed to create Checkstyle Checker");
-                }
+                checker[i].setClassloader(classLoader);
+                checker[i].configure(checkConfig);
+            }
+            catch (com.puppycrawl.tools.checkstyle.api.CheckstyleException e)
+            {
+                CheckstyleLog.error("Failed to create Checkstyle Checker", e);
+                throw new CheckstylePluginException("Failed to create Checkstyle Checker");
             }
         }
 
@@ -202,16 +186,21 @@ class Auditor
         int currentCount = 0;
         File[] checkFile = new File[1];
         Iterator iter = files.iterator();
-
         while (iter.hasNext())
         {
             IFile file = (IFile)iter.next();
-
+            
+            //
+            //  Remove any markers on the file.
+            //
             file.deleteMarkers(CheckstyleMarker.MARKER_ID, true, IResource.DEPTH_INFINITE);
-
+            
+            //
+            //  Run through the file sets.
+            //
             for (int i = 0; i < mFileSets.length; i++)
             {
-                if (mFileSets[i].isEnabled() && mFileSets[i].includesFile(file))
+                if (mFileSets[i].includesFile(file))
                 {
                     String fileName = file.getLocation().toOSString();
                     checkFile[0] = new File(fileName);
@@ -219,23 +208,29 @@ class Auditor
                     checker[i].process(checkFile);
                 }
             }
-
             ++currentCount;
-
+            
+            //
+            //  Update the progress monitor.
+            //
             if ((monitor != null) && ((currentCount % MONITOR_INTERVAL) == 0))
             {
                 monitor.worked(MONITOR_INTERVAL);
-
+                
+                //
+                //  Build a label for the progress monitor.
+                //
                 IPath path = file.getFullPath();
                 int segCount = path.segmentCount();
-
                 path = path.uptoSegment(segCount - 1);
-
                 String label = path.toString();
-
                 label = label.substring(1, label.length());
                 monitor.subTask("Checking " + label);
-
+                
+                //
+                //  Check to see if the user has cancled the built.  If so, break out
+                //  of the loop.
+                //
                 if (monitor.isCanceled())
                 {
                     break;
