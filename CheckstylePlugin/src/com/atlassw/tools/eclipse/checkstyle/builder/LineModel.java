@@ -42,17 +42,17 @@ public final class LineModel
     //
 
     /** Constant for the a carriage return character. */
-    private static final char carriageReturn = '\r';
+    private static final char CARRIAGE_RETURN = '\r';
 
     /** Constant for the linefeed character. */
-    private static final char lineFeed       = '\n';
+    private static final char LINE_FEED       = '\n';
 
     //
     // attributes
     //
 
     /** List containing the lines of this line model. */
-    private List              mLines         = new ArrayList();
+    private List              mLines          = new ArrayList();
 
     //
     // constructors
@@ -72,7 +72,7 @@ public final class LineModel
         String line = null;
 
         BufferedReader reader = new BufferedReader(new FileReader(aFile));
-        reader.mark(512); //should be sufficient to read the first line
+        reader.mark(2048); //should be sufficient to read the first line
 
         //find out if the file uses dos linebreaks (\r\n)
         boolean isDOSFileFormat = isDOSFile(reader);
@@ -154,16 +154,16 @@ public final class LineModel
 
         while (reader.read(character) != -1)
         {
-            if (character[0] == carriageReturn)
+            if (character[0] == CARRIAGE_RETURN)
             {
                 lastCharWasCarriageReturn = true;
             }
-            else if (character[0] == lineFeed && lastCharWasCarriageReturn)
+            else if (character[0] == LINE_FEED && lastCharWasCarriageReturn)
             {
                 dosFormat = true;
                 break;
             }
-            else if (character[0] == lineFeed && !lastCharWasCarriageReturn)
+            else if (character[0] == LINE_FEED && !lastCharWasCarriageReturn)
             {
                 break;
             }
@@ -188,10 +188,10 @@ public final class LineModel
         // attributes
         //
 
-        /** the start offset of the line */
+        /** the start offset of the line. */
         public final int mStartOffset;
 
-        /** the end offset of the line */
+        /** the end offset of the line. */
         public final int mEndOffset;
 
         //

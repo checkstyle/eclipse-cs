@@ -18,7 +18,6 @@
 //
 //============================================================================
 
-
 package com.atlassw.tools.eclipse.checkstyle.builder;
 
 import org.eclipse.core.resources.IProject;
@@ -42,10 +41,10 @@ public class BuildProjectJob extends Job
     // attributes
     //
 
-    /** the project to build */
+    /** the project to build. */
     private IProject[] mProjects;
 
-    /** the build kind */
+    /** the build kind. */
     private int        mKind;
 
     //

@@ -47,7 +47,6 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.puppycrawl.tools.checkstyle.Checker;
 import com.puppycrawl.tools.checkstyle.api.AuditEvent;
 import com.puppycrawl.tools.checkstyle.api.AuditListener;
-import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
 
 /**
@@ -102,7 +101,7 @@ class Auditor
      * 
      * @param monitor Progress monitor to update with progress.
      * 
-     * @throws CheckstyleException Error during processing.
+     * @throws CheckstylePluginException Error during processing.
      * 
      * @throws CoreException Error during processing.
      */

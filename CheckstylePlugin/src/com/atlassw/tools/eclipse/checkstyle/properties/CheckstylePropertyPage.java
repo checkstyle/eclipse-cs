@@ -31,7 +31,6 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.ColumnWeightData;
@@ -110,7 +109,7 @@ public class CheckstylePropertyPage extends PropertyPage
     //=================================================
 
     /**
-     * @see PreferencePage#createContents(Composite)
+     * @see org.eclipse.jface.preference.PreferencePage#createContents(Composite)
      */
     protected Control createContents(Composite parent)
     {

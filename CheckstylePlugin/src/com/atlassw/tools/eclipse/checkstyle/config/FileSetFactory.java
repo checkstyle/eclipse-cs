@@ -54,62 +54,62 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-
 /**
- *  Used to manage the life cycle of FileSet objects.
+ * Used to manage the life cycle of FileSet objects.
  */
 public final class FileSetFactory
 {
     //=================================================
-	// Public static final variables.
-	//=================================================
+    // Public static final variables.
+    //=================================================
 
-	//=================================================
-	// Static class variables.
-	//=================================================
-    
-    private static final String FILESET_FILE = ".checkstyle";
-    
+    //=================================================
+    // Static class variables.
+    //=================================================
+
+    private static final String FILESET_FILE                = ".checkstyle";
+
     private static final String CURRENT_FILE_FORMAT_VERSION = "1.0.0";
 
-	//=================================================
-	// Instance member variables.
-	//=================================================
+    //=================================================
+    // Instance member variables.
+    //=================================================
 
-	//=================================================
-	// Constructors & finalizer.
-	//=================================================
-    
+    //=================================================
+    // Constructors & finalizer.
+    //=================================================
+
     private FileSetFactory()
     {}
 
-	//=================================================
-	// Methods.
-	//=================================================
-    
+    //=================================================
+    // Methods.
+    //=================================================
+
     /**
-     *  Get a list of <code>FileSet</code> objects for the specified project.
+     * Get a list of <code>FileSet</code> objects for the specified project.
      * 
-     *  @param  project  The project to get <code>FileSet</code>'s for.
+     * @param project The project to get <code>FileSet</code>'s for.
      * 
-     *  @return  A list of <code>FileSet</code> instances.
+     * @return A list of <code>FileSet</code> instances.
      * 
-     *  @throws CheckstylePluginException  Error during processing.
+     * @throws CheckstylePluginException Error during processing.
      */
     public static List getFileSets(IProject project) throws CheckstylePluginException
     {
         List result = loadFromPersistence(project);
         return result;
     }
-    
+
     /**
-     *  Get a list of enabled <code>FileSet</code> objects for the specified project.
+     * Get a list of enabled <code>FileSet</code> objects for the specified
+     * project.
      * 
-     *  @param  project  The project to get <code>FileSet</code>'s for.
+     * @param project The project to get <code>FileSet</code>'s for.
      * 
-     *  @return  A list of enabled <code>FileSet</code> instances.
+     * @return A list of enabled <code>FileSet</code> instances.
      * 
-     *  @throws CheckstylePluginException  Error during processing.
+     * @throws CheckstylePluginException Error during processing.
      */
     public static List getEnabledFileSets(IProject project) throws CheckstylePluginException
     {
@@ -117,38 +117,38 @@ public final class FileSetFactory
         List result = new LinkedList();
         for (Iterator iter = fileSets.iterator(); iter.hasNext();)
         {
-            FileSet fileSet = (FileSet)iter.next();
+            FileSet fileSet = (FileSet) iter.next();
             if (fileSet.isEnabled())
             {
                 result.add(fileSet);
             }
         }
-        
+
         return result;
     }
-    
+
     /**
-     *  Add a <code>FileSet</code> to a project.
+     * Add a <code>FileSet</code> to a project.
      * 
-     *  @param fileSets  The list of <code>FileSet</code> objects to set.
+     * @param fileSets The list of <code>FileSet</code> objects to set.
      * 
-     *  @param project  The project to add it too.
+     * @param project The project to add it too.
      * 
-     *  @throws CheckstylePluginException  Error during processing.
+     * @throws CheckstylePluginException Error during processing.
      */
     public static void setFileSets(List fileSets, IProject project)
-        throws CheckstylePluginException
+            throws CheckstylePluginException
     {
         storeToPersistence(fileSets, project);
     }
-    
+
     /**
-     *  Load the audit configurations from the persistent state storage.
+     * Load the audit configurations from the persistent state storage.
      */
     private static List loadFromPersistence(IProject project) throws CheckstylePluginException
     {
         List fileSets = new LinkedList();
-                
+
         //
         //  Make sure the files exists, it might not.
         //
@@ -158,7 +158,7 @@ public final class FileSetFactory
         {
             return fileSets;
         }
-        
+
         InputStream inStream = null;
         try
         {
@@ -207,19 +207,21 @@ public final class FileSetFactory
                 }
                 catch (Exception e)
                 {
-                	//  Nothing can be done about it.
+                    //  Nothing can be done about it.
                 }
             }
         }
-        
+
         return fileSets;
     }
-    
+
     /**
-     *  Store the audit configurations to the persistent state storage.
+     * Store the audit configurations to the persistent state storage.
+     * 
+     * @throws CheckstylePluginException error while storing the file sets
      */
     private static void storeToPersistence(List fileSets, IProject project)
-        throws CheckstylePluginException
+            throws CheckstylePluginException
     {
         try
         {
@@ -227,15 +229,15 @@ public final class FileSetFactory
             Element root = doc.createElement(XMLTags.FILESET_CONFIG_TAG);
             doc.appendChild(root);
             root.setAttribute(XMLTags.FORMAT_VERSION_TAG, CURRENT_FILE_FORMAT_VERSION);
-            
+
             Iterator iter = fileSets.iterator();
             while (iter.hasNext())
             {
-                FileSet fileSet = (FileSet)iter.next();
+                FileSet fileSet = (FileSet) iter.next();
                 Node node = fileSet.toDOMNode(doc);
                 root.appendChild(node);
             }
-            
+
             String xml = XMLUtil.serializeDocument(doc, true);
 
             IFile file = project.getFile(FILESET_FILE);
@@ -255,8 +257,7 @@ public final class FileSetFactory
             }
             catch (CoreException e)
             {
-                String message = "Failed to write FileSet file: "
-                                 + e.getMessage();
+                String message = "Failed to write FileSet file: " + e.getMessage();
                 CheckstyleLog.warning(message, e);
                 throw new CheckstylePluginException(message);
             }
@@ -267,41 +268,38 @@ public final class FileSetFactory
         }
         catch (Exception e)
         {
-            String message = "Failed to write audit configuration file: "
-                             + e.getMessage();
+            String message = "Failed to write audit configuration file: " + e.getMessage();
             CheckstyleLog.warning(message, e);
             throw new CheckstylePluginException(message);
         }
     }
-    
+
     /**
-     *  Checks to see if the file format version is out of date.  If it is
-     *  then the DOM is updated to the new format and the new root node if
-     *  returned.
+     * Checks to see if the file format version is out of date. If it is then
+     * the DOM is updated to the new format and the new root node if returned.
      */
     private static Node checkFileFormatVersion(Document doc)
     {
         return doc.getDocumentElement();
     }
-    
+
     /**
-     *  Check to see if a check configuration is currently in use
-     *  by any projects.
+     * Check to see if a check configuration is currently in use by any
+     * projects.
      * 
-     *  @param configName  The configuration name to check for.
+     * @param configName The configuration name to check for.
      * 
-     *  @return  <code>true</code> = in use, <code>false</code> = not in use.
+     * @return <code>true</code>= in use, <code>false</code>= not in use.
      * 
-     *  @throws CheckstylePluginException  Error during processing.
+     * @throws CheckstylePluginException Error during processing.
      */
-    public static boolean isCheckConfigInUse(String configName)
-        throws CheckstylePluginException
+    public static boolean isCheckConfigInUse(String configName) throws CheckstylePluginException
     {
         boolean result = false;
-        
+
         if (configName == null)
         {
-        	return result;
+            return result;
         }
 
         IWorkspace workspace = ResourcesPlugin.getWorkspace();
@@ -312,7 +310,7 @@ public final class FileSetFactory
             Iterator iter = fileSets.iterator();
             while (iter.hasNext())
             {
-                FileSet fileSet = (FileSet)iter.next();
+                FileSet fileSet = (FileSet) iter.next();
                 if (configName.equals(fileSet.getCheckConfigName()))
                 {
                     result = true;
@@ -320,7 +318,7 @@ public final class FileSetFactory
                 }
             }
         }
-        
+
         return result;
     }
 }

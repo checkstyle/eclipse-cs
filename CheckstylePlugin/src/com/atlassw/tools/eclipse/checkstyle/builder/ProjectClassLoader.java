@@ -61,16 +61,16 @@ public class ProjectClassLoader extends ClassLoader
     // attributes
     //
 
-    /** the classloader delegate */
+    /** the classloader delegate. */
     private ClassLoader             mDelegateClassLoader;
 
-    /** the parent classloader */
+    /** the parent classloader. */
     private ClassLoader             mParentClassLoader;
 
-    /** the URLStreamHandlerFactory to provide support for non standard protocols */
+    /** the URLStreamHandlerFactory to provide support for non standard protocols. */
     private URLStreamHandlerFactory mStreamHandlerFactory;
 
-    /** the last project the classloader was configured for */
+    /** the last project the classloader was configured for. */
     private IProject                mRecentProject;
 
     //
@@ -172,7 +172,7 @@ public class ProjectClassLoader extends ClassLoader
     }
 
     /**
-     * Gets the complete classpath for a given project
+     * Gets the complete classpath for a given project.
      * 
      * @param project the project
      * @return the classpath
@@ -192,7 +192,7 @@ public class ProjectClassLoader extends ClassLoader
     }
 
     /**
-     * Adds the contents of a project to list of URLs
+     * Adds the contents of a project to list of URLs.
      * 
      * @param project the project
      * @param cpURLs the resulting list
@@ -259,7 +259,7 @@ public class ProjectClassLoader extends ClassLoader
     }
 
     /**
-     * Helper method to handle a source path
+     * Helper method to handle a source path.
      * 
      * @param project the original project
      * @param cpURLs the list that is to contain the projects classpath
@@ -309,7 +309,7 @@ public class ProjectClassLoader extends ClassLoader
     }
 
     /**
-     * Helper method to handle a referenced project for the classpath
+     * Helper method to handle a referenced project for the classpath.
      * 
      * @param cpURLs the list that is to contain the projects classpath
      * @param entry the actually processed classpath entry
@@ -329,7 +329,7 @@ public class ProjectClassLoader extends ClassLoader
     }
 
     /**
-     * Helper method to handle a library for the classpath
+     * Helper method to handle a library for the classpath.
      * 
      * @param project the original project
      * @param cpURLs the list that is to contain the projects classpath
@@ -361,7 +361,7 @@ public class ProjectClassLoader extends ClassLoader
     }
 
     /**
-     * Helper method to handle an absolute path for the classpath
+     * Helper method to handle an absolute path for the classpath.
      * 
      * @param absolutePath the absolute path
      * @param cpURLs the list that is to contain the projects classpath

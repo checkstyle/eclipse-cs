@@ -37,7 +37,6 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 
-
 /**
  * The main plugin class to be used in the desktop.
  */
@@ -48,39 +47,37 @@ public class CheckstylePlugin extends AbstractUIPlugin
     //=================================================
 
     /** Identifier of the plug-in. */
-    public static final String PLUGIN_ID = "com.atlassw.tools.eclipse.checkstyle";
-    
-    /** Preference name indicating if rule names are to be included in violation messages. */
-    public static final String PREF_INCLUDE_RULE_NAMES = "include.rule.names";
+    public static final String      PLUGIN_ID               = "com.atlassw.tools.eclipse.checkstyle";
+
+    /**
+     * Preference name indicating if rule names are to be included in violation
+     * messages.
+     */
+    public static final String      PREF_INCLUDE_RULE_NAMES = "include.rule.names";
 
     /** constant for the plugin properties. */
-    private static final String PROPERTIES = "plugin.properties"; //$NON-NLS-1$
+    private static final String     PROPERTIES              = "plugin.properties";                   //$NON-NLS-1$
 
-    
     //=================================================
     // Static class variables.
     //=================================================
 
-    /**  The shared instance. */
+    /** The shared instance. */
     private static CheckstylePlugin sPlugin;
-    
-    /**  Resource bundle. */
-    private static ResourceBundle sResourceBundle;
+
+    /** Resource bundle. */
+    private static ResourceBundle   sResourceBundle;
 
     //=================================================
     // Instance member variables.
     //=================================================
-
-
 
     //=================================================
     // Constructors & finalizer.
     //=================================================
 
     /**
-     *  The constructor.
-     *
-     *  @param descriptor  Plug-in descriptor.
+     * The constructor.
      */
     public CheckstylePlugin()
     {
@@ -93,9 +90,9 @@ public class CheckstylePlugin extends AbstractUIPlugin
     //=================================================
 
     /**
-     *  Returns the shared instance.
-     *
-     *  @return The shared plug-in instance.
+     * Returns the shared instance.
+     * 
+     * @return The shared plug-in instance.
      */
     public static CheckstylePlugin getDefault()
     {
@@ -103,9 +100,9 @@ public class CheckstylePlugin extends AbstractUIPlugin
     }
 
     /**
-     *  Returns the workspace instance.
-     *
-     *  @return  Workspace instance.
+     * Returns the workspace instance.
+     * 
+     * @return Workspace instance.
      */
     public static IWorkspace getWorkspace()
     {
@@ -113,33 +110,38 @@ public class CheckstylePlugin extends AbstractUIPlugin
     }
 
     /**
-     *  Returns the string from the plugin's resource bundle,
-     *  or 'key' if not found.
-     *
-     *  @param  key  Resource key.
-     *
-     *  @return The requested resource.
+     * Returns the string from the plugin's resource bundle, or 'key' if not
+     * found.
+     * 
+     * @param key Resource key.
+     * 
+     * @return The requested resource.
      */
     public static String getResourceString(String key)
     {
-        if (sResourceBundle == null) {
-            try {
-              URL url = CheckstylePlugin.getDefault().find(new Path(PROPERTIES));
-              sResourceBundle = new PropertyResourceBundle(url.openStream());
+        if (sResourceBundle == null)
+        {
+            try
+            {
+                URL url = CheckstylePlugin.getDefault().find(new Path(PROPERTIES));
+                sResourceBundle = new PropertyResourceBundle(url.openStream());
             }
-            catch (IOException ioe) {
-              CheckstyleLog.error(ioe.getLocalizedMessage(), ioe);
+            catch (IOException ioe)
+            {
+                CheckstyleLog.error(ioe.getLocalizedMessage(), ioe);
             }
-          }
+        }
 
-          try {
+        try
+        {
             return sResourceBundle.getString(key);
-          }
-          catch (MissingResourceException e) {
+        }
+        catch (MissingResourceException e)
+        {
             return '!' + key + '!';
-          }
+        }
     }
-    
+
     /**
      * Initialize the default preferences.
      */
