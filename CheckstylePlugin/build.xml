@@ -106,7 +106,6 @@
 		<copy file="${checkstyle.jar}" todir="${bin.dist.dir}" />
 		<copy file="${checkstyle-optional.jar}" todir="${bin.dist.dir}" />
 		<copy file="plugin.xml" todir="${bin.dist.dir}" />
-		<copy file="plugin-eclipse2-0-x.xml" todir="${bin.dist.dir}" />
 		<copy file="xercesImpl.jar" todir="${bin.dist.dir}" />
 		<copy file="xmlParserAPIs.jar" todir="${bin.dist.dir}" />
 		<copy file="toc.xml" todir="${bin.dist.dir}" />
