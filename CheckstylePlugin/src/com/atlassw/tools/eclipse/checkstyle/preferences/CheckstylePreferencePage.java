@@ -513,7 +513,7 @@ public class CheckstylePreferencePage
 			return;
 		}
         
-        FileDialog dialog = new FileDialog(getShell());
+        FileDialog dialog = new FileDialog(getShell(), SWT.SAVE);
         dialog.setText("Export Plug-in Check Configuration");
         String path = dialog.open();
         if (path == null)
@@ -547,7 +547,7 @@ public class CheckstylePreferencePage
         	return;
         }
         
-        FileDialog dialog = new FileDialog(getShell());
+        FileDialog dialog = new FileDialog(getShell(), SWT.SAVE);
         dialog.setText("Export Checkstyle Check Configuration");
         String path = dialog.open();
         if (path == null)
