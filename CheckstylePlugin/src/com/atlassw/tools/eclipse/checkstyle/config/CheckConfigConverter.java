@@ -268,7 +268,7 @@ public class CheckConfigConverter
                 String tagValue = (String)tagEntry.getValue();
                 if (value.indexOf(tagName) != -1)
                 {
-                    value = value.replaceAll(tagName, tagValue);
+                    value = replaceAll(value, tagName, tagValue);
                 }
             }
             
@@ -502,5 +502,25 @@ public class CheckConfigConverter
             mPropsToResolve.add(prop);
             return corrTag;
         }
+    }
+    
+    /**
+     *  Mimic the behavior of the String.replaceAll() method which was
+     *  introduced in JDK 1.4 and is not available in JDK 1.3.
+     */
+    private String replaceAll(String string, String tagName, String tagValue)
+    {
+        String result = string;
+        int index = result.indexOf(tagName);
+        while (index >= 0)
+        {
+            result =
+                result.substring(0, index)
+                    + tagValue
+                    + result.substring(index + tagName.length());
+            index = result.indexOf(tagName);
+        }
+
+        return result;
     }
 }
