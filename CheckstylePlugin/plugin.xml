@@ -9,6 +9,7 @@
    <runtime>
       <library name="CheckstylePlugin.jar"/>
       <library name="checkstyle-all-3.2.jar"/>
+      <library name="checkstyle-3.2-optional.jar"/>
    </runtime>
    <requires>
       <import plugin="org.eclipse.core.resources"/>
