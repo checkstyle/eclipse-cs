@@ -139,6 +139,12 @@ public class RuleConfiguration implements Cloneable, XMLTags, Configuration
             throw new CheckstylePluginException(message);
         }
         
+        temp = XMLUtil.getNodeAttributeValue(node, COMMENT_TAG);
+        if (temp != null)
+        {
+            mComment = temp;
+        }
+        
         Node configItems = XMLUtil.getChildNode(node, CONFIG_PROPERTIES_TAG);
         NodeList children = configItems.getChildNodes();
         int count = children.getLength();
@@ -241,6 +247,14 @@ public class RuleConfiguration implements Cloneable, XMLTags, Configuration
             String severity = mSeverityLevel.getName();
             ruleNode.setAttribute(SEVERITY_TAG, severity);
             
+            //
+            //  Add the rule's comment, if one exists.
+            //
+            if ((mComment != null) && (mComment.trim().length() > 0))
+            {
+                ruleNode.setAttribute(COMMENT_TAG, mComment);
+            }
+            
             Node cfgPropsNode = doc.createElement(CONFIG_PROPERTIES_TAG);
             ruleNode.appendChild(cfgPropsNode);
             
@@ -253,15 +267,6 @@ public class RuleConfiguration implements Cloneable, XMLTags, Configuration
                 ConfigProperty prop = (ConfigProperty)iter.next();
                 Node propNode = prop.toDOMNode(doc);
                 cfgPropsNode.appendChild(propNode);
-            }
-            
-            //
-            //  Add the rule's comment, if one exists.
-            //
-            if ((mComment != null) && (mComment.trim().length() > 0))
-            {
-                Node commentNode = doc.createElement(COMMENT_TAG);
-                commentNode.setNodeValue(mComment);
             }
         }
         catch (DOMException e)

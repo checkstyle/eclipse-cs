@@ -53,6 +53,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 
@@ -89,6 +90,8 @@ public class RuleConfigurationEditDialog extends Dialog
     private RuleConfigWorkingCopy     mRule;
 
     private RuleConfigWorkingCopy     mFinalRule;
+
+    private Text                      mCommentText;
     
     private Combo                     mSeverityCombo;
     
@@ -141,6 +144,7 @@ public class RuleConfigurationEditDialog extends Dialog
 		dialog.setLayout(layout);
         
         createRuleNameLable(dialog);
+        createComment(dialog);
         createSeveritySelection(dialog);
         createConfigPropertyEntries(dialog);
 
@@ -166,6 +170,11 @@ public class RuleConfigurationEditDialog extends Dialog
         {
             CheckstyleLog.warning("Invalid severity level found, using original value", e);
         }
+        
+        //
+        //  Get the comment.
+        //
+        String comment = mCommentText.getText();
         
         //
         //  Build a new collection of configuration properties.
@@ -198,7 +207,7 @@ public class RuleConfigurationEditDialog extends Dialog
         //
         mFinalRule.setConfigItems(configProps);
         mFinalRule.setSeverityLevel(severity);
-        
+        mFinalRule.setRuleComment(comment);
         
         mOkWasPressed = true;
 		super.okPressed();
@@ -226,6 +235,35 @@ public class RuleConfigurationEditDialog extends Dialog
     {
         Label label = new Label(parent, SWT.NULL);
         label.setText("Rule: " + mRule.getRuleName());
+    }
+
+    private void createComment(Composite parent)
+    {
+        Composite comp = new Composite(parent, SWT.NONE);
+        GridLayout layout = new GridLayout();
+        layout.numColumns = 2;
+        layout.marginWidth = 0;
+        comp.setLayout(layout);
+
+        Label commentLabel = new Label(comp, SWT.NULL);
+        commentLabel.setText("Instance Comment:");
+
+        mCommentText = new Text(comp, SWT.SINGLE | SWT.BORDER);
+        GridData data = new GridData();
+        data.horizontalAlignment = GridData.FILL;
+        data.horizontalSpan = 1;
+        data.grabExcessHorizontalSpace = true;
+        data.verticalAlignment = GridData.CENTER;
+        data.grabExcessVerticalSpace = false;
+        data.widthHint = convertWidthInCharsToPixels(MAX_INPUT_LENGTH);
+        data.heightHint = convertHeightInCharsToPixels(1);
+        mCommentText.setLayoutData(data);
+        mCommentText.setFont(parent.getFont());
+        String comment = mRule.getRuleComment();
+        if (comment != null)
+        {
+            mCommentText.setText(comment);
+        }
     }
     
     private void createSeveritySelection(Composite parent)
