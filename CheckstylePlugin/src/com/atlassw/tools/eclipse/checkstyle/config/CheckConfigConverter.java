@@ -54,7 +54,7 @@ import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
  *  Used to convert from a standard Checkstyle config file to
  *  the plug-in's internal CheckConfiguration object.
  */
-public class CheckConfigConverter
+public class CheckConfigConverter implements XMLTags
 {
 	//=================================================
     // Public static final variables.
@@ -67,8 +67,6 @@ public class CheckConfigConverter
     private static final String CHECKER_TAG = "Checker";
     
     private static final String TREE_WALKER_TAG = "TreeWalker";
-    
-    private static final String SEVERITY_TAG = "severity";
     
     private static final String CORR_TAG_ROOT = "com.atlassw.property.to.resolve.";
     
