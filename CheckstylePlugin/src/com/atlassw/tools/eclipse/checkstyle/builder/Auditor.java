@@ -27,6 +27,7 @@ import java.io.File;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 //=================================================
 // Imports from javax namespace
@@ -35,9 +36,11 @@ import java.util.List;
 //=================================================
 // Imports from com namespace
 //=================================================
+import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.config.FileSet;
 import com.atlassw.tools.eclipse.checkstyle.config.FileSetFactory;
+import com.atlassw.tools.eclipse.checkstyle.config.MetadataFactory;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.puppycrawl.tools.checkstyle.api.AuditEvent;
@@ -55,6 +58,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Preferences;
 
 
 /**
@@ -137,6 +141,9 @@ class Auditor
         //
         Checker[] checker = new Checker[mFileSets.length];
         CheckstyleAuditListener auditListener = new CheckstyleAuditListener();
+        Preferences prefs = CheckstylePlugin.getDefault().getPluginPreferences();
+        boolean includeRuleNames = prefs.getBoolean(CheckstylePlugin.PREF_INCLUDE_RULE_NAMES);
+        auditListener.setAddRuleName(includeRuleNames);
 
         for (int i = 0; i < checker.length; i++)
         {
@@ -222,7 +229,13 @@ class Auditor
 
     private static class CheckstyleAuditListener implements AuditListener
     {
+    	//  The file currently being checked.
         private IFile mFile;
+        
+        //  Add the check rule name to the message?
+        private boolean mAddRuleName = false;
+        
+        private Map mClassToNameMap = MetadataFactory.getClassToNameMap();
 
         public void addError(AuditEvent error)
         {
@@ -235,9 +248,9 @@ class Auditor
                     IMarker marker = mFile.createMarker(CheckstyleMarker.MARKER_ID);
 
                     marker.setAttribute(IMarker.LINE_NUMBER, error.getLine());
-                    marker.setAttribute(IMarker.MESSAGE, error.getMessage());
                     marker.setAttribute(IMarker.PRIORITY, IMarker.PRIORITY_NORMAL);
                     marker.setAttribute(IMarker.SEVERITY, getSeverityValue(severity));
+					marker.setAttribute(IMarker.MESSAGE, getMessage(error));
                 }
             }
             catch (CoreException e)
@@ -295,5 +308,38 @@ class Auditor
 
             return result;
         }
+        
+        private String getMessage(AuditEvent error)
+        {
+        	String message = error.getMessage();
+        	if (mAddRuleName)
+        	{
+        		StringBuffer buffer = new StringBuffer(getRuleName(error));
+        		buffer.append(": ").append(message);
+        		message = buffer.toString();
+        	}
+        	return message;
+        }
+        
+        private String getRuleName(AuditEvent error)
+        {
+        	String ruleName = (String)mClassToNameMap.get(error.getSourceName());
+        	if (ruleName == null)
+        	{
+        		ruleName = "Unknown";
+        	}
+        	return ruleName;
+        }
+
+        public boolean getAddRuleName()
+        {
+            return mAddRuleName;
+        }
+
+        public void setAddRuleName(boolean b)
+        {
+            mAddRuleName = b;
+        }
+
     }
 }

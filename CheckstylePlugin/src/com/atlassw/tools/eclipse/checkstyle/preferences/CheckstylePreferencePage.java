@@ -28,6 +28,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.eclipse.core.runtime.Preferences;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.viewers.ColumnWeightData;
@@ -44,6 +45,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
@@ -107,6 +109,8 @@ public class CheckstylePreferencePage
 	private Button           mImportCheckstyleButton;
 
 	private Button           mExportCheckstyleButton;
+
+	private Button           mIncludeRuleNamesButton;
     
     private List             mCheckConfigurations;
     
@@ -120,7 +124,7 @@ public class CheckstylePreferencePage
 	{
 		super();
 		setPreferenceStore(CheckstylePlugin.getDefault().getPreferenceStore());
-		setDescription("Defined Check Configurations");
+		setDescription("Checkstyle Settings:");
 		initializeDefaults();
 	}
 
@@ -140,12 +144,48 @@ public class CheckstylePreferencePage
 	public Control createContents(Composite ancestor)
 	{
 		noDefaultAndApplyButton();
-		Composite parent = new Composite(ancestor, SWT.NULL);
-		mParentComposite = parent;
-
+		
+		//
+		//  Build the top level composite with one colume.
+		//
+		mParentComposite = new Composite(ancestor, SWT.NULL);
 		GridLayout layout = new GridLayout();
+		layout.numColumns = 1;
+		mParentComposite.setLayout(layout);
+		
+		//
+		//  Build the composite for the general settings.
+		//
+		Group generalComposite = new Group(mParentComposite, SWT.NULL);
+		generalComposite.setText(" General Settings ");
+		generalComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		layout = new GridLayout();
+		layout.numColumns = 1;
+		generalComposite.setLayout(layout);
+		
+		//
+		//  Get the preferences.
+		//
+		Preferences prefs = CheckstylePlugin.getDefault().getPluginPreferences();
+		
+		//
+		//  Create the "Include rule name" check box.
+		//
+		mIncludeRuleNamesButton = new Button(generalComposite, SWT.CHECK);
+		mIncludeRuleNamesButton.setText("Include rule names in violation messages");
+		mIncludeRuleNamesButton.setSelection(
+		    prefs.getBoolean(CheckstylePlugin.PREF_INCLUDE_RULE_NAMES));
+		
+		//
+		//  Create the composite for configuring check configurations.
+		//
+		Group configComposite = new Group(mParentComposite, SWT.NULL);
+		configComposite.setText(" Check Configurations ");
+		configComposite.setLayoutData(
+		    new GridData(GridData.FILL_HORIZONTAL|GridData.FILL_VERTICAL));
+		layout = new GridLayout();
 		layout.numColumns = 2;
-		parent.setLayout(layout);
+		configComposite.setLayout(layout);
         
         try
         {
@@ -158,7 +198,7 @@ public class CheckstylePreferencePage
             return ancestor;
         }
 
-		Table table = new Table(parent, SWT.BORDER | SWT.SINGLE | SWT.FULL_SELECTION);
+		Table table = new Table(configComposite, SWT.BORDER | SWT.SINGLE | SWT.FULL_SELECTION);
 
 		GridData data = new GridData(GridData.FILL_BOTH);
 		data.widthHint = convertWidthInCharsToPixels(80);
@@ -177,13 +217,19 @@ public class CheckstylePreferencePage
 		tableLayout.addColumnData(new ColumnWeightData(40));
 
 		mViewer = new TableViewer(table);
-
 		mViewer.setLabelProvider(new CheckConfigurationLabelProvider());
 		mViewer.setContentProvider(new CheckConfigurationProvider());
 		mViewer.setSorter(new CheckConfigurationViewerSorter());
         mViewer.setInput(mCheckConfigurations);
+		mViewer.addDoubleClickListener(new IDoubleClickListener()
+		{
+			public void doubleClick(DoubleClickEvent e)
+			{
+				editCheckConfig();
+			}
+		});
 
-		Composite rightButtons = new Composite(parent, SWT.NULL);
+		Composite rightButtons = new Composite(configComposite, SWT.NULL);
 		rightButtons.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
 		layout = new GridLayout();
 		layout.marginHeight = 0;
@@ -217,7 +263,7 @@ public class CheckstylePreferencePage
 			}
 		});
 
-        Composite bottomButtons = new Composite(parent, SWT.NULL);
+        Composite bottomButtons = new Composite(configComposite, SWT.NULL);
         bottomButtons.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
         layout = new GridLayout();
         layout.marginHeight = 0;
@@ -261,15 +307,7 @@ public class CheckstylePreferencePage
 			}
 		});
 
-		mViewer.addDoubleClickListener(new IDoubleClickListener()
-		{
-			public void doubleClick(DoubleClickEvent e)
-			{
-				editCheckConfig();
-			}
-		});
-
-		return parent;
+		return mParentComposite;
 	}
 
 	public void init(IWorkbench workbench)
@@ -277,6 +315,9 @@ public class CheckstylePreferencePage
     
     public boolean performOk()
     {
+    	//
+    	//  Save the check configurations.
+    	//
         try
         {
             CheckConfigurationFactory.setCheckConfigurations(mCheckConfigurations);
@@ -288,6 +329,24 @@ public class CheckstylePreferencePage
             CheckstyleLog.internalErrorDialog();
         }
         
+        //
+        //  Save the general preferences.
+        //
+		Preferences prefs = CheckstylePlugin.getDefault().getPluginPreferences();
+		
+		//
+		//  Include rule names preference.
+		//
+		boolean includeRuleNamesNow = 
+		    mIncludeRuleNamesButton.getSelection();
+		boolean includeRuleNamesOriginal = 
+		    prefs.getBoolean(CheckstylePlugin.PREF_INCLUDE_RULE_NAMES);
+		prefs.setValue(CheckstylePlugin.PREF_INCLUDE_RULE_NAMES, includeRuleNamesNow);
+		mNeedRebuild = mNeedRebuild | (includeRuleNamesNow ^ includeRuleNamesOriginal);
+        
+        //
+        //  Do a rebuild if one is needed.
+        //
         if (mNeedRebuild)
         {
             try

@@ -41,6 +41,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPluginDescriptor;
+import org.eclipse.jface.preference.IPreferenceStore;
 
 
 /**
@@ -54,6 +55,9 @@ public class CheckstylePlugin extends AbstractUIPlugin
 
     /** Identifier of the plug-in */
     public static final String PLUGIN_ID = "com.atlassw.tools.eclipse.checkstyle";
+    
+    /** Preference name indicating if rule names are to be included in violation messages. */
+    public static final String PREF_INCLUDE_RULE_NAMES = "include.rule.names";
 
     //=================================================
     // Static class variables.
@@ -150,4 +154,14 @@ public class CheckstylePlugin extends AbstractUIPlugin
     {
         return mResourceBundle;
     }
+    
+    /**
+     * Initialize the default preferences.
+     */
+	protected void initializeDefaultPluginPreferences()
+	{
+		IPreferenceStore prefStore = getPreferenceStore();
+		
+		prefStore.setDefault(PREF_INCLUDE_RULE_NAMES, false);
+	}
 }

@@ -25,9 +25,11 @@ package com.atlassw.tools.eclipse.checkstyle.config;
 //=================================================
 import java.util.HashMap;
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.LinkedList;
+import java.util.Map;
 
 //=================================================
 // Imports from javax namespace
@@ -65,6 +67,9 @@ public final class MetadataFactory
     
     /**  Metadata for all rules, keyed by class name.  */
     private static HashMap sRuleMetadata = new HashMap();
+    
+    /**  Map of rule class name to rule display name. */
+    private static HashMap sClassToNameMap = new HashMap();
 
     /**  Name of the rules metadata XML file.  */
     private static final String METADATA_FILENAME = "/CheckstyleMetadata.xml";
@@ -177,6 +182,7 @@ public final class MetadataFactory
                 RuleMetadata ruleMeta = (RuleMetadata)iter2.next();
                 ruleMeta.setGroupIndex(i);
                 sRuleMetadata.put(ruleMeta.getCheckImplClassname(), ruleMeta);
+                sClassToNameMap.put(ruleMeta.getCheckImplClassname(), ruleMeta.getRuleName());
             }
         }
         
@@ -218,5 +224,16 @@ public final class MetadataFactory
 			metadata.setGroupIndex(sDefaultGroupIndex);
 		}
 		return metadata;
+	}
+	
+	/**
+	 *  Get a map from class names to rule names.
+	 * 
+	 *  @return  A map keyed by rule classname that contains <code>String</code>
+	 *           objects with the rule's display name.
+	 */
+	public static Map getClassToNameMap()
+	{
+		return Collections.unmodifiableMap(sClassToNameMap);
 	}
 }
