@@ -48,9 +48,7 @@ import com.puppycrawl.tools.checkstyle.Checker;
 import com.puppycrawl.tools.checkstyle.api.AuditEvent;
 import com.puppycrawl.tools.checkstyle.api.AuditListener;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
-import com.puppycrawl.tools.checkstyle.api.FileContents;
 import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
-import com.puppycrawl.tools.checkstyle.checks.FileContentsHolder;
 
 /**
  * Performs checking on Java source code.
@@ -270,11 +268,16 @@ class Auditor
                         //Offset must be file based, not line based
                         LineModel.LineOffset lineOffset = mLineModel.getLineOffset(error.getLine());
 
-                        //annotate from the error column until the end of the
-                        // line
-                        int indent = error.getColumn() == 0 ? 0 : error.getColumn() - 1;
-                        MarkerUtilities.setCharStart(attributes, lineOffset.mStartOffset + indent);
-                        MarkerUtilities.setCharEnd(attributes, lineOffset.mEndOffset);
+                        if (lineOffset != null)
+                        {
+
+                            //annotate from the error column until the end of
+                            // the line
+                            int indent = error.getColumn() == 0 ? 0 : error.getColumn() - 1;
+                            MarkerUtilities.setCharStart(attributes, lineOffset.mStartOffset
+                                    + indent);
+                            MarkerUtilities.setCharEnd(attributes, lineOffset.mEndOffset);
+                        }
                     }
 
                     //create a marker for the actual resource
