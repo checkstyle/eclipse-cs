@@ -63,7 +63,7 @@ public class FileMatchPatternEditDialog extends Dialog
     // Static class variables.
     //=================================================
     
-    private static final int MAX_LENGTH = 40; 
+    private static final int MAX_LENGTH = 250; 
     
     //=================================================
     // Instance member variables.
@@ -120,10 +120,9 @@ public class FileMatchPatternEditDialog extends Dialog
         data.grabExcessHorizontalSpace = true;
         data.verticalAlignment = GridData.CENTER;
         data.grabExcessVerticalSpace = false;
-        data.widthHint = convertWidthInCharsToPixels(MAX_LENGTH);
+        data.widthHint = convertWidthInCharsToPixels(60);
         mFileMatchPatternText.setLayoutData(data);
         mFileMatchPatternText.setFont(parent.getFont());
-        mFileMatchPatternText.setTextLimit(MAX_LENGTH);
         if (mPattern != null)
         {
             mFileMatchPatternText.setText(mPattern);
