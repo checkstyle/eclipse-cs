@@ -235,14 +235,12 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
                 // classes for JavadocMethodCheck.
                 //
                 ClassLoader classLoader = null;
-                    
                 IJavaProject javaProject = (IJavaProject)project.getAdapter(IJavaElement.class);
-                    
                 try
                 {
-                    List urls = new ArrayList(20);
-                    getClasspathURLs(javaProject, false, urls);
-                    classLoader = new URLClassLoader((URL[])urls.toArray(new URL[urls.size()]));
+                    List urls = getClasspathURLs(javaProject, false);
+                    URL[] urlArray = (URL[])urls.toArray(new URL[urls.size()]);
+                    classLoader = new URLClassLoader(urlArray);
                 }
                 catch(CoreException e)
                 {
@@ -368,17 +366,13 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
      * @param javaProject
      * @return
      */    
-    private static void getClasspathURLs(
-        IJavaProject javaProject,
-        boolean exportedOnly, 
-        List urls)
-        
-        throws JavaModelException,
-               MalformedURLException,
-               CoreException 
+    private static List getClasspathURLs(IJavaProject javaProject, 
+                                         boolean exportedOnly)
+        throws JavaModelException, MalformedURLException, CoreException 
     {
+    	ArrayList urls = new ArrayList();
+    	
         IClasspathEntry[] entries = javaProject.getResolvedClasspath(true);
-
         boolean defaultOutputAdded = false;
         
         for (int i = 0; i < entries.length; i++) 
@@ -390,7 +384,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
             {
                 switch (entries[i].getEntryKind()) 
                 {
-                    case IClasspathEntry.CPE_SOURCE :
+                    case IClasspathEntry.CPE_SOURCE:
                     {
                         IPath outputLocation = null;
                         
@@ -446,7 +440,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
                                 getProject(entries[i].getPath().segment(0))).
                                     getAdapter(IJavaElement.class);
         
-                        getClasspathURLs(dependentProject, true, urls);
+                        urls.add(getClasspathURLs(dependentProject, true));
                         
                         break;
                     }
@@ -464,6 +458,15 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
                 }
             }
         }
+        
+        //  TODO: delete me
+        for (Iterator iter = urls.iterator(); iter.hasNext();)
+        {
+        	URL url = (URL)iter.next();
+        	System.out.println(url.toString());
+        }
+        
+        return urls;
     }
 
     /**

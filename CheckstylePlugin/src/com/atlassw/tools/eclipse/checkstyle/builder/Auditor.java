@@ -150,8 +150,8 @@ class Auditor
 						CheckstyleLog.error(msg);
 						throw new CheckstylePluginException(msg);
                     }
+					checker[i].setClassloader(classLoader);
                     checker[i].configure(checkConfig);
-                    checker[i].setClassloader(classLoader);
                 }
                 catch (com.puppycrawl.tools.checkstyle.api.CheckstyleException e)
                 {
