@@ -34,7 +34,7 @@
       </pre>
       <p class="body">
       All naming modules belong to package
-      <span class="code">com.puppycrawl.tools.checkstyle.checks</span> and are submodules of
+      <span class="code">com.puppycrawl.tools.checkstyle.checks.naming</span> and are submodules of
       <a href="config.html#treewalker"><span class="code">TreeWalker</span></a>.
       </p>
       <h2>Modules</h2>
@@ -46,10 +46,15 @@
           <th>default value of <span class="code">format</span></th>
         </tr>
         <tr>
+          <td><span class="code">AbstractClassName</span></td>
+          <td><span class="code">abstract</span> classes</td>
+          <td><span class="default">^Abstract.*$|^.*Factory$</span></td>
+        </tr>
+        <tr>
           <td><span class="code">ConstantName</span></td>
           <td>constants (<span class="code">static</span>, <span class="code"> 
           final</span> fields)</td>
-          <td><span class="default">^[A-Z](_?[A-Z0-9]+)*$</span></td>
+          <td><span class="default">^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$</span></td>
         </tr>
         <tr>
           <td><span class="code">LocalFinalVariableName</span></td>
@@ -58,7 +63,8 @@
         </tr>
         <tr>
           <td><span class="code">LocalVariableName</span></td>
-          <td>local, non-<span class="code">final</span> variables</td>
+          <td>local, non-<span class="code">final</span> variables, including
+              <span class="code">catch</span> parameters</td>
           <td><span class="default">^[a-z][a-zA-Z0-9]*$</span></td>
         </tr>
         <tr>
@@ -74,7 +80,7 @@
         <tr>
           <td><span class="code">PackageName</span></td>
           <td>packages</td>
-          <td><span class="default">^[a-z]+(\\.[a-zA-Z_][a-zA-Z0-9_]*)*$</span></td>
+          <td><span class="default">^[a-z]+(\.[a-zA-Z_][a-zA-Z0-9_]*)*$</span></td>
         </tr>
         <tr>
           <td><span class="code">ParameterName</span></td>
@@ -110,6 +116,22 @@
         &lt;/module&gt;
           </pre>
           </li>
+          <li>
+            Module <span class="code">LocalVariableName</span> also has property <span class="code">tokens</span>
+            which can be used to control whether the check applies to variable declarations or
+            <span class="code">catch</span> clause parameters through
+            tokens
+            <span class="code">VARIABLE_DEF</span> and <span class="code">PARAMETER_DEF</span>. 
+            For example, the following configuration element ensures that
+            <span class="code">catch</span> clause parameters begin with <span class="code">"e"</span>,
+            followed by letters and digits: 
+            <pre class="body">
+        &lt;module name=&quot;LocalVariableName&quot;&gt;
+            &lt;property name=&quot;format&quot; value=&quot;^e[a-zA-Z0-9]*$&quot;/&gt;
+            &lt;property name=&quot;tokens&quot; value=&quot;PARAMETER_DEF&quot;/&gt;
+        &lt;/module&gt;
+            </pre>
+            </li>
           <li>
             Module <span class="code">TypeName</span> also has property <span class="code">tokens</span>
             which can be used to control whether the check applies to classes or interfaces through

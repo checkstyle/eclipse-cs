@@ -29,6 +29,7 @@
     <td class="menu" valign="top">
       <p>Checkstyle 3</p>
       <ul>
+        <li><a href="#release3_2">Release 3.2</a></li>
         <li><a href="#release3_1">Release 3.1</a></li>
         <li><a href="#release3_0">Release 3.0</a></li>
       </ul>
@@ -45,6 +46,278 @@
 
     <!--Content-->
     <td class="content" valign="top" align="left">
+
+      <a name="release3_2"></a>
+      <h2>Release 3.2</h2>
+      <p class="body">
+        Structural changes
+      </p>
+        <ul>
+
+          <li class="body">Checks that are designed to be used for a
+          special class of applications (like J2EE) or that require
+          external libraries are now distributed in a separate jar
+          file. This is similar to the way the <a
+          href="http://ant.apache.org">Ant</a> distribution is
+          organized. See the <a href="optional.html">documentation of
+          optional checks</a> for details.</li>
+
+        </ul>
+
+      <p class="body">
+      New features:
+      </p>
+      <ul>
+
+	<li class="body">Added ability for user to incorporate custom listeners (requests
+          738205, 738388). Example listeners perform verbose and Commons Logging
+          audits (request 737584).</li>
+
+	<li class="body">Added JavadocStyle check to ensure they are
+	stylistically well formed. Nice patch from Chris Stillwell.</li>
+
+        <li class="body">Added check for trailing comma in array
+        initialization (module ArrayTrailingComma, request
+        696301).</li>
+
+        <li class="body">MagicNumberCheck now checks array initializers (request
+        745949).</li>
+
+        <li class="body">Added check for uncommented main
+        methods (debugging leftovers). (module UncommentedMain,
+        request 732257)</li>
+
+        <li class="body">Added check to enforce that anonymous inner classes do
+        not exceed a certain length (module AnonInnerLength,
+        request 715709, contributed by Rob Worth).</li>
+
+        <li class="body">Added TypecastParenPadCheck to check the padding of
+        typecasts (bug 750348).</li>
+
+        <li class="body">Added ignoreFormat property to HiddenFieldCheck (request 748830).</li>
+
+        <li class="body">Nice patch from Matt Quail to DetailAST to replace all the
+        repeated int[] array construction with a BitSet.</li>
+
+        <li class="body">Patch from Matt Quail to stop the ugly hack of having hard coded
+        constants in TokenTypes. The big risk was that when the grammar changed, the generated
+        constants could change (patch 757846).</li>
+
+        <li class="body">Added excludes property to AvoidStarImport, contributed
+        by Bill Schneider (request 744955).</li>
+
+        <li class="body">Added CyclomaticComplexityCheck from Simon Harris.</li>
+
+        <li class="body">Added check to catch equality comparison with string literals
+        using the == operator (module StringLiteralEquality, request 754835).</li>
+
+        <li class="body">Added check for definition of covariant equals() method
+           without overriding method equals(comp.lang.Object)
+           (module coding.CovariantEquals).</li>
+
+        <li class="body">Added NestedTryDepthCheck and
+        NestedIfDepthCheck from Simon Harris (requests 750736 and
+        750744).</li>
+
+        <li class="body">Added IllegalTokenCheck from Simon Harris
+          (request 750755).</li>
+
+        <li class="body">Added allowInSwitchCase property to AvoidNestedBlocksCheck
+        to allow limiting the scope of variables to one case of a switch statement.</li>
+
+        <li class="body">Added checks for J2EE requirements.</li>
+
+        <li class="body">Added a check that an overriding clone() method invokes
+          super.clone().</li>
+
+        <li class="body">Added a check that an overriding finalize() method invokes
+          super.finalize().</li>
+
+        <li class="body">Added usage checks OneMethodPrivateFieldCheck, UnusedLocalVariableCheck,
+          UnusedParameterCheck, UnusedPrivateFieldCheck, UnusedPrivateMethodCheck.</li>
+
+        <li class="body">Added filters for audit events (partially fulfills request 559103).
+          A SuppressionFilter denies events according to a suppressions file (request 756416).</li>
+
+        <li class="body">Made basedir property of Checker OS agnostic
+        (request 663149).</li>
+
+        <li class="body">Enhanced RedundantModifier to check that all private methods and all methods in a
+          final class do not contain modifier final (discussed in request 775011).</li>
+
+        <li class="body">Added MethodLengthCheck option for counting empty and comment lines
+          (requests 589358 and 654039).</li>
+
+        <li class="body">Added a check for illegal token text 
+          (requests 740694 and 750633).</li>
+
+        <li class="body">Added property to HiddenFieldCheck to ignore the parameter of 
+            property setter methods (request 790456).</li>
+          
+	<li class="body">Added DescendantToken check (request 755021).</li>
+
+        <li class="body">Added IllegalCatch check from Simon Harris (request 750746).</li>
+
+        <li class="body">Added PackageDeclaration check from Simon Harris (request 750753).</li>
+
+        <li class="body">Added JUnitTestCase check from Simon Harris (request 750761).</li>
+
+        <li class="body">Added MutableException check from Simon Harris (request 750750).</li>
+
+        <li class="body">Added AbstractClassName check from Simon Harris (request 750749).</li>
+
+        <li class="body">Added ThrowsCount check from Simon Harris (request 750742).</li>
+
+        <li class="body">Added ReturnCount check from Simon Harris (request 750745).</li>
+
+        <li class="body">Added CyclomaticComplexity check from Simon Harris (request 750756).</li>
+
+        <li class="body">Added ExecutableStatementCount check from Simon Harris (request 750751).</li>
+
+        <li class="body">Added property to HiddenFieldCheck to ignore constructor parameters
+            (request 798240).</li>
+
+        <li class="body">Added check for illegal type of variable,
+        parameters and return value of methods contributed by Simon
+        Harris (request 750739, module IllegalType)</li>
+
+        <li class="body">Added check for correct declarations order
+        contributed by Roland Auckenthaler (module
+        DeclarationOrder)</li>
+
+        <li class="body">Added ParameterAssignment check contributed
+        by Simon Harris (request 750748).</li>
+
+        <li class="body">Added FinalLocalVariable check from Roland
+        Auckenthaler and Kevin Gibbs.</li> 
+
+        <li class="body">Added check for correct grouping/order of
+        imports from Bill Schneider (module ImportOrder, request
+        745548)</li>
+
+        <li class="body">Added Indentation check from John Richardson
+        (request 493366)</li>
+
+        <li class="body">Added check for explicit initialization class
+        and object variable to value which is default for variable's
+        type (module ExplicitInitialization, request 614387).</li>
+
+        <li class="body">Added check to find duplicate code
+        (module StrictDuplicateCode, request 650710).</li>
+
+	<li class="body">Updated Jakarta Regexp library to version 1.3.</li>
+
+      </ul>
+
+      <p class="body">
+      Resolved bugs:
+      </p>
+
+      <ul>
+
+        <li class="body">Fixed NPE when running ArrayTypeStyle check (bug
+        744573)</li>
+
+        <li class="body">Typo in HideUtilityClassConstructor description (bug
+        743973)</li>
+
+        <li class="body">False MagicNumberCheck errors for interfaces (bug
+        745941)</li>
+
+        <li class="body">Docs for severity (bug 745937)</li>
+
+        <li class="body">EmptyBlock does not accept stmt option (bug 747400)</li>
+
+        <li class="body">Inner class fields interpreted as local variables (bug 747530)</li>
+
+        <li class="body">Fixed typo in documentation for PackageName
+        (bug 7480028)</li>
+
+        <li class="body">NumberFormatException in MagicNumberCheck (bug 748913)</li>
+
+        <li class="body">Removed broken support for checking typecasts from
+        ParenPadCheck (bug 750348)</li>
+
+        <li class="body">Fixed grammar problems with unclosed string
+        literals and multiple-lines comments (bug 694111)</li>
+
+        <li class="body">Fixed grammar definition for identifiers to
+        handle all Unicode symbols (bug 755744)</li>
+
+        <li class="body">Corrected misspelling of &quot;precede&quot; (bug 744342)</li>
+
+        <li class="body">EmptyForIteratorPadCheck errors when for statement
+           wraps at the iterator (bug 777471)</li>
+
+        <li class="body">False alarms from IllegalInstantiation for
+           user defined classes with the same names as those in
+           java.lang (bug 772832)</li>
+
+        <li class="body">NoSuchElementException in JavadocStyleCheck (bug 785514)</li>
+
+        <li class="body">RedundantModifierCheck error for public modifier of a
+           method defined in an inner implementation (bug 784814)</li>
+
+        <li class="body">MagicNumberCheck does not permits negative constants (bug 788106)</li>
+
+        <li class="body">NullPointerException in Unused... checks (bug 787672)</li>
+
+        <li class="body">NoSuchMethodError when line wrapped at dot
+        operator (bug 790209)</li>
+
+        <li class="body">Removed finder restrictions of LocalHomeInterfaceCheck
+             and RemoteHomeInterfaceCheck (bug 791591)</li>
+
+	<li class="body">Fixed NoSuchMethodError when line wrapped at dot operator (bugid 790209)</li>
+
+        <li class="body">Incorrect usage checks documentation (bug 790457)</li>
+
+        <li class="body">CyclomaticComplexityCheck not documented in docs (bug 783800)</li>
+
+        <li class="body">Changed configuration documentation example from checkstyle_checks.xml
+            to sun_checks.xml  (see bug 750169)</li>
+        
+        <li class="body">JavadocStyleCheck doesn't accept {@inheritDoc} javadoc (bug 798405)</li>
+
+        <li class="body">Unused local variables are not always detected (bug 798111)</li>
+
+	<li class="body">Fixed allowThrowsTagsForSubclasses/allowMissingThrowsTag interfere (bug 803577) </li>
+	
+	<li class="body">Unused... checks don't work together (bug 805954)</li>
+
+	<li class="body">NoWhitespaceBeforeCheck error with an interface (bug 806242)</li>
+
+	<li class="body">NoWhitespaceBeforeCheck error for anonymous inner class (bug 806243)</li>
+
+        <li class="body">Usage of optional checks should be documented (bug 806961)</li>
+
+        <li class="body">Changed default format for ConstantName to
+        ^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$ to please regexp library (see bug
+        807571)</li>
+
+        <li class="body">HiddenFieldCheck error for a local variable of a static
+             method with same name as an instance field (bug 827713)</li>
+
+        <li class="body">Changed HideUtilityClassConstructorCheck behaviour for classes
+             that do not extend java.lang.Object directly (partial fix for bug 824754)</li>
+
+        <li class="body">False alarms for abstract classes from FinalClass (bug 837012)</li>
+
+        <li class="body">Added Checker.removeListener() (fix for 834367)</li>
+
+      </ul>
+
+      <p class="body">
+        API changes (only relevant for IDE plugin authors):
+      </p>
+        <ul>
+
+          <li class="body">AuditListener and AuditEvent have been moved 
+          from package com.puppycrawl.tools.checkstyle to package 
+          com.puppycrawl.tools.checkstyle.api.</li>
+
+        </ul>
+
 
       <a name="release3_1"></a>
       <h2>Release 3.1</h2>
@@ -129,11 +402,11 @@
           <li class="body">Added line and column numbers to configuration
           parse exceptions (request 714962).</li>
 
-          <li class="body">Added check for redundant exceptions in 
+          <li class="body">Added check for redundant exceptions in
           throws clause (module RedundantThrows, request 579056)</li>
 
           <li class="body">Added property for GenericIllegalRegexp to
-          customize reported message (module GenericIllegalRegexp, 
+          customize reported message (module GenericIllegalRegexp,
           property message, request 738567)</li>
 
           <li class="body">Moved the location of the file

@@ -23,6 +23,9 @@
     <td class="menu" valign="top">
       <ul>
         <li>
+          <a href="#ExecutableStatementCount">ExecutableStatementCount</a>
+        </li>
+        <li>
           <a href="#FileLength">FileLength</a>
         </li>
         <li>
@@ -32,12 +35,88 @@
           <a href="#MethodLength">MethodLength</a>
         </li>
         <li>
+          <a href="#AnonInnerLength">AnonInnerLength</a>
+        </li>
+        <li>
           <a href="#ParameterNumber">ParameterNumber</a>
         </li>
       </ul>
     </td>
     <!--Content-->
     <td class="content" valign="top" align="left">
+
+
+
+      <!-- --><a name="ExecutableStatementCount"></a> <h2>ExecutableStatementCount</h2>
+      <h4>Description</h4>
+
+      <p class="body">
+      Restricts the number of executable statements to a specified limit.
+      </p>
+
+
+      <h4>Properties</h4>
+      <table width="100%" border="1" cellpadding="5" class="body">
+        <tr class="header">
+          <th>name</th>
+          <th>description</th>
+          <th>type</th>
+          <th>default value</th>
+        </tr>
+        <tr>
+          <td>max</td>
+          <td>the maximum threshold allowed</td>
+          <td><a href="property_types.html#integer">integer</a></td>
+          <td><span class="default">30</span></td>
+        </tr>
+
+        <tr>
+          <td>tokens</td>
+          <td>members to check</td>
+
+          <td>subset of tokens <a
+          href="api/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#CTOR_DEF">CTOR_DEF</a>,
+          <a
+          href="api/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#METHOD_DEF">METHOD_DEF</a>,
+          <a
+          href="api/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#INSTANCE_INIT">INSTANCE_INIT</a>,
+          <a
+          href="api/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#STATIC_INIT">STATIC_INIT</a>
+          </td>
+
+          <td>all tokens</td>
+        </tr>
+      </table>
+
+      <h4>Examples</h4>
+      <p class="body">
+      To configure the check:
+      </p>
+      <pre class="body">
+&lt;module name=&quot;ExecutableStatementCount&quot;/&gt;
+      </pre>
+      <p class="body">
+      To configure the check with a threshold of 20 for constructor and
+      method definitions:
+      </p>
+      <pre class="body">
+&lt;module name=&quot;ExecutableStatementCount&quot;&gt;
+    &lt;property name=&quot;max&quot; value=&quot;20&quot;/&gt;
+    &lt;property name=&quot;tokens&quot; value=&quot;CTOR_DEF,METHOD_DEF&quot;/&gt;
+&lt;/module&gt;
+      
+      </pre>
+
+      <h4>Package</h4>
+      <p class="body">
+      com.puppycrawl.tools.checkstyle.checks.sizes
+      </p>
+
+      <h4>Parent Module</h4>
+      <p class="body">
+      <a href="config.html#treewalker">TreeWalker</a>
+      </p>
+
 
       <a name="FileLength"></a> <h2>FileLength</h2> <h4>Description</h4>
       <p class="body">
@@ -78,7 +157,7 @@
 
       <h4>Package</h4>
       <p class="body">
-      com.puppycrawl.tools.checkstyle.checks
+      com.puppycrawl.tools.checkstyle.checks.sizes
       </p>
       <h4>Parent Module</h4>
       <p class="body">
@@ -159,7 +238,7 @@
 
       <h4>Package</h4>
       <p class="body">
-      com.puppycrawl.tools.checkstyle.checks
+      com.puppycrawl.tools.checkstyle.checks.sizes
       </p>
       <h4>Parent Module</h4>
       <p class="body">
@@ -190,6 +269,12 @@
           <td>maximum allowable number of lines</td>
           <td><a href="property_types.html#integer">integer</a></td>
           <td>150</td>
+        </tr>
+        <tr>
+          <td>countEmpty</td>
+          <td>whether to count empty lines and single line comments of the form <span class="code">//</span></td>
+          <td><a href="property_types.html#boolean">boolean</a></td>
+          <td><span class="default">true</span></td>
         </tr>
         <tr>
           <td>tokens</td>
@@ -225,15 +310,75 @@
 &lt;/module&gt;
         </pre>
 
+
+      <p class="body">
+      To configure the check so that it accepts methods with at most 60 lines, not counting
+      empty lines and single line comments:
+      </p>
+      <pre class="body">
+&lt;module name="MethodLength"&gt;
+   &lt;property name="tokens" value="METHOD_DEF"/&gt;
+   &lt;property name="max" value="60"/&gt;
+   &lt;property name="countEmpty" value="false"/&gt;
+&lt;/module&gt;
+        </pre>
       <h4>Package</h4>
       <p class="body">
-      com.puppycrawl.tools.checkstyle.checks
+      com.puppycrawl.tools.checkstyle.checks.sizes
       </p>
       <h4>Parent Module</h4>
       <p class="body">
       <a href="config.html#treewalker">TreeWalker</a>
       </p>
 
+
+      <a name="AnonInnerLength"></a> <h2>AnonInnerLength</h2> <h4>Description</h4>
+      <p class="body">
+      Checks for long anonymous inner classes.
+      </p>
+      <p class="body">
+      Rationale: If an anonymous inner class becomes very long
+      it is hard to understand and to see the flow of the method
+      where the class is defined. Therefore long anonymous inner
+      classes should usually be refactored into a named inner class.
+      See also Bloch, Effective Java, p. 93.
+      </p>
+
+      <h4>Properties</h4>
+
+      <table width="100%" border="1" cellpadding="5" class="body">
+        <tr class="header">
+          <th>name</th>
+          <th>description</th>
+          <th>type</th>
+          <th>default value</th>
+        </tr>
+        <tr>
+          <td>max</td>
+          <td>maximum allowable number of lines</td>
+          <td><a href="property_types.html#integer">integer</a></td>
+          <td>20</td>
+        </tr>
+      </table>
+
+      <h4>Examples</h4>
+      <p class="body">
+      To configure the check to accept files with up to 60 lines:
+      </p>
+      <pre class="body">
+&lt;module name="AnonInnerLength"&gt;
+      &lt;property name="max" value="60"/&gt;
+&lt;/module&gt;
+        </pre>
+
+      <h4>Package</h4>
+      <p class="body">
+      com.puppycrawl.tools.checkstyle.checks.sizes
+      </p>
+      <h4>Parent Module</h4>
+      <p class="body">
+      <a href="config.html#treewalker">TreeWalker</a>
+      </p>
 
       <a name="ParameterNumber"></a> <h2>ParameterNumber</h2> <h4>Description</h4>
       <p class="body">
@@ -290,7 +435,7 @@
       </pre>
       <h4>Package</h4>
       <p class="body">
-      com.puppycrawl.tools.checkstyle.checks
+      com.puppycrawl.tools.checkstyle.checks.sizes
       </p>
       <h4>Parent Module</h4>
       <p class="body">

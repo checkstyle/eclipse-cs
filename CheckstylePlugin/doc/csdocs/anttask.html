@@ -4,12 +4,12 @@
     "DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-  <title>Checkstyle ANT Task - Version 3.1</title>
+  <title>Checkstyle ANT Task - Version 3.2</title>
   <link rel="stylesheet" type="text/css" href="mystyle.css"/>
 </head>
 
 <body>
-<h1><a name="checkstyle">Checkstyle ANT Task - Version 3.1</a></h1>
+<h1><a name="checkstyle">Checkstyle ANT Task - Version 3.2</a></h1>
 <h3>Description</h3>
 
 <p>This task runs Checkstyle over specified Java files. The task has been tested using ANT 1.5.
@@ -17,11 +17,11 @@ The latest version of checkstyle can be found at <a href="http://checkstyle.sour
 This task is included in the checkstyle distribution.</p>
 
 <h3>Installation</h3>
-<p>The easiest way is to include <span class="default">checkstyle-all-3.1.jar</span> in the classpath. This contains all the classes required to run Checkstyle. Alternatively, you must include the following in the classpath:</p>
+<p>The easiest way is to include <span class="default">checkstyle-all-3.2.jar</span> in the classpath. This contains all the classes required to run Checkstyle. Alternatively, you must include the following in the classpath:</p>
 <ol>
-  <li><span class="default">checkstyle-3.1.jar</span></li>
-  <li>ANTLR 2.7.1 classes. <span class="default">antlr.jar</span> is included in the distribution.</li>
-  <li>Jakarta Regexp 1.2 classes. <span class="default">jakarta-regexp-1.2.jar</span> is included in the distribution.</li>
+  <li><span class="default">checkstyle-3.2.jar</span></li>
+  <li>ANTLR 2.7.2 classes. <span class="default">antlr.jar</span> is included in the distribution.</li>
+  <li>Jakarta Regexp 1.3 classes. <span class="default">jakarta-regexp-1.3.jar</span> is included in the distribution.</li>
   <li>Jakarta Commons Beanutils classes. <span class="default">commons-beanutils.jar</span> is included in the distribution.</li>
   <li>Jakarta Commons Collections classes. <span class="default">commons-collections.jar</span> is included in the distribution.</li>
   <li>Jakarta Commons Logging classes. <span class="default">commons-logging.jar</span> is included in the distribution.</li>
@@ -33,7 +33,7 @@ This task is included in the checkstyle distribution.</p>
 
 <pre>
   &lt;taskdef resource=&quot;checkstyletask.properties&quot;
-           classpath=&quot;/path/to/checkstyle-all-3.1.jar&quot;/&gt;
+           classpath=&quot;/path/to/checkstyle-all-3.2.jar&quot;/&gt;
 </pre>
 
 
@@ -114,7 +114,7 @@ then you will need the following <code>taskdef</code> declaration:</p>
 <p>This task supports the nested elements
 <a href="http://ant.apache.org/manual/CoreTypes/fileset.html">&lt;fileset&gt;</a>,
 <a href="http://ant.apache.org/manual/using.html#path">&lt;classpath&gt;</a>,
-<span class="default">&lt;formatter&gt;</span> and
+<span class="default">&lt;formatter&gt;</span>, and
 <span class="default">&lt;property&gt;</span>.</p>
 
 <p>The parameters for the <span class="default">&lt;formatter&gt;</span> element are:</p>
@@ -177,15 +177,15 @@ The parameters for the <span class="default">&lt;property&gt;</span> element are
 </table>
 
 <h3>Examples</h3>
-<p><b>Run checkstyle with configuration file <code>docs/checkstyle_checks.xml</code> on a single file</b></p>
+<p><b>Run checkstyle with configuration file <code>docs/sun_checks.xml</code> on a single file</b></p>
 <pre>
-  &lt;checkstyle config=&quot;docs/checkstyle_checks.xml&quot; file=&quot;Check.java&quot;/&gt;
+  &lt;checkstyle config=&quot;docs/sun_checks.xml&quot; file=&quot;Check.java&quot;/&gt;
 </pre>
 
 <p><b>Run checkstyle on a set of Java files using site-wide configuration and
 an expanded property value</b></p>
 <pre>
-  &lt;checkstyle config=&quot;/path/to/site/checkstyle_checks.xml&quot;&gt;
+  &lt;checkstyle config=&quot;/path/to/site/sun_checks.xml&quot;&gt;
     &lt;fileset dir=&quot;src/checkstyle&quot; includes=&quot;**/*.java&quot;/&gt;
 
     &lt;!-- Location of cache-file. Something that is project specific --&gt;
@@ -195,27 +195,30 @@ an expanded property value</b></p>
 
 <p><b>Run checkstyle on a set of files and output messages to standard output in plain format, and a file in XML format</b></p>
 <pre>
-  &lt;checkstyle config=&quot;docs/checkstyle_checks.xml&quot;&gt;
+  &lt;checkstyle config=&quot;docs/sun_checks.xml&quot;&gt;
     &lt;fileset dir=&quot;src/checkstyle&quot; includes=&quot;**/*.java&quot;/&gt;
     &lt;formatter type=&quot;plain&quot;/&gt;
     &lt;formatter type=&quot;xml&quot; toFile=&quot;build/checkstyle_errors.xml&quot;/&gt;
   &lt;/checkstyle&gt;
 </pre>
 <p>
-<b>Run checkstyle  with configuration file <code>docs/checkstyle_checks.xml</code> on a file and
+<b>Run checkstyle  with configuration file <code>docs/sun_checks.xml</code> on a file and
 provide a package names file</b>
 </p>
 <pre>
-  &lt;checkstyle config=&quot;docs/checkstyle_checks.xml&quot;
+  &lt;checkstyle config=&quot;docs/sun_checks.xml&quot;
               packageNamesFile=&quot;myPackageNames.xml&quot;
               file=&quot;Check.java&quot;/&gt;
 </pre>
+
+<p>
+
 <p><b>Run checkstyle in an automated build and send an email report if style violations are detected</b></p>
 <pre>
   &lt;target name=&quot;checkstyle&quot;
           description=&quot;Generates a report of code convention violations.&quot;>
 
-    &lt;checkstyle config=&quot;docs/checkstyle_checks.xml&quot;
+    &lt;checkstyle config=&quot;docs/sun_checks.xml&quot;
                 failureProperty=&quot;checkstyle.failure&quot;
                 failOnViolation=&quot;false&quot;&gt;
       &lt;formatter type=&quot;xml&quot; tofile=&quot;checkstyle_report.xml&quot;/&gt;

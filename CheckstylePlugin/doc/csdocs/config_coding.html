@@ -23,7 +23,16 @@
     <td class="menu" valign="top">
       <ul>
         <li>
+          <a href="#ArrayTrailingComma">ArrayTrailingComma</a>
+        </li>
+        <li>
           <a href="#AvoidInlineConditionals">AvoidInlineConditionals</a>
+        </li>
+        <li>
+          <a href="#CovariantEquals">CovariantEquals</a>
+        </li>
+        <li>
+          <a href="#DeclarationOrder">DeclarationOrder</a>
         </li>
         <li>
           <a href="#DoubleCheckedLocking">DoubleCheckedLocking</a>
@@ -35,13 +44,34 @@
           <a href="#EqualsHashCode">EqualsHashCode</a>
         </li>
         <li>
+          <a href="#ExplicitInitialization">ExplicitInitialization</a>
+        </li>
+        <li>
+          <a href="#FinalLocalVariable">FinalLocalVariable</a>
+        </li>
+        <li>
           <a href="#HiddenField">HiddenField</a>
+        </li>
+        <li>
+          <a href="#IllegalCatch">IllegalCatch</a>
         </li>
         <li>
           <a href="#IllegalInstantiation">IllegalInstantiation</a>
         </li>
         <li>
+          <a href="#IllegalToken">IllegalToken</a>
+        </li>
+        <li>
+          <a href="#IllegalTokenText">IllegalTokenText</a>
+        </li>
+        <li>
+          <a href="#IllegalType">IllegalType</a>
+        </li>
+        <li>
           <a href="#InnerAssignment">InnerAssignment</a>
+        </li>
+        <li>
+          <a href="#JUnitTestCase">JUnitTestCase</a>
         </li>
         <li>
           <a href="#MagicNumber">MagicNumber</a>
@@ -50,7 +80,22 @@
           <a href="#MissingSwitchDefault">MissingSwitchDefault</a>
         </li>
         <li>
+          <a href="#NestedIfDepth">NestedIfDepth</a>
+        </li>
+        <li>
+          <a href="#NestedTryDepth">NestedTryDepth</a>
+        </li>
+        <li>
+          <a href="#PackageDeclaration">PackageDeclaration</a>
+        </li>
+        <li>
+          <a href="#ParameterAssignment">ParameterAssignment</a>
+        </li>
+        <li>
           <a href="#RedundantThrows">RedundantThrows</a>
+        </li>
+        <li>
+          <a href="#ReturnCount">ReturnCount</a>
         </li>
         <li>
           <a href="#SimplifyBooleanExpression">SimplifyBooleanExpression</a>
@@ -58,10 +103,58 @@
         <li>
           <a href="#SimplifyBooleanReturn">SimplifyBooleanReturn</a>
         </li>
+        <li>
+          <a href="#StringLiteralEquality">StringLiteralEquality</a>
+        </li>
+        <li>
+          <a href="#SuperClone">SuperClone</a>
+        </li>
+        <li>
+          <a href="#SuperFinalize">SuperFinalize</a>
+        </li>
       </ul>
     </td>
     <!--Content-->
     <td class="content" valign="top" align="left">
+
+      <!-- --> <a name="ArrayTrailingComma"></a> <h2>ArrayTrailingComma</h2> <h4>Description</h4>
+      <p class="body">
+      Checks that array initialization contains a trailing comma.
+      </p>
+      <pre class="body"	>
+      int[] a = new int[] 
+      {
+          1, 
+          2, 
+          3, 
+      }; 
+      </pre>
+      <p class="body">
+      The check allows to not add a comma if both left and right curlys
+      are on the same line.
+      </p>
+      <pre class="body">
+      return new int[] { 0 };
+      </pre>
+      <p class="body">
+      Rationale: Putting this comma in makes it easier to change the
+      order of the elements or add new elements on the end. 
+      </p>
+      <h4>Examples</h4>
+      <p class="body">
+      To configure the check:
+      </p>
+      <pre class="body">
+&lt;module name=&quot;ArrayTrailingComma&quot;/&gt;
+      </pre>
+      <h4>Package</h4>
+      <p class="body">
+      com.puppycrawl.tools.checkstyle.checks.coding
+      </p>
+      <h4>Parent Module</h4>
+      <p class="body">
+      <a href="config.html#treewalker">TreeWalker</a>
+      </p>
 
       <!-- --> <a name="AvoidInlineConditionals"></a> <h2>AvoidInlineConditionals</h2> <h4>Description</h4>
       <p class="body">
@@ -86,7 +179,37 @@ String b = (a==null || a.length&lt;1) ? null : a.substring(1);
       </pre>
       <h4>Package</h4>
       <p class="body">
-      com.puppycrawl.tools.checkstyle.checks
+      com.puppycrawl.tools.checkstyle.checks.coding
+      </p>
+      <h4>Parent Module</h4>
+      <p class="body">
+      <a href="config.html#treewalker">TreeWalker</a>
+      </p>
+
+
+      <!-- --> <a name="CovariantEquals"></a> <h2>CovariantEquals</h2>
+      <h4>Description</h4>
+      <p class="body">
+      Checks that classes that define a covariant <span class="code">equals()</span>
+      method also override method <span class="code">equals(java.lang.Object)</span>.
+      Inspired by <a href="http://www.cs.umd.edu/~pugh/java/bugs/docs/findbugsPaper.pdf">findbugs</a>.
+      </p>
+      <p class="body">
+      Rationale: Mistakenly defining a covariant <span class="code">equals()</span>
+      method without overriding method <span class="code">equals(java.lang.Object)</span>
+      can produce unexpected runtime behaviour.
+      </p>
+
+      <h4>Example</h4>
+      <p class="body">
+      To configure the check:
+      </p>
+      <pre class="body">
+&lt;module name=&quot;CovariantEquals&quot;/&gt;
+      </pre>
+      <h4>Package</h4>
+      <p class="body">
+      com.puppycrawl.tools.checkstyle.checks.coding
       </p>
       <h4>Parent Module</h4>
       <p class="body">
@@ -136,7 +259,7 @@ public class MySingleton
       </pre>
       <h4>Package</h4>
       <p class="body">
-      com.puppycrawl.tools.checkstyle.checks
+      com.puppycrawl.tools.checkstyle.checks.coding
       </p>
       <h4>Parent Module</h4>
       <p class="body">
@@ -156,7 +279,7 @@ public class MySingleton
       </pre>
       <h4>Package</h4>
       <p class="body">
-      com.puppycrawl.tools.checkstyle.checks
+      com.puppycrawl.tools.checkstyle.checks.coding
       </p>
       <h4>Parent Module</h4>
       <p class="body">
@@ -186,7 +309,59 @@ public class MySingleton
       </pre>
       <h4>Package</h4>
       <p class="body">
-      com.puppycrawl.tools.checkstyle.checks
+      com.puppycrawl.tools.checkstyle.checks.coding
+      </p>
+      <h4>Parent Module</h4>
+      <p class="body">
+      <a href="config.html#treewalker">TreeWalker</a>
+      </p>
+
+      <!-- --> <a name="FinalLocalVariable"></a> <h2>FinalLocalVariable</h2> <h4>Description</h4>
+      <p class="body">
+      Checks that local variables that never have their values changed
+      are declared final. The check can be configured to also check that
+      unchanged parameters are declared final.
+      </p>
+      <h4>Properties</h4>
+      <table width="100%" border="1" cellpadding="5" class="body">
+        <tr class="header">
+          <th>name</th>
+          <th>description</th>
+          <th>type</th>
+          <th>default value</th>
+        </tr>
+        <tr>
+          <td>tokens</td>
+          <td>tokens to check</td>
+          <td>subset of tokens <a
+          href="api/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#PARAMETER_DEF">PARAMETER_DEF</a>,
+          <a
+          href="api/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#VARIABLE_DEF">VARIABLE_DEF</a></td>
+          <td>
+          <a
+          href="api/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#VARIABLE_DEF">VARIABLE_DEF</a></td>
+        </tr>
+
+      </table>
+      <h4>Examples</h4>
+      <p class="body">
+      To configure the check:
+      </p>
+      <pre class="body">
+&lt;module name=&quot;FinalLocalVariable&quot;/&gt;
+      </pre>
+      <p class="body">
+      To configure the check so that it checks local variables and parameters:
+      </p>
+      <pre class="body">
+&lt;module name=&quot;HiddenField&quot;&gt;
+    &lt;property name=&quot;tokens&quot; value=&quot;VARIABLE_DEF&quot;/&gt;
+      &lt;property name=&quot;tokens&quot; value=&quot;PARAMETER_DEF&quot;/&gt;
+&lt;/module&gt;
+      </pre>
+      <h4>Package</h4>
+      <p class="body">
+      com.puppycrawl.tools.checkstyle.checks.coding
       </p>
       <h4>Parent Module</h4>
       <p class="body">
@@ -219,6 +394,28 @@ public class MySingleton
           <a
           href="api/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#VARIABLE_DEF">VARIABLE_DEF</a></td>
         </tr>
+
+        <tr>
+          <td>ignoreFormat</td>
+          <td>pattern for names to ignore</td>
+          <td><a href="property_types.html#regexp">regular expression</a></td>
+          <td>(not applied)</td>
+        </tr>
+
+        <tr>
+          <td>ignoreConstructorParameter</td>
+          <td>Controls whether to ignore constructor parameters.</td>
+          <td><a href="property_types.html#boolean">Boolean</a></td>
+          <td><span class="default">false</span></td>
+        </tr>
+        <tr>
+          <td>ignoreSetter</td>
+          <td>Controls whether to ignore the parameter of a property setter method, where
+          the property setter method for field &quot;xyz&quot; has name &quot;setXyz&quot;,
+          one parameter named &quot;xyz&quot;, and return type <span class="code">void</span>.</td>
+          <td><a href="property_types.html#boolean">Boolean</a></td>
+          <td><span class="default">false</span></td>
+        </tr>
       </table>
       <h4>Examples</h4>
       <p class="body">
@@ -235,9 +432,33 @@ public class MySingleton
     &lt;property name=&quot;tokens&quot; value=&quot;VARIABLE_DEF&quot;/&gt;
 &lt;/module&gt;
       </pre>
+      <p class="body">
+      To configure the check so that it ignores the name &quot;rcsid&quot;:
+      </p>
+      <pre class="body">
+&lt;module name=&quot;HiddenField&quot;&gt;
+    &lt;property name=&quot;ignoreFormat&quot; value=&quot;^rcsid$&quot;/&gt;
+&lt;/module&gt;
+      </pre>
+      <p class="body">
+      To configure the check so that it ignores constructor parameters:
+      </p>
+      <pre class="body">
+&lt;module name=&quot;HiddenField&quot;&gt;
+    &lt;property name=&quot;ignoreConstructorParameter&quot; value=&quot;true&quot;/&gt;
+&lt;/module&gt;
+      </pre>
+      <p class="body">
+      To configure the check so that it ignores the parameter of setter methods:
+      </p>
+      <pre class="body">
+&lt;module name=&quot;HiddenField&quot;&gt;
+    &lt;property name=&quot;ignoreSetter&quot; value=&quot;true&quot;/&gt;
+&lt;/module&gt;
+      </pre>
       <h4>Package</h4>
       <p class="body">
-      com.puppycrawl.tools.checkstyle.checks
+      com.puppycrawl.tools.checkstyle.checks.coding
       </p>
       <h4>Parent Module</h4>
       <p class="body">
@@ -294,12 +515,134 @@ public class MySingleton
 
       <h4>Package</h4>
       <p class="body">
-      com.puppycrawl.tools.checkstyle.checks
+      com.puppycrawl.tools.checkstyle.checks.coding
       </p>
       <h4>Parent Module</h4>
       <p class="body">
       <a href="config.html#treewalker">TreeWalker</a>
       </p>
+
+      <!-- --> <a name="IllegalToken"></a> <h2>IllegalToken</h2> <h4>Description</h4>
+      <p class="body">
+      Checks for illegal tokens.
+      </p>
+      <p class="body">
+      Rational: Certain language features often lead to hard to
+      maintain code or are non-obvious to novice developers. Other
+      features may be discouraged in certain frameworks, such as not
+      having native methods in EJB components.
+      </p>
+      <table width="100%" border="1" cellpadding="5" class="body">
+        <tr class="header">
+          <th>name</th>
+          <th>description</th>
+          <th>type</th>
+          <th>default value</th>
+        </tr>
+        <tr>
+          <td>tokens</td>
+          <td>tokens to check</td>
+          <td>subset of <a
+          href="api/com/puppycrawl/tools/checkstyle/api/TokenTypes.html">TokenTypes</a>,
+          <a</td>
+          <td><a
+          href="api/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#LITERAL_SWITCH">LITERAL_SWITCH</a>,
+          <a
+          href="api/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#POST_INC">POST_INC</a>,
+          <a
+          href="api/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#POST_DEC">POST_DEC</a></td>
+        </tr>
+      </table>
+      <h4>Example</h4>
+      <p class="body">
+      To configure the check to find token LITERAL_NATIVE:
+      </p>
+      <pre class="body">
+&lt;module name=&quot;IllegalToken&quot;&gt;
+    &lt;property name=&quot;tokens&quot; value=&quot;LITERAL_NATIVE&quot;/&gt;
+&lt;/module&gt;
+      </pre>
+
+      <h4>Package</h4>
+      <p class="body">
+      com.puppycrawl.tools.checkstyle.checks.coding
+      </p>
+      <h4>Parent Module</h4>
+      <p class="body">
+      <a href="config.html#treewalker">TreeWalker</a>
+      </p>
+
+
+      <!-- --> <a name="IllegalTokenText"></a> <h2>IllegalTokenText</h2> <h4>Description</h4>
+      <p class="body">
+      Checks for illegal token text.
+      </p>
+      <table width="100%" border="1" cellpadding="5" class="body">
+        <tr class="header">
+          <th>name</th>
+          <th>description</th>
+          <th>type</th>
+          <th>default value</th>
+        </tr>
+        <tr>
+          <td>tokens</td>
+          <td>tokens to check</td>
+          <td>subset of <a
+          href="api/com/puppycrawl/tools/checkstyle/api/TokenTypes.html">TokenTypes</a>
+          </td>
+          <td>empty</td>
+        </tr>
+        <tr>
+          <td>format</td>
+          <td>illegal pattern</td>
+          <td><a href="property_types.html#regexp">regular expression</a></td>
+          <td><span class="default">^$</span> (empty)</td>
+        </tr>
+        <tr>
+          <td>ignoreCase</td>
+          <td>Controls whether to ignore case when matching.</td>
+          <td><a href="property_types.html#boolean">Boolean</a></td>
+          <td><span class="default">false</span></td>
+        </tr>
+        <tr>
+          <td>message</td>
+          <td>Message which is used to notify about violations; 
+          if empty then the default message is used.</td>
+          <td><a href="property_types.html#String">String</a></td>
+          <td><span class="default">&quot;&quot;</span>(empty)</td>
+        </tr>
+      </table>
+      <h4>Examples</h4>
+      <p class="body">
+      To configure the check to forbid String literals containing <span class="code">&quot;a href&quot;</span>:
+      </p>
+      <pre class="body">
+&lt;module name=&quot;IllegalTokenText&quot;&gt;
+    &lt;property name=&quot;tokens&quot; value=&quot;STRING_LITERAL&quot;/&gt;
+    &lt;property name=&quot;format&quot; value=&quot;a href&quot;/&gt;
+&lt;/module&gt;
+      </pre>
+
+      <p class="body">
+      To configure the check to forbid leading zeros in an integer literal, other than
+      zero and a hex literal:
+      </p>
+      <pre class="body">
+&lt;module name=&quot;IllegalTokenText&quot;&gt;
+    &lt;property name=&quot;tokens&quot; value=&quot;NUM_INT,NUM_LONG&quot;/&gt;
+    &lt;property name=&quot;format&quot; value=&quot;^0[^lx]&quot;/&gt;
+    &lt;property name=&quot;ignoreCase&quot; value=&quot;true&quot;/&gt;
+&lt;/module&gt;
+      </pre>
+    <h4>Package</h4>
+      <p class="body">
+      com.puppycrawl.tools.checkstyle.checks.coding
+      </p>
+      <h4>Parent Module</h4>
+      <p class="body">
+      <a href="config.html#treewalker">TreeWalker</a>
+      </p>
+
       <!-- --> <a name="InnerAssignment"></a> <h2>InnerAssignment</h2> <h4>Description</h4>
       <p class="body">
       Checks for assignments in subexpressions, such as in <span class="code">String s
@@ -367,7 +710,7 @@ public class MySingleton
       </pre>
       <h4>Package</h4>
       <p class="body">
-      com.puppycrawl.tools.checkstyle.checks
+      com.puppycrawl.tools.checkstyle.checks.coding
       </p>
       <h4>Parent Module</h4>
       <p class="body">
@@ -421,7 +764,7 @@ public class MySingleton
       </pre>
       <h4>Package</h4>
       <p class="body">
-      com.puppycrawl.tools.checkstyle.checks
+      com.puppycrawl.tools.checkstyle.checks.coding
       </p>
       <h4>Parent Module</h4>
       <p class="body">
@@ -449,7 +792,7 @@ public class MySingleton
       </pre>
       <h4>Package</h4>
       <p class="body">
-      com.puppycrawl.tools.checkstyle.checks
+      com.puppycrawl.tools.checkstyle.checks.coding
       </p>
       <h4>Parent Module</h4>
       <p class="body">
@@ -501,7 +844,7 @@ public class MySingleton
       </pre>
       <h4>Package</h4>
       <p class="body">
-      com.puppycrawl.tools.checkstyle.checks
+      com.puppycrawl.tools.checkstyle.checks.coding
       </p>
       <h4>Parent Module</h4>
       <p class="body">
@@ -526,7 +869,7 @@ public class MySingleton
       </pre>
       <h4>Package</h4>
       <p class="body">
-      com.puppycrawl.tools.checkstyle.checks
+      com.puppycrawl.tools.checkstyle.checks.coding
       </p>
       <h4>Parent Module</h4>
       <p class="body">
@@ -562,12 +905,519 @@ return !valid();
       </pre>
       <h4>Package</h4>
       <p class="body">
-      com.puppycrawl.tools.checkstyle.checks
+      com.puppycrawl.tools.checkstyle.checks.coding
       </p>
       <h4>Parent Module</h4>
       <p class="body">
       <a href="config.html#treewalker">TreeWalker</a>
       </p>
+
+      <!-- --> <a name="StringLiteralEquality"></a> <h2>StringLiteralEquality</h2>
+      <h4>Description</h4>
+      <p class="body">
+      Checks that string literals are not used with
+      <code>==</code> or <code>&#33;=</code>.
+      </p>
+
+      <p class="body">
+      Rationale: Novice Java programmers often use code like
+      <code>if&nbsp;(x&nbsp;==&nbsp;&quot;something&quot;)</code> when they mean
+      <code>if&nbsp;(&quot;something&quot;.equals(x))</code>.
+      </p>
+
+      <h4>Example</h4>
+      <p class="body">
+      To configure the check:
+      </p>
+      <pre class="body">
+&lt;module name=&quot;StringLiteralEquality&quot;/&gt;
+      </pre>
+      <h4>Package</h4>
+      <p class="body">
+      com.puppycrawl.tools.checkstyle.checks.coding
+      </p>
+      <h4>Parent Module</h4>
+      <p class="body">
+      <a href="config.html#treewalker">TreeWalker</a>
+      </p>
+
+      <!-- --> <a name="NestedIfDepth"></a> <h2>NestedIfDepth</h2>
+      <h4>Description</h4>
+      <p class="body">
+      Restricts nested if-else blocks to a specified depth (default = 1).
+      </p>
+
+      <h4>Properties</h4>
+      <table width="100%" border="1" cellpadding="5" class="body">
+        <tr class="header">
+          <th>name</th>
+          <th>description</th>
+          <th>type</th>
+          <th>default value</th>
+        </tr>
+        <tr>
+          <td>max</td>
+          <td>allowed nesting depth</td>
+          <td><a href="property_types.html#integer">Integer</a></td>
+          <td><span class="default">1</span></td>
+        </tr>
+      </table>
+
+      <h4>Example</h4>
+      <p class="body">
+      To configure the check:
+      </p>
+      <pre class="body">
+&lt;module name=&quot;NestedIfDepth&quot;/&gt;
+      </pre>
+      <p class="body">
+      To configure the check to allow nesting depth 3:
+      </p>
+      <pre class="body">
+&lt;module name=&quot;NestedIfDepth&quot;&gt;
+    &lt;property name=&quot;max&quot; value=&quot;3&quot;/&gt;
+&lt;/module&gt;
+      </pre>
+      <h4>Package</h4>
+      <p class="body">
+      com.puppycrawl.tools.checkstyle.checks.coding
+      </p>
+      <h4>Parent Module</h4>
+      <p class="body">
+      <a href="config.html#treewalker">TreeWalker</a>
+      </p>
+
+      <!-- --> <a name="NestedTryDepth"></a> <h2>NestedTryDepth</h2>
+      <h4>Description</h4>
+      <p class="body">
+      Restricts nested if-else blocks to a specified depth (default = 1).
+      </p>
+
+      <h4>Properties</h4>
+      <table width="100%" border="1" cellpadding="5" class="body">
+        <tr class="header">
+          <th>name</th>
+          <th>description</th>
+          <th>type</th>
+          <th>default value</th>
+        </tr>
+        <tr>
+          <td>max</td>
+          <td>allowed nesting depth</td>
+          <td><a href="property_types.html#integer">Integer</a></td>
+          <td><span class="default">1</span></td>
+        </tr>
+      </table>
+
+      <h4>Example</h4>
+      <p class="body">
+      To configure the check:
+      </p>
+      <pre class="body">
+&lt;module name=&quot;NestedTryDepth&quot;/&gt;
+      </pre>
+      <p class="body">
+      To configure the check to allow nesting depth 3:
+      </p>
+      <pre class="body">
+&lt;module name=&quot;NestedTryDepth&quot;&gt;
+    &lt;property name=&quot;max&quot; value=&quot;3&quot;/&gt;
+&lt;/module&gt;
+      </pre>
+      <h4>Package</h4>
+      <p class="body">
+      com.puppycrawl.tools.checkstyle.checks.coding
+      </p>
+      <h4>Parent Module</h4>
+      <p class="body">
+      <a href="config.html#treewalker">TreeWalker</a>
+      </p>
+
+
+      <!-- --> <a name="SuperClone"></a> <h2>SuperClone</h2> <h4>Description</h4>
+      <p class="body">
+      Checks that an overriding <span class="code">clone()</span> method invokes <span class="code">super.clone()</span>.
+      </p>
+      <p class="body">
+      Reference: <a href="http://java.sun.com/j2se/1.4.1/docs/api/java/lang/Object.html#clone()">Object.clone()</a>. 
+      </p>
+      <h4>Examples</h4>
+      <p class="body">
+      To configure the check:
+      </p>
+      <pre class="body">
+&lt;module name=&quot;SuperClone&quot;/&gt;
+      </pre>
+      <h4>Package</h4>
+      <p class="body">
+      com.puppycrawl.tools.checkstyle.checks.coding
+      </p>
+      <h4>Parent Module</h4>
+      <p class="body">
+      <a href="config.html#treewalker">TreeWalker</a>
+      </p>
+
+
+      <!-- --> <a name="SuperFinalize"></a> <h2>SuperFinalize</h2> <h4>Description</h4>
+      <p class="body">
+      Checks that an overriding <span class="code">finalize()</span> method invokes <span class="code">super.finalize()</span>.
+      </p>
+      <p class="body">
+      Reference: <a href="http://java.sun.com/docs/books/tutorial/java/data/garbagecollection.html">Cleaning
+      Up Unused Objects</a>. 
+      </p>
+      <h4>Examples</h4>
+      <p class="body">
+      To configure the check:
+      </p>
+      <pre class="body">
+&lt;module name=&quot;SuperFinalize&quot;/&gt;
+      </pre>
+      <h4>Package</h4>
+      <p class="body">
+      com.puppycrawl.tools.checkstyle.checks.coding
+      </p>
+      <h4>Parent Module</h4>
+      <p class="body">
+      <a href="config.html#treewalker">TreeWalker</a>
+      </p>
+
+      <!-- --> <a name="SuperClone"></a> <h2>SuperClone</h2> <h4>Description</h4>
+      <p class="body">
+      Checks that an overriding <span class="code">clone()</span> method invokes <span class="code">super.clone()</span>.
+      </p>
+      <p class="body">
+      Reference: <a href="http://java.sun.com/j2se/1.4.1/docs/api/java/lang/Object.html#clone()">Object.clone()</a>. 
+      </p>
+      <h4>Examples</h4>
+      <p class="body">
+      To configure the check:
+      </p>
+      <pre class="body">
+&lt;module name=&quot;SuperClone&quot;/&gt;
+      </pre>
+      <h4>Package</h4>
+      <p class="body">
+      com.puppycrawl.tools.checkstyle.checks.coding
+      </p>
+      <h4>Parent Module</h4>
+      <p class="body">
+      <a href="config.html#treewalker">TreeWalker</a>
+      </p>
+
+      <!-- --> <a name="IllegalCatch"></a> <h2>IllegalCatch</h2> <h4>Description</h4>
+      <p class="body">
+      Catching java.lang.Exception, java.lang.Error or java.lang.RuntimeException
+      is almost never acceptable.
+      </p>
+      <p class="body">
+      Rationale: Junior developers often simply catch Exception in an
+      attempt to handle multiple exception classes. This unfortunately
+      leads to code that inadvertantly catchs NPE, OutOfMemoryErrors,
+      etc.
+      </p>
+      <h4>Properties</h4>
+      <table width="100%" border="1" cellpadding="5" class="body">
+        <tr class="header">
+          <th>name</th>
+          <th>description</th>
+          <th>type</th>
+          <th>default value</th>
+        </tr>
+        <tr>
+          <td>illegalClassNames</td>
+          <td>exception class names to reject</td>
+          <td><a href="property_types.html#stringSet">list of strings</a></td>
+          <td><span class="default">&quot;java.lang.Exception,
+          java.lang.Throwable, java.lang.RuntimeException&quot;</span></td>
+        </tr>
+      </table>
+
+      <h4>Examples</h4>
+      <p class="body">
+      To configure the check:
+      </p>
+      <pre class="body">
+&lt;module name=&quot;IllegalCatch&quot;/&gt;
+      </pre>
+      <h4>Package</h4>
+      <p class="body">
+      com.puppycrawl.tools.checkstyle.checks.coding
+      </p>
+      <h4>Parent Module</h4>
+      <p class="body">
+      <a href="config.html#treewalker">TreeWalker</a>
+      </p>
+
+      <!-- --> <a name="PackageDeclaration"></a> <h2>PackageDeclaration</h2> 
+      <h4>Description</h4>
+      <p class="body">
+      Ensure a class is has a package declaration.
+      </p>
+      <p class="body">
+      Rationale: Classes that live in the null package cannot be
+      imported. Many novice developers are not aware of this.
+      </p>
+
+      <h4>Examples</h4>
+      <p class="body">
+      To configure the check:
+      </p>
+      <pre class="body">
+&lt;module name=&quot;PackageDeclaration&quot;/&gt;
+      </pre>
+      <h4>Package</h4>
+      <p class="body">
+      com.puppycrawl.tools.checkstyle.checks.coding
+      </p>
+      <h4>Parent Module</h4>
+      <p class="body">
+      <a href="config.html#treewalker">TreeWalker</a>
+      </p>
+
+      <!-- --> <a name="JUnitTestCase"></a> <h2>JUnitTestCase</h2> 
+      <h4>Description</h4>
+      <p class="body">
+      Ensures that the setUp(), tearDown()methods are named correctly,
+      have no arguments, return void and are either public or protected.<br>
+      Also ensures that suite() is named correctly, have no arguments, return
+      junit.framewotk.Test, public and static.
+      </p>
+      <p class="body">
+      Rationale: often times developers will misname one or more of these
+       methods and not realise that the method is not being called.
+      </p>
+
+      <h4>Examples</h4>
+      <p class="body">
+      To configure the check:
+      </p>
+      <pre class="body">
+&lt;module name=&quot;JUnitTestCase&quot;/&gt;
+      </pre>
+      <h4>Package</h4>
+      <p class="body">
+      com.puppycrawl.tools.checkstyle.checks.coding
+      </p>
+      <h4>Parent Module</h4>
+      <p class="body">
+      <a href="config.html#treewalker">TreeWalker</a>
+      </p>
+
+      <!-- --> <a name="ReturnCount"></a> <h2>ReturnCount</h2> <h4>Description</h4>
+      <p class="body">
+      Restrict the number of return statements. Default = 2.
+      </p>
+
+      <p class="body">
+      Rationale:
+      Too many return points can be indication that code is
+      attempting to do too much or may be difficult to understand.
+      </p>
+
+      <h4>Properties</h4>
+      <table width="100%" border="1" cellpadding="5" class="body">
+        <tr class="header">
+          <th>name</th>
+          <th>description</th>
+          <th>type</th>
+          <th>default value</th>
+        </tr>
+        <tr>
+          <td>max</td>
+          <td>maximum allowed number of return statments</td>
+          <td><a href="property_types.html#integer">Integer</a></td>
+          <td><span class="default">2</span></td>
+        </tr>
+      </table>
+
+      <h4>Examples</h4>
+      <p class="body">
+      To configure the check so that it doesn't allow more than three
+      return statements per method:
+      </p>
+      <pre class="body">
+&lt;module name=&quot;ReturnCount&quot;&gt;
+    &lt;property name=&quot;max&quot; value=&quot;3&quot;/&gt;
+&lt;/module&gt;
+      </pre>
+      <h4>Package</h4>
+      <p class="body">
+      com.puppycrawl.tools.checkstyle.checks.coding
+      </p>
+      <h4>Parent Module</h4>
+      <p class="body">
+      <a href="config.html#treewalker">TreeWalker</a>
+      </p>
+
+      <!-- --> <a name="IllegalType"></a> <h2>IllegalType</h2> <h4>Description</h4>
+      <p class="body">
+      Checks that particular class are never used as types in variable
+      declarations, return values or parameters. Includes
+      a pattern check that by default disallows abstract classes.
+      </p>
+
+      <p class="body">
+      Rationale:
+      Helps reduce coupling on concrete classes. In addition abstract
+      classes should be thought of a convenience base class implementations
+      of interfaces and as such are not types themsleves. 
+      </p>
+
+      <h4>Properties</h4>
+      <table width="100%" border="1" cellpadding="5" class="body">
+        <tr class="header">
+          <th>name</th>
+          <th>description</th>
+          <th>type</th>
+          <th>default value</th>
+        </tr>
+        <tr>
+          <td>tokens</td>
+          <td>tokens to check</td>
+          <td>subset of tokens <a
+          href="api/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#PARAMETER_DEF">PARAMETER_DEF</a>,
+          <a
+          href="api/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#VARIABLE_DEF">VARIABLE_DEF</a>
+          <a href="api/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#METHOD_DEF">METHOD_DEF</a></td>
+
+          <td><a
+          href="api/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#PARAMETER_DEF">PARAMETER_DEF</a>,
+          <a
+          href="api/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#VARIABLE_DEF">VARIABLE_DEF</a>
+          <a href="api/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#METHOD_DEF">METHOD_DEF</a></td>
+          </tr>
+        <tr>
+          <td>illegalClassNames</td>
+          <td>classes that should not be used as types in variable
+          declarations, return values or parameters. </td>
+          <td><a href="property_types.html#stringSet">String Set</a></td>
+          <td>&quot;java.util.GregorianCalendar, java.util.Hashtable,
+          java.util.HashSet, java.util.HashMap, java.util.ArrayList,
+          java.util.LinkedList, java.util.LinkedHashMap,
+          java.util.LinkedHashSet, java.util.TreeSet,
+          java.util.TreeMap, java.util.Vector&quot;</td>
+        </tr>
+        <tr>
+          <td>ignoredMethodNames</td>
+          <td>methods that should not be checked</td>
+          <td><a href="property_types.html#stringSet">String Set</a></td>
+          <td>&quot;getInitialContext, getEnvironment&quot; </td>
+        </tr>
+      </table>
+
+      <h4>Examples</h4>
+      <p class="body">
+      To configure the check so that it ignore getInstance() method:
+      </p>
+      <pre class="body">
+&lt;module name=&quot;IllegalType&quot;&gt;
+    &lt;property name=&quot;ignoredMethodNames&quot; value=&quot;getInstance&quot;/&gt;
+&lt;/module&gt;
+      </pre>
+      <h4>Package</h4>
+      <p class="body">
+      com.puppycrawl.tools.checkstyle.checks.coding
+      </p>
+      <h4>Parent Module</h4>
+      <p class="body">
+      <a href="config.html#treewalker">TreeWalker</a>
+      </p>
+
+      <!-- --> <a name="DeclarationOrder"></a> <h2>DeclarationOrder</h2> <h4>Description</h4>
+      <p class="body">
+      According to
+      <a
+      href="http://java.sun.com/docs/codeconv/html/CodeConventions.doc2.html#1852">
+      Code Conventions for the Java Programming Language</a>
+      , the parts of a class or interface declaration should appear in the
+      following order
+
+      <li> Class (static) variables. First the public class variables, then
+           the protected, then package level (no access modifier), and then
+           the private. </li>
+      <li> Instance variables. First the public class variables, then
+           the protected, then package level (no access modifier), and then
+           the private. </li>
+      <li> Constructors </li>
+      <li> Methods </li>
+      </p>
+
+      <h4>Examples</h4>
+      <p class="body">
+      To configure the check:
+      </p>
+      <pre class="body">
+&lt;module name=&quot;DeclarationOrder&quot;/&gt;
+      </pre>
+      <h4>Package</h4>
+      <p class="body">
+      com.puppycrawl.tools.checkstyle.checks.coding
+      </p>
+      <h4>Parent Module</h4>
+      <p class="body">
+      <a href="config.html#treewalker">TreeWalker</a>
+      </p>
+
+      <!-- --> <a name="ParameterAssignment"></a> <h2>ParameterAssignment</h2> <h4>Description</h4>
+      <p class="body"> Disallow assignment of parameters.</p>
+      <p class="body">Rationale: Parameter assignment is often
+      considered poor programming practice. Forcing developers to
+      declare parameters as final is often onerous. Having a check
+      ensure that parameters are never assigned would give the best of
+      both worlds.</p>
+
+      <h4>Examples</h4>
+      <p class="body">
+      To configure the check:
+      </p>
+      <pre class="body">
+&lt;module name=&quot;ParameterAssignment&quot;/&gt;
+      </pre>
+      <h4>Package</h4>
+      <p class="body">
+      com.puppycrawl.tools.checkstyle.checks.coding
+      </p>
+      <h4>Parent Module</h4>
+      <p class="body">
+      <a href="config.html#treewalker">TreeWalker</a>
+      </p>
+
+      <!-- --> <a name="ExplicitInitialization"></a> <h2>ExplicitInitialization</h2> <h4>Description</h4>
+      <p class="body">Checks if any class or object member explicitly
+      initialized to default for its type value (<span
+      class="code">null</span> for object references, zero for numeric
+      types and <span class="code">char</span> and <span
+      class="code">false</span> for <span
+      class="code">booolean</span>.</p>
+      <p class="body">Rationale: each instance variable gets
+      initialized twice, to the same value.  Java
+      initializes each instance variable to its default
+      value (0 or null) before performing any
+      initialization specified in the code.  So in this case,
+      x gets initialized to 0 twice, and bar gets initialized
+      to null twice.  So there is a minor inefficiency.  This style of
+      coding is a hold-over from C/C++ style coding,
+      and it shows that the developer isn't really confident that
+      Java really initializes instance variables to default
+      values.</p>
+
+      <h4>Examples</h4>
+      <p class="body">
+      To configure the check:
+      </p>
+      <pre class="body">
+&lt;module name=&quot;ExplicitInitialization&quot;/&gt;
+      </pre>
+      <h4>Package</h4>
+      <p class="body">
+      com.puppycrawl.tools.checkstyle.checks.coding
+      </p>
+      <h4>Parent Module</h4>
+      <p class="body">
+      <a href="config.html#treewalker">TreeWalker</a>
+      </p>
+
     </td>
   </tr>
 </table>
