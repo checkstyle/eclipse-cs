@@ -101,95 +101,6 @@ public class RuleConfiguration implements Cloneable, XMLTags, Configuration
      */
     public RuleConfiguration(Node node) throws CheckstylePluginException
     {
-    	
-    	this(node,false);
-    	
-    }
-    
-    /**
-     *  Construct from a config file DOM node.
-     * @param node	the node
-     * @param defaultCSFormat	if ture parse in default checkstyle format, if false parse using
-     * Schnedier enhanced format
-     */
-    public RuleConfiguration(Node node, boolean defaultCSFormat) throws CheckstylePluginException
-    {
-    	if (defaultCSFormat)
-    	{
-    		String temp = XMLUtil.getNodeAttributeValue(node, NAME_TAG);
-        if (temp != null)
-        {
-            mImplClassname = temp.trim();
-        }
-        else
-        {
-            String message = "Rule missing implementation classname";
-            CheckstyleLog.warning(message);
-            throw new CheckstylePluginException(message);
-        }
-        
-        temp = XMLUtil.getNodeAttributeValue(node, NAME_TAG);
-        if (temp != null)
-        {
-            mRuleName = temp.trim();
-
-        }
-        else
-        {
-            String message = "Rule missing name";
-            CheckstyleLog.warning(message);
-            throw new CheckstylePluginException(message);
-        }
-        
-        /*
-        temp = XMLUtil.getNodeAttributeValue(node, SEVERITY_TAG);
-        if (temp != null)
-        {
-            mSeverityLevel = SeverityLevel.getInstance(temp.trim());
-        }
-        else
-        {
-            String message = "Rule missing severity level in metadata";
-            CheckstyleLog.warning(message);
-            throw new CheckstyleException(message);
-        }
-        */
-        
-        
-        //Node configItems = XMLUtil.getChildNode(node, PROPERTY_TAG);
-        NodeList children = node.getChildNodes();
-        boolean serverityLevelFound = false;
-        int count = children.getLength();
-        for (int i = 0; i < count; i++)
-        {
-            Node child = children.item(i);
-            if (child.getNodeName().equals(PROPERTY_TAG))
-            {
-                ConfigProperty prop = new ConfigProperty(child);
-                mConfigProperties.put(prop.getName(), prop);
-                
-                if (prop.getName().equals(SEVERITY_TAG))
-                {
-                	
-                	serverityLevelFound = true;
-                	String secLev = prop.getValue();
-                	mSeverityLevel = SeverityLevel.getInstance(secLev.trim());
-                }
-            }
-        }
-        if (!serverityLevelFound)
-        {
-        	String message = "Rule missing severity level in metadata";
-            CheckstyleLog.warning(message);
-            throw new CheckstylePluginException(message);
-        }
-        /////////////////////////////////////////
-    	}
-    	else
-    	{
-    	
-    	
-    	
         String temp = XMLUtil.getNodeAttributeValue(node, CLASSNAME_TAG);
         if (temp != null)
         {
@@ -238,7 +149,6 @@ public class RuleConfiguration implements Cloneable, XMLTags, Configuration
                 mConfigProperties.put(prop.getName(), prop);
             }
         }
-    	}//end else
     }
 
 	//=================================================

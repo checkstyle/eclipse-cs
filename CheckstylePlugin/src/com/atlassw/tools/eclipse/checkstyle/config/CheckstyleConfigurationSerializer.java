@@ -23,8 +23,6 @@ package com.atlassw.tools.eclipse.checkstyle.config;
 //=================================================
 // Imports from java namespace
 //=================================================
-import java.util.LinkedList;
-import java.util.List;
 
 //=================================================
 // Imports from javax namespace
@@ -45,7 +43,6 @@ import com.puppycrawl.tools.checkstyle.api.Configuration;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
 
 /**
@@ -116,53 +113,6 @@ public class CheckstyleConfigurationSerializer implements XMLTags
         
         return xml;
 		
-	}
-	
-	public static List deserialize(Document configDoc) throws CheckstylePluginException
-	{
-		List checkConfigs = new LinkedList();
-
-		if (configDoc == null)
-		{
-			String message = "Failed to read and parse check configurations";
-			CheckstyleLog.warning(message);
-			throw new CheckstylePluginException(message);
-		}
-
-		Node rootNode = configDoc.getDocumentElement();
-		String checkConfigName = "";
-		checkConfigName = XMLUtil.getNodeAttributeValue(rootNode, CHECK_CONFIG_NAME_TAG);
-
-		NodeList children = rootNode.getChildNodes();
-		int count = children.getLength();
-		for (int i = 0; i < count; i++)
-		{
-			Node node = children.item(i);
-			if (node.getNodeType() == Node.ELEMENT_NODE)
-			{
-				if (node.getNodeName().equals(MODULE_TAG))
-				{
-
-					Node treewalkerNode = children.item(i);
-					if (treewalkerNode.getNodeType() == Node.ELEMENT_NODE)
-					{
-
-						CheckConfiguration config =
-							new CheckConfiguration(treewalkerNode, checkConfigName, true);
-						if (config == null)
-						{
-							CheckstyleLog.warning("Failed to create CheckConfiguration, ignoring");
-						}
-						else
-						{
-							checkConfigs.add(config);
-						}
-					}
-				}
-			}
-		}
-
-		return checkConfigs;
 	}
 	
 	/**

@@ -336,50 +336,6 @@ public class CheckConfigurationFactory implements XMLTags
         return checkConfigs;
 	}
 	
-	
-	
-	private static List loadCSFile(File file) throws CheckstylePluginException
-	{
-        List checkConfigs = null;
-		FileInputStream inStream = null;
-		try
-		{
-			inStream = new FileInputStream(file);
-			Document configDoc = XMLUtil.newDocument(inStream);
-			if (configDoc == null)
-			{
-                String message = "Failed to read and parse check configurations";
-                CheckstyleLog.warning(message);
-				throw new CheckstylePluginException(message);
-			}
-
-			checkConfigs = CheckstyleConfigurationSerializer.deserialize(configDoc);
-
-			
-		}
-		catch (FileNotFoundException e)
-		{
-            String message = "Failed to read check configurations: " + e.getMessage();
-            CheckstyleLog.warning(message, e);
-            throw new CheckstylePluginException(message);
-		}
-		finally
-		{
-			if (inStream != null)
-			{
-				try
-				{
-					inStream.close();
-				}
-				catch (Exception e)
-				{
-                    CheckstyleLog.warning("Error closing input file", e);
-                }
-			}
-		}
-        
-        return checkConfigs;
-	}
    
     /**
      *  Write a collection of check configurations to a file.
