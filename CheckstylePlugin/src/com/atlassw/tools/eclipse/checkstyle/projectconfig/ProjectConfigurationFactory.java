@@ -235,7 +235,7 @@ public final class ProjectConfigurationFactory
         catch (Exception e)
         {
             String message = "Failed to write audit configuration file: " + e.getMessage();
-            CheckstyleLog.warning(message, e);
+            CheckstyleLog.error(message, e);
             throw new CheckstylePluginException(message);
         }
         finally
@@ -243,12 +243,20 @@ public final class ProjectConfigurationFactory
             try
             {
                 pipeOut.close();
-                pipeIn.close();
             }
-            catch (IOException e1)
+            catch (Exception e1)
             {
                 //can nothing do about it
             }
+            try
+            {
+                pipeIn.close();
+            }
+            catch (Exception e1)
+            {
+                //can nothing do about it
+            }
+
         }
     }
 
@@ -266,13 +274,12 @@ public final class ProjectConfigurationFactory
         xmlOut.startDocument();
 
         AttributesImpl attr = new AttributesImpl();
-        attr
-                .addAttribute(null, null, XMLTags.FORMAT_VERSION_TAG, null,
-                        CURRENT_FILE_FORMAT_VERSION);
-        attr.addAttribute(null, null, XMLTags.SIMPLE_CONFIG_TAG, null, ""
+        attr.addAttribute("", XMLTags.FORMAT_VERSION_TAG, XMLTags.FORMAT_VERSION_TAG, null,
+                CURRENT_FILE_FORMAT_VERSION);
+        attr.addAttribute("", XMLTags.SIMPLE_CONFIG_TAG, XMLTags.SIMPLE_CONFIG_TAG, null, ""
                 + config.isUseSimpleConfig());
 
-        xmlOut.startElement(null, null, XMLTags.FILESET_CONFIG_TAG, attr);
+        xmlOut.startElement("", XMLTags.FILESET_CONFIG_TAG, XMLTags.FILESET_CONFIG_TAG, attr);
 
         List fileSets = config.getFileSets();
         int size = fileSets != null ? fileSets.size() : 0;
@@ -288,7 +295,7 @@ public final class ProjectConfigurationFactory
             writeFilter(filters[i], xmlOut);
         }
 
-        xmlOut.endElement(null, null, XMLTags.FILESET_CONFIG_TAG);
+        xmlOut.endElement("", XMLTags.FILESET_CONFIG_TAG, XMLTags.FILESET_CONFIG_TAG);
         xmlOut.endDocument();
     }
 
@@ -303,12 +310,13 @@ public final class ProjectConfigurationFactory
         throws SAXException
     {
         AttributesImpl attr = new AttributesImpl();
-        attr.addAttribute(null, null, XMLTags.NAME_TAG, null, fileSet.getName());
-        attr.addAttribute(null, null, XMLTags.CHECK_CONFIG_NAME_TAG, null, fileSet
-                .getCheckConfigName());
-        attr.addAttribute(null, null, XMLTags.ENABLED_TAG, null, "" + fileSet.isEnabled());
+        attr.addAttribute("", XMLTags.NAME_TAG, XMLTags.NAME_TAG, null, fileSet.getName());
+        attr.addAttribute("", XMLTags.CHECK_CONFIG_NAME_TAG, XMLTags.CHECK_CONFIG_NAME_TAG, null,
+                fileSet.getCheckConfigName());
+        attr.addAttribute("", XMLTags.ENABLED_TAG, XMLTags.ENABLED_TAG, null, ""
+                + fileSet.isEnabled());
 
-        xmlOut.startElement(null, null, XMLTags.FILESET_TAG, attr);
+        xmlOut.startElement("", XMLTags.FILESET_TAG, XMLTags.FILESET_TAG, attr);
 
         //write patterns
         List patterns = fileSet.getFileMatchPatterns();
@@ -318,7 +326,7 @@ public final class ProjectConfigurationFactory
             writeMatchPattern((FileMatchPattern) patterns.get(i), xmlOut);
         }
 
-        xmlOut.endElement(null, null, XMLTags.FILESET_TAG);
+        xmlOut.endElement("", XMLTags.FILESET_TAG, XMLTags.FILESET_TAG);
     }
 
     /**
@@ -333,12 +341,14 @@ public final class ProjectConfigurationFactory
     {
 
         AttributesImpl attr = new AttributesImpl();
-        attr.addAttribute(null, null, XMLTags.MATCH_PATTERN_TAG, null, pattern.getMatchPattern());
-        attr.addAttribute(null, null, XMLTags.INCLUDE_PATTERN_TAG, null, ""
+        attr.addAttribute("", XMLTags.MATCH_PATTERN_TAG, XMLTags.MATCH_PATTERN_TAG, null, pattern
+                .getMatchPattern());
+        attr.addAttribute("", XMLTags.INCLUDE_PATTERN_TAG, XMLTags.INCLUDE_PATTERN_TAG, null, ""
                 + pattern.isIncludePattern());
 
-        xmlOut.startElement(null, null, XMLTags.FILE_MATCH_PATTERN_TAG, attr);
-        xmlOut.endElement(null, null, XMLTags.FILE_MATCH_PATTERN_TAG);
+        xmlOut.startElement("", XMLTags.FILE_MATCH_PATTERN_TAG, XMLTags.FILE_MATCH_PATTERN_TAG,
+                attr);
+        xmlOut.endElement("", XMLTags.FILE_MATCH_PATTERN_TAG, XMLTags.FILE_MATCH_PATTERN_TAG);
     }
 
     /**
@@ -360,10 +370,11 @@ public final class ProjectConfigurationFactory
         }
 
         AttributesImpl attr = new AttributesImpl();
-        attr.addAttribute(null, null, XMLTags.NAME_TAG, null, filter.getInternalName());
-        attr.addAttribute(null, null, XMLTags.ENABLED_TAG, null, "" + filter.isEnabled());
+        attr.addAttribute("", XMLTags.NAME_TAG, XMLTags.NAME_TAG, null, filter.getInternalName());
+        attr.addAttribute("", XMLTags.ENABLED_TAG, XMLTags.ENABLED_TAG, null, ""
+                + filter.isEnabled());
 
-        xmlOut.startElement(null, null, XMLTags.FILTER_TAG, attr);
+        xmlOut.startElement("", XMLTags.FILTER_TAG, XMLTags.FILTER_TAG, attr);
 
         List data = filter.getFilterData();
         int size = data != null ? data.size() : 0;
@@ -371,13 +382,13 @@ public final class ProjectConfigurationFactory
         {
 
             attr = new AttributesImpl();
-            attr.addAttribute(null, null, XMLTags.VALUE_TAG, null, (String) data.get(i));
+            attr.addAttribute("", XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, null, (String) data.get(i));
 
-            xmlOut.startElement(null, null, XMLTags.FILTER_DATA_TAG, attr);
-            xmlOut.endElement(null, null, XMLTags.FILTER_DATA_TAG);
+            xmlOut.startElement("", XMLTags.FILTER_DATA_TAG, XMLTags.FILTER_DATA_TAG, attr);
+            xmlOut.endElement("", XMLTags.FILTER_DATA_TAG, XMLTags.FILTER_DATA_TAG);
         }
 
-        xmlOut.endElement(null, null, XMLTags.FILTER_TAG);
+        xmlOut.endElement("", XMLTags.FILTER_TAG, XMLTags.FILTER_TAG);
 
     }
 

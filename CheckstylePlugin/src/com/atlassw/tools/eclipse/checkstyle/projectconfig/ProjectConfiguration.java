@@ -44,13 +44,13 @@ public class ProjectConfiguration implements Cloneable
     //
 
     /** the file sets. */
-    private List      mFileSets        = new LinkedList();
+    private List mFileSets = new LinkedList();
 
     /** the filters. */
     private IFilter[] mFilters;
 
     /** Flags if the simple file set editor should be used. */
-    private boolean   mUseSimpleConfig = true;
+    private boolean mUseSimpleConfig = true;
 
     //
     // constructors
@@ -310,7 +310,15 @@ public class ProjectConfiguration implements Cloneable
         int result = 1;
         result = (result * prime) + Boolean.valueOf(mUseSimpleConfig).hashCode();
         result = (result * prime) + mFileSets.hashCode();
-        result = (result * prime) + Arrays.hashCode(mFilters);
+
+        int size = mFilters != null ? mFilters.length : 0;
+        for (int i = 0; i < size; i++)
+        {
+            result = (result * prime) + (mFilters[i] != null ? mFilters[i].hashCode() : 0);
+        }
+
+        //could not use it because only available in jdk1.5
+        //result = (result * prime) + Arrays.hashCode(mFilters);
         return result;
     }
 }
