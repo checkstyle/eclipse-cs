@@ -1,346 +1,941 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html
-     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-    "DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-  <title>Metrics Checks</title>
-  <link rel="stylesheet" type="text/css" href="mystyle.css"/>
-</head>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
-<body>
-<!-- The header -->
-<table border="0" width="100%" summary="header layout">
-  <tr>
-    <td><h1>Metrics Checks</h1></td>
-    <td align="right"><img src="logo.png" alt="Checkstyle Logo"/></td>
-  </tr>
-</table>
-<!-- content -->
-<table border="0" width="100%" cellpadding="5" summary="body layout">
-  <tr>
-    <!--Left menu-->
-    <td class="menu" valign="top">
-      <ul>
-        <li><a href="#BooleanExpressionComplexity">BooleanExpressionComplexity</a></li>
-        <li><a href="#ClassDataAbstractionCoupling">ClassDataAbstractionCoupling</a></li>
-        <li><a href="#ClassFanOutComplexity">ClassFanOutComplexity</a></li>
-        <li><a href="#CyclomaticComplexity">CyclomaticComplexity</a></li>
-        <li><a href="#NPathComplexity">NPathComplexity</a></li>
-      </ul>
+<!-- Content Stylesheet for Site -->
+
+    
+    
+
+    
+<!-- start the processing -->
+    <!-- ====================================================================== -->
+    <!-- GENERATED FILE, DO NOT EDIT, EDIT THE XML FILE IN xdocs INSTEAD! -->
+    <!-- Main Page Section -->
+    <!-- ====================================================================== -->
+    <html>
+        <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+
+                                                    <meta name="author" value="Checkstyle Development Team">
+            <meta name="email" value="checkstyle-devel@lists.sourceforge.net">
+            
+           
+                                    
+                        
+            <link href="./css/site.css" rel="stylesheet" type="text/css"/>
+
+            <title>Checkstyle - Metrics</title>
+        </head>
+
+        <body bgcolor="#ffffff" text="#000000" link="#525D76">
+           <!-- START Header table -->
+           <table border="0" cellspacing="0" width="98%">
+                <!-- TOP IMAGE -->
+                <tr>
+                        <td align="left">
+       <h1>Metrics</h1>
     </td>
-    <!--Content-->
-    <td class="content" valign="top" align="left">
+    <td align="right">
+                  	<a href="http://checkstyle.sourceforge.net/">
+      	  <img src="./images/logo.png" alt="Checkstyle Logo" border="0"/>
+      	</a>
+          </td>
+                </tr>
+            </table>
+           <!-- END Header table -->
 
-      <!-- --><a name="BooleanExpressionComplexity"></a>
-      <h2>BooleanExpressionComplexity</h2>
-      <h4>Description</h4>
+           <!-- START main table -->
+            <table id="main" border="0" width="98%" cellspacing="2" cellpadding="0">
+                <tr><td colspan="2">
+                    <hr noshade="" size="1"/>
+                </td></tr>
 
-      <p class="body">
-      Restrict the number of number of <span class="code">&&</span>,
-      <span class="code">||</span> and <span class="code">^</span> in
-      an expression.
-      </p>
-      <p>
-      Rationale:
-      Too many conditions leads to code that is difficult to
-      read and hence debug and maintain.
-      </p>
+                <tr>
+                    <!-- LEFT SIDE NAVIGATION -->
+                    <td id="navbar" valign="top">
+                      <!-- ============================================================ -->
+  <table id="navbar" border="0" cellspacing="0" cellpadding="0">
+               <tr >
+       	 <td class="navbarHeader">
+           <strong>About</strong>
+         </td>
+       </tr>
+       <tr >
+       	 <td class="navbarItem">
+             <ul>
+                  <li>    <a href="./index.html">Checkstyle</a>
+</li>
+                    <ul>
+    </ul>
+    </ul>
+         </td>
+       </tr>
 
+           <tr >
+       	 <td class="navbarHeader">
+           <strong>Documentation</strong>
+         </td>
+       </tr>
+       <tr >
+       	 <td class="navbarItem">
+             <ul>
+                  <li>    <a href="./releasenotes.html">Release Notes</a>
+</li>
+                    <ul>
+    </ul>
+                  <li>    <a href="./config.html">Configuration</a>
+</li>
+                    <ul>
+                  <li>    <a href="./property_types.html">Property Types</a>
+</li>
+                    <ul>
+    </ul>
+    </ul>
+                  <li>    <a href="./running.html">Running</a>
+</li>
+                    <ul>
+                  <li>    <a href="./anttask.html">Ant Task</a>
+</li>
+                    <ul>
+    </ul>
+                  <li>    <a href="./cmdline.html">Command Line</a>
+</li>
+                    <ul>
+    </ul>
+    </ul>
+                  <li>    <a href="./checks.html">Standard Checks</a>
+</li>
+                    <ul>
+                  <li>    <a href="./config_javadoc.html">Javadoc Comments</a>
+</li>
+                    <ul>
+    </ul>
+                  <li>    <a href="./config_naming.html">Naming Conventions</a>
+</li>
+                    <ul>
+    </ul>
+                  <li>    <a href="./config_header.html">Headers</a>
+</li>
+                    <ul>
+    </ul>
+                  <li>    <a href="./config_import.html">Imports</a>
+</li>
+                    <ul>
+    </ul>
+                  <li>    <a href="./config_sizes.html">Size Violations</a>
+</li>
+                    <ul>
+    </ul>
+                  <li>    <a href="./config_whitespace.html">Whitespace</a>
+</li>
+                    <ul>
+    </ul>
+                  <li>    <a href="./config_modifiers.html">Modifiers</a>
+</li>
+                    <ul>
+    </ul>
+                  <li>    <a href="./config_blocks.html">Block Checks</a>
+</li>
+                    <ul>
+    </ul>
+                  <li>    <a href="./config_coding.html">Coding</a>
+</li>
+                    <ul>
+    </ul>
+                  <li>    <a href="./config_design.html">Class Design</a>
+</li>
+                    <ul>
+    </ul>
+                  <li>    <a href="./config_duplicates.html">Duplicate Code</a>
+</li>
+                    <ul>
+    </ul>
+                  <li><b>    <a href="./config_metrics.html">Metrics</a>
+</b></li>
+                      <ul class="sectionquicklink">
+                                          <li><a href="#BooleanExpressionComplexity">BooleanExpressionComplexity</a></li>
+                                                        <li><a href="#ClassDataAbstractionCoupling">ClassDataAbstractionCoupling</a></li>
+                                                        <li><a href="#ClassFanOutComplexity">ClassFanOutComplexity</a></li>
+                                                        <li><a href="#CyclomaticComplexity">CyclomaticComplexity</a></li>
+                                                        <li><a href="#NPathComplexity">NPathComplexity</a></li>
+                                                        <li><a href="#JavaNCSS">JavaNCSS</a></li>
+                                  </ul>
+              <ul>
+    </ul>
+                  <li>    <a href="./config_misc.html">Miscellaneous</a>
+</li>
+                    <ul>
+    </ul>
+    </ul>
+                  <li>    <a href="./optional.html">Optional Checks</a>
+</li>
+                    <ul>
+                  <li>    <a href="./config_usage.html">Usage Checks</a>
+</li>
+                    <ul>
+    </ul>
+                  <li>    <a href="./config_j2ee.html">J2EE Checks</a>
+</li>
+                    <ul>
+    </ul>
+    </ul>
+                  <li>    <a href="./extending.html">Extending Checkstyle</a>
+</li>
+                    <ul>
+                  <li>    <a href="./writingchecks.html">Writing checks</a>
+</li>
+                    <ul>
+    </ul>
+                  <li>    <a href="./writingfilters.html">Writing filters</a>
+</li>
+                    <ul>
+    </ul>
+                  <li>    <a href="./writinglisteners.html">Writing listeners</a>
+</li>
+                    <ul>
+    </ul>
+    </ul>
+                  <li>    <a href="./api/index.html">Javadoc</a>
+</li>
+                    <ul>
+    </ul>
+    </ul>
+         </td>
+       </tr>
 
-      <h4>Properties</h4>
-      <table width="100%" border="1" cellpadding="5" class="body">
-        <tr class="header">
-          <th>name</th>
-          <th>description</th>
-          <th>type</th>
-          <th>default value</th>
-        </tr>
-        <tr>
-          <td>max</td>
-          <td>the maximum allowed number of boolean operations in one
-          experession.</td>
-          <td><a href="property_types.html#integer">integer</a></td>
-          <td><span class="default">3</span></td>
-        </tr>
+           <tr >
+       	 <td class="navbarHeader">
+           <strong>SourceForge</strong>
+         </td>
+       </tr>
+       <tr >
+       	 <td class="navbarItem">
+             <ul>
+                  <li>    <a href="http://sourceforge.net/mail/?group_id=29721">Mailing Lists</a>
+</li>
+                    <ul>
+    </ul>
+                  <li>    <a href="http://sourceforge.net/tracker/?atid=397078&group_id=29721&func=browse">Bug Database</a>
+</li>
+                    <ul>
+    </ul>
+                  <li>    <a href="http://sourceforge.net/tracker/?atid=397081&group_id=29721&func=browse">Feature Requests</a>
+</li>
+                    <ul>
+    </ul>
+    </ul>
+         </td>
+       </tr>
+
+           <tr >
+       	 <td class="navbarHeader">
+           <strong>Developers</strong>
+         </td>
+       </tr>
+       <tr >
+       	 <td class="navbarItem">
+             <ul>
+                  <li>    <a href="http://sourceforge.net/projects/checkstyle">Project Page</a>
+</li>
+                    <ul>
+    </ul>
+                  <li>    <a href="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/checkstyle/">CVS Repository</a>
+</li>
+                    <ul>
+    </ul>
+                  <li>    <a href="./contributing.html">Contributing</a>
+</li>
+                    <ul>
+    </ul>
+    </ul>
+         </td>
+       </tr>
+
       </table>
 
-      <h4>Examples</h4>
-      <p class="body">
-      To configure the check:
-      </p>
-      <pre class="body">
-&lt;module name=&quot;BooleanExpressionComplexity&quot;/&gt;
-      </pre>
-      <p class="body">
-      To configure the check with 7 allowed operation in boolean expression:
-      </p>
-      <pre class="body">
-&lt;module name=&quot;BooleanExpressionComplexity&quot;&gt;
+                    </td>
+                    <td id="mainContents" align="left" valign="top">
+	                                                                     <a name="BooleanExpressionComplexity"></a>
+  <h2>BooleanExpressionComplexity</h2>
+                                            <h3>Description</h3>
+                                    <p>
+          Restrict the number of number of <span class="code">&amp;&amp;</span>, <span class="code">||</span>
+          and <span class="code">^</span> in an expression.
+        </p>
+                                                <p>
+          Rationale: Too many conditions leads to code that is difficult
+          to read and hence debug and maintain.
+        </p>
+                                                                            <h3>Properties</h3>
+                                    <table>
+                                            <tr class="even">
+                        <th colspan="" rowspan="" valign="top" align="left">
+                name
+        </th>
+                                <th colspan="" rowspan="" valign="top" align="left">
+                description
+        </th>
+                                <th colspan="" rowspan="" valign="top" align="left">
+                type
+        </th>
+                                <th colspan="" rowspan="" valign="top" align="left">
+                default value
+        </th>
+            </tr>
+                                                <tr class="odd">
+                        <td class="odd" colspan="" rowspan="">
+                max
+        </td>
+                                <td class="odd" colspan="" rowspan="">
+                
+              the maximum allowed number of boolean operations in one
+              expression.
+            
+        </td>
+                                <td class="odd" colspan="" rowspan="">
+                <a href="property_types.html#integer">integer</a>
+        </td>
+                                <td class="odd" colspan="" rowspan="">
+                <span class="default">3</span>
+        </td>
+            </tr>
+            </table>
+                                                                            <h3>Examples</h3>
+                                    <p>
+          To configure the check:
+        </p>
+                                                    <div align="left">
+    <table cellspacing="4" cellpadding="0" border="0">
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;BooleanExpressionComplexity&quot;/&gt;</pre></td>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    </table>
+    </div>
+                                                <p>
+          To configure the check with 7 allowed operation in boolean
+          expression:
+        </p>
+                                                    <div align="left">
+    <table cellspacing="4" cellpadding="0" border="0">
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;BooleanExpressionComplexity&quot;&gt;
     &lt;property name=&quot;max&quot; value=&quot;7&quot;/&gt;
-&lt;/module&gt;
-      
-      </pre>
-
-      <h4>Package</h4>
-      <p class="body">
-      com.puppycrawl.tools.checkstyle.checks.metrics
-      </p>
-
-      <h4>Parent Module</h4>
-      <p class="body">
-      <a href="config.html#treewalker">TreeWalker</a>
-      </p>
-
-      <!-- --><a name="ClassDataAbstractionCoupling"></a> <h2>ClassDataAbstractionCoupling</h2>
-      <h4>Description</h4>
-
-      <p class="body">
-      This metric measures the number of instantiations of
-      other classes within the given class. This type of
-      coupling is not caused by inheritance or the object
-      oriented paradigm. Generally speaking, any abstract
-      data type with other abstract data types as members has
-      data abstraction coupling; therefore, if a class has a
-      local variable that is an instantiation (object) of
-      another class, there is data abstraction coupling. The
-      higher the DAC, the more complex the data structure
-      (classes) of the system.
-      </p>
-
-
-      <h4>Properties</h4>
-      <table width="100%" border="1" cellpadding="5" class="body">
-        <tr class="header">
-          <th>name</th>
-          <th>description</th>
-          <th>type</th>
-          <th>default value</th>
-        </tr>
-        <tr>
-          <td>max</td>
-          <td>the maximum threshold allowed</td>
-          <td><a href="property_types.html#integer">integer</a></td>
-          <td><span class="default">7</span></td>
-        </tr>
-      </table>
-
-      <h4>Examples</h4>
-      <p class="body">
-      To configure the check:
-      </p>
-      <pre class="body">
-&lt;module name=&quot;ClassDataAbstractionCoupling&quot;/&gt;
-      </pre>
-      <p class="body">
-      To configure the check with a threshold of 5:
-      </p>
-      <pre class="body">
-&lt;module name=&quot;ClassDataAbstractionCoupling&quot;&gt;
+&lt;/module&gt;</pre></td>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    </table>
+    </div>
+                                                                            <h3>Package</h3>
+                                    <p>
+          com.puppycrawl.tools.checkstyle.checks.metrics
+        </p>
+                                                                            <h3>Parent Module</h3>
+                                    <p>
+          <a href="config.html#treewalker">TreeWalker</a>
+        </p>
+                                                                                                                                              <a name="ClassDataAbstractionCoupling"></a>
+  <h2>ClassDataAbstractionCoupling</h2>
+                                            <h3>Description</h3>
+                                    <p>
+          This metric measures the number of instantiations of other
+          classes within the given class. This type of coupling is not
+          caused by inheritance or the object oriented
+          paradigm. Generally speaking, any abstract data type with
+          other abstract data types as members has data abstraction
+          coupling; therefore, if a class has a local variable that is
+          an instantiation (object) of another class, there is data
+          abstraction coupling. The higher the DAC, the more complex the
+          data structure (classes) of the system.
+        </p>
+                                                                            <h3>Properties</h3>
+                                    <table>
+                                            <tr class="even">
+                        <th colspan="" rowspan="" valign="top" align="left">
+                name
+        </th>
+                                <th colspan="" rowspan="" valign="top" align="left">
+                description
+        </th>
+                                <th colspan="" rowspan="" valign="top" align="left">
+                type
+        </th>
+                                <th colspan="" rowspan="" valign="top" align="left">
+                default value
+        </th>
+            </tr>
+                                                <tr class="odd">
+                        <td class="odd" colspan="" rowspan="">
+                max
+        </td>
+                                <td class="odd" colspan="" rowspan="">
+                the maximum threshold allowed
+        </td>
+                                <td class="odd" colspan="" rowspan="">
+                <a href="property_types.html#integer">integer</a>
+        </td>
+                                <td class="odd" colspan="" rowspan="">
+                <span class="default">7</span>
+        </td>
+            </tr>
+            </table>
+                                                                            <h3>Examples</h3>
+                                    <p>
+          To configure the check:
+        </p>
+                                                    <div align="left">
+    <table cellspacing="4" cellpadding="0" border="0">
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;ClassDataAbstractionCoupling&quot;/&gt;</pre></td>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    </table>
+    </div>
+                                                <p>
+          To configure the check with a threshold of 5:
+        </p>
+                                                    <div align="left">
+    <table cellspacing="4" cellpadding="0" border="0">
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;ClassDataAbstractionCoupling&quot;&gt;
     &lt;property name=&quot;max&quot; value=&quot;5&quot;/&gt;
-&lt;/module&gt;
-      
-      </pre>
-
-      <h4>Package</h4>
-      <p class="body">
-      com.puppycrawl.tools.checkstyle.checks.metrics
-      </p>
-
-      <h4>Parent Module</h4>
-      <p class="body">
-      <a href="config.html#treewalker">TreeWalker</a>
-      </p>
-
-      <!-- --><a name="ClassFanOutComplexity"></a> <h2>ClassFanOutComplexity</h2>
-      <h4>Description</h4>
-
-      <p class="body">
-      The number of other classes a given class relies on. Also
-      the square of this has been shown to indicate the
-      amount of maintenence required in functional programs
-      (on a file basis) at least.
-      </p>
-
-
-      <h4>Properties</h4>
-      <table width="100%" border="1" cellpadding="5" class="body">
-        <tr class="header">
-          <th>name</th>
-          <th>description</th>
-          <th>type</th>
-          <th>default value</th>
-        </tr>
-        <tr>
-          <td>max</td>
-          <td>the maximum threshold allowed</td>
-          <td><a href="property_types.html#integer">integer</a></td>
-          <td><span class="default">20</span></td>
-        </tr>
-      </table>
-
-      <h4>Examples</h4>
-      <p class="body">
-      To configure the check:
-      </p>
-      <pre class="body">
-&lt;module name=&quot;ClassFanOutComplexity&quot;/&gt;
-      </pre>
-      <p class="body">
-      To configure the check with a threshold of 10:
-      </p>
-      <pre class="body">
-&lt;module name=&quot;ClassFanOutComplexity&quot;&gt;
+&lt;/module&gt;</pre></td>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    </table>
+    </div>
+                                                                            <h3>Package</h3>
+                                    <p>
+          com.puppycrawl.tools.checkstyle.checks.metrics
+        </p>
+                                                                            <h3>Parent Module</h3>
+                                    <p>
+          <a href="config.html#treewalker">TreeWalker</a>
+        </p>
+                                                                                                                                              <a name="ClassFanOutComplexity"></a>
+  <h2>ClassFanOutComplexity</h2>
+                                            <h3>Description</h3>
+                                    <p>
+          The number of other classes a given class relies on. Also the
+          square of this has been shown to indicate the amount of
+          maintenence required in functional programs (on a file basis)
+          at least.
+        </p>
+                                                                            <h3>Properties</h3>
+                                    <table>
+                                            <tr class="even">
+                        <th colspan="" rowspan="" valign="top" align="left">
+                name
+        </th>
+                                <th colspan="" rowspan="" valign="top" align="left">
+                description
+        </th>
+                                <th colspan="" rowspan="" valign="top" align="left">
+                type
+        </th>
+                                <th colspan="" rowspan="" valign="top" align="left">
+                default value
+        </th>
+            </tr>
+                                                <tr class="odd">
+                        <td class="odd" colspan="" rowspan="">
+                max
+        </td>
+                                <td class="odd" colspan="" rowspan="">
+                the maximum threshold allowed
+        </td>
+                                <td class="odd" colspan="" rowspan="">
+                <a href="property_types.html#integer">integer</a>
+        </td>
+                                <td class="odd" colspan="" rowspan="">
+                <span class="default">20</span>
+        </td>
+            </tr>
+            </table>
+                                                                            <h3>Examples</h3>
+                                    <p>
+          To configure the check:
+        </p>
+                                                    <div align="left">
+    <table cellspacing="4" cellpadding="0" border="0">
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;ClassFanOutComplexity&quot;/&gt;</pre></td>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    </table>
+    </div>
+                                                <p>
+          To configure the check with a threshold of 10:
+        </p>
+                                                    <div align="left">
+    <table cellspacing="4" cellpadding="0" border="0">
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;ClassFanOutComplexity&quot;&gt;
     &lt;property name=&quot;max&quot; value=&quot;10&quot;/&gt;
-&lt;/module&gt;
-      
-      </pre>
-
-      <h4>Package</h4>
-      <p class="body">
-      com.puppycrawl.tools.checkstyle.checks.metrics
-      </p>
-
-      <h4>Parent Module</h4>
-      <p class="body">
-      <a href="config.html#treewalker">TreeWalker</a>
-      </p>
-
-      <!-- --><a name="CyclomaticComplexity"></a> <h2>CyclomaticComplexity</h2>
-      <h4>Description</h4>
-
-      <p class="body">
-Checks cyclomatic complexity against a specified limit. The complexity is
-measured by the number of
-      <span CLASS="code">if</span>,
-      <span CLASS="code">while</span>,
-      <span CLASS="code">do</span>,
-      <span CLASS="code">for</span>,
-      <span CLASS="code">?:</span>,
-      <span CLASS="code">catch</span>,
-      <span CLASS="code">switch</span>,
-      <span CLASS="code">case</span> statements, and operators
-      <span CLASS="code">&&</span> and <span CLASS="code">||</span> (plus one) in the body of a
-constructor, method, static initializer, or instance initializer.
-      It is a measure of the minimum number of possible paths through the
-source and therefore the number of required tests. Generally 1-4 is
-considered good, 5-7 ok, 8-10 consider re-factoring, and 11+ re-factor now!
-      </p>
-
-
-      <h4>Properties</h4>
-      <table width="100%" border="1" cellpadding="5" class="body">
-        <tr class="header">
-          <th>name</th>
-          <th>description</th>
-          <th>type</th>
-          <th>default value</th>
-        </tr>
-        <tr>
-          <td>max</td>
-          <td>the maximum threshold allowed</td>
-          <td><a href="property_types.html#integer">integer</a></td>
-          <td><span class="default">10</span></td>
-        </tr>
-      </table>
-
-      <h4>Examples</h4>
-      <p class="body">
-      To configure the check:
-      </p>
-      <pre class="body">
-&lt;module name=&quot;CyclomaticComplexity&quot;/&gt;
-      </pre>
-      <p class="body">
-      To configure the check with a threshold of 7:
-      </p>
-      <pre class="body">
-&lt;module name=&quot;CyclomaticComplexity&quot;&gt;
+&lt;/module&gt;</pre></td>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    </table>
+    </div>
+                                                                            <h3>Package</h3>
+                                    <p>
+          com.puppycrawl.tools.checkstyle.checks.metrics
+        </p>
+                                                                            <h3>Parent Module</h3>
+                                    <p>
+          <a href="config.html#treewalker">TreeWalker</a>
+        </p>
+                                                                                                                                              <a name="CyclomaticComplexity"></a>
+  <h2>CyclomaticComplexity</h2>
+                                            <h3>Description</h3>
+                                    <p>
+          Checks cyclomatic complexity against a specified limit. The
+          complexity is measured by the number of <span CLASS="code">if</span>, <span CLASS="code">while</span>, <span CLASS="code">do</span>, <span CLASS="code">for</span>, <span CLASS="code">?:</span>, <span CLASS="code">catch</span>, <span CLASS="code">switch</span>, <span CLASS="code">case</span>
+          statements, and operators <span CLASS="code">&amp;&amp;</span> and <span CLASS="code">||</span> (plus one) in the body of a
+          constructor, method, static initializer, or instance
+          initializer.  It is a measure of the minimum number of
+          possible paths through the source and therefore the number of
+          required tests. Generally 1-4 is considered good, 5-7 ok, 8-10
+          consider re-factoring, and 11+ re-factor now!
+        </p>
+                                                                            <h3>Properties</h3>
+                                    <table>
+                                            <tr class="even">
+                        <th colspan="" rowspan="" valign="top" align="left">
+                name
+        </th>
+                                <th colspan="" rowspan="" valign="top" align="left">
+                description
+        </th>
+                                <th colspan="" rowspan="" valign="top" align="left">
+                type
+        </th>
+                                <th colspan="" rowspan="" valign="top" align="left">
+                default value
+        </th>
+            </tr>
+                                                <tr class="odd">
+                        <td class="odd" colspan="" rowspan="">
+                max
+        </td>
+                                <td class="odd" colspan="" rowspan="">
+                the maximum threshold allowed
+        </td>
+                                <td class="odd" colspan="" rowspan="">
+                <a href="property_types.html#integer">integer</a>
+        </td>
+                                <td class="odd" colspan="" rowspan="">
+                <span class="default">10</span>
+        </td>
+            </tr>
+            </table>
+                                                                            <h3>Examples</h3>
+                                    <p>
+          To configure the check:
+        </p>
+                                                    <div align="left">
+    <table cellspacing="4" cellpadding="0" border="0">
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;CyclomaticComplexity&quot;/&gt;</pre></td>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    </table>
+    </div>
+                                                <p>
+          To configure the check with a threshold of 7:
+        </p>
+                                                    <div align="left">
+    <table cellspacing="4" cellpadding="0" border="0">
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;CyclomaticComplexity&quot;&gt;
     &lt;property name=&quot;max&quot; value=&quot;7&quot;/&gt;
-&lt;/module&gt;
-      
-      </pre>
-
-      <h4>Package</h4>
-      <p class="body">
-      com.puppycrawl.tools.checkstyle.checks.metrics
-      </p>
-
-      <h4>Parent Module</h4>
-      <p class="body">
-      <a href="config.html#treewalker">TreeWalker</a>
-      </p>
-
-      <!-- --><a name="NPathComplexity"></a> <h2>NPathComplexity</h2>
-      <h4>Description</h4>
-
-      <p class="body">
-      The NPATH metric computes the number of possible
-      execution paths through a function. It takes into
-      account the nesting of conditional statements and
-      multi-part boolean expressions (e.g., A && B, C || D,
-      etc.).
-      </p>
-      <p>
-      Rationale:
-      Nejmeh says that his group had an informal NPATH limit
-      of 200 on individual routines; functions that exceeded
-      this value were candidates for further decomposition -
-      or at least a closer look.
-      </p>
-
-
-      <h4>Properties</h4>
-      <table width="100%" border="1" cellpadding="5" class="body">
-        <tr class="header">
-          <th>name</th>
-          <th>description</th>
-          <th>type</th>
-          <th>default value</th>
-        </tr>
-        <tr>
-          <td>max</td>
-          <td>the maximum threshold allowed</td>
-          <td><a href="property_types.html#integer">integer</a></td>
-          <td><span class="default">200</span></td>
-        </tr>
-      </table>
-
-      <h4>Examples</h4>
-      <p class="body">
-      To configure the check:
-      </p>
-      <pre class="body">
-&lt;module name=&quot;NPathComplexity&quot;/&gt;
-      </pre>
-      <p class="body">
-      To configure the check with a threshold of 20:
-      </p>
-      <pre class="body">
-&lt;module name=&quot;NPathComplexity&quot;&gt;
+&lt;/module&gt;</pre></td>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    </table>
+    </div>
+                                                                            <h3>Package</h3>
+                                    <p>
+          com.puppycrawl.tools.checkstyle.checks.metrics
+        </p>
+                                                                            <h3>Parent Module</h3>
+                                    <p>
+          <a href="config.html#treewalker">TreeWalker</a>
+        </p>
+                                                                                                                                              <a name="NPathComplexity"></a>
+  <h2>NPathComplexity</h2>
+                                            <h3>Description</h3>
+                                    <p>
+          The NPATH metric computes the number of possible execution
+          paths through a function. It takes into account the nesting of
+          conditional statements and multi-part boolean expressions
+          (e.g., A &amp;&amp; B, C || D, etc.).
+        </p>
+                                                <p>
+          Rationale: Nejmeh says that his group had an informal NPATH
+          limit of 200 on individual routines; functions that exceeded
+          this value were candidates for further decomposition - or at
+          least a closer look.
+        </p>
+                                                                            <h3>Properties</h3>
+                                    <table>
+                                            <tr class="even">
+                        <th colspan="" rowspan="" valign="top" align="left">
+                name
+        </th>
+                                <th colspan="" rowspan="" valign="top" align="left">
+                description
+        </th>
+                                <th colspan="" rowspan="" valign="top" align="left">
+                type
+        </th>
+                                <th colspan="" rowspan="" valign="top" align="left">
+                default value
+        </th>
+            </tr>
+                                                <tr class="odd">
+                        <td class="odd" colspan="" rowspan="">
+                max
+        </td>
+                                <td class="odd" colspan="" rowspan="">
+                the maximum threshold allowed
+        </td>
+                                <td class="odd" colspan="" rowspan="">
+                <a href="property_types.html#integer">integer</a>
+        </td>
+                                <td class="odd" colspan="" rowspan="">
+                <span class="default">200</span>
+        </td>
+            </tr>
+            </table>
+                                                                            <h3>Examples</h3>
+                                    <p>
+          To configure the check:
+        </p>
+                                                    <div align="left">
+    <table cellspacing="4" cellpadding="0" border="0">
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;NPathComplexity&quot;/&gt;</pre></td>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    </table>
+    </div>
+                                                <p>
+          To configure the check with a threshold of 20:
+        </p>
+                                                    <div align="left">
+    <table cellspacing="4" cellpadding="0" border="0">
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;NPathComplexity&quot;&gt;
     &lt;property name=&quot;max&quot; value=&quot;20&quot;/&gt;
-&lt;/module&gt;
-      
-      </pre>
+&lt;/module&gt;</pre></td>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    </table>
+    </div>
+                                                                            <h3>Package</h3>
+                                    <p>
+          com.puppycrawl.tools.checkstyle.checks.metrics
+        </p>
+                                                                            <h3>Parent Module</h3>
+                                    <p>
+          <a href="config.html#treewalker">TreeWalker</a>
+        </p>
+                                                                                                                                              <a name="JavaNCSS"></a>
+  <h2>JavaNCSS</h2>
+                                            <h3>Description</h3>
+                                    <p>
+          Determines complexity of methods, classes and files by
+          counting the Non Commenting Source Statements (NCSS).  This
+          check adheres to the <a href="http://www.kclee.com/clemens/java/javancss/">
+          specification</a> for the JavaNCSS-Tool written by
+          <b>Chr. Clemens Lee</b> which sadly seems to have been pulled
+          off the web.<br /> Rougly said the NCSS metric is calculated by
+          counting the source lines which are not comments, (nearly)
+          equivalent to counting the semicolons and opening curly
+          braces.<br /> The NCSS for a class is summarized from the NCSS
+          of all its methods, the NCSS of its nested classes and the
+          number of member variable declarations.<br /> The NCSS for a
+          file is summarized from the ncss of all its top level classes,
+          the number of imports and the package declaration.
+        </p>
+                                                <p>
+          Rationale: Too large methods and classes are hard to read and
+          costly to maintain. A large NCSS number often means that a
+          method or class has too many responsabilities and/or
+          functionalities which should be decomposed into smaller units.
+        </p>
+                                                                            <h3>Properties</h3>
+                                    <table>
+                                            <tr class="even">
+                        <th colspan="" rowspan="" valign="top" align="left">
+                name
+        </th>
+                                <th colspan="" rowspan="" valign="top" align="left">
+                description
+        </th>
+                                <th colspan="" rowspan="" valign="top" align="left">
+                type
+        </th>
+                                <th colspan="" rowspan="" valign="top" align="left">
+                default value
+        </th>
+            </tr>
+                                                <tr class="odd">
+                        <td class="odd" colspan="" rowspan="">
+                methodMaximum
+        </td>
+                                <td class="odd" colspan="" rowspan="">
+                
+              the maximum allowed number of non commenting lines in a
+              method.
+            
+        </td>
+                                <td class="odd" colspan="" rowspan="">
+                <a href="property_types.html#integer">integer</a>
+        </td>
+                                <td class="odd" colspan="" rowspan="">
+                <span class="default">50</span>
+        </td>
+            </tr>
+                                                <tr class="even">
+                        <td class="even" colspan="" rowspan="">
+                classMaximum
+        </td>
+                                <td class="even" colspan="" rowspan="">
+                
+              the maximum allowed number of non commenting lines in a
+              class.
+            
+        </td>
+                                <td class="even" colspan="" rowspan="">
+                <a href="property_types.html#integer">integer</a>
+        </td>
+                                <td class="even" colspan="" rowspan="">
+                <span class="default">1500</span>
+        </td>
+            </tr>
+                                                <tr class="odd">
+                        <td class="odd" colspan="" rowspan="">
+                fileMaximum
+        </td>
+                                <td class="odd" colspan="" rowspan="">
+                
+              the maximum allowed number of non commenting lines in a
+              file including all top level and nested classes.
+            
+        </td>
+                                <td class="odd" colspan="" rowspan="">
+                <a href="property_types.html#integer">integer</a>
+        </td>
+                                <td class="odd" colspan="" rowspan="">
+                <span class="default">2000</span>
+        </td>
+            </tr>
+            </table>
+                                                                            <h3>Examples</h3>
+                                    <p>
+          To configure the check:
+        </p>
+                                                    <div align="left">
+    <table cellspacing="4" cellpadding="0" border="0">
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;JavaNCSS&quot;/&gt;</pre></td>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    </table>
+    </div>
+                                                <p>
+          To configure the check with 40 allowed non commenting lines
+          for a method:
+        </p>
+                                                    <div align="left">
+    <table cellspacing="4" cellpadding="0" border="0">
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;JavaNCSS&quot;&gt;
+    &lt;property name=&quot;methodMaximum&quot; value=&quot;40&quot;/&gt;
+&lt;/module&gt;</pre></td>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    </table>
+    </div>
+                                                                            <h3>Package</h3>
+                                    <p>
+          com.puppycrawl.tools.checkstyle.checks.metrics
+        </p>
+                                                                            <h3>Parent Module</h3>
+                                    <p>
+          <a href="config.html#treewalker">TreeWalker</a>
+        </p>
+                                                                                        
+                    </td>
+                </tr>
 
-      <h4>Package</h4>
-      <p class="body">
-      com.puppycrawl.tools.checkstyle.checks.metrics
-      </p>
+                <!-- FOOTER -->
+                <tr><td colspan="2">
+                    <hr noshade="" size="1"/>
+                </td></tr>
+                <tr><td colspan="2">
+                    <div align="center"><font color="#525D76" size="-1"><em>
+                    Copyright &#169; 2001-2004, Oliver Burn
+                    </em></font></div>
+                </td></tr>
+            </table>
+           <!-- END main table -->
+        </body>
+    </html>
+<!-- end the processing -->
 
-      <h4>Parent Module</h4>
-      <p class="body">
-      <a href="config.html#treewalker">TreeWalker</a>
-      </p>
 
-    </td>
-  </tr>
-</table>
-<hr />
-<div><a href="index.html">Back to the Checkstyle Home Page</a></div>
-<p class="copyright">
-Copyright &copy; 2002-2003 Oliver Burn. All rights Reserved.
-</p>
 
-</body>
-</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

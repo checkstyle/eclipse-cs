@@ -23,7 +23,7 @@
                         
             <link href="./css/site.css" rel="stylesheet" type="text/css"/>
 
-            <title>Checkstyle - Optional Checks</title>
+            <title>Checkstyle - Standard Checks</title>
         </head>
 
         <body bgcolor="#ffffff" text="#000000" link="#525D76">
@@ -32,7 +32,7 @@
                 <!-- TOP IMAGE -->
                 <tr>
                         <td align="left">
-       <h1>Optional Checks</h1>
+       <h1>Standard Checks</h1>
     </td>
     <td align="right">
                   	<a href="http://checkstyle.sourceforge.net/">
@@ -102,9 +102,11 @@
                     <ul>
     </ul>
     </ul>
-                  <li>    <a href="./checks.html">Standard Checks</a>
-</li>
-                    <ul>
+                  <li><b>    <a href="./checks.html">Standard Checks</a>
+</b></li>
+                      <ul class="sectionquicklink">
+                                            </ul>
+              <ul>
                   <li>    <a href="./config_javadoc.html">Javadoc Comments</a>
 </li>
                     <ul>
@@ -158,14 +160,9 @@
                     <ul>
     </ul>
     </ul>
-                  <li><b>    <a href="./optional.html">Optional Checks</a>
-</b></li>
-                      <ul class="sectionquicklink">
-                                          <li><a href="#Overview">Overview</a></li>
-                                                        <li><a href="#Configuration">Configuration</a></li>
-                                                        <li><a href="#Usage">Usage</a></li>
-                                  </ul>
-              <ul>
+                  <li>    <a href="./optional.html">Optional Checks</a>
+</li>
+                    <ul>
                   <li>    <a href="./config_usage.html">Usage Checks</a>
 </li>
                     <ul>
@@ -251,87 +248,13 @@
 
                     </td>
                     <td id="mainContents" align="left" valign="top">
-	                                                                     <a name="Overview"></a>
-  <h2>Overview</h2>
-                                    <p>
-        <a href="checks.html">Standard</a> Checkstyle Checks are
-        applicable to general Java coding style and require no external
-        libraries. An optional Check is for special applications or
-        requires additional libraries. There are are optional Checks
-        for:
-      </p>
-                                                <ul>
-        <li><a href="config_j2ee.html">J2EE Requirements</a></li>
-        <li><a href="config_usage.html">Usage</a></li>
-      </ul>
-                                                                                                                          <a name="Configuration"></a>
-  <h2>Configuration</h2>
-                                    <p>
-        As with standard checks, optional checks are configured as
-        submodules of <a href="config.html#treewalker">TreeWalker</a>. The shortened name
-        of an optional Check module must include the appropriate package
-        name prefix. For example, this is a configuration fragment for
-        Check <span class="code">com.puppycrawl.tools.checkstyle.checks.usage.UnusedLocalVariable</span>:
-      </p>
-                                                    <div align="left">
-    <table cellspacing="4" cellpadding="0" border="0">
-    <tr>
-      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
-      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
-      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
-    </tr>
-    <tr>
-      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
-      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;usage.UnusedLocalVariable&quot;/&gt;</pre></td>
-      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
-    </tr>
-    <tr>
-      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
-      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
-      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
-    </tr>
-    </table>
-    </div>
-                                                <p>
-        Consult the <a href="config.html#packagenames">Checkstyle
-        configuration manual</a> to learn how to integrate optional
-        Checks into the package configuration so that you can use fully
-        shortened names such as <span class="code">UnusedLocalVariable</span>.
-      </p>
-                                                                                                                          <a name="Usage"></a>
-  <h2>Usage</h2>
-                                    <p>
-        Optional checks are distributed in jar file <span class="code">checkstyle-optional-3.5.jar</span>
-        and, in order to use an optional check, this jar file must be in
-        the classpath.  For example, this is a command to run Checkstyle
-        with a configuration that contains optional checks:
-      </p>
-                                                    <div align="left">
-    <table cellspacing="4" cellpadding="0" border="0">
-    <tr>
-      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
-      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
-      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
-    </tr>
-    <tr>
-      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
-      <td bgcolor="#ffffff"><pre>java -classpath checkstyle-optional-3.5.jar:checkstyle-all-3.5.jar \
-    com.puppycrawl.tools.checkstyle.Main \
-    -c config.xml -r .</pre></td>
-      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
-    </tr>
-    <tr>
-      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
-      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
-      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
-    </tr>
-    </table>
-    </div>
-                                                <p>
-        Please consult <a href="cmdline.html">Command Line</a> and <a href="anttask.html">ANT Task</a> documentation for further usage
-        information.
-      </p>
-                                                                    
+	                                                                  <p>
+      Checkstyle provides many checks that you can apply to your source
+      code. The standard checks are included in the base
+      distribution. There are also <a href="optional.html">optional</a>
+      checks.
+    </p>
+                                                
                     </td>
                 </tr>
 

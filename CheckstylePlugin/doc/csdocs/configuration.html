@@ -96,6 +96,7 @@
                                                         <li><a href="#AuditListeners">AuditListeners</a></li>
                                                         <li><a href="#Packages">Packages</a></li>
                                                         <li><a href="#XML Details">XML Details</a></li>
+                                                        <li><a href="#Suppressions XML Document">Suppressions XML Document</a></li>
                                   </ul>
               <ul>
                   <li>    <a href="./property_types.html">Property Types</a>
@@ -388,7 +389,7 @@
           com.puppycrawl.tools.checkstyle</span>, <span class="code">
           com.puppycrawl.tools.checkstyle.filters</span>, and <span class="code"> com.puppycrawl.tools.checkstyle.checks</span>
           and its sub-packages (only those included in the Checkstyle
-          distribution). You can specify other packages in a <a href="#Packages"><em>package names XML document</em></a>
+          distribution). You can specify other packages in a <a href="#packagenames"><em>package names XML document</em></a>
           when you invoke Checkstyle at the <a href="cmdline.html">command line</a>, and when you run a <a href="anttask.html">Checkstyle task</a> in ant.
         </li>
 
@@ -799,7 +800,7 @@
       </p>
                                                 <p>
         Filter <span class="code">SeverityMatchFilter</span> decides
-        audit events according to the <a href="#Severity">severity
+        audit events according to the <a href="#severity">severity
         level</a> of the event.
       </p>
                                                 <h4 class="body">SeverityMatchFilter Properties</h4>
@@ -866,9 +867,9 @@
       </pre>
                                                 <p>
         Filter <span class="code">SuppressionFilter</span> rejects audit
-        events for Check errors according to a <a href="#XML%20Details"><em>suppressions XML document</em></a> in a
-        file. If there is no configured suppressions file, the Filter accepts
-        all audit events.
+        events for Check errors according to a <a href="#suppressionsxml"><em>suppressions XML document</em></a>
+        in a file. If there is no configured suppressions file, the
+        Filter accepts all audit events.
       </p>
                                                 <h4 class="body">SuppressionFilter Properties</h4>
                                                 <table>
@@ -912,7 +913,7 @@
 &lt;/module&gt;
       </pre>
                                                 <p>
-        A <a href="#XML%20Details"><em>suppressions XML
+        A <a href="#suppressionsxml"><em>suppressions XML
         document</em></a> contains a set of <span class="code">suppress</span> elements, where each <span class="code">suppress</span> element has a <span class="code">files</span> attribute, a <span class="code">checks</span> attribute, an optional <span class="code">lines</span> attribute, and an optional <span class="code">columns</span> attribute.  Attributes <span class="code">files</span> and <span class="code">checks</span>
         are <a href="property_types.html#regexp">regular
         expressions</a>.  Attributes <span class="code">lines</span> and
@@ -1312,8 +1313,9 @@
 "-//Puppy Crawl//DTD Package Names 1.0//EN"
 "http://www.puppycrawl.com/dtds/packages_1_0.dtd"&gt;
       </pre>
-                                                <h4>Suppressions XML Document</h4>
-                                                <p>
+                                                                                                                          <a name="Suppressions XML Document"></a>
+  <h2>Suppressions XML Document</h2>
+                                    <p>
         This is a DTD for a suppressions XML document:
       </p>
                                                 <pre>
