@@ -387,8 +387,10 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
         
         for (int i = 0; i < entries.length; i++) 
         {
-            // Source entries are apparently always assumed to be exported - but don't
-            // report themselves as such.
+            //
+            //  Source entries are apparently always assumed to be exported - but don't
+            //  report themselves as such.
+            //
             if (!exportedOnly || entries[i].isExported() || 
                 entries[i].getEntryKind() == IClasspathEntry.CPE_SOURCE)
             {
@@ -417,19 +419,21 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
                         
                         if (outputLocation != null)
                         {
-                            
-                            // When the output location is the project itself, the project
-                            // can't resolve the file - therefore just get the project's
-                            // location. 
-
+                            //
+                            //  When the output location is the project itself, the project
+                            //  can't resolve the file - therefore just get the project's
+                            //  location. 
+                            //
                             if (outputLocation.segmentCount() == 1)
                             {
                                 outputLocation = javaProject.getProject().getLocation();
                             }
                             else
                             {
-                                // Output locations are always workspace relative. Do this mess
-                                // to get a fully qualified location.
+                                //
+                                //  Output locations are always workspace relative. Do this mess
+                                //  to get a fully qualified location.
+                                //
                                 outputLocation =
                                     javaProject.getProject().getParent().getFile(outputLocation).
                                         getLocation();
@@ -440,14 +444,27 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
     
                         break;
                     }
-                    case IClasspathEntry.CPE_LIBRARY :
+                    case IClasspathEntry.CPE_LIBRARY:
                     {
-                        // Jars always come with a nice fully specified path.
-                        urls.add(new URL("file:/" + entries[i].getPath().toOSString()));
-                        
+                        //
+                        //  External jars have fully specified paths, but we've no easy way to tell 
+                        //  them apart from project relative paths. So assume it's relative, and try
+                        //  and get a path.
+                        //
+                        IContainer parent = javaProject.getProject().getParent();
+                        IPath libPath = parent.getFile(entries[i].getPath()).getLocation();
+                        if (libPath == null)
+                        {
+                            //
+                            //  It must be fully specified.
+                            //
+                            libPath = entries[i].getPath();
+                        }
+                        urls.add(new URL("file:/" + libPath.toOSString()));
+
                         break;
                     }
-                    case IClasspathEntry.CPE_PROJECT : 
+                    case IClasspathEntry.CPE_PROJECT: 
                     {
                         IJavaProject dependentProject = 
                             (IJavaProject)(ResourcesPlugin.getWorkspace().getRoot().
