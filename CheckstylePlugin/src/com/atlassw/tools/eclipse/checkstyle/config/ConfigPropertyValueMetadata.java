@@ -45,7 +45,7 @@ import org.w3c.dom.Node;
  *  when the set of legal values is a limited set defined by 
  *  an enumeration.
  */
-public class ConfigPropertyValueMetadata implements Cloneable, XMLTags
+public class ConfigPropertyValueMetadata implements Cloneable
 {
     //=================================================
 	// Public static final variables.
@@ -70,7 +70,7 @@ public class ConfigPropertyValueMetadata implements Cloneable, XMLTags
         //
         //  Get the value attribute.
         //
-        String temp = XMLUtil.getNodeAttributeValue(valueNode, VALUE_TAG);
+        String temp = XMLUtil.getNodeAttributeValue(valueNode, XMLTags.VALUE_TAG);
         if (temp != null)
         {
             mValue = temp.trim();

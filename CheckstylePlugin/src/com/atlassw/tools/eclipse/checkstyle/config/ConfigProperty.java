@@ -45,7 +45,7 @@ import org.w3c.dom.Node;
 /**
  *  A simple configuration consisting of a name/value pair.
  */
-public class ConfigProperty implements XMLTags, Comparable
+public class ConfigProperty implements Comparable
 {
     //=================================================
 	// Public static final variables.
@@ -96,7 +96,7 @@ public class ConfigProperty implements XMLTags, Comparable
      */
     ConfigProperty(Node node) throws CheckstylePluginException
     {        
-        String name  = XMLUtil.getNodeAttributeValue(node, NAME_TAG);
+        String name  = XMLUtil.getNodeAttributeValue(node, XMLTags.NAME_TAG);
         if (name == null)
         {
             String message = "ConfigProperty missing name attribute";
@@ -108,7 +108,7 @@ public class ConfigProperty implements XMLTags, Comparable
             setName(name.trim());
         }
         
-        String value = XMLUtil.getNodeAttributeValue(node, VALUE_TAG);
+        String value = XMLUtil.getNodeAttributeValue(node, XMLTags.VALUE_TAG);
         if (value == null)
         {
             String message = "ConfigProperty missing value attribute";
@@ -165,23 +165,23 @@ public class ConfigProperty implements XMLTags, Comparable
 
     String getConfigItemTypeTag()
     {
-        return CONFIG_PROPERTY_TAG;
+        return XMLTags.CONFIG_PROPERTY_TAG;
     }
     
     Node toDOMNode(Document doc)
     {
-        Element cfgPropertyNode = doc.createElement(CONFIG_PROPERTY_TAG);
-        cfgPropertyNode.setAttribute(NAME_TAG,  getName());
-        cfgPropertyNode.setAttribute(VALUE_TAG, mValue);
+        Element cfgPropertyNode = doc.createElement(XMLTags.CONFIG_PROPERTY_TAG);
+        cfgPropertyNode.setAttribute(XMLTags.NAME_TAG,  getName());
+        cfgPropertyNode.setAttribute(XMLTags.VALUE_TAG, mValue);
         
         return cfgPropertyNode;
     }
     
     Node toCSDOMNode(Document doc)
     {
-        Element cfgPropertyNode = doc.createElement(PROPERTY_TAG);
-        cfgPropertyNode.setAttribute(NAME_TAG,  getName());
-        cfgPropertyNode.setAttribute(VALUE_TAG, mValue);
+        Element cfgPropertyNode = doc.createElement(XMLTags.PROPERTY_TAG);
+        cfgPropertyNode.setAttribute(XMLTags.NAME_TAG,  getName());
+        cfgPropertyNode.setAttribute(XMLTags.VALUE_TAG, mValue);
         
         return cfgPropertyNode;
     }

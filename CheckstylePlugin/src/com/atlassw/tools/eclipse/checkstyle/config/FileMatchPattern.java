@@ -52,7 +52,7 @@ import org.w3c.dom.Node;
  *  A file match pattern is a pattern used in a regular express to check
  *  for matching file names.
  */
-public class FileMatchPattern implements Cloneable, XMLTags
+public class FileMatchPattern implements Cloneable
 {
     //=================================================
 	// Public static final variables.
@@ -101,7 +101,7 @@ public class FileMatchPattern implements Cloneable, XMLTags
      */
     public FileMatchPattern(Node node) throws CheckstylePluginException
     {
-        String temp = XMLUtil.getNodeAttributeValue(node, MATCH_PATTERN_TAG);
+        String temp = XMLUtil.getNodeAttributeValue(node, XMLTags.MATCH_PATTERN_TAG);
         if (temp != null)
         {
             setMatchPattern(temp.trim());
@@ -111,7 +111,7 @@ public class FileMatchPattern implements Cloneable, XMLTags
             CheckstyleLog.warning("FileMatchPattern pattern is null");
         }
 
-        temp = XMLUtil.getNodeAttributeValue(node, INCLUDE_PATTERN_TAG);
+        temp = XMLUtil.getNodeAttributeValue(node, XMLTags.INCLUDE_PATTERN_TAG);
         if (temp != null)
         {
             mIsIncludePattern = Boolean.valueOf(temp.trim()).booleanValue();
@@ -212,10 +212,10 @@ public class FileMatchPattern implements Cloneable, XMLTags
         
         try
         {
-            rootNode = doc.createElement(FILE_MATCH_PATTERN_TAG);
-            rootNode.setAttribute(MATCH_PATTERN_TAG,   mMatchPattern);
+            rootNode = doc.createElement(XMLTags.FILE_MATCH_PATTERN_TAG);
+            rootNode.setAttribute(XMLTags.MATCH_PATTERN_TAG,   mMatchPattern);
             Boolean pattern = new Boolean(mIsIncludePattern);
-            rootNode.setAttribute(INCLUDE_PATTERN_TAG, pattern.toString());
+            rootNode.setAttribute(XMLTags.INCLUDE_PATTERN_TAG, pattern.toString());
         }
         catch (DOMException e)
         {

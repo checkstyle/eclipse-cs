@@ -39,7 +39,7 @@ package com.atlassw.tools.eclipse.checkstyle.config;
 /**
  *  Defines XML tages used in configuration files.
  */
-public interface XMLTags
+public class XMLTags
 {
     //=================================================
 	// Public static final variables.

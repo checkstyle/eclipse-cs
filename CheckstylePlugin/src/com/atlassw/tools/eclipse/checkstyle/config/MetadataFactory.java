@@ -50,7 +50,7 @@ import org.w3c.dom.NodeList;
 /**
  *  This class is the factory for all Checkstyle rule metadata.
  */
-public final class MetadataFactory implements XMLTags
+public final class MetadataFactory
 {
     //=================================================
 	// Public static final variables.
@@ -69,7 +69,7 @@ public final class MetadataFactory implements XMLTags
     /**  Name of the rules metadata XML file.  */
     private static final String METADATA_FILENAME = "/CheckstyleMetadata.xml";
     
-    private static int mDefaultGroupIndex = -1;
+    private static int sDefaultGroupIndex = -1;
 
 	//=================================================
 	// Instance member variables.
@@ -146,7 +146,7 @@ public final class MetadataFactory implements XMLTags
 		for (int i = 0; i < count; i++)
 		{
 			Node node = children.item(i);
-			if (node.getNodeName().equals(RULE_GROUP_METADATA_TAG))
+			if (node.getNodeName().equals(XMLTags.RULE_GROUP_METADATA_TAG))
 			{
                 RuleGroupMetadata ruleGroup = null;
                 try
@@ -183,7 +183,7 @@ public final class MetadataFactory implements XMLTags
         //
         //  Add the default group "Other".
         //
-		mDefaultGroupIndex = sRuleGroupMetadata.size();
+		sDefaultGroupIndex = sRuleGroupMetadata.size();
         RuleGroupMetadata otherGroup = new RuleGroupMetadata("Other");
 		sRuleGroupMetadata.add(otherGroup);
 	}
@@ -215,7 +215,7 @@ public final class MetadataFactory implements XMLTags
 		if (metadata == null)
 		{
 			metadata = new RuleMetadata(ruleConfig);
-			metadata.setGroupIndex(mDefaultGroupIndex);
+			metadata.setGroupIndex(sDefaultGroupIndex);
 		}
 		return metadata;
 	}

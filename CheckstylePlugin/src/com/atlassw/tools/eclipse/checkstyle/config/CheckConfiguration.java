@@ -54,7 +54,7 @@ import org.w3c.dom.NodeList;
  *  Represents an audit configuration.  An audit configuration consists
  *  of a collection of audit rules and their configuration parameters.
  */
-public class CheckConfiguration implements Cloneable, XMLTags, Configuration, Comparable
+public class CheckConfiguration implements Cloneable, Configuration, Comparable
 {
     //=================================================
     // Public static final variables.
@@ -96,7 +96,7 @@ public class CheckConfiguration implements Cloneable, XMLTags, Configuration, Co
      */
     public CheckConfiguration(Node node) throws CheckstylePluginException
     {
-        mConfigName = XMLUtil.getNodeAttributeValue(node, NAME_TAG);
+        mConfigName = XMLUtil.getNodeAttributeValue(node, XMLTags.NAME_TAG);
 
         NodeList children = node.getChildNodes();
         int count = children.getLength();
@@ -105,7 +105,7 @@ public class CheckConfiguration implements Cloneable, XMLTags, Configuration, Co
         {
             Node child = children.item(i);
 
-            if (child.getNodeName().equals(RULE_CONFIG_TAG))
+            if (child.getNodeName().equals(XMLTags.RULE_CONFIG_TAG))
             {
                 RuleConfiguration rule = null;
 
@@ -198,8 +198,8 @@ public class CheckConfiguration implements Cloneable, XMLTags, Configuration, Co
 
         try
         {
-            configNode = doc.createElement(CHECK_CONFIG_TAG);
-            configNode.setAttribute(NAME_TAG, mConfigName);
+            configNode = doc.createElement(XMLTags.CHECK_CONFIG_TAG);
+            configNode.setAttribute(XMLTags.NAME_TAG, mConfigName);
             
             Collections.sort(mRuleConfigs);
             Iterator iter = mRuleConfigs.iterator();
@@ -274,16 +274,6 @@ public class CheckConfiguration implements Cloneable, XMLTags, Configuration, Co
     public String getName()
     {
         return "Checker";
-    }
-
-    /**
-     * Returns the mCheckConfigName.
-     * 
-     * @return  The configuration's name.
-     */
-    public String getCheckConfigName()
-    {
-        return mConfigName;
     }
     
     /**

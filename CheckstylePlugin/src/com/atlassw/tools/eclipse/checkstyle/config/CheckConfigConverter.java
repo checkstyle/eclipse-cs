@@ -55,7 +55,7 @@ import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
  *  Used to convert from a standard Checkstyle config file to
  *  the plug-in's internal CheckConfiguration object.
  */
-public class CheckConfigConverter implements XMLTags
+public class CheckConfigConverter
 {
 	//=================================================
     // Public static final variables.
@@ -108,6 +108,8 @@ public class CheckConfigConverter implements XMLTags
      *  Load a standard Checkstyle configuration file.
      * 
      *  @param  filePath  Path to the Checkstyle config file.
+     * 
+     *  @throws CheckstylePluginException  Error loading the file.
      */
     public void loadConfig(String filePath)
 		throws CheckstylePluginException
@@ -178,6 +180,11 @@ public class CheckConfigConverter implements XMLTags
         }
     }
 	
+	/**
+	 * Get the list of properties that need to be resolved.
+	 * 
+	 * @return list of properties.
+	 */
 	public List getPropsToResolve()
 	{
 		return mPropsToResolve;
@@ -359,14 +366,14 @@ public class CheckConfigConverter implements XMLTags
 		//  the TreeWalker and Checker properties and then set to a default value if
 		//  not found.
 		//
-		String severity = (String)ruleProps.get(SEVERITY_TAG);
-		ruleProps.remove(SEVERITY_TAG);
+		String severity = (String)ruleProps.get(XMLTags.SEVERITY_TAG);
+		ruleProps.remove(XMLTags.SEVERITY_TAG);
 		if (severity == null)
 		{
-			severity = (String)mTreeWalkerProps.get(SEVERITY_TAG);
+			severity = (String)mTreeWalkerProps.get(XMLTags.SEVERITY_TAG);
 			if (severity == null)
 			{
-				severity = (String)mCheckerProps.get(SEVERITY_TAG);
+				severity = (String)mCheckerProps.get(XMLTags.SEVERITY_TAG);
 			}
 		}
 

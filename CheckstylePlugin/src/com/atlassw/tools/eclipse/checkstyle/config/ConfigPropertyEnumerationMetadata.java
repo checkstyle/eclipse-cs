@@ -47,7 +47,7 @@ import org.w3c.dom.NodeList;
  *  This represents an enumeration of possible legal values for a
  *  rule's configuration property.
  */
-public class ConfigPropertyEnumerationMetadata implements Cloneable, XMLTags
+public class ConfigPropertyEnumerationMetadata implements Cloneable
 {
     //=================================================
 	// Public static final variables.
@@ -81,7 +81,7 @@ public class ConfigPropertyEnumerationMetadata implements Cloneable, XMLTags
 		for (int i = 0; i < count; i++)
 		{
 			Node node = children.item(i);
-			if (node.getNodeName().equals(PROPERTY_VALUE_OPTIONS_TAG))
+			if (node.getNodeName().equals(XMLTags.PROPERTY_VALUE_OPTIONS_TAG))
 			{
 				ConfigPropertyValueMetadata valueMeta = null;
 				try

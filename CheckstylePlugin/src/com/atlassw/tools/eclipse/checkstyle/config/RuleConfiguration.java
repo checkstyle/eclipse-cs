@@ -55,7 +55,7 @@ import org.w3c.dom.NodeList;
 /**
  *  Represents the configuration of a specific rule.
  */
-public class RuleConfiguration implements Cloneable, XMLTags, Configuration, Comparable
+public class RuleConfiguration implements Cloneable, Configuration, Comparable
 {
     //=================================================
 	// Public static final variables.
@@ -97,7 +97,7 @@ public class RuleConfiguration implements Cloneable, XMLTags, Configuration, Com
      */
     public RuleConfiguration(Node node) throws CheckstylePluginException
     {
-        String temp = XMLUtil.getNodeAttributeValue(node, CLASSNAME_TAG);
+        String temp = XMLUtil.getNodeAttributeValue(node, XMLTags.CLASSNAME_TAG);
         if (temp != null)
         {
             mImplClassname = temp.trim();
@@ -109,7 +109,7 @@ public class RuleConfiguration implements Cloneable, XMLTags, Configuration, Com
             throw new CheckstylePluginException(message);
         }
         
-        temp = XMLUtil.getNodeAttributeValue(node, SEVERITY_TAG);
+        temp = XMLUtil.getNodeAttributeValue(node, XMLTags.SEVERITY_TAG);
         if (temp != null)
         {
             mSeverityLevel = SeverityLevel.getInstance(temp.trim());
@@ -121,24 +121,24 @@ public class RuleConfiguration implements Cloneable, XMLTags, Configuration, Com
             throw new CheckstylePluginException(message);
         }
         
-        temp = XMLUtil.getNodeAttributeValue(node, COMMENT_TAG);
+        temp = XMLUtil.getNodeAttributeValue(node, XMLTags.COMMENT_TAG);
         if (temp != null)
         {
             mComment = temp;
         }
         
-        Node configItems = XMLUtil.getChildNode(node, CONFIG_PROPERTIES_TAG);
+        Node configItems = XMLUtil.getChildNode(node, XMLTags.CONFIG_PROPERTIES_TAG);
         NodeList children = configItems.getChildNodes();
         int count = children.getLength();
         for (int i = 0; i < count; i++)
         {
             Node child = children.item(i);
-            if (child.getNodeName().equals(CONFIG_PROPERTY_TAG))
+            if (child.getNodeName().equals(XMLTags.CONFIG_PROPERTY_TAG))
             {
                 ConfigProperty prop = new ConfigProperty(child);
                 mConfigProperties.put(prop.getName(), prop);
             }
-            else if (child.getNodeName().equals(COMMENT_TAG))
+            else if (child.getNodeName().equals(XMLTags.COMMENT_TAG))
             {
                 mComment = XMLUtil.getNodeTextValue(child);
             }
@@ -175,19 +175,18 @@ public class RuleConfiguration implements Cloneable, XMLTags, Configuration, Com
     {
         mSeverityLevel = level;
         
-        ConfigProperty prop = (ConfigProperty)mConfigProperties.get(SEVERITY_TAG);
+        ConfigProperty prop = (ConfigProperty)mConfigProperties.get(XMLTags.SEVERITY_TAG);
         String value = (level == null) ? null : level.getName();
         if (prop == null)
         {
         	
-        	prop = new ConfigProperty(SEVERITY_TAG, value);
-        	mConfigProperties.put(SEVERITY_TAG, prop);
+        	prop = new ConfigProperty(XMLTags.SEVERITY_TAG, value);
+        	mConfigProperties.put(XMLTags.SEVERITY_TAG, prop);
         }
         else
         {
         	prop.setValue(value);
         }
-        
     }
     
     public Object clone() throws CloneNotSupportedException
@@ -223,20 +222,20 @@ public class RuleConfiguration implements Cloneable, XMLTags, Configuration, Com
         
         try
         {
-            ruleNode = doc.createElement(RULE_CONFIG_TAG);
-            ruleNode.setAttribute(CLASSNAME_TAG, mImplClassname);
+            ruleNode = doc.createElement(XMLTags.RULE_CONFIG_TAG);
+            ruleNode.setAttribute(XMLTags.CLASSNAME_TAG, mImplClassname);
             String severity = mSeverityLevel.getName();
-            ruleNode.setAttribute(SEVERITY_TAG, severity);
+            ruleNode.setAttribute(XMLTags.SEVERITY_TAG, severity);
             
             //
             //  Add the rule's comment, if one exists.
             //
             if ((mComment != null) && (mComment.trim().length() > 0))
             {
-                ruleNode.setAttribute(COMMENT_TAG, mComment);
+                ruleNode.setAttribute(XMLTags.COMMENT_TAG, mComment);
             }
             
-            Node cfgPropsNode = doc.createElement(CONFIG_PROPERTIES_TAG);
+            Node cfgPropsNode = doc.createElement(XMLTags.CONFIG_PROPERTIES_TAG);
             ruleNode.appendChild(cfgPropsNode);
             
             //
@@ -253,7 +252,7 @@ public class RuleConfiguration implements Cloneable, XMLTags, Configuration, Com
                 //  Don't output severity as a property, internally its considered 
                 //  an attribute of the rule.
                 //
-                if (prop.getName().equals(SEVERITY_TAG))
+                if (prop.getName().equals(XMLTags.SEVERITY_TAG))
                 {
                 	continue;
                 }
@@ -275,7 +274,7 @@ public class RuleConfiguration implements Cloneable, XMLTags, Configuration, Com
     public String getAttribute(String name)
         throws com.puppycrawl.tools.checkstyle.api.CheckstyleException
     {
-        if (name.equals(SEVERITY_TAG))
+        if (name.equals(XMLTags.SEVERITY_TAG))
         {
             return mSeverityLevel.getName();
         }
@@ -314,9 +313,9 @@ public class RuleConfiguration implements Cloneable, XMLTags, Configuration, Com
         //  This is necessary since severity it not internally treated as a
         //  "property"
         //
-        if (!nonNullProps.contains(SEVERITY_TAG))
+        if (!nonNullProps.contains(XMLTags.SEVERITY_TAG))
         {
-        	nonNullProps.add(SEVERITY_TAG);
+        	nonNullProps.add(XMLTags.SEVERITY_TAG);
         }
         
         String[] result = new String[nonNullProps.size()];

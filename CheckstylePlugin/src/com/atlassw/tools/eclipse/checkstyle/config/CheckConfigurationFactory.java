@@ -60,7 +60,7 @@ import org.w3c.dom.NodeList;
  *  Used to manage the life cycle of <code>CheckConfiguration</code>
  *  objects.
  */
-public final class CheckConfigurationFactory implements XMLTags
+public final class CheckConfigurationFactory
 {
     //=================================================
 	// Public static final variables.
@@ -376,7 +376,7 @@ public final class CheckConfigurationFactory implements XMLTags
         for (int i = 0; i < count; i++)
         {
         	Node node = children.item(i);
-        	if (node.getNodeName().equals(CHECK_CONFIG_TAG))
+        	if (node.getNodeName().equals(XMLTags.CHECK_CONFIG_TAG))
         	{
                 CheckConfiguration config = new CheckConfiguration(node);
                 if (config == null)
@@ -406,9 +406,9 @@ public final class CheckConfigurationFactory implements XMLTags
         try
         {
             Document configDoc = XMLUtil.newDocument();
-            Element root = configDoc.createElement(CHECKSTYLE_ROOT_TAG);
+            Element root = configDoc.createElement(XMLTags.CHECKSTYLE_ROOT_TAG);
             configDoc.appendChild(root);
-            root.setAttribute(FORMAT_VERSION_TAG, CURRENT_CONFIG_FILE_FORMAT_VERSION);
+            root.setAttribute(XMLTags.FORMAT_VERSION_TAG, CURRENT_CONFIG_FILE_FORMAT_VERSION);
             
             Iterator iter = configs.iterator();
             while (iter.hasNext())

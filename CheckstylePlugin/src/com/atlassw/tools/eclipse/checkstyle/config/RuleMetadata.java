@@ -49,7 +49,7 @@ import org.w3c.dom.NodeList;
 /**
  *  This class contains the metadata that describes a check rule.
  */
-public class RuleMetadata implements Cloneable, XMLTags
+public class RuleMetadata implements Cloneable
 {
     //=================================================
 	// Public static final variables.
@@ -84,7 +84,7 @@ public class RuleMetadata implements Cloneable, XMLTags
         //
         //  Get the name attribute.
         //
-        String temp = XMLUtil.getNodeAttributeValue(ruleNode, NAME_TAG);
+        String temp = XMLUtil.getNodeAttributeValue(ruleNode, XMLTags.NAME_TAG);
         if (temp != null)
         {
             mName = temp.trim();
@@ -93,7 +93,7 @@ public class RuleMetadata implements Cloneable, XMLTags
         //
         //  Get the check implementation classname attribute.
         //
-        temp = XMLUtil.getNodeAttributeValue(ruleNode, CLASSNAME_TAG);
+        temp = XMLUtil.getNodeAttributeValue(ruleNode, XMLTags.CLASSNAME_TAG);
         if (temp != null)
         {
             mCheckImplClassname = temp.trim();
@@ -102,7 +102,7 @@ public class RuleMetadata implements Cloneable, XMLTags
         //
         //  Get the default severity attribute.
         //
-        temp = XMLUtil.getNodeAttributeValue(ruleNode, DEFAULT_SEVERITY_TAG);
+        temp = XMLUtil.getNodeAttributeValue(ruleNode, XMLTags.DEFAULT_SEVERITY_TAG);
         if (temp != null)
         {
             mDefaultSeverityLevel = SeverityLevel.getInstance(temp.trim());
@@ -111,7 +111,7 @@ public class RuleMetadata implements Cloneable, XMLTags
         //
         //  Get the description node.
         //
-		Node descNode = XMLUtil.getChildNode(ruleNode, DESCRIPTION_TAG);
+		Node descNode = XMLUtil.getChildNode(ruleNode, XMLTags.DESCRIPTION_TAG);
 		if (descNode != null)
 		{
 			temp = XMLUtil.getNodeTextValue(descNode);
@@ -129,7 +129,7 @@ public class RuleMetadata implements Cloneable, XMLTags
         for (int i = 0; i < count; i++)
         {
             Node node = children.item(i);
-            if (node.getNodeName().equals(PROPERTY_METADATA_TAG))
+            if (node.getNodeName().equals(XMLTags.PROPERTY_METADATA_TAG))
             {
                 ConfigPropertyMetadata propMeta = null;
                 try
@@ -160,7 +160,7 @@ public class RuleMetadata implements Cloneable, XMLTags
 		for (int i = 0; i < propNames.length; i++)
 		{
 			String name = propNames[i];
-			if (name.equals(SEVERITY_TAG))
+			if (name.equals(XMLTags.SEVERITY_TAG))
 			{
 				continue;
 			}

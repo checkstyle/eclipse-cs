@@ -53,7 +53,7 @@ import org.w3c.dom.NodeList;
  *  A File Set is a collection of files audited with a common set
  *  of audit rules.
  */
-public class FileSet implements Cloneable, XMLTags
+public class FileSet implements Cloneable
 {
     //=================================================
 	// Public static final variables.
@@ -93,7 +93,7 @@ public class FileSet implements Cloneable, XMLTags
     {
         mName        = name;
         mCheckConfig = checkConfig;
-        mCheckConfigName = checkConfig.getCheckConfigName();
+        mCheckConfigName = checkConfig.getConfigName();
     }
     
     /**
@@ -105,7 +105,7 @@ public class FileSet implements Cloneable, XMLTags
      */
     public FileSet(Node node) throws CheckstylePluginException
     {
-        String temp = XMLUtil.getNodeAttributeValue(node, NAME_TAG);
+        String temp = XMLUtil.getNodeAttributeValue(node, XMLTags.NAME_TAG);
         if (temp != null)
         {
             mName = temp.trim();
@@ -115,7 +115,7 @@ public class FileSet implements Cloneable, XMLTags
             CheckstyleLog.warning("FileSet name is null");
         }
         
-        temp = XMLUtil.getNodeAttributeValue(node, ENABLED_TAG);
+        temp = XMLUtil.getNodeAttributeValue(node, XMLTags.ENABLED_TAG);
         if (temp != null)
         {
             mEnabled = Boolean.valueOf(temp.trim()).booleanValue();
@@ -125,7 +125,7 @@ public class FileSet implements Cloneable, XMLTags
             CheckstyleLog.warning("FileSet enabled is null");
         }
         
-        temp = XMLUtil.getNodeAttributeValue(node, CHECK_CONFIG_NAME_TAG);
+        temp = XMLUtil.getNodeAttributeValue(node, XMLTags.CHECK_CONFIG_NAME_TAG);
         if (temp != null)
         {
         	mCheckConfigName = temp;
@@ -143,7 +143,7 @@ public class FileSet implements Cloneable, XMLTags
         for (int i = 0; i < count; i++)
         {
             Node child = children.item(i);
-            if (child.getNodeName().equals(FILE_MATCH_PATTERN_TAG))
+            if (child.getNodeName().equals(XMLTags.FILE_MATCH_PATTERN_TAG))
             {
                 FileMatchPattern pattern = null;
                 try
@@ -249,11 +249,11 @@ public class FileSet implements Cloneable, XMLTags
         
         try
         {
-            rootNode = doc.createElement(FILESET_TAG);
-            rootNode.setAttribute(NAME_TAG,    mName);
+            rootNode = doc.createElement(XMLTags.FILESET_TAG);
+            rootNode.setAttribute(XMLTags.NAME_TAG, mName);
             Boolean enabled = new Boolean(mEnabled);
-            rootNode.setAttribute(ENABLED_TAG, enabled.toString());
-            rootNode.setAttribute(CHECK_CONFIG_NAME_TAG, mCheckConfigName);
+            rootNode.setAttribute(XMLTags.ENABLED_TAG, enabled.toString());
+            rootNode.setAttribute(XMLTags.CHECK_CONFIG_NAME_TAG, mCheckConfigName);
             
             Iterator iter = mFileMatchPatterns.iterator();
             while (iter.hasNext())

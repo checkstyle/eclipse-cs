@@ -48,7 +48,7 @@ import org.w3c.dom.NodeList;
  *  This class describes a collection of check rules 
  *  that are logicaly grouped together.
  */
-public class RuleGroupMetadata implements Cloneable, XMLTags
+public class RuleGroupMetadata implements Cloneable
 {
     //=================================================
 	// Public static final variables.
@@ -75,7 +75,7 @@ public class RuleGroupMetadata implements Cloneable, XMLTags
 		//
 		//  Get the name attribute off of the group node.
 		//
-		mGroupName = XMLUtil.getNodeAttributeValue(groupNode, NAME_TAG);
+		mGroupName = XMLUtil.getNodeAttributeValue(groupNode, XMLTags.NAME_TAG);
 
 		//
 		//  Find all the rules and load them.
@@ -85,7 +85,7 @@ public class RuleGroupMetadata implements Cloneable, XMLTags
 		for (int i = 0; i < count; i++)
 		{
 			Node node = children.item(i);
-			if (node.getNodeName().equals(RULE_METADATA_TAG))
+			if (node.getNodeName().equals(XMLTags.RULE_METADATA_TAG))
 			{
                 RuleMetadata rule = null;
                 try

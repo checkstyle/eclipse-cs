@@ -58,7 +58,7 @@ import org.w3c.dom.NodeList;
 /**
  *  Used to manage the life cycle of FileSet objects.
  */
-public final class FileSetFactory implements XMLTags
+public final class FileSetFactory
 {
     //=================================================
 	// Public static final variables.
@@ -148,7 +148,7 @@ public final class FileSetFactory implements XMLTags
             for (int i = 0; i < count; i++)
             {
                 Node node = children.item(i);
-                if (node.getNodeName().equals(FILESET_TAG))
+                if (node.getNodeName().equals(XMLTags.FILESET_TAG))
                 {
                     FileSet fileSet = new FileSet(node);
                     if (fileSet == null)
@@ -195,9 +195,9 @@ public final class FileSetFactory implements XMLTags
         try
         {
             Document doc = XMLUtil.newDocument();
-            Element root = doc.createElement(FILESET_CONFIG_TAG);
+            Element root = doc.createElement(XMLTags.FILESET_CONFIG_TAG);
             doc.appendChild(root);
-            root.setAttribute(FORMAT_VERSION_TAG, CURRENT_FILE_FORMAT_VERSION);
+            root.setAttribute(XMLTags.FORMAT_VERSION_TAG, CURRENT_FILE_FORMAT_VERSION);
             
             Iterator iter = fileSets.iterator();
             while (iter.hasNext())

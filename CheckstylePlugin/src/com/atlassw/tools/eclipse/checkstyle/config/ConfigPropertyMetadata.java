@@ -44,7 +44,7 @@ import org.w3c.dom.Node;
 /**
  *  This class represents metadata about one of a rule's properties.
  */
-public class ConfigPropertyMetadata implements Cloneable, XMLTags
+public class ConfigPropertyMetadata implements Cloneable
 {
     //=================================================
 	// Public static final variables.
@@ -86,7 +86,7 @@ public class ConfigPropertyMetadata implements Cloneable, XMLTags
         //
         //  Get the name attribute.
         //
-        String temp = XMLUtil.getNodeAttributeValue(propNode, NAME_TAG);
+        String temp = XMLUtil.getNodeAttributeValue(propNode, XMLTags.NAME_TAG);
         if (temp != null)
         {
             mName = temp.trim();
@@ -95,7 +95,7 @@ public class ConfigPropertyMetadata implements Cloneable, XMLTags
         //
         //  Get the default value attribute.
         //
-        temp = XMLUtil.getNodeAttributeValue(propNode, DEFAULT_VALUE_TAG);
+        temp = XMLUtil.getNodeAttributeValue(propNode, XMLTags.DEFAULT_VALUE_TAG);
         if (temp != null)
         {
             mDefaultValue = temp.trim();
@@ -104,7 +104,7 @@ public class ConfigPropertyMetadata implements Cloneable, XMLTags
         //
         //  Get the data type.
         //
-        temp = XMLUtil.getNodeAttributeValue(propNode, DATATYPE_TAG);
+        temp = XMLUtil.getNodeAttributeValue(propNode, XMLTags.DATATYPE_TAG);
         if (temp != null)
         {
             mDatatype = ConfigPropertyType.getConfigPropertyType(temp.trim());
@@ -113,7 +113,7 @@ public class ConfigPropertyMetadata implements Cloneable, XMLTags
         //
         //  Get the description node.
         //
-        Node descNode = XMLUtil.getChildNode(propNode, DESCRIPTION_TAG);
+        Node descNode = XMLUtil.getChildNode(propNode, XMLTags.DESCRIPTION_TAG);
         if (descNode != null)
         {
             temp = XMLUtil.getNodeTextValue(descNode);
@@ -126,7 +126,7 @@ public class ConfigPropertyMetadata implements Cloneable, XMLTags
 		//
 		//  Look for an enumeration node.
 		//
-        Node enumNode = XMLUtil.getChildNode(propNode, ENUMERATION_TAG);
+        Node enumNode = XMLUtil.getChildNode(propNode, XMLTags.ENUMERATION_TAG);
         if (enumNode != null)
 		{
 			ConfigPropertyEnumerationMetadata enumMeta = null;

@@ -51,7 +51,7 @@ import org.w3c.dom.Element;
  * 
  * @author dnehring
  */
-public final class CheckstyleConfigurationSerializer implements XMLTags
+public final class CheckstyleConfigurationSerializer
 {
     //=================================================
 	// Public static final variables.
@@ -99,13 +99,13 @@ public final class CheckstyleConfigurationSerializer implements XMLTags
 		try
         {
         	Document configDoc = XMLUtil.newDocument();
-            Element root = configDoc.createElement(MODULE_TAG);
+            Element root = configDoc.createElement(XMLTags.MODULE_TAG);
             configDoc.appendChild(root);
             
             //
             //  Set the name of the root element.
             //
-            root.setAttribute(NAME_TAG, config.getName());
+            root.setAttribute(XMLTags.NAME_TAG, config.getName());
             Configuration[] configurations = config.getChildren();
             serializeConfiguration(configurations, configDoc, root);
             xml = XMLUtil.serializeDocument(configDoc, true);
@@ -156,8 +156,8 @@ public final class CheckstyleConfigurationSerializer implements XMLTags
 		}
 		String configurationName = configuration.getName();
 		String [] attributes = configuration.getAttributeNames();
-		Element configElement = configDoc.createElement(MODULE_TAG);
-		configElement.setAttribute(NAME_TAG, configurationName);
+		Element configElement = configDoc.createElement(XMLTags.MODULE_TAG);
+		configElement.setAttribute(XMLTags.NAME_TAG, configurationName);
 		
 		for (int i = 0; i < attributes.length; i++)
 		{
@@ -180,9 +180,9 @@ public final class CheckstyleConfigurationSerializer implements XMLTags
 	
 	private static Node toPropertyNode(Document doc, String name, String value)
     {
-        Element propertyNode = doc.createElement(PROPERTY_TAG);
-        propertyNode.setAttribute(NAME_TAG,  name);
-        propertyNode.setAttribute(VALUE_TAG, value);
+        Element propertyNode = doc.createElement(XMLTags.PROPERTY_TAG);
+        propertyNode.setAttribute(XMLTags.NAME_TAG,  name);
+        propertyNode.setAttribute(XMLTags.VALUE_TAG, value);
         
         return propertyNode;
     }
