@@ -94,7 +94,7 @@ public class FileSetEditDialog extends Dialog
     
     private static final String JAVA_SUFFIX = ".java";
     
-    private static final String DEFAULT_PATTERN = "[.java]$";
+    private static final String DEFAULT_PATTERN = ".java$";
     
     private static final String NOTE_TEXT =
         "Note: The last matching regular expression determines if a file is included " +

@@ -23,6 +23,7 @@ package com.atlassw.tools.eclipse.checkstyle.config;
 //=================================================
 // Imports from java namespace
 //=================================================
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -54,7 +55,7 @@ import org.w3c.dom.NodeList;
 /**
  *  Represents the configuration of a specific rule.
  */
-public class RuleConfiguration implements Cloneable, XMLTags, Configuration
+public class RuleConfiguration implements Cloneable, XMLTags, Configuration, Comparable
 {
     //=================================================
 	// Public static final variables.
@@ -63,8 +64,6 @@ public class RuleConfiguration implements Cloneable, XMLTags, Configuration
 	//=================================================
 	// Static class variables.
 	//=================================================
-    
-    private static final String SEVERITY_PROP = "severity";
 
 	//=================================================
 	// Instance member variables.
@@ -243,10 +242,22 @@ public class RuleConfiguration implements Cloneable, XMLTags, Configuration
             //
             //  Add the properties.
             //
-            Iterator iter = mConfigProperties.values().iterator();
+            LinkedList props = new LinkedList(mConfigProperties.values());
+            Collections.sort(props);
+            Iterator iter = props.iterator();
             while (iter.hasNext())
             {
                 ConfigProperty prop = (ConfigProperty)iter.next();
+                
+                //
+                //  Don't output severity as a property, internally its considered 
+                //  an attribute of the rule.
+                //
+                if (prop.getName().equals(SEVERITY_TAG))
+                {
+                	continue;
+                }
+                
                 Node propNode = prop.toDOMNode(doc);
                 cfgPropsNode.appendChild(propNode);
             }
@@ -264,7 +275,7 @@ public class RuleConfiguration implements Cloneable, XMLTags, Configuration
     public String getAttribute(String name)
         throws com.puppycrawl.tools.checkstyle.api.CheckstyleException
     {
-        if (name.equals(SEVERITY_PROP))
+        if (name.equals(SEVERITY_TAG))
         {
             return mSeverityLevel.getName();
         }
@@ -303,12 +314,13 @@ public class RuleConfiguration implements Cloneable, XMLTags, Configuration
         //  This is necessary since severity it not internally treated as a
         //  "property"
         //
-        if (!nonNullProps.contains(SEVERITY_PROP))
+        if (!nonNullProps.contains(SEVERITY_TAG))
         {
-        	nonNullProps.add(SEVERITY_PROP);
+        	nonNullProps.add(SEVERITY_TAG);
         }
         
         String[] result = new String[nonNullProps.size()];
+        Collections.sort(nonNullProps);
         result = (String[])nonNullProps.toArray(result);
         return result;
     }
@@ -340,6 +352,22 @@ public class RuleConfiguration implements Cloneable, XMLTags, Configuration
 	public void setComment(String comment)
 	{
 		mComment = comment;
+	}
+    
+	public int compareTo(Object obj)
+	{
+		int result = 0;
+		RuleConfiguration that = (RuleConfiguration)obj;
+		result = this.mImplClassname.compareTo(that.mImplClassname);
+		if (result == 0)
+		{
+			//
+			//  Check the severity setting as the tie breaker.
+			//
+			result = mSeverityLevel.getName().compareTo(that.mSeverityLevel.getName());
+		}
+		
+		return result;
 	}
 
 }

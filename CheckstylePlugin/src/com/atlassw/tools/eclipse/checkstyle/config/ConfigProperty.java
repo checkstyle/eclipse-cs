@@ -45,7 +45,7 @@ import org.w3c.dom.Node;
 /**
  *  A simple configuration consisting of a name/value pair.
  */
-public class ConfigProperty implements XMLTags
+public class ConfigProperty implements XMLTags, Comparable
 {
     //=================================================
 	// Public static final variables.
@@ -185,5 +185,9 @@ public class ConfigProperty implements XMLTags
         
         return cfgPropertyNode;
     }
-
+    
+    public int compareTo(Object obj)
+    {
+        return this.mName.compareTo(((ConfigProperty)obj).mName);
+    }
 }

@@ -23,6 +23,7 @@ package com.atlassw.tools.eclipse.checkstyle.config;
 //=================================================
 // Imports from java namespace
 //=================================================
+import java.util.Collections;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.Iterator;
@@ -199,7 +200,8 @@ public class CheckConfiguration implements Cloneable, XMLTags, Configuration, Co
         {
             configNode = doc.createElement(CHECK_CONFIG_TAG);
             configNode.setAttribute(NAME_TAG, mConfigName);
-
+            
+            Collections.sort(mRuleConfigs);
             Iterator iter = mRuleConfigs.iterator();
 
             while (iter.hasNext())
@@ -323,7 +325,8 @@ public class CheckConfiguration implements Cloneable, XMLTags, Configuration, Co
         public Configuration[] getChildren()
         {
             Configuration[] result = new Configuration[mRuleConfigs.size()];
-
+            
+            Collections.sort(mRuleConfigs);
             result = (Configuration[])mRuleConfigs.toArray(result);
 
             return result;

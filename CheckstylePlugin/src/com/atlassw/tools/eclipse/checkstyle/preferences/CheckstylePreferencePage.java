@@ -496,7 +496,7 @@ public class CheckstylePreferencePage
         }
         catch (CheckstylePluginException e)
         {
-            CheckstyleLog.error("Failed to import CheckConfigurations from external file");
+            CheckstyleLog.error("Failed to import CheckConfigurations from external file", e);
             CheckstyleLog.internalErrorDialog();
         }
     }
@@ -527,7 +527,7 @@ public class CheckstylePreferencePage
         }
         catch (CheckstylePluginException e)
         {
-            CheckstyleLog.error("Failed to export CheckConfigurations to external file");
+			CheckstyleLog.error("Failed to export CheckConfigurations to external file", e);
             MessageDialog.openError(mParentComposite.getShell(),
                     "Checkstyle Error",
                     "Failed to export CheckConfigurations to external file");
