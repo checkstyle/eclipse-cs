@@ -1,1103 +1,1534 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <checkstyle-metadata file-format-version="1.0.0">
+   <rule-group-metadata name="Javadoc Comments">
+      <rule-metadata name="Method Javadoc" classname="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocMethodCheck" default-severity="Warning">
+         <description>Checks to ensure that the following tags exist (if required): @return, @param, @throws or @exception, @see or {@inheritDoc}.</description>
+         <property-metadata name="scope" datatype="SingleSelect" default-value="private">
+            <description>Visibility scope where Javadoc comments are checked.</description>
+            <enumeration>
+               <property-value-option value="nothing"/>
+               <property-value-option value="public"/>
+               <property-value-option value="protected"/>
+               <property-value-option value="package"/>
+               <property-value-option value="private"/>
+               <property-value-option value="anoninner"/>
+            </enumeration>
+         </property-metadata>
+         <property-metadata name="allowUndeclaredRTE" datatype="Boolean" default-value="false">
+            <description>Whether to allow documented exceptions that are not declared if they are a subclass of java.lang.RuntimeException.</description>
+         </property-metadata>
+         <property-metadata name="allowThrowsTagsForSubclasses" datatype="Boolean" default-value="false">
+            <description>Whether to allow documented exceptions that are subclass of one of declared exception.</description>
+         </property-metadata>
+         <property-metadata name="allowMissingParamTags" datatype="Boolean" default-value="false">
+            <description>Whether to ignore errors when a method has parameters but does not have matching param tags in the javadoc.</description>
+         </property-metadata>
+         <property-metadata name="allowMissingThrowsTags" datatype="Boolean" default-value="false">
+            <description>Whether to ignore errors when a method declares that it throws exceptions but does have matching throws tags in the javadoc.</description>
+         </property-metadata>
+         <property-metadata name="allowMissingReturnTag" datatype="Boolean" default-value="false">
+            <description>Whether to ignore errors when a method returns non-void type does have a return tag in the javadoc.</description>
+         </property-metadata>
+         <property-metadata name="tokens" datatype="MultiCheck" default-value="METHOD_DEF, CTOR_DEF">
+            <description>Tokens to check.</description>
+            <enumeration>
+               <property-value-option value="METHOD_DEF"/>
+               <property-value-option value="CTOR_DEF"/>
+            </enumeration>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Style Javadoc" classname="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocStyleCheck" default-severity="Warning">
+         <description>Validates Javadoc comments to help ensure they are well formed. The following checks are performed: 
+         1.Ensures the first sentence ends with proper punctuation (That is a period, question mark, or exclamation mark). Javadoc automatically places the first sentence in the method summary table and index. With out proper punctuation the Javadoc may be malformed. 
+         2.Check text for incomplete HTML tags. Verifies that HTML tags have corresponding end tags and issues an "Unclosed HTML tag found:" error if not. An "Extra HTML tag found:" error is issued if an end tag is found without a previous open tag. 
+       </description>
+         <property-metadata name="scope" datatype="SingleSelect" default-value="private">
+            <description>Visibility scope where Javadoc comments are checked.</description>
+            <enumeration>
+               <property-value-option value="nothing"/>
+               <property-value-option value="public"/>
+               <property-value-option value="protected"/>
+               <property-value-option value="package"/>
+               <property-value-option value="private"/>
+               <property-value-option value="anoninner"/>
+            </enumeration>
+         </property-metadata>
+         <property-metadata name="checkFirstSentence" datatype="Boolean" default-value="true">
+            <description>Whether to check the first sentence for proper end of sentence.</description>
+         </property-metadata>
+         <property-metadata name="checkHtml" datatype="Boolean" default-value="true">
+            <description>Whether to check for incomplete html tags.</description>
+         </property-metadata>
+         <property-metadata name="tokens" datatype="MultiCheck" default-value="INTERFACE_DEF, CLASS_DEF, METHOD_DEF, CTOR_DEF, VARIABLE_DEF">
+            <description>Tokens to check.</description>
+            <enumeration>
+               <property-value-option value="INTERFACE_DEF"/>
+               <property-value-option value="CLASS_DEF"/>
+               <property-value-option value="METHOD_DEF"/>
+               <property-value-option value="CTOR_DEF"/>
+               <property-value-option value="VARIABLE_DEF"/>
+            </enumeration>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Type Javadoc" classname="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocTypeCheck" default-severity="Warning">
+         <description>Checks Javadoc comments for class and interface definitions.</description>
+         <property-metadata name="scope" datatype="SingleSelect" default-value="private">
+            <description>Visibility scope where Javadoc comments are checked.</description>
+            <enumeration>
+               <property-value-option value="nothing"/>
+               <property-value-option value="public"/>
+               <property-value-option value="protected"/>
+               <property-value-option value="package"/>
+               <property-value-option value="private"/>
+               <property-value-option value="anoninner"/>
+            </enumeration>
+         </property-metadata>
+         <property-metadata name="authorFormat" datatype="String" default-value="">
+            <description>Pattern for @author tag.</description>
+         </property-metadata>
+         <property-metadata name="versionFormat" datatype="String" default-value="">
+            <description>Pattern for @version tag.</description>
+         </property-metadata>
+         <property-metadata name="tokens" datatype="MultiCheck" default-value="CLASS_DEF, INTERFACE_DEF">
+            <description>Tokens to check.</description>
+            <enumeration>
+               <property-value-option value="CLASS_DEF"/>
+               <property-value-option value="INTERFACE_DEF"/>
+            </enumeration>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Variable Javadoc" classname="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocVariableCheck" default-severity="Warning">
+         <description>Checks that variables have Javadoc comments.</description>
+         <property-metadata name="scope" datatype="SingleSelect" default-value="private">
+            <description>Visibility scope where Javadoc comments are checked.</description>
+            <enumeration>
+               <property-value-option value="nothing"/>
+               <property-value-option value="public"/>
+               <property-value-option value="protected"/>
+               <property-value-option value="package"/>
+               <property-value-option value="private"/>
+               <property-value-option value="anoninner"/>
+            </enumeration>
+         </property-metadata>
+      </rule-metadata>
+   </rule-group-metadata>
+   <rule-group-metadata name="Naming Conventions">
+      <rule-metadata name="Abstract Class Name" classname="com.puppycrawl.tools.checkstyle.checks.naming.AbstractClassNameCheck" default-severity="Warning">
+         <description>Checks that abstract class names follow naming convention.</description>
+         <property-metadata name="format" datatype="String" default-value="^Abstract.*$|^.*Factory$">
+            <description>Regular expression defining required naming pattern.</description>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Constant Names" classname="com.puppycrawl.tools.checkstyle.checks.naming.ConstantNameCheck" default-severity="Warning">
+         <description>Checks that constents (static final fields) variables follow naming convention.</description>
+         <property-metadata name="format" datatype="String" default-value="^[A-Z](_?[A-Z0-9]+)*$">
+            <description>Regular expression defining required naming pattern.</description>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Local Final Variable Names" classname="com.puppycrawl.tools.checkstyle.checks.naming.LocalFinalVariableNameCheck" default-severity="Warning">
+         <description>Checks that local final variables follow naming convention.</description>
+         <property-metadata name="format" datatype="String" default-value="^[a-z][a-zA-Z0-9]*$">
+            <description>Regular expression defining required naming pattern.</description>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Local Variable Names" classname="com.puppycrawl.tools.checkstyle.checks.naming.LocalVariableNameCheck" default-severity="Warning">
+         <description>Checks that local variables follow naming convention.</description>
+         <property-metadata name="format" datatype="String" default-value="^[a-z][a-zA-Z0-9]*$">
+            <description>Regular expression defining required naming pattern.</description>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Member Names" classname="com.puppycrawl.tools.checkstyle.checks.naming.MemberNameCheck" default-severity="Warning">
+         <description>Checks that member variables (non-static fields) follow naming convention.</description>
+         <property-metadata name="format" datatype="String" default-value="^[a-z][a-zA-Z0-9]*$">
+            <description>Regular expression defining required naming pattern.</description>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Method Names" classname="com.puppycrawl.tools.checkstyle.checks.naming.MethodNameCheck" default-severity="Warning">
+         <description>Checks that method names follow naming convention.</description>
+         <property-metadata name="format" datatype="String" default-value="^[a-z][a-zA-Z0-9]*$">
+            <description>Regular expression defining required naming pattern.</description>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Package Names" classname="com.puppycrawl.tools.checkstyle.checks.naming.PackageNameCheck" default-severity="Warning">
+         <description>Checks that package names follow naming convention.</description>
+         <property-metadata name="format" datatype="String" default-value="^[a-z]+(\.[a-zA-Z_][a-zA-Z0-9_]*)*$">
+            <description>Regular expression defining required naming pattern.</description>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Parameter Names" classname="com.puppycrawl.tools.checkstyle.checks.naming.ParameterNameCheck" default-severity="Warning">
+         <description>Checks that parameter names follow naming convention.</description>
+         <property-metadata name="format" datatype="String" default-value="^[a-z][a-zA-Z0-9]*$">
+            <description>Regular expression defining required naming pattern.</description>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Static Variable Names" classname="com.puppycrawl.tools.checkstyle.checks.naming.StaticVariableNameCheck" default-severity="Warning">
+         <description>Checks that static variables (static, non-final fields) follow naming convention.</description>
+         <property-metadata name="format" datatype="String" default-value="^[a-z][a-zA-Z0-9]*$">
+            <description>Regular expression defining required naming pattern.</description>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Type Names" classname="com.puppycrawl.tools.checkstyle.checks.naming.TypeNameCheck" default-severity="Warning">
+         <description>Checks that class names follow naming convention.</description>
+         <property-metadata name="format" datatype="String" default-value="^[A-Z][a-zA-Z0-9]*$">
+            <description>Regular expression defining required naming pattern.</description>
+         </property-metadata>
+         <property-metadata name="tokens" datatype="MultiCheck" default-value="CLASS_DEF, INTERFACE_DEF">
+            <description>Tokens to check.</description>
+            <enumeration>
+               <property-value-option value="CLASS_DEF"/>
+               <property-value-option value="INTERFACE_DEF"/>
+            </enumeration>
+         </property-metadata>
+      </rule-metadata>
+   </rule-group-metadata>
+   <rule-group-metadata name="Imports">
+      <rule-metadata name="Avoid Star (Demand) Imports" classname="com.puppycrawl.tools.checkstyle.checks.imports.AvoidStarImportCheck" default-severity="Warning">
+         <description>Checks for use of demand import statements.</description>
+         <!-- <property-metadata name="excludes" datatype="String" default-value="">
+            <description>packages where star imports are allowed. Note that this property is not recursive, subpackages of excluded packages are not automatically excluded.</description>
+         </property-metadata>-->
+      </rule-metadata>
+      <rule-metadata name="Illegal Imports" classname="com.puppycrawl.tools.checkstyle.checks.imports.IllegalImportCheck" default-severity="Warning">
+         <description>Checks for imports from a set of illegal packages.</description>
+         <property-metadata name="illegalPkgs" datatype="String" default-value="sun">
+            <description>Comma (',') seperated list of illegal packages.</description>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Import Order Check" classname="com.puppycrawl.tools.checkstyle.checks.imports.ImportOrderCheck" default-severity="Warning">
+         <description>Checks the ordering/grouping of imports. Ensures that groups of imports come in a specific order (e.g., java. comes first, javax. comes first, then everything else) and imports within each group are in lexicographic order. </description>
+         <!--<property-metadata name="groups" datatype="StringArray" default-value=" ">
+            <description>list of imports groups (every group identified by string it's started)</description>
+         </property-metadata>-->
+         <property-metadata name="ordered" datatype="Boolean" default-value="true">
+            <description>whether imports within group should be sorted</description>
+         </property-metadata>
+         <property-metadata name="separated" datatype="Boolean" default-value="false">
+            <description>whether imports groups should be separated by, at least, one blank line</description>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Redundant Imports" classname="com.puppycrawl.tools.checkstyle.checks.imports.RedundantImportCheck" default-severity="Warning">
+         <description>Checks for redundant import statements. An import statement is considered redundant if: 1) It is a duplicate of another import. This is, when a class is imported more than once; or 2) The class imported is from the java.lang package, e.g. importing java.lang.String; or 3) The class imported is from the same package. </description>
+      </rule-metadata>
+      <rule-metadata name="Unused Imports" classname="com.puppycrawl.tools.checkstyle.checks.imports.UnusedImportsCheck" default-severity="Warning">
+         <description>Checks for unused import statements.</description>
+      </rule-metadata>
+   </rule-group-metadata>
+   <rule-group-metadata name="Size Violations">
+      <rule-metadata name="Anonymous inner classes lengths" classname="com.puppycrawl.tools.checkstyle.checks.sizes.AnonInnerLengthCheck" default-severity="Warning">
+         <description>Checks for long anonymous inner classes. 
 
-	<rule-group-metadata name="Javadoc Comments">
+Rationale: If an anonymous inner class becomes very long it is hard to understand and to see the flow of the method where the class is defined. Therefore long anonymous inner classes should usually be refactored into a named inner class. See also Bloch, Effective Java, p. 93. 
+         </description>
+         <property-metadata name="max" datatype="Integer" default-value="20">
+            <description>maximum allowable number of lines.</description>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Executable Statement Size" classname="com.puppycrawl.tools.checkstyle.checks.sizes.ExecutableStatementCountCheck" default-severity="Warning">
+         <description>Restricts the number of executable statements to a specified limit</description>
+         <property-metadata name="max" datatype="Integer" default-value="30">
+            <description>Maximum allowed parameters.</description>
+         </property-metadata>
+         <property-metadata name="tokens" datatype="MultiCheck" default-value="CTOR_DEF, METHOD_DEF, INSTANCE_INIT, STATIC_INIT ">
+            <description>Tokens to check.</description>
+            <enumeration>
+               <property-value-option value="INSTANCE_INIT"/>
+               <property-value-option value="STATIC_INIT"/>
+               <property-value-option value="METHOD_DEF"/>
+               <property-value-option value="CTOR_DEF"/>
+            </enumeration>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Maximum File Length" classname="com.puppycrawl.tools.checkstyle.checks.sizes.FileLengthCheck" default-severity="Warning">
+         <description>Checks for source files that exceed the configured maximum length.</description>
+         <property-metadata name="max" datatype="Integer" default-value="2000">
+            <description>Maximum number of lines allowed.</description>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Maximum Line Length" classname="com.puppycrawl.tools.checkstyle.checks.sizes.LineLengthCheck" default-severity="Warning">
+         <description>Checks for lines that exceed the configured maximum length.</description>
+         <property-metadata name="ignorePattern" datatype="String" default-value="^$">
+            <description>Pattern for lines to ignore.</description>
+         </property-metadata>
+         <property-metadata name="max" datatype="Integer" default-value="80">
+            <description>Maximum allowed line length.</description>
+         </property-metadata>
+         <property-metadata name="tabWidth" datatype="Integer" default-value="4">
+            <description>Number of characters to count for each tab character.</description>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Maximum Method Length" classname="com.puppycrawl.tools.checkstyle.checks.sizes.MethodLengthCheck" default-severity="Warning">
+         <description>Checks for methods that exceed the configured maximum length.</description>
+         <property-metadata name="max" datatype="Integer" default-value="150">
+            <description>Maximum number of lines allowed.</description>
+         </property-metadata>
+         <property-metadata name="countEmpty" datatype="Boolean" default-value="true">
+            <description>whether to count empty lines and single line comments of the form //</description>
+         </property-metadata>
+         <property-metadata name="tokens" datatype="MultiCheck" default-value="METHOD_DEF, CTOR_DEF">
+            <description>Tokens to check.</description>
+            <enumeration>
+               <property-value-option value="METHOD_DEF"/>
+               <property-value-option value="CTOR_DEF"/>
+            </enumeration>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Maximum Parameters" classname="com.puppycrawl.tools.checkstyle.checks.sizes.ParameterNumberCheck" default-severity="Warning">
+         <description>Checks the number of parameters of a method or constructor.</description>
+         <property-metadata name="max" datatype="Integer" default-value="7">
+            <description>Maximum allowed parameters.</description>
+         </property-metadata>
+         <property-metadata name="tokens" datatype="MultiCheck" default-value="METHOD_DEF, CTOR_DEF">
+            <description>Tokens to check.</description>
+            <enumeration>
+               <property-value-option value="METHOD_DEF"/>
+               <property-value-option value="CTOR_DEF"/>
+            </enumeration>
+         </property-metadata>
+      </rule-metadata>
+   </rule-group-metadata>
+   <rule-group-metadata name="Whitespace">
+      <rule-metadata name="Empty For Iterator Pad" classname="com.puppycrawl.tools.checkstyle.checks.whitespace.EmptyForIteratorPadCheck" default-severity="Warning">
+         <description>Checks the padding of an empty for iterator; that is whether white space is required at an empty for iterator, or such white space is forbidden.</description>
+         <property-metadata name="option" datatype="SingleSelect" default-value="nospace">
+            <description>Policy on how to pad an empty for iterator.</description>
+            <enumeration>
+               <property-value-option value="nospace"/>
+               <property-value-option value="space"/>
+            </enumeration>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="No Whitespace After" classname="com.puppycrawl.tools.checkstyle.checks.whitespace.NoWhitespaceAfterCheck" default-severity="Warning">
+         <description>Checks that there is no whitespace after a token. More specifically, it checks that it is not followed by whitespace, or (if linebreaks are allowed) all characters on the line after are whitespace. To forbid linebreaks after a token, set property allowLineBreaks to false.</description>
+         <property-metadata name="allowLineBreaks" datatype="Boolean" default-value="true">
+            <description>Whether whitespace is allowed if the token is at a linebreak.</description>
+         </property-metadata>
+         <property-metadata name="tokens" datatype="MultiCheck" default-value="ARRAY_INIT, BNOT, DEC, DOT, INC, LNOT, UNARY_MINUS, UNARY_PLUS">
+            <description>Tokens to check.</description>
+            <enumeration>
+               <property-value-option value="ARRAY_INIT"/>
+               <property-value-option value="BNOT"/>
+               <property-value-option value="DEC"/>
+               <property-value-option value="DOT"/>
+               <property-value-option value="INC"/>
+               <property-value-option value="LNOT"/>
+               <property-value-option value="UNARY_MINUS"/>
+               <property-value-option value="UNARY_PLUS"/>
+            </enumeration>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="No Whitespace Before" classname="com.puppycrawl.tools.checkstyle.checks.whitespace.NoWhitespaceBeforeCheck" default-severity="Warning">
+         <description>Checks that there is no whitespace before a token. More specifically, it checks that it is not preceded with whitespace, or (if linebreaks are allowed) all characters on the line before are whitespace. To allow linebreaks before a token, set property allowLineBreaks to true.</description>
+         <property-metadata name="allowLineBreaks" datatype="Boolean" default-value="true">
+            <description>Whether whitespace is allowed if the token is at a linebreak.</description>
+         </property-metadata>
+         <property-metadata name="tokens" datatype="MultiCheck" default-value="SEMI, POST_DEC, POST_INC">
+            <description>Tokens to check.</description>
+            <enumeration>
+               <property-value-option value="SEMI"/>
+               <property-value-option value="DOT"/>
+               <property-value-option value="POST_DEC"/>
+               <property-value-option value="POST_INC"/>
+            </enumeration>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Operator Wrap" classname="com.puppycrawl.tools.checkstyle.checks.whitespace.OperatorWrapCheck" default-severity="Warning">
+         <description>Checks the policy on how to wrap lines on operators.</description>
+         <property-metadata name="option" datatype="SingleSelect" default-value="nl">
+            <description>Policy on how to wrap lines. nl = operator must be on a new line, eol = operator must be at the end of the line.</description>
+            <enumeration>
+               <property-value-option value="eol"/>
+               <property-value-option value="nl"/>
+            </enumeration>
+         </property-metadata>
+         <property-metadata name="tokens" datatype="MultiCheck" default-value="BAND, BOR, BSR, BXOR, COLON, DIV, EQUAL, GE, GT, LAND, LE, LITERAL_INSTANCEOF, LOR, LT, MINUS, MOD, NOT_EQUAL, PLUS, QUESTION, SL, SR, STAR">
+            <description>Tokens to check.</description>
+            <enumeration>
+               <property-value-option value="ASSIGN"/>
+               <property-value-option value="BAND"/>
+               <property-value-option value="BAND_ASSIGN"/>
+               <property-value-option value="BOR"/>
+               <property-value-option value="BOR_ASSIGN"/>
+               <property-value-option value="BSR"/>
+               <property-value-option value="BSR_ASSIGN"/>
+               <property-value-option value="BXOR"/>
+               <property-value-option value="BXOR_ASSIGN"/>
+               <property-value-option value="COLON"/>
+               <property-value-option value="DIV"/>
+               <property-value-option value="DIV_ASSIGN"/>
+               <property-value-option value="EQUAL"/>
+               <property-value-option value="GE"/>
+               <property-value-option value="GT"/>
+               <property-value-option value="LAND"/>
+               <property-value-option value="LE"/>
+               <property-value-option value="LITERAL_INSTANCEOF"/>
+               <property-value-option value="LOR"/>
+               <property-value-option value="LT"/>
+               <property-value-option value="MINUS"/>
+               <property-value-option value="MINUS_ASSIGN"/>
+               <property-value-option value="MOD"/>
+               <property-value-option value="MOD_ASSIGN"/>
+               <property-value-option value="NOT_EQUAL"/>
+               <property-value-option value="PLUS"/>
+               <property-value-option value="PLUS_ASSIGN"/>
+               <property-value-option value="QUESTION"/>
+               <property-value-option value="SL"/>
+               <property-value-option value="SL_ASSIGN"/>
+               <property-value-option value="SR"/>
+               <property-value-option value="SR_ASSIGN"/>
+               <property-value-option value="STAR"/>
+               <property-value-option value="STAR_ASSIGN"/>
+            </enumeration>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Paren Pad" classname="com.puppycrawl.tools.checkstyle.checks.whitespace.ParenPadCheck" default-severity="Warning">
+         <description>Checks the policy on the padding of parentheses; i.e. whether a space is required after a left parenthesis and before a right parenthesis, or such spaces are forbidden.</description>
+         <property-metadata name="option" datatype="SingleSelect" default-value="nospace">
+            <description>Policy on how to pad parentheses. nospace = do not pad (e.g. method(a, b)).  space = ensure padding (e.g. method( a, b )).</description>
+            <enumeration>
+               <property-value-option value="nospace"/>
+               <property-value-option value="space"/>
+            </enumeration>
+         </property-metadata>
+         <property-metadata name="tokens" datatype="MultiCheck" default-value="CTOR_CALL, LPAREN, METHOD_CALL, RPAREN, SUPER_CTOR_CALL ">
+            <description>Tokens to check.</description>
+            <enumeration>
+               <property-value-option value="CTOR_CALL"/>
+               <property-value-option value="LPAREN"/>
+               <property-value-option value="METHOD_CALL"/>
+               <property-value-option value="RPAREN"/>
+               <property-value-option value="SUPER_CTOR_CALL"/>
+            </enumeration>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Tab Character" classname="com.puppycrawl.tools.checkstyle.checks.whitespace.TabCharacterCheck" default-severity="Warning">
+         <description>Checks that there are no tab characters ('\t') in the source code.</description>
+      </rule-metadata>
+      <rule-metadata name="Typecast Paren Pad" classname="com.puppycrawl.tools.checkstyle.checks.whitespace.TypecastParenPadCheck" default-severity="Warning">
+         <description>Checks the policy on the padding of parentheses for typecasts. That is, whether a space is required after a left parenthesis and before a right parenthesis, or such spaces are forbidden. </description>
+         <property-metadata name="option" datatype="SingleSelect" default-value="nospace">
+            <description>Policy on how to pad parentheses. nospace = do not pad (e.g. method(a, b)).  space = ensure padding (e.g. method( a, b )).</description>
+            <enumeration>
+               <property-value-option value="nospace"/>
+               <property-value-option value="space"/>
+            </enumeration>
+         </property-metadata>
+         <property-metadata name="tokens" datatype="MultiCheck" default-value="TYPECAST, RPAREN">
+            <description>Tokens to check.</description>
+            <enumeration>
+               <property-value-option value="RPAREN"/>
+               <property-value-option value="TYPECAST"/>
+            </enumeration>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Whitespace After" classname="com.puppycrawl.tools.checkstyle.checks.whitespace.WhitespaceAfterCheck" default-severity="Warning">
+         <description>Checks that a token is followed by whitespace.</description>
+         <property-metadata name="tokens" datatype="MultiCheck" default-value="COMMA, SEMI, TYPECAST">
+            <description>Tokens to check.</description>
+            <enumeration>
+               <property-value-option value="COMMA"/>
+               <property-value-option value="SEMI"/>
+               <property-value-option value="TYPECAST"/>
+            </enumeration>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Whitespace Around" classname="com.puppycrawl.tools.checkstyle.checks.whitespace.WhitespaceAroundCheck" default-severity="Warning">
+         <description>Checks that a token is surrounded by whitespace.</description>
+         <property-metadata name="tokens" datatype="MultiCheck" default-value="ASSIGN, BAND, BAND_ASSIGN, BOR, BOR_ASSIGN, BSR, BSR_ASSIGN, BXOR, BXOR_ASSIGN, COLON, DIV, DIV_ASSIGN, EQUAL, GE, GT, LAND, LCURLY, LE, LITERAL_ASSERT, LITERAL_CATCH, LITERAL_DO, LITERAL_ELSE, LITERAL_FINALLY, LITERAL_FOR, LITERAL_IF, LITERAL_RETURN, LITERAL_SYNCHRONIZED, LITERAL_TRY, LITERAL_WHILE, LOR, LT, MINUS, MINUS_ASSIGN, MOD, MOD_ASSIGN, NOT_EQUAL, PLUS, PLUS_ASSIGN, QUESTION, RCURLY, SL, SLIST, SL_ASSIGN, SR, SR_ASSIGN, STAR, STAR_ASSIGN">
+            <description>Tokens to check.</description>
+            <enumeration>
+               <property-value-option value="ASSIGN"/>
+               <property-value-option value="BAND"/>
+               <property-value-option value="BAND_ASSIGN"/>
+               <property-value-option value="BOR"/>
+               <property-value-option value="BOR_ASSIGN"/>
+               <property-value-option value="BSR"/>
+               <property-value-option value="BSR_ASSIGN"/>
+               <property-value-option value="BXOR"/>
+               <property-value-option value="BXOR_ASSIGN"/>
+               <property-value-option value="COLON"/>
+               <property-value-option value="DIV"/>
+               <property-value-option value="DIV_ASSIGN"/>
+               <property-value-option value="EQUAL"/>
+               <property-value-option value="GE"/>
+               <property-value-option value="GT"/>
+               <property-value-option value="LAND"/>
+               <property-value-option value="LCURLY"/>
+               <property-value-option value="LE"/>
+               <property-value-option value="LITERAL_ASSERT"/>
+               <property-value-option value="LITERAL_CATCH"/>
+               <property-value-option value="LITERAL_DO"/>
+               <property-value-option value="LITERAL_ELSE"/>
+               <property-value-option value="LITERAL_FINALLY"/>
+               <property-value-option value="LITERAL_FOR"/>
+               <property-value-option value="LITERAL_IF"/>
+               <property-value-option value="LITERAL_RETURN"/>
+               <property-value-option value="LITERAL_SYNCHRONIZED"/>
+               <property-value-option value="LITERAL_TRY"/>
+               <property-value-option value="LITERAL_WHILE"/>
+               <property-value-option value="LOR"/>
+               <property-value-option value="LT"/>
+               <property-value-option value="MINUS"/>
+               <property-value-option value="MINUS_ASSIGN"/>
+               <property-value-option value="MOD"/>
+               <property-value-option value="MOD_ASSIGN"/>
+               <property-value-option value="NOT_EQUAL"/>
+               <property-value-option value="PLUS"/>
+               <property-value-option value="PLUS_ASSIGN"/>
+               <property-value-option value="QUESTION"/>
+               <property-value-option value="RCURLY"/>
+               <property-value-option value="SL"/>
+               <property-value-option value="SLIST"/>
+               <property-value-option value="SL_ASSIGN"/>
+               <property-value-option value="SR"/>
+               <property-value-option value="SR_ASSIGN"/>
+               <property-value-option value="STAR"/>
+               <property-value-option value="STAR_ASSIGN"/>
+            </enumeration>
+         </property-metadata>
+      </rule-metadata>
+   </rule-group-metadata>
+   <rule-group-metadata name="Modifiers">
+      <rule-metadata name="Modifier Order" classname="com.puppycrawl.tools.checkstyle.checks.ModifierOrderCheck" default-severity="Warning">
+         <description>Checks that the order of modifiers conforms to the suggestions in the Java Language specification, sections 8.1.1, 8.3.1 and 8.4.3. The correct order is: public, protected, private, abstract, static, final, transient, volatile, synchronized, native, strictfp.</description>
+      </rule-metadata>
+      <rule-metadata name="Redundant Modifier" classname="com.puppycrawl.tools.checkstyle.checks.RedundantModifierCheck" default-severity="Warning">
+         <description>Checks that method declarations in interfaces include neither the public modifier nor the abstract modifier (see the Java Language specification, section 9.4).  Also checks that variable declarations in interfaces include none of the following modifiers: public, static, final (variables in interface definitions are constants and have these modifiers implicitly, see the Java Language specification, section 9.3).</description>
+         <property-metadata name="tokens" datatype="MultiCheck" default-value="METHOD_DEF, VARIABLE_DEF">
+            <description>Tokens to check.</description>
+            <enumeration>
+               <property-value-option value="METHOD_DEF"/>
+               <property-value-option value="VARIABLE_DEF"/>
+            </enumeration>
+         </property-metadata>
+      </rule-metadata>
+   </rule-group-metadata>
+   <rule-group-metadata name="Blocks">
+      <rule-metadata name="Avoid Nested Blocks" classname="com.puppycrawl.tools.checkstyle.checks.blocks.AvoidNestedBlocksCheck" default-severity="Warning">
+         <description>Finds nested blocks, i.e. blocks that are used freely in the code. Rationale: Nested blocks are often leftovers from the debugging process, they confuse the reader.</description>
+         <property-metadata name="allowInSwitchCase" datatype="Boolean" default-value="false">
+            <description>Allow nested blocks in case statements</description>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Empty Block" classname="com.puppycrawl.tools.checkstyle.checks.blocks.EmptyBlockCheck" default-severity="Warning">
+         <description>Checks for empty blocks.</description>
+         <property-metadata name="option" datatype="SingleSelect" default-value="stmt">
+            <description>Policy on block contents. text = require that there is some text in the block.  stmt = require that there is a statement in the block.</description>
+            <enumeration>
+               <property-value-option value="text"/>
+               <property-value-option value="stmt"/>
+            </enumeration>
+         </property-metadata>
+         <property-metadata name="tokens" datatype="MultiCheck" default-value="LITERAL_CATCH, LITERAL_DO, LITERAL_ELSE, LITERAL_FINALLY, LITERAL_IF, LITERAL_FOR, LITERAL_TRY, LITERAL_WHILE, STATIC_INIT">
+            <description>Blocks to check.</description>
+            <enumeration>
+               <property-value-option value="LITERAL_CATCH"/>
+               <property-value-option value="LITERAL_DO"/>
+               <property-value-option value="LITERAL_ELSE"/>
+               <property-value-option value="LITERAL_FINALLY"/>
+               <property-value-option value="LITERAL_IF"/>
+               <property-value-option value="LITERAL_FOR"/>
+               <property-value-option value="LITERAL_TRY"/>
+               <property-value-option value="LITERAL_WHILE"/>
+               <property-value-option value="STATIC_INIT"/>
+            </enumeration>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Left Curly Brace Placement" classname="com.puppycrawl.tools.checkstyle.checks.blocks.LeftCurlyCheck" default-severity="Warning">
+         <description>Checks the placement of left curly braces on types, methods and other the other blocks.</description>
+         <property-metadata name="option" datatype="SingleSelect" default-value="eol">
+            <description>Defines where left curly braces should be placed.  'eol' = End-of-Line, 'nl' = New-Line, and 'nlow' = New-Line-on-Wrap (if the brace will fit on the first line of the statement, taking into account maximum line length, then apply eol rule, otherwise apply the nl rule).</description>
+            <enumeration>
+               <property-value-option value="eol"/>
+               <property-value-option value="nl"/>
+               <property-value-option value="nlow"/>
+            </enumeration>
+         </property-metadata>
+         <property-metadata name="maxLineLength" datatype="Integer" default-value="80">
+            <description>Line length for applying wrap rule.</description>
+         </property-metadata>
+         <property-metadata name="tokens" datatype="MultiCheck" default-value="CLASS_DEF, CTOR_DEF, INTERFACE_DEF, LITERAL_CATCH, LITERAL_DO, LITERAL_ELSE, LITERAL_FINALLY, LITERAL_FOR, LITERAL_IF, LITERAL_SWITCH, LITERAL_SYNCHRONIZED, LITERAL_TRY, LITERAL_WHILE, METHOD_DEF">
+            <description>Blocks to check.</description>
+            <enumeration>
+               <property-value-option value="CLASS_DEF"/>
+               <property-value-option value="CTOR_DEF"/>
+               <property-value-option value="INTERFACE_DEF"/>
+               <property-value-option value="LITERAL_CATCH"/>
+               <property-value-option value="LITERAL_DO"/>
+               <property-value-option value="LITERAL_ELSE"/>
+               <property-value-option value="LITERAL_FINALLY"/>
+               <property-value-option value="LITERAL_FOR"/>
+               <property-value-option value="LITERAL_IF"/>
+               <property-value-option value="LITERAL_SWITCH"/>
+               <property-value-option value="LITERAL_SYNCHRONIZED"/>
+               <property-value-option value="LITERAL_TRY"/>
+               <property-value-option value="LITERAL_WHILE"/>
+               <property-value-option value="METHOD_DEF"/>
+            </enumeration>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Need Braces" classname="com.puppycrawl.tools.checkstyle.checks.blocks.NeedBracesCheck" default-severity="Warning">
+         <description>Checks for braces around code blocks.</description>
+         <property-metadata name="tokens" datatype="MultiCheck" default-value="LITERAL_DO, LITERAL_ELSE, LITERAL_IF, LITERAL_FOR, LITERAL_WHILE">
+            <description>Blocks to check.</description>
+            <enumeration>
+               <property-value-option value="LITERAL_DO"/>
+               <property-value-option value="LITERAL_ELSE"/>
+               <property-value-option value="LITERAL_IF"/>
+               <property-value-option value="LITERAL_FOR"/>
+               <property-value-option value="LITERAL_WHILE"/>
+            </enumeration>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Right Curly Brace Placement" classname="com.puppycrawl.tools.checkstyle.checks.blocks.RightCurlyCheck" default-severity="Warning">
+         <description>Checks the placement of right curly braces ('}') for else, try, and catch tokens.</description>
+         <property-metadata name="option" datatype="SingleSelect" default-value="same">
+            <description>Defines where right curly braces should be placed.  same = brace must be on the same line as the next statement.  alone = brace must be alone on the line.</description>
+            <enumeration>
+               <property-value-option value="same"/>
+               <property-value-option value="alone"/>
+            </enumeration>
+         </property-metadata>
+         <property-metadata name="tokens" datatype="MultiCheck" default-value="LITERAL_CATCH, LITERAL_ELSE, LITERAL_TRY">
+            <description>Blocks to check.</description>
+            <enumeration>
+               <property-value-option value="LITERAL_CATCH"/>
+               <property-value-option value="LITERAL_ELSE"/>
+               <property-value-option value="LITERAL_TRY"/>
+            </enumeration>
+         </property-metadata>
+      </rule-metadata>
+   </rule-group-metadata>
+   <rule-group-metadata name="Coding Problems">
+      <rule-metadata name="Avoid Inline Conditionals" classname="com.puppycrawl.tools.checkstyle.checks.coding.AvoidInlineConditionalsCheck" default-severity="Warning">
+         <description>Detects inline conditionals. Rationale: Some developers find inline conditionals hard to read, so their company's coding standards forbids them.</description>
+      </rule-metadata>
+      <rule-metadata name="Covariant Equals" classname="com.puppycrawl.tools.checkstyle.checks.coding.CovariantEqualsCheck" default-severity="Warning">
+         <description>Checks that classes that define a covariant equals() method also override method equals(java.lang.Object). Inspired by findbugs. 
 
-	    <rule-metadata 
-	        name="Type Javadoc"
-	        classname="com.puppycrawl.tools.checkstyle.checks.JavadocTypeCheck"
-	        default-severity="Warning">
-	        <description>Checks Javadoc comments for class and interface definitions.</description>
-	        <property-metadata 
-	            name="scope" 
-	            datatype="SingleSelect" 
-	            default-value="private">
-	            <description>Visibility scope where Javadoc comments are checked.</description>
-	            <enumeration>
-	                <property-value-option value="nothing"/>
-	                <property-value-option value="public"/>
-	                <property-value-option value="protected"/>
-	                <property-value-option value="package"/>
-	                <property-value-option value="private"/>
-	                <property-value-option value="anoninner"/>
-	            </enumeration>
-	        </property-metadata>
-	        <property-metadata 
-	            name="authorFormat" 
-	            datatype="String" 
-	            default-value="">
-	            <description>Pattern for @author tag.</description>
-	        </property-metadata>
-	        <property-metadata 
-	            name="versionFormat" 
-	            datatype="String" 
-	            default-value="">
-	            <description>Pattern for @version tag.</description>
-	        </property-metadata>
-	        <property-metadata
-	            name="tokens" 
-	            datatype="MultiCheck"
-	            default-value="CLASS_DEF, INTERFACE_DEF">
-	            <description>Tokens to check.</description>
-	            <enumeration>
-	                <property-value-option value="CLASS_DEF"/>
-	                <property-value-option value="INTERFACE_DEF"/>
-	            </enumeration>
-	        </property-metadata>
-	    </rule-metadata>
+Rationale: Mistakenly defining a covariant equals() method without overriding method equals(java.lang.Object) can produce unexpected runtime behaviour.     </description>
+      </rule-metadata>
+      <rule-metadata name="Declaration Order Check" classname="com.puppycrawl.tools.checkstyle.checks.coding.DeclarationOrderCheck" default-severity="Warning">
+         <description>According to Code Conventions for the Java Programming Language , the parts of a class or interface declaration should appear in the following order 
 
-	    <rule-metadata 
-	        name="Method Javadoc"
-	        classname="com.puppycrawl.tools.checkstyle.checks.JavadocMethodCheck"
-	        default-severity="Warning">
-	        <description>Checks to ensure that the following tags exist (if required): @return, @param, @throws or @exception, @see or {@inheritDoc}.</description>
-	        <property-metadata 
-	            name="scope" 
-	            datatype="SingleSelect" 
-	            default-value="private">
-	            <description>Visibility scope where Javadoc comments are checked.</description>
-	            <enumeration>
-	                <property-value-option value="nothing"/>
-	                <property-value-option value="public"/>
-	                <property-value-option value="protected"/>
-	                <property-value-option value="package"/>
-	                <property-value-option value="private"/>
-	                <property-value-option value="anoninner"/>
-	            </enumeration>
-	        </property-metadata>
-	        <property-metadata 
-	            name="allowUndeclaredRTE" 
-	            datatype="Boolean" 
-	            default-value="false">
-	            <description>Whether to allow documented exceptions that are not declared if they are a subclass of java.lang.RuntimeException.</description>
-	        </property-metadata>
-	        <property-metadata 
-	            name="allowThrowsTagsForSubclasses" 
-	            datatype="Boolean" 
-	            default-value="false">
-	            <description>Whether to allow documented exceptions that are subclass of one of declared exception.</description>
-	        </property-metadata>
-	        <property-metadata 
-	            name="allowMissingParamTags" 
-	            datatype="Boolean" 
-	            default-value="false">
-	            <description>Whether to ignore errors when a method has parameters but does not have matching param tags in the javadoc.</description>
-	        </property-metadata>
-	        <property-metadata 
-	            name="allowMissingThrowsTags" 
-	            datatype="Boolean" 
-	            default-value="false">
-	            <description>Whether to ignore errors when a method declares that it throws exceptions but does have matching throws tags in the javadoc.</description>
-	        </property-metadata>
-	        <property-metadata 
-	            name="allowMissingReturnTag" 
-	            datatype="Boolean" 
-	            default-value="false">
-	            <description>Whether to ignore errors when a method returns non-void type does have a return tag in the javadoc.</description>
-	        </property-metadata>
-	        <property-metadata
-	            name="tokens" 
-	            datatype="MultiCheck"
-	            default-value="METHOD_DEF, CTOR_DEF">
-	            <description>Tokens to check.</description>
-	            <enumeration>
-	                <property-value-option value="METHOD_DEF"/>
-	                <property-value-option value="CTOR_DEF"/>
-	            </enumeration>
-	        </property-metadata>
-	    </rule-metadata>
-	    
-	    <rule-metadata 
-	        name="Variable Javadoc"
-	        classname="com.puppycrawl.tools.checkstyle.checks.JavadocVariableCheck"
-	        default-severity="Warning">
-	        <description>Checks that variables have Javadoc comments.</description>
-	        <property-metadata 
-	            name="scope" 
-	            datatype="SingleSelect" 
-	            default-value="private">
-	            <description>Visibility scope where Javadoc comments are checked.</description>
-	            <enumeration>
-	                <property-value-option value="nothing"/>
-	                <property-value-option value="public"/>
-	                <property-value-option value="protected"/>
-	                <property-value-option value="package"/>
-	                <property-value-option value="private"/>
-	                <property-value-option value="anoninner"/>
-	            </enumeration>
-	        </property-metadata>
-	    </rule-metadata>
-	</rule-group-metadata>
+Class (static) variables. First the public class variables, then the protected, then package level (no access modifier), and then the private. 
+Instance variables. First the public class variables, then the protected, then package level (no access modifier), and then the private. 
+Constructors 
+Methods 
+         </description>
+      </rule-metadata>
+      <rule-metadata name="Double Checked Locking" classname="com.puppycrawl.tools.checkstyle.checks.coding.DoubleCheckedLockingCheck" default-severity="Warning">
+         <description>The "double-checked locking" idiom (DCL) tries to avoid the runtime cost of synchronization. The problem with the DCL idiom in Java is that it just does not work correctly. Using it introduces bugs that are extremely hard to track down and reproduce.</description>
+      </rule-metadata>
+      <rule-metadata name="Empty Statement" classname="com.puppycrawl.tools.checkstyle.checks.coding.EmptyStatementCheck" default-severity="Warning">
+         <description>Detects empty statements (standalone ;).</description>
+      </rule-metadata>
+      <rule-metadata name="Equals and HashCode" classname="com.puppycrawl.tools.checkstyle.checks.coding.EqualsHashCodeCheck" default-severity="Warning">
+         <description>Checks that classes that override equals() also override hashCode().</description>
+      </rule-metadata>
+      <rule-metadata name="Explicit Initialization" classname="com.puppycrawl.tools.checkstyle.checks.coding.ExplicitInitializationCheck" default-severity="Warning">
+         <description>Checks if any class or object member explicitly initialized to default for its type value (null for object references, zero for numeric types and char and false for booolean.
 
-	<rule-group-metadata name="Naming Conventions">
-	
-	    <rule-metadata 
-	        name="Constant Names"
-	        classname="com.puppycrawl.tools.checkstyle.checks.ConstantNameCheck"
-	        default-severity="Warning">
-	        <description>Checks that constents (static final fields) variables follow naming convention.</description>
-	        <property-metadata 
-	            name="format" 
-	            datatype="String" 
-	            default-value="^[A-Z](_?[A-Z0-9]+)*$">
-	            <description>Regular expression defining required naming pattern.</description>
-	        </property-metadata>
-	    </rule-metadata>
-	    
-	    <rule-metadata 
-	        name="Local Final Variable Names"
-	        classname="com.puppycrawl.tools.checkstyle.checks.LocalFinalVariableNameCheck"
-	        default-severity="Warning">
-	        <description>Checks that local final variables follow naming convention.</description>
-	        <property-metadata 
-	            name="format" 
-	            datatype="String" 
-	            default-value="^[a-z][a-zA-Z0-9]*$">
-	            <description>Regular expression defining required naming pattern.</description>
-	        </property-metadata>
-	    </rule-metadata>
-	    
-	    <rule-metadata 
-	        name="Local Variable Names"
-	        classname="com.puppycrawl.tools.checkstyle.checks.LocalVariableNameCheck"
-	        default-severity="Warning">
-	        <description>Checks that local variables follow naming convention.</description>
-	        <property-metadata 
-	            name="format" 
-	            datatype="String" 
-	            default-value="^[a-z][a-zA-Z0-9]*$">
-	            <description>Regular expression defining required naming pattern.</description>
-	        </property-metadata>
-	    </rule-metadata>
-	    <rule-metadata 
-	        name="Member Names"
-	        classname="com.puppycrawl.tools.checkstyle.checks.MemberNameCheck"
-	        default-severity="Warning">
-	        <description>Checks that member variables (non-static fields) follow naming convention.</description>
-	        <property-metadata 
-	            name="format" 
-	            datatype="String" 
-	            default-value="^[a-z][a-zA-Z0-9]*$">
-	            <description>Regular expression defining required naming pattern.</description>
-	        </property-metadata>
-	    </rule-metadata>
-	    
-	    <rule-metadata 
-	        name="Method Names"
-	        classname="com.puppycrawl.tools.checkstyle.checks.MethodNameCheck"
-	        default-severity="Warning">
-	        <description>Checks that method names follow naming convention.</description>
-	        <property-metadata 
-	            name="format" 
-	            datatype="String" 
-	            default-value="^[a-z][a-zA-Z0-9]*$">
-	            <description>Regular expression defining required naming pattern.</description>
-	        </property-metadata>
-	    </rule-metadata>
-	    
-	    <rule-metadata 
-	        name="Package Names"
-	        classname="com.puppycrawl.tools.checkstyle.checks.PackageNameCheck"
-	        default-severity="Warning">
-	        <description>Checks that package names follow naming convention.</description>
-	        <property-metadata 
-	            name="format" 
-	            datatype="String" 
-	            default-value="^[a-z]+(\.[a-zA-Z_][a-zA-Z0-9_]*)*$">
-	            <description>Regular expression defining required naming pattern.</description>
-	        </property-metadata>
-	    </rule-metadata>
-	    
-	    <rule-metadata 
-	        name="Parameter Names"
-	        classname="com.puppycrawl.tools.checkstyle.checks.ParameterNameCheck"
-	        default-severity="Warning">
-	        <description>Checks that parameter names follow naming convention.</description>
-	        <property-metadata 
-	            name="format" 
-	            datatype="String" 
-	            default-value="^[a-z][a-zA-Z0-9]*$">
-	            <description>Regular expression defining required naming pattern.</description>
-	        </property-metadata>
-	    </rule-metadata>
-	    
-	    <rule-metadata 
-	        name="Static Variable Names"
-	        classname="com.puppycrawl.tools.checkstyle.checks.StaticVariableNameCheck"
-	        default-severity="Warning">
-	        <description>Checks that static variables (static, non-final fields) follow naming convention.</description>
-	        <property-metadata 
-	            name="format" 
-	            datatype="String" 
-	            default-value="^[a-z][a-zA-Z0-9]*$">
-	            <description>Regular expression defining required naming pattern.</description>
-	        </property-metadata>
-	    </rule-metadata>
-	    
-	    <rule-metadata 
-	        name="Type Names"
-	        classname="com.puppycrawl.tools.checkstyle.checks.TypeNameCheck"
-	        default-severity="Warning">
-	        <description>Checks that class names follow naming convention.</description>
-	        <property-metadata 
-	            name="format" 
-	            datatype="String" 
-	            default-value="^[A-Z][a-zA-Z0-9]*$">
-	            <description>Regular expression defining required naming pattern.</description>
-	        </property-metadata>
-	        <property-metadata
-	            name="tokens" 
-	            datatype="MultiCheck"
-	            default-value="CLASS_DEF, INTERFACE_DEF">
-	            <description>Tokens to check.</description>
-	            <enumeration>
-	                <property-value-option value="CLASS_DEF"/>
-	                <property-value-option value="INTERFACE_DEF"/>
-	            </enumeration>
-	        </property-metadata>
-	    </rule-metadata>
-	    
-	</rule-group-metadata>
+Rationale: each instance variable gets initialized twice, to the same value. Java initializes each instance variable to its default value (0 or null) before performing any initialization specified in the code. So in this case, x gets initialized to 0 twice, and bar gets initialized to null twice. So there is a minor inefficiency. This style of coding is a hold-over from C/C++ style coding, and it shows that the developer isn't really confident that Java really initializes instance variables to default values.
+         </description>
+      </rule-metadata>
+      <rule-metadata name="Final Local Variable" classname="com.puppycrawl.tools.checkstyle.checks.coding.FinalLocalVariableCheck" default-severity="Warning">
+         <description>Checks that local variables that never have their values changed are declared final. The check can be configured to also check that unchanged parameters are declared final.         </description>
+         <property-metadata name="tokens" datatype="MultiCheck" default-value="VARIABLE_DEF">
+            <description>Tokens to check.</description>
+            <enumeration>
+               <property-value-option value="PARAMETER_DEF"/>
+               <property-value-option value="VARIABLE_DEF"/>
+            </enumeration>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Hidden Field" classname="com.puppycrawl.tools.checkstyle.checks.coding.HiddenFieldCheck" default-severity="Warning">
+         <description>Checks that a local variable or a parameter does not shadow a field that is defined in the same class.</description>
+         <property-metadata name="tokens" datatype="MultiCheck" default-value="PARAMETER_DEF, VARIABLE_DEF">
+            <description>Tokens to check.</description>
+            <enumeration>
+               <property-value-option value="PARAMETER_DEF"/>
+               <property-value-option value="VARIABLE_DEF"/>
+            </enumeration>
+         </property-metadata>
+         <property-metadata name="ignoreFormat" datatype="String">
+            <description>pattern for names to ignore</description>
+         </property-metadata>
+         <property-metadata name="ignoreConstructorParameter" datatype="Boolean" default-value="false">
+            <description>Controls whether to ignore constructor parameters.</description>
+         </property-metadata>
+         <property-metadata name="ignoreSetter" datatype="Boolean" default-value="false">
+            <description>Controls whether to ignore the parameter of a property setter method, where the property setter method for field "xyz" has name "setXyz", one parameter named "xyz", and return type void.</description>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Illegal Instantiation" classname="com.puppycrawl.tools.checkstyle.checks.coding.IllegalInstantiationCheck" default-severity="Warning">
+         <description>Checks for illegal instantiations where a factory method is preferred.  Rationale: Depending on the project, for some classes it might be preferable to create instances through factory methods rather than calling the constructor.  A simple example is the java.lang.Boolean class. In order to save memory and CPU cycles, it is preferable to use the predefined constants TRUE and FALSE. Constructor invocations should be replaced by calls to Boolean.valueOf().  Some extremely performance sensitive projects may require the use of factory methods for other classes as well, to enforce the usage of number caches or object pools.</description>
+         <property-metadata name="classes" datatype="String" default-value="{}">
+            <description>Comman seperated list of classes that should not be instantiated.</description>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Illiegal Catch" classname="com.puppycrawl.tools.checkstyle.checks.coding.IllegalCatchCheck" default-severity="Warning">
+         <description>Catching java.lang.Exception, java.lang.Error or java.lang.RuntimeException is almost never acceptable. 
 
-	<rule-group-metadata name="Imports">
-	
-	    <rule-metadata 
-	        name="Avoid Star (Demand) Imports"
-	        classname="com.puppycrawl.tools.checkstyle.checks.AvoidStarImportCheck"
-	        default-severity="Warning">
-	        <description>Checks for use of demand import statements.</description>
-	    </rule-metadata>
-	    
-	    <rule-metadata 
-	        name="Illegal Imports"
-	        classname="com.puppycrawl.tools.checkstyle.checks.IllegalImportCheck"
-	        default-severity="Warning">
-	        <description>Checks for imports from a set of illegal packages.</description>
-	        <property-metadata
-	            name="illegalPkgs" 
-	            datatype="String"
-	            default-value="sun">
-	            <description>Comma (',') seperated list of illegal packages.</description>
-	        </property-metadata>
-	    </rule-metadata>
-	
-	    <rule-metadata 
-	        name="Redundant Imports"
-	        classname="com.puppycrawl.tools.checkstyle.checks.RedundantImportCheck"
-	        default-severity="Warning">
-	        <description>Checks for redundant import statements. An import statement is considered redundant if: 1) It is a duplicate of another import. This is, when a class is imported more than once; or 2) The class imported is from the java.lang package, e.g. importing java.lang.String; or 3) The class imported is from the same package. </description>
-	    </rule-metadata>
-	
-	    <rule-metadata 
-	        name="Unused Imports"
-	        classname="com.puppycrawl.tools.checkstyle.checks.UnusedImportsCheck"
-	        default-severity="Warning">
-	        <description>Checks for unused import statements.</description>
-	    </rule-metadata>
-	    
-	</rule-group-metadata>
+Rationale: Junior developers often simply catch Exception in an attempt to handle multiple exception classes. This unfortunately leads to code that inadvertantly catchs NPE, OutOfMemoryErrors, etc. </description>
+         <!-- <property-metadata name="illegalClassNames" datatype="StringArray" default-value="java.lang.Exception, java.lang.Throwable, java.lang.RuntimeException">
+            <description>exception class names to reject</description>
+         </property-metadata>-->
+      </rule-metadata>
+      <rule-metadata name="Illiegal Tokens" classname="com.puppycrawl.tools.checkstyle.checks.coding.IllegalTokenCheck" default-severity="Warning">
+         <description>Checks for illegal tokens. 
 
-	<rule-group-metadata name="Size Violations">
-	
-	    <rule-metadata 
-	        name="Maximum File Length"
-	        classname="com.puppycrawl.tools.checkstyle.checks.FileLengthCheck"
-	        default-severity="Warning">
-	            <description>Checks for source files that exceed the configured maximum length.</description>
-	        <property-metadata 
-	            name="max" 
-	            datatype="Integer" 
-	            default-value="2000">
-	            <description>Maximum number of lines allowed.</description>
-	        </property-metadata>
-	    </rule-metadata>
-	
-	    <rule-metadata 
-	        name="Maximum Line Length"
-	        classname="com.puppycrawl.tools.checkstyle.checks.LineLengthCheck"
-	        default-severity="Warning">
-	            <description>Checks for lines that exceed the configured maximum length.</description>
-	        <property-metadata 
-	            name="ignorePattern" 
-	            datatype="String" 
-	            default-value="^$">
-	            <description>Pattern for lines to ignore.</description>
-	        </property-metadata>
-	        <property-metadata 
-	            name="max" 
-	            datatype="Integer" 
-	            default-value="80">
-	            <description>Maximum allowed line length.</description>
-	        </property-metadata>
-	        <property-metadata 
-	            name="tabWidth" 
-	            datatype="Integer" 
-	            default-value="4">
-	            <description>Number of characters to count for each tab character.</description>
-	        </property-metadata>
-	    </rule-metadata>
-	
-	    <rule-metadata 
-	        name="Maximum Method Length"
-	        classname="com.puppycrawl.tools.checkstyle.checks.MethodLengthCheck"
-	        default-severity="Warning">
-	            <description>Checks for methods that exceed the configured maximum length.</description>
-	        <property-metadata 
-	            name="max" 
-	            datatype="Integer" 
-	            default-value="150">
-	            <description>Maximum number of lines allowed.</description>
-	        </property-metadata>
-	        <property-metadata
-	            name="tokens" 
-	            datatype="MultiCheck"
-	            default-value="METHOD_DEF, CTOR_DEF">
-	            <description>Tokens to check.</description>
-	            <enumeration>
-	                <property-value-option value="METHOD_DEF"/>
-	                <property-value-option value="CTOR_DEF"/>
-	            </enumeration>
-	        </property-metadata>
-	    </rule-metadata>
-	
-	    <rule-metadata 
-	        name="Maximum Parameters"
-	        classname="com.puppycrawl.tools.checkstyle.checks.ParameterNumberCheck"
-	        default-severity="Warning">
-	            <description>Checks the number of parameters of a method or constructor.</description>
-	        <property-metadata 
-	            name="max" 
-	            datatype="Integer" 
-	            default-value="7">
-	            <description>Maximum allowed parameters.</description>
-	        </property-metadata>
-	        <property-metadata 
-	            name="tokens" 
-	            datatype="MultiCheck" 
-	            default-value="METHOD_DEF, CTOR_DEF">
-	            <description>Tokens to check.</description>
-	            <enumeration>
-	                <property-value-option value="METHOD_DEF"/>
-	                <property-value-option value="CTOR_DEF"/>
-	            </enumeration>
-	        </property-metadata>
-	    </rule-metadata>
-	    
-	</rule-group-metadata>
+Rational: Certain language features often lead to hard to maintain code or are non-obvious to novice developers. Other features may be discouraged in certain frameworks, such as not having native methods in EJB components. </description>
+         <property-metadata name="tokens" datatype="MultiCheck" default-value="LITERAL_SWITCH, POST_INC, POST_DEC">
+            <description>Tokens to check.</description>
+            <enumeration>
+               <property-value-option value="ABSTRACT"/>
+               <property-value-option value="ARRAY_DECLARATOR"/>
+               <property-value-option value="ARRAY_INIT"/>
+               <property-value-option value="ASSIGN"/>
+               <property-value-option value="BAND"/>
+               <property-value-option value="BAND_ASSIGN"/>
+               <property-value-option value="BNOT"/>
+               <property-value-option value="BOR"/>
+               <property-value-option value="BOR_ASSIGN"/>
+               <property-value-option value="BSR"/>
+               <property-value-option value="BSR_ASSIGN"/>
+               <property-value-option value="BXOR"/>
+               <property-value-option value="BXOR_ASSIGN"/>
+               <property-value-option value="CASE_GROUP"/>
+               <property-value-option value="CHAR_LITERAL"/>
+               <property-value-option value="CLASS_DEF"/>
+               <property-value-option value="COLON"/>
+               <property-value-option value="COMMA"/>
+               <property-value-option value="CTOR_CALL"/>
+               <property-value-option value="CTOR_DEF"/>
+               <property-value-option value="DEC"/>
+               <property-value-option value="DIV"/>
+               <property-value-option value="DIV_ASSIGN"/>
+               <property-value-option value="DOT"/>
+               <property-value-option value="ELIST"/>
+               <property-value-option value="EMPTY_STAT"/>
+               <property-value-option value="EOF"/>
+               <property-value-option value="EQUAL"/>
+               <property-value-option value="EXPR"/>
+               <property-value-option value="EXTENDS_CLAUSE"/>
+               <property-value-option value="FINAL"/>
+               <property-value-option value="FOR_CONDITION"/>
+               <property-value-option value="FOR_INIT"/>
+               <property-value-option value="FOR_ITERATOR"/>
+               <property-value-option value="GE"/>
+               <property-value-option value="GT"/>
+               <property-value-option value="IDENT"/>
+               <property-value-option value="IMPLEMENTS_CLAUSE"/>
+               <property-value-option value="IMPORT"/>
+               <property-value-option value="INC"/>
+               <property-value-option value="INDEX_OP"/>
+               <property-value-option value="INSTANCE_INIT"/>
+               <property-value-option value="INTERFACE_DEF"/>
+               <property-value-option value="LABELED_STAT"/>
+               <property-value-option value="LAND"/>
+               <property-value-option value="LCURLY"/>
+               <property-value-option value="LE"/>
+               <property-value-option value="LITERAL_ASSERT"/>
+               <property-value-option value="LITERAL_BOOLEAN"/>
+               <property-value-option value="LITERAL_BREAK"/>
+               <property-value-option value="LITERAL_BYTE"/>
+               <property-value-option value="LITERAL_CASE"/>
+               <property-value-option value="LITERAL_CATCH"/>
+               <property-value-option value="LITERAL_CHAR"/>
+               <property-value-option value="LITERAL_CLASS"/>
+               <property-value-option value="LITERAL_CONTINUE"/>
+               <property-value-option value="LITERAL_DEFAULT"/>
+               <property-value-option value="LITERAL_DO"/>
+               <property-value-option value="LITERAL_DOUBLE"/>
+               <property-value-option value="LITERAL_ELSE"/>
+               <property-value-option value="LITERAL_FALSE"/>
+               <property-value-option value="LITERAL_FINALLY"/>
+               <property-value-option value="LITERAL_FLOAT"/>
+               <property-value-option value="LITERAL_FOR"/>
+               <property-value-option value="LITERAL_IF"/>
+               <property-value-option value="LITERAL_INSTANCEOF"/>
+               <property-value-option value="LITERAL_INT"/>
+               <property-value-option value="LITERAL_LONG"/>
+               <property-value-option value="LITERAL_NATIVE"/>
+               <property-value-option value="LITERAL_NEW"/>
+               <property-value-option value="LITERAL_NULL"/>
+               <property-value-option value="LITERAL_PRIVATE"/>
+               <property-value-option value="LITERAL_PROTECTED"/>
+               <property-value-option value="LITERAL_PUBLIC"/>
+               <property-value-option value="LITERAL_RETURN"/>
+               <property-value-option value="LITERAL_SHORT"/>
+               <property-value-option value="LITERAL_STATIC"/>
+               <property-value-option value="LITERAL_SUPER"/>
+               <property-value-option value="LITERAL_SWITCH"/>
+               <property-value-option value="LITERAL_SYNCHRONIZED"/>
+               <property-value-option value="LITERAL_THIS"/>
+               <property-value-option value="LITERAL_THROW"/>
+               <property-value-option value="LITERAL_THROWS"/>
+               <property-value-option value="LITERAL_TRANSIENT"/>
+               <property-value-option value="LITERAL_TRUE"/>
+               <property-value-option value="LITERAL_TRY"/>
+               <property-value-option value="LITERAL_VOID"/>
+               <property-value-option value="LITERAL_VOLATILE"/>
+               <property-value-option value="LITERAL_WHILE"/>
+               <property-value-option value="LNOT"/>
+               <property-value-option value="LOR"/>
+               <property-value-option value="LPAREN"/>
+               <property-value-option value="LT"/>
+               <property-value-option value="METHOD_CALL"/>
+               <property-value-option value="METHOD_DEF"/>
+               <property-value-option value="MINUS"/>
+               <property-value-option value="MINUS_ASSIGN"/>
+               <property-value-option value="MOD"/>
+               <property-value-option value="MOD_ASSIGN"/>
+               <property-value-option value="MODIFIERS"/>
+               <property-value-option value="NOT_EQUAL"/>
+               <property-value-option value="NUM_DOUBLE"/>
+               <property-value-option value="NUM_FLOAT"/>
+               <property-value-option value="NUM_INT"/>
+               <property-value-option value="NUM_LONG"/>
+               <property-value-option value="OBJBLOCK"/>
+               <property-value-option value="PACKAGE_DEF"/>
+               <property-value-option value="PARAMETER_DEF"/>
+               <property-value-option value="PARAMETERS"/>
+               <property-value-option value="PLUS"/>
+               <property-value-option value="PLUS_ASSIGN"/>
+               <property-value-option value="POST_DEC"/>
+               <property-value-option value="POST_INC"/>
+               <property-value-option value="QUESTION"/>
+               <property-value-option value="RCURLY"/>
+               <property-value-option value="RPAREN"/>
+               <property-value-option value="SEMI"/>
+               <property-value-option value="SL"/>
+               <property-value-option value="SL_ASSIGN"/>
+               <property-value-option value="SLIST"/>
+               <property-value-option value="SR"/>
+               <property-value-option value="SR_ASSIGN"/>
+               <property-value-option value="STAR"/>
+               <property-value-option value="STAR_ASSIGN"/>
+               <property-value-option value="STATIC_INIT"/>
+               <property-value-option value="STRICTFP"/>
+               <property-value-option value="STRING_LITERAL"/>
+               <property-value-option value="SUPER_CTOR_CALL"/>
+               <property-value-option value="TYPE"/>
+               <property-value-option value="TYPECAST"/>
+               <property-value-option value="UNARY_MINUS"/>
+               <property-value-option value="UNARY_PLUS"/>
+               <property-value-option value="VARIABLE_DEF"/>
+            </enumeration>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Illiegal Tokens Text" classname="com.puppycrawl.tools.checkstyle.checks.coding.IllegalTokenTextCheck" default-severity="Warning">
+         <description>Checks for illegal token text.</description>
+         <property-metadata name="tokens" datatype="MultiCheck" default-value=" ">
+            <description>Tokens to check.</description>
+            <enumeration>
+               <property-value-option value="ABSTRACT"/>
+               <property-value-option value="ARRAY_DECLARATOR"/>
+               <property-value-option value="ARRAY_INIT"/>
+               <property-value-option value="ASSIGN"/>
+               <property-value-option value="BAND"/>
+               <property-value-option value="BAND_ASSIGN"/>
+               <property-value-option value="BNOT"/>
+               <property-value-option value="BOR"/>
+               <property-value-option value="BOR_ASSIGN"/>
+               <property-value-option value="BSR"/>
+               <property-value-option value="BSR_ASSIGN"/>
+               <property-value-option value="BXOR"/>
+               <property-value-option value="BXOR_ASSIGN"/>
+               <property-value-option value="CASE_GROUP"/>
+               <property-value-option value="CHAR_LITERAL"/>
+               <property-value-option value="CLASS_DEF"/>
+               <property-value-option value="COLON"/>
+               <property-value-option value="COMMA"/>
+               <property-value-option value="CTOR_CALL"/>
+               <property-value-option value="CTOR_DEF"/>
+               <property-value-option value="DEC"/>
+               <property-value-option value="DIV"/>
+               <property-value-option value="DIV_ASSIGN"/>
+               <property-value-option value="DOT"/>
+               <property-value-option value="ELIST"/>
+               <property-value-option value="EMPTY_STAT"/>
+               <property-value-option value="EOF"/>
+               <property-value-option value="EQUAL"/>
+               <property-value-option value="EXPR"/>
+               <property-value-option value="EXTENDS_CLAUSE"/>
+               <property-value-option value="FINAL"/>
+               <property-value-option value="FOR_CONDITION"/>
+               <property-value-option value="FOR_INIT"/>
+               <property-value-option value="FOR_ITERATOR"/>
+               <property-value-option value="GE"/>
+               <property-value-option value="GT"/>
+               <property-value-option value="IDENT"/>
+               <property-value-option value="IMPLEMENTS_CLAUSE"/>
+               <property-value-option value="IMPORT"/>
+               <property-value-option value="INC"/>
+               <property-value-option value="INDEX_OP"/>
+               <property-value-option value="INSTANCE_INIT"/>
+               <property-value-option value="INTERFACE_DEF"/>
+               <property-value-option value="LABELED_STAT"/>
+               <property-value-option value="LAND"/>
+               <property-value-option value="LCURLY"/>
+               <property-value-option value="LE"/>
+               <property-value-option value="LITERAL_ASSERT"/>
+               <property-value-option value="LITERAL_BOOLEAN"/>
+               <property-value-option value="LITERAL_BREAK"/>
+               <property-value-option value="LITERAL_BYTE"/>
+               <property-value-option value="LITERAL_CASE"/>
+               <property-value-option value="LITERAL_CATCH"/>
+               <property-value-option value="LITERAL_CHAR"/>
+               <property-value-option value="LITERAL_CLASS"/>
+               <property-value-option value="LITERAL_CONTINUE"/>
+               <property-value-option value="LITERAL_DEFAULT"/>
+               <property-value-option value="LITERAL_DO"/>
+               <property-value-option value="LITERAL_DOUBLE"/>
+               <property-value-option value="LITERAL_ELSE"/>
+               <property-value-option value="LITERAL_FALSE"/>
+               <property-value-option value="LITERAL_FINALLY"/>
+               <property-value-option value="LITERAL_FLOAT"/>
+               <property-value-option value="LITERAL_FOR"/>
+               <property-value-option value="LITERAL_IF"/>
+               <property-value-option value="LITERAL_INSTANCEOF"/>
+               <property-value-option value="LITERAL_INT"/>
+               <property-value-option value="LITERAL_LONG"/>
+               <property-value-option value="LITERAL_NATIVE"/>
+               <property-value-option value="LITERAL_NEW"/>
+               <property-value-option value="LITERAL_NULL"/>
+               <property-value-option value="LITERAL_PRIVATE"/>
+               <property-value-option value="LITERAL_PROTECTED"/>
+               <property-value-option value="LITERAL_PUBLIC"/>
+               <property-value-option value="LITERAL_RETURN"/>
+               <property-value-option value="LITERAL_SHORT"/>
+               <property-value-option value="LITERAL_STATIC"/>
+               <property-value-option value="LITERAL_SUPER"/>
+               <property-value-option value="LITERAL_SWITCH"/>
+               <property-value-option value="LITERAL_SYNCHRONIZED"/>
+               <property-value-option value="LITERAL_THIS"/>
+               <property-value-option value="LITERAL_THROW"/>
+               <property-value-option value="LITERAL_THROWS"/>
+               <property-value-option value="LITERAL_TRANSIENT"/>
+               <property-value-option value="LITERAL_TRUE"/>
+               <property-value-option value="LITERAL_TRY"/>
+               <property-value-option value="LITERAL_VOID"/>
+               <property-value-option value="LITERAL_VOLATILE"/>
+               <property-value-option value="LITERAL_WHILE"/>
+               <property-value-option value="LNOT"/>
+               <property-value-option value="LOR"/>
+               <property-value-option value="LPAREN"/>
+               <property-value-option value="LT"/>
+               <property-value-option value="METHOD_CALL"/>
+               <property-value-option value="METHOD_DEF"/>
+               <property-value-option value="MINUS"/>
+               <property-value-option value="MINUS_ASSIGN"/>
+               <property-value-option value="MOD"/>
+               <property-value-option value="MOD_ASSIGN"/>
+               <property-value-option value="MODIFIERS"/>
+               <property-value-option value="NOT_EQUAL"/>
+               <property-value-option value="NUM_DOUBLE"/>
+               <property-value-option value="NUM_FLOAT"/>
+               <property-value-option value="NUM_INT"/>
+               <property-value-option value="NUM_LONG"/>
+               <property-value-option value="OBJBLOCK"/>
+               <property-value-option value="PACKAGE_DEF"/>
+               <property-value-option value="PARAMETER_DEF"/>
+               <property-value-option value="PARAMETERS"/>
+               <property-value-option value="PLUS"/>
+               <property-value-option value="PLUS_ASSIGN"/>
+               <property-value-option value="POST_DEC"/>
+               <property-value-option value="POST_INC"/>
+               <property-value-option value="QUESTION"/>
+               <property-value-option value="RCURLY"/>
+               <property-value-option value="RPAREN"/>
+               <property-value-option value="SEMI"/>
+               <property-value-option value="SL"/>
+               <property-value-option value="SL_ASSIGN"/>
+               <property-value-option value="SLIST"/>
+               <property-value-option value="SR"/>
+               <property-value-option value="SR_ASSIGN"/>
+               <property-value-option value="STAR"/>
+               <property-value-option value="STAR_ASSIGN"/>
+               <property-value-option value="STATIC_INIT"/>
+               <property-value-option value="STRICTFP"/>
+               <property-value-option value="STRING_LITERAL"/>
+               <property-value-option value="SUPER_CTOR_CALL"/>
+               <property-value-option value="TYPE"/>
+               <property-value-option value="TYPECAST"/>
+               <property-value-option value="UNARY_MINUS"/>
+               <property-value-option value="UNARY_PLUS"/>
+               <property-value-option value="VARIABLE_DEF"/>
+            </enumeration>
+         </property-metadata>
+         <property-metadata name="format" datatype="String" default-value="^$">
+            <description>illegal pattern</description>
+         </property-metadata>
+         <property-metadata name="ignoreCase" datatype="Boolean" default-value="false">
+            <description>Controls whether to ignore case when matching.</description>
+         </property-metadata>
+         <property-metadata name="message" datatype="String" default-value=" ">
+            <description>Message which is used to notify about violations; if empty then the default message is used.</description>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Illiegal Type" classname="com.puppycrawl.tools.checkstyle.checks.coding.IllegalTypeCheck" default-severity="Warning">
+         <description>Checks that particular class are never used as types in variable declarations, return values or parameters. Includes a pattern check that by default disallows abstract classes. 
 
-	<rule-group-metadata name="Whitespace">
-	
-	    <rule-metadata 
-	        name="Empty For Iterator Pad"
-	        classname="com.puppycrawl.tools.checkstyle.checks.EmptyForIteratorPadCheck"
-	        default-severity="Warning">
-	        <description>Checks the padding of an empty for iterator; that is whether white space is required at an empty for iterator, or such white space is forbidden.</description>
-	        <property-metadata 
-	            name="option" 
-	            datatype="SingleSelect" 
-	            default-value="nospace">
-	            <description>Policy on how to pad an empty for iterator.</description>
-		            <enumeration>
-	                <property-value-option value="nospace"/>
-	                <property-value-option value="space"/>
-	            </enumeration>
-            </property-metadata>
-	    </rule-metadata>
-	
-	    <rule-metadata 
-	        name="No Whitespace After"
-	        classname="com.puppycrawl.tools.checkstyle.checks.NoWhitespaceAfterCheck"
-	        default-severity="Warning">
-	        <description>Checks that there is no whitespace after a token. More specifically, it checks that it is not followed by whitespace, or (if linebreaks are allowed) all characters on the line after are whitespace. To forbid linebreaks after a token, set property allowLineBreaks to false.</description>
-	        <property-metadata 
-	            name="allowLineBreaks" 
-	            datatype="Boolean" 
-	            default-value="true">
-	            <description>Whether whitespace is allowed if the token is at a linebreak.</description>
-	        </property-metadata>
-	        <property-metadata 
-	            name="tokens" 
-	            datatype="MultiCheck" 
-	            default-value="ARRAY_INIT, BNOT, DEC, DOT, INC, LNOT, UNARY_MINUS, UNARY_PLUS">
-	            <description>Tokens to check.</description>
-	            <enumeration>
-	                <property-value-option value="ARRAY_INIT"/>
-	                <property-value-option value="BNOT"/>
-	                <property-value-option value="DEC"/>
-	                <property-value-option value="DOT"/>
-	                <property-value-option value="INC"/>
-	                <property-value-option value="LNOT"/>
-	                <property-value-option value="UNARY_MINUS"/>
-	                <property-value-option value="UNARY_PLUS"/>
-	            </enumeration>
-	        </property-metadata>
-	    </rule-metadata>
-	    
-	    <rule-metadata 
-	        name="No Whitespace Before"
-	        classname="com.puppycrawl.tools.checkstyle.checks.NoWhitespaceBeforeCheck"
-	        default-severity="Warning">
-	        <description>Checks that there is no whitespace before a token. More specifically, it checks that it is not preceded with whitespace, or (if linebreaks are allowed) all characters on the line before are whitespace. To allow linebreaks before a token, set property allowLineBreaks to true.</description>
-	        <property-metadata 
-	            name="allowLineBreaks" 
-	            datatype="Boolean" 
-	            default-value="true">
-	            <description>Whether whitespace is allowed if the token is at a linebreak.</description>
-	        </property-metadata>
-	        <property-metadata 
-	            name="tokens" 
-	            datatype="MultiCheck" 
-	            default-value="SEMI, POST_DEC, POST_INC">
-	            <description>Tokens to check.</description>
-	            <enumeration>
-	                <property-value-option value="SEMI"/>
-	                <property-value-option value="DOT"/>
-	                <property-value-option value="POST_DEC"/>
-	                <property-value-option value="POST_INC"/>
-	            </enumeration>
-	        </property-metadata>
-	    </rule-metadata>
-	    
-	    <rule-metadata 
-	        name="Operator Wrap"
-	        classname="com.puppycrawl.tools.checkstyle.checks.OperatorWrapCheck"
-	        default-severity="Warning">
-	        <description>Checks the policy on how to wrap lines on operators.</description>
-	        <property-metadata 
-	            name="option" 
-	            datatype="SingleSelect" 
-	            default-value="nl">
-	            <description>Policy on how to wrap lines. nl = operator must be on a new line, eol = operator must be at the end of the line.</description>
-	            <enumeration>
-	                <property-value-option value="eol"/>
-	                <property-value-option value="nl"/>
-	            </enumeration>
-	        </property-metadata>
-	        <property-metadata 
-	            name="tokens" 
-	            datatype="MultiCheck" 
-	            default-value="BAND, BOR, BSR, BXOR, COLON, DIV, EQUAL, GE, GT, LAND, LE, LITERAL_INSTANCEOF, LOR, LT, MINUS, MOD, NOT_EQUAL, PLUS, QUESTION, SL, SR, STAR">
-	            <description>Tokens to check.</description>
-	            <enumeration>
-	                <property-value-option value="ASSIGN"/>
-	                <property-value-option value="BAND"/>
-	                <property-value-option value="BAND_ASSIGN"/>
-	                <property-value-option value="BOR"/>
-	                <property-value-option value="BOR_ASSIGN"/>
-	                <property-value-option value="BSR"/>
-	                <property-value-option value="BSR_ASSIGN"/>
-	                <property-value-option value="BXOR"/>
-	                <property-value-option value="BXOR_ASSIGN"/>
-	                <property-value-option value="COLON"/>
-	                <property-value-option value="DIV"/>
-	                <property-value-option value="DIV_ASSIGN"/>
-	                <property-value-option value="EQUAL"/>
-	                <property-value-option value="GE"/>
-	                <property-value-option value="GT"/>
-	                <property-value-option value="LAND"/>
-	                <property-value-option value="LE"/>
-	                <property-value-option value="LITERAL_INSTANCEOF"/>
-	                <property-value-option value="LOR"/>
-	                <property-value-option value="LT"/>
-	                <property-value-option value="MINUS"/>
-	                <property-value-option value="MINUS_ASSIGN"/>
-	                <property-value-option value="MOD"/>
-	                <property-value-option value="MOD_ASSIGN"/>
-	                <property-value-option value="NOT_EQUAL"/>
-	                <property-value-option value="PLUS"/>
-	                <property-value-option value="PLUS_ASSIGN"/>
-	                <property-value-option value="QUESTION"/>
-	                <property-value-option value="SL"/>
-	                <property-value-option value="SL_ASSIGN"/>
-	                <property-value-option value="SR"/>
-	                <property-value-option value="SR_ASSIGN"/>
-	                <property-value-option value="STAR"/>
-	                <property-value-option value="STAR_ASSIGN"/>
-	            </enumeration>
-	        </property-metadata>
-	    </rule-metadata>
-	    
-	    <rule-metadata 
-	        name="Paren Pad"
-	        classname="com.puppycrawl.tools.checkstyle.checks.ParenPadCheck"
-	        default-severity="Warning">
-	        <description>Checks the policy on the padding of parentheses; i.e. whether a space is required after a left parenthesis and before a right parenthesis, or such spaces are forbidden.</description>
-	        <property-metadata 
-	            name="option" 
-	            datatype="SingleSelect" 
-	            default-value="nospace">
-	            <description>Policy on how to pad parentheses. nospace = do not pad (e.g. method(a, b)).  space = ensure padding (e.g. method( a, b )).</description>
-	            <enumeration>
-	                <property-value-option value="nospace"/>
-	                <property-value-option value="space"/>
-	            </enumeration>
-	        </property-metadata>
-	        <property-metadata 
-	            name="tokens" 
-	            datatype="MultiCheck" 
-	            default-value="CTOR_CALL, LPAREN, METHOD_CALL, RPAREN, SUPER_CTOR_CALL, TYPECAST">
-	            <description>Tokens to check.</description>
-	            <enumeration>
-	                <property-value-option value="CTOR_CALL"/>
-	                <property-value-option value="LPAREN"/>
-	                <property-value-option value="METHOD_CALL"/>
-	                <property-value-option value="RPAREN"/>
-	                <property-value-option value="SUPER_CTOR_CALL"/>
-	                <property-value-option value="TYPECAST"/>
-	            </enumeration>
-	        </property-metadata>
-	    </rule-metadata>
-	    
-	    <rule-metadata 
-	        name="Tab Character"
-	        classname="com.puppycrawl.tools.checkstyle.checks.TabCharacterCheck"
-	        default-severity="Warning">
-	        <description>Checks that there are no tab characters ('\t') in the source code.</description>
-	    </rule-metadata>
-	    
-	    <rule-metadata 
-	        name="Whitespace After"
-	        classname="com.puppycrawl.tools.checkstyle.checks.WhitespaceAfterCheck"
-	        default-severity="Warning">
-	        <description>Checks that a token is followed by whitespace.</description>
-	        <property-metadata 
-	            name="tokens" 
-	            datatype="MultiCheck" 
-	            default-value="COMMA, SEMI, TYPECAST">
-	            <description>Tokens to check.</description>
-	            <enumeration>
-	                <property-value-option value="COMMA"/>
-	                <property-value-option value="SEMI"/>
-	                <property-value-option value="TYPECAST"/>
-	            </enumeration>
-	        </property-metadata>
-	    </rule-metadata>
-	    
-	    <rule-metadata 
-	        name="Whitespace Around"
-	        classname="com.puppycrawl.tools.checkstyle.checks.WhitespaceAroundCheck"
-	        default-severity="Warning">
-	        <description>Checks that a token is surrounded by whitespace.</description>
-	        <property-metadata 
-	            name="tokens" 
-	            datatype="MultiCheck" 
-	            default-value="ASSIGN, BAND, BAND_ASSIGN, BOR, BOR_ASSIGN, BSR, BSR_ASSIGN, BXOR, BXOR_ASSIGN, COLON, DIV, DIV_ASSIGN, EQUAL, GE, GT, LAND, LCURLY, LE, LITERAL_ASSERT, LITERAL_CATCH, LITERAL_DO, LITERAL_ELSE, LITERAL_FINALLY, LITERAL_FOR, LITERAL_IF, LITERAL_RETURN, LITERAL_SYNCHRONIZED, LITERAL_TRY, LITERAL_WHILE, LOR, LT, MINUS, MINUS_ASSIGN, MOD, MOD_ASSIGN, NOT_EQUAL, PLUS, PLUS_ASSIGN, QUESTION, RCURLY, SL, SLIST, SL_ASSIGN, SR, SR_ASSIGN, STAR, STAR_ASSIGN">
-	            <description>Tokens to check.</description>
-	            <enumeration>
-	                <property-value-option value="ASSIGN"/>
-	                <property-value-option value="BAND"/>
-	                <property-value-option value="BAND_ASSIGN"/>
-	                <property-value-option value="BOR"/>
-	                <property-value-option value="BOR_ASSIGN"/>
-	                <property-value-option value="BSR"/>
-	                <property-value-option value="BSR_ASSIGN"/>
-	                <property-value-option value="BXOR"/>
-	                <property-value-option value="BXOR_ASSIGN"/>
-	                <property-value-option value="COLON"/>
-	                <property-value-option value="DIV"/>
-	                <property-value-option value="DIV_ASSIGN"/>
-	                <property-value-option value="EQUAL"/>
-	                <property-value-option value="GE"/>
-	                <property-value-option value="GT"/>
-	                <property-value-option value="LAND"/>
-	                <property-value-option value="LCURLY"/>
-	                <property-value-option value="LE"/>
-	                <property-value-option value="LITERAL_ASSERT"/>
-	                <property-value-option value="LITERAL_CATCH"/>
-	                <property-value-option value="LITERAL_DO"/>
-	                <property-value-option value="LITERAL_ELSE"/>
-	                <property-value-option value="LITERAL_FINALLY"/>
-	                <property-value-option value="LITERAL_FOR"/>
-	                <property-value-option value="LITERAL_IF"/>
-	                <property-value-option value="LITERAL_RETURN"/>
-	                <property-value-option value="LITERAL_SYNCHRONIZED"/>
-	                <property-value-option value="LITERAL_TRY"/>
-	                <property-value-option value="LITERAL_WHILE"/>
-	                <property-value-option value="LOR"/>
-	                <property-value-option value="LT"/>
-	                <property-value-option value="MINUS"/>
-	                <property-value-option value="MINUS_ASSIGN"/>
-	                <property-value-option value="MOD"/>
-	                <property-value-option value="MOD_ASSIGN"/>
-	                <property-value-option value="NOT_EQUAL"/>
-	                <property-value-option value="PLUS"/>
-	                <property-value-option value="PLUS_ASSIGN"/>
-	                <property-value-option value="QUESTION"/>
-	                <property-value-option value="RCURLY"/>
-	                <property-value-option value="SL"/>
-	                <property-value-option value="SLIST"/>
-	                <property-value-option value="SL_ASSIGN"/>
-	                <property-value-option value="SR"/>
-	                <property-value-option value="SR_ASSIGN"/>
-	                <property-value-option value="STAR"/>
-	                <property-value-option value="STAR_ASSIGN"/>
-	            </enumeration>
-	        </property-metadata>
-	    </rule-metadata>
+Rationale: Helps reduce coupling on concrete classes. In addition abstract classes should be thought of a convenience base class implementations of interfaces and as such are not types themsleves.
+         </description>
+         <property-metadata name="tokens" datatype="MultiCheck" default-value="PARAMETER_DEF, VARIABLE_DEF METHOD_DEF">
+            <description>Tokens to check.</description>
+            <enumeration>
+               <property-value-option value="METHOD_DEF"/>
+               <property-value-option value="PARAMETER_DEF"/>
+               <property-value-option value="VARIABLE_DEF"/>
+            </enumeration>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Inner Assignment" classname="com.puppycrawl.tools.checkstyle.checks.coding.InnerAssignmentCheck" default-severity="Warning">
+         <description>Checks for assignments in subexpressions, such as in "String s = Integer.toString(i = 2);".  Rationale: With the exception of for iterators, all assignments should occur in their own toplevel statement to increase readability. With inner assignments like the above it is difficult to see all places where a variable is set.</description>
+         <property-metadata name="tokens" datatype="MultiCheck" default-value="ASSIGN, BAND_ASSIGN, BOR_ASSIGN, BSR_ASSIGN, BXOR_ASSIGN, DIV_ASSIGN, MINUS_ASSIGN, MOD_ASSIGN, PLUS_ASSIGN, SL_ASSIGN, SR_ASSIGN, STAR_ASSIGN">
+            <description>Tokens to check.</description>
+            <enumeration>
+               <property-value-option value="ASSIGN"/>
+               <property-value-option value="BAND_ASSIGN"/>
+               <property-value-option value="BOR_ASSIGN"/>
+               <property-value-option value="BSR_ASSIGN"/>
+               <property-value-option value="BXOR_ASSIGN"/>
+               <property-value-option value="DIV_ASSIGN"/>
+               <property-value-option value="MINUS_ASSIGN"/>
+               <property-value-option value="MOD_ASSIGN"/>
+               <property-value-option value="PLUS_ASSIGN"/>
+               <property-value-option value="SL_ASSIGN"/>
+               <property-value-option value="SR_ASSIGN"/>
+               <property-value-option value="STAR_ASSIGN"/>
+            </enumeration>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Junit Test Case" classname="com.puppycrawl.tools.checkstyle.checks.coding.JUnitTestCaseCheck" default-severity="Warning">
+         <description>Ensures that the setUp(), tearDown()methods are named correctly, have no arguments, return void and are either public or protected.
+Also ensures that suite() is named correctly, have no arguments, return junit.framewotk.Test, public and static. 
 
-	</rule-group-metadata>
+Rationale: often times developers will misname one or more of these methods and not realise that the method is not being called. 
+         </description>
+      </rule-metadata>
+      <rule-metadata name="Magic Number" classname="com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck" default-severity="Warning">
+         <description>Checks that there are no "magic numbers", where a magic number is a numeric literal that is not defined as a constant.</description>
+         <property-metadata name="ignoreNumbers" datatype="String" default-value="-1, 0, 1, 2">
+            <description>Comman seperated list of non-Magic numbers.</description>
+         </property-metadata>
+         <property-metadata name="tokens" datatype="MultiCheck" default-value="NUM_DOUBLE, NUM_FLOAT, NUM_INT, NUM_LONG">
+            <description>Tokens to check.</description>
+            <enumeration>
+               <property-value-option value="NUM_DOUBLE"/>
+               <property-value-option value="NUM_FLOAT"/>
+               <property-value-option value="NUM_INT"/>
+               <property-value-option value="NUM_LONG"/>
+            </enumeration>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Missing Switch Default" classname="com.puppycrawl.tools.checkstyle.checks.coding.MissingSwitchDefaultCheck" default-severity="Warning">
+         <description>Checks that switch statement has "default" clause. Rationale: It's usually a good idea to introduce a default case in every switch statement. Even if the developer is sure that all currently possible cases are covered, this should be expressed in the default branch, e.g. by using an assertion. This way the code is protected aginst later changes, e.g. introduction of new types in an enumeration type.</description>
+      </rule-metadata>
+      <rule-metadata name="Nested If Depth" classname="com.puppycrawl.tools.checkstyle.checks.coding.NestedIfDepthCheck" default-severity="Warning">
+         <description>Restricts nested if-else blocks to a specified depth (default = 1). </description>
+         <property-metadata name="max" datatype="Integer" default-value="1">
+            <description>allowed nesting depth</description>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Nested Try Depth" classname="com.puppycrawl.tools.checkstyle.checks.coding.NestedTryDepthCheck" default-severity="Warning">
+         <description>Restricts nested try-catch blocks to a specified depth (default = 1). </description>
+         <property-metadata name="max" datatype="Integer" default-value="1">
+            <description>allowed nesting depth</description>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Package Declaration" classname="com.puppycrawl.tools.checkstyle.checks.coding.PackageDeclarationCheck" default-severity="Warning">
+         <description>Ensure a class is has a package declaration. 
 
-	<rule-group-metadata name="Modifiers">
-	    
-	    <rule-metadata 
-	        name="Modifier Order"
-	        classname="com.puppycrawl.tools.checkstyle.checks.ModifierOrderCheck"
-	        default-severity="Warning">
-	        <description>Checks that the order of modifiers conforms to the suggestions in the Java Language specification, sections 8.1.1, 8.3.1 and 8.4.3. The correct order is: public, protected, private, abstract, static, final, transient, volatile, synchronized, native, strictfp.</description>
-	    </rule-metadata>
-	    
-	    <rule-metadata 
-	        name="Redundant Modifier"
-	        classname="com.puppycrawl.tools.checkstyle.checks.RedundantModifierCheck"
-	        default-severity="Warning">
-	        <description>Checks that method declarations in interfaces include neither the public modifier nor the abstract modifier (see the Java Language specification, section 9.4).  Also checks that variable declarations in interfaces include none of the following modifiers: public, static, final (variables in interface definitions are constants and have these modifiers implicitly, see the Java Language specification, section 9.3).</description>
-	        <property-metadata 
-	            name="tokens" 
-	            datatype="MultiCheck" 
-	            default-value="METHOD_DEF, VARIABLE_DEF">
-	            <description>Tokens to check.</description>
-	            <enumeration>
-	                <property-value-option value="METHOD_DEF"/>
-	                <property-value-option value="VARIABLE_DEF"/>
-	            </enumeration>
-	        </property-metadata>
-	    </rule-metadata>
-	    
-	</rule-group-metadata>
+Rationale: Classes that live in the null package cannot be imported. Many novice developers are not aware of this. </description>
+      </rule-metadata>
+      <rule-metadata name="Parameter Assignment" classname="com.puppycrawl.tools.checkstyle.checks.coding.ParameterAssignmentCheck" default-severity="Warning">
+         <description>Disallow assignment of parameters.
 
-	<rule-group-metadata name="Blocks">
-	
-	    <rule-metadata 
-	        name="Empty Block"
-	        classname="com.puppycrawl.tools.checkstyle.checks.EmptyBlockCheck"
-	        default-severity="Warning">
-	        <description>Checks for empty blocks.</description>
-	        <property-metadata 
-	            name="option" 
-	            datatype="SingleSelect" 
-	            default-value="statement">
-	            <description>Policy on block contents. text = require that there is some text in the block.  stmt = require that there is a statement in the block.</description>
-	            <enumeration>
-	                <property-value-option value="text"/>
-	                <property-value-option value="statement"/>
-	            </enumeration>
-	        </property-metadata>
-	        <property-metadata 
-	            name="tokens" 
-	            datatype="MultiCheck" 
-	            default-value="LITERAL_CATCH, LITERAL_DO, LITERAL_ELSE, LITERAL_FINALLY, LITERAL_IF, LITERAL_FOR, LITERAL_TRY, LITERAL_WHILE, STATIC_INIT">
-	            <description>Blocks to check.</description>
-	            <enumeration>
-	                <property-value-option value="LITERAL_CATCH"/>
-	                <property-value-option value="LITERAL_DO"/>
-	                <property-value-option value="LITERAL_ELSE"/>
-	                <property-value-option value="LITERAL_FINALLY"/>
-	                <property-value-option value="LITERAL_IF"/>
-	                <property-value-option value="LITERAL_FOR"/>
-	                <property-value-option value="LITERAL_TRY"/>
-	                <property-value-option value="LITERAL_WHILE"/>
-	                <property-value-option value="STATIC_INIT"/>
-	            </enumeration>
-	        </property-metadata>
-	    </rule-metadata>
+Rationale: Parameter assignment is often considered poor programming practice. Forcing developers to declare parameters as final is often onerous. Having a check ensure that parameters are never assigned would give the best of both worlds.
+         </description>
+      </rule-metadata>
+      <rule-metadata name="Redundant Throws" classname="com.puppycrawl.tools.checkstyle.checks.coding.RedundantThrowsCheck" default-severity="Warning">
+         <description>Checks for redundant exceptions declared in throws clause such as duplicates, unchecked exceptions or subclasses of another declared exception.</description>
+         <property-metadata name="allowUnchecked" datatype="Boolean" default-value="false">
+            <description>Whether unchecked exceptions in throws are allowed or not.</description>
+         </property-metadata>
+         <property-metadata name="allowSubclasses" datatype="Boolean" default-value="false">
+            <description>Whether subclass of another declared exception is allowed in throws clause.</description>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Return Count" classname="com.puppycrawl.tools.checkstyle.checks.coding.ReturnCountCheck" default-severity="Warning">
+         <description>Restrict the number of return statements. Default = 2. 
 
-	    <rule-metadata 
-	        name="Left Curly Brace Placement"
-	        classname="com.puppycrawl.tools.checkstyle.checks.LeftCurlyCheck"
-	        default-severity="Warning">
-	        <description>Checks the placement of left curly braces on types, methods and other the other blocks.</description>
-	        <property-metadata 
-	            name="option" 
-	            datatype="SingleSelect" 
-	            default-value="eol">
-	            <description>Defines where left curly braces should be placed.  'eol' = End-of-Line, 'nl' = New-Line, and 'nlow' = New-Line-on-Wrap (if the brace will fit on the first line of the statement, taking into account maximum line length, then apply eol rule, otherwise apply the nl rule).</description>
-	            <enumeration>
-	                <property-value-option value="eol"/>
-	                <property-value-option value="nl"/>
-	                <property-value-option value="nlow"/>
-	            </enumeration>
-	        </property-metadata>
-	        <property-metadata 
-	            name="maxLineLength" 
-	            datatype="Integer" 
-	            default-value="80">
-	            <description>Line length for applying wrap rule.</description>
-	        </property-metadata>
-	        <property-metadata 
-	            name="tokens" 
-	            datatype="MultiCheck" 
-	            default-value="CLASS_DEF, CTOR_DEF, INTERFACE_DEF, LITERAL_CATCH, LITERAL_DO, LITERAL_ELSE, LITERAL_FINALLY, LITERAL_FOR, LITERAL_IF, LITERAL_SWITCH, LITERAL_SYNCHRONIZED, LITERAL_TRY, LITERAL_WHILE, METHOD_DEF">
-	            <description>Blocks to check.</description>
-	            <enumeration>
-	                <property-value-option value="CLASS_DEF"/>
-	                <property-value-option value="CTOR_DEF"/>
-	                <property-value-option value="INTERFACE_DEF"/>
-	                <property-value-option value="LITERAL_CATCH"/>
-	                <property-value-option value="LITERAL_DO"/>
-	                <property-value-option value="LITERAL_ELSE"/>
-	                <property-value-option value="LITERAL_FINALLY"/>
-	                <property-value-option value="LITERAL_FOR"/>
-	                <property-value-option value="LITERAL_IF"/>
-	                <property-value-option value="LITERAL_SWITCH"/>
-	                <property-value-option value="LITERAL_SYNCHRONIZED"/>
-	                <property-value-option value="LITERAL_TRY"/>
-	                <property-value-option value="LITERAL_WHILE"/>
-	                <property-value-option value="METHOD_DEF"/>
-	            </enumeration>
-	        </property-metadata>
-	    </rule-metadata>
-	
-	    <rule-metadata 
-	        name="Need Braces"
-	        classname="com.puppycrawl.tools.checkstyle.checks.NeedBracesCheck"
-	        default-severity="Warning">
-	        <description>Checks for braces around code blocks.</description>
-	        <property-metadata 
-	            name="tokens" 
-	            datatype="MultiCheck" 
-	            default-value="LITERAL_DO, LITERAL_ELSE, LITERAL_IF, LITERAL_FOR, LITERAL_WHILE">
-	            <description>Blocks to check.</description>
-	            <enumeration>
-	                <property-value-option value="LITERAL_DO"/>
-	                <property-value-option value="LITERAL_ELSE"/>
-	                <property-value-option value="LITERAL_IF"/>
-	                <property-value-option value="LITERAL_FOR"/>
-	                <property-value-option value="LITERAL_WHILE"/>
-	            </enumeration>
-	        </property-metadata>
-	    </rule-metadata>
+Rationale: Too many return points can be indication that code is attempting to do too much or may be difficult to understand. </description>
+         <property-metadata name="max" datatype="Integer" default-value="2">
+            <description>maximum allowed number of return statments</description>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Simplify Boolean Expression" classname="com.puppycrawl.tools.checkstyle.checks.coding.SimplifyBooleanExpressionCheck" default-severity="Warning">
+         <description>Checks for overly complicated boolean expressions. Currently finds code like if (b == true), b || true, !false, etc.</description>
+      </rule-metadata>
+      <rule-metadata name="Simplify Boolean Return" classname="com.puppycrawl.tools.checkstyle.checks.coding.SimplifyBooleanReturnCheck" default-severity="Warning">
+         <description>Checks for overly complicated boolean return statements.</description>
+      </rule-metadata>
+      <rule-metadata name="String Literal Equality" classname="com.puppycrawl.tools.checkstyle.checks.coding.StringLiteralEqualityCheck" default-severity="Warning">
+         <description>Checks that string literals are not used with == or !=. 
 
-	    <rule-metadata 
-	        name="Right Curly Brace Placement"
-	        classname="com.puppycrawl.tools.checkstyle.checks.RightCurlyCheck"
-	        default-severity="Warning">
-	        <description>Checks the placement of right curly braces ('}') for else, try, and catch tokens.</description>
-	        <property-metadata 
-	            name="option" 
-	            datatype="SingleSelect" 
-	            default-value="same">
-	            <description>Defines where right curly braces should be placed.  same = brace must be on the same line as the next statement.  alone = brace must be alone on the line.</description>
-	            <enumeration>
-	                <property-value-option value="same"/>
-	                <property-value-option value="alone"/>
-	            </enumeration>
-	        </property-metadata>
-	        <property-metadata 
-	            name="tokens" 
-	            datatype="MultiCheck" 
-	            default-value="LITERAL_CATCH, LITERAL_ELSE, LITERAL_TRY">
-	            <description>Blocks to check.</description>
-	            <enumeration>
-	                <property-value-option value="LITERAL_CATCH"/>
-	                <property-value-option value="LITERAL_ELSE"/>
-	                <property-value-option value="LITERAL_TRY"/>
-	            </enumeration>
-	        </property-metadata>
-	    </rule-metadata>
+Rationale: Novice Java programmers often use code like if (x == "something") when they mean if ("something".equals(x)). 
+         </description>
+      </rule-metadata>
+      <rule-metadata name="SuperClone" classname="com.puppycrawl.tools.checkstyle.checks.coding.SuperCloneCheck" default-severity="Warning">
+         <description>Checks that an overriding clone() method invokes super.clone().        </description>
+      </rule-metadata>
+      <rule-metadata name="SuperFinalize" classname="com.puppycrawl.tools.checkstyle.checks.coding.SuperFinalizeCheck" default-severity="Warning">
+         <description>Checks that an overriding finalize() method invokes super.finalize().</description>
+      </rule-metadata>
+      <rule-metadata name="Trailing Array Comma" classname="com.puppycrawl.tools.checkstyle.checks.coding.ArrayTrailingCommaCheck" default-severity="Warning">
+         <description>
+Checks that array initialization contains a trailing comma. 
+      int[] a = new int[] 
+      {
+          1, 
+          2, 
+          3, 
+      }; 
+      
+The check allows to not add a comma if both left and right curlys are on the same line. 
 
-	    <rule-metadata 
-	        name="Avoid Nested Blocks"
-	        classname="com.puppycrawl.tools.checkstyle.checks.AvoidNestedBlocksCheck"
-	        default-severity="Warning">
-	        <description>Finds nested blocks, i.e. blocks that are used freely in the code. Rationale: Nested blocks are often leftovers from the debugging process, they confuse the reader.</description>
-	    </rule-metadata>
+      return new int[] { 0 };
+      
+Rationale: Putting this comma in makes it easier to change the order of the elements or add new elements on the end. 
+         </description>
+      </rule-metadata>
+   </rule-group-metadata>
+   <rule-group-metadata name="Class Design">
+      <rule-metadata name="Design For Extension" classname="com.puppycrawl.tools.checkstyle.checks.design.DesignForExtensionCheck" default-severity="Warning">
+         <description>Checks that classes are designed for extension. More specifically, it enforces a programming style where superclasses provide empty "hooks" that can be implemented by subclasses. The exact rule is that nonprivate, nonstatic methods of classes that can be subclassed must either be a) abstract or b) final or c) have an empty implementation.  Rationale: This API design style protects superclasses against beeing broken by subclasses. The downside is that subclasses are limited in their flexibility, in particular they cannot prevent execution of code in the superclass, but that also means that subclasses cannot corrupt the state of the superclass by forgetting to call the super method.</description>
+      </rule-metadata>
+      <rule-metadata name="Final Class" classname="com.puppycrawl.tools.checkstyle.checks.design.FinalClassCheck" default-severity="Warning">
+         <description>Checks that a class which has only private constructors is declared as final.</description>
+      </rule-metadata>
+      <rule-metadata name="Hide Utility Class Constructor" classname="com.puppycrawl.tools.checkstyle.checks.design.HideUtilityClassConstructorCheck" default-severity="Warning">
+         <description>Make sure that utility classes (classes that contain only static methods) do not have a public constructor.  Rationale: Instantiating utility classes does not make sense. Hence the constructors should either be private or (if you want to allow subclassing) protected. A common mistake is forgetting to hide the default constructor.</description>
+      </rule-metadata>
+      <rule-metadata name="Interface Is Type" classname="com.puppycrawl.tools.checkstyle.checks.design.InterfaceIsTypeCheck" default-severity="Warning">
+         <description>Implements Bloch, Effective Java, Item 17 - Use Interfaces only to define types.  According to Bloch, an interface should describe a type. It is therefore inappropriate to define an interface that does not contain any methods but only constants. The Standard class javax.swing.SwingConstants is an example of a class that would be flagged by this check.</description>
+         <property-metadata name="allowMarkerInterfaces" datatype="Boolean" default-value="true">
+            <description>Controls whether marker interfaces like Serializable are allowed.</description>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Mutable Exception" classname="com.puppycrawl.tools.checkstyle.checks.design.MutableExceptionCheck" default-severity="Warning">
+         <description>Ensures that exceptions (defined as any class name conforming to some regular expression) are immutable. That is, have only final fields. 
 
-	</rule-group-metadata>
+The current algorithm is very simple it checks that all members of exception are final. User can still mutates an exception's instance (e.g. Throwable has setStackTrace(StackTraceElement[] stackTrace) method which changes stack trace). But, at least, all information provided by this exception type is unchangable. 
 
-	<rule-group-metadata name="Coding Problems">
-	
-	    <rule-metadata 
-	        name="Avoid Inline Conditionals"
-	        classname="com.puppycrawl.tools.checkstyle.checks.AvoidInlineConditionalsCheck"
-	        default-severity="Warning">
-	        <description>Detects inline conditionals. Rationale: Some developers find inline conditionals hard to read, so their company's coding standards forbids them.</description>
-	    </rule-metadata>
-	
-	    <rule-metadata 
-	        name="Double Checked Locking"
-	        classname="com.puppycrawl.tools.checkstyle.checks.DoubleCheckedLockingCheck"
-	        default-severity="Warning">
-	        <description>The "double-checked locking" idiom (DCL) tries to avoid the runtime cost of synchronization. The problem with the DCL idiom in Java is that it just does not work correctly. Using it introduces bugs that are extremely hard to track down and reproduce.</description>
-	    </rule-metadata>
-	
-	    <rule-metadata 
-	        name="Empty Statement"
-	        classname="com.puppycrawl.tools.checkstyle.checks.EmptyStatementCheck"
-	        default-severity="Warning">
-	        <description>Detects empty statements (standalone ;).</description>
-	    </rule-metadata>
-	
-	    <rule-metadata 
-	        name="Equals and HashCode"
-	        classname="com.puppycrawl.tools.checkstyle.checks.EqualsHashCodeCheck"
-	        default-severity="Warning">
-	        <description>Checks that classes that override equals() also override hashCode().</description>
-	    </rule-metadata>
-	
-	    <rule-metadata 
-	        name="Hidden Field"
-	        classname="com.puppycrawl.tools.checkstyle.checks.HiddenFieldCheck"
-	        default-severity="Warning">
-	        <description>Checks that a local variable or a parameter does not shadow a field that is defined in the same class.</description>
-	        <property-metadata 
-	            name="tokens" 
-	            datatype="MultiCheck" 
-	            default-value="PARAMETER_DEF, VARIABLE_DEF">
-	            <description>Tokens to check.</description>
-	            <enumeration>
-	                <property-value-option value="PARAMETER_DEF"/>
-	                <property-value-option value="VARIABLE_DEF"/>
-	            </enumeration>
-	        </property-metadata>
-	    </rule-metadata>
-	
-	    <rule-metadata 
-	        name="Illegal Instantiation"
-	        classname="com.puppycrawl.tools.checkstyle.checks.IllegalInstantiationCheck"
-	        default-severity="Warning">
-	        <description>Checks for illegal instantiations where a factory method is preferred.  Rationale: Depending on the project, for some classes it might be preferable to create instances through factory methods rather than calling the constructor.  A simple example is the java.lang.Boolean class. In order to save memory and CPU cycles, it is preferable to use the predefined constants TRUE and FALSE. Constructor invocations should be replaced by calls to Boolean.valueOf().  Some extremely performance sensitive projects may require the use of factory methods for other classes as well, to enforce the usage of number caches or object pools.</description>
-	        <property-metadata 
-	            name="classes" 
-	            datatype="String" 
-	            default-value="{}">
-	            <description>Comman seperated list of classes that should not be instantiated.</description>
-	        </property-metadata>
-	    </rule-metadata>
-	
-	    <rule-metadata 
-	        name="Inner Assignment"
-	        classname="com.puppycrawl.tools.checkstyle.checks.InnerAssignmentCheck"
-	        default-severity="Warning">
-	        <description>Checks for assignments in subexpressions, such as in "String s = Integer.toString(i = 2);".  Rationale: With the exception of for iterators, all assignments should occur in their own toplevel statement to increase readability. With inner assignments like the above it is difficult to see all places where a variable is set.</description>
-	        <property-metadata 
-	            name="tokens" 
-	            datatype="MultiCheck" 
-	            default-value="ASSIGN, BAND_ASSIGN, BOR_ASSIGN, BSR_ASSIGN, BXOR_ASSIGN, DIV_ASSIGN, MINUS_ASSIGN, MOD_ASSIGN, PLUS_ASSIGN, SL_ASSIGN, SR_ASSIGN, STAR_ASSIGN">
-	            <description>Tokens to check.</description>
-	            <enumeration>
-	                <property-value-option value="ASSIGN"/>
-	                <property-value-option value="BAND_ASSIGN"/>
-	                <property-value-option value="BOR_ASSIGN"/>
-	                <property-value-option value="BSR_ASSIGN"/>
-	                <property-value-option value="BXOR_ASSIGN"/>
-	                <property-value-option value="DIV_ASSIGN"/>
-	                <property-value-option value="MINUS_ASSIGN"/>
-	                <property-value-option value="MOD_ASSIGN"/>
-	                <property-value-option value="PLUS_ASSIGN"/>
-	                <property-value-option value="SL_ASSIGN"/>
-	                <property-value-option value="SR_ASSIGN"/>
-	                <property-value-option value="STAR_ASSIGN"/>
-	            </enumeration>
-	        </property-metadata>
-	    </rule-metadata>
-	
-	    <rule-metadata 
-	        name="Magic Number"
-	        classname="com.puppycrawl.tools.checkstyle.checks.MagicNumberCheck"
-	        default-severity="Warning">
-	        <description>Checks that there are no "magic numbers", where a magic number is a numeric literal that is not defined as a constant.</description>
-	        <property-metadata 
-	            name="ignoreNumbers" 
-	            datatype="String" 
-	            default-value="-1, 0, 1, 2">
-	            <description>Comman seperated list of non-Magic numbers.</description>
-	        </property-metadata>
-	        <property-metadata 
-	            name="tokens" 
-	            datatype="MultiCheck" 
-	            default-value="NUM_DOUBLE, NUM_FLOAT, NUM_INT, NUM_LONG">
-	            <description>Tokens to check.</description>
-	            <enumeration>
-	                <property-value-option value="NUM_DOUBLE"/>
-	                <property-value-option value="NUM_FLOAT"/>
-	                <property-value-option value="NUM_INT"/>
-	                <property-value-option value="NUM_LONG"/>
-	            </enumeration>
-	        </property-metadata>
-	    </rule-metadata>
-	
-	    <rule-metadata 
-	        name="Missing Switch Default"
-	        classname="com.puppycrawl.tools.checkstyle.checks.MissingSwitchDefaultCheck"
-	        default-severity="Warning">
-	        <description>Checks that switch statement has "default" clause. Rationale: It's usually a good idea to introduce a default case in every switch statement. Even if the developer is sure that all currently possible cases are covered, this should be expressed in the default branch, e.g. by using an assertion. This way the code is protected aginst later changes, e.g. introduction of new types in an enumeration type.</description>
-	    </rule-metadata>
-	
-	    <rule-metadata 
-	        name="Redundant Throws"
-	        classname="com.puppycrawl.tools.checkstyle.checks.RedundantThrowsCheck"
-	        default-severity="Warning">
-	        <description>Checks for redundant exceptions declared in throws clause such as duplicates, unchecked exceptions or subclasses of another declared exception.</description>
-	        <property-metadata 
-	            name="allowUnchecked" 
-	            datatype="Boolean" 
-	            default-value="false">
-	            <description>Whether unchecked exceptions in throws are allowed or not.</description>
-	        </property-metadata>
-	        <property-metadata 
-	            name="allowSubclasses" 
-	            datatype="Boolean" 
-	            default-value="false">
-	            <description>Whether subclass of another declared exception is allowed in throws clause.</description>
-	        </property-metadata>
-	    </rule-metadata>
-	
-	    <rule-metadata 
-	        name="Simplify Boolean Expression"
-	        classname="com.puppycrawl.tools.checkstyle.checks.SimplifyBooleanExpressionCheck"
-	        default-severity="Warning">
-	        <description>Checks for overly complicated boolean expressions. Currently finds code like if (b == true), b || true, !false, etc.</description>
-	    </rule-metadata>
-	
-	    <rule-metadata 
-	        name="Simplify Boolean Return"
-	        classname="com.puppycrawl.tools.checkstyle.checks.SimplifyBooleanReturnCheck"
-	        default-severity="Warning">
-	        <description>Checks for overly complicated boolean return statements.</description>
-	    </rule-metadata>
-	    
-	</rule-group-metadata>
+Rationale: Exception instances should represent an error condition. Having non final fields not only allows the state to be modified by accident and therefore mask the original condition but also allows developers to accidentally forget to initialise state thereby leading to code catching the exception to draw incorrect conclusions based on the state.      </description>
+         <property-metadata name="format" datatype="String" default-value="^.*Exception$|^.*Error$">
+            <description>pattern for name of exception class.</description>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Throws Count" classname="com.puppycrawl.tools.checkstyle.checks.design.ThrowsCountCheck" default-severity="Warning">
+         <description>Restricts throws statements to a specified count (default = 1). 
 
-	<rule-group-metadata name="Class Design">
-	
-	    <rule-metadata 
-	        name="Visibility Modifier"
-	        classname="com.puppycrawl.tools.checkstyle.checks.VisibilityModifierCheck"
-	        default-severity="Warning">
-	        <description>Checks visibility of class members. Only static final members may be public; other class members must be private unless property protectedAllowed or packageAllowed is set.</description>
-	        <property-metadata 
-	            name="packageAllowed" 
-	            datatype="Boolean" 
-	            default-value="false">
-	            <description>Whether package visible members are allowed or not.</description>
-	        </property-metadata>
-	        <property-metadata 
-	            name="protectedAllowed" 
-	            datatype="Boolean" 
-	            default-value="false">
-	            <description>Whether protected members are allowed or not.</description>
-	        </property-metadata>
-	        <property-metadata 
-	            name="publicMemberPattern" 
-	            datatype="String" 
-	            default-value="^serialVersionUID">
-	            <description>Pattern for public members that should be ignored.</description>
-	        </property-metadata>
-	    </rule-metadata>
-	
-	    <rule-metadata 
-	        name="Final Class"
-	        classname="com.puppycrawl.tools.checkstyle.checks.FinalClassCheck"
-	        default-severity="Warning">
-	        <description>Checks that a class which has only private constructors is declared as final.</description>
-	    </rule-metadata>
-	
-	    <rule-metadata 
-	        name="Interface Is Type"
-	        classname="com.puppycrawl.tools.checkstyle.checks.InterfaceIsTypeCheck"
-	        default-severity="Warning">
-	        <description>Implements Bloch, Effective Java, Item 17 - Use Interfaces only to define types.  According to Bloch, an interface should describe a type. It is therefore inappropriate to define an interface that does not contain any methods but only constants. The Standard class javax.swing.SwingConstants is an example of a class that would be flagged by this check.</description>
-	        <property-metadata 
-	            name="allowMarkerInterfaces" 
-	            datatype="Boolean" 
-	            default-value="true">
-	            <description>Controls whether marker interfaces like Serializable are allowed.</description>
-	        </property-metadata>
-	    </rule-metadata>
-	
-	    <rule-metadata 
-	        name="Hide Utility Class Constructor"
-	        classname="com.puppycrawl.tools.checkstyle.checks.HideUtilityClassConstructorCheck"
-	        default-severity="Warning">
-	        <description>Make sure that utility classes (classes that contain only static methods) do not have a public constructor.  Rationale: Instantiating utility classes does not make sense. Hence the constructors should either be private or (if you want to allow subclassing) protected. A common mistake is forgetting to hide the default constructor.</description>
-	    </rule-metadata>
-	
-	    <rule-metadata 
-	        name="Design For Extension"
-	        classname="com.puppycrawl.tools.checkstyle.checks.DesignForExtensionCheck"
-	        default-severity="Warning">
-	        <description>Checks that classes are designed for extension. More specifically, it enforces a programming style where superclasses provide empty "hooks" that can be implemented by subclasses. The exact rule is that nonprivate, nonstatic methods of classes that can be subclassed must either be a) abstract or b) final or c) have an empty implementation.  Rationale: This API design style protects superclasses against beeing broken by subclasses. The downside is that subclasses are limited in their flexibility, in particular they cannot prevent execution of code in the superclass, but that also means that subclasses cannot corrupt the state of the superclass by forgetting to call the super method.</description>
-	    </rule-metadata>
-	    
-	</rule-group-metadata>
+Rationale: Exceptions form part of a methods interface. Declaring a method to throw too many differently rooted exceptions makes exception handling onerous and leads to poor programming practices such as catch (Exception). This check forces developers to put exceptions into a heirachy such that in the simplest case, only one type of exception need be checked for by a caller but allows any sub-classes to be caught specifically if necessary. 
+         </description>
+         <property-metadata name="max" datatype="Integer" default-value="1">
+            <description>maximum allowed number of throws statments</description>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Visibility Modifier" classname="com.puppycrawl.tools.checkstyle.checks.design.VisibilityModifierCheck" default-severity="Warning">
+         <description>Checks visibility of class members. Only static final members may be public; other class members must be private unless property protectedAllowed or packageAllowed is set.</description>
+         <property-metadata name="packageAllowed" datatype="Boolean" default-value="false">
+            <description>Whether package visible members are allowed or not.</description>
+         </property-metadata>
+         <property-metadata name="protectedAllowed" datatype="Boolean" default-value="false">
+            <description>Whether protected members are allowed or not.</description>
+         </property-metadata>
+         <property-metadata name="publicMemberPattern" datatype="String" default-value="^serialVersionUID">
+            <description>Pattern for public members that should be ignored.</description>
+         </property-metadata>
+      </rule-metadata>
+   </rule-group-metadata>
+   <rule-group-metadata name="Metrics">
+      <rule-metadata name="Cyclomatic Complexity" classname="com.puppycrawl.tools.checkstyle.checks.metrics.CyclomaticComplexityCheck" default-severity="Warning">
+         <description>Checks cyclomatic complexity against a specified limit. The complexity is measured by the number of if, while, do, for, ?:, catch, switch, case statements, and operators &amp;&amp; and || (plus one) in the body of a constructor, method, static initializer, or instance initializer. It is a measure of the minimum number of possible paths through the source and therefore the number of required tests. Generally 1-4 is considered good, 5-7 ok, 8-10 consider re-factoring, and 11+ re-factor now! </description>
+         <property-metadata name="max" datatype="Integer" default-value="10">
+            <description>the maximum threshold allowed</description>
+         </property-metadata>
+      </rule-metadata>
+   </rule-group-metadata>
+   <rule-group-metadata name="Miscellaneous">
+      <rule-metadata name="Array Type Style" classname="com.puppycrawl.tools.checkstyle.checks.ArrayTypeStyleCheck" default-severity="Warning">
+         <description>Checks the style of array type definitions. Some like Java-style: public static void main(String[] args) and some like C-style: public static void main(String args[]).</description>
+         <property-metadata name="javaStyle" datatype="Boolean" default-value="true">
+            <description>Controls whether to enforce Java style (true) or C style (false).</description>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Descendent Token Check" classname="com.puppycrawl.tools.checkstyle.checks.DescendantTokenCheck" default-severity="Warning">
+         <description>Checks for restricted tokens beneath other tokens. 
 
-	<rule-group-metadata name="Miscellaneous">
-	
-	    <rule-metadata 
-	        name="Generic Illegal Regexp"
-	        classname="com.puppycrawl.tools.checkstyle.checks.GenericIllegalRegexpCheck"
-	        default-severity="Warning">
-	        <description>A generic check for code problems - the user can search for any pattern.  For example: exception.printStacktrace(), System.out.println(), System.exit(), etc.</description>
-	        <property-metadata 
-	            name="format" 
-	            datatype="String" 
-	            default-value="^$">
-	            <description>Pattern to check for.</description>
-	        </property-metadata>
-	        <property-metadata 
-	            name="ignoreCase" 
-	            datatype="Boolean" 
-	            default-value="false">
-	            <description>Controls whether to ignore case when searching.</description>
-	        </property-metadata>
-	        <property-metadata 
-	            name="message" 
-	            datatype="String" 
-	            default-value="">
-	            <description>Message which is used to notify about violations, if empty then default(hard-coded) message is used.</description>
-	        </property-metadata>
-	    </rule-metadata>
-	
-	    <rule-metadata 
-	        name="Todo Comment"
-	        classname="com.puppycrawl.tools.checkstyle.checks.TodoCommentCheck"
-	        default-severity="Warning">
-	        <description>A check for TODO: comments. Actually it is a generic regular expression matcher on Java comments. To check for other patterns in Java comments, set property format.</description>
-	        <property-metadata 
-	            name="format" 
-	            datatype="String" 
-	            default-value="TODO:">
-	            <description>Regular expression definging pattern to look for.</description>
-	        </property-metadata>
-	    </rule-metadata>
-	
-	    <rule-metadata 
-	        name="Upper Ell"
-	        classname="com.puppycrawl.tools.checkstyle.checks.UpperEllCheck"
-	        default-severity="Warning">
-	        <description>Checks that long constants are defined with an upper ell. That is ' L' and not 'l'. This is in accordance to the Java Language Specification, Section 3.10.1.  Rationale: The lower case letter l looks a lot like the digit 1.</description>
-	    </rule-metadata>
-	
-	    <rule-metadata 
-	        name="Array Type Style"
-	        classname="com.puppycrawl.tools.checkstyle.checks.ArrayTypeStyleCheck"
-	        default-severity="Warning">
-	        <description>Checks the style of array type definitions. Some like Java-style: public static void main(String[] args) and some like C-style: public static void main(String args[]).</description>
-	        <property-metadata 
-	            name="javaStyle" 
-	            datatype="Boolean" 
-	            default-value="true">
-	            <description>Controls whether to enforce Java style (true) or C style (false).</description>
-	        </property-metadata>
-	    </rule-metadata>
-	
-	    <rule-metadata 
-	        name="Final Parameters"
-	        classname="com.puppycrawl.tools.checkstyle.checks.FinalParametersCheck"
-	        default-severity="Warning">
-	        <description>Check that method/constructor parameters are final. Interface methods are not checked - the final keyword does not make sense for interface method parameters as there is no code that could modify the parameter.  Rationale: Changing the value of parameters during the execution of the method's algorithm can be confusing and should be avoided. A great way to let the Java compiler prevent this coding style is to declare parameters final.</description>
-	        <property-metadata
-	            name="tokens" 
-	            datatype="MultiCheck"
-	            default-value="METHOD_DEF, CTOR_DEF">
-	            <description>Tokens to check.</description>
-	            <enumeration>
-	                <property-value-option value="METHOD_DEF"/>
-	                <property-value-option value="CTOR_DEF"/>
-	            </enumeration>
-	        </property-metadata>
-	    </rule-metadata>
+WARNING: This is a very powerful and flexible check, but, at the same time, it is low level and very implementation dependent because its results depend on the grammar we use to build abstract syntax trees. Thus we recomend using other checks when they provide the desired funcionality. All in all, this check just works on the level of an abstract tree and knows nothing about language structures. </description>
+         <property-metadata name="tokens" datatype="MultiCheck" default-value=" ">
+            <description>Tokens to check.</description>
+            <enumeration>
+               <property-value-option value="ABSTRACT"/>
+               <property-value-option value="ARRAY_DECLARATOR"/>
+               <property-value-option value="ARRAY_INIT"/>
+               <property-value-option value="ASSIGN"/>
+               <property-value-option value="BAND"/>
+               <property-value-option value="BAND_ASSIGN"/>
+               <property-value-option value="BNOT"/>
+               <property-value-option value="BOR"/>
+               <property-value-option value="BOR_ASSIGN"/>
+               <property-value-option value="BSR"/>
+               <property-value-option value="BSR_ASSIGN"/>
+               <property-value-option value="BXOR"/>
+               <property-value-option value="BXOR_ASSIGN"/>
+               <property-value-option value="CASE_GROUP"/>
+               <property-value-option value="CHAR_LITERAL"/>
+               <property-value-option value="CLASS_DEF"/>
+               <property-value-option value="COLON"/>
+               <property-value-option value="COMMA"/>
+               <property-value-option value="CTOR_CALL"/>
+               <property-value-option value="CTOR_DEF"/>
+               <property-value-option value="DEC"/>
+               <property-value-option value="DIV"/>
+               <property-value-option value="DIV_ASSIGN"/>
+               <property-value-option value="DOT"/>
+               <property-value-option value="ELIST"/>
+               <property-value-option value="EMPTY_STAT"/>
+               <property-value-option value="EOF"/>
+               <property-value-option value="EQUAL"/>
+               <property-value-option value="EXPR"/>
+               <property-value-option value="EXTENDS_CLAUSE"/>
+               <property-value-option value="FINAL"/>
+               <property-value-option value="FOR_CONDITION"/>
+               <property-value-option value="FOR_INIT"/>
+               <property-value-option value="FOR_ITERATOR"/>
+               <property-value-option value="GE"/>
+               <property-value-option value="GT"/>
+               <property-value-option value="IDENT"/>
+               <property-value-option value="IMPLEMENTS_CLAUSE"/>
+               <property-value-option value="IMPORT"/>
+               <property-value-option value="INC"/>
+               <property-value-option value="INDEX_OP"/>
+               <property-value-option value="INSTANCE_INIT"/>
+               <property-value-option value="INTERFACE_DEF"/>
+               <property-value-option value="LABELED_STAT"/>
+               <property-value-option value="LAND"/>
+               <property-value-option value="LCURLY"/>
+               <property-value-option value="LE"/>
+               <property-value-option value="LITERAL_ASSERT"/>
+               <property-value-option value="LITERAL_BOOLEAN"/>
+               <property-value-option value="LITERAL_BREAK"/>
+               <property-value-option value="LITERAL_BYTE"/>
+               <property-value-option value="LITERAL_CASE"/>
+               <property-value-option value="LITERAL_CATCH"/>
+               <property-value-option value="LITERAL_CHAR"/>
+               <property-value-option value="LITERAL_CLASS"/>
+               <property-value-option value="LITERAL_CONTINUE"/>
+               <property-value-option value="LITERAL_DEFAULT"/>
+               <property-value-option value="LITERAL_DO"/>
+               <property-value-option value="LITERAL_DOUBLE"/>
+               <property-value-option value="LITERAL_ELSE"/>
+               <property-value-option value="LITERAL_FALSE"/>
+               <property-value-option value="LITERAL_FINALLY"/>
+               <property-value-option value="LITERAL_FLOAT"/>
+               <property-value-option value="LITERAL_FOR"/>
+               <property-value-option value="LITERAL_IF"/>
+               <property-value-option value="LITERAL_INSTANCEOF"/>
+               <property-value-option value="LITERAL_INT"/>
+               <property-value-option value="LITERAL_LONG"/>
+               <property-value-option value="LITERAL_NATIVE"/>
+               <property-value-option value="LITERAL_NEW"/>
+               <property-value-option value="LITERAL_NULL"/>
+               <property-value-option value="LITERAL_PRIVATE"/>
+               <property-value-option value="LITERAL_PROTECTED"/>
+               <property-value-option value="LITERAL_PUBLIC"/>
+               <property-value-option value="LITERAL_RETURN"/>
+               <property-value-option value="LITERAL_SHORT"/>
+               <property-value-option value="LITERAL_STATIC"/>
+               <property-value-option value="LITERAL_SUPER"/>
+               <property-value-option value="LITERAL_SWITCH"/>
+               <property-value-option value="LITERAL_SYNCHRONIZED"/>
+               <property-value-option value="LITERAL_THIS"/>
+               <property-value-option value="LITERAL_THROW"/>
+               <property-value-option value="LITERAL_THROWS"/>
+               <property-value-option value="LITERAL_TRANSIENT"/>
+               <property-value-option value="LITERAL_TRUE"/>
+               <property-value-option value="LITERAL_TRY"/>
+               <property-value-option value="LITERAL_VOID"/>
+               <property-value-option value="LITERAL_VOLATILE"/>
+               <property-value-option value="LITERAL_WHILE"/>
+               <property-value-option value="LNOT"/>
+               <property-value-option value="LOR"/>
+               <property-value-option value="LPAREN"/>
+               <property-value-option value="LT"/>
+               <property-value-option value="METHOD_CALL"/>
+               <property-value-option value="METHOD_DEF"/>
+               <property-value-option value="MINUS"/>
+               <property-value-option value="MINUS_ASSIGN"/>
+               <property-value-option value="MOD"/>
+               <property-value-option value="MOD_ASSIGN"/>
+               <property-value-option value="MODIFIERS"/>
+               <property-value-option value="NOT_EQUAL"/>
+               <property-value-option value="NUM_DOUBLE"/>
+               <property-value-option value="NUM_FLOAT"/>
+               <property-value-option value="NUM_INT"/>
+               <property-value-option value="NUM_LONG"/>
+               <property-value-option value="OBJBLOCK"/>
+               <property-value-option value="PACKAGE_DEF"/>
+               <property-value-option value="PARAMETER_DEF"/>
+               <property-value-option value="PARAMETERS"/>
+               <property-value-option value="PLUS"/>
+               <property-value-option value="PLUS_ASSIGN"/>
+               <property-value-option value="POST_DEC"/>
+               <property-value-option value="POST_INC"/>
+               <property-value-option value="QUESTION"/>
+               <property-value-option value="RCURLY"/>
+               <property-value-option value="RPAREN"/>
+               <property-value-option value="SEMI"/>
+               <property-value-option value="SL"/>
+               <property-value-option value="SL_ASSIGN"/>
+               <property-value-option value="SLIST"/>
+               <property-value-option value="SR"/>
+               <property-value-option value="SR_ASSIGN"/>
+               <property-value-option value="STAR"/>
+               <property-value-option value="STAR_ASSIGN"/>
+               <property-value-option value="STATIC_INIT"/>
+               <property-value-option value="STRICTFP"/>
+               <property-value-option value="STRING_LITERAL"/>
+               <property-value-option value="SUPER_CTOR_CALL"/>
+               <property-value-option value="TYPE"/>
+               <property-value-option value="TYPECAST"/>
+               <property-value-option value="UNARY_MINUS"/>
+               <property-value-option value="UNARY_PLUS"/>
+               <property-value-option value="VARIABLE_DEF"/>
+            </enumeration>
+         </property-metadata>
+         <property-metadata name="limitedTokens" datatype="MultiCheck" default-value=" ">
+            <description>Tokens to check.</description>
+            <enumeration>
+               <property-value-option value="ABSTRACT"/>
+               <property-value-option value="ARRAY_DECLARATOR"/>
+               <property-value-option value="ARRAY_INIT"/>
+               <property-value-option value="ASSIGN"/>
+               <property-value-option value="BAND"/>
+               <property-value-option value="BAND_ASSIGN"/>
+               <property-value-option value="BNOT"/>
+               <property-value-option value="BOR"/>
+               <property-value-option value="BOR_ASSIGN"/>
+               <property-value-option value="BSR"/>
+               <property-value-option value="BSR_ASSIGN"/>
+               <property-value-option value="BXOR"/>
+               <property-value-option value="BXOR_ASSIGN"/>
+               <property-value-option value="CASE_GROUP"/>
+               <property-value-option value="CHAR_LITERAL"/>
+               <property-value-option value="CLASS_DEF"/>
+               <property-value-option value="COLON"/>
+               <property-value-option value="COMMA"/>
+               <property-value-option value="CTOR_CALL"/>
+               <property-value-option value="CTOR_DEF"/>
+               <property-value-option value="DEC"/>
+               <property-value-option value="DIV"/>
+               <property-value-option value="DIV_ASSIGN"/>
+               <property-value-option value="DOT"/>
+               <property-value-option value="ELIST"/>
+               <property-value-option value="EMPTY_STAT"/>
+               <property-value-option value="EOF"/>
+               <property-value-option value="EQUAL"/>
+               <property-value-option value="EXPR"/>
+               <property-value-option value="EXTENDS_CLAUSE"/>
+               <property-value-option value="FINAL"/>
+               <property-value-option value="FOR_CONDITION"/>
+               <property-value-option value="FOR_INIT"/>
+               <property-value-option value="FOR_ITERATOR"/>
+               <property-value-option value="GE"/>
+               <property-value-option value="GT"/>
+               <property-value-option value="IDENT"/>
+               <property-value-option value="IMPLEMENTS_CLAUSE"/>
+               <property-value-option value="IMPORT"/>
+               <property-value-option value="INC"/>
+               <property-value-option value="INDEX_OP"/>
+               <property-value-option value="INSTANCE_INIT"/>
+               <property-value-option value="INTERFACE_DEF"/>
+               <property-value-option value="LABELED_STAT"/>
+               <property-value-option value="LAND"/>
+               <property-value-option value="LCURLY"/>
+               <property-value-option value="LE"/>
+               <property-value-option value="LITERAL_ASSERT"/>
+               <property-value-option value="LITERAL_BOOLEAN"/>
+               <property-value-option value="LITERAL_BREAK"/>
+               <property-value-option value="LITERAL_BYTE"/>
+               <property-value-option value="LITERAL_CASE"/>
+               <property-value-option value="LITERAL_CATCH"/>
+               <property-value-option value="LITERAL_CHAR"/>
+               <property-value-option value="LITERAL_CLASS"/>
+               <property-value-option value="LITERAL_CONTINUE"/>
+               <property-value-option value="LITERAL_DEFAULT"/>
+               <property-value-option value="LITERAL_DO"/>
+               <property-value-option value="LITERAL_DOUBLE"/>
+               <property-value-option value="LITERAL_ELSE"/>
+               <property-value-option value="LITERAL_FALSE"/>
+               <property-value-option value="LITERAL_FINALLY"/>
+               <property-value-option value="LITERAL_FLOAT"/>
+               <property-value-option value="LITERAL_FOR"/>
+               <property-value-option value="LITERAL_IF"/>
+               <property-value-option value="LITERAL_INSTANCEOF"/>
+               <property-value-option value="LITERAL_INT"/>
+               <property-value-option value="LITERAL_LONG"/>
+               <property-value-option value="LITERAL_NATIVE"/>
+               <property-value-option value="LITERAL_NEW"/>
+               <property-value-option value="LITERAL_NULL"/>
+               <property-value-option value="LITERAL_PRIVATE"/>
+               <property-value-option value="LITERAL_PROTECTED"/>
+               <property-value-option value="LITERAL_PUBLIC"/>
+               <property-value-option value="LITERAL_RETURN"/>
+               <property-value-option value="LITERAL_SHORT"/>
+               <property-value-option value="LITERAL_STATIC"/>
+               <property-value-option value="LITERAL_SUPER"/>
+               <property-value-option value="LITERAL_SWITCH"/>
+               <property-value-option value="LITERAL_SYNCHRONIZED"/>
+               <property-value-option value="LITERAL_THIS"/>
+               <property-value-option value="LITERAL_THROW"/>
+               <property-value-option value="LITERAL_THROWS"/>
+               <property-value-option value="LITERAL_TRANSIENT"/>
+               <property-value-option value="LITERAL_TRUE"/>
+               <property-value-option value="LITERAL_TRY"/>
+               <property-value-option value="LITERAL_VOID"/>
+               <property-value-option value="LITERAL_VOLATILE"/>
+               <property-value-option value="LITERAL_WHILE"/>
+               <property-value-option value="LNOT"/>
+               <property-value-option value="LOR"/>
+               <property-value-option value="LPAREN"/>
+               <property-value-option value="LT"/>
+               <property-value-option value="METHOD_CALL"/>
+               <property-value-option value="METHOD_DEF"/>
+               <property-value-option value="MINUS"/>
+               <property-value-option value="MINUS_ASSIGN"/>
+               <property-value-option value="MOD"/>
+               <property-value-option value="MOD_ASSIGN"/>
+               <property-value-option value="MODIFIERS"/>
+               <property-value-option value="NOT_EQUAL"/>
+               <property-value-option value="NUM_DOUBLE"/>
+               <property-value-option value="NUM_FLOAT"/>
+               <property-value-option value="NUM_INT"/>
+               <property-value-option value="NUM_LONG"/>
+               <property-value-option value="OBJBLOCK"/>
+               <property-value-option value="PACKAGE_DEF"/>
+               <property-value-option value="PARAMETER_DEF"/>
+               <property-value-option value="PARAMETERS"/>
+               <property-value-option value="PLUS"/>
+               <property-value-option value="PLUS_ASSIGN"/>
+               <property-value-option value="POST_DEC"/>
+               <property-value-option value="POST_INC"/>
+               <property-value-option value="QUESTION"/>
+               <property-value-option value="RCURLY"/>
+               <property-value-option value="RPAREN"/>
+               <property-value-option value="SEMI"/>
+               <property-value-option value="SL"/>
+               <property-value-option value="SL_ASSIGN"/>
+               <property-value-option value="SLIST"/>
+               <property-value-option value="SR"/>
+               <property-value-option value="SR_ASSIGN"/>
+               <property-value-option value="STAR"/>
+               <property-value-option value="STAR_ASSIGN"/>
+               <property-value-option value="STATIC_INIT"/>
+               <property-value-option value="STRICTFP"/>
+               <property-value-option value="STRING_LITERAL"/>
+               <property-value-option value="SUPER_CTOR_CALL"/>
+               <property-value-option value="TYPE"/>
+               <property-value-option value="TYPECAST"/>
+               <property-value-option value="UNARY_MINUS"/>
+               <property-value-option value="UNARY_PLUS"/>
+               <property-value-option value="VARIABLE_DEF"/>
+            </enumeration>
+         </property-metadata>
+         <property-metadata name="minimumDepth" datatype="Integer" default-value="0">
+            <description>the mimimum depth for descendant counts</description>
+         </property-metadata>
+         <property-metadata name="maximumDepth" datatype="Integer" default-value="2147483647">
+            <description>the maximum depth for descendant counts</description>
+         </property-metadata>
+         <property-metadata name="minimumNumber" datatype="Integer" default-value="0">
+            <description>a minimum count for descendants</description>
+         </property-metadata>
+         <property-metadata name="maximumNumber" datatype="Integer" default-value="2147483647">
+            <description>a maximum count for descendants</description>
+         </property-metadata>
+         <property-metadata name="minimumMessage" datatype="String">
+            <description>error message when minimum count not reached </description>
+         </property-metadata>
+         <property-metadata name="maximumMessage" datatype="String">
+            <description>error message when maximum count exceeded</description>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Final Parameters" classname="com.puppycrawl.tools.checkstyle.checks.FinalParametersCheck" default-severity="Warning">
+         <description>Check that method/constructor parameters are final. Interface methods are not checked - the final keyword does not make sense for interface method parameters as there is no code that could modify the parameter.  Rationale: Changing the value of parameters during the execution of the method's algorithm can be confusing and should be avoided. A great way to let the Java compiler prevent this coding style is to declare parameters final.</description>
+         <property-metadata name="tokens" datatype="MultiCheck" default-value="METHOD_DEF, CTOR_DEF">
+            <description>Tokens to check.</description>
+            <enumeration>
+               <property-value-option value="METHOD_DEF"/>
+               <property-value-option value="CTOR_DEF"/>
+            </enumeration>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Generic Illegal Regexp" classname="com.puppycrawl.tools.checkstyle.checks.GenericIllegalRegexpCheck" default-severity="Warning">
+         <description>A generic check for code problems - the user can search for any pattern.  For example: exception.printStacktrace(), System.out.println(), System.exit(), etc.</description>
+         <property-metadata name="format" datatype="String" default-value="^$">
+            <description>Pattern to check for.</description>
+         </property-metadata>
+         <property-metadata name="ignoreCase" datatype="Boolean" default-value="false">
+            <description>Controls whether to ignore case when searching.</description>
+         </property-metadata>
+         <property-metadata name="message" datatype="String" default-value="">
+            <description>Message which is used to notify about violations, if empty then default(hard-coded) message is used.</description>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Indentation" classname="com.puppycrawl.tools.checkstyle.checks.indentation.IndentationCheck" default-severity="Warning">
+         <description>Checks correct indentation of Java Code. 
 
-	</rule-group-metadata>
-		
+The basic idea behind this is that while pretty printers are sometimes convienent for bulk reformats of legacy code, they often either aren't configurable enough or just can't anticipate how format should be done. Sometimes this is personal preference, other times it is practical experience. In any case, this check should just ensure that a minimal set of indentation rules are followed.       </description>
+         <property-metadata name="basicOffset" datatype="Integer" default-value="4">
+            <description>how many spaces to use for new indentation level</description>
+         </property-metadata>
+         <property-metadata name="braceAdjustment" datatype="Integer" default-value="0">
+            <description>how far brace should be indented when on next line</description>
+         </property-metadata>
+         <property-metadata name="caseIndent" datatype="Integer" default-value="4">
+            <description>how much to indent a case label</description>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Todo Comment" classname="com.puppycrawl.tools.checkstyle.checks.TodoCommentCheck" default-severity="Warning">
+         <description>A check for TODO: comments. Actually it is a generic regular expression matcher on Java comments. To check for other patterns in Java comments, set property format.</description>
+         <property-metadata name="format" datatype="String" default-value="TODO:">
+            <description>Regular expression definging pattern to look for.</description>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Uncommented Main" classname="com.puppycrawl.tools.checkstyle.checks.UncommentedMainCheck" default-severity="Warning">
+         <description>Checks for uncommented main() methods (debugging leftovers). 
+
+Rationale: main() method can be often used for debug puposes. Thus most of main() method should be removed/commented out of the sources. 
+</description>
+         <property-metadata name="excludedClasses" datatype="String" default-value="^$">
+            <description>pattern for qualified names of classes which ar allowed to have main method.</description>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Upper Ell" classname="com.puppycrawl.tools.checkstyle.checks.UpperEllCheck" default-severity="Warning">
+         <description>Checks that long constants are defined with an upper ell. That is ' L' and not 'l'. This is in accordance to the Java Language Specification, Section 3.10.1.  Rationale: The lower case letter l looks a lot like the digit 1.</description>
+      </rule-metadata>
+      <!--      <rule-metadata name="Strict Duplicate Code" classname="com.puppycrawl.tools.checkstyle.checks.duplicates.StrictDuplicateCodeCheck" default-severity="Warning">
+         <description>There are many trade-offs when writing a duplicate code detection tool. Some of the conflicting goals are: 
+Fast 
+Low memory usage 
+Avoid false alarms 
+Support multiple/arbitrary languages 
+Support Fuzzy matches (comments, whitespace, linebreaks, variable renaming, etc.) 
+         </description>
+         <property-metadata name="min" datatype="Integer" default-value="12">
+            <description>how many lines must be equal to be considered a duplicate</description>
+         </property-metadata>
+      </rule-metadata>-->
+   </rule-group-metadata>
 </checkstyle-metadata>

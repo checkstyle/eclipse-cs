@@ -2,7 +2,7 @@
 
 	<property environment="env" />
 
-	<property name="plugin.version" value="3.1.1" />
+	<property name="plugin.version" value="3.2" />
 
 	<property name="bin.dist.basedir" value="target/dist/bin" />
 	<property name="bin.dist.dir" value="${bin.dist.basedir}/com.atlassw.tools.eclipse.checkstyle_${plugin.version}" />
@@ -12,7 +12,7 @@
 
     <property name="check.config" value="CheckConfig_Checkstyle.xml"/>
 
-    <property name="checkstyle.jar" value="checkstyle-all-3.1.jar" />
+    <property name="checkstyle.jar" value="checkstyle-all-3.2.jar" />
 	<property name="eclipse.core.resources.jar" value="${env.ECLIPSE_HOME}/plugins/org.eclipse.core.resources_2.1.0/resources.jar" />
 	<property name="eclipse.ui.jar" value="${env.ECLIPSE_HOME}/plugins/org.eclipse.ui_2.1.0/ui.jar" />
 	<property name="eclipse.swt.win32.jar" value="${env.ECLIPSE_HOME}/plugins/org.eclipse.swt.win32_2.1.0/ws/win32/swt.jar" />

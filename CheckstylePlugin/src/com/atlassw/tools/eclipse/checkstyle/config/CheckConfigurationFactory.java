@@ -32,6 +32,7 @@ import java.io.InputStream;
 import java.util.Iterator;
 import java.util.List;
 import java.util.LinkedList;
+import java.util.Properties;
 
 //=================================================
 // Imports from javax namespace
@@ -50,8 +51,10 @@ import com.atlassw.tools.eclipse.checkstyle.util.XMLUtil;
 //=================================================
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -74,7 +77,14 @@ public final class CheckConfigurationFactory
     
     private static final String CHECKSTYLE_CONFIG_FILE = "checkstyle-config.xml";
     
-    private static final String CURRENT_CONFIG_FILE_FORMAT_VERSION = "1.0.0";
+	private static final String VERSION_1_0_0 = "1.0.0";
+    
+	private static final String VERSION_3_2_0 = "3.2.0";
+	
+	private static final String CURRENT_CONFIG_FILE_FORMAT_VERSION = VERSION_3_2_0;
+	
+	private static String CLASSNAMES_V3_2_0_UPDATE 
+	    = "com/atlassw/tools/eclipse/checkstyle/config/classnames_v3.2.0_update.properties";
     
 	//=================================================
 	// Instance member variables.
@@ -101,7 +111,7 @@ public final class CheckConfigurationFactory
      */
     public static CheckConfiguration getNewInstance() throws CheckstylePluginException
     {
-        CheckConfiguration config = new CheckConfiguration();
+        CheckConfiguration config = new CheckConfiguration();        
         return config;
     }
     
@@ -499,8 +509,21 @@ public final class CheckConfigurationFactory
      *  returned.
      */
     private static Node checkFileFormatVersion(Document doc)
+	    throws CheckstylePluginException
     {
-        return doc.getDocumentElement();
+    	Node result = doc.getDocumentElement();
+    	String fileVersion = XMLUtil.getNodeAttributeValue(result, XMLTags.FORMAT_VERSION_TAG);
+    	if (fileVersion.equals(VERSION_1_0_0));
+    	{
+    		//
+    		//  The package names of the check rules changed going from
+    		//  Checkstyle v3.1 (file format 1.0.0) to Checkstyle 3.2
+    		//  (file format 3.2.0).  Update the check rule class names
+    		//  to the correct version 3.2.0 names.
+    		//
+    		result = updateCheckClassnamesTo_v3_2_0(result);
+    	}
+        return result;
     }
     
     /**
@@ -520,5 +543,77 @@ public final class CheckConfigurationFactory
             result = false;
         }
         return result;
+    }
+    
+    /**
+     * Updates check rule class names based on a package renaming that occured 
+     * with the release of Checkstyle v3.2.0.
+     * 
+     * @param  doc  The check configuration XML document.
+     * 
+     * @return  A modified check configuration XML document.
+     */
+    private static Node updateCheckClassnamesTo_v3_2_0(Node rootNode)
+	    throws CheckstylePluginException
+    {
+		//
+		//  Load the classname mapping from the v3.2.0 update.
+		//
+		Properties classnameMap = new Properties();
+		ClassLoader loader = CheckConfigurationFactory.class.getClassLoader();
+		InputStream inStream = loader.getResourceAsStream(CLASSNAMES_V3_2_0_UPDATE);
+		if (inStream == null)
+		{
+			throw new CheckstylePluginException("Failed to load check classname update map");
+		}
+		
+		try
+		{
+		    classnameMap.load(inStream);
+		}
+		catch (IOException e)
+		{
+			throw new CheckstylePluginException("Failed to load check classname update map");
+		}
+		finally
+		{
+		    try {inStream.close();} catch (IOException e) {}
+		}
+
+    	//
+    	//  Iterate through the check configurations.
+    	//
+    	NodeList checkConfigs = rootNode.getChildNodes();
+    	int numConfigs = checkConfigs.getLength();
+    	for (int i = 0; i < numConfigs; i++)
+    	{
+    		Node config = checkConfigs.item(i);
+    		if (config.getNodeName().equals(XMLTags.CHECK_CONFIG_TAG))
+    		{
+    			NodeList checkRules = config.getChildNodes();
+    			int numRules = checkRules.getLength();
+    			for (int j = 0; j < numRules; j++)
+    			{
+    				Node rule = checkRules.item(j);
+    				if (rule.getNodeName().equals(XMLTags.RULE_CONFIG_TAG))
+    				{
+    					//
+    					//  This is a rule configuration.  Get it's classname
+    					//  attribute.
+    					//
+    					NamedNodeMap attrMap = rule.getAttributes();
+    					Attr attr = (Attr)attrMap.getNamedItem(XMLTags.CLASSNAME_TAG);
+    					String currentClassname = attr.getValue();
+    					String newClassname 
+    					    = classnameMap.getProperty(currentClassname, currentClassname);
+    					if (!newClassname.equals(currentClassname))
+    					{
+    					    attr.setValue(newClassname);
+    					}
+    				}
+    			}
+    		}
+    	}
+    	return rootNode;
     }
 }

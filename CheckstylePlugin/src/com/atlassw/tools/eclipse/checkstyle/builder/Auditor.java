@@ -40,8 +40,8 @@ import com.atlassw.tools.eclipse.checkstyle.config.FileSet;
 import com.atlassw.tools.eclipse.checkstyle.config.FileSetFactory;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
-import com.puppycrawl.tools.checkstyle.AuditEvent;
-import com.puppycrawl.tools.checkstyle.AuditListener;
+import com.puppycrawl.tools.checkstyle.api.AuditEvent;
+import com.puppycrawl.tools.checkstyle.api.AuditListener;
 import com.puppycrawl.tools.checkstyle.Checker;
 import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
 

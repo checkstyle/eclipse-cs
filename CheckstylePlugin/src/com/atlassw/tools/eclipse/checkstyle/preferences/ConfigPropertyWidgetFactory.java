@@ -83,6 +83,10 @@ public final class ConfigPropertyWidgetFactory
         {
             widget = new ConfigPropertyWidgetString(parent, prop, metadata);
         }
+        if (type.equals(ConfigPropertyType.STRING_ARRAY))
+        {
+            widget = new ConfigPropertyWidgetString(parent, prop, metadata);
+        }
         else if (type.equals(ConfigPropertyType.INTEGER))
         {
             widget = new ConfigPropertyWidgetString(parent, prop, metadata);

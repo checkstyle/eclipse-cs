@@ -51,20 +51,23 @@ public final class ConfigPropertyType
     public static final ConfigPropertyType STRING 
         = new ConfigPropertyType(10, "String");
     
+    public static final ConfigPropertyType STRING_ARRAY 
+        = new ConfigPropertyType(20, "StringArray");
+
     public static final ConfigPropertyType INTEGER
-        = new ConfigPropertyType(20, "Integer");
+        = new ConfigPropertyType(30, "Integer");
     
     public static final ConfigPropertyType SINGLE_SELECT
-        = new ConfigPropertyType(30, "SingleSelect");
+        = new ConfigPropertyType(40, "SingleSelect");
     
     public static final ConfigPropertyType BOOLEAN
-        = new ConfigPropertyType(40, "Boolean");
+        = new ConfigPropertyType(50, "Boolean");
     
     public static final ConfigPropertyType MULTI_CHECK
-        = new ConfigPropertyType(50, "MultiCheck");
+        = new ConfigPropertyType(60, "MultiCheck");
     
     public static final ConfigPropertyType HIDDEN
-        = new ConfigPropertyType(60, "Hidden");
+        = new ConfigPropertyType(70, "Hidden");
 
 	//=================================================
 	// Static class variables.
@@ -153,6 +156,10 @@ public final class ConfigPropertyType
         if (label.equalsIgnoreCase(STRING.mLabel))
         {
             result = STRING;
+        }
+        else if (label.equalsIgnoreCase(STRING_ARRAY.mLabel))
+        {
+            result = STRING_ARRAY;
         }
         else if (label.equalsIgnoreCase(INTEGER.mLabel))
         {
