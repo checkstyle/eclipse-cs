@@ -381,6 +381,7 @@ public class RuleConfigurationEditDialog extends Dialog
 		        || type.equals(ConfigPropertyType.HIDDEN))
         {
             //  Assume valid since the user can't enter a value.
+			result = true;
         }
         else
         {

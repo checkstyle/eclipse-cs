@@ -46,7 +46,7 @@ import org.eclipse.swt.widgets.Composite;
  *  Create <code>ConfigPropertyWidget</code> instances based on provided
  *  metadata.
  */
-public class ConfigPropertyWidgetFactory
+public final class ConfigPropertyWidgetFactory
 {
     //=================================================
 	// Public static final variables.
