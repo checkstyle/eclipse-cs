@@ -244,7 +244,8 @@ public class FileSet implements Cloneable, XMLTags
         {
             rootNode = doc.createElement(FILESET_TAG);
             rootNode.setAttribute(NAME_TAG,    mName);
-            rootNode.setAttribute(ENABLED_TAG, Boolean.valueOf(mEnabled).toString());
+            Boolean enabled = new Boolean(mEnabled);
+            rootNode.setAttribute(ENABLED_TAG, enabled.toString());
             rootNode.setAttribute(CHECK_CONFIG_NAME_TAG, mCheckConfig.getConfigName());
             
             Iterator iter = mFileMatchPatterns.iterator();
