@@ -213,7 +213,7 @@ public final class FileSetFactory
             ByteArrayInputStream inStream = null;
             try
             {
-                inStream = new ByteArrayInputStream(xml.getBytes());
+                inStream = new ByteArrayInputStream(xml.getBytes("utf-8"));
                 if (!file.exists())
                 {
                     file.create(inStream, true, null);

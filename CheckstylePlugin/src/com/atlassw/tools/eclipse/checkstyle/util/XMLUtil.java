@@ -23,9 +23,9 @@ package com.atlassw.tools.eclipse.checkstyle.util;
 //=================================================
 // Imports from java namespace
 //=================================================
+import java.io.IOException;
 import java.io.StringWriter;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.ByteArrayInputStream;
 import java.util.Stack;
 import java.util.EmptyStackException;
@@ -52,6 +52,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 import org.w3c.dom.DOMException;
+import org.xml.sax.SAXException;
 import org.apache.xml.serialize.OutputFormat;
 import org.apache.xml.serialize.XMLSerializer;
 
@@ -317,30 +318,24 @@ public final class XMLUtil
 		Document result = null;
 		try
 		{
-			InputStreamReader reader = new InputStreamReader(inStream);
-			StringBuffer buffer = new StringBuffer();
-			boolean eofReached = false;
-			char[] input = new char[inStream.available()];
-			while (!eofReached)
-			{
-				int status = reader.read(input, 0, input.length);
-				if (status < 0)
-				{
-					eofReached = true;
-				}
-				else
-				{
-					buffer.append(input, 0, status);
-				}
-			}
-
-			String xmlString = buffer.toString();
-			result = newDocument(xmlString);
+			DocumentBuilder docBuilder = getDocumentBuilder();
+			result = docBuilder.parse(inStream);
+			releaseDocumentBuilder(docBuilder);
 		}
-		catch (Exception e)
+		catch (ParserConfigurationException ex)
 		{
-			String msg = "Exception while reading and parsing XML file";
-			CheckstyleLog.warning(msg, e);
+			result = null;
+			CheckstyleLog.warning("Exception while parsing XML", ex);
+		}
+		catch (IOException ex)
+		{
+			result = null;
+			CheckstyleLog.warning("Exception while reading XML", ex);
+		}
+		catch (SAXException e)
+		{
+			result = null;
+			CheckstyleLog.warning("Exception while parsing XML file", e);
 		}
 
 		return result;

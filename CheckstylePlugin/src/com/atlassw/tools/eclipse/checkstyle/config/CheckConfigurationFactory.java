@@ -26,9 +26,10 @@ package com.atlassw.tools.eclipse.checkstyle.config;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStreamWriter;
 import java.util.Iterator;
 import java.util.List;
 import java.util.LinkedList;
@@ -430,10 +431,10 @@ public final class CheckConfigurationFactory
             
             String xml = XMLUtil.serializeDocument(configDoc, true);
 
-            FileWriter writer = null;
+            OutputStreamWriter writer = null;
             try
             {
-                writer = new FileWriter(file);
+                writer = new OutputStreamWriter(new FileOutputStream(file),"utf-8");
                 writer.write(xml);
             }
             catch (Exception e)
@@ -473,10 +474,10 @@ public final class CheckConfigurationFactory
         try
         {
             String xml = CheckstyleConfigurationSerializer.serialize(config);
-            FileWriter writer = null;
+            OutputStreamWriter writer = null;
             try
             {
-                writer = new FileWriter(file);
+                writer = new OutputStreamWriter(new FileOutputStream(file),"utf-8");
                 writer.write(xml);
             }
             catch (Exception e)
