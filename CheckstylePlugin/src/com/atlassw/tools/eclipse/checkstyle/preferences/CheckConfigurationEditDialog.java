@@ -153,8 +153,8 @@ public class CheckConfigurationEditDialog extends Dialog
 		//
 		//  If we were given an existing audit configuration then make a clone
 		//  of it, otherwise create a new one.  A clone is used so that the
-		//  original is not modified in case the where the user makes some
-		//  changes and then selects the cancel button.
+		//  original is not modified in case the user makes some changes and then
+		//  selects the cancel button.
 		//
 		if (checkConfig == null)
 		{
@@ -168,7 +168,7 @@ public class CheckConfigurationEditDialog extends Dialog
 			}
 			catch (CloneNotSupportedException e)
 			{
-                String msg = "Failed to clone AuditConfiguration";
+                String msg = "Failed to clone CheckConfiguration";
 				CheckstyleLog.error(msg, e);
 				throw new CheckstylePluginException(msg);
 			}

@@ -100,6 +100,8 @@ public class CheckstylePreferencePage
 
 	private Button           mEditButton;
 
+	private Button           mCopyButton;
+
 	private Button           mRemoveButton;
 
 	private Button           mImportPluginButton;
@@ -251,6 +253,15 @@ public class CheckstylePreferencePage
 			public void handleEvent(Event evt)
 			{
 				editCheckConfig();
+			}
+		});
+
+		mCopyButton = createPushButton(rightButtons, "Copy...");
+		mCopyButton.addListener(SWT.Selection, new Listener()
+		{
+			public void handleEvent(Event evt)
+			{
+				copyCheckConfig();
 			}
 		});
 
@@ -540,6 +551,66 @@ public class CheckstylePreferencePage
             }
         }
     }
+
+	private void copyCheckConfig()
+	{
+		IStructuredSelection selection = (IStructuredSelection)mViewer.getSelection();
+		CheckConfiguration checkConfig = (CheckConfiguration)selection.getFirstElement();
+		if (checkConfig == null)
+		{
+			//
+			//  Nothing is selected.
+			//
+			return;
+		}
+		
+		//
+		//  Make a clone of the selected configuration.
+		//
+		try
+		{
+			checkConfig = (CheckConfiguration)checkConfig.clone();
+			String name = "Copy of " + checkConfig.getConfigName();
+			checkConfig.setName(name);
+		}
+		catch  (CloneNotSupportedException e)
+		{
+			CheckstyleLog.error("Failed to clone CheckConfiguration");
+			CheckstyleLog.internalErrorDialog();
+			return;
+		}
+        
+		CheckConfigurationEditDialog dialog = null;
+		try
+		{
+			dialog = new CheckConfigurationEditDialog(mParentComposite.getShell(),
+													  checkConfig,
+													  mCheckConfigurations);
+			dialog.open();
+		}
+		catch (CheckstylePluginException e)
+		{
+			CheckstyleLog.error("Failed to open CheckConfigurationEditDialog, " 
+									+ e.getMessage(), e);
+			CheckstyleLog.internalErrorDialog();
+			return;
+		}
+        
+		if (dialog.okWasPressed())
+		{
+			CheckConfiguration copiedConfig = dialog.getFinalConfiguration();
+			if (copiedConfig != null)
+			{
+				mCheckConfigurations.add(copiedConfig);
+				mViewer.refresh();
+			}
+			else
+			{
+				CheckstyleLog.error("Copied check configuration is null");
+				CheckstyleLog.internalErrorDialog();
+			}
+		}
+	}
 
 	private void removeCheckConfig()
 	{
