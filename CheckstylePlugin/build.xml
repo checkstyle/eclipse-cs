@@ -2,7 +2,7 @@
 
 	<property environment="env" />
 
-	<property name="plugin.version" value="3.3.0" />
+	<property name="plugin.version" value="3.3.0.1" />
 
 	<property name="bin.dist.basedir" value="target/dist/bin" />
 	<property name="bin.dist.dir" value="${bin.dist.basedir}/com.atlassw.tools.eclipse.checkstyle_${plugin.version}" />

@@ -2,19 +2,20 @@
 <plugin
    id="com.atlassw.tools.eclipse.checkstyle"
    name="Checkstyle Plug-in"
-   version="3.2.0.1"
+   version="3.3.0.1"
    provider-name="David Schneider"
    class="com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin">
 
    <runtime>
       <library name="CheckstylePlugin.jar"/>
-      <library name="checkstyle-all-3.2.jar"/>
-      <library name="checkstyle-3.2-optional.jar"/>
+      <library name="checkstyle-all-3.3.jar"/>
+      <library name="checkstyle-3.3-optional.jar"/>
    </runtime>
    <requires>
       <import plugin="org.eclipse.core.resources"/>
       <import plugin="org.eclipse.ui"/>
       <import plugin="org.apache.xerces"/>
+      <import plugin="org.eclipse.jdt.core"/>
    </requires>
 
 
