@@ -74,6 +74,8 @@ public class RuleConfiguration implements Cloneable, XMLTags, Configuration
     
     private String           mRuleName;
     
+    private String           mComment = "";
+    
     private SeverityLevel    mSeverityLevel;
     
     private HashMap          mConfigProperties = new HashMap();
@@ -147,6 +149,10 @@ public class RuleConfiguration implements Cloneable, XMLTags, Configuration
             {
                 ConfigProperty prop = new ConfigProperty(child);
                 mConfigProperties.put(prop.getName(), prop);
+            }
+            else if (child.getNodeName().equals(COMMENT_TAG))
+            {
+                mComment = XMLUtil.getNodeTextValue(child);
             }
         }
     }
@@ -238,12 +244,24 @@ public class RuleConfiguration implements Cloneable, XMLTags, Configuration
             Node cfgPropsNode = doc.createElement(CONFIG_PROPERTIES_TAG);
             ruleNode.appendChild(cfgPropsNode);
             
+            //
+            //  Add the properties.
+            //
             Iterator iter = mConfigProperties.values().iterator();
             while (iter.hasNext())
             {
                 ConfigProperty prop = (ConfigProperty)iter.next();
                 Node propNode = prop.toDOMNode(doc);
                 cfgPropsNode.appendChild(propNode);
+            }
+            
+            //
+            //  Add the rule's comment, if one exists.
+            //
+            if ((mComment != null) && (mComment.trim().length() > 0))
+            {
+                Node commentNode = doc.createElement(COMMENT_TAG);
+                commentNode.setNodeValue(mComment);
             }
         }
         catch (DOMException e)
@@ -293,9 +311,11 @@ public class RuleConfiguration implements Cloneable, XMLTags, Configuration
             }
         }
         
-        //need to prevent multiple security property types here
-        //I believe this to be necessary are security it not initially treated as a
-        //"property"
+        //
+        //  Need to prevent multiple severity property types here
+        //  This is necessary since severity it not internally treated as a
+        //  "property"
+        //
         if (!nonNullProps.contains(SEVERITY_PROP))
         {
         	nonNullProps.add(SEVERITY_PROP);
@@ -316,11 +336,23 @@ public class RuleConfiguration implements Cloneable, XMLTags, Configuration
     {
         return getImplClassname();
     }
+    
+	/**
+	 * Returns the comment.
+	 * @return String
+	 */
+	public String getComment()
+	{
+		return mComment;
+	}
 
-    public String getRuleID()
-    {
-    	//DKN 031903--do we need the siffix part anymore?
-        return mImplClassname + " - " + mRuleName;
-        //return mImplClassname;
-    }
+	/**
+	 * Sets the comment.
+	 * @param comment The comment to set
+	 */
+	public void setComment(String comment)
+	{
+		mComment = comment;
+	}
+
 }

@@ -437,11 +437,15 @@ public class CheckConfigurationEditDialog extends Dialog
 
 		TableColumn column1 = new TableColumn(table, SWT.NULL);
 		column1.setText("Severity");
-		tableLayout.addColumnData(new ColumnWeightData(20));
+		tableLayout.addColumnData(new ColumnWeightData(10));
 
-		TableColumn column2 = new TableColumn(table, SWT.NULL);
-		column2.setText("Rule");
-		tableLayout.addColumnData(new ColumnWeightData(60));
+        TableColumn column2 = new TableColumn(table, SWT.NULL);
+        column2.setText("Rule");
+        tableLayout.addColumnData(new ColumnWeightData(30));
+
+        TableColumn column3 = new TableColumn(table, SWT.NULL);
+        column3.setText("Comment");
+        tableLayout.addColumnData(new ColumnWeightData(40));
 
 		TableViewer viewer = new TableViewer(table);
 		mTableViewers[index] = viewer;

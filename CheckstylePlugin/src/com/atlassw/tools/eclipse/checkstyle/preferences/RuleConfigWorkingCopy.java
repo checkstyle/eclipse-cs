@@ -101,6 +101,16 @@ public class RuleConfigWorkingCopy implements Cloneable
         return mMetadata.getRuleName();
     }
     
+    public String getRuleComment()
+    {
+        return mRuleConfig.getComment();
+    }
+    
+    public void setRuleComment(String comment)
+    {
+        mRuleConfig.setComment(comment);
+    }
+    
     public SeverityLevel getSeverityLevel()
     {
         return mRuleConfig.getSeverityLevel();

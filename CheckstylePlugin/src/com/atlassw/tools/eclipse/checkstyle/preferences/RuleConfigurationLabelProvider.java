@@ -111,6 +111,14 @@ class RuleConfigurationLabelProvider
                 case 1:
                     result = rule.getRuleName();
                     break;
+                
+                case 2:
+                    result = rule.getRuleComment();
+                    if (result == null)
+                    {
+                        result = "";
+                    }
+                    break;
                     
                 default:
                     CheckstyleLog.warning("Unknown column index for RuleConfigWorkingCopy, "

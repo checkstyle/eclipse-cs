@@ -53,6 +53,8 @@ public interface XMLTags
     
     public static final String CLASSNAME_TAG                = "classname";
     
+    public static final String COMMENT_TAG                  = "comment";
+    
     public static final String CONFIG_PROPERTIES_TAG        = "config-properties";
     
     public static final String CONFIG_PROPERTY_TAG          = "config-property";
