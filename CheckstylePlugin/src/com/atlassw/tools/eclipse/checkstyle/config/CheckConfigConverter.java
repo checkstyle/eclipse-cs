@@ -23,6 +23,7 @@ package com.atlassw.tools.eclipse.checkstyle.config;
 //=================================================
 // Imports from java namespace
 //=================================================
+import java.io.File;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -76,6 +77,8 @@ public class CheckConfigConverter implements XMLTags
     // Instance member variables.
     //=================================================
     
+    private String           mFilePath;
+    
     private Configuration    mChecker = null;
     
     private Configuration    mTreeWalker = null;
@@ -109,6 +112,8 @@ public class CheckConfigConverter implements XMLTags
     public void loadConfig(String filePath)
 		throws CheckstylePluginException
 	{
+		mFilePath = filePath;
+		
 		//
 		//  Use the Checkstyle configuration loader to load the configuration.
 		//
@@ -177,23 +182,6 @@ public class CheckConfigConverter implements XMLTags
 	{
 		return mPropsToResolve;
 	}
-    
-	private class CSPropertyResolver implements PropertyResolver
-	{
-		public String resolve(String varName)
-		{
-			//
-			//  Record the variable that needs to be resolved and assign
-			//  a tempory value that will be later replaced.
-			//
-			String corrTag = CORR_TAG_ROOT + Integer.toString(mPropSequence++);
-			ResolvableProperty  prop = new ResolvableProperty();
-			prop.setVariableName(varName);
-			prop.setCorrelationTag(corrTag);
-			mPropsToResolve.add(prop);
-			return corrTag;
-		}
-	}
 
     /**
      *  Build a check configuration from the loaded information and
@@ -220,10 +208,17 @@ public class CheckConfigConverter implements XMLTags
 		List rules = buildRules();
 		
 		//
+		//  Build an initial configuration name from the file name.
+		//
+		File file = new File(mFilePath);
+		String name = file.getName();
+		
+		//
 		//  Build the CheckConfiguration.
 		//
 		CheckConfiguration config = new CheckConfiguration();
 		config.setRuleConfigs(rules);
+		config.setName(name);
         
         return config;
     }
@@ -462,5 +457,22 @@ public class CheckConfigConverter implements XMLTags
 		}
 		
 		return outMap;
+	}
+    
+	private class CSPropertyResolver implements PropertyResolver
+	{
+		public String resolve(String varName)
+		{
+			//
+			//  Record the variable that needs to be resolved and assign
+			//  a tempory value that will be later replaced.
+			//
+			String corrTag = CORR_TAG_ROOT + Integer.toString(mPropSequence++);
+			ResolvableProperty  prop = new ResolvableProperty();
+			prop.setVariableName(varName);
+			prop.setCorrelationTag(corrTag);
+			mPropsToResolve.add(prop);
+			return corrTag;
+		}
 	}
 }
