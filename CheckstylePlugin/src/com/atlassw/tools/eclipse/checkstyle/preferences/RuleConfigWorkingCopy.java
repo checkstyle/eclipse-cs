@@ -73,7 +73,7 @@ public class RuleConfigWorkingCopy implements Cloneable
     
     RuleConfigWorkingCopy(RuleMetadata metadata, RuleConfiguration ruleConfig)
     {
-        mMetadata   = metadata;
+        mMetadata = metadata;
         
         if (ruleConfig == null)
         {

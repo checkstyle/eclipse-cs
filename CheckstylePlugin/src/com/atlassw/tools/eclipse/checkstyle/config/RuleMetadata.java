@@ -148,6 +148,29 @@ public class RuleMetadata implements Cloneable, XMLTags
             }
         }
     }
+    
+    RuleMetadata(RuleConfiguration ruleConfig)
+    {
+    	mCheckImplClassname = ruleConfig.getImplClassname();
+    	mName = classToRuleName(mCheckImplClassname);
+    	mDescription = "";
+		mDefaultSeverityLevel = ruleConfig.getSeverityLevel();
+		
+		String[] propNames = ruleConfig.getAttributeNames();
+		for (int i = 0; i < propNames.length; i++)
+		{
+			String name = propNames[i];
+			if (name.equals(SEVERITY_TAG))
+			{
+				continue;
+			}
+			
+			String value = ruleConfig.getConfigProperty(name).getValue();
+			ConfigPropertyMetadata propMetadata =
+			    new ConfigPropertyMetadata(ConfigPropertyType.STRING, name, value);
+			mConfigPropMetadata.add(propMetadata);
+		}
+    }
 
 	//=================================================
 	// Methods.
@@ -224,5 +247,12 @@ public class RuleMetadata implements Cloneable, XMLTags
 	{
 		mGroupIndex = groupIndex;
 	}
-
+	
+	private String classToRuleName(String classname)
+	{
+		String result = "Unknown";
+		int index = classname.lastIndexOf(".");
+		result = classname.substring(index+1, classname.length());
+		return result;
+	}
 }

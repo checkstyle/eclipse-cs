@@ -66,7 +66,7 @@ public class ConfigPropertyMetadata implements Cloneable, XMLTags
     
     private String                             mDescription = "";
     
-    private boolean                           mHidden = false;
+    private boolean                            mHidden = false;
     
     private ConfigPropertyEnumerationMetadata  mEnumeration = null;
 
@@ -145,6 +145,14 @@ public class ConfigPropertyMetadata implements Cloneable, XMLTags
 				mEnumeration = enumMeta;
 			}
 		}
+    }
+    
+    ConfigPropertyMetadata(ConfigPropertyType type, String name, String defaultValue)
+    {
+    	mDatatype = type;
+    	mName = name;
+    	mDefaultValue = defaultValue;
+    	mDescription = "No Description Available";
     }
 
 	//=================================================

@@ -103,6 +103,11 @@ public class RuleGroupMetadata implements Cloneable, XMLTags
 			}
 		}
 	}
+	
+	RuleGroupMetadata(String groupName)
+	{
+		mGroupName = groupName;
+	}
 
 	//=================================================
 	// Methods.

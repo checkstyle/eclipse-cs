@@ -118,7 +118,7 @@ public class CheckConfigurationEditDialog extends Dialog
     
     private String                 mCheckConfigName;
     
-    private boolean               mOkWasPressed = false;
+    private boolean                mOkWasPressed = false;
 
 	//=================================================
 	// Constructors & finalizer.
@@ -203,16 +203,16 @@ public class CheckConfigurationEditDialog extends Dialog
                     CheckstyleLog.internalErrorDialog();
                 }
                 
-                //
-                //  Note: this logic will need to be updated to support importing
-                //        standard Checkstyle config files since they may contain
-                //        rules for which the plug-in does not have metadata.
-                //
                 RuleMetadata metadata = getRuleMetadata(ruleConfig);
-                if (metadata != null)
+                RuleConfigWorkingCopy copy = new RuleConfigWorkingCopy(metadata, ruleConfig);
+                int groupIndex = metadata.getGroupIndex();
+                if ((groupIndex >= 0) && (groupIndex < mRuleConfigWorkingCopies.length))
                 {
-                    RuleConfigWorkingCopy copy = new RuleConfigWorkingCopy(metadata, ruleConfig);
-                    mRuleConfigWorkingCopies[metadata.getGroupIndex()].add(copy);
+                    mRuleConfigWorkingCopies[groupIndex].add(copy);
+                }
+                else
+                {
+                    //  TODO: log something here
                 }
             }
         }
@@ -566,6 +566,12 @@ public class CheckConfigurationEditDialog extends Dialog
         RuleGroupMetadata groupMeta = 
             (RuleGroupMetadata)MetadataFactory.getRuleGroupMetadata().get(groupIndex);
         List ruleMetadataList = groupMeta.getRuleMetadata();
+        
+        if (ruleMetadataList.size() <= 0)
+        {
+        	return;
+        }
+        
         RuleSelectionDialog dialog = null;
         try
         {
@@ -707,7 +713,6 @@ public class CheckConfigurationEditDialog extends Dialog
     
     private RuleMetadata getRuleMetadata(RuleConfiguration ruleConfig)
     {
-        RuleMetadata metadata = MetadataFactory.getRuleMetadata(ruleConfig.getImplClassname());
-        return metadata;
+    	return MetadataFactory.getRuleMetadata(ruleConfig);
     }
 }

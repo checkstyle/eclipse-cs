@@ -68,6 +68,8 @@ public final class MetadataFactory implements XMLTags
 
     /**  Name of the rules metadata XML file.  */
     private static final String METADATA_FILENAME = "/CheckstyleMetadata.xml";
+    
+    private static int mDefaultGroupIndex = -1;
 
 	//=================================================
 	// Instance member variables.
@@ -177,17 +179,44 @@ public final class MetadataFactory implements XMLTags
                 sRuleMetadata.put(ruleMeta.getCheckImplClassname(), ruleMeta);
             }
         }
+        
+        //
+        //  Add the default group "Other".
+        //
+		mDefaultGroupIndex = sRuleGroupMetadata.size();
+        RuleGroupMetadata otherGroup = new RuleGroupMetadata("Other");
+		sRuleGroupMetadata.add(otherGroup);
 	}
     
-    /**
-     *  Get metadata for a check rule.
-     * 
-     *  @param classname  The rule's implementation classname.
-     * 
-     *  @return  The metadata.
-     */
-    public static RuleMetadata getRuleMetadata(String classname)
-    {
-        return (RuleMetadata)sRuleMetadata.get(classname);
-    }
+	/**
+	 *  Get metadata for a check rule.
+	 * 
+	 *  @param classname  The rule's implementation classname.
+	 * 
+	 *  @return  The metadata.
+	 */
+	public static RuleMetadata getRuleMetadata(String classname)
+	{
+		return (RuleMetadata)sRuleMetadata.get(classname);
+	}
+    
+	/**
+	 *  Get metadata for a check rule.  If no metadata is known for the rule
+	 *  a default set of metadata is created from the rule configuration consisting
+	 *  name/value pairs of type String.
+	 * 
+	 *  @param  ruleConfig  A <code>RuleConfiguration</code> that metadata is requested for.
+	 * 
+	 *  @return  The metadata for the rule.
+	 */
+	public static RuleMetadata getRuleMetadata(RuleConfiguration ruleConfig)
+	{
+		RuleMetadata metadata = getRuleMetadata(ruleConfig.getImplClassname());
+		if (metadata == null)
+		{
+			metadata = new RuleMetadata(ruleConfig);
+			metadata.setGroupIndex(mDefaultGroupIndex);
+		}
+		return metadata;
+	}
 }
