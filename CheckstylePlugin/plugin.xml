@@ -17,6 +17,9 @@
       <library name="checkstyle-optional-3.4.jar">
          <export name="*"/>
       </library>
+      <library name="xmlParserAPIs.jar">
+         <export name="*"/>
+      </library>
    </runtime>
    <requires>
       <import plugin="org.eclipse.core.resources"/>

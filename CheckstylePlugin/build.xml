@@ -12,8 +12,8 @@
 
     <property name="check.config" value="CheckConfig_Checkstyle.xml"/>
 
-    <property name="checkstyle.jar" value="checkstyle-all-3.3.jar" />
-    <property name="checkstyle-optional.jar" value="checkstyle-optional-3.3.jar" />
+    <property name="checkstyle.jar" value="checkstyle-all-3.4.jar" />
+    <property name="checkstyle-optional.jar" value="checkstyle-optional-3.4.jar" />
 
 	<property name="eclipse.core.resources.jar" value="${env.ECLIPSE_HOME}/plugins/org.eclipse.core.resources_2.1.1/resources.jar" />
 	<property name="eclipse.ui.jar" value="${env.ECLIPSE_HOME}/plugins/org.eclipse.ui_2.1.1/ui.jar" />
@@ -92,6 +92,12 @@
 	</target>
 
 	<!-- ==================================================== -->
+	<!--   DISTRIBUTION TARGET                                -->
+	<!-- ==================================================== -->
+	<target name="build.dist" depends="build.bindist, build.srcdist">
+	</target>
+
+	<!-- ==================================================== -->
 	<!--   BINARY DISTRIBUTION TARGET                         -->
 	<!-- ==================================================== -->
 	<target name="build.bindist" depends="build.target.area, jar.plugin" 
@@ -101,6 +107,8 @@
 		<copy file="${checkstyle-optional.jar}" todir="${bin.dist.dir}" />
 		<copy file="plugin.xml" todir="${bin.dist.dir}" />
 		<copy file="plugin-eclipse2-0-x.xml" todir="${bin.dist.dir}" />
+		<copy file="xercesImpl.jar" todir="${bin.dist.dir}" />
+		<copy file="xmlParserAPIs.jar" todir="${bin.dist.dir}" />
 		<copy file="toc.xml" todir="${bin.dist.dir}" />
 		<copy file="README.html" todir="${bin.dist.dir}" />
 		<copy file="DefaultChecks.xml" todir="${bin.dist.dir}" />
