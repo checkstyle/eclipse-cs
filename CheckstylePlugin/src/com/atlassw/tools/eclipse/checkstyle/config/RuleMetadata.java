@@ -193,9 +193,9 @@ public class RuleMetadata implements Cloneable, XMLTags
     }
 
 	/**
-	 * Returns the configuration item metadata.
+	 * Returns the configuration property metadata.
      * 
-	 * @return A list of <code>ConfigItemMetadata</code> objects.
+	 * @return A list of <code>ConfigPropertyMetadata</code> objects.
 	 */
 	public List getConfigItemMetadata()
 	{

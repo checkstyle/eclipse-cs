@@ -37,6 +37,7 @@ import java.util.List;
 //=================================================
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleBuilder;
+import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigConverter;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationFactory;
 import com.atlassw.tools.eclipse.checkstyle.config.FileSetFactory;
@@ -113,11 +114,13 @@ public class CheckstylePreferencePage
 
     private Button           mExportPluginButton;
 
-    private Button           mExportCheckstyleButton;
+	private Button           mImportCheckstyleButton;
+
+	private Button           mExportCheckstyleButton;
     
     private List             mAuditConfigurations;
     
-    private boolean         mNeedRebuild = false;
+    private boolean          mNeedRebuild = false;
         
     //=================================================
     // Constructors & finalizer.
@@ -202,7 +205,7 @@ public class CheckstylePreferencePage
 		{
 			public void handleEvent(Event evt)
 			{
-				addCheckConfig();
+				addCheckConfig(null);
 			}
 		});
 
@@ -229,7 +232,7 @@ public class CheckstylePreferencePage
         layout = new GridLayout();
         layout.marginHeight = 0;
         layout.marginWidth = 0;
-        layout.numColumns = 3;
+        layout.numColumns = 2;
         bottomButtons.setLayout(layout);
 
 		mImportPluginButton = createPushButton(bottomButtons, "Import Plugin Config ...");
@@ -250,14 +253,23 @@ public class CheckstylePreferencePage
             }
         });
 
-        mExportCheckstyleButton = createPushButton(bottomButtons, "Export Checkstyle Config ...");
-        mExportCheckstyleButton.addListener(SWT.Selection, new Listener()
-        {
-            public void handleEvent(Event evt)
-            {
-                exportCheckstyleCheckConfig();
-            }
-        });
+		mExportCheckstyleButton = createPushButton(bottomButtons, "Export Checkstyle Config ...");
+		mExportCheckstyleButton.addListener(SWT.Selection, new Listener()
+		{
+			public void handleEvent(Event evt)
+			{
+				exportCheckstyleCheckConfig();
+			}
+		});
+
+		mImportCheckstyleButton = createPushButton(bottomButtons, "Import Checkstyle Config ...");
+		mImportCheckstyleButton.addListener(SWT.Selection, new Listener()
+		{
+			public void handleEvent(Event evt)
+			{
+				importCheckstyleCheckConfig();
+			}
+		});
 
 		mViewer.addDoubleClickListener(new IDoubleClickListener()
 		{
@@ -321,12 +333,12 @@ public class CheckstylePreferencePage
         return button;
     }
 
-	private void addCheckConfig()
+	private void addCheckConfig(CheckConfiguration configToAdd)
 	{
         CheckConfigurationEditDialog dialog = null;
         try
         {
-		    dialog = new CheckConfigurationEditDialog(mParentComposite.getShell(), null);
+		    dialog = new CheckConfigurationEditDialog(mParentComposite.getShell(), configToAdd);
 		    dialog.open();
         }
         catch (CheckstylePluginException e)
@@ -463,7 +475,7 @@ public class CheckstylePreferencePage
     private void importPluginCheckConfig()
     {
         FileDialog dialog= new FileDialog(getShell());
-        dialog.setText("Import Checkstyle Check Configuration");
+        dialog.setText("Import Plug-in Check Configuration");
         String path = dialog.open();
         
         if (path == null)
@@ -471,17 +483,20 @@ public class CheckstylePreferencePage
             return;
         }
         
-        File auditConfigFile = new File(path);
+        File checkConfigFile = new File(path);
         try
         {
             List newConfigs = 
-                CheckConfigurationFactory.importPluginCheckConfigurations(auditConfigFile);
-            mAuditConfigurations.addAll(newConfigs);
-            mViewer.refresh();
+                CheckConfigurationFactory.importPluginCheckConfigurations(checkConfigFile);
+            Iterator iter = newConfigs.iterator();
+            while (iter.hasNext())
+            {
+			    addCheckConfig((CheckConfiguration)iter.next());
+            }
         }
         catch (CheckstylePluginException e)
         {
-            CheckstyleLog.error("Failed to import AuditConfigurations from external file");
+            CheckstyleLog.error("Failed to import CheckConfigurations from external file");
             CheckstyleLog.internalErrorDialog();
         }
     }
@@ -497,7 +512,7 @@ public class CheckstylePreferencePage
             configs.add(cfg);
         }
         
-        FileDialog dialog= new FileDialog(getShell());
+        FileDialog dialog = new FileDialog(getShell());
         dialog.setText("Export Plug-in Check Configuration");
         String path = dialog.open();
         if (path == null)
@@ -512,10 +527,10 @@ public class CheckstylePreferencePage
         }
         catch (CheckstylePluginException e)
         {
-            CheckstyleLog.error("Failed to export AuditConfigurations to external file");
+            CheckstyleLog.error("Failed to export CheckConfigurations to external file");
             MessageDialog.openError(mParentComposite.getShell(),
                     "Checkstyle Error",
-                    "Failed to export AuditConfigurations to external file");
+                    "Failed to export CheckConfigurations to external file");
         }
     }
 
@@ -530,7 +545,7 @@ public class CheckstylePreferencePage
             configs.add(cfg);
         }
         
-        FileDialog dialog= new FileDialog(getShell());
+        FileDialog dialog = new FileDialog(getShell());
         dialog.setText("Export Checkstyle Check Configuration");
         String path = dialog.open();
         if (path == null)
@@ -545,12 +560,62 @@ public class CheckstylePreferencePage
         }
         catch (CheckstylePluginException e)
         {
-            CheckstyleLog.error("Failed to export AuditConfigurations to external file");
+            CheckstyleLog.error("Failed to export CheckConfigurations to external file");
             MessageDialog.openError(mParentComposite.getShell(),
                     "Checkstyle Error",
-                    "Failed to export AuditConfigurations to external file");
+                    "Failed to export CheckConfigurations to external file");
         }
     }
+
+	private void importCheckstyleCheckConfig()
+	{
+		//
+		//  Get the full path to the file to be imported.
+		//
+		FileDialog fileDialog = new FileDialog(getShell());
+		fileDialog.setText("Import Checkstyle Check Configuration");
+		String path = fileDialog.open();
+		if (path == null)
+		{
+			return;
+		}
+		
+        try
+        {
+        	//
+        	//  Load the config file.
+        	//
+        	CheckConfigConverter converter = new CheckConfigConverter();
+        	converter.loadConfig(path);
+        	
+        	//
+        	//  Resolve property values.
+        	//
+        	List resolveProps = converter.getPropsToResolve();
+        	if (resolveProps.size() > 0)
+        	{
+        	    ResolvePropertyValuesDialog resolveDialog = 
+        	        new ResolvePropertyValuesDialog(getShell(), resolveProps);
+			    resolveDialog.open();
+        	}
+            
+            //
+            //  Get a CheckConfiguration from the converter.
+            //
+            CheckConfiguration config = converter.getCheckConfiguration();
+            
+            //
+            //  Add the config using the add dialog so the user can see what it looks like,
+            //  make changes, and it will be validated.
+            //
+			addCheckConfig(config);
+        }
+        catch (CheckstylePluginException e)
+        {
+            CheckstyleLog.error("Failed to import CheckConfigurations from external file");
+            CheckstyleLog.internalErrorDialog();
+        }
+	}
     
     /**
      *  Make a local working copy of the Check Configurations in case

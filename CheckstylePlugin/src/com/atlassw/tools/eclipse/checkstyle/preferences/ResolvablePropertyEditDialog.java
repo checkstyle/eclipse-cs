@@ -18,7 +18,7 @@
 //
 //============================================================================
 
-package com.atlassw.tools.eclipse.checkstyle.properties;
+package com.atlassw.tools.eclipse.checkstyle.preferences;
 
 //=================================================
 // Imports from java namespace
@@ -31,13 +31,12 @@ package com.atlassw.tools.eclipse.checkstyle.properties;
 //=================================================
 // Imports from com namespace
 //=================================================
-
+import com.atlassw.tools.eclipse.checkstyle.config.ResolvableProperty;
 
 //=================================================
 // Imports from org namespace
 //=================================================
 import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -47,13 +46,11 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import org.apache.regexp.RECompiler;
-import org.apache.regexp.RESyntaxException;
 
 /**
  *  Property page.
  */
-public class FileMatchPatternEditDialog extends Dialog
+public class ResolvablePropertyEditDialog extends Dialog
 {
     //=================================================
     // Public static final variables.
@@ -69,14 +66,13 @@ public class FileMatchPatternEditDialog extends Dialog
     // Instance member variables.
     //=================================================
     
+    private String                  mValue;
     
     private Composite               mComposite;
     
-    private Text                    mFileMatchPatternText;
+    private Text                    mPropValueText;
     
-    private String                  mPattern;
-    
-    private String                  mValidationErrorMsg;
+    private ResolvableProperty      mProperty;
     
     private boolean                 mOkWasPressed = false;
 
@@ -87,10 +83,10 @@ public class FileMatchPatternEditDialog extends Dialog
 	/**
 	 * Constructor for SamplePropertyPage.
 	 */
-	public FileMatchPatternEditDialog(Shell parent, String  pattern)
+	public ResolvablePropertyEditDialog(Shell parent, ResolvableProperty  prop)
 	{
 		super(parent);
-        mPattern = pattern;
+		mProperty = prop;
 	}
 
     //=================================================
@@ -110,10 +106,15 @@ public class FileMatchPatternEditDialog extends Dialog
         layout.numColumns = 2;
         dialog.setLayout(layout);
         
-        Label nameLabel = new Label(dialog, SWT.NULL);
-        nameLabel.setText("Match Regular Expression:");
+		Label label = new Label(dialog, SWT.NULL);
+		label.setText("Variable:");
+		label = new Label(dialog, SWT.NULL);
+		label.setText(mProperty.getVariableName());
+        
+		label = new Label(dialog, SWT.NULL);
+		label.setText("Value:");
 
-        mFileMatchPatternText = new Text(dialog, SWT.SINGLE | SWT.BORDER);
+		mPropValueText = new Text(dialog, SWT.SINGLE | SWT.BORDER);
         GridData data = new GridData();
         data.horizontalAlignment = GridData.FILL;
         data.horizontalSpan = 1;
@@ -121,12 +122,12 @@ public class FileMatchPatternEditDialog extends Dialog
         data.verticalAlignment = GridData.CENTER;
         data.grabExcessVerticalSpace = false;
         data.widthHint = convertWidthInCharsToPixels(MAX_LENGTH);
-        mFileMatchPatternText.setLayoutData(data);
-        mFileMatchPatternText.setFont(parent.getFont());
-        mFileMatchPatternText.setTextLimit(MAX_LENGTH);
-        if (mPattern != null)
+		mPropValueText.setLayoutData(data);
+		mPropValueText.setFont(parent.getFont());
+		mPropValueText.setTextLimit(MAX_LENGTH);
+        if (mProperty.getValue() != null)
         {
-            mFileMatchPatternText.setText(mPattern);
+			mPropValueText.setText(mProperty.getValue());
         }
         
         dialog.layout();
@@ -136,34 +137,10 @@ public class FileMatchPatternEditDialog extends Dialog
     protected void okPressed()
     {
         //
-        //  Get the entered pattern.
+        //  Get the entered value.
         //
-        mPattern = mFileMatchPatternText.getText();
-        if ((mPattern == null) || (mPattern.trim().length() == 0))
-        {
-            //
-            //  Nothing was entered.
-            //
-            mPattern = null;
-            super.okPressed();
-            return;
-        }
-        
-        //
-        //  Check that the pattern is a valid regular expression pattern.
-        //
-        if (!validatePattern(mPattern))
-        {
-            String msg = "The string '" + mPattern 
-                         + "' is not a valid regular expression pattern."
-                         + System.getProperty("line.separator")
-                         + mValidationErrorMsg;
-                         
-            MessageDialog.openError(mComposite.getShell(),
-                        "Pattern Validation Error", msg);
-            return;
-        }
-        
+        mValue = mPropValueText.getText();
+                
         mOkWasPressed = true;
         super.okPressed();
     }
@@ -173,32 +150,11 @@ public class FileMatchPatternEditDialog extends Dialog
         return mOkWasPressed;
     }
     
-    public String getPattern()
+    public String getValue()
     {
-        return mPattern;
+        return mValue;
     }
-    
-    private boolean validatePattern(String pattern)
-    {
-        boolean result = false;
         
-        //
-        //  Try compiling the pattern using the regular expression compiler.
-        //
-        try
-        {
-            RECompiler compiler = new RECompiler();
-            compiler.compile(pattern);
-            result = true;
-        }
-        catch (RESyntaxException e)
-        {
-            mValidationErrorMsg = e.getMessage();
-        }
-        
-        return result;
-    }
-    
     /**
      *  Over-rides method from Window to configure the 
      *  shell (e.g. the enclosing window).
@@ -206,7 +162,7 @@ public class FileMatchPatternEditDialog extends Dialog
     protected void configureShell(Shell shell)
     {
         super.configureShell(shell);
-        shell.setText("Checkstyle Regular Expression Editor");
+        shell.setText("Property Variable Value Editor");
     }
     
 }

@@ -400,7 +400,7 @@ public final class CheckConfigurationFactory implements XMLTags
     {
         if (configs.size() != 1)
         {
-            String message = "Too many confis for checkstyle export, count=" +
+            String message = "Too many configs for checkstyle export, count=" +
                              configs.size();
             CheckstyleLog.warning(message);
             throw new CheckstylePluginException(message);
@@ -439,7 +439,7 @@ public final class CheckConfigurationFactory implements XMLTags
             throw new CheckstylePluginException(message);
         }
     }
-    
+   
     /**
      *  Checks to see if the file format version is out of date.  If it is
      *  then the DOM is updated to the new format and the new root node if

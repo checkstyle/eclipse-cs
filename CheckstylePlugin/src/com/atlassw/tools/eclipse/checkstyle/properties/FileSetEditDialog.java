@@ -175,8 +175,8 @@ public class FileSetEditDialog extends Dialog
     protected Control createDialogArea(Composite parent)
     {
         mComposite = parent;
-        Composite composite = (Composite)super.createDialogArea(parent);
         
+        Composite composite = (Composite)super.createDialogArea(parent);
         Composite dialog = new Composite(composite, SWT.NONE);
         
         GridLayout layout = new GridLayout();

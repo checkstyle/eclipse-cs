@@ -204,4 +204,5 @@ public final class CheckstyleConfigurationSerializer implements XMLTags
         
         return result;
     }
+
 }
