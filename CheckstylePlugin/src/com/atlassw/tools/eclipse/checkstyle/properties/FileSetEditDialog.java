@@ -538,6 +538,7 @@ public class FileSetEditDialog extends Dialog
             try
             {
                 FileMatchPattern editedPattern = new FileMatchPattern(patternString);
+                editedPattern.setIsIncludePattern(pattern.isIncludePattern());
                 mFileMatchPatterns.remove(pattern);
                 mFileMatchPatterns.add(editedPattern);                
                 mViewer.refresh();
