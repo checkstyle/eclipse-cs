@@ -159,7 +159,6 @@ public class CheckstyleConfigurationSerializer implements XMLTags
 				String value = configuration.getAttribute(name);
 				Node propertyNode = toPropertyNode(configDoc, name, value);
 				configElement.appendChild(propertyNode);
-				
 			}
 			catch (com.puppycrawl.tools.checkstyle.api.CheckstyleException cse)
 			{
