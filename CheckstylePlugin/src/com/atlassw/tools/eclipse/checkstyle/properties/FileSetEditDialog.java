@@ -132,7 +132,7 @@ public class FileSetEditDialog extends Dialog
     
     private List                    mFileMatchPatterns = new LinkedList();
     
-    private boolean                mOkWasPressed = false;
+    private boolean                 mOkWasPressed = false;
 
     //=================================================
     // Constructors & finalizer.

@@ -71,8 +71,6 @@ public class FileSet implements Cloneable
     
     private CheckConfiguration   mCheckConfig;
     
-    private String               mCheckConfigName;
-    
     private boolean              mEnabled = true;
     
     private List                 mFileMatchPatterns = new LinkedList();
