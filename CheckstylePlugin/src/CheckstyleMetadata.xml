@@ -1126,6 +1126,23 @@ Rationale: often times developers will misname one or more of these methods and 
       <rule-metadata name="Missing Switch Default" classname="com.puppycrawl.tools.checkstyle.checks.coding.MissingSwitchDefaultCheck" default-severity="Warning">
          <description>Checks that switch statement has "default" clause. Rationale: It's usually a good idea to introduce a default case in every switch statement. Even if the developer is sure that all currently possible cases are covered, this should be expressed in the default branch, e.g. by using an assertion. This way the code is protected aginst later changes, e.g. introduction of new types in an enumeration type.</description>
       </rule-metadata>
+      <rule-metadata name="Modified Control Variable" classname="com.puppycrawl.tools.checkstyle.checks.coding.ModifiedControlVariableCheck" default-severity="Warning">
+         <description> Check for ensuring that for loop control variables are not modified inside the for block. An example is:
+		
+for (int i = 0; i &lt; 1; i++) {
+    i++;
+}
+
+Rationale: If the control variable is modified inside the loop body, the program flow becomes more difficult to follow. An option is to replace the for loop with a while loop. </description>
+      </rule-metadata>
+      <rule-metadata name="Multiple String Literals" classname="com.puppycrawl.tools.checkstyle.checks.coding.MultipleStringLiteralsCheck" default-severity="Warning">
+         <description> Checks for multiple occurrences of the same string literal within a single file.
+
+Rationale: Code duplication makes maintenance more difficult, so it can be better to replace the multiple occurrences with a constant.</description>
+         <property-metadata name="allowedDuplicates" datatype="Integer" default-value="1">
+            <description> The maximum number of occurences to allow without generating a warning</description>
+         </property-metadata>
+      </rule-metadata>
       <rule-metadata name="Multiple Variable Declaration" classname="com.puppycrawl.tools.checkstyle.checks.coding.MultipleVariableDeclarationsCheck" default-severity="Warning">
          <description>Checks that each variable declaration is in its own statement and on its own line. 
 
@@ -1294,6 +1311,22 @@ Rationale: Too many conditions leads to code that is difficult to read and hence
          <description>Checks cyclomatic complexity against a specified limit. The complexity is measured by the number of if, while, do, for, ?:, catch, switch, case statements, and operators &amp;&amp; and || (plus one) in the body of a constructor, method, static initializer, or instance initializer. It is a measure of the minimum number of possible paths through the source and therefore the number of required tests. Generally 1-4 is considered good, 5-7 ok, 8-10 consider re-factoring, and 11+ re-factor now! </description>
          <property-metadata name="max" datatype="Integer" default-value="10">
             <description>the maximum threshold allowed</description>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Non Commenting Source Statements" classname="com.puppycrawl.tools.checkstyle.checks.metrics.JavaNCSSCheck" default-severity="Warning">
+         <description> Determines complexity of methods, classes and files by counting the Non Commenting Source Statements (NCSS). This check adheres to the  specification for the JavaNCSS-Tool written by Chr. Clemens Lee which sadly seems to have been pulled off the web.
+Rougly said the NCSS metric is calculated by counting the source lines which are not comments, (nearly) equivalent to counting the semicolons and opening curly braces.
+The NCSS for a class is summarized from the NCSS of all its methods, the NCSS of its nested classes and the number of member variable declarations.
+The NCSS for a file is summarized from the ncss of all its top level classes, the number of imports and the package declaration.
+Rationale: Too large methods and classes are hard to read and costly to maintain. A large NCSS number often means that a method or class has too many responsabilities and/or functionalities which should be decomposed into smaller units. </description>
+         <property-metadata name="methodMaximum " datatype="Integer" default-value="50">
+            <description>the maximum allowed number of non commenting lines in a method.</description>
+         </property-metadata>
+         <property-metadata name="classMaximum " datatype="Integer" default-value="1500">
+            <description>the maximum allowed number of non commenting lines in a class.</description>
+         </property-metadata>
+         <property-metadata name="fileMaximum " datatype="Integer" default-value="2000">
+            <description>the maximum allowed number of non commenting lines in a file.</description>
          </property-metadata>
       </rule-metadata>
       <rule-metadata name="NPath Complexity" classname="com.puppycrawl.tools.checkstyle.checks.metrics.NPathComplexityCheck" default-severity="Warning">
@@ -1650,6 +1683,12 @@ The basic idea behind this is that while pretty printers are sometimes convienen
          </property-metadata>
          <property-metadata name="caseIndent" datatype="Integer" default-value="4">
             <description>how much to indent a case label</description>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Required Regular Expression" classname="com.puppycrawl.tools.checkstyle.checks.RequiredRegexpCheck" default-severity="Warning">
+         <description> A check that makes sure that a specified pattern exists in the code, e.g. a required legal text. It does not care about where in the file the pattern is</description>
+         <property-metadata name="format" datatype="String" default-value="^$">
+            <description> required pattern</description>
          </property-metadata>
       </rule-metadata>
       <rule-metadata name="Todo Comment" classname="com.puppycrawl.tools.checkstyle.checks.TodoCommentCheck" default-severity="Warning">

@@ -2,7 +2,7 @@
 <plugin
    id="com.atlassw.tools.eclipse.checkstyle"
    name="Checkstyle Plug-in"
-   version="3.4.0.1-beta"
+   version="3.5.0"
    provider-name="David Schneider"
    class="com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin">
 
@@ -11,10 +11,10 @@
       <library name="xercesImpl.jar">
          <export name="*"/>
       </library>
-      <library name="checkstyle-all-3.4.jar">
+      <library name="checkstyle-all-3.5.jar">
          <export name="*"/>
       </library>
-      <library name="checkstyle-optional-3.4.jar">
+      <library name="checkstyle-optional-3.5.jar">
          <export name="*"/>
       </library>
       <library name="xmlParserAPIs.jar">
