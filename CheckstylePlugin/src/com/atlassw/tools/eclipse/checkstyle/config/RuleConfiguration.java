@@ -72,8 +72,6 @@ public class RuleConfiguration implements Cloneable, XMLTags, Configuration
     
     private String           mImplClassname;
     
-    private String           mRuleName;
-    
     private String           mComment = "";
     
     private SeverityLevel    mSeverityLevel;
@@ -89,13 +87,10 @@ public class RuleConfiguration implements Cloneable, XMLTags, Configuration
      * 
      *  @param  implClassname   Fully qualified class name of the
      *                           rule's implementation class.
-     * 
-     *  @param  ruleName        The common name for the rule.
      */
-    public RuleConfiguration(String implClassname, String ruleName)
+    public RuleConfiguration(String implClassname)
     {
         mImplClassname = implClassname;
-        mRuleName      = ruleName;
     }
     
     /**
@@ -111,18 +106,6 @@ public class RuleConfiguration implements Cloneable, XMLTags, Configuration
         else
         {
             String message = "Rule missing implementation classname";
-            CheckstyleLog.warning(message);
-            throw new CheckstylePluginException(message);
-        }
-        
-        temp = XMLUtil.getNodeAttributeValue(node, NAME_TAG);
-        if (temp != null)
-        {
-            mRuleName = temp.trim();
-        }
-        else
-        {
-            String message = "Rule missing name";
             CheckstyleLog.warning(message);
             throw new CheckstylePluginException(message);
         }
@@ -243,7 +226,6 @@ public class RuleConfiguration implements Cloneable, XMLTags, Configuration
         {
             ruleNode = doc.createElement(RULE_CONFIG_TAG);
             ruleNode.setAttribute(CLASSNAME_TAG, mImplClassname);
-            ruleNode.setAttribute(NAME_TAG, mRuleName);
             String severity = mSeverityLevel.getName();
             ruleNode.setAttribute(SEVERITY_TAG, severity);
             

@@ -154,8 +154,7 @@ public class RuleConfigWorkingCopy implements Cloneable
     private RuleConfiguration buildDefaultRuleConfig(RuleMetadata metadata)
     {
         RuleConfiguration ruleConfig = 
-            new RuleConfiguration(metadata.getCheckImplClassname(),
-                                  metadata.getRuleName());
+            new RuleConfiguration(metadata.getCheckImplClassname());
         ruleConfig.setSeverityLevel(mMetadata.getDefaultSeverityLevel());
         
         //
