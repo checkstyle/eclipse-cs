@@ -459,13 +459,6 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
             }
         }
         
-        //  TODO: delete me
-        for (Iterator iter = urls.iterator(); iter.hasNext();)
-        {
-        	URL url = (URL)iter.next();
-        	System.out.println(url.toString());
-        }
-        
         return urls;
     }
 
