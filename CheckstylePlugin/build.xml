@@ -19,6 +19,7 @@
 	<property name="eclipse.ui.jar" value="${env.ECLIPSE_HOME}/plugins/org.eclipse.ui_2.1.1/ui.jar" />
 	<property name="eclipse.swt.win32.jar" value="${env.ECLIPSE_HOME}/plugins/org.eclipse.swt.win32_2.1.1/ws/win32/swt.jar" />
 	<property name="eclipse.text.jar" value="${env.ECLIPSE_HOME}/plugins/org.eclipse.text_2.1.0/text.jar" />
+	<property name="eclipse.jdt.core.jar" value="${env.ECLIPSE_HOME}/plugins/org.eclipse.jdt.core_2.1.1/jdtcore.jar" />
 	<property name="eclipse.jface.jar" value="${env.ECLIPSE_HOME}/plugins/org.eclipse.jface_2.1.1/jface.jar" />
 	<property name="eclipse.jface.text.jar" value="${env.ECLIPSE_HOME}/plugins/org.eclipse.jface.text_2.1.0/jfacetext.jar" />
 	<property name="eclipse.ui.views.jar" value="${env.ECLIPSE_HOME}/plugins/org.eclipse.ui.views_2.1.0/views.jar" />
@@ -37,6 +38,7 @@
 		<pathelement location="${eclipse.ui.jar}" />
 		<pathelement location="${eclipse.swt.win32.jar}" />
 		<pathelement location="${eclipse.text.jar}" />
+		<pathelement location="${eclipse.jdt.core.jar}" />
 		<pathelement location="${eclipse.jface.jar}" />
 		<pathelement location="${eclipse.jface.text.jar}" />
 		<pathelement location="${eclipse.ui.views.jar}" />
