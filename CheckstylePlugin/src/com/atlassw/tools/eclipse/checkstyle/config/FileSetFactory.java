@@ -273,7 +273,7 @@ public final class FileSetFactory implements XMLTags
             while (iter.hasNext())
             {
                 FileSet fileSet = (FileSet)iter.next();
-                if (configName.equals(fileSet.getCheckConfig().getConfigName()))
+                if (configName.equals(fileSet.getCheckConfigName()))
                 {
                     result = true;
                     break;
