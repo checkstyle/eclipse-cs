@@ -79,6 +79,9 @@
 	<!--   JAR TARGET                                         -->
 	<!-- ==================================================== -->
 	<target name="jar.plugin" depends="build.target.area, compile" description="Jars up all the files that go into the plug-in jar file">
+		<copy 
+         file="src/com/atlassw/tools/eclipse/checkstyle/config/classnames_v3.2.0_update.properties"
+         tofile="bin/com/atlassw/tools/eclipse/checkstyle/config/classnames_v3.2.0_update.properties" />
 		<copy file="src/CheckstyleMetadata.xml" todir="bin" />
 		<mkdir dir="${bin.dist.dir}" />
 		<jar destfile="${bin.dist.dir}/CheckstylePlugin.jar" basedir="bin" index="true" />
