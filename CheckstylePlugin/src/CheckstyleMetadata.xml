@@ -40,6 +40,28 @@
          <property-metadata name="allowMissingReturnTag" datatype="Boolean" default-value="false">
             <description>Whether to ignore errors when a method returns non-void type does have a return tag in the javadoc.</description>
          </property-metadata>
+         <property-metadata name="allowMissingJavaDoc" datatype="Boolean" default-value="false">
+            <description>Whether to ignore errors when a method javadoc is missed</description>
+         </property-metadata>
+         <property-metadata name=" allowMissingPropertyJavadoc" datatype="Boolean" default-value="false">
+            <description>Whether to allow missing Javadoc on accessor methods for properties (setters and getters). The setter and getter methods must match exactly the structures below.
+
+public void setNumber(final int number)
+{
+    mNumber = number;
+}
+
+public int getNumber()
+{
+    return mNumber;
+}
+
+public boolean isSomething()
+{
+    return false;
+}
+              </description>
+         </property-metadata>
          <property-metadata name="tokens" datatype="MultiCheck" default-value="METHOD_DEF, CTOR_DEF">
             <description>Tokens to check.</description>
             <enumeration>
@@ -574,10 +596,10 @@ for (
       </rule-metadata>
    </rule-group-metadata>
    <rule-group-metadata name="Modifiers">
-      <rule-metadata name="Modifier Order" classname="com.puppycrawl.tools.checkstyle.checks.ModifierOrderCheck" default-severity="Warning">
+      <rule-metadata name="Modifier Order" classname="com.puppycrawl.tools.checkstyle.checks.modifier.ModifierOrderCheck" default-severity="Warning">
          <description>Checks that the order of modifiers conforms to the suggestions in the Java Language specification, sections 8.1.1, 8.3.1 and 8.4.3. The correct order is: public, protected, private, abstract, static, final, transient, volatile, synchronized, native, strictfp.</description>
       </rule-metadata>
-      <rule-metadata name="Redundant Modifier" classname="com.puppycrawl.tools.checkstyle.checks.RedundantModifierCheck" default-severity="Warning">
+      <rule-metadata name="Redundant Modifier" classname="com.puppycrawl.tools.checkstyle.checks.modifier.RedundantModifierCheck" default-severity="Warning">
          <description>Checks that method declarations in interfaces include neither the public modifier nor the abstract modifier (see the Java Language specification, section 9.4).  Also checks that variable declarations in interfaces include none of the following modifiers: public, static, final (variables in interface definitions are constants and have these modifiers implicitly, see the Java Language specification, section 9.3).</description>
          <property-metadata name="tokens" datatype="MultiCheck" default-value="METHOD_DEF, VARIABLE_DEF">
             <description>Tokens to check.</description>
@@ -1128,7 +1150,7 @@ Rationale: often times developers will misname one or more of these methods and 
       </rule-metadata>
       <rule-metadata name="Modified Control Variable" classname="com.puppycrawl.tools.checkstyle.checks.coding.ModifiedControlVariableCheck" default-severity="Warning">
          <description> Check for ensuring that for loop control variables are not modified inside the for block. An example is:
-		
+      
 for (int i = 0; i &lt; 1; i++) {
     i++;
 }
@@ -1873,6 +1895,9 @@ Rationale: a private field used in only one method, constructor, or initializer 
          <description>Checks that a private method is used. </description>
          <property-metadata name="ignoreFormat" datatype="String" default-value="^$">
             <description>pattern for field names that should be ignored</description>
+         </property-metadata>
+         <property-metadata name=" allowSerializationMethods" datatype="Boolean" default-value="false">
+            <description>whether the check should allow serialization-related methods (readObject(), writeObject(), readResolve() and writeReplace())</description>
          </property-metadata>
       </rule-metadata>
    </rule-group-metadata>
