@@ -67,9 +67,9 @@
           (classes that have only static methods) cannot be instantiated
           (module HideUtilityClassConstructor, request 634838).</li>
 
-          <li class="body">Added check to enforce an Api design that shields
+          <li class="body">Added check to enforce an API design that shields
           classes against bugs in derived classes (module
-          DesignForInheritance, request 659715).</li>
+          DesignForExtension, request 659715).</li>
 
           <li class="body">Added check to enforce that Interfaces do not
           contain only constants (module InterfaceIsType, request 659717, see
@@ -84,12 +84,11 @@
           request 493380).</li>
 
           <li class="body">Added check to enforce that method parameters are
-          final (module FinalParameters, request 528196) (request
-          528196).</li>
+          final (module FinalParameters, request 528196).</li>
 
           <li class="body">Added module to enforce that files end
           with a newline character, contributed by Christopher Lenz
-          (module NewLineAtEndOfFile).</li>
+          (module NewLineAtEndOfFile, request 662544).</li>
 
           <li class="body">Many documentation improvements, contributed by
           Peter Dobratz.</li>
@@ -108,6 +107,48 @@
 	  MissingSwitchDefaultCheck to check that a switch statement has a
 	  default clause (request 564199).</li>
 
+	  <li class="body">Patch from Oleg Sukhodolsky to fix TranslationCheck
+	  Test bug. (bug 720925).</li>
+
+	  <li class="body">Patch from Oleg Sukhodolsky to fix documentation.
+	  (bug 727896).</li>
+
+          <li class="body">Added check to find empty statements (module
+          EmptyStatement, request 724573).</li>
+
+          <li class="body">Added check to find magic numbers (module
+          MagicNumber, request 564206).</li>
+
+          <li class="body">One more option for JavadocMethodCheck
+          (allowThrowsTagsForSubclasses, request 540383)</li>
+
+          <li class="body">Added sourceName property to AuditEvent and
+          LocalizedMessage; and &quot;source&quot; attribute to
+          &quot;error&quot; element of XMLLogger output (request 686336).</li>
+
+          <li class="body">Added line and column numbers to configuration
+          parse exceptions (request 714962).</li>
+
+          <li class="body">Added check for redundant exceptions in 
+          throws clause (module RedundantThrows, request 579056)</li>
+
+          <li class="body">Added property for GenericIllegalRegexp to
+          customize reported message (module GenericIllegalRegexp, 
+          property message, request 738567)</li>
+
+          <li class="body">Moved the location of the file
+          checkstyle_packages.xml to be in the directory
+          com/puppycrawl/tools/checkstyle. This is to work around a bug in
+          NetBeans (request 739881).</li>
+
+          <li class="body">Patch from Dale King to enhance the GUI with
+           a Reload Java File button and storage of the current directory
+           of the last opened file (request 740545).</li>
+
+          <li class="body">Patch from Bill Schneider to add
+            GenericIllegalRegexpCheck property to perform
+             case-insensitive matches (request 740112).</li>
+
         </ul>
 
       <p class="body">
@@ -115,15 +156,39 @@
       </p>
         <ul>
 
-		  <li class="body">False alarms from RightCurly module for code that
-does not have braces in if-then-else (bug 689836).</li>
+	  <li class="body">False alarms from RightCurly module for code that
+	  does not have braces in if-then-else (bug 689836).</li>
 
-	      <li class="body">Grammar incorrectly defaulting unqualified floating point literals to be float, when they should be double (bug 713716).</li>
+          <li class="body">Grammar incorrectly defaulting unqualified floating
+          point literals to be float, when they should be double (bug
+          713716).</li>
 
-          <li class="body">&quot;threadsafe&quot; was treated as a Java keyword, resulting in parser errors for
-          sources that use it as an identifier (bug 710319).</li>
-          <li class="body">ConfigurationLoader was not public (only relevant for IDE plugin authors).</li>
-       	  <li class="body">HTML syntax errors in documentation (bug 721458).</li>
+	  <li class="body">&quot;threadsafe&quot; was treated as a Java
+	  keyword, resulting in parser errors for sources that use it as an
+	  identifier (bug 710319).</li>
+
+          <li class="body">ConfigurationLoader was not public (only relevant
+          for IDE plugin authors).</li>
+
+       	  <li class="body">HTML syntax errors in documentation (bug
+       	  721458).</li>
+
+          <li class="body">Error when writing a DOS file name from
+          checkstyle-frames.xsl (bug 713845).</li>
+
+          <li class="body">Files were not being closed by
+          Utils.getLines().</li>
+
+          <li class="body">Missing documentation for the EmptyForIterator
+          check (bug 740038).</li>
+
+        </ul>
+
+      <p class="body">
+        Development Team:
+      </p>
+        <ul>
+          <li class="body">Oleg Sukhodolsky has joined the team.</li>
         </ul>
 
       <a name="release3_0"></a>
@@ -332,4 +397,6 @@ does not have braces in if-then-else (bug 689836).</li>
   </tr>
 </table>
 <hr />
+<div><a href="index.html">Back to the Checkstyle Home Page</a></div>
+<p class="copyright">Copyright &copy; 2002-2003 Oliver Burn. All rights Reserved.</p>
 </body> </html>
