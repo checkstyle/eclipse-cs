@@ -20,30 +20,11 @@
 
 package com.atlassw.tools.eclipse.checkstyle.builder;
 
-//=================================================
-// Imports from java namespace
-//=================================================
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
-//=================================================
-// Imports from javax namespace
-//=================================================
-
-//=================================================
-// Imports from com namespace
-//=================================================
-import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
-import com.atlassw.tools.eclipse.checkstyle.config.FileSetFactory;
-import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
-import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
-
-//=================================================
-// Imports from org namespace
-//=================================================
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -56,6 +37,12 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Shell;
+
+import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
+import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfiguration;
+import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfigurationFactory;
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
 /**
  * Project builder for Checkstyle plug-in.
@@ -148,10 +135,10 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
         //
         //  Get the list of enabled file sets for the project.
         //
-        List fileSets = null;
+        ProjectConfiguration config = null;
         try
         {
-            fileSets = FileSetFactory.getEnabledFileSets(project);
+            config = ProjectConfigurationFactory.getConfiguration(project);
         }
         catch (CheckstylePluginException e)
         {
@@ -176,7 +163,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
         //
         //  Audit the files that need to be audited.
         //
-        Auditor auditor = new Auditor(getProject(), fileSets);
+        Auditor auditor = new Auditor(getProject(), config);
 
         try
         {

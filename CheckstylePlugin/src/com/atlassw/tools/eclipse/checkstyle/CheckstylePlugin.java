@@ -32,6 +32,7 @@ import java.util.ResourceBundle;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jface.dialogs.MessageDialogWithToggle;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
@@ -55,8 +56,15 @@ public class CheckstylePlugin extends AbstractUIPlugin
      */
     public static final String      PREF_INCLUDE_RULE_NAMES = "include.rule.names";
 
+    /**
+     * Preference name indication if the user should be warned of possibly
+     * losing fileset configurations if he switches from advanced to simple
+     * fileset configuration.
+     */
+    public static final String      PREF_FILESET_WARNING    = "warn.before.losing.filesets";
+
     /** constant for the plugin properties. */
-    private static final String     PROPERTIES              = "plugin.properties";                   //$NON-NLS-1$
+    private static final String     PROPERTIES              = "plugin.properties";
 
     //=================================================
     // Static class variables.
@@ -150,5 +158,6 @@ public class CheckstylePlugin extends AbstractUIPlugin
         IPreferenceStore prefStore = getPreferenceStore();
 
         prefStore.setDefault(PREF_INCLUDE_RULE_NAMES, false);
+        prefStore.setDefault(PREF_FILESET_WARNING, true);
     }
 }

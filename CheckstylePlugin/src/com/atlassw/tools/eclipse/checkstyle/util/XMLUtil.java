@@ -26,6 +26,7 @@ package com.atlassw.tools.eclipse.checkstyle.util;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.StringWriter;
 import java.util.EmptyStackException;
 import java.util.Stack;
@@ -36,12 +37,19 @@ import java.util.Stack;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import javax.xml.transform.ErrorListener;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.sax.SAXTransformerFactory;
+import javax.xml.transform.sax.TransformerHandler;
 import javax.xml.transform.stream.StreamResult;
 
 //=================================================
@@ -60,6 +68,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * Provides utility methods for XML manipulations.
@@ -78,6 +87,8 @@ public final class XMLUtil
 
     private static DocumentBuilderFactory sDocBuilderFactory    = DocumentBuilderFactory
                                                                         .newInstance();
+
+    private static SAXParserFactory       sSAXParserFactory     = SAXParserFactory.newInstance();
 
     private static TransformerFactory     sTransformerFactory   = TransformerFactory.newInstance();
 
@@ -403,6 +414,72 @@ public final class XMLUtil
     public static String serializeDocument(Document doc) throws CheckstylePluginException
     {
         return serializeDocument(doc, false);
+    }
+
+    /**
+     * Parses an input stream with a sax parser using the given default handler.
+     * 
+     * @param in the input stream
+     * @param handler the default handler receiving the sax events
+     * @throws ParserConfigurationException error creating the sax parser
+     * @throws SAXException error parsing the input stream
+     * @throws IOException error reading the input stream
+     */
+    public static void parseWithSAX(InputStream in, DefaultHandler handler)
+            throws ParserConfigurationException, SAXException, IOException
+    {
+
+        SAXParser parser = sSAXParserFactory.newSAXParser();
+        parser.parse(in, handler);
+    }
+
+    /**
+     * Creates a transformer handler that writes to the given output stream. You
+     * can send sax events to the transformer and receive a similar output.
+     * 
+     * @param out the output stream the handler writes to
+     * @return the transformer handler where sax events can be sent to.
+     * @throws TransformerConfigurationException error creating the transformer
+     */
+    public static TransformerHandler writeWithSax(OutputStream out)
+            throws TransformerConfigurationException
+    {
+
+        SAXTransformerFactory saxFactory = (SAXTransformerFactory) sTransformerFactory;
+
+        //uses identity transformation (in==out)
+        Transformer transformer = saxFactory.newTransformer();
+        transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+        transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+        transformer.setErrorListener(new ErrorListener()
+        {
+
+            public void warning(TransformerException exception) throws TransformerException
+            {
+                exception.printStackTrace();
+
+            }
+
+            public void error(TransformerException exception) throws TransformerException
+            {
+                exception.printStackTrace();
+
+            }
+
+            public void fatalError(TransformerException exception) throws TransformerException
+            {
+                exception.printStackTrace();
+            }
+
+        });
+
+        StreamResult result = new StreamResult(out);
+
+        TransformerHandler handler = saxFactory.newTransformerHandler();
+        handler.setResult(result);
+
+        return handler;
     }
 
     private static DocumentBuilder getDocumentBuilder() throws ParserConfigurationException

@@ -40,8 +40,9 @@ import org.eclipse.ui.texteditor.MarkerUtilities;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfiguration;
-import com.atlassw.tools.eclipse.checkstyle.config.FileSet;
 import com.atlassw.tools.eclipse.checkstyle.config.MetadataFactory;
+import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileSet;
+import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.puppycrawl.tools.checkstyle.Checker;
@@ -62,15 +63,17 @@ class Auditor
     // Static class variables.
     //=================================================
 
-    private static final int MONITOR_INTERVAL = 10;
+    private static final int     MONITOR_INTERVAL = 10;
 
     //=================================================
     // Instance member variables.
     //=================================================
 
-    private IProject         mProject;
+    private IProject             mProject;
 
-    private FileSet[]        mFileSets;
+    private ProjectConfiguration mProjectConfig;
+
+    private FileSet[]            mFileSets;
 
     //=================================================
     // Constructors & finalizer.
@@ -83,10 +86,13 @@ class Auditor
      * 
      * @param fileSets The list of file sets to use in the audit.
      */
-    Auditor(IProject project, List fileSets)
+    Auditor(IProject project, ProjectConfiguration config)
     {
         mProject = project;
-        mFileSets = (FileSet[]) fileSets.toArray(new FileSet[fileSets.size()]);
+        mProjectConfig = config;
+
+        List enabledFileSets = config.getEnabledFileSets();
+        mFileSets = (FileSet[]) enabledFileSets.toArray(new FileSet[enabledFileSets.size()]);
     }
 
     //=================================================
@@ -184,6 +190,16 @@ class Auditor
             //  Remove any markers on the file.
             //
             file.deleteMarkers(CheckstyleMarker.MARKER_ID, true, IResource.DEPTH_INFINITE);
+            
+            //TODO optimize!!!
+
+            //
+            // check if file is checked at all
+            //
+            if (!mProjectConfig.isFileChecked(file))
+            {
+                continue;
+            }
 
             //
             //  Run through the file sets.

@@ -31,14 +31,11 @@ package com.atlassw.tools.eclipse.checkstyle.properties;
 //=================================================
 // Imports from com namespace
 //=================================================
-import com.atlassw.tools.eclipse.checkstyle.config.FileSet;
-
-//=================================================
-// Imports from org namespace
-//=================================================
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.swt.graphics.Image;
+
+import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileSet;
 
 /**
  *  Provides the labels for the FileSet list display.
@@ -66,13 +63,13 @@ class FileSetLabelProvider implements ITableLabelProvider
     //=================================================
 
     /**
-     * @see IBaseLabelProvider#removeListener(ILabelProviderListener)
+     * @see org.eclipse.jface.viewers.IBaseLabelProvider#removeListener(ILabelProviderListener)
      */
     public void removeListener(ILabelProviderListener listener)
     {}
 
     /**
-     * @see IBaseLabelProvider#isLabelProperty(Object, String)
+     * @see org.eclipse.jface.viewers.IBaseLabelProvider#isLabelProperty(Object, String)
      */
     public boolean isLabelProperty(Object element, String property)
     {
@@ -80,13 +77,13 @@ class FileSetLabelProvider implements ITableLabelProvider
     }
 
     /**
-     * @see IBaseLabelProvider#dispose()
+     * @see org.eclipse.jface.viewers.IBaseLabelProvider#dispose()
      */
     public void dispose()
     {}
 
     /**
-     * @see IBaseLabelProvider#addListener(ILabelProviderListener)
+     * @see org.eclipse.jface.viewers.IBaseLabelProvider#addListener(ILabelProviderListener)
      */
     public void addListener(ILabelProviderListener listener)
     {}

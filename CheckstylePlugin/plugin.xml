@@ -132,25 +132,29 @@
       <filter
             readonly="true"
             name="%NonJavaFilesFilter.label"
+            internal-name="NonJavaFiles"
             selected="true"
             description="%NonJavaFilesFilter.description"
-            class="com.atlassw.tools.eclipse.checkstyle.filters.NonJavaFileFilter">
+            class="com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.NonJavaFileFilter">
       </filter>
       <filter
             name="%WriteProtectedFilter.label"
+            internal-name="WriteProtectedFiles"
             description="%WriteProtectedFilter.description"
-            class="com.atlassw.tools.eclipse.checkstyle.filters.WriteProtectedFilter">
+            class="com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.WriteProtectedFilter">
       </filter>
       <filter
             name="%UnOpenedFilesFilter.label"
+            internal-name="UnOpenedFiles"
             description="%UnOpenedFilesFilter.description"
-            class="com.atlassw.tools.eclipse.checkstyle.filters.UnOpenedFilesFilter">
+            class="com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.UnOpenedFilesFilter">
       </filter>      
       <filter
-            editorClass="com.atlassw.tools.eclipse.checkstyle.filters.PackageFilterEditor2"
+            editorClass="com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.PackageFilterEditor2"
+            internal-name="FilesFromPackage"
             name="%PackageFilter.label"
             description="%PackageFilter.description"
-            class="com.atlassw.tools.eclipse.checkstyle.filters.PackageFilter">
+            class="com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.PackageFilter">
       </filter>
       <!--
       <filter

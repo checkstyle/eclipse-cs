@@ -36,11 +36,11 @@ import java.util.Iterator;
 //=================================================
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationFactory;
-import com.atlassw.tools.eclipse.checkstyle.config.FileSetFactory;
 import com.atlassw.tools.eclipse.checkstyle.config.RuleConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.config.RuleMetadata;
 import com.atlassw.tools.eclipse.checkstyle.config.MetadataFactory;
 import com.atlassw.tools.eclipse.checkstyle.config.RuleGroupMetadata;
+import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfigurationFactory;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 
@@ -301,7 +301,7 @@ public class CheckConfigurationEditDialog extends Dialog
             //
             try
             {
-                nameInUse = FileSetFactory.isCheckConfigInUse(mCheckConfiguration.getConfigName());
+                nameInUse = ProjectConfigurationFactory.isCheckConfigInUse(mCheckConfiguration.getConfigName());
             }
             catch (CheckstylePluginException e)
             {

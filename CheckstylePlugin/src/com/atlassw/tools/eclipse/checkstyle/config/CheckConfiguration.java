@@ -49,50 +49,48 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-
 /**
- *  Represents an audit configuration.  An audit configuration consists
- *  of a collection of audit rules and their configuration parameters.
+ * Represents an audit configuration. An audit configuration consists of a
+ * collection of audit rules and their configuration parameters.
  */
 public class CheckConfiguration implements Cloneable, Configuration, Comparable
 {
     //=================================================
     // Public static final variables.
     //=================================================
-    
+
     //=================================================
     // Static class variables.
     //=================================================
-    
+
     //=================================================
     // Instance member variables.
     //=================================================
-    
-    private String mConfigName;
 
-    private List mRuleConfigs = new LinkedList();
-    
-    private TreeWalker mTreeWalker = new TreeWalker();
+    private String     mConfigName;
+
+    private List       mRuleConfigs = new LinkedList();
+
+    private TreeWalker mTreeWalker  = new TreeWalker();
 
     //=================================================
     // Constructors & finalizer.
     //=================================================
 
     /**
-     *  Default constructor.
+     * Default constructor.
      */
     CheckConfiguration()
-    {
-    }
+    {}
 
     /**
-     *  Construct from a config file DOM node.
-     *
-     *  @param node  An XML document node containing the <code>CheckConfiguration</code>'s
-     *                data.
-     *
-     *  @throws CheckstylePluginException  Could not properly construct the
-     *                                <code>CheckConfiguration</code> from the XML node.
+     * Construct from a config file DOM node.
+     * 
+     * @param node An XML document node containing the
+     *            <code>CheckConfiguration</code>'s data.
+     * 
+     * @throws CheckstylePluginException Could not properly construct the
+     *             <code>CheckConfiguration</code> from the XML node.
      */
     public CheckConfiguration(Node node) throws CheckstylePluginException
     {
@@ -132,9 +130,9 @@ public class CheckConfiguration implements Cloneable, Configuration, Comparable
     //=================================================
 
     /**
-     *  Get the name.
-     *
-     *  @return  The name.
+     * Get the name.
+     * 
+     * @return The name.
      */
     public String getConfigName()
     {
@@ -142,9 +140,21 @@ public class CheckConfiguration implements Cloneable, Configuration, Comparable
     }
 
     /**
-     *  Set the name.
-     *
-     *  @param name  The new name.
+     * Get the description of the configuration.
+     * 
+     * @return the description
+     */
+    public String getConfigDecription()
+    {
+
+        //TODO provide description of the config
+        return "TODO: provide description";
+    }
+
+    /**
+     * Set the name.
+     * 
+     * @param name The new name.
      */
     public void setName(String name)
     {
@@ -152,10 +162,10 @@ public class CheckConfiguration implements Cloneable, Configuration, Comparable
     }
 
     /**
-     *  Get the rule configurations.
-     *
-     *  @return  A <code>HashMap</code> containing
-     *            <code>RuleConfiguration</code> objects.
+     * Get the rule configurations.
+     * 
+     * @return A <code>HashMap</code> containing
+     *         <code>RuleConfiguration</code> objects.
      */
     public List getRuleConfigs()
     {
@@ -163,10 +173,10 @@ public class CheckConfiguration implements Cloneable, Configuration, Comparable
     }
 
     /**
-     *  Set the rule configurations.
-     *
-     *  @param rules  A <code>HashMap</code> containing
-     *                <code>RuleConfiguration</code> objects.
+     * Set the rule configurations.
+     * 
+     * @param rules A <code>HashMap</code> containing
+     *            <code>RuleConfiguration</code> objects.
      */
     public void setRuleConfigs(List rules)
     {
@@ -174,11 +184,11 @@ public class CheckConfiguration implements Cloneable, Configuration, Comparable
     }
 
     /**
-     *  Create a clone of the object.
-     *
-     *  @return The clone.
-     *
-     *  @throws CloneNotSupportedException  Object can't be cloned.
+     * Create a clone of the object.
+     * 
+     * @return The clone.
+     * 
+     * @throws CloneNotSupportedException Object can't be cloned.
      */
     public Object clone() throws CloneNotSupportedException
     {
@@ -186,11 +196,12 @@ public class CheckConfiguration implements Cloneable, Configuration, Comparable
     }
 
     /**
-     *  Create an XML DOM node representation of the audit configuration.
-     *
-     *  @param  doc  The document to create the node within.
-     *
-     *  @return  An XML node containing the <code>CheckConfiguration</code>'s data.
+     * Create an XML DOM node representation of the audit configuration.
+     * 
+     * @param doc The document to create the node within.
+     * 
+     * @return An XML node containing the <code>CheckConfiguration</code>'s
+     *         data.
      */
     public Node toDOMNode(Document doc)
     {
@@ -200,13 +211,13 @@ public class CheckConfiguration implements Cloneable, Configuration, Comparable
         {
             configNode = doc.createElement(XMLTags.CHECK_CONFIG_TAG);
             configNode.setAttribute(XMLTags.NAME_TAG, mConfigName);
-            
+
             Collections.sort(mRuleConfigs);
             Iterator iter = mRuleConfigs.iterator();
 
             while (iter.hasNext())
             {
-                RuleConfiguration rule = (RuleConfiguration)iter.next();
+                RuleConfiguration rule = (RuleConfiguration) iter.next();
                 Node ruleNode = rule.toDOMNode(doc);
 
                 if (ruleNode == null)
@@ -229,33 +240,33 @@ public class CheckConfiguration implements Cloneable, Configuration, Comparable
     }
 
     /**
-     *  Get an attribute by name.  Required by the <code>Configuration</code>
-     *  interface.  A <code>CheckConfiguration</code> does not have any attributes
-     *  so <code>null</code> is always returned.
-     *
-     *  @param name The attribute name.
-     *
-     *  @return  <code>null</code> is always returned.
+     * Get an attribute by name. Required by the <code>Configuration</code>
+     * interface. A <code>CheckConfiguration</code> does not have any
+     * attributes so <code>null</code> is always returned.
+     * 
+     * @param name The attribute name.
+     * 
+     * @return <code>null</code> is always returned.
      */
     public String getAttribute(String name)
     {
         return null;
     }
-    
+
     /**
-     *  Get the names of all attributes.
+     * Get the names of all attributes.
      * 
-     *  @return  An array of names.
+     * @return An array of names.
      */
     public String[] getAttributeNames()
     {
         return new String[0];
     }
-    
+
     /**
-     *  Get the child configuration nodes.
+     * Get the child configuration nodes.
      * 
-     *  @return  An array of <code>Configuration</code> objects.
+     * @return An array of <code>Configuration</code> objects.
      */
     public Configuration[] getChildren()
     {
@@ -265,21 +276,21 @@ public class CheckConfiguration implements Cloneable, Configuration, Comparable
 
         return result;
     }
-    
+
     /**
-     *  Get the name of this <code>Configuration</code>.
+     * Get the name of this <code>Configuration</code>.
      * 
-     *  @return  The name "Checker"
+     * @return The name "Checker"
      */
     public String getName()
     {
         return "Checker";
     }
-    
+
     /**
-     *  Compare to objects to determine greater then / less then.
+     * Compare to objects to determine greater then / less then.
      * 
-     *  @see java.lang.Comparable
+     * @see java.lang.Comparable
      */
     public int compareTo(Object obj)
     {
@@ -288,7 +299,7 @@ public class CheckConfiguration implements Cloneable, Configuration, Comparable
         if (obj instanceof CheckConfiguration)
         {
             String string1 = getConfigName();
-            String string2 = ((CheckConfiguration)obj).getConfigName();
+            String string2 = ((CheckConfiguration) obj).getConfigName();
 
             result = string1.compareToIgnoreCase(string2);
         }
@@ -297,8 +308,8 @@ public class CheckConfiguration implements Cloneable, Configuration, Comparable
     }
 
     /**
-     *  This class is used as a place holder for the checkstyle configuration's
-     *  TreeWalker module.
+     * This class is used as a place holder for the checkstyle configuration's
+     * TreeWalker module.
      */
     private class TreeWalker implements Configuration
     {
@@ -315,9 +326,9 @@ public class CheckConfiguration implements Cloneable, Configuration, Comparable
         public Configuration[] getChildren()
         {
             Configuration[] result = new Configuration[mRuleConfigs.size()];
-            
+
             Collections.sort(mRuleConfigs);
-            result = (Configuration[])mRuleConfigs.toArray(result);
+            result = (Configuration[]) mRuleConfigs.toArray(result);
 
             return result;
         }

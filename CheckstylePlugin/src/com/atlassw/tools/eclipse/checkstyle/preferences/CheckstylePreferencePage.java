@@ -30,6 +30,7 @@ import java.util.List;
 
 import org.eclipse.core.runtime.Preferences;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.dialogs.MessageDialogWithToggle;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -46,6 +47,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
@@ -57,22 +59,19 @@ import com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleBuilder;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigConverter;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationFactory;
-import com.atlassw.tools.eclipse.checkstyle.config.FileSetFactory;
+import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfigurationFactory;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
 /**
- * This class represents a preference page that
- * is contributed to the Preferences dialog. By 
- * subclassing <samp>FieldEditorPreferencePage</samp>, we
- * can use the field support built into JFace that allows
- * us to create a page that is small and knows how to 
- * save, restore and apply itself.
+ * This class represents a preference page that is contributed to the
+ * Preferences dialog. By subclassing <samp>FieldEditorPreferencePage </samp>,
+ * we can use the field support built into JFace that allows us to create a page
+ * that is small and knows how to save, restore and apply itself.
  * <p>
- * This page is used to modify preferences only. They
- * are stored in the preference store that belongs to
- * the main plug-in class. That way, preferences can
- * be accessed directly via the preference store.
+ * This page is used to modify preferences only. They are stored in the
+ * preference store that belongs to the main plug-in class. That way,
+ * preferences can be accessed directly via the preference store.
  */
 public class CheckstylePreferencePage extends PreferencePage implements IWorkbenchPreferencePage
 {
@@ -88,36 +87,38 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
     // Instance member variables.
     //=================================================
 
-    private Composite mParentComposite;
+    private Composite   mParentComposite;
 
     private TableViewer mViewer;
 
-    private Button mAddButton;
+    private Button      mAddButton;
 
-    private Button mEditButton;
+    private Button      mEditButton;
 
-    private Button mCopyButton;
+    private Button      mCopyButton;
 
-    private Button mRemoveButton;
+    private Button      mRemoveButton;
 
-    private Button mImportPluginButton;
+    private Button      mImportPluginButton;
 
-    private Button mExportPluginButton;
+    private Button      mExportPluginButton;
 
-    private Button mImportCheckstyleButton;
+    private Button      mImportCheckstyleButton;
 
-    private Button mExportCheckstyleButton;
+    private Button      mExportCheckstyleButton;
 
-    private Button mIncludeRuleNamesButton;
+    private Button      mWarnBeforeLosingFilesets;
 
-    private List mCheckConfigurations;
+    private Button      mIncludeRuleNamesButton;
 
-    private boolean mNeedRebuild = false;
+    private List        mCheckConfigurations;
+
+    private boolean     mNeedRebuild = false;
 
     //=================================================
     // Constructors & finalizer.
     //=================================================
-    
+
     /**
      * Constructor.
      */
@@ -144,8 +145,11 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
      */
     public Control createContents(Composite ancestor)
     {
+
+        //TODO externalize message strings
+
         noDefaultAndApplyButton();
-        
+
         //
         //  Initialize the check configurations.
         //
@@ -167,12 +171,12 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         GridLayout layout = new GridLayout();
         layout.numColumns = 1;
         mParentComposite.setLayout(layout);
-        
+
         //
         //  Create the general section of the screen.
         //
         createGeneralContents(mParentComposite);
-        
+
         //
         //  Create the check configuration section of the screen.
         //
@@ -180,7 +184,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
 
         return mParentComposite;
     }
-    
+
     private void createGeneralContents(Composite parent)
     {
         //
@@ -199,23 +203,34 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         Preferences prefs = CheckstylePlugin.getDefault().getPluginPreferences();
 
         //
+        //  Create the "Fileset warning" check box.
+        //
+        mWarnBeforeLosingFilesets = new Button(generalComposite, SWT.CHECK);
+        mWarnBeforeLosingFilesets.setText("Warn before losing configured file sets");
+        mWarnBeforeLosingFilesets.setSelection(prefs
+                .getBoolean(CheckstylePlugin.PREF_FILESET_WARNING));
+
+        //
         //  Create the "Include rule name" check box.
         //
         mIncludeRuleNamesButton = new Button(generalComposite, SWT.CHECK);
         mIncludeRuleNamesButton.setText("Include rule names in violation messages");
-        mIncludeRuleNamesButton.setSelection(
-            prefs.getBoolean(CheckstylePlugin.PREF_INCLUDE_RULE_NAMES));
+        mIncludeRuleNamesButton.setSelection(prefs
+                .getBoolean(CheckstylePlugin.PREF_INCLUDE_RULE_NAMES));
+
+        new Label(generalComposite, SWT.NULL)
+                .setText("Note: Changes to this option only become visible after a full rebuild of your projects.");
     }
-    
+
     private void createCheckConfigContents(Composite parent)
-    { 
+    {
         //
         //  Create the composite for configuring check configurations.
         //
         Group configComposite = new Group(parent, SWT.NULL);
         configComposite.setText(" Check Configurations ");
-        configComposite.setLayoutData(
-            new GridData(GridData.FILL_HORIZONTAL | GridData.FILL_VERTICAL));
+        configComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL
+                | GridData.FILL_VERTICAL));
         GridLayout layout = new GridLayout();
         layout.numColumns = 2;
         configComposite.setLayout(layout);
@@ -338,13 +353,13 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
             }
         });
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public void init(IWorkbench workbench)
     {}
-    
+
     /**
      * {@inheritDoc}
      */
@@ -369,11 +384,18 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         Preferences prefs = CheckstylePlugin.getDefault().getPluginPreferences();
 
         //
+        // fileset warning preference
+        //
+        boolean warnFileSetsNow = mWarnBeforeLosingFilesets.getSelection();
+        boolean iwarnFileSetsNowOriginal = prefs.getBoolean(CheckstylePlugin.PREF_FILESET_WARNING);
+        prefs.setValue(CheckstylePlugin.PREF_FILESET_WARNING, warnFileSetsNow);
+
+        //
         //  Include rule names preference.
         //
         boolean includeRuleNamesNow = mIncludeRuleNamesButton.getSelection();
-        boolean includeRuleNamesOriginal =
-            prefs.getBoolean(CheckstylePlugin.PREF_INCLUDE_RULE_NAMES);
+        boolean includeRuleNamesOriginal = prefs
+                .getBoolean(CheckstylePlugin.PREF_INCLUDE_RULE_NAMES);
         prefs.setValue(CheckstylePlugin.PREF_INCLUDE_RULE_NAMES, includeRuleNamesNow);
         mNeedRebuild = mNeedRebuild | (includeRuleNamesNow ^ includeRuleNamesOriginal);
 
@@ -397,11 +419,11 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
     }
 
     /**
-     * Utility method that creates a push button instance
-     * and sets the default layout data.
-     *
-     * @param parent  the parent for the new button
-     * @param label  the label for the new button
+     * Utility method that creates a push button instance and sets the default
+     * layout data.
+     * 
+     * @param parent the parent for the new button
+     * @param label the label for the new button
      * @return the newly-created button
      */
     private Button createPushButton(Composite parent, String label)
@@ -419,18 +441,14 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         CheckConfigurationEditDialog dialog = null;
         try
         {
-            dialog =
-                new CheckConfigurationEditDialog(
-                    mParentComposite.getShell(),
-                    configToAdd,
+            dialog = new CheckConfigurationEditDialog(mParentComposite.getShell(), configToAdd,
                     mCheckConfigurations);
             dialog.open();
         }
         catch (CheckstylePluginException e)
         {
-            CheckstyleLog.error(
-                "Failed to open CheckConfigurationEditDialog, " + e.getMessage(),
-                e);
+            CheckstyleLog
+                    .error("Failed to open CheckConfigurationEditDialog, " + e.getMessage(), e);
             CheckstyleLog.internalErrorDialog();
             return;
         }
@@ -441,29 +459,28 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
             if (checkConfig != null)
             {
                 //
-                // ad, 7.Jan.2004, Bug #872279 
+                // ad, 7.Jan.2004, Bug #872279
                 // If the config that is to be imported already exists, ask the
                 // user whether to replace it or not.
                 // When the user chooses not to replace it, the import action
                 // is aborted for the single config, but the import process
-                // should be continued for the other configs (if multiple configs
+                // should be continued for the other configs (if multiple
+                // configs
                 // were selected.)
                 // 
                 for (Iterator iter = mCheckConfigurations.iterator(); iter.hasNext();)
                 {
-                    CheckConfiguration c = (CheckConfiguration)iter.next();
+                    CheckConfiguration c = (CheckConfiguration) iter.next();
                     if (c.getConfigName().equals(checkConfig.getConfigName()))
                     {
                         //
-                        // The newly imported config exists already.  Ask the user if
+                        // The newly imported config exists already. Ask the
+                        // user if
                         // the existing one should be replaced.
                         //
-                        boolean replaceConfiguration =
-                            CheckstyleLog.questionDialog(
-                                getShell(),
-                                "The configuration '"
-                                    + c.getConfigName()
-                                    + "' already exists. Do you want to replace it?");
+                        boolean replaceConfiguration = CheckstyleLog.questionDialog(getShell(),
+                                "The configuration '" + c.getConfigName()
+                                        + "' already exists. Do you want to replace it?");
 
                         if (replaceConfiguration)
                         {
@@ -488,12 +505,12 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
                 mViewer.refresh();
 
                 //
-                // Since the config may have potentially been replaced by a 
+                // Since the config may have potentially been replaced by a
                 // new one, we need to do a rebuild, if it is in used.
                 //
                 try
                 {
-                    if (FileSetFactory.isCheckConfigInUse(checkConfig.getConfigName()))
+                    if (ProjectConfigurationFactory.isCheckConfigInUse(checkConfig.getConfigName()))
                     {
                         mNeedRebuild = true;
                     }
@@ -506,7 +523,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
                     mNeedRebuild = true;
                     CheckstyleLog.warning("Exception while checking for check config use", e);
                 }
-                // ad, 7.Jan.2004, Bug #872279 
+                // ad, 7.Jan.2004, Bug #872279
                 // end change
 
             }
@@ -520,8 +537,8 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
 
     private void editCheckConfig()
     {
-        IStructuredSelection selection = (IStructuredSelection)mViewer.getSelection();
-        CheckConfiguration checkConfig = (CheckConfiguration)selection.getFirstElement();
+        IStructuredSelection selection = (IStructuredSelection) mViewer.getSelection();
+        CheckConfiguration checkConfig = (CheckConfiguration) selection.getFirstElement();
         if (checkConfig == null)
         {
             //
@@ -533,18 +550,14 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         CheckConfigurationEditDialog dialog = null;
         try
         {
-            dialog =
-                new CheckConfigurationEditDialog(
-                    mParentComposite.getShell(),
-                    checkConfig,
+            dialog = new CheckConfigurationEditDialog(mParentComposite.getShell(), checkConfig,
                     mCheckConfigurations);
             dialog.open();
         }
         catch (CheckstylePluginException e)
         {
-            CheckstyleLog.error(
-                "Failed to open CheckConfigurationEditDialog, " + e.getMessage(),
-                e);
+            CheckstyleLog
+                    .error("Failed to open CheckConfigurationEditDialog, " + e.getMessage(), e);
             CheckstyleLog.internalErrorDialog();
             return;
         }
@@ -558,7 +571,8 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
                 mCheckConfigurations.add(editedConfig);
                 try
                 {
-                    if (FileSetFactory.isCheckConfigInUse(editedConfig.getConfigName()))
+                    if (ProjectConfigurationFactory
+                            .isCheckConfigInUse(editedConfig.getConfigName()))
                     {
                         mNeedRebuild = true;
                     }
@@ -583,8 +597,8 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
 
     private void copyCheckConfig()
     {
-        IStructuredSelection selection = (IStructuredSelection)mViewer.getSelection();
-        CheckConfiguration checkConfig = (CheckConfiguration)selection.getFirstElement();
+        IStructuredSelection selection = (IStructuredSelection) mViewer.getSelection();
+        CheckConfiguration checkConfig = (CheckConfiguration) selection.getFirstElement();
         if (checkConfig == null)
         {
             //
@@ -598,7 +612,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         //
         try
         {
-            checkConfig = (CheckConfiguration)checkConfig.clone();
+            checkConfig = (CheckConfiguration) checkConfig.clone();
             String name = "Copy of " + checkConfig.getConfigName();
             checkConfig.setName(name);
         }
@@ -612,18 +626,14 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         CheckConfigurationEditDialog dialog = null;
         try
         {
-            dialog =
-                new CheckConfigurationEditDialog(
-                    mParentComposite.getShell(),
-                    checkConfig,
+            dialog = new CheckConfigurationEditDialog(mParentComposite.getShell(), checkConfig,
                     mCheckConfigurations);
             dialog.open();
         }
         catch (CheckstylePluginException e)
         {
-            CheckstyleLog.error(
-                "Failed to open CheckConfigurationEditDialog, " + e.getMessage(),
-                e);
+            CheckstyleLog
+                    .error("Failed to open CheckConfigurationEditDialog, " + e.getMessage(), e);
             CheckstyleLog.internalErrorDialog();
             return;
         }
@@ -646,8 +656,8 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
 
     private void removeCheckConfig()
     {
-        IStructuredSelection selection = (IStructuredSelection)mViewer.getSelection();
-        CheckConfiguration checkConfig = (CheckConfiguration)selection.getFirstElement();
+        IStructuredSelection selection = (IStructuredSelection) mViewer.getSelection();
+        CheckConfiguration checkConfig = (CheckConfiguration) selection.getFirstElement();
         if (checkConfig == null)
         {
             //
@@ -657,21 +667,18 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         }
 
         //
-        //  Make sure the check config is not in use.  Don't let it be
+        //  Make sure the check config is not in use. Don't let it be
         //  deleted if it is.
         //
         try
         {
-            if (FileSetFactory.isCheckConfigInUse(checkConfig.getConfigName()))
+            if (ProjectConfigurationFactory.isCheckConfigInUse(checkConfig.getConfigName()))
             {
-                MessageDialog.openInformation(
-                    mParentComposite.getShell(),
-                    "Can't Delete",
-                    "The Check Configuration '"
-                        + checkConfig.getConfigName()
-                        + "' is currently in use by a project."
-                        + "  It must be removed from all project "
-                        + "configurations before it can be deleted.");
+                MessageDialog.openInformation(mParentComposite.getShell(), "Can't Delete",
+                        "The Check Configuration '" + checkConfig.getConfigName()
+                                + "' is currently in use by a project."
+                                + "  It must be removed from all project "
+                                + "configurations before it can be deleted.");
                 return;
             }
         }
@@ -682,10 +689,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
             return;
         }
 
-        boolean confirm =
-            MessageDialog.openQuestion(
-                mParentComposite.getShell(),
-                "Confirm Delete",
+        boolean confirm = MessageDialog.openQuestion(mParentComposite.getShell(), "Confirm Delete",
                 "Remove check configuration '" + checkConfig.getConfigName() + "'?");
         if (confirm)
         {
@@ -708,12 +712,12 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         File checkConfigFile = new File(path);
         try
         {
-            List newConfigs =
-                CheckConfigurationFactory.importPluginCheckConfigurations(checkConfigFile);
+            List newConfigs = CheckConfigurationFactory
+                    .importPluginCheckConfigurations(checkConfigFile);
             Iterator iter = newConfigs.iterator();
             while (iter.hasNext())
             {
-                addCheckConfig((CheckConfiguration)iter.next());
+                addCheckConfig((CheckConfiguration) iter.next());
             }
         }
         catch (CheckstylePluginException e)
@@ -725,14 +729,12 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
 
     private void exportPluginCheckConfig()
     {
-        IStructuredSelection selection = (IStructuredSelection)mViewer.getSelection();
-        CheckConfiguration config = (CheckConfiguration)selection.getFirstElement();
+        IStructuredSelection selection = (IStructuredSelection) mViewer.getSelection();
+        CheckConfiguration config = (CheckConfiguration) selection.getFirstElement();
         if (config == null)
         {
-            MessageDialog.openInformation(
-                mParentComposite.getShell(),
-                "No Selection",
-                "No Check Configuration Selected");
+            MessageDialog.openInformation(mParentComposite.getShell(), "No Selection",
+                    "No Check Configuration Selected");
             return;
         }
 
@@ -752,23 +754,19 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         catch (CheckstylePluginException e)
         {
             CheckstyleLog.error("Failed to export CheckConfigurations to external file", e);
-            MessageDialog.openError(
-                mParentComposite.getShell(),
-                "Checkstyle Error",
-                "Failed to export CheckConfigurations to external file");
+            MessageDialog.openError(mParentComposite.getShell(), "Checkstyle Error",
+                    "Failed to export CheckConfigurations to external file");
         }
     }
 
     private void exportCheckstyleCheckConfig()
     {
-        IStructuredSelection selection = (IStructuredSelection)mViewer.getSelection();
-        CheckConfiguration config = (CheckConfiguration)selection.getFirstElement();
+        IStructuredSelection selection = (IStructuredSelection) mViewer.getSelection();
+        CheckConfiguration config = (CheckConfiguration) selection.getFirstElement();
         if (config == null)
         {
-            MessageDialog.openInformation(
-                mParentComposite.getShell(),
-                "No Selection",
-                "No Check Configuration Selected");
+            MessageDialog.openInformation(mParentComposite.getShell(), "No Selection",
+                    "No Check Configuration Selected");
             return;
         }
 
@@ -788,10 +786,8 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         catch (CheckstylePluginException e)
         {
             CheckstyleLog.error("Failed to export CheckConfigurations to external file", e);
-            MessageDialog.openError(
-                mParentComposite.getShell(),
-                "Checkstyle Error",
-                "Failed to export CheckConfigurations to external file");
+            MessageDialog.openError(mParentComposite.getShell(), "Checkstyle Error",
+                    "Failed to export CheckConfigurations to external file");
         }
     }
 
@@ -822,8 +818,8 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
             List resolveProps = converter.getPropsToResolve();
             if (resolveProps.size() > 0)
             {
-                ResolvePropertyValuesDialog resolveDialog =
-                    new ResolvePropertyValuesDialog(getShell(), resolveProps);
+                ResolvePropertyValuesDialog resolveDialog = new ResolvePropertyValuesDialog(
+                        getShell(), resolveProps);
                 resolveDialog.open();
             }
 
@@ -833,7 +829,8 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
             CheckConfiguration config = converter.getCheckConfiguration();
 
             //
-            //  Add the config using the add dialog so the user can see what it looks like,
+            //  Add the config using the add dialog so the user can see what it
+            // looks like,
             //  make changes, and it will be validated.
             //
             addCheckConfig(config);
@@ -846,10 +843,10 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
     }
 
     /**
-     *  Make a local working copy of the Check Configurations in case
-     *  the user exits the preferences window with the cancel button.
-     *  In this case all edits will be discarded, otherwise they are
-     *  saved when the user presses the OK button.
+     * Make a local working copy of the Check Configurations in case the user
+     * exits the preferences window with the cancel button. In this case all
+     * edits will be discarded, otherwise they are saved when the user presses
+     * the OK button.
      */
     private void initializeCheckConfigs() throws CheckstylePluginException
     {
@@ -860,16 +857,16 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
             Iterator iter = configs.iterator();
             while (iter.hasNext())
             {
-                CheckConfiguration cfg = (CheckConfiguration)iter.next();
-                CheckConfiguration clone = (CheckConfiguration)cfg.clone();
+                CheckConfiguration cfg = (CheckConfiguration) iter.next();
+                CheckConfiguration clone = (CheckConfiguration) cfg.clone();
                 mCheckConfigurations.add(clone);
             }
         }
         catch (CloneNotSupportedException e)
         {
             CheckstyleLog.error("Failed to clone CheckConfiguration", e);
-            throw new CheckstylePluginException(
-                "Failed to clone CheckConfiguration, " + e.getMessage());
+            throw new CheckstylePluginException("Failed to clone CheckConfiguration, "
+                    + e.getMessage());
         }
     }
 }

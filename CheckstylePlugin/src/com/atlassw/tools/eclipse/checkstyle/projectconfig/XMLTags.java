@@ -18,7 +18,7 @@
 //
 //============================================================================
 
-package com.atlassw.tools.eclipse.checkstyle.util;
+package com.atlassw.tools.eclipse.checkstyle.projectconfig;
 
 //=================================================
 // Imports from java namespace
@@ -37,13 +37,39 @@ package com.atlassw.tools.eclipse.checkstyle.util;
 //=================================================
 
 /**
- * Exception used internal to Checkstyle.
+ * Defines XML tages used in configuration files.
  */
-public class CheckstylePluginException extends Exception
+public class XMLTags
 {
     //=================================================
     // Public static final variables.
     //=================================================
+
+    static final String CHECK_CONFIG_NAME_TAG  = "check-config-name";
+
+    static final String ENABLED_TAG            = "enabled";
+
+    static final String FILE_MATCH_PATTERN_TAG = "file-match-pattern";
+
+    static final String FILESET_TAG            = "fileset";
+
+    static final String FILESET_CONFIG_TAG     = "fileset-config";
+
+    static final String FORMAT_VERSION_TAG     = "file-format-version";
+
+    static final String INCLUDE_PATTERN_TAG    = "include-pattern";
+
+    static final String MATCH_PATTERN_TAG      = "match-pattern";
+
+    static final String NAME_TAG               = "name";
+
+    static final String FILTER_TAG             = "filter";
+
+    static final String FILTER_DATA_TAG        = "filter-data";
+
+    static final String VALUE_TAG              = "value";
+
+    static final String SIMPLE_CONFIG_TAG      = "simple-config";
 
     //=================================================
     // Static class variables.
@@ -56,27 +82,6 @@ public class CheckstylePluginException extends Exception
     //=================================================
     // Constructors & finalizer.
     //=================================================
-
-    /**
-     * Exception for the Checkstyle plug-in.
-     * 
-     * @param msg Description of the error.
-     */
-    public CheckstylePluginException(String msg)
-    {
-        super(msg);
-    }
-
-    /**
-     * Exception for the Checkstyle plug-in.
-     * 
-     * @param msg Description of the error.
-     * @param cause the causing exception
-     */
-    public CheckstylePluginException(String msg, Throwable cause)
-    {
-        super(msg, cause);
-    }
 
     //=================================================
     // Methods.

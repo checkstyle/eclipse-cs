@@ -31,13 +31,10 @@ package com.atlassw.tools.eclipse.checkstyle.properties;
 //=================================================
 // Imports from com namespace
 //=================================================
-import com.atlassw.tools.eclipse.checkstyle.config.FileSet;
-
-//=================================================
-// Imports from org namespace
-//=================================================
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
+
+import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileSet;
 
 /**
  *  Sorts CheckConfiguration objects into their display order.

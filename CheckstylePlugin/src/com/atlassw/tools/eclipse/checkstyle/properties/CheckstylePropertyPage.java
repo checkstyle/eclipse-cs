@@ -20,106 +20,346 @@
 
 package com.atlassw.tools.eclipse.checkstyle.properties;
 
-//=================================================
-// Imports from java namespace
-//=================================================
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.MessageDialogWithToggle;
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
-import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.ICheckStateListener;
 import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.TableLayout;
+import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerFilter;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.FormAttachment;
+import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.PropertyPage;
 
-import com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleBuilder;
-import com.atlassw.tools.eclipse.checkstyle.config.FileSet;
-import com.atlassw.tools.eclipse.checkstyle.config.FileSetFactory;
+import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
+import com.atlassw.tools.eclipse.checkstyle.builder.BuildProjectJob;
 import com.atlassw.tools.eclipse.checkstyle.nature.CheckstyleNature;
 import com.atlassw.tools.eclipse.checkstyle.nature.ConfigureDeconfigureNatureJob;
+import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfigurationFactory;
+import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfiguration;
+import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.IFilter;
+import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.IFilterEditor;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
 /**
- * Property page.
+ * Property page for projects to enable checkstyle audit.
+ * 
+ * @author Lars Ködderitzsch
  */
 public class CheckstylePropertyPage extends PropertyPage
 {
-    //=================================================
-    // Public static final variables.
-    //=================================================
 
-    //=================================================
-    // Static class variables.
-    //=================================================
+    //
+    // controls
+    //
 
-    //=================================================
-    // Instance member variables.
-    //=================================================
+    /** button to enable checkstyle for the project. */
+    private Button               mChkEnable;
 
-    private IProject            mProject;
+    /** button to enable/disable the simple configuration. */
+    private Button               mChkSimpleConfig;
 
-    private Composite           mComposite;
+    /** the container holding the file sets editor. */
+    private Composite            mFileSetsContainer;
 
-    private CheckboxTableViewer mViewer;
+    /** the editor for the file sets. */
+    private IFileSetsEditor      mFileSetsEditor;
 
-    private Button              mAddButton;
+    /** viewer to display the known checkstyle filters. */
+    private CheckboxTableViewer  mFilterList;
 
-    private Button              mEditButton;
+    /** button to open a filter editor. */
+    private Button               mBtnEditFilter;
 
-    private Button              mRemoveButton;
+    /** used to display the filter description. */
+    private Text                 mTxtFilterDescription;
 
-    private List                mFileSets;
+    //
+    // other members
+    //
 
-    private boolean             mNeedRebuild = false;
+    /** controller of this page. */
+    private PageController       mPageController;
 
-    //=================================================
-    // Constructors & finalizer.
-    //=================================================
+    /** the the original project configuration. */
+    private ProjectConfiguration mProjectConfigOrig;
+
+    /** the actual working data for this form. */
+    private ProjectConfiguration mProjectConfig;
+
+    /** the project. */
+    private IProject             mProject;
+
+    private boolean              mCheckstyleActivated;
+
+    //
+    // methods
+    //
 
     /**
-     * Constructor for SamplePropertyPage.
+     * Create the contents of this page.
+     * 
+     * @see org.eclipse.jface.preference.PreferencePage#createContents(org.eclipse.swt.widgets.Composite)
      */
-    public CheckstylePropertyPage()
+    public Control createContents(Composite parent)
     {
-        super();
+
+        Composite container = null;
+
+        try
+        {
+            //initialize the forms data
+            initialize();
+
+            this.mPageController = new PageController();
+
+            //suppress default- & apply-buttons
+            noDefaultAndApplyButton();
+
+            //create the main container
+            container = new Composite(parent, SWT.NULL);
+            container.setLayout(new FormLayout());
+            container.setLayoutData(new GridData(GridData.FILL_BOTH));
+
+            //create the checkbox to enable/diable the simple configuration
+            this.mChkSimpleConfig = new Button(container, SWT.CHECK);
+            this.mChkSimpleConfig.setText(CheckstylePlugin
+                    .getResourceString("CheckstylePropertiesPage.chkSimpleConfig"));
+            this.mChkSimpleConfig.addSelectionListener(this.mPageController);
+            this.mChkSimpleConfig.setSelection(mProjectConfig.isUseSimpleConfig());
+
+            FormData fd = new FormData();
+            //fd.left = new FormAttachment(this.mChkEnable, 0, SWT.RIGHT);
+            fd.top = new FormAttachment(0);
+            fd.right = new FormAttachment(100);
+            this.mChkSimpleConfig.setLayoutData(fd);
+
+            //create the checkbox to enabel/disable checkstyle
+            this.mChkEnable = new Button(container, SWT.CHECK);
+            this.mChkEnable.setText(CheckstylePlugin
+                    .getResourceString("CheckstylePropertiesPage.chkEnable"));
+            this.mChkEnable.addSelectionListener(this.mPageController);
+            this.mChkEnable.setSelection(mCheckstyleActivated);
+
+            fd = new FormData();
+            fd.left = new FormAttachment(0);
+            fd.top = new FormAttachment(0);
+            fd.right = new FormAttachment(this.mChkSimpleConfig, 0, SWT.LEFT);
+            this.mChkEnable.setLayoutData(fd);
+
+            //create the configuration area
+            mFileSetsContainer = new Composite(container, SWT.NULL);
+            Control configArea = createFileSetsArea(mFileSetsContainer);
+            fd = new FormData();
+            fd.left = new FormAttachment(0);
+            fd.top = new FormAttachment(this.mChkEnable, 6, SWT.BOTTOM);
+            fd.right = new FormAttachment(100);
+            fd.bottom = new FormAttachment(50);
+            configArea.setLayoutData(fd);
+
+            //create the filter area
+            Control filterArea = createFilterArea(container);
+            fd = new FormData();
+            fd.left = new FormAttachment(0);
+            fd.top = new FormAttachment(configArea, 3, SWT.BOTTOM);
+            fd.right = new FormAttachment(100);
+            fd.bottom = new FormAttachment(100);
+            filterArea.setLayoutData(fd);
+
+        }
+        catch (CheckstylePluginException e)
+        {
+            CheckstyleLog.error("Error opening the properties page", e);
+            CheckstyleLog.errorDialog(getShell(), "Error changing fileset editor");
+            return container;
+        }
+
+        return container;
     }
 
-    //=================================================
-    // Methods.
-    //=================================================
+    /**
+     * Creates the file sets area.
+     * 
+     * @param fileSetsContainer the container to add the file sets area to
+     */
+    private Control createFileSetsArea(Composite fileSetsContainer)
+            throws CheckstylePluginException
+    {
+
+        Control[] controls = fileSetsContainer.getChildren();
+        for (int i = 0; i < controls.length; i++)
+        {
+            controls[i].dispose();
+        }
+
+        if (mProjectConfig.isUseSimpleConfig())
+        {
+            mFileSetsEditor = new SimpleFileSetsEditor();
+        }
+        else
+        {
+            mFileSetsEditor = new ComplexFileSetsEditor();
+        }
+
+        mFileSetsEditor.setFileSets(mProjectConfig.getFileSets());
+
+        Control editor = mFileSetsEditor.createContents(mFileSetsContainer);
+
+        fileSetsContainer.setLayout(new FormLayout());
+        FormData fd = new FormData();
+        fd.left = new FormAttachment(0);
+        fd.top = new FormAttachment(0);
+        fd.right = new FormAttachment(100);
+        fd.bottom = new FormAttachment(100);
+        editor.setLayoutData(fd);
+
+        return fileSetsContainer;
+    }
 
     /**
-     * @see org.eclipse.jface.preference.PreferencePage#createContents(Composite)
+     * Creates the filter area.
+     * 
+     * @param container the container to add the filter area
      */
-    protected Control createContents(Composite parent)
+    private Control createFilterArea(Composite container)
     {
-        mComposite = parent;
 
-        noDefaultAndApplyButton();
-        Composite composite = new Composite(parent, SWT.NONE);
-        GridLayout layout = new GridLayout();
-        layout.numColumns = 2;
-        composite.setLayout(layout);
+        FormData fd = new FormData();
+
+        //group composite containing the filter settings
+        Group filterArea = new Group(container, SWT.NULL);
+        filterArea
+                .setText(CheckstylePlugin.getResourceString("CheckstylePropertiesPage.grpFilter"));
+
+        filterArea.setLayout(new FormLayout());
+
+        this.mFilterList = CheckboxTableViewer.newCheckList(filterArea, SWT.BORDER);
+        this.mBtnEditFilter = new Button(filterArea, SWT.PUSH);
+
+        fd.left = new FormAttachment(0, 3);
+        fd.top = new FormAttachment(0, 3);
+        fd.right = new FormAttachment(this.mBtnEditFilter, -3, SWT.LEFT);
+        fd.bottom = new FormAttachment(70, -3);
+        this.mFilterList.getTable().setLayoutData(fd);
+
+        this.mFilterList.setLabelProvider(new LabelProvider()
+        {
+
+            public String getText(Object element)
+            {
+
+                StringBuffer buf = new StringBuffer();
+
+                if (element instanceof IFilter)
+                {
+
+                    IFilter filter = (IFilter) element;
+
+                    buf.append(filter.getName());
+                    if (filter.getPresentableFilterData() != null)
+                    {
+                        buf.append(": ").append(filter.getPresentableFilterData());
+                    }
+                }
+                else
+                {
+                    buf.append(super.getText(element));
+                }
+
+                return buf.toString();
+            }
+        });
+        this.mFilterList.setContentProvider(new ArrayContentProvider());
+        this.mFilterList.addSelectionChangedListener(this.mPageController);
+        this.mFilterList.addDoubleClickListener(this.mPageController);
+        this.mFilterList.addCheckStateListener(this.mPageController);
+
+        this.mBtnEditFilter.setText(CheckstylePlugin
+                .getResourceString("CheckstylePropertiesPage.btnEditFilter"));
+        this.mBtnEditFilter.addSelectionListener(this.mPageController);
+
+        //readonly filter nicht anzeigen
+        mFilterList.addFilter(new ViewerFilter()
+        {
+            public boolean select(Viewer viewer, Object parentElement, Object element)
+            {
+                return !((IFilter) element).isReadonly();
+            }
+        });
+
+        fd = new FormData();
+        fd.top = new FormAttachment(0, 3);
+        fd.right = new FormAttachment(100, -3);
+        this.mBtnEditFilter.setLayoutData(fd);
+
+        // Description
+        Label lblDesc = new Label(filterArea, SWT.LEFT);
+        lblDesc.setText(CheckstylePlugin.getResourceString("CheckstylePropertiesPage.lblDesc"));
+        fd = new FormData();
+        fd.left = new FormAttachment(0, 3);
+        fd.top = new FormAttachment(this.mFilterList.getTable(), 3, SWT.BOTTOM);
+        fd.right = new FormAttachment(100, -3);
+        lblDesc.setLayoutData(fd);
+
+        this.mTxtFilterDescription = new Text(filterArea, SWT.LEFT | SWT.WRAP | SWT.MULTI
+                | SWT.READ_ONLY | SWT.BORDER | SWT.VERTICAL);
+        fd = new FormData();
+        fd.left = new FormAttachment(0, 3);
+        fd.top = new FormAttachment(lblDesc, 3, SWT.BOTTOM);
+        fd.right = new FormAttachment(100, -3);
+        fd.bottom = new FormAttachment(100, -3);
+        this.mTxtFilterDescription.setLayoutData(fd);
+
+        //intialize filter list
+        IFilter[] filterDefs = mProjectConfig.getFilters();
+        this.mFilterList.setInput(filterDefs);
+
+        //set the checked state
+        for (int i = 0; i < filterDefs.length; i++)
+        {
+            this.mFilterList.setChecked(filterDefs[i], filterDefs[i].isEnabled());
+        }
+
+        //set the readonly state
+        for (int i = 0; i < filterDefs.length; i++)
+        {
+            this.mFilterList.setGrayed(filterDefs[i], filterDefs[i].isReadonly());
+        }
+
+        this.mBtnEditFilter.setEnabled(false);
+
+        return filterArea;
+    }
+
+    private void initialize() throws CheckstylePluginException
+    {
 
         //
         //  Get the project.
@@ -131,330 +371,262 @@ public class CheckstylePropertyPage extends PropertyPage
         }
         else
         {
-            return parent;
+            throw new CheckstylePluginException("Could not get project for properties page.");
         }
 
-        //
-        //  Initialize the file sets for editing.
-        //
-        if (!initializeFileSets())
-        {
-            CheckstyleLog.internalErrorDialog();
-            return null;
-        }
-
-        //
-        //  Create the table of file sets.
-        //
-        Table table = new Table(composite, SWT.CHECK | SWT.BORDER | SWT.FULL_SELECTION);
-
-        GridData data = new GridData(GridData.FILL_BOTH);
-        data.widthHint = convertWidthInCharsToPixels(60);
-        data.heightHint = convertHeightInCharsToPixels(10);
-        table.setLayoutData(data);
-
-        table.setHeaderVisible(true);
-        table.setLinesVisible(true);
-
-        TableLayout tableLayout = new TableLayout();
-        table.setLayout(tableLayout);
-
-        TableColumn column1 = new TableColumn(table, SWT.NONE);
-        column1.setText("Enabled");
-        column1.setResizable(false);
-
-        TableColumn column2 = new TableColumn(table, SWT.NONE);
-        column2.setText("File Set");
-
-        tableLayout.addColumnData(new ColumnWeightData(12));
-        tableLayout.addColumnData(new ColumnWeightData(48));
-
-        mViewer = new CheckboxTableViewer(table);
-        mViewer.setLabelProvider(new FileSetLabelProvider());
-        mViewer.setContentProvider(new FileSetProvider());
-        mViewer.setSorter(new FileSetViewerSorter());
-        mViewer.setInput(mFileSets);
-
-        //
-        //  Set checked state
-        //
-        Iterator iter = mFileSets.iterator();
-        while (iter.hasNext())
-        {
-            FileSet fileSet = (FileSet) iter.next();
-            mViewer.setChecked(fileSet, fileSet.isEnabled());
-        }
-
-        mViewer.addDoubleClickListener(new IDoubleClickListener()
-        {
-            public void doubleClick(DoubleClickEvent e)
-            {
-                editFileSet();
-            }
-        });
-
-        mViewer.addCheckStateListener(new ICheckStateListener()
-        {
-            public void checkStateChanged(CheckStateChangedEvent event)
-            {
-                changeEnabledState(event);
-            }
-        });
-
-        //
-        //  Build the buttons.
-        //
-        Composite buttons = new Composite(composite, SWT.NULL);
-        buttons.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
-        layout = new GridLayout();
-        layout.marginHeight = 0;
-        layout.marginWidth = 0;
-        buttons.setLayout(layout);
-
-        mAddButton = createPushButton(buttons, "Add...");
-        mAddButton.addListener(SWT.Selection, new Listener()
-        {
-            public void handleEvent(Event evt)
-            {
-                addFileSet();
-            }
-        });
-
-        mEditButton = createPushButton(buttons, "Edit...");
-        mEditButton.addListener(SWT.Selection, new Listener()
-        {
-            public void handleEvent(Event evt)
-            {
-                editFileSet();
-            }
-        });
-
-        mRemoveButton = createPushButton(buttons, "Remove");
-        mRemoveButton.addListener(SWT.Selection, new Listener()
-        {
-            public void handleEvent(Event evt)
-            {
-                removeFileSet();
-            }
-        });
-
-        return composite;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public boolean performOk()
-    {
+        mProjectConfigOrig = ProjectConfigurationFactory.getConfiguration(mProject);
         try
         {
-            FileSetFactory.setFileSets(mFileSets, mProject);
-        }
-        catch (CheckstylePluginException e)
-        {
-            CheckstyleLog.error("Failed to save FileSets: " + e.getMessage(), e);
-            CheckstyleLog.internalErrorDialog();
-        }
-
-        try
-        {
-            addNature();
-        }
-        catch (CheckstylePluginException e)
-        {
-            CheckstyleLog.error("Failed to add project nature: " + e.getMessage(), e);
-            CheckstyleLog.internalErrorDialog();
-        }
-
-        if (mNeedRebuild)
-        {
-            try
-            {
-                CheckstyleBuilder.buildProject(mProject, mComposite.getShell());
-            }
-            catch (CheckstylePluginException e)
-            {
-                CheckstyleLog.error("Failed to rebuild project: " + e.getMessage(), e);
-                CheckstyleLog.internalErrorDialog();
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * Utility method that creates a push button instance and sets the default
-     * layout data.
-     * 
-     * @param parent the parent for the new button
-     * @param label the label for the new button
-     * @return the newly-created button
-     */
-    private Button createPushButton(Composite parent, String label)
-    {
-        Button button = new Button(parent, SWT.PUSH);
-        button.setText(label);
-        GridData data = new GridData();
-        data.horizontalAlignment = GridData.FILL;
-        button.setLayoutData(data);
-        return button;
-    }
-
-    private void addFileSet()
-    {
-        try
-        {
-            FileSetEditDialog dialog = new FileSetEditDialog(mComposite.getShell(), null, mProject);
-            dialog.open();
-            if (dialog.okWasPressed())
-            {
-                FileSet fileSet = dialog.getFileSet();
-                mFileSets.add(fileSet);
-                mViewer.refresh();
-                mViewer.setChecked(fileSet, fileSet.isEnabled());
-                mNeedRebuild = true;
-            }
-        }
-        catch (CheckstylePluginException e)
-        {
-            CheckstyleLog.error("Failed to add FileSet: " + e.getMessage(), e);
-            CheckstyleLog.internalErrorDialog();
-        }
-    }
-
-    private void editFileSet()
-    {
-        IStructuredSelection selection = (IStructuredSelection) mViewer.getSelection();
-        FileSet fileSet = (FileSet) selection.getFirstElement();
-        if (fileSet == null)
-        {
-            //
-            //  Nothing is selected.
-            //
-            return;
-        }
-
-        try
-        {
-            FileSetEditDialog dialog = new FileSetEditDialog(mComposite.getShell(), fileSet,
-                    mProject);
-            dialog.open();
-            if (dialog.okWasPressed())
-            {
-                FileSet newFileSet = dialog.getFileSet();
-                mFileSets.remove(fileSet);
-                mFileSets.add(newFileSet);
-                mViewer.refresh();
-                mViewer.setChecked(newFileSet, newFileSet.isEnabled());
-                mNeedRebuild = true;
-            }
-        }
-        catch (CheckstylePluginException e)
-        {
-            CheckstyleLog.error("Failed to edit FileSet: " + e.getMessage(), e);
-            CheckstyleLog.internalErrorDialog();
-        }
-    }
-
-    private void removeFileSet()
-    {
-        IStructuredSelection selection = (IStructuredSelection) mViewer.getSelection();
-        FileSet fileSet = (FileSet) selection.getFirstElement();
-        if (fileSet == null)
-        {
-            //
-            //  Nothing is selected.
-            //
-            return;
-        }
-
-        mFileSets.remove(fileSet);
-        mViewer.refresh();
-        mNeedRebuild = true;
-    }
-
-    private void changeEnabledState(CheckStateChangedEvent event)
-    {
-        if (event.getElement() instanceof FileSet)
-        {
-            FileSet fileSet = (FileSet) event.getElement();
-            fileSet.setEnabled(event.getChecked());
-            mViewer.refresh();
-            mNeedRebuild = true;
-        }
-        else
-        {
-            CheckstyleLog.warning("Checked element in FileSet table not a FileSet");
-        }
-    }
-
-    /**
-     * Add the Checkstyle nature to the project.
-     */
-    private void addNature() throws CheckstylePluginException
-    {
-        try
-        {
-            //
-            //  Check to see if the project already has the Checkstyle nature.
-            //
-            if (mProject.getNature(CheckstyleNature.NATURE_ID) != null)
-            {
-                //
-                //  The project already has the nature.
-                //
-                return;
-            }
-
-            //
-            //  Add the nature to the project.
-            //
-            ConfigureDeconfigureNatureJob natureJob = new ConfigureDeconfigureNatureJob(mProject,
-                    CheckstyleNature.NATURE_ID);
-            natureJob.setRule(ResourcesPlugin.getWorkspace().getRoot());
-            natureJob.schedule();
-        }
-        catch (CoreException e)
-        {
-            CheckstyleLog.error("Failed to add Checkstyle nature to project", e);
-            throw new CheckstylePluginException("Failed to add Checkstyle nature to project");
-        }
-    }
-
-    private boolean initializeFileSets()
-    {
-        //
-        //  Make a clone of the file sets so that the real values do not
-        //  get modified until the user presses the OK button (they might
-        //  press Cancel instead).
-        //
-        mFileSets = null;
-        try
-        {
-            List fileSets = FileSetFactory.getFileSets(mProject);
-            mFileSets = new LinkedList();
-            Iterator iter = fileSets.iterator();
-            while (iter.hasNext())
-            {
-                FileSet fileSet = (FileSet) iter.next();
-                fileSet = (FileSet) fileSet.clone();
-                mFileSets.add(fileSet);
-            }
-        }
-        catch (CheckstylePluginException e)
-        {
-            CheckstyleLog.error("Failed get FileSets, " + e.getMessage(), e);
-            mFileSets = null;
-            return false;
+            mProjectConfig = (ProjectConfiguration) mProjectConfigOrig.clone();
         }
         catch (CloneNotSupportedException e)
         {
-            CheckstyleLog.error("Failed to clone FileSet, " + e.getMessage(), e);
-            mFileSets = null;
-            return false;
+            throw new CheckstylePluginException("Could not clone project configuration.", e);
         }
 
+        try
+        {
+            mCheckstyleActivated = mProject.hasNature(CheckstyleNature.NATURE_ID);
+        }
+        catch (CoreException e1)
+        {
+            throw new CheckstylePluginException("Could determine Checkstyle Nature.", e1);
+        }
+    }
+
+    /**
+     * @return the result of the ok action
+     * @see org.eclipse.jface.preference.IPreferencePage#performOk()
+     */
+    public boolean performOk()
+    {
+
+        try
+        {
+
+            //save the edited form data
+            ProjectConfigurationFactory.setConfiguration(mProjectConfig, mProject);
+
+            boolean checkstyleEnabled = mChkEnable.getSelection();
+            boolean needRebuild = !this.mProjectConfigOrig.equals(this.mProjectConfig);
+
+            //check if checkstyle nature has to be configured/deconfigured
+            if (checkstyleEnabled != mCheckstyleActivated)
+            {
+
+                ConfigureDeconfigureNatureJob configOperation = new ConfigureDeconfigureNatureJob(
+                        mProject, CheckstyleNature.NATURE_ID);
+                configOperation.setRule(ResourcesPlugin.getWorkspace().getRoot());
+                configOperation.schedule();
+                needRebuild = true;
+            }
+
+            //check if a rebuild is necessary
+            if (checkstyleEnabled && needRebuild)
+            {
+
+                BuildProjectJob rebuildOperation = new BuildProjectJob(mProject,
+                        IncrementalProjectBuilder.FULL_BUILD);
+                rebuildOperation.setRule(ResourcesPlugin.getWorkspace().getRoot());
+                rebuildOperation.schedule();
+            }
+        }
+        catch (CheckstylePluginException e)
+        {
+            CheckstyleLog.errorDialog(getShell(), e.getLocalizedMessage());
+        }
         return true;
+    }
+
+    /**
+     * This class works as controller for the page. It listenes for events to
+     * occur and handles the pages context.
+     * 
+     * @author Lars Ködderitzsch
+     */
+    private class PageController extends SelectionAdapter implements ISelectionChangedListener,
+            ICheckStateListener, IDoubleClickListener
+    {
+
+        /**
+         * @see org.eclipse.swt.events.SelectionListener#widgetSelected(org.eclipse.swt.events.SelectionEvent)
+         */
+        public void widgetSelected(SelectionEvent e)
+        {
+
+            Object source = e.getSource();
+            //edit filter
+            if (source == mBtnEditFilter)
+            {
+
+                ISelection selection = mFilterList.getSelection();
+                openFilterEditor(selection);
+            }
+            else if (source == mChkSimpleConfig)
+            {
+                try
+                {
+
+                    mProjectConfig.setUseSimpleConfig(mChkSimpleConfig.getSelection());
+
+                    IPreferenceStore prefStore = CheckstylePlugin.getDefault().getPreferenceStore();
+                    boolean showWarning = prefStore
+                            .getBoolean(CheckstylePlugin.PREF_FILESET_WARNING);
+                    if (mProjectConfig.isUseSimpleConfig() && showWarning)
+                    {
+                        MessageDialogWithToggle dialog = new MessageDialogWithToggle(
+                                getShell(),
+                                CheckstylePlugin
+                                        .getResourceString("CheckstylePropertiesPage.titleWarnFileSet"),
+                                null, // accept the default window icon
+                                CheckstylePlugin
+                                        .getResourceString("CheckstylePropertiesPage.msgWarnFileSet"),
+                                MessageDialogWithToggle.WARNING,
+                                new String[] { IDialogConstants.OK_LABEL },
+                                0,
+                                CheckstylePlugin
+                                        .getResourceString("CheckstylePropertiesPage.optionWarnFileSet"),
+                                showWarning)
+                        {
+                            /**
+                             * Overwritten because we don't want to store which
+                             * button the user pressed but the state of the
+                             * toggle.
+                             * 
+                             * @see org.eclipse.jface.dialogs.MessageDialogWithToggle#buttonPressed(int)
+                             */
+                            protected void buttonPressed(int buttonId)
+                            {
+                                getPrefStore().setValue(getPrefKey(), getToggleState());
+                                setReturnCode(buttonId);
+                                close();
+                            }
+
+                        };
+                        dialog.setPrefStore(prefStore);
+                        dialog.setPrefKey(CheckstylePlugin.PREF_FILESET_WARNING);
+                        dialog.open();
+
+                    }
+
+                    createFileSetsArea(mFileSetsContainer);
+                    mFileSetsContainer.redraw();
+                    mFileSetsContainer.update();
+                    mFileSetsContainer.layout();
+                }
+                catch (CheckstylePluginException ex)
+                {
+                    CheckstyleLog.error("Error changing fileset editor", ex);
+                    CheckstyleLog.errorDialog(getShell(), "Error changing fileset editor");
+                }
+            }
+
+        }
+
+        /**
+         * @see org.eclipse.jface.viewers.ISelectionChangedListener#selectionChanged
+         *      (org.eclipse.jface.viewers.SelectionChangedEvent)
+         */
+        public void selectionChanged(SelectionChangedEvent event)
+        {
+
+            Object source = event.getSource();
+            if (source == mFilterList)
+            {
+
+                ISelection selection = event.getSelection();
+                if (selection instanceof IStructuredSelection)
+                {
+                    Object selectedElement = ((IStructuredSelection) selection).getFirstElement();
+
+                    if (selectedElement instanceof IFilter)
+                    {
+
+                        IFilter filterDef = (IFilter) selectedElement;
+
+                        mTxtFilterDescription.setText(filterDef.getDescription());
+
+                        //activate edit button
+                        mBtnEditFilter.setEnabled(filterDef.isEditable());
+                    }
+                }
+            }
+        }
+
+        /**
+         * @see org.eclipse.jface.viewers.ICheckStateListener#checkStateChanged
+         *      (org.eclipse.jface.viewers.CheckStateChangedEvent)
+         */
+        public void checkStateChanged(CheckStateChangedEvent event)
+        {
+
+            Object element = event.getElement();
+            if (element instanceof IFilter)
+            {
+                ((IFilter) element).setEnabled(event.getChecked());
+            }
+        }
+
+        /**
+         * @see org.eclipse.jface.viewers.IDoubleClickListener#doubleClick(org.eclipse.jface.viewers.DoubleClickEvent)
+         */
+        public void doubleClick(DoubleClickEvent event)
+        {
+
+            openFilterEditor(event.getSelection());
+        }
+
+        /**
+         * Open the filter editor on a given selection of the list.
+         * 
+         * @param selection the selection
+         */
+        private void openFilterEditor(ISelection selection)
+        {
+
+            if (selection instanceof IStructuredSelection)
+            {
+                Object selectedElement = ((IStructuredSelection) selection).getFirstElement();
+
+                if (selectedElement instanceof IFilter)
+                {
+
+                    try
+                    {
+
+                        IFilter aFilterDef = (IFilter) selectedElement;
+
+                        if (!aFilterDef.isEditable())
+                        {
+                            return;
+                        }
+
+                        Class editorClass = aFilterDef.getEditorClass();
+
+                        IFilterEditor editableFilter = (IFilterEditor) editorClass.newInstance();
+                        editableFilter.setInputProject(mProject);
+                        editableFilter.setFilterData(aFilterDef.getFilterData());
+
+                        if (Window.OK == editableFilter.openEditor(getShell()))
+                        {
+
+                            aFilterDef.setFilterData(editableFilter.getFilterData());
+                            mFilterList.refresh();
+                        }
+                    }
+                    catch (IllegalAccessException ex)
+                    {
+                        CheckstyleLog.error(ex.getLocalizedMessage(), ex);
+                        CheckstyleLog.errorDialog(getShell(), ex.getLocalizedMessage());
+                    }
+                    catch (InstantiationException ex)
+                    {
+                        CheckstyleLog.error(ex.getLocalizedMessage(), ex);
+                        CheckstyleLog.errorDialog(getShell(), ex.getLocalizedMessage());
+                    }
+                }
+            }
+        }
     }
 
 }

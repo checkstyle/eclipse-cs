@@ -28,23 +28,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-//=================================================
-// Imports from javax namespace
-//=================================================
-
-//=================================================
-// Imports from com namespace
-//=================================================
-import com.atlassw.tools.eclipse.checkstyle.config.CheckConfiguration;
-import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationFactory;
-import com.atlassw.tools.eclipse.checkstyle.config.FileMatchPattern;
-import com.atlassw.tools.eclipse.checkstyle.config.FileSet;
-import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
-import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
-
-//=================================================
-// Imports from org namespace
-//=================================================
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -74,6 +57,13 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
+
+import com.atlassw.tools.eclipse.checkstyle.config.CheckConfiguration;
+import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationFactory;
+import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileMatchPattern;
+import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileSet;
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
 /**
  *  Property page.
