@@ -1,6 +1,2 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<fileset-config file-format-version="1.0.0">
-    <fileset name="Production Files" enabled="false" check-config-name="Production Files">
-        <file-match-pattern match-pattern="[.java]$" include-pattern="true"/>
-    </fileset>
-</fileset-config>
+<fileset-config file-format-version="1.0.0"/>
