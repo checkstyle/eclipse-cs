@@ -108,7 +108,7 @@ public class CheckstylePreferencePage
 
 	private Button           mExportCheckstyleButton;
     
-    private List             mAuditConfigurations;
+    private List             mCheckConfigurations;
     
     private boolean          mNeedRebuild = false;
         
@@ -181,7 +181,7 @@ public class CheckstylePreferencePage
 		mViewer.setLabelProvider(new CheckConfigurationLabelProvider());
 		mViewer.setContentProvider(new CheckConfigurationProvider());
 		mViewer.setSorter(new CheckConfigurationViewerSorter());
-        mViewer.setInput(mAuditConfigurations);
+        mViewer.setInput(mCheckConfigurations);
 
 		Composite rightButtons = new Composite(parent, SWT.NULL);
 		rightButtons.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
@@ -279,11 +279,11 @@ public class CheckstylePreferencePage
     {
         try
         {
-            CheckConfigurationFactory.setCheckConfigurations(mAuditConfigurations);
+            CheckConfigurationFactory.setCheckConfigurations(mCheckConfigurations);
         }
         catch (CheckstylePluginException e)
         {
-            CheckstyleLog.error("Failed to save AuditConfigurations, " 
+            CheckstyleLog.error("Failed to save CheckConfigurations, " 
                             + e.getMessage(), e);
             CheckstyleLog.internalErrorDialog();
         }
@@ -341,8 +341,8 @@ public class CheckstylePreferencePage
 
 		if (dialog.okWasPressed())
 		{
-			CheckConfiguration auditConfig = dialog.getFinalConfiguration();
-			if (auditConfig != null)
+			CheckConfiguration checkConfig = dialog.getFinalConfiguration();
+			if (checkConfig != null)
 			{
 				//
 				// ad, 7.Jan.2004, Bug #872279 
@@ -353,10 +353,10 @@ public class CheckstylePreferencePage
 				// should be continued for the other configs (if multiple configs
 				// were selected.)
 				// 
-				for (Iterator iter = mAuditConfigurations.iterator(); iter.hasNext();) 
+				for (Iterator iter = mCheckConfigurations.iterator(); iter.hasNext();) 
 				{
 					CheckConfiguration c = (CheckConfiguration) iter.next();
-					if(c.getConfigName().equals(auditConfig.getConfigName())) 
+					if(c.getConfigName().equals(checkConfig.getConfigName())) 
 					{
 						//
 						// The newly imported config exists already.  Ask the user if
@@ -386,7 +386,7 @@ public class CheckstylePreferencePage
 					}
 				}
 				
-				mAuditConfigurations.add(auditConfig);
+				mCheckConfigurations.add(checkConfig);
 				mViewer.refresh();
 				
 				//
@@ -395,7 +395,7 @@ public class CheckstylePreferencePage
 				//
 				try
 				{
-					if (FileSetFactory.isCheckConfigInUse(auditConfig.getConfigName()))
+					if (FileSetFactory.isCheckConfigInUse(checkConfig.getConfigName()))
 					{
 						mNeedRebuild = true;
 					}
@@ -406,7 +406,7 @@ public class CheckstylePreferencePage
 					//  Assume its in use.
 					//
 					mNeedRebuild = true;
-					CheckstyleLog.warning("Exception while checking for audit config use", e);
+					CheckstyleLog.warning("Exception while checking for check config use", e);
 				}
 				// ad, 7.Jan.2004, Bug #872279 
 				// end change
@@ -423,8 +423,8 @@ public class CheckstylePreferencePage
     private void editCheckConfig()
     {
         IStructuredSelection selection = (IStructuredSelection)mViewer.getSelection();
-        CheckConfiguration auditConfig = (CheckConfiguration)selection.getFirstElement();
-        if (auditConfig == null)
+        CheckConfiguration checkConfig = (CheckConfiguration)selection.getFirstElement();
+        if (checkConfig == null)
         {
             //
             //  Nothing is selected.
@@ -436,12 +436,12 @@ public class CheckstylePreferencePage
         try
         {
             dialog = new CheckConfigurationEditDialog(mParentComposite.getShell(),
-                                                      auditConfig);
+                                                      checkConfig);
             dialog.open();
         }
         catch (CheckstylePluginException e)
         {
-            CheckstyleLog.error("Failed to open AuditConfigurationEditDialog, " 
+            CheckstyleLog.error("Failed to open CheckConfigurationEditDialog, " 
                                     + e.getMessage(), e);
             CheckstyleLog.internalErrorDialog();
             return;
@@ -452,8 +452,8 @@ public class CheckstylePreferencePage
             CheckConfiguration editedConfig = dialog.getFinalConfiguration();
             if (editedConfig != null)
             {
-                mAuditConfigurations.remove(auditConfig);
-                mAuditConfigurations.add(editedConfig);
+                mCheckConfigurations.remove(checkConfig);
+                mCheckConfigurations.add(editedConfig);
                 try
                 {
                     if (FileSetFactory.isCheckConfigInUse(editedConfig.getConfigName()))
@@ -467,13 +467,13 @@ public class CheckstylePreferencePage
                     //  Assume its in use.
                     //
                     mNeedRebuild = true;
-                    CheckstyleLog.warning("Exception while checking for audit config use", e);
+                    CheckstyleLog.warning("Exception while checking for check config use", e);
                 }
                 mViewer.refresh();
             }
             else
             {
-                CheckstyleLog.error("Edited audit configuration is null");
+                CheckstyleLog.error("Edited check configuration is null");
                 CheckstyleLog.internalErrorDialog();
             }
         }
@@ -482,8 +482,8 @@ public class CheckstylePreferencePage
 	private void removeCheckConfig()
 	{
 		IStructuredSelection selection = (IStructuredSelection) mViewer.getSelection();
-		CheckConfiguration auditConfig = (CheckConfiguration) selection.getFirstElement();
-		if (auditConfig == null)
+		CheckConfiguration checkConfig = (CheckConfiguration) selection.getFirstElement();
+		if (checkConfig == null)
 		{
 			//
 			//  Nothing is selected.
@@ -492,17 +492,17 @@ public class CheckstylePreferencePage
 		}
 
 		//
-		//  Make sure the audit config is not in use.  Don't let it be
+		//  Make sure the check config is not in use.  Don't let it be
 		//  deleted if it is.
 		//
 		try
 		{
-			if (FileSetFactory.isCheckConfigInUse(auditConfig.getConfigName()))
+			if (FileSetFactory.isCheckConfigInUse(checkConfig.getConfigName()))
 			{
 				MessageDialog.openInformation(mParentComposite.getShell(),
                                               "Can't Delete",
-                                              "The Audit Configuration '"
-                                              + auditConfig.getConfigName() 
+                                              "The Check Configuration '"
+                                              + checkConfig.getConfigName() 
                                               + "' is currently in use by a project."
                                               + "  It must be removed from all project "
                                               + "configurations before it can be deleted.");
@@ -511,18 +511,18 @@ public class CheckstylePreferencePage
 		}
 		catch (CheckstylePluginException e)
 		{
-			CheckstyleLog.warning("Exception while checking for audit config use", e);
+			CheckstyleLog.warning("Exception while checking for check config use", e);
             CheckstyleLog.internalErrorDialog();
             return;
 		}
 
 		boolean confirm = MessageDialog.openQuestion(mParentComposite.getShell(),
 				                                      "Confirm Delete",
-				                                      "Remove audit configuration '" 
-                                                      + auditConfig.getConfigName() + "'?");
+				                                      "Remove check configuration '" 
+                                                      + checkConfig.getConfigName() + "'?");
 		if (confirm)
 		{
-			mAuditConfigurations.remove(auditConfig);
+			mCheckConfigurations.remove(checkConfig);
 			mViewer.refresh();
 		}
 	}
@@ -682,7 +682,7 @@ public class CheckstylePreferencePage
      */
     private void initializeCheckConfigs() throws CheckstylePluginException
     {
-        mAuditConfigurations = new LinkedList();
+        mCheckConfigurations = new LinkedList();
         try
         {
             List configs = CheckConfigurationFactory.getCheckConfigurations();
@@ -691,13 +691,13 @@ public class CheckstylePreferencePage
             {
                 CheckConfiguration cfg = (CheckConfiguration)iter.next();
                 CheckConfiguration clone = (CheckConfiguration)cfg.clone();
-                mAuditConfigurations.add(clone);
+                mCheckConfigurations.add(clone);
             }
         }
         catch (CloneNotSupportedException e)
         {
-            CheckstyleLog.error("Failed to clone AuditConfiguration", e);
-            throw new CheckstylePluginException("Failed to clone AuditConfiguration, "
+            CheckstyleLog.error("Failed to clone CheckConfiguration", e);
+            throw new CheckstylePluginException("Failed to clone CheckConfiguration, "
                                        + e.getMessage());
         }
     }

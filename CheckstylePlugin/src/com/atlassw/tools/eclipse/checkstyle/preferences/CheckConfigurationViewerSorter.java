@@ -41,7 +41,7 @@ import org.eclipse.jface.viewers.ViewerSorter;
 
 
 /**
- *  Sorts AuditConfiguration objects into their display order.
+ *  Sorts CheckConfiguration objects into their display order.
  */
 public class CheckConfigurationViewerSorter extends ViewerSorter
 {
