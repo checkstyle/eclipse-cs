@@ -263,6 +263,11 @@ public final class FileSetFactory
         throws CheckstylePluginException
     {
         boolean result = false;
+        
+        if (configName == null)
+        {
+        	return result;
+        }
 
         IWorkspace workspace = ResourcesPlugin.getWorkspace();
         IProject projects[] = workspace.getRoot().getProjects();

@@ -328,7 +328,9 @@ public class CheckstylePreferencePage
         CheckConfigurationEditDialog dialog = null;
         try
         {
-		    dialog = new CheckConfigurationEditDialog(mParentComposite.getShell(), configToAdd);
+		    dialog = new CheckConfigurationEditDialog(mParentComposite.getShell(), 
+		                                              configToAdd,
+			                                          mCheckConfigurations);
 		    dialog.open();
         }
         catch (CheckstylePluginException e)
@@ -436,7 +438,8 @@ public class CheckstylePreferencePage
         try
         {
             dialog = new CheckConfigurationEditDialog(mParentComposite.getShell(),
-                                                      checkConfig);
+                                                      checkConfig,
+			                                          mCheckConfigurations);
             dialog.open();
         }
         catch (CheckstylePluginException e)

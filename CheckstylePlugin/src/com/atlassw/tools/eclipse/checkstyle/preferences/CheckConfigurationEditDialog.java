@@ -119,6 +119,8 @@ public class CheckConfigurationEditDialog extends Dialog
     private String                 mCheckConfigName;
     
     private boolean                mOkWasPressed = false;
+    
+    private List                   mCurrentCheckConfigs;
 
 	//=================================================
 	// Constructors & finalizer.
@@ -130,16 +132,24 @@ public class CheckConfigurationEditDialog extends Dialog
 	 * @param parent        Parent shell.
 	 * 
 	 * @param checkConfig   Check configuration being edited.
+	 * 
+	 * @param currentCheckConfigs  List of the current check configs defined.
      * 
      * @throws CheckstyleException  Error during processing.
 	 */
-	public CheckConfigurationEditDialog(
-		Shell parent,
-		CheckConfiguration checkConfig)
+	public CheckConfigurationEditDialog(Shell parent,
+	                                    CheckConfiguration checkConfig,
+	                                    List currentCheckConfigs)
 		throws CheckstylePluginException
 	{
 		super(parent);
-
+		
+		//
+		//  Remimber the list of current check configs.  These are checked to make
+		//  sure the check config name entered via the editor is unique.
+		//
+		mCurrentCheckConfigs = currentCheckConfigs;
+		
 		//
 		//  If we were given an existing audit configuration then make a clone
 		//  of it, otherwise create a new one.  A clone is used so that the
@@ -248,12 +258,12 @@ public class CheckConfigurationEditDialog extends Dialog
 	 */
 	protected void okPressed()
 	{
-        String auditConfigName = mConfigNameText.getText();
+        String checkConfigName = mConfigNameText.getText().trim();
         
         //
         //  Make sure a name was entered for the check configuration.
         //
-        if ((auditConfigName == null) || (auditConfigName.trim().length() == 0))
+        if ((checkConfigName == null) || (checkConfigName.length() == 0))
         {
             MessageDialog.openError(mParentComposite.getShell(), 
                                     "Invalid Value",
@@ -264,40 +274,32 @@ public class CheckConfigurationEditDialog extends Dialog
         //
         //  See if the name was modified.
         //
-		if (!auditConfigName.equals(mCheckConfiguration.getConfigName()))
+		if (!checkConfigName.equals(mCheckConfiguration.getConfigName()))
 		{
             //
+            //  The name was changed.
             //  Make sure the name is not already in use by another check configuration.
             //  Check configuration names must be unique within the workspace.
             //
-			boolean nameInUse = false;
-			try
-			{
-				nameInUse = CheckConfigurationFactory.isNameInUse(auditConfigName);
-			}
-			catch (CheckstylePluginException e)
-			{
-				CheckstyleLog.warning("Error checking CheckConfiguration name already in use", e);
-				CheckstyleLog.internalErrorDialog(mParentComposite.getShell());
-			}
+			boolean nameInUse = isNameInUse(checkConfigName);
 			if (nameInUse)
 			{
 				MessageDialog.openError(
 					mParentComposite.getShell(),
 					"Invalid Value",
 					"The check configuration name '"
-						+ auditConfigName
+						+ checkConfigName
 						+ "' is already in use, please choose a different name.");
 				return;
 			}
             
             //
-            //  Make sure the name is not part of an existing file set.
+            //  Make sure the orignal name is not part of an existing file set.
             //
             try
             {
                 nameInUse = 
-                    FileSetFactory.isCheckConfigInUse(auditConfigName);
+                    FileSetFactory.isCheckConfigInUse(mCheckConfiguration.getConfigName());
             }
             catch (CheckstylePluginException e)
             {
@@ -310,12 +312,12 @@ public class CheckConfigurationEditDialog extends Dialog
                     mParentComposite.getShell(),
                     "Invalid Value",
                     "The check configuration name '"
-                        + auditConfigName
+                        + checkConfigName
                         + "' is referenced by a project File Set and can not be changed.");
                 return;
             }
 		}
-        mCheckConfigName = auditConfigName.trim();
+        mCheckConfigName = checkConfigName;
         
         mOkWasPressed = true;
 		super.okPressed();
@@ -716,5 +718,20 @@ public class CheckConfigurationEditDialog extends Dialog
     private RuleMetadata getRuleMetadata(RuleConfiguration ruleConfig)
     {
     	return MetadataFactory.getRuleMetadata(ruleConfig);
+    }
+    
+    private boolean isNameInUse(String name)
+    {
+    	boolean result = false;
+    	for (Iterator iter = mCurrentCheckConfigs.iterator(); iter.hasNext();)
+    	{
+    		CheckConfiguration config = (CheckConfiguration)iter.next();
+    		if (config.getName().equals(name))
+    		{
+    			result = true;
+    			break;
+    		}
+    	}
+    	return result;
     }
 }
