@@ -263,7 +263,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
 
                 try
                 {
-                    auditor.auditFiles(files, classLoader, monitor);
+                    auditor.checkFiles(files, classLoader, monitor);
                 }
                 catch (CheckstylePluginException e)
                 {

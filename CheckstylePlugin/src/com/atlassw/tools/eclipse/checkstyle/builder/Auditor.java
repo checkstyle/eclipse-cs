@@ -58,7 +58,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 
 /**
- *  Performs auditing on Java source code.
+ *  Performs checking on Java source code.
  */
 class Auditor
 {
@@ -114,7 +114,7 @@ class Auditor
     }
 
     /**
-     *  Audit a collection of files.
+     *  Check a collection of files.
      *
      *  @param files    The collection of <code>IFile</code> objects to be audited.
      * 
@@ -124,7 +124,7 @@ class Auditor
      * 
      *  @throws CoreException  Error during processing.
      */
-    void auditFiles(Collection files, ClassLoader classLoader, IProgressMonitor monitor)
+    void checkFiles(Collection files, ClassLoader classLoader, IProgressMonitor monitor)
         throws CheckstylePluginException, CoreException
     {
         //
