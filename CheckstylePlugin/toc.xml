@@ -8,4 +8,5 @@
 	<topic label="Using Regular Expressions"         href="doc/regularexpressions.html"/>
 	<topic label="Import/Export Configurations"      href="doc/import_export.html"/>
 	<topic label="Working with a Team Repository"    href="doc/team.html"/>
+	<topic label="Troubleshooting"                   href="doc/troubleshooting.html"/>
 </toc>
