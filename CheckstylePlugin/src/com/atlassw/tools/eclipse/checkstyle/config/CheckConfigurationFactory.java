@@ -80,11 +80,16 @@ public final class CheckConfigurationFactory
     private static final String VERSION_1_0_0 = "1.0.0";
 
     private static final String VERSION_3_2_0 = "3.2.0";
+    
+    private static final String VERSION_4_0_0 = "4.0.0";
 
-    private static final String CURRENT_CONFIG_FILE_FORMAT_VERSION = VERSION_3_2_0;
+    private static final String CURRENT_CONFIG_FILE_FORMAT_VERSION = VERSION_4_0_0;
 
     private static final String CLASSNAMES_V3_2_0_UPDATE =
         "com/atlassw/tools/eclipse/checkstyle/config/classnames_v3.2.0_update.properties";
+
+    private static final String CLASSNAMES_V4_0_0_UPDATE =
+       "com/atlassw/tools/eclipse/checkstyle/config/classnames_v4.0.0_update.properties";
 
     //=================================================
     // Instance member variables.
@@ -504,15 +509,16 @@ public final class CheckConfigurationFactory
     {
         Node result = doc.getDocumentElement();
         String fileVersion = XMLUtil.getNodeAttributeValue(result, XMLTags.FORMAT_VERSION_TAG);
-        if (fileVersion.equals(VERSION_1_0_0))
+        if (fileVersion.equals(VERSION_1_0_0) || fileVersion.equals(VERSION_3_2_0))
         {
             //
             //  The package names of the check rules changed going from
             //  Checkstyle v3.1 (file format 1.0.0) to Checkstyle 3.2
             //  (file format 3.2.0).  Update the check rule class names
             //  to the correct version 3.2.0 names.
+            //  They have also changed from 3.2.0 to 4.0.0 this will update to the latest
             //
-            result = updateCheckClassnamesTo_v3_2_0(result);
+            result = updateCheckClassnamesTo_Latest(result);
         }
         return result;
     }
@@ -547,12 +553,54 @@ public final class CheckConfigurationFactory
     private static Node updateCheckClassnamesTo_v3_2_0(Node rootNode)
         throws CheckstylePluginException
     {
+       return updateCheckClassnames(rootNode, CLASSNAMES_V3_2_0_UPDATE);
+    }
+    
+    /**
+     * Updates check rule class names based on a package renaming that occured 
+     * with the release of Checkstyle v4.0.0.
+     * 
+     * @param  rootNode  The check configuration XML document.
+     * 
+     * @return  A modified check configuration XML document.
+     */
+    private static Node updateCheckClassnamesTo_v4_0_0(Node rootNode)
+        throws CheckstylePluginException
+    {
+       return updateCheckClassnames(updateCheckClassnamesTo_v3_2_0(rootNode), CLASSNAMES_V4_0_0_UPDATE);
+    }
+
+    /**
+     * Updates check rule class names based on a package renaming that occured 
+     * since the release of Checkstyle v3.2.0.
+     * 
+     * @param  rootNode  The check configuration XML document.
+     * 
+     * @return  A modified check configuration XML document.
+     */
+    private static Node updateCheckClassnamesTo_Latest(Node rootNode)
+        throws CheckstylePluginException
+    {
+       return updateCheckClassnamesTo_v4_0_0(rootNode);
+    }
+
+    /**
+     * Updates check rule class names based on a package renaming that occured 
+     * based on the passed in update file
+     * 
+     * @param  rootNode  The check configuration XML document.
+     * 
+     * @return  A modified check configuration XML document.
+     */
+    private static Node updateCheckClassnames(Node rootNode, String updateFile)
+        throws CheckstylePluginException
+    {
         //
         //  Load the classname mapping from the v3.2.0 update.
         //
         Properties classnameMap = new Properties();
         ClassLoader loader = CheckConfigurationFactory.class.getClassLoader();
-        InputStream inStream = loader.getResourceAsStream(CLASSNAMES_V3_2_0_UPDATE);
+        InputStream inStream = loader.getResourceAsStream(updateFile);
         if (inStream == null)
         {
             throw new CheckstylePluginException("Failed to load check classname update map");
