@@ -23,35 +23,15 @@ package com.atlassw.tools.eclipse.checkstyle.properties;
 //=================================================
 // Imports from java namespace
 //=================================================
-import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-//=================================================
-// Imports from javax namespace
-//=================================================
-
-//=================================================
-// Imports from com namespace
-//=================================================
-import com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleBuilder;
-import com.atlassw.tools.eclipse.checkstyle.config.FileSet;
-import com.atlassw.tools.eclipse.checkstyle.config.FileSetFactory;
-import com.atlassw.tools.eclipse.checkstyle.nature.CheckstyleNature;
-import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
-import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
-
-//=================================================
-// Imports from org namespace
-//=================================================
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.dialogs.ProgressMonitorDialog;
-import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.ColumnWeightData;
@@ -72,8 +52,16 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.dialogs.PropertyPage;
 
+import com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleBuilder;
+import com.atlassw.tools.eclipse.checkstyle.config.FileSet;
+import com.atlassw.tools.eclipse.checkstyle.config.FileSetFactory;
+import com.atlassw.tools.eclipse.checkstyle.nature.CheckstyleNature;
+import com.atlassw.tools.eclipse.checkstyle.nature.ConfigureDeconfigureNatureJob;
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
+
 /**
- *  Property page.
+ * Property page.
  */
 public class CheckstylePropertyPage extends PropertyPage
 {
@@ -83,27 +71,27 @@ public class CheckstylePropertyPage extends PropertyPage
 
     //=================================================
     // Static class variables.
-    //=================================================    
+    //=================================================
 
     //=================================================
     // Instance member variables.
     //=================================================
 
-    private IProject mProject;
+    private IProject            mProject;
 
-    private Composite mComposite;
+    private Composite           mComposite;
 
     private CheckboxTableViewer mViewer;
 
-    private Button mAddButton;
+    private Button              mAddButton;
 
-    private Button mEditButton;
+    private Button              mEditButton;
 
-    private Button mRemoveButton;
+    private Button              mRemoveButton;
 
-    private List mFileSets;
+    private List                mFileSets;
 
-    private boolean mNeedRebuild = false;
+    private boolean             mNeedRebuild = false;
 
     //=================================================
     // Constructors & finalizer.
@@ -137,10 +125,10 @@ public class CheckstylePropertyPage extends PropertyPage
         //
         //  Get the project.
         //
-        IResource resource = (IResource)getElement();
+        IResource resource = (IResource) getElement();
         if (resource.getType() == IResource.PROJECT)
         {
-            mProject = (IProject)resource;
+            mProject = (IProject) resource;
         }
         else
         {
@@ -194,7 +182,7 @@ public class CheckstylePropertyPage extends PropertyPage
         Iterator iter = mFileSets.iterator();
         while (iter.hasNext())
         {
-            FileSet fileSet = (FileSet)iter.next();
+            FileSet fileSet = (FileSet) iter.next();
             mViewer.setChecked(fileSet, fileSet.isEnabled());
         }
 
@@ -255,7 +243,7 @@ public class CheckstylePropertyPage extends PropertyPage
     }
 
     /**
-     *  {@inheritDoc}
+     * {@inheritDoc}
      */
     public boolean performOk()
     {
@@ -296,11 +284,11 @@ public class CheckstylePropertyPage extends PropertyPage
     }
 
     /**
-     * Utility method that creates a push button instance
-     * and sets the default layout data.
-     *
-     * @param parent  the parent for the new button
-     * @param label  the label for the new button
+     * Utility method that creates a push button instance and sets the default
+     * layout data.
+     * 
+     * @param parent the parent for the new button
+     * @param label the label for the new button
      * @return the newly-created button
      */
     private Button createPushButton(Composite parent, String label)
@@ -337,8 +325,8 @@ public class CheckstylePropertyPage extends PropertyPage
 
     private void editFileSet()
     {
-        IStructuredSelection selection = (IStructuredSelection)mViewer.getSelection();
-        FileSet fileSet = (FileSet)selection.getFirstElement();
+        IStructuredSelection selection = (IStructuredSelection) mViewer.getSelection();
+        FileSet fileSet = (FileSet) selection.getFirstElement();
         if (fileSet == null)
         {
             //
@@ -349,8 +337,8 @@ public class CheckstylePropertyPage extends PropertyPage
 
         try
         {
-            FileSetEditDialog dialog =
-                new FileSetEditDialog(mComposite.getShell(), fileSet, mProject);
+            FileSetEditDialog dialog = new FileSetEditDialog(mComposite.getShell(), fileSet,
+                    mProject);
             dialog.open();
             if (dialog.okWasPressed())
             {
@@ -371,8 +359,8 @@ public class CheckstylePropertyPage extends PropertyPage
 
     private void removeFileSet()
     {
-        IStructuredSelection selection = (IStructuredSelection)mViewer.getSelection();
-        FileSet fileSet = (FileSet)selection.getFirstElement();
+        IStructuredSelection selection = (IStructuredSelection) mViewer.getSelection();
+        FileSet fileSet = (FileSet) selection.getFirstElement();
         if (fileSet == null)
         {
             //
@@ -390,7 +378,7 @@ public class CheckstylePropertyPage extends PropertyPage
     {
         if (event.getElement() instanceof FileSet)
         {
-            FileSet fileSet = (FileSet)event.getElement();
+            FileSet fileSet = (FileSet) event.getElement();
             fileSet.setEnabled(event.getChecked());
             mViewer.refresh();
             mNeedRebuild = true;
@@ -402,7 +390,7 @@ public class CheckstylePropertyPage extends PropertyPage
     }
 
     /**
-     *  Add the Checkstyle nature to the project.
+     * Add the Checkstyle nature to the project.
      */
     private void addNature() throws CheckstylePluginException
     {
@@ -422,56 +410,15 @@ public class CheckstylePropertyPage extends PropertyPage
             //
             //  Add the nature to the project.
             //
-            AddNature addNature = new AddNature(mProject);
-            ProgressMonitorDialog monitor = new ProgressMonitorDialog(getShell());
-            monitor.run(true, true, addNature);
-        }
-        catch (InvocationTargetException e)
-        {
-            CheckstyleLog.error("Failed to add Checkstyle nature to project", e);
-            throw new CheckstylePluginException("Failed to add Checkstyle nature to project");
-        }
-        catch (InterruptedException e)
-        {
-            CheckstyleLog.error("Failed to add Checkstyle nature to project", e);
-            throw new CheckstylePluginException("Failed to add Checkstyle nature to project");
+            ConfigureDeconfigureNatureJob natureJob = new ConfigureDeconfigureNatureJob(mProject,
+                    CheckstyleNature.NATURE_ID);
+            natureJob.setRule(ResourcesPlugin.getWorkspace().getRoot());
+            natureJob.schedule();
         }
         catch (CoreException e)
         {
             CheckstyleLog.error("Failed to add Checkstyle nature to project", e);
             throw new CheckstylePluginException("Failed to add Checkstyle nature to project");
-        }
-    }
-
-    private class AddNature implements IRunnableWithProgress
-    {
-        private IProject mProject;
-
-        public AddNature(IProject project)
-        {
-            mProject = project;
-        }
-
-        public void run(IProgressMonitor monitor)
-            throws InvocationTargetException, InterruptedException
-        {
-            try
-            {
-                //
-                //  Add the nature to the project.
-                //
-                IProjectDescription description = mProject.getDescription();
-                String[] natures = description.getNatureIds();
-                String[] newNatures = new String[natures.length + 1];
-                System.arraycopy(natures, 0, newNatures, 0, natures.length);
-                newNatures[natures.length] = CheckstyleNature.NATURE_ID;
-                description.setNatureIds(newNatures);
-                mProject.setDescription(description, monitor);
-            }
-            catch (CoreException e)
-            {
-                throw new InvocationTargetException(e);
-            }
         }
     }
 
@@ -490,8 +437,8 @@ public class CheckstylePropertyPage extends PropertyPage
             Iterator iter = fileSets.iterator();
             while (iter.hasNext())
             {
-                FileSet fileSet = (FileSet)iter.next();
-                fileSet = (FileSet)fileSet.clone();
+                FileSet fileSet = (FileSet) iter.next();
+                fileSet = (FileSet) fileSet.clone();
                 mFileSets.add(fileSet);
             }
         }
