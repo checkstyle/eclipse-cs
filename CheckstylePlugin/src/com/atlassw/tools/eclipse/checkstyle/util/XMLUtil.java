@@ -23,12 +23,12 @@ package com.atlassw.tools.eclipse.checkstyle.util;
 //=================================================
 // Imports from java namespace
 //=================================================
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.InputStream;
 import java.io.ByteArrayInputStream;
-import java.util.Stack;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
 import java.util.EmptyStackException;
+import java.util.Stack;
 
 //=================================================
 // Imports from javax namespace
@@ -36,6 +36,13 @@ import java.util.EmptyStackException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 //=================================================
 // Imports from com namespace
@@ -45,19 +52,17 @@ import javax.xml.parsers.ParserConfigurationException;
 // Imports from org namespace
 //=================================================
 import org.w3c.dom.Attr;
+import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
-import org.w3c.dom.DOMException;
 import org.xml.sax.SAXException;
-import org.apache.xml.serialize.OutputFormat;
-import org.apache.xml.serialize.XMLSerializer;
 
 /**
- *  Provides utility methods for XML manipulations.
+ * Provides utility methods for XML manipulations.
  */
 public final class XMLUtil
 {
@@ -69,11 +74,14 @@ public final class XMLUtil
     // Static class variables.
     //=================================================
 
-    private static Stack sDocBuilderCache = new Stack();
+    private static Stack                  sDocBuilderCache      = new Stack();
 
-    private static DocumentBuilderFactory sDocBuilderFactory = DocumentBuilderFactory.newInstance();
+    private static DocumentBuilderFactory sDocBuilderFactory    = DocumentBuilderFactory
+                                                                        .newInstance();
 
-    private static final int MAX_DOC_BUILDER_CACHE = 10;
+    private static TransformerFactory     sTransformerFactory   = TransformerFactory.newInstance();
+
+    private static final int              MAX_DOC_BUILDER_CACHE = 10;
 
     //=================================================
     // Instance member variables.
@@ -84,7 +92,7 @@ public final class XMLUtil
     //=================================================
 
     /**
-     *  Private constructor to prevent instances.
+     * Private constructor to prevent instances.
      */
     private XMLUtil()
     {}
@@ -94,15 +102,15 @@ public final class XMLUtil
     //=================================================
 
     /**
-     *  Get a named child node.  If there is more then one child node
-     *  with the given name the child returned is undefined.
+     * Get a named child node. If there is more then one child node with the
+     * given name the child returned is undefined.
      * 
-     *  @param  parent  The parent node.
+     * @param parent The parent node.
      * 
-     *  @param  childName  The node name of the child node.
+     * @param childName The node name of the child node.
      * 
-     *  @return  The requested child node or <code>null</code> if no
-     *           child with the requested name is found.
+     * @return The requested child node or <code>null</code> if no child with
+     *         the requested name is found.
      */
     public static Node getChildNode(Node parent, String childName)
     {
@@ -128,11 +136,11 @@ public final class XMLUtil
     }
 
     /**
-     *  Get the value of the text node that is passed in.
-     *
-     *  @param  node   The node to work on
+     * Get the value of the text node that is passed in.
      * 
-     *  @return Text   value of the tag element
+     * @param node The node to work on
+     * 
+     * @return Text value of the tag element
      */
     public static String getNodeTextValue(Node node)
     {
@@ -147,7 +155,7 @@ public final class XMLUtil
                 Node childNode = childNodes.item(0);
 
                 if (childNode.getNodeType() == Node.TEXT_NODE
-                    || childNode.getNodeType() == Node.CDATA_SECTION_NODE)
+                        || childNode.getNodeType() == Node.CDATA_SECTION_NODE)
                 {
                     nodeValue = childNode.getNodeValue();
                 }
@@ -157,13 +165,14 @@ public final class XMLUtil
     }
 
     /**
-     *  Get the value of a node attribute.
+     * Get the value of a node attribute.
      * 
-     *  @param node  The nade to get the attribute from.
+     * @param node The nade to get the attribute from.
      * 
-     *  @param attrName  Name of the attribute.
+     * @param attrName Name of the attribute.
      * 
-     *  @return Value of the attribute or <code>null</code> if the attribute was not found.
+     * @return Value of the attribute or <code>null</code> if the attribute
+     *         was not found.
      */
     public static String getNodeAttributeValue(Node node, String attrName)
     {
@@ -178,7 +187,7 @@ public final class XMLUtil
 
         if (attr instanceof Attr)
         {
-            result = ((Attr)attr).getValue();
+            result = ((Attr) attr).getValue();
         }
         else
         {
@@ -189,23 +198,20 @@ public final class XMLUtil
     }
 
     /**
-     *  Add a new Element and its value to an input Document.
-     *
-     *  @param  document   Document to add to
+     * Add a new Element and its value to an input Document.
      * 
-     *  @param  parent  Parent element to add new element to
+     * @param document Document to add to
      * 
-     *  @param  tagName  Element tag name to add
+     * @param parent Parent element to add new element to
      * 
-     *  @param  value   Value of new Element
+     * @param tagName Element tag name to add
      * 
-     *  @return Element   Newly added Element
+     * @param value Value of new Element
+     * 
+     * @return Element Newly added Element
      */
-    public static Element addElementAndValue(
-        Document document,
-        Element parent,
-        String tagName,
-        String value)
+    public static Element addElementAndValue(Document document, Element parent, String tagName,
+            String value)
     {
         Element element = document.createElement(tagName);
         parent.appendChild(element);
@@ -216,15 +222,15 @@ public final class XMLUtil
     }
 
     /**
-     *  Add a new Element to an input Document.
-     *
-     *  @param  document   Document to add to
+     * Add a new Element to an input Document.
      * 
-     *  @param  parent  Parent element to add new element to
+     * @param document Document to add to
      * 
-     *  @param  tagName  Element tag name to add
+     * @param parent Parent element to add new element to
      * 
-     *  @return Element   Newly added Element
+     * @param tagName Element tag name to add
+     * 
+     * @return Element Newly added Element
      */
     public static Element addElement(Document document, Element parent, String tagName)
     {
@@ -235,11 +241,11 @@ public final class XMLUtil
     }
 
     /**
-     *  Create a new Document.
+     * Create a new Document.
      * 
-     *  @throws CheckstylePluginException An error occurred during creation.
+     * @throws CheckstylePluginException An error occurred during creation.
      * 
-     *  @return Document   Newly created Document
+     * @return Document Newly created Document
      */
     public static Document newDocument() throws CheckstylePluginException
     {
@@ -263,10 +269,11 @@ public final class XMLUtil
     }
 
     /**
-     * Converts the specified String into an XML Document.  If the String
-     * can't be parsed, then null is returned.
-     * @param	xmlString	The String to parse into an XML Document
-     * @return	Document	The parsed Docuement
+     * Converts the specified String into an XML Document. If the String can't
+     * be parsed, then null is returned.
+     * 
+     * @param xmlString The String to parse into an XML Document
+     * @return Document The parsed Docuement
      */
     public static Document newDocument(String xmlString)
     {
@@ -304,11 +311,11 @@ public final class XMLUtil
     }
 
     /**
-     *  Create a document from the contents of a stream.
+     * Create a document from the contents of a stream.
      * 
-     *  @param inStream  Stream to read from.
+     * @param inStream Stream to read from.
      * 
-     *  @return  Resulting Document.
+     * @return Resulting Document.
      */
     public static Document newDocument(InputStream inStream)
     {
@@ -339,32 +346,38 @@ public final class XMLUtil
     }
 
     /**
-     *  Serialize Document into String Rep.
+     * Serialize Document into String Rep.
      * 
      * @param doc - Document to be serialized
      * 
-     * @param indent - boolean indicating whether or not to indent
-     *                 tags
+     * @param indent - boolean indicating whether or not to indent tags
      * 
-     * @throws CheckstylePluginException - An error occurred
-     *                                     during serialization
+     * @throws CheckstylePluginException - An error occurred during
+     *             serialization
      * 
-     * @return String  - Serialized string representation of doc
+     * @return String - Serialized string representation of doc
      */
     public static String serializeDocument(Document doc, boolean indent)
-        throws CheckstylePluginException
+            throws CheckstylePluginException
     {
-        String result;
+
+        String result = null;
+
         try
         {
             final Document document = doc;
             final StringWriter writer = new StringWriter();
 
-            OutputFormat outputFormat = new OutputFormat(document);
-            outputFormat.setIndenting(indent);
-            final XMLSerializer serializer = new XMLSerializer(writer, outputFormat);
+            Source theSource = new DOMSource(doc);
+            Result theResult = new StreamResult(writer);
 
-            serializer.serialize(document);
+            //A transformer without stylesheet does identity transformation
+            Transformer transformer = sTransformerFactory.newTransformer();
+            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+            transformer.setOutputProperty(OutputKeys.INDENT, indent ? "yes" : "no");
+
+            transformer.transform(theSource, theResult);
+
             result = writer.toString();
         }
         catch (Exception e)
@@ -377,14 +390,15 @@ public final class XMLUtil
     }
 
     /**
-     *  Serialize Document into String Rep, delegates to method
-     *  with two arguments (indent set to false).
+     * Serialize Document into String Rep, delegates to method with two
+     * arguments (indent set to false).
      * 
      * @param doc - Document to be serialized
      * 
-     * @throws CheckstylePluginException - An error occurred during serialization.
+     * @throws CheckstylePluginException - An error occurred during
+     *             serialization.
      * 
-     * @return String  - Serialized string representation of doc
+     * @return String - Serialized string representation of doc
      */
     public static String serializeDocument(Document doc) throws CheckstylePluginException
     {
@@ -396,7 +410,7 @@ public final class XMLUtil
         DocumentBuilder builder = null;
         try
         {
-            builder = (DocumentBuilder)sDocBuilderCache.pop();
+            builder = (DocumentBuilder) sDocBuilderCache.pop();
         }
         catch (EmptyStackException e)
         {
@@ -415,7 +429,7 @@ public final class XMLUtil
     }
 
     private static synchronized DocumentBuilder createDocumentBuilder()
-        throws ParserConfigurationException
+            throws ParserConfigurationException
     {
         return sDocBuilderFactory.newDocumentBuilder();
     }
