@@ -29,6 +29,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -61,6 +62,9 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Plugin;
+import org.eclipse.core.runtime.PluginVersionIdentifier;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaElement;
@@ -94,6 +98,10 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
 	//=================================================
 	// Instance member variables.
 	//=================================================
+    
+    private boolean mEclipse_2_1_Safe = false;
+    
+    private boolean mEclipseVersionDetermined = false;
     
 	//=================================================
 	// Constructors & finalizer.
@@ -369,11 +377,10 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
      * @param javaProject
      * @return
      */    
-    private static List getClasspathURLs(IJavaProject javaProject, 
-                                         boolean exportedOnly)
+    private List getClasspathURLs(IJavaProject javaProject, boolean exportedOnly)
         throws JavaModelException, MalformedURLException, CoreException 
     {
-    	ArrayList urls = new ArrayList();
+    	HashSet urls = new HashSet();
     	
         IClasspathEntry[] entries = javaProject.getResolvedClasspath(true);
         boolean defaultOutputAdded = false;
@@ -391,17 +398,21 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
                     {
                         IPath outputLocation = null;
                         
-                        if (entries[i].getOutputLocation() == null)
+                        if (isEclipse_2_1_Safe())
                         {
+                            outputLocation = entries[i].getOutputLocation();
+                        }
+                        if (outputLocation == null)
+                        {
+                            //
+                            //  If the output location is null then the project's
+                            //  default output location is being used.
+                            //
                             if (!defaultOutputAdded)
                             {
                                 defaultOutputAdded = true;
                                 outputLocation = javaProject.getOutputLocation();
                             }
-                        }
-                        else
-                        {
-                            outputLocation = entries[i].getOutputLocation();
                         }
                         
                         if (outputLocation != null)
@@ -443,7 +454,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
                                     getProject(entries[i].getPath().segment(0))).
                                     getAdapter(IJavaElement.class);
         
-                        urls.add(getClasspathURLs(dependentProject, true));
+                        urls.addAll(getClasspathURLs(dependentProject, true));
                         
                         break;
                     }
@@ -462,7 +473,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
             }
         }
         
-        return urls;
+        return new ArrayList(urls);
     }
 
     /**
@@ -590,5 +601,33 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
                 }
             }
         }          
+    }
+    
+    /**
+     *  Determine if running eclipse 2.1 or newer.
+     *
+     *  The ability for source folders to have different output folders
+     *  was introduced in Eclipse 2.1.  Check the version of the
+     *  org.eclipse.jdt.core plug-in to determine if it's safe to
+     *  call the getOutputLocation() method, which was introduced
+     *  in Eclipse v2.1.
+     */
+    private boolean isEclipse_2_1_Safe()
+    {
+        if (!mEclipseVersionDetermined)
+        {
+            Plugin jdtCorePlugin = Platform.getPlugin("org.eclipse.jdt.core");
+            if (jdtCorePlugin != null)
+            {
+                PluginVersionIdentifier version =
+                    jdtCorePlugin.getDescriptor().getVersionIdentifier();
+                mEclipse_2_1_Safe = 
+                    version.isGreaterOrEqualTo(new PluginVersionIdentifier("2.1"));
+            }
+            mEclipseVersionDetermined = true;
+            //CheckstyleLog.info("Eclipse 2.1 Safe = " + mEclipse_2_1_Safe);
+        }
+        
+        return mEclipse_2_1_Safe;
     }
 }
