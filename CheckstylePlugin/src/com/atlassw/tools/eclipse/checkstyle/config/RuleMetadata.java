@@ -72,6 +72,8 @@ public class RuleMetadata implements Cloneable, XMLTags
     private SeverityLevel   mDefaultSeverityLevel = SeverityLevel.WARNING;
     
     private List            mConfigPropMetadata = new LinkedList();
+    
+    private int             mGroupIndex = -1;
 
 	//=================================================
 	// Constructors & finalizer.
@@ -204,12 +206,23 @@ public class RuleMetadata implements Cloneable, XMLTags
     {
         return super.clone();
     }
-    
-    public String getRuleID()
-    {
-    	//DKN 031903 trying to get around meta data specifiec names
-        return mCheckImplClassname + " - " + mName;
-        //return mCheckImplClassname;
-    }
+
+	/**
+	 * Returns the groupIndex.
+	 * @return int
+	 */
+	public int getGroupIndex()
+	{
+		return mGroupIndex;
+	}
+
+	/**
+	 * Sets the groupIndex.
+	 * @param groupIndex The groupIndex to set
+	 */
+	public void setGroupIndex(int groupIndex)
+	{
+		mGroupIndex = groupIndex;
+	}
 
 }

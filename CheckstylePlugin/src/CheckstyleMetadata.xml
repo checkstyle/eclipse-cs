@@ -314,32 +314,14 @@
 	    </rule-metadata>
 	
 	    <rule-metadata 
-	        name="Maximum Method Parameters"
+	        name="Maximum Parameters"
 	        classname="com.puppycrawl.tools.checkstyle.checks.ParameterNumberCheck"
 	        default-severity="Warning">
-	            <description>Checks the number of parameters of a method.</description>
+	            <description>Checks the number of parameters of a method or constructor.</description>
 	        <property-metadata 
 	            name="tokens" 
 	            datatype="Hidden" 
-	            default-value="METHOD_DEF">
-	        </property-metadata>
-	        <property-metadata 
-	            name="max" 
-	            datatype="Integer" 
-	            default-value="7">
-	            <description>Maximum allowed parameters.</description>
-	        </property-metadata>
-	    </rule-metadata>
-	
-	    <rule-metadata 
-	        name="Maximum Constructor Parameters"
-	        classname="com.puppycrawl.tools.checkstyle.checks.ParameterNumberCheck"
-	        default-severity="Warning">
-	            <description>Checks the number of parameters of a constructor.</description>
-	        <property-metadata 
-	            name="tokens" 
-	            datatype="Hidden" 
-	            default-value="CTOR_DEF">
+	            default-value="METHOD_DEF, CTOR_DEF">
 	        </property-metadata>
 	        <property-metadata 
 	            name="max" 

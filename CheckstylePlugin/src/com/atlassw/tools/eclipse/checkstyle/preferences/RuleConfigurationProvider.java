@@ -24,7 +24,7 @@ package com.atlassw.tools.eclipse.checkstyle.preferences;
 //=================================================
 // Imports from java namespace
 //=================================================
-import java.util.HashMap;
+import java.util.List;
 
 //=================================================
 // Imports from javax namespace
@@ -81,10 +81,10 @@ public class RuleConfigurationProvider implements IStructuredContentProvider
 	public Object[] getElements(Object input) 
 	{
 		Object result[] = null;
-		if (input instanceof HashMap)
+		if (input instanceof List)
 		{
-            HashMap ruleConfigs = (HashMap)input;
-            result = ruleConfigs.values().toArray();
+            List ruleConfigs = (List)input;
+            result = ruleConfigs.toArray();
 		}
 		
 		return result;

@@ -73,10 +73,8 @@ public class RuleConfigWorkingCopy implements Cloneable
     
     RuleConfigWorkingCopy(RuleMetadata metadata)
     {
-        mMetadata = metadata;
-        
+        mMetadata   = metadata;
         mRuleConfig = buildDefaultRuleConfig(metadata);
-        
     }
 
 	//=================================================
@@ -116,11 +114,6 @@ public class RuleConfigWorkingCopy implements Cloneable
     public String getRuleDescription()
     {
         return mMetadata.getDescription();
-    }
-    
-    public String getRuleID()
-    {
-        return mMetadata.getRuleID();
     }
 
     /**

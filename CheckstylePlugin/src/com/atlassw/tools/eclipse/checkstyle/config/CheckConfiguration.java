@@ -23,7 +23,8 @@ package com.atlassw.tools.eclipse.checkstyle.config;
 //=================================================
 // Imports from java namespace
 //=================================================
-import java.util.HashMap;
+import java.util.List;
+import java.util.LinkedList;
 import java.util.Iterator;
 
 //=================================================
@@ -65,12 +66,11 @@ public class CheckConfiguration implements Cloneable, XMLTags, Configuration, Co
     //=================================================
     // Instance member variables.
     //=================================================
+    
     private String mConfigName;
 
-    //this name represents the check-config-name value
-    //not sure where else to put it at this point
-    private String mCheckConfigName;
-    private HashMap mRuleConfigs = new HashMap();
+    private List mRuleConfigs = new LinkedList();
+    
     private TreeWalker mTreeWalker = new TreeWalker();
 
     //=================================================
@@ -120,7 +120,7 @@ public class CheckConfiguration implements Cloneable, XMLTags, Configuration, Co
 
                 if (rule != null)
                 {
-                    mRuleConfigs.put(rule.getRuleID(), rule);
+                    mRuleConfigs.add(rule);
                 }
             }
         }
@@ -154,8 +154,6 @@ public class CheckConfiguration implements Cloneable, XMLTags, Configuration, Co
             
             mConfigName = name;
 
-            
-
             NodeList children = node.getChildNodes();
             int count = children.getLength();
 
@@ -180,7 +178,7 @@ public class CheckConfiguration implements Cloneable, XMLTags, Configuration, Co
 
                     if (rule != null)
                     {
-                        mRuleConfigs.put(rule.getRuleID(), rule);
+                        mRuleConfigs.add(rule);
                     }
                 }
             }
@@ -212,7 +210,7 @@ public class CheckConfiguration implements Cloneable, XMLTags, Configuration, Co
 
                     if (rule != null)
                     {
-                        mRuleConfigs.put(rule.getRuleID(), rule);
+                        mRuleConfigs.add(rule);
                     }
                 }
             }
@@ -249,7 +247,7 @@ public class CheckConfiguration implements Cloneable, XMLTags, Configuration, Co
      *  @return  A <code>HashMap</code> containing
      *            <code>RuleConfiguration</code> objects.
      */
-    public HashMap getRuleConfigs()
+    public List getRuleConfigs()
     {
         return mRuleConfigs;
     }
@@ -260,7 +258,7 @@ public class CheckConfiguration implements Cloneable, XMLTags, Configuration, Co
      *  @param rules  A <code>HashMap</code> containing
      *                <code>RuleConfiguration</code> objects.
      */
-    public void setRuleConfigs(HashMap rules)
+    public void setRuleConfigs(List rules)
     {
         mRuleConfigs = rules;
     }
@@ -293,7 +291,7 @@ public class CheckConfiguration implements Cloneable, XMLTags, Configuration, Co
             configNode = doc.createElement(CHECK_CONFIG_TAG);
             configNode.setAttribute(NAME_TAG, mConfigName);
 
-            Iterator iter = mRuleConfigs.values().iterator();
+            Iterator iter = mRuleConfigs.iterator();
 
             while (iter.hasNext())
             {
@@ -374,7 +372,7 @@ public class CheckConfiguration implements Cloneable, XMLTags, Configuration, Co
      */
     public String getCheckConfigName()
     {
-        return mCheckConfigName;
+        return mConfigName;
     }
     
     /**
@@ -417,7 +415,7 @@ public class CheckConfiguration implements Cloneable, XMLTags, Configuration, Co
         {
             Configuration[] result = new Configuration[mRuleConfigs.size()];
 
-            result = (Configuration[])mRuleConfigs.values().toArray(result);
+            result = (Configuration[])mRuleConfigs.toArray(result);
 
             return result;
         }

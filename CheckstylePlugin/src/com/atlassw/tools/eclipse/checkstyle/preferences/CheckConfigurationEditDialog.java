@@ -23,8 +23,8 @@ package com.atlassw.tools.eclipse.checkstyle.preferences;
 //=================================================
 // Imports from java namespace
 //=================================================
-import java.util.HashMap;
 import java.util.List;
+import java.util.LinkedList;
 import java.util.Iterator;
 
 //=================================================
@@ -39,7 +39,7 @@ import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationFactory;
 import com.atlassw.tools.eclipse.checkstyle.config.FileSetFactory;
 import com.atlassw.tools.eclipse.checkstyle.config.RuleConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.config.RuleMetadata;
-import com.atlassw.tools.eclipse.checkstyle.config.RuleGroupMetadataFactory;
+import com.atlassw.tools.eclipse.checkstyle.config.MetadataFactory;
 import com.atlassw.tools.eclipse.checkstyle.config.RuleGroupMetadata;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
@@ -113,13 +113,13 @@ public class CheckConfigurationEditDialog extends Dialog
     
     private TextViewer             mRuleDescriptionText;
     
-    private HashMap[]              mRuleConfigWorkingCopies;
-    
-    private HashMap                mAllRuleConfigWorkingCopies = new HashMap();
+    private List[]                 mRuleConfigWorkingCopies;
     
     private Button                 mConfigureButton;
     
     private RuleConfigWorkingCopy  mCurrentSelection;
+    
+    private int                    mCurrentSelectionIndex;
     
     private String                 mCheckConfigName;
     
@@ -179,34 +179,22 @@ public class CheckConfigurationEditDialog extends Dialog
     private void buildRuleConfigWorkingCopies(Shell parent)
     {
         //
-        //  Create working copies from the metadata.
+        //  Create working copies for each rule group.
         //
-        List groups = RuleGroupMetadataFactory.getRuleGroupMetadata();
-        mRuleConfigWorkingCopies = new HashMap[groups.size()];
-        Iterator groupIter = groups.iterator();
-        for (int i = 0; groupIter.hasNext(); i++)
+        List groups = MetadataFactory.getRuleGroupMetadata();
+        mRuleConfigWorkingCopies = new LinkedList[groups.size()];
+        for (int i = 0; i < groups.size(); i++)
         {
-            mRuleConfigWorkingCopies[i] = new HashMap();
-            RuleGroupMetadata group = (RuleGroupMetadata)groupIter.next();
-            Iterator ruleIter = group.getRuleMetadata().iterator();
-            while (ruleIter.hasNext())
-            {
-                RuleMetadata ruleMetadata = (RuleMetadata)ruleIter.next();
-                RuleConfigWorkingCopy rule = 
-                    new RuleConfigWorkingCopy(ruleMetadata);
-                mRuleConfigWorkingCopies[i].put(rule.getRuleID(), rule);
-                mAllRuleConfigWorkingCopies.put(rule.getRuleID(), rule);
-            }
+            mRuleConfigWorkingCopies[i] = new LinkedList();
         }
         
         //
         //  If an existing audit configuration was specified update the
-        //  working copies with the existing values.
+        //  working copy lists with the existing values.
         //
         if (mCheckConfiguration != null)
         {
-            Iterator iter = 
-                mCheckConfiguration.getRuleConfigs().values().iterator();
+            Iterator iter = mCheckConfiguration.getRuleConfigs().iterator();
             while (iter.hasNext())
             {
                 RuleConfiguration ruleConfig = (RuleConfiguration)iter.next();
@@ -219,13 +207,12 @@ public class CheckConfigurationEditDialog extends Dialog
                     CheckstyleLog.warning("Failed to clone RuleConfiguration");
                     CheckstyleLog.internalErrorDialog();
                 }
-                String ruleID = ruleConfig.getRuleID();
-                RuleConfigWorkingCopy copy = 
-                    (RuleConfigWorkingCopy)mAllRuleConfigWorkingCopies.get(ruleID);
-                if (copy != null)
-                {
-                    copy.setRuleConfig(ruleConfig);
-                }
+                
+                RuleMetadata metadata = getRuleMetadata(ruleConfig);
+                RuleConfigWorkingCopy copy = new RuleConfigWorkingCopy(metadata);
+                copy.setRuleConfig(ruleConfig);
+                
+                mRuleConfigWorkingCopies[metadata.getGroupIndex()].add(copy);
             }
         }
     }
@@ -246,7 +233,7 @@ public class CheckConfigurationEditDialog extends Dialog
 
 		buildConfigNameField(dialog);
 		buildRuleGroupTabs(dialog);
-        buildConfigureButton(dialog);
+        buildButtons(dialog);
         buildDescriptionArea(dialog);
 
 		dialog.layout();
@@ -340,13 +327,16 @@ public class CheckConfigurationEditDialog extends Dialog
 	{
         mCheckConfiguration.setName(mCheckConfigName);
         
-        HashMap rules = new HashMap();
-        Iterator iter = mAllRuleConfigWorkingCopies.values().iterator();
-        while (iter.hasNext())
+        List rules = new LinkedList();
+        for (int i = 0; i < mRuleConfigWorkingCopies.length; i++)
         {
-            RuleConfigWorkingCopy workingCopy = (RuleConfigWorkingCopy)iter.next();
-            RuleConfiguration ruleConfig = workingCopy.getRuleConfig();
-            rules.put(ruleConfig.getRuleID(), ruleConfig);
+            Iterator iter = mRuleConfigWorkingCopies[i].iterator();
+            while (iter.hasNext())
+            {
+                RuleConfigWorkingCopy workingCopy = (RuleConfigWorkingCopy)iter.next();
+                RuleConfiguration ruleConfig = workingCopy.getRuleConfig();
+                rules.add(ruleConfig);
+            }
         }
         mCheckConfiguration.setRuleConfigs(rules);
         
@@ -386,7 +376,7 @@ public class CheckConfigurationEditDialog extends Dialog
 		mTabFolder = new TabFolder(parent, SWT.NONE);
 		mTabFolder.setLayout(new TabFolderLayout());
 
-		List ruleGroups = RuleGroupMetadataFactory.getRuleGroupMetadata();
+		List ruleGroups = MetadataFactory.getRuleGroupMetadata();
 		mTabItems = new TabItem[ruleGroups.size()];
 		mTableViewers = new TableViewer[ruleGroups.size()];
         
@@ -413,7 +403,7 @@ public class CheckConfigurationEditDialog extends Dialog
 		}
         
         //
-        //  Set the first ab as the selected tab.
+        //  Set the first tab as the selected tab.
         //
 		mTabFolder.setSelection(0);
 
@@ -465,7 +455,7 @@ public class CheckConfigurationEditDialog extends Dialog
         {
             public void doubleClick(DoubleClickEvent e)
             {
-                configureRule();
+                editRule();
             }
         });
 
@@ -493,15 +483,53 @@ public class CheckConfigurationEditDialog extends Dialog
         mRuleDescriptionText.setDocument(doc);
     }
     
-    private void buildConfigureButton(Composite parent)
+    private void buildButtons(Composite parent)
+    {
+        Composite comp = new Composite(parent, SWT.NONE);
+        GridLayout layout = new GridLayout();
+        layout.numColumns = 3;
+        comp.setLayout(layout);
+        
+        buildAddButton(comp);
+        buildEditButton(comp);
+        buildDeleteButton(comp);
+    }
+    
+    private void buildAddButton(Composite parent)
     {
         mConfigureButton = new Button(parent, SWT.PUSH);
-        mConfigureButton.setText("Configure");
+        mConfigureButton.setText("Add Rule");
         mConfigureButton.addListener(SWT.Selection, new Listener()
         {
             public void handleEvent(Event evt)
             {
-                configureRule();
+                addRule();
+            }
+        });
+    }
+    
+    private void buildEditButton(Composite parent)
+    {
+        mConfigureButton = new Button(parent, SWT.PUSH);
+        mConfigureButton.setText("Edit Rule");
+        mConfigureButton.addListener(SWT.Selection, new Listener()
+        {
+            public void handleEvent(Event evt)
+            {
+                editRule();
+            }
+        });
+    }
+    
+    private void buildDeleteButton(Composite parent)
+    {
+        mConfigureButton = new Button(parent, SWT.PUSH);
+        mConfigureButton.setText("Delete Rule");
+        mConfigureButton.addListener(SWT.Selection, new Listener()
+        {
+            public void handleEvent(Event evt)
+            {
+                deleteRule();
             }
         });
     }
@@ -525,8 +553,42 @@ public class CheckConfigurationEditDialog extends Dialog
         control.setLayoutData(data);
     }
     
-    private void configureRule()
+    private void addRule()
     {
+        int groupIndex = mTabFolder.getSelectionIndex();
+        RuleGroupMetadata groupMeta = 
+            (RuleGroupMetadata)MetadataFactory.getRuleGroupMetadata().get(groupIndex);
+        List ruleMetadataList = groupMeta.getRuleMetadata();
+        RuleSelectionDialog dialog = null;
+        try
+        {
+            dialog = new RuleSelectionDialog(mParentComposite.getShell(),
+                                             ruleMetadataList);
+            dialog.open();
+        }
+        catch (CheckstylePluginException e)
+        {
+            CheckstyleLog.error("Failed to open RuleSelectionDialog, " 
+                                    + e.getMessage(), e);
+            CheckstyleLog.internalErrorDialog();
+            return;
+        }
+        
+        RuleMetadata ruleMetadata = dialog.getSelectedRule();
+        if (ruleMetadata != null)
+        {
+            mCurrentSelection = new RuleConfigWorkingCopy(ruleMetadata);
+            editRule();
+        }
+    }
+    
+    private void editRule()
+    {
+        if (mCurrentSelection == null)
+        {
+            return;
+        }
+        
         RuleConfigurationEditDialog dialog = null;
         try
         {
@@ -549,8 +611,34 @@ public class CheckConfigurationEditDialog extends Dialog
             //
             RuleConfigWorkingCopy rule = dialog.getFinalRule();
             int groupIndex = mTabFolder.getSelectionIndex();
-            mRuleConfigWorkingCopies[groupIndex].put(rule.getRuleID(), rule);
-            mAllRuleConfigWorkingCopies.put(rule.getRuleID(), rule);
+            
+            mRuleConfigWorkingCopies[groupIndex].remove(mCurrentSelection);
+            mRuleConfigWorkingCopies[groupIndex].add(rule);
+            mCurrentSelection = rule;
+            
+            mTableViewers[groupIndex].setSelection(new StructuredSelection(rule), true);
+            mTableViewers[groupIndex].refresh(true);
+        }
+    }
+    
+    private void deleteRule()
+    {
+        if (mCurrentSelection == null)
+        {
+            return;
+        }
+        
+        boolean confirm = MessageDialog.openQuestion(mParentComposite.getShell(),
+                                                      "Confirm Delete",
+                                                      "Delete rule '" 
+                                                      + mCurrentSelection.getRuleName() 
+                                                      + "'?");
+        if (confirm)
+        {
+            int groupIndex = mTabFolder.getSelectionIndex();
+            
+            mRuleConfigWorkingCopies[groupIndex].remove(mCurrentSelection);
+            mCurrentSelection = null;            
             mTableViewers[groupIndex].refresh(true);
         }
     }
@@ -609,5 +697,10 @@ public class CheckConfigurationEditDialog extends Dialog
             widgetSelected(e);
         }
     }
-
+    
+    private RuleMetadata getRuleMetadata(RuleConfiguration ruleConfig)
+    {
+        RuleMetadata metadata = MetadataFactory.getRuleMetadata(ruleConfig.getImplClassname());
+        return metadata;
+    }
 }
