@@ -25,25 +25,17 @@ package com.atlassw.tools.eclipse.checkstyle.nature;
 //=================================================
 import java.util.Vector;
 
-//=================================================
-// Imports from javax namespace
-//=================================================
-
-//=================================================
-// Imports from com namespace
-//=================================================
-import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
-import com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleBuilder;
-
-//=================================================
-// Imports from org namespace
-//=================================================
-
 import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IProjectNature;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
+
+import com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleBuilder;
+import com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleMarker;
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 
 
 /**
@@ -153,7 +145,10 @@ public class CheckstyleNature implements IProjectNature
                 newCommands[i] = (ICommand)newCommandsVec.elementAt(i);
             }
             description.setBuildSpec(newCommands);
-            mProject.setDescription(description, null);
+            mProject.setDescription(description, new NullProgressMonitor());
+            
+            //remove checkstyle markers from the project
+            getProject().deleteMarkers(CheckstyleMarker.MARKER_ID, true, IResource.DEPTH_INFINITE);
         } 
         catch (CoreException e) 
         {
