@@ -193,8 +193,6 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
     }
     private void doBuild(Map args, IProgressMonitor monitor) throws CoreException
     {
-        CheckstyleLog.info("=========  Starting a Checkstyle build  =============");
-
         IProject project = getProject();
         if (project == null)
         {
@@ -237,7 +235,6 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
         //
         Collection files = null;
         IResourceDelta resourceDelta = getDelta(project);
-        CheckstyleLog.info("Getting files that need to be audited");
         if (resourceDelta != null)
         {
             //
@@ -252,7 +249,6 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
             //
             files = getFiles(project);
         }
-        CheckstyleLog.info("Found " + files.size() + " files that need to be audited");
 
         //
         //  If there are no files to audit then return.
@@ -266,7 +262,6 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
         //  Build a classloader with which to resolve Exception
         //  classes for JavadocMethodCheck.
         //
-        CheckstyleLog.info("Building checkstyle classloader");
         ClassLoader classLoader = null;
         IJavaProject javaProject = (IJavaProject)project.getAdapter(IJavaElement.class);
         try
@@ -291,21 +286,15 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
             CheckstyleLog.error("Unable to create a classloader for the project", e);
             classLoader = null;
         }
-        CheckstyleLog.info("Done building checkstyle classloader");
-
         
         //
         //  Audit the files that need to be audited.
         //
         monitor.beginTask("Checkstyle", files.size());
-        CheckstyleLog.info("Creating Checkstyle auditor");
         Auditor auditor = new Auditor(getProject(), fileSets);
-        CheckstyleLog.info("Auditor creation complete");
         try
         {
-            CheckstyleLog.info("Auditing source files");
             auditor.checkFiles(files, classLoader, monitor);
-            CheckstyleLog.info("Audit of source files complete");
         }
         catch (CheckstylePluginException e)
         {
@@ -315,9 +304,8 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
                 new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR, msg, e);
             throw new CoreException(status);
         }
-
-        CheckstyleLog.info("=========  Checkstyle build complete  =============");
     }
+    
     private Collection getFiles(IResourceDelta delta) throws CoreException
     {
         ArrayList files = new ArrayList(0);
@@ -522,10 +510,6 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
         }
 
         ArrayList urlList = new ArrayList(urls);
-
-        //  TODO: comment out
-        //printUrls(urlList);
-
         return urlList;
     }
 

@@ -57,7 +57,9 @@
 	<!-- ==================================================== -->
 	<target name="compile" description="Compiles the source code">
 		<mkdir dir="bin" />
-		<javac srcdir="src" destdir="bin" deprecation="on" classpathref="build.classpath" />
+		<javac srcdir="src" destdir="bin" deprecation="on" classpathref="build.classpath"
+		       debug="true" debuglevel="lines">
+		</javac>
 	</target>
 
 	<!-- ==================================================== -->
