@@ -4,7 +4,8 @@
 <toc label="Checkstyle" topic="doc/introduction.html">
 	<topic label="Getting Started"                   href="doc/getting_started.html"/>
 	<topic label="Configuring Check Configurations"  href="doc/configuring.html"/>
-	<topic label="Enabling on a Project"             href="doc/config_file_sets.html"/>
+	<topic label="Configuring File Sets"             href="doc/config_file_sets.html"/>
 	<topic label="Using Regular Expressions"         href="doc/regularexpressions.html"/>
+	<topic label="Import/Export Configurations"      href="doc/import_export.html"/>
 	<topic label="Working with a Team Repository"    href="doc/team.html"/>
 </toc>

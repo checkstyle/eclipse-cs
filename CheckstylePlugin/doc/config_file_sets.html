@@ -8,14 +8,14 @@
 
 <p align="left"><font color="#0000cc" size="6" face="Arial Narrow"><b>Eclipse
 Checkstyle Plug-in</b></font></p>
-<p><b><font size="4" face="Arial">Enabling Checkstyle on a Project</font></b><br>
+<p><font size="4" face="Arial"><b>Configuring File Sets</b></font><br>
 By default, Checkstyle is not configured to check the source code in any of your projects. To get Checkstyle to check the Java source files in a project it must first be configured for that project. To configure Checkstyle to check the files in a project select the project in either the Navigator or Package Explorer views, right-click on the project and select <b><font
 	face="Arial Narrow">Properties</font></b>. In the properties windows select Checkstyle along the left side. You should now see something like the window below.</p>
-<p align="center"><img border="0" src="images/properties.jpg" width="661" height="532"></p>
+<p align="center"><img border="0" src="images/properties.jpg" width="661" height="534"></p>
 <p>From the Properties window you can create and edit File Sets. A File Set is the Checkstyle plug-in's way of allowing different Check Configurations to be used to check different collections of source files within the same project. A File Set defines a collection of source files and the Check Configuration used to audit them.</p>
 <p>To create a new File Set click the New button. To edit an existing File Set select the File Set and then click the Edit button, or just double-click on the File Set. This should bring up the File Set Editor shown below.</p>
-<p align="center"><img border="0" src="images/file_set_editor.jpg" width="518"
-	height="364"></p>
+<p align="center"><img border="0" src="images/file_set_editor.jpg" width="520"
+	height="377"></p>
 <p>Each File Set is given a unique name and a Check Configuration. Select from the drop down list the Check Configuration you want used when this File Set is audited. If no Check Configurations appear in the drop down list then you will need to first create one. See <a
 	href="configuring.html">Configuring Check Configurations</a> for information on how to create a Check Configuration.</p>
 <p>Next, enter a series of <a href="regularexpressions.html">regular
