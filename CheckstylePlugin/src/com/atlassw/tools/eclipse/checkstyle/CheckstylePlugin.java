@@ -23,25 +23,19 @@ package com.atlassw.tools.eclipse.checkstyle;
 //=================================================
 // Imports from java namespace
 //=================================================
+import java.io.IOException;
+import java.net.URL;
 import java.util.MissingResourceException;
+import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
-//=================================================
-// Imports from javax namespace
-//=================================================
-
-//=================================================
-// Imports from com namespace
-//=================================================
-
-//=================================================
-// Imports from org namespace
-//=================================================
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.IPluginDescriptor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
+
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 
 
 /**
@@ -59,19 +53,25 @@ public class CheckstylePlugin extends AbstractUIPlugin
     /** Preference name indicating if rule names are to be included in violation messages. */
     public static final String PREF_INCLUDE_RULE_NAMES = "include.rule.names";
 
+    /** constant for the plugin properties. */
+    private static final String PROPERTIES = "plugin.properties"; //$NON-NLS-1$
+
+    
     //=================================================
     // Static class variables.
     //=================================================
 
     /**  The shared instance. */
     private static CheckstylePlugin sPlugin;
+    
+    /**  Resource bundle. */
+    private static ResourceBundle sResourceBundle;
 
     //=================================================
     // Instance member variables.
     //=================================================
 
-    /**  Resource bundle. */
-    private ResourceBundle mResourceBundle;
+
 
     //=================================================
     // Constructors & finalizer.
@@ -82,21 +82,10 @@ public class CheckstylePlugin extends AbstractUIPlugin
      *
      *  @param descriptor  Plug-in descriptor.
      */
-    public CheckstylePlugin(IPluginDescriptor descriptor)
+    public CheckstylePlugin()
     {
-        super(descriptor);
+        super();
         sPlugin = this;
-
-        try
-        {
-            mResourceBundle =
-                ResourceBundle.getBundle(
-                    "com.atlassw.tools.eclipse.checkstyle.CheckstylePluginResources");
-        }
-        catch (MissingResourceException x)
-        {
-            mResourceBundle = null;
-        }
     }
 
     //=================================================
@@ -133,26 +122,22 @@ public class CheckstylePlugin extends AbstractUIPlugin
      */
     public static String getResourceString(String key)
     {
-        ResourceBundle bundle = CheckstylePlugin.getDefault().getResourceBundle();
+        if (sResourceBundle == null) {
+            try {
+              URL url = CheckstylePlugin.getDefault().find(new Path(PROPERTIES));
+              sResourceBundle = new PropertyResourceBundle(url.openStream());
+            }
+            catch (IOException ioe) {
+              CheckstyleLog.error(ioe.getLocalizedMessage(), ioe);
+            }
+          }
 
-        try
-        {
-            return bundle.getString(key);
-        }
-        catch (MissingResourceException e)
-        {
-            return key;
-        }
-    }
-
-    /**
-     *  Returns the plugin's resource bundle.
-     *
-     *  @return  The plug-in's resource bundle.
-     */
-    public ResourceBundle getResourceBundle()
-    {
-        return mResourceBundle;
+          try {
+            return sResourceBundle.getString(key);
+          }
+          catch (MissingResourceException e) {
+            return '!' + key + '!';
+          }
     }
     
     /**
