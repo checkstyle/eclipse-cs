@@ -40,9 +40,11 @@
          <property-metadata name="allowMissingReturnTag" datatype="Boolean" default-value="false">
             <description>Whether to ignore errors when a method returns non-void type does have a return tag in the javadoc.</description>
          </property-metadata>
+         <!-- Seems to have been removed 
          <property-metadata name="allowMissingJavaDoc" datatype="Boolean" default-value="false">
             <description>Whether to ignore errors when a method javadoc is missed</description>
          </property-metadata>
+         -->
          <property-metadata name=" allowMissingPropertyJavadoc" datatype="Boolean" default-value="false">
             <description>Whether to allow missing Javadoc on accessor methods for properties (setters and getters). The setter and getter methods must match exactly the structures below.
 
