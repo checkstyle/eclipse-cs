@@ -1,0 +1,20 @@
+Manifest-Version: 1.0
+Bundle-Name: Checkstyle Plug-in
+Bundle-SymbolicName: com.atlassw.tools.eclipse.checkstyle; singleton=true
+Bundle-Version: 3.4.0.1-beta
+Bundle-ClassPath: CheckstylePlugin.jar,checkstyle-all-3.5.jar,checkstyle-optional-3.5.jar
+Bundle-Activator: com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin
+Bundle-Vendor: David Schneider
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.core.resources,
+ org.eclipse.ui,
+ org.eclipse.jface.text,
+ org.eclipse.jdt.core,
+ org.eclipse.core.runtime,
+ org.eclipse.ui.ide,
+ org.eclipse.jdt.ui
+Eclipse-AutoStart: false;exceptions="com.atlassw.tools.eclipse.checkstyle,
+ com.atlassw.tools.eclipse.checkstyle.config,
+ com.atlassw.tools.eclipse.checkstyle.nature,
+ com.atlassw.tools.eclipse.checkstyle.preferences,
+ com.atlassw.tools.eclipse.checkstyle.properties"
