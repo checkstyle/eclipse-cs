@@ -40,6 +40,8 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 // Imports from org namespace
 //=================================================
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
@@ -48,6 +50,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.text.Document;
+import org.eclipse.jface.text.TextViewer;
 
 
 /**
@@ -63,6 +67,7 @@ public class RuleSelectionDialog extends Dialog
 	// Static class variables.
 	//=================================================
     
+    private static final int MAX_LENGTH = 80;
 
 	//=================================================
 	// Instance member variables.
@@ -75,6 +80,8 @@ public class RuleSelectionDialog extends Dialog
     private List          mMetadataList;
 
 	private Combo         mComboItem;
+    
+    private TextViewer    mRuleDescriptionText;
     
     private RuleMetadata  mFinalSelection = null;
 
@@ -106,15 +113,33 @@ public class RuleSelectionDialog extends Dialog
 	protected Control createDialogArea(Composite parent)
 	{
 		Composite composite = (Composite) super.createDialogArea(parent);
-
+        
 		Composite dialog = new Composite(composite, SWT.NONE);
         mParentComposite = dialog;
 		GridLayout layout = new GridLayout();
-		layout.numColumns = 2;
+		layout.numColumns = 1;
 		dialog.setLayout(layout);
         
-        Label label = new Label(dialog, SWT.NULL);
-        label.setText(" Select Rule:");
+        createCombo(dialog);
+        createRuleDescription(dialog);
+                
+        mComboItem.select(0);
+        setDescription(0);
+
+		dialog.layout();
+		return composite;
+	}
+    
+    private void createCombo(Composite parent)
+    {
+        Composite comp = new Composite(parent, SWT.NONE);
+        GridLayout layout = new GridLayout();
+        layout.numColumns = 2;
+        layout.marginWidth = 0;
+        comp.setLayout(layout);
+
+        Label label = new Label(comp, SWT.NULL);
+        label.setText("Select Rule:");
         
         //
         //  Build an array of rule names.
@@ -130,14 +155,39 @@ public class RuleSelectionDialog extends Dialog
         //
         //  Create a combo box for selecting the rule.
         //
-        mComboItem = new Combo(dialog, SWT.NONE | SWT.DROP_DOWN | SWT.READ_ONLY);
+        mComboItem = new Combo(comp, SWT.NONE | SWT.DROP_DOWN | SWT.READ_ONLY);
         mComboItem.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
         mComboItem.setItems(labels);
-        mComboItem.select(0);
+        mComboItem.addSelectionListener(new ComboSelectionListener());
+    }
+    
+    private void createRuleDescription(Composite parent)
+    {
+        Composite comp = new Composite(parent, SWT.NONE);
+        GridLayout layout = new GridLayout();
+        layout.numColumns = 1;
+        layout.marginWidth = 0;
+        comp.setLayout(layout);
 
-		dialog.layout();
-		return composite;
-	}
+        //
+        //  Create the rule description area.
+        //
+        Label label = new Label(comp, SWT.NULL);
+        label.setText("Rule Description");
+        
+        mRuleDescriptionText = new TextViewer(comp, SWT.BORDER | SWT.WRAP | SWT.V_SCROLL);
+        
+        Control control = mRuleDescriptionText.getControl();
+        GridData data = new GridData(GridData.FILL_BOTH);
+        data.horizontalAlignment = GridData.FILL;
+        data.horizontalSpan = 1;
+        data.grabExcessHorizontalSpace = true;
+        data.verticalAlignment = GridData.CENTER;
+        data.grabExcessVerticalSpace = false;
+        data.widthHint = convertWidthInCharsToPixels(MAX_LENGTH);
+        data.heightHint = convertHeightInCharsToPixels(5);
+        control.setLayoutData(data);
+    }
 
 	/**
 	 *  Notification that the OK button was selected.
@@ -174,4 +224,28 @@ public class RuleSelectionDialog extends Dialog
         super.configureShell(shell);
         shell.setText("Checkstyle Rule Selection");
     }
+    
+    private void setDescription(int index)
+    {
+        RuleMetadata metadata = (RuleMetadata)mMetadataList.get(index);
+        Document doc = new Document(metadata.getDescription());
+        mRuleDescriptionText.setDocument(doc);
+    }
+        
+    /**
+     *  Listener for selection of a rule.
+     */
+    private class ComboSelectionListener implements SelectionListener
+    {
+        public void widgetSelected(SelectionEvent e)
+        {
+            setDescription(mComboItem.getSelectionIndex());
+        }
+
+        public void widgetDefaultSelected(SelectionEvent e)
+        {
+            setDescription(mComboItem.getSelectionIndex());
+        }
+    }
+
 }
