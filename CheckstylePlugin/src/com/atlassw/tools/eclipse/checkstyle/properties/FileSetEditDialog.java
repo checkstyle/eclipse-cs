@@ -242,8 +242,8 @@ public class FileSetEditDialog extends Dialog
         }
         catch (CheckstylePluginException e)
         {
-            CheckstyleLog.error("Failed to list of CheckConfiguration objects, " 
-                                    + e.getMessage(), e);
+            CheckstyleLog.error("Failed to get list of CheckConfiguration objects, " 
+                                + e.getMessage(), e);
             CheckstyleLog.internalErrorDialog();
             return;
         }
@@ -272,7 +272,17 @@ public class FileSetEditDialog extends Dialog
 		mAuditConfigCombo = new Combo(composite, SWT.NONE | SWT.DROP_DOWN | SWT.READ_ONLY);
 		mAuditConfigCombo.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
 		mAuditConfigCombo.setItems(labels);
-        mAuditConfigCombo.select(initialIndex);
+		
+		//
+		//  Even though the Javadoc for the Combo.select() method says indecies out of range
+		//  are ignored a bug have been reported on the Mac platform showing an
+		//  IllegalArgumentException exception being thrown with a message of
+		//  "Index out of bounds" from this method.
+		//
+		if ((initialIndex >= 0) && (initialIndex < labels.length))
+		{
+		    mAuditConfigCombo.select(initialIndex);
+		}
 	} 
       
     private void createFileMatchPatternPart(Composite parent)
