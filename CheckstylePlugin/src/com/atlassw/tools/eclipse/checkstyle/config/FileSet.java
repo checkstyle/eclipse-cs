@@ -321,7 +321,12 @@ public class FileSet implements Cloneable
      */
     public String getCheckConfigName()
     {
-        return mCheckConfig.getConfigName();
+    	String name = "";
+    	if (mCheckConfig != null)
+    	{
+    		name = mCheckConfig.getConfigName();
+    	}
+        return name;
     }
 
 }
