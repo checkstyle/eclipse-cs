@@ -96,8 +96,8 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
         //
         //  Get the data to build the check boxes.
         //
-        ConfigPropertyEnumerationMetadata enum = metadata.getPropertyEnumeration();
-        List valueList = (List)enum.getValueMetadata();
+        ConfigPropertyEnumerationMetadata enumeration = metadata.getPropertyEnumeration();
+        List valueList = (List)enumeration.getValueMetadata();
         mLabels = new String[valueList.size()];
         mButtons = new Button[valueList.size()];
                 

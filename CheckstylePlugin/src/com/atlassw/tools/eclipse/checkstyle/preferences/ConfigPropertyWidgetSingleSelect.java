@@ -86,8 +86,8 @@ public class ConfigPropertyWidgetSingleSelect extends ConfigPropertyWidgetAbstra
         //
         //  Create a combo box for selecting a value from the enumeration.
         //
-        ConfigPropertyEnumerationMetadata enum = metadata.getPropertyEnumeration();
-        List valueList = (List)enum.getValueMetadata();
+        ConfigPropertyEnumerationMetadata enumeration = metadata.getPropertyEnumeration();
+        List valueList = (List)enumeration.getValueMetadata();
         String[] valueLabels = new String[valueList.size()];
         int initialIndex = 0;
         String initValue = getInitValue();
