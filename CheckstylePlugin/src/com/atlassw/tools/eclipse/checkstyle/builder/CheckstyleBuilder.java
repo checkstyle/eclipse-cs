@@ -54,7 +54,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
     //=================================================
 
     /** Eclipse extension point ID for the builder. */
-    public static final String        BUILDER_ID   = "com.atlassw.tosols.eclipse.checkstyle.CheckstyleBuilder";
+    public static final String        BUILDER_ID   = "com.atlassw.tools.eclipse.checkstyle.CheckstyleBuilder";
 
     //=================================================
     // Static class variables.

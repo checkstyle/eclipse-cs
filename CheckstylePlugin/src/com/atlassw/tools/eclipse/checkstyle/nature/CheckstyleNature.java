@@ -37,44 +37,42 @@ import com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleBuilder;
 import com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleMarker;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 
-
 /**
- *  Checkstyle project nature.
+ * Checkstyle project nature.
  */
 public class CheckstyleNature implements IProjectNature
 {
     //=================================================
-	// Public static final variables.
-	//=================================================
-    
-    /**  ID for the Checkstyle project nature.  */
-    public static final String NATURE_ID = 
-        "com.atlassw.tools.eclipse.checkstyle.CheckstyleNature";
+    // Public static final variables.
+    //=================================================
 
-	//=================================================
-	// Static class variables.
-	//=================================================
+    /** ID for the Checkstyle project nature. */
+    public static final String NATURE_ID = "com.atlassw.tools.eclipse.checkstyle.CheckstyleNature";
 
-	//=================================================
-	// Instance member variables.
-	//=================================================
-    
-    private IProject mProject;
+    //=================================================
+    // Static class variables.
+    //=================================================
 
-	//=================================================
-	// Constructors & finalizer.
-	//=================================================
+    //=================================================
+    // Instance member variables.
+    //=================================================
 
-	//=================================================
-	// Methods.
-	//=================================================
-    
-	/**
-     *  {@inheritDoc}
-	 */
+    private IProject           mProject;
+
+    //=================================================
+    // Constructors & finalizer.
+    //=================================================
+
+    //=================================================
+    // Methods.
+    //=================================================
+
+    /**
+     * {@inheritDoc}
+     */
     public void configure() throws CoreException
     {
-        try 
+        try
         {
             //
             //  Add the builder to the project.
@@ -82,44 +80,44 @@ public class CheckstyleNature implements IProjectNature
             IProjectDescription description = mProject.getDescription();
             ICommand[] commands = description.getBuildSpec();
             boolean found = false;
-            for (int i = 0; i < commands.length; ++i) 
+            for (int i = 0; i < commands.length; ++i)
             {
-                if (commands[i].getBuilderName().equals(CheckstyleBuilder.BUILDER_ID)) 
+                if (commands[i].getBuilderName().equals(CheckstyleBuilder.BUILDER_ID))
                 {
                     found = true;
                     break;
                 }
             }
-            
-            if (!found) 
-            { 
+
+            if (!found)
+            {
                 //add builder to project
                 ICommand command = description.newCommand();
                 command.setBuilderName(CheckstyleBuilder.BUILDER_ID);
                 ICommand[] newCommands = new ICommand[commands.length + 1];
 
                 // Add it before other builders.
-                System.arraycopy(commands, 0, newCommands, 1, commands.length);
-                newCommands[0] = command;
+                System.arraycopy(commands, 0, newCommands, 0, commands.length);
+                newCommands[commands.length] = command;
                 description.setBuildSpec(newCommands);
                 mProject.setDescription(description, null);
             }
-        } 
-        catch (CoreException e) 
+        }
+        catch (CoreException e)
         {
             CheckstyleLog.error("Error while adding Checkstyle nature", e);
             throw e;
         }
     }
 
-	/**
-     *  Remove the nature from the project.
+    /**
+     * Remove the nature from the project.
      * 
-	 *  @see org.eclipse.core.resources.IProjectNature#deconfigure()
-	 */
+     * @see org.eclipse.core.resources.IProjectNature#deconfigure()
+     */
     public void deconfigure() throws CoreException
     {
-        try 
+        try
         {
             //
             //  Remove the builder from the project.
@@ -127,9 +125,9 @@ public class CheckstyleNature implements IProjectNature
             IProjectDescription description = mProject.getDescription();
             ICommand[] commands = description.getBuildSpec();
             Vector newCommandsVec = new Vector(0);
-            for (int i = 0; i < commands.length; ++i) 
+            for (int i = 0; i < commands.length; ++i)
             {
-                if (commands[i].getBuilderName().equals(CheckstyleBuilder.BUILDER_ID)) 
+                if (commands[i].getBuilderName().equals(CheckstyleBuilder.BUILDER_ID))
                 {
                     continue;
                 }
@@ -138,35 +136,35 @@ public class CheckstyleNature implements IProjectNature
                     newCommandsVec.add(commands[i]);
                 }
             }
-            
+
             ICommand[] newCommands = new ICommand[newCommandsVec.size()];
             for (int i = 0; i < newCommandsVec.size(); i++)
             {
-                newCommands[i] = (ICommand)newCommandsVec.elementAt(i);
+                newCommands[i] = (ICommand) newCommandsVec.elementAt(i);
             }
             description.setBuildSpec(newCommands);
             mProject.setDescription(description, new NullProgressMonitor());
-            
+
             //remove checkstyle markers from the project
             getProject().deleteMarkers(CheckstyleMarker.MARKER_ID, true, IResource.DEPTH_INFINITE);
-        } 
-        catch (CoreException e) 
+        }
+        catch (CoreException e)
         {
             CheckstyleLog.error("Error while adding Checkstyle nature", e);
             throw e;
         }
     }
 
-	/**
-	 *  @see org.eclipse.core.resources.IProjectNature#getProject()
-	 */
+    /**
+     * @see org.eclipse.core.resources.IProjectNature#getProject()
+     */
     public IProject getProject()
     {
         return mProject;
     }
 
     /**
-     *  @see org.eclipse.core.resources.IProjectNature#setProject(IProject)
+     * @see org.eclipse.core.resources.IProjectNature#setProject(IProject)
      */
     public void setProject(IProject project)
     {
