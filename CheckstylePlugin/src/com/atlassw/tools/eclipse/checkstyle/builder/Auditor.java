@@ -127,7 +127,12 @@ class Auditor
     void checkFiles(Collection files, ClassLoader classLoader, IProgressMonitor monitor)
         throws CheckstylePluginException, CoreException
     {
-        //
+    	//
+    	//  Delete any existing project level markers.
+    	//
+		mProject.deleteMarkers(CheckstyleMarker.MARKER_ID, true, IResource.DEPTH_ZERO);
+
+		//
         //  Build a checkstyle checker for each file set that is enabled.
         //
         Checker[] checker = new Checker[mFileSets.length];
@@ -144,11 +149,16 @@ class Auditor
                     CheckConfiguration checkConfig = mFileSets[i].getCheckConfig();
                     if (checkConfig == null)
                     {
-                    	String msg = "CheckConfig '" 
-                    	             + mFileSets[i].getCheckConfigName() 
-                    	             + "' not found";
-						CheckstyleLog.error(msg);
-						throw new CheckstylePluginException(msg);
+						String msg = "Checkstyle CheckConfig '" 
+									 + mFileSets[i].getCheckConfigName() 
+									 + "' not found";
+
+						IMarker marker = mProject.createMarker(CheckstyleMarker.MARKER_ID);
+						marker.setAttribute(IMarker.MESSAGE, msg);
+						marker.setAttribute(IMarker.PRIORITY, IMarker.PRIORITY_NORMAL);
+						marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
+						
+						continue;
                     }
 					checker[i].setClassloader(classLoader);
                     checker[i].configure(checkConfig);
