@@ -29,6 +29,7 @@
     <td class="menu" valign="top">
       <p>Checkstyle 3</p>
       <ul>
+        <li><a href="#release3_3">Release 3.3</a></li>
         <li><a href="#release3_2">Release 3.2</a></li>
         <li><a href="#release3_1">Release 3.1</a></li>
         <li><a href="#release3_0">Release 3.0</a></li>
@@ -47,10 +48,85 @@
     <!--Content-->
     <td class="content" valign="top" align="left">
 
+      <a name="release3_3"></a>
+      <h2>Release 3.3</h2>
+      <p class="body">
+        Distribution:
+      </p>
+        <ul>
+
+          <li class="body">Renamed checkstyle-version-optional.jar to 
+          checktyle-optional-version.jar to make the distribution 
+          <a href="http://maven.apache.org">Maven</a> friendly.</li>
+
+        </ul>
+
+
+      <p class="body">
+      New features:
+      </p>
+      <ul>
+        <li class="body">Fixed grammar build process (request 827781).</li>
+
+        <li class="body">Added caseSensitive property to ImportOrder check 
+        (bug 842604).</li>
+
+        <li class="body">Added classpathref property to ant task
+        (patch 835896, from Ville Skytta (scop)).</li>
+
+      </ul>
+
+      <p class="body">
+      Resolved bugs:
+      </p>
+
+      <ul>
+        <li class="body">Removed MutableException dependency from
+        1.4 API.(bug 842756)</li>
+
+        <li class="body">j2ee.EntityBean check for constructor is incorrect
+         (bug 846110).</li>
+
+        <li class="body">Fixed ArrayIndexOutOfBounds in JavaStyle
+         (bug 841942).</li>
+
+        <li class="body">Fixed 8433887 - XHTML not handled correctly
+         in JavadocStyle.</li>
+
+        <li class="body">Fixed ArrayTypeStyle error when type declaration
+        and variable/method name are placed on different lines
+        (bug 848750).</li>
+
+        <li class="body">Fixed several typos in documentation (patch 848483
+        from Ville Skytta (scop)).</li>
+
+        <li class="body">xmllogger.dtd is out-of-date
+         (bug 847974).</li>
+
+        <li class="body">ArrayTypeStyle shouldn't check method definition
+         (bug 849450).</li>
+
+        <li class="body">Added link to summary page in
+        checkstyle-frames.xsl (bug 852397).</li>
+
+        <li class="body">Fixed bug #791245: checkstyle-frames.xsl
+        cannot handle multiple leafs.</li>
+
+        <li class="body">Fixed handling of inheritDoc in JavadocMathod
+        check (bug 855839).</li>
+
+        <li class="body">Fixed bug #853225 - Indentation gives false
+        errors.</li>
+
+        <li class="body">Wrong documentation for FinalLocalVariable
+         (bug 860990).</li>
+
+      </ul>
+
       <a name="release3_2"></a>
       <h2>Release 3.2</h2>
       <p class="body">
-        Structural changes
+        Distribution:
       </p>
         <ul>
 
@@ -61,6 +137,8 @@
           href="http://ant.apache.org">Ant</a> distribution is
           organized. See the <a href="optional.html">documentation of
           optional checks</a> for details.</li>
+
+          <li class="body">Updated Jakarta Regexp library to version 1.3.</li>
 
         </ul>
 
@@ -204,8 +282,6 @@
 
         <li class="body">Added check to find duplicate code
         (module StrictDuplicateCode, request 650710).</li>
-
-	<li class="body">Updated Jakarta Regexp library to version 1.3.</li>
 
       </ul>
 
