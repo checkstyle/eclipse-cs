@@ -4,7 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="/CheckstylePlugin"/>
 	<classpathentry kind="var" path="JUNIT_HOME/junit.jar"/>
-	<classpathentry kind="lib" path="/CheckstylePlugin/xercesImpl.jar"/>
 	<classpathentry kind="lib" path="xml-apis.jar"/>
 	<classpathentry kind="src" path="launchConfigurations"/>
 	<classpathentry kind="output" path="bin"/>
