@@ -223,12 +223,11 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
                 }
                 try
                 {
-                    auditor = new Auditor(getProject());
                     auditor.auditFiles(files, monitor);
                 }
                 catch (CheckstylePluginException e)
                 {
-                    String msg = "Error occured while checking file";
+                    String msg = "Error occured while checking file: " + e.getMessage();
                     CheckstyleLog.error(msg, e);
                     Status status = new Status(IStatus.ERROR,
                                        CheckstylePlugin.PLUGIN_ID,

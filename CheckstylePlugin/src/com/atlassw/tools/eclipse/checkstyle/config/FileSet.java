@@ -71,7 +71,9 @@ public class FileSet implements Cloneable, XMLTags
     
     private CheckConfiguration   mCheckConfig;
     
-    private boolean             mEnabled = true;
+    private String               mCheckConfigName;
+    
+    private boolean              mEnabled = true;
     
     private List                 mFileMatchPatterns = new LinkedList();
 
@@ -91,6 +93,7 @@ public class FileSet implements Cloneable, XMLTags
     {
         mName        = name;
         mCheckConfig = checkConfig;
+        mCheckConfigName = checkConfig.getCheckConfigName();
     }
     
     /**
@@ -125,19 +128,14 @@ public class FileSet implements Cloneable, XMLTags
         temp = XMLUtil.getNodeAttributeValue(node, CHECK_CONFIG_NAME_TAG);
         if (temp != null)
         {
+        	mCheckConfigName = temp;
             mCheckConfig = CheckConfigurationFactory.getByName(temp.trim());
-            if (mCheckConfig == null)
-            {
-                String msg = "Failed to find CheckConfiguration for name '" + temp + "'";
-                CheckstyleLog.error(msg);
-                CheckstyleLog.errorDialog(msg);
-                throw new CheckstylePluginException(msg);
-            }
         }
         else
         {
-            CheckstyleLog.warning("FileSet check configuration is null");
-            throw new CheckstylePluginException("FileSet check configuration is null");
+        	String msg = "FileSet check configuration name is null";
+            CheckstyleLog.warning(msg);
+            throw new CheckstylePluginException(msg);
         }
 
         NodeList children = node.getChildNodes();
@@ -255,7 +253,7 @@ public class FileSet implements Cloneable, XMLTags
             rootNode.setAttribute(NAME_TAG,    mName);
             Boolean enabled = new Boolean(mEnabled);
             rootNode.setAttribute(ENABLED_TAG, enabled.toString());
-            rootNode.setAttribute(CHECK_CONFIG_NAME_TAG, mCheckConfig.getConfigName());
+            rootNode.setAttribute(CHECK_CONFIG_NAME_TAG, mCheckConfigName);
             
             Iterator iter = mFileMatchPatterns.iterator();
             while (iter.hasNext())
@@ -318,6 +316,14 @@ public class FileSet implements Cloneable, XMLTags
         }
 
         return result;
+    }
+
+    /**
+     * @return
+     */
+    public String getCheckConfigName()
+    {
+        return mCheckConfigName;
     }
 
 }

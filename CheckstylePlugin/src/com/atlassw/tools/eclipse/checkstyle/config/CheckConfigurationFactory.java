@@ -118,15 +118,18 @@ public final class CheckConfigurationFactory implements XMLTags
     public static CheckConfiguration getByName(String name) throws CheckstylePluginException
     {
         CheckConfiguration result = null;
-        List configurations = loadFromPersistence();
-        Iterator iter = configurations.iterator();
-        while (iter.hasNext())
+        if (name != null)
         {
-            CheckConfiguration config = (CheckConfiguration)iter.next();
-            if (config.getConfigName().equals(name))
+            List configurations = loadFromPersistence();
+            Iterator iter = configurations.iterator();
+            while (iter.hasNext())
             {
-                result = config;
-                break;
+                CheckConfiguration config = (CheckConfiguration)iter.next();
+                if (config.getConfigName().equals(name))
+                {
+                    result = config;
+                    break;
+                }
             }
         }
         return result;

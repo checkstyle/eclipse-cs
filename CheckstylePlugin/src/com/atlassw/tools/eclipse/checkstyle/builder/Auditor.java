@@ -35,6 +35,7 @@ import java.util.List;
 //=================================================
 // Imports from com namespace
 //=================================================
+import com.atlassw.tools.eclipse.checkstyle.config.CheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.config.FileSet;
 import com.atlassw.tools.eclipse.checkstyle.config.FileSetFactory;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
@@ -103,11 +104,9 @@ class Auditor
     private void loadFileSets() throws CheckstylePluginException
     {
         List fileSets = FileSetFactory.getFileSets(mProject);
-
         mFileSets = new FileSet[fileSets.size()];
 
         Iterator iter = fileSets.iterator();
-
         for (int i = 0; iter.hasNext(); i++)
         {
             mFileSets[i] = (FileSet)iter.next();
@@ -129,23 +128,35 @@ class Auditor
         throws CheckstylePluginException, CoreException
     {
         //
-        //  Build a checkstyle checker for each file set.
+        //  Build a checkstyle checker for each file set that is enabled.
         //
         Checker[] checker = new Checker[mFileSets.length];
         CheckstyleAuditListener auditListener = new CheckstyleAuditListener();
 
         for (int i = 0; i < checker.length; i++)
         {
-            try
+            if (mFileSets[i].isEnabled())
             {
-                checker[i] = new Checker();
-                checker[i].addListener(auditListener);
-                checker[i].configure(mFileSets[i].getCheckConfig());
-            }
-            catch (com.puppycrawl.tools.checkstyle.api.CheckstyleException e)
-            {
-                CheckstyleLog.error("Failed to create Checkstyle Checker", e);
-                throw new CheckstylePluginException("Failed to create Checkstyle Checker");
+                try
+                {
+                    checker[i] = new Checker();
+                    checker[i].addListener(auditListener);
+                    CheckConfiguration checkConfig = mFileSets[i].getCheckConfig();
+                    if (checkConfig == null)
+                    {
+                    	String msg = "CheckConfig '" 
+                    	             + mFileSets[i].getCheckConfigName() 
+                    	             + "' not found";
+						CheckstyleLog.error(msg);
+						throw new CheckstylePluginException(msg);
+                    }
+                    checker[i].configure(checkConfig);
+                }
+                catch (com.puppycrawl.tools.checkstyle.api.CheckstyleException e)
+                {
+                    CheckstyleLog.error("Failed to create Checkstyle Checker", e);
+                    throw new CheckstylePluginException("Failed to create Checkstyle Checker");
+                }
             }
         }
 

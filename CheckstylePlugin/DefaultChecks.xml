@@ -65,12 +65,6 @@
             </config-properties>
         </rule-configuration>
         <rule-configuration
-            classname="com.puppycrawl.tools.checkstyle.checks.HeaderCheck" severity="warning">
-            <config-properties>
-                <config-property name="headerFile" value="com.atlassw.property.to.resolve.0/java.header"/>
-            </config-properties>
-        </rule-configuration>
-        <rule-configuration
             classname="com.puppycrawl.tools.checkstyle.checks.HiddenFieldCheck" severity="warning">
             <config-properties/>
         </rule-configuration>

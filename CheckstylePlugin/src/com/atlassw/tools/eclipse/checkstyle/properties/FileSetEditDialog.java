@@ -263,9 +263,19 @@ public class FileSetEditDialog extends Dialog
 			labels[i] = config.getConfigName();
             if (mFileSet != null)
             {
-                if (mFileSet.getCheckConfig().getConfigName().equals(config.getConfigName()))
+            	//
+            	//  Make sure the check configuration is not null.  This can happen
+            	//  if the .checkstyle has been updated (say via a team repository)
+            	//  to reference a check configuration that has not yet been imported
+            	//  into the workspace.
+            	//
+                CheckConfiguration checkConfig = mFileSet.getCheckConfig();
+                if (checkConfig != null)
                 {
-                    initialIndex = i;
+                    if (checkConfig.getConfigName().equals(config.getConfigName()))
+                    {
+                        initialIndex = i;
+                    }
                 }
             }
 		}
