@@ -253,21 +253,21 @@ public class CheckstylePreferencePage
             }
         });
 
-		mExportCheckstyleButton = createPushButton(bottomButtons, "Export Checkstyle Config ...");
-		mExportCheckstyleButton.addListener(SWT.Selection, new Listener()
-		{
-			public void handleEvent(Event evt)
-			{
-				exportCheckstyleCheckConfig();
-			}
-		});
-
 		mImportCheckstyleButton = createPushButton(bottomButtons, "Import Checkstyle Config ...");
 		mImportCheckstyleButton.addListener(SWT.Selection, new Listener()
 		{
 			public void handleEvent(Event evt)
 			{
 				importCheckstyleCheckConfig();
+			}
+		});
+
+		mExportCheckstyleButton = createPushButton(bottomButtons, "Export Checkstyle Config ...");
+		mExportCheckstyleButton.addListener(SWT.Selection, new Listener()
+		{
+			public void handleEvent(Event evt)
+			{
+				exportCheckstyleCheckConfig();
 			}
 		});
 
@@ -614,7 +614,7 @@ public class CheckstylePreferencePage
         }
         catch (CheckstylePluginException e)
         {
-            CheckstyleLog.error("Failed to import CheckConfigurations from external file");
+            CheckstyleLog.error("Failed to import CheckConfigurations from external file", e);
             CheckstyleLog.internalErrorDialog();
         }
 	}

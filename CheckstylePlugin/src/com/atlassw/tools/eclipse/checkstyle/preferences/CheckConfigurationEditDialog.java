@@ -212,7 +212,9 @@ public class CheckConfigurationEditDialog extends Dialog
                 }
                 else
                 {
-                    //  TODO: log something here
+                	String msg = "Invalid group index for check rule, ignoring rule. class="
+                	             + ruleConfig.getImplClassname();
+					CheckstyleLog.warning(msg);
                 }
             }
         }
