@@ -9,10 +9,10 @@
 
    <runtime>
       <library name="CheckstylePlugin.jar"/>
-      <library name="checkstyle-all-3.5.jar">
+      <library name="checkstyle-all-4.0alpha.jar">
          <export name="*"/>
       </library>
-      <library name="checkstyle-optional-3.5.jar">
+      <library name="checkstyle-optional-4.0alpha.jar">
          <export name="*"/>
       </library>
    </runtime>
