@@ -139,9 +139,8 @@ public class CheckstyleConfigurationSerializer implements XMLTags
 	 * Serializes a Configuration into xml
 	 */
 	private static Node serializeConfiguration(Configuration configuration,
-                                                 Document configDoc, Node node)
+                                               Document configDoc, Node node)
 	{
-		
 		if (configuration == null)
 		{
 			return null;
@@ -162,12 +161,12 @@ public class CheckstyleConfigurationSerializer implements XMLTags
 			}
 			catch (com.puppycrawl.tools.checkstyle.api.CheckstyleException cse)
 			{
-				//  TODO
+				String message = "Error serializing check attributes";
+				CheckstyleLog.warning(message, cse);
 			}
 		}
 		node.appendChild(configElement);
 		return configElement; 
-		
 	}
 	
 	private static Node toPropertyNode(Document doc, String name, String value)

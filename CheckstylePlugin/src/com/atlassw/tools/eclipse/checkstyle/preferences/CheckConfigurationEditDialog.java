@@ -271,7 +271,8 @@ public class CheckConfigurationEditDialog extends Dialog
 			}
 			catch (CheckstylePluginException e)
 			{
-				//  TODO
+				CheckstyleLog.warning("Error checking CheckConfiguration name already in use", e);
+				CheckstyleLog.internalErrorDialog(mParentComposite.getShell());
 			}
 			if (nameInUse)
 			{
@@ -294,7 +295,8 @@ public class CheckConfigurationEditDialog extends Dialog
             }
             catch (CheckstylePluginException e)
             {
-                //  TODO
+				CheckstyleLog.warning("Error checking CheckConfiguration name in use", e);
+				CheckstyleLog.internalErrorDialog(mParentComposite.getShell());
             }
             if (nameInUse)
             {

@@ -291,18 +291,20 @@ public class XMLUtil
 		{
 			//you get nothing-
 			document = null;
+			CheckstyleLog.warning("Exception while parsing XML", ex);
 		}
 		catch (DOMException ex)       
 		{
 			//you get nothing-
 			document = null;
+			CheckstyleLog.warning("Exception while parsing XML", ex);
 		}
 		catch (Exception e)
 		{
 			//humm?
 			document = null;
+			CheckstyleLog.warning("Exception while parsing XML", e);
 		}
-		
 		
         return document;
 	}
@@ -336,7 +338,10 @@ public class XMLUtil
 			result = newDocument(xmlString);
 		}
 		catch (Exception e)
-		{}
+		{
+			String msg = "Exception while reading and parsing XML file";
+			CheckstyleLog.warning(msg, e);
+		}
 
 		return result;
 	}
