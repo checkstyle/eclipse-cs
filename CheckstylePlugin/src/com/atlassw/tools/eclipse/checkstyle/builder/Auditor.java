@@ -197,7 +197,6 @@ class Auditor
                 if (mFileSets[i].isEnabled() && mFileSets[i].includesFile(file))
                 {
                     String fileName = file.getLocation().toOSString();
-
                     checkFile[0] = new File(fileName);
                     auditListener.setFile(file);
                     checker[i].process(checkFile);
@@ -262,6 +261,8 @@ class Auditor
 
         public void addException(AuditEvent event, Throwable throwable)
         {
+            CheckstyleLog.warning("Exception while auditing, file=" + mFile.getName()
+                                  + " exception=" + throwable.getMessage());
         }
 
         public void auditFinished(AuditEvent event)
