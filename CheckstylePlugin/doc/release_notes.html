@@ -1,216 +1,334 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-<head>
-<title>Eclipse Checkstyle Plug-in</title>
-</head>
-<body bgcolor="#ffffff">
-
-<p align="left"><font color="#0000cc" size="6" face="Arial Narrow"><b>Eclipse
-Checkstyle Plug-in</b></font></p>
-<table border="0">
-	<tbody>
-		<tr>
-			<td width="130" valign="top"><font face="Arial"><a href="index.html">Home</a><br>
-			<a href="screen_shots.html">Screen Shots</a><br>
-			Release Notes<br>
-			<br>
-			<a href="#r3_5_0">Release 3.5.0</a><br>
-			<a href="#r3_4_1">Release 3.4.1</a><br>
-			<a href="#r3_4_0">Release 3.4.0</a>
-			<a href="#r3_3_2"><br>
-			Release 3.3.2</a><br>
-			<a href="#r3_3_1">Release 3.3.1</a><a href="#r3_3_0"><br>
-			Release 3.3.0</a><a href="#r3_2_0"><br>
-			Release 3.2.0</a><br>
-			<a href="#r3_1_1"> Release 3.1.1</a><a href="#r3_1_0"><br>
-			Release 3.1.0</a> <br>
-			</font>
-			<br>
-			<br>
-			<b><font size="2" face="Arial">Hosted By:</font> </b><br>
-			<a href="http://sourceforge.net"> <img
-				src="http://sourceforge.net/sflogo.php?group_id=80344&amp;amp;type=1"
-				width="88" height="31" border="0" alt="SourceForge.net Logo"> </a></td>
-			<td>
-			<table border="0" width="100%">
-				<tbody>
-					<tr>
-						<td><p><font size="4" face="Arial"><b><a name="r3_5_0"></a>Release 3.5.0</b></font></p>
-						<b><font color="#ff0000"><i></i></font></b><ul>
-						    <li>Updated to Checkstyle 3.5.</li>
-							<li><b>Note:</b> This is likely to be the last release supported on Eclipse 2.x. The plan is that the next release, v4.0, will be a pure Eclipse 3.0 plug-in and will not be compatable with Eclipse 2.x.</li>
-						</ul>
-						</td>
-					</tr>
-					<tr>
-						<td></td>
-					</tr>
-					<tr>
-						<td><p><font size="4" face="Arial"><b><a name="r3_4_1"></a>Release 3.4.1</b></font></p>
-						<b><font color="#ff0000"><i></i></font></b>
-						<p><font face="Arial"><b>Bugs Resolved:</b></font></p>
-						<ul>
-						    <li>991820: Very slow builder</li>
-							<li>979798: Got Exception: lava.lang.NoClassDefFoundError</li>
-							<li>934083: Unable to get class information for &lt;Exception&gt; errors</li>
-							<li>905079: Invoking CheckstyleBuilder Even If No File Set is Enabled</li>
-							<li>904268: Redundant throws: 'Exception' is unchecked exception</li>
-							<li>896571: Still Having Issues With Exceptions Not Visible from Classpath</li>
-							<li>895725:  Can not be disabled / performance</li>
-						</ul>
-						<p><font face="Arial"><b>Other Items:</b></font></p>
-						<ul>
-						    <li>Thanks to Richard Atkins for his patch  that fixed the relative jars bug.</li>
-							<li>Added some optimizations to improve build performance.</li>
-						</ul>
-						</td>
-					</tr>
-					<tr>
-						<td>
-						<p><font size="4" face="Arial"><b></b></font></p></td>
-					</tr>
-					<tr>
-						<td><p><font size="4" face="Arial"><b><a name="r3_4_0"></a>Release 3.4.0</b></font></p>
-						<b><font color="#ff0000"></font></b><ul>
-							<li>Updated to include Checkstyle 3.4.</li><li><b>Note:</b> This release has only been tested with Eclipse 2.1.x. Eclipse 2.0.x is no longer supported.</li>
-							<li><b>Note:</b> Support for Eclipse 3.0 is in the works and will be released as soon as possible.</li>
-						</ul>
-						</td>
-					</tr>
-					<tr>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-						<p><a name="r3_3_2"></a><font size="4" face="Arial"><b>Release 3.3.2</b></font></p>
-						<b><font color="#ff0000"><i></i></font></b>
-						<p><font face="Arial"><b>Bugs Resolved:</b></font></p>
-						<ul>
-							<li>883468: Calling method missing from Eclipse 2.0.x</li><li>883469: Classpath not complete</li>
-							<li>886271: Checkstyle fails to get class information for Exception</li>
-							<li>887849: Property value bugs</li>
-						</ul>
-						
-						</td>
-					</tr>
-					<tr>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-						<p><font size="4" face="Arial"><b><a name="r3_3_1"></a>Release 3.3.1</b></font></p>
-						<b><font color="#ff0000"><i></i></font></b>
-						<p><font face="Arial"><b>Bugs Resolved:</b></font></p>
-						<ul>
-							<li>878261: Error in plugin-eclipse2-0-x.xml</li>
-							<li>875539: Still Unable to get class information for Exceptions</li>
-							<li>784182: Removing configuration - re-adding not allowed.</li>
-							<li>771490: Exceptions when CheckConfig not found</li>
-						</ul>
-						<p><font face="Arial"><b>Feature Requests:</b></font></p>
-						<ul>
-							<li>750399: Copy check configurations</li>
-							<li>754423: Include rule name in message to user</li>
-						</ul>
-
-						</td>
-					</tr>
-					<tr>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-						<p><font size="4" face="Arial"><b><a name="r3_3_0"></a>Release 3.3.0</b></font></p>
-						<b><font color="#ff0000"><i></i></font></b><p><font face="Arial"><b>Bugs Resolved:</b></font></p>
-						<ul>
-							<li>872279: Import Plugin Config produces duplicate entry</li>
-							<li>864322: empty block check doesn't work in 3.0M6</li>
-							<li>855057: configuration saved with wrong encoding</li>
-							<li>849075: Properties window is not long enough</li>
-							<li>820342: Property Variable Value Editor field length too short</li>
-							<li>787873: NPE in ArrayTypeStyleCheck</li>
-							<li>778321: Says Got a null pointer exception</li>
-							<li>773768: Cannot read hex numbers</li>
-							<li>773754: Exclude become Include</li>
-							<li>748678: Checkstyle fails to get class information for Exceptions</li>
-						</ul>
-						<p><font face="Arial"><b>Other Items:</b></font></p>
-						<ul>
-							<li>Updated to include Checkstyle v3.3.</li>
-						</ul></td>
-					</tr>
-					<tr>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-						<p><font size="4" face="Arial"><b><a name="r3_2_0"></a>Release 3.2.0</b></font></p>
-						<b><font color="#ff0000"><i>Important Note:</i></font></b> If you are using version 2.0.x of Eclipse or version 5.0.x of WSAD you will need to replace the plugin.xml file     with the plugin-eclipse2-0-x.xml file. Rename plugin-eclipse2-0-x.xml to plugin.xml     in the com.atlassw.tools.eclipse.checkstyle_x.y.z folder in the Eclipse plugins folder.<p><font face="Arial"><b>Bugs Fixed:</b></font></p>
-						<ul>
-							<li>784243: Test file filter fails with NPE</li>
-						</ul>
-						<p><font face="Arial"><b>Other Items:</b></font></p>
-						<ul>
-							<li>Updates to include Checkstyle v3.2.</li>
-						</ul>
-						</td>
-					</tr>
-					<tr>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-						<p><a name="r3_1_1"></a><font size="4" face="Arial"><b>Release 3.1.1</b></font></p>
-						<p><font face="Arial"><b>Bugs Fixed:</b></font></p>
-						<ul>
-							<li>744773: Unknown property type for empty block rule.</li>
-							<li>745200: Failed to read and parse check configuration.</li>
-							<li>745340: Poor check config export failure message.</li>
-							<li>748772: Default file pattern is misleading.</li>
-							<li>748779: Exported plugin configuration is not ordered.</li>
-						</ul>
-						<p><font face="Arial"><b>Feature Requests:</b></font></p>
-						<ul>
-							<li>741546: You can now import standard Checkstyle configuration
-							files.</li>
-							<li>744754: A file of default configurations is now provided. One
-							configuration on the Sun coding standards from the Checkstyle
-							distribution is included.</li>
-						</ul>
-						<p><font face="Arial"><b>Other Items:</b></font></p>
-						<ul>
-							<li>Updated documentation to include a Getting Started and
-							Troubleshooting topic.</li>
-							<li>Improved error handling and reporting in some situations. In
-							particular, when a project FileSet refers to a check
-							configuration that is not in the workspace.</li>
-							<li>Improved performance of check initialization.</li>
-						</ul>
-						</td>
-
-						</tr>
-					<tr>
-						<td width="576"></td>
-					</tr>
-					<tr>
-						<td width="576"><font size="4" face="Arial"><b><a name="r3_1_0"></a>Release 3.1.0</b></font><ul>
-							<li>Support for Checkstyle version 3.1</li>
-							<li>Support for multiple check configurations within your
-							workspace at the same time</li>
-							<li>Greatly improved configuration user interface</li>
-							<li>Much greater control over which rules are used to check which
-							source files</li>
-							<li>Support for multiple severity levels (Error, Warning, Info,
-							Ignore) for each rule</li>
-						</ul>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			
-			</td></tr></tbody></table>
-<hr>
-<p><font size="2" color="#808080">Copyright &copy; 2002-2004 David
-Schneider. All Rights Reserved.</font></p>
-</body>
-</html>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
+	<TITLE>Eclipse Checkstyle Plug-in</TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1.4  (Win32)">
+	<META NAME="CREATED" CONTENT="20050330;7324716">
+	<META NAME="CHANGEDBY" CONTENT="Lars K&ouml;dderitzsch">
+	<META NAME="CHANGED" CONTENT="20050330;7383916">
+</HEAD>
+<BODY LANG="de-DE" BGCOLOR="#ffffff" DIR="LTR">
+<P ALIGN=LEFT><FONT COLOR="#0000cc"><FONT FACE="Arial Narrow"><FONT SIZE=6><B>Eclipse
+Checkstyle Plug-in</B></FONT></FONT></FONT></P>
+<TABLE WIDTH=727 BORDER=0 CELLPADDING=2 CELLSPACING=0 STYLE="page-break-before: always">
+	<COL WIDTH=126>
+	<COL WIDTH=6>
+	<COL WIDTH=580>
+	<COL WIDTH=0>
+	<TR>
+		<TD ROWSPAN=19 WIDTH=126 VALIGN=TOP>
+			<P><FONT FACE="Arial">
+				<A HREF="index.html">Home</A><BR><A HREF="screen_shots.html">ScreenShots</A>
+				<BR>Release Notes<BR><BR>
+				<A HREF="#r4_0_0a">Release 4.0.0a</A><BR>
+				<A HREF="#r3_5_0">Release 3.5.0</A><BR>
+				<A HREF="#r3_4_1">Release 3.4.1</A><BR>
+				<A HREF="#r3_4_0">Release 3.4.0</A><BR>
+				<A HREF="#r3_3_2">Release 3.3.2</A><BR>
+				<A HREF="#r3_3_1">Release 3.3.1</A><BR>
+				<A HREF="#r3_3_0">Release 3.3.0</A><BR>
+				<A HREF="#r3_2_0">Release 3.2.0</A><BR>
+				<A HREF="#r3_1_1">Release 3.1.1</A><BR>
+				<A HREF="#r3_1_0">Release 3.1.0</A><BR>
+				</FONT><BR><BR><B><FONT SIZE=2><FONT FACE="Arial">Hosted By:</FONT></FONT> </B><BR><A HREF="http://sourceforge.net/"><IMG SRC="http://sourceforge.net/sflogo.php?group_id=80344&amp;amp;type=1" 				NAME="Grafik1" ALT="SourceForge.net Logo" ALIGN=BOTTOM WIDTH=88 HEIGHT=31 BORDER=0></A><A HREF="http://sourceforge.net/"></A>
+			</P>
+		</TD>
+		<TD ROWSPAN=18 WIDTH=6 VALIGN=TOP></TD>
+		<TD WIDTH=580>
+			<P><A NAME="r4_0_0a"></A><FONT FACE="Arial"><FONT SIZE=4><B>Release
+			4.0.0a</B></FONT></FONT></P>
+			<UL>
+				<LI><P STYLE="margin-bottom: 0cm">Updated to Checkstyle 4.0 beta1 - Support for Java 5.0 features</P>
+				<LI><P STYLE="margin-bottom: 0cm">Now works with Eclipse 3.0 and
+				greater (3.1 M5 tested)</P>
+				<LI><P><B>Note:</B> Eclipse 2.x.x is no more supported</P>
+			</UL>
+				<P><FONT FACE="Arial"><B>New Features:</B></FONT></P>
+			<UL>
+				<LI><P STYLE="margin-bottom: 0cm">Checkstyle warnings are annotated in the source code.<BR/>Can be turned off via Window->Preferences->Workbench->Editors->Annotations
+				</P>	
+			</UL>
+				<P><FONT FACE="Arial"><B>Incorporated Patches:</B></FONT></P>
+			<UL>
+				<LI><P STYLE="margin-bottom: 0cm">Patch 1096720: Use of jobs api + filter facility
+				</P>
+				<LI><P STYLE="margin-bottom: 0cm">Patch 1064092: Make eclipse-cs a 3.x-style plugin
+				</P>
+				<LI><P STYLE="margin-bottom: 0cm">Patch 1064046: Remove xerces dependency
+				</P>
+			</UL>
+		</TD>
+		<TD ROWSPAN=18 WIDTH=0 VALIGN=TOP></TD>
+	</TR>
+	<TR>
+		<TD WIDTH=580>
+			<P><A NAME="r3_5_0"/><FONT FACE="Arial"><FONT SIZE=4><B>Release 3.5.0</B></FONT></FONT></P>
+			<UL>
+				<LI><P STYLE="margin-bottom: 0cm">Updated to Checkstyle 3.5. 
+				</P>
+				<LI><P><B>Note:</B> This is likely to be the last release
+				supported on Eclipse 2.x. The plan is that the next release,
+				v4.0, will be a pure Eclipse 3.0 plug-in and will not be
+				compatable with Eclipse 2.x. 
+				</P>
+			</UL>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=580></TD>
+	</TR>
+	<TR>
+		<TD WIDTH=580>
+			<P><A NAME="r3_4_1"/><FONT FACE="Arial"><FONT SIZE=4><B>Release 3.4.1</B></FONT></FONT></P>
+			<P><FONT FACE="Arial"><B>Bugs Resolved:</B></FONT></P>
+			<UL>
+				<LI><P STYLE="margin-bottom: 0cm">991820: Very slow builder 
+				</P>
+				<LI><P STYLE="margin-bottom: 0cm">979798: Got Exception:
+				lava.lang.NoClassDefFoundError 
+				</P>
+				<LI><P STYLE="margin-bottom: 0cm">934083: Unable to get class
+				information for &lt;Exception&gt; errors 
+				</P>
+				<LI><P STYLE="margin-bottom: 0cm">905079: Invoking
+				CheckstyleBuilder Even If No File Set is Enabled 
+				</P>
+				<LI><P STYLE="margin-bottom: 0cm">904268: Redundant throws:
+				'Exception' is unchecked exception 
+				</P>
+				<LI><P STYLE="margin-bottom: 0cm">896571: Still Having Issues
+				With Exceptions Not Visible from Classpath 
+				</P>
+				<LI><P>895725: Can not be disabled / performance 
+				</P>
+			</UL>
+			<P><FONT FACE="Arial"><B>Other Items:</B></FONT></P>
+			<UL>
+				<LI><P STYLE="margin-bottom: 0cm">Thanks to Richard Atkins for
+				his patch that fixed the relative jars bug. 
+				</P>
+				<LI><P>Added some optimizations to improve build performance. 
+				</P>
+			</UL>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=580></TD>
+	</TR>
+	<TR>
+		<TD WIDTH=580>
+			<P><A NAME="r3_4_0"/><FONT FACE="Arial"><FONT SIZE=4><B>Release 3.4.0</B></FONT></FONT></P>
+			<UL>
+				<LI><P STYLE="margin-bottom: 0cm">Updated to include Checkstyle
+				3.4.</P>
+				<LI><P STYLE="margin-bottom: 0cm"><B>Note:</B> This release has
+				only been tested with Eclipse 2.1.x. Eclipse 2.0.x is no longer
+				supported. 
+				</P>
+				<LI><P><B>Note:</B> Support for Eclipse 3.0 is in the works and
+				will be released as soon as possible. 
+				</P>
+			</UL>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=580></TD>
+	</TR>
+	<TR>
+		<TD WIDTH=580>
+			<P><A NAME="r3_3_2"/><FONT FACE="Arial"><FONT SIZE=4><B>Release 3.3.2</B></FONT></FONT></P>
+			<P><FONT FACE="Arial"><B>Bugs Resolved:</B></FONT></P>
+			<UL>
+				<LI><P STYLE="margin-bottom: 0cm">883468: Calling method missing
+				from Eclipse 2.0.x</P>
+				<LI><P STYLE="margin-bottom: 0cm">883469: Classpath not complete 
+				</P>
+				<LI><P STYLE="margin-bottom: 0cm">886271: Checkstyle fails to get
+				class information for Exception 
+				</P>
+				<LI><P>887849: Property value bugs 
+				</P>
+			</UL>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=580></TD>
+	</TR>
+	<TR>
+		<TD WIDTH=580>
+			<P><A NAME="r3_3_1"/><FONT FACE="Arial"><FONT SIZE=4><B>Release 3.3.1</B></FONT></FONT></P>
+			<P><FONT FACE="Arial"><B>Bugs Resolved:</B></FONT></P>
+			<UL>
+				<LI><P STYLE="margin-bottom: 0cm">878261: Error in
+				plugin-eclipse2-0-x.xml 
+				</P>
+				<LI><P STYLE="margin-bottom: 0cm">875539: Still Unable to get
+				class information for Exceptions 
+				</P>
+				<LI><P STYLE="margin-bottom: 0cm">784182: Removing configuration
+				- re-adding not allowed. 
+				</P>
+				<LI><P>771490: Exceptions when CheckConfig not found 
+				</P>
+			</UL>
+			<P><FONT FACE="Arial"><B>Feature Requests:</B></FONT></P>
+			<UL>
+				<LI><P STYLE="margin-bottom: 0cm">750399: Copy check
+				configurations 
+				</P>
+				<LI><P>754423: Include rule name in message to user 
+				</P>
+			</UL>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=580></TD>
+	</TR>
+	<TR>
+		<TD WIDTH=580>
+			<P><A NAME="r3_3_0"/><FONT FACE="Arial"><FONT SIZE=4><B>Release 3.3.0</B></FONT></FONT></P>
+			<P><FONT FACE="Arial"><B>Bugs Resolved:</B></FONT></P>
+			<UL>
+				<LI><P STYLE="margin-bottom: 0cm">872279: Import Plugin Config
+				produces duplicate entry 
+				</P>
+				<LI><P STYLE="margin-bottom: 0cm">864322: empty block check
+				doesn't work in 3.0M6 
+				</P>
+				<LI><P STYLE="margin-bottom: 0cm">855057: configuration saved
+				with wrong encoding 
+				</P>
+				<LI><P STYLE="margin-bottom: 0cm">849075: Properties window is
+				not long enough 
+				</P>
+				<LI><P STYLE="margin-bottom: 0cm">820342: Property Variable Value
+				Editor field length too short 
+				</P>
+				<LI><P STYLE="margin-bottom: 0cm">787873: NPE in
+				ArrayTypeStyleCheck 
+				</P>
+				<LI><P STYLE="margin-bottom: 0cm">778321: Says Got a null pointer
+				exception 
+				</P>
+				<LI><P STYLE="margin-bottom: 0cm">773768: Cannot read hex numbers
+								</P>
+				<LI><P STYLE="margin-bottom: 0cm">773754: Exclude become Include 
+				</P>
+				<LI><P>748678: Checkstyle fails to get class information for
+				Exceptions 
+				</P>
+			</UL>
+			<P><FONT FACE="Arial"><B>Other Items:</B></FONT></P>
+			<UL>
+				<LI><P>Updated to include Checkstyle v3.3. 
+				</P>
+			</UL>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=580></TD>
+	</TR>
+	<TR>
+		<TD WIDTH=580>
+			<P><A NAME="r3_2_0"/><FONT FACE="Arial"><FONT SIZE=4><B>Release 3.2.0</B></FONT></FONT></P>
+			<P><B><I><FONT COLOR="#ff0000">Important Note:</FONT></I></B> If
+			you are using version 2.0.x of Eclipse or version 5.0.x of WSAD
+			you will need to replace the plugin.xml file with the
+			plugin-eclipse2-0-x.xml file. Rename plugin-eclipse2-0-x.xml to
+			plugin.xml in the com.atlassw.tools.eclipse.checkstyle_x.y.z
+			folder in the Eclipse plugins folder.</P>
+			<P><FONT FACE="Arial"><B>Bugs Fixed:</B></FONT></P>
+			<UL>
+				<LI><P>784243: Test file filter fails with NPE 
+				</P>
+			</UL>
+			<P><FONT FACE="Arial"><B>Other Items:</B></FONT></P>
+			<UL>
+				<LI><P>Updates to include Checkstyle v3.2. 
+				</P>
+			</UL>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=580></TD>
+	</TR>
+	<TR>
+		<TD WIDTH=580>
+			<P><A NAME="r3_1_1"/><FONT FACE="Arial"><FONT SIZE=4><B>Release 3.1.1</B></FONT></FONT></P>
+			<P><FONT FACE="Arial"><B>Bugs Fixed:</B></FONT></P>
+			<UL>
+				<LI><P STYLE="margin-bottom: 0cm">744773: Unknown property type
+				for empty block rule. 
+				</P>
+				<LI><P STYLE="margin-bottom: 0cm">745200: Failed to read and
+				parse check configuration. 
+				</P>
+				<LI><P STYLE="margin-bottom: 0cm">745340: Poor check config
+				export failure message. 
+				</P>
+				<LI><P STYLE="margin-bottom: 0cm">748772: Default file pattern is
+				misleading. 
+				</P>
+				<LI><P>748779: Exported plugin configuration is not ordered. 
+				</P>
+			</UL>
+			<P><FONT FACE="Arial"><B>Feature Requests:</B></FONT></P>
+			<UL>
+				<LI><P STYLE="margin-bottom: 0cm">741546: You can now import
+				standard Checkstyle configuration files. 
+				</P>
+				<LI><P>744754: A file of default configurations is now provided.
+				One configuration on the Sun coding standards from the Checkstyle
+				distribution is included. 
+				</P>
+			</UL>
+			<P><FONT FACE="Arial"><B>Other Items:</B></FONT></P>
+			<UL>
+				<LI><P STYLE="margin-bottom: 0cm">Updated documentation to
+				include a Getting Started and Troubleshooting topic. 
+				</P>
+				<LI><P STYLE="margin-bottom: 0cm">Improved error handling and
+				reporting in some situations. In particular, when a project
+				FileSet refers to a check configuration that is not in the
+				workspace. 
+				</P>
+				<LI><P>Improved performance of check initialization. 
+				</P>
+			</UL>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=580></TD>
+	</TR>
+	<TR>
+		<TD WIDTH=580>
+			<P><A NAME="r3_1_0"/><FONT FACE="Arial"><FONT SIZE=4><B>Release 3.1.0</B></FONT></FONT></P>
+			<UL>
+				<LI><P STYLE="margin-bottom: 0cm">Support for Checkstyle version
+				3.1 
+				</P>
+				<LI><P STYLE="margin-bottom: 0cm">Support for multiple check
+				configurations within your workspace at the same time 
+				</P>
+				<LI><P STYLE="margin-bottom: 0cm">Greatly improved configuration
+				user interface 
+				</P>
+				<LI><P STYLE="margin-bottom: 0cm">Much greater control over which
+				rules are used to check which source files 
+				</P>
+				<LI><P>Support for multiple severity levels (Error, Warning,
+				Info, Ignore) for each rule 
+				</P>
+			</UL>
+		</TD>
+	</TR>
+	<TR>
+		<TD COLSPAN=3 WIDTH=593></TD>
+	</TR>
+</TABLE>
+<HR>
+<P><FONT COLOR="#808080"><FONT SIZE=2>Copyright &copy; 2002-2004
+David Schneider. All Rights Reserved.</FONT></FONT></P>
+</BODY>
+</HTML>
