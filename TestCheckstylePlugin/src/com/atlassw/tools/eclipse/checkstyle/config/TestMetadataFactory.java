@@ -6,6 +6,7 @@
 //
 package com.atlassw.tools.eclipse.checkstyle.config;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -32,13 +33,14 @@ public class TestMetadataFactory extends TestCase
                 CHECKSTYLE_CHECKS_PACKAGE + ".NewlineAtEndOfFileCheck",
                 CHECKSTYLE_CHECKS_PACKAGE + ".TranslationCheck",
    });
+   
    public void testAllChecksAreIncluded() throws ClassNotFoundException, IOException
    {
       final List includedClasses = new ArrayList();
       final Iterator it = MetadataFactory.getRuleGroupMetadata().iterator();
       while (it.hasNext())
       {
-         RuleGroupMetadata ruleGroup = (RuleGroupMetadata) it.next();
+         final RuleGroupMetadata ruleGroup = (RuleGroupMetadata) it.next();
          final Iterator it2 = ruleGroup.getRuleMetadata().iterator();
          while (it2.hasNext())
          {
@@ -56,7 +58,19 @@ public class TestMetadataFactory extends TestCase
             
          }
       }
-      JarFile jar = new JarFile("checkstyle-all-3.2.jar");
+      final File file = new File(".");
+      final String[] files = file.list();
+      for(int i = 0; i < files.length; i++)
+      {
+         if(files[i].endsWith(".jar"))
+         {
+            checkJar(includedClasses, new JarFile(files[i]));            
+         }
+      }
+   }
+   
+   private void checkJar(final List includedClasses, final JarFile jar) throws ClassNotFoundException
+   {
       final Enumeration entries = jar.entries();
       while (entries.hasMoreElements())
       {
@@ -76,8 +90,6 @@ public class TestMetadataFactory extends TestCase
                }
             }
          }
-         
       }
-      
    }
 }
