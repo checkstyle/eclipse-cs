@@ -13,21 +13,35 @@
     <property name="check.config" value="CheckConfig_Checkstyle.xml"/>
 
     <property name="checkstyle.jar" value="checkstyle-all-3.1.jar" />
-	<property name="eclipse.core.resources.jar" value="${env.ECLIPSE_HOME}/plugins/org.eclipse.core.resources_2.0.1/resources.jar" />
-	<property name="eclipse.ui.jar" value="${env.ECLIPSE_HOME}/plugins/org.eclipse.ui_2.0.2/workbench.jar" />
-	<property name="eclipse.ui.win32.jar" value="${env.ECLIPSE_HOME}/plugins/org.eclipse.ui.win32_2.0.0/workbenchwin32.jar" />
-	<property name="eclipse.swt.win32.jar" value="${env.ECLIPSE_HOME}/plugins/org.eclipse.swt.win32_2.0.2/ws/win32/swt.jar" />
+	<property name="eclipse.core.resources.jar" value="${env.ECLIPSE_HOME}/plugins/org.eclipse.core.resources_2.1.0/resources.jar" />
+	<property name="eclipse.ui.jar" value="${env.ECLIPSE_HOME}/plugins/org.eclipse.ui_2.1.0/ui.jar" />
+	<property name="eclipse.swt.win32.jar" value="${env.ECLIPSE_HOME}/plugins/org.eclipse.swt.win32_2.1.0/ws/win32/swt.jar" />
+	<property name="eclipse.text.jar" value="${env.ECLIPSE_HOME}/plugins/org.eclipse.text_2.1.0/text.jar" />
+	<property name="eclipse.jface.jar" value="${env.ECLIPSE_HOME}/plugins/org.eclipse.jface_2.1.0/jface.jar" />
+	<property name="eclipse.jface.text.jar" value="${env.ECLIPSE_HOME}/plugins/org.eclipse.jface.text_2.1.0/jfacetext.jar" />
+	<property name="eclipse.ui.views.jar" value="${env.ECLIPSE_HOME}/plugins/org.eclipse.ui.views_2.1.0/views.jar" />
+	<property name="eclipse.ui.workbench.jar" value="${env.ECLIPSE_HOME}/plugins/org.eclipse.ui.workbench_2.1.0/workbench.jar" />
+	<property name="eclipse.ui.win32.jar" value="${env.ECLIPSE_HOME}/plugins/org.eclipse.ui.win32_2.1.0/workbenchwin32.jar" />
+	<property name="eclipse.ui.workbench.texteditor.jar" value="${env.ECLIPSE_HOME}/plugins/org.eclipse.ui.workbench.texteditor_2.1.0/texteditor.jar" />
+	<property name="eclipse.ui.editors.jar" value="${env.ECLIPSE_HOME}/plugins/org.eclipse.ui.editors_2.1.0/editors.jar" />
 	<property name="apache.xerces.api.jar" value="${env.ECLIPSE_HOME}/plugins/org.apache.xerces_4.0.7/xmlParserAPIs.jar" />
 	<property name="apache.xerces.impl.jar" value="${env.ECLIPSE_HOME}/plugins/org.apache.xerces_4.0.7/xercesImpl.jar" />
-	<property name="eclipse.core.runtime.jar" value="${env.ECLIPSE_HOME}/plugins/org.eclipse.core.runtime_2.0.2/runtime.jar" />
-	<property name="eclipse.core.boot.jar" value="${env.ECLIPSE_HOME}/plugins/org.eclipse.core.boot_2.0.2/boot.jar" />
+	<property name="eclipse.core.runtime.jar" value="${env.ECLIPSE_HOME}/plugins/org.eclipse.core.runtime_2.1.0/runtime.jar" />
+	<property name="eclipse.core.boot.jar" value="${env.ECLIPSE_HOME}/plugins/org.eclipse.core.boot_2.1.0/boot.jar" />
 
 	<path id="build.classpath">
 		<pathelement location="${checkstyle.jar}" />
 		<pathelement location="${eclipse.core.resources.jar}" />
 		<pathelement location="${eclipse.ui.jar}" />
-		<pathelement location="${eclipse.ui.win32.jar}" />
 		<pathelement location="${eclipse.swt.win32.jar}" />
+		<pathelement location="${eclipse.text.jar}" />
+		<pathelement location="${eclipse.jface.jar}" />
+		<pathelement location="${eclipse.jface.text.jar}" />
+		<pathelement location="${eclipse.ui.views.jar}" />
+		<pathelement location="${eclipse.ui.workbench.jar}" />
+		<pathelement location="${eclipse.ui.win32.jar}" />
+		<pathelement location="${eclipse.ui.workbench.texteditor.jar}" />
+		<pathelement location="${eclipse.ui.editors.jar}" />
 		<pathelement location="${apache.xerces.api.jar}" />
 		<pathelement location="${apache.xerces.impl.jar}" />
 		<pathelement location="${eclipse.core.runtime.jar}" />
