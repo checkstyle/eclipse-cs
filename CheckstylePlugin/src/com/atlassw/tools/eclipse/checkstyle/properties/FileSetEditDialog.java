@@ -671,7 +671,7 @@ public class FileSetEditDialog extends Dialog
         return mFileSet;
     }
 
-    final private List getFiles(IContainer container)
+    private final List getFiles(IContainer container)
         throws CoreException
     {
         LinkedList files   = new LinkedList();

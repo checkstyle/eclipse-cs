@@ -47,7 +47,7 @@ import org.eclipse.ui.PlatformUI;
 /**
  *  Logging utility for the Checkstyle plug-in.
  */
-public class CheckstyleLog
+public final class CheckstyleLog
 {
     //=================================================
 	// Public static final variables.

@@ -51,7 +51,7 @@ import org.w3c.dom.Element;
  * 
  * @author dnehring
  */
-public class CheckstyleConfigurationSerializer implements XMLTags
+public final class CheckstyleConfigurationSerializer implements XMLTags
 {
     //=================================================
 	// Public static final variables.
@@ -83,6 +83,15 @@ public class CheckstyleConfigurationSerializer implements XMLTags
 	{
 	}
 	
+	/**
+	 * Serialize a check configuration into a standard Checkstyle configuration file format.
+	 * 
+	 * @param  config  The configuration to serialize
+	 * 
+	 * @return  The XML for the standard Checkstyle configuration file.
+	 * 
+	 * @throws CheckstylePluginException  Error during processing.
+	 */
 	public static String serialize(CheckConfiguration config)
         throws CheckstylePluginException
 	{
@@ -117,9 +126,9 @@ public class CheckstyleConfigurationSerializer implements XMLTags
 	
 	/**
 	 * Serializes a Configuration[] into xml
-	 * 
 	 */
-	private static void serializeConfiguration(Configuration[] configurations, Document configDoc, Node node)
+	private static void serializeConfiguration(Configuration[] configurations, 
+	                                           Document configDoc, Node node)
 	{
 		
 		if (configurations == null || configurations.length < 1)

@@ -42,7 +42,7 @@ import com.atlassw.tools.eclipse.checkstyle.config.ConfigPropertyType;
 /**
  *  Interface all configuration property input widget classes.
  */
-interface ConfigPropertyWidget
+interface IConfigPropertyWidget
 {
     //=================================================
 	// Public static final variables.

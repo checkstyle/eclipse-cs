@@ -58,7 +58,7 @@ import org.w3c.dom.NodeList;
 /**
  *  Used to manage the life cycle of FileSet objects.
  */
-public class FileSetFactory implements XMLTags
+public final class FileSetFactory implements XMLTags
 {
     //=================================================
 	// Public static final variables.
@@ -177,7 +177,9 @@ public class FileSetFactory implements XMLTags
                     inStream.close();
                 }
                 catch (Exception e)
-                {}
+                {
+                	//  Nothing can be done about it.
+                }
             }
         }
         

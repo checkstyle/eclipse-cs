@@ -62,7 +62,7 @@ public class FileMatchPattern implements Cloneable, XMLTags
 	// Static class variables.
 	//=================================================
     
-    private RECompiler  sRECompiler = new RECompiler();
+    private static RECompiler  sRECompiler = new RECompiler();
 
 	//=================================================
 	// Instance member variables.
@@ -70,7 +70,7 @@ public class FileMatchPattern implements Cloneable, XMLTags
     
     private String       mMatchPattern;
     
-    private boolean     mIsIncludePattern = true;
+    private boolean      mIsIncludePattern = true;
     
     private REProgram    mProgram;
     
@@ -84,6 +84,8 @@ public class FileMatchPattern implements Cloneable, XMLTags
      *  Construct a new <code>FileMatchPattern</code>.
      * 
      *  @param pattern  The new pattern.
+     * 
+     *  @throws CheckstylePluginException  Error during processing
      */
     public FileMatchPattern(String pattern) throws CheckstylePluginException
     {
@@ -92,6 +94,10 @@ public class FileMatchPattern implements Cloneable, XMLTags
 
     /**
      *  Create from a DOM node.
+     * 
+     *  @param  node  The DOM node to construct from.
+     * 
+     *  @throws CheckstylePluginException  Error during processing
      */
     public FileMatchPattern(Node node) throws CheckstylePluginException
     {
@@ -131,9 +137,11 @@ public class FileMatchPattern implements Cloneable, XMLTags
 	}
     
 	/**
-	 * Sets the match pattern.
+	 *  Sets the match pattern.
      * 
-	 * @param matchPattern The match pattern to set
+	 *  @param pattern The match pattern to set
+     * 
+     *  @throws CheckstylePluginException  Error during processing
 	 */
 	public void setMatchPattern(String pattern) throws CheckstylePluginException
 	{
@@ -195,6 +203,8 @@ public class FileMatchPattern implements Cloneable, XMLTags
      *  Create an XML DOM node representation of the file set.
      * 
      *  @param  doc  The document to create the node within.
+     * 
+     *  @return  A DOM Node representing the FileMatchPattern.
      */
     public Node toDOMNode(Document doc)
     {
@@ -216,6 +226,13 @@ public class FileMatchPattern implements Cloneable, XMLTags
         return rootNode;
     }
     
+    /**
+     *  Clone the object
+     * 
+     *  @return  The clone
+     * 
+     *  @throws  CloneNotSupportedException  The object can not be cloned.
+     */
     public Object clone() throws CloneNotSupportedException
     {
         return super.clone();

@@ -151,31 +151,63 @@ public class ConfigPropertyMetadata implements Cloneable, XMLTags
 	// Methods.
 	//=================================================
     
+    /**
+     *  Get the property's datatype
+     * 
+     *  @return  The datatype
+     */
     public ConfigPropertyType getDatatype()
     {
         return mDatatype;
     }
-        
+    
+    /**
+     * Get the property's name
+     * 
+     * @return  The name
+     */
     public String getName()
     {
         return mName;
     }
     
+    /**
+     * Get the property's description.
+     * 
+     * @return  The description
+     */
     public String getDescription()
     {
         return mDescription;
     }
     
+    /**
+     * Get the default value
+     * 
+     * @return  The default value
+     */
     public String getDefaultValue()
     {
         return mDefaultValue;
     }
     
+    /**
+     * Get the enumeration of allowable values.
+     * 
+     * @return  Enumeration of values
+     */
     public ConfigPropertyEnumerationMetadata getPropertyEnumeration()
     {
         return mEnumeration;
     }
     
+    /**
+     * Clone the object.
+     * 
+     * @return  The cloned object.
+     * 
+     * @throws  CloneNotSupportedException  The object can not be cloned.
+     */
     public Object clone() throws CloneNotSupportedException
     {
         return super.clone();

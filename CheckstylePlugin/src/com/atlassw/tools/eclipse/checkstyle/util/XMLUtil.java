@@ -59,7 +59,7 @@ import org.apache.xml.serialize.XMLSerializer;
 /**
  *  Provides utility methods for XML manipulations.
  */
-public class XMLUtil
+public final class XMLUtil
 {
 	//=================================================
 	// Public static final variables.

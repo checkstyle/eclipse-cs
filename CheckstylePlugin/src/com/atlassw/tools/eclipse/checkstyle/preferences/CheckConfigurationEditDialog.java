@@ -203,11 +203,15 @@ public class CheckConfigurationEditDialog extends Dialog
                     CheckstyleLog.internalErrorDialog();
                 }
                 
+                //
+                //  Note: this logic will need to be updated to support importing
+                //        standard Checkstyle config files since they may contain
+                //        rules for which the plug-in does not have metadata.
+                //
                 RuleMetadata metadata = getRuleMetadata(ruleConfig);
                 if (metadata != null)
                 {
-                    RuleConfigWorkingCopy copy = new RuleConfigWorkingCopy(metadata);
-                    copy.setRuleConfig(ruleConfig);
+                    RuleConfigWorkingCopy copy = new RuleConfigWorkingCopy(metadata, ruleConfig);
                     mRuleConfigWorkingCopies[metadata.getGroupIndex()].add(copy);
                 }
             }
@@ -580,7 +584,7 @@ public class CheckConfigurationEditDialog extends Dialog
         RuleMetadata ruleMetadata = dialog.getSelectedRule();
         if (ruleMetadata != null)
         {
-            mCurrentSelection = new RuleConfigWorkingCopy(ruleMetadata);
+            mCurrentSelection = new RuleConfigWorkingCopy(ruleMetadata, null);
             editRule();
         }
     }

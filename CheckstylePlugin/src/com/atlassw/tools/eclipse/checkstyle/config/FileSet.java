@@ -81,15 +81,24 @@ public class FileSet implements Cloneable, XMLTags
     
     /**
      *  Default constructor.
+     * 
+     *  @param  name  The name of the <code>FileSet</code>
+     * 
+     *  @param checkConfig  The name of the <code>CheckConfiguration</code>
+     *                      used to check this <code>FileSet</code>.
      */
-    public FileSet(String name, CheckConfiguration auditConfig)
+    public FileSet(String name, CheckConfiguration checkConfig)
     {
         mName        = name;
-        mCheckConfig = auditConfig;
+        mCheckConfig = checkConfig;
     }
     
     /**
      *  Create from a DOM node.
+     * 
+     *  @param  node The DOM node to create the <code>FileSet</code> from.
+     * 
+     *  @throws  CheckstylePluginException  Error during processing.
      */
     public FileSet(Node node) throws CheckstylePluginException
     {

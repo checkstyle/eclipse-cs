@@ -57,7 +57,7 @@ import org.w3c.dom.NodeList;
  *  Used to manage the life cycle of <code>CheckConfiguration</code>
  *  objects.
  */
-public class CheckConfigurationFactory implements XMLTags
+public final class CheckConfigurationFactory implements XMLTags
 {
     //=================================================
 	// Public static final variables.
@@ -92,7 +92,7 @@ public class CheckConfigurationFactory implements XMLTags
      * 
      *  @return  A new instance.
      * 
-     *  @throws CheckstyleException  Error during processing.
+     *  @throws CheckstylePluginException  Error during processing.
      */
     public static CheckConfiguration getNewInstance() throws CheckstylePluginException
     {
@@ -108,7 +108,7 @@ public class CheckConfigurationFactory implements XMLTags
      *  @return  The requested instance or <code>null</code> if the named instance
      *            could not be found.
      * 
-     *  @throws  CheckstyleException  Error during processing.
+     *  @throws  CheckstylePluginException  Error during processing.
      */
     public static CheckConfiguration getByName(String name) throws CheckstylePluginException
     {
@@ -132,7 +132,7 @@ public class CheckConfigurationFactory implements XMLTags
      * 
      *  @return  A list containing all instances.
      * 
-     *  @throws  CheckstyleException  Error during processing.
+     *  @throws  CheckstylePluginException  Error during processing.
      */
     public static List getCheckConfigurations() throws CheckstylePluginException
     {
@@ -144,7 +144,7 @@ public class CheckConfigurationFactory implements XMLTags
      * 
      *  @param  configs  List of <code>CheckConfiguration</code> objects.
      * 
-     *  @throws  CheckstyleException  Error during processing.
+     *  @throws  CheckstylePluginException  Error during processing.
      */
     public static void setCheckConfigurations(List configs) throws CheckstylePluginException
     {
@@ -156,7 +156,7 @@ public class CheckConfigurationFactory implements XMLTags
      *
      *  @param  checkConfig  The check configuration to add.
      * 
-     *  @throws  CheckstyleException  Error during processing.
+     *  @throws  CheckstylePluginException  Error during processing.
      */
     public static void addCheckConfiguration(CheckConfiguration checkConfig)
          throws CheckstylePluginException
@@ -171,7 +171,7 @@ public class CheckConfigurationFactory implements XMLTags
      *
      *  @param  checkConfig  The check configuration to remove.
      * 
-     *  @throws  CheckstyleException  Error during processing.
+     *  @throws  CheckstylePluginException  Error during processing.
      */
     public static void removeCheckConfiguration(CheckConfiguration checkConfig)
          throws CheckstylePluginException
@@ -188,7 +188,7 @@ public class CheckConfigurationFactory implements XMLTags
      * 
      *  @return A list containing the import configurations.
      * 
-     *  @throws  CheckstyleException  Error during processing.
+     *  @throws  CheckstylePluginException  Error during processing.
      */
     public static List importPluginCheckConfigurations(File file)
         throws CheckstylePluginException
@@ -208,7 +208,7 @@ public class CheckConfigurationFactory implements XMLTags
      * 
      *  @param  configs  List of check configurations to write out.
      * 
-     *  @throws  CheckstyleException  Error during processing.
+     *  @throws  CheckstylePluginException  Error during processing.
      */
     public static void exportPluginCheckConfigurations(File file, List configs)
         throws CheckstylePluginException
@@ -457,7 +457,7 @@ public class CheckConfigurationFactory implements XMLTags
      * 
      *  @return  <code>true</code> = in use, <code>false</code> = not in use.
      * 
-     *  @throws CheckstyleException  Error during processing.
+     *  @throws CheckstylePluginException  Error during processing.
      */
     public static boolean isNameInUse(String name) throws CheckstylePluginException
     {

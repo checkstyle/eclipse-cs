@@ -71,11 +71,11 @@ public class ConfigPropertyWidgetFactory
 	// Methods.
 	//=================================================
     
-    static ConfigPropertyWidget createWidget(Composite parent, 
+    static IConfigPropertyWidget createWidget(Composite parent, 
                                               ConfigPropertyMetadata metadata,
                                               ConfigProperty prop)
     {
-        ConfigPropertyWidget widget = null;
+        IConfigPropertyWidget widget = null;
         
         ConfigPropertyType type = metadata.getDatatype();
         

@@ -90,6 +90,13 @@ public class ConfigPropertyValueMetadata implements Cloneable, XMLTags
 		return mValue;
 	}
     
+    /**
+     *  Clone the object.
+     *  
+     *  @return  The cloned object
+     * 
+     *  @throws  CloneNotSupportedException  The object can not be cloned.
+     */
     public Object clone() throws CloneNotSupportedException
     {
         return super.clone();

@@ -50,7 +50,7 @@ import org.eclipse.swt.widgets.Listener;
 /**
  *  Base class for all configuration property input widget classes.
  */
-public abstract class ConfigPropertyWidgetAbstractBase implements ConfigPropertyWidget
+public abstract class ConfigPropertyWidgetAbstractBase implements IConfigPropertyWidget
 {
     //=================================================
 	// Public static final variables.
@@ -96,7 +96,7 @@ public abstract class ConfigPropertyWidgetAbstractBase implements ConfigProperty
         return mType;
     }
     
-    abstract public String getValue();
+	public abstract String getValue();
     
     protected String getInitValue()
     {

@@ -102,7 +102,7 @@ public class ConfigPropertyWidgetBoolean extends ConfigPropertyWidgetAbstractBas
 	}
     
 	/**
-	 * @see com.atlassw.tools.eclipse.checkstyle.preferences.ConfigPropertyWidgetAbstractBase#getValue()
+	 * @see com.atlassw.tools.eclipse.checkstyle.preferences.ConfigPropertyWidgetAbstractBase#getValue() $
 	 */
 	public String getValue()
 	{

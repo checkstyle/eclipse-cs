@@ -474,7 +474,8 @@ public class CheckstylePreferencePage
         File auditConfigFile = new File(path);
         try
         {
-            List newConfigs = CheckConfigurationFactory.importPluginCheckConfigurations(auditConfigFile);
+            List newConfigs = 
+                CheckConfigurationFactory.importPluginCheckConfigurations(auditConfigFile);
             mAuditConfigurations.addAll(newConfigs);
             mViewer.refresh();
         }

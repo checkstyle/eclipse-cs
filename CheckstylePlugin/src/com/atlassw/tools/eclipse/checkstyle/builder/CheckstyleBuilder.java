@@ -330,7 +330,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
      * 
      *  @param shell     Shell to display progress and messages on.
      * 
-     *  @throws CheckstyleException  Error during the build.
+     *  @throws CheckstylePluginException  Error during the build.
      */
     public static void buildProject(IProject project, Shell shell) throws CheckstylePluginException
     {
@@ -344,7 +344,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
      * 
      *  @param shell     Shell to display progress and messages on.
      * 
-     *  @throws CheckstyleException  Error during the build.
+     *  @throws CheckstylePluginException  Error during the build.
      */
     public static void buildAllProjects(Shell shell) throws CheckstylePluginException
     {

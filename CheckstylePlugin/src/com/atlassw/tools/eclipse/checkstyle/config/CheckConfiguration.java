@@ -90,7 +90,7 @@ public class CheckConfiguration implements Cloneable, XMLTags, Configuration, Co
      *  @param node  An XML document node containing the <code>CheckConfiguration</code>'s
      *                data.
      *
-     *  @throws CheckstyleException  Could not properly construct the
+     *  @throws CheckstylePluginException  Could not properly construct the
      *                                <code>CheckConfiguration</code> from the XML node.
      */
     public CheckConfiguration(Node node) throws CheckstylePluginException

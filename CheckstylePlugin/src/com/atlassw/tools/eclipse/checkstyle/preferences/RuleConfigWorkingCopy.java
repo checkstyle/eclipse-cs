@@ -71,20 +71,26 @@ public class RuleConfigWorkingCopy implements Cloneable
 	// Constructors & finalizer.
 	//=================================================
     
-    RuleConfigWorkingCopy(RuleMetadata metadata)
+    RuleConfigWorkingCopy(RuleMetadata metadata, RuleConfiguration ruleConfig)
     {
         mMetadata   = metadata;
-        mRuleConfig = buildDefaultRuleConfig(metadata);
+        
+        if (ruleConfig == null)
+        {
+        	//
+        	//  No existing rule configuration was given so create a default one.
+        	//
+            mRuleConfig = buildDefaultRuleConfig(metadata);
+        }
+        else
+        {
+        	mRuleConfig = ruleConfig;
+        }
     }
 
 	//=================================================
 	// Methods.
 	//=================================================
-    
-    public void setRuleConfig(RuleConfiguration config)
-    {
-        mRuleConfig = config;
-    }
     
     public RuleConfiguration getRuleConfig()
     {

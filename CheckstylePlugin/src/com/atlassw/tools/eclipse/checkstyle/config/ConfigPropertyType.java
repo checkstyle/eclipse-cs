@@ -42,7 +42,7 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
  *  This represents the possible data types for a rule's
  *  configuration property.
  */
-public class ConfigPropertyType
+public final class ConfigPropertyType
 {
     //=================================================
 	// Public static final variables.
@@ -98,6 +98,8 @@ public class ConfigPropertyType
     /**
      *  The equals method.
      * 
+     *  @param  obj  The object to test against.
+     * 
      *  @return  <code>true</code> means equal, <code>false</code> means not equal.
      */
     public boolean equals(Object obj)
@@ -136,11 +138,12 @@ public class ConfigPropertyType
     
     /**
      *  Get a config property type from a type label string.
+     * 
+     *  @param label  The label to look up.
      *
      *  @return  Matching config property type.
      * 
-     *  @throws  InvalidConfigPropertyTypelException  The string did not match any
-     *                                                 known types.
+     *  @throws  CheckstylePluginException  The string did not match any known types.
      */
     public static ConfigPropertyType getConfigPropertyType(String label)
         throws CheckstylePluginException

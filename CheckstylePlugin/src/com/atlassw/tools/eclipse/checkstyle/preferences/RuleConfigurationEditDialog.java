@@ -95,9 +95,9 @@ public class RuleConfigurationEditDialog extends Dialog
     
     private Combo                     mSeverityCombo;
     
-    private ConfigPropertyWidget[]    mConfigPropertyWidgets;
+    private IConfigPropertyWidget[]    mConfigPropertyWidgets;
     
-    private boolean                  mOkWasPressed = false;
+    private boolean                   mOkWasPressed = false;
 
 	//=================================================
 	// Constructors & finalizer.
@@ -187,7 +187,7 @@ public class RuleConfigurationEditDialog extends Dialog
         {
             for (int i = 0; i < mConfigPropertyWidgets.length; i++)
             {
-                ConfigPropertyWidget widget = mConfigPropertyWidgets[i];
+                IConfigPropertyWidget widget = mConfigPropertyWidgets[i];
                 ConfigProperty property = buildConfigProperty(widget);
                 if (property == null)
                 {
@@ -213,7 +213,7 @@ public class RuleConfigurationEditDialog extends Dialog
 		super.okPressed();
 	}
     
-    private ConfigProperty buildConfigProperty(ConfigPropertyWidget widget)
+    private ConfigProperty buildConfigProperty(IConfigPropertyWidget widget)
     {
         String value = widget.getValue();
         boolean isValid = validatePropertyValue(value, widget.getMetadata());
@@ -300,7 +300,7 @@ public class RuleConfigurationEditDialog extends Dialog
         layout.marginWidth = 0;
         comp.setLayout(layout);
         
-        mConfigPropertyWidgets = new ConfigPropertyWidget[configItemMetadata.size()];
+        mConfigPropertyWidgets = new IConfigPropertyWidget[configItemMetadata.size()];
         Iterator iter = configItemMetadata.iterator();
         for (int i = 0; iter.hasNext(); i++)
         {
@@ -375,13 +375,16 @@ public class RuleConfigurationEditDialog extends Dialog
                 result = false;
             }
         }
-        else if (type.equals(ConfigPropertyType.SINGLE_SELECT))
+        else if ((type.equals(ConfigPropertyType.SINGLE_SELECT))
+		        || type.equals(ConfigPropertyType.MULTI_CHECK)
+		        || type.equals(ConfigPropertyType.BOOLEAN)
+		        || type.equals(ConfigPropertyType.HIDDEN))
         {
             //  Assume valid since the user can't enter a value.
         }
         else
         {
-            CheckstyleLog.warning("Unknown property type: " + type.toString());
+            CheckstyleLog.warning("Unknown property type: " + type.getLabel());
         }
         
         return result;

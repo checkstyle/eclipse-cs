@@ -50,7 +50,7 @@ import org.w3c.dom.NodeList;
 /**
  *  This class is the factory for all Checkstyle rule metadata.
  */
-public class MetadataFactory implements XMLTags
+public final class MetadataFactory implements XMLTags
 {
     //=================================================
 	// Public static final variables.
@@ -131,7 +131,9 @@ public class MetadataFactory implements XMLTags
 				metadataStream.close();
 			}
 			catch (Exception e)
-			{} //  We tried to be nice and close the stream.
+			{
+				//	We tried to be nice and close the stream.
+			}
 		}
 
 		//
