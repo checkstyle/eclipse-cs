@@ -94,6 +94,7 @@
 		<copy file="plugin.xml" todir="${bin.dist.dir}" />
 		<copy file="toc.xml" todir="${bin.dist.dir}" />
 		<copy file="README.html" todir="${bin.dist.dir}" />
+		<copy file="DefaultChecks.xml" todir="${bin.dist.dir}" />
 		<copy todir="${bin.dist.dir}/doc">
 			<fileset dir="doc" />
 		</copy>

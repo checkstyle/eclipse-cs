@@ -27,6 +27,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Iterator;
 import java.util.List;
 import java.util.LinkedList;
@@ -47,6 +49,7 @@ import com.atlassw.tools.eclipse.checkstyle.util.XMLUtil;
 // Imports from org namespace
 //=================================================
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -66,6 +69,8 @@ public final class CheckConfigurationFactory implements XMLTags
 	//=================================================
 	// Static class variables.
 	//=================================================
+	
+	private static final String DEFAULT_CHECK_CONFIGS = "DefaultChecks.xml";
     
     private static final String CHECKSTYLE_CONFIG_FILE = "checkstyle-config.xml";
     
@@ -257,12 +262,55 @@ public final class CheckConfigurationFactory implements XMLTags
             //
             //  Create an empty config file for next time.
             //
-            storeToPersistence(new LinkedList());
+			configurations = loadDefaultCheckConfigs();
+            storeToPersistence(configurations);
         }
         
         return configurations;
     }
     
+    /**
+     * @return  List of default check configurations.
+     */
+    private static List loadDefaultCheckConfigs()
+    {
+    	//
+		//  Empty list in coase of an error loading the defaults.
+		//
+        List configurations = new LinkedList();
+        Path defaultsPath = new Path(DEFAULT_CHECK_CONFIGS);
+		InputStream inStream = null;
+        try
+        {
+            inStream = CheckstylePlugin.getDefault().openStream(defaultsPath);
+            configurations = loadInputStream(inStream);
+        }
+        catch (IOException e)
+        {
+			CheckstyleLog.warning("Failed to load default check configurations", e);
+        }
+        catch (CheckstylePluginException e)
+        {
+			CheckstyleLog.warning("Failed to load default check configurations", e);
+        }
+        finally
+        {
+        	if (inStream != null)
+        	{
+        		try
+        		{
+        		    inStream.close();
+        		}
+        		catch (Exception e)
+        		{
+					CheckstyleLog.warning("Error closing default checks file", e);
+        		}
+        	}
+        }
+        
+        return configurations;
+    }
+
     /**
      *  Store the check configurations to the persistent state storage.
      */
@@ -276,38 +324,12 @@ public final class CheckConfigurationFactory implements XMLTags
     
 	private static List loadFile(File file) throws CheckstylePluginException
 	{
-        List checkConfigs = new LinkedList();
+        List checkConfigs = null;
 		FileInputStream inStream = null;
 		try
 		{
 			inStream = new FileInputStream(file);
-			Document configDoc = XMLUtil.newDocument(inStream);
-			if (configDoc == null)
-			{
-                String message = "Failed to read and parse check configurations";
-                CheckstyleLog.warning(message);
-				throw new CheckstylePluginException(message);
-			}
-
-			Node rootNode = checkFileFormatVersion(configDoc);
-			NodeList children = rootNode.getChildNodes();
-			int count = children.getLength();
-			for (int i = 0; i < count; i++)
-			{
-				Node node = children.item(i);
-				if (node.getNodeName().equals(CHECK_CONFIG_TAG))
-				{
-                    CheckConfiguration config = new CheckConfiguration(node);
-                    if (config == null)
-                    {
-                        CheckstyleLog.warning("Failed to create CheckConfiguration, ignoring");
-                    }
-                    else
-                    {
-                        checkConfigs.add(config);
-                    }
-                }
-			}
+			checkConfigs = loadInputStream(inStream);
 		}
 		catch (FileNotFoundException e)
 		{
@@ -332,6 +354,41 @@ public final class CheckConfigurationFactory implements XMLTags
         
         return checkConfigs;
 	}
+
+    private static List loadInputStream(InputStream inStream)
+        throws CheckstylePluginException
+    {
+		List checkConfigs = new LinkedList();
+        Document configDoc = XMLUtil.newDocument(inStream);
+        if (configDoc == null)
+        {
+            String message = "Failed to read and parse check configurations";
+            CheckstyleLog.warning(message);
+        	throw new CheckstylePluginException(message);
+        }
+        
+        Node rootNode = checkFileFormatVersion(configDoc);
+        NodeList children = rootNode.getChildNodes();
+        int count = children.getLength();
+        for (int i = 0; i < count; i++)
+        {
+        	Node node = children.item(i);
+        	if (node.getNodeName().equals(CHECK_CONFIG_TAG))
+        	{
+                CheckConfiguration config = new CheckConfiguration(node);
+                if (config == null)
+                {
+                    CheckstyleLog.warning("Failed to create CheckConfiguration, ignoring");
+                }
+                else
+                {
+                    checkConfigs.add(config);
+                }
+            }
+        }
+        
+        return checkConfigs;
+    }
 	
    
     /**
