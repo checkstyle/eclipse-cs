@@ -2,8 +2,8 @@
 <plugin
    id="com.atlassw.tools.eclipse.checkstyle"
    name="Checkstyle Plug-in"
-   version="3.1.0.b1"
-   provider-name="Atlas Software"
+   version="3.1.0"
+   provider-name="David Schneider"
    class="com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin">
 
    <runtime>
