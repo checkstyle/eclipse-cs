@@ -22,7 +22,7 @@ public class TestCheckConfigurationFactory extends TestCase
    {
       ClassLoader loader = CheckConfigurationFactory.class.getClassLoader();
       Properties classnameMap = new Properties();
-      InputStream in = loader.getResourceAsStream(CheckConfigurationFactory.CLASSNAMES_V3_2_0_UPDATE);
+      InputStream in = loader.getResourceAsStream("com/atlassw/tools/eclipse/checkstyle/config/classnames_v3.2.0_update.properties");
       classnameMap.load(in);
       final Iterator it = classnameMap.values().iterator();
       while (it.hasNext())
