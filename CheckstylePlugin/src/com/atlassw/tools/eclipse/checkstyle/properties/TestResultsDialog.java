@@ -65,10 +65,6 @@ public class TestResultsDialog extends Dialog
     // Static class variables.
     //=================================================
     
-    private static final int MAX_LENGTH = 40;
-    
-    private static final String JAVA_SUFFIX = ".java";
-    
     //=================================================
     // Instance member variables.
     //=================================================

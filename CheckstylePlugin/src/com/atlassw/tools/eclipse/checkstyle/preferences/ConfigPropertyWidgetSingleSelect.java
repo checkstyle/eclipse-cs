@@ -62,8 +62,6 @@ public class ConfigPropertyWidgetSingleSelect extends ConfigPropertyWidgetAbstra
 	// Static class variables.
 	//=================================================
 
-    private static final int MAX_INPUT_LENGTH = 40;
-
 	//=================================================
 	// Instance member variables.
 	//=================================================

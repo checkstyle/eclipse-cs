@@ -65,7 +65,6 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 
-import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.text.Document;
@@ -99,8 +98,6 @@ public class CheckConfigurationEditDialog extends Dialog
 
     private Composite              mParentComposite;
 
-	private IDialogSettings        mDialogSettings;
-
 	private CheckConfiguration     mCheckConfiguration;
 
 	private TabFolder              mTabFolder;
@@ -118,8 +115,6 @@ public class CheckConfigurationEditDialog extends Dialog
     private Button                 mConfigureButton;
     
     private RuleConfigWorkingCopy  mCurrentSelection;
-    
-    private int                    mCurrentSelectionIndex;
     
     private String                 mCheckConfigName;
     

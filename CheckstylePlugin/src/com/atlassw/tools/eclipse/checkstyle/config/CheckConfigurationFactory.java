@@ -231,12 +231,7 @@ public class CheckConfigurationFactory implements XMLTags
     {
         writeCSFile(file, configs);
     }
-    
-    private static void initialize() throws CheckstylePluginException
-    {
-        loadFromPersistence();
-    }
-    
+        
     /**
      *  Load the check configurations from the persistent state storage.
      */
