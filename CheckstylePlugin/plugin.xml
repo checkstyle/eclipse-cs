@@ -23,6 +23,8 @@
       <import plugin="org.eclipse.jface.text"/>
       <import plugin="org.eclipse.jdt.core"/>
       <import plugin="org.eclipse.jdt.ui"/>
+      <import plugin="org.eclipse.ui.workbench.texteditor"/>
+      <import plugin="org.eclipse.ui.editors"/>
    </requires>
 
    <!-- defines the extension point to contribute custom filters to the checkstyle plugin -->
@@ -74,18 +76,75 @@
          </run>
       </runtime>
    </extension>
+ 
+<!--
+	Marker for displaying checkstyle warnings
+	-->
    <extension
          id="CheckstyleMarker"
          name="%CheckstyleMarker.name"
          point="org.eclipse.core.resources.markers">
       <super
+            type="org.eclipse.core.resources.textmarker">
+      </super>
+      <super
             type="org.eclipse.core.resources.problemmarker">
       </super>
+      <attribute
+            name="line">
+      </attribute>
       <persistent
             value="true">
       </persistent>
-   </extension>
+   </extension>   
 
+<!--
+   Annotation-support for checkstyle markers
+   -->
+   <extension
+         point="org.eclipse.ui.editors.annotationTypes">
+      <type
+            markerType="com.atlassw.tools.eclipse.checkstyle.CheckstyleMarker"
+            name="com.atlassw.tools.eclipse.checkstyle.CheckstyleAnnotation"
+            markerSeverity="1">
+      </type>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors.markerAnnotationSpecification">
+      <specification
+            textPreferenceKey="CheckstyleAnnotation.text"
+            presentationLayer="3"
+            highlightPreferenceValue="true"
+            showInNextPrevDropdownToolbarAction="true"
+            textPreferenceValue="false"
+            isGoToPreviousNavigationTargetKey="CheckstyleAnnotation.previous"
+            label="%CheckstyleMarker.name"
+            colorPreferenceKey="CheckstyleAnnotation.color"
+            showInNextPrevDropdownToolbarActionKey="CheckstyleAnnotation.dropdown"
+            annotationType="com.atlassw.tools.eclipse.checkstyle.CheckstyleAnnotation"
+            isGoToNextNavigationTargetKey="CheckstyleAnnotation.next"
+            isGoToNextNavigationTarget="true"
+            textStylePreferenceKey="checkstyle.text.style"
+            overviewRulerPreferenceKey="CheckstyleAnnotation.overviewruler"
+            verticalRulerPreferenceValue="true"
+            highlightPreferenceKey="CheckstyleAnnotation.highlight"
+            isGoToPreviousNavigationTarget="true"
+            verticalRulerPreferenceKey="CheckstyleAnnotation.verticalruler"
+            icon="icons/checkstyle_marker.gif"
+            textStylePreferenceValue="BOX"
+            colorPreferenceValue="255,213,213"
+            overviewRulerPreferenceValue="true">
+      </specification>
+   </extension>
+   <extension
+         point="org.eclipse.jdt.ui.javaEditorTextHovers">
+      <hover
+            label="%CheckstyleMarker.name"
+            activate="true"
+            class="com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleHover"
+            id="com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleHover">
+      </hover>
+   </extension>
 
 <!-- 
 	Standard checkstyle filters
