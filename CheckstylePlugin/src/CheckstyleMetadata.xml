@@ -1531,4 +1531,23 @@ Support Fuzzy matches (comments, whitespace, linebreaks, variable renaming, etc.
          </property-metadata>
       </rule-metadata>-->
    </rule-group-metadata>
+
+   <rule-group-metadata name="J2EE">
+      <rule-metadata name="Entity Bean" classname="com.puppycrawl.tools.checkstyle.checks.j2ee.EntityBeanCheck" default-severity="Warning">
+          <description>Checks that a direct entity bean, i.e. a class that directly implements javax.ejb.EntityBean, satisfies these class requirements:
+  - The class is defined as public.
+  - The class cannot be defined as final.
+  - It contains a public constructor with no parameters.
+  - It must not define the finalize method.
+          </description>
+          <property-metadata name="persistence" datatype="SingleSelect" default-value="mixed">
+            <description>This property represents the policy for checking entity beans according to whether the beans have bean-managed persistence, container-managed persistence, or mixed persistence.</description>
+            <enumeration>
+               <property-value-option value="bean"/>
+               <property-value-option value="container"/>
+               <property-value-option value="mixed"/>
+            </enumeration>
+          </property-metadata>
+      </rule-metadata>
+   </rule-group-metadata>
 </checkstyle-metadata>
