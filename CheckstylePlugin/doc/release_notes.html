@@ -14,7 +14,10 @@ Checkstyle Plug-in</b></font></p>
 			<a href="screen_shots.html">Screen Shots</a><br>
 			Release Notes<br>
 			<br>
-			<a href="#r3_3_2">Release 3.3.2</a><br>
+			<a href="#r3_4_1">Release 3.4.1</a><br>
+			<a href="#r3_4_0">Release 3.4.0</a>
+			<a href="#r3_3_2"><br>
+			Release 3.3.2</a><br>
 			<a href="#r3_3_1">Release 3.3.1</a><a href="#r3_3_0"><br>
 			Release 3.3.0</a><a href="#r3_2_0"><br>
 			Release 3.2.0</a><br>
@@ -31,7 +34,31 @@ Checkstyle Plug-in</b></font></p>
 			<table border="0" width="100%">
 				<tbody>
 					<tr>
-						<td><p><font size="4" face="Arial"><b>Release 3.4.0</b></font></p>
+						<td><p><font size="4" face="Arial"><b><a name="r3_4_1"></a>Release 3.4.1</b></font></p>
+						<b><font color="#ff0000"><i></i></font></b>
+						<p><font face="Arial"><b>Bugs Resolved:</b></font></p>
+						<ul>
+						    <li>991820: Very slow builder</li>
+							<li>979798: Got Exception: lava.lang.NoClassDefFoundError</li>
+							<li>934083: Unable to get class information for &lt;Exception&gt; errors</li>
+							<li>905079: Invoking CheckstyleBuilder Even If No File Set is Enabled</li>
+							<li>904268: Redundant throws: 'Exception' is unchecked exception</li>
+							<li>896571: Still Having Issues With Exceptions Not Visible from Classpath</li>
+							<li>895725:  Can not be disabled / performance</li>
+						</ul>
+						<p><font face="Arial"><b>Other Items:</b></font></p>
+						<ul>
+						    <li>Thanks to Richard Atkins for his patch  that fixed the relative jars bug.</li>
+							<li>Added some optimizations to improve build performance.</li>
+						</ul>
+						</td>
+					</tr>
+					<tr>
+						<td>
+						<p><font size="4" face="Arial"><b></b></font></p></td>
+					</tr>
+					<tr>
+						<td><p><font size="4" face="Arial"><b><a name="r3_4_0"></a>Release 3.4.0</b></font></p>
 						<b><font color="#ff0000"></font></b><ul>
 							<li>Updated to include Checkstyle 3.4.</li><li><b>Note:</b> This release has only been tested with Eclipse 2.1.x. Eclipse 2.0.x is no longer supported.</li>
 							<li><b>Note:</b> Support for Eclipse 3.0 is in the works and will be released as soon as possible.</li>
