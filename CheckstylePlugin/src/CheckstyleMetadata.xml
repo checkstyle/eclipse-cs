@@ -14,7 +14,7 @@
                <property-value-option value="anoninner"/>
             </enumeration>
          </property-metadata>
-         <property-metadata name="excludeScope" datatype="SingleSelect" default-value="private">
+         <property-metadata name="excludeScope" datatype="SingleSelect">
             <description>visibility scope where Javadoc comments are not checked</description>
             <enumeration>
                <property-value-option value="nothing"/>
@@ -86,7 +86,7 @@
       </rule-metadata>
       <rule-metadata name="Type Javadoc" classname="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocTypeCheck" default-severity="Warning">
          <description>Checks Javadoc comments for class and interface definitions.</description>
-         <property-metadata name="excludeScope" datatype="SingleSelect" default-value="private">
+         <property-metadata name="excludeScope" datatype="SingleSelect">
             <description>visibility scope where Javadoc comments are not checked</description>
             <enumeration>
                <property-value-option value="nothing"/>
@@ -124,7 +124,7 @@
       </rule-metadata>
       <rule-metadata name="Variable Javadoc" classname="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocVariableCheck" default-severity="Warning">
          <description>Checks that variables have Javadoc comments.</description>
-         <property-metadata name="excludeScope" datatype="SingleSelect" default-value="private">
+         <property-metadata name="excludeScope" datatype="SingleSelect">
             <description>visibility scope where Javadoc comments are not checked</description>
             <enumeration>
                <property-value-option value="nothing"/>
@@ -217,18 +217,6 @@
       </rule-metadata>
       <rule-metadata name="Type Names" classname="com.puppycrawl.tools.checkstyle.checks.naming.TypeNameCheck" default-severity="Warning">
          <description>Checks that class names follow naming convention.</description>
-         <property-metadata name="applyToPublic" datatype="Boolean" default-value="true">
-            <description>Controls whether to apply the check to public member.</description>
-         </property-metadata>
-         <property-metadata name="applyToProtected" datatype="Boolean" default-value="true">
-            <description>Controls whether to apply the check to protected member.</description>
-         </property-metadata>
-         <property-metadata name="applyToPackage" datatype="Boolean" default-value="true">
-            <description>Controls whether to apply the check to package-protected member.</description>
-         </property-metadata>
-         <property-metadata name="applyToPrivate" datatype="Boolean" default-value="true">
-            <description>Controls whether to apply the check to private member.</description>
-         </property-metadata>
          <property-metadata name="format" datatype="String" default-value="^[A-Z][a-zA-Z0-9]*$">
             <description>Regular expression defining required naming pattern.</description>
          </property-metadata>
