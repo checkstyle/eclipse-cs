@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 //=================================================
 // Imports from javax namespace
@@ -256,17 +257,25 @@ public class CheckConfigConverter
             String value = (String)map.get(key);
 
             //
-            //  See if the value is really a correlation tag in the
-            //  resolved values HashMap.
+            //  See if the value contains one or more
+            //  correlation tags in the resolved values HashMap.
             //
-            if (mResolvedProps.containsKey(value))
+            Iterator tagIter = mResolvedProps.entrySet().iterator();
+            while (tagIter.hasNext())
             {
-                //
-                //  Get the resolved value and update the target map with the new value.
-                //
-                value = (String)mResolvedProps.get(value);
-                map.put(key, value);
+                Map.Entry tagEntry = (Map.Entry)tagIter.next();
+                String tagName = (String)tagEntry.getKey();
+                String tagValue = (String)tagEntry.getValue();
+                if (value.indexOf(tagName) != -1)
+                {
+                    value = value.replaceAll(tagName, tagValue);
+                }
             }
+            
+            //
+            //  Update the target map with the new value.
+            //
+            map.put(key, value);
         }
     }
 
@@ -469,6 +478,19 @@ public class CheckConfigConverter
     {
         public String resolve(String varName)
         {
+            //
+            // Check to see if this variable has already been seen.
+            //
+            Iterator iter = mPropsToResolve.iterator();
+            while (iter.hasNext())
+            {
+                ResolvableProperty prop = (ResolvableProperty)iter.next();
+                if (varName.equals(prop.getPropertyName()))
+                {
+                    return prop.getCorrelationTag();
+                }
+            }
+            
             //
             //  Record the variable that needs to be resolved and assign
             //  a tempory value that will be later replaced.
