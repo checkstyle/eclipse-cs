@@ -8,11 +8,11 @@
             </config-properties>
         </rule-configuration>
         <rule-configuration
-            classname="com.puppycrawl.tools.checkstyle.checks.ModifierOrderCheck" severity="warning">
+            classname="com.puppycrawl.tools.checkstyle.checks.modifier.ModifierOrderCheck" severity="warning">
             <config-properties/>
         </rule-configuration>
         <rule-configuration
-            classname="com.puppycrawl.tools.checkstyle.checks.RedundantModifierCheck" severity="warning">
+            classname="com.puppycrawl.tools.checkstyle.checks.modifier.RedundantModifierCheck" severity="warning">
             <config-properties>
                 <config-property name="tokens" value="METHOD_DEF, VARIABLE_DEF"/>
             </config-properties>

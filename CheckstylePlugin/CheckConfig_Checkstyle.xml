@@ -6,10 +6,10 @@
             <property name="javaStyle" value="true"/>
             <property name="severity" value="warning"/>
         </module>
-        <module name="com.puppycrawl.tools.checkstyle.checks.ModifierOrderCheck">
+        <module name="com.puppycrawl.tools.checkstyle.checks.modifier.ModifierOrderCheck">
             <property name="severity" value="warning"/>
         </module>
-        <module name="com.puppycrawl.tools.checkstyle.checks.RedundantModifierCheck">
+        <module name="com.puppycrawl.tools.checkstyle.checks.modifier.RedundantModifierCheck">
             <property name="severity" value="warning"/>
             <property name="tokens" value="METHOD_DEF, VARIABLE_DEF"/>
         </module>
