@@ -8,9 +8,13 @@
 
    <runtime>
       <library name="CheckstylePlugin.jar"/>
-      <library name="checkstyle-all-3.3.jar"/>
-      <library name="checkstyle-optional-3.3.jar"/>
       <library name="xercesImpl.jar">
+         <export name="*"/>
+      </library>
+      <library name="checkstyle-all-3.4.jar">
+         <export name="*"/>
+      </library>
+      <library name="checkstyle-optional-3.4.jar">
          <export name="*"/>
       </library>
    </runtime>

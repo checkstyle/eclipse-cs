@@ -14,6 +14,17 @@
                <property-value-option value="anoninner"/>
             </enumeration>
          </property-metadata>
+         <property-metadata name="excludeScope" datatype="SingleSelect" default-value="private">
+            <description>visibility scope where Javadoc comments are not checked</description>
+            <enumeration>
+               <property-value-option value="nothing"/>
+               <property-value-option value="public"/>
+               <property-value-option value="protected"/>
+               <property-value-option value="package"/>
+               <property-value-option value="private"/>
+               <property-value-option value="anoninner"/>
+            </enumeration>
+         </property-metadata>
          <property-metadata name="allowUndeclaredRTE" datatype="Boolean" default-value="false">
             <description>Whether to allow documented exceptions that are not declared if they are a subclass of java.lang.RuntimeException.</description>
          </property-metadata>
@@ -53,6 +64,9 @@
                <property-value-option value="anoninner"/>
             </enumeration>
          </property-metadata>
+         <property-metadata name="checkEmptyJavadoc" datatype="Boolean" default-value="false">
+            <description>Whether to check if the Javadoc is missing a describing text.</description>
+         </property-metadata>
          <property-metadata name="checkFirstSentence" datatype="Boolean" default-value="true">
             <description>Whether to check the first sentence for proper end of sentence.</description>
          </property-metadata>
@@ -72,6 +86,17 @@
       </rule-metadata>
       <rule-metadata name="Type Javadoc" classname="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocTypeCheck" default-severity="Warning">
          <description>Checks Javadoc comments for class and interface definitions.</description>
+         <property-metadata name="excludeScope" datatype="SingleSelect" default-value="private">
+            <description>visibility scope where Javadoc comments are not checked</description>
+            <enumeration>
+               <property-value-option value="nothing"/>
+               <property-value-option value="public"/>
+               <property-value-option value="protected"/>
+               <property-value-option value="package"/>
+               <property-value-option value="private"/>
+               <property-value-option value="anoninner"/>
+            </enumeration>
+         </property-metadata>
          <property-metadata name="scope" datatype="SingleSelect" default-value="private">
             <description>Visibility scope where Javadoc comments are checked.</description>
             <enumeration>
@@ -99,6 +124,17 @@
       </rule-metadata>
       <rule-metadata name="Variable Javadoc" classname="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocVariableCheck" default-severity="Warning">
          <description>Checks that variables have Javadoc comments.</description>
+         <property-metadata name="excludeScope" datatype="SingleSelect" default-value="private">
+            <description>visibility scope where Javadoc comments are not checked</description>
+            <enumeration>
+               <property-value-option value="nothing"/>
+               <property-value-option value="public"/>
+               <property-value-option value="protected"/>
+               <property-value-option value="package"/>
+               <property-value-option value="private"/>
+               <property-value-option value="anoninner"/>
+            </enumeration>
+         </property-metadata>
          <property-metadata name="scope" datatype="SingleSelect" default-value="private">
             <description>Visibility scope where Javadoc comments are checked.</description>
             <enumeration>
@@ -139,6 +175,18 @@
       </rule-metadata>
       <rule-metadata name="Member Names" classname="com.puppycrawl.tools.checkstyle.checks.naming.MemberNameCheck" default-severity="Warning">
          <description>Checks that member variables (non-static fields) follow naming convention.</description>
+         <property-metadata name="applyToPublic" datatype="Boolean" default-value="true">
+            <description>Controls whether to apply the check to public member.</description>
+         </property-metadata>
+         <property-metadata name="applyToProtected" datatype="Boolean" default-value="true">
+            <description>Controls whether to apply the check to protected member.</description>
+         </property-metadata>
+         <property-metadata name="applyToPackage" datatype="Boolean" default-value="true">
+            <description>Controls whether to apply the check to package-protected member.</description>
+         </property-metadata>
+         <property-metadata name="applyToPrivate" datatype="Boolean" default-value="true">
+            <description>Controls whether to apply the check to private member.</description>
+         </property-metadata>
          <property-metadata name="format" datatype="String" default-value="^[a-z][a-zA-Z0-9]*$">
             <description>Regular expression defining required naming pattern.</description>
          </property-metadata>
@@ -169,6 +217,18 @@
       </rule-metadata>
       <rule-metadata name="Type Names" classname="com.puppycrawl.tools.checkstyle.checks.naming.TypeNameCheck" default-severity="Warning">
          <description>Checks that class names follow naming convention.</description>
+         <property-metadata name="applyToPublic" datatype="Boolean" default-value="true">
+            <description>Controls whether to apply the check to public member.</description>
+         </property-metadata>
+         <property-metadata name="applyToProtected" datatype="Boolean" default-value="true">
+            <description>Controls whether to apply the check to protected member.</description>
+         </property-metadata>
+         <property-metadata name="applyToPackage" datatype="Boolean" default-value="true">
+            <description>Controls whether to apply the check to package-protected member.</description>
+         </property-metadata>
+         <property-metadata name="applyToPrivate" datatype="Boolean" default-value="true">
+            <description>Controls whether to apply the check to private member.</description>
+         </property-metadata>
          <property-metadata name="format" datatype="String" default-value="^[A-Z][a-zA-Z0-9]*$">
             <description>Regular expression defining required naming pattern.</description>
          </property-metadata>
@@ -290,6 +350,21 @@ Rationale: If an anonymous inner class becomes very long it is hard to understan
       </rule-metadata>
    </rule-group-metadata>
    <rule-group-metadata name="Whitespace">
+      <rule-metadata name="Empty For Initializer Pad" classname="com.puppycrawl.tools.checkstyle.checks.whitespace.EmptyForInitializerPadCheck" default-severity="Warning">
+         <description>Checks the padding of an empty for initializer; that is whether white space is required at an empty for initializer, or such white space is forbidden. No check occurs if there is a line wrap at the initializer, as in 
+
+for (
+      ; i &lt; j; i++, j--)
+
+</description>
+         <property-metadata name="option" datatype="SingleSelect" default-value="nospace">
+            <description>Policy on how to pad an empty for iterator.</description>
+            <enumeration>
+               <property-value-option value="nospace"/>
+               <property-value-option value="space"/>
+            </enumeration>
+         </property-metadata>
+      </rule-metadata>
       <rule-metadata name="Empty For Iterator Pad" classname="com.puppycrawl.tools.checkstyle.checks.whitespace.EmptyForIteratorPadCheck" default-severity="Warning">
          <description>Checks the padding of an empty for iterator; that is whether white space is required at an empty for iterator, or such white space is forbidden.</description>
          <property-metadata name="option" datatype="SingleSelect" default-value="nospace">
@@ -380,6 +455,26 @@ Rationale: If an anonymous inner class becomes very long it is hard to understan
                <property-value-option value="SR_ASSIGN"/>
                <property-value-option value="STAR"/>
                <property-value-option value="STAR_ASSIGN"/>
+            </enumeration>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Method Parameter Pad" classname="com.puppycrawl.tools.checkstyle.checks.whitespace.MethodParamPadCheck" default-severity="Warning">
+         <description>Checks the padding between the identifier of a method definition, constructor definition, method call, or constructor invocation; and the left parenthesis of the parameter list. That is, if the identifier and left parenthesis are on the same line, checks whether a space is required immediately after the identifier or such a space is forbidden. If they are not on the same line, reports an error, unless configured to allow line breaks. To allow linebreaks after the identifier, set property allowLineBreaks to true.</description>
+         <property-metadata name="allowLineBreaks" datatype="Boolean" default-value="false">
+            <description>whether a line break between the identifier and left parenthesis is allowed</description>
+            <enumeration>
+               <property-value-option value="eol"/>
+               <property-value-option value="nl"/>
+            </enumeration>
+         </property-metadata>
+         <property-metadata name="tokens" datatype="MultiCheck" default-value="CTOR_DEF, LITERAL_NEW, METHOD_CALL, METHOD_DEF, SUPER_CTOR_CALL">
+            <description>Tokens to check.</description>
+            <enumeration>
+               <property-value-option value="CTOR_DEF"/>
+               <property-value-option value="LITERAL_NEW"/>
+               <property-value-option value="METHOD_CALL"/>
+               <property-value-option value="METHOD_DEF"/>
+               <property-value-option value="SUPER_CTOR_CALL"/>
             </enumeration>
          </property-metadata>
       </rule-metadata>
@@ -610,6 +705,11 @@ Rationale: If an anonymous inner class becomes very long it is hard to understan
 
 Rationale: Mistakenly defining a covariant equals() method without overriding method equals(java.lang.Object) can produce unexpected runtime behaviour.     </description>
       </rule-metadata>
+      <rule-metadata name="Default Comes Last" classname="com.puppycrawl.tools.checkstyle.checks.coding.DefaultComesLastCheck" default-severity="Warning">
+         <description>Check that the default is after all the cases in a switch statement. 
+
+Rationale: Java allows default anywhere within the switch statement. But it is more readable if it comes after the last case</description>
+      </rule-metadata>
       <rule-metadata name="Declaration Order Check" classname="com.puppycrawl.tools.checkstyle.checks.coding.DeclarationOrderCheck" default-severity="Warning">
          <description>According to Code Conventions for the Java Programming Language , the parts of a class or interface declaration should appear in the following order 
 
@@ -633,6 +733,12 @@ Methods
 
 Rationale: each instance variable gets initialized twice, to the same value. Java initializes each instance variable to its default value (0 or null) before performing any initialization specified in the code. So in this case, x gets initialized to 0 twice, and bar gets initialized to null twice. So there is a minor inefficiency. This style of coding is a hold-over from C/C++ style coding, and it shows that the developer isn't really confident that Java really initializes instance variables to default values.
          </description>
+      </rule-metadata>
+      <rule-metadata name="Fall Through" classname="com.puppycrawl.tools.checkstyle.checks.coding.FallThroughCheck" default-severity="Warning">
+         <description>Checks for fall through in switch statements Finds locations where a case contains
+Java code - but lacks a break, return, throw or continue statement. 
+
+Note: the check works in assumption that there is no unreachable code in the case.          </description>
       </rule-metadata>
       <rule-metadata name="Final Local Variable" classname="com.puppycrawl.tools.checkstyle.checks.coding.FinalLocalVariableCheck" default-severity="Warning">
          <description>Checks that local variables that never have their values changed are declared final. The check can be configured to also check that unchanged parameters are declared final.         </description>
@@ -1026,8 +1132,16 @@ Rationale: often times developers will misname one or more of these methods and 
             </enumeration>
          </property-metadata>
       </rule-metadata>
+      <rule-metadata name="Missing Constructor" classname="com.puppycrawl.tools.checkstyle.checks.coding.MissingCtorCheck" default-severity="Warning">
+         <description>Checks that classes (except abtract one) define a ctor and don't rely on the default one.</description>
+      </rule-metadata>
       <rule-metadata name="Missing Switch Default" classname="com.puppycrawl.tools.checkstyle.checks.coding.MissingSwitchDefaultCheck" default-severity="Warning">
          <description>Checks that switch statement has "default" clause. Rationale: It's usually a good idea to introduce a default case in every switch statement. Even if the developer is sure that all currently possible cases are covered, this should be expressed in the default branch, e.g. by using an assertion. This way the code is protected aginst later changes, e.g. introduction of new types in an enumeration type.</description>
+      </rule-metadata>
+      <rule-metadata name="Multiple Variable Declaration" classname="com.puppycrawl.tools.checkstyle.checks.coding.MultipleVariableDeclarationsCheck" default-severity="Warning">
+         <description>Checks that each variable declaration is in its own statement and on its own line. 
+
+Rationale: the SUN Code conventions chapter 6.1 recommends that declarations should be one per line/statement</description>
       </rule-metadata>
       <rule-metadata name="Nested If Depth" classname="com.puppycrawl.tools.checkstyle.checks.coding.NestedIfDepthCheck" default-severity="Warning">
          <description>Restricts nested if-else blocks to a specified depth (default = 1). </description>
@@ -1061,12 +1175,24 @@ Rationale: Parameter assignment is often considered poor programming practice. F
             <description>Whether subclass of another declared exception is allowed in throws clause.</description>
          </property-metadata>
       </rule-metadata>
+      <rule-metadata name="Require This" classname="com.puppycrawl.tools.checkstyle.checks.coding.RequireThisCheck" default-severity="Warning">
+         <description>Checks that code doesn't rely on the "this." default, i.e. references to instance variables and methods of the present object are explicitly of the form "this.varName" or "this.methodName(args)". </description>
+         <property-metadata name="checkFields" datatype="Boolean" default-value="true">
+            <description>whether we should check fields usage or not</description>
+         </property-metadata>
+         <property-metadata name="checkMethods" datatype="Boolean" default-value="true">
+            <description>whether we should check methods usage or not</description>
+         </property-metadata>
+      </rule-metadata>
       <rule-metadata name="Return Count" classname="com.puppycrawl.tools.checkstyle.checks.coding.ReturnCountCheck" default-severity="Warning">
          <description>Restrict the number of return statements. Default = 2. 
 
 Rationale: Too many return points can be indication that code is attempting to do too much or may be difficult to understand. </description>
          <property-metadata name="max" datatype="Integer" default-value="2">
             <description>maximum allowed number of return statments</description>
+         </property-metadata>
+         <property-metadata name="format" datatype="String" default-value="^equals$ (empty)">
+            <description>method names to ignore</description>
          </property-metadata>
       </rule-metadata>
       <rule-metadata name="Simplify Boolean Expression" classname="com.puppycrawl.tools.checkstyle.checks.coding.SimplifyBooleanExpressionCheck" default-severity="Warning">
@@ -1103,6 +1229,9 @@ The check allows to not add a comma if both left and right curlys are on the sam
       
 Rationale: Putting this comma in makes it easier to change the order of the elements or add new elements on the end. 
          </description>
+      </rule-metadata>
+      <rule-metadata name="Unnecessary Parentheses" classname="com.puppycrawl.tools.checkstyle.checks.coding.UnnecessaryParenthesesCheck" default-severity="Warning">
+         <description>Checks for the use of unnecessary parentheses. </description>
       </rule-metadata>
    </rule-group-metadata>
    <rule-group-metadata name="Class Design">
@@ -1154,9 +1283,37 @@ Rationale: Exceptions form part of a methods interface. Declaring a method to th
       </rule-metadata>
    </rule-group-metadata>
    <rule-group-metadata name="Metrics">
+      <rule-metadata name="Boolean Expression Complexity" classname="com.puppycrawl.tools.checkstyle.checks.metrics.BooleanExpressionComplexityCheck" default-severity="Warning">
+         <description>Restrict the number of number of &amp;&amp;, || and ^ in an expression. 
+Rationale: Too many conditions leads to code that is difficult to read and hence debug and maintain. </description>
+         <property-metadata name="max" datatype="Integer" default-value="3">
+            <description>the maximum allowed number of boolean operations in one experession.</description>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Class Data Abstraction Coupling" classname="com.puppycrawl.tools.checkstyle.checks.metrics.ClassDataAbstractionCouplingCheck" default-severity="Warning">
+         <description>This metric measures the number of instantiations of other classes within the given class. This type of coupling is not caused by inheritance or the object oriented paradigm. Generally speaking, any abstract data type with other abstract data types as members has data abstraction coupling; therefore, if a class has a local variable that is an instantiation (object) of another class, there is data abstraction coupling. The higher the DAC, the more complex the data structure (classes) of the system. </description>
+         <property-metadata name="max" datatype="Integer" default-value="7">
+            <description>the maximum threshold allowed</description>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Class Fan Out Complexity" classname="com.puppycrawl.tools.checkstyle.checks.metrics.ClassFanOutComplexityCheck" default-severity="Warning">
+         <description>The number of other classes a given class relies on. Also the square of this has been shown to indicate the amount of maintenence required in functional programs (on a file basis) at least. </description>
+         <property-metadata name="max" datatype="Integer" default-value="20">
+            <description>the maximum threshold allowed</description>
+         </property-metadata>
+      </rule-metadata>
       <rule-metadata name="Cyclomatic Complexity" classname="com.puppycrawl.tools.checkstyle.checks.metrics.CyclomaticComplexityCheck" default-severity="Warning">
          <description>Checks cyclomatic complexity against a specified limit. The complexity is measured by the number of if, while, do, for, ?:, catch, switch, case statements, and operators &amp;&amp; and || (plus one) in the body of a constructor, method, static initializer, or instance initializer. It is a measure of the minimum number of possible paths through the source and therefore the number of required tests. Generally 1-4 is considered good, 5-7 ok, 8-10 consider re-factoring, and 11+ re-factor now! </description>
          <property-metadata name="max" datatype="Integer" default-value="10">
+            <description>the maximum threshold allowed</description>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="NPath Complexity" classname="com.puppycrawl.tools.checkstyle.checks.metrics.NPathComplexityCheck" default-severity="Warning">
+         <description>The NPATH metric computes the number of possible execution paths through a function. It takes into account the nesting of conditional statements and multi-part boolean expressions (e.g., A &amp;&amp; B, C || D, etc.). 
+
+Rationale: Nejmeh says that his group had an informal NPATH limit of 200 on individual routines; functions that exceeded this value were candidates for further decomposition - or at least a closer look
+mp;&amp; and || (plus one) in the body of a constructor, method, static initializer, or instance initializer. It is a measure of the minimum number of possible paths through the source and therefore the number of required tests. Generally 1-4 is considered good, 5-7 ok, 8-10 consider re-factoring, and 11+ re-factor now! </description>
+         <property-metadata name="max" datatype="Integer" default-value="200">
             <description>the maximum threshold allowed</description>
          </property-metadata>
       </rule-metadata>
@@ -1474,6 +1631,7 @@ WARNING: This is a very powerful and flexible check, but, at the same time, it i
             <enumeration>
                <property-value-option value="METHOD_DEF"/>
                <property-value-option value="CTOR_DEF"/>
+               <property-value-option value="LITERAL_CATCH"/>
             </enumeration>
          </property-metadata>
       </rule-metadata>
@@ -1484,6 +1642,9 @@ WARNING: This is a very powerful and flexible check, but, at the same time, it i
          </property-metadata>
          <property-metadata name="ignoreCase" datatype="Boolean" default-value="false">
             <description>Controls whether to ignore case when searching.</description>
+         </property-metadata>
+         <property-metadata name="ignoreComments" datatype="Boolean" default-value="false">
+            <description>Controls whether to ignore text in comments when searching.</description>
          </property-metadata>
          <property-metadata name="message" datatype="String" default-value="">
             <description>Message which is used to notify about violations, if empty then default(hard-coded) message is used.</description>
@@ -1507,6 +1668,25 @@ The basic idea behind this is that while pretty printers are sometimes convienen
          <description>A check for TODO: comments. Actually it is a generic regular expression matcher on Java comments. To check for other patterns in Java comments, set property format.</description>
          <property-metadata name="format" datatype="String" default-value="TODO:">
             <description>Regular expression definging pattern to look for.</description>
+         </property-metadata>
+      </rule-metadata>
+      <rule-metadata name="Trailing Comment" classname="com.puppycrawl.tools.checkstyle.checks.TrailingCommentCheck" default-severity="Warning">
+         <description>The check to ensure that requires that comments be the only thing on a line. For the case of // comments that means that the only thing that should precede it is whitespace. It doesn't check comments if they do not end line, i.e. it accept the following: Thread.sleep( 10 &lt;some comment here&gt; ); Format property is intended to deal with the "} // while" example. 
+
+Rationale: Steve McConnel in "Code Complete" suggests that endline comments are a bad practice. An end line comment would be one that is on the same line as actual code. For example: 
+
+       a = b + c;      // Some insightful comment
+       d = e / f;        // Another comment for this line
+      
+Quoting "Code Complete" for the justfication: 
+"The comments have to be aligned so that they do not interfere with the visual structure of the code. If you don't align them neatly, they'll make your listing look like it's been through a washing machine." 
+"Endline comments tend to be hard to format...It takes time to align them. Such time is not spent learning more about the code; it's dedicated solely to the tedious task of pressing the spacebar or tab key." 
+"Endline comments are also hard to maintain. If the code on any line containing an endline comment grows, it bumps the comment farther out, and all the other endline comments will have to bumped out to match. Styles that are hard to maintain aren't maintained...." 
+"Endline comments also tend to be cryptic. The right side of the line doesn't offer much room and the desire to keep the comment on one line means the comment must be short. Work then goes into making the line as short as possible instead of as clear as possible. The comment usually ends up as cryptic as possible...." 
+"A systemic problem with endline comments is that it's hard to write a meaningful comment for one line of code. Most endline comments just repeat the line of code, which hurts more than it helps." 
+His comments on being hard to maintain when the size of the line changes are even more important in the age of automated refactorings. </description>
+         <property-metadata name="format" datatype="String" default-value="^[\\s\\}\\);]*$">
+            <description>pattern for string allowed before comment.</description>
          </property-metadata>
       </rule-metadata>
       <rule-metadata name="Uncommented Main" classname="com.puppycrawl.tools.checkstyle.checks.UncommentedMainCheck" default-severity="Warning">
@@ -1651,6 +1831,9 @@ Rationale: a private field used in only one method, constructor, or initializer 
          </property-metadata>
          <property-metadata name="ignoreCatch" datatype="Boolean" default-value="true">
             <description>controls whether catch parameters should be ignored</description>
+         </property-metadata>
+         <property-metadata name="ignoreNonLocal" datatype="Boolean" default-value="false">
+            <description>controls whether parameters of non local (public, protected or package) methods should be ignored</description>
          </property-metadata>
       </rule-metadata>
       <rule-metadata name="Unused Private Field" classname="com.puppycrawl.tools.checkstyle.checks.usage.UnusedPrivateFieldCheck" default-severity="Warning">
