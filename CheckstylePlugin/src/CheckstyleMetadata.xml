@@ -184,9 +184,9 @@
    <rule-group-metadata name="Imports">
       <rule-metadata name="Avoid Star (Demand) Imports" classname="com.puppycrawl.tools.checkstyle.checks.imports.AvoidStarImportCheck" default-severity="Warning">
          <description>Checks for use of demand import statements.</description>
-         <!-- <property-metadata name="excludes" datatype="String" default-value="">
+         <property-metadata name="excludes" datatype="String">
             <description>packages where star imports are allowed. Note that this property is not recursive, subpackages of excluded packages are not automatically excluded.</description>
-         </property-metadata>-->
+         </property-metadata>
       </rule-metadata>
       <rule-metadata name="Illegal Imports" classname="com.puppycrawl.tools.checkstyle.checks.imports.IllegalImportCheck" default-severity="Warning">
          <description>Checks for imports from a set of illegal packages.</description>
@@ -196,9 +196,9 @@
       </rule-metadata>
       <rule-metadata name="Import Order Check" classname="com.puppycrawl.tools.checkstyle.checks.imports.ImportOrderCheck" default-severity="Warning">
          <description>Checks the ordering/grouping of imports. Ensures that groups of imports come in a specific order (e.g., java. comes first, javax. comes first, then everything else) and imports within each group are in lexicographic order. </description>
-         <!--<property-metadata name="groups" datatype="StringArray" default-value=" ">
+         <property-metadata name="groups" datatype="String">
             <description>list of imports groups (every group identified by string it's started)</description>
-         </property-metadata>-->
+         </property-metadata>
          <property-metadata name="ordered" datatype="Boolean" default-value="true">
             <description>whether imports within group should be sorted</description>
          </property-metadata>
@@ -670,9 +670,9 @@ Rationale: each instance variable gets initialized twice, to the same value. Jav
          <description>Catching java.lang.Exception, java.lang.Error or java.lang.RuntimeException is almost never acceptable. 
 
 Rationale: Junior developers often simply catch Exception in an attempt to handle multiple exception classes. This unfortunately leads to code that inadvertantly catchs NPE, OutOfMemoryErrors, etc. </description>
-         <!-- <property-metadata name="illegalClassNames" datatype="StringArray" default-value="java.lang.Exception, java.lang.Throwable, java.lang.RuntimeException">
+         <property-metadata name="illegalClassNames" datatype="String" default-value="java.lang.Exception, java.lang.Throwable, java.lang.RuntimeException">
             <description>exception class names to reject</description>
-         </property-metadata>-->
+         </property-metadata>
       </rule-metadata>
       <rule-metadata name="Illiegal Tokens" classname="com.puppycrawl.tools.checkstyle.checks.coding.IllegalTokenCheck" default-severity="Warning">
          <description>Checks for illegal tokens. 
