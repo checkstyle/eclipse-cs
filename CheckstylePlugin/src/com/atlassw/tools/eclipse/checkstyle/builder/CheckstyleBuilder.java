@@ -29,7 +29,6 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -286,7 +285,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
             CheckstyleLog.error("Unable to create a classloader for the project", e);
             classLoader = null;
         }
-        
+
         //
         //  Audit the files that need to be audited.
         //
@@ -305,7 +304,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
             throw new CoreException(status);
         }
     }
-    
+
     private Collection getFiles(IResourceDelta delta) throws CoreException
     {
         ArrayList files = new ArrayList(0);
@@ -407,104 +406,101 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
                 switch (entries[i].getEntryKind())
                 {
                     case IClasspathEntry.CPE_SOURCE :
+
+                        IPath outputLocation = null;
+
+                        if (isEclipse_2_1_Safe())
                         {
-                            IPath outputLocation = null;
-
-                            if (isEclipse_2_1_Safe())
+                            outputLocation = entries[i].getOutputLocation();
+                        }
+                        if (outputLocation == null)
+                        {
+                            //
+                            //  If the output location is null then the project's
+                            //  default output location is being used.
+                            //
+                            if (!defaultOutputAdded)
                             {
-                                outputLocation = entries[i].getOutputLocation();
+                                defaultOutputAdded = true;
+                                outputLocation = javaProject.getOutputLocation();
                             }
-                            if (outputLocation == null)
-                            {
-                                //
-                                //  If the output location is null then the project's
-                                //  default output location is being used.
-                                //
-                                if (!defaultOutputAdded)
-                                {
-                                    defaultOutputAdded = true;
-                                    outputLocation = javaProject.getOutputLocation();
-                                }
-                            }
+                        }
 
-                            if (outputLocation != null)
+                        if (outputLocation != null)
+                        {
+                            //
+                            //  When the output location is the project itself, the project
+                            //  can't resolve the file - therefore just get the project's
+                            //  location. 
+                            //
+                            if (outputLocation.segmentCount() == 1)
+                            {
+                                outputLocation = javaProject.getProject().getLocation();
+                            }
+                            else
                             {
                                 //
-                                //  When the output location is the project itself, the project
-                                //  can't resolve the file - therefore just get the project's
-                                //  location. 
+                                //  Output locations are always workspace relative. Do this mess
+                                //  to get a fully qualified location.
                                 //
-                                if (outputLocation.segmentCount() == 1)
-                                {
-                                    outputLocation = javaProject.getProject().getLocation();
-                                }
-                                else
-                                {
-                                    //
-                                    //  Output locations are always workspace relative. Do this mess
-                                    //  to get a fully qualified location.
-                                    //
-                                    outputLocation =
-                                        javaProject
-                                            .getProject()
-                                            .getParent()
+                                outputLocation =
+                                    javaProject
+                                        .getProject()
+                                        .getParent()
                                             .getFile(outputLocation)
-                                            .getLocation();
-                                }
-
-                                urls.add(outputLocation.addTrailingSeparator().toFile().toURL());
+                                                .getLocation();
                             }
 
-                            break;
+                            urls.add(outputLocation.addTrailingSeparator().toFile().toURL());
                         }
+
+                        break;
+
                     case IClasspathEntry.CPE_LIBRARY :
+
+                        //
+                        //  External jars have fully specified paths, but we've no easy way to tell 
+                        //  them apart from project relative paths. So assume it's relative, and try
+                        //  and get a path.
+                        //
+                        IContainer parent = javaProject.getProject().getParent();
+                        IPath libPath = parent.getFile(entries[i].getPath()).getLocation();
+                        if (libPath == null)
                         {
                             //
-                            //  External jars have fully specified paths, but we've no easy way to tell 
-                            //  them apart from project relative paths. So assume it's relative, and try
-                            //  and get a path.
+                            //  It must be fully specified.
                             //
-                            IContainer parent = javaProject.getProject().getParent();
-                            IPath libPath = parent.getFile(entries[i].getPath()).getLocation();
-                            if (libPath == null)
-                            {
-                                //
-                                //  It must be fully specified.
-                                //
-                                libPath = entries[i].getPath();
-                            }
-                            urls.add(new URL("file:/" + libPath.toOSString()));
-
-                            break;
+                            libPath = entries[i].getPath();
                         }
+                        urls.add(new URL("file:/" + libPath.toOSString()));
+
+                        break;
+
                     case IClasspathEntry.CPE_PROJECT :
-                        {
-                            IJavaProject dependentProject =
-                                (IJavaProject)
-                                    (
-                                        ResourcesPlugin.getWorkspace().getRoot().getProject(
-                                            entries[i].getPath().segment(0))).getAdapter(
-                                    IJavaElement.class);
 
-                            urls.addAll(getClasspathURLs(dependentProject, true));
+                        IJavaProject dependentProject =
+                            (IJavaProject)
+                                (
+                                    ResourcesPlugin.getWorkspace().getRoot().getProject(
+                                        entries[i].getPath().segment(0))).getAdapter(
+                                IJavaElement.class);
 
-                            break;
-                        }
+                        urls.addAll(getClasspathURLs(dependentProject, true));
+
+                        break;
+
                     default :
-                        {
-                            String msg =
-                                "Encountered unexpected classpath entry : "
-                                    + entries[i].getEntryKind();
-                            CheckstyleLog.error(msg);
-                            Status status =
-                                new Status(
-                                    IStatus.ERROR,
-                                    CheckstylePlugin.PLUGIN_ID,
-                                    IStatus.ERROR,
-                                    msg,
-                                    null);
-                            throw new CoreException(status);
-                        }
+                        String msg =
+                            "Encountered unexpected classpath entry : " + entries[i].getEntryKind();
+                        CheckstyleLog.error(msg);
+                        Status status =
+                            new Status(
+                                IStatus.ERROR,
+                                CheckstylePlugin.PLUGIN_ID,
+                                IStatus.ERROR,
+                                msg,
+                                null);
+                        throw new CoreException(status);
                 }
             }
         }
