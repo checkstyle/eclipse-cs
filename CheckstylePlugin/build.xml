@@ -98,6 +98,7 @@
 		<copy file="${checkstyle.jar}" todir="${bin.dist.dir}" />
 		<copy file="${checkstyle-optional.jar}" todir="${bin.dist.dir}" />
 		<copy file="plugin.xml" todir="${bin.dist.dir}" />
+		<copy file="plugin-eclipse2-0-x.xml.xml" todir="${bin.dist.dir}" />
 		<copy file="toc.xml" todir="${bin.dist.dir}" />
 		<copy file="README.html" todir="${bin.dist.dir}" />
 		<copy file="DefaultChecks.xml" todir="${bin.dist.dir}" />
@@ -119,6 +120,7 @@
 		<mkdir dir="${src.dist.dir}" />
 		<copy file="${checkstyle.jar}" todir="${src.dist.dir}" />
 		<copy file="plugin.xml" todir="${src.dist.dir}" />
+		<copy file="plugin-eclipse2-0-x.xml.xml" todir="${src.dist.dir}" />
 		<copy file="toc.xml" todir="${src.dist.dir}" />
 		<copy file="README.html" todir="${src.dist.dir}" />
 		<copy file="build.xml" todir="${src.dist.dir}" />
