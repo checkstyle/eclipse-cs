@@ -16,6 +16,7 @@
    <requires>
       <import plugin="com.atlassw.tools.eclipse.checkstyle"/>
       <import plugin="org.junit"/>
+      <import plugin="org.eclipse.core.resources"/>
    </requires>
 
 
