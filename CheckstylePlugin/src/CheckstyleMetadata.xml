@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XMLSPY v2004 rel. 3 U (http://www.xmlspy.com) by Nikolay (Teamphone) -->
 <checkstyle-metadata file-format-version="1.0.0">
    <rule-group-metadata name="Javadoc Comments">
       <rule-metadata name="Method Javadoc" classname="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocMethodCheck" default-severity="Warning">
@@ -205,6 +204,9 @@
          </property-metadata>
          <property-metadata name="separated" datatype="Boolean" default-value="false">
             <description>whether imports groups should be separated by, at least, one blank line</description>
+         </property-metadata>
+         <property-metadata name="caseSensitive" datatype="Boolean" default-value="true">
+            <description>whether strings comprision should be case sensitive or not</description>
          </property-metadata>
       </rule-metadata>
       <rule-metadata name="Redundant Imports" classname="com.puppycrawl.tools.checkstyle.checks.imports.RedundantImportCheck" default-severity="Warning">

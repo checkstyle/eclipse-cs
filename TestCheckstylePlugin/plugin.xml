@@ -10,8 +10,8 @@
       <library name="TestCheckStylePlugin2.jar">
          <export name="*"/>
       </library>
-      <library name="checkstyle-all-3.2.jar"/>
-      <library name="checkstyle-3.2-optional.jar"/>
+      <library name="checkstyle-all-3.3.jar"/>
+      <library name="checkstyle-optional-3.3.jar"/>
    </runtime>
    <requires>
       <import plugin="com.atlassw.tools.eclipse.checkstyle"/>
