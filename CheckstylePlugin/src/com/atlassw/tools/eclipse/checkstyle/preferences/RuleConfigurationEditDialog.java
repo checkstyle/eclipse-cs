@@ -246,7 +246,7 @@ public class RuleConfigurationEditDialog extends Dialog
         comp.setLayout(layout);
 
         Label commentLabel = new Label(comp, SWT.NULL);
-        commentLabel.setText("Instance Comment:");
+        commentLabel.setText("Comment:");
 
         mCommentText = new Text(comp, SWT.SINGLE | SWT.BORDER);
         GridData data = new GridData();

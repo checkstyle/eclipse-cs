@@ -34,6 +34,16 @@
 	            default-value="">
 	            <description>Pattern for @version tag.</description>
 	        </property-metadata>
+	        <property-metadata
+	            name="tokens" 
+	            datatype="MultiCheck"
+	            default-value="CLASS_DEF, INTERFACE_DEF">
+	            <description>Tokens to check.</description>
+	            <enumeration>
+	                <property-value-option value="CLASS_DEF"/>
+	                <property-value-option value="INTERFACE_DEF"/>
+	            </enumeration>
+	        </property-metadata>
 	    </rule-metadata>
 
 	    <rule-metadata 
@@ -61,7 +71,42 @@
 	            default-value="false">
 	            <description>Whether to allow documented exceptions that are not declared if they are a subclass of java.lang.RuntimeException.</description>
 	        </property-metadata>
+	        <property-metadata 
+	            name="allowThrowsTagsForSubclasses" 
+	            datatype="Boolean" 
+	            default-value="false">
+	            <description>Whether to allow documented exceptions that are subclass of one of declared exception.</description>
+	        </property-metadata>
+	        <property-metadata 
+	            name="allowMissingParamTags" 
+	            datatype="Boolean" 
+	            default-value="false">
+	            <description>Whether to ignore errors when a method has parameters but does not have matching param tags in the javadoc.</description>
+	        </property-metadata>
+	        <property-metadata 
+	            name="allowMissingThrowsTags" 
+	            datatype="Boolean" 
+	            default-value="false">
+	            <description>Whether to ignore errors when a method declares that it throws exceptions but does have matching throws tags in the javadoc.</description>
+	        </property-metadata>
+	        <property-metadata 
+	            name="allowMissingReturnTag" 
+	            datatype="Boolean" 
+	            default-value="false">
+	            <description>Whether to ignore errors when a method returns non-void type does have a return tag in the javadoc.</description>
+	        </property-metadata>
+	        <property-metadata
+	            name="tokens" 
+	            datatype="MultiCheck"
+	            default-value="METHOD_DEF, CTOR_DEF">
+	            <description>Tokens to check.</description>
+	            <enumeration>
+	                <property-value-option value="METHOD_DEF"/>
+	                <property-value-option value="CTOR_DEF"/>
+	            </enumeration>
+	        </property-metadata>
 	    </rule-metadata>
+	    
 	    <rule-metadata 
 	        name="Variable Javadoc"
 	        classname="com.puppycrawl.tools.checkstyle.checks.JavadocVariableCheck"
@@ -85,6 +130,7 @@
 	</rule-group-metadata>
 
 	<rule-group-metadata name="Naming Conventions">
+	
 	    <rule-metadata 
 	        name="Constant Names"
 	        classname="com.puppycrawl.tools.checkstyle.checks.ConstantNameCheck"
@@ -97,6 +143,7 @@
 	            <description>Regular expression defining required naming pattern.</description>
 	        </property-metadata>
 	    </rule-metadata>
+	    
 	    <rule-metadata 
 	        name="Local Final Variable Names"
 	        classname="com.puppycrawl.tools.checkstyle.checks.LocalFinalVariableNameCheck"
@@ -109,6 +156,7 @@
 	            <description>Regular expression defining required naming pattern.</description>
 	        </property-metadata>
 	    </rule-metadata>
+	    
 	    <rule-metadata 
 	        name="Local Variable Names"
 	        classname="com.puppycrawl.tools.checkstyle.checks.LocalVariableNameCheck"
@@ -122,10 +170,10 @@
 	        </property-metadata>
 	    </rule-metadata>
 	    <rule-metadata 
-	        name="Instance Variable Names"
+	        name="Member Names"
 	        classname="com.puppycrawl.tools.checkstyle.checks.MemberNameCheck"
 	        default-severity="Warning">
-	        <description>Checks that instance variables (non-static fields) follow naming convention.</description>
+	        <description>Checks that member variables (non-static fields) follow naming convention.</description>
 	        <property-metadata 
 	            name="format" 
 	            datatype="String" 
@@ -133,6 +181,7 @@
 	            <description>Regular expression defining required naming pattern.</description>
 	        </property-metadata>
 	    </rule-metadata>
+	    
 	    <rule-metadata 
 	        name="Method Names"
 	        classname="com.puppycrawl.tools.checkstyle.checks.MethodNameCheck"
@@ -145,6 +194,7 @@
 	            <description>Regular expression defining required naming pattern.</description>
 	        </property-metadata>
 	    </rule-metadata>
+	    
 	    <rule-metadata 
 	        name="Package Names"
 	        classname="com.puppycrawl.tools.checkstyle.checks.PackageNameCheck"
@@ -157,6 +207,7 @@
 	            <description>Regular expression defining required naming pattern.</description>
 	        </property-metadata>
 	    </rule-metadata>
+	    
 	    <rule-metadata 
 	        name="Parameter Names"
 	        classname="com.puppycrawl.tools.checkstyle.checks.ParameterNameCheck"
@@ -169,6 +220,7 @@
 	            <description>Regular expression defining required naming pattern.</description>
 	        </property-metadata>
 	    </rule-metadata>
+	    
 	    <rule-metadata 
 	        name="Static Variable Names"
 	        classname="com.puppycrawl.tools.checkstyle.checks.StaticVariableNameCheck"
@@ -181,6 +233,7 @@
 	            <description>Regular expression defining required naming pattern.</description>
 	        </property-metadata>
 	    </rule-metadata>
+	    
 	    <rule-metadata 
 	        name="Type Names"
 	        classname="com.puppycrawl.tools.checkstyle.checks.TypeNameCheck"
@@ -203,12 +256,8 @@
 	            </enumeration>
 	        </property-metadata>
 	    </rule-metadata>
+	    
 	</rule-group-metadata>
-
-    <!--
-	<rule-group-metadata name="Headers">
-	</rule-group-metadata>
-	-->
 
 	<rule-group-metadata name="Imports">
 	
@@ -258,20 +307,7 @@
 	        <property-metadata 
 	            name="max" 
 	            datatype="Integer" 
-	            default-value="1500">
-	            <description>Maximum number of lines allowed.</description>
-	        </property-metadata>
-	    </rule-metadata>
-	
-	    <rule-metadata 
-	        name="Maximum Method Length"
-	        classname="com.puppycrawl.tools.checkstyle.checks.MethodLengthCheck"
-	        default-severity="Warning">
-	            <description>Checks for methods that exceed the configured maximum length.</description>
-	        <property-metadata 
-	            name="max" 
-	            datatype="Integer" 
-	            default-value="150">
+	            default-value="2000">
 	            <description>Maximum number of lines allowed.</description>
 	        </property-metadata>
 	    </rule-metadata>
@@ -302,10 +338,39 @@
 	    </rule-metadata>
 	
 	    <rule-metadata 
+	        name="Maximum Method Length"
+	        classname="com.puppycrawl.tools.checkstyle.checks.MethodLengthCheck"
+	        default-severity="Warning">
+	            <description>Checks for methods that exceed the configured maximum length.</description>
+	        <property-metadata 
+	            name="max" 
+	            datatype="Integer" 
+	            default-value="150">
+	            <description>Maximum number of lines allowed.</description>
+	        </property-metadata>
+	        <property-metadata
+	            name="tokens" 
+	            datatype="MultiCheck"
+	            default-value="METHOD_DEF, CTOR_DEF">
+	            <description>Tokens to check.</description>
+	            <enumeration>
+	                <property-value-option value="METHOD_DEF"/>
+	                <property-value-option value="CTOR_DEF"/>
+	            </enumeration>
+	        </property-metadata>
+	    </rule-metadata>
+	
+	    <rule-metadata 
 	        name="Maximum Parameters"
 	        classname="com.puppycrawl.tools.checkstyle.checks.ParameterNumberCheck"
 	        default-severity="Warning">
 	            <description>Checks the number of parameters of a method or constructor.</description>
+	        <property-metadata 
+	            name="max" 
+	            datatype="Integer" 
+	            default-value="7">
+	            <description>Maximum allowed parameters.</description>
+	        </property-metadata>
 	        <property-metadata 
 	            name="tokens" 
 	            datatype="MultiCheck" 
@@ -316,22 +381,34 @@
 	                <property-value-option value="CTOR_DEF"/>
 	            </enumeration>
 	        </property-metadata>
-	        <property-metadata 
-	            name="max" 
-	            datatype="Integer" 
-	            default-value="7">
-	            <description>Maximum allowed parameters.</description>
-	        </property-metadata>
 	    </rule-metadata>
 	    
 	</rule-group-metadata>
 
 	<rule-group-metadata name="Whitespace">
+	
+	    <rule-metadata 
+	        name="Empty For Iterator Pad"
+	        classname="com.puppycrawl.tools.checkstyle.checks.EmptyForIteratorPadCheck"
+	        default-severity="Warning">
+	        <description>Checks the padding of an empty for iterator; that is whether white space is required at an empty for iterator, or such white space is forbidden.</description>
+	        <property-metadata 
+	            name="option" 
+	            datatype="SingleSelect" 
+	            default-value="nospace">
+	            <description>Policy on how to pad an empty for iterator.</description>
+		            <enumeration>
+	                <property-value-option value="nospace"/>
+	                <property-value-option value="space"/>
+	            </enumeration>
+            </property-metadata>
+	    </rule-metadata>
+	
 	    <rule-metadata 
 	        name="No Whitespace After"
 	        classname="com.puppycrawl.tools.checkstyle.checks.NoWhitespaceAfterCheck"
 	        default-severity="Warning">
-	        <description>Checks that there is no whitespace after a token. More specifically, it checks that it is not followed by whitespace, or (if linebreaks are allowed) all characters on the line after are whitespace.</description>
+	        <description>Checks that there is no whitespace after a token. More specifically, it checks that it is not followed by whitespace, or (if linebreaks are allowed) all characters on the line after are whitespace. To forbid linebreaks after a token, set property allowLineBreaks to false.</description>
 	        <property-metadata 
 	            name="allowLineBreaks" 
 	            datatype="Boolean" 
@@ -355,11 +432,12 @@
 	            </enumeration>
 	        </property-metadata>
 	    </rule-metadata>
+	    
 	    <rule-metadata 
 	        name="No Whitespace Before"
 	        classname="com.puppycrawl.tools.checkstyle.checks.NoWhitespaceBeforeCheck"
 	        default-severity="Warning">
-	        <description>Checks that there is no whitespace before a token. More specifically, it checks that it is not preceded with whitespace, or (if linebreaks are allowed) all characters on the line before are whitespace.</description>
+	        <description>Checks that there is no whitespace before a token. More specifically, it checks that it is not preceded with whitespace, or (if linebreaks are allowed) all characters on the line before are whitespace. To allow linebreaks before a token, set property allowLineBreaks to true.</description>
 	        <property-metadata 
 	            name="allowLineBreaks" 
 	            datatype="Boolean" 
@@ -379,6 +457,7 @@
 	            </enumeration>
 	        </property-metadata>
 	    </rule-metadata>
+	    
 	    <rule-metadata 
 	        name="Operator Wrap"
 	        classname="com.puppycrawl.tools.checkstyle.checks.OperatorWrapCheck"
@@ -388,7 +467,7 @@
 	            name="option" 
 	            datatype="SingleSelect" 
 	            default-value="nl">
-	            <description>Policy on how to wrap lines.</description>
+	            <description>Policy on how to wrap lines. nl = operator must be on a new line, eol = operator must be at the end of the line.</description>
 	            <enumeration>
 	                <property-value-option value="eol"/>
 	                <property-value-option value="nl"/>
@@ -447,7 +526,7 @@
 	            name="option" 
 	            datatype="SingleSelect" 
 	            default-value="nospace">
-	            <description>Policy on how to pad parentheses.  nospace = do not pad (e.g. method(a, b)).  space = ensure padding (e.g. method( a, b )).</description>
+	            <description>Policy on how to pad parentheses. nospace = do not pad (e.g. method(a, b)).  space = ensure padding (e.g. method( a, b )).</description>
 	            <enumeration>
 	                <property-value-option value="nospace"/>
 	                <property-value-option value="space"/>
@@ -584,31 +663,6 @@
 	        </property-metadata>
 	    </rule-metadata>
 	    
-	    <rule-metadata 
-	        name="Visibility Modifier"
-	        classname="com.puppycrawl.tools.checkstyle.checks.VisibilityModifierCheck"
-	        default-severity="Warning">
-	        <description>Checks visibility of class members. Only static final members may be public; other class members must be private unless property protectedAllowed or packageAllowed is set.</description>
-	        <property-metadata 
-	            name="packageAllowed" 
-	            datatype="Boolean" 
-	            default-value="false">
-	            <description>Whether package visible members are allowed.</description>
-	        </property-metadata>
-	        <property-metadata 
-	            name="protectedAllowed" 
-	            datatype="Boolean" 
-	            default-value="false">
-	            <description>Whether protected members are allowed.</description>
-	        </property-metadata>
-	        <property-metadata 
-	            name="publicMemberPattern" 
-	            datatype="String" 
-	            default-value="^serialVersionUID$">
-	            <description>Pattern for public members that should be ignored.</description>
-	        </property-metadata>
-	    </rule-metadata>
-
 	</rule-group-metadata>
 
 	<rule-group-metadata name="Blocks">
@@ -656,7 +710,7 @@
 	            name="option" 
 	            datatype="SingleSelect" 
 	            default-value="eol">
-	            <description>Defines where left curly braces should be placed.  'eol' = End-of-Line, 'nl' = New-Line, and 'nlow' = 'New-Line-on-Wrap.</description>
+	            <description>Defines where left curly braces should be placed.  'eol' = End-of-Line, 'nl' = New-Line, and 'nlow' = New-Line-on-Wrap (if the brace will fit on the first line of the statement, taking into account maximum line length, then apply eol rule, otherwise apply the nl rule).</description>
 	            <enumeration>
 	                <property-value-option value="eol"/>
 	                <property-value-option value="nl"/>
@@ -741,28 +795,43 @@
 	        </property-metadata>
 	    </rule-metadata>
 
+	    <rule-metadata 
+	        name="Avoid Nested Blocks"
+	        classname="com.puppycrawl.tools.checkstyle.checks.AvoidNestedBlocksCheck"
+	        default-severity="Warning">
+	        <description>Finds nested blocks, i.e. blocks that are used freely in the code. Rationale: Nested blocks are often leftovers from the debugging process, they confuse the reader.</description>
+	    </rule-metadata>
+
 	</rule-group-metadata>
 
-	<rule-group-metadata name="Miscellaneous">
+	<rule-group-metadata name="Coding Problems">
+	
+	    <rule-metadata 
+	        name="Avoid Inline Conditionals"
+	        classname="com.puppycrawl.tools.checkstyle.checks.AvoidInlineConditionalsCheck"
+	        default-severity="Warning">
+	        <description>Detects inline conditionals. Rationale: Some developers find inline conditionals hard to read, so their company's coding standards forbids them.</description>
+	    </rule-metadata>
+	
+	    <rule-metadata 
+	        name="Double Checked Locking"
+	        classname="com.puppycrawl.tools.checkstyle.checks.DoubleCheckedLockingCheck"
+	        default-severity="Warning">
+	        <description>The "double-checked locking" idiom (DCL) tries to avoid the runtime cost of synchronization. The problem with the DCL idiom in Java is that it just does not work correctly. Using it introduces bugs that are extremely hard to track down and reproduce.</description>
+	    </rule-metadata>
+	
+	    <rule-metadata 
+	        name="Empty Statement"
+	        classname="com.puppycrawl.tools.checkstyle.checks.EmptyStatementCheck"
+	        default-severity="Warning">
+	        <description>Detects empty statements (standalone ;).</description>
+	    </rule-metadata>
 	
 	    <rule-metadata 
 	        name="Equals and HashCode"
 	        classname="com.puppycrawl.tools.checkstyle.checks.EqualsHashCodeCheck"
 	        default-severity="Warning">
 	        <description>Checks that classes that override equals() also override hashCode().</description>
-	    </rule-metadata>
-	
-	    <rule-metadata 
-	        name="Generic Illegal Regexp"
-	        classname="com.puppycrawl.tools.checkstyle.checks.GenericIllegalRegexpCheck"
-	        default-severity="Warning">
-	        <description>A generic check for code problems - the user can search for any pattern.  For example: exception.printStacktrace(), System.out.println(), System.exit(), etc.</description>
-	        <property-metadata 
-	            name="format" 
-	            datatype="String" 
-	            default-value="^$">
-	            <description>Pattern to check for.</description>
-	        </property-metadata>
 	    </rule-metadata>
 	
 	    <rule-metadata 
@@ -823,10 +892,160 @@
 	    </rule-metadata>
 	
 	    <rule-metadata 
+	        name="Magic Number"
+	        classname="com.puppycrawl.tools.checkstyle.checks.MagicNumberCheck"
+	        default-severity="Warning">
+	        <description>Checks that there are no "magic numbers", where a magic number is a numeric literal that is not defined as a constant.</description>
+	        <property-metadata 
+	            name="ignoreNumbers" 
+	            datatype="String" 
+	            default-value="-1, 0, 1, 2">
+	            <description>Comman seperated list of non-Magic numbers.</description>
+	        </property-metadata>
+	        <property-metadata 
+	            name="tokens" 
+	            datatype="MultiCheck" 
+	            default-value="NUM_DOUBLE, NUM_FLOAT, NUM_INT, NUM_LONG">
+	            <description>Tokens to check.</description>
+	            <enumeration>
+	                <property-value-option value="NUM_DOUBLE"/>
+	                <property-value-option value="NUM_FLOAT"/>
+	                <property-value-option value="NUM_INT"/>
+	                <property-value-option value="NUM_LONG"/>
+	            </enumeration>
+	        </property-metadata>
+	    </rule-metadata>
+	
+	    <rule-metadata 
+	        name="Missing Switch Default"
+	        classname="com.puppycrawl.tools.checkstyle.checks.MissingSwitchDefaultCheck"
+	        default-severity="Warning">
+	        <description>Checks that switch statement has "default" clause. Rationale: It's usually a good idea to introduce a default case in every switch statement. Even if the developer is sure that all currently possible cases are covered, this should be expressed in the default branch, e.g. by using an assertion. This way the code is protected aginst later changes, e.g. introduction of new types in an enumeration type.</description>
+	    </rule-metadata>
+	
+	    <rule-metadata 
+	        name="Redundant Throws"
+	        classname="com.puppycrawl.tools.checkstyle.checks.RedundantThrowsCheck"
+	        default-severity="Warning">
+	        <description>Checks for redundant exceptions declared in throws clause such as duplicates, unchecked exceptions or subclasses of another declared exception.</description>
+	        <property-metadata 
+	            name="allowUnchecked" 
+	            datatype="Boolean" 
+	            default-value="false">
+	            <description>Whether unchecked exceptions in throws are allowed or not.</description>
+	        </property-metadata>
+	        <property-metadata 
+	            name="allowSubclasses" 
+	            datatype="Boolean" 
+	            default-value="false">
+	            <description>Whether subclass of another declared exception is allowed in throws clause.</description>
+	        </property-metadata>
+	    </rule-metadata>
+	
+	    <rule-metadata 
 	        name="Simplify Boolean Expression"
 	        classname="com.puppycrawl.tools.checkstyle.checks.SimplifyBooleanExpressionCheck"
 	        default-severity="Warning">
 	        <description>Checks for overly complicated boolean expressions. Currently finds code like if (b == true), b || true, !false, etc.</description>
+	    </rule-metadata>
+	
+	    <rule-metadata 
+	        name="Simplify Boolean Return"
+	        classname="com.puppycrawl.tools.checkstyle.checks.SimplifyBooleanReturnCheck"
+	        default-severity="Warning">
+	        <description>Checks for overly complicated boolean return statements.</description>
+	    </rule-metadata>
+	    
+	</rule-group-metadata>
+
+	<rule-group-metadata name="Class Design">
+	
+	    <rule-metadata 
+	        name="Visibility Modifier"
+	        classname="com.puppycrawl.tools.checkstyle.checks.VisibilityModifierCheck"
+	        default-severity="Warning">
+	        <description>Checks visibility of class members. Only static final members may be public; other class members must be private unless property protectedAllowed or packageAllowed is set.</description>
+	        <property-metadata 
+	            name="packageAllowed" 
+	            datatype="Boolean" 
+	            default-value="false">
+	            <description>Whether package visible members are allowed or not.</description>
+	        </property-metadata>
+	        <property-metadata 
+	            name="protectedAllowed" 
+	            datatype="Boolean" 
+	            default-value="false">
+	            <description>Whether protected members are allowed or not.</description>
+	        </property-metadata>
+	        <property-metadata 
+	            name="publicMemberPattern" 
+	            datatype="String" 
+	            default-value="^serialVersionUID">
+	            <description>Pattern for public members that should be ignored.</description>
+	        </property-metadata>
+	    </rule-metadata>
+	
+	    <rule-metadata 
+	        name="Final Class"
+	        classname="com.puppycrawl.tools.checkstyle.checks.FinalClassCheck"
+	        default-severity="Warning">
+	        <description>Checks that a class which has only private constructors is declared as final.</description>
+	    </rule-metadata>
+	
+	    <rule-metadata 
+	        name="Interface Is Type"
+	        classname="com.puppycrawl.tools.checkstyle.checks.InterfaceIsTypeCheck"
+	        default-severity="Warning">
+	        <description>Implements Bloch, Effective Java, Item 17 - Use Interfaces only to define types.  According to Bloch, an interface should describe a type. It is therefore inappropriate to define an interface that does not contain any methods but only constants. The Standard class javax.swing.SwingConstants is an example of a class that would be flagged by this check.</description>
+	        <property-metadata 
+	            name="allowMarkerInterfaces" 
+	            datatype="Boolean" 
+	            default-value="true">
+	            <description>Controls whether marker interfaces like Serializable are allowed.</description>
+	        </property-metadata>
+	    </rule-metadata>
+	
+	    <rule-metadata 
+	        name="Hide Utility Class Constructor"
+	        classname="com.puppycrawl.tools.checkstyle.checks.HideUtilityClassConstructorCheck"
+	        default-severity="Warning">
+	        <description>Make sure that utility classes (classes that contain only static methods) do not have a public constructor.  Rationale: Instantiating utility classes does not make sense. Hence the constructors should either be private or (if you want to allow subclassing) protected. A common mistake is forgetting to hide the default constructor.</description>
+	    </rule-metadata>
+	
+	    <rule-metadata 
+	        name="Design For Extension"
+	        classname="com.puppycrawl.tools.checkstyle.checks.DesignForExtensionCheck"
+	        default-severity="Warning">
+	        <description>Checks that classes are designed for extension. More specifically, it enforces a programming style where superclasses provide empty "hooks" that can be implemented by subclasses. The exact rule is that nonprivate, nonstatic methods of classes that can be subclassed must either be a) abstract or b) final or c) have an empty implementation.  Rationale: This API design style protects superclasses against beeing broken by subclasses. The downside is that subclasses are limited in their flexibility, in particular they cannot prevent execution of code in the superclass, but that also means that subclasses cannot corrupt the state of the superclass by forgetting to call the super method.</description>
+	    </rule-metadata>
+	    
+	</rule-group-metadata>
+
+	<rule-group-metadata name="Miscellaneous">
+	
+	    <rule-metadata 
+	        name="Generic Illegal Regexp"
+	        classname="com.puppycrawl.tools.checkstyle.checks.GenericIllegalRegexpCheck"
+	        default-severity="Warning">
+	        <description>A generic check for code problems - the user can search for any pattern.  For example: exception.printStacktrace(), System.out.println(), System.exit(), etc.</description>
+	        <property-metadata 
+	            name="format" 
+	            datatype="String" 
+	            default-value="^$">
+	            <description>Pattern to check for.</description>
+	        </property-metadata>
+	        <property-metadata 
+	            name="ignoreCase" 
+	            datatype="Boolean" 
+	            default-value="false">
+	            <description>Controls whether to ignore case when searching.</description>
+	        </property-metadata>
+	        <property-metadata 
+	            name="message" 
+	            datatype="String" 
+	            default-value="">
+	            <description>Message which is used to notify about violations, if empty then default(hard-coded) message is used.</description>
+	        </property-metadata>
 	    </rule-metadata>
 	
 	    <rule-metadata 
@@ -847,6 +1066,36 @@
 	        classname="com.puppycrawl.tools.checkstyle.checks.UpperEllCheck"
 	        default-severity="Warning">
 	        <description>Checks that long constants are defined with an upper ell. That is ' L' and not 'l'. This is in accordance to the Java Language Specification, Section 3.10.1.  Rationale: The lower case letter l looks a lot like the digit 1.</description>
+	    </rule-metadata>
+	
+	    <rule-metadata 
+	        name="Array Type Style"
+	        classname="com.puppycrawl.tools.checkstyle.checks.ArrayTypeStyleCheck"
+	        default-severity="Warning">
+	        <description>Checks the style of array type definitions. Some like Java-style: public static void main(String[] args) and some like C-style: public static void main(String args[]).</description>
+	        <property-metadata 
+	            name="javaStyle" 
+	            datatype="Boolean" 
+	            default-value="true">
+	            <description>Controls whether to enforce Java style (true) or C style (false).</description>
+	        </property-metadata>
+	    </rule-metadata>
+	
+	    <rule-metadata 
+	        name="Final Parameters"
+	        classname="com.puppycrawl.tools.checkstyle.checks.FinalParametersCheck"
+	        default-severity="Warning">
+	        <description>Check that method/constructor parameters are final. Interface methods are not checked - the final keyword does not make sense for interface method parameters as there is no code that could modify the parameter.  Rationale: Changing the value of parameters during the execution of the method's algorithm can be confusing and should be avoided. A great way to let the Java compiler prevent this coding style is to declare parameters final.</description>
+	        <property-metadata
+	            name="tokens" 
+	            datatype="MultiCheck"
+	            default-value="METHOD_DEF, CTOR_DEF">
+	            <description>Tokens to check.</description>
+	            <enumeration>
+	                <property-value-option value="METHOD_DEF"/>
+	                <property-value-option value="CTOR_DEF"/>
+	            </enumeration>
+	        </property-metadata>
 	    </rule-metadata>
 
 	</rule-group-metadata>

@@ -209,10 +209,12 @@ public class CheckConfigurationEditDialog extends Dialog
                 }
                 
                 RuleMetadata metadata = getRuleMetadata(ruleConfig);
-                RuleConfigWorkingCopy copy = new RuleConfigWorkingCopy(metadata);
-                copy.setRuleConfig(ruleConfig);
-                
-                mRuleConfigWorkingCopies[metadata.getGroupIndex()].add(copy);
+                if (metadata != null)
+                {
+                    RuleConfigWorkingCopy copy = new RuleConfigWorkingCopy(metadata);
+                    copy.setRuleConfig(ruleConfig);
+                    mRuleConfigWorkingCopies[metadata.getGroupIndex()].add(copy);
+                }
             }
         }
     }
