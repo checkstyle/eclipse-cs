@@ -16,6 +16,7 @@
       <import plugin="org.eclipse.ui"/>
       <import plugin="org.apache.xerces"/>
       <import plugin="org.eclipse.jface.text"/>
+      <import plugin="org.eclipse.jdt.core"/>
    </requires>
 
 

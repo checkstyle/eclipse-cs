@@ -124,7 +124,7 @@ class Auditor
      * 
      *  @throws CoreException  Error during processing.
      */
-    void auditFiles(Collection files, IProgressMonitor monitor)
+    void auditFiles(Collection files, ClassLoader classLoader, IProgressMonitor monitor)
         throws CheckstylePluginException, CoreException
     {
         //
@@ -151,6 +151,7 @@ class Auditor
 						throw new CheckstylePluginException(msg);
                     }
                     checker[i].configure(checkConfig);
+                    checker[i].setClassloader(classLoader);
                 }
                 catch (com.puppycrawl.tools.checkstyle.api.CheckstyleException e)
                 {

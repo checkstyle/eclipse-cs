@@ -24,6 +24,9 @@ package com.atlassw.tools.eclipse.checkstyle.builder;
 // Imports from java namespace
 //=================================================
 import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -55,9 +58,14 @@ import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.core.IClasspathEntry;
+import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.widgets.Shell;
@@ -221,9 +229,41 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
                                        e);
                     throw new CoreException(status);
                 }
+                
+                //
+                // Build a classloader with which to resolve Exception
+                // classes for JavadocMethodCheck.
+                //
+                ClassLoader classLoader = null;
+                    
+                IJavaProject javaProject = (IJavaProject)project.getAdapter(IJavaElement.class);
+                    
                 try
                 {
-                    auditor.auditFiles(files, monitor);
+                    List urls = new ArrayList(20);
+                    getClasspathURLs(javaProject, false, urls);
+                    classLoader = new URLClassLoader((URL[])urls.toArray(new URL[urls.size()]));
+                }
+                catch(CoreException e)
+                {
+                	//
+                    // Unexpected classpath entry type - don't want to ignore.
+                    //
+                    throw e;
+                }
+                catch(Throwable e)
+                {
+                	//
+                    // Eat this exception - not having a classloader will not prevent
+                    // checkstyle from working.
+                    //
+                    CheckstyleLog.error("Unable to create a classloader for the project", e);
+                    classLoader = null;
+                }
+
+                try
+                {
+                    auditor.auditFiles(files, classLoader, monitor);
                 }
                 catch (CheckstylePluginException e)
                 {
@@ -321,7 +361,111 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
         
         return files;
     }
+
+    /**
+     * Daniel Berg jdt-dev@eclipse.org  
+     * 
+     * @param javaProject
+     * @return
+     */    
+    private static void getClasspathURLs(
+        IJavaProject javaProject,
+        boolean exportedOnly, 
+        List urls)
+        
+        throws JavaModelException,
+               MalformedURLException,
+               CoreException 
+    {
+        IClasspathEntry[] entries = javaProject.getResolvedClasspath(true);
+
+        boolean defaultOutputAdded = false;
+        
+        for (int i = 0; i < entries.length; i++) 
+        {
+            // Source entries are apparently always assumed to be exported - but don't
+            // report themselves as such.
+            if (!exportedOnly || entries[i].isExported() || 
+                entries[i].getEntryKind() == IClasspathEntry.CPE_SOURCE)
+            {
+                switch (entries[i].getEntryKind()) 
+                {
+                    case IClasspathEntry.CPE_SOURCE :
+                    {
+                        IPath outputLocation = null;
+                        
+                        if (entries[i].getOutputLocation() == null)
+                        {
+                            if (!defaultOutputAdded)
+                            {
+                                defaultOutputAdded = true;
+                                outputLocation = javaProject.getOutputLocation();
+                            }
+                        }
+                        else
+                        {
+                            outputLocation = entries[i].getOutputLocation();
+                        }
+                        
+                        if (outputLocation != null)
+                        {
+                            
+                            // When the output location is the project itself, the project
+                            // can't resolve the file - therefore just get the project's
+                            // location. 
+
+                            if (outputLocation.segmentCount() == 1)
+                            {
+                                outputLocation = javaProject.getProject().getLocation();
+                            }
+                            else
+                            {
+                                // Output locations are always workspace relative. Do this mess
+                                // to get a fully qualified location.
+                                outputLocation =
+                                    javaProject.getProject().getParent().getFile(outputLocation).
+                                        getLocation();
+                            }
+
+                            urls.add(outputLocation.addTrailingSeparator().toFile().toURL());
+                        }
     
+                        break;
+                    }
+                    case IClasspathEntry.CPE_LIBRARY :
+                    {
+                        // Jars always come with a nice fully specified path.
+                        urls.add(new URL("file://" + entries[i].getPath().toOSString()));
+                        
+                        break;
+                    }
+                    case IClasspathEntry.CPE_PROJECT : 
+                    {
+                        IJavaProject dependentProject = 
+                            (IJavaProject)(ResourcesPlugin.getWorkspace().getRoot().
+                                getProject(entries[i].getPath().segment(0))).
+                                    getAdapter(IJavaElement.class);
+        
+                        getClasspathURLs(dependentProject, true, urls);
+                        
+                        break;
+                    }
+                    default :
+                    {
+                        String msg = "Encountered unexpected classpath entry : " + 
+                                     entries[i].getEntryKind();
+                        CheckstyleLog.error(msg);
+                        Status status = new Status(IStatus.ERROR,
+                                                   CheckstylePlugin.PLUGIN_ID,
+                                                   IStatus.ERROR,
+                                                   msg, null);
+                        throw new CoreException(status);
+                    }
+                }
+            }
+        }
+    }
+
     /**
      *  Runs the Checkstyle builder on a project.
      * 
