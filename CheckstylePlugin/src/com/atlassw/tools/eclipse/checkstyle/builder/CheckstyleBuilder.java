@@ -429,7 +429,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
                     case IClasspathEntry.CPE_LIBRARY :
                     {
                         // Jars always come with a nice fully specified path.
-                        urls.add(new URL("file://" + entries[i].getPath().toOSString()));
+                        urls.add(new URL("file:/" + entries[i].getPath().toOSString()));
                         
                         break;
                     }
