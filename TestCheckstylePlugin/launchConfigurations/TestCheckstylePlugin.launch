@@ -1,12 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<launchConfiguration type="org.eclipse.jdt.junit.launchconfig">
-<booleanAttribute key="org.eclipse.jdt.junit.KEEPRUNNING_ATTR" value="false"/>
+<launchConfiguration type="org.eclipse.pde.ui.JunitLaunchConfig">
+<booleanAttribute key="org.eclipse.debug.ui.ATTR_LAUNCH_IN_BACKGROUND" value="false"/>
+<booleanAttribute key="clearws" value="true"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value=""/>
-<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="TestCheckstylePlugin"/>
+<booleanAttribute key="tracing" value="false"/>
 <listAttribute key="org.eclipse.debug.ui.favoriteGroups">
 <listEntry value="org.eclipse.debug.ui.launchGroup.run"/>
 <listEntry value="org.eclipse.debug.ui.launchGroup.debug"/>
 </listAttribute>
-<stringAttribute key="org.eclipse.jdt.junit.CONTAINER" value="=TestCheckstylePlugin/src"/>
-<stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="CheckstylePlugin"/>
+<booleanAttribute key="default" value="true"/>
+<stringAttribute key="vmargs" value=""/>
+<stringAttribute key="org.eclipse.jdt.junit.CONTAINER" value="=TestCheckstylePlugin"/>
+<booleanAttribute key="org.eclipse.debug.core.appendEnvironmentVariables" value="true"/>
+<stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
+<booleanAttribute key="org.eclipse.jdt.junit.KEEPRUNNING_ATTR" value="false"/>
+<stringAttribute key="progargs" value="-os win32 -ws win32 -arch x86 -nl en_GB"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="TestCheckstylePlugin"/>
+<booleanAttribute key="askclear" value="true"/>
+<booleanAttribute key="maximized" value="false"/>
+<stringAttribute key="org.eclipse.debug.core.source_locator_id" value="org.eclipse.jdt.debug.ui.javaSourceLocator"/>
+<stringAttribute key="location0" value="D:\Program Files\eclipse\junit-workbench-workspace"/>
+<stringAttribute key="application" value="org.eclipse.pde.junit.runtime.coretestapplication"/>
 </launchConfiguration>
