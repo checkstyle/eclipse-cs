@@ -204,7 +204,8 @@ public class FileMatchPattern implements Cloneable, XMLTags
         {
             rootNode = doc.createElement(FILE_MATCH_PATTERN_TAG);
             rootNode.setAttribute(MATCH_PATTERN_TAG,   mMatchPattern);
-            rootNode.setAttribute(INCLUDE_PATTERN_TAG, Boolean.toString(mIsIncludePattern));
+            rootNode.setAttribute(INCLUDE_PATTERN_TAG, 
+                                  Boolean.valueOf(mIsIncludePattern).toString());
         }
         catch (DOMException e)
         {
