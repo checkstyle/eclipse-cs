@@ -69,6 +69,8 @@ public class FileSet implements Cloneable
     
     private String               mName;
     
+    private String               mCheckConfigName = "";
+    
     private CheckConfiguration   mCheckConfig;
     
     private boolean              mEnabled = true;
@@ -90,6 +92,10 @@ public class FileSet implements Cloneable
     public FileSet(String name, CheckConfiguration checkConfig)
     {
         mName        = name;
+        if (checkConfig != null)
+        {
+        	mCheckConfigName = checkConfig.getName();
+        }
         mCheckConfig = checkConfig;
     }
     
@@ -125,7 +131,8 @@ public class FileSet implements Cloneable
         temp = XMLUtil.getNodeAttributeValue(node, XMLTags.CHECK_CONFIG_NAME_TAG);
         if (temp != null)
         {
-            mCheckConfig = CheckConfigurationFactory.getByName(temp.trim());
+        	mCheckConfigName = temp.trim();
+            mCheckConfig = CheckConfigurationFactory.getByName(mCheckConfigName);
         }
         else
         {
@@ -201,7 +208,15 @@ public class FileSet implements Cloneable
      */
     public CheckConfiguration getCheckConfig()
     {
-        return mCheckConfig;
+		CheckConfiguration config = null;
+		try
+		{
+			config = CheckConfigurationFactory.getByName(mCheckConfigName);
+		}
+		catch (CheckstylePluginException e)
+		{}
+		
+        return config;
     }
 
 	/**
@@ -319,12 +334,14 @@ public class FileSet implements Cloneable
      */
     public String getCheckConfigName()
     {
-    	String name = "";
-    	if (mCheckConfig != null)
-    	{
-    		name = mCheckConfig.getConfigName();
-    	}
-        return name;
+//    	String name = "";
+//    	if (mCheckConfig != null)
+//    	{
+//    		name = mCheckConfig.getConfigName();
+//    	}
+//        return name;
+
+        return mCheckConfigName;
     }
 
 }
