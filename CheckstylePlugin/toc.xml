@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc label="Checkstyle" topic="doc/introduction.html">
+	<topic label="Configuring Check Settings"     href="doc/configuring.html"/>
+	<topic label="Enabling on a Project"          href="doc/enabling.html"/>
+	<topic label="Using Regular Expressions"      href="doc/regularexpressions.html"/>
+	<topic label="Working with a Team Repository" href="doc/team.html"/>
+</toc>

@@ -1,0 +1,20 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta name="GENERATOR" content="IBM WebSphere Studio">
+<title>readme.html</title>
+</head>
+<body bgcolor="#ffffff">
+
+<p align="right"><font size="2" face="Arial"><a
+	href="http://www.atlas-sw.com">Visit Atlas Software</a></font></p>
+<p><font color="#0000cc" size="6" face="Arial Narrow"><b>Eclipse
+Checkstyle Plug-in</b></font></p>
+
+
+<p><b><font size="4" face="Arial">Working with a Team Repository</font></b><br>Most software projects involve more then one person and a team repository is used to manage and share files among the team members. The Eclipse Checkstyle plug-in supports working in a team environment with a repository. The following discussion provides the information you need to know when working in a team environment.</p>
+<p>Check Configurations are defined in your workspace preferences. Since they are part of your workspace's preferences they are stored on your local file system by Eclipse in a location that is not shared via your team repository. To share a Check Configuration with other team members use the Import/Export facility on the Checkstyle preferences page. Have one team member define the Check Configuration to be used by the team and then export that configuration to a file. Distribute that file to all the team members. One approach for distributing the file is to create a 'build' or 'metadata' Eclipse project that is shared via the repository for managing files like this. Next, each team member needs to import the Check Configuration via the Checkstyle preferences window.</p>
+<p>Once Checkstyle is configured for a project via the project's properties page the plug-in will create a file named .checkstyle in root of the project. This file can then be shared with all the team members via the repository just as the .project and .classpath files are.</p>
+<p><b><i>Important Note:</i></b> File Set configurations refer to their Check Configuration by the Check Configuration's name. To avoid having bad references the imported Check Configuration must be named  the same in each team member's workspace. Otherwise, the shared .checkstyle file will point to a non-existent Check Configuration in someone's workspace.</p>
+</body>
+</html>

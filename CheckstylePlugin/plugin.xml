@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin
+   id="com.atlassw.tools.eclipse.checkstyle"
+   name="Checkstyle Plug-in"
+   version="3.1.0.b1"
+   provider-name="Atlas Software"
+   class="com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin">
+
+   <runtime>
+      <library name="CheckstylePlugin.jar"/>
+      <library name="checkstyle-all-3.1.jar"/>
+   </runtime>
+   <requires>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.apache.xerces"/>
+   </requires>
+
+
+   <extension
+         point="org.eclipse.help.toc">
+      <toc
+            file="toc.xml"
+            primary="true">
+      </toc>
+      <toc
+            file="tocconcepts.xml">
+      </toc>
+      <toc
+            file="tocgettingstarted.xml">
+      </toc>
+      <toc
+            file="tocreference.xml">
+      </toc>
+      <toc
+            file="tocsamples.xml">
+      </toc>
+      <toc
+            file="toctasks.xml">
+      </toc>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            name="Checkstyle"
+            class="com.atlassw.tools.eclipse.checkstyle.preferences.CheckstylePreferencePage"
+            id="com.atlassw.tools.eclipse.checkstyle.preferences.CheckstylePreferencePage">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.ui.propertyPages">
+      <page
+            objectClass="org.eclipse.core.resources.IProject"
+            adaptable="true"
+            name="Checkstyle"
+            nameFilter="*"
+            class="com.atlassw.tools.eclipse.checkstyle.properties.CheckstylePropertyPage"
+            id="com.atlassw.tools.eclipse.checkstyle.properties.samplePropertyPage">
+      </page>
+   </extension>
+   <extension
+         id="CheckstyleBuilder"
+         name="CheckstyleBuilder"
+         point="org.eclipse.core.resources.builders">
+      <builder>
+         <run
+               class="com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleBuilder">
+         </run>
+      </builder>
+   </extension>
+   <extension
+         id="CheckstyleNature"
+         name="CheckstyleNature"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run
+               class="com.atlassw.tools.eclipse.checkstyle.nature.CheckstyleNature">
+         </run>
+      </runtime>
+   </extension>
+   <extension
+         id="CheckstyleMarker"
+         name="Checkstyle Marker"
+         point="org.eclipse.core.resources.markers">
+      <super
+            type="org.eclipse.core.resources.problemmarker">
+      </super>
+      <persistent
+            value="true">
+      </persistent>
+   </extension>
+
+</plugin>

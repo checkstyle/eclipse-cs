@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle-configurations file-format-version="1.0.0">
+    <check-configuration name="Production Files">
+        <rule-configuration
+            classname="com.puppycrawl.tools.checkstyle.checks.JavadocMethodCheck"
+            name="Method Javadoc" severity="warning">
+            <config-properties>
+                <config-property name="allowUndeclaredRTE" value="false"/>
+                <config-property name="severity" value="warning"/>
+                <config-property name="scope" value="package"/>
+            </config-properties>
+        </rule-configuration>
+        <rule-configuration
+            classname="com.puppycrawl.tools.checkstyle.checks.SimplifyBooleanExpressionCheck"
+            name="Simplify Boolean Expression" severity="warning">
+            <config-properties/>
+        </rule-configuration>
+        <rule-configuration
+            classname="com.puppycrawl.tools.checkstyle.checks.LeftCurlyCheck"
+            name="Left Curly Brace Placement" severity="warning">
+            <config-properties>
+                <config-property name="option" value="nl"/>
+                <config-property name="severity" value="warning"/>
+                <config-property name="tokens" value="CLASS_DEF, CTOR_DEF, INTERFACE_DEF, LITERAL_CATCH, LITERAL_DO, LITERAL_ELSE, LITERAL_FINALLY, LITERAL_FOR, LITERAL_IF, LITERAL_SWITCH, LITERAL_SYNCHRONIZED, LITERAL_TRY, LITERAL_WHILE, METHOD_DEF"/>
+                <config-property name="maxLineLength" value="80"/>
+            </config-properties>
+        </rule-configuration>
+        <rule-configuration
+            classname="com.puppycrawl.tools.checkstyle.checks.JavadocTypeCheck"
+            name="Type Javadoc" severity="warning">
+            <config-properties>
+                <config-property name="severity" value="warning"/>
+                <config-property name="authorFormat" value=""/>
+                <config-property name="scope" value="package"/>
+                <config-property name="versionFormat" value=""/>
+            </config-properties>
+        </rule-configuration>
+        <rule-configuration
+            classname="com.puppycrawl.tools.checkstyle.checks.OperatorWrapCheck"
+            name="Operator Wrap" severity="warning">
+            <config-properties>
+                <config-property name="option" value="eol"/>
+                <config-property name="tokens" value="BAND, BOR, BSR, BXOR, COLON, DIV, EQUAL, GE, GT, LAND, LE, LITERAL_INSTANCEOF, LOR, LT, MINUS, MOD, NOT_EQUAL, PLUS, QUESTION, SL, SR, STAR"/>
+                <config-property name="severity" value="warning"/>
+            </config-properties>
+        </rule-configuration>
+        <rule-configuration
+            classname="com.puppycrawl.tools.checkstyle.checks.UpperEllCheck"
+            name="Upper Ell" severity="warning">
+            <config-properties/>
+        </rule-configuration>
+        <rule-configuration
+            classname="com.puppycrawl.tools.checkstyle.checks.NeedBracesCheck"
+            name="Need Braces" severity="warning">
+            <config-properties>
+                <config-property name="tokens" value="LITERAL_DO, LITERAL_ELSE, LITERAL_IF, LITERAL_FOR, LITERAL_WHILE"/>
+            </config-properties>
+        </rule-configuration>
+        <rule-configuration
+            classname="com.puppycrawl.tools.checkstyle.checks.TodoCommentCheck"
+            name="Todo Comment" severity="warning">
+            <config-properties>
+                <config-property name="format" value="TODO:"/>
+            </config-properties>
+        </rule-configuration>
+        <rule-configuration
+            classname="com.puppycrawl.tools.checkstyle.checks.ParenPadCheck"
+            name="Paren Pad" severity="warning">
+            <config-properties>
+                <config-property name="option" value="nospace"/>
+                <config-property name="tokens" value="CTOR_CALL, LPAREN, METHOD_CALL, RPAREN, SUPER_CTOR_CALL, TYPECAST"/>
+            </config-properties>
+        </rule-configuration>
+        <rule-configuration
+            classname="com.puppycrawl.tools.checkstyle.checks.RedundantImportCheck"
+            name="Redundant Imports" severity="warning">
+            <config-properties/>
+        </rule-configuration>
+        <rule-configuration
+            classname="com.puppycrawl.tools.checkstyle.checks.LocalFinalVariableNameCheck"
+            name="Local Final Variable Names" severity="warning">
+            <config-properties>
+                <config-property name="format" value="^[a-z][a-zA-Z0-9]*$"/>
+            </config-properties>
+        </rule-configuration>
+        <rule-configuration
+            classname="com.puppycrawl.tools.checkstyle.checks.EmptyBlockCheck"
+            name="Empty Block" severity="warning">
+            <config-properties>
+                <config-property name="option" value="statement"/>
+                <config-property name="tokens" value="LITERAL_CATCH, LITERAL_DO, LITERAL_ELSE, LITERAL_FINALLY, LITERAL_IF, LITERAL_FOR, LITERAL_TRY, LITERAL_WHILE, STATIC_INIT"/>
+            </config-properties>
+        </rule-configuration>
+        <rule-configuration
+            classname="com.puppycrawl.tools.checkstyle.checks.PackageNameCheck"
+            name="Package Names" severity="ignore">
+            <config-properties>
+                <config-property name="severity" value="ignore"/>
+                <config-property name="format" value="^[a-z]+(\\.[a-zA-Z_][a-zA-Z0-9_]*)*$"/>
+            </config-properties>
+        </rule-configuration>
+        <rule-configuration
+            classname="com.puppycrawl.tools.checkstyle.checks.WhitespaceAfterCheck"
+            name="Whitespace After" severity="warning">
+            <config-properties>
+                <config-property name="tokens" value="COMMA, SEMI"/>
+                <config-property name="severity" value="warning"/>
+            </config-properties>
+        </rule-configuration>
+        <rule-configuration
+            classname="com.puppycrawl.tools.checkstyle.checks.GenericIllegalRegexpCheck"
+            name="Generic Illegal Regexp" severity="ignore">
+            <config-properties>
+                <config-property name="severity" value="ignore"/>
+                <config-property name="format" value="^$"/>
+            </config-properties>
+        </rule-configuration>
+        <rule-configuration
+            classname="com.puppycrawl.tools.checkstyle.checks.EqualsHashCodeCheck"
+            name="Equals and HashCode" severity="warning">
+            <config-properties/>
+        </rule-configuration>
+        <rule-configuration
+            classname="com.puppycrawl.tools.checkstyle.checks.NoWhitespaceBeforeCheck"
+            name="No Whitespace Before" severity="warning">
+            <config-properties>
+                <config-property name="allowLineBreaks" value="true"/>
+                <config-property name="tokens" value="SEMI, POST_DEC, POST_INC"/>
+            </config-properties>
+        </rule-configuration>
+        <rule-configuration
+            classname="com.puppycrawl.tools.checkstyle.checks.MethodNameCheck"
+            name="Method Names" severity="warning">
+            <config-properties>
+                <config-property name="format" value="^[a-z][a-zA-Z0-9]*$"/>
+            </config-properties>
+        </rule-configuration>
+        <rule-configuration
+            classname="com.puppycrawl.tools.checkstyle.checks.TypeNameCheck"
+            name="Interface Names" severity="warning">
+            <config-properties>
+                <config-property name="tokens" value="INTERFACE_DEF"/>
+                <config-property name="format" value="^I[A-Z][a-zA-Z0-9]*$"/>
+            </config-properties>
+        </rule-configuration>
+        <rule-configuration
+            classname="com.puppycrawl.tools.checkstyle.checks.FileLengthCheck"
+            name="Maximum File Length" severity="warning">
+            <config-properties>
+                <config-property name="max" value="1500"/>
+            </config-properties>
+        </rule-configuration>
+        <rule-configuration
+            classname="com.puppycrawl.tools.checkstyle.checks.IllegalImportCheck"
+            name="Illegal Imports" severity="warning">
+            <config-properties>
+                <config-property name="illegalPkgs" value="sun"/>
+            </config-properties>
+        </rule-configuration>
+        <rule-configuration
+            classname="com.puppycrawl.tools.checkstyle.checks.InnerAssignmentCheck"
+            name="Inner Assignment" severity="warning">
+            <config-properties>
+                <config-property name="tokens" value="ASSIGN, BAND_ASSIGN, BOR_ASSIGN, BSR_ASSIGN, BXOR_ASSIGN, DIV_ASSIGN, MINUS_ASSIGN, MOD_ASSIGN, PLUS_ASSIGN, SL_ASSIGN, SR_ASSIGN, STAR_ASSIGN"/>
+            </config-properties>
+        </rule-configuration>
+        <rule-configuration
+            classname="com.puppycrawl.tools.checkstyle.checks.MemberNameCheck"
+            name="Instance Variable Names" severity="warning">
+            <config-properties>
+                <config-property name="severity" value="warning"/>
+                <config-property name="format" value="^m[A-Z][a-zA-Z0-9]*$"/>
+            </config-properties>
+        </rule-configuration>
+        <rule-configuration
+            classname="com.puppycrawl.tools.checkstyle.checks.NoWhitespaceAfterCheck"
+            name="No Whitespace After" severity="warning">
+            <config-properties>
+                <config-property name="allowLineBreaks" value="true"/>
+                <config-property name="tokens" value="ARRAY_INIT, BNOT, DEC, DOT, INC, LNOT, UNARY_MINUS, UNARY_PLUS"/>
+            </config-properties>
+        </rule-configuration>
+        <rule-configuration
+            classname="com.puppycrawl.tools.checkstyle.checks.AvoidStarImportCheck"
+            name="Avoid Star (Demand) Imports" severity="warning">
+            <config-properties/>
+        </rule-configuration>
+        <rule-configuration
+            classname="com.puppycrawl.tools.checkstyle.checks.StaticVariableNameCheck"
+            name="Static Variable Names" severity="warning">
+            <config-properties>
+                <config-property name="severity" value="warning"/>
+                <config-property name="format" value="^s[A-Z][a-zA-Z0-9]*$"/>
+            </config-properties>
+        </rule-configuration>
+        <rule-configuration
+            classname="com.puppycrawl.tools.checkstyle.checks.TypeNameCheck"
+            name="Class Names" severity="warning">
+            <config-properties>
+                <config-property name="tokens" value="CLASS_DEF"/>
+                <config-property name="format" value="^[A-Z][a-zA-Z0-9]*$"/>
+            </config-properties>
+        </rule-configuration>
+        <rule-configuration
+            classname="com.puppycrawl.tools.checkstyle.checks.VisibilityModifierCheck"
+            name="Visibility Modifier" severity="warning">
+            <config-properties>
+                <config-property name="packageAllowed" value="false"/>
+                <config-property name="publicMemberPattern" value="^serialVersionUID$"/>
+                <config-property name="protectedAllowed" value="false"/>
+            </config-properties>
+        </rule-configuration>
+        <rule-configuration
+            classname="com.puppycrawl.tools.checkstyle.checks.ParameterNumberCheck"
+            name="Maximum Constructor Parameters" severity="warning">
+            <config-properties>
+                <config-property name="tokens" value="CTOR_DEF"/>
+                <config-property name="max" value="7"/>
+            </config-properties>
+        </rule-configuration>
+        <rule-configuration
+            classname="com.puppycrawl.tools.checkstyle.checks.ParameterNameCheck"
+            name="Parameter Names" severity="warning">
+            <config-properties>
+                <config-property name="format" value="^[a-z][a-zA-Z0-9]*$"/>
+            </config-properties>
+        </rule-configuration>
+        <rule-configuration
+            classname="com.puppycrawl.tools.checkstyle.checks.LineLengthCheck"
+            name="Maximum Line Length" severity="warning">
+            <config-properties>
+                <config-property name="severity" value="warning"/>
+                <config-property name="tabWidth" value="4"/>
+                <config-property name="max" value="100"/>
+                <config-property name="ignorePattern" value="^$"/>
+            </config-properties>
+        </rule-configuration>
+        <rule-configuration
+            classname="com.puppycrawl.tools.checkstyle.checks.ParameterNumberCheck"
+            name="Maximum Method Parameters" severity="warning">
+            <config-properties>
+                <config-property name="tokens" value="METHOD_DEF"/>
+                <config-property name="max" value="7"/>
+            </config-properties>
+        </rule-configuration>
+        <rule-configuration
+            classname="com.puppycrawl.tools.checkstyle.checks.ConstantNameCheck"
+            name="Constant Names" severity="warning">
+            <config-properties>
+                <config-property name="format" value="^[A-Z](_?[A-Z0-9]+)*$"/>
+            </config-properties>
+        </rule-configuration>
+        <rule-configuration
+            classname="com.puppycrawl.tools.checkstyle.checks.MethodLengthCheck"
+            name="Maximum Method Length" severity="warning">
+            <config-properties>
+                <config-property name="max" value="150"/>
+            </config-properties>
+        </rule-configuration>
+        <rule-configuration
+            classname="com.puppycrawl.tools.checkstyle.checks.JavadocVariableCheck"
+            name="Variable Javadoc" severity="warning">
+            <config-properties>
+                <config-property name="severity" value="warning"/>
+                <config-property name="scope" value="package"/>
+            </config-properties>
+        </rule-configuration>
+        <rule-configuration
+            classname="com.puppycrawl.tools.checkstyle.checks.RedundantModifierCheck"
+            name="Redundant Modifier" severity="warning">
+            <config-properties>
+                <config-property name="tokens" value="METHOD_DEF, VARIABLE_DEF"/>
+            </config-properties>
+        </rule-configuration>
+        <rule-configuration
+            classname="com.puppycrawl.tools.checkstyle.checks.UnusedImportsCheck"
+            name="Unused Imports" severity="warning">
+            <config-properties/>
+        </rule-configuration>
+        <rule-configuration
+            classname="com.puppycrawl.tools.checkstyle.checks.IllegalInstantiationCheck"
+            name="Illegal Instantiation" severity="warning">
+            <config-properties>
+                <config-property name="classes" value="{}"/>
+            </config-properties>
+        </rule-configuration>
+        <rule-configuration
+            classname="com.puppycrawl.tools.checkstyle.checks.RightCurlyCheck"
+            name="Right Curly Brace Placement" severity="warning">
+            <config-properties>
+                <config-property name="option" value="alone"/>
+                <config-property name="severity" value="warning"/>
+                <config-property name="tokens" value="LITERAL_CATCH, LITERAL_ELSE, LITERAL_TRY"/>
+            </config-properties>
+        </rule-configuration>
+        <rule-configuration
+            classname="com.puppycrawl.tools.checkstyle.checks.ModifierOrderCheck"
+            name="Modifier Order" severity="warning">
+            <config-properties/>
+        </rule-configuration>
+        <rule-configuration
+            classname="com.puppycrawl.tools.checkstyle.checks.WhitespaceAroundCheck"
+            name="Whitespace Around" severity="warning">
+            <config-properties>
+                <config-property name="tokens" value="ASSIGN, BAND, BAND_ASSIGN, BOR, BOR_ASSIGN, BSR, BSR_ASSIGN, BXOR, BXOR_ASSIGN, COLON, DIV, DIV_ASSIGN, EQUAL, GE, GT, LAND, LCURLY, LE, LITERAL_ASSERT, LITERAL_CATCH, LITERAL_DO, LITERAL_ELSE, LITERAL_FINALLY, LITERAL_FOR, LITERAL_IF, LITERAL_RETURN, LITERAL_SYNCHRONIZED, LITERAL_TRY, LITERAL_WHILE, LOR, LT, MINUS, MINUS_ASSIGN, MOD, MOD_ASSIGN, NOT_EQUAL, PLUS, PLUS_ASSIGN, QUESTION, RCURLY, SL, SLIST, SL_ASSIGN, SR, SR_ASSIGN, STAR, STAR_ASSIGN"/>
+            </config-properties>
+        </rule-configuration>
+        <rule-configuration
+            classname="com.puppycrawl.tools.checkstyle.checks.HiddenFieldCheck"
+            name="Hidden Field" severity="warning">
+            <config-properties>
+                <config-property name="tokens" value="PARAMETER_DEF, VARIABLE_DEF"/>
+            </config-properties>
+        </rule-configuration>
+        <rule-configuration
+            classname="com.puppycrawl.tools.checkstyle.checks.TabCharacterCheck"
+            name="Tab Character" severity="ignore">
+            <config-properties>
+                <config-property name="severity" value="ignore"/>
+            </config-properties>
+        </rule-configuration>
+        <rule-configuration
+            classname="com.puppycrawl.tools.checkstyle.checks.LocalVariableNameCheck"
+            name="Local Variable Names" severity="warning">
+            <config-properties>
+                <config-property name="format" value="^[a-z][a-zA-Z0-9]*$"/>
+            </config-properties>
+        </rule-configuration>
+    </check-configuration>
+</checkstyle-configurations>

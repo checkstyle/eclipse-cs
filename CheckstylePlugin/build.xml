@@ -1,0 +1,138 @@
+<project name="CheckstylePlugin" default="compile" basedir=".">
+
+	<property environment="env" />
+
+	<property name="plugin.version" value="3.1.0.b1" />
+
+	<property name="bin.dist.basedir" value="target/dist/bin" />
+	<property name="bin.dist.dir" value="${bin.dist.basedir}/com.atlassw.tools.eclipse.checkstyle_${plugin.version}" />
+
+	<property name="src.dist.basedir" value="target/dist/src" />
+	<property name="src.dist.dir" value="${src.dist.basedir}/com.atlassw.tools.eclipse.checkstyle_${plugin.version}-src" />
+
+    <property name="check.config" value="CheckConfig_Checkstyle.xml"/>
+
+    <property name="checkstyle.jar" value="checkstyle-all-3.1.jar" />
+	<property name="eclipse.core.resources.jar" value="${env.ECLIPSE_HOME}/plugins/org.eclipse.core.resources_2.0.1/resources.jar" />
+	<property name="eclipse.ui.jar" value="${env.ECLIPSE_HOME}/plugins/org.eclipse.ui_2.0.2/workbench.jar" />
+	<property name="eclipse.ui.win32.jar" value="${env.ECLIPSE_HOME}/plugins/org.eclipse.ui.win32_2.0.0/workbenchwin32.jar" />
+	<property name="eclipse.swt.win32.jar" value="${env.ECLIPSE_HOME}/plugins/org.eclipse.swt.win32_2.0.2/ws/win32/swt.jar" />
+	<property name="apache.xerces.api.jar" value="${env.ECLIPSE_HOME}/plugins/org.apache.xerces_4.0.7/xmlParserAPIs.jar" />
+	<property name="apache.xerces.impl.jar" value="${env.ECLIPSE_HOME}/plugins/org.apache.xerces_4.0.7/xercesImpl.jar" />
+	<property name="eclipse.core.runtime.jar" value="${env.ECLIPSE_HOME}/plugins/org.eclipse.core.runtime_2.0.2/runtime.jar" />
+	<property name="eclipse.core.boot.jar" value="${env.ECLIPSE_HOME}/plugins/org.eclipse.core.boot_2.0.2/boot.jar" />
+
+	<path id="build.classpath">
+		<pathelement location="${checkstyle.jar}" />
+		<pathelement location="${eclipse.core.resources.jar}" />
+		<pathelement location="${eclipse.ui.jar}" />
+		<pathelement location="${eclipse.ui.win32.jar}" />
+		<pathelement location="${eclipse.swt.win32.jar}" />
+		<pathelement location="${apache.xerces.api.jar}" />
+		<pathelement location="${apache.xerces.impl.jar}" />
+		<pathelement location="${eclipse.core.runtime.jar}" />
+		<pathelement location="${eclipse.core.boot.jar}" />
+	</path>
+
+	<!-- ==================================================== -->
+	<!--   COMPILE TARGET                                     -->
+	<!-- ==================================================== -->
+	<target name="compile" description="Compiles the source code">
+		<mkdir dir="bin" />
+		<javac srcdir="src" destdir="bin" deprecation="on" classpathref="build.classpath" />
+	</target>
+
+	<!-- ==================================================== -->
+	<!--   CLEAN TARGET                                       -->
+	<!-- ==================================================== -->
+	<target name="clean" description="Cleans any directories and generated files">
+		<delete dir="target" failonerror="false" quiet="true" />
+		<delete includeemptydirs="true" failonerror="false" quiet="true">
+			<fileset dir="bin" includes="**" excludes="bin" />
+		</delete>
+		<mkdir dir="bin" />
+	</target>
+
+	<!-- ==================================================== -->
+	<!--   BUILD TARGET AREA                                  -->
+	<!-- ==================================================== -->
+	<target name="build.target.area" description="Build the directory structure of the target area">
+		<mkdir dir="target" />
+		<mkdir dir="target/dist" />
+	</target>
+
+	<!-- ==================================================== -->
+	<!--   JAR TARGET                                         -->
+	<!-- ==================================================== -->
+	<target name="jar.plugin" depends="build.target.area, compile" description="Jars up all the files that go into the plug-in jar file">
+		<copy file="src/CheckstyleMetadata.xml" todir="bin" />
+		<mkdir dir="${bin.dist.dir}" />
+		<jar destfile="${bin.dist.dir}/CheckstylePlugin.jar" basedir="bin" index="true" />
+	</target>
+
+	<!-- ==================================================== -->
+	<!--   BINARY DISTRIBUTION TARGET                         -->
+	<!-- ==================================================== -->
+	<target name="build.bindist" depends="build.target.area, jar.plugin" 
+	        description="Copies all the necessary files to the distribution directory">
+		<mkdir dir="${bin.dist.dir}" />
+		<copy file="${checkstyle.jar}" todir="${bin.dist.dir}" />
+		<copy file="plugin.xml" todir="${bin.dist.dir}" />
+		<copy file="toc.xml" todir="${bin.dist.dir}" />
+		<copy file="README.html" todir="${bin.dist.dir}" />
+		<copy todir="${bin.dist.dir}/doc">
+			<fileset dir="doc" />
+		</copy>
+		<copy todir="${bin.dist.dir}/license">
+			<fileset dir="license" />
+		</copy>
+		<delete file="${bin.dist.dir}.zip"/>
+		<zip destfile="${bin.dist.dir}.zip" basedir="${bin.dist.basedir}" update="false"/>
+	</target>
+
+	<!-- ==================================================== -->
+	<!--   SOURCE DISTRIBUTION TARGET                         -->
+	<!-- ==================================================== -->
+	<target name="build.srcdist" depends="build.target.area"
+	        description="Copies all the necessary files to the distribution directory">
+		<mkdir dir="${src.dist.dir}" />
+		<copy file="${checkstyle.jar}" todir="${src.dist.dir}" />
+		<copy file="plugin.xml" todir="${src.dist.dir}" />
+		<copy file="toc.xml" todir="${src.dist.dir}" />
+		<copy file="README.html" todir="${src.dist.dir}" />
+		<copy file="build.xml" todir="${src.dist.dir}" />
+		<copy todir="${src.dist.dir}/doc">
+			<fileset dir="doc" />
+		</copy>
+		<copy todir="${src.dist.dir}/license">
+			<fileset dir="license" />
+		</copy>
+		<copy todir="${src.dist.dir}/src">
+			<fileset dir="src" />
+		</copy>
+		<delete file="${src.dist.dir}.zip"/>
+		<zip destfile="${src.dist.dir}.zip" basedir="${src.dist.basedir}" />
+	</target>
+
+	<!-- ==================================================== -->
+	<!--   RUN CHECKSTYLE TARGET                              -->
+	<!-- ==================================================== -->
+	<target name="run.checkstyle" depends="compile">
+		<taskdef name="checkstyle" classname="com.puppycrawl.tools.checkstyle.CheckStyleTask" classpath="${checkstyle.jar}"></taskdef>
+		<checkstyle config="${check.config}">
+			<fileset dir="src" includes="**/*.java"/>
+			<formatter type="plain" />
+			<formatter type="xml" toFile="target/cs_errors.xml" />
+			<classpath refid="build.classpath" />
+		</checkstyle>
+	</target>
+
+	<!-- ==================================================== -->
+	<!--   DEBUG TARGETS                                      -->
+	<!-- ==================================================== -->
+	<target name="display.build.classpath" description="Displays the build classpath">
+		<property name="temp" refid="build.classpath" />
+		<echo message="Build classpath is ${temp}" />
+	</target>
+
+</project>

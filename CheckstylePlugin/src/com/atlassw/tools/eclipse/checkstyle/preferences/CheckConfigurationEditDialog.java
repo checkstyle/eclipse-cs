@@ -1,0 +1,613 @@
+//============================================================================
+//
+// Copyright (C) 2002-2003  David Schneider
+//
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//
+//============================================================================
+
+package com.atlassw.tools.eclipse.checkstyle.preferences;
+
+//=================================================
+// Imports from java namespace
+//=================================================
+import java.util.HashMap;
+import java.util.List;
+import java.util.Iterator;
+
+//=================================================
+// Imports from javax namespace
+//=================================================
+
+//=================================================
+// Imports from com namespace
+//=================================================
+import com.atlassw.tools.eclipse.checkstyle.config.CheckConfiguration;
+import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationFactory;
+import com.atlassw.tools.eclipse.checkstyle.config.FileSetFactory;
+import com.atlassw.tools.eclipse.checkstyle.config.RuleConfiguration;
+import com.atlassw.tools.eclipse.checkstyle.config.RuleMetadata;
+import com.atlassw.tools.eclipse.checkstyle.config.RuleGroupMetadataFactory;
+import com.atlassw.tools.eclipse.checkstyle.config.RuleGroupMetadata;
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
+
+//=================================================
+// Imports from org namespace
+//=================================================
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.TabFolder;
+import org.eclipse.swt.widgets.TabItem;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.Text;
+
+import org.eclipse.jface.dialogs.IDialogSettings;
+import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.text.Document;
+import org.eclipse.jface.text.TextViewer;
+import org.eclipse.jface.viewers.ColumnWeightData;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TableLayout;
+import org.eclipse.jface.viewers.TableViewer;
+
+/**
+ * Edit dialog for property values.
+ */
+public class CheckConfigurationEditDialog extends Dialog
+{
+	//=================================================
+	// Public static final variables.
+	//=================================================
+
+	//=================================================
+	// Static class variables.
+	//=================================================
+
+	private static final int MAX_LENGTH = 40;
+
+	//=================================================
+	// Instance member variables.
+	//=================================================
+
+    private Composite              mParentComposite;
+
+	private IDialogSettings        mDialogSettings;
+
+	private CheckConfiguration     mCheckConfiguration;
+
+	private TabFolder              mTabFolder;
+
+	private TabItem[]              mTabItems;
+
+	private TableViewer[]          mTableViewers;
+
+	private Text                   mConfigNameText;
+    
+    private TextViewer             mRuleDescriptionText;
+    
+    private HashMap[]              mRuleConfigWorkingCopies;
+    
+    private HashMap                mAllRuleConfigWorkingCopies = new HashMap();
+    
+    private Button                 mConfigureButton;
+    
+    private RuleConfigWorkingCopy  mCurrentSelection;
+    
+    private String                 mCheckConfigName;
+    
+    private boolean               mOkWasPressed = false;
+
+	//=================================================
+	// Constructors & finalizer.
+	//=================================================
+
+	/**
+	 * Constructor
+	 * 
+	 * @param parent        Parent shell.
+	 * 
+	 * @param checkConfig   Check configuration being edited.
+     * 
+     * @throws CheckstyleException  Error during processing.
+	 */
+	public CheckConfigurationEditDialog(
+		Shell parent,
+		CheckConfiguration checkConfig)
+		throws CheckstylePluginException
+	{
+		super(parent);
+
+		//
+		//  If we were given an existing audit configuration then make a clone
+		//  of it, otherwise create a new one.  A clone is used so that the
+		//  original is not modified in case the where the user makes some
+		//  changes and then selects the cancel button.
+		//
+		if (checkConfig == null)
+		{
+			mCheckConfiguration = CheckConfigurationFactory.getNewInstance();
+		}
+		else
+		{
+			try
+			{
+				mCheckConfiguration = (CheckConfiguration)checkConfig.clone();
+			}
+			catch (CloneNotSupportedException e)
+			{
+                String msg = "Failed to clone AuditConfiguration";
+				CheckstyleLog.error(msg, e);
+				throw new CheckstylePluginException(msg);
+			}
+		}
+
+		buildRuleConfigWorkingCopies(parent);
+	}
+
+	//=================================================
+	// Methods.
+	//=================================================
+    
+    private void buildRuleConfigWorkingCopies(Shell parent)
+    {
+        //
+        //  Create working copies from the metadata.
+        //
+        List groups = RuleGroupMetadataFactory.getRuleGroupMetadata();
+        mRuleConfigWorkingCopies = new HashMap[groups.size()];
+        Iterator groupIter = groups.iterator();
+        for (int i = 0; groupIter.hasNext(); i++)
+        {
+            mRuleConfigWorkingCopies[i] = new HashMap();
+            RuleGroupMetadata group = (RuleGroupMetadata)groupIter.next();
+            Iterator ruleIter = group.getRuleMetadata().iterator();
+            while (ruleIter.hasNext())
+            {
+                RuleMetadata ruleMetadata = (RuleMetadata)ruleIter.next();
+                RuleConfigWorkingCopy rule = 
+                    new RuleConfigWorkingCopy(ruleMetadata);
+                mRuleConfigWorkingCopies[i].put(rule.getRuleID(), rule);
+                mAllRuleConfigWorkingCopies.put(rule.getRuleID(), rule);
+            }
+        }
+        
+        //
+        //  If an existing audit configuration was specified update the
+        //  working copies with the existing values.
+        //
+        if (mCheckConfiguration != null)
+        {
+            Iterator iter = 
+                mCheckConfiguration.getRuleConfigs().values().iterator();
+            while (iter.hasNext())
+            {
+                RuleConfiguration ruleConfig = (RuleConfiguration)iter.next();
+                try
+                {
+                    ruleConfig = (RuleConfiguration)ruleConfig.clone();
+                }
+                catch (CloneNotSupportedException e)
+                {
+                    CheckstyleLog.warning("Failed to clone RuleConfiguration");
+                    CheckstyleLog.internalErrorDialog();
+                }
+                String ruleID = ruleConfig.getRuleID();
+                RuleConfigWorkingCopy copy = 
+                    (RuleConfigWorkingCopy)mAllRuleConfigWorkingCopies.get(ruleID);
+                if (copy != null)
+                {
+                    copy.setRuleConfig(ruleConfig);
+                }
+            }
+        }
+    }
+
+	/**
+	 * @see Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
+	 */
+	protected Control createDialogArea(Composite parent)
+	{
+		Composite composite = (Composite)super.createDialogArea(parent);
+
+		Composite dialog = new Composite(composite, SWT.NONE);
+        mParentComposite = dialog;
+        
+		GridLayout layout = new GridLayout();
+		layout.numColumns = 1;
+		dialog.setLayout(layout);
+
+		buildConfigNameField(dialog);
+		buildRuleGroupTabs(dialog);
+        buildConfigureButton(dialog);
+        buildDescriptionArea(dialog);
+
+		dialog.layout();
+		return composite;
+	}
+
+	/**
+	 * OK button was selected.
+	 */
+	protected void okPressed()
+	{
+        String auditConfigName = mConfigNameText.getText();
+        
+        //
+        //  Make sure a name was entered for the check configuration.
+        //
+        if ((auditConfigName == null) || (auditConfigName.trim().length() == 0))
+        {
+            MessageDialog.openError(mParentComposite.getShell(), 
+                                    "Invalid Value",
+                                    "An check configuration name must be entered");
+            return;
+        }
+        
+        //
+        //  See if the name was modified.
+        //
+		if (!auditConfigName.equals(mCheckConfiguration.getConfigName()))
+		{
+            //
+            //  Make sure the name is not already in use by another check configuration.
+            //  Check configuration names must be unique within the workspace.
+            //
+			boolean nameInUse = false;
+			try
+			{
+				nameInUse = CheckConfigurationFactory.isNameInUse(auditConfigName);
+			}
+			catch (CheckstylePluginException e)
+			{
+				//  TODO
+			}
+			if (nameInUse)
+			{
+				MessageDialog.openError(
+					mParentComposite.getShell(),
+					"Invalid Value",
+					"The check configuration name '"
+						+ auditConfigName
+						+ "' is already in use, please choose a different name.");
+				return;
+			}
+            
+            //
+            //  Make sure the name is not part of an existing file set.
+            //
+            try
+            {
+                nameInUse = 
+                    FileSetFactory.isCheckConfigInUse(auditConfigName);
+            }
+            catch (CheckstylePluginException e)
+            {
+                //  TODO
+            }
+            if (nameInUse)
+            {
+                MessageDialog.openError(
+                    mParentComposite.getShell(),
+                    "Invalid Value",
+                    "The check configuration name '"
+                        + auditConfigName
+                        + "' is referenced by a project File Set and can not be changed.");
+                return;
+            }
+		}
+        mCheckConfigName = auditConfigName.trim();
+        
+        mOkWasPressed = true;
+		super.okPressed();
+	}
+    
+    /**
+     *  Get the final <code>CheckConfiguration</code> after all edits completed.
+     *  The object returned here is only valid if the <code>okPressed()</code>
+     *  method returned <code>true</code>.
+     * 
+     *  @return  The final <code>CheckConfiguration</code> object.
+     */
+	CheckConfiguration getFinalConfiguration()
+	{
+        mCheckConfiguration.setName(mCheckConfigName);
+        
+        HashMap rules = new HashMap();
+        Iterator iter = mAllRuleConfigWorkingCopies.values().iterator();
+        while (iter.hasNext())
+        {
+            RuleConfigWorkingCopy workingCopy = (RuleConfigWorkingCopy)iter.next();
+            RuleConfiguration ruleConfig = workingCopy.getRuleConfig();
+            rules.put(ruleConfig.getRuleID(), ruleConfig);
+        }
+        mCheckConfiguration.setRuleConfigs(rules);
+        
+		return mCheckConfiguration;
+	}
+
+	private void buildConfigNameField(Composite parent)
+	{
+		Composite comp = new Composite(parent, SWT.NONE);
+		GridLayout layout = new GridLayout();
+		layout.numColumns = 2;
+		comp.setLayout(layout);
+
+		Label configNameLabel = new Label(comp, SWT.NULL);
+		configNameLabel.setText("Audit Configuration Name:");
+
+        mConfigNameText = new Text(comp, SWT.SINGLE | SWT.BORDER);
+        GridData data = new GridData();
+        data.horizontalAlignment = GridData.FILL;
+        data.horizontalSpan = 1;
+        data.grabExcessHorizontalSpace = true;
+        data.verticalAlignment = GridData.CENTER;
+        data.grabExcessVerticalSpace = false;
+        data.widthHint = convertWidthInCharsToPixels(MAX_LENGTH);
+        data.heightHint = convertHeightInCharsToPixels(1);
+        mConfigNameText.setLayoutData(data);
+        mConfigNameText.setFont(parent.getFont());
+        String name = mCheckConfiguration.getConfigName();
+        if (name != null)
+        {
+            mConfigNameText.setText(name);
+        }
+	}
+
+	private void buildRuleGroupTabs(Composite parent)
+	{
+		mTabFolder = new TabFolder(parent, SWT.NONE);
+		mTabFolder.setLayout(new TabFolderLayout());
+
+		List ruleGroups = RuleGroupMetadataFactory.getRuleGroupMetadata();
+		mTabItems = new TabItem[ruleGroups.size()];
+		mTableViewers = new TableViewer[ruleGroups.size()];
+        
+        Iterator iter = ruleGroups.iterator();
+		for (int index = 0; iter.hasNext(); index++)
+		{
+			//
+			//  Create the tab item.
+			//
+			TabItem tab = new TabItem(mTabFolder, SWT.NONE);
+			mTabItems[index] = tab;
+
+			//
+			//  Set the tab label.
+			//
+			RuleGroupMetadata ruleGroup = (RuleGroupMetadata)iter.next();
+			tab.setText(ruleGroup.getGroupName());
+
+			//
+			//  Create the composite inside the tab item.
+			//
+			Composite comp = createTabItemComposite(mTabFolder, ruleGroup, index);
+			tab.setControl(comp);
+		}
+        
+        //
+        //  Set the first ab as the selected tab.
+        //
+		mTabFolder.setSelection(0);
+
+        //
+        //  Add a selection listener.
+        //
+        mTabFolder.addSelectionListener(new TabSelectionListener());
+	}
+
+	private Composite createTabItemComposite(Composite parent,
+		                                      RuleGroupMetadata ruleGroup,
+		                                      int index)
+	{
+		Composite comp = new Composite(parent, SWT.NONE);
+		GridLayout layout = new GridLayout();
+		layout.numColumns = 1;
+		comp.setLayout(layout);
+
+		Table table = new Table(comp, SWT.BORDER | SWT.SINGLE | SWT.FULL_SELECTION);
+		TableLayout tableLayout = new TableLayout();
+		table.setLayout(tableLayout);
+		table.setHeaderVisible(true);
+		table.setLinesVisible(true);
+
+		GridData data = new GridData(GridData.FILL_BOTH);
+		data.widthHint = convertWidthInCharsToPixels(80);
+		data.heightHint = convertHeightInCharsToPixels(20);
+		table.setLayoutData(data);
+
+		table.addSelectionListener(new TableSelectionListener());
+
+		TableColumn column1 = new TableColumn(table, SWT.NULL);
+		column1.setText("Severity");
+		tableLayout.addColumnData(new ColumnWeightData(20));
+
+		TableColumn column2 = new TableColumn(table, SWT.NULL);
+		column2.setText("Rule");
+		tableLayout.addColumnData(new ColumnWeightData(60));
+
+		TableViewer viewer = new TableViewer(table);
+		mTableViewers[index] = viewer;
+
+		viewer.setLabelProvider(new RuleConfigurationLabelProvider());
+		viewer.setContentProvider(new RuleConfigurationProvider());
+		viewer.setInput(mRuleConfigWorkingCopies[index]);
+		viewer.setSorter(new RuleConfigurationViewerSorter());
+
+        viewer.addDoubleClickListener(new IDoubleClickListener()
+        {
+            public void doubleClick(DoubleClickEvent e)
+            {
+                configureRule();
+            }
+        });
+
+		return comp;
+	}
+
+    private void ruleSelected(SelectionEvent e)
+    {
+        int tabIndex = mTabFolder.getSelectionIndex();
+        TableViewer viewer = mTableViewers[tabIndex];
+        IStructuredSelection selection = (IStructuredSelection) viewer.getSelection();
+        mCurrentSelection = (RuleConfigWorkingCopy)selection.getFirstElement();
+        
+        Document doc = new Document(mCurrentSelection.getRuleDescription());
+        mRuleDescriptionText.setDocument(doc);
+    }
+
+    private void tabSelected(SelectionEvent e)
+    {
+        int tabIndex = mTabFolder.getSelectionIndex();
+        TableViewer viewer = mTableViewers[tabIndex];
+        viewer.setSelection(StructuredSelection.EMPTY, true);
+        
+        Document doc = new Document("");
+        mRuleDescriptionText.setDocument(doc);
+    }
+    
+    private void buildConfigureButton(Composite parent)
+    {
+        mConfigureButton = new Button(parent, SWT.PUSH);
+        mConfigureButton.setText("Configure");
+        mConfigureButton.addListener(SWT.Selection, new Listener()
+        {
+            public void handleEvent(Event evt)
+            {
+                configureRule();
+            }
+        });
+    }
+    
+    private void buildDescriptionArea(Composite parent)
+    {
+        Label label = new Label(parent, SWT.NULL);
+        label.setText("Rule Description");
+        
+        mRuleDescriptionText = new TextViewer(parent, SWT.BORDER | SWT.WRAP | SWT.V_SCROLL);
+        
+        Control control = mRuleDescriptionText.getControl();
+        GridData data = new GridData(GridData.FILL_BOTH);
+        data.horizontalAlignment = GridData.FILL;
+        data.horizontalSpan = 1;
+        data.grabExcessHorizontalSpace = true;
+        data.verticalAlignment = GridData.CENTER;
+        data.grabExcessVerticalSpace = false;
+        data.widthHint = convertWidthInCharsToPixels(MAX_LENGTH);
+        data.heightHint = convertHeightInCharsToPixels(5);
+        control.setLayoutData(data);
+    }
+    
+    private void configureRule()
+    {
+        RuleConfigurationEditDialog dialog = null;
+        try
+        {
+            dialog = new RuleConfigurationEditDialog(mParentComposite.getShell(),
+                                                     mCurrentSelection);
+            dialog.open();
+        }
+        catch (CheckstylePluginException e)
+        {
+            CheckstyleLog.error("Failed to open RuleConfigurationEditDialog, " 
+                                    + e.getMessage(), e);
+            CheckstyleLog.internalErrorDialog();
+            return;
+        }
+        
+        if (dialog.okWasPressed())
+        {
+            //
+            //  Get the updated rule configuration.
+            //
+            RuleConfigWorkingCopy rule = dialog.getFinalRule();
+            int groupIndex = mTabFolder.getSelectionIndex();
+            mRuleConfigWorkingCopies[groupIndex].put(rule.getRuleID(), rule);
+            mAllRuleConfigWorkingCopies.put(rule.getRuleID(), rule);
+            mTableViewers[groupIndex].refresh(true);
+        }
+    }
+    
+    /**
+     *  Indicates if the OK button was pressed rather then the Cancel button.
+     * 
+     *  @return  <code>true</code> = OK button was pressed,<br>
+     *            <code>false</code> = OK was not pressed.
+     */
+    public boolean okWasPressed()
+    {
+        return mOkWasPressed;
+    }
+    
+    /**
+     *  Over-rides method from Window to configure the 
+     *  shell (e.g. the enclosing window).
+     * 
+     *  @param shell  The shell to configure.
+     */
+    protected void configureShell(Shell shell)
+    {
+        super.configureShell(shell);
+        shell.setText("Checkstyle Check Configuration Editor");
+    }
+    
+    /**
+     *  Listener for selections in the table of rules per rule group.
+     */
+    private class TableSelectionListener implements SelectionListener
+    {
+        public void widgetSelected(SelectionEvent e)
+        {
+            ruleSelected(e);
+        }
+
+        public void widgetDefaultSelected(SelectionEvent e)
+        {
+            widgetSelected(e);
+        }
+    }
+    
+    /**
+     *  Listener for selection of a rule group tab.
+     */
+    private class TabSelectionListener implements SelectionListener
+    {
+        public void widgetSelected(SelectionEvent e)
+        {
+            tabSelected(e);
+        }
+
+        public void widgetDefaultSelected(SelectionEvent e)
+        {
+            widgetSelected(e);
+        }
+    }
+
+}
