@@ -4,12 +4,12 @@
     "DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-  <title>Checkstyle Command Line - Version 3.3</title>
+  <title>Checkstyle Command Line - Version 3.4</title>
   <link rel="stylesheet" type="text/css" href="mystyle.css"/>
 </head>
 
 <body>
-<h1><a name="checkstyle">Checkstyle Command Line - Version 3.3</a></h1>
+<h1><a name="checkstyle">Checkstyle Command Line - Version 3.4</a></h1>
 <h2>Description</h2>
 
 <p>
@@ -21,10 +21,10 @@ This command line tool is included in the checkstyle distribution.
 
 <h2>Installation</h2>
 <p>
-The easiest way is to include <span class="default">checkstyle-all-3.3.jar</span> in the classpath. If you are running JDK 1.4 this contains all the classes required to run checkstyle (JDK 1.3 users must add a JAXP compliant XML parser implementation). Alternatively, you must include the following in the classpath:
+The easiest way is to include <span class="default">checkstyle-all-3.4.jar</span> in the classpath. If you are running JDK 1.4 this contains all the classes required to run checkstyle (JDK 1.3 users must add a JAXP compliant XML parser implementation). Alternatively, you must include the following in the classpath:
 </p>
 <ol>
-  <li><span class="default">checkstyle-3.3.jar</span></li>
+  <li><span class="default">checkstyle-3.4.jar</span></li>
   <li>ANTLR 2.7.2 classes. <span class="default">antlr.jar</span> is included in the distribution.</li>
   <li>Jakarta Regexp 1.3 classes. <span class="default">jakarta-regexp-1.3.jar</span> is included in the distribution.</li>
   <li>Jakarta Commons Beanutils classes. <span class="default">commons-beanutils.jar</span> is included in the distribution.</li>
@@ -44,7 +44,7 @@ The command line usage is:
        com.puppycrawl.tools.checkstyle.Main \
        -c &lt;configurationFile&gt; [-n &lt;packageNameFile&gt;] \
        [-f &lt;format&gt;] [-p &lt;propertiesFile&gt;] [-o &lt;file&gt;] \
-       [-r &lt;dir&gt;] [-e &lt;extension&gt;] file...
+       [-r &lt;dir&gt;] file...
 </pre>
 
 <p>
@@ -75,10 +75,6 @@ checks to apply. Command line options are:
   <li>
     <span class="default">-r dir</span> - specify the directory to traverse for Java
     source files.
-  </li>
-  <li>
-    <span class="default">-e extension</span> - specify the file extension for
-    Java source files. Defaults to <span class="default">"java"</span>.
   </li>
 </ul>
 
@@ -153,7 +149,7 @@ provide a package names file</b>
   </p>
 
   <pre>
-  java -jar checkstyle-all-3.3.jar \
+  java -jar checkstyle-all-3.4.jar \
        -c docs/sun_checks.xml Check.java
   </pre>
 </div>

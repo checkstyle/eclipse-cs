@@ -35,6 +35,9 @@
           <a href="#DeclarationOrder">DeclarationOrder</a>
         </li>
         <li>
+          <a href="#DefaultComesLast">DefaultComesLast</a>
+        </li>
+        <li>
           <a href="#DoubleCheckedLocking">DoubleCheckedLocking</a>
         </li>
         <li>
@@ -45,6 +48,9 @@
         </li>
         <li>
           <a href="#ExplicitInitialization">ExplicitInitialization</a>
+        </li>
+        <li>
+          <a href="#FallThrough">FallThrough</a>
         </li>
         <li>
           <a href="#FinalLocalVariable">FinalLocalVariable</a>
@@ -77,7 +83,13 @@
           <a href="#MagicNumber">MagicNumber</a>
         </li>
         <li>
+          <a href="#MissingCtor">MissingCtor</a>
+        </li>
+        <li>
           <a href="#MissingSwitchDefault">MissingSwitchDefault</a>
+        </li>
+        <li>
+          <a href="#MultipleVariableDeclarations">MultipleVariableDeclarations</a>
         </li>
         <li>
           <a href="#NestedIfDepth">NestedIfDepth</a>
@@ -98,6 +110,9 @@
           <a href="#ReturnCount">ReturnCount</a>
         </li>
         <li>
+          <a href="#RequireThis">RequireThis</a>
+        </li>
+        <li>
           <a href="#SimplifyBooleanExpression">SimplifyBooleanExpression</a>
         </li>
         <li>
@@ -112,6 +127,9 @@
         <li>
           <a href="#SuperFinalize">SuperFinalize</a>
         </li>
+       <li>
+         <a href="#UnnecessaryParentheses">UnnecessaryParentheses</a>
+       </li>
       </ul>
     </td>
     <!--Content-->
@@ -122,12 +140,12 @@
       Checks that array initialization contains a trailing comma.
       </p>
       <pre class="body"	>
-      int[] a = new int[] 
+      int[] a = new int[]
       {
-          1, 
-          2, 
-          3, 
-      }; 
+          1,
+          2,
+          3,
+      };
       </pre>
       <p class="body">
       The check allows to not add a comma if both left and right curlys
@@ -138,7 +156,7 @@
       </pre>
       <p class="body">
       Rationale: Putting this comma in makes it easier to change the
-      order of the elements or add new elements on the end. 
+      order of the elements or add new elements on the end.
       </p>
       <h4>Examples</h4>
       <p class="body">
@@ -285,7 +303,7 @@ public class MySingleton
       <p class="body">
       <a href="config.html#treewalker">TreeWalker</a>
       </p>
-    
+
       <!-- --> <a name="EqualsHashCode"></a> <h2>EqualsHashCode</h2>
       <h4>Description</h4>
       <p class="body">
@@ -606,7 +624,7 @@ public class MySingleton
         </tr>
         <tr>
           <td>message</td>
-          <td>Message which is used to notify about violations; 
+          <td>Message which is used to notify about violations;
           if empty then the default message is used.</td>
           <td><a href="property_types.html#String">String</a></td>
           <td><span class="default">&quot;&quot;</span>(empty)</td>
@@ -802,7 +820,7 @@ public class MySingleton
       <!-- --> <a name="RedundantThrows"></a> <h2>RedundantThrows</h2> <h4>Description</h4>
       <p class="body">
        Checks for redundant exceptions declared in throws clause
-        such as duplicates, unchecked exceptions or subclasses of 
+        such as duplicates, unchecked exceptions or subclasses of
         another declared exception.
       </p>
       <h4>Properties</h4>
@@ -821,7 +839,7 @@ public class MySingleton
         </tr>
         <tr>
           <td>allowSubclasses</td>
-          <td> whether subclass of another declared exception 
+          <td> whether subclass of another declared exception
           is allowed in throws clause </td>
           <td><a href="property_types.html#boolean">boolean</a></td>
           <td><span class="default">false</span></td>
@@ -842,6 +860,12 @@ public class MySingleton
     &lt;property name=&quot;allowUnchecked&quot; value=&quot;true&quot;/&gt;
 &lt;/module&gt;
       </pre>
+        <h4>Note</h4>
+
+        <p class="body">The classpath should be configured to locate the class
+        information. The classpath configuration is dependent on the
+        mechanism used to invoke Checkstyle.</p>
+
       <h4>Package</h4>
       <p class="body">
       com.puppycrawl.tools.checkstyle.checks.coding
@@ -990,7 +1014,7 @@ return !valid();
       <!-- --> <a name="NestedTryDepth"></a> <h2>NestedTryDepth</h2>
       <h4>Description</h4>
       <p class="body">
-      Restricts nested if-else blocks to a specified depth (default = 1).
+      Restricts nested try blocks to a specified depth (default = 1).
       </p>
 
       <h4>Properties</h4>
@@ -1039,7 +1063,7 @@ return !valid();
       Checks that an overriding <span class="code">clone()</span> method invokes <span class="code">super.clone()</span>.
       </p>
       <p class="body">
-      Reference: <a href="http://java.sun.com/j2se/1.4.1/docs/api/java/lang/Object.html#clone()">Object.clone()</a>. 
+      Reference: <a href="http://java.sun.com/j2se/1.4.1/docs/api/java/lang/Object.html#clone()">Object.clone()</a>.
       </p>
       <h4>Examples</h4>
       <p class="body">
@@ -1064,7 +1088,7 @@ return !valid();
       </p>
       <p class="body">
       Reference: <a href="http://java.sun.com/docs/books/tutorial/java/data/garbagecollection.html">Cleaning
-      Up Unused Objects</a>. 
+      Up Unused Objects</a>.
       </p>
       <h4>Examples</h4>
       <p class="body">
@@ -1126,7 +1150,7 @@ return !valid();
       <a href="config.html#treewalker">TreeWalker</a>
       </p>
 
-      <!-- --> <a name="PackageDeclaration"></a> <h2>PackageDeclaration</h2> 
+      <!-- --> <a name="PackageDeclaration"></a> <h2>PackageDeclaration</h2>
       <h4>Description</h4>
       <p class="body">
       Ensure a class is has a package declaration.
@@ -1152,7 +1176,7 @@ return !valid();
       <a href="config.html#treewalker">TreeWalker</a>
       </p>
 
-      <!-- --> <a name="JUnitTestCase"></a> <h2>JUnitTestCase</h2> 
+      <!-- --> <a name="JUnitTestCase"></a> <h2>JUnitTestCase</h2>
       <h4>Description</h4>
       <p class="body">
       Ensures that the setUp(), tearDown()methods are named correctly,
@@ -1183,7 +1207,8 @@ return !valid();
 
       <!-- --> <a name="ReturnCount"></a> <h2>ReturnCount</h2> <h4>Description</h4>
       <p class="body">
-      Restrict the number of return statements. Default = 2.
+      Restricts the number of return statements. Default = 2.
+      Ignores specified methods (<span class="code">equals()</span> by default).
       </p>
 
       <p class="body">
@@ -1206,16 +1231,33 @@ return !valid();
           <td><a href="property_types.html#integer">Integer</a></td>
           <td><span class="default">2</span></td>
         </tr>
+        <tr>
+          <td>format</td>
+          <td>method names to ingone</td>
+          <td><a href="property_types.html#regexp">regular expression</a></td>
+          <td><span class="default">^equals$</span> (empty)</td>
+        </tr>
       </table>
 
       <h4>Examples</h4>
       <p class="body">
       To configure the check so that it doesn't allow more than three
-      return statements per method:
+      return statements per method (<span class="code">equals()</span>
+      method ignored):
       </p>
       <pre class="body">
 &lt;module name=&quot;ReturnCount&quot;&gt;
     &lt;property name=&quot;max&quot; value=&quot;3&quot;/&gt;
+&lt;/module&gt;
+      </pre>
+      <p class="body">
+      To configure the check so that it doesn't allow more than three
+      return statements per method for all methods:
+      </p>
+      <pre class="body">
+&lt;module name=&quot;ReturnCount&quot;&gt;
+    &lt;property name=&quot;max&quot; value=&quot;3&quot;/&gt;
+    &lt;property name=&quot;format&quot; value=&quot;^$&quot;/&gt;
 &lt;/module&gt;
       </pre>
       <h4>Package</h4>
@@ -1238,7 +1280,7 @@ return !valid();
       Rationale:
       Helps reduce coupling on concrete classes. In addition abstract
       classes should be thought of a convenience base class implementations
-      of interfaces and as such are not types themsleves. 
+      of interfaces and as such are not types themsleves.
       </p>
 
       <h4>Properties</h4>
@@ -1385,6 +1427,183 @@ return !valid();
       </p>
       <pre class="body">
 &lt;module name=&quot;ExplicitInitialization&quot;/&gt;
+      </pre>
+      <h4>Package</h4>
+      <p class="body">
+      com.puppycrawl.tools.checkstyle.checks.coding
+      </p>
+      <h4>Parent Module</h4>
+      <p class="body">
+      <a href="config.html#treewalker">TreeWalker</a>
+      </p>
+
+      <!-- --> <a name="DefaultComesLast"></a> <h2>DefaultComesLast</h2> <h4>Description</h4>
+      <p class="body">
+      Check that the <span class="code">default</span> is after all the
+      <span class="code">case</span>s in a <span class="code">switch</span>
+      statement.
+      </p>
+      <p class="body">
+      Rationale: Java allows <span class="code">default</span> anywhere
+      within the <span class="code">switch</span> statement. But it is more
+      readable if it comes after the last <span class="code">case</span>.
+      </p>
+      <h4>Examples</h4>
+      <p class="body">
+      To configure the check:
+      </p>
+      <pre class="body">
+&lt;module name=&quot;DefaultComesLast&quot;/&gt;
+      </pre>
+      <h4>Package</h4>
+      <p class="body">
+      com.puppycrawl.tools.checkstyle.checks.coding
+      </p>
+      <h4>Parent Module</h4>
+      <p class="body">
+      <a href="config.html#treewalker">TreeWalker</a>
+      </p>
+
+      <!-- --> <a name="MissingCtor"></a> <h2>MissingCtor</h2> <h4>Description</h4>
+      <p class="body">
+      Checks that classes (except abtract one) define a ctor and don't
+      rely on the default one.
+      </p>
+      <h4>Examples</h4>
+      <p class="body">
+      To configure the check:
+      </p>
+      <pre class="body">
+&lt;module name=&quot;MissingCtor&quot;/&gt;
+      </pre>
+      <h4>Package</h4>
+      <p class="body">
+      com.puppycrawl.tools.checkstyle.checks.coding
+      </p>
+      <h4>Parent Module</h4>
+      <p class="body">
+      <a href="config.html#treewalker">TreeWalker</a>
+      </p>
+
+      <!-- --> <a name="FallThrough"></a> <h2>FallThrough</h2> <h4>Description</h4>
+      <p class="body">
+      Checks for fall through in <span class="code">switch</span> statements
+      Finds locations where a <span class="code">case</span> contains<br>
+      Java code - but lacks a <span class="code">break</span>, <span
+      class="code">return</span>, <span class="code">throw</span> or
+      <span class="code">continue</span> statement.
+      </p>
+      <p class="body">
+      Note: the check works in assumption that there is no unreachable
+      code in the <span class="code">case</span>.
+      </p>
+      <h4>Examples</h4>
+      <p class="body">
+      To configure the check:
+      </p>
+      <pre class="body">
+&lt;module name=&quot;FallThrough&quot;/&gt;
+      </pre>
+      <h4>Package</h4>
+      <p class="body">
+      com.puppycrawl.tools.checkstyle.checks.coding
+      </p>
+      <h4>Parent Module</h4>
+      <p class="body">
+      <a href="config.html#treewalker">TreeWalker</a>
+      </p>
+
+      <!-- --> <a name="MultipleVariableDeclarations"></a>
+      <h2>MultipleVariableDeclarations</h2> <h4>Description</h4>
+      <p class="body">
+       Checks that each variable declaration is in its own statement
+       and on its own line.
+      </p>
+      <p class="body">
+       Rationale: <a
+       href="http://java.sun.com/docs/codeconv/html/CodeConventions.doc5.html#2991">
+       the SUN Code conventions chapter 6.1</a> recommends that
+       declarations should be one per line/statement.
+      </p>
+      <h4>Examples</h4>
+      <p class="body">
+      To configure the check:
+      </p>
+      <pre class="body">
+&lt;module name=&quot;MultipleVariableDeclarations&quot;/&gt;
+      </pre>
+      <h4>Package</h4>
+      <p class="body">
+      com.puppycrawl.tools.checkstyle.checks.coding
+      </p>
+      <h4>Parent Module</h4>
+      <p class="body">
+      <a href="config.html#treewalker">TreeWalker</a>
+      </p>
+
+      <!-- --> <a name="RequireThis"></a> <h2>RequireThis</h2> <h4>Description</h4>
+      <p class="body">
+      Checks that code doesn't rely on the &quot;this.&quot; default,
+      i.e. references to instance variables and methods of the present
+      object are explicitly of the form &quot;this.varName&quot; or
+      &quot;this.methodName(args)&quot;.
+      </p>
+      <h4>Properties</h4>
+      <table width="100%" border="1" cellpadding="5" class="body">
+        <tr class="header">
+          <th>name</th>
+          <th>description</th>
+          <th>type</th>
+          <th>default value</th>
+        </tr>
+        <tr>
+          <td>checkFields</td>
+          <td>whether we should check fields usage or not</td>
+          <td><a href="property_types.html#boolean">boolean</a></td>
+          <td><span class="default">true</span></td>
+        </tr>
+        <tr>
+          <td>checkMethods</td>
+          <td>whether we should check methods usage or not</td>
+          <td><a href="property_types.html#boolean">boolean</a></td>
+          <td><span class="default">true</span></td>
+        </tr>
+      </table>
+      <h4>Examples</h4>
+      <p class="body">
+      To configure the default check:
+      </p>
+      <pre class="body">
+&lt;module name=&quot;RequireThis&quot;/&gt;
+      </pre>
+      <p class="body">
+      To configure to check <code>this</code> qualifier for fields only:
+      </p>
+      <pre class="body">
+&lt;module name="RequireThis"&gt;
+    &lt;property name=&quot;checkMethods&quot; value=&quot;false&quot;/&gt;
+&lt;/module&gt;
+      </pre>
+      <h4>Package</h4>
+      <p class="body">
+      com.puppycrawl.tools.checkstyle.checks.coding
+      </p>
+      <h4>Parent Module</h4>
+      <p class="body">
+      <a href="config.html#treewalker">TreeWalker</a>
+      </p>
+
+      <!-- --> <a name="UnnecessaryParentheses"></a>
+      <h2>UnnecessaryParentheses</h2> <h4>Description</h4>
+      <p class="body">
+       Checks for the use of unnecessary parentheses.
+      </p>
+      <h4>Examples</h4>
+      <p class="body">
+      To configure the check:
+      </p>
+      <pre class="body">
+&lt;module name=&quot;UnnecessaryParentheses&quot;/&gt;
       </pre>
       <h4>Package</h4>
       <p class="body">
