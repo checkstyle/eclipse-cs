@@ -1532,7 +1532,8 @@ Support Fuzzy matches (comments, whitespace, linebreaks, variable renaming, etc.
       </rule-metadata>-->
    </rule-group-metadata>
 
-   <rule-group-metadata name="J2EE">
+   <rule-group-metadata name="J2EE"> 
+     
       <rule-metadata name="Entity Bean" classname="com.puppycrawl.tools.checkstyle.checks.j2ee.EntityBeanCheck" default-severity="Warning">
           <description>Checks that a direct entity bean, i.e. a class that directly implements javax.ejb.EntityBean, satisfies these class requirements:
   - The class is defined as public.
@@ -1549,5 +1550,92 @@ Support Fuzzy matches (comments, whitespace, linebreaks, variable renaming, etc.
             </enumeration>
           </property-metadata>
       </rule-metadata>
+            
+      <rule-metadata name="Final Static" classname="com.puppycrawl.tools.checkstyle.checks.j2ee.FinalStaticCheck" default-severity="Warning">
+          <description>Checks that all static fields are declared final. 
+
+Rational: This check ensures consistent runtime semantics so that EJB containers have the flexibility to distribute instances across multiple JVMs.
+          </description>
+      </rule-metadata>
+      
+      <rule-metadata name="Local Home Interface" classname="com.puppycrawl.tools.checkstyle.checks.j2ee.LocalHomeInterfaceCheck" default-severity="Warning">
+          <description>Checks that a direct local home interface, i.e. an interface that directly extends javax.ejb.EJBLocalHome, satisfies these requirements: 
+
+  - The return type of all create&lt;METHOD&gt;(...) methods is not void, because the return type must be the bean's local interface. 
+  - The throws clause of all create&lt;METHOD&gt;(...) methods defines the javax.ejb.CreateException. 
+  - The throws clause of all methods does not define the java.rmi.RemoteException. 
+
+Reference: Enterprise JavaBeansTM Specification,Version 2.0, sections 6.4 and 9.6.
+          </description>
+      </rule-metadata>
+      
+      <rule-metadata name="Local Interface" classname="com.puppycrawl.tools.checkstyle.checks.j2ee.LocalInterfaceCheck" default-severity="Warning">
+          <description>Checks that a direct local interface, i.e. an interface that directly extends javax.ejb.EJBLocalObject, satisfies these requirements: 
+
+  - The throws clause of all methods does not define the java.rmi.RemoteException. 
+
+Reference: Enterprise JavaBeansTM Specification,Version 2.0, section 9.10. 
+          </description>
+      </rule-metadata>
+      
+      <rule-metadata name="Message Bean" classname="com.puppycrawl.tools.checkstyle.checks.j2ee.MessageBeanCheck" default-severity="Warning">
+          <description>Checks that a direct message bean, i.e. a class that directly implements javax.ejb.MessageDrivenBean and javax.jms.MessageListener, satisfies these class requirements: 
+
+  - The class is defined as public. 
+  - The class cannot be defined as final. 
+  - The class cannot be defined as abstract. 
+  - It contains a public constructor with no parameters. 
+  - It must not define the finalize method. 
+  - It defines an ejbCreate() method this is public, not final, not static, has no parameters, and has return type void. 
+
+Reference: Enterprise JavaBeans™ Specification,Version 2.0, section 15.7. 
+          </description>
+      </rule-metadata>
+      
+      <rule-metadata name="Remote Home Interface" classname="com.puppycrawl.tools.checkstyle.checks.j2ee.RemoteHomeInterfaceCheck" default-severity="Warning">
+          <description>Checks that a direct remote home interface, i.e. an interface that directly extends javax.ejb.EJBHome, satisfies these requirements: 
+
+  - The return type of all create&lt;METHOD&gt;(...) methods is not void, because the return type must be the bean's remote interface. 
+  - The throws clause of all create&lt;METHOD&gt;(...) methods defines the javax.ejb.CreateException. 
+  - The throws clause of all methods defines the java.rmi.RemoteException. 
+
+Reference: Enterprise JavaBeansTM Specification,Version 2.0, sections 6.3 and 9.5. 
+          </description>
+      </rule-metadata>
+      
+      <rule-metadata name="Remote Interface" classname="com.puppycrawl.tools.checkstyle.checks.j2ee.RemoteInterfaceCheck" default-severity="Warning">
+          <description>Checks that a direct remote interface, i.e. an interface that directly extends javax.ejb.EJBObject, satisfies these requirements: 
+
+  - The throws clause of all methods defines the java.rmi.RemoteException. 
+
+Reference: Enterprise JavaBeansTM Specification,Version 2.0, section 9.9. 
+          </description>
+      </rule-metadata>
+      
+      <rule-metadata name="Session Bean" classname="com.puppycrawl.tools.checkstyle.checks.j2ee.SessionBeanCheck" default-severity="Warning">
+          <description>Checks that a direct session bean, i.e. a class that directly implements javax.ejb.SessionBean, satisfies these class requirements: 
+
+  - The class is defined as public. 
+  - The class cannot be defined as final. 
+  - The class cannot be defined as abstract. 
+  - It contains a public constructor with no parameters. 
+  - It must not define the finalize method. 
+  - It defines an ejbCreate&lt;METHOD&gt;() method this is public, not final, not static, and has return type void. 
+
+Reference: Enterprise JavaBeans™ Specification,Version 2.0, section 7.10. 
+          </description>
+      </rule-metadata>
+      
+      <rule-metadata name="This Parameter" classname="com.puppycrawl.tools.checkstyle.checks.j2ee.ThisParameterCheck" default-severity="Warning">
+          <description>Checks that this is not a parameter of any method calls or constructors for a bean. Instead, you must use the result of the getEJBObject() available in SessionContext or EntityContext. 
+          </description>
+      </rule-metadata>
+      
+      <rule-metadata name="This Return" classname="com.puppycrawl.tools.checkstyle.checks.j2ee.ThisReturnCheck" default-severity="Warning">
+          <description>Checks that this is not returned by a bean method. Instead, you must use the result of the getEJBObject() available in SessionContext or EntityContext.
+          </description>
+      </rule-metadata>
+      
    </rule-group-metadata>
+
 </checkstyle-metadata>
