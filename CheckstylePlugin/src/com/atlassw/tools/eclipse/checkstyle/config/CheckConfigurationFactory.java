@@ -206,13 +206,15 @@ public final class CheckConfigurationFactory implements XMLTags
      * 
      *  @param  file     File to write too.
      * 
-     *  @param  configs  List of check configurations to write out.
+     *  @param  config   The check configuration to write out.
      * 
      *  @throws  CheckstylePluginException  Error during processing.
      */
-    public static void exportPluginCheckConfigurations(File file, List configs)
+    public static void exportPluginCheckConfigurations(File file, CheckConfiguration config)
         throws CheckstylePluginException
     {
+    	LinkedList configs = new LinkedList();
+    	configs.add(config);
         writeFile(file, configs);
     }
     
@@ -226,10 +228,10 @@ public final class CheckConfigurationFactory implements XMLTags
      * 
      *  @throws  CheckstylePluginException  Error during processing.
      */
-    public static void exportCheckstyleCheckConfigurations(File file, List configs)
+    public static void exportCheckstyleCheckConfigurations(File file, CheckConfiguration config)
         throws CheckstylePluginException
     {
-        writeCSFile(file, configs);
+        writeCSFile(file, config);
     }
         
     /**
@@ -388,27 +390,18 @@ public final class CheckConfigurationFactory implements XMLTags
         }
     }
     
-        /**
+    /**
      *  Write a collection of check configurations to a file.
      * 
      *  @param  file      The file to write too.
      * 
-     *  @param  configs   The list of check configurations to write to the file.
+     *  @param  config   The check configuration to write to the file.
      */
-    private static void writeCSFile(File file, List configs)
+    private static void writeCSFile(File file, CheckConfiguration config)
         throws CheckstylePluginException
     {
-        if (configs.size() != 1)
-        {
-            String message = "Too many configs for checkstyle export, count=" +
-                             configs.size();
-            CheckstyleLog.warning(message);
-            throw new CheckstylePluginException(message);
-        }
-        
         try
         {
-            CheckConfiguration config = (CheckConfiguration)configs.get(0);
             String xml = CheckstyleConfigurationSerializer.serialize(config);
             FileWriter writer = null;
             try

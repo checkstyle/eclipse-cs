@@ -503,14 +503,15 @@ public class CheckstylePreferencePage
 
     private void exportPluginCheckConfig()
     {
-        List configs = new LinkedList();
-        IStructuredSelection selection = (IStructuredSelection)mViewer.getSelection();
-        Iterator iter = selection.iterator();
-        while (iter.hasNext())
-        {
-            CheckConfiguration cfg = (CheckConfiguration)iter.next();
-            configs.add(cfg);
-        }
+		IStructuredSelection selection = (IStructuredSelection)mViewer.getSelection();
+		CheckConfiguration config = (CheckConfiguration)selection.getFirstElement();
+		if (config == null)
+		{
+			MessageDialog.openInformation(mParentComposite.getShell(),
+			                              "No Selection",
+										  "No Check Configuration Selected");
+			return;
+		}
         
         FileDialog dialog = new FileDialog(getShell());
         dialog.setText("Export Plug-in Check Configuration");
@@ -523,7 +524,7 @@ public class CheckstylePreferencePage
 
         try
         {
-            CheckConfigurationFactory.exportPluginCheckConfigurations(file, configs);
+            CheckConfigurationFactory.exportPluginCheckConfigurations(file, config);
         }
         catch (CheckstylePluginException e)
         {
@@ -536,13 +537,14 @@ public class CheckstylePreferencePage
 
     private void exportCheckstyleCheckConfig()
     {
-        List configs = new LinkedList();
         IStructuredSelection selection = (IStructuredSelection)mViewer.getSelection();
-        Iterator iter = selection.iterator();
-        while (iter.hasNext())
+        CheckConfiguration config = (CheckConfiguration)selection.getFirstElement();
+        if (config == null)
         {
-            CheckConfiguration cfg = (CheckConfiguration)iter.next();
-            configs.add(cfg);
+			MessageDialog.openInformation(mParentComposite.getShell(),
+										  "No Selection",
+										  "No Check Configuration Selected");
+        	return;
         }
         
         FileDialog dialog = new FileDialog(getShell());
@@ -556,11 +558,11 @@ public class CheckstylePreferencePage
 
         try
         {
-            CheckConfigurationFactory.exportCheckstyleCheckConfigurations(file, configs);
+            CheckConfigurationFactory.exportCheckstyleCheckConfigurations(file, config);
         }
         catch (CheckstylePluginException e)
         {
-            CheckstyleLog.error("Failed to export CheckConfigurations to external file");
+            CheckstyleLog.error("Failed to export CheckConfigurations to external file", e);
             MessageDialog.openError(mParentComposite.getShell(),
                     "Checkstyle Error",
                     "Failed to export CheckConfigurations to external file");
