@@ -2,7 +2,7 @@
 <plugin
    id="com.atlassw.tools.eclipse.checkstyle"
    name="Checkstyle Plug-in"
-   version="3.1.1.b2"
+   version="3.1.1"
    provider-name="David Schneider"
    class="com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin">
 
@@ -24,7 +24,6 @@
             primary="true">
       </toc>
    </extension>
-   
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
