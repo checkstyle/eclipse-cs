@@ -83,7 +83,7 @@ public final class CheckConfigurationFactory
 	
 	private static final String CURRENT_CONFIG_FILE_FORMAT_VERSION = VERSION_3_2_0;
 	
-	private static String CLASSNAMES_V3_2_0_UPDATE 
+	public static final String CLASSNAMES_V3_2_0_UPDATE 
 	    = "com/atlassw/tools/eclipse/checkstyle/config/classnames_v3.2.0_update.properties";
     
 	//=================================================
