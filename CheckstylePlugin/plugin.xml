@@ -2,7 +2,7 @@
 <plugin
    id="com.atlassw.tools.eclipse.checkstyle"
    name="Checkstyle Plug-in"
-   version="3.4.0.0-beta"
+   version="3.4.0.0"
    provider-name="David Schneider"
    class="com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin">
 
