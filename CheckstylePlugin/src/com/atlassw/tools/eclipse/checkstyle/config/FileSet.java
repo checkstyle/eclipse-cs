@@ -93,7 +93,6 @@ public class FileSet implements Cloneable
     {
         mName        = name;
         mCheckConfig = checkConfig;
-        mCheckConfigName = checkConfig.getConfigName();
     }
     
     /**
@@ -128,7 +127,6 @@ public class FileSet implements Cloneable
         temp = XMLUtil.getNodeAttributeValue(node, XMLTags.CHECK_CONFIG_NAME_TAG);
         if (temp != null)
         {
-        	mCheckConfigName = temp;
             mCheckConfig = CheckConfigurationFactory.getByName(temp.trim());
         }
         else
@@ -253,7 +251,7 @@ public class FileSet implements Cloneable
             rootNode.setAttribute(XMLTags.NAME_TAG, mName);
             Boolean enabled = new Boolean(mEnabled);
             rootNode.setAttribute(XMLTags.ENABLED_TAG, enabled.toString());
-            rootNode.setAttribute(XMLTags.CHECK_CONFIG_NAME_TAG, mCheckConfigName);
+            rootNode.setAttribute(XMLTags.CHECK_CONFIG_NAME_TAG, mCheckConfig.getConfigName());
             
             Iterator iter = mFileMatchPatterns.iterator();
             while (iter.hasNext())
@@ -323,7 +321,7 @@ public class FileSet implements Cloneable
      */
     public String getCheckConfigName()
     {
-        return mCheckConfigName;
+        return mCheckConfig.getConfigName();
     }
 
 }
