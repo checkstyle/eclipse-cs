@@ -28,25 +28,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-//=================================================
-// Imports from javax namespace
-//=================================================
-
-//=================================================
-// Imports from com namespace
-//=================================================
-import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
-import com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleBuilder;
-import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigConverter;
-import com.atlassw.tools.eclipse.checkstyle.config.CheckConfiguration;
-import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationFactory;
-import com.atlassw.tools.eclipse.checkstyle.config.FileSetFactory;
-import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
-import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
-
-//=================================================
-// Imports from org namespace
-//=================================================
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.viewers.ColumnWeightData;
@@ -66,8 +47,17 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPreferencePage;
+
+import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
+import com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleBuilder;
+import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigConverter;
+import com.atlassw.tools.eclipse.checkstyle.config.CheckConfiguration;
+import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationFactory;
+import com.atlassw.tools.eclipse.checkstyle.config.FileSetFactory;
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
 
 /**
@@ -354,8 +344,73 @@ public class CheckstylePreferencePage
 			CheckConfiguration auditConfig = dialog.getFinalConfiguration();
 			if (auditConfig != null)
 			{
-                mAuditConfigurations.add(auditConfig);
+				//
+				// ad, 7.Jan.2004, Bug #872279 
+				// If the config that is to be imported already exists, ask the
+				// user whether to replace it or not.
+				// When the user chooses not to replace it, the import action
+				// is aborted for the single config, but the import process
+				// should be continued for the other configs (if multiple configs
+				// were selected.)
+				// 
+				for (Iterator iter = mAuditConfigurations.iterator(); iter.hasNext();) 
+				{
+					CheckConfiguration c = (CheckConfiguration) iter.next();
+					if(c.getConfigName().equals(auditConfig.getConfigName())) 
+					{
+						//
+						// The newly imported config exists already.  Ask the user if
+						// the existing one should be replaced.
+						//
+						boolean replaceConfiguration = CheckstyleLog.questionDialog(
+							                     getShell(), "The configuration '"
+								                 + c.getConfigName()
+								                 + "' already exists. Do you want to replace it?");
+						
+						if(replaceConfiguration) 
+						{
+							//
+							// The user chose to replace the config, so
+							// delete the existing one here
+							//
+							iter.remove();
+						} 
+						else 
+						{
+							//
+							// The user chose NOT to replace the exising config:
+							// Do nothing.
+							//
+							return;
+						}
+					}
+				}
+				
+				mAuditConfigurations.add(auditConfig);
 				mViewer.refresh();
+				
+				//
+				// Since the config may have potentially been replaced by a 
+				// new one, we need to do a rebuild, if it is in used.
+				//
+				try
+				{
+					if (FileSetFactory.isCheckConfigInUse(auditConfig.getConfigName()))
+					{
+						mNeedRebuild = true;
+					}
+				}
+				catch (CheckstylePluginException e)
+				{
+					//
+					//  Assume its in use.
+					//
+					mNeedRebuild = true;
+					CheckstyleLog.warning("Exception while checking for audit config use", e);
+				}
+				// ad, 7.Jan.2004, Bug #872279 
+				// end change
+				
 			}
 			else
 			{

@@ -44,6 +44,7 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
 
+
 /**
  *  Logging utility for the Checkstyle plug-in.
  */
@@ -192,6 +193,31 @@ public final class CheckstyleLog
             MessageDialog.openError(shell, "Checkstyle Error", logMsg);
         }
     }
+    
+    // ad, 7.Jan.2004, Bug #872279 
+    /**
+     *  ad, 7.Jan.2004, Bug #872279 
+     *  Displays a simple yes/no dialog.
+     *  <p>
+     *  @param shell		the Shell object 
+     *  @param msg  		Message to display.
+     *  @return boolean	true if the user pressed OK.
+     * 						false if the user cancelled the dialog.
+     */
+    public static boolean questionDialog(Shell shell, String msg)
+    {
+    	if (shell != null)
+    	{
+    		String logMsg = msg;
+    		return MessageDialog.openQuestion(shell, "Checkstyle Question", logMsg);
+    	} 
+    	else 
+    	{
+    		return false;
+    	}
+    }
+    // ad, 7.Jan.2004, Bug #872279 
+    // end change
     
     private static Shell getShell()
     {
