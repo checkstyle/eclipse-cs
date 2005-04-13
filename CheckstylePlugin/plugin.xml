@@ -19,6 +19,11 @@
             class="com.atlassw.tools.eclipse.checkstyle.preferences.CheckstylePreferencePage"
             id="com.atlassw.tools.eclipse.checkstyle.preferences.CheckstylePreferencePage">
       </page>
+      <page
+            class="com.atlassw.tools.eclipse.checkstyle.preferences.duplicates.DuplicatedCodePreferencePage"
+            category="com.atlassw.tools.eclipse.checkstyle.preferences.CheckstylePreferencePage"
+            name="Duplicates Analysis"
+            id="com.atlassw.tools.eclipse.checkstyle.preferences.duplicates.DuplicatedCodePreferencePage"/>
    </extension>
    <extension
          point="org.eclipse.ui.propertyPages">
@@ -165,4 +170,48 @@
       </filter>
       -->
    </extension>
+   
+   <!--
+   Action that launches the duplicates analysis
+   -->
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            adaptable="true"
+            objectClass="org.eclipse.core.resources.IResource"
+            nameFilter="*"
+            id="com.atlassw.tools.eclipse.checkstyle.projectcontribution">
+         <menu
+               label="Checkstyle"
+               path="additions"
+               id="com.atlassw.tools.eclipse.checkstyle.menu">
+            <separator name="group1"/>
+         </menu>
+         <action
+               enablesFor="*"
+               label="Search duplicated code"
+               icon="icons/duplicatedCode.gif"
+               class="com.atlassw.tools.eclipse.checkstyle.duplicates.DuplicatedCodeAction"
+               menubarPath="com.atlassw.tools.eclipse.checkstyle.menu/group1"
+               id="com.atlassw.tools.eclipse.checkstyle.duplicatesAction"/>
+      </objectContribution>
+   </extension>
+   
+   <!--
+   View that displays the duplicates
+   -->
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            name="Checkstyle"
+            id="com.atlassw.tools.eclipse.checkstyle.category">
+      </category>
+      <view
+            class="com.atlassw.tools.eclipse.checkstyle.duplicates.DuplicatedCodeView"
+            icon="icons/duplicatedCode.gif"
+            category="com.atlassw.tools.eclipse.checkstyle.category"
+            name="Duplication de code"
+            id="com.atlassw.tools.eclipse.checkstyle.duplicatesView"/>
+   </extension>
+   
 </plugin>
