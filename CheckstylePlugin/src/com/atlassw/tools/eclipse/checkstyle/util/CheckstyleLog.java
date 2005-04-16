@@ -56,9 +56,9 @@ public final class CheckstyleLog
     // Static class variables.
     //=================================================
 
-    private static ILog         sLog;
+    private static ILog sLog;
 
-    private static final String NEWLINE   = System.getProperty("line.separator");
+    private static final String NEWLINE = System.getProperty("line.separator");
 
     private static final String ADDED_MSG = "See your <workspace>/.metadata/.log file for additional details.";
 
@@ -182,6 +182,24 @@ public final class CheckstyleLog
      * @param msg Message to display.
      */
     public static void errorDialog(Shell shell, String msg)
+    {
+        if (shell != null)
+        {
+            String logMsg = msg + NEWLINE + ADDED_MSG;
+            MessageDialog.openError(shell, "Checkstyle Error", logMsg);
+        }
+    }
+
+    /**
+     * Displays a simple error dialog indicating there was a Checkstyle internal
+     * error.
+     * 
+     * @param shell Shell to use for the dialog.
+     * 
+     * @param msg Message to display.
+     * @param throwable the throwable
+     */
+    public static void errorDialog(Shell shell, String msg, Throwable throwable)
     {
         if (shell != null)
         {

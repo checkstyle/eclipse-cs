@@ -20,73 +20,17 @@
 
 package com.atlassw.tools.eclipse.checkstyle.properties;
 
-//=================================================
-// Imports from java namespace
-//=================================================
-
-//=================================================
-// Imports from javax namespace
-//=================================================
-
-//=================================================
-// Imports from com namespace
-//=================================================
-import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ITableLabelProvider;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileSet;
 
 /**
- *  Provides the labels for the FileSet list display.
+ * Provides the labels for the FileSet list display.
  */
-class FileSetLabelProvider implements ITableLabelProvider
+class FileSetLabelProvider extends LabelProvider implements ITableLabelProvider
 {
-    //=================================================
-    // Public static final variables.
-    //=================================================
-
-    //=================================================
-    // Static class variables.
-    //=================================================
-
-    //=================================================
-    // Instance member variables.
-    //=================================================
-
-    //=================================================
-    // Constructors & finalizer.
-    //=================================================
-
-    //=================================================
-    // Methods.
-    //=================================================
-
-    /**
-     * @see org.eclipse.jface.viewers.IBaseLabelProvider#removeListener(ILabelProviderListener)
-     */
-    public void removeListener(ILabelProviderListener listener)
-    {}
-
-    /**
-     * @see org.eclipse.jface.viewers.IBaseLabelProvider#isLabelProperty(Object, String)
-     */
-    public boolean isLabelProperty(Object element, String property)
-    {
-        return false;
-    }
-
-    /**
-     * @see org.eclipse.jface.viewers.IBaseLabelProvider#dispose()
-     */
-    public void dispose()
-    {}
-
-    /**
-     * @see org.eclipse.jface.viewers.IBaseLabelProvider#addListener(ILabelProviderListener)
-     */
-    public void addListener(ILabelProviderListener listener)
-    {}
 
     /**
      * @see ITableLabelProvider#getColumnText(Object, int)
@@ -96,10 +40,10 @@ class FileSetLabelProvider implements ITableLabelProvider
         String result = element.toString();
         if (element instanceof FileSet)
         {
-            FileSet fileSet = (FileSet)element;
+            FileSet fileSet = (FileSet) element;
             switch (columnIndex)
             {
-                case 0 :
+                case 0:
                     if (fileSet.isEnabled())
                     {
                         result = " Enabled";
@@ -110,11 +54,11 @@ class FileSetLabelProvider implements ITableLabelProvider
                     }
                     break;
 
-                case 1 :
+                case 1:
                     result = fileSet.getName();
                     break;
 
-                default :
+                default:
                     break;
             }
 

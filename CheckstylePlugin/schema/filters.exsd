@@ -13,7 +13,7 @@
    <element name="extension">
       <complexType>
          <sequence>
-            <element ref="filter" minOccurs="1" maxOccurs="99"/>
+            <element ref="filter" minOccurs="1" maxOccurs="unbounded"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -47,6 +47,9 @@ The id is used to identify the specific filter set.
          </documentation>
       </annotation>
       <complexType>
+         <sequence>
+            <element ref="data" minOccurs="0" maxOccurs="unbounded"/>
+         </sequence>
          <attribute name="class" type="string" use="required">
             <annotation>
                <documentation>
@@ -99,6 +102,18 @@ The class is required to implement &lt;link&gt;com.atlassw.tools.eclipse.checkst
             </annotation>
          </attribute>
          <attribute name="internal-name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="data">
+      <complexType>
+         <attribute name="value" type="string" use="required">
             <annotation>
                <documentation>
                   

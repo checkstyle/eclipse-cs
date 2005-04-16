@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle-configurations file-format-version="5.0.0">
+    <check-configuration name="Sun Checks" location="sun_checks.xml" type="builtin" description="Checkstyle configuration that checks the sun coding conventions."/>
+</checkstyle-configurations>

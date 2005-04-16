@@ -306,7 +306,7 @@ public class CheckstylePropertyPage extends PropertyPage
                 .getResourceString("CheckstylePropertiesPage.btnEditFilter"));
         this.mBtnEditFilter.addSelectionListener(this.mPageController);
 
-        //readonly filter nicht anzeigen
+        //don't show readonly filters
         mFilterList.addFilter(new ViewerFilter()
         {
             public boolean select(Viewer viewer, Object parentElement, Object element)
@@ -495,7 +495,7 @@ public class CheckstylePropertyPage extends PropertyPage
                              * button the user pressed but the state of the
                              * toggle.
                              * 
-                             * @see org.eclipse.jface.dialogs.MessageDialogWithToggle#buttonPressed(int)
+                             * @see MessageDialogWithToggle#buttonPressed(int)
                              */
                             protected void buttonPressed(int buttonId)
                             {

@@ -31,22 +31,16 @@ package com.atlassw.tools.eclipse.checkstyle.preferences;
 //=================================================
 // Imports from com namespace
 //=================================================
-import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
-import com.atlassw.tools.eclipse.checkstyle.config.ConfigPropertyMetadata;
-import com.atlassw.tools.eclipse.checkstyle.config.ConfigPropertyType;
-
-//=================================================
-// Imports from org namespace
-//=================================================
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.FontMetrics;
-import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 
+import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
+
 /**
- *  A string property configuration widget.
+ * A string property configuration widget.
  */
 public class ConfigPropertyWidgetString extends ConfigPropertyWidgetAbstractBase
 {
@@ -57,8 +51,6 @@ public class ConfigPropertyWidgetString extends ConfigPropertyWidgetAbstractBase
     //=================================================
     // Static class variables.
     //=================================================
-
-    private static final int MAX_INPUT_LENGTH = 40;
 
     //=================================================
     // Instance member variables.
@@ -74,42 +66,34 @@ public class ConfigPropertyWidgetString extends ConfigPropertyWidgetAbstractBase
     // Methods.
     //=================================================
 
-    ConfigPropertyWidgetString(
-        Composite parent,
-        ConfigProperty prop,
-        ConfigPropertyMetadata metadata)
+    ConfigPropertyWidgetString(Composite parent, ConfigProperty prop)
     {
-        super(ConfigPropertyType.STRING, parent, prop, metadata);
+        super(parent, prop);
+    }
 
-        addPropertyLabel(SWT.NULL);
+    /**
+     * @see ConfigPropertyWidgetAbstractBase#getValueWidget(org.eclipse.swt.widgets.Composite)
+     */
+    protected Control getValueWidget(Composite parent)
+    {
 
-        //
-        //  Create a text entry field.
-        //
-        mTextWidget = new Text(parent, SWT.SINGLE | SWT.BORDER);
-        GridData data = new GridData();
-        data.horizontalAlignment = GridData.FILL;
-        data.horizontalSpan = 1;
-        data.grabExcessHorizontalSpace = true;
-        data.verticalAlignment = GridData.CENTER;
-        data.grabExcessVerticalSpace = false;
-
-        GC gc = new GC(parent);
-        gc.setFont(parent.getFont());
-        FontMetrics fontMetrics = gc.getFontMetrics();
-        data.widthHint = fontMetrics.getAverageCharWidth() * MAX_INPUT_LENGTH;
-        data.heightHint = fontMetrics.getHeight();
-
-        mTextWidget.setLayoutData(data);
-        mTextWidget.setFont(parent.getFont());
-
-        String initValue = getInitValue();
-        if (initValue != null)
+        if (mTextWidget == null)
         {
-            mTextWidget.setText(initValue);
+
+            //
+            //  Create a text entry field.
+            //
+            mTextWidget = new Text(parent, SWT.SINGLE | SWT.BORDER);
+            mTextWidget.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+            String initValue = getInitValue();
+            if (initValue != null)
+            {
+                mTextWidget.setText(initValue);
+            }
         }
 
-        addDescriptionButton(SWT.NULL);
+        return mTextWidget;
     }
 
     /**
@@ -123,5 +107,14 @@ public class ConfigPropertyWidgetString extends ConfigPropertyWidgetAbstractBase
             result = "";
         }
         return result;
+    }
+    
+    /**
+     * @see IConfigPropertyWidget#restorePropertyDefault()
+     */
+    public void restorePropertyDefault()
+    {
+        String defaultValue = getConfigProperty().getMetaData().getDefaultValue();
+        mTextWidget.setText(defaultValue != null ? defaultValue : "");
     }
 }

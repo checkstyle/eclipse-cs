@@ -25,23 +25,18 @@ package com.atlassw.tools.eclipse.checkstyle.properties;
 //=================================================
 import java.util.List;
 
-//=================================================
-// Imports from javax namespace
-//=================================================
-
-//=================================================
-// Imports from com namespace
-//=================================================
-
-
-//=================================================
-// Imports from org namespace
-//=================================================
+import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnWeightData;
+import org.eclipse.jface.viewers.ITableLabelProvider;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -51,33 +46,32 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
-
 /**
- *  Property page.
+ * Property page.
  */
 public class TestResultsDialog extends Dialog
 {
     //=================================================
     // Public static final variables.
     //=================================================
-  
+
     //=================================================
     // Static class variables.
     //=================================================
-    
+
     //=================================================
     // Instance member variables.
     //=================================================
-    
-    private List  mFiles;
+
+    private List mFiles;
 
     //=================================================
     // Constructors & finalizer.
     //=================================================
 
-	/**
-	 * Constructor for SamplePropertyPage.
-	 */
+    /**
+     * Constructor for SamplePropertyPage.
+     */
     TestResultsDialog(Shell parent, List files)
     {
         super(parent);
@@ -93,17 +87,17 @@ public class TestResultsDialog extends Dialog
      */
     protected Control createDialogArea(Composite parent)
     {
-        Composite composite = (Composite)super.createDialogArea(parent);
+        Composite composite = (Composite) super.createDialogArea(parent);
         Composite dialog = new Composite(composite, SWT.NONE);
-        
-     	GridLayout layout = new GridLayout();
+
+        GridLayout layout = new GridLayout();
         layout.numColumns = 1;
         dialog.setLayout(layout);
-        
+
         Label label = new Label(dialog, SWT.NULL);
         label.setText("The following files are included in the File Set");
 
-        Table table = new Table(dialog, SWT.BORDER );
+        Table table = new Table(dialog, SWT.BORDER);
         TableLayout tableLayout = new TableLayout();
         table.setLayout(tableLayout);
         table.setHeaderVisible(true);
@@ -120,26 +114,77 @@ public class TestResultsDialog extends Dialog
 
         TableViewer viewer = new TableViewer(table);
         viewer.setLabelProvider(new TestResultLabelProvider());
-        viewer.setContentProvider(new TestResultProvider());
+        viewer.setContentProvider(new ArrayContentProvider());
         viewer.setSorter(new TestResultViewerSorter());
         viewer.setInput(mFiles);
 
         return composite;
     }
-    
+
     boolean okWasPressed()
     {
         return true;
     }
-    
+
     /**
-     *  Over-rides method from Window to configure the 
-     *  shell (e.g. the enclosing window).
+     * Over-rides method from Window to configure the shell (e.g. the enclosing
+     * window).
      */
     protected void configureShell(Shell shell)
     {
         super.configureShell(shell);
         shell.setText("Checkstyle File Set Test Results");
     }
-   
+
+    class TestResultLabelProvider extends LabelProvider implements ITableLabelProvider
+    {
+
+        /**
+         * @see ITableLabelProvider#getColumnText(Object, int)
+         */
+        public String getColumnText(Object element, int columnIndex)
+        {
+            String result = element.toString();
+            if (element instanceof IFile)
+            {
+                IFile file = (IFile) element;
+                result = file.getProjectRelativePath().toString();
+            }
+            return result;
+        }
+
+        /**
+         * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnImage(java.lang.Object,
+         *      int)
+         */
+        public Image getColumnImage(Object element, int columnIndex)
+        {
+            return null;
+        }
+    }
+
+    private class TestResultViewerSorter extends ViewerSorter
+    {
+
+        /**
+         * @see ViewerSorter#compare
+         */
+        public int compare(Viewer viewer, Object e1, Object e2)
+        {
+            int result = 0;
+
+            if ((e1 instanceof IFile) && (e2 instanceof IFile))
+            {
+                IFile file1 = (IFile) e1;
+                IFile file2 = (IFile) e2;
+
+                String name1 = file1.getProjectRelativePath().toString();
+                String name2 = file2.getProjectRelativePath().toString();
+
+                result = name1.compareTo(name2);
+            }
+
+            return result;
+        }
+    }
 }

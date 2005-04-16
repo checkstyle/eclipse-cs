@@ -20,15 +20,13 @@
 
 package com.atlassw.tools.eclipse.checkstyle.projectconfig;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.eclipse.core.resources.IFile;
-
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.IFilter;
-import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
 /**
  * Represents the configuration for a project. Contains the file sets configured
@@ -111,6 +109,26 @@ public class ProjectConfiguration implements Cloneable
     }
 
     /**
+     * Gets the enabled filters of this file set.
+     * 
+     * @return the enabled filters
+     */
+    public IFilter[] getEnabledFilters()
+    {
+        List filters = new ArrayList();
+        int size = mFilters != null ? mFilters.length : 0;
+        for (int i = 0; i < size; i++)
+        {
+            if (mFilters[i].isEnabled())
+            {
+                filters.add(mFilters[i]);
+            }
+        }
+
+        return (IFilter[]) filters.toArray(new IFilter[filters.size()]);
+    }
+
+    /**
      * Returns the filter that has the given internal name. If no filter has
      * this name <code>null</code> is returned.
      * 
@@ -166,51 +184,51 @@ public class ProjectConfiguration implements Cloneable
         return mUseSimpleConfig;
     }
 
-    /**
-     * Returns if the given file is checked by checkstyle.
-     * 
-     * @param file the file
-     * @return <code>true</code> if the file is checked, <code>false</code>
-     *         otherwise
-     * @throws CheckstylePluginException unexpected error
-     */
-    public boolean isFileChecked(IFile file) throws CheckstylePluginException
-    {
-
-        boolean result = false;
-
-        //check if file within fileSets
-        List fileSets = getFileSets();
-        int size = fileSets != null ? fileSets.size() : 0;
-        for (int i = 0; i < size; i++)
-        {
-
-            if (((FileSet) fileSets.get(i)).includesFile(file))
-            {
-                result = true;
-                break;
-            }
-        }
-
-        //check if file runs through filters
-        if (result)
-        {
-
-            IFilter[] filters = getFilters();
-            size = filters != null ? filters.length : 0;
-            for (int i = 0; i < size; i++)
-            {
-
-                if (filters[i].isEnabled() && !filters[i].accept(file))
-                {
-                    result = false;
-                    break;
-                }
-            }
-        }
-
-        return result;
-    }
+    //    /**
+    //     * Returns if the given file is checked by checkstyle.
+    //     *
+    //     * @param file the file
+    //     * @return <code>true</code> if the file is checked, <code>false</code>
+    //     * otherwise
+    //     * @throws CheckstylePluginException unexpected error
+    //     */
+    //    public boolean isFileChecked(IFile file) throws CheckstylePluginException
+    //    {
+    //
+    //        boolean result = false;
+    //
+    //        //check if file within fileSets
+    //        List fileSets = getFileSets();
+    //        int size = fileSets != null ? fileSets.size() : 0;
+    //        for (int i = 0; i < size; i++)
+    //        {
+    //
+    //            if (((FileSet) fileSets.get(i)).includesFile(file))
+    //            {
+    //                result = true;
+    //                break;
+    //            }
+    //        }
+    //
+    //        //check if file runs through filters
+    //        if (result)
+    //        {
+    //
+    //            IFilter[] filters = getFilters();
+    //            size = filters != null ? filters.length : 0;
+    //            for (int i = 0; i < size; i++)
+    //            {
+    //
+    //                if (filters[i].isEnabled() && !filters[i].accept(file))
+    //                {
+    //                    result = false;
+    //                    break;
+    //                }
+    //            }
+    //        }
+    //
+    //        return result;
+    //    }
 
     /**
      * Checks if this project configuration uses the given checkstyle

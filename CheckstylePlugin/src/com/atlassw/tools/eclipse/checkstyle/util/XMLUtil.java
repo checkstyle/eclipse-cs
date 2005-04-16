@@ -31,34 +31,22 @@ import java.io.StringWriter;
 import java.util.EmptyStackException;
 import java.util.Stack;
 
-//=================================================
-// Imports from javax namespace
-//=================================================
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import javax.xml.transform.ErrorListener;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXTransformerFactory;
 import javax.xml.transform.sax.TransformerHandler;
 import javax.xml.transform.stream.StreamResult;
 
-//=================================================
-// Imports from com namespace
-//=================================================
-
-//=================================================
-// Imports from org namespace
-//=================================================
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
@@ -429,6 +417,8 @@ public final class XMLUtil
     {
 
         SAXParser parser = sSAXParserFactory.newSAXParser();
+        
+        
         parser.parse(in, handler);
     }
 
@@ -451,28 +441,6 @@ public final class XMLUtil
         transformer.setOutputProperty(OutputKeys.METHOD, "xml");
         transformer.setOutputProperty(OutputKeys.INDENT, "yes");
         transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-        transformer.setErrorListener(new ErrorListener()
-        {
-
-            public void warning(TransformerException exception) throws TransformerException
-            {
-                exception.printStackTrace();
-
-            }
-
-            public void error(TransformerException exception) throws TransformerException
-            {
-                exception.printStackTrace();
-
-            }
-
-            public void fatalError(TransformerException exception) throws TransformerException
-            {
-                exception.printStackTrace();
-            }
-
-        });
-
         StreamResult result = new StreamResult(out);
 
         TransformerHandler handler = saxFactory.newTransformerHandler();

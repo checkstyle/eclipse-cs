@@ -31,33 +31,41 @@ import java.util.List;
 import org.eclipse.core.runtime.Preferences;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.PreferencePage;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.layout.FormAttachment;
+import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleBuilder;
-import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigConverter;
-import com.atlassw.tools.eclipse.checkstyle.config.CheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationFactory;
+import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
+import com.atlassw.tools.eclipse.checkstyle.config.configtypes.ConfigurationTypes;
+import com.atlassw.tools.eclipse.checkstyle.config.configtypes.IConfigurationType;
+import com.atlassw.tools.eclipse.checkstyle.config.configtypes.InternalCheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfigurationFactory;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
@@ -86,25 +94,21 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
     // Instance member variables.
     //=================================================
 
-    private Composite mParentComposite;
-
     private TableViewer mViewer;
 
     private Button mAddButton;
 
     private Button mEditButton;
 
+    private Button mConfigureButton;
+
     private Button mCopyButton;
 
     private Button mRemoveButton;
 
-    private Button mImportPluginButton;
+    private Button mExportButton;
 
-    private Button mExportPluginButton;
-
-    private Button mImportCheckstyleButton;
-
-    private Button mExportCheckstyleButton;
+    private Text mConfigurationDescription;
 
     private Button mWarnBeforeLosingFilesets;
 
@@ -113,6 +117,8 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
     private List mCheckConfigurations;
 
     private boolean mNeedRebuild = false;
+
+    private PageController mController = new PageController();
 
     //=================================================
     // Constructors & finalizer.
@@ -125,7 +131,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
     {
         super();
         setPreferenceStore(CheckstylePlugin.getDefault().getPreferenceStore());
-        setDescription("Checkstyle Settings:");
+        //setDescription("Checkstyle Settings:");
         initializeDefaults();
     }
 
@@ -166,32 +172,47 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         //
         //  Build the top level composite with one colume.
         //
-        mParentComposite = new Composite(ancestor, SWT.NULL);
-        GridLayout layout = new GridLayout();
-        layout.numColumns = 1;
-        mParentComposite.setLayout(layout);
+        Composite parentComposite = new Composite(ancestor, SWT.NULL);
+        FormLayout layout = new FormLayout();
+        parentComposite.setLayout(layout);
 
         //
         //  Create the general section of the screen.
         //
-        createGeneralContents(mParentComposite);
+        Composite generalComposite = createGeneralContents(parentComposite);
+        FormData fd = new FormData();
+        fd.left = new FormAttachment(0);
+        fd.top = new FormAttachment(0);
+        fd.right = new FormAttachment(100);
+        generalComposite.setLayoutData(fd);
 
         //
         //  Create the check configuration section of the screen.
         //
-        createCheckConfigContents(mParentComposite);
+        Composite configComposite = createCheckConfigContents(parentComposite);
+        fd = new FormData();
+        fd.left = new FormAttachment(0);
+        fd.top = new FormAttachment(generalComposite, 3, SWT.BOTTOM);
+        fd.right = new FormAttachment(100);
+        fd.bottom = new FormAttachment(100);
+        configComposite.setLayoutData(fd);
 
-        return mParentComposite;
+        return parentComposite;
     }
 
-    private void createGeneralContents(Composite parent)
+    /**
+     * Create the area with the general preference settings.
+     * 
+     * @param parent the parent composite
+     * @return the general area
+     */
+    private Composite createGeneralContents(Composite parent)
     {
         //
         //  Build the composite for the general settings.
         //
         Group generalComposite = new Group(parent, SWT.NULL);
         generalComposite.setText(" General Settings ");
-        generalComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         GridLayout layout = new GridLayout();
         layout.numColumns = 1;
         generalComposite.setLayout(layout);
@@ -219,27 +240,78 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
 
         new Label(generalComposite, SWT.NULL)
                 .setText("Note: Changes to this option only become visible after a full rebuild of your projects.");
+
+        return generalComposite;
     }
 
-    private void createCheckConfigContents(Composite parent)
+    /**
+     * Creates the content regarding the management of check configurations.
+     * 
+     * @param parent the parent composite
+     * @return the configuration area
+     */
+    private Composite createCheckConfigContents(Composite parent)
     {
         //
         //  Create the composite for configuring check configurations.
         //
         Group configComposite = new Group(parent, SWT.NULL);
         configComposite.setText(" Check Configurations ");
-        configComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL
-                | GridData.FILL_VERTICAL));
-        GridLayout layout = new GridLayout();
-        layout.numColumns = 2;
-        configComposite.setLayout(layout);
+        configComposite.setLayout(new FormLayout());
 
-        Table table = new Table(configComposite, SWT.BORDER | SWT.SINGLE | SWT.FULL_SELECTION);
+        Control rightButtons = createButtonBar(configComposite);
+        FormData fd = new FormData();
+        fd.top = new FormAttachment(0, 3);
+        fd.right = new FormAttachment(100, -3);
+        fd.bottom = new FormAttachment(100, -3);
+        rightButtons.setLayoutData(fd);
 
-        GridData data = new GridData(GridData.FILL_BOTH);
-        data.widthHint = convertWidthInCharsToPixels(80);
-        data.heightHint = convertHeightInCharsToPixels(10);
-        table.setLayoutData(data);
+        Composite tableAndDesc = new Composite(configComposite, SWT.NULL);
+        tableAndDesc.setLayout(new FormLayout());
+        fd = new FormData();
+        fd.left = new FormAttachment(0, 3);
+        fd.top = new FormAttachment(0, 3);
+        fd.right = new FormAttachment(rightButtons, -3, SWT.LEFT);
+        fd.bottom = new FormAttachment(100, -3);
+        tableAndDesc.setLayoutData(fd);
+
+        Control table = createConfigTable(tableAndDesc);
+        fd = new FormData();
+        fd.left = new FormAttachment(0);
+        fd.top = new FormAttachment(0);
+        fd.right = new FormAttachment(100);
+        fd.bottom = new FormAttachment(70);
+        table.setLayoutData(fd);
+
+        Label lblDescription = new Label(tableAndDesc, SWT.NULL);
+        lblDescription.setText("Description:");
+        fd = new FormData();
+        fd.left = new FormAttachment(0);
+        fd.top = new FormAttachment(table, 3);
+        fd.right = new FormAttachment(100);
+        lblDescription.setLayoutData(fd);
+
+        mConfigurationDescription = new Text(tableAndDesc, SWT.LEFT | SWT.WRAP | SWT.MULTI
+                | SWT.READ_ONLY | SWT.BORDER | SWT.VERTICAL);
+        fd = new FormData();
+        fd.left = new FormAttachment(0);
+        fd.top = new FormAttachment(lblDescription);
+        fd.right = new FormAttachment(100);
+        fd.bottom = new FormAttachment(100);
+        mConfigurationDescription.setLayoutData(fd);
+
+        return configComposite;
+    }
+
+    /**
+     * Creates the table viewer to show the existing check configurations.
+     * 
+     * @param parent the parent composite
+     * @return the table control
+     */
+    private Control createConfigTable(Composite parent)
+    {
+        Table table = new Table(parent, SWT.BORDER | SWT.SINGLE | SWT.FULL_SELECTION);
 
         table.setHeaderVisible(true);
         table.setLinesVisible(true);
@@ -249,108 +321,94 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
 
         TableColumn column1 = new TableColumn(table, SWT.NULL);
         column1.setText("Check Configuration");
-
         tableLayout.addColumnData(new ColumnWeightData(40));
+
+        TableColumn column2 = new TableColumn(table, SWT.NULL);
+        column2.setText("Location");
+        tableLayout.addColumnData(new ColumnWeightData(30));
+
+        TableColumn column3 = new TableColumn(table, SWT.NULL);
+        column3.setText("Type");
+        tableLayout.addColumnData(new ColumnWeightData(30));
 
         mViewer = new TableViewer(table);
         mViewer.setLabelProvider(new CheckConfigurationLabelProvider());
-        mViewer.setContentProvider(new CheckConfigurationProvider());
+        mViewer.setContentProvider(new ArrayContentProvider());
         mViewer.setSorter(new CheckConfigurationViewerSorter());
         mViewer.setInput(mCheckConfigurations);
-        mViewer.addDoubleClickListener(new IDoubleClickListener()
-        {
-            public void doubleClick(DoubleClickEvent e)
-            {
-                editCheckConfig();
-            }
-        });
+        mViewer.addDoubleClickListener(mController);
+        mViewer.addSelectionChangedListener(mController);
 
-        Composite rightButtons = new Composite(configComposite, SWT.NULL);
-        rightButtons.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
-        layout = new GridLayout();
-        layout.marginHeight = 0;
-        layout.marginWidth = 0;
-        rightButtons.setLayout(layout);
+        return table;
+    }
 
-        mAddButton = createPushButton(rightButtons, "Add...");
-        mAddButton.addListener(SWT.Selection, new Listener()
-        {
-            public void handleEvent(Event evt)
-            {
-                addCheckConfig(null);
-            }
-        });
+    /**
+     * Creates the button bar.
+     * 
+     * @param parent the parent composite
+     * @return the button bar composite
+     */
+    private Control createButtonBar(Composite parent)
+    {
 
-        mEditButton = createPushButton(rightButtons, "Edit...");
-        mEditButton.addListener(SWT.Selection, new Listener()
-        {
-            public void handleEvent(Event evt)
-            {
-                editCheckConfig();
-            }
-        });
+        Composite rightButtons = new Composite(parent, SWT.NULL);
+        rightButtons.setLayout(new FormLayout());
 
-        mCopyButton = createPushButton(rightButtons, "Copy...");
-        mCopyButton.addListener(SWT.Selection, new Listener()
-        {
-            public void handleEvent(Event evt)
-            {
-                copyCheckConfig();
-            }
-        });
+        mAddButton = new Button(rightButtons, SWT.PUSH);
+        mAddButton.setText("New...");
+        mAddButton.addSelectionListener(mController);
+        FormData fd = new FormData();
+        fd.left = new FormAttachment(0);
+        fd.top = new FormAttachment(0);
+        fd.right = new FormAttachment(100);
+        mAddButton.setLayoutData(fd);
 
-        mRemoveButton = createPushButton(rightButtons, "Remove");
-        mRemoveButton.addListener(SWT.Selection, new Listener()
-        {
-            public void handleEvent(Event evt)
-            {
-                removeCheckConfig();
-            }
-        });
+        mEditButton = new Button(rightButtons, SWT.PUSH);
+        mEditButton.setText("Properties...");
+        mEditButton.addSelectionListener(mController);
+        fd = new FormData();
+        fd.left = new FormAttachment(0);
+        fd.top = new FormAttachment(mAddButton, 3, SWT.BOTTOM);
+        fd.right = new FormAttachment(100);
+        mEditButton.setLayoutData(fd);
 
-        Composite bottomButtons = new Composite(configComposite, SWT.NULL);
-        bottomButtons.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
-        layout = new GridLayout();
-        layout.marginHeight = 0;
-        layout.marginWidth = 0;
-        layout.numColumns = 2;
-        bottomButtons.setLayout(layout);
+        mConfigureButton = new Button(rightButtons, SWT.PUSH);
+        mConfigureButton.setText("Configure...");
+        mConfigureButton.addSelectionListener(mController);
+        fd = new FormData();
+        fd.left = new FormAttachment(0);
+        fd.top = new FormAttachment(mEditButton, 3, SWT.BOTTOM);
+        fd.right = new FormAttachment(100);
+        mConfigureButton.setLayoutData(fd);
 
-        mImportPluginButton = createPushButton(bottomButtons, "Import Plugin Config ...");
-        mImportPluginButton.addListener(SWT.Selection, new Listener()
-        {
-            public void handleEvent(Event evt)
-            {
-                importPluginCheckConfig();
-            }
-        });
+        mCopyButton = new Button(rightButtons, SWT.PUSH);
+        mCopyButton.setText("Copy...");
+        mCopyButton.addSelectionListener(mController);
+        fd = new FormData();
+        fd.left = new FormAttachment(0);
+        fd.top = new FormAttachment(mConfigureButton, 3, SWT.BOTTOM);
+        fd.right = new FormAttachment(100);
+        mCopyButton.setLayoutData(fd);
 
-        mExportPluginButton = createPushButton(bottomButtons, "Export Plugin Config ...");
-        mExportPluginButton.addListener(SWT.Selection, new Listener()
-        {
-            public void handleEvent(Event evt)
-            {
-                exportPluginCheckConfig();
-            }
-        });
+        mRemoveButton = new Button(rightButtons, SWT.PUSH);
+        mRemoveButton.setText("Remove");
+        mRemoveButton.addSelectionListener(mController);
+        fd = new FormData();
+        fd.left = new FormAttachment(0);
+        fd.top = new FormAttachment(mCopyButton, 3, SWT.BOTTOM);
+        fd.right = new FormAttachment(100);
+        mRemoveButton.setLayoutData(fd);
 
-        mImportCheckstyleButton = createPushButton(bottomButtons, "Import Checkstyle Config ...");
-        mImportCheckstyleButton.addListener(SWT.Selection, new Listener()
-        {
-            public void handleEvent(Event evt)
-            {
-                importCheckstyleCheckConfig();
-            }
-        });
+        mExportButton = new Button(rightButtons, SWT.PUSH);
+        mExportButton.setText("Export...");
+        mExportButton.addSelectionListener(mController);
+        fd = new FormData();
+        fd.left = new FormAttachment(0);
+        fd.right = new FormAttachment(100);
+        fd.bottom = new FormAttachment(100);
+        mExportButton.setLayoutData(fd);
 
-        mExportCheckstyleButton = createPushButton(bottomButtons, "Export Checkstyle Config ...");
-        mExportCheckstyleButton.addListener(SWT.Selection, new Listener()
-        {
-            public void handleEvent(Event evt)
-            {
-                exportCheckstyleCheckConfig();
-            }
-        });
+        return rightButtons;
     }
 
     /**
@@ -418,265 +476,222 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
     }
 
     /**
-     * Utility method that creates a push button instance and sets the default
-     * layout data.
+     * Controller for this page.
      * 
-     * @param parent the parent for the new button
-     * @param label the label for the new button
-     * @return the newly-created button
+     * @author Lars Ködderitzsch
      */
-    private Button createPushButton(Composite parent, String label)
+    private class PageController implements SelectionListener, IDoubleClickListener,
+            ISelectionChangedListener
     {
-        Button button = new Button(parent, SWT.PUSH | SWT.WRAP);
-        button.setText(label);
-        GridData data = new GridData();
-        data.horizontalAlignment = GridData.FILL;
-        button.setLayoutData(data);
-        return button;
+
+        /**
+         * @see SelectionListener#widgetSelected(org.eclipse.swt.events.SelectionEvent)
+         */
+        public void widgetSelected(SelectionEvent e)
+        {
+
+            if (mAddButton == e.widget)
+            {
+                addCheckConfig();
+            }
+            if (mEditButton == e.widget && mViewer.getSelection() instanceof IStructuredSelection)
+            {
+                editCheckConfig();
+            }
+            if (mConfigureButton == e.widget
+                    && mViewer.getSelection() instanceof IStructuredSelection)
+            {
+                configureCheckConfig();
+            }
+            if (mCopyButton == e.widget && mViewer.getSelection() instanceof IStructuredSelection)
+            {
+                copyCheckConfig();
+            }
+            if (mRemoveButton == e.widget && mViewer.getSelection() instanceof IStructuredSelection)
+            {
+                removeCheckConfig();
+            }
+            if (mExportButton == e.widget && mViewer.getSelection() instanceof IStructuredSelection)
+            {
+                exportCheckstyleCheckConfig();
+            }
+        }
+
+        /**
+         * @see sSelectionListener#widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent)
+         */
+        public void widgetDefaultSelected(SelectionEvent e)
+        {
+        // NOOP
+        }
+
+        /**
+         * @see IDoubleClickListener#doubleClick(org.eclipse.jface.viewers.DoubleClickEvent)
+         */
+        public void doubleClick(DoubleClickEvent event)
+        {
+            configureCheckConfig();
+        }
+
+        /**
+         * @see ISelectionChangedListener#selectionChanged(
+         *      org.eclipse.jface.viewers.SelectionChangedEvent)
+         */
+        public void selectionChanged(SelectionChangedEvent event)
+        {
+            if (event.getSource() == mViewer
+                    && event.getSelection() instanceof IStructuredSelection)
+            {
+                ICheckConfiguration config = (ICheckConfiguration) ((IStructuredSelection) event
+                        .getSelection()).getFirstElement();
+                if (config != null && config.getDescription() != null)
+                {
+                    mConfigurationDescription.setText(config.getDescription());
+                }
+                else
+                {
+                    mConfigurationDescription.setText("");
+                }
+            }
+        }
+
     }
 
-    private void addCheckConfig(CheckConfiguration configToAdd)
+    /**
+     * Create a new Check configuration.
+     */
+    private void addCheckConfig()
     {
-        CheckConfigurationEditDialog dialog = null;
-        try
+        CheckConfigurationPropertiesDialog dialog = new CheckConfigurationPropertiesDialog(
+                getShell(), null);
+        dialog.setBlockOnOpen(true);
+        if (CheckConfigurationPropertiesDialog.OK == dialog.open())
         {
-            dialog = new CheckConfigurationEditDialog(mParentComposite.getShell(), configToAdd,
-                    mCheckConfigurations);
-            dialog.open();
-        }
-        catch (CheckstylePluginException e)
-        {
-            CheckstyleLog
-                    .error("Failed to open CheckConfigurationEditDialog, " + e.getMessage(), e);
-            CheckstyleLog.internalErrorDialog();
-            return;
-        }
-
-        if (dialog.okWasPressed())
-        {
-            CheckConfiguration checkConfig = dialog.getFinalConfiguration();
-            if (checkConfig != null)
+            try
             {
-                //
-                // ad, 7.Jan.2004, Bug #872279
-                // If the config that is to be imported already exists, ask the
-                // user whether to replace it or not.
-                // When the user chooses not to replace it, the import action
-                // is aborted for the single config, but the import process
-                // should be continued for the other configs (if multiple
-                // configs
-                // were selected.)
-                // 
-                for (Iterator iter = mCheckConfigurations.iterator(); iter.hasNext();)
-                {
-                    CheckConfiguration c = (CheckConfiguration) iter.next();
-                    if (c.getConfigName().equals(checkConfig.getConfigName()))
-                    {
-                        //
-                        // The newly imported config exists already. Ask the
-                        // user if
-                        // the existing one should be replaced.
-                        //
-                        boolean replaceConfiguration = CheckstyleLog.questionDialog(getShell(),
-                                "The configuration '" + c.getConfigName()
-                                        + "' already exists. Do you want to replace it?");
-
-                        if (replaceConfiguration)
-                        {
-                            //
-                            // The user chose to replace the config, so
-                            // delete the existing one here
-                            //
-                            iter.remove();
-                        }
-                        else
-                        {
-                            //
-                            // The user chose NOT to replace the exising config:
-                            // Do nothing.
-                            //
-                            return;
-                        }
-                    }
-                }
-
-                mCheckConfigurations.add(checkConfig);
-                mViewer.refresh();
-
-                //
-                // Since the config may have potentially been replaced by a
-                // new one, we need to do a rebuild, if it is in used.
-                //
-                try
-                {
-                    if (ProjectConfigurationFactory.isCheckConfigInUse(checkConfig.getConfigName()))
-                    {
-                        mNeedRebuild = true;
-                    }
-                }
-                catch (CheckstylePluginException e)
-                {
-                    //
-                    //  Assume its in use.
-                    //
-                    mNeedRebuild = true;
-                    CheckstyleLog.warning("Exception while checking for check config use", e);
-                }
-                // ad, 7.Jan.2004, Bug #872279
-                // end change
-
+                ICheckConfiguration newConfig = dialog.getCheckConfiguration();
+                mCheckConfigurations.add(newConfig);
+                mViewer.refresh(true);
             }
-            else
+            catch (CheckstylePluginException ex)
             {
-                CheckstyleLog.error("New check configuration is null");
-                CheckstyleLog.internalErrorDialog();
+                CheckstyleLog.error(ex.getLocalizedMessage(), ex);
+                CheckstyleLog.errorDialog(getShell(), ex.getLocalizedMessage(), ex);
             }
+
         }
     }
 
+    /**
+     * Edit the properties of a check configuration.
+     */
     private void editCheckConfig()
     {
-        IStructuredSelection selection = (IStructuredSelection) mViewer.getSelection();
-        CheckConfiguration checkConfig = (CheckConfiguration) selection.getFirstElement();
-        if (checkConfig == null)
-        {
-            //
-            //  Nothing is selected.
-            //
-            return;
-        }
+        ICheckConfiguration config = (ICheckConfiguration) ((IStructuredSelection) mViewer
+                .getSelection()).getFirstElement();
 
-        CheckConfigurationEditDialog dialog = null;
-        try
+        if (config != null)
         {
-            dialog = new CheckConfigurationEditDialog(mParentComposite.getShell(), checkConfig,
-                    mCheckConfigurations);
-            dialog.open();
-        }
-        catch (CheckstylePluginException e)
-        {
-            CheckstyleLog
-                    .error("Failed to open CheckConfigurationEditDialog, " + e.getMessage(), e);
-            CheckstyleLog.internalErrorDialog();
-            return;
-        }
-
-        if (dialog.okWasPressed())
-        {
-            CheckConfiguration editedConfig = dialog.getFinalConfiguration();
-            if (editedConfig != null)
+            CheckConfigurationPropertiesDialog dialog = new CheckConfigurationPropertiesDialog(
+                    getShell(), config);
+            dialog.setBlockOnOpen(true);
+            if (CheckConfigurationPropertiesDialog.OK == dialog.open())
             {
-                mCheckConfigurations.remove(checkConfig);
-                mCheckConfigurations.add(editedConfig);
-                try
-                {
-                    if (ProjectConfigurationFactory
-                            .isCheckConfigInUse(editedConfig.getConfigName()))
-                    {
-                        mNeedRebuild = true;
-                    }
-                }
-                catch (CheckstylePluginException e)
-                {
-                    //
-                    //  Assume its in use.
-                    //
-                    mNeedRebuild = true;
-                    CheckstyleLog.warning("Exception while checking for check config use", e);
-                }
-                mViewer.refresh();
-            }
-            else
-            {
-                CheckstyleLog.error("Edited check configuration is null");
-                CheckstyleLog.internalErrorDialog();
+                mViewer.refresh(true);
             }
         }
     }
 
+    private void configureCheckConfig()
+    {
+        ICheckConfiguration config = (ICheckConfiguration) ((IStructuredSelection) mViewer
+                .getSelection()).getFirstElement();
+
+        if (config != null)
+        {
+            CheckConfigurationConfigureDialog dialog = new CheckConfigurationConfigureDialog(
+                    getShell(), config);
+            dialog.setBlockOnOpen(true);
+            if (CheckConfigurationConfigureDialog.OK == dialog.open() && config.isConfigurable())
+            {
+                mNeedRebuild = true;
+            }
+        }
+    }
+
+    /**
+     * Copy an existing config.
+     */
     private void copyCheckConfig()
     {
         IStructuredSelection selection = (IStructuredSelection) mViewer.getSelection();
-        CheckConfiguration checkConfig = (CheckConfiguration) selection.getFirstElement();
-        if (checkConfig == null)
+        ICheckConfiguration sourceConfig = (ICheckConfiguration) selection.getFirstElement();
+        if (sourceConfig == null)
         {
             //
-            //  Nothing is selected.
+            // Nothing is selected.
             //
             return;
         }
 
-        //
-        //  Make a clone of the selected configuration.
-        //
         try
         {
-            checkConfig = (CheckConfiguration) checkConfig.clone();
-            String name = "Copy of " + checkConfig.getConfigName();
-            checkConfig.setName(name);
-        }
-        catch (CloneNotSupportedException e)
-        {
-            CheckstyleLog.error("Failed to clone CheckConfiguration");
-            CheckstyleLog.internalErrorDialog();
-            return;
-        }
 
-        CheckConfigurationEditDialog dialog = null;
-        try
-        {
-            dialog = new CheckConfigurationEditDialog(mParentComposite.getShell(), checkConfig,
-                    mCheckConfigurations);
-            dialog.open();
+            //create a new internal check configuration
+            ICheckConfiguration newConfig = new InternalCheckConfiguration();
+            IConfigurationType internalType = ConfigurationTypes.getByInternalName("internal");
+            newConfig.initialize("Copy of " + sourceConfig.getName(), null, internalType,
+                    sourceConfig.getDescription());
+
+            //Open the properties dialog to change default name and description
+            CheckConfigurationPropertiesDialog dialog = new CheckConfigurationPropertiesDialog(
+                    getShell(), newConfig);
+            dialog.setBlockOnOpen(true);
+            if (CheckConfigurationPropertiesDialog.OK == dialog.open())
+            {
+
+                //Copy the source configuration into the new internal config
+                CheckConfigurationFactory.copyConfiguration(sourceConfig, newConfig);
+
+                mCheckConfigurations.add(newConfig);
+                mViewer.refresh();
+            }
         }
         catch (CheckstylePluginException e)
         {
-            CheckstyleLog
-                    .error("Failed to open CheckConfigurationEditDialog, " + e.getMessage(), e);
+            CheckstyleLog.error(e.getLocalizedMessage(), e);
             CheckstyleLog.internalErrorDialog();
             return;
         }
-
-        if (dialog.okWasPressed())
-        {
-            CheckConfiguration copiedConfig = dialog.getFinalConfiguration();
-            if (copiedConfig != null)
-            {
-                mCheckConfigurations.add(copiedConfig);
-                mViewer.refresh();
-            }
-            else
-            {
-                CheckstyleLog.error("Copied check configuration is null");
-                CheckstyleLog.internalErrorDialog();
-            }
-        }
     }
 
+    /**
+     * Remove a config.
+     */
     private void removeCheckConfig()
     {
         IStructuredSelection selection = (IStructuredSelection) mViewer.getSelection();
-        CheckConfiguration checkConfig = (CheckConfiguration) selection.getFirstElement();
-        if (checkConfig == null)
+        ICheckConfiguration checkConfig = (ICheckConfiguration) selection.getFirstElement();
+        if (checkConfig == null || !checkConfig.isEditable())
         {
             //
-            //  Nothing is selected.
+            // Nothing is selected.
             //
             return;
         }
 
         //
-        //  Make sure the check config is not in use. Don't let it be
-        //  deleted if it is.
+        // Make sure the check config is not in use. Don't let it be
+        // deleted if it is.
         //
         try
         {
-            if (ProjectConfigurationFactory.isCheckConfigInUse(checkConfig.getConfigName()))
+            if (ProjectConfigurationFactory.isCheckConfigInUse(checkConfig.getName()))
             {
-                MessageDialog.openInformation(mParentComposite.getShell(), "Can't Delete",
-                        "The Check Configuration '" + checkConfig.getConfigName()
+                MessageDialog.openInformation(getShell(), "Can't Delete",
+                        "The Check Configuration '" + checkConfig.getName()
                                 + "' is currently in use by a project."
-                                + "  It must be removed from all project "
+                                + " It must be removed from all project "
                                 + "configurations before it can be deleted.");
                 return;
             }
@@ -688,8 +703,8 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
             return;
         }
 
-        boolean confirm = MessageDialog.openQuestion(mParentComposite.getShell(), "Confirm Delete",
-                "Remove check configuration '" + checkConfig.getConfigName() + "'?");
+        boolean confirm = MessageDialog.openQuestion(getShell(), "Confirm Delete",
+                "Remove check configuration '" + checkConfig.getName() + "'?");
         if (confirm)
         {
             mCheckConfigurations.remove(checkConfig);
@@ -697,75 +712,18 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         }
     }
 
-    private void importPluginCheckConfig()
-    {
-        FileDialog dialog = new FileDialog(getShell());
-        dialog.setText("Import Plug-in Check Configuration");
-        String path = dialog.open();
-
-        if (path == null)
-        {
-            return;
-        }
-
-        File checkConfigFile = new File(path);
-        try
-        {
-            List newConfigs = CheckConfigurationFactory
-                    .importPluginCheckConfigurations(checkConfigFile);
-            Iterator iter = newConfigs.iterator();
-            while (iter.hasNext())
-            {
-                addCheckConfig((CheckConfiguration) iter.next());
-            }
-        }
-        catch (CheckstylePluginException e)
-        {
-            CheckstyleLog.error("Failed to import CheckConfigurations from external file", e);
-            CheckstyleLog.internalErrorDialog();
-        }
-    }
-
-    private void exportPluginCheckConfig()
-    {
-        IStructuredSelection selection = (IStructuredSelection) mViewer.getSelection();
-        CheckConfiguration config = (CheckConfiguration) selection.getFirstElement();
-        if (config == null)
-        {
-            MessageDialog.openInformation(mParentComposite.getShell(), "No Selection",
-                    "No Check Configuration Selected");
-            return;
-        }
-
-        FileDialog dialog = new FileDialog(getShell(), SWT.SAVE);
-        dialog.setText("Export Plug-in Check Configuration");
-        String path = dialog.open();
-        if (path == null)
-        {
-            return;
-        }
-        File file = new File(path);
-
-        try
-        {
-            CheckConfigurationFactory.exportPluginCheckConfigurations(file, config);
-        }
-        catch (CheckstylePluginException e)
-        {
-            CheckstyleLog.error("Failed to export CheckConfigurations to external file", e);
-            MessageDialog.openError(mParentComposite.getShell(), "Checkstyle Error",
-                    "Failed to export CheckConfigurations to external file");
-        }
-    }
-
+    /**
+     * Export a configuration.
+     */
     private void exportCheckstyleCheckConfig()
     {
         IStructuredSelection selection = (IStructuredSelection) mViewer.getSelection();
-        CheckConfiguration config = (CheckConfiguration) selection.getFirstElement();
+        ICheckConfiguration config = (ICheckConfiguration) selection.getFirstElement();
         if (config == null)
         {
-            MessageDialog.openInformation(mParentComposite.getShell(), "No Selection",
-                    "No Check Configuration Selected");
+            //
+            // Nothing is selected.
+            //
             return;
         }
 
@@ -780,65 +738,67 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
 
         try
         {
-            CheckConfigurationFactory.exportCheckstyleCheckConfigurations(file, config);
+            CheckConfigurationFactory.exportConfiguration(file, config);
         }
         catch (CheckstylePluginException e)
         {
             CheckstyleLog.error("Failed to export CheckConfigurations to external file", e);
-            MessageDialog.openError(mParentComposite.getShell(), "Checkstyle Error",
-                    "Failed to export CheckConfigurations to external file");
+            CheckstyleLog.errorDialog(getShell(),
+                    "Failed to export CheckConfigurations to external file", e);
         }
     }
 
     private void importCheckstyleCheckConfig()
     {
-        //
-        //  Get the full path to the file to be imported.
-        //
-        FileDialog fileDialog = new FileDialog(getShell());
-        fileDialog.setText("Import Checkstyle Check Configuration");
-        String path = fileDialog.open();
-        if (path == null)
-        {
-            return;
-        }
-
-        try
-        {
-            //
-            //  Load the config file.
-            //
-            CheckConfigConverter converter = new CheckConfigConverter();
-            converter.loadConfig(path);
-
-            //
-            //  Resolve property values.
-            //
-            List resolveProps = converter.getPropsToResolve();
-            if (resolveProps.size() > 0)
-            {
-                ResolvePropertyValuesDialog resolveDialog = new ResolvePropertyValuesDialog(
-                        getShell(), resolveProps);
-                resolveDialog.open();
-            }
-
-            //
-            //  Get a CheckConfiguration from the converter.
-            //
-            CheckConfiguration config = converter.getCheckConfiguration();
-
-            //
-            //  Add the config using the add dialog so the user can see what it
-            // looks like,
-            //  make changes, and it will be validated.
-            //
-            addCheckConfig(config);
-        }
-        catch (CheckstylePluginException e)
-        {
-            CheckstyleLog.error("Failed to import CheckConfigurations from external file", e);
-            CheckstyleLog.internalErrorDialog();
-        }
+    //        //
+    //        // Get the full path to the file to be imported.
+    //        //
+    //        FileDialog fileDialog = new FileDialog(getShell());
+    //        fileDialog.setText("Import Checkstyle Check Configuration");
+    //        String path = fileDialog.open();
+    //        if (path == null)
+    //        {
+    //            return;
+    //        }
+    //
+    //        try
+    //        {
+    //            //
+    //            // Load the config file.
+    //            //
+    //            CheckConfigConverter converter = new CheckConfigConverter();
+    //            converter.loadConfig(path);
+    //
+    //            //
+    //            // Resolve property values.
+    //            //
+    //            List resolveProps = converter.getPropsToResolve();
+    //            if (resolveProps.size() > 0)
+    //            {
+    //                ResolvePropertyValuesDialog resolveDialog = new
+    // ResolvePropertyValuesDialog(
+    //                        getShell(), resolveProps);
+    //                resolveDialog.open();
+    //            }
+    //
+    //            //
+    //            // Get a CheckConfiguration from the converter.
+    //            //
+    //            CheckConfiguration config = converter.getCheckConfiguration();
+    //
+    //            //
+    //            // Add the config using the add dialog so the user can see what it
+    //            // looks like,
+    //            // make changes, and it will be validated.
+    //            //
+    //            addCheckConfig(config);
+    //        }
+    //        catch (CheckstylePluginException e)
+    //        {
+    //            CheckstyleLog.error("Failed to import CheckConfigurations from external
+    // file", e);
+    //            CheckstyleLog.internalErrorDialog();
+    //        }
     }
 
     /**
@@ -856,9 +816,8 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
             Iterator iter = configs.iterator();
             while (iter.hasNext())
             {
-                CheckConfiguration cfg = (CheckConfiguration) iter.next();
-                CheckConfiguration clone = (CheckConfiguration) cfg.clone();
-                mCheckConfigurations.add(clone);
+                ICheckConfiguration cfg = (ICheckConfiguration) iter.next();
+                mCheckConfigurations.add(cfg.clone());
             }
         }
         catch (CloneNotSupportedException e)
@@ -868,4 +827,5 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
                     + e.getMessage());
         }
     }
+
 }

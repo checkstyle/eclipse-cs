@@ -31,24 +31,24 @@ package com.atlassw.tools.eclipse.checkstyle.preferences;
 //=================================================
 // Imports from com namespace
 //=================================================
-import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
-import com.atlassw.tools.eclipse.checkstyle.config.ConfigPropertyMetadata;
-import com.atlassw.tools.eclipse.checkstyle.config.ConfigPropertyType;
 
-import org.eclipse.jface.dialogs.MessageDialog;
+import java.util.List;
+
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
+
+import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
+import com.atlassw.tools.eclipse.checkstyle.config.meta.ConfigPropertyType;
 
 //=================================================
 // Imports from org namespace
 //=================================================
 
 /**
- *  Base class for all configuration property input widget classes.
+ * Base class for all configuration property input widget classes.
  */
 public abstract class ConfigPropertyWidgetAbstractBase implements IConfigPropertyWidget
 {
@@ -64,51 +64,71 @@ public abstract class ConfigPropertyWidgetAbstractBase implements IConfigPropert
     // Instance member variables.
     //=================================================
 
-    private ConfigPropertyType mType;
-
     private ConfigProperty mProp;
 
-    private ConfigPropertyMetadata mMetadata;
-
     private Composite mParent;
+
+    private Control mValueWidget;
 
     //=================================================
     // Constructors.
     //=================================================
 
-    protected ConfigPropertyWidgetAbstractBase(
-        ConfigPropertyType type,
-        Composite parent,
-        ConfigProperty prop,
-        ConfigPropertyMetadata metadata)
+    protected ConfigPropertyWidgetAbstractBase(Composite parent, ConfigProperty prop)
     {
         mParent = parent;
-        mType = type;
         mProp = prop;
-        mMetadata = metadata;
+
+        //
+        //  Add the property's name.
+        //
+        Label label = new Label(parent, SWT.NULL);
+        label.setText(mProp.getName() + ":");
+        GridData gd = new GridData();
+        gd.verticalAlignment = SWT.BEGINNING;
+        label.setLayoutData(gd);
+
+        mValueWidget = getValueWidget(parent);
+        gd = (GridData) mValueWidget.getLayoutData();
+        mValueWidget.setToolTipText(mProp.getMetaData().getDescription());
     }
 
     //=================================================
     // Methods.
     //=================================================
-    
+
     /**
-     * @return  The type of the configuration property.
+     * @return The type of the configuration property.
      */
     public ConfigPropertyType getConfigPropertyType()
     {
-        return mType;
+        return mProp.getMetaData().getDatatype();
     }
-    
+
     /**
-     * @return  The property's value.
+     * @see IConfigPropertyWidget#setEnabled(boolean)
+     */
+    public void setEnabled(boolean enabled)
+    {
+        mValueWidget.setEnabled(enabled);
+    }
+
+    /**
+     * Returns the widget containing the values.
+     * 
+     * @return the widget containing the value
+     */
+    protected abstract Control getValueWidget(Composite parent);
+
+    /**
+     * @return The property's value.
      */
     public abstract String getValue();
 
     protected String getInitValue()
     {
         //
-        //  Figure out an initial value for the property.  This will be,
+        //  Figure out an initial value for the property. This will be,
         //  in order of precidents:
         //
         //     1) the existing value
@@ -122,7 +142,7 @@ public abstract class ConfigPropertyWidgetAbstractBase implements IConfigPropert
         }
         if (initValue == null)
         {
-            initValue = mMetadata.getDefaultValue();
+            initValue = mProp.getMetaData().getDefaultValue();
         }
         if (initValue == null)
         {
@@ -131,7 +151,7 @@ public abstract class ConfigPropertyWidgetAbstractBase implements IConfigPropert
 
         return initValue;
     }
-    
+
     /**
      * @return The configuration property.
      */
@@ -139,48 +159,12 @@ public abstract class ConfigPropertyWidgetAbstractBase implements IConfigPropert
     {
         return mProp;
     }
-    
+
     /**
      * @return Configuration property metadata.
      */
-    public ConfigPropertyMetadata getMetadata()
+    public List getMetadata()
     {
-        return mMetadata;
-    }
-
-    protected void addPropertyLabel(int style)
-    {
-        //
-        //  Add some spaces just to indent the property configurations.
-        //
-        Label label = new Label(mParent, style);
-        label.setText("   ");
-
-        //
-        //  Add the property's name.
-        //
-        label = new Label(mParent, style);
-        label.setText(mMetadata.getName());
-    }
-
-    protected void addDescriptionButton(int style)
-    {
-        Button button = new Button(mParent, style | SWT.PUSH);
-        button.setText("Description");
-        button.addListener(SWT.Selection, new Listener()
-        {
-            public void handleEvent(Event evt)
-            {
-                propDescription(evt);
-            }
-        });
-    }
-
-    private void propDescription(Event event)
-    {
-        MessageDialog.openInformation(
-            mParent.getShell(),
-            "Description",
-            mMetadata.getDescription());
+        return mProp.getMetaData().getPropertyEnumeration();
     }
 }

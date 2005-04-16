@@ -23,44 +23,41 @@ package com.atlassw.tools.eclipse.checkstyle.preferences;
 //=================================================
 // Imports from java namespace
 //=================================================
-import java.util.HashMap;
+import java.io.File;
 import java.util.Iterator;
 import java.util.List;
 
-//=================================================
-// Imports from javax namespace
-//=================================================
-
-//=================================================
-// Imports from com namespace
-//=================================================
-import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
-import com.atlassw.tools.eclipse.checkstyle.config.ConfigPropertyMetadata;
-import com.atlassw.tools.eclipse.checkstyle.config.ConfigPropertyType;
-import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
-import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
-
-import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
-
-//=================================================
-// Imports from org namespace
-//=================================================
+import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.dialogs.TitleAreaDialog;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.dialogs.MessageDialog;
+
+import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
+import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
+import com.atlassw.tools.eclipse.checkstyle.config.Module;
+import com.atlassw.tools.eclipse.checkstyle.config.meta.ConfigPropertyMetadata;
+import com.atlassw.tools.eclipse.checkstyle.config.meta.ConfigPropertyType;
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
+import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
 
 /**
  * Edit dialog for property values.
  */
-public class RuleConfigurationEditDialog extends Dialog
+public class RuleConfigurationEditDialog extends TitleAreaDialog
 {
     //=================================================
     // Public static final variables.
@@ -70,15 +67,8 @@ public class RuleConfigurationEditDialog extends Dialog
     // Static class variables.
     //=================================================
 
-    private static final int MAX_INPUT_LENGTH = 40;
-
-    private static final String[] SEVERITY_LABELS =
-    {
-            SeverityLevel.IGNORE.getName(),
-            SeverityLevel.INFO.getName(),
-            SeverityLevel.WARNING.getName(),
-            SeverityLevel.ERROR.getName()
-    };
+    private static final SeverityLevel[] SEVERITY_LEVELS = { SeverityLevel.IGNORE,
+        SeverityLevel.INFO, SeverityLevel.WARNING, SeverityLevel.ERROR };
 
     //=================================================
     // Instance member variables.
@@ -86,17 +76,17 @@ public class RuleConfigurationEditDialog extends Dialog
 
     private Composite mParentComposite;
 
-    private RuleConfigWorkingCopy mRule;
-
-    private RuleConfigWorkingCopy mFinalRule;
+    private Module mRule;
 
     private Text mCommentText;
 
-    private Combo mSeverityCombo;
+    private ComboViewer mSeverityCombo;
 
     private IConfigPropertyWidget[] mConfigPropertyWidgets;
 
-    private boolean mOkWasPressed = false;
+    private boolean mReadonly = false;
+
+    private String mTitle;
 
     //=================================================
     // Constructors & finalizer.
@@ -105,26 +95,19 @@ public class RuleConfigurationEditDialog extends Dialog
     /**
      * Constructor.
      * 
-     * @param parent  Parent shell.
+     * @param parent Parent shell.
      * 
-     * @param rule    Rule being edited.
+     * @param rule Rule being edited.
      * 
-     * @throws CheckstylePluginException  Error during processing.
+     * @throws CheckstylePluginException Error during processing.
      */
-    RuleConfigurationEditDialog(Shell parent, RuleConfigWorkingCopy rule)
+    RuleConfigurationEditDialog(Shell parent, Module rule, boolean readonly, String title)
         throws CheckstylePluginException
     {
         super(parent);
         mRule = rule;
-        try
-        {
-            mFinalRule = (RuleConfigWorkingCopy)rule.clone();
-        }
-        catch (CloneNotSupportedException e)
-        {
-            CheckstyleLog.error("Failed to clone RuleConfigWorkingCopy", e);
-            throw new CheckstylePluginException("Failed to clone RuleConfigWorkingCopy");
-        }
+        mReadonly = readonly;
+        mTitle = title;
     }
 
     //=================================================
@@ -132,40 +115,153 @@ public class RuleConfigurationEditDialog extends Dialog
     //=================================================
 
     /**
-     * @see Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
+     * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
      */
     protected Control createDialogArea(Composite parent)
     {
-        Composite composite = (Composite)super.createDialogArea(parent);
+        Composite composite = (Composite) super.createDialogArea(parent);
 
         Composite dialog = new Composite(composite, SWT.NONE);
+        dialog.setLayoutData(new GridData(GridData.FILL_BOTH));
         mParentComposite = dialog;
-        GridLayout layout = new GridLayout();
-        layout.numColumns = 1;
+        GridLayout layout = new GridLayout(2, false);
         dialog.setLayout(layout);
 
-        createRuleNameLable(dialog);
-        createComment(dialog);
-        createSeveritySelection(dialog);
-        createConfigPropertyEntries(dialog);
+        //Build comment
+        Label commentLabel = new Label(dialog, SWT.NULL);
+        commentLabel.setText("Comment:");
+        commentLabel.setLayoutData(new GridData());
 
-        dialog.layout();
+        mCommentText = new Text(dialog, SWT.SINGLE | SWT.BORDER);
+        mCommentText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+        //Build severity
+        Label lblSeverity = new Label(dialog, SWT.NULL);
+        lblSeverity.setText("Severity: ");
+        lblSeverity.setLayoutData(new GridData());
+
+        mSeverityCombo = new ComboViewer(dialog);
+        mSeverityCombo.setContentProvider(new ArrayContentProvider());
+        mSeverityCombo.setLabelProvider(new LabelProvider()
+        {
+            /**
+             * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
+             */
+            public String getText(Object element)
+            {
+                return ((SeverityLevel) element).getName();
+            }
+        });
+        mSeverityCombo.getControl().setLayoutData(new GridData());
+
+        Group properties = new Group(dialog, SWT.NULL);
+        properties.setLayout(new GridLayout(2, false));
+        properties.setText("Properties:");
+        GridData gd = new GridData(GridData.FILL_BOTH);
+        gd.horizontalSpan = 2;
+        properties.setLayoutData(gd);
+
+        createConfigPropertyEntries(properties);
+
+        if (mConfigPropertyWidgets == null || mConfigPropertyWidgets.length == 0)
+        {
+
+            properties.dispose();
+        }
+
+        initialize();
         return composite;
     }
 
+    protected void createButtonsForButtonBar(Composite parent)
+    {
+
+        createButton(parent, IDialogConstants.BACK_ID, "Default", true);
+        // create OK and Cancel buttons by default
+        createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true);
+        createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
+    }
+
+    private void initialize()
+    {
+
+        this.setTitle("Configuration of checkstyle module '" + mRule.getName() + "'");
+        if (!mReadonly)
+        {
+            this.setMessage("Edit the module configuration.");
+        }
+        else
+        {
+            this.setMessage("The module can not be edited.");
+        }
+
+        String comment = mRule.getComment();
+        if (comment != null)
+        {
+            mCommentText.setText(comment);
+        }
+        mCommentText.setEditable(!mReadonly);
+
+        mSeverityCombo.setInput(SEVERITY_LEVELS);
+        mSeverityCombo.getCombo().setEnabled(!mReadonly);
+        if (mRule.getMetaData().hasSeverity())
+        {
+            mSeverityCombo.setSelection(new StructuredSelection(mRule.getSeverity()));
+        }
+        else
+        {
+            mSeverityCombo.getCombo().setEnabled(false);
+        }
+
+        //set the logo
+        this.setTitleImage(CheckstylePlugin.getLogo());
+    }
+
     /**
-     *  OK button was selected.
+     * @see org.eclipse.jface.dialogs.Dialog#buttonPressed(int)
+     */
+    protected void buttonPressed(int buttonId)
+    {
+        if (IDialogConstants.BACK_ID == buttonId)
+        {
+
+            if (MessageDialog.openConfirm(getShell(), "Restore default values",
+                    "Restore default values for this module?"))
+            {
+
+                if (mRule.getMetaData().hasSeverity())
+                {
+                    mSeverityCombo.setSelection(new StructuredSelection(mRule.getMetaData()
+                            .getDefaultSeverityLevel()));
+                    mCommentText.setText("");
+                }
+
+                //restore the default value for the properties
+                for (int i = 0; i < mConfigPropertyWidgets.length; i++)
+                {
+                    mConfigPropertyWidgets[i].restorePropertyDefault();
+                }
+            }
+        }
+        else
+        {
+            super.buttonPressed(buttonId);
+        }
+    }
+
+    /**
+     * OK button was selected.
      */
     protected void okPressed()
     {
         //
         //  Get the selected severity level.
         //
-        SeverityLevel severity = mRule.getSeverityLevel();
+        SeverityLevel severity = mRule.getSeverity();
         try
         {
-            String severityLabel = mSeverityCombo.getItem(mSeverityCombo.getSelectionIndex());
-            severity = SeverityLevel.getInstance(severityLabel);
+            severity = (SeverityLevel) ((IStructuredSelection) mSeverityCombo.getSelection())
+                    .getFirstElement();
         }
         catch (IllegalArgumentException e)
         {
@@ -183,157 +279,65 @@ public class RuleConfigurationEditDialog extends Dialog
         //  Note: if the rule does not have any configuration properties then
         //        skip over the populating of the config property hash map.
         //
-        HashMap configProps = new HashMap();
+        boolean hasError = false;
         if (mConfigPropertyWidgets != null)
         {
             for (int i = 0; i < mConfigPropertyWidgets.length; i++)
             {
                 IConfigPropertyWidget widget = mConfigPropertyWidgets[i];
-                ConfigProperty property = buildConfigProperty(widget);
-                if (property == null)
+                ConfigProperty property = widget.getConfigProperty();
+
+                boolean isValid = validatePropertyValue(widget.getValue(), property.getMetaData());
+                if (!isValid)
                 {
-                    return;
+                    String message = "Invalid value for property "
+                            + property.getMetaData().getName();
+                    MessageDialog.openError(mParentComposite.getShell(), "Invalid Property Value",
+                            message);
+                    hasError = true;
                 }
                 else
                 {
-                    configProps.put(property.getName(), property);
+                    property.setValue(widget.getValue());
                 }
             }
-
         }
 
         //
-        //  If we made it this far then all of the user input validated and we can
+        //  If we made it this far then all of the user input validated and we
+        // can
         //  update the final rule with the values the user entered.
         //
-        mFinalRule.setConfigItems(configProps);
-        mFinalRule.setSeverityLevel(severity);
-        mFinalRule.setRuleComment(comment);
+        mRule.setSeverity(severity);
+        mRule.setComment(comment);
 
-        mOkWasPressed = true;
-        super.okPressed();
-    }
-
-    private ConfigProperty buildConfigProperty(IConfigPropertyWidget widget)
-    {
-        String value = widget.getValue();
-        boolean isValid = validatePropertyValue(value, widget.getMetadata());
-        if (!isValid)
+        if (!hasError)
         {
-            String message = "Invalid value for property " + widget.getMetadata().getName();
-            MessageDialog.openError(mParentComposite.getShell(), "Invalid Property Value", message);
-            return null;
+            super.okPressed();
         }
-
-        ConfigProperty prop = new ConfigProperty(widget.getMetadata().getName(), value);
-        return prop;
-    }
-
-    private void createRuleNameLable(Composite parent)
-    {
-        Label label = new Label(parent, SWT.NULL);
-        label.setText("Rule: " + mRule.getRuleName());
-    }
-
-    private void createComment(Composite parent)
-    {
-        Composite comp = new Composite(parent, SWT.NONE);
-        GridLayout layout = new GridLayout();
-        layout.numColumns = 2;
-        layout.marginWidth = 0;
-        comp.setLayout(layout);
-
-        Label commentLabel = new Label(comp, SWT.NULL);
-        commentLabel.setText("Comment:");
-
-        mCommentText = new Text(comp, SWT.SINGLE | SWT.BORDER);
-        GridData data = new GridData();
-        data.horizontalAlignment = GridData.FILL;
-        data.horizontalSpan = 1;
-        data.grabExcessHorizontalSpace = true;
-        data.verticalAlignment = GridData.CENTER;
-        data.grabExcessVerticalSpace = false;
-        data.widthHint = convertWidthInCharsToPixels(MAX_INPUT_LENGTH);
-        data.heightHint = convertHeightInCharsToPixels(1);
-        mCommentText.setLayoutData(data);
-        mCommentText.setFont(parent.getFont());
-        String comment = mRule.getRuleComment();
-        if (comment != null)
-        {
-            mCommentText.setText(comment);
-        }
-    }
-
-    private void createSeveritySelection(Composite parent)
-    {
-        Composite comp = new Composite(parent, SWT.NONE);
-        GridLayout layout = new GridLayout();
-        layout.numColumns = 2;
-        layout.marginWidth = 0;
-        comp.setLayout(layout);
-
-        Label label = new Label(comp, SWT.NULL);
-        label.setText("Severity: ");
-
-        mSeverityCombo = new Combo(comp, SWT.NONE | SWT.DROP_DOWN | SWT.READ_ONLY);
-        mSeverityCombo.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
-        mSeverityCombo.setItems(SEVERITY_LABELS);
-        mSeverityCombo.select(severityToComboPosition(mRule.getSeverityLevel()));
     }
 
     private void createConfigPropertyEntries(Composite parent)
     {
-        List configItemMetadata = mRule.getConfigItemMetadata();
+        List configItemMetadata = mRule.getProperties();
         if (configItemMetadata.size() <= 0)
         {
             return;
         }
 
-        Label label = new Label(parent, SWT.NULL);
-        label.setText("Properties:");
-
-        Composite comp = new Composite(parent, SWT.NONE);
-        GridLayout layout = new GridLayout();
-        layout.numColumns = 4;
-        layout.marginWidth = 0;
-        comp.setLayout(layout);
-
         mConfigPropertyWidgets = new IConfigPropertyWidget[configItemMetadata.size()];
         Iterator iter = configItemMetadata.iterator();
         for (int i = 0; iter.hasNext(); i++)
         {
-            ConfigPropertyMetadata cfgPropMetadata = (ConfigPropertyMetadata)iter.next();
-            ConfigProperty prop =
-                (ConfigProperty)mRule.getConfigProperty(cfgPropMetadata.getName());
+            ConfigProperty prop = (ConfigProperty) iter.next();
 
             //
             //  Add an input widget for the properties value.
             //
-            mConfigPropertyWidgets[i] =
-                ConfigPropertyWidgetFactory.createWidget(comp, cfgPropMetadata, prop);
+            mConfigPropertyWidgets[i] = ConfigPropertyWidgetFactory.createWidget(parent, prop,
+                    getShell());
+            mConfigPropertyWidgets[i].setEnabled(!mReadonly);
         }
-    }
-
-    private int severityToComboPosition(SeverityLevel severity)
-    {
-        int result = 0;
-
-        String label = severity.getName();
-        for (int i = 0; i < SEVERITY_LABELS.length; i++)
-        {
-            if (label.equals(SEVERITY_LABELS[i]))
-            {
-                result = i;
-                break;
-            }
-        }
-
-        return result;
-    }
-
-    RuleConfigWorkingCopy getFinalRule()
-    {
-        return mFinalRule;
     }
 
     private boolean validatePropertyValue(String value, ConfigPropertyMetadata metadata)
@@ -367,13 +371,24 @@ public class RuleConfigurationEditDialog extends Dialog
             catch (NumberFormatException e)
             {
                 //
-                //  If an exception was thrown then consider the value to be invalid.
+                //  If an exception was thrown then consider the value to be
+                // invalid.
                 //
                 result = false;
             }
         }
-        else if (
-            (type.equals(ConfigPropertyType.SINGLE_SELECT))
+        else if (type.equals(ConfigPropertyType.FILE))
+        {
+            if (value == null || value.trim().length() == 0)
+            {
+                result = true;
+            }
+            else
+            {
+                result = new File(value).exists();
+            }
+        }
+        else if ((type.equals(ConfigPropertyType.SINGLE_SELECT))
                 || type.equals(ConfigPropertyType.MULTI_CHECK)
                 || type.equals(ConfigPropertyType.BOOLEAN)
                 || type.equals(ConfigPropertyType.HIDDEN))
@@ -388,22 +403,14 @@ public class RuleConfigurationEditDialog extends Dialog
 
         return result;
     }
-    
-    /**
-     * @return  Indicates if the OK button was pressed to close the dialog window.
-     */
-    public boolean okWasPressed()
-    {
-        return mOkWasPressed;
-    }
 
     /**
-     *  Over-rides method from Window to configure the 
-     *  shell (e.g. the enclosing window).
+     * Over-rides method from Window to configure the shell (e.g. the enclosing
+     * window).
      */
     protected void configureShell(Shell shell)
     {
         super.configureShell(shell);
-        shell.setText("Checkstyle Rule Configuration Editor");
+        shell.setText(mTitle);
     }
 }

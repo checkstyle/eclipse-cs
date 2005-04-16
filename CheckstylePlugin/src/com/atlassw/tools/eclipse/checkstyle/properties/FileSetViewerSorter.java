@@ -37,37 +37,10 @@ import org.eclipse.jface.viewers.ViewerSorter;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileSet;
 
 /**
- *  Sorts CheckConfiguration objects into their display order.
+ * Sorts CheckConfiguration objects into their display order.
  */
 public class FileSetViewerSorter extends ViewerSorter
 {
-    //=================================================
-    // Public static final variables.
-    //=================================================
-
-    //=================================================
-    // Static class variables.
-    //=================================================
-
-    //=================================================
-    // Instance member variables.
-    //=================================================
-
-    //=================================================
-    // Constructors & finalizer.
-    //=================================================
-
-    /**
-     * Default constructor.
-     */
-    public FileSetViewerSorter()
-    {
-        super();
-    }
-
-    //=================================================
-    // Methods.
-    //=================================================
 
     /**
      * @see ViewerSorter#compare
@@ -78,8 +51,8 @@ public class FileSetViewerSorter extends ViewerSorter
 
         if ((e1 instanceof FileSet) && (e2 instanceof FileSet))
         {
-            FileSet fileSet1 = (FileSet)e1;
-            FileSet fileSet2 = (FileSet)e2;
+            FileSet fileSet1 = (FileSet) e1;
+            FileSet fileSet2 = (FileSet) e2;
 
             String name1 = fileSet1.getName();
             String name2 = fileSet2.getName();

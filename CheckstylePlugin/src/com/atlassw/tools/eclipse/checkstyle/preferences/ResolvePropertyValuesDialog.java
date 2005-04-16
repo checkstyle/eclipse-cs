@@ -49,6 +49,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -157,7 +158,7 @@ public class ResolvePropertyValuesDialog extends Dialog
 
         mViewer = new TableViewer(table);
         mViewer.setLabelProvider(new ResolvablePropertyLabelProvider());
-        mViewer.setContentProvider(new ResolvablePropertyProvider());
+        mViewer.setContentProvider(new ArrayContentProvider());
         mViewer.setSorter(new ResolvablePropertyViewerSorter());
         mViewer.setInput(mProperties);
 
@@ -198,25 +199,6 @@ public class ResolvePropertyValuesDialog extends Dialog
         }
     }
 
-    /**
-     * OK button was selected.
-     */
-    protected void okPressed()
-    {
-        mOkWasPressed = true;
-        super.okPressed();
-    }
-
-    /**
-     *  Indicates if the OK button was pressed rather then the Cancel button.
-     * 
-     *  @return  <code>true</code> = OK button was pressed,<br>
-     *            <code>false</code> = OK was not pressed.
-     */
-    public boolean okWasPressed()
-    {
-        return mOkWasPressed;
-    }
 
     /**
      *  Over-rides method from Window to configure the 

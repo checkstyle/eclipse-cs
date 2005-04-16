@@ -2,6 +2,9 @@
 <?eclipse version="3.0"?>
 <plugin>
   
+   <!-- defines the extension point to contribute custom configuration type. -->
+   <extension-point id="configurationtypes" name="Configuration types" schema="schema/configtypes.exsd"/>
+  
    <!-- defines the extension point to contribute custom filters to the checkstyle plugin -->
    <extension-point id="filters" name="Checkstyle filters" schema="schema/filters.exsd"/>
    
@@ -84,38 +87,102 @@
    <extension
          point="org.eclipse.ui.editors.annotationTypes">
       <type
+      		name="com.atlassw.tools.eclipse.checkstyle.error"         
             markerType="com.atlassw.tools.eclipse.checkstyle.CheckstyleMarker"
-            name="com.atlassw.tools.eclipse.checkstyle.CheckstyleAnnotation"
+            markerSeverity="2">
+      </type>
+      <type
+      		name="com.atlassw.tools.eclipse.checkstyle.warning"         
+            markerType="com.atlassw.tools.eclipse.checkstyle.CheckstyleMarker"
             markerSeverity="1">
       </type>
+      <type
+      		name="com.atlassw.tools.eclipse.checkstyle.info"         
+            markerType="com.atlassw.tools.eclipse.checkstyle.CheckstyleMarker"
+            markerSeverity="0">
+      </type>
    </extension>
+  
    <extension
          point="org.eclipse.ui.editors.markerAnnotationSpecification">
       <specification
-            textPreferenceKey="CheckstyleAnnotation.text"
-            presentationLayer="3"
-            highlightPreferenceValue="true"
-            showInNextPrevDropdownToolbarAction="true"
-            textPreferenceValue="false"
-            isGoToPreviousNavigationTargetKey="CheckstyleAnnotation.previous"
-            label="%CheckstyleMarker.name"
-            colorPreferenceKey="CheckstyleAnnotation.color"
-            showInNextPrevDropdownToolbarActionKey="CheckstyleAnnotation.dropdown"
-            annotationType="com.atlassw.tools.eclipse.checkstyle.CheckstyleAnnotation"
-            isGoToNextNavigationTargetKey="CheckstyleAnnotation.next"
-            isGoToNextNavigationTarget="true"
-            textStylePreferenceKey="checkstyle.text.style"
-            overviewRulerPreferenceKey="CheckstyleAnnotation.overviewruler"
+      		annotationType="com.atlassw.tools.eclipse.checkstyle.error"
+      		presentationLayer="5"
+      		icon="icons/checkstyle_error.gif"
+      		label="Checkstyle error"      		   
+            verticalRulerPreferenceKey="com.atlassw.tools.eclipse.checkstyle.error.verticalruler"
             verticalRulerPreferenceValue="true"
-            highlightPreferenceKey="CheckstyleAnnotation.highlight"
-            isGoToPreviousNavigationTarget="true"
-            verticalRulerPreferenceKey="CheckstyleAnnotation.verticalruler"
-            icon="icons/checkstyle_marker.gif"
-            textStylePreferenceValue="BOX"
-            colorPreferenceValue="255,213,213"
-            overviewRulerPreferenceValue="true">
+            overviewRulerPreferenceKey="com.atlassw.tools.eclipse.checkstyle.error.overviewruler"            
+            overviewRulerPreferenceValue="true"
+            showInNextPrevDropdownToolbarActionKey="com.atlassw.tools.eclipse.checkstyle.error.dropdown"
+            showInNextPrevDropdownToolbarAction="true"  
+            isGoToPreviousNavigationTargetKey="com.atlassw.tools.eclipse.checkstyle.error.previous"
+            isGoToPreviousNavigationTarget="true"            
+            isGoToNextNavigationTargetKey="com.atlassw.tools.eclipse.checkstyle.error.next"
+            isGoToNextNavigationTarget="true"                 
+            highlightPreferenceKey="com.atlassw.tools.eclipse.checkstyle.error.highlight"
+            highlightPreferenceValue="true"
+            textPreferenceKey="com.atlassw.tools.eclipse.checkstyle.error.text"
+            textPreferenceValue="false"
+            textStylePreferenceKey="com.atlassw.tools.eclipse.checkstyle.error.text.style"
+            textStylePreferenceValue="BOX"           
+            colorPreferenceKey="com.atlassw.tools.eclipse.checkstyle.error.color"
+            colorPreferenceValue="255,225,225"
+            >
+      </specification>
+      <specification
+      		annotationType="com.atlassw.tools.eclipse.checkstyle.warning"
+      		presentationLayer="4"
+      		icon="icons/checkstyle_warning.gif"
+      		label="Checkstyle warning"      		   
+            verticalRulerPreferenceKey="com.atlassw.tools.eclipse.checkstyle.warning.verticalruler"
+            verticalRulerPreferenceValue="true"
+            overviewRulerPreferenceKey="com.atlassw.tools.eclipse.checkstyle.warning.overviewruler"            
+            overviewRulerPreferenceValue="true"
+            showInNextPrevDropdownToolbarActionKey="com.atlassw.tools.eclipse.checkstyle.warning.dropdown"
+            showInNextPrevDropdownToolbarAction="true"  
+            isGoToPreviousNavigationTargetKey="com.atlassw.tools.eclipse.checkstyle.warning.previous"
+            isGoToPreviousNavigationTarget="true"            
+            isGoToNextNavigationTargetKey="com.atlassw.tools.eclipse.checkstyle.warning.next"
+            isGoToNextNavigationTarget="true"                 
+            highlightPreferenceKey="com.atlassw.tools.eclipse.checkstyle.warning.highlight"
+            highlightPreferenceValue="true"
+            textPreferenceKey="com.atlassw.tools.eclipse.checkstyle.warning.text"
+            textPreferenceValue="false"
+            textStylePreferenceKey="com.atlassw.tools.eclipse.checkstyle.warning.text.style"
+            textStylePreferenceValue="BOX"           
+            colorPreferenceKey="com.atlassw.tools.eclipse.checkstyle.warning.color"
+            colorPreferenceValue="255,255,190"
+            >
+      </specification>
+      <specification
+      		annotationType="com.atlassw.tools.eclipse.checkstyle.info"
+      		presentationLayer="3"
+      		icon="icons/checkstyle_info.gif"
+      		label="Checkstyle info"      		   
+            verticalRulerPreferenceKey="com.atlassw.tools.eclipse.checkstyle.info.verticalruler"
+            verticalRulerPreferenceValue="true"
+            overviewRulerPreferenceKey="com.atlassw.tools.eclipse.checkstyle.info.overviewruler"            
+            overviewRulerPreferenceValue="true"
+            showInNextPrevDropdownToolbarActionKey="Ccom.atlassw.tools.eclipse.checkstyle.info.dropdown"
+            showInNextPrevDropdownToolbarAction="true"  
+            isGoToPreviousNavigationTargetKey="com.atlassw.tools.eclipse.checkstyle.info.previous"
+            isGoToPreviousNavigationTarget="true"            
+            isGoToNextNavigationTargetKey="com.atlassw.tools.eclipse.checkstyle.info.next"
+            isGoToNextNavigationTarget="true"                 
+            highlightPreferenceKey="com.atlassw.tools.eclipse.checkstyle.info.highlight"
+            highlightPreferenceValue="true"
+            textPreferenceKey="com.atlassw.tools.eclipse.checkstyle.info.text"
+            textPreferenceValue="false"
+            textStylePreferenceKey="com.atlassw.tools.eclipse.checkstyle.info.text.style"
+            textStylePreferenceValue="BOX"           
+            colorPreferenceKey="com.atlassw.tools.eclipse.checkstyle.info.color"
+            colorPreferenceValue="225,225,255"
+            >
       </specification>
    </extension>
+   
+   
    
    <extension
          point="org.eclipse.jdt.ui.javaEditorTextHovers">
@@ -129,18 +196,52 @@
    
 
 <!-- 
+	Standard plugin check configuration types
+	-->
+   <extension
+         id="checkstyle.CheckConfiguration"
+         point="com.atlassw.tools.eclipse.checkstyle.configurationtypes">
+      <configuration-type
+            name="%BuiltinCheckConfiguration.label"
+            internal-name="builtin"
+            creatable="false"
+            icon="icons/configtype_builtin.gif"
+            class="com.atlassw.tools.eclipse.checkstyle.config.configtypes.BuiltInCheckConfiguration"
+            editorClass="com.atlassw.tools.eclipse.checkstyle.config.configtypes.ReadonlyLocationEditor">
+      </configuration-type>
+      <configuration-type
+            name="%InternalCheckConfiguration.label"
+            internal-name="internal"
+            creatable="true"
+            icon="icons/configtype_internal.gif"
+            class="com.atlassw.tools.eclipse.checkstyle.config.configtypes.InternalCheckConfiguration"
+            editorClass="com.atlassw.tools.eclipse.checkstyle.config.configtypes.ReadonlyLocationEditor">
+      </configuration-type>
+      <configuration-type
+            name="%ExternalFileCheckConfiguration.label"
+            internal-name="external"
+            creatable="true"
+            icon="icons/configtype_external.gif"
+            class="com.atlassw.tools.eclipse.checkstyle.config.configtypes.ExternalFileCheckConfiguration"
+            editorClass="com.atlassw.tools.eclipse.checkstyle.config.configtypes.FileConfigurationLocationEditor">
+      </configuration-type>
+   </extension>
+
+<!-- 
 	Standard checkstyle filters
 	-->
    <extension
          id="checkstyle.CheckstyleFilters"
          point="com.atlassw.tools.eclipse.checkstyle.filters">
+      <!-- this should be the first filter, since it filters out many files with little effort. -->
       <filter
+            name="FileTypesFilter"
+            internal-name="FileTypesFilter"
+            description="Filters all but the statically defined file types (see data tags)"
+            class="com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.FileTypesFilter"
             readonly="true"
-            name="%NonJavaFilesFilter.label"
-            internal-name="NonJavaFiles"
-            selected="true"
-            description="%NonJavaFilesFilter.description"
-            class="com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.NonJavaFileFilter">
+            selected="true">
+            <data value="java"/> 
       </filter>
       <filter
             name="%WriteProtectedFilter.label"
@@ -161,16 +262,8 @@
             description="%PackageFilter.description"
             class="com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.PackageFilter">
       </filter>
-      <!--
-      <filter
-            editorClass="com.atlassw.tools.eclipse.checkstyle.filters.RegexFilterEditor"
-            name="%RegexFilter.label"
-            description="%RegexFilter.description"
-            class="com.atlassw.tools.eclipse.checkstyle.filters.RegexFilter">
-      </filter>
-      -->
    </extension>
-   
+
    <!--
    Action that launches the duplicates analysis
    -->
@@ -213,5 +306,4 @@
             name="Duplication de code"
             id="com.atlassw.tools.eclipse.checkstyle.duplicatesView"/>
    </extension>
-   
 </plugin>

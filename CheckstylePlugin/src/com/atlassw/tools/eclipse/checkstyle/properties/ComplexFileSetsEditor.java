@@ -24,6 +24,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.ColumnWeightData;
@@ -66,19 +67,19 @@ public class ComplexFileSetsEditor implements IFileSetsEditor
     // Instance member variables.
     //=================================================
 
-    private IProject            mProject;
+    private IProject mProject;
 
-    private Composite           mComposite;
+    private Composite mComposite;
 
     private CheckboxTableViewer mViewer;
 
-    private Button              mAddButton;
+    private Button mAddButton;
 
-    private Button              mEditButton;
+    private Button mEditButton;
 
-    private Button              mRemoveButton;
+    private Button mRemoveButton;
 
-    private List                mFileSets;
+    private List mFileSets;
 
     //=================================================
     // Constructors & finalizer.
@@ -126,8 +127,6 @@ public class ComplexFileSetsEditor implements IFileSetsEditor
         Table table = new Table(composite, SWT.CHECK | SWT.BORDER | SWT.FULL_SELECTION);
 
         GridData data = new GridData(GridData.FILL_BOTH);
-        //data.widthHint = convertWidthInCharsToPixels(60);
-        //data.heightHint = convertHeightInCharsToPixels(10);
         table.setLayoutData(data);
 
         table.setHeaderVisible(true);
@@ -148,7 +147,7 @@ public class ComplexFileSetsEditor implements IFileSetsEditor
 
         mViewer = new CheckboxTableViewer(table);
         mViewer.setLabelProvider(new FileSetLabelProvider());
-        mViewer.setContentProvider(new FileSetProvider());
+        mViewer.setContentProvider(new ArrayContentProvider());
         mViewer.setSorter(new FileSetViewerSorter());
         mViewer.setInput(mFileSets);
 

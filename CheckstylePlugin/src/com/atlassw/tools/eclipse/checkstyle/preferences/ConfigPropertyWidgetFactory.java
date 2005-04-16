@@ -20,7 +20,6 @@
 
 package com.atlassw.tools.eclipse.checkstyle.preferences;
 
-
 //=================================================
 // Imports from java namespace
 //=================================================
@@ -32,82 +31,80 @@ package com.atlassw.tools.eclipse.checkstyle.preferences;
 //=================================================
 // Imports from com namespace
 //=================================================
-import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
-import com.atlassw.tools.eclipse.checkstyle.config.ConfigPropertyMetadata;
-import com.atlassw.tools.eclipse.checkstyle.config.ConfigPropertyType;
-
-//=================================================
-// Imports from org namespace
-//=================================================
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Shell;
 
+import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
+import com.atlassw.tools.eclipse.checkstyle.config.meta.ConfigPropertyType;
 
 /**
- *  Create <code>ConfigPropertyWidget</code> instances based on provided
- *  metadata.
+ * Create <code>ConfigPropertyWidget</code> instances based on provided
+ * metadata.
  */
 public final class ConfigPropertyWidgetFactory
 {
     //=================================================
-	// Public static final variables.
-	//=================================================
+    // Public static final variables.
+    //=================================================
 
-	//=================================================
-	// Static class variables.
-	//=================================================
+    //=================================================
+    // Static class variables.
+    //=================================================
 
-	//=================================================
-	// Instance member variables.
-	//=================================================
+    //=================================================
+    // Instance member variables.
+    //=================================================
 
-	//=================================================
-	// Constructors & finalizer.
-	//=================================================
-    
+    //=================================================
+    // Constructors & finalizer.
+    //=================================================
+
     private ConfigPropertyWidgetFactory()
     {}
 
-	//=================================================
-	// Methods.
-	//=================================================
-    
-    static IConfigPropertyWidget createWidget(Composite parent, 
-                                              ConfigPropertyMetadata metadata,
-                                              ConfigProperty prop)
+    //=================================================
+    // Methods.
+    //=================================================
+
+    static IConfigPropertyWidget createWidget(Composite parent, ConfigProperty prop, Shell shell)
     {
         IConfigPropertyWidget widget = null;
-        
-        ConfigPropertyType type = metadata.getDatatype();
-        
+
+        ConfigPropertyType type = prop.getMetaData().getDatatype();
+
         if (type.equals(ConfigPropertyType.STRING))
         {
-            widget = new ConfigPropertyWidgetString(parent, prop, metadata);
+            widget = new ConfigPropertyWidgetString(parent, prop);
         }
         if (type.equals(ConfigPropertyType.STRING_ARRAY))
         {
-            widget = new ConfigPropertyWidgetString(parent, prop, metadata);
+            widget = new ConfigPropertyWidgetString(parent, prop);
         }
         else if (type.equals(ConfigPropertyType.INTEGER))
         {
-            widget = new ConfigPropertyWidgetString(parent, prop, metadata);
+            widget = new ConfigPropertyWidgetInteger(parent, prop);
         }
         else if (type.equals(ConfigPropertyType.SINGLE_SELECT))
         {
-            widget = new ConfigPropertyWidgetSingleSelect(parent, prop, metadata);
+            widget = new ConfigPropertyWidgetSingleSelect(parent, prop);
         }
         else if (type.equals(ConfigPropertyType.BOOLEAN))
         {
-            widget = new ConfigPropertyWidgetBoolean(parent, prop, metadata);
+            widget = new ConfigPropertyWidgetBoolean(parent, prop);
         }
         else if (type.equals(ConfigPropertyType.MULTI_CHECK))
         {
-            widget = new ConfigPropertyWidgetMultiCheck(parent, prop, metadata);
+            widget = new ConfigPropertyWidgetMultiCheck(parent, prop);
         }
         else if (type.equals(ConfigPropertyType.HIDDEN))
         {
-            widget = new ConfigPropertyWidgetHidden(parent, prop, metadata);
+            widget = new ConfigPropertyWidgetHidden(parent, prop);
         }
-        
+        else if (type.equals(ConfigPropertyType.FILE))
+        {
+            widget = new ConfigPropertyWidgetFile(parent, prop, shell);
+        }
+
         return widget;
     }
 }

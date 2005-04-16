@@ -20,133 +20,86 @@
 
 package com.atlassw.tools.eclipse.checkstyle.config;
 
-//=================================================
-// Imports from java namespace
-//=================================================
-
-//=================================================
-// Imports from javax namespace
-//=================================================
-
-//=================================================
-// Imports from com namespace
-//=================================================
-import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
-import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
-import com.atlassw.tools.eclipse.checkstyle.util.XMLUtil;
-
-//=================================================
-// Imports from org namespace
-//=================================================
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
+import com.atlassw.tools.eclipse.checkstyle.config.meta.ConfigPropertyMetadata;
 
 /**
- *  A simple configuration consisting of a name/value pair.
+ * A simple configuration consisting of a name/value pair.
  */
-public class ConfigProperty implements Comparable
+public class ConfigProperty implements Comparable, Cloneable
 {
     //=================================================
-	// Public static final variables.
-	//=================================================
+    // Public static final variables.
+    //=================================================
 
-	//=================================================
-	// Static class variables.
-	//=================================================
+    //=================================================
+    // Static class variables.
+    //=================================================
 
-	//=================================================
-	// Instance member variables.
-	//=================================================
-    
+    //=================================================
+    // Instance member variables.
+    //=================================================
+
     private String mName;
-    
+
     private String mValue;
 
-	//=================================================
-	// Constructors & finalizer.
-	//=================================================
-    
+    private ConfigPropertyMetadata mMetaData;
+
+    //=================================================
+    // Constructors & finalizer.
+    //=================================================
+
     /**
-     *  Constructor.
+     * Constructor.
+     * 
+     * @param metaData the property meta data
      */
-    public ConfigProperty()
+    public ConfigProperty(ConfigPropertyMetadata metaData)
     {
+
+        this(metaData.getName(), metaData.getDefaultValue());
+        setMetaData(metaData);
     }
-    
+
     /**
-     *  Constructor.
+     * Constructor.
      * 
-     *  @param name  Property name.
-     * 
-     *  @param value  Property value.
+     * @param name Property name.
+     * @param value Property value.
      */
     public ConfigProperty(String name, String value)
     {
         setName(name);
         setValue(value);
     }
-    
-    /**
-     *  Construct from a config file DOM node.
-     * 
-     *  @param node  The DOM node containing this property.
-     * 
-     *  @throws CheckstyleException  Error during processing.
-     */
-    ConfigProperty(Node node) throws CheckstylePluginException
-    {        
-        String name  = XMLUtil.getNodeAttributeValue(node, XMLTags.NAME_TAG);
-        if (name == null)
-        {
-            String message = "ConfigProperty missing name attribute";
-            CheckstyleLog.warning(message);
-            throw new CheckstylePluginException(message);
-        }
-        else
-        {
-            setName(name.trim());
-        }
-        
-        String value = XMLUtil.getNodeAttributeValue(node, XMLTags.VALUE_TAG);
-        if (value == null)
-        {
-            String message = "ConfigProperty missing value attribute";
-            CheckstyleLog.warning(message);
-            throw new CheckstylePluginException(message);
-        }
-        else
-        {
-            mValue = value.trim();
-        }
-    }
 
-	//=================================================
-	// Methods.
-	//=================================================
-    
+    //=================================================
+    // Methods.
+    //=================================================
+
     /**
-     *  Get the property's name.
+     * Get the property's name.
      * 
-     *  @return The name
+     * @return The name
      */
     public String getName()
     {
         return mName;
     }
-    
+
     /**
-     *  Set the property's name.
+     * Set the property's name.
      * 
-     *  @param  name  The new name.
+     * @param name The new name.
      */
     public void setName(String name)
     {
         mName = name;
     }
-    
+
     /**
      * Returns the value.
+     * 
      * @return String
      */
     public String getValue()
@@ -156,6 +109,7 @@ public class ConfigProperty implements Comparable
 
     /**
      * Sets the value.
+     * 
      * @param value The value to set
      */
     public void setValue(String value)
@@ -163,34 +117,47 @@ public class ConfigProperty implements Comparable
         mValue = value;
     }
 
-    String getConfigItemTypeTag()
+    /**
+     * Returns the meta data for this property.
+     * 
+     * @return the meta data
+     */
+    public ConfigPropertyMetadata getMetaData()
     {
-        return XMLTags.CONFIG_PROPERTY_TAG;
+        return mMetaData;
     }
-    
-    Node toDOMNode(Document doc)
+
+    /**
+     * Sets the meta data for this property.
+     * 
+     * @param metaData the meta data
+     */
+    public void setMetaData(ConfigPropertyMetadata metaData)
     {
-        Element cfgPropertyNode = doc.createElement(XMLTags.CONFIG_PROPERTY_TAG);
-        cfgPropertyNode.setAttribute(XMLTags.NAME_TAG,  getName());
-        cfgPropertyNode.setAttribute(XMLTags.VALUE_TAG, mValue);
-        
-        return cfgPropertyNode;
+        mMetaData = metaData;
     }
-    
-    Node toCSDOMNode(Document doc)
-    {
-        Element cfgPropertyNode = doc.createElement(XMLTags.PROPERTY_TAG);
-        cfgPropertyNode.setAttribute(XMLTags.NAME_TAG,  getName());
-        cfgPropertyNode.setAttribute(XMLTags.VALUE_TAG, mValue);
-        
-        return cfgPropertyNode;
-    }
-    
+
     /**
      * {@inheritDoc}
      */
     public int compareTo(Object obj)
     {
-        return this.mName.compareTo(((ConfigProperty)obj).mName);
+        return this.mName.compareTo(((ConfigProperty) obj).mName);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Object clone()
+    {
+        try
+        {
+            Object clone = super.clone();
+            return clone;
+        }
+        catch (CloneNotSupportedException e)
+        {
+            throw new InternalError(); //Should not happen
+        }
     }
 }

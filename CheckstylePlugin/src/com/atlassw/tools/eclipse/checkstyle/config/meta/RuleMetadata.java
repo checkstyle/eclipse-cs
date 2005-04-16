@@ -1,0 +1,246 @@
+//============================================================================
+//
+// Copyright (C) 2002-2004  David Schneider
+//
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//
+//============================================================================
+
+package com.atlassw.tools.eclipse.checkstyle.config.meta;
+
+import java.util.LinkedList;
+import java.util.List;
+
+import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
+
+/**
+ * This class contains the metadata that describes a check rule.
+ */
+public class RuleMetadata implements Cloneable
+{
+    //=================================================
+    // Public static final variables.
+    //=================================================
+
+    //=================================================
+    // Static class variables.
+    //=================================================
+
+    //=================================================
+    // Instance member variables.
+    //=================================================
+
+    private String mName;
+
+    private String mInternalName;
+
+    private String mParent;
+
+    private String mDescription;
+
+    private boolean mIsHidden;
+
+    private boolean mHasSeverity;
+
+    private boolean mIsDeletable;
+
+    private SeverityLevel mDefaultSeverityLevel;
+
+    private List mConfigPropMetadata = new LinkedList();
+
+    private RuleGroupMetadata mGroup;
+
+    //=================================================
+    // Constructors & finalizer.
+    //=================================================
+
+    /**
+     * Creates a rule metadata.
+     * 
+     * @param ruleName the name of the rule
+     * @param internalName the internal name of the rule
+     * @param parent the parent module name
+     * @param defaultSeverity the default severity level
+     * @param hidden <code>true</code> if the module should be hidden from the
+     *            user
+     * @param hasSeverity <code>true</code> if the module has a severity to
+     *            configure
+     * @param deletable <code>true</code> if the module has can be deleted
+     *            from the configuration
+     * @param group the group the module belongs to
+     */
+    public RuleMetadata(String ruleName, String internalName, String parent,
+            SeverityLevel defaultSeverity, boolean hidden, boolean hasSeverity, boolean deletable,
+            RuleGroupMetadata group)
+    {
+        mName = ruleName;
+        mInternalName = internalName;
+        mParent = parent;
+        mDefaultSeverityLevel = defaultSeverity;
+        mIsHidden = hidden;
+        mHasSeverity = hasSeverity;
+        mIsDeletable = deletable;
+        mGroup = group;
+    }
+
+    //=================================================
+    // Methods.
+    //=================================================
+
+    /**
+     * Returns the default severity level.
+     * 
+     * @return The severity level.
+     */
+    public SeverityLevel getDefaultSeverityLevel()
+    {
+        return mDefaultSeverityLevel;
+    }
+
+    /**
+     * Returns the rule's description.
+     * 
+     * @return Rule description
+     */
+    public String getDescription()
+    {
+        return mDescription;
+    }
+
+    /**
+     * Set the description for the rule.
+     * 
+     * @param description the description
+     */
+    public void setDescription(String description)
+    {
+        mDescription = description;
+    }
+
+    /**
+     * Returns the rule's name.
+     * 
+     * @return String
+     */
+    public String getRuleName()
+    {
+        return mName;
+    }
+
+    /**
+     * Returns the internal name of the module. The internal name is the name of
+     * the module inside the checkstyle configuration file.
+     * 
+     * @return the internal module name
+     */
+    public String getInternalName()
+    {
+        return mInternalName;
+    }
+
+    /**
+     * Determine if the module is to be hidden from the users sight.
+     * 
+     * @return <code>true</code> if the module is hidden
+     */
+    public boolean isHidden()
+    {
+        return mIsHidden;
+    }
+
+    /**
+     * Determine if the module has a severity to configure.
+     * 
+     * @return <code>true</code> if the module has a severity
+     */
+    public boolean hasSeverity()
+    {
+        return mHasSeverity;
+    }
+
+    /**
+     * Determine if the module can be removed from the configuration.
+     * 
+     * @return <code>true</code> if the module can be removed
+     */
+    public boolean isDeletable()
+    {
+        return mIsDeletable;
+    }
+
+    /**
+     * Gets the name of the parent module.
+     * 
+     * @return the parent module
+     */
+    public String getParentModule()
+    {
+        return mParent;
+    }
+
+    /**
+     * Returns the configuration property metadata.
+     * 
+     * @return A list of <code>ConfigPropertyMetadata</code> objects.
+     */
+    public List getPropertyMetadata()
+    {
+        return mConfigPropMetadata;
+    }
+
+    /**
+     * Returns the property meta data for a given property name.
+     * 
+     * @param property the property name
+     * @return the coresponding property meta data or <code>null</code>
+     */
+    public ConfigPropertyMetadata getPropertyMetadata(String property)
+    {
+
+        ConfigPropertyMetadata propertyMeta = null;
+
+        int size = mConfigPropMetadata != null ? mConfigPropMetadata.size() : 0;
+        for (int i = 0; i < size; i++)
+        {
+            ConfigPropertyMetadata tmp = (ConfigPropertyMetadata) mConfigPropMetadata.get(i);
+
+            if (tmp.getName().equals(property))
+            {
+                propertyMeta = tmp;
+                break;
+            }
+        }
+
+        return propertyMeta;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Object clone() throws CloneNotSupportedException
+    {
+        return super.clone();
+    }
+
+    /**
+     * Returns the group this rule belongs to.
+     * 
+     * @return the group
+     */
+    public RuleGroupMetadata getGroup()
+    {
+        return mGroup;
+    }
+}

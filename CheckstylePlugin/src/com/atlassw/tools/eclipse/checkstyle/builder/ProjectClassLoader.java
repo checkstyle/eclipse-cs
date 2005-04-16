@@ -122,10 +122,10 @@ public class ProjectClassLoader extends ClassLoader
     {
 
         //Optimization if the project is the same as last
-        if (project == this.mRecentProject)
-        {
-            return;
-        }
+//        if (project == this.mRecentProject)
+//        {
+//            return;
+//        }
 
         URL[] projClassPath = getProjectClassPath(project);
 

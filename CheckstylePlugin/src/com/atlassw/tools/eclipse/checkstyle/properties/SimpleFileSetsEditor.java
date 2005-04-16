@@ -37,8 +37,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
-import com.atlassw.tools.eclipse.checkstyle.config.CheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationFactory;
+import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileMatchPattern;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileSet;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
@@ -81,7 +81,7 @@ public class SimpleFileSetsEditor implements IFileSetsEditor
     {
         mFileSets = fileSets;
 
-        CheckConfiguration config = null;
+        ICheckConfiguration config = null;
         if (mFileSets.size() > 0)
         {
             config = ((FileSet) mFileSets.get(0)).getCheckConfig();
@@ -92,13 +92,12 @@ public class SimpleFileSetsEditor implements IFileSetsEditor
             List allConfigs = CheckConfigurationFactory.getCheckConfigurations();
             if (allConfigs.size() > 0)
             {
-                config = (CheckConfiguration) allConfigs.get(0);
+                config = (ICheckConfiguration) allConfigs.get(0);
             }
         }
 
-        //TODO make this better
         mDefaultFileSet = new FileSet("all", config);
-        mDefaultFileSet.getFileMatchPatterns().add(new FileMatchPattern(".java$"));
+        mDefaultFileSet.getFileMatchPatterns().add(new FileMatchPattern("."));
         mFileSets.clear();
         mFileSets.add(mDefaultFileSet);
     }
@@ -150,9 +149,9 @@ public class SimpleFileSetsEditor implements IFileSetsEditor
 
                 try
                 {
-                    CheckConfiguration config = CheckConfigurationFactory.getByName(configName);
+                    ICheckConfiguration config = CheckConfigurationFactory.getByName(configName);
                     mDefaultFileSet.setCheckConfig(config);
-                    mTxtConfigDescription.setText(config.getConfigDecription());
+                    mTxtConfigDescription.setText(config.getDescription());
                 }
                 catch (CheckstylePluginException e1)
                 {
@@ -207,22 +206,22 @@ public class SimpleFileSetsEditor implements IFileSetsEditor
 
         for (int i = 0; i < items.length; i++)
         {
-            items[i] = ((CheckConfiguration) configurations.get(i)).getConfigName();
+            items[i] = ((ICheckConfiguration) configurations.get(i)).getName();
         }
 
         mConfigList.setItems(items);
 
-        CheckConfiguration config = mDefaultFileSet.getCheckConfig();
+        ICheckConfiguration config = mDefaultFileSet.getCheckConfig();
         if (config != null)
         {
-            mConfigList.select(mConfigList.indexOf(config.getConfigName()));
-            mTxtConfigDescription.setText(config.getConfigDecription());
+            mConfigList.select(mConfigList.indexOf(config.getName()));
+            mTxtConfigDescription.setText(config.getDescription());
         }
         else if (items.length > 0)
         {
             mConfigList.select(0);
-            mTxtConfigDescription.setText(((CheckConfiguration) configurations.get(0))
-                    .getConfigDecription());
+            mTxtConfigDescription.setText(((ICheckConfiguration) configurations.get(0))
+                    .getDescription());
         }
     }
 }

@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.sax.TransformerHandler;
 
 import org.eclipse.core.resources.IFile;
@@ -35,6 +36,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
@@ -91,6 +93,7 @@ public final class ProjectConfigurationFactory
     public static ProjectConfiguration getConfiguration(IProject project)
         throws CheckstylePluginException
     {
+        //TODO Cache the project configurations
         return loadFromPersistence(project);
     }
 
@@ -166,18 +169,29 @@ public final class ProjectConfigurationFactory
         InputStream inStream = null;
         try
         {
-            inStream = file.getContents();
+            inStream = file.getContents(true);
 
             ProjectConfigFileHandler handler = new ProjectConfigFileHandler();
             XMLUtil.parseWithSAX(inStream, handler);
 
             configuration = handler.getConfiguration();
         }
-        catch (Exception e)
+        catch (CoreException ce)
         {
-            String message = "Failed to read FileSets: " + e.getMessage();
-            CheckstyleLog.warning(message, e);
-            throw new CheckstylePluginException(message);
+            throw new CheckstylePluginException(ce.getLocalizedMessage(), ce);
+        }
+        catch (SAXException se)
+        {
+            Exception ex = se.getException() != null ? se.getException() : se;
+            throw new CheckstylePluginException(ex.getLocalizedMessage(), ex);
+        }
+        catch (ParserConfigurationException pe)
+        {
+            throw new CheckstylePluginException(pe.getLocalizedMessage(), pe);
+        }
+        catch (IOException ioe)
+        {
+            throw new CheckstylePluginException(ioe.getLocalizedMessage(), ioe);
         }
 
         finally
@@ -280,6 +294,7 @@ public final class ProjectConfigurationFactory
                 + config.isUseSimpleConfig());
 
         xmlOut.startElement("", XMLTags.FILESET_CONFIG_TAG, XMLTags.FILESET_CONFIG_TAG, attr);
+        xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
 
         List fileSets = config.getFileSets();
         int size = fileSets != null ? fileSets.size() : 0;
@@ -327,6 +342,7 @@ public final class ProjectConfigurationFactory
         }
 
         xmlOut.endElement("", XMLTags.FILESET_TAG, XMLTags.FILESET_TAG);
+        xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
     }
 
     /**
@@ -349,6 +365,7 @@ public final class ProjectConfigurationFactory
         xmlOut.startElement("", XMLTags.FILE_MATCH_PATTERN_TAG, XMLTags.FILE_MATCH_PATTERN_TAG,
                 attr);
         xmlOut.endElement("", XMLTags.FILE_MATCH_PATTERN_TAG, XMLTags.FILE_MATCH_PATTERN_TAG);
+        xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
     }
 
     /**
@@ -364,7 +381,7 @@ public final class ProjectConfigurationFactory
         //write only filters that are actually changed
         //(enabled or contain data)
         IFilter prototype = PluginFilters.getByName(filter.getName());
-        if (prototype.equals(filter))
+        if (prototype.equals(filter) || filter.isReadonly())
         {
             return;
         }
@@ -386,9 +403,11 @@ public final class ProjectConfigurationFactory
 
             xmlOut.startElement("", XMLTags.FILTER_DATA_TAG, XMLTags.FILTER_DATA_TAG, attr);
             xmlOut.endElement("", XMLTags.FILTER_DATA_TAG, XMLTags.FILTER_DATA_TAG);
+            xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
         }
 
         xmlOut.endElement("", XMLTags.FILTER_TAG, XMLTags.FILTER_TAG);
+        xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
 
     }
 

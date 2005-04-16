@@ -33,6 +33,7 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
@@ -159,6 +160,17 @@ public class CheckstylePlugin extends AbstractUIPlugin
         {
             return '!' + key + '!';
         }
+    }
+
+    /**
+     * Returns the checkstyle logo.
+     * 
+     * @return the checkstyle logo
+     */
+    public static Image getLogo()
+    {
+        return CheckstylePlugin.imageDescriptorFromPlugin(PLUGIN_ID, "icons/logo.png")
+                .createImage();
     }
 
     /**

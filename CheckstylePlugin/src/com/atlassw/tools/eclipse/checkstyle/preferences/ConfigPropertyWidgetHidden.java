@@ -20,7 +20,6 @@
 
 package com.atlassw.tools.eclipse.checkstyle.preferences;
 
-
 //=================================================
 // Imports from java namespace
 //=================================================
@@ -32,55 +31,64 @@ package com.atlassw.tools.eclipse.checkstyle.preferences;
 //=================================================
 // Imports from com namespace
 //=================================================
-import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
-import com.atlassw.tools.eclipse.checkstyle.config.ConfigPropertyMetadata;
-import com.atlassw.tools.eclipse.checkstyle.config.ConfigPropertyType;
-
-//=================================================
-// Imports from org namespace
-//=================================================
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 
+import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
 
 /**
- *  Non-configuration property.
+ * Non-configuration property.
  */
 public class ConfigPropertyWidgetHidden extends ConfigPropertyWidgetAbstractBase
 {
     //=================================================
-	// Public static final variables.
-	//=================================================
+    // Public static final variables.
+    //=================================================
 
-	//=================================================
-	// Static class variables.
-	//=================================================
+    //=================================================
+    // Static class variables.
+    //=================================================
 
-	//=================================================
-	// Instance member variables.
-	//=================================================
-    
-    private String  mValue = "";
+    //=================================================
+    // Instance member variables.
+    //=================================================
 
-	//=================================================
-	// Constructors & finalizer.
-	//=================================================
+    private String mValue = "";
 
-	//=================================================
-	// Methods.
-	//=================================================
-    
-    ConfigPropertyWidgetHidden(Composite parent, 
-                               ConfigProperty prop,
-                               ConfigPropertyMetadata metadata)
+    //=================================================
+    // Constructors & finalizer.
+    //=================================================
+
+    //=================================================
+    // Methods.
+    //=================================================
+
+    ConfigPropertyWidgetHidden(Composite parent, ConfigProperty prop)
     {
-        super(ConfigPropertyType.HIDDEN, parent, prop, metadata);
+        super(parent, prop);
     }
     
+    /**
+     * @see ConfigPropertyWidgetAbstractBase#getValueWidget(org.eclipse.swt.widgets.Composite)
+     */
+    protected Control getValueWidget(Composite parent)
+    {
+        return null;
+    }
+
     /**
      * {@inheritDoc}
      */
     public String getValue()
     {
         return mValue;
+    }
+    
+    /**
+     * @see IConfigPropertyWidget#restorePropertyDefault()
+     */
+    public void restorePropertyDefault()
+    {
+        //NOOP
     }
 }

@@ -20,121 +20,70 @@
 
 package com.atlassw.tools.eclipse.checkstyle.preferences;
 
-
-//=================================================
-// Imports from java namespace
-//=================================================
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-//=================================================
-// Imports from javax namespace
-//=================================================
-
-//=================================================
-// Imports from com namespace
-//=================================================
-import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
-import com.atlassw.tools.eclipse.checkstyle.config.ConfigPropertyEnumerationMetadata;
-import com.atlassw.tools.eclipse.checkstyle.config.ConfigPropertyMetadata;
-import com.atlassw.tools.eclipse.checkstyle.config.ConfigPropertyType;
-import com.atlassw.tools.eclipse.checkstyle.config.ConfigPropertyValueMetadata;
-
-//=================================================
-// Imports from org namespace
-//=================================================
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 
+import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
 
 /**
- *  Configuration widget for selecting multiple values with check boxes.
+ * Configuration widget for selecting multiple values with check boxes.
  */
 public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstractBase
 {
     //=================================================
-	// Public static final variables.
-	//=================================================
+    // Public static final variables.
+    //=================================================
 
-	//=================================================
-	// Static class variables.
-	//=================================================
-    
-    private static final int  COLUMN_THRESHOLD = 12;
+    //=================================================
+    // Static class variables.
+    //=================================================
 
-	//=================================================
-	// Instance member variables.
-	//=================================================
-    
-    private Composite    mCheckboxCompisite;
-    
-    private String[]     mLabels;
-    
-    private Button[]     mButtons;
-    
-	//=================================================
-	// Constructors & finalizer.
-	//=================================================
+    //=================================================
+    // Instance member variables.
+    //=================================================
 
-	//=================================================
-	// Methods.
-	//=================================================
-    
-    ConfigPropertyWidgetMultiCheck(Composite parent, 
-                                   ConfigProperty prop,
-                                   ConfigPropertyMetadata metadata)
+    private CheckboxTableViewer mTable;
+
+    //=================================================
+    // Constructors & finalizer.
+    //=================================================
+
+    //=================================================
+    // Methods.
+    //=================================================
+
+    ConfigPropertyWidgetMultiCheck(Composite parent, ConfigProperty prop)
     {
-		super(ConfigPropertyType.MULTI_CHECK, parent, prop, metadata);
-        
-        addPropertyLabel(SWT.TOP);
-        
-        //
-        //  Get the data to build the check boxes.
-        //
-        ConfigPropertyEnumerationMetadata enumeration = metadata.getPropertyEnumeration();
-        List valueList = (List)enumeration.getValueMetadata();
-        mLabels = new String[valueList.size()];
-        mButtons = new Button[valueList.size()];
-                
-		//
-		//  Create a new composite to hold the check boxes.
-        //
-        int numColumns = 1;
-        if (valueList.size() > COLUMN_THRESHOLD)
+        super(parent, prop);
+    }
+
+    /**
+     * @see ConfigPropertyWidgetAbstractBase#getValueWidget(org.eclipse.swt.widgets.Composite)
+     */
+    protected Control getValueWidget(Composite parent)
+    {
+        if (mTable == null)
         {
-            numColumns = valueList.size() / COLUMN_THRESHOLD;
+
+            mTable = CheckboxTableViewer.newCheckList(parent, SWT.V_SCROLL | SWT.BORDER);
+            mTable.setContentProvider(new ArrayContentProvider());
+            mTable.setInput(getMetadata());
+            mTable.setCheckedElements(getInitialValues().toArray());
+
+            GridData gd = new GridData(GridData.FILL_BOTH);
+            gd.heightHint = 150;
+            mTable.getControl().setLayoutData(gd);
         }
-        mCheckboxCompisite = new Composite(parent, SWT.NONE);
-        GridLayout layout = new GridLayout();
-        layout.numColumns = numColumns;
-        layout.marginWidth = 0;
-        mCheckboxCompisite.setLayout(layout);
-        
-        List currentValues = getInitialValues();
-        
-        Iterator iter = valueList.iterator();
-        for (int i = 0; iter.hasNext(); i++)
-        {
-            ConfigPropertyValueMetadata value = (ConfigPropertyValueMetadata)iter.next();
-            mLabels[i] = value.getValue();
-            mButtons[i] = new Button(mCheckboxCompisite, SWT.CHECK | SWT.LEFT);
-            mButtons[i].setText(mLabels[i]);
-            mButtons[i].setLayoutData(new GridData());
-            
-            boolean checked = false;
-            if (currentValues.contains(mLabels[i]))
-            {
-                checked = true;
-            }
-            mButtons[i].setSelection(checked);
-        }
-        
-        addDescriptionButton(SWT.TOP);
+
+        return mTable.getControl();
     }
 
     /**
@@ -144,38 +93,54 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
     {
         StringBuffer buffer = new StringBuffer("");
         boolean first = true;
-        
-        for (int i = 0; i < mButtons.length; i++)
+
+        Object[] checkedElements = mTable.getCheckedElements();
+
+        for (int i = 0; i < checkedElements.length; i++)
         {
-            if (mButtons[i].getSelection())
+
+            if (i > 0)
             {
-                //
-                //  Add a comma unless this is the first element.
-                //
-                if (first)
-                {
-                    first = false;
-                }
-                else
-                {
-                    buffer.append(", ");
-                }
-                buffer.append(mLabels[i]);
+                buffer.append(",");
             }
+            buffer.append(checkedElements[i]);
         }
         return buffer.toString();
     }
-    
+
     private List getInitialValues()
     {
         List result = new LinkedList();
-        StringTokenizer tokenizer = new StringTokenizer(getInitValue(), " ,");
+        StringTokenizer tokenizer = new StringTokenizer(getInitValue(), ",");
         while (tokenizer.hasMoreTokens())
         {
-            result.add(tokenizer.nextToken());
+            result.add(tokenizer.nextToken().trim());
         }
-        
+
         return result;
     }
-    
+
+    /**
+     * @see IConfigPropertyWidget#restorePropertyDefault()
+     */
+    public void restorePropertyDefault()
+    {
+        String defaultValue = getConfigProperty().getMetaData().getDefaultValue();
+        List result = new LinkedList();
+
+        if (defaultValue != null)
+        {
+            StringTokenizer tokenizer = new StringTokenizer(defaultValue, ",");
+            while (tokenizer.hasMoreTokens())
+            {
+                result.add(tokenizer.nextToken().trim());
+            }
+        }
+
+        //clear current checked state
+        mTable.setCheckedElements(new Object[0]);
+
+        mTable.setCheckedElements(result.toArray());
+    }
+
 }

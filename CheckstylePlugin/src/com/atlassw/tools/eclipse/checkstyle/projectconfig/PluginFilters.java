@@ -72,6 +72,9 @@ public final class PluginFilters
     /** constant for the value attribute. */
     private static final String ATTR_VALUE = "value";
 
+    /** constant for the data tag. */
+    private static final String TAG_DATA = "data";
+
     /** the filter prototypes configured to the extension point. */
     private static final IFilter[] FILTER_PROTOTYPES;
 
@@ -116,7 +119,16 @@ public final class PluginFilters
                 String defaultData = elements[i].getAttribute(ATTR_VALUE);
 
                 filter.setEnabled(defaultState);
-                //filter.setFilterData(defaultData);
+
+                //Load initial filter data
+                List data = new ArrayList();
+                IConfigurationElement[] dataTags = elements[i].getChildren(TAG_DATA);
+                int size = dataTags != null ? dataTags.length : 0;
+                for (int j = 0; j < size; j++)
+                {
+                    data.add(dataTags[j].getAttribute(ATTR_VALUE));
+                }
+                filter.setFilterData(data);
 
                 filters.add(filter);
             }

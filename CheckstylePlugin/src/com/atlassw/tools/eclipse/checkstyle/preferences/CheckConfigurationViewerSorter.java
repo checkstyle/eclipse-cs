@@ -31,42 +31,35 @@ package com.atlassw.tools.eclipse.checkstyle.preferences;
 //=================================================
 // Imports from com namespace
 //=================================================
-import com.atlassw.tools.eclipse.checkstyle.config.CheckConfiguration;
-
-//=================================================
-// Imports from org namespace
-//=================================================
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
 
+import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 
 /**
- *  Sorts CheckConfiguration objects into their display order.
+ * Sorts CheckConfiguration objects into their display order.
  */
 public class CheckConfigurationViewerSorter extends ViewerSorter
 {
     //=================================================
     // Public static final variables.
     //=================================================
-    
-    
+
     //=================================================
     // Static class variables.
     //=================================================
-    
-    
+
     //=================================================
     // Instance member variables.
     //=================================================
-    
-    
+
     //=================================================
     // Constructors & finalizer.
     //=================================================
-    
-	/**
-	 * Default constructor.
-	 */
+
+    /**
+     * Default constructor.
+     */
     public CheckConfigurationViewerSorter()
     {
         super();
@@ -83,13 +76,13 @@ public class CheckConfigurationViewerSorter extends ViewerSorter
     {
         int result = 0;
 
-        if ((e1 instanceof CheckConfiguration) && (e2 instanceof CheckConfiguration))
+        if ((e1 instanceof ICheckConfiguration) && (e2 instanceof ICheckConfiguration))
         {
-            CheckConfiguration cfg1 = (CheckConfiguration)e1;
-            CheckConfiguration cfg2 = (CheckConfiguration)e2;
+            ICheckConfiguration cfg1 = (ICheckConfiguration) e1;
+            ICheckConfiguration cfg2 = (ICheckConfiguration) e2;
 
-            String string1 = cfg1.getConfigName();
-            String string2 = cfg2.getConfigName();
+            String string1 = cfg1.getName();
+            String string2 = cfg2.getName();
 
             result = string1.compareToIgnoreCase(string2);
         }

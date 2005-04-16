@@ -31,32 +31,37 @@ package com.atlassw.tools.eclipse.checkstyle.preferences;
 //=================================================
 // Imports from com namespace
 //=================================================
+import java.util.List;
+
 import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
-import com.atlassw.tools.eclipse.checkstyle.config.ConfigPropertyMetadata;
-import com.atlassw.tools.eclipse.checkstyle.config.ConfigPropertyType;
+import com.atlassw.tools.eclipse.checkstyle.config.meta.ConfigPropertyType;
 
 //=================================================
 // Imports from org namespace
 //=================================================
 
 /**
- *  Interface all configuration property input widget classes.
+ * Interface all configuration property input widget classes.
  */
 interface IConfigPropertyWidget
 {
     //=================================================
-	// Public static final variables.
-	//=================================================
+    // Public static final variables.
+    //=================================================
 
-	//=================================================
-	// Methods.
-	//=================================================
-    
+    //=================================================
+    // Methods.
+    //=================================================
+
     ConfigPropertyType getConfigPropertyType();
-    
+
     String getValue();
-    
+
     ConfigProperty getConfigProperty();
-    
-    ConfigPropertyMetadata getMetadata();
+
+    List getMetadata();
+
+    void setEnabled(boolean enabled);
+
+    void restorePropertyDefault();
 }

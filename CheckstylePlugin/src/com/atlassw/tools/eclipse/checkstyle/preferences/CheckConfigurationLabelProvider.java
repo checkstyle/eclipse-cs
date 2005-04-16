@@ -20,76 +20,17 @@
 
 package com.atlassw.tools.eclipse.checkstyle.preferences;
 
-//=================================================
-// Imports from java namespace
-//=================================================
-
-//=================================================
-// Imports from javax namespace
-//=================================================
-
-//=================================================
-// Imports from com namespace
-//=================================================
-import com.atlassw.tools.eclipse.checkstyle.config.CheckConfiguration;
-
-//=================================================
-// Imports from org namespace
-//=================================================
-import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ITableLabelProvider;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
+import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
+
 /**
- *  Provides the labels for the audit configuration list display.
+ * Provides the labels for the audit configuration list display.
  */
-class CheckConfigurationLabelProvider implements ITableLabelProvider
+class CheckConfigurationLabelProvider extends LabelProvider implements ITableLabelProvider
 {
-    //=================================================
-    // Public static final variables.
-    //=================================================
-
-    //=================================================
-    // Static class variables.
-    //=================================================
-
-    //=================================================
-    // Instance member variables.
-    //=================================================
-
-    //=================================================
-    // Constructors & finalizer.
-    //=================================================
-
-    //=================================================
-    // Methods.
-    //=================================================
-
-    /**
-     * @see IBaseLabelProvider#removeListener(ILabelProviderListener)
-     */
-    public void removeListener(ILabelProviderListener listener)
-    {}
-
-    /**
-     * @see IBaseLabelProvider#isLabelProperty(Object, String)
-     */
-    public boolean isLabelProperty(Object element, String property)
-    {
-        return false;
-    }
-
-    /**
-     * @see IBaseLabelProvider#dispose()
-     */
-    public void dispose()
-    {}
-
-    /**
-     * @see IBaseLabelProvider#addListener(ILabelProviderListener)
-     */
-    public void addListener(ILabelProviderListener listener)
-    {}
 
     /**
      * @see ITableLabelProvider#getColumnText(Object, int)
@@ -97,10 +38,21 @@ class CheckConfigurationLabelProvider implements ITableLabelProvider
     public String getColumnText(Object element, int columnIndex)
     {
         String result = element.toString();
-        if (element instanceof CheckConfiguration)
+        if (element instanceof ICheckConfiguration)
         {
-            CheckConfiguration cfg = (CheckConfiguration)element;
-            result = cfg.getConfigName();
+            ICheckConfiguration cfg = (ICheckConfiguration) element;
+            if (columnIndex == 0)
+            {
+                result = cfg.getName();
+            }
+            if (columnIndex == 1)
+            {
+                result = cfg.getLocation();
+            }
+            if (columnIndex == 2)
+            {
+                result = cfg.getType().getName();
+            }
         }
         return result;
     }
@@ -110,6 +62,12 @@ class CheckConfigurationLabelProvider implements ITableLabelProvider
      */
     public Image getColumnImage(Object element, int columnIndex)
     {
-        return null;
+        Image image = null;
+        if (element instanceof ICheckConfiguration && columnIndex == 0)
+        {
+            image = ((ICheckConfiguration) element).getType().getTypeImage();
+        }
+
+        return image;
     }
 }

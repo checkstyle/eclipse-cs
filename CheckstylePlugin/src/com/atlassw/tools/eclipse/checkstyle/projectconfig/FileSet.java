@@ -26,8 +26,8 @@ import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 
-import com.atlassw.tools.eclipse.checkstyle.config.CheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationFactory;
+import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
 /**
@@ -51,7 +51,7 @@ public class FileSet implements Cloneable
 
     private String             mCheckConfigName   = "";
 
-    private CheckConfiguration mCheckConfig;
+    private ICheckConfiguration mCheckConfig;
 
     private boolean            mEnabled           = true;
 
@@ -77,7 +77,7 @@ public class FileSet implements Cloneable
      * @param checkConfig The name of the <code>CheckConfiguration</code> used
      *            to check this <code>FileSet</code>.
      */
-    public FileSet(String name, CheckConfiguration checkConfig)
+    public FileSet(String name, ICheckConfiguration checkConfig)
     {
         setName(name);
         setCheckConfig(checkConfig);
@@ -112,9 +112,9 @@ public class FileSet implements Cloneable
      * 
      * @return The check configuration used to audit files in the file set.
      */
-    public CheckConfiguration getCheckConfig()
+    public ICheckConfiguration getCheckConfig()
     {
-        CheckConfiguration config = null;
+        ICheckConfiguration config = null;
         try
         {
             config = CheckConfigurationFactory.getByName(mCheckConfigName);
@@ -132,11 +132,11 @@ public class FileSet implements Cloneable
      * 
      * @param checkConfig the check configuration
      */
-    public void setCheckConfig(CheckConfiguration checkConfig)
+    public void setCheckConfig(ICheckConfiguration checkConfig)
     {
         if (checkConfig != null)
         {
-            mCheckConfigName = checkConfig.getConfigName();
+            mCheckConfigName = checkConfig.getName();
         }
         mCheckConfig = checkConfig;
     }

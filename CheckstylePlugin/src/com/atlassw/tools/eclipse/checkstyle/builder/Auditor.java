@@ -22,6 +22,7 @@ package com.atlassw.tools.eclipse.checkstyle.builder;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -35,25 +36,26 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Preferences;
 import org.eclipse.ui.texteditor.MarkerUtilities;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
-import com.atlassw.tools.eclipse.checkstyle.config.CheckConfiguration;
-import com.atlassw.tools.eclipse.checkstyle.config.MetadataFactory;
-import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileSet;
-import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfiguration;
+import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
+import com.atlassw.tools.eclipse.checkstyle.config.meta.MetadataFactory;
+import com.atlassw.tools.eclipse.checkstyle.config.meta.RuleMetadata;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.puppycrawl.tools.checkstyle.Checker;
 import com.puppycrawl.tools.checkstyle.api.AuditEvent;
 import com.puppycrawl.tools.checkstyle.api.AuditListener;
+import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
 
 /**
  * Performs checking on Java source code.
  */
-class Auditor
+public class Auditor
 {
     //=================================================
     // Public static final variables.
@@ -69,30 +71,31 @@ class Auditor
     // Instance member variables.
     //=================================================
 
-    private IProject mProject;
+    /** The check configuration the auditor uses. */
+    private ICheckConfiguration mCheckConfiguration;
 
-    private ProjectConfiguration mProjectConfig;
+    /** The progress monitor. */
+    private IProgressMonitor mMonitor;
 
-    private FileSet[] mFileSets;
+    /** Map containing the file resources to audit. */
+    private Map mFiles = new HashMap();
+
+    /** Add the check rule name to the message? */
+    private boolean mAddRuleName = false;
 
     //=================================================
     // Constructors & finalizer.
     //=================================================
 
-    /**
-     * Construct an <code>Auditor</code> for the indicated project.
-     * 
-     * @param project The project the auditor is associated with.
-     * 
-     * @param fileSets The list of file sets to use in the audit.
-     */
-    Auditor(IProject project, ProjectConfiguration config)
+    public Auditor(ICheckConfiguration checkConfiguration)
     {
-        mProject = project;
-        mProjectConfig = config;
+        mCheckConfiguration = checkConfiguration;
 
-        List enabledFileSets = config.getEnabledFileSets();
-        mFileSets = (FileSet[]) enabledFileSets.toArray(new FileSet[enabledFileSets.size()]);
+        //
+        // check wether to include rule names
+        //
+        Preferences prefs = CheckstylePlugin.getDefault().getPluginPreferences();
+        mAddRuleName = prefs.getBoolean(CheckstylePlugin.PREF_INCLUDE_RULE_NAMES);
     }
 
     //=================================================
@@ -100,164 +103,176 @@ class Auditor
     //=================================================
 
     /**
-     * Check a collection of files.
+     * Runs the audit on the files associated with the auditor.
      * 
-     * @param files The collection of <code>IFile</code> objects to be
-     *            audited.
-     * 
-     * @param monitor Progress monitor to update with progress.
-     * 
-     * @throws CheckstylePluginException Error during processing.
-     * 
-     * @throws CoreException Error during processing.
+     * @param project the project is needed to build the correct classpath for
+     *            the checker
+     * @param monitor the progress monitor
+     * @throws CheckstylePluginException error processing the audit
      */
-    void checkFiles(Collection files, ClassLoader classLoader, IProgressMonitor monitor)
-        throws CheckstylePluginException, CoreException
+    public void runAudit(IProject project, IProgressMonitor monitor)
+        throws CheckstylePluginException
     {
-        //
-        //  Delete any existing project level markers.
-        //
-        mProject.deleteMarkers(CheckstyleMarker.MARKER_ID, true, IResource.DEPTH_ZERO);
 
-        //
-        //  If the project does not have any enabled file sets then return
-        // without
-        //  doing anything else.
-        //
-        if (mFileSets.length <= 0)
+        mMonitor = monitor;
+
+        Checker checker = null;
+        AuditListener listener = null;
+
+        try
         {
-            //
-            //  Remove any markers that may be present in the project.
-            //
-            mProject.deleteMarkers(CheckstyleMarker.MARKER_ID, true, IResource.DEPTH_INFINITE);
-            return;
+
+            File[] filesToAudit = getFileArray();
+
+            //begin task
+            monitor.beginTask("Checking '" + mCheckConfiguration.getName() + "'",
+                    filesToAudit.length);
+
+            //create checker
+            checker = CheckerFactory.createChecker(mCheckConfiguration);
+
+            //create and add listener
+            listener = new CheckstyleAuditListener(project);
+            checker.addListener(listener);
+
+            //reconfigure the shared classloader for the current
+            // project
+            CheckerFactory.getSharedClassLoader().intializeWithProject(project);
+
+            //run the files through the checker
+            checker.process(filesToAudit);
+
         }
-
-        //
-        //  Build an audit listener to receive audit violations from Checkstyle.
-        //
-        CheckstyleAuditListener auditListener = new CheckstyleAuditListener();
-        Preferences prefs = CheckstylePlugin.getDefault().getPluginPreferences();
-        boolean includeRuleNames = prefs.getBoolean(CheckstylePlugin.PREF_INCLUDE_RULE_NAMES);
-        auditListener.setAddRuleName(includeRuleNames);
-
-        //
-        //  Build a checkstyle checker for each file set.
-        //
-        Checker[] checker = new Checker[mFileSets.length];
-        for (int i = 0; i < checker.length; i++)
+        catch (IOException e)
         {
-            try
-            {
-                checker[i] = new Checker();
-                checker[i].addListener(auditListener);
-                CheckConfiguration checkConfig = mFileSets[i].getCheckConfig();
-                if (checkConfig == null)
-                {
-                    String msg = "Checkstyle CheckConfig '" + mFileSets[i].getCheckConfigName()
-                            + "' not found";
-
-                    IMarker marker = mProject.createMarker(CheckstyleMarker.MARKER_ID);
-                    marker.setAttribute(IMarker.MESSAGE, msg);
-                    marker.setAttribute(IMarker.PRIORITY, IMarker.PRIORITY_NORMAL);
-                    marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
-
-                    continue;
-                }
-                checker[i].setClassloader(classLoader);
-                checker[i].configure(checkConfig);
-            }
-            catch (com.puppycrawl.tools.checkstyle.api.CheckstyleException e)
-            {
-                e.printStackTrace();
-                CheckstyleLog.error("Failed to create Checkstyle Checker", e);
-                throw new CheckstylePluginException("Failed to create Checkstyle Checker");
-            }
+            throw new CheckstylePluginException(e.getLocalizedMessage(), e);
         }
-
-        //
-        //  Iterate through the files and audit any files that match the file
-        // set.
-        //
-        int currentCount = 0;
-        File[] checkFile = new File[1];
-        Iterator iter = files.iterator();
-        while (iter.hasNext())
+        catch (CheckstyleException e)
         {
-            IFile file = (IFile) iter.next();
+            throw new CheckstylePluginException(e.getLocalizedMessage(), e);
+        }
+        finally
+        {
+            monitor.done();
 
-            //
-            //  Remove any markers on the file.
-            //
-            file.deleteMarkers(CheckstyleMarker.MARKER_ID, true, IResource.DEPTH_INFINITE);
-
-            //TODO optimize!!!
-
-            //
-            // check if file is checked at all
-            //
-            if (!mProjectConfig.isFileChecked(file))
+            //Cleanup listener
+            if (checker != null)
             {
-                continue;
-            }
-
-            //
-            //  Run through the file sets.
-            //
-            for (int i = 0; i < mFileSets.length; i++)
-            {
-                if (mFileSets[i].includesFile(file))
-                {
-                    String fileName = file.getLocation().toOSString();
-                    checkFile[0] = new File(fileName);
-                    auditListener.setFile(file);
-                    checker[i].process(checkFile);
-                }
-            }
-            ++currentCount;
-
-            //
-            //  Update the progress monitor.
-            //
-            if ((monitor != null) && ((currentCount % MONITOR_INTERVAL) == 0))
-            {
-                monitor.worked(MONITOR_INTERVAL);
-
-                //
-                //  Build a label for the progress monitor.
-                //
-                IPath path = file.getFullPath();
-                int segCount = path.segmentCount();
-                path = path.uptoSegment(segCount - 1);
-                String label = path.toString();
-                label = label.substring(1, label.length());
-                monitor.subTask("Checking " + label);
-
-                //
-                //  Check to see if the user has cancled the built. If so, break
-                // out
-                //  of the loop.
-                //
-                if (monitor.isCanceled())
-                {
-                    break;
-                }
+                checker.removeListener(listener);
             }
         }
     }
 
-    private static class CheckstyleAuditListener implements AuditListener
+    /**
+     * Add a file to the audit.
+     * 
+     * @param file the file
+     */
+    public void addFile(IFile file)
     {
-        //  The file currently being checked.
-        private IFile mFile;
+        mFiles.put(file.getLocation().toOSString(), file);
+    }
 
-        //  Add the check rule name to the message?
-        private boolean mAddRuleName = false;
+    /**
+     * Get a file resource by the file name.
+     * 
+     * @param fileName the file name
+     * @return the file resource or <code>null</code>
+     */
+    private IFile getFile(String fileName)
+    {
+        return (IFile) mFiles.get(fileName);
+    }
 
-        private Map mClassToNameMap = MetadataFactory.getClassToNameMap();
+    /**
+     * Helper method to get an array of java.io.Files. This array gets passed to
+     * the checker.
+     * 
+     * @return
+     */
+    private File[] getFileArray()
+    {
+        List files = new ArrayList();
 
-        // Contains a offset information for all lines of the file
+        Collection iFiles = mFiles.values();
+        Iterator it = iFiles.iterator();
+        while (it.hasNext())
+        {
+            files.add(((IFile) it.next()).getLocation().toFile());
+        }
+
+        return (File[]) files.toArray(new File[files.size()]);
+    }
+
+    /**
+     * Implementation of the audit listener. This listener creates markers on
+     * the file resources if checkstyle messages are reported.
+     * 
+     * @author David Schneider
+     * @author Lars Ködderitzsch
+     */
+    private class CheckstyleAuditListener implements AuditListener
+    {
+
+        /** the project. */
+        private IProject mProject;
+
+        /** The file currently being checked. */
+        private IResource mResource;
+
+        /** Contains a offset information for all lines of the file. */
         private LineModel mLineModel;
+
+        /** internal counter used to time to actualisation of the monitor. */
+        private int mMonitorCounter;
+
+        public CheckstyleAuditListener(IProject project)
+        {
+            mProject = project;
+        }
+
+        public void fileStarted(AuditEvent event)
+        {
+            //get the current IFile reference
+            mResource = getFile(event.getFileName());
+
+            if (mResource != null)
+            {
+
+                //begin subtask
+                if (mMonitorCounter == 0)
+                {
+                    mMonitor.subTask(CheckstylePlugin.getResourceString("taskCheckstyleStep")
+                            + mResource.getName());
+                }
+
+                //increment monitor-counter
+                this.mMonitorCounter++;
+
+                //invalidate the last line model
+                mLineModel = null;
+            }
+            else
+            {
+
+                IPath filePath = new Path(event.getFileName());
+                IPath dirPath = filePath.removeFileExtension().removeLastSegments(1);
+
+                IPath projectPath = mProject.getLocation();
+                if (projectPath.isPrefixOf(dirPath))
+                {
+                    //find the resource with a project relative path
+                    mResource = mProject.findMember(dirPath.removeFirstSegments(projectPath
+                            .segmentCount()));
+                }
+                else
+                {
+                    //if the resource is not inside the project, take project
+                    // as resource this should not happen
+                    mResource = mProject;
+                }
+            }
+        }
 
         public void addError(AuditEvent error)
         {
@@ -265,7 +280,7 @@ class Auditor
             {
                 SeverityLevel severity = error.getSeverityLevel();
 
-                if (!severity.equals(SeverityLevel.IGNORE))
+                if (!severity.equals(SeverityLevel.IGNORE) && mResource != null)
                 {
 
                     //set attributes of the marker
@@ -274,6 +289,21 @@ class Auditor
                     attributes.put(IMarker.SEVERITY, new Integer(getSeverityValue(severity)));
                     MarkerUtilities.setLineNumber(attributes, error.getLine());
                     MarkerUtilities.setMessage(attributes, getMessage(error));
+
+                    //lazy create the line model for the current file
+                    if (mLineModel == null && mResource instanceof IFile)
+                    {
+
+                        //create the file's line offset information
+                        try
+                        {
+                            mLineModel = new LineModel(mResource.getLocation().toFile());
+                        }
+                        catch (IOException e)
+                        {
+                            CheckstyleLog.error(e.getLocalizedMessage(), e);
+                        }
+                    }
 
                     //Provide offset information for the marker to make
                     // annotated source code possible
@@ -296,7 +326,7 @@ class Auditor
                     }
 
                     //create a marker for the actual resource
-                    MarkerUtilities.createMarker(mFile, attributes, CheckstyleMarker.MARKER_ID);
+                    MarkerUtilities.createMarker(mResource, attributes, CheckstyleMarker.MARKER_ID);
                 }
             }
             catch (CoreException e)
@@ -307,8 +337,18 @@ class Auditor
 
         public void addException(AuditEvent event, Throwable throwable)
         {
-            CheckstyleLog.warning("Exception while auditing, file=" + mFile.getName()
+            CheckstyleLog.warning("Exception while auditing, file=" + mResource.getName()
                     + " exception=" + throwable.getMessage());
+        }
+
+        public void fileFinished(AuditEvent event)
+        {
+            //update monitor according to the monitor interval
+            if (mMonitorCounter == MONITOR_INTERVAL)
+            {
+                mMonitor.worked(MONITOR_INTERVAL);
+                mMonitorCounter = 0;
+            }
         }
 
         public void auditFinished(AuditEvent event)
@@ -316,32 +356,6 @@ class Auditor
 
         public void auditStarted(AuditEvent event)
         {}
-
-        public void fileFinished(AuditEvent event)
-        {}
-
-        public void fileStarted(AuditEvent event)
-        {}
-
-        public IFile getFile()
-        {
-            return mFile;
-        }
-
-        public void setFile(IFile file)
-        {
-            mFile = file;
-
-            //create the file's line offset information
-            try
-            {
-                mLineModel = new LineModel(mFile.getLocation().toFile());
-            }
-            catch (IOException e)
-            {
-                CheckstyleLog.error(e.getLocalizedMessage(), e);
-            }
-        }
 
         private int getSeverityValue(SeverityLevel severity)
         {
@@ -377,23 +391,12 @@ class Auditor
 
         private String getRuleName(AuditEvent error)
         {
-            String ruleName = (String) mClassToNameMap.get(error.getSourceName());
-            if (ruleName == null)
+            RuleMetadata metaData = MetadataFactory.getRuleMetadata(error.getSourceName());
+            if (metaData == null)
             {
-                ruleName = "Unknown";
+                return "Unknown";
             }
-            return ruleName;
-        }
-
-        public boolean getAddRuleName()
-        {
-            return mAddRuleName;
-        }
-
-        public void setAddRuleName(boolean b)
-        {
-            mAddRuleName = b;
+            return metaData.getRuleName();
         }
     }
-
 }

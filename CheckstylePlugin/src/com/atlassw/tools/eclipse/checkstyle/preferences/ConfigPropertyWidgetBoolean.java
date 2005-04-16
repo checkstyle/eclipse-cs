@@ -31,20 +31,16 @@ package com.atlassw.tools.eclipse.checkstyle.preferences;
 //=================================================
 // Imports from com namespace
 //=================================================
-import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
-import com.atlassw.tools.eclipse.checkstyle.config.ConfigPropertyMetadata;
-import com.atlassw.tools.eclipse.checkstyle.config.ConfigPropertyType;
-
-//=================================================
-// Imports from org namespace
-//=================================================
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+
+import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
 
 /**
- *  Boolean configuration widget.
+ * Boolean configuration widget.
  */
 public class ConfigPropertyWidgetBoolean extends ConfigPropertyWidgetAbstractBase
 {
@@ -60,44 +56,41 @@ public class ConfigPropertyWidgetBoolean extends ConfigPropertyWidgetAbstractBas
     // Instance member variables.
     //=================================================
 
-    private Combo mComboItem;
+    private Button mCheckbox;
 
     //=================================================
     // Constructors & finalizer.
     //=================================================
 
+    protected ConfigPropertyWidgetBoolean(Composite parent, ConfigProperty prop)
+    {
+        super(parent, prop);
+    }
+
     //=================================================
     // Methods.
     //=================================================
 
-    ConfigPropertyWidgetBoolean(
-        Composite parent,
-        ConfigProperty prop,
-        ConfigPropertyMetadata metadata)
+    /**
+     * @see ConfigPropertyWidgetAbstractBase#getValueWidget(org.eclipse.swt.widgets.Composite)
+     */
+    protected Control getValueWidget(Composite parent)
     {
-        super(ConfigPropertyType.BOOLEAN, parent, prop, metadata);
-
-        addPropertyLabel(SWT.NULL);
-
-        //
-        //  Create a combo box for selecting true or false.
-        //
-        String[] valueLabels = new String[2];
-        valueLabels[0] = Boolean.TRUE.toString();
-        valueLabels[1] = Boolean.FALSE.toString();
-        int initialIndex = 0;
-        String initValue = getInitValue();
-        if (initValue.equalsIgnoreCase(Boolean.FALSE.toString()))
+        if (mCheckbox == null)
         {
-            initialIndex = 1;
+
+            //
+            //  Create a check box for selecting true or false.
+            //
+
+            mCheckbox = new Button(parent, SWT.CHECK);
+            mCheckbox.setLayoutData(new GridData());
+
+            String initValue = getInitValue();
+            mCheckbox.setSelection(Boolean.valueOf(initValue).booleanValue());
+
         }
-
-        mComboItem = new Combo(parent, SWT.NONE | SWT.DROP_DOWN | SWT.READ_ONLY);
-        mComboItem.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
-        mComboItem.setItems(valueLabels);
-        mComboItem.select(initialIndex);
-
-        addDescriptionButton(SWT.NULL);
+        return mCheckbox;
     }
 
     /**
@@ -105,7 +98,15 @@ public class ConfigPropertyWidgetBoolean extends ConfigPropertyWidgetAbstractBas
      */
     public String getValue()
     {
-        String result = mComboItem.getItem(mComboItem.getSelectionIndex());
-        return result;
+        return "" + mCheckbox.getSelection();
+    }
+
+    /**
+     * @see IConfigPropertyWidget#restorePropertyDefault()
+     */
+    public void restorePropertyDefault()
+    {
+        String defaultValue = getConfigProperty().getMetaData().getDefaultValue();
+        mCheckbox.setSelection(Boolean.valueOf(defaultValue).booleanValue());
     }
 }
