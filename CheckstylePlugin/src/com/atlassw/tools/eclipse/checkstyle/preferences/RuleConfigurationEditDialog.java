@@ -30,14 +30,18 @@ import java.util.List;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
@@ -83,6 +87,8 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
     private ComboViewer mSeverityCombo;
 
     private IConfigPropertyWidget[] mConfigPropertyWidgets;
+
+    private Button mBtnTranslate;
 
     private boolean mReadonly = false;
 
@@ -173,10 +179,55 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
         return composite;
     }
 
+    protected Control createButtonBar(Composite parent)
+    {
+
+        Composite composite = new Composite(parent, SWT.NONE);
+        GridLayout layout = new GridLayout(2, false);
+        layout.marginHeight = 0;
+        layout.marginWidth = 0;
+        composite.setLayout(layout);
+        composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+        mBtnTranslate = new Button(composite, SWT.CHECK);
+        mBtnTranslate.setText("Translate tokens");
+        GridData gd = new GridData();
+        gd.horizontalAlignment = GridData.BEGINNING;
+        gd.horizontalIndent = 5;
+        mBtnTranslate.setLayoutData(gd);
+
+        //Init the translate tokens preference
+        IPreferenceStore prefStore = CheckstylePlugin.getDefault().getPreferenceStore();
+        mBtnTranslate.setSelection(prefStore.getBoolean(CheckstylePlugin.PREF_TRANSLATE_TOKENS));
+        mBtnTranslate.addSelectionListener(new SelectionListener()
+        {
+
+            public void widgetSelected(SelectionEvent e)
+            {
+                //store translation preference
+                IPreferenceStore prefStore = CheckstylePlugin.getDefault().getPreferenceStore();
+                prefStore.setValue(CheckstylePlugin.PREF_TRANSLATE_TOKENS, ((Button) e.widget)
+                        .getSelection());
+            }
+
+            public void widgetDefaultSelected(SelectionEvent e)
+            {
+            //NOOP
+            }
+        });
+
+        Control buttonBar = super.createButtonBar(composite);
+        gd = new GridData(GridData.FILL_HORIZONTAL);
+        gd.horizontalAlignment = GridData.END;
+        buttonBar.setLayoutData(gd);
+
+        return composite;
+    }
+
     protected void createButtonsForButtonBar(Composite parent)
     {
 
-        createButton(parent, IDialogConstants.BACK_ID, "Default", true);
+        createButton(parent, IDialogConstants.BACK_ID, "Default", false);
         // create OK and Cancel buttons by default
         createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true);
         createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
@@ -215,6 +266,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
 
         //set the logo
         this.setTitleImage(CheckstylePlugin.getLogo());
+
     }
 
     /**

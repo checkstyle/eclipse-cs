@@ -27,7 +27,7 @@
                <property-value-option value="anoninner"/>
             </enumeration>
          </property-metadata>
-         <property-metadata name="excludeScope" datatype="SingleSelect">
+         <property-metadata name="excludeScope" datatype="SingleSelect" default-value="nothing">
             <description>visibility scope where Javadoc comments are not checked</description>
             <enumeration>
                <property-value-option value="nothing"/>
@@ -137,7 +137,7 @@ public boolean isSomething()
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocTypeCheck"/>
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.JavadocTypeCheck"/>
          <description>Checks Javadoc comments for class and interface definitions.</description>
-         <property-metadata name="excludeScope" datatype="SingleSelect">
+         <property-metadata name="excludeScope" datatype="SingleSelect" default-value="nothing">
             <description>visibility scope where Javadoc comments are not checked</description>
             <enumeration>
                <property-value-option value="nothing"/>
@@ -178,7 +178,7 @@ public boolean isSomething()
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocVariableCheck"/>
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.JavadocVariableCheck"/>
          <description>Checks that variables have Javadoc comments.</description>
-         <property-metadata name="excludeScope" datatype="SingleSelect">
+         <property-metadata name="excludeScope" datatype="SingleSelect" default-value="nothing">
             <description>visibility scope where Javadoc comments are not checked</description>
             <enumeration>
                <property-value-option value="nothing"/>

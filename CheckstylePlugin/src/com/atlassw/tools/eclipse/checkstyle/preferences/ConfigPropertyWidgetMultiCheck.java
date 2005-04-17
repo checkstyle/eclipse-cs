@@ -22,25 +22,40 @@ package com.atlassw.tools.eclipse.checkstyle.preferences;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.MissingResourceException;
+import java.util.PropertyResourceBundle;
+import java.util.ResourceBundle;
 import java.util.StringTokenizer;
 
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
+import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
 
 /**
  * Configuration widget for selecting multiple values with check boxes.
  */
-public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstractBase
+public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstractBase implements
+        IPropertyChangeListener
 {
     //=================================================
     // Public static final variables.
     //=================================================
+
+    /** Resource bundle containing the token translations. */
+    private static final ResourceBundle TOKEN_BUNDLE = PropertyResourceBundle
+            .getBundle("com.atlassw.tools.eclipse.checkstyle.preferences.token");
 
     //=================================================
     // Static class variables.
@@ -51,6 +66,8 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
     //=================================================
 
     private CheckboxTableViewer mTable;
+
+    private boolean mTranslateTokens;
 
     //=================================================
     // Constructors & finalizer.
@@ -72,15 +89,30 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
     {
         if (mTable == null)
         {
+            IPreferenceStore prefStore = CheckstylePlugin.getDefault().getPreferenceStore();
+            mTranslateTokens = prefStore.getBoolean(CheckstylePlugin.PREF_TRANSLATE_TOKENS);
+            prefStore.addPropertyChangeListener(this);
 
             mTable = CheckboxTableViewer.newCheckList(parent, SWT.V_SCROLL | SWT.BORDER);
             mTable.setContentProvider(new ArrayContentProvider());
+            mTable.setLabelProvider(new TokenLabelProvider());
             mTable.setInput(getMetadata());
             mTable.setCheckedElements(getInitialValues().toArray());
 
             GridData gd = new GridData(GridData.FILL_BOTH);
             gd.heightHint = 150;
             mTable.getControl().setLayoutData(gd);
+
+            //deregister the listener on widget dipose
+            mTable.getControl().addDisposeListener(new DisposeListener()
+            {
+
+                public void widgetDisposed(DisposeEvent e)
+                {
+                    IPreferenceStore prefStore = CheckstylePlugin.getDefault().getPreferenceStore();
+                    prefStore.removePropertyChangeListener(ConfigPropertyWidgetMultiCheck.this);
+                }
+            });
         }
 
         return mTable.getControl();
@@ -143,4 +175,50 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
         mTable.setCheckedElements(result.toArray());
     }
 
+    /**
+     * Label provider to translate checkstyle tokens into readable form.
+     * 
+     * @author Lars Ködderitzsch
+     */
+    private class TokenLabelProvider extends LabelProvider
+    {
+
+        /**
+         * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
+         */
+        public String getText(Object element)
+        {
+            String translation = null;
+            if (!mTranslateTokens)
+            {
+                translation = "" + element;
+            }
+            else
+            {
+                try
+                {
+                    translation = TOKEN_BUNDLE.getString((String) element);
+                }
+                catch (MissingResourceException e)
+                {
+                    translation = "" + element;
+                }
+            }
+            return translation;
+        }
+
+    }
+
+    /**
+     * @see IPropertyChangeListener#propertyChange(org.eclipse.jface.util.PropertyChangeEvent)
+     */
+    public void propertyChange(PropertyChangeEvent event)
+    {
+
+        if (CheckstylePlugin.PREF_TRANSLATE_TOKENS.equals(event.getProperty()))
+        {
+            mTranslateTokens = ((Boolean) event.getNewValue()).booleanValue();
+            mTable.refresh(true);
+        }
+    }
 }

@@ -107,13 +107,20 @@ public class ConfigPropertyWidgetSingleSelect extends ConfigPropertyWidgetAbstra
         String result = mComboItem.getItem(mComboItem.getSelectionIndex());
         return result;
     }
-    
+
     /**
      * @see IConfigPropertyWidget#restorePropertyDefault()
      */
     public void restorePropertyDefault()
     {
         String defaultValue = getConfigProperty().getMetaData().getDefaultValue();
-        mComboItem.select(mComboItem.indexOf(defaultValue));
+        if (defaultValue == null)
+        {
+            mComboItem.select(0);
+        }
+        else
+        {
+            mComboItem.select(mComboItem.indexOf(defaultValue));
+        }
     }
 }

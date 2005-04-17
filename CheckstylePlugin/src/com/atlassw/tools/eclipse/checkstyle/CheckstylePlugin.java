@@ -64,17 +64,23 @@ public class CheckstylePlugin extends AbstractUIPlugin
     public static final String PREF_FILESET_WARNING = "warn.before.losing.filesets";
 
     /**
-     * Preference name indicating the minimum amount of lines that is used for the checker
-     * analysis.
+     * Preference name indication if the checkstyle tokens within the module
+     * editor should be translated.
+     */
+    public static final String PREF_TRANSLATE_TOKENS = "translate.checkstyle.tokens";
+
+    /**
+     * Preference name indicating the minimum amount of lines that is used for
+     * the checker analysis.
      */
     public static final String PREF_DUPLICATED_CODE_MIN_LINES = "checker.strictDuplicatedCode.minLines";
-    
+
     /**
-     * Default value for the minimum amount of lines that is used for the checker
-     * analysis.
+     * Default value for the minimum amount of lines that is used for the
+     * checker analysis.
      */
     public static final int DUPLICATED_CODE_MIN_LINES = 20;
-    
+
     /** constant for the plugin properties. */
     private static final String PROPERTIES = "plugin.properties";
 
@@ -182,6 +188,7 @@ public class CheckstylePlugin extends AbstractUIPlugin
 
         prefStore.setDefault(PREF_INCLUDE_RULE_NAMES, false);
         prefStore.setDefault(PREF_FILESET_WARNING, true);
+        prefStore.setDefault(PREF_TRANSLATE_TOKENS, true);
         prefStore.setDefault(PREF_DUPLICATED_CODE_MIN_LINES, DUPLICATED_CODE_MIN_LINES);
     }
 }
