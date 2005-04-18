@@ -23,7 +23,6 @@ package com.atlassw.tools.eclipse.checkstyle.properties;
 //=================================================
 // Imports from java namespace
 //=================================================
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -235,7 +234,7 @@ public class FileSetEditDialog extends Dialog
             CheckstyleLog.internalErrorDialog();
             return;
         }
-        Collections.sort(configList);
+        //Collections.sort(configList);
         mAuditConfigs = new ICheckConfiguration[configList.size()];
         String[] labels = new String[configList.size()];
 

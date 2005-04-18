@@ -236,6 +236,9 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
                     if (fileSet.includesFile(file))
                     {
                         audit.addFile(file);
+
+                        //remove markers on this file
+                        file.deleteMarkers(CheckstyleMarker.MARKER_ID, false, IResource.DEPTH_ZERO);
                     }
                 }
             }

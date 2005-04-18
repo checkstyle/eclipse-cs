@@ -23,6 +23,8 @@ package com.atlassw.tools.eclipse.checkstyle.config;
 import java.net.URL;
 import java.util.List;
 
+import org.eclipse.core.resources.IProject;
+
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.IConfigurationType;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
@@ -46,6 +48,13 @@ public interface ICheckConfiguration extends Cloneable
      */
     void initialize(String name, String location, IConfigurationType type, String description)
         throws CheckstylePluginException;
+
+    /**
+     * Sets the actual project context.
+     * 
+     * @param context the context of the current project.
+     */
+    void setContext(IProject context);
 
     /**
      * Returns the displayable name of the configuration.
@@ -137,6 +146,14 @@ public interface ICheckConfiguration extends Cloneable
      *         configured.
      */
     boolean isConfigurable();
+
+    /**
+     * Determines if the specific check configuration needs a project context to
+     * resolve.
+     * 
+     * @return <code>true</code> if project context is needed
+     */
+    boolean isContextNeeded();
 
     /**
      * Returns the modules configured within the checkstyle configuration.

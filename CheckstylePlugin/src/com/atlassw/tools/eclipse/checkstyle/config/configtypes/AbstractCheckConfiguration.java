@@ -31,6 +31,8 @@ import java.net.URL;
 import java.rmi.server.UID;
 import java.util.List;
 
+import org.eclipse.core.resources.IProject;
+
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationFactory;
 import com.atlassw.tools.eclipse.checkstyle.config.ConfigurationReader;
 import com.atlassw.tools.eclipse.checkstyle.config.ConfigurationWriter;
@@ -58,13 +60,16 @@ public abstract class AbstractCheckConfiguration implements ICheckConfiguration
     private String mName;
 
     /** the location of the configuration file. */
-    private String mLocation;
+    protected String mLocation;
 
     /** the description of the configuration. */
     private String mDescription;
 
     /** the configuration type. */
     private IConfigurationType mConfigType;
+
+    /** the current project context. */
+    private IProject mContext;
 
     //
     // methods
@@ -83,6 +88,14 @@ public abstract class AbstractCheckConfiguration implements ICheckConfiguration
         mConfigType = type;
         setDescription(description);
         mId = new UID().toString();
+    }
+
+    /**
+     * @see ICheckConfiguration#setContext(org.eclipse.core.resources.IProject)
+     */
+    public void setContext(IProject context)
+    {
+        mContext = context;
     }
 
     /**
@@ -198,6 +211,15 @@ public abstract class AbstractCheckConfiguration implements ICheckConfiguration
     }
 
     /**
+     * @see com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration#isContextNeeded()
+     */
+    public boolean isContextNeeded()
+    {
+        //By default no context is needed
+        return false;
+    }
+
+    /**
      * @see ICheckConfiguration#getPropertyResolver()
      */
     public PropertyResolver getPropertyResolver()
@@ -212,9 +234,13 @@ public abstract class AbstractCheckConfiguration implements ICheckConfiguration
     {
         try
         {
-            return handleGetLocation();
+            //check if URL resolves
+            URL configURL = handleGetLocation();
+            configURL.openStream();
+
+            return configURL;
         }
-        catch (MalformedURLException e)
+        catch (IOException e)
         {
             throw new CheckstylePluginException(e.getLocalizedMessage(), e);
         }
@@ -306,6 +332,16 @@ public abstract class AbstractCheckConfiguration implements ICheckConfiguration
     {
         ICheckConfiguration clone = (ICheckConfiguration) super.clone();
         return clone;
+    }
+
+    /**
+     * Returns the context of the configuration.
+     * 
+     * @return
+     */
+    protected IProject getContext()
+    {
+        return mContext;
     }
 
     /**

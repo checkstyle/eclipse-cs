@@ -81,9 +81,21 @@ public class ComplexFileSetsEditor implements IFileSetsEditor
 
     private List mFileSets;
 
+    private CheckstylePropertyPage mPropertyPage;
+
     //=================================================
     // Constructors & finalizer.
     //=================================================
+
+    /**
+     * Creates the ComplexFileSetsEditor.
+     * 
+     * @param propsPage the property page
+     */
+    public ComplexFileSetsEditor(CheckstylePropertyPage propsPage)
+    {
+        mPropertyPage = propsPage;
+    }
 
     //=================================================
     // Methods.
@@ -247,6 +259,8 @@ public class ComplexFileSetsEditor implements IFileSetsEditor
                 mFileSets.add(fileSet);
                 mViewer.refresh();
                 mViewer.setChecked(fileSet, fileSet.isEnabled());
+
+                mPropertyPage.getContainer().updateButtons();
             }
         }
         catch (CheckstylePluginException e)
@@ -280,6 +294,8 @@ public class ComplexFileSetsEditor implements IFileSetsEditor
                 mFileSets.add(newFileSet);
                 mViewer.refresh();
                 mViewer.setChecked(newFileSet, newFileSet.isEnabled());
+
+                mPropertyPage.getContainer().updateButtons();
             }
         }
         catch (CheckstylePluginException e)
@@ -303,6 +319,7 @@ public class ComplexFileSetsEditor implements IFileSetsEditor
 
         mFileSets.remove(fileSet);
         mViewer.refresh();
+        mPropertyPage.getContainer().updateButtons();
     }
 
     private void changeEnabledState(CheckStateChangedEvent event)

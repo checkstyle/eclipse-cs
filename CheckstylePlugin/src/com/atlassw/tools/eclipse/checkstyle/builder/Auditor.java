@@ -87,6 +87,11 @@ public class Auditor
     // Constructors & finalizer.
     //=================================================
 
+    /**
+     * Creates an auditor.
+     * 
+     * @param checkConfiguration the check configuraton to use during audit.
+     */
     public Auditor(ICheckConfiguration checkConfiguration)
     {
         mCheckConfiguration = checkConfiguration;
@@ -127,6 +132,12 @@ public class Auditor
             //begin task
             monitor.beginTask("Checking '" + mCheckConfiguration.getName() + "'",
                     filesToAudit.length);
+
+            //set context
+            if (mCheckConfiguration.isContextNeeded())
+            {
+                mCheckConfiguration.setContext(project);
+            }
 
             //create checker
             checker = CheckerFactory.createChecker(mCheckConfiguration);

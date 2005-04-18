@@ -20,12 +20,16 @@
 
 package com.atlassw.tools.eclipse.checkstyle.properties;
 
+import java.util.Iterator;
+import java.util.List;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.MessageDialogWithToggle;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -59,8 +63,10 @@ import org.eclipse.ui.dialogs.PropertyPage;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.builder.BuildProjectJob;
+import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.nature.CheckstyleNature;
 import com.atlassw.tools.eclipse.checkstyle.nature.ConfigureDeconfigureNatureJob;
+import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileSet;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfigurationFactory;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.IFilter;
@@ -222,11 +228,11 @@ public class CheckstylePropertyPage extends PropertyPage
 
         if (mProjectConfig.isUseSimpleConfig())
         {
-            mFileSetsEditor = new SimpleFileSetsEditor();
+            mFileSetsEditor = new SimpleFileSetsEditor(this);
         }
         else
         {
-            mFileSetsEditor = new ComplexFileSetsEditor();
+            mFileSetsEditor = new ComplexFileSetsEditor(this);
         }
 
         mFileSetsEditor.setFileSets(mProjectConfig.getFileSets());
@@ -393,6 +399,39 @@ public class CheckstylePropertyPage extends PropertyPage
         {
             throw new CheckstylePluginException("Could determine Checkstyle Nature.", e1);
         }
+    }
+
+    /**
+     * @see org.eclipse.jface.preference.IPreferencePage#isValid()()
+     */
+    public boolean isValid()
+    {
+        //check if all check configurations resolve
+        List fileSets = mProjectConfig.getFileSets();
+        Iterator it = fileSets.iterator();
+        while (it.hasNext())
+        {
+            FileSet fileset = (FileSet) it.next();
+            ICheckConfiguration checkConfig = fileset.getCheckConfig();
+            if (checkConfig.isContextNeeded())
+            {
+                checkConfig.setContext(mProject);
+            }
+
+            try
+            {
+                checkConfig.getCheckstyleConfigurationURL();
+            }
+            catch (CheckstylePluginException e)
+            {
+                MessageDialog.openError(getShell(), "Cannot resolve check configuration",
+                        "Location '" + checkConfig.getLocation() + "' of check configuration '"
+                                + checkConfig.getName() + "' cannot be resolved.");
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**

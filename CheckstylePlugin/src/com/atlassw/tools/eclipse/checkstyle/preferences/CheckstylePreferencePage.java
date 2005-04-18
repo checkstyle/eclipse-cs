@@ -28,7 +28,10 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Preferences;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -40,6 +43,8 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -58,6 +63,11 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
+import org.eclipse.ui.dialogs.ISelectionStatusValidator;
+import org.eclipse.ui.model.WorkbenchContentProvider;
+import org.eclipse.ui.model.WorkbenchLabelProvider;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleBuilder;
@@ -609,14 +619,95 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
 
         if (config != null)
         {
-            CheckConfigurationConfigureDialog dialog = new CheckConfigurationConfigureDialog(
-                    getShell(), config);
-            dialog.setBlockOnOpen(true);
-            if (CheckConfigurationConfigureDialog.OK == dialog.open() && config.isConfigurable())
+
+            if (config.isContextNeeded())
             {
-                mNeedRebuild = true;
+
+                IProject context = getProjectContext();
+                if (context != null)
+                {
+                    config.setContext(context);
+                }
+                else
+                {
+                    //cant go further without context
+                    return;
+                }
+            }
+
+            try
+            {
+                //test if file exists
+                config.getCheckstyleConfigurationURL();
+
+                CheckConfigurationConfigureDialog dialog = new CheckConfigurationConfigureDialog(
+                        getShell(), config);
+                dialog.setBlockOnOpen(true);
+                if (CheckConfigurationConfigureDialog.OK == dialog.open()
+                        && config.isConfigurable())
+                {
+                    mNeedRebuild = true;
+                }
+
+                config.setContext(null);
+            }
+            catch (CheckstylePluginException e)
+            {
+                CheckstyleLog.error(e.getLocalizedMessage(), e);
+                CheckstyleLog.errorDialog(getShell(), e.getLocalizedMessage(), e);
+                return;
             }
         }
+    }
+
+    /**
+     * Lets the user choose a project context.
+     * 
+     * @return the project or <code>null</code>
+     */
+    private IProject getProjectContext()
+    {
+
+        IProject context = null;
+
+        ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(getShell(),
+                new WorkbenchLabelProvider(), new WorkbenchContentProvider());
+        dialog.setBlockOnOpen(true);
+        dialog.setTitle("Select project context");
+        dialog.setMessage("Select project context for check configuration.");
+        dialog.setAllowMultiple(false);
+        dialog.setInput(CheckstylePlugin.getWorkspace().getRoot());
+
+        //filter all but projects
+        dialog.addFilter(new ViewerFilter()
+        {
+            public boolean select(Viewer viewer, Object parentElement, Object element)
+            {
+                return element instanceof IProject;
+            }
+        });
+        dialog.setValidator(new ISelectionStatusValidator()
+        {
+            public IStatus validate(Object[] selection)
+            {
+                if (selection.length == 1 && selection[0] instanceof IProject)
+                {
+                    return new Status(IStatus.OK, PlatformUI.PLUGIN_ID, IStatus.ERROR, "", null);
+                }
+                else
+                {
+                    return new Status(IStatus.ERROR, PlatformUI.PLUGIN_ID, IStatus.ERROR, "", null);
+                }
+            }
+        });
+
+        if (ElementTreeSelectionDialog.OK == dialog.open())
+        {
+            Object[] result = dialog.getResult();
+            context = (IProject) result[0];
+        }
+
+        return context;
     }
 
     /**

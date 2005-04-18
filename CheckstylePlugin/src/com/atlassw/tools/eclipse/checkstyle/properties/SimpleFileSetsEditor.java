@@ -70,6 +70,22 @@ public class SimpleFileSetsEditor implements IFileSetsEditor
 
     private FileSet mDefaultFileSet;
 
+    private CheckstylePropertyPage mPropertyPage;
+
+    //
+    // constructor
+    //
+
+    /**
+     * Creates the SimpleFileSetsEditor.
+     * 
+     * @param propsPage the property page
+     */
+    public SimpleFileSetsEditor(CheckstylePropertyPage propsPage)
+    {
+        mPropertyPage = propsPage;
+    }
+
     //
     // methods
     //
@@ -152,6 +168,8 @@ public class SimpleFileSetsEditor implements IFileSetsEditor
                     ICheckConfiguration config = CheckConfigurationFactory.getByName(configName);
                     mDefaultFileSet.setCheckConfig(config);
                     mTxtConfigDescription.setText(config.getDescription());
+
+                    mPropertyPage.getContainer().updateButtons();
                 }
                 catch (CheckstylePluginException e1)
                 {
