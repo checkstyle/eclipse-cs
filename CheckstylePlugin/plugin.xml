@@ -225,6 +225,22 @@
             class="com.atlassw.tools.eclipse.checkstyle.config.configtypes.ExternalFileCheckConfiguration"
             editorClass="com.atlassw.tools.eclipse.checkstyle.config.configtypes.FileConfigurationLocationEditor">
       </configuration-type>
+      <configuration-type
+            name="%RemoteCheckConfiguration.label"
+            internal-name="remote"
+            creatable="true"
+            icon="icons/configtype_remote.gif"
+            class="com.atlassw.tools.eclipse.checkstyle.config.configtypes.RemoteCheckConfiguration"
+            editorClass="com.atlassw.tools.eclipse.checkstyle.config.configtypes.RemoteConfigurationLocationEditor">
+      </configuration-type>
+      <configuration-type
+            name="%ProjectRelativeCheckConfiguration.label"
+            internal-name="project"
+            creatable="true"
+            icon="icons/configtype_project.gif"
+            class="com.atlassw.tools.eclipse.checkstyle.config.configtypes.ProjectCheckConfiguration"
+            editorClass="com.atlassw.tools.eclipse.checkstyle.config.configtypes.ProjectConfigurationLocationEditor">
+      </configuration-type>
    </extension>
 
 <!-- 
