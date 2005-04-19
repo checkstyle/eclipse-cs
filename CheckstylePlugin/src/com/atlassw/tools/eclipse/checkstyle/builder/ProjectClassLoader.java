@@ -62,16 +62,19 @@ public class ProjectClassLoader extends ClassLoader
     //
 
     /** the classloader delegate. */
-    private ClassLoader             mDelegateClassLoader;
+    private ClassLoader mDelegateClassLoader;
 
     /** the parent classloader. */
-    private ClassLoader             mParentClassLoader;
+    private ClassLoader mParentClassLoader;
 
-    /** the URLStreamHandlerFactory to provide support for non standard protocols. */
+    /**
+     * the URLStreamHandlerFactory to provide support for non standard
+     * protocols.
+     */
     private URLStreamHandlerFactory mStreamHandlerFactory;
 
     /** the last project the classloader was configured for. */
-    private IProject                mRecentProject;
+    private IProject mRecentProject;
 
     //
     // constructors
@@ -121,11 +124,11 @@ public class ProjectClassLoader extends ClassLoader
     public void intializeWithProject(IProject project)
     {
 
-        //Optimization if the project is the same as last
-//        if (project == this.mRecentProject)
-//        {
-//            return;
-//        }
+        // Optimization if the project is the same as last
+        // if (project == this.mRecentProject)
+        // {
+        // return;
+        // }
 
         URL[] projClassPath = getProjectClassPath(project);
 
@@ -180,10 +183,10 @@ public class ProjectClassLoader extends ClassLoader
     private static URL[] getProjectClassPath(IProject project)
     {
 
-        //List to contain the classpath urls
+        // List to contain the classpath urls
         List cpURLs = new ArrayList();
 
-        //add the projects contents to the classpath
+        // add the projects contents to the classpath
         addToClassPath(project, cpURLs, false);
 
         URL[] urls = (URL[]) cpURLs.toArray(new URL[cpURLs.size()]);
@@ -204,50 +207,49 @@ public class ProjectClassLoader extends ClassLoader
         try
         {
 
-            //get the java project
+            // get the java project
             IJavaProject javaProject = JavaCore.create(project);
 
-            //get the resolved classpath of the project
+            // get the resolved classpath of the project
             IClasspathEntry[] cpEntries = javaProject.getResolvedClasspath(true);
 
-            //iterate over classpath to create classpath urls
+            // iterate over classpath to create classpath urls
             int size = cpEntries.length;
             for (int i = 0; i < size; i++)
             {
 
                 int entryKind = cpEntries[i].getEntryKind();
 
-                //handle a source path
+                // handle a source path
                 if (IClasspathEntry.CPE_SOURCE == entryKind)
                 {
 
                     handleSourcePath(project, cpURLs, cpEntries[i], javaProject);
                 }
-                //handle a project reference
+                // handle a project reference
                 else if (IClasspathEntry.CPE_PROJECT == entryKind)
                 {
 
                     handleRefProject(cpURLs, cpEntries[i]);
                 }
-                //handle a library entry
+                // handle a library entry
                 else if (IClasspathEntry.CPE_LIBRARY == entryKind)
                 {
 
-                    //do only if this project is not referenced or the entry is
+                    // do only if this project is not referenced or the entry is
                     // exported
                     if (!isReferenced || cpEntries[i].isExported())
                     {
                         handleLibrary(project, cpURLs, cpEntries[i]);
                     }
                 }
-                //cannot happen since we use a resolved classpath
+                // cannot happen since we use a resolved classpath
                 else
                 {
 
-                    //log as exception
-                    CheckstylePluginException ex = new CheckstylePluginException(CheckstylePlugin
-                            .getResourceString("msgUnknownCpEntry")
-                            + cpEntries[i].getPath());
+                    // log as exception
+                    CheckstylePluginException ex = new CheckstylePluginException(
+                            "Unknown classpath entry " + cpEntries[i].getPath());
                     CheckstyleLog.error(ex.getLocalizedMessage(), ex);
                 }
             }
@@ -273,7 +275,7 @@ public class ProjectClassLoader extends ClassLoader
 
         IPath sourcePath = entry.getPath();
 
-        //check for if the output path is different to the source path
+        // check for if the output path is different to the source path
         IPath outputPath = entry.getOutputLocation();
 
         if (outputPath == null)
@@ -283,28 +285,28 @@ public class ProjectClassLoader extends ClassLoader
         else if (!outputPath.equals(sourcePath))
         {
 
-            //make the output path the relevant path since it contains the
-            //class files
+            // make the output path the relevant path since it contains the
+            // class files
             sourcePath = outputPath;
         }
 
-        //check if the sourcepath is relative to the project
+        // check if the sourcepath is relative to the project
         IPath projPath = project.getFullPath();
 
         if (!projPath.equals(sourcePath) && sourcePath.matchingFirstSegments(projPath) > 0)
         {
 
-            //remove the project part from the source path
+            // remove the project part from the source path
             sourcePath = sourcePath.removeFirstSegments(projPath.segmentCount());
 
-            //get the folder for the path
+            // get the folder for the path
             IFolder sourceFolder = project.getFolder(sourcePath);
 
-            //get the absolute path for the folder
+            // get the absolute path for the folder
             sourcePath = sourceFolder.getLocation();
         }
 
-        //try to add the path to the classpath
+        // try to add the path to the classpath
         handlePath(sourcePath, cpURLs);
     }
 
@@ -317,11 +319,11 @@ public class ProjectClassLoader extends ClassLoader
     private static void handleRefProject(List cpURLs, IClasspathEntry entry)
     {
 
-        //get the referenced project from the workspace
+        // get the referenced project from the workspace
         IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
         IProject referencedProject = root.getProject(entry.getPath().toString());
 
-        //add the referenced projects contents
+        // add the referenced projects contents
         if (referencedProject.exists())
         {
             addToClassPath(referencedProject, cpURLs, true);
@@ -340,23 +342,23 @@ public class ProjectClassLoader extends ClassLoader
 
         IPath libPath = entry.getPath();
 
-        //check if the library path is relative to the project
-        //can happen if the library is contained within the project
+        // check if the library path is relative to the project
+        // can happen if the library is contained within the project
         IPath projPath = project.getFullPath();
         if (libPath.matchingFirstSegments(projPath) > 0)
         {
 
-            //remove the project part from the source path
+            // remove the project part from the source path
             libPath = libPath.removeFirstSegments(projPath.segmentCount());
 
-            //get the file handle for the library
+            // get the file handle for the library
             IFile file = project.getFile(libPath);
 
-            //get the absolute path for the library file
+            // get the absolute path for the library file
             libPath = file.getLocation();
         }
 
-        //try to add the path to the classpath
+        // try to add the path to the classpath
         handlePath(libPath, cpURLs);
     }
 
@@ -374,7 +376,7 @@ public class ProjectClassLoader extends ClassLoader
 
             File file = absolutePath.toFile();
 
-            //check if the file exists
+            // check if the file exists
             if (file != null && file.exists())
             {
 
@@ -389,7 +391,7 @@ public class ProjectClassLoader extends ClassLoader
                 }
                 catch (MalformedURLException mfe)
                 {
-                    //log the exception although this should not happen
+                    // log the exception although this should not happen
                     CheckstyleLog.error(mfe.getLocalizedMessage(), mfe);
                 }
             }

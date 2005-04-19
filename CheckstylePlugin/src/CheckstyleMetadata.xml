@@ -2075,7 +2075,7 @@ The basic idea behind this is that while pretty printers are sometimes convienen
       </rule-metadata>
       
       <rule-metadata name="New Line At End Of File" internal-name="NewlineAtEndOfFile" parent="Checker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.NewlineAtEndOfFile"/>
+         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.NewlineAtEndOfFileCheck"/>
          <description>Checks whether files end with a new line. 
 
 Rationale: Any source files and text files in general should end with a newline character, especially when using SCM systems such as CVS. CVS will even print a warning when it encounters a file that doesn't end with a newline.</description>
@@ -2110,7 +2110,7 @@ Rationale: Any source files and text files in general should end with a newline 
       </rule-metadata>
       
       <rule-metadata name="Translation" internal-name="Translation" parent="Checker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.Translation"/>
+         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.TranslationCheck"/>
          <description>A FileSetCheck that ensures the correct translation of code by checking property files for consistency regarding their keys. Two property files describing one and the same context are consistent if they contain the same keys.</description>
          <property-metadata name="fileExtensions" datatype="String" default-value="properties">
             <description>file type extension to identify translation files. Setting this property is typically only required if your translation files are preprocessed and the original files do not have the extension .properties</description>
@@ -2160,7 +2160,7 @@ Rationale: main() method can be often used for debug puposes. Thus most of main(
    
    <rule-group-metadata name="J2EE">
    
-      <rule-metadata name="Entity Bean" internal-name="EntityBean" parent="TreeWalker">
+      <rule-metadata name="Entity Bean" internal-name="j2ee.EntityBean" parent="TreeWalker">
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.j2ee.EntityBeanCheck"/>
          <description>Checks that a direct entity bean, i.e. a class that directly implements javax.ejb.EntityBean, satisfies these class requirements:
   - The class is defined as public.
@@ -2178,7 +2178,7 @@ Rationale: main() method can be often used for debug puposes. Thus most of main(
          </property-metadata>
       </rule-metadata>
       
-      <rule-metadata name="Final Static" internal-name="FinalStatic" parent="TreeWalker">
+      <rule-metadata name="Final Static" internal-name="j2ee.FinalStatic" parent="TreeWalker">
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.j2ee.FinalStaticCheck"/>
          <description>Checks that all static fields are declared final. 
 
@@ -2186,7 +2186,7 @@ Rational: This check ensures consistent runtime semantics so that EJB containers
           </description>
       </rule-metadata>
       
-      <rule-metadata name="Local Home Interface" internal-name="LocalHomeInterface" parent="TreeWalker">
+      <rule-metadata name="Local Home Interface" internal-name="j2ee.LocalHomeInterface" parent="TreeWalker">
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.j2ee.LocalHomeInterfaceCheck"/>
          <description>Checks that a direct local home interface, i.e. an interface that directly extends javax.ejb.EJBLocalHome, satisfies these requirements: 
 
@@ -2198,7 +2198,7 @@ Reference: Enterprise JavaBeansTM Specification,Version 2.0, sections 6.4 and 9.
           </description>
       </rule-metadata>
       
-      <rule-metadata name="Local Interface" internal-name="LocalInterface" parent="TreeWalker">
+      <rule-metadata name="Local Interface" internal-name="j2ee.LocalInterface" parent="TreeWalker">
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.j2ee.LocalInterfaceCheck"/>
          <description>Checks that a direct local interface, i.e. an interface that directly extends javax.ejb.EJBLocalObject, satisfies these requirements: 
 
@@ -2208,7 +2208,7 @@ Reference: Enterprise JavaBeansTM Specification,Version 2.0, section 9.10.
           </description>
       </rule-metadata>
       
-      <rule-metadata name="Message Bean" internal-name="MessageBean" parent="TreeWalker">
+      <rule-metadata name="Message Bean" internal-name="j2ee.MessageBean" parent="TreeWalker">
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.j2ee.MessageBeanCheck"/>
          <description>Checks that a direct message bean, i.e. a class that directly implements javax.ejb.MessageDrivenBean and javax.jms.MessageListener, satisfies these class requirements: 
 
@@ -2223,7 +2223,7 @@ Reference: Enterprise JavaBeans™ Specification,Version 2.0, section 15.7.
           </description>
       </rule-metadata>
       
-      <rule-metadata name="Remote Home Interface" internal-name="RemoteHomeInterface" parent="TreeWalker">
+      <rule-metadata name="Remote Home Interface" internal-name="j2ee.RemoteHomeInterface" parent="TreeWalker">
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.j2ee.RemoteHomeInterfaceCheck"/>
          <description>Checks that a direct remote home interface, i.e. an interface that directly extends javax.ejb.EJBHome, satisfies these requirements: 
 
@@ -2235,7 +2235,7 @@ Reference: Enterprise JavaBeansTM Specification,Version 2.0, sections 6.3 and 9.
           </description>
       </rule-metadata>
       
-      <rule-metadata name="Remote Interface" internal-name="RemoteInterface" parent="TreeWalker">
+      <rule-metadata name="Remote Interface" internal-name="j2ee.RemoteInterface" parent="TreeWalker">
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.j2ee.RemoteInterfaceCheck"/>
          <description>Checks that a direct remote interface, i.e. an interface that directly extends javax.ejb.EJBObject, satisfies these requirements: 
 
@@ -2245,7 +2245,7 @@ Reference: Enterprise JavaBeansTM Specification,Version 2.0, section 9.9.
           </description>
       </rule-metadata>
       
-      <rule-metadata name="Session Bean" internal-name="SessionBean" parent="TreeWalker">
+      <rule-metadata name="Session Bean" internal-name="j2ee.SessionBean" parent="TreeWalker">
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.j2ee.SessionBeanCheck"/>
          <description>Checks that a direct session bean, i.e. a class that directly implements javax.ejb.SessionBean, satisfies these class requirements: 
 
@@ -2260,13 +2260,13 @@ Reference: Enterprise JavaBeans™ Specification,Version 2.0, section 7.10.
           </description>
       </rule-metadata>
       
-      <rule-metadata name="This Parameter" internal-name="ThisParameter" parent="TreeWalker">
+      <rule-metadata name="This Parameter" internal-name="j2ee.ThisParameter" parent="TreeWalker">
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.j2ee.ThisParameterCheck"/>
          <description>Checks that this is not a parameter of any method calls or constructors for a bean. Instead, you must use the result of the getEJBObject() available in SessionContext or EntityContext. 
           </description>
       </rule-metadata>
       
-      <rule-metadata name="This Return" internal-name="ThisReturn" parent="TreeWalker">
+      <rule-metadata name="This Return" internal-name="j2ee.ThisReturn" parent="TreeWalker">
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.j2ee.ThisReturnCheck"/>
          <description>Checks that this is not returned by a bean method. Instead, you must use the result of the getEJBObject() available in SessionContext or EntityContext.
           </description>
@@ -2276,7 +2276,7 @@ Reference: Enterprise JavaBeans™ Specification,Version 2.0, section 7.10.
    
    <rule-group-metadata name="Usage">
    
-      <rule-metadata name="One Method Private Field" internal-name="OneMethodPrivateField" parent="TreeWalker">
+      <rule-metadata name="One Method Private Field" internal-name="usage.OneMethodPrivateField" parent="TreeWalker">
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.usage.OneMethodPrivateFieldCheck"/>
          <description>Checks that a private field is used in more than one method, constructor, or initializer. 
 
@@ -2286,7 +2286,7 @@ Rationale: a private field used in only one method, constructor, or initializer 
          </property-metadata>
       </rule-metadata>
       
-      <rule-metadata name="Unused Local Variable" internal-name="UnusedLocalVariable" parent="TreeWalker">
+      <rule-metadata name="Unused Local Variable" internal-name="usage.UnusedLocalVariable" parent="TreeWalker">
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.usage.UnusedLocalVariableCheck"/>
          <description>Checks that a local variable is used after its declaration
           </description>
@@ -2295,7 +2295,7 @@ Rationale: a private field used in only one method, constructor, or initializer 
          </property-metadata>
       </rule-metadata>
       
-      <rule-metadata name="Unused Parameter" internal-name="UnusedParameter" parent="TreeWalker">
+      <rule-metadata name="Unused Parameter" internal-name="usage.UnusedParameter" parent="TreeWalker">
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.usage.UnusedParameterCheck"/>
          <description>Checks that a parameter is used.</description>
          <property-metadata name="ignoreFormat" datatype="String" default-value="^$">
@@ -2309,7 +2309,7 @@ Rationale: a private field used in only one method, constructor, or initializer 
          </property-metadata>
       </rule-metadata>
       
-      <rule-metadata name="Unused Private Field" internal-name="UnusedPrivateField" parent="TreeWalker">
+      <rule-metadata name="Unused Private Field" internal-name="usage.UnusedPrivateField" parent="TreeWalker">
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.usage.UnusedPrivateFieldCheck"/>
          <description>Checks that a private field is used. </description>
          <property-metadata name="ignoreFormat" datatype="String" default-value="^$">
@@ -2317,7 +2317,7 @@ Rationale: a private field used in only one method, constructor, or initializer 
          </property-metadata>
       </rule-metadata>
       
-      <rule-metadata name="Unused Private Method" internal-name="UnusedPrivateMethod" parent="TreeWalker">
+      <rule-metadata name="Unused Private Method" internal-name="usage.UnusedPrivateMethod" parent="TreeWalker">
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.usage.UnusedPrivateMethodCheck"/>
          <description>Checks that a private method is used. </description>
          <property-metadata name="ignoreFormat" datatype="String" default-value="^$">

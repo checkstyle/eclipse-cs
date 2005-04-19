@@ -70,7 +70,7 @@ public final class CheckerFactory
         sCheckerMap = Collections.synchronizedMap(new WeakHashMap());
         sModifiedMap = Collections.synchronizedMap(new HashMap());
 
-        sSharedClassLoader = new ProjectClassLoader(Thread.currentThread().getContextClassLoader());
+        sSharedClassLoader = new ProjectClassLoader(/*Thread.currentThread().getContextClassLoader()*/);
     }
 
     //

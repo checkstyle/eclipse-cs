@@ -239,6 +239,12 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
 
                         //remove markers on this file
                         file.deleteMarkers(CheckstyleMarker.MARKER_ID, false, IResource.DEPTH_ZERO);
+
+                        //remove markers from package to prevent packagehtml
+                        // messages
+                        //from accumulatin
+                        file.getParent().deleteMarkers(CheckstyleMarker.MARKER_ID, false,
+                                IResource.DEPTH_ZERO);
                     }
                 }
             }
