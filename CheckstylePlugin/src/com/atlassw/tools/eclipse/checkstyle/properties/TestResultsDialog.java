@@ -138,6 +138,11 @@ public class TestResultsDialog extends Dialog
         shell.setText(Messages.TestResultsDialog_titleTestResult);
     }
 
+    /**
+     * Provides the labels for the test results.
+     * 
+     * @author David Schneider
+     */
     class TestResultLabelProvider extends LabelProvider implements ITableLabelProvider
     {
 
@@ -165,6 +170,11 @@ public class TestResultsDialog extends Dialog
         }
     }
 
+    /**
+     * Sorts the test result.
+     * 
+     * @author David Schneider
+     */
     private class TestResultViewerSorter extends ViewerSorter
     {
 

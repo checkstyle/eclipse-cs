@@ -321,7 +321,6 @@ public final class XMLUtil
 
         String result = null;
 
-        final Document document = doc;
         final StringWriter writer = new StringWriter();
 
         Source theSource = new DOMSource(doc);

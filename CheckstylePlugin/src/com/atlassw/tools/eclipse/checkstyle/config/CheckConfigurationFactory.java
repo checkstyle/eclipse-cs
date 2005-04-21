@@ -68,13 +68,17 @@ public final class CheckConfigurationFactory
     // =================================================
     // Static class variables.
     // =================================================
-
+    
+    /** Name of the file containing the plugin default configuration. */
     private static final String DEFAULT_CHECK_CONFIGS = "DefaultCheckConfigurations.xml"; //$NON-NLS-1$
 
+    /** Name of the internal file storing the plugin check configurations. */
     private static final String CHECKSTYLE_CONFIG_FILE = "checkstyle-config.xml"; //$NON-NLS-1$
 
+    /** Name of the actual config file version. */
     private static final String VERSION_5_0_0 = "5.0.0"; //$NON-NLS-1$
 
+    /** The current file version. */
     private static final String CURRENT_CONFIG_FILE_FORMAT_VERSION = VERSION_5_0_0;
 
     /**

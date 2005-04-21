@@ -40,7 +40,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.swt.widgets.Shell;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
@@ -87,12 +86,9 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
      * Runs the Checkstyle builder on a project.
      * 
      * @param project Project to be built.
-     * 
-     * @param shell Shell to display progress and messages on.
-     * 
      * @throws CheckstylePluginException Error during the build.
      */
-    public static void buildProject(IProject project, Shell shell) throws CheckstylePluginException
+    public static void buildProject(IProject project) throws CheckstylePluginException
     {
         // uses the new Jobs API to run the build in the background
         BuildProjectJob buildJob = new BuildProjectJob(project,
@@ -103,12 +99,9 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
 
     /**
      * Run the Checkstyle builder on all open projects in the workspace.
-     * 
-     * @param shell Shell to display progress and messages on.
-     * 
      * @throws CheckstylePluginException Error during the build.
      */
-    public static void buildAllProjects(Shell shell) throws CheckstylePluginException
+    public static void buildAllProjects() throws CheckstylePluginException
     {
         IWorkspace workspace = ResourcesPlugin.getWorkspace();
         IProject[] projects = workspace.getRoot().getProjects();

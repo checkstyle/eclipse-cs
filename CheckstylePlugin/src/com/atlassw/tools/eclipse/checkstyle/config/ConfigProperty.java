@@ -39,10 +39,13 @@ public class ConfigProperty implements Comparable, Cloneable
     // Instance member variables.
     //=================================================
 
+    /** The name of the property. */
     private String mName;
 
+    /** The value of the property. */
     private String mValue;
 
+    /** The meta data of the property. */
     private ConfigPropertyMetadata mMetaData;
 
     //=================================================

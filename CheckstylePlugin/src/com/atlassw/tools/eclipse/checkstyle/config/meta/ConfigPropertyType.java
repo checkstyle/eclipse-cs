@@ -82,8 +82,10 @@ public final class ConfigPropertyType
     // Instance member variables.
     // =================================================
 
+    /** The string representation. */
     private String mLabel;
 
+    /** The internal value. */
     private int mValue;
 
     // =================================================

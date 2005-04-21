@@ -74,9 +74,6 @@ public class ProjectClassLoader extends ClassLoader
      */
     private URLStreamHandlerFactory mStreamHandlerFactory;
 
-    /** the last project the classloader was configured for. */
-    private IProject mRecentProject;
-
     //
     // constructors
     //

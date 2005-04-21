@@ -42,24 +42,34 @@ public class RuleMetadata implements Cloneable
     // Instance member variables.
     //=================================================
 
+    /** The diplay name of the module. */
     private String mName;
 
+    /** The internal name of the module. */
     private String mInternalName;
 
+    /** The internal name of the parent module. */
     private String mParent;
 
+    /** The description of the module. */
     private String mDescription;
 
+    /** Determines if the module is hidden. */
     private boolean mIsHidden;
 
+    /** Determines if the module has a severity. */
     private boolean mHasSeverity;
 
+    /** Determines if the module can be deleted. */
     private boolean mIsDeletable;
 
+    /** The default severity. */
     private SeverityLevel mDefaultSeverityLevel;
 
+    /** The list of property metadata. */
     private List mConfigPropMetadata = new LinkedList();
 
+    /** The group. */
     private RuleGroupMetadata mGroup;
 
     //=================================================

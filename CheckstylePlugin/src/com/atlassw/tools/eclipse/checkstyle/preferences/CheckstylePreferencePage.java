@@ -106,7 +106,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
     // =================================================
     // Instance member variables.
     // =================================================
-
+    
     private TableViewer mViewer;
 
     private Button mAddButton;
@@ -456,7 +456,6 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         // fileset warning preference
         //
         boolean warnFileSetsNow = mWarnBeforeLosingFilesets.getSelection();
-        boolean iwarnFileSetsNowOriginal = prefs.getBoolean(CheckstylePlugin.PREF_FILESET_WARNING);
         prefs.setValue(CheckstylePlugin.PREF_FILESET_WARNING, warnFileSetsNow);
 
         //
@@ -475,7 +474,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         {
             try
             {
-                CheckstyleBuilder.buildAllProjects(getShell());
+                CheckstyleBuilder.buildAllProjects();
             }
             catch (CheckstylePluginException e)
             {
@@ -836,59 +835,6 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
             CheckstyleLog
                     .errorDialog(getShell(), ErrorMessages.msgErrorFailedExportConfig, e, true);
         }
-    }
-
-    private void importCheckstyleCheckConfig()
-    {
-    // //
-    // // Get the full path to the file to be imported.
-    // //
-    // FileDialog fileDialog = new FileDialog(getShell());
-    // fileDialog.setText("Import Checkstyle Check Configuration");
-    // String path = fileDialog.open();
-    // if (path == null)
-    // {
-    // return;
-    // }
-    //
-    // try
-    // {
-    // //
-    // // Load the config file.
-    // //
-    // CheckConfigConverter converter = new CheckConfigConverter();
-    // converter.loadConfig(path);
-    //
-    // //
-    // // Resolve property values.
-    // //
-    // List resolveProps = converter.getPropsToResolve();
-    // if (resolveProps.size() > 0)
-    // {
-    // ResolvePropertyValuesDialog resolveDialog = new
-    // ResolvePropertyValuesDialog(
-    // getShell(), resolveProps);
-    // resolveDialog.open();
-    // }
-    //
-    // //
-    // // Get a CheckConfiguration from the converter.
-    // //
-    // CheckConfiguration config = converter.getCheckConfiguration();
-    //
-    // //
-    // // Add the config using the add dialog so the user can see what it
-    // // looks like,
-    // // make changes, and it will be validated.
-    // //
-    // addCheckConfig(config);
-    // }
-    // catch (CheckstylePluginException e)
-    // {
-    // CheckstyleLog.error("Failed to import CheckConfigurations from external
-    // file", e);
-    // CheckstyleLog.internalErrorDialog();
-    // }
     }
 
     /**

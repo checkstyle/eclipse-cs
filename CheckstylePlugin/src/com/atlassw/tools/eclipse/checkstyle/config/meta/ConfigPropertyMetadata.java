@@ -53,14 +53,19 @@ public class ConfigPropertyMetadata implements Cloneable
     // Instance member variables.
     //=================================================
 
+    /** The type of the property data. */
     private ConfigPropertyType mDatatype;
 
+    /** The name of the property. */
     private String mName;
 
+    /** The default value of the property. */
     private String mDefaultValue;
 
+    /** The description of the property. */
     private String mDescription;
 
+    /** The list of possible property values. */
     private List mEnumeration = new ArrayList();
 
     //=================================================

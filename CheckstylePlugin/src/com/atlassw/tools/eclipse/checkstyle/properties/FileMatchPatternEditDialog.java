@@ -65,8 +65,6 @@ public class FileMatchPatternEditDialog extends Dialog
     // Static class variables.
     // =================================================
 
-    private static final int MAX_LENGTH = 250;
-
     // =================================================
     // Instance member variables.
     // =================================================

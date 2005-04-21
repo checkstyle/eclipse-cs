@@ -116,7 +116,6 @@ public final class PluginFilters
 
                 boolean defaultState = Boolean.valueOf(elements[i].getAttribute(ATTR_SELECTED))
                         .booleanValue();
-                String defaultData = elements[i].getAttribute(ATTR_VALUE);
 
                 filter.setEnabled(defaultState);
 

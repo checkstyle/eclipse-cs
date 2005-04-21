@@ -67,6 +67,7 @@ public class Auditor
     // Static class variables.
     // =================================================
 
+    /** The interval for updating the task info. */
     private static final int MONITOR_INTERVAL = 10;
 
     // =================================================

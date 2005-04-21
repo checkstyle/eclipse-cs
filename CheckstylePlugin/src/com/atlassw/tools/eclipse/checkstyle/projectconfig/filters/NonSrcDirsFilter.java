@@ -69,8 +69,6 @@ public class NonSrcDirsFilter extends AbstractFilter
         {
             IResource resource = (IResource) element;
 
-            IPath resPath = resource.getFullPath();
-
             IProject project = resource.getProject();
             if (mCurrentProject != project)
             {

@@ -71,8 +71,6 @@ public class ResolvePropertyValuesDialog extends Dialog
     // Static class variables.
     //=================================================
 
-    private static final int MAX_LENGTH = 40;
-
     //=================================================
     // Instance member variables.
     //=================================================
@@ -82,8 +80,6 @@ public class ResolvePropertyValuesDialog extends Dialog
     private TableViewer mViewer;
 
     private List mProperties;
-
-    private boolean mOkWasPressed = false;
 
     //=================================================
     // Constructors & finalizer.

@@ -59,11 +59,10 @@ import com.puppycrawl.tools.checkstyle.checks.duplicates.StrictDuplicateCodeChec
 public class DuplicatedCodeAction implements IObjectActionDelegate
 {
 
-    /**
-     * The project that is currently selected.
-     */
+    /** The project that is currently selected. */
     private ISelection mCurrentSelection;
 
+    /** The workbench part. */
     private IWorkbenchPart mWorkbenchPart;
 
     /**

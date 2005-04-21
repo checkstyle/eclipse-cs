@@ -579,7 +579,6 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
         {
 
             // set selected modules (Modules where severity is not Ignore).
-            List selected = new ArrayList();
             int size = mModules != null ? mModules.size() : 0;
             for (int i = 0; i < size; i++)
             {

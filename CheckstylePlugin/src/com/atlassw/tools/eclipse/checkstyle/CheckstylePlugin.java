@@ -23,8 +23,6 @@ package com.atlassw.tools.eclipse.checkstyle;
 //=================================================
 // Imports from java namespace
 //=================================================
-import java.util.ResourceBundle;
-
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -80,9 +78,6 @@ public class CheckstylePlugin extends AbstractUIPlugin
 
     /** The shared instance. */
     private static CheckstylePlugin sPlugin;
-
-    /** Resource bundle. */
-    private static ResourceBundle sResourceBundle;
 
     // =================================================
     // Instance member variables.

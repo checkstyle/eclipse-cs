@@ -124,7 +124,6 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
     public String getValue()
     {
         StringBuffer buffer = new StringBuffer(""); //$NON-NLS-1$
-        boolean first = true;
 
         Object[] checkedElements = mTable.getCheckedElements();
 

@@ -127,8 +127,10 @@ public final class ConfigurationReader
     private static class ConfigurationHandler extends DefaultHandler
     {
 
+        /** The list of modules. */
         private List mRules = new ArrayList();
 
+        /** The current module being built. */
         private Module mCurrentModule;
 
         public List getRules()

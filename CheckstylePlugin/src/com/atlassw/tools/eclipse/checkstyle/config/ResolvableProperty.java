@@ -53,10 +53,13 @@ public class ResolvableProperty
     // Instance member variables.
     //=================================================
     
+    /** The name of the property. */
     private String   mPropertyName;
     
+    /** The correlating tag. */
     private String   mCorrelationTag;
     
+    /** The property value. */
     private String   mValue;
 
     //=================================================

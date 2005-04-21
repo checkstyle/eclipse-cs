@@ -57,6 +57,7 @@ public class CheckstyleNature implements IProjectNature
     // Instance member variables.
     // =================================================
 
+    /** The project. */
     private IProject mProject;
 
     // =================================================

@@ -41,10 +41,13 @@ public class RuleGroupMetadata implements Cloneable
     // Instance member variables.
     //=================================================
 
+    /** The name of the group. */
     private String mGroupName;
 
+    /** Determines if the group is hidden. */
     private boolean mIsHidden;
 
+    /** The list of modules belonging to the group. */
     private List mRuleMetadata = new LinkedList();
 
     //=================================================
