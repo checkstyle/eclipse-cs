@@ -22,11 +22,13 @@
             class="com.atlassw.tools.eclipse.checkstyle.preferences.CheckstylePreferencePage"
             id="com.atlassw.tools.eclipse.checkstyle.preferences.CheckstylePreferencePage">
       </page>
+      <!--
       <page
             class="com.atlassw.tools.eclipse.checkstyle.preferences.duplicates.DuplicatedCodePreferencePage"
             category="com.atlassw.tools.eclipse.checkstyle.preferences.CheckstylePreferencePage"
             name="Duplicates Analysis"
             id="com.atlassw.tools.eclipse.checkstyle.preferences.duplicates.DuplicatedCodePreferencePage"/>
+       -->
    </extension>
    <extension
          point="org.eclipse.ui.propertyPages">
@@ -278,11 +280,18 @@
             description="%PackageFilter.description"
             class="com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.PackageFilter">
       </filter>
+      <filter
+            name="%NonSrcDirsFilter.label"
+            internal-name="NonSrcDirs"
+            description="%NonSrcDirsFilter.description"
+            class="com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.NonSrcDirsFilter">
+      </filter>    
    </extension>
 
    <!--
    Action that launches the duplicates analysis
    -->
+   <!--
    <extension
          point="org.eclipse.ui.popupMenus">
       <objectContribution
@@ -305,10 +314,12 @@
                id="com.atlassw.tools.eclipse.checkstyle.duplicatesAction"/>
       </objectContribution>
    </extension>
+   -->
    
    <!--
    View that displays the duplicates
    -->
+   <!--
    <extension
          point="org.eclipse.ui.views">
       <category
@@ -322,4 +333,5 @@
             name="Duplication de code"
             id="com.atlassw.tools.eclipse.checkstyle.duplicatesView"/>
    </extension>
+   -->
 </plugin>
