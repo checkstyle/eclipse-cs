@@ -55,13 +55,13 @@ public class InternalCheckConfiguration extends AbstractCheckConfiguration
         throws CheckstylePluginException
     {
 
-        //a new internal configuration has no location yet
+        // a new internal configuration has no location yet
         if (location == null || location.trim().length() == 0)
         {
-            //this is done on purpose
-            //CHECKSTYLE:OFF
-            location = "internal_config_" + System.currentTimeMillis() + ".xml";
-            //CHECKSTYLE:ON
+            // this is done on purpose
+            // CHECKSTYLE:OFF
+            location = "internal_config_" + System.currentTimeMillis() + ".xml"; //$NON-NLS-1$ //$NON-NLS-2$
+            // CHECKSTYLE:ON
         }
         super.initialize(name, location, type, description);
     }
@@ -78,7 +78,7 @@ public class InternalCheckConfiguration extends AbstractCheckConfiguration
 
         if (!configFile.exists())
         {
-            //create a new basic configuration file
+            // create a new basic configuration file
             OutputStream out = null;
 
             try
@@ -88,13 +88,13 @@ public class InternalCheckConfiguration extends AbstractCheckConfiguration
             }
             catch (IOException e)
             {
-                //Should not happen
-                CheckstyleLog.error(e.getLocalizedMessage(), e);
+                // Should not happen
+                CheckstyleLog.log(e);
             }
             catch (CheckstylePluginException e)
             {
-                //Should not happen
-                CheckstyleLog.error(e.getLocalizedMessage(), e);
+                // Should not happen
+                CheckstyleLog.log(e);
             }
             finally
             {
@@ -104,7 +104,7 @@ public class InternalCheckConfiguration extends AbstractCheckConfiguration
                 }
                 catch (Exception e)
                 {
-                    //can do nothing about it
+                    // can do nothing about it
                 }
             }
         }
@@ -133,7 +133,7 @@ public class InternalCheckConfiguration extends AbstractCheckConfiguration
      */
     protected PropertyResolver handleGetPropertyResolver()
     {
-        //we have no need for property expansion for builtin configurations
+        // we have no need for property expansion for builtin configurations
         return null;
     }
 }

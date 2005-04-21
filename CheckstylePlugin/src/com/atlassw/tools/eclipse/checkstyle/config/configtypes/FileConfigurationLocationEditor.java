@@ -18,7 +18,6 @@
 //
 //============================================================================
 
-
 package com.atlassw.tools.eclipse.checkstyle.config.configtypes;
 
 import org.eclipse.swt.SWT;
@@ -32,6 +31,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+
+import com.atlassw.tools.eclipse.checkstyle.Messages;
 
 /**
  * Implementation of a file based location editor. Contains a text field with
@@ -74,7 +75,7 @@ public class FileConfigurationLocationEditor implements IConfigurationLocationEd
         mLocation.setLayoutData(gd);
 
         mBtnBrowse = new Button(contents, SWT.PUSH);
-        mBtnBrowse.setText("Browse...");
+        mBtnBrowse.setText(Messages.FileConfigurationLocationEditor_btnBrowse);
         mBtnBrowse.setLayoutData(new GridData());
 
         mBtnBrowse.addSelectionListener(new SelectionListener()
@@ -94,7 +95,7 @@ public class FileConfigurationLocationEditor implements IConfigurationLocationEd
 
             public void widgetDefaultSelected(SelectionEvent e)
             {
-            //NOOP
+            // NOOP
             }
         });
 

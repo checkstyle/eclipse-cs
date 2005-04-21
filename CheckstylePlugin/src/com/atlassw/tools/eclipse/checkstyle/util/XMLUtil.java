@@ -41,6 +41,7 @@ import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXTransformerFactory;
@@ -241,27 +242,17 @@ public final class XMLUtil
     /**
      * Create a new Document.
      * 
-     * @throws CheckstylePluginException An error occurred during creation.
-     * 
      * @return Document Newly created Document
+     * @throws DOMException error creating the document
+     * @throws ParserConfigurationException error creating DOM parser
      */
-    public static Document newDocument() throws CheckstylePluginException
+    public static Document newDocument() throws DOMException, ParserConfigurationException
     {
         Document document = null;
-        try
-        {
-            DocumentBuilder docBuilder = getDocumentBuilder();
-            document = docBuilder.newDocument();
-            releaseDocumentBuilder(docBuilder);
-        }
-        catch (ParserConfigurationException ex)
-        {
-            throw new CheckstylePluginException("ParserConfigurationException" + ex.getMessage());
-        }
-        catch (DOMException ex)
-        {
-            throw new CheckstylePluginException("Caught DOMException " + ex.getMessage());
-        }
+
+        DocumentBuilder docBuilder = getDocumentBuilder();
+        document = docBuilder.newDocument();
+        releaseDocumentBuilder(docBuilder);
 
         return document;
     }
@@ -272,38 +263,20 @@ public final class XMLUtil
      * 
      * @param xmlString The String to parse into an XML Document
      * @return Document The parsed Docuement
+     * @throws ParserConfigurationException error creating the DOM parser
+     * @throws IOException error reading from the input stream
+     * @throws SAXException error farsing the stream content
      */
-    public static Document newDocument(String xmlString)
+    public static Document newDocument(String xmlString) throws ParserConfigurationException,
+        IOException, SAXException
     {
         //
         //  Parse the document.
         //        
         Document document = null;
-        try
-        {
-            ByteArrayInputStream bs = new ByteArrayInputStream(xmlString.getBytes());
-            DocumentBuilder docBuilder = getDocumentBuilder();
-            document = docBuilder.parse(bs);
-            releaseDocumentBuilder(docBuilder);
-        }
-        catch (ParserConfigurationException ex)
-        {
-            //you get nothing-
-            document = null;
-            CheckstyleLog.warning("Exception while parsing XML", ex);
-        }
-        catch (DOMException ex)
-        {
-            //you get nothing-
-            document = null;
-            CheckstyleLog.warning("Exception while parsing XML", ex);
-        }
-        catch (Exception e)
-        {
-            //humm?
-            document = null;
-            CheckstyleLog.warning("Exception while parsing XML", e);
-        }
+
+        ByteArrayInputStream bs = new ByteArrayInputStream(xmlString.getBytes());
+        document = newDocument(bs);
 
         return document;
     }
@@ -314,31 +287,18 @@ public final class XMLUtil
      * @param inStream Stream to read from.
      * 
      * @return Resulting Document.
+     * @throws ParserConfigurationException error creating the DOM parser
+     * @throws IOException error reading from the input stream
+     * @throws SAXException error farsing the stream content
      */
-    public static Document newDocument(InputStream inStream)
+    public static Document newDocument(InputStream inStream) throws ParserConfigurationException,
+        IOException, SAXException
     {
         Document result = null;
-        try
-        {
-            DocumentBuilder docBuilder = getDocumentBuilder();
-            result = docBuilder.parse(inStream);
-            releaseDocumentBuilder(docBuilder);
-        }
-        catch (ParserConfigurationException ex)
-        {
-            result = null;
-            CheckstyleLog.warning("Exception while parsing XML", ex);
-        }
-        catch (IOException ex)
-        {
-            result = null;
-            CheckstyleLog.warning("Exception while reading XML", ex);
-        }
-        catch (SAXException e)
-        {
-            result = null;
-            CheckstyleLog.warning("Exception while parsing XML file", e);
-        }
+
+        DocumentBuilder docBuilder = getDocumentBuilder();
+        result = docBuilder.parse(inStream);
+        releaseDocumentBuilder(docBuilder);
 
         return result;
     }
@@ -350,40 +310,32 @@ public final class XMLUtil
      * 
      * @param indent - boolean indicating whether or not to indent tags
      * 
-     * @throws CheckstylePluginException - An error occurred during
-     *             serialization
      * 
      * @return String - Serialized string representation of doc
+     * @throws TransformerConfigurationException error creating the transformer
+     * @throws TransformerException error serializing the document
      */
     public static String serializeDocument(Document doc, boolean indent)
-        throws CheckstylePluginException
+        throws TransformerConfigurationException, TransformerException
     {
 
         String result = null;
 
-        try
-        {
-            final Document document = doc;
-            final StringWriter writer = new StringWriter();
+        final Document document = doc;
+        final StringWriter writer = new StringWriter();
 
-            Source theSource = new DOMSource(doc);
-            Result theResult = new StreamResult(writer);
+        Source theSource = new DOMSource(doc);
+        Result theResult = new StreamResult(writer);
 
-            //A transformer without stylesheet does identity transformation
-            Transformer transformer = sTransformerFactory.newTransformer();
-            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-            transformer.setOutputProperty(OutputKeys.INDENT, indent ? "yes" : "no");
+        //A transformer without stylesheet does identity transformation
+        Transformer transformer = sTransformerFactory.newTransformer();
+        transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+        transformer.setOutputProperty(OutputKeys.INDENT, indent ? "yes" : "no");
 
-            transformer.transform(theSource, theResult);
+        transformer.transform(theSource, theResult);
 
-            result = writer.toString();
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            String errMsg = "Exception occurred while serializing document: " + e.getMessage();
-            throw new CheckstylePluginException(errMsg);
-        }
+        result = writer.toString();
+
         return result;
     }
 
@@ -392,13 +344,12 @@ public final class XMLUtil
      * arguments (indent set to false).
      * 
      * @param doc - Document to be serialized
-     * 
-     * @throws CheckstylePluginException - An error occurred during
-     *             serialization.
-     * 
      * @return String - Serialized string representation of doc
+     * @throws TransformerConfigurationException error creating the transformer
+     * @throws TransformerException error serializing the document
      */
-    public static String serializeDocument(Document doc) throws CheckstylePluginException
+    public static String serializeDocument(Document doc) throws TransformerConfigurationException,
+        TransformerException
     {
         return serializeDocument(doc, false);
     }
@@ -417,8 +368,7 @@ public final class XMLUtil
     {
 
         SAXParser parser = sSAXParserFactory.newSAXParser();
-        
-        
+
         parser.parse(in, handler);
     }
 

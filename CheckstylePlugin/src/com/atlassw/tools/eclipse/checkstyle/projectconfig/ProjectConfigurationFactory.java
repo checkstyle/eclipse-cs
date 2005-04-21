@@ -37,14 +37,15 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.osgi.util.NLS;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 import org.xml.sax.helpers.DefaultHandler;
 
+import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationFactory;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.IFilter;
-import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.atlassw.tools.eclipse.checkstyle.util.XMLUtil;
 
@@ -53,32 +54,32 @@ import com.atlassw.tools.eclipse.checkstyle.util.XMLUtil;
  */
 public final class ProjectConfigurationFactory
 {
-    //=================================================
+    // =================================================
     // Public static final variables.
-    //=================================================
+    // =================================================
 
-    //=================================================
+    // =================================================
     // Static class variables.
-    //=================================================
+    // =================================================
 
-    private static final String PROJECT_CONFIGURATION_FILE = ".checkstyle";
+    private static final String PROJECT_CONFIGURATION_FILE = ".checkstyle"; //$NON-NLS-1$
 
-    private static final String CURRENT_FILE_FORMAT_VERSION = "1.1.0";
+    private static final String CURRENT_FILE_FORMAT_VERSION = "1.1.0"; //$NON-NLS-1$
 
-    //=================================================
+    // =================================================
     // Instance member variables.
-    //=================================================
+    // =================================================
 
-    //=================================================
+    // =================================================
     // Constructors & finalizer.
-    //=================================================
+    // =================================================
 
     private ProjectConfigurationFactory()
     {}
 
-    //=================================================
+    // =================================================
     // Methods.
-    //=================================================
+    // =================================================
 
     /**
      * Get the <code>ProjectConfiguration</code> object for the specified
@@ -93,7 +94,7 @@ public final class ProjectConfigurationFactory
     public static ProjectConfiguration getConfiguration(IProject project)
         throws CheckstylePluginException
     {
-        //TODO Cache the project configurations
+        // TODO Cache the project configurations
         return loadFromPersistence(project);
     }
 
@@ -125,7 +126,7 @@ public final class ProjectConfigurationFactory
     public static boolean isCheckConfigInUse(String configName) throws CheckstylePluginException
     {
 
-        //TODO why not change the configuration name in the file sets??
+        // TODO why not change the configuration name in the file sets??
 
         boolean result = false;
 
@@ -157,7 +158,7 @@ public final class ProjectConfigurationFactory
         ProjectConfiguration configuration = null;
 
         //
-        //  Make sure the files exists, it might not.
+        // Make sure the files exists, it might not.
         //
         IFile file = project.getFile(PROJECT_CONFIGURATION_FILE);
         boolean exists = file.exists();
@@ -178,20 +179,20 @@ public final class ProjectConfigurationFactory
         }
         catch (CoreException ce)
         {
-            throw new CheckstylePluginException(ce.getLocalizedMessage(), ce);
+            CheckstylePluginException.rethrow(ce);
         }
         catch (SAXException se)
         {
             Exception ex = se.getException() != null ? se.getException() : se;
-            throw new CheckstylePluginException(ex.getLocalizedMessage(), ex);
+            CheckstylePluginException.rethrow(ex);
         }
         catch (ParserConfigurationException pe)
         {
-            throw new CheckstylePluginException(pe.getLocalizedMessage(), pe);
+            CheckstylePluginException.rethrow(pe);
         }
         catch (IOException ioe)
         {
-            throw new CheckstylePluginException(ioe.getLocalizedMessage(), ioe);
+            CheckstylePluginException.rethrow(ioe);
         }
 
         finally
@@ -204,7 +205,7 @@ public final class ProjectConfigurationFactory
                 }
                 catch (IOException e)
                 {
-                    //  Nothing can be done about it.
+                    // Nothing can be done about it.
                 }
             }
         }
@@ -226,7 +227,7 @@ public final class ProjectConfigurationFactory
 
             pipeOut = new ByteArrayOutputStream();
 
-            //Write the configuration document by pushing sax events through
+            // Write the configuration document by pushing sax events through
             // the transformer handler
             TransformerHandler xmlOut = XMLUtil.writeWithSax(pipeOut);
 
@@ -234,7 +235,7 @@ public final class ProjectConfigurationFactory
 
             pipeIn = new ByteArrayInputStream(pipeOut.toByteArray());
 
-            //create or overwrite the .checkstyle file
+            // create or overwrite the .checkstyle file
             IFile file = project.getFile(PROJECT_CONFIGURATION_FILE);
             if (!file.exists())
             {
@@ -248,9 +249,7 @@ public final class ProjectConfigurationFactory
         }
         catch (Exception e)
         {
-            String message = "Failed to write audit configuration file: " + e.getMessage();
-            CheckstyleLog.error(message, e);
-            throw new CheckstylePluginException(message);
+            CheckstylePluginException.rethrow(e, ErrorMessages.errorWritingCheckConfigurations);
         }
         finally
         {
@@ -260,7 +259,7 @@ public final class ProjectConfigurationFactory
             }
             catch (Exception e1)
             {
-                //can nothing do about it
+                // can nothing do about it
             }
             try
             {
@@ -268,7 +267,7 @@ public final class ProjectConfigurationFactory
             }
             catch (Exception e1)
             {
-                //can nothing do about it
+                // can nothing do about it
             }
 
         }
@@ -288,12 +287,13 @@ public final class ProjectConfigurationFactory
         xmlOut.startDocument();
 
         AttributesImpl attr = new AttributesImpl();
-        attr.addAttribute("", XMLTags.FORMAT_VERSION_TAG, XMLTags.FORMAT_VERSION_TAG, null,
-                CURRENT_FILE_FORMAT_VERSION);
-        attr.addAttribute("", XMLTags.SIMPLE_CONFIG_TAG, XMLTags.SIMPLE_CONFIG_TAG, null, ""
-                + config.isUseSimpleConfig());
+        attr.addAttribute(new String(), XMLTags.FORMAT_VERSION_TAG, XMLTags.FORMAT_VERSION_TAG,
+                null, CURRENT_FILE_FORMAT_VERSION);
+        attr.addAttribute(new String(), XMLTags.SIMPLE_CONFIG_TAG, XMLTags.SIMPLE_CONFIG_TAG, null,
+                new String() + config.isUseSimpleConfig());
 
-        xmlOut.startElement("", XMLTags.FILESET_CONFIG_TAG, XMLTags.FILESET_CONFIG_TAG, attr);
+        xmlOut.startElement(new String(), XMLTags.FILESET_CONFIG_TAG, XMLTags.FILESET_CONFIG_TAG,
+                attr);
         xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
 
         List fileSets = config.getFileSets();
@@ -302,7 +302,7 @@ public final class ProjectConfigurationFactory
         {
             writeFileSet((FileSet) fileSets.get(i), xmlOut);
         }
-        //write filters
+        // write filters
         IFilter[] filters = config.getFilters();
         size = filters != null ? filters.length : 0;
         for (int i = 0; i < size; i++)
@@ -310,7 +310,7 @@ public final class ProjectConfigurationFactory
             writeFilter(filters[i], xmlOut);
         }
 
-        xmlOut.endElement("", XMLTags.FILESET_CONFIG_TAG, XMLTags.FILESET_CONFIG_TAG);
+        xmlOut.endElement(new String(), XMLTags.FILESET_CONFIG_TAG, XMLTags.FILESET_CONFIG_TAG);
         xmlOut.endDocument();
     }
 
@@ -325,15 +325,17 @@ public final class ProjectConfigurationFactory
         throws SAXException
     {
         AttributesImpl attr = new AttributesImpl();
-        attr.addAttribute("", XMLTags.NAME_TAG, XMLTags.NAME_TAG, null, fileSet.getName());
-        attr.addAttribute("", XMLTags.CHECK_CONFIG_NAME_TAG, XMLTags.CHECK_CONFIG_NAME_TAG, null,
-                fileSet.getCheckConfigName());
-        attr.addAttribute("", XMLTags.ENABLED_TAG, XMLTags.ENABLED_TAG, null, ""
-                + fileSet.isEnabled());
+        attr
+                .addAttribute(new String(), XMLTags.NAME_TAG, XMLTags.NAME_TAG, null, fileSet
+                        .getName());
+        attr.addAttribute(new String(), XMLTags.CHECK_CONFIG_NAME_TAG,
+                XMLTags.CHECK_CONFIG_NAME_TAG, null, fileSet.getCheckConfigName());
+        attr.addAttribute(new String(), XMLTags.ENABLED_TAG, XMLTags.ENABLED_TAG, null,
+                new String() + fileSet.isEnabled());
 
-        xmlOut.startElement("", XMLTags.FILESET_TAG, XMLTags.FILESET_TAG, attr);
+        xmlOut.startElement(new String(), XMLTags.FILESET_TAG, XMLTags.FILESET_TAG, attr);
 
-        //write patterns
+        // write patterns
         List patterns = fileSet.getFileMatchPatterns();
         int size = patterns != null ? patterns.size() : 0;
         for (int i = 0; i < size; i++)
@@ -341,7 +343,7 @@ public final class ProjectConfigurationFactory
             writeMatchPattern((FileMatchPattern) patterns.get(i), xmlOut);
         }
 
-        xmlOut.endElement("", XMLTags.FILESET_TAG, XMLTags.FILESET_TAG);
+        xmlOut.endElement(new String(), XMLTags.FILESET_TAG, XMLTags.FILESET_TAG);
         xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
     }
 
@@ -357,14 +359,15 @@ public final class ProjectConfigurationFactory
     {
 
         AttributesImpl attr = new AttributesImpl();
-        attr.addAttribute("", XMLTags.MATCH_PATTERN_TAG, XMLTags.MATCH_PATTERN_TAG, null, pattern
-                .getMatchPattern());
-        attr.addAttribute("", XMLTags.INCLUDE_PATTERN_TAG, XMLTags.INCLUDE_PATTERN_TAG, null, ""
-                + pattern.isIncludePattern());
+        attr.addAttribute(new String(), XMLTags.MATCH_PATTERN_TAG, XMLTags.MATCH_PATTERN_TAG, null,
+                pattern.getMatchPattern());
+        attr.addAttribute(new String(), XMLTags.INCLUDE_PATTERN_TAG, XMLTags.INCLUDE_PATTERN_TAG,
+                null, new String() + pattern.isIncludePattern());
 
-        xmlOut.startElement("", XMLTags.FILE_MATCH_PATTERN_TAG, XMLTags.FILE_MATCH_PATTERN_TAG,
-                attr);
-        xmlOut.endElement("", XMLTags.FILE_MATCH_PATTERN_TAG, XMLTags.FILE_MATCH_PATTERN_TAG);
+        xmlOut.startElement(new String(), XMLTags.FILE_MATCH_PATTERN_TAG,
+                XMLTags.FILE_MATCH_PATTERN_TAG, attr);
+        xmlOut.endElement(new String(), XMLTags.FILE_MATCH_PATTERN_TAG,
+                XMLTags.FILE_MATCH_PATTERN_TAG);
         xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
     }
 
@@ -378,8 +381,8 @@ public final class ProjectConfigurationFactory
     private static void writeFilter(IFilter filter, TransformerHandler xmlOut) throws SAXException
     {
 
-        //write only filters that are actually changed
-        //(enabled or contain data)
+        // write only filters that are actually changed
+        // (enabled or contain data)
         IFilter prototype = PluginFilters.getByName(filter.getName());
         if (prototype.equals(filter) || filter.isReadonly())
         {
@@ -387,11 +390,12 @@ public final class ProjectConfigurationFactory
         }
 
         AttributesImpl attr = new AttributesImpl();
-        attr.addAttribute("", XMLTags.NAME_TAG, XMLTags.NAME_TAG, null, filter.getInternalName());
-        attr.addAttribute("", XMLTags.ENABLED_TAG, XMLTags.ENABLED_TAG, null, ""
-                + filter.isEnabled());
+        attr.addAttribute(new String(), XMLTags.NAME_TAG, XMLTags.NAME_TAG, null, filter
+                .getInternalName());
+        attr.addAttribute(new String(), XMLTags.ENABLED_TAG, XMLTags.ENABLED_TAG, null,
+                new String() + filter.isEnabled());
 
-        xmlOut.startElement("", XMLTags.FILTER_TAG, XMLTags.FILTER_TAG, attr);
+        xmlOut.startElement(new String(), XMLTags.FILTER_TAG, XMLTags.FILTER_TAG, attr);
 
         List data = filter.getFilterData();
         int size = data != null ? data.size() : 0;
@@ -399,14 +403,16 @@ public final class ProjectConfigurationFactory
         {
 
             attr = new AttributesImpl();
-            attr.addAttribute("", XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, null, (String) data.get(i));
+            attr.addAttribute(new String(), XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, null,
+                    (String) data.get(i));
 
-            xmlOut.startElement("", XMLTags.FILTER_DATA_TAG, XMLTags.FILTER_DATA_TAG, attr);
-            xmlOut.endElement("", XMLTags.FILTER_DATA_TAG, XMLTags.FILTER_DATA_TAG);
+            xmlOut.startElement(new String(), XMLTags.FILTER_DATA_TAG, XMLTags.FILTER_DATA_TAG,
+                    attr);
+            xmlOut.endElement(new String(), XMLTags.FILTER_DATA_TAG, XMLTags.FILTER_DATA_TAG);
             xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
         }
 
-        xmlOut.endElement("", XMLTags.FILTER_TAG, XMLTags.FILTER_TAG);
+        xmlOut.endElement(new String(), XMLTags.FILTER_TAG, XMLTags.FILTER_TAG);
         xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
 
     }
@@ -424,7 +430,7 @@ public final class ProjectConfigurationFactory
         //
 
         /** constant list of supported file versions. */
-        private static final List SUPPORTED_VERSIONS = Arrays.asList(new String[] { "1.0.0",
+        private static final List SUPPORTED_VERSIONS = Arrays.asList(new String[] { "1.0.0", //$NON-NLS-1$
             CURRENT_FILE_FORMAT_VERSION });
 
         //
@@ -470,7 +476,8 @@ public final class ProjectConfigurationFactory
                     String version = attributes.getValue(XMLTags.FORMAT_VERSION_TAG);
                     if (!SUPPORTED_VERSIONS.contains(version))
                     {
-                        throw new CheckstylePluginException("Unknown file format: " + version);
+                        throw new CheckstylePluginException(NLS.bind(
+                                ErrorMessages.errorUnknownFileFormat, version));
                     }
 
                     mProjectConfig.setUseSimpleConfig(Boolean.valueOf(
@@ -487,7 +494,7 @@ public final class ProjectConfigurationFactory
                     mCurrentFileSet.setCheckConfig(CheckConfigurationFactory.getByName(attributes
                             .getValue(XMLTags.CHECK_CONFIG_NAME_TAG)));
 
-                    //set an empty list for the patterns to store
+                    // set an empty list for the patterns to store
                     mCurrentFileSet.setFileMatchPatterns(new ArrayList());
 
                     mProjectConfig.getFileSets().add(mCurrentFileSet);
@@ -512,7 +519,7 @@ public final class ProjectConfigurationFactory
                         mCurrentFilter.setEnabled(Boolean.valueOf(
                                 attributes.getValue(XMLTags.ENABLED_TAG)).booleanValue());
 
-                        //set an empty list for the filter data
+                        // set an empty list for the filter data
                         mCurrentFilter.setFilterData(new ArrayList());
                     }
                 }

@@ -20,7 +20,6 @@
 
 package com.atlassw.tools.eclipse.checkstyle.config.meta;
 
-
 //=================================================
 // Imports from java namespace
 //=================================================
@@ -32,6 +31,9 @@ package com.atlassw.tools.eclipse.checkstyle.config.meta;
 //=================================================
 // Imports from com namespace
 //=================================================
+import org.eclipse.osgi.util.NLS;
+
+import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
 //=================================================
@@ -39,65 +41,57 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 //=================================================
 
 /**
- *  This represents the possible data types for a rule's
- *  configuration property.
+ * This represents the possible data types for a rule's configuration property.
  */
 public final class ConfigPropertyType
 {
-    //=================================================
-	// Public static final variables.
-	//=================================================
-    
-    /**  A String.  */
-    public static final ConfigPropertyType STRING 
-        = new ConfigPropertyType(10, "String");
-    
-    /**  An array of strings.  */
-    public static final ConfigPropertyType STRING_ARRAY 
-        = new ConfigPropertyType(20, "StringArray");
-    
-    /**  An integer.  */
-    public static final ConfigPropertyType INTEGER
-        = new ConfigPropertyType(30, "Integer");
-    
-    /**  Select a single items from a list.  */
-    public static final ConfigPropertyType SINGLE_SELECT
-        = new ConfigPropertyType(40, "SingleSelect");
-    
-    /**  Boolean value.  */
-    public static final ConfigPropertyType BOOLEAN
-        = new ConfigPropertyType(50, "Boolean");
-    
-    /**  Select multiple items from a set.  */
-    public static final ConfigPropertyType MULTI_CHECK
-        = new ConfigPropertyType(60, "MultiCheck");
-    
-    /**  A value that is not configured.  */
-    public static final ConfigPropertyType HIDDEN
-        = new ConfigPropertyType(70, "Hidden");
-    
-    /**  A value that contains a file name.  */
-    public static final ConfigPropertyType FILE
-        = new ConfigPropertyType(80, "File");
+    // =================================================
+    // Public static final variables.
+    // =================================================
 
-	//=================================================
-	// Static class variables.
-	//=================================================
+    /** A String. */
+    public static final ConfigPropertyType STRING = new ConfigPropertyType(10, "String"); //$NON-NLS-1$
 
-	//=================================================
-	// Instance member variables.
-	//=================================================
-    
-    private String  mLabel;
-    
-    private int     mValue;
+    /** An array of strings. */
+    public static final ConfigPropertyType STRING_ARRAY = new ConfigPropertyType(20, "StringArray"); //$NON-NLS-1$
 
-	//=================================================
-	// Constructors & finalizer.
-	//=================================================
-    
+    /** An integer. */
+    public static final ConfigPropertyType INTEGER = new ConfigPropertyType(30, "Integer"); //$NON-NLS-1$
+
+    /** Select a single items from a list. */
+    public static final ConfigPropertyType SINGLE_SELECT = new ConfigPropertyType(40,
+            "SingleSelect"); //$NON-NLS-1$
+
+    /** Boolean value. */
+    public static final ConfigPropertyType BOOLEAN = new ConfigPropertyType(50, "Boolean"); //$NON-NLS-1$
+
+    /** Select multiple items from a set. */
+    public static final ConfigPropertyType MULTI_CHECK = new ConfigPropertyType(60, "MultiCheck"); //$NON-NLS-1$
+
+    /** A value that is not configured. */
+    public static final ConfigPropertyType HIDDEN = new ConfigPropertyType(70, "Hidden"); //$NON-NLS-1$
+
+    /** A value that contains a file name. */
+    public static final ConfigPropertyType FILE = new ConfigPropertyType(80, "File"); //$NON-NLS-1$
+
+    // =================================================
+    // Static class variables.
+    // =================================================
+
+    // =================================================
+    // Instance member variables.
+    // =================================================
+
+    private String mLabel;
+
+    private int mValue;
+
+    // =================================================
+    // Constructors & finalizer.
+    // =================================================
+
     /**
-     *  Private constructor to prevent instantiation.
+     * Private constructor to prevent instantiation.
      */
     private ConfigPropertyType(int value, String label)
     {
@@ -105,65 +99,66 @@ public final class ConfigPropertyType
         mLabel = label;
     }
 
-	//=================================================
-	// Methods.
-	//=================================================
-    
+    // =================================================
+    // Methods.
+    // =================================================
+
     /**
-     *  The equals method.
+     * The equals method.
      * 
-     *  @param  obj  The object to test against.
+     * @param obj The object to test against.
      * 
-     *  @return  <code>true</code> means equal, <code>false</code> means not equal.
+     * @return <code>true</code> means equal, <code>false</code> means not
+     *         equal.
      */
     public boolean equals(Object obj)
     {
         boolean result = false;
-        
-        if ((obj instanceof ConfigPropertyType) &&
-            (((ConfigPropertyType)obj).mValue == this.mValue))
+
+        if ((obj instanceof ConfigPropertyType)
+                && (((ConfigPropertyType) obj).mValue == this.mValue))
         {
             result = true;
         }
-        
+
         return result;
     }
-    
+
     /**
-     *  The hashCode method.
+     * The hashCode method.
      * 
-     *  @return  has code for the object.
+     * @return has code for the object.
      */
     public int hashCode()
     {
         return mValue;
     }
-    
 
     /**
-     *  Get the label string.
+     * Get the label string.
      * 
-     *  @return  The  label.
+     * @return The label.
      */
     public String getLabel()
     {
         return mLabel;
     }
-    
+
     /**
-     *  Get a config property type from a type label string.
+     * Get a config property type from a type label string.
      * 
-     *  @param label  The label to look up.
-     *
-     *  @return  Matching config property type.
+     * @param label The label to look up.
      * 
-     *  @throws  CheckstylePluginException  The string did not match any known types.
+     * @return Matching config property type.
+     * 
+     * @throws CheckstylePluginException The string did not match any known
+     *             types.
      */
     public static ConfigPropertyType getConfigPropertyType(String label)
         throws CheckstylePluginException
     {
         ConfigPropertyType result = null;
-        
+
         if (label.equalsIgnoreCase(STRING.mLabel))
         {
             result = STRING;
@@ -198,9 +193,10 @@ public final class ConfigPropertyType
         }
         else
         {
-            throw new CheckstylePluginException("Unknown config property type label: " + label);
+            throw new CheckstylePluginException(NLS.bind(ErrorMessages.errorUnknownPropertyType,
+                    label));
         }
-        
+
         return result;
     }
 }

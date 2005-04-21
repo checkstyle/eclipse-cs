@@ -17,6 +17,7 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 //============================================================================
+
 package com.atlassw.tools.eclipse.checkstyle.duplicates;
 
 import java.util.MissingResourceException;
@@ -65,19 +66,15 @@ public class DuplicatedCode
                     .getBundle("com.puppycrawl.tools.checkstyle.checks.duplicates.messages");
             String localProperty = resourceBundle.getString("duplicates.lines");
             sMask1 = localProperty.substring(0, localProperty.indexOf("{0}"));
-            sMask2 = localProperty.substring(localProperty.indexOf("{0}") + 3,
-                    localProperty.indexOf("{1}"));
-            sMask3 = localProperty.substring(localProperty.indexOf("{1}") + 3,
-                    localProperty.indexOf("{2}"));
+            sMask2 = localProperty.substring(localProperty.indexOf("{0}") + 3, localProperty
+                    .indexOf("{1}"));
+            sMask3 = localProperty.substring(localProperty.indexOf("{1}") + 3, localProperty
+                    .indexOf("{2}"));
         }
         catch (MissingResourceException x)
         {
-            CheckstyleLog
-                    .error(
-                            "Unable to get the resource bundle "
-                                    + "\"com.puppycrawl.tools.checkstyle.checks.duplicates.messages\".",
-                            x);
-            CheckstyleLog.internalErrorDialog();
+            CheckstyleLog.log(x, "Unable to get the resource bundle "
+                    + "\"com.puppycrawl.tools.checkstyle.checks.duplicates.messages\".");
         }
     }
 
@@ -99,12 +96,9 @@ public class DuplicatedCode
     /**
      * Construct the object with the message that Checkstyle reports.
      * 
-     * @param file :
-     *            the source file
-     * @param line :
-     *            the starting line
-     * @param checkstyleMessage :
-     *            the message
+     * @param file : the source file
+     * @param line : the starting line
+     * @param checkstyleMessage : the message
      */
     public DuplicatedCode(IFile file, int line, String checkstyleMessage)
     {
@@ -147,8 +141,7 @@ public class DuplicatedCode
         int start = mMessage.indexOf(sMask2) + sMask2.length();
         int end = mMessage.indexOf(sMask3);
         String path = mMessage.substring(start, end);
-        IFile file = ResourcesPlugin.getWorkspace().getRoot()
-                .getFileForLocation(new Path(path));
+        IFile file = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(new Path(path));
         return file;
     }
 

@@ -44,14 +44,7 @@ class FileSetLabelProvider extends LabelProvider implements ITableLabelProvider
             switch (columnIndex)
             {
                 case 0:
-                    if (fileSet.isEnabled())
-                    {
-                        result = " Enabled";
-                    }
-                    else
-                    {
-                        result = " Disabled";
-                    }
+                    result = new String();
                     break;
 
                 case 1:

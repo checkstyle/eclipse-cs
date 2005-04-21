@@ -43,6 +43,7 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
 
 /**
@@ -105,7 +106,7 @@ public class ConfigPropertyWidgetFile extends ConfigPropertyWidgetAbstractBase
             mTextWidget.setLayoutData(gd);
 
             mBtnBrowse = new Button(mContents, SWT.PUSH);
-            mBtnBrowse.setText("Browse...");
+            mBtnBrowse.setText(Messages.ConfigPropertyWidgetFile_btnBrowse0);
             mBtnBrowse.setLayoutData(new GridData());
 
             mBtnBrowse.addSelectionListener(new SelectionListener()
@@ -147,7 +148,7 @@ public class ConfigPropertyWidgetFile extends ConfigPropertyWidgetAbstractBase
         String result = mTextWidget.getText();
         if (result == null)
         {
-            result = "";
+            result = ""; //$NON-NLS-1$
         }
         return result;
     }
@@ -167,6 +168,6 @@ public class ConfigPropertyWidgetFile extends ConfigPropertyWidgetAbstractBase
     public void restorePropertyDefault()
     {
         String defaultValue = getConfigProperty().getMetaData().getDefaultValue();
-        mTextWidget.setText(defaultValue != null ? defaultValue : "");
+        mTextWidget.setText(defaultValue != null ? defaultValue : ""); //$NON-NLS-1$
     }
 }

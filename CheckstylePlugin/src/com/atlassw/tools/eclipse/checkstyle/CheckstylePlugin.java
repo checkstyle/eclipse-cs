@@ -23,57 +23,50 @@ package com.atlassw.tools.eclipse.checkstyle;
 //=================================================
 // Imports from java namespace
 //=================================================
-import java.io.IOException;
-import java.net.URL;
-import java.util.MissingResourceException;
-import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-
-import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 
 /**
  * The main plugin class to be used in the desktop.
  */
 public class CheckstylePlugin extends AbstractUIPlugin
 {
-    //=================================================
+    // =================================================
     // Public static final variables.
-    //=================================================
+    // =================================================
 
     /** Identifier of the plug-in. */
-    public static final String PLUGIN_ID = "com.atlassw.tools.eclipse.checkstyle";
+    public static final String PLUGIN_ID = "com.atlassw.tools.eclipse.checkstyle"; //$NON-NLS-1$
 
     /**
      * Preference name indicating if rule names are to be included in violation
      * messages.
      */
-    public static final String PREF_INCLUDE_RULE_NAMES = "include.rule.names";
+    public static final String PREF_INCLUDE_RULE_NAMES = "include.rule.names"; //$NON-NLS-1$
 
     /**
      * Preference name indication if the user should be warned of possibly
      * losing fileset configurations if he switches from advanced to simple
      * fileset configuration.
      */
-    public static final String PREF_FILESET_WARNING = "warn.before.losing.filesets";
+    public static final String PREF_FILESET_WARNING = "warn.before.losing.filesets"; //$NON-NLS-1$
 
     /**
      * Preference name indication if the checkstyle tokens within the module
      * editor should be translated.
      */
-    public static final String PREF_TRANSLATE_TOKENS = "translate.checkstyle.tokens";
+    public static final String PREF_TRANSLATE_TOKENS = "translate.checkstyle.tokens"; //$NON-NLS-1$
 
     /**
      * Preference name indicating the minimum amount of lines that is used for
      * the checker analysis.
      */
-    public static final String PREF_DUPLICATED_CODE_MIN_LINES = "checker.strictDuplicatedCode.minLines";
+    public static final String PREF_DUPLICATED_CODE_MIN_LINES = "checker.strictDuplicatedCode.minLines"; //$NON-NLS-1$
 
     /**
      * Default value for the minimum amount of lines that is used for the
@@ -81,12 +74,9 @@ public class CheckstylePlugin extends AbstractUIPlugin
      */
     public static final int DUPLICATED_CODE_MIN_LINES = 20;
 
-    /** constant for the plugin properties. */
-    private static final String PROPERTIES = "plugin.properties";
-
-    //=================================================
+    // =================================================
     // Static class variables.
-    //=================================================
+    // =================================================
 
     /** The shared instance. */
     private static CheckstylePlugin sPlugin;
@@ -94,13 +84,13 @@ public class CheckstylePlugin extends AbstractUIPlugin
     /** Resource bundle. */
     private static ResourceBundle sResourceBundle;
 
-    //=================================================
+    // =================================================
     // Instance member variables.
-    //=================================================
+    // =================================================
 
-    //=================================================
+    // =================================================
     // Constructors & finalizer.
-    //=================================================
+    // =================================================
 
     /**
      * The constructor.
@@ -111,9 +101,9 @@ public class CheckstylePlugin extends AbstractUIPlugin
         sPlugin = this;
     }
 
-    //=================================================
+    // =================================================
     // Methods.
-    //=================================================
+    // =================================================
 
     /**
      * Returns the shared instance.
@@ -136,46 +126,13 @@ public class CheckstylePlugin extends AbstractUIPlugin
     }
 
     /**
-     * Returns the string from the plugin's resource bundle, or 'key' if not
-     * found.
-     * 
-     * @param key Resource key.
-     * 
-     * @return The requested resource.
-     */
-    public static String getResourceString(String key)
-    {
-        if (sResourceBundle == null)
-        {
-            try
-            {
-                URL url = CheckstylePlugin.getDefault().find(new Path(PROPERTIES));
-                sResourceBundle = new PropertyResourceBundle(url.openStream());
-            }
-            catch (IOException ioe)
-            {
-                CheckstyleLog.error(ioe.getLocalizedMessage(), ioe);
-            }
-        }
-
-        try
-        {
-            return sResourceBundle.getString(key);
-        }
-        catch (MissingResourceException e)
-        {
-            return '!' + key + '!';
-        }
-    }
-
-    /**
      * Returns the checkstyle logo.
      * 
      * @return the checkstyle logo
      */
     public static Image getLogo()
     {
-        return CheckstylePlugin.imageDescriptorFromPlugin(PLUGIN_ID, "icons/logo.png")
+        return CheckstylePlugin.imageDescriptorFromPlugin(PLUGIN_ID, "icons/logo.png") //$NON-NLS-1$
                 .createImage();
     }
 

@@ -28,38 +28,37 @@ import org.eclipse.core.resources.IFile;
 
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationFactory;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
-import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
 /**
  * A File Set is a collection of files audited with a common set of audit rules.
  */
 public class FileSet implements Cloneable
 {
-    //=================================================
+    // =================================================
     // Public static final variables.
-    //=================================================
+    // =================================================
 
-    //=================================================
+    // =================================================
     // Static class variables.
-    //=================================================
+    // =================================================
 
-    //=================================================
+    // =================================================
     // Instance member variables.
-    //=================================================
+    // =================================================
 
-    private String             mName;
+    private String mName;
 
-    private String             mCheckConfigName   = "";
+    private String mCheckConfigName;
 
     private ICheckConfiguration mCheckConfig;
 
-    private boolean            mEnabled           = true;
+    private boolean mEnabled = true;
 
-    private List               mFileMatchPatterns = new LinkedList();
+    private List mFileMatchPatterns = new LinkedList();
 
-    //=================================================
+    // =================================================
     // Constructors & finalizer.
-    //=================================================
+    // =================================================
 
     /**
      * Default constructor.
@@ -83,9 +82,9 @@ public class FileSet implements Cloneable
         setCheckConfig(checkConfig);
     }
 
-    //=================================================
+    // =================================================
     // Methods.
-    //=================================================
+    // =================================================
 
     /**
      * Returns a list of <code>FileMatchPattern</code> objects.
@@ -114,16 +113,7 @@ public class FileSet implements Cloneable
      */
     public ICheckConfiguration getCheckConfig()
     {
-        ICheckConfiguration config = null;
-        try
-        {
-            config = CheckConfigurationFactory.getByName(mCheckConfigName);
-        }
-        catch (CheckstylePluginException e)
-        {
-            //  Just return null.
-        }
-
+        ICheckConfiguration config = CheckConfigurationFactory.getByName(mCheckConfigName);
         return config;
     }
 
@@ -184,9 +174,27 @@ public class FileSet implements Cloneable
     /**
      * {@inheritDoc}
      */
-    public Object clone() throws CloneNotSupportedException
+    public Object clone()
     {
-        return super.clone();
+        try
+        {
+            FileSet clone = (FileSet) super.clone();
+
+            //clone filesets
+            List clonedPatterns = new LinkedList();
+            Iterator it = mFileMatchPatterns.iterator();
+            while (it.hasNext())
+            {
+                clonedPatterns.add(((FileMatchPattern) it.next()).clone());
+            }
+            clone.mFileMatchPatterns = clonedPatterns;
+
+            return clone;
+        }
+        catch (CloneNotSupportedException e)
+        {
+            throw new InternalError();
+        }
     }
 
     /**
@@ -223,7 +231,7 @@ public class FileSet implements Cloneable
      */
     public int hashCode()
     {
-        //a "nice" prime number, see Java Report, April 2000
+        // a "nice" prime number, see Java Report, April 2000
         final int prime = 1000003;
 
         int result = 1;
@@ -244,10 +252,8 @@ public class FileSet implements Cloneable
      * @return <code>true</code>= the file is included in the file set,
      *         <p>
      *         <code>false</code>= the file is not included in the file set.
-     * 
-     * @throws CheckstylePluginException Error during processing.
      */
-    public boolean includesFile(IFile file) throws CheckstylePluginException
+    public boolean includesFile(IFile file)
     {
         boolean result = false;
         String filePath = file.getProjectRelativePath().toString();

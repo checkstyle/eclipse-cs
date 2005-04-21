@@ -46,34 +46,34 @@ public final class PluginFilters
     //
 
     /** constant for the extension point id. */
-    private static final String FILTER_EXTENSION_POINT = CheckstylePlugin.PLUGIN_ID + ".filters";
+    private static final String FILTER_EXTENSION_POINT = CheckstylePlugin.PLUGIN_ID + ".filters"; //$NON-NLS-1$
 
     /** constant for the name attribute. */
-    private static final String ATTR_NAME = "name";
+    private static final String ATTR_NAME = "name"; //$NON-NLS-1$
 
     /** constant for the name attribute. */
-    private static final String ATTR_INTERNAL_NAME = "internal-name";
+    private static final String ATTR_INTERNAL_NAME = "internal-name"; //$NON-NLS-1$
 
     /** constant for the description attribute. */
-    private static final String ATTR_DESCRIPTION = "description";
+    private static final String ATTR_DESCRIPTION = "description"; //$NON-NLS-1$
 
     /** constant for the class attribute. */
-    private static final String ATTR_CLASS = "class";
+    private static final String ATTR_CLASS = "class"; //$NON-NLS-1$
 
     /** constant for the editorClass attribute. */
-    private static final String ATTR_EDITOR = "editorClass";
+    private static final String ATTR_EDITOR = "editorClass"; //$NON-NLS-1$
 
     /** contant for the readonly attribute. */
-    private static final String ATTR_READONLY = "readonly";
+    private static final String ATTR_READONLY = "readonly"; //$NON-NLS-1$
 
     /** constant for the selected attribute. */
-    private static final String ATTR_SELECTED = "selected";
+    private static final String ATTR_SELECTED = "selected"; //$NON-NLS-1$
 
     /** constant for the value attribute. */
-    private static final String ATTR_VALUE = "value";
+    private static final String ATTR_VALUE = "value"; //$NON-NLS-1$
 
     /** constant for the data tag. */
-    private static final String TAG_DATA = "data";
+    private static final String TAG_DATA = "data"; //$NON-NLS-1$
 
     /** the filter prototypes configured to the extension point. */
     private static final IFilter[] FILTER_PROTOTYPES;
@@ -134,8 +134,7 @@ public final class PluginFilters
             }
             catch (Exception e)
             {
-
-                CheckstyleLog.error(e.getLocalizedMessage(), e);
+                CheckstyleLog.log(e);
             }
         }
 

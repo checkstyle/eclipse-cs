@@ -36,6 +36,7 @@ import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -50,6 +51,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
+import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
 import com.atlassw.tools.eclipse.checkstyle.config.Module;
 import com.atlassw.tools.eclipse.checkstyle.config.meta.ConfigPropertyMetadata;
@@ -63,20 +65,20 @@ import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
  */
 public class RuleConfigurationEditDialog extends TitleAreaDialog
 {
-    //=================================================
+    // =================================================
     // Public static final variables.
-    //=================================================
+    // =================================================
 
-    //=================================================
+    // =================================================
     // Static class variables.
-    //=================================================
+    // =================================================
 
     private static final SeverityLevel[] SEVERITY_LEVELS = { SeverityLevel.IGNORE,
         SeverityLevel.INFO, SeverityLevel.WARNING, SeverityLevel.ERROR };
 
-    //=================================================
+    // =================================================
     // Instance member variables.
-    //=================================================
+    // =================================================
 
     private Composite mParentComposite;
 
@@ -94,9 +96,9 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
 
     private String mTitle;
 
-    //=================================================
+    // =================================================
     // Constructors & finalizer.
-    //=================================================
+    // =================================================
 
     /**
      * Constructor.
@@ -116,9 +118,9 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
         mTitle = title;
     }
 
-    //=================================================
+    // =================================================
     // Methods.
-    //=================================================
+    // =================================================
 
     /**
      * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
@@ -133,17 +135,17 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
         GridLayout layout = new GridLayout(2, false);
         dialog.setLayout(layout);
 
-        //Build comment
+        // Build comment
         Label commentLabel = new Label(dialog, SWT.NULL);
-        commentLabel.setText("Comment:");
+        commentLabel.setText(Messages.RuleConfigurationEditDialog_lblComment);
         commentLabel.setLayoutData(new GridData());
 
         mCommentText = new Text(dialog, SWT.SINGLE | SWT.BORDER);
         mCommentText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-        //Build severity
+        // Build severity
         Label lblSeverity = new Label(dialog, SWT.NULL);
-        lblSeverity.setText("Severity: ");
+        lblSeverity.setText(Messages.RuleConfigurationEditDialog_lblSeverity);
         lblSeverity.setLayoutData(new GridData());
 
         mSeverityCombo = new ComboViewer(dialog);
@@ -162,7 +164,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
 
         Group properties = new Group(dialog, SWT.NULL);
         properties.setLayout(new GridLayout(2, false));
-        properties.setText("Properties:");
+        properties.setText(Messages.RuleConfigurationEditDialog_lblProperties);
         GridData gd = new GridData(GridData.FILL_BOTH);
         gd.horizontalSpan = 2;
         properties.setLayoutData(gd);
@@ -190,13 +192,13 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
         composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
         mBtnTranslate = new Button(composite, SWT.CHECK);
-        mBtnTranslate.setText("Translate tokens");
+        mBtnTranslate.setText(Messages.RuleConfigurationEditDialog_btnTranslateTokens);
         GridData gd = new GridData();
         gd.horizontalAlignment = GridData.BEGINNING;
         gd.horizontalIndent = 5;
         mBtnTranslate.setLayoutData(gd);
 
-        //Init the translate tokens preference
+        // Init the translate tokens preference
         IPreferenceStore prefStore = CheckstylePlugin.getDefault().getPreferenceStore();
         mBtnTranslate.setSelection(prefStore.getBoolean(CheckstylePlugin.PREF_TRANSLATE_TOKENS));
         mBtnTranslate.addSelectionListener(new SelectionListener()
@@ -204,7 +206,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
 
             public void widgetSelected(SelectionEvent e)
             {
-                //store translation preference
+                // store translation preference
                 IPreferenceStore prefStore = CheckstylePlugin.getDefault().getPreferenceStore();
                 prefStore.setValue(CheckstylePlugin.PREF_TRANSLATE_TOKENS, ((Button) e.widget)
                         .getSelection());
@@ -212,7 +214,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
 
             public void widgetDefaultSelected(SelectionEvent e)
             {
-            //NOOP
+            // NOOP
             }
         });
 
@@ -227,7 +229,10 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
     protected void createButtonsForButtonBar(Composite parent)
     {
 
-        createButton(parent, IDialogConstants.BACK_ID, "Default", false);
+        Button defautlt = createButton(parent, IDialogConstants.BACK_ID,
+                Messages.RuleConfigurationEditDialog_btnDefaul, false);
+        defautlt.setEnabled(!mReadonly);
+        
         // create OK and Cancel buttons by default
         createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true);
         createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
@@ -236,14 +241,15 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
     private void initialize()
     {
 
-        this.setTitle("Configuration of checkstyle module '" + mRule.getName() + "'");
+        this.setTitle(NLS.bind(Messages.RuleConfigurationEditDialog_titleRuleConfigEditor, mRule
+                .getName()));
         if (!mReadonly)
         {
-            this.setMessage("Edit the module configuration.");
+            this.setMessage(Messages.RuleConfigurationEditDialog_msgEditRuleConfig);
         }
         else
         {
-            this.setMessage("The module can not be edited.");
+            this.setMessage(Messages.RuleConfigurationEditDialog_msgReadonlyModule);
         }
 
         String comment = mRule.getComment();
@@ -264,7 +270,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
             mSeverityCombo.getCombo().setEnabled(false);
         }
 
-        //set the logo
+        // set the logo
         this.setTitleImage(CheckstylePlugin.getLogo());
 
     }
@@ -277,18 +283,19 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
         if (IDialogConstants.BACK_ID == buttonId)
         {
 
-            if (MessageDialog.openConfirm(getShell(), "Restore default values",
-                    "Restore default values for this module?"))
+            if (MessageDialog.openConfirm(getShell(),
+                    Messages.RuleConfigurationEditDialog_titleRestoreDefault,
+                    Messages.RuleConfigurationEditDialog_msgRestoreDefault))
             {
 
                 if (mRule.getMetaData().hasSeverity())
                 {
                     mSeverityCombo.setSelection(new StructuredSelection(mRule.getMetaData()
                             .getDefaultSeverityLevel()));
-                    mCommentText.setText("");
+                    mCommentText.setText(new String());
                 }
 
-                //restore the default value for the properties
+                // restore the default value for the properties
                 for (int i = 0; i < mConfigPropertyWidgets.length; i++)
                 {
                     mConfigPropertyWidgets[i].restorePropertyDefault();
@@ -307,7 +314,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
     protected void okPressed()
     {
         //
-        //  Get the selected severity level.
+        // Get the selected severity level.
         //
         SeverityLevel severity = mRule.getSeverity();
         try
@@ -317,19 +324,19 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
         }
         catch (IllegalArgumentException e)
         {
-            CheckstyleLog.warning("Invalid severity level found, using original value", e);
+            CheckstyleLog.log(e);
         }
 
         //
-        //  Get the comment.
+        // Get the comment.
         //
         String comment = mCommentText.getText();
 
         //
-        //  Build a new collection of configuration properties.
+        // Build a new collection of configuration properties.
         //
-        //  Note: if the rule does not have any configuration properties then
-        //        skip over the populating of the config property hash map.
+        // Note: if the rule does not have any configuration properties then
+        // skip over the populating of the config property hash map.
         //
         boolean hasError = false;
         if (mConfigPropertyWidgets != null)
@@ -342,10 +349,10 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
                 boolean isValid = validatePropertyValue(widget.getValue(), property.getMetaData());
                 if (!isValid)
                 {
-                    String message = "Invalid value for property "
-                            + property.getMetaData().getName();
-                    MessageDialog.openError(mParentComposite.getShell(), "Invalid Property Value",
-                            message);
+                    String message = NLS.bind(
+                            Messages.RuleConfigurationEditDialog_msgInvalidPropertyValue, property
+                                    .getMetaData().getName());
+                    MessageDialog.openError(mParentComposite.getShell(), message, message);
                     hasError = true;
                 }
                 else
@@ -356,9 +363,9 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
         }
 
         //
-        //  If we made it this far then all of the user input validated and we
+        // If we made it this far then all of the user input validated and we
         // can
-        //  update the final rule with the values the user entered.
+        // update the final rule with the values the user entered.
         //
         mRule.setSeverity(severity);
         mRule.setComment(comment);
@@ -384,7 +391,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
             ConfigProperty prop = (ConfigProperty) iter.next();
 
             //
-            //  Add an input widget for the properties value.
+            // Add an input widget for the properties value.
             //
             mConfigPropertyWidgets[i] = ConfigPropertyWidgetFactory.createWidget(parent, prop,
                     getShell());
@@ -401,13 +408,13 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
         }
 
         //
-        //  What datatype is this property?
+        // What datatype is this property?
         //
         ConfigPropertyType type = metadata.getDatatype();
         if (type.equals(ConfigPropertyType.STRING))
         {
             //
-            //  Anything, including nothing, is valid.
+            // Anything, including nothing, is valid.
             //
             result = true;
         }
@@ -416,14 +423,14 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
             try
             {
                 //
-                //  Parse the value to see if an exception gets thrown.
+                // Parse the value to see if an exception gets thrown.
                 //
                 Integer.parseInt(value);
             }
             catch (NumberFormatException e)
             {
                 //
-                //  If an exception was thrown then consider the value to be
+                // If an exception was thrown then consider the value to be
                 // invalid.
                 //
                 result = false;
@@ -445,12 +452,8 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
                 || type.equals(ConfigPropertyType.BOOLEAN)
                 || type.equals(ConfigPropertyType.HIDDEN))
         {
-            //  Assume valid since the user can't enter a value.
+            // Assume valid since the user can't enter a value.
             result = true;
-        }
-        else
-        {
-            CheckstyleLog.warning("Unknown property type: " + type.getLabel());
         }
 
         return result;

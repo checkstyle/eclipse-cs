@@ -17,6 +17,7 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 //============================================================================
+
 package com.atlassw.tools.eclipse.checkstyle.duplicates;
 
 import java.util.ArrayList;
@@ -40,8 +41,7 @@ import com.puppycrawl.tools.checkstyle.api.AutomaticBean;
  * 
  * @author Fabrice BELLINGARD
  */
-public class DuplicatedCodeAuditListener extends AutomaticBean implements
-        AuditListener
+public class DuplicatedCodeAuditListener extends AutomaticBean implements AuditListener
 {
 
     /**
@@ -92,8 +92,7 @@ public class DuplicatedCodeAuditListener extends AutomaticBean implements
     /**
      * Constructor.
      * 
-     * @param duplicatedCodeView :
-     *            the view to notify with changes
+     * @param duplicatedCodeView : the view to notify with changes
      */
     public DuplicatedCodeAuditListener(DuplicatedCodeView duplicatedCodeView)
     {
@@ -135,8 +134,8 @@ public class DuplicatedCodeAuditListener extends AutomaticBean implements
         mCurrentFile = mWorkspaceRoot.getFile(new Path(event.getFileName()));
         if (!mCurrentFile.exists())
         {
-            CheckstyleLog.warning("The file \"" + event.getFileName()
-                    + "\" has not been found in the workspace.", null);
+            CheckstyleLog.log(null, "The file \"" + event.getFileName()
+                    + "\" has not been found in the workspace.");
             mCurrentFile = null;
             return;
         }
@@ -181,8 +180,8 @@ public class DuplicatedCodeAuditListener extends AutomaticBean implements
      */
     public void addError(AuditEvent event)
     {
-        mCurrentDuplicatedCodeCollection.add(new DuplicatedCode(mCurrentFile,
-                event.getLine(), event.getMessage()));
+        mCurrentDuplicatedCodeCollection.add(new DuplicatedCode(mCurrentFile, event.getLine(),
+                event.getMessage()));
     }
 
     /**
@@ -192,7 +191,6 @@ public class DuplicatedCodeAuditListener extends AutomaticBean implements
      *      java.lang.Throwable)
      */
     public void addException(AuditEvent event, Throwable arg1)
-    {
-    }
+    {}
 
 }

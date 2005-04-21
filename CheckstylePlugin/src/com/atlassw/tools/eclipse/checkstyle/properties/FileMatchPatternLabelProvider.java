@@ -44,14 +44,7 @@ class FileMatchPatternLabelProvider extends LabelProvider implements ITableLabel
             switch (columnIndex)
             {
                 case 0:
-                    if (pattern.isIncludePattern())
-                    {
-                        result = " Include";
-                    }
-                    else
-                    {
-                        result = " Exclude";
-                    }
+                    result = new String();
                     break;
 
                 case 1:

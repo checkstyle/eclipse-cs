@@ -34,6 +34,8 @@ package com.atlassw.tools.eclipse.checkstyle.config.meta;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.atlassw.tools.eclipse.checkstyle.Messages;
+
 /**
  * This class represents metadata about one of a rule's properties.
  */
@@ -77,7 +79,7 @@ public class ConfigPropertyMetadata implements Cloneable
         mDatatype = type;
         mName = name;
         mDefaultValue = defaultValue;
-        mDescription = "No Description Available";
+        mDescription = Messages.ConfigPropertyMetadata_txtNoDescription;
     }
 
     //=================================================

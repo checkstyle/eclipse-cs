@@ -65,7 +65,7 @@ public class ExternalFileCheckConfiguration extends AbstractCheckConfiguration
      */
     protected boolean handleIsEditable()
     {
-        //External check configurations can be edited
+        // External check configurations can be edited
         return true;
     }
 
@@ -74,7 +74,7 @@ public class ExternalFileCheckConfiguration extends AbstractCheckConfiguration
      */
     protected boolean handleIsConfigurable()
     {
-        //The configuration can be changed when the external configuration file
+        // The configuration can be changed when the external configuration file
         // can is writable
         return new File(getLocation()).canWrite();
     }
@@ -93,10 +93,10 @@ public class ExternalFileCheckConfiguration extends AbstractCheckConfiguration
         if (mPropertyResolver == null)
         {
             String location = getLocation();
-            //Strip file extension
-            location = location.substring(0, location.lastIndexOf("."));
+            // Strip file extension
+            location = location.substring(0, location.lastIndexOf(".")); //$NON-NLS-1$
 
-            File propertyFile = new File(location + ".properties");
+            File propertyFile = new File(location + ".properties"); //$NON-NLS-1$
             ResourceBundle bundle = null;
 
             try
@@ -106,7 +106,7 @@ public class ExternalFileCheckConfiguration extends AbstractCheckConfiguration
             }
             catch (IOException ioe)
             {
-                //we won't load the bundle then
+                // we won't load the bundle then
             }
 
             mPropertyResolver = new ResourceBundleProperyResolver(bundle);

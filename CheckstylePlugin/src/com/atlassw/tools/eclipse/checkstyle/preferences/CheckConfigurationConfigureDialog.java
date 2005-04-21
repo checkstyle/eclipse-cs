@@ -44,6 +44,7 @@ import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.SelectionEvent;
@@ -62,6 +63,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
+import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.config.Module;
 import com.atlassw.tools.eclipse.checkstyle.config.meta.MetadataFactory;
@@ -166,7 +168,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
         sashForm.setWeights(new int[] { 30, 70 });
 
         Label lblDescription = new Label(contents, SWT.NULL);
-        lblDescription.setText("Description:");
+        lblDescription.setText(Messages.CheckConfigurationConfigureDialog_lblDescription);
         lblDescription.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
         mTxtDescription = new Text(contents, SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.READ_ONLY
@@ -175,7 +177,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
         gd.heightHint = 100;
         mTxtDescription.setLayoutData(gd);
 
-        //initialize the data
+        // initialize the data
         initialize();
 
         return contents;
@@ -187,7 +189,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
     protected void configureShell(Shell newShell)
     {
         super.configureShell(newShell);
-        newShell.setText("Checkstyle Configuration");
+        newShell.setText(Messages.CheckConfigurationConfigureDialog_titleCheckConfigurationDialog);
     }
 
     /**
@@ -205,8 +207,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
         }
         catch (CheckstylePluginException e)
         {
-            CheckstyleLog.error(e.getLocalizedMessage(), e);
-            CheckstyleLog.errorDialog(getShell(), e.getLocalizedMessage(), e);
+            CheckstyleLog.errorDialog(getShell(), e, true);
         }
 
         super.okPressed();
@@ -217,7 +218,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
 
         Group knownModules = new Group(parent, SWT.NULL);
         knownModules.setLayout(new GridLayout());
-        knownModules.setText("Known modules");
+        knownModules.setText(Messages.CheckConfigurationConfigureDialog_lblKnownModules);
 
         mTreeViewer = new TreeViewer(knownModules, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL
                 | SWT.BORDER);
@@ -227,7 +228,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
         mTreeViewer.addSelectionChangedListener(mController);
         mTreeViewer.addDoubleClickListener(mController);
 
-        //filter hidden elements
+        // filter hidden elements
         mTreeViewer.addFilter(new ViewerFilter()
         {
 
@@ -247,7 +248,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
         });
 
         mAddButton = new Button(knownModules, SWT.PUSH);
-        mAddButton.setText(("Add... ->"));
+        mAddButton.setText((Messages.CheckConfigurationConfigureDialog_btnAdd));
         GridData gd = new GridData();
         gd.horizontalAlignment = GridData.END;
         mAddButton.setLayoutData(gd);
@@ -273,19 +274,19 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
 
         TableColumn column1 = new TableColumn(table, SWT.NULL);
         column1.setAlignment(SWT.CENTER);
-        column1.setText("Enabled");
+        column1.setText(Messages.CheckConfigurationConfigureDialog_colEnabled);
         tableLayout.addColumnData(new ColumnWeightData(15));
 
         TableColumn column2 = new TableColumn(table, SWT.NULL);
-        column2.setText("Module");
+        column2.setText(Messages.CheckConfigurationConfigureDialog_colModule);
         tableLayout.addColumnData(new ColumnWeightData(30));
 
         TableColumn column3 = new TableColumn(table, SWT.NULL);
-        column3.setText("Severity");
+        column3.setText(Messages.CheckConfigurationConfigureDialog_colSeverity);
         tableLayout.addColumnData(new ColumnWeightData(20));
 
         TableColumn column4 = new TableColumn(table, SWT.NULL);
-        column4.setText("Comment");
+        column4.setText(Messages.CheckConfigurationConfigureDialog_colComment);
         tableLayout.addColumnData(new ColumnWeightData(35));
 
         mTableViewer = new CheckboxTableViewer(table);
@@ -305,12 +306,12 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
         buttons.setLayoutData(new GridData());
 
         mRemoveButton = new Button(buttons, SWT.PUSH);
-        mRemoveButton.setText(("<- Remove"));
+        mRemoveButton.setText((Messages.CheckConfigurationConfigureDialog_btnRemove));
         mRemoveButton.setLayoutData(new GridData());
         mRemoveButton.addSelectionListener(mController);
 
         mEditButton = new Button(buttons, SWT.PUSH);
-        mEditButton.setText(("Open..."));
+        mEditButton.setText((Messages.CheckConfigurationConfigureDialog_btnOpen));
         mEditButton.setLayoutData(new GridData());
         mEditButton.addSelectionListener(mController);
 
@@ -332,23 +333,23 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
         catch (CheckstylePluginException e)
         {
             mModules = new ArrayList();
-            CheckstyleLog.error(e.getLocalizedMessage(), e);
-            CheckstyleLog.errorDialog(getShell(), e.getLocalizedMessage(), e);
+            CheckstyleLog.errorDialog(getShell(), e, true);
         }
         mTableViewer.setInput(mModules);
 
-        this.setTitle(mConfiguration.getType().getName() + " '" + mConfiguration.getName() + "'");
+        this.setTitle(NLS.bind(Messages.CheckConfigurationConfigureDialog_titleMessageArea,
+                mConfiguration.getType().getName(), mConfiguration.getName()));
 
         if (mConfiguration.isConfigurable())
         {
-            this.setMessage("Edit checkstyle configuration.");
+            this.setMessage(Messages.CheckConfigurationConfigureDialog_msgEditConfig);
         }
         else
         {
-            this.setMessage("The configuration can not be edited.");
+            this.setMessage(Messages.CheckConfigurationConfigureDialog_msgReadonlyConfig);
         }
 
-        //set the logo
+        // set the logo
         this.setTitleImage(CheckstylePlugin.getLogo());
 
         mAddButton.setEnabled(mConfiguration.isConfigurable());
@@ -404,7 +405,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
          */
         public void widgetDefaultSelected(SelectionEvent e)
         {
-        //NOOP
+        // NOOP
         }
 
         /**
@@ -443,8 +444,9 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
             if (element instanceof RuleGroupMetadata)
             {
                 mGroupFilter.setCurrentGroup((RuleGroupMetadata) element);
-                mConfiguredModulesGroup.setText("Configured modules for group '"
-                        + ((RuleGroupMetadata) element).getGroupName() + "'");
+                mConfiguredModulesGroup.setText(NLS.bind(
+                        Messages.CheckConfigurationConfigureDialog_lblConfiguredModules,
+                        ((RuleGroupMetadata) element).getGroupName()));
                 mTableViewer.refresh();
 
                 refreshTableViewerState();
@@ -454,8 +456,9 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
 
                 description = ((RuleMetadata) element).getDescription();
                 mGroupFilter.setCurrentGroup(((RuleMetadata) element).getGroup());
-                mConfiguredModulesGroup.setText("Configured modules for group '"
-                        + ((RuleMetadata) element).getGroup().getGroupName() + "'");
+                mConfiguredModulesGroup.setText(NLS.bind(
+                        Messages.CheckConfigurationConfigureDialog_lblConfiguredModules,
+                        ((RuleMetadata) element).getGroup().getGroupName()));
                 mTableViewer.refresh();
                 refreshTableViewerState();
 
@@ -465,8 +468,8 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
                 description = ((Module) element).getMetaData().getDescription();
             }
 
-            mTxtDescription
-                    .setText(description != null ? description : "No description available.");
+            mTxtDescription.setText(description != null ? description
+                    : Messages.CheckConfigurationConfigureDialog_txtNoDescription);
         }
 
         /**
@@ -487,7 +490,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
 
                     RuleConfigurationEditDialog dialog = new RuleConfigurationEditDialog(
                             getShell(), workingCopy, !mConfiguration.isConfigurable(),
-                            "Edit module configuration");
+                            Messages.CheckConfigurationConfigureDialog_titleModuleConfigEditor);
                     if (RuleConfigurationEditDialog.OK == dialog.open()
                             && mConfiguration.isConfigurable())
                     {
@@ -498,8 +501,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
                 }
                 catch (CheckstylePluginException e)
                 {
-                    CheckstyleLog.error(e.getLocalizedMessage(), e);
-                    CheckstyleLog.errorDialog(getShell(), e.getLocalizedMessage(), e);
+                    CheckstyleLog.errorDialog(getShell(), e, true);
                 }
             }
         }
@@ -522,7 +524,8 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
                     Module workingCopy = new Module((RuleMetadata) selectedElement);
 
                     RuleConfigurationEditDialog dialog = new RuleConfigurationEditDialog(
-                            getShell(), workingCopy, !mConfiguration.isConfigurable(), "New module");
+                            getShell(), workingCopy, !mConfiguration.isConfigurable(),
+                            Messages.CheckConfigurationConfigureDialog_titleNewModule);
                     if (RuleConfigurationEditDialog.OK == dialog.open()
                             && mConfiguration.isConfigurable())
                     {
@@ -533,8 +536,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
                 }
                 catch (CheckstylePluginException e)
                 {
-                    CheckstyleLog.error(e.getLocalizedMessage(), e);
-                    CheckstyleLog.errorDialog(getShell(), e.getLocalizedMessage(), e);
+                    CheckstyleLog.errorDialog(getShell(), e, true);
                 }
             }
         }
@@ -550,8 +552,9 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
             if (!selection.isEmpty())
             {
 
-                if (MessageDialog.openConfirm(getShell(), "Remove modules",
-                        "Remove the selected modules from the configuration?"))
+                if (MessageDialog.openConfirm(getShell(),
+                        Messages.CheckConfigurationConfigureDialog_titleRemoveModules,
+                        Messages.CheckConfigurationConfigureDialog_msgRemoveModules))
                 {
 
                     Iterator it = ((IStructuredSelection) selection).iterator();
@@ -575,7 +578,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
         private void refreshTableViewerState()
         {
 
-            //set selected modules (Modules where severity is not Ignore).
+            // set selected modules (Modules where severity is not Ignore).
             List selected = new ArrayList();
             int size = mModules != null ? mModules.size() : 0;
             for (int i = 0; i < size; i++)
@@ -675,7 +678,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
          */
         public void dispose()
         {
-        //NOOP
+        // NOOP
         }
 
         /**
@@ -685,7 +688,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
          */
         public void inputChanged(Viewer viewer, Object oldInput, Object newInput)
         {
-        //NOOP
+        // NOOP
         }
     }
 
@@ -748,19 +751,20 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
                 {
 
                     case 0:
-                        text = "";
+                        text = new String();
                         break;
                     case 1:
-                        text = module.getName() != null ? module.getName() : "";
+                        text = module.getName() != null ? module.getName() : new String();
                         break;
                     case 2:
-                        text = module.getSeverity() != null ? module.getSeverity().getName() : "";
+                        text = module.getSeverity() != null ? module.getSeverity().getName()
+                                : new String();
                         break;
                     case 3:
-                        text = module.getComment() != null ? module.getComment() : "";
+                        text = module.getComment() != null ? module.getComment() : new String();
                         break;
                     default:
-                        text = "";
+                        text = new String();
                         break;
                 }
             }
@@ -820,13 +824,13 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
             {
                 result = true;
             }
-            else if (moduleGroup == null && mCurrentGroup.getGroupName().equals("Other"))
+            else if (moduleGroup == null && mCurrentGroup.getGroupName().equals("Other")) //$NON-NLS-1$
             {
                 result = true;
             }
-            //TODO Thats not too nice - make better
-            else if (moduleGroup != null && moduleGroup.getGroupName().equals("Internal")
-                    && mCurrentGroup.getGroupName().equals("Other"))
+            // TODO Thats not too nice - make better
+            else if (moduleGroup != null && moduleGroup.getGroupName().equals("Internal") //$NON-NLS-1$
+                    && mCurrentGroup.getGroupName().equals("Other")) //$NON-NLS-1$
             {
                 result = true;
             }

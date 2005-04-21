@@ -36,12 +36,11 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
+import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationFactory;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileMatchPattern;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileSet;
-import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
 /**
@@ -112,8 +111,8 @@ public class SimpleFileSetsEditor implements IFileSetsEditor
             }
         }
 
-        mDefaultFileSet = new FileSet("all", config);
-        mDefaultFileSet.getFileMatchPatterns().add(new FileMatchPattern("."));
+        mDefaultFileSet = new FileSet(Messages.SimpleFileSetsEditor_nameAllFileset, config);
+        mDefaultFileSet.getFileMatchPatterns().add(new FileMatchPattern(".")); //$NON-NLS-1$
         mFileSets.clear();
         mFileSets.add(mDefaultFileSet);
     }
@@ -134,16 +133,8 @@ public class SimpleFileSetsEditor implements IFileSetsEditor
 
         //group composite containing the config settings
         Group configArea = new Group(parent, SWT.NULL);
-        configArea.setText(CheckstylePlugin.getResourceString("SimpleFileSetsEditor.grpConfig"));
+        configArea.setText(Messages.SimpleFileSetsEditor_titleSimpleConfig);
         configArea.setLayout(new FormLayout());
-
-        //        this.mBtnManageConfigs = new Button(configArea, SWT.PUSH);
-        //        this.mBtnManageConfigs.setText(CheckstylePlugin
-        //                .getResourceString("SimpleFileSetsEditor.btnManageConfigs"));
-        //        FormData fd = new FormData();
-        //        fd.top = new FormAttachment(0, 3);
-        //        fd.right = new FormAttachment(100, -3);
-        //        this.mBtnManageConfigs.setLayoutData(fd);
 
         this.mConfigList = new Combo(configArea, SWT.DROP_DOWN | SWT.READ_ONLY);
         FormData fd = new FormData();
@@ -163,19 +154,11 @@ public class SimpleFileSetsEditor implements IFileSetsEditor
             {
                 String configName = mConfigList.getItem(mConfigList.getSelectionIndex());
 
-                try
-                {
-                    ICheckConfiguration config = CheckConfigurationFactory.getByName(configName);
-                    mDefaultFileSet.setCheckConfig(config);
-                    mTxtConfigDescription.setText(config.getDescription());
+                ICheckConfiguration config = CheckConfigurationFactory.getByName(configName);
+                mDefaultFileSet.setCheckConfig(config);
+                mTxtConfigDescription.setText(config.getDescription());
 
-                    mPropertyPage.getContainer().updateButtons();
-                }
-                catch (CheckstylePluginException e1)
-                {
-                    CheckstyleLog.error(e1.getLocalizedMessage(), e1);
-                    CheckstyleLog.errorDialog(e1.getLocalizedMessage());
-                }
+                mPropertyPage.getContainer().updateButtons();
             }
 
             /**
@@ -190,7 +173,7 @@ public class SimpleFileSetsEditor implements IFileSetsEditor
 
         // Description
         Label lblConfigDesc = new Label(configArea, SWT.LEFT);
-        lblConfigDesc.setText(CheckstylePlugin.getResourceString("SimpleFileSetsEditor.lblDesc"));
+        lblConfigDesc.setText(Messages.SimpleFileSetsEditor_lblDescription);
         fd = new FormData();
         fd.left = new FormAttachment(0, 3);
         fd.top = new FormAttachment(this.mConfigList, 3, SWT.BOTTOM);
@@ -213,12 +196,11 @@ public class SimpleFileSetsEditor implements IFileSetsEditor
 
     /**
      * Initializes the editor.
-     * 
-     *  
      */
     private void initialize() throws CheckstylePluginException
     {
 
+        //get available check configurations
         List configurations = CheckConfigurationFactory.getCheckConfigurations();
         String[] items = new String[configurations.size()];
 
@@ -229,6 +211,7 @@ public class SimpleFileSetsEditor implements IFileSetsEditor
 
         mConfigList.setItems(items);
 
+        //select the selected check configuration
         ICheckConfiguration config = mDefaultFileSet.getCheckConfig();
         if (config != null)
         {

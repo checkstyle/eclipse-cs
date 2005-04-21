@@ -30,6 +30,9 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.osgi.util.NLS;
+
+import com.atlassw.tools.eclipse.checkstyle.Messages;
 
 /**
  * This operation configures or deconfigures a project with a given nature. If
@@ -59,7 +62,7 @@ public class ConfigureDeconfigureNatureJob extends WorkspaceJob
      */
     public ConfigureDeconfigureNatureJob(IProject project, String natureId)
     {
-        super("Configure project nature '" + natureId + "'");
+        super(NLS.bind(Messages.ConfigureDeconfigureNatureJob_msgTaksAddingNature, natureId));
         mProject = project;
         mNatureId = natureId;
     }
@@ -103,17 +106,17 @@ public class ConfigureDeconfigureNatureJob extends WorkspaceJob
     private void enableNature() throws CoreException
     {
 
-        //get the description
+        // get the description
         IProjectDescription desc = mProject.getDescription();
 
-        //copy existing natures and add the nature
+        // copy existing natures and add the nature
         String[] natures = desc.getNatureIds();
 
         String[] newNatures = new String[natures.length + 1];
         System.arraycopy(natures, 0, newNatures, 0, natures.length);
         newNatures[natures.length] = mNatureId;
 
-        //set natures
+        // set natures
         desc.setNatureIds(newNatures);
         mProject.setDescription(desc, mMonitor);
     }
@@ -129,7 +132,7 @@ public class ConfigureDeconfigureNatureJob extends WorkspaceJob
         IProjectDescription desc = mProject.getDescription();
         String[] natures = desc.getNatureIds();
 
-        //remove given nature from the array
+        // remove given nature from the array
         List newNaturesList = new ArrayList();
         for (int i = 0; i < natures.length; i++)
         {
@@ -141,7 +144,7 @@ public class ConfigureDeconfigureNatureJob extends WorkspaceJob
 
         String[] newNatures = (String[]) newNaturesList.toArray(new String[newNaturesList.size()]);
 
-        //set natures
+        // set natures
         desc.setNatureIds(newNatures);
         mProject.setDescription(desc, mMonitor);
     }

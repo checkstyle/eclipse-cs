@@ -39,7 +39,7 @@ import org.eclipse.ui.dialogs.CheckedTreeSelectionDialog;
 import org.eclipse.ui.internal.ide.misc.ContainerContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 
-import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
+import com.atlassw.tools.eclipse.checkstyle.Messages;
 
 /**
  * Editor dialog for the package filter.
@@ -124,8 +124,8 @@ public class PackageFilterEditor implements IFilterEditor
     private void initCheckedTreeSelectionDialog()
     {
 
-        this.mDialog.setTitle(CheckstylePlugin.getResourceString("msgCheckstylePackageSelTitle"));
-        this.mDialog.setMessage(CheckstylePlugin.getResourceString("msgCheckstylePackageSel"));
+        this.mDialog.setTitle(Messages.PackageFilterEditor_titleFilterPackages);
+        this.mDialog.setMessage(Messages.PackageFilterEditor_msgFilterPackages);
         this.mDialog.setBlockOnOpen(true);
 
         this.mDialog.addFilter(new NonSourceDirsFilter());

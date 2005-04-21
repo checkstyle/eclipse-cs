@@ -83,7 +83,7 @@ public abstract class ConfigPropertyWidgetAbstractBase implements IConfigPropert
         //  Add the property's name.
         //
         Label label = new Label(parent, SWT.NULL);
-        label.setText(mProp.getName() + ":");
+        label.setText(mProp.getName() + ":"); //$NON-NLS-1$
         GridData gd = new GridData();
         gd.verticalAlignment = SWT.BEGINNING;
         label.setLayoutData(gd);
@@ -146,7 +146,7 @@ public abstract class ConfigPropertyWidgetAbstractBase implements IConfigPropert
         }
         if (initValue == null)
         {
-            initValue = "";
+            initValue = ""; //$NON-NLS-1$
         }
 
         return initValue;

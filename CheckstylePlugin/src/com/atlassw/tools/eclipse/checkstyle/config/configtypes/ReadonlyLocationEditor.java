@@ -90,6 +90,6 @@ public class ReadonlyLocationEditor implements IConfigurationLocationEditor
      */
     public void setEditable(boolean editable)
     {
-    //NOOP
+    // NOOP
     }
 }

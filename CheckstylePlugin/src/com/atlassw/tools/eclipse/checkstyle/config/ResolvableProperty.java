@@ -57,7 +57,7 @@ public class ResolvableProperty
     
     private String   mCorrelationTag;
     
-    private String   mValue = "";
+    private String   mValue;
 
     //=================================================
     // Constructors & finalizer.

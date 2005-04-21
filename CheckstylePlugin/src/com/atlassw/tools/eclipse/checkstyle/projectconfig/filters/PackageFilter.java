@@ -102,7 +102,7 @@ public class PackageFilter extends AbstractFilter
         {
             if (i > 0)
             {
-                buf.append(", ");
+                buf.append(", "); //$NON-NLS-1$
             }
 
             buf.append(mData.get(i));

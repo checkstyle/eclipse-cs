@@ -29,10 +29,12 @@ import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.eclipse.osgi.util.NLS;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.config.Module;
@@ -70,27 +72,31 @@ public final class CheckConfigurationMigrator
         throws CheckstylePluginException
     {
 
+        List result = null;
+
         try
         {
 
             OldConfigurationHandler handler = new OldConfigurationHandler();
             XMLUtil.parseWithSAX(checkConfigsFile, handler);
 
-            return handler.getMigratedConfigurations();
+            result = handler.getMigratedConfigurations();
         }
         catch (SAXException se)
         {
             Exception ex = se.getException() != null ? se.getException() : se;
-            throw new CheckstylePluginException(ex.getLocalizedMessage(), ex);
+            CheckstylePluginException.rethrow(ex);
         }
         catch (ParserConfigurationException pe)
         {
-            throw new CheckstylePluginException(pe.getLocalizedMessage(), pe);
+            CheckstylePluginException.rethrow(pe);
         }
         catch (IOException ioe)
         {
-            throw new CheckstylePluginException(ioe.getLocalizedMessage(), ioe);
+            CheckstylePluginException.rethrow(ioe);
         }
+
+        return result;
     }
 
     /**
@@ -138,23 +144,25 @@ public final class CheckConfigurationMigrator
 
                     String name = attributes.getValue(XMLTags.NAME_TAG);
 
-                    //create an internal configuration
+                    // create an internal configuration
                     mCurrentConfiguration = new InternalCheckConfiguration();
                     IConfigurationType internalType = ConfigurationTypes
-                            .getByInternalName("internal");
+                            .getByInternalName("internal"); //$NON-NLS-1$
 
                     try
                     {
-                        mCurrentConfiguration.initialize(name, null, internalType, "");
+                        mCurrentConfiguration.initialize(name, null, internalType, new String());
                     }
                     catch (CheckstylePluginException cpe)
                     {
-                        //we probably got a name collision so we try to use a
+                        // we probably got a name collision so we try to use a
                         // unique name
-                        mCurrentConfiguration.initialize(name
-                                + " (Migrated on "
-                                + DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL)
-                                        .format(new Date()) + ")", null, internalType, "");
+                        String nameAddition = NLS.bind(
+                                Messages.CheckConfigurationMigrator_txtMigrationAddition,
+                                DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL)
+                                        .format(new Date()));
+                        mCurrentConfiguration.initialize(name + nameAddition, null, internalType,
+                                new String());
                     }
                 }
                 else if (XMLTags.RULE_CONFIG_TAG.equals(qName))
@@ -189,12 +197,12 @@ public final class CheckConfigurationMigrator
                         {
                             property.setValue(value);
                         }
-                        //properties that are not within the meta data are
+                        // properties that are not within the meta data are
                         // omitted
                     }
                     else
                     {
-                        //if module has no meta data defined create property
+                        // if module has no meta data defined create property
                         ConfigProperty property = new ConfigProperty(name, value);
                         mCurrentModule.getProperties().add(property);
                     }
@@ -217,7 +225,7 @@ public final class CheckConfigurationMigrator
                 if (XMLTags.CHECK_CONFIG_TAG.equals(qName))
                 {
 
-                    //store the moduless
+                    // store the moduless
                     mCurrentConfiguration.setModules(mCurrentConfigModules);
                     mMigratedConfigurations.add(mCurrentConfiguration);
                 }
@@ -225,7 +233,7 @@ public final class CheckConfigurationMigrator
                 else if (XMLTags.RULE_CONFIG_TAG.equals(qName))
                 {
 
-                    //if the module has not metadata attached we create some
+                    // if the module has not metadata attached we create some
                     // generic metadata
                     if (mCurrentModule.getMetaData() == null)
                     {

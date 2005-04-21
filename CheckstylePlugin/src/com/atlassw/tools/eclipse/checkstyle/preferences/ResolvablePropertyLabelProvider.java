@@ -112,7 +112,7 @@ class ResolvablePropertyLabelProvider implements ITableLabelProvider
                     break;
                 
                 default:
-                    result = "ERROR";
+                    result = "ERROR"; //$NON-NLS-1$
                     break;
             }
         }

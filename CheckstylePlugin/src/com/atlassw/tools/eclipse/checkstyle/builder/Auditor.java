@@ -38,9 +38,11 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Preferences;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.texteditor.MarkerUtilities;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
+import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.config.meta.MetadataFactory;
 import com.atlassw.tools.eclipse.checkstyle.config.meta.RuleMetadata;
@@ -57,19 +59,19 @@ import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
  */
 public class Auditor
 {
-    //=================================================
+    // =================================================
     // Public static final variables.
-    //=================================================
+    // =================================================
 
-    //=================================================
+    // =================================================
     // Static class variables.
-    //=================================================
+    // =================================================
 
     private static final int MONITOR_INTERVAL = 10;
 
-    //=================================================
+    // =================================================
     // Instance member variables.
-    //=================================================
+    // =================================================
 
     /** The check configuration the auditor uses. */
     private ICheckConfiguration mCheckConfiguration;
@@ -83,9 +85,9 @@ public class Auditor
     /** Add the check rule name to the message? */
     private boolean mAddRuleName = false;
 
-    //=================================================
+    // =================================================
     // Constructors & finalizer.
-    //=================================================
+    // =================================================
 
     /**
      * Creates an auditor.
@@ -103,9 +105,9 @@ public class Auditor
         mAddRuleName = prefs.getBoolean(CheckstylePlugin.PREF_INCLUDE_RULE_NAMES);
     }
 
-    //=================================================
+    // =================================================
     // Methods.
-    //=================================================
+    // =================================================
 
     /**
      * Runs the audit on the files associated with the auditor.
@@ -129,44 +131,44 @@ public class Auditor
 
             File[] filesToAudit = getFileArray();
 
-            //begin task
-            monitor.beginTask("Checking '" + mCheckConfiguration.getName() + "'",
-                    filesToAudit.length);
+            // begin task
+            monitor.beginTask(NLS.bind(Messages.Auditor_msgCheckingConfig, mCheckConfiguration
+                    .getName()), filesToAudit.length);
 
-            //set context
+            // set context
             if (mCheckConfiguration.isContextNeeded())
             {
                 mCheckConfiguration.setContext(project);
             }
 
-            //create checker
+            // create checker
             checker = CheckerFactory.createChecker(mCheckConfiguration);
 
-            //create and add listener
+            // create and add listener
             listener = new CheckstyleAuditListener(project);
             checker.addListener(listener);
 
-            //reconfigure the shared classloader for the current
+            // reconfigure the shared classloader for the current
             // project
             CheckerFactory.getSharedClassLoader().intializeWithProject(project);
 
-            //run the files through the checker
+            // run the files through the checker
             checker.process(filesToAudit);
 
         }
         catch (IOException e)
         {
-            throw new CheckstylePluginException(e.getLocalizedMessage(), e);
+            CheckstylePluginException.rethrow(e);
         }
         catch (CheckstyleException e)
         {
-            throw new CheckstylePluginException(e.getLocalizedMessage(), e);
+            CheckstylePluginException.rethrow(e);
         }
         finally
         {
             monitor.done();
 
-            //Cleanup listener
+            // Cleanup listener
             if (checker != null)
             {
                 checker.removeListener(listener);
@@ -244,23 +246,23 @@ public class Auditor
 
         public void fileStarted(AuditEvent event)
         {
-            //get the current IFile reference
+            // get the current IFile reference
             mResource = getFile(event.getFileName());
 
             if (mResource != null)
             {
 
-                //begin subtask
+                // begin subtask
                 if (mMonitorCounter == 0)
                 {
-                    mMonitor.subTask(CheckstylePlugin.getResourceString("taskCheckstyleStep")
-                            + mResource.getName());
+                    mMonitor.subTask(NLS
+                            .bind(Messages.Auditor_msgCheckingFile, mResource.getName()));
                 }
 
-                //increment monitor-counter
+                // increment monitor-counter
                 this.mMonitorCounter++;
 
-                //invalidate the last line model
+                // invalidate the last line model
                 mLineModel = null;
             }
             else
@@ -272,13 +274,13 @@ public class Auditor
                 IPath projectPath = mProject.getLocation();
                 if (projectPath.isPrefixOf(dirPath))
                 {
-                    //find the resource with a project relative path
+                    // find the resource with a project relative path
                     mResource = mProject.findMember(dirPath.removeFirstSegments(projectPath
                             .segmentCount()));
                 }
                 else
                 {
-                    //if the resource is not inside the project, take project
+                    // if the resource is not inside the project, take project
                     // as resource this should not happen
                     mResource = mProject;
                 }
@@ -294,40 +296,40 @@ public class Auditor
                 if (!severity.equals(SeverityLevel.IGNORE) && mResource != null)
                 {
 
-                    //set attributes of the marker
+                    // set attributes of the marker
                     Map attributes = new HashMap();
                     attributes.put(IMarker.PRIORITY, new Integer(IMarker.PRIORITY_NORMAL));
                     attributes.put(IMarker.SEVERITY, new Integer(getSeverityValue(severity)));
                     MarkerUtilities.setLineNumber(attributes, error.getLine());
                     MarkerUtilities.setMessage(attributes, getMessage(error));
 
-                    //lazy create the line model for the current file
+                    // lazy create the line model for the current file
                     if (mLineModel == null && mResource instanceof IFile)
                     {
 
-                        //create the file's line offset information
+                        // create the file's line offset information
                         try
                         {
                             mLineModel = new LineModel(mResource.getLocation().toFile());
                         }
                         catch (IOException e)
                         {
-                            CheckstyleLog.error(e.getLocalizedMessage(), e);
+                            CheckstyleLog.log(e);
                         }
                     }
 
-                    //Provide offset information for the marker to make
+                    // Provide offset information for the marker to make
                     // annotated source code possible
                     if (mLineModel != null)
                     {
 
-                        //Offset must be file based, not line based
+                        // Offset must be file based, not line based
                         LineModel.LineOffset lineOffset = mLineModel.getLineOffset(error.getLine());
 
                         if (lineOffset != null)
                         {
 
-                            //annotate from the error column until the end of
+                            // annotate from the error column until the end of
                             // the line
                             int indent = error.getColumn() == 0 ? 0 : error.getColumn() - 1;
                             MarkerUtilities.setCharStart(attributes, lineOffset.getStartOffset()
@@ -336,25 +338,24 @@ public class Auditor
                         }
                     }
 
-                    //create a marker for the actual resource
+                    // create a marker for the actual resource
                     MarkerUtilities.createMarker(mResource, attributes, CheckstyleMarker.MARKER_ID);
                 }
             }
             catch (CoreException e)
             {
-                CheckstyleLog.error("Exception while adding Checkstyle marker to file", e);
+                CheckstyleLog.log(e);
             }
         }
 
         public void addException(AuditEvent event, Throwable throwable)
         {
-            CheckstyleLog.warning("Exception while auditing, file=" + mResource.getName()
-                    + " exception=" + throwable.getMessage());
+            CheckstyleLog.log(throwable);
         }
 
         public void fileFinished(AuditEvent event)
         {
-            //update monitor according to the monitor interval
+            // update monitor according to the monitor interval
             if (mMonitorCounter == MONITOR_INTERVAL)
             {
                 mMonitor.worked(MONITOR_INTERVAL);
@@ -394,7 +395,7 @@ public class Auditor
             if (mAddRuleName)
             {
                 StringBuffer buffer = new StringBuffer(getRuleName(error));
-                buffer.append(": ").append(message);
+                buffer.append(": ").append(message); //$NON-NLS-1$
                 message = buffer.toString();
             }
             return message;
@@ -405,7 +406,7 @@ public class Auditor
             RuleMetadata metaData = MetadataFactory.getRuleMetadata(error.getSourceName());
             if (metaData == null)
             {
-                return "Unknown";
+                return Messages.Auditor_txtUnknownModule;
             }
             return metaData.getRuleName();
         }

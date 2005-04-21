@@ -63,7 +63,7 @@ public class RemoteCheckConfiguration extends AbstractCheckConfiguration
      */
     protected boolean handleIsEditable()
     {
-        //External check configurations can be edited
+        // External check configurations can be edited
         return true;
     }
 
@@ -72,7 +72,7 @@ public class RemoteCheckConfiguration extends AbstractCheckConfiguration
      */
     protected boolean handleIsConfigurable()
     {
-        //a remote configuration can not be configured
+        // a remote configuration can not be configured
         return false;
     }
 
@@ -90,9 +90,9 @@ public class RemoteCheckConfiguration extends AbstractCheckConfiguration
         if (mPropertyResolver == null)
         {
             String location = getLocation();
-            //Strip file extension
-            location = location.substring(0, location.lastIndexOf("."));
-            location = location + ".properties";
+            // Strip file extension
+            location = location.substring(0, location.lastIndexOf(".")); //$NON-NLS-1$
+            location = location + ".properties"; //$NON-NLS-1$
 
             ResourceBundle bundle = null;
 
@@ -103,7 +103,7 @@ public class RemoteCheckConfiguration extends AbstractCheckConfiguration
             }
             catch (IOException ioe)
             {
-                //we won't load the bundle then
+                // we won't load the bundle then
             }
 
             mPropertyResolver = new ResourceBundleProperyResolver(bundle);

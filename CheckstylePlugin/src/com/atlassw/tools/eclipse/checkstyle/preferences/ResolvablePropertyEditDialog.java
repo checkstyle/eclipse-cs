@@ -31,6 +31,7 @@ package com.atlassw.tools.eclipse.checkstyle.preferences;
 //=================================================
 // Imports from com namespace
 //=================================================
+import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.config.ResolvableProperty;
 
 //=================================================
@@ -110,12 +111,12 @@ public class ResolvablePropertyEditDialog extends Dialog
         dialog.setLayout(layout);
 
         Label label = new Label(dialog, SWT.NULL);
-        label.setText("Variable:");
+        label.setText(Messages.ResolvablePropertyEditDialog_lblVariable);
         label = new Label(dialog, SWT.NULL);
         label.setText(mProperty.getPropertyName());
 
         label = new Label(dialog, SWT.NULL);
-        label.setText("Value:");
+        label.setText(Messages.ResolvablePropertyEditDialog_lblValue);
 
         mPropValueText = new Text(dialog, SWT.SINGLE | SWT.BORDER);
         GridData data = new GridData();
@@ -171,7 +172,7 @@ public class ResolvablePropertyEditDialog extends Dialog
     protected void configureShell(Shell shell)
     {
         super.configureShell(shell);
-        shell.setText("Property Variable Value Editor");
+        shell.setText(Messages.ResolvablePropertyEditDialog_titlePropertyValueEditor);
     }
 
 }

@@ -17,6 +17,7 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 //============================================================================
+
 package com.atlassw.tools.eclipse.checkstyle.duplicates;
 
 import java.io.File;
@@ -63,6 +64,8 @@ public class DuplicatedCodeAction implements IObjectActionDelegate
      */
     private ISelection mCurrentSelection;
 
+    private IWorkbenchPart mWorkbenchPart;
+
     /**
      * Constructor.
      */
@@ -78,6 +81,7 @@ public class DuplicatedCodeAction implements IObjectActionDelegate
      */
     public void setActivePart(IAction action, IWorkbenchPart targetPart)
     {
+        mWorkbenchPart = targetPart;
     }
 
     /**
@@ -129,10 +133,8 @@ public class DuplicatedCodeAction implements IObjectActionDelegate
     {
         Checker checker = null;
 
-        Preferences prefs = CheckstylePlugin.getDefault()
-                .getPluginPreferences();
-        int minimumNumberOfLines = prefs
-                .getInt(CheckstylePlugin.PREF_DUPLICATED_CODE_MIN_LINES);
+        Preferences prefs = CheckstylePlugin.getDefault().getPluginPreferences();
+        int minimumNumberOfLines = prefs.getInt(CheckstylePlugin.PREF_DUPLICATED_CODE_MIN_LINES);
 
         StrictDuplicateCodeCheck check = new StrictDuplicateCodeCheck();
         check.setMin(minimumNumberOfLines);
@@ -144,18 +146,15 @@ public class DuplicatedCodeAction implements IObjectActionDelegate
             try
             {
                 checker = new Checker();
-                checker.setBasedir(ResourcesPlugin.getWorkspace().getRoot()
-                        .getLocation().toString());
+                checker.setBasedir(ResourcesPlugin.getWorkspace().getRoot().getLocation()
+                        .toString());
                 checker.addFileSetCheck(check);
-                checker.addListener(new DuplicatedCodeAuditListener(
-                        duplicatedCodeView));
+                checker.addListener(new DuplicatedCodeAuditListener(duplicatedCodeView));
             }
             catch (CheckstyleException e)
             {
-                CheckstyleLog.error(
-                        "Error while creating the duplicated code checker.", e);
-                CheckstyleLog
-                        .errorDialog("Unable to launch the duplicated code analyser.");
+                CheckstyleLog.errorDialog(mWorkbenchPart.getSite().getShell(),
+                        "Unable to launch the duplicated code analyser.", e, true);
             }
         }
 
@@ -173,15 +172,14 @@ public class DuplicatedCodeAction implements IObjectActionDelegate
         try
         {
             duplicatedCodeView = (DuplicatedCodeView) PlatformUI.getWorkbench()
-                    .getActiveWorkbenchWindow().getActivePage().showView(
-                            DuplicatedCodeView.VIEW_ID);
+                    .getActiveWorkbenchWindow().getActivePage()
+                    .showView(DuplicatedCodeView.VIEW_ID);
         }
         catch (PartInitException e)
         {
-            CheckstyleLog.error("Error opening the duplicated code view '"
-                    + DuplicatedCodeView.VIEW_ID + "'.", e);
-            CheckstyleLog
-                    .errorDialog("Unable to open the duplicated code view.");
+            CheckstyleLog.errorDialog(mWorkbenchPart.getSite().getShell(),
+                    "Error opening the duplicated code view '" + DuplicatedCodeView.VIEW_ID + "'.",
+                    e, true);
         }
         return duplicatedCodeView;
     }
@@ -198,8 +196,7 @@ public class DuplicatedCodeAction implements IObjectActionDelegate
         for (Iterator iter = selection.iterator(); iter.hasNext();)
         {
             IResource resource = (IResource) iter.next();
-            if (resource instanceof IFile
-                    && ((IFile) resource).getFileExtension().equals("java"))
+            if (resource instanceof IFile && ((IFile) resource).getFileExtension().equals("java"))
             {
                 filesToScan.add(new File(resource.getLocation().toString()));
             }
@@ -214,10 +211,8 @@ public class DuplicatedCodeAction implements IObjectActionDelegate
     /**
      * Adds to the set all the java files found in the container.
      * 
-     * @param filesToScan :
-     *            the set
-     * @param container :
-     *            the container to scan
+     * @param filesToScan : the set
+     * @param container : the container to scan
      */
     private void addJavaFilesToSet(Set filesToScan, IContainer container)
     {
@@ -230,8 +225,7 @@ public class DuplicatedCodeAction implements IObjectActionDelegate
                 if (resource instanceof IFile
                         && ((IFile) resource).getFileExtension().equals("java"))
                 {
-                    filesToScan
-                            .add(new File(resource.getLocation().toString()));
+                    filesToScan.add(new File(resource.getLocation().toString()));
                 }
                 else if (resource instanceof IContainer)
                 {
@@ -242,10 +236,7 @@ public class DuplicatedCodeAction implements IObjectActionDelegate
         catch (CoreException e)
         {
             // we can't do anything : just log the pbm...
-            CheckstyleLog
-                    .error(
-                            "Error while scanning files for the duplication code analysis.",
-                            e);
+            CheckstyleLog.log(e, "Error while scanning files for the duplication code analysis.");
         }
 
     }

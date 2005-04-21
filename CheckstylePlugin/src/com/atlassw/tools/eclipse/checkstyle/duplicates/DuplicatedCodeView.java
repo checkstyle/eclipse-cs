@@ -17,6 +17,7 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 //============================================================================
+
 package com.atlassw.tools.eclipse.checkstyle.duplicates;
 
 import java.util.Collection;
@@ -106,19 +107,17 @@ public class DuplicatedCodeView extends ViewPart
     /**
      * Content provider for the tree viewer.
      */
-    class ViewContentProvider implements IStructuredContentProvider,
-            ITreeContentProvider
+    class ViewContentProvider implements IStructuredContentProvider, ITreeContentProvider
     {
         /**
          * Cf. method below.
          * 
          * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(
-         * 			org.eclipse.jface.viewers.Viewer,
-         *      	java.lang.Object, java.lang.Object)
+         *      org.eclipse.jface.viewers.Viewer, java.lang.Object,
+         *      java.lang.Object)
          */
         public void inputChanged(Viewer viewer, Object oldInput, Object newInput)
-        {
-        }
+        {}
 
         /**
          * Cf. method below.
@@ -126,8 +125,7 @@ public class DuplicatedCodeView extends ViewPart
          * @see org.eclipse.jface.viewers.IContentProvider#dispose()
          */
         public void dispose()
-        {
-        }
+        {}
 
         /**
          * Cf. method below.
@@ -166,8 +164,7 @@ public class DuplicatedCodeView extends ViewPart
         {
             if (parent instanceof IFile)
             {
-                Collection duplicatedCodes = (Collection) mReport
-                        .get((IFile) parent);
+                Collection duplicatedCodes = (Collection) mReport.get((IFile) parent);
                 return duplicatedCodes.toArray();
             }
             return new Object[0];
@@ -182,8 +179,7 @@ public class DuplicatedCodeView extends ViewPart
         {
             if (parent instanceof IFile)
             {
-                Collection duplicatedCodes = (Collection) mReport
-                        .get((IFile) parent);
+                Collection duplicatedCodes = (Collection) mReport.get((IFile) parent);
                 return !duplicatedCodes.isEmpty();
             }
             return false;
@@ -221,8 +217,7 @@ public class DuplicatedCodeView extends ViewPart
             {
                 imageKey = ISharedImages.IMG_OBJ_FILE;
             }
-            return PlatformUI.getWorkbench().getSharedImages().getImage(
-                    imageKey);
+            return PlatformUI.getWorkbench().getSharedImages().getImage(imageKey);
         }
     }
 
@@ -230,8 +225,7 @@ public class DuplicatedCodeView extends ViewPart
      * The constructor.
      */
     public DuplicatedCodeView()
-    {
-    }
+    {}
 
     /**
      * Cf. method below.
@@ -240,8 +234,7 @@ public class DuplicatedCodeView extends ViewPart
      */
     public void createPartControl(Composite parent)
     {
-        mViewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL
-                | SWT.V_SCROLL | SWT.SINGLE);
+        mViewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.SINGLE);
         mDrillDownAdapter = new DrillDownAdapter(mViewer);
         mViewer.setContentProvider(new ViewContentProvider());
         mViewer.setLabelProvider(new ViewLabelProvider());
@@ -255,8 +248,7 @@ public class DuplicatedCodeView extends ViewPart
     /**
      * Give the report of the duplicated code analysis as a Map.
      * 
-     * @param report :
-     *            a map that contains IFile as keys and a collection of
+     * @param report : a map that contains IFile as keys and a collection of
      *            DuplicatedCode objects as values
      */
     public void setReport(Map report)
@@ -298,14 +290,12 @@ public class DuplicatedCodeView extends ViewPart
     /**
      * Adds action to the contect menu.
      * 
-     * @param manager :
-     *            the menu manager
+     * @param manager : the menu manager
      */
     private void fillContextMenu(IMenuManager manager)
     {
         manager.add(mOpenSourceFileAction);
-        IStructuredSelection selection = (IStructuredSelection) mViewer
-                .getSelection();
+        IStructuredSelection selection = (IStructuredSelection) mViewer.getSelection();
         if (selection.getFirstElement() instanceof DuplicatedCode)
         {
             manager.add(mOpenDuplicatedCodeFileAction);
@@ -345,49 +335,40 @@ public class DuplicatedCodeView extends ViewPart
             {
                 try
                 {
-                    IStructuredSelection selection = (IStructuredSelection) mViewer
-                            .getSelection();
+                    IStructuredSelection selection = (IStructuredSelection) mViewer.getSelection();
                     if (selection.getFirstElement() instanceof IFile)
                     {
-                        IDE.openEditor(getSite().getPage(), (IFile) selection
-                                .getFirstElement());
+                        IDE.openEditor(getSite().getPage(), (IFile) selection.getFirstElement());
                     }
                     else if (selection.getFirstElement() instanceof DuplicatedCode)
                     {
                         DuplicatedCode duplicatedCode = (DuplicatedCode) selection
                                 .getFirstElement();
-                        IEditorPart editorPart = IDE.openEditor(getSite()
-                                .getPage(), duplicatedCode.getSourceFile());
+                        IEditorPart editorPart = IDE.openEditor(getSite().getPage(), duplicatedCode
+                                .getSourceFile());
                         if (editorPart instanceof ITextEditor)
                         {
                             // instanceof just to be sure, but the JavaEditor is
                             // an ITextEditor
-                            selectAndRevealDuplicatedLines(
-                                    ((ITextEditor) editorPart),
-                                    duplicatedCode
-                                            .getSourceFileFirstLineNumber(),
-                                    duplicatedCode
+                            selectAndRevealDuplicatedLines(((ITextEditor) editorPart),
+                                    duplicatedCode.getSourceFileFirstLineNumber(), duplicatedCode
                                             .getSourceFileFirstLineNumber()
-                                            + duplicatedCode
-                                                    .getNumberOfDuplicatedLines());
+                                            + duplicatedCode.getNumberOfDuplicatedLines());
                         }
                     }
                 }
                 catch (PartInitException e)
                 {
-                    CheckstyleLog.error("Error while opening the file editor.",
-                            e);
-                    CheckstyleLog
-                            .errorDialog("Error while opening the file editor.");
+                    CheckstyleLog.errorDialog(mViewer.getControl().getShell(),
+                            "Error while opening the file editor.", e, true);
                 }
             }
         };
         mOpenSourceFileAction.setText("Open source file");
         mOpenSourceFileAction
                 .setToolTipText("Opens the file where duplications have been detected.");
-        mOpenSourceFileAction.setImageDescriptor(PlatformUI.getWorkbench()
-                .getSharedImages().getImageDescriptor(
-                        ISharedImages.IMG_TOOL_FORWARD));
+        mOpenSourceFileAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages()
+                .getImageDescriptor(ISharedImages.IMG_TOOL_FORWARD));
     }
 
     /**
@@ -401,8 +382,7 @@ public class DuplicatedCodeView extends ViewPart
             {
                 try
                 {
-                    IStructuredSelection selection = (IStructuredSelection) mViewer
-                            .getSelection();
+                    IStructuredSelection selection = (IStructuredSelection) mViewer.getSelection();
                     if (selection.getFirstElement() instanceof DuplicatedCode)
                     {
                         DuplicatedCode duplicatedCode = (DuplicatedCode) selection
@@ -413,52 +393,41 @@ public class DuplicatedCodeView extends ViewPart
                             // nothing to do
                             return;
                         }
-                        IEditorPart editorPart = IDE.openEditor(getSite()
-                                .getPage(), destinationFile);
+                        IEditorPart editorPart = IDE.openEditor(getSite().getPage(),
+                                destinationFile);
                         if (editorPart instanceof ITextEditor)
                         {
                             // instanceof just to be sure, but the JavaEditor is
                             // an ITextEditor
-                            selectAndRevealDuplicatedLines(
-                                    ((ITextEditor) editorPart),
-                                    duplicatedCode
-                                            .getTargetFileFirstLineNumber(),
-                                    duplicatedCode
+                            selectAndRevealDuplicatedLines(((ITextEditor) editorPart),
+                                    duplicatedCode.getTargetFileFirstLineNumber(), duplicatedCode
                                             .getTargetFileFirstLineNumber()
-                                            + duplicatedCode
-                                                    .getNumberOfDuplicatedLines());
+                                            + duplicatedCode.getNumberOfDuplicatedLines());
                         }
                     }
                 }
                 catch (PartInitException e)
                 {
-                    CheckstyleLog.error("Error while opening the file editor.",
-                            e);
-                    CheckstyleLog
-                            .errorDialog("Error while opening the file editor.");
+                    CheckstyleLog.errorDialog(mViewer.getControl().getShell(),
+                            "Error while opening the file editor.", e, true);
                 }
             }
         };
         mOpenDuplicatedCodeFileAction.setText("Open target file");
         mOpenDuplicatedCodeFileAction
                 .setToolTipText("Opens the file where duplicate code has been found.");
-        mOpenDuplicatedCodeFileAction.setImageDescriptor(PlatformUI
-                .getWorkbench().getSharedImages().getImageDescriptor(
-                        ISharedImages.IMG_TOOL_FORWARD));
+        mOpenDuplicatedCodeFileAction.setImageDescriptor(PlatformUI.getWorkbench()
+                .getSharedImages().getImageDescriptor(ISharedImages.IMG_TOOL_FORWARD));
     }
 
     /**
      * Opens the editor and selects the area defined by the two lines.
      * 
-     * @param editor
-     *            the editor to open
-     * @param firstLine
-     *            the line to jump to and select from
-     * @param lastLine
-     *            the last line to select
+     * @param editor the editor to open
+     * @param firstLine the line to jump to and select from
+     * @param lastLine the last line to select
      */
-    private void selectAndRevealDuplicatedLines(ITextEditor editor,
-            int firstLine, int lastLine)
+    private void selectAndRevealDuplicatedLines(ITextEditor editor, int firstLine, int lastLine)
     {
         IDocumentProvider provider = editor.getDocumentProvider();
         IDocument document = provider.getDocument(editor.getEditorInput());
@@ -470,12 +439,9 @@ public class DuplicatedCodeView extends ViewPart
         }
         catch (BadLocationException e)
         {
-            CheckstyleLog
-                    .warning(
-                            "Error while trying to reveal and display the duplicated lines.",
-                            e);
-            CheckstyleLog
-                    .errorDialog("Error while trying to reveal and display the duplicated lines.");
+
+            CheckstyleLog.errorDialog(mViewer.getControl().getShell(),
+                    "Error while trying to reveal and display the duplicated lines.", e, true);
         }
     }
 
@@ -488,8 +454,7 @@ public class DuplicatedCodeView extends ViewPart
         {
             public void doubleClick(DoubleClickEvent event)
             {
-                IStructuredSelection selection = (IStructuredSelection) mViewer
-                        .getSelection();
+                IStructuredSelection selection = (IStructuredSelection) mViewer.getSelection();
                 mOpenSourceFileAction.run();
                 if (selection.getFirstElement() instanceof DuplicatedCode)
                 {

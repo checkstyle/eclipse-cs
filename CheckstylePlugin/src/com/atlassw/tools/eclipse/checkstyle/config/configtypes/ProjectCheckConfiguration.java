@@ -31,7 +31,9 @@ import java.util.ResourceBundle;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.osgi.util.NLS;
 
+import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
@@ -63,7 +65,7 @@ public class ProjectCheckConfiguration extends AbstractCheckConfiguration
     {
         if (location == null || location.trim().length() == 0)
         {
-            throw new CheckstylePluginException("Location must not be empty.");
+            throw new CheckstylePluginException(ErrorMessages.errorLocationEmpty);
         }
 
         String oldLocation = getLocation();
@@ -78,8 +80,9 @@ public class ProjectCheckConfiguration extends AbstractCheckConfiguration
             catch (Exception e)
             {
                 mLocation = oldLocation;
-                throw new CheckstylePluginException("Location '" + location
-                        + "' can not be resolved (" + e.getLocalizedMessage() + ").");
+                CheckstylePluginException.rethrow(e, NLS
+                        .bind(ErrorMessages.errorResolveConfigLocation, location, e
+                                .getLocalizedMessage()));
             }
         }
     }
@@ -113,7 +116,7 @@ public class ProjectCheckConfiguration extends AbstractCheckConfiguration
      */
     protected boolean handleIsEditable()
     {
-        //External check configurations can be edited
+        // External check configurations can be edited
         return true;
     }
 
@@ -122,7 +125,7 @@ public class ProjectCheckConfiguration extends AbstractCheckConfiguration
      */
     protected boolean handleIsConfigurable()
     {
-        //The configuration can be changed when the external configuration file
+        // The configuration can be changed when the external configuration file
         // can is writable
         try
         {
@@ -139,7 +142,7 @@ public class ProjectCheckConfiguration extends AbstractCheckConfiguration
      */
     public boolean isContextNeeded()
     {
-        //a project relative configuration needs project context
+        // a project relative configuration needs project context
         return true;
     }
 
@@ -163,17 +166,17 @@ public class ProjectCheckConfiguration extends AbstractCheckConfiguration
             {
                 String location = handleGetLocation().getFile();
 
-                //Strip file extension
-                String propsLocation = location.substring(0, location.lastIndexOf("."));
+                // Strip file extension
+                String propsLocation = location.substring(0, location.lastIndexOf(".")); //$NON-NLS-1$
 
-                URL propertyFile = new URL(propsLocation + ".properties");
+                URL propertyFile = new URL(propsLocation + ".properties"); //$NON-NLS-1$
 
                 bundle = new PropertyResourceBundle(new BufferedInputStream(propertyFile
                         .openStream()));
             }
             catch (IOException ioe)
             {
-                //we won't load the bundle then
+                // we won't load the bundle then
             }
 
             mPropertyResolver = new ResourceBundleProperyResolver(bundle);

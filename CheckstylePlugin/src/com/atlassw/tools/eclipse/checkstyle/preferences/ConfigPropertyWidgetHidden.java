@@ -53,7 +53,7 @@ public class ConfigPropertyWidgetHidden extends ConfigPropertyWidgetAbstractBase
     // Instance member variables.
     //=================================================
 
-    private String mValue = "";
+    private String mValue = ""; //$NON-NLS-1$
 
     //=================================================
     // Constructors & finalizer.

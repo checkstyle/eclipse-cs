@@ -32,7 +32,9 @@ import java.rmi.server.UID;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.osgi.util.NLS;
 
+import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationFactory;
 import com.atlassw.tools.eclipse.checkstyle.config.ConfigurationReader;
 import com.atlassw.tools.eclipse.checkstyle.config.ConfigurationWriter;
@@ -114,18 +116,17 @@ public abstract class AbstractCheckConfiguration implements ICheckConfiguration
 
         if (name == null || name.trim().length() == 0)
         {
-            throw new CheckstylePluginException("Name must not be empty.");
+            throw new CheckstylePluginException(ErrorMessages.errorConfigNameEmpty);
         }
 
         String oldName = getName();
         mName = name;
 
-        //Check if the new name is in use
+        // Check if the new name is in use
         if (CheckConfigurationFactory.isNameCollision(this))
         {
             mName = oldName;
-            throw new CheckstylePluginException("Check configuration name '" + name
-                    + "' is already in use.");
+            throw new CheckstylePluginException(NLS.bind(ErrorMessages.errorConfigNameInUse, name));
         }
     }
 
@@ -144,7 +145,7 @@ public abstract class AbstractCheckConfiguration implements ICheckConfiguration
     {
         if (location == null || location.trim().length() == 0)
         {
-            throw new CheckstylePluginException("Location must not be empty.");
+            throw new CheckstylePluginException(ErrorMessages.errorLocationEmpty);
         }
 
         String oldLocation = getLocation();
@@ -157,8 +158,8 @@ public abstract class AbstractCheckConfiguration implements ICheckConfiguration
         catch (Exception e)
         {
             mLocation = oldLocation;
-            throw new CheckstylePluginException("Location '" + location + "' can not be resolved ("
-                    + e.getLocalizedMessage() + ").");
+            throw new CheckstylePluginException(NLS.bind(ErrorMessages.errorResolveConfigLocation,
+                    location, e.getLocalizedMessage()));
         }
     }
 
@@ -215,7 +216,7 @@ public abstract class AbstractCheckConfiguration implements ICheckConfiguration
      */
     public boolean isContextNeeded()
     {
-        //By default no context is needed
+        // By default no context is needed
         return false;
     }
 
@@ -232,18 +233,22 @@ public abstract class AbstractCheckConfiguration implements ICheckConfiguration
      */
     public URL getCheckstyleConfigurationURL() throws CheckstylePluginException
     {
+        URL location = null;
+
         try
         {
-            //check if URL resolves
+            // check if URL resolves
             URL configURL = handleGetLocation();
             configURL.openStream();
 
-            return configURL;
+            location = configURL;
         }
         catch (IOException e)
         {
-            throw new CheckstylePluginException(e.getLocalizedMessage(), e);
+            CheckstylePluginException.rethrow(e);
         }
+
+        return location;
     }
 
     /**
@@ -251,16 +256,18 @@ public abstract class AbstractCheckConfiguration implements ICheckConfiguration
      */
     public List getModules() throws CheckstylePluginException
     {
+        List result = null;
+
         InputStream in = null;
 
         try
         {
             in = getCheckstyleConfigurationURL().openStream();
-            return ConfigurationReader.read(in);
+            result = ConfigurationReader.read(in);
         }
         catch (IOException e)
         {
-            throw new CheckstylePluginException(e.getLocalizedMessage(), e);
+            CheckstylePluginException.rethrow(e);
         }
         finally
         {
@@ -270,9 +277,11 @@ public abstract class AbstractCheckConfiguration implements ICheckConfiguration
             }
             catch (Exception e)
             {
-                //Can do nothing
+                // Can do nothing
             }
         }
+
+        return result;
     }
 
     /**
@@ -285,16 +294,16 @@ public abstract class AbstractCheckConfiguration implements ICheckConfiguration
         ByteArrayOutputStream byteOut = null;
         try
         {
-            System.out.println("Writing to: " + getCheckstyleConfigurationURL());
+            System.out.println("Writing to: " + getCheckstyleConfigurationURL()); //$NON-NLS-1$
 
-            //First write to a byte array outputstream
-            //because otherwise in an error case the original
-            //file would be destroyed
+            // First write to a byte array outputstream
+            // because otherwise in an error case the original
+            // file would be destroyed
             byteOut = new ByteArrayOutputStream();
 
             ConfigurationWriter.write(byteOut, modules);
 
-            //all went ok, write to the file
+            // all went ok, write to the file
             out = new BufferedOutputStream(new FileOutputStream(getCheckstyleConfigurationURL()
                     .getFile()));
 
@@ -302,7 +311,7 @@ public abstract class AbstractCheckConfiguration implements ICheckConfiguration
         }
         catch (IOException e)
         {
-            throw new CheckstylePluginException(e.getLocalizedMessage(), e);
+            CheckstylePluginException.rethrow(e);
         }
         finally
         {
@@ -312,7 +321,7 @@ public abstract class AbstractCheckConfiguration implements ICheckConfiguration
             }
             catch (Exception e)
             {
-                //Can do nothing
+                // Can do nothing
             }
             try
             {
@@ -320,7 +329,7 @@ public abstract class AbstractCheckConfiguration implements ICheckConfiguration
             }
             catch (Exception e)
             {
-                //Can do nothing
+                // Can do nothing
             }
         }
     }
@@ -328,9 +337,17 @@ public abstract class AbstractCheckConfiguration implements ICheckConfiguration
     /**
      * @see com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration#clone()
      */
-    public Object clone() throws CloneNotSupportedException
+    public Object clone()
     {
-        ICheckConfiguration clone = (ICheckConfiguration) super.clone();
+        ICheckConfiguration clone = null;
+        try
+        {
+            clone = (ICheckConfiguration) super.clone();
+        }
+        catch (CloneNotSupportedException e)
+        {
+            throw new InternalError();
+        }
         return clone;
     }
 
@@ -398,7 +415,7 @@ public abstract class AbstractCheckConfiguration implements ICheckConfiguration
                 }
                 catch (Exception e)
                 {
-                    //Nothing we can do about it
+                    // Nothing we can do about it
                 }
             }
         }

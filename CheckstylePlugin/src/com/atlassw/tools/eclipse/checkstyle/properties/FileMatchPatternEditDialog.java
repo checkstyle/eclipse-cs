@@ -32,12 +32,13 @@ package com.atlassw.tools.eclipse.checkstyle.properties;
 // Imports from com namespace
 //=================================================
 
-
 //=================================================
 // Imports from org namespace
 //=================================================
+import org.apache.regexp.RECompiler;
+import org.apache.regexp.RESyntaxException;
 import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -47,55 +48,51 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import org.apache.regexp.RECompiler;
-import org.apache.regexp.RESyntaxException;
+import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
+import com.atlassw.tools.eclipse.checkstyle.Messages;
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 
 /**
- *  Property page.
+ * Property page.
  */
 public class FileMatchPatternEditDialog extends Dialog
 {
-    //=================================================
+    // =================================================
     // Public static final variables.
-    //=================================================
-  
-    //=================================================
+    // =================================================
+
+    // =================================================
     // Static class variables.
-    //=================================================
-    
-    private static final int MAX_LENGTH = 250; 
-    
-    //=================================================
+    // =================================================
+
+    private static final int MAX_LENGTH = 250;
+
+    // =================================================
     // Instance member variables.
-    //=================================================
-    
-    
-    private Composite               mComposite;
-    
-    private Text                    mFileMatchPatternText;
-    
-    private String                  mPattern;
-    
-    private String                  mValidationErrorMsg;
-    
-    private boolean                 mOkWasPressed = false;
+    // =================================================
 
-    //=================================================
+    private Composite mComposite;
+
+    private Text mFileMatchPatternText;
+
+    private String mPattern;
+
+    // =================================================
     // Constructors & finalizer.
-    //=================================================
+    // =================================================
 
-	/**
-	 * Constructor for SamplePropertyPage.
-	 */
+    /**
+     * Constructor for SamplePropertyPage.
+     */
     FileMatchPatternEditDialog(Shell parent, String pattern)
     {
         super(parent);
         mPattern = pattern;
     }
 
-    //=================================================
+    // =================================================
     // Methods.
-    //=================================================
+    // =================================================
 
     /**
      * @see Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
@@ -103,15 +100,15 @@ public class FileMatchPatternEditDialog extends Dialog
     protected Control createDialogArea(Composite parent)
     {
         mComposite = parent;
-        Composite composite = (Composite)super.createDialogArea(parent);
+        Composite composite = (Composite) super.createDialogArea(parent);
         Composite dialog = new Composite(composite, SWT.NONE);
-        
+
         GridLayout layout = new GridLayout();
         layout.numColumns = 2;
         dialog.setLayout(layout);
-        
+
         Label nameLabel = new Label(dialog, SWT.NULL);
-        nameLabel.setText("Match Regular Expression:");
+        nameLabel.setText(Messages.FileMatchPatternEditDialog_lblRegex);
 
         mFileMatchPatternText = new Text(dialog, SWT.SINGLE | SWT.BORDER);
         GridData data = new GridData();
@@ -127,85 +124,72 @@ public class FileMatchPatternEditDialog extends Dialog
         {
             mFileMatchPatternText.setText(mPattern);
         }
-        
+
         dialog.layout();
         return composite;
     }
-    
+
     protected void okPressed()
     {
         //
-        //  Get the entered pattern.
+        // Get the entered pattern.
         //
-        mPattern = mFileMatchPatternText.getText();
-        if ((mPattern == null) || (mPattern.trim().length() == 0))
+        String pattern = mFileMatchPatternText.getText();
+        if ((pattern == null) || (pattern.trim().length() == 0))
         {
             //
-            //  Nothing was entered.
+            // Nothing was entered.
             //
-            mPattern = null;
+            pattern = null;
             super.okPressed();
             return;
         }
-        
+
         //
-        //  Check that the pattern is a valid regular expression pattern.
+        // Check that the pattern is a valid regular expression pattern.
         //
-        if (!validatePattern(mPattern))
+        try
         {
-            String msg = "The string '" + mPattern 
-                         + "' is not a valid regular expression pattern."
-                         + System.getProperty("line.separator")
-                         + mValidationErrorMsg;
-                         
-            MessageDialog.openError(mComposite.getShell(),
-                        "Pattern Validation Error", msg);
-            return;
+
+            validatePattern(pattern);
+            mPattern = pattern;
+            super.okPressed();
         }
-        
-        mOkWasPressed = true;
-        super.okPressed();
+        catch (RESyntaxException e)
+        {
+            CheckstyleLog.errorDialog(getShell(), NLS.bind(ErrorMessages.errorNoValidRegex,
+                    mPattern, e.getLocalizedMessage()), e, true);
+        }
     }
-   
-    boolean okWasPressed()
-    {
-        return mOkWasPressed;
-    }
-    
+
     String getPattern()
     {
         return mPattern;
     }
-    
-    private boolean validatePattern(String pattern)
+
+    private boolean validatePattern(String pattern) throws RESyntaxException
     {
         boolean result = false;
-        
+
         //
-        //  Try compiling the pattern using the regular expression compiler.
+        // Try compiling the pattern using the regular expression compiler.
         //
-        try
-        {
-            RECompiler compiler = new RECompiler();
-            compiler.compile(pattern);
-            result = true;
-        }
-        catch (RESyntaxException e)
-        {
-            mValidationErrorMsg = e.getMessage();
-        }
-        
+
+        RECompiler compiler = new RECompiler();
+        compiler.compile(pattern);
+        result = true;
+
         return result;
     }
-    
+
     /**
-     *  Over-rides method from Window to configure the 
-     *  shell (e.g. the enclosing window).
+     * Over-rides method from Window to configure the shell (e.g. the enclosing
+     * window).
      */
     protected void configureShell(Shell shell)
     {
         super.configureShell(shell);
-        shell.setText("Checkstyle Regular Expression Editor");
+        shell.setText(Messages.FileMatchPatternEditDialog_titleRegexEditor);
     }
-    
+
 }

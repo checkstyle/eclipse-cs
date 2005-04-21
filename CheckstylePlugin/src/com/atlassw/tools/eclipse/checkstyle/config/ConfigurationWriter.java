@@ -33,6 +33,7 @@ import javax.xml.transform.sax.TransformerHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
+import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.config.meta.MetadataFactory;
 import com.atlassw.tools.eclipse.checkstyle.config.meta.RuleMetadata;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
@@ -78,8 +79,8 @@ public final class ConfigurationWriter
     public static void writeNewConfiguration(OutputStream out) throws CheckstylePluginException
     {
 
-        //write an empty list of modules
-        //mandatory modules are added automatically
+        // write an empty list of modules
+        // mandatory modules are added automatically
         write(out, new ArrayList());
     }
 
@@ -98,30 +99,30 @@ public final class ConfigurationWriter
         {
             TransformerHandler xmlOut = XMLUtil.writeWithSax(out);
             xmlOut.startDocument();
-            xmlOut.startDTD(XMLTags.MODULE_TAG, "-//Puppy Crawl//DTD Check Configuration 1.2//EN",
-                    "http://www.puppycrawl.com/dtds/configuration_1_2.dtd");
+            xmlOut.startDTD(XMLTags.MODULE_TAG, "-//Puppy Crawl//DTD Check Configuration 1.2//EN", //$NON-NLS-1$
+                    "http://www.puppycrawl.com/dtds/configuration_1_2.dtd"); //$NON-NLS-1$
             xmlOut.endDTD();
             xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
 
-            //check for mandatory modules if they are not present
-            //they are automatically added
+            // check for mandatory modules if they are not present
+            // they are automatically added
             checkForAndAddMandatoryModules(modules);
 
-            //Sort modules because of
-            //Checkstyle bug #1183749
+            // Sort modules because of
+            // Checkstyle bug #1183749
             Collections.sort(modules, new ModuleComparator());
 
-            //find the root module (Checker)
-            //the root module is the only module that has no parent
+            // find the root module (Checker)
+            // the root module is the only module that has no parent
             List rootModules = getChildModules(null, modules);
             if (rootModules.size() < 1)
             {
-                throw new CheckstylePluginException("No root module found.");
+                throw new CheckstylePluginException(ErrorMessages.errorNoRootModule);
             }
 
             if (rootModules.size() > 1)
             {
-                throw new CheckstylePluginException("More than one root module found.");
+                throw new CheckstylePluginException(ErrorMessages.errorMoreThanOneRootModule);
             }
 
             writeModule((Module) rootModules.get(0), xmlOut, null, modules);
@@ -130,12 +131,12 @@ public final class ConfigurationWriter
         }
         catch (TransformerConfigurationException e)
         {
-            throw new CheckstylePluginException(e.getLocalizedMessage(), e);
+            CheckstylePluginException.rethrow(e);
         }
         catch (SAXException e)
         {
             Exception ex = e.getException() != null ? e.getException() : e;
-            throw new CheckstylePluginException(ex.getLocalizedMessage(), ex);
+            CheckstylePluginException.rethrow(ex);
         }
     }
 
@@ -172,67 +173,70 @@ public final class ConfigurationWriter
 
         SeverityLevel severity = parentSeverity;
 
-        //remove this module from the list of modules to write
+        // remove this module from the list of modules to write
         remainingModules.remove(module);
 
-        //Start the module
+        // Start the module
         AttributesImpl attr = new AttributesImpl();
-        attr.addAttribute("", XMLTags.NAME_TAG, XMLTags.NAME_TAG, null, module.getMetaData()
-                .getInternalName());
-        xmlOut.startElement("", XMLTags.MODULE_TAG, XMLTags.MODULE_TAG, attr);
+        attr.addAttribute(new String(), XMLTags.NAME_TAG, XMLTags.NAME_TAG, null, module
+                .getMetaData().getInternalName());
+        xmlOut.startElement(new String(), XMLTags.MODULE_TAG, XMLTags.MODULE_TAG, attr);
         xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
 
-        //Write comment
+        // Write comment
         if (module.getComment() != null && module.getComment().trim().length() != 0)
         {
             attr = new AttributesImpl();
-            attr.addAttribute("", XMLTags.NAME_TAG, XMLTags.NAME_TAG, null, XMLTags.COMMENT_ID);
-            attr.addAttribute("", XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, null, module.getComment());
-            xmlOut.startElement("", XMLTags.METADATA_TAG, XMLTags.METADATA_TAG, attr);
-            xmlOut.endElement("", XMLTags.METADATA_TAG, XMLTags.METADATA_TAG);
+            attr.addAttribute(new String(), XMLTags.NAME_TAG, XMLTags.NAME_TAG, null,
+                    XMLTags.COMMENT_ID);
+            attr.addAttribute(new String(), XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, null, module
+                    .getComment());
+            xmlOut.startElement(new String(), XMLTags.METADATA_TAG, XMLTags.METADATA_TAG, attr);
+            xmlOut.endElement(new String(), XMLTags.METADATA_TAG, XMLTags.METADATA_TAG);
             xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
         }
 
-        //Write severity only if it differs from the parents severity
+        // Write severity only if it differs from the parents severity
         if (module.getSeverity() != null && !module.getSeverity().equals(parentSeverity))
         {
 
             attr = new AttributesImpl();
-            attr.addAttribute("", XMLTags.NAME_TAG, XMLTags.NAME_TAG, null, XMLTags.SEVERITY_TAG);
-            attr.addAttribute("", XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, null, module.getSeverity()
-                    .getName());
+            attr.addAttribute(new String(), XMLTags.NAME_TAG, XMLTags.NAME_TAG, null,
+                    XMLTags.SEVERITY_TAG);
+            attr.addAttribute(new String(), XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, null, module
+                    .getSeverity().getName());
 
-            xmlOut.startElement("", XMLTags.PROPERTY_TAG, XMLTags.PROPERTY_TAG, attr);
-            xmlOut.endElement("", XMLTags.PROPERTY_TAG, XMLTags.PROPERTY_TAG);
+            xmlOut.startElement(new String(), XMLTags.PROPERTY_TAG, XMLTags.PROPERTY_TAG, attr);
+            xmlOut.endElement(new String(), XMLTags.PROPERTY_TAG, XMLTags.PROPERTY_TAG);
             xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
 
-            //set the parent severity for child modules
+            // set the parent severity for child modules
             severity = module.getSeverity();
         }
 
-        //write properties of the module
+        // write properties of the module
         List properties = module.getProperties();
         Iterator it = properties.iterator();
         while (it.hasNext())
         {
             ConfigProperty property = (ConfigProperty) it.next();
-            //write property only if it differs from the default value
+            // write property only if it differs from the default value
             if (property.getValue() != null && property.getValue().trim().length() != 0
                     && !property.getValue().equals(property.getMetaData().getDefaultValue()))
             {
                 attr = new AttributesImpl();
-                attr.addAttribute("", XMLTags.NAME_TAG, XMLTags.NAME_TAG, null, property
+                attr.addAttribute(new String(), XMLTags.NAME_TAG, XMLTags.NAME_TAG, null, property
                         .getMetaData().getName());
-                attr.addAttribute("", XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, null, property
-                        .getValue());
+                attr.addAttribute(new String(), XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, null,
+                        property.getValue());
 
-                xmlOut.startElement("", XMLTags.PROPERTY_TAG, XMLTags.PROPERTY_TAG, attr);
-                xmlOut.endElement("", XMLTags.PROPERTY_TAG, XMLTags.PROPERTY_TAG);
+                xmlOut.startElement(new String(), XMLTags.PROPERTY_TAG, XMLTags.PROPERTY_TAG, attr);
+                xmlOut.endElement(new String(), XMLTags.PROPERTY_TAG, XMLTags.PROPERTY_TAG);
                 xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
             }
         }
 
-        //write child modules recursivly
+        // write child modules recursivly
         List childs = getChildModules(module, remainingModules);
         it = childs.iterator();
         while (it.hasNext())
@@ -240,7 +244,7 @@ public final class ConfigurationWriter
             writeModule((Module) it.next(), xmlOut, severity, remainingModules);
         }
 
-        xmlOut.endElement("", XMLTags.MODULE_TAG, XMLTags.MODULE_TAG);
+        xmlOut.endElement(new String(), XMLTags.MODULE_TAG, XMLTags.MODULE_TAG);
         xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
     }
 
@@ -266,7 +270,7 @@ public final class ConfigurationWriter
                     : null;
             String childParent = tmp.getMetaData().getParentModule();
 
-            //only the checker module has no parent
+            // only the checker module has no parent
             if (parentInternalName == null && childParent == null)
             {
                 childModules.add(tmp);

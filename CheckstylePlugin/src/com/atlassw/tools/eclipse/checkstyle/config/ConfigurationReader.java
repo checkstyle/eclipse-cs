@@ -29,11 +29,13 @@ import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.eclipse.osgi.util.NLS;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.config.meta.MetadataFactory;
 import com.atlassw.tools.eclipse.checkstyle.config.meta.RuleMetadata;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
@@ -60,12 +62,12 @@ public final class ConfigurationReader
     static
     {
 
-        PUBLIC2INTERNAL_DTD_MAP.put("-//Puppy Crawl//DTD Check Configuration 1.0//EN",
-                "com/puppycrawl/tools/checkstyle/configuration_1_0.dtd");
-        PUBLIC2INTERNAL_DTD_MAP.put("-//Puppy Crawl//DTD Check Configuration 1.1//EN",
-                "com/puppycrawl/tools/checkstyle/configuration_1_1.dtd");
-        PUBLIC2INTERNAL_DTD_MAP.put("-//Puppy Crawl//DTD Check Configuration 1.2//EN",
-                "com/puppycrawl/tools/checkstyle/configuration_1_2.dtd");
+        PUBLIC2INTERNAL_DTD_MAP.put("-//Puppy Crawl//DTD Check Configuration 1.0//EN", //$NON-NLS-1$
+                "com/puppycrawl/tools/checkstyle/configuration_1_0.dtd"); //$NON-NLS-1$
+        PUBLIC2INTERNAL_DTD_MAP.put("-//Puppy Crawl//DTD Check Configuration 1.1//EN", //$NON-NLS-1$
+                "com/puppycrawl/tools/checkstyle/configuration_1_1.dtd"); //$NON-NLS-1$
+        PUBLIC2INTERNAL_DTD_MAP.put("-//Puppy Crawl//DTD Check Configuration 1.2//EN", //$NON-NLS-1$
+                "com/puppycrawl/tools/checkstyle/configuration_1_2.dtd"); //$NON-NLS-1$
     }
 
     //
@@ -103,15 +105,15 @@ public final class ConfigurationReader
         catch (SAXException se)
         {
             Exception ex = se.getException() != null ? se.getException() : se;
-            throw new CheckstylePluginException(ex.getLocalizedMessage(), ex);
+            CheckstylePluginException.rethrow(ex);
         }
         catch (ParserConfigurationException pe)
         {
-            throw new CheckstylePluginException(pe.getLocalizedMessage(), pe);
+            CheckstylePluginException.rethrow(pe);
         }
         catch (IOException ioe)
         {
-            throw new CheckstylePluginException(ioe.getLocalizedMessage(), ioe);
+            CheckstylePluginException.rethrow(ioe);
         }
 
         return rules != null ? rules : new ArrayList();
@@ -147,7 +149,8 @@ public final class ConfigurationReader
                         dtdResourceName);
                 if (dtdIS == null)
                 {
-                    throw new SAXException("Unable to load internal dtd " + dtdResourceName);
+                    throw new SAXException(NLS.bind(ErrorMessages.errorResolveConfigLocation,
+                            dtdResourceName));
                 }
                 return new InputSource(dtdIS);
             }
@@ -159,13 +162,13 @@ public final class ConfigurationReader
             {
                 if (false)
                 {
-                    throw new IOException("");
+                    throw new IOException(""); //$NON-NLS-1$
                 }
                 return super.resolveEntity(publicId, systemId);
             }
             catch (IOException e)
             {
-                throw new SAXException("" + e, e);
+                throw new SAXException("" + e, e); //$NON-NLS-1$
             }
         }
 

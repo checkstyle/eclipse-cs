@@ -104,7 +104,7 @@ public class ConfigPropertyWidgetString extends ConfigPropertyWidgetAbstractBase
         String result = mTextWidget.getText();
         if (result == null)
         {
-            result = "";
+            result = ""; //$NON-NLS-1$
         }
         return result;
     }
@@ -115,6 +115,6 @@ public class ConfigPropertyWidgetString extends ConfigPropertyWidgetAbstractBase
     public void restorePropertyDefault()
     {
         String defaultValue = getConfigProperty().getMetaData().getDefaultValue();
-        mTextWidget.setText(defaultValue != null ? defaultValue : "");
+        mTextWidget.setText(defaultValue != null ? defaultValue : ""); //$NON-NLS-1$
     }
 }

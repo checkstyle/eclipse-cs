@@ -29,7 +29,6 @@ import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.MessageDialogWithToggle;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -46,6 +45,7 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -62,13 +62,15 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.PropertyPage;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
+import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
+import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.builder.BuildProjectJob;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.nature.CheckstyleNature;
 import com.atlassw.tools.eclipse.checkstyle.nature.ConfigureDeconfigureNatureJob;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileSet;
-import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfigurationFactory;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfiguration;
+import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfigurationFactory;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.IFilter;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.IFilterEditor;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
@@ -142,36 +144,34 @@ public class CheckstylePropertyPage extends PropertyPage
 
         try
         {
-            //initialize the forms data
+            // initialize the forms data
             initialize();
 
             this.mPageController = new PageController();
 
-            //suppress default- & apply-buttons
+            // suppress default- & apply-buttons
             noDefaultAndApplyButton();
 
-            //create the main container
+            // create the main container
             container = new Composite(parent, SWT.NULL);
             container.setLayout(new FormLayout());
             container.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-            //create the checkbox to enable/diable the simple configuration
+            // create the checkbox to enable/diable the simple configuration
             this.mChkSimpleConfig = new Button(container, SWT.CHECK);
-            this.mChkSimpleConfig.setText(CheckstylePlugin
-                    .getResourceString("CheckstylePropertiesPage.chkSimpleConfig"));
+            this.mChkSimpleConfig.setText(Messages.CheckstylePropertyPage_btnUseSimpleConfig);
             this.mChkSimpleConfig.addSelectionListener(this.mPageController);
             this.mChkSimpleConfig.setSelection(mProjectConfig.isUseSimpleConfig());
 
             FormData fd = new FormData();
-            //fd.left = new FormAttachment(this.mChkEnable, 0, SWT.RIGHT);
+            // fd.left = new FormAttachment(this.mChkEnable, 0, SWT.RIGHT);
             fd.top = new FormAttachment(0);
             fd.right = new FormAttachment(100);
             this.mChkSimpleConfig.setLayoutData(fd);
 
-            //create the checkbox to enabel/disable checkstyle
+            // create the checkbox to enabel/disable checkstyle
             this.mChkEnable = new Button(container, SWT.CHECK);
-            this.mChkEnable.setText(CheckstylePlugin
-                    .getResourceString("CheckstylePropertiesPage.chkEnable"));
+            this.mChkEnable.setText(Messages.CheckstylePropertyPage_btnActivateCheckstyle);
             this.mChkEnable.addSelectionListener(this.mPageController);
             this.mChkEnable.setSelection(mCheckstyleActivated);
 
@@ -181,7 +181,7 @@ public class CheckstylePropertyPage extends PropertyPage
             fd.right = new FormAttachment(this.mChkSimpleConfig, 0, SWT.LEFT);
             this.mChkEnable.setLayoutData(fd);
 
-            //create the configuration area
+            // create the configuration area
             mFileSetsContainer = new Composite(container, SWT.NULL);
             Control configArea = createFileSetsArea(mFileSetsContainer);
             fd = new FormData();
@@ -191,7 +191,7 @@ public class CheckstylePropertyPage extends PropertyPage
             fd.bottom = new FormAttachment(50);
             configArea.setLayoutData(fd);
 
-            //create the filter area
+            // create the filter area
             Control filterArea = createFilterArea(container);
             fd = new FormData();
             fd.left = new FormAttachment(0);
@@ -203,9 +203,8 @@ public class CheckstylePropertyPage extends PropertyPage
         }
         catch (CheckstylePluginException e)
         {
-            CheckstyleLog.error("Error opening the properties page", e);
-            CheckstyleLog.errorDialog(getShell(), "Error changing fileset editor");
-            return container;
+            CheckstyleLog
+                    .errorDialog(getShell(), ErrorMessages.errorOpeningPropertiesPage, e, true);
         }
 
         return container;
@@ -260,10 +259,9 @@ public class CheckstylePropertyPage extends PropertyPage
 
         FormData fd = new FormData();
 
-        //group composite containing the filter settings
+        // group composite containing the filter settings
         Group filterArea = new Group(container, SWT.NULL);
-        filterArea
-                .setText(CheckstylePlugin.getResourceString("CheckstylePropertiesPage.grpFilter"));
+        filterArea.setText(Messages.CheckstylePropertyPage_titleFilterGroup);
 
         filterArea.setLayout(new FormLayout());
 
@@ -292,7 +290,7 @@ public class CheckstylePropertyPage extends PropertyPage
                     buf.append(filter.getName());
                     if (filter.getPresentableFilterData() != null)
                     {
-                        buf.append(": ").append(filter.getPresentableFilterData());
+                        buf.append(": ").append(filter.getPresentableFilterData()); //$NON-NLS-1$
                     }
                 }
                 else
@@ -308,11 +306,10 @@ public class CheckstylePropertyPage extends PropertyPage
         this.mFilterList.addDoubleClickListener(this.mPageController);
         this.mFilterList.addCheckStateListener(this.mPageController);
 
-        this.mBtnEditFilter.setText(CheckstylePlugin
-                .getResourceString("CheckstylePropertiesPage.btnEditFilter"));
+        this.mBtnEditFilter.setText(Messages.CheckstylePropertyPage_btnChangeFilter);
         this.mBtnEditFilter.addSelectionListener(this.mPageController);
 
-        //don't show readonly filters
+        // don't show readonly filters
         mFilterList.addFilter(new ViewerFilter()
         {
             public boolean select(Viewer viewer, Object parentElement, Object element)
@@ -328,7 +325,7 @@ public class CheckstylePropertyPage extends PropertyPage
 
         // Description
         Label lblDesc = new Label(filterArea, SWT.LEFT);
-        lblDesc.setText(CheckstylePlugin.getResourceString("CheckstylePropertiesPage.lblDesc"));
+        lblDesc.setText(Messages.CheckstylePropertyPage_lblDescription);
         fd = new FormData();
         fd.left = new FormAttachment(0, 3);
         fd.top = new FormAttachment(this.mFilterList.getTable(), 3, SWT.BOTTOM);
@@ -344,17 +341,17 @@ public class CheckstylePropertyPage extends PropertyPage
         fd.bottom = new FormAttachment(100, -3);
         this.mTxtFilterDescription.setLayoutData(fd);
 
-        //intialize filter list
+        // intialize filter list
         IFilter[] filterDefs = mProjectConfig.getFilters();
         this.mFilterList.setInput(filterDefs);
 
-        //set the checked state
+        // set the checked state
         for (int i = 0; i < filterDefs.length; i++)
         {
             this.mFilterList.setChecked(filterDefs[i], filterDefs[i].isEnabled());
         }
 
-        //set the readonly state
+        // set the readonly state
         for (int i = 0; i < filterDefs.length; i++)
         {
             this.mFilterList.setGrayed(filterDefs[i], filterDefs[i].isReadonly());
@@ -369,27 +366,16 @@ public class CheckstylePropertyPage extends PropertyPage
     {
 
         //
-        //  Get the project.
+        // Get the project.
         //
         IResource resource = (IResource) getElement();
         if (resource.getType() == IResource.PROJECT)
         {
             mProject = (IProject) resource;
         }
-        else
-        {
-            throw new CheckstylePluginException("Could not get project for properties page.");
-        }
 
         mProjectConfigOrig = ProjectConfigurationFactory.getConfiguration(mProject);
-        try
-        {
-            mProjectConfig = (ProjectConfiguration) mProjectConfigOrig.clone();
-        }
-        catch (CloneNotSupportedException e)
-        {
-            throw new CheckstylePluginException("Could not clone project configuration.", e);
-        }
+        mProjectConfig = (ProjectConfiguration) mProjectConfigOrig.clone();
 
         try
         {
@@ -397,7 +383,7 @@ public class CheckstylePropertyPage extends PropertyPage
         }
         catch (CoreException e1)
         {
-            throw new CheckstylePluginException("Could determine Checkstyle Nature.", e1);
+            CheckstylePluginException.rethrow(e1);
         }
     }
 
@@ -406,7 +392,7 @@ public class CheckstylePropertyPage extends PropertyPage
      */
     public boolean isValid()
     {
-        //check if all check configurations resolve
+        // check if all check configurations resolve
         List fileSets = mProjectConfig.getFileSets();
         Iterator it = fileSets.iterator();
         while (it.hasNext())
@@ -424,9 +410,10 @@ public class CheckstylePropertyPage extends PropertyPage
             }
             catch (CheckstylePluginException e)
             {
-                MessageDialog.openError(getShell(), "Cannot resolve check configuration",
-                        "Location '" + checkConfig.getLocation() + "' of check configuration '"
-                                + checkConfig.getName() + "' cannot be resolved.");
+
+                CheckstyleLog.warningDialog(getShell(), NLS.bind(
+                        ErrorMessages.errorCannotResolveCheckLocation, checkConfig.getLocation(),
+                        checkConfig.getName()), e);
                 return false;
             }
         }
@@ -444,13 +431,13 @@ public class CheckstylePropertyPage extends PropertyPage
         try
         {
 
-            //save the edited form data
+            // save the edited form data
             ProjectConfigurationFactory.setConfiguration(mProjectConfig, mProject);
 
             boolean checkstyleEnabled = mChkEnable.getSelection();
             boolean needRebuild = !this.mProjectConfigOrig.equals(this.mProjectConfig);
 
-            //check if checkstyle nature has to be configured/deconfigured
+            // check if checkstyle nature has to be configured/deconfigured
             if (checkstyleEnabled != mCheckstyleActivated)
             {
 
@@ -461,7 +448,7 @@ public class CheckstylePropertyPage extends PropertyPage
                 needRebuild = true;
             }
 
-            //check if a rebuild is necessary
+            // check if a rebuild is necessary
             if (checkstyleEnabled && needRebuild)
             {
 
@@ -473,7 +460,7 @@ public class CheckstylePropertyPage extends PropertyPage
         }
         catch (CheckstylePluginException e)
         {
-            CheckstyleLog.errorDialog(getShell(), e.getLocalizedMessage());
+            CheckstyleLog.errorDialog(getShell(), e, true);
         }
         return true;
     }
@@ -496,7 +483,7 @@ public class CheckstylePropertyPage extends PropertyPage
         {
 
             Object source = e.getSource();
-            //edit filter
+            // edit filter
             if (source == mBtnEditFilter)
             {
 
@@ -515,18 +502,12 @@ public class CheckstylePropertyPage extends PropertyPage
                             .getBoolean(CheckstylePlugin.PREF_FILESET_WARNING);
                     if (mProjectConfig.isUseSimpleConfig() && showWarning)
                     {
-                        MessageDialogWithToggle dialog = new MessageDialogWithToggle(
-                                getShell(),
-                                CheckstylePlugin
-                                        .getResourceString("CheckstylePropertiesPage.titleWarnFileSet"),
-                                null, // accept the default window icon
-                                CheckstylePlugin
-                                        .getResourceString("CheckstylePropertiesPage.msgWarnFileSet"),
+                        MessageDialogWithToggle dialog = new MessageDialogWithToggle(getShell(),
+                                Messages.CheckstylePropertyPage_titleWarnFilesets, null,
+                                Messages.CheckstylePropertyPage_msgWarnFilesets,
                                 MessageDialogWithToggle.WARNING,
-                                new String[] { IDialogConstants.OK_LABEL },
-                                0,
-                                CheckstylePlugin
-                                        .getResourceString("CheckstylePropertiesPage.optionWarnFileSet"),
+                                new String[] { IDialogConstants.OK_LABEL }, 0,
+                                Messages.CheckstylePropertyPage_mgsWarnFileSetNagOption,
                                 showWarning)
                         {
                             /**
@@ -557,8 +538,8 @@ public class CheckstylePropertyPage extends PropertyPage
                 }
                 catch (CheckstylePluginException ex)
                 {
-                    CheckstyleLog.error("Error changing fileset editor", ex);
-                    CheckstyleLog.errorDialog(getShell(), "Error changing fileset editor");
+                    CheckstyleLog.errorDialog(getShell(), ErrorMessages.errorChangingFilesetEditor,
+                            ex, true);
                 }
             }
 
@@ -587,7 +568,7 @@ public class CheckstylePropertyPage extends PropertyPage
 
                         mTxtFilterDescription.setText(filterDef.getDescription());
 
-                        //activate edit button
+                        // activate edit button
                         mBtnEditFilter.setEnabled(filterDef.isEditable());
                     }
                 }
@@ -658,13 +639,11 @@ public class CheckstylePropertyPage extends PropertyPage
                     }
                     catch (IllegalAccessException ex)
                     {
-                        CheckstyleLog.error(ex.getLocalizedMessage(), ex);
-                        CheckstyleLog.errorDialog(getShell(), ex.getLocalizedMessage());
+                        CheckstyleLog.errorDialog(getShell(), ex, true);
                     }
                     catch (InstantiationException ex)
                     {
-                        CheckstyleLog.error(ex.getLocalizedMessage(), ex);
-                        CheckstyleLog.errorDialog(getShell(), ex.getLocalizedMessage());
+                        CheckstyleLog.errorDialog(getShell(), ex, true);
                     }
                 }
             }

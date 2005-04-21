@@ -36,78 +36,70 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleBuilder;
 import com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleMarker;
-import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 
 /**
  * Checkstyle project nature.
  */
 public class CheckstyleNature implements IProjectNature
 {
-    //=================================================
+    // =================================================
     // Public static final variables.
-    //=================================================
+    // =================================================
 
     /** ID for the Checkstyle project nature. */
-    public static final String NATURE_ID = CheckstylePlugin.PLUGIN_ID + ".CheckstyleNature";
+    public static final String NATURE_ID = CheckstylePlugin.PLUGIN_ID + ".CheckstyleNature"; //$NON-NLS-1$
 
-    //=================================================
+    // =================================================
     // Static class variables.
-    //=================================================
+    // =================================================
 
-    //=================================================
+    // =================================================
     // Instance member variables.
-    //=================================================
+    // =================================================
 
     private IProject mProject;
 
-    //=================================================
+    // =================================================
     // Constructors & finalizer.
-    //=================================================
+    // =================================================
 
-    //=================================================
+    // =================================================
     // Methods.
-    //=================================================
+    // =================================================
 
     /**
      * {@inheritDoc}
      */
     public void configure() throws CoreException
     {
-        try
+
+        //
+        // Add the builder to the project.
+        //
+        IProjectDescription description = mProject.getDescription();
+        ICommand[] commands = description.getBuildSpec();
+        boolean found = false;
+        for (int i = 0; i < commands.length; ++i)
         {
-            //
-            //  Add the builder to the project.
-            //
-            IProjectDescription description = mProject.getDescription();
-            ICommand[] commands = description.getBuildSpec();
-            boolean found = false;
-            for (int i = 0; i < commands.length; ++i)
+            if (commands[i].getBuilderName().equals(CheckstyleBuilder.BUILDER_ID))
             {
-                if (commands[i].getBuilderName().equals(CheckstyleBuilder.BUILDER_ID))
-                {
-                    found = true;
-                    break;
-                }
-            }
-
-            if (!found)
-            {
-                //add builder to project
-                ICommand command = description.newCommand();
-                command.setBuilderName(CheckstyleBuilder.BUILDER_ID);
-                ICommand[] newCommands = new ICommand[commands.length + 1];
-
-                // Add it before other builders.
-                System.arraycopy(commands, 0, newCommands, 0, commands.length);
-                newCommands[commands.length] = command;
-                description.setBuildSpec(newCommands);
-                mProject.setDescription(description, null);
+                found = true;
+                break;
             }
         }
-        catch (CoreException e)
+
+        if (!found)
         {
-            CheckstyleLog.error("Error while adding Checkstyle nature", e);
-            throw e;
+            // add builder to project
+            ICommand command = description.newCommand();
+            command.setBuilderName(CheckstyleBuilder.BUILDER_ID);
+            ICommand[] newCommands = new ICommand[commands.length + 1];
+
+            // Add it before other builders.
+            System.arraycopy(commands, 0, newCommands, 0, commands.length);
+            newCommands[commands.length] = command;
+            description.setBuildSpec(newCommands);
+            mProject.setDescription(description, null);
         }
     }
 
@@ -118,42 +110,36 @@ public class CheckstyleNature implements IProjectNature
      */
     public void deconfigure() throws CoreException
     {
-        try
-        {
-            //
-            //  Remove the builder from the project.
-            //
-            IProjectDescription description = mProject.getDescription();
-            ICommand[] commands = description.getBuildSpec();
-            Vector newCommandsVec = new Vector(0);
-            for (int i = 0; i < commands.length; ++i)
-            {
-                if (commands[i].getBuilderName().equals(CheckstyleBuilder.BUILDER_ID))
-                {
-                    continue;
-                }
-                else
-                {
-                    newCommandsVec.add(commands[i]);
-                }
-            }
 
-            ICommand[] newCommands = new ICommand[newCommandsVec.size()];
-            for (int i = 0; i < newCommandsVec.size(); i++)
-            {
-                newCommands[i] = (ICommand) newCommandsVec.elementAt(i);
-            }
-            description.setBuildSpec(newCommands);
-            mProject.setDescription(description, new NullProgressMonitor());
-
-            //remove checkstyle markers from the project
-            getProject().deleteMarkers(CheckstyleMarker.MARKER_ID, true, IResource.DEPTH_INFINITE);
-        }
-        catch (CoreException e)
+        //
+        // Remove the builder from the project.
+        //
+        IProjectDescription description = mProject.getDescription();
+        ICommand[] commands = description.getBuildSpec();
+        Vector newCommandsVec = new Vector(0);
+        for (int i = 0; i < commands.length; ++i)
         {
-            CheckstyleLog.error("Error while adding Checkstyle nature", e);
-            throw e;
+            if (commands[i].getBuilderName().equals(CheckstyleBuilder.BUILDER_ID))
+            {
+                continue;
+            }
+            else
+            {
+                newCommandsVec.add(commands[i]);
+            }
         }
+
+        ICommand[] newCommands = new ICommand[newCommandsVec.size()];
+        for (int i = 0; i < newCommandsVec.size(); i++)
+        {
+            newCommands[i] = (ICommand) newCommandsVec.elementAt(i);
+        }
+        description.setBuildSpec(newCommands);
+        mProject.setDescription(description, new NullProgressMonitor());
+
+        // remove checkstyle markers from the project
+        getProject().deleteMarkers(CheckstyleMarker.MARKER_ID, true, IResource.DEPTH_INFINITE);
+
     }
 
     /**

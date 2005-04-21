@@ -45,6 +45,7 @@ import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -70,6 +71,8 @@ import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
+import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
+import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleBuilder;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationFactory;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
@@ -92,17 +95,17 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
  */
 public class CheckstylePreferencePage extends PreferencePage implements IWorkbenchPreferencePage
 {
-    //=================================================
+    // =================================================
     // Public static final variables.
-    //=================================================
+    // =================================================
 
-    //=================================================
+    // =================================================
     // Static class variables.
-    //=================================================
+    // =================================================
 
-    //=================================================
+    // =================================================
     // Instance member variables.
-    //=================================================
+    // =================================================
 
     private TableViewer mViewer;
 
@@ -130,9 +133,9 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
 
     private PageController mController = new PageController();
 
-    //=================================================
+    // =================================================
     // Constructors & finalizer.
-    //=================================================
+    // =================================================
 
     /**
      * Constructor.
@@ -141,13 +144,13 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
     {
         super();
         setPreferenceStore(CheckstylePlugin.getDefault().getPreferenceStore());
-        //setDescription("Checkstyle Settings:");
+        // setDescription("Checkstyle Settings:");
         initializeDefaults();
     }
 
-    //=================================================
+    // =================================================
     // Methods.
-    //=================================================
+    // =================================================
 
     /**
      * Sets the default values of the preferences.
@@ -161,12 +164,10 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
     public Control createContents(Composite ancestor)
     {
 
-        //TODO externalize message strings
-
         noDefaultAndApplyButton();
 
         //
-        //  Initialize the check configurations.
+        // Initialize the check configurations.
         //
         try
         {
@@ -174,20 +175,21 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         }
         catch (CheckstylePluginException e)
         {
-            CheckstyleLog.error("Failed to create preferences window, " + e.getMessage(), e);
-            CheckstyleLog.internalErrorDialog();
+            CheckstyleLog.errorDialog(getShell(), NLS.bind(
+                    ErrorMessages.errorFailedCreatePreferencesPage, e.getLocalizedMessage()), e,
+                    true);
             return ancestor;
         }
 
         //
-        //  Build the top level composite with one colume.
+        // Build the top level composite with one colume.
         //
         Composite parentComposite = new Composite(ancestor, SWT.NULL);
         FormLayout layout = new FormLayout();
         parentComposite.setLayout(layout);
 
         //
-        //  Create the general section of the screen.
+        // Create the general section of the screen.
         //
         Composite generalComposite = createGeneralContents(parentComposite);
         FormData fd = new FormData();
@@ -197,7 +199,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         generalComposite.setLayoutData(fd);
 
         //
-        //  Create the check configuration section of the screen.
+        // Create the check configuration section of the screen.
         //
         Composite configComposite = createCheckConfigContents(parentComposite);
         fd = new FormData();
@@ -219,37 +221,37 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
     private Composite createGeneralContents(Composite parent)
     {
         //
-        //  Build the composite for the general settings.
+        // Build the composite for the general settings.
         //
         Group generalComposite = new Group(parent, SWT.NULL);
-        generalComposite.setText(" General Settings ");
+        generalComposite.setText(Messages.CheckstylePreferencePage_lblGeneralSettings);
         GridLayout layout = new GridLayout();
         layout.numColumns = 1;
         generalComposite.setLayout(layout);
 
         //
-        //  Get the preferences.
+        // Get the preferences.
         //
         Preferences prefs = CheckstylePlugin.getDefault().getPluginPreferences();
 
         //
-        //  Create the "Fileset warning" check box.
+        // Create the "Fileset warning" check box.
         //
         mWarnBeforeLosingFilesets = new Button(generalComposite, SWT.CHECK);
-        mWarnBeforeLosingFilesets.setText("Warn before losing configured file sets");
+        mWarnBeforeLosingFilesets.setText(Messages.CheckstylePreferencePage_lblWarnFilesets);
         mWarnBeforeLosingFilesets.setSelection(prefs
                 .getBoolean(CheckstylePlugin.PREF_FILESET_WARNING));
 
         //
-        //  Create the "Include rule name" check box.
+        // Create the "Include rule name" check box.
         //
         mIncludeRuleNamesButton = new Button(generalComposite, SWT.CHECK);
-        mIncludeRuleNamesButton.setText("Include rule names in violation messages");
+        mIncludeRuleNamesButton.setText(Messages.CheckstylePreferencePage_lblIncludeRulenames);
         mIncludeRuleNamesButton.setSelection(prefs
                 .getBoolean(CheckstylePlugin.PREF_INCLUDE_RULE_NAMES));
 
         new Label(generalComposite, SWT.NULL)
-                .setText("Note: Changes to this option only become visible after a full rebuild of your projects.");
+                .setText(Messages.CheckstylePreferencePage_txtSuggestRebuild);
 
         return generalComposite;
     }
@@ -263,10 +265,10 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
     private Composite createCheckConfigContents(Composite parent)
     {
         //
-        //  Create the composite for configuring check configurations.
+        // Create the composite for configuring check configurations.
         //
         Group configComposite = new Group(parent, SWT.NULL);
-        configComposite.setText(" Check Configurations ");
+        configComposite.setText(Messages.CheckstylePreferencePage_titleCheckConfigs);
         configComposite.setLayout(new FormLayout());
 
         Control rightButtons = createButtonBar(configComposite);
@@ -294,7 +296,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         table.setLayoutData(fd);
 
         Label lblDescription = new Label(tableAndDesc, SWT.NULL);
-        lblDescription.setText("Description:");
+        lblDescription.setText(Messages.CheckstylePreferencePage_lblDescription);
         fd = new FormData();
         fd.left = new FormAttachment(0);
         fd.top = new FormAttachment(table, 3);
@@ -330,15 +332,15 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         table.setLayout(tableLayout);
 
         TableColumn column1 = new TableColumn(table, SWT.NULL);
-        column1.setText("Check Configuration");
+        column1.setText(Messages.CheckstylePreferencePage_colCheckConfig);
         tableLayout.addColumnData(new ColumnWeightData(40));
 
         TableColumn column2 = new TableColumn(table, SWT.NULL);
-        column2.setText("Location");
+        column2.setText(Messages.CheckstylePreferencePage_colLocation);
         tableLayout.addColumnData(new ColumnWeightData(30));
 
         TableColumn column3 = new TableColumn(table, SWT.NULL);
-        column3.setText("Type");
+        column3.setText(Messages.CheckstylePreferencePage_colType);
         tableLayout.addColumnData(new ColumnWeightData(30));
 
         mViewer = new TableViewer(table);
@@ -365,7 +367,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         rightButtons.setLayout(new FormLayout());
 
         mAddButton = new Button(rightButtons, SWT.PUSH);
-        mAddButton.setText("New...");
+        mAddButton.setText(Messages.CheckstylePreferencePage_btnNew);
         mAddButton.addSelectionListener(mController);
         FormData fd = new FormData();
         fd.left = new FormAttachment(0);
@@ -374,7 +376,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         mAddButton.setLayoutData(fd);
 
         mEditButton = new Button(rightButtons, SWT.PUSH);
-        mEditButton.setText("Properties...");
+        mEditButton.setText(Messages.CheckstylePreferencePage_btnProperties);
         mEditButton.addSelectionListener(mController);
         fd = new FormData();
         fd.left = new FormAttachment(0);
@@ -383,7 +385,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         mEditButton.setLayoutData(fd);
 
         mConfigureButton = new Button(rightButtons, SWT.PUSH);
-        mConfigureButton.setText("Configure...");
+        mConfigureButton.setText(Messages.CheckstylePreferencePage_btnConfigure);
         mConfigureButton.addSelectionListener(mController);
         fd = new FormData();
         fd.left = new FormAttachment(0);
@@ -392,7 +394,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         mConfigureButton.setLayoutData(fd);
 
         mCopyButton = new Button(rightButtons, SWT.PUSH);
-        mCopyButton.setText("Copy...");
+        mCopyButton.setText(Messages.CheckstylePreferencePage_btnCopy);
         mCopyButton.addSelectionListener(mController);
         fd = new FormData();
         fd.left = new FormAttachment(0);
@@ -401,7 +403,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         mCopyButton.setLayoutData(fd);
 
         mRemoveButton = new Button(rightButtons, SWT.PUSH);
-        mRemoveButton.setText("Remove");
+        mRemoveButton.setText(Messages.CheckstylePreferencePage_btnRemove);
         mRemoveButton.addSelectionListener(mController);
         fd = new FormData();
         fd.left = new FormAttachment(0);
@@ -410,7 +412,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         mRemoveButton.setLayoutData(fd);
 
         mExportButton = new Button(rightButtons, SWT.PUSH);
-        mExportButton.setText("Export...");
+        mExportButton.setText(Messages.CheckstylePreferencePage_btnExport);
         mExportButton.addSelectionListener(mController);
         fd = new FormData();
         fd.left = new FormAttachment(0);
@@ -433,7 +435,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
     public boolean performOk()
     {
         //
-        //  Save the check configurations.
+        // Save the check configurations.
         //
         try
         {
@@ -441,12 +443,12 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         }
         catch (CheckstylePluginException e)
         {
-            CheckstyleLog.error("Failed to save CheckConfigurations, " + e.getMessage(), e);
-            CheckstyleLog.internalErrorDialog();
+            CheckstyleLog.errorDialog(getShell(), NLS.bind(
+                    ErrorMessages.errorFailedSavePreferences, e.getLocalizedMessage()), e, true);
         }
 
         //
-        //  Save the general preferences.
+        // Save the general preferences.
         //
         Preferences prefs = CheckstylePlugin.getDefault().getPluginPreferences();
 
@@ -458,7 +460,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         prefs.setValue(CheckstylePlugin.PREF_FILESET_WARNING, warnFileSetsNow);
 
         //
-        //  Include rule names preference.
+        // Include rule names preference.
         //
         boolean includeRuleNamesNow = mIncludeRuleNamesButton.getSelection();
         boolean includeRuleNamesOriginal = prefs
@@ -467,7 +469,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         mNeedRebuild = mNeedRebuild | (includeRuleNamesNow ^ includeRuleNamesOriginal);
 
         //
-        //  Do a rebuild if one is needed.
+        // Do a rebuild if one is needed.
         //
         if (mNeedRebuild)
         {
@@ -477,8 +479,8 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
             }
             catch (CheckstylePluginException e)
             {
-                CheckstyleLog.error("Failed to rebuild projects, " + e.getMessage(), e);
-                CheckstyleLog.internalErrorDialog();
+                CheckstyleLog.errorDialog(getShell(), NLS.bind(ErrorMessages.errorFailedRebuild, e
+                        .getMessage()), e, true);
             }
         }
 
@@ -560,7 +562,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
                 }
                 else
                 {
-                    mConfigurationDescription.setText("");
+                    mConfigurationDescription.setText(new String());
                 }
             }
         }
@@ -585,8 +587,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
             }
             catch (CheckstylePluginException ex)
             {
-                CheckstyleLog.error(ex.getLocalizedMessage(), ex);
-                CheckstyleLog.errorDialog(getShell(), ex.getLocalizedMessage(), ex);
+                CheckstyleLog.errorDialog(getShell(), ex, true);
             }
 
         }
@@ -630,14 +631,14 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
                 }
                 else
                 {
-                    //cant go further without context
+                    // cant go further without context
                     return;
                 }
             }
 
             try
             {
-                //test if file exists
+                // test if file exists
                 config.getCheckstyleConfigurationURL();
 
                 CheckConfigurationConfigureDialog dialog = new CheckConfigurationConfigureDialog(
@@ -653,9 +654,9 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
             }
             catch (CheckstylePluginException e)
             {
-                CheckstyleLog.error(e.getLocalizedMessage(), e);
-                CheckstyleLog.errorDialog(getShell(), e.getLocalizedMessage(), e);
-                return;
+                CheckstyleLog.warningDialog(getShell(), NLS.bind(
+                        ErrorMessages.errorCannotResolveCheckLocation, config.getLocation(), config
+                                .getName()), e);
             }
         }
     }
@@ -673,12 +674,12 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(getShell(),
                 new WorkbenchLabelProvider(), new WorkbenchContentProvider());
         dialog.setBlockOnOpen(true);
-        dialog.setTitle("Select project context");
-        dialog.setMessage("Select project context for check configuration.");
+        dialog.setTitle(Messages.CheckstylePreferencePage_titleSelectProject);
+        dialog.setMessage(Messages.CheckstylePreferencePage_msgSelectProject);
         dialog.setAllowMultiple(false);
         dialog.setInput(CheckstylePlugin.getWorkspace().getRoot());
 
-        //filter all but projects
+        // filter all but projects
         dialog.addFilter(new ViewerFilter()
         {
             public boolean select(Viewer viewer, Object parentElement, Object element)
@@ -692,11 +693,13 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
             {
                 if (selection.length == 1 && selection[0] instanceof IProject)
                 {
-                    return new Status(IStatus.OK, PlatformUI.PLUGIN_ID, IStatus.ERROR, "", null);
+                    return new Status(IStatus.OK, PlatformUI.PLUGIN_ID, IStatus.ERROR,
+                            new String(), null);
                 }
                 else
                 {
-                    return new Status(IStatus.ERROR, PlatformUI.PLUGIN_ID, IStatus.ERROR, "", null);
+                    return new Status(IStatus.ERROR, PlatformUI.PLUGIN_ID, IStatus.ERROR,
+                            new String(), null);
                 }
             }
         });
@@ -728,20 +731,20 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         try
         {
 
-            //create a new internal check configuration
+            // create a new internal check configuration
             ICheckConfiguration newConfig = new InternalCheckConfiguration();
-            IConfigurationType internalType = ConfigurationTypes.getByInternalName("internal");
-            newConfig.initialize("Copy of " + sourceConfig.getName(), null, internalType,
-                    sourceConfig.getDescription());
+            IConfigurationType internalType = ConfigurationTypes.getByInternalName("internal"); //$NON-NLS-1$
+            newConfig.initialize(NLS.bind(Messages.CheckstylePreferencePage_CopyOfAddition,
+                    sourceConfig.getName()), null, internalType, sourceConfig.getDescription());
 
-            //Open the properties dialog to change default name and description
+            // Open the properties dialog to change default name and description
             CheckConfigurationPropertiesDialog dialog = new CheckConfigurationPropertiesDialog(
                     getShell(), newConfig);
             dialog.setBlockOnOpen(true);
             if (CheckConfigurationPropertiesDialog.OK == dialog.open())
             {
 
-                //Copy the source configuration into the new internal config
+                // Copy the source configuration into the new internal config
                 CheckConfigurationFactory.copyConfiguration(sourceConfig, newConfig);
 
                 mCheckConfigurations.add(newConfig);
@@ -750,9 +753,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         }
         catch (CheckstylePluginException e)
         {
-            CheckstyleLog.error(e.getLocalizedMessage(), e);
-            CheckstyleLog.internalErrorDialog();
-            return;
+            CheckstyleLog.errorDialog(getShell(), e, true);
         }
     }
 
@@ -779,23 +780,22 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         {
             if (ProjectConfigurationFactory.isCheckConfigInUse(checkConfig.getName()))
             {
-                MessageDialog.openInformation(getShell(), "Can't Delete",
-                        "The Check Configuration '" + checkConfig.getName()
-                                + "' is currently in use by a project."
-                                + " It must be removed from all project "
-                                + "configurations before it can be deleted.");
+                MessageDialog.openInformation(getShell(),
+
+                Messages.CheckstylePreferencePage_titleCantDelete, NLS.bind(
+                        Messages.CheckstylePreferencePage_msgCantDelete, checkConfig.getName()));
                 return;
             }
         }
         catch (CheckstylePluginException e)
         {
-            CheckstyleLog.warning("Exception while checking for check config use", e);
-            CheckstyleLog.internalErrorDialog();
+            CheckstyleLog.errorDialog(getShell(), e, true);
             return;
         }
 
-        boolean confirm = MessageDialog.openQuestion(getShell(), "Confirm Delete",
-                "Remove check configuration '" + checkConfig.getName() + "'?");
+        boolean confirm = MessageDialog.openQuestion(getShell(),
+                Messages.CheckstylePreferencePage_titleDelete, NLS.bind(
+                        Messages.CheckstylePreferencePage_msgDelete, checkConfig.getName()));
         if (confirm)
         {
             mCheckConfigurations.remove(checkConfig);
@@ -819,7 +819,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         }
 
         FileDialog dialog = new FileDialog(getShell(), SWT.SAVE);
-        dialog.setText("Export Checkstyle Check Configuration");
+        dialog.setText(Messages.CheckstylePreferencePage_titleExportConfig);
         String path = dialog.open();
         if (path == null)
         {
@@ -833,63 +833,62 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         }
         catch (CheckstylePluginException e)
         {
-            CheckstyleLog.error("Failed to export CheckConfigurations to external file", e);
-            CheckstyleLog.errorDialog(getShell(),
-                    "Failed to export CheckConfigurations to external file", e);
+            CheckstyleLog
+                    .errorDialog(getShell(), ErrorMessages.msgErrorFailedExportConfig, e, true);
         }
     }
 
     private void importCheckstyleCheckConfig()
     {
-    //        //
-    //        // Get the full path to the file to be imported.
-    //        //
-    //        FileDialog fileDialog = new FileDialog(getShell());
-    //        fileDialog.setText("Import Checkstyle Check Configuration");
-    //        String path = fileDialog.open();
-    //        if (path == null)
-    //        {
-    //            return;
-    //        }
+    // //
+    // // Get the full path to the file to be imported.
+    // //
+    // FileDialog fileDialog = new FileDialog(getShell());
+    // fileDialog.setText("Import Checkstyle Check Configuration");
+    // String path = fileDialog.open();
+    // if (path == null)
+    // {
+    // return;
+    // }
     //
-    //        try
-    //        {
-    //            //
-    //            // Load the config file.
-    //            //
-    //            CheckConfigConverter converter = new CheckConfigConverter();
-    //            converter.loadConfig(path);
+    // try
+    // {
+    // //
+    // // Load the config file.
+    // //
+    // CheckConfigConverter converter = new CheckConfigConverter();
+    // converter.loadConfig(path);
     //
-    //            //
-    //            // Resolve property values.
-    //            //
-    //            List resolveProps = converter.getPropsToResolve();
-    //            if (resolveProps.size() > 0)
-    //            {
-    //                ResolvePropertyValuesDialog resolveDialog = new
+    // //
+    // // Resolve property values.
+    // //
+    // List resolveProps = converter.getPropsToResolve();
+    // if (resolveProps.size() > 0)
+    // {
+    // ResolvePropertyValuesDialog resolveDialog = new
     // ResolvePropertyValuesDialog(
-    //                        getShell(), resolveProps);
-    //                resolveDialog.open();
-    //            }
+    // getShell(), resolveProps);
+    // resolveDialog.open();
+    // }
     //
-    //            //
-    //            // Get a CheckConfiguration from the converter.
-    //            //
-    //            CheckConfiguration config = converter.getCheckConfiguration();
+    // //
+    // // Get a CheckConfiguration from the converter.
+    // //
+    // CheckConfiguration config = converter.getCheckConfiguration();
     //
-    //            //
-    //            // Add the config using the add dialog so the user can see what it
-    //            // looks like,
-    //            // make changes, and it will be validated.
-    //            //
-    //            addCheckConfig(config);
-    //        }
-    //        catch (CheckstylePluginException e)
-    //        {
-    //            CheckstyleLog.error("Failed to import CheckConfigurations from external
+    // //
+    // // Add the config using the add dialog so the user can see what it
+    // // looks like,
+    // // make changes, and it will be validated.
+    // //
+    // addCheckConfig(config);
+    // }
+    // catch (CheckstylePluginException e)
+    // {
+    // CheckstyleLog.error("Failed to import CheckConfigurations from external
     // file", e);
-    //            CheckstyleLog.internalErrorDialog();
-    //        }
+    // CheckstyleLog.internalErrorDialog();
+    // }
     }
 
     /**
@@ -901,22 +900,15 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
     private void initializeCheckConfigs() throws CheckstylePluginException
     {
         mCheckConfigurations = new LinkedList();
-        try
+
+        List configs = CheckConfigurationFactory.getCheckConfigurations();
+        Iterator iter = configs.iterator();
+        while (iter.hasNext())
         {
-            List configs = CheckConfigurationFactory.getCheckConfigurations();
-            Iterator iter = configs.iterator();
-            while (iter.hasNext())
-            {
-                ICheckConfiguration cfg = (ICheckConfiguration) iter.next();
-                mCheckConfigurations.add(cfg.clone());
-            }
+            ICheckConfiguration cfg = (ICheckConfiguration) iter.next();
+            mCheckConfigurations.add(cfg.clone());
         }
-        catch (CloneNotSupportedException e)
-        {
-            CheckstyleLog.error("Failed to clone CheckConfiguration", e);
-            throw new CheckstylePluginException("Failed to clone CheckConfiguration, "
-                    + e.getMessage());
-        }
+
     }
 
 }

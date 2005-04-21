@@ -184,51 +184,51 @@ public class ProjectConfiguration implements Cloneable
         return mUseSimpleConfig;
     }
 
-    //    /**
-    //     * Returns if the given file is checked by checkstyle.
-    //     *
-    //     * @param file the file
-    //     * @return <code>true</code> if the file is checked, <code>false</code>
-    //     * otherwise
-    //     * @throws CheckstylePluginException unexpected error
-    //     */
-    //    public boolean isFileChecked(IFile file) throws CheckstylePluginException
-    //    {
+    // /**
+    // * Returns if the given file is checked by checkstyle.
+    // *
+    // * @param file the file
+    // * @return <code>true</code> if the file is checked, <code>false</code>
+    // * otherwise
+    // * @throws CheckstylePluginException unexpected error
+    // */
+    // public boolean isFileChecked(IFile file) throws CheckstylePluginException
+    // {
     //
-    //        boolean result = false;
+    // boolean result = false;
     //
-    //        //check if file within fileSets
-    //        List fileSets = getFileSets();
-    //        int size = fileSets != null ? fileSets.size() : 0;
-    //        for (int i = 0; i < size; i++)
-    //        {
+    // //check if file within fileSets
+    // List fileSets = getFileSets();
+    // int size = fileSets != null ? fileSets.size() : 0;
+    // for (int i = 0; i < size; i++)
+    // {
     //
-    //            if (((FileSet) fileSets.get(i)).includesFile(file))
-    //            {
-    //                result = true;
-    //                break;
-    //            }
-    //        }
+    // if (((FileSet) fileSets.get(i)).includesFile(file))
+    // {
+    // result = true;
+    // break;
+    // }
+    // }
     //
-    //        //check if file runs through filters
-    //        if (result)
-    //        {
+    // //check if file runs through filters
+    // if (result)
+    // {
     //
-    //            IFilter[] filters = getFilters();
-    //            size = filters != null ? filters.length : 0;
-    //            for (int i = 0; i < size; i++)
-    //            {
+    // IFilter[] filters = getFilters();
+    // size = filters != null ? filters.length : 0;
+    // for (int i = 0; i < size; i++)
+    // {
     //
-    //                if (filters[i].isEnabled() && !filters[i].accept(file))
-    //                {
-    //                    result = false;
-    //                    break;
-    //                }
-    //            }
-    //        }
+    // if (filters[i].isEnabled() && !filters[i].accept(file))
+    // {
+    // result = false;
+    // break;
+    // }
+    // }
+    // }
     //
-    //        return result;
-    //    }
+    // return result;
+    // }
 
     /**
      * Checks if this project configuration uses the given checkstyle
@@ -259,29 +259,36 @@ public class ProjectConfiguration implements Cloneable
     /**
      * @see java.lang.Object#clone()
      */
-    public Object clone() throws CloneNotSupportedException
+    public Object clone()
     {
-
-        ProjectConfiguration clone = (ProjectConfiguration) super.clone();
-        clone.mFileSets = new LinkedList();
-        clone.setUseSimpleConfig(this.isUseSimpleConfig());
-
-        //clone file sets
-        Iterator iter = getFileSets().iterator();
-        while (iter.hasNext())
+        ProjectConfiguration clone = null;
+        try
         {
-            clone.getFileSets().add(((FileSet) iter.next()).clone());
-        }
+            clone = (ProjectConfiguration) super.clone();
+            clone.mFileSets = new LinkedList();
+            clone.setUseSimpleConfig(this.isUseSimpleConfig());
 
-        //clone filters
-        IFilter[] filters = getFilters();
-        int size = filters != null ? filters.length : 0;
-        IFilter[] clonedFilters = new IFilter[size];
-        for (int i = 0; i < size; i++)
-        {
-            clonedFilters[i] = (IFilter) filters[i].clone();
+            // clone file sets
+            Iterator iter = getFileSets().iterator();
+            while (iter.hasNext())
+            {
+                clone.getFileSets().add(((FileSet) iter.next()).clone());
+            }
+
+            // clone filters
+            IFilter[] filters = getFilters();
+            int size = filters != null ? filters.length : 0;
+            IFilter[] clonedFilters = new IFilter[size];
+            for (int i = 0; i < size; i++)
+            {
+                clonedFilters[i] = (IFilter) filters[i].clone();
+            }
+            clone.setFilters(clonedFilters);
         }
-        clone.setFilters(clonedFilters);
+        catch (CloneNotSupportedException e)
+        {
+            throw new InternalError();
+        }
 
         return clone;
     }
@@ -322,7 +329,7 @@ public class ProjectConfiguration implements Cloneable
      */
     public int hashCode()
     {
-        //a "nice" prime number, see Java Report, April 2000
+        // a "nice" prime number, see Java Report, April 2000
         final int prime = 1000003;
 
         int result = 1;
@@ -335,8 +342,8 @@ public class ProjectConfiguration implements Cloneable
             result = (result * prime) + (mFilters[i] != null ? mFilters[i].hashCode() : 0);
         }
 
-        //could not use it because only available in jdk1.5
-        //result = (result * prime) + Arrays.hashCode(mFilters);
+        // could not use it because only available in jdk1.5
+        // result = (result * prime) + Arrays.hashCode(mFilters);
         return result;
     }
 }

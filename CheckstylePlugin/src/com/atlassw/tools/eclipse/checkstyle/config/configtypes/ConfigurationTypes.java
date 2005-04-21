@@ -50,25 +50,25 @@ public final class ConfigurationTypes
 
     /** constant for the extension point id. */
     private static final String CONFIGTYPES_EXTENSION_POINT = CheckstylePlugin.PLUGIN_ID
-            + ".configurationtypes";
+            + ".configurationtypes"; //$NON-NLS-1$
 
     /** constant for the name attribute. */
-    private static final String ATTR_NAME = "name";
+    private static final String ATTR_NAME = "name"; //$NON-NLS-1$
 
     /** constant for the name attribute. */
-    private static final String ATTR_INTERNAL_NAME = "internal-name";
+    private static final String ATTR_INTERNAL_NAME = "internal-name"; //$NON-NLS-1$
 
     /** constant for the description attribute. */
-    private static final String ATTR_IMAGE = "icon";
+    private static final String ATTR_IMAGE = "icon"; //$NON-NLS-1$
 
     /** constant for the class attribute. */
-    private static final String ATTR_CLASS = "class";
+    private static final String ATTR_CLASS = "class"; //$NON-NLS-1$
 
     /** constant for the editorClass attribute. */
-    private static final String ATTR_EDITOR = "editorClass";
+    private static final String ATTR_EDITOR = "editorClass"; //$NON-NLS-1$
 
     /** constant for the creatable attribute. */
-    private static final String ATTR_CREATABLE = "creatable";
+    private static final String ATTR_CREATABLE = "creatable"; //$NON-NLS-1$
 
     /** the configuration types configured to the extension point. */
     private static final Map CONFIGURATION_TYPES = new HashMap();
@@ -112,8 +112,7 @@ public final class ConfigurationTypes
             }
             catch (Exception e)
             {
-
-                CheckstyleLog.error(e.getLocalizedMessage(), e);
+                CheckstyleLog.log(e);
             }
         }
     }
@@ -125,7 +124,7 @@ public final class ConfigurationTypes
     /** Hidden default constructor. */
     private ConfigurationTypes()
     {
-    //NOOP
+    // NOOP
     }
 
     //

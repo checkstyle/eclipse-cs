@@ -55,7 +55,7 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
 
     /** Resource bundle containing the token translations. */
     private static final ResourceBundle TOKEN_BUNDLE = PropertyResourceBundle
-            .getBundle("com.atlassw.tools.eclipse.checkstyle.preferences.token");
+            .getBundle("com.atlassw.tools.eclipse.checkstyle.preferences.token"); //$NON-NLS-1$
 
     //=================================================
     // Static class variables.
@@ -123,7 +123,7 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
      */
     public String getValue()
     {
-        StringBuffer buffer = new StringBuffer("");
+        StringBuffer buffer = new StringBuffer(""); //$NON-NLS-1$
         boolean first = true;
 
         Object[] checkedElements = mTable.getCheckedElements();
@@ -133,7 +133,7 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
 
             if (i > 0)
             {
-                buffer.append(",");
+                buffer.append(","); //$NON-NLS-1$
             }
             buffer.append(checkedElements[i]);
         }
@@ -143,7 +143,7 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
     private List getInitialValues()
     {
         List result = new LinkedList();
-        StringTokenizer tokenizer = new StringTokenizer(getInitValue(), ",");
+        StringTokenizer tokenizer = new StringTokenizer(getInitValue(), ","); //$NON-NLS-1$
         while (tokenizer.hasMoreTokens())
         {
             result.add(tokenizer.nextToken().trim());
@@ -162,7 +162,7 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
 
         if (defaultValue != null)
         {
-            StringTokenizer tokenizer = new StringTokenizer(defaultValue, ",");
+            StringTokenizer tokenizer = new StringTokenizer(defaultValue, ","); //$NON-NLS-1$
             while (tokenizer.hasMoreTokens())
             {
                 result.add(tokenizer.nextToken().trim());
@@ -191,7 +191,7 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
             String translation = null;
             if (!mTranslateTokens)
             {
-                translation = "" + element;
+                translation = "" + element; //$NON-NLS-1$
             }
             else
             {
@@ -201,7 +201,7 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
                 }
                 catch (MissingResourceException e)
                 {
-                    translation = "" + element;
+                    translation = "" + element; //$NON-NLS-1$
                 }
             }
             return translation;

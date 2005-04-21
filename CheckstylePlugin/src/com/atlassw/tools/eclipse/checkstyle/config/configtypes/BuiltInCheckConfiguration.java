@@ -49,7 +49,7 @@ public class BuiltInCheckConfiguration extends AbstractCheckConfiguration
      */
     protected boolean handleIsEditable()
     {
-        //Built-in configurations cannot be changed
+        // Built-in configurations cannot be changed
         return false;
     }
 
@@ -58,7 +58,7 @@ public class BuiltInCheckConfiguration extends AbstractCheckConfiguration
      */
     protected boolean handleIsConfigurable()
     {
-        //Built-in configurations cannot be configured
+        // Built-in configurations cannot be configured
         return false;
     }
 
@@ -67,7 +67,7 @@ public class BuiltInCheckConfiguration extends AbstractCheckConfiguration
      */
     protected PropertyResolver handleGetPropertyResolver()
     {
-        //we have no need for property expansion for builtin configurations
+        // we have no need for property expansion for builtin configurations
         return null;
     }
 }

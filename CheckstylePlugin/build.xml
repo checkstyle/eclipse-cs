@@ -42,6 +42,7 @@
 	<target name="jar.plugin" depends="build.target.area" description="Jars up all the files that go into the plug-in jar file">
 		<mkdir dir="${bin.dist.dir}" />
 		<jar destfile="${bin.dist.dir}/CheckstylePlugin.jar" basedir="bin" index="true" />
+		<jar destfile="${bin.dist.dir}/NLS.jar" basedir="binnls" index="true" />
 	</target>
 
 	<!-- ==================================================== -->
@@ -61,7 +62,8 @@
 		<copy file="plugin.properties" todir="${bin.dist.dir}" />
 		<copy file="toc.xml" todir="${bin.dist.dir}" />
 		<copy file="README.html" todir="${bin.dist.dir}" />
-		<copy file="DefaultChecks.xml" todir="${bin.dist.dir}" />
+		<copy file="sun_checks.xml" todir="${bin.dist.dir}" />
+		<copy file="DefaultCheckConfigurations.xml" todir="${bin.dist.dir}" />
 		<copy todir="${bin.dist.dir}/doc">
 			<fileset dir="doc" />
 		</copy>
@@ -92,8 +94,11 @@
 		<copy file="plugin.properties" todir="${src.dist.dir}" />
 		<copy file="toc.xml" todir="${src.dist.dir}" />
 		<copy file="README.html" todir="${src.dist.dir}" />
-		<copy file="DefaultChecks.xml" todir="${src.dist.dir}" />
+		<copy file="sun_checks.xml" todir="${src.dist.dir}" />
+		<copy file="CheckConfig_Checkstyle.xml" todir="${src.dist.dir}" />
+		<copy file="DefaultCheckConfigurations.xml" todir="${src.dist.dir}" />
 		<copy file="build.xml" todir="${src.dist.dir}" />
+		<copy file=".checkstyle" todir="${src.dist.dir}" />
 		<copy file=".project" todir="${src.dist.dir}" />
 		<copy file=".classpath" todir="${src.dist.dir}" />
 		<copy todir="${src.dist.dir}/doc">

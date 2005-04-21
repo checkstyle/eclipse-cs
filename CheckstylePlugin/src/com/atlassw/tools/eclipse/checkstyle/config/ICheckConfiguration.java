@@ -176,7 +176,6 @@ public interface ICheckConfiguration extends Cloneable
      * Clone this Check Configuration.
      * 
      * @return ICheckConfiguration the clone
-     * @throws CloneNotSupportedException if cloning is not supported
      */
-    Object clone() throws CloneNotSupportedException;
+    Object clone();
 }

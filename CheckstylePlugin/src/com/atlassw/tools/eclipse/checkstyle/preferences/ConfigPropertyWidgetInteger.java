@@ -47,27 +47,27 @@ import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
  */
 public class ConfigPropertyWidgetInteger extends ConfigPropertyWidgetAbstractBase
 {
-    //=================================================
+    // =================================================
     // Public static final variables.
-    //=================================================
+    // =================================================
 
-    //=================================================
+    // =================================================
     // Static class variables.
-    //=================================================
+    // =================================================
 
-    //=================================================
+    // =================================================
     // Instance member variables.
-    //=================================================
+    // =================================================
 
     private Text mTextWidget;
 
-    //=================================================
+    // =================================================
     // Constructors & finalizer.
-    //=================================================
+    // =================================================
 
-    //=================================================
+    // =================================================
     // Methods.
-    //=================================================
+    // =================================================
 
     ConfigPropertyWidgetInteger(Composite parent, ConfigProperty prop)
     {
@@ -84,7 +84,7 @@ public class ConfigPropertyWidgetInteger extends ConfigPropertyWidgetAbstractBas
         {
 
             //
-            //  Create a text entry field.
+            // Create a text entry field.
             //
             mTextWidget = new Text(parent, SWT.SINGLE | SWT.BORDER);
             mTextWidget.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -96,13 +96,13 @@ public class ConfigPropertyWidgetInteger extends ConfigPropertyWidgetAbstractBas
 
                     boolean doit = true;
 
-                    //only let digits pass (and del, backspace)
+                    // only let digits pass (and del, backspace)
                     if (!(Character.isDigit(e.character) || e.character == SWT.DEL || e.character == SWT.BS))
                     {
                         doit = false;
                     }
 
-                    //check if inserted text is an integer
+                    // check if inserted text is an integer
                     if (!doit)
                     {
                         try
@@ -143,7 +143,7 @@ public class ConfigPropertyWidgetInteger extends ConfigPropertyWidgetAbstractBas
         String result = mTextWidget.getText();
         if (result == null)
         {
-            result = "";
+            result = new String();
         }
         return result;
     }
@@ -154,6 +154,6 @@ public class ConfigPropertyWidgetInteger extends ConfigPropertyWidgetAbstractBas
     public void restorePropertyDefault()
     {
         String defaultValue = getConfigProperty().getMetaData().getDefaultValue();
-        mTextWidget.setText(defaultValue != null ? defaultValue : "");
+        mTextWidget.setText(defaultValue != null ? defaultValue : new String());
     }
 }

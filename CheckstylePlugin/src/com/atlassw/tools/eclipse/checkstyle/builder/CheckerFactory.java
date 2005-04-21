@@ -66,11 +66,11 @@ public final class CheckerFactory
     static
     {
 
-        //Use synchronized collections to avoid concurrent modification
+        // Use synchronized collections to avoid concurrent modification
         sCheckerMap = Collections.synchronizedMap(new WeakHashMap());
         sModifiedMap = Collections.synchronizedMap(new HashMap());
 
-        sSharedClassLoader = new ProjectClassLoader(/*Thread.currentThread().getContextClassLoader()*/);
+        sSharedClassLoader = new ProjectClassLoader();
     }
 
     //
@@ -82,7 +82,7 @@ public final class CheckerFactory
      */
     private CheckerFactory()
     {
-    //noop
+    // noop
     }
 
     //
@@ -105,15 +105,15 @@ public final class CheckerFactory
 
         Checker checker = tryCheckerCache(configLocation);
 
-        //no cache hit
+        // no cache hit
         if (checker == null)
         {
 
-            //TODO remove this
+            // TODO remove this
             System.out.println("Creating checker for :" + configLocation);
             checker = createCheckerInternal(configLocation, config.getPropertyResolver());
 
-            //store checker in cache
+            // store checker in cache
             Long modified = new Long(configLocation.openConnection().getLastModified());
             sCheckerMap.put(configLocation, checker);
             sModifiedMap.put(configLocation, modified);
@@ -152,18 +152,18 @@ public final class CheckerFactory
     private static Checker tryCheckerCache(URL config) throws IOException
     {
 
-        //try the cache
+        // try the cache
         Checker checker = (Checker) sCheckerMap.get(config);
 
-        //if cache hit
+        // if cache hit
         if (checker != null)
         {
 
-            //compare modification times of the configs
+            // compare modification times of the configs
             Long oldTime = (Long) sModifiedMap.get(config);
             Long newTime = new Long(config.openConnection().getLastModified());
 
-            //no match - remove checker from cache
+            // no match - remove checker from cache
             if (oldTime == null || oldTime.compareTo(newTime) != 0)
             {
                 checker = null;
@@ -189,11 +189,11 @@ public final class CheckerFactory
         throws CheckstyleException
     {
 
-        //load configuration
+        // load configuration
         Configuration configuration = ConfigurationLoader.loadConfiguration(config.toString(),
                 propResolver);
 
-        //create and configure checker
+        // create and configure checker
         Checker checker = new Checker();
         checker.setClassloader(sSharedClassLoader);
         checker.configure(configuration);

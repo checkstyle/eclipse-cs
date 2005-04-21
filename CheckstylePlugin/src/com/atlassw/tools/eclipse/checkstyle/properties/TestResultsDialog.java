@@ -46,6 +46,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
+import com.atlassw.tools.eclipse.checkstyle.Messages;
+
 /**
  * Property page.
  */
@@ -95,7 +97,7 @@ public class TestResultsDialog extends Dialog
         dialog.setLayout(layout);
 
         Label label = new Label(dialog, SWT.NULL);
-        label.setText("The following files are included in the File Set");
+        label.setText(Messages.TestResultsDialog_lblFilterResult);
 
         Table table = new Table(dialog, SWT.BORDER);
         TableLayout tableLayout = new TableLayout();
@@ -109,7 +111,7 @@ public class TestResultsDialog extends Dialog
         table.setLayoutData(data);
 
         TableColumn column1 = new TableColumn(table, SWT.NONE);
-        column1.setText("Matching Files");
+        column1.setText(Messages.TestResultsDialog_colMatchingFiles);
         tableLayout.addColumnData(new ColumnWeightData(10));
 
         TableViewer viewer = new TableViewer(table);
@@ -133,7 +135,7 @@ public class TestResultsDialog extends Dialog
     protected void configureShell(Shell shell)
     {
         super.configureShell(shell);
-        shell.setText("Checkstyle File Set Test Results");
+        shell.setText(Messages.TestResultsDialog_titleTestResult);
     }
 
     class TestResultLabelProvider extends LabelProvider implements ITableLabelProvider

@@ -48,6 +48,7 @@ import org.xml.sax.helpers.AttributesImpl;
 import org.xml.sax.helpers.DefaultHandler;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
+import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.ConfigurationTypes;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.IConfigurationType;
 import com.atlassw.tools.eclipse.checkstyle.config.migration.CheckConfigurationMigrator;
@@ -60,19 +61,19 @@ import com.atlassw.tools.eclipse.checkstyle.util.XMLUtil;
  */
 public final class CheckConfigurationFactory
 {
-    //=================================================
+    // =================================================
     // Public static final variables.
-    //=================================================
+    // =================================================
 
-    //=================================================
+    // =================================================
     // Static class variables.
-    //=================================================
+    // =================================================
 
-    private static final String DEFAULT_CHECK_CONFIGS = "DefaultCheckConfigurations.xml";
+    private static final String DEFAULT_CHECK_CONFIGS = "DefaultCheckConfigurations.xml"; //$NON-NLS-1$
 
-    private static final String CHECKSTYLE_CONFIG_FILE = "checkstyle-config.xml";
+    private static final String CHECKSTYLE_CONFIG_FILE = "checkstyle-config.xml"; //$NON-NLS-1$
 
-    private static final String VERSION_5_0_0 = "5.0.0";
+    private static final String VERSION_5_0_0 = "5.0.0"; //$NON-NLS-1$
 
     private static final String CURRENT_CONFIG_FILE_FORMAT_VERSION = VERSION_5_0_0;
 
@@ -90,24 +91,24 @@ public final class CheckConfigurationFactory
         }
         catch (CheckstylePluginException e)
         {
-            CheckstyleLog.error("Error loading the internal check configurations", e);
+            CheckstyleLog.log(e);
         }
     }
 
-    //=================================================
+    // =================================================
     // Instance member variables.
-    //=================================================
+    // =================================================
 
-    //=================================================
+    // =================================================
     // Constructors & finalizer.
-    //=================================================
+    // =================================================
 
     private CheckConfigurationFactory()
     {}
 
-    //=================================================
+    // =================================================
     // Methods.
-    //=================================================
+    // =================================================
 
     /**
      * Get an <code>CheckConfiguration</code> instance by its name.
@@ -116,10 +117,8 @@ public final class CheckConfigurationFactory
      * 
      * @return The requested instance or <code>null</code> if the named
      *         instance could not be found.
-     * 
-     * @throws CheckstylePluginException Error during processing.
      */
-    public static ICheckConfiguration getByName(String name) throws CheckstylePluginException
+    public static ICheckConfiguration getByName(String name)
     {
         ICheckConfiguration config = null;
         Iterator it = sConfigurations.iterator();
@@ -140,10 +139,8 @@ public final class CheckConfigurationFactory
      * Get a list of the currently defined check configurations.
      * 
      * @return A list containing all instances.
-     * 
-     * @throws CheckstylePluginException Error during processing.
      */
-    public static List getCheckConfigurations() throws CheckstylePluginException
+    public static List getCheckConfigurations()
     {
         return sConfigurations;
     }
@@ -197,7 +194,7 @@ public final class CheckConfigurationFactory
     public static void copyConfiguration(ICheckConfiguration source, ICheckConfiguration target)
         throws CheckstylePluginException
     {
-        //use the export function ;-)
+        // use the export function ;-)
         String targetFile = target.getCheckstyleConfigurationURL().getFile();
         exportConfiguration(new File(targetFile), source);
     }
@@ -222,7 +219,7 @@ public final class CheckConfigurationFactory
         try
         {
 
-            //Just copy the checkstyle configuration
+            // Just copy the checkstyle configuration
             URL configUrl = config.getCheckstyleConfigurationURL();
 
             in = new BufferedInputStream(configUrl.openStream());
@@ -237,7 +234,7 @@ public final class CheckConfigurationFactory
         }
         catch (Exception e)
         {
-            throw new CheckstylePluginException(e.getLocalizedMessage(), e);
+            CheckstylePluginException.rethrow(e);
         }
         finally
         {
@@ -248,7 +245,7 @@ public final class CheckConfigurationFactory
             }
             catch (IOException e1)
             {
-                //NOOP
+                // NOOP
             }
             try
             {
@@ -256,7 +253,7 @@ public final class CheckConfigurationFactory
             }
             catch (IOException e2)
             {
-                //NOOP
+                // NOOP
             }
         }
     }
@@ -277,11 +274,11 @@ public final class CheckConfigurationFactory
             File configFile = configPath.toFile();
 
             //
-            //  Make sure the files exists, it might not.
+            // Make sure the files exists, it might not.
             //
             if (!configFile.exists())
             {
-                //load from plugins default configuration
+                // load from plugins default configuration
                 Path defaultsPath = new Path(DEFAULT_CHECK_CONFIGS);
                 inStream = CheckstylePlugin.getDefault().openStream(defaultsPath);
             }
@@ -304,8 +301,7 @@ public final class CheckConfigurationFactory
         }
         catch (Exception e)
         {
-            String message = "Failed to read internal check configuration file";
-            throw new CheckstylePluginException(message, e);
+            CheckstylePluginException.rethrow(e, ErrorMessages.errorLoadingConfigFile);
         }
 
         finally
@@ -318,7 +314,7 @@ public final class CheckConfigurationFactory
                 }
                 catch (Exception e)
                 {
-                    //  Nothing can be done about it.
+                    // Nothing can be done about it.
                 }
             }
         }
@@ -333,7 +329,7 @@ public final class CheckConfigurationFactory
         try
         {
 
-            //get input stream to the default configuration
+            // get input stream to the default configuration
             Path defaultsPath = new Path(DEFAULT_CHECK_CONFIGS);
             defaultConfigStream = CheckstylePlugin.getDefault().openStream(defaultsPath);
 
@@ -341,10 +337,10 @@ public final class CheckConfigurationFactory
             XMLUtil.parseWithSAX(defaultConfigStream, handler);
             List defaultConfigs = handler.getConfigurations();
 
-            //set configurations to make duplicate name detection possible
+            // set configurations to make duplicate name detection possible
             sConfigurations.addAll(defaultConfigs);
 
-            //get inputstream to the current oldstyle config
+            // get inputstream to the current oldstyle config
             IPath configPath = CheckstylePlugin.getDefault().getStateLocation();
             configPath = configPath.append(CHECKSTYLE_CONFIG_FILE);
             File configFile = configPath.toFile();
@@ -352,15 +348,14 @@ public final class CheckConfigurationFactory
 
             List migratedConfigs = CheckConfigurationMigrator.getMigratedConfigurations(inStream);
 
-            //store all configurations
+            // store all configurations
             defaultConfigs.addAll(migratedConfigs);
             setCheckConfigurations(defaultConfigs);
 
         }
         catch (Exception e)
         {
-            String message = "Failed to migrate old check configurations.";
-            throw new CheckstylePluginException(message, e);
+            CheckstylePluginException.rethrow(e, ErrorMessages.errorMigratingConfig);
         }
 
         finally
@@ -372,7 +367,7 @@ public final class CheckConfigurationFactory
             }
             catch (Exception e)
             {
-                //  Nothing can be done about it.
+                // Nothing can be done about it.
             }
             try
             {
@@ -380,7 +375,7 @@ public final class CheckConfigurationFactory
             }
             catch (Exception e)
             {
-                //  Nothing can be done about it.
+                // Nothing can be done about it.
             }
         }
     }
@@ -402,21 +397,20 @@ public final class CheckConfigurationFactory
 
             byteOut = new ByteArrayOutputStream();
 
-            //Write the configuration document by pushing sax events through
+            // Write the configuration document by pushing sax events through
             // the transformer handler
             TransformerHandler xmlOut = XMLUtil.writeWithSax(byteOut);
 
             writeConfigurations(xmlOut);
 
-            //write to the file after the serialization was successful
-            //prevents corrupted files in case of error
+            // write to the file after the serialization was successful
+            // prevents corrupted files in case of error
             out = new BufferedOutputStream(new FileOutputStream(configFile));
             out.write(byteOut.toByteArray());
         }
         catch (Exception e)
         {
-            String message = "Failed to write check configurations file";
-            throw new CheckstylePluginException(message, e);
+            CheckstylePluginException.rethrow(e, ErrorMessages.errorWritingConfigFile);
         }
         finally
         {
@@ -426,7 +420,7 @@ public final class CheckConfigurationFactory
             }
             catch (Exception e1)
             {
-                //can nothing do about it
+                // can nothing do about it
             }
             try
             {
@@ -434,7 +428,7 @@ public final class CheckConfigurationFactory
             }
             catch (Exception e1)
             {
-                //can nothing do about it
+                // can nothing do about it
             }
         }
     }
@@ -451,10 +445,11 @@ public final class CheckConfigurationFactory
 
         handler.startDocument();
         AttributesImpl attrs = new AttributesImpl();
-        attrs.addAttribute("", XMLTags.VERSION_TAG, XMLTags.VERSION_TAG, null,
+        attrs.addAttribute(new String(), XMLTags.VERSION_TAG, XMLTags.VERSION_TAG, null,
                 CURRENT_CONFIG_FILE_FORMAT_VERSION);
 
-        handler.startElement("", XMLTags.CHECKSTYLE_ROOT_TAG, XMLTags.CHECKSTYLE_ROOT_TAG, attrs);
+        handler.startElement(new String(), XMLTags.CHECKSTYLE_ROOT_TAG,
+                XMLTags.CHECKSTYLE_ROOT_TAG, attrs);
         handler.ignorableWhitespace(new char[] { '\n' }, 0, 1);
 
         Iterator it = sConfigurations.iterator();
@@ -464,23 +459,25 @@ public final class CheckConfigurationFactory
             ICheckConfiguration config = (ICheckConfiguration) it.next();
 
             attrs = new AttributesImpl();
-            attrs.addAttribute("", XMLTags.NAME_TAG, XMLTags.NAME_TAG, null, config.getName());
-            attrs.addAttribute("", XMLTags.LOCATION_TAG, XMLTags.LOCATION_TAG, null, config
-                    .getLocation());
-            attrs.addAttribute("", XMLTags.TYPE_TAG, XMLTags.TYPE_TAG, null, config.getType()
-                    .getInternalName());
+            attrs.addAttribute(new String(), XMLTags.NAME_TAG, XMLTags.NAME_TAG, null, config
+                    .getName());
+            attrs.addAttribute(new String(), XMLTags.LOCATION_TAG, XMLTags.LOCATION_TAG, null,
+                    config.getLocation());
+            attrs.addAttribute(new String(), XMLTags.TYPE_TAG, XMLTags.TYPE_TAG, null, config
+                    .getType().getInternalName());
             if (config.getDescription() != null)
             {
-                attrs.addAttribute("", XMLTags.DESCRIPTION_TAG, XMLTags.DESCRIPTION_TAG, null,
-                        config.getDescription());
+                attrs.addAttribute(new String(), XMLTags.DESCRIPTION_TAG, XMLTags.DESCRIPTION_TAG,
+                        null, config.getDescription());
             }
 
-            handler.startElement("", XMLTags.CHECK_CONFIG_TAG, XMLTags.CHECK_CONFIG_TAG, attrs);
-            handler.endElement("", XMLTags.CHECK_CONFIG_TAG, XMLTags.CHECK_CONFIG_TAG);
+            handler.startElement(new String(), XMLTags.CHECK_CONFIG_TAG, XMLTags.CHECK_CONFIG_TAG,
+                    attrs);
+            handler.endElement(new String(), XMLTags.CHECK_CONFIG_TAG, XMLTags.CHECK_CONFIG_TAG);
             handler.ignorableWhitespace(new char[] { '\n' }, 0, 1);
         }
 
-        handler.endElement("", XMLTags.CHECKSTYLE_ROOT_TAG, XMLTags.CHECKSTYLE_ROOT_TAG);
+        handler.endElement(new String(), XMLTags.CHECKSTYLE_ROOT_TAG, XMLTags.CHECKSTYLE_ROOT_TAG);
         handler.endDocument();
     }
 

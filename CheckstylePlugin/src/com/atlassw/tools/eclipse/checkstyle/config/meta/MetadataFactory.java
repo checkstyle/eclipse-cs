@@ -37,6 +37,7 @@ import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
 import com.atlassw.tools.eclipse.checkstyle.config.Module;
 import com.atlassw.tools.eclipse.checkstyle.config.XMLTags;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.atlassw.tools.eclipse.checkstyle.util.XMLUtil;
 import com.puppycrawl.tools.checkstyle.api.AbstractFileSetCheck;
 import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
@@ -46,13 +47,13 @@ import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
  */
 public final class MetadataFactory
 {
-    //=================================================
+    // =================================================
     // Public static final variables.
-    //=================================================
+    // =================================================
 
-    //=================================================
+    // =================================================
     // Static class variables.
-    //=================================================
+    // =================================================
 
     /** Metadata for the rule groups. */
     private static List sRuleGroupMetadata = new LinkedList();
@@ -70,15 +71,15 @@ public final class MetadataFactory
     private static SeverityLevel sDefaultSeverity;
 
     /** Name of the rules metadata XML file. */
-    private static final String METADATA_FILENAME = "/CheckstyleMetadata.xml";
+    private static final String METADATA_FILENAME = "/CheckstyleMetadata.xml"; //$NON-NLS-1$
 
-    //=================================================
+    // =================================================
     // Instance member variables.
-    //=================================================
+    // =================================================
 
-    //=================================================
+    // =================================================
     // Constructors & finalizer.
-    //=================================================
+    // =================================================
 
     /**
      * Private constructor to prevent instantiation.
@@ -91,12 +92,19 @@ public final class MetadataFactory
      */
     static
     {
-        doInitialization();
+        try
+        {
+            doInitialization();
+        }
+        catch (CheckstylePluginException e)
+        {
+            CheckstyleLog.log(e);
+        }
     }
 
-    //=================================================
+    // =================================================
     // Methods.
-    //=================================================
+    // =================================================
 
     /**
      * Get a list of metadata objects for all rule groups.
@@ -120,10 +128,10 @@ public final class MetadataFactory
 
         RuleMetadata metadata = null;
 
-        //first try the internal name mapping
+        // first try the internal name mapping
         metadata = (RuleMetadata) sRuleMetadata.get(name);
 
-        //try the alternative names
+        // try the alternative names
         if (metadata == null)
         {
             metadata = (RuleMetadata) sAlternativeNamesMap.get(name);
@@ -159,7 +167,7 @@ public final class MetadataFactory
         }
         catch (Exception e)
         {
-            //Ok we tried... default to TreeWalker
+            // Ok we tried... default to TreeWalker
             parent = XMLTags.TREEWALKER_MODULE;
         }
 
@@ -192,37 +200,34 @@ public final class MetadataFactory
 
     /**
      * Initializes the meta data from the xml file.
+     * 
+     * @throws CheckstylePluginException error loading the meta data file
      */
-    private static void doInitialization()
+    private static void doInitialization() throws CheckstylePluginException
     {
         InputStream metadataStream = null;
         try
         {
             //
-            //  Get the metadata file's input stream.
+            // Get the metadata file's input stream.
             //
             metadataStream = new BufferedInputStream(MetadataFactory.class
                     .getResourceAsStream(METADATA_FILENAME));
-            if (metadataStream == null)
-            {
-                CheckstyleLog.error("Failed to load audit rule metadata, input stream is null");
-                return;
-            }
 
             XMLUtil.parseWithSAX(metadataStream, new MetaDataHandler());
-
         }
-        catch (ParserConfigurationException e)
+        catch (SAXException se)
         {
-            CheckstyleLog.error("Could not create parser.", e);
+            Exception ex = se.getException() != null ? se.getException() : se;
+            CheckstylePluginException.rethrow(ex);
         }
-        catch (SAXException e)
+        catch (ParserConfigurationException pe)
         {
-            CheckstyleLog.error("Error parsing the metadata.", e);
+            CheckstylePluginException.rethrow(pe);
         }
-        catch (IOException e)
+        catch (IOException ioe)
         {
-            CheckstyleLog.error("Error reading metadata file.", e);
+            CheckstylePluginException.rethrow(ioe);
         }
         finally
         {
@@ -232,7 +237,7 @@ public final class MetadataFactory
             }
             catch (Exception e)
             {
-                //  We tried to be nice and close the stream.
+                // We tried to be nice and close the stream.
             }
         }
     }
@@ -282,13 +287,13 @@ public final class MetadataFactory
                     boolean hidden = Boolean.valueOf(attributes.getValue(XMLTags.HIDDEN_TAG))
                             .booleanValue();
 
-                    //Create the groups
+                    // Create the groups
                     mCurrentGroup = new RuleGroupMetadata(groupName, hidden);
                     sRuleGroupMetadata.add(mCurrentGroup);
                 }
                 else if (XMLTags.RULE_METADATA_TAG.equals(qName))
                 {
-                    //default severity
+                    // default severity
                     String defaultSeverity = attributes.getValue(XMLTags.DEFAULT_SEVERITY_TAG);
                     SeverityLevel severity = defaultSeverity == null
                             || defaultSeverity.trim().length() == 0 ? sDefaultSeverity
@@ -301,16 +306,16 @@ public final class MetadataFactory
                             : null;
                     boolean hidden = Boolean.valueOf(attributes.getValue(XMLTags.HIDDEN_TAG))
                             .booleanValue();
-                    boolean hasSeverity = !"false".equals(attributes
+                    boolean hasSeverity = !"false".equals(attributes //$NON-NLS-1$
                             .getValue(XMLTags.HAS_SEVERITY_TAG));
-                    boolean deletable = !"false".equals(attributes.getValue(XMLTags.DELETABLE_TAG));
+                    boolean deletable = !"false".equals(attributes.getValue(XMLTags.DELETABLE_TAG)); //$NON-NLS-1$
 
-                    //create rule metadata
+                    // create rule metadata
                     mCurrentRule = new RuleMetadata(name, internalName, parentName, severity,
                             hidden, hasSeverity, deletable, mCurrentGroup);
                     mCurrentGroup.getRuleMetadata().add(mCurrentRule);
 
-                    //register internal name
+                    // register internal name
                     sRuleMetadata.put(internalName, mCurrentRule);
                 }
                 else if (XMLTags.PROPERTY_METADATA_TAG.equals(qName))
@@ -327,12 +332,12 @@ public final class MetadataFactory
 
                     mCurrentProperty = new ConfigPropertyMetadata(type, name, defaultValue);
 
-                    //add to current rule
+                    // add to current rule
                     mCurrentRule.getPropertyMetadata().add(mCurrentProperty);
                 }
                 else if (XMLTags.ALTERNATIVE_NAME_TAG.equals(qName))
                 {
-                    //register alternative name
+                    // register alternative name
                     sAlternativeNamesMap.put(attributes.getValue(XMLTags.INTERNAL_NAME_TAG),
                             mCurrentRule);
                 }
@@ -347,9 +352,8 @@ public final class MetadataFactory
                             attributes.getValue(XMLTags.VALUE_TAG));
                 }
             }
-            catch (Exception e)
+            catch (CheckstylePluginException e)
             {
-                CheckstyleLog.error(e.getLocalizedMessage(), e);
                 throw new SAXException(e.getLocalizedMessage(), e);
             }
         }
@@ -372,7 +376,7 @@ public final class MetadataFactory
             else if (XMLTags.DESCRIPTION_TAG.equals(qName))
             {
                 mInDescriptionElement = false;
-                //Set the description to the current element
+                // Set the description to the current element
                 String description = mDescription.toString();
                 if (mCurrentProperty != null)
                 {

@@ -40,6 +40,7 @@ import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
+import com.atlassw.tools.eclipse.checkstyle.Messages;
 
 /**
  * Implementation of a file based location editor. Contains a text field with
@@ -82,7 +83,7 @@ public class ProjectConfigurationLocationEditor implements IConfigurationLocatio
         mLocation.setLayoutData(gd);
 
         mBtnBrowse = new Button(contents, SWT.PUSH);
-        mBtnBrowse.setText("Browse...");
+        mBtnBrowse.setText(Messages.ProjectConfigurationLocationEditor_btnBrowse);
         mBtnBrowse.setLayoutData(new GridData());
 
         mBtnBrowse.addSelectionListener(new SelectionListener()
@@ -92,8 +93,8 @@ public class ProjectConfigurationLocationEditor implements IConfigurationLocatio
             {
                 ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(shell,
                         new WorkbenchLabelProvider(), new WorkbenchContentProvider());
-                dialog.setTitle("Select checkstyle configuration file");
-                dialog.setMessage("Select the configuration file for this check configuration.");
+                dialog.setTitle(Messages.ProjectConfigurationLocationEditor_titleSelectConfigFile);
+                dialog.setMessage(Messages.ProjectConfigurationLocationEditor_msgSelectConfigFile);
                 dialog.setBlockOnOpen(true);
                 dialog.setAllowMultiple(false);
                 dialog.setInput(CheckstylePlugin.getWorkspace().getRoot());
@@ -103,13 +104,13 @@ public class ProjectConfigurationLocationEditor implements IConfigurationLocatio
                     {
                         if (selection.length == 1 && selection[0] instanceof IFile)
                         {
-                            return new Status(IStatus.OK, PlatformUI.PLUGIN_ID, IStatus.ERROR, "",
-                                    null);
+                            return new Status(IStatus.OK, PlatformUI.PLUGIN_ID, IStatus.ERROR,
+                                    new String(), null);
                         }
                         else
                         {
                             return new Status(IStatus.ERROR, PlatformUI.PLUGIN_ID, IStatus.ERROR,
-                                    "", null);
+                                    new String(), null);
                         }
                     }
                 });
@@ -123,7 +124,7 @@ public class ProjectConfigurationLocationEditor implements IConfigurationLocatio
 
             public void widgetDefaultSelected(SelectionEvent e)
             {
-            //NOOP
+            // NOOP
             }
         });
 

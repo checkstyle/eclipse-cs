@@ -39,9 +39,11 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Shell;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
+import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileSet;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfiguration;
@@ -58,28 +60,28 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
  */
 public class CheckstyleBuilder extends IncrementalProjectBuilder
 {
-    //=================================================
+    // =================================================
     // Public static final variables.
-    //=================================================
+    // =================================================
 
     /** Eclipse extension point ID for the builder. */
-    public static final String BUILDER_ID = CheckstylePlugin.PLUGIN_ID + ".CheckstyleBuilder";
+    public static final String BUILDER_ID = CheckstylePlugin.PLUGIN_ID + ".CheckstyleBuilder"; //$NON-NLS-1$
 
-    //=================================================
+    // =================================================
     // Static class variables.
-    //=================================================
+    // =================================================
 
-    //=================================================
+    // =================================================
     // Instance member variables.
-    //=================================================
+    // =================================================
 
-    //=================================================
+    // =================================================
     // Constructors & finalizer.
-    //=================================================
+    // =================================================
 
-    //=================================================
+    // =================================================
     // Methods.
-    //=================================================
+    // =================================================
 
     /**
      * Runs the Checkstyle builder on a project.
@@ -92,7 +94,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
      */
     public static void buildProject(IProject project, Shell shell) throws CheckstylePluginException
     {
-        //uses the new Jobs API to run the build in the background
+        // uses the new Jobs API to run the build in the background
         BuildProjectJob buildJob = new BuildProjectJob(project,
                 IncrementalProjectBuilder.FULL_BUILD);
         buildJob.setRule(ResourcesPlugin.getWorkspace().getRoot());
@@ -111,7 +113,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
         IWorkspace workspace = ResourcesPlugin.getWorkspace();
         IProject[] projects = workspace.getRoot().getProjects();
 
-        //uses the new Jobs API to run the build in the background
+        // uses the new Jobs API to run the build in the background
         BuildProjectJob buildJob = new BuildProjectJob(projects,
                 IncrementalProjectBuilder.FULL_BUILD);
         buildJob.setRule(ResourcesPlugin.getWorkspace().getRoot());
@@ -126,14 +128,14 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
         throws CoreException
     {
 
-        //get the associated project for this builder
+        // get the associated project for this builder
         IProject project = getProject();
 
         if (project != null)
         {
 
             //
-            //  get the project configuration
+            // get the project configuration
             //
             ProjectConfiguration config = null;
             try
@@ -149,10 +151,10 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
 
             Collection files = null;
 
-            //get the delta of the latest changes
+            // get the delta of the latest changes
             IResourceDelta resourceDelta = getDelta(project);
 
-            //find the files for the build
+            // find the files for the build
             if (resourceDelta != null)
             {
                 files = getFiles(resourceDelta, config.getEnabledFilters());
@@ -163,7 +165,6 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
             }
 
             System.out.println("Passing through filters: " + files.size());
-
             handleBuildSelection(files, config, monitor, project, kind);
         }
 
@@ -183,7 +184,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
             IProgressMonitor monitor, IProject project, int kind) throws CoreException
     {
 
-        //on full build remove all previous checkstyle markers
+        // on full build remove all previous checkstyle markers
         if (kind == IncrementalProjectBuilder.FULL_BUILD)
         {
             project.deleteMarkers(CheckstyleMarker.MARKER_ID, false, IResource.DEPTH_INFINITE);
@@ -208,48 +209,48 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
 
                 FileSet fileSet = (FileSet) fileSets.get(i);
 
-                //get an already created audit from the map
+                // get an already created audit from the map
                 Auditor audit = (Auditor) audits.get(fileSet.getCheckConfigName());
 
-                //create the audit with the file sets check configuration
+                // create the audit with the file sets check configuration
                 if (audit == null)
                 {
                     ICheckConfiguration checkConfig = fileSet.getCheckConfig();
                     if (checkConfig == null)
                     {
-                        throw new CheckstylePluginException("Fileset from project '"
-                                + project.getName() + "' has no valid check configuration.");
+                        throw new CheckstylePluginException(NLS.bind(
+                                ErrorMessages.errorNoCheckConfig, project.getName()));
                     }
 
                     audit = new Auditor(checkConfig);
                     audits.put(fileSet.getCheckConfigName(), audit);
                 }
 
-                //check which files belong to the file set
+                // check which files belong to the file set
                 Iterator it = resources.iterator();
                 while (it.hasNext())
                 {
 
                     IFile file = (IFile) it.next();
 
-                    //if file set includes file add to the audit
+                    // if file set includes file add to the audit
                     if (fileSet.includesFile(file))
                     {
                         audit.addFile(file);
 
-                        //remove markers on this file
+                        // remove markers on this file
                         file.deleteMarkers(CheckstyleMarker.MARKER_ID, false, IResource.DEPTH_ZERO);
 
-                        //remove markers from package to prevent packagehtml
+                        // remove markers from package to prevent packagehtml
                         // messages
-                        //from accumulatin
+                        // from accumulatin
                         file.getParent().deleteMarkers(CheckstyleMarker.MARKER_ID, false,
                                 IResource.DEPTH_ZERO);
                     }
                 }
             }
 
-            //run all auditors
+            // run all auditors
             Iterator it = audits.values().iterator();
             while (it.hasNext())
             {
@@ -262,7 +263,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
         }
         catch (CheckstylePluginException e)
         {
-            CheckstyleLog.error(e.getLocalizedMessage(), e);
+            CheckstyleLog.log(e); //TODO check if this is needed
             Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR, e
                     .getLocalizedMessage(), e);
             throw new CoreException(status);
@@ -289,14 +290,14 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
 
             IResourceDelta childDelta = affectedChildren[i];
 
-            //check if a resource has changed
+            // check if a resource has changed
             int deltaKind = childDelta.getKind();
             if ((deltaKind == IResourceDelta.ADDED) || (deltaKind == IResourceDelta.CHANGED))
             {
 
                 IResource child = childDelta.getResource();
 
-                //filter resources
+                // filter resources
                 boolean goesThrough = true;
                 for (int j = 0; j < filters.length; j++)
                 {
@@ -308,15 +309,15 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
                     }
                 }
 
-                //the child has made it through the filters
+                // the child has made it through the filters
                 if (goesThrough)
                 {
 
-                    //add to the resources to check
+                    // add to the resources to check
                     resources.add(child);
                 }
 
-                //recurse over containers
+                // recurse over containers
                 if (child instanceof IContainer)
                 {
                     resources.addAll(getFiles(childDelta, filters));
@@ -341,13 +342,13 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
 
         IResource[] children = container.members();
 
-        //loop over children resources
+        // loop over children resources
         for (int i = 0; i < children.length; i++)
         {
 
             IResource child = children[i];
 
-            //filter resources
+            // filter resources
             boolean goesThrough = true;
             for (int j = 0; j < filters.length; j++)
             {
@@ -359,15 +360,15 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
                 }
             }
 
-            //the child has made it through the filters
+            // the child has made it through the filters
             if (goesThrough)
             {
 
-                //add to the resources to check
+                // add to the resources to check
                 resources.add(child);
             }
 
-            //recurse over containers
+            // recurse over containers
             if (child instanceof IContainer)
             {
                 resources.addAll(getFiles((IContainer) child, filters));

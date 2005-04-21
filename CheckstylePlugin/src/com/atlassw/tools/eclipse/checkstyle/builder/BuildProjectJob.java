@@ -26,7 +26,9 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.osgi.util.NLS;
 
+import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.nature.CheckstyleNature;
 
 /**
@@ -59,7 +61,7 @@ public class BuildProjectJob extends Job
      */
     public BuildProjectJob(IProject project, int buildKind)
     {
-        super("Build project '" + project.getName() + "'");
+        super(NLS.bind(Messages.BuildProjectJob_msgBuildProject, project.getName()));
         mProjects = new IProject[] { project };
         mKind = buildKind;
     }
@@ -72,7 +74,7 @@ public class BuildProjectJob extends Job
      */
     public BuildProjectJob(IProject[] projects, int buildKind)
     {
-        super("Build all projects");
+        super(Messages.BuildProjectJob_msgBuildAllProjects);
 
         mProjects = projects;
         mKind = buildKind;
@@ -97,7 +99,7 @@ public class BuildProjectJob extends Job
             for (int i = 0; i < mProjects.length; i++)
             {
 
-                //build only if open and checkstyle active for the project
+                // build only if open and checkstyle active for the project
                 if (mProjects[i].isOpen() && mProjects[i].hasNature(CheckstyleNature.NATURE_ID))
                 {
                     mProjects[i].build(mKind, monitor);

@@ -25,6 +25,7 @@ import org.apache.regexp.RECompiler;
 import org.apache.regexp.REProgram;
 import org.apache.regexp.RESyntaxException;
 
+import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
 /**
@@ -41,19 +42,19 @@ public class FileMatchPattern implements Cloneable
     // Static class variables.
     //=================================================
 
-    private static RECompiler sRECompiler       = new RECompiler();
+    private static RECompiler sRECompiler = new RECompiler();
 
     //=================================================
     // Instance member variables.
     //=================================================
 
-    private String            mMatchPattern;
+    private String mMatchPattern;
 
-    private boolean           mIsIncludePattern = true;
+    private boolean mIsIncludePattern = true;
 
-    private REProgram         mProgram;
+    private REProgram mProgram;
 
-    private RE                mProcessor;
+    private RE mProcessor;
 
     //=================================================
     // Constructors & finalizer.
@@ -96,7 +97,7 @@ public class FileMatchPattern implements Cloneable
     {
         if ((pattern == null) || (pattern.trim().length() == 0))
         {
-            throw new CheckstylePluginException("Empty or null pattern");
+            throw new CheckstylePluginException(ErrorMessages.errorEmptyPattern);
         }
 
         REProgram program = null;
@@ -106,7 +107,7 @@ public class FileMatchPattern implements Cloneable
         }
         catch (RESyntaxException e)
         {
-            throw new CheckstylePluginException(e.getMessage());
+            CheckstylePluginException.rethrow(e); //wrap the exception
         }
         mProcessor = new RE(program);
         mProgram = program;

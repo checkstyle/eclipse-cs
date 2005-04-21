@@ -39,6 +39,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
+import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.ConfigurationTypes;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.IConfigurationLocationEditor;
@@ -133,13 +134,9 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
                             mDescription.getText());
                 }
             }
-            catch (CheckstylePluginException e)
-            {
-                throw e;
-            }
             catch (Exception e)
             {
-                throw new CheckstylePluginException(e.getLocalizedMessage(), e);
+                CheckstylePluginException.rethrow(e);
             }
         }
 
@@ -162,7 +159,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
         contents.setLayoutData(fd);
 
         Label lblConfigType = new Label(contents, SWT.NULL);
-        lblConfigType.setText("Type:");
+        lblConfigType.setText(Messages.CheckConfigurationPropertiesDialog_lblConfigType);
         fd = new GridData();
         lblConfigType.setLayoutData(fd);
 
@@ -206,7 +203,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
         });
 
         Label lblConfigName = new Label(contents, SWT.NULL);
-        lblConfigName.setText("Name:");
+        lblConfigName.setText(Messages.CheckConfigurationPropertiesDialog_lblName);
         fd = new GridData();
         lblConfigName.setLayoutData(fd);
 
@@ -215,7 +212,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
         mConfigName.setLayoutData(fd);
 
         Label lblConfigLocation = new Label(contents, SWT.NULL);
-        lblConfigLocation.setText("Location:");
+        lblConfigLocation.setText(Messages.CheckConfigurationPropertiesDialog_lblLocation);
         fd = new GridData();
         fd.verticalAlignment = GridData.VERTICAL_ALIGN_BEGINNING;
         lblConfigLocation.setLayoutData(fd);
@@ -229,7 +226,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
         mEditorPlaceHolder.setLayoutData(fd);
 
         Label lblDescription = new Label(contents, SWT.NULL);
-        lblDescription.setText("Description:");
+        lblDescription.setText(Messages.CheckConfigurationPropertiesDialog_lblDescription);
         fd = new GridData();
         fd.horizontalSpan = 2;
         lblDescription.setLayoutData(fd);
@@ -256,7 +253,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
     protected void configureShell(Shell newShell)
     {
         super.configureShell(newShell);
-        newShell.setText("Check Configuration Properties");
+        newShell.setText(Messages.CheckConfigurationPropertiesDialog_titleCheckProperties);
     }
 
     /**
@@ -312,8 +309,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
         }
         catch (Exception ex)
         {
-            CheckstyleLog.error(ex.getLocalizedMessage(), ex);
-            CheckstyleLog.errorDialog(getShell(), ex.getLocalizedMessage());
+            CheckstyleLog.errorDialog(getShell(), ex, true);
         }
     }
 
@@ -325,8 +321,8 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
 
         if (mCheckConfig == null)
         {
-            this.setTitle("Check Configuration");
-            this.setMessage("Create a new Check Configuration");
+            this.setTitle(Messages.CheckConfigurationPropertiesDialog_titleCheckConfig);
+            this.setMessage(Messages.CheckConfigurationPropertiesDialog_msgCreateNewCheckConfig);
 
             IConfigurationType[] types = ConfigurationTypes.getCreatableConfigTypes();
             mConfigType.setInput(types);
@@ -337,8 +333,8 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
         }
         else
         {
-            this.setTitle("Check Configuration");
-            this.setMessage("Edit properties of an existing Check Configuration");
+            this.setTitle(Messages.CheckConfigurationPropertiesDialog_titleCheckConfig);
+            this.setMessage(Messages.CheckConfigurationPropertiesDialog_msgEditCheckConfig);
 
             mConfigType.setInput(new IConfigurationType[] { mCheckConfig.getType() });
             //type of existing configs cannot be changed

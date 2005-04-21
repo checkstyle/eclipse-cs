@@ -32,6 +32,7 @@ import java.util.List;
 //=================================================
 // Imports from com namespace
 //=================================================
+import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.config.ResolvableProperty;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
@@ -135,7 +136,7 @@ public class ResolvePropertyValuesDialog extends Dialog
         composite.setLayout(layout);
 
         Label nameLabel = new Label(composite, SWT.NULL);
-        nameLabel.setText("Double-click Variable to Edit");
+        nameLabel.setText(Messages.ResolvePropertyValuesDialog_lblname);
 
         Table table = new Table(composite, SWT.BORDER | SWT.SINGLE | SWT.FULL_SELECTION);
         TableLayout tableLayout = new TableLayout();
@@ -149,11 +150,11 @@ public class ResolvePropertyValuesDialog extends Dialog
         table.setLayoutData(data);
 
         TableColumn column1 = new TableColumn(table, SWT.NONE);
-        column1.setText("Variable");
+        column1.setText(Messages.ResolvePropertyValuesDialog_colVariable);
         tableLayout.addColumnData(new ColumnWeightData(40));
 
         TableColumn column2 = new TableColumn(table, SWT.NONE);
-        column2.setText("Value");
+        column2.setText(Messages.ResolvePropertyValuesDialog_colValue);
         tableLayout.addColumnData(new ColumnWeightData(120));
 
         mViewer = new TableViewer(table);
@@ -192,7 +193,7 @@ public class ResolvePropertyValuesDialog extends Dialog
             String value = dialog.getValue();
             if (value == null)
             {
-                value = "";
+                value = ""; //$NON-NLS-1$
             }
             prop.setValue(value);
             mViewer.refresh();
@@ -209,6 +210,6 @@ public class ResolvePropertyValuesDialog extends Dialog
     protected void configureShell(Shell shell)
     {
         super.configureShell(shell);
-        shell.setText("Resolve Variable Property Values");
+        shell.setText(Messages.ResolvePropertyValuesDialog_titleResolveProperties);
     }
 }

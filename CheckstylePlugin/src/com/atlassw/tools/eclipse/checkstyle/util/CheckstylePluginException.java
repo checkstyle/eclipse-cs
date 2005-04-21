@@ -20,6 +20,7 @@
 
 package com.atlassw.tools.eclipse.checkstyle.util;
 
+
 //=================================================
 // Imports from java namespace
 //=================================================
@@ -73,7 +74,7 @@ public class CheckstylePluginException extends Exception
      * @param msg Description of the error.
      * @param cause the causing exception
      */
-    public CheckstylePluginException(String msg, Throwable cause)
+    private CheckstylePluginException(String msg, Throwable cause)
     {
         super(msg, cause);
     }
@@ -81,4 +82,34 @@ public class CheckstylePluginException extends Exception
     //=================================================
     // Methods.
     //=================================================
+
+    /**
+     * Wraps an exception into a CheckstylePluginException.
+     * 
+     * @param t the exception
+     * @param message an additional exception message
+     * @throws CheckstylePluginException the wrapped exception
+     */
+    public static void rethrow(Throwable t, String message) throws CheckstylePluginException
+    {
+        if (t instanceof CheckstylePluginException)
+        {
+            throw (CheckstylePluginException) t;
+        }
+        else
+        {
+            throw new CheckstylePluginException(message, t);
+        }
+    }
+
+    /**
+     * Wraps an exception into a CheckstylePluginException.
+     * 
+     * @param t the exception
+     * @throws CheckstylePluginException the wrapped exception
+     */
+    public static void rethrow(Throwable t) throws CheckstylePluginException
+    {
+        rethrow(t, t.getLocalizedMessage());
+    }
 }

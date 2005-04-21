@@ -41,8 +41,9 @@ import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.osgi.util.NLS;
 
-import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
+import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
@@ -248,15 +249,15 @@ public class ProjectClassLoader extends ClassLoader
                 {
 
                     // log as exception
-                    CheckstylePluginException ex = new CheckstylePluginException(
-                            "Unknown classpath entry " + cpEntries[i].getPath());
-                    CheckstyleLog.error(ex.getLocalizedMessage(), ex);
+                    CheckstylePluginException ex = new CheckstylePluginException(NLS.bind(
+                            ErrorMessages.errorUnknownClasspathEntry, cpEntries[i].getPath()));
+                    CheckstyleLog.log(ex);
                 }
             }
         }
         catch (JavaModelException jme)
         {
-            CheckstyleLog.error(jme.getLocalizedMessage(), jme);
+            CheckstyleLog.log(jme);
         }
     }
 
@@ -392,7 +393,7 @@ public class ProjectClassLoader extends ClassLoader
                 catch (MalformedURLException mfe)
                 {
                     // log the exception although this should not happen
-                    CheckstyleLog.error(mfe.getLocalizedMessage(), mfe);
+                    CheckstyleLog.log(mfe, mfe.getLocalizedMessage());
                 }
             }
         }

@@ -33,6 +33,7 @@ import org.eclipse.jface.viewers.ICheckStateListener;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableLayout;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -45,7 +46,8 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
-import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
+import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
+import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileSet;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
@@ -55,17 +57,17 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
  */
 public class ComplexFileSetsEditor implements IFileSetsEditor
 {
-    //=================================================
+    // =================================================
     // Public static final variables.
-    //=================================================
+    // =================================================
 
-    //=================================================
+    // =================================================
     // Static class variables.
-    //=================================================
+    // =================================================
 
-    //=================================================
+    // =================================================
     // Instance member variables.
-    //=================================================
+    // =================================================
 
     private IProject mProject;
 
@@ -83,9 +85,9 @@ public class ComplexFileSetsEditor implements IFileSetsEditor
 
     private CheckstylePropertyPage mPropertyPage;
 
-    //=================================================
+    // =================================================
     // Constructors & finalizer.
-    //=================================================
+    // =================================================
 
     /**
      * Creates the ComplexFileSetsEditor.
@@ -95,11 +97,12 @@ public class ComplexFileSetsEditor implements IFileSetsEditor
     public ComplexFileSetsEditor(CheckstylePropertyPage propsPage)
     {
         mPropertyPage = propsPage;
+        mProject = (IProject) propsPage.getElement();
     }
 
-    //=================================================
+    // =================================================
     // Methods.
-    //=================================================
+    // =================================================
 
     /**
      * @see IFileSetsEditor#setFileSets(java.util.List)
@@ -127,14 +130,14 @@ public class ComplexFileSetsEditor implements IFileSetsEditor
         mComposite = parent;
 
         Group composite = new Group(parent, SWT.NONE);
-        composite.setText(CheckstylePlugin.getResourceString("ComplexFileSetsEditor.title"));
+        composite.setText(Messages.ComplexFileSetsEditor_titleAdvancedFilesetEditor);
 
         GridLayout layout = new GridLayout();
         layout.numColumns = 2;
         composite.setLayout(layout);
 
         //
-        //  Create the table of file sets.
+        // Create the table of file sets.
         //
         Table table = new Table(composite, SWT.CHECK | SWT.BORDER | SWT.FULL_SELECTION);
 
@@ -148,11 +151,11 @@ public class ComplexFileSetsEditor implements IFileSetsEditor
         table.setLayout(tableLayout);
 
         TableColumn column1 = new TableColumn(table, SWT.NONE);
-        column1.setText("Enabled");
+        column1.setText(Messages.ComplexFileSetsEditor_colEnabled);
         column1.setResizable(false);
 
         TableColumn column2 = new TableColumn(table, SWT.NONE);
-        column2.setText("File Set");
+        column2.setText(Messages.ComplexFileSetsEditor_colFilesetName);
 
         tableLayout.addColumnData(new ColumnWeightData(12));
         tableLayout.addColumnData(new ColumnWeightData(48));
@@ -164,7 +167,7 @@ public class ComplexFileSetsEditor implements IFileSetsEditor
         mViewer.setInput(mFileSets);
 
         //
-        //  Set checked state
+        // Set checked state
         //
         Iterator iter = mFileSets.iterator();
         while (iter.hasNext())
@@ -190,7 +193,7 @@ public class ComplexFileSetsEditor implements IFileSetsEditor
         });
 
         //
-        //  Build the buttons.
+        // Build the buttons.
         //
         Composite buttons = new Composite(composite, SWT.NULL);
         buttons.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
@@ -199,7 +202,7 @@ public class ComplexFileSetsEditor implements IFileSetsEditor
         layout.marginWidth = 0;
         buttons.setLayout(layout);
 
-        mAddButton = createPushButton(buttons, "Add...");
+        mAddButton = createPushButton(buttons, Messages.ComplexFileSetsEditor_btnAdd);
         mAddButton.addListener(SWT.Selection, new Listener()
         {
             public void handleEvent(Event evt)
@@ -208,7 +211,7 @@ public class ComplexFileSetsEditor implements IFileSetsEditor
             }
         });
 
-        mEditButton = createPushButton(buttons, "Edit...");
+        mEditButton = createPushButton(buttons, Messages.ComplexFileSetsEditor_btnEdit);
         mEditButton.addListener(SWT.Selection, new Listener()
         {
             public void handleEvent(Event evt)
@@ -217,7 +220,7 @@ public class ComplexFileSetsEditor implements IFileSetsEditor
             }
         });
 
-        mRemoveButton = createPushButton(buttons, "Remove");
+        mRemoveButton = createPushButton(buttons, Messages.ComplexFileSetsEditor_btnRemove);
         mRemoveButton.addListener(SWT.Selection, new Listener()
         {
             public void handleEvent(Event evt)
@@ -265,8 +268,8 @@ public class ComplexFileSetsEditor implements IFileSetsEditor
         }
         catch (CheckstylePluginException e)
         {
-            CheckstyleLog.error("Failed to add FileSet: " + e.getMessage(), e);
-            CheckstyleLog.internalErrorDialog();
+            CheckstyleLog.errorDialog(mComposite.getShell(), NLS.bind(
+                    ErrorMessages.errorFailedAddFileset, e.getMessage()), e, true);
         }
     }
 
@@ -277,7 +280,7 @@ public class ComplexFileSetsEditor implements IFileSetsEditor
         if (fileSet == null)
         {
             //
-            //  Nothing is selected.
+            // Nothing is selected.
             //
             return;
         }
@@ -300,8 +303,8 @@ public class ComplexFileSetsEditor implements IFileSetsEditor
         }
         catch (CheckstylePluginException e)
         {
-            CheckstyleLog.error("Failed to edit FileSet: " + e.getMessage(), e);
-            CheckstyleLog.internalErrorDialog();
+            CheckstyleLog.errorDialog(mComposite.getShell(), NLS.bind(
+                    ErrorMessages.errorFailedEditFileset, e.getMessage()), e, true);
         }
     }
 
@@ -312,7 +315,7 @@ public class ComplexFileSetsEditor implements IFileSetsEditor
         if (fileSet == null)
         {
             //
-            //  Nothing is selected.
+            // Nothing is selected.
             //
             return;
         }
@@ -329,10 +332,6 @@ public class ComplexFileSetsEditor implements IFileSetsEditor
             FileSet fileSet = (FileSet) event.getElement();
             fileSet.setEnabled(event.getChecked());
             mViewer.refresh();
-        }
-        else
-        {
-            CheckstyleLog.warning("Checked element in FileSet table not a FileSet");
         }
     }
 

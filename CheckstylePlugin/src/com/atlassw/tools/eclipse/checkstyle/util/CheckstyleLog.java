@@ -31,17 +31,14 @@ package com.atlassw.tools.eclipse.checkstyle.util;
 //=================================================
 // Imports from com namespace
 //=================================================
-import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
-
-//=================================================
-// Imports from org namespace
-//=================================================
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.dialogs.ErrorDialog;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PlatformUI;
+
+import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
+import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 
 /**
  * Logging utility for the Checkstyle plug-in.
@@ -60,7 +57,7 @@ public final class CheckstyleLog
 
     private static final String NEWLINE = System.getProperty("line.separator");
 
-    private static final String ADDED_MSG = "See your <workspace>/.metadata/.log file for additional details.";
+    private static final String ADDED_MSG = "See the Error Log view for additional details.";
 
     //=================================================
     // Instance member variables.
@@ -83,167 +80,251 @@ public final class CheckstyleLog
     //=================================================
 
     /**
-     * Log an error message.
+     * Logs the exceptions.
      * 
-     * @param message Log message.
+     * @param t the exception to log
      */
-    public static void error(String message)
+    public static void log(Throwable t)
     {
-        error(message, null);
+        log(t, t.getLocalizedMessage());
     }
 
     /**
-     * Log an error message.
+     * Logs the exception, describing it with the given message.
      * 
-     * @param message Log message.
-     * 
-     * @param exception Ecxeption that caused the error.
+     * @param t the exception to log
+     * @param message the message
      */
-    public static void error(String message, Throwable exception)
+    public static void log(Throwable t, String message)
     {
-        Status status = new Status(Status.ERROR, CheckstylePlugin.PLUGIN_ID, Status.OK,
-                "Checkstyle: " + message, exception);
+        Status status = new Status(Status.ERROR, CheckstylePlugin.PLUGIN_ID, Status.OK, NLS.bind(
+                "Checkstyle-Plugin: {0}", message), t);
         sLog.log(status);
     }
 
     /**
-     * Log a warning message.
+     * Open an error dialog for an exception that occurred within the plugin.
      * 
-     * @param message Log message.
+     * @param shell the shell
+     * @param message the exception message
+     * @param t the exception
+     * @param log <code>true</code> if the exception should be logged
      */
-    public static void warning(String message)
+    public static void errorDialog(Shell shell, String message, Throwable t, boolean log)
     {
-        warning(message, null);
-    }
 
-    /**
-     * Log a warning message.
-     * 
-     * @param message Log message.
-     * 
-     * @param exception Ecxeption that caused the error.
-     */
-    public static void warning(String message, Throwable exception)
-    {
-        Status status = new Status(Status.WARNING, CheckstylePlugin.PLUGIN_ID, Status.OK,
-                "Checkstyle: " + message, exception);
-        sLog.log(status);
-    }
+        Status status = new Status(Status.ERROR, CheckstylePlugin.PLUGIN_ID, Status.OK, t
+                .getLocalizedMessage(), t);
 
-    /**
-     * Log an information message.
-     * 
-     * @param message Log message.
-     */
-    public static void info(String message)
-    {
-        Status status = new Status(Status.INFO, CheckstylePlugin.PLUGIN_ID, Status.OK,
-                "Checkstyle: " + message, null);
-        sLog.log(status);
-    }
+        String msg = NLS.bind(ErrorMessages.errorDialogMainMessage, message);
+        ErrorDialog.openError(shell, "Internal Checkstyle-Plugin error", msg, status);
 
-    /**
-     * Displays a simple error dialog indicating there was a Checkstyle internal
-     * error.
-     * 
-     * @param shell Shell the use for the dialog.
-     */
-    public static void internalErrorDialog(Shell shell)
-    {
-        errorDialog(shell, "A Checkstyle internal error occured.");
-    }
-
-    /**
-     * Displays a simple error dialog indicating there was a Checkstyle internal
-     * error.
-     */
-    public static void internalErrorDialog()
-    {
-        errorDialog("A Checkstyle internal error occured.");
-    }
-
-    /**
-     * Displays a simple error dialog indicating there was a Checkstyle internal
-     * error.
-     * 
-     * @param msg Message to display.
-     */
-    public static void errorDialog(String msg)
-    {
-        errorDialog(getShell(), msg);
-    }
-
-    /**
-     * Displays a simple error dialog indicating there was a Checkstyle internal
-     * error.
-     * 
-     * @param shell Shell to use for the dialog.
-     * 
-     * @param msg Message to display.
-     */
-    public static void errorDialog(Shell shell, String msg)
-    {
-        if (shell != null)
+        if (log)
         {
-            String logMsg = msg + NEWLINE + ADDED_MSG;
-            MessageDialog.openError(shell, "Checkstyle Error", logMsg);
+            log(t);
         }
     }
 
     /**
-     * Displays a simple error dialog indicating there was a Checkstyle internal
-     * error.
+     * Open an error dialog for an exception that occurred within the plugin.
      * 
-     * @param shell Shell to use for the dialog.
-     * 
-     * @param msg Message to display.
-     * @param throwable the throwable
+     * @param shell the shell
+     * @param t the exception
+     * @param log <code>true</code> if the exception should be logged
      */
-    public static void errorDialog(Shell shell, String msg, Throwable throwable)
+    public static void errorDialog(Shell shell, Throwable t, boolean log)
     {
-        if (shell != null)
-        {
-            String logMsg = msg + NEWLINE + ADDED_MSG;
-            MessageDialog.openError(shell, "Checkstyle Error", logMsg);
-        }
+        CheckstyleLog.errorDialog(shell, t.getLocalizedMessage(), t, log);
     }
 
-    // ad, 7.Jan.2004, Bug #872279
     /**
-     * ad, 7.Jan.2004, Bug #872279 Displays a simple yes/no dialog.
-     * <p>
+     * Open an warning dialog for an exception that occurred within the plugin.
      * 
-     * @param shell the Shell object
-     * @param msg Message to display.
-     * @return boolean true if the user pressed OK. false if the user cancelled
-     *         the dialog.
+     * @param shell the shell
+     * @param message the exception message
+     * @param t the exception
      */
-    public static boolean questionDialog(Shell shell, String msg)
+    public static void warningDialog(Shell shell, String message, Throwable t)
     {
-        if (shell != null)
-        {
-            String logMsg = msg;
-            return MessageDialog.openQuestion(shell, "Checkstyle Question", logMsg);
-        }
-        else
-        {
-            return false;
-        }
+        Status status = new Status(Status.WARNING, CheckstylePlugin.PLUGIN_ID, Status.OK, t
+                .getLocalizedMessage(), t);
+
+        ErrorDialog.openError(shell, "Internal Checkstyle-Plugin error", message, status);
     }
 
-    // ad, 7.Jan.2004, Bug #872279
-    // end change
-
-    private static Shell getShell()
-    {
-        Shell shell = null;
-
-        IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-        if (window != null)
-        {
-            shell = window.getShell();
-        }
-
-        return shell;
-    }
+    //    /**
+    //     * Log an error message.
+    //     *
+    //     * @param message Log message.
+    //     */
+    //    public static void error(String message)
+    //    {
+    //        error(message, null);
+    //    }
+    //
+    //    /**
+    //     * Log an error message.
+    //     *
+    //     * @param message Log message.
+    //     *
+    //     * @param exception Ecxeption that caused the error.
+    //     */
+    //    public static void error(String message, Throwable exception)
+    //    {
+    //        Status status = new Status(Status.ERROR, CheckstylePlugin.PLUGIN_ID,
+    // Status.OK,
+    //                "Checkstyle: " + message, exception);
+    //        sLog.log(status);
+    //    }
+    //
+    //    /**
+    //     * Log a warning message.
+    //     *
+    //     * @param message Log message.
+    //     */
+    //    public static void warning(String message)
+    //    {
+    //        warning(message, null);
+    //    }
+    //
+    //    /**
+    //     * Log a warning message.
+    //     *
+    //     * @param message Log message.
+    //     *
+    //     * @param exception Ecxeption that caused the error.
+    //     */
+    //    public static void warning(String message, Throwable exception)
+    //    {
+    //        Status status = new Status(Status.WARNING, CheckstylePlugin.PLUGIN_ID,
+    // Status.OK,
+    //                "Checkstyle: " + message, exception);
+    //        sLog.log(status);
+    //    }
+    //
+    //    /**
+    //     * Log an information message.
+    //     *
+    //     * @param message Log message.
+    //     */
+    //    public static void info(String message)
+    //    {
+    //        Status status = new Status(Status.INFO, CheckstylePlugin.PLUGIN_ID,
+    // Status.OK,
+    //                "Checkstyle: " + message, null);
+    //        sLog.log(status);
+    //    }
+    //
+    //    /**
+    //     * Displays a simple error dialog indicating there was a Checkstyle
+    // internal
+    //     * error.
+    //     *
+    //     * @param shell Shell the use for the dialog.
+    //     */
+    //    public static void internalErrorDialog(Shell shell)
+    //    {
+    //        errorDialog(shell, "A Checkstyle internal error occured.");
+    //    }
+    //
+    //    /**
+    //     * Displays a simple error dialog indicating there was a Checkstyle
+    // internal
+    //     * error.
+    //     */
+    //    public static void internalErrorDialog()
+    //    {
+    //        errorDialog("A Checkstyle internal error occured.");
+    //    }
+    //
+    //    /**
+    //     * Displays a simple error dialog indicating there was a Checkstyle
+    // internal
+    //     * error.
+    //     *
+    //     * @param msg Message to display.
+    //     */
+    //    public static void errorDialog(String msg)
+    //    {
+    //        errorDialog(getShell(), msg);
+    //    }
+    //
+    //    /**
+    //     * Displays a simple error dialog indicating there was a Checkstyle
+    // internal
+    //     * error.
+    //     *
+    //     * @param shell Shell to use for the dialog.
+    //     *
+    //     * @param msg Message to display.
+    //     */
+    //    public static void errorDialog(Shell shell, String msg)
+    //    {
+    //        if (shell != null)
+    //        {
+    //            String logMsg = msg + NEWLINE + ADDED_MSG;
+    //            MessageDialog.openError(shell, "Checkstyle Error", logMsg);
+    //        }
+    //    }
+    //
+    //    /**
+    //     * Displays a simple error dialog indicating there was a Checkstyle
+    // internal
+    //     * error.
+    //     *
+    //     * @param shell Shell to use for the dialog.
+    //     *
+    //     * @param msg Message to display.
+    //     * @param throwable the throwable
+    //     */
+    //    public static void errorDialog(Shell shell, String msg, Throwable
+    // throwable)
+    //    {
+    //        if (shell != null)
+    //        {
+    //            String logMsg = msg + NEWLINE + ADDED_MSG;
+    //            MessageDialog.openError(shell, "Checkstyle Error", logMsg);
+    //        }
+    //    }
+    //
+    //    // ad, 7.Jan.2004, Bug #872279
+    //    /**
+    //     * ad, 7.Jan.2004, Bug #872279 Displays a simple yes/no dialog.
+    //     * <p>
+    //     *
+    //     * @param shell the Shell object
+    //     * @param msg Message to display.
+    //     * @return boolean true if the user pressed OK. false if the user
+    // cancelled
+    //     * the dialog.
+    //     */
+    //    public static boolean questionDialog(Shell shell, String msg)
+    //    {
+    //        if (shell != null)
+    //        {
+    //            String logMsg = msg;
+    //            return MessageDialog.openQuestion(shell, "Checkstyle Question", logMsg);
+    //        }
+    //        else
+    //        {
+    //            return false;
+    //        }
+    //    }
+    //
+    //    // ad, 7.Jan.2004, Bug #872279
+    //    // end change
+    //
+    //    private static Shell getShell()
+    //    {
+    //        Shell shell = null;
+    //
+    //        IWorkbenchWindow window =
+    // PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+    //        if (window != null)
+    //        {
+    //            shell = window.getShell();
+    //        }
+    //
+    //        return shell;
+    //    }
 }
