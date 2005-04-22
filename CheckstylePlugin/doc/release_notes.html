@@ -13,10 +13,11 @@ Checkstyle Plug-in</B></FONT></FONT></FONT></P>
 	<COL WIDTH=580>
 	<COL WIDTH=0>
 	<TR>
-		<TD ROWSPAN=22 WIDTH=126 VALIGN=TOP>
+		<TD ROWSPAN=24 WIDTH=126 VALIGN=TOP>
 			<P><FONT FACE="Arial">
 				<A HREF="index.html">Home</A><BR><A HREF="screen_shots.html">ScreenShots</A>
 				<BR>Release Notes<BR><BR>
+				<A HREF="#r4_0_0a4">Release 4.0.0a4</A><BR>
 				<A HREF="#r4_0_0a3">Release 4.0.0a3</A><BR>
 				<A HREF="#r4_0_0a2">Release 4.0.0a2</A><BR>
 				<A HREF="#r4_0_0a">Release 4.0.0a</A><BR>
@@ -33,6 +34,85 @@ Checkstyle Plug-in</B></FONT></FONT></FONT></P>
 			</P>
 		</TD>
 		<TD WIDTH=580>
+			<P><A NAME="r4_0_0a4"></A><FONT FACE="Arial"><FONT SIZE=4><B>Release
+			4.0.0a4</B></FONT></FONT></P>
+			<UL>
+				<LI><P STYLE="margin-bottom: 0cm">Plugin now uses plain checkstyle configuration files
+				</P>
+				<LI><P STYLE="margin-bottom: 0cm">Now able to use checkstyle configuration files located somewhere in the file systems (External Configuration)
+				</P>
+				<LI><P STYLE="margin-bottom: 0cm">Possible to use checkstyle configuration files from a remote URL (Remote Configuration)
+				</P>
+				<LI><P STYLE="margin-bottom: 0cm">Possible to use project relative checkstyle configurations (Project Relative Configuration)
+				</P>
+				<LI><P STYLE="margin-bottom: 0cm">ALL checkstyle modules are now supported including Header Checks, Fileset Checks (for instance StrictDuplicateCheck) and Filters
+				</P>
+				<LI><P STYLE="margin-bottom: 0cm">All modules can be configured from the GUI
+				</P>
+				<LI><P STYLE="margin-bottom: 0cm">Completely reworked the configuration GUI
+				</P>
+				<LI><P STYLE="margin-bottom: 0cm">Added 'Default' option to the module (rule) configuration dialog so that default settings can easily be restored
+				</P>				
+				<LI><P STYLE="margin-bottom: 0cm">Modules can now be easily enabled/disabled using a checkbox
+				</P>				
+				<LI><P STYLE="margin-bottom: 0cm">Checkstyle tokens can now be translated into a more readable form in the configuration GUI
+				</P>				
+				<LI><P STYLE="margin-bottom: 0cm">Existing check configurations (old format) are migrated to the new configuration format
+				</P>				
+				<LI><P STYLE="margin-bottom: 0cm">Improved the annotations for eclipse editors so that errors and infos are shown in a similar way
+				</P>				
+				<LI><P STYLE="margin-bottom: 0cm">Added filter to exclude files from non source directories
+				</P>																				
+			</UL>
+				<P><FONT FACE="Arial"><B>Feature requests:</B></FONT></P>
+			<UL>
+				<LI><P STYLE="margin-bottom: 0cm">1186986	Scan only source files from configured source paths
+				</P>
+				<LI><P STYLE="margin-bottom: 0cm">1163353	Suppression filters do not work
+				</P>
+				<LI><P STYLE="margin-bottom: 0cm">978202	URL checkstyle config download
+				</P>
+				<LI><P STYLE="margin-bottom: 0cm">905061	Support for Duplicate Code Analysis
+				</P>
+				<LI><P STYLE="margin-bottom: 0cm">887874	Missing support for modules.
+				</P>
+				<LI><P STYLE="margin-bottom: 0cm">772913	allow header checks
+				</P>
+				<LI><P STYLE="margin-bottom: 0cm">758563	Use meaningful tokens
+				</P>
+				<LI><P STYLE="margin-bottom: 0cm">758558	ditch changing labels next to checkboxes
+				</P>
+				<LI><P STYLE="margin-bottom: 0cm">758555	Enabling/disabling rules using checkboxes
+				</P>
+				<LI><P STYLE="margin-bottom: 0cm">745756	Allow storing of checkstyle configuration in project
+				</P>
+				<LI><P STYLE="margin-bottom: 0cm">758560	Rework file set editor page
+				</P>
+				<LI><P STYLE="margin-bottom: 0cm">905675	Support eclipse development
+				</P>
+			</UL>
+				<P><FONT FACE="Arial"><B>Bugs resolved:</B></FONT></P>
+			<UL>
+				<LI><P STYLE="margin-bottom: 0cm">1146104	Plugin ignores SuppressionCommentFilter
+				</P>
+				<LI><P STYLE="margin-bottom: 0cm">1098141	Configuration editor has tabs outside its window
+				</P>
+				<LI><P STYLE="margin-bottom: 0cm">978112	Import of checkstyle config dumps with non supported checks
+				</P>
+				<LI><P STYLE="margin-bottom: 0cm">974583	bug in configuration editor layout hides options
+				</P>
+				<LI><P STYLE="margin-bottom: 0cm">890956	Problems with Import of checkstyle-configuration
+				</P>
+				<LI><P STYLE="margin-bottom: 0cm">878118	Suppression File no longer works since 3.2
+				</P>
+			</UL>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=580></TD>
+	</TR>
+	<TR>
+		<TD WIDTH=580>
 			<P><A NAME="r4_0_0a3"></A><FONT FACE="Arial"><FONT SIZE=4><B>Release
 			4.0.0a3</B></FONT></FONT></P>
 			<UL>
@@ -45,7 +125,7 @@ Checkstyle Plug-in</B></FONT></FONT></FONT></P>
 				</P>
 			</UL>
 		</TD>
-	</TR>
+	</TR>	
 	<TR>
 		<TD WIDTH=580></TD>
 	</TR>
