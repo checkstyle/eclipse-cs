@@ -107,7 +107,6 @@
 <property name="format" value="^[a-z][a-zA-Z0-9_]*$"/>
 </module>
 <module name="PackageName">
-<property name="severity" value="ignore"/>
 </module>
 <module name="StaticVariableName">
 <property name="format" value="^s[A-Z][a-zA-Z0-9]*$"/>
@@ -115,9 +114,6 @@
 <module name="TypeName">
 <property name="format" value="^I[A-Z][a-zA-Z0-9]*$"/>
 <property name="tokens" value="INTERFACE_DEF"/>
-</module>
-<module name="TypeName">
-<property name="tokens" value="CLASS_DEF"/>
 </module>
 <module name="FileLength">
 <property name="max" value="1500"/>
@@ -127,6 +123,14 @@
 </module>
 <module name="MethodLength">
 <property name="tokens" value="METHOD_DEF, CTOR_DEF"/>
+</module>
+<module name="usage.UnusedLocalVariable">
+</module>
+<module name="usage.UnusedPrivateField">
+</module>
+<module name="usage.UnusedPrivateMethod">
+</module>
+<module name="JavadocType">
 </module>
 </module>
 <module name="SuppressionCommentFilter">
