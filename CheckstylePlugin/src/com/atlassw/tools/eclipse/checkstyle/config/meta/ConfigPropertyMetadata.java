@@ -39,7 +39,7 @@ import com.atlassw.tools.eclipse.checkstyle.Messages;
 /**
  * This class represents metadata about one of a rule's properties.
  */
-public class ConfigPropertyMetadata implements Cloneable
+public class ConfigPropertyMetadata
 {
     //=================================================
     // Public static final variables.
@@ -161,21 +161,5 @@ public class ConfigPropertyMetadata implements Cloneable
         return ConfigPropertyType.HIDDEN.equals(mDatatype);
     }
 
-    /**
-     * Clone the object.
-     * 
-     * @return The cloned object.
-     */
-    public Object clone()
-    {
-        try
-        {
-            return super.clone();
-        }
-        catch (CloneNotSupportedException e)
-        {
-            throw new InternalError(); //Should not happen
-        }
-    }
 
 }

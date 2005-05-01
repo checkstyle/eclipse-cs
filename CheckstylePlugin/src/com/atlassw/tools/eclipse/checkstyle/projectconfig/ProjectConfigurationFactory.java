@@ -125,24 +125,30 @@ public final class ProjectConfigurationFactory
      */
     public static boolean isCheckConfigInUse(String configName) throws CheckstylePluginException
     {
+        return getProjectsUsingConfig(configName).size() > 0;
+    }
 
-        // TODO why not change the configuration name in the file sets??
+    /**
+     * Returns a list of projects using this check configuration.
+     * 
+     * @param checkConfigName the name of the check configuration
+     * @return the list of projects using this configuration
+     * @throws CheckstylePluginException an unexpected exception occurred
+     */
+    public static List getProjectsUsingConfig(String checkConfigName)
+        throws CheckstylePluginException
+    {
 
-        boolean result = false;
-
-        if (configName == null)
-        {
-            return result;
-        }
+        List result = new ArrayList();
 
         IWorkspace workspace = ResourcesPlugin.getWorkspace();
         IProject[] projects = workspace.getRoot().getProjects();
-        for (int i = 0; (i < projects.length) && !result; i++)
+        for (int i = 0; (i < projects.length); i++)
         {
-            if (ProjectConfigurationFactory.getConfiguration(projects[i]).isConfigInUse(configName))
+            if (ProjectConfigurationFactory.getConfiguration(projects[i]).isConfigInUse(
+                    checkConfigName))
             {
-                result = true;
-                break;
+                result.add(projects[i]);
             }
         }
 
@@ -269,7 +275,6 @@ public final class ProjectConfigurationFactory
             {
                 // can nothing do about it
             }
-
         }
     }
 

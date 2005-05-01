@@ -26,7 +26,6 @@ import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 
-import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationFactory;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 
 /**
@@ -47,8 +46,6 @@ public class FileSet implements Cloneable
     // =================================================
 
     private String mName;
-
-    private String mCheckConfigName;
 
     private ICheckConfiguration mCheckConfig;
 
@@ -113,8 +110,7 @@ public class FileSet implements Cloneable
      */
     public ICheckConfiguration getCheckConfig()
     {
-        ICheckConfiguration config = CheckConfigurationFactory.getByName(mCheckConfigName);
-        return config;
+        return mCheckConfig;
     }
 
     /**
@@ -124,10 +120,6 @@ public class FileSet implements Cloneable
      */
     public void setCheckConfig(ICheckConfiguration checkConfig)
     {
-        if (checkConfig != null)
-        {
-            mCheckConfigName = checkConfig.getName();
-        }
         mCheckConfig = checkConfig;
     }
 
@@ -212,9 +204,11 @@ public class FileSet implements Cloneable
             return true;
         }
         FileSet otherFileSet = (FileSet) obj;
-        if (!mName.equals(otherFileSet.mName)
-                || !mCheckConfigName.equals(otherFileSet.mCheckConfigName)
-                || mEnabled != otherFileSet.mEnabled)
+        if (!mName.equals(otherFileSet.mName) || mEnabled != otherFileSet.mEnabled)
+        {
+            return false;
+        }
+        if (!getCheckConfigName().equals(otherFileSet.getCheckConfigName()))
         {
             return false;
         }
@@ -237,7 +231,8 @@ public class FileSet implements Cloneable
         int result = 1;
         result = (result * prime) + Boolean.valueOf(mEnabled).hashCode();
         result = (result * prime) + (mName != null ? mName.hashCode() : 0);
-        result = (result * prime) + (mCheckConfigName != null ? mCheckConfigName.hashCode() : 0);
+        result = (result * prime)
+                + (getCheckConfigName() != null ? getCheckConfigName().hashCode() : 0);
         result = (result * prime)
                 + (mFileMatchPatterns != null ? mFileMatchPatterns.hashCode() : 0);
 
@@ -285,7 +280,8 @@ public class FileSet implements Cloneable
      */
     public String getCheckConfigName()
     {
-        return mCheckConfigName;
+        String result = mCheckConfig != null ? mCheckConfig.getName() : null;
+        return result;
     }
 
 }

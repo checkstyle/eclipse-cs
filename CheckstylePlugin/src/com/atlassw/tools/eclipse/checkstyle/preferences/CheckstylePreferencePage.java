@@ -24,15 +24,22 @@ package com.atlassw.tools.eclipse.checkstyle.preferences;
 // Imports from java namespace
 //=================================================
 import java.io.File;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Preferences;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.preferences.IPreferencesService;
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.dialogs.MessageDialogWithToggle;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnWeightData;
@@ -54,6 +61,7 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
@@ -106,7 +114,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
     // =================================================
     // Instance member variables.
     // =================================================
-    
+
     private TableViewer mViewer;
 
     private Button mAddButton;
@@ -123,13 +131,13 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
 
     private Text mConfigurationDescription;
 
+    private Combo mRebuildIfNeeded;
+
     private Button mWarnBeforeLosingFilesets;
 
     private Button mIncludeRuleNamesButton;
 
     private List mCheckConfigurations;
-
-    private boolean mNeedRebuild = false;
 
     private PageController mController = new PageController();
 
@@ -233,6 +241,24 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         // Get the preferences.
         //
         Preferences prefs = CheckstylePlugin.getDefault().getPluginPreferences();
+
+        //
+        // Create a combo with the rebuild options
+        //
+        Composite rebuildComposite = new Composite(generalComposite, SWT.NULL);
+        GridLayout layout2 = new GridLayout(2, false);
+        layout2.marginHeight = 0;
+        layout2.marginWidth = 0;
+        rebuildComposite.setLayout(layout2);
+
+        Label lblRebuild = new Label(rebuildComposite, SWT.NULL);
+        lblRebuild.setText("Rebuild projects if needed:");
+
+        mRebuildIfNeeded = new Combo(rebuildComposite, SWT.READ_ONLY);
+        mRebuildIfNeeded.setItems(new String[] { MessageDialogWithToggle.PROMPT,
+            MessageDialogWithToggle.ALWAYS, MessageDialogWithToggle.NEVER });
+        mRebuildIfNeeded.select(mRebuildIfNeeded.indexOf(prefs
+                .getString(CheckstylePlugin.PREF_ASK_BEFORE_REBUILD)));
 
         //
         // Create the "Fileset warning" check box.
@@ -434,12 +460,87 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
      */
     public boolean performOk()
     {
-        //
-        // Save the check configurations.
-        //
+
         try
         {
+
+            //
+            // Save the check configurations.
+            //
             CheckConfigurationFactory.setCheckConfigurations(mCheckConfigurations);
+
+            //
+            // Save the general preferences.
+            //
+            Preferences prefs = CheckstylePlugin.getDefault().getPluginPreferences();
+            prefs.setValue(CheckstylePlugin.PREF_ASK_BEFORE_REBUILD, mRebuildIfNeeded
+                    .getItem(mRebuildIfNeeded.getSelectionIndex()));
+
+            //
+            // fileset warning preference
+            //
+            boolean warnFileSetsNow = mWarnBeforeLosingFilesets.getSelection();
+            prefs.setValue(CheckstylePlugin.PREF_FILESET_WARNING, warnFileSetsNow);
+
+            //
+            // Include rule names preference.
+            //
+            boolean includeRuleNamesNow = mIncludeRuleNamesButton.getSelection();
+            boolean includeRuleNamesOriginal = prefs
+                    .getBoolean(CheckstylePlugin.PREF_INCLUDE_RULE_NAMES);
+            prefs.setValue(CheckstylePlugin.PREF_INCLUDE_RULE_NAMES, includeRuleNamesNow);
+
+            //See if all projects need rebuild
+            boolean needRebuildAllProjects = includeRuleNamesNow != includeRuleNamesOriginal;
+
+            //Get projects that need rebuild considering the changes
+            Collection projectsToBuild = getProjectsToRebuild();
+
+            IPreferenceStore prefStore = CheckstylePlugin.getDefault().getPreferenceStore();
+            String promptRebuildPref = prefStore
+                    .getString(CheckstylePlugin.PREF_ASK_BEFORE_REBUILD);
+
+            boolean rebuild = MessageDialogWithToggle.ALWAYS.equals(promptRebuildPref)
+                    && (needRebuildAllProjects || projectsToBuild.size() > 0);
+
+            //
+            // Prompt for rebuild
+            //
+            if (MessageDialogWithToggle.PROMPT.equals(promptRebuildPref)
+                    && (needRebuildAllProjects || projectsToBuild.size() > 0))
+            {
+
+                MessageDialogWithToggle dialog = MessageDialogWithToggle
+                        .openYesNoQuestion(
+                                getShell(),
+                                "Rebuild suggested",
+                                "Some projects need to be rebuilt for the changes to become visible.\n Rebuild these projects?",
+                                "Don't ask me again", false, prefStore,
+                                CheckstylePlugin.PREF_ASK_BEFORE_REBUILD);
+
+                rebuild = dialog.getReturnCode() == IDialogConstants.YES_ID;
+            }
+
+            if (rebuild)
+            {
+                try
+                {
+                    if (needRebuildAllProjects)
+                    {
+                        CheckstyleBuilder.buildAllProjects();
+                    }
+                    else
+                    {
+                        CheckstyleBuilder.buildProjects(projectsToBuild);
+                    }
+
+                }
+                catch (CheckstylePluginException e)
+                {
+                    CheckstyleLog.errorDialog(getShell(), NLS.bind(
+                            ErrorMessages.errorFailedRebuild, e.getMessage()), e, true);
+                }
+            }
         }
         catch (CheckstylePluginException e)
         {
@@ -447,43 +548,44 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
                     ErrorMessages.errorFailedSavePreferences, e.getLocalizedMessage()), e, true);
         }
 
-        //
-        // Save the general preferences.
-        //
-        Preferences prefs = CheckstylePlugin.getDefault().getPluginPreferences();
+        return true;
+    }
 
-        //
-        // fileset warning preference
-        //
-        boolean warnFileSetsNow = mWarnBeforeLosingFilesets.getSelection();
-        prefs.setValue(CheckstylePlugin.PREF_FILESET_WARNING, warnFileSetsNow);
+    /**
+     * Finds all projects that should be rebuilt consifering the changes to the
+     * check configurations.
+     * 
+     * @return the projects that need to be rebuilt
+     * @throws CheckstylePluginException an unexpected exception ocurred
+     */
+    private Collection getProjectsToRebuild() throws CheckstylePluginException
+    {
 
-        //
-        // Include rule names preference.
-        //
-        boolean includeRuleNamesNow = mIncludeRuleNamesButton.getSelection();
-        boolean includeRuleNamesOriginal = prefs
-                .getBoolean(CheckstylePlugin.PREF_INCLUDE_RULE_NAMES);
-        prefs.setValue(CheckstylePlugin.PREF_INCLUDE_RULE_NAMES, includeRuleNamesNow);
-        mNeedRebuild = mNeedRebuild | (includeRuleNamesNow ^ includeRuleNamesOriginal);
+        Set projects = new HashSet();
 
-        //
-        // Do a rebuild if one is needed.
-        //
-        if (mNeedRebuild)
+        Iterator it = mCheckConfigurations.iterator();
+        while (it.hasNext())
         {
-            try
+
+            ICheckConfiguration checkConfig = (ICheckConfiguration) it.next();
+
+            //skip non dirty configurations
+            if (!checkConfig.isDirty())
             {
-                CheckstyleBuilder.buildAllProjects();
+                continue;
             }
-            catch (CheckstylePluginException e)
+
+            List usingProjects = ProjectConfigurationFactory.getProjectsUsingConfig(checkConfig
+                    .getName());
+
+            Iterator it2 = usingProjects.iterator();
+            while (it2.hasNext())
             {
-                CheckstyleLog.errorDialog(getShell(), NLS.bind(ErrorMessages.errorFailedRebuild, e
-                        .getMessage()), e, true);
+                projects.add(it2.next());
             }
         }
 
-        return true;
+        return projects;
     }
 
     /**
@@ -643,11 +745,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
                 CheckConfigurationConfigureDialog dialog = new CheckConfigurationConfigureDialog(
                         getShell(), config);
                 dialog.setBlockOnOpen(true);
-                if (CheckConfigurationConfigureDialog.OK == dialog.open()
-                        && config.isConfigurable())
-                {
-                    mNeedRebuild = true;
-                }
+                dialog.open();
 
                 config.setContext(null);
             }
@@ -852,7 +950,9 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         while (iter.hasNext())
         {
             ICheckConfiguration cfg = (ICheckConfiguration) iter.next();
-            mCheckConfigurations.add(cfg.clone());
+            ICheckConfiguration workingCopy = (ICheckConfiguration) cfg.clone();
+            workingCopy.setOriginalCheckConfig(cfg);
+            mCheckConfigurations.add(workingCopy);
         }
 
     }

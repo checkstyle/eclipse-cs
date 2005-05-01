@@ -118,6 +118,9 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
     /** the list of modules. */
     private List mModules;
 
+    /** Flags if the check configuration was changed. */
+    private boolean mIsDirty;
+
     //
     // constructors
     //
@@ -200,7 +203,9 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
 
         try
         {
-            if (mConfiguration.isConfigurable())
+            //only write the modules back if the config is configurable
+            //and was actually changed
+            if (mConfiguration.isConfigurable() && mIsDirty)
             {
                 mConfiguration.setModules(mModules);
             }
@@ -495,6 +500,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
                             && mConfiguration.isConfigurable())
                     {
                         mModules.set(mModules.indexOf(m), workingCopy);
+                        mIsDirty = true;
                         mTableViewer.refresh(true);
                         refreshTableViewerState();
                     }
@@ -530,6 +536,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
                             && mConfiguration.isConfigurable())
                     {
                         mModules.add(workingCopy);
+                        mIsDirty = true;
                         mTableViewer.refresh(true);
                         refreshTableViewerState();
                     }
@@ -564,6 +571,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
                         if (m.getMetaData().isDeletable())
                         {
                             mModules.remove(m);
+                            mIsDirty = true;
                             mTableViewer.refresh(true);
                             refreshTableViewerState();
                         }

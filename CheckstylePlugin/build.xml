@@ -109,6 +109,10 @@
 		</copy>
 		<copy todir="${src.dist.dir}/src">
 			<fileset dir="src" />
+			<fileset dir="nls" />
+		</copy>
+		<copy todir="${src.dist.dir}/nls">
+			<fileset dir="nls" />
 		</copy>
 		<copy todir="${src.dist.dir}/META-INF">
 			<fileset dir="META-INF" />

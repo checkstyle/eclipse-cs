@@ -28,7 +28,7 @@ import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
 /**
  * This class contains the metadata that describes a check rule.
  */
-public class RuleMetadata implements Cloneable
+public class RuleMetadata
 {
     //=================================================
     // Public static final variables.
@@ -234,14 +234,6 @@ public class RuleMetadata implements Cloneable
         }
 
         return propertyMeta;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public Object clone() throws CloneNotSupportedException
-    {
-        return super.clone();
     }
 
     /**

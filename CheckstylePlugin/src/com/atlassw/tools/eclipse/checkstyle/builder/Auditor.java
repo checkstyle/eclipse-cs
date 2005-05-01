@@ -52,6 +52,7 @@ import com.puppycrawl.tools.checkstyle.Checker;
 import com.puppycrawl.tools.checkstyle.api.AuditEvent;
 import com.puppycrawl.tools.checkstyle.api.AuditListener;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
+import com.puppycrawl.tools.checkstyle.api.Filter;
 import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
 
 /**
@@ -126,7 +127,7 @@ public class Auditor
 
         Checker checker = null;
         AuditListener listener = null;
-
+        Filter runtimeExceptionFilter = null;
         try
         {
 
@@ -149,6 +150,12 @@ public class Auditor
             listener = new CheckstyleAuditListener(project);
             checker.addListener(listener);
 
+            //create and add filter for RuntimeExceptions reported by
+            // RedundantThrowsCheck
+            //BUGS 1177797, 996575
+            runtimeExceptionFilter = new RuntimeExceptionFilter();
+            checker.addFilter(runtimeExceptionFilter);
+
             // reconfigure the shared classloader for the current
             // project
             CheckerFactory.getSharedClassLoader().intializeWithProject(project);
@@ -169,10 +176,11 @@ public class Auditor
         {
             monitor.done();
 
-            // Cleanup listener
+            // Cleanup listener and filter
             if (checker != null)
             {
                 checker.removeListener(listener);
+                checker.removeFilter(runtimeExceptionFilter);
             }
         }
     }
@@ -216,6 +224,24 @@ public class Auditor
         }
 
         return (File[]) files.toArray(new File[files.size()]);
+    }
+
+    /**
+     * Filter implementation to filter java.lang.RuntimeException errors that
+     * are reportet from RedundantThrowsCheck.
+     * 
+     * @author Lars Ködderitzsch
+     */
+    private class RuntimeExceptionFilter implements Filter
+    {
+
+        /**
+         * @see Filter#accept(com.puppycrawl.tools.checkstyle.api.AuditEvent)
+         */
+        public boolean accept(AuditEvent aEvent)
+        {
+            return aEvent.getMessage().indexOf(RuntimeException.class.getName()) == -1;
+        }
     }
 
     /**

@@ -109,13 +109,6 @@ public interface ICheckConfiguration extends Cloneable
     IConfigurationType getType();
 
     /**
-     * Returns an id of the check configuration.
-     * 
-     * @return the id
-     */
-    String getId();
-
-    /**
      * Gets the property resolver for this configuration used to expand property
      * values within the checkstyle configuration.
      * 
@@ -171,6 +164,30 @@ public interface ICheckConfiguration extends Cloneable
      * @throws CheckstylePluginException error writing the configuration
      */
     void setModules(List modules) throws CheckstylePluginException;
+
+    /**
+     * If the check configuration is a working copy this method returns the
+     * original (unchanged) check configuration.
+     * 
+     * @return the original or <code>null</code> if this check configuration
+     *         is no working copy
+     */
+    ICheckConfiguration getOriginalCheckConfig();
+
+    /**
+     * Sets the original check configurations if this object serves as a working
+     * copy.
+     * 
+     * @param original the original check config
+     */
+    void setOriginalCheckConfig(ICheckConfiguration original);
+
+    /**
+     * Returns <code>true</code> if the checkstyle configuration has changed.
+     * 
+     * @return <code>true</code>, if the checkstyle configuration has changed
+     */
+    boolean isDirty();
 
     /**
      * Clone this Check Configuration.

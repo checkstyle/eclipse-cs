@@ -21,6 +21,7 @@
 package com.atlassw.tools.eclipse.checkstyle.builder;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -44,6 +45,7 @@ import org.eclipse.osgi.util.NLS;
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
+import com.atlassw.tools.eclipse.checkstyle.nature.CheckstyleNature;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileSet;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfigurationFactory;
@@ -99,6 +101,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
 
     /**
      * Run the Checkstyle builder on all open projects in the workspace.
+     * 
      * @throws CheckstylePluginException Error during the build.
      */
     public static void buildAllProjects() throws CheckstylePluginException
@@ -106,8 +109,45 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
         IWorkspace workspace = ResourcesPlugin.getWorkspace();
         IProject[] projects = workspace.getRoot().getProjects();
 
+        buildProjects(Arrays.asList(projects));
+    }
+
+    /**
+     * Builds all checkstyle enabled projects that are open from the given
+     * collection of projects.
+     * 
+     * @param projects the projects to build
+     * @throws CheckstylePluginException Error during the build
+     */
+    public static void buildProjects(Collection projects) throws CheckstylePluginException
+    {
+
+        //Build only open projects with Checkstyle enabled
+        List checkstyleProjects = new ArrayList();
+
+        Iterator it = projects.iterator();
+        while (it.hasNext())
+        {
+
+            IProject project = (IProject) it.next();
+
+            try
+            {
+                if (project.exists() && project.isOpen()
+                        && project.hasNature(CheckstyleNature.NATURE_ID))
+                {
+                    checkstyleProjects.add(project);
+                }
+            }
+            catch (CoreException e)
+            {
+                CheckstylePluginException.rethrow(e);
+            }
+        }
+
         // uses the new Jobs API to run the build in the background
-        BuildProjectJob buildJob = new BuildProjectJob(projects,
+        BuildProjectJob buildJob = new BuildProjectJob((IProject[]) checkstyleProjects
+                .toArray(new IProject[checkstyleProjects.size()]),
                 IncrementalProjectBuilder.FULL_BUILD);
         buildJob.setRule(ResourcesPlugin.getWorkspace().getRoot());
         buildJob.schedule();

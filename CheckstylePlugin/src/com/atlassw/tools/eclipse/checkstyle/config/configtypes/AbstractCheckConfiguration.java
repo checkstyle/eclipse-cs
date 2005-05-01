@@ -28,7 +28,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.rmi.server.UID;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
@@ -55,13 +54,10 @@ public abstract class AbstractCheckConfiguration implements ICheckConfiguration
     // attributes
     //
 
-    /** String containing the unique id of the configuration. */
-    private String mId;
-
     /** the displayable name of the configuration. */
     private String mName;
 
-    /** the location of the configuration file. */
+    /** the location of the checkstyle configuration file. */
     protected String mLocation;
 
     /** the description of the configuration. */
@@ -72,6 +68,15 @@ public abstract class AbstractCheckConfiguration implements ICheckConfiguration
 
     /** the current project context. */
     private IProject mContext;
+
+    /** the original check configuration. */
+    private ICheckConfiguration mOriginal;
+
+    /** flags if the configuration is dirty. */
+    private boolean mIsDirty;
+
+    /** flags if the configuration is currently initializing. */
+    private boolean mIsInitializing;
 
     //
     // methods
@@ -85,11 +90,21 @@ public abstract class AbstractCheckConfiguration implements ICheckConfiguration
     public void initialize(String name, String location, IConfigurationType type, String description)
         throws CheckstylePluginException
     {
-        setName(name);
-        setLocation(location);
-        mConfigType = type;
-        setDescription(description);
-        mId = new UID().toString();
+        //set the flag to enforce the changes done here do not mark the object
+        // dirty
+        mIsInitializing = true;
+        try
+        {
+
+            setName(name);
+            setLocation(location);
+            mConfigType = type;
+            setDescription(description);
+        }
+        finally
+        {
+            mIsInitializing = false;
+        }
     }
 
     /**
@@ -154,6 +169,12 @@ public abstract class AbstractCheckConfiguration implements ICheckConfiguration
         try
         {
             handleCanResolveLocation();
+
+            //if the location validly changed set dirty to mark for rebuild
+            if (!mIsInitializing && !location.equals(oldLocation))
+            {
+                mIsDirty = true;
+            }
         }
         catch (Exception e)
         {
@@ -188,14 +209,6 @@ public abstract class AbstractCheckConfiguration implements ICheckConfiguration
     }
 
     /**
-     * @see ICheckConfiguration#getId()
-     */
-    public String getId()
-    {
-        return mId;
-    }
-
-    /**
      * @see ICheckConfiguration#isEditable()
      */
     public boolean isEditable()
@@ -219,6 +232,42 @@ public abstract class AbstractCheckConfiguration implements ICheckConfiguration
         // By default no context is needed
         return false;
     }
+
+    /**
+     * @see ICheckConfiguration#getOriginalCheckConfig()
+     */
+    public ICheckConfiguration getOriginalCheckConfig()
+    {
+        if (mOriginal != null && mOriginal.getOriginalCheckConfig() == null)
+        {
+            return mOriginal;
+        }
+        else if (mOriginal != null)
+        {
+            return mOriginal.getOriginalCheckConfig();
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    /**
+     * @see ICheckConfiguration#setOriginalCheckConfig(ICheckConfiguration)
+     */
+    public void setOriginalCheckConfig(ICheckConfiguration original)
+    {
+        mOriginal = original;
+    }
+
+    /**
+     * @see com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration#isDirty()
+     */
+    public boolean isDirty()
+    {
+        return mIsDirty;
+    }
+
 
     /**
      * @see ICheckConfiguration#getPropertyResolver()
@@ -308,6 +357,13 @@ public abstract class AbstractCheckConfiguration implements ICheckConfiguration
                     .getFile()));
 
             out.write(byteOut.toByteArray());
+
+            //if the checkstyle configuration validly changed set dirty to mark
+            // for rebuild
+            if (!mIsInitializing)
+            {
+                mIsDirty = true;
+            }
         }
         catch (IOException e)
         {
@@ -339,10 +395,10 @@ public abstract class AbstractCheckConfiguration implements ICheckConfiguration
      */
     public Object clone()
     {
-        ICheckConfiguration clone = null;
+        AbstractCheckConfiguration clone = null;
         try
         {
-            clone = (ICheckConfiguration) super.clone();
+            clone = (AbstractCheckConfiguration) super.clone();
         }
         catch (CloneNotSupportedException e)
         {

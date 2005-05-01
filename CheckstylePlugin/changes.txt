@@ -1,0 +1,104 @@
+###################
+# Important note: #
+###################
+After installation of this plugin eclipse must be restartet with the -clean option at least once.
+That is: <path-to-my-eclipse-install>/eclipse.exe -clean
+
+The plugin version 4.0.0 does not support eclipse 2.x.x any more. 
+Make sure you have an eclipse 3.0 or higher installation you are installing this plugin to.
+
+Eclipse Checkstyle Plugin v4.0.0
+---------------------------------
+
+Release beta1:
+--------------
+
+* Uses checkstyle-4.0-beta2
+* Improved rebuild logic - now rebuilds only necessary projects
+
+RFE's:
+758117	Don't rebuild everything - or ask before doing so
+
+Bugs:
+1177797	RuntimeException
+1084281	Many classes flagged as "with errors" with eclipse 3.1.0M3
+996575	NoClassDefFoundError in v. 3.4.1
+
+
+
+Release alpha4:
+---------------
+
+This release revises much of the inner workings of the checkstyle plugin as well as the plugin GUI.
+Currently there is no updated user doc, this will be included with the 4.0.0 final release.
+Be warned that some things might work slightly different now (especially the GUI). But it should not
+be too hard to figure out.
+
+* Plugin now uses plain checkstyle configuration files
+* Now able to use checkstyle configuration files located somewhere in the file systems (External Configuration)
+* Possible to use checkstyle configuration files from a remote URL (Remote Configuration)
+* Possible to use project relative checkstyle configurations (Project Relative Configuration)
+* ALL checkstyle modules are now supported including Header Checks, Fileset Checks (for instance StrictDuplicateCheck) and Filters
+* All modules can be configured from the GUI
+* Completely reworked the configuration GUI
+* Added 'Default' option to the module (rule) configuration dialog so that default settings can easily be restored
+* Modules can now be easily enabled/disabled using a checkbox
+* Checkstyle tokens can now be translated into a more readable form in the configuration GUI
+* Existing check configurations (old format) are migrated to the new configuration format
+* Improved the annotations for eclipse editors so that errors and infos are shown in a similar way
+* Added filter to exclude files from non source directories
+
+
+RFE's:
+1186986	Scan only source files from configured source paths
+1163353	Suppression filters do not work
+978202	URL checkstyle config download
+905061	Support for Duplicate Code Analysis
+887874	Missing support for modules.
+772913	allow header checks
+758563	Use meaningful tokens
+758558	ditch changing labels next to checkboxes
+758555	Enabling/disabling rules using checkboxes
+745756	Allow storing of checkstyle configuration in project
+758560	Rework file set editor page
+905675	Support eclipse development
+
+Bugs;
+1146104	Plugin ignores SuppressionCommentFilter
+1098141	Configuration editor has tabs outside its window
+978112	Import of checkstyle config dumps with non supported checks
+974583	bug in configuration editor layout hides options
+890956	Problems with Import of checkstyle-configuration
+878118	Suppression File no longer works since 3.2
+
+Patches:
+1123128	Duplicated Code Checker
+
+
+Release alpha2/3:
+-----------------
+* Added simplified project configuration
+* Added filter facility
+* Added filter for write protected files
+* Added filter for files not opened in editor
+* Added package filter
+
+
+Bugs fixed:
+1176430: Config Problem
+
+
+Release alpha1:
+---------------
+* Support for checkstyle 4.0 beta1
+* Supports Eclipse 3.1 M5
+* All checking processes are now run as background jobs
+* Added editor annotations for checkstyle warnings
+
+
+Note: Eclipse 2.x.x is no more supported
+
+Patch 1096720: Use of jobs api + filter facility 
+Patch 1064092: Make eclipse-cs a 3.x-style plugin 
+Patch 1064046: Remove xerces dependency 
+

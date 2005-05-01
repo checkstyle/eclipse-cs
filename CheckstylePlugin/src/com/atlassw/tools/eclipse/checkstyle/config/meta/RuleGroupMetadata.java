@@ -27,7 +27,7 @@ import java.util.List;
  * This class describes a collection of check rules that are logicaly grouped
  * together.
  */
-public class RuleGroupMetadata implements Cloneable
+public class RuleGroupMetadata
 {
     //=================================================
     // Public static final variables.
@@ -92,13 +92,5 @@ public class RuleGroupMetadata implements Cloneable
     public final List getRuleMetadata()
     {
         return mRuleMetadata;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public Object clone() throws CloneNotSupportedException
-    {
-        return super.clone();
     }
 }

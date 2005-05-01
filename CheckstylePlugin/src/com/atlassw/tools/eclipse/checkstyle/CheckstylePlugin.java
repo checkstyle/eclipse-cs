@@ -25,6 +25,7 @@ package com.atlassw.tools.eclipse.checkstyle;
 //=================================================
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.jface.dialogs.MessageDialogWithToggle;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -53,6 +54,12 @@ public class CheckstylePlugin extends AbstractUIPlugin
      * fileset configuration.
      */
     public static final String PREF_FILESET_WARNING = "warn.before.losing.filesets"; //$NON-NLS-1$
+
+    /**
+     * Preference name indication if the user should be asked before rebuilding
+     * projects.
+     */
+    public static final String PREF_ASK_BEFORE_REBUILD = "ask.before.rebuild"; //$NON-NLS-1$
 
     /**
      * Preference name indication if the checkstyle tokens within the module
@@ -140,6 +147,7 @@ public class CheckstylePlugin extends AbstractUIPlugin
 
         prefStore.setDefault(PREF_INCLUDE_RULE_NAMES, false);
         prefStore.setDefault(PREF_FILESET_WARNING, true);
+        prefStore.setDefault(PREF_ASK_BEFORE_REBUILD, MessageDialogWithToggle.PROMPT);
         prefStore.setDefault(PREF_TRANSLATE_TOKENS, true);
         prefStore.setDefault(PREF_DUPLICATED_CODE_MIN_LINES, DUPLICATED_CODE_MIN_LINES);
     }
