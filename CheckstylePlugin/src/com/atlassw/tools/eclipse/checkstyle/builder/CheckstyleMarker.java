@@ -54,6 +54,9 @@ public class CheckstyleMarker
     /** ID for the CheckstyleMarker. */
     public static final String MARKER_ID = CheckstylePlugin.PLUGIN_ID + ".CheckstyleMarker"; //$NON-NLS-1$
 
+    /** Constant for module info additionally stored. */
+    public static final String MODULE_NAME = "ModuleName"; //$NON-NLS-1$
+
     // =================================================
     // Instance member variables.
     // =================================================

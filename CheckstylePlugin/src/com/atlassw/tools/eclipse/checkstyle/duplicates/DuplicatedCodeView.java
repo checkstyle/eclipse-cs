@@ -20,10 +20,18 @@
 
 package com.atlassw.tools.eclipse.checkstyle.duplicates;
 
-import java.util.Collection;
-import java.util.Map;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IResourceChangeEvent;
+import org.eclipse.core.resources.IResourceChangeListener;
+import org.eclipse.core.resources.IResourceVisitor;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
@@ -33,14 +41,11 @@ import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
-import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.ITreeContentProvider;
-import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
@@ -51,12 +56,17 @@ import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
+import org.eclipse.ui.model.BaseWorkbenchContentProvider;
+import org.eclipse.ui.model.IWorkbenchAdapter;
+import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.part.DrillDownAdapter;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
+import com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleMarker;
+import com.atlassw.tools.eclipse.checkstyle.nature.CheckstyleNature;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 
 /**
@@ -80,16 +90,6 @@ public class DuplicatedCodeView extends ViewPart
     private TreeViewer mViewer;
 
     /**
-     * Report to display. This is a m1ap that contains :
-     * <ul>
-     * <li>as a key : a IFile</li>
-     * <li>as a value : a Collection of DuplicatedCode objects related to that
-     * file.</li>
-     * </ul>
-     */
-    private Map mReport;
-
-    /**
      * Adapter used for adding navigation actions.
      */
     private DrillDownAdapter mDrillDownAdapter;
@@ -107,119 +107,133 @@ public class DuplicatedCodeView extends ViewPart
     /**
      * Content provider for the tree viewer.
      */
-    class ViewContentProvider implements IStructuredContentProvider, ITreeContentProvider
+    class ViewContentProvider extends BaseWorkbenchContentProvider
     {
-        /**
-         * Cf. method below.
-         * 
-         * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(
-         *      org.eclipse.jface.viewers.Viewer, java.lang.Object,
-         *      java.lang.Object)
-         */
-        public void inputChanged(Viewer viewer, Object oldInput, Object newInput)
-        {}
 
         /**
-         * Cf. method below.
-         * 
-         * @see org.eclipse.jface.viewers.IContentProvider#dispose()
-         */
-        public void dispose()
-        {}
-
-        /**
-         * Cf. method below.
-         * 
-         * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
-         */
-        public Object[] getElements(Object parent)
-        {
-            if (parent instanceof Map && mReport != null)
-            {
-                return mReport.keySet().toArray();
-            }
-            return getChildren(parent);
-        }
-
-        /**
-         * Cf. method below.
-         * 
-         * @see org.eclipse.jface.viewers.ITreeContentProvider#getParent(java.lang.Object)
-         */
-        public Object getParent(Object child)
-        {
-            if (child instanceof DuplicatedCode)
-            {
-                return ((DuplicatedCode) child).getSourceFile();
-            }
-            return null;
-        }
-
-        /**
-         * Cf. method below.
-         * 
          * @see org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.Object)
          */
-        public Object[] getChildren(Object parent)
+        public Object[] getChildren(Object parentElement)
         {
-            if (parent instanceof IFile)
-            {
-                Collection duplicatedCodes = (Collection) mReport.get((IFile) parent);
-                return duplicatedCodes.toArray();
-            }
-            return new Object[0];
-        }
 
-        /**
-         * Cf. method below.
-         * 
-         * @see org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java.lang.Object)
-         */
-        public boolean hasChildren(Object parent)
-        {
-            if (parent instanceof IFile)
+            IWorkbenchAdapter adapter = getAdapter(parentElement);
+
+            if (parentElement instanceof IProject)
             {
-                Collection duplicatedCodes = (Collection) mReport.get((IFile) parent);
-                return !duplicatedCodes.isEmpty();
+
+                final List files = new LinkedList();
+                IResourceVisitor visitor = new IResourceVisitor()
+                {
+                    public boolean visit(IResource resource) throws CoreException
+                    {
+                        if (resource instanceof IFile)
+                        {
+                            files.add(resource);
+                            return false;
+                        }
+                        return true;
+                    }
+                };
+
+                try
+                {
+                    ((IProject) parentElement).accept(visitor);
+                }
+                catch (CoreException e)
+                {
+                    return new Object[0];
+                }
+
+                return files.toArray();
             }
-            return false;
+            else if (parentElement instanceof IFile)
+            {
+                try
+                {
+                    return ((IFile) parentElement).findMarkers(CheckstyleMarker.MARKER_ID, false,
+                            IResource.DEPTH_ZERO);
+                }
+                catch (CoreException e)
+                {
+                    return new Object[0];
+                }
+            }
+            else
+            {
+                return super.getChildren(parentElement);
+            }
         }
     }
 
     /**
      * Label provider for the tree viewer.
      */
-    class ViewLabelProvider extends LabelProvider
+    class ViewLabelProvider extends WorkbenchLabelProvider
     {
-        /**
-         * Cf. method below.
-         * 
-         * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
-         */
-        public String getText(Object obj)
-        {
-            if (obj instanceof IFile)
-            {
-                return ((IFile) obj).getFullPath().toString();
-            }
-            return obj.toString();
-        }
+
+    }
+
+    class DuplicatesFilter extends ViewerFilter
+    {
 
         /**
-         * Cf. method below.
-         * 
-         * @see org.eclipse.jface.viewers.LabelProvider#getImage(java.lang.Object)
+         * @see org.eclipse.jface.viewers.ViewerFilter#select(org.eclipse.jface.viewers.Viewer,
+         *      java.lang.Object, java.lang.Object)
          */
-        public Image getImage(Object obj)
+        public boolean select(Viewer viewer, Object parentElement, Object element)
         {
-            String imageKey = ISharedImages.IMG_OBJS_ERROR_TSK;
-            if (obj instanceof IFile)
+
+            try
             {
-                imageKey = ISharedImages.IMG_OBJ_FILE;
+                if (element instanceof IProject)
+                {
+
+                    return ((IProject) element).hasNature(CheckstyleNature.NATURE_ID);
+                }
+                else if (element instanceof IFile)
+                {
+                    boolean result = false;
+                    IMarker[] markers = ((IFile) element).findMarkers(CheckstyleMarker.MARKER_ID,
+                            false, IResource.DEPTH_ZERO);
+                    for (int i = 0; i < markers.length; i++)
+                    {
+                        if ("StrictDuplicateCode".equals(markers[i].getAttribute("ModuleName")))
+                        {
+                            result = true;
+                            break;
+                        }
+                    }
+
+                    return result;
+                }
+                else if (element instanceof IMarker)
+                {
+                    return "StrictDuplicateCode".equals(((IMarker) element)
+                            .getAttribute("ModuleName"));
+                }
             }
-            return PlatformUI.getWorkbench().getSharedImages().getImage(imageKey);
+            catch (CoreException e)
+            {
+                return false;
+            }
+            return true;
         }
     }
+
+    IResourceChangeListener resourceListener = new IResourceChangeListener()
+    {
+        public void resourceChanged(final IResourceChangeEvent event)
+        {
+            //update in UI thread
+            Display.getDefault().asyncExec(new Runnable()
+            {
+                public void run()
+                {
+                    mViewer.refresh(event.getResource(), true);
+                }
+            });
+        }
+    };
 
     /**
      * The constructor.
@@ -238,34 +252,14 @@ public class DuplicatedCodeView extends ViewPart
         mDrillDownAdapter = new DrillDownAdapter(mViewer);
         mViewer.setContentProvider(new ViewContentProvider());
         mViewer.setLabelProvider(new ViewLabelProvider());
-        mViewer.setInput(null);
+        mViewer.addFilter(new DuplicatesFilter());
+        mViewer.setInput(CheckstylePlugin.getWorkspace().getRoot());
         makeActions();
         hookContextMenu();
         hookDoubleClickAction();
         contributeToActionBars();
-    }
 
-    /**
-     * Give the report of the duplicated code analysis as a Map.
-     * 
-     * @param report : a map that contains IFile as keys and a collection of
-     *            DuplicatedCode objects as values
-     */
-    public void setReport(Map report)
-    {
-        this.mReport = report;
-        Display.getDefault().asyncExec(new Runnable()
-        {
-            /**
-             * Cf. overriden method documentation.
-             * 
-             * @see java.lang.Runnable#run()
-             */
-            public void run()
-            {
-                mViewer.setInput(DuplicatedCodeView.this.mReport);
-            }
-        });
+        ResourcesPlugin.getWorkspace().addResourceChangeListener(resourceListener);
     }
 
     /**
@@ -296,7 +290,7 @@ public class DuplicatedCodeView extends ViewPart
     {
         manager.add(mOpenSourceFileAction);
         IStructuredSelection selection = (IStructuredSelection) mViewer.getSelection();
-        if (selection.getFirstElement() instanceof DuplicatedCode)
+        if (selection.getFirstElement() instanceof IMarker)
         {
             manager.add(mOpenDuplicatedCodeFileAction);
         }
@@ -340,10 +334,15 @@ public class DuplicatedCodeView extends ViewPart
                     {
                         IDE.openEditor(getSite().getPage(), (IFile) selection.getFirstElement());
                     }
-                    else if (selection.getFirstElement() instanceof DuplicatedCode)
+                    else if (selection.getFirstElement() instanceof IMarker)
                     {
-                        DuplicatedCode duplicatedCode = (DuplicatedCode) selection
-                                .getFirstElement();
+                        IMarker duplicateMarker = (IMarker) selection.getFirstElement();
+
+                        DuplicatedCode duplicatedCode = new DuplicatedCode((IFile) duplicateMarker
+                                .getResource(), ((Integer) duplicateMarker
+                                .getAttribute(IMarker.LINE_NUMBER)).intValue(),
+                                (String) duplicateMarker.getAttribute(IMarker.MESSAGE));
+
                         IEditorPart editorPart = IDE.openEditor(getSite().getPage(), duplicatedCode
                                 .getSourceFile());
                         if (editorPart instanceof ITextEditor)
@@ -358,6 +357,11 @@ public class DuplicatedCodeView extends ViewPart
                     }
                 }
                 catch (PartInitException e)
+                {
+                    CheckstyleLog.errorDialog(mViewer.getControl().getShell(),
+                            "Error while opening the file editor.", e, true);
+                }
+                catch (CoreException e)
                 {
                     CheckstyleLog.errorDialog(mViewer.getControl().getShell(),
                             "Error while opening the file editor.", e, true);
@@ -383,10 +387,14 @@ public class DuplicatedCodeView extends ViewPart
                 try
                 {
                     IStructuredSelection selection = (IStructuredSelection) mViewer.getSelection();
-                    if (selection.getFirstElement() instanceof DuplicatedCode)
+                    if (selection.getFirstElement() instanceof IMarker)
                     {
-                        DuplicatedCode duplicatedCode = (DuplicatedCode) selection
-                                .getFirstElement();
+                        IMarker duplicateMarker = (IMarker) selection.getFirstElement();
+
+                        DuplicatedCode duplicatedCode = new DuplicatedCode((IFile) duplicateMarker
+                                .getResource(), ((Integer) duplicateMarker
+                                .getAttribute(IMarker.LINE_NUMBER)).intValue(),
+                                (String) duplicateMarker.getAttribute(IMarker.MESSAGE));
                         IFile destinationFile = duplicatedCode.getTargetFile();
                         if (destinationFile == null)
                         {
@@ -407,6 +415,11 @@ public class DuplicatedCodeView extends ViewPart
                     }
                 }
                 catch (PartInitException e)
+                {
+                    CheckstyleLog.errorDialog(mViewer.getControl().getShell(),
+                            "Error while opening the file editor.", e, true);
+                }
+                catch (CoreException e)
                 {
                     CheckstyleLog.errorDialog(mViewer.getControl().getShell(),
                             "Error while opening the file editor.", e, true);
@@ -473,5 +486,14 @@ public class DuplicatedCodeView extends ViewPart
     public void setFocus()
     {
         mViewer.getControl().setFocus();
+    }
+
+    /**
+     * @see org.eclipse.ui.IWorkbenchPart#dispose()
+     */
+    public void dispose()
+    {
+        ResourcesPlugin.getWorkspace().removeResourceChangeListener(resourceListener);
+        super.dispose();
     }
 }

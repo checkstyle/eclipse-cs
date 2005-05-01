@@ -110,8 +110,7 @@ public class DuplicatedCodeAuditListener extends AutomaticBean implements AuditL
      */
     public void auditStarted(AuditEvent event)
     {
-        // empty map to initialize the viewer
-        mDuplicatedCodeView.setReport(new HashMap());
+
     }
 
     /**
@@ -120,9 +119,7 @@ public class DuplicatedCodeAuditListener extends AutomaticBean implements AuditL
      * @see com.puppycrawl.tools.checkstyle.api.AuditListener#auditFinished(com.puppycrawl.tools.checkstyle.api.AuditEvent)
      */
     public void auditFinished(AuditEvent event)
-    {
-        mDuplicatedCodeView.setReport(mMap);
-    }
+    {}
 
     /**
      * Cf. method below.
@@ -166,8 +163,7 @@ public class DuplicatedCodeAuditListener extends AutomaticBean implements AuditL
         mRefreshCounter++;
         if (mRefreshCounter >= REFRESH_FREQUENCY)
         {
-            // notify the viewer with changes
-            mDuplicatedCodeView.setReport(mMap);
+
             // and set the counter back to zero
             mRefreshCounter = 0;
         }

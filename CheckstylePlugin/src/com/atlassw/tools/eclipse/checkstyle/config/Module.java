@@ -283,7 +283,6 @@ public class Module implements Cloneable
      */
     public int hashCode()
     {
-        // TODO Auto-generated method stub
         return super.hashCode();
     }
 }

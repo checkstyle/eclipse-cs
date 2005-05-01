@@ -22,13 +22,6 @@
             class="com.atlassw.tools.eclipse.checkstyle.preferences.CheckstylePreferencePage"
             id="com.atlassw.tools.eclipse.checkstyle.preferences.CheckstylePreferencePage">
       </page>
-      <!--
-      <page
-            class="com.atlassw.tools.eclipse.checkstyle.preferences.duplicates.DuplicatedCodePreferencePage"
-            category="com.atlassw.tools.eclipse.checkstyle.preferences.CheckstylePreferencePage"
-            name="Duplicates Analysis"
-            id="com.atlassw.tools.eclipse.checkstyle.preferences.duplicates.DuplicatedCodePreferencePage"/>
-       -->
    </extension>
    <extension
          point="org.eclipse.ui.propertyPages">
@@ -319,7 +312,6 @@
    <!--
    View that displays the duplicates
    -->
-   <!--
    <extension
          point="org.eclipse.ui.views">
       <category
@@ -330,8 +322,8 @@
             class="com.atlassw.tools.eclipse.checkstyle.duplicates.DuplicatedCodeView"
             icon="icons/duplicatedCode.gif"
             category="com.atlassw.tools.eclipse.checkstyle.category"
-            name="Duplication de code"
+            name="%DuplicatedCodeView.name"
             id="com.atlassw.tools.eclipse.checkstyle.duplicatesView"/>
    </extension>
-   -->
+   
 </plugin>

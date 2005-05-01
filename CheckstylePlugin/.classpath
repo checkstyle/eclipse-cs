@@ -5,6 +5,5 @@
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="checkstyle-all-4.0-beta2.jar"/>
-	<classpathentry kind="lib" path="checkstyle-optional-4.0-beta2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

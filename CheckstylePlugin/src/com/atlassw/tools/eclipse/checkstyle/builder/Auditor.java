@@ -325,6 +325,12 @@ public class Auditor
 
                     // set attributes of the marker
                     Map attributes = new HashMap();
+
+                    RuleMetadata metaData = MetadataFactory.getRuleMetadata(error.getSourceName());
+                    if (metaData != null)
+                    {
+                        attributes.put(CheckstyleMarker.MODULE_NAME, metaData.getInternalName());
+                    }
                     attributes.put(IMarker.PRIORITY, new Integer(IMarker.PRIORITY_NORMAL));
                     attributes.put(IMarker.SEVERITY, new Integer(getSeverityValue(severity)));
                     MarkerUtilities.setLineNumber(attributes, error.getLine());
