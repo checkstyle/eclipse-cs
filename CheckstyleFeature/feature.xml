@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="com.atlassw.tools.eclipse.checkstyle"
+      label="%feature.label"
+      version="4.0.0"
+      provider-name="%feature.provider_name">
+
+   <description url="%description.url">
+      
+   </description>
+
+   <copyright>
+      %copyright.text
+   </copyright>
+
+   <license>
+      %license.text
+   </license>
+
+   <requires>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.jface.text"/>
+      <import plugin="org.eclipse.jdt.core"/>
+   </requires>
+
+   <plugin
+         id="com.atlassw.tools.eclipse.checkstyle"
+         download-size="2200"
+         install-size="3520"
+         version="4.0.0"/>
+
+</feature>
