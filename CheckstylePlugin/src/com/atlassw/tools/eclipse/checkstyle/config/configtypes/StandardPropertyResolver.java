@@ -38,13 +38,13 @@ public class StandardPropertyResolver implements PropertyResolver
     //
 
     /** constant for the workspace_loc variable. */
-    private static final String WORKSPACE_LOC = "workspace_loc";
+    private static final String WORKSPACE_LOC = "workspace_loc"; //$NON-NLS-1$
 
     /** constant for the project_loc variable. */
-    private static final String PROJECT_LOC = "project_loc";
+    private static final String PROJECT_LOC = "project_loc"; //$NON-NLS-1$
 
     /** constant for the basedir variable. */
-    private static final String BASEDIR_LOC = "basedir";
+    private static final String BASEDIR_LOC = "basedir"; //$NON-NLS-1$
 
     //
     // attributes

@@ -12,8 +12,8 @@
 
 	<property name="check.config" value="CheckConfig_Checkstyle.xml" />
 
-	<property name="checkstyle.jar" value="checkstyle-all-4.0-beta1.jar" />
-	<property name="checkstyle-optional.jar" value="checkstyle-optional-4.0-beta1.jar" />
+	<property name="checkstyle.jar" value="checkstyle-all-4.0-beta2.jar" />
+	<property name="checkstyle-optional.jar" value="checkstyle-optional-4.0-beta2.jar" />
 
 
 
@@ -48,7 +48,7 @@
 	<!-- ==================================================== -->
 	<!--   DISTRIBUTION TARGET                                -->
 	<!-- ==================================================== -->
-	<target name="build.dist" depends="build.bindist, build.srcdist">
+	<target name="build.dist" depends="build.bindist,build.srcdist">
 	</target>
 
 	<!-- ==================================================== -->
@@ -57,7 +57,7 @@
 	<target name="build.bindist" depends="build.target.area, jar.plugin" description="Copies all the necessary files to the distribution directory">
 		<mkdir dir="${bin.dist.dir}" />
 		<copy file="${checkstyle.jar}" todir="${bin.dist.dir}" />
-		<copy file="${checkstyle-optional.jar}" todir="${bin.dist.dir}" />
+		<copy file="extension-libraries/${checkstyle-optional.jar}" todir="${bin.dist.dir}/extension-libraries" />
 		<copy file="plugin.xml" todir="${bin.dist.dir}" />
 		<copy file="plugin.properties" todir="${bin.dist.dir}" />
 		<copy file="toc.xml" todir="${bin.dist.dir}" />
@@ -89,7 +89,7 @@
 	<target name="build.srcdist" depends="build.target.area" description="Copies all the necessary files to the distribution directory">
 		<mkdir dir="${src.dist.dir}" />
 		<copy file="${checkstyle.jar}" todir="${src.dist.dir}" />
-		<copy file="${checkstyle-optional.jar}" todir="${src.dist.dir}" />
+		<copy file="extension-libraries/${checkstyle-optional.jar}" todir="${src.dist.dir}/extension-libraries" />
 		<copy file="plugin.xml" todir="${src.dist.dir}" />
 		<copy file="plugin.properties" todir="${src.dist.dir}" />
 		<copy file="toc.xml" todir="${src.dist.dir}" />

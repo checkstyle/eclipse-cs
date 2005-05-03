@@ -11,7 +11,7 @@ import org.eclipse.osgi.util.NLS;
  */
 public final class Messages extends NLS
 {
-    //CHECKSTYLE:OFF
+    // CHECKSTYLE:OFF
 
     private static final String BUNDLE_NAME = "com.atlassw.tools.eclipse.checkstyle.messages"; //$NON-NLS-1$
 
@@ -44,6 +44,8 @@ public final class Messages extends NLS
 
     public static String CheckstylePropertyPage_btnChangeFilter;
 
+    public static String CheckstylePreferencePage_lblRebuild;
+
     public static String CheckstylePropertyPage_lblDescription;
 
     public static String CheckstylePropertyPage_titleCannotResolveCheckLocation;
@@ -53,6 +55,12 @@ public final class Messages extends NLS
     public static String CheckstylePropertyPage_msgWarnFilesets;
 
     public static String CheckstylePropertyPage_mgsWarnFileSetNagOption;
+
+    public static String CheckstylePreferencePage_titleRebuild;
+
+    public static String CheckstylePreferencePage_msgRebuild;
+
+    public static String CheckstylePreferencePage_nagRebuild;
 
     public static String ComplexFileSetsEditor_titleAdvancedFilesetEditor;
 
@@ -290,5 +298,5 @@ public final class Messages extends NLS
 
     public static String CheckstylePreferencePage_titleExportConfig;
 
-    //CHECKSTYLE:ON
+    // CHECKSTYLE:ON
 }

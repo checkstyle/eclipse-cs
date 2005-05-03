@@ -208,7 +208,8 @@ public class FileSet implements Cloneable
         {
             return false;
         }
-        if (!getCheckConfigName().equals(otherFileSet.getCheckConfigName()))
+        if (getCheckConfigName() != null
+                && !getCheckConfigName().equals(otherFileSet.getCheckConfigName()))
         {
             return false;
         }

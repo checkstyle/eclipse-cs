@@ -5,7 +5,7 @@ After installation of this plugin eclipse must be restartet with the -clean opti
 That is: <path-to-my-eclipse-install>/eclipse.exe -clean
 
 The plugin version 4.0.0 does not support eclipse 2.x.x any more. 
-Make sure you have an eclipse 3.0 or higher installation you are installing this plugin to.
+Make sure you got an eclipse 3.0 or higher installation you are installing this plugin to.
 
 Eclipse Checkstyle Plugin v4.0.0
 ---------------------------------
@@ -15,14 +15,27 @@ Release beta1:
 
 * Uses checkstyle-4.0-beta2
 * Improved rebuild logic - now rebuilds only necessary projects
+* Integrated Duplicate Code View - Thanks to Fabrice Bellingard
+* Jar files containing own checks can now integrated more easily 
+  - Just drop your .jar file in the extension-libraries directory
+    and add your jar-File to the Bundle-ClassPath entry in the MANIFEST.MF.
+    Restart eclipse with -clean option afterwards at least once.
+    Use your checkstyle configuration file containing your custom checks with the plugin.
+
+Patches:
+1123128	Duplicated Code Checker
 
 RFE's:
+1022915	Support for eclipse variables
 758117	Don't rebuild everything - or ask before doing so
+796155	Allow other jars to be added
+741543	Allow user defined check rules
 
 Bugs:
 1177797	RuntimeException
 1084281	Many classes flagged as "with errors" with eclipse 3.1.0M3
 996575	NoClassDefFoundError in v. 3.4.1
+913098	Cannot add new check jars
 
 
 

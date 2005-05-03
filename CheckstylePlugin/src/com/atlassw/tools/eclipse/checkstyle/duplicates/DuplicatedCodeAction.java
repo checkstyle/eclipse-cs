@@ -148,7 +148,8 @@ public class DuplicatedCodeAction implements IObjectActionDelegate
                 checker.setBasedir(ResourcesPlugin.getWorkspace().getRoot().getLocation()
                         .toString());
                 checker.addFileSetCheck(check);
-                checker.addListener(new DuplicatedCodeAuditListener(duplicatedCodeView));
+                // checker.addListener(new
+                // DuplicatedCodeAuditListener(duplicatedCodeView));
             }
             catch (CheckstyleException e)
             {

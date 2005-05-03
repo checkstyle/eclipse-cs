@@ -35,7 +35,6 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Preferences;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.preferences.IPreferencesService;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.MessageDialogWithToggle;
@@ -252,7 +251,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         rebuildComposite.setLayout(layout2);
 
         Label lblRebuild = new Label(rebuildComposite, SWT.NULL);
-        lblRebuild.setText("Rebuild projects if needed:");
+        lblRebuild.setText(Messages.CheckstylePreferencePage_lblRebuild);
 
         mRebuildIfNeeded = new Combo(rebuildComposite, SWT.READ_ONLY);
         mRebuildIfNeeded.setItems(new String[] { MessageDialogWithToggle.PROMPT,
@@ -490,10 +489,10 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
                     .getBoolean(CheckstylePlugin.PREF_INCLUDE_RULE_NAMES);
             prefs.setValue(CheckstylePlugin.PREF_INCLUDE_RULE_NAMES, includeRuleNamesNow);
 
-            //See if all projects need rebuild
+            // See if all projects need rebuild
             boolean needRebuildAllProjects = includeRuleNamesNow != includeRuleNamesOriginal;
 
-            //Get projects that need rebuild considering the changes
+            // Get projects that need rebuild considering the changes
             Collection projectsToBuild = getProjectsToRebuild();
 
             IPreferenceStore prefStore = CheckstylePlugin.getDefault().getPreferenceStore();
@@ -510,13 +509,11 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
                     && (needRebuildAllProjects || projectsToBuild.size() > 0))
             {
 
-                MessageDialogWithToggle dialog = MessageDialogWithToggle
-                        .openYesNoQuestion(
-                                getShell(),
-                                "Rebuild suggested",
-                                "Some projects need to be rebuilt for the changes to become visible.\n Rebuild these projects?",
-                                "Don't ask me again", false, prefStore,
-                                CheckstylePlugin.PREF_ASK_BEFORE_REBUILD);
+                MessageDialogWithToggle dialog = MessageDialogWithToggle.openYesNoQuestion(
+                        getShell(), Messages.CheckstylePreferencePage_titleRebuild,
+                        Messages.CheckstylePreferencePage_msgRebuild,
+                        Messages.CheckstylePreferencePage_nagRebuild, false, prefStore,
+                        CheckstylePlugin.PREF_ASK_BEFORE_REBUILD);
 
                 rebuild = dialog.getReturnCode() == IDialogConstants.YES_ID;
             }
@@ -569,7 +566,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
 
             ICheckConfiguration checkConfig = (ICheckConfiguration) it.next();
 
-            //skip non dirty configurations
+            // skip non dirty configurations
             if (!checkConfig.isDirty())
             {
                 continue;
