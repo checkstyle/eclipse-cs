@@ -268,13 +268,20 @@ public abstract class AbstractCheckConfiguration implements ICheckConfiguration
         return mIsDirty;
     }
 
-
     /**
      * @see ICheckConfiguration#getPropertyResolver()
      */
     public PropertyResolver getPropertyResolver()
     {
-        return handleGetPropertyResolver();
+        PropertyResolver propsResolver = handleGetPropertyResolver();
+
+        //set the project context
+        if (propsResolver instanceof StandardPropertyResolver)
+        {
+            ((StandardPropertyResolver) propsResolver).setContext(mContext);
+        }
+
+        return propsResolver;
     }
 
     /**
@@ -483,5 +490,8 @@ public abstract class AbstractCheckConfiguration implements ICheckConfiguration
      * 
      * @return the property resolver.
      */
-    protected abstract PropertyResolver handleGetPropertyResolver();
+    protected PropertyResolver handleGetPropertyResolver()
+    {
+        return new StandardPropertyResolver();
+    }
 }

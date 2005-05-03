@@ -28,7 +28,6 @@ import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
-import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 
 /**
  * Implementation of a check configuration that uses an exteral checkstyle
@@ -109,42 +108,5 @@ public class RemoteCheckConfiguration extends AbstractCheckConfiguration
             mPropertyResolver = new ResourceBundleProperyResolver(bundle);
         }
         return mPropertyResolver;
-    }
-
-    /**
-     * Property resolver that resolves properties from a resource bundle.
-     * 
-     * @author Lars Ködderitzsch
-     */
-    private class ResourceBundleProperyResolver implements PropertyResolver
-    {
-
-        /** the resource bundle. */
-        private ResourceBundle mBundle;
-
-        /**
-         * Creates the property resolver.
-         * 
-         * @param bundle the resource bundle
-         */
-        public ResourceBundleProperyResolver(ResourceBundle bundle)
-        {
-            mBundle = bundle;
-        }
-
-        /**
-         * @see com.puppycrawl.tools.checkstyle.PropertyResolver#resolve(java.lang.String)
-         */
-        public String resolve(String property) throws CheckstyleException
-        {
-
-            String value = null;
-
-            if (mBundle != null)
-            {
-                value = mBundle.getString(property);
-            }
-            return value;
-        }
     }
 }

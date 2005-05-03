@@ -21,7 +21,6 @@
 package com.atlassw.tools.eclipse.checkstyle.config;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -270,7 +269,7 @@ public class Module implements Cloneable
         {
             return false;
         }
-        if (!mSeverityLevel.equals(otherModule.getSeverity()))
+        if (!getSeverity().equals(otherModule.getSeverity()))
         {
             return false;
         }

@@ -20,44 +20,43 @@
 
 package com.atlassw.tools.eclipse.checkstyle.config.configtypes;
 
-import java.net.URL;
+import java.util.ResourceBundle;
 
-import org.eclipse.core.runtime.Path;
-
-import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
+import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 
 /**
- * Implementation of the configuration type for a built in check configuration,
- * that is located inside the plugin.
+ * Property resolver that resolves properties from a resource bundle.
  * 
  * @author Lars Ködderitzsch
  */
-public class BuiltInCheckConfiguration extends AbstractCheckConfiguration
+class ResourceBundleProperyResolver extends StandardPropertyResolver
 {
 
+    /** the resource bundle. */
+    private ResourceBundle mBundle;
+
     /**
-     * @see AbstractCheckConfiguration#handleGetLocation()
+     * Creates the property resolver.
+     * 
+     * @param bundle the resource bundle
      */
-    protected URL handleGetLocation()
+    public ResourceBundleProperyResolver(ResourceBundle bundle)
     {
-        return CheckstylePlugin.getDefault().find(new Path(getLocation()));
+        mBundle = bundle;
     }
 
     /**
-     * @see AbstractCheckConfiguration#handleIsEditable()
+     * @see com.puppycrawl.tools.checkstyle.PropertyResolver#resolve(java.lang.String)
      */
-    protected boolean handleIsEditable()
+    public String resolve(String property) throws CheckstyleException
     {
-        // Built-in configurations cannot be changed
-        return false;
-    }
+        //first look for the standard variables
+        String value = super.resolve(property);
 
-    /**
-     * @see AbstractCheckConfiguration#handleIsConfigurable()
-     */
-    protected boolean handleIsConfigurable()
-    {
-        // Built-in configurations cannot be configured
-        return false;
+        if (value == null && mBundle != null)
+        {
+            value = mBundle.getString(property);
+        }
+        return value;
     }
 }

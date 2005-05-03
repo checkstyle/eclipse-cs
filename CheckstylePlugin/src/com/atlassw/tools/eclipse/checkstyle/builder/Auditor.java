@@ -138,10 +138,7 @@ public class Auditor
                     .getName()), filesToAudit.length);
 
             // set context
-            if (mCheckConfiguration.isContextNeeded())
-            {
-                mCheckConfiguration.setContext(project);
-            }
+            mCheckConfiguration.setContext(project);
 
             // create checker
             checker = CheckerFactory.createChecker(mCheckConfiguration);
@@ -182,6 +179,9 @@ public class Auditor
                 checker.removeListener(listener);
                 checker.removeFilter(runtimeExceptionFilter);
             }
+
+            //reset the context
+            mCheckConfiguration.setContext(null);
         }
     }
 

@@ -34,7 +34,6 @@ import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.config.ConfigurationWriter;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
-import com.puppycrawl.tools.checkstyle.PropertyResolver;
 
 /**
  * Implementation of the configuration type for a internal check configuration,
@@ -126,14 +125,5 @@ public class InternalCheckConfiguration extends AbstractCheckConfiguration
     protected boolean handleIsConfigurable()
     {
         return true;
-    }
-
-    /**
-     * @see AbstractCheckConfiguration#handleGetPropertyResolver()
-     */
-    protected PropertyResolver handleGetPropertyResolver()
-    {
-        // we have no need for property expansion for builtin configurations
-        return null;
     }
 }

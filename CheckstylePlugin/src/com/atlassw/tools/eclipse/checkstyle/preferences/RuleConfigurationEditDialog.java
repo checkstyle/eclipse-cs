@@ -23,7 +23,6 @@ package com.atlassw.tools.eclipse.checkstyle.preferences;
 //=================================================
 // Imports from java namespace
 //=================================================
-import java.io.File;
 import java.util.Iterator;
 import java.util.List;
 
@@ -436,17 +435,17 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
                 result = false;
             }
         }
-        else if (type.equals(ConfigPropertyType.FILE))
-        {
-            if (value == null || value.trim().length() == 0)
-            {
-                result = true;
-            }
-            else
-            {
-                result = new File(value).exists();
-            }
-        }
+//        else if (type.equals(ConfigPropertyType.FILE))
+//        {
+//            if (value == null || value.trim().length() == 0)
+//            {
+//                result = true;
+//            }
+//            else
+//            {
+//                result = new File(value).exists();
+//            }
+//        }
         else if ((type.equals(ConfigPropertyType.SINGLE_SELECT))
                 || type.equals(ConfigPropertyType.MULTI_CHECK)
                 || type.equals(ConfigPropertyType.BOOLEAN)
