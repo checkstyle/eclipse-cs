@@ -29,7 +29,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
@@ -254,7 +253,7 @@ public final class CheckConfigurationFactory
             {
                 in.close();
             }
-            catch (IOException e1)
+            catch (Exception e1)
             {
                 // NOOP
             }
@@ -262,7 +261,7 @@ public final class CheckConfigurationFactory
             {
                 out.close();
             }
-            catch (IOException e2)
+            catch (Exception e2)
             {
                 // NOOP
             }
