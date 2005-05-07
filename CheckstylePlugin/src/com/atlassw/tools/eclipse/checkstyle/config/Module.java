@@ -244,44 +244,4 @@ public class Module implements Cloneable
             throw new InternalError(); //should not happen
         }
     }
-
-    /**
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-    public boolean equals(Object obj)
-    {
-        if (obj == null || !(obj instanceof Module))
-        {
-            return false;
-        }
-        if (this == obj)
-        {
-            return true;
-        }
-
-        Module otherModule = (Module) obj;
-
-        if (mMetaData != otherModule.getMetaData())
-        {
-            return false;
-        }
-        if (!mComment.equals(otherModule.getComment()))
-        {
-            return false;
-        }
-        if (!getSeverity().equals(otherModule.getSeverity()))
-        {
-            return false;
-        }
-
-        return mProperties.equals(otherModule.getProperties());
-    }
-
-    /**
-     * @see java.lang.Object#hashCode()
-     */
-    public int hashCode()
-    {
-        return super.hashCode();
-    }
 }
