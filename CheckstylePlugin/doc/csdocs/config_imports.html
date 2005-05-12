@@ -23,7 +23,7 @@
                         
             <link href="./css/site.css" rel="stylesheet" type="text/css"/>
 
-            <title>Checkstyle - Naming Conventions</title>
+            <title>Checkstyle - Imports</title>
         </head>
 
         <body bgcolor="#ffffff" text="#000000" link="#525D76">
@@ -32,7 +32,7 @@
                 <!-- TOP IMAGE -->
                 <tr>
                         <td align="left">
-       <h1>Naming Conventions</h1>
+       <h1>Imports</h1>
     </td>
     <td align="right">
                   	<a href="http://checkstyle.sourceforge.net/">
@@ -112,22 +112,24 @@
 </li>
                     <ul>
     </ul>
-                  <li><b>    <a href="./config_naming.html">Naming Conventions</a>
-</b></li>
-                      <ul class="sectionquicklink">
-                                          <li><a href="#Overview">Overview</a></li>
-                                                        <li><a href="#Modules">Modules</a></li>
-                                                        <li><a href="#Notes">Notes</a></li>
-                                  </ul>
-              <ul>
+                  <li>    <a href="./config_naming.html">Naming Conventions</a>
+</li>
+                    <ul>
     </ul>
                   <li>    <a href="./config_header.html">Headers</a>
 </li>
                     <ul>
     </ul>
-                  <li>    <a href="./config_imports.html">Imports</a>
-</li>
-                    <ul>
+                  <li><b>    <a href="./config_imports.html">Imports</a>
+</b></li>
+                      <ul class="sectionquicklink">
+                                          <li><a href="#AvoidStarImport">AvoidStarImport</a></li>
+                                                        <li><a href="#IllegalImport">IllegalImport</a></li>
+                                                        <li><a href="#RedundantImport">RedundantImport</a></li>
+                                                        <li><a href="#UnusedImports">UnusedImports</a></li>
+                                                        <li><a href="#ImportOrder">ImportOrder</a></li>
+                                  </ul>
+              <ul>
     </ul>
                   <li>    <a href="./config_sizes.html">Size Violations</a>
 </li>
@@ -269,271 +271,19 @@
 
                     </td>
                     <td id="mainContents" align="left" valign="top">
-	                                                                     <a name="Overview"></a>
-  <h2>Overview</h2>
+	                                                                     <a name="AvoidStarImport"></a>
+  <h2>AvoidStarImport</h2>
+                                            <h3>Description</h3>
                                     <p>
-        Each of these naming modules validates identifiers for particular code
-        elements. Valid identifiers for a naming module are specified by its
-        <span class="code"> format</span> property. The value of <span class="code">format</span> is a <a href="http://jakarta.apache.org/regexp/">regular expression</a> for
-        valid identifiers.  This is an example of a configuration of the <span class="code">MemberName</span> module to ensure that member
-        identifiers begin with <span class="code">'m'</span>, followed
-        by an upper case letter, and then letters and digits:
-      </p>
-                                                    <div align="left">
-    <table cellspacing="4" cellpadding="0" border="0">
-    <tr>
-      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
-      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
-      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
-    </tr>
-    <tr>
-      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
-      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;MemberName&quot;&gt;
-  &lt;property name=&quot;format&quot; value=&quot;^m[A-Z][a-zA-Z0-9]*$&quot;/&gt;
-&lt;/module&gt;</pre></td>
-      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
-    </tr>
-    <tr>
-      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
-      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
-      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
-    </tr>
-    </table>
-    </div>
+          Checks that there are no import statements that use the * notation.
+        </p>
                                                 <p>
-        All naming modules belong to package <span class="code">com.puppycrawl.tools.checkstyle.checks.naming</span> and
-        are submodules of <a href="config.html#treewalker"><span class="code">TreeWalker</span></a>.
-      </p>
-                                                                                                                          <a name="Modules"></a>
-  <h2>Modules</h2>
+          Rationale: Importing all classes from a package leads to tight
+          coupling between packages and might lead to problems when a new
+          version of a library introduces name clashes.
+        </p>
+                                                                            <h3>Properties</h3>
                                     <table>
-                                            <tr class="even">
-                        <th colspan="" rowspan="" valign="top" align="left">
-                module
-        </th>
-                                <th colspan="" rowspan="" valign="top" align="left">
-                validates identifiers for
-        </th>
-                                <th colspan="" rowspan="" valign="top" align="left">
-                default value of <span class="code">format</span>
-        </th>
-            </tr>
-                                                <tr class="odd">
-                        <td class="odd" colspan="" rowspan="">
-                <span class="code">AbstractClassName</span>
-        </td>
-                                <td class="odd" colspan="" rowspan="">
-                <span class="code">abstract</span> classes
-        </td>
-                                <td class="odd" colspan="" rowspan="">
-                <span class="default">^Abstract.*$|^.*Factory$</span>
-        </td>
-            </tr>
-                                                <tr class="even">
-                        <td class="even" colspan="" rowspan="">
-                <span class="code">ConstantName</span>
-        </td>
-                                <td class="even" colspan="" rowspan="">
-                
-            constants (<span class="code">static</span>, <span class="code">
-            final</span> fields)
-          
-        </td>
-                                <td class="even" colspan="" rowspan="">
-                <span class="default">^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$</span>
-        </td>
-            </tr>
-                                                <tr class="odd">
-                        <td class="odd" colspan="" rowspan="">
-                <span class="code">LocalFinalVariableName</span>
-        </td>
-                                <td class="odd" colspan="" rowspan="">
-                local, <span class="code">final</span> variables
-        </td>
-                                <td class="odd" colspan="" rowspan="">
-                <span class="default">^[a-z][a-zA-Z0-9]*$</span>
-        </td>
-            </tr>
-                                                <tr class="even">
-                        <td class="even" colspan="" rowspan="">
-                <span class="code">LocalVariableName</span>
-        </td>
-                                <td class="even" colspan="" rowspan="">
-                
-            local, non-<span class="code">final</span> variables, including
-            <span class="code">catch</span> parameters
-          
-        </td>
-                                <td class="even" colspan="" rowspan="">
-                <span class="default">^[a-z][a-zA-Z0-9]*$</span>
-        </td>
-            </tr>
-                                                <tr class="odd">
-                        <td class="odd" colspan="" rowspan="">
-                <span class="code">MemberName</span>
-        </td>
-                                <td class="odd" colspan="" rowspan="">
-                non-<span class="code">static</span> fields
-        </td>
-                                <td class="odd" colspan="" rowspan="">
-                <span class="default">^[a-z][a-zA-Z0-9]*$</span>
-        </td>
-            </tr>
-                                                <tr class="even">
-                        <td class="even" colspan="" rowspan="">
-                <span class="code">MethodName</span>
-        </td>
-                                <td class="even" colspan="" rowspan="">
-                methods
-        </td>
-                                <td class="even" colspan="" rowspan="">
-                <span class="default">^[a-z][a-zA-Z0-9]*$</span>
-        </td>
-            </tr>
-                                                <tr class="odd">
-                        <td class="odd" colspan="" rowspan="">
-                <span class="code">PackageName</span>
-        </td>
-                                <td class="odd" colspan="" rowspan="">
-                packages
-        </td>
-                                <td class="odd" colspan="" rowspan="">
-                
-            <span class="default">^[a-z]+(\.[a-zA-Z_][a-zA-Z0-9_]*)*$</span>
-          
-        </td>
-            </tr>
-                                                <tr class="even">
-                        <td class="even" colspan="" rowspan="">
-                <span class="code">ParameterName</span>
-        </td>
-                                <td class="even" colspan="" rowspan="">
-                parameters
-        </td>
-                                <td class="even" colspan="" rowspan="">
-                <span class="default">^[a-z][a-zA-Z0-9]*$</span>
-        </td>
-            </tr>
-                                                <tr class="odd">
-                        <td class="odd" colspan="" rowspan="">
-                <span class="code">StaticVariableName</span>
-        </td>
-                                <td class="odd" colspan="" rowspan="">
-                
-            <span class="code">static</span>, non-<span class="code">final</span> fields
-          
-        </td>
-                                <td class="odd" colspan="" rowspan="">
-                <span class="default">^[a-z][a-zA-Z0-9]*$</span>
-        </td>
-            </tr>
-                                                <tr class="even">
-                        <td class="even" colspan="" rowspan="">
-                <span class="code">TypeName</span>
-        </td>
-                                <td class="even" colspan="" rowspan="">
-                classes and interfaces
-        </td>
-                                <td class="even" colspan="" rowspan="">
-                <span class="default">^[A-Z][a-zA-Z0-9]*$</span>
-        </td>
-            </tr>
-            </table>
-                                                                                                                          <a name="Notes"></a>
-  <h2>Notes</h2>
-                                    <p>
-        The default value of <span class="code">format</span> for module <span class="code">PackageName</span> has been chosen to match the
-        requirements in the <a href="http://java.sun.com/docs/books/jls/second_edition/html/packages.doc.html#40169">Java
-        Language specification</a> and the Sun coding conventions. However
-        both underscores and uppercase letters are rather uncommon, so most
-        configurations should probably assign value <span class="code">^[a-z]+(\.[a-z][a-z0-9]*)*$</span> to <span class="code">format</span> for module <span class="code">PackageName</span>, as in
-      </p>
-                                                    <div align="left">
-    <table cellspacing="4" cellpadding="0" border="0">
-    <tr>
-      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
-      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
-      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
-    </tr>
-    <tr>
-      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
-      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;PackageName&quot;&gt;
-    &lt;property name=&quot;format&quot;
-              value=&quot;^[a-z]+(\.[a-z][a-z0-9]*)*$&quot;/&gt;
-&lt;/module&gt;</pre></td>
-      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
-    </tr>
-    <tr>
-      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
-      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
-      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
-    </tr>
-    </table>
-    </div>
-                                                <p>
-        Module <span class="code">LocalVariableName</span> also has property
-        <span class="code">tokens</span> which can be used to control whether
-        the check applies to variable declarations or <span class="code">catch</span> clause parameters through tokens <span class="code">VARIABLE_DEF</span> and <span class="code">PARAMETER_DEF</span>.  For example, the following
-        configuration element ensures that <span class="code">catch</span>
-        clause parameters begin with <span class="code">"e"</span>, followed
-        by letters and digits:
-      </p>
-                                                    <div align="left">
-    <table cellspacing="4" cellpadding="0" border="0">
-    <tr>
-      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
-      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
-      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
-    </tr>
-    <tr>
-      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
-      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;LocalVariableName&quot;&gt;
-    &lt;property name=&quot;format&quot; value=&quot;^e[a-zA-Z0-9]*$&quot;/&gt;
-    &lt;property name=&quot;tokens&quot; value=&quot;PARAMETER_DEF&quot;/&gt;
-&lt;/module&gt;</pre></td>
-      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
-    </tr>
-    <tr>
-      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
-      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
-      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
-    </tr>
-    </table>
-    </div>
-                                                <p>
-        Module <span class="code">TypeName</span> also has property <span class="code">tokens</span> which can be used to control whether the
-        check applies to classes or interfaces through tokens <span class="code">CLASS_DEF</span> and <span class="code">INTERFACE_DEF</span>.  For example, the following
-        configuration element ensures that interface names begin with <span class="code">"I_"</span>, followed by letters and digits:
-      </p>
-                                                    <div align="left">
-    <table cellspacing="4" cellpadding="0" border="0">
-    <tr>
-      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
-      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
-      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
-    </tr>
-    <tr>
-      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
-      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;TypeName&quot;&gt;
-    &lt;property name=&quot;format&quot;
-              value=&quot;^I_[a-zA-Z0-9]*$&quot;/&gt;
-    &lt;property name=&quot;tokens&quot;
-              value=&quot;INTERFACE_DEF&quot;/&gt;
-&lt;/module&gt;</pre></td>
-      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
-    </tr>
-    <tr>
-      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
-      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
-      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
-    </tr>
-    </table>
-    </div>
-                                                <p>
-        Module <span class="code">MemberName</span> also has the following
-        properties:
-      </p>
-                                                <table>
                                             <tr class="even">
                         <th colspan="" rowspan="" valign="top" align="left">
                 name
@@ -550,64 +300,389 @@
             </tr>
                                                 <tr class="odd">
                         <td class="odd" colspan="" rowspan="">
-                applyToPublic
+                excludes
         </td>
                                 <td class="odd" colspan="" rowspan="">
-                Controls whether to apply the check to public member.
+                
+              packages where star imports are allowed. Note that this property
+              is not recursive, subpackages of excluded packages are not
+              automatically excluded.
+            
         </td>
                                 <td class="odd" colspan="" rowspan="">
-                <a href="property_types.html#boolean">Boolean</a>
+                <a href="property_types.html#stringSet">list of strings</a>
         </td>
                                 <td class="odd" colspan="" rowspan="">
-                <span class="default">true</span>
+                <span class="default">empty list</span>
+        </td>
+            </tr>
+            </table>
+                                                                            <h3>Example</h3>
+                                    <p>
+          An example how to configure the check so that star imports from
+          java.io and java.net are allowed:
+        </p>
+                                                    <div align="left">
+    <table cellspacing="4" cellpadding="0" border="0">
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;AvoidStarImport&quot;&gt;
+   &lt;property name=&quot;excludes&quot; value=&quot;java.io,java.net&quot;/&gt;
+&lt;/module&gt;</pre></td>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    </table>
+    </div>
+                                                                            <h3>Package</h3>
+                                    <p> com.puppycrawl.tools.checkstyle.checks.imports </p>
+                                                                            <h3>Parent Module</h3>
+                                    <p>
+          <a href="config.html#treewalker">TreeWalker</a>
+        </p>
+                                                                                                                                              <a name="IllegalImport"></a>
+  <h2>IllegalImport</h2>
+                                            <h3>Description</h3>
+                                    <p>
+          Checks for imports from a set of illegal packages. By default, the
+          check rejects all <span class="code">sun.*</span> packages since
+          programs that contain direct calls to the <span class="code">sun.*</span> packages are <a href="http://java.sun.com/products/jdk/faq/faq-sun-packages.html">not
+          100% Pure Java</a>. To reject other packages, set property <span class="code"> illegalPkgs</span> to a list of the illegal packages.
+        </p>
+                                                                            <h3>Properties</h3>
+                                    <table>
+                                            <tr class="even">
+                        <th colspan="" rowspan="" valign="top" align="left">
+                name
+        </th>
+                                <th colspan="" rowspan="" valign="top" align="left">
+                description
+        </th>
+                                <th colspan="" rowspan="" valign="top" align="left">
+                type
+        </th>
+                                <th colspan="" rowspan="" valign="top" align="left">
+                default value
+        </th>
+            </tr>
+                                                <tr class="odd">
+                        <td class="odd" colspan="" rowspan="">
+                illegalPkgs
+        </td>
+                                <td class="odd" colspan="" rowspan="">
+                packages to reject
+        </td>
+                                <td class="odd" colspan="" rowspan="">
+                <a href="property_types.html#stringSet">list of strings</a>
+        </td>
+                                <td class="odd" colspan="" rowspan="">
+                <span class="default">sun</span>
+        </td>
+            </tr>
+            </table>
+                                                                            <h3>Examples</h3>
+                                    <p>
+          To configure the check:
+        </p>
+                                                    <div align="left">
+    <table cellspacing="4" cellpadding="0" border="0">
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;IllegalImport&quot;/&gt;</pre></td>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    </table>
+    </div>
+                                                <p>
+          To configure the check so that it rejects packages <span class="code">java.io.*</span> and <span class="code">java.sql.*</span>:
+        </p>
+                                                    <div align="left">
+    <table cellspacing="4" cellpadding="0" border="0">
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;IllegalImport&quot;&gt;
+    &lt;property name=&quot;illegalPkgs&quot; value=&quot;java.io, java.sql&quot;/&gt;
+&lt;/module&gt;</pre></td>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    </table>
+    </div>
+                                                                            <h3>Package</h3>
+                                    <p>
+          com.puppycrawl.tools.checkstyle.checks.imports
+        </p>
+                                                                            <h3>Parent Module</h3>
+                                    <p>
+          <a href="config.html#treewalker">TreeWalker</a>
+        </p>
+                                                                                                                                              <a name="RedundantImport"></a>
+  <h2>RedundantImport</h2>
+                                            <h3>Description</h3>
+                                    <p>
+          Checks for redundant import statements. An import statement is
+          considered redundant if:
+        </p>
+                                                <ul>
+          <li>
+            It is a duplicate of another import. This is, when a class is
+            imported more than once.
+          </li>
+          <li>
+            The class imported is from the <span class="code">java.lang</span>
+            package, e.g.  importing <span class="code">java.lang.String</span>.
+          </li>
+          <li>
+            The class imported is from the same package.
+          </li>
+        </ul>
+                                                                            <h3>Example</h3>
+                                    <p>
+          To configure the check:
+        </p>
+                                                    <div align="left">
+    <table cellspacing="4" cellpadding="0" border="0">
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;RedundantImport&quot;/&gt;</pre></td>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    </table>
+    </div>
+                                                                            <h3>Package</h3>
+                                    <p>
+          com.puppycrawl.tools.checkstyle.checks.imports
+        </p>
+                                                                            <h3>Parent Module</h3>
+                                    <p>
+          <a href="config.html#treewalker">TreeWalker</a>
+        </p>
+                                                                                                                                              <a name="UnusedImports"></a>
+  <h2>UnusedImports</h2>
+                                            <h3>Description</h3>
+                                    <p>
+          Checks for unused import statements. Checkstyle uses a simple but
+          very reliable algorithm to report on unused import statements. An
+          import statement is considered unused if:
+        </p>
+                                                <ul>
+          <li>
+            It is not referenced in the file. The algorithm does not support
+            wild-card imports like <span class="code">import
+            java.io.*;</span>. Most IDE's provide very sophisticated checks
+            for imports that handle wild-card imports.
+          </li>
+
+          <li>
+            It is a duplicate of another import. This is when a class is
+            imported more than once.
+          </li>
+
+          <li>
+            The class imported is from the <span class="code">java.lang</span>
+            package. For example importing <span class="code">java.lang.String</span>.
+          </li>
+
+          <li>
+            The class imported is from the same package.
+          </li>
+        </ul>
+                                                                            <h3>Example</h3>
+                                    <p>
+          To configure the check:
+        </p>
+                                                    <div align="left">
+    <table cellspacing="4" cellpadding="0" border="0">
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;UnusedImports&quot;/&gt;</pre></td>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    </table>
+    </div>
+                                                                            <h3>Package</h3>
+                                    <p>
+          com.puppycrawl.tools.checkstyle.checks.imports
+        </p>
+                                                                            <h3>Parent Module</h3>
+                                    <p>
+          <a href="config.html#treewalker">TreeWalker</a>
+        </p>
+                                                                                                                                              <a name="ImportOrder"></a>
+  <h2>ImportOrder</h2>
+                                            <h3>Description</h3>
+                                    <p>
+          Checks the ordering/grouping of imports.  Ensures that groups of
+          imports come in a specific order (e.g., java. comes first,
+          javax. comes first, then everything else) and imports within each
+          group are in lexicographic order.
+        </p>
+                                                                            <h3>Properties</h3>
+                                    <table>
+                                            <tr class="even">
+                        <th colspan="" rowspan="" valign="top" align="left">
+                name
+        </th>
+                                <th colspan="" rowspan="" valign="top" align="left">
+                description
+        </th>
+                                <th colspan="" rowspan="" valign="top" align="left">
+                type
+        </th>
+                                <th colspan="" rowspan="" valign="top" align="left">
+                default value
+        </th>
+            </tr>
+                                                <tr class="odd">
+                        <td class="odd" colspan="" rowspan="">
+                groups
+        </td>
+                                <td class="odd" colspan="" rowspan="">
+                
+              list of imports groups (every group identified by string it's
+              started)
+            
+        </td>
+                                <td class="odd" colspan="" rowspan="">
+                <a href="property_types.html#stringSet">list of strings</a>
+        </td>
+                                <td class="odd" colspan="" rowspan="">
+                <span class="default">empty list</span>
         </td>
             </tr>
                                                 <tr class="even">
                         <td class="even" colspan="" rowspan="">
-                applyToProtected
+                ordered
         </td>
                                 <td class="even" colspan="" rowspan="">
-                Controls whether to apply the check to protected member.
+                whether imports within group should be sorted
         </td>
                                 <td class="even" colspan="" rowspan="">
-                <a href="property_types.html#boolean">Boolean</a>
+                <a href="property_types.html#Boolean">Boolean</a>
         </td>
                                 <td class="even" colspan="" rowspan="">
-                <span class="default">true</span>
+                true
         </td>
             </tr>
                                                 <tr class="odd">
                         <td class="odd" colspan="" rowspan="">
-                applyToPackage
+                separated
         </td>
                                 <td class="odd" colspan="" rowspan="">
                 
-            Controls whether to apply the check to package-private member.
-          
+              whether imports groups should be separated by, at least, one
+              blank line
+            
         </td>
                                 <td class="odd" colspan="" rowspan="">
-                <a href="property_types.html#boolean">Boolean</a>
+                <a href="property_types.html#Boolean">Boolean</a>
         </td>
                                 <td class="odd" colspan="" rowspan="">
-                <span class="default">true</span>
+                false
         </td>
             </tr>
                                                 <tr class="even">
                         <td class="even" colspan="" rowspan="">
-                applyToPrivate
+                caseSensitive
         </td>
                                 <td class="even" colspan="" rowspan="">
-                Controls whether to apply the check to pribvate member.
+                whether string comparision should be case sensitive or not
         </td>
                                 <td class="even" colspan="" rowspan="">
-                <a href="property_types.html#boolean">Boolean</a>
+                <a href="property_types.html#Boolean">Boolean</a>
         </td>
                                 <td class="even" colspan="" rowspan="">
-                <span class="default">true</span>
+                true
         </td>
             </tr>
             </table>
-                                                                    
+                                                                            <h3>Example</h3>
+                                    <p>
+          To configure the check so that it requires "java" packages
+          first, than "javax" and than all other imports, imports
+          will be sorted in the groups and groups are separated by, at least,
+          on blank line:
+        </p>
+                                                    <div align="left">
+    <table cellspacing="4" cellpadding="0" border="0">
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;ImportOrder&quot;&gt;
+    &lt;property name=&quot;groups&quot; value=&quot;java,javax&quot;/&gt;
+    &lt;property name=&quot;ordered&quot; value=&quot;true&quot;/&gt;
+    &lt;property name=&quot;separated&quot; value=&quot;true&quot;/&gt;
+&lt;/module&gt;</pre></td>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    </table>
+    </div>
+                                                                            <h3>Package</h3>
+                                    <p>
+          com.puppycrawl.tools.checkstyle.checks.imports
+        </p>
+                                                                            <h3>Parent Module</h3>
+                                    <p>
+          <a href="config.html#treewalker">TreeWalker</a>
+        </p>
+                                                                                        
                     </td>
                 </tr>
 

@@ -15,15 +15,15 @@
         <head>
             <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
 
-                                                    <meta name="author" value="Lars Kühne">
-            <meta name="email" value="$au.getAttributeValue("email")">
+                                                    <meta name="author" value="Checkstyle Development Team">
+            <meta name="email" value="checkstyle-devel@lists.sourceforge.net">
             
            
                                     
                         
             <link href="./css/site.css" rel="stylesheet" type="text/css"/>
 
-            <title>Checkstyle - Writing Filters</title>
+            <title>Checkstyle - Modifiers</title>
         </head>
 
         <body bgcolor="#ffffff" text="#000000" link="#525D76">
@@ -32,7 +32,7 @@
                 <!-- TOP IMAGE -->
                 <tr>
                         <td align="left">
-       <h1>Writing Filters</h1>
+       <h1>Modifiers</h1>
     </td>
     <td align="right">
                   	<a href="http://checkstyle.sourceforge.net/">
@@ -132,9 +132,13 @@
 </li>
                     <ul>
     </ul>
-                  <li>    <a href="./config_modifier.html">Modifiers</a>
-</li>
-                    <ul>
+                  <li><b>    <a href="./config_modifier.html">Modifiers</a>
+</b></li>
+                      <ul class="sectionquicklink">
+                                          <li><a href="#ModifierOrder">ModifierOrder</a></li>
+                                                        <li><a href="#RedundantModifier">RedundantModifier</a></li>
+                                  </ul>
+              <ul>
     </ul>
                   <li>    <a href="./config_blocks.html">Block Checks</a>
 </li>
@@ -181,16 +185,9 @@
 </li>
                     <ul>
     </ul>
-                  <li><b>    <a href="./writingfilters.html">Writing filters</a>
-</b></li>
-                      <ul class="sectionquicklink">
-                                          <li><a href="#Overview">Overview</a></li>
-                                                        <li><a href="#Writing Filters">Writing Filters</a></li>
-                                                        <li><a href="#Using Filters">Using Filters</a></li>
-                                                        <li><a href="#Huh? I can't figure it out!">Huh? I can't figure it out!</a></li>
-                                                        <li><a href="#Contributing">Contributing</a></li>
-                                  </ul>
-              <ul>
+                  <li>    <a href="./writingfilters.html">Writing filters</a>
+</li>
+                    <ul>
     </ul>
                   <li>    <a href="./writinglisteners.html">Writing listeners</a>
 </li>
@@ -271,38 +268,52 @@
 
                     </td>
                     <td id="mainContents" align="left" valign="top">
-	                                                                     <a name="Overview"></a>
-  <h2>Overview</h2>
+	                                                                     <a name="ModifierOrder"></a>
+  <h2>ModifierOrder</h2>
+                                            <h3>Description</h3>
                                     <p>
-        A <span class="code">Checker</span> has a set of <span class="code">Filter</span>s that decide which audit events the <span class="code">Checker</span> reports through its listeners.  Interface
-        <span class="code">Filter</span> and class <span class="code">FilterSet</span> are intended to support general <span class="code">AuditEvent</span> filtering using a set of <span class="code">Filter</span>s.
-      </p>
-                                                <p>
-        A <span class="code">Filter</span> has <span class="code">boolean</span> method <span class="code">accept(AuditEvent)</span> that returns <span class="code">true</span> if the <span class="code">Filter</span>
-        accepts the <span class="code">AuditEvent</span> parameter and returns
-        <span class="code">false</span> if the <span class="code">Filter</span> rejects it.
-      </p>
-                                                <p>
-        A <span class="code">FilterSet</span> is a particular <span class="code">Filter</span> that contains a set of <span class="code">Filter</span>s. A <span class="code">FilterSet</span>
-        accepts an <span class="code">AuditEvent</span> if and only if all
-        <span class="code">Filter</span>s in the set accept the <span class="code">AuditEvent</span>.
-      </p>
-                                                <p>
-        Here is a UML diagram for interface <span class="code">Filter</span>
-        and class <span class="code">FilterSet</span>.
-      </p>
-                                                <image src="images/Filter.gif" width="233" height="324" alt="Filter UML diagram" />
-                                                                                                                          <a name="Writing Filters"></a>
-  <h2>Writing Filters</h2>
-                                    <p>
-        The <span class="code">Filter</span> that we demonstrate here rejects
-        audit events for files whose name matches a <a href="property_types.html#regexp">regular expression</a>.  In order to
-        enable the specification of the file name pattern as a property in a
-        configuration file, the <span class="code">Filter</span> is an <a href="api/com/puppycrawl/tools/checkstyle/api/AutomaticBean.html">AutomaticBean</a>
-        with mutator method <span class="code">setFiles(String)</span> that
-        receives the file name pattern.  An <span class="code">AutomaticBean</span> uses JavaBean introspection to set
-        JavaBean properties such as <span class="code">files</span>.
-      </p>
+          Checks that the order of modifiers conforms to the suggestions in
+          the <a href="http://java.sun.com/docs/books/jls/second_edition/html/classes.doc.html">Java
+          Language specification, sections 8.1.1, 8.3.1 and 8.4.3</a>. The
+          correct order is:
+        </p>
+                                                <ol>
+          <li>
+            <span class="code">public</span>
+          </li>
+          <li>
+            <span class="code">protected</span>
+          </li>
+          <li>
+            <span class="code">private</span>
+          </li>
+          <li>
+            <span class="code">abstract</span>
+          </li>
+          <li>
+            <span class="code">static</span>
+          </li>
+          <li>
+            <span class="code">final</span>
+          </li>
+          <li>
+            <span class="code">transient</span>
+          </li>
+          <li>
+            <span class="code">volatile</span>
+          </li>
+          <li>
+            <span class="code">synchronized</span>
+          </li>
+          <li>
+            <span class="code">native</span>
+          </li>
+          <li>
+            <span class="code">strictfp</span>
+          </li>
+        </ol>
+                                                                            <h3>Example</h3>
+                                    <p> To configure the check: </p>
                                                     <div align="left">
     <table cellspacing="4" cellpadding="0" border="0">
     <tr>
@@ -312,40 +323,7 @@
     </tr>
     <tr>
       <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
-      <td bgcolor="#ffffff"><pre>package com.mycompany.filters;
-
-import org.apache.regexp.RE;
-import org.apache.regexp.RESyntaxException;
-
-import com.puppycrawl.tools.checkstyle.api.AuditEvent;
-import com.puppycrawl.tools.checkstyle.api.AutomaticBean;
-import com.puppycrawl.tools.checkstyle.api.Filter;
-import com.puppycrawl.tools.checkstyle.api.Utils;
-
-public class FilesFilter
-    extends AutomaticBean
-    implements Filter
-{
-    private RE mFileRegexp;
-
-    public FilesFilter()
-        throws RESyntaxException
-    {
-        setFiles(&quot;^$&quot;);
-    }
-
-    public boolean accept(AuditEvent aEvent)
-    {
-        final String fileName = aEvent.getFileName();
-        return ((fileName == null) || !mFileRegexp.match(fileName));
-    }
-
-    public void setFiles(String aFilesPattern)
-        throws RESyntaxException
-    {
-        mFileRegexp = Utils.getRE(aFilesPattern);
-    }
-}</pre></td>
+      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;ModifierOrder&quot;/&gt;</pre></td>
       <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
     </tr>
     <tr>
@@ -355,17 +333,80 @@ public class FilesFilter
     </tr>
     </table>
     </div>
-                                                                                                                          <a name="Using Filters"></a>
-  <h2>Using Filters</h2>
+                                                                            <h3>Package</h3>
+                                    <p> com.puppycrawl.tools.checkstyle.checks </p>
+                                                                            <h3>Parent Module</h3>
                                     <p>
-        To incorporate a <span class="code">Filter</span> in the filter set
-        for a <span class="code">Checker</span>, include a module element for
-        the <span class="code">Filter</span> in the <a href="config.html#filters">configuration file</a>. For example, to
-        configure a <span class="code">Checker</span> so that it uses custom
-        filter <span class="code">FilesFilter</span> to prevent reporting of
-        audit events for files whose name contains "Generated",
-        include the following module in the configuration file:
-      </p>
+          <a href="config.html#treewalker">TreeWalker</a>
+        </p>
+                                                                                                                                              <a name="RedundantModifier"></a>
+  <h2>RedundantModifier</h2>
+                                            <h3>Description</h3>
+                                    <p>
+          Checks for redundant modifiers in interface and annotation
+          definitions.  Also checks for redundant final modifiers on
+          methods of final classes.
+        </p>
+                                                <p>
+          Rationale: The Java Language Specification strongly
+          discourages the usage of "public" and "abstract" for method
+          declarations in interface definitions as a matter of style.
+        </p>
+                                                <p>
+          Variables in interfaces and annotations are automatically
+          public, static and final, so these modifiers are redundant as
+          well.
+        </p>
+                                                <p>
+          As annotations are a form of interface, their fields are also
+          automatically public, static and final just as their
+          annotation fields are automatically public and abstract.
+        </p>
+                                                <p>
+          Final classes by definition can not be extended so the final
+          modifier on the method of a final class is redundant.
+        </p>
+                                                                            <h3>Properties</h3>
+                                    <table>
+                                            <tr class="even">
+                        <th colspan="" rowspan="" valign="top" align="left">
+                name
+        </th>
+                                <th colspan="" rowspan="" valign="top" align="left">
+                description
+        </th>
+                                <th colspan="" rowspan="" valign="top" align="left">
+                type
+        </th>
+                                <th colspan="" rowspan="" valign="top" align="left">
+                default value
+        </th>
+            </tr>
+                                                <tr class="odd">
+                        <td class="odd" colspan="" rowspan="">
+                tokens
+        </td>
+                                <td class="odd" colspan="" rowspan="">
+                tokens to check
+        </td>
+                                <td class="odd" colspan="" rowspan="">
+                
+              subset of tokens <a href="api/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#METHOD_DEF">METHOD_DEF</a>,
+              <a href="api/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#VARIABLE_DEF">VARIABLE_DEF</a>,
+              <a href="api/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#ANNOTATION_FIELD_DEF">ANNOTATION_FIELD_DEF</a>
+            
+        </td>
+                                <td class="odd" colspan="" rowspan="">
+                
+              <a href="api/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#METHOD_DEF">METHOD_DEF</a>,
+              <a href="api/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#VARIABLE_DEF">VARIABLE_DEF</a>,
+              <a href="api/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#ANNOTATION_FIELD_DEF">ANNOTATION_FIELD_DEF</a>
+            
+        </td>
+            </tr>
+            </table>
+                                                                            <h3>Example</h3>
+                                    <p> To configure the check: </p>
                                                     <div align="left">
     <table cellspacing="4" cellpadding="0" border="0">
     <tr>
@@ -375,8 +416,30 @@ public class FilesFilter
     </tr>
     <tr>
       <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
-      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;com.mycompany.filters.FilesFilter&quot;&gt;
-    &lt;property name=&quot;files&quot; value=&quot;Generated&quot;/&gt;
+      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;RedundantModifier&quot;/&gt;</pre></td>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    </table>
+    </div>
+                                                <p>
+          To configure the check to check only methods and not variables:
+        </p>
+                                                    <div align="left">
+    <table cellspacing="4" cellpadding="0" border="0">
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;RedundantModifier&quot;&gt;
+  &lt;property name=&quot;tokens&quot; value=&quot;METHOD_DEF&quot;/&gt;
 &lt;/module&gt;</pre></td>
       <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
     </tr>
@@ -387,27 +450,13 @@ public class FilesFilter
     </tr>
     </table>
     </div>
-                                                                                                                          <a name="Huh? I can't figure it out!"></a>
-  <h2>Huh? I can't figure it out!</h2>
+                                                                            <h3>Package</h3>
+                                    <p> com.puppycrawl.tools.checkstyle.checks </p>
+                                                                            <h3>Parent Module</h3>
                                     <p>
-        That's probably our fault, and it means that we have to provide
-        better documentation. Please do not hesitate to ask questions on the
-        user mailing list, this will help us to improve this document.  Please
-        ask your questions as precisely as possible. We will not be able to
-        answer questions like "I want to write a filter but I don't
-        know how, can you help me?". Tell us what you are trying to do
-        (the purpose of the filter), what you have understood so far, and what
-        exactly you are getting stuck on.
-      </p>
-                                                                                                                          <a name="Contributing"></a>
-  <h2>Contributing</h2>
-                                    <p>
-        We need <em>your</em> help to keep improving Checkstyle. Whenever you
-        write a filter that you think is generally useful, please consider <a href="contributing.html">contributing</a> it to the Checkstyle
-        community and submit it for inclusion in the next release of
-        Checkstyle.
-      </p>
-                                                                    
+          <a href="config.html#treewalker">TreeWalker</a>
+        </p>
+                                                                                        
                     </td>
                 </tr>
 

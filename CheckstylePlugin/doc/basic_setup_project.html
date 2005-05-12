@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
+	<TITLE></TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1.4  (Win32)">
+	<META NAME="AUTHOR" CONTENT="Lars K&ouml;dderitzsch">
+	<META NAME="CREATED" CONTENT="20050507;15354586">
+	<META NAME="CHANGEDBY" CONTENT="Lars K&ouml;dderitzsch">
+	<META NAME="CHANGED" CONTENT="20050512;20575812">
+	<STYLE>
+	<!--
+		@page { size: 21cm 29.7cm }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="de-DE" DIR="LTR">
+<H1><FONT FACE="Times New Roman, serif">Setting up a project</FONT></H1>
+<P>To get your files checked by checkstyle there are a few simple
+steps set up the checkstyle plug-in for your project.</P>
+<OL>
+	<LI><P><B>Open the properties of the project you want to get checked</B></P>
+</OL>
+<P><IMG SRC="images/basic_setup_project_html_482cc57a.gif" NAME="Grafik1" ALIGN=LEFT WIDTH=835 HEIGHT=632 BORDER=0><BR CLEAR=LEFT><BR><BR>
+</P>
+<OL START=2>
+	<LI><P><B>Select the checkstyle section within the properties dialog</B></P>
+</OL>
+<P><IMG SRC="images/basic_setup_project_html_m2388a161.jpg" NAME="Grafik2" ALIGN=LEFT WIDTH=634 HEIGHT=532 BORDER=0><BR CLEAR=LEFT><BR><BR>
+</P>
+<OL START=3>
+	<LI><P><B>Activate checkstyle for your project by selecting the
+	</B><I>Checkstyle active for this project</I> <B>checkbox and press
+	</B><I>OK</I></P>
+</OL>
+<P><IMG SRC="images/basic_setup_project_html_m76fd5cc9.jpg" NAME="Grafik3" ALIGN=LEFT WIDTH=634 HEIGHT=532 BORDER=0><BR CLEAR=LEFT><BR><BR>
+</P>
+<P>Don't mind the other options of the checkstyle project
+configuration for now &ndash; these will be explained in detail
+later.<BR>For starters we are using the <I>Sun Checks</I>
+configuration which is built into the plugin. This configuration
+contains coding conventions recommended by Sun and widely accepted
+standards and best practices.<BR><BR>Now checkstyle should begin
+checking your code. This may take a while depending on how many
+source files your project contains.<BR>The Checkstyle Plug-in uses
+background jobs to do its work &ndash; so while checkstyle audits
+your source files you should be able to continue your work.</P>
+<P>After checkstyle has finished checking your code please look into
+your Eclipse Problems View.<BR>The should be some warnings from
+checkstyle. This warnings point to the code locations where your code
+violates the Sun Checks configuration.</P>
+<P><IMG SRC="images/basic_setup_project_html_6d5299d0.jpg" NAME="Grafik4" ALIGN=LEFT WIDTH=861 HEIGHT=674 BORDER=0><BR CLEAR=LEFT><BR><BR>
+</P>
+<P>You can navigate to the problems in your code by double-clicking
+the problem in you problems view.<BR>On the left hand side of the
+editor an icon is shown for each line that contains a checkstyle
+violation. Hovering with your mouse above this icon will show you the
+problem message.<BR>Also note the editor annotations &ndash; they are
+there to make it even easier to see where the problems are.<BR><BR><BR>
+</P>
+<P><B><FONT SIZE=4 STYLE="font-size: 16pt">Congratulations!</FONT></B><BR>You
+audited your first eclipse project with checkstyle.<BR>Now you surely
+want to know how to change the rules for the audit to accomodate your
+own (or your companies) coding style.<BR>Read on in the <A HREF="basic_creating_config.html">next
+chapter</A>.<BR><BR><BR>
+</P>
+</BODY>
+</HTML>
