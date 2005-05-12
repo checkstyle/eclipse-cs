@@ -399,22 +399,25 @@ public class CheckstylePropertyPage extends PropertyPage
         {
             FileSet fileset = (FileSet) it.next();
             ICheckConfiguration checkConfig = fileset.getCheckConfig();
-            if (checkConfig.isContextNeeded())
+            if (checkConfig != null)
             {
-                checkConfig.setContext(mProject);
-            }
+                if (checkConfig.isContextNeeded())
+                {
+                    checkConfig.setContext(mProject);
+                }
 
-            try
-            {
-                checkConfig.getCheckstyleConfigurationURL();
-            }
-            catch (CheckstylePluginException e)
-            {
+                try
+                {
+                    checkConfig.getCheckstyleConfigurationURL();
+                }
+                catch (CheckstylePluginException e)
+                {
 
-                CheckstyleLog.warningDialog(getShell(), NLS.bind(
-                        ErrorMessages.errorCannotResolveCheckLocation, checkConfig.getLocation(),
-                        checkConfig.getName()), e);
-                return false;
+                    CheckstyleLog.warningDialog(getShell(), NLS.bind(
+                            ErrorMessages.errorCannotResolveCheckLocation, checkConfig
+                                    .getLocation(), checkConfig.getName()), e);
+                    return false;
+                }
             }
         }
 

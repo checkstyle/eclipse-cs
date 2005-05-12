@@ -39,6 +39,8 @@ import org.eclipse.swt.widgets.Text;
 import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationFactory;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
+import com.atlassw.tools.eclipse.checkstyle.preferences.CheckConfigurationConfigureDialog;
+import com.atlassw.tools.eclipse.checkstyle.preferences.CheckConfigurationPropertiesDialog;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileMatchPattern;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileSet;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
@@ -68,6 +70,8 @@ public class SimpleFileSetsEditor implements IFileSetsEditor
     private List mFileSets;
 
     private FileSet mDefaultFileSet;
+
+    private Controller mController;
 
     private CheckstylePropertyPage mPropertyPage;
 
@@ -131,45 +135,29 @@ public class SimpleFileSetsEditor implements IFileSetsEditor
     public Control createContents(Composite parent) throws CheckstylePluginException
     {
 
+        mController = new Controller();
+
         //group composite containing the config settings
         Group configArea = new Group(parent, SWT.NULL);
         configArea.setText(Messages.SimpleFileSetsEditor_titleSimpleConfig);
         configArea.setLayout(new FormLayout());
 
-        this.mConfigList = new Combo(configArea, SWT.DROP_DOWN | SWT.READ_ONLY);
+        this.mBtnManageConfigs = new Button(configArea, SWT.PUSH);
+        this.mBtnManageConfigs.setText(Messages.SimpleFileSetsEditor_btnManageConfigs);
+        this.mBtnManageConfigs.addSelectionListener(mController);
         FormData fd = new FormData();
+        fd.top = new FormAttachment(0, 3);
+        fd.right = new FormAttachment(100, -3);
+        this.mBtnManageConfigs.setLayoutData(fd);
+
+        this.mConfigList = new Combo(configArea, SWT.DROP_DOWN | SWT.READ_ONLY);
+        this.mConfigList.addSelectionListener(mController);
+        fd = new FormData();
         fd.left = new FormAttachment(0, 3);
         fd.top = new FormAttachment(0, 3);
-        //        fd.right = new FormAttachment(mBtnManageConfigs, -3, SWT.LEFT);
-        fd.right = new FormAttachment(100, -3);
+        fd.right = new FormAttachment(mBtnManageConfigs, -3, SWT.LEFT);
+        //fd.right = new FormAttachment(100, -3);
         this.mConfigList.setLayoutData(fd);
-
-        this.mConfigList.addSelectionListener(new SelectionListener()
-        {
-            /**
-             * @see org.eclipse.swt.events.SelectionListener#widgetSelected(
-             *      org.eclipse.swt.events.SelectionEvent)
-             */
-            public void widgetSelected(SelectionEvent e)
-            {
-                String configName = mConfigList.getItem(mConfigList.getSelectionIndex());
-
-                ICheckConfiguration config = CheckConfigurationFactory.getByName(configName);
-                mDefaultFileSet.setCheckConfig(config);
-                mTxtConfigDescription.setText(config.getDescription());
-
-                mPropertyPage.getContainer().updateButtons();
-            }
-
-            /**
-             * @see org.eclipse.swt.events.SelectionListener#widgetDefaultSelected(
-             *      org.eclipse.swt.events.SelectionEvent)
-             */
-            public void widgetDefaultSelected(SelectionEvent e)
-            {
-
-            }
-        });
 
         // Description
         Label lblConfigDesc = new Label(configArea, SWT.LEFT);
@@ -224,5 +212,53 @@ public class SimpleFileSetsEditor implements IFileSetsEditor
             mTxtConfigDescription.setText(((ICheckConfiguration) configurations.get(0))
                     .getDescription());
         }
+    }
+
+    private class Controller implements SelectionListener
+    {
+
+        /**
+         * @see SelectionListener#widgetSelected(org.eclipse.swt.events.SelectionEvent)
+         */
+        public void widgetSelected(SelectionEvent e)
+        {
+            if (mBtnManageConfigs == e.widget)
+            {
+                String configName = mConfigList.getItem(mConfigList.getSelectionIndex());
+                ICheckConfiguration config = CheckConfigurationFactory.getByName(configName);
+
+                if (config != null)
+                {
+
+                    CheckConfigurationConfigureDialog dialog = new CheckConfigurationConfigureDialog(
+                            mPropertyPage.getShell(), config);
+                    dialog.setBlockOnOpen(true);
+                    if (CheckConfigurationPropertiesDialog.OK == dialog.open())
+                    {
+                        //TODO handle if rebuild needed in properties page
+                    }
+                }
+
+            }
+            else if (mConfigList == e.widget)
+            {
+                String configName = mConfigList.getItem(mConfigList.getSelectionIndex());
+
+                ICheckConfiguration config = CheckConfigurationFactory.getByName(configName);
+                mDefaultFileSet.setCheckConfig(config);
+                mTxtConfigDescription.setText(config.getDescription());
+
+                mPropertyPage.getContainer().updateButtons();
+            }
+        }
+
+        /**
+         * @see SelectionListener#widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent)
+         */
+        public void widgetDefaultSelected(SelectionEvent e)
+        {
+        // NOOP
+        }
+
     }
 }

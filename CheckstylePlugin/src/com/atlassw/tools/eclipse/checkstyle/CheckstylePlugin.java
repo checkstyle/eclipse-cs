@@ -68,6 +68,12 @@ public class CheckstylePlugin extends AbstractUIPlugin
     public static final String PREF_TRANSLATE_TOKENS = "translate.checkstyle.tokens"; //$NON-NLS-1$
 
     /**
+     * Preference name indication if the module editor should be opened when
+     * adding a module.
+     */
+    public static final String PREF_OPEN_MODULE_EDITOR = "open.module.editor.on.add"; //$NON-NLS-1$
+
+    /**
      * Preference name indicating the minimum amount of lines that is used for
      * the checker analysis.
      */
@@ -149,6 +155,7 @@ public class CheckstylePlugin extends AbstractUIPlugin
         prefStore.setDefault(PREF_FILESET_WARNING, true);
         prefStore.setDefault(PREF_ASK_BEFORE_REBUILD, MessageDialogWithToggle.PROMPT);
         prefStore.setDefault(PREF_TRANSLATE_TOKENS, true);
+        prefStore.setDefault(PREF_OPEN_MODULE_EDITOR, true);
         prefStore.setDefault(PREF_DUPLICATED_CODE_MIN_LINES, DUPLICATED_CODE_MIN_LINES);
     }
 }

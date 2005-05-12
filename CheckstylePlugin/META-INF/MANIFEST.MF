@@ -14,7 +14,9 @@ Require-Bundle: org.eclipse.core.resources,
  org.eclipse.ui.ide,
  org.eclipse.jdt.ui,
  org.eclipse.ui.workbench.texteditor,
- org.eclipse.ui.editors
+ org.eclipse.ui.editors,
+ org.eclipse.team.cvs.core,
+ org.eclipse.team.core
 Eclipse-AutoStart: false;exceptions="com.atlassw.tools.eclipse.checkstyle,
  com.atlassw.tools.eclipse.checkstyle.builder,
  com.atlassw.tools.eclipse.checkstyle.config,

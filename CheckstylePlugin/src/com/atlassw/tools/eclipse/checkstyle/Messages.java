@@ -61,6 +61,8 @@ public final class Messages extends NLS
     public static String CheckstylePreferencePage_msgRebuild;
 
     public static String CheckstylePreferencePage_nagRebuild;
+    
+    public static String SimpleFileSetsEditor_btnManageConfigs;
 
     public static String ComplexFileSetsEditor_titleAdvancedFilesetEditor;
 
@@ -251,6 +253,8 @@ public final class Messages extends NLS
     public static String CheckConfigurationConfigureDialog_titleRemoveModules;
 
     public static String CheckConfigurationConfigureDialog_msgRemoveModules;
+
+    public static String CheckConfigurationConfigureDialog_btnOpenModuleOnAdd;
 
     public static String CheckstylePreferencePage_lblGeneralSettings;
 

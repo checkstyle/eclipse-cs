@@ -26,6 +26,8 @@ import java.util.List;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
@@ -47,6 +49,8 @@ import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
@@ -108,6 +112,9 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
 
     /** Textarea showing the description of a module. */
     private Text mTxtDescription;
+
+    /** Checkbox handling if the module editor is opened on add action. */
+    private Button mBtnOpenModuleOnAdd;
 
     /** Filter for the table viewer to show only element of the selected group. */
     private RuleGroupModuleFilter mGroupFilter = new RuleGroupModuleFilter();
@@ -225,13 +232,14 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
         knownModules.setLayout(new GridLayout());
         knownModules.setText(Messages.CheckConfigurationConfigureDialog_lblKnownModules);
 
-        mTreeViewer = new TreeViewer(knownModules, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL
+        mTreeViewer = new TreeViewer(knownModules, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL
                 | SWT.BORDER);
         mTreeViewer.getControl().setLayoutData(new GridData(GridData.FILL_BOTH));
         mTreeViewer.setContentProvider(new MetaDataContentProvider());
         mTreeViewer.setLabelProvider(new MetaDataLabelProvider());
         mTreeViewer.addSelectionChangedListener(mController);
         mTreeViewer.addDoubleClickListener(mController);
+        mTreeViewer.getTree().addKeyListener(mController);
 
         // filter hidden elements
         mTreeViewer.addFilter(new ViewerFilter()
@@ -302,6 +310,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
         mTableViewer.addDoubleClickListener(mController);
         mTableViewer.addSelectionChangedListener(mController);
         mTableViewer.addCheckStateListener(mController);
+        mTableViewer.getTable().addKeyListener(mController);
 
         Composite buttons = new Composite(mConfiguredModulesGroup, SWT.NULL);
         GridLayout layout = new GridLayout(2, true);
@@ -321,6 +330,52 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
         mEditButton.addSelectionListener(mController);
 
         return mConfiguredModulesGroup;
+    }
+
+    protected Control createButtonBar(Composite parent)
+    {
+
+        Composite composite = new Composite(parent, SWT.NONE);
+        GridLayout layout = new GridLayout(2, false);
+        layout.marginHeight = 0;
+        layout.marginWidth = 0;
+        composite.setLayout(layout);
+        composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+        mBtnOpenModuleOnAdd = new Button(composite, SWT.CHECK);
+        mBtnOpenModuleOnAdd.setText(Messages.CheckConfigurationConfigureDialog_btnOpenModuleOnAdd);
+        GridData gd = new GridData();
+        gd.horizontalAlignment = GridData.BEGINNING;
+        gd.horizontalIndent = 5;
+        mBtnOpenModuleOnAdd.setLayoutData(gd);
+
+        // Init the translate tokens preference
+        IPreferenceStore prefStore = CheckstylePlugin.getDefault().getPreferenceStore();
+        mBtnOpenModuleOnAdd.setSelection(prefStore
+                .getBoolean(CheckstylePlugin.PREF_OPEN_MODULE_EDITOR));
+        mBtnOpenModuleOnAdd.addSelectionListener(new SelectionListener()
+        {
+
+            public void widgetSelected(SelectionEvent e)
+            {
+                // store translation preference
+                IPreferenceStore prefStore = CheckstylePlugin.getDefault().getPreferenceStore();
+                prefStore.setValue(CheckstylePlugin.PREF_OPEN_MODULE_EDITOR, ((Button) e.widget)
+                        .getSelection());
+            }
+
+            public void widgetDefaultSelected(SelectionEvent e)
+            {
+            // NOOP
+            }
+        });
+
+        Control buttonBar = super.createButtonBar(composite);
+        gd = new GridData(GridData.FILL_HORIZONTAL);
+        gd.horizontalAlignment = GridData.END;
+        buttonBar.setLayoutData(gd);
+
+        return composite;
     }
 
     /**
@@ -367,7 +422,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
      * @author Lars Ködderitzsch
      */
     private class PageController implements ISelectionChangedListener, ICheckStateListener,
-            IDoubleClickListener, SelectionListener
+            IDoubleClickListener, SelectionListener, KeyListener
     {
 
         /**
@@ -406,11 +461,40 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
         }
 
         /**
+         * @see org.eclipse.swt.events.KeyListener#keyReleased(org.eclipse.swt.events.KeyEvent)
+         */
+        public void keyReleased(KeyEvent e)
+        {
+            if (e.widget == mTableViewer.getTable())
+            {
+                if (e.character == SWT.DEL || e.keyCode == SWT.ARROW_LEFT)
+                {
+                    removeModule(mTableViewer.getSelection());
+                }
+            }
+            if (e.widget == mTreeViewer.getTree())
+            {
+                if (e.keyCode == SWT.ARROW_RIGHT || e.character == ' ')
+                {
+                    newModule(mTreeViewer.getSelection());
+                }
+            }
+        }
+
+        /**
          * @see SelectionListener#widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent)
          */
         public void widgetDefaultSelected(SelectionEvent e)
         {
         // NOOP
+        }
+
+        /**
+         * @see org.eclipse.swt.events.KeyListener#keyPressed(org.eclipse.swt.events.KeyEvent)
+         */
+        public void keyPressed(KeyEvent e)
+        {
+        //NOOP
         }
 
         /**
@@ -519,31 +603,51 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
          */
         private void newModule(ISelection selection)
         {
-
-            Object selectedElement = ((IStructuredSelection) selection).getFirstElement();
-            if (selectedElement instanceof RuleMetadata)
+            if (mConfiguration.isConfigurable())
             {
+                IPreferenceStore prefStore = CheckstylePlugin.getDefault().getPreferenceStore();
+                boolean openOnAdd = prefStore.getBoolean(CheckstylePlugin.PREF_OPEN_MODULE_EDITOR);
 
-                try
+                Iterator it = ((IStructuredSelection) selection).iterator();
+                while (it.hasNext())
                 {
-
-                    Module workingCopy = new Module((RuleMetadata) selectedElement);
-
-                    RuleConfigurationEditDialog dialog = new RuleConfigurationEditDialog(
-                            getShell(), workingCopy, !mConfiguration.isConfigurable(),
-                            Messages.CheckConfigurationConfigureDialog_titleNewModule);
-                    if (RuleConfigurationEditDialog.OK == dialog.open()
-                            && mConfiguration.isConfigurable())
+                    Object selectedElement = it.next();
+                    if (selectedElement instanceof RuleMetadata)
                     {
-                        mModules.add(workingCopy);
-                        mIsDirty = true;
-                        mTableViewer.refresh(true);
-                        refreshTableViewerState();
+
+                        try
+                        {
+
+                            Module workingCopy = new Module((RuleMetadata) selectedElement);
+
+                            if (openOnAdd)
+                            {
+
+                                RuleConfigurationEditDialog dialog = new RuleConfigurationEditDialog(
+                                        getShell(), workingCopy, !mConfiguration.isConfigurable(),
+                                        Messages.CheckConfigurationConfigureDialog_titleNewModule);
+                                if (RuleConfigurationEditDialog.OK == dialog.open()
+                                        && mConfiguration.isConfigurable())
+                                {
+                                    mModules.add(workingCopy);
+                                    mIsDirty = true;
+                                    mTableViewer.refresh(true);
+                                    refreshTableViewerState();
+                                }
+                            }
+                            else
+                            {
+                                mModules.add(workingCopy);
+                                mIsDirty = true;
+                                mTableViewer.refresh(true);
+                                refreshTableViewerState();
+                            }
+                        }
+                        catch (CheckstylePluginException e)
+                        {
+                            CheckstyleLog.errorDialog(getShell(), e, true);
+                        }
                     }
-                }
-                catch (CheckstylePluginException e)
-                {
-                    CheckstyleLog.errorDialog(getShell(), e, true);
                 }
             }
         }
@@ -556,7 +660,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
         private void removeModule(ISelection selection)
         {
 
-            if (!selection.isEmpty())
+            if (!selection.isEmpty() && mConfiguration.isConfigurable())
             {
 
                 if (MessageDialog.openConfirm(getShell(),
@@ -602,8 +706,8 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
                     mTableViewer.setChecked(module, !SeverityLevel.IGNORE.equals(module
                             .getSeverity())
                             || !module.getMetaData().hasSeverity());
-                    mTableViewer.setGrayed(module, !module.getSeverity().equals(
-                            SeverityLevel.IGNORE));
+                    mTableViewer.setGrayed(module, !SeverityLevel.IGNORE.equals(module
+                            .getSeverity()));
                 }
             }
         }
@@ -707,6 +811,12 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
     private class MetaDataLabelProvider extends LabelProvider
     {
 
+        Image mModuleGroupImage = CheckstylePlugin.imageDescriptorFromPlugin(
+                CheckstylePlugin.PLUGIN_ID, "icons/modulegroup.gif").createImage();
+
+        Image mModuleImage = CheckstylePlugin.imageDescriptorFromPlugin(CheckstylePlugin.PLUGIN_ID,
+                "icons/module.gif").createImage();
+
         /**
          * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
          */
@@ -722,6 +832,24 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
                 text = ((RuleMetadata) element).getRuleName();
             }
             return text;
+        }
+
+        /**
+         * @see org.eclipse.jface.viewers.LabelProvider#getImage(java.lang.Object)
+         */
+        public Image getImage(Object element)
+        {
+            Image image = null;
+
+            if (element instanceof RuleGroupMetadata)
+            {
+                image = mModuleGroupImage;
+            }
+            else if (element instanceof RuleMetadata)
+            {
+                image = mModuleImage;
+            }
+            return image;
         }
     }
 

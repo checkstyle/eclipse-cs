@@ -10,6 +10,20 @@ Make sure you got an eclipse 3.0 or higher installation you are installing this 
 Eclipse Checkstyle Plugin v4.0.0
 ---------------------------------
 
+Release beta2:
+--------------
+
+* Minor usability enhancements in configuration editor (multiple selection and adding from the tree, option to skip opening the module editor on add action)
+* Keyboard support for configuration editor (remove modules using DEL or <-, add modules using SPACE or ->)
+* Added button to configure a checkstyle configuration from the properties page
+* Added FileInSyncFilter that excludes all files from the checks that are in sync with the CVS repository
+
+
+Bugs:
+1196130	Configuration Editor broken with duplicate checks
+1196084	Can't use eclipse variables on SuppressionFilter
+
+
 Release beta1:
 --------------
 

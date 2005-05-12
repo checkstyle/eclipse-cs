@@ -278,7 +278,13 @@
             internal-name="NonSrcDirs"
             description="%NonSrcDirsFilter.description"
             class="com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.NonSrcDirsFilter">
-      </filter>    
+      </filter> 
+      <filter
+            name="%FilesInSyncFilter.label"
+            internal-name="FilesInSync"
+            description="%FilesInSyncFilter.description"
+            class="com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.FilesInSyncFilter">
+      </filter>       
    </extension>
 
    <!--
