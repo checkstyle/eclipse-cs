@@ -106,6 +106,9 @@ public class XMLTags
 
     /** tag for a property value enumeration. */
     public static final String ENUMERATION_TAG = "enumeration"; //$NON-NLS-1$
+    
+    /** tag for an option provider. */
+    public static final String OPTION_PROVIDER = "option-provider"; //$NON-NLS-1$
 
     /** tag for a enumeration value. */
     public static final String PROPERTY_VALUE_OPTIONS_TAG = "property-value-option"; //$NON-NLS-1$

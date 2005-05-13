@@ -346,6 +346,18 @@ public final class MetadataFactory
                     mInDescriptionElement = true;
                     mDescription = new StringBuffer();
                 }
+                else if (XMLTags.ENUMERATION_TAG.equals(qName))
+                {
+                    String optionProvider = attributes.getValue(XMLTags.OPTION_PROVIDER);
+                    if (optionProvider != null)
+                    {
+
+                        Class providerClass = Class.forName(optionProvider);
+
+                        IOptionProvider provider = (IOptionProvider) providerClass.newInstance();
+                        mCurrentProperty.getPropertyEnumeration().addAll(provider.getOptions());
+                    }
+                }
                 else if (XMLTags.PROPERTY_VALUE_OPTIONS_TAG.equals(qName))
                 {
                     mCurrentProperty.getPropertyEnumeration().add(
@@ -353,6 +365,18 @@ public final class MetadataFactory
                 }
             }
             catch (CheckstylePluginException e)
+            {
+                throw new SAXException(e.getLocalizedMessage(), e);
+            }
+            catch (ClassNotFoundException e)
+            {
+                throw new SAXException(e.getLocalizedMessage(), e);
+            }
+            catch (InstantiationException e)
+            {
+                throw new SAXException(e.getLocalizedMessage(), e);
+            }
+            catch (IllegalAccessException e)
             {
                 throw new SAXException(e.getLocalizedMessage(), e);
             }

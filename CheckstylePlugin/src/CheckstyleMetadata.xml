@@ -18,24 +18,12 @@
          <description>Checks to ensure that the following tags exist (if required): @return, @param, @throws or @exception, @see or {@inheritDoc}.</description>
          <property-metadata name="scope" datatype="SingleSelect" default-value="private">
             <description>Visibility scope where Javadoc comments are checked.</description>
-            <enumeration>
-               <property-value-option value="nothing"/>
-               <property-value-option value="public"/>
-               <property-value-option value="protected"/>
-               <property-value-option value="package"/>
-               <property-value-option value="private"/>
-               <property-value-option value="anoninner"/>
+            <enumeration option-provider="com.atlassw.tools.eclipse.checkstyle.config.meta.VisibilityOptionsProvider">
             </enumeration>
          </property-metadata>
          <property-metadata name="excludeScope" datatype="SingleSelect" default-value="nothing">
             <description>visibility scope where Javadoc comments are not checked</description>
-            <enumeration>
-               <property-value-option value="nothing"/>
-               <property-value-option value="public"/>
-               <property-value-option value="protected"/>
-               <property-value-option value="package"/>
-               <property-value-option value="private"/>
-               <property-value-option value="anoninner"/>
+            <enumeration option-provider="com.atlassw.tools.eclipse.checkstyle.config.meta.VisibilityOptionsProvider">
             </enumeration>
          </property-metadata>
          <property-metadata name="allowUndeclaredRTE" datatype="Boolean" default-value="false">
@@ -92,24 +80,12 @@ public boolean isSomething()
        </description>
          <property-metadata name="scope" datatype="SingleSelect" default-value="private">
             <description>Visibility scope where Javadoc comments are checked.</description>
-            <enumeration>
-               <property-value-option value="nothing"/>
-               <property-value-option value="public"/>
-               <property-value-option value="protected"/>
-               <property-value-option value="package"/>
-               <property-value-option value="private"/>
-               <property-value-option value="anoninner"/>
+            <enumeration option-provider="com.atlassw.tools.eclipse.checkstyle.config.meta.VisibilityOptionsProvider">
             </enumeration>
          </property-metadata>
          <property-metadata name="excludeScope" datatype="SingleSelect">
             <description>visibility scope where Javadoc comments are not checked.</description>
-            <enumeration>
-               <property-value-option value="nothing"/>
-               <property-value-option value="public"/>
-               <property-value-option value="protected"/>
-               <property-value-option value="package"/>
-               <property-value-option value="private"/>
-               <property-value-option value="anoninner"/>
+            <enumeration option-provider="com.atlassw.tools.eclipse.checkstyle.config.meta.VisibilityOptionsProvider">
             </enumeration>
          </property-metadata>
          <property-metadata name="checkEmptyJavadoc" datatype="Boolean" default-value="false">
@@ -139,24 +115,12 @@ public boolean isSomething()
          <description>Checks Javadoc comments for class and interface definitions.</description>
          <property-metadata name="excludeScope" datatype="SingleSelect" default-value="nothing">
             <description>visibility scope where Javadoc comments are not checked</description>
-            <enumeration>
-               <property-value-option value="nothing"/>
-               <property-value-option value="public"/>
-               <property-value-option value="protected"/>
-               <property-value-option value="package"/>
-               <property-value-option value="private"/>
-               <property-value-option value="anoninner"/>
+            <enumeration option-provider="com.atlassw.tools.eclipse.checkstyle.config.meta.VisibilityOptionsProvider">
             </enumeration>
          </property-metadata>
          <property-metadata name="scope" datatype="SingleSelect" default-value="private">
             <description>Visibility scope where Javadoc comments are checked.</description>
-            <enumeration>
-               <property-value-option value="nothing"/>
-               <property-value-option value="public"/>
-               <property-value-option value="protected"/>
-               <property-value-option value="package"/>
-               <property-value-option value="private"/>
-               <property-value-option value="anoninner"/>
+            <enumeration option-provider="com.atlassw.tools.eclipse.checkstyle.config.meta.VisibilityOptionsProvider">
             </enumeration>
          </property-metadata>
          <property-metadata name="authorFormat" datatype="String">
@@ -180,24 +144,12 @@ public boolean isSomething()
          <description>Checks that variables have Javadoc comments.</description>
          <property-metadata name="excludeScope" datatype="SingleSelect" default-value="nothing">
             <description>visibility scope where Javadoc comments are not checked</description>
-            <enumeration>
-               <property-value-option value="nothing"/>
-               <property-value-option value="public"/>
-               <property-value-option value="protected"/>
-               <property-value-option value="package"/>
-               <property-value-option value="private"/>
-               <property-value-option value="anoninner"/>
+            <enumeration option-provider="com.atlassw.tools.eclipse.checkstyle.config.meta.VisibilityOptionsProvider">
             </enumeration>
          </property-metadata>
          <property-metadata name="scope" datatype="SingleSelect" default-value="private">
             <description>Visibility scope where Javadoc comments are checked.</description>
-            <enumeration>
-               <property-value-option value="nothing"/>
-               <property-value-option value="public"/>
-               <property-value-option value="protected"/>
-               <property-value-option value="package"/>
-               <property-value-option value="private"/>
-               <property-value-option value="anoninner"/>
+            <enumeration option-provider="com.atlassw.tools.eclipse.checkstyle.config.meta.VisibilityOptionsProvider">
             </enumeration>
          </property-metadata>
       </rule-metadata>
@@ -1034,140 +986,7 @@ Rationale: Junior developers often simply catch Exception in an attempt to handl
 Rational: Certain language features often lead to hard to maintain code or are non-obvious to novice developers. Other features may be discouraged in certain frameworks, such as not having native methods in EJB components. </description>
          <property-metadata name="tokens" datatype="MultiCheck" default-value="LITERAL_SWITCH,POST_INC,POST_DEC">
             <description>Tokens to check.</description>
-            <enumeration>
-               <property-value-option value="ABSTRACT"/>
-               <property-value-option value="ARRAY_DECLARATOR"/>
-               <property-value-option value="ARRAY_INIT"/>
-               <property-value-option value="ASSIGN"/>
-               <property-value-option value="BAND"/>
-               <property-value-option value="BAND_ASSIGN"/>
-               <property-value-option value="BNOT"/>
-               <property-value-option value="BOR"/>
-               <property-value-option value="BOR_ASSIGN"/>
-               <property-value-option value="BSR"/>
-               <property-value-option value="BSR_ASSIGN"/>
-               <property-value-option value="BXOR"/>
-               <property-value-option value="BXOR_ASSIGN"/>
-               <property-value-option value="CASE_GROUP"/>
-               <property-value-option value="CHAR_LITERAL"/>
-               <property-value-option value="CLASS_DEF"/>
-               <property-value-option value="COLON"/>
-               <property-value-option value="COMMA"/>
-               <property-value-option value="CTOR_CALL"/>
-               <property-value-option value="CTOR_DEF"/>
-               <property-value-option value="DEC"/>
-               <property-value-option value="DIV"/>
-               <property-value-option value="DIV_ASSIGN"/>
-               <property-value-option value="DOT"/>
-               <property-value-option value="ELIST"/>
-               <property-value-option value="EMPTY_STAT"/>
-               <property-value-option value="EOF"/>
-               <property-value-option value="EQUAL"/>
-               <property-value-option value="EXPR"/>
-               <property-value-option value="EXTENDS_CLAUSE"/>
-               <property-value-option value="FINAL"/>
-               <property-value-option value="FOR_CONDITION"/>
-               <property-value-option value="FOR_INIT"/>
-               <property-value-option value="FOR_ITERATOR"/>
-               <property-value-option value="GE"/>
-               <property-value-option value="GT"/>
-               <property-value-option value="IDENT"/>
-               <property-value-option value="IMPLEMENTS_CLAUSE"/>
-               <property-value-option value="IMPORT"/>
-               <property-value-option value="INC"/>
-               <property-value-option value="INDEX_OP"/>
-               <property-value-option value="INSTANCE_INIT"/>
-               <property-value-option value="INTERFACE_DEF"/>
-               <property-value-option value="LABELED_STAT"/>
-               <property-value-option value="LAND"/>
-               <property-value-option value="LCURLY"/>
-               <property-value-option value="LE"/>
-               <property-value-option value="LITERAL_ASSERT"/>
-               <property-value-option value="LITERAL_BOOLEAN"/>
-               <property-value-option value="LITERAL_BREAK"/>
-               <property-value-option value="LITERAL_BYTE"/>
-               <property-value-option value="LITERAL_CASE"/>
-               <property-value-option value="LITERAL_CATCH"/>
-               <property-value-option value="LITERAL_CHAR"/>
-               <property-value-option value="LITERAL_CLASS"/>
-               <property-value-option value="LITERAL_CONTINUE"/>
-               <property-value-option value="LITERAL_DEFAULT"/>
-               <property-value-option value="LITERAL_DO"/>
-               <property-value-option value="LITERAL_DOUBLE"/>
-               <property-value-option value="LITERAL_ELSE"/>
-               <property-value-option value="LITERAL_FALSE"/>
-               <property-value-option value="LITERAL_FINALLY"/>
-               <property-value-option value="LITERAL_FLOAT"/>
-               <property-value-option value="LITERAL_FOR"/>
-               <property-value-option value="LITERAL_IF"/>
-               <property-value-option value="LITERAL_INSTANCEOF"/>
-               <property-value-option value="LITERAL_INT"/>
-               <property-value-option value="LITERAL_LONG"/>
-               <property-value-option value="LITERAL_NATIVE"/>
-               <property-value-option value="LITERAL_NEW"/>
-               <property-value-option value="LITERAL_NULL"/>
-               <property-value-option value="LITERAL_PRIVATE"/>
-               <property-value-option value="LITERAL_PROTECTED"/>
-               <property-value-option value="LITERAL_PUBLIC"/>
-               <property-value-option value="LITERAL_RETURN"/>
-               <property-value-option value="LITERAL_SHORT"/>
-               <property-value-option value="LITERAL_STATIC"/>
-               <property-value-option value="LITERAL_SUPER"/>
-               <property-value-option value="LITERAL_SWITCH"/>
-               <property-value-option value="LITERAL_SYNCHRONIZED"/>
-               <property-value-option value="LITERAL_THIS"/>
-               <property-value-option value="LITERAL_THROW"/>
-               <property-value-option value="LITERAL_THROWS"/>
-               <property-value-option value="LITERAL_TRANSIENT"/>
-               <property-value-option value="LITERAL_TRUE"/>
-               <property-value-option value="LITERAL_TRY"/>
-               <property-value-option value="LITERAL_VOID"/>
-               <property-value-option value="LITERAL_VOLATILE"/>
-               <property-value-option value="LITERAL_WHILE"/>
-               <property-value-option value="LNOT"/>
-               <property-value-option value="LOR"/>
-               <property-value-option value="LPAREN"/>
-               <property-value-option value="LT"/>
-               <property-value-option value="METHOD_CALL"/>
-               <property-value-option value="METHOD_DEF"/>
-               <property-value-option value="MINUS"/>
-               <property-value-option value="MINUS_ASSIGN"/>
-               <property-value-option value="MOD"/>
-               <property-value-option value="MOD_ASSIGN"/>
-               <property-value-option value="MODIFIERS"/>
-               <property-value-option value="NOT_EQUAL"/>
-               <property-value-option value="NUM_DOUBLE"/>
-               <property-value-option value="NUM_FLOAT"/>
-               <property-value-option value="NUM_INT"/>
-               <property-value-option value="NUM_LONG"/>
-               <property-value-option value="OBJBLOCK"/>
-               <property-value-option value="PACKAGE_DEF"/>
-               <property-value-option value="PARAMETER_DEF"/>
-               <property-value-option value="PARAMETERS"/>
-               <property-value-option value="PLUS"/>
-               <property-value-option value="PLUS_ASSIGN"/>
-               <property-value-option value="POST_DEC"/>
-               <property-value-option value="POST_INC"/>
-               <property-value-option value="QUESTION"/>
-               <property-value-option value="RCURLY"/>
-               <property-value-option value="RPAREN"/>
-               <property-value-option value="SEMI"/>
-               <property-value-option value="SL"/>
-               <property-value-option value="SL_ASSIGN"/>
-               <property-value-option value="SLIST"/>
-               <property-value-option value="SR"/>
-               <property-value-option value="SR_ASSIGN"/>
-               <property-value-option value="STAR"/>
-               <property-value-option value="STAR_ASSIGN"/>
-               <property-value-option value="STATIC_INIT"/>
-               <property-value-option value="STRICTFP"/>
-               <property-value-option value="STRING_LITERAL"/>
-               <property-value-option value="SUPER_CTOR_CALL"/>
-               <property-value-option value="TYPE"/>
-               <property-value-option value="TYPECAST"/>
-               <property-value-option value="UNARY_MINUS"/>
-               <property-value-option value="UNARY_PLUS"/>
-               <property-value-option value="VARIABLE_DEF"/>
+            <enumeration option-provider="com.atlassw.tools.eclipse.checkstyle.config.meta.AllTokensProvider">
             </enumeration>
          </property-metadata>
       </rule-metadata>
@@ -1177,140 +996,7 @@ Rational: Certain language features often lead to hard to maintain code or are n
          <description>Checks for illegal token text.</description>
          <property-metadata name="tokens" datatype="MultiCheck">
             <description>Tokens to check.</description>
-            <enumeration>
-               <property-value-option value="ABSTRACT"/>
-               <property-value-option value="ARRAY_DECLARATOR"/>
-               <property-value-option value="ARRAY_INIT"/>
-               <property-value-option value="ASSIGN"/>
-               <property-value-option value="BAND"/>
-               <property-value-option value="BAND_ASSIGN"/>
-               <property-value-option value="BNOT"/>
-               <property-value-option value="BOR"/>
-               <property-value-option value="BOR_ASSIGN"/>
-               <property-value-option value="BSR"/>
-               <property-value-option value="BSR_ASSIGN"/>
-               <property-value-option value="BXOR"/>
-               <property-value-option value="BXOR_ASSIGN"/>
-               <property-value-option value="CASE_GROUP"/>
-               <property-value-option value="CHAR_LITERAL"/>
-               <property-value-option value="CLASS_DEF"/>
-               <property-value-option value="COLON"/>
-               <property-value-option value="COMMA"/>
-               <property-value-option value="CTOR_CALL"/>
-               <property-value-option value="CTOR_DEF"/>
-               <property-value-option value="DEC"/>
-               <property-value-option value="DIV"/>
-               <property-value-option value="DIV_ASSIGN"/>
-               <property-value-option value="DOT"/>
-               <property-value-option value="ELIST"/>
-               <property-value-option value="EMPTY_STAT"/>
-               <property-value-option value="EOF"/>
-               <property-value-option value="EQUAL"/>
-               <property-value-option value="EXPR"/>
-               <property-value-option value="EXTENDS_CLAUSE"/>
-               <property-value-option value="FINAL"/>
-               <property-value-option value="FOR_CONDITION"/>
-               <property-value-option value="FOR_INIT"/>
-               <property-value-option value="FOR_ITERATOR"/>
-               <property-value-option value="GE"/>
-               <property-value-option value="GT"/>
-               <property-value-option value="IDENT"/>
-               <property-value-option value="IMPLEMENTS_CLAUSE"/>
-               <property-value-option value="IMPORT"/>
-               <property-value-option value="INC"/>
-               <property-value-option value="INDEX_OP"/>
-               <property-value-option value="INSTANCE_INIT"/>
-               <property-value-option value="INTERFACE_DEF"/>
-               <property-value-option value="LABELED_STAT"/>
-               <property-value-option value="LAND"/>
-               <property-value-option value="LCURLY"/>
-               <property-value-option value="LE"/>
-               <property-value-option value="LITERAL_ASSERT"/>
-               <property-value-option value="LITERAL_BOOLEAN"/>
-               <property-value-option value="LITERAL_BREAK"/>
-               <property-value-option value="LITERAL_BYTE"/>
-               <property-value-option value="LITERAL_CASE"/>
-               <property-value-option value="LITERAL_CATCH"/>
-               <property-value-option value="LITERAL_CHAR"/>
-               <property-value-option value="LITERAL_CLASS"/>
-               <property-value-option value="LITERAL_CONTINUE"/>
-               <property-value-option value="LITERAL_DEFAULT"/>
-               <property-value-option value="LITERAL_DO"/>
-               <property-value-option value="LITERAL_DOUBLE"/>
-               <property-value-option value="LITERAL_ELSE"/>
-               <property-value-option value="LITERAL_FALSE"/>
-               <property-value-option value="LITERAL_FINALLY"/>
-               <property-value-option value="LITERAL_FLOAT"/>
-               <property-value-option value="LITERAL_FOR"/>
-               <property-value-option value="LITERAL_IF"/>
-               <property-value-option value="LITERAL_INSTANCEOF"/>
-               <property-value-option value="LITERAL_INT"/>
-               <property-value-option value="LITERAL_LONG"/>
-               <property-value-option value="LITERAL_NATIVE"/>
-               <property-value-option value="LITERAL_NEW"/>
-               <property-value-option value="LITERAL_NULL"/>
-               <property-value-option value="LITERAL_PRIVATE"/>
-               <property-value-option value="LITERAL_PROTECTED"/>
-               <property-value-option value="LITERAL_PUBLIC"/>
-               <property-value-option value="LITERAL_RETURN"/>
-               <property-value-option value="LITERAL_SHORT"/>
-               <property-value-option value="LITERAL_STATIC"/>
-               <property-value-option value="LITERAL_SUPER"/>
-               <property-value-option value="LITERAL_SWITCH"/>
-               <property-value-option value="LITERAL_SYNCHRONIZED"/>
-               <property-value-option value="LITERAL_THIS"/>
-               <property-value-option value="LITERAL_THROW"/>
-               <property-value-option value="LITERAL_THROWS"/>
-               <property-value-option value="LITERAL_TRANSIENT"/>
-               <property-value-option value="LITERAL_TRUE"/>
-               <property-value-option value="LITERAL_TRY"/>
-               <property-value-option value="LITERAL_VOID"/>
-               <property-value-option value="LITERAL_VOLATILE"/>
-               <property-value-option value="LITERAL_WHILE"/>
-               <property-value-option value="LNOT"/>
-               <property-value-option value="LOR"/>
-               <property-value-option value="LPAREN"/>
-               <property-value-option value="LT"/>
-               <property-value-option value="METHOD_CALL"/>
-               <property-value-option value="METHOD_DEF"/>
-               <property-value-option value="MINUS"/>
-               <property-value-option value="MINUS_ASSIGN"/>
-               <property-value-option value="MOD"/>
-               <property-value-option value="MOD_ASSIGN"/>
-               <property-value-option value="MODIFIERS"/>
-               <property-value-option value="NOT_EQUAL"/>
-               <property-value-option value="NUM_DOUBLE"/>
-               <property-value-option value="NUM_FLOAT"/>
-               <property-value-option value="NUM_INT"/>
-               <property-value-option value="NUM_LONG"/>
-               <property-value-option value="OBJBLOCK"/>
-               <property-value-option value="PACKAGE_DEF"/>
-               <property-value-option value="PARAMETER_DEF"/>
-               <property-value-option value="PARAMETERS"/>
-               <property-value-option value="PLUS"/>
-               <property-value-option value="PLUS_ASSIGN"/>
-               <property-value-option value="POST_DEC"/>
-               <property-value-option value="POST_INC"/>
-               <property-value-option value="QUESTION"/>
-               <property-value-option value="RCURLY"/>
-               <property-value-option value="RPAREN"/>
-               <property-value-option value="SEMI"/>
-               <property-value-option value="SL"/>
-               <property-value-option value="SL_ASSIGN"/>
-               <property-value-option value="SLIST"/>
-               <property-value-option value="SR"/>
-               <property-value-option value="SR_ASSIGN"/>
-               <property-value-option value="STAR"/>
-               <property-value-option value="STAR_ASSIGN"/>
-               <property-value-option value="STATIC_INIT"/>
-               <property-value-option value="STRICTFP"/>
-               <property-value-option value="STRING_LITERAL"/>
-               <property-value-option value="SUPER_CTOR_CALL"/>
-               <property-value-option value="TYPE"/>
-               <property-value-option value="TYPECAST"/>
-               <property-value-option value="UNARY_MINUS"/>
-               <property-value-option value="UNARY_PLUS"/>
-               <property-value-option value="VARIABLE_DEF"/>
+			<enumeration option-provider="com.atlassw.tools.eclipse.checkstyle.config.meta.AllTokensProvider">
             </enumeration>
          </property-metadata>
          <property-metadata name="format" datatype="String" default-value="^$">
@@ -1734,278 +1420,12 @@ mp;&amp; and || (plus one) in the body of a constructor, method, static initiali
 WARNING: This is a very powerful and flexible check, but, at the same time, it is low level and very implementation dependent because its results depend on the grammar we use to build abstract syntax trees. Thus we recomend using other checks when they provide the desired funcionality. All in all, this check just works on the level of an abstract tree and knows nothing about language structures. </description>
          <property-metadata name="tokens" datatype="MultiCheck">
             <description>Tokens to check.</description>
-            <enumeration>
-               <property-value-option value="ABSTRACT"/>
-               <property-value-option value="ARRAY_DECLARATOR"/>
-               <property-value-option value="ARRAY_INIT"/>
-               <property-value-option value="ASSIGN"/>
-               <property-value-option value="BAND"/>
-               <property-value-option value="BAND_ASSIGN"/>
-               <property-value-option value="BNOT"/>
-               <property-value-option value="BOR"/>
-               <property-value-option value="BOR_ASSIGN"/>
-               <property-value-option value="BSR"/>
-               <property-value-option value="BSR_ASSIGN"/>
-               <property-value-option value="BXOR"/>
-               <property-value-option value="BXOR_ASSIGN"/>
-               <property-value-option value="CASE_GROUP"/>
-               <property-value-option value="CHAR_LITERAL"/>
-               <property-value-option value="CLASS_DEF"/>
-               <property-value-option value="COLON"/>
-               <property-value-option value="COMMA"/>
-               <property-value-option value="CTOR_CALL"/>
-               <property-value-option value="CTOR_DEF"/>
-               <property-value-option value="DEC"/>
-               <property-value-option value="DIV"/>
-               <property-value-option value="DIV_ASSIGN"/>
-               <property-value-option value="DOT"/>
-               <property-value-option value="ELIST"/>
-               <property-value-option value="EMPTY_STAT"/>
-               <property-value-option value="EOF"/>
-               <property-value-option value="EQUAL"/>
-               <property-value-option value="EXPR"/>
-               <property-value-option value="EXTENDS_CLAUSE"/>
-               <property-value-option value="FINAL"/>
-               <property-value-option value="FOR_CONDITION"/>
-               <property-value-option value="FOR_INIT"/>
-               <property-value-option value="FOR_ITERATOR"/>
-               <property-value-option value="GE"/>
-               <property-value-option value="GT"/>
-               <property-value-option value="IDENT"/>
-               <property-value-option value="IMPLEMENTS_CLAUSE"/>
-               <property-value-option value="IMPORT"/>
-               <property-value-option value="INC"/>
-               <property-value-option value="INDEX_OP"/>
-               <property-value-option value="INSTANCE_INIT"/>
-               <property-value-option value="INTERFACE_DEF"/>
-               <property-value-option value="LABELED_STAT"/>
-               <property-value-option value="LAND"/>
-               <property-value-option value="LCURLY"/>
-               <property-value-option value="LE"/>
-               <property-value-option value="LITERAL_ASSERT"/>
-               <property-value-option value="LITERAL_BOOLEAN"/>
-               <property-value-option value="LITERAL_BREAK"/>
-               <property-value-option value="LITERAL_BYTE"/>
-               <property-value-option value="LITERAL_CASE"/>
-               <property-value-option value="LITERAL_CATCH"/>
-               <property-value-option value="LITERAL_CHAR"/>
-               <property-value-option value="LITERAL_CLASS"/>
-               <property-value-option value="LITERAL_CONTINUE"/>
-               <property-value-option value="LITERAL_DEFAULT"/>
-               <property-value-option value="LITERAL_DO"/>
-               <property-value-option value="LITERAL_DOUBLE"/>
-               <property-value-option value="LITERAL_ELSE"/>
-               <property-value-option value="LITERAL_FALSE"/>
-               <property-value-option value="LITERAL_FINALLY"/>
-               <property-value-option value="LITERAL_FLOAT"/>
-               <property-value-option value="LITERAL_FOR"/>
-               <property-value-option value="LITERAL_IF"/>
-               <property-value-option value="LITERAL_INSTANCEOF"/>
-               <property-value-option value="LITERAL_INT"/>
-               <property-value-option value="LITERAL_LONG"/>
-               <property-value-option value="LITERAL_NATIVE"/>
-               <property-value-option value="LITERAL_NEW"/>
-               <property-value-option value="LITERAL_NULL"/>
-               <property-value-option value="LITERAL_PRIVATE"/>
-               <property-value-option value="LITERAL_PROTECTED"/>
-               <property-value-option value="LITERAL_PUBLIC"/>
-               <property-value-option value="LITERAL_RETURN"/>
-               <property-value-option value="LITERAL_SHORT"/>
-               <property-value-option value="LITERAL_STATIC"/>
-               <property-value-option value="LITERAL_SUPER"/>
-               <property-value-option value="LITERAL_SWITCH"/>
-               <property-value-option value="LITERAL_SYNCHRONIZED"/>
-               <property-value-option value="LITERAL_THIS"/>
-               <property-value-option value="LITERAL_THROW"/>
-               <property-value-option value="LITERAL_THROWS"/>
-               <property-value-option value="LITERAL_TRANSIENT"/>
-               <property-value-option value="LITERAL_TRUE"/>
-               <property-value-option value="LITERAL_TRY"/>
-               <property-value-option value="LITERAL_VOID"/>
-               <property-value-option value="LITERAL_VOLATILE"/>
-               <property-value-option value="LITERAL_WHILE"/>
-               <property-value-option value="LNOT"/>
-               <property-value-option value="LOR"/>
-               <property-value-option value="LPAREN"/>
-               <property-value-option value="LT"/>
-               <property-value-option value="METHOD_CALL"/>
-               <property-value-option value="METHOD_DEF"/>
-               <property-value-option value="MINUS"/>
-               <property-value-option value="MINUS_ASSIGN"/>
-               <property-value-option value="MOD"/>
-               <property-value-option value="MOD_ASSIGN"/>
-               <property-value-option value="MODIFIERS"/>
-               <property-value-option value="NOT_EQUAL"/>
-               <property-value-option value="NUM_DOUBLE"/>
-               <property-value-option value="NUM_FLOAT"/>
-               <property-value-option value="NUM_INT"/>
-               <property-value-option value="NUM_LONG"/>
-               <property-value-option value="OBJBLOCK"/>
-               <property-value-option value="PACKAGE_DEF"/>
-               <property-value-option value="PARAMETER_DEF"/>
-               <property-value-option value="PARAMETERS"/>
-               <property-value-option value="PLUS"/>
-               <property-value-option value="PLUS_ASSIGN"/>
-               <property-value-option value="POST_DEC"/>
-               <property-value-option value="POST_INC"/>
-               <property-value-option value="QUESTION"/>
-               <property-value-option value="RCURLY"/>
-               <property-value-option value="RPAREN"/>
-               <property-value-option value="SEMI"/>
-               <property-value-option value="SL"/>
-               <property-value-option value="SL_ASSIGN"/>
-               <property-value-option value="SLIST"/>
-               <property-value-option value="SR"/>
-               <property-value-option value="SR_ASSIGN"/>
-               <property-value-option value="STAR"/>
-               <property-value-option value="STAR_ASSIGN"/>
-               <property-value-option value="STATIC_INIT"/>
-               <property-value-option value="STRICTFP"/>
-               <property-value-option value="STRING_LITERAL"/>
-               <property-value-option value="SUPER_CTOR_CALL"/>
-               <property-value-option value="TYPE"/>
-               <property-value-option value="TYPECAST"/>
-               <property-value-option value="UNARY_MINUS"/>
-               <property-value-option value="UNARY_PLUS"/>
-               <property-value-option value="VARIABLE_DEF"/>
+            <enumeration option-provider="com.atlassw.tools.eclipse.checkstyle.config.meta.AllTokensProvider">
             </enumeration>
          </property-metadata>
          <property-metadata name="limitedTokens" datatype="MultiCheck">
             <description>Tokens to check.</description>
-            <enumeration>
-               <property-value-option value="ABSTRACT"/>
-               <property-value-option value="ARRAY_DECLARATOR"/>
-               <property-value-option value="ARRAY_INIT"/>
-               <property-value-option value="ASSIGN"/>
-               <property-value-option value="BAND"/>
-               <property-value-option value="BAND_ASSIGN"/>
-               <property-value-option value="BNOT"/>
-               <property-value-option value="BOR"/>
-               <property-value-option value="BOR_ASSIGN"/>
-               <property-value-option value="BSR"/>
-               <property-value-option value="BSR_ASSIGN"/>
-               <property-value-option value="BXOR"/>
-               <property-value-option value="BXOR_ASSIGN"/>
-               <property-value-option value="CASE_GROUP"/>
-               <property-value-option value="CHAR_LITERAL"/>
-               <property-value-option value="CLASS_DEF"/>
-               <property-value-option value="COLON"/>
-               <property-value-option value="COMMA"/>
-               <property-value-option value="CTOR_CALL"/>
-               <property-value-option value="CTOR_DEF"/>
-               <property-value-option value="DEC"/>
-               <property-value-option value="DIV"/>
-               <property-value-option value="DIV_ASSIGN"/>
-               <property-value-option value="DOT"/>
-               <property-value-option value="ELIST"/>
-               <property-value-option value="EMPTY_STAT"/>
-               <property-value-option value="EOF"/>
-               <property-value-option value="EQUAL"/>
-               <property-value-option value="EXPR"/>
-               <property-value-option value="EXTENDS_CLAUSE"/>
-               <property-value-option value="FINAL"/>
-               <property-value-option value="FOR_CONDITION"/>
-               <property-value-option value="FOR_INIT"/>
-               <property-value-option value="FOR_ITERATOR"/>
-               <property-value-option value="GE"/>
-               <property-value-option value="GT"/>
-               <property-value-option value="IDENT"/>
-               <property-value-option value="IMPLEMENTS_CLAUSE"/>
-               <property-value-option value="IMPORT"/>
-               <property-value-option value="INC"/>
-               <property-value-option value="INDEX_OP"/>
-               <property-value-option value="INSTANCE_INIT"/>
-               <property-value-option value="INTERFACE_DEF"/>
-               <property-value-option value="LABELED_STAT"/>
-               <property-value-option value="LAND"/>
-               <property-value-option value="LCURLY"/>
-               <property-value-option value="LE"/>
-               <property-value-option value="LITERAL_ASSERT"/>
-               <property-value-option value="LITERAL_BOOLEAN"/>
-               <property-value-option value="LITERAL_BREAK"/>
-               <property-value-option value="LITERAL_BYTE"/>
-               <property-value-option value="LITERAL_CASE"/>
-               <property-value-option value="LITERAL_CATCH"/>
-               <property-value-option value="LITERAL_CHAR"/>
-               <property-value-option value="LITERAL_CLASS"/>
-               <property-value-option value="LITERAL_CONTINUE"/>
-               <property-value-option value="LITERAL_DEFAULT"/>
-               <property-value-option value="LITERAL_DO"/>
-               <property-value-option value="LITERAL_DOUBLE"/>
-               <property-value-option value="LITERAL_ELSE"/>
-               <property-value-option value="LITERAL_FALSE"/>
-               <property-value-option value="LITERAL_FINALLY"/>
-               <property-value-option value="LITERAL_FLOAT"/>
-               <property-value-option value="LITERAL_FOR"/>
-               <property-value-option value="LITERAL_IF"/>
-               <property-value-option value="LITERAL_INSTANCEOF"/>
-               <property-value-option value="LITERAL_INT"/>
-               <property-value-option value="LITERAL_LONG"/>
-               <property-value-option value="LITERAL_NATIVE"/>
-               <property-value-option value="LITERAL_NEW"/>
-               <property-value-option value="LITERAL_NULL"/>
-               <property-value-option value="LITERAL_PRIVATE"/>
-               <property-value-option value="LITERAL_PROTECTED"/>
-               <property-value-option value="LITERAL_PUBLIC"/>
-               <property-value-option value="LITERAL_RETURN"/>
-               <property-value-option value="LITERAL_SHORT"/>
-               <property-value-option value="LITERAL_STATIC"/>
-               <property-value-option value="LITERAL_SUPER"/>
-               <property-value-option value="LITERAL_SWITCH"/>
-               <property-value-option value="LITERAL_SYNCHRONIZED"/>
-               <property-value-option value="LITERAL_THIS"/>
-               <property-value-option value="LITERAL_THROW"/>
-               <property-value-option value="LITERAL_THROWS"/>
-               <property-value-option value="LITERAL_TRANSIENT"/>
-               <property-value-option value="LITERAL_TRUE"/>
-               <property-value-option value="LITERAL_TRY"/>
-               <property-value-option value="LITERAL_VOID"/>
-               <property-value-option value="LITERAL_VOLATILE"/>
-               <property-value-option value="LITERAL_WHILE"/>
-               <property-value-option value="LNOT"/>
-               <property-value-option value="LOR"/>
-               <property-value-option value="LPAREN"/>
-               <property-value-option value="LT"/>
-               <property-value-option value="METHOD_CALL"/>
-               <property-value-option value="METHOD_DEF"/>
-               <property-value-option value="MINUS"/>
-               <property-value-option value="MINUS_ASSIGN"/>
-               <property-value-option value="MOD"/>
-               <property-value-option value="MOD_ASSIGN"/>
-               <property-value-option value="MODIFIERS"/>
-               <property-value-option value="NOT_EQUAL"/>
-               <property-value-option value="NUM_DOUBLE"/>
-               <property-value-option value="NUM_FLOAT"/>
-               <property-value-option value="NUM_INT"/>
-               <property-value-option value="NUM_LONG"/>
-               <property-value-option value="OBJBLOCK"/>
-               <property-value-option value="PACKAGE_DEF"/>
-               <property-value-option value="PARAMETER_DEF"/>
-               <property-value-option value="PARAMETERS"/>
-               <property-value-option value="PLUS"/>
-               <property-value-option value="PLUS_ASSIGN"/>
-               <property-value-option value="POST_DEC"/>
-               <property-value-option value="POST_INC"/>
-               <property-value-option value="QUESTION"/>
-               <property-value-option value="RCURLY"/>
-               <property-value-option value="RPAREN"/>
-               <property-value-option value="SEMI"/>
-               <property-value-option value="SL"/>
-               <property-value-option value="SL_ASSIGN"/>
-               <property-value-option value="SLIST"/>
-               <property-value-option value="SR"/>
-               <property-value-option value="SR_ASSIGN"/>
-               <property-value-option value="STAR"/>
-               <property-value-option value="STAR_ASSIGN"/>
-               <property-value-option value="STATIC_INIT"/>
-               <property-value-option value="STRICTFP"/>
-               <property-value-option value="STRING_LITERAL"/>
-               <property-value-option value="SUPER_CTOR_CALL"/>
-               <property-value-option value="TYPE"/>
-               <property-value-option value="TYPECAST"/>
-               <property-value-option value="UNARY_MINUS"/>
-               <property-value-option value="UNARY_PLUS"/>
-               <property-value-option value="VARIABLE_DEF"/>
+            <enumeration option-provider="com.atlassw.tools.eclipse.checkstyle.config.meta.AllTokensProvider">
             </enumeration>
          </property-metadata>
          <property-metadata name="minimumDepth" datatype="Integer" default-value="0">
