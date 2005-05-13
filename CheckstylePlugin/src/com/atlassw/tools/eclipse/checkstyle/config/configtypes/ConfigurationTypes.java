@@ -22,8 +22,8 @@ package com.atlassw.tools.eclipse.checkstyle.config.configtypes;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -71,7 +71,7 @@ public final class ConfigurationTypes
     private static final String ATTR_CREATABLE = "creatable"; //$NON-NLS-1$
 
     /** the configuration types configured to the extension point. */
-    private static final Map CONFIGURATION_TYPES = new HashMap();
+    private static final Map CONFIGURATION_TYPES = new LinkedHashMap();
 
     //
     // Initializer
