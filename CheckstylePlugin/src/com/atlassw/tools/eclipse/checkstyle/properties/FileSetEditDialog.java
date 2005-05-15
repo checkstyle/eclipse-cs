@@ -208,13 +208,6 @@ public class FileSetEditDialog extends TitleAreaDialog
 
         sashForm.setWeights(new int[] { 50, 50 });
 
-        //
-        // Add the note text.
-        //
-        Text noteText = new Text(composite, SWT.WRAP | SWT.READ_ONLY | SWT.MULTI);
-        noteText.setLayoutData(new GridData(GridData.FILL_BOTH));
-        noteText.setText(Messages.FileSetEditDialog_msgLastMatchingRegex);
-
         //init the data
         initializeControls();
 

@@ -108,8 +108,6 @@ public final class Messages extends NLS
 
     public static String FileSetEditDialog_btnDown;
 
-    public static String FileSetEditDialog_msgLastMatchingRegex;
-
     public static String FileSetEditDialog_msgNoFilesetName;
 
     public static String FileSetEditDialog_titleValidationError;
