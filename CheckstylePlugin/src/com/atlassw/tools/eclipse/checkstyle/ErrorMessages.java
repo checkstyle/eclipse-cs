@@ -84,5 +84,11 @@ public final class ErrorMessages extends NLS
 
     public static String msgErrorFailedExportConfig;
 
+	public static String CheckstyleLog_msgStatusPrefix;
+
+	public static String CheckstyleLog_titleInternalError;
+
+	public static String CheckstyleLog_titleWarning;
+
     //  CHECKSTYLE:ON
 }

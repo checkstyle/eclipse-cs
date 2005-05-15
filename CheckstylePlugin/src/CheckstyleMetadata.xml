@@ -123,10 +123,10 @@ public boolean isSomething()
             <enumeration option-provider="com.atlassw.tools.eclipse.checkstyle.config.meta.VisibilityOptionsProvider">
             </enumeration>
          </property-metadata>
-         <property-metadata name="authorFormat" datatype="String">
+         <property-metadata name="authorFormat" datatype="Regex">
             <description>Pattern for @author tag.</description>
          </property-metadata>
-         <property-metadata name="versionFormat" datatype="String">
+         <property-metadata name="versionFormat" datatype="Regex">
             <description>Pattern for @version tag.</description>
          </property-metadata>
          <property-metadata name="tokens" datatype="MultiCheck" default-value="CLASS_DEF,INTERFACE_DEF">
@@ -160,7 +160,7 @@ public boolean isSomething()
       <rule-metadata name="Abstract Class Name" internal-name="AbstractClassName" parent="TreeWalker">
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.naming.AbstractClassNameCheck"/>
          <description>Checks that abstract class names follow naming convention.</description>
-         <property-metadata name="format" datatype="String" default-value="^Abstract.*$|^.*Factory$">
+         <property-metadata name="format" datatype="Regex" default-value="^Abstract.*$|^.*Factory$">
             <description>Regular expression defining required naming pattern.</description>
          </property-metadata>
       </rule-metadata>
@@ -169,7 +169,7 @@ public boolean isSomething()
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.naming.ConstantNameCheck"/>
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.ConstantNameCheck"/>
          <description>Checks that constents (static final fields) variables follow naming convention.</description>
-         <property-metadata name="format" datatype="String" default-value="^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$">
+         <property-metadata name="format" datatype="Regex" default-value="^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$">
             <description>Regular expression defining required naming pattern.</description>
          </property-metadata>
       </rule-metadata>
@@ -178,7 +178,7 @@ public boolean isSomething()
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.naming.LocalFinalVariableNameCheck"/>
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.LocalFinalVariableNameCheck"/>
          <description>Checks that local final variables follow naming convention.</description>
-         <property-metadata name="format" datatype="String" default-value="^[a-z][a-zA-Z0-9]*$">
+         <property-metadata name="format" datatype="Regex" default-value="^[a-z][a-zA-Z0-9]*$">
             <description>Regular expression defining required naming pattern.</description>
          </property-metadata>
       </rule-metadata>
@@ -187,7 +187,7 @@ public boolean isSomething()
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.naming.LocalVariableNameCheck"/>
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.LocalVariableNameCheck"/>
          <description>Checks that local variables follow naming convention.</description>
-         <property-metadata name="format" datatype="String" default-value="^[a-z][a-zA-Z0-9]*$">
+         <property-metadata name="format" datatype="Regex" default-value="^[a-z][a-zA-Z0-9]*$">
             <description>Regular expression defining required naming pattern.</description>
          </property-metadata>
          <property-metadata name="tokens" datatype="MultiCheck" default-value="VARIABLE_DEF,PARAMETER_DEF">
@@ -215,7 +215,7 @@ public boolean isSomething()
          <property-metadata name="applyToPrivate" datatype="Boolean" default-value="true">
             <description>Controls whether to apply the check to private member.</description>
          </property-metadata>
-         <property-metadata name="format" datatype="String" default-value="^[a-z][a-zA-Z0-9]*$">
+         <property-metadata name="format" datatype="Regex" default-value="^[a-z][a-zA-Z0-9]*$">
             <description>Regular expression defining required naming pattern.</description>
          </property-metadata>
       </rule-metadata>
@@ -224,7 +224,7 @@ public boolean isSomething()
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.naming.MethodNameCheck"/>
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.MethodNameCheck"/>
          <description>Checks that method names follow naming convention.</description>
-         <property-metadata name="format" datatype="String" default-value="^[a-z][a-zA-Z0-9]*$">
+         <property-metadata name="format" datatype="Regex" default-value="^[a-z][a-zA-Z0-9]*$">
             <description>Regular expression defining required naming pattern.</description>
          </property-metadata>
       </rule-metadata>
@@ -233,7 +233,7 @@ public boolean isSomething()
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.naming.PackageNameCheck"/>
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.PackageNameCheck"/>
          <description>Checks that package names follow naming convention.</description>
-         <property-metadata name="format" datatype="String" default-value="^[a-z]+(\.[a-zA-Z_][a-zA-Z0-9_]*)*$">
+         <property-metadata name="format" datatype="Regex" default-value="^[a-z]+(\.[a-zA-Z_][a-zA-Z0-9_]*)*$">
             <description>Regular expression defining required naming pattern.</description>
          </property-metadata>
       </rule-metadata>
@@ -242,7 +242,7 @@ public boolean isSomething()
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.naming.ParameterNameCheck"/>
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.ParameterNameCheck"/>
          <description>Checks that parameter names follow naming convention.</description>
-         <property-metadata name="format" datatype="String" default-value="^[a-z][a-zA-Z0-9]*$">
+         <property-metadata name="format" datatype="Regex" default-value="^[a-z][a-zA-Z0-9]*$">
             <description>Regular expression defining required naming pattern.</description>
          </property-metadata>
       </rule-metadata>
@@ -251,7 +251,7 @@ public boolean isSomething()
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.naming.StaticVariableNameCheck"/>
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.StaticVariableNameCheck"/>
          <description>Checks that static variables (static, non-final fields) follow naming convention.</description>
-         <property-metadata name="format" datatype="String" default-value="^[a-z][a-zA-Z0-9]*$">
+         <property-metadata name="format" datatype="Regex" default-value="^[a-z][a-zA-Z0-9]*$">
             <description>Regular expression defining required naming pattern.</description>
          </property-metadata>
       </rule-metadata>
@@ -260,7 +260,7 @@ public boolean isSomething()
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.naming.TypeNameCheck"/>
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.TypeNameCheck"/>
          <description>Checks that class names follow naming convention.</description>
-         <property-metadata name="format" datatype="String" default-value="^[A-Z][a-zA-Z0-9]*$">
+         <property-metadata name="format" datatype="Regex" default-value="^[A-Z][a-zA-Z0-9]*$">
             <description>Regular expression defining required naming pattern.</description>
          </property-metadata>
          <property-metadata name="tokens" datatype="MultiCheck" default-value="CLASS_DEF,INTERFACE_DEF">
@@ -404,7 +404,7 @@ Rationale: If an anonymous inner class becomes very long it is hard to understan
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.sizes.LineLengthCheck"/>
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.LineLengthCheck"/>
          <description>Checks for lines that exceed the configured maximum length.</description>
-         <property-metadata name="ignorePattern" datatype="String" default-value="^$">
+         <property-metadata name="ignorePattern" datatype="Regex" default-value="^$">
             <description>Pattern for lines to ignore.</description>
          </property-metadata>
          <property-metadata name="max" datatype="Integer" default-value="80">
@@ -949,7 +949,7 @@ Note: the check works in assumption that there is no unreachable code in the cas
                <property-value-option value="VARIABLE_DEF"/>
             </enumeration>
          </property-metadata>
-         <property-metadata name="ignoreFormat" datatype="String">
+         <property-metadata name="ignoreFormat" datatype="Regex">
             <description>pattern for names to ignore</description>
          </property-metadata>
          <property-metadata name="ignoreConstructorParameter" datatype="Boolean" default-value="false">
@@ -999,7 +999,7 @@ Rational: Certain language features often lead to hard to maintain code or are n
 			<enumeration option-provider="com.atlassw.tools.eclipse.checkstyle.config.meta.AllTokensProvider">
             </enumeration>
          </property-metadata>
-         <property-metadata name="format" datatype="String" default-value="^$">
+         <property-metadata name="format" datatype="Regex" default-value="^$">
             <description>illegal pattern</description>
          </property-metadata>
          <property-metadata name="ignoreCase" datatype="Boolean" default-value="false">
@@ -1030,7 +1030,7 @@ Rationale: Helps reduce coupling on concrete classes. In addition abstract class
          <property-metadata name="ignoredMethodNames" datatype="String" default-value="getInitialContext, getEnvironment">
             <description>methods that should not be checked.</description>
          </property-metadata>
-         <property-metadata name="format" datatype="String" default-value="^(.*[\\.])?Abstract.*$">
+         <property-metadata name="format" datatype="Regex" default-value="^(.*[\\.])?Abstract.*$">
             <description>pattern for illegal class name </description>
          </property-metadata>         
       </rule-metadata>
@@ -1186,7 +1186,7 @@ Rationale: Too many return points can be indication that code is attempting to d
          <property-metadata name="max" datatype="Integer" default-value="2">
             <description>maximum allowed number of return statments</description>
          </property-metadata>
-         <property-metadata name="format" datatype="String" default-value="^equals$ (empty)">
+         <property-metadata name="format" datatype="Regex" default-value="^equals$ (empty)">
             <description>method names to ignore</description>
          </property-metadata>
       </rule-metadata>
@@ -1283,7 +1283,7 @@ Rationale: Putting this comma in makes it easier to change the order of the elem
 The current algorithm is very simple it checks that all members of exception are final. User can still mutates an exception's instance (e.g. Throwable has setStackTrace(StackTraceElement[] stackTrace) method which changes stack trace). But, at least, all information provided by this exception type is unchangable. 
 
 Rationale: Exception instances should represent an error condition. Having non final fields not only allows the state to be modified by accident and therefore mask the original condition but also allows developers to accidentally forget to initialise state thereby leading to code catching the exception to draw incorrect conclusions based on the state.      </description>
-         <property-metadata name="format" datatype="String" default-value="^.*Exception$|^.*Error$">
+         <property-metadata name="format" datatype="Regex" default-value="^.*Exception$|^.*Error$">
             <description>pattern for name of exception class.</description>
          </property-metadata>
       </rule-metadata>
@@ -1309,7 +1309,7 @@ Rationale: Exceptions form part of a methods interface. Declaring a method to th
          <property-metadata name="protectedAllowed" datatype="Boolean" default-value="false">
             <description>Whether protected members are allowed or not.</description>
          </property-metadata>
-         <property-metadata name="publicMemberPattern" datatype="String" default-value="^serialVersionUID">
+         <property-metadata name="publicMemberPattern" datatype="Regex" default-value="^serialVersionUID">
             <description>Pattern for public members that should be ignored.</description>
          </property-metadata>
       </rule-metadata>
@@ -1464,7 +1464,7 @@ WARNING: This is a very powerful and flexible check, but, at the same time, it i
       <rule-metadata name="Generic Illegal Regexp" internal-name="GenericIllegalRegexp" parent="TreeWalker">
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.GenericIllegalRegexpCheck"/>
          <description>A generic check for code problems - the user can search for any pattern.  For example: exception.printStacktrace(), System.out.println(), System.exit(), etc.</description>
-         <property-metadata name="format" datatype="String" default-value="^$">
+         <property-metadata name="format" datatype="Regex" default-value="^$">
             <description>Pattern to check for.</description>
          </property-metadata>
          <property-metadata name="ignoreCase" datatype="Boolean" default-value="false">
@@ -1516,7 +1516,7 @@ Rationale: Any source files and text files in general should end with a newline 
       <rule-metadata name="Required Regular Expression" internal-name="RequiredRegexp" parent="TreeWalker">
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.RequiredRegexpCheck"/>
          <description> A check that makes sure that a specified pattern exists in the code, e.g. a required legal text. It does not care about where in the file the pattern is</description>
-         <property-metadata name="format" datatype="String" default-value="^$">
+         <property-metadata name="format" datatype="Regex" default-value="^$">
             <description> required pattern</description>
          </property-metadata>
       </rule-metadata>
@@ -1524,7 +1524,7 @@ Rationale: Any source files and text files in general should end with a newline 
       <rule-metadata name="Todo Comment" internal-name="TodoComment" parent="TreeWalker">
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.TodoCommentCheck"/>
          <description>A check for TODO: comments. Actually it is a generic regular expression matcher on Java comments. To check for other patterns in Java comments, set property format.</description>
-         <property-metadata name="format" datatype="String" default-value="TODO:">
+         <property-metadata name="format" datatype="Regex" default-value="TODO:">
             <description>Regular expression definging pattern to look for.</description>
          </property-metadata>
       </rule-metadata>
@@ -1553,7 +1553,7 @@ Quoting "Code Complete" for the justfication:
 "Endline comments also tend to be cryptic. The right side of the line doesn't offer much room and the desire to keep the comment on one line means the comment must be short. Work then goes into making the line as short as possible instead of as clear as possible. The comment usually ends up as cryptic as possible...." 
 "A systemic problem with endline comments is that it's hard to write a meaningful comment for one line of code. Most endline comments just repeat the line of code, which hurts more than it helps." 
 His comments on being hard to maintain when the size of the line changes are even more important in the age of automated refactorings. </description>
-         <property-metadata name="format" datatype="String" default-value="^[\\s\\}\\);]*$">
+         <property-metadata name="format" datatype="Regex" default-value="^[\\s\\}\\);]*$">
             <description>pattern for string allowed before comment.</description>
          </property-metadata>
       </rule-metadata>
@@ -1564,7 +1564,7 @@ His comments on being hard to maintain when the size of the line changes are eve
 
 Rationale: main() method can be often used for debug puposes. Thus most of main() method should be removed/commented out of the sources. 
 </description>
-         <property-metadata name="excludedClasses" datatype="String" default-value="^$">
+         <property-metadata name="excludedClasses" datatype="Regex" default-value="^$">
             <description>pattern for qualified names of classes which ar allowed to have main method.</description>
          </property-metadata>
       </rule-metadata>
@@ -1701,7 +1701,7 @@ Reference: Enterprise JavaBeans™ Specification,Version 2.0, section 7.10.
          <description>Checks that a private field is used in more than one method, constructor, or initializer. 
 
 Rationale: a private field used in only one method, constructor, or initializer should be replaced by a local variable. </description>
-         <property-metadata name="ignoreFormat" datatype="String" default-value="^$">
+         <property-metadata name="ignoreFormat" datatype="Regex" default-value="^$">
             <description>pattern for field names that should be ignored</description>
          </property-metadata>
       </rule-metadata>
@@ -1710,7 +1710,7 @@ Rationale: a private field used in only one method, constructor, or initializer 
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.usage.UnusedLocalVariableCheck"/>
          <description>Checks that a local variable is used after its declaration
           </description>
-         <property-metadata name="ignoreFormat" datatype="String" default-value="^$">
+         <property-metadata name="ignoreFormat" datatype="Regex" default-value="^$">
             <description>pattern for field names that should be ignored</description>
          </property-metadata>
       </rule-metadata>
@@ -1718,7 +1718,7 @@ Rationale: a private field used in only one method, constructor, or initializer 
       <rule-metadata name="Unused Parameter" internal-name="usage.UnusedParameter" parent="TreeWalker">
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.usage.UnusedParameterCheck"/>
          <description>Checks that a parameter is used.</description>
-         <property-metadata name="ignoreFormat" datatype="String" default-value="^$">
+         <property-metadata name="ignoreFormat" datatype="Regex" default-value="^$">
             <description>pattern for field names that should be ignored</description>
          </property-metadata>
          <property-metadata name="ignoreCatch" datatype="Boolean" default-value="true">
@@ -1732,7 +1732,7 @@ Rationale: a private field used in only one method, constructor, or initializer 
       <rule-metadata name="Unused Private Field" internal-name="usage.UnusedPrivateField" parent="TreeWalker">
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.usage.UnusedPrivateFieldCheck"/>
          <description>Checks that a private field is used. </description>
-         <property-metadata name="ignoreFormat" datatype="String" default-value="^$">
+         <property-metadata name="ignoreFormat" datatype="Regex" default-value="^$">
             <description>pattern for field names that should be ignored</description>
          </property-metadata>
       </rule-metadata>
@@ -1740,7 +1740,7 @@ Rationale: a private field used in only one method, constructor, or initializer 
       <rule-metadata name="Unused Private Method" internal-name="usage.UnusedPrivateMethod" parent="TreeWalker">
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.usage.UnusedPrivateMethodCheck"/>
          <description>Checks that a private method is used. </description>
-         <property-metadata name="ignoreFormat" datatype="String" default-value="^$">
+         <property-metadata name="ignoreFormat" datatype="Regex" default-value="^$">
             <description>pattern for field names that should be ignored</description>
          </property-metadata>
          <property-metadata name="allowSerializationMethods" datatype="Boolean" default-value="false">
@@ -1789,16 +1789,16 @@ Rationale: Sometimes there are legitimate reasons for violating a check. When th
 Usage: This filter only works in conjunction with a FileContentsHolder, since that check makes the suppression comments in the .java files available sub rosa. A configuration that includes this filter must configure FileContentsHolder as a child module of TreeWalker. 
 
 </description>
-         <property-metadata name="offCommentFormat" datatype="String" default-value="CHECKSTYLE\:OFF">
+         <property-metadata name="offCommentFormat" datatype="Regex" default-value="CHECKSTYLE\:OFF">
             <description>comment pattern to trigger filter to begin suppression.</description>
          </property-metadata>
-         <property-metadata name="onCommentFormat" datatype="String" default-value="CHECKSTYLE\:ON">
+         <property-metadata name="onCommentFormat" datatype="Regex" default-value="CHECKSTYLE\:ON">
             <description>comment pattern to trigger filter to end suppression.</description>
          </property-metadata>
-         <property-metadata name="checkFormat" datatype="String" default-value=".*">
+         <property-metadata name="checkFormat" datatype="Regex" default-value=".*">
             <description>check pattern to suppress.</description>
          </property-metadata>
-         <property-metadata name="messageFormat" datatype="String">
+         <property-metadata name="messageFormat" datatype="Regex">
             <description>message pattern to suppress.</description>
          </property-metadata>
          <property-metadata name="checkCPP" datatype="Boolean" default-value="true">

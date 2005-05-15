@@ -109,8 +109,6 @@ public final class CheckerFactory
         if (checker == null)
         {
 
-            // TODO remove this
-            System.out.println("Creating checker for :" + configLocation);
             checker = createCheckerInternal(configLocation, config.getPropertyResolver());
 
             // store checker in cache

@@ -61,7 +61,9 @@ public final class Messages extends NLS
     public static String CheckstylePreferencePage_msgRebuild;
 
     public static String CheckstylePreferencePage_nagRebuild;
-    
+
+    public static String CheckstylePreferencePage_lblProjectUsage;
+
     public static String SimpleFileSetsEditor_btnManageConfigs;
 
     public static String ComplexFileSetsEditor_titleAdvancedFilesetEditor;
@@ -69,6 +71,8 @@ public final class Messages extends NLS
     public static String ComplexFileSetsEditor_colEnabled;
 
     public static String ComplexFileSetsEditor_colFilesetName;
+
+    public static String ComplexFileSetsEditor_colConfiguration;
 
     public static String ComplexFileSetsEditor_btnAdd;
 
@@ -301,6 +305,24 @@ public final class Messages extends NLS
     public static String CheckstylePreferencePage_msgDelete;
 
     public static String CheckstylePreferencePage_titleExportConfig;
+
+    public static String FileMatchPatternEditDialog_chkIncludesFiles;
+
+    public static String FileMatchPatternEditDialog_title;
+
+    public static String FileMatchPatternEditDialog_message;
+
+    public static String FileSetEditDialog_btnConfigure;
+
+    public static String FileSetEditDialog_titlePatternsTable;
+
+    public static String FileSetEditDialog_message;
+
+    public static String FileSetEditDialog_titleCreate;
+
+    public static String FileSetEditDialog_titleEdit;
+
+    public static String FileSetEditDialog_titleTestResult;
 
     // CHECKSTYLE:ON
 }

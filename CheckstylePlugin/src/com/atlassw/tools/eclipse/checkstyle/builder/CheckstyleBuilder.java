@@ -197,7 +197,6 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
                 files = getFiles(project, config.getEnabledFilters());
             }
 
-            System.out.println("Passing through filters: " + files.size());
             handleBuildSelection(files, config, monitor, project, kind);
         }
 

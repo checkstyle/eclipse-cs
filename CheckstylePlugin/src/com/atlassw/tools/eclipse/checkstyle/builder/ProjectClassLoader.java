@@ -129,10 +129,6 @@ public class ProjectClassLoader extends ClassLoader
         // }
 
         URL[] projClassPath = getProjectClassPath(project);
-        
-        for (int i=0; i<projClassPath.length; i++) {
-            System.out.println(projClassPath[i]);
-        }
 
         this.mDelegateClassLoader = new URLClassLoader(projClassPath, this.mParentClassLoader,
                 this.mStreamHandlerFactory);
