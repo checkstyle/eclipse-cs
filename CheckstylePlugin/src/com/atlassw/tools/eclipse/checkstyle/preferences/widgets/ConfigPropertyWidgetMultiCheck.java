@@ -18,7 +18,7 @@
 //
 //============================================================================
 
-package com.atlassw.tools.eclipse.checkstyle.preferences;
+package com.atlassw.tools.eclipse.checkstyle.preferences.widgets;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -73,14 +73,20 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
     // Constructors & finalizer.
     //=================================================
 
-    //=================================================
-    // Methods.
-    //=================================================
-
-    ConfigPropertyWidgetMultiCheck(Composite parent, ConfigProperty prop)
+    /**
+     * Creates the widget.
+     * 
+     * @param parent the parent composite
+     * @param prop the property
+     */
+    public ConfigPropertyWidgetMultiCheck(Composite parent, ConfigProperty prop)
     {
         super(parent, prop);
     }
+
+    //=================================================
+    // Methods.
+    //=================================================
 
     /**
      * @see ConfigPropertyWidgetAbstractBase#getValueWidget(org.eclipse.swt.widgets.Composite)
@@ -96,7 +102,7 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
             mTable = CheckboxTableViewer.newCheckList(parent, SWT.V_SCROLL | SWT.BORDER);
             mTable.setContentProvider(new ArrayContentProvider());
             mTable.setLabelProvider(new TokenLabelProvider());
-            mTable.setInput(getMetadata());
+            mTable.setInput(getConfigProperty().getMetaData().getPropertyEnumeration());
             mTable.setCheckedElements(getInitialValues().toArray());
 
             GridData gd = new GridData(GridData.FILL_BOTH);
@@ -152,7 +158,7 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
     }
 
     /**
-     * @see IConfigPropertyWidget#restorePropertyDefault()
+     * @see ConfigPropertyWidgetAbstractBase#restorePropertyDefault()
      */
     public void restorePropertyDefault()
     {

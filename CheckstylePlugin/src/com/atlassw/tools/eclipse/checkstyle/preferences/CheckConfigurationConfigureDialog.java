@@ -27,7 +27,6 @@ import java.util.List;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
@@ -808,14 +807,14 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
      * 
      * @author Lars Ködderitzsch
      */
-    private class MetaDataLabelProvider extends LabelProvider
+    private static class MetaDataLabelProvider extends LabelProvider
     {
 
-        Image mModuleGroupImage = CheckstylePlugin.imageDescriptorFromPlugin(
-                CheckstylePlugin.PLUGIN_ID, "icons/modulegroup.gif").createImage();
+        private static Image sModuleGroupImage = CheckstylePlugin.imageDescriptorFromPlugin(
+                CheckstylePlugin.PLUGIN_ID, "icons/modulegroup.gif").createImage(); //$NON-NLS-1$
 
-        Image mModuleImage = CheckstylePlugin.imageDescriptorFromPlugin(CheckstylePlugin.PLUGIN_ID,
-                "icons/module.gif").createImage();
+        private static Image sModuleImage = CheckstylePlugin.imageDescriptorFromPlugin(
+                CheckstylePlugin.PLUGIN_ID, "icons/module.gif").createImage(); //$NON-NLS-1$
 
         /**
          * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
@@ -843,11 +842,11 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
 
             if (element instanceof RuleGroupMetadata)
             {
-                image = mModuleGroupImage;
+                image = sModuleGroupImage;
             }
             else if (element instanceof RuleMetadata)
             {
-                image = mModuleImage;
+                image = sModuleImage;
             }
             return image;
         }

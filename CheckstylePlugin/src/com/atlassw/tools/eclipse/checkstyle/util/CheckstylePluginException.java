@@ -20,7 +20,6 @@
 
 package com.atlassw.tools.eclipse.checkstyle.util;
 
-
 //=================================================
 // Imports from java namespace
 //=================================================

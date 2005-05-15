@@ -255,7 +255,8 @@ public final class ProjectConfigurationFactory
         }
         catch (Exception e)
         {
-            CheckstylePluginException.rethrow(e, ErrorMessages.errorWritingCheckConfigurations);
+            CheckstylePluginException.rethrow(e, NLS.bind(
+                    ErrorMessages.errorWritingCheckConfigurations, e.getLocalizedMessage()));
         }
         finally
         {
@@ -365,7 +366,7 @@ public final class ProjectConfigurationFactory
 
         AttributesImpl attr = new AttributesImpl();
         attr.addAttribute(new String(), XMLTags.MATCH_PATTERN_TAG, XMLTags.MATCH_PATTERN_TAG, null,
-                pattern.getMatchPattern());
+                pattern.getMatchPattern() != null ? pattern.getMatchPattern() : ""); //$NON-NLS-1$
         attr.addAttribute(new String(), XMLTags.INCLUDE_PATTERN_TAG, XMLTags.INCLUDE_PATTERN_TAG,
                 null, new String() + pattern.isIncludePattern());
 

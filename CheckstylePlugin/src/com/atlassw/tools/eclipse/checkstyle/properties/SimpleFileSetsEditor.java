@@ -40,7 +40,6 @@ import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationFactory;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.preferences.CheckConfigurationConfigureDialog;
-import com.atlassw.tools.eclipse.checkstyle.preferences.CheckConfigurationPropertiesDialog;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileMatchPattern;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileSet;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
@@ -214,6 +213,11 @@ public class SimpleFileSetsEditor implements IFileSetsEditor
         }
     }
 
+    /**
+     * Controller for this file set editor.
+     * 
+     * @author Lars Ködderitzsch
+     */
     private class Controller implements SelectionListener
     {
 
@@ -233,10 +237,7 @@ public class SimpleFileSetsEditor implements IFileSetsEditor
                     CheckConfigurationConfigureDialog dialog = new CheckConfigurationConfigureDialog(
                             mPropertyPage.getShell(), config);
                     dialog.setBlockOnOpen(true);
-                    if (CheckConfigurationPropertiesDialog.OK == dialog.open())
-                    {
-                        //TODO handle if rebuild needed in properties page
-                    }
+                    dialog.open();
                 }
 
             }

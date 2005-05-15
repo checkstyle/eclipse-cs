@@ -41,7 +41,7 @@ import org.eclipse.jface.viewers.ViewerSorter;
 import com.atlassw.tools.eclipse.checkstyle.config.ResolvableProperty;
 
 /**
- *  Sorts AuditConfiguration objects into their display order.
+ * Sorts AuditConfiguration objects into their display order.
  */
 public class ResolvablePropertyViewerSorter extends ViewerSorter
 {
@@ -82,8 +82,8 @@ public class ResolvablePropertyViewerSorter extends ViewerSorter
 
         if ((e1 instanceof ResolvableProperty) && (e2 instanceof ResolvableProperty))
         {
-            String string1 = ((ResolvableProperty)e1).getPropertyName();
-            String string2 = ((ResolvableProperty)e2).getPropertyName();
+            String string1 = ((ResolvableProperty) e1).getPropertyName();
+            String string2 = ((ResolvableProperty) e2).getPropertyName();
 
             result = string1.compareToIgnoreCase(string2);
         }

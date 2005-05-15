@@ -24,6 +24,7 @@ package com.atlassw.tools.eclipse.checkstyle.preferences;
 // Imports from java namespace
 //=================================================
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -47,6 +48,7 @@ import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
@@ -129,6 +131,8 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
     private Button mExportButton;
 
     private Text mConfigurationDescription;
+
+    private StructuredViewer mUsageView;
 
     private Combo mRebuildIfNeeded;
 
@@ -320,15 +324,24 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         fd.bottom = new FormAttachment(70);
         table.setLayoutData(fd);
 
-        Label lblDescription = new Label(tableAndDesc, SWT.NULL);
-        lblDescription.setText(Messages.CheckstylePreferencePage_lblDescription);
+        Composite descArea = new Composite(tableAndDesc, SWT.NULL);
+        descArea.setLayout(new FormLayout());
         fd = new FormData();
         fd.left = new FormAttachment(0);
         fd.top = new FormAttachment(table, 3);
+        fd.right = new FormAttachment(60);
+        fd.bottom = new FormAttachment(100);
+        descArea.setLayoutData(fd);
+
+        Label lblDescription = new Label(descArea, SWT.NULL);
+        lblDescription.setText(Messages.CheckstylePreferencePage_lblDescription);
+        fd = new FormData();
+        fd.left = new FormAttachment(0);
+        fd.top = new FormAttachment(0);
         fd.right = new FormAttachment(100);
         lblDescription.setLayoutData(fd);
 
-        mConfigurationDescription = new Text(tableAndDesc, SWT.LEFT | SWT.WRAP | SWT.MULTI
+        mConfigurationDescription = new Text(descArea, SWT.LEFT | SWT.WRAP | SWT.MULTI
                 | SWT.READ_ONLY | SWT.BORDER | SWT.VERTICAL);
         fd = new FormData();
         fd.left = new FormAttachment(0);
@@ -336,6 +349,34 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         fd.right = new FormAttachment(100);
         fd.bottom = new FormAttachment(100);
         mConfigurationDescription.setLayoutData(fd);
+
+        Composite usageArea = new Composite(tableAndDesc, SWT.NULL);
+        usageArea.setLayout(new FormLayout());
+        fd = new FormData();
+        fd.left = new FormAttachment(60, 3);
+        fd.top = new FormAttachment(table, 3);
+        fd.right = new FormAttachment(100);
+        fd.bottom = new FormAttachment(100);
+        usageArea.setLayoutData(fd);
+
+        Label lblUsage = new Label(usageArea, SWT.NULL);
+        lblUsage.setText(Messages.CheckstylePreferencePage_lblProjectUsage);
+        fd = new FormData();
+        fd.left = new FormAttachment(0);
+        fd.top = new FormAttachment(0);
+        fd.right = new FormAttachment(100);
+        lblUsage.setLayoutData(fd);
+
+        mUsageView = new TableViewer(usageArea);
+        mUsageView.getControl().setEnabled(false);
+        mUsageView.setContentProvider(new ArrayContentProvider());
+        mUsageView.setLabelProvider(new WorkbenchLabelProvider());
+        fd = new FormData();
+        fd.left = new FormAttachment(0);
+        fd.top = new FormAttachment(lblUsage);
+        fd.right = new FormAttachment(100);
+        fd.bottom = new FormAttachment(100);
+        mUsageView.getControl().setLayoutData(fd);
 
         return configComposite;
     }
@@ -654,17 +695,27 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
             {
                 ICheckConfiguration config = (ICheckConfiguration) ((IStructuredSelection) event
                         .getSelection()).getFirstElement();
-                if (config != null && config.getDescription() != null)
+                if (config != null)
                 {
-                    mConfigurationDescription.setText(config.getDescription());
+                    mConfigurationDescription.setText(config.getDescription() != null ? config
+                            .getDescription() : ""); //$NON-NLS-1$
+                    try
+                    {
+                        mUsageView.setInput(ProjectConfigurationFactory
+                                .getProjectsUsingConfig(config.getName()));
+                    }
+                    catch (CheckstylePluginException e)
+                    {
+                        CheckstyleLog.log(e);
+                    }
                 }
                 else
                 {
-                    mConfigurationDescription.setText(new String());
+                    mConfigurationDescription.setText(""); //$NON-NLS-1$
+                    mUsageView.setInput(new ArrayList());
                 }
             }
         }
-
     }
 
     /**
@@ -876,7 +927,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
             {
                 MessageDialog.openInformation(getShell(),
 
-                Messages.CheckstylePreferencePage_titleCantDelete, NLS.bind(
+                Messages.CheckstylePreferencePage_titleCantDelete, Messages.bind(
                         Messages.CheckstylePreferencePage_msgCantDelete, checkConfig.getName()));
                 return;
             }

@@ -29,8 +29,30 @@ import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 /**
  * Provides the labels for the audit configuration list display.
  */
-class CheckConfigurationLabelProvider extends LabelProvider implements ITableLabelProvider
+public class CheckConfigurationLabelProvider extends LabelProvider implements ITableLabelProvider
 {
+
+    /**
+     * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
+     */
+    public String getText(Object element)
+    {
+        String text = super.getText(element);
+        if (element instanceof ICheckConfiguration)
+        {
+            text = ((ICheckConfiguration) element).getName();
+        }
+
+        return text;
+    }
+
+    /**
+     * @see org.eclipse.jface.viewers.LabelProvider#getImage(java.lang.Object)
+     */
+    public Image getImage(Object element)
+    {
+        return getColumnImage(element, 0);
+    }
 
     /**
      * @see ITableLabelProvider#getColumnText(Object, int)

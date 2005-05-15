@@ -36,6 +36,14 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
 import com.atlassw.tools.eclipse.checkstyle.config.meta.ConfigPropertyType;
+import com.atlassw.tools.eclipse.checkstyle.preferences.widgets.ConfigPropertyWidgetBoolean;
+import com.atlassw.tools.eclipse.checkstyle.preferences.widgets.ConfigPropertyWidgetFile;
+import com.atlassw.tools.eclipse.checkstyle.preferences.widgets.ConfigPropertyWidgetHidden;
+import com.atlassw.tools.eclipse.checkstyle.preferences.widgets.ConfigPropertyWidgetInteger;
+import com.atlassw.tools.eclipse.checkstyle.preferences.widgets.ConfigPropertyWidgetMultiCheck;
+import com.atlassw.tools.eclipse.checkstyle.preferences.widgets.ConfigPropertyWidgetRegex;
+import com.atlassw.tools.eclipse.checkstyle.preferences.widgets.ConfigPropertyWidgetSingleSelect;
+import com.atlassw.tools.eclipse.checkstyle.preferences.widgets.ConfigPropertyWidgetString;
 
 /**
  * Create <code>ConfigPropertyWidget</code> instances based on provided
@@ -66,7 +74,16 @@ public final class ConfigPropertyWidgetFactory
     // Methods.
     //=================================================
 
-    static IConfigPropertyWidget createWidget(Composite parent, ConfigProperty prop, Shell shell)
+    /**
+     * Creates a property widget for the given property.
+     * 
+     * @param parent the parent component
+     * @param prop the property
+     * @param shell the parent shell
+     * @return the widget or <code>null</code> if the property type is unknown
+     */
+    public static IConfigPropertyWidget createWidget(Composite parent, ConfigProperty prop,
+            Shell shell)
     {
         IConfigPropertyWidget widget = null;
 
@@ -102,7 +119,11 @@ public final class ConfigPropertyWidgetFactory
         }
         else if (type.equals(ConfigPropertyType.FILE))
         {
-            widget = new ConfigPropertyWidgetFile(parent, prop, shell);
+            widget = new ConfigPropertyWidgetFile(parent, prop);
+        }
+        else if (type.equals(ConfigPropertyType.REGEX))
+        {
+            widget = new ConfigPropertyWidgetRegex(parent, prop);
         }
 
         return widget;

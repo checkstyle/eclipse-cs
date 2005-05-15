@@ -1,7 +1,7 @@
 ###################
 # Important note: #
 ###################
-After installation of this plugin eclipse must be restartet with the -clean option at least once.
+After installation of this plugin eclipse must be restarted with the -clean option at least once.
 That is: <path-to-my-eclipse-install>/eclipse.exe -clean
 
 The plugin version 4.0.0 does not support eclipse 2.x.x any more. 
@@ -17,6 +17,10 @@ Release beta2:
 * Keyboard support for configuration editor (remove modules using DEL or <-, add modules using SPACE or ->)
 * Added button to configure a checkstyle configuration from the properties page
 * Added FileInSyncFilter that excludes all files from the checks that are in sync with the CVS repository
+* Added control to the preferences page to see which projects use a specific check configuration
+* Reworked file set editor gui
+* Added content assist for regular expressions in file set editor and check configuration gui
+* Added button to configure a check configuration from the properties page (Usability shortcut)
 
 
 Bugs:

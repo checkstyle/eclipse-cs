@@ -50,6 +50,11 @@ class FileSetLabelProvider extends LabelProvider implements ITableLabelProvider
                 case 1:
                     result = fileSet.getName();
                     break;
+                    
+                case 2:
+                    result = fileSet.getCheckConfigName() != null ? fileSet.getCheckConfigName()
+                            : "";
+                    break;
 
                 default:
                     break;

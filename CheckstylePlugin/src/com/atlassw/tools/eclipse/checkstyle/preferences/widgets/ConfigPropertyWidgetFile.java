@@ -18,7 +18,7 @@
 //
 //============================================================================
 
-package com.atlassw.tools.eclipse.checkstyle.preferences;
+package com.atlassw.tools.eclipse.checkstyle.preferences.widgets;
 
 //=================================================
 // Imports from java namespace
@@ -40,7 +40,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import com.atlassw.tools.eclipse.checkstyle.Messages;
@@ -69,21 +68,24 @@ public class ConfigPropertyWidgetFile extends ConfigPropertyWidgetAbstractBase
 
     private Button mBtnBrowse;
 
-    private Shell mParentShell;
-
     //=================================================
     // Constructors & finalizer.
     //=================================================
+    
+    /**
+     * Creates the widget.
+     * 
+     * @param parent the parent composite
+     * @param prop the property
+     */
+    public ConfigPropertyWidgetFile(Composite parent, ConfigProperty prop)
+    {
+        super(parent, prop);
+    }
 
     //=================================================
     // Methods.
     //=================================================
-
-    ConfigPropertyWidgetFile(Composite parent, ConfigProperty prop, Shell shell)
-    {
-        super(parent, prop);
-        mParentShell = shell;
-    }
 
     /**
      * @see ConfigPropertyWidgetAbstractBase#getValueWidget(org.eclipse.swt.widgets.Composite)
@@ -114,7 +116,7 @@ public class ConfigPropertyWidgetFile extends ConfigPropertyWidgetAbstractBase
 
                 public void widgetSelected(SelectionEvent e)
                 {
-                    FileDialog fileDialog = new FileDialog(mParentShell);
+                    FileDialog fileDialog = new FileDialog(mTextWidget.getShell());
                     fileDialog.setFileName(mTextWidget.getText());
 
                     String file = fileDialog.open();
@@ -163,7 +165,7 @@ public class ConfigPropertyWidgetFile extends ConfigPropertyWidgetAbstractBase
     }
 
     /**
-     * @see IConfigPropertyWidget#restorePropertyDefault()
+     * @see ConfigPropertyWidgetAbstractBase#restorePropertyDefault()
      */
     public void restorePropertyDefault()
     {

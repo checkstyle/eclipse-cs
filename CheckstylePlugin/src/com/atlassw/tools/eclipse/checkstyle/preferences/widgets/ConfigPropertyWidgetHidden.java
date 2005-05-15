@@ -18,7 +18,7 @@
 //
 //============================================================================
 
-package com.atlassw.tools.eclipse.checkstyle.preferences;
+package com.atlassw.tools.eclipse.checkstyle.preferences.widgets;
 
 //=================================================
 // Imports from java namespace
@@ -59,15 +59,21 @@ public class ConfigPropertyWidgetHidden extends ConfigPropertyWidgetAbstractBase
     // Constructors & finalizer.
     //=================================================
 
+    /**
+     * Creates the widget.
+     * 
+     * @param parent the parent composite
+     * @param prop the property
+     */
+    public ConfigPropertyWidgetHidden(Composite parent, ConfigProperty prop)
+    {
+        super(parent, prop);
+    }
+
     //=================================================
     // Methods.
     //=================================================
 
-    ConfigPropertyWidgetHidden(Composite parent, ConfigProperty prop)
-    {
-        super(parent, prop);
-    }
-    
     /**
      * @see ConfigPropertyWidgetAbstractBase#getValueWidget(org.eclipse.swt.widgets.Composite)
      */
@@ -83,12 +89,12 @@ public class ConfigPropertyWidgetHidden extends ConfigPropertyWidgetAbstractBase
     {
         return mValue;
     }
-    
+
     /**
-     * @see IConfigPropertyWidget#restorePropertyDefault()
+     * @see ConfigPropertyWidgetAbstractBase#restorePropertyDefault()
      */
     public void restorePropertyDefault()
     {
-        //NOOP
+    //NOOP
     }
 }

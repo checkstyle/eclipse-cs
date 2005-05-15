@@ -18,7 +18,7 @@
 //
 //============================================================================
 
-package com.atlassw.tools.eclipse.checkstyle.properties;
+package com.atlassw.tools.eclipse.checkstyle.preferences.widgets;
 
 //=================================================
 // Imports from java namespace
@@ -31,15 +31,10 @@ package com.atlassw.tools.eclipse.checkstyle.properties;
 //=================================================
 // Imports from com namespace
 //=================================================
-
-//=================================================
-// Imports from org namespace
-//=================================================
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 import org.eclipse.jface.contentassist.SubjectControlContentAssistant;
-import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.text.DefaultInformationControl;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IInformationControl;
@@ -48,28 +43,21 @@ import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContentAssistant;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.contentassist.ContentAssistHandler;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
-import com.atlassw.tools.eclipse.checkstyle.Messages;
-import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileMatchPattern;
+import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.atlassw.tools.eclipse.checkstyle.util.regex.RegExContentAssistProcessor;
 
 /**
- * Dialog to edit file match patterns.
- * 
- * @author David Schneider
- * @author Lars Ködderitzsch
+ * A string property configuration widget.
  */
-public class FileMatchPatternEditDialog extends TitleAreaDialog
+public class ConfigPropertyWidgetRegex extends ConfigPropertyWidgetAbstractBase
 {
     // =================================================
     // Public static final variables.
@@ -83,28 +71,23 @@ public class FileMatchPatternEditDialog extends TitleAreaDialog
     // Instance member variables.
     // =================================================
 
-    private Button mIncludeButton;
-
-    private Text mFileMatchPatternText;
+    private Text mTextWidget;
 
     private ContentAssistHandler mContentAssistHandler;
-
-    private FileMatchPattern mPattern;
 
     // =================================================
     // Constructors & finalizer.
     // =================================================
 
     /**
-     * Creates a file matching pattern editor dialog.
+     * Creates the widget.
      * 
-     * @param parentShell the parent shell
-     * @param pattern the pattern
+     * @param parent the parent composite
+     * @param prop the property
      */
-    public FileMatchPatternEditDialog(Shell parentShell, FileMatchPattern pattern)
+    public ConfigPropertyWidgetRegex(Composite parent, ConfigProperty prop)
     {
-        super(parentShell);
-        mPattern = pattern;
+        super(parent, prop);
     }
 
     // =================================================
@@ -112,106 +95,72 @@ public class FileMatchPatternEditDialog extends TitleAreaDialog
     // =================================================
 
     /**
-     * Returns the pattern edited by this dialog.
-     * 
-     * @return the pattern
+     * @see ConfigPropertyWidgetAbstractBase#getValueWidget(org.eclipse.swt.widgets.Composite)
      */
-    public FileMatchPattern getPattern()
+    protected Control getValueWidget(Composite parent)
     {
-        return mPattern;
+
+        if (mTextWidget == null)
+        {
+
+            //
+            // Create a text entry field.
+            //
+            mTextWidget = new Text(parent, SWT.SINGLE | SWT.BORDER);
+            mTextWidget.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+            // integrate content assist
+            mContentAssistHandler = ContentAssistHandler.createHandlerForText(mTextWidget,
+                    createContentAssistant());
+
+            String initValue = getInitValue();
+            if (initValue != null)
+            {
+                mTextWidget.setText(initValue);
+            }
+        }
+
+        return mTextWidget;
     }
 
     /**
-     * @see TitleAreaDialog#createDialogArea(org.eclipse.swt.widgets.Composite)
+     * {@inheritDoc}
      */
-    protected Control createDialogArea(Composite parent)
+    public String getValue()
     {
-        Composite composite = (Composite) super.createDialogArea(parent);
-
-        Composite dialog = new Composite(composite, SWT.NONE);
-        dialog.setLayoutData(new GridData(GridData.FILL_BOTH));
-        dialog.setLayout(new GridLayout(1, false));
-
-        Label nameLabel = new Label(dialog, SWT.NULL);
-        nameLabel.setText(Messages.FileMatchPatternEditDialog_lblRegex);
-
-        mFileMatchPatternText = new Text(dialog, SWT.SINGLE | SWT.BORDER);
-        mFileMatchPatternText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-        mIncludeButton = new Button(dialog, SWT.CHECK);
-        mIncludeButton.setText(Messages.FileMatchPatternEditDialog_chkIncludesFiles);
-        mIncludeButton.setLayoutData(new GridData());
-
-        // integrate content assist
-        mContentAssistHandler = ContentAssistHandler.createHandlerForText(mFileMatchPatternText,
-                createContentAssistant());
-
-        // init the controls
-        if (mPattern != null)
+        String result = mTextWidget.getText();
+        if (result == null)
         {
-            mFileMatchPatternText.setText(mPattern.getMatchPattern());
-            mIncludeButton.setSelection(mPattern.isIncludePattern());
+            result = ""; //$NON-NLS-1$
         }
-        else
-        {
-            mIncludeButton.setSelection(true);
-        }
-
-        this.setTitleImage(CheckstylePlugin.getLogo());
-        this.setTitle(Messages.FileMatchPatternEditDialog_title);
-        this.setMessage(Messages.FileMatchPatternEditDialog_message);
-
-        return dialog;
+        return result;
     }
 
     /**
-     * @see org.eclipse.jface.dialogs.Dialog#okPressed()
+     * @see ConfigPropertyWidgetAbstractBase#restorePropertyDefault()
      */
-    protected void okPressed()
+    public void restorePropertyDefault()
     {
+        String defaultValue = getConfigProperty().getMetaData().getDefaultValue();
+        mTextWidget.setText(defaultValue != null ? defaultValue : ""); //$NON-NLS-1$
+    }
 
-        String pattern = mFileMatchPatternText.getText();
-
+    /**
+     * @see ConfigPropertyWidgetAbstractBase#validate()
+     */
+    public void validate() throws CheckstylePluginException
+    {
         try
         {
             //
-            // Try compiling the pattern using the regular expression compiler.
+            // Compile the text to a regex pattern
             //
-            Pattern.compile(pattern);
-
-            if (mPattern == null)
-            {
-                mPattern = new FileMatchPattern(pattern);
-            }
-            else
-            {
-                mPattern.setMatchPattern(pattern);
-            }
-            
-            mPattern.setIsIncludePattern(mIncludeButton.getSelection());
+            Pattern.compile(mTextWidget.getText());
         }
         catch (PatternSyntaxException e)
         {
-            this.setErrorMessage(e.getLocalizedMessage());
-            return;
+            CheckstylePluginException.rethrow(e, e.getLocalizedMessage());
         }
-        catch (CheckstylePluginException e)
-        {
-            this.setErrorMessage(e.getLocalizedMessage());
-            return;
-        }
-
-        super.okPressed();
-    }
-
-    /**
-     * Over-rides method from Window to configure the shell (e.g. the enclosing
-     * window).
-     */
-    protected void configureShell(Shell shell)
-    {
-        super.configureShell(shell);
-        shell.setText(Messages.FileMatchPatternEditDialog_titleRegexEditor);
     }
 
     /**
@@ -234,7 +183,7 @@ public class FileMatchPatternEditDialog extends TitleAreaDialog
         contentAssistant.setInformationControlCreator(new IInformationControlCreator()
         {
             /*
-             * @see org.eclipse.jface.text.IInformationControlCreator#createInformationControl(org.eclipse.swt.widgets.Shell)
+             * @see IInformationControlCreator#createInformationControl(Shell)
              */
             public IInformationControl createInformationControl(Shell parent)
             {
@@ -244,4 +193,5 @@ public class FileMatchPatternEditDialog extends TitleAreaDialog
 
         return contentAssistant;
     }
+
 }

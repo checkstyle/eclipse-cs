@@ -161,5 +161,4 @@ public class ConfigPropertyMetadata
         return ConfigPropertyType.HIDDEN.equals(mDatatype);
     }
 
-
 }

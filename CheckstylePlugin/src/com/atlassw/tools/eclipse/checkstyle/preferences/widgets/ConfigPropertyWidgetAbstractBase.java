@@ -18,7 +18,7 @@
 //
 //============================================================================
 
-package com.atlassw.tools.eclipse.checkstyle.preferences;
+package com.atlassw.tools.eclipse.checkstyle.preferences.widgets;
 
 //=================================================
 // Imports from java namespace
@@ -32,8 +32,6 @@ package com.atlassw.tools.eclipse.checkstyle.preferences;
 // Imports from com namespace
 //=================================================
 
-import java.util.List;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -41,7 +39,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 
 import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
-import com.atlassw.tools.eclipse.checkstyle.config.meta.ConfigPropertyType;
+import com.atlassw.tools.eclipse.checkstyle.preferences.IConfigPropertyWidget;
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
 //=================================================
 // Imports from org namespace
@@ -96,14 +95,6 @@ public abstract class ConfigPropertyWidgetAbstractBase implements IConfigPropert
     //=================================================
     // Methods.
     //=================================================
-
-    /**
-     * @return The type of the configuration property.
-     */
-    public ConfigPropertyType getConfigPropertyType()
-    {
-        return mProp.getMetaData().getDatatype();
-    }
 
     /**
      * @see IConfigPropertyWidget#setEnabled(boolean)
@@ -161,10 +152,10 @@ public abstract class ConfigPropertyWidgetAbstractBase implements IConfigPropert
     }
 
     /**
-     * @return Configuration property metadata.
+     * @see com.atlassw.tools.eclipse.checkstyle.preferences.IConfigPropertyWidget#validate()
      */
-    public List getMetadata()
+    public void validate() throws CheckstylePluginException
     {
-        return mProp.getMetaData().getPropertyEnumeration();
+    // Nothing to to for most properties
     }
 }

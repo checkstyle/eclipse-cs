@@ -18,7 +18,7 @@
 //
 //============================================================================
 
-package com.atlassw.tools.eclipse.checkstyle.preferences;
+package com.atlassw.tools.eclipse.checkstyle.preferences.widgets;
 
 //=================================================
 // Imports from java namespace
@@ -62,14 +62,20 @@ public class ConfigPropertyWidgetString extends ConfigPropertyWidgetAbstractBase
     // Constructors & finalizer.
     //=================================================
 
-    //=================================================
-    // Methods.
-    //=================================================
-
-    ConfigPropertyWidgetString(Composite parent, ConfigProperty prop)
+    /**
+     * Creates the widget.
+     * 
+     * @param parent the parent composite
+     * @param prop the property
+     */
+    public ConfigPropertyWidgetString(Composite parent, ConfigProperty prop)
     {
         super(parent, prop);
     }
+
+    //=================================================
+    // Methods.
+    //=================================================
 
     /**
      * @see ConfigPropertyWidgetAbstractBase#getValueWidget(org.eclipse.swt.widgets.Composite)
@@ -108,9 +114,9 @@ public class ConfigPropertyWidgetString extends ConfigPropertyWidgetAbstractBase
         }
         return result;
     }
-    
+
     /**
-     * @see IConfigPropertyWidget#restorePropertyDefault()
+     * @see ConfigPropertyWidgetAbstractBase#restorePropertyDefault()
      */
     public void restorePropertyDefault()
     {

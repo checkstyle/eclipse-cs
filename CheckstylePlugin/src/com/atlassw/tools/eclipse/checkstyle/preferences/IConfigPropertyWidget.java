@@ -31,10 +31,8 @@ package com.atlassw.tools.eclipse.checkstyle.preferences;
 //=================================================
 // Imports from com namespace
 //=================================================
-import java.util.List;
-
 import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
-import com.atlassw.tools.eclipse.checkstyle.config.meta.ConfigPropertyType;
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
 //=================================================
 // Imports from org namespace
@@ -43,7 +41,7 @@ import com.atlassw.tools.eclipse.checkstyle.config.meta.ConfigPropertyType;
 /**
  * Interface all configuration property input widget classes.
  */
-interface IConfigPropertyWidget
+public interface IConfigPropertyWidget
 {
     //=================================================
     // Public static final variables.
@@ -53,15 +51,38 @@ interface IConfigPropertyWidget
     // Methods.
     //=================================================
 
-    ConfigPropertyType getConfigPropertyType();
-
+    /**
+     * Returns the stringified value of the widget.
+     * 
+     * @return the value as string
+     */
     String getValue();
 
+    /**
+     * Returns the property the widget operates on.
+     * 
+     * @return the property
+     */
     ConfigProperty getConfigProperty();
 
-    List getMetadata();
-
+    /**
+     * Enables/disables the widget.
+     * 
+     * @param enabled <code>true</code> if the widget should be enabled,
+     *            <code>false</code> otherwise
+     */
     void setEnabled(boolean enabled);
 
+    /**
+     * Restore the default value of the property for this widget.
+     */
     void restorePropertyDefault();
+
+    /**
+     * Validates the widgets data. A CheckstylePluginException with an
+     * appropriate message is thrown if the data is invalid.
+     * 
+     * @throws CheckstylePluginException thrown if the data is invalid
+     */
+    void validate() throws CheckstylePluginException;
 }

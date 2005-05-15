@@ -18,7 +18,7 @@
 //
 //============================================================================
 
-package com.atlassw.tools.eclipse.checkstyle.preferences;
+package com.atlassw.tools.eclipse.checkstyle.preferences.widgets;
 
 //=================================================
 // Imports from java namespace
@@ -41,6 +41,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 
 import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
 /**
  * A string property configuration widget.
@@ -65,14 +66,20 @@ public class ConfigPropertyWidgetInteger extends ConfigPropertyWidgetAbstractBas
     // Constructors & finalizer.
     // =================================================
 
-    // =================================================
-    // Methods.
-    // =================================================
-
-    ConfigPropertyWidgetInteger(Composite parent, ConfigProperty prop)
+    /**
+     * Creates the widget.
+     * 
+     * @param parent the parent composite
+     * @param prop the property
+     */
+    public ConfigPropertyWidgetInteger(Composite parent, ConfigProperty prop)
     {
         super(parent, prop);
     }
+
+    // =================================================
+    // Methods.
+    // =================================================
 
     /**
      * @see ConfigPropertyWidgetAbstractBase#getValueWidget(org.eclipse.swt.widgets.Composite)
@@ -149,11 +156,29 @@ public class ConfigPropertyWidgetInteger extends ConfigPropertyWidgetAbstractBas
     }
 
     /**
-     * @see IConfigPropertyWidget#restorePropertyDefault()
+     * @see ConfigPropertyWidgetAbstractBase#restorePropertyDefault()
      */
     public void restorePropertyDefault()
     {
         String defaultValue = getConfigProperty().getMetaData().getDefaultValue();
         mTextWidget.setText(defaultValue != null ? defaultValue : new String());
+    }
+
+    /**
+     * @see ConfigPropertyWidgetAbstractBase#validate()
+     */
+    public void validate() throws CheckstylePluginException
+    {
+        try
+        {
+            //
+            // Parse the value to see if an exception gets thrown.
+            //
+            Integer.parseInt(mTextWidget.getText());
+        }
+        catch (NumberFormatException e)
+        {
+            CheckstylePluginException.rethrow(e, e.getLocalizedMessage());
+        }
     }
 }

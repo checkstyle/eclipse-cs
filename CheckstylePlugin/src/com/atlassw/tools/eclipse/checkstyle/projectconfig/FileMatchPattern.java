@@ -20,10 +20,9 @@
 
 package com.atlassw.tools.eclipse.checkstyle.projectconfig;
 
-import org.apache.regexp.RE;
-import org.apache.regexp.RECompiler;
-import org.apache.regexp.REProgram;
-import org.apache.regexp.RESyntaxException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
@@ -42,19 +41,13 @@ public class FileMatchPattern implements Cloneable
     // Static class variables.
     //=================================================
 
-    private static RECompiler sRECompiler = new RECompiler();
-
     //=================================================
     // Instance member variables.
     //=================================================
 
-    private String mMatchPattern;
-
     private boolean mIsIncludePattern = true;
 
-    private REProgram mProgram;
-
-    private RE mProcessor;
+    private Pattern mRegexPattern;
 
     //=================================================
     // Constructors & finalizer.
@@ -83,7 +76,7 @@ public class FileMatchPattern implements Cloneable
      */
     public String getMatchPattern()
     {
-        return mMatchPattern;
+        return mRegexPattern.pattern();
     }
 
     /**
@@ -99,19 +92,14 @@ public class FileMatchPattern implements Cloneable
         {
             throw new CheckstylePluginException(ErrorMessages.errorEmptyPattern);
         }
-
-        REProgram program = null;
         try
         {
-            program = sRECompiler.compile(pattern);
+            mRegexPattern = Pattern.compile(pattern);
         }
-        catch (RESyntaxException e)
+        catch (PatternSyntaxException e)
         {
             CheckstylePluginException.rethrow(e); //wrap the exception
         }
-        mProcessor = new RE(program);
-        mProgram = program;
-        mMatchPattern = pattern;
     }
 
     /**
@@ -125,7 +113,8 @@ public class FileMatchPattern implements Cloneable
     {
         boolean result = false;
 
-        result = mProcessor.match(fileName);
+        Matcher matcher = mRegexPattern.matcher(fileName);
+        result = matcher.find();
 
         return result;
     }
@@ -154,12 +143,17 @@ public class FileMatchPattern implements Cloneable
      * Clone the object.
      * 
      * @return The clone
-     * 
-     * @throws CloneNotSupportedException The object can not be cloned.
      */
-    public Object clone() throws CloneNotSupportedException
+    public Object clone()
     {
-        return super.clone();
+        try
+        {
+            return super.clone();
+        }
+        catch (CloneNotSupportedException e)
+        {
+            throw new InternalError(); // should never happen
+        }
     }
 
     /**
@@ -176,7 +170,7 @@ public class FileMatchPattern implements Cloneable
             return true;
         }
         FileMatchPattern otherPattern = (FileMatchPattern) obj;
-        if (!mMatchPattern.equals(otherPattern.mMatchPattern)
+        if (!mRegexPattern.pattern().equals(otherPattern.mRegexPattern.pattern())
                 || mIsIncludePattern != otherPattern.mIsIncludePattern)
         {
             return false;
@@ -195,7 +189,8 @@ public class FileMatchPattern implements Cloneable
 
         int result = 1;
         result = (result * prime) + Boolean.valueOf(mIsIncludePattern).hashCode();
-        result = (result * prime) + (mMatchPattern != null ? mMatchPattern.hashCode() : 0);
+        result = (result * prime)
+                + (mRegexPattern != null ? mRegexPattern.pattern().hashCode() : 0);
 
         return result;
     }

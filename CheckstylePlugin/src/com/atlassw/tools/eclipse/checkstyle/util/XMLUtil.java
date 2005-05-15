@@ -328,8 +328,8 @@ public final class XMLUtil
 
         //A transformer without stylesheet does identity transformation
         Transformer transformer = sTransformerFactory.newTransformer();
-        transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-        transformer.setOutputProperty(OutputKeys.INDENT, indent ? "yes" : "no");
+        transformer.setOutputProperty(OutputKeys.METHOD, "xml"); //$NON-NLS-1$
+        transformer.setOutputProperty(OutputKeys.INDENT, indent ? "yes" : "no"); //$NON-NLS-1$ //$NON-NLS-2$
 
         transformer.transform(theSource, theResult);
 
@@ -387,9 +387,9 @@ public final class XMLUtil
 
         //uses identity transformation (in==out)
         Transformer transformer = saxFactory.newTransformer();
-        transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-        transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+        transformer.setOutputProperty(OutputKeys.METHOD, "xml"); //$NON-NLS-1$
+        transformer.setOutputProperty(OutputKeys.INDENT, "yes"); //$NON-NLS-1$
+        transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8"); //$NON-NLS-1$
         StreamResult result = new StreamResult(out);
 
         TransformerHandler handler = saxFactory.newTransformerHandler();

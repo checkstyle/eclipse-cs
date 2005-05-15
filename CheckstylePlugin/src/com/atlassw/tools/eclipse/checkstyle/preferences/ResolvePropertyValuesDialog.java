@@ -25,20 +25,14 @@ package com.atlassw.tools.eclipse.checkstyle.preferences;
 //=================================================
 import java.util.List;
 
-//=================================================
-// Imports from javax namespace
-//=================================================
-
-//=================================================
-// Imports from com namespace
-//=================================================
-import com.atlassw.tools.eclipse.checkstyle.Messages;
-import com.atlassw.tools.eclipse.checkstyle.config.ResolvableProperty;
-import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
-
-//=================================================
-// Imports from org namespace
-//=================================================
+import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ColumnWeightData;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.TableLayout;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -49,17 +43,12 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
-import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.ColumnWeightData;
-import org.eclipse.jface.viewers.DoubleClickEvent;
-import org.eclipse.jface.viewers.IDoubleClickListener;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.TableLayout;
-import org.eclipse.jface.viewers.TableViewer;
+import com.atlassw.tools.eclipse.checkstyle.Messages;
+import com.atlassw.tools.eclipse.checkstyle.config.ResolvableProperty;
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
 /**
- *  Resolve property values that were specified as variables in a config file.
+ * Resolve property values that were specified as variables in a config file.
  */
 public class ResolvePropertyValuesDialog extends Dialog
 {
@@ -88,11 +77,11 @@ public class ResolvePropertyValuesDialog extends Dialog
     /**
      * Constructor.
      * 
-     * @param parent  Parent shell.
+     * @param parent Parent shell.
      * 
-     * @param props   Properties being edited.
+     * @param props Properties being edited.
      * 
-     * @throws CheckstyleException  Error during processing.
+     * @throws CheckstylePluginException Error during processing.
      */
     ResolvePropertyValuesDialog(Shell parent, List props) throws CheckstylePluginException
     {
@@ -111,7 +100,7 @@ public class ResolvePropertyValuesDialog extends Dialog
     {
         mParentComposite = parent;
 
-        Composite composite = (Composite)super.createDialogArea(parent);
+        Composite composite = (Composite) super.createDialogArea(parent);
         Composite dialog = new Composite(composite, SWT.NONE);
 
         GridLayout layout = new GridLayout();
@@ -170,8 +159,8 @@ public class ResolvePropertyValuesDialog extends Dialog
 
     private void editValue()
     {
-        IStructuredSelection selection = (IStructuredSelection)mViewer.getSelection();
-        ResolvableProperty prop = (ResolvableProperty)selection.getFirstElement();
+        IStructuredSelection selection = (IStructuredSelection) mViewer.getSelection();
+        ResolvableProperty prop = (ResolvableProperty) selection.getFirstElement();
         if (prop == null)
         {
             //
@@ -180,8 +169,8 @@ public class ResolvePropertyValuesDialog extends Dialog
             return;
         }
 
-        ResolvablePropertyEditDialog dialog =
-            new ResolvablePropertyEditDialog(mParentComposite.getShell(), prop);
+        ResolvablePropertyEditDialog dialog = new ResolvablePropertyEditDialog(mParentComposite
+                .getShell(), prop);
         dialog.open();
 
         if (dialog.okWasPressed())
@@ -196,12 +185,11 @@ public class ResolvePropertyValuesDialog extends Dialog
         }
     }
 
-
     /**
-     *  Over-rides method from Window to configure the 
-     *  shell (e.g. the enclosing window).
+     * Over-rides method from Window to configure the shell (e.g. the enclosing
+     * window).
      * 
-     *  @param shell  The shell to configure.
+     * @param shell The shell to configure.
      */
     protected void configureShell(Shell shell)
     {

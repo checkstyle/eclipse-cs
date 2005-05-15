@@ -74,6 +74,9 @@ public final class ConfigPropertyType
     /** A value that contains a file name. */
     public static final ConfigPropertyType FILE = new ConfigPropertyType(80, "File"); //$NON-NLS-1$
 
+    /** A value that contains a regular expression. */
+    public static final ConfigPropertyType REGEX = new ConfigPropertyType(90, "Regex"); //$NON-NLS-1$
+
     // =================================================
     // Static class variables.
     // =================================================
@@ -192,6 +195,10 @@ public final class ConfigPropertyType
         else if (label.equalsIgnoreCase(FILE.mLabel))
         {
             result = FILE;
+        }
+        else if (label.equalsIgnoreCase(REGEX.mLabel))
+        {
+            result = REGEX;
         }
         else
         {

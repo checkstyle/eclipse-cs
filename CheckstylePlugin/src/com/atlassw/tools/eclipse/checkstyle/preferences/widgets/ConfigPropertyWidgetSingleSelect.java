@@ -18,31 +18,24 @@
 //
 //============================================================================
 
-package com.atlassw.tools.eclipse.checkstyle.preferences;
+package com.atlassw.tools.eclipse.checkstyle.preferences.widgets;
 
-//=================================================
-// Imports from java namespace
-//=================================================
+import java.util.Iterator;
+import java.util.List;
 
-//=================================================
-// Imports from javax namespace
-//=================================================
-
-//=================================================
-// Imports from com namespace
-//=================================================
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
 
 /**
- * Boolean configuration widget.
+ * Configuration widget that allows for selecting one value from a set of
+ * values.
  */
-public class ConfigPropertyWidgetBoolean extends ConfigPropertyWidgetAbstractBase
+public class ConfigPropertyWidgetSingleSelect extends ConfigPropertyWidgetAbstractBase
 {
     //=================================================
     // Public static final variables.
@@ -56,13 +49,19 @@ public class ConfigPropertyWidgetBoolean extends ConfigPropertyWidgetAbstractBas
     // Instance member variables.
     //=================================================
 
-    private Button mCheckbox;
+    private Combo mComboItem;
 
     //=================================================
     // Constructors & finalizer.
     //=================================================
 
-    protected ConfigPropertyWidgetBoolean(Composite parent, ConfigProperty prop)
+    /**
+     * Creates the widget.
+     * 
+     * @param parent the parent composite
+     * @param prop the property
+     */
+    public ConfigPropertyWidgetSingleSelect(Composite parent, ConfigProperty prop)
     {
         super(parent, prop);
     }
@@ -76,21 +75,34 @@ public class ConfigPropertyWidgetBoolean extends ConfigPropertyWidgetAbstractBas
      */
     protected Control getValueWidget(Composite parent)
     {
-        if (mCheckbox == null)
+
+        if (mComboItem == null)
         {
 
             //
-            //  Create a check box for selecting true or false.
+            //  Create a combo box for selecting a value from the enumeration.
             //
-
-            mCheckbox = new Button(parent, SWT.CHECK);
-            mCheckbox.setLayoutData(new GridData());
-
+            List valueList = getConfigProperty().getMetaData().getPropertyEnumeration();
+            String[] valueLabels = new String[valueList.size()];
+            int initialIndex = 0;
             String initValue = getInitValue();
-            mCheckbox.setSelection(Boolean.valueOf(initValue).booleanValue());
-
+            Iterator iter = valueList.iterator();
+            for (int i = 0; iter.hasNext(); i++)
+            {
+                String value = (String) iter.next();
+                valueLabels[i] = value;
+                if ((initValue != null) && (initValue.equals(value)))
+                {
+                    initialIndex = i;
+                }
+            }
+            mComboItem = new Combo(parent, SWT.NONE | SWT.DROP_DOWN | SWT.READ_ONLY);
+            mComboItem.setLayoutData(new GridData());
+            mComboItem.setItems(valueLabels);
+            mComboItem.select(initialIndex);
         }
-        return mCheckbox;
+
+        return mComboItem;
     }
 
     /**
@@ -98,15 +110,23 @@ public class ConfigPropertyWidgetBoolean extends ConfigPropertyWidgetAbstractBas
      */
     public String getValue()
     {
-        return "" + mCheckbox.getSelection(); //$NON-NLS-1$
+        String result = mComboItem.getItem(mComboItem.getSelectionIndex());
+        return result;
     }
 
     /**
-     * @see IConfigPropertyWidget#restorePropertyDefault()
+     * @see ConfigPropertyWidgetAbstractBase#restorePropertyDefault()
      */
     public void restorePropertyDefault()
     {
         String defaultValue = getConfigProperty().getMetaData().getDefaultValue();
-        mCheckbox.setSelection(Boolean.valueOf(defaultValue).booleanValue());
+        if (defaultValue == null)
+        {
+            mComboItem.select(0);
+        }
+        else
+        {
+            mComboItem.select(mComboItem.indexOf(defaultValue));
+        }
     }
 }

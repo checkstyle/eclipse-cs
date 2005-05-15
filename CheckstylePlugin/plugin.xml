@@ -267,7 +267,7 @@
             class="com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.UnOpenedFilesFilter">
       </filter>      
       <filter
-            editorClass="com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.PackageFilterEditor2"
+            editorClass="com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.PackageFilterEditor"
             internal-name="FilesFromPackage"
             name="%PackageFilter.label"
             description="%PackageFilter.description"

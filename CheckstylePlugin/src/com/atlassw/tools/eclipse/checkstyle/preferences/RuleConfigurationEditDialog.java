@@ -53,8 +53,6 @@ import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
 import com.atlassw.tools.eclipse.checkstyle.config.Module;
-import com.atlassw.tools.eclipse.checkstyle.config.meta.ConfigPropertyMetadata;
-import com.atlassw.tools.eclipse.checkstyle.config.meta.ConfigPropertyType;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
@@ -231,7 +229,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
         Button defautlt = createButton(parent, IDialogConstants.BACK_ID,
                 Messages.RuleConfigurationEditDialog_btnDefaul, false);
         defautlt.setEnabled(!mReadonly);
-        
+
         // create OK and Cancel buttons by default
         createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true);
         createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
@@ -337,7 +335,6 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
         // Note: if the rule does not have any configuration properties then
         // skip over the populating of the config property hash map.
         //
-        boolean hasError = false;
         if (mConfigPropertyWidgets != null)
         {
             for (int i = 0; i < mConfigPropertyWidgets.length; i++)
@@ -345,19 +342,19 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
                 IConfigPropertyWidget widget = mConfigPropertyWidgets[i];
                 ConfigProperty property = widget.getConfigProperty();
 
-                boolean isValid = validatePropertyValue(widget.getValue(), property.getMetaData());
-                if (!isValid)
+                try
+                {
+                    widget.validate();
+                }
+                catch (CheckstylePluginException e)
                 {
                     String message = NLS.bind(
                             Messages.RuleConfigurationEditDialog_msgInvalidPropertyValue, property
                                     .getMetaData().getName());
-                    MessageDialog.openError(mParentComposite.getShell(), message, message);
-                    hasError = true;
+                    this.setErrorMessage(message);
+                    return;
                 }
-                else
-                {
-                    property.setValue(widget.getValue());
-                }
+                property.setValue(widget.getValue());
             }
         }
 
@@ -369,10 +366,8 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
         mRule.setSeverity(severity);
         mRule.setComment(comment);
 
-        if (!hasError)
-        {
-            super.okPressed();
-        }
+        super.okPressed();
+
     }
 
     private void createConfigPropertyEntries(Composite parent)
@@ -396,66 +391,6 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
                     getShell());
             mConfigPropertyWidgets[i].setEnabled(!mReadonly);
         }
-    }
-
-    private boolean validatePropertyValue(String value, ConfigPropertyMetadata metadata)
-    {
-        boolean result = true;
-        if (value == null)
-        {
-            return false;
-        }
-
-        //
-        // What datatype is this property?
-        //
-        ConfigPropertyType type = metadata.getDatatype();
-        if (type.equals(ConfigPropertyType.STRING))
-        {
-            //
-            // Anything, including nothing, is valid.
-            //
-            result = true;
-        }
-        else if (type.equals(ConfigPropertyType.INTEGER))
-        {
-            try
-            {
-                //
-                // Parse the value to see if an exception gets thrown.
-                //
-                Integer.parseInt(value);
-            }
-            catch (NumberFormatException e)
-            {
-                //
-                // If an exception was thrown then consider the value to be
-                // invalid.
-                //
-                result = false;
-            }
-        }
-//        else if (type.equals(ConfigPropertyType.FILE))
-//        {
-//            if (value == null || value.trim().length() == 0)
-//            {
-//                result = true;
-//            }
-//            else
-//            {
-//                result = new File(value).exists();
-//            }
-//        }
-        else if ((type.equals(ConfigPropertyType.SINGLE_SELECT))
-                || type.equals(ConfigPropertyType.MULTI_CHECK)
-                || type.equals(ConfigPropertyType.BOOLEAN)
-                || type.equals(ConfigPropertyType.HIDDEN))
-        {
-            // Assume valid since the user can't enter a value.
-            result = true;
-        }
-
-        return result;
     }
 
     /**

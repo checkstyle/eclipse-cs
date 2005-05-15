@@ -31,12 +31,6 @@ package com.atlassw.tools.eclipse.checkstyle.preferences;
 //=================================================
 // Imports from com namespace
 //=================================================
-import com.atlassw.tools.eclipse.checkstyle.Messages;
-import com.atlassw.tools.eclipse.checkstyle.config.ResolvableProperty;
-
-//=================================================
-// Imports from org namespace
-//=================================================
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -47,8 +41,11 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+import com.atlassw.tools.eclipse.checkstyle.Messages;
+import com.atlassw.tools.eclipse.checkstyle.config.ResolvableProperty;
+
 /**
- *  Property page.
+ * Property page.
  */
 public class ResolvablePropertyEditDialog extends Dialog
 {
@@ -83,9 +80,9 @@ public class ResolvablePropertyEditDialog extends Dialog
     /**
      * Constructor for SamplePropertyPage.
      * 
-     * @param parent  Parent shell for the dialog window.
+     * @param parent Parent shell for the dialog window.
      * 
-     * @param prop  Property to be edited.
+     * @param prop Property to be edited.
      */
     ResolvablePropertyEditDialog(Shell parent, ResolvableProperty prop)
     {
@@ -103,7 +100,7 @@ public class ResolvablePropertyEditDialog extends Dialog
     protected Control createDialogArea(Composite parent)
     {
         mComposite = parent;
-        Composite composite = (Composite)super.createDialogArea(parent);
+        Composite composite = (Composite) super.createDialogArea(parent);
         Composite dialog = new Composite(composite, SWT.NONE);
 
         GridLayout layout = new GridLayout();
@@ -148,7 +145,7 @@ public class ResolvablePropertyEditDialog extends Dialog
         mOkWasPressed = true;
         super.okPressed();
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -156,9 +153,9 @@ public class ResolvablePropertyEditDialog extends Dialog
     {
         return mOkWasPressed;
     }
-    
+
     /**
-     * @return  The property's value.
+     * @return The property's value.
      */
     public String getValue()
     {
@@ -166,8 +163,8 @@ public class ResolvablePropertyEditDialog extends Dialog
     }
 
     /**
-     *  Over-rides method from Window to configure the 
-     *  shell (e.g. the enclosing window).
+     * Over-rides method from Window to configure the shell (e.g. the enclosing
+     * window).
      */
     protected void configureShell(Shell shell)
     {

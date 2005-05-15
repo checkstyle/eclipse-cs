@@ -45,31 +45,31 @@ public class XMLTags
     // Public static final variables.
     //=================================================
 
-    static final String CHECK_CONFIG_NAME_TAG  = "check-config-name"; //$NON-NLS-1$
+    static final String CHECK_CONFIG_NAME_TAG = "check-config-name"; //$NON-NLS-1$
 
-    static final String ENABLED_TAG            = "enabled"; //$NON-NLS-1$
+    static final String ENABLED_TAG = "enabled"; //$NON-NLS-1$
 
     static final String FILE_MATCH_PATTERN_TAG = "file-match-pattern"; //$NON-NLS-1$
 
-    static final String FILESET_TAG            = "fileset"; //$NON-NLS-1$
+    static final String FILESET_TAG = "fileset"; //$NON-NLS-1$
 
-    static final String FILESET_CONFIG_TAG     = "fileset-config"; //$NON-NLS-1$
+    static final String FILESET_CONFIG_TAG = "fileset-config"; //$NON-NLS-1$
 
-    static final String FORMAT_VERSION_TAG     = "file-format-version"; //$NON-NLS-1$
+    static final String FORMAT_VERSION_TAG = "file-format-version"; //$NON-NLS-1$
 
-    static final String INCLUDE_PATTERN_TAG    = "include-pattern"; //$NON-NLS-1$
+    static final String INCLUDE_PATTERN_TAG = "include-pattern"; //$NON-NLS-1$
 
-    static final String MATCH_PATTERN_TAG      = "match-pattern"; //$NON-NLS-1$
+    static final String MATCH_PATTERN_TAG = "match-pattern"; //$NON-NLS-1$
 
-    static final String NAME_TAG               = "name"; //$NON-NLS-1$
+    static final String NAME_TAG = "name"; //$NON-NLS-1$
 
-    static final String FILTER_TAG             = "filter"; //$NON-NLS-1$
+    static final String FILTER_TAG = "filter"; //$NON-NLS-1$
 
-    static final String FILTER_DATA_TAG        = "filter-data"; //$NON-NLS-1$
+    static final String FILTER_DATA_TAG = "filter-data"; //$NON-NLS-1$
 
-    static final String VALUE_TAG              = "value"; //$NON-NLS-1$
+    static final String VALUE_TAG = "value"; //$NON-NLS-1$
 
-    static final String SIMPLE_CONFIG_TAG      = "simple-config"; //$NON-NLS-1$
+    static final String SIMPLE_CONFIG_TAG = "simple-config"; //$NON-NLS-1$
 
     //=================================================
     // Static class variables.

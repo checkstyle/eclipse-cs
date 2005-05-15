@@ -157,8 +157,12 @@ public class ComplexFileSetsEditor implements IFileSetsEditor
         TableColumn column2 = new TableColumn(table, SWT.NONE);
         column2.setText(Messages.ComplexFileSetsEditor_colFilesetName);
 
-        tableLayout.addColumnData(new ColumnWeightData(12));
-        tableLayout.addColumnData(new ColumnWeightData(48));
+        TableColumn column3 = new TableColumn(table, SWT.NONE);
+        column3.setText("Check configuration");
+
+        tableLayout.addColumnData(new ColumnWeightData(20));
+        tableLayout.addColumnData(new ColumnWeightData(40));
+        tableLayout.addColumnData(new ColumnWeightData(40));
 
         mViewer = new CheckboxTableViewer(table);
         mViewer.setLabelProvider(new FileSetLabelProvider());
@@ -255,8 +259,7 @@ public class ComplexFileSetsEditor implements IFileSetsEditor
         try
         {
             FileSetEditDialog dialog = new FileSetEditDialog(mComposite.getShell(), null, mProject);
-            dialog.open();
-            if (dialog.okWasPressed())
+            if (FileSetEditDialog.OK == dialog.open())
             {
                 FileSet fileSet = dialog.getFileSet();
                 mFileSets.add(fileSet);
@@ -287,10 +290,13 @@ public class ComplexFileSetsEditor implements IFileSetsEditor
 
         try
         {
-            FileSetEditDialog dialog = new FileSetEditDialog(mComposite.getShell(), fileSet,
+            
+            
+            
+            
+            FileSetEditDialog dialog = new FileSetEditDialog(mComposite.getShell(), (FileSet) fileSet.clone(),
                     mProject);
-            dialog.open();
-            if (dialog.okWasPressed())
+            if (FileSetEditDialog.OK == dialog.open())
             {
                 FileSet newFileSet = dialog.getFileSet();
                 mFileSets.remove(fileSet);

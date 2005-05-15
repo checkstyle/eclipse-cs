@@ -94,7 +94,7 @@ public final class CheckstyleLog
     public static void log(Throwable t, String message)
     {
         Status status = new Status(Status.ERROR, CheckstylePlugin.PLUGIN_ID, Status.OK, NLS.bind(
-                "Checkstyle-Plugin: {0}", message), t);
+                ErrorMessages.CheckstyleLog_msgStatusPrefix, message), t);
         sLog.log(status);
     }
 
@@ -113,7 +113,7 @@ public final class CheckstyleLog
                 .getLocalizedMessage(), t);
 
         String msg = NLS.bind(ErrorMessages.errorDialogMainMessage, message);
-        ErrorDialog.openError(shell, "Internal Checkstyle-Plugin error", msg, status);
+        ErrorDialog.openError(shell, ErrorMessages.CheckstyleLog_titleInternalError, msg, status);
 
         if (log)
         {
@@ -145,6 +145,6 @@ public final class CheckstyleLog
         Status status = new Status(Status.WARNING, CheckstylePlugin.PLUGIN_ID, Status.OK, t
                 .getLocalizedMessage(), t);
 
-        ErrorDialog.openError(shell, "Checkstyle-Plugin warning", message, status);
+        ErrorDialog.openError(shell, ErrorMessages.CheckstyleLog_titleWarning, message, status);
     }
 }
