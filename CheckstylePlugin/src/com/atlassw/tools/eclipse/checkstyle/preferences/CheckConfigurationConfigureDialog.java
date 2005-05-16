@@ -513,6 +513,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
                 {
                     module.setSeverity(SeverityLevel.IGNORE);
                 }
+                mIsDirty = true;
                 mTableViewer.refresh(module, true);
             }
             refreshTableViewerState();
