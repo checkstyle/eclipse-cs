@@ -24,6 +24,7 @@ package com.atlassw.tools.eclipse.checkstyle.preferences;
 // Imports from java namespace
 //=================================================
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -773,14 +774,9 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
             if (config.isContextNeeded())
             {
 
-                IProject context = getProjectContext();
-                if (context != null)
+                if (!setProjectContext(config))
                 {
-                    config.setContext(context);
-                }
-                else
-                {
-                    // cant go further without context
+                    //cant go further without proper context
                     return;
                 }
             }
@@ -803,6 +799,10 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
                         ErrorMessages.errorCannotResolveCheckLocation, config.getLocation(), config
                                 .getName()), e);
             }
+            finally
+            {
+                config.setContext(null);
+            }
         }
     }
 
@@ -811,7 +811,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
      * 
      * @return the project or <code>null</code>
      */
-    private IProject getProjectContext()
+    private boolean setProjectContext(ICheckConfiguration config)
     {
 
         IProject context = null;
@@ -853,9 +853,25 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         {
             Object[] result = dialog.getResult();
             context = (IProject) result[0];
+            config.setContext(context);
         }
 
-        return context;
+        boolean contextOK = true;
+
+        try
+        {
+            config.getCheckstyleConfigurationURL();
+        }
+        catch (CheckstylePluginException e)
+        {
+            config.setContext(null);
+            contextOK = false;
+            CheckstyleLog.warningDialog(getShell(), Messages.bind(
+                    Messages.CheckstylePreferencePage_msgProjectRelativeConfigNoFound, context
+                            .getName(), config.getLocation()), e);
+        }
+
+        return contextOK;
     }
 
     /**
@@ -875,6 +891,16 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
 
         try
         {
+
+            if (sourceConfig.isContextNeeded())
+            {
+
+                if (!setProjectContext(sourceConfig))
+                {
+                    //cant go further without proper context
+                    return;
+                }
+            }
 
             // create a new internal check configuration
             ICheckConfiguration newConfig = new InternalCheckConfiguration();
@@ -899,6 +925,10 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         catch (CheckstylePluginException e)
         {
             CheckstyleLog.errorDialog(getShell(), e, true);
+        }
+        finally
+        {
+            sourceConfig.setContext(null);
         }
     }
 
@@ -963,6 +993,16 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
             return;
         }
 
+        if (config.isContextNeeded())
+        {
+
+            if (!setProjectContext(config))
+            {
+                //cant go further without proper context
+                return;
+            }
+        }
+
         FileDialog dialog = new FileDialog(getShell(), SWT.SAVE);
         dialog.setText(Messages.CheckstylePreferencePage_titleExportConfig);
         String path = dialog.open();
@@ -980,6 +1020,10 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         {
             CheckstyleLog
                     .errorDialog(getShell(), ErrorMessages.msgErrorFailedExportConfig, e, true);
+        }
+        finally
+        {
+            config.setContext(null);
         }
     }
 

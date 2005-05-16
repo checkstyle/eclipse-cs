@@ -725,10 +725,28 @@ public class FileSetEditDialog extends TitleAreaDialog
                 if (config != null)
                 {
 
-                    CheckConfigurationConfigureDialog dialog = new CheckConfigurationConfigureDialog(
-                            getShell(), config);
-                    dialog.setBlockOnOpen(true);
-                    dialog.open();
+                    try
+                    {
+
+                        config.setContext(mProject);
+                        config.getCheckstyleConfigurationURL();
+
+                        CheckConfigurationConfigureDialog dialog = new CheckConfigurationConfigureDialog(
+                                getShell(), config);
+                        dialog.setBlockOnOpen(true);
+                        dialog.open();
+
+                    }
+                    catch (CheckstylePluginException ex)
+                    {
+                        CheckstyleLog.warningDialog(getShell(), Messages.bind(
+                                Messages.CheckstylePreferencePage_msgProjectRelativeConfigNoFound,
+                                mProject, config.getLocation()), ex);
+                    }
+                    finally
+                    {
+                        config.setContext(null);
+                    }
                 }
             }
         }

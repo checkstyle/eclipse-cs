@@ -22,6 +22,7 @@ package com.atlassw.tools.eclipse.checkstyle.properties;
 
 import java.util.List;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -42,6 +43,7 @@ import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.preferences.CheckConfigurationConfigureDialog;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileMatchPattern;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileSet;
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
 /**
@@ -233,11 +235,30 @@ public class SimpleFileSetsEditor implements IFileSetsEditor
 
                 if (config != null)
                 {
+                    IProject project = (IProject) mPropertyPage.getElement();
 
-                    CheckConfigurationConfigureDialog dialog = new CheckConfigurationConfigureDialog(
-                            mPropertyPage.getShell(), config);
-                    dialog.setBlockOnOpen(true);
-                    dialog.open();
+                    try
+                    {
+
+                        config.setContext(project);
+                        config.getCheckstyleConfigurationURL();
+
+                        CheckConfigurationConfigureDialog dialog = new CheckConfigurationConfigureDialog(
+                                mPropertyPage.getShell(), config);
+                        dialog.setBlockOnOpen(true);
+                        dialog.open();
+
+                    }
+                    catch (CheckstylePluginException ex)
+                    {
+                        CheckstyleLog.warningDialog(mPropertyPage.getShell(), Messages.bind(
+                                Messages.CheckstylePreferencePage_msgProjectRelativeConfigNoFound,
+                                project, config.getLocation()), ex);
+                    }
+                    finally
+                    {
+                        config.setContext(null);
+                    }
                 }
 
             }

@@ -418,6 +418,10 @@ public class CheckstylePropertyPage extends PropertyPage
                                     .getLocation(), checkConfig.getName()), e);
                     return false;
                 }
+                finally
+                {
+                    checkConfig.setContext(null);
+                }
             }
         }
 

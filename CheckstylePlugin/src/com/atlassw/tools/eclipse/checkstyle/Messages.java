@@ -63,6 +63,8 @@ public final class Messages extends NLS
     public static String CheckstylePreferencePage_nagRebuild;
 
     public static String CheckstylePreferencePage_lblProjectUsage;
+    
+    public static String CheckstylePreferencePage_msgProjectRelativeConfigNoFound;
 
     public static String SimpleFileSetsEditor_btnManageConfigs;
 
