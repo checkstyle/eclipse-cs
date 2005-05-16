@@ -25,6 +25,7 @@ Release beta2:
 
 
 Bugs:
+1202812 Checkbox value changes are not persisted
 1202435	NPE on "Export" with 4.0 beta Eclipse 3.02
 1196130	Configuration Editor broken with duplicate checks
 1196084	Can't use eclipse variables on SuppressionFilter
