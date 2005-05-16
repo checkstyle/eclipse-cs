@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+  <head>
+    <meta name="generator" content="HTML Tidy, see www.w3.org" />
+    <meta http-equiv="CONTENT-TYPE" content="text/html; charset=iso-8859-1" />
+    <link type="text/css" href="style.css" rel="stylesheet" />
+
+    <title>Configuring File Sets</title>
+  </head>
+
+  <body>
+    <h1>Eclipse Checkstyle Plug-in</h1>
+
+    <h2>Configuring File Sets</h2>
+
+    <p>In the <a href="basic_setup_project.html">getting started section</a> we configured our project using the simple
+    configuration approach.<br />
+     With the simple configuration all files in your project get checked by the same check configuration.</p>
+
+    <p><img src="images/advanced_file_sets_html_m4aad520.jpg" alt="Checkstyle Properties Page" /><br clear="LEFT" />
+    <br />
+     Using the simple project configuration might suite you in most cases there are cases where you might need more
+    control:</p>
+
+    <ol>
+      <li>
+        <p>You only want to check certain files based on the file name or exclude files based on the file name</p>
+      </li>
+
+      <li>
+        <p>You want to check parts of your project with one check configuration and another part of your project with
+        another check configuration</p>
+      </li>
+    </ol>
+
+    <p>To give you fine grained control over which files get checked with which check configuration the plug-in allows
+    you to configure file sets.<br />
+     A File Set is a collection of files within one project that need to be checked with the same Check Configuration.
+    A File Set is defined using regular expressions to select the files to include and exclude from the File Set.</p>
+
+    <p>Deselect the check box <i>Use simple configuration</i> on the upper right of the Checkstyle Properties Page.</p>
+
+    <p><img src="images/advanced_file_sets_html_m4a352c13.jpg" alt="Checkstyle Properties Page advanced" /><br
+    clear="LEFT" />
+    <br />
+     Now a table is displayed containing all file sets configured for this project.<br />
+     There is already a default file set named <i>all</i> in the table.<br />
+    <br />
+    <br />
+    </p>
+
+    <p>To create a new file set click the <i>Add...</i> button, to edit an existing file set select the file set in
+    question and use the <i>Edit...</i> button:<br />
+     Both actions will result in the Checkstyle File Set Editor opening.</p>
+
+    <p><img src="images/advanced_file_sets_html_m4059966b.jpg" alt="Checkstyle File Set Editor" /><br clear="LEFT" />
+    <br />
+     Each File Set is given a unique name and a Check Configuration. Select from the drop down list the Check
+    Configuration you want used when this File Set is audited.<br />
+     If no Check Configurations appear in the drop down list then you will need to first create one. See <a
+    href="basic_creating_config.html">Creating a Check Configuration</a> for information on how to create a Check
+    Configuration.</p>
+
+    <p>Next, enter a series of <a href="advanced_regularexpressions.html">regular expressions</a> to select which files
+    you want to include in the File Set. Each regular expression can be used to include or exclude files (the default
+    regular expressions matches all files ending with ".java").<br />
+     The regular expression is matched against the fully qualified file name within the project.<br />
+     That is, the entire path to the file starting with the name of the top level folder within the project and
+    progressing through each folder down to the file, with '/' being used as the path separator.<br />
+     For example, consider the project in the figure below. The <i>CheckstylePlugin.java</i> file has a complete path
+    of <b><font size="2"><font
+    face="Courier New">src/com/atlassw/tools/eclipse/checkstyle/CheckstylePlugin.java</font></font></b></p>
+
+    <p><img src="images/advanced_file_sets_html_m1e1320f2.gif" alt="Package Explorer" /><br clear="LEFT" />
+    </p>
+
+    <p>The include/exclude setting of the <b><i>last</i></b> regular expression a file matches will determine if the
+    file is included in or excluded from the File Set.<br />
+     This lets you create a regular expression that matches a number of files and then refine the selection with a
+    series of exclusion expressions.<br />
+     To adjust the order of the regular expressions use the Up and Down buttons to move the selected expression up or
+    down in the list.<br />
+     The bottom section of the Checkstyle File Set Editor shows which files from your project are included in your file
+    set based on the current settings.<br />
+     This section will update as you change the regular expression patterns and their include/exclude state.</p>
+
+    <p>Each project in your Eclipse workspace can have any number of File Sets defined, each with a different set of
+    files and each with a different Check Configuration.<br />
+     You can also turn off the checking of a File Set using the Enabled check box in the properties window.</p>
+    <hr />
+
+    <p class="copyright">Copyright © 2002-2005 David Schneider. All Rights Reserved.<br />
+     Hosted By:<br />
+     <a href="http://sourceforge.net/"><img src="http://sourceforge.net/sflogo.php?group_id=80344&amp;amp;type=1"
+    alt="SourceForge.net Logo" /></a></p>
+  </body>
+</html>
+

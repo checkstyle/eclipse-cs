@@ -1,79 +1,75 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
 <html>
-<head>
-<title>Eclipse Checkstyle Plug-in</title>
-</head>
-<body bgcolor="#ffffff">
+  <head>
+    <meta http-equiv="CONTENT-TYPE" content="text/html; charset=iso-8859-1" />
+    <link type="text/css" href="style.css" rel="stylesheet" />
 
-<p align="left"><font color="#0000cc" size="6" face="Arial Narrow"><b>Eclipse
-Checkstyle Plug-in</b></font></p>
-<table border="0">
-	<tbody>
-		<tr>
-			<td width="130" valign="top"><font face="Arial">Home<br>
-			<a href="screen_shots.html">Screen Shots</a><br>
-			<a href="release_notes.html">Release Notes</a> </font><br>
-			<br>
-			<br>
-			<b><font size="2" face="Arial">Hosted By:</font> </b><br>
-			<a href="http://sourceforge.net">
-			<img src="http://sourceforge.net/sflogo.php?group_id=80344&amp;amp;type=1"
-                 width="88" height="31" border="0" alt="SourceForge.net Logo"/>
-            </a>
-			</td>
-			<td>
-			<p><b><font size="4" face="Arial">Introduction</font></b><br>
-			<a href="http://checkstyle.sourceforge.net/">Checkstyle</a> is a development tool written by Oliver Burn to help you
-			ensure that your Java code adheres to a set of coding standards.
-			Checkstyle does this by inspecting your Java source code and pointing
-			out items that deviate from a defined set of coding rules. The full
-			Checkstyle distribution is included with the plug-in. In addition to
-			using the Eclipse Checkstyle plug-in you can also use Checkstyle from
-			the command line or as part of an Ant build.<br>
-			<br>
-			With the Checkstyle Eclipse plug-in your code is constantly inspected
-			for problems. Within the Eclipse workbench you are notified of
-			problems via the task window and source code markers just as you
-			would see with compiler errors or warnings. The current release of
-			the Eclipse plug-in runs the tree-walker checks from Checkstyle.
-			These checks only check individual Java source files. A future
-			release of the plug-in may include Checkstyle checks that span across
-			multiple files.</p>
-			<p><b><font size="4" face="Arial">Download &amp; Installation</font></b><br>
-			The Checkstyle Eclipse plug-in can be downloaded from the <a
-				href="http://sourceforge.net/projects/eclipse-cs/">SourceForge
-			project page</a>. The download package consists of a single zip file
-			that contains both the Checkstyle plug-in and the Checkstyle core
-			engine.<br>
-			<br>
-			Once you have downloaded the distribution zip file extract its
-			contents. Copy the <font face="Courier New">com.atlassw.tools.eclipse.checkstyle_</font><font
-				face="Times New Roman"><i>&lt;version&gt;</i></font> folder to your
-			Eclipse plug-in folder and restart Eclipse. That's all there is to
-			it, you are now ready to run Checkstyle.</p>
-			<p><b><font color="#ff0000"><i>Important Note:</i></font></b> Eclipse
-			2.0.x is no longer supported as of plug-in release 3.4.0.</p>
-			<p><font color="#ff0000"><b><i>Important Note:</i></b></font> If you
-			had a pre 3.1.0 version of the Eclipse Checkstyle plug-in installed
-			you will need to remove it before installing the new plug-in. Also,
-			remove any .checkstyle files from the root of your projects, these
-			files are not compatible with this version of the plug-in. After
-			removing these files be sure and refresh your workspace so that
-			Eclipse is aware that they have been removed.</p>
-			<p><b><font size="4" face="Arial">What Next?</font></b><br>
-			See the on-line help within Eclipse for more information on how to
-			configure and use Checkstyle. To get to the on-line help go the <font
-				face="Arial">Help</font> menu and select <font face="Arial">Help
-			Contents</font>. Within the help window select the <font face="Arial">Checkstyle</font>
-			topic in the left column.</p>
+    <title>Eclipse Checkstyle Plug-in</title>
+  </head>
 
-			
-			</td>
-		</tr>
-	</tbody>
-</table>
-<hr>
-<p><font size="2" color="#808080">Copyright &copy; 2002-2004 David
-Schneider. All Rights Reserved.</font></p>
-</body>
+  <body>
+    <h1>Eclipse Checkstyle Plug-in</h1>
+
+    <table border="0">
+      <tbody>
+        <tr>
+          <td width="130" valign="top">
+            <p>Home<br />
+             <a href="screen_shots.html">Screen Shots</a><br />
+             <a href="release_notes.html">Release Notes</a><br />
+            <br />
+            <br />
+             <b><font size="2" face="Arial">Hosted By:</font></b><br />
+             <a href="http://sourceforge.net"><img
+            src="http://sourceforge.net/sflogo.php?group_id=80344&amp;amp;type=1" alt="SourceForge.net Logo" /></a></p>
+          </td>
+
+          <td>
+            <p><b>Introduction</b><br />
+             <a href="http://checkstyle.sourceforge.net/">Checkstyle</a> is a development tool written by Oliver Burn
+            to help you ensure that your Java code adheres to a set of coding standards. Checkstyle does this by
+            inspecting your Java source code and pointing out items that deviate from a defined set of coding rules.
+            The full Checkstyle distribution is included with the plug-in. In addition to using the Eclipse Checkstyle
+            plug-in you can also use Checkstyle from the command line or as part of an Ant build.<br />
+            <br />
+             With the Checkstyle Eclipse plug-in your code is constantly inspected for problems. Within the Eclipse
+            workbench you are notified of problems via the Eclipse Problems View and source code annotations just as
+            you would see with compiler errors or warnings.</p>
+
+            <p><b>Download &amp; Installation</b><br />
+             The Checkstyle Eclipse plug-in can be downloaded from the <a
+            href="http://sourceforge.net/projects/eclipse-cs/">SourceForge project page</a>. The download package
+            consists of a single zip file that contains both the Checkstyle plug-in and the Checkstyle core
+            engine.<br />
+            <br />
+             Once you have downloaded the distribution zip file extract its contents. Copy the <font
+            face="Courier New">com.atlassw.tools.eclipse.checkstyle_</font><i>&lt;version&gt;</i> folder to your
+            Eclipse plug-in folder and restart Eclipse. That's all there is to it, you are now ready to run
+            Checkstyle.</p>
+
+            <p><b><i>Important Note:</i></b> Eclipse 2.x.x is no longer supported as of plug-in release 4.0.0.</p>
+
+            <p><b><i>Important Note:</i></b> If you had a pre 3.1.0 version of the Eclipse Checkstyle plug-in installed
+            you will need to remove it before installing the new plug-in. Also, remove any .checkstyle files from the
+            root of your projects, these files are not compatible with this version of the plug-in. After removing
+            these files be sure and refresh your workspace so that Eclipse is aware that they have been removed.</p>
+
+            <p><b><font size="4" face="Arial">What Next?</font></b><br />
+             See the on-line help within Eclipse for more information on how to configure and use Checkstyle. To get to
+            the on-line help go the <font face="Arial">Help</font> menu and select <font face="Arial">Help
+            Contents</font>. Within the help window select the <font face="Arial">Checkstyle</font> topic in the left
+            column.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+
+    <p class="copyright">Copyright © 2002-2005 David Schneider. All Rights Reserved.<br />
+     Hosted By:<br />
+     <a href="http://sourceforge.net/"><img src="http://sourceforge.net/sflogo.php?group_id=80344&amp;amp;type=1"
+    alt="SourceForge.net Logo" /></a></p>
+  </body>
 </html>
+

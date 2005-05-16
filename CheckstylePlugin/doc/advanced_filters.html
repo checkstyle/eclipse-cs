@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd" >
+
+<html>
+  <head>
+    <meta name="generator" content="HTML Tidy, see www.w3.org" />
+    <meta http-equiv="CONTENT-TYPE" content="text/html; charset=iso-8859-1" />
+    <link type="text/css" href="style.css" rel="stylesheet" />
+
+    <title>Using the plug-in filters</title>
+  </head>
+
+  <body>
+    <h1>Eclipse Checkstyle Plug-in</h1>
+
+    <h2>Using the plug-in filters</h2>
+
+    <p>The Eclipse Checkstyle Plug-in contains a filter facility that uses filters to exclude certain files from
+    checking.<br />
+     Knowing that the plugin allows you to configure file sets you might ask why there are also filters.<br />
+     This feature seems to be quite redundant to file sets.</p>
+
+    <p>Lets think about this some more.<br />
+     File set let you configure patterns that determine if a file gets included or excluded from the checks based on
+    the file name.<br />
+     In some situations this is quite sufficient but there are also cases where you want to exclude files based on
+    other properties, for instance if you want to exclude files that are write protected.<br />
+    <br />
+    <br />
+    </p>
+
+    <p>The filters are accessible in the bottom section of the Checkstyle Project Properties Page.</p>
+
+    <p><img src="images/advanced_filters_html_m76700955.jpg" alt="Plug-in filters" /><br clear="LEFT" />
+    <br />
+     To enable a filter for your project just select the corresponding check box.<br />
+     Some filters are configurable, if you select a configuration filter the <i>Change...</i> button will become
+    enabled.<br />
+     Pressing the Change... button will open a specific filter editor.</p>
+
+    <p>The following filters come with the Checkstyle Plug-in:</p>
+
+    <ul>
+      <li>
+        <p><b>Filter for write protected files</b><br />
+         Use this filter if you want to check only writable files. This filter is particular useful if you use a
+        Versioning system with a Check-In/Check-Out semantic which uses file write protection to allow/disallow
+        modification.<br />
+         So you can restrict the Checkstyle Plug-in to only check files you are actually working on (because you
+        checked them out from the repository).</p>
+      </li>
+
+      <li>
+        <p><b>Filter for files that are not opened in an Eclipse editor</b><br />
+         You can use this filter to check only files you opened in an Eclipse editor.</p>
+      </li>
+
+      <li>
+        <p><b>Filter for files from specific packages</b><br />
+         This is a configurable filter, allowing you to specify the packages you want to exclude from checking. You
+        can, of course, get the same result by <a href="advanced_file_sets.html">configuring file sets</a>.</p>
+      </li>
+
+      <li>
+        <p><b>Filter for filtes from non source directories</b><br />
+         Some projects have java sources outside of source folders (for instance build folders where all sources are
+        copied to for source dist builds).<br />
+         With this filter you can exclude this files from the checks. Again, this can be also achieved by <a
+        href="advanced_file_sets.html">configuring file sets</a> &ndash; but for most cases the filter is easier to
+        use.</p>
+      </li>
+
+      <li>
+        <p><b>Filter that excudes all files that are in sync with the CVS repository</b><br />
+         If your project is based on a CVS repository you might want to use this filter.<br />
+         With this you can limit the checks to the files you actually changed. All other files that are in sync with
+        the repository (therefor unchanged) are excluded from the checks.</p>
+      </li>
+    </ul>
+
+    <p>The Eclipse Checkstyle Plug-in filters are base on some very simple interfaces &ndash; so the filter facility is
+    very much extensible.<br />
+     The plug-in provides an extension point for filters that can be used to provide your custom filter. Read <a
+    href="extending_filters.html">here</a> for more info about <a href="extending_filters.html">extending the plug-in
+    with filters</a>.</p>
+    <hr />
+
+    <p class="copyright">Copyright © 2002-2005 David Schneider. All Rights Reserved.<br />
+     Hosted By:<br />
+     <a href="http://sourceforge.net/"><img src="http://sourceforge.net/sflogo.php?group_id=80344&amp;amp;type=1"
+    alt="SourceForge.net Logo" /></a></p>
+  </body>
+</html>
+

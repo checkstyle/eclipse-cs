@@ -1,0 +1,19 @@
+body{
+	background-image:url(images/background.jpg);
+}
+
+h1{
+	/**font-size:24px;**/
+	color:#0000cc;
+}
+h2{
+	/**font-size:16px;**/
+}
+p.copyright{
+	font-size:11px;
+	color:#808080;
+}
+img{
+	vertical-align:left;
+	border:0;
+}

@@ -1,33 +1,82 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
 <html>
-<head>
-<meta name="GENERATOR" content="IBM WebSphere Studio">
-<title>readme.html</title>
-</head>
-<body bgcolor="#ffffff">
+  <head>
+    <meta http-equiv="CONTENT-TYPE" content="text/html; charset=iso-8859-1" />
+    <link type="text/css" href="style.css" rel="stylesheet" />
 
-<p align="left"><font color="#0000cc" size="6" face="Arial Narrow"><b>Eclipse
-Checkstyle Plug-in</b></font></p>
+    <title></title>
+  </head>
 
-<p><font size="4" face="Arial"><b>Troubleshooting</b></font><br>
-A lot of effort has gone into testing the Checkstyle plug-in, but like all software things can and do go wrong. The following are some tips that may help in troubleshooting when things go wrong and some guidelines on reporting bugs to help get them fixed.</p>
-<ol>
-	<li>Check the log file. The file <i>&lt;workspace root&gt;</i>/.metadata/.log may contain additional diagnostic messages that can help determine the source of the problem.</li>
-	<li>Verify that the .checkstyle file in the project's root directory is writeable when editing the project's File Sets. Some version control systems don't know to make this file writeable and the plug-in may fail trying to write your updated settings to it.</li>
-	<li>Verify that the Check Configuration referred to in your File Set configuration exists in your workspace. Because the .checkstyle file is often shared through a team repository its possible for the file to be updated by one team member and propagated to another team member when he synchronizes with the repository. The Check Configuration name in the File Set must match one of the Check Configurations defined in your workspace.</li>
-</ol>
-<p><b><font size="4" face="Arial">Reporting Bugs</font></b><br>Bugs do happen. If you think you have found a bug with the Checkstyle plug-in please report it on the <a
-	href="http://sourceforge.net/projects/eclipse-cs/">SourceForge Eclipse
-Checkstyle Plug-in project site</a> (http://sourceforge.net/projects/eclipse-cs/). Please submit as much of the following information that will help in finding and correcting the bug as possible:</p>
-<ul>
-	<li>Steps for recreating the problem</li>
-	<li>The .checkstyle from the project experiencing the problem</li>
-	<li>The <i>&lt;workspace root&gt;</i>/.metadata/.log file</li>
-	<li>The <i>&lt;workspace root&gt;</i>/.metadata/.plugins/com.atlassw.tools.eclipse.checkstyle/checkstyle-config.xml file</li>
-	<li>Specific Java source files experiencing the problem, if possible</li>
-</ul>
-<hr>
-<p><font size="2" color="#808080">Copyright &copy; 2002-2004 David
-Schneider. All Rights Reserved.</font></p>
-</body>
+  <body>
+    <h1>Eclipse Checkstyle Plug-in</h1>
+
+    <h2>Troubleshooting</h2>
+
+    <p>A lot of effort has gone into testing the Checkstyle plug-in, but like all software things can and do go wrong.
+    The following are some tips that may help in troubleshooting when things go wrong and some guidelines on reporting
+    bugs to help get them fixed.</p>
+
+    <ol>
+      <li>
+        <p>Check the Eclipse Error Log view. All exceptions happening in Eclipse should be logged there. Identify the
+        log entry which you mean belongs to your problem with the Checkstyle plug-in. The exception message and the
+        stack trace might give you an additional clue what went wrong.</p>
+      </li>
+
+      <li>
+        <p>Verify that the .checkstyle file in the project's root directory is writable when editing the project's File
+        Sets. Some version control systems don't know to make this file writable and the plug-in may fail trying to
+        write your updated settings to it.</p>
+      </li>
+
+      <li>
+        <p>Verify that the Check Configuration referred to in your project configuration exists in your workspace.
+        Because the .checkstyle file is often shared through a team repository its possible for the file to be updated
+        by one team member and propagated to another team member when he synchronizes with the repository. The Check
+        Configuration name in the File Set must match one of the Check Configurations defined in your workspace.</p>
+      </li>
+    </ol>
+
+    <h2>Reporting Bugs</h2>
+
+    <p>Bugs do happen. If you think you have found a bug with the Checkstyle plug-in please report it on the <a
+    href="http://sourceforge.net/projects/eclipse-cs/">SourceForge Eclipse Checkstyle Plug-in project site</a>
+    (http://sourceforge.net/projects/eclipse-cs/). Please submit as much of the following information that will help in
+    finding and correcting the bug as possible:</p>
+
+    <ul>
+      <li>
+        <p>The plug-in version number, Eclipse version, JDK/JRE version you are running eclipse with, which operation
+        system</p>
+      </li>
+
+      <li>
+        <p>Steps for recreating the problem</p>
+      </li>
+
+      <li>
+        <p>The .checkstyle from the project experiencing the problem</p>
+      </li>
+
+      <li>
+        <p>The Checkstyle configuration file in question</p>
+      </li>
+
+      <li>
+        <p>The stack trace from the corresponding error in the Eclipse error log view</p>
+      </li>
+
+      <li>
+        <p>Specific Java source files experiencing the problem, if possible</p>
+      </li>
+    </ul>
+    <hr />
+
+    <p class="copyright">Copyright © 2002-2005 David Schneider. All Rights Reserved.<br />
+     Hosted By:<br />
+     <a href="http://sourceforge.net/"><img src="http://sourceforge.net/sflogo.php?group_id=80344&amp;amp;type=1"
+    alt="SourceForge.net Logo" /></a></p>
+  </body>
 </html>
+

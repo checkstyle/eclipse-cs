@@ -1,163 +1,169 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML>
-<HEAD>
-	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
-	<TITLE></TITLE>
-	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1.4  (Win32)">
-	<META NAME="AUTHOR" CONTENT="Lars K&ouml;dderitzsch">
-	<META NAME="CREATED" CONTENT="20050509;7542455">
-	<META NAME="CHANGEDBY" CONTENT="Lars K&ouml;dderitzsch">
-	<META NAME="CHANGED" CONTENT="20050512;21020408">
-</HEAD>
-<BODY LANG="de-DE" DIR="LTR">
-<P><FONT SIZE=6>Creating and configuring a checkstyle configuration</FONT></P>
-<P>We learned how to set up a project to be checked with the
-checkstyle plugin in the <A HREF="basic_setup_project.html">previous
-chapter</A>.</P>
-<P><FONT SIZE=3>Now we want to create our own checkstyle
-configuration.</FONT></P>
-<OL>
-	<LI><P><B>Open the Eclipse Preferences Window</B></P>
-</OL>
-<P><IMG SRC="images/basic_creating_config_html_m305e17bd.gif" NAME="Grafik1" ALIGN=LEFT WIDTH=860 HEIGHT=673 BORDER=0><BR CLEAR=LEFT><BR><BR>
-</P>
-<OL START=2>
-	<LI><P><B>Navigate to the Checkstyle section within the Eclipse
-	preferences</B></P>
-</OL>
-<P><IMG SRC="images/basic_creating_config_html_37de0111.jpg" NAME="Grafik2" ALIGN=LEFT WIDTH=650 HEIGHT=532 BORDER=0><BR CLEAR=LEFT><BR>The
-checkstyle preferences should look like this. In the upper area are
-some general settings which will be explained later in detail.<BR>The
-center/bottom area shows the Checkstyle configurations known to the
-plugin. Only Checkstyle Configurations that are listed therein can be
-used with the plug-in.<BR>Note the <I>Sun Checks</I> configuration
-which we used in the previous chapter as check configuration for our
-project.<BR><I>Sun Checks</I> is a built-in standard configuration
-that comes delivered with checkstyle and therefor also with the
-plug-in. Built-In configurations cannot be modified nor be deleted.</P>
-<P><BR><BR>
-</P>
-<OL START=3>
-	<LI><P><B>Click the </B><SPAN STYLE="font-weight: medium"><I>New...</I></SPAN><B>
-	button to create a new checkstyle configuration</B></P>
-</OL>
-<P><IMG SRC="images/basic_creating_config_html_d676967.jpg" NAME="Grafik3" ALIGN=LEFT WIDTH=438 HEIGHT=380 BORDER=0><BR CLEAR=LEFT><BR>The
-Check Configuration Properties dialog comes up. Its quite empty so we
-must provide some data to create our checkstyle configuration.<BR>At
-first we must decide which type of configuration we would like to
-create. There are several configuration types &ndash; each suitable
-for specific use cases.<BR>Don't mind all these types for now &ndash;
-for starters we will be creating a <I>Internal Configuration</I>.<BR>Note
-that the location text field will be greyed out as you select this
-configuration type. This is because internal configurations are
-stored deep within the bowels of the eclipse workspace.<BR>The plugin
-will create a unique filename for our new configuration.<BR>To
-complete our configuration we must provide a name &ndash; the
-description is optional and can be used to describe what your
-configuration is all about.</P>
-<P><IMG SRC="images/basic_creating_config_html_m7d9bdb11.jpg" NAME="Grafik4" ALIGN=LEFT WIDTH=438 HEIGHT=380 BORDER=0><BR CLEAR=LEFT><BR>When
-you are done the dialog should look like this. Don't worry if you
-done something wrong the dialog will tell you.<BR>Press OK to return
-to the main configuration screen. The configuration you created
-should show up in the configuration table.<BR>You can go back to this
-dialog by selecting the configuration and pressing <I>Properties...</I><BR>Our
-configuration is (of course) quite empty because we have not yet
-defined any checks.</P>
-<P><BR><BR>
-</P>
-<OL START=4>
-	<LI><P><B>Select the configuration you created and press
-	<I>Configure...</I>to open the Configuration Editor</B></P>
-</OL>
-<P STYLE="font-style: normal"><IMG SRC="images/basic_creating_config_html_m2e510705.jpg" NAME="Grafik5" ALIGN=LEFT WIDTH=716 HEIGHT=706 BORDER=0><BR CLEAR=LEFT><BR>In
-the left hand side tree all modules known to the plugin are shown.
-These are all modules that come with checkstyle out-of-the-box.<BR>The
-modules are semantically grouped into categories.<BR>The table on the
-right side shows the modules your configuration is actually
-containing.<BR>Based on the selection in the tree all modules in your
-configuration belonging to the selected group are shown.<BR>If you
-select a module in the tree or in the table a description of the
-module will be shown in the description area of the dialog.<BR>To add
-a particular module to your configuration you must select the module
-in the tree press the <I>Add... </I>button.<BR>For instance we open
-the first group <I>Javadoc Comments</I> and select the <I>Method
-Javadoc </I>module.<BR>Pressing the <I>Add...</I> button the property
-dialog for this module is shown.</P>
-<P STYLE="font-style: normal"><IMG SRC="images/basic_creating_config_html_m16ef8dbd.jpg" NAME="Grafik6" ALIGN=LEFT WIDTH=438 HEIGHT=622 BORDER=0><BR CLEAR=LEFT><BR>Using
-the dialog you can customize the check for your needs.<BR>Mostly all
-modules have a severity combo box. With this you can specify if a
-violation of the check results in an error, warning or an info.<BR>The
-other settings in the editor are highly specific to the module. But
-don't bother for now, pressing OK will add the module to your
-configuration.<BR>The result should look like this:</P>
-<P STYLE="font-style: normal"><IMG SRC="images/basic_creating_config_html_206bd710.jpg" NAME="Grafik7" ALIGN=LEFT WIDTH=716 HEIGHT=706 BORDER=0><BR CLEAR=LEFT><BR>Now
-your configuration contains the <I>Method Javadoc</I>
-check.<BR>Operating the <I>enabled</I> checkbox in the table lets you
-easily set the severity of the module to <I>ignore</I>.<BR>Ok, now
-you figured it all out!<BR>Press <I>OK</I> to save your configuration
-and return to the main configuration page.<BR>In the main dialog
-press <I>OK</I> to store all changes you made.</P>
-<OL START=5>
-	<LI><P STYLE="font-style: normal"><B>Go back to the project
-	properties and select your configuration to be used to check your
-	project</B></P>
-</OL>
-<P STYLE="font-style: normal"><IMG SRC="images/basic_creating_config_html_6a190213.jpg" NAME="Grafik8" ALIGN=LEFT WIDTH=634 HEIGHT=532 BORDER=0><BR CLEAR=LEFT><BR>After
-you press <I>OK </I>your project will be rebuilt using your self
-created configuration.<BR>Look into the Eclipse Problems View again
-to see the effects. Now only checkstyle warnings regarding missing or
-invalid method javadoc should be there.</P>
-<P STYLE="font-style: normal"><FONT SIZE=4 STYLE="font-size: 16pt">Congratulations!</FONT><BR>Now
-we've covered all the basics of the Eclipse Checkstyle Plug-in.<BR>Now
-you surely want to dive in and create an extensive configuration &ndash;
-trying out all checks that checkstyle has to offer (which are a
-lot!).</P>
-<P STYLE="font-style: normal">Detailed information on the
-configuration options for each check can be found in the following
-sections:</P>
-<UL>
-	<LI><P STYLE="margin-bottom: 0cm"><A HREF="csdocs/config_javadoc.html">Javadoc
-	Comments</A> 
-	</P>
-	<LI><P STYLE="margin-bottom: 0cm"><A HREF="csdocs/config_naming.html">Naming
-	Conventions</A> 
-	</P>
-	<LI><P STYLE="margin-bottom: 0cm"><A HREF="csdocs/config_import.html">Imports</A>
-		</P>
-	<LI><P STYLE="margin-bottom: 0cm"><A HREF="csdocs/config_sizes.html">Size
-	Violations</A> 
-	</P>
-	<LI><P STYLE="margin-bottom: 0cm"><A HREF="csdocs/config_whitespace.html">Whitespace</A>
-		</P>
-	<LI><P STYLE="margin-bottom: 0cm"><A HREF="csdocs/config_modifiers.html">Modifiers</A>
-		</P>
-	<LI><P STYLE="margin-bottom: 0cm"><A HREF="csdocs/config_blocks.html">Blocks</A>
-		</P>
-	<LI><P STYLE="margin-bottom: 0cm"><A HREF="csdocs/config_coding.html">Coding
-	Problems</A> 
-	</P>
-	<LI><P STYLE="margin-bottom: 0cm"><A HREF="csdocs/config_design.html">Class
-	Design</A> 
-	</P>
-	<LI><P STYLE="margin-bottom: 0cm"><A HREF="csdocs/config_misc.html">Miscellaneous</A>
-		</P>
-	<LI><P STYLE="margin-bottom: 0cm"><A HREF="csdocs/config_j2ee.html">J2EE
-	Checks</A> 
-	</P>
-	<LI><P><A HREF="csdocs/config_usage.html">Usage Checks</A> 
-	</P>
-</UL>
-<P><BR><BR>
-</P>
-<P><BR><BR>
-</P>
-<P><BR><BR>
-</P>
-<P><BR><BR>
-</P>
-<P><BR><BR>
-</P>
-<P><BR><BR>
-</P>
-</BODY>
-</HTML>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+  <head>
+    <meta http-equiv="CONTENT-TYPE" content="text/html; charset=iso-8859-1" />
+    <link type="text/css" href="style.css" rel="stylesheet" />
+
+    <title>Creating and configuring a Checkstyle configuration</title>
+  </head>
+
+  <body>
+    <h1>Eclipse Checkstyle Plug-in</h1>
+
+    <h2>Creating and configuring a Checkstyle configuration</h2>
+
+    <p>We learned how to set up a project to be checked with the Checkstyle Plug-in in the <a
+    href="basic_setup_project.html">previous chapter</a>.</p>
+
+    <p>Now we want to create our own Checkstyle configuration.</p>
+
+    <ol>
+      <li>
+        <p><b>Open the Eclipse Preferences Window</b></p>
+
+        <p><img src="images/basic_creating_config_html_m305e17bd.gif" alt="Open Eclipse preferences" /><br
+        clear="left" />
+        </p>
+      </li>
+
+      <li>
+        <p><b>Navigate to the Checkstyle section within the Eclipse preferences</b></p>
+
+        <p><img src="images/basic_creating_config_html_37de0111.jpg" alt="Checkstyle preferences" /><br clear="left" />
+        <br />
+         The Checkstyle preferences should look like this. In the upper area are some general settings which will be
+        explained later in detail.<br />
+         The center/bottom area shows the Checkstyle configurations known to the plug-in. Only Checkstyle
+        Configurations that are listed therein can be used with the plug-in.<br />
+         Note the <i>Sun Checks</i> configuration which we used in the previous chapter as check configuration for our
+        project.<br />
+         <i>Sun Checks</i> is a built-in standard configuration that comes delivered with Checkstyle and therefor also
+        with the plug-in. Built-In configurations cannot be modified nor be deleted.</p>
+      </li>
+
+      <li>
+        <p><b>Click the</b> <i>New...</i> <b>button to create a new checkstyle configuration</b></p>
+
+        <p><img src="images/basic_creating_config_html_d676967.jpg" alt="Check Configuration properties" /><br
+        clear="left" />
+        <br />
+         The Check Configuration Properties dialog comes up. Its quite empty so we must provide some data to create our
+        Checkstyle configuration.<br />
+         At first we must decide which type of configuration we would like to create. There are several configuration
+        types &ndash; each suitable for specific use cases.<br />
+         Don't mind all these types for now &ndash; for starters we will be creating a <i>Internal
+        Configuration</i>.<br />
+         Note that the location text field will be grayed out as you select this configuration type. This is because
+        internal configurations are stored deep within the bowels of the eclipse workspace.<br />
+         The plugin will create a unique filename for our new configuration.<br />
+         To complete our configuration we must provide a name &ndash; the description is optional and can be used to
+        describe what your configuration is all about.</p>
+
+        <p><img src="images/basic_creating_config_html_m7d9bdb11.jpg" alt="Check Configuration properties filled" /><br
+        clear="left" />
+        <br />
+         When you are done the dialog should look like this. Don't worry if you done something wrong the dialog will
+        tell you.<br />
+         Press OK to return to the main configuration screen. The configuration you created should show up in the
+        configuration table.<br />
+         You can go back to this dialog by selecting the configuration and pressing <i>Properties...</i><br />
+         Our configuration is (of course) quite empty because we have not yet defined any checks.</p>
+      </li>
+
+      <li>
+        <p><b>Select the configuration you created and press <i>Configure...</i> to open the Configuration
+        Editor</b></p>
+
+        <p><img src="images/basic_creating_config_html_m2e510705.jpg" alt="Checkstyle Configuration Editor" /><br
+        clear="left" />
+        <br />
+         In the left hand side tree all modules known to the plug-in are shown. These are all modules that come with
+        Checkstyle out-of-the-box.<br />
+         The modules are semantically grouped into categories.<br />
+         The table on the right side shows the modules your configuration is actually containing.<br />
+         Based on the selection in the tree all modules in your configuration belonging to the selected group are
+        shown.<br />
+         If you select a module in the tree or in the table a description of the module will be shown in the
+        description area of the dialog.<br />
+         To add a particular module to your configuration you must select the module in the tree press the
+        <i>Add...</i> button.<br />
+         For instance we open the first group <i>Javadoc Comments</i> and select the <i>Method Javadoc</i>
+        module.<br />
+         Pressing the <i>Add...</i> button the property dialog for this module is shown.</p>
+
+        <p><img src="images/basic_creating_config_html_m16ef8dbd.jpg" alt="Checkstyle Module Editor" /><br
+        clear="left" />
+        <br />
+         Using the dialog you can customize the check for your needs.<br />
+         Mostly all modules have a severity combo box. With this you can specify if a violation of the check results in
+        an error, warning or an info.<br />
+         The other settings in the editor are highly specific to the module. But don't bother for now, pressing OK will
+        add the module to your configuration.<br />
+         The result should look like this:</p>
+
+        <p><img src="images/basic_creating_config_html_206bd710.jpg" alt="Checkstyle Configuration Editor filled" /><br
+        clear="left" />
+        <br />
+         Now your configuration contains the <i>Method Javadoc</i> check.<br />
+         Operating the <i>enabled</i> check box in the table lets you easily set the severity of the module to
+        <i>ignore</i>.<br />
+         OK, now you figured it all out!<br />
+         Press <i>OK</i> to save your configuration and return to the main configuration page.<br />
+         In the main dialog press <i>OK</i> to store all changes you made.</p>
+      </li>
+
+      <li>
+        <p><b>Go back to the project properties and select your configuration to be used to check your project</b></p>
+
+        <p><img src="images/basic_creating_config_html_6a190213.jpg" alt="Checkstyle Project Properties" /><br
+        clear="left" />
+        <br />
+         After you press <i>OK</i> your project will be rebuilt using your self created configuration.<br />
+         Look into the Eclipse Problems View again to see the effects. Now only Checkstyle warnings regarding missing
+        or invalid method Javadoc should be there.</p>
+      </li>
+    </ol>
+
+    <h3>Congratulations!</h3>
+
+    <p>Now we've covered all the basics of the Eclipse Checkstyle Plug-in.<br />
+     Now you surely want to dive in and create an extensive configuration &ndash; trying out all checks that Checkstyle
+    has to offer (which are a lot!).</p>
+
+    <p>Detailed information on the configuration options for each check can be found in the following sections:</p>
+
+    <ul>
+      <li><a href="csdocs/config_javadoc.html">Javadoc Comments</a></li>
+
+      <li><a href="csdocs/config_naming.html">Naming Conventions</a></li>
+
+      <li><a href="csdocs/config_import.html">Imports</a></li>
+
+      <li><a href="csdocs/config_sizes.html">Size Violations</a></li>
+
+      <li><a href="csdocs/config_whitespace.html">Whitespace</a></li>
+
+      <li><a href="csdocs/config_modifiers.html">Modifiers</a></li>
+
+      <li><a href="csdocs/config_blocks.html">Blocks</a></li>
+
+      <li><a href="csdocs/config_coding.html">Coding Problems</a></li>
+
+      <li><a href="csdocs/config_design.html">Class Design</a></li>
+
+      <li><a href="csdocs/config_misc.html">Miscellaneous</a></li>
+
+      <li><a href="csdocs/config_j2ee.html">J2EE Checks</a></li>
+
+      <li><a href="csdocs/config_usage.html">Usage Checks</a></li>
+    </ul>
+    <hr />
+
+    <p class="copyright">Copyright © 2002-2005 David Schneider. All Rights Reserved.<br />
+     Hosted By:<br />
+     <a href="http://sourceforge.net/"><img src="http://sourceforge.net/sflogo.php?group_id=80344&amp;amp;type=1"
+    alt="SourceForge.net Logo" /></a></p>
+  </body>
+</html>
+

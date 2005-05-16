@@ -1,36 +1,50 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-<head>
-<title>Checkstyle Plug-in Getting Started</title>
-</head>
-<body bgcolor="#ffffff">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
-<p align="left"><font color="#0000cc" size="6" face="Arial Narrow"><b>Eclipse
-Checkstyle Plug-in</b></font></p>
-<p><b><font size="4" face="Arial">Getting Started</font></b><br>
-There are only a few things you need to do to get up and running
-using the Checkstyle plug-in. The first thing is to understand a few
-basic concepts about how the plug-in works.</p>
-<p><b><font size="4" face="Arial">Basic Concepts</font></b><br>
-The Checkstyle plug-in works with two basic objects, a Check
-Configuration and a File Set. A Check Configuration specifies which check rules you want to inspect your code, the configuration settings for each rule, and the severity level of the message if the rule finds a problem. Once defined a Check Configuration is saved in your workspace and can be used accross multiple projects. The Checkstyle plug-in comes with one or more Check Configurations already
-defined. To see/modify the pre-defined Check Configurations or to create your own go to <font
-	face="Arial Narrow"><b>Window -&gt; Preferences -&gt; Checkstyle</b></font>.</p>
-<p>A File Set is a collection of files within one project that need to be checked with the same Check Configuration. A File Set is defined using regular expressions to select the files to include and exclude from the File Set. A File Set also references the Check Configuration to use when checking its files. File Sets are defined for each project by right clicking on the project and selecting <font
-	face="Arial Narrow"><b>Properties -&gt; Checkstyle</b></font>.</p>
-<p><b><font size="4" face="Arial">My First Code Check</font></b><br>The following steps will guide you through your first code check using Checkstyle.
-</p>
-<ol>
-	<li>Review the pre-defined Check Configurations, modify them, or define you own. For detailed instructions see <a
-		href="configuring.html">Configuring Check Configurations</a>.</li>
-	<li>Enable Checkstyle on your project by creating one or more File Sets. For detailed instructions see <a
-		href="config_file_sets.html">Configuring File Sets</a>.</li>
-	<li>Upon closing the project properties window a new build should be triggered that will include a code check. If a build is not triggered automatically select <font
-		face="Arial Narrow"><b>Project -&gt; Rebuild Project</b></font>.</li>
-	<li>Any problems Checkstyle finds in your Java source code will be listed in the Tasks view.</li>
-</ol>
-<hr>
-<p><font size="2" color="#808080">Copyright &copy; 2002-2004 David
-Schneider. All Rights Reserved.</font></p>
-</body>
+<html>
+  <head>
+    <meta http-equiv="CONTENT-TYPE" content="text/html; charset=iso-8859-1" />
+    <link type="text/css" href="style.css" rel="stylesheet" />
+
+    <title>Getting Started</title>
+  </head>
+
+  <body>
+    <h1>Eclipse Checkstyle Plug-in</h1>
+
+    <h2>Getting Started</h2>
+
+    <p>There are only a few things you need to do to get up and running using the Checkstyle plug-in. The first thing
+    is to understand a few basic concepts about how the plug-in works.</p>
+
+    <p><b>Basic Concepts<br />
+    </b> The Checkstyle Plug-in uses a project builder to check your project files with Checkstyle. So whenever you
+    build your project your files will be checked by Checkstyle as well.<br />
+     This goes so far that even if you edit a single file in your Eclipse editor this file will immediately get checked
+    by Checkstyle on file save (assuming the Eclipse auto-build feature is enabled) - giving you immediate feedback
+    about the changes you made.<br />
+     To use a simple analogy &ndash; the Checkstyle Plug-in works very much like a compiler but instead of producing
+    <i>.class</i> files it produces warnings where your code violates the Checkstyle rules.<br />
+     The violations Checkstyle finds in your code are accessible in the Eclipse Problems View and are additionally
+    annotated in the code editor.</p>
+
+    <p>The set of rules used to check your code is not fixed but highly configurable.<br />
+     A Check Configuration specifies which check rules you want to inspect your code, the configuration settings for
+    each rule, and the severity level of the message if the rule finds a problem.<br />
+     Once defined a Check Configuration can be used across multiple projects. The Checkstyle Plug-in comes with one
+    Check Configuration already defined.<br />
+     You can create own Check Configurations using the comfortable Check Configuration Editor that comes with the
+    plug-in or even use an existing Checkstyle Configuration file from an external location.</p>
+
+    <p><b>Got it, how to go on from here?</b><br />
+     To learn how to <a href="basic_setup_project.html">set up a project</a> to use the Checkstyle Plug-in read <a
+    href="basic_setup_project.html">here</a> &ndash; how to <a href="basic_creating_config.html">create your own check
+    configuration</a> read <a href="basic_creating_config.html">here</a>.</p>
+    <hr />
+
+    <p class="copyright">Copyright © 2002-2005 David Schneider. All Rights Reserved.<br />
+     Hosted By:<br />
+     <a href="http://sourceforge.net/"><img src="http://sourceforge.net/sflogo.php?group_id=80344&amp;amp;type=1"
+    alt="SourceForge.net Logo" /></a></p>
+  </body>
 </html>
+
