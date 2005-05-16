@@ -223,6 +223,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
         layout.marginHeight = 0;
         mEditorPlaceHolder.setLayout(layout);
         fd = new GridData(GridData.FILL_HORIZONTAL);
+        fd.heightHint = 23;
         mEditorPlaceHolder.setLayoutData(fd);
 
         Label lblDescription = new Label(contents, SWT.NULL);
