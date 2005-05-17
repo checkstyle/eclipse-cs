@@ -1,11 +1,32 @@
-body{
+body.navbar{
+	/**
+	background-color:#746acc;
+	color:white;
+	**/
 	background-image:url(images/background.jpg);
 }
 
-h1{
-	/**font-size:24px;**/
-	color:#0000cc;
+body.content{
+	background-image:url(images/background.jpg);
+	/**
+	margin-bottom:0;
+	margin-left:0;
+	margin-right:0;
+	margin-top:0;
+	**/
 }
+
+table.header{
+	/**
+	background-color:#746acc;
+	color:white;
+	**/
+}
+
+h1.header{
+	/**font-size:24px;**/
+}
+
 h2{
 	/**font-size:16px;**/
 }

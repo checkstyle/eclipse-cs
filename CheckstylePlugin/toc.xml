@@ -7,7 +7,7 @@
 		<topic label="Creating a checkstyle configuration"  href="doc/basic_creating_config.html"/>
 	</topic>
 	<topic label="Advanced topics">
-		<topic label="Configuring File Sets"             	href="doc/config_file_sets.html"/>
+		<topic label="Configuring File Sets"             	href="doc/advanced_file_sets.html"/>
 		<topic label="Using the plug-in filters"            href="doc/advanced_filters.html"/>
 		<topic label="Configuration types"					href="doc/advanced_configuration_types.html"/>	
 		<topic label="Working with a Team Repository"    	href="doc/advanced_team.html"/>
