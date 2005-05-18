@@ -19,6 +19,94 @@ header();
     <table width="100%" border="0" cellpadding="2" cellspacing="0" style="page-break-before: always">
       <tr>
         <td width="700">
+          <h2><a id="r4_0_0b2" name="r4_0_0b2" />Release 4.0.0b2</h2>
+
+          <ul>
+            <li>Minor usability enhancements in configuration editor (multiple selection and adding from the tree,
+            option to skip opening the module editor on add action)</li>
+
+            <li>Keyboard support for configuration editor (remove modules using DEL or &lt;-, add modules using SPACE
+            or -&gt;)</li>
+
+            <li>Added button to configure a checkstyle configuration from the properties page</li>
+
+            <li>Added FileInSyncFilter that excludes all files from the checks that are in sync with the CVS
+            repository</li>
+
+            <li>Added control to the preferences page to see which projects use a specific check configuration</li>
+
+            <li>Reworked file set editor gui</li>
+
+            <li>Added content assist for regular expressions in file set editor and check configuration gui</li>
+
+            <li>Added button to configure a check configuration from the properties page (Usability shortcut)</li>
+
+            <li>Some documentation updated - work still in progress</li>
+          </ul>
+
+          <h3>Feature requests:</h3>
+
+          <ul>
+            <li>750183 add a get started paragraph or page</li>
+          </ul>
+
+          <h3>Bugs resolved:</h3>
+
+          <ul>
+            <li>1202812 Checkbox value changes are not persisted</li>
+
+            <li>1202435 NPE on "Export" with 4.0 beta Eclipse 3.02</li>
+
+            <li>1196130 Configuration Editor broken with duplicate checks</li>
+
+            <li>1196084 Can't use eclipse variables on SuppressionFilter</li>
+          </ul>
+
+          <h2><a id="r4_0_0b1" name="r4_0_0b1" />Release 4.0.0b1</h2>
+
+          <ul>
+            <li>Uses checkstyle-4.0-beta2</li>
+
+            <li>Improved rebuild logic - now rebuilds only necessary projects</li>
+
+            <li>Integrated Duplicate Code View - Thanks to Fabrice Bellingard</li>
+
+            <li>Jar files containing own checks can now integrated more easily<br />
+             - Just drop your .jar file in the extension-libraries directory and add your jar-File to the
+            Bundle-ClassPath entry in the MANIFEST.MF. Restart eclipse with -clean option afterwards at least once. Use
+            your checkstyle configuration file containing your custom checks with the plugin.</li>
+          </ul>
+
+          <h3>Feature requests:</h3>
+
+          <ul>
+            <li>1022915 Support for eclipse variables</li>
+
+            <li>758117 Don't rebuild everything - or ask before doing so</li>
+
+            <li>796155 Allow other jars to be added</li>
+
+            <li>741543 Allow user defined check rules</li>
+          </ul>
+
+          <h3>Bugs resolved:</h3>
+
+          <ul>
+            <li>1177797 RuntimeException</li>
+
+            <li>1084281 Many classes flagged as "with errors" with eclipse 3.1.0M3</li>
+
+            <li>996575 NoClassDefFoundError in v. 3.4.1</li>
+
+            <li>913098 Cannot add new check jars</li>
+          </ul>
+
+          <h3>Incorporated Patches:</h3>
+
+          <ul>
+            <li>1123128 Duplicated Code Checker</li>
+          </ul>
+
           <h2><a id="r4_0_0a4" name="r4_0_0a4" />Release 4.0.0a4</h2>
 
           <ul>
@@ -344,6 +432,8 @@ header();
         </td>
 
         <td rowspan="24" valign="TOP"><br />
+         <a href="#r4_0_0b2">Release 4.0.0b2</a><br />
+         <a href="#r4_0_0b1">Release 4.0.0b1</a><br />
          <a href="#r4_0_0a4">Release 4.0.0a4</a><br />
          <a href="#r4_0_0a3">Release 4.0.0a3</a><br />
          <a href="#r4_0_0a2">Release 4.0.0a2</a><br />
