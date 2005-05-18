@@ -24,7 +24,6 @@ package com.atlassw.tools.eclipse.checkstyle.preferences;
 // Imports from java namespace
 //=================================================
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -854,6 +853,10 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
             Object[] result = dialog.getResult();
             context = (IProject) result[0];
             config.setContext(context);
+        }
+        else
+        {
+            return false;
         }
 
         boolean contextOK = true;
