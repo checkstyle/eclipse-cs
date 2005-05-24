@@ -507,7 +507,16 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
 
                 if (event.getChecked())
                 {
-                    module.setSeverity(module.getMetaData().getDefaultSeverityLevel());
+                    //restore last severity before setting to ignore
+                    SeverityLevel lastEnabled = module.getLastEnabledSeverity();
+                    if (lastEnabled != null)
+                    {
+                        module.setSeverity(lastEnabled);
+                    }
+                    else
+                    {
+                        module.setSeverity(module.getMetaData().getDefaultSeverityLevel());
+                    }
                 }
                 else
                 {

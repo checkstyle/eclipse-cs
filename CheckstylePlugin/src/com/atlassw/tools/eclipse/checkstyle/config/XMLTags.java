@@ -106,7 +106,7 @@ public class XMLTags
 
     /** tag for a property value enumeration. */
     public static final String ENUMERATION_TAG = "enumeration"; //$NON-NLS-1$
-    
+
     /** tag for an option provider. */
     public static final String OPTION_PROVIDER = "option-provider"; //$NON-NLS-1$
 
@@ -158,6 +158,10 @@ public class XMLTags
 
     /** constant for the comment meta data stored with the modules. */
     public static final String COMMENT_ID = CheckstylePlugin.PLUGIN_ID + ".comment"; //$NON-NLS-1$
+
+    /** constant for the lastEnabledSeverity meta data stored with the modules. */
+    public static final String LAST_ENABLED_SEVERITY_ID = CheckstylePlugin.PLUGIN_ID
+            + ".lastEnabledSeverity"; //$NON-NLS-1$
 
     //
     // tags for the old proprietary check configuration

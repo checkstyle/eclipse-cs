@@ -234,6 +234,14 @@ public final class ConfigurationReader
                 {
                     mCurrentModule.setComment(value);
                 }
+                else if (XMLTags.LAST_ENABLED_SEVERITY_ID.equals(name))
+                {
+                    mCurrentModule.setLastEnabledSeverity(SeverityLevel.getInstance(value));
+                }
+                else
+                {
+                    mCurrentModule.getCustomMetaData().put(name, value);
+                }
             }
         }
 

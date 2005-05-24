@@ -21,8 +21,10 @@
 package com.atlassw.tools.eclipse.checkstyle.config;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import com.atlassw.tools.eclipse.checkstyle.config.meta.ConfigPropertyMetadata;
 import com.atlassw.tools.eclipse.checkstyle.config.meta.RuleMetadata;
@@ -55,6 +57,12 @@ public class Module implements Cloneable
 
     /** the severity level. */
     private SeverityLevel mSeverityLevel;
+
+    /** the last severity level before setting to ignored. */
+    private SeverityLevel mLastEnabledSeverity;
+
+    /** map containing unknown custom metadata of the module. */
+    private Map mCustomMetaData = new HashMap();
 
     //
     // constructors
@@ -200,6 +208,27 @@ public class Module implements Cloneable
     }
 
     /**
+     * Returns the last severity level before the module was set to ignore.
+     * 
+     * @return the last severity level
+     */
+    public SeverityLevel getLastEnabledSeverity()
+    {
+        return mLastEnabledSeverity;
+    }
+
+    /**
+     * Sets the last enabled severity. This is used to restore the original
+     * severity setting after the module has been set to ignore.
+     * 
+     * @param severity the severity
+     */
+    public void setLastEnabledSeverity(SeverityLevel severity)
+    {
+        mLastEnabledSeverity = severity;
+    }
+
+    /**
      * Sets the severity level.
      * 
      * @param severityLevel the severity level to set
@@ -213,12 +242,32 @@ public class Module implements Cloneable
             if (severityLevel.equals(defaultLevel))
             {
                 mSeverityLevel = null;
+                setLastEnabledSeverity(null);
+            }
+            else if (SeverityLevel.IGNORE.equals(severityLevel))
+            {
+                if (mSeverityLevel != null)
+                {
+                    setLastEnabledSeverity(mSeverityLevel);
+                }
+
+                mSeverityLevel = severityLevel;
             }
             else
             {
                 mSeverityLevel = severityLevel;
             }
         }
+    }
+
+    /**
+     * Return the map containing custom metadata for the module.
+     * 
+     * @return the custom metadata
+     */
+    public Map getCustomMetaData()
+    {
+        return mCustomMetaData;
     }
 
     /**

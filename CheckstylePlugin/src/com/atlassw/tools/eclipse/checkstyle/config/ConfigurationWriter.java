@@ -196,6 +196,35 @@ public final class ConfigurationWriter
             xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
         }
 
+        //Write last enabled severity level
+        if (module.getLastEnabledSeverity() != null)
+        {
+            attr = new AttributesImpl();
+            attr.addAttribute(new String(), XMLTags.NAME_TAG, XMLTags.NAME_TAG, null,
+                    XMLTags.LAST_ENABLED_SEVERITY_ID);
+            attr.addAttribute(new String(), XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, null, module
+                    .getLastEnabledSeverity().getName());
+            xmlOut.startElement(new String(), XMLTags.METADATA_TAG, XMLTags.METADATA_TAG, attr);
+            xmlOut.endElement(new String(), XMLTags.METADATA_TAG, XMLTags.METADATA_TAG);
+            xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
+        }
+
+        //write custom metadata
+        Iterator keys = module.getCustomMetaData().keySet().iterator();
+        while (keys.hasNext())
+        {
+
+            String name = (String) keys.next();
+            String value = (String) module.getCustomMetaData().get(name);
+
+            attr = new AttributesImpl();
+            attr.addAttribute(new String(), XMLTags.NAME_TAG, XMLTags.NAME_TAG, null, name);
+            attr.addAttribute(new String(), XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, null, value);
+            xmlOut.startElement(new String(), XMLTags.METADATA_TAG, XMLTags.METADATA_TAG, attr);
+            xmlOut.endElement(new String(), XMLTags.METADATA_TAG, XMLTags.METADATA_TAG);
+            xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
+        }
+
         // Write severity only if it differs from the parents severity
         if (module.getSeverity() != null && !module.getSeverity().equals(parentSeverity))
         {
