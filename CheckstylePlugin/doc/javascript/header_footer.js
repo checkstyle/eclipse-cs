@@ -11,6 +11,6 @@ document.write('</tr></table>');
 function footer()
 {
 document.write('<hr />');
-document.write('<p class="copyright">Copyright © 2002-2005 David Schneider. All Rights Reserved.</p>');
+document.write('<p class="copyright">Copyright © 2002-2005 David Schneider, Lars Ködderitzsch. All Rights Reserved.</p>');
 }
 

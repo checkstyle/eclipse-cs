@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="CONTENT-TYPE" content="text/html; charset=iso-8859-1" />
+    <link type="text/css" href="style.css" rel="stylesheet" />
+<script type="text/javascript" src="javascript/header_footer.js">
+</script>
+
+    <title>Expanding Properties</title>
+  </head>
+
+  <body class="content">
+<script type="text/javascript">
+header();
+</script>
+
+    <h2>Expanding Properties within Checkstyle configuration files</h2>
+
+    <p>Checkstyle contains a <a href="csdocs/config.html#Properties">feature</a> that lets you define module properties
+    in a way that they can expanded dynamically when the configuration is loaded.<br />
+     Such a property is defined using the well known <i>${property_name}</i> notation.</p>
+
+    <p>Normally these properties are resolved from command line or ant properties.<br />
+     Of course this does not work within the plugin &ndash; so using a checkstyle configuration containing such
+    expandable properties will probably fail.</p>
+
+    <p>But as you might have thought there are some features in place to help you out in this case.</p>
+
+    <p>First there are some properties that are automatically expanded by the plugin:</p>
+
+    <ul>
+      <li>
+        <p><i>${basedir}</i> &ndash; gets mapped to the current project directory</p>
+      </li>
+
+      <li>
+        <p><i>${project_loc}</i> &ndash; same as <i>${basedir}</i></p>
+      </li>
+
+      <li>
+        <p><i>${workspace_loc}</i> &ndash; gets mapped to the current Elipse workspace directory</p>
+      </li>
+    </ul>
+    <br />
+     
+
+    <p>If you have more properties that need to be expanded there is another featue for you.</p>
+
+    <p>Using External, Remote or Project Relative Configuration you can write your the properties you need expanded
+    into a <i>.properties</i> file that lies in the same directory as the configuration file and has the same
+    name.<br />
+     For instance:</p>
+
+    <p><i>D:/path/to/my/config/myCheckConfiguration.xml</i><br />
+     can resolve properties defined in<br />
+     <i>D:/path/to/my/config/myCheckConfiguration.properties</i></p>
+
+    <p>Expandable properties within your configuration file will then be resolved from the corresponding
+    <i>.properties</i> file.</p>
+<script type="text/javascript">
+footer();
+</script>
+  </body>
+</html>
+

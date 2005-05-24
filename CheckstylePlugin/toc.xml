@@ -9,14 +9,14 @@
 	<topic label="Advanced topics">
 		<topic label="Configuring File Sets"             	href="doc/advanced_file_sets.html"/>
 		<topic label="Using the plug-in filters"            href="doc/advanced_filters.html"/>
-		<topic label="Configuration types"					href="doc/advanced_configuration_types.html"/>	
+		<topic label="Configuration types"					href="doc/advanced_configtypes.html"/>	
 		<topic label="Working with a Team Repository"    	href="doc/advanced_team.html"/>
 		<topic label="Using Regular Expressions"         	href="doc/advanced_regularexpressions.html"/>
-		<topic label="Resolving properties"					href="doc/advanced_properties.html"/>
+		<topic label="Expanding properties"					href="doc/advanced_properties.html"/>
 	</topic>
 	<topic label="Extending the Checkstyle Plug-in">
 		<topic label="Using custom checks"					href="doc/extending_custom_checks.html"/>
-		<topic label="Creating a custom plugin filter"		href="doc/extending_custom_filters.html"/>
+		<topic label="Creating a custom plugin filter"		href="doc/extending_filters.html"/>
 	</topic>
 	<topic label="New and Noteworthy"						href="doc/new_and_noteworthy.html"/>
 	<topic label="Release notes"                   			href="doc/release_notes.html"/>

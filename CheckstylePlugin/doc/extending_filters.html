@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="CONTENT-TYPE" content="text/html; charset=iso-8859-1" />
+    <link type="text/css" href="style.css" rel="stylesheet" />
+<script type="text/javascript" src="javascript/header_footer.js">
+</script>
+
+    <title>Writing a custom plug-in filter</title>
+  </head>
+
+  <body class="content">
+<script type="text/javascript">
+header();
+</script>
+
+    <h2>Writing a custom plug-in filter</h2>
+
+    <p>As you surely know by now, the Eclipse Checkstyle Plug-in sports filters to exclude files from the checks.<br />
+     These filters are available on the plug-ins project properties page.</p>
+
+    <p><img src="images/basic_setup_project_html_m76fd5cc9.jpg" /><br clear="LEFT" />
+    <br />
+     If filters are activated for a project they exclude certain files of the project from the checks based on their
+    specific implementation.</p>
+
+    <p>Many useful filters are <a href="advanced_filters.html">already coming</a> with the plug-in distribution.<br />
+     However you may need to implement other filters that are very specific to your environment.</p>
+
+    <p>To enable you to write your own filters the plug-in defines an extension point for filters <font size="2"><font
+    face="Courier New"><font color="#008000">com.atlassw.tools.eclipse.checkstyle.filters</font></font></font>.<br />
+     To define and write your own filter you need to know how the Eclipse plug-in extension scheme works.<br />
+     Please understand that we can hardly give you a tutorial on how Eclipse plug-ins are developed.<br />
+    <br />
+    <br />
+    </p>
+
+    <p>Example:</p>
+
+    <p>Using the <font size="2"><font face="Courier New"><font
+    color="#008000">com.atlassw.tools.eclipse.checkstyle.filters</font></font></font> extension point in your
+    plug-in.xml</p>
+
+    <p style="margin-bottom: 0cm"><font face="Courier New" size="2"><font color="#000080">&lt;extension</font><br />
+     <font color="#000080">&nbsp;&nbsp;&nbsp;&nbsp;id=</font><font
+    color="#008000">"checkstyle.CheckstyleFilters"</font><br />
+     <font size="2"><font color="#000080">&nbsp;&nbsp;&nbsp;&nbsp;point=</font><font
+    color="#008000">"com.atlassw.tools.eclipse.checkstyle.filters"</font><font color="#000080">&gt;</font></font><br />
+     <font color="#000080">&nbsp;&nbsp;&nbsp;&nbsp;&lt;filter</font><br />
+     <font color="#000080">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name=</font><font
+    color="#008000">"%WriteProtectedFilter.label"</font><br />
+     <font color="#000080">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;internal-name=</font><font
+    color="#008000">"WriteProtectedFiles"</font><br />
+     <font color="#000080">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description=</font><font
+    color="#008000">"%WriteProtectedFilter.description"</font><br />
+     <font color="#000080">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;class=</font><font
+    color="#008000">"com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.WriteProtectedFilter"</font><font
+    color="#000080">&gt;</font><br />
+     <font color="#000080">&nbsp;&nbsp;&nbsp;&nbsp;&lt;/filter&gt;</font><br />
+     <font color="#000080">&lt;/extension&gt;</font><br />
+    </font></p>
+
+    <p style="margin-bottom: 0cm"><br />
+    </p>
+
+    <p>The filter implementation class must implement the <font color="#000080"><font size="2"><font
+    face="Courier New">com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.IFilter</font></font></font>
+    interface.<br />
+     To make life a bit easier for you there is the <font size="2" color="#000080"><font
+    face="Courier New">com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.AbstractFilter</font></font> class
+    which implements already most of the filter interface.</p>
+
+    <p style="margin-bottom: 0cm">A simple filter implementation (like <font size="2"><font
+    face="Courier New">WriteProtectedFilter</font></font>) looks like this:</p>
+
+    <p style="margin-bottom: 0cm"><br />
+    </p>
+
+    <p><font color="#000000" face="Courier New" size="2"><b><font color="#7f0055">public</font></b> <b><font
+    color="#7f0055">&nbsp;class</font></b>&nbsp;WriteProtectedFilter <b><font color="#7f0055">&nbsp;extends</font></b>
+    &nbsp;AbstractFilter<br />
+     {<br />
+     <font color="#3f5fbf">&nbsp;&nbsp;/**</font><br />
+     <font color="#3f5fbf">&nbsp;&nbsp;&nbsp;*</font><b><font color="#7f9fbf">&nbsp;@see</font></b><font
+    color="#3f5fbf">&nbsp;IFilter#accept(java.lang.Object)</font><br />
+     <font color="#3f5fbf">&nbsp;&nbsp;&nbsp;*/</font><br />
+     <b><font color="#7f0055">&nbsp;&nbsp;public</font></b><b><font
+    color="#7f0055">&nbsp;boolean</font></b>&nbsp;accept(Object element)<br />
+     &nbsp;&nbsp;{<br />
+     <b><font color="#7f0055">&nbsp;&nbsp;&nbsp;&nbsp;boolean</font></b>&nbsp;passes = <b><font
+    color="#7f0055">true</font></b><font color="#000000">;</font><br />
+     <b><font color="#7f0055">&nbsp;&nbsp;&nbsp;&nbsp;if</font></b>&nbsp;(element <b><font
+    color="#7f0055">instanceof</font></b>&nbsp;IResource)<br />
+     &nbsp;&nbsp;&nbsp;&nbsp;{<br />
+     <font size="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;passes = !((IResource) element).isReadOnly();</font><br />
+     &nbsp;&nbsp;&nbsp;&nbsp;}<br />
+     <b><font color="#7f0055">&nbsp;&nbsp;&nbsp;&nbsp;return</font></b>&nbsp;passes;<br />
+     &nbsp;&nbsp;}<br />
+     }<br />
+    <br />
+    </font></p>
+
+    <p>We hope you get the idea.<br />
+    To get further insight how this stuff is working we recommend looking into the plug-ins sources as all filters
+    coming with the plugin are using this mechanism too.</p>
+  </body>
+</html>
+
