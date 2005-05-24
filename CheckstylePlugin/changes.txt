@@ -10,6 +10,21 @@ Make sure you got an eclipse 3.0 or higher installation you are installing this 
 Eclipse Checkstyle Plugin v4.0.0
 ---------------------------------
 
+Release beta3:
+--------------
+
+* Some bugfixes
+* Documentation updated
+
+
+Bugs:
+1086440	Reports are in the Eclipse Problems View
+1203108	Additional metadata is removed
+1204531	Checkbox always sets severity to warning
+
+
+
+
 Release beta2:
 --------------
 
