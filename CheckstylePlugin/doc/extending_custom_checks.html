@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="CONTENT-TYPE" content="text/html; charset=iso-8859-1" />
+    <link type="text/css" href="style.css" rel="stylesheet" />
+<script type="text/javascript" src="javascript/header_footer.js">
+</script>
+
+    <title>Using custom checks</title>
+  </head>
+
+  <body class="content">
+<script type="text/javascript">
+header();
+</script>
+
+    <h2>Using custom checks</h2>
+
+    <p>One great feature of Checkstyle is its extentablity. You can easily write own checks as explained <a
+    href="./csdocs\writingchecks.html">here</a>.</p>
+
+    <p>Once you have written your check you surely want to use them with the plugin.</p>
+
+    <p>There are a few steps you must take to accomplish this:</p>
+
+    <ol>
+      <li>
+        <p>Package your checks into a <i>.jar</i> file</p>
+      </li>
+
+      <li>
+        <p>Go to <i>&lt;path-to-my-eclipse&gt;/plugins/com.atlassw.tools.eclipse.checkstyle_x.x.x</i> directory and
+        copy the <i>.jar</i> into the <i>extension-libraries</i> directory</p>
+      </li>
+
+      <li>
+        <p>Open the META-INF/MANIFEST.MF file from within the with an text editor</p>
+      </li>
+
+      <li>
+        <p>Extend the <i>Bundle-ClassPath</i> entry to include your <i>.jar</i> file<br />
+         Before: <font size="2"><font face="Courier New">Bundle-ClassPath:
+        CheckstylePlugin.jar,NLS.jar,checkstyle-all-4.0-beta2.jar,extension-libraries/checkstyle-optional-4.0-beta2.jar</font></font><br />
+         After: <font size="2"><font face="Courier New">Bundle-ClassPath:
+        CheckstylePlugin.jar,NLS.jar,checkstyle-all-4.0-beta2.jar,extension-libraries/checkstyle-optional-4.0-beta2.jar,extension-libraries/myCustomChecks.jar</font></font></p>
+      </li>
+
+      <li>
+        <p>Restart Eclipse with the <i>-clean</i> option &ndash; this is needed to let Eclipse pick up the changes you
+        made</p>
+      </li>
+
+      <li>
+        <p>Write a Checkstyle configuration file using a text editor &ndash; include your custom modules within this
+        configuration.<br />
+         Be sure to include all properties of your modules within the module configuration so you can edit the
+        properties afterward in the Checkstyle Plug-in Configuration Editor.<br />
+         Note that the custom check will show up in the <i>Other</i> section of the configuration editor.<br />
+         You are now able to configure the known properties of your check and to remove the check from the
+        configuration.<br />
+         After you removed it you can't add it again using the Checkstyle Plug-in Configuration Editor &ndash; so be
+        careful.<br />
+        <br />
+         This limitation exists because there is no meta data for you check known to the plug-in.<br />
+         If you are really knowing what you are doing you might want to try fiddling with the module metadata within
+        the <i>CheckstylePlugin.jar</i>.<br />
+        <br />
+         Maybe a later release will let you specifiy the meta data for your checks more easily.</p>
+      </li>
+    </ol>
+<script type="text/javascript">
+footer();
+</script>
+  </body>
+</html>
+
