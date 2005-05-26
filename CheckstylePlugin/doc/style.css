@@ -1,13 +1,12 @@
 body.navbar{
-	/**
-	background-color:#746acc;
-	color:white;
-	**/
-	background-image:url(images/background.jpg);
+	/**background-color:#CCFFFF;**/
+	background-image:url(images/tile_center.gif);
 }
 
 body.content{
-	background-image:url(images/background.jpg);
+
+	background-image:url(images/tile_center.gif);
+	
 	/**
 	margin-bottom:0;
 	margin-left:0;
@@ -24,17 +23,55 @@ table.header{
 }
 
 h1.header{
-	/**font-size:24px;**/
+	font-size:36px;
+	color:#003399;
 }
 
 h2{
-	/**font-size:16px;**/
+background-color: #003399;
+color: #FFFFFF;
+text-align: center;
+font-size:24px;
 }
 p.copyright{
 	font-size:11px;
-	color:#808080;
+	color:#003399;
 }
 img{
 	vertical-align:left;
 	border:0;
 }
+
+
+.buttonscontainer {width: 220px; margin-top: 76px;}
+
+.buttons a {color: #FFFFFF;
+background-color: #003399;
+padding: 2px;
+padding-left: 3px;
+display: block;
+border-left: 10px solid #6699FF;
+font: 12px Arial, sans-serif;
+font-weight: bold;
+text-decoration: none;
+text-align: left;
+margin-top: 1px;}
+
+.buttons span {color: #FFFFFF;
+background-color: #003399;
+padding: 2px;
+padding-left: 3px;
+display: block;
+border-left: 10px solid #6699FF;
+font: 12px Arial, sans-serif;
+font-weight: bold;
+text-decoration: none;
+text-align: left;
+margin-top: 1px;}
+
+.buttons a:hover {border-left: 10px solid #FFFFFF;
+text-decoration: none;
+color: #FFFFFF;}
+
+
+
