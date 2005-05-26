@@ -1,25 +1,12 @@
 body.navbar{
-	/**background-color:#CCFFFF;**/
 	background-image:url(images/tile_center.gif);
+	background-attachment:fixed;
+	background-position:-680px 0px;
 }
 
 body.content{
-
 	background-image:url(images/tile_center.gif);
-	
-	/**
-	margin-bottom:0;
-	margin-left:0;
-	margin-right:0;
-	margin-top:0;
-	**/
-}
-
-table.header{
-	/**
-	background-color:#746acc;
-	color:white;
-	**/
+	background-attachment:fixed;
 }
 
 h1.header{
@@ -28,11 +15,12 @@ h1.header{
 }
 
 h2{
-background-color: #003399;
-color: #FFFFFF;
-text-align: center;
-font-size:24px;
+	background-color: #003399;
+	color: #FFFFFF;
+	text-align: center;
+	font-size:24px;
 }
+
 p.copyright{
 	font-size:11px;
 	color:#003399;
@@ -43,35 +31,44 @@ img{
 }
 
 
-.buttonscontainer {width: 220px; margin-top: 76px;}
+.buttonscontainer {
+	width: 220px; 
+	margin-top: 42px;
+}
 
-.buttons a {color: #FFFFFF;
-background-color: #003399;
-padding: 2px;
-padding-left: 3px;
-display: block;
-border-left: 10px solid #6699FF;
-font: 12px Arial, sans-serif;
-font-weight: bold;
-text-decoration: none;
-text-align: left;
-margin-top: 1px;}
+.buttons a {
+	color: #FFFFFF;
+	background-color: #003399;
+	padding: 2px;
+	padding-left: 3px;
+	display: block;
+	border-left: 10px solid #6699FF;
+	font: 12px Arial, sans-serif;
+	font-weight: bold;
+	text-decoration: none;
+	text-align: left;
+	margin-top: 1px;
+}
 
-.buttons span {color: #FFFFFF;
-background-color: #003399;
-padding: 2px;
-padding-left: 3px;
-display: block;
-border-left: 10px solid #6699FF;
-font: 12px Arial, sans-serif;
-font-weight: bold;
-text-decoration: none;
-text-align: left;
-margin-top: 1px;}
+.buttons span {
+	color: #FFFFFF;
+	background-color: #003399;
+	padding: 2px;
+	padding-left: 3px;
+	display: block;
+	border-left: 10px solid #6699FF;
+	font: 12px Arial, sans-serif;
+	font-weight: bold;
+	text-decoration: none;
+	text-align: left;
+	margin-top: 1px;
+}
 
-.buttons a:hover {border-left: 10px solid #FFFFFF;
-text-decoration: none;
-color: #FFFFFF;}
+.buttons a:hover {
+	border-left: 10px solid #FFFFFF;
+	text-decoration: none;
+	color: #FFFFFF;
+}
 
 
 
