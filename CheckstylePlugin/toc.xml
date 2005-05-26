@@ -18,7 +18,6 @@
 		<topic label="Using custom checks"					href="doc/extending_custom_checks.html"/>
 		<topic label="Creating a custom plugin filter"		href="doc/extending_filters.html"/>
 	</topic>
-	<topic label="New and Noteworthy"						href="doc/new_and_noteworthy.html"/>
 	<topic label="Release notes"                   			href="doc/release_notes.html"/>
 	<topic label="FAQ"										href="doc/faq.html"/>
 	<topic label="Troubleshooting"                   		href="doc/troubleshooting.html"/>
