@@ -82,7 +82,7 @@ public final class Messages extends NLS
     public static String CheckstylePreferencePage_nagRebuild;
 
     public static String CheckstylePreferencePage_lblProjectUsage;
-    
+
     public static String CheckstylePreferencePage_msgProjectRelativeConfigNoFound;
 
     public static String SimpleFileSetsEditor_btnManageConfigs;
@@ -100,8 +100,6 @@ public final class Messages extends NLS
     public static String ComplexFileSetsEditor_btnEdit;
 
     public static String ComplexFileSetsEditor_btnRemove;
-
-    public static String ComplexFileSetsEditor_msgNoFileset;
 
     public static String FileMatchPatternEditDialog_lblRegex;
 
@@ -123,8 +121,6 @@ public final class Messages extends NLS
 
     public static String FileSetEditDialog_btnRemove;
 
-    public static String FileSetEditDialog_btnText;
-
     public static String FileSetEditDialog_btnUp;
 
     public static String FileSetEditDialog_btnDown;
@@ -134,8 +130,6 @@ public final class Messages extends NLS
     public static String FileSetEditDialog_titleValidationError;
 
     public static String FileSetEditDialog_noCheckConfigSelected;
-
-    public static String FileSetEditDialog_msgNoPattern;
 
     public static String FileSetEditDialog_titleFilesetEditor;
 
@@ -149,8 +143,6 @@ public final class Messages extends NLS
 
     public static String ConfigureDeconfigureNatureJob_msgTaksAddingNature;
 
-    public static String CheckstyleNature_msgErrorAddingNature;
-
     public static String BuildProjectJob_msgBuildProject;
 
     public static String BuildProjectJob_msgBuildAllProjects;
@@ -159,19 +151,9 @@ public final class Messages extends NLS
 
     public static String Auditor_msgCheckingFile;
 
-    public static String Auditor_msgErrorAddingMarker;
-
     public static String Auditor_txtUnknownModule;
 
     public static String ConfigPropertyMetadata_txtNoDescription;
-
-    public static String MetadataFactory_msgErrorLoadingMetadata;
-
-    public static String MetadataFactory_msgErrorCreatingParser;
-
-    public static String MetadataFactory_msgErrorParsingMetadata;
-
-    public static String MetadataFactory_msgErrorReadingFile;
 
     public static String FileConfigurationLocationEditor_btnBrowse;
 
@@ -182,8 +164,6 @@ public final class Messages extends NLS
     public static String ProjectConfigurationLocationEditor_msgSelectConfigFile;
 
     public static String CheckConfigurationMigrator_txtMigrationAddition;
-
-    public static String CheckConfigurationFactory_msgErrorLoadingCheckConfigs;
 
     public static String ConfigPropertyWidgetFile_btnBrowse0;
 
