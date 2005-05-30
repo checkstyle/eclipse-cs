@@ -168,7 +168,9 @@ public class ProjectCheckConfiguration extends AbstractCheckConfiguration
                 // Strip file extension
                 String propsLocation = location.substring(0, location.lastIndexOf(".")); //$NON-NLS-1$
 
-                URL propertyFile = new URL(propsLocation + ".properties"); //$NON-NLS-1$
+                File f = new File(propsLocation + ".properties");
+
+                URL propertyFile = f.toURL(); //$NON-NLS-1$
 
                 bundle = new PropertyResourceBundle(new BufferedInputStream(propertyFile
                         .openStream()));

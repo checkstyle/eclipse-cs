@@ -542,7 +542,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
             if (element instanceof RuleGroupMetadata)
             {
                 mGroupFilter.setCurrentGroup((RuleGroupMetadata) element);
-                mConfiguredModulesGroup.setText(NLS.bind(
+                mConfiguredModulesGroup.setText(Messages.bind(
                         Messages.CheckConfigurationConfigureDialog_lblConfiguredModules,
                         ((RuleGroupMetadata) element).getGroupName()));
                 mTableViewer.refresh();
@@ -554,7 +554,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
 
                 description = ((RuleMetadata) element).getDescription();
                 mGroupFilter.setCurrentGroup(((RuleMetadata) element).getGroup());
-                mConfiguredModulesGroup.setText(NLS.bind(
+                mConfiguredModulesGroup.setText(Messages.bind(
                         Messages.CheckConfigurationConfigureDialog_lblConfiguredModules,
                         ((RuleMetadata) element).getGroup().getGroupName()));
                 mTableViewer.refresh();
