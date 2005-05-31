@@ -59,6 +59,12 @@ header();
 
     <p>Expandable properties within your configuration file will then be resolved from the corresponding
     <i>.properties</i> file.</p>
+
+    <p>Note that the plugin supports 'property chaining' to let you use 'properties within properties'.<br />
+     With this feature you can write something like this in your <i>.properties</i> file:<br />
+     <i>property1=abc<br />
+     property2=${property1}def</i><br />
+     Using <i>${property2}</i> in your checkstyle configuration will then be resolved to: <i>abcdef</i></p>
 <script type="text/javascript">
 footer();
 </script>
