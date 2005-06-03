@@ -41,6 +41,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.MessageDialogWithToggle;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferencePage;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -57,9 +58,11 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
@@ -82,6 +85,7 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.Messages;
+import com.atlassw.tools.eclipse.checkstyle.builder.CheckerFactory;
 import com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleBuilder;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationFactory;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
@@ -129,6 +133,8 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
     private Button mRemoveButton;
 
     private Button mExportButton;
+
+    private Button mPurgeCacheButton;
 
     private Text mConfigurationDescription;
 
@@ -249,10 +255,11 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         // Create a combo with the rebuild options
         //
         Composite rebuildComposite = new Composite(generalComposite, SWT.NULL);
-        GridLayout layout2 = new GridLayout(2, false);
+        GridLayout layout2 = new GridLayout(3, false);
         layout2.marginHeight = 0;
         layout2.marginWidth = 0;
         rebuildComposite.setLayout(layout2);
+        rebuildComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
         Label lblRebuild = new Label(rebuildComposite, SWT.NULL);
         lblRebuild.setText(Messages.CheckstylePreferencePage_lblRebuild);
@@ -262,6 +269,23 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
             MessageDialogWithToggle.ALWAYS, MessageDialogWithToggle.NEVER });
         mRebuildIfNeeded.select(mRebuildIfNeeded.indexOf(prefs
                 .getString(CheckstylePlugin.PREF_ASK_BEFORE_REBUILD)));
+
+        //
+        // Create button to purge the checker cache
+        //
+
+        mPurgeCacheButton = new Button(rebuildComposite, SWT.FLAT);
+        ImageDescriptor descriptor = CheckstylePlugin.imageDescriptorFromPlugin(
+                CheckstylePlugin.PLUGIN_ID, "icons/refresh.gif");
+        mPurgeCacheButton.setImage(descriptor.createImage());
+        mPurgeCacheButton.setToolTipText("Refresh cached checkstyle configurations");
+        mPurgeCacheButton.addSelectionListener(mController);
+        GridData gd = new GridData();
+        gd.horizontalAlignment = GridData.END;
+        gd.grabExcessHorizontalSpace = true;
+        gd.heightHint = 20;
+        gd.widthHint = 20;
+        mPurgeCacheButton.setLayoutData(gd);
 
         //
         // Create the "Fileset warning" check box.
@@ -645,26 +669,34 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
             {
                 addCheckConfig();
             }
-            if (mEditButton == e.widget && mViewer.getSelection() instanceof IStructuredSelection)
+            else if (mEditButton == e.widget
+                    && mViewer.getSelection() instanceof IStructuredSelection)
             {
                 editCheckConfig();
             }
-            if (mConfigureButton == e.widget
+            else if (mConfigureButton == e.widget
                     && mViewer.getSelection() instanceof IStructuredSelection)
             {
                 configureCheckConfig();
             }
-            if (mCopyButton == e.widget && mViewer.getSelection() instanceof IStructuredSelection)
+            else if (mCopyButton == e.widget
+                    && mViewer.getSelection() instanceof IStructuredSelection)
             {
                 copyCheckConfig();
             }
-            if (mRemoveButton == e.widget && mViewer.getSelection() instanceof IStructuredSelection)
+            else if (mRemoveButton == e.widget
+                    && mViewer.getSelection() instanceof IStructuredSelection)
             {
                 removeCheckConfig();
             }
-            if (mExportButton == e.widget && mViewer.getSelection() instanceof IStructuredSelection)
+            else if (mExportButton == e.widget
+                    && mViewer.getSelection() instanceof IStructuredSelection)
             {
                 exportCheckstyleCheckConfig();
+            }
+            else if (mPurgeCacheButton == e.widget)
+            {
+                CheckerFactory.cleanup();
             }
         }
 
