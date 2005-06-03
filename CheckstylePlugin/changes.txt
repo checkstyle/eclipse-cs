@@ -18,10 +18,11 @@ Release beta3:
 
 
 Bugs:
+1213014	changes to suppressions file require restart
+1212545	property file in "project relative" configuration
 1086440	Reports are in the Eclipse Problems View
 1203108	Additional metadata is removed
 1204531	Checkbox always sets severity to warning
-
 
 
 
