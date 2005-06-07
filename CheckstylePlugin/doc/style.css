@@ -5,6 +5,7 @@ body.navbar{
 }
 
 body.content{
+	margin-top:0px;
 	background-image:url(images/tile_center.gif);
 	background-attachment:fixed;
 }

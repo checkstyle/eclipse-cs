@@ -14,7 +14,8 @@ Release beta3:
 --------------
 
 * Some bugfixes
-* Documentation updated
+* Documentation fully updated (but not yet reviewed)
+* Updated to Checkstyle 4.0 beta3
 
 
 Bugs:
