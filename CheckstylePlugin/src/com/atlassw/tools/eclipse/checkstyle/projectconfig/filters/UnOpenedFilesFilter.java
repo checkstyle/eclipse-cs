@@ -22,6 +22,7 @@ package com.atlassw.tools.eclipse.checkstyle.projectconfig.filters;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IWorkbench;
@@ -63,9 +64,12 @@ public class UnOpenedFilesFilter extends AbstractFilter
                     for (int k = 0; k < editorRefs.length; k++)
                     {
 
-                        IEditorInput input = editorRefs[k].getEditor(false).getEditorInput();
+                        IEditorPart editor = editorRefs[k] != null ? editorRefs[k].getEditor(false)
+                                : null;
 
-                        if (input instanceof IFileEditorInput)
+                        IEditorInput input = editor != null ? editor.getEditorInput() : null;
+
+                        if (input != null && input instanceof IFileEditorInput)
                         {
 
                             IFileEditorInput fileInput = (IFileEditorInput) input;
