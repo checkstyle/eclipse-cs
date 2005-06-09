@@ -13,6 +13,9 @@ Eclipse Checkstyle Plugin v4.0.0
 Release beta4:
 --------------
 
+Checkstyle Eclipse Plugin 4.0.0 beta3 had to be quickly pulled because of a critical bug in Checkstyle 4.0 beta3.
+If you installed plugin version 4.0.0 beta3 please consider upgrading to this version.
+
 * Updated to Checkstyle 4.0 beta4
 
 Bugs:

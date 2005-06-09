@@ -1,0 +1,986 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!-- Content Stylesheet for Site -->
+
+    
+    
+
+    
+<!-- start the processing -->
+    <!-- ====================================================================== -->
+    <!-- GENERATED FILE, DO NOT EDIT, EDIT THE XML FILE IN xdocs INSTEAD! -->
+    <!-- Main Page Section -->
+    <!-- ====================================================================== -->
+    <html>
+        <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+
+                                                    <meta name="author" value="Checkstyle Development Team">
+            <meta name="email" value="checkstyle-devel@lists.sourceforge.net">
+            
+           
+                                    
+                        
+            <link href="./css/site.css" rel="stylesheet" type="text/css"/>
+
+            <title>Checkstyle - Size Violations</title>
+        </head>
+
+        <body bgcolor="#ffffff" text="#000000" link="#525D76">
+           <!-- START Header table -->
+           <table border="0" cellspacing="0" width="98%">
+                <!-- TOP IMAGE -->
+                <tr>
+                        <td align="left">
+       <h1>Size Violations</h1>
+    </td>
+    <td align="right">
+                  	<a href="http://checkstyle.sourceforge.net/">
+      	  <img src="./images/logo.png" alt="Checkstyle Logo" border="0"/>
+      	</a>
+          </td>
+                </tr>
+            </table>
+           <!-- END Header table -->
+
+           <!-- START main table -->
+            <table id="main" border="0" width="98%" cellspacing="2" cellpadding="0">
+                <tr><td colspan="2">
+                    <hr noshade="" size="1"/>
+                </td></tr>
+
+                <tr>
+                    <!-- LEFT SIDE NAVIGATION -->
+                    <td id="navbar" valign="top">
+                      <!-- ============================================================ -->
+  <table id="navbar" border="0" cellspacing="0" cellpadding="0">
+               <tr >
+       	 <td class="navbarHeader">
+           <strong>About</strong>
+         </td>
+       </tr>
+       <tr >
+       	 <td class="navbarItem">
+             <ul>
+                  <li>    <a href="./index.html">Checkstyle</a>
+</li>
+                    <ul>
+    </ul>
+    </ul>
+         </td>
+       </tr>
+
+           <tr >
+       	 <td class="navbarHeader">
+           <strong>Documentation</strong>
+         </td>
+       </tr>
+       <tr >
+       	 <td class="navbarItem">
+             <ul>
+                  <li>    <a href="./releasenotes.html">Release Notes</a>
+</li>
+                    <ul>
+    </ul>
+                  <li>    <a href="./config.html">Configuration</a>
+</li>
+                    <ul>
+                  <li>    <a href="./property_types.html">Property Types</a>
+</li>
+                    <ul>
+    </ul>
+    </ul>
+                  <li>    <a href="./running.html">Running</a>
+</li>
+                    <ul>
+                  <li>    <a href="./anttask.html">Ant Task</a>
+</li>
+                    <ul>
+    </ul>
+                  <li>    <a href="./cmdline.html">Command Line</a>
+</li>
+                    <ul>
+    </ul>
+    </ul>
+                  <li>    <a href="./availablechecks.html">Available Checks</a>
+</li>
+                    <ul>
+                  <li>    <a href="./checks.html">Standard Checks</a>
+</li>
+                    <ul>
+                  <li>    <a href="./config_javadoc.html">Javadoc Comments</a>
+</li>
+                    <ul>
+    </ul>
+                  <li>    <a href="./config_naming.html">Naming Conventions</a>
+</li>
+                    <ul>
+    </ul>
+                  <li>    <a href="./config_header.html">Headers</a>
+</li>
+                    <ul>
+    </ul>
+                  <li>    <a href="./config_imports.html">Imports</a>
+</li>
+                    <ul>
+    </ul>
+                  <li><b>    <a href="./config_sizes.html">Size Violations</a>
+</b></li>
+                      <ul class="sectionquicklink">
+                                          <li><a href="#ExecutableStatementCount">ExecutableStatementCount</a></li>
+                                                        <li><a href="#FileLength">FileLength</a></li>
+                                                        <li><a href="#LineLength">LineLength</a></li>
+                                                        <li><a href="#MethodLength">MethodLength</a></li>
+                                                        <li><a href="#AnonInnerLength">AnonInnerLength</a></li>
+                                                        <li><a href="#ParameterNumber">ParameterNumber</a></li>
+                                  </ul>
+              <ul>
+    </ul>
+                  <li>    <a href="./config_whitespace.html">Whitespace</a>
+</li>
+                    <ul>
+    </ul>
+                  <li>    <a href="./config_modifier.html">Modifiers</a>
+</li>
+                    <ul>
+    </ul>
+                  <li>    <a href="./config_blocks.html">Block Checks</a>
+</li>
+                    <ul>
+    </ul>
+                  <li>    <a href="./config_coding.html">Coding</a>
+</li>
+                    <ul>
+    </ul>
+                  <li>    <a href="./config_design.html">Class Design</a>
+</li>
+                    <ul>
+    </ul>
+                  <li>    <a href="./config_duplicates.html">Duplicate Code</a>
+</li>
+                    <ul>
+    </ul>
+                  <li>    <a href="./config_metrics.html">Metrics</a>
+</li>
+                    <ul>
+    </ul>
+                  <li>    <a href="./config_misc.html">Miscellaneous</a>
+</li>
+                    <ul>
+    </ul>
+    </ul>
+                  <li>    <a href="./optional.html">Optional Checks</a>
+</li>
+                    <ul>
+                  <li>    <a href="./config_usage.html">Usage Checks</a>
+</li>
+                    <ul>
+    </ul>
+                  <li>    <a href="./config_j2ee.html">J2EE Checks</a>
+</li>
+                    <ul>
+    </ul>
+    </ul>
+    </ul>
+                  <li>    <a href="./extending.html">Extending Checkstyle</a>
+</li>
+                    <ul>
+                  <li>    <a href="./writingchecks.html">Writing checks</a>
+</li>
+                    <ul>
+    </ul>
+                  <li>    <a href="./writingfilters.html">Writing filters</a>
+</li>
+                    <ul>
+    </ul>
+                  <li>    <a href="./writinglisteners.html">Writing listeners</a>
+</li>
+                    <ul>
+    </ul>
+    </ul>
+                  <li>    <a href="./api/index.html">Javadoc</a>
+</li>
+                    <ul>
+    </ul>
+    </ul>
+         </td>
+       </tr>
+
+           <tr >
+       	 <td class="navbarHeader">
+           <strong>SourceForge</strong>
+         </td>
+       </tr>
+       <tr >
+       	 <td class="navbarItem">
+             <ul>
+                  <li>    <a href="http://sourceforge.net/mail/?group_id=29721">Mailing Lists</a>
+</li>
+                    <ul>
+    </ul>
+                  <li>    <a href="http://sourceforge.net/tracker/?atid=397078&group_id=29721&func=browse">Bug Database</a>
+</li>
+                    <ul>
+    </ul>
+                  <li>    <a href="http://sourceforge.net/tracker/?atid=397081&group_id=29721&func=browse">Feature Requests</a>
+</li>
+                    <ul>
+    </ul>
+    </ul>
+         </td>
+       </tr>
+
+           <tr >
+       	 <td class="navbarHeader">
+           <strong>Developers</strong>
+         </td>
+       </tr>
+       <tr >
+       	 <td class="navbarItem">
+             <ul>
+                  <li>    <a href="http://sourceforge.net/projects/checkstyle">Project Page</a>
+</li>
+                    <ul>
+    </ul>
+                  <li>    <a href="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/checkstyle/">CVS Repository</a>
+</li>
+                    <ul>
+    </ul>
+                  <li>    <a href="./contributing.html">Contributing</a>
+</li>
+                    <ul>
+    </ul>
+    </ul>
+         </td>
+       </tr>
+
+      </table>
+
+
+  <div align="center">
+    <p><a href="http://www.cenqua.com/clover?ref=checkstyle">
+      <img src="http://www.cenqua.com/clover/images/clovered1.gif?ref=checkstyle" alt="Clover Logo"/></a>
+    </p>
+  </div>
+
+  <p>Hosted by:</p>
+  <div align="center">
+    <p><a href="http://sourceforge.net">
+      <img src="http://sourceforge.net/sflogo.php?group_id=29721&amp;type=1" width="88" height="31" alt="SourceForge Logo"/></a>
+    </p>
+  </div>
+
+                    </td>
+                    <td id="mainContents" align="left" valign="top">
+	                                                                     <a name="ExecutableStatementCount"></a>
+  <h2>ExecutableStatementCount</h2>
+                                            <h3>Description</h3>
+                                    <p>
+          Restricts the number of executable statements to a specified limit.
+        </p>
+                                                                            <h3>Properties</h3>
+                                    <table>
+                                            <tr class="even">
+                        <th colspan="" rowspan="" valign="top" align="left">
+                name
+        </th>
+                                <th colspan="" rowspan="" valign="top" align="left">
+                description
+        </th>
+                                <th colspan="" rowspan="" valign="top" align="left">
+                type
+        </th>
+                                <th colspan="" rowspan="" valign="top" align="left">
+                default value
+        </th>
+            </tr>
+                                                <tr class="odd">
+                        <td class="odd" colspan="" rowspan="">
+                max
+        </td>
+                                <td class="odd" colspan="" rowspan="">
+                the maximum threshold allowed
+        </td>
+                                <td class="odd" colspan="" rowspan="">
+                <a href="property_types.html#integer">integer</a>
+        </td>
+                                <td class="odd" colspan="" rowspan="">
+                <span class="default">30</span>
+        </td>
+            </tr>
+                                                <tr class="even">
+                        <td class="even" colspan="" rowspan="">
+                tokens
+        </td>
+                                <td class="even" colspan="" rowspan="">
+                members to check
+        </td>
+                                <td class="even" colspan="" rowspan="">
+                
+              subset of tokens <a href="api/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#CTOR_DEF">CTOR_DEF</a>,
+              <a href="api/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#METHOD_DEF">METHOD_DEF</a>,
+               <a href="api/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#INSTANCE_INIT">INSTANCE_INIT</a>,
+                <a href="api/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#STATIC_INIT">STATIC_INIT</a>
+            
+        </td>
+                                <td class="even" colspan="" rowspan="">
+                all tokens
+        </td>
+            </tr>
+            </table>
+                                                                            <h3>Examples</h3>
+                                    <p>
+          To configure the check:
+        </p>
+                                                    <div align="left">
+    <table cellspacing="4" cellpadding="0" border="0">
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;ExecutableStatementCount&quot;/&gt;</pre></td>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    </table>
+    </div>
+                                                <p>
+          To configure the check with a threshold of 20 for constructor and
+          method definitions:
+        </p>
+                                                    <div align="left">
+    <table cellspacing="4" cellpadding="0" border="0">
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;ExecutableStatementCount&quot;&gt;
+    &lt;property name=&quot;max&quot; value=&quot;20&quot;/&gt;
+    &lt;property name=&quot;tokens&quot; value=&quot;CTOR_DEF,METHOD_DEF&quot;/&gt;
+&lt;/module&gt;</pre></td>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    </table>
+    </div>
+                                                                            <h3>Package</h3>
+                                    <p>
+          com.puppycrawl.tools.checkstyle.checks.sizes
+        </p>
+                                                                            <h3>Parent Module</h3>
+                                    <p>
+          <a href="config.html#treewalker">TreeWalker</a>
+        </p>
+                                                                                                                                              <a name="FileLength"></a>
+  <h2>FileLength</h2>
+                                            <h3>Description</h3>
+                                    <p>
+          Checks for long source files.
+        </p>
+                                                <p>
+          Rationale: If a source file becomes very long it is hard to
+          understand.  Therefore long classes should usually be refactored
+          into several individual classes that focus on a specific task.
+        </p>
+                                                                            <h3>Properties</h3>
+                                    <table>
+                                            <tr class="even">
+                        <th colspan="" rowspan="" valign="top" align="left">
+                name
+        </th>
+                                <th colspan="" rowspan="" valign="top" align="left">
+                description
+        </th>
+                                <th colspan="" rowspan="" valign="top" align="left">
+                type
+        </th>
+                                <th colspan="" rowspan="" valign="top" align="left">
+                default value
+        </th>
+            </tr>
+                                                <tr class="odd">
+                        <td class="odd" colspan="" rowspan="">
+                max
+        </td>
+                                <td class="odd" colspan="" rowspan="">
+                maximum allowable number of lines
+        </td>
+                                <td class="odd" colspan="" rowspan="">
+                <a href="property_types.html#integer">integer</a>
+        </td>
+                                <td class="odd" colspan="" rowspan="">
+                2000
+        </td>
+            </tr>
+            </table>
+                                                                            <h3>Examples</h3>
+                                    <p>
+          To configure the check to accept files with up to 1500 lines:
+        </p>
+                                                    <div align="left">
+    <table cellspacing="4" cellpadding="0" border="0">
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;FileLength&quot;&gt;
+      &lt;property name=&quot;max&quot; value=&quot;1500&quot;/&gt;
+&lt;/module&gt;</pre></td>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    </table>
+    </div>
+                                                                            <h3>Package</h3>
+                                    <p>
+          com.puppycrawl.tools.checkstyle.checks.sizes
+        </p>
+                                                                            <h3>Parent Module</h3>
+                                    <p>
+          <a href="config.html#treewalker">TreeWalker</a>
+        </p>
+                                                                                                                                              <a name="LineLength"></a>
+  <h2>LineLength</h2>
+                                            <h3>Description</h3>
+                                    <p>
+          Checks for long lines.
+        </p>
+                                                <p>
+          Rationale: Long lines are hard to read in printouts or if developers
+          have limited screen space for the source code, e.g. if the IDE
+          displays additional information like project tree, class hierarchy,
+          etc.
+        </p>
+                                                                            <h3>Properties</h3>
+                                    <table>
+                                            <tr class="even">
+                        <th colspan="" rowspan="" valign="top" align="left">
+                name
+        </th>
+                                <th colspan="" rowspan="" valign="top" align="left">
+                description
+        </th>
+                                <th colspan="" rowspan="" valign="top" align="left">
+                type
+        </th>
+                                <th colspan="" rowspan="" valign="top" align="left">
+                default value
+        </th>
+            </tr>
+                                                <tr class="odd">
+                        <td class="odd" colspan="" rowspan="">
+                ignorePattern
+        </td>
+                                <td class="odd" colspan="" rowspan="">
+                pattern for lines to ignore
+        </td>
+                                <td class="odd" colspan="" rowspan="">
+                <a href="property_types.html#regexp">regular expression</a>
+        </td>
+                                <td class="odd" colspan="" rowspan="">
+                ^$
+        </td>
+            </tr>
+                                                <tr class="even">
+                        <td class="even" colspan="" rowspan="">
+                max
+        </td>
+                                <td class="even" colspan="" rowspan="">
+                maximum allowable line length
+        </td>
+                                <td class="even" colspan="" rowspan="">
+                <a href="property_types.html#integer">integer</a>
+        </td>
+                                <td class="even" colspan="" rowspan="">
+                80
+        </td>
+            </tr>
+            </table>
+                                                                            <h3>Examples</h3>
+                                    <p>
+          To configure the check to accept lines up to 120 characters long:
+        </p>
+                                                    <div align="left">
+    <table cellspacing="4" cellpadding="0" border="0">
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;LineLength&quot;&gt;
+    &lt;property name=&quot;max&quot; value=&quot;120&quot;/&gt;
+&lt;/module&gt;</pre></td>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    </table>
+    </div>
+                                                <p>
+          To configure the check to ignore lines that begin with " *
+          ", followed by just one word, such as within a Javadoc comment:
+        </p>
+                                                    <div align="left">
+    <table cellspacing="4" cellpadding="0" border="0">
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;LineLength&quot;&gt;
+   &lt;property name=&quot;ignorePattern&quot; value=&quot;^ *\* *[^ ]+$&quot;/&gt;
+&lt;/module&gt;</pre></td>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    </table>
+    </div>
+                                                                            <h3>Notes</h3>
+                                    <ul>
+          <li>
+            The calculation of the length of a line takes into account the
+            number of expanded spaces for a tab character (<span class="code">'\t'</span>). The default number of spaces is <span class="code">8</span>.  To specify a different number of spaces,
+            the user can set <a href="config.html#treewalker"><span class="code">TreeWalker</span></a> property <span class="code">tabWidth</span> which applies to all Checks,
+            including <span class="code">LineLength</span>; or can set
+            property <span class="code">tabWidth</span> for <span class="code">LineLength</span> alone.
+          </li>
+          <li>
+            Support for the special handling of imports in CheckStyle Version
+            2 has been dropped as it is a special case of regexp: The user can
+            set property <span class="code">ignorePattern</span> to <span class="code">^import</span> and achieve the same effect.
+          </li>
+        </ul>
+                                                                            <h3>Package</h3>
+                                    <p>
+          com.puppycrawl.tools.checkstyle.checks.sizes
+        </p>
+                                                                            <h3>Parent Module</h3>
+                                    <p>
+          <a href="config.html#treewalker">TreeWalker</a>
+        </p>
+                                                                                                                                              <a name="MethodLength"></a>
+  <h2>MethodLength</h2>
+                                            <h3>Description</h3>
+                                    <p>
+          Checks for long methods and constructors.
+        </p>
+                                                <p>
+          Rationale: If a method becomes very long it is hard to
+          understand. Therefore long methods should usually be refactored into
+          several individual methods that focus on a specific task.
+        </p>
+                                                                            <h3>Properties</h3>
+                                    <table>
+                                            <tr class="even">
+                        <th colspan="" rowspan="" valign="top" align="left">
+                name
+        </th>
+                                <th colspan="" rowspan="" valign="top" align="left">
+                description
+        </th>
+                                <th colspan="" rowspan="" valign="top" align="left">
+                type
+        </th>
+                                <th colspan="" rowspan="" valign="top" align="left">
+                default value
+        </th>
+            </tr>
+                                                <tr class="odd">
+                        <td class="odd" colspan="" rowspan="">
+                max
+        </td>
+                                <td class="odd" colspan="" rowspan="">
+                maximum allowable number of lines
+        </td>
+                                <td class="odd" colspan="" rowspan="">
+                <a href="property_types.html#integer">integer</a>
+        </td>
+                                <td class="odd" colspan="" rowspan="">
+                150
+        </td>
+            </tr>
+                                                <tr class="even">
+                        <td class="even" colspan="" rowspan="">
+                countEmpty
+        </td>
+                                <td class="even" colspan="" rowspan="">
+                
+              whether to count empty lines and single line comments of the
+              form <span class="code">//</span>
+            
+        </td>
+                                <td class="even" colspan="" rowspan="">
+                <a href="property_types.html#boolean">boolean</a>
+        </td>
+                                <td class="even" colspan="" rowspan="">
+                <span class="default">true</span>
+        </td>
+            </tr>
+                                                <tr class="odd">
+                        <td class="odd" colspan="" rowspan="">
+                tokens
+        </td>
+                                <td class="odd" colspan="" rowspan="">
+                blocks to check
+        </td>
+                                <td class="odd" colspan="" rowspan="">
+                
+              subset of tokens <a href="api/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#METHOD_DEF">METHOD_DEF</a>,
+              <a href="api/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#CTOR_DEF">CTOR_DEF</a>
+            
+        </td>
+                                <td class="odd" colspan="" rowspan="">
+                
+              <a href="api/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#METHOD_DEF">METHOD_DEF</a>,
+               <a href="api/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#CTOR_DEF">CTOR_DEF</a>
+            
+        </td>
+            </tr>
+            </table>
+                                                                            <h3>Examples</h3>
+                                    <p>
+          To configure the check:
+        </p>
+                                                    <div align="left">
+    <table cellspacing="4" cellpadding="0" border="0">
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;MethodLength&quot;/&gt;</pre></td>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    </table>
+    </div>
+                                                <p>
+          To configure the check so that it accepts methods with at most 60
+          lines:
+        </p>
+                                                    <div align="left">
+    <table cellspacing="4" cellpadding="0" border="0">
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;MethodLength&quot;&gt;
+   &lt;property name=&quot;tokens&quot; value=&quot;METHOD_DEF&quot;/&gt;
+   &lt;property name=&quot;max&quot; value=&quot;60&quot;/&gt;
+&lt;/module&gt;</pre></td>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    </table>
+    </div>
+                                                <p>
+          To configure the check so that it accepts methods with at most 60
+          lines, not counting empty lines and single line comments:
+        </p>
+                                                    <div align="left">
+    <table cellspacing="4" cellpadding="0" border="0">
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;MethodLength&quot;&gt;
+   &lt;property name=&quot;tokens&quot; value=&quot;METHOD_DEF&quot;/&gt;
+   &lt;property name=&quot;max&quot; value=&quot;60&quot;/&gt;
+   &lt;property name=&quot;countEmpty&quot; value=&quot;false&quot;/&gt;
+&lt;/module&gt;</pre></td>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    </table>
+    </div>
+                                                                            <h3>Package</h3>
+                                    <p>
+          com.puppycrawl.tools.checkstyle.checks.sizes
+        </p>
+                                                                            <h3>Parent Module</h3>
+                                    <p>
+          <a href="config.html#treewalker">TreeWalker</a>
+        </p>
+                                                                                                                                              <a name="AnonInnerLength"></a>
+  <h2>AnonInnerLength</h2>
+                                            <h3>Description</h3>
+                                    <p>
+          Checks for long anonymous inner classes.
+        </p>
+                                                <p>
+          Rationale: If an anonymous inner class becomes very long it is hard
+          to understand and to see the flow of the method where the class is
+          defined. Therefore long anonymous inner classes should usually be
+          refactored into a named inner class.  See also Bloch, Effective
+          Java, p. 93.
+        </p>
+                                                                            <h3>Properties</h3>
+                                    <table>
+                                            <tr class="even">
+                        <th colspan="" rowspan="" valign="top" align="left">
+                name
+        </th>
+                                <th colspan="" rowspan="" valign="top" align="left">
+                description
+        </th>
+                                <th colspan="" rowspan="" valign="top" align="left">
+                type
+        </th>
+                                <th colspan="" rowspan="" valign="top" align="left">
+                default value
+        </th>
+            </tr>
+                                                <tr class="odd">
+                        <td class="odd" colspan="" rowspan="">
+                max
+        </td>
+                                <td class="odd" colspan="" rowspan="">
+                maximum allowable number of lines
+        </td>
+                                <td class="odd" colspan="" rowspan="">
+                <a href="property_types.html#integer">integer</a>
+        </td>
+                                <td class="odd" colspan="" rowspan="">
+                20
+        </td>
+            </tr>
+            </table>
+                                                                            <h3>Examples</h3>
+                                    <p>
+          To configure the check to accept files with up to 60 lines:
+        </p>
+                                                    <div align="left">
+    <table cellspacing="4" cellpadding="0" border="0">
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;AnonInnerLength&quot;&gt;
+      &lt;property name=&quot;max&quot; value=&quot;60&quot;/&gt;
+&lt;/module&gt;</pre></td>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    </table>
+    </div>
+                                                                            <h3>Package</h3>
+                                    <p>
+          com.puppycrawl.tools.checkstyle.checks.sizes
+        </p>
+                                                                            <h3>Parent Module</h3>
+                                    <p>
+          <a href="config.html#treewalker">TreeWalker</a>
+        </p>
+                                                                                                                                              <a name="ParameterNumber"></a>
+  <h2>ParameterNumber</h2>
+                                            <h3>Description</h3>
+                                    <p>
+          Checks the number of parameters of a method or constructor.
+        </p>
+                                                                            <h3>Properties</h3>
+                                    <table>
+                                            <tr class="even">
+                        <th colspan="" rowspan="" valign="top" align="left">
+                name
+        </th>
+                                <th colspan="" rowspan="" valign="top" align="left">
+                description
+        </th>
+                                <th colspan="" rowspan="" valign="top" align="left">
+                type
+        </th>
+                                <th colspan="" rowspan="" valign="top" align="left">
+                default value
+        </th>
+            </tr>
+                                                <tr class="odd">
+                        <td class="odd" colspan="" rowspan="">
+                max
+        </td>
+                                <td class="odd" colspan="" rowspan="">
+                maximum allowable number of parameters
+        </td>
+                                <td class="odd" colspan="" rowspan="">
+                <a href="property_types.html#integer">integer</a>
+        </td>
+                                <td class="odd" colspan="" rowspan="">
+                7
+        </td>
+            </tr>
+                                                <tr class="even">
+                        <td class="even" colspan="" rowspan="">
+                tokens
+        </td>
+                                <td class="even" colspan="" rowspan="">
+                declarations to check
+        </td>
+                                <td class="even" colspan="" rowspan="">
+                
+              subset of tokens <a href="api/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#METHOD_DEF">METHOD_DEF</a>,
+              <a href="api/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#CTOR_DEF">CTOR_DEF</a>
+            
+        </td>
+                                <td class="even" colspan="" rowspan="">
+                
+              <a href="api/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#METHOD_DEF">METHOD_DEF</a>,
+              <a href="api/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#CTOR_DEF">CTOR_DEF</a>
+            
+        </td>
+            </tr>
+            </table>
+                                                                            <h3>Examples</h3>
+                                    <p>
+          To configure the check:
+        </p>
+                                                    <div align="left">
+    <table cellspacing="4" cellpadding="0" border="0">
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;ParameterNumber&quot;/&gt;</pre></td>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    </table>
+    </div>
+                                                <p>
+          To configure the check to allow 10 parameters for a method:
+        </p>
+                                                    <div align="left">
+    <table cellspacing="4" cellpadding="0" border="0">
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;ParameterNumber&quot;&gt;
+   &lt;property name=&quot;max&quot; value=&quot;10&quot;/&gt;
+   &lt;property name=&quot;tokens&quot; value=&quot;METHOD_DEF&quot;/&gt;
+&lt;/module&gt;</pre></td>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    </table>
+    </div>
+                                                                            <h3>Package</h3>
+                                    <p>
+          com.puppycrawl.tools.checkstyle.checks.sizes
+        </p>
+                                                                            <h3>Parent Module</h3>
+                                    <p>
+          <a href="config.html#treewalker">TreeWalker</a>
+        </p>
+                                                                                        
+                    </td>
+                </tr>
+
+                <!-- FOOTER -->
+                <tr><td colspan="2">
+                    <hr noshade="" size="1"/>
+                </td></tr>
+                <tr><td colspan="2">
+                    <div align="center"><font color="#525D76" size="-1"><em>
+                    Copyright &#169; 2001-2005, Oliver Burn
+                    </em></font></div>
+                </td></tr>
+            </table>
+           <!-- END main table -->
+        </body>
+    </html>
+<!-- end the processing -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
