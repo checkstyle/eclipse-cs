@@ -4,7 +4,7 @@
 	<classpathentry output="binnls" kind="src" path="nls"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="checkstyle-all-4.0-beta3.jar"/>
-	<classpathentry kind="lib" path="extension-libraries/checkstyle-optional-4.0-beta3.jar"/>
+	<classpathentry kind="lib" path="checkstyle-all-4.0-beta4.jar"/>
+	<classpathentry kind="lib" path="extension-libraries/checkstyle-optional-4.0-beta4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

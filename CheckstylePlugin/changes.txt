@@ -10,6 +10,14 @@ Make sure you got an eclipse 3.0 or higher installation you are installing this 
 Eclipse Checkstyle Plugin v4.0.0
 ---------------------------------
 
+Release beta4:
+--------------
+
+* Updated to Checkstyle 4.0 beta4
+
+Bugs:
+1217357	NullPointerException in UnOpenedFilesFilter
+
 Release beta3:
 --------------
 

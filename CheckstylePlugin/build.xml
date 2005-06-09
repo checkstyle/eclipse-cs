@@ -12,8 +12,8 @@
 
 	<property name="check.config" value="CheckConfig_Checkstyle.xml" />
 
-	<property name="checkstyle.jar" value="checkstyle-all-4.0-beta2.jar" />
-	<property name="checkstyle-optional.jar" value="checkstyle-optional-4.0-beta2.jar" />
+	<property name="checkstyle.jar" value="checkstyle-all-4.0-beta3.jar" />
+	<property name="checkstyle-optional.jar" value="checkstyle-optional-4.0-beta3.jar" />
 
 
 
