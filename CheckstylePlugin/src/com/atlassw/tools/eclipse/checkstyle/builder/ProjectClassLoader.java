@@ -37,13 +37,17 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.osgi.util.NLS;
 
+import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
+import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
@@ -55,344 +59,354 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
  * 
  * @author Lars Ködderitzsch
  */
-public class ProjectClassLoader extends ClassLoader
-{
-
-    //
-    // attributes
-    //
-
-    /** the classloader delegate. */
-    private ClassLoader mDelegateClassLoader;
-
-    /** the parent classloader. */
-    private ClassLoader mParentClassLoader;
-
-    /**
-     * the URLStreamHandlerFactory to provide support for non standard
-     * protocols.
-     */
-    private URLStreamHandlerFactory mStreamHandlerFactory;
-
-    //
-    // constructors
-    //
-
-    /**
-     * Constructs the classloader.
-     */
-    public ProjectClassLoader()
-    {
-        this(null);
-    }
-
-    /**
-     * Constructs the classloader and uses a parent classloader.
-     * 
-     * @param parent the parent classloader
-     */
-    public ProjectClassLoader(ClassLoader parent)
-    {
-        this(parent, null);
-    }
-
-    /**
-     * Constructs the classloader and uses a parent classloader and a handler to
-     * support non-standard protocols.
-     * 
-     * @param parent the parent classloader
-     * @param factory the streamhandler factory
-     */
-    public ProjectClassLoader(ClassLoader parent, URLStreamHandlerFactory factory)
-    {
-
-        this.mParentClassLoader = parent;
-        this.mStreamHandlerFactory = factory;
-    }
-
-    //
-    // methods
-    //
-
-    /**
-     * Initializes this classloader with a given eclipse project.
-     * 
-     * @param project the project
-     */
-    public void intializeWithProject(IProject project)
-    {
-
-        // Optimization if the project is the same as last
-        // if (project == this.mRecentProject)
-        // {
-        // return;
-        // }
-
-        URL[] projClassPath = getProjectClassPath(project);
-
-        this.mDelegateClassLoader = new URLClassLoader(projClassPath, this.mParentClassLoader,
-                this.mStreamHandlerFactory);
-    }
-
-    /**
-     * @see java.lang.ClassLoader#loadClass(java.lang.String)
-     */
-    public Class loadClass(String name) throws ClassNotFoundException
-    {
-
-        return this.mDelegateClassLoader.loadClass(name);
-    }
-
-    /**
-     * @see java.lang.ClassLoader#getResource(java.lang.String)
-     */
-    public URL getResource(String name)
-    {
-
-        return this.mDelegateClassLoader.getResource(name);
-    }
-
-    /**
-     * @see java.lang.ClassLoader#getResourceAsStream(java.lang.String)
-     */
-    public InputStream getResourceAsStream(String name)
-    {
-
-        return this.mDelegateClassLoader.getResourceAsStream(name);
-    }
-
-    /**
-     * Since java.lang.ClassLoader#getResources(java.lang.String) is final
-     * (why?) this method is overridden as a workaround.
-     * 
-     * @see java.lang.ClassLoader#findResources(java.lang.String)
-     */
-    protected Enumeration findResources(String name) throws IOException
-    {
-        return this.mDelegateClassLoader.getResources(name);
-    }
-
-    /**
-     * Gets the complete classpath for a given project.
-     * 
-     * @param project the project
-     * @return the classpath
-     */
-    private static URL[] getProjectClassPath(IProject project)
-    {
-
-        // List to contain the classpath urls
-        List cpURLs = new ArrayList();
-
-        // add the projects contents to the classpath
-        addToClassPath(project, cpURLs, false);
-
-        URL[] urls = (URL[]) cpURLs.toArray(new URL[cpURLs.size()]);
-
-        return urls;
-    }
-
-    /**
-     * Adds the contents of a project to list of URLs.
-     * 
-     * @param project the project
-     * @param cpURLs the resulting list
-     * @param isReferenced true if a referenced project is processed
-     */
-    private static void addToClassPath(IProject project, List cpURLs, boolean isReferenced)
-    {
-
-        try
-        {
-
-            // get the java project
-            IJavaProject javaProject = JavaCore.create(project);
-
-            // get the resolved classpath of the project
-            IClasspathEntry[] cpEntries = javaProject.getResolvedClasspath(true);
-
-            // iterate over classpath to create classpath urls
-            int size = cpEntries.length;
-            for (int i = 0; i < size; i++)
-            {
-
-                int entryKind = cpEntries[i].getEntryKind();
-
-                // handle a source path
-                if (IClasspathEntry.CPE_SOURCE == entryKind)
-                {
-
-                    handleSourcePath(project, cpURLs, cpEntries[i], javaProject);
-                }
-                // handle a project reference
-                else if (IClasspathEntry.CPE_PROJECT == entryKind)
-                {
-
-                    handleRefProject(cpURLs, cpEntries[i]);
-                }
-                // handle a library entry
-                else if (IClasspathEntry.CPE_LIBRARY == entryKind)
-                {
-
-                    // do only if this project is not referenced or the entry is
-                    // exported
-                    if (!isReferenced || cpEntries[i].isExported())
-                    {
-                        handleLibrary(project, cpURLs, cpEntries[i]);
-                    }
-                }
-                // cannot happen since we use a resolved classpath
-                else
-                {
-
-                    // log as exception
-                    CheckstylePluginException ex = new CheckstylePluginException(NLS.bind(
-                            ErrorMessages.errorUnknownClasspathEntry, cpEntries[i].getPath()));
-                    CheckstyleLog.log(ex);
-                }
-            }
-        }
-        catch (JavaModelException jme)
-        {
-            CheckstyleLog.log(jme);
-        }
-    }
-
-    /**
-     * Helper method to handle a source path.
-     * 
-     * @param project the original project
-     * @param cpURLs the list that is to contain the projects classpath
-     * @param entry the actually processed classpath entry
-     * @param javapProject the java project
-     * @throws JavaModelException an exception with the java project occured
-     */
-    private static void handleSourcePath(IProject project, List cpURLs, IClasspathEntry entry,
-            IJavaProject javapProject) throws JavaModelException
-    {
-
-        IPath sourcePath = entry.getPath();
-
-        // check for if the output path is different to the source path
-        IPath outputPath = entry.getOutputLocation();
-
-        if (outputPath == null)
-        {
-            sourcePath = javapProject.getOutputLocation();
-        }
-        else if (!outputPath.equals(sourcePath))
-        {
-
-            // make the output path the relevant path since it contains the
-            // class files
-            sourcePath = outputPath;
-        }
-
-        // check if the sourcepath is relative to the project
-        IPath projPath = project.getFullPath();
-
-        if (!projPath.equals(sourcePath) && sourcePath.matchingFirstSegments(projPath) > 0)
-        {
-
-            // remove the project part from the source path
-            sourcePath = sourcePath.removeFirstSegments(projPath.segmentCount());
-
-            // get the folder for the path
-            IFolder sourceFolder = project.getFolder(sourcePath);
-
-            // get the absolute path for the folder
-            sourcePath = sourceFolder.getLocation();
-        }
-
-        // try to add the path to the classpath
-        handlePath(sourcePath, cpURLs);
-    }
-
-    /**
-     * Helper method to handle a referenced project for the classpath.
-     * 
-     * @param cpURLs the list that is to contain the projects classpath
-     * @param entry the actually processed classpath entry
-     */
-    private static void handleRefProject(List cpURLs, IClasspathEntry entry)
-    {
-
-        // get the referenced project from the workspace
-        IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-        IProject referencedProject = root.getProject(entry.getPath().toString());
-
-        // add the referenced projects contents
-        if (referencedProject.exists())
-        {
-            addToClassPath(referencedProject, cpURLs, true);
-        }
-    }
-
-    /**
-     * Helper method to handle a library for the classpath.
-     * 
-     * @param project the original project
-     * @param cpURLs the list that is to contain the projects classpath
-     * @param entry the actually processed classpath entry
-     */
-    private static void handleLibrary(IProject project, List cpURLs, IClasspathEntry entry)
-    {
-
-        IPath libPath = entry.getPath();
-
-        // check if the library path is relative to the project
-        // can happen if the library is contained within the project
-        IPath projPath = project.getFullPath();
-        if (libPath.matchingFirstSegments(projPath) > 0)
-        {
-
-            // remove the project part from the source path
-            libPath = libPath.removeFirstSegments(projPath.segmentCount());
-
-            // get the file handle for the library
-            IFile file = project.getFile(libPath);
-
-            // get the absolute path for the library file
-            libPath = file.getLocation();
-        }
-
-        // try to add the path to the classpath
-        handlePath(libPath, cpURLs);
-    }
-
-    /**
-     * Helper method to handle an absolute path for the classpath.
-     * 
-     * @param absolutePath the absolute path
-     * @param cpURLs the list that is to contain the projects classpath
-     */
-    private static void handlePath(IPath absolutePath, List cpURLs)
-    {
-
-        if (absolutePath != null)
-        {
-
-            File file = absolutePath.toFile();
-
-            // check if the file exists
-            if (file != null && file.exists())
-            {
-
-                try
-                {
-
-                    URL url = file.toURL();
-                    if (!cpURLs.contains(url))
-                    {
-                        cpURLs.add(url);
-                    }
-                }
-                catch (MalformedURLException mfe)
-                {
-                    // log the exception although this should not happen
-                    CheckstyleLog.log(mfe, mfe.getLocalizedMessage());
-                }
-            }
-        }
-    }
+public class ProjectClassLoader extends ClassLoader {
+
+	//
+	// attributes
+	//
+
+	/** the classloader delegate. */
+	private ClassLoader mDelegateClassLoader;
+
+	/** the parent classloader. */
+	private ClassLoader mParentClassLoader;
+
+	/**
+	 * the URLStreamHandlerFactory to provide support for non standard
+	 * protocols.
+	 */
+	private URLStreamHandlerFactory mStreamHandlerFactory;
+
+	//
+	// constructors
+	//
+
+	/**
+	 * Constructs the classloader.
+	 */
+	public ProjectClassLoader() {
+		this(null);
+	}
+
+	/**
+	 * Constructs the classloader and uses a parent classloader.
+	 * 
+	 * @param parent
+	 *            the parent classloader
+	 */
+	public ProjectClassLoader(ClassLoader parent) {
+		this(parent, null);
+	}
+
+	/**
+	 * Constructs the classloader and uses a parent classloader and a handler to
+	 * support non-standard protocols.
+	 * 
+	 * @param parent
+	 *            the parent classloader
+	 * @param factory
+	 *            the streamhandler factory
+	 */
+	public ProjectClassLoader(ClassLoader parent,
+			URLStreamHandlerFactory factory) {
+
+		this.mParentClassLoader = parent;
+		this.mStreamHandlerFactory = factory;
+	}
+
+	//
+	// methods
+	//
+
+	/**
+	 * Initializes this classloader with a given eclipse project.
+	 * 
+	 * @param project
+	 *            the project
+	 */
+	public void intializeWithProject(IProject project) {
+
+		// Optimization if the project is the same as last
+		// if (project == this.mRecentProject)
+		// {
+		// return;
+		// }
+
+		URL[] projClassPath = getProjectClassPath(project);
+
+		//log the complete classpath to track down these pesky NoClassDefFound-Errors
+		StringBuffer buf = new StringBuffer();
+		buf.append("Checkstyle Classpath for project \"").append(
+				project.getName()).append("\":");
+		for (int i = 0; i < projClassPath.length; i++) {
+			buf.append("\n").append(projClassPath[i].toExternalForm());
+		}
+		IStatus status = new Status(IStatus.INFO, CheckstylePlugin.PLUGIN_ID,
+				IStatus.OK, buf.toString(), null);
+		CheckstylePlugin.getDefault().getLog().log(status);
+
+		this.mDelegateClassLoader = new URLClassLoader(projClassPath,
+				this.mParentClassLoader, this.mStreamHandlerFactory);
+	}
+
+	/**
+	 * @see java.lang.ClassLoader#loadClass(java.lang.String)
+	 */
+	public Class loadClass(String name) throws ClassNotFoundException {
+
+		return this.mDelegateClassLoader.loadClass(name);
+	}
+
+	/**
+	 * @see java.lang.ClassLoader#getResource(java.lang.String)
+	 */
+	public URL getResource(String name) {
+
+		return this.mDelegateClassLoader.getResource(name);
+	}
+
+	/**
+	 * @see java.lang.ClassLoader#getResourceAsStream(java.lang.String)
+	 */
+	public InputStream getResourceAsStream(String name) {
+
+		return this.mDelegateClassLoader.getResourceAsStream(name);
+	}
+
+	/**
+	 * Since java.lang.ClassLoader#getResources(java.lang.String) is final
+	 * (why?) this method is overridden as a workaround.
+	 * 
+	 * @see java.lang.ClassLoader#findResources(java.lang.String)
+	 */
+	protected Enumeration findResources(String name) throws IOException {
+		return this.mDelegateClassLoader.getResources(name);
+	}
+
+	/**
+	 * Gets the complete classpath for a given project.
+	 * 
+	 * @param project
+	 *            the project
+	 * @return the classpath
+	 */
+	private static URL[] getProjectClassPath(IProject project) {
+
+		// List to contain the classpath urls
+		List cpURLs = new ArrayList();
+
+		// add the projects contents to the classpath
+		addToClassPath(project, cpURLs, false);
+
+		URL[] urls = (URL[]) cpURLs.toArray(new URL[cpURLs.size()]);
+
+		return urls;
+	}
+
+	/**
+	 * Adds the contents of a project to list of URLs.
+	 * 
+	 * @param project
+	 *            the project
+	 * @param cpURLs
+	 *            the resulting list
+	 * @param isReferenced
+	 *            true if a referenced project is processed
+	 */
+	private static void addToClassPath(IProject project, List cpURLs,
+			boolean isReferenced) {
+
+		try {
+
+			// get the java project
+			IJavaProject javaProject = JavaCore.create(project);
+
+			// get the resolved classpath of the project
+			IClasspathEntry[] cpEntries = javaProject
+					.getResolvedClasspath(true);
+
+			// iterate over classpath to create classpath urls
+			int size = cpEntries.length;
+			for (int i = 0; i < size; i++) {
+
+				int entryKind = cpEntries[i].getEntryKind();
+
+				// handle a source path
+				if (IClasspathEntry.CPE_SOURCE == entryKind) {
+
+					handleSourcePath(project, cpURLs, cpEntries[i], javaProject);
+				}
+				// handle a project reference
+				else if (IClasspathEntry.CPE_PROJECT == entryKind) {
+
+					handleRefProject(cpURLs, cpEntries[i]);
+				}
+				// handle a library entry
+				else if (IClasspathEntry.CPE_LIBRARY == entryKind) {
+
+					// do only if this project is not referenced or the entry is
+					// exported
+					// if (!isReferenced /*|| cpEntries[i].isExported()*/)
+					// {
+
+					// TODO Check if this is fixing the
+					// NoClassDefFoundExceptions some users
+					// are reporting
+
+					handleLibrary(project, cpURLs, cpEntries[i]);
+					// }
+				}
+				// cannot happen since we use a resolved classpath
+				else {
+
+					// log as exception
+					CheckstylePluginException ex = new CheckstylePluginException(
+							NLS.bind(ErrorMessages.errorUnknownClasspathEntry,
+									cpEntries[i].getPath()));
+					CheckstyleLog.log(ex);
+				}
+			}
+		} catch (JavaModelException jme) {
+			CheckstyleLog.log(jme);
+		}
+	}
+
+	/**
+	 * Helper method to handle a source path.
+	 * 
+	 * @param project
+	 *            the original project
+	 * @param cpURLs
+	 *            the list that is to contain the projects classpath
+	 * @param entry
+	 *            the actually processed classpath entry
+	 * @param javapProject
+	 *            the java project
+	 * @throws JavaModelException
+	 *             an exception with the java project occured
+	 */
+	private static void handleSourcePath(IProject project, List cpURLs,
+			IClasspathEntry entry, IJavaProject javapProject)
+			throws JavaModelException {
+
+		IPath sourcePath = entry.getPath();
+
+		// check for if the output path is different to the source path
+		IPath outputPath = entry.getOutputLocation();
+
+		if (outputPath == null) {
+			sourcePath = javapProject.getOutputLocation();
+		} else if (!outputPath.equals(sourcePath)) {
+
+			// make the output path the relevant path since it contains the
+			// class files
+			sourcePath = outputPath;
+		}
+
+		// check if the sourcepath is relative to the project
+		IPath projPath = project.getFullPath();
+
+		if (!projPath.equals(sourcePath)
+				&& sourcePath.matchingFirstSegments(projPath) > 0) {
+
+			// remove the project part from the source path
+			sourcePath = sourcePath
+					.removeFirstSegments(projPath.segmentCount());
+
+			// get the folder for the path
+			IFolder sourceFolder = project.getFolder(sourcePath);
+
+			// get the absolute path for the folder
+			sourcePath = sourceFolder.getLocation();
+		}
+
+		// try to add the path to the classpath
+		handlePath(sourcePath, cpURLs);
+	}
+
+	/**
+	 * Helper method to handle a referenced project for the classpath.
+	 * 
+	 * @param cpURLs
+	 *            the list that is to contain the projects classpath
+	 * @param entry
+	 *            the actually processed classpath entry
+	 */
+	private static void handleRefProject(List cpURLs, IClasspathEntry entry) {
+
+		// get the referenced project from the workspace
+		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+		IProject referencedProject = root
+				.getProject(entry.getPath().toString());
+
+		// add the referenced projects contents
+		if (referencedProject.exists()) {
+			addToClassPath(referencedProject, cpURLs, true);
+		}
+	}
+
+	/**
+	 * Helper method to handle a library for the classpath.
+	 * 
+	 * @param project
+	 *            the original project
+	 * @param cpURLs
+	 *            the list that is to contain the projects classpath
+	 * @param entry
+	 *            the actually processed classpath entry
+	 */
+	private static void handleLibrary(IProject project, List cpURLs,
+			IClasspathEntry entry) {
+
+		IPath libPath = entry.getPath();
+
+		// check if the library path is relative to the project
+		// can happen if the library is contained within the project
+		IPath projPath = project.getFullPath();
+		if (libPath.matchingFirstSegments(projPath) > 0) {
+
+			// remove the project part from the source path
+			libPath = libPath.removeFirstSegments(projPath.segmentCount());
+
+			// get the file handle for the library
+			IFile file = project.getFile(libPath);
+
+			// get the absolute path for the library file
+			libPath = file.getLocation();
+		}
+
+		// try to add the path to the classpath
+		handlePath(libPath, cpURLs);
+	}
+
+	/**
+	 * Helper method to handle an absolute path for the classpath.
+	 * 
+	 * @param absolutePath
+	 *            the absolute path
+	 * @param cpURLs
+	 *            the list that is to contain the projects classpath
+	 */
+	private static void handlePath(IPath absolutePath, List cpURLs) {
+
+		if (absolutePath != null) {
+
+			File file = absolutePath.toFile();
+
+			// check if the file exists
+			if (file != null && file.exists()) {
+
+				try {
+
+					URL url = file.toURL();
+					if (!cpURLs.contains(url)) {
+						cpURLs.add(url);
+					}
+				} catch (MalformedURLException mfe) {
+					// log the exception although this should not happen
+					CheckstyleLog.log(mfe, mfe.getLocalizedMessage());
+				}
+			}
+		}
+	}
 }
