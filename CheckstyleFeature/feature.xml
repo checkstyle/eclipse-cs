@@ -2,8 +2,9 @@
 <feature
       id="com.atlassw.tools.eclipse.checkstyle"
       label="%feature.label"
-      version="4.0.0"
-      provider-name="%feature.provider_name">
+      version="3.9.99"
+      provider-name="%feature.provider_name"
+      image="eclipse-cs-logo.jpg">
 
    <description url="%description.url">
       
@@ -13,8 +14,8 @@
       %copyright.text
    </copyright>
 
-   <license>
-      %license.text
+   <license url="license.html">
+      
    </license>
 
    <requires>
@@ -22,12 +23,19 @@
       <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.jface.text"/>
       <import plugin="org.eclipse.jdt.core"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="org.eclipse.jdt.ui"/>
+      <import plugin="org.eclipse.ui.workbench.texteditor"/>
+      <import plugin="org.eclipse.ui.editors"/>
+      <import plugin="org.eclipse.team.cvs.core"/>
+      <import plugin="org.eclipse.team.core"/>
    </requires>
 
    <plugin
          id="com.atlassw.tools.eclipse.checkstyle"
-         download-size="2200"
-         install-size="3520"
+         download-size="3000"
+         install-size="5000"
          version="4.0.0"/>
 
 </feature>
