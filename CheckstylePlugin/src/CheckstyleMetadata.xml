@@ -168,7 +168,7 @@ public boolean isSomething()
       <rule-metadata name="Constant Names" internal-name="ConstantName" parent="TreeWalker">
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.naming.ConstantNameCheck"/>
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.ConstantNameCheck"/>
-         <description>Checks that constents (static final fields) variables follow naming convention.</description>
+         <description>Checks that constants (static final fields) variables follow naming convention.</description>
          <property-metadata name="format" datatype="Regex" default-value="^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$">
             <description>Regular expression defining required naming pattern.</description>
          </property-metadata>
