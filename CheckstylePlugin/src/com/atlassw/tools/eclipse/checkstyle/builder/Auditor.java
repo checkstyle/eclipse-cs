@@ -123,6 +123,12 @@ public class Auditor
         throws CheckstylePluginException
     {
 
+        //skip if there are no files to check
+        if (mFiles.isEmpty() || project == null)
+        {
+            return;
+        }
+
         mMonitor = monitor;
 
         Checker checker = null;
