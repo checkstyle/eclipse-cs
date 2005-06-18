@@ -74,6 +74,7 @@ import com.atlassw.tools.eclipse.checkstyle.config.meta.RuleGroupMetadata;
 import com.atlassw.tools.eclipse.checkstyle.config.meta.RuleMetadata;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginImages;
 import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
 
 /**
@@ -409,7 +410,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
         }
 
         // set the logo
-        this.setTitleImage(CheckstylePlugin.getLogo());
+        this.setTitleImage(CheckstylePluginImages.getImage(CheckstylePluginImages.PLUGIN_LOGO));
 
         mAddButton.setEnabled(mConfiguration.isConfigurable());
         mRemoveButton.setEnabled(mConfiguration.isConfigurable());

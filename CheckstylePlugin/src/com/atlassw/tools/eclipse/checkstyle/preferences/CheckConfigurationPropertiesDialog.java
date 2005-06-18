@@ -46,6 +46,7 @@ import com.atlassw.tools.eclipse.checkstyle.config.configtypes.IConfigurationLoc
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.IConfigurationType;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginImages;
 
 /**
  * Dialog to show/edit the properties (name, location, description) of a check
@@ -354,6 +355,6 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
         }
 
         //set the logo
-        this.setTitleImage(CheckstylePlugin.getLogo());
+        this.setTitleImage(CheckstylePluginImages.getImage(CheckstylePluginImages.PLUGIN_LOGO));
     }
 }

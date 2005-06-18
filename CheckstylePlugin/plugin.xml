@@ -84,16 +84,19 @@
       <type
       		name="com.atlassw.tools.eclipse.checkstyle.error"         
             markerType="com.atlassw.tools.eclipse.checkstyle.CheckstyleMarker"
+            super="org.eclipse.ui.workbench.texteditor.error"
             markerSeverity="2">
       </type>
       <type
       		name="com.atlassw.tools.eclipse.checkstyle.warning"         
             markerType="com.atlassw.tools.eclipse.checkstyle.CheckstyleMarker"
+            super="org.eclipse.ui.workbench.texteditor.warning"
             markerSeverity="1">
       </type>
       <type
       		name="com.atlassw.tools.eclipse.checkstyle.info"         
             markerType="com.atlassw.tools.eclipse.checkstyle.CheckstyleMarker"
+            super="org.eclipse.ui.workbench.texteditor.info"
             markerSeverity="0">
       </type>
    </extension>
@@ -102,8 +105,8 @@
          point="org.eclipse.ui.editors.markerAnnotationSpecification">
       <specification
       		annotationType="com.atlassw.tools.eclipse.checkstyle.error"
+      		annotationImageProvider="com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleMarkerImageProvider"
       		presentationLayer="5"
-      		icon="icons/checkstyle_error.gif"
       		label="Checkstyle error"      		   
             verticalRulerPreferenceKey="com.atlassw.tools.eclipse.checkstyle.error.verticalruler"
             verticalRulerPreferenceValue="true"
@@ -127,8 +130,8 @@
       </specification>
       <specification
       		annotationType="com.atlassw.tools.eclipse.checkstyle.warning"
+      		annotationImageProvider="com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleMarkerImageProvider"
       		presentationLayer="4"
-      		icon="icons/checkstyle_warning.gif"
       		label="Checkstyle warning"      		   
             verticalRulerPreferenceKey="com.atlassw.tools.eclipse.checkstyle.warning.verticalruler"
             verticalRulerPreferenceValue="true"
@@ -152,8 +155,8 @@
       </specification>
       <specification
       		annotationType="com.atlassw.tools.eclipse.checkstyle.info"
+      		annotationImageProvider="com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleMarkerImageProvider"
       		presentationLayer="3"
-      		icon="icons/checkstyle_info.gif"
       		label="Checkstyle info"      		   
             verticalRulerPreferenceKey="com.atlassw.tools.eclipse.checkstyle.info.verticalruler"
             verticalRulerPreferenceValue="true"

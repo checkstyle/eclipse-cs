@@ -165,14 +165,6 @@ public class DuplicatedCodeView extends ViewPart
         }
     }
 
-    /**
-     * Label provider for the tree viewer.
-     */
-    class ViewLabelProvider extends WorkbenchLabelProvider
-    {
-
-    }
-
     class DuplicatesFilter extends ViewerFilter
     {
 
@@ -251,7 +243,7 @@ public class DuplicatedCodeView extends ViewPart
         mViewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.SINGLE);
         mDrillDownAdapter = new DrillDownAdapter(mViewer);
         mViewer.setContentProvider(new ViewContentProvider());
-        mViewer.setLabelProvider(new ViewLabelProvider());
+        mViewer.setLabelProvider(new WorkbenchLabelProvider());
         mViewer.addFilter(new DuplicatesFilter());
         mViewer.setInput(CheckstylePlugin.getWorkspace().getRoot());
         makeActions();

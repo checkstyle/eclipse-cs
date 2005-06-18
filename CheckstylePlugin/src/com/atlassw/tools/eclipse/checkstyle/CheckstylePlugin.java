@@ -134,17 +134,6 @@ public class CheckstylePlugin extends AbstractUIPlugin
     }
 
     /**
-     * Returns the checkstyle logo.
-     * 
-     * @return the checkstyle logo
-     */
-    public static Image getLogo()
-    {
-        return CheckstylePlugin.imageDescriptorFromPlugin(PLUGIN_ID, "icons/logo.png") //$NON-NLS-1$
-                .createImage();
-    }
-
-    /**
      * Initialize the default preferences.
      */
     protected void initializeDefaultPluginPreferences()

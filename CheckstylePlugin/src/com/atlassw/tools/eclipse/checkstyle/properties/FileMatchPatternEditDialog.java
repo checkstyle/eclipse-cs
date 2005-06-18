@@ -61,6 +61,7 @@ import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileMatchPattern;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginImages;
 import com.atlassw.tools.eclipse.checkstyle.util.regex.RegExContentAssistProcessor;
 
 /**
@@ -157,7 +158,7 @@ public class FileMatchPatternEditDialog extends TitleAreaDialog
             mIncludeButton.setSelection(true);
         }
 
-        this.setTitleImage(CheckstylePlugin.getLogo());
+        this.setTitleImage(CheckstylePluginImages.getImage(CheckstylePluginImages.PLUGIN_LOGO));
         this.setTitle(Messages.FileMatchPatternEditDialog_title);
         this.setMessage(Messages.FileMatchPatternEditDialog_message);
 

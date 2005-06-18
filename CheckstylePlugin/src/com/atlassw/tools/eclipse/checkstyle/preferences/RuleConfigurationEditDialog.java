@@ -55,6 +55,7 @@ import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
 import com.atlassw.tools.eclipse.checkstyle.config.Module;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginImages;
 import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
 
 /**
@@ -268,7 +269,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
         }
 
         // set the logo
-        this.setTitleImage(CheckstylePlugin.getLogo());
+        this.setTitleImage(CheckstylePluginImages.getImage(CheckstylePluginImages.PLUGIN_LOGO));
 
     }
 

@@ -82,6 +82,7 @@ import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileMatchPattern;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileSet;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginImages;
 
 /**
  * Property page.
@@ -441,7 +442,7 @@ public class FileSetEditDialog extends TitleAreaDialog
     private void initializeControls()
     {
 
-        this.setTitleImage(CheckstylePlugin.getLogo());
+        this.setTitleImage(CheckstylePluginImages.getImage(CheckstylePluginImages.PLUGIN_LOGO));
         this.setMessage(Messages.FileSetEditDialog_message);
 
         if (mIsCreatingNewFileset)
