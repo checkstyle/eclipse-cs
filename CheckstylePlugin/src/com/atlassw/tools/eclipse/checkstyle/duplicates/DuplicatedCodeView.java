@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2005  David Schneider, Lars Ködderitzsch
+// Copyright (C) 2002-2005  David Schneider, Lars Ködderitzsch, Fabrice Bellingard
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -439,8 +439,13 @@ public class DuplicatedCodeView extends ViewPart
         try
         {
             int start = document.getLineOffset(firstLine);
-            int end = document.getLineOffset(lastLine - 1);
-            editor.selectAndReveal(start, end - start);
+        	if (firstLine != 0) {
+        		// need to do this because in an IDocument, line count begins at 0
+        		start = document.getLineOffset(firstLine-1);
+        	}
+        	// Same comment here
+            int end = document.getLineOffset(lastLine - 2) + document.getLineLength(lastLine - 2);
+            editor.selectAndReveal(start, end - start - 1);
         }
         catch (BadLocationException e)
         {
