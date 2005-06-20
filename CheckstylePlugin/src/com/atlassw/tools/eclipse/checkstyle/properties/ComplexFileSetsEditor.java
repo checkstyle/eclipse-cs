@@ -158,7 +158,7 @@ public class ComplexFileSetsEditor implements IFileSetsEditor
         column2.setText(Messages.ComplexFileSetsEditor_colFilesetName);
 
         TableColumn column3 = new TableColumn(table, SWT.NONE);
-        column3.setText("Check configuration");
+        column3.setText(Messages.ComplexFileSetsEditor_colConfiguration);
 
         tableLayout.addColumnData(new ColumnWeightData(20));
         tableLayout.addColumnData(new ColumnWeightData(40));
