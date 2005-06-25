@@ -30,13 +30,20 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IResourceVisitor;
+import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -45,6 +52,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -57,7 +65,6 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.model.BaseWorkbenchContentProvider;
-import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.part.DrillDownAdapter;
 import org.eclipse.ui.part.ViewPart;
@@ -65,6 +72,9 @@ import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
+import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
+import com.atlassw.tools.eclipse.checkstyle.Messages;
+import com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleBuilder;
 import com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleMarker;
 import com.atlassw.tools.eclipse.checkstyle.nature.CheckstyleNature;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
@@ -82,7 +92,12 @@ public class DuplicatedCodeView extends ViewPart
     /**
      * Id of the view. Cf. plugin.xml
      */
-    public static final String VIEW_ID = CheckstylePlugin.PLUGIN_ID + ".duplicatesView";
+    public static final String VIEW_ID = CheckstylePlugin.PLUGIN_ID + ".duplicatesView"; //$NON-NLS-1$
+
+    /**
+     * Name of the StrictDuplicateCode module.
+     */
+    public static final String STRICT_DUPLICATE_CODE_MODULE_NAME = "StrictDuplicateCode"; //$NON-NLS-1$
 
     /**
      * Tree viewer that displays the result of the analysis.
@@ -115,9 +130,6 @@ public class DuplicatedCodeView extends ViewPart
          */
         public Object[] getChildren(Object parentElement)
         {
-
-            IWorkbenchAdapter adapter = getAdapter(parentElement);
-
             if (parentElement instanceof IProject)
             {
 
@@ -165,6 +177,9 @@ public class DuplicatedCodeView extends ViewPart
         }
     }
 
+    /**
+     * Filter for the viewer.
+     */
     class DuplicatesFilter extends ViewerFilter
     {
 
@@ -189,7 +204,8 @@ public class DuplicatedCodeView extends ViewPart
                             false, IResource.DEPTH_ZERO);
                     for (int i = 0; i < markers.length; i++)
                     {
-                        if ("StrictDuplicateCode".equals(markers[i].getAttribute("ModuleName")))
+                        if (STRICT_DUPLICATE_CODE_MODULE_NAME.equals(
+                            markers[i].getAttribute(CheckstyleMarker.MODULE_NAME)))
                         {
                             result = true;
                             break;
@@ -200,8 +216,8 @@ public class DuplicatedCodeView extends ViewPart
                 }
                 else if (element instanceof IMarker)
                 {
-                    return "StrictDuplicateCode".equals(((IMarker) element)
-                            .getAttribute("ModuleName"));
+                    return STRICT_DUPLICATE_CODE_MODULE_NAME.equals(((IMarker) element)
+                            .getAttribute(CheckstyleMarker.MODULE_NAME));
                 }
             }
             catch (CoreException e)
@@ -212,7 +228,7 @@ public class DuplicatedCodeView extends ViewPart
         }
     }
 
-    IResourceChangeListener resourceListener = new IResourceChangeListener()
+    private IResourceChangeListener mResourceListener = new IResourceChangeListener()
     {
         public void resourceChanged(final IResourceChangeEvent event)
         {
@@ -251,7 +267,7 @@ public class DuplicatedCodeView extends ViewPart
         hookDoubleClickAction();
         contributeToActionBars();
 
-        ResourcesPlugin.getWorkspace().addResourceChangeListener(resourceListener);
+        ResourcesPlugin.getWorkspace().addResourceChangeListener(mResourceListener);
     }
 
     /**
@@ -299,6 +315,63 @@ public class DuplicatedCodeView extends ViewPart
     {
         IActionBars bars = getViewSite().getActionBars();
         mDrillDownAdapter.addNavigationActions(bars.getToolBarManager());
+        
+        // Adds a refresh button
+        IAction mRefreshAction = new Action()
+        {
+            public void run()
+            {
+                Job job = new Job(Messages.DuplicatedCodeView_runningCheckstyleToRefresh)
+                {
+                    protected IStatus run(IProgressMonitor monitor)
+                    {
+                        IProject[] projects = ResourcesPlugin.getWorkspace()
+                            .getRoot().getProjects();
+                        for (int i = 0; i < projects.length; i++)
+                        {
+                            IProject project = projects[i];
+                            try
+                            {
+                                if (project
+                                    .hasNature(CheckstyleNature.NATURE_ID))
+                                {
+                                    project.build(
+                                        IncrementalProjectBuilder.FULL_BUILD,
+                                        CheckstyleBuilder.BUILDER_ID, null,
+                                        monitor);
+                                }
+                            }
+                            catch (CoreException e)
+                            {
+                                CheckstyleLog
+                                    .errorDialog(
+                                        mViewer.getControl().getShell(),
+                                        NLS.bind(
+                                                ErrorMessages.errorWhileBuildingProject,
+                                                project.getName()), e, true);
+                            }
+                        }
+                        Display.getDefault().asyncExec(new Runnable()
+                        {
+                            public void run()
+                            {
+                                // update the UI
+                                mViewer.refresh();
+                            }
+                        });
+                        return Status.OK_STATUS;
+                    }
+                };
+                job.schedule();
+            }
+        };
+        mRefreshAction.setText(Messages.DuplicatedCodeView_refreshAction);
+        mRefreshAction.setToolTipText(Messages.DuplicatedCodeView_refreshActionTooltip);
+        ImageDescriptor descriptor = CheckstylePlugin
+            .imageDescriptorFromPlugin(CheckstylePlugin.PLUGIN_ID,
+                "icons/refresh.gif"); //$NON-NLS-1$
+        mRefreshAction.setImageDescriptor(descriptor);
+        bars.getToolBarManager().add(mRefreshAction);
     }
 
     /**
@@ -351,18 +424,18 @@ public class DuplicatedCodeView extends ViewPart
                 catch (PartInitException e)
                 {
                     CheckstyleLog.errorDialog(mViewer.getControl().getShell(),
-                            "Error while opening the file editor.", e, true);
+                            ErrorMessages.errorWhileOpeningEditor, e, true);
                 }
                 catch (CoreException e)
                 {
                     CheckstyleLog.errorDialog(mViewer.getControl().getShell(),
-                            "Error while opening the file editor.", e, true);
+                            ErrorMessages.errorWhileOpeningEditor, e, true);
                 }
             }
         };
-        mOpenSourceFileAction.setText("Open source file");
+        mOpenSourceFileAction.setText(Messages.DuplicatedCodeView_openSourceAction);
         mOpenSourceFileAction
-                .setToolTipText("Opens the file where duplications have been detected.");
+                .setToolTipText(Messages.DuplicatedCodeView_openSourceActionTooltip);
         mOpenSourceFileAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages()
                 .getImageDescriptor(ISharedImages.IMG_TOOL_FORWARD));
     }
@@ -409,18 +482,18 @@ public class DuplicatedCodeView extends ViewPart
                 catch (PartInitException e)
                 {
                     CheckstyleLog.errorDialog(mViewer.getControl().getShell(),
-                            "Error while opening the file editor.", e, true);
+                            ErrorMessages.errorWhileOpeningEditor, e, true);
                 }
                 catch (CoreException e)
                 {
                     CheckstyleLog.errorDialog(mViewer.getControl().getShell(),
-                            "Error while opening the file editor.", e, true);
+                            ErrorMessages.errorWhileOpeningEditor, e, true);
                 }
             }
         };
-        mOpenDuplicatedCodeFileAction.setText("Open target file");
+        mOpenDuplicatedCodeFileAction.setText(Messages.DuplicatedCodeView_openTargetAction);
         mOpenDuplicatedCodeFileAction
-                .setToolTipText("Opens the file where duplicate code has been found.");
+                .setToolTipText(Messages.DuplicatedCodeView_openTargetActionTooltip);
         mOpenDuplicatedCodeFileAction.setImageDescriptor(PlatformUI.getWorkbench()
                 .getSharedImages().getImageDescriptor(ISharedImages.IMG_TOOL_FORWARD));
     }
@@ -432,26 +505,32 @@ public class DuplicatedCodeView extends ViewPart
      * @param firstLine the line to jump to and select from
      * @param lastLine the last line to select
      */
-    private void selectAndRevealDuplicatedLines(ITextEditor editor, int firstLine, int lastLine)
+    protected void selectAndRevealDuplicatedLines(ITextEditor editor, int firstLine, int lastLine)
     {
         IDocumentProvider provider = editor.getDocumentProvider();
         IDocument document = provider.getDocument(editor.getEditorInput());
         try
         {
             int start = document.getLineOffset(firstLine);
-        	if (firstLine != 0) {
-        		// need to do this because in an IDocument, line count begins at 0
-        		start = document.getLineOffset(firstLine-1);
-        	}
-        	// Same comment here
-            int end = document.getLineOffset(lastLine - 2) + document.getLineLength(lastLine - 2);
+            if (firstLine != 0)
+            {
+                // need to do this because in an IDocument, line count begins at
+                // 0
+                start = document.getLineOffset(firstLine - 1);
+            }
+            // Same comment here
+            int end = document.getLineOffset(lastLine - 2)
+                + document.getLineLength(lastLine - 2);
             editor.selectAndReveal(start, end - start - 1);
         }
         catch (BadLocationException e)
         {
 
-            CheckstyleLog.errorDialog(mViewer.getControl().getShell(),
-                    "Error while trying to reveal and display the duplicated lines.", e, true);
+            CheckstyleLog
+                .errorDialog(
+                    mViewer.getControl().getShell(),
+                    ErrorMessages.errorWhileDisplayingDuplicates,
+                    e, true);
         }
     }
 
@@ -490,7 +569,7 @@ public class DuplicatedCodeView extends ViewPart
      */
     public void dispose()
     {
-        ResourcesPlugin.getWorkspace().removeResourceChangeListener(resourceListener);
+        ResourcesPlugin.getWorkspace().removeResourceChangeListener(mResourceListener);
         super.dispose();
     }
 }
