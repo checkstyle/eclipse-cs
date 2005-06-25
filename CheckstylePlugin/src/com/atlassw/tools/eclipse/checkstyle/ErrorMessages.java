@@ -109,5 +109,11 @@ public final class ErrorMessages extends NLS
 
 	public static String CheckstyleLog_titleWarning;
 
+    public static String errorWhileBuildingProject;
+
+    public static String errorWhileOpeningEditor;
+
+    public static String errorWhileDisplayingDuplicates;
+
     //  CHECKSTYLE:ON
 }

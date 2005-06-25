@@ -44,6 +44,16 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 public class DuplicatedCode
 {
     /**
+     * Checkstyle bundle that contains the duplicates i18n.
+     */
+    private final static String DUPLICATES_MESSAGE_BUNDLE = "com.puppycrawl.tools.checkstyle.checks.duplicates.messages"; //$NON-NLS-1$
+    
+    /**
+     * Key of the message given to the user for duplicates.
+     */
+    private static final String DUPLICATE_LINE_MESSAGE = "duplicates.lines"; //$NON-NLS-1$
+    
+    /**
      * First mask for the checkstyle message.
      */
     private static String sMask1;
@@ -63,18 +73,19 @@ public class DuplicatedCode
         try
         {
             ResourceBundle resourceBundle = ResourceBundle
-                    .getBundle("com.puppycrawl.tools.checkstyle.checks.duplicates.messages");
-            String localProperty = resourceBundle.getString("duplicates.lines");
-            sMask1 = localProperty.substring(0, localProperty.indexOf("{0}"));
-            sMask2 = localProperty.substring(localProperty.indexOf("{0}") + 3, localProperty
-                    .indexOf("{1}"));
-            sMask3 = localProperty.substring(localProperty.indexOf("{1}") + 3, localProperty
-                    .indexOf("{2}"));
+                    .getBundle(DUPLICATES_MESSAGE_BUNDLE);
+            String localProperty = resourceBundle.getString(DUPLICATE_LINE_MESSAGE);
+            sMask1 = localProperty.substring(0, localProperty.indexOf("{0}")); //$NON-NLS-1$
+            sMask2 = localProperty.substring(localProperty.indexOf("{0}") + 3, localProperty //$NON-NLS-1$
+                    .indexOf("{1}")); //$NON-NLS-1$
+            sMask3 = localProperty.substring(localProperty.indexOf("{1}") + 3, localProperty //$NON-NLS-1$
+                    .indexOf("{2}")); //$NON-NLS-1$
         }
         catch (MissingResourceException x)
         {
-            CheckstyleLog.log(x, "Unable to get the resource bundle "
-                    + "\"com.puppycrawl.tools.checkstyle.checks.duplicates.messages\".");
+            CheckstyleLog.log(x, "Unable to get the resource bundle " //$NON-NLS-1$
+                    + DUPLICATES_MESSAGE_BUNDLE
+                    + "."); //$NON-NLS-1$
         }
     }
 

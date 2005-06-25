@@ -323,5 +323,19 @@ public final class Messages extends NLS
 
     public static String FileSetEditDialog_titleTestResult;
 
+    public static String DuplicatedCodeView_runningCheckstyleToRefresh;
+
+    public static String DuplicatedCodeView_refreshAction;
+
+    public static String DuplicatedCodeView_refreshActionTooltip;
+
+    public static String DuplicatedCodeView_openSourceAction;
+
+    public static String DuplicatedCodeView_openSourceActionTooltip;
+
+    public static String DuplicatedCodeView_openTargetAction;
+
+    public static String DuplicatedCodeView_openTargetActionTooltip;
+
     // CHECKSTYLE:ON
 }
