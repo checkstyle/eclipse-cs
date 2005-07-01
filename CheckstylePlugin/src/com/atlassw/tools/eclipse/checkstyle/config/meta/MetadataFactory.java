@@ -340,6 +340,7 @@ public final class MetadataFactory
                     // register alternative name
                     sAlternativeNamesMap.put(attributes.getValue(XMLTags.INTERNAL_NAME_TAG),
                             mCurrentRule);
+                    mCurrentRule.addAlternativeName(attributes.getValue(XMLTags.INTERNAL_NAME_TAG));
                 }
                 else if (XMLTags.DESCRIPTION_TAG.equals(qName))
                 {

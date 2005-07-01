@@ -20,6 +20,8 @@
 
 package com.atlassw.tools.eclipse.checkstyle.config.meta;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -71,6 +73,9 @@ public class RuleMetadata
 
     /** The group. */
     private RuleGroupMetadata mGroup;
+    
+    /** Alternative names, including the name of the Checkstyle checker class */
+    private Collection mAlternativeNames;
 
     //=================================================
     // Constructors & finalizer.
@@ -103,12 +108,29 @@ public class RuleMetadata
         mHasSeverity = hasSeverity;
         mIsDeletable = deletable;
         mGroup = group;
+        mAlternativeNames = new ArrayList();
     }
 
     //=================================================
     // Methods.
     //=================================================
 
+    /**
+     * Adds an alternative name for this rule.
+     * @param alternativeName an alternative name for this rule
+     */
+    public void addAlternativeName(String alternativeName) {
+    	mAlternativeNames.add(alternativeName);
+    }
+    
+    /**
+     * Returns the list of alternative names.
+     * @return a collection of String 
+     */
+    public Collection getAlternativeNames() {
+    	return mAlternativeNames;
+    }
+    
     /**
      * Returns the default severity level.
      * 
