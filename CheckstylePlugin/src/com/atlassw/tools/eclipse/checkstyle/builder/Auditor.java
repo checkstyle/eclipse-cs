@@ -336,6 +336,7 @@ public class Auditor
                     if (metaData != null)
                     {
                         attributes.put(CheckstyleMarker.MODULE_NAME, metaData.getInternalName());
+                        attributes.put(CheckstyleMarker.MESSAGE_KEY, error.getLocalizedMessage().getKey());
                     }
                     attributes.put(IMarker.PRIORITY, new Integer(IMarker.PRIORITY_NORMAL));
                     attributes.put(IMarker.SEVERITY, new Integer(getSeverityValue(severity)));

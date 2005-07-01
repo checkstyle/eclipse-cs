@@ -57,6 +57,9 @@ public class CheckstyleMarker
     /** Constant for module info additionally stored. */
     public static final String MODULE_NAME = "ModuleName"; //$NON-NLS-1$
 
+    /** Constant for message key info additionally stored. */
+    public static final String MESSAGE_KEY = "MessageKey"; //$NON-NLS-1$
+
     /** Constant for the error marker type. */
     public static final String ERROR_TYPE = CheckstylePlugin.PLUGIN_ID + ".error"; //$NON-NLS-1$
 
