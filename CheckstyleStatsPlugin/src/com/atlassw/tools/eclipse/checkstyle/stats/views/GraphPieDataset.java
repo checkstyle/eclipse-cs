@@ -104,7 +104,8 @@ public class GraphPieDataset extends AbstractDataset implements PieDataset,
             if (!mShowJavadoc)
             {
                 String id = markerStat.getIdentifiant();
-                if (id.indexOf("Javadoc") > -1 || id.indexOf("@") > -1) //$NON-NLS-1$ //$NON-NLS-2$
+                // look for the word Javadoc (or javadoc) or @
+                if (id.indexOf("avadoc") > -1 || id.indexOf("@") > -1) //$NON-NLS-1$ //$NON-NLS-2$
                 {
                     // c'est une erreur Javadoc : on ne l'affiche pas
                     continue;

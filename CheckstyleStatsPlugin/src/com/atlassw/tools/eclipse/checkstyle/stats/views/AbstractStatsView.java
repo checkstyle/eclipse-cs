@@ -27,6 +27,7 @@ import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -99,7 +100,7 @@ public abstract class AbstractStatsView extends ViewPart
         createColumns(table);
 
         // Les providers
-        mViewer.setContentProvider(new CollectionContentProvider());
+        mViewer.setContentProvider(new ArrayContentProvider());
         mViewer.setLabelProvider(createLabelProvider());
 
         makeActions();
