@@ -410,32 +410,38 @@ public final class CheckConfigurationFactory
                     .getOriginalCheckConfig()
                     : checkConfig;
 
-            List projects = ProjectConfigurationFactory.getProjectsUsingConfig(original.getName());
-            Iterator it2 = projects.iterator();
-
-            while (it2.hasNext())
+            // only if the name of the check config differs from the original
+            if (!original.getName().equals(checkConfig.getName()))
             {
 
-                IProject project = (IProject) it2.next();
-                ProjectConfiguration projectConfig = ProjectConfigurationFactory
-                        .getConfiguration(project);
+                List projects = ProjectConfigurationFactory.getProjectsUsingConfig(original
+                        .getName());
+                Iterator it2 = projects.iterator();
 
-                List fileSets = projectConfig.getFileSets();
-                Iterator it3 = fileSets.iterator();
-                while (it3.hasNext())
+                while (it2.hasNext())
                 {
-                    FileSet fileSet = (FileSet) it3.next();
 
-                    //Check if the fileset uses the check config
-                    if (original.getName().equals(fileSet.getCheckConfigName()))
+                    IProject project = (IProject) it2.next();
+                    ProjectConfiguration projectConfig = ProjectConfigurationFactory
+                            .getConfiguration(project);
+
+                    List fileSets = projectConfig.getFileSets();
+                    Iterator it3 = fileSets.iterator();
+                    while (it3.hasNext())
                     {
-                        //set the new check configuration
-                        fileSet.setCheckConfig(checkConfig);
-                    }
-                }
+                        FileSet fileSet = (FileSet) it3.next();
 
-                //store the project configuration
-                ProjectConfigurationFactory.setConfiguration(projectConfig, project);
+                        // Check if the fileset uses the check config
+                        if (original.getName().equals(fileSet.getCheckConfigName()))
+                        {
+                            // set the new check configuration
+                            fileSet.setCheckConfig(checkConfig);
+                        }
+                    }
+
+                    // store the project configuration
+                    ProjectConfigurationFactory.setConfiguration(projectConfig, project);
+                }
             }
         }
     }
