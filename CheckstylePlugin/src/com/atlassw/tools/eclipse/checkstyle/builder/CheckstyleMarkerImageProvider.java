@@ -62,34 +62,14 @@ public class CheckstyleMarkerImageProvider implements IAnnotationImageProvider
      */
     public String getImageDescriptorId(Annotation annotation)
     {
-
-        //        String type = annotation.getType();
-        //        if (CheckstyleMarker.ERROR_TYPE.equals(type) ||
-        // CheckstyleMarker.WARNING_TYPE.equals(type)
-        //                || CheckstyleMarker.INFO_TYPE.equals(type))
-        //        {
-        //            return type;
-        //        }
         return null;
     }
 
-    /*
+    /**
      * @see org.eclipse.ui.texteditor.IAnnotationImageProvider#getImageDescriptor(java.lang.String)
      */
     public ImageDescriptor getImageDescriptor(String imageDescritporId)
     {
-        //        if (CheckstyleMarker.ERROR_TYPE.equals(imageDescritporId))
-        //        {
-        //
-        //        }
-        //        else if (CheckstyleMarker.WARNING_TYPE.equals(imageDescritporId))
-        //        {
-        //
-        //        }
-        //        else if (CheckstyleMarker.INFO_TYPE.equals(imageDescritporId))
-        //        {
-        //
-        //        }
         return null;
     }
 }
