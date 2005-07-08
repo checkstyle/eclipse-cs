@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <fileset-config file-format-version="1.1.0" simple-config="true">
-<fileset name="all" check-config-name="Sun Checks" enabled="true"><file-match-pattern match-pattern="." include-pattern="true"/>
+<fileset name="Alle" check-config-name="Production Files" enabled="true"><file-match-pattern match-pattern="." include-pattern="true"/>
 </fileset>
 <filter name="FilesFromPackage" enabled="true"><filter-data value="src/com/atlassw/tools/eclipse/checkstyle/util/regex"/>
 <filter-data value="nls"/>
