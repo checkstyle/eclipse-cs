@@ -149,6 +149,8 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
 
     private PageController mController = new PageController();
 
+    private boolean mRebuildAll = false;
+
     // =================================================
     // Constructors & finalizer.
     // =================================================
@@ -554,7 +556,8 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
             prefs.setValue(CheckstylePlugin.PREF_INCLUDE_RULE_NAMES, includeRuleNamesNow);
 
             // See if all projects need rebuild
-            boolean needRebuildAllProjects = includeRuleNamesNow != includeRuleNamesOriginal;
+            boolean needRebuildAllProjects = (includeRuleNamesNow != includeRuleNamesOriginal)
+                    || mRebuildAll;
 
             // Get projects that need rebuild considering the changes
             Collection projectsToBuild = getProjectsToRebuild();
@@ -696,6 +699,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
             else if (mPurgeCacheButton == e.widget)
             {
                 CheckerFactory.cleanup();
+                mRebuildAll = true;
             }
         }
 
@@ -806,7 +810,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
 
                 if (!setProjectContext(config))
                 {
-                    //cant go further without proper context
+                    // cant go further without proper context
                     return;
                 }
             }
@@ -931,7 +935,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
 
                 if (!setProjectContext(sourceConfig))
                 {
-                    //cant go further without proper context
+                    // cant go further without proper context
                     return;
                 }
             }
@@ -1032,7 +1036,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
 
             if (!setProjectContext(config))
             {
-                //cant go further without proper context
+                // cant go further without proper context
                 return;
             }
         }
