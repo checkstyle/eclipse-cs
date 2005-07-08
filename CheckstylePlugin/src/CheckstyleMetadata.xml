@@ -667,7 +667,7 @@ for (
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.whitespace.WhitespaceAroundCheck"/>
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.WhitespaceAroundCheck"/>
          <description>Checks that a token is surrounded by whitespace.</description>
-         <property-metadata name="tokens" datatype="MultiCheck" default-value="ASSIGN,BAND,BAND_ASSIGN,BOR,BOR_ASSIGN,BSR,BSR_ASSIGN,BXOR,BXOR_ASSIGN,COLON,DIV,DIV_ASSIGN,EQUAL,GE,GT,LAND,LCURLY,LE,LITERAL_ASSERT,LITERAL_CATCH,LITERAL_DO,LITERAL_ELSE,LITERAL_FINALLY,LITERAL_FOR,LITERAL_IF,LITERAL_RETURN,LITERAL_SYNCHRONIZED,LITERAL_TRY,LITERAL_WHILE,LOR,LT,MINUS,MINUS_ASSIGN,MOD,MOD_ASSIGN,NOT_EQUAL,PLUS,PLUS_ASSIGN,QUESTION,RCURLY,SL,SLIST,SL_ASSIGN,SR,SR_ASSIGN,STAR,STAR_ASSIGN">
+         <property-metadata name="tokens" datatype="MultiCheck" default-value="ASSIGN,BAND,BAND_ASSIGN,BOR,BOR_ASSIGN,BSR,BSR_ASSIGN,BXOR,BXOR_ASSIGN,COLON,DIV,DIV_ASSIGN,EQUAL,GE,GT,LAND,LCURLY,LE,LITERAL_ASSERT,LITERAL_CATCH,LITERAL_DO,LITERAL_ELSE,LITERAL_FINALLY,LITERAL_FOR,LITERAL_IF,LITERAL_RETURN,LITERAL_SYNCHRONIZED,LITERAL_TRY,LITERAL_WHILE,LOR,LT,MINUS,MINUS_ASSIGN,MOD,MOD_ASSIGN,NOT_EQUAL,PLUS,PLUS_ASSIGN,QUESTION,RCURLY,SL,SLIST,SL_ASSIGN,SR,SR_ASSIGN,STAR,STAR_ASSIGN,LITERAL_ASSERT,GENERIC_START,GENERIC_END,TYPE_EXTENSION_AND,WILDCARD_TYPE">
             <description>Tokens to check.</description>
             <enumeration>
                <property-value-option value="ASSIGN"/>
@@ -717,6 +717,11 @@ for (
                <property-value-option value="SR_ASSIGN"/>
                <property-value-option value="STAR"/>
                <property-value-option value="STAR_ASSIGN"/>
+               <property-value-option value="LITERAL_ASSERT"/>
+               <property-value-option value="GENERIC_START"/>
+               <property-value-option value="GENERIC_END"/>
+               <property-value-option value="TYPE_EXTENSION_AND"/>
+               <property-value-option value="WILDCARD_TYPE"/>
             </enumeration>
          </property-metadata>
       </rule-metadata>
@@ -958,6 +963,11 @@ Note: the check works in assumption that there is no unreachable code in the cas
          <property-metadata name="ignoreSetter" datatype="Boolean" default-value="false">
             <description>Controls whether to ignore the parameter of a property setter method, where the property setter method for field "xyz" has name "setXyz", one parameter named "xyz", and return type void.</description>
          </property-metadata>
+         <!--
+         <property-metadata name="ignoreAbstractMethods" datatype="Boolean" default-value="false">
+         	<description>TODO</description>
+         </property-metadata>
+         -->	
       </rule-metadata>
       
       <rule-metadata name="Illegal Instantiation" internal-name="IllegalInstantiation" parent="TreeWalker">
