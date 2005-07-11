@@ -189,7 +189,7 @@ public final class CheckerFactory
 
         // load configuration
         Configuration configuration = ConfigurationLoader.loadConfiguration(config.toString(),
-                propResolver);
+                propResolver, true);
 
         // create and configure checker
         Checker checker = new Checker();

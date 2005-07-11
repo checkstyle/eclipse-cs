@@ -105,7 +105,7 @@ public class RemoteCheckConfiguration extends AbstractCheckConfiguration
                 // we won't load the bundle then
             }
 
-            mPropertyResolver = new ResourceBundleProperyResolver(bundle);
+            mPropertyResolver = new ResourceBundlePropertyResolver(bundle);
         }
         return mPropertyResolver;
     }
