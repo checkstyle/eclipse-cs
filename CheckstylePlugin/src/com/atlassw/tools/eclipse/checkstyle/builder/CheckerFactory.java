@@ -177,7 +177,7 @@ public final class CheckerFactory
      * file.
      * 
      * @param config location of the configuration file
-     * @param propResolver a property resolverr null
+     * @param propResolver a property resolver null
      * @param entityResolver a custom entity resolver
      * @return the newly created Checker
      * @throws CheckstyleException an exception during the creation of the
@@ -189,7 +189,7 @@ public final class CheckerFactory
 
         // load configuration
         Configuration configuration = ConfigurationLoader.loadConfiguration(config.toString(),
-                propResolver, true);
+                propResolver);
 
         // create and configure checker
         Checker checker = new Checker();
