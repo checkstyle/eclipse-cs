@@ -114,6 +114,8 @@ public final class ErrorMessages extends NLS
     public static String errorWhileOpeningEditor;
 
     public static String errorWhileDisplayingDuplicates;
+    
+    public static String errorFilesetWithoutCheckConfig;
 
     //  CHECKSTYLE:ON
 }

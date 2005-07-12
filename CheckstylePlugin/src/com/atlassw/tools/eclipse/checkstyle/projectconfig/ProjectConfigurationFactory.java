@@ -237,7 +237,7 @@ public final class ProjectConfigurationFactory
             // the transformer handler
             TransformerHandler xmlOut = XMLUtil.writeWithSax(pipeOut);
 
-            writeProjectConfig(config, xmlOut);
+            writeProjectConfig(config, project, xmlOut);
 
             pipeIn = new ByteArrayInputStream(pipeOut.toByteArray());
 
@@ -283,11 +283,12 @@ public final class ProjectConfigurationFactory
      * Produces the sax events to write a project configuration.
      * 
      * @param config the configuration
+     * @param project the project
      * @param xmlOut the transformer handler receiving the events
      * @throws SAXException error writing
      */
-    private static void writeProjectConfig(ProjectConfiguration config, TransformerHandler xmlOut)
-        throws SAXException
+    private static void writeProjectConfig(ProjectConfiguration config, IProject project,
+            TransformerHandler xmlOut) throws SAXException, CheckstylePluginException
     {
 
         xmlOut.startDocument();
@@ -306,7 +307,7 @@ public final class ProjectConfigurationFactory
         int size = fileSets != null ? fileSets.size() : 0;
         for (int i = 0; i < size; i++)
         {
-            writeFileSet((FileSet) fileSets.get(i), xmlOut);
+            writeFileSet((FileSet) fileSets.get(i), project, xmlOut);
         }
         // write filters
         IFilter[] filters = config.getFilters();
@@ -324,12 +325,21 @@ public final class ProjectConfigurationFactory
      * Produces the sax events to write a file set to xml.
      * 
      * @param fileSet the file set
+     * @param project the project
      * @param xmlOut the transformer handler receiving the events
      * @throws SAXException error writing
      */
-    private static void writeFileSet(FileSet fileSet, TransformerHandler xmlOut)
-        throws SAXException
+    private static void writeFileSet(FileSet fileSet, IProject project, TransformerHandler xmlOut)
+        throws SAXException, CheckstylePluginException
     {
+
+        if (fileSet.getCheckConfigName() == null)
+        {
+            throw new CheckstylePluginException(ErrorMessages.bind(
+                    ErrorMessages.errorFilesetWithoutCheckConfig, fileSet.getName(), project
+                            .getName()));
+        }
+
         AttributesImpl attr = new AttributesImpl();
         attr
                 .addAttribute(new String(), XMLTags.NAME_TAG, XMLTags.NAME_TAG, null, fileSet
