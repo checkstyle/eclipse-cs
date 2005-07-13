@@ -22,6 +22,7 @@ package com.atlassw.tools.eclipse.checkstyle.builder;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -29,6 +30,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.filebuffers.FileBuffers;
+import org.eclipse.core.filebuffers.ITextFileBufferManager;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
@@ -36,8 +39,15 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Preferences;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.internal.corext.util.CodeFormatterUtil;
+import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.IRegion;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.texteditor.MarkerUtilities;
 
@@ -87,6 +97,9 @@ public class Auditor
     /** Add the check rule name to the message? */
     private boolean mAddRuleName = false;
 
+    /** Reference to the file buffer manager. */
+    private final ITextFileBufferManager fileBufferManager = FileBuffers.getTextFileBufferManager();
+
     // =================================================
     // Constructors & finalizer.
     // =================================================
@@ -123,7 +136,7 @@ public class Auditor
         throws CheckstylePluginException
     {
 
-        //skip if there are no files to check
+        // skip if there are no files to check
         if (mFiles.isEmpty() || project == null)
         {
             return;
@@ -153,9 +166,9 @@ public class Auditor
             listener = new CheckstyleAuditListener(project);
             checker.addListener(listener);
 
-            //create and add filter for RuntimeExceptions reported by
+            // create and add filter for RuntimeExceptions reported by
             // RedundantThrowsCheck
-            //BUGS 1177797, 996575
+            // BUGS 1177797, 996575
             runtimeExceptionFilter = new RuntimeExceptionFilter();
             checker.addFilter(runtimeExceptionFilter);
 
@@ -186,7 +199,7 @@ public class Auditor
                 checker.removeFilter(runtimeExceptionFilter);
             }
 
-            //reset the context
+            // reset the context
             mCheckConfiguration.setContext(null);
         }
     }
@@ -260,21 +273,49 @@ public class Auditor
     private class CheckstyleAuditListener implements AuditListener
     {
 
+        /** The tab width set within eclipse. */
+        private int mTabWidth;
+
         /** the project. */
         private IProject mProject;
 
         /** The file currently being checked. */
         private IResource mResource;
 
-        /** Contains a offset information for all lines of the file. */
-        private LineModel mLineModel;
+        /** Document model of the current file. */
+        private IDocument mDocument;
 
         /** internal counter used to time to actualisation of the monitor. */
         private int mMonitorCounter;
 
+        /** map containing the marker data. */
+        private Map mMarkerAttributes = new HashMap();
+
         public CheckstyleAuditListener(IProject project)
         {
             mProject = project;
+
+            try
+            {
+
+                // In Eclipse 3.1 there can be project specific settings for
+                // tabwidtdh etc.
+                // Here reflection is used to maintain compatibility with
+                // Eclipse 3.0
+                Method getTabWidht3_1Style = CodeFormatterUtil.class.getMethod("getTabWidth",
+                        new Class[] { IJavaProject.class });
+
+                IJavaProject javaProject = JavaCore.create(project);
+
+                Integer width = (Integer) getTabWidht3_1Style.invoke(null,
+                        new Object[] { javaProject });
+                mTabWidth = width.intValue();
+            }
+            catch (Exception e)
+            {
+                // we're in Eclipse 3.0 - fall back to the std method
+                mTabWidth = CodeFormatterUtil.getTabWidth();
+            }
         }
 
         public void fileStarted(AuditEvent event)
@@ -295,8 +336,9 @@ public class Auditor
                 // increment monitor-counter
                 this.mMonitorCounter++;
 
-                // invalidate the last line model
-                mLineModel = null;
+                // invalidate the last document
+                mDocument = null;
+
             }
             else
             {
@@ -314,7 +356,7 @@ public class Auditor
                 else
                 {
                     // if the resource is not inside the project, take project
-                    // as resource this should not happen
+                    // as resource - this should not happen
                     mResource = mProject;
                 }
             }
@@ -329,57 +371,30 @@ public class Auditor
                 if (!severity.equals(SeverityLevel.IGNORE) && mResource != null)
                 {
 
-                    // set attributes of the marker
-                    Map attributes = new HashMap();
-
                     RuleMetadata metaData = MetadataFactory.getRuleMetadata(error.getSourceName());
                     if (metaData != null)
                     {
-                        attributes.put(CheckstyleMarker.MODULE_NAME, metaData.getInternalName());
-                        attributes.put(CheckstyleMarker.MESSAGE_KEY, error.getLocalizedMessage().getKey());
+                        mMarkerAttributes.put(CheckstyleMarker.MODULE_NAME, metaData
+                                .getInternalName());
+                        mMarkerAttributes.put(CheckstyleMarker.MESSAGE_KEY, error
+                                .getLocalizedMessage().getKey());
                     }
-                    attributes.put(IMarker.PRIORITY, new Integer(IMarker.PRIORITY_NORMAL));
-                    attributes.put(IMarker.SEVERITY, new Integer(getSeverityValue(severity)));
-                    MarkerUtilities.setLineNumber(attributes, error.getLine());
-                    MarkerUtilities.setMessage(attributes, getMessage(error));
+                    mMarkerAttributes.put(IMarker.PRIORITY, new Integer(IMarker.PRIORITY_NORMAL));
+                    mMarkerAttributes
+                            .put(IMarker.SEVERITY, new Integer(getSeverityValue(severity)));
+                    MarkerUtilities.setLineNumber(mMarkerAttributes, error.getLine());
+                    MarkerUtilities.setMessage(mMarkerAttributes, getMessage(error));
 
-                    // lazy create the line model for the current file
-                    if (mLineModel == null && mResource instanceof IFile)
-                    {
-
-                        // create the file's line offset information
-                        try
-                        {
-                            mLineModel = new LineModel(mResource.getLocation().toFile());
-                        }
-                        catch (IOException e)
-                        {
-                            CheckstyleLog.log(e);
-                        }
-                    }
-
-                    // Provide offset information for the marker to make
-                    // annotated source code possible
-                    if (mLineModel != null)
-                    {
-
-                        // Offset must be file based, not line based
-                        LineModel.LineOffset lineOffset = mLineModel.getLineOffset(error.getLine());
-
-                        if (lineOffset != null)
-                        {
-
-                            // annotate from the error column until the end of
-                            // the line
-                            int indent = error.getColumn() == 0 ? 0 : error.getColumn() - 1;
-                            MarkerUtilities.setCharStart(attributes, lineOffset.getStartOffset()
-                                    + indent);
-                            MarkerUtilities.setCharEnd(attributes, lineOffset.getEndOffset());
-                        }
-                    }
+                    //calculate offset for editor annotations
+                    calculateMarkerOffset(error, mMarkerAttributes);
 
                     // create a marker for the actual resource
-                    MarkerUtilities.createMarker(mResource, attributes, CheckstyleMarker.MARKER_ID);
+                    MarkerUtilities.createMarker(mResource, mMarkerAttributes,
+                            CheckstyleMarker.MARKER_ID);
+
+                    //clear the marker attributes to reuse the map for the next
+                    // error
+                    mMarkerAttributes.clear();
                 }
             }
             catch (CoreException e)
@@ -408,6 +423,90 @@ public class Auditor
 
         public void auditStarted(AuditEvent event)
         {}
+
+        /**
+         * Calculates the offset information for the editor annotations.
+         * 
+         * @param error the audit error
+         * @param markerAttributes the marker attributes
+         * @throws CoreException
+         */
+        private void calculateMarkerOffset(AuditEvent error, Map markerAttributes)
+            throws CoreException
+        {
+
+            // lazy create the document for the current file
+            if (mDocument == null && mResource instanceof IFile)
+            {
+                IPath path = mResource.getFullPath();
+                fileBufferManager.connect(path, new NullProgressMonitor());
+                mDocument = fileBufferManager.getTextFileBuffer(path).getDocument();
+            }
+
+            // Provide offset information for the marker to make
+            // annotated source code possible
+            if (mDocument != null)
+            {
+                try
+                {
+
+                    int line = error.getLine();
+
+                    IRegion lineInformation = mDocument
+                            .getLineInformation(line == 0 ? 0 : line - 1);
+                    int lineOffset = lineInformation.getOffset();
+                    int lineLength = lineInformation.getLength();
+
+                    String lineData = mDocument.get(lineOffset, lineLength);
+
+                    // annotate from the error column until the end of
+                    // the line
+                    int offset = getOffsetFromColumn(lineData, error.getColumn());
+
+                    MarkerUtilities.setCharStart(markerAttributes, lineOffset + offset);
+                    MarkerUtilities.setCharEnd(markerAttributes, lineOffset + lineLength);
+                }
+                catch (BadLocationException e)
+                {
+                    CheckstyleLog.log(e);
+                }
+            }
+        }
+
+        /**
+         * Calculates the offset for the given column within this line. This is
+         * done to get a correct offset if tab characters are used within this
+         * line.
+         * 
+         * @param line the line as string
+         * @param column the column
+         * @return the true offset of this column within the line
+         */
+        private int getOffsetFromColumn(String line, int column)
+        {
+
+            int calculatedColumn = 0;
+
+            int lineLength = line.length();
+            for (int i = 0; i < lineLength; i++)
+            {
+                char c = line.charAt(i);
+                if (c == '\t')
+                {
+                    calculatedColumn += mTabWidth;
+                }
+                else
+                {
+                    calculatedColumn++;
+                }
+
+                if (calculatedColumn >= column)
+                {
+                    return i;
+                }
+            }
+            return lineLength;
+        }
 
         private int getSeverityValue(SeverityLevel severity)
         {
