@@ -19,13 +19,9 @@
 //============================================================================
 package com.atlassw.tools.eclipse.checkstyle.stats;
 
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
-
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.osgi.framework.BundleContext;
 
 /**
  * The main plugin class to be used in the desktop.
@@ -34,15 +30,22 @@ import org.osgi.framework.BundleContext;
  */
 public class StatsCheckstylePlugin extends AbstractUIPlugin
 {
+
+    //
+    // constants
+    //
+
+    /** The plugin id. */
+    public static final String PLUGIN_ID = "com.atlassw.tools.eclipse.checkstyle.stats";
+
     /**
      * The shared instance.
      */
     private static StatsCheckstylePlugin sPlugin;
 
-    /**
-     * Resource bundle.
-     */
-    private ResourceBundle mResourceBundle;
+    //
+    // constructors
+    //
 
     /**
      * The constructor.
@@ -51,78 +54,20 @@ public class StatsCheckstylePlugin extends AbstractUIPlugin
     {
         super();
         sPlugin = this;
-        try
-        {
-            mResourceBundle = ResourceBundle
-                .getBundle("com.atlassw.tools.eclipse.checkstyle.stats.StatsCheckstylePluginResources"); //$NON-NLS-1$
-        }
-        catch (MissingResourceException x)
-        {
-            mResourceBundle = null;
-        }
     }
 
-    /**
-     * Cf. méthode surchargée.
-     * 
-     * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
-     */
-    public void start(BundleContext context) throws Exception
-    {
-        super.start(context);
-    }
-
-    /**
-     * Cf. méthode surchargée.
-     * 
-     * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
-     */
-    public void stop(BundleContext context) throws Exception
-    {
-        super.stop(context);
-    }
+    //
+    // methods
+    //
 
     /**
      * Returns the shared instance.
      * 
-     * @return l'instance
+     * @return lthe shared instance
      */
     public static StatsCheckstylePlugin getDefault()
     {
         return sPlugin;
-    }
-
-    /**
-     * 
-     * Returns the string from the plugin's resource bundle, or 'key' if not
-     * found.
-     * 
-     * @param key
-     *            la clé
-     * @return le message correspondant
-     */
-    public static String getResourceString(String key)
-    {
-        ResourceBundle bundle = StatsCheckstylePlugin.getDefault()
-            .getResourceBundle();
-        try
-        {
-            return (bundle != null) ? bundle.getString(key) : key;
-        }
-        catch (MissingResourceException e)
-        {
-            return key;
-        }
-    }
-
-    /**
-     * Returns the plugin's resource bundle.
-     * 
-     * @return le bundle du plugin
-     */
-    public ResourceBundle getResourceBundle()
-    {
-        return mResourceBundle;
     }
 
     /**

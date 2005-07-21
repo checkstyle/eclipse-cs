@@ -46,6 +46,8 @@ import com.atlassw.tools.eclipse.checkstyle.stats.analyser.IAnalyserListener;
 import com.atlassw.tools.eclipse.checkstyle.stats.analyser.MarkerAnalyser;
 import com.atlassw.tools.eclipse.checkstyle.stats.data.MarkerStat;
 import com.atlassw.tools.eclipse.checkstyle.stats.data.Stats;
+import com.atlassw.tools.eclipse.checkstyle.stats.views.internal.CheckstyleMarkerFilter;
+import com.atlassw.tools.eclipse.checkstyle.stats.views.internal.FiltersAction;
 
 /**
  * View that displays statistics about checkstyle markers.
@@ -132,6 +134,14 @@ public class MarkerStatsView extends AbstractStatsView implements
     public IWorkbenchPage getPage()
     {
         return getViewSite().getPage();
+    }
+
+    /**
+     * @see com.atlassw.tools.eclipse.checkstyle.stats.views.AbstractStatsView#getViewId()
+     */
+    protected String getViewId()
+    {
+        return VIEW_ID;
     }
 
     /**
@@ -303,6 +313,7 @@ public class MarkerStatsView extends AbstractStatsView implements
     {
         IActionBars bars = getViewSite().getActionBars();
         bars.getMenuManager().add(mChartAction);
+        bars.getMenuManager().add(new FiltersAction(this));
     }
 
 }

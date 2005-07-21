@@ -19,22 +19,33 @@
 //============================================================================
 package com.atlassw.tools.eclipse.checkstyle.stats.views;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -44,10 +55,18 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Table;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchActionConstants;
+import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.ide.ResourceUtil;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.ui.views.tasklist.ITaskListResourceAdapter;
 
+import com.atlassw.tools.eclipse.checkstyle.stats.StatsCheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.stats.data.MarkerStat;
+import com.atlassw.tools.eclipse.checkstyle.stats.views.internal.CheckstyleMarkerFilter;
+import com.atlassw.tools.eclipse.checkstyle.stats.views.internal.CheckstyleMarkerFilterDialog;
 
 /**
  * Abstract view that gathers common behaviour for the stats views.
@@ -66,6 +85,137 @@ public abstract class AbstractStatsView extends ViewPart
      * Viewer.
      */
     private TableViewer mViewer;
+
+    /** The filter for this stats view. */
+    private CheckstyleMarkerFilter mFilter;
+
+    /** The focused resources. */
+    private IResource[] mFocusedResources;
+
+    /** The listener reacting to selection changes in the workspace. */
+    private ISelectionListener mFocusListener = new ISelectionListener()
+    {
+        public void selectionChanged(IWorkbenchPart part, ISelection selection)
+        {
+            AbstractStatsView.this.focusSelectionChanged(part, selection);
+        }
+    };
+
+    public void dispose()
+    {
+        super.dispose();
+
+        getSite().getPage().removeSelectionListener(mFocusListener);
+    }
+
+    /**
+     * @param part
+     * @param selection
+     */
+    private void focusSelectionChanged(IWorkbenchPart part, ISelection selection)
+    {
+
+        List resources = new ArrayList();
+        if (part instanceof IEditorPart)
+        {
+            IEditorPart editor = (IEditorPart) part;
+            IFile file = ResourceUtil.getFile(editor.getEditorInput());
+            if (file != null)
+            {
+                resources.add(file);
+            }
+        }
+        else
+        {
+            if (selection instanceof IStructuredSelection)
+            {
+                for (Iterator iterator = ((IStructuredSelection) selection)
+                    .iterator(); iterator.hasNext();)
+                {
+                    Object object = iterator.next();
+                    if (object instanceof IAdaptable)
+                    {
+                        IResource resource = (IResource) ((IAdaptable) object)
+                            .getAdapter(IResource.class);
+
+                        if (resource == null)
+                        {
+                            resource = (IResource) ((IAdaptable) object)
+                                .getAdapter(IFile.class);
+                        }
+
+                        if (resource != null)
+                        {
+                            resources.add(resource);
+                        }
+                    }
+                }
+            }
+        }
+
+        IResource[] focus = new IResource[resources.size()];
+        resources.toArray(focus);
+        updateFocusResource(focus);
+    }
+
+    private void updateFocusResource(IResource[] resources)
+    {
+        boolean updateNeeded = updateNeeded(mFocusedResources, resources);
+        if (updateNeeded)
+        {
+            mFocusedResources = resources;
+            getFilter().setFocusResource(resources);
+            refresh();
+        }
+    }
+
+    private boolean updateNeeded(IResource[] oldResources,
+        IResource[] newResources)
+    {
+        // determine if an update if refiltering is required
+        CheckstyleMarkerFilter filter = getFilter();
+        if (!filter.isEnabled())
+        {
+            return false;
+        }
+
+        int onResource = filter.getOnResource();
+        if (onResource == CheckstyleMarkerFilter.ON_ANY_RESOURCE
+            || onResource == CheckstyleMarkerFilter.ON_WORKING_SET)
+        {
+            return false;
+        }
+        if (newResources == null || newResources.length < 1)
+        {
+            return false;
+        }
+        if (oldResources == null || oldResources.length < 1)
+        {
+            return true;
+        }
+        if (Arrays.equals(oldResources, newResources))
+        {
+            return false;
+        }
+        if (onResource == CheckstyleMarkerFilter.ON_ANY_RESOURCE_OF_SAME_PROJECT)
+        {
+            Collection oldProjects = CheckstyleMarkerFilter
+                .getProjectsAsCollection(oldResources);
+            Collection newProjects = CheckstyleMarkerFilter
+                .getProjectsAsCollection(newResources);
+
+            if (oldProjects.size() == newProjects.size())
+            {
+                return !newProjects.containsAll(oldProjects);
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        return true;
+    }
 
     /**
      * See method below.
@@ -151,6 +301,27 @@ public abstract class AbstractStatsView extends ViewPart
     }
 
     /**
+     * Opens the filters dialog for the specific stats view.
+     */
+    public void openFiltersDialog()
+    {
+
+        CheckstyleMarkerFilterDialog dialog = new CheckstyleMarkerFilterDialog(
+            getViewer().getControl().getShell(),
+            (CheckstyleMarkerFilter) getFilter().clone());
+
+        if (dialog.open() == Window.OK)
+        {
+            CheckstyleMarkerFilter filter = dialog.getFilter();
+            filter.saveState(getDialogSettings());
+
+            mFilter = filter;
+
+            refresh();
+        }
+    }
+
+    /**
      * Cf. méthode surchargée.
      * 
      * @see org.eclipse.ui.IWorkbenchPart#setFocus()
@@ -178,6 +349,84 @@ public abstract class AbstractStatsView extends ViewPart
     public Label getDescLabel()
     {
         return mDescLabel;
+    }
+
+    /**
+     * Returns the view id of the concrete view. This is used to make separate
+     * filter settings (stored in dialog settings) for different concrete views
+     * possible.
+     * 
+     * @return the view id
+     */
+    protected abstract String getViewId();
+
+    /**
+     * Returns the filter of this view.
+     * 
+     * @return the filter
+     */
+    protected CheckstyleMarkerFilter getFilter()
+    {
+        if (mFilter == null)
+        {
+            mFilter = new CheckstyleMarkerFilter();
+            mFilter.restoreState(getDialogSettings());
+        }
+
+        return mFilter;
+    }
+
+    /**
+     * Returns the dialog settings for this view.
+     * 
+     * @return the dialog settings
+     */
+    protected final IDialogSettings getDialogSettings()
+    {
+
+        String concreteViewId = getViewId();
+
+        IDialogSettings workbenchSettings = StatsCheckstylePlugin.getDefault()
+            .getDialogSettings();
+        IDialogSettings settings = workbenchSettings.getSection(concreteViewId);
+
+        if (settings == null)
+        {
+            settings = workbenchSettings.addNewSection(concreteViewId);
+        }
+
+        return settings;
+    }
+
+    /**
+     * Causes the view to re-sync its contents with the workspace. Note that
+     * changes will be scheduled in a background job, and may not take effect
+     * immediately.
+     */
+    protected void refresh()
+    {
+
+        // rebuild statistics data
+
+        // if (uiJob == null)
+        // createUIJob();
+        //
+        // if (refreshJob == null)
+        // {
+        //
+        // refreshJob = new RestartableJob(Messages.format(
+        // "MarkerView.refreshTitle", new Object[] { getTitle() }),//$NON-NLS-1$
+        // new IRunnableWithProgress()
+        // {
+        // public void run(IProgressMonitor monitor)
+        // throws InvocationTargetException, InterruptedException
+        // {
+        // internalRefresh(monitor);
+        // }
+        // }, getProgressService());
+        // }
+        //
+        // refreshJob.restart();
     }
 
     /**

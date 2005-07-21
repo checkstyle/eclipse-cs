@@ -79,6 +79,11 @@ public class DetailStatsView extends AbstractStatsView
         return new DetailStatsViewLabelProvider();
     }
 
+    protected String getViewId()
+    {
+        return VIEW_ID;
+    }
+
     /**
      * See method below.
      * 
