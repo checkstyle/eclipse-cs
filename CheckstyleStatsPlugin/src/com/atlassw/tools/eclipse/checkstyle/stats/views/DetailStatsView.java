@@ -180,4 +180,10 @@ public class DetailStatsView extends AbstractStatsView
         hookContextMenu(actionList);
     }
 
+    protected void handleStatsRebuilt()
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
 }

@@ -23,7 +23,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -38,6 +41,7 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.progress.WorkbenchJob;
 
 import com.atlassw.tools.eclipse.checkstyle.stats.Messages;
 import com.atlassw.tools.eclipse.checkstyle.stats.StatsCheckstylePlugin;
@@ -46,7 +50,6 @@ import com.atlassw.tools.eclipse.checkstyle.stats.analyser.IAnalyserListener;
 import com.atlassw.tools.eclipse.checkstyle.stats.analyser.MarkerAnalyser;
 import com.atlassw.tools.eclipse.checkstyle.stats.data.MarkerStat;
 import com.atlassw.tools.eclipse.checkstyle.stats.data.Stats;
-import com.atlassw.tools.eclipse.checkstyle.stats.views.internal.CheckstyleMarkerFilter;
 import com.atlassw.tools.eclipse.checkstyle.stats.views.internal.FiltersAction;
 
 /**
@@ -107,10 +110,12 @@ public class MarkerStatsView extends AbstractStatsView implements
 
         contributeToActionBars();
 
-        // on veut écouter les statistiques
-        MarkerAnalyser.getInstance().addAnalyserListener(this);
-        MarkerAnalyser.getInstance().selectionChanged(this,
-            getSite().getPage().getSelection());
+        refresh();
+
+        // // on veut écouter les statistiques
+        // MarkerAnalyser.getInstance().addAnalyserListener(this);
+        // MarkerAnalyser.getInstance().selectionChanged(this,
+        // getSite().getPage().getSelection());
     }
 
     /**
@@ -172,6 +177,39 @@ public class MarkerStatsView extends AbstractStatsView implements
         countCol.pack();
         countCol.addSelectionListener(new SorterSelectionListener(
             new CountSorter()));
+    }
+
+    protected void handleStatsRebuilt()
+    {
+
+        if (getViewer() != null && !getViewer().getTable().isDisposed())
+        {
+
+            getViewer().setInput(getStats().getMarkerStats());
+
+            // and updates the view description label
+            StringBuffer labelBuffer = new StringBuffer(" "); //$NON-NLS-1$
+            labelBuffer.append(NLS.bind(
+                Messages.StatsViewUtils_checkstyleErrorsCount, new Integer(
+                    getStats().getMarkerCount())));
+
+            labelBuffer.append(" - "); //$NON-NLS-1$
+
+            // Collection namesList = StatsViewUtils
+            // .computeAnalysedResourceNames(analyserEvent);
+            // for (Iterator iter = namesList.iterator();
+            // iter.hasNext();)
+            // {
+            // labelBuffer.append(iter.next());
+            // if (iter.hasNext())
+            // {
+            // labelBuffer.append(", "); //$NON-NLS-1$
+            // }
+            // }
+
+            getDescLabel().setText(labelBuffer.toString());
+            getViewer().refresh();
+        }
     }
 
     /**

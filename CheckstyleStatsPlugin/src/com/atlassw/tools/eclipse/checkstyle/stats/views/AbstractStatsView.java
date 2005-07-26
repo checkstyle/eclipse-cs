@@ -26,14 +26,23 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IMarkerDelta;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IResourceChangeEvent;
+import org.eclipse.core.resources.IResourceChangeListener;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.IJobChangeEvent;
+import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -61,10 +70,14 @@ import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.ide.ResourceUtil;
 import org.eclipse.ui.part.ViewPart;
-import org.eclipse.ui.views.tasklist.ITaskListResourceAdapter;
+import org.eclipse.ui.progress.IWorkbenchSiteProgressService;
+import org.eclipse.ui.progress.WorkbenchJob;
 
+import com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleMarker;
 import com.atlassw.tools.eclipse.checkstyle.stats.StatsCheckstylePlugin;
+import com.atlassw.tools.eclipse.checkstyle.stats.data.CreateStatsJob;
 import com.atlassw.tools.eclipse.checkstyle.stats.data.MarkerStat;
+import com.atlassw.tools.eclipse.checkstyle.stats.data.Stats;
 import com.atlassw.tools.eclipse.checkstyle.stats.views.internal.CheckstyleMarkerFilter;
 import com.atlassw.tools.eclipse.checkstyle.stats.views.internal.CheckstyleMarkerFilterDialog;
 
@@ -73,9 +86,11 @@ import com.atlassw.tools.eclipse.checkstyle.stats.views.internal.CheckstyleMarke
  * 
  * @author Fabrice BELLINGARD
  */
-
 public abstract class AbstractStatsView extends ViewPart
 {
+    // TODO abstract further to allow non tableview based subclasses (f.i.
+    // GraphStatsView)
+
     /**
      * Label de description.
      */
@@ -86,136 +101,28 @@ public abstract class AbstractStatsView extends ViewPart
      */
     private TableViewer mViewer;
 
+    //
+    // attributes
+    //
+
     /** The filter for this stats view. */
     private CheckstyleMarkerFilter mFilter;
 
     /** The focused resources. */
     private IResource[] mFocusedResources;
 
+    /** The views private set of statistics. */
+    private Stats mStats;
+
     /** The listener reacting to selection changes in the workspace. */
-    private ISelectionListener mFocusListener = new ISelectionListener()
-    {
-        public void selectionChanged(IWorkbenchPart part, ISelection selection)
-        {
-            AbstractStatsView.this.focusSelectionChanged(part, selection);
-        }
-    };
+    private ISelectionListener mFocusListener;
 
-    public void dispose()
-    {
-        super.dispose();
+    /** The listener reacting on resource changes. */
+    private IResourceChangeListener mResourceListener;
 
-        getSite().getPage().removeSelectionListener(mFocusListener);
-    }
-
-    /**
-     * @param part
-     * @param selection
-     */
-    private void focusSelectionChanged(IWorkbenchPart part, ISelection selection)
-    {
-
-        List resources = new ArrayList();
-        if (part instanceof IEditorPart)
-        {
-            IEditorPart editor = (IEditorPart) part;
-            IFile file = ResourceUtil.getFile(editor.getEditorInput());
-            if (file != null)
-            {
-                resources.add(file);
-            }
-        }
-        else
-        {
-            if (selection instanceof IStructuredSelection)
-            {
-                for (Iterator iterator = ((IStructuredSelection) selection)
-                    .iterator(); iterator.hasNext();)
-                {
-                    Object object = iterator.next();
-                    if (object instanceof IAdaptable)
-                    {
-                        IResource resource = (IResource) ((IAdaptable) object)
-                            .getAdapter(IResource.class);
-
-                        if (resource == null)
-                        {
-                            resource = (IResource) ((IAdaptable) object)
-                                .getAdapter(IFile.class);
-                        }
-
-                        if (resource != null)
-                        {
-                            resources.add(resource);
-                        }
-                    }
-                }
-            }
-        }
-
-        IResource[] focus = new IResource[resources.size()];
-        resources.toArray(focus);
-        updateFocusResource(focus);
-    }
-
-    private void updateFocusResource(IResource[] resources)
-    {
-        boolean updateNeeded = updateNeeded(mFocusedResources, resources);
-        if (updateNeeded)
-        {
-            mFocusedResources = resources;
-            getFilter().setFocusResource(resources);
-            refresh();
-        }
-    }
-
-    private boolean updateNeeded(IResource[] oldResources,
-        IResource[] newResources)
-    {
-        // determine if an update if refiltering is required
-        CheckstyleMarkerFilter filter = getFilter();
-        if (!filter.isEnabled())
-        {
-            return false;
-        }
-
-        int onResource = filter.getOnResource();
-        if (onResource == CheckstyleMarkerFilter.ON_ANY_RESOURCE
-            || onResource == CheckstyleMarkerFilter.ON_WORKING_SET)
-        {
-            return false;
-        }
-        if (newResources == null || newResources.length < 1)
-        {
-            return false;
-        }
-        if (oldResources == null || oldResources.length < 1)
-        {
-            return true;
-        }
-        if (Arrays.equals(oldResources, newResources))
-        {
-            return false;
-        }
-        if (onResource == CheckstyleMarkerFilter.ON_ANY_RESOURCE_OF_SAME_PROJECT)
-        {
-            Collection oldProjects = CheckstyleMarkerFilter
-                .getProjectsAsCollection(oldResources);
-            Collection newProjects = CheckstyleMarkerFilter
-                .getProjectsAsCollection(newResources);
-
-            if (oldProjects.size() == newProjects.size())
-            {
-                return !newProjects.containsAll(oldProjects);
-            }
-            else
-            {
-                return true;
-            }
-        }
-
-        return true;
-    }
+    //
+    // methods
+    //
 
     /**
      * See method below.
@@ -253,7 +160,54 @@ public abstract class AbstractStatsView extends ViewPart
         mViewer.setContentProvider(new ArrayContentProvider());
         mViewer.setLabelProvider(createLabelProvider());
 
+        // create and register the workspace focus listener
+        mFocusListener = new ISelectionListener()
+        {
+            public void selectionChanged(IWorkbenchPart part,
+                ISelection selection)
+            {
+                AbstractStatsView.this.focusSelectionChanged(part, selection);
+            }
+        };
+
+        getSite().getPage().addSelectionListener(mFocusListener);
+        focusSelectionChanged(getSite().getPage().getActivePart(), getSite()
+            .getPage().getSelection());
+
+        // create and register the listener for resource changes
+        mResourceListener = new IResourceChangeListener()
+        {
+            public void resourceChanged(IResourceChangeEvent event)
+            {
+
+                IMarkerDelta[] markerDeltas = event.findMarkerDeltas(
+                    CheckstyleMarker.MARKER_ID, true);
+
+                if (markerDeltas.length > 0)
+                {
+                    refresh();
+                }
+            }
+        };
+
+        ResourcesPlugin.getWorkspace().addResourceChangeListener(
+            mResourceListener);
+
         makeActions();
+    }
+
+    /**
+     * @see org.eclipse.ui.IWorkbenchPart#dispose()
+     */
+    public void dispose()
+    {
+
+        // IMPORTANT: Deregister listeners
+        getSite().getPage().removeSelectionListener(mFocusListener);
+        ResourcesPlugin.getWorkspace().removeResourceChangeListener(
+            mResourceListener);
+
+        super.dispose();
     }
 
     /**
@@ -303,7 +257,7 @@ public abstract class AbstractStatsView extends ViewPart
     /**
      * Opens the filters dialog for the specific stats view.
      */
-    public void openFiltersDialog()
+    public final void openFiltersDialog()
     {
 
         CheckstyleMarkerFilterDialog dialog = new CheckstyleMarkerFilterDialog(
@@ -316,7 +270,6 @@ public abstract class AbstractStatsView extends ViewPart
             filter.saveState(getDialogSettings());
 
             mFilter = filter;
-
             refresh();
         }
     }
@@ -352,20 +305,11 @@ public abstract class AbstractStatsView extends ViewPart
     }
 
     /**
-     * Returns the view id of the concrete view. This is used to make separate
-     * filter settings (stored in dialog settings) for different concrete views
-     * possible.
-     * 
-     * @return the view id
-     */
-    protected abstract String getViewId();
-
-    /**
      * Returns the filter of this view.
      * 
      * @return the filter
      */
-    protected CheckstyleMarkerFilter getFilter()
+    protected final CheckstyleMarkerFilter getFilter()
     {
         if (mFilter == null)
         {
@@ -374,6 +318,53 @@ public abstract class AbstractStatsView extends ViewPart
         }
 
         return mFilter;
+    }
+
+    /**
+     * Returns the statistics data.
+     * 
+     * @return the data of this view
+     */
+    protected final Stats getStats()
+    {
+        return mStats;
+    }
+
+    /**
+     * Causes the view to re-sync its contents with the workspace. Note that
+     * changes will be scheduled in a background job, and may not take effect
+     * immediately.
+     */
+    protected final void refresh()
+    {
+
+        IWorkbenchSiteProgressService service = (IWorkbenchSiteProgressService) getSite()
+            .getAdapter(IWorkbenchSiteProgressService.class);
+
+        // rebuild statistics data
+        CreateStatsJob job = new CreateStatsJob(getFilter());
+        job.setRule(ResourcesPlugin.getWorkspace().getRoot());
+        job.addJobChangeListener(new JobChangeAdapter()
+        {
+            public void done(IJobChangeEvent event)
+            {
+                mStats = ((CreateStatsJob) event.getJob()).getStats();
+                Job uiJob = new WorkbenchJob("Refresh Checkstyle statistics")
+                {
+
+                    public IStatus runInUIThread(IProgressMonitor monitor)
+                    {
+                        handleStatsRebuilt();
+                        return Status.OK_STATUS;
+                    }
+                };
+                uiJob.setPriority(Job.INTERACTIVE);
+                uiJob.setSystem(true);
+                uiJob.schedule();
+            }
+        });
+
+        service.schedule(job, 0, true);
     }
 
     /**
@@ -399,35 +390,21 @@ public abstract class AbstractStatsView extends ViewPart
     }
 
     /**
-     * Causes the view to re-sync its contents with the workspace. Note that
-     * changes will be scheduled in a background job, and may not take effect
-     * immediately.
+     * Returns the view id of the concrete view. This is used to make separate
+     * filter settings (stored in dialog settings) for different concrete views
+     * possible.
+     * 
+     * @return the view id
      */
-    protected void refresh()
-    {
+    protected abstract String getViewId();
 
-        // rebuild statistics data
-
-        // if (uiJob == null)
-        // createUIJob();
-        //
-        // if (refreshJob == null)
-        // {
-        //
-        // refreshJob = new RestartableJob(Messages.format(
-        // "MarkerView.refreshTitle", new Object[] { getTitle() }),//$NON-NLS-1$
-        // new IRunnableWithProgress()
-        // {
-        // public void run(IProgressMonitor monitor)
-        // throws InvocationTargetException, InterruptedException
-        // {
-        // internalRefresh(monitor);
-        // }
-        // }, getProgressService());
-        // }
-        //
-        // refreshJob.restart();
-    }
+    /**
+     * Callback for subclasses to refresh the content of their controls, since
+     * the statistics data has been updated.<br/>Note that the subclass should
+     * check if their controls have been disposed, since this method is called
+     * by a job that might run even if the view has been closed.
+     */
+    protected abstract void handleStatsRebuilt();
 
     /**
      * Returns an appropriate LabelProvider for the elements being displayed in
@@ -453,6 +430,127 @@ public abstract class AbstractStatsView extends ViewPart
      * @see AbstractStatsView#hookDoubleClickAction(IAction)
      */
     protected abstract void makeActions();
+
+    /**
+     * Invoked on selection changes within the workspace.
+     * 
+     * @param part
+     *            the workbench part the selection occurred
+     * @param selection
+     *            the selection
+     */
+    private void focusSelectionChanged(IWorkbenchPart part, ISelection selection)
+    {
+
+        List resources = new ArrayList();
+        if (part instanceof IEditorPart)
+        {
+            IEditorPart editor = (IEditorPart) part;
+            IFile file = ResourceUtil.getFile(editor.getEditorInput());
+            if (file != null)
+            {
+                resources.add(file);
+            }
+        }
+        else
+        {
+            if (selection instanceof IStructuredSelection)
+            {
+                for (Iterator iterator = ((IStructuredSelection) selection)
+                    .iterator(); iterator.hasNext();)
+                {
+                    Object object = iterator.next();
+                    if (object instanceof IAdaptable)
+                    {
+                        IResource resource = (IResource) ((IAdaptable) object)
+                            .getAdapter(IResource.class);
+
+                        if (resource == null)
+                        {
+                            resource = (IResource) ((IAdaptable) object)
+                                .getAdapter(IFile.class);
+                        }
+
+                        if (resource != null)
+                        {
+                            resources.add(resource);
+                        }
+                    }
+                }
+            }
+        }
+
+        IResource[] focusedResources = new IResource[resources.size()];
+        resources.toArray(focusedResources);
+
+        // check if update necessary -> if so then update
+        boolean updateNeeded = updateNeeded(mFocusedResources, focusedResources);
+        if (updateNeeded)
+        {
+            mFocusedResources = focusedResources;
+            getFilter().setFocusResource(focusedResources);
+            refresh();
+        }
+    }
+
+    /**
+     * Checks if an update of the statistics data is needed, based on the
+     * current and previously selected resources. The current filter setting is
+     * also taken into consideration.
+     * 
+     * @param oldResources
+     *            the previously selected resources.
+     * @param newResources
+     *            the currently selected resources
+     * @return <code>true</code> if an update of the statistics data is needed
+     */
+    private boolean updateNeeded(IResource[] oldResources,
+        IResource[] newResources)
+    {
+        // determine if an update if refiltering is required
+        CheckstyleMarkerFilter filter = getFilter();
+        if (!filter.isEnabled())
+        {
+            return false;
+        }
+
+        int onResource = filter.getOnResource();
+        if (onResource == CheckstyleMarkerFilter.ON_ANY_RESOURCE
+            || onResource == CheckstyleMarkerFilter.ON_WORKING_SET)
+        {
+            return false;
+        }
+        if (newResources == null || newResources.length < 1)
+        {
+            return false;
+        }
+        if (oldResources == null || oldResources.length < 1)
+        {
+            return true;
+        }
+        if (Arrays.equals(oldResources, newResources))
+        {
+            return false;
+        }
+        if (onResource == CheckstyleMarkerFilter.ON_ANY_RESOURCE_OF_SAME_PROJECT)
+        {
+            Collection oldProjects = CheckstyleMarkerFilter
+                .getProjectsAsCollection(oldResources);
+            Collection newProjects = CheckstyleMarkerFilter
+                .getProjectsAsCollection(newResources);
+
+            if (oldProjects.size() == newProjects.size())
+            {
+                return !newProjects.containsAll(oldProjects);
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        return true;
+    }
 
     /**
      * Class used to listen to table viewer column header clicking to sort the
