@@ -32,17 +32,17 @@ import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
  */
 public class RuleMetadata
 {
-    //=================================================
+    // =================================================
     // Public static final variables.
-    //=================================================
+    // =================================================
 
-    //=================================================
+    // =================================================
     // Static class variables.
-    //=================================================
+    // =================================================
 
-    //=================================================
+    // =================================================
     // Instance member variables.
-    //=================================================
+    // =================================================
 
     /** The diplay name of the module. */
     private String mName;
@@ -73,13 +73,13 @@ public class RuleMetadata
 
     /** The group. */
     private RuleGroupMetadata mGroup;
-    
-    /** Alternative names, including the name of the Checkstyle checker class */
+
+    /** Alternative names, including the name of the Checkstyle checker class. */
     private Collection mAlternativeNames;
 
-    //=================================================
+    // =================================================
     // Constructors & finalizer.
-    //=================================================
+    // =================================================
 
     /**
      * Creates a rule metadata.
@@ -111,26 +111,30 @@ public class RuleMetadata
         mAlternativeNames = new ArrayList();
     }
 
-    //=================================================
+    // =================================================
     // Methods.
-    //=================================================
+    // =================================================
 
     /**
      * Adds an alternative name for this rule.
+     * 
      * @param alternativeName an alternative name for this rule
      */
-    public void addAlternativeName(String alternativeName) {
-    	mAlternativeNames.add(alternativeName);
+    public void addAlternativeName(String alternativeName)
+    {
+        mAlternativeNames.add(alternativeName);
     }
-    
+
     /**
      * Returns the list of alternative names.
-     * @return a collection of String 
+     * 
+     * @return a collection of String
      */
-    public Collection getAlternativeNames() {
-    	return mAlternativeNames;
+    public Collection getAlternativeNames()
+    {
+        return mAlternativeNames;
     }
-    
+
     /**
      * Returns the default severity level.
      * 
