@@ -30,9 +30,16 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.osgi.util.NLS;
 
+import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationFactory;
 import com.atlassw.tools.eclipse.checkstyle.config.ConfigurationReader;
@@ -90,7 +97,7 @@ public abstract class AbstractCheckConfiguration implements ICheckConfiguration
     public void initialize(String name, String location, IConfigurationType type, String description)
         throws CheckstylePluginException
     {
-        //set the flag to enforce the changes done here do not mark the object
+        // set the flag to enforce the changes done here do not mark the object
         // dirty
         mIsInitializing = true;
         try
@@ -170,7 +177,7 @@ public abstract class AbstractCheckConfiguration implements ICheckConfiguration
         {
             handleCanResolveLocation();
 
-            //if the location validly changed set dirty to mark for rebuild
+            // if the location validly changed set dirty to mark for rebuild
             if (!mIsInitializing && !location.equals(oldLocation))
             {
                 mIsDirty = true;
@@ -275,7 +282,7 @@ public abstract class AbstractCheckConfiguration implements ICheckConfiguration
     {
         PropertyResolver propsResolver = handleGetPropertyResolver();
 
-        //set the project context
+        // set the project context
         if (propsResolver instanceof StandardPropertyResolver)
         {
             ((StandardPropertyResolver) propsResolver).setContext(mContext);
@@ -360,12 +367,28 @@ public abstract class AbstractCheckConfiguration implements ICheckConfiguration
             ConfigurationWriter.write(byteOut, modules);
 
             // all went ok, write to the file
-            out = new BufferedOutputStream(new FileOutputStream(getCheckstyleConfigurationURL()
-                    .getFile()));
-
+            String configFile = getCheckstyleConfigurationURL().getFile();
+            out = new BufferedOutputStream(new FileOutputStream(configFile));
             out.write(byteOut.toByteArray());
 
-            //if the checkstyle configuration validly changed set dirty to mark
+            // refresh the files if within the workspace
+            // Bug 1251194 - Resource out of sync after performing changes to
+            // config
+            IPath path = new Path(configFile);
+            IFile[] files = CheckstylePlugin.getWorkspace().getRoot().findFilesForLocation(path);
+            for (int i = 0; i < files.length; i++)
+            {
+                try
+                {
+                    files[i].refreshLocal(IResource.DEPTH_ZERO, new NullProgressMonitor());
+                }
+                catch (CoreException e)
+                {
+                    // NOOP - just ignore
+                }
+            }
+
+            // if the checkstyle configuration validly changed set dirty to mark
             // for rebuild
             if (!mIsInitializing)
             {
