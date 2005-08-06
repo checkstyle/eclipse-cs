@@ -28,7 +28,9 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.net.URLStreamHandlerFactory;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
@@ -38,8 +40,6 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
@@ -134,17 +134,19 @@ public class ProjectClassLoader extends ClassLoader
 
         URL[] projClassPath = getProjectClassPath(project);
 
-        //log the complete classpath to track down these pesky
-        // NoClassDefFound-Errors
-//        StringBuffer buf = new StringBuffer();
-//        buf.append("Checkstyle Classpath for project \"").append(project.getName()).append("\":");
-//        for (int i = 0; i < projClassPath.length; i++)
-//        {
-//            buf.append("\n").append(projClassPath[i].toExternalForm());
-//        }
-//        IStatus status = new Status(IStatus.INFO, CheckstylePlugin.PLUGIN_ID, IStatus.OK, buf
-//                .toString(), null);
-//        CheckstylePlugin.getDefault().getLog().log(status);
+        // // log the complete classpath to track down these pesky
+        // // NoClassDefFound-Errors
+        // StringBuffer buf = new StringBuffer();
+        // buf.append("Checkstyle Classpath for
+        // project\"").append(project.getName()).append("\":");
+        // for (int i = 0; i < projClassPath.length; i++)
+        // {
+        // buf.append("\n").append(projClassPath[i].toExternalForm());
+        // }
+        // IStatus status = new Status(IStatus.INFO, CheckstylePlugin.PLUGIN_ID,
+        // IStatus.OK, buf
+        // .toString(), null);
+        // CheckstylePlugin.getDefault().getLog().log(status);
 
         this.mDelegateClassLoader = new URLClassLoader(projClassPath, this.mParentClassLoader,
                 this.mStreamHandlerFactory);
@@ -201,7 +203,7 @@ public class ProjectClassLoader extends ClassLoader
         List cpURLs = new ArrayList();
 
         // add the projects contents to the classpath
-        addToClassPath(project, cpURLs, false);
+        addToClassPath(project, cpURLs, false, new HashSet());
 
         URL[] urls = (URL[]) cpURLs.toArray(new URL[cpURLs.size()]);
 
@@ -215,11 +217,22 @@ public class ProjectClassLoader extends ClassLoader
      * @param cpURLs the resulting list
      * @param isReferenced true if a referenced project is processed
      */
-    private static void addToClassPath(IProject project, List cpURLs, boolean isReferenced)
+    private static void addToClassPath(IProject project, List cpURLs, boolean isReferenced,
+            Collection processedProjects)
     {
 
         try
         {
+
+            // this project has already been added
+            if (processedProjects.contains(project))
+            {
+                return;
+            }
+            else
+            {
+                processedProjects.add(project);
+            }
 
             // get the java project
             IJavaProject javaProject = JavaCore.create(project);
@@ -244,23 +257,13 @@ public class ProjectClassLoader extends ClassLoader
                 else if (IClasspathEntry.CPE_PROJECT == entryKind)
                 {
 
-                    handleRefProject(cpURLs, cpEntries[i]);
+                    handleRefProject(cpURLs, cpEntries[i], processedProjects);
                 }
                 // handle a library entry
                 else if (IClasspathEntry.CPE_LIBRARY == entryKind)
                 {
 
-                    // do only if this project is not referenced or the entry is
-                    // exported
-                    // if (!isReferenced /*|| cpEntries[i].isExported()*/)
-                    // {
-
-                    // TODO Check if this is fixing the
-                    // NoClassDefFoundExceptions some users
-                    // are reporting
-
                     handleLibrary(project, cpURLs, cpEntries[i]);
-                    // }
                 }
                 // cannot happen since we use a resolved classpath
                 else
@@ -335,7 +338,8 @@ public class ProjectClassLoader extends ClassLoader
      * @param cpURLs the list that is to contain the projects classpath
      * @param entry the actually processed classpath entry
      */
-    private static void handleRefProject(List cpURLs, IClasspathEntry entry)
+    private static void handleRefProject(List cpURLs, IClasspathEntry entry,
+            Collection processedProjects)
     {
 
         // get the referenced project from the workspace
@@ -345,7 +349,7 @@ public class ProjectClassLoader extends ClassLoader
         // add the referenced projects contents
         if (referencedProject.exists())
         {
-            addToClassPath(referencedProject, cpURLs, true);
+            addToClassPath(referencedProject, cpURLs, true, processedProjects);
         }
     }
 
@@ -378,7 +382,7 @@ public class ProjectClassLoader extends ClassLoader
         }
         else
         {
-            //Check if the resource is otherwise relative to the workspace
+            // Check if the resource is otherwise relative to the workspace
             IResource resource = CheckstylePlugin.getWorkspace().getRoot().findMember(libPath);
             if (resource != null && resource.exists())
             {
