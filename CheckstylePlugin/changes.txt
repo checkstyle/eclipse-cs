@@ -17,6 +17,9 @@ Updated to use Checkstyle 4.0 beta 5.
 Introduces French (thanks Fabrice Belingard) and German translations.
 Apart from this mostly bug fixes.
 
+Important: Note that the usage-Checks have been removed from the official Checkstyle 4.0 beta5 distribution and are therefore not contained within the plugin any more.
+Checkstyle configurations that use these checks will fail until the usage-Checks are removed.
+
 Bugs:
 1252252	StackOverflow Error
 1251194	Resource out of sync after performing changes to config
