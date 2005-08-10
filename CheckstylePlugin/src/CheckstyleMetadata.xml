@@ -963,11 +963,9 @@ Note: the check works in assumption that there is no unreachable code in the cas
          <property-metadata name="ignoreSetter" datatype="Boolean" default-value="false">
             <description>Controls whether to ignore the parameter of a property setter method, where the property setter method for field "xyz" has name "setXyz", one parameter named "xyz", and return type void.</description>
          </property-metadata>
-         <!--
          <property-metadata name="ignoreAbstractMethods" datatype="Boolean" default-value="false">
-         	<description>TODO</description>
+         	<description>Controls whether to ignore parameters of abstract methods.</description>
          </property-metadata>
-         -->	
       </rule-metadata>
       
       <rule-metadata name="Illegal Instantiation" internal-name="IllegalInstantiation" parent="TreeWalker">
@@ -979,13 +977,21 @@ Note: the check works in assumption that there is no unreachable code in the cas
          </property-metadata>
       </rule-metadata>
       
-      <rule-metadata name="Illiegal Catch" internal-name="IllegalCatch" parent="TreeWalker">
+      <rule-metadata name="Illegal Catch" internal-name="IllegalCatch" parent="TreeWalker">
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.IllegalCatchCheck"/>
          <description>Catching java.lang.Exception, java.lang.Error or java.lang.RuntimeException is almost never acceptable. 
 
 Rationale: Junior developers often simply catch Exception in an attempt to handle multiple exception classes. This unfortunately leads to code that inadvertantly catchs NPE, OutOfMemoryErrors, etc. </description>
          <property-metadata name="illegalClassNames" datatype="String" default-value="java.lang.Exception, java.lang.Throwable, java.lang.RuntimeException">
             <description>exception class names to reject</description>
+         </property-metadata>
+      </rule-metadata>
+      
+      <rule-metadata name="Illegal Throws" internal-name="IllegalThrows" parent="TreeWalker">
+         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.IllegalThrowsCheck"/>
+         <description>This check can be used to ensure that types are not declared to be thrown. Declaring to throw java.lang.Error or java.lang.RuntimeException is almost never acceptable.</description>
+         <property-metadata name="illegalClassNames" datatype="String" default-value="java.lang.Throwable, java.lang.Error, java.lang.RuntimeException">
+            <description>throw class names to reject</description>
          </property-metadata>
       </rule-metadata>
       
@@ -1704,6 +1710,8 @@ Reference: Enterprise JavaBeans™ Specification,Version 2.0, section 7.10.
       
    </rule-group-metadata>
    
+   <!--
+		Usage checks were removed with Checkstyle 4.0 beta5
    <rule-group-metadata name="Usage">
    
       <rule-metadata name="One Method Private Field" internal-name="usage.OneMethodPrivateField" parent="TreeWalker">
@@ -1759,6 +1767,7 @@ Rationale: a private field used in only one method, constructor, or initializer 
       </rule-metadata>
       
    </rule-group-metadata>
+   -->
    
    <rule-group-metadata name="Other"> 	
    </rule-group-metadata>

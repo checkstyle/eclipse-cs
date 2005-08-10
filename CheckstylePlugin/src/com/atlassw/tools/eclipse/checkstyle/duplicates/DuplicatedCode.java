@@ -46,13 +46,13 @@ public class DuplicatedCode
     /**
      * Checkstyle bundle that contains the duplicates i18n.
      */
-    private final static String DUPLICATES_MESSAGE_BUNDLE = "com.puppycrawl.tools.checkstyle.checks.duplicates.messages"; //$NON-NLS-1$
-    
+    private static final String DUPLICATES_MESSAGE_BUNDLE = "com.puppycrawl.tools.checkstyle.checks.duplicates.messages"; //$NON-NLS-1$
+
     /**
      * Key of the message given to the user for duplicates.
      */
     private static final String DUPLICATE_LINE_MESSAGE = "duplicates.lines"; //$NON-NLS-1$
-    
+
     /**
      * First mask for the checkstyle message.
      */
@@ -72,8 +72,7 @@ public class DuplicatedCode
     {
         try
         {
-            ResourceBundle resourceBundle = ResourceBundle
-                    .getBundle(DUPLICATES_MESSAGE_BUNDLE);
+            ResourceBundle resourceBundle = ResourceBundle.getBundle(DUPLICATES_MESSAGE_BUNDLE);
             String localProperty = resourceBundle.getString(DUPLICATE_LINE_MESSAGE);
             sMask1 = localProperty.substring(0, localProperty.indexOf("{0}")); //$NON-NLS-1$
             sMask2 = localProperty.substring(localProperty.indexOf("{0}") + 3, localProperty //$NON-NLS-1$
@@ -84,8 +83,7 @@ public class DuplicatedCode
         catch (MissingResourceException x)
         {
             CheckstyleLog.log(x, "Unable to get the resource bundle " //$NON-NLS-1$
-                    + DUPLICATES_MESSAGE_BUNDLE
-                    + "."); //$NON-NLS-1$
+                    + DUPLICATES_MESSAGE_BUNDLE + "."); //$NON-NLS-1$
         }
     }
 

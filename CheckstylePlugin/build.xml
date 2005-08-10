@@ -12,8 +12,8 @@
 
 	<property name="check.config" value="CheckConfig_Checkstyle.xml" />
 
-	<property name="checkstyle.jar" value="checkstyle-all-4.0-beta4.jar" />
-	<property name="checkstyle-optional.jar" value="checkstyle-optional-4.0-beta4.jar" />
+	<property name="checkstyle.jar" value="checkstyle-all-4.0-beta5.jar" />
+	<property name="checkstyle-optional.jar" value="checkstyle-optional-4.0-beta5.jar" />
 
 
 
@@ -60,6 +60,8 @@
 		<copy file="extension-libraries/${checkstyle-optional.jar}" todir="${bin.dist.dir}/extension-libraries" />
 		<copy file="plugin.xml" todir="${bin.dist.dir}" />
 		<copy file="plugin.properties" todir="${bin.dist.dir}" />
+		<copy file="plugin_de.properties" todir="${bin.dist.dir}" />
+		<copy file="plugin_fr.properties" todir="${bin.dist.dir}" />
 		<copy file="toc.xml" todir="${bin.dist.dir}" />
 		<copy file="README.html" todir="${bin.dist.dir}" />
 		<copy file="sun_checks.xml" todir="${bin.dist.dir}" />
@@ -92,6 +94,8 @@
 		<copy file="extension-libraries/${checkstyle-optional.jar}" todir="${src.dist.dir}/extension-libraries" />
 		<copy file="plugin.xml" todir="${src.dist.dir}" />
 		<copy file="plugin.properties" todir="${src.dist.dir}" />
+		<copy file="plugin_de.properties" todir="${src.dist.dir}" />
+		<copy file="plugin_fr.properties" todir="${src.dist.dir}" />
 		<copy file="toc.xml" todir="${src.dist.dir}" />
 		<copy file="README.html" todir="${src.dist.dir}" />
 		<copy file="sun_checks.xml" todir="${src.dist.dir}" />

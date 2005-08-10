@@ -38,7 +38,6 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.ui.IActionDelegate;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
@@ -86,7 +85,7 @@ public class DuplicatedCodeAction implements IObjectActionDelegate
     /**
      * Cf. method below.
      * 
-     * @see IActionDelegate#run(IAction)
+     * @seeorg.eclipse.ui.IActionDelegate#run(IAction)
      */
     public void run(IAction action)
     {
@@ -244,7 +243,7 @@ public class DuplicatedCodeAction implements IObjectActionDelegate
     /**
      * Cf. method below.
      * 
-     * @see IActionDelegate#selectionChanged(IAction, ISelection)
+     * @see org.eclipse.ui.IActionDelegate#selectionChanged(IAction, ISelection)
      */
     public void selectionChanged(IAction action, ISelection selection)
     {

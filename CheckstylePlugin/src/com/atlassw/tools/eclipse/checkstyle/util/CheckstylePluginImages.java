@@ -33,7 +33,7 @@ import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
  * 
  * @author Lars Ködderitzsch
  */
-public class CheckstylePluginImages
+public abstract class CheckstylePluginImages
 {
 
     /** Image descriptor for the plugin logo. */
@@ -62,6 +62,14 @@ public class CheckstylePluginImages
                 "icons/checkstyle_warning.gif"); //$NON-NLS-1$
         MARKER_INFO = CheckstylePlugin.imageDescriptorFromPlugin(CheckstylePlugin.PLUGIN_ID,
                 "icons/checkstyle_info.gif"); //$NON-NLS-1$
+    }
+
+    /**
+     * Hidden default constructor.
+     */
+    private CheckstylePluginImages()
+    {
+    // NOOP
     }
 
     /**

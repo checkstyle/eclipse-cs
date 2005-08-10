@@ -98,7 +98,7 @@ public class Auditor
     private boolean mAddRuleName = false;
 
     /** Reference to the file buffer manager. */
-    private final ITextFileBufferManager fileBufferManager = FileBuffers.getTextFileBufferManager();
+    private final ITextFileBufferManager mFileBufferManager = FileBuffers.getTextFileBufferManager();
 
     // =================================================
     // Constructors & finalizer.
@@ -439,8 +439,8 @@ public class Auditor
             if (mDocument == null && mResource instanceof IFile)
             {
                 IPath path = mResource.getFullPath();
-                fileBufferManager.connect(path, new NullProgressMonitor());
-                mDocument = fileBufferManager.getTextFileBuffer(path).getDocument();
+                mFileBufferManager.connect(path, new NullProgressMonitor());
+                mDocument = mFileBufferManager.getTextFileBuffer(path).getDocument();
             }
 
             // Provide offset information for the marker to make

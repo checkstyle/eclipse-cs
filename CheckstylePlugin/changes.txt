@@ -10,6 +10,32 @@ Make sure you got an eclipse 3.0 or higher installation you are installing this 
 Eclipse Checkstyle Plugin v4.0.0
 ---------------------------------
 
+Release beta5:
+--------------
+
+Updated to use Checkstyle 4.0 beta 5.
+Introduces French (thanks Fabrice Belingard) and German translations.
+Apart from this mostly bug fixes.
+
+Bugs:
+1252252	StackOverflow Error
+1251194	Resource out of sync after performing changes to config
+1217447	TreeWalker: exception - java.lang.NoClassDefFoundError
+1218510	Typo in Checkstyle Configuration
+1222784	No icon when code is "folded/collapsed"
+1232089	Repeated 'Checkstyle Classpath for project' messages
+1233444	.checkstyle file touched even when no changes made to config
+1234062	Problem with generic handling
+1236418	Unable to write checkstyle plugin config file
+1236864	Inacurrate Marker placement with Tabs *** Thanks go to Scott Severtson ***
+1232696	Usage checks should be removed
+
+RFE:
+1233689	Reevaluate problems on check refresh
+755830	&quot;Disabled&quot; option for checks
+
+
+
 Release beta4:
 --------------
 
