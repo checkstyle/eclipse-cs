@@ -1046,7 +1046,7 @@ Rationale: Helps reduce coupling on concrete classes. In addition abstract class
          <property-metadata name="ignoredMethodNames" datatype="String" default-value="getInitialContext, getEnvironment">
             <description>methods that should not be checked.</description>
          </property-metadata>
-         <property-metadata name="format" datatype="Regex" default-value="^(.*[\\.])?Abstract.*$">
+         <property-metadata name="format" datatype="Regex" default-value="^(.*[\.])?Abstract.*$">
             <description>pattern for illegal class name </description>
          </property-metadata>         
       </rule-metadata>
@@ -1569,7 +1569,7 @@ Quoting "Code Complete" for the justfication:
 "Endline comments also tend to be cryptic. The right side of the line doesn't offer much room and the desire to keep the comment on one line means the comment must be short. Work then goes into making the line as short as possible instead of as clear as possible. The comment usually ends up as cryptic as possible...." 
 "A systemic problem with endline comments is that it's hard to write a meaningful comment for one line of code. Most endline comments just repeat the line of code, which hurts more than it helps." 
 His comments on being hard to maintain when the size of the line changes are even more important in the age of automated refactorings. </description>
-         <property-metadata name="format" datatype="Regex" default-value="^[\\s\\}\\);]*$">
+         <property-metadata name="format" datatype="Regex" default-value="^[\s\}\);]*$">
             <description>pattern for string allowed before comment.</description>
          </property-metadata>
       </rule-metadata>
