@@ -126,6 +126,7 @@
             textStylePreferenceValue="BOX"           
             colorPreferenceKey="com.atlassw.tools.eclipse.checkstyle.error.color"
             colorPreferenceValue="255,225,225"
+            icon="icons/checkstyle_error.gif"
             >
       </specification>
       <specification
@@ -151,6 +152,7 @@
             textStylePreferenceValue="BOX"           
             colorPreferenceKey="com.atlassw.tools.eclipse.checkstyle.warning.color"
             colorPreferenceValue="255,255,190"
+            icon="icons/checkstyle_warning.gif"
             >
       </specification>
       <specification
@@ -176,6 +178,7 @@
             textStylePreferenceValue="BOX"           
             colorPreferenceKey="com.atlassw.tools.eclipse.checkstyle.info.color"
             colorPreferenceValue="225,225,255"
+            icon="icons/checkstyle_info.gif"
             >
       </specification>
    </extension>
