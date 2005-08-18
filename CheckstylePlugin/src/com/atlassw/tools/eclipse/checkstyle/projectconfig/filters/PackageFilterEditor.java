@@ -23,24 +23,25 @@ package com.atlassw.tools.eclipse.checkstyle.projectconfig.filters;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.jdt.core.IJavaElement;
-import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.CheckedTreeSelectionDialog;
-import org.eclipse.ui.internal.ide.misc.ContainerContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 
 import com.atlassw.tools.eclipse.checkstyle.Messages;
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 
 /**
  * Editor dialog for the package filter.
@@ -78,15 +79,15 @@ public class PackageFilterEditor implements IFilterEditor
     {
 
         this.mDialog = new CheckedTreeSelectionDialog(parent, WorkbenchLabelProvider
-                .getDecoratingWorkbenchLabelProvider(), new ContainerContentProvider());
+                .getDecoratingWorkbenchLabelProvider(), new SourceFolderContentProvider());
 
-        //initialize the dialog with the filter data
+        // initialize the dialog with the filter data
         initCheckedTreeSelectionDialog();
 
-        //open the dialog
+        // open the dialog
         int retCode = this.mDialog.open();
 
-        //actualize the filter data
+        // actualize the filter data
         if (Window.OK == retCode)
         {
             this.mFilterData = this.getFilterDataFromDialog();
@@ -129,10 +130,9 @@ public class PackageFilterEditor implements IFilterEditor
         this.mDialog.setMessage(Messages.PackageFilterEditor_msgFilterPackages);
         this.mDialog.setBlockOnOpen(true);
 
-        this.mDialog.addFilter(new NonSourceDirsFilter());
         this.mDialog.setInput(this.mInputProject);
 
-        //display the filter data
+        // display the filter data
         if (this.mInputProject != null && this.mFilterData != null)
         {
 
@@ -147,7 +147,7 @@ public class PackageFilterEditor implements IFilterEditor
 
                 selectedElements.add(this.mInputProject.findMember(path));
 
-                //get all parent elements to expand
+                // get all parent elements to expand
                 while (path.segmentCount() > 0)
                 {
                     path = path.removeLastSegments(1);
@@ -183,44 +183,126 @@ public class PackageFilterEditor implements IFilterEditor
     }
 
     /**
-     * Filters non source directories.
+     * Content provider that provides the source folders of a project and their
+     * container members.
      * 
      * @author Lars Ködderitzsch
+     * 
      */
-    private class NonSourceDirsFilter extends ViewerFilter
+    private class SourceFolderContentProvider implements ITreeContentProvider
     {
 
         /**
-         * @see org.eclipse.jface.viewers.ViewerFilter#select(org.eclipse.jface.viewers.Viewer,
-         *      java.lang.Object, java.lang.Object)
+         * @see org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.Object)
          */
-        public boolean select(Viewer viewer, Object parentElement, Object element)
+        public Object[] getChildren(Object parentElement)
         {
+            List children = new ArrayList();
 
-            boolean passes = true;
-
-            if (element instanceof IFolder)
+            if (parentElement instanceof IProject)
             {
 
-                passes = false;
+                IProject project = (IProject) parentElement;
 
-                IFolder folder = (IFolder) element;
-
-                IJavaElement el = JavaCore.create(folder);
-                if (el != null && el.exists())
+                if (project.isAccessible())
                 {
 
-                    if (el instanceof IPackageFragmentRoot)
+                    try
                     {
-                        passes = !((IPackageFragmentRoot) el).isArchive();
+
+                        IJavaProject javaProject = JavaCore.create(project);
+                        if (javaProject.exists())
+                        {
+
+                            IPackageFragmentRoot[] packageRoots = javaProject
+                                    .getAllPackageFragmentRoots();
+
+                            for (int i = 0, size = packageRoots.length; i < size; i++)
+                            {
+
+                                if (!packageRoots[i].isArchive())
+                                {
+                                    children.add(packageRoots[i].getResource());
+                                }
+                            }
+                        }
                     }
-                    else if (el instanceof IPackageFragment)
+                    catch (JavaModelException e)
                     {
-                        passes = !((IPackageFragment) el).isDefaultPackage();
+                        CheckstyleLog.log(e);
+                    }
+
+                }
+
+            }
+            else if (parentElement instanceof IContainer)
+            {
+
+                IContainer container = (IContainer) parentElement;
+                if (container.isAccessible())
+                {
+                    try
+                    {
+                        IResource[] members = container.members();
+                        for (int i = 0; i < members.length; i++)
+                        {
+                            if (members[i].getType() != IResource.FILE)
+                            {
+                                children.add(members[i]);
+                            }
+                        }
+                        return children.toArray();
+                    }
+                    catch (CoreException e)
+                    {
+                        // this should never happen because we call
+                        // #isAccessible before invoking #members
                     }
                 }
             }
-            return passes;
+
+            return children.toArray();
+        }
+
+        /**
+         * @see org.eclipse.jface.viewers.ITreeContentProvider#getParent(java.lang.Object)
+         */
+        public Object getParent(Object element)
+        {
+            return element instanceof IResource ? ((IResource) element).getParent() : null;
+        }
+
+        /**
+         * @see org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java.lang.Object)
+         */
+        public boolean hasChildren(Object element)
+        {
+            return getChildren(element).length > 0;
+        }
+
+        /**
+         * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
+         */
+        public Object[] getElements(Object inputElement)
+        {
+            return getChildren(inputElement);
+        }
+
+        /**
+         * @see org.eclipse.jface.viewers.IContentProvider#dispose()
+         */
+        public void dispose()
+        {
+        // NOOP
+        }
+
+        /**
+         * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface.viewers.Viewer,
+         *      java.lang.Object, java.lang.Object)
+         */
+        public void inputChanged(Viewer viewer, Object oldInput, Object newInput)
+        {
+        // NOOP
         }
     }
 }
