@@ -98,7 +98,8 @@ public class Auditor
     private boolean mAddRuleName = false;
 
     /** Reference to the file buffer manager. */
-    private final ITextFileBufferManager mFileBufferManager = FileBuffers.getTextFileBufferManager();
+    private final ITextFileBufferManager mFileBufferManager = FileBuffers
+            .getTextFileBufferManager();
 
     // =================================================
     // Constructors & finalizer.
@@ -385,14 +386,14 @@ public class Auditor
                     MarkerUtilities.setLineNumber(mMarkerAttributes, error.getLine());
                     MarkerUtilities.setMessage(mMarkerAttributes, getMessage(error));
 
-                    //calculate offset for editor annotations
+                    // calculate offset for editor annotations
                     calculateMarkerOffset(error, mMarkerAttributes);
 
                     // create a marker for the actual resource
                     MarkerUtilities.createMarker(mResource, mMarkerAttributes,
                             CheckstyleMarker.MARKER_ID);
 
-                    //clear the marker attributes to reuse the map for the next
+                    // clear the marker attributes to reuse the map for the next
                     // error
                     mMarkerAttributes.clear();
                 }
@@ -468,7 +469,9 @@ public class Auditor
                 }
                 catch (BadLocationException e)
                 {
-                    CheckstyleLog.log(e);
+                    // seems to happen quite often so its no use to log since we
+                    // can't do anything about it
+                    // CheckstyleLog.log(e);
                 }
             }
         }
