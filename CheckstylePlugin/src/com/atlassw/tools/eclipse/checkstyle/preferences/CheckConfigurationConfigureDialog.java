@@ -41,6 +41,7 @@ import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
@@ -210,8 +211,8 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
 
         try
         {
-            //only write the modules back if the config is configurable
-            //and was actually changed
+            // only write the modules back if the config is configurable
+            // and was actually changed
             if (mConfiguration.isConfigurable() && mIsDirty)
             {
                 mConfiguration.setModules(mModules);
@@ -494,7 +495,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
          */
         public void keyPressed(KeyEvent e)
         {
-        //NOOP
+        // NOOP
         }
 
         /**
@@ -508,7 +509,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
 
                 if (event.getChecked())
                 {
-                    //restore last severity before setting to ignore
+                    // restore last severity before setting to ignore
                     SeverityLevel lastEnabled = module.getLastEnabledSeverity();
                     if (lastEnabled != null)
                     {
@@ -622,7 +623,16 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
                 while (it.hasNext())
                 {
                     Object selectedElement = it.next();
-                    if (selectedElement instanceof RuleMetadata)
+                    if (selectedElement instanceof RuleGroupMetadata)
+                    {
+                        // if group is selected add all modules from this group
+                        List rules = ((RuleGroupMetadata) selectedElement).getRuleMetadata();
+
+                        IStructuredSelection allRulesOfGroupSelection = new StructuredSelection(
+                                rules);
+                        newModule(allRulesOfGroupSelection);
+                    }
+                    else if (selectedElement instanceof RuleMetadata)
                     {
 
                         try
