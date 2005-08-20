@@ -2,12 +2,12 @@
 <feature
       id="com.atlassw.tools.eclipse.checkstyle"
       label="%feature.label"
-      version="3.9.99"
+      version="4.0.0"
       provider-name="%feature.provider_name"
       image="eclipse-cs-logo.jpg">
 
    <description url="%description.url">
-      
+      This feature integreates Checkstyle into Eclipse.
    </description>
 
    <copyright>
@@ -15,8 +15,13 @@
    </copyright>
 
    <license url="license.html">
-      
+      %license.text
    </license>
+
+   <url>
+      <update label="%updateSiteName" url="http://eclipse-cs.sourceforge.net/update"/>
+      <discovery label="%updateSiteName" url="http://eclipse-cs.sourceforge.net/update"/>
+   </url>
 
    <requires>
       <import plugin="org.eclipse.core.resources"/>
@@ -34,8 +39,8 @@
 
    <plugin
          id="com.atlassw.tools.eclipse.checkstyle"
-         download-size="3000"
-         install-size="5000"
+         download-size="2800"
+         install-size="7000"
          version="4.0.0"/>
 
 </feature>
