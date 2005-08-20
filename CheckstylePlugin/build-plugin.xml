@@ -1,0 +1,111 @@
+<project name="CheckstylePlugin" default="build.dist" basedir=".">
+
+	<!-- properties that likely change between releases -->
+	<property name="plugin.version" value="4.0.0" />
+	<property name="plugin.version.postfix" value="-beta5" />
+	<property name="checkstyle.jar" value="checkstyle-all-4.0-beta5.jar" />
+	<property name="checkstyle-optional.jar" value="extension-libraries/checkstyle-optional-4.0-beta5.jar" />
+
+	<!-- properties that remain relativly fixed -->
+	<property name="plugin.name" value="com.atlassw.tools.eclipse.checkstyle_${plugin.version}" />
+
+	<property name="dist.basedir" value="${basedir}/dist/" />
+	<property name="dist.basedir.tmpdir" value="${basedir}/dist/tmp" />
+	<property name="feature.project.dir" value="../CheckstyleFeature/" />
+
+	<property name="bin.dist.file" value="${plugin.name}${plugin.version.postfix}-bin.zip" />
+	<property name="src.dist.file" value="${plugin.name}${plugin.version.postfix}-src.zip" />
+
+	<!-- ==================================================== -->
+	<!--   CLEAN TARGET                                       -->
+	<!-- ==================================================== -->
+	<target name="clean" description="Cleans any directories and generated files">
+		<delete dir="${dist.basedir}" failonerror="false" quiet="true" />
+	</target>
+
+	<!-- ==================================================== -->
+	<!--   BUILD TARGET AREA                                  -->
+	<!-- ==================================================== -->
+	<target name="build.target.area" description="Build the directory structure of the target area">
+		<mkdir dir="${dist.basedir}" />
+		<mkdir dir="${dist.basedir.tmpdir}" />
+	</target>
+
+	<!-- ==================================================== -->
+	<!--   DISTRIBUTION TARGET                                -->
+	<!-- ==================================================== -->
+	<target name="build.dist" depends="build.bindist,build.srcdist" />
+
+	<!-- ==================================================== -->
+	<!--   BINARY DISTRIBUTION TARGET                         -->
+	<!-- ==================================================== -->
+	<target name="build.bindist" depends="build.target.area" description="Builds the binary distribution file">
+
+		<!-- prefix paths within the binary dist file -->
+		<property name="plugins.path" value="plugins/${plugin.name}" />
+		<property name="features.path" value="features/${plugin.name}" />
+
+		<!-- jar the contents of the output dirs into the tmp directory -->
+		<jar destfile="${dist.basedir.tmpdir}/CheckstylePlugin.jar" basedir="./bin" index="true" />
+		<jar destfile="${dist.basedir.tmpdir}/NLS.jar" basedir="./binnls" index="true" />
+
+		<!-- zip the contents into the binary dist file -->
+		<zip destfile="${dist.basedir}/${bin.dist.file}" update="false">
+
+			<zipfileset dir="${dist.basedir.tmpdir}" prefix="${plugins.path}" includes="*.jar" />
+
+			<zipfileset dir="." prefix="${plugins.path}" includes="${checkstyle.jar}" />
+			<zipfileset dir="." prefix="${plugins.path}" includes="${checkstyle-optional.jar}" />
+			<zipfileset dir="." prefix="${plugins.path}" includes="plugin.xml" />
+			<zipfileset dir="." prefix="${plugins.path}" includes="*.properties" excludes="build.properties" />
+			<zipfileset dir="." prefix="${plugins.path}" includes="toc.xml" />
+			<zipfileset dir="." prefix="${plugins.path}" includes="README.html" />
+			<zipfileset dir="." prefix="${plugins.path}" includes="sun_checks.xml" />
+			<zipfileset dir="." prefix="${plugins.path}" includes="DefaultCheckConfigurations.xml" />
+			<zipfileset dir="." prefix="${plugins.path}" includes="META-INF/**" />
+			<zipfileset dir="." prefix="${plugins.path}" includes="schema/**" />
+			<zipfileset dir="." prefix="${plugins.path}" includes="icons/**" />
+			<zipfileset dir="." prefix="${plugins.path}" includes="license/**" />
+			<zipfileset dir="." prefix="${plugins.path}" includes="doc/**" />
+
+			<!-- include the feature -->
+			<zipfileset dir="${feature.project.dir}" prefix="${features.path}" includes="eclipse-cs-logo.jpg" />
+			<zipfileset dir="${feature.project.dir}" prefix="${features.path}" includes="feature.properties" />
+			<zipfileset dir="${feature.project.dir}" prefix="${features.path}" includes="feature.xml" />
+			<zipfileset dir="${feature.project.dir}" prefix="${features.path}" includes="license.html" />
+		</zip>
+
+		<!-- remove the temp directory -->
+		<delete dir="${dist.basedir.tmpdir}" failonerror="false" quiet="true" />
+	</target>
+
+	<!-- ==================================================== -->
+	<!--   SOURCE DISTRIBUTION TARGET                         -->
+	<!-- ==================================================== -->
+	<target name="build.srcdist" depends="build.target.area" description="Builds the source distribution file">
+
+		<zip destfile="${dist.basedir}/${src.dist.file}" update="false">
+
+			<zipfileset dir="." includes="${checkstyle.jar}" />
+			<zipfileset dir="." includes="${checkstyle-optional.jar}" />
+			<zipfileset dir="." includes="plugin.xml" />
+			<zipfileset dir="." includes="*.properties" excludes="build.properties" />
+			<zipfileset dir="." includes="toc.xml" />
+			<zipfileset dir="." includes="README.html" />
+			<zipfileset dir="." includes="sun_checks.xml" />
+			<zipfileset dir="." includes="DefaultCheckConfigurations.xml" />
+			<zipfileset dir="." includes="META-INF/**" />
+			<zipfileset dir="." includes="schema/**" />
+			<zipfileset dir="." includes="icons/**" />
+			<zipfileset dir="." includes="license/**" />
+			<zipfileset dir="." includes="doc/**" />
+
+			<zipfileset dir="." includes="src/**" />
+			<zipfileset dir="." includes="nls/**" />
+			<zipfileset dir="." includes="CheckConfig_Checkstyle.xml" />
+			<zipfileset dir="." includes="build-plugin.xml" />
+			<zipfileset dir="." includes="build.properties" />
+			<zipfileset dir="." includes=".*" />
+		</zip>
+	</target>
+</project>
