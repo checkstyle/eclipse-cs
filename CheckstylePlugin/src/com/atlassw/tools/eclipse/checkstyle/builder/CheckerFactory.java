@@ -24,8 +24,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.WeakHashMap;
+
+import org.eclipse.core.runtime.Platform;
 
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
@@ -193,9 +196,33 @@ public final class CheckerFactory
 
         // create and configure checker
         Checker checker = new Checker();
+
+        //set the eclipse platform locale
+        Locale platformLocale = getPlatformLocale();
+        checker.setLocaleLanguage(platformLocale.getLanguage());
+        checker.setLocaleCountry(platformLocale.getCountry());
+
         checker.setClassloader(sSharedClassLoader);
         checker.configure(configuration);
 
         return checker;
+    }
+
+    /**
+     * Helper method to get the current plattform locale.
+     * 
+     * @return the platform locale
+     */
+    private static Locale getPlatformLocale()
+    {
+
+        String nl = Platform.getNL();
+        String[] parts = nl.split("_");
+
+        String language = parts.length > 0 ? parts[0] : "";
+        String country = parts.length > 1 ? parts[1] : "";
+        String variant = parts.length > 2 ? parts[2] : "";
+
+        return new Locale(language, country, variant);
     }
 }
