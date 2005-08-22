@@ -61,16 +61,28 @@ public class CheckstylePlugin extends AbstractUIPlugin
     public static final String PREF_ASK_BEFORE_REBUILD = "ask.before.rebuild"; //$NON-NLS-1$
 
     /**
-     * Preference name indication if the checkstyle tokens within the module
+     * Preference name indicating if the checkstyle tokens within the module
      * editor should be translated.
      */
     public static final String PREF_TRANSLATE_TOKENS = "translate.checkstyle.tokens"; //$NON-NLS-1$
 
     /**
-     * Preference name indication if the module editor should be opened when
+     * Preference name indicating if the module editor should be opened when
      * adding a module.
      */
     public static final String PREF_OPEN_MODULE_EDITOR = "open.module.editor.on.add"; //$NON-NLS-1$
+
+    /**
+     * Preference name indicating if the number of checkstyle warning generated
+     * per file should be limited.
+     */
+    public static final String PREF_LIMIT_MARKERS_PER_RESOURCE = "limit.markers.per.resource"; //$NON-NLS-1$
+
+    /**
+     * Preference name for the preference that stores the limit of markers per
+     * resource.
+     */
+    public static final String PREF_MARKER_AMOUNT_LIMIT = "marker.amount.limit"; //$NON-NLS-1$
 
     /**
      * Preference name indicating the minimum amount of lines that is used for
@@ -83,6 +95,9 @@ public class CheckstylePlugin extends AbstractUIPlugin
      * checker analysis.
      */
     public static final int DUPLICATED_CODE_MIN_LINES = 20;
+
+    /** Default value for the marker limitation. */
+    public static final int MARKER_LIMIT = 100;
 
     // =================================================
     // Static class variables.
@@ -145,5 +160,8 @@ public class CheckstylePlugin extends AbstractUIPlugin
         prefStore.setDefault(PREF_TRANSLATE_TOKENS, true);
         prefStore.setDefault(PREF_OPEN_MODULE_EDITOR, true);
         prefStore.setDefault(PREF_DUPLICATED_CODE_MIN_LINES, DUPLICATED_CODE_MIN_LINES);
+        prefStore.setDefault(PREF_LIMIT_MARKERS_PER_RESOURCE, false);
+        prefStore.setDefault(PREF_MARKER_AMOUNT_LIMIT, MARKER_LIMIT);
+
     }
 }

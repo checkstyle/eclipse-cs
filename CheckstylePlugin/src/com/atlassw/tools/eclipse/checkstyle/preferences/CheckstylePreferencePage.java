@@ -58,6 +58,8 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -67,6 +69,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
@@ -144,6 +147,10 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
     private Button mWarnBeforeLosingFilesets;
 
     private Button mIncludeRuleNamesButton;
+
+    private Button mLimitCheckstyleMarkers;
+
+    private Text mTxtMarkerLimit;
 
     private List mCheckConfigurations;
 
@@ -277,9 +284,9 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
 
         mPurgeCacheButton = new Button(rebuildComposite, SWT.FLAT);
         ImageDescriptor descriptor = CheckstylePlugin.imageDescriptorFromPlugin(
-                CheckstylePlugin.PLUGIN_ID, "icons/refresh.gif");
+                CheckstylePlugin.PLUGIN_ID, "icons/refresh.gif"); //$NON-NLS-1$
         mPurgeCacheButton.setImage(descriptor.createImage());
-        mPurgeCacheButton.setToolTipText("Refresh cached checkstyle configurations");
+        mPurgeCacheButton.setToolTipText(Messages.CheckstylePreferencePage_btnRefreshCheckerCache);
         mPurgeCacheButton.addSelectionListener(mController);
         GridData gd = new GridData();
         gd.horizontalAlignment = GridData.END;
@@ -303,6 +310,63 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         mIncludeRuleNamesButton.setText(Messages.CheckstylePreferencePage_lblIncludeRulenames);
         mIncludeRuleNamesButton.setSelection(prefs
                 .getBoolean(CheckstylePlugin.PREF_INCLUDE_RULE_NAMES));
+
+        //
+        // Create the "limit markers" check box and text field combination
+        //
+        Composite limitMarkersComposite = new Composite(generalComposite, SWT.NULL);
+        GridLayout layout3 = new GridLayout(2, false);
+        layout3.marginHeight = 0;
+        layout3.marginWidth = 0;
+        limitMarkersComposite.setLayout(layout3);
+
+        mLimitCheckstyleMarkers = new Button(limitMarkersComposite, SWT.CHECK);
+        mLimitCheckstyleMarkers.setText(Messages.CheckstylePreferencePage_lblLimitMarker);
+        mLimitCheckstyleMarkers.setSelection(prefs
+                .getBoolean(CheckstylePlugin.PREF_LIMIT_MARKERS_PER_RESOURCE));
+
+        mTxtMarkerLimit = new Text(limitMarkersComposite, SWT.SINGLE | SWT.BORDER);
+        mTxtMarkerLimit.setTextLimit(5);
+        mTxtMarkerLimit.addVerifyListener(new VerifyListener()
+        {
+
+            public void verifyText(VerifyEvent e)
+            {
+
+                boolean doit = true;
+
+                // only let digits pass (and del, backspace)
+                if (!(Character.isDigit(e.character) || e.character == SWT.DEL || e.character == SWT.BS))
+                {
+                    doit = false;
+                }
+
+                // check if inserted text is an integer
+                if (!doit)
+                {
+                    try
+                    {
+                        Integer.parseInt(e.text);
+                        doit = true;
+                    }
+                    catch (NumberFormatException ex)
+                    {
+                        doit = false;
+                    }
+                }
+
+                e.doit = doit;
+                if (!e.doit)
+                {
+                    Display.getCurrent().beep();
+                }
+            }
+        });
+        mTxtMarkerLimit.setText(Integer.toString(prefs
+                .getInt(CheckstylePlugin.PREF_MARKER_AMOUNT_LIMIT)));
+        gd = new GridData();
+        gd.widthHint = 30;
+        mTxtMarkerLimit.setLayoutData(gd);
 
         new Label(generalComposite, SWT.NULL)
                 .setText(Messages.CheckstylePreferencePage_txtSuggestRebuild);
@@ -555,9 +619,23 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
                     .getBoolean(CheckstylePlugin.PREF_INCLUDE_RULE_NAMES);
             prefs.setValue(CheckstylePlugin.PREF_INCLUDE_RULE_NAMES, includeRuleNamesNow);
 
+            //
+            // Limit markers preference
+            //
+
+            boolean limitMarkersNow = mLimitCheckstyleMarkers.getSelection();
+            boolean limitMarkersOriginal = prefs
+                    .getBoolean(CheckstylePlugin.PREF_LIMIT_MARKERS_PER_RESOURCE);
+            prefs.setValue(CheckstylePlugin.PREF_LIMIT_MARKERS_PER_RESOURCE, limitMarkersNow);
+
+            int markerLimitNow = Integer.parseInt(mTxtMarkerLimit.getText());
+            int markerLimitOriginal = prefs.getInt(CheckstylePlugin.PREF_MARKER_AMOUNT_LIMIT);
+            prefs.setValue(CheckstylePlugin.PREF_MARKER_AMOUNT_LIMIT, markerLimitNow);
+
             // See if all projects need rebuild
             boolean needRebuildAllProjects = (includeRuleNamesNow != includeRuleNamesOriginal)
-                    || mRebuildAll;
+                    || (limitMarkersNow != limitMarkersOriginal)
+                    || (markerLimitNow != markerLimitOriginal) || mRebuildAll;
 
             // Get projects that need rebuild considering the changes
             Collection projectsToBuild = getProjectsToRebuild();

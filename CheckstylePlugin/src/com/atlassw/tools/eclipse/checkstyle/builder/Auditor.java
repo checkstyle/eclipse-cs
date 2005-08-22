@@ -45,6 +45,7 @@ import org.eclipse.core.runtime.Preferences;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.internal.corext.util.CodeFormatterUtil;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
@@ -292,6 +293,15 @@ public class Auditor
         /** map containing the marker data. */
         private Map mMarkerAttributes = new HashMap();
 
+        /** flags if the amount of markers should be limited. */
+        private boolean mLimitMarkers;
+
+        /** the max amount of markers per resource. */
+        private int mMarkerLimit;
+
+        /** the count of markers generated for the current resource. */
+        private int mMarkerCount;
+
         public CheckstyleAuditListener(IProject project)
         {
             mProject = project;
@@ -317,12 +327,18 @@ public class Auditor
                 // we're in Eclipse 3.0 - fall back to the std method
                 mTabWidth = CodeFormatterUtil.getTabWidth();
             }
+
+            // init the marker limitation
+            IPreferenceStore prefStore = CheckstylePlugin.getDefault().getPreferenceStore();
+            mLimitMarkers = prefStore.getBoolean(CheckstylePlugin.PREF_LIMIT_MARKERS_PER_RESOURCE);
+            mMarkerLimit = prefStore.getInt(CheckstylePlugin.PREF_MARKER_AMOUNT_LIMIT);
         }
 
         public void fileStarted(AuditEvent event)
         {
             // get the current IFile reference
             mResource = getFile(event.getFileName());
+            mMarkerCount = 0;
 
             if (mResource != null)
             {
@@ -367,35 +383,42 @@ public class Auditor
         {
             try
             {
-                SeverityLevel severity = error.getSeverityLevel();
-
-                if (!severity.equals(SeverityLevel.IGNORE) && mResource != null)
+                if (!mLimitMarkers || mMarkerCount < mMarkerLimit)
                 {
 
-                    RuleMetadata metaData = MetadataFactory.getRuleMetadata(error.getSourceName());
-                    if (metaData != null)
+                    SeverityLevel severity = error.getSeverityLevel();
+
+                    if (!severity.equals(SeverityLevel.IGNORE) && mResource != null)
                     {
-                        mMarkerAttributes.put(CheckstyleMarker.MODULE_NAME, metaData
-                                .getInternalName());
-                        mMarkerAttributes.put(CheckstyleMarker.MESSAGE_KEY, error
-                                .getLocalizedMessage().getKey());
+
+                        RuleMetadata metaData = MetadataFactory.getRuleMetadata(error
+                                .getSourceName());
+                        if (metaData != null)
+                        {
+                            mMarkerAttributes.put(CheckstyleMarker.MODULE_NAME, metaData
+                                    .getInternalName());
+                            mMarkerAttributes.put(CheckstyleMarker.MESSAGE_KEY, error
+                                    .getLocalizedMessage().getKey());
+                        }
+                        mMarkerAttributes.put(IMarker.PRIORITY,
+                                new Integer(IMarker.PRIORITY_NORMAL));
+                        mMarkerAttributes.put(IMarker.SEVERITY, new Integer(
+                                getSeverityValue(severity)));
+                        MarkerUtilities.setLineNumber(mMarkerAttributes, error.getLine());
+                        MarkerUtilities.setMessage(mMarkerAttributes, getMessage(error));
+
+                        // calculate offset for editor annotations
+                        calculateMarkerOffset(error, mMarkerAttributes);
+
+                        // create a marker for the actual resource
+                        MarkerUtilities.createMarker(mResource, mMarkerAttributes,
+                                CheckstyleMarker.MARKER_ID);
+                        mMarkerCount++;
+
+                        // clear the marker attributes to reuse the map for the
+                        // next error
+                        mMarkerAttributes.clear();
                     }
-                    mMarkerAttributes.put(IMarker.PRIORITY, new Integer(IMarker.PRIORITY_NORMAL));
-                    mMarkerAttributes
-                            .put(IMarker.SEVERITY, new Integer(getSeverityValue(severity)));
-                    MarkerUtilities.setLineNumber(mMarkerAttributes, error.getLine());
-                    MarkerUtilities.setMessage(mMarkerAttributes, getMessage(error));
-
-                    // calculate offset for editor annotations
-                    calculateMarkerOffset(error, mMarkerAttributes);
-
-                    // create a marker for the actual resource
-                    MarkerUtilities.createMarker(mResource, mMarkerAttributes,
-                            CheckstyleMarker.MARKER_ID);
-
-                    // clear the marker attributes to reuse the map for the next
-                    // error
-                    mMarkerAttributes.clear();
                 }
             }
             catch (CoreException e)
