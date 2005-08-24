@@ -22,7 +22,6 @@ package com.atlassw.tools.eclipse.checkstyle.config.configtypes;
 
 import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.PropertyResourceBundle;
@@ -153,43 +152,71 @@ public class ProjectCheckConfiguration extends AbstractCheckConfiguration
      * 
      * @see AbstractCheckConfiguration#handleGetPropertyResolver()
      */
-    protected PropertyResolver handleGetPropertyResolver()
+    protected PropertyResolver handleGetPropertyResolver() throws CheckstylePluginException
     {
 
         if (mPropertyResolver == null)
         {
 
-            ResourceBundle bundle = null;
-
+            MultiPropertyResolver multiResolver = new MultiPropertyResolver();
             try
             {
-                String location = handleGetLocation().getFile();
-
-                // Strip file extension
-                String propsLocation = null;
-                if (location.lastIndexOf(".") > -1)
-                {
-                    propsLocation = location.substring(0, location.lastIndexOf(".")); //$NON-NLS-1$
-                }
-                else
-                {
-                    propsLocation = location;
-                }
-
-                File f = new File(propsLocation + ".properties");
-
-                URL propertyFile = f.toURL(); //$NON-NLS-1$
-
-                bundle = new PropertyResourceBundle(new BufferedInputStream(propertyFile
-                        .openStream()));
+                multiResolver.addPropertyResolver(new StandardPropertyResolver(handleGetLocation()
+                        .getFile()));
             }
-            catch (Exception ioe)
+            catch (MalformedURLException e)
             {
-                // we won't load the bundle then
+                CheckstylePluginException.rethrow(e);
             }
 
-            mPropertyResolver = new ResourceBundlePropertyResolver(bundle);
+            ResourceBundle bundle = getBundle();
+            if (bundle != null)
+            {
+                multiResolver.addPropertyResolver(new ResourceBundlePropertyResolver(bundle));
+            }
+
+            mPropertyResolver = multiResolver;
         }
         return mPropertyResolver;
+    }
+
+    /**
+     * Helper method to get the resource bundle for this configuration.
+     * 
+     * @return the resource bundle or <code>null</code> if no bundle exists
+     */
+    private ResourceBundle getBundle()
+    {
+
+        ResourceBundle bundle = null;
+
+        try
+        {
+            String location = handleGetLocation().getFile();
+
+            // Strip file extension
+            String propsLocation = null;
+            int lastPointIndex = location.lastIndexOf("."); //$NON-NLS-1$
+            if (lastPointIndex > -1)
+            {
+                propsLocation = location.substring(0, lastPointIndex);
+            }
+            else
+            {
+                propsLocation = location;
+            }
+
+            File f = new File(propsLocation + ".properties"); //$NON-NLS-1$
+
+            URL propertyFile = f.toURL();
+
+            bundle = new PropertyResourceBundle(new BufferedInputStream(propertyFile.openStream()));
+        }
+        catch (Exception ioe)
+        {
+            // we won't load the bundle then
+        }
+
+        return bundle;
     }
 }

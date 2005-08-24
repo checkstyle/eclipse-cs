@@ -23,6 +23,8 @@ package com.atlassw.tools.eclipse.checkstyle.config.configtypes;
 import org.eclipse.swt.graphics.Image;
 
 /**
+ * Interface for a configuration type.
+ * 
  * @author Lars Ködderitzsch
  */
 public interface IConfigurationType

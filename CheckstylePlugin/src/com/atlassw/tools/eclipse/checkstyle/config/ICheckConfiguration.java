@@ -113,8 +113,9 @@ public interface ICheckConfiguration extends Cloneable
      * values within the checkstyle configuration.
      * 
      * @return the property resolver
+     * @throws CheckstylePluginException error creating the property resolver
      */
-    PropertyResolver getPropertyResolver();
+    PropertyResolver getPropertyResolver() throws CheckstylePluginException;
 
     /**
      * Returns the URL of the checkstyle configuration file.

@@ -82,7 +82,7 @@ public class ExternalFileCheckConfiguration extends AbstractCheckConfiguration
      * External file based configurations support property expansion. The
      * precondition is that the .properties file containing the property values
      * lies in the same location as the configuration file, with the same file
-     * name exept the file extension (.properties).
+     * name except the file extension (.properties).
      * 
      * @see AbstractCheckConfiguration#handleGetPropertyResolver()
      */
@@ -92,35 +92,57 @@ public class ExternalFileCheckConfiguration extends AbstractCheckConfiguration
         if (mPropertyResolver == null)
         {
 
-            ResourceBundle bundle = null;
+            MultiPropertyResolver multiResolver = new MultiPropertyResolver();
+            multiResolver.addPropertyResolver(new StandardPropertyResolver(getLocation()));
 
-            try
+            ResourceBundle bundle = getBundle();
+            if (bundle != null)
             {
-
-                String location = getLocation();
-                // Strip file extension
-                String propsLocation = null;
-                if (location.lastIndexOf(".") > -1)
-                {
-                    propsLocation = location.substring(0, location.lastIndexOf(".")); //$NON-NLS-1$
-                }
-                else
-                {
-                    propsLocation = location;
-                }
-
-                File propertyFile = new File(propsLocation + ".properties"); //$NON-NLS-1$
-
-                bundle = new PropertyResourceBundle(new BufferedInputStream(new FileInputStream(
-                        propertyFile)));
-            }
-            catch (IOException ioe)
-            {
-                // we won't load the bundle then
+                multiResolver.addPropertyResolver(new ResourceBundlePropertyResolver(bundle));
             }
 
-            mPropertyResolver = new ResourceBundlePropertyResolver(bundle);
+            mPropertyResolver = multiResolver;
         }
         return mPropertyResolver;
+    }
+
+    /**
+     * Helper method to get the resource bundle for this configuration.
+     * 
+     * @return the resource bundle or <code>null</code> if no bundle exists
+     */
+    private ResourceBundle getBundle()
+    {
+
+        ResourceBundle bundle = null;
+
+        try
+        {
+
+            String location = getLocation();
+
+            // Strip file extension
+            String propsLocation = null;
+            int lastPointIndex = location.lastIndexOf("."); //$NON-NLS-1$
+            if (lastPointIndex > -1)
+            {
+                propsLocation = location.substring(0, lastPointIndex);
+            }
+            else
+            {
+                propsLocation = location;
+            }
+
+            File propertyFile = new File(propsLocation + ".properties"); //$NON-NLS-1$
+
+            bundle = new PropertyResourceBundle(new BufferedInputStream(new FileInputStream(
+                    propertyFile)));
+        }
+        catch (IOException ioe)
+        {
+            // we won't load the bundle then
+        }
+
+        return bundle;
     }
 }

@@ -20,8 +20,11 @@
 
 package com.atlassw.tools.eclipse.checkstyle.config.configtypes;
 
+import java.net.URL;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.ui.contexts.IContextActivation;
 
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
@@ -31,7 +34,7 @@ import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
  * 
  * @author Lars Ködderitzsch
  */
-public class StandardPropertyResolver implements PropertyResolver
+public class StandardPropertyResolver implements PropertyResolver, IContextAware
 {
     //
     // constants
@@ -46,6 +49,12 @@ public class StandardPropertyResolver implements PropertyResolver
     /** constant for the basedir variable. */
     private static final String BASEDIR_LOC = "basedir"; //$NON-NLS-1$
 
+    /** constant for the samedir variable. */
+    private static final String SAMEDIR_LOC = "samedir"; //$NON-NLS-1$
+
+    /** constant for the config_loc variable. */
+    private static final String CONFIG_LOC = "config_loc"; //$NON-NLS-1$
+
     //
     // attributes
     //
@@ -53,9 +62,35 @@ public class StandardPropertyResolver implements PropertyResolver
     /** the context project. */
     private IProject mProject;
 
+    /** the location of the configuration file. */
+    private String mConfigLocation;
+
+    //
+    // constructors
+    //
+
+    /**
+     * Creates the BuiltInPropertyResolver.
+     * 
+     * @param project the current project
+     * @param configLocation the location of the checkstyle configuration file
+     */
+    public StandardPropertyResolver(String configLocation)
+    {
+        mConfigLocation = configLocation;
+    }
+
     //
     // methods
     //
+
+    /**
+     * @see IContextAware#setProjectContext(org.eclipse.core.resources.IProject)
+     */
+    public void setProjectContext(IProject project)
+    {
+        mProject = project;
+    }
 
     /**
      * @see com.puppycrawl.tools.checkstyle.PropertyResolver#resolve(java.lang.String)
@@ -71,17 +106,18 @@ public class StandardPropertyResolver implements PropertyResolver
         {
             value = mProject.getLocation().toOSString();
         }
+        else if ((SAMEDIR_LOC.equals(property) || CONFIG_LOC.equals(property))
+                && mConfigLocation != null)
+        {
+            String configLocWOBackslashes = mConfigLocation.replace('\\', '/');
+
+            int lastSlash = configLocWOBackslashes.lastIndexOf("/");
+            if (lastSlash > -1)
+            {
+                value = configLocWOBackslashes.substring(0, lastSlash + 1); //$NON-NLS-1$
+            }
+        }
 
         return value;
-    }
-
-    /**
-     * Sets the project context.
-     * 
-     * @param project the project
-     */
-    public void setContext(IProject project)
-    {
-        mProject = project;
     }
 }

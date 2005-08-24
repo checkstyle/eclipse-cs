@@ -278,14 +278,14 @@ public abstract class AbstractCheckConfiguration implements ICheckConfiguration
     /**
      * @see ICheckConfiguration#getPropertyResolver()
      */
-    public PropertyResolver getPropertyResolver()
+    public PropertyResolver getPropertyResolver() throws CheckstylePluginException
     {
         PropertyResolver propsResolver = handleGetPropertyResolver();
 
         // set the project context
-        if (propsResolver instanceof StandardPropertyResolver)
+        if (propsResolver instanceof IContextAware)
         {
-            ((StandardPropertyResolver) propsResolver).setContext(mContext);
+            ((IContextAware) propsResolver).setProjectContext(mContext);
         }
 
         return propsResolver;
@@ -512,9 +512,18 @@ public abstract class AbstractCheckConfiguration implements ICheckConfiguration
      * Get the property resolver for the actual configuration implementation.
      * 
      * @return the property resolver.
+     * @throws CheckstylePluginException error creating the property resolver
      */
-    protected PropertyResolver handleGetPropertyResolver()
+    protected PropertyResolver handleGetPropertyResolver() throws CheckstylePluginException
     {
-        return new StandardPropertyResolver();
+        try
+        {
+            return new StandardPropertyResolver(handleGetLocation().getFile());
+        }
+        catch (MalformedURLException e)
+        {
+            CheckstylePluginException.rethrow(e);
+        }
+        return null;
     }
 }

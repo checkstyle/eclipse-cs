@@ -89,35 +89,57 @@ public class RemoteCheckConfiguration extends AbstractCheckConfiguration
         if (mPropertyResolver == null)
         {
 
-            ResourceBundle bundle = null;
+            MultiPropertyResolver multiResolver = new MultiPropertyResolver();
+            multiResolver.addPropertyResolver(new StandardPropertyResolver(getLocation()));
 
-            try
+            ResourceBundle bundle = getBundle();
+            if (bundle != null)
             {
-
-                String location = getLocation();
-
-                // Strip file extension
-                String propsLocation = null;
-                if (location.lastIndexOf(".") > -1)
-                {
-                    propsLocation = location.substring(0, location.lastIndexOf(".")); //$NON-NLS-1$
-                }
-                else
-                {
-                    propsLocation = location;
-                }
-
-                URL propUrl = new URL(propsLocation + ".properties"); //$NON-NLS-1$
-
-                bundle = new PropertyResourceBundle(new BufferedInputStream(propUrl.openStream()));
-            }
-            catch (IOException ioe)
-            {
-                // we won't load the bundle then
+                multiResolver.addPropertyResolver(new ResourceBundlePropertyResolver(bundle));
             }
 
-            mPropertyResolver = new ResourceBundlePropertyResolver(bundle);
+            mPropertyResolver = multiResolver;
         }
         return mPropertyResolver;
+    }
+
+    /**
+     * Helper method to get the resource bundle for this configuration.
+     * 
+     * @return the resource bundle or <code>null</code> if no bundle exists
+     */
+    private ResourceBundle getBundle()
+    {
+
+        ResourceBundle bundle = null;
+
+        try
+        {
+
+            String location = getLocation();
+
+            // Strip file extension
+            String propsLocation = null;
+
+            int lastPointIndex = location.lastIndexOf("."); //$NON-NLS-1$
+            if (lastPointIndex > -1)
+            {
+                propsLocation = location.substring(0, lastPointIndex);
+            }
+            else
+            {
+                propsLocation = location;
+            }
+
+            URL propUrl = new URL(propsLocation + ".properties"); //$NON-NLS-1$
+
+            bundle = new PropertyResourceBundle(new BufferedInputStream(propUrl.openStream()));
+        }
+        catch (IOException ioe)
+        {
+            // we won't load the bundle then
+        }
+
+        return bundle;
     }
 }
