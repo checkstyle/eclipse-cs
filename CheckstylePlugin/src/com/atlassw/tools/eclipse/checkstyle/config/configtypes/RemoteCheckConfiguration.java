@@ -88,16 +88,27 @@ public class RemoteCheckConfiguration extends AbstractCheckConfiguration
 
         if (mPropertyResolver == null)
         {
-            String location = getLocation();
-            // Strip file extension
-            location = location.substring(0, location.lastIndexOf(".")); //$NON-NLS-1$
-            location = location + ".properties"; //$NON-NLS-1$
 
             ResourceBundle bundle = null;
 
             try
             {
-                URL propUrl = new URL(location);
+
+                String location = getLocation();
+
+                // Strip file extension
+                String propsLocation = null;
+                if (location.lastIndexOf(".") > -1)
+                {
+                    propsLocation = location.substring(0, location.lastIndexOf(".")); //$NON-NLS-1$
+                }
+                else
+                {
+                    propsLocation = location;
+                }
+
+                URL propUrl = new URL(propsLocation + ".properties"); //$NON-NLS-1$
+
                 bundle = new PropertyResourceBundle(new BufferedInputStream(propUrl.openStream()));
             }
             catch (IOException ioe)

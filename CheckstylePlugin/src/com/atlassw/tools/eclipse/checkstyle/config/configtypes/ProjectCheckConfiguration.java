@@ -166,7 +166,15 @@ public class ProjectCheckConfiguration extends AbstractCheckConfiguration
                 String location = handleGetLocation().getFile();
 
                 // Strip file extension
-                String propsLocation = location.substring(0, location.lastIndexOf(".")); //$NON-NLS-1$
+                String propsLocation = null;
+                if (location.lastIndexOf(".") > -1)
+                {
+                    propsLocation = location.substring(0, location.lastIndexOf(".")); //$NON-NLS-1$
+                }
+                else
+                {
+                    propsLocation = location;
+                }
 
                 File f = new File(propsLocation + ".properties");
 
@@ -175,7 +183,7 @@ public class ProjectCheckConfiguration extends AbstractCheckConfiguration
                 bundle = new PropertyResourceBundle(new BufferedInputStream(propertyFile
                         .openStream()));
             }
-            catch (IOException ioe)
+            catch (Exception ioe)
             {
                 // we won't load the bundle then
             }

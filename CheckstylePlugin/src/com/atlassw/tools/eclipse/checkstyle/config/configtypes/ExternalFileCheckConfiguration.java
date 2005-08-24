@@ -91,15 +91,26 @@ public class ExternalFileCheckConfiguration extends AbstractCheckConfiguration
 
         if (mPropertyResolver == null)
         {
-            String location = getLocation();
-            // Strip file extension
-            location = location.substring(0, location.lastIndexOf(".")); //$NON-NLS-1$
 
-            File propertyFile = new File(location + ".properties"); //$NON-NLS-1$
             ResourceBundle bundle = null;
 
             try
             {
+
+                String location = getLocation();
+                // Strip file extension
+                String propsLocation = null;
+                if (location.lastIndexOf(".") > -1)
+                {
+                    propsLocation = location.substring(0, location.lastIndexOf(".")); //$NON-NLS-1$
+                }
+                else
+                {
+                    propsLocation = location;
+                }
+
+                File propertyFile = new File(propsLocation + ".properties"); //$NON-NLS-1$
+
                 bundle = new PropertyResourceBundle(new BufferedInputStream(new FileInputStream(
                         propertyFile)));
             }
