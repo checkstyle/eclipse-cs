@@ -28,12 +28,17 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.WeakHashMap;
 
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 
+import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.puppycrawl.tools.checkstyle.Checker;
 import com.puppycrawl.tools.checkstyle.ConfigurationLoader;
+import com.puppycrawl.tools.checkstyle.ModuleFactory;
+import com.puppycrawl.tools.checkstyle.PackageNamesLoader;
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.puppycrawl.tools.checkstyle.api.Configuration;
@@ -197,7 +202,27 @@ public final class CheckerFactory
         // create and configure checker
         Checker checker = new Checker();
 
-        //set the eclipse platform locale
+        // load the package name file
+        URL packagesFile = CheckstylePlugin.getDefault().find(
+                new Path(CheckstylePlugin.PACKAGE_NAMES_FILE));
+
+        if (packagesFile != null)
+        {
+
+            try
+            {
+                packagesFile = Platform.resolve(packagesFile);
+                ModuleFactory moduleFactory = PackageNamesLoader.loadModuleFactory(packagesFile
+                        .getFile());
+                checker.setModuleFactory(moduleFactory);
+            }
+            catch (Exception e)
+            {
+                CheckstyleLog.log(e, "Could not load extension-libaries/checkstyle_packages.xml");
+            }
+        }
+
+        // set the eclipse platform locale
         Locale platformLocale = getPlatformLocale();
         checker.setLocaleLanguage(platformLocale.getLanguage());
         checker.setLocaleCountry(platformLocale.getCountry());

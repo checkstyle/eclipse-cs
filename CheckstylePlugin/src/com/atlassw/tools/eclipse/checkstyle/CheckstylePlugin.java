@@ -99,6 +99,9 @@ public class CheckstylePlugin extends AbstractUIPlugin
     /** Default value for the marker limitation. */
     public static final int MARKER_LIMIT = 100;
 
+    /** Constant for the path of the (custom) package names file. */
+    public static final String PACKAGE_NAMES_FILE = "/extension-libraries/checkstyle_packages.xml";
+
     // =================================================
     // Static class variables.
     // =================================================
