@@ -176,13 +176,20 @@ public class Auditor
 
             // reconfigure the shared classloader for the current
             // project
-            CheckerFactory.getSharedClassLoader().intializeWithProject(project);
+            if (project.hasNature(JavaCore.NATURE_ID))
+            {
+                CheckerFactory.getSharedClassLoader().intializeWithProject(project);
+            }
 
             // run the files through the checker
             checker.process(filesToAudit);
 
         }
         catch (IOException e)
+        {
+            CheckstylePluginException.rethrow(e);
+        }
+        catch (CoreException e)
         {
             CheckstylePluginException.rethrow(e);
         }

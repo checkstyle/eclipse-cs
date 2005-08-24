@@ -26,6 +26,7 @@ import java.util.List;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
@@ -104,18 +105,24 @@ public class NonSrcDirsFilter extends AbstractFilter
 
         try
         {
-
-            IJavaProject javaProject = JavaCore.create(project);
-            IClasspathEntry[] cp = javaProject.getResolvedClasspath(true);
-            for (int i = 0; i < cp.length; i++)
+            if (project.hasNature(JavaCore.NATURE_ID))
             {
-                if (cp[i].getEntryKind() == IClasspathEntry.CPE_SOURCE)
+                IJavaProject javaProject = JavaCore.create(project);
+                IClasspathEntry[] cp = javaProject.getResolvedClasspath(true);
+                for (int i = 0; i < cp.length; i++)
                 {
-                    sourceDirs.add(cp[i].getPath());
+                    if (cp[i].getEntryKind() == IClasspathEntry.CPE_SOURCE)
+                    {
+                        sourceDirs.add(cp[i].getPath());
+                    }
                 }
             }
         }
         catch (JavaModelException e)
+        {
+            CheckstyleLog.log(e);
+        }
+        catch (CoreException e)
         {
             CheckstyleLog.log(e);
         }
