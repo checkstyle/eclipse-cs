@@ -1,78 +1,142 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="CONTENT-TYPE" content="text/html; charset=iso-8859-1" />
-    <link type="text/css" href="style.css" rel="stylesheet" />
+    <head>
+        <meta http-equiv="CONTENT-TYPE" content="text/html; charset=iso-8859-1" />
+
+        <link type="text/css" href="style.css" rel="stylesheet" />
+
 <script type="text/javascript" src="javascript/header_footer.js">
 </script>
 
-    <title>Using custom checks</title>
-  </head>
+        <title>Using custom checks</title>
+    </head>
 
-  <body class="content">
+    <body class="content">
 <script type="text/javascript">
 header();
 </script>
 
-    <h2>Using custom checks</h2>
+        <h2>Using custom checks</h2>
 
-    <p>One great feature of Checkstyle is its extentablity. You can easily write own checks as explained <a
-    href="http://checkstyle.sourceforge.net/writingchecks.html" target="_blank">here</a>.</p>
+        <p>One great feature of Checkstyle is its extentablity. You can easily write own checks as explained 
+        <a href="http://checkstyle.sourceforge.net/writingchecks.html" target="_blank">here</a>
 
-    <p>Once you have written your check you surely want to use them with the plugin.</p>
+        .</p>
 
-    <p>There are a few steps you must take to accomplish this:</p>
+        <p>Once you have written your check you surely want to use them with the plugin.</p>
 
-    <ol>
-      <li>
-        <p>Package your checks into a <i>.jar</i> file</p>
-      </li>
+        <p>There are a few steps you must take to accomplish this:</p>
 
-      <li>
-        <p>Go to <i>&lt;path-to-my-eclipse&gt;/plugins/com.atlassw.tools.eclipse.checkstyle_x.x.x</i> directory and
-        copy the <i>.jar</i> into the <i>extension-libraries</i> directory</p>
-      </li>
+        <ol>
+            <li>
+                <p>Package your checks (and optional metadata, see point 6) into a 
+                <i>.jar</i>
 
-      <li>
-        <p>Open the META-INF/MANIFEST.MF file from within the with an text editor</p>
-      </li>
+                file</p>
+            </li>
 
-      <li>
-        <p>Extend the <i>Bundle-ClassPath</i> entry to include your <i>.jar</i> file<br />
-         Before: <font size="2"><font face="Courier New">Bundle-ClassPath:
-        CheckstylePlugin.jar,NLS.jar,checkstyle-all-4.0-beta2.jar,extension-libraries/checkstyle-optional-4.0-beta2.jar</font></font><br />
-         After: <font size="2"><font face="Courier New">Bundle-ClassPath:
-        CheckstylePlugin.jar,NLS.jar,checkstyle-all-4.0-beta2.jar,extension-libraries/checkstyle-optional-4.0-beta2.jar,extension-libraries/myCustomChecks.jar</font></font></p>
-      </li>
+            <li>
+                <p>Go to 
+                <i>&lt;path-to-my-eclipse&gt;/plugins/com.atlassw.tools.eclipse.checkstyle_x.x.x</i>
 
-      <li>
-        <p>Restart Eclipse with the <i>-clean</i> option &ndash; this is needed to let Eclipse pick up the changes you
-        made</p>
-      </li>
+                directory and copy the 
+                <i>.jar</i>
 
-      <li>
-        <p>Write a Checkstyle configuration file using a text editor &ndash; include your custom modules within this
-        configuration.<br />
-         Be sure to include all properties of your modules within the module configuration so you can edit the
-        properties afterward in the Checkstyle Plug-in Configuration Editor.<br />
-         Note that the custom check will show up in the <i>Other</i> section of the configuration editor.<br />
-         You are now able to configure the known properties of your check and to remove the check from the
-        configuration.<br />
-         After you removed it you can't add it again using the Checkstyle Plug-in Configuration Editor &ndash; so be
-        careful.<br />
-        <br />
-         This limitation exists because there is no meta data for you check known to the plug-in.<br />
-         If you are really knowing what you are doing you might want to try fiddling with the module metadata within
-        the <i>CheckstylePlugin.jar</i>.<br />
-        <br />
-         Maybe a later release will let you specifiy the meta data for your checks more easily.</p>
-      </li>
-    </ol>
+                into the 
+                <i>extension-libraries</i>
+
+                directory</p>
+            </li>
+
+            <li>
+                <p>(Optional) Create or update a Checkstyle packages definition file inside the 
+                <i>extension-libraries</i>
+
+                directory named 
+                <i>checkstyle_packages.xml</i>
+
+                . You will find a template file in the 
+                <i>extension-libraries</i>
+
+                directory already. In doing so you are able to define your checks in your configuration file using the logical check name instead of needing to provide the fully qualified class name of your check. For mor info about the checkstyle packages files please read here: 
+                <a target="_blank" href="http://checkstyle.sourceforge.net/config.html#Packages">http://checkstyle.sourceforge.net/config.html#Packages</a>
+                </p>
+            </li>
+
+            <li>
+                <p>Either restart eclipse or hit the 
+                <img src="images/refresh.gif" />
+
+                button within the plugins preference page to let the plugin pick up the changes.</p>
+            </li>
+
+            <li>
+                <p>Write a Checkstyle configuration file using a text editor to include your custom modules within this configuration. 
+                <br />
+
+                Be sure to include all properties of your modules within the module configuration so you can edit the properties afterward in the Checkstyle Plug-in Configuration Editor. 
+                <br />
+
+                Note that the custom check will show up in the 
+                <i>Other</i>
+
+                section of the configuration editor. 
+                <br />
+
+                You are now able to configure the known properties of your check and to remove the check from the configuration. 
+                <br />
+
+                After you removed it you can't add it again using the Checkstyle Plug-in Configuration Editor – so be careful.</p>
+            </li>
+
+            <li>
+                <p>(Optional) To get rid of the limitation described in point 5 you can provide metadata for your checks, which will allows the plugin to treat your check or filter modules like the built-in checks. 
+                <br />
+
+                This means be providing metadata your checks will facilitate the full capabilities of the plugins configuration editor. 
+                <br />
+
+                To define the metadata you need to write a file named 
+                <i>checkstyle-metadata.xml</i>
+
+                which is to be placed into the package (or packages) your check classed lie in. In order to let the plugin find your metadata you need to declare the package within the custom 
+                <i>checkstyle_packages.xml</i>
+
+                file (see point 3). 
+                <br />
+
+                The metadata file must adhere to this dtd: 
+                <a href="http://eclipse-cs.sourceforge.net/dtds/checkstyle-metadata_1_0.dtd">http://eclipse-cs.sourceforge.net/dtds/checkstyle-metadata_1_0.dtd</a>
+
+                . 
+                <br />
+
+                So it would be a good idea to include this document type declaration to your metadata file: 
+                <i>
+<pre>
+    &lt;!DOCTYPE checkstyle-metadata PUBLIC
+        "-//eclipse-cs//DTD Check Metadata 1.0//EN"
+        "http://eclipse-cs.sourceforge.net/dtds/checkstyle-metadata_1_0.dtd"&gt;
+</pre>
+                </i>
+
+                This way you can validate your metadata file against the dtd using your preferred XML editor before packaging it into your custom .jar. The plugin will validate the metadata regardless if you defined the doctype declaration. Please see the dtd as a reference for the structure, meaning and features the metadata can possibly provide. 
+                <br />
+
+                Repeat point 1,2 and 4 to let the plugin pick up your metadata. If you were successful in creating and deploying the metadata your checks will show up like the build-in checks in the configuration editor.
+                <br />
+
+                For further examples for metadata files and pointers how to achieve on or another feature please see the metadata inside the 
+                <i>CheckstyleMetadata.jar</i>
+
+                inside the plugin directory.</p>
+            </li>
+        </ol>
+
 <script type="text/javascript">
 footer();
 </script>
-  </body>
+    </body>
 </html>
 
