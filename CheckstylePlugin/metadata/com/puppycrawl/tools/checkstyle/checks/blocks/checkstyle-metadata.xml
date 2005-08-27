@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE checkstyle-metadata PUBLIC
+"-//eclipse-cs//DTD Check Metadata 1.0//EN"
+"http://eclipse-cs.sourceforge.net/dtds/checkstyle-metadata_1_0.dtd">
+<checkstyle-metadata>
+  <rule-group-metadata name="Blocks" priority="800">
+   
+      <rule-metadata name="Avoid Nested Blocks" internal-name="AvoidNestedBlocks" parent="TreeWalker">
+         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.blocks.AvoidNestedBlocksCheck"/>
+         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.AvoidNestedBlocksCheck"/>
+         <description>Finds nested blocks, i.e. blocks that are used freely in the code. Rationale: Nested blocks are often leftovers from the debugging process, they confuse the reader.</description>
+         <property-metadata name="allowInSwitchCase" datatype="Boolean" default-value="false">
+            <description>Allow nested blocks in case statements</description>
+         </property-metadata>
+      </rule-metadata>
+      
+      <rule-metadata name="Empty Block" internal-name="EmptyBlock" parent="TreeWalker">
+         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.blocks.EmptyBlockCheck"/>
+         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.EmptyBlockCheck"/>
+         <description>Checks for empty blocks.</description>
+         <property-metadata name="option" datatype="SingleSelect" default-value="stmt">
+            <description>Policy on block contents. text = require that there is some text in the block.  stmt = require that there is a statement in the block.</description>
+            <enumeration>
+               <property-value-option value="text"/>
+               <property-value-option value="stmt"/>
+            </enumeration>
+         </property-metadata>
+         <property-metadata name="tokens" datatype="MultiCheck" default-value="LITERAL_CATCH,LITERAL_DO,LITERAL_ELSE,LITERAL_FINALLY,LITERAL_IF,LITERAL_FOR,LITERAL_TRY,LITERAL_WHILE,STATIC_INIT">
+            <description>Blocks to check.</description>
+            <enumeration>
+               <property-value-option value="LITERAL_CATCH"/>
+               <property-value-option value="LITERAL_DO"/>
+               <property-value-option value="LITERAL_ELSE"/>
+               <property-value-option value="LITERAL_FINALLY"/>
+               <property-value-option value="LITERAL_IF"/>
+               <property-value-option value="LITERAL_FOR"/>
+               <property-value-option value="LITERAL_TRY"/>
+               <property-value-option value="LITERAL_WHILE"/>
+               <property-value-option value="STATIC_INIT"/>
+            </enumeration>
+         </property-metadata>
+      </rule-metadata>
+      
+      <rule-metadata name="Left Curly Brace Placement" internal-name="LeftCurly" parent="TreeWalker">
+         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.blocks.LeftCurlyCheck"/>
+         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.LeftCurlyCheck"/>
+         <description>Checks the placement of left curly braces on types, methods and other the other blocks.</description>
+         <property-metadata name="option" datatype="SingleSelect" default-value="eol">
+            <description>Defines where left curly braces should be placed.  'eol' = End-of-Line, 'nl' = New-Line, and 'nlow' = New-Line-on-Wrap (if the brace will fit on the first line of the statement, taking into account maximum line length, then apply eol rule, otherwise apply the nl rule).</description>
+            <enumeration>
+               <property-value-option value="eol"/>
+               <property-value-option value="nl"/>
+               <property-value-option value="nlow"/>
+            </enumeration>
+         </property-metadata>
+         <property-metadata name="maxLineLength" datatype="Integer" default-value="80">
+            <description>Line length for applying wrap rule.</description>
+         </property-metadata>
+         <property-metadata name="tokens" datatype="MultiCheck" default-value="CLASS_DEF,CTOR_DEF,INTERFACE_DEF,LITERAL_CATCH,LITERAL_DO,LITERAL_ELSE,LITERAL_FINALLY,LITERAL_FOR,LITERAL_IF,LITERAL_SWITCH,LITERAL_SYNCHRONIZED,LITERAL_TRY,LITERAL_WHILE,METHOD_DEF">
+            <description>Blocks to check.</description>
+            <enumeration>
+               <property-value-option value="CLASS_DEF"/>
+               <property-value-option value="CTOR_DEF"/>
+               <property-value-option value="INTERFACE_DEF"/>
+               <property-value-option value="LITERAL_CATCH"/>
+               <property-value-option value="LITERAL_DO"/>
+               <property-value-option value="LITERAL_ELSE"/>
+               <property-value-option value="LITERAL_FINALLY"/>
+               <property-value-option value="LITERAL_FOR"/>
+               <property-value-option value="LITERAL_IF"/>
+               <property-value-option value="LITERAL_SWITCH"/>
+               <property-value-option value="LITERAL_SYNCHRONIZED"/>
+               <property-value-option value="LITERAL_TRY"/>
+               <property-value-option value="LITERAL_WHILE"/>
+               <property-value-option value="METHOD_DEF"/>
+            </enumeration>
+         </property-metadata>
+      </rule-metadata>
+      
+      <rule-metadata name="Need Braces" internal-name="NeedBraces" parent="TreeWalker">
+         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.blocks.NeedBracesCheck"/>
+         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.NeedBracesCheck"/>
+         <description>Checks for braces around code blocks.</description>
+         <property-metadata name="tokens" datatype="MultiCheck" default-value="LITERAL_DO,LITERAL_ELSE,LITERAL_IF,LITERAL_FOR,LITERAL_WHILE">
+            <description>Blocks to check.</description>
+            <enumeration>
+               <property-value-option value="LITERAL_DO"/>
+               <property-value-option value="LITERAL_ELSE"/>
+               <property-value-option value="LITERAL_IF"/>
+               <property-value-option value="LITERAL_FOR"/>
+               <property-value-option value="LITERAL_WHILE"/>
+            </enumeration>
+         </property-metadata>
+      </rule-metadata>
+      
+      <rule-metadata name="Right Curly Brace Placement" internal-name="RightCurly" parent="TreeWalker">
+         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.blocks.RightCurlyCheck"/>
+         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.RightCurlyCheck"/>
+         <description>Checks the placement of right curly braces ('}') for else, try, and catch tokens.</description>
+         <property-metadata name="option" datatype="SingleSelect" default-value="same">
+            <description>Defines where right curly braces should be placed.  same = brace must be on the same line as the next statement.  alone = brace must be alone on the line.</description>
+            <enumeration>
+               <property-value-option value="same"/>
+               <property-value-option value="alone"/>
+            </enumeration>
+         </property-metadata>
+         <property-metadata name="tokens" datatype="MultiCheck" default-value="LITERAL_CATCH,LITERAL_ELSE,LITERAL_TRY">
+            <description>Blocks to check.</description>
+            <enumeration>
+               <property-value-option value="LITERAL_CATCH"/>
+               <property-value-option value="LITERAL_ELSE"/>
+               <property-value-option value="LITERAL_TRY"/>
+            </enumeration>
+         </property-metadata>
+      </rule-metadata>
+   </rule-group-metadata>
+</checkstyle-metadata>
+

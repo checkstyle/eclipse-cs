@@ -29,17 +29,17 @@ import java.util.List;
  */
 public class RuleGroupMetadata
 {
-    //=================================================
+    // =================================================
     // Public static final variables.
-    //=================================================
+    // =================================================
 
-    //=================================================
+    // =================================================
     // Static class variables.
-    //=================================================
+    // =================================================
 
-    //=================================================
+    // =================================================
     // Instance member variables.
-    //=================================================
+    // =================================================
 
     /** The name of the group. */
     private String mGroupName;
@@ -47,22 +47,26 @@ public class RuleGroupMetadata
     /** Determines if the group is hidden. */
     private boolean mIsHidden;
 
+    /** The priority of the group. */
+    private int mPriority;
+
     /** The list of modules belonging to the group. */
     private List mRuleMetadata = new LinkedList();
 
-    //=================================================
+    // =================================================
     // Constructors & finalizer.
-    //=================================================
+    // =================================================
 
-    RuleGroupMetadata(String groupName, boolean hidden)
+    RuleGroupMetadata(String groupName, boolean hidden, int priority)
     {
         mGroupName = groupName;
         mIsHidden = hidden;
+        mPriority = priority;
     }
 
-    //=================================================
+    // =================================================
     // Methods.
-    //=================================================
+    // =================================================
 
     /**
      * Returns the group's name.
@@ -82,6 +86,16 @@ public class RuleGroupMetadata
     public boolean isHidden()
     {
         return mIsHidden;
+    }
+
+    /**
+     * Returns the priority of the group.
+     * 
+     * @return the priority
+     */
+    public int getPriority()
+    {
+        return mPriority;
     }
 
     /**

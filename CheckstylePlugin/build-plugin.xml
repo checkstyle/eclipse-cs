@@ -2,7 +2,7 @@
 
 	<!-- properties that likely change between releases -->
 	<property name="plugin.version" value="4.0.0" />
-	<property name="plugin.version.postfix" value="-beta5" />
+	<property name="plugin.version.postfix" value="-beta6" />
 	<property name="checkstyle.jar" value="checkstyle-all-4.0-beta5.jar" />
 	<property name="checkstyle-optional.jar" value="extension-libraries/checkstyle-optional-4.0-beta5.jar" />
 
@@ -12,6 +12,7 @@
 	<property name="dist.basedir" value="${basedir}/dist/" />
 	<property name="dist.basedir.tmpdir" value="${basedir}/dist/tmp" />
 	<property name="feature.project.dir" value="../CheckstyleFeature/" />
+	<available file="${feature.project.dir}" type="dir" property="include.feature" />
 
 	<property name="bin.dist.file" value="${plugin.name}${plugin.version.postfix}-bin.zip" />
 	<property name="src.dist.file" value="${plugin.name}${plugin.version.postfix}-src.zip" />
@@ -43,11 +44,11 @@
 
 		<!-- prefix paths within the binary dist file -->
 		<property name="plugins.path" value="plugins/${plugin.name}" />
-		<property name="features.path" value="features/${plugin.name}" />
 
 		<!-- jar the contents of the output dirs into the tmp directory -->
 		<jar destfile="${dist.basedir.tmpdir}/CheckstylePlugin.jar" basedir="./bin" index="true" />
 		<jar destfile="${dist.basedir.tmpdir}/NLS.jar" basedir="./binnls" index="true" />
+		<jar destfile="${dist.basedir.tmpdir}/CheckstyleMetadata.jar" basedir="./metadata" index="true" />
 
 		<!-- zip the contents into the binary dist file -->
 		<zip destfile="${dist.basedir}/${bin.dist.file}" update="false">
@@ -67,6 +68,22 @@
 			<zipfileset dir="." prefix="${plugins.path}" includes="icons/**" />
 			<zipfileset dir="." prefix="${plugins.path}" includes="license/**" />
 			<zipfileset dir="." prefix="${plugins.path}" includes="doc/**" />
+		</zip>
+
+		<!-- call this conditional target to include the feature -->
+		<antcall target="include.feature" />
+
+		<!-- remove the temp directory -->
+		<delete dir="${dist.basedir.tmpdir}" failonerror="false" quiet="true" />
+	</target>
+
+	<target name="include.feature" if="include.feature" description="Includes the feature into the binary distribution">
+
+		<!-- prefix paths within the binary dist file -->
+		<property name="features.path" value="features/${plugin.name}" />
+
+		<!-- zip the contents of the feature into the binary dist file -->
+		<zip destfile="${dist.basedir}/${bin.dist.file}" update="true">
 
 			<!-- include the feature -->
 			<zipfileset dir="${feature.project.dir}" prefix="${features.path}" includes="eclipse-cs-logo.jpg" />
@@ -74,9 +91,6 @@
 			<zipfileset dir="${feature.project.dir}" prefix="${features.path}" includes="feature.xml" />
 			<zipfileset dir="${feature.project.dir}" prefix="${features.path}" includes="license.html" />
 		</zip>
-
-		<!-- remove the temp directory -->
-		<delete dir="${dist.basedir.tmpdir}" failonerror="false" quiet="true" />
 	</target>
 
 	<!-- ==================================================== -->

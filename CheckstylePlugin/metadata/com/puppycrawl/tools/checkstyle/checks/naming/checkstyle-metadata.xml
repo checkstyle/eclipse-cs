@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE checkstyle-metadata PUBLIC
+"-//eclipse-cs//DTD Check Metadata 1.0//EN"
+"http://eclipse-cs.sourceforge.net/dtds/checkstyle-metadata_1_0.dtd">
+<checkstyle-metadata>
+      <rule-group-metadata name="Naming Conventions" priority="200">
+   
+      <rule-metadata name="Abstract Class Name" internal-name="AbstractClassName" parent="TreeWalker">
+         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.naming.AbstractClassNameCheck"/>
+         <description>Checks that abstract class names follow naming convention.</description>
+         <property-metadata name="format" datatype="Regex" default-value="^Abstract.*$|^.*Factory$">
+            <description>Regular expression defining required naming pattern.</description>
+         </property-metadata>
+      </rule-metadata>
+      
+      <rule-metadata name="Constant Names" internal-name="ConstantName" parent="TreeWalker">
+         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.naming.ConstantNameCheck"/>
+         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.ConstantNameCheck"/>
+         <description>Checks that constants (static final fields) variables follow naming convention.</description>
+         <property-metadata name="format" datatype="Regex" default-value="^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$">
+            <description>Regular expression defining required naming pattern.</description>
+         </property-metadata>
+      </rule-metadata>
+      
+      <rule-metadata name="Local Final Variable Names" internal-name="LocalFinalVariableName" parent="TreeWalker">
+         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.naming.LocalFinalVariableNameCheck"/>
+         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.LocalFinalVariableNameCheck"/>
+         <description>Checks that local final variables follow naming convention.</description>
+         <property-metadata name="format" datatype="Regex" default-value="^[a-z][a-zA-Z0-9]*$">
+            <description>Regular expression defining required naming pattern.</description>
+         </property-metadata>
+      </rule-metadata>
+      
+      <rule-metadata name="Local Variable Names" internal-name="LocalVariableName" parent="TreeWalker">
+         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.naming.LocalVariableNameCheck"/>
+         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.LocalVariableNameCheck"/>
+         <description>Checks that local variables follow naming convention.</description>
+         <property-metadata name="format" datatype="Regex" default-value="^[a-z][a-zA-Z0-9]*$">
+            <description>Regular expression defining required naming pattern.</description>
+         </property-metadata>
+         <property-metadata name="tokens" datatype="MultiCheck" default-value="VARIABLE_DEF,PARAMETER_DEF">
+            <description>Tokens to check.</description>
+            <enumeration>
+               <property-value-option value="VARIABLE_DEF"/>
+               <property-value-option value="PARAMETER_DEF"/>
+            </enumeration>
+         </property-metadata>
+      </rule-metadata>
+      
+      <rule-metadata name="Member Names" internal-name="MemberName" parent="TreeWalker">
+         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.naming.MemberNameCheck"/>
+         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.MemberNameCheck"/>
+         <description>Checks that member variables (non-static fields) follow naming convention.</description>
+         <property-metadata name="applyToPublic" datatype="Boolean" default-value="true">
+            <description>Controls whether to apply the check to public member.</description>
+         </property-metadata>
+         <property-metadata name="applyToProtected" datatype="Boolean" default-value="true">
+            <description>Controls whether to apply the check to protected member.</description>
+         </property-metadata>
+         <property-metadata name="applyToPackage" datatype="Boolean" default-value="true">
+            <description>Controls whether to apply the check to package-protected member.</description>
+         </property-metadata>
+         <property-metadata name="applyToPrivate" datatype="Boolean" default-value="true">
+            <description>Controls whether to apply the check to private member.</description>
+         </property-metadata>
+         <property-metadata name="format" datatype="Regex" default-value="^[a-z][a-zA-Z0-9]*$">
+            <description>Regular expression defining required naming pattern.</description>
+         </property-metadata>
+      </rule-metadata>
+      
+      <rule-metadata name="Method Names" internal-name="MethodName" parent="TreeWalker">
+         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.naming.MethodNameCheck"/>
+         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.MethodNameCheck"/>
+         <description>Checks that method names follow naming convention.</description>
+         <property-metadata name="format" datatype="Regex" default-value="^[a-z][a-zA-Z0-9]*$">
+            <description>Regular expression defining required naming pattern.</description>
+         </property-metadata>
+      </rule-metadata>
+      
+      <rule-metadata name="Package Names" internal-name="PackageName" parent="TreeWalker">
+         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.naming.PackageNameCheck"/>
+         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.PackageNameCheck"/>
+         <description>Checks that package names follow naming convention.</description>
+         <property-metadata name="format" datatype="Regex" default-value="^[a-z]+(\.[a-zA-Z_][a-zA-Z0-9_]*)*$">
+            <description>Regular expression defining required naming pattern.</description>
+         </property-metadata>
+      </rule-metadata>
+      
+      <rule-metadata name="Parameter Names" internal-name="ParameterName" parent="TreeWalker">
+         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.naming.ParameterNameCheck"/>
+         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.ParameterNameCheck"/>
+         <description>Checks that parameter names follow naming convention.</description>
+         <property-metadata name="format" datatype="Regex" default-value="^[a-z][a-zA-Z0-9]*$">
+            <description>Regular expression defining required naming pattern.</description>
+         </property-metadata>
+      </rule-metadata>
+      
+      <rule-metadata name="Static Variable Names" internal-name="StaticVariableName" parent="TreeWalker">
+         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.naming.StaticVariableNameCheck"/>
+         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.StaticVariableNameCheck"/>
+         <description>Checks that static variables (static, non-final fields) follow naming convention.</description>
+         <property-metadata name="format" datatype="Regex" default-value="^[a-z][a-zA-Z0-9]*$">
+            <description>Regular expression defining required naming pattern.</description>
+         </property-metadata>
+      </rule-metadata>
+      
+      <rule-metadata name="Type Names" internal-name="TypeName" parent="TreeWalker">
+         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.naming.TypeNameCheck"/>
+         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.TypeNameCheck"/>
+         <description>Checks that class names follow naming convention.</description>
+         <property-metadata name="format" datatype="Regex" default-value="^[A-Z][a-zA-Z0-9]*$">
+            <description>Regular expression defining required naming pattern.</description>
+         </property-metadata>
+         <property-metadata name="tokens" datatype="MultiCheck" default-value="CLASS_DEF,INTERFACE_DEF">
+            <description>Tokens to check.</description>
+            <enumeration>
+               <property-value-option value="CLASS_DEF"/>
+               <property-value-option value="INTERFACE_DEF"/>
+            </enumeration>
+         </property-metadata>
+      </rule-metadata>
+      
+   </rule-group-metadata>
+   
+</checkstyle-metadata>
+

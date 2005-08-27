@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE checkstyle-metadata PUBLIC
+"-//eclipse-cs//DTD Check Metadata 1.0//EN"
+"http://eclipse-cs.sourceforge.net/dtds/checkstyle-metadata_1_0.dtd">
+<checkstyle-metadata>
+    <rule-group-metadata name="Other" priority="1500">
+    </rule-group-metadata>
+
+<!--
+        Contains module metadata for internal elements that can not be removed or added to a check config.
+   -->
+    <rule-group-metadata name="Internal" priority="1600" hidden="true">
+        <rule-metadata name="Checker" internal-name="Checker" deletable="false">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.Checker" />
+
+            <description>Root module of every checkstyle configuration. Cannot be deleted.</description>
+
+            <property-metadata name="localeCountry" datatype="String">
+                <description>locale country for messages</description>
+            </property-metadata>
+
+            <property-metadata name="localeLanguage" datatype="String">
+                <description>locale language for messages</description>
+            </property-metadata>
+        </rule-metadata>
+
+        <rule-metadata name="TreeWalker" internal-name="TreeWalker" parent="Checker" deletable="false">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.TreeWalker" />
+
+            <description>FileSetCheck TreeWalker checks individual Java source files and defines properties that are applicable to checking such files.</description>
+
+            <property-metadata name="cacheFile" datatype="File">
+                <description>caches information about files that have checked ok; used to avoid repeated checks of the same files</description>
+            </property-metadata>
+
+            <property-metadata name="tabWidth" datatype="Integer" default-value="8">
+                <description>number of expanded spaces for a tab character ('\t'); used in messages and Checks that require a tab width, such as LineLength</description>
+            </property-metadata>
+
+            <property-metadata name="fileExtensions" datatype="StringArray" default-value="java">
+                <description>file type extension to identify java files. Setting this property is typically only required if your java source code is preprocessed before compilation and the original files do not have the extension .java</description>
+            </property-metadata>
+
+            <property-metadata name="charset" datatype="String">
+                <description>name of the file charset</description>
+            </property-metadata>
+        </rule-metadata>
+
+        <rule-metadata name="FileContentsHolder" internal-name="FileContentsHolder" parent="TreeWalker" hidden="true" deletable="false">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.FileContentsHolder" />
+        </rule-metadata>
+    </rule-group-metadata>
+</checkstyle-metadata>
+

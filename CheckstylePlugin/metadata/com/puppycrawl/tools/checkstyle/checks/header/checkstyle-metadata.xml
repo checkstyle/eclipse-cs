@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE checkstyle-metadata PUBLIC
+"-//eclipse-cs//DTD Check Metadata 1.0//EN"
+"http://eclipse-cs.sourceforge.net/dtds/checkstyle-metadata_1_0.dtd">
+<checkstyle-metadata>
+   <rule-group-metadata name="Headers" priority="300">
+
+      <rule-metadata name="Header" internal-name="Header" parent="TreeWalker">
+         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.header.HeaderCheck"/>
+         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.HeaderCheck"/>
+         <description>Checks that a source file begins with a specified header. Property headerFile specifies a file that contains the required header. Alternatively, the header specification can be set directly in the header property without the need for an external file.</description>
+         <property-metadata name="headerFile" datatype="File">
+            <description>name of the file containing the required header.</description>
+         </property-metadata>
+         <property-metadata name="header" datatype="String">
+            <description>the required header specified inline. Individual header lines must be separated by the string "\n" (even on platforms with a different line separator).</description>
+         </property-metadata>
+         <property-metadata name="ignoreLines" datatype="String">
+            <description>line numbers to ignore (comma separated)</description>
+         </property-metadata>
+      </rule-metadata>   
+
+      <rule-metadata name="Regular Expression Header" internal-name="RegexpHeader" parent="TreeWalker">
+         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.header.RegexpHeaderCheck"/>
+         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.RegexpHeaderCheck"/>
+         <description>Checks the header of a source file against a header that contains a regular expression for each line of the source header. 
+
+Rationale: In some projects checking against a fixed header is not sufficient, e.g. the header might require a copyright line where the year information is not static.</description>
+         <property-metadata name="headerFile" datatype="File">
+            <description>name of the file containing the required header.</description>
+         </property-metadata>
+         <property-metadata name="header" datatype="String">
+            <description>the required header specified inline. Individual header lines must be separated by the string "\n" (even on platforms with a different line separator), and regular expressions must not span multiple lines.</description>
+         </property-metadata>
+         <property-metadata name="multiLines" datatype="String">
+            <description>line numbers to repeat (zero or more times)</description>
+         </property-metadata>
+      </rule-metadata>   
+         
+   </rule-group-metadata>
+</checkstyle-metadata>
+

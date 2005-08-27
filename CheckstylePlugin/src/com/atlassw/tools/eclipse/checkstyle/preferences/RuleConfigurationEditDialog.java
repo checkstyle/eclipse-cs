@@ -294,7 +294,8 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
                 }
 
                 // restore the default value for the properties
-                for (int i = 0; i < mConfigPropertyWidgets.length; i++)
+                int size = mConfigPropertyWidgets != null ? mConfigPropertyWidgets.length : 0;
+                for (int i = 0; i < size; i++)
                 {
                     mConfigPropertyWidgets[i].restorePropertyDefault();
                 }

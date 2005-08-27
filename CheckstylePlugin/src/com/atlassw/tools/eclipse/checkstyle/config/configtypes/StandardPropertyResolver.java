@@ -20,11 +20,8 @@
 
 package com.atlassw.tools.eclipse.checkstyle.config.configtypes;
 
-import java.net.URL;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.ui.contexts.IContextActivation;
 
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;

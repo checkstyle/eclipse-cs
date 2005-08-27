@@ -28,7 +28,7 @@ import java.util.List;
  * instance this is true for module metadata that need all token types as
  * options.
  * 
- * @author Lars
+ * @author Lars Ködderitzsch
  */
 public interface IOptionProvider
 {

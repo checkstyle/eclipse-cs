@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE checkstyle-metadata PUBLIC
+"-//eclipse-cs//DTD Check Metadata 1.0//EN"
+"http://eclipse-cs.sourceforge.net/dtds/checkstyle-metadata_1_0.dtd">
+<checkstyle-metadata>
+    <rule-group-metadata name="Metrics" priority="1200">
+   
+      <rule-metadata name="Boolean Expression Complexity" internal-name="BooleanExpressionComplexity" parent="TreeWalker">
+         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.metrics.BooleanExpressionComplexityCheck"/>
+         <description>Restrict the number of number of &amp;&amp;, || and ^ in an expression. 
+Rationale: Too many conditions leads to code that is difficult to read and hence debug and maintain. </description>
+         <property-metadata name="max" datatype="Integer" default-value="3">
+            <description>the maximum allowed number of boolean operations in one experession.</description>
+         </property-metadata>
+      </rule-metadata>
+      
+      <rule-metadata name="Class Data Abstraction Coupling" internal-name="ClassDataAbstractionCoupling" parent="TreeWalker">
+         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.metrics.ClassDataAbstractionCouplingCheck"/>
+         <description>This metric measures the number of instantiations of other classes within the given class. This type of coupling is not caused by inheritance or the object oriented paradigm. Generally speaking, any abstract data type with other abstract data types as members has data abstraction coupling; therefore, if a class has a local variable that is an instantiation (object) of another class, there is data abstraction coupling. The higher the DAC, the more complex the data structure (classes) of the system. </description>
+         <property-metadata name="max" datatype="Integer" default-value="7">
+            <description>the maximum threshold allowed</description>
+         </property-metadata>
+      </rule-metadata>
+      
+      <rule-metadata name="Class Fan Out Complexity" internal-name="ClassFanOutComplexity" parent="TreeWalker">
+         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.metrics.ClassFanOutComplexityCheck"/>
+         <description>The number of other classes a given class relies on. Also the square of this has been shown to indicate the amount of maintenence required in functional programs (on a file basis) at least. </description>
+         <property-metadata name="max" datatype="Integer" default-value="20">
+            <description>the maximum threshold allowed</description>
+         </property-metadata>
+      </rule-metadata>
+      
+      <rule-metadata name="Cyclomatic Complexity" internal-name="CyclomaticComplexity" parent="TreeWalker">
+         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.metrics.CyclomaticComplexityCheck"/>
+         <description>Checks cyclomatic complexity against a specified limit. The complexity is measured by the number of if, while, do, for, ?:, catch, switch, case statements, and operators &amp;&amp; and || (plus one) in the body of a constructor, method, static initializer, or instance initializer. It is a measure of the minimum number of possible paths through the source and therefore the number of required tests. Generally 1-4 is considered good, 5-7 ok, 8-10 consider re-factoring, and 11+ re-factor now! </description>
+         <property-metadata name="max" datatype="Integer" default-value="10">
+            <description>the maximum threshold allowed</description>
+         </property-metadata>
+      </rule-metadata>
+      
+      <rule-metadata name="Non Commenting Source Statements" internal-name="JavaNCSS" parent="TreeWalker">
+         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.metrics.JavaNCSSCheck"/>
+         <description> Determines complexity of methods, classes and files by counting the Non Commenting Source Statements (NCSS). This check adheres to the  specification for the JavaNCSS-Tool written by Chr. Clemens Lee which sadly seems to have been pulled off the web.
+Rougly said the NCSS metric is calculated by counting the source lines which are not comments, (nearly) equivalent to counting the semicolons and opening curly braces.
+The NCSS for a class is summarized from the NCSS of all its methods, the NCSS of its nested classes and the number of member variable declarations.
+The NCSS for a file is summarized from the ncss of all its top level classes, the number of imports and the package declaration.
+Rationale: Too large methods and classes are hard to read and costly to maintain. A large NCSS number often means that a method or class has too many responsabilities and/or functionalities which should be decomposed into smaller units. </description>
+         <property-metadata name="methodMaximum" datatype="Integer" default-value="50">
+            <description>the maximum allowed number of non commenting lines in a method.</description>
+         </property-metadata>
+         <property-metadata name="classMaximum" datatype="Integer" default-value="1500">
+            <description>the maximum allowed number of non commenting lines in a class.</description>
+         </property-metadata>
+         <property-metadata name="fileMaximum" datatype="Integer" default-value="2000">
+            <description>the maximum allowed number of non commenting lines in a file.</description>
+         </property-metadata>
+      </rule-metadata>
+      
+      <rule-metadata name="NPath Complexity" internal-name="NPathComplexity" parent="TreeWalker">
+         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.metrics.NPathComplexityCheck"/>
+         <description>The NPATH metric computes the number of possible execution paths through a function. It takes into account the nesting of conditional statements and multi-part boolean expressions (e.g., A &amp;&amp; B, C || D, etc.). 
+
+Rationale: Nejmeh says that his group had an informal NPATH limit of 200 on individual routines; functions that exceeded this value were candidates for further decomposition - or at least a closer look
+mp;&amp; and || (plus one) in the body of a constructor, method, static initializer, or instance initializer. It is a measure of the minimum number of possible paths through the source and therefore the number of required tests. Generally 1-4 is considered good, 5-7 ok, 8-10 consider re-factoring, and 11+ re-factor now! </description>
+         <property-metadata name="max" datatype="Integer" default-value="200">
+            <description>the maximum threshold allowed</description>
+         </property-metadata>
+      </rule-metadata>
+      
+   </rule-group-metadata>
+</checkstyle-metadata>
+

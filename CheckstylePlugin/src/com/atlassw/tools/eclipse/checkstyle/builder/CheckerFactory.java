@@ -21,6 +21,7 @@
 package com.atlassw.tools.eclipse.checkstyle.builder;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
@@ -220,6 +221,40 @@ public final class CheckerFactory
             {
                 CheckstyleLog.log(e, "Could not load extension-libaries/checkstyle_packages.xml");
             }
+        }
+        else
+        {
+            // ensure there is a modulefactory in place for the following hack
+            ModuleFactory moduleFactory = PackageNamesLoader.loadModuleFactory(Checker.class
+                    .getClassLoader());
+            checker.setModuleFactory(moduleFactory);
+        }
+
+        //
+        // this is a wild hack to bend the internal classloader reference of the
+        // PackageObjectFactory to our classloader that is able to load classes
+        // from the extension-libraries folder
+        //
+        try
+        {
+
+            // get the ModuleFactory from the checker
+            Field moduleFactoryField = Checker.class.getDeclaredField("mModuleFactory");
+            moduleFactoryField.setAccessible(true);
+
+            ModuleFactory moduleFactory = (ModuleFactory) moduleFactoryField.get(checker);
+
+            Class packageObjectFactoryClass = Class
+                    .forName("com.puppycrawl.tools.checkstyle.PackageObjectFactory");
+
+            Field classLoaderField = packageObjectFactoryClass.getDeclaredField("mLoader");
+            classLoaderField.setAccessible(true);
+            classLoaderField.set(moduleFactory, Thread.currentThread().getContextClassLoader());
+
+        }
+        catch (Exception e)
+        {
+            CheckstyleLog.log(e, "The classloader hack doesn't work anymore");
         }
 
         // set the eclipse platform locale

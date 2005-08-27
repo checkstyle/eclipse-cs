@@ -59,6 +59,7 @@ import com.atlassw.tools.eclipse.checkstyle.config.meta.MetadataFactory;
 import com.atlassw.tools.eclipse.checkstyle.config.meta.RuleMetadata;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
+import com.atlassw.tools.eclipse.checkstyle.util.CustomLibrariesClassLoader;
 import com.puppycrawl.tools.checkstyle.Checker;
 import com.puppycrawl.tools.checkstyle.api.AuditEvent;
 import com.puppycrawl.tools.checkstyle.api.AuditListener;
@@ -149,8 +150,17 @@ public class Auditor
         Checker checker = null;
         AuditListener listener = null;
         Filter runtimeExceptionFilter = null;
+
+        // store the current context class loader
+        ClassLoader contextClassloader = Thread.currentThread().getContextClassLoader();
+
         try
         {
+
+            // get the classloader that is able to load classes from custom jars
+            // within the extension-libraries dir
+            ClassLoader customClassLoader = CustomLibrariesClassLoader.get();
+            Thread.currentThread().setContextClassLoader(customClassLoader);
 
             File[] filesToAudit = getFileArray();
 
@@ -210,6 +220,9 @@ public class Auditor
 
             // reset the context
             mCheckConfiguration.setContext(null);
+
+            // restore the original classloader
+            Thread.currentThread().setContextClassLoader(contextClassloader);
         }
     }
 

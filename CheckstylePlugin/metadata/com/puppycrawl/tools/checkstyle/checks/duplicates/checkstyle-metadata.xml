@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE checkstyle-metadata PUBLIC
+"-//eclipse-cs//DTD Check Metadata 1.0//EN"
+"http://eclipse-cs.sourceforge.net/dtds/checkstyle-metadata_1_0.dtd">
+<checkstyle-metadata>
+  <rule-group-metadata name="Duplicates" priority="1100">
+   
+      <rule-metadata name="Strict Duplicate Code" internal-name="StrictDuplicateCode" parent="Checker">
+         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.duplicates.StrictDuplicateCodeCheck"/>
+         <description>There are many trade-offs when writing a duplicate code detection tool. Some of the conflicting goals are: 
+Fast 
+Low memory usage 
+Avoid false alarms 
+Support multiple/arbitrary languages 
+Support Fuzzy matches (comments, whitespace, linebreaks, variable renaming, etc.) 
+         </description>
+         <property-metadata name="min" datatype="Integer" default-value="12">
+            <description>how many lines must be equal to be considered a duplicate</description>
+         </property-metadata>
+         <property-metadata name="charset" datatype="String">
+            <description>name of the file charset</description>
+         </property-metadata>
+      </rule-metadata>  
+       
+   </rule-group-metadata>
+</checkstyle-metadata>
+

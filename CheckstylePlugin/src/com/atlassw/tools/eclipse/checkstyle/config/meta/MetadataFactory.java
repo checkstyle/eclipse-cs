@@ -23,23 +23,41 @@ package com.atlassw.tools.eclipse.checkstyle.config.meta;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Stack;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.xml.sax.ext.EntityResolver2;
 import org.xml.sax.helpers.DefaultHandler;
 
+import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
 import com.atlassw.tools.eclipse.checkstyle.config.Module;
 import com.atlassw.tools.eclipse.checkstyle.config.XMLTags;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
+import com.atlassw.tools.eclipse.checkstyle.util.CustomLibrariesClassLoader;
 import com.atlassw.tools.eclipse.checkstyle.util.XMLUtil;
+import com.puppycrawl.tools.checkstyle.Checker;
 import com.puppycrawl.tools.checkstyle.api.AbstractFileSetCheck;
+import com.puppycrawl.tools.checkstyle.api.AbstractLoader;
 import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
 
 /**
@@ -56,22 +74,28 @@ public final class MetadataFactory
     // =================================================
 
     /** Metadata for the rule groups. */
-    private static List sRuleGroupMetadata = new LinkedList();
+    private static Map sRuleGroupMetadata;
 
     /** Metadata for all rules, keyed by internal rule name. */
-    private static HashMap sRuleMetadata = new HashMap();
+    private static Map sRuleMetadata;
 
     /**
      * Mapping for all rules, keyed by alternative rule names (full qualified,
      * old full qualified).
      */
-    private static HashMap sAlternativeNamesMap = new HashMap();
+    private static Map sAlternativeNamesMap;
 
     /** the default severity level. */
-    private static SeverityLevel sDefaultSeverity;
+    private static SeverityLevel sDefaultSeverity = SeverityLevel.WARNING;
 
     /** Name of the rules metadata XML file. */
-    private static final String METADATA_FILENAME = "/CheckstyleMetadata.xml"; //$NON-NLS-1$
+    private static final String METADATA_FILENAME = "checkstyle-metadata.xml"; //$NON-NLS-1$
+
+    /**
+     * Name of default checkstyle package names resource file. The file must be
+     * in the classpath.
+     */
+    private static final String DEFAULT_PACKAGES = "/com/puppycrawl/tools/checkstyle/checkstyle_packages.xml";
 
     // =================================================
     // Instance member variables.
@@ -92,14 +116,7 @@ public final class MetadataFactory
      */
     static
     {
-        try
-        {
-            doInitialization();
-        }
-        catch (CheckstylePluginException e)
-        {
-            CheckstyleLog.log(e);
-        }
+        refresh();
     }
 
     // =================================================
@@ -113,7 +130,20 @@ public final class MetadataFactory
      */
     public static List getRuleGroupMetadata()
     {
-        return sRuleGroupMetadata;
+        List groups = new ArrayList(sRuleGroupMetadata.values());
+        Collections.sort(groups, new Comparator()
+        {
+
+            public int compare(Object arg0, Object arg1)
+            {
+                int prio1 = ((RuleGroupMetadata) arg0).getPriority();
+                int prio2 = ((RuleGroupMetadata) arg1).getPriority();
+
+                return (prio1 < prio2 ? -1 : (prio1 == prio2 ? 0 : 1));
+            }
+        });
+
+        return groups;
     }
 
     /**
@@ -138,6 +168,17 @@ public final class MetadataFactory
         }
 
         return metadata;
+    }
+
+    /**
+     * Returns the metadata for a rule group.
+     * 
+     * @param name the group name
+     * @return the RuleGroupMetadata object or <code>null</code>
+     */
+    public static RuleGroupMetadata getRuleGroupMetadata(String name)
+    {
+        return (RuleGroupMetadata) sRuleGroupMetadata.get(name);
     }
 
     /**
@@ -199,22 +240,109 @@ public final class MetadataFactory
     }
 
     /**
+     * Refreshes the metadata.
+     */
+    public static synchronized void refresh()
+    {
+        sRuleGroupMetadata = new TreeMap();
+        sRuleMetadata = new HashMap();
+        sAlternativeNamesMap = new HashMap();
+        try
+        {
+            doInitialization();
+        }
+        catch (CheckstylePluginException e)
+        {
+            CheckstyleLog.log(e);
+        }
+    }
+
+    /**
      * Initializes the meta data from the xml file.
      * 
      * @throws CheckstylePluginException error loading the meta data file
      */
     private static void doInitialization() throws CheckstylePluginException
     {
-        InputStream metadataStream = null;
+        ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+
         try
         {
-            //
-            // Get the metadata file's input stream.
-            //
-            metadataStream = new BufferedInputStream(MetadataFactory.class
-                    .getResourceAsStream(METADATA_FILENAME));
 
-            XMLUtil.parseWithSAX(metadataStream, new MetaDataHandler());
+            // get the classloader containing the extension libraries
+            ClassLoader customsLoader = CustomLibrariesClassLoader.get();
+            Thread.currentThread().setContextClassLoader(customsLoader);
+
+            MetaDataHandler metadataHandler = new MetaDataHandler();
+
+            Collection potentialMetadataFiles = getAllPotentialMetadataFiles();
+            Iterator it = potentialMetadataFiles.iterator();
+            while (it.hasNext())
+            {
+
+                String metadataFile = (String) it.next();
+                InputStream metadataStream = null;
+                try
+                {
+                    metadataStream = customsLoader.getResourceAsStream(metadataFile);
+                    if (metadataStream != null)
+                    {
+                        XMLUtil.parseWithSAX(metadataStream, metadataHandler);
+                    }
+                }
+                catch (SAXException e)
+                {
+                    CheckstyleLog.log(e, "Could not read metadata " + metadataFile);
+                }
+                catch (ParserConfigurationException e)
+                {
+                    CheckstyleLog.log(e, "Could not read metadata " + metadataFile);
+                }
+                catch (IOException e)
+                {
+                    CheckstyleLog.log(e, "Could not read metadata " + metadataFile);
+                }
+                finally
+                {
+                    try
+                    {
+                        metadataStream.close();
+                    }
+                    catch (Exception e)
+                    {
+                        // We tried to be nice and close the stream.
+                    }
+                }
+            }
+        }
+        finally
+        {
+            // restore the original classloader
+            Thread.currentThread().setContextClassLoader(contextClassLoader);
+        }
+    }
+
+    /**
+     * Helper method to get all potential metadata files using the
+     * checkstyle_packages.xml as base where to look. It is not guaranteed that
+     * the files returned acutally exist.
+     * 
+     * @return the collection of potential metadata files.
+     * @throws CheckstylePluginException an unexpected exception ocurred
+     */
+    private static Collection getAllPotentialMetadataFiles() throws CheckstylePluginException
+    {
+
+        Collection potentialMetadataFiles = null;
+
+        InputStream packageFileStream = null;
+
+        try
+        {
+            PackageNamesHandler packagesHandler = new PackageNamesHandler();
+            XMLUtil.parseWithSAX(getPackageNamesFileStream(), packagesHandler);
+
+            potentialMetadataFiles = packagesHandler.getPotentialMetadataFiles();
         }
         catch (SAXException se)
         {
@@ -233,13 +361,40 @@ public final class MetadataFactory
         {
             try
             {
-                metadataStream.close();
+                packageFileStream.close();
             }
             catch (Exception e)
             {
                 // We tried to be nice and close the stream.
             }
         }
+        return potentialMetadataFiles;
+    }
+
+    /**
+     * Gets a stream to the checkstyle_packages.xml file. Either the custom
+     * checkstyle_package.xml inside the extension-libraries folder is returned
+     * if specified or the default packages file from checkstyle is loaded.
+     * 
+     * @return the input stream containing the checkstyle_packages.xml
+     * @throws IOException error reading the packages file
+     */
+    private static InputStream getPackageNamesFileStream() throws IOException
+    {
+        // load the package name file
+        URL packagesFile = CheckstylePlugin.getDefault().find(
+                new Path(CheckstylePlugin.PACKAGE_NAMES_FILE));
+
+        if (packagesFile != null)
+        {
+            packagesFile = Platform.resolve(packagesFile);
+        }
+        else
+        {
+            packagesFile = Checker.class.getResource(DEFAULT_PACKAGES);
+        }
+
+        return new BufferedInputStream(packagesFile.openStream());
     }
 
     /**
@@ -247,8 +402,12 @@ public final class MetadataFactory
      * 
      * @author Lars Ködderitzsch
      */
-    private static class MetaDataHandler extends DefaultHandler
+    private static class MetaDataHandler extends DefaultHandler implements EntityResolver2
     {
+
+        private final static String DTD_PUBLIC_ID = "-//eclipse-cs//DTD Check Metadata 1.0//EN";
+
+        private final static String DTD_RESOURCE_NAME = "/com/puppycrawl/tools/checkstyle/checkstyle-metadata.dtd";
 
         /** the current rule group. */
         private RuleGroupMetadata mCurrentGroup;
@@ -266,6 +425,53 @@ public final class MetadataFactory
         private StringBuffer mDescription;
 
         /**
+         * @see org.xml.sax.ext.EntityResolver2#getExternalSubset(java.lang.String,
+         *      java.lang.String)
+         */
+        public InputSource getExternalSubset(String name, String baseURI) throws SAXException,
+            IOException
+        {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        /**
+         * @see org.xml.sax.ext.EntityResolver2#resolveEntity(java.lang.String,
+         *      java.lang.String, java.lang.String, java.lang.String)
+         */
+        public InputSource resolveEntity(String name, String publicId, String baseURI,
+                String systemId) throws SAXException, IOException
+        {
+            if (DTD_PUBLIC_ID.equals(publicId))
+            {
+
+                final InputStream dtdIS = getClass().getClassLoader().getResourceAsStream(
+                        DTD_RESOURCE_NAME);
+                if (dtdIS == null)
+                {
+                    throw new SAXException("Unable to load internal dtd " + DTD_RESOURCE_NAME);
+                }
+                return new InputSource(dtdIS);
+            }
+            // This is a hack to workaround problem with SAX
+            // DefaultHeader.resolveEntity():
+            // sometimes it throws SAX- and IO- exceptions
+            // sometime SAX only :(
+            try
+            {
+                if (false)
+                {
+                    throw new IOException("");
+                }
+                return super.resolveEntity(publicId, systemId);
+            }
+            catch (IOException e)
+            {
+                throw new SAXException("" + e, e);
+            }
+        }
+
+        /**
          * @see org.xml.sax.helpers.DefaultHandler#startElement(java.lang.String,
          *      java.lang.String, java.lang.String, org.xml.sax.Attributes)
          */
@@ -275,21 +481,26 @@ public final class MetadataFactory
             try
             {
 
-                if (XMLTags.CHECKSTYLE_METADATA_TAG.equals(qName))
-                {
-                    sDefaultSeverity = SeverityLevel.getInstance(attributes
-                            .getValue(XMLTags.DEFAULT_SEVERITY_TAG));
-                }
-                else if (XMLTags.RULE_GROUP_METADATA_TAG.equals(qName))
+                if (XMLTags.RULE_GROUP_METADATA_TAG.equals(qName))
                 {
 
                     String groupName = attributes.getValue(XMLTags.NAME_TAG).trim();
                     boolean hidden = Boolean.valueOf(attributes.getValue(XMLTags.HIDDEN_TAG))
                             .booleanValue();
+                    int priority = 0;
+                    try
+                    {
+                        priority = Integer.parseInt(attributes.getValue(XMLTags.PRIORITY_TAG));
+                    }
+                    catch (Exception e)
+                    {
+                        CheckstyleLog.log(e);
+                        priority = Integer.MAX_VALUE;
+                    }
 
                     // Create the groups
-                    mCurrentGroup = new RuleGroupMetadata(groupName, hidden);
-                    sRuleGroupMetadata.add(mCurrentGroup);
+                    mCurrentGroup = new RuleGroupMetadata(groupName, hidden, priority);
+                    sRuleGroupMetadata.put(groupName, mCurrentGroup);
                 }
                 else if (XMLTags.RULE_METADATA_TAG.equals(qName))
                 {
@@ -424,6 +635,107 @@ public final class MetadataFactory
             {
                 mDescription.append(ch, start, length);
             }
+        }
+
+    }
+
+    /**
+     * SAX-Handler able to read the checkstyle_packages.xml file and to build
+     * all potential metadata locations.
+     * 
+     * @author Lars Ködderitzsch
+     */
+    private static class PackageNamesHandler extends AbstractLoader
+    {
+
+        //
+        // attributes
+        //
+
+        /** the public ID for the configuration dtd. */
+        private static final String DTD_PUBLIC_ID = "-//Puppy Crawl//DTD Package Names 1.0//EN";
+
+        /** the resource for the configuration dtd. */
+        private static final String DTD_RESOURCE_NAME = "com/puppycrawl/tools/checkstyle/packages_1_0.dtd";
+
+        /** the package stack. */
+        private Stack mPackageStack = new Stack();
+
+        /** the list of potential locations for checkstyle-metadata files. */
+        private Collection mMetadataLocations = new TreeSet();
+
+        /**
+         * Creates the package names handler.
+         * 
+         * @throws ParserConfigurationException no one will ever know
+         * @throws SAXException no one will ever know
+         */
+        public PackageNamesHandler() throws SAXException, ParserConfigurationException
+        {
+            super(DTD_PUBLIC_ID, DTD_RESOURCE_NAME);
+        }
+
+        /**
+         * Returns the collection of potiential metadata file locations based on
+         * the checkstyle_packages.xml.
+         * 
+         * @return the potential metatdata locations
+         */
+        public Collection getPotentialMetadataFiles()
+        {
+            return mMetadataLocations;
+        }
+
+        /**
+         * @see org.xml.sax.ContentHandler#startElement(java.lang.String,
+         *      java.lang.String, java.lang.String, org.xml.sax.Attributes)
+         */
+        public void startElement(String uri, String localName, String qName, Attributes attributes)
+            throws SAXException
+        {
+
+            if (XMLTags.PACKAGE_TAG.equals(qName))
+            {
+                String packageName = attributes.getValue(XMLTags.NAME_TAG);
+                mPackageStack.push(packageName);
+
+                String fullPackage = getPackageName();
+                String metaFileLocation = "/" + fullPackage.replace('.', '/') + METADATA_FILENAME;
+                mMetadataLocations.add(metaFileLocation);
+            }
+        }
+
+        /**
+         * @see org.xml.sax.ContentHandler#endElement(java.lang.String,
+         *      java.lang.String, java.lang.String)
+         */
+        public void endElement(String uri, String localName, String qName) throws SAXException
+        {
+            if (XMLTags.PACKAGE_TAG.equals(qName))
+            {
+                mPackageStack.pop();
+            }
+        }
+
+        /**
+         * Creates a full package name from the package names on the stack.
+         * 
+         * @return the full name of the current package.
+         */
+        private String getPackageName()
+        {
+            final StringBuffer buf = new StringBuffer();
+            final Iterator it = mPackageStack.iterator();
+            while (it.hasNext())
+            {
+                final String subPackage = (String) it.next();
+                buf.append(subPackage);
+                if (!subPackage.endsWith("."))
+                {
+                    buf.append(".");
+                }
+            }
+            return buf.toString();
         }
     }
 }

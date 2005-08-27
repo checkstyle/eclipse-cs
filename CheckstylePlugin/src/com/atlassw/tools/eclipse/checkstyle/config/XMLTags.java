@@ -89,6 +89,9 @@ public class XMLTags
     /** tag for a module group. */
     public static final String RULE_GROUP_METADATA_TAG = "rule-group-metadata"; //$NON-NLS-1$
 
+    /** tag for the priority of a rule group. */
+    public static final String PRIORITY_TAG = "priority";
+
     /** tag for a module metadata. */
     public static final String RULE_METADATA_TAG = "rule-metadata"; //$NON-NLS-1$
 
@@ -181,4 +184,12 @@ public class XMLTags
 
     /** rule classname tag. */
     public static final String CLASSNAME_TAG = "classname"; //$NON-NLS-1$
+
+    //
+    // tags for the checkstyle_packages.xml file
+    //
+
+    /** package tag. */
+    public static final String PACKAGE_TAG = "package";
+
 }

@@ -94,9 +94,11 @@ import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.ConfigurationTypes;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.IConfigurationType;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.InternalCheckConfiguration;
+import com.atlassw.tools.eclipse.checkstyle.config.meta.MetadataFactory;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfigurationFactory;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
+import com.atlassw.tools.eclipse.checkstyle.util.CustomLibrariesClassLoader;
 
 /**
  * This class represents a preference page that is contributed to the
@@ -777,6 +779,8 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
             else if (mPurgeCacheButton == e.widget)
             {
                 CheckerFactory.cleanup();
+                MetadataFactory.refresh();
+                CustomLibrariesClassLoader.invalidate();
                 mRebuildAll = true;
             }
         }
