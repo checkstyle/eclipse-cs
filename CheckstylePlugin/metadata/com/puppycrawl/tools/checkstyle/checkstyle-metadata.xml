@@ -10,7 +10,7 @@
         Contains module metadata for internal elements that can not be removed or added to a check config.
    -->
     <rule-group-metadata name="Internal" priority="1600" hidden="true">
-        <rule-metadata name="Checker" internal-name="Checker" deletable="false">
+        <rule-metadata name="Checker" internal-name="Checker" deletable="false" parent="Root">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.Checker" />
 
             <description>Root module of every checkstyle configuration. Cannot be deleted.</description>
@@ -37,7 +37,7 @@
                 <description>number of expanded spaces for a tab character ('\t'); used in messages and Checks that require a tab width, such as LineLength</description>
             </property-metadata>
 
-            <property-metadata name="fileExtensions" datatype="StringArray" default-value="java">
+            <property-metadata name="fileExtensions" datatype="String" default-value="java">
                 <description>file type extension to identify java files. Setting this property is typically only required if your java source code is preprocessed before compilation and the original files do not have the extension .java</description>
             </property-metadata>
 

@@ -30,7 +30,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
@@ -41,9 +40,11 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.osgi.util.NLS;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 import org.xml.sax.ext.EntityResolver2;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -287,8 +288,14 @@ public final class MetadataFactory
                     metadataStream = customsLoader.getResourceAsStream(metadataFile);
                     if (metadataStream != null)
                     {
-                        XMLUtil.parseWithSAX(metadataStream, metadataHandler);
+                        XMLUtil.parseWithSAX(metadataStream, metadataHandler, true);
                     }
+                }
+                catch (SAXParseException e)
+                {
+                    CheckstyleLog.log(e, NLS.bind("Could not parse metadata file {0} at {1}:{2}",
+                            new Object[] { metadataFile, new Integer(e.getLineNumber()),
+                                new Integer(e.getColumnNumber()) }));
                 }
                 catch (SAXException e)
                 {
@@ -340,7 +347,7 @@ public final class MetadataFactory
         try
         {
             PackageNamesHandler packagesHandler = new PackageNamesHandler();
-            XMLUtil.parseWithSAX(getPackageNamesFileStream(), packagesHandler);
+            XMLUtil.parseWithSAX(getPackageNamesFileStream(), packagesHandler, true);
 
             potentialMetadataFiles = packagesHandler.getPotentialMetadataFiles();
         }
@@ -405,9 +412,9 @@ public final class MetadataFactory
     private static class MetaDataHandler extends DefaultHandler implements EntityResolver2
     {
 
-        private final static String DTD_PUBLIC_ID = "-//eclipse-cs//DTD Check Metadata 1.0//EN";
+        private static final String DTD_PUBLIC_ID = "-//eclipse-cs//DTD Check Metadata 1.0//EN";
 
-        private final static String DTD_RESOURCE_NAME = "/com/puppycrawl/tools/checkstyle/checkstyle-metadata.dtd";
+        private static final String DTD_RESOURCE_NAME = "/com/puppycrawl/tools/checkstyle/checkstyle-metadata_1_0.dtd";
 
         /** the current rule group. */
         private RuleGroupMetadata mCurrentGroup;
@@ -431,8 +438,9 @@ public final class MetadataFactory
         public InputSource getExternalSubset(String name, String baseURI) throws SAXException,
             IOException
         {
-            // TODO Auto-generated method stub
-            return null;
+
+            InputStream dtdIS = getClass().getClassLoader().getResourceAsStream(DTD_RESOURCE_NAME);
+            return new InputSource(dtdIS);
         }
 
         /**
@@ -637,6 +645,13 @@ public final class MetadataFactory
             }
         }
 
+        /**
+         * @see org.xml.sax.ErrorHandler#error(org.xml.sax.SAXParseException)
+         */
+        public void error(SAXParseException e) throws SAXException
+        {
+            throw e;
+        }
     }
 
     /**

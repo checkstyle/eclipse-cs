@@ -32,7 +32,7 @@
 	Used to to provide a textual description for the element.
 	The content might be translatable.
 	-->
-<!ELEMENT description (CDATA)>
+<!ELEMENT description (#PCDATA)>
 
 
 <!-- 
@@ -60,7 +60,7 @@
 <!ATTLIST rule-metadata
 	name			CDATA					#REQUIRED
 	internal-name	NMTOKEN					#REQUIRED
-	parent			(Checker|TreeWalker)	#REQUIRED
+	parent			(Root|Checker|TreeWalker)	#REQUIRED
 	hasSeverity		(true|false)			"true"
 	hidden			(true|false)			"false"
 	deletable		(true|false)			"true">
@@ -100,10 +100,10 @@
 	this property.
 	-->
 <!ELEMENT property-metadata	(description?,enumeration?)>
-<!ATTLIST property-metatdata
+<!ATTLIST property-metadata
 	name			NMTOKEN					#REQUIRED
 	datatype		(Boolean|Integer|String|Regex|SingleSelect|MultiCheck|File|Hidden)	#REQUIRED
-	default			CDATA					#IMPLIED>
+	default-value	CDATA					#IMPLIED>
 
 
 <!--

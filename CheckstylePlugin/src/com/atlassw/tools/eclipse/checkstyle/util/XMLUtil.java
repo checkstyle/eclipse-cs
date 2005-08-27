@@ -56,6 +56,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
+import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -64,13 +65,13 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public final class XMLUtil
 {
-    //=================================================
+    // =================================================
     // Public static final variables.
-    //=================================================
+    // =================================================
 
-    //=================================================
+    // =================================================
     // Static class variables.
-    //=================================================
+    // =================================================
 
     private static Stack sDocBuilderCache = new Stack();
 
@@ -82,13 +83,13 @@ public final class XMLUtil
 
     private static final int MAX_DOC_BUILDER_CACHE = 10;
 
-    //=================================================
+    // =================================================
     // Instance member variables.
-    //=================================================
+    // =================================================
 
-    //=================================================
+    // =================================================
     // Constructors & finalizer.
-    //=================================================
+    // =================================================
 
     /**
      * Private constructor to prevent instances.
@@ -96,9 +97,9 @@ public final class XMLUtil
     private XMLUtil()
     {}
 
-    //=================================================
+    // =================================================
     // Methods.
-    //=================================================
+    // =================================================
 
     /**
      * Get a named child node. If there is more then one child node with the
@@ -271,7 +272,7 @@ public final class XMLUtil
         IOException, SAXException
     {
         //
-        //  Parse the document.
+        // Parse the document.
         //        
         Document document = null;
 
@@ -326,7 +327,7 @@ public final class XMLUtil
         Source theSource = new DOMSource(doc);
         Result theResult = new StreamResult(writer);
 
-        //A transformer without stylesheet does identity transformation
+        // A transformer without stylesheet does identity transformation
         Transformer transformer = sTransformerFactory.newTransformer();
         transformer.setOutputProperty(OutputKeys.METHOD, "xml"); //$NON-NLS-1$
         transformer.setOutputProperty(OutputKeys.INDENT, indent ? "yes" : "no"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -366,6 +367,24 @@ public final class XMLUtil
         throws ParserConfigurationException, SAXException, IOException
     {
 
+        parseWithSAX(in, handler, false);
+    }
+
+    /**
+     * Validated and parses an input stream with a sax parser using the given
+     * default handler.
+     * 
+     * @param in the input stream
+     * @param handler the default handler receiving the sax events
+     * @param validate <code>true</code> if the xml should be validated.
+     * @throws ParserConfigurationException error creating the sax parser
+     * @throws SAXException error parsing the input stream
+     * @throws IOException error reading the input stream
+     */
+    public static void parseWithSAX(InputStream in, DefaultHandler handler, boolean validate)
+        throws ParserConfigurationException, SAXException, IOException
+    {
+        sSAXParserFactory.setValidating(validate);
         SAXParser parser = sSAXParserFactory.newSAXParser();
 
         parser.parse(in, handler);
@@ -385,7 +404,7 @@ public final class XMLUtil
 
         SAXTransformerFactory saxFactory = (SAXTransformerFactory) sTransformerFactory;
 
-        //uses identity transformation (in==out)
+        // uses identity transformation (in==out)
         Transformer transformer = saxFactory.newTransformer();
         transformer.setOutputProperty(OutputKeys.METHOD, "xml"); //$NON-NLS-1$
         transformer.setOutputProperty(OutputKeys.INDENT, "yes"); //$NON-NLS-1$

@@ -3,7 +3,7 @@
 "-//eclipse-cs//DTD Check Metadata 1.0//EN"
 "http://eclipse-cs.sourceforge.net/dtds/checkstyle-metadata_1_0.dtd">
 <checkstyle-metadata>
-    <rule-group-metadata name="Whitespace" priority="600">
+   <rule-group-metadata name="Whitespace" priority="600">
    
       <rule-metadata name="Empty For Initializer Pad" internal-name="EmptyForInitializerPad" parent="TreeWalker">
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.whitespace.EmptyForInitializerPadCheck"/>   
