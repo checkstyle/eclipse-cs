@@ -196,7 +196,7 @@ public final class ConfigurationWriter
             xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
         }
 
-        //Write last enabled severity level
+        // Write last enabled severity level
         if (module.getLastEnabledSeverity() != null)
         {
             attr = new AttributesImpl();
@@ -209,7 +209,7 @@ public final class ConfigurationWriter
             xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
         }
 
-        //write custom metadata
+        // write custom metadata
         Iterator keys = module.getCustomMetaData().keySet().iterator();
         while (keys.hasNext())
         {
@@ -300,7 +300,7 @@ public final class ConfigurationWriter
             String childParent = tmp.getMetaData().getParentModule();
 
             // only the checker module has no parent
-            if (parentInternalName == null && childParent == null)
+            if (parentInternalName == null && childParent.equals("Root"))
             {
                 childModules.add(tmp);
             }

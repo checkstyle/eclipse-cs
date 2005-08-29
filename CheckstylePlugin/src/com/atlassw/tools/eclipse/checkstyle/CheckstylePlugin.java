@@ -102,6 +102,10 @@ public class CheckstylePlugin extends AbstractUIPlugin
     /** Constant for the path of the (custom) package names file. */
     public static final String PACKAGE_NAMES_FILE = "/extension-libraries/checkstyle_packages.xml";
 
+    /** Constant for the path to the extension-libraries directory. */
+    public static final String EXTENSION_LIBS_DIR = "/extension-libraries";
+  
+    
     // =================================================
     // Static class variables.
     // =================================================
