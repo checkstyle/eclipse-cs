@@ -406,12 +406,10 @@ public final class CheckConfigurationFactory
 
             ICheckConfiguration checkConfig = (ICheckConfiguration) it.next();
 
-            ICheckConfiguration original = checkConfig.getOriginalCheckConfig() != null ? checkConfig
-                    .getOriginalCheckConfig()
-                    : checkConfig;
+            ICheckConfiguration original = checkConfig.getOriginalCheckConfig();
 
             // only if the name of the check config differs from the original
-            if (!original.getName().equals(checkConfig.getName()))
+            if (original != null)
             {
 
                 List projects = ProjectConfigurationFactory.getProjectsUsingConfig(original

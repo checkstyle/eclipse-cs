@@ -45,6 +45,9 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationFactory;
+import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
+import com.atlassw.tools.eclipse.checkstyle.config.configtypes.ConfigurationTypes;
+import com.atlassw.tools.eclipse.checkstyle.config.configtypes.IConfigurationType;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.IFilter;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.atlassw.tools.eclipse.checkstyle.util.XMLUtil;
@@ -344,10 +347,26 @@ public final class ProjectConfigurationFactory
         attr
                 .addAttribute(new String(), XMLTags.NAME_TAG, XMLTags.NAME_TAG, null, fileSet
                         .getName());
-        attr.addAttribute(new String(), XMLTags.CHECK_CONFIG_NAME_TAG,
-                XMLTags.CHECK_CONFIG_NAME_TAG, null, fileSet.getCheckConfigName());
+
         attr.addAttribute(new String(), XMLTags.ENABLED_TAG, XMLTags.ENABLED_TAG, null,
                 new String() + fileSet.isEnabled());
+
+        ICheckConfiguration checkConfig = fileSet.getCheckConfig();
+        if (checkConfig != null)
+        {
+
+            attr.addAttribute(new String(), XMLTags.CHECK_CONFIG_NAME_TAG,
+                    XMLTags.CHECK_CONFIG_NAME_TAG, null, checkConfig.getName());
+            attr.addAttribute(new String(), XMLTags.TYPE_TAG, XMLTags.TYPE_TAG, null, checkConfig
+                    .getType().getInternalName());
+            attr.addAttribute(new String(), XMLTags.LOCATION_TAG, XMLTags.LOCATION_TAG, null,
+                    checkConfig.getLocation());
+            if (checkConfig.getDescription() != null)
+            {
+                attr.addAttribute(new String(), XMLTags.DESCRIPTION_TAG, XMLTags.DESCRIPTION_TAG,
+                        null, checkConfig.getDescription());
+            }
+        }
 
         xmlOut.startElement(new String(), XMLTags.FILESET_TAG, XMLTags.FILESET_TAG, attr);
 
@@ -503,12 +522,38 @@ public final class ProjectConfigurationFactory
                 else if (XMLTags.FILESET_TAG.equals(qName))
                 {
 
+                    String configName = attributes.getValue(XMLTags.CHECK_CONFIG_NAME_TAG);
+                    String location = attributes.getValue(XMLTags.LOCATION_TAG);
+                    String type = attributes.getValue(XMLTags.TYPE_TAG);
+                    String description = attributes.getValue(XMLTags.DESCRIPTION_TAG);
+
                     mCurrentFileSet = new FileSet();
                     mCurrentFileSet.setName(attributes.getValue(XMLTags.NAME_TAG));
                     mCurrentFileSet.setEnabled(Boolean.valueOf(
                             attributes.getValue(XMLTags.ENABLED_TAG)).booleanValue());
-                    mCurrentFileSet.setCheckConfig(CheckConfigurationFactory.getByName(attributes
-                            .getValue(XMLTags.CHECK_CONFIG_NAME_TAG)));
+
+                    ICheckConfiguration checkConfig = CheckConfigurationFactory
+                            .getByName(configName);
+
+                    // if the plugin does not know the config and necessary data
+                    // is there
+                    if (checkConfig == null && type != null && location != null)
+                    {
+
+                        // create the check configuration
+                        IConfigurationType configType = ConfigurationTypes.getByInternalName(type);
+
+                        checkConfig = (ICheckConfiguration) configType.getImplementationClass()
+                                .newInstance();
+                        checkConfig.initialize(configName, location, configType, description);
+
+                        // store the configuration within the plugin
+                        List exitistingConfigs = CheckConfigurationFactory.getCheckConfigurations();
+                        exitistingConfigs.add(checkConfig);
+                        CheckConfigurationFactory.setCheckConfigurations(exitistingConfigs);
+                    }
+
+                    mCurrentFileSet.setCheckConfig(checkConfig);
 
                     // set an empty list for the patterns to store
                     mCurrentFileSet.setFileMatchPatterns(new ArrayList());
@@ -545,9 +590,17 @@ public final class ProjectConfigurationFactory
                 }
 
             }
-            catch (CheckstylePluginException ce)
+            catch (CheckstylePluginException e)
             {
-                throw new SAXException(ce);
+                throw new SAXException(e);
+            }
+            catch (InstantiationException e)
+            {
+                throw new SAXException(e);
+            }
+            catch (IllegalAccessException e)
+            {
+                throw new SAXException(e);
             }
         }
     }

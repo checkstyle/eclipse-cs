@@ -57,6 +57,7 @@
 
 			<zipfileset dir="." prefix="${plugins.path}" includes="${checkstyle.jar}" />
 			<zipfileset dir="." prefix="${plugins.path}" includes="${checkstyle-optional.jar}" />
+			<zipfileset dir="." prefix="${plugins.path}" includes="extension-libraries/checkstyle_packages.xml.template"/>
 			<zipfileset dir="." prefix="${plugins.path}" includes="plugin.xml" />
 			<zipfileset dir="." prefix="${plugins.path}" includes="*.properties" excludes="build.properties" />
 			<zipfileset dir="." prefix="${plugins.path}" includes="toc.xml" />
@@ -102,6 +103,7 @@
 
 			<zipfileset dir="." includes="${checkstyle.jar}" />
 			<zipfileset dir="." includes="${checkstyle-optional.jar}" />
+			<zipfileset dir="." includes="extension-libraries/checkstyle_packages.xml.template"/>
 			<zipfileset dir="." includes="plugin.xml" />
 			<zipfileset dir="." includes="*.properties" excludes="build.properties" />
 			<zipfileset dir="." includes="toc.xml" />
