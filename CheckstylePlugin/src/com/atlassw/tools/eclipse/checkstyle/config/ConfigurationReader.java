@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -77,7 +78,7 @@ public final class ConfigurationReader
     /** Hidden default constructor to prevent instantiation. */
     private ConfigurationReader()
     {
-    //NOOP
+    // NOOP
     }
 
     //
@@ -130,8 +131,8 @@ public final class ConfigurationReader
         /** The list of modules. */
         private List mRules = new ArrayList();
 
-        /** The current module being built. */
-        private Module mCurrentModule;
+        /** The current modules being built. */
+        private Stack mCurrentStack = new Stack();
 
         public List getRules()
         {
@@ -187,42 +188,44 @@ public final class ConfigurationReader
                 String name = attributes.getValue(XMLTags.NAME_TAG);
 
                 RuleMetadata metadata = MetadataFactory.getRuleMetadata(name);
-
+                Module module = null;
                 if (metadata != null)
                 {
-                    mCurrentModule = new Module(metadata);
+                    module = new Module(metadata);
                 }
                 else
                 {
-                    mCurrentModule = new Module(name);
+                    module = new Module(name);
                 }
 
-                mRules.add(mCurrentModule);
+                mRules.add(module);
+                mCurrentStack.push(module);
             }
             else if (XMLTags.PROPERTY_TAG.equals(qName))
             {
                 String name = attributes.getValue(XMLTags.NAME_TAG);
                 String value = attributes.getValue(XMLTags.VALUE_TAG);
 
-                if (name.equals(XMLTags.SEVERITY_TAG) && mCurrentModule.getMetaData() != null
-                        && mCurrentModule.getMetaData().hasSeverity())
+                Module module = (Module) mCurrentStack.peek();
+                if (name.equals(XMLTags.SEVERITY_TAG) && module.getMetaData() != null
+                        && module.getMetaData().hasSeverity())
                 {
-                    mCurrentModule.setSeverity(SeverityLevel.getInstance(value));
+                    module.setSeverity(SeverityLevel.getInstance(value));
                 }
-                else if (mCurrentModule.getMetaData() != null)
+                else if (module.getMetaData() != null)
                 {
-                    ConfigProperty property = mCurrentModule.getProperty(name);
+                    ConfigProperty property = module.getProperty(name);
                     if (property != null)
                     {
                         property.setValue(value);
                     }
-                    //properties that are not within the meta data are omitted
+                    // properties that are not within the meta data are omitted
                 }
                 else
                 {
-                    //if module has no meta data defined create property
+                    // if module has no meta data defined create property
                     ConfigProperty property = new ConfigProperty(name, value);
-                    mCurrentModule.getProperties().add(property);
+                    module.getProperties().add(property);
                 }
             }
             else if (XMLTags.METADATA_TAG.equals(qName))
@@ -230,17 +233,18 @@ public final class ConfigurationReader
                 String name = attributes.getValue(XMLTags.NAME_TAG);
                 String value = attributes.getValue(XMLTags.VALUE_TAG);
 
+                Module module = (Module) mCurrentStack.peek();
                 if (XMLTags.COMMENT_ID.equals(name))
                 {
-                    mCurrentModule.setComment(value);
+                    module.setComment(value);
                 }
                 else if (XMLTags.LAST_ENABLED_SEVERITY_ID.equals(name))
                 {
-                    mCurrentModule.setLastEnabledSeverity(SeverityLevel.getInstance(value));
+                    module.setLastEnabledSeverity(SeverityLevel.getInstance(value));
                 }
                 else
                 {
-                    mCurrentModule.getCustomMetaData().put(name, value);
+                    module.getCustomMetaData().put(name, value);
                 }
             }
         }
@@ -255,11 +259,12 @@ public final class ConfigurationReader
             if (XMLTags.MODULE_TAG.equals(qName))
             {
 
-                //if the module has not metadata attached we create some
+                // if the module has not metadata attached we create some
                 // generic metadata
-                if (mCurrentModule.getMetaData() == null)
+                Module module = (Module) mCurrentStack.pop();
+                if (module.getMetaData() == null)
                 {
-                    MetadataFactory.createGenericMetadata(mCurrentModule);
+                    MetadataFactory.createGenericMetadata(module);
                 }
             }
         }

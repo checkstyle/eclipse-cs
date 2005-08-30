@@ -80,7 +80,7 @@ public class Module implements Cloneable
         if (metaData != null)
         {
 
-            //create the properties according to the meta data
+            // create the properties according to the meta data
             List propMetas = metaData.getPropertyMetadata();
             int size = propMetas != null ? propMetas.size() : 0;
             for (int i = 0; i < size; i++)
@@ -195,7 +195,7 @@ public class Module implements Cloneable
      */
     public SeverityLevel getSeverity()
     {
-        if (mMetaData.hasSeverity())
+        if (mMetaData != null && mMetaData.hasSeverity())
         {
 
             return mSeverityLevel != null ? mSeverityLevel : getMetaData()
@@ -290,7 +290,7 @@ public class Module implements Cloneable
         }
         catch (CloneNotSupportedException e)
         {
-            throw new InternalError(); //should not happen
+            throw new InternalError(); // should not happen
         }
     }
 }

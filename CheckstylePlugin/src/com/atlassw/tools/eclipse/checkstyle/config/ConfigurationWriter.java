@@ -53,7 +53,7 @@ public final class ConfigurationWriter
 
     /** Array containing the internal names of the mandatory modules. */
     private static final String[] MANDATORY_MODULES = new String[] { XMLTags.CHECKER_MODULE,
-        XMLTags.TREEWALKER_MODULE, XMLTags.FILECONTENTSHOLDER_MODULE };
+        XMLTags.TREEWALKER_MODULE, XMLTags.FILECONTENTSHOLDER_MODULE, "TreeWalker4Ada" };
 
     //
     // constructors
@@ -153,7 +153,10 @@ public final class ConfigurationWriter
             if (!containsModule(modules, MANDATORY_MODULES[i]))
             {
                 RuleMetadata metadata = MetadataFactory.getRuleMetadata(MANDATORY_MODULES[i]);
-                modules.add(0, new Module(metadata));
+                if (metadata != null)
+                {
+                    modules.add(0, new Module(metadata));
+                }
             }
         }
     }
@@ -175,6 +178,15 @@ public final class ConfigurationWriter
 
         // remove this module from the list of modules to write
         remainingModules.remove(module);
+
+        List childs = getChildModules(module, remainingModules);
+
+        // skip the treewalker module if it has not more than one child
+        // the one child that is always there is FileContentsHolder
+        if (module.getName().equals(XMLTags.TREEWALKER_MODULE) && childs.size() <= 1)
+        {
+            return;
+        }
 
         // Start the module
         AttributesImpl attr = new AttributesImpl();
@@ -266,7 +278,6 @@ public final class ConfigurationWriter
         }
 
         // write child modules recursivly
-        List childs = getChildModules(module, remainingModules);
         it = childs.iterator();
         while (it.hasNext())
         {

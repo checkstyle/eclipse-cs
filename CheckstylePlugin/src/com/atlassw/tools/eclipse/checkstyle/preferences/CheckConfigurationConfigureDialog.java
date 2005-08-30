@@ -565,7 +565,11 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
             }
             else if (element instanceof Module)
             {
-                description = ((Module) element).getMetaData().getDescription();
+                RuleMetadata meta = ((Module) element).getMetaData();
+                if (meta != null)
+                {
+                    description = meta.getDescription();
+                }
             }
 
             mTxtDescription.setText(description != null ? description

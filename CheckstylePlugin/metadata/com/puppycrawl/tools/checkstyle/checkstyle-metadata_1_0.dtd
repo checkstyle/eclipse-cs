@@ -60,7 +60,7 @@
 <!ATTLIST rule-metadata
 	name			CDATA					#REQUIRED
 	internal-name	NMTOKEN					#REQUIRED
-	parent			(Root|Checker|TreeWalker)	#REQUIRED
+	parent			NMTOKEN					#REQUIRED
 	hasSeverity		(true|false)			"true"
 	hidden			(true|false)			"false"
 	deletable		(true|false)			"true">

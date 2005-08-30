@@ -215,8 +215,8 @@ public final class MetadataFactory
 
         RuleMetadata ruleMeta = new RuleMetadata(module.getName(), module.getName(), parent,
                 MetadataFactory.getDefaultSeverity(), false, true, true, null);
-
         module.setMetaData(ruleMeta);
+        sRuleMetadata.put(ruleMeta.getInternalName(), ruleMeta);
 
         List properties = module.getProperties();
         int size = properties != null ? properties.size() : 0;
@@ -715,7 +715,7 @@ public final class MetadataFactory
                 mPackageStack.push(packageName);
 
                 String fullPackage = getPackageName();
-                String metaFileLocation = "/" + fullPackage.replace('.', '/') + METADATA_FILENAME;
+                String metaFileLocation = fullPackage.replace('.', '/') + METADATA_FILENAME;
                 mMetadataLocations.add(metaFileLocation);
             }
         }
