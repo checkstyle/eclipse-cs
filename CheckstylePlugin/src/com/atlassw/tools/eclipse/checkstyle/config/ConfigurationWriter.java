@@ -183,7 +183,12 @@ public final class ConfigurationWriter
 
         // skip the treewalker module if it has not more than one child
         // the one child that is always there is FileContentsHolder
+        // TODO we really need to improve this
         if (module.getName().equals(XMLTags.TREEWALKER_MODULE) && childs.size() <= 1)
+        {
+            return;
+        }
+        if (module.getName().equals("TreeWalker4Ada") && childs.size() <= 0)
         {
             return;
         }
