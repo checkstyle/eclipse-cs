@@ -45,7 +45,6 @@ import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
-import org.xml.sax.ext.EntityResolver2;
 import org.xml.sax.helpers.DefaultHandler;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
@@ -409,7 +408,7 @@ public final class MetadataFactory
      * 
      * @author Lars Ködderitzsch
      */
-    private static class MetaDataHandler extends DefaultHandler implements EntityResolver2
+    private static class MetaDataHandler extends DefaultHandler
     {
 
         private static final String DTD_PUBLIC_ID = "-//eclipse-cs//DTD Check Metadata 1.0//EN";
@@ -431,24 +430,25 @@ public final class MetadataFactory
         /** StringBuffer containing the description. */
         private StringBuffer mDescription;
 
-        /**
-         * @see org.xml.sax.ext.EntityResolver2#getExternalSubset(java.lang.String,
-         *      java.lang.String)
-         */
-        public InputSource getExternalSubset(String name, String baseURI) throws SAXException,
-            IOException
-        {
+        //        /**
+        //         * @see
+        // org.xml.sax.ext.EntityResolver2#getExternalSubset(java.lang.String,
+        //         * java.lang.String)
+        //         */
+        //        public InputSource getExternalSubset(String name, String baseURI)
+        // throws SAXException,
+        //            IOException
+        //        {
+        //
+        //            InputStream dtdIS =
+        // getClass().getClassLoader().getResourceAsStream(DTD_RESOURCE_NAME);
+        //            return new InputSource(dtdIS);
+        //        }
 
-            InputStream dtdIS = getClass().getClassLoader().getResourceAsStream(DTD_RESOURCE_NAME);
-            return new InputSource(dtdIS);
-        }
-
-        /**
-         * @see org.xml.sax.ext.EntityResolver2#resolveEntity(java.lang.String,
-         *      java.lang.String, java.lang.String, java.lang.String)
+        /*
+         * 
          */
-        public InputSource resolveEntity(String name, String publicId, String baseURI,
-                String systemId) throws SAXException, IOException
+        public InputSource resolveEntity(String publicId, String systemId) throws SAXException
         {
             if (DTD_PUBLIC_ID.equals(publicId))
             {
