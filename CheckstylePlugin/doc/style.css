@@ -22,6 +22,15 @@ h2{
 	font-size:24px;
 }
 
+h3 {
+	font: 12px Arial, sans-serif;
+	font-weight: bold;
+	background-color: #003399;
+	color: #FFFFFF;
+	text-align: center;
+	margin-top: 0px;
+}
+
 p.copyright{
 	font-size:14px;
 	color:#003399;
@@ -71,5 +80,45 @@ img{
 	color: #FFFFFF;
 }
 
+.donors {	
+	display: block;
+	border: 1px solid #003399;
+}
 
+.donors a:link {
+	text-decoration:none; 
+	color:#003399; 
+	font-family: verdana, arial, geneva, sans-serif; 
+	font-size: 11px; 
+}
+.donors a:visited {
+	text-decoration:none; 
+	color:#003399; 
+	font-family: verdana, arial, geneva, sans-serif; 
+	font-size: 11px; 
+}
+.donors a:active {
+	text-decoration:none; 
+	color:#003399;
+	font-family: verdana, arial, geneva, sans-serif; 
+	font-size: 11px; 
+}
+.donors a:hover {
+	text-decoration:none; 
+	color:#003399; 
+	font-family: verdana, arial, geneva, sans-serif; 
+	font-size: 11px; 
+}
+
+.donorcomment {
+	font-family: verdana, arial, geneva, sans-serif; 
+	font-size: 11px; 
+	color: #000000;
+	font-style: italic; 
+}
+
+.vote {
+	display: block;
+	border: 1px solid #003399;
+}
 
