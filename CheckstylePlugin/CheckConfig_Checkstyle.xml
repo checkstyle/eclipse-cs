@@ -125,6 +125,10 @@
 </module>
 <module name="JavadocType">
 </module>
+<module name="BooleanExpressionComplexity">
+<property name="severity" value="ignore"/>
+<property name="max" value="2"/>
+</module>
 </module>
 <module name="SuppressionCommentFilter">
 </module>

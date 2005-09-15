@@ -259,6 +259,8 @@
             readonly="true"
             selected="true">
             <data value="java"/> 
+            <data value="adb"/> 
+            <data value="ads"/>
       </filter>
       <filter
             name="%WriteProtectedFilter.label"

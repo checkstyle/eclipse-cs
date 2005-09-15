@@ -2,9 +2,9 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry output="binnls" kind="src" path="nls"/>
-	<classpathentry kind="src" path="metadata"/>
-	<classpathentry exported="true" sourcepath="/checkstyle/src" kind="lib" path="checkstyle-all-4.0-beta5.jar"/>
+	<classpathentry output="metadata" kind="src" path="metadata"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry kind="lib" path="checkstyle-all-4.0-beta6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

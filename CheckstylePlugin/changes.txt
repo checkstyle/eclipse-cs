@@ -10,6 +10,37 @@ Make sure you got an eclipse 3.0 or higher installation you are installing this 
 Eclipse Checkstyle Plugin v4.0.0
 ---------------------------------
 
+Release beta6:
+--------------
+
+Updated to use Checkstyle 4.0 beta 6.
+The new plugin version brings vastly improved support for custom checks.
+Users providing custom checks are now able to define metadata for this checks.
+Use this metadata to get you checks fully integrated into the plugin.
+Please see the updated documentation on this topic.
+
+Teamworking support has been improved as well - when a project is now setup up to use checkstyle
+and the .checkstyle file ist shared through a repository
+no additional steps are needed to set up the plugin when a team member checks out the project from the repository.
+Please see the updated documentation on this topic as well.
+
+Bugs:
+1285998 	error with jre 1.4.2_06 on win2000
+1276613 	custom metadata not detected
+1267504 	No output seen from Checkstyle under Eclipse 3.1
+1267123 	checkstyle on non-java projects
+1266138 	Strange localization
+1265965 	checkstyle 4.0 very very very slow with eclipse 3
+1260852 	Cosmetic: Annotation icons do not show in preferences
+1260129 	PackageFilter GUI is broken
+
+RFE:
+1283480 	More on configuring variables
+1225561 	Move checkstyle-config.xml to project root
+741543 		Allow user defined check rules
+1234748 	Support custom packages
+745756 		Allow storing of checkstyle configuration in project
+
 Release beta5:
 --------------
 
