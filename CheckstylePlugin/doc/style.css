@@ -22,13 +22,8 @@ h2{
 	font-size:24px;
 }
 
-h3 {
-	font: 12px Arial, sans-serif;
-	font-weight: bold;
-	background-color: #003399;
-	color: #FFFFFF;
-	text-align: center;
-	margin-top: 0px;
+form{
+	margin: 5px 0px 0px 0px;
 }
 
 p.copyright{
@@ -80,9 +75,20 @@ img{
 	color: #FFFFFF;
 }
 
-.donors {	
+.box {
 	display: block;
 	border: 1px solid #003399;
+	margin-top: 0px;
+	padding: 0px 3px 3px 3px;
+}
+
+.box h3{
+	font: 12px Arial, sans-serif;
+	font-weight: bold;
+	background-color: #003399;
+	color: #FFFFFF;
+	text-align: center;
+	margin: 0px -3px 3px -3px;
 }
 
 .donors a:link {
@@ -116,9 +122,3 @@ img{
 	color: #000000;
 	font-style: italic; 
 }
-
-.vote {
-	display: block;
-	border: 1px solid #003399;
-}
-

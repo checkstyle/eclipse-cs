@@ -1,535 +1,578 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="CONTENT-TYPE" content="text/html; charset=iso-8859-1" />
-    <link type="text/css" href="style.css" rel="stylesheet" />
+    <head>
+        <meta http-equiv="CONTENT-TYPE" content="text/html; charset=iso-8859-1" />
+        <link type="text/css" href="style.css" rel="stylesheet" />
 <script type="text/javascript" src="javascript/header_footer.js">
 </script>
 
-    <title>Release notes</title>
-  </head>
+        <title>Release notes</title>
+    </head>
 
-  <body class="content">
+    <body class="content">
 <script type="text/javascript">
 header();
 </script>
 
-    <h2>Release notes</h2>
+        <h2>Release notes</h2>
 
-    <table width="100%" border="0" cellpadding="2" cellspacing="0" style="page-break-before: always">
-      <tr>
-        <td width="80%">
-        
-          <h3><u><a id="r4_0_0b5" name="r4_0_0b5" />Release 4.0.0b5</u></h3>
+        <table width="100%" border="0" cellpadding="2" cellspacing="0" style="page-break-before: always">
+            <tr>
+                <td width="80%">
+                    <h3><u><a id="r4_0_0b6" name="r4_0_0b6" />Release 4.0.0b6</u></h3>
 
-          <ul>
-            <li>Updated to use Checkstyle 4.0 beta 5.</li>
-            <li>Introduces French (thanks Fabrice Bellingard) and German translations.</li>
-			<li>Apart from this mostly bug fixes.</li>
-			<li>Tested to work with Eclipse 3.1 final</li>
-          </ul>
-          
-          <b>Important:</b> Note that the usage-Checks have been removed from the official Checkstyle 4.0 beta5 distribution and are therefore not contained within the plugin any more.
-Checkstyle configurations that use these checks will fail until the usage-Checks are removed.
-          
+                    <ul>
+                        <li>Updated to use Checkstyle 4.0 beta 6.</li>
 
-          <h4>Bugs resolved:</h4>
+                        <li>The new plugin version brings vastly improved support for custom checks. Users providing custom checks are now able to define metadata for this checks. Use this metadata to get you checks fully integrated into the plugin. Please see the updated documentation on this topic.</li>
 
-          <ul>
-			<li>1252252	StackOverflow Error</li>
-			<li>1251194	Resource out of sync after performing changes to config</li>
-			<li>1217447	TreeWalker: exception - java.lang.NoClassDefFoundError</li>
-			<li>1218510	Typo in Checkstyle Configuration</li>
-			<li>1222784	No icon when code is "folded/collapsed"</l>
-			<li>1232089	Repeated 'Checkstyle Classpath for project' messages</li>
-			<li>1233444	.checkstyle file touched even when no changes made to config</li>
-			<li>1234062	Problem with generic handling</li>
-			<li>1236418	Unable to write checkstyle plugin config file</li>
-			<li>1236864	Inacurrate Marker placement with Tabs *** Thanks go to Scott Severtson for his contribution ***</li>
-			<li>1232696	Usage checks should be removed</li>
-          </ul>
-          
-          <h4>Feature requests:</h4>
-        
-          <ul>
-        	<li>1233689	Reevaluate problems on check refresh</li>
-			<li>755830	&quot;Disabled&quot; option for checks</li>
-		  </ul> 
-		         
-          <h3><u><a id="r4_0_0b4" name="r4_0_0b4" />Release 4.0.0b4</u></h3>
+                        <li>Teamworking support has been improved as well - when a project is now setup up to use checkstyle and the .checkstyle file ist shared through a repository no additional steps are needed to set up the plugin when a team member checks out the project from the repository. Please see the updated documentation on this topic as well.</li>
+                    </ul>
 
-          <ul>
-            <li>Updated to Checkstyle 4.0 beta4</li>
-          </ul>
+                    <h4>Bugs resolved:</h4>
 
-          <h4>Bugs resolved:</h4>
+                    <ul>
+                        <li>1285998 error with jre 1.4.2_06 on win2000</li>
 
-          <ul>
-            <li>1217357 NullPointerException in UnOpenedFilesFilter</li>
-          </ul>
+                        <li>1276613 custom metadata not detected</li>
 
-          <h3><u><a id="r4_0_0b3" name="r4_0_0b3" />Release 4.0.0b3</u></h3>
+                        <li>1267504 No output seen from Checkstyle under Eclipse 3.1</li>
 
-          <ul>
-            <li>Uses Checkstyle 4.0 beta3</li>
+                        <li>1267123 checkstyle on non-java projects</li>
 
-            <li>Documentation fully updated (but not yet reviewed)</li>
-          </ul>
+                        <li>1266138 Strange localization</li>
 
-          <h4>Bugs resolved:</h4>
+                        <li>1265965 checkstyle 4.0 very very very slow with eclipse 3</li>
 
-          <ul>
-            <li>1213014 changes to suppressions file require restart</li>
+                        <li>1260852 Cosmetic: Annotation icons do not show in preferences</li>
 
-            <li>1212545 property file in "project relative" configuration</li>
+                        <li>1260129 PackageFilter GUI is broken</li>
+                    </ul>
 
-            <li>1086440 Reports are in the Eclipse Problems View</li>
+                    <h4>Feature requests:</h4>
 
-            <li>1203108 Additional metadata is removed</li>
+                    <ul>
+                        <li>1283480 More on configuring variables</li>
 
-            <li>1204531 Checkbox always sets severity to warning</li>
-          </ul>
+                        <li>1225561 Move checkstyle-config.xml to project root</li>
 
-          <h3><u><a id="r4_0_0b2" name="r4_0_0b2" />Release 4.0.0b2</u></h3>
+                        <li>1234748 Support custom packages</li>
 
-          <ul>
-            <li>Minor usability enhancements in configuration editor (multiple selection and adding from the tree,
-            option to skip opening the module editor on add action)</li>
+                        <li>741543 Allow user defined check rules</li>
 
-            <li>Keyboard support for configuration editor (remove modules using DEL or &lt;-, add modules using SPACE
-            or -&gt;)</li>
+                        <li>745756 Allow storing of checkstyle configuration in project</li>
+                    </ul>
 
-            <li>Added button to configure a checkstyle configuration from the properties page</li>
+                    <h3><u><a id="r4_0_0b5" name="r4_0_0b5" />Release 4.0.0b5</u></h3>
 
-            <li>Added FileInSyncFilter that excludes all files from the checks that are in sync with the CVS
-            repository</li>
+                    <ul>
+                        <li>Updated to use Checkstyle 4.0 beta 5.</li>
 
-            <li>Added control to the preferences page to see which projects use a specific check configuration</li>
+                        <li>Introduces French (thanks Fabrice Bellingard) and German translations.</li>
 
-            <li>Reworked file set editor gui</li>
+                        <li>Apart from this mostly bug fixes.</li>
 
-            <li>Added content assist for regular expressions in file set editor and check configuration gui</li>
+                        <li>Tested to work with Eclipse 3.1 final</li>
+                    </ul>
+                    <b>Important:</b> Note that the usage-Checks have been removed from the official Checkstyle 4.0 beta5 distribution and are therefore not contained within the plugin any more. Checkstyle configurations that use these checks will fail until the usage-Checks are removed. 
 
-            <li>Added button to configure a check configuration from the properties page (Usability shortcut)</li>
+                    <h4>Bugs resolved:</h4>
 
-            <li>Some documentation updated - work still in progress</li>
-          </ul>
+                    <ul>
+                        <li>1252252 StackOverflow Error</li>
 
-          <h4>Feature requests:</h4>
+                        <li>1251194 Resource out of sync after performing changes to config</li>
 
-          <ul>
-            <li>750183 add a get started paragraph or page</li>
-          </ul>
+                        <li>1217447 TreeWalker: exception - java.lang.NoClassDefFoundError</li>
 
-          <h4>Bugs resolved:</h4>
+                        <li>1218510 Typo in Checkstyle Configuration</li>
 
-          <ul>
-            <li>1202812 Checkbox value changes are not persisted</li>
+                        <li>1222784 No icon when code is "folded/collapsed"</li>
 
-            <li>1202435 NPE on "Export" with 4.0 beta Eclipse 3.02</li>
+                        <li>1232089 Repeated 'Checkstyle Classpath for project' messages</li>
 
-            <li>1196130 Configuration Editor broken with duplicate checks</li>
+                        <li>1233444 .checkstyle file touched even when no changes made to config</li>
 
-            <li>1196084 Can't use eclipse variables on SuppressionFilter</li>
-          </ul>
+                        <li>1234062 Problem with generic handling</li>
 
-          <h3><u><a id="r4_0_0b1" name="r4_0_0b1" />Release 4.0.0b1</u></h3>
+                        <li>1236418 Unable to write checkstyle plugin config file</li>
 
-          <ul>
-            <li>Uses checkstyle-4.0-beta2</li>
+                        <li>1236864 Inacurrate Marker placement with Tabs *** Thanks go to Scott Severtson for his contribution ***</li>
 
-            <li>Improved rebuild logic - now rebuilds only necessary projects</li>
+                        <li>1232696 Usage checks should be removed</li>
+                    </ul>
 
-            <li>Integrated Duplicate Code View - Thanks to Fabrice Bellingard</li>
+                    <h4>Feature requests:</h4>
 
-            <li>Jar files containing own checks can now integrated more easily<br />
-             - Just drop your .jar file in the extension-libraries directory and add your jar-File to the
-            Bundle-ClassPath entry in the MANIFEST.MF. Restart eclipse with -clean option afterwards at least once. Use
-            your checkstyle configuration file containing your custom checks with the plugin.</li>
-          </ul>
+                    <ul>
+                        <li>1233689 Reevaluate problems on check refresh</li>
 
-          <h4>Feature requests:</h4>
+                        <li>755830 "Disabled" option for checks</li>
+                    </ul>
 
-          <ul>
-            <li>1022915 Support for eclipse variables</li>
+                    <h3><u><a id="r4_0_0b4" name="r4_0_0b4" />Release 4.0.0b4</u></h3>
 
-            <li>758117 Don't rebuild everything - or ask before doing so</li>
+                    <ul>
+                        <li>Updated to Checkstyle 4.0 beta4</li>
+                    </ul>
 
-            <li>796155 Allow other jars to be added</li>
+                    <h4>Bugs resolved:</h4>
 
-            <li>741543 Allow user defined check rules</li>
-          </ul>
+                    <ul>
+                        <li>1217357 NullPointerException in UnOpenedFilesFilter</li>
+                    </ul>
 
-          <h4>Bugs resolved:</h4>
+                    <h3><u><a id="r4_0_0b3" name="r4_0_0b3" />Release 4.0.0b3</u></h3>
 
-          <ul>
-            <li>1177797 RuntimeException</li>
+                    <ul>
+                        <li>Uses Checkstyle 4.0 beta3</li>
 
-            <li>1084281 Many classes flagged as "with errors" with eclipse 3.1.0M3</li>
+                        <li>Documentation fully updated (but not yet reviewed)</li>
+                    </ul>
 
-            <li>996575 NoClassDefFoundError in v. 3.4.1</li>
+                    <h4>Bugs resolved:</h4>
 
-            <li>913098 Cannot add new check jars</li>
-          </ul>
+                    <ul>
+                        <li>1213014 changes to suppressions file require restart</li>
 
-          <h4>Incorporated Patches:</h4>
+                        <li>1212545 property file in "project relative" configuration</li>
 
-          <ul>
-            <li>1123128 Duplicated Code Checker</li>
-          </ul>
+                        <li>1086440 Reports are in the Eclipse Problems View</li>
 
-          <h3><u><a id="r4_0_0a4" name="r4_0_0a4" />Release 4.0.0a4</u></h3>
+                        <li>1203108 Additional metadata is removed</li>
 
-          <ul>
-            <li>Plugin now uses plain checkstyle configuration files</li>
+                        <li>1204531 Checkbox always sets severity to warning</li>
+                    </ul>
 
-            <li>Now able to use checkstyle configuration files located somewhere in the file systems (External
-            Configuration)</li>
+                    <h3><u><a id="r4_0_0b2" name="r4_0_0b2" />Release 4.0.0b2</u></h3>
 
-            <li>Possible to use checkstyle configuration files from a remote URL (Remote Configuration)</li>
+                    <ul>
+                        <li>Minor usability enhancements in configuration editor (multiple selection and adding from the tree, option to skip opening the module editor on add action)</li>
 
-            <li>Possible to use project relative checkstyle configurations (Project Relative Configuration)</li>
+                        <li>Keyboard support for configuration editor (remove modules using DEL or &lt;-, add modules using SPACE or -&gt;)</li>
 
-            <li>ALL checkstyle modules are now supported including Header Checks, Fileset Checks (for instance
-            StrictDuplicateCheck) and Filters</li>
+                        <li>Added button to configure a checkstyle configuration from the properties page</li>
 
-            <li>All modules can be configured from the GUI</li>
+                        <li>Added FileInSyncFilter that excludes all files from the checks that are in sync with the CVS repository</li>
 
-            <li>Completely reworked the configuration GUI</li>
+                        <li>Added control to the preferences page to see which projects use a specific check configuration</li>
 
-            <li>Added 'Default' option to the module (rule) configuration dialog so that default settings can easily be
-            restored</li>
+                        <li>Reworked file set editor gui</li>
 
-            <li>Modules can now be easily enabled/disabled using a checkbox</li>
+                        <li>Added content assist for regular expressions in file set editor and check configuration gui</li>
 
-            <li>Checkstyle tokens can now be translated into a more readable form in the configuration GUI</li>
+                        <li>Added button to configure a check configuration from the properties page (Usability shortcut)</li>
 
-            <li>Existing check configurations (old format) are migrated to the new configuration format</li>
+                        <li>Some documentation updated - work still in progress</li>
+                    </ul>
 
-            <li>Improved the annotations for eclipse editors so that errors and infos are shown in a similar way</li>
+                    <h4>Feature requests:</h4>
 
-            <li>Added filter to exclude files from non source directories</li>
-          </ul>
+                    <ul>
+                        <li>750183 add a get started paragraph or page</li>
+                    </ul>
 
-          <h4>Feature requests:</h4>
+                    <h4>Bugs resolved:</h4>
 
-          <ul>
-            <li>1186986 Scan only source files from configured source paths</li>
+                    <ul>
+                        <li>1202812 Checkbox value changes are not persisted</li>
 
-            <li>1163353 Suppression filters do not work</li>
+                        <li>1202435 NPE on "Export" with 4.0 beta Eclipse 3.02</li>
 
-            <li>978202 URL checkstyle config download</li>
+                        <li>1196130 Configuration Editor broken with duplicate checks</li>
 
-            <li>905061 Support for Duplicate Code Analysis</li>
+                        <li>1196084 Can't use eclipse variables on SuppressionFilter</li>
+                    </ul>
 
-            <li>887874 Missing support for modules.</li>
+                    <h3><u><a id="r4_0_0b1" name="r4_0_0b1" />Release 4.0.0b1</u></h3>
 
-            <li>772913 allow header checks</li>
+                    <ul>
+                        <li>Uses checkstyle-4.0-beta2</li>
 
-            <li>758563 Use meaningful tokens</li>
+                        <li>Improved rebuild logic - now rebuilds only necessary projects</li>
 
-            <li>758558 ditch changing labels next to checkboxes</li>
+                        <li>Integrated Duplicate Code View - Thanks to Fabrice Bellingard</li>
 
-            <li>758555 Enabling/disabling rules using checkboxes</li>
+                        <li>Jar files containing own checks can now integrated more easily<br />
+                         - Just drop your .jar file in the extension-libraries directory and add your jar-File to the Bundle-ClassPath entry in the MANIFEST.MF. Restart eclipse with -clean option afterwards at least once. Use your checkstyle configuration file containing your custom checks with the plugin.</li>
+                    </ul>
 
-            <li>745756 Allow storing of checkstyle configuration in project</li>
+                    <h4>Feature requests:</h4>
 
-            <li>758560 Rework file set editor page</li>
+                    <ul>
+                        <li>1022915 Support for eclipse variables</li>
 
-            <li>905675 Support eclipse development</li>
-          </ul>
+                        <li>758117 Don't rebuild everything - or ask before doing so</li>
 
-          <h4>Bugs resolved:</h4>
+                        <li>796155 Allow other jars to be added</li>
 
-          <ul>
-            <li>1146104 Plugin ignores SuppressionCommentFilter</li>
+                        <li>741543 Allow user defined check rules</li>
+                    </ul>
 
-            <li>1098141 Configuration editor has tabs outside its window</li>
+                    <h4>Bugs resolved:</h4>
 
-            <li>978112 Import of checkstyle config dumps with non supported checks</li>
+                    <ul>
+                        <li>1177797 RuntimeException</li>
 
-            <li>974583 bug in configuration editor layout hides options</li>
+                        <li>1084281 Many classes flagged as "with errors" with eclipse 3.1.0M3</li>
 
-            <li>890956 Problems with Import of checkstyle-configuration</li>
+                        <li>996575 NoClassDefFoundError in v. 3.4.1</li>
 
-            <li>878118 Suppression File no longer works since 3.2</li>
-          </ul>
+                        <li>913098 Cannot add new check jars</li>
+                    </ul>
 
-          <h3><u><a id="r4_0_0a3" name="r4_0_0a3" />Release 4.0.0a3</u></h3>
+                    <h4>Incorporated Patches:</h4>
 
-          <ul>
-            <li>Fixes incompatibility with jdk1.4.x introduced in alpha2</li>
-          </ul>
+                    <ul>
+                        <li>1123128 Duplicated Code Checker</li>
+                    </ul>
 
-          <h4>Bugs resolved:</h4>
+                    <h3><u><a id="r4_0_0a4" name="r4_0_0a4" />Release 4.0.0a4</u></h3>
 
-          <ul>
-            <li>1176430: Config Problem</li>
-          </ul>
+                    <ul>
+                        <li>Plugin now uses plain checkstyle configuration files</li>
 
-          <h3><u><a id="r4_0_0a2" name="r4_0_0a2" />Release 4.0.0a2</u></h3>
+                        <li>Now able to use checkstyle configuration files located somewhere in the file systems (External Configuration)</li>
 
-          <ul>
-            <li>Fixes some problems with 4.0.0alpha1</li>
+                        <li>Possible to use checkstyle configuration files from a remote URL (Remote Configuration)</li>
 
-            <li>New filter facility allows more dynamic exclusion of files</li>
+                        <li>Possible to use project relative checkstyle configurations (Project Relative Configuration)</li>
 
-            <li>Enhanced properties page for simple project configuration</li>
-          </ul>
+                        <li>ALL checkstyle modules are now supported including Header Checks, Fileset Checks (for instance StrictDuplicateCheck) and Filters</li>
 
-          <h4>Feature requests:</h4>
+                        <li>All modules can be configured from the GUI</li>
 
-          <ul>
-            <li>1002929: Invoke Checkstyle For Open Files Only</li>
+                        <li>Completely reworked the configuration GUI</li>
 
-            <li>1088368: unclear filter message</li>
-          </ul>
+                        <li>Added 'Default' option to the module (rule) configuration dialog so that default settings can easily be restored</li>
 
-          <h4>Bugs resolved:</h4>
+                        <li>Modules can now be easily enabled/disabled using a checkbox</li>
 
-          <ul>
-            <li>1175793: v4.0.0alpha does not give any problem markers</li>
-          </ul>
+                        <li>Checkstyle tokens can now be translated into a more readable form in the configuration GUI</li>
 
-          <h3><u><a id="r4_0_0a" name="r4_0_0a" />Release 4.0.0a</u></h3>
+                        <li>Existing check configurations (old format) are migrated to the new configuration format</li>
 
-          <ul>
-            <li>Updated to Checkstyle 4.0 beta1 - Support for Java 5.0 features</li>
+                        <li>Improved the annotations for eclipse editors so that errors and infos are shown in a similar way</li>
 
-            <li>Now works with Eclipse 3.0 and greater (3.1 M5 tested)</li>
+                        <li>Added filter to exclude files from non source directories</li>
+                    </ul>
 
-            <li><b>Note:</b> Eclipse 2.x.x is no more supported</li>
-          </ul>
+                    <h4>Feature requests:</h4>
 
-          <h4>New Features:</h4>
+                    <ul>
+                        <li>1186986 Scan only source files from configured source paths</li>
 
-          <ul>
-            <li>Checkstyle warnings are annotated in the source code.<br />
-             Can be turned off via Window-&gt;Preferences-&gt;Workbench-&gt;Editors-&gt;Annotations</li>
-          </ul>
+                        <li>1163353 Suppression filters do not work</li>
 
-          <h4>Patches:</h4>
+                        <li>978202 URL checkstyle config download</li>
 
-          <ul>
-            <li>Patch 1096720: Use of jobs api + filter facility</li>
+                        <li>905061 Support for Duplicate Code Analysis</li>
 
-            <li>Patch 1064092: Make eclipse-cs a 3.x-style plugin</li>
+                        <li>887874 Missing support for modules.</li>
 
-            <li>Patch 1064046: Remove xerces dependency</li>
-          </ul>
+                        <li>772913 allow header checks</li>
 
-          <h3><u><a id="r3_5_0" name="r3_5_0" />Release 3.5.0</u></h3>
+                        <li>758563 Use meaningful tokens</li>
 
-          <ul>
-            <li>Updated to Checkstyle 3.5.</li>
+                        <li>758558 ditch changing labels next to checkboxes</li>
 
-            <li><b>Note:</b> This is likely to be the last release supported on Eclipse 2.x. The plan is that the next
-            release, v4.0, will be a pure Eclipse 3.0 plug-in and will not be compatable with Eclipse 2.x.</li>
-          </ul>
+                        <li>758555 Enabling/disabling rules using checkboxes</li>
 
-          <h3><u><a id="r3_4_1" name="r3_4_1" />Release 3.4.1</u></h3>
+                        <li>745756 Allow storing of checkstyle configuration in project</li>
 
-          <h4>Bugs Resolved:</h4>
+                        <li>758560 Rework file set editor page</li>
 
-          <ul>
-            <li>991820: Very slow builder</li>
+                        <li>905675 Support eclipse development</li>
+                    </ul>
 
-            <li>979798: Got Exception: lava.lang.NoClassDefFoundError</li>
+                    <h4>Bugs resolved:</h4>
 
-            <li>934083: Unable to get class information for &lt;Exception&gt; errors</li>
+                    <ul>
+                        <li>1146104 Plugin ignores SuppressionCommentFilter</li>
 
-            <li>905079: Invoking CheckstyleBuilder Even If No File Set is Enabled</li>
+                        <li>1098141 Configuration editor has tabs outside its window</li>
 
-            <li>904268: Redundant throws: 'Exception' is unchecked exception</li>
+                        <li>978112 Import of checkstyle config dumps with non supported checks</li>
 
-            <li>896571: Still Having Issues With Exceptions Not Visible from Classpath</li>
+                        <li>974583 bug in configuration editor layout hides options</li>
 
-            <li>895725: Can not be disabled / performance</li>
-          </ul>
+                        <li>890956 Problems with Import of checkstyle-configuration</li>
 
-          <h4>Other Items:</h4>
+                        <li>878118 Suppression File no longer works since 3.2</li>
+                    </ul>
 
-          <ul>
-            <li>Thanks to Richard Atkins for his patch that fixed the relative jars bug.</li>
+                    <h3><u><a id="r4_0_0a3" name="r4_0_0a3" />Release 4.0.0a3</u></h3>
 
-            <li>Added some optimizations to improve build performance.</li>
-          </ul>
+                    <ul>
+                        <li>Fixes incompatibility with jdk1.4.x introduced in alpha2</li>
+                    </ul>
 
-          <h3><u><a id="r3_4_0" name="r3_4_0" />Release 3.4.0</u></h3>
+                    <h4>Bugs resolved:</h4>
 
-          <ul>
-            <li>Updated to include Checkstyle 3.4.</li>
+                    <ul>
+                        <li>1176430: Config Problem</li>
+                    </ul>
 
-            <li><b>Note:</b> This release has only been tested with Eclipse 2.1.x. Eclipse 2.0.x is no longer
-            supported.</li>
+                    <h3><u><a id="r4_0_0a2" name="r4_0_0a2" />Release 4.0.0a2</u></h3>
 
-            <li><b>Note:</b> Support for Eclipse 3.0 is in the works and will be released as soon as possible.</li>
-          </ul>
+                    <ul>
+                        <li>Fixes some problems with 4.0.0alpha1</li>
 
-          <h3><u><a id="r3_3_2" name="r3_3_2" />Release 3.3.2</u></h3>
+                        <li>New filter facility allows more dynamic exclusion of files</li>
 
-          <h4>Bugs Resolved:</h4>
+                        <li>Enhanced properties page for simple project configuration</li>
+                    </ul>
 
-          <ul>
-            <li>883468: Calling method missing from Eclipse 2.0.x</li>
+                    <h4>Feature requests:</h4>
 
-            <li>883469: Classpath not complete</li>
+                    <ul>
+                        <li>1002929: Invoke Checkstyle For Open Files Only</li>
 
-            <li>886271: Checkstyle fails to get class information for Exception</li>
+                        <li>1088368: unclear filter message</li>
+                    </ul>
 
-            <li>887849: Property value bugs</li>
-          </ul>
+                    <h4>Bugs resolved:</h4>
 
-          <h3><u><a id="r3_3_1" name="r3_3_1" />Release 3.3.1</u></h3>
+                    <ul>
+                        <li>1175793: v4.0.0alpha does not give any problem markers</li>
+                    </ul>
 
-          <h4>Bugs Resolved:</h4>
+                    <h3><u><a id="r4_0_0a" name="r4_0_0a" />Release 4.0.0a</u></h3>
 
-          <ul>
-            <li>878261: Error in plugin-eclipse2-0-x.xml</li>
+                    <ul>
+                        <li>Updated to Checkstyle 4.0 beta1 - Support for Java 5.0 features</li>
 
-            <li>875539: Still Unable to get class information for Exceptions</li>
+                        <li>Now works with Eclipse 3.0 and greater (3.1 M5 tested)</li>
 
-            <li>784182: Removing configuration - re-adding not allowed.</li>
+                        <li><b>Note:</b> Eclipse 2.x.x is no more supported</li>
+                    </ul>
 
-            <li>771490: Exceptions when CheckConfig not found</li>
-          </ul>
+                    <h4>New Features:</h4>
 
-          <h4>Feature Requests:</h4>
+                    <ul>
+                        <li>Checkstyle warnings are annotated in the source code.<br />
+                         Can be turned off via Window-&gt;Preferences-&gt;Workbench-&gt;Editors-&gt;Annotations</li>
+                    </ul>
 
-          <ul>
-            <li>750399: Copy check configurations</li>
+                    <h4>Patches:</h4>
 
-            <li>754423: Include rule name in message to user</li>
-          </ul>
+                    <ul>
+                        <li>Patch 1096720: Use of jobs api + filter facility</li>
 
-          <h3><u><a id="r3_3_0" name="r3_3_0" />Release 3.3.0</u></h3>
+                        <li>Patch 1064092: Make eclipse-cs a 3.x-style plugin</li>
 
-          <h4>Bugs Resolved:</h4>
+                        <li>Patch 1064046: Remove xerces dependency</li>
+                    </ul>
 
-          <ul>
-            <li>872279: Import Plugin Config produces duplicate entry</li>
+                    <h3><u><a id="r3_5_0" name="r3_5_0" />Release 3.5.0</u></h3>
 
-            <li>864322: empty block check doesn't work in 3.0M6</li>
+                    <ul>
+                        <li>Updated to Checkstyle 3.5.</li>
 
-            <li>855057: configuration saved with wrong encoding</li>
+                        <li><b>Note:</b> This is likely to be the last release supported on Eclipse 2.x. The plan is that the next release, v4.0, will be a pure Eclipse 3.0 plug-in and will not be compatable with Eclipse 2.x.</li>
+                    </ul>
 
-            <li>849075: Properties window is not long enough</li>
+                    <h3><u><a id="r3_4_1" name="r3_4_1" />Release 3.4.1</u></h3>
 
-            <li>820342: Property Variable Value Editor field length too short</li>
+                    <h4>Bugs Resolved:</h4>
 
-            <li>787873: NPE in ArrayTypeStyleCheck</li>
+                    <ul>
+                        <li>991820: Very slow builder</li>
 
-            <li>778321: Says Got a null pointer exception</li>
+                        <li>979798: Got Exception: lava.lang.NoClassDefFoundError</li>
 
-            <li>773768: Cannot read hex numbers</li>
+                        <li>934083: Unable to get class information for &lt;Exception&gt; errors</li>
 
-            <li>773754: Exclude become Include</li>
+                        <li>905079: Invoking CheckstyleBuilder Even If No File Set is Enabled</li>
 
-            <li>748678: Checkstyle fails to get class information for Exceptions</li>
-          </ul>
+                        <li>904268: Redundant throws: 'Exception' is unchecked exception</li>
 
-          <h4>Other Items:</h4>
+                        <li>896571: Still Having Issues With Exceptions Not Visible from Classpath</li>
 
-          <ul>
-            <li>Updated to include Checkstyle v3.3.</li>
-          </ul>
+                        <li>895725: Can not be disabled / performance</li>
+                    </ul>
 
-          <h3><u><a id="r3_2_0" name="r3_2_0" />Release 3.2.0</u></h3>
-          <b><i>Important Note:</i></b> If you are using version 2.0.x of Eclipse or version 5.0.x of WSAD you will
-          need to replace the plugin.xml file with the plugin-eclipse2-0-x.xml file. Rename plugin-eclipse2-0-x.xml to
-          plugin.xml in the com.atlassw.tools.eclipse.checkstyle_x.y.z folder in the Eclipse plugins folder. 
+                    <h4>Other Items:</h4>
 
-          <h4>Bugs Fixed:</h4>
+                    <ul>
+                        <li>Thanks to Richard Atkins for his patch that fixed the relative jars bug.</li>
 
-          <ul>
-            <li>784243: Test file filter fails with NPE</li>
-          </ul>
+                        <li>Added some optimizations to improve build performance.</li>
+                    </ul>
 
-          <h4>Other Items:</h4>
+                    <h3><u><a id="r3_4_0" name="r3_4_0" />Release 3.4.0</u></h3>
 
-          <ul>
-            <li>Updates to include Checkstyle v3.2.</li>
-          </ul>
+                    <ul>
+                        <li>Updated to include Checkstyle 3.4.</li>
 
-          <h3><u><a id="r3_1_1" name="r3_1_1" />Release 3.1.1</u></h3>
+                        <li><b>Note:</b> This release has only been tested with Eclipse 2.1.x. Eclipse 2.0.x is no longer supported.</li>
 
-          <h4>Bugs Fixed:</h4>
+                        <li><b>Note:</b> Support for Eclipse 3.0 is in the works and will be released as soon as possible.</li>
+                    </ul>
 
-          <ul>
-            <li>744773: Unknown property type for empty block rule.</li>
+                    <h3><u><a id="r3_3_2" name="r3_3_2" />Release 3.3.2</u></h3>
 
-            <li>745200: Failed to read and parse check configuration.</li>
+                    <h4>Bugs Resolved:</h4>
 
-            <li>745340: Poor check config export failure message.</li>
+                    <ul>
+                        <li>883468: Calling method missing from Eclipse 2.0.x</li>
 
-            <li>748772: Default file pattern is misleading.</li>
+                        <li>883469: Classpath not complete</li>
 
-            <li>748779: Exported plugin configuration is not ordered.</li>
-          </ul>
+                        <li>886271: Checkstyle fails to get class information for Exception</li>
 
-          <h4>Feature Requests:</h4>
+                        <li>887849: Property value bugs</li>
+                    </ul>
 
-          <ul>
-            <li>741546: You can now import standard Checkstyle configuration files.</li>
+                    <h3><u><a id="r3_3_1" name="r3_3_1" />Release 3.3.1</u></h3>
 
-            <li>744754: A file of default configurations is now provided. One configuration on the Sun coding standards
-            from the Checkstyle distribution is included.</li>
-          </ul>
+                    <h4>Bugs Resolved:</h4>
 
-          <h4>Other Items:</h4>
+                    <ul>
+                        <li>878261: Error in plugin-eclipse2-0-x.xml</li>
 
-          <ul>
-            <li>Updated documentation to include a Getting Started and Troubleshooting topic.</li>
+                        <li>875539: Still Unable to get class information for Exceptions</li>
 
-            <li>Improved error handling and reporting in some situations. In particular, when a project FileSet refers
-            to a check configuration that is not in the workspace.</li>
+                        <li>784182: Removing configuration - re-adding not allowed.</li>
 
-            <li>Improved performance of check initialization.</li>
-          </ul>
+                        <li>771490: Exceptions when CheckConfig not found</li>
+                    </ul>
 
-          <h3><u><a id="r3_1_0" name="r3_1_0" />Release 3.1.0</u></h3>
+                    <h4>Feature Requests:</h4>
 
-          <ul>
-            <li>Support for Checkstyle version 3.1</li>
+                    <ul>
+                        <li>750399: Copy check configurations</li>
 
-            <li>Support for multiple check configurations within your workspace at the same time</li>
+                        <li>754423: Include rule name in message to user</li>
+                    </ul>
 
-            <li>Greatly improved configuration user interface</li>
+                    <h3><u><a id="r3_3_0" name="r3_3_0" />Release 3.3.0</u></h3>
 
-            <li>Much greater control over which rules are used to check which source files</li>
+                    <h4>Bugs Resolved:</h4>
 
-            <li>Support for multiple severity levels (Error, Warning, Info, Ignore) for each rule</li>
-          </ul>
-        </td>
+                    <ul>
+                        <li>872279: Import Plugin Config produces duplicate entry</li>
 
-        <td width="20%" valign="TOP"><br />
-         <a href="#r4_0_0b5">Release 4.0.0b5</a><br />
-         <a href="#r4_0_0b4">Release 4.0.0b4</a><br />
-         <a href="#r4_0_0b3">Release 4.0.0b3</a><br />
-         <a href="#r4_0_0b2">Release 4.0.0b2</a><br />
-         <a href="#r4_0_0b1">Release 4.0.0b1</a><br />
-         <a href="#r4_0_0a4">Release 4.0.0a4</a><br />
-         <a href="#r4_0_0a3">Release 4.0.0a3</a><br />
-         <a href="#r4_0_0a2">Release 4.0.0a2</a><br />
-         <a href="#r4_0_0a">Release 4.0.0a</a><br />
-         <a href="#r3_5_0">Release 3.5.0</a><br />
-         <a href="#r3_4_1">Release 3.4.1</a><br />
-         <a href="#r3_4_0">Release 3.4.0</a><br />
-         <a href="#r3_3_2">Release 3.3.2</a><br />
-         <a href="#r3_3_1">Release 3.3.1</a><br />
-         <a href="#r3_3_0">Release 3.3.0</a><br />
-         <a href="#r3_2_0">Release 3.2.0</a><br />
-         <a href="#r3_1_1">Release 3.1.1</a><br />
-         <a href="#r3_1_0">Release 3.1.0</a><br />
-         </td>
-      </tr>
-    </table>
+                        <li>864322: empty block check doesn't work in 3.0M6</li>
+
+                        <li>855057: configuration saved with wrong encoding</li>
+
+                        <li>849075: Properties window is not long enough</li>
+
+                        <li>820342: Property Variable Value Editor field length too short</li>
+
+                        <li>787873: NPE in ArrayTypeStyleCheck</li>
+
+                        <li>778321: Says Got a null pointer exception</li>
+
+                        <li>773768: Cannot read hex numbers</li>
+
+                        <li>773754: Exclude become Include</li>
+
+                        <li>748678: Checkstyle fails to get class information for Exceptions</li>
+                    </ul>
+
+                    <h4>Other Items:</h4>
+
+                    <ul>
+                        <li>Updated to include Checkstyle v3.3.</li>
+                    </ul>
+
+                    <h3><u><a id="r3_2_0" name="r3_2_0" />Release 3.2.0</u></h3>
+                    <b><i>Important Note:</i></b> If you are using version 2.0.x of Eclipse or version 5.0.x of WSAD you will need to replace the plugin.xml file with the plugin-eclipse2-0-x.xml file. Rename plugin-eclipse2-0-x.xml to plugin.xml in the com.atlassw.tools.eclipse.checkstyle_x.y.z folder in the Eclipse plugins folder. 
+
+                    <h4>Bugs Fixed:</h4>
+
+                    <ul>
+                        <li>784243: Test file filter fails with NPE</li>
+                    </ul>
+
+                    <h4>Other Items:</h4>
+
+                    <ul>
+                        <li>Updates to include Checkstyle v3.2.</li>
+                    </ul>
+
+                    <h3><u><a id="r3_1_1" name="r3_1_1" />Release 3.1.1</u></h3>
+
+                    <h4>Bugs Fixed:</h4>
+
+                    <ul>
+                        <li>744773: Unknown property type for empty block rule.</li>
+
+                        <li>745200: Failed to read and parse check configuration.</li>
+
+                        <li>745340: Poor check config export failure message.</li>
+
+                        <li>748772: Default file pattern is misleading.</li>
+
+                        <li>748779: Exported plugin configuration is not ordered.</li>
+                    </ul>
+
+                    <h4>Feature Requests:</h4>
+
+                    <ul>
+                        <li>741546: You can now import standard Checkstyle configuration files.</li>
+
+                        <li>744754: A file of default configurations is now provided. One configuration on the Sun coding standards from the Checkstyle distribution is included.</li>
+                    </ul>
+
+                    <h4>Other Items:</h4>
+
+                    <ul>
+                        <li>Updated documentation to include a Getting Started and Troubleshooting topic.</li>
+
+                        <li>Improved error handling and reporting in some situations. In particular, when a project FileSet refers to a check configuration that is not in the workspace.</li>
+
+                        <li>Improved performance of check initialization.</li>
+                    </ul>
+
+                    <h3><u><a id="r3_1_0" name="r3_1_0" />Release 3.1.0</u></h3>
+
+                    <ul>
+                        <li>Support for Checkstyle version 3.1</li>
+
+                        <li>Support for multiple check configurations within your workspace at the same time</li>
+
+                        <li>Greatly improved configuration user interface</li>
+
+                        <li>Much greater control over which rules are used to check which source files</li>
+
+                        <li>Support for multiple severity levels (Error, Warning, Info, Ignore) for each rule</li>
+                    </ul>
+                </td>
+
+                <td width="20%" valign="TOP">
+                	<div class="box">
+                		<h3>Releases</h3>
+                		<a href="#r4_0_0b6">Release 4.0.0b6</a><br />
+						<a href="#r4_0_0b5">Release 4.0.0b5</a><br />
+						<a href="#r4_0_0b4">Release 4.0.0b4</a><br />
+						<a href="#r4_0_0b3">Release 4.0.0b3</a><br />
+						<a href="#r4_0_0b2">Release 4.0.0b2</a><br />
+						<a href="#r4_0_0b1">Release 4.0.0b1</a><br />
+						<a href="#r4_0_0a4">Release 4.0.0a4</a><br />
+						<a href="#r4_0_0a3">Release 4.0.0a3</a><br />
+						<a href="#r4_0_0a2">Release 4.0.0a2</a><br />
+						<a href="#r4_0_0a">Release 4.0.0a</a><br />
+						<a href="#r3_5_0">Release 3.5.0</a><br />
+						<a href="#r3_4_1">Release 3.4.1</a><br />
+						<a href="#r3_4_0">Release 3.4.0</a><br />
+						<a href="#r3_3_2">Release 3.3.2</a><br />
+						<a href="#r3_3_1">Release 3.3.1</a><br />
+						<a href="#r3_3_0">Release 3.3.0</a><br />
+						<a href="#r3_2_0">Release 3.2.0</a><br />
+						<a href="#r3_1_1">Release 3.1.1</a><br />
+						<a href="#r3_1_0">Release 3.1.0</a><br />
+	                </div>
+                 </td>
+            </tr>
+        </table>
 <script type="text/javascript">
 footer();
 </script>
-  </body>
+    </body>
 </html>
 

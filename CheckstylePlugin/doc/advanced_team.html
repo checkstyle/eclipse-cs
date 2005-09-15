@@ -25,9 +25,8 @@ header();
 
     <p>Check Configurations are defined in your workspace preferences. Since they are part of your workspace's
     preferences they are stored on your local file system by Eclipse in a location that is not shared via your team
-    repository. To share a Check Configuration with other team members use the Import/Export facility on the Checkstyle
-    preferences page. Have one team member define the Check Configuration to be used by the team and then distribute
-    that Checkstyle configuration file to all the team members.</p>
+    repository. To share a Check Configuration with other team members have one team member define the Check Configuration 
+    to be used by the team and then distribute that Checkstyle configuration file to all the team members.</p>
 
     <p>One approach for distributing the file is to put it on your companies intranet server. Have each team member
     using this configuration by creating a remote check configuration using the file's intranet URL.</p>
@@ -47,12 +46,13 @@ header();
 
     <p>Once Checkstyle is configured for a project via the project's properties page the plug-in will create a file
     named .checkstyle in root of the project. This file can then be shared with all the team members via the repository
-    just as the .project and .classpath files are.</p>
+    just as the .project and .classpath files are.<br />
+    When a team member checks out the project from the repository the Eclipse Checkstyle Plug-In will be already set up
+    for this project - no additional setup steps are required.</p>
 
-    <p><b><i>Important Note:</i></b> File Set configurations refer to their Check Configuration by the Check
-    Configuration's name. To avoid having bad references the imported Check Configuration must be named the same in
-    each team member's workspace. Otherwise, the shared .checkstyle file will point to a non-existent Check
-    Configuration in someone's workspace.</p>
+    <p><b><i>Important Note:</i></b> The team working support has been improved with the plugin version 4.0.0 beta6.
+    In order to get the new features the .checkstyle file for your project need to be rewritten once by the new plugin
+    version. To achieve this just change a small thing within the plugins project properties, Apply the change and then undo it again.</p>
 <script type="text/javascript">
 footer();
 </script>
