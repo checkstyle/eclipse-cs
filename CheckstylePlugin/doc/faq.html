@@ -1,86 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="CONTENT-TYPE" content="text/html; charset=iso-8859-1" />
-    <link type="text/css" href="style.css" rel="stylesheet" />
+    <head>
+        <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8" />
+        <link type="text/css" href="style.css" rel="stylesheet" />
 <script type="text/javascript" src="javascript/header_footer.js">
 </script>
 
-    <title>Writing a custom plug-in filter</title>
-  </head>
+        <title>Writing a custom plug-in filter</title>
+    </head>
 
-  <body class="content">
+    <body class="content">
 <script type="text/javascript">
 header();
 </script>
 
-    <h2><b>F</b>requently <b>A</b>sked (<b>A</b>nd <b>U</b>nasked) <b>Q</b>uestions</h2>
+        <h2><b>F</b>requently <b>A</b>sked (<b>A</b>nd <b>U</b>nasked) <b>Q</b>uestions</h2>
 
-    <p>If you feel there is a very obvious, essential question missing please drop us a note an the mailing list or
-    enter a bug report.</p>
+        <p>If you feel there is a very obvious, essential question missing please drop us a note an the mailing list or
+        enter a bug report.</p>
 
-    <p><b>Q:</b><br />
-     I just dropped plug-in version x.x.x in Eclipse (replacing version z.z.z, which was working great) and I'm having
-    some trouble using it.<br />
-     When I go to Window &gt; Preferences &gt; Checkstyle, there are no Check Configurations listed, and the "Add"
-    button doesn't do anything.<br />
-     I looked at the eclipse log, and saw this:<br />
-     <font size="2"><font face="Courier New, monospace">java.lang.ArrayIndexOutOfBoundsException: 0<br />
-     at
-    com.atlassw.tools.eclipse.checkstyle.preferences.CheckConfigurationPropertiesDialog.initialize(CheckConfigurationPropertiesDialog.java:329)<br />
-     at
-    com.atlassw.tools.eclipse.checkstyle.preferences.CheckConfigurationPropertiesDialog.createDialogArea(CheckConfigurationPropertiesDialog.java:245)</font></font></p>
+        <p><b>Q:</b>
+        <br />
+         I just dropped plug-in version x.x.x in Eclipse (replacing version z.z.z, which was working great) and I&#39;m
+        having some trouble using it.
+        <br />
+         When I go to Window &gt; Preferences &gt; Checkstyle, there are no Check Configurations listed, and the
+        &quot;Add&quot; button doesn&#39;t do anything.
+        <br />
+         I looked at the eclipse log, and saw this:
+        <br />
+         <font size="2"><font face="Courier New, monospace">java.lang.ArrayIndexOutOfBoundsException: 0
+        <br />
+         at
+        com.atlassw.tools.eclipse.checkstyle.preferences.CheckConfigurationPropertiesDialog.initialize(CheckConfigurationPropertiesDialog.java:329)
+        <br />
+         at
+        com.atlassw.tools.eclipse.checkstyle.preferences.CheckConfigurationPropertiesDialog.createDialogArea(CheckConfigurationPropertiesDialog.java:245)</font></font></p>
 
-    <p><b>A:</b><br />
-     If you install the plug-in from the downloaded distributable (not via the Update Site) over an older version of
-    the plug-in, Eclipse may have difficulties detecting the change and updating its cached information about the
-    plug-in.<br />
-     To force Eclipse to update this information you have to restart Eclipse with the <i>-clean</i> option.<br />
-     For instance: <i>&lt;path-to-my-eclipse&gt;\eclipse.exe -clean</i></p>
-    <hr />
+        <p><b>A:</b>
+        <br />
+         If you install the plug-in from the downloaded distributable (not via the Update Site) over an older version
+        of the plug-in, Eclipse may have difficulties detecting the change and updating its cached information about
+        the plug-in.
+        <br />
+         To force Eclipse to update this information you have to restart Eclipse with the <i>-clean</i> option.
+        <br />
+         For instance: <i>&lt;path-to-my-eclipse&gt;\eclipse.exe -clean</i></p>
+        <hr />
 
-    <p><b>Q:<br />
-    </b> I wrote a new Checkstyle rule. I know it works because I tested it. I created a .jar file with .class files
-    and with messages.properties.<br />
-     I can't plug-in my rule to Eclipse - i don't know how do it ?</p>
+        <p><b>Q:
+        <br />
+        </b> I wrote a new Checkstyle rule. I know it works because I tested it. I created a .jar file with .class
+        files and with messages.properties.
+        <br />
+         I can&#39;t plug-in my rule to Eclipse - i don&#39;t know how do it ?</p>
 
-    <p><b>A:<br />
-    </b> It is now documented what to do to integrate custom checks with the plug-in. See <a
-    href="extending_custom_checks.html">here</a>.</p>
-    <hr />
+        <p><b>A:
+        <br />
+        </b> It is now documented what to do to integrate custom checks with the plug-in. See <a
+        href="extending_custom_checks.html">here</a>.</p>
+        <hr />
 
-    <p><b>Q:</b><br />
-     I use the Checkstyle Plug-in with my project which has only 1.000.000 source files.<br />
-     Using Checkstyle on this project is extremely slow even after I upgraded to 4 GB memory!<br />
-     What to do? (This question is a bit dramatized by the FAQ author)</p>
+        <p><b>Q:</b>
+        <br />
+         I use the Checkstyle Plug-in with my project which has only 1.000.000 source files.
+        <br />
+         Using Checkstyle on this project is extremely slow even after I upgraded to 4 GB memory!
+        <br />
+         What to do? (This question is a bit dramatized by the FAQ author)</p>
 
-    <p><b>A:</b><br />
-     Yes, checking such a project takes some time and memory resources.<br />
-     You should try to decrease the number of files that are actually checked by using <a
-    href="advanced_file_sets.html">file sets</a> and <a href="advanced_filters.html">filter</a>.</p>
-    <hr />
+        <p><b>A:</b>
+        <br />
+         Yes, checking such a project takes some time and memory resources.
+        <br />
+         You should try to decrease the number of files that are actually checked by using <a
+        href="advanced_file_sets.html">file sets</a> and <a href="advanced_filters.html">filter</a>.</p>
+        <hr />
 
-    <p><b>Q:</b><br />
-     I think you have done a really good job with your plug-in!<br />
-     We are using it in our company with xxx developers and it helped us to improve the quality of our code big
-    time!<br />
-     I would like to send you some bottles of beer but I don't know your addresses. (OK I admit this question was never
-    asked...)</p>
+        <p><b>Q:</b>
+        <br />
+         I think you have done a really good job with your plug-in!
+        <br />
+         We are using it in our company with xxx developers and it helped us to improve the quality of our code big
+        time!
+        <br />
+         I would like to send you some bottles of beer but I don&#39;t know your addresses. (OK I admit this question
+        was never asked...)</p>
 
-    <p><b>A:</b><br />
-     Thank You for your kind words. Since it wouldn't be wise to publish our addresses on the net we would appreciate a
-    donation for the project.<br />
-     You can make donations to the Checkstyle Plug-in Project <a
-    href="http://sourceforge.net/donate/index.php?group_id=80344" target="_blank">here</a>.<br />
-     Please do not overlook the very great work of the Checkstyle (Core) Project &ndash; they are laying out the base
-    on which the plug-in relies.<br />
-     Since their project has not opted in for donations please drop them a kind note how you like their work.<br />
-    </p>
+        <p><b>A:</b>
+        <br />
+         Thank You for your kind words. Since it wouldn&#39;t be wise to publish our addresses on the net we would
+        appreciate a donation for the project.
+        <br />
+         You can make donations to the Checkstyle Plug-in Project <a
+        href="http://sourceforge.net/donate/index.php?group_id=80344" target="_blank">here</a>.
+        <br />
+         Please do not overlook the very great work of the Checkstyle (Core) Project – they are laying out the base on
+        which the plug-in relies.
+        <br />
+         Since their project has not opted in for donations please drop them a kind note how you like their work.
+        <br />
+        </p>
 <script type="text/javascript">
 footer();
 </script>
-  </body>
+    </body>
 </html>
 

@@ -1,59 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="CONTENT-TYPE" content="text/html; charset=iso-8859-1" />
-    <link type="text/css" href="style.css" rel="stylesheet" />
+    <head>
+        <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8" />
+        <link type="text/css" href="style.css" rel="stylesheet" />
 <script type="text/javascript" src="javascript/header_footer.js">
 </script>
 
-    <title>Configuration types</title>
-  </head>
+        <title>Configuration types</title>
+    </head>
 
-  <body class="content">
+    <body class="content">
 <script type="text/javascript">
 header();
 </script>
-    <h2>Configuration types</h2>
-    Since the 4.0.0 release the Checkstyle Plug-in uses plain Checkstyle configuration files. For easier reuse of
-    existing Checkstyle configurations and to support some common use cases different Configuration types were
-    introduced into the plug-in. The following section explains the existing configuration types 
 
-    <h3>Built-in Configuration</h3>
-    Built-in configurations come shipped with the plug-in. They can not be edited nor deleted.<br />
-    You can create an own configuration based on a built-in (or any other) configuration by copying the
-    configuration.<br />
-    Please note that you cannot create new Built-In configurations. 
+        <h2>Configuration types</h2>
 
-    <h3>Internal Configuration</h3>
-    Internal configurations are stored within the Eclipse metadata. Use an internal configuration if you don't want to
-    manage the location of your configuration by yourself.<br />
-    If you ever need the internal configuration outside the plug-in use the export functionality.<br />
-    Internal configurations can be edited and deleted. 
+        <p>Since the 4.0.0 release the Checkstyle Plug-in uses plain Checkstyle configuration files. For easier reuse
+        of existing Checkstyle configurations and to support some common use cases different Configuration types were
+        introduced into the plug-in. The following section explains the existing configuration types</p>
 
-    <h3>External Configuration</h3>
-    Use this configuration type if you have a Checkstyle configuration file outside of eclipse in your file
-    system.<br />
-    The plug-in just points to this configuration file and uses it from its location.<br />
-    External configurations can be edited if the configuration file is write enabled.<br />
-    If you delete an External Configuration from the plug-in the external configuration file will NOT be deleted. 
+        <h3>Built-in Configuration</h3>
 
-    <h3>Remote Configuration</h3>
-    This configuration type can be used if you want to publish your Checkstyle configuration on a web server and have
-    all developer in your company use it.<br />
-    A Remote Configuration can not be edited but can be removed from the plug-in. 
+        <p>Built-in configurations come shipped with the plug-in. They can not be edited nor deleted.
+        <br />
+         You can create an own configuration based on a built-in (or any other) configuration by copying the
+        configuration.
+        <br />
+         Please note that you cannot create new Built-In configurations.</p>
 
-    <h3>Project Relative Configuration</h3>
-    If you got a several projects with specific Checkstyle configurations under the same relative path stored within
-    these projects you might want to use the Project Relative Configuration type.<br />
-    You must provide the project relative location of the configuration file.<br />
-    If then project A is checked the Checkstyle configuration file is used from project A. If project B is checked the
-    configuration is used from project B.<br />
-    This is particular useful if you already using Checkstyle with your Ant-Build for these projects. 
+        <h3>Internal Configuration</h3>
+
+        <p>Internal configurations are stored within the Eclipse metadata. Use an internal configuration if you
+        don&#39;t want to manage the location of your configuration by yourself.
+        <br />
+         If you ever need the internal configuration outside the plug-in use the export functionality.
+        <br />
+         Internal configurations can be edited and deleted.</p>
+
+        <h3>External Configuration</h3>
+
+        <p>Use this configuration type if you have a Checkstyle configuration file outside of eclipse in your file
+        system.
+        <br />
+         The plug-in just points to this configuration file and uses it from its location.
+        <br />
+         External configurations can be edited if the configuration file is write enabled.
+        <br />
+         If you delete an External Configuration from the plug-in the external configuration file will NOT be
+        deleted.</p>
+
+        <h3>Remote Configuration</h3>
+
+        <p>This configuration type can be used if you want to publish your Checkstyle configuration on a web server and
+        have all developer in your company use it.
+        <br />
+         A Remote Configuration can not be edited but can be removed from the plug-in.</p>
+
+        <h3>Project Relative Configuration</h3>
+
+        <p>If you got a several projects with specific Checkstyle configurations under the same relative path stored
+        within these projects you might want to use the Project Relative Configuration type.
+        <br />
+         You must provide the project relative location of the configuration file.
+        <br />
+         If then project A is checked the Checkstyle configuration file is used from project A. If project B is checked
+        the configuration is used from project B.
+        <br />
+         This is particular useful if you already using Checkstyle with your Ant-Build for these projects. 
 <script type="text/javascript">
 footer();
 </script>
-  </body>
+        </p>
+    </body>
 </html>
 

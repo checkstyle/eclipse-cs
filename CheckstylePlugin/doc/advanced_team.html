@@ -1,61 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="CONTENT-TYPE" content="text/html; charset=iso-8859-1" />
-    <link type="text/css" href="style.css" rel="stylesheet" />
+    <head>
+        <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8" />
+        <link type="text/css" href="style.css" rel="stylesheet" />
 <script type="text/javascript" src="javascript/header_footer.js">
 </script>
 
-    <title>Working with a Team Repository</title>
-  </head>
+        <title>Working with a Team Repository</title>
+    </head>
 
-  <body class="content">
+    <body class="content">
 <script type="text/javascript">
 header();
 </script>
 
-    <h2>Working with a Team Repository</h2>
+        <h2>Working with a Team Repository</h2>
 
-    <p>Most software projects involve more then one person and a team repository is used to manage and share files
-    among the team members.<br />
-     The Eclipse Checkstyle plug-in supports working in a team environment with a repository.<br />
-     The following discussion provides the information you need to know when working in a team environment.</p>
+        <p>Most software projects involve more then one person and a team repository is used to manage and share files
+        among the team members.
+        <br />
+         The Eclipse Checkstyle plug-in supports working in a team environment with a repository.
+        <br />
+         The following discussion provides the information you need to know when working in a team environment.</p>
 
-    <p>Check Configurations are defined in your workspace preferences. Since they are part of your workspace's
-    preferences they are stored on your local file system by Eclipse in a location that is not shared via your team
-    repository. To share a Check Configuration with other team members have one team member define the Check Configuration 
-    to be used by the team and then distribute that Checkstyle configuration file to all the team members.</p>
+        <p>Check Configurations are defined in your workspace preferences. Since they are part of your workspace&#39;s
+        preferences they are stored on your local file system by Eclipse in a location that is not shared via your team
+        repository. To share a Check Configuration with other team members have one team member define the Check
+        Configuration to be used by the team and then distribute that Checkstyle configuration file to all the team
+        members.</p>
 
-    <p>One approach for distributing the file is to put it on your companies intranet server. Have each team member
-    using this configuration by creating a remote check configuration using the file's intranet URL.</p>
+        <p>One approach for distributing the file is to put it on your companies intranet server. Have each team member
+        using this configuration by creating a remote check configuration using the file&#39;s intranet URL.</p>
 
-    <p><img src="images/advanced_team_html_m1fca405c.jpg" alt="Remote Configuration" /><br clear="left" />
-    </p>
+        <p><img src="images/advanced_team_html_m1fca405c.jpg" alt="Remote Configuration" />
+        <br clear="left" />
+        </p>
 
-    <p>Another option to store the Checkstyle configuration file within your eclipse project and put it under version
-    control. Have each team member using this configuration by creating a project relative check configuration.</p>
+        <p>Another option to store the Checkstyle configuration file within your eclipse project and put it under
+        version control. Have each team member using this configuration by creating a project relative check
+        configuration.</p>
 
-    <p><img src="images/advanced_team_html_m748fe704.jpg" alt="Project Relative Configuration" /><br clear="left" />
-    </p>
+        <p><img src="images/advanced_team_html_m748fe704.jpg" alt="Project Relative Configuration" />
+        <br clear="left" />
+        </p>
 
-    <p>This even allows you to have project specific configurations in each project with the same configuration file
-    name. Each if these project use then the same project specific configuration set up in the preferences.<br />
-     When Checkstyle is invoked on the project the specific configuration file is loaded and used with the project.</p>
+        <p>This even allows you to have project specific configurations in each project with the same configuration
+        file name. Each if these project use then the same project specific configuration set up in the preferences.
+        <br />
+         When Checkstyle is invoked on the project the specific configuration file is loaded and used with the
+        project.</p>
 
-    <p>Once Checkstyle is configured for a project via the project's properties page the plug-in will create a file
-    named .checkstyle in root of the project. This file can then be shared with all the team members via the repository
-    just as the .project and .classpath files are.<br />
-    When a team member checks out the project from the repository the Eclipse Checkstyle Plug-In will be already set up
-    for this project - no additional setup steps are required.</p>
+        <p>Once Checkstyle is configured for a project via the project&#39;s properties page the plug-in will create a
+        file named .checkstyle in root of the project. This file can then be shared with all the team members via the
+        repository just as the .project and .classpath files are.
+        <br />
+         When a team member checks out the project from the repository the Eclipse Checkstyle Plug-In will be already
+        set up for this project - no additional setup steps are required.</p>
 
-    <p><b><i>Important Note:</i></b> The team working support has been improved with the plugin version 4.0.0 beta6.
-    In order to get the new features the .checkstyle file for your project need to be rewritten once by the new plugin
-    version. To achieve this just change a small thing within the plugins project properties, Apply the change and then undo it again.</p>
+        <p><b><i>Important Note:</i></b> The team working support has been improved with the plugin version 4.0.0
+        beta6. In order to get the new features the .checkstyle file for your project need to be rewritten once by the
+        new plugin version. To achieve this just change a small thing within the plugins project properties, Apply the
+        change and then undo it again.</p>
 <script type="text/javascript">
 footer();
 </script>
-  </body>
+    </body>
 </html>
 
