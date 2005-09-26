@@ -10,6 +10,6 @@ document.write('</tr></table>');
 function footer()
 {
 document.write('<hr />');
-document.write('<p class="copyright">Copyright © 2002-2005 David Schneider, <a href="http://www.koedderitzsch.net" target="_blank">Lars Ködderitzsch</a>. All Rights Reserved.</p>');
+document.write('<p class="copyright">Copyright (c) 2002-2005 David Schneider, <a href="http://www.koedderitzsch.net" target="_blank">Lars KÃ¶dderitzsch</a>. All Rights Reserved.</p>');
 }
 
