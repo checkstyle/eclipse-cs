@@ -40,8 +40,11 @@ import java.util.List;
 import javax.xml.transform.sax.TransformerHandler;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
@@ -49,6 +52,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
+import com.atlassw.tools.eclipse.checkstyle.config.configtypes.BuiltInCheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.ConfigurationTypes;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.IConfigurationType;
 import com.atlassw.tools.eclipse.checkstyle.config.migration.CheckConfigurationMigrator;
@@ -72,9 +76,6 @@ public final class CheckConfigurationFactory
     // Static class variables.
     // =================================================
 
-    /** Name of the file containing the plugin default configuration. */
-    private static final String DEFAULT_CHECK_CONFIGS = "DefaultCheckConfigurations.xml"; //$NON-NLS-1$
-
     /** Name of the internal file storing the plugin check configurations. */
     private static final String CHECKSTYLE_CONFIG_FILE = "checkstyle-config.xml"; //$NON-NLS-1$
 
@@ -83,6 +84,10 @@ public final class CheckConfigurationFactory
 
     /** The current file version. */
     private static final String CURRENT_CONFIG_FILE_FORMAT_VERSION = VERSION_5_0_0;
+
+    /** constant for the extension point id. */
+    private static final String CONFIGS_EXTENSION_POINT = CheckstylePlugin.PLUGIN_ID
+            + ".configurations"; //$NON-NLS-1$
 
     /**
      * List of known check configurations. Synchronized because of possible
@@ -94,6 +99,7 @@ public final class CheckConfigurationFactory
     {
         try
         {
+            loadBuiltinConfigurations();
             loadFromPersistence();
         }
         catch (CheckstylePluginException e)
@@ -165,6 +171,7 @@ public final class CheckConfigurationFactory
 
         sConfigurations.clear();
 
+        loadBuiltinConfigurations();
         loadFromPersistence();
     }
 
@@ -288,9 +295,7 @@ public final class CheckConfigurationFactory
             //
             if (!configFile.exists())
             {
-                // load from plugins default configuration
-                Path defaultsPath = new Path(DEFAULT_CHECK_CONFIGS);
-                inStream = CheckstylePlugin.getDefault().openStream(defaultsPath);
+                return;
             }
             else
             {
@@ -330,6 +335,49 @@ public final class CheckConfigurationFactory
         }
     }
 
+    /**
+     * Loads the built-in check configurations defined in plugin.xml or custom
+     * fragments.
+     */
+    private static void loadBuiltinConfigurations()
+    {
+
+        IExtensionRegistry pluginRegistry = Platform.getExtensionRegistry();
+
+        IConfigurationElement[] elements = pluginRegistry
+                .getConfigurationElementsFor(CONFIGS_EXTENSION_POINT);
+
+        for (int i = 0; i < elements.length; i++)
+        {
+            String name = elements[i].getAttribute(XMLTags.NAME_TAG);
+            String description = elements[i].getAttribute(XMLTags.DESCRIPTION_TAG);
+            String location = elements[i].getAttribute(XMLTags.LOCATION_TAG);
+
+            IConfigurationType configType = ConfigurationTypes.getByInternalName("builtin");
+
+            try
+            {
+                ICheckConfiguration checkConfig = (ICheckConfiguration) configType
+                        .getImplementationClass().newInstance();
+
+                checkConfig.initialize(name, location, configType, description);
+                sConfigurations.add(checkConfig);
+            }
+            catch (InstantiationException e)
+            {
+                CheckstyleLog.log(e);
+            }
+            catch (IllegalAccessException e)
+            {
+                CheckstyleLog.log(e);
+            }
+            catch (CheckstylePluginException e)
+            {
+                CheckstyleLog.log(e);
+            }
+        }
+    }
+
     private static void migrate() throws CheckstylePluginException
     {
 
@@ -339,16 +387,9 @@ public final class CheckConfigurationFactory
         try
         {
 
-            // get input stream to the default configuration
-            Path defaultsPath = new Path(DEFAULT_CHECK_CONFIGS);
-            defaultConfigStream = CheckstylePlugin.getDefault().openStream(defaultsPath);
-
-            CheckConfigurationsFileHandler handler = new CheckConfigurationsFileHandler();
-            XMLUtil.parseWithSAX(defaultConfigStream, handler);
-            List defaultConfigs = handler.getConfigurations();
-
-            // set configurations to make duplicate name detection possible
-            sConfigurations.addAll(defaultConfigs);
+            // load builtin configurations to make duplicate name detection
+            // possible
+            loadBuiltinConfigurations();
 
             // get inputstream to the current oldstyle config
             IPath configPath = CheckstylePlugin.getDefault().getStateLocation();
@@ -359,8 +400,7 @@ public final class CheckConfigurationFactory
             List migratedConfigs = CheckConfigurationMigrator.getMigratedConfigurations(inStream);
 
             // store all configurations
-            defaultConfigs.addAll(migratedConfigs);
-            setCheckConfigurations(defaultConfigs);
+            setCheckConfigurations(migratedConfigs);
 
         }
         catch (Exception e)
@@ -522,6 +562,12 @@ public final class CheckConfigurationFactory
         {
 
             ICheckConfiguration config = (ICheckConfiguration) it.next();
+
+            // don't store built-in configurations to persistence
+            if (config instanceof BuiltInCheckConfiguration)
+            {
+                continue;
+            }
 
             attrs = new AttributesImpl();
             attrs.addAttribute(new String(), XMLTags.NAME_TAG, XMLTags.NAME_TAG, null, config

@@ -57,13 +57,11 @@
 
 			<zipfileset dir="." prefix="${plugins.path}" includes="${checkstyle.jar}" />
 			<zipfileset dir="." prefix="${plugins.path}" includes="${checkstyle-optional.jar}" />
-			<zipfileset dir="." prefix="${plugins.path}" includes="extension-libraries/checkstyle_packages.xml.template"/>
 			<zipfileset dir="." prefix="${plugins.path}" includes="plugin.xml" />
 			<zipfileset dir="." prefix="${plugins.path}" includes="*.properties" excludes="build.properties" />
 			<zipfileset dir="." prefix="${plugins.path}" includes="toc.xml" />
 			<zipfileset dir="." prefix="${plugins.path}" includes="README.html" />
 			<zipfileset dir="." prefix="${plugins.path}" includes="sun_checks.xml" />
-			<zipfileset dir="." prefix="${plugins.path}" includes="DefaultCheckConfigurations.xml" />
 			<zipfileset dir="." prefix="${plugins.path}" includes="META-INF/**" />
 			<zipfileset dir="." prefix="${plugins.path}" includes="schema/**" />
 			<zipfileset dir="." prefix="${plugins.path}" includes="icons/**" />
@@ -103,19 +101,16 @@
 
 			<zipfileset dir="." includes="${checkstyle.jar}" />
 			<zipfileset dir="." includes="${checkstyle-optional.jar}" />
-			<zipfileset dir="." includes="extension-libraries/checkstyle_packages.xml.template"/>
 			<zipfileset dir="." includes="plugin.xml" />
 			<zipfileset dir="." includes="*.properties" excludes="build.properties" />
 			<zipfileset dir="." includes="toc.xml" />
 			<zipfileset dir="." includes="README.html" />
 			<zipfileset dir="." includes="sun_checks.xml" />
-			<zipfileset dir="." includes="DefaultCheckConfigurations.xml" />
 			<zipfileset dir="." includes="META-INF/**" />
 			<zipfileset dir="." includes="schema/**" />
 			<zipfileset dir="." includes="icons/**" />
 			<zipfileset dir="." includes="license/**" />
 			<zipfileset dir="." includes="doc/**" />
-
 			<zipfileset dir="." includes="src/**" />
 			<zipfileset dir="." includes="nls/**" />
 			<zipfileset dir="." includes="CheckConfig_Checkstyle.xml" />

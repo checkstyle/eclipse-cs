@@ -152,7 +152,7 @@ public final class ConfigurationReader
                         dtdResourceName);
                 if (dtdIS == null)
                 {
-                    throw new SAXException(NLS.bind(ErrorMessages.errorResolveConfigLocation,
+                    throw new SAXException(NLS.bind(ErrorMessages.msgErrorLoadingCheckstyleDTD,
                             dtdResourceName));
                 }
                 return new InputSource(dtdIS);

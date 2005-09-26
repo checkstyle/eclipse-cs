@@ -4,7 +4,10 @@
   
    <!-- defines the extension point to contribute custom configuration type. -->
    <extension-point id="configurationtypes" name="Configuration types" schema="schema/configtypes.exsd"/>
-  
+
+   <!-- defines the extension point to contribute default checkstyle configurations to the checkstyle plugin -->
+   <extension-point id="configurations" name="Checkstyle configurations" schema="schema/configurations.exsd"/>
+    
    <!-- defines the extension point to contribute custom filters to the checkstyle plugin -->
    <extension-point id="filters" name="Checkstyle filters" schema="schema/filters.exsd"/>
    
@@ -244,6 +247,18 @@
       </configuration-type>
    </extension>
 
+<!-- 
+	Standard plugin check configurations
+	-->
+   <extension
+         id="checkstyle.CheckConfiguration"
+         point="com.atlassw.tools.eclipse.checkstyle.configurations">
+		<check-configuration 
+			name="Sun Checks" 
+			location="sun_checks.xml" 
+			description="%SunChecks.description"/>
+	</extension>
+	
 <!-- 
 	Standard checkstyle filters
 	-->
