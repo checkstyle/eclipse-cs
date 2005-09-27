@@ -220,7 +220,20 @@ public class PackageFilterEditor implements IFilterEditor
                             for (int i = 0, size = packageRoots.length; i < size; i++)
                             {
 
-                                if (!packageRoots[i].isArchive())
+                                // special case - project itself is package root
+                                if (project.equals(packageRoots[i].getResource()))
+                                {
+
+                                    IResource[] members = project.members();
+                                    for (int j = 0; j < members.length; j++)
+                                    {
+                                        if (members[j].getType() != IResource.FILE)
+                                        {
+                                            children.add(members[j]);
+                                        }
+                                    }
+                                }
+                                else if (!packageRoots[i].isArchive())
                                 {
                                     children.add(packageRoots[i].getResource());
                                 }
@@ -231,7 +244,11 @@ public class PackageFilterEditor implements IFilterEditor
                     {
                         CheckstyleLog.log(e);
                     }
-
+                    catch (CoreException e)
+                    {
+                        // this should never happen because we call
+                        // #isAccessible before invoking #members
+                    }
                 }
 
             }
