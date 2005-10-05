@@ -48,6 +48,9 @@ public abstract class CheckstylePluginImages
     /** Image descriptor for the info marker. */
     public static final ImageDescriptor MARKER_INFO;
 
+    /** Image descriptor for the help icon. */
+    public static final ImageDescriptor HELP_ICON;
+
     /** Image cache. */
     private static final Map CACHED_IMAGES = new HashMap();
 
@@ -62,6 +65,8 @@ public abstract class CheckstylePluginImages
                 "icons/checkstyle_warning.gif"); //$NON-NLS-1$
         MARKER_INFO = CheckstylePlugin.imageDescriptorFromPlugin(CheckstylePlugin.PLUGIN_ID,
                 "icons/checkstyle_info.gif"); //$NON-NLS-1$
+        HELP_ICON = CheckstylePlugin.imageDescriptorFromPlugin(CheckstylePlugin.PLUGIN_ID,
+                "icons/help.gif"); //$NON-NLS-1$
     }
 
     /**

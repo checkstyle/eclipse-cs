@@ -91,6 +91,12 @@ public class CheckstylePlugin extends AbstractUIPlugin
     public static final String PREF_DUPLICATED_CODE_MIN_LINES = "checker.strictDuplicatedCode.minLines"; //$NON-NLS-1$
 
     /**
+     * Preference name indicating if the project classloader feature should be
+     * disabled. This can help with worspace crashes with RAD 6.0.
+     */
+    public static final String PREF_DISABLE_PROJ_CLASSLOADER = "diable.project.classloader"; //$NON-NLS-1$
+
+    /**
      * Default value for the minimum amount of lines that is used for the
      * checker analysis.
      */
@@ -104,8 +110,7 @@ public class CheckstylePlugin extends AbstractUIPlugin
 
     /** Constant for the path to the extension-libraries directory. */
     public static final String EXTENSION_LIBS_DIR = "/extension-libraries";
-  
-    
+
     // =================================================
     // Static class variables.
     // =================================================
@@ -169,6 +174,6 @@ public class CheckstylePlugin extends AbstractUIPlugin
         prefStore.setDefault(PREF_DUPLICATED_CODE_MIN_LINES, DUPLICATED_CODE_MIN_LINES);
         prefStore.setDefault(PREF_LIMIT_MARKERS_PER_RESOURCE, false);
         prefStore.setDefault(PREF_MARKER_AMOUNT_LIMIT, MARKER_LIMIT);
-
+        prefStore.setDefault(PREF_DISABLE_PROJ_CLASSLOADER, false);
     }
 }

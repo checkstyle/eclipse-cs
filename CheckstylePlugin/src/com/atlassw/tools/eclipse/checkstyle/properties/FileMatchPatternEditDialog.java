@@ -88,8 +88,6 @@ public class FileMatchPatternEditDialog extends TitleAreaDialog
 
     private Text mFileMatchPatternText;
 
-    private ContentAssistHandler mContentAssistHandler;
-
     private FileMatchPattern mPattern;
 
     // =================================================
@@ -144,8 +142,7 @@ public class FileMatchPatternEditDialog extends TitleAreaDialog
         mIncludeButton.setLayoutData(new GridData());
 
         // integrate content assist
-        mContentAssistHandler = ContentAssistHandler.createHandlerForText(mFileMatchPatternText,
-                createContentAssistant());
+        ContentAssistHandler.createHandlerForText(mFileMatchPatternText, createContentAssistant());
 
         // init the controls
         if (mPattern != null)
@@ -188,7 +185,7 @@ public class FileMatchPatternEditDialog extends TitleAreaDialog
             {
                 mPattern.setMatchPattern(pattern);
             }
-            
+
             mPattern.setIsIncludePattern(mIncludeButton.getSelection());
         }
         catch (PatternSyntaxException e)
@@ -235,7 +232,8 @@ public class FileMatchPatternEditDialog extends TitleAreaDialog
         contentAssistant.setInformationControlCreator(new IInformationControlCreator()
         {
             /*
-             * @see org.eclipse.jface.text.IInformationControlCreator#createInformationControl(org.eclipse.swt.widgets.Shell)
+             * @see org.eclipse.jface.text.IInformationControlCreator#createInformationControl(
+             *      org.eclipse.swt.widgets.Shell)
              */
             public IInformationControl createInformationControl(Shell parent)
             {

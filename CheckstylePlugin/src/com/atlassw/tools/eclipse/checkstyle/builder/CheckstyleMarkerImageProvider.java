@@ -58,7 +58,8 @@ public class CheckstyleMarkerImageProvider implements IAnnotationImageProvider
     }
 
     /**
-     * @see org.eclipse.ui.texteditor.IAnnotationImageProvider#getImageDescriptorId(org.eclipse.jface.text.source.Annotation)
+     * @see org.eclipse.ui.texteditor.IAnnotationImageProvider#getImageDescriptorId(
+     *      org.eclipse.jface.text.source.Annotation)
      */
     public String getImageDescriptorId(Annotation annotation)
     {

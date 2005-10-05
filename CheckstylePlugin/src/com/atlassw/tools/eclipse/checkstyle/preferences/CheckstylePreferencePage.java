@@ -58,8 +58,6 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.events.VerifyEvent;
-import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -69,7 +67,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
@@ -89,6 +86,7 @@ import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.builder.CheckerFactory;
 import com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleBuilder;
+import com.atlassw.tools.eclipse.checkstyle.builder.PackageNamesLoader;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationFactory;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.ConfigurationTypes;
@@ -98,7 +96,9 @@ import com.atlassw.tools.eclipse.checkstyle.config.meta.MetadataFactory;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfigurationFactory;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginImages;
 import com.atlassw.tools.eclipse.checkstyle.util.CustomLibrariesClassLoader;
+import com.atlassw.tools.eclipse.checkstyle.util.SWTUtil;
 
 /**
  * This class represents a preference page that is contributed to the
@@ -151,6 +151,8 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
     private Button mIncludeRuleNamesButton;
 
     private Button mLimitCheckstyleMarkers;
+
+    private Button mDisableClassloader;
 
     private Text mTxtMarkerLimit;
 
@@ -252,9 +254,9 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         //
         Group generalComposite = new Group(parent, SWT.NULL);
         generalComposite.setText(Messages.CheckstylePreferencePage_lblGeneralSettings);
-        GridLayout layout = new GridLayout();
-        layout.numColumns = 1;
-        generalComposite.setLayout(layout);
+        GridLayout gridLayout = new GridLayout();
+        gridLayout.numColumns = 1;
+        generalComposite.setLayout(gridLayout);
 
         //
         // Get the preferences.
@@ -265,10 +267,10 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         // Create a combo with the rebuild options
         //
         Composite rebuildComposite = new Composite(generalComposite, SWT.NULL);
-        GridLayout layout2 = new GridLayout(3, false);
-        layout2.marginHeight = 0;
-        layout2.marginWidth = 0;
-        rebuildComposite.setLayout(layout2);
+        gridLayout = new GridLayout(3, false);
+        gridLayout.marginHeight = 0;
+        gridLayout.marginWidth = 0;
+        rebuildComposite.setLayout(gridLayout);
         rebuildComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
         Label lblRebuild = new Label(rebuildComposite, SWT.NULL);
@@ -308,19 +310,30 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         //
         // Create the "Include rule name" check box.
         //
-        mIncludeRuleNamesButton = new Button(generalComposite, SWT.CHECK);
+        Composite includeRuleNamesComposite = new Composite(generalComposite, SWT.NULL);
+        gridLayout = new GridLayout(2, false);
+        gridLayout.marginHeight = 0;
+        gridLayout.marginWidth = 0;
+        includeRuleNamesComposite.setLayout(gridLayout);
+
+        mIncludeRuleNamesButton = new Button(includeRuleNamesComposite, SWT.CHECK);
         mIncludeRuleNamesButton.setText(Messages.CheckstylePreferencePage_lblIncludeRulenames);
         mIncludeRuleNamesButton.setSelection(prefs
                 .getBoolean(CheckstylePlugin.PREF_INCLUDE_RULE_NAMES));
+
+        Label lblRebuildNote = new Label(includeRuleNamesComposite, SWT.NULL);
+        lblRebuildNote.setImage(CheckstylePluginImages.getImage(CheckstylePluginImages.HELP_ICON));
+        lblRebuildNote.setToolTipText(Messages.CheckstylePreferencePage_txtSuggestRebuild);
+        SWTUtil.addTooltipOnPressSupport(lblRebuildNote);
 
         //
         // Create the "limit markers" check box and text field combination
         //
         Composite limitMarkersComposite = new Composite(generalComposite, SWT.NULL);
-        GridLayout layout3 = new GridLayout(2, false);
-        layout3.marginHeight = 0;
-        layout3.marginWidth = 0;
-        limitMarkersComposite.setLayout(layout3);
+        gridLayout = new GridLayout(3, false);
+        gridLayout.marginHeight = 0;
+        gridLayout.marginWidth = 0;
+        limitMarkersComposite.setLayout(gridLayout);
 
         mLimitCheckstyleMarkers = new Button(limitMarkersComposite, SWT.CHECK);
         mLimitCheckstyleMarkers.setText(Messages.CheckstylePreferencePage_lblLimitMarker);
@@ -329,49 +342,42 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
 
         mTxtMarkerLimit = new Text(limitMarkersComposite, SWT.SINGLE | SWT.BORDER);
         mTxtMarkerLimit.setTextLimit(5);
-        mTxtMarkerLimit.addVerifyListener(new VerifyListener()
-        {
+        SWTUtil.addOnlyDigitInputSupport(mTxtMarkerLimit);
 
-            public void verifyText(VerifyEvent e)
-            {
-
-                boolean doit = true;
-
-                // only let digits pass (and del, backspace)
-                if (!(Character.isDigit(e.character) || e.character == SWT.DEL || e.character == SWT.BS))
-                {
-                    doit = false;
-                }
-
-                // check if inserted text is an integer
-                if (!doit)
-                {
-                    try
-                    {
-                        Integer.parseInt(e.text);
-                        doit = true;
-                    }
-                    catch (NumberFormatException ex)
-                    {
-                        doit = false;
-                    }
-                }
-
-                e.doit = doit;
-                if (!e.doit)
-                {
-                    Display.getCurrent().beep();
-                }
-            }
-        });
         mTxtMarkerLimit.setText(Integer.toString(prefs
                 .getInt(CheckstylePlugin.PREF_MARKER_AMOUNT_LIMIT)));
         gd = new GridData();
         gd.widthHint = 30;
         mTxtMarkerLimit.setLayoutData(gd);
 
-        new Label(generalComposite, SWT.NULL)
-                .setText(Messages.CheckstylePreferencePage_txtSuggestRebuild);
+        lblRebuildNote = new Label(limitMarkersComposite, SWT.NULL);
+        lblRebuildNote.setImage(CheckstylePluginImages.getImage(CheckstylePluginImages.HELP_ICON));
+        lblRebuildNote.setToolTipText(Messages.CheckstylePreferencePage_txtSuggestRebuild);
+        SWTUtil.addTooltipOnPressSupport(lblRebuildNote);
+
+        //
+        // Create the "disable classloader" check box
+        //
+
+        Composite disableClassloaderComposite = new Composite(generalComposite, SWT.NULL);
+        gridLayout = new GridLayout(2, false);
+        gridLayout.marginHeight = 0;
+        gridLayout.marginWidth = 0;
+        disableClassloaderComposite.setLayout(gridLayout);
+
+        mDisableClassloader = new Button(disableClassloaderComposite, SWT.CHECK);
+        mDisableClassloader.setText(Messages.CheckstylePreferencePage_lblDisableClassloader);
+        mDisableClassloader.setSelection(prefs
+                .getBoolean(CheckstylePlugin.PREF_DISABLE_PROJ_CLASSLOADER));
+        mDisableClassloader
+                .setToolTipText(Messages.CheckstylePreferencePage_lblDisableClassloaderNote);
+
+        Label lblDisableClassloader = new Label(disableClassloaderComposite, SWT.NULL);
+        lblDisableClassloader.setImage(CheckstylePluginImages
+                .getImage(CheckstylePluginImages.HELP_ICON));
+        lblDisableClassloader
+                .setToolTipText(Messages.CheckstylePreferencePage_lblDisableClassloaderNote);
+        SWTUtil.addTooltipOnPressSupport(lblDisableClassloader);
 
         return generalComposite;
     }
@@ -608,6 +614,12 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
                     .getItem(mRebuildIfNeeded.getSelectionIndex()));
 
             //
+            // Save the classloader preferences.
+            //
+            prefs.setValue(CheckstylePlugin.PREF_DISABLE_PROJ_CLASSLOADER, mDisableClassloader
+                    .getSelection());
+
+            //
             // fileset warning preference
             //
             boolean warnFileSetsNow = mWarnBeforeLosingFilesets.getSelection();
@@ -781,6 +793,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
                 CheckerFactory.cleanup();
                 MetadataFactory.refresh();
                 CustomLibrariesClassLoader.invalidate();
+                PackageNamesLoader.refresh();
                 mRebuildAll = true;
             }
         }

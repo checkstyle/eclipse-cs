@@ -78,8 +78,6 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
     // Instance member variables.
     // =================================================
 
-    private Composite mParentComposite;
-
     private Module mRule;
 
     private Text mCommentText;
@@ -129,7 +127,6 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
 
         Composite dialog = new Composite(composite, SWT.NONE);
         dialog.setLayoutData(new GridData(GridData.FILL_BOTH));
-        mParentComposite = dialog;
         GridLayout layout = new GridLayout(2, false);
         dialog.setLayout(layout);
 
@@ -161,7 +158,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
         mSeverityCombo.getControl().setLayoutData(new GridData());
 
         Group properties = new Group(dialog, SWT.NULL);
-        properties.setLayout(new GridLayout(2, false));
+        properties.setLayout(new GridLayout(3, false));
         properties.setText(Messages.RuleConfigurationEditDialog_lblProperties);
         GridData gd = new GridData(GridData.FILL_BOTH);
         gd.horizontalSpan = 2;
