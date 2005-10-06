@@ -203,7 +203,7 @@
 	Standard plugin check configuration types
 	-->
    <extension
-         id="checkstyle.CheckConfiguration"
+         id="checkstyle.CheckConfigurationTypes"
          point="com.atlassw.tools.eclipse.checkstyle.configurationtypes">
       <configuration-type
             name="%BuiltinCheckConfiguration.label"
