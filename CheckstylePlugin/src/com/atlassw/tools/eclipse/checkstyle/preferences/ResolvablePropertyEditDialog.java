@@ -49,23 +49,21 @@ import com.atlassw.tools.eclipse.checkstyle.config.ResolvableProperty;
  */
 public class ResolvablePropertyEditDialog extends Dialog
 {
-    //=================================================
+    // =================================================
     // Public static final variables.
-    //=================================================
+    // =================================================
 
-    //=================================================
+    // =================================================
     // Static class variables.
-    //=================================================
+    // =================================================
 
     private static final int MAX_LENGTH = 120;
 
-    //=================================================
+    // =================================================
     // Instance member variables.
-    //=================================================
+    // =================================================
 
     private String mValue;
-
-    private Composite mComposite;
 
     private Text mPropValueText;
 
@@ -73,9 +71,9 @@ public class ResolvablePropertyEditDialog extends Dialog
 
     private boolean mOkWasPressed = false;
 
-    //=================================================
+    // =================================================
     // Constructors & finalizer.
-    //=================================================
+    // =================================================
 
     /**
      * Constructor for SamplePropertyPage.
@@ -90,16 +88,15 @@ public class ResolvablePropertyEditDialog extends Dialog
         mProperty = prop;
     }
 
-    //=================================================
+    // =================================================
     // Methods.
-    //=================================================
+    // =================================================
 
     /**
      * @see Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
      */
     protected Control createDialogArea(Composite parent)
     {
-        mComposite = parent;
         Composite composite = (Composite) super.createDialogArea(parent);
         Composite dialog = new Composite(composite, SWT.NONE);
 
@@ -125,7 +122,7 @@ public class ResolvablePropertyEditDialog extends Dialog
         data.widthHint = convertWidthInCharsToPixels(MAX_LENGTH);
         mPropValueText.setLayoutData(data);
         mPropValueText.setFont(parent.getFont());
-        //mPropValueText.setTextLimit(MAX_LENGTH);
+        // mPropValueText.setTextLimit(MAX_LENGTH);
         if (mProperty.getValue() != null)
         {
             mPropValueText.setText(mProperty.getValue());
@@ -138,7 +135,7 @@ public class ResolvablePropertyEditDialog extends Dialog
     protected void okPressed()
     {
         //
-        //  Get the entered value.
+        // Get the entered value.
         //
         mValue = mPropValueText.getText();
 

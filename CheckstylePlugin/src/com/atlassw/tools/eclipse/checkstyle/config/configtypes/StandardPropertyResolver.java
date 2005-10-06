@@ -69,7 +69,6 @@ public class StandardPropertyResolver implements PropertyResolver, IContextAware
     /**
      * Creates the BuiltInPropertyResolver.
      * 
-     * @param project the current project
      * @param configLocation the location of the checkstyle configuration file
      */
     public StandardPropertyResolver(String configLocation)
