@@ -46,7 +46,7 @@ The &#39;name&#39; attribute is used as display name and is translatable.
 
 The &#39;priority&#39; influences the order in which groups appear in the configuration editor.
 
-The &#39;hidden&#39; attribut can be used to hide an entire group.
+The &#39;hidden&#39; attribute can be used to hide an entire group.
 --&gt;
 &lt;!ELEMENT rule-group-metadata (description?,rule-metadata*)&gt;
 &lt;!ATTLIST rule-group-metadata
@@ -75,7 +75,7 @@ Some modules (like filters) have no severity property.
 
 The &#39;hidden&#39; attribute is used to hide a module, so it cannot be seen or 
 configured in the configuration editor. This is only used for some special modules
-like FileContentsHolder. The attribut defaults to &#39;false&#39;.
+like FileContentsHolder. The attribute defaults to &#39;false&#39;.
 
 The &#39;deletable&#39; attribute is used to specify if the module can be removed from the 
 configuration via the configuration editor. This only makes sense for some 
@@ -102,7 +102,7 @@ to this module.
 You are able to provide multiple alternative names, which might be useful if
 your package structure for your modules changed over time. In this case specify
 the old qualified class names for your module as &#39;alternative-name&#39; element.
-The plugin is then able to load even Checkstyle configuration files where your old
+The plug-in is then able to load even Checkstyle configuration files where your old
 module names are used.
 --&gt;
 &lt;!ELEMENT alternative-name EMPTY&gt;
@@ -112,7 +112,7 @@ module names are used.
 
 &lt;!--
 &#39;property-metadata&#39; elements are used to describe the properties of a checkstyle
-module. Properties described this way can then be configured using the plugins
+module. Properties described this way can then be configured using the plug-ins
 configuration editor.
 
 The &#39;name&#39; attributes specifies the name of the property.

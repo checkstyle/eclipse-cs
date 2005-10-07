@@ -22,7 +22,7 @@ header();
         <p>One great feature of Checkstyle is its extentablity. You can easily write own checks as explained <a
         href="http://checkstyle.sourceforge.net/writingchecks.html" target="_blank">here</a> .</p>
 
-        <p>Once you have written your check you surely want to use them with the plugin.</p>
+        <p>Once you have written your check you surely want to use them with the plug-in.</p>
 
         <p>There are a few steps you must take to accomplish this:</p>
 
@@ -32,7 +32,7 @@ header();
             </li>
 
             <li>
-                <p>Go to <i>&lt;path-to-my-eclipse&gt;/plugins/com.atlassw.tools.eclipse.checkstyle_x.x.x</i> directory
+                <p>Go to <i>&lt;path-to-my-eclipse&gt;/plug-ins/com.atlassw.tools.eclipse.checkstyle_x.x.x</i> directory
                 and copy the <i>.jar</i> into the <i>extension-libraries</i> directory</p>
             </li>
 
@@ -47,8 +47,8 @@ header();
             </li>
 
             <li>
-                <p>Either restart eclipse or hit the <img src="images/refresh.gif" /> button within the plugins
-                preference page to let the plugin pick up the changes.</p>
+                <p>Either restart eclipse or hit the <img src="images/refresh.gif" /> button within the plug-ins
+                preference page to let the plug-in pick up the changes.</p>
             </li>
 
             <li>
@@ -69,13 +69,13 @@ header();
 
             <li>
                 <p>(Optional) To get rid of the limitation described in point 5 you can provide metadata for your
-                checks, which will allows the plugin to treat your check or filter modules like the built-in checks.
+                checks, which will allows the plug-in to treat your check or filter modules like the built-in checks.
                 <br />
-                 This means be providing metadata your checks will facilitate the full capabilities of the plugins
+                 This means be providing metadata your checks will facilitate the full capabilities of the plug-ins
                 configuration editor.
                 <br />
                  To define the metadata you need to write a file named <i>checkstyle-metadata.xml</i> which is to be
-                placed into the package (or packages) your check classed lie in. In order to let the plugin find your
+                placed into the package (or packages) your check classed lie in. In order to let the plug-in find your
                 metadata you need to declare the package within the custom <i>checkstyle_packages.xml</i> file (see
                 point 3).
                 <br />
@@ -93,15 +93,15 @@ header();
 </i>
 </pre>
                 This way you can validate your metadata file against the dtd using your preferred XML editor before
-                packaging it into your custom .jar. The plugin will validate the metadata regardless if you defined the
+                packaging it into your custom .jar. The plug-in will validate the metadata regardless if you defined the
                 doctype declaration. Please see the dtd as a reference for the structure, meaning and features the
                 metadata can possibly provide.
                 <br />
-                 Repeat point 1,2 and 4 to let the plugin pick up your metadata. If you were successful in creating and
+                 Repeat point 1,2 and 4 to let the plug-in pick up your metadata. If you were successful in creating and
                 deploying the metadata your checks will show up like the build-in checks in the configuration editor.
                 <br />
                  For further examples for metadata files and pointers how to achieve on or another feature please see
-                the metadata inside the <i>CheckstyleMetadata.jar</i> inside the plugin directory.
+                the metadata inside the <i>CheckstyleMetadata.jar</i> inside the plug-in directory.
                 <br />
                 <br />
             </li>

@@ -27,12 +27,12 @@ header();
 
         <p>Normally these properties are resolved from command line or ant properties.
         <br />
-         Of course this does not work within the plugin so using a checkstyle configuration containing such expandable
+         Of course this does not work within the plug-in so using a checkstyle configuration containing such expandable
         properties will probably fail.</p>
 
         <p>But as you might have thought there are some features in place to help you out in this case.</p>
 
-        <p>First there are some properties that are automatically expanded by the plugin:</p>
+        <p>First there are some properties that are automatically expanded by the plug-in:</p>
 
         <ul>
             <li>
@@ -44,7 +44,7 @@ header();
             </li>
 
             <li>
-                <p><i>${workspace_loc}</i> - gets mapped to the current Elipse workspace directory</p>
+                <p><i>${workspace_loc}</i> - gets mapped to the current Eclipse workspace directory</p>
             </li>
 
             <li>
@@ -73,7 +73,7 @@ header();
         <p>Expandable properties within your configuration file will then be resolved from the corresponding
         <i>.properties</i> file.</p>
 
-        <p>Note that the plugin supports &#39;property chaining&#39; to let you use &#39;properties within
+        <p>Note that the plug-in supports &#39;property chaining&#39; to let you use &#39;properties within
         properties&#39;.
         <br />
          With this feature you can write something like this in your <i>.properties</i> file:

@@ -21,6 +21,9 @@ h2{
 	text-align: center;
 	font-size:24px;
 }
+h3 {
+	text-decoration:underline;
+}
 
 form{
 	margin: 5px 0px 0px 0px;
@@ -31,7 +34,7 @@ p.copyright{
 	color:#003399;
 }
 img{
-	vertical-align:left;
+	text-align:left;
 	border:0;
 }
 
@@ -89,6 +92,7 @@ img{
 	color: #FFFFFF;
 	text-align: center;
 	margin: 0px -3px 3px -3px;
+	text-decoration:none;
 }
 
 .donors a:link {
@@ -121,4 +125,9 @@ img{
 	font-size: 11px; 
 	color: #000000;
 	font-style: italic; 
+}
+
+
+.releaselist a {
+	white-space: nowrap;
 }
