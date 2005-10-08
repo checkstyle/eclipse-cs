@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-Name: Checkstyle Plug-in
 Bundle-SymbolicName: com.atlassw.tools.eclipse.checkstyle; singleton=true
 Bundle-Version: 4.0.0
-Bundle-ClassPath: CheckstylePlugin.jar,NLS.jar,CheckstyleMetadata.jar,checkstyle-all-4.0-beta6.jar
+Bundle-ClassPath: CheckstylePlugin.jar,NLS.jar,CheckstyleMetadata.jar,checkstyle-all-4.0-beta7.jar
 Bundle-Activator: com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin
 Bundle-Vendor: David Schneider, Lars Ködderitzsch
 Bundle-Localization: plugin

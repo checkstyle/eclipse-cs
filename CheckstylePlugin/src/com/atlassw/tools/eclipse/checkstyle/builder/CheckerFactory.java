@@ -21,25 +21,22 @@
 package com.atlassw.tools.eclipse.checkstyle.builder;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.WeakHashMap;
 
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.jface.preference.IPreferenceStore;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
-import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.puppycrawl.tools.checkstyle.Checker;
 import com.puppycrawl.tools.checkstyle.ConfigurationLoader;
-import com.puppycrawl.tools.checkstyle.ModuleFactory;
-import com.puppycrawl.tools.checkstyle.PackageNamesLoader;
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.puppycrawl.tools.checkstyle.api.Configuration;
@@ -191,9 +188,11 @@ public final class CheckerFactory
      * @return the newly created Checker
      * @throws CheckstyleException an exception during the creation of the
      *             checker occured
+     * @throws CheckstylePluginException an exception during the creation of the
+     *             checker occured
      */
     private static Checker createCheckerInternal(URL config, PropertyResolver propResolver)
-        throws CheckstyleException
+        throws CheckstyleException, CheckstylePluginException
     {
 
         // load configuration
@@ -203,66 +202,22 @@ public final class CheckerFactory
         // create and configure checker
         Checker checker = new Checker();
 
-        // load the package name file
-        URL packagesFile = CheckstylePlugin.getDefault().find(
-                new Path(CheckstylePlugin.PACKAGE_NAMES_FILE));
-
-        if (packagesFile != null)
-        {
-
-            try
-            {
-                packagesFile = Platform.resolve(packagesFile);
-                ModuleFactory moduleFactory = PackageNamesLoader.loadModuleFactory(packagesFile
-                        .getFile());
-                checker.setModuleFactory(moduleFactory);
-            }
-            catch (Exception e)
-            {
-                CheckstyleLog.log(e, "Could not load extension-libaries/checkstyle_packages.xml");
-            }
-        }
-        else
-        {
-            // ensure there is a modulefactory in place for the following hack
-            ModuleFactory moduleFactory = PackageNamesLoader.loadModuleFactory(Checker.class
-                    .getClassLoader());
-            checker.setModuleFactory(moduleFactory);
-        }
-
-        //
-        // this is a wild hack to bend the internal classloader reference of the
-        // PackageObjectFactory to our classloader that is able to load classes
-        // from the extension-libraries folder
-        //
-        try
-        {
-
-            // get the ModuleFactory from the checker
-            Field moduleFactoryField = Checker.class.getDeclaredField("mModuleFactory");
-            moduleFactoryField.setAccessible(true);
-
-            ModuleFactory moduleFactory = (ModuleFactory) moduleFactoryField.get(checker);
-
-            Class packageObjectFactoryClass = Class
-                    .forName("com.puppycrawl.tools.checkstyle.PackageObjectFactory");
-
-            Field classLoaderField = packageObjectFactoryClass.getDeclaredField("mLoader");
-            classLoaderField.setAccessible(true);
-            classLoaderField.set(moduleFactory, Thread.currentThread().getContextClassLoader());
-
-        }
-        catch (Exception e)
-        {
-            CheckstyleLog.log(e, "The classloader hack doesn't work anymore");
-        }
+        // load the package name files and create the module factory
+        List packages = com.atlassw.tools.eclipse.checkstyle.builder.PackageNamesLoader
+                .getPackageNames(Thread.currentThread().getContextClassLoader());
+        checker.setModuleFactory(new PackageObjectFactory(packages));
 
         // set the eclipse platform locale
         Locale platformLocale = getPlatformLocale();
         checker.setLocaleLanguage(platformLocale.getLanguage());
         checker.setLocaleCountry(platformLocale.getCountry());
 
-        checker.setClassloader(sSharedClassLoader);
+        IPreferenceStore prefStore = CheckstylePlugin.getDefault().getPreferenceStore();
+        if (!prefStore.getBoolean(CheckstylePlugin.PREF_DISABLE_PROJ_CLASSLOADER))
+        {
+            checker.setClassloader(sSharedClassLoader);
+        }
+
         checker.configure(configuration);
 
         return checker;
