@@ -73,8 +73,6 @@ public class ConfigPropertyWidgetRegex extends ConfigPropertyWidgetAbstractBase
 
     private Text mTextWidget;
 
-    private ContentAssistHandler mContentAssistHandler;
-
     // =================================================
     // Constructors & finalizer.
     // =================================================
@@ -110,8 +108,7 @@ public class ConfigPropertyWidgetRegex extends ConfigPropertyWidgetAbstractBase
             mTextWidget.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
             // integrate content assist
-            mContentAssistHandler = ContentAssistHandler.createHandlerForText(mTextWidget,
-                    createContentAssistant());
+            ContentAssistHandler.createHandlerForText(mTextWidget, createContentAssistant());
 
             String initValue = getInitValue();
             if (initValue != null)

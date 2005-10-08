@@ -32,16 +32,14 @@ package com.atlassw.tools.eclipse.checkstyle.preferences.widgets;
 // Imports from com namespace
 //=================================================
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.VerifyEvent;
-import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 
 import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
+import com.atlassw.tools.eclipse.checkstyle.util.SWTUtil;
 
 /**
  * A string property configuration widget.
@@ -95,42 +93,7 @@ public class ConfigPropertyWidgetInteger extends ConfigPropertyWidgetAbstractBas
             //
             mTextWidget = new Text(parent, SWT.SINGLE | SWT.BORDER);
             mTextWidget.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-            mTextWidget.addVerifyListener(new VerifyListener()
-            {
-
-                public void verifyText(VerifyEvent e)
-                {
-
-                    boolean doit = true;
-
-                    // only let digits pass (and del, backspace)
-                    if (!(Character.isDigit(e.character) || e.character == SWT.DEL || e.character == SWT.BS))
-                    {
-                        doit = false;
-                    }
-
-                    // check if inserted text is an integer
-                    if (!doit)
-                    {
-                        try
-                        {
-                            Integer.parseInt(e.text);
-                            doit = true;
-                        }
-                        catch (NumberFormatException ex)
-                        {
-                            doit = false;
-                        }
-                    }
-
-                    e.doit = doit;
-                    if (!e.doit)
-                    {
-                        Display.getCurrent().beep();
-                    }
-                }
-
-            });
+            SWTUtil.addOnlyDigitInputSupport(mTextWidget);
 
             String initValue = getInitValue();
             if (initValue != null)

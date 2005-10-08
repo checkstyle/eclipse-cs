@@ -41,6 +41,8 @@ import org.eclipse.swt.widgets.Label;
 import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
 import com.atlassw.tools.eclipse.checkstyle.preferences.IConfigPropertyWidget;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginImages;
+import com.atlassw.tools.eclipse.checkstyle.util.SWTUtil;
 
 //=================================================
 // Imports from org namespace
@@ -51,35 +53,32 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
  */
 public abstract class ConfigPropertyWidgetAbstractBase implements IConfigPropertyWidget
 {
-    //=================================================
+    // =================================================
     // Public static final variables.
-    //=================================================
+    // =================================================
 
-    //=================================================
+    // =================================================
     // Static class variables.
-    //=================================================
+    // =================================================
 
-    //=================================================
+    // =================================================
     // Instance member variables.
-    //=================================================
+    // =================================================
 
     private ConfigProperty mProp;
 
-    private Composite mParent;
-
     private Control mValueWidget;
 
-    //=================================================
+    // =================================================
     // Constructors.
-    //=================================================
+    // =================================================
 
     protected ConfigPropertyWidgetAbstractBase(Composite parent, ConfigProperty prop)
     {
-        mParent = parent;
         mProp = prop;
 
         //
-        //  Add the property's name.
+        // Add the property's name.
         //
         Label label = new Label(parent, SWT.NULL);
         label.setText(mProp.getName() + ":"); //$NON-NLS-1$
@@ -90,11 +89,20 @@ public abstract class ConfigPropertyWidgetAbstractBase implements IConfigPropert
         mValueWidget = getValueWidget(parent);
         gd = (GridData) mValueWidget.getLayoutData();
         mValueWidget.setToolTipText(mProp.getMetaData().getDescription());
+
+        // provide a label that shows a tooltip with the property description
+        Label lblPropertyInfo = new Label(parent, SWT.NULL);
+        gd = new GridData();
+        gd.verticalAlignment = SWT.BEGINNING;
+        lblPropertyInfo.setLayoutData(gd);
+        lblPropertyInfo.setImage(CheckstylePluginImages.getImage(CheckstylePluginImages.HELP_ICON));
+        lblPropertyInfo.setToolTipText(mProp.getMetaData().getDescription());
+        SWTUtil.addTooltipOnPressSupport(lblPropertyInfo);
     }
 
-    //=================================================
+    // =================================================
     // Methods.
-    //=================================================
+    // =================================================
 
     /**
      * @see IConfigPropertyWidget#setEnabled(boolean)
@@ -119,12 +127,12 @@ public abstract class ConfigPropertyWidgetAbstractBase implements IConfigPropert
     protected String getInitValue()
     {
         //
-        //  Figure out an initial value for the property. This will be,
-        //  in order of precidents:
+        // Figure out an initial value for the property. This will be,
+        // in order of precidents:
         //
-        //     1) the existing value
-        //     2) the default value, if specified
-        //     3) blank
+        // 1) the existing value
+        // 2) the default value, if specified
+        // 3) blank
         //
         String initValue = null;
         if (mProp != null)
