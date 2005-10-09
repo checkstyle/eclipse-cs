@@ -18,71 +18,46 @@ header();
 </script>
 
         <h2>Expanding Properties within Checkstyle configuration files</h2>
-
-        <p>Checkstyle contains a <a href="http://checkstyle.sourceforge.net/config.html#Properties"
-        target="_blank">feature</a> that lets you define module properties in a way that they can expanded dynamically
-        when the configuration is loaded.
-        <br />
-         Such a property is defined using the well known <i>${property_name}</i> notation.</p>
-
-        <p>Normally these properties are resolved from command line or ant properties.
-        <br />
-         Of course this does not work within the plug-in so using a checkstyle configuration containing such expandable
-        properties will probably fail.</p>
-
-        <p>But as you might have thought there are some features in place to help you out in this case.</p>
-
-        <p>First there are some properties that are automatically expanded by the plug-in:</p>
-
-        <ul>
+<p>Checkstyle contains a
+        <a href="http://checkstyle.sourceforge.net/config.html#Properties"
+        target="_blank">feature</a>
+        that lets you define module properties in a way that they can expanded dynamically when the configuration is loaded. <br />
+        Such a property is defined using the well known <i>${property_name}</i> notation.</p>
+<p>Normally these properties are resolved from command line or ant properties. <br />
+        Of course this does not work within the plug-in so using a checkstyle configuration containing such expandable properties
+            will probably fail.</p>
+<p>But as you might have thought there are some features in place to help you out in this case.</p>
+<p>First there are some properties that are automatically expanded by the plug-in:</p>
+<ul>
             <li>
                 <p><i>${basedir}</i> - gets mapped to the current project directory</p>
-            </li>
-
-            <li>
+</li>
+<li>
                 <p><i>${project_loc}</i> - same as <i>${basedir}</i></p>
-            </li>
-
-            <li>
+</li>
+<li>
                 <p><i>${workspace_loc}</i> - gets mapped to the current Eclipse workspace directory</p>
-            </li>
-
-            <li>
-                <p><i>${config_loc}</i> &amp; <i>${samedir}</i> - get mapped to the directory the configuration file
-                lies in</p>
-            </li>
-        </ul>
-
+</li>
+<li>
+                <p><i>${config_loc}</i> &amp; <i>${samedir}</i> - get mapped to the directory the configuration file lies
+                    in</p>
+</li>
+</ul>
+<p>If you have more properties that need to be expanded there is another feature for you.</p>
+<p>Using External, Remote or Project Relative Configuration you can write the properties you need to be expanded into a <i>.properties</i> file
+    that lies in the same directory as the configuration file and has the same name. <br />
+        For instance:</p>
+<p><i>D:/path/to/my/config/myCheckConfiguration.xml</i>
         <br />
-         
-
-        <p>If you have more properties that need to be expanded there is another feature for you.</p>
-
-        <p>Using External, Remote or Project Relative Configuration you can write the properties you need to be
-        expanded into a <i>.properties</i> file that lies in the same directory as the configuration file and has the
-        same name.
-        <br />
-         For instance:</p>
-
-        <p><i>D:/path/to/my/config/myCheckConfiguration.xml</i>
-        <br />
-         can resolve properties defined in
-        <br />
+        can resolve properties defined in <br />
          <i>D:/path/to/my/config/myCheckConfiguration.properties</i></p>
-
-        <p>Expandable properties within your configuration file will then be resolved from the corresponding
-        <i>.properties</i> file.</p>
-
-        <p>Note that the plug-in supports &#39;property chaining&#39; to let you use &#39;properties within
-        properties&#39;.
+<p>Expandable properties within your configuration file will then be resolved from the corresponding <i>.properties</i> file.</p>
+<p>Note that the plug-in supports &#39;property chaining&#39; to let you use &#39;properties within properties&#39;. <br />
+        With this feature you can write something like this in your <i>.properties</i> file: <br />
+         <i>property1=abc <br />
+    property2=${property1}def</i>
         <br />
-         With this feature you can write something like this in your <i>.properties</i> file:
-        <br />
-         <i>property1=abc
-        <br />
-         property2=${property1}def</i>
-        <br />
-         Using <i>${property2}</i> in your checkstyle configuration will then be resolved to: <i>abcdef</i></p>
+        Using <i>${property2}</i> in your checkstyle configuration will then be resolved to: <i>abcdef</i></p>
 <script type="text/javascript">
 footer();
 </script>
