@@ -276,6 +276,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
 
         mConfiguredModulesGroup = new Group(parent, SWT.NULL);
         mConfiguredModulesGroup.setLayout(new GridLayout());
+        mConfiguredModulesGroup.setText("\0"); //$NON-NLS-1$
 
         Table table = new Table(mConfiguredModulesGroup, SWT.CHECK | SWT.BORDER | SWT.MULTI
                 | SWT.FULL_SELECTION);
