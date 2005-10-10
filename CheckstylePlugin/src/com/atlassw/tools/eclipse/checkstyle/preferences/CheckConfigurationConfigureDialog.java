@@ -65,6 +65,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.TreeItem;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.Messages;
@@ -387,6 +388,10 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
     {
 
         mTreeViewer.setInput(MetadataFactory.getRuleGroupMetadata());
+
+        ISelection initialSelection = new StructuredSelection(MetadataFactory
+                .getRuleGroupMetadata().get(0));
+        mTreeViewer.setSelection(initialSelection);
 
         try
         {
