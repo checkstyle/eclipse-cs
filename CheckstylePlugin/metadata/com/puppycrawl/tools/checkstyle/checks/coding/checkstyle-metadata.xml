@@ -267,9 +267,13 @@ Rationale: If the control variable is modified inside the loop body, the program
          <description> Checks for multiple occurrences of the same string literal within a single file.
 
 Rationale: Code duplication makes maintenance more difficult, so it can be better to replace the multiple occurrences with a constant.</description>
+         
          <property-metadata name="allowedDuplicates" datatype="Integer" default-value="1">
             <description> The maximum number of occurences to allow without generating a warning</description>
          </property-metadata>
+         <property-metadata name="ignoreStringsRegexp" datatype="Regex" default-value="^&quot;&quot;$">
+            <description> Regexp pattern for ignored strings (with quotation marks)</description>
+         </property-metadata>               
       </rule-metadata>
       
       <rule-metadata name="Multiple Variable Declaration" internal-name="MultipleVariableDeclarations" parent="TreeWalker">
