@@ -246,7 +246,7 @@ public class Module implements Cloneable
             }
             else if (SeverityLevel.IGNORE.equals(severityLevel))
             {
-                if (mSeverityLevel != null)
+                if (mSeverityLevel != null && !SeverityLevel.IGNORE.equals(mSeverityLevel))
                 {
                     setLastEnabledSeverity(mSeverityLevel);
                 }
