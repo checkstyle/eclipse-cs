@@ -443,7 +443,17 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
             }
             else if (event.getViewer() == mTreeViewer)
             {
-                newModule(event.getSelection());
+                IStructuredSelection selection = (IStructuredSelection) event.getSelection();
+                Object element = selection.getFirstElement();
+
+                if (element instanceof RuleGroupMetadata)
+                {
+                    mTreeViewer.setExpandedState(element, !mTreeViewer.getExpandedState(element));
+                }
+                else
+                {
+                    newModule(event.getSelection());
+                }
             }
         }
 
