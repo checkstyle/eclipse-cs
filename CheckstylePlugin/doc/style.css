@@ -21,9 +21,9 @@ h2{
 	background-color: #003399;
 	color: #FFFFFF;
 	text-align: center;
-	font-size:24px;
-	margin-top:0px;
-	
+	font-size: 24px;
+	margin-top: 0px;
+	border-bottom: 3px inset #6699FF;
 }
 h3 {
 	text-decoration:underline;
@@ -55,7 +55,7 @@ img{
 	padding-left: 3px;
 	display: block;
 	border-left: 10px solid #6699FF;
-	font: 12px Arial, sans-serif;
+	font: 10px Arial, sans-serif;
 	font-weight: bold;
 	text-decoration: none;
 	text-align: left;
@@ -69,7 +69,7 @@ img{
 	padding-left: 3px;
 	display: block;
 	border-left: 10px solid #6699FF;
-	font: 12px Arial, sans-serif;
+	font: 10px Arial, sans-serif;
 	font-weight: bold;
 	text-decoration: none;
 	text-align: left;
@@ -85,18 +85,19 @@ img{
 .box {
 	display: block;
 	border: 1px solid #003399;
-	margin-top: 5px;
+	margin-top: 3px;
 	padding: 0px 3px 3px 3px;
 }
 
 .box h3{
-	font: 12px Arial, sans-serif;
+	font: 10px Arial, sans-serif;
 	font-weight: bold;
 	background-color: #003399;
 	color: #FFFFFF;
 	text-align: center;
 	margin: 0px -3px 3px -3px;
 	text-decoration:none;
+	border-bottom: 3px inset #6699FF;
 }
 
 .donors a:link {
