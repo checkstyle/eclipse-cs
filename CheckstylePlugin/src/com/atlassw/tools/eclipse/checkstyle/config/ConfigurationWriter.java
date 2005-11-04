@@ -165,7 +165,7 @@ public final class ConfigurationWriter
         // Start the module
         AttributesImpl attr = new AttributesImpl();
         attr.addAttribute(new String(), XMLTags.NAME_TAG, XMLTags.NAME_TAG, null, module
-                .getMetaData().getInternalName());
+                .getMetaData().getCheckstyleModuleName());
         xmlOut.startElement(new String(), XMLTags.MODULE_TAG, XMLTags.MODULE_TAG, attr);
         xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
 
