@@ -99,13 +99,18 @@ public final class ConfigurationWriter
 
             TransformerHandler xmlOut = XMLUtil.writeWithSax(out);
             xmlOut.startDocument();
+
+            String comment = "This configuration file was written by the eclipse-cs plugin configuration editor";
+            xmlOut.comment(comment.toCharArray(), 0, comment.length());
+            xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
             xmlOut.startDTD(XMLTags.MODULE_TAG, "-//Puppy Crawl//DTD Check Configuration 1.2//EN", //$NON-NLS-1$
                     "http://www.puppycrawl.com/dtds/configuration_1_2.dtd"); //$NON-NLS-1$
             xmlOut.endDTD();
             xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
 
             // write out name and description as comment
-            String description = checkConfig.getName() + ":\n" + checkConfig.getDescription();
+            String description = "\n" + checkConfig.getName() + ":\n"
+                    + checkConfig.getDescription() + "\n";
             xmlOut.comment(description.toCharArray(), 0, description.length());
             xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
 
