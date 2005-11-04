@@ -199,7 +199,7 @@ public final class MetadataFactory
         }
 
         RuleMetadata ruleMeta = new RuleMetadata(module.getName(), module.getName(), parent,
-                MetadataFactory.getDefaultSeverity(), false, true, true, null);
+                MetadataFactory.getDefaultSeverity(), false, true, true, false, null);
         module.setMetaData(ruleMeta);
         sRuleMetadata.put(ruleMeta.getInternalName(), ruleMeta);
 
@@ -278,21 +278,21 @@ public final class MetadataFactory
                 }
                 catch (SAXParseException e)
                 {
-                    CheckstyleLog.log(e, NLS.bind("Could not parse metadata file {0} at {1}:{2}",
+                    CheckstyleLog.log(e, NLS.bind("Could not parse metadata file {0} at {1}:{2}", //$NON-NLS-1$
                             new Object[] { metadataFile, new Integer(e.getLineNumber()),
                                 new Integer(e.getColumnNumber()) }));
                 }
                 catch (SAXException e)
                 {
-                    CheckstyleLog.log(e, "Could not read metadata " + metadataFile);
+                    CheckstyleLog.log(e, "Could not read metadata " + metadataFile); //$NON-NLS-1$
                 }
                 catch (ParserConfigurationException e)
                 {
-                    CheckstyleLog.log(e, "Could not read metadata " + metadataFile);
+                    CheckstyleLog.log(e, "Could not read metadata " + metadataFile); //$NON-NLS-1$
                 }
                 catch (IOException e)
                 {
-                    CheckstyleLog.log(e, "Could not read metadata " + metadataFile);
+                    CheckstyleLog.log(e, "Could not read metadata " + metadataFile); //$NON-NLS-1$
                 }
                 finally
                 {
@@ -347,9 +347,9 @@ public final class MetadataFactory
     private static class MetaDataHandler extends DefaultHandler
     {
 
-        private static final String DTD_PUBLIC_ID = "-//eclipse-cs//DTD Check Metadata 1.0//EN";
+        private static final String DTD_PUBLIC_ID = "-//eclipse-cs//DTD Check Metadata 1.0//EN"; //$NON-NLS-1$
 
-        private static final String DTD_RESOURCE_NAME = "/com/puppycrawl/tools/checkstyle/checkstyle-metadata_1_0.dtd";
+        private static final String DTD_RESOURCE_NAME = "/com/puppycrawl/tools/checkstyle/checkstyle-metadata_1_0.dtd"; //$NON-NLS-1$
 
         /** the current rule group. */
         private RuleGroupMetadata mCurrentGroup;
@@ -393,7 +393,7 @@ public final class MetadataFactory
                         DTD_RESOURCE_NAME);
                 if (dtdIS == null)
                 {
-                    throw new SAXException("Unable to load internal dtd " + DTD_RESOURCE_NAME);
+                    throw new SAXException("Unable to load internal dtd " + DTD_RESOURCE_NAME); //$NON-NLS-1$
                 }
                 return new InputSource(dtdIS);
             }
@@ -405,13 +405,13 @@ public final class MetadataFactory
             {
                 if (false)
                 {
-                    throw new IOException("");
+                    throw new IOException(""); //$NON-NLS-1$
                 }
                 return super.resolveEntity(publicId, systemId);
             }
             catch (IOException e)
             {
-                throw new SAXException("" + e, e);
+                throw new SAXException("" + e, e); //$NON-NLS-1$
             }
         }
 
@@ -464,10 +464,12 @@ public final class MetadataFactory
                     boolean hasSeverity = !"false".equals(attributes //$NON-NLS-1$
                             .getValue(XMLTags.HAS_SEVERITY_TAG));
                     boolean deletable = !"false".equals(attributes.getValue(XMLTags.DELETABLE_TAG)); //$NON-NLS-1$
+                    boolean isSingleton = Boolean.valueOf(
+                            attributes.getValue(XMLTags.IS_SINGLETON_TAG)).booleanValue();
 
                     // create rule metadata
                     mCurrentRule = new RuleMetadata(name, internalName, parentName, severity,
-                            hidden, hasSeverity, deletable, mCurrentGroup);
+                            hidden, hasSeverity, deletable, isSingleton, mCurrentGroup);
                     mCurrentGroup.getRuleMetadata().add(mCurrentRule);
 
                     // register internal name

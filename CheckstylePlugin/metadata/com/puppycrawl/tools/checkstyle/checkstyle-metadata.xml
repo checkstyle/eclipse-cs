@@ -4,13 +4,8 @@
 "http://eclipse-cs.sourceforge.net/dtds/checkstyle-metadata_1_0.dtd">
 <checkstyle-metadata>
     <rule-group-metadata name="Other" priority="1500">
-    </rule-group-metadata>
-
-<!--
-        Contains module metadata for internal elements that can not be removed or added to a check config.
-   -->
-    <rule-group-metadata name="Internal" priority="1600" hidden="true">
-        <rule-metadata name="Checker" internal-name="Checker" deletable="false" parent="Root">
+    
+        <rule-metadata name="Checker" internal-name="Checker" parent="Root" singleton="true">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.Checker" />
 
             <description>Root module of every checkstyle configuration. Cannot be deleted.</description>
@@ -24,7 +19,7 @@
             </property-metadata>
         </rule-metadata>
 
-        <rule-metadata name="TreeWalker" internal-name="TreeWalker" parent="Checker" deletable="false">
+        <rule-metadata name="TreeWalker" internal-name="TreeWalker" parent="Checker" singleton="true">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.TreeWalker" />
 
             <description>FileSetCheck TreeWalker checks individual Java source files and defines properties that are applicable to checking such files.</description>
@@ -45,8 +40,14 @@
                 <description>name of the file charset</description>
             </property-metadata>
         </rule-metadata>
+    </rule-group-metadata>
 
-        <rule-metadata name="FileContentsHolder" internal-name="FileContentsHolder" parent="TreeWalker" hidden="true" deletable="false">
+<!--
+        Contains module metadata for internal elements that can not be removed or added to a check config.
+   -->
+    <rule-group-metadata name="Internal" priority="1600" hidden="true">
+
+        <rule-metadata name="FileContentsHolder" internal-name="FileContentsHolder" parent="TreeWalker" hidden="true" deletable="false" singleton="true">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.FileContentsHolder" />
         </rule-metadata>
     </rule-group-metadata>

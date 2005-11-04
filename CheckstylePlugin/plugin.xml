@@ -10,7 +10,11 @@
     
    <!-- defines the extension point to contribute custom filters to the checkstyle plugin -->
    <extension-point id="filters" name="Checkstyle filters" schema="schema/filters.exsd"/>
+
+   <!-- defines the extension point to contribute custom configuration save filters -->
+   <extension-point id="saveFilters" name="Configuration save filters" schema="schema/saveFilters.exsd"/>
    
+      
    <extension
          point="org.eclipse.help.toc">
       <toc
@@ -66,17 +70,38 @@
          name="%CheckstyleMarker.name"
          point="org.eclipse.core.resources.markers">
       <super
-            type="org.eclipse.core.resources.textmarker">
-      </super>
-      <super
             type="org.eclipse.core.resources.problemmarker">
       </super>
-      <attribute
-            name="line">
-      </attribute>
+      <super
+            type="org.eclipse.core.resources.textmarker">
+      </super>
       <persistent
             value="true">
       </persistent>
+      <attribute
+            name="severity">
+      </attribute>
+      <attribute
+            name="message">
+      </attribute>
+      <attribute
+            name="location">
+      </attribute>
+      <attribute
+            name="charStart">
+      </attribute>
+      <attribute
+            name="charEnd">
+      </attribute>
+      <attribute
+            name="lineNumber">
+      </attribute>      
+      <attribute
+            name="ModuleName">
+      </attribute>
+      <attribute
+            name="MessageKey">
+      </attribute>
    </extension>   
 
 <!--
@@ -267,15 +292,14 @@
          point="com.atlassw.tools.eclipse.checkstyle.filters">
       <!-- this should be the first filter, since it filters out many files with little effort. -->
       <filter
-            name="FileTypesFilter"
+            name="%FileTypesFilter.label"
             internal-name="FileTypesFilter"
-            description="Filters all but the statically defined file types (see data tags)"
+            description="%FileTypesFilter.description"
             class="com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.FileTypesFilter"
+            editorClass="com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.FileTypesFilterEditor"
             readonly="true"
             selected="true">
             <data value="java"/> 
-            <data value="adb"/> 
-            <data value="ads"/>
       </filter>
       <filter
             name="%WriteProtectedFilter.label"
@@ -309,6 +333,19 @@
             class="com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.FilesInSyncFilter">
       </filter>       
    </extension>
+   
+ <!-- 
+	Standard checkstyle save filters
+	-->
+   <extension
+         id="checkstyle.SaveFilters"
+         point="com.atlassw.tools.eclipse.checkstyle.saveFilters">
+         
+      	<saveFilter class="com.atlassw.tools.eclipse.checkstyle.config.savefilter.CheckerModuleSaveFilter"/>   
+	 	<saveFilter class="com.atlassw.tools.eclipse.checkstyle.config.savefilter.FileContentsHolderSaveFilter"/>   
+		<saveFilter class="com.atlassw.tools.eclipse.checkstyle.config.savefilter.TreeWalkerModuleSaveFilter"/>   
+		<saveFilter class="com.atlassw.tools.eclipse.checkstyle.config.savefilter.SortingSaveFilter"/>    
+   </extension>  
 
    <!--
    Action that launches the duplicates analysis

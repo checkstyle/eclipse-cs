@@ -232,11 +232,11 @@ public final class CheckerFactory
     {
 
         String nl = Platform.getNL();
-        String[] parts = nl.split("_");
+        String[] parts = nl.split("_"); //$NON-NLS-1$
 
-        String language = parts.length > 0 ? parts[0] : "";
-        String country = parts.length > 1 ? parts[1] : "";
-        String variant = parts.length > 2 ? parts[2] : "";
+        String language = parts.length > 0 ? parts[0] : ""; //$NON-NLS-1$
+        String country = parts.length > 1 ? parts[1] : ""; //$NON-NLS-1$
+        String variant = parts.length > 2 ? parts[2] : ""; //$NON-NLS-1$
 
         return new Locale(language, country, variant);
     }

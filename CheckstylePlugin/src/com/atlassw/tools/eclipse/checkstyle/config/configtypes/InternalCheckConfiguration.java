@@ -83,7 +83,7 @@ public class InternalCheckConfiguration extends AbstractCheckConfiguration
             try
             {
                 out = new BufferedOutputStream(new FileOutputStream(configFile));
-                ConfigurationWriter.writeNewConfiguration(out);
+                ConfigurationWriter.writeNewConfiguration(out, this);
             }
             catch (IOException e)
             {

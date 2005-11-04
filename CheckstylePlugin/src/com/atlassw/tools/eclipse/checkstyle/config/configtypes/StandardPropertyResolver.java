@@ -107,7 +107,7 @@ public class StandardPropertyResolver implements PropertyResolver, IContextAware
         {
             String configLocWOBackslashes = mConfigLocation.replace('\\', '/');
 
-            int lastSlash = configLocWOBackslashes.lastIndexOf("/");
+            int lastSlash = configLocWOBackslashes.lastIndexOf("/"); //$NON-NLS-1$
             if (lastSlash > -1)
             {
                 value = configLocWOBackslashes.substring(0, lastSlash + 1); //$NON-NLS-1$

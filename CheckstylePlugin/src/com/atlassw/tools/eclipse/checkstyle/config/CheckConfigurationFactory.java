@@ -352,7 +352,7 @@ public final class CheckConfigurationFactory
             String description = elements[i].getAttribute(XMLTags.DESCRIPTION_TAG);
             String location = elements[i].getAttribute(XMLTags.LOCATION_TAG);
 
-            IConfigurationType configType = ConfigurationTypes.getByInternalName("builtin");
+            IConfigurationType configType = ConfigurationTypes.getByInternalName("builtin"); //$NON-NLS-1$
 
             try
             {

@@ -48,16 +48,16 @@ import com.puppycrawl.tools.checkstyle.api.AbstractLoader;
 public final class PackageNamesLoader extends AbstractLoader
 {
     /** the public ID for the configuration dtd. */
-    private static final String DTD_PUBLIC_ID = "-//Puppy Crawl//DTD Package Names 1.0//EN";
+    private static final String DTD_PUBLIC_ID = "-//Puppy Crawl//DTD Package Names 1.0//EN"; //$NON-NLS-1$
 
     /** the resource for the configuration dtd. */
-    private static final String DTD_RESOURCE_NAME = "com/puppycrawl/tools/checkstyle/packages_1_0.dtd";
+    private static final String DTD_RESOURCE_NAME = "com/puppycrawl/tools/checkstyle/packages_1_0.dtd"; //$NON-NLS-1$
 
     /**
      * Name of default checkstyle package names resource file. The file must be
      * in the classpath.
      */
-    private static final String DEFAULT_PACKAGES = "com/puppycrawl/tools/checkstyle/checkstyle_packages.xml";
+    private static final String DEFAULT_PACKAGES = "com/puppycrawl/tools/checkstyle/checkstyle_packages.xml"; //$NON-NLS-1$
 
     /** The loaded package names. */
     private Stack mPackageStack = new Stack();
@@ -79,13 +79,13 @@ public final class PackageNamesLoader extends AbstractLoader
     public void startElement(String aNamespaceURI, String aLocalName, String aQName,
             Attributes aAtts) throws SAXException
     {
-        if (aQName.equals("package"))
+        if (aQName.equals("package")) //$NON-NLS-1$
         {
             // push package name
-            final String name = aAtts.getValue("name");
+            final String name = aAtts.getValue("name"); //$NON-NLS-1$
             if (name == null)
             {
-                throw new SAXException("missing package name");
+                throw new SAXException("missing package name"); //$NON-NLS-1$
             }
             mPackageStack.push(name);
         }
@@ -94,7 +94,7 @@ public final class PackageNamesLoader extends AbstractLoader
     /** @see org.xml.sax.helpers.DefaultHandler * */
     public void endElement(String aNamespaceURI, String aLocalName, String aQName)
     {
-        if (aQName.equals("package"))
+        if (aQName.equals("package")) //$NON-NLS-1$
         {
 
             String packageName = getPackageName();
@@ -119,9 +119,9 @@ public final class PackageNamesLoader extends AbstractLoader
         {
             final String subPackage = (String) it.next();
             buf.append(subPackage);
-            if (!subPackage.endsWith("."))
+            if (!subPackage.endsWith(".")) //$NON-NLS-1$
             {
-                buf.append(".");
+                buf.append("."); //$NON-NLS-1$
             }
         }
         return buf.toString();
@@ -152,22 +152,22 @@ public final class PackageNamesLoader extends AbstractLoader
             }
             catch (ParserConfigurationException e)
             {
-                CheckstylePluginException.rethrow(e, "unable to parse " + DEFAULT_PACKAGES);
+                CheckstylePluginException.rethrow(e, "unable to parse " + DEFAULT_PACKAGES); //$NON-NLS-1$
             }
             catch (SAXException e)
             {
-                CheckstylePluginException.rethrow(e, "unable to parse " + DEFAULT_PACKAGES + " - "
+                CheckstylePluginException.rethrow(e, "unable to parse " + DEFAULT_PACKAGES + " - " //$NON-NLS-1$ //$NON-NLS-2$
                         + e.getMessage());
             }
             catch (IOException e)
             {
-                CheckstylePluginException.rethrow(e, "unable to read " + DEFAULT_PACKAGES);
+                CheckstylePluginException.rethrow(e, "unable to read " + DEFAULT_PACKAGES); //$NON-NLS-1$
             }
 
             // load custom package files
             try
             {
-                Enumeration packageFiles = aClassLoader.getResources("checkstyle_packages.xml");
+                Enumeration packageFiles = aClassLoader.getResources("checkstyle_packages.xml"); //$NON-NLS-1$
 
                 while (packageFiles.hasMoreElements())
                 {
@@ -184,12 +184,12 @@ public final class PackageNamesLoader extends AbstractLoader
                     }
                     catch (SAXException e)
                     {
-                        CheckstyleLog.log(e, "unable to parse " + aPackageFile.toExternalForm()
-                                + " - " + e.getLocalizedMessage());
+                        CheckstyleLog.log(e, "unable to parse " + aPackageFile.toExternalForm() //$NON-NLS-1$
+                                + " - " + e.getLocalizedMessage()); //$NON-NLS-1$
                     }
                     catch (IOException e)
                     {
-                        CheckstyleLog.log(e, "unable to read " + aPackageFile.toExternalForm());
+                        CheckstyleLog.log(e, "unable to read " + aPackageFile.toExternalForm()); //$NON-NLS-1$
                     }
                     finally
                     {

@@ -333,7 +333,7 @@ public class Auditor
                 // tabwidtdh etc.
                 // Here reflection is used to maintain compatibility with
                 // Eclipse 3.0
-                Method getTabWidht3_1Style = CodeFormatterUtil.class.getMethod("getTabWidth",
+                Method getTabWidht3_1Style = CodeFormatterUtil.class.getMethod("getTabWidth", //$NON-NLS-1$
                         new Class[] { IJavaProject.class });
 
                 IJavaProject javaProject = JavaCore.create(project);

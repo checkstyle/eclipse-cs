@@ -106,10 +106,10 @@ public class CheckstylePlugin extends AbstractUIPlugin
     public static final int MARKER_LIMIT = 100;
 
     /** Constant for the path of the (custom) package names file. */
-    public static final String PACKAGE_NAMES_FILE = "/extension-libraries/checkstyle_packages.xml";
+    public static final String PACKAGE_NAMES_FILE = "/extension-libraries/checkstyle_packages.xml"; //$NON-NLS-1$
 
     /** Constant for the path to the extension-libraries directory. */
-    public static final String EXTENSION_LIBS_DIR = "/extension-libraries";
+    public static final String EXTENSION_LIBS_DIR = "/extension-libraries"; //$NON-NLS-1$
 
     // =================================================
     // Static class variables.

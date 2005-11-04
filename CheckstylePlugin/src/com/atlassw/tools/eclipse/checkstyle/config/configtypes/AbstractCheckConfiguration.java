@@ -364,7 +364,7 @@ public abstract class AbstractCheckConfiguration implements ICheckConfiguration
             // file would be destroyed
             byteOut = new ByteArrayOutputStream();
 
-            ConfigurationWriter.write(byteOut, modules);
+            ConfigurationWriter.write(byteOut, modules, this);
 
             // all went ok, write to the file
             String configFile = getCheckstyleConfigurationURL().getFile();

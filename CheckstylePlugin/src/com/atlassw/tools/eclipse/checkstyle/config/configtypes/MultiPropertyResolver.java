@@ -176,8 +176,8 @@ public class MultiPropertyResolver implements PropertyResolver, IContextAware
                 fragment = aProps.resolve(propertyName);
                 if (fragment == null)
                 {
-                    throw new CheckstyleException("Property ${" + propertyName
-                            + "} has not been set");
+                    throw new CheckstyleException("Property ${" + propertyName //$NON-NLS-1$
+                            + "} has not been set"); //$NON-NLS-1$
                 }
             }
             sb.append(fragment);
@@ -210,7 +210,7 @@ public class MultiPropertyResolver implements PropertyResolver, IContextAware
         int prev = 0;
         int pos;
         // search for the next instance of $ from the 'prev' position
-        while ((pos = aValue.indexOf("$", prev)) >= 0)
+        while ((pos = aValue.indexOf("$", prev)) >= 0) //$NON-NLS-1$
         {
 
             // if there was any text before this, add it as a fragment
@@ -225,7 +225,7 @@ public class MultiPropertyResolver implements PropertyResolver, IContextAware
             // then move past it
             if (pos == (aValue.length() - 1))
             {
-                aFragments.add("$");
+                aFragments.add("$"); //$NON-NLS-1$
                 prev = pos + 1;
             }
             else if (aValue.charAt(pos + 1) != '{')
@@ -239,7 +239,7 @@ public class MultiPropertyResolver implements PropertyResolver, IContextAware
                 if (aValue.charAt(pos + 1) == '$')
                 {
                     // backwards compatibility two $ map to one mode
-                    aFragments.add("$");
+                    aFragments.add("$"); //$NON-NLS-1$
                     prev = pos + 2;
                 }
                 else
@@ -256,7 +256,7 @@ public class MultiPropertyResolver implements PropertyResolver, IContextAware
                 final int endName = aValue.indexOf('}', pos);
                 if (endName < 0)
                 {
-                    throw new CheckstyleException("Syntax error in property: " + aValue);
+                    throw new CheckstyleException("Syntax error in property: " + aValue); //$NON-NLS-1$
                 }
                 final String propertyName = aValue.substring(pos + 2, endName);
                 aFragments.add(null);

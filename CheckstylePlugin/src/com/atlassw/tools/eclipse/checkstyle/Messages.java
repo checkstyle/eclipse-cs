@@ -345,5 +345,11 @@ public final class Messages extends NLS
 
     public static String DuplicatedCodeView_openTargetActionTooltip;
 
+    public static String FileTypesFilterEditor_btnAdd;
+
+    public static String FileTypesFilterEditor_btnRemove;
+
+    public static String FileTypesFilterEditor_title;
+
     // CHECKSTYLE:ON
 }

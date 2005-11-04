@@ -25,6 +25,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.atlassw.tools.eclipse.checkstyle.config.savefilter.ISaveFilter;
 import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
 
 /**
@@ -77,6 +78,9 @@ public class RuleMetadata
     /** Alternative names, including the name of the Checkstyle checker class. */
     private Collection mAlternativeNames;
 
+    /** Determines if the module is a singleton. */
+    private boolean mIsSingleton;
+
     // =================================================
     // Constructors & finalizer.
     // =================================================
@@ -94,11 +98,15 @@ public class RuleMetadata
      *            configure
      * @param deletable <code>true</code> if the module has can be deleted
      *            from the configuration
+     * @param isSingleton <code>true</code> if the module should occur only
+     *            once in a checkstyle configuration
      * @param group the group the module belongs to
+     * @param moduleLogic the module logic that contains advanced logic for a
+     *            module
      */
     public RuleMetadata(String ruleName, String internalName, String parent,
             SeverityLevel defaultSeverity, boolean hidden, boolean hasSeverity, boolean deletable,
-            RuleGroupMetadata group)
+            boolean isSingleton, RuleGroupMetadata group)
     {
         mName = ruleName;
         mInternalName = internalName;
@@ -109,6 +117,7 @@ public class RuleMetadata
         mIsDeletable = deletable;
         mGroup = group;
         mAlternativeNames = new ArrayList();
+        mIsSingleton = isSingleton;
     }
 
     // =================================================
@@ -214,6 +223,16 @@ public class RuleMetadata
     public boolean isDeletable()
     {
         return mIsDeletable;
+    }
+
+    /**
+     * Determine if the module is a singleton inside a checkstyle configuration.
+     * 
+     * @return <code>true</code> if the module is a singleton
+     */
+    public boolean isSingleton()
+    {
+        return mIsSingleton;
     }
 
     /**

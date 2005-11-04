@@ -101,7 +101,7 @@ class PackageObjectFactory implements ModuleFactory
             }
         }
 
-        throw new CheckstyleException("Unable to instantiate " + aName);
+        throw new CheckstyleException("Unable to instantiate " + aName); //$NON-NLS-1$
     }
 
     /**
@@ -121,18 +121,18 @@ class PackageObjectFactory implements ModuleFactory
         }
         catch (ClassNotFoundException e)
         {
-            throw new CheckstyleException("Unable to find class for " + aClassName, e);
+            throw new CheckstyleException("Unable to find class for " + aClassName, e); //$NON-NLS-1$
         }
         catch (InstantiationException e)
         {
             // /CLOVER:OFF
-            throw new CheckstyleException("Unable to instantiate " + aClassName, e);
+            throw new CheckstyleException("Unable to instantiate " + aClassName, e); //$NON-NLS-1$
             // /CLOVER:ON
         }
         catch (IllegalAccessException e)
         {
             // /CLOVER:OFF
-            throw new CheckstyleException("Unable to instantiate " + aClassName, e);
+            throw new CheckstyleException("Unable to instantiate " + aClassName, e); //$NON-NLS-1$
             // /CLOVER:ON
         }
     }
@@ -159,11 +159,11 @@ class PackageObjectFactory implements ModuleFactory
             // try again with suffix "Check"
             try
             {
-                return doMakeObject(aName + "Check");
+                return doMakeObject(aName + "Check"); //$NON-NLS-1$
             }
             catch (CheckstyleException ex2)
             {
-                throw new CheckstyleException("Unable to instantiate " + aName, ex2);
+                throw new CheckstyleException("Unable to instantiate " + aName, ex2); //$NON-NLS-1$
             }
         }
     }

@@ -57,7 +57,7 @@ public class FileTypesFilter extends AbstractFilter
             IResource resource = (IResource) element;
             int type = resource.getType();
 
-            //java files go through
+            // java files go through
             goesThrough = (IResource.FILE == type)
                     && (mFileTypes.contains(resource.getFileExtension()));
         }
@@ -70,5 +70,49 @@ public class FileTypesFilter extends AbstractFilter
     public void setFilterData(List filterData)
     {
         mFileTypes = filterData;
+    }
+
+    /**
+     * @see IFilter#getFilterData()
+     */
+    public List getFilterData()
+    {
+        return mFileTypes;
+    }
+
+    /**
+     * @see IFilter#getPresentableFilterData()
+     */
+    public String getPresentableFilterData()
+    {
+        StringBuffer buf = new StringBuffer();
+
+        int size = mFileTypes != null ? mFileTypes.size() : 0;
+        for (int i = 0; i < size; i++)
+        {
+            if (i > 0)
+            {
+                buf.append(", "); //$NON-NLS-1$
+            }
+
+            buf.append(mFileTypes.get(i));
+        }
+
+        return buf.toString();
+    }
+
+    /**
+     * @see java.lang.Object#hashCode()
+     */
+    public int hashCode()
+    {
+
+        // a "nice" prime number, see Java Report, April 2000
+        final int prime = 1000003;
+
+        int result = super.hashCode();
+        result = (result * prime) + (this.mFileTypes != null ? this.mFileTypes.hashCode() : 0);
+
+        return result;
     }
 }

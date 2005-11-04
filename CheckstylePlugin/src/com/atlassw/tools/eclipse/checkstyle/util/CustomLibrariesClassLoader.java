@@ -143,7 +143,7 @@ public final class CustomLibrariesClassLoader
          */
         public boolean accept(File pathname)
         {
-            return pathname.getAbsolutePath().endsWith(".jar");
+            return pathname.getAbsolutePath().endsWith(".jar"); //$NON-NLS-1$
         }
 
     }

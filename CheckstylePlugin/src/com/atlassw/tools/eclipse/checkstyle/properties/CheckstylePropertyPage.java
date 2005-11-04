@@ -42,8 +42,6 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
@@ -188,7 +186,7 @@ public class CheckstylePropertyPage extends PropertyPage
             fd.left = new FormAttachment(0);
             fd.top = new FormAttachment(this.mChkEnable, 6, SWT.BOTTOM);
             fd.right = new FormAttachment(100);
-            fd.bottom = new FormAttachment(50);
+            fd.bottom = new FormAttachment(45);
             configArea.setLayoutData(fd);
 
             // create the filter area
@@ -271,7 +269,7 @@ public class CheckstylePropertyPage extends PropertyPage
         fd.left = new FormAttachment(0, 3);
         fd.top = new FormAttachment(0, 3);
         fd.right = new FormAttachment(this.mBtnEditFilter, -3, SWT.LEFT);
-        fd.bottom = new FormAttachment(70, -3);
+        fd.bottom = new FormAttachment(60, -3);
         this.mFilterList.getTable().setLayoutData(fd);
 
         this.mFilterList.setLabelProvider(new LabelProvider()
@@ -310,13 +308,14 @@ public class CheckstylePropertyPage extends PropertyPage
         this.mBtnEditFilter.addSelectionListener(this.mPageController);
 
         // don't show readonly filters
-        mFilterList.addFilter(new ViewerFilter()
-        {
-            public boolean select(Viewer viewer, Object parentElement, Object element)
-            {
-                return !((IFilter) element).isReadonly();
-            }
-        });
+        // mFilterList.addFilter(new ViewerFilter()
+        // {
+        // public boolean select(Viewer viewer, Object parentElement, Object
+        // element)
+        // {
+        // return !((IFilter) element).isReadonly();
+        // }
+        // });
 
         fd = new FormData();
         fd.top = new FormAttachment(0, 3);
@@ -592,7 +591,15 @@ public class CheckstylePropertyPage extends PropertyPage
             Object element = event.getElement();
             if (element instanceof IFilter)
             {
-                ((IFilter) element).setEnabled(event.getChecked());
+                IFilter filter = (IFilter) element;
+                if (!filter.isReadonly())
+                {
+                    filter.setEnabled(event.getChecked());
+                }
+                else
+                {
+                    event.getCheckable().setChecked(event.getElement(), true);
+                }
             }
         }
 

@@ -22,8 +22,6 @@ package com.atlassw.tools.eclipse.checkstyle.config;
 
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -34,8 +32,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
 import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
-import com.atlassw.tools.eclipse.checkstyle.config.meta.MetadataFactory;
-import com.atlassw.tools.eclipse.checkstyle.config.meta.RuleMetadata;
+import com.atlassw.tools.eclipse.checkstyle.config.savefilter.SaveFilters;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.atlassw.tools.eclipse.checkstyle.util.XMLUtil;
 import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
@@ -50,10 +47,6 @@ public final class ConfigurationWriter
     //
     // constants
     //
-
-    /** Array containing the internal names of the mandatory modules. */
-    private static final String[] MANDATORY_MODULES = new String[] { XMLTags.CHECKER_MODULE,
-        XMLTags.TREEWALKER_MODULE, XMLTags.FILECONTENTSHOLDER_MODULE, "TreeWalker4Ada" };
 
     //
     // constructors
@@ -72,16 +65,18 @@ public final class ConfigurationWriter
     /**
      * Writes a new checkstyle configuration to the output stream.
      * 
-     * @param out the output stream to write to *
+     * @param out the output stream to write to
+     * @param checkConfig the Check configuration object
      * @throws CheckstylePluginException error writing the checkstyle
      *             configuration
      */
-    public static void writeNewConfiguration(OutputStream out) throws CheckstylePluginException
+    public static void writeNewConfiguration(OutputStream out, ICheckConfiguration checkConfig)
+        throws CheckstylePluginException
     {
 
         // write an empty list of modules
         // mandatory modules are added automatically
-        write(out, new ArrayList());
+        write(out, new ArrayList(), checkConfig);
     }
 
     /**
@@ -89,14 +84,19 @@ public final class ConfigurationWriter
      * 
      * @param out the ouput stream.
      * @param modules the modules
+     * @param checkConfig the Check configuration object
      * @throws CheckstylePluginException error writing the checkstyle
      *             configuration
      */
-    public static void write(OutputStream out, List modules) throws CheckstylePluginException
+    public static void write(OutputStream out, List modules, ICheckConfiguration checkConfig)
+        throws CheckstylePluginException
     {
 
         try
         {
+            // pass the configured modules through the save filters
+            SaveFilters.process(modules);
+
             TransformerHandler xmlOut = XMLUtil.writeWithSax(out);
             xmlOut.startDocument();
             xmlOut.startDTD(XMLTags.MODULE_TAG, "-//Puppy Crawl//DTD Check Configuration 1.2//EN", //$NON-NLS-1$
@@ -104,13 +104,10 @@ public final class ConfigurationWriter
             xmlOut.endDTD();
             xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
 
-            // check for mandatory modules if they are not present
-            // they are automatically added
-            checkForAndAddMandatoryModules(modules);
-
-            // Sort modules because of
-            // Checkstyle bug #1183749
-            Collections.sort(modules, new ModuleComparator());
+            // write out name and description as comment
+            String description = checkConfig.getName() + ":\n" + checkConfig.getDescription();
+            xmlOut.comment(description.toCharArray(), 0, description.length());
+            xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
 
             // find the root module (Checker)
             // the root module is the only module that has no parent
@@ -137,27 +134,6 @@ public final class ConfigurationWriter
         {
             Exception ex = e.getException() != null ? e.getException() : e;
             CheckstylePluginException.rethrow(ex);
-        }
-    }
-
-    /**
-     * Checks if all mandatory modules are present. If not they are added.
-     * 
-     * @param modules the list of modules.
-     */
-    private static void checkForAndAddMandatoryModules(List modules)
-    {
-        for (int i = 0; i < MANDATORY_MODULES.length; i++)
-        {
-
-            if (!containsModule(modules, MANDATORY_MODULES[i]))
-            {
-                RuleMetadata metadata = MetadataFactory.getRuleMetadata(MANDATORY_MODULES[i]);
-                if (metadata != null)
-                {
-                    modules.add(0, new Module(metadata));
-                }
-            }
         }
     }
 
@@ -315,71 +291,5 @@ public final class ConfigurationWriter
         }
 
         return childModules;
-    }
-
-    /**
-     * Check if the modules contains a certain module.
-     * 
-     * @param modules the modules
-     * @param moduleName the internal name of the module to look for
-     * @return <code>true</code> if the FileContentsHolder module is contained
-     */
-    private static boolean containsModule(List modules, String moduleName)
-    {
-
-        boolean result = false;
-
-        Iterator it = modules.iterator();
-        while (it.hasNext())
-        {
-
-            Module m = (Module) it.next();
-
-            if (moduleName.equals(m.getMetaData().getInternalName()))
-            {
-
-                result = true;
-                break;
-            }
-        }
-        return result;
-    }
-
-    /**
-     * Comparator to sort modules so that Checker and TreeWalker come first.
-     * This is done because of a bug in SuppressionCommentFilter.
-     * 
-     * @author Lars Ködderitzsch
-     */
-    private static class ModuleComparator implements Comparator
-    {
-
-        /**
-         * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
-         */
-        public int compare(Object o1, Object o2)
-        {
-
-            String internalName1 = ((Module) o1).getMetaData().getInternalName();
-            String internalName2 = ((Module) o2).getMetaData().getInternalName();
-
-            if (XMLTags.CHECKER_MODULE.equals(internalName1)
-                    || XMLTags.TREEWALKER_MODULE.equals(internalName1)
-                    || XMLTags.FILECONTENTSHOLDER_MODULE.equals(internalName1))
-            {
-                return -1;
-            }
-            else if (XMLTags.CHECKER_MODULE.equals(internalName2)
-                    || XMLTags.TREEWALKER_MODULE.equals(internalName2)
-                    || XMLTags.FILECONTENTSHOLDER_MODULE.equals(internalName2))
-            {
-                return 1;
-            }
-            else
-            {
-                return 0;
-            }
-        }
-
     }
 }

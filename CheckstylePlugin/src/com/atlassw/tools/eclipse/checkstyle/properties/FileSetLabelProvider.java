@@ -53,7 +53,7 @@ class FileSetLabelProvider extends LabelProvider implements ITableLabelProvider
                     
                 case 2:
                     result = fileSet.getCheckConfigName() != null ? fileSet.getCheckConfigName()
-                            : "";
+                            : ""; //$NON-NLS-1$
                     break;
 
                 default:

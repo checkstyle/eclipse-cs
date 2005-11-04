@@ -90,7 +90,7 @@ public class XMLTags
     public static final String RULE_GROUP_METADATA_TAG = "rule-group-metadata"; //$NON-NLS-1$
 
     /** tag for the priority of a rule group. */
-    public static final String PRIORITY_TAG = "priority";
+    public static final String PRIORITY_TAG = "priority"; //$NON-NLS-1$
 
     /** tag for a module metadata. */
     public static final String RULE_METADATA_TAG = "rule-metadata"; //$NON-NLS-1$
@@ -134,6 +134,12 @@ public class XMLTags
     /** tag to flag if a module is deletable. */
     public static final String DELETABLE_TAG = "deletable"; //$NON-NLS-1$
 
+    /** tag to flag if a module is a singleton. */
+    public static final String IS_SINGLETON_TAG = "singleton"; //$NON-NLS-1$
+
+    /** tag for the module logic. */
+    public static final String MODULELOGIC_TAG = "moduleLogic"; //$NON-NLS-1$
+
     //
     // tags for the checkstyle configuration
     //
@@ -146,6 +152,9 @@ public class XMLTags
 
     /** Constant for the name of the FileContentsHolder module. */
     public static final String FILECONTENTSHOLDER_MODULE = "FileContentsHolder"; //$NON-NLS-1$
+
+    /** Constant for the name of the SuppressionCommentFiler module. */
+    public static final String SUPRESSIONCOMMENTFILTER_MODULE = "SuppressionCommentFilter"; //$NON-NLS-1$
 
     /** tag for a checkstyle module. */
     public static final String MODULE_TAG = "module"; //$NON-NLS-1$
@@ -190,6 +199,6 @@ public class XMLTags
     //
 
     /** package tag. */
-    public static final String PACKAGE_TAG = "package";
+    public static final String PACKAGE_TAG = "package"; //$NON-NLS-1$
 
 }

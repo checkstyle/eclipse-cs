@@ -65,7 +65,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.TreeItem;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.Messages;
@@ -389,10 +388,6 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
 
         mTreeViewer.setInput(MetadataFactory.getRuleGroupMetadata());
 
-        ISelection initialSelection = new StructuredSelection(MetadataFactory
-                .getRuleGroupMetadata().get(0));
-        mTreeViewer.setSelection(initialSelection);
-
         try
         {
             mModules = mConfiguration.getModules();
@@ -421,6 +416,10 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
 
         mAddButton.setEnabled(mConfiguration.isConfigurable());
         mRemoveButton.setEnabled(mConfiguration.isConfigurable());
+
+        ISelection initialSelection = new StructuredSelection(MetadataFactory
+                .getRuleGroupMetadata().get(0));
+        mTreeViewer.setSelection(initialSelection);
     }
 
     /**
@@ -658,7 +657,16 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
                         try
                         {
 
-                            Module workingCopy = new Module((RuleMetadata) selectedElement);
+                            RuleMetadata metadata = (RuleMetadata) selectedElement;
+
+                            // check if the module is a singleton and already
+                            // configured
+                            if (metadata.isSingleton() && isAlreadyConfigured(metadata))
+                            {
+                                return;
+                            }
+
+                            Module workingCopy = new Module(metadata);
 
                             if (openOnAdd)
                             {
@@ -690,6 +698,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
                     }
                 }
             }
+
         }
 
         /**
@@ -752,6 +761,27 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
             }
         }
 
+        /**
+         * Checks if a certain module is already contained in the configuration.
+         */
+        private boolean isAlreadyConfigured(RuleMetadata metadata)
+        {
+            String internalName = metadata.getInternalName();
+            boolean containsModule = false;
+            for (int i = 0, size = mModules.size(); i < size; i++)
+            {
+
+                Module module = (Module) mModules.get(i);
+
+                if (internalName.equals(module.getMetaData().getInternalName()))
+                {
+                    containsModule = true;
+                    break;
+                }
+
+            }
+            return containsModule;
+        }
     }
 
     /**
@@ -987,31 +1017,16 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
 
             RuleGroupMetadata moduleGroup = metaData.getGroup();
 
-            if (mCurrentGroup == null)
+            if (mCurrentGroup == null || metaData.isHidden())
             {
                 result = false;
             }
-            else if (metaData.isHidden())
-            {
-                result = false;
-            }
-            else if (mCurrentGroup == moduleGroup)
-            {
-                result = true;
-            }
-            else if (moduleGroup == null && mCurrentGroup.getGroupName().equals("Other")) //$NON-NLS-1$
-            {
-                result = true;
-            }
-            // TODO Thats not too nice - make better
-            else if (moduleGroup != null && moduleGroup.getGroupName().equals("Internal") //$NON-NLS-1$
-                    && mCurrentGroup.getGroupName().equals("Other")) //$NON-NLS-1$
+            else if (mCurrentGroup == moduleGroup || moduleGroup == null)
             {
                 result = true;
             }
 
             return result;
         }
-
     }
 }

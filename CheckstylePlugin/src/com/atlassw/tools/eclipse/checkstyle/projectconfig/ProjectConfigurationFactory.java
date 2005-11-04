@@ -419,7 +419,7 @@ public final class ProjectConfigurationFactory
         // write only filters that are actually changed
         // (enabled or contain data)
         IFilter prototype = PluginFilters.getByName(filter.getName());
-        if (prototype.equals(filter) || filter.isReadonly())
+        if (prototype.equals(filter))
         {
             return;
         }

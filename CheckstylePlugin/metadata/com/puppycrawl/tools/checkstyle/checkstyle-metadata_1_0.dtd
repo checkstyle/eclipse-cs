@@ -55,6 +55,9 @@
 		configuration via the configuration editor. This only makes sense for some 
 		special modules like Checker or TreeWalker, which must be present. Therefore
 		this attribute default to 'false'.
+
+	The 'singleton' module is used to specify if the module should occur only once in
+		a checkstyle configuration. This will be taken into account by the configuration editor.
 	-->
 <!ELEMENT rule-metadata (alternative-name+,description?,property-metadata*)>
 <!ATTLIST rule-metadata
@@ -63,7 +66,8 @@
 	parent			NMTOKEN					#REQUIRED
 	hasSeverity		(true|false)			"true"
 	hidden			(true|false)			"false"
-	deletable		(true|false)			"true">
+	deletable		(true|false)			"true"
+	singleton		(true|false)			"false">
 
 
 <!-- 
