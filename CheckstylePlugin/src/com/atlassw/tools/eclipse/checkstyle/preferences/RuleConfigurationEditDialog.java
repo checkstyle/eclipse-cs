@@ -109,6 +109,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
         throws CheckstylePluginException
     {
         super(parent);
+        setShellStyle(getShellStyle() | SWT.RESIZE);
         mRule = rule;
         mReadonly = readonly;
         mTitle = title;
@@ -399,6 +400,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
     protected void configureShell(Shell shell)
     {
         super.configureShell(shell);
+
         shell.setText(mTitle);
     }
 }

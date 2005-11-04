@@ -142,6 +142,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
     public CheckConfigurationConfigureDialog(Shell parentShell, ICheckConfiguration config)
     {
         super(parentShell);
+        setShellStyle(getShellStyle() | SWT.RESIZE);
         mConfiguration = config;
     }
 
@@ -184,7 +185,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
 
         mTxtDescription = new Text(contents, SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.READ_ONLY
                 | SWT.BORDER | SWT.VERTICAL);
-        gd = new GridData(GridData.FILL_BOTH);
+        gd = new GridData(GridData.FILL_HORIZONTAL);
         gd.heightHint = 100;
         mTxtDescription.setLayoutData(gd);
 
