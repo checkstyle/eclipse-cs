@@ -76,6 +76,7 @@ import com.atlassw.tools.eclipse.checkstyle.config.meta.RuleMetadata;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginImages;
+import com.atlassw.tools.eclipse.checkstyle.util.SWTUtil;
 import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
 
 /**
@@ -142,7 +143,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
     public CheckConfigurationConfigureDialog(Shell parentShell, ICheckConfiguration config)
     {
         super(parentShell);
-        setShellStyle(getShellStyle() | SWT.RESIZE);
+        setShellStyle(getShellStyle() | SWT.RESIZE | SWT.MAX);
         mConfiguration = config;
     }
 
@@ -196,12 +197,24 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
     }
 
     /**
+     * @see org.eclipse.jface.window.Window#create()
+     */
+    public void create()
+    {
+        super.create();
+
+        SWTUtil.addResizeSupport(this, CheckstylePlugin.getDefault().getDialogSettings(),
+                CheckConfigurationConfigureDialog.class.getName());
+    }
+
+    /**
      * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
      */
     protected void configureShell(Shell newShell)
     {
         super.configureShell(newShell);
         newShell.setText(Messages.CheckConfigurationConfigureDialog_titleCheckConfigurationDialog);
+        newShell.setMinimumSize(400, 500);
     }
 
     /**

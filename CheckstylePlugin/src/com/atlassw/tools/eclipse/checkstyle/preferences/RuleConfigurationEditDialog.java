@@ -56,6 +56,7 @@ import com.atlassw.tools.eclipse.checkstyle.config.Module;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginImages;
+import com.atlassw.tools.eclipse.checkstyle.util.SWTUtil;
 import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
 
 /**
@@ -391,6 +392,20 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
                     getShell());
             mConfigPropertyWidgets[i].setEnabled(!mReadonly);
         }
+    }
+
+    /**
+     * @see org.eclipse.jface.window.Window#create()
+     */
+    public void create()
+    {
+        super.create();
+
+        // add resize support - for each different module the settings will be
+        // stored separately
+        SWTUtil.addResizeSupport(this, CheckstylePlugin.getDefault().getDialogSettings(),
+                RuleConfigurationEditDialog.class.getName() + "#"
+                        + mRule.getMetaData().getInternalName());
     }
 
     /**
