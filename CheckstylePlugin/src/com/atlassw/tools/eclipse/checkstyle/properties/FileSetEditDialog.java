@@ -72,6 +72,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 
+import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationFactory;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
@@ -82,6 +83,7 @@ import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileSet;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginImages;
+import com.atlassw.tools.eclipse.checkstyle.util.SWTUtil;
 
 /**
  * Property page.
@@ -145,6 +147,7 @@ public class FileSetEditDialog extends TitleAreaDialog
         throws CheckstylePluginException
     {
         super(parent);
+        setShellStyle(getShellStyle() | SWT.RESIZE);
         mProject = project;
         mFileSet = fileSet;
 
@@ -189,7 +192,8 @@ public class FileSetEditDialog extends TitleAreaDialog
         composite.setLayoutData(new GridData(GridData.FILL_BOTH));
         Composite dialog = new Composite(composite, SWT.NONE);
         dialog.setLayout(new GridLayout(1, false));
-
+        dialog.setLayoutData(new GridData(GridData.FILL_BOTH));
+        
         Control commonArea = createCommonArea(dialog);
         commonArea.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
@@ -208,7 +212,7 @@ public class FileSetEditDialog extends TitleAreaDialog
 
         sashForm.setWeights(new int[] { 50, 50 });
 
-        //init the data
+        // init the data
         initializeControls();
 
         return composite;
@@ -294,69 +298,6 @@ public class FileSetEditDialog extends TitleAreaDialog
 
         mPatternViewer = new CheckboxTableViewer(table);
 
-        //        TextCellEditor mPatternCellEditor = new TextCellEditor(table);
-        //        mPatternViewer.setColumnProperties(new String[] { "include",
-        // "pattern" });
-        //        mPatternViewer.setCellEditors(new CellEditor[] { null,
-        // mPatternCellEditor });
-        //        mPatternViewer.setCellModifier(new ICellModifier()
-        //        {
-        //
-        //            public boolean canModify(Object element, String property)
-        //            {
-        //                return true;
-        //            }
-        //
-        //            public Object getValue(Object element, String property)
-        //            {
-        //                Object value = null;
-        //                if ("include".equals(property))
-        //                {
-        //                    value = Boolean.valueOf(((FileMatchPattern)
-        // element).isIncludePattern());
-        //                }
-        //                else if ("pattern".equals(property))
-        //                {
-        //                    value = ((FileMatchPattern) element).getMatchPattern();
-        //                }
-        //                return value;
-        //            }
-        //
-        //            public void modify(Object element, String property, Object value)
-        //            {
-        //                if (element == null || property == null || value == null)
-        //                {
-        //                    return;
-        //                }
-        //
-        //                if (element instanceof Item)
-        //                {
-        //                    element = ((Item) element).getData();
-        //                }
-        //
-        //                if ("include".equals(property))
-        //                {
-        //                    ((FileMatchPattern) element).setIsIncludePattern(((Boolean) value)
-        //                            .booleanValue());
-        //                    updateMatchView();
-        //                }
-        //                else if ("pattern".equals(property))
-        //                {
-        //                    try
-        //                    {
-        //                        ((FileMatchPattern) element).setMatchPattern(((String)
-        // value).trim());
-        //                        setErrorMessage(null);
-        //                        mPatternViewer.refresh();
-        //                        updateMatchView();
-        //                    }
-        //                    catch (CheckstylePluginException e)
-        //                    {
-        //                        setErrorMessage(e.getLocalizedMessage());
-        //                    }
-        //                }
-        //            }
-        //        });
         mPatternViewer.setLabelProvider(new FileMatchPatternLabelProvider());
         mPatternViewer.setContentProvider(new ArrayContentProvider());
         mPatternViewer.addDoubleClickListener(mController);
@@ -453,17 +394,17 @@ public class FileSetEditDialog extends TitleAreaDialog
             this.setTitle(Messages.FileSetEditDialog_titleEdit);
         }
 
-        //intitialize the name
+        // intitialize the name
         mFileSetNameText.setText(mFileSet.getName() != null ? mFileSet.getName() : ""); //$NON-NLS-1$
 
-        //init the check configuration combo
+        // init the check configuration combo
         mComboViewer.setInput(CheckConfigurationFactory.getCheckConfigurations());
         if (mFileSet.getCheckConfig() != null)
         {
             mComboViewer.setSelection(new StructuredSelection(mFileSet.getCheckConfig()));
         }
 
-        //init the pattern area
+        // init the pattern area
         mPatternViewer.setInput(mFileSet.getFileMatchPatterns());
         Iterator iter = mFileSet.getFileMatchPatterns().iterator();
         while (iter.hasNext())
@@ -472,7 +413,7 @@ public class FileSetEditDialog extends TitleAreaDialog
             mPatternViewer.setChecked(pattern, pattern.isIncludePattern());
         }
 
-        //init the test area
+        // init the test area
         mMatchesViewer.setInput(mProjectFiles);
         updateMatchView();
     }
@@ -486,6 +427,17 @@ public class FileSetEditDialog extends TitleAreaDialog
     }
 
     /**
+     * @see org.eclipse.jface.window.Window#create()
+     */
+    public void create()
+    {
+        super.create();
+
+        SWTUtil.addResizeSupport(this, CheckstylePlugin.getDefault().getDialogSettings(),
+                FileSetEditDialog.class.getName());
+    }
+
+    /**
      * Over-rides method from Window to configure the shell (e.g. the enclosing
      * window).
      */
@@ -493,6 +445,7 @@ public class FileSetEditDialog extends TitleAreaDialog
     {
         super.configureShell(shell);
         shell.setText(Messages.FileSetEditDialog_titleFilesetEditor);
+        shell.setMinimumSize(400, 500);
     }
 
     /**
