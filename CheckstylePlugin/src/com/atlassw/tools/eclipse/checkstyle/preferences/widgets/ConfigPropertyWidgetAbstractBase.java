@@ -69,29 +69,43 @@ public abstract class ConfigPropertyWidgetAbstractBase implements IConfigPropert
 
     private Control mValueWidget;
 
+    private Composite mParent;
+
     // =================================================
     // Constructors.
     // =================================================
 
     protected ConfigPropertyWidgetAbstractBase(Composite parent, ConfigProperty prop)
     {
+        mParent = parent;
         mProp = prop;
+    }
+
+    // =================================================
+    // Methods.
+    // =================================================
+
+    /**
+     * @see com.atlassw.tools.eclipse.checkstyle.preferences.IConfigPropertyWidget#initialize()
+     */
+    public void initialize()
+    {
 
         //
         // Add the property's name.
         //
-        Label label = new Label(parent, SWT.NULL);
+        Label label = new Label(mParent, SWT.NULL);
         label.setText(mProp.getName() + ":"); //$NON-NLS-1$
         GridData gd = new GridData();
         gd.verticalAlignment = SWT.BEGINNING;
         label.setLayoutData(gd);
 
-        mValueWidget = getValueWidget(parent);
+        mValueWidget = getValueWidget(mParent);
         gd = (GridData) mValueWidget.getLayoutData();
         mValueWidget.setToolTipText(mProp.getMetaData().getDescription());
 
         // provide a label that shows a tooltip with the property description
-        Label lblPropertyInfo = new Label(parent, SWT.NULL);
+        Label lblPropertyInfo = new Label(mParent, SWT.NULL);
         gd = new GridData();
         gd.verticalAlignment = SWT.BEGINNING;
         lblPropertyInfo.setLayoutData(gd);
@@ -99,10 +113,6 @@ public abstract class ConfigPropertyWidgetAbstractBase implements IConfigPropert
         lblPropertyInfo.setToolTipText(mProp.getMetaData().getDescription());
         SWTUtil.addTooltipOnPressSupport(lblPropertyInfo);
     }
-
-    // =================================================
-    // Methods.
-    // =================================================
 
     /**
      * @see IConfigPropertyWidget#setEnabled(boolean)

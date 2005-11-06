@@ -67,6 +67,12 @@ public class CheckstylePlugin extends AbstractUIPlugin
     public static final String PREF_TRANSLATE_TOKENS = "translate.checkstyle.tokens"; //$NON-NLS-1$
 
     /**
+     * Preference name indicating if the checkstyle tokens within the module
+     * editor should be sorted.
+     */
+    public static final String PREF_SORT_TOKENS = "translate.sort.tokens"; //$NON-NLS-1$
+
+    /**
      * Preference name indicating if the module editor should be opened when
      * adding a module.
      */
@@ -170,6 +176,7 @@ public class CheckstylePlugin extends AbstractUIPlugin
         prefStore.setDefault(PREF_FILESET_WARNING, true);
         prefStore.setDefault(PREF_ASK_BEFORE_REBUILD, MessageDialogWithToggle.PROMPT);
         prefStore.setDefault(PREF_TRANSLATE_TOKENS, true);
+        prefStore.setDefault(PREF_SORT_TOKENS, false);
         prefStore.setDefault(PREF_OPEN_MODULE_EDITOR, true);
         prefStore.setDefault(PREF_DUPLICATED_CODE_MIN_LINES, DUPLICATED_CODE_MIN_LINES);
         prefStore.setDefault(PREF_LIMIT_MARKERS_PER_RESOURCE, false);

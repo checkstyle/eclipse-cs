@@ -20,19 +20,29 @@
 
 package com.atlassw.tools.eclipse.checkstyle.preferences.widgets;
 
+import java.text.Collator;
+import java.text.ParseException;
+import java.text.RuleBasedCollator;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 import java.util.StringTokenizer;
 
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -49,29 +59,33 @@ import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
 public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstractBase implements
         IPropertyChangeListener
 {
-    //=================================================
+    // =================================================
     // Public static final variables.
-    //=================================================
+    // =================================================
 
     /** Resource bundle containing the token translations. */
     private static final ResourceBundle TOKEN_BUNDLE = PropertyResourceBundle
             .getBundle("com.atlassw.tools.eclipse.checkstyle.preferences.token"); //$NON-NLS-1$
 
-    //=================================================
+    // =================================================
     // Static class variables.
-    //=================================================
+    // =================================================
 
-    //=================================================
+    // =================================================
     // Instance member variables.
-    //=================================================
+    // =================================================
 
     private CheckboxTableViewer mTable;
 
     private boolean mTranslateTokens;
 
-    //=================================================
+    private boolean mSortTokens = true;
+
+    private List mTokens;
+
+    // =================================================
     // Constructors & finalizer.
-    //=================================================
+    // =================================================
 
     /**
      * Creates the widget.
@@ -82,34 +96,40 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
     public ConfigPropertyWidgetMultiCheck(Composite parent, ConfigProperty prop)
     {
         super(parent, prop);
+        mTokens = new ArrayList(prop.getMetaData().getPropertyEnumeration());
     }
 
-    //=================================================
+    // =================================================
     // Methods.
-    //=================================================
+    // =================================================
 
     /**
      * @see ConfigPropertyWidgetAbstractBase#getValueWidget(org.eclipse.swt.widgets.Composite)
      */
     protected Control getValueWidget(Composite parent)
     {
+
         if (mTable == null)
         {
             IPreferenceStore prefStore = CheckstylePlugin.getDefault().getPreferenceStore();
             mTranslateTokens = prefStore.getBoolean(CheckstylePlugin.PREF_TRANSLATE_TOKENS);
+            mSortTokens = prefStore.getBoolean(CheckstylePlugin.PREF_SORT_TOKENS);
             prefStore.addPropertyChangeListener(this);
 
             mTable = CheckboxTableViewer.newCheckList(parent, SWT.V_SCROLL | SWT.BORDER);
             mTable.setContentProvider(new ArrayContentProvider());
             mTable.setLabelProvider(new TokenLabelProvider());
-            mTable.setInput(getConfigProperty().getMetaData().getPropertyEnumeration());
+
+            installSorter(mSortTokens);
+
+            mTable.setInput(mTokens);
             mTable.setCheckedElements(getInitialValues().toArray());
 
             GridData gd = new GridData(GridData.FILL_BOTH);
             gd.heightHint = 150;
             mTable.getControl().setLayoutData(gd);
 
-            //deregister the listener on widget dipose
+            // deregister the listener on widget dipose
             mTable.getControl().addDisposeListener(new DisposeListener()
             {
 
@@ -157,6 +177,20 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
         return result;
     }
 
+    private void installSorter(boolean sort)
+    {
+        if (sort)
+        {
+            Collator collator = Collator.getInstance(getPlatformLocale());
+            mTable.setSorter(new ViewerSorter(collator));
+        }
+        else
+        {
+            mTable.setSorter(null);
+        }
+        mTable.refresh();
+    }
+
     /**
      * @see ConfigPropertyWidgetAbstractBase#restorePropertyDefault()
      */
@@ -174,10 +208,46 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
             }
         }
 
-        //clear current checked state
+        // clear current checked state
         mTable.setCheckedElements(new Object[0]);
 
         mTable.setCheckedElements(result.toArray());
+    }
+
+    /**
+     * @see IPropertyChangeListener#propertyChange(org.eclipse.jface.util.PropertyChangeEvent)
+     */
+    public void propertyChange(PropertyChangeEvent event)
+    {
+
+        if (CheckstylePlugin.PREF_TRANSLATE_TOKENS.equals(event.getProperty()))
+        {
+            mTranslateTokens = ((Boolean) event.getNewValue()).booleanValue();
+            mTable.refresh(true);
+        }
+        if (CheckstylePlugin.PREF_SORT_TOKENS.equals(event.getProperty()))
+        {
+            mSortTokens = ((Boolean) event.getNewValue()).booleanValue();
+            installSorter(mSortTokens);
+        }
+    }
+
+    /**
+     * Helper method to get the current plattform locale.
+     * 
+     * @return the platform locale
+     */
+    private static Locale getPlatformLocale()
+    {
+
+        String nl = Platform.getNL();
+        String[] parts = nl.split("_"); //$NON-NLS-1$
+
+        String language = parts.length > 0 ? parts[0] : ""; //$NON-NLS-1$
+        String country = parts.length > 1 ? parts[1] : ""; //$NON-NLS-1$
+        String variant = parts.length > 2 ? parts[2] : ""; //$NON-NLS-1$
+
+        return new Locale(language, country, variant);
     }
 
     /**
@@ -212,18 +282,5 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
             return translation;
         }
 
-    }
-
-    /**
-     * @see IPropertyChangeListener#propertyChange(org.eclipse.jface.util.PropertyChangeEvent)
-     */
-    public void propertyChange(PropertyChangeEvent event)
-    {
-
-        if (CheckstylePlugin.PREF_TRANSLATE_TOKENS.equals(event.getProperty()))
-        {
-            mTranslateTokens = ((Boolean) event.getNewValue()).booleanValue();
-            mTable.refresh(true);
-        }
     }
 }
