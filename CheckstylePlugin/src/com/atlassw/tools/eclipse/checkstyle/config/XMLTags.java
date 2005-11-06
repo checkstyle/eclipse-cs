@@ -107,6 +107,9 @@ public class XMLTags
     /** tag for the internal name of the module. */
     public static final String INTERNAL_NAME_TAG = "internal-name"; //$NON-NLS-1$
 
+    /** tag for the optional checkstyle module name. */
+    public static final String CHECKSTYLE_MODULE_NAME_TAG = "checkstyle-module-name"; //$NON-NLS-1$
+
     /** tag for a property value enumeration. */
     public static final String ENUMERATION_TAG = "enumeration"; //$NON-NLS-1$
 
@@ -136,9 +139,6 @@ public class XMLTags
 
     /** tag to flag if a module is a singleton. */
     public static final String IS_SINGLETON_TAG = "singleton"; //$NON-NLS-1$
-
-    /** tag for the module logic. */
-    public static final String MODULELOGIC_TAG = "moduleLogic"; //$NON-NLS-1$
 
     //
     // tags for the checkstyle configuration
