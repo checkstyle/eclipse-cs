@@ -218,7 +218,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
         });
 
         mBtnSort = new Button(composite, SWT.CHECK);
-        mBtnSort.setText("Sort tokens");
+        mBtnSort.setText(Messages.RuleConfigurationEditDialog_btnSortTokens);
         gd = new GridData();
         gd.horizontalAlignment = GridData.BEGINNING;
         gd.horizontalIndent = 5;
@@ -432,7 +432,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
         // add resize support - for each different module the settings will be
         // stored separately
         SWTUtil.addResizeSupport(this, CheckstylePlugin.getDefault().getDialogSettings(),
-                RuleConfigurationEditDialog.class.getName() + "#"
+                RuleConfigurationEditDialog.class.getName() + "#" //$NON-NLS-1$
                         + mRule.getMetaData().getInternalName());
     }
 

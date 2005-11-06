@@ -351,5 +351,7 @@ public final class Messages extends NLS
 
     public static String FileTypesFilterEditor_title;
 
+    public static String RuleConfigurationEditDialog_btnSortTokens;
+
     // CHECKSTYLE:ON
 }
