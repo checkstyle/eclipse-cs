@@ -43,13 +43,18 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
  */
 public interface IConfigPropertyWidget
 {
-    //=================================================
+    // =================================================
     // Public static final variables.
-    //=================================================
+    // =================================================
 
-    //=================================================
+    // =================================================
     // Methods.
-    //=================================================
+    // =================================================
+
+    /**
+     * Initialized the widget and its controls.
+     */
+    void initialize();
 
     /**
      * Returns the stringified value of the widget.

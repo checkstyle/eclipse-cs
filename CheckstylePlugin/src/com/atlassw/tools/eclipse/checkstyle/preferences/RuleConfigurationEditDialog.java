@@ -89,6 +89,8 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
 
     private Button mBtnTranslate;
 
+    private Button mBtnSort;
+
     private boolean mReadonly = false;
 
     private String mTitle;
@@ -182,7 +184,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
     {
 
         Composite composite = new Composite(parent, SWT.NONE);
-        GridLayout layout = new GridLayout(2, false);
+        GridLayout layout = new GridLayout(3, false);
         layout.marginHeight = 0;
         layout.marginWidth = 0;
         composite.setLayout(layout);
@@ -206,6 +208,32 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
                 // store translation preference
                 IPreferenceStore prefStore = CheckstylePlugin.getDefault().getPreferenceStore();
                 prefStore.setValue(CheckstylePlugin.PREF_TRANSLATE_TOKENS, ((Button) e.widget)
+                        .getSelection());
+            }
+
+            public void widgetDefaultSelected(SelectionEvent e)
+            {
+            // NOOP
+            }
+        });
+
+        mBtnSort = new Button(composite, SWT.CHECK);
+        mBtnSort.setText("Sort tokens");
+        gd = new GridData();
+        gd.horizontalAlignment = GridData.BEGINNING;
+        gd.horizontalIndent = 5;
+        mBtnSort.setLayoutData(gd);
+
+        // Init the sort tokens preference
+        mBtnSort.setSelection(prefStore.getBoolean(CheckstylePlugin.PREF_SORT_TOKENS));
+        mBtnSort.addSelectionListener(new SelectionListener()
+        {
+
+            public void widgetSelected(SelectionEvent e)
+            {
+                // store translation preference
+                IPreferenceStore prefStore = CheckstylePlugin.getDefault().getPreferenceStore();
+                prefStore.setValue(CheckstylePlugin.PREF_SORT_TOKENS, ((Button) e.widget)
                         .getSelection());
             }
 
