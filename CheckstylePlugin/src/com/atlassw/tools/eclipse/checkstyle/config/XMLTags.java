@@ -156,6 +156,9 @@ public class XMLTags
     /** Constant for the name of the SuppressionCommentFiler module. */
     public static final String SUPRESSIONCOMMENTFILTER_MODULE = "SuppressionCommentFilter"; //$NON-NLS-1$
 
+    /** Constant for the name of the Other group. */
+    public static final String OTHER_GROUP = "Other"; //$NON-NLS-1$
+
     /** tag for a checkstyle module. */
     public static final String MODULE_TAG = "module"; //$NON-NLS-1$
 

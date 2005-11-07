@@ -198,8 +198,9 @@ public final class MetadataFactory
             parent = XMLTags.TREEWALKER_MODULE;
         }
 
+        RuleGroupMetadata otherGroup = getRuleGroupMetadata(XMLTags.OTHER_GROUP);
         RuleMetadata ruleMeta = new RuleMetadata(module.getName(), module.getName(), null, parent,
-                MetadataFactory.getDefaultSeverity(), false, true, true, false, null);
+                MetadataFactory.getDefaultSeverity(), false, true, true, false, otherGroup);
         module.setMetaData(ruleMeta);
         sRuleMetadata.put(ruleMeta.getInternalName(), ruleMeta);
 
