@@ -430,22 +430,29 @@ public final class MetadataFactory
                 {
 
                     String groupName = attributes.getValue(XMLTags.NAME_TAG).trim();
-                    boolean hidden = Boolean.valueOf(attributes.getValue(XMLTags.HIDDEN_TAG))
-                            .booleanValue();
-                    int priority = 0;
-                    try
-                    {
-                        priority = Integer.parseInt(attributes.getValue(XMLTags.PRIORITY_TAG));
-                    }
-                    catch (Exception e)
-                    {
-                        CheckstyleLog.log(e);
-                        priority = Integer.MAX_VALUE;
-                    }
 
-                    // Create the groups
-                    mCurrentGroup = new RuleGroupMetadata(groupName, hidden, priority);
-                    sRuleGroupMetadata.put(groupName, mCurrentGroup);
+                    mCurrentGroup = getRuleGroupMetadata(groupName);
+
+                    if (mCurrentGroup == null)
+                    {
+
+                        boolean hidden = Boolean.valueOf(attributes.getValue(XMLTags.HIDDEN_TAG))
+                                .booleanValue();
+                        int priority = 0;
+                        try
+                        {
+                            priority = Integer.parseInt(attributes.getValue(XMLTags.PRIORITY_TAG));
+                        }
+                        catch (Exception e)
+                        {
+                            CheckstyleLog.log(e);
+                            priority = Integer.MAX_VALUE;
+                        }
+
+                        // Create the groups
+                        mCurrentGroup = new RuleGroupMetadata(groupName, hidden, priority);
+                        sRuleGroupMetadata.put(groupName, mCurrentGroup);
+                    }
                 }
                 else if (XMLTags.RULE_METADATA_TAG.equals(qName))
                 {
