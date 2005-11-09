@@ -20,9 +20,12 @@
 
 package com.atlassw.tools.eclipse.checkstyle.util;
 
+import java.lang.reflect.Method;
+
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.DialogSettings;
 import org.eclipse.jface.dialogs.IDialogSettings;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
@@ -93,7 +96,7 @@ public final class SWTUtil
     {
 
         Shell shell = dialog.getShell();
-        ShellResizeSupportListener shellSupport = new ShellResizeSupportListener(settings,
+        ShellResizeSupportListener shellSupport = new ShellResizeSupportListener(dialog, settings,
                 dialogKey);
 
         shell.addControlListener(shellSupport);
@@ -254,6 +257,9 @@ public final class SWTUtil
         /** the minmized state of the shell. */
         private boolean mMinimized;
 
+        /** the dialog. */
+        private Dialog mDialog;
+
         /** the plugins dialog settings instance. */
         private IDialogSettings mSettings;
 
@@ -273,8 +279,9 @@ public final class SWTUtil
          * @param settings the dialog settings instance for the plugin
          * @param dialogKey the unique key of the dialog
          */
-        public ShellResizeSupportListener(IDialogSettings settings, String dialogKey)
+        public ShellResizeSupportListener(Dialog dialog, IDialogSettings settings, String dialogKey)
         {
+            mDialog = dialog;
             mSettings = settings;
             mDialogKey = dialogKey;
         }
@@ -318,11 +325,27 @@ public final class SWTUtil
             // do only on initial activation (aka when the dialog is opened)
             if (!mInitialyActivated)
             {
+
+                Point initialSize = null;
+
+                // Hack to get the initial size computed for this dialog
+                try
+                {
+                    Method getInitialSizeMethod = Window.class.getDeclaredMethod("getInitialSize",
+                            null);
+                    getInitialSizeMethod.setAccessible(true);
+                    initialSize = (Point) getInitialSizeMethod.invoke(mDialog, null);
+                }
+                catch (Exception e1)
+                {
+                    initialSize = new Point(0, 0);
+                }
+                Shell shell = (Shell) e.getSource();
+                shell.setMinimumSize(initialSize);
+
                 IDialogSettings bounds = mSettings.getSection(mDialogKey);
                 if (bounds != null)
                 {
-
-                    Shell shell = (Shell) e.getSource();
 
                     mMaximized = bounds.getBoolean(MAXIMIZED);
                     mMinimized = bounds.getBoolean(MINIMIZED);
