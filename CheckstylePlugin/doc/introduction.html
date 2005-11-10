@@ -33,7 +33,7 @@ header();
         you are notified of problems via the Eclipse Problems View and source code annotations just as you would see with
         compiler errors or warnings.</p>
 <h2>Download &amp; Installation</h2>
-<!-- 
+
                         
                         <p>The first way to install the Eclipse Checkstyle Plug-in is via the <a
                         href="http://eclipse-cs.sourceforge.net/update" target="_blank">update site</a>.</p>
@@ -45,8 +45,7 @@ header();
 
                           <li>Create a <i>New Remote Site...</i></li>
 
-                          <li>Input a name to your liking (for instance <i>Checkstyle Plugin</i>) and input the following URL: <font
-                          face="Courier New" size="2">http://eclipse-cs.sourceforge.net/update</font></li>
+                          <li>Input a name to your liking (for instance <i>Checkstyle Plugin</i>) and input the following URL: <i>http://eclipse-cs.sourceforge.net/update</i></li>
 
                           <li>Click your way through the following pages to install the plug-in.</li>
                         </ol>
@@ -60,8 +59,8 @@ header();
                          <font face="Courier New" size="2">com.atlassw.tools.eclipse.checkstyle_<i>&lt;version&gt;</i></font> folder to your Eclipse
                         plug-in folder and restart Eclipse. That's all there is to it, you are now ready to run Checkstyle.</p>
                         
-                        -->
-
+                        
+<!--
         <p>The Checkstyle Eclipse Plug-in can be downloaded from the
         <a
         href="http://sourceforge.net/projects/eclipse-cs/" target="_blank">Eclipse Checkstyle Plug-in&#39;s SourceForge
@@ -71,17 +70,19 @@ header();
         <br />
         Once you have downloaded the distribution zip file extract its contents. First, exit from Eclipse. Next, copy the <i>com.atlassw.tools.eclipse.checkstyle_&lt;version&gt;</i> folder
         to your Eclipse plug-in folder and restart Eclipse. That&#39;s all there is to it, you are now ready to run Checkstyle.</p>
-<!--
+-->
                         <p><b><i>Important Note:</i></b> If you did not use the update site to install the plug-in please make sure to
                         restart Eclipse with the <i>-clean</i> option at least once. This is because Eclipse caches a lot of information
                         about plug-ins. In case you just updated the plugin from a previous version this information cached by Eclipse is
                         not up to date - resulting in the plugin failing with ClassNotFoundExceptions and other serious issues.</p>
-                        -->
-
+                        
+<!--
         <p><b><i>Important Note:</i></b> If installed the updated the plug-in from a previous version please make sure to
             restart Eclipse with the <i>-clean</i> option at least once. This is because Eclipse caches a lot of information
             about plug-ins. In case you just updated the plug-in from a previous version this information cached by Eclipse
             is not up to date - resulting in the plug-in failing with ClassNotFoundExceptions and other serious issues.</p>
+-->            
+            
 <p><b><i>Important Note:</i></b> As of plug-in release 4.0.0 only Eclipse 3.0 and newer is supported. Eclipse 2.x.x support
     is discontinued. Please use older plug-in versions with Eclipse 2.x.x. - downloadable from the
         <a

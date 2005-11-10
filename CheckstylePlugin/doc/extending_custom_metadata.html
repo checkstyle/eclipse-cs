@@ -62,34 +62,45 @@ The content might be translatable.
 
 
 &lt;!-- 
-&#39;rule-metadata&#39; elements are used to define the metadata for a check (or filter) module.
-The &#39;name&#39; attribute is used as display name and is translatable.
+	'rule-metadata' elements are used to define the metadata for a check (or filter) module.
+	The 'name' attribute is used as display name and is translatable.
+	
+	The 'internal-name' attribute defines the logical name of the module.
+	The internal name must be unique.
+	
+	The 'checkstyle-module-name' can be used if the internal-name differs from the actual name
+		of the checkstyle module that needs to be written to the checkstyle configuration file.
+		Most likely this will only be used by users adopting checkstyle for other languages than
+		java and want to reuse existing implementations of standard checkstyle checks.
+	
+	The 'parent' element defines if the module is a file set check (Checker as parent)
+		or a regular 'TreeWalker' check.
+		
+	The 'hasSeverity' attribute specifies if a module has a severity property that can be set.
+	Some modules (like filters) have no severity property.
+		
+	The 'hidden' attribute is used to hide a module, so it cannot be seen or 
+		configured in the configuration editor. This is only used for some special modules
+		like FileContentsHolder. The attribut defaults to 'false'.
+		
+	The 'deletable' attribute is used to specify if the module can be removed from the 
+		configuration via the configuration editor. This only makes sense for some 
+		special modules like Checker or TreeWalker, which must be present. Therefore
+		this attribute default to 'false'.
 
-The &#39;internal-name&#39; attribute defines the logical name of the module.
-
-The &#39;parent&#39; element defines if the module is a file set check (Checker as parent)
-or a regular &#39;TreeWalker&#39; check.
-
-The &#39;hasSeverity&#39; attribute specifies if a module has a severity property that can be set.
-Some modules (like filters) have no severity property.
-
-The &#39;hidden&#39; attribute is used to hide a module, so it cannot be seen or 
-configured in the configuration editor. This is only used for some special modules
-like FileContentsHolder. The attribute defaults to &#39;false&#39;.
-
-The &#39;deletable&#39; attribute is used to specify if the module can be removed from the 
-configuration via the configuration editor. This only makes sense for some 
-special modules like Checker or TreeWalker, which must be present. Therefore
-this attribute default to &#39;false&#39;.
---&gt;
+	The 'singleton' module is used to specify if the module should occur only once in
+		a checkstyle configuration. This will be taken into account by the configuration editor.
+	--&gt;
 &lt;!ELEMENT rule-metadata (alternative-name+,description?,property-metadata*)&gt;
 &lt;!ATTLIST rule-metadata
-	name			CDATA						#REQUIRED
-	internal-name	NMTOKEN						#REQUIRED
-	parent			(Root|Checker|TreeWalker)	#REQUIRED
-	hasSeverity		(true|false)				&quot;true&quot;
-	hidden			(true|false)				&quot;false&quot;
-	deletable		(true|false)				&quot;true&quot;&gt;
+	name                    CDATA           #REQUIRED
+	internal-name           NMTOKEN         #REQUIRED
+	checkstyle-module-name  NMTOKEN         #IMPLIED
+	parent                  NMTOKEN         #REQUIRED
+	hasSeverity             (true|false)    "true"
+	hidden                  (true|false)    "false"
+	deletable               (true|false)    "true"
+	singleton               (true|false)    "false"&gt;
 
 
 &lt;!-- 

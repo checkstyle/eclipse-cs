@@ -10,6 +10,36 @@ Make sure you got an eclipse 3.0 or higher installation you are installing this 
 Eclipse Checkstyle Plugin v4.0.0
 ---------------------------------
 
+Final Release
+-------------
+
+Updated to use Checkstyle 4.0 final
+Handling of checkstyle_packages.xml files has changed again, the intermediate solution from beta6 won't work anymore.
+Be sure to check out the updated documentation.
+
+Important Note: 
+The eclipse-cs update site is now officially released! 
+Using the update mechanism of Eclipse can save you the hassle of a by hand install.
+Be sure to check out the documentation on www.eclipse-cs.sourceforge.net for more detail.
+
+Bugs:
+1352322 	checks get hidden when redefining group-metadata
+1340884 	Ignore checkbox can be broken
+1330193 	unexpected behaviour with deletable="false" in metadata
+1328840 	lack of ImportControl support
+1324819 	Checker/Treewalker not hidden and in category 'Other'
+1322079 	Label hidden in configuration editor
+1305354 	Cannot exclude packages
+1292831 	messages_xx.properties not detected
+1322079 	Label hidden in configuration editor
+
+RFE:
+1340855 	Double click on group name behaviour
+1333015 	Sort tokens in "Edit module config" window
+1304768 	Provide extension point for built-in configurations
+1286034 	provide extension point to add custom checks
+
+
 Release beta6:
 --------------
 

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8" />
+    <link type="text/css" href="style.css" rel="stylesheet" />
+<script type="text/javascript" src="javascript/header_footer.js">
+</script>
+
+    <title>Providing a build-in configuration</title>
+  </head>
+
+  <body class="content">
+<script type="text/javascript">
+header();
+</script>
+
+    <h2>Providing a build-in configuration</h2>
+
+    <p>By providing a <a href="extending_fragments.html">fragment</a> the plug-in enables you to roll out an immutable Checkstyle configuration to your team members.</br>
+    This is especially powerful if you distribute your fragment via a corporate update site</p>
+
+    <p>You can provide such a built-in configuration by the use of the <i>com.atlassw.tools.eclipse.checkstyle.configurations</i> extension point.</p>
+
+    <p>Simply package you configuration file with your fragment and add a similar entry (see example below) to your <i>fragment.xml</i>.
+    <br />
+    <br />
+    
+    </p>
+
+    <p>Example:</p>
+
+    <p style="margin-bottom: 0cm"><font face="Courier New" size="2"><font color="#000080">&lt;extension</font><br />
+     <font color="#000080">&nbsp;&nbsp;&nbsp;&nbsp;id=</font><font
+    color="#008000">"com.mychecks"</font><br />
+     <font size="2"><font color="#000080">&nbsp;&nbsp;&nbsp;&nbsp;point=</font><font
+    color="#008000">"com.atlassw.tools.eclipse.checkstyle.configurations"</font><font color="#000080">&gt;</font></font><br />
+     <font color="#000080">&nbsp;&nbsp;&nbsp;&nbsp;&lt;check-configuration</font><br />
+     <font color="#000080">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name=</font><font
+    color="#008000">"My built-in configuration "</font><br />
+     <font color="#000080">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description=</font><font
+    color="#008000">"The mandatory set of checkstyle rules for my company."</font><br />
+     <font color="#000080">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;location=</font><font
+    color="#008000">"my-custom-builtin-configuration.xml"</font><font
+    color="#000080">&gt;</font><br />
+     <font color="#000080">&nbsp;&nbsp;&nbsp;&nbsp;&lt;/check-configuration&gt;</font><br />
+     <font color="#000080">&lt;/extension&gt;</font><br />
+    </font></p>
+    
+    <script type="text/javascript">
+footer();
+</script>
+  </body>
+</html>
+

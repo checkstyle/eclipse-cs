@@ -11,7 +11,7 @@
 
 	<property name="dist.basedir" value="${basedir}/dist/" />
 	<property name="dist.basedir.tmpdir" value="${basedir}/dist/tmp" />
-	<property name="feature.project.dir" value="../CheckstyleFeature/" />
+	<property name="feature.project.dir" value="${basedir}/feature" />
 	<available file="${feature.project.dir}" type="dir" property="include.feature" />
 
 	<property name="bin.dist.file" value="${plugin.name}${plugin.version.postfix}-bin.zip" />
@@ -111,6 +111,7 @@
 			<zipfileset dir="." includes="icons/**" />
 			<zipfileset dir="." includes="license/**" />
 			<zipfileset dir="." includes="doc/**" />
+			<zipfileset dir="." includes="feature/**" />
 			<zipfileset dir="." includes="src/**" />
 			<zipfileset dir="." includes="nls/**" />
 			<zipfileset dir="." includes="CheckConfig_Checkstyle.xml" />
