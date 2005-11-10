@@ -64,12 +64,16 @@ Rationale: each instance variable gets initialized twice, to the same value. Jav
       
       <rule-metadata name="Fall Through" internal-name="FallThrough" parent="TreeWalker">
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.FallThroughCheck"/>
-         <description>Checks for fall through in switch statements Finds locations where a case contains
-Java code - but lacks a break, return, throw or continue statement. 
+         <description>Checks for fall through in switch statements Finds locations where a case contains Java code - but lacks a break, return, throw or continue statement. 
 
-Note: the check works in assumption that there is no unreachable code in the case.          </description>
+The check honores special comments to supress the warning. By default the text "fallthru", "fall through", "fallthrough", "falls through" and "fallsthrough" are recognized (case sensitive). The comment containing this words must be a one-liner and must be on the last none-empty line before the case triggering the warning or on the same line before the case (ugly, but possible). 
+
+Note: the check works in assumption that there is no unreachable code in the case.</description>
 		 <property-metadata name="checkLastCaseGroup" datatype="Boolean" default-value="false">
             <description>Whether we need to check last case group or not.</description>
+         </property-metadata>
+		 <property-metadata name="reliefPattern" datatype="Regex" default-value="fallthru|falls? ?through">
+            <description>Regular expression to match the relief comment that supresses the warning about a fall through. </description>
          </property-metadata>
       </rule-metadata>
       
