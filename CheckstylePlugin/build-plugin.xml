@@ -69,8 +69,8 @@
 
 		<!-- zip the contents into the binary dist file -->
 		<zip destfile="${dist.basedir}/${bin.dist.file}" update="false">
-			<zipfileset dir="${dist.basedir.tmpdir}" prefix="${plugins.path}" includes="*" />
-			<zipfileset dir="${feature.project.dir}" prefix="${features.path}" includes="*" />
+			<zipfileset dir="${dist.basedir.tmpdir}" prefix="${plugins.path}" includes="**/*" />
+			<zipfileset dir="${feature.project.dir}" prefix="${features.path}" includes="**/*" />
 		</zip>
 
 		<!-- build the jars for the update site -->
@@ -95,7 +95,7 @@
 			<zipfileset dir="." includes="${checkstyle.jar}" />
 			<zipfileset dir="." includes="${checkstyle-optional.jar}" />
 			<zipfileset dir="." includes="plugin.xml" />
-			<zipfileset dir="." includes="*.properties" excludes="build.properties" />
+			<zipfileset dir="." includes="*.properties"/>
 			<zipfileset dir="." includes="toc.xml" />
 			<zipfileset dir="." includes="README.html" />
 			<zipfileset dir="." includes="sun_checks.xml" />
