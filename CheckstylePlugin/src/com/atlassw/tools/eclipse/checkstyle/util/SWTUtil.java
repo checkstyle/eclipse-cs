@@ -341,7 +341,9 @@ public final class SWTUtil
                     initialSize = new Point(0, 0);
                 }
                 Shell shell = (Shell) e.getSource();
-                shell.setMinimumSize(initialSize);
+                
+                //this is only supported in Eclipse 3.1 and greater
+                // shell.setMinimumSize(initialSize);
 
                 IDialogSettings bounds = mSettings.getSection(mDialogKey);
                 if (bounds != null)
@@ -362,6 +364,16 @@ public final class SWTUtil
                     }
 
                     shell.removeControlListener(this);
+
+                    if (mNewBounds.width < initialSize.x)
+                    {
+                        mNewBounds.width = initialSize.x;
+                    }
+                    if (mNewBounds.height < initialSize.y)
+                    {
+                        mNewBounds.height = initialSize.y;
+                    }
+
                     shell.setBounds(mNewBounds);
 
                     if (mMaximized)
