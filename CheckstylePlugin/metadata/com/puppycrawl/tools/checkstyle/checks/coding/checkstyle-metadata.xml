@@ -68,6 +68,9 @@ Rationale: each instance variable gets initialized twice, to the same value. Jav
 Java code - but lacks a break, return, throw or continue statement. 
 
 Note: the check works in assumption that there is no unreachable code in the case.          </description>
+		 <property-metadata name="checkLastCaseGroup" datatype="Boolean" default-value="false">
+            <description>Whether we need to check last case group or not.</description>
+         </property-metadata>
       </rule-metadata>
       
       <rule-metadata name="Final Local Variable" internal-name="FinalLocalVariable" parent="TreeWalker">

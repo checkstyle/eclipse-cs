@@ -134,6 +134,7 @@
                                                         <li><a href="#Indentation">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Indentation</a></li>
                                                         <li><a href="#TrailingComment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TrailingComment</a></li>
                                                         <li><a href="#RequiredRegexp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RequiredRegexp</a></li>
+                                                        <li><a href="#Regexp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Regexp</a></li>
                                       
   
                   <li>    <a href="./optional.html">Optional Checks</a>
@@ -1886,6 +1887,782 @@ d = e / f;        // Another comment for this line</pre></td>
     </tr>
     </table>
     </div>
+                                                                            <h3>Package</h3>
+                                    <p>
+          com.puppycrawl.tools.checkstyle.checks
+        </p>
+                                                                            <h3>Parent Module</h3>
+                                    <p>
+          <a href="config.html#treewalker">TreeWalker</a>
+        </p>
+                                                                          <a id="Regexp"></a>
+  <h2>Regexp</h2>
+                                            <h3>Description</h3>
+                                    <p>
+          A check that makes sure that a specified pattern exists, exists less
+          than a set number of times, or does not exist in the file.
+        </p>
+                                                <p>
+          This check combines all the functionality provided by 
+          <a href="config_header.html#RegexpHeader">RegexpHeader</a>,
+          <a href="config_misc.html#GenericIllegalRegexp">GenericIllegalRegexp</a> 
+          and <a href="config_misc.html#RequiredRegexp">RequiredRegexp</a>, 
+          except supplying the regular expression from a file. 
+        </p>
+                                                <p>
+          It differs from them in that it works in multiline mode. 
+          It's regular expression can span multiple lines and it checks this 
+          against the whole file at once. 
+          The others work in singleline mode.
+          Their single or multiple regular expressions can only span one line. 
+          They check each of these against each line in the file in turn.
+        </p>
+                                                <p>
+          <b>Note:</b> Because of the different mode of operation there may be 
+          some changes in the regular expressions used to achieve a particular end.
+        </p>
+                                                <p>
+          In multiline mode...
+          <ul>
+          <li> ^ means beginning of a line, as oposed to beginning of input.</li>
+          <li> For beginning of input use \A.</li>
+          <li> $ means end of a line, as oposed to end of input.</li>
+          <li> For end of input use \Z.</li>
+          <li> Each line in the file is terminated with a newline character.</li>
+          </ul>
+        </p>
+                                                <p>
+          <b>Note:</b> Not all regexp engines are created equal. Some provide extra 
+          functions that others do not and some elements of the syntax may vary.
+          This check makes use of the <a href="http://java.sun.com/j2se/1.4.2/docs/api/java/util/regex/package-summary.html">
+          java.util.regex package</a>, please check its documentation for 
+          details of how to construct a regular expression to achive a particular
+          goal.
+        </p>
+                                                <p>
+          <b>Note:</b> When entering a regular expression as a parameter in the 
+          xml config file you must also take into account the xml rules. e.g. if 
+          you want to match a &lt; symbol you need to enter &amp;lt;. The regular 
+          expression should be entered on one line.
+        </p>
+                                                                            <h3>Properties</h3>
+                                    <table>
+                                            <tr class="even">
+                        <th valign="top" align="left"
+>
+                name
+        </th>
+                                <th valign="top" align="left"
+>
+                description
+        </th>
+                                <th valign="top" align="left"
+>
+                type
+        </th>
+                                <th valign="top" align="left"
+>
+                default value
+        </th>
+            </tr>
+                                                <tr class="odd">
+                        <td class="odd"
+>
+                format
+        </td>
+                                <td class="odd"
+>
+                pattern
+        </td>
+                                <td class="odd"
+>
+                <a href="property_types.html#regexp">regular expression</a>
+        </td>
+                                <td class="odd"
+>
+                <span class="default">$^</span> (empty)
+        </td>
+            </tr>
+                                                <tr class="even">
+                        <td class="even"
+>
+                message
+        </td>
+                                <td class="even"
+>
+                message which is used to notify about violations,
+            if empty then default(hard-coded) message is used.
+        </td>
+                                <td class="even"
+>
+                <a href="property_types.html#String">String</a>
+        </td>
+                                <td class="even"
+>
+                <span class="default">""</span>(empty)
+        </td>
+            </tr>
+                                                <tr class="odd">
+                        <td class="odd"
+>
+                illegalPattern
+        </td>
+                                <td class="odd"
+>
+                Controls whether the pattern is required or illegal.
+        </td>
+                                <td class="odd"
+>
+                <a href="property_types.html#boolean">Boolean</a>
+        </td>
+                                <td class="odd"
+>
+                <span class="default">false</span>
+        </td>
+            </tr>
+                                                <tr class="even">
+                        <td class="even"
+>
+                duplicateLimit
+        </td>
+                                <td class="even"
+>
+                Controls whether to check for duplicates of a required pattern,
+            any negative value means no checking for duplicates, any positive 
+            value is used as the maximum number of allowed duplicates, if the 
+            limit is exceeded errors will be logged.
+        </td>
+                                <td class="even"
+>
+                <a href="property_types.html#integer">Integer</a>
+        </td>
+                                <td class="even"
+>
+                <span class="default">-1</span>
+        </td>
+            </tr>
+                                                <tr class="odd">
+                        <td class="odd"
+>
+                errorLimit
+        </td>
+                                <td class="odd"
+>
+                Controls the maximum number of errors before the check will abort.
+        </td>
+                                <td class="odd"
+>
+                <a href="property_types.html#integer">Integer</a>
+        </td>
+                                <td class="odd"
+>
+                <span class="default">100</span>
+        </td>
+            </tr>
+                                                <tr class="even">
+                        <td class="even"
+>
+                ignoreComments
+        </td>
+                                <td class="even"
+>
+                Controls whether to ignore matches found within comments.
+        </td>
+                                <td class="even"
+>
+                <a href="property_types.html#boolean">Boolean</a>
+        </td>
+                                <td class="even"
+>
+                <span class="default">false</span>
+        </td>
+            </tr>
+            </table>
+                                                                            <h3>Examples</h3>
+                                    <p>
+          The following examples are mainly copied from the other 3 checks 
+          mentioned above, to show how the same results can be acheived using
+          this check in place of them.
+        </p>
+                                                <p>
+          <b>To use like <a href="config_misc.html#RequiredRegexp">RequiredRegexp
+          </a>:</b>
+        </p>
+                                                <p>
+          An example of how to configure the check to make sure a copyright
+          statement is included in the file:
+        </p>
+                                                <p> The statement. </p>
+                                                    <div align="left">
+    <table cellspacing="4" cellpadding="0" border="0">
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#ffffff"><pre>// This code is copyrighted</pre></td>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    </table>
+    </div>
+                                                <p> The check. </p>
+                                                    <div align="left">
+    <table cellspacing="4" cellpadding="0" border="0">
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;Regexp&quot;&gt;
+   &lt;property name=&quot;format&quot; value=&quot;// This code is copyrighted&quot;/&gt;
+&lt;/module&gt;</pre></td>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    </table>
+    </div>
+                                                <p> Your statement may be multiline. </p>
+                                                    <div align="left">
+    <table cellspacing="4" cellpadding="0" border="0">
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#ffffff"><pre>// This code is copyrighted
+// (c) MyCompany</pre></td>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    </table>
+    </div>
+                                                <p> Then the check would be. </p>
+                                                    <div align="left">
+    <table cellspacing="4" cellpadding="0" border="0">
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;Regexp&quot;&gt;
+   &lt;property name=&quot;format&quot; value=&quot;// This code is copyrighted\n// \(c\) MyCompany&quot;/&gt;
+&lt;/module&gt;</pre></td>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    </table>
+    </div>
+                                                <p><b>Note:</b> To search for parentheses () in a regular expression
+          you must escape them like \(\). This is required by the regexp engine,
+          otherwise it will think they are special instruction characters.
+        </p>
+                                                <p>
+          And to make sure it appears only once:
+        </p>
+                                                    <div align="left">
+    <table cellspacing="4" cellpadding="0" border="0">
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;Regexp&quot;&gt;
+   &lt;property name=&quot;format&quot; value=&quot;// This code is copyrighted\n// \(c\) MyCompany&quot;/&gt;
+   &lt;property name=&quot;duplicateLimit&quot; value=&quot;0&quot;/&gt;
+&lt;/module&gt;</pre></td>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    </table>
+    </div>
+                                                <p>
+          It can also be useful to attach a meaningful message to the check:
+        </p>
+                                                    <div align="left">
+    <table cellspacing="4" cellpadding="0" border="0">
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;Regexp&quot;&gt;
+   &lt;property name=&quot;format&quot; value=&quot;// This code is copyrighted\n// \(c\) MyCompany&quot;/&gt;
+   &lt;property name=&quot;message&quot; value=&quot;Copyright&quot;/&gt;
+&lt;/module&gt;</pre></td>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    </table>
+    </div>
+                                                <p>
+          <b>To use like <a href="config_misc.html#GenericIllegalRegexp">GenericIllegalRegexp
+          </a>:</b>
+        </p>
+                                                <p>
+          An example of how to configure the check to make sure there are no
+          calls to <span class="code">System.out.println</span>:
+        </p>
+                                                    <div align="left">
+    <table cellspacing="4" cellpadding="0" border="0">
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;Regexp&quot;&gt;
+    &lt;!-- . matches any character, so we need to escape it and use \. to match dots. --&gt;
+    &lt;property name=&quot;format&quot; value=&quot;System\.out\.println&quot;/&gt;
+    &lt;property name=&quot;illegalPattern&quot; value=&quot;true&quot;/&gt;
+&lt;/module&gt;</pre></td>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    </table>
+    </div>
+                                                <p>
+          You may want to make the above check ignore comments, like this:
+        </p>
+                                                    <div align="left">
+    <table cellspacing="4" cellpadding="0" border="0">
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;Regexp&quot;&gt;
+    &lt;property name=&quot;format&quot; value=&quot;System\.out\.println&quot;/&gt;
+    &lt;property name=&quot;illegalPattern&quot; value=&quot;true&quot;/&gt;
+    &lt;property name=&quot;ignoreComments&quot; value=&quot;true&quot;/&gt;
+&lt;/module&gt;</pre></td>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    </table>
+    </div>
+                                                <p>
+          An example of how to configure the check to find trailing whitespace 
+          at the end of a line:
+        </p>
+                                                    <div align="left">
+    <table cellspacing="4" cellpadding="0" border="0">
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;Regexp&quot;&gt;
+    &lt;property name=&quot;format&quot; value=&quot;[ \t]+$&quot;/&gt;
+    &lt;property name=&quot;illegalPattern&quot; value=&quot;true&quot;/&gt;
+    &lt;property name=&quot;message&quot; value=&quot;Trailing whitespace&quot;/&gt;
+&lt;/module&gt;</pre></td>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    </table>
+    </div>
+                                                <p>
+          <b>Note:</b> The difference between this and the example given for
+          <a href="config_misc.html#genericIllegalRegexp">GenericIllegalRegexp</a> 
+          is necessary because \s and $ both match the newline character ("\n").
+        </p>
+                                                <p>
+          An example of how to configure the check to find case-insensitive 
+          occurrences of "debug":
+        </p>
+                                                    <div align="left">
+    <table cellspacing="4" cellpadding="0" border="0">
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;Regexp&quot;&gt;
+    &lt;property name=&quot;format&quot; value=&quot;(?i)debug&quot;/&gt;
+    &lt;property name=&quot;illegalPattern&quot; value=&quot;true&quot;/&gt;
+&lt;/module&gt;</pre></td>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    </table>
+    </div>
+                                                <p>
+          <b>Note:</b> The (?i) at the beginning of the regular expression 
+          tells the regexp engine to ignore the case.
+        </p>
+                                                <p>
+          There is also a feature to limit the number of errors reported. 
+          When the limit is reached the check aborts with a message 
+          reporting that the limit has been reached.
+          The default limit setting is 100, but this can be change as shown in 
+          the following example.
+        </p>
+                                                    <div align="left">
+    <table cellspacing="4" cellpadding="0" border="0">
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;Regexp&quot;&gt;
+    &lt;property name=&quot;format&quot; value=&quot;(?i)debug&quot;/&gt;
+    &lt;property name=&quot;illegalPattern&quot; value=&quot;true&quot;/&gt;
+    &lt;property name=&quot;errorLimit&quot; value=&quot;1000&quot;/&gt;
+&lt;/module&gt;</pre></td>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    </table>
+    </div>
+                                                <p>
+          <b>To use like <a href="config_misc.html#RegexpHeader">RegexpHeader
+          </a>:</b>
+        </p>
+                                                <p>
+          To configure the check to verify that each file starts with the
+          following multiline header. 
+        </p>
+                                                <p>
+          Note the following:
+          <ul>
+            <li>\A means the start of the file.</li>
+            <li>The date can be any 4 digit number.</li>
+          </ul>
+        </p>
+                                                    <div align="left">
+    <table cellspacing="4" cellpadding="0" border="0">
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#ffffff"><pre>// Copyright (C) 2004 MyCompany
+// All rights reserved</pre></td>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    </table>
+    </div>
+                                                    <div align="left">
+    <table cellspacing="4" cellpadding="0" border="0">
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;Regexp&quot;&gt;
+  &lt;property
+    name=&quot;format&quot;
+    value=&quot;\A// Copyright \(C\) \d\d\d\d MyCompany\n// All rights reserved&quot;/&gt;
+&lt;/module&gt;</pre></td>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    </table>
+    </div>
+                                                <p>
+          A more complex example. Note how the import and javadoc multilines are 
+          handled, there can be any number of them.
+        </p>
+                                                    <div align="left">
+    <table cellspacing="4" cellpadding="0" border="0">
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#ffffff"><pre>///////////////////////////////////////////////////////////////////////
+// checkstyle:
+// Checks Java source code for adherence to a set of rules.
+// Copyright (C) 2004  Oliver Burn
+// Last modification by $Author A.N.Other$
+///////////////////////////////////////////////////////////////////////
+
+package com.puppycrawl.checkstyle;
+
+import java.util.thing1;
+import java.util.thing2;
+import java.util.thing3;
+
+/**
+ * javadoc line 1
+ * javadoc line 2
+ * javadoc line 3
+ */</pre></td>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    </table>
+    </div>
+                                                    <div align="left">
+    <table cellspacing="4" cellpadding="0" border="0">
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;Regexp&quot;&gt;
+  &lt;property
+    name=&quot;format&quot;
+    value=&quot;\A/{71}\n// checkstyle:\n// Checks Java source code for 
+    adherence to a set of rules\.\n// Copyright \(C\) \d\d\d\d  Oliver Burn\n
+    // Last modification by \$Author.*\$\n/{71}\n\npackage [\w\.]*;\n\n
+    (import [\w\.]*;\n)*\n/\*\*\n( \*[^/]*\n)* \*/&quot;/&gt;
+&lt;/module&gt;</pre></td>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    </table>
+    </div>
+                                                <p>
+          <b>More examples:</b>
+        </p>
+                                                <p>
+          The next 2 examples deal with the following example java source file:
+        </p>
+                                                    <div align="left">
+    <table cellspacing="4" cellpadding="0" border="0">
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#ffffff"><pre>/*
+ * PID.java
+ *
+ * Copyright (c) 2001 ACME
+ * 123 Some St.
+ * Somewhere.
+ *
+ * This software is the confidential and proprietary information of ACME.
+ * (&quot;Confidential Information&quot;). You shall not disclose such
+ * Confidential Information and shall use it only in accordance with
+ * the terms of the license agreement you entered into with ACME.
+ *
+ * $Log$
+ * Revision 1.5  2005/11/06 11:54:12  oburn
+ * Incorporate excellent patch [ 1344344 ] Consolidation of regexp checks.
+ *
+ * Revision 1.3.8.1  2005/10/11 14:26:32  someone
+ * Fix for bug 251.  The broken bit is fixed
+ */
+
+package com.acme.tools;
+
+import com.acme.thing1;
+import com.acme.thing2;
+import com.acme.thing3;
+
+/**
+ *
+ * &lt;P&gt;
+ *   &lt;I&gt;This software is the confidential and proprietary information of
+ *   ACME (&lt;B&gt;&quot;Confidential Information&quot;&lt;/B&gt;). You shall not
+ *   disclose such Confidential Information and shall use it only in
+ *   accordance with the terms of the license agreement you entered into
+ *   with ACME.&lt;/I&gt;
+ * &lt;/P&gt;
+ *
+ * &amp;#169; copyright 2002 ACME
+ *
+ * @author   Some Body
+ */
+public class PID extends StateMachine implements WebObject.Constants {
+
+    /** javadoc. */
+    public static final int A_SETPOINT = 1;
+    .
+    .
+    .
+} // class PID</pre></td>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    </table>
+    </div>
+                                                <p>
+          This checks for the presence of the header, the first 16 lines.
+        </p>
+                                                <p>
+          Note the following:
+          <ul>
+            <li>Line 2 and 13 contain the file name. These are checked to 
+            make sure they are the same, and that they match the class name.</li>
+            <li>The date can be any 4 digit number.</li>
+          </ul>
+        </p>
+                                                    <div align="left">
+    <table cellspacing="4" cellpadding="0" border="0">
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;Regexp&quot;&gt;
+        &lt;property 
+                name=&quot;format&quot;
+                value=&quot;\A/\*\n \* (\w*)\.java\n \*\n \* Copyright \(c\) 
+                \d\d\d\d ACME\n \* 123 Some St\.\n \* Somewhere\.\n \*\n 
+                \* This software is the confidential and proprietary information 
+                of ACME\.\n \* \(&quot;Confidential Information&quot;\)\. You 
+                shall not disclose such\n \* Confidential Information and shall 
+                use it only in accordance with\n \* the terms of the license 
+                agreement you entered into with ACME\.\n \*\n 
+                \* \$Log$
+                \* \Revision 1.5  2005/11/06 11:54:12  oburn
+                \* \Incorporate excellent patch [ 1344344 ] Consolidation of regexp checks.
+                \* \\n(.*\n)*([\w|\s]*( class | interface )\1)&quot;/&gt;
+        &lt;property name=&quot;message&quot; value=&quot;Correct header not found&quot;/&gt;
+&lt;/module&gt;</pre></td>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    </table>
+    </div>
+                                                <p>
+          This checks for the presence of a copyright notice within the class 
+          javadoc, lines 24 to 37.
+        </p>
+                                                    <div align="left">
+    <table cellspacing="4" cellpadding="0" border="0">
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;Regexp&quot;&gt;
+        &lt;property 
+                name=&quot;format&quot;
+                value=&quot;(/\*\*\n)( \*.*\n)*( \* &amp;lt;P&amp;gt;\n \*   &amp;lt;I&amp;gt;
+                This software is the confidential and proprietary information of\n 
+                \*   ACME \(&amp;lt;B&amp;gt;&amp;quot;Confidential Information&amp;quot;&amp;lt;/B&amp;gt;
+                \)\. You shall not\n \*   disclose such Confidential Information 
+                and shall use it only in\n \*   accordance with the terms of the 
+                license agreement you entered into\n \*   with ACME\.&amp;lt;/I&amp;gt;\n
+                 \* &amp;lt;/P&amp;gt;\n \*\n \* &amp;#169; copyright \d\d\d\d ACME\n
+                  \*\n \* @author .*)(\n\s\*.*)*/\n[\w|\s]*( class | interface )&quot;/&gt;
+        &lt;property name=&quot;message&quot; value=&quot;Copyright in class/interface Javadoc&quot;/&gt;
+        &lt;property name=&quot;duplicateLimit&quot; value=&quot;0&quot;/&gt;
+&lt;/module&gt;</pre></td>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    </table>
+    </div>
+                                                <p>
+          <b>Note:</b> To search for things that mean something in xml, like
+          &lt; you need to escape them like &amp;lt;. This is required so the
+          xml parser does not act on them, but instead passes the correct
+          character to the regexp engine.
+        </p>
                                                                             <h3>Package</h3>
                                     <p>
           com.puppycrawl.tools.checkstyle.checks

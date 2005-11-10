@@ -173,7 +173,48 @@ Rationale: main() method can be often used for debug puposes. Thus most of main(
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.UpperEllCheck"/>
          <description>Checks that long constants are defined with an upper ell. That is ' L' and not 'l'. This is in accordance to the Java Language Specification, Section 3.10.1.  Rationale: The lower case letter l looks a lot like the digit 1.</description>
       </rule-metadata>
- 
+      
+      <rule-metadata name="Regexp" internal-name="Regexp" parent="TreeWalker">
+         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.RegexpCheck"/>
+         <description>A check that makes sure that a specified pattern exists, exists less than a set number of times, or does not exist in the file. 
+
+This check combines all the functionality provided by RegexpHeader, GenericIllegalRegexp and RequiredRegexp, except supplying the regular expression from a file. 
+
+It differs from them in that it works in multiline mode. It's regular expression can span multiple lines and it checks this against the whole file at once. The others work in singleline mode. Their single or multiple regular expressions can only span one line. They check each of these against each line in the file in turn. 
+
+Note: Because of the different mode of operation there may be some changes in the regular expressions used to achieve a particular end. 
+
+In multiline mode... 
+
+^ means beginning of a line, as oposed to beginning of input. 
+For beginning of input use \A. 
+$ means end of a line, as oposed to end of input. 
+For end of input use \Z. 
+Each line in the file is terminated with a newline character. 
+
+Note: Not all regexp engines are created equal. Some provide extra functions that others do not and some elements of the syntax may vary. This check makes use of the java.util.regex package, please check its documentation for details of how to construct a regular expression to achive a particular goal. 
+
+Note: When entering a regular expression as a parameter in the xml config file you must also take into account the xml rules. e.g. if you want to match a &lt; symbol you need to enter &amp;lt;. The regular expression should be entered on one line. 
+</description>
+         <property-metadata name="format" datatype="Regex" default-value="$^">
+            <description>Regular expression pattern.</description>
+         </property-metadata>
+         <property-metadata name="message" datatype="String" default-value="">
+            <description>message which is used to notify about violations, if empty then default(hard-coded) message is used. </description>
+         </property-metadata>     
+         <property-metadata name="illegalPattern" datatype="Boolean" default-value="false">
+            <description>Controls whether the pattern is required or illegal. </description>
+         </property-metadata>  
+         <property-metadata name="duplicateLimit" datatype="Integer" default-value="-1">
+            <description>Controls whether to check for duplicates of a required pattern, any negative value means no checking for duplicates, any positive value is used as the maximum number of allowed duplicates, if the limit is exceeded errors will be logged. </description>
+         </property-metadata>
+         <property-metadata name="errorLimit" datatype="Integer" default-value="100">
+            <description>Controls the maximum number of errors before the check will abort. </description>
+         </property-metadata>    
+         <property-metadata name="ignoreComments" datatype="Boolean" default-value="false">
+            <description>Controls whether to ignore matches found within comments. </description>
+         </property-metadata>                     
+      </rule-metadata>      
    </rule-group-metadata>
    
   

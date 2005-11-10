@@ -207,14 +207,14 @@
                                                       <a id="Installation"></a>
   <h2>Installation</h2>
                                     <p>
-        The easiest way is to include <span class="default">checkstyle-all-4.0-beta6.jar</span> in the
+        The easiest way is to include <span class="default">checkstyle-all-4.0.jar</span> in the
         classpath. This contains all the classes required to run
         Checkstyle. Alternatively, you must include the following in the
         classpath:
       </p>
                                                 <ol>
         <li>
-          <span class="default">checkstyle-4.0-beta6.jar</span>
+          <span class="default">checkstyle-4.0.jar</span>
         </li>
         <li>
           ANTLR 2.7.2 classes. <span class="default">antlr.jar</span> is
@@ -251,7 +251,7 @@
     <tr>
       <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
       <td bgcolor="#ffffff"><pre>&lt;taskdef resource=&quot;checkstyletask.properties&quot;
-         classpath=&quot;/path/to/checkstyle-all-4.0-beta6.jar&quot;/&gt;</pre></td>
+         classpath=&quot;/path/to/checkstyle-all-4.0.jar&quot;/&gt;</pre></td>
       <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
     </tr>
     <tr>
@@ -276,6 +276,38 @@
     <tr>
       <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
       <td bgcolor="#ffffff"><pre>&lt;taskdef resource=&quot;checkstyletask.properties&quot;/&gt;</pre></td>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    </table>
+    </div>
+                                                <p>
+        Or if you use Ant 1.6 and later and assuming that Checkstyle
+        is in the library search path, then you may use antlib feature
+        of Ant (see <a href="http://ant.apache.org/manual/CoreTypes/antlib.html">http://ant.apache.org/manual/CoreTypes/antlib.html</a>
+        for more details).  For example:
+      </p>
+                                                    <div align="left">
+    <table cellspacing="4" cellpadding="0" border="0">
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#ffffff"><pre>&lt;project name=&quot;foo&quot; ...
+         xmlns:cs=&quot;antlib:com.puppycrawl.tools.checkstyle&quot;&gt;
+...
+  &lt;cs:checkstyle&gt;
+  ...
+  &lt;/cs:checkstyle&gt;
+...
+&lt;/project&gt;</pre></td>
       <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
     </tr>
     <tr>

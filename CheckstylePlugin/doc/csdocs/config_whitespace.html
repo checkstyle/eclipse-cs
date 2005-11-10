@@ -1480,7 +1480,17 @@
   <h2>WhitespaceAround</h2>
                                             <h3>Description</h3>
                                     <p>
-          Checks that a token is surrounded by whitespace.
+        Checks that a token is surrounded by whitespace.  Empty constructor and
+        method bodies (blocks) of the form
+        </p>
+                                                <p>
+        <pre>public MyClass() {}      // empty constructor
+public void func() {}    // empty method</pre>
+        </p>
+                                                <p>
+        may optionally be exempted from the policy using the <span class="code">
+        allowEmptyMethods</span> and <span class="code">allowEmptyConstructors
+        </span> properties.
         </p>
                                                                             <h3>Properties</h3>
                                     <table>
@@ -1570,6 +1580,42 @@
                                 <td class="odd"
 >
                 all tokens
+        </td>
+            </tr>
+                                                <tr class="even">
+                        <td class="even"
+>
+                allowEmptyConstructors
+        </td>
+                                <td class="even"
+>
+                allow empty constructor bodies
+        </td>
+                                <td class="even"
+>
+                <a href="property_types.html#boolean">boolean</a>
+        </td>
+                                <td class="even"
+>
+                <span class="default">false</span>
+        </td>
+            </tr>
+                                                <tr class="odd">
+                        <td class="odd"
+>
+                allowEmptyMethods
+        </td>
+                                <td class="odd"
+>
+                allow empty method bodies
+        </td>
+                                <td class="odd"
+>
+                <a href="property_types.html#boolean">boolean</a>
+        </td>
+                                <td class="odd"
+>
+                <span class="default">false</span>
         </td>
             </tr>
             </table>

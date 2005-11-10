@@ -63,7 +63,8 @@
       </li>
                         <li><b>    <a href="./releasenotes.html">Release Notes</a>
 </b></li>
-                                                      <li><a href="#Release 4.0 Beta 6">&nbsp;&nbsp;&nbsp;Release 4.0 Beta 6</a></li>
+                                                      <li><a href="#Release 4.0 Beta OR Release Candidate">&nbsp;&nbsp;&nbsp;Release 4.0 Beta OR Release Candidate</a></li>
+                                                        <li><a href="#Release 4.0 Beta 6">&nbsp;&nbsp;&nbsp;Release 4.0 Beta 6</a></li>
                                                         <li><a href="#Release 4.0 Beta 5">&nbsp;&nbsp;&nbsp;Release 4.0 Beta 5</a></li>
                                                         <li><a href="#Release 4.0 Beta 4">&nbsp;&nbsp;&nbsp;Release 4.0 Beta 4</a></li>
                                                         <li><a href="#Release 4.0 Beta 3">&nbsp;&nbsp;&nbsp;Release 4.0 Beta 3</a></li>
@@ -208,7 +209,100 @@
       </div>
 
       <div class="csMain">
-                          <a id="Release 4.0 Beta 6"></a>
+                          <a id="Release 4.0 Beta OR Release Candidate"></a>
+  <h2>Release 4.0 Beta OR Release Candidate</h2>
+                                    <p>New features:</p>
+                                                <ul>
+	<li>
+	  Applied excellent patch 1344344 by sjq to consolidate the
+	  regexp checks into one.
+	</li>
+        <li>
+          Added support for property <i>ignoreStringsRegexp</i> to
+          <i>MultipleStringLiterals</i> check. Patch 1254918 from taab.
+        </li>
+        <li>
+          Added Spanish translation of messages. Thanks to Ricardo Mones
+          (patch 1250329).
+        </li>
+        <li>
+          Made the Class Loader used to load infrastructure classes and
+          resources come from <code>Thread.currentThread()
+          .getContextClassLoader()</code>. Done as a result of patch
+          1273903 from Lars Koedderitzsch.
+        </li>
+        <li>
+          Added patch The LocalizedMessage already gets the Class of the
+          check that triggers the message (to output the name of the
+          check). Instead of storing just the name of this class, store
+          the class itself. With this the name can be retrieved and the
+          classloader of this class can be used to load the correct
+          resource bundle. Patch 1309516 from Ralf (rakus).
+        </li>
+        <li>
+          FallThrough check now can check last case group (property
+          checkLastCaseGroup, bug 1245942).
+        </li>
+        <li>
+          Applied patch 906531 (WhitespaceAround allows empty
+          method/ctor bodies.) Thanks to Eric Roe (module
+          WhitespaceAround, properties allowEmptyCtors and
+          allowEmptyMethods).
+        </li>
+      </ul>
+                                                <p>Fixed Bugs:</p>
+                                                <ul>
+        <li>
+          Fixed encoding problems when parsing XML because was using
+          FileReader instead of FileInputStream. Bug 1320132.
+        </li>
+        <li>
+          The InnerAssignment check didn't find all instances of inner
+          assignments. Bug 1195047.
+        </li>
+        <li>
+          Fixed typo in grammar (bug 1335088)
+        </li>
+        <li>
+          Fixed ParenPad check problem which was caused by one of
+          recent grammar change (one which was about
+          (SUPER_)CTOR_CALL) (bug 1322879).
+        </li>
+        <li>
+          Fixed bug in logic JavadocStyle check uses to get
+          main-section of javadoc (bug 1291847).
+        </li>
+        <li>
+          Three more fixes for Indentation check (bugs 1251988,
+          1260079, 1336737).
+        </li>
+        <li>
+          Fixed problem in Comment.hasIntersectionWithComment() (patch
+          1339523 from Richard Schulte).
+        </li>
+        <li>
+          Now javadoc method should not contain only @see tag (but
+          could contain only {@ingeritDoc} tag) (bug 1290379, module
+          JavadocMethod)
+        </li>
+      </ul>
+                                                <p>Other improvements:</p>
+                                                <ul>
+        <li>
+          Applied patch 1292684 from Maarten Coene to fix the generated
+          HTML reports that are not correct if you include the
+          TreeWalker and the StrictDuplicateCode modules in the same
+          configuration. Patch effects checkstyle-noframes-sorted.xsl.
+        </li>
+        <li>
+          Applied patch 1340300 from David Dodini to update bcel
+          checks to be compilable with current Checkstyle's API.
+        </li>
+        <li>
+          Added antlib.xml to support new cool feature of Ant.
+        </li>
+      </ul>
+                                                      <a id="Release 4.0 Beta 6"></a>
   <h2>Release 4.0 Beta 6</h2>
                                     <p>New features:</p>
                                                 <ul>

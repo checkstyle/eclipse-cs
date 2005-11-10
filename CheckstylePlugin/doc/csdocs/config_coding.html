@@ -3052,6 +3052,47 @@ else
           Note: the check works in assumption that there is no unreachable
           code in the <span class="code">case</span>.
         </p>
+                                                                            <h3>Properties</h3>
+                                    <table>
+                                            <tr class="even">
+                        <th valign="top" align="left"
+>
+                name
+        </th>
+                                <th valign="top" align="left"
+>
+                description
+        </th>
+                                <th valign="top" align="left"
+>
+                type
+        </th>
+                                <th valign="top" align="left"
+>
+                default value
+        </th>
+            </tr>
+                                                <tr class="odd">
+                        <td class="odd"
+>
+                checkLastCaseGroup
+        </td>
+                                <td class="odd"
+>
+                
+              Whether we need to check last case group or not.
+            
+        </td>
+                                <td class="odd"
+>
+                <a href="property_types.html#boolean">Boolean</a>
+        </td>
+                                <td class="odd"
+>
+                <span class="default">false</span>
+        </td>
+            </tr>
+            </table>
                                                                             <h3>Examples</h3>
                                     <p>
           To configure the check:
@@ -3135,6 +3176,26 @@ else
                 1
         </td>
             </tr>
+                                                <tr class="even">
+                        <td class="even"
+>
+                ignoreStringsRegexp
+        </td>
+                                <td class="even"
+>
+                
+              regexp pattern for ignored strings (with quotation marks)
+            
+        </td>
+                                <td class="even"
+>
+                <a href="property_types.html#regexp">regular expression</a>
+        </td>
+                                <td class="even"
+>
+                <span class="default">^""$</span> (ignore empty strings)
+        </td>
+            </tr>
             </table>
                                                                             <h3>Examples</h3>
                                     <p>
@@ -3174,6 +3235,30 @@ else
       <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
       <td bgcolor="#ffffff"><pre>&lt;module name=&quot;MultipleStringLiterals&quot;&gt;
     &lt;property name=&quot;allowedDuplicates&quot; value=&quot;2&quot;/&gt;
+&lt;/module&gt;</pre></td>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    </table>
+    </div>
+                                                <p>
+          To configure the check so that it ignores ", " and empty strings:
+        </p>
+                                                    <div align="left">
+    <table cellspacing="4" cellpadding="0" border="0">
+    <tr>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#023264" width="1" height="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
+      <td bgcolor="#ffffff"><pre>&lt;module name=&quot;MultipleStringLiterals&quot;&gt;
+    &lt;property name=&quot;allowedDuplicates&quot; value='^((&quot;&quot;)|(&quot;, &quot;))$'/&gt;
 &lt;/module&gt;</pre></td>
       <td bgcolor="#023264" width="1"><img src="/images/void.gif" width="1" height="1" vspace="0" hspace="0" border="0"/></td>
     </tr>
