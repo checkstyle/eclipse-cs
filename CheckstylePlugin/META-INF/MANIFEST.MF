@@ -4,7 +4,7 @@ Bundle-SymbolicName: com.atlassw.tools.eclipse.checkstyle; singleton=true
 Bundle-Version: 4.0.0
 Bundle-ClassPath: CheckstylePlugin.jar,NLS.jar,CheckstyleMetadata.jar,checkstyle-all-4.0.jar
 Bundle-Activator: com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin
-Bundle-Vendor: David Schneider, Lars Ködderitzsch
+Bundle-Vendor: David Schneider, Lars Koedderitzsch
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.resources,
  org.eclipse.ui,
