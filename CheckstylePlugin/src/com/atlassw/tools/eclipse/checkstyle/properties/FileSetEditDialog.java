@@ -445,7 +445,6 @@ public class FileSetEditDialog extends TitleAreaDialog
     {
         super.configureShell(shell);
         shell.setText(Messages.FileSetEditDialog_titleFilesetEditor);
-        shell.setMinimumSize(400, 500);
     }
 
     /**

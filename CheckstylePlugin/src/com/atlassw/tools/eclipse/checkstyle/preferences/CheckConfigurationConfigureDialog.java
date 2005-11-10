@@ -214,7 +214,6 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
     {
         super.configureShell(newShell);
         newShell.setText(Messages.CheckConfigurationConfigureDialog_titleCheckConfigurationDialog);
-        newShell.setMinimumSize(400, 500);
     }
 
     /**
