@@ -15,8 +15,13 @@
 		<topic label="Expanding properties"					href="doc/advanced_properties.html"/>
 	</topic>
 	<topic label="Extending the Checkstyle Plug-in">
-		<topic label="Using custom checks"					href="doc/extending_custom_checks.html"/>
-		<topic label="Creating a custom plugin filter"		href="doc/extending_filters.html"/>
+		<topic label="Using custom checks"					href="doc/extending_custom_checks.html">
+			<topic label="Metadata explained"				href="doc/extending_custom_metadata.html"/>
+		</topic>
+		<topic label="Providing a plug-in fragment"			href="doc/extending_fragments.html">
+			<topic label="Provide a built-in configuration"		href="doc/extending_builtin_configurations.html"/>
+			<topic label="Creating a custom plug-in filter"		href="doc/extending_filters.html"/>
+		</topic>
 	</topic>
 	<topic label="Release notes"                   			href="doc/release_notes.html"/>
 	<topic label="FAQ"										href="doc/faq.html"/>

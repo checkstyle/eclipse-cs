@@ -17,6 +17,7 @@
 	<property name="src.dist.file" value="${plugin.name}${plugin.version.postfix}-src.zip" />
 	<property name="plugin.jar.file" value="${plugin.name}.jar" />
 	<property name="feature.jar.file" value="${plugin.name}-feature.jar" />
+	<property name="update.site.file" value="${plugin.name}${plugin.version.postfix}-updatesite.zip" />
 
 	<!-- ==================================================== -->
 	<!--   CLEAN TARGET                                       -->
@@ -36,7 +37,7 @@
 	<!-- ==================================================== -->
 	<!--   DISTRIBUTION TARGET                                -->
 	<!-- ==================================================== -->
-	<target name="build.dist" depends="build.bindist,build.srcdist" />
+	<target name="build.dist" depends="build.bindist,build.srcdist,build.local.update.site" />
 
 	<!-- ==================================================== -->
 	<!--   BINARY DISTRIBUTION TARGET                         -->
@@ -52,6 +53,7 @@
 		<jar destfile="${dist.basedir.tmpdir}/NLS.jar" basedir="./binnls" index="true" />
 		<jar destfile="${dist.basedir.tmpdir}/CheckstyleMetadata.jar" basedir="./metadata" index="true" />
 
+		<!-- copy the plugin contents to the tmp dir -->
 		<copy todir="${dist.basedir.tmpdir}/">
 			<fileset dir="." includes="${checkstyle.jar}" />
 			<fileset dir="." includes="${checkstyle-optional.jar}" />
@@ -95,7 +97,7 @@
 			<zipfileset dir="." includes="${checkstyle.jar}" />
 			<zipfileset dir="." includes="${checkstyle-optional.jar}" />
 			<zipfileset dir="." includes="plugin.xml" />
-			<zipfileset dir="." includes="*.properties"/>
+			<zipfileset dir="." includes="*.properties" />
 			<zipfileset dir="." includes="toc.xml" />
 			<zipfileset dir="." includes="README.html" />
 			<zipfileset dir="." includes="sun_checks.xml" />
@@ -109,8 +111,54 @@
 			<zipfileset dir="." includes="nls/**" />
 			<zipfileset dir="." includes="CheckConfig_Checkstyle.xml" />
 			<zipfileset dir="." includes="build-plugin.xml" />
-			<zipfileset dir="." includes="build.properties" />
 			<zipfileset dir="." includes=".*" />
 		</zip>
 	</target>
+
+	<!-- ==================================================== -->
+	<!--   BUILDS A LOCAL UPDATE SITE                         -->
+	<!-- ==================================================== -->
+	<target name="build.local.update.site" depends="build.bindist" description="Builds a local update site">
+	
+		<!-- prepare the site.xml file -->
+		<copy file="${basedir}/update-site/local-site.template" tofile="${dist.basedir.tmpdir}/site.xml" />
+		<replace file="${dist.basedir.tmpdir}/site.xml" token="@feature.jar.file@" value="${feature.jar.file}" />
+		<replace file="${dist.basedir.tmpdir}/site.xml" token="@plugin.version@" value="${plugin.version}" />
+
+		<!-- package the local update site -->
+		<zip destfile="${dist.basedir}/${update.site.file}" update="false">
+			<zipfileset dir="${dist.basedir.tmpdir}" includes="site.xml" />
+			<zipfileset dir="${dist.basedir}" prefix="features" includes="${feature.jar.file}" />
+			<zipfileset dir="${dist.basedir}" prefix="plugins" includes="${plugin.jar.file}" />
+		</zip>
+		
+		<!-- remove the temp directory -->
+		<delete dir="${dist.basedir.tmpdir}" failonerror="false" quiet="true" />
+	</target>
+
+
+
+	<!-- ==================================================== -->
+	<!--   Release through Sourceforge File Release System    -->
+	<!-- ==================================================== -->
+	<!--
+	<taskdef name="sfpublish" classname="org.apache.tools.ant.taskdefs.optional.sourceforge.SourceForgePublish" />
+
+	<target name="sampletarget">
+
+		<tstamp>
+			<format property="release_date" pattern="MM/dd/yyyy hh:mm" locale="en" unit="minute" />
+		</tstamp>
+
+		<sfpublish releasename="v${4.0.0}${}" packagename="Eclipse Checkstyle Plug-in" packagehidden="no" hidden="yes" projectshortname="eclipse-cs" projectname="Eclipse Checkstyle Plug-in" username="myUsername" password="myPassword" releasedate="${release_date}">
+			<filespec file="${dist.basedir}/${bin.dist.file}" filetype="zip_file" processortype="platform_independent" />
+			<filespec file="${dist.basedir}/${src.dist.file}" filetype="zip_file" processortype="platform_independent" />
+		</sfpublish>
+		<sfpublish releasename="v${4.0.0}${plugin.version.postfix}" packagename="eclipse-cs Update Site" packagehidden="no" hidden="yes" projectshortname="eclipse-cs" projectname="Eclipse Checkstyle Plug-in" username="myUsername" password="myPassword" releasedate="${release_date}">
+			<filespec file="${dist.basedir}/${plugin.jar.file}" filetype="jar_file" processortype="platform_independent" />
+			<filespec file="${dist.basedir}/${feature.jar.file}" filetype="jar_file" processortype="platform_independent" />
+		</sfpublish>
+	</target>
+	-->
+
 </project>
