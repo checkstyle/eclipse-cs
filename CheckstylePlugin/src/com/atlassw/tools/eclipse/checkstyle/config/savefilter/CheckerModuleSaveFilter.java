@@ -35,7 +35,7 @@ public class CheckerModuleSaveFilter implements ISaveFilter
 {
 
     /**
-     * @see ISaveFilter#postProcessConfiguredModules(java.util.List)
+     * {@inheritDoc}
      */
     public void postProcessConfiguredModules(List configuredModules)
     {

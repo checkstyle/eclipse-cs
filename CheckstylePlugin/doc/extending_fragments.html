@@ -1,21 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
     <head>
         <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8" />
         <link type="text/css" href="style.css" rel="stylesheet" />
-<script type="text/javascript" src="javascript/header_footer.js">
-</script>
-
-        <title>Writing a custom plug-in filter</title>
+        <title>Extending the plug-in - The advanced way</title>
     </head>
 
     <body class="content">
-<script type="text/javascript">
-header();
-</script>
 
         <h2>Extending the plug-in - The advanced way</h2>
 <p>A more Eclipse conforming way to extend the Checkstyle plug-in would be to provide a so called fragment. <br />
@@ -42,23 +33,23 @@ header();
         . </li>
 <li>Create a new fragment project <br />
                 <p>
-                 <img src="images/extending_fragments_html_m2b0c642e.jpg"/>
+                 <img src="images/extending_fragments_html_m2b0c642e.jpg" alt="Fragment Project Wizard"/>
                 <br />
 </p>
-<p> <img src="images/extending_fragments_html_m49de31b9.jpg"/>
+<p> <img src="images/extending_fragments_html_m49de31b9.jpg" alt="Fragment Project Wizard"/>
                 <br />
 </p>
-<p> <img src="images/extending_fragments_html_mea508ae.jpg" />
+<p> <img src="images/extending_fragments_html_mea508ae.jpg" alt="Fragment Project Wizard"/>
                 <br />
             Choose the Checkstyle plug-in from the list of plug-ins that appears when you hit the <i>Browse...</i> button. <br />
             Finish creating the fragment project by pressing <i>Finish</i>.</p>
 </li>
 <li> Copy your jar file containing you custom checks into the fragment project <br />
-                <p> <img src="images/extending_fragments_html_m32cc9d1b.jpg" /></p>
+                <p> <img src="images/extending_fragments_html_m32cc9d1b.jpg" alt="Project View"/></p>
 </li>
 <li> Open the MANIFEST.MF file and add your custom library to the fragments classpath <br />
                 <br />
-                <p> <img src="images/extending_fragments_html_334ab982.jpg" />
+                <p> <img src="images/extending_fragments_html_334ab982.jpg" alt="Manifest editor"/>
                 <br />
             Don&#39;t forget to save the manifest editor.</p>
 </li>
@@ -66,10 +57,10 @@ header();
                 <p>To &quot;build&quot; your fragment simply use the export wizard <br />
                 <br />
 </p>
-<p><img src="images/extending_fragments_html_m247a49b8.jpg"/>
+<p><img src="images/extending_fragments_html_m247a49b8.jpg" alt="Export wizard"/>
                 <br />
 </p>
-<p><img src="images/extending_fragments_html_m17f44216.jpg"/>
+<p><img src="images/extending_fragments_html_m17f44216.jpg" alt="Export wizard"/>
 </p>
 </li>
 <li>
@@ -79,9 +70,6 @@ header();
                 <p>(Re)start your eclipse with the -clean option to make sure the changes get picked up</p>
 </li>
 </ol>
-<script type="text/javascript">
-footer();
-</script>
     </body>
 </html>
 

@@ -58,7 +58,7 @@ public abstract class CheckstylePluginImages
     {
 
         PLUGIN_LOGO = CheckstylePlugin.imageDescriptorFromPlugin(CheckstylePlugin.PLUGIN_ID,
-                "icons/logo.png"); //$NON-NLS-1$
+                "icons/eclipse-cs_inverted.png"); //$NON-NLS-1$
         MARKER_ERROR = CheckstylePlugin.imageDescriptorFromPlugin(CheckstylePlugin.PLUGIN_ID,
                 "icons/checkstyle_error.gif"); //$NON-NLS-1$
         MARKER_WARNING = CheckstylePlugin.imageDescriptorFromPlugin(CheckstylePlugin.PLUGIN_ID,

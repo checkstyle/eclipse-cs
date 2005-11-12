@@ -1,20 +1,8 @@
-body.navbar{
-	background-image:url(images/tile_center.gif);
-	background-attachment:fixed;
-	background-position:-680px 0px;
-}
-
-body.content{
-	margin-top:0px;
-	margin-left:5px;
-	background-image:url(images/tile_center.gif);
-	background-attachment:fixed;
-}
-
-h1.header{
-	font-size:36px;
-	color:#003399;
-	margin-top: 0;
+body {
+	border: 0px;
+	margin: 0px;
+	padding: 0px;
+	height: 100%;
 }
 
 h2{
@@ -23,29 +11,133 @@ h2{
 	text-align: center;
 	font-size: 24px;
 	margin-top: 0px;
-	border-bottom: 3px inset #6699FF;
+	border-top: 1px solid #cddeff;
+	border-bottom: 5px solid #cddeff;
 }
+
 h3 {
+	margin-left: 10px;
 	text-decoration:underline;
+}
+
+h4 {
+	margin-left: 10px;
 }
 
 form{
 	margin: 5px 0px 0px 0px;
 }
 
-p.copyright{
-	font-size:14px;
-	color:#003399;
+p {
+	text-indent: 10px;
+	margin-left: 10px;
+	margin-right: 10px;
 }
+
+pre{
+	margin-left: 10px;
+	margin-right: 10px;	
+}
+
+a {
+    color: #003399;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #6699ff;
+    text-decoration: underline;
+} 
+
 img{
 	text-align:left;
-	border:0;
+	border:0px;
 }
 
+td{
+	vertical-align: top;
+}
+
+.maintable{
+	height: 100%;
+	width: 100%
+	text-align: left;
+	background-color: #cddeff;
+	border: 0px;
+}
+
+.navsection {
+	width: 220px;
+}
+
+.mainsection{
+	width: 100%;
+	border-left: 10px solid #cddeff;
+	background-color: #ffffff; 
+}
+
+.header {
+	border: 0px;
+	width: 100%;
+	background-color: #cddeff;
+}
+
+.copyright{
+	font-size:14px;
+	color:#003399;
+	vertical-align: top;
+	padding-left: 10px;
+}
+
+.code-lightblue{
+	font-family: "Courier New", Courier, monospace;
+	font-size: 14px;
+	color: #3f5fbf;
+}
+.code-blue{
+	font-family: "Courier New", Courier, monospace;
+	font-size: 14px;
+	color: #000080;
+}
+.code-green{
+	font-family: "Courier New", Courier, monospace;
+	font-size: 14px;
+	color: #008000;
+}
+.code-black{
+	font-family: "Courier New", Courier, monospace;
+	font-size: 14px;
+	color: #000000;
+}
+.code-purple{
+	font-family: "Courier New", Courier, monospace;
+	font-size: 14px;
+	color: #7f0055;
+}
 
 .buttonscontainer {
-	width: 220px; 
 	margin-top: -4px;
+	background-color: #cddeff; 
+	width: 220px; 
+	text-align: left;
+}
+
+.imagelink {
+	text-decoration: none;
+}
+
+.level2{
+	text-indent: 0px;
+}
+.level2{
+	text-indent: 10px;
+}
+.level3{
+	text-indent: 20px;
+}
+
+.buttons {
+	background-color: #FFFFFF; 
 }
 
 .buttons a {
@@ -85,8 +177,9 @@ img{
 .box {
 	display: block;
 	border: 1px solid #003399;
-	margin-top: 3px;
+	margin-top: 5px;
 	padding: 0px 3px 3px 3px;
+	background-color: #FFFFFF;
 }
 
 .box h3{
@@ -97,7 +190,7 @@ img{
 	text-align: center;
 	margin: 0px -3px 3px -3px;
 	text-decoration:none;
-	border-bottom: 3px inset #6699FF;
+	border-bottom: 3px inset #cddeff;
 }
 
 .donors a:link {

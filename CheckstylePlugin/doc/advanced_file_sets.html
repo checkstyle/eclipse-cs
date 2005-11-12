@@ -1,21 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
     <head>
         <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8" />
         <link type="text/css" href="style.css" rel="stylesheet" />
-<script type="text/javascript" src="javascript/header_footer.js">
-</script>
-
         <title>Configuring File Sets</title>
     </head>
 
     <body class="content">
-<script type="text/javascript">
-header();
-</script>
 
         <h2>Configuring File Sets</h2>
 <p>In the
@@ -64,8 +56,8 @@ header();
         The regular expression is matched against the fully qualified file name within the project. <br />
         That is, the entire path to the file starting with the name of the top level folder within the project and progressing
         through each folder down to the file, with &#39;/&#39; being used as the path separator. <br />
-        For example, consider the project in the figure below. The <i>CheckstylePlugin.java</i> file has a complete path
-        of <b><i>src/com/atlassw/tools/eclipse/checkstyle/CheckstylePlugin.java</i></b></p>
+        For example, consider the project in the figure below. The <span class="code-blue">CheckstylePlugin.java</span> file has a complete path
+        of <b><span class="code-blue">src/com/atlassw/tools/eclipse/checkstyle/CheckstylePlugin.java</span></b></p>
 <p><img src="images/advanced_file_sets_html_m1e1320f2.gif" alt="Package Explorer" />
     </p>
 <p>The include/exclude setting of the <b><i>last</i></b> regular expression a file matches will determine if the file is
@@ -80,9 +72,6 @@ header();
 <p>Each project in your Eclipse workspace can have any number of File Sets defined, each with a different set of files and
     each with a different Check Configuration. <br />
         You can also turn off the checking of a File Set using the Enabled check box in the properties window.</p>
-<script type="text/javascript">
-footer();
-</script>
     </body>
 </html>
 

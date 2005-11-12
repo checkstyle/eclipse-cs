@@ -1,25 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
     <head>
         <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8" />
         <link type="text/css" href="style.css" rel="stylesheet" />
-<script type="text/javascript" src="javascript/header_footer.js">
-</script>
-
-        <title>Using custom checks</title>
+        <title>Metadata explained</title>
     </head>
 
     <body class="content">
-<script type="text/javascript">
-header();
-</script>
-
+    
         <h2>Metadata explained</h2>
 
-        <p>As you may know from the <a href="extending_custom_checks.html" target="_self">previous chapter</a> you can
+        <p>As you may know from the <a href="extending_custom_checks.html">previous chapter</a> you can
         provide metadata for your custom checks to enhance support for your checks inside the plug-in.
         <br />
          The structure and features of such metadata files is described below.</p>
@@ -97,10 +88,10 @@ The content might be translatable.
 	internal-name           NMTOKEN         #REQUIRED
 	checkstyle-module-name  NMTOKEN         #IMPLIED
 	parent                  NMTOKEN         #REQUIRED
-	hasSeverity             (true|false)    "true"
-	hidden                  (true|false)    "false"
-	deletable               (true|false)    "true"
-	singleton               (true|false)    "false"&gt;
+	hasSeverity             (true|false)    &quot;true&quot;
+	hidden                  (true|false)    &quot;false&quot;
+	deletable               (true|false)    &quot;true&quot;
+	singleton               (true|false)    &quot;false&quot;&gt;
 
 
 &lt;!-- 
@@ -169,9 +160,6 @@ Specifies a single enumeration value.
 	value	CDATA	#REQUIRED&gt;             
        
 </pre>
-<script type="text/javascript">
-footer();
-</script>
     </body>
 </html>
 
