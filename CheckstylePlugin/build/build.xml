@@ -1,25 +1,28 @@
-<project name="CheckstylePlugin" default="build.dist" basedir=".">
+<project name="CheckstylePlugin" default="build.dist" basedir="../">
+	
+	<!-- get the environment properties specific to each developer machine -->
+	<property file="${basedir}/build/env.properties"/>
 
 	<!-- properties that likely change between releases -->
-	<property name="plugin.version" value="4.0.0" />
-	<property name="plugin.version.postfix" value="-final" />
-	<property name="checkstyle.jar" value="checkstyle-all-4.0.jar" />
-	<property name="checkstyle-optional.jar" value="extension-libraries/checkstyle-optional-4.0.jar" />
-
-	<!-- properties that remain relativly fixed -->
+	<property file="${basedir}/build/version.properties"/>
+	
+	<!-- file and directory settings -->
+	<property name="checkstyle.jar" value="checkstyle-all-${checkstyle.version}.jar" />
 	<property name="plugin.name" value="com.atlassw.tools.eclipse.checkstyle_${plugin.version}" />
 
 	<property name="dist.basedir" value="${basedir}/dist/" />
 	<property name="dist.basedir.tmpdir" value="${basedir}/dist/tmp" />
 	<property name="feature.project.dir" value="${basedir}/feature" />
 
+	<!-- file names for the files to be distributed -->
 	<property name="bin.dist.file" value="${plugin.name}${plugin.version.postfix}-bin.zip" />
 	<property name="src.dist.file" value="${plugin.name}${plugin.version.postfix}-src.zip" />
 	<property name="plugin.jar.file" value="${plugin.name}.jar" />
 	<property name="feature.jar.file" value="${plugin.name}-feature.jar" />
 	<property name="update.site.file" value="${plugin.name}${plugin.version.postfix}-updatesite.zip" />
-	
-	<property name="checkstyle.docs.dir" value="../checkstyle/target/docs"/>
+
+	<!-- define ant4eclipse (used for compilation support) -->
+	<taskdef resource="net/sf/ant4eclipse/antlib.xml" classpath="${basedir}/build/ant4eclipse-0.2.1.jar"/>
 
 	<!-- ==================================================== -->
 	<!--   CLEAN TARGET                                       -->
@@ -41,33 +44,81 @@
 	<!-- ==================================================== -->
 	<target name="build.dist" depends="build.bindist,build.srcdist,build.local.update.site,build.plugin.website" />
 
+
+	<!-- ==================================================== -->
+	<!--   COMPILE TARGET                                     -->
+	<!-- ==================================================== -->
+	<target name="compile.sources" depends="build.target.area">
+
+		<!-- resolve the org.eclipse.pde.core.requiredPlugins needed by ant4eclipse -->
+		<path id="org.eclipse.pde.core.requiredPlugins" >
+			<pathelement location="${eclipse.plugin.dir}/org.eclipse.core.resources_${eclipse.version}.jar" />
+			<pathelement location="${eclipse.plugin.dir}/org.eclipse.ui_${eclipse.version}.jar" />
+			<pathelement location="${eclipse.plugin.dir}/org.eclipse.swt_${eclipse.version}.jar" />
+			<pathelement location="${eclipse.plugin.dir}/org.eclipse.jface_${eclipse.version}.jar" />
+			<pathelement location="${eclipse.plugin.dir}/org.eclipse.core.commands_${eclipse.version}.jar" />
+			<pathelement location="${eclipse.plugin.dir}/org.eclipse.ui.workbench_${eclipse.version}.jar" />
+			<pathelement location="${eclipse.plugin.dir}/org.eclipse.jface.text_${eclipse.version}.jar" />
+			<pathelement location="${eclipse.plugin.dir}/org.eclipse.text_${eclipse.version}.jar" />
+			<pathelement location="${eclipse.plugin.dir}/org.eclipse.jdt.core_${eclipse.version}.jar" />
+			<pathelement location="${eclipse.plugin.dir}/org.eclipse.core.runtime_${eclipse.version}.jar" />
+			<pathelement location="${eclipse.plugin.dir}/org.eclipse.osgi_${eclipse.version}.jar" />
+			<pathelement location="${eclipse.plugin.dir}/org.eclipse.ui.ide_${eclipse.version}.jar" />
+			<pathelement location="${eclipse.plugin.dir}/org.eclipse.jdt.ui_${eclipse.version}.jar" />
+			<pathelement location="${eclipse.plugin.dir}/org.eclipse.ui.workbench.texteditor_${eclipse.version}.jar" />
+			<pathelement location="${eclipse.plugin.dir}/org.eclipse.ui.editors_${eclipse.version}.jar" />
+			<pathelement location="${eclipse.plugin.dir}/org.eclipse.core.filebuffers_${eclipse.version}.jar" />
+			<pathelement location="${eclipse.plugin.dir}/org.eclipse.team.cvs.core_${eclipse.version}.jar" />
+			<pathelement location="${eclipse.plugin.dir}/org.eclipse.team.core_${eclipse.version}.jar" />
+		</path>
+
+		<!-- init -->
+		<mkdir dir="${dist.basedir.tmpdir}/bin" />
+		<mkdir dir="${dist.basedir.tmpdir}/binnls" />
+
+		<!-- read the eclipse classpath -->
+		<getEclipseClasspath workspace="${workspace}" projectName="${project.name}" classpathId="build.classpath" />
+
+		<!-- compile -->
+		<javac srcdir="${basedir}/src" destdir="${dist.basedir.tmpdir}/bin" classpathref="build.classpath" source="1.4" />
+		<javac srcdir="${basedir}/nls" destdir="${dist.basedir.tmpdir}/binnls" classpathref="build.classpath" source="1.4" />
+	
+		<!-- copy properties and other stuff -->
+	    <copy todir="${dist.basedir.tmpdir}/bin">
+	      <fileset dir="${basedir}/src" includes="**/*.properties"/>
+	    </copy>
+	</target>
+
+
 	<!-- ==================================================== -->
 	<!--   BINARY DISTRIBUTION TARGET                         -->
 	<!-- ==================================================== -->
-	<target name="build.bindist" depends="build.target.area,build.plugin.docs" description="Builds the binary distribution file">
+	<target name="build.bindist" depends="build.target.area,compile.sources,build.plugin.docs" description="Builds the binary distribution file">
 
 		<!-- prefix paths within the binary dist file -->
 		<property name="plugins.path" value="plugins/${plugin.name}" />
 		<property name="features.path" value="features/${plugin.name}" />
 
 		<!-- jar the contents of the output dirs into the tmp directory -->
-		<jar destfile="${dist.basedir.tmpdir}/CheckstylePlugin.jar" basedir="./bin" index="true" />
-		<jar destfile="${dist.basedir.tmpdir}/NLS.jar" basedir="./binnls" index="true" />
-		<jar destfile="${dist.basedir.tmpdir}/CheckstyleMetadata.jar" basedir="./metadata" index="true" />
+		<jar destfile="${dist.basedir.tmpdir}/CheckstylePlugin.jar" basedir="${dist.basedir.tmpdir}/bin" index="true" />
+		<jar destfile="${dist.basedir.tmpdir}/NLS.jar" basedir="${dist.basedir.tmpdir}/binnls" index="true" />
+		<jar destfile="${dist.basedir.tmpdir}/CheckstyleMetadata.jar" basedir="${basedir}/metadata" index="true" />
 
 		<!-- copy the plugin contents to the tmp dir -->
 		<copy todir="${dist.basedir.tmpdir}/">
-			<fileset dir="." includes="${checkstyle.jar}" />
-			<fileset dir="." includes="${checkstyle-optional.jar}" />
-			<fileset dir="." includes="plugin.xml" />
-			<fileset dir="." includes="*.properties" excludes="build.properties" />
-			<fileset dir="." includes="toc.xml" />
-			<fileset dir="." includes="README.html" />
-			<fileset dir="." includes="sun_checks.xml" />
-			<fileset dir="." includes="META-INF/**" />
-			<fileset dir="." includes="schema/**" />
-			<fileset dir="." includes="icons/**" />
-			<fileset dir="." includes="license/**" />
+			<fileset dir="${basedir}">
+				<include name="${checkstyle.jar}" />
+				<include name="extension-libraries/**" />
+				<include name="plugin.xml" />
+				<include name="*.properties" />
+				<include name="toc.xml" />
+				<include name="README.html" />
+				<include name="sun_checks.xml" />
+				<include name="META-INF/**" />
+				<include name="schema/**" />
+				<include name="icons/**" />
+				<include name="license/**" />
+			</fileset>
 		</copy>
 
 		<!-- zip the contents into the binary dist file -->
@@ -93,26 +144,13 @@
 	<!-- ==================================================== -->
 	<target name="build.srcdist" depends="build.target.area" description="Builds the source distribution file">
 
+		<!-- The other way around is easier, just include all but the ouput directories -->
 		<zip destfile="${dist.basedir}/${src.dist.file}" update="false">
-
-			<zipfileset dir="." includes="${checkstyle.jar}" />
-			<zipfileset dir="." includes="${checkstyle-optional.jar}" />
-			<zipfileset dir="." includes="plugin.xml" />
-			<zipfileset dir="." includes="*.properties" />
-			<zipfileset dir="." includes="toc.xml" />
-			<zipfileset dir="." includes="README.html" />
-			<zipfileset dir="." includes="sun_checks.xml" />
-			<zipfileset dir="." includes="META-INF/**" />
-			<zipfileset dir="." includes="schema/**" />
-			<zipfileset dir="." includes="icons/**" />
-			<zipfileset dir="." includes="license/**" />
-			<zipfileset dir="." includes="doc/**" />
-			<zipfileset dir="." includes="feature/**" />
-			<zipfileset dir="." includes="src/**" />
-			<zipfileset dir="." includes="nls/**" />
-			<zipfileset dir="." includes="CheckConfig_Checkstyle.xml" />
-			<zipfileset dir="." includes="build-plugin.xml" />
-			<zipfileset dir="." includes=".*" />
+			<fileset dir="${basedir}" includes="**/*">
+				<exclude name="dist/**" />
+				<exclude name="bin/**" />
+				<exclude name="binnls/**" />
+			</fileset>
 		</zip>
 	</target>
 
@@ -120,7 +158,7 @@
 	<!--   BUILDS A LOCAL UPDATE SITE                         -->
 	<!-- ==================================================== -->
 	<target name="build.local.update.site" depends="build.bindist" description="Builds a local update site">
-	
+
 		<!-- prepare the site.xml file -->
 		<copy file="${basedir}/update-site/local-site.template" tofile="${dist.basedir.tmpdir}/site.xml" />
 		<replace file="${dist.basedir.tmpdir}/site.xml" token="@feature.jar.file@" value="${feature.jar.file}" />
@@ -132,7 +170,7 @@
 			<zipfileset dir="${dist.basedir}" prefix="features" includes="${feature.jar.file}" />
 			<zipfileset dir="${dist.basedir}" prefix="plugins" includes="${plugin.jar.file}" />
 		</zip>
-		
+
 		<!-- remove the temp directory -->
 		<delete dir="${dist.basedir.tmpdir}" failonerror="false" quiet="true" />
 	</target>
@@ -141,15 +179,15 @@
 	<!--   BUILD THE PLUGIN ONLINE DOCUMENTATION              -->
 	<!-- ==================================================== -->
 	<target name="build.plugin.docs">
-		<copy todir="${dist.basedir.tmpdir}/doc">			
+		<copy todir="${dist.basedir.tmpdir}/doc">
 			<fileset dir="${basedir}/doc" includes="*.css" />
 			<fileset dir="${basedir}/doc" includes="images/**" />
 		</copy>
-		<copy todir="${dist.basedir.tmpdir}/doc/csdocs">			
+		<copy todir="${dist.basedir.tmpdir}/doc/csdocs">
 			<fileset dir="${checkstyle.docs.dir}" includes="**/*" />
 		</copy>
-		
-		<xslt style="${basedir}/doc/generate_docs.xsl" basedir="${basedir}/doc" includes="*.html" destdir="${dist.basedir.tmpdir}/doc"/>
+
+		<xslt style="${basedir}/doc/generate_docs.xsl" basedir="${basedir}/doc" includes="*.html" destdir="${dist.basedir.tmpdir}/doc" />
 	</target>
 
 	<!-- ==================================================== -->
@@ -166,9 +204,9 @@
 		<copy todir="${dist.basedir}/website/dtds" flatten="true">
 			<fileset dir="${basedir}/metadata" includes="**/*.dtd" />
 		</copy>
-		
+
 		<xslt style="${basedir}/doc/generate_docs.xsl" basedir="${basedir}/doc" includes="*.html" destdir="${dist.basedir}/website">
-			<param name="style" expression="website"/>
+			<param name="style" expression="website" />
 		</xslt>
 	</target>
 
