@@ -150,6 +150,7 @@
 				<exclude name="dist/**" />
 				<exclude name="bin/**" />
 				<exclude name="binnls/**" />
+				<exclude name="build/env.properties" />
 			</fileset>
 		</zip>
 	</target>
@@ -160,7 +161,7 @@
 	<target name="build.local.update.site" depends="build.bindist" description="Builds a local update site">
 
 		<!-- prepare the site.xml file -->
-		<copy file="${basedir}/update-site/local-site.template" tofile="${dist.basedir.tmpdir}/site.xml" />
+		<copy file="${basedir}/build/local-site.template" tofile="${dist.basedir.tmpdir}/site.xml" />
 		<replace file="${dist.basedir.tmpdir}/site.xml" token="@feature.jar.file@" value="${feature.jar.file}" />
 		<replace file="${dist.basedir.tmpdir}/site.xml" token="@plugin.version@" value="${plugin.version}" />
 
@@ -197,9 +198,7 @@
 		<copy todir="${dist.basedir}/website">
 			<fileset dir="${basedir}/doc" includes="*.css" />
 			<fileset dir="${basedir}/doc" includes="images/**" />
-		</copy>
-		<copy todir="${dist.basedir}/website/update">
-			<fileset dir="${basedir}/update-site" includes="site.xml" />
+			<fileset dir="${basedir}/doc" includes="update/**" />
 		</copy>
 		<copy todir="${dist.basedir}/website/dtds" flatten="true">
 			<fileset dir="${basedir}/metadata" includes="**/*.dtd" />
