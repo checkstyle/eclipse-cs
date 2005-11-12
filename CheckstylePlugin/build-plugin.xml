@@ -163,6 +163,9 @@
 		<copy todir="${dist.basedir}/website/update">
 			<fileset dir="${basedir}/update-site" includes="site.xml" />
 		</copy>
+		<copy todir="${dist.basedir}/website/dtds" flatten="true">
+			<fileset dir="${basedir}/metadata" includes="**/*.dtd" />
+		</copy>
 		
 		<xslt style="${basedir}/doc/generate_docs.xsl" basedir="${basedir}/doc" includes="*.html" destdir="${dist.basedir}/website">
 			<param name="style" expression="website"/>
