@@ -18,6 +18,8 @@
 	<property name="plugin.jar.file" value="${plugin.name}.jar" />
 	<property name="feature.jar.file" value="${plugin.name}-feature.jar" />
 	<property name="update.site.file" value="${plugin.name}${plugin.version.postfix}-updatesite.zip" />
+	
+	<property name="checkstyle.docs.dir" value="../checkstyle/target/docs"/>
 
 	<!-- ==================================================== -->
 	<!--   CLEAN TARGET                                       -->
@@ -37,12 +39,12 @@
 	<!-- ==================================================== -->
 	<!--   DISTRIBUTION TARGET                                -->
 	<!-- ==================================================== -->
-	<target name="build.dist" depends="build.bindist,build.srcdist,build.local.update.site" />
+	<target name="build.dist" depends="build.bindist,build.srcdist,build.local.update.site,build.plugin.website" />
 
 	<!-- ==================================================== -->
 	<!--   BINARY DISTRIBUTION TARGET                         -->
 	<!-- ==================================================== -->
-	<target name="build.bindist" depends="build.target.area" description="Builds the binary distribution file">
+	<target name="build.bindist" depends="build.target.area,build.plugin.docs" description="Builds the binary distribution file">
 
 		<!-- prefix paths within the binary dist file -->
 		<property name="plugins.path" value="plugins/${plugin.name}" />
@@ -66,7 +68,6 @@
 			<fileset dir="." includes="schema/**" />
 			<fileset dir="." includes="icons/**" />
 			<fileset dir="." includes="license/**" />
-			<fileset dir="." includes="doc/**" />
 		</copy>
 
 		<!-- zip the contents into the binary dist file -->
@@ -136,7 +137,37 @@
 		<delete dir="${dist.basedir.tmpdir}" failonerror="false" quiet="true" />
 	</target>
 
+	<!-- ==================================================== -->
+	<!--   BUILD THE PLUGIN ONLINE DOCUMENTATION              -->
+	<!-- ==================================================== -->
+	<target name="build.plugin.docs">
+		<copy todir="${dist.basedir.tmpdir}/doc">			
+			<fileset dir="${basedir}/doc" includes="*.css" />
+			<fileset dir="${basedir}/doc" includes="images/**" />
+		</copy>
+		<copy todir="${dist.basedir.tmpdir}/doc/csdocs">			
+			<fileset dir="${checkstyle.docs.dir}" includes="**/*" />
+		</copy>
+		
+		<xslt style="${basedir}/doc/generate_docs.xsl" basedir="${basedir}/doc" includes="*.html" destdir="${dist.basedir.tmpdir}/doc"/>
+	</target>
 
+	<!-- ==================================================== -->
+	<!--   BUILD THE PLUGIN WEBSITE                           -->
+	<!-- ==================================================== -->
+	<target name="build.plugin.website">
+		<copy todir="${dist.basedir}/website">
+			<fileset dir="${basedir}/doc" includes="*.css" />
+			<fileset dir="${basedir}/doc" includes="images/**" />
+		</copy>
+		<copy todir="${dist.basedir}/website/update">
+			<fileset dir="${basedir}/update-site" includes="site.xml" />
+		</copy>
+		
+		<xslt style="${basedir}/doc/generate_docs.xsl" basedir="${basedir}/doc" includes="*.html" destdir="${dist.basedir}/website">
+			<param name="style" expression="website"/>
+		</xslt>
+	</target>
 
 	<!-- ==================================================== -->
 	<!--   Release through Sourceforge File Release System    -->
