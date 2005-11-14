@@ -28,9 +28,23 @@
 							</td>
 						</xsl:if>
 						<td class="mainsection">
-							<xsl:call-template name="header"/>
-							<xsl:apply-templates select="/*[local-name()='html']/*[local-name()='body']/*"/>
-							<xsl:call-template name="footer"/>
+							<table border="0" width="100%" cellpadding="0" cellspacing="0" style="height: 100%">
+								<tr>
+									<td>
+										<xsl:call-template name="header"/>
+									</td>
+								</tr>
+								<tr>
+									<td class="content">
+										<xsl:apply-templates select="/*[local-name()='html']/*[local-name()='body']/*"/>
+									</td>
+								</tr>
+								<tr>
+									<td class="footer">
+										<xsl:call-template name="footer"/>
+									</td>
+								</tr>
+							</table>
 						</td>
 					</tr>
 				</table>
@@ -135,6 +149,12 @@
 				<img src="images/logo_jprofiler01.gif" alt="ej-technologies' JProfiler"/>
 			</a>
 		</div>
+		
+		<div style="text-align=right; margin-top: 5px;">
+			<a href="http://validator.w3.org/check?uri=referer" class="imagelink">
+				<img src="images/valid-xhtml11.png" alt="Valid XHTML 1.1" height="31" width="88"/>
+			</a>			
+		</div>
 	</xsl:template>
 
 	<!-- renders the header of the page -->
@@ -144,7 +164,7 @@
 				<td style="text-align: left; height: 75px; width=100%">
 					<img src="images/banner.png" alt="eclipse-cs Banner"/>
 				</td>
-				<td style="vertical-align: middle; text-align: right; width: 75px; height: 75px; padding-right: 10px;">
+				<td style="vertical-align: middle; width: 75px; height: 75px;">
 					<a href="http://sourceforge.net/" class="imagelink">
 						<img src="http://sourceforge.net/sflogo.php?group_id=80344&amp;amp;type=1" alt="SourceForge.net Logo"/>
 					</a>
@@ -158,10 +178,18 @@
 
 	<!-- renders the footer of the page -->
 	<xsl:template name="footer">
-		<hr/>
-		<span class="copyright">Copyright &#xA9; 2002-2005 David Schneider, <a href="http://www.koedderitzsch.net">Lars Ködderitzsch</a>. All Rights Reserved.</span>
-		<a href="http://validator.w3.org/check?uri=referer" class="imagelink">
-			<img src="images/valid-xhtml11.png" alt="Valid XHTML 1.1" height="31" width="88"/>
-		</a>
+		<table cellpadding="0" cellspacing="0" border="0" width="100%" style="text-align:top;">
+			<tr>
+				<td style="width: 35px">			
+					<a href="#"><img src="images/top_button_left.gif" alt="Back to top"/></a>
+				</td>
+				<td class="copyright">
+					Copyright &#xA9; 2002-2005 David Schneider, <a href="http://www.koedderitzsch.net">Lars Ködderitzsch</a>. All Rights Reserved.
+				</td>
+				<td style="width: 35px">			
+					<a href="#"><img src="images/top_button_right.gif" alt="Back to top"/></a>
+				</td>
+			</tr>
+		</table>
 	</xsl:template>
 </xsl:stylesheet>
