@@ -61,6 +61,9 @@ img{
 td{
 	vertical-align: top;
 }
+li {
+	color: #000000;
+}
 
 .maintable{
 	height: 100%;

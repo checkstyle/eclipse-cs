@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"  xmlns="http://www.w3.org/1999/xhtml">
 
 	<!-- parameter to control wheter the navigational menu should be included. -->
 	<xsl:param name="style"/>
 
-	<!-- output as XHTML -->
-	<xsl:output encoding="UTF-8" method="xml" indent="yes" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"/>
+	<!-- output as XHTML 1.1 -->
+	<xsl:output encoding="UTF-8" method="xml" indent="yes" doctype-public="-//W3C//DTD XHTML 1.1//EN" doctype-system="http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"/>
 
 	<!-- root template -->
 	<xsl:template match="/">
@@ -14,13 +14,10 @@
 			<head>
 				<meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8"/>
 				<link type="text/css" href="style.css" rel="stylesheet"/>
-				<title>
-					eclipse-cs: <xsl:value-of select="/html/head/title"/>
-				</title>
+				<title>eclipse-cs: <xsl:value-of select="/*[local-name()='html']/*[local-name()='head']/*[local-name()='title']"/></title>
 			</head>
 
 			<body>
-
 				<table class="maintable" cellpadding="0" cellspacing="0">
 					<tr>
 						<xsl:if test="$style = 'website'">
@@ -32,7 +29,7 @@
 						</xsl:if>
 						<td class="mainsection">
 							<xsl:call-template name="header"/>
-							<xsl:apply-templates select="/html/body/*"/>
+							<xsl:apply-templates select="/*[local-name()='html']/*[local-name()='body']/*"/>
 							<xsl:call-template name="footer"/>
 						</td>
 					</tr>
@@ -164,7 +161,7 @@
 		<hr/>
 		<span class="copyright">Copyright &#xA9; 2002-2005 David Schneider, <a href="http://www.koedderitzsch.net">Lars Ködderitzsch</a>. All Rights Reserved.</span>
 		<a href="http://validator.w3.org/check?uri=referer" class="imagelink">
-			<img src="images/valid-xhtml10.png" alt="Valid XHTML 1.0 Strict" height="31" width="88"/>
+			<img src="images/valid-xhtml11.png" alt="Valid XHTML 1.1" height="31" width="88"/>
 		</a>
 	</xsl:template>
 </xsl:stylesheet>
