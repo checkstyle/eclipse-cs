@@ -13,6 +13,7 @@
 		<topic label="Working with a Team Repository"    	href="doc/advanced_team.html"/>
 		<topic label="Using Regular Expressions"         	href="doc/advanced_regularexpressions.html"/>
 		<topic label="Expanding properties"					href="doc/advanced_properties.html"/>
+		<topic label="Advanced Preferences"					href="doc/advanced_preferences.html"/>
 	</topic>
 	<topic label="Extending the Checkstyle Plug-in">
 		<topic label="Using custom checks"					href="doc/extending_custom_checks.html">

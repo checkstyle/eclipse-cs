@@ -114,6 +114,7 @@
 				<include name="toc.xml" />
 				<include name="README.html" />
 				<include name="sun_checks.xml" />
+				<include name="sun_checks_eclipse.xml" />
 				<include name="META-INF/**" />
 				<include name="schema/**" />
 				<include name="icons/**" />

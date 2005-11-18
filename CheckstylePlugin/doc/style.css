@@ -1,5 +1,6 @@
 html{
 	height: 100%;
+	width: 100%;
 }
 
 body {
@@ -7,15 +8,17 @@ body {
 	margin: 0px;
 	padding: 0px;
 	height: 100%;
+	width: 100%;
+	color: #000000;
+	background-color: #cddeff;
 }
 
 h2{
-	background-color: #003399;
 	color: #FFFFFF;
+	background-color: #003399;
 	text-align: center;
 	font-size: 24px;
 	margin-top: 0px;
-	border-top: 1px solid #cddeff;
 	border-bottom: 5px solid #cddeff;
 }
 
@@ -33,25 +36,28 @@ form{
 }
 
 p {
-	text-indent: 10px;
 	margin-left: 10px;
 	margin-right: 10px;
 }
 
 pre{
 	margin-left: 10px;
-	margin-right: 10px;	
+	margin-right: 10px;
+	font-family: "Courier New", Courier, monospace;
+	font-size: 12px;
 }
 
 a {
-    color: #003399;
-    text-decoration: none;
+	color:#003399;
+	background-color: #FFFFFF;
+	text-decoration: none;
 }
 
 a:hover {
-    color: #6699ff;
-    text-decoration: underline;
-} 
+	color: #6699ff;
+	background-color: #FFFFFF;
+	text-decoration: underline;
+}
 
 img{
 	text-align:left;
@@ -61,15 +67,21 @@ img{
 td{
 	vertical-align: top;
 }
-li {
+
+ol{
+	margin: 10px 10px 10px 25px;
+	padding: 0;
+}
+
+li{
 	color: #000000;
+	background-color: #FFFFFF;
 }
 
 .maintable{
 	height: 100%;
-	width: 100%
+	width: 100%;
 	text-align: left;
-	background-color: #cddeff;
 	border: 0px;
 }
 
@@ -77,56 +89,108 @@ li {
 	width: 220px;
 }
 
+.navsection a {
+	color:#003399;
+	background-color: #cddeff;
+}
+.navsection a:hover {
+	color: #6699ff;
+	background-color: #cddeff;
+}
+
 .mainsection{
 	width: 100%;
+	height: 100%;
 	border-left: 10px solid #cddeff;
-	background-color: #ffffff; 
+	border-right: 10px solid #cddeff;
 }
 
 .header {
 	border: 0px;
 	width: 100%;
+	color: #003399;
+	background-color: #cddeff;
+}
+.header a {
+	color:#003399;
+	background-color: #cddeff;
+}
+.header a:hover {
+	color: #6699ff;
+	background-color: #cddeff;
+}
+
+.content {
+	height: 100%; 
+	border-left: 1px solid #003399;
+	border-right: 1px solid #003399;
+	padding-bottom:10px;
+	color: #000000;
+	background-color: #ffffff;
+}
+
+.footer{
+	color:#003399;
+	background-color: #cddeff;
+}
+.footer a {
+	color:#003399;
+	background-color: #cddeff;
+}
+.footer a:hover {
+	color: #6699ff;
 	background-color: #cddeff;
 }
 
 .copyright{
-	font-size:14px;
 	color:#003399;
-	vertical-align: top;
-	padding-left: 10px;
+	background-color: #cddeff;
+	font-family: "Courier New", Courier, monospace;
+	font-size: 14px;
+	vertical-align: middle;
+	padding-left: 20px;
+	border-top: 1px solid #003399;
+	white-space: nowrap;
 }
 
 .code-lightblue{
 	font-family: "Courier New", Courier, monospace;
 	font-size: 14px;
 	color: #3f5fbf;
+	background-color: #FFFFFF;
 }
 .code-blue{
 	font-family: "Courier New", Courier, monospace;
 	font-size: 14px;
 	color: #000080;
+	background-color: #FFFFFF;
 }
 .code-green{
 	font-family: "Courier New", Courier, monospace;
 	font-size: 14px;
 	color: #008000;
+	background-color: #FFFFFF;
 }
 .code-black{
 	font-family: "Courier New", Courier, monospace;
 	font-size: 14px;
 	color: #000000;
+	background-color: #FFFFFF;
 }
 .code-purple{
 	font-family: "Courier New", Courier, monospace;
 	font-size: 14px;
 	color: #7f0055;
+	background-color: #FFFFFF;
 }
 
 .buttonscontainer {
 	margin-top: -4px;
+	color: #FFFFFF;
 	background-color: #cddeff; 
 	width: 220px; 
 	text-align: left;
+	height: 100%;
 }
 
 .imagelink {
@@ -144,14 +208,14 @@ li {
 }
 
 .buttons {
+	color: #000000;
 	background-color: #FFFFFF; 
 }
 
 .buttons a {
 	color: #FFFFFF;
 	background-color: #003399;
-	padding: 2px;
-	padding-left: 3px;
+	padding: 2px 2px 2px 3px;
 	display: block;
 	border-left: 10px solid #6699FF;
 	font: 11px Arial, sans-serif;
@@ -164,8 +228,7 @@ li {
 .buttons span {
 	color: #FFFFFF;
 	background-color: #003399;
-	padding: 2px;
-	padding-left: 3px;
+	padding: 2px 2px 2px 3px;
 	display: block;
 	border-left: 10px solid #6699FF;
 	font: 11px Arial, sans-serif;
@@ -179,6 +242,7 @@ li {
 	border-left: 10px solid #FFFFFF;
 	text-decoration: none;
 	color: #FFFFFF;
+	background-color: #003399;
 }
 
 .box {
@@ -186,6 +250,7 @@ li {
 	border: 1px solid #003399;
 	margin-top: 5px;
 	padding: 0px 3px 3px 3px;
+	color: #000000;
 	background-color: #FFFFFF;
 }
 
@@ -197,38 +262,19 @@ li {
 	text-align: center;
 	margin: 0px -3px 3px -3px;
 	text-decoration:none;
-	border-bottom: 3px inset #cddeff;
+	border-bottom: 3px solid #cddeff;
 }
 
-.donors a:link {
-	text-decoration:none; 
-	color:#003399; 
-	font-family: verdana, arial, geneva, sans-serif; 
-	font-size: 11px; 
-}
-.donors a:visited {
-	text-decoration:none; 
-	color:#003399; 
-	font-family: verdana, arial, geneva, sans-serif; 
-	font-size: 11px; 
-}
-.donors a:active {
-	text-decoration:none; 
-	color:#003399;
-	font-family: verdana, arial, geneva, sans-serif; 
-	font-size: 11px; 
-}
-.donors a:hover {
-	text-decoration:none; 
-	color:#003399; 
-	font-family: verdana, arial, geneva, sans-serif; 
-	font-size: 11px; 
+.navsection-box {
+	color: #000000;
+	background-color: #cddeff; 
 }
 
 .donorcomment {
 	font-family: verdana, arial, geneva, sans-serif; 
 	font-size: 11px; 
 	color: #000000;
+	background-color: #FFFFFF; 
 	font-style: italic; 
 }
 

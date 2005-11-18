@@ -81,6 +81,7 @@
 			<a href="advanced_team.html" class="level2">Working with a Team Repository</a>
 			<a href="advanced_regularexpressions.html" class="level2">Using Regular Expressions</a>
 			<a href="advanced_properties.html" class="level2">Expanding properties</a>
+			<a href="advanced_preferences.html" class="level2">Advanced Preferences</a>
 			<span class="level1">Extending the Checkstyle Plug-in</span>
 			<a href="extending_custom_checks.html" class="level2">Using custom checks</a>
 			<a href="extending_custom_metadata.html" class="level3">Metadata explained</a>
@@ -93,7 +94,7 @@
 			<a href="http://sourceforge.net/projects/eclipse-cs/" class="level1">SourceForge project page</a>
 		</div>
 
-		<div class="box">
+		<div class="box navsection-box">
 			<h3>Rate this plug-in<br/>@ Eclipse Plugin Central!</h3>
 			<form method="post" action="http://www.eclipseplugincentral.com/Web_Links+main.html" style="width:100%">
 				<table border="0" width="100%" cellspacing="0" cellpadding="0">
@@ -143,7 +144,7 @@
 				</table>
 			</form>
 		</div>
-		<div class="box">
+		<div class="box navsection-box">
 			<h3>Kindly endorsed by</h3>
 			<a href="http://www.ej-technologies.com/products/jprofiler/overview.html" class="imagelink">
 				<img src="images/logo_jprofiler01.gif" alt="ej-technologies' JProfiler"/>
@@ -153,7 +154,10 @@
 		<div style="text-align=right; margin-top: 5px;">
 			<a href="http://validator.w3.org/check?uri=referer" class="imagelink">
 				<img src="images/valid-xhtml11.png" alt="Valid XHTML 1.1" height="31" width="88"/>
-			</a>			
+			</a>
+			<a href="http://jigsaw.w3.org/css-validator/">
+				<img src="images/valid-css.png" alt="Valid CSS" height="31" width="88"/>
+			</a>
 		</div>
 	</xsl:template>
 

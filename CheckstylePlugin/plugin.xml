@@ -282,6 +282,10 @@
 			name="Sun Checks" 
 			location="sun_checks.xml" 
 			description="%SunChecks.description"/>
+		<check-configuration 
+			name="Sun Checks (Eclipse)" 
+			location="sun_checks_eclipse.xml" 
+			description="%SunChecksEclipse.description"/>
 	</extension>
 	
 <!-- 

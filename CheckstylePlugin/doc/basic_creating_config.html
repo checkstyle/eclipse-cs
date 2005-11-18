@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+-->
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8" />
@@ -7,7 +9,7 @@
         <title>Creating and configuring a Checkstyle configuration</title>
     </head>
 
-    <body class="content">
+    <body>
         <h2>Creating and configuring a Checkstyle configuration</h2>
 <p>We learned how to set up a project to be checked with the Checkstyle Plug-in in the
         <a
@@ -17,15 +19,15 @@
 <ol>
             <li>
                 <p><b>Open the Eclipse Preferences Window</b></p>
-<p><img src="images/basic_creating_config_html_m305e17bd.gif" alt="Open Eclipse preferences" />
+<p><img src="images/open_preferences.png" alt="Open Eclipse preferences" />
             </p>
 </li>
 <li>
                 <p><b>Navigate to the Checkstyle section within the Eclipse preferences</b></p>
-<p><img src="images/basic_creating_config_html_37de0111.jpg" alt="Checkstyle preferences" />
+<p><img src="images/default_preferences.png" alt="Checkstyle preferences" />
                 <br />
             The Checkstyle preferences should look like this. In the upper area are some general settings which will be explained
-            later in detail. <br />
+            <a href="advanced_preferences.html">later in detail</a>.<br />
             The center/bottom area shows the Checkstyle configurations known to the plug-in. Only Checkstyle Configurations
             that are listed therein can be used with the plug-in. <br />
             Note the <i>Sun Checks</i> configuration which we used in the previous chapter as check configuration for our
@@ -35,7 +37,7 @@
 </li>
 <li>
                 <p><b>Click the</b> <i>New...</i> <b>button to create a new checkstyle configuration</b></p>
-<p><img src="images/basic_creating_config_html_d676967.jpg" alt="Check Configuration properties" />
+<p><img src="images/new_config.png" alt="Check Configuration properties" />
                 <br />
             The Check Configuration Properties dialog comes up. Its quite empty so we must provide some data to create our
             Checkstyle configuration. <br />
@@ -47,7 +49,7 @@
             The plug-in will create a unique filename for our new configuration. <br />
             To complete our configuration we must provide a name - the description is optional and can be used to describe
             what your configuration is all about.</p>
-<p><img src="images/basic_creating_config_html_m7d9bdb11.jpg"
+<p><img src="images/new_config_filled.png"
                 alt="Check Configuration properties filled" />
                 <br />
             When you are done the dialog should look like this. Don&#39;t worry if you done something wrong the dialog will
@@ -60,7 +62,7 @@
 </li>
 <li>
                 <p><b>Select the configuration you created and press <i>Configure...</i> to open the Configuration Editor</b></p>
-<p><img src="images/basic_creating_config_html_m2e510705.jpg" alt="Checkstyle Configuration Editor" />
+<p><img src="images/configuration_editor_new.png" alt="Checkstyle Configuration Editor" />
                 <br />
             In the left hand side tree all modules known to the plug-in are shown. These are all modules that come with Checkstyle
             out-of-the-box. <br />
@@ -72,7 +74,7 @@
             To add a particular module to your configuration you must select the module in the tree press the <i>Add...</i> button. <br />
             For instance we open the first group <i>Javadoc Comments</i> and select the <i>Method Javadoc</i> module. <br />
             Pressing the <i>Add...</i> button the property dialog for this module is shown.</p>
-<p><img src="images/basic_creating_config_html_m16ef8dbd.jpg" alt="Checkstyle Module Editor" />
+<p><img src="images/module_editor.png" alt="Checkstyle Module Editor" />
                 <br />
             Using the dialog you can customize the check for your needs. <br />
             Mostly all modules have a severity combo box. With this you can specify if a violation of the check results in
@@ -80,7 +82,7 @@
             The other settings in the editor are highly specific to the module. But don&#39;t bother for now, pressing OK
             will add the module to your configuration. <br />
             The result should look like this:</p>
-<p><img src="images/basic_creating_config_html_206bd710.jpg"
+<p><img src="images/configuration_editor_filled.png"
                 alt="Checkstyle Configuration Editor filled" />
                 <br />
             Now your configuration contains the <i>Method Javadoc</i> check. <br />
@@ -91,7 +93,7 @@
 </li>
 <li>
                 <p><b>Go back to the project properties and select your configuration to be used to check your project</b></p>
-<p><img src="images/basic_creating_config_html_6a190213.jpg" alt="Checkstyle Project Properties" />
+<p><img src="images/preferences_first_config.png" alt="Checkstyle Project Properties" />
                 <br />
             After you press <i>OK</i> your project will be rebuilt using your self created configuration. <br />
             Look into the Eclipse Problems View again to see the effects. Now only Checkstyle warnings regarding missing
