@@ -107,8 +107,6 @@ public class RuleMetadata
      * @param isSingleton <code>true</code> if the module should occur only
      *            once in a checkstyle configuration
      * @param group the group the module belongs to
-     * @param moduleLogic the module logic that contains advanced logic for a
-     *            module
      */
     public RuleMetadata(String ruleName, String internalName, String checkstyleModuleName,
             String parent, SeverityLevel defaultSeverity, boolean hidden, boolean hasSeverity,
