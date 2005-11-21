@@ -51,9 +51,9 @@ public class FiltersAction extends Action
      */
     public FiltersAction(AbstractStatsView view)
     {
-        super("Filter"); // TODO externalize
+        super("Filters..."); // TODO externalize
         setImageDescriptor(CheckstyleStatsPluginImages.FILTER_ICON);
-        setToolTipText("Filters certain markers");
+        setToolTipText("Filters certain Checkstyle markers");
         this.mStatsView = view;
         setEnabled(true);
     }

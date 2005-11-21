@@ -28,19 +28,21 @@ import javax.swing.JPanel;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.awt.SWT_AWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.part.ViewPart;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -51,10 +53,9 @@ import org.jfree.util.Rotation;
 import com.atlassw.tools.eclipse.checkstyle.stats.Messages;
 import com.atlassw.tools.eclipse.checkstyle.stats.StatsCheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.stats.analyser.AnalyserEvent;
-import com.atlassw.tools.eclipse.checkstyle.stats.analyser.IAnalyserListener;
-import com.atlassw.tools.eclipse.checkstyle.stats.analyser.MarkerAnalyser;
 import com.atlassw.tools.eclipse.checkstyle.stats.data.Stats;
 import com.atlassw.tools.eclipse.checkstyle.stats.preferences.PreferencePage;
+import com.atlassw.tools.eclipse.checkstyle.stats.views.internal.FiltersAction;
 
 /**
  * Vue qui affiche les statistiques Checkstyle sous forme de graph (camember).
@@ -62,7 +63,7 @@ import com.atlassw.tools.eclipse.checkstyle.stats.preferences.PreferencePage;
  * @author Fabrice BELLINGARD
  */
 
-public class GraphStatsView extends ViewPart implements IAnalyserListener
+public class GraphStatsView extends AbstractStatsView
 {
 
     /**
@@ -124,6 +125,9 @@ public class GraphStatsView extends ViewPart implements IAnalyserListener
      */
     public void createPartControl(Composite parent)
     {
+
+        super.createPartControl(parent);
+
         // on crée les composants permettant d'encapsuler du AWT/Swing dans SWT
         mEmbeddedComposite = new Composite(parent, SWT.EMBEDDED);
         Frame fileTableFrame = SWT_AWT.new_Frame(mEmbeddedComposite);
@@ -135,158 +139,71 @@ public class GraphStatsView extends ViewPart implements IAnalyserListener
         fileTableFrame.add(panel);
 
         makeActions();
-        contributeToActionBars();
-
-        // on veut écouter les statistiques
-        MarkerAnalyser.getInstance().addAnalyserListener(this);
-        MarkerAnalyser.getInstance().selectionChanged(this,
-            getSite().getPage().getSelection());
     }
 
     /**
-     * Cf. method below.
-     * 
-     * @see org.eclipse.ui.IWorkbenchPart#dispose()
+     * {@inheritDoc}
      */
-    public void dispose()
+    protected void initMenu(IMenuManager menu)
     {
-        super.dispose();
-
-        // remove the listener
-        MarkerAnalyser.getInstance().removeAnalyserListener(this);
+        menu.add(new FiltersAction(this));
+        menu.add(new Separator());
+        menu.add(mListingAction);
+        menu.add(new Separator());
+        menu.add(mShowJavadocErrorsAction);
+        menu.add(mShowAllCategoriesAction);
     }
 
     /**
-     * Crée le graphe JFreeChart.
-     * 
-     * @param piedataset :
-     *            la source de données à afficher
-     * @return le diagramme
+     * {@inheritDoc}
      */
-    private JFreeChart createChart(GraphPieDataset piedataset)
+    protected void initToolBar(IToolBarManager tbm)
     {
-        JFreeChart jfreechart = ChartFactory.createPieChart3D(
-            Messages.GraphStatsView_errorsRepartition, piedataset, true, true,
-            false);
-        jfreechart.setLegend(null);
-        PiePlot3D pieplot3d = (PiePlot3D) jfreechart.getPlot();
-        final double angle = 290D;
-        pieplot3d.setStartAngle(angle);
-        pieplot3d.setDirection(Rotation.CLOCKWISE);
-        final float foreground = 0.5F;
-        pieplot3d.setForegroundAlpha(foreground);
-        pieplot3d.setNoDataMessage(Messages.GraphStatsView_noDataToDisplay);
-        return jfreechart;
+        tbm.add(new FiltersAction(this));
     }
 
     /**
-     * Cf. méthode surchargée.
-     * 
-     * @see com.atlassw.tools.eclipse.checkstyle.stats.analyser.IAnalyserListener#statsUpdated(com.atlassw.tools.eclipse.checkstyle.stats.analyser.AnalyserEvent)
+     * @see com.atlassw.tools.eclipse.checkstyle.stats.views.AbstractStatsView#getViewId()
      */
-    public void statsUpdated(final AnalyserEvent analyserEvent)
+    protected String getViewId()
     {
-        mStatsToDisplay = analyserEvent.getStats();
-        mSelectionToDisplay = analyserEvent.getSelection();
-        // nécessaire car il va y avoir un travail de fait sur l'UI
-        Display.getDefault().asyncExec(new Runnable()
+        return VIEW_ID;
+    }
+
+    protected void handleStatsRebuilt()
+    {
+        if (!mEmbeddedComposite.isDisposed() && mEmbeddedComposite.isVisible())
         {
-            /**
-             * Cf. méthode surchargée.
-             * 
-             * @see java.lang.Runnable#run()
-             */
-            public void run()
+            // on met à jour le dataset, qui notifie le graph, qui se
+            // met à jour
+            if (mStatsToDisplay == null)
             {
-                if (!mEmbeddedComposite.isDisposed()
-                    && mEmbeddedComposite.isVisible())
-                {
-                    // on met à jour le dataset, qui notifie le graph, qui se
-                    // met à jour
-                    if (mStatsToDisplay == null)
-                    {
-                        mPieDataset.removeValues();
-                    }
-                    else
-                    {
-                        mPieDataset
-                            .setMarkerStatCollection(mStatsToDisplay
-                                .getMarkerStats(), mStatsToDisplay
-                                .getMarkerCount());
-                    }
-                    // on met à jour le titre
-                    ArrayList titlesList = computeTitleList(analyserEvent);
-                    mGraph.setSubtitles(titlesList);
-                }
+                mPieDataset.removeValues();
             }
-        });
-    }
-
-    /**
-     * Cf. méthode surchargée.
-     * 
-     * @see com.atlassw.tools.eclipse.checkstyle.stats.analyser.IAnalyserListener#getPage()
-     */
-    public IWorkbenchPage getPage()
-    {
-        return getSite().getPage();
-    }
-
-    /**
-     * Rend la liste des sous-titres à afficher.
-     * 
-     * @param event
-     *            l'évènement de changement de stats
-     * @return la liste de String
-     */
-    private ArrayList computeTitleList(AnalyserEvent event)
-    {
-        // liste des sous-titres, dont le 1er est le nombre d'erreurs
-        ArrayList titles = new ArrayList();
-        StringBuffer title = new StringBuffer(StatsViewUtils
-            .computeMainTitle(event));
-        if (!mShowJavadocErrorsAction.isChecked())
-        {
-            title.append(" "); //$NON-NLS-1$
-            title.append(Messages.GraphStatsView_javadocNotDisplayed);
-        }
-        titles.add(new TextTitle(title.toString()));
-
-        // vérification pour la sélection
-        Collection namesList = StatsViewUtils
-            .computeAnalysedResourceNames(event);
-        if (!namesList.isEmpty())
-        {
-            StringBuffer namesBuffer = new StringBuffer();
-            for (Iterator iter = namesList.iterator(); iter.hasNext();)
+            else
             {
-
-                namesBuffer.append(iter.next());
-                if (iter.hasNext())
-                {
-                    namesBuffer.append(", "); //$NON-NLS-1$
-                }
+                mPieDataset.setMarkerStatCollection(
+                    getStats().getMarkerStats(), getStats().getMarkerCount());
             }
-            titles.add(new TextTitle(namesBuffer.toString()));
+            // on met à jour le titre
+            // ArrayList titlesList = computeTitleList(analyserEvent);
+            // mGraph.setSubtitles(titlesList);
         }
-
-        return titles;
     }
 
-    /**
-     * Cf. méthode surchargée.
-     * 
-     * @see org.eclipse.ui.IWorkbenchPart#setFocus()
-     */
-    public void setFocus()
+    protected IBaseLabelProvider createLabelProvider()
     {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    protected void createColumns(Table table)
+    {
+        // TODO Auto-generated method stub
 
     }
 
-    /**
-     * Crée les actions du viewer.
-     */
-    private void makeActions()
+    protected void makeActions()
     {
         mListingAction = new Action()
         {
@@ -297,11 +214,11 @@ public class GraphStatsView extends ViewPart implements IAnalyserListener
                     MarkerStatsView view = (MarkerStatsView) getSite()
                         .getWorkbenchWindow().getActivePage().showView(
                             MarkerStatsView.VIEW_ID);
-                    if (view != null)
-                    {
-                        view.statsUpdated(new AnalyserEvent(mStatsToDisplay,
-                            mSelectionToDisplay));
-                    }
+                    // if (view != null)
+                    // {
+                    // view.statsUpdated(new AnalyserEvent(mStatsToDisplay,
+                    // mSelectionToDisplay));
+                    // }
                 }
                 catch (PartInitException e)
                 {
@@ -389,6 +306,118 @@ public class GraphStatsView extends ViewPart implements IAnalyserListener
     }
 
     /**
+     * Crée le graphe JFreeChart.
+     * 
+     * @param piedataset :
+     *            la source de données à afficher
+     * @return le diagramme
+     */
+    private JFreeChart createChart(GraphPieDataset piedataset)
+    {
+        JFreeChart jfreechart = ChartFactory.createPieChart3D(
+            Messages.GraphStatsView_errorsRepartition, piedataset, true, true,
+            false);
+        jfreechart.setLegend(null);
+        PiePlot3D pieplot3d = (PiePlot3D) jfreechart.getPlot();
+        final double angle = 290D;
+        pieplot3d.setStartAngle(angle);
+        pieplot3d.setDirection(Rotation.CLOCKWISE);
+        final float foreground = 0.5F;
+        pieplot3d.setForegroundAlpha(foreground);
+        pieplot3d.setNoDataMessage(Messages.GraphStatsView_noDataToDisplay);
+        return jfreechart;
+    }
+
+    public void statsUpdated(final AnalyserEvent analyserEvent)
+    {
+        mStatsToDisplay = analyserEvent.getStats();
+        mSelectionToDisplay = analyserEvent.getSelection();
+        // nécessaire car il va y avoir un travail de fait sur l'UI
+        Display.getDefault().asyncExec(new Runnable()
+        {
+            /**
+             * Cf. méthode surchargée.
+             * 
+             * @see java.lang.Runnable#run()
+             */
+            public void run()
+            {
+                if (!mEmbeddedComposite.isDisposed()
+                    && mEmbeddedComposite.isVisible())
+                {
+                    // on met à jour le dataset, qui notifie le graph, qui se
+                    // met à jour
+                    if (mStatsToDisplay == null)
+                    {
+                        mPieDataset.removeValues();
+                    }
+                    else
+                    {
+                        mPieDataset
+                            .setMarkerStatCollection(mStatsToDisplay
+                                .getMarkerStats(), mStatsToDisplay
+                                .getMarkerCount());
+                    }
+                    // on met à jour le titre
+                    ArrayList titlesList = computeTitleList(analyserEvent);
+                    mGraph.setSubtitles(titlesList);
+                }
+            }
+        });
+    }
+
+    /**
+     * Rend la liste des sous-titres à afficher.
+     * 
+     * @param event
+     *            l'évènement de changement de stats
+     * @return la liste de String
+     */
+    private ArrayList computeTitleList(AnalyserEvent event)
+    {
+        // liste des sous-titres, dont le 1er est le nombre d'erreurs
+        ArrayList titles = new ArrayList();
+        StringBuffer title = new StringBuffer(StatsViewUtils
+            .computeMainTitle(event));
+        if (!mShowJavadocErrorsAction.isChecked())
+        {
+            title.append(" "); //$NON-NLS-1$
+            title.append(Messages.GraphStatsView_javadocNotDisplayed);
+        }
+        titles.add(new TextTitle(title.toString()));
+
+        // vérification pour la sélection
+        Collection namesList = StatsViewUtils
+            .computeAnalysedResourceNames(event);
+        if (!namesList.isEmpty())
+        {
+            StringBuffer namesBuffer = new StringBuffer();
+            for (Iterator iter = namesList.iterator(); iter.hasNext();)
+            {
+
+                namesBuffer.append(iter.next());
+                if (iter.hasNext())
+                {
+                    namesBuffer.append(", "); //$NON-NLS-1$
+                }
+            }
+            titles.add(new TextTitle(namesBuffer.toString()));
+        }
+
+        return titles;
+    }
+
+    /**
+     * Cf. méthode surchargée.
+     * 
+     * @see org.eclipse.ui.IWorkbenchPart#setFocus()
+     */
+    public void setFocus()
+    {
+
+    }
+
+    /**
      * Ajoute les actions à la toolbar.
      */
     private void contributeToActionBars()
@@ -399,4 +428,5 @@ public class GraphStatsView extends ViewPart implements IAnalyserListener
         bars.getMenuManager().add(mShowJavadocErrorsAction);
         bars.getMenuManager().add(mShowAllCategoriesAction);
     }
+
 }

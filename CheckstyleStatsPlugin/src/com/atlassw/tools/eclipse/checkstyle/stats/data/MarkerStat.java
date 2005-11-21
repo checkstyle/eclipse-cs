@@ -69,7 +69,7 @@ public class MarkerStat implements Comparable
     }
 
     /**
-     * Cf. méthode surchargée.
+     * {@inheritDoc}
      * 
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */

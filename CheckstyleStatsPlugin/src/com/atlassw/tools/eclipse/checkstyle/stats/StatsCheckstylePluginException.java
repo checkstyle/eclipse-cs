@@ -36,7 +36,7 @@ public class StatsCheckstylePluginException extends CheckstylePluginException
      * @param msg
      *            the message of the exception
      */
-    public StatsCheckstylePluginException(String msg)
+    public StatsCheckstylePluginException(final String msg)
     {
         super(msg);
     }

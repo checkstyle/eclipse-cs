@@ -214,9 +214,9 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog
         // init the controls
         updateUIFromFilter();
 
-        this.setTitle("Checkstyle Statistics filter");
+        this.setTitle("Checkstyle markers filter");
         this
-            .setMessage("Use this filter settings to specify on which resources/severities\nthe statistics will be compiled. ");
+            .setMessage("Use this filter settings to specify on which resources/severities\nthe the markers will be shown. ");
 
         return composite;
     }

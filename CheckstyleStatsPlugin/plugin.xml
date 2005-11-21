@@ -21,13 +21,6 @@
             id="com.atlassw.tools.eclipse.checkstyle.stats.views.MarkerStatsView">
       </view>
       <view
-            name="%DetailStatsView.name"
-            icon="icons/detailMarkers.gif"
-            category="com.atlassw.tools.eclipse.checkstyle.category"
-            class="com.atlassw.tools.eclipse.checkstyle.stats.views.DetailStatsView"
-            id="com.atlassw.tools.eclipse.checkstyle.stats.views.DetailStatsView">
-      </view>
-      <view
             name="%GraphStatsView.name"
             icon="icons/graphView.gif"
             category="com.atlassw.tools.eclipse.checkstyle.category"
