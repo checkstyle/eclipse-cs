@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src/"/>
-	<classpathentry exported="true" kind="lib" path="lib/jcommon-0.9.6.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jfreechart-0.9.21.jar"/>
+	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry sourcepath="D:/_libs/jfreechart-1.0.0-rc1" kind="lib" path="lib/jcommon-1.0.0-rc1.jar"/>
+	<classpathentry sourcepath="D:/_libs/jfreechart-1.0.0-rc1" kind="lib" path="lib/jfreechart-1.0.0-rc1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

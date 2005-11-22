@@ -19,19 +19,18 @@
 //============================================================================
 package com.atlassw.tools.eclipse.checkstyle.stats.views;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
 import org.jfree.data.DefaultKeyedValues;
-import org.jfree.data.KeyedValues;
 import org.jfree.data.general.AbstractDataset;
 import org.jfree.data.general.PieDataset;
 
 import com.atlassw.tools.eclipse.checkstyle.stats.Messages;
 import com.atlassw.tools.eclipse.checkstyle.stats.data.MarkerStat;
+import com.atlassw.tools.eclipse.checkstyle.stats.data.Stats;
 
 /**
  * Implémentation d'un PieDataset pour fournir les données à afficher au graph.
@@ -42,8 +41,7 @@ import com.atlassw.tools.eclipse.checkstyle.stats.data.MarkerStat;
  * @see org.jfree.data.general.DefaultPieDataset
  * @author Fabrice BELLINGARD
  */
-public class GraphPieDataset extends AbstractDataset implements PieDataset,
-    Cloneable, Serializable
+public class GraphPieDataset extends AbstractDataset implements PieDataset
 {
 
     // --------------- RAJOUT : début ---------------
@@ -69,33 +67,21 @@ public class GraphPieDataset extends AbstractDataset implements PieDataset,
     private boolean mShowAllCategories;
 
     /**
-     * La collection à afficher.
-     */
-    private Collection mMarkerStatCollection;
-
-    /**
-     * Le nombre de marqueurs analysés.
-     */
-    private int mMarkerCount;
-
-    /**
      * Remplit le Dataset avec les valeurs de la collection de MarkerStat.
      * 
-     * @param markerStatCollection :
-     *            la collection d'objet MarkerStat
-     * @param markerCount :
-     *            le nombre de marqueurs analysés
+     * @param stats
+     *            the Checkstyle violation stats
      */
-    public void setMarkerStatCollection(Collection markerStatCollection,
-        int markerCount)
+    public void setStats(Stats stats)
     {
-        this.mMarkerStatCollection = markerStatCollection;
-        this.mMarkerCount = markerCount;
+
+        Collection markerStatCollection = stats.getMarkerStats();
         mData = new DefaultKeyedValues();
+
         // markers que l'on comptera dans une catégorie "Autres" car ils
         // représentent trop peu de %
         int leftCount = 0;
-        float mCount = new Float(markerCount).floatValue();
+        float mCount = new Float(stats.getMarkerCount()).floatValue();
         // et on remplit
         for (Iterator iter = markerStatCollection.iterator(); iter.hasNext();)
         {
@@ -184,23 +170,6 @@ public class GraphPieDataset extends AbstractDataset implements PieDataset,
 
         this.mData = new DefaultKeyedValues();
 
-    }
-
-    /**
-     * Creates a new dataset that uses the data from a {@link KeyedValues}
-     * instance.
-     * 
-     * @param data
-     *            the data.
-     */
-    public GraphPieDataset(final KeyedValues data)
-    {
-
-        this.mData = new DefaultKeyedValues();
-        for (int i = 0; i < data.getItemCount(); i++)
-        {
-            this.mData.addValue(data.getKey(i), data.getValue(i));
-        }
     }
 
     /**
@@ -327,96 +296,6 @@ public class GraphPieDataset extends AbstractDataset implements PieDataset,
      */
     public void setValue(final Comparable key, final double value)
     {
-
         setValue(key, new Double(value));
-
     }
-
-    /**
-     * Tests if this object is equal to another.
-     * 
-     * @param o
-     *            the other object.
-     * 
-     * @return A boolean.
-     */
-    public boolean equals(final Object o)
-    {
-
-        if (o == null)
-        {
-            return false;
-        }
-        if (o == this)
-        {
-            return true;
-        }
-
-        if (!(o instanceof PieDataset))
-        {
-            return false;
-        }
-        final PieDataset pd = (PieDataset) o;
-        final int count = getItemCount();
-        if (pd.getItemCount() != count)
-        {
-            return false;
-        }
-
-        for (int i = 0; i < count; i++)
-        {
-            final Comparable k1 = getKey(i);
-            final Comparable k2 = pd.getKey(i);
-            if (!k1.equals(k2))
-            {
-                return false;
-            }
-
-            final Number v1 = getValue(i);
-            final Number v2 = pd.getValue(i);
-            if (v1 == null)
-            {
-                if (v2 != null)
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                if (!v1.equals(v2))
-                {
-                    return false;
-                }
-            }
-        }
-        return true;
-
-    }
-
-    /**
-     * Returns a hash code.
-     * 
-     * @return a hash code.
-     */
-    public int hashCode()
-    {
-        return this.mData.hashCode();
-    }
-
-    /**
-     * Returns a clone.
-     * 
-     * @return A clone.
-     * 
-     * @throws CloneNotSupportedException
-     *             This class will not throw this exception, but subclasses (if
-     *             any) might.
-     */
-    public Object clone() throws CloneNotSupportedException
-    {
-        final GraphPieDataset clone = (GraphPieDataset) super.clone();
-        clone.mData = (DefaultKeyedValues) this.mData.clone();
-        return clone;
-    }
-
 }

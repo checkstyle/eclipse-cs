@@ -51,6 +51,8 @@ public class Stats
      *            la liste des MarkerStats
      * @param markerCount
      *            le nombre de marqueurs scannés
+     * @param markerCountWhole
+     *            the number of all checkstyle markers in the workspace
      */
     public Stats(Collection markerStats, int markerCount, int markerCountWhole)
     {

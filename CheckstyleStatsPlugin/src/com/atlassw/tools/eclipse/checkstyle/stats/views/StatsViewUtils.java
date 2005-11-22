@@ -19,10 +19,6 @@
 //============================================================================
 package com.atlassw.tools.eclipse.checkstyle.stats.views;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jdt.core.ICompilationUnit;
@@ -30,11 +26,9 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.osgi.util.NLS;
 
 import com.atlassw.tools.eclipse.checkstyle.stats.Messages;
-import com.atlassw.tools.eclipse.checkstyle.stats.analyser.AnalyserEvent;
 
 /**
  * Utility class for Stats views.
@@ -51,50 +45,50 @@ public final class StatsViewUtils
     {
     }
 
-    /**
-     * Returns the main title for an analyser event.
-     * 
-     * @param event
-     *            the analyser event
-     * @return the title
-     */
-    public static String computeMainTitle(AnalyserEvent event)
-    {
-        return NLS.bind(Messages.StatsViewUtils_checkstyleErrorsCount,
-            new Integer(event.getStats().getMarkerCount()));
-    }
-
-    /**
-     * Returns a list of displayable names of the resources that were analysed.
-     * 
-     * @param event
-     *            the analyser event
-     * @return a String Collection of the resource names
-     */
-    public static Collection computeAnalysedResourceNames(AnalyserEvent event)
-    {
-        IStructuredSelection selection = event.getSelection();
-        ArrayList resourceNames = new ArrayList();
-
-        if (selection != null)
-        {
-            // on va regarder quels éléments ont été sélectionnés
-            for (Iterator it = selection.iterator(); it.hasNext();)
-            {
-                Object element = it.next();
-                if (element instanceof IAdaptable)
-                {
-                    String name = computeResourceName((IAdaptable) element);
-                    if (name != null)
-                    {
-                        resourceNames.add(name);
-                    }
-                }
-            }
-        }
-
-        return resourceNames;
-    }
+//    /**
+//     * Returns the main title for an analyser event.
+//     * 
+//     * @param event
+//     *            the analyser event
+//     * @return the title
+//     */
+//    public static String computeMainTitle(AnalyserEvent event)
+//    {
+//        return NLS.bind(Messages.StatsViewUtils_checkstyleErrorsCount,
+//            new Integer(event.getStats().getMarkerCount()));
+//    }
+//
+//    /**
+//     * Returns a list of displayable names of the resources that were analysed.
+//     * 
+//     * @param event
+//     *            the analyser event
+//     * @return a String Collection of the resource names
+//     */
+//    public static Collection computeAnalysedResourceNames(AnalyserEvent event)
+//    {
+//        IStructuredSelection selection = event.getSelection();
+//        ArrayList resourceNames = new ArrayList();
+//
+//        if (selection != null)
+//        {
+//            // on va regarder quels éléments ont été sélectionnés
+//            for (Iterator it = selection.iterator(); it.hasNext();)
+//            {
+//                Object element = it.next();
+//                if (element instanceof IAdaptable)
+//                {
+//                    String name = computeResourceName((IAdaptable) element);
+//                    if (name != null)
+//                    {
+//                        resourceNames.add(name);
+//                    }
+//                }
+//            }
+//        }
+//
+//        return resourceNames;
+//    }
 
     /**
      * Returns a displayable name for the adaptable object.

@@ -3,15 +3,6 @@
 <plugin>
 
    <extension
-         point="org.eclipse.ui.preferencePages">
-      <page
-            class="com.atlassw.tools.eclipse.checkstyle.stats.preferences.PreferencePage"
-            category="com.atlassw.tools.eclipse.checkstyle.preferences.CheckstylePreferencePage"
-            name="%StatsPreferencePage.name"
-            id="com.atlassw.tools.eclipse.checkstyle.stats.preferences.PreferencePage">
-      </page>
-   </extension>
-   <extension
          point="org.eclipse.ui.views">
       <view
             name="%MarkerStatsView.name"

@@ -21,16 +21,25 @@ package com.atlassw.tools.eclipse.checkstyle.stats;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 
-import com.atlassw.tools.eclipse.checkstyle.stats.preferences.PreferencePage;
-
 /**
- * 
- * Initialise les préférences du plugin.
+ * The plugins preferences initializer.
  * 
  * @author Fabrice BELLINGARD
  */
 public class PrefsInitializer extends AbstractPreferenceInitializer
 {
+
+    /**
+     * Permet de dire si on veut afficher dans le graphe les erreurs Checkstyle
+     * liées au Javadoc.
+     */
+    public static final String PROPS_SHOW_JAVADOC_ERRORS = "show_javadoc_errors"; //$NON-NLS-1$
+
+    /**
+     * Permet de dire si on veut afficher dans le graphe toutes les catégories
+     * ou bien regrouper les plus faibles dans une catégorie "Autres".
+     */
+    public static final String PROPS_SHOW_ALL_CATEGORIES = "show_all_categories"; //$NON-NLS-1$
 
     /**
      * Cf. méthode surchargée.
@@ -40,9 +49,9 @@ public class PrefsInitializer extends AbstractPreferenceInitializer
     public void initializeDefaultPreferences()
     {
         StatsCheckstylePlugin.getDefault().getPluginPreferences().setDefault(
-            PreferencePage.PROPS_SHOW_JAVADOC_ERRORS, true);
+            PROPS_SHOW_JAVADOC_ERRORS, true);
         StatsCheckstylePlugin.getDefault().getPluginPreferences().setDefault(
-            PreferencePage.PROPS_SHOW_ALL_CATEGORIES, false);
+            PROPS_SHOW_ALL_CATEGORIES, false);
     }
 
 }

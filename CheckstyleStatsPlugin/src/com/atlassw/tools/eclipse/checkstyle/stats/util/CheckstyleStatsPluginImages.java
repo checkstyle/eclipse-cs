@@ -34,11 +34,17 @@ import com.atlassw.tools.eclipse.checkstyle.stats.StatsCheckstylePlugin;
  * 
  * @author Lars Ködderitzsch
  */
-public class CheckstyleStatsPluginImages
+public final class CheckstyleStatsPluginImages
 {
 
     /** Image descriptor for the filter icon. */
     public static final ImageDescriptor FILTER_ICON;
+
+    /** Image descriptor for the Checkstyle violation view icon. */
+    public static final ImageDescriptor LIST_VIEW_ICON;
+
+    /** Image descriptor for the graph view icon. */
+    public static final ImageDescriptor GRAPH_VIEW_ICON;
 
     /** Image cache. */
     private static final Map CACHED_IMAGES = new HashMap();
@@ -47,6 +53,16 @@ public class CheckstyleStatsPluginImages
     {
         FILTER_ICON = CheckstylePlugin.imageDescriptorFromPlugin(
             StatsCheckstylePlugin.PLUGIN_ID, "icons/filter_16.gif"); //$NON-NLS-1$
+        LIST_VIEW_ICON = CheckstylePlugin.imageDescriptorFromPlugin(
+            StatsCheckstylePlugin.PLUGIN_ID, "icons/listingView.gif"); //$NON-NLS-1$
+        GRAPH_VIEW_ICON = CheckstylePlugin.imageDescriptorFromPlugin(
+            StatsCheckstylePlugin.PLUGIN_ID, "icons/graphView.gif"); //$NON-NLS-1$
+    }
+
+    /** Hidden default constructor. */
+    private CheckstyleStatsPluginImages()
+    {
+        // NOOP
     }
 
     /**

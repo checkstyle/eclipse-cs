@@ -38,7 +38,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
-import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.dialogs.IDialogSettings;
@@ -69,8 +68,6 @@ import com.atlassw.tools.eclipse.checkstyle.stats.views.internal.CheckstyleMarke
  */
 public abstract class AbstractStatsView extends ViewPart
 {
-    // TODO abstract further to allow non tableview based subclasses (f.i.
-    // GraphStatsView)
 
     //
     // attributes
@@ -146,27 +143,19 @@ public abstract class AbstractStatsView extends ViewPart
     }
 
     /**
-     * Initializes the action bars of this view.
-     * 
-     * @param actionBars
-     *            the action bars
+     * {@inheritDoc}
      */
-    protected void initActionBars(IActionBars actionBars)
+    public void setFocus()
     {
-        initMenu(actionBars.getMenuManager());
-        initToolBar(actionBars.getToolBarManager());
+        // initialize the view data
+        refresh();
     }
 
-    protected abstract void initMenu(IMenuManager menu);
-
-    protected abstract void initToolBar(IToolBarManager tbm);
-
     /**
-     * @see org.eclipse.ui.IWorkbenchPart#dispose()
+     * {@inheritDoc}
      */
     public void dispose()
     {
-
         // IMPORTANT: Deregister listeners
         getSite().getPage().removeSelectionListener(mFocusListener);
         ResourcesPlugin.getWorkspace().removeResourceChangeListener(
@@ -194,6 +183,22 @@ public abstract class AbstractStatsView extends ViewPart
             refresh();
         }
     }
+
+    /**
+     * Initializes the action bars of this view.
+     * 
+     * @param actionBars
+     *            the action bars
+     */
+    protected void initActionBars(IActionBars actionBars)
+    {
+        initMenu(actionBars.getMenuManager());
+        initToolBar(actionBars.getToolBarManager());
+    }
+
+    protected abstract void initMenu(IMenuManager menu);
+
+    protected abstract void initToolBar(IToolBarManager tbm);
 
     /**
      * Returns the filter of this view.
@@ -298,11 +303,7 @@ public abstract class AbstractStatsView extends ViewPart
     protected abstract void handleStatsRebuilt();
 
     /**
-     * Create the wiewer actions. hookContextMenu and hookDoubleClickAction can
-     * be called inside this method.
-     * 
-     * @see AbstractStatsView#hookContextMenu(Collection)
-     * @see AbstractStatsView#hookDoubleClickAction(IAction)
+     * Create the viewer actions.
      */
     protected abstract void makeActions();
 

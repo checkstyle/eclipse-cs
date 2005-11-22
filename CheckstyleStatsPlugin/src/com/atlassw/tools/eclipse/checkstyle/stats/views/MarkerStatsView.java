@@ -35,7 +35,6 @@ import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.DoubleClickEvent;
-import org.eclipse.jface.viewers.IColorProvider;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -51,12 +50,10 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Table;
@@ -71,6 +68,7 @@ import com.atlassw.tools.eclipse.checkstyle.stats.Messages;
 import com.atlassw.tools.eclipse.checkstyle.stats.StatsCheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.stats.data.MarkerStat;
 import com.atlassw.tools.eclipse.checkstyle.stats.data.Stats;
+import com.atlassw.tools.eclipse.checkstyle.stats.util.CheckstyleStatsPluginImages;
 import com.atlassw.tools.eclipse.checkstyle.stats.views.internal.FiltersAction;
 
 /**
@@ -129,41 +127,34 @@ public class MarkerStatsView extends AbstractStatsView
      */
     public void createPartControl(Composite parent)
     {
-        try
-        {
-            super.createPartControl(parent);
 
-            // set up the main layout
-            GridLayout layout = new GridLayout(1, false);
-            layout.marginWidth = 0;
-            layout.marginHeight = 0;
-            parent.setLayout(layout);
+        super.createPartControl(parent);
 
-            // the label
-            mDescLabel = new Label(parent, SWT.NONE);
-            GridData gridData = new GridData();
-            gridData.horizontalAlignment = GridData.FILL;
-            gridData.grabExcessHorizontalSpace = true;
-            mDescLabel.setLayoutData(gridData);
+        // set up the main layout
+        GridLayout layout = new GridLayout(1, false);
+        layout.marginWidth = 0;
+        layout.marginHeight = 0;
+        parent.setLayout(layout);
 
-            // the main section
-            mMainSection = new Composite(parent, SWT.NONE);
-            layout = new GridLayout(1, false);
-            layout.marginWidth = 0;
-            layout.marginHeight = 0;
-            mMainSection.setLayout(layout);
-            mMainSection.setLayoutData(new GridData(GridData.FILL_BOTH));
+        // the label
+        mDescLabel = new Label(parent, SWT.NONE);
+        GridData gridData = new GridData();
+        gridData.horizontalAlignment = GridData.FILL;
+        gridData.grabExcessHorizontalSpace = true;
+        mDescLabel.setLayoutData(gridData);
 
-            // initially create the master viewer
-            mCurrentViewer = createMasterView(mMainSection);
+        // the main section
+        mMainSection = new Composite(parent, SWT.NONE);
+        layout = new GridLayout(1, false);
+        layout.marginWidth = 0;
+        layout.marginHeight = 0;
+        mMainSection.setLayout(layout);
+        mMainSection.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-            refresh();
-            updateActions();
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+        // initially create the master viewer
+        mCurrentViewer = createMasterView(mMainSection);
+
+        updateActions();
     }
 
     /**
@@ -171,6 +162,7 @@ public class MarkerStatsView extends AbstractStatsView
      */
     public void setFocus()
     {
+        super.setFocus();
         mCurrentViewer.getControl().setFocus();
     }
 
@@ -306,8 +298,6 @@ public class MarkerStatsView extends AbstractStatsView
     protected void initMenu(IMenuManager menu)
     {
         menu.add(new FiltersAction(this));
-        menu.add(new Separator());
-        menu.add(mChartAction);
     }
 
     /**
@@ -315,11 +305,10 @@ public class MarkerStatsView extends AbstractStatsView
      */
     protected void initToolBar(IToolBarManager tbm)
     {
-        tbm.add(mDrillBackAction);
-        tbm.add(mDrillDownAction);
-        tbm.add(new Separator());
         tbm.add(mChartAction);
         tbm.add(new Separator());
+        tbm.add(mDrillBackAction);
+        tbm.add(mDrillDownAction);
         tbm.add(new FiltersAction(this));
     }
 
@@ -363,14 +352,8 @@ public class MarkerStatsView extends AbstractStatsView
             {
                 try
                 {
-                    GraphStatsView view = (GraphStatsView) getSite()
-                        .getWorkbenchWindow().getActivePage().showView(
-                            GraphStatsView.VIEW_ID);
-                    // if (view != null)
-                    // {
-                    // view.statsUpdated(new AnalyserEvent(mStatsToDisplay,
-                    // mSelectionToDisplay));
-                    // }
+                    getSite().getWorkbenchWindow().getActivePage().showView(
+                        GraphStatsView.VIEW_ID);
                 }
                 catch (PartInitException e)
                 {
@@ -384,10 +367,8 @@ public class MarkerStatsView extends AbstractStatsView
         mChartAction.setText(Messages.MarkerStatsView_displayChart);
         mChartAction
             .setToolTipText(Messages.MarkerStatsView_displayChartTooltip);
-        mChartAction.setImageDescriptor(PlatformUI.getWorkbench()
-            .getSharedImages().getImageDescriptor(
-                ISharedImages.IMG_OBJS_ERROR_TSK));
-        // TODO set another image
+        mChartAction
+            .setImageDescriptor(CheckstyleStatsPluginImages.GRAPH_VIEW_ICON);
 
         // action used to display the detail of a specific error type
         mDrillDownAction = new Action()

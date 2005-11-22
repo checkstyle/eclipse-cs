@@ -124,12 +124,14 @@
 <module name="MethodLength">
 <property name="tokens" value="METHOD_DEF, CTOR_DEF"/>
 </module>
+<!--
 <module name="usage.UnusedLocalVariable">
 </module>
 <module name="usage.UnusedPrivateField">
 </module>
 <module name="usage.UnusedPrivateMethod">
 </module>
+-->
 <module name="JavadocType">
 </module>
 </module>
