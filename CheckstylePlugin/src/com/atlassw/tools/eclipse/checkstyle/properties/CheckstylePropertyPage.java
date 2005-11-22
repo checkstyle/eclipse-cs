@@ -196,6 +196,7 @@ public class CheckstylePropertyPage extends PropertyPage
             fd.top = new FormAttachment(configArea, 3, SWT.BOTTOM);
             fd.right = new FormAttachment(100);
             fd.bottom = new FormAttachment(100);
+            fd.width = 500;
             filterArea.setLayoutData(fd);
 
         }
