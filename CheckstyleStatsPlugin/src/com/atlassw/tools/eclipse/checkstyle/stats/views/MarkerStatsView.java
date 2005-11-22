@@ -35,6 +35,7 @@ import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IColorProvider;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -50,10 +51,12 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Table;
@@ -155,7 +158,7 @@ public class MarkerStatsView extends AbstractStatsView
             mCurrentViewer = createMasterView(mMainSection);
 
             refresh();
-            manageActionState();
+            updateActions();
         }
         catch (Exception e)
         {
@@ -212,7 +215,7 @@ public class MarkerStatsView extends AbstractStatsView
             {
                 public void selectionChanged(SelectionChangedEvent event)
                 {
-                    manageActionState();
+                    updateActions();
                 }
             });
 
@@ -279,7 +282,7 @@ public class MarkerStatsView extends AbstractStatsView
             {
                 public void selectionChanged(SelectionChangedEvent event)
                 {
-                    manageActionState();
+                    updateActions();
                 }
             });
 
@@ -328,6 +331,9 @@ public class MarkerStatsView extends AbstractStatsView
         return VIEW_ID;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected void handleStatsRebuilt()
     {
 
@@ -335,29 +341,11 @@ public class MarkerStatsView extends AbstractStatsView
         {
 
             mCurrentViewer.setInput(getStats());
-
-            // and updates the view description label
-            StringBuffer labelBuffer = new StringBuffer(" "); //$NON-NLS-1$
-            labelBuffer.append(NLS.bind(
-                Messages.StatsViewUtils_checkstyleErrorsCount, new Integer(
-                    getStats().getMarkerCount())));
-
-            labelBuffer.append(" - "); //$NON-NLS-1$
-
-            // Collection namesList = StatsViewUtils
-            // .computeAnalysedResourceNames(analyserEvent);
-            // for (Iterator iter = namesList.iterator();
-            // iter.hasNext();)
-            // {
-            // labelBuffer.append(iter.next());
-            // if (iter.hasNext())
-            // {
-            // labelBuffer.append(", "); //$NON-NLS-1$
-            // }
-            // }
-
-            mDescLabel.setText(labelBuffer.toString());
             mCurrentViewer.refresh();
+
+            // update the actions and the label
+            updateActions();
+            updateLabel();
         }
     }
 
@@ -426,7 +414,8 @@ public class MarkerStatsView extends AbstractStatsView
                     mMainSection.redraw();
                     mMainSection.update();
 
-                    manageActionState();
+                    updateActions();
+                    updateLabel();
                 }
             }
         };
@@ -458,7 +447,8 @@ public class MarkerStatsView extends AbstractStatsView
                 mMainSection.redraw();
                 mMainSection.update();
 
-                manageActionState();
+                updateActions();
+                updateLabel();
             }
         };
         mDrillBackAction.setText("Back to Overview");
@@ -502,13 +492,45 @@ public class MarkerStatsView extends AbstractStatsView
     /**
      * Helper method to manage the state of the view's actions.
      */
-    private void manageActionState()
+    private void updateActions()
     {
         mDrillBackAction.setEnabled(mIsDrilledDown);
         mDrillDownAction.setEnabled(!mIsDrilledDown
             && !mCurrentViewer.getSelection().isEmpty());
         mShowErrorAction.setEnabled(mIsDrilledDown
             && !mCurrentViewer.getSelection().isEmpty());
+    }
+
+    /**
+     * Helper method to update the label of the view.
+     */
+    private void updateLabel()
+    {
+        if (!mIsDrilledDown)
+        {
+
+            Stats stats = getStats();
+
+            String text = NLS
+                .bind(
+                    "Overview of Checkstyle violations - {0} markers in {1} categories (Filter matched {0} of {2} items)",
+                    new Object[] { new Integer(stats.getMarkerCount()),
+                            new Integer(stats.getMarkerStats().size()),
+                            new Integer(stats.getMarkerCountAll()) });
+            mDescLabel.setText(text);
+        }
+        else
+        {
+
+            String text = NLS
+                .bind(
+                    "Details of Checkstyle violation \"{0}\"  - {1} occurances",
+                    new Object[] {
+                            mCurrentDetailCategory,
+                            new Integer(mCurrentViewer.getTable()
+                                .getItemCount()) });
+            mDescLabel.setText(text);
+        }
     }
 
     /**
@@ -565,51 +587,6 @@ public class MarkerStatsView extends AbstractStatsView
             }
         });
     }
-
-    // /**
-    // * See method below.
-    // *
-    // * @see
-    // com.atlassw.tools.eclipse.checkstyle.stats.analyser.IAnalyserListener#statsUpdated(com.atlassw.tools.eclipse.checkstyle.stats.analyser.AnalyserEvent)
-    // */
-    // public void statsUpdated(final AnalyserEvent analyserEvent)
-    // {
-    // mStatsToDisplay = analyserEvent.getStats();
-    // mSelectionToDisplay = analyserEvent.getSelection();
-    // Display.getDefault().asyncExec(new Runnable()
-    // {
-    // /**
-    // * Cf. method below.
-    // *
-    // * @see java.lang.Runnable#run()
-    // */
-    // public void run()
-    // {
-    // // update the UI
-    // if (getViewer().getContentProvider() != null)
-    // {
-    // // sets the viewer input
-    // getViewer().setInput(mStatsToDisplay.getMarkerStats());
-    // // and updates the view description label
-    // StringBuffer labelBuffer = new StringBuffer(" "); //$NON-NLS-1$
-    // labelBuffer.append(StatsViewUtils
-    // .computeMainTitle(analyserEvent));
-    // labelBuffer.append(" - "); //$NON-NLS-1$
-    // Collection namesList = StatsViewUtils
-    // .computeAnalysedResourceNames(analyserEvent);
-    // for (Iterator iter = namesList.iterator(); iter.hasNext();)
-    // {
-    // labelBuffer.append(iter.next());
-    // if (iter.hasNext())
-    // {
-    // labelBuffer.append(", "); //$NON-NLS-1$
-    // }
-    // }
-    // getDescLabel().setText(labelBuffer.toString());
-    // }
-    // }
-    // });
-    // }
 
     /**
      * Content provider for the master table viewer.
@@ -748,6 +725,7 @@ public class MarkerStatsView extends AbstractStatsView
         {
             return null;
         }
+
     }
 
     /**
@@ -823,8 +801,6 @@ public class MarkerStatsView extends AbstractStatsView
 
         private ViewerSorter mReverseSorter;
 
-        private ViewerSorter mCurrentSorter;
-
         /**
          * Constructor.
          * 
@@ -841,15 +817,16 @@ public class MarkerStatsView extends AbstractStatsView
 
         public void widgetSelected(SelectionEvent e)
         {
-            if (mCurrentSorter == mReverseSorter)
+            ViewerSorter currentSorter = mViewer.getSorter();
+
+            if (currentSorter == mReverseSorter)
             {
-                mCurrentSorter = mSorter;
+                mViewer.setSorter(mSorter);
             }
             else
             {
-                mCurrentSorter = mReverseSorter;
+                mViewer.setSorter(mReverseSorter);
             }
-            mViewer.setSorter(mCurrentSorter);
         }
     }
 

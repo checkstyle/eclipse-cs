@@ -8,6 +8,8 @@ import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -72,6 +74,11 @@ public class CreateStatsJob extends Job
     {
         try
         {
+
+            int wholeAmountOfMarkers = ResourcesPlugin.getWorkspace().getRoot()
+                .findMarkers(CheckstyleMarker.MARKER_ID, true,
+                    IResource.DEPTH_INFINITE).length;
+
             IMarker[] markers = mFilter.findMarkers(monitor);
 
             Map markerStats = new HashMap();
@@ -118,7 +125,8 @@ public class CreateStatsJob extends Job
                 }
             }
 
-            mStats = new Stats(markerStats.values(), markers.length);
+            mStats = new Stats(markerStats.values(), markers.length,
+                wholeAmountOfMarkers);
         }
         catch (CoreException e)
         {
@@ -137,54 +145,6 @@ public class CreateStatsJob extends Job
     public Stats getStats()
     {
         return mStats;
-    }
-
-    public static Stats createStats(IMarker[] markers)
-    {
-
-        Map markerStats = new HashMap();
-
-        for (int i = 0, size = markers.length; i < size; i++)
-        {
-
-            String message = null;
-            try
-            {
-                message = getUnlocalizedMessage(markers[i]);
-                message = cleanMessage(message);
-            }
-            catch (CoreException e)
-            {
-                StatsCheckstylePlugin.log(IStatus.WARNING,
-                    "error analyzing markers", e);
-            }
-
-            // on vérifie que le message n'est pas null ou vide
-            if (message == null || message.equals("")) //$NON-NLS-1$
-            {
-                // cela ne devrait pas arriver, mais bon, on laisse faire
-                StatsCheckstylePlugin.log(IStatus.WARNING,
-                    Messages.MarkerAnalyser_markerMessageShouldntBeEmpty, null);
-                continue;
-            }
-
-            // puis on recherche
-            MarkerStat stat = (MarkerStat) markerStats.get(message);
-            if (stat == null)
-            {
-                // 1ere fois qu'on rencontre un marqueur de ce type
-                MarkerStat newMarkerStat = new MarkerStat(message);
-                newMarkerStat.addMarker(markers[i]);
-                markerStats.put(newMarkerStat.getIdentifiant(), newMarkerStat);
-            }
-            else
-            {
-                // on augmente juste le nombre d'occurence
-                stat.addMarker(markers[i]);
-            }
-        }
-
-        return new Stats(markerStats.values(), markers.length);
     }
 
     /**

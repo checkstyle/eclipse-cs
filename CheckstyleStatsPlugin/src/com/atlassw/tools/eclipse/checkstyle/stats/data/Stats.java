@@ -41,6 +41,9 @@ public class Stats
      */
     private int mMarkerCount;
 
+    /** The number of all markers in the workspace. */
+    private int mMarkerCountWhole;
+
     /**
      * Constructeur.
      * 
@@ -49,11 +52,12 @@ public class Stats
      * @param markerCount
      *            le nombre de marqueurs scannés
      */
-    public Stats(Collection markerStats, int markerCount)
+    public Stats(Collection markerStats, int markerCount, int markerCountWhole)
     {
         super();
         this.mMarkerStats = markerStats;
         this.mMarkerCount = markerCount;
+        this.mMarkerCountWhole = markerCountWhole;
     }
 
     /**
@@ -77,13 +81,12 @@ public class Stats
     }
 
     /**
-     * The markerCount to set.
+     * Returns the number of all Checkstyle markers in the workspace.
      * 
-     * @param markerCount
-     *            The markerCount to set.
+     * @return the number of all Checkstyle markers
      */
-    public void setMarkerCount(int markerCount)
+    public int getMarkerCountAll()
     {
-        this.mMarkerCount = markerCount;
+        return mMarkerCountWhole;
     }
 }

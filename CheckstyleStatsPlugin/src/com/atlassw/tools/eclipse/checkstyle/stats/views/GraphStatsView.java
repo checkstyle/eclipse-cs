@@ -191,17 +191,6 @@ public class GraphStatsView extends AbstractStatsView
         }
     }
 
-    protected IBaseLabelProvider createLabelProvider()
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    protected void createColumns(Table table)
-    {
-        // TODO Auto-generated method stub
-
-    }
 
     protected void makeActions()
     {

@@ -359,7 +359,7 @@ public final class MarkerAnalyser implements ISelectionListener
         // on fait le tri par défaut
         Collections.sort(markerStatsCollection);
 
-        return new Stats(markerStatsCollection, markerCount);
+        return new Stats(markerStatsCollection, markerCount, 0);
     }
 
     /**
