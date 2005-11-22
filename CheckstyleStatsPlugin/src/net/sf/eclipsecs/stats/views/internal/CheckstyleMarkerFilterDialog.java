@@ -17,7 +17,9 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 //============================================================================
-package com.atlassw.tools.eclipse.checkstyle.stats.views.internal;
+package net.sf.eclipsecs.stats.views.internal;
+
+import net.sf.eclipsecs.stats.Messages;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
@@ -133,30 +135,30 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog
         dialog.setLayout(new GridLayout(1, false));
 
         mChkFilterEnabled = new Button(dialog, SWT.CHECK);
-        mChkFilterEnabled.setText("Enabled");
+        mChkFilterEnabled.setText(Messages.CheckstyleMarkerFilterDialog_btnEnabled);
         mChkFilterEnabled.addSelectionListener(mController);
 
         Group onResourceGroup = new Group(dialog, SWT.NULL);
-        onResourceGroup.setText("Show statistics");
+        onResourceGroup.setText(Messages.CheckstyleMarkerFilterDialog_groupResourceSetting);
         onResourceGroup.setLayout(new GridLayout(3, false));
         onResourceGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         mFilterComposite = onResourceGroup;
 
         mRadioOnAnyResource = new Button(onResourceGroup, SWT.RADIO);
-        mRadioOnAnyResource.setText("On any resource");
+        mRadioOnAnyResource.setText(Messages.CheckstyleMarkerFilterDialog_btnOnAnyResource);
         GridData gd = new GridData();
         gd.horizontalSpan = 3;
         mRadioOnAnyResource.setLayoutData(gd);
 
         mRadioAnyResourceInSameProject = new Button(onResourceGroup, SWT.RADIO);
         mRadioAnyResourceInSameProject
-            .setText("On any resource in same project");
+            .setText(Messages.CheckstyleMarkerFilterDialog_btnOnAnyResourceInSameProject);
         gd = new GridData();
         gd.horizontalSpan = 3;
         mRadioAnyResourceInSameProject.setLayoutData(gd);
 
         mRadioSelectedResource = new Button(onResourceGroup, SWT.RADIO);
-        mRadioSelectedResource.setText("On selected resource only");
+        mRadioSelectedResource.setText(Messages.CheckstyleMarkerFilterDialog_btnOnSelectedResource);
         gd = new GridData();
         gd.horizontalSpan = 3;
         mRadioSelectedResource.setLayoutData(gd);
@@ -164,13 +166,13 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog
         mRadioSelectedResourceAndChildren = new Button(onResourceGroup,
             SWT.RADIO);
         mRadioSelectedResourceAndChildren
-            .setText("On selected resource and its children");
+            .setText(Messages.CheckstyleMarkerFilterDialog_btnOnSelectedResourceAndChilds);
         gd = new GridData();
         gd.horizontalSpan = 3;
         mRadioSelectedResourceAndChildren.setLayoutData(gd);
 
         mRadioSelectedWorkingSet = new Button(onResourceGroup, SWT.RADIO);
-        mRadioSelectedWorkingSet.setText("On working set:");
+        mRadioSelectedWorkingSet.setText(Messages.CheckstyleMarkerFilterDialog_btnOnWorkingSet);
         mRadioSelectedWorkingSet.setLayoutData(new GridData());
 
         mLblSelectedWorkingSet = new Label(onResourceGroup, SWT.NULL);
@@ -178,7 +180,7 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog
             GridData.FILL_HORIZONTAL | GridData.HORIZONTAL_ALIGN_BEGINNING));
 
         mBtnWorkingSet = new Button(onResourceGroup, SWT.PUSH);
-        mBtnWorkingSet.setText("Select...");
+        mBtnWorkingSet.setText(Messages.CheckstyleMarkerFilterDialog_btnSelect);
         gd = new GridData();
         gd.horizontalSpan = 1;
         gd.verticalSpan = 2;
@@ -194,29 +196,29 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog
         severityGroup.setLayoutData(gd);
 
         mChkSeverityEnabled = new Button(severityGroup, SWT.CHECK);
-        mChkSeverityEnabled.setText("On Checkstyle warnings with severity:");
+        mChkSeverityEnabled.setText(Messages.CheckstyleMarkerFilterDialog_btnMarkerSeverity);
         mChkSeverityEnabled
             .setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         mChkSeverityEnabled.addSelectionListener(mController);
 
         mChkSeverityError = new Button(severityGroup, SWT.CHECK);
-        mChkSeverityError.setText("Error");
+        mChkSeverityError.setText(Messages.CheckstyleMarkerFilterDialog_btnSeverityError);
         mChkSeverityError.setLayoutData(new GridData());
 
         mChkSeverityWarning = new Button(severityGroup, SWT.CHECK);
-        mChkSeverityWarning.setText("Warning");
+        mChkSeverityWarning.setText(Messages.CheckstyleMarkerFilterDialog_btnSeverityWarning);
         mChkSeverityWarning.setLayoutData(new GridData());
 
         mChkSeverityInfo = new Button(severityGroup, SWT.CHECK);
-        mChkSeverityInfo.setText("Info");
+        mChkSeverityInfo.setText(Messages.CheckstyleMarkerFilterDialog_btnSeverityInfo);
         mChkSeverityInfo.setLayoutData(new GridData());
 
         // init the controls
         updateUIFromFilter();
 
-        this.setTitle("Checkstyle markers filter");
+        this.setTitle(Messages.CheckstyleMarkerFilterDialog_title);
         this
-            .setMessage("Use this filter settings to specify on which resources/severities\nthe the markers will be shown. ");
+            .setMessage(Messages.CheckstyleMarkerFilterDialog_titleMessage);
 
         return composite;
     }
@@ -227,7 +229,7 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog
     protected void createButtonsForButtonBar(Composite parent)
     {
 
-        mBtnDefault = createButton(parent, IDialogConstants.BACK_ID, "Default",
+        mBtnDefault = createButton(parent, IDialogConstants.BACK_ID, Messages.CheckstyleMarkerFilterDialog_btnRestoreDefault,
             false);
         mBtnDefault.addSelectionListener(mController);
 
@@ -244,7 +246,7 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog
     protected void configureShell(Shell shell)
     {
         super.configureShell(shell);
-        shell.setText("Checkstyle Statistics Filter");
+        shell.setText(Messages.CheckstyleMarkerFilterDialog_btnShellTitle);
     }
 
     /**
@@ -349,7 +351,7 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog
 
         if (mSelectedWorkingSet == null)
         {
-            mLblSelectedWorkingSet.setText("<no woking set selected>");
+            mLblSelectedWorkingSet.setText(Messages.CheckstyleMarkerFilterDialog_msgNoWorkingSetSelected);
         }
         else
         {

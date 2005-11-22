@@ -17,13 +17,16 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 //============================================================================
-package com.atlassw.tools.eclipse.checkstyle.stats.views;
+package net.sf.eclipsecs.stats.views;
 
-import java.awt.Font;
 import java.awt.Frame;
-import java.awt.Insets;
 
-import javax.swing.JPanel;
+import net.sf.eclipsecs.stats.Messages;
+import net.sf.eclipsecs.stats.PrefsInitializer;
+import net.sf.eclipsecs.stats.StatsCheckstylePlugin;
+import net.sf.eclipsecs.stats.data.Stats;
+import net.sf.eclipsecs.stats.util.CheckstyleStatsPluginImages;
+import net.sf.eclipsecs.stats.views.internal.FiltersAction;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.action.Action;
@@ -47,16 +50,8 @@ import org.jfree.chart.ChartMouseListener;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PiePlot3D;
-import org.jfree.chart.title.TextTitle;
 import org.jfree.ui.RectangleInsets;
 import org.jfree.util.Rotation;
-
-import com.atlassw.tools.eclipse.checkstyle.stats.Messages;
-import com.atlassw.tools.eclipse.checkstyle.stats.PrefsInitializer;
-import com.atlassw.tools.eclipse.checkstyle.stats.StatsCheckstylePlugin;
-import com.atlassw.tools.eclipse.checkstyle.stats.data.Stats;
-import com.atlassw.tools.eclipse.checkstyle.stats.util.CheckstyleStatsPluginImages;
-import com.atlassw.tools.eclipse.checkstyle.stats.views.internal.FiltersAction;
 
 /**
  * View that shows a graph for the Checkstyle marker distribution.
@@ -73,7 +68,7 @@ public class GraphStatsView extends AbstractStatsView
     //
 
     /** The unique view id. */
-    public static final String VIEW_ID = "com.atlassw.tools.eclipse.checkstyle.stats.views.GraphStatsView"; //$NON-NLS-1$
+    public static final String VIEW_ID = GraphStatsView.class.getName();
 
     //
     // attributes
@@ -152,15 +147,18 @@ public class GraphStatsView extends AbstractStatsView
             public void chartMouseClicked(ChartMouseEvent event)
             {
                 // TODO Auto-generated method stub
-                
+
             }
 
             public void chartMouseMoved(ChartMouseEvent event)
             {
                 // TODO Auto-generated method stub
-                
+
             }
         });
+
+        // initialize the view data
+        refresh();
     }
 
     /**
@@ -344,12 +342,10 @@ public class GraphStatsView extends AbstractStatsView
 
         Stats stats = getStats();
 
-        String text = NLS
-            .bind(
-                "Graph of Checkstyle violations - {0} markers in {1} categories (Filter matched {0} of {2} items)",
-                new Object[] { new Integer(stats.getMarkerCount()),
-                        new Integer(stats.getMarkerStats().size()),
-                        new Integer(stats.getMarkerCountAll()) });
+        String text = NLS.bind(Messages.GraphStatsView_lblViewMessage,
+            new Object[] { new Integer(stats.getMarkerCount()),
+                    new Integer(stats.getMarkerStats().size()),
+                    new Integer(stats.getMarkerCountAll()) });
         mLabelDesc.setText(text);
     }
 

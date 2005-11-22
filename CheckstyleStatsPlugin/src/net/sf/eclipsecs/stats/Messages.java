@@ -18,7 +18,7 @@
 //
 //============================================================================
 
-package com.atlassw.tools.eclipse.checkstyle.stats;
+package net.sf.eclipsecs.stats;
 
 import org.eclipse.osgi.util.NLS;
 
@@ -31,7 +31,7 @@ public final class Messages extends NLS
 {
     // CHECKSTYLE:OFF
 
-    private static final String BUNDLE_NAME = "com.atlassw.tools.eclipse.checkstyle.stats.messages"; //$NON-NLS-1$
+    private static final String BUNDLE_NAME = "net.sf.eclipsecs.stats.messages"; //$NON-NLS-1$
 
     private Messages()
     {
@@ -43,27 +43,22 @@ public final class Messages extends NLS
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);
     }
 
-    public static String MarkerAnalyser_computingstats;
-
-    public static String MarkerAnalyser_errorWhileComputingStats;
-
-    public static String MarkerAnalyser_markerMessageShouldntBeEmpty;
 
     public static String PreferencePage_displayJavadocErrors;
 
     public static String PreferencePage_displayAllCategories;
 
-    public static String DetailStatsView_fileColumn;
+    public static String MarkerStatsView_fileColumn;
 
-    public static String DetailStatsView_lineColumn;
+    public static String MarkerStatsView_lineColumn;
 
-    public static String DetailStatsView_messageColumn;
+    public static String MarkerStatsView_messageColumn;
 
-    public static String DetailStatsView_unableToShowMarker;
+    public static String MarkerStatsView_unableToShowMarker;
 
-    public static String DetailStatsView_displayError;
+    public static String MarkerStatsView_displayError;
 
-    public static String DetailStatsView_displayErrorTooltip;
+    public static String MarkerStatsView_displayErrorTooltip;
 
     public static String DetailStatsView_descriptionLabel;
 
@@ -79,7 +74,7 @@ public final class Messages extends NLS
 
     public static String GraphPieDataset_otherCategories;
 
-    public static String DetailStatsViewLabelProvider_unknown;
+    public static String MarkerStatsView_unknownProblem;
 
     public static String MarkerStatsView_kindOfErrorColumn;
 
@@ -108,6 +103,65 @@ public final class Messages extends NLS
     public static String GraphStatsView_displayJavadocErrors;
 
     public static String GraphStatsView_displayAllCategories;
+
+    public static String CreateStatsJob_msgAnalyzeMarkers;
+
+    public static String CreateStatsJob_errorAnalyzingMarkers;
+    
+    public static String CreateStatsJob_markerMessageShouldntBeEmpty;
+
+    public static String AbstractStatsView_msgRefreshStats;
+
+    public static String FiltersAction_text;
+
+    public static String FiltersAction_tooltip;
+
+    public static String CheckstyleMarkerFilterDialog_btnEnabled;
+
+    public static String CheckstyleMarkerFilterDialog_groupResourceSetting;
+
+    public static String CheckstyleMarkerFilterDialog_btnOnAnyResource;
+
+    public static String CheckstyleMarkerFilterDialog_btnOnAnyResourceInSameProject;
+
+    public static String CheckstyleMarkerFilterDialog_btnOnSelectedResource;
+
+    public static String CheckstyleMarkerFilterDialog_btnOnSelectedResourceAndChilds;
+
+    public static String CheckstyleMarkerFilterDialog_btnOnWorkingSet;
+
+    public static String CheckstyleMarkerFilterDialog_btnSelect;
+
+    public static String CheckstyleMarkerFilterDialog_btnMarkerSeverity;
+
+    public static String CheckstyleMarkerFilterDialog_btnSeverityError;
+
+    public static String CheckstyleMarkerFilterDialog_btnSeverityWarning;
+
+    public static String CheckstyleMarkerFilterDialog_btnSeverityInfo;
+
+    public static String CheckstyleMarkerFilterDialog_title;
+
+    public static String CheckstyleMarkerFilterDialog_titleMessage;
+
+    public static String CheckstyleMarkerFilterDialog_btnRestoreDefault;
+
+    public static String CheckstyleMarkerFilterDialog_btnShellTitle;
+
+    public static String CheckstyleMarkerFilterDialog_msgNoWorkingSetSelected;
+
+    public static String GraphStatsView_lblViewMessage;
+
+    public static String MarkerStatsView_folderColumn;
+
+    public static String MarkerStatsView_actionBack;
+
+    public static String MarkerStatsView_actionBackTooltip;
+
+    public static String MarkerStatsView_lblOverviewMessage;
+
+    public static String MarkerStatsView_lblDetailMessage;
+
 
     // CHECKSTYLE:ON
 }

@@ -17,20 +17,21 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 //============================================================================
-package com.atlassw.tools.eclipse.checkstyle.stats.views;
+package net.sf.eclipsecs.stats.views;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import net.sf.eclipsecs.stats.Messages;
+import net.sf.eclipsecs.stats.data.MarkerStat;
+import net.sf.eclipsecs.stats.data.Stats;
+
 import org.jfree.data.DefaultKeyedValues;
 import org.jfree.data.general.AbstractDataset;
 import org.jfree.data.general.PieDataset;
 
-import com.atlassw.tools.eclipse.checkstyle.stats.Messages;
-import com.atlassw.tools.eclipse.checkstyle.stats.data.MarkerStat;
-import com.atlassw.tools.eclipse.checkstyle.stats.data.Stats;
 
 /**
  * Implémentation d'un PieDataset pour fournir les données à afficher au graph.

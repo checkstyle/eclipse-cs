@@ -17,13 +17,20 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 //============================================================================
-package com.atlassw.tools.eclipse.checkstyle.stats.views;
+package net.sf.eclipsecs.stats.views;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+
+import net.sf.eclipsecs.stats.Messages;
+import net.sf.eclipsecs.stats.StatsCheckstylePlugin;
+import net.sf.eclipsecs.stats.data.CreateStatsJob;
+import net.sf.eclipsecs.stats.data.Stats;
+import net.sf.eclipsecs.stats.views.internal.CheckstyleMarkerFilter;
+import net.sf.eclipsecs.stats.views.internal.CheckstyleMarkerFilterDialog;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarkerDelta;
@@ -55,11 +62,6 @@ import org.eclipse.ui.progress.IWorkbenchSiteProgressService;
 import org.eclipse.ui.progress.WorkbenchJob;
 
 import com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleMarker;
-import com.atlassw.tools.eclipse.checkstyle.stats.StatsCheckstylePlugin;
-import com.atlassw.tools.eclipse.checkstyle.stats.data.CreateStatsJob;
-import com.atlassw.tools.eclipse.checkstyle.stats.data.Stats;
-import com.atlassw.tools.eclipse.checkstyle.stats.views.internal.CheckstyleMarkerFilter;
-import com.atlassw.tools.eclipse.checkstyle.stats.views.internal.CheckstyleMarkerFilterDialog;
 
 /**
  * Abstract view that gathers common behaviour for the stats views.
@@ -147,8 +149,7 @@ public abstract class AbstractStatsView extends ViewPart
      */
     public void setFocus()
     {
-        // initialize the view data
-        refresh();
+
     }
 
     /**
@@ -245,7 +246,7 @@ public abstract class AbstractStatsView extends ViewPart
             public void done(IJobChangeEvent event)
             {
                 mStats = ((CreateStatsJob) event.getJob()).getStats();
-                Job uiJob = new WorkbenchJob("Refresh Checkstyle statistics")
+                Job uiJob = new WorkbenchJob(Messages.AbstractStatsView_msgRefreshStats)
                 {
 
                     public IStatus runInUIThread(IProgressMonitor monitor)

@@ -17,7 +17,7 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 //============================================================================
-package com.atlassw.tools.eclipse.checkstyle.stats.data;
+package net.sf.eclipsecs.stats.data;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -25,6 +25,10 @@ import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
+
+import net.sf.eclipsecs.stats.Messages;
+import net.sf.eclipsecs.stats.StatsCheckstylePlugin;
+import net.sf.eclipsecs.stats.views.internal.CheckstyleMarkerFilter;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
@@ -38,9 +42,6 @@ import org.eclipse.core.runtime.jobs.Job;
 import com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleMarker;
 import com.atlassw.tools.eclipse.checkstyle.config.meta.MetadataFactory;
 import com.atlassw.tools.eclipse.checkstyle.config.meta.RuleMetadata;
-import com.atlassw.tools.eclipse.checkstyle.stats.Messages;
-import com.atlassw.tools.eclipse.checkstyle.stats.StatsCheckstylePlugin;
-import com.atlassw.tools.eclipse.checkstyle.stats.views.internal.CheckstyleMarkerFilter;
 
 /**
  * Job implementation that builds the data objects for the statistic views.
@@ -83,7 +84,7 @@ public class CreateStatsJob extends Job
      */
     public CreateStatsJob(CheckstyleMarkerFilter filter)
     {
-        super("Analyzing Checkstyle markers.");
+        super(Messages.CreateStatsJob_msgAnalyzeMarkers);
         mFilter = (CheckstyleMarkerFilter) filter.clone();
     }
 
@@ -119,15 +120,15 @@ public class CreateStatsJob extends Job
                 catch (CoreException e)
                 {
                     StatsCheckstylePlugin.log(IStatus.WARNING,
-                        "error analyzing markers", e);
+                        Messages.CreateStatsJob_errorAnalyzingMarkers, e);
                 }
 
-                // on vérifie que le message n'est pas null ou vide
-                if (message == null || message.equals("")) //$NON-NLS-1$
+                // check that the message is not empty
+                if (message == null || message.trim().length() == 0)
                 {
                     // cela ne devrait pas arriver, mais bon, on laisse faire
                     StatsCheckstylePlugin.log(IStatus.WARNING,
-                        Messages.MarkerAnalyser_markerMessageShouldntBeEmpty,
+                        Messages.CreateStatsJob_markerMessageShouldntBeEmpty,
                         null);
                     continue;
                 }
@@ -155,7 +156,7 @@ public class CreateStatsJob extends Job
         catch (CoreException e)
         {
             return new Status(IStatus.ERROR, StatsCheckstylePlugin.PLUGIN_ID,
-                IStatus.OK, "error analyzing markers", e);
+                IStatus.OK, Messages.CreateStatsJob_errorAnalyzingMarkers, e);
         }
 
         return Status.OK_STATUS;

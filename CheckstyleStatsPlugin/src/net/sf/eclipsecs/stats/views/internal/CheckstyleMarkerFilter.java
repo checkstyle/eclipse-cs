@@ -17,7 +17,7 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 //============================================================================
-package com.atlassw.tools.eclipse.checkstyle.stats.views.internal;
+package net.sf.eclipsecs.stats.views.internal;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,6 +25,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+
+import net.sf.eclipsecs.stats.StatsCheckstylePlugin;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
@@ -37,7 +39,6 @@ import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.ui.IWorkingSet;
 
 import com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleMarker;
-import com.atlassw.tools.eclipse.checkstyle.stats.StatsCheckstylePlugin;
 
 /**
  * Filter class for Checkstyle markers. This filter is used by the Checkstyle

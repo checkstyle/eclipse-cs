@@ -17,11 +17,18 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 //============================================================================
-package com.atlassw.tools.eclipse.checkstyle.stats.views;
+package net.sf.eclipsecs.stats.views;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+
+import net.sf.eclipsecs.stats.Messages;
+import net.sf.eclipsecs.stats.StatsCheckstylePlugin;
+import net.sf.eclipsecs.stats.data.MarkerStat;
+import net.sf.eclipsecs.stats.data.Stats;
+import net.sf.eclipsecs.stats.util.CheckstyleStatsPluginImages;
+import net.sf.eclipsecs.stats.views.internal.FiltersAction;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.CoreException;
@@ -64,13 +71,6 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 
-import com.atlassw.tools.eclipse.checkstyle.stats.Messages;
-import com.atlassw.tools.eclipse.checkstyle.stats.StatsCheckstylePlugin;
-import com.atlassw.tools.eclipse.checkstyle.stats.data.MarkerStat;
-import com.atlassw.tools.eclipse.checkstyle.stats.data.Stats;
-import com.atlassw.tools.eclipse.checkstyle.stats.util.CheckstyleStatsPluginImages;
-import com.atlassw.tools.eclipse.checkstyle.stats.views.internal.FiltersAction;
-
 /**
  * View that displays statistics about checkstyle markers.
  * 
@@ -85,7 +85,7 @@ public class MarkerStatsView extends AbstractStatsView
     //
 
     /** The unique view id. */
-    public static final String VIEW_ID = "com.atlassw.tools.eclipse.checkstyle.stats.views.MarkerStatsView"; //$NON-NLS-1$
+    public static final String VIEW_ID = MarkerStatsView.class.getName();
 
     //
     // attributes
@@ -155,6 +155,9 @@ public class MarkerStatsView extends AbstractStatsView
         mCurrentViewer = createMasterView(mMainSection);
 
         updateActions();
+
+        // initialize the view data
+        refresh();
     }
 
     /**
@@ -245,23 +248,23 @@ public class MarkerStatsView extends AbstractStatsView
         table.setHeaderVisible(true);
 
         TableColumn idCol = new TableColumn(table, SWT.LEFT, 0);
-        idCol.setText(Messages.DetailStatsView_fileColumn);
+        idCol.setText(Messages.MarkerStatsView_fileColumn);
         idCol.setWidth(150);
         idCol.addSelectionListener(new SorterSelectionListener(detailViewer,
             new NameSorter()));
 
         TableColumn folderCol = new TableColumn(table, SWT.LEFT, 1);
-        folderCol.setText("In Folder");
+        folderCol.setText(Messages.MarkerStatsView_folderColumn);
         folderCol.setWidth(300);
         folderCol.addSelectionListener(new SorterSelectionListener(
             detailViewer, new NameSorter()));
 
         TableColumn countCol = new TableColumn(table, SWT.CENTER, 2);
-        countCol.setText(Messages.DetailStatsView_lineColumn);
+        countCol.setText(Messages.MarkerStatsView_lineColumn);
         countCol.pack();
 
         TableColumn messageCol = new TableColumn(table, SWT.LEFT, 3);
-        messageCol.setText(Messages.DetailStatsView_messageColumn);
+        messageCol.setText(Messages.MarkerStatsView_messageColumn);
         messageCol.setWidth(300);
 
         // set the providers
@@ -341,7 +344,7 @@ public class MarkerStatsView extends AbstractStatsView
     /**
      * See method below.
      * 
-     * @see com.atlassw.tools.eclipse.checkstyle.stats.views.AbstractStatsView#makeActions()
+     * @see net.sf.eclipsecs.stats.views.AbstractStatsView#makeActions()
      */
     protected void makeActions()
     {
@@ -432,8 +435,9 @@ public class MarkerStatsView extends AbstractStatsView
                 updateLabel();
             }
         };
-        mDrillBackAction.setText("Back to Overview");
-        mDrillBackAction.setToolTipText("Go back to the master view");
+        mDrillBackAction.setText(Messages.MarkerStatsView_actionBack);
+        mDrillBackAction
+            .setToolTipText(Messages.MarkerStatsView_actionBackTooltip);
         mDrillBackAction.setImageDescriptor(PlatformUI.getWorkbench()
             .getSharedImages().getImageDescriptor(ISharedImages.IMG_TOOL_BACK));
         mDrillBackAction.setDisabledImageDescriptor(PlatformUI.getWorkbench()
@@ -456,15 +460,15 @@ public class MarkerStatsView extends AbstractStatsView
                     catch (PartInitException e)
                     {
                         StatsCheckstylePlugin.log(IStatus.ERROR,
-                            Messages.DetailStatsView_unableToShowMarker, e);
+                            Messages.MarkerStatsView_unableToShowMarker, e);
                         // TODO : mettre message d'erreur à l'utilisateur
                     }
                 }
             }
         };
-        mShowErrorAction.setText(Messages.DetailStatsView_displayError);
+        mShowErrorAction.setText(Messages.MarkerStatsView_displayError);
         mShowErrorAction
-            .setToolTipText(Messages.DetailStatsView_displayErrorTooltip);
+            .setToolTipText(Messages.MarkerStatsView_displayErrorTooltip);
         mShowErrorAction.setImageDescriptor(PlatformUI.getWorkbench()
             .getSharedImages().getImageDescriptor(
                 IDE.SharedImages.IMG_OPEN_MARKER));
@@ -492,24 +496,19 @@ public class MarkerStatsView extends AbstractStatsView
 
             Stats stats = getStats();
 
-            String text = NLS
-                .bind(
-                    "Overview of Checkstyle violations - {0} markers in {1} categories (Filter matched {0} of {2} items)",
-                    new Object[] { new Integer(stats.getMarkerCount()),
-                            new Integer(stats.getMarkerStats().size()),
-                            new Integer(stats.getMarkerCountAll()) });
+            String text = NLS.bind(Messages.MarkerStatsView_lblOverviewMessage,
+                new Object[] { new Integer(stats.getMarkerCount()),
+                        new Integer(stats.getMarkerStats().size()),
+                        new Integer(stats.getMarkerCountAll()) });
             mDescLabel.setText(text);
         }
         else
         {
 
             String text = NLS
-                .bind(
-                    "Details of Checkstyle violation \"{0}\"  - {1} occurances",
-                    new Object[] {
-                            mCurrentDetailCategory,
-                            new Integer(mCurrentViewer.getTable()
-                                .getItemCount()) });
+                .bind(Messages.MarkerStatsView_lblDetailMessage, new Object[] {
+                        mCurrentDetailCategory,
+                        new Integer(mCurrentViewer.getTable().getItemCount()) });
             mDescLabel.setText(text);
         }
     }
@@ -753,7 +752,7 @@ public class MarkerStatsView extends AbstractStatsView
             catch (CoreException e)
             {
                 // Can't do anything: let's put a default value
-                text = Messages.DetailStatsViewLabelProvider_unknown;
+                text = Messages.MarkerStatsView_unknownProblem;
             }
 
             return text;

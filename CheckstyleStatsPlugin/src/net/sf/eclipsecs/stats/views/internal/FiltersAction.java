@@ -17,12 +17,14 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 //============================================================================
-package com.atlassw.tools.eclipse.checkstyle.stats.views.internal;
+package net.sf.eclipsecs.stats.views.internal;
+
+import net.sf.eclipsecs.stats.Messages;
+import net.sf.eclipsecs.stats.util.CheckstyleStatsPluginImages;
+import net.sf.eclipsecs.stats.views.AbstractStatsView;
 
 import org.eclipse.jface.action.Action;
 
-import com.atlassw.tools.eclipse.checkstyle.stats.util.CheckstyleStatsPluginImages;
-import com.atlassw.tools.eclipse.checkstyle.stats.views.AbstractStatsView;
 
 /**
  * Action implementation for the filters action.
@@ -51,9 +53,9 @@ public class FiltersAction extends Action
      */
     public FiltersAction(AbstractStatsView view)
     {
-        super("Filters..."); // TODO externalize
+        super(Messages.FiltersAction_text); // TODO externalize
         setImageDescriptor(CheckstyleStatsPluginImages.FILTER_ICON);
-        setToolTipText("Filters certain Checkstyle markers");
+        setToolTipText(Messages.FiltersAction_tooltip);
         this.mStatsView = view;
         setEnabled(true);
     }

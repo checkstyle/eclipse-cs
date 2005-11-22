@@ -17,7 +17,7 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 //============================================================================
-package com.atlassw.tools.eclipse.checkstyle.stats;
+package net.sf.eclipsecs.stats;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -36,7 +36,7 @@ public class StatsCheckstylePlugin extends AbstractUIPlugin
     //
 
     /** The plugin id. */
-    public static final String PLUGIN_ID = "com.atlassw.tools.eclipse.checkstyle.stats";
+    public static final String PLUGIN_ID = "net.sf.eclipsecs.stats"; //$NON-NLS-1$
 
     /**
      * The shared instance.
