@@ -117,5 +117,7 @@ public final class ErrorMessages extends NLS
     
     public static String errorFilesetWithoutCheckConfig;
 
+    public static String errorFailedAutoCreatingConfig;
+
     //  CHECKSTYLE:ON
 }

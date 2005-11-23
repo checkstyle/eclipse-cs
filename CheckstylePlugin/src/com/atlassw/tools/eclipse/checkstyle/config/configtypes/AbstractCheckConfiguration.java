@@ -22,6 +22,7 @@ package com.atlassw.tools.eclipse.checkstyle.config.configtypes;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -302,6 +303,10 @@ public abstract class AbstractCheckConfiguration implements ICheckConfiguration
         {
             // check if URL resolves
             URL configURL = handleGetLocation();
+            if (configURL == null)
+            {
+                throw new FileNotFoundException(NLS.bind("Could not find {0}", getLocation()));
+            }
             configURL.openStream();
 
             location = configURL;

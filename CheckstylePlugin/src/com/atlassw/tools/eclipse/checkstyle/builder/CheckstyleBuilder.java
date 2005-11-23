@@ -122,7 +122,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
     public static void buildProjects(Collection projects) throws CheckstylePluginException
     {
 
-        //Build only open projects with Checkstyle enabled
+        // Build only open projects with Checkstyle enabled
         List checkstyleProjects = new ArrayList();
 
         Iterator it = projects.iterator();
@@ -178,7 +178,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
             catch (CheckstylePluginException e)
             {
                 Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID,
-                        IStatus.ERROR, e.getMessage(), e);
+                        IStatus.ERROR, e.getMessage() != null ? e.getMessage() : "Unknown", e);
                 throw new CoreException(status);
             }
 
@@ -295,7 +295,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
         }
         catch (CheckstylePluginException e)
         {
-            CheckstyleLog.log(e); //TODO check if this is needed
+            CheckstyleLog.log(e); // TODO check if this is needed
             Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR, e
                     .getLocalizedMessage(), e);
             throw new CoreException(status);

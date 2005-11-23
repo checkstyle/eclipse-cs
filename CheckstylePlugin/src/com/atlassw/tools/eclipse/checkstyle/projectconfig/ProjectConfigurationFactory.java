@@ -49,6 +49,7 @@ import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.ConfigurationTypes;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.IConfigurationType;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.IFilter;
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.atlassw.tools.eclipse.checkstyle.util.XMLUtil;
 
@@ -181,27 +182,27 @@ public final class ProjectConfigurationFactory
         {
             inStream = file.getContents(true);
 
-            ProjectConfigFileHandler handler = new ProjectConfigFileHandler();
+            ProjectConfigFileHandler handler = new ProjectConfigFileHandler(project);
             XMLUtil.parseWithSAX(inStream, handler);
 
             configuration = handler.getConfiguration();
         }
         catch (CoreException ce)
         {
-            CheckstylePluginException.rethrow(ce);
+            CheckstylePluginException.rethrow(ce, ce.getLocalizedMessage());
         }
         catch (SAXException se)
         {
             Exception ex = se.getException() != null ? se.getException() : se;
-            CheckstylePluginException.rethrow(ex);
+            CheckstylePluginException.rethrow(ex, ex.getLocalizedMessage());
         }
         catch (ParserConfigurationException pe)
         {
-            CheckstylePluginException.rethrow(pe);
+            CheckstylePluginException.rethrow(pe, pe.getLocalizedMessage());
         }
         catch (IOException ioe)
         {
-            CheckstylePluginException.rethrow(ioe);
+            CheckstylePluginException.rethrow(ioe, ioe.getLocalizedMessage());
         }
 
         finally
@@ -472,6 +473,9 @@ public final class ProjectConfigurationFactory
         // attributes
         //
 
+        /** the project whose configuration is read. */
+        private IProject mProject;
+
         /** the project configuration. */
         private ProjectConfiguration mProjectConfig = new ProjectConfiguration();
 
@@ -480,6 +484,20 @@ public final class ProjectConfigurationFactory
 
         /** the current filter. */
         private IFilter mCurrentFilter;
+
+        //
+        // constructors
+        //
+
+        /**
+         * Creates the handler.
+         * 
+         * @param project the project whose configuration is read
+         */
+        ProjectConfigFileHandler(IProject project)
+        {
+            mProject = project;
+        }
 
         //
         // methods
@@ -547,10 +565,27 @@ public final class ProjectConfigurationFactory
                                 .newInstance();
                         checkConfig.initialize(configName, location, configType, description);
 
-                        // store the configuration within the plugin
-                        List exitistingConfigs = CheckConfigurationFactory.getCheckConfigurations();
-                        exitistingConfigs.add(checkConfig);
-                        CheckConfigurationFactory.setCheckConfigurations(exitistingConfigs);
+                        // check if the configuration to be created can be
+                        // resolved
+                        try
+                        {
+
+                            checkConfig.setContext(mProject);
+                            checkConfig.getCheckstyleConfigurationURL();
+                            checkConfig.setContext(null);
+
+                            // store the configuration within the plugin
+                            List exitistingConfigs = CheckConfigurationFactory
+                                    .getCheckConfigurations();
+                            exitistingConfigs.add(checkConfig);
+                            CheckConfigurationFactory.setCheckConfigurations(exitistingConfigs);
+                        }
+                        catch (CheckstylePluginException e)
+                        {
+                            CheckstyleLog.log(e, NLS.bind(
+                                    ErrorMessages.errorFailedAutoCreatingConfig, checkConfig
+                                            .getName(), mProject.getName()));
+                        }
                     }
 
                     mCurrentFileSet.setCheckConfig(checkConfig);
