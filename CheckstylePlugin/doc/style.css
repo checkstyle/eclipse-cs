@@ -10,7 +10,7 @@ body {
 	height: 100%;
 	width: 100%;
 	color: #000000;
-	background-color: #cddeff;
+	background-color: #ffffff;
 }
 
 h2{
@@ -87,6 +87,8 @@ li{
 
 .navsection {
 	width: 220px;
+	color: #003399;
+	background-color: #cddeff;
 }
 
 .navsection a {
