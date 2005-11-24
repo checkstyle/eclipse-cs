@@ -199,6 +199,10 @@ li{
 	text-decoration: none;
 }
 
+.imagelink:hover {
+	text-decoration: none;
+}
+
 .level2{
 	text-indent: 0px;
 }
