@@ -149,6 +149,11 @@
 			<a href="http://www.ej-technologies.com/products/jprofiler/overview.html" class="imagelink">
 				<img src="images/logo_jprofiler01.gif" alt="ej-technologies' JProfiler"/>
 			</a>
+			<br/>
+			<br/>
+			<a href="http://www.oxygenxml.com" class="imagelink">
+				<img src="images/logoOxygen.gif" alt="oXygen xml editor"/>
+			</a>
 		</div>
 		
 		<div style="text-align=right; margin-top: 5px;">
