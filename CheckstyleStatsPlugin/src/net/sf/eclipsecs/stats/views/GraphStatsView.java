@@ -17,6 +17,7 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 //============================================================================
+
 package net.sf.eclipsecs.stats.views;
 
 import java.awt.Frame;
@@ -90,11 +91,6 @@ public class GraphStatsView extends AbstractStatsView
     private Action mListingAction;
 
     /**
-     * Permet l'affichage ou pas des erreurs Javadoc.
-     */
-    private Action mShowJavadocErrorsAction;
-
-    /**
      * Permet l'affichage ou pas de toutes les catégories.
      */
     private Action mShowAllCategoriesAction;
@@ -132,7 +128,6 @@ public class GraphStatsView extends AbstractStatsView
 
         // create the date set for the chart
         mPieDataset = new GraphPieDataset();
-        mPieDataset.setShowJavadoc(mShowJavadocErrorsAction.isChecked());
         mPieDataset.setShowAllCategories(mShowAllCategoriesAction.isChecked());
 
         // creates the chart component
@@ -146,13 +141,13 @@ public class GraphStatsView extends AbstractStatsView
 
             public void chartMouseClicked(ChartMouseEvent event)
             {
-                // TODO Auto-generated method stub
+            // TODO Auto-generated method stub
 
             }
 
             public void chartMouseMoved(ChartMouseEvent event)
             {
-                // TODO Auto-generated method stub
+            // TODO Auto-generated method stub
 
             }
         });
@@ -168,7 +163,6 @@ public class GraphStatsView extends AbstractStatsView
     {
         menu.add(new FiltersAction(this));
         menu.add(new Separator());
-        menu.add(mShowJavadocErrorsAction);
         menu.add(mShowAllCategoriesAction);
     }
 
@@ -179,7 +173,6 @@ public class GraphStatsView extends AbstractStatsView
     {
         tbm.add(mListingAction);
         tbm.add(new Separator());
-        tbm.add(mShowJavadocErrorsAction);
         tbm.add(mShowAllCategoriesAction);
         tbm.add(new FiltersAction(this));
     }
@@ -217,25 +210,24 @@ public class GraphStatsView extends AbstractStatsView
             {
                 try
                 {
-                    getSite().getWorkbenchWindow().getActivePage().showView(
-                        MarkerStatsView.VIEW_ID);
+                    getSite().getWorkbenchWindow().getActivePage()
+                            .showView(MarkerStatsView.VIEW_ID);
                 }
                 catch (PartInitException e)
                 {
                     StatsCheckstylePlugin.log(IStatus.ERROR, NLS.bind(
-                        Messages.GraphStatsView_unableToOpenListingView,
-                        MarkerStatsView.VIEW_ID), e);
+                            Messages.GraphStatsView_unableToOpenListingView,
+                            MarkerStatsView.VIEW_ID), e);
                     // TODO : mettre message d'erreur à l'utilisateur
                 }
             }
         };
         mListingAction.setText(Messages.GraphStatsView_displayListing);
         mListingAction.setToolTipText(Messages.GraphStatsView_displayListing);
-        mListingAction
-            .setImageDescriptor(CheckstyleStatsPluginImages.LIST_VIEW_ICON);
+        mListingAction.setImageDescriptor(CheckstyleStatsPluginImages.LIST_VIEW_ICON);
 
-        mShowJavadocErrorsAction = new Action(
-            Messages.GraphStatsView_displayJavadocErrors, Action.AS_CHECK_BOX)
+        mShowAllCategoriesAction = new Action(Messages.GraphStatsView_displayAllCategories,
+                Action.AS_CHECK_BOX)
         {
             public void run()
             {
@@ -243,53 +235,13 @@ public class GraphStatsView extends AbstractStatsView
                 {
                     public void run()
                     {
-                        if (!mEmbeddedComposite.isDisposed()
-                            && mEmbeddedComposite.isVisible())
+                        if (!mEmbeddedComposite.isDisposed() && mEmbeddedComposite.isVisible())
                         {
                             // on averti le dataset
-                            mPieDataset.setShowJavadoc(mShowJavadocErrorsAction
-                                .isChecked());
+                            mPieDataset.setShowAllCategories(mShowAllCategoriesAction.isChecked());
 
                             // update the preference
-                            StatsCheckstylePlugin.getDefault()
-                                .getPreferenceStore().setValue(
-                                    PrefsInitializer.PROPS_SHOW_JAVADOC_ERRORS,
-                                    mShowJavadocErrorsAction.isChecked());
-
-                            refresh();
-                        }
-                    }
-                });
-            }
-        };
-        mShowJavadocErrorsAction
-            .setToolTipText(Messages.GraphStatsView_displayJavadocErrors);
-        mShowJavadocErrorsAction.setImageDescriptor(PlatformUI.getWorkbench()
-            .getSharedImages().getImageDescriptor(ISharedImages.IMG_OBJ_FILE));
-        mShowJavadocErrorsAction.setChecked(StatsCheckstylePlugin.getDefault()
-            .getPreferenceStore().getBoolean(
-                PrefsInitializer.PROPS_SHOW_JAVADOC_ERRORS));
-
-        mShowAllCategoriesAction = new Action(
-            Messages.GraphStatsView_displayAllCategories, Action.AS_CHECK_BOX)
-        {
-            public void run()
-            {
-                Display.getDefault().asyncExec(new Runnable()
-                {
-                    public void run()
-                    {
-                        if (!mEmbeddedComposite.isDisposed()
-                            && mEmbeddedComposite.isVisible())
-                        {
-                            // on averti le dataset
-                            mPieDataset
-                                .setShowAllCategories(mShowAllCategoriesAction
-                                    .isChecked());
-
-                            // update the preference
-                            StatsCheckstylePlugin.getDefault()
-                                .getPreferenceStore().setValue(
+                            StatsCheckstylePlugin.getDefault().getPreferenceStore().setValue(
                                     PrefsInitializer.PROPS_SHOW_ALL_CATEGORIES,
                                     mShowAllCategoriesAction.isChecked());
 
@@ -299,28 +251,23 @@ public class GraphStatsView extends AbstractStatsView
                 });
             }
         };
-        mShowAllCategoriesAction
-            .setToolTipText(Messages.GraphStatsView_displayAllCategories);
-        mShowAllCategoriesAction.setImageDescriptor(PlatformUI.getWorkbench()
-            .getSharedImages()
-            .getImageDescriptor(ISharedImages.IMG_OBJ_ELEMENT));
-        mShowAllCategoriesAction.setChecked(StatsCheckstylePlugin.getDefault()
-            .getPreferenceStore().getBoolean(
-                PrefsInitializer.PROPS_SHOW_ALL_CATEGORIES));
+        mShowAllCategoriesAction.setToolTipText(Messages.GraphStatsView_displayAllCategories);
+        mShowAllCategoriesAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages()
+                .getImageDescriptor(ISharedImages.IMG_OBJ_ELEMENT));
+        mShowAllCategoriesAction.setChecked(StatsCheckstylePlugin.getDefault().getPreferenceStore()
+                .getBoolean(PrefsInitializer.PROPS_SHOW_ALL_CATEGORIES));
 
     }
 
     /**
      * Crée le graphe JFreeChart.
      * 
-     * @param piedataset :
-     *            la source de données à afficher
+     * @param piedataset : la source de données à afficher
      * @return le diagramme
      */
     private JFreeChart createChart(GraphPieDataset piedataset)
     {
-        JFreeChart jfreechart = ChartFactory.createPieChart3D(null, piedataset,
-            false, true, false);
+        JFreeChart jfreechart = ChartFactory.createPieChart3D(null, piedataset, false, true, false);
 
         PiePlot3D pieplot3d = (PiePlot3D) jfreechart.getPlot();
         pieplot3d.setInsets(new RectangleInsets(0, 0, 0, 0));
@@ -342,10 +289,9 @@ public class GraphStatsView extends AbstractStatsView
 
         Stats stats = getStats();
 
-        String text = NLS.bind(Messages.GraphStatsView_lblViewMessage,
-            new Object[] { new Integer(stats.getMarkerCount()),
-                    new Integer(stats.getMarkerStats().size()),
-                    new Integer(stats.getMarkerCountAll()) });
+        String text = NLS.bind(Messages.GraphStatsView_lblViewMessage, new Object[] {
+            new Integer(stats.getMarkerCount()), new Integer(stats.getMarkerStats().size()),
+            new Integer(stats.getMarkerCountAll()) });
         mLabelDesc.setText(text);
     }
 

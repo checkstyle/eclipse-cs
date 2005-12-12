@@ -17,6 +17,7 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 //============================================================================
+
 package net.sf.eclipsecs.stats.views;
 
 import java.util.Collection;
@@ -31,7 +32,6 @@ import net.sf.eclipsecs.stats.data.Stats;
 import org.jfree.data.DefaultKeyedValues;
 import org.jfree.data.general.AbstractDataset;
 import org.jfree.data.general.PieDataset;
-
 
 /**
  * Implémentation d'un PieDataset pour fournir les données à afficher au graph.
@@ -50,17 +50,12 @@ public class GraphPieDataset extends AbstractDataset implements PieDataset
      * Pourcentage minimum en dessous duquel une catégorie d'erreur est mise
      * dans la catégorie "Autres" opur l'affichage du camember.
      */
-    private static final int POURCENTAGE_MIN = 2;
+    private static final int POURCENTAGE_MIN = 1;
 
     /**
      * Pourcentage pour le calcul.
      */
     private static final int CENT = 100;
-
-    /**
-     * Afficher ou pas les Javadoc.
-     */
-    private boolean mShowJavadoc;
 
     /**
      * Afficher ou pas toutes les catégories.
@@ -70,8 +65,7 @@ public class GraphPieDataset extends AbstractDataset implements PieDataset
     /**
      * Remplit le Dataset avec les valeurs de la collection de MarkerStat.
      * 
-     * @param stats
-     *            the Checkstyle violation stats
+     * @param stats the Checkstyle violation stats
      */
     public void setStats(Stats stats)
     {
@@ -87,17 +81,7 @@ public class GraphPieDataset extends AbstractDataset implements PieDataset
         for (Iterator iter = markerStatCollection.iterator(); iter.hasNext();)
         {
             MarkerStat markerStat = (MarkerStat) iter.next();
-            // on vérifie si on affiche le Javadoc
-            if (!mShowJavadoc)
-            {
-                String id = markerStat.getIdentifiant();
-                // look for the word Javadoc (or javadoc) or @
-                if (id.indexOf("avadoc") > -1 || id.indexOf("@") > -1) //$NON-NLS-1$ //$NON-NLS-2$
-                {
-                    // c'est une erreur Javadoc : on ne l'affiche pas
-                    continue;
-                }
-            }
+
             // on calcule le %
             float percentage = CENT * markerStat.getCount() / mCount;
             if (mShowAllCategories)
@@ -121,8 +105,7 @@ public class GraphPieDataset extends AbstractDataset implements PieDataset
         {
             // on ne veut pas montrer toutes les catégories, et certaines
             // n'ont pas été prises en compte : on les mets dans "Autres"
-            setValue(Messages.GraphPieDataset_otherCategories, CENT * leftCount
-                / mCount);
+            setValue(Messages.GraphPieDataset_otherCategories, CENT * leftCount / mCount);
         }
         fireDatasetChanged();
     }
@@ -137,21 +120,9 @@ public class GraphPieDataset extends AbstractDataset implements PieDataset
     }
 
     /**
-     * The showJavadoc to set.
-     * 
-     * @param showJavadoc
-     *            The showJavadoc to set.
-     */
-    public void setShowJavadoc(boolean showJavadoc)
-    {
-        this.mShowJavadoc = showJavadoc;
-    }
-
-    /**
      * The showAllCategories to set.
      * 
-     * @param showAllCategories
-     *            The showAllCategories to set.
+     * @param showAllCategories The showAllCategories to set.
      */
     public void setShowAllCategories(boolean showAllCategories)
     {
@@ -168,9 +139,7 @@ public class GraphPieDataset extends AbstractDataset implements PieDataset
      */
     public GraphPieDataset()
     {
-
         this.mData = new DefaultKeyedValues();
-
     }
 
     /**
@@ -196,8 +165,7 @@ public class GraphPieDataset extends AbstractDataset implements PieDataset
     /**
      * Returns the key for an item.
      * 
-     * @param item
-     *            the item index (zero-based).
+     * @param item the item index (zero-based).
      * 
      * @return the category.
      */
@@ -216,8 +184,7 @@ public class GraphPieDataset extends AbstractDataset implements PieDataset
     /**
      * Returns the index for a key.
      * 
-     * @param key
-     *            the key.
+     * @param key the key.
      * 
      * @return the key index.
      */
@@ -231,8 +198,7 @@ public class GraphPieDataset extends AbstractDataset implements PieDataset
     /**
      * Returns a value.
      * 
-     * @param item
-     *            the value index.
+     * @param item the value index.
      * 
      * @return the value (possibly <code>null</code>).
      */
@@ -251,8 +217,7 @@ public class GraphPieDataset extends AbstractDataset implements PieDataset
     /**
      * Returns the data value associated with a key.
      * 
-     * @param key
-     *            the key (<code>null</code> not permitted).
+     * @param key the key (<code>null</code> not permitted).
      * 
      * @return the value (possibly <code>null</code>).
      */
@@ -262,8 +227,7 @@ public class GraphPieDataset extends AbstractDataset implements PieDataset
         // check arguments...
         if (key == null)
         {
-            throw new IllegalArgumentException(
-                "PieDataset: null key not allowed."); //$NON-NLS-1$
+            throw new IllegalArgumentException("PieDataset: null key not allowed."); //$NON-NLS-1$
         }
 
         // fetch the value...
@@ -274,10 +238,8 @@ public class GraphPieDataset extends AbstractDataset implements PieDataset
     /**
      * Sets the data value for a key.
      * 
-     * @param key
-     *            the key.
-     * @param value
-     *            the value.
+     * @param key the key.
+     * @param value the value.
      */
     public void setValue(final Comparable key, final Number value)
     {
@@ -290,10 +252,8 @@ public class GraphPieDataset extends AbstractDataset implements PieDataset
     /**
      * Sets the data value for a key.
      * 
-     * @param key
-     *            the key.
-     * @param value
-     *            the value.
+     * @param key the key.
+     * @param value the value.
      */
     public void setValue(final Comparable key, final double value)
     {

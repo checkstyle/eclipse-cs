@@ -17,6 +17,7 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 //============================================================================
+
 package net.sf.eclipsecs.stats.views;
 
 import java.util.ArrayList;
@@ -172,14 +173,13 @@ public class MarkerStatsView extends AbstractStatsView
     /**
      * Creates the table viewer for the master view.
      * 
-     * @param parent
-     *            the parent composite
+     * @param parent the parent composite
      * @return the master table viewer
      */
     private TableViewer createMasterView(Composite parent)
     {
-        TableViewer masterViewer = new TableViewer(parent, SWT.H_SCROLL
-            | SWT.V_SCROLL | SWT.SINGLE | SWT.FULL_SELECTION);
+        TableViewer masterViewer = new TableViewer(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.SINGLE
+                | SWT.FULL_SELECTION);
         GridData gridData = new GridData(GridData.FILL_BOTH);
         masterViewer.getControl().setLayoutData(gridData);
 
@@ -191,28 +191,25 @@ public class MarkerStatsView extends AbstractStatsView
         TableColumn idCol = new TableColumn(table, SWT.LEFT, 0);
         idCol.setText(Messages.MarkerStatsView_kindOfErrorColumn);
         idCol.setWidth(400);
-        idCol.addSelectionListener(new SorterSelectionListener(masterViewer,
-            new NameSorter()));
+        idCol.addSelectionListener(new SorterSelectionListener(masterViewer, new NameSorter()));
 
         TableColumn countCol = new TableColumn(table, SWT.CENTER, 1);
         countCol.setText(Messages.MarkerStatsView_numberOfErrorsColumn);
         countCol.pack();
-        countCol.addSelectionListener(new SorterSelectionListener(masterViewer,
-            new CountSorter()));
+        countCol.addSelectionListener(new SorterSelectionListener(masterViewer, new CountSorter()));
 
         // set the providers
         masterViewer.setContentProvider(new MasterContentProvider());
         masterViewer.setLabelProvider(new MarkerStatsViewLabelProvider());
 
         // add selection listener to maintain action state
-        masterViewer
-            .addSelectionChangedListener(new ISelectionChangedListener()
+        masterViewer.addSelectionChangedListener(new ISelectionChangedListener()
+        {
+            public void selectionChanged(SelectionChangedEvent event)
             {
-                public void selectionChanged(SelectionChangedEvent event)
-                {
-                    updateActions();
-                }
-            });
+                updateActions();
+            }
+        });
 
         // hooks the action to double click
         hookDoubleClickAction(mDrillDownAction, masterViewer);
@@ -230,15 +227,14 @@ public class MarkerStatsView extends AbstractStatsView
     /**
      * Creates the table viewer for the detail view.
      * 
-     * @param parent
-     *            the parent composite
+     * @param parent the parent composite
      * @return the detail table viewer
      */
     private TableViewer createDetailView(Composite parent)
     {
         // le tableau
-        TableViewer detailViewer = new TableViewer(parent, SWT.H_SCROLL
-            | SWT.V_SCROLL | SWT.SINGLE | SWT.FULL_SELECTION);
+        TableViewer detailViewer = new TableViewer(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.SINGLE
+                | SWT.FULL_SELECTION);
         GridData gridData = new GridData(GridData.FILL_BOTH);
         detailViewer.getControl().setLayoutData(gridData);
 
@@ -250,14 +246,12 @@ public class MarkerStatsView extends AbstractStatsView
         TableColumn idCol = new TableColumn(table, SWT.LEFT, 0);
         idCol.setText(Messages.MarkerStatsView_fileColumn);
         idCol.setWidth(150);
-        idCol.addSelectionListener(new SorterSelectionListener(detailViewer,
-            new NameSorter()));
+        idCol.addSelectionListener(new SorterSelectionListener(detailViewer, new NameSorter()));
 
         TableColumn folderCol = new TableColumn(table, SWT.LEFT, 1);
         folderCol.setText(Messages.MarkerStatsView_folderColumn);
         folderCol.setWidth(300);
-        folderCol.addSelectionListener(new SorterSelectionListener(
-            detailViewer, new NameSorter()));
+        folderCol.addSelectionListener(new SorterSelectionListener(detailViewer, new NameSorter()));
 
         TableColumn countCol = new TableColumn(table, SWT.CENTER, 2);
         countCol.setText(Messages.MarkerStatsView_lineColumn);
@@ -272,14 +266,13 @@ public class MarkerStatsView extends AbstractStatsView
         detailViewer.setLabelProvider(new DetailStatsViewLabelProvider());
 
         // add selection listener to maintain action state
-        detailViewer
-            .addSelectionChangedListener(new ISelectionChangedListener()
+        detailViewer.addSelectionChangedListener(new ISelectionChangedListener()
+        {
+            public void selectionChanged(SelectionChangedEvent event)
             {
-                public void selectionChanged(SelectionChangedEvent event)
-                {
-                    updateActions();
-                }
-            });
+                updateActions();
+            }
+        });
 
         // hooks the action to double click
         hookDoubleClickAction(mShowErrorAction, detailViewer);
@@ -355,23 +348,19 @@ public class MarkerStatsView extends AbstractStatsView
             {
                 try
                 {
-                    getSite().getWorkbenchWindow().getActivePage().showView(
-                        GraphStatsView.VIEW_ID);
+                    getSite().getWorkbenchWindow().getActivePage().showView(GraphStatsView.VIEW_ID);
                 }
                 catch (PartInitException e)
                 {
                     StatsCheckstylePlugin.log(IStatus.ERROR, NLS.bind(
-                        Messages.MarkerStatsView_unableToOpenGraph,
-                        GraphStatsView.VIEW_ID), e);
+                            Messages.MarkerStatsView_unableToOpenGraph, GraphStatsView.VIEW_ID), e);
                     // TODO : mettre message d'erreur à l'utilisateur
                 }
             }
         };
         mChartAction.setText(Messages.MarkerStatsView_displayChart);
-        mChartAction
-            .setToolTipText(Messages.MarkerStatsView_displayChartTooltip);
-        mChartAction
-            .setImageDescriptor(CheckstyleStatsPluginImages.GRAPH_VIEW_ICON);
+        mChartAction.setToolTipText(Messages.MarkerStatsView_displayChartTooltip);
+        mChartAction.setImageDescriptor(CheckstyleStatsPluginImages.GRAPH_VIEW_ICON);
 
         // action used to display the detail of a specific error type
         mDrillDownAction = new Action()
@@ -379,11 +368,10 @@ public class MarkerStatsView extends AbstractStatsView
             public void run()
             {
                 IStructuredSelection selection = (IStructuredSelection) mCurrentViewer
-                    .getSelection();
+                        .getSelection();
                 if (selection.getFirstElement() instanceof MarkerStat)
                 {
-                    MarkerStat markerStat = (MarkerStat) selection
-                        .getFirstElement();
+                    MarkerStat markerStat = (MarkerStat) selection.getFirstElement();
 
                     Object currentInput = mCurrentViewer.getInput();
 
@@ -404,14 +392,11 @@ public class MarkerStatsView extends AbstractStatsView
             }
         };
         mDrillDownAction.setText(Messages.MarkerStatsView_showDetails);
-        mDrillDownAction
-            .setToolTipText(Messages.MarkerStatsView_showDetailsTooltip);
-        mDrillDownAction.setImageDescriptor(PlatformUI.getWorkbench()
-            .getSharedImages().getImageDescriptor(
-                ISharedImages.IMG_TOOL_FORWARD));
-        mDrillDownAction.setDisabledImageDescriptor(PlatformUI.getWorkbench()
-            .getSharedImages().getImageDescriptor(
-                ISharedImages.IMG_TOOL_FORWARD_DISABLED));
+        mDrillDownAction.setToolTipText(Messages.MarkerStatsView_showDetailsTooltip);
+        mDrillDownAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages()
+                .getImageDescriptor(ISharedImages.IMG_TOOL_FORWARD));
+        mDrillDownAction.setDisabledImageDescriptor(PlatformUI.getWorkbench().getSharedImages()
+                .getImageDescriptor(ISharedImages.IMG_TOOL_FORWARD_DISABLED));
 
         // action used to go back to the master view
         mDrillBackAction = new Action()
@@ -436,20 +421,18 @@ public class MarkerStatsView extends AbstractStatsView
             }
         };
         mDrillBackAction.setText(Messages.MarkerStatsView_actionBack);
-        mDrillBackAction
-            .setToolTipText(Messages.MarkerStatsView_actionBackTooltip);
-        mDrillBackAction.setImageDescriptor(PlatformUI.getWorkbench()
-            .getSharedImages().getImageDescriptor(ISharedImages.IMG_TOOL_BACK));
-        mDrillBackAction.setDisabledImageDescriptor(PlatformUI.getWorkbench()
-            .getSharedImages().getImageDescriptor(
-                ISharedImages.IMG_TOOL_BACK_DISABLED));
+        mDrillBackAction.setToolTipText(Messages.MarkerStatsView_actionBackTooltip);
+        mDrillBackAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages()
+                .getImageDescriptor(ISharedImages.IMG_TOOL_BACK));
+        mDrillBackAction.setDisabledImageDescriptor(PlatformUI.getWorkbench().getSharedImages()
+                .getImageDescriptor(ISharedImages.IMG_TOOL_BACK_DISABLED));
 
         mShowErrorAction = new Action()
         {
             public void run()
             {
                 IStructuredSelection selection = (IStructuredSelection) mCurrentViewer
-                    .getSelection();
+                        .getSelection();
                 if (selection.getFirstElement() instanceof IMarker)
                 {
                     IMarker marker = (IMarker) selection.getFirstElement();
@@ -460,18 +443,16 @@ public class MarkerStatsView extends AbstractStatsView
                     catch (PartInitException e)
                     {
                         StatsCheckstylePlugin.log(IStatus.ERROR,
-                            Messages.MarkerStatsView_unableToShowMarker, e);
+                                Messages.MarkerStatsView_unableToShowMarker, e);
                         // TODO : mettre message d'erreur à l'utilisateur
                     }
                 }
             }
         };
         mShowErrorAction.setText(Messages.MarkerStatsView_displayError);
-        mShowErrorAction
-            .setToolTipText(Messages.MarkerStatsView_displayErrorTooltip);
-        mShowErrorAction.setImageDescriptor(PlatformUI.getWorkbench()
-            .getSharedImages().getImageDescriptor(
-                IDE.SharedImages.IMG_OPEN_MARKER));
+        mShowErrorAction.setToolTipText(Messages.MarkerStatsView_displayErrorTooltip);
+        mShowErrorAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages()
+                .getImageDescriptor(IDE.SharedImages.IMG_OPEN_MARKER));
     }
 
     /**
@@ -480,10 +461,8 @@ public class MarkerStatsView extends AbstractStatsView
     private void updateActions()
     {
         mDrillBackAction.setEnabled(mIsDrilledDown);
-        mDrillDownAction.setEnabled(!mIsDrilledDown
-            && !mCurrentViewer.getSelection().isEmpty());
-        mShowErrorAction.setEnabled(mIsDrilledDown
-            && !mCurrentViewer.getSelection().isEmpty());
+        mDrillDownAction.setEnabled(!mIsDrilledDown && !mCurrentViewer.getSelection().isEmpty());
+        mShowErrorAction.setEnabled(mIsDrilledDown && !mCurrentViewer.getSelection().isEmpty());
     }
 
     /**
@@ -496,19 +475,16 @@ public class MarkerStatsView extends AbstractStatsView
 
             Stats stats = getStats();
 
-            String text = NLS.bind(Messages.MarkerStatsView_lblOverviewMessage,
-                new Object[] { new Integer(stats.getMarkerCount()),
-                        new Integer(stats.getMarkerStats().size()),
-                        new Integer(stats.getMarkerCountAll()) });
+            String text = NLS.bind(Messages.MarkerStatsView_lblOverviewMessage, new Object[] {
+                new Integer(stats.getMarkerCount()), new Integer(stats.getMarkerStats().size()),
+                new Integer(stats.getMarkerCountAll()) });
             mDescLabel.setText(text);
         }
         else
         {
 
-            String text = NLS
-                .bind(Messages.MarkerStatsView_lblDetailMessage, new Object[] {
-                        mCurrentDetailCategory,
-                        new Integer(mCurrentViewer.getTable().getItemCount()) });
+            String text = NLS.bind(Messages.MarkerStatsView_lblDetailMessage, new Object[] {
+                mCurrentDetailCategory, new Integer(mCurrentViewer.getTable().getItemCount()) });
             mDescLabel.setText(text);
         }
     }
@@ -516,11 +492,9 @@ public class MarkerStatsView extends AbstractStatsView
     /**
      * Adds the actions to the tableviewer context menu.
      * 
-     * @param actions
-     *            a collection of IAction objets
+     * @param actions a collection of IAction objets
      */
-    private void hookContextMenu(final Collection actions,
-        StructuredViewer viewer)
+    private void hookContextMenu(final Collection actions, StructuredViewer viewer)
     {
         MenuManager menuMgr = new MenuManager();
         menuMgr.setRemoveAllWhenShown(true);
@@ -540,8 +514,7 @@ public class MarkerStatsView extends AbstractStatsView
                         manager.add((IAction) item);
                     }
                 }
-                manager.add(new Separator(
-                    IWorkbenchActionConstants.MB_ADDITIONS));
+                manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
             }
         });
         Menu menu = menuMgr.createContextMenu(viewer.getControl());
@@ -553,11 +526,9 @@ public class MarkerStatsView extends AbstractStatsView
     /**
      * Specifies which action will be run when double clicking on the viewer.
      * 
-     * @param action
-     *            the IAction to add
+     * @param action the IAction to add
      */
-    private void hookDoubleClickAction(final IAction action,
-        StructuredViewer viewer)
+    private void hookDoubleClickAction(final IAction action, StructuredViewer viewer)
     {
         viewer.addDoubleClickListener(new IDoubleClickListener()
         {
@@ -633,8 +604,7 @@ public class MarkerStatsView extends AbstractStatsView
                 while (it.hasNext())
                 {
                     MarkerStat markerStat = (MarkerStat) it.next();
-                    if (markerStat.getIdentifiant().equals(
-                        mCurrentDetailCategory))
+                    if (markerStat.getIdentifiant().equals(mCurrentDetailCategory))
                     {
                         mCurrentDetails = markerStat.getMarkers().toArray();
                         break;
@@ -668,8 +638,7 @@ public class MarkerStatsView extends AbstractStatsView
      * 
      * @author Lars Ködderitzsch
      */
-    private class MarkerStatsViewLabelProvider extends LabelProvider implements
-        ITableLabelProvider
+    private class MarkerStatsViewLabelProvider extends LabelProvider implements ITableLabelProvider
     {
         /**
          * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnText(java.lang.Object,
@@ -713,8 +682,7 @@ public class MarkerStatsView extends AbstractStatsView
      * 
      * @author Lars Ködderitzsch
      */
-    private class DetailStatsViewLabelProvider extends LabelProvider implements
-        ITableLabelProvider
+    private class DetailStatsViewLabelProvider extends LabelProvider implements ITableLabelProvider
     {
         /**
          * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnText(java.lang.Object,
@@ -733,12 +701,10 @@ public class MarkerStatsView extends AbstractStatsView
                         text = marker.getResource().getName();
                         break;
                     case 1:
-                        text = marker.getResource().getParent().getFullPath()
-                            .toString();
+                        text = marker.getResource().getParent().getFullPath().toString();
                         break;
                     case 2:
-                        text = marker.getAttribute(IMarker.LINE_NUMBER)
-                            .toString();
+                        text = marker.getAttribute(IMarker.LINE_NUMBER).toString();
                         break;
                     case 3:
                         text = marker.getAttribute(IMarker.MESSAGE).toString();
@@ -784,11 +750,9 @@ public class MarkerStatsView extends AbstractStatsView
         /**
          * Constructor.
          * 
-         * @param sorter :
-         *            the sorter to use
+         * @param sorter : the sorter to use
          */
-        public SorterSelectionListener(StructuredViewer viewer,
-            ViewerSorter sorter)
+        public SorterSelectionListener(StructuredViewer viewer, ViewerSorter sorter)
         {
             mViewer = viewer;
             mSorter = sorter;
@@ -823,8 +787,7 @@ public class MarkerStatsView extends AbstractStatsView
         /**
          * Creates a reverse sorter that negates the original sorter.
          * 
-         * @param sorter
-         *            the original sorter
+         * @param sorter the original sorter
          */
         public ReverseSorter(ViewerSorter sorter)
         {
@@ -854,7 +817,7 @@ public class MarkerStatsView extends AbstractStatsView
         public int compare(Viewer viewer, Object e1, Object e2)
         {
             ITableLabelProvider provider = (ITableLabelProvider) ((TableViewer) viewer)
-                .getLabelProvider();
+                    .getLabelProvider();
 
             String label1 = provider.getColumnText(e1, 0);
             String label2 = provider.getColumnText(e2, 0);

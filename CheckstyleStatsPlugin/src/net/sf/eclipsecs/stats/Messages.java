@@ -34,15 +34,13 @@ public final class Messages extends NLS
     private static final String BUNDLE_NAME = "net.sf.eclipsecs.stats.messages"; //$NON-NLS-1$
 
     private Messages()
-    {
-    }
+    {}
 
     static
     {
         // initialize resource bundle
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);
     }
-
 
     public static String PreferencePage_displayJavadocErrors;
 
@@ -59,8 +57,6 @@ public final class Messages extends NLS
     public static String MarkerStatsView_displayError;
 
     public static String MarkerStatsView_displayErrorTooltip;
-
-    public static String DetailStatsView_descriptionLabel;
 
     public static String StatsViewUtils_checkstyleErrorsCount;
 
@@ -107,7 +103,7 @@ public final class Messages extends NLS
     public static String CreateStatsJob_msgAnalyzeMarkers;
 
     public static String CreateStatsJob_errorAnalyzingMarkers;
-    
+
     public static String CreateStatsJob_markerMessageShouldntBeEmpty;
 
     public static String AbstractStatsView_msgRefreshStats;
@@ -162,6 +158,19 @@ public final class Messages extends NLS
 
     public static String MarkerStatsView_lblDetailMessage;
 
+    public static String CheckstyleMarkerFilterDialog_lblExcludeMarkers;
+
+    public static String CheckstyleMarkerFilterDialog_lblRegex;
+
+    public static String CheckstyleMarkerFilterDialog_btnEdit;
+
+    public static String CheckstyleMarkerFilterDialog_btnAdd;
+
+    public static String CheckstyleMarkerFilterDialog_btnRemove;
+
+    public static String CheckstyleMarkerFilterDialog_titleRegexEditor;
+
+    public static String CheckstyleMarkerFilterDialog_msgNoRegexDefined;
 
     // CHECKSTYLE:ON
 }

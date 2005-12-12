@@ -30,12 +30,6 @@ public class PrefsInitializer extends AbstractPreferenceInitializer
 {
 
     /**
-     * Permet de dire si on veut afficher dans le graphe les erreurs Checkstyle
-     * liées au Javadoc.
-     */
-    public static final String PROPS_SHOW_JAVADOC_ERRORS = "show_javadoc_errors"; //$NON-NLS-1$
-
-    /**
      * Permet de dire si on veut afficher dans le graphe toutes les catégories
      * ou bien regrouper les plus faibles dans une catégorie "Autres".
      */
@@ -48,8 +42,6 @@ public class PrefsInitializer extends AbstractPreferenceInitializer
      */
     public void initializeDefaultPreferences()
     {
-        StatsCheckstylePlugin.getDefault().getPluginPreferences().setDefault(
-            PROPS_SHOW_JAVADOC_ERRORS, true);
         StatsCheckstylePlugin.getDefault().getPluginPreferences().setDefault(
             PROPS_SHOW_ALL_CATEGORIES, false);
     }
