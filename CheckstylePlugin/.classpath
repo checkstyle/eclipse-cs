@@ -5,6 +5,6 @@
 	<classpathentry output="metadata" kind="src" path="metadata"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-	<classpathentry kind="lib" path="checkstyle-all-4.0.jar"/>
+	<classpathentry kind="lib" path="checkstyle-all-4.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
