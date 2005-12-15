@@ -3,10 +3,10 @@
    <description url="http://eclipse-cs.sourceforge.net/update">
       Eclipse Checkstyle Plug-in Update Site
    </description>
-   <feature url="http://osdn.dl.sourceforge.net/sourceforge/eclipse-cs/com.atlassw.tools.eclipse.checkstyle_4.0.0-feature_2.jar" id="com.atlassw.tools.eclipse.checkstyle" version="4.0.0">
+   <feature url="http://osdn.dl.sourceforge.net/sourceforge/eclipse-cs/com.atlassw.tools.eclipse.checkstyle_4.0.1-feature.jar" id="com.atlassw.tools.eclipse.checkstyle" version="4.0.1">
       <category name="Checkstyle"/>
    </feature>
-   <archive path="plugins/com.atlassw.tools.eclipse.checkstyle_4.0.0.jar" url="http://osdn.dl.sourceforge.net/sourceforge/eclipse-cs/com.atlassw.tools.eclipse.checkstyle_4.0.0_2.jar"/>
+   <archive path="plugins/com.atlassw.tools.eclipse.checkstyle_4.0.1.jar" url="http://osdn.dl.sourceforge.net/sourceforge/eclipse-cs/com.atlassw.tools.eclipse.checkstyle_4.0.1.jar"/>
    <category-def name="Checkstyle" label="Eclipse Checkstyle Plug-in">
       <description>
          Integrates Checkstyle with Eclipse

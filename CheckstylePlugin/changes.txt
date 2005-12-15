@@ -7,6 +7,14 @@ That is: <path-to-my-eclipse-install>/eclipse.exe -clean
 The plugin version 4.0.0 does not support eclipse 2.x.x any more. 
 Make sure you got an eclipse 3.0 or higher installation you are installing this plugin to.
 
+Eclipse Checkstyle Plugin v4.0.1
+---------------------------------
+
+This is a bugfix release that incorporates the Checkstyle 4.1 release,
+which comes with several bugfixes in the Checkstyle core.
+No changes have been made to the plug-in itself since the last release.
+
+
 Eclipse Checkstyle Plugin v4.0.0
 ---------------------------------
 
