@@ -41,6 +41,6 @@
          id="com.atlassw.tools.eclipse.checkstyle"
          download-size="2800"
          install-size="7000"
-         version="4.0.0"/>
+         version="4.0.1"/>
 
 </feature>
