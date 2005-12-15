@@ -2,7 +2,7 @@
 <feature
       id="com.atlassw.tools.eclipse.checkstyle"
       label="%feature.label"
-      version="4.0.0"
+      version="4.0.1"
       provider-name="%feature.provider_name"
       image="eclipse-cs_inverted.png">
 
