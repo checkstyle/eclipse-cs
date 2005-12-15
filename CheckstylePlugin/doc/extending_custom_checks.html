@@ -8,7 +8,7 @@
         <title>Using custom checks</title>
     </head>
     <body>
-        <h2>Using custom checks</h2>
+        <h2>-- Using custom checks --</h2>
         <p>One great feature of Checkstyle is its extentablity. You can easily write own checks as
             explained <a href="http://checkstyle.sourceforge.net/writingchecks.html">here</a> .</p>
         <p>Once you have written your check you surely want to use them with the plug-in.</p>
@@ -53,14 +53,15 @@
                     <span class="code-black"> &lt;!DOCTYPE checkstyle-metadata PUBLIC
                         &quot;-//eclipse-cs//DTD Check Metadata 1.0//EN&quot;
                         &quot;http://eclipse-cs.sourceforge.net/dtds/checkstyle-metadata_1_0.dtd&quot;&gt;</span>
-                </pre> This way you can validate your metadata file against the dtd using your
-                preferred XML editor before packaging it into your custom <span class="code-blue"
+                </pre>
+                <p>This way you can validate your metadata file against the dtd using your preferred
+                    XML editor before packaging it into your custom <span class="code-blue"
                     >.jar</span>.<br/> Please see the <a href="extending_custom_metadata.html"
-                >dtd</a> as a reference for the structure, meaning and features the metadata can
-                possibly provide. <br/> For further examples for metadata files and pointers how to
-                achieve on or another feature please see the metadata inside the <span
-                    class="code-blue">CheckstyleMetadata.jar</span> inside the plug-in directory. <br/>
-                <br/>
+                    >dtd</a> as a reference for the structure, meaning and features the metadata can
+                    possibly provide. <br/> For further examples for metadata files and pointers how
+                    to achieve on or another feature please see the metadata inside the <span
+                        class="code-blue">CheckstyleMetadata.jar</span> inside the plug-in
+                    directory.</p>
             </li>
             <li>
                 <p>Finally package your <span class="code-blue">.jar</span> file together.<br/> Go
@@ -78,18 +79,26 @@
             </li>
             <li>
                 <p>If you provided custom metadata for your checks you will be able to fully
-                    configure them using the plug-in's configuration editor.</p> If you did not
-                provide custom metadata some limitations in the configuration editor will apply: <ul>
-                    <li>You cannot add your custom checks via the configuration editor, because your
-                        checks are not known to the plugin.<br/> This means you need to write your
-                        checkstyle configuration file by hand using a text editor. Be sure to
-                        include all properties of your modules within the module configuration so
-                        you can at least edit the properties afterwards in the Checkstyle Plug-in
-                        Configuration Editor.</li>
-                    <li>If you remove your custom checks from the configuration using the
-                        configuration editor you cannot re-add them using the configuration editor.</li>
-                    <li>Your hand added custom checks will show up in the <i>Other</i> section of
-                        the configuration editor.</li>
+                    configure them using the plug-in's configuration editor. If you did not provide
+                    custom metadata some limitations in the configuration editor will apply: </p>
+                <ul>
+                    <li>
+                        <p>You cannot add your custom checks via the configuration editor, because
+                            your checks are not known to the plugin.<br/> This means you need to
+                            write your checkstyle configuration file by hand using a text editor. Be
+                            sure to include all properties of your modules within the module
+                            configuration so you can at least edit the properties afterwards in the
+                            Checkstyle Plug-in Configuration Editor.</p>
+                    </li>
+                    <li>
+                        <p>If you remove your custom checks from the configuration using the
+                            configuration editor you cannot re-add them using the configuration
+                            editor.</p>
+                    </li>
+                    <li>
+                        <p>Your hand added custom checks will show up in the <i>Other</i> section of
+                            the configuration editor.</p>
+                    </li>
                 </ul>
             </li>
         </ol>

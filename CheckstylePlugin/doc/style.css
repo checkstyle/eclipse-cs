@@ -1,4 +1,5 @@
-html{
+/* Page styles */
+html, body{
 	height: 100%;
 	width: 100%;
 }
@@ -7,37 +8,47 @@ body {
 	border: 0px;
 	margin: 0px;
 	padding: 0px;
-	height: 100%;
-	width: 100%;
 	color: #000000;
 	background-color: #ffffff;
+	font-family: verdana, "trebuchet MS", helvetica, sans-serif;
 }
 
+/* Header styles */
 h2{
 	color: #FFFFFF;
 	background-color: #003399;
 	text-align: center;
-	font-size: 24px;
+	font-size: 14px;
 	margin-top: 0px;
 	border-bottom: 5px solid #cddeff;
+	letter-spacing: 3px;
 }
 
 h3 {
+	font-size: 12px;
 	margin-left: 10px;
-	text-decoration:underline;
+	text-decoration: none;
+	color: #000000;
+	background-color: #ffffff;
 }
 
 h4 {
+	font-size: 11px;
 	margin-left: 10px;
 }
 
-form{
-	margin: 5px 0px 0px 0px;
-}
 
+/* Text block styles */
 p {
 	margin-left: 10px;
 	margin-right: 10px;
+	line-height: 1.5;
+	font-size: 11px;
+}
+
+table, ul, ol {
+	line-height: 1.5;
+	font-size: 11px;
 }
 
 pre{
@@ -47,16 +58,15 @@ pre{
 	font-size: 12px;
 }
 
-a {
+/* Styles for simple links */
+a, a:hover {
 	color:#003399;
 	background-color: #FFFFFF;
-	text-decoration: none;
+	text-decoration: underline;
 }
 
 a:hover {
 	color: #6699ff;
-	background-color: #FFFFFF;
-	text-decoration: underline;
 }
 
 img{
@@ -64,18 +74,13 @@ img{
 	border:0px;
 }
 
+.imagelink, .imagelink:hover {
+	text-decoration: none;
+}
+
+
 td{
 	vertical-align: top;
-}
-
-ol{
-	margin: 10px 10px 10px 25px;
-	padding: 0;
-}
-
-li{
-	color: #000000;
-	background-color: #FFFFFF;
 }
 
 .maintable{
@@ -131,17 +136,10 @@ li{
 	background-color: #ffffff;
 }
 
-.footer{
+.footer, .footer a, .footer a:hover{
 	color:#003399;
 	background-color: #cddeff;
-}
-.footer a {
-	color:#003399;
-	background-color: #cddeff;
-}
-.footer a:hover {
-	color: #6699ff;
-	background-color: #cddeff;
+	text-decoration: none;
 }
 
 .copyright{
@@ -155,37 +153,29 @@ li{
 	white-space: nowrap;
 }
 
-.code-lightblue{
+/* Styles used to color source code */
+.code-lightblue, .code-blue, .code-green, .code-black, .code-purple {
 	font-family: "Courier New", Courier, monospace;
 	font-size: 14px;
-	color: #3f5fbf;
 	background-color: #FFFFFF;
+}
+.code-lightblue {
+	color: #3f5fbf;
 }
 .code-blue{
-	font-family: "Courier New", Courier, monospace;
-	font-size: 14px;
 	color: #000080;
-	background-color: #FFFFFF;
 }
 .code-green{
-	font-family: "Courier New", Courier, monospace;
-	font-size: 14px;
 	color: #008000;
-	background-color: #FFFFFF;
 }
 .code-black{
-	font-family: "Courier New", Courier, monospace;
-	font-size: 14px;
 	color: #000000;
-	background-color: #FFFFFF;
 }
 .code-purple{
-	font-family: "Courier New", Courier, monospace;
-	font-size: 14px;
 	color: #7f0055;
-	background-color: #FFFFFF;
 }
 
+/* Styles for the navigational buttons */
 .buttonscontainer {
 	margin-top: -4px;
 	color: #FFFFFF;
@@ -195,12 +185,25 @@ li{
 	height: 100%;
 }
 
-.imagelink {
-	text-decoration: none;
+.buttons {
+	color: #000000;
+	background-color: #FFFFFF; 
 }
 
-.imagelink:hover {
+.buttons a, .buttons a:hover, .buttons span {
+	color: #FFFFFF;
+	background-color: #003399;
+	padding: 2px 2px 2px 3px;
+	display: block;
+	border-left: 10px solid #6699FF;
 	text-decoration: none;
+	text-align: left;
+	border-top: 1px solid #FFFFFF;
+	font-size: 11px;
+}
+
+.buttons a:hover {
+	border-left: 10px solid #FFFFFF;
 }
 
 .level2{
@@ -213,43 +216,6 @@ li{
 	text-indent: 20px;
 }
 
-.buttons {
-	color: #000000;
-	background-color: #FFFFFF; 
-}
-
-.buttons a {
-	color: #FFFFFF;
-	background-color: #003399;
-	padding: 2px 2px 2px 3px;
-	display: block;
-	border-left: 10px solid #6699FF;
-	font: 11px Arial, sans-serif;
-	font-weight: bold;
-	text-decoration: none;
-	text-align: left;
-	margin-top: 1px;
-}
-
-.buttons span {
-	color: #FFFFFF;
-	background-color: #003399;
-	padding: 2px 2px 2px 3px;
-	display: block;
-	border-left: 10px solid #6699FF;
-	font: 11px Arial, sans-serif;
-	font-weight: bold;
-	text-decoration: none;
-	text-align: left;
-	margin-top: 1px;
-}
-
-.buttons a:hover {
-	border-left: 10px solid #FFFFFF;
-	text-decoration: none;
-	color: #FFFFFF;
-	background-color: #003399;
-}
 
 .box {
 	display: block;
@@ -261,7 +227,6 @@ li{
 }
 
 .box h3{
-	font: 11px Arial, sans-serif;
 	font-weight: bold;
 	background-color: #003399;
 	color: #FFFFFF;
@@ -269,6 +234,11 @@ li{
 	margin: 0px -3px 3px -3px;
 	text-decoration:none;
 	border-bottom: 3px solid #cddeff;
+	font-size: 11px;
+}
+
+.box form{
+	margin: 5px 0px 0px 0px;
 }
 
 .navsection-box {
