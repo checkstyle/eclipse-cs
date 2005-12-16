@@ -104,6 +104,10 @@
 		<jar destfile="${dist.basedir.tmpdir}/NLS.jar" basedir="${dist.basedir.tmpdir}/binnls" index="true" />
 		<jar destfile="${dist.basedir.tmpdir}/CheckstyleMetadata.jar" basedir="${basedir}/metadata" index="true" />
 
+		<!-- remove the class file directories -->
+		<delete dir="${dist.basedir.tmpdir}/bin" failonerror="false" quiet="true" />
+		<delete dir="${dist.basedir.tmpdir}/binnls" failonerror="false" quiet="true" />
+				
 		<!-- copy the plugin contents to the tmp dir -->
 		<copy todir="${dist.basedir.tmpdir}/">
 			<fileset dir="${basedir}">
