@@ -465,7 +465,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         lblUsage.setLayoutData(fd);
 
         mUsageView = new TableViewer(usageArea);
-        mUsageView.getControl().setEnabled(false);
+        mUsageView.getControl().setBackground(usageArea.getBackground());
         mUsageView.setContentProvider(new ArrayContentProvider());
         mUsageView.setLabelProvider(new WorkbenchLabelProvider());
         fd = new FormData();
