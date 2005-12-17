@@ -1,5 +1,5 @@
 /* Page styles */
-html, body{
+html {
 	height: 100%;
 	width: 100%;
 }
@@ -8,6 +8,8 @@ body {
 	border: 0px;
 	margin: 0px;
 	padding: 0px;
+	height: 100%;
+	width: 100%;
 	color: #000000;
 	background-color: #ffffff;
 	font-family: verdana, "trebuchet MS", helvetica, sans-serif;
@@ -91,9 +93,12 @@ td{
 }
 
 .navsection {
-	width: 220px;
+	height: 100%;
+	width: 230px;
 	color: #003399;
 	background-color: #cddeff;
+	margin-top: -4px;
+	text-align: left;
 }
 
 .navsection a {
@@ -103,6 +108,7 @@ td{
 .navsection a:hover {
 	color: #6699ff;
 	background-color: #cddeff;
+
 }
 
 .mainsection{
@@ -176,16 +182,8 @@ td{
 }
 
 /* Styles for the navigational buttons */
-.buttonscontainer {
-	margin-top: -4px;
-	color: #FFFFFF;
-	background-color: #cddeff; 
-	width: 220px; 
-	text-align: left;
-	height: 100%;
-}
-
 .buttons {
+	width: 230px;
 	color: #000000;
 	background-color: #FFFFFF; 
 }
@@ -200,22 +198,23 @@ td{
 	text-align: left;
 	border-top: 1px solid #FFFFFF;
 	font-size: 11px;
+	white-space: nowrap;
 }
 
 .buttons a:hover {
 	border-left: 10px solid #FFFFFF;
 }
 
+.buttons a img {
+	margin-right: 3px;
+}
+
 .level2{
 	text-indent: 0px;
 }
 .level2{
-	text-indent: 10px;
-}
-.level3{
 	text-indent: 20px;
 }
-
 
 .box {
 	display: block;

@@ -1,11 +1,11 @@
 <project name="CheckstylePlugin" default="build.dist" basedir="../">
-	
+
 	<!-- get the environment properties specific to each developer machine -->
-	<property file="${basedir}/build/env.properties"/>
+	<property file="${basedir}/build/env.properties" />
 
 	<!-- properties that likely change between releases -->
-	<property file="${basedir}/build/version.properties"/>
-	
+	<property file="${basedir}/build/version.properties" />
+
 	<!-- file and directory settings -->
 	<property name="checkstyle.jar" value="checkstyle-all-${checkstyle.version}.jar" />
 	<property name="plugin.name" value="com.atlassw.tools.eclipse.checkstyle_${plugin.version}" />
@@ -22,7 +22,7 @@
 	<property name="update.site.file" value="${plugin.name}${plugin.version.postfix}-updatesite.zip" />
 
 	<!-- define ant4eclipse (used for compilation support) -->
-	<taskdef resource="net/sf/ant4eclipse/antlib.xml" classpath="${basedir}/build/ant4eclipse-0.2.1.jar"/>
+	<taskdef resource="net/sf/ant4eclipse/antlib.xml" classpath="${basedir}/build/ant4eclipse-0.2.1.jar" />
 
 	<!-- ==================================================== -->
 	<!--   CLEAN TARGET                                       -->
@@ -51,7 +51,7 @@
 	<target name="compile.sources" depends="build.target.area">
 
 		<!-- resolve the org.eclipse.pde.core.requiredPlugins needed by ant4eclipse -->
-		<path id="org.eclipse.pde.core.requiredPlugins" >
+		<path id="org.eclipse.pde.core.requiredPlugins">
 			<pathelement location="${eclipse.plugin.dir}/org.eclipse.core.resources_${eclipse.version}.jar" />
 			<pathelement location="${eclipse.plugin.dir}/org.eclipse.ui_${eclipse.version}.jar" />
 			<pathelement location="${eclipse.plugin.dir}/org.eclipse.swt_${eclipse.version}.jar" />
@@ -82,11 +82,11 @@
 		<!-- compile -->
 		<javac srcdir="${basedir}/src" destdir="${dist.basedir.tmpdir}/bin" classpathref="build.classpath" source="1.4" />
 		<javac srcdir="${basedir}/nls" destdir="${dist.basedir.tmpdir}/binnls" classpathref="build.classpath" source="1.4" />
-	
+
 		<!-- copy properties and other stuff -->
-	    <copy todir="${dist.basedir.tmpdir}/bin">
-	      <fileset dir="${basedir}/src" includes="**/*.properties"/>
-	    </copy>
+		<copy todir="${dist.basedir.tmpdir}/bin">
+			<fileset dir="${basedir}/src" includes="**/*.properties" />
+		</copy>
 	</target>
 
 
@@ -107,7 +107,7 @@
 		<!-- remove the class file directories -->
 		<delete dir="${dist.basedir.tmpdir}/bin" failonerror="false" quiet="true" />
 		<delete dir="${dist.basedir.tmpdir}/binnls" failonerror="false" quiet="true" />
-				
+
 		<!-- copy the plugin contents to the tmp dir -->
 		<copy todir="${dist.basedir.tmpdir}/">
 			<fileset dir="${basedir}">
@@ -193,7 +193,7 @@
 			<fileset dir="${checkstyle.docs.dir}" includes="**/*" />
 		</copy>
 
-		<xslt style="${basedir}/doc/generate_docs.xsl" basedir="${basedir}/doc" includes="*.html" destdir="${dist.basedir.tmpdir}/doc" />
+		<xslt style="${basedir}/doc/generate_docs.xsl" basedir="${basedir}/doc" includes="*.*html" destdir="${dist.basedir.tmpdir}/doc" />
 	</target>
 
 	<!-- ==================================================== -->
@@ -211,6 +211,10 @@
 
 		<xslt style="${basedir}/doc/generate_docs.xsl" basedir="${basedir}/doc" includes="*.html" destdir="${dist.basedir}/website">
 			<param name="style" expression="website" />
+		</xslt>
+		<xslt style="${basedir}/doc/generate_docs.xsl" basedir="${basedir}/doc" includes="*.shtml" destdir="${dist.basedir}/website">
+			<param name="style" expression="website" />
+			<mapper type="glob" from="*.shtml" to="*.shtml" />
 		</xslt>
 	</target>
 
