@@ -188,10 +188,10 @@ td{
 	background-color: #FFFFFF; 
 }
 
-.buttons a, .buttons a:hover, .buttons span {
+.buttons a, .buttons a:hover {
 	color: #FFFFFF;
 	background-color: #003399;
-	padding: 2px 2px 2px 3px;
+	padding: 2px 0px 2px 3px;
 	display: block;
 	border-left: 10px solid #6699FF;
 	text-decoration: none;

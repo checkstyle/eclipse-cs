@@ -65,43 +65,34 @@
 	</xsl:template>
 	<!-- renders the left hand side bar containing the navigation and other things -->
 	<xsl:template name="navigation">
-
 		<xsl:variable name="section"
 			select="/*[local-name()='html']/*[local-name()='head']/*[local-name()='meta' and
 			@name='section']/@content"/>
 		<div class="buttons">
-			<a href="index.html" style="padding-left: 0px;">
-				<img src="images/eclipse-cs.png" alt="eclipse-cs Logo"/>
+			<a href="index.html" style="padding-top: 58px; border-top: 0px solid #FFFFFF; background-image: url(images/eclipse-cs.png); background-repeat: no-repeat;">
+				<!--<img src="images/eclipse-cs.png" alt="eclipse-cs Logo"/>-->
+				The Checkstyle Plug-in for Eclipse
 			</a>
 			<a href="screen_shots.html" class="level1">Screenshots</a>
 			<a href="release_notes.html" class="level1">Release Notes</a>
 			<a href="faq.html" class="level1">FAQ</a>
 			<a href="troubleshooting.html" class="level1">Troubleshooting</a>
-			<xsl:if test="$section = 'main'">
+			<xsl:if test="$section != 'docs-basic'">
 				<a href="getting_started.html" class="level1"><img src="images/plus.gif" alt=""
 					/>Getting Started</a>
-				<a href="advanced_file_sets.html" class="level1"><img src="images/plus.gif" alt=""
-					/>Advanced topics</a>
-				<a href="extending_custom_checks.html" class="level1"><img src="images/plus.gif"
-						alt=""/>Extending the Checkstyle Plug-in</a>
-				<a href="news.shtml" class="level1"><img src="images/plus.gif" alt=""
-					/>eclipse-cs project</a>
 			</xsl:if>
 			<xsl:if test="$section = 'docs-basic'">
 				<a href="getting_started.html" class="level1"><img src="images/minus.gif" alt=""
 					/>Getting Started</a>
 				<a href="basic_setup_project.html" class="level2">Setting up a project</a>
-				<a href="basic_creating_config.html" class="level2">Creating a check configuration</a>
+				<a href="basic_creating_config.html" class="level2">Creating a check
+				configuration</a>
+			</xsl:if>
+			<xsl:if test="$section != 'docs-adv'">
 				<a href="advanced_file_sets.html" class="level1"><img src="images/plus.gif" alt=""
 					/>Advanced topics</a>
-				<a href="extending_custom_checks.html" class="level1"><img src="images/plus.gif"
-						alt=""/>Extending the Checkstyle Plug-in</a>
-				<a href="news.shtml" class="level1"><img src="images/plus.gif" alt=""
-					/>eclipse-cs project</a>
 			</xsl:if>
 			<xsl:if test="$section = 'docs-adv'">
-				<a href="getting_started.html" class="level1"><img src="images/plus.gif" alt=""
-					/>Getting Started</a>
 				<a href="advanced_file_sets.html" class="level1"><img src="images/minus.gif" alt=""
 					/>Advanced topics</a>
 				<a href="advanced_file_sets.html" class="level2">Configuring File Sets</a>
@@ -111,16 +102,12 @@
 				<a href="advanced_regularexpressions.html" class="level2">Using Regular Expressions</a>
 				<a href="advanced_properties.html" class="level2">Expanding properties</a>
 				<a href="advanced_preferences.html" class="level2">Advanced Preferences</a>
+			</xsl:if>
+			<xsl:if test="$section != 'docs-ext'">
 				<a href="extending_custom_checks.html" class="level1"><img src="images/plus.gif"
 						alt=""/>Extending the Checkstyle Plug-in</a>
-				<a href="news.shtml" class="level1"><img src="images/plus.gif" alt=""
-					/>eclipse-cs project</a>
 			</xsl:if>
 			<xsl:if test="$section = 'docs-ext'">
-				<a href="getting_started.html" class="level1"><img src="images/plus.gif" alt=""
-					/>Getting Started</a>
-				<a href="advanced_file_sets.html" class="level1"><img src="images/plus.gif" alt=""
-					/>Advanced topics</a>
 				<a href="extending_custom_checks.html" class="level1"><img src="images/minus.gif"
 						alt=""/>Extending the Checkstyle Plug-in</a>
 				<a href="extending_custom_checks.html" class="level2">Using custom checks</a>
@@ -129,27 +116,27 @@
 				<a href="extending_builtin_configurations.html" class="level2">Provide a built-in
 					configuration</a>
 				<a href="extending_filters.html" class="level2">Creating a custom plug-in filter</a>
-				<a href="news.shtml" class="level1"><img src="images/plus.gif" alt=""
-					/>eclipse-cs project</a>
+			</xsl:if>
+			<xsl:if test="$section != 'project'">
+				<a href="news.shtml" class="level1"><img src="images/plus.gif" alt=""/>eclipse-cs
+					project</a>
 			</xsl:if>
 			<xsl:if test="$section = 'project'">
-				<a href="getting_started.html" class="level1"><img src="images/plus.gif" alt=""
-					/>Getting Started</a>
-				<a href="advanced_file_sets.html" class="level1"><img src="images/plus.gif" alt=""
-					/>Advanced topics</a>
-				<a href="extending_custom_checks.html" class="level1"><img src="images/plus.gif"
-						alt=""/>Extending the Checkstyle Plug-in</a>
-				<a href="news.shtml" class="level1"><img src="images/minus.gif" alt=""
-					/>eclipse-cs project</a>
+				<a href="news.shtml" class="level1"><img src="images/minus.gif" alt=""/>eclipse-cs
+					project</a>
 				<a href="developers.html" class="level2">Project members</a>
 				<a href="http://sourceforge.net/projects/eclipse-cs/" class="level2">SourceForge
 					project page</a>
-				<a href="http://sourceforge.net/tracker/?atid=559494&amp;group_id=80344&amp;func=browse" class="level2">Report a bug</a>
-				<a href="http://sourceforge.net/tracker/?atid=559494&amp;group_id=80344&amp;func=browse" class="level2">File a feature request</a>
-				<a href="https://sourceforge.net/forum/?group_id=80344" class="level2">Get help in the Forums</a>
+				<a
+					href="http://sourceforge.net/tracker/?atid=559494&amp;group_id=80344&amp;func=browse"
+					class="level2">Report a bug</a>
+				<a
+					href="http://sourceforge.net/tracker/?atid=559494&amp;group_id=80344&amp;func=browse"
+					class="level2">File a feature request</a>
+				<a href="https://sourceforge.net/forum/?group_id=80344" class="level2">Get help in
+					the Forums</a>
 				<a href="https://sourceforge.net/project/showfiles.php?group_id=80344"
 					class="level2">Downloads</a>
-				
 			</xsl:if>
 		</div>
 		<div class="box navsection-box">
@@ -188,8 +175,8 @@
 						</tr>
 						<tr>
 							<td colspan="3" style="text-align: center;">
-								<textarea cols="25" rows="7"
-									name="ratingcomments" style="font-siz:10px;">Please input a comment on why you like or dislike the Eclipse Checkstyle Plug-in.</textarea>
+								<textarea cols="25" rows="7" name="ratingcomments"
+									style="font-siz:10px;">Please input a comment on why you like or dislike the Eclipse Checkstyle Plug-in.</textarea>
 							</td>
 						</tr>
 						<tr>
