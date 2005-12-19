@@ -17,6 +17,7 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 //============================================================================
+
 package net.sf.eclipsecs.stats.views;
 
 import java.util.ArrayList;
@@ -53,10 +54,10 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IActionBars;
+import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.ide.ResourceUtil;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.progress.IWorkbenchSiteProgressService;
 import org.eclipse.ui.progress.WorkbenchJob;
@@ -110,16 +111,15 @@ public abstract class AbstractStatsView extends ViewPart
         // create and register the workspace focus listener
         mFocusListener = new ISelectionListener()
         {
-            public void selectionChanged(IWorkbenchPart part,
-                ISelection selection)
+            public void selectionChanged(IWorkbenchPart part, ISelection selection)
             {
                 AbstractStatsView.this.focusSelectionChanged(part, selection);
             }
         };
 
         getSite().getPage().addSelectionListener(mFocusListener);
-        focusSelectionChanged(getSite().getPage().getActivePart(), getSite()
-            .getPage().getSelection());
+        focusSelectionChanged(getSite().getPage().getActivePart(), getSite().getPage()
+                .getSelection());
 
         // create and register the listener for resource changes
         mResourceListener = new IResourceChangeListener()
@@ -127,8 +127,8 @@ public abstract class AbstractStatsView extends ViewPart
             public void resourceChanged(IResourceChangeEvent event)
             {
 
-                IMarkerDelta[] markerDeltas = event.findMarkerDeltas(
-                    CheckstyleMarker.MARKER_ID, true);
+                IMarkerDelta[] markerDeltas = event.findMarkerDeltas(CheckstyleMarker.MARKER_ID,
+                        true);
 
                 if (markerDeltas.length > 0)
                 {
@@ -137,8 +137,7 @@ public abstract class AbstractStatsView extends ViewPart
             }
         };
 
-        ResourcesPlugin.getWorkspace().addResourceChangeListener(
-            mResourceListener);
+        ResourcesPlugin.getWorkspace().addResourceChangeListener(mResourceListener);
 
         makeActions();
         initActionBars(getViewSite().getActionBars());
@@ -159,8 +158,7 @@ public abstract class AbstractStatsView extends ViewPart
     {
         // IMPORTANT: Deregister listeners
         getSite().getPage().removeSelectionListener(mFocusListener);
-        ResourcesPlugin.getWorkspace().removeResourceChangeListener(
-            mResourceListener);
+        ResourcesPlugin.getWorkspace().removeResourceChangeListener(mResourceListener);
 
         super.dispose();
     }
@@ -171,9 +169,8 @@ public abstract class AbstractStatsView extends ViewPart
     public final void openFiltersDialog()
     {
 
-        CheckstyleMarkerFilterDialog dialog = new CheckstyleMarkerFilterDialog(
-            mMainComposite.getShell(), (CheckstyleMarkerFilter) getFilter()
-                .clone());
+        CheckstyleMarkerFilterDialog dialog = new CheckstyleMarkerFilterDialog(mMainComposite
+                .getShell(), (CheckstyleMarkerFilter) getFilter().clone());
 
         if (dialog.open() == Window.OK)
         {
@@ -188,8 +185,7 @@ public abstract class AbstractStatsView extends ViewPart
     /**
      * Initializes the action bars of this view.
      * 
-     * @param actionBars
-     *            the action bars
+     * @param actionBars the action bars
      */
     protected void initActionBars(IActionBars actionBars)
     {
@@ -236,7 +232,7 @@ public abstract class AbstractStatsView extends ViewPart
     {
 
         IWorkbenchSiteProgressService service = (IWorkbenchSiteProgressService) getSite()
-            .getAdapter(IWorkbenchSiteProgressService.class);
+                .getAdapter(IWorkbenchSiteProgressService.class);
 
         // rebuild statistics data
         CreateStatsJob job = new CreateStatsJob(getFilter());
@@ -274,8 +270,7 @@ public abstract class AbstractStatsView extends ViewPart
 
         String concreteViewId = getViewId();
 
-        IDialogSettings workbenchSettings = StatsCheckstylePlugin.getDefault()
-            .getDialogSettings();
+        IDialogSettings workbenchSettings = StatsCheckstylePlugin.getDefault().getDialogSettings();
         IDialogSettings settings = workbenchSettings.getSection(concreteViewId);
 
         if (settings == null)
@@ -297,7 +292,7 @@ public abstract class AbstractStatsView extends ViewPart
 
     /**
      * Callback for subclasses to refresh the content of their controls, since
-     * the statistics data has been updated.<br/>Note that the subclass should
+     * the statistics data has been updated. <br/>Note that the subclass should
      * check if their controls have been disposed, since this method is called
      * by a job that might run even if the view has been closed.
      */
@@ -311,10 +306,8 @@ public abstract class AbstractStatsView extends ViewPart
     /**
      * Invoked on selection changes within the workspace.
      * 
-     * @param part
-     *            the workbench part the selection occurred
-     * @param selection
-     *            the selection
+     * @param part the workbench part the selection occurred
+     * @param selection the selection
      */
     private void focusSelectionChanged(IWorkbenchPart part, ISelection selection)
     {
@@ -323,7 +316,7 @@ public abstract class AbstractStatsView extends ViewPart
         if (part instanceof IEditorPart)
         {
             IEditorPart editor = (IEditorPart) part;
-            IFile file = ResourceUtil.getFile(editor.getEditorInput());
+            IFile file = getFile(editor.getEditorInput());
             if (file != null)
             {
                 resources.add(file);
@@ -333,19 +326,18 @@ public abstract class AbstractStatsView extends ViewPart
         {
             if (selection instanceof IStructuredSelection)
             {
-                for (Iterator iterator = ((IStructuredSelection) selection)
-                    .iterator(); iterator.hasNext();)
+                for (Iterator iterator = ((IStructuredSelection) selection).iterator(); iterator
+                        .hasNext();)
                 {
                     Object object = iterator.next();
                     if (object instanceof IAdaptable)
                     {
                         IResource resource = (IResource) ((IAdaptable) object)
-                            .getAdapter(IResource.class);
+                                .getAdapter(IResource.class);
 
                         if (resource == null)
                         {
-                            resource = (IResource) ((IAdaptable) object)
-                                .getAdapter(IFile.class);
+                            resource = (IResource) ((IAdaptable) object).getAdapter(IFile.class);
                         }
 
                         if (resource != null)
@@ -371,18 +363,43 @@ public abstract class AbstractStatsView extends ViewPart
     }
 
     /**
+     * *** * Copied from ResourceUtil.getFile() since ResourceUtil is only
+     * available since Eclipse 3.1 *** Returns the file corresponding to the
+     * given editor input, or <code>null</code> if there is no applicable
+     * file. Returns <code>null</code> if the given editor input is
+     * <code>null</code>.
+     * 
+     * @param editorInput the editor input, or <code>null</code>
+     * @return the file corresponding to the editor input, or <code>null</code>
+     */
+    public static IFile getFile(IEditorInput editorInput)
+    {
+        if (editorInput == null)
+        {
+            return null;
+        }
+        // Note: do not treat IFileEditorInput as a special case. Use the
+        // adapter mechanism instead.
+        // See Bug 87288 [IDE] [EditorMgmt] Should avoid explicit checks for
+        // [I]FileEditorInput
+        Object o = editorInput.getAdapter(IFile.class);
+        if (o instanceof IFile)
+        {
+            return (IFile) o;
+        }
+        return null;
+    }
+
+    /**
      * Checks if an update of the statistics data is needed, based on the
      * current and previously selected resources. The current filter setting is
      * also taken into consideration.
      * 
-     * @param oldResources
-     *            the previously selected resources.
-     * @param newResources
-     *            the currently selected resources
+     * @param oldResources the previously selected resources.
+     * @param newResources the currently selected resources
      * @return <code>true</code> if an update of the statistics data is needed
      */
-    private boolean updateNeeded(IResource[] oldResources,
-        IResource[] newResources)
+    private boolean updateNeeded(IResource[] oldResources, IResource[] newResources)
     {
         // determine if an update if refiltering is required
         CheckstyleMarkerFilter filter = getFilter();
@@ -393,7 +410,7 @@ public abstract class AbstractStatsView extends ViewPart
 
         int onResource = filter.getOnResource();
         if (onResource == CheckstyleMarkerFilter.ON_ANY_RESOURCE
-            || onResource == CheckstyleMarkerFilter.ON_WORKING_SET)
+                || onResource == CheckstyleMarkerFilter.ON_WORKING_SET)
         {
             return false;
         }
@@ -411,10 +428,8 @@ public abstract class AbstractStatsView extends ViewPart
         }
         if (onResource == CheckstyleMarkerFilter.ON_ANY_RESOURCE_OF_SAME_PROJECT)
         {
-            Collection oldProjects = CheckstyleMarkerFilter
-                .getProjectsAsCollection(oldResources);
-            Collection newProjects = CheckstyleMarkerFilter
-                .getProjectsAsCollection(newResources);
+            Collection oldProjects = CheckstyleMarkerFilter.getProjectsAsCollection(oldResources);
+            Collection newProjects = CheckstyleMarkerFilter.getProjectsAsCollection(newResources);
 
             if (oldProjects.size() == newProjects.size())
             {
