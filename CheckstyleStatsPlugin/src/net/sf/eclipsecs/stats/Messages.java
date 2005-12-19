@@ -172,5 +172,9 @@ public final class Messages extends NLS
 
     public static String CheckstyleMarkerFilterDialog_msgNoRegexDefined;
 
+    public static String CheckstyleMarkerFilterDialog_msgInvalidRegex;
+
+    public static String CheckstyleMarkerFilterDialog_msgEditRegex;
+
     // CHECKSTYLE:ON
 }

@@ -22,6 +22,8 @@ package net.sf.eclipsecs.stats.views.internal;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import net.sf.eclipsecs.stats.Messages;
 
@@ -40,6 +42,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.jface.window.Window;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -58,6 +61,7 @@ import org.eclipse.ui.contentassist.ContentAssistHandler;
 import org.eclipse.ui.dialogs.IWorkingSetSelectionDialog;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginImages;
 import com.atlassw.tools.eclipse.checkstyle.util.regex.RegExContentAssistProcessor;
 
 /**
@@ -264,6 +268,7 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog
         // init the controls
         updateUIFromFilter();
 
+        this.setTitleImage(CheckstylePluginImages.getImage(CheckstylePluginImages.PLUGIN_LOGO));
         this.setTitle(Messages.CheckstyleMarkerFilterDialog_title);
         this.setMessage(Messages.CheckstyleMarkerFilterDialog_titleMessage);
 
@@ -537,7 +542,7 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog
      * 
      * @author Lars Ködderitzsch
      */
-    private class RegexDialog extends Dialog
+    private class RegexDialog extends TitleAreaDialog
     {
 
         // =================================================
@@ -591,17 +596,30 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog
 
             Composite main = new Composite(composite, SWT.NONE);
             GridLayout layout = new GridLayout(2, false);
-            layout.marginHeight = 0;
-            layout.marginWidth = 0;
             main.setLayout(layout);
             GridData gd = new GridData(GridData.FILL_BOTH);
             main.setLayoutData(gd);
 
-            mRegexText = new Text(main, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
+            Composite controls = new Composite(main, SWT.NONE);
+            layout = new GridLayout(1, false);
+            layout.marginHeight = 0;
+            layout.marginWidth = 0;
+            controls.setLayout(layout);
+            controls.setLayoutData(new GridData(GridData.FILL_BOTH));
+
+            Composite buttons = new Composite(main, SWT.NONE);
+            layout = new GridLayout(1, false);
+            layout.marginHeight = 0;
+            layout.marginWidth = 0;
+            buttons.setLayout(layout);
+            buttons.setLayoutData(new GridData(GridData.FILL_VERTICAL));
+
+            mRegexText = new Text(controls, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
             gd = new GridData(GridData.FILL_HORIZONTAL);
+            gd.grabExcessHorizontalSpace = true;
             mRegexText.setLayoutData(gd);
 
-            mAddButton = new Button(main, SWT.PUSH);
+            mAddButton = new Button(buttons, SWT.PUSH);
             mAddButton.setText(Messages.CheckstyleMarkerFilterDialog_btnAdd);
             gd = new GridData(GridData.FILL_HORIZONTAL);
             gd.verticalAlignment = SWT.TOP;
@@ -614,9 +632,23 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog
                     String text = mRegexText.getText();
                     if (text.trim().length() > 0)
                     {
-                        mFileTypesList.add(mRegexText.getText());
-                        mListViewer.refresh();
-                        mRegexText.setText(""); //$NON-NLS-1$
+
+                        try
+                        {
+                            // check for the patterns validity
+                            Pattern.compile(text);
+
+                            mFileTypesList.add(text);
+                            mListViewer.refresh();
+                            mRegexText.setText(""); //$NON-NLS-1$
+
+                        }
+                        catch (PatternSyntaxException ex)
+                        {
+                            RegexDialog.this.setErrorMessage(NLS.bind(
+                                    Messages.CheckstyleMarkerFilterDialog_msgInvalidRegex, ex
+                                            .getLocalizedMessage()));
+                        }
                     }
                 }
 
@@ -626,7 +658,7 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog
                 }
             });
 
-            mListViewer = new ListViewer(main, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL
+            mListViewer = new ListViewer(controls, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL
                     | SWT.BORDER);
             mListViewer.setLabelProvider(new LabelProvider());
             mListViewer.setContentProvider(new ArrayContentProvider());
@@ -634,10 +666,10 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog
             gd = new GridData(GridData.FILL_BOTH);
             gd.heightHint = 100;
             gd.widthHint = 150;
-            gd.grabExcessVerticalSpace = true;
+            gd.grabExcessHorizontalSpace = true;
             mListViewer.getControl().setLayoutData(gd);
 
-            mRemoveButton = new Button(main, SWT.PUSH);
+            mRemoveButton = new Button(buttons, SWT.PUSH);
             mRemoveButton.setText(Messages.CheckstyleMarkerFilterDialog_btnRemove);
             gd = new GridData(GridData.FILL_HORIZONTAL);
             gd.verticalAlignment = SWT.TOP;
@@ -661,6 +693,9 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog
 
             // integrate content assist
             ContentAssistHandler.createHandlerForText(mRegexText, createContentAssistant());
+
+            this.setTitle(Messages.CheckstyleMarkerFilterDialog_titleRegexEditor);
+            this.setMessage(Messages.CheckstyleMarkerFilterDialog_msgEditRegex);
 
             return main;
         }
