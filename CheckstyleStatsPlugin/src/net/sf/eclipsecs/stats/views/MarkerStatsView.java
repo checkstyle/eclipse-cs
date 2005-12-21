@@ -612,7 +612,7 @@ public class MarkerStatsView extends AbstractStatsView
                 }
             }
 
-            return mCurrentDetails;
+            return mCurrentDetails != null ? mCurrentDetails : new Object[0];
         }
 
         /**
