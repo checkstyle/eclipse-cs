@@ -30,6 +30,9 @@ import net.sf.eclipsecs.stats.data.MarkerStat;
 import net.sf.eclipsecs.stats.data.Stats;
 import net.sf.eclipsecs.stats.util.CheckstyleStatsPluginImages;
 import net.sf.eclipsecs.stats.views.internal.FiltersAction;
+import net.sf.eclipsecs.stats.views.table.EnhancedTableViewer;
+import net.sf.eclipsecs.stats.views.table.ITableComparableProvider;
+import net.sf.eclipsecs.stats.views.table.ITableSettingsProvider;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.CoreException;
@@ -42,6 +45,7 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -51,13 +55,10 @@ import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredViewer;
-import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -88,6 +89,10 @@ public class MarkerStatsView extends AbstractStatsView
     /** The unique view id. */
     public static final String VIEW_ID = MarkerStatsView.class.getName();
 
+    private static final String TAG_SECTION_MASTER = "masterView";
+
+    private static final String TAG_SECTION_DETAIL = "detailView";
+
     //
     // attributes
     //
@@ -98,8 +103,14 @@ public class MarkerStatsView extends AbstractStatsView
     /** The main composite. */
     private Composite mMainSection;
 
-    /** The current viewer. */
-    private TableViewer mCurrentViewer;
+    /** The stack layout of the main composite. */
+    private StackLayout mStackLayout;
+
+    /** The master viewer. */
+    private EnhancedTableViewer mMasterViewer;
+
+    /** The detail viewer. */
+    private EnhancedTableViewer mDetailViewer;
 
     /** Action to show the charts view. */
     private Action mChartAction;
@@ -128,7 +139,6 @@ public class MarkerStatsView extends AbstractStatsView
      */
     public void createPartControl(Composite parent)
     {
-
         super.createPartControl(parent);
 
         // set up the main layout
@@ -146,19 +156,26 @@ public class MarkerStatsView extends AbstractStatsView
 
         // the main section
         mMainSection = new Composite(parent, SWT.NONE);
-        layout = new GridLayout(1, false);
-        layout.marginWidth = 0;
-        layout.marginHeight = 0;
-        mMainSection.setLayout(layout);
+        mStackLayout = new StackLayout();
+        mStackLayout.marginHeight = 0;
+        mStackLayout.marginWidth = 0;
+        mMainSection.setLayout(mStackLayout);
         mMainSection.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-        // initially create the master viewer
-        mCurrentViewer = createMasterView(mMainSection);
+        // create the master viewer
+        mMasterViewer = createMasterView(mMainSection);
+
+        // create the detail viewer
+        mDetailViewer = createDetailView(mMainSection);
+
+        mStackLayout.topControl = mMasterViewer.getTable();
 
         updateActions();
 
         // initialize the view data
         refresh();
+
+        // initFromSettings();
     }
 
     /**
@@ -167,7 +184,7 @@ public class MarkerStatsView extends AbstractStatsView
     public void setFocus()
     {
         super.setFocus();
-        mCurrentViewer.getControl().setFocus();
+        mStackLayout.topControl.setFocus();
     }
 
     /**
@@ -176,10 +193,10 @@ public class MarkerStatsView extends AbstractStatsView
      * @param parent the parent composite
      * @return the master table viewer
      */
-    private TableViewer createMasterView(Composite parent)
+    private EnhancedTableViewer createMasterView(Composite parent)
     {
-        TableViewer masterViewer = new TableViewer(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.SINGLE
-                | SWT.FULL_SELECTION);
+        EnhancedTableViewer masterViewer = new EnhancedTableViewer(parent, SWT.H_SCROLL
+                | SWT.V_SCROLL | SWT.SINGLE | SWT.FULL_SELECTION);
         GridData gridData = new GridData(GridData.FILL_BOTH);
         masterViewer.getControl().setLayoutData(gridData);
 
@@ -191,16 +208,18 @@ public class MarkerStatsView extends AbstractStatsView
         TableColumn idCol = new TableColumn(table, SWT.LEFT, 0);
         idCol.setText(Messages.MarkerStatsView_kindOfErrorColumn);
         idCol.setWidth(400);
-        idCol.addSelectionListener(new SorterSelectionListener(masterViewer, new NameSorter()));
 
         TableColumn countCol = new TableColumn(table, SWT.CENTER, 1);
         countCol.setText(Messages.MarkerStatsView_numberOfErrorsColumn);
         countCol.pack();
-        countCol.addSelectionListener(new SorterSelectionListener(masterViewer, new CountSorter()));
 
         // set the providers
         masterViewer.setContentProvider(new MasterContentProvider());
-        masterViewer.setLabelProvider(new MarkerStatsViewLabelProvider());
+        MasterViewMultiProvider multiProvider = new MasterViewMultiProvider();
+        masterViewer.setLabelProvider(multiProvider);
+        masterViewer.setTableComparableProvider(multiProvider);
+        masterViewer.setTableSettingsProvider(multiProvider);
+        masterViewer.installEnhancements();
 
         // add selection listener to maintain action state
         masterViewer.addSelectionChangedListener(new ISelectionChangedListener()
@@ -230,11 +249,11 @@ public class MarkerStatsView extends AbstractStatsView
      * @param parent the parent composite
      * @return the detail table viewer
      */
-    private TableViewer createDetailView(Composite parent)
+    private EnhancedTableViewer createDetailView(Composite parent)
     {
         // le tableau
-        TableViewer detailViewer = new TableViewer(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.SINGLE
-                | SWT.FULL_SELECTION);
+        EnhancedTableViewer detailViewer = new EnhancedTableViewer(parent, SWT.H_SCROLL
+                | SWT.V_SCROLL | SWT.SINGLE | SWT.FULL_SELECTION);
         GridData gridData = new GridData(GridData.FILL_BOTH);
         detailViewer.getControl().setLayoutData(gridData);
 
@@ -246,12 +265,10 @@ public class MarkerStatsView extends AbstractStatsView
         TableColumn idCol = new TableColumn(table, SWT.LEFT, 0);
         idCol.setText(Messages.MarkerStatsView_fileColumn);
         idCol.setWidth(150);
-        idCol.addSelectionListener(new SorterSelectionListener(detailViewer, new NameSorter()));
 
         TableColumn folderCol = new TableColumn(table, SWT.LEFT, 1);
         folderCol.setText(Messages.MarkerStatsView_folderColumn);
         folderCol.setWidth(300);
-        folderCol.addSelectionListener(new SorterSelectionListener(detailViewer, new NameSorter()));
 
         TableColumn countCol = new TableColumn(table, SWT.CENTER, 2);
         countCol.setText(Messages.MarkerStatsView_lineColumn);
@@ -263,7 +280,11 @@ public class MarkerStatsView extends AbstractStatsView
 
         // set the providers
         detailViewer.setContentProvider(new DetailContentProvider());
-        detailViewer.setLabelProvider(new DetailStatsViewLabelProvider());
+        DetailViewMultiProvider multiProvider = new DetailViewMultiProvider();
+        detailViewer.setLabelProvider(multiProvider);
+        detailViewer.setTableComparableProvider(multiProvider);
+        detailViewer.setTableSettingsProvider(multiProvider);
+        detailViewer.installEnhancements();
 
         // add selection listener to maintain action state
         detailViewer.addSelectionChangedListener(new ISelectionChangedListener()
@@ -322,11 +343,11 @@ public class MarkerStatsView extends AbstractStatsView
     protected void handleStatsRebuilt()
     {
 
-        if (mCurrentViewer != null && !mCurrentViewer.getTable().isDisposed())
+        if (mMasterViewer != null && !mMasterViewer.getTable().isDisposed())
         {
 
-            mCurrentViewer.setInput(getStats());
-            mCurrentViewer.refresh();
+            mMasterViewer.setInput(getStats());
+            mDetailViewer.setInput(getStats());
 
             // update the actions and the label
             updateActions();
@@ -367,24 +388,17 @@ public class MarkerStatsView extends AbstractStatsView
         {
             public void run()
             {
-                IStructuredSelection selection = (IStructuredSelection) mCurrentViewer
+                IStructuredSelection selection = (IStructuredSelection) mMasterViewer
                         .getSelection();
                 if (selection.getFirstElement() instanceof MarkerStat)
                 {
                     MarkerStat markerStat = (MarkerStat) selection.getFirstElement();
 
-                    Object currentInput = mCurrentViewer.getInput();
-
                     mIsDrilledDown = true;
                     mCurrentDetailCategory = markerStat.getIdentifiant();
-                    mCurrentViewer.getControl().dispose();
-
-                    mCurrentViewer = createDetailView(mMainSection);
-                    mCurrentViewer.setInput(currentInput);
-
+                    mStackLayout.topControl = mDetailViewer.getTable();
                     mMainSection.layout();
-                    mMainSection.redraw();
-                    mMainSection.update();
+                    mDetailViewer.setInput(mDetailViewer.getInput());
 
                     updateActions();
                     updateLabel();
@@ -403,18 +417,11 @@ public class MarkerStatsView extends AbstractStatsView
         {
             public void run()
             {
-                Object currentInput = mCurrentViewer.getInput();
-
                 mIsDrilledDown = false;
                 mCurrentDetailCategory = null;
-                mCurrentViewer.getControl().dispose();
-
-                mCurrentViewer = createMasterView(mMainSection);
-                mCurrentViewer.setInput(currentInput);
-
+                mStackLayout.topControl = mMasterViewer.getTable();
                 mMainSection.layout();
-                mMainSection.redraw();
-                mMainSection.update();
+                mMasterViewer.refresh();
 
                 updateActions();
                 updateLabel();
@@ -431,7 +438,7 @@ public class MarkerStatsView extends AbstractStatsView
         {
             public void run()
             {
-                IStructuredSelection selection = (IStructuredSelection) mCurrentViewer
+                IStructuredSelection selection = (IStructuredSelection) mDetailViewer
                         .getSelection();
                 if (selection.getFirstElement() instanceof IMarker)
                 {
@@ -461,8 +468,8 @@ public class MarkerStatsView extends AbstractStatsView
     private void updateActions()
     {
         mDrillBackAction.setEnabled(mIsDrilledDown);
-        mDrillDownAction.setEnabled(!mIsDrilledDown && !mCurrentViewer.getSelection().isEmpty());
-        mShowErrorAction.setEnabled(mIsDrilledDown && !mCurrentViewer.getSelection().isEmpty());
+        mDrillDownAction.setEnabled(!mIsDrilledDown && !mMasterViewer.getSelection().isEmpty());
+        mShowErrorAction.setEnabled(mIsDrilledDown && !mDetailViewer.getSelection().isEmpty());
     }
 
     /**
@@ -484,7 +491,7 @@ public class MarkerStatsView extends AbstractStatsView
         {
 
             String text = NLS.bind(Messages.MarkerStatsView_lblDetailMessage, new Object[] {
-                mCurrentDetailCategory, new Integer(mCurrentViewer.getTable().getItemCount()) });
+                mCurrentDetailCategory, new Integer(mDetailViewer.getTable().getItemCount()) });
             mDescLabel.setText(text);
         }
     }
@@ -538,6 +545,50 @@ public class MarkerStatsView extends AbstractStatsView
             }
         });
     }
+
+    // private void initFromSettings()
+    // {
+    //
+    // IDialogSettings settings = getDialogSettings();
+    //
+    // IDialogSettings masterSection = settings.getSection(TAG_SECTION_MASTER);
+    // IDialogSettings detailSection = settings.getSection(TAG_SECTION_DETAIL);
+    // if (masterSection == null)
+    // {
+    // masterSection = settings.addNewSection(TAG_SECTION_MASTER);
+    // }
+    // if (detailSection == null)
+    // {
+    // detailSection = settings.addNewSection(TAG_SECTION_DETAIL);
+    // }
+    //
+    // // restore table settings
+    // ((TableSortSupport)
+    // mMasterViewer.getSorter()).restoreState(masterSection);
+    // ((TableSortSupport)
+    // mDetailViewer.getSorter()).restoreState(detailSection);
+    // }
+    //
+    // private void storeToSettings()
+    // {
+    //
+    // IDialogSettings settings = getDialogSettings();
+    //
+    // IDialogSettings masterSection = settings.getSection(TAG_SECTION_MASTER);
+    // IDialogSettings detailSection = settings.getSection(TAG_SECTION_DETAIL);
+    // if (masterSection == null)
+    // {
+    // masterSection = settings.addNewSection(TAG_SECTION_MASTER);
+    // }
+    // if (detailSection == null)
+    // {
+    // detailSection = settings.addNewSection(TAG_SECTION_DETAIL);
+    // }
+    //
+    // // store the table settings
+    // ((TableSortSupport) mMasterViewer.getSorter()).saveState(masterSection);
+    // ((TableSortSupport) mDetailViewer.getSorter()).saveState(detailSection);
+    // }
 
     /**
      * Content provider for the master table viewer.
@@ -631,6 +682,7 @@ public class MarkerStatsView extends AbstractStatsView
         {
             mCurrentDetails = null;
         }
+
     }
 
     /**
@@ -638,7 +690,8 @@ public class MarkerStatsView extends AbstractStatsView
      * 
      * @author Lars Ködderitzsch
      */
-    private class MarkerStatsViewLabelProvider extends LabelProvider implements ITableLabelProvider
+    private class MasterViewMultiProvider extends LabelProvider implements ITableLabelProvider,
+            ITableComparableProvider, ITableSettingsProvider
     {
         /**
          * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnText(java.lang.Object,
@@ -675,6 +728,42 @@ public class MarkerStatsView extends AbstractStatsView
             return null;
         }
 
+        public Comparable getComparableValue(Object element, int colIndex)
+        {
+            MarkerStat stat = (MarkerStat) element;
+            Comparable comparable = null;
+
+            switch (colIndex)
+            {
+                case 0:
+                    comparable = stat.getIdentifiant();
+                    break;
+                case 1:
+                    comparable = new Integer(stat.getCount());
+                    break;
+
+                default:
+                    comparable = ""; //$NON-NLS-1$
+                    break;
+            }
+
+            return comparable;
+        }
+
+        public IDialogSettings getTableSettings()
+        {
+
+            IDialogSettings mainSettings = getDialogSettings();
+
+            IDialogSettings settings = mainSettings.getSection(TAG_SECTION_MASTER);
+
+            if (settings == null)
+            {
+                settings = mainSettings.addNewSection(TAG_SECTION_MASTER);
+            }
+
+            return settings;
+        }
     }
 
     /**
@@ -682,7 +771,8 @@ public class MarkerStatsView extends AbstractStatsView
      * 
      * @author Lars Ködderitzsch
      */
-    private class DetailStatsViewLabelProvider extends LabelProvider implements ITableLabelProvider
+    private class DetailViewMultiProvider extends LabelProvider implements ITableLabelProvider,
+            ITableComparableProvider, ITableSettingsProvider
     {
         /**
          * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnText(java.lang.Object,
@@ -732,115 +822,49 @@ public class MarkerStatsView extends AbstractStatsView
         {
             return null;
         }
-    }
 
-    /**
-     * Class used to listen to table viewer column header clicking to sort the
-     * different kind of values.
-     */
-    private static class SorterSelectionListener extends SelectionAdapter
-    {
-
-        private StructuredViewer mViewer;
-
-        private ViewerSorter mSorter;
-
-        private ViewerSorter mReverseSorter;
-
-        /**
-         * Constructor.
-         * 
-         * @param sorter : the sorter to use
-         */
-        public SorterSelectionListener(StructuredViewer viewer, ViewerSorter sorter)
+        public Comparable getComparableValue(Object element, int colIndex)
         {
-            mViewer = viewer;
-            mSorter = sorter;
-            mReverseSorter = new ReverseSorter(sorter);
-        }
+            IMarker marker = (IMarker) element;
+            Comparable comparable = null;
 
-        public void widgetSelected(SelectionEvent e)
-        {
-            ViewerSorter currentSorter = mViewer.getSorter();
-
-            if (currentSorter == mReverseSorter)
+            switch (colIndex)
             {
-                mViewer.setSorter(mSorter);
+                case 0:
+                    comparable = marker.getResource().getName();
+                    break;
+                case 1:
+                    comparable = marker.getResource().getParent().getFullPath().toString();
+                    break;
+                case 2:
+                    comparable = new Integer(marker.getAttribute(IMarker.LINE_NUMBER,
+                            Integer.MAX_VALUE));
+                    break;
+                case 3:
+                    comparable = marker.getAttribute(IMarker.MESSAGE, "").toString();
+                    break;
+
+                default:
+                    comparable = ""; //$NON-NLS-1$
+                    break;
             }
-            else
+
+            return comparable;
+        }
+
+        public IDialogSettings getTableSettings()
+        {
+
+            IDialogSettings mainSettings = getDialogSettings();
+
+            IDialogSettings settings = mainSettings.getSection(TAG_SECTION_DETAIL);
+
+            if (settings == null)
             {
-                mViewer.setSorter(mReverseSorter);
+                settings = mainSettings.addNewSection(TAG_SECTION_DETAIL);
             }
-        }
-    }
 
-    /**
-     * A viewer sorter that reverses the result of another sorter.
-     * 
-     * @author Lars Ködderitzsch
-     */
-    private static class ReverseSorter extends ViewerSorter
-    {
-        /** The original sorter. */
-        private ViewerSorter mSorter;
-
-        /**
-         * Creates a reverse sorter that negates the original sorter.
-         * 
-         * @param sorter the original sorter
-         */
-        public ReverseSorter(ViewerSorter sorter)
-        {
-            mSorter = sorter;
-        }
-
-        /**
-         * @see org.eclipse.jface.viewers.ViewerSorter#compare(org.eclipse.jface.viewers.Viewer,
-         *      java.lang.Object, java.lang.Object)
-         */
-        public int compare(Viewer viewer, Object e1, Object e2)
-        {
-            // just negate the result of the original sorter, neat huh? ;-)
-            return mSorter.compare(viewer, e1, e2) * -1;
-        }
-    }
-
-    /**
-     * Sorter for Strings.
-     */
-    private static class NameSorter extends ViewerSorter
-    {
-        /**
-         * @see org.eclipse.jface.viewers.ViewerSorter#compare(org.eclipse.jface.viewers.Viewer,
-         *      java.lang.Object, java.lang.Object)
-         */
-        public int compare(Viewer viewer, Object e1, Object e2)
-        {
-            ITableLabelProvider provider = (ITableLabelProvider) ((TableViewer) viewer)
-                    .getLabelProvider();
-
-            String label1 = provider.getColumnText(e1, 0);
-            String label2 = provider.getColumnText(e2, 0);
-
-            return label1.compareTo(label2);
-        }
-    }
-
-    /**
-     * Sorter for the marker counts.
-     */
-    private static class CountSorter extends ViewerSorter
-    {
-        /**
-         * @see org.eclipse.jface.viewers.ViewerSorter#compare(org.eclipse.jface.viewers.Viewer,
-         *      java.lang.Object, java.lang.Object)
-         */
-        public int compare(Viewer viewer, Object e1, Object e2)
-        {
-            int count1 = ((MarkerStat) e1).getCount();
-            int count2 = ((MarkerStat) e2).getCount();
-
-            return count1 - count2;
+            return settings;
         }
     }
 }

@@ -46,6 +46,10 @@ public class GraphPieDataset extends AbstractDataset implements PieDataset
 {
 
     // --------------- RAJOUT : début ---------------
+
+    /** Serialization support across different class versions. */
+    private static final long serialVersionUID = 9010212577897074893L;
+
     /**
      * Pourcentage minimum en dessous duquel une catégorie d'erreur est mise
      * dans la catégorie "Autres" opur l'affichage du camember.
