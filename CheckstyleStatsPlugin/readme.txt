@@ -21,3 +21,8 @@ Similar to the first view a filter can be used to determine which violations sho
 This plug-in needs the standard eclipse-cs plugin (com.atlassw.tools.eclipse.checkstyle_x.x.x) 
 in version 4.0.0 or greater to be installed.
 
+Version 0.1.1
+-------------
+- fixes bug which occurs when in details view and cleaning up the last violation of a category
+- fixes bug [ 1387136 ] Statistics plugin - sort order being lost
+
