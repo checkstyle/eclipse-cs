@@ -3,6 +3,8 @@ package net.sf.eclipsecs.stats.views.table;
 
 import java.text.Collator;
 
+import net.sf.eclipsecs.stats.StatsCheckstylePlugin;
+
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
@@ -14,8 +16,6 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-
-import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 
 /**
  * This subclass of <code>TableViewer</code> adds easier sorting support and
@@ -48,7 +48,7 @@ public class EnhancedTableViewer extends TableViewer
     private static final int DIRECTION_REVERSE = -1;
 
     /** Collator to support natural sorting of strings. */
-    private static final Collator COLLATOR = Collator.getInstance(CheckstylePlugin
+    private static final Collator COLLATOR = Collator.getInstance(StatsCheckstylePlugin
             .getPlatformLocale());
 
     //

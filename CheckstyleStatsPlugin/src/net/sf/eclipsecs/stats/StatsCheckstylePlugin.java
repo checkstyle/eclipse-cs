@@ -17,9 +17,13 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 //============================================================================
+
 package net.sf.eclipsecs.stats;
 
+import java.util.Locale;
+
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
@@ -71,19 +75,34 @@ public class StatsCheckstylePlugin extends AbstractUIPlugin
     }
 
     /**
+     * Helper method to get the current plattform locale.
+     * 
+     * @return the platform locale
+     */
+    public static Locale getPlatformLocale()
+    {
+
+        String nl = Platform.getNL();
+        String[] parts = nl.split("_"); //$NON-NLS-1$
+
+        String language = parts.length > 0 ? parts[0] : ""; //$NON-NLS-1$
+        String country = parts.length > 1 ? parts[1] : ""; //$NON-NLS-1$
+        String variant = parts.length > 2 ? parts[2] : ""; //$NON-NLS-1$
+
+        return new Locale(language, country, variant);
+    }
+
+    /**
      * Permet de loguer plus facilement dans la log du plugin.
      * 
-     * @param severity :
-     *            la gravité
-     * @param message :
-     *            le message à loguer
-     * @param throwable :
-     *            l'exception à loguer
+     * @param severity : la gravité
+     * @param message : le message à loguer
+     * @param throwable : l'exception à loguer
      */
     public static void log(int severity, String message, Throwable throwable)
     {
-        IStatus status = new Status(severity, getDefault().getBundle()
-            .getSymbolicName(), IStatus.OK, message, throwable);
+        IStatus status = new Status(severity, getDefault().getBundle().getSymbolicName(),
+                IStatus.OK, message, throwable);
         getDefault().getLog().log(status);
     }
 }
