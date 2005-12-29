@@ -61,7 +61,7 @@ for (
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.whitespace.NoWhitespaceBeforeCheck"/>
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.NoWhitespaceBeforeCheck"/>
          <description>Checks that there is no whitespace before a token. More specifically, it checks that it is not preceded with whitespace, or (if linebreaks are allowed) all characters on the line before are whitespace. To allow linebreaks before a token, set property allowLineBreaks to true.</description>
-         <property-metadata name="allowLineBreaks" datatype="Boolean" default-value="true">
+         <property-metadata name="allowLineBreaks" datatype="Boolean" default-value="false">
             <description>Whether whitespace is allowed if the token is at a linebreak.</description>
          </property-metadata>
          <property-metadata name="tokens" datatype="MultiCheck" default-value="SEMI,POST_DEC,POST_INC">
