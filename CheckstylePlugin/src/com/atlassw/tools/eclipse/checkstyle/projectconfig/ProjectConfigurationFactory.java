@@ -44,12 +44,14 @@ import org.xml.sax.helpers.AttributesImpl;
 import org.xml.sax.helpers.DefaultHandler;
 
 import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
+import com.atlassw.tools.eclipse.checkstyle.config.CheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationFactory;
+import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationWorkingCopy;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
+import com.atlassw.tools.eclipse.checkstyle.config.configtypes.BuiltInConfigurationType;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.ConfigurationTypes;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.IConfigurationType;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.IFilter;
-import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.atlassw.tools.eclipse.checkstyle.util.XMLUtil;
 
@@ -68,7 +70,7 @@ public final class ProjectConfigurationFactory
 
     private static final String PROJECT_CONFIGURATION_FILE = ".checkstyle"; //$NON-NLS-1$
 
-    private static final String CURRENT_FILE_FORMAT_VERSION = "1.1.0"; //$NON-NLS-1$
+    private static final String CURRENT_FILE_FORMAT_VERSION = "1.2.0"; //$NON-NLS-1$
 
     // =================================================
     // Instance member variables.
@@ -106,9 +108,7 @@ public final class ProjectConfigurationFactory
      * Sets the <code>ProjectConfiguration</code> to a project.
      * 
      * @param config The <code>ProjectConfiguration</code> object to set.
-     * 
      * @param project The project to add it too.
-     * 
      * @throws CheckstylePluginException Error during processing.
      */
     public static void setConfiguration(ProjectConfiguration config, IProject project)
@@ -121,25 +121,24 @@ public final class ProjectConfigurationFactory
      * Check to see if a check configuration is currently in use by any
      * projects.
      * 
-     * @param configName The configuration name to check for.
-     * 
+     * @param checkConfig The check configuration to check for.
      * @return <code>true</code>= in use, <code>false</code>= not in use.
-     * 
      * @throws CheckstylePluginException Error during processing.
      */
-    public static boolean isCheckConfigInUse(String configName) throws CheckstylePluginException
+    public static boolean isCheckConfigInUse(ICheckConfiguration checkConfig)
+        throws CheckstylePluginException
     {
-        return getProjectsUsingConfig(configName).size() > 0;
+        return getProjectsUsingConfig(checkConfig).size() > 0;
     }
 
     /**
      * Returns a list of projects using this check configuration.
      * 
-     * @param checkConfigName the name of the check configuration
+     * @param checkConfig the check configuration
      * @return the list of projects using this configuration
      * @throws CheckstylePluginException an unexpected exception occurred
      */
-    public static List getProjectsUsingConfig(String checkConfigName)
+    public static List getProjectsUsingConfig(ICheckConfiguration checkConfig)
         throws CheckstylePluginException
     {
 
@@ -149,8 +148,8 @@ public final class ProjectConfigurationFactory
         IProject[] projects = workspace.getRoot().getProjects();
         for (int i = 0; (i < projects.length); i++)
         {
-            if (ProjectConfigurationFactory.getConfiguration(projects[i]).isConfigInUse(
-                    checkConfigName))
+            if (ProjectConfigurationFactory.getConfiguration(projects[i])
+                    .isConfigInUse(checkConfig))
             {
                 result.add(projects[i]);
             }
@@ -182,27 +181,27 @@ public final class ProjectConfigurationFactory
         {
             inStream = file.getContents(true);
 
-            ProjectConfigFileHandler handler = new ProjectConfigFileHandler(project);
+            ProjectConfigFileHandler handler = new ProjectConfigFileHandler();
             XMLUtil.parseWithSAX(inStream, handler);
 
             configuration = handler.getConfiguration();
         }
         catch (CoreException ce)
         {
-            CheckstylePluginException.rethrow(ce, ce.getLocalizedMessage());
+            CheckstylePluginException.rethrow(ce);
         }
         catch (SAXException se)
         {
             Exception ex = se.getException() != null ? se.getException() : se;
-            CheckstylePluginException.rethrow(ex, ex.getLocalizedMessage());
+            CheckstylePluginException.rethrow(ex);
         }
         catch (ParserConfigurationException pe)
         {
-            CheckstylePluginException.rethrow(pe, pe.getLocalizedMessage());
+            CheckstylePluginException.rethrow(pe);
         }
         catch (IOException ioe)
         {
-            CheckstylePluginException.rethrow(ioe, ioe.getLocalizedMessage());
+            CheckstylePluginException.rethrow(ioe);
         }
 
         finally
@@ -256,6 +255,8 @@ public final class ProjectConfigurationFactory
             {
                 file.setContents(pipeIn, true, true, null);
             }
+
+            config.getCheckConfigWorkingSet().store();
         }
         catch (Exception e)
         {
@@ -307,6 +308,12 @@ public final class ProjectConfigurationFactory
                 attr);
         xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
 
+        ICheckConfiguration[] workingCopies = config.getCheckConfigWorkingSet().getWorkingCopies();
+        for (int i = 0; i < workingCopies.length; i++)
+        {
+            writeLocalConfiguration(workingCopies[i], xmlOut);
+        }
+
         List fileSets = config.getFileSets();
         int size = fileSets != null ? fileSets.size() : 0;
         for (int i = 0; i < size; i++)
@@ -323,6 +330,45 @@ public final class ProjectConfigurationFactory
 
         xmlOut.endElement(new String(), XMLTags.FILESET_CONFIG_TAG, XMLTags.FILESET_CONFIG_TAG);
         xmlOut.endDocument();
+    }
+
+    /**
+     * Writes a local check configuration.
+     * 
+     * @param checkConfig the local check configuration
+     * @param xmlOut the transformer handler receiving the events
+     * @throws SAXException error writing
+     * @throws CheckstylePluginException
+     */
+    private static void writeLocalConfiguration(ICheckConfiguration checkConfig,
+            TransformerHandler xmlOut) throws SAXException, CheckstylePluginException
+    {
+
+        // don't store built-in configurations to persistence or local
+        // configurations
+        if (checkConfig.getType() instanceof BuiltInConfigurationType || checkConfig.isGlobal())
+        {
+            return;
+        }
+
+        AttributesImpl attrs = new AttributesImpl();
+        attrs.addAttribute(new String(), XMLTags.NAME_TAG, XMLTags.NAME_TAG, null, checkConfig
+                .getName());
+        attrs.addAttribute(new String(), XMLTags.LOCATION_TAG, XMLTags.LOCATION_TAG, null,
+                checkConfig.getLocation());
+        attrs.addAttribute(new String(), XMLTags.TYPE_TAG, XMLTags.TYPE_TAG, null, checkConfig
+                .getType().getInternalName());
+        if (checkConfig.getDescription() != null)
+        {
+            attrs.addAttribute(new String(), XMLTags.DESCRIPTION_TAG, XMLTags.DESCRIPTION_TAG,
+                    null, checkConfig.getDescription());
+        }
+
+        xmlOut
+                .startElement(new String(), XMLTags.CHECK_CONFIG_TAG, XMLTags.CHECK_CONFIG_TAG,
+                        attrs);
+        xmlOut.endElement(new String(), XMLTags.CHECK_CONFIG_TAG, XMLTags.CHECK_CONFIG_TAG);
+        xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
     }
 
     /**
@@ -358,18 +404,12 @@ public final class ProjectConfigurationFactory
 
             attr.addAttribute(new String(), XMLTags.CHECK_CONFIG_NAME_TAG,
                     XMLTags.CHECK_CONFIG_NAME_TAG, null, checkConfig.getName());
-            attr.addAttribute(new String(), XMLTags.TYPE_TAG, XMLTags.TYPE_TAG, null, checkConfig
-                    .getType().getInternalName());
-            attr.addAttribute(new String(), XMLTags.LOCATION_TAG, XMLTags.LOCATION_TAG, null,
-                    checkConfig.getLocation());
-            if (checkConfig.getDescription() != null)
-            {
-                attr.addAttribute(new String(), XMLTags.DESCRIPTION_TAG, XMLTags.DESCRIPTION_TAG,
-                        null, checkConfig.getDescription());
-            }
+            attr.addAttribute(new String(), XMLTags.LOCAL_TAG, XMLTags.LOCAL_TAG, null, ""
+                    + !checkConfig.isGlobal());
         }
 
         xmlOut.startElement(new String(), XMLTags.FILESET_TAG, XMLTags.FILESET_TAG, attr);
+        xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
 
         // write patterns
         List patterns = fileSet.getFileMatchPatterns();
@@ -432,6 +472,7 @@ public final class ProjectConfigurationFactory
                 new String() + filter.isEnabled());
 
         xmlOut.startElement(new String(), XMLTags.FILTER_TAG, XMLTags.FILTER_TAG, attr);
+        xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
 
         List data = filter.getFilterData();
         int size = data != null ? data.size() : 0;
@@ -466,15 +507,13 @@ public final class ProjectConfigurationFactory
         //
 
         /** constant list of supported file versions. */
-        private static final List SUPPORTED_VERSIONS = Arrays.asList(new String[] { "1.0.0", //$NON-NLS-1$
+        private static final List SUPPORTED_VERSIONS = Arrays.asList(new String[] {
+            "1.0.0", "1.1.0", //$NON-NLS-1$ //$NON-NLS-2$
             CURRENT_FILE_FORMAT_VERSION });
 
         //
         // attributes
         //
-
-        /** the project whose configuration is read. */
-        private IProject mProject;
 
         /** the project configuration. */
         private ProjectConfiguration mProjectConfig = new ProjectConfiguration();
@@ -484,20 +523,6 @@ public final class ProjectConfigurationFactory
 
         /** the current filter. */
         private IFilter mCurrentFilter;
-
-        //
-        // constructors
-        //
-
-        /**
-         * Creates the handler.
-         * 
-         * @param project the project whose configuration is read
-         */
-        ProjectConfigFileHandler(IProject project)
-        {
-            mProject = project;
-        }
 
         //
         // methods
@@ -536,56 +561,44 @@ public final class ProjectConfigurationFactory
                     mProjectConfig.setUseSimpleConfig(Boolean.valueOf(
                             attributes.getValue(XMLTags.SIMPLE_CONFIG_TAG)).booleanValue());
                 }
-
-                else if (XMLTags.FILESET_TAG.equals(qName))
+                else if (XMLTags.CHECK_CONFIG_TAG.equals(qName))
                 {
 
-                    String configName = attributes.getValue(XMLTags.CHECK_CONFIG_NAME_TAG);
+                    String name = attributes.getValue(XMLTags.NAME_TAG);
                     String location = attributes.getValue(XMLTags.LOCATION_TAG);
                     String type = attributes.getValue(XMLTags.TYPE_TAG);
                     String description = attributes.getValue(XMLTags.DESCRIPTION_TAG);
+
+                    IConfigurationType configType = ConfigurationTypes.getByInternalName(type);
+
+                    ICheckConfiguration checkConfig = new CheckConfiguration(name, location,
+                            description, configType, false);
+
+                    CheckConfigurationWorkingCopy workingCopy = mProjectConfig
+                            .getCheckConfigWorkingSet().newWorkingCopy(checkConfig);
+                    mProjectConfig.getCheckConfigWorkingSet().addCheckConfiguration(workingCopy);
+                }
+                else if (XMLTags.FILESET_TAG.equals(qName))
+                {
+
+                    String name = attributes.getValue(XMLTags.CHECK_CONFIG_NAME_TAG);
+                    boolean local = Boolean.valueOf(attributes.getValue(XMLTags.LOCAL_TAG))
+                            .booleanValue();
 
                     mCurrentFileSet = new FileSet();
                     mCurrentFileSet.setName(attributes.getValue(XMLTags.NAME_TAG));
                     mCurrentFileSet.setEnabled(Boolean.valueOf(
                             attributes.getValue(XMLTags.ENABLED_TAG)).booleanValue());
 
-                    ICheckConfiguration checkConfig = CheckConfigurationFactory
-                            .getByName(configName);
+                    ICheckConfiguration checkConfig = null;
 
-                    // if the plugin does not know the config and necessary data
-                    // is there
-                    if (checkConfig == null && type != null && location != null)
+                    if (local)
                     {
-
-                        // create the check configuration
-                        IConfigurationType configType = ConfigurationTypes.getByInternalName(type);
-
-                        checkConfig = (ICheckConfiguration) configType.getImplementationClass()
-                                .newInstance();
-                        checkConfig.initialize(configName, location, configType, description);
-
-                        // check if the configuration to be created can be
-                        // resolved
-                        try
-                        {
-
-                            checkConfig.setContext(mProject);
-                            checkConfig.getCheckstyleConfigurationURL();
-                            checkConfig.setContext(null);
-
-                            // store the configuration within the plugin
-                            List exitistingConfigs = CheckConfigurationFactory
-                                    .getCheckConfigurations();
-                            exitistingConfigs.add(checkConfig);
-                            CheckConfigurationFactory.setCheckConfigurations(exitistingConfigs);
-                        }
-                        catch (CheckstylePluginException e)
-                        {
-                            CheckstyleLog.log(e, NLS.bind(
-                                    ErrorMessages.errorFailedAutoCreatingConfig, checkConfig
-                                            .getName(), mProject.getName()));
-                        }
+                        checkConfig = mProjectConfig.getLocalCheckConfigByName(name);
+                    }
+                    else
+                    {
+                        checkConfig = CheckConfigurationFactory.getByName(name);
                     }
 
                     mCurrentFileSet.setCheckConfig(checkConfig);
@@ -626,14 +639,6 @@ public final class ProjectConfigurationFactory
 
             }
             catch (CheckstylePluginException e)
-            {
-                throw new SAXException(e);
-            }
-            catch (InstantiationException e)
-            {
-                throw new SAXException(e);
-            }
-            catch (IllegalAccessException e)
             {
                 throw new SAXException(e);
             }

@@ -81,7 +81,7 @@ public class StandardPropertyResolver implements PropertyResolver, IContextAware
     //
 
     /**
-     * @see IContextAware#setProjectContext(org.eclipse.core.resources.IProject)
+     * {@inheritDoc}
      */
     public void setProjectContext(IProject project)
     {
@@ -89,7 +89,7 @@ public class StandardPropertyResolver implements PropertyResolver, IContextAware
     }
 
     /**
-     * @see com.puppycrawl.tools.checkstyle.PropertyResolver#resolve(java.lang.String)
+     * {@inheritDoc}
      */
     public String resolve(String property) throws CheckstyleException
     {

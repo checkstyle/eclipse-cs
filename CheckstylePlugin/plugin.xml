@@ -14,7 +14,6 @@
    <!-- defines the extension point to contribute custom configuration save filters -->
    <extension-point id="saveFilters" name="Configuration save filters" schema="schema/saveFilters.exsd"/>
    
-      
    <extension
          point="org.eclipse.help.toc">
       <toc
@@ -38,7 +37,7 @@
             name="%CheckstylePropertiesPage.name"
             nameFilter="*"
             class="com.atlassw.tools.eclipse.checkstyle.properties.CheckstylePropertyPage"
-            id="com.atlassw.tools.eclipse.checkstyle.properties.samplePropertyPage">
+            id="com.atlassw.tools.eclipse.checkstyle.properties.CheckstylePropertyPage">
       </page>
    </extension>
    <extension
@@ -78,24 +77,6 @@
       <persistent
             value="true">
       </persistent>
-      <attribute
-            name="severity">
-      </attribute>
-      <attribute
-            name="message">
-      </attribute>
-      <attribute
-            name="location">
-      </attribute>
-      <attribute
-            name="charStart">
-      </attribute>
-      <attribute
-            name="charEnd">
-      </attribute>
-      <attribute
-            name="lineNumber">
-      </attribute>      
       <attribute
             name="ModuleName">
       </attribute>
@@ -234,41 +215,51 @@
             name="%BuiltinCheckConfiguration.label"
             internal-name="builtin"
             creatable="false"
+            editable="false"
+            configurable="false"
             icon="icons/configtype_builtin.gif"
-            class="com.atlassw.tools.eclipse.checkstyle.config.configtypes.BuiltInCheckConfiguration"
-            editorClass="com.atlassw.tools.eclipse.checkstyle.config.configtypes.ReadonlyLocationEditor">
+            class="com.atlassw.tools.eclipse.checkstyle.config.configtypes.BuiltInConfigurationType"
+            editorClass="com.atlassw.tools.eclipse.checkstyle.config.configtypes.BuiltInConfigurationEditor">
       </configuration-type>
       <configuration-type
             name="%InternalCheckConfiguration.label"
             internal-name="internal"
             creatable="true"
+            editable="true"
+            configurable="true"
             icon="icons/configtype_internal.gif"
-            class="com.atlassw.tools.eclipse.checkstyle.config.configtypes.InternalCheckConfiguration"
-            editorClass="com.atlassw.tools.eclipse.checkstyle.config.configtypes.ReadonlyLocationEditor">
+            class="com.atlassw.tools.eclipse.checkstyle.config.configtypes.InternalConfigurationType"
+            editorClass="com.atlassw.tools.eclipse.checkstyle.config.configtypes.InternalConfigurationEditor">
       </configuration-type>
       <configuration-type
             name="%ExternalFileCheckConfiguration.label"
             internal-name="external"
             creatable="true"
+            editable="true"
+            configurable="true"
             icon="icons/configtype_external.gif"
-            class="com.atlassw.tools.eclipse.checkstyle.config.configtypes.ExternalFileCheckConfiguration"
-            editorClass="com.atlassw.tools.eclipse.checkstyle.config.configtypes.FileConfigurationLocationEditor">
+            class="com.atlassw.tools.eclipse.checkstyle.config.configtypes.ExternalFileConfigurationType"
+            editorClass="com.atlassw.tools.eclipse.checkstyle.config.configtypes.ExternalFileConfigurationEditor">
       </configuration-type>
       <configuration-type
             name="%RemoteCheckConfiguration.label"
             internal-name="remote"
             creatable="true"
+            editable="true"
+            configurable="false"
             icon="icons/configtype_remote.gif"
-            class="com.atlassw.tools.eclipse.checkstyle.config.configtypes.RemoteCheckConfiguration"
-            editorClass="com.atlassw.tools.eclipse.checkstyle.config.configtypes.RemoteConfigurationLocationEditor">
+            class="com.atlassw.tools.eclipse.checkstyle.config.configtypes.RemoteConfigurationType"
+            editorClass="com.atlassw.tools.eclipse.checkstyle.config.configtypes.RemoteConfigurationEditor">
       </configuration-type>
       <configuration-type
             name="%ProjectRelativeCheckConfiguration.label"
             internal-name="project"
             creatable="true"
+            editable="true"
+            configurable="true"
             icon="icons/configtype_project.gif"
-            class="com.atlassw.tools.eclipse.checkstyle.config.configtypes.ProjectCheckConfiguration"
-            editorClass="com.atlassw.tools.eclipse.checkstyle.config.configtypes.ProjectConfigurationLocationEditor">
+            class="com.atlassw.tools.eclipse.checkstyle.config.configtypes.ProjectConfigurationType"
+            editorClass="com.atlassw.tools.eclipse.checkstyle.config.configtypes.ProjectConfigurationEditor">
       </configuration-type>
    </extension>
 
@@ -304,6 +295,7 @@
             readonly="true"
             selected="true">
             <data value="java"/> 
+            <data value="properties"/> 
       </filter>
       <filter
             name="%WriteProtectedFilter.label"

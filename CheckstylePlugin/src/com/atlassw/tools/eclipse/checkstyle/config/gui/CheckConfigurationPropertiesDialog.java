@@ -18,7 +18,7 @@
 //
 //============================================================================
 
-package com.atlassw.tools.eclipse.checkstyle.preferences;
+package com.atlassw.tools.eclipse.checkstyle.config.gui;
 
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -29,19 +29,21 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
 
 import com.atlassw.tools.eclipse.checkstyle.Messages;
-import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
+import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationWorkingCopy;
+import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfigurationWorkingSet;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.ConfigurationTypes;
-import com.atlassw.tools.eclipse.checkstyle.config.configtypes.IConfigurationLocationEditor;
+import com.atlassw.tools.eclipse.checkstyle.config.configtypes.ICheckConfigurationEditor;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.IConfigurationType;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
@@ -60,23 +62,20 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
     // attributes
     //
 
+    /** the working set. */
+    private ICheckConfigurationWorkingSet mWorkingSet;
+
     /** the check configuration. */
-    private ICheckConfiguration mCheckConfig;
+    private CheckConfigurationWorkingCopy mCheckConfig;
 
     /** the combo box containing the config type. */
     private ComboViewer mConfigType;
-
-    /** the text field containing the config name. */
-    private Text mConfigName;
 
     /** place holder for the location editor. */
     private Composite mEditorPlaceHolder;
 
     /** the editor for the configuration location. */
-    private IConfigurationLocationEditor mLocationEditor;
-
-    /** the text containing the description. */
-    private Text mDescription;
+    private ICheckConfigurationEditor mConfigurationEditor;
 
     //
     // constructor
@@ -88,10 +87,13 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
      * @param parent the parent shell
      * @param checkConfig the check configuration or <code>null</code> if a
      *            new check config should be created
+     * @param workingSet the working set the check config is changed in
      */
-    public CheckConfigurationPropertiesDialog(Shell parent, ICheckConfiguration checkConfig)
+    public CheckConfigurationPropertiesDialog(Shell parent,
+            CheckConfigurationWorkingCopy checkConfig, ICheckConfigurationWorkingSet workingSet)
     {
         super(parent);
+        mWorkingSet = workingSet;
         mCheckConfig = checkConfig;
     }
 
@@ -105,42 +107,18 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
      * @return the check configuration
      * @throws CheckstylePluginException if the data is not valid
      */
-    public ICheckConfiguration getCheckConfiguration() throws CheckstylePluginException
+    public CheckConfigurationWorkingCopy getCheckConfiguration() throws CheckstylePluginException
     {
-        ICheckConfiguration result = null;
-        if (mCheckConfig != null && !mCheckConfig.isEditable() || mConfigName.isDisposed())
-        {
-            result = mCheckConfig;
-        }
-        else if (mCheckConfig != null)
-        {
-            result = mCheckConfig;
+        return mCheckConfig;
+    }
 
-            result.setName(mConfigName.getText());
-            result.setLocation(mLocationEditor.getLocation());
-            result.setDescription(mDescription.getText());
-        }
-        else if (mCheckConfig == null)
-        {
-            try
-            {
-                if (mConfigType.getSelection() instanceof IStructuredSelection)
-                {
-                    IConfigurationType type = (IConfigurationType) ((IStructuredSelection) mConfigType
-                            .getSelection()).getFirstElement();
-
-                    result = (ICheckConfiguration) type.getImplementationClass().newInstance();
-                    result.initialize(mConfigName.getText(), mLocationEditor.getLocation(), type,
-                            mDescription.getText());
-                }
-            }
-            catch (Exception e)
-            {
-                CheckstylePluginException.rethrow(e);
-            }
-        }
-
-        return result;
+    /**
+     * @see org.eclipse.jface.dialogs.Dialog#create()
+     */
+    public void create()
+    {
+        super.create();
+        initialize();
     }
 
     /**
@@ -150,6 +128,9 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
      */
     protected Control createDialogArea(Composite parent)
     {
+
+        // set the logo
+        this.setTitleImage(CheckstylePluginImages.getImage(CheckstylePluginImages.PLUGIN_LOGO));
 
         Composite composite = (Composite) super.createDialogArea(parent);
 
@@ -161,6 +142,19 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
         Label lblConfigType = new Label(contents, SWT.NULL);
         lblConfigType.setText(Messages.CheckConfigurationPropertiesDialog_lblConfigType);
         fd = new GridData();
+
+        // this is a weird hack to find the longest label
+        // this is done to have a nice ordered appearance of the this label
+        // and the labels below
+        // this is very difficult to do, because they belong to different
+        // layouts
+        GC gc = new GC(lblConfigType);
+        int nameSize = gc.textExtent(Messages.CheckConfigurationPropertiesDialog_lblName).x;
+        int locationsSize = gc.textExtent(Messages.CheckConfigurationPropertiesDialog_lblLocation).x;
+        int max = Math.max(nameSize, locationsSize);
+        gc.dispose();
+
+        fd.widthHint = max;
         lblConfigType.setLayoutData(fd);
 
         mConfigType = new ComboViewer(contents);
@@ -197,25 +191,29 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
                 {
                     IConfigurationType type = (IConfigurationType) ((IStructuredSelection) event
                             .getSelection()).getFirstElement();
-                    createLocationEditor(type);
+                    createConfigurationEditor(type);
+
+                    if (mConfigType.getCombo().isEnabled())
+                    {
+
+                        String oldName = mCheckConfig.getName();
+                        String oldDescr = mCheckConfig.getDescription();
+
+                        mCheckConfig = mWorkingSet.newWorkingCopy(type);
+                        try
+                        {
+                            mCheckConfig.setName(oldName);
+                        }
+                        catch (CheckstylePluginException e)
+                        {
+                            // NOOP
+                        }
+                        mCheckConfig.setDescription(oldDescr);
+                    }
+                    mConfigurationEditor.initialize(mCheckConfig);
                 }
             }
         });
-
-        Label lblConfigName = new Label(contents, SWT.NULL);
-        lblConfigName.setText(Messages.CheckConfigurationPropertiesDialog_lblName);
-        fd = new GridData();
-        lblConfigName.setLayoutData(fd);
-
-        mConfigName = new Text(contents, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
-        fd = new GridData(GridData.FILL_HORIZONTAL);
-        mConfigName.setLayoutData(fd);
-
-        Label lblConfigLocation = new Label(contents, SWT.NULL);
-        lblConfigLocation.setText(Messages.CheckConfigurationPropertiesDialog_lblLocation);
-        fd = new GridData();
-        fd.verticalAlignment = GridData.VERTICAL_ALIGN_BEGINNING;
-        lblConfigLocation.setLayoutData(fd);
 
         mEditorPlaceHolder = new Composite(contents, SWT.NULL);
         GridLayout layout = new GridLayout(1, true);
@@ -223,27 +221,8 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
         layout.marginHeight = 0;
         mEditorPlaceHolder.setLayout(layout);
         fd = new GridData(GridData.FILL_HORIZONTAL);
-        fd.heightHint = 23;
+        fd.horizontalSpan = 2;
         mEditorPlaceHolder.setLayoutData(fd);
-
-        Label lblDescription = new Label(contents, SWT.NULL);
-        lblDescription.setText(Messages.CheckConfigurationPropertiesDialog_lblDescription);
-        fd = new GridData();
-        fd.horizontalSpan = 2;
-        lblDescription.setLayoutData(fd);
-
-        mDescription = new Text(contents, SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.BORDER
-                | SWT.VERTICAL);
-        fd = new GridData(GridData.FILL_BOTH);
-        fd.horizontalSpan = 2;
-        fd.widthHint = 300;
-        fd.heightHint = 100;
-        fd.grabExcessHorizontalSpace = true;
-        fd.grabExcessVerticalSpace = true;
-        mDescription.setLayoutData(fd);
-
-        contents.layout();
-        initialize();
 
         return composite;
     }
@@ -253,6 +232,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
      */
     protected void configureShell(Shell newShell)
     {
+
         super.configureShell(newShell);
         newShell.setText(Messages.CheckConfigurationPropertiesDialog_titleCheckProperties);
     }
@@ -264,8 +244,8 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
     {
         try
         {
-            //Check if the configuration is valid
-            mCheckConfig = getCheckConfiguration();
+            // Check if the configuration is valid
+            mCheckConfig = mConfigurationEditor.getEditedWorkingCopy();
             super.okPressed();
         }
         catch (CheckstylePluginException e)
@@ -279,33 +259,30 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
      * 
      * @param configType the configuration type
      */
-    private void createLocationEditor(IConfigurationType configType)
+    private void createConfigurationEditor(IConfigurationType configType)
     {
 
         Class editorClass = configType.getLocationEditorClass();
 
         try
         {
-            mLocationEditor = (IConfigurationLocationEditor) editorClass.newInstance();
+            mConfigurationEditor = (ICheckConfigurationEditor) editorClass.newInstance();
 
-            //remove old editor
+            // remove old editor
             Control[] controls = mEditorPlaceHolder.getChildren();
             for (int i = 0; i < controls.length; i++)
             {
                 controls[i].dispose();
             }
 
-            mLocationEditor.createEditorControl(mEditorPlaceHolder, getShell());
-
-            if (mCheckConfig != null)
-            {
-                mLocationEditor.setLocation(mCheckConfig.getLocation());
-                mLocationEditor.setEditable(mCheckConfig.isEditable());
-            }
+            mConfigurationEditor.createEditorControl(mEditorPlaceHolder, getShell());
 
             mEditorPlaceHolder.redraw();
             mEditorPlaceHolder.update();
             mEditorPlaceHolder.layout();
+
+            Point initialSize = this.getInitialSize();
+            getShell().setSize(initialSize);
 
         }
         catch (Exception ex)
@@ -326,34 +303,28 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
             this.setMessage(Messages.CheckConfigurationPropertiesDialog_msgCreateNewCheckConfig);
 
             IConfigurationType[] types = ConfigurationTypes.getCreatableConfigTypes();
+
+            mCheckConfig = mWorkingSet.newWorkingCopy(types[0]);
             mConfigType.setInput(types);
             mConfigType.setSelection(new StructuredSelection(types[0]), true);
 
-            createLocationEditor(types[0]);
-
+            createConfigurationEditor(types[0]);
+            mConfigurationEditor.initialize(mCheckConfig);
         }
         else
         {
             this.setTitle(Messages.CheckConfigurationPropertiesDialog_titleCheckConfig);
             this.setMessage(Messages.CheckConfigurationPropertiesDialog_msgEditCheckConfig);
 
-            mConfigType.setInput(new IConfigurationType[] { mCheckConfig.getType() });
-            //type of existing configs cannot be changed
             mConfigType.getCombo().setEnabled(false);
+            mConfigType.setInput(new IConfigurationType[] { mCheckConfig.getType() });
+
+            // type of existing configs cannot be changed
             mConfigType.setSelection(new StructuredSelection(mCheckConfig.getType()), true);
-            createLocationEditor(mCheckConfig.getType());
+            createConfigurationEditor(mCheckConfig.getType());
 
-            mConfigName.setText(mCheckConfig.getName());
-            mConfigName.setEditable(mCheckConfig.isEditable());
-
-            if (mCheckConfig.getDescription() != null)
-            {
-                mDescription.setText(mCheckConfig.getDescription());
-            }
-            mDescription.setEditable(mCheckConfig.isEditable());
+            mConfigurationEditor.initialize(mCheckConfig);
         }
 
-        //set the logo
-        this.setTitleImage(CheckstylePluginImages.getImage(CheckstylePluginImages.PLUGIN_LOGO));
     }
 }

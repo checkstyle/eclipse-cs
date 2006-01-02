@@ -157,7 +157,7 @@ public class FileMatchPattern implements Cloneable
     }
 
     /**
-     * @see java.lang.Object#equals(java.lang.Object)
+     * {@inheritDoc}
      */
     public boolean equals(Object obj)
     {
@@ -180,7 +180,7 @@ public class FileMatchPattern implements Cloneable
     }
 
     /**
-     * @see java.lang.Object#hashCode()
+     * {@inheritDoc}
      */
     public int hashCode()
     {

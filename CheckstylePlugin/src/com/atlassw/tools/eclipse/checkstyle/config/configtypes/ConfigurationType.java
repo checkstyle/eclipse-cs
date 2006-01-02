@@ -20,17 +20,25 @@
 
 package com.atlassw.tools.eclipse.checkstyle.config.configtypes;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
+import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
+import com.puppycrawl.tools.checkstyle.PropertyResolver;
 
 /**
- * Implementation of <code>IConfigurationType</code>.
+ * Base implementation of <code>IConfigurationType</code>.
  * 
  * @author Lars Ködderitzsch
  */
-public class ConfigurationType implements IConfigurationType
+public abstract class ConfigurationType implements IConfigurationType
 {
 
     //
@@ -43,9 +51,6 @@ public class ConfigurationType implements IConfigurationType
     /** The internal name. */
     private String mInternalName;
 
-    /** The implementation class. */
-    private Class mImplementationClass;
-
     /** The editor class. */
     private Class mEditorClass;
 
@@ -55,22 +60,28 @@ public class ConfigurationType implements IConfigurationType
     /** Flag if creatable. */
     private boolean mIsCreatable;
 
+    /** Flag if properties are editable. */
+    private boolean mIsEditable;
+
+    /** Flag if configuration file is configurable. */
+    private boolean mIsConfigurable;
+
     //
     // methods
     //
 
     /**
-     * @see IConfigurationType#initialize(java.lang.String, java.lang.String,
-     *      java.lang.Class, java.lang.Class, java.lang.String)
+     * {@inheritDoc}
      */
-    public void initialize(String name, String internalName, Class implementationClass,
-            Class editorClass, String image, String definingPluginId, boolean creatable)
+    public void initialize(String name, String internalName, Class editorClass, String image,
+            String definingPluginId, boolean creatable, boolean editable, boolean configurable)
     {
         mName = name;
         mInternalName = internalName;
-        mImplementationClass = implementationClass;
         mEditorClass = editorClass;
         mIsCreatable = creatable;
+        mIsEditable = editable;
+        mIsConfigurable = configurable;
 
         if (image != null && definingPluginId != null)
         {
@@ -81,7 +92,7 @@ public class ConfigurationType implements IConfigurationType
     }
 
     /**
-     * @see IConfigurationType#getName()
+     * {@inheritDoc}
      */
     public String getName()
     {
@@ -89,7 +100,7 @@ public class ConfigurationType implements IConfigurationType
     }
 
     /**
-     * @see IConfigurationType#getInternalName()
+     * {@inheritDoc}
      */
     public String getInternalName()
     {
@@ -97,15 +108,7 @@ public class ConfigurationType implements IConfigurationType
     }
 
     /**
-     * @see IConfigurationType#getImplementationClass()
-     */
-    public Class getImplementationClass()
-    {
-        return mImplementationClass;
-    }
-
-    /**
-     * @see IConfigurationType#getLocationEditorClass()
+     * {@inheritDoc}
      */
     public Class getLocationEditorClass()
     {
@@ -113,7 +116,7 @@ public class ConfigurationType implements IConfigurationType
     }
 
     /**
-     * @see IConfigurationType#getTypeImage()
+     * {@inheritDoc}
      */
     public Image getTypeImage()
     {
@@ -121,10 +124,67 @@ public class ConfigurationType implements IConfigurationType
     }
 
     /**
-     * @see IConfigurationType#isCreatable()
+     * {@inheritDoc}
      */
     public boolean isCreatable()
     {
         return mIsCreatable;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isEditable()
+    {
+        return mIsEditable;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isConfigurable(ICheckConfiguration checkConfiguration)
+    {
+        return mIsConfigurable;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public InputStream openConfigurationFileStream(ICheckConfiguration checkConfiguration)
+        throws CheckstylePluginException
+    {
+
+        InputStream inStream = null;
+
+        try
+        {
+            URL configURL = resolveLocation(checkConfiguration);
+            inStream = new BufferedInputStream(configURL.openStream());
+        }
+        catch (IOException e)
+        {
+            CheckstylePluginException.rethrow(e);
+        }
+
+        return inStream;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public PropertyResolver getPropertyResolver(ICheckConfiguration checkConfiguration)
+        throws CheckstylePluginException
+    {
+        return new StandardPropertyResolver(resolveLocation(checkConfiguration).getFile());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void notifyCheckConfigRemoved(ICheckConfiguration checkConfiguration)
+        throws CheckstylePluginException
+    {
+    // standard is that nothing happens
+    }
+
 }

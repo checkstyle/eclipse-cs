@@ -20,10 +20,8 @@
 
 package com.atlassw.tools.eclipse.checkstyle.config;
 
+import java.io.InputStream;
 import java.net.URL;
-import java.util.List;
-
-import org.eclipse.core.resources.IProject;
 
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.IConfigurationType;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
@@ -34,27 +32,8 @@ import com.puppycrawl.tools.checkstyle.PropertyResolver;
  * 
  * @author Lars Ködderitzsch
  */
-public interface ICheckConfiguration extends Cloneable
+public interface ICheckConfiguration
 {
-
-    /**
-     * Initializes the check configuration.
-     * 
-     * @param name the name of the configuration
-     * @param location the location of the checkstyle configuration file
-     * @param type the configuration type
-     * @param description the description of the config or <code>null</code>
-     * @throws CheckstylePluginException if a parameter is not correct
-     */
-    void initialize(String name, String location, IConfigurationType type, String description)
-        throws CheckstylePluginException;
-
-    /**
-     * Sets the actual project context.
-     * 
-     * @param context the context of the current project.
-     */
-    void setContext(IProject context);
 
     /**
      * Returns the displayable name of the configuration.
@@ -64,14 +43,6 @@ public interface ICheckConfiguration extends Cloneable
     String getName();
 
     /**
-     * Sets the name of the configuration.
-     * 
-     * @param name the name
-     * @throws CheckstylePluginException if the name is already in use
-     */
-    void setName(String name) throws CheckstylePluginException;
-
-    /**
      * Return a description of the check configuration.
      * 
      * @return a description.
@@ -79,27 +50,11 @@ public interface ICheckConfiguration extends Cloneable
     String getDescription();
 
     /**
-     * Sets the description of the configuration.
-     * 
-     * @param description the description
-     */
-    void setDescription(String description);
-
-    /**
      * Returns the location of the checkstyle configuration file.
      * 
      * @return the location of the configuration file
      */
     String getLocation();
-
-    /**
-     * Sets the location of the checkstyle configuration.
-     * 
-     * @param location the location
-     * @throws CheckstylePluginException if the location is not valid or cannot
-     *             be resolveds
-     */
-    void setLocation(String location) throws CheckstylePluginException;
 
     /**
      * Return the type of the configuration.
@@ -118,12 +73,23 @@ public interface ICheckConfiguration extends Cloneable
     PropertyResolver getPropertyResolver() throws CheckstylePluginException;
 
     /**
-     * Returns the URL of the checkstyle configuration file.
+     * Checks if the checkstyle configuration file is available. If the
+     * configuration file is available the method call exits normally. Otherwise
+     * a CheckstylePluginException will be thrown, specifing what went wrong.
      * 
-     * @return the URL of the checkstyle configuration file
-     * @throws CheckstylePluginException error while creating the url
+     * @return the URL of the configuration file
+     * @throws CheckstylePluginException if the Checkstyle configuration file is
+     *             not available
      */
-    URL getCheckstyleConfigurationURL() throws CheckstylePluginException;
+    URL isConfigurationAvailable() throws CheckstylePluginException;
+
+    /**
+     * Opens an input stream to the configuration file.
+     * 
+     * @return input stream to the configuration file
+     * @throws CheckstylePluginException error opening the stream
+     */
+    InputStream openConfigurationFileStream() throws CheckstylePluginException;
 
     /**
      * Determines if the configuration properties are editable by the user.
@@ -142,58 +108,11 @@ public interface ICheckConfiguration extends Cloneable
     boolean isConfigurable();
 
     /**
-     * Determines if the specific check configuration needs a project context to
-     * resolve.
+     * Returns if the check configuration is a global configuration, configured
+     * for the workspace, or a local configuration for a single project.
      * 
-     * @return <code>true</code> if project context is needed
+     * @return <code>true</code> if the check configuration is configured
+     *         globally
      */
-    boolean isContextNeeded();
-
-    /**
-     * Returns the modules configured within the checkstyle configuration.
-     * 
-     * @return all modules of the checkstyle configuration
-     * @throws CheckstylePluginException error loading the configuration
-     */
-    List getModules() throws CheckstylePluginException;
-
-    /**
-     * Sets the modules for the checkstyle configuration. The modules are
-     * immediatly written to the checkstyle configuration file.
-     * 
-     * @param modules the modules of the configuration.
-     * @throws CheckstylePluginException error writing the configuration
-     */
-    void setModules(List modules) throws CheckstylePluginException;
-
-    /**
-     * If the check configuration is a working copy this method returns the
-     * original (unchanged) check configuration.
-     * 
-     * @return the original or <code>null</code> if this check configuration
-     *         is no working copy
-     */
-    ICheckConfiguration getOriginalCheckConfig();
-
-    /**
-     * Sets the original check configurations if this object serves as a working
-     * copy.
-     * 
-     * @param original the original check config
-     */
-    void setOriginalCheckConfig(ICheckConfiguration original);
-
-    /**
-     * Returns <code>true</code> if the checkstyle configuration has changed.
-     * 
-     * @return <code>true</code>, if the checkstyle configuration has changed
-     */
-    boolean isDirty();
-
-    /**
-     * Clone this Check Configuration.
-     * 
-     * @return ICheckConfiguration the clone
-     */
-    Object clone();
+    boolean isGlobal();
 }

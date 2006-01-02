@@ -25,7 +25,6 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.atlassw.tools.eclipse.checkstyle.config.savefilter.ISaveFilter;
 import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
 
 /**
@@ -96,6 +95,8 @@ public class RuleMetadata
      * 
      * @param ruleName the name of the rule
      * @param internalName the internal name of the rule
+     * @param checkstyleModuleName the checkstyle module name, if it differs
+     *            from the internal name
      * @param parent the parent module name
      * @param defaultSeverity the default severity level
      * @param hidden <code>true</code> if the module should be hidden from the
@@ -123,7 +124,6 @@ public class RuleMetadata
         mGroup = group;
         mAlternativeNames = new ArrayList();
         mIsSingleton = isSingleton;
-
     }
 
     // =================================================

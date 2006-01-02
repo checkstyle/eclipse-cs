@@ -168,11 +168,8 @@ public class Auditor
             monitor.beginTask(NLS.bind(Messages.Auditor_msgCheckingConfig, mCheckConfiguration
                     .getName()), filesToAudit.length);
 
-            // set context
-            mCheckConfiguration.setContext(project);
-
             // create checker
-            checker = CheckerFactory.createChecker(mCheckConfiguration);
+            checker = CheckerFactory.createChecker(mCheckConfiguration, project);
 
             // create and add listener
             listener = new CheckstyleAuditListener(project);
@@ -217,9 +214,6 @@ public class Auditor
                 checker.removeListener(listener);
                 checker.removeFilter(runtimeExceptionFilter);
             }
-
-            // reset the context
-            mCheckConfiguration.setContext(null);
 
             // restore the original classloader
             Thread.currentThread().setContextClassLoader(contextClassloader);

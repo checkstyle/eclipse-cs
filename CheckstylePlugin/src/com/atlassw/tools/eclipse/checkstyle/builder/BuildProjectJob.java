@@ -85,8 +85,7 @@ public class BuildProjectJob extends Job
     //
 
     /**
-     * @see org.eclipse.core.internal.jobs.InternalJob#run(
-     *      org.eclipse.core.runtime.IProgressMonitor)
+     * {@inheritDoc}
      */
     public IStatus run(IProgressMonitor monitor)
     {

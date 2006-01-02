@@ -25,39 +25,29 @@ package com.atlassw.tools.eclipse.checkstyle.config;
 //=================================================
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.xml.transform.sax.TransformerHandler;
-
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
-import org.xml.sax.helpers.AttributesImpl;
 import org.xml.sax.helpers.DefaultHandler;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
-import com.atlassw.tools.eclipse.checkstyle.config.configtypes.BuiltInCheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.ConfigurationTypes;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.IConfigurationType;
 import com.atlassw.tools.eclipse.checkstyle.config.migration.CheckConfigurationMigrator;
-import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileSet;
-import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfiguration;
-import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfigurationFactory;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.atlassw.tools.eclipse.checkstyle.util.XMLUtil;
@@ -76,13 +66,13 @@ public final class CheckConfigurationFactory
     // =================================================
 
     /** Name of the internal file storing the plugin check configurations. */
-    private static final String CHECKSTYLE_CONFIG_FILE = "checkstyle-config.xml"; //$NON-NLS-1$
+    protected static final String CHECKSTYLE_CONFIG_FILE = "checkstyle-config.xml"; //$NON-NLS-1$
 
     /** Name of the actual config file version. */
     private static final String VERSION_5_0_0 = "5.0.0"; //$NON-NLS-1$
 
     /** The current file version. */
-    private static final String CURRENT_CONFIG_FILE_FORMAT_VERSION = VERSION_5_0_0;
+    protected static final String CURRENT_CONFIG_FILE_FORMAT_VERSION = VERSION_5_0_0;
 
     /** constant for the extension point id. */
     private static final String CONFIGS_EXTENSION_POINT = CheckstylePlugin.PLUGIN_ID
@@ -96,15 +86,7 @@ public final class CheckConfigurationFactory
 
     static
     {
-        try
-        {
-            loadBuiltinConfigurations();
-            loadFromPersistence();
-        }
-        catch (CheckstylePluginException e)
-        {
-            CheckstyleLog.log(e);
-        }
+        refresh();
     }
 
     // =================================================
@@ -154,49 +136,34 @@ public final class CheckConfigurationFactory
      */
     public static List getCheckConfigurations()
     {
-        return sConfigurations;
+        return Collections.unmodifiableList(sConfigurations);
     }
 
     /**
-     * Set the list of defined check configurations.
+     * Creates a new working set from the existing configurations.
      * 
-     * @param configs the configurations
-     * @throws CheckstylePluginException Error while storing the configurations
+     * @return a new configuration working set
      */
-    public static void setCheckConfigurations(List configs) throws CheckstylePluginException
+    public static ICheckConfigurationWorkingSet newWorkingSet()
     {
-        updateProjectConfigurations(configs);
-        storeToPersistence(configs);
-
-        sConfigurations.clear();
-
-        loadBuiltinConfigurations();
-        loadFromPersistence();
+        return new GlobalCheckConfigurationWorkingSet(sConfigurations);
     }
 
     /**
-     * Check to see if a check configuration is using an already existing name.
-     * 
-     * @param configuration The check configuration
-     * 
-     * @return <code>true</code>= in use, <code>false</code>= not in use.
+     * Refreshes the check configurations from the persistent store.
      */
-    public static boolean isNameCollision(ICheckConfiguration configuration)
-
+    public static void refresh()
     {
-        boolean result = false;
-        Iterator it = sConfigurations.iterator();
-        while (it.hasNext())
+        try
         {
-            ICheckConfiguration tmp = (ICheckConfiguration) it.next();
-            if (!(tmp == configuration || tmp == configuration.getOriginalCheckConfig())
-                    && tmp.getName().equals(configuration.getName()))
-            {
-                result = true;
-                break;
-            }
+            sConfigurations.clear();
+            loadBuiltinConfigurations();
+            loadFromPersistence();
         }
-        return result;
+        catch (CheckstylePluginException e)
+        {
+            CheckstyleLog.log(e);
+        }
     }
 
     /**
@@ -211,7 +178,7 @@ public final class CheckConfigurationFactory
         throws CheckstylePluginException
     {
         // use the export function ;-)
-        String targetFile = target.getCheckstyleConfigurationURL().getFile();
+        String targetFile = target.isConfigurationAvailable().getFile();
         exportConfiguration(new File(targetFile), source);
     }
 
@@ -236,9 +203,7 @@ public final class CheckConfigurationFactory
         {
 
             // Just copy the checkstyle configuration
-            URL configUrl = config.getCheckstyleConfigurationURL();
-
-            in = new BufferedInputStream(configUrl.openStream());
+            in = config.openConfigurationFileStream();
             out = new BufferedOutputStream(new FileOutputStream(file));
 
             byte[] buf = new byte[512];
@@ -354,26 +319,9 @@ public final class CheckConfigurationFactory
 
             IConfigurationType configType = ConfigurationTypes.getByInternalName("builtin"); //$NON-NLS-1$
 
-            try
-            {
-                ICheckConfiguration checkConfig = (ICheckConfiguration) configType
-                        .getImplementationClass().newInstance();
-
-                checkConfig.initialize(name, location, configType, description);
-                sConfigurations.add(checkConfig);
-            }
-            catch (InstantiationException e)
-            {
-                CheckstyleLog.log(e);
-            }
-            catch (IllegalAccessException e)
-            {
-                CheckstyleLog.log(e);
-            }
-            catch (CheckstylePluginException e)
-            {
-                CheckstyleLog.log(e);
-            }
+            ICheckConfiguration checkConfig = new CheckConfiguration(name, location, description,
+                    configType, true);
+            sConfigurations.add(checkConfig);
         }
     }
 
@@ -396,11 +344,13 @@ public final class CheckConfigurationFactory
             File configFile = configPath.toFile();
             inStream = new BufferedInputStream(new FileInputStream(configFile));
 
-            List migratedConfigs = CheckConfigurationMigrator.getMigratedConfigurations(inStream);
+            // migrate the configurations
+            ICheckConfigurationWorkingSet workingSet = newWorkingSet();
+            CheckConfigurationMigrator.migrate(inStream, workingSet);
+            workingSet.store();
 
-            // store all configurations
-            setCheckConfigurations(migratedConfigs);
-
+            // refresh the cached instances
+            refresh();
         }
         catch (Exception e)
         {
@@ -427,168 +377,6 @@ public final class CheckConfigurationFactory
                 // Nothing can be done about it.
             }
         }
-    }
-
-    /**
-     * Updates the project configurations that use the changed check
-     * configurations.
-     * 
-     * @param configurations the check configurations
-     * @throws CheckstylePluginException an unexpected exception occurred
-     */
-    private static void updateProjectConfigurations(List configurations)
-        throws CheckstylePluginException
-    {
-        Iterator it = configurations.iterator();
-        while (it.hasNext())
-        {
-
-            ICheckConfiguration checkConfig = (ICheckConfiguration) it.next();
-
-            ICheckConfiguration original = checkConfig.getOriginalCheckConfig();
-
-            // only if the name of the check config differs from the original
-            if (original != null)
-            {
-
-                List projects = ProjectConfigurationFactory.getProjectsUsingConfig(original
-                        .getName());
-                Iterator it2 = projects.iterator();
-
-                while (it2.hasNext())
-                {
-
-                    IProject project = (IProject) it2.next();
-                    ProjectConfiguration projectConfig = ProjectConfigurationFactory
-                            .getConfiguration(project);
-
-                    List fileSets = projectConfig.getFileSets();
-                    Iterator it3 = fileSets.iterator();
-                    while (it3.hasNext())
-                    {
-                        FileSet fileSet = (FileSet) it3.next();
-
-                        // Check if the fileset uses the check config
-                        if (original.getName().equals(fileSet.getCheckConfigName()))
-                        {
-                            // set the new check configuration
-                            fileSet.setCheckConfig(checkConfig);
-                        }
-                    }
-
-                    // store the project configuration
-                    ProjectConfigurationFactory.setConfiguration(projectConfig, project);
-                }
-            }
-        }
-    }
-
-    /**
-     * Store the check configurations to the persistent state storage.
-     */
-    private static void storeToPersistence(List configurations) throws CheckstylePluginException
-    {
-
-        BufferedOutputStream out = null;
-        ByteArrayOutputStream byteOut = null;
-        try
-        {
-
-            IPath configPath = CheckstylePlugin.getDefault().getStateLocation();
-            configPath = configPath.append(CHECKSTYLE_CONFIG_FILE);
-            File configFile = configPath.toFile();
-
-            byteOut = new ByteArrayOutputStream();
-
-            // Write the configuration document by pushing sax events through
-            // the transformer handler
-            TransformerHandler xmlOut = XMLUtil.writeWithSax(byteOut);
-
-            writeConfigurations(xmlOut, configurations);
-
-            // write to the file after the serialization was successful
-            // prevents corrupted files in case of error
-            out = new BufferedOutputStream(new FileOutputStream(configFile));
-            out.write(byteOut.toByteArray());
-        }
-        catch (Exception e)
-        {
-            CheckstylePluginException.rethrow(e, ErrorMessages.errorWritingConfigFile);
-        }
-        finally
-        {
-            try
-            {
-                byteOut.close();
-            }
-            catch (Exception e1)
-            {
-                // can nothing do about it
-            }
-            try
-            {
-                out.close();
-            }
-            catch (Exception e1)
-            {
-                // can nothing do about it
-            }
-        }
-    }
-
-    /**
-     * Writes to check configurations through the transformer handler by passing
-     * SAX events to it.
-     * 
-     * @param handler the transformer handler
-     * @throws SAXException error writing the configurations
-     */
-    private static void writeConfigurations(TransformerHandler handler, List configurations)
-        throws SAXException
-    {
-
-        handler.startDocument();
-        AttributesImpl attrs = new AttributesImpl();
-        attrs.addAttribute(new String(), XMLTags.VERSION_TAG, XMLTags.VERSION_TAG, null,
-                CURRENT_CONFIG_FILE_FORMAT_VERSION);
-
-        handler.startElement(new String(), XMLTags.CHECKSTYLE_ROOT_TAG,
-                XMLTags.CHECKSTYLE_ROOT_TAG, attrs);
-        handler.ignorableWhitespace(new char[] { '\n' }, 0, 1);
-
-        Iterator it = configurations.iterator();
-        while (it.hasNext())
-        {
-
-            ICheckConfiguration config = (ICheckConfiguration) it.next();
-
-            // don't store built-in configurations to persistence
-            if (config instanceof BuiltInCheckConfiguration)
-            {
-                continue;
-            }
-
-            attrs = new AttributesImpl();
-            attrs.addAttribute(new String(), XMLTags.NAME_TAG, XMLTags.NAME_TAG, null, config
-                    .getName());
-            attrs.addAttribute(new String(), XMLTags.LOCATION_TAG, XMLTags.LOCATION_TAG, null,
-                    config.getLocation());
-            attrs.addAttribute(new String(), XMLTags.TYPE_TAG, XMLTags.TYPE_TAG, null, config
-                    .getType().getInternalName());
-            if (config.getDescription() != null)
-            {
-                attrs.addAttribute(new String(), XMLTags.DESCRIPTION_TAG, XMLTags.DESCRIPTION_TAG,
-                        null, config.getDescription());
-            }
-
-            handler.startElement(new String(), XMLTags.CHECK_CONFIG_TAG, XMLTags.CHECK_CONFIG_TAG,
-                    attrs);
-            handler.endElement(new String(), XMLTags.CHECK_CONFIG_TAG, XMLTags.CHECK_CONFIG_TAG);
-            handler.ignorableWhitespace(new char[] { '\n' }, 0, 1);
-        }
-
-        handler.endElement(new String(), XMLTags.CHECKSTYLE_ROOT_TAG, XMLTags.CHECKSTYLE_ROOT_TAG);
-        handler.endDocument();
     }
 
     /**
@@ -653,9 +441,8 @@ public final class CheckConfigurationFactory
 
                     IConfigurationType configType = ConfigurationTypes.getByInternalName(type);
 
-                    ICheckConfiguration checkConfig = (ICheckConfiguration) configType
-                            .getImplementationClass().newInstance();
-                    checkConfig.initialize(name, location, configType, description);
+                    ICheckConfiguration checkConfig = new CheckConfiguration(name, location,
+                            description, configType, true);
                     mConfigurations.add(checkConfig);
                 }
                 catch (Exception e)

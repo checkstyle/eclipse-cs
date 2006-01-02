@@ -57,8 +57,7 @@ public abstract class AbstractFilter implements IFilter
     //
 
     /**
-     * @see IFilter#initialize(java.lang.String, sjava.lang.String,
-     *      java.lang.Class, boolean)
+     * {@inheritDoc}
      */
     public void initialize(String name, String internalName, String desc, Class editorClass,
             boolean readonly)
@@ -112,7 +111,7 @@ public abstract class AbstractFilter implements IFilter
     }
 
     /**
-     * @see IFilter#isEditable()
+     * {@inheritDoc}
      */
     public boolean isEditable()
     {
@@ -121,7 +120,7 @@ public abstract class AbstractFilter implements IFilter
     }
 
     /**
-     * @see IFilter#isEnabled()
+     * {@inheritDoc}
      */
     public boolean isEnabled()
     {
@@ -129,7 +128,7 @@ public abstract class AbstractFilter implements IFilter
     }
 
     /**
-     * @see IFilter#setEnabled(boolean)
+     * {@inheritDoc}
      */
     public void setEnabled(boolean selected)
     {
@@ -137,7 +136,7 @@ public abstract class AbstractFilter implements IFilter
     }
 
     /**
-     * @see IFilter#isReadonly()
+     * {@inheritDoc}
      */
     public boolean isReadonly()
     {
@@ -145,7 +144,7 @@ public abstract class AbstractFilter implements IFilter
     }
 
     /**
-     * @see IFilter#getFilterData()
+     * {@inheritDoc}
      */
     public List getFilterData()
     {
@@ -154,7 +153,7 @@ public abstract class AbstractFilter implements IFilter
     }
 
     /**
-     * @see IFilter#setFilterData(java.lang.String)
+     * {@inheritDoc}
      */
     public void setFilterData(List filterData)
     {
@@ -162,7 +161,7 @@ public abstract class AbstractFilter implements IFilter
     }
 
     /**
-     * @see IFilter#getPresentableFilterData()
+     * {@inheritDoc}
      */
     public String getPresentableFilterData()
     {
@@ -170,7 +169,7 @@ public abstract class AbstractFilter implements IFilter
     }
 
     /**
-     * @see java.lang.Object#clone()
+     * {@inheritDoc}
      */
     public Object clone()
     {
@@ -189,7 +188,7 @@ public abstract class AbstractFilter implements IFilter
     }
 
     /**
-     * @see java.lang.Object#equals(java.lang.Object)
+     * {@inheritDoc}
      */
     public boolean equals(Object o)
     {
@@ -205,7 +204,7 @@ public abstract class AbstractFilter implements IFilter
     }
 
     /**
-     * @see java.lang.Object#hashCode()
+     * {@inheritDoc}
      */
     public int hashCode()
     {

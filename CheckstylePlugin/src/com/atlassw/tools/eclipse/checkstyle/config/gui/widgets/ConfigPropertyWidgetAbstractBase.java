@@ -18,7 +18,7 @@
 //
 //============================================================================
 
-package com.atlassw.tools.eclipse.checkstyle.preferences.widgets;
+package com.atlassw.tools.eclipse.checkstyle.config.gui.widgets;
 
 //=================================================
 // Imports from java namespace
@@ -39,7 +39,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 
 import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
-import com.atlassw.tools.eclipse.checkstyle.preferences.IConfigPropertyWidget;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginImages;
 import com.atlassw.tools.eclipse.checkstyle.util.SWTUtil;
@@ -86,7 +85,7 @@ public abstract class ConfigPropertyWidgetAbstractBase implements IConfigPropert
     // =================================================
 
     /**
-     * @see com.atlassw.tools.eclipse.checkstyle.preferences.IConfigPropertyWidget#initialize()
+     * @see com.atlassw.tools.eclipse.checkstyle.config.gui.widgets.IConfigPropertyWidget#initialize()
      */
     public void initialize()
     {
@@ -115,7 +114,7 @@ public abstract class ConfigPropertyWidgetAbstractBase implements IConfigPropert
     }
 
     /**
-     * @see IConfigPropertyWidget#setEnabled(boolean)
+     * {@inheritDoc}
      */
     public void setEnabled(boolean enabled)
     {
@@ -162,7 +161,7 @@ public abstract class ConfigPropertyWidgetAbstractBase implements IConfigPropert
     }
 
     /**
-     * @return The configuration property.
+     * {@inheritDoc}
      */
     public ConfigProperty getConfigProperty()
     {
@@ -170,7 +169,7 @@ public abstract class ConfigPropertyWidgetAbstractBase implements IConfigPropert
     }
 
     /**
-     * @see com.atlassw.tools.eclipse.checkstyle.preferences.IConfigPropertyWidget#validate()
+     * {@inheritDoc}
      */
     public void validate() throws CheckstylePluginException
     {

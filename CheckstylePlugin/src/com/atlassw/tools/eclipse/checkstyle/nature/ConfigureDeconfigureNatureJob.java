@@ -68,8 +68,7 @@ public class ConfigureDeconfigureNatureJob extends WorkspaceJob
     }
 
     /**
-     * @see org.eclipse.core.resources.WorkspaceJob#runInWorkspace(
-     *      rg.eclipse.core.runtime.IProgressMonitor)
+     * {@inheritDoc}
      */
     public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException
     {

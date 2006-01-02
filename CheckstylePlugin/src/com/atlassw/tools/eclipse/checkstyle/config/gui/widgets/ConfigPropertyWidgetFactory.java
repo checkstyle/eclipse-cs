@@ -18,7 +18,7 @@
 //
 //============================================================================
 
-package com.atlassw.tools.eclipse.checkstyle.preferences;
+package com.atlassw.tools.eclipse.checkstyle.config.gui.widgets;
 
 //=================================================
 // Imports from java namespace
@@ -36,14 +36,6 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
 import com.atlassw.tools.eclipse.checkstyle.config.meta.ConfigPropertyType;
-import com.atlassw.tools.eclipse.checkstyle.preferences.widgets.ConfigPropertyWidgetBoolean;
-import com.atlassw.tools.eclipse.checkstyle.preferences.widgets.ConfigPropertyWidgetFile;
-import com.atlassw.tools.eclipse.checkstyle.preferences.widgets.ConfigPropertyWidgetHidden;
-import com.atlassw.tools.eclipse.checkstyle.preferences.widgets.ConfigPropertyWidgetInteger;
-import com.atlassw.tools.eclipse.checkstyle.preferences.widgets.ConfigPropertyWidgetMultiCheck;
-import com.atlassw.tools.eclipse.checkstyle.preferences.widgets.ConfigPropertyWidgetRegex;
-import com.atlassw.tools.eclipse.checkstyle.preferences.widgets.ConfigPropertyWidgetSingleSelect;
-import com.atlassw.tools.eclipse.checkstyle.preferences.widgets.ConfigPropertyWidgetString;
 
 /**
  * Create <code>ConfigPropertyWidget</code> instances based on provided

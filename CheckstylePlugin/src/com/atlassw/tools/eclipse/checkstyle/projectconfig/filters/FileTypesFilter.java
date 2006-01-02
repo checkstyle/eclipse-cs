@@ -45,7 +45,7 @@ public class FileTypesFilter extends AbstractFilter
     //
 
     /**
-     * @see IFilter#accept(java.lang.Object)
+     * {@inheritDoc}
      */
     public boolean accept(Object element)
     {
@@ -65,7 +65,7 @@ public class FileTypesFilter extends AbstractFilter
     }
 
     /**
-     * @see AbstractFilter#setFilterData(java.util.List)
+     * {@inheritDoc}
      */
     public void setFilterData(List filterData)
     {
@@ -73,7 +73,7 @@ public class FileTypesFilter extends AbstractFilter
     }
 
     /**
-     * @see IFilter#getFilterData()
+     * {@inheritDoc}
      */
     public List getFilterData()
     {
@@ -81,7 +81,7 @@ public class FileTypesFilter extends AbstractFilter
     }
 
     /**
-     * @see IFilter#getPresentableFilterData()
+     * {@inheritDoc}
      */
     public String getPresentableFilterData()
     {
@@ -102,7 +102,7 @@ public class FileTypesFilter extends AbstractFilter
     }
 
     /**
-     * @see java.lang.Object#hashCode()
+     * {@inheritDoc}
      */
     public int hashCode()
     {

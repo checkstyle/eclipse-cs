@@ -18,7 +18,7 @@
 //
 //============================================================================
 
-package com.atlassw.tools.eclipse.checkstyle.preferences.widgets;
+package com.atlassw.tools.eclipse.checkstyle.config.gui.widgets;
 
 //=================================================
 // Imports from java namespace
@@ -93,7 +93,7 @@ public class ConfigPropertyWidgetRegex extends ConfigPropertyWidgetAbstractBase
     // =================================================
 
     /**
-     * @see ConfigPropertyWidgetAbstractBase#getValueWidget(org.eclipse.swt.widgets.Composite)
+     * {@inheritDoc}
      */
     protected Control getValueWidget(Composite parent)
     {
@@ -134,7 +134,7 @@ public class ConfigPropertyWidgetRegex extends ConfigPropertyWidgetAbstractBase
     }
 
     /**
-     * @see ConfigPropertyWidgetAbstractBase#restorePropertyDefault()
+     * {@inheritDoc}
      */
     public void restorePropertyDefault()
     {
@@ -143,7 +143,7 @@ public class ConfigPropertyWidgetRegex extends ConfigPropertyWidgetAbstractBase
     }
 
     /**
-     * @see ConfigPropertyWidgetAbstractBase#validate()
+     * {@inheritDoc}
      */
     public void validate() throws CheckstylePluginException
     {

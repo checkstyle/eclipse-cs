@@ -18,7 +18,7 @@
 //
 //============================================================================
 
-package com.atlassw.tools.eclipse.checkstyle.preferences.widgets;
+package com.atlassw.tools.eclipse.checkstyle.config.gui;
 
 //=================================================
 // Imports from java namespace
@@ -31,18 +31,15 @@ package com.atlassw.tools.eclipse.checkstyle.preferences.widgets;
 //=================================================
 // Imports from com namespace
 //=================================================
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerSorter;
 
-import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
+import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 
 /**
- * Boolean configuration widget.
+ * Sorts CheckConfiguration objects into their display order.
  */
-public class ConfigPropertyWidgetBoolean extends ConfigPropertyWidgetAbstractBase
+public class CheckConfigurationViewerSorter extends ViewerSorter
 {
     //=================================================
     // Public static final variables.
@@ -56,21 +53,16 @@ public class ConfigPropertyWidgetBoolean extends ConfigPropertyWidgetAbstractBas
     // Instance member variables.
     //=================================================
 
-    private Button mCheckbox;
-
     //=================================================
     // Constructors & finalizer.
     //=================================================
 
     /**
-     * Creates the widget.
-     * 
-     * @param parent the parent composite
-     * @param prop the property
+     * Default constructor.
      */
-    public ConfigPropertyWidgetBoolean(Composite parent, ConfigProperty prop)
+    public CheckConfigurationViewerSorter()
     {
-        super(parent, prop);
+        super();
     }
 
     //=================================================
@@ -78,41 +70,23 @@ public class ConfigPropertyWidgetBoolean extends ConfigPropertyWidgetAbstractBas
     //=================================================
 
     /**
-     * @see ConfigPropertyWidgetAbstractBase#getValueWidget(org.eclipse.swt.widgets.Composite)
-     */
-    protected Control getValueWidget(Composite parent)
-    {
-        if (mCheckbox == null)
-        {
-
-            //
-            //  Create a check box for selecting true or false.
-            //
-
-            mCheckbox = new Button(parent, SWT.CHECK);
-            mCheckbox.setLayoutData(new GridData());
-
-            String initValue = getInitValue();
-            mCheckbox.setSelection(Boolean.valueOf(initValue).booleanValue());
-
-        }
-        return mCheckbox;
-    }
-
-    /**
      * {@inheritDoc}
      */
-    public String getValue()
+    public int compare(Viewer viewer, Object e1, Object e2)
     {
-        return "" + mCheckbox.getSelection(); //$NON-NLS-1$
-    }
+        int result = 0;
 
-    /**
-     * @see ConfigPropertyWidgetAbstractBase#restorePropertyDefault()
-     */
-    public void restorePropertyDefault()
-    {
-        String defaultValue = getConfigProperty().getMetaData().getDefaultValue();
-        mCheckbox.setSelection(Boolean.valueOf(defaultValue).booleanValue());
+        if ((e1 instanceof ICheckConfiguration) && (e2 instanceof ICheckConfiguration))
+        {
+            ICheckConfiguration cfg1 = (ICheckConfiguration) e1;
+            ICheckConfiguration cfg2 = (ICheckConfiguration) e2;
+
+            String string1 = cfg1.getName();
+            String string2 = cfg2.getName();
+
+            result = string1.compareToIgnoreCase(string2);
+        }
+
+        return result;
     }
 }

@@ -36,7 +36,7 @@ public class CheckstyleMarkerImageProvider implements IAnnotationImageProvider
 {
 
     /**
-     * @see org.eclipse.ui.texteditor.IAnnotationImageProvider#getManagedImage(org.eclipse.jface.text.source.Annotation)
+     * {@inheritDoc}
      */
     public Image getManagedImage(Annotation annotation)
     {
@@ -58,8 +58,7 @@ public class CheckstyleMarkerImageProvider implements IAnnotationImageProvider
     }
 
     /**
-     * @see org.eclipse.ui.texteditor.IAnnotationImageProvider#getImageDescriptorId(
-     *      org.eclipse.jface.text.source.Annotation)
+     * {@inheritDoc}
      */
     public String getImageDescriptorId(Annotation annotation)
     {
@@ -67,7 +66,7 @@ public class CheckstyleMarkerImageProvider implements IAnnotationImageProvider
     }
 
     /**
-     * @see org.eclipse.ui.texteditor.IAnnotationImageProvider#getImageDescriptor(java.lang.String)
+     * {@inheritDoc}
      */
     public ImageDescriptor getImageDescriptor(String imageDescritporId)
     {

@@ -43,7 +43,7 @@ public class FileSetViewerSorter extends ViewerSorter
 {
 
     /**
-     * @see ViewerSorter#compare
+     * {@inheritDoc}
      */
     public int compare(Viewer viewer, Object e1, Object e2)
     {

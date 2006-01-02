@@ -20,7 +20,14 @@
 
 package com.atlassw.tools.eclipse.checkstyle.config.configtypes;
 
+import java.io.InputStream;
+import java.net.URL;
+
 import org.eclipse.swt.graphics.Image;
+
+import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
+import com.puppycrawl.tools.checkstyle.PropertyResolver;
 
 /**
  * Interface for a configuration type.
@@ -35,16 +42,19 @@ public interface IConfigurationType
      * 
      * @param name the displayable name of the configuration type
      * @param internalName the internal name of the configuration type
-     * @param implementationClass the implementation class
      * @param editorClass the properties editor class
      * @param image the image of the configuration type
      * @param definingPluginId the plugin id the configuration type was defined
      *            in
      * @param isCreatable <code>true</code> if a configuration of this type
      *            can be created by the user.
+     * @param isEditable <code>true</code> if a configuration of this type can
+     *            be edited by the user.
+     * @param isConfigurable <code>true</code> if a configuration of this type
+     *            can be configured by the user.
      */
-    void initialize(String name, String internalName, Class implementationClass, Class editorClass,
-            String image, String definingPluginId, boolean isCreatable);
+    void initialize(String name, String internalName, Class editorClass, String image,
+            String definingPluginId, boolean isCreatable, boolean isEditable, boolean isConfigurable);
 
     /**
      * The displayable name of the configuration type.
@@ -59,14 +69,6 @@ public interface IConfigurationType
      * @return the internal name
      */
     String getInternalName();
-
-    /**
-     * Returns the class of the configuration type implementation. The
-     * implementation class must implement <code>ICheckConfiguration</code>.
-     * 
-     * @return the implementation class
-     */
-    Class getImplementationClass();
 
     /**
      * Returns the class of the configuration types properties editor.
@@ -89,4 +91,60 @@ public interface IConfigurationType
      *         otherwise <code>false</code>
      */
     boolean isCreatable();
+
+    /**
+     * Determines if the configuration properties are editable by the user.
+     * 
+     * @return <code>true</code>, if the configuration is editable
+     */
+    boolean isEditable();
+
+    /**
+     * Determines if the checkstyle configuration associates with this check
+     * configuration can be configured.
+     * 
+     * @param checkConfiguration the actual check configuration
+     * @return <code>true</code> if the checkstyle configuration can be
+     *         configured.
+     */
+    boolean isConfigurable(ICheckConfiguration checkConfiguration);
+
+    /**
+     * Gets the property resolver for this configuration type used to expand
+     * property values within the checkstyle configuration.
+     * 
+     * @param checkConfiguration the actual check configuration
+     * @return the property resolver
+     * @throws CheckstylePluginException error creating the property resolver
+     */
+    PropertyResolver getPropertyResolver(ICheckConfiguration checkConfiguration)
+        throws CheckstylePluginException;
+
+    /**
+     * Returns the URL of the checkstyle configuration file.
+     * 
+     * @param checkConfiguration the actual check configuration
+     * @return the URL of the checkstyle configuration file
+     * @throws CheckstylePluginException error while creating the url
+     */
+    URL resolveLocation(ICheckConfiguration checkConfiguration) throws CheckstylePluginException;
+
+    /**
+     * Opens an input stream to the Checkstyle configuration file.
+     * 
+     * @param checkConfiguration the actual check configuration
+     * @return input stream to the Checkstyle configuration file
+     * @throws CheckstylePluginException error opening the stream
+     */
+    InputStream openConfigurationFileStream(ICheckConfiguration checkConfiguration)
+        throws CheckstylePluginException;
+
+    /**
+     * Notifies that a check configuration has been removed.
+     * 
+     * @param checkConfiguration the check configuration which was removed
+     * @throws CheckstylePluginException error while processing the notification
+     */
+    void notifyCheckConfigRemoved(ICheckConfiguration checkConfiguration)
+        throws CheckstylePluginException;
 }

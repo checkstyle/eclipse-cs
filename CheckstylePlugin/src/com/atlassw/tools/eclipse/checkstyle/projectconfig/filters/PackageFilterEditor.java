@@ -73,7 +73,7 @@ public class PackageFilterEditor implements IFilterEditor
     //
 
     /**
-     * @see IFilterEditor#openEditor(org.eclipse.swt.widgets.Shell)
+     * {@inheritDoc}
      */
     public int openEditor(Shell parent)
     {
@@ -97,7 +97,7 @@ public class PackageFilterEditor implements IFilterEditor
     }
 
     /**
-     * @see IFilterEditor#setInputProject(org.eclipse.core.resources.IProject)
+     * {@inheritDoc}
      */
     public void setInputProject(IProject input)
     {
@@ -105,7 +105,7 @@ public class PackageFilterEditor implements IFilterEditor
     }
 
     /**
-     * @see IFilterEditor#setFilterData(java.lang.String)
+     * {@inheritDoc}
      */
     public void setFilterData(List filterData)
     {
@@ -113,7 +113,7 @@ public class PackageFilterEditor implements IFilterEditor
     }
 
     /**
-     * @see IFilterEditor#getFilterData()
+     * {@inheritDoc}
      */
     public List getFilterData()
     {

@@ -18,34 +18,24 @@
 //
 //============================================================================
 
-package com.atlassw.tools.eclipse.checkstyle.config.meta;
+package com.atlassw.tools.eclipse.checkstyle.config.configtypes;
 
-import java.util.List;
-
-import com.atlassw.tools.eclipse.checkstyle.config.savefilter.ISaveFilter;
+import com.puppycrawl.tools.checkstyle.PropertyResolver;
+import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 
 /**
- * Standard module logic for most modules.
+ * Property resolver implementation that resolves system properties.
  * 
  * @author Lars Ködderitzsch
  */
-public class StandardModuleLogic implements ISaveFilter
+public class SystemPropertyResolver implements PropertyResolver
 {
-
     /**
-     * @see ISaveFilter#compareTo(com.atlassw.tools.eclipse.checkstyle.config.savefilter.ISaveFilter)
+     * {@inheritDoc}
      */
-    public int compareTo(ISaveFilter anotherModule)
+    public String resolve(String property) throws CheckstyleException
     {
-        return 0;
+        // get the system property
+        return System.getProperty(property);
     }
-
-    /**
-     * @see ISaveFilter#postProcessConfiguredModules(java.util.List)
-     */
-    public void postProcessConfiguredModules(List configuredModules)
-    {
-    // NOOP
-    }
-
 }

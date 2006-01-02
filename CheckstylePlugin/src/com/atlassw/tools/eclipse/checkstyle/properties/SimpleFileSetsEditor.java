@@ -23,14 +23,20 @@ package com.atlassw.tools.eclipse.checkstyle.properties;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
@@ -39,8 +45,14 @@ import org.eclipse.swt.widgets.Text;
 
 import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationFactory;
+import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationWorkingCopy;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
-import com.atlassw.tools.eclipse.checkstyle.preferences.CheckConfigurationConfigureDialog;
+import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfigurationWorkingSet;
+import com.atlassw.tools.eclipse.checkstyle.config.TemporaryCheckConfigurationWorkingSet;
+import com.atlassw.tools.eclipse.checkstyle.config.gui.CheckConfigurationConfigureDialog;
+import com.atlassw.tools.eclipse.checkstyle.config.gui.CheckConfigurationContentProvider;
+import com.atlassw.tools.eclipse.checkstyle.config.gui.CheckConfigurationLabelProvider;
+import com.atlassw.tools.eclipse.checkstyle.config.gui.CheckConfigurationViewerSorter;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileMatchPattern;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileSet;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
@@ -60,7 +72,7 @@ public class SimpleFileSetsEditor implements IFileSetsEditor
     //
 
     /** viewer to display the known checkstyle configurations. */
-    private Combo mConfigList;
+    private ComboViewer mComboViewer;
 
     /** used to display the config description. */
     private Text mTxtConfigDescription;
@@ -95,7 +107,7 @@ public class SimpleFileSetsEditor implements IFileSetsEditor
     //
 
     /**
-     * @see IFileSetsEditor#setFileSets(java.util.List)
+     * {@inheritDoc}
      */
     public void setFileSets(List fileSets) throws CheckstylePluginException
     {
@@ -123,7 +135,7 @@ public class SimpleFileSetsEditor implements IFileSetsEditor
     }
 
     /**
-     * @see IFileSetsEditor#getFileSets()
+     * {@inheritDoc}
      */
     public List getFileSets()
     {
@@ -131,14 +143,14 @@ public class SimpleFileSetsEditor implements IFileSetsEditor
     }
 
     /**
-     * @see IFileSetsEditor#createContents(org.eclipse.swt.widgets.Composite)
+     * {@inheritDoc}
      */
     public Control createContents(Composite parent) throws CheckstylePluginException
     {
 
         mController = new Controller();
 
-        //group composite containing the config settings
+        // group composite containing the config settings
         Group configArea = new Group(parent, SWT.NULL);
         configArea.setText(Messages.SimpleFileSetsEditor_titleSimpleConfig);
         configArea.setLayout(new FormLayout());
@@ -151,21 +163,25 @@ public class SimpleFileSetsEditor implements IFileSetsEditor
         fd.right = new FormAttachment(100, -3);
         this.mBtnManageConfigs.setLayoutData(fd);
 
-        this.mConfigList = new Combo(configArea, SWT.DROP_DOWN | SWT.READ_ONLY);
-        this.mConfigList.addSelectionListener(mController);
+        mComboViewer = new ComboViewer(configArea);
+        mComboViewer.setContentProvider(new CheckConfigurationContentProvider());
+        mComboViewer.setLabelProvider(new CheckConfigurationLabelProvider());
+        mComboViewer.setSorter(new CheckConfigurationViewerSorter());
+        mComboViewer.getControl().setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        mComboViewer.addSelectionChangedListener(mController);
         fd = new FormData();
         fd.left = new FormAttachment(0, 3);
         fd.top = new FormAttachment(0, 3);
         fd.right = new FormAttachment(mBtnManageConfigs, -3, SWT.LEFT);
-        //fd.right = new FormAttachment(100, -3);
-        this.mConfigList.setLayoutData(fd);
+        // fd.right = new FormAttachment(100, -3);
+        mComboViewer.getCombo().setLayoutData(fd);
 
         // Description
         Label lblConfigDesc = new Label(configArea, SWT.LEFT);
         lblConfigDesc.setText(Messages.SimpleFileSetsEditor_lblDescription);
         fd = new FormData();
         fd.left = new FormAttachment(0, 3);
-        fd.top = new FormAttachment(this.mConfigList, 3, SWT.BOTTOM);
+        fd.top = new FormAttachment(mComboViewer.getCombo(), 3, SWT.BOTTOM);
         fd.right = new FormAttachment(100, -3);
         lblConfigDesc.setLayoutData(fd);
 
@@ -178,41 +194,22 @@ public class SimpleFileSetsEditor implements IFileSetsEditor
         fd.bottom = new FormAttachment(100, -3);
         this.mTxtConfigDescription.setLayoutData(fd);
 
-        initialize();
+        // init the check configuration combo
+        mComboViewer.setInput(mPropertyPage.getProjectConfiguration());
+        if (mDefaultFileSet.getCheckConfig() != null)
+        {
+            mComboViewer.setSelection(new StructuredSelection(mDefaultFileSet.getCheckConfig()));
+        }
 
         return configArea;
     }
 
     /**
-     * Initializes the editor.
+     * {@inheritDoc}
      */
-    private void initialize() throws CheckstylePluginException
+    public void refresh()
     {
-
-        //get available check configurations
-        List configurations = CheckConfigurationFactory.getCheckConfigurations();
-        String[] items = new String[configurations.size()];
-
-        for (int i = 0; i < items.length; i++)
-        {
-            items[i] = ((ICheckConfiguration) configurations.get(i)).getName();
-        }
-
-        mConfigList.setItems(items);
-
-        //select the selected check configuration
-        ICheckConfiguration config = mDefaultFileSet.getCheckConfig();
-        if (config != null)
-        {
-            mConfigList.select(mConfigList.indexOf(config.getName()));
-            mTxtConfigDescription.setText(config.getDescription());
-        }
-        else if (items.length > 0)
-        {
-            mConfigList.select(0);
-            mTxtConfigDescription.setText(((ICheckConfiguration) configurations.get(0))
-                    .getDescription());
-        }
+        mComboViewer.refresh();
     }
 
     /**
@@ -220,7 +217,7 @@ public class SimpleFileSetsEditor implements IFileSetsEditor
      * 
      * @author Lars Ködderitzsch
      */
-    private class Controller implements SelectionListener
+    private class Controller implements SelectionListener, ISelectionChangedListener
     {
 
         /**
@@ -230,8 +227,7 @@ public class SimpleFileSetsEditor implements IFileSetsEditor
         {
             if (mBtnManageConfigs == e.widget)
             {
-                String configName = mConfigList.getItem(mConfigList.getSelectionIndex());
-                ICheckConfiguration config = CheckConfigurationFactory.getByName(configName);
+                ICheckConfiguration config = mDefaultFileSet.getCheckConfig();
 
                 if (config != null)
                 {
@@ -239,15 +235,27 @@ public class SimpleFileSetsEditor implements IFileSetsEditor
 
                     try
                     {
+                        config.isConfigurationAvailable();
 
-                        config.setContext(project);
-                        config.getCheckstyleConfigurationURL();
+                        CheckConfigurationWorkingCopy workingCopy = null;
+
+                        if (config instanceof CheckConfigurationWorkingCopy)
+                        {
+                            workingCopy = (CheckConfigurationWorkingCopy) config;
+                        }
+                        else
+                        {
+                            ICheckConfigurationWorkingSet tmpWorkingSet = new TemporaryCheckConfigurationWorkingSet();
+                            workingCopy = tmpWorkingSet.newWorkingCopy(config);
+                        }
 
                         CheckConfigurationConfigureDialog dialog = new CheckConfigurationConfigureDialog(
-                                mPropertyPage.getShell(), config);
+                                mTxtConfigDescription.getShell(), workingCopy);
                         dialog.setBlockOnOpen(true);
-                        dialog.open();
+                        if (Dialog.OK == dialog.open() && workingCopy.isDirty())
+                        {
 
+                        }
                     }
                     catch (CheckstylePluginException ex)
                     {
@@ -255,22 +263,7 @@ public class SimpleFileSetsEditor implements IFileSetsEditor
                                 Messages.CheckstylePreferencePage_msgProjectRelativeConfigNoFound,
                                 project, config.getLocation()), ex);
                     }
-                    finally
-                    {
-                        config.setContext(null);
-                    }
                 }
-
-            }
-            else if (mConfigList == e.widget)
-            {
-                String configName = mConfigList.getItem(mConfigList.getSelectionIndex());
-
-                ICheckConfiguration config = CheckConfigurationFactory.getByName(configName);
-                mDefaultFileSet.setCheckConfig(config);
-                mTxtConfigDescription.setText(config.getDescription());
-
-                mPropertyPage.getContainer().updateButtons();
             }
         }
 
@@ -282,5 +275,25 @@ public class SimpleFileSetsEditor implements IFileSetsEditor
         // NOOP
         }
 
+        /**
+         * @see ISelectionChangedListener#selectionChanged(SelectionChangedEvent)
+         */
+        public void selectionChanged(SelectionChangedEvent event)
+        {
+            IStructuredSelection selection = (IStructuredSelection) event.getSelection();
+            ICheckConfiguration config = (ICheckConfiguration) selection.getFirstElement();
+
+            if (config != null)
+            {
+                mDefaultFileSet.setCheckConfig(config);
+                mTxtConfigDescription.setText(config.getDescription());
+            }
+            else
+            {
+                mComboViewer.setSelection(new StructuredSelection(mComboViewer.getElementAt(0)));
+            }
+
+            mPropertyPage.getContainer().updateButtons();
+        }
     }
 }

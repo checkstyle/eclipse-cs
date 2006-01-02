@@ -18,28 +18,24 @@
 //
 //============================================================================
 
-package com.atlassw.tools.eclipse.checkstyle.preferences.widgets;
+package com.atlassw.tools.eclipse.checkstyle.config.gui.widgets;
 
-//=================================================
-// Imports from java namespace
-//=================================================
+import java.util.Iterator;
+import java.util.List;
 
-//=================================================
-// Imports from javax namespace
-//=================================================
-
-//=================================================
-// Imports from com namespace
-//=================================================
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
 
 /**
- * Non-configuration property.
+ * Configuration widget that allows for selecting one value from a set of
+ * values.
  */
-public class ConfigPropertyWidgetHidden extends ConfigPropertyWidgetAbstractBase
+public class ConfigPropertyWidgetSingleSelect extends ConfigPropertyWidgetAbstractBase
 {
     //=================================================
     // Public static final variables.
@@ -53,7 +49,7 @@ public class ConfigPropertyWidgetHidden extends ConfigPropertyWidgetAbstractBase
     // Instance member variables.
     //=================================================
 
-    private String mValue = ""; //$NON-NLS-1$
+    private Combo mComboItem;
 
     //=================================================
     // Constructors & finalizer.
@@ -65,7 +61,7 @@ public class ConfigPropertyWidgetHidden extends ConfigPropertyWidgetAbstractBase
      * @param parent the parent composite
      * @param prop the property
      */
-    public ConfigPropertyWidgetHidden(Composite parent, ConfigProperty prop)
+    public ConfigPropertyWidgetSingleSelect(Composite parent, ConfigProperty prop)
     {
         super(parent, prop);
     }
@@ -79,7 +75,34 @@ public class ConfigPropertyWidgetHidden extends ConfigPropertyWidgetAbstractBase
      */
     protected Control getValueWidget(Composite parent)
     {
-        return null;
+
+        if (mComboItem == null)
+        {
+
+            //
+            //  Create a combo box for selecting a value from the enumeration.
+            //
+            List valueList = getConfigProperty().getMetaData().getPropertyEnumeration();
+            String[] valueLabels = new String[valueList.size()];
+            int initialIndex = 0;
+            String initValue = getInitValue();
+            Iterator iter = valueList.iterator();
+            for (int i = 0; iter.hasNext(); i++)
+            {
+                String value = (String) iter.next();
+                valueLabels[i] = value;
+                if ((initValue != null) && (initValue.equals(value)))
+                {
+                    initialIndex = i;
+                }
+            }
+            mComboItem = new Combo(parent, SWT.NONE | SWT.DROP_DOWN | SWT.READ_ONLY);
+            mComboItem.setLayoutData(new GridData());
+            mComboItem.setItems(valueLabels);
+            mComboItem.select(initialIndex);
+        }
+
+        return mComboItem;
     }
 
     /**
@@ -87,7 +110,8 @@ public class ConfigPropertyWidgetHidden extends ConfigPropertyWidgetAbstractBase
      */
     public String getValue()
     {
-        return mValue;
+        String result = mComboItem.getItem(mComboItem.getSelectionIndex());
+        return result;
     }
 
     /**
@@ -95,6 +119,14 @@ public class ConfigPropertyWidgetHidden extends ConfigPropertyWidgetAbstractBase
      */
     public void restorePropertyDefault()
     {
-    //NOOP
+        String defaultValue = getConfigProperty().getMetaData().getDefaultValue();
+        if (defaultValue == null)
+        {
+            mComboItem.select(0);
+        }
+        else
+        {
+            mComboItem.select(mComboItem.indexOf(defaultValue));
+        }
     }
 }

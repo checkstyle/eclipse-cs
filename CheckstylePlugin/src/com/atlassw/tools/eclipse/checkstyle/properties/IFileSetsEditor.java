@@ -59,4 +59,9 @@ public interface IFileSetsEditor
      * @return the list of file sets
      */
     List getFileSets();
+
+    /**
+     * Refreshes the view.
+     */
+    void refresh();
 }

@@ -32,9 +32,12 @@ import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.ICheckStateListener;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.ITableLabelProvider;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -48,6 +51,7 @@ import org.eclipse.swt.widgets.TableColumn;
 
 import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.Messages;
+import com.atlassw.tools.eclipse.checkstyle.config.gui.CheckConfigurationLabelProvider;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileSet;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
@@ -105,7 +109,7 @@ public class ComplexFileSetsEditor implements IFileSetsEditor
     // =================================================
 
     /**
-     * @see IFileSetsEditor#setFileSets(java.util.List)
+     * {@inheritDoc}
      */
     public void setFileSets(List fileSets)
     {
@@ -114,7 +118,7 @@ public class ComplexFileSetsEditor implements IFileSetsEditor
     }
 
     /**
-     * @see IFileSetsEditor#getFileSets()
+     * {@inheritDoc}
      */
     public List getFileSets()
     {
@@ -122,7 +126,7 @@ public class ComplexFileSetsEditor implements IFileSetsEditor
     }
 
     /**
-     * @see IFileSetsEditor#createContents(Composite)
+     * {@inheritDoc}
      */
     public Control createContents(Composite parent) throws CheckstylePluginException
     {
@@ -237,6 +241,14 @@ public class ComplexFileSetsEditor implements IFileSetsEditor
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public void refresh()
+    {
+    // NOOP
+    }
+
+    /**
      * Utility method that creates a push button instance and sets the default
      * layout data.
      * 
@@ -258,7 +270,8 @@ public class ComplexFileSetsEditor implements IFileSetsEditor
     {
         try
         {
-            FileSetEditDialog dialog = new FileSetEditDialog(mComposite.getShell(), null, mProject);
+            FileSetEditDialog dialog = new FileSetEditDialog(mComposite.getShell(), null, mProject,
+                    mPropertyPage);
             if (FileSetEditDialog.OK == dialog.open())
             {
                 FileSet fileSet = dialog.getFileSet();
@@ -290,12 +303,9 @@ public class ComplexFileSetsEditor implements IFileSetsEditor
 
         try
         {
-            
-            
-            
-            
-            FileSetEditDialog dialog = new FileSetEditDialog(mComposite.getShell(), (FileSet) fileSet.clone(),
-                    mProject);
+
+            FileSetEditDialog dialog = new FileSetEditDialog(mComposite.getShell(),
+                    (FileSet) fileSet.clone(), mProject, mPropertyPage);
             if (FileSetEditDialog.OK == dialog.open())
             {
                 FileSet newFileSet = dialog.getFileSet();
@@ -341,4 +351,52 @@ public class ComplexFileSetsEditor implements IFileSetsEditor
         }
     }
 
+    /**
+     * Provides the labels for the FileSet list display.
+     */
+    class FileSetLabelProvider extends LabelProvider implements ITableLabelProvider
+    {
+
+        private CheckConfigurationLabelProvider checkConfigLabelProvider = new CheckConfigurationLabelProvider();
+
+        /**
+         * @see ITableLabelProvider#getColumnText(Object, int)
+         */
+        public String getColumnText(Object element, int columnIndex)
+        {
+            String result = element.toString();
+            if (element instanceof FileSet)
+            {
+                FileSet fileSet = (FileSet) element;
+                switch (columnIndex)
+                {
+                    case 0:
+                        result = new String();
+                        break;
+
+                    case 1:
+                        result = fileSet.getName();
+                        break;
+
+                    case 2:
+                        result = fileSet.getCheckConfig() != null ? checkConfigLabelProvider
+                                .getText(fileSet.getCheckConfig()) : ""; //$NON-NLS-1$
+                        break;
+
+                    default:
+                        break;
+                }
+
+            }
+            return result;
+        }
+
+        /**
+         * @see ITableLabelProvider#getColumnImage(Object, int)
+         */
+        public Image getColumnImage(Object element, int columnIndex)
+        {
+            return null;
+        }
+    }
 }

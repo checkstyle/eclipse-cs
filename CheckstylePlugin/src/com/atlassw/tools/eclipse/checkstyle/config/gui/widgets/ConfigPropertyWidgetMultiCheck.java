@@ -18,19 +18,17 @@
 //
 //============================================================================
 
-package com.atlassw.tools.eclipse.checkstyle.preferences.widgets;
+package com.atlassw.tools.eclipse.checkstyle.config.gui.widgets;
 
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 import java.util.StringTokenizer;
 
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
@@ -60,7 +58,7 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
 
     /** Resource bundle containing the token translations. */
     private static final ResourceBundle TOKEN_BUNDLE = PropertyResourceBundle
-            .getBundle("com.atlassw.tools.eclipse.checkstyle.preferences.token"); //$NON-NLS-1$
+            .getBundle("com.atlassw.tools.eclipse.checkstyle.config.gui.token"); //$NON-NLS-1$
 
     // =================================================
     // Static class variables.
@@ -99,7 +97,7 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
     // =================================================
 
     /**
-     * @see ConfigPropertyWidgetAbstractBase#getValueWidget(org.eclipse.swt.widgets.Composite)
+     * {@inheritDoc}
      */
     protected Control getValueWidget(Composite parent)
     {
@@ -176,7 +174,7 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
     {
         if (sort)
         {
-            Collator collator = Collator.getInstance(getPlatformLocale());
+            Collator collator = Collator.getInstance(CheckstylePlugin.getPlatformLocale());
             mTable.setSorter(new ViewerSorter(collator));
         }
         else
@@ -210,7 +208,7 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
     }
 
     /**
-     * @see IPropertyChangeListener#propertyChange(org.eclipse.jface.util.PropertyChangeEvent)
+     * {@inheritDoc}
      */
     public void propertyChange(PropertyChangeEvent event)
     {
@@ -228,24 +226,6 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
     }
 
     /**
-     * Helper method to get the current plattform locale.
-     * 
-     * @return the platform locale
-     */
-    private static Locale getPlatformLocale()
-    {
-
-        String nl = Platform.getNL();
-        String[] parts = nl.split("_"); //$NON-NLS-1$
-
-        String language = parts.length > 0 ? parts[0] : ""; //$NON-NLS-1$
-        String country = parts.length > 1 ? parts[1] : ""; //$NON-NLS-1$
-        String variant = parts.length > 2 ? parts[2] : ""; //$NON-NLS-1$
-
-        return new Locale(language, country, variant);
-    }
-
-    /**
      * Label provider to translate checkstyle tokens into readable form.
      * 
      * @author Lars Ködderitzsch
@@ -254,7 +234,7 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
     {
 
         /**
-         * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
+         * {@inheritDoc}
          */
         public String getText(Object element)
         {

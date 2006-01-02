@@ -35,13 +35,13 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import com.atlassw.tools.eclipse.checkstyle.Messages;
+import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationWorkingCopy;
 import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
-import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
+import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfigurationWorkingSet;
 import com.atlassw.tools.eclipse.checkstyle.config.Module;
 import com.atlassw.tools.eclipse.checkstyle.config.XMLTags;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.ConfigurationTypes;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.IConfigurationType;
-import com.atlassw.tools.eclipse.checkstyle.config.configtypes.InternalCheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.config.meta.MetadataFactory;
 import com.atlassw.tools.eclipse.checkstyle.config.meta.RuleMetadata;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
@@ -65,22 +65,18 @@ public final class CheckConfigurationMigrator
      * contained configurations.
      * 
      * @param checkConfigsFile the old configuration file stream
-     * @return the list of migrated configurations
+     * @param workingSet the configuration working set
      * @throws CheckstylePluginException error migrating the configurations
      */
-    public static List getMigratedConfigurations(InputStream checkConfigsFile)
+    public static void migrate(InputStream checkConfigsFile, ICheckConfigurationWorkingSet workingSet)
         throws CheckstylePluginException
     {
-
-        List result = null;
 
         try
         {
 
-            OldConfigurationHandler handler = new OldConfigurationHandler();
+            OldConfigurationHandler handler = new OldConfigurationHandler(workingSet);
             XMLUtil.parseWithSAX(checkConfigsFile, handler);
-
-            result = handler.getMigratedConfigurations();
         }
         catch (SAXException se)
         {
@@ -95,8 +91,6 @@ public final class CheckConfigurationMigrator
         {
             CheckstylePluginException.rethrow(ioe);
         }
-
-        return result;
     }
 
     /**
@@ -106,27 +100,26 @@ public final class CheckConfigurationMigrator
      */
     private static class OldConfigurationHandler extends DefaultHandler
     {
-
-        /** List containing the migrated configurations. */
-        private List mMigratedConfigurations = new ArrayList();
+        /** the working set. */
+        private ICheckConfigurationWorkingSet mWorkingSet;
 
         /** List containing the modules of the current configuration. */
         private List mCurrentConfigModules = new ArrayList();
 
         /** the check configuration currently migrating. */
-        private ICheckConfiguration mCurrentConfiguration;
+        private CheckConfigurationWorkingCopy mCurrentConfiguration;
 
         /** the module currently being built. */
         private Module mCurrentModule;
 
         /**
-         * Returns the list of migrated configurations.
+         * Creates the handler.
          * 
-         * @return the migrated configurations
+         * @param workingSet the working set
          */
-        public List getMigratedConfigurations()
+        OldConfigurationHandler(ICheckConfigurationWorkingSet workingSet)
         {
-            return mMigratedConfigurations;
+            mWorkingSet = workingSet;
         }
 
         /**
@@ -144,14 +137,15 @@ public final class CheckConfigurationMigrator
 
                     String name = attributes.getValue(XMLTags.NAME_TAG);
 
-                    // create an internal configuration
-                    mCurrentConfiguration = new InternalCheckConfiguration();
-                    IConfigurationType internalType = ConfigurationTypes
-                            .getByInternalName("internal"); //$NON-NLS-1$
-
+                    // create an new check config working copy
                     try
                     {
-                        mCurrentConfiguration.initialize(name, null, internalType, new String());
+
+                        IConfigurationType internalType = ConfigurationTypes
+                                .getByInternalName("internal"); //$NON-NLS-1$
+
+                        mCurrentConfiguration = mWorkingSet.newWorkingCopy(internalType);
+                        mCurrentConfiguration.setName(name);
                     }
                     catch (CheckstylePluginException cpe)
                     {
@@ -161,8 +155,7 @@ public final class CheckConfigurationMigrator
                                 Messages.CheckConfigurationMigrator_txtMigrationAddition,
                                 DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL)
                                         .format(new Date()));
-                        mCurrentConfiguration.initialize(name + nameAddition, null, internalType,
-                                new String());
+                        mCurrentConfiguration.setName(name + nameAddition);
                     }
                 }
                 else if (XMLTags.RULE_CONFIG_TAG.equals(qName))
@@ -227,7 +220,7 @@ public final class CheckConfigurationMigrator
 
                     // store the moduless
                     mCurrentConfiguration.setModules(mCurrentConfigModules);
-                    mMigratedConfigurations.add(mCurrentConfiguration);
+                    mWorkingSet.addCheckConfiguration(mCurrentConfiguration);
                 }
 
                 else if (XMLTags.RULE_CONFIG_TAG.equals(qName))

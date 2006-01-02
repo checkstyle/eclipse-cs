@@ -26,6 +26,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
+import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfigurationWorkingSet;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.IFilter;
 
 /**
@@ -40,6 +42,9 @@ public class ProjectConfiguration implements Cloneable
     //
     // attributes
     //
+
+    /** The local check configurations. */
+    private ICheckConfigurationWorkingSet mCheckConfigWorkingSet;
 
     /** the file sets. */
     private List mFileSets = new LinkedList();
@@ -60,11 +65,45 @@ public class ProjectConfiguration implements Cloneable
     public ProjectConfiguration()
     {
         mFilters = PluginFilters.getConfiguredFilters();
+        mCheckConfigWorkingSet = new LocalCheckConfigurationWorkingSet();
     }
 
     //
     // methods
     //
+
+    /**
+     * Returns the check configuration working set for local configurations.
+     * 
+     * @return the local configurations working set
+     */
+    public ICheckConfigurationWorkingSet getCheckConfigWorkingSet()
+    {
+        return mCheckConfigWorkingSet;
+    }
+
+    /**
+     * Returns a project local check configuration by its name.
+     * 
+     * @param name the configurations name
+     * @return the check configuration or <code>null</code>, if no local
+     *         configuration with this name exists
+     */
+    public ICheckConfiguration getLocalCheckConfigByName(String name)
+    {
+        ICheckConfiguration config = null;
+        ICheckConfiguration[] configs = mCheckConfigWorkingSet.getWorkingCopies();
+        for (int i = 0; i < configs.length; i++)
+        {
+            if (configs[i].getName().equals(name))
+            {
+                config = configs[i];
+                break;
+            }
+        }
+
+        return config;
+    }
 
     /**
      * Returns the file sets configured for the project.
@@ -184,52 +223,6 @@ public class ProjectConfiguration implements Cloneable
         return mUseSimpleConfig;
     }
 
-    // /**
-    // * Returns if the given file is checked by checkstyle.
-    // *
-    // * @param file the file
-    // * @return <code>true</code> if the file is checked, <code>false</code>
-    // * otherwise
-    // * @throws CheckstylePluginException unexpected error
-    // */
-    // public boolean isFileChecked(IFile file) throws CheckstylePluginException
-    // {
-    //
-    // boolean result = false;
-    //
-    // //check if file within fileSets
-    // List fileSets = getFileSets();
-    // int size = fileSets != null ? fileSets.size() : 0;
-    // for (int i = 0; i < size; i++)
-    // {
-    //
-    // if (((FileSet) fileSets.get(i)).includesFile(file))
-    // {
-    // result = true;
-    // break;
-    // }
-    // }
-    //
-    // //check if file runs through filters
-    // if (result)
-    // {
-    //
-    // IFilter[] filters = getFilters();
-    // size = filters != null ? filters.length : 0;
-    // for (int i = 0; i < size; i++)
-    // {
-    //
-    // if (filters[i].isEnabled() && !filters[i].accept(file))
-    // {
-    // result = false;
-    // break;
-    // }
-    // }
-    // }
-    //
-    // return result;
-    // }
-
     /**
      * Checks if this project configuration uses the given checkstyle
      * configuration.
@@ -238,7 +231,7 @@ public class ProjectConfiguration implements Cloneable
      * @return <code>true</code>, if the project config uses the checkstyle
      *         config, <code>false</code> otherwise
      */
-    public boolean isConfigInUse(String configName)
+    public boolean isConfigInUse(ICheckConfiguration configuration)
     {
 
         boolean result = false;
@@ -247,7 +240,7 @@ public class ProjectConfiguration implements Cloneable
         while (iter.hasNext())
         {
             FileSet fileSet = (FileSet) iter.next();
-            if (configName.equals(fileSet.getCheckConfigName()))
+            if (configuration.equals(fileSet.getCheckConfig()))
             {
                 result = true;
                 break;
@@ -257,7 +250,7 @@ public class ProjectConfiguration implements Cloneable
     }
 
     /**
-     * @see java.lang.Object#clone()
+     * {@inheritDoc}
      */
     public Object clone()
     {
@@ -294,7 +287,7 @@ public class ProjectConfiguration implements Cloneable
     }
 
     /**
-     * @see java.lang.Object#equals(java.lang.Object)
+     * {@inheritDoc}
      */
     public boolean equals(Object obj)
     {
@@ -325,7 +318,7 @@ public class ProjectConfiguration implements Cloneable
     }
 
     /**
-     * @see java.lang.Object#hashCode()
+     * {@inheritDoc}
      */
     public int hashCode()
     {

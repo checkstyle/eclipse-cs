@@ -45,15 +45,19 @@ public class XMLTags
     // Public static final variables.
     // =================================================
 
+    static final String FILESET_CONFIG_TAG = "fileset-config"; //$NON-NLS-1$
+
+    static final String CHECK_CONFIG_TAG = "local-check-config"; //$NON-NLS-1$
+
     static final String CHECK_CONFIG_NAME_TAG = "check-config-name"; //$NON-NLS-1$
+
+    static final String LOCAL_TAG = "local"; //$NON-NLS-1$
 
     static final String ENABLED_TAG = "enabled"; //$NON-NLS-1$
 
     static final String FILE_MATCH_PATTERN_TAG = "file-match-pattern"; //$NON-NLS-1$
 
     static final String FILESET_TAG = "fileset"; //$NON-NLS-1$
-
-    static final String FILESET_CONFIG_TAG = "fileset-config"; //$NON-NLS-1$
 
     static final String FORMAT_VERSION_TAG = "file-format-version"; //$NON-NLS-1$
 

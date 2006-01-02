@@ -153,7 +153,7 @@ public class ProjectClassLoader extends ClassLoader
     }
 
     /**
-     * @see java.lang.ClassLoader#loadClass(java.lang.String)
+     * {@inheritDoc}
      */
     public Class loadClass(String name) throws ClassNotFoundException
     {
@@ -162,7 +162,7 @@ public class ProjectClassLoader extends ClassLoader
     }
 
     /**
-     * @see java.lang.ClassLoader#getResource(java.lang.String)
+     * {@inheritDoc}
      */
     public URL getResource(String name)
     {
@@ -171,7 +171,7 @@ public class ProjectClassLoader extends ClassLoader
     }
 
     /**
-     * @see java.lang.ClassLoader#getResourceAsStream(java.lang.String)
+     * {@inheritDoc}
      */
     public InputStream getResourceAsStream(String name)
     {

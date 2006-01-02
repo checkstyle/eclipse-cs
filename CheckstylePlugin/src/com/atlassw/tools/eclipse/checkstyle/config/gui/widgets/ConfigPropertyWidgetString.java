@@ -18,7 +18,7 @@
 //
 //============================================================================
 
-package com.atlassw.tools.eclipse.checkstyle.preferences;
+package com.atlassw.tools.eclipse.checkstyle.config.gui.widgets;
 
 //=================================================
 // Imports from java namespace
@@ -31,15 +31,18 @@ package com.atlassw.tools.eclipse.checkstyle.preferences;
 //=================================================
 // Imports from com namespace
 //=================================================
-import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.viewers.ViewerSorter;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Text;
 
-import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
+import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
 
 /**
- * Sorts CheckConfiguration objects into their display order.
+ * A string property configuration widget.
  */
-public class CheckConfigurationViewerSorter extends ViewerSorter
+public class ConfigPropertyWidgetString extends ConfigPropertyWidgetAbstractBase
 {
     //=================================================
     // Public static final variables.
@@ -53,16 +56,21 @@ public class CheckConfigurationViewerSorter extends ViewerSorter
     // Instance member variables.
     //=================================================
 
+    private Text mTextWidget;
+
     //=================================================
     // Constructors & finalizer.
     //=================================================
 
     /**
-     * Default constructor.
+     * Creates the widget.
+     * 
+     * @param parent the parent composite
+     * @param prop the property
      */
-    public CheckConfigurationViewerSorter()
+    public ConfigPropertyWidgetString(Composite parent, ConfigProperty prop)
     {
-        super();
+        super(parent, prop);
     }
 
     //=================================================
@@ -70,23 +78,49 @@ public class CheckConfigurationViewerSorter extends ViewerSorter
     //=================================================
 
     /**
-     * @see ViewerSorter#compare
+     * @see ConfigPropertyWidgetAbstractBase#getValueWidget(org.eclipse.swt.widgets.Composite)
      */
-    public int compare(Viewer viewer, Object e1, Object e2)
+    protected Control getValueWidget(Composite parent)
     {
-        int result = 0;
 
-        if ((e1 instanceof ICheckConfiguration) && (e2 instanceof ICheckConfiguration))
+        if (mTextWidget == null)
         {
-            ICheckConfiguration cfg1 = (ICheckConfiguration) e1;
-            ICheckConfiguration cfg2 = (ICheckConfiguration) e2;
 
-            String string1 = cfg1.getName();
-            String string2 = cfg2.getName();
+            //
+            //  Create a text entry field.
+            //
+            mTextWidget = new Text(parent, SWT.SINGLE | SWT.BORDER);
+            mTextWidget.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-            result = string1.compareToIgnoreCase(string2);
+            String initValue = getInitValue();
+            if (initValue != null)
+            {
+                mTextWidget.setText(initValue);
+            }
         }
 
+        return mTextWidget;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getValue()
+    {
+        String result = mTextWidget.getText();
+        if (result == null)
+        {
+            result = ""; //$NON-NLS-1$
+        }
         return result;
+    }
+
+    /**
+     * @see ConfigPropertyWidgetAbstractBase#restorePropertyDefault()
+     */
+    public void restorePropertyDefault()
+    {
+        String defaultValue = getConfigProperty().getMetaData().getDefaultValue();
+        mTextWidget.setText(defaultValue != null ? defaultValue : ""); //$NON-NLS-1$
     }
 }

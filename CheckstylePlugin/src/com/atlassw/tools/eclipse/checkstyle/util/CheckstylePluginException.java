@@ -41,21 +41,16 @@ package com.atlassw.tools.eclipse.checkstyle.util;
  */
 public class CheckstylePluginException extends Exception
 {
-    //=================================================
-    // Public static final variables.
-    //=================================================
+    //
+    // constants
+    //
 
-    //=================================================
-    // Static class variables.
-    //=================================================
+    /** safe serialization support across different versions. */
+    private static final long serialVersionUID = 8173568340314023129L;
 
-    //=================================================
-    // Instance member variables.
-    //=================================================
-
-    //=================================================
-    // Constructors & finalizer.
-    //=================================================
+    //
+    // constructors
+    //
 
     /**
      * Exception for the Checkstyle plug-in.
@@ -78,9 +73,9 @@ public class CheckstylePluginException extends Exception
         super(msg, cause);
     }
 
-    //=================================================
-    // Methods.
-    //=================================================
+    //
+    // methods
+    //
 
     /**
      * Wraps an exception into a CheckstylePluginException.

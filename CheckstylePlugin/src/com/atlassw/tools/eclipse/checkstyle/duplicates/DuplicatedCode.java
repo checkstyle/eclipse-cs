@@ -207,9 +207,7 @@ public class DuplicatedCode
     }
 
     /**
-     * Cf. method below.
-     * 
-     * @see java.lang.Object#toString()
+     * {@inheritDoc}
      */
     public String toString()
     {

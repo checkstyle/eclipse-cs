@@ -28,6 +28,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialogWithToggle;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -56,6 +57,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.TabFolder;
+import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.PropertyPage;
 
@@ -64,6 +67,7 @@ import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.builder.BuildProjectJob;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
+import com.atlassw.tools.eclipse.checkstyle.config.gui.CheckConfigurationWorkingSetEditor;
 import com.atlassw.tools.eclipse.checkstyle.nature.CheckstyleNature;
 import com.atlassw.tools.eclipse.checkstyle.nature.ConfigureDeconfigureNatureJob;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileSet;
@@ -85,6 +89,9 @@ public class CheckstylePropertyPage extends PropertyPage
     //
     // controls
     //
+
+    /** The tab folder. */
+    private TabFolder mMainTab = null;
 
     /** button to enable checkstyle for the project. */
     private Button mChkEnable;
@@ -123,6 +130,9 @@ public class CheckstylePropertyPage extends PropertyPage
     /** the project. */
     private IProject mProject;
 
+    /** the local configurations working set editor. */
+    private CheckConfigurationWorkingSetEditor mWorkingSetEditor;
+
     private boolean mCheckstyleActivated;
 
     //
@@ -130,10 +140,53 @@ public class CheckstylePropertyPage extends PropertyPage
     //
 
     /**
-     * Create the contents of this page.
+     * Returns the project configuration.
      * 
-     * @see org.eclipse.jface.preference.PreferencePage#createContents(
-     *      org.eclipse.swt.widgets.Composite)
+     * @return the project configuration
+     */
+    public ProjectConfiguration getProjectConfiguration()
+    {
+        return mProjectConfig;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setElement(IAdaptable element)
+    {
+        super.setElement(element);
+
+        try
+        {
+
+            //
+            // Get the project.
+            //
+            IResource resource = (IResource) element;
+            if (resource.getType() == IResource.PROJECT)
+            {
+                mProject = (IProject) resource;
+            }
+
+            mProjectConfigOrig = ProjectConfigurationFactory.getConfiguration(mProject);
+            mProjectConfig = (ProjectConfiguration) mProjectConfigOrig.clone();
+
+            mCheckstyleActivated = mProject.hasNature(CheckstyleNature.NATURE_ID);
+        }
+        catch (CoreException e)
+        {
+            CheckstyleLog
+                    .errorDialog(getShell(), ErrorMessages.errorOpeningPropertiesPage, e, true);
+        }
+        catch (CheckstylePluginException e)
+        {
+            CheckstyleLog
+                    .errorDialog(getShell(), ErrorMessages.errorOpeningPropertiesPage, e, true);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
      */
     public Control createContents(Composite parent)
     {
@@ -142,16 +195,18 @@ public class CheckstylePropertyPage extends PropertyPage
 
         try
         {
-            // initialize the forms data
-            initialize();
 
             this.mPageController = new PageController();
 
             // suppress default- & apply-buttons
             noDefaultAndApplyButton();
 
+            mMainTab = new TabFolder(parent, SWT.TOP);
+            mMainTab.setLayoutData(new GridData(GridData.FILL_BOTH));
+            mMainTab.addSelectionListener(mPageController);
+
             // create the main container
-            container = new Composite(parent, SWT.NULL);
+            container = new Composite(mMainTab, SWT.NULL);
             container.setLayout(new FormLayout());
             container.setLayoutData(new GridData(GridData.FILL_BOTH));
 
@@ -198,6 +253,17 @@ public class CheckstylePropertyPage extends PropertyPage
             fd.bottom = new FormAttachment(100);
             fd.width = 500;
             filterArea.setLayoutData(fd);
+
+            // create the local configurations area
+            Control localConfigArea = createLocalConfigArea(mMainTab);
+
+            TabItem mainItem = new TabItem(mMainTab, SWT.NULL);
+            mainItem.setControl(container);
+            mainItem.setText("Main");
+
+            TabItem localItem = new TabItem(mMainTab, SWT.NULL);
+            localItem.setControl(localConfigArea);
+            localItem.setText("Local Check Configurations");
 
         }
         catch (CheckstylePluginException e)
@@ -362,33 +428,25 @@ public class CheckstylePropertyPage extends PropertyPage
         return filterArea;
     }
 
-    private void initialize() throws CheckstylePluginException
+    private Control createLocalConfigArea(Composite parent)
     {
 
-        //
-        // Get the project.
-        //
-        IResource resource = (IResource) getElement();
-        if (resource.getType() == IResource.PROJECT)
-        {
-            mProject = (IProject) resource;
-        }
+        mWorkingSetEditor = new CheckConfigurationWorkingSetEditor(mProjectConfig
+                .getCheckConfigWorkingSet(), false);
+        Control editorControl = mWorkingSetEditor.createContents(parent);
+        editorControl.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-        mProjectConfigOrig = ProjectConfigurationFactory.getConfiguration(mProject);
-        mProjectConfig = (ProjectConfiguration) mProjectConfigOrig.clone();
+        // setMessage("Use this page to set up check configurtation that are
+        // local to this project.\nThe check configurations data will be stored
+        // with the .checkstyle file,\nallowing for improved teamworking
+        // support\nas other team members won't have to set up\nthe check
+        // configuration in the workspace preferences.");
 
-        try
-        {
-            mCheckstyleActivated = mProject.hasNature(CheckstyleNature.NATURE_ID);
-        }
-        catch (CoreException e1)
-        {
-            CheckstylePluginException.rethrow(e1);
-        }
+        return editorControl;
     }
 
     /**
-     * @see org.eclipse.jface.preference.IPreferencePage#isValid()()
+     * {@inheritDoc}
      */
     public boolean isValid()
     {
@@ -401,14 +459,9 @@ public class CheckstylePropertyPage extends PropertyPage
             ICheckConfiguration checkConfig = fileset.getCheckConfig();
             if (checkConfig != null)
             {
-                if (checkConfig.isContextNeeded())
-                {
-                    checkConfig.setContext(mProject);
-                }
-
                 try
                 {
-                    checkConfig.getCheckstyleConfigurationURL();
+                    checkConfig.isConfigurationAvailable();
                 }
                 catch (CheckstylePluginException e)
                 {
@@ -417,10 +470,6 @@ public class CheckstylePropertyPage extends PropertyPage
                             ErrorMessages.errorCannotResolveCheckLocation, checkConfig
                                     .getLocation(), checkConfig.getName()), e);
                     return false;
-                }
-                finally
-                {
-                    checkConfig.setContext(null);
                 }
             }
         }
@@ -496,6 +545,10 @@ public class CheckstylePropertyPage extends PropertyPage
 
                 ISelection selection = mFilterList.getSelection();
                 openFilterEditor(selection);
+            }
+            if (source == mMainTab)
+            {
+                mFileSetsEditor.refresh();
             }
             else if (source == mChkSimpleConfig)
             {

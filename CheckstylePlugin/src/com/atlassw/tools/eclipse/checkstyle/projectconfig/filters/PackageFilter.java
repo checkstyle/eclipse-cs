@@ -39,7 +39,7 @@ public class PackageFilter extends AbstractFilter
     private List mData = new ArrayList();
 
     /**
-     * @see IFilter#accept(java.lang.Object)
+     * {@inheritDoc}
      */
     public boolean accept(Object element)
     {
@@ -69,7 +69,7 @@ public class PackageFilter extends AbstractFilter
     }
 
     /**
-     * @see IFilter#setFilterData(java.lang.String)
+     * {@inheritDoc}
      */
     public void setFilterData(List filterData)
     {
@@ -82,7 +82,7 @@ public class PackageFilter extends AbstractFilter
     }
 
     /**
-     * @see IFilter#getFilterData()
+     * {@inheritDoc}
      */
     public List getFilterData()
     {
@@ -90,7 +90,7 @@ public class PackageFilter extends AbstractFilter
     }
 
     /**
-     * @see IFilter#getPresentableFilterData()
+     * {@inheritDoc}
      */
     public String getPresentableFilterData()
     {
@@ -112,7 +112,7 @@ public class PackageFilter extends AbstractFilter
     }
 
     /**
-     * @see java.lang.Object#hashCode()
+     * {@inheritDoc}
      */
     public int hashCode()
     {

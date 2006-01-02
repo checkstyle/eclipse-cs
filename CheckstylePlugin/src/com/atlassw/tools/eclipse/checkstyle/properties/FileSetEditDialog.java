@@ -32,6 +32,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
@@ -74,10 +75,14 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.Messages;
-import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationFactory;
+import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationWorkingCopy;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
-import com.atlassw.tools.eclipse.checkstyle.preferences.CheckConfigurationConfigureDialog;
-import com.atlassw.tools.eclipse.checkstyle.preferences.CheckConfigurationLabelProvider;
+import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfigurationWorkingSet;
+import com.atlassw.tools.eclipse.checkstyle.config.TemporaryCheckConfigurationWorkingSet;
+import com.atlassw.tools.eclipse.checkstyle.config.gui.CheckConfigurationConfigureDialog;
+import com.atlassw.tools.eclipse.checkstyle.config.gui.CheckConfigurationContentProvider;
+import com.atlassw.tools.eclipse.checkstyle.config.gui.CheckConfigurationLabelProvider;
+import com.atlassw.tools.eclipse.checkstyle.config.gui.CheckConfigurationViewerSorter;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileMatchPattern;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileSet;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
@@ -136,6 +141,8 @@ public class FileSetEditDialog extends TitleAreaDialog
 
     private boolean mIsCreatingNewFileset;
 
+    private CheckstylePropertyPage mPropertyPage;
+
     // =================================================
     // Constructors & finalizer.
     // =================================================
@@ -143,13 +150,14 @@ public class FileSetEditDialog extends TitleAreaDialog
     /**
      * Constructor for SamplePropertyPage.
      */
-    FileSetEditDialog(Shell parent, FileSet fileSet, IProject project)
-        throws CheckstylePluginException
+    FileSetEditDialog(Shell parent, FileSet fileSet, final IProject project,
+            CheckstylePropertyPage propsPage) throws CheckstylePluginException
     {
         super(parent);
         setShellStyle(getShellStyle() | SWT.RESIZE);
         mProject = project;
         mFileSet = fileSet;
+        mPropertyPage = propsPage;
 
         if (mFileSet == null)
         {
@@ -158,14 +166,6 @@ public class FileSetEditDialog extends TitleAreaDialog
             mIsCreatingNewFileset = true;
         }
 
-        try
-        {
-            mProjectFiles = getFiles(project);
-        }
-        catch (CoreException e)
-        {
-            CheckstyleLog.log(e);
-        }
     }
 
     // =================================================
@@ -193,7 +193,7 @@ public class FileSetEditDialog extends TitleAreaDialog
         Composite dialog = new Composite(composite, SWT.NONE);
         dialog.setLayout(new GridLayout(1, false));
         dialog.setLayoutData(new GridData(GridData.FILL_BOTH));
-        
+
         Control commonArea = createCommonArea(dialog);
         commonArea.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
@@ -243,8 +243,10 @@ public class FileSetEditDialog extends TitleAreaDialog
         comboComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
         mComboViewer = new ComboViewer(comboComposite);
-        mComboViewer.setContentProvider(new ArrayContentProvider());
+        mComboViewer.setContentProvider(new CheckConfigurationContentProvider());
+        mComboViewer.setInput(mPropertyPage.getProjectConfiguration());
         mComboViewer.setLabelProvider(new CheckConfigurationLabelProvider());
+        mComboViewer.setSorter(new CheckConfigurationViewerSorter());
         mComboViewer.getControl().setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         mComboViewer.addSelectionChangedListener(mController);
 
@@ -398,7 +400,6 @@ public class FileSetEditDialog extends TitleAreaDialog
         mFileSetNameText.setText(mFileSet.getName() != null ? mFileSet.getName() : ""); //$NON-NLS-1$
 
         // init the check configuration combo
-        mComboViewer.setInput(CheckConfigurationFactory.getCheckConfigurations());
         if (mFileSet.getCheckConfig() != null)
         {
             mComboViewer.setSelection(new StructuredSelection(mFileSet.getCheckConfig()));
@@ -413,9 +414,28 @@ public class FileSetEditDialog extends TitleAreaDialog
             mPatternViewer.setChecked(pattern, pattern.isIncludePattern());
         }
 
-        // init the test area
-        mMatchesViewer.setInput(mProjectFiles);
-        updateMatchView();
+        getShell().getDisplay().asyncExec(new Runnable()
+        {
+            public void run()
+            {
+
+                mMatchGroup.setText("Building test results...");
+
+                try
+                {
+                    mProjectFiles = getFiles(mProject);
+                }
+                catch (CoreException e)
+                {
+                    CheckstyleLog.log(e);
+                }
+
+                // init the test area
+                mMatchesViewer.setInput(mProjectFiles);
+                updateMatchView();
+            }
+        });
+
     }
 
     private void updateMatchView()
@@ -674,30 +694,40 @@ public class FileSetEditDialog extends TitleAreaDialog
             else if (e.widget == mConfigureButton)
             {
                 ICheckConfiguration config = mFileSet.getCheckConfig();
+
                 if (config != null)
                 {
+                    IProject project = (IProject) mPropertyPage.getElement();
 
                     try
                     {
+                        config.isConfigurationAvailable();
 
-                        config.setContext(mProject);
-                        config.getCheckstyleConfigurationURL();
+                        CheckConfigurationWorkingCopy workingCopy = null;
+
+                        if (config instanceof CheckConfigurationWorkingCopy)
+                        {
+                            workingCopy = (CheckConfigurationWorkingCopy) config;
+                        }
+                        else
+                        {
+                            ICheckConfigurationWorkingSet tmpWorkingSet = new TemporaryCheckConfigurationWorkingSet();
+                            workingCopy = tmpWorkingSet.newWorkingCopy(config);
+                        }
 
                         CheckConfigurationConfigureDialog dialog = new CheckConfigurationConfigureDialog(
-                                getShell(), config);
+                                getShell(), workingCopy);
                         dialog.setBlockOnOpen(true);
-                        dialog.open();
+                        if (Dialog.OK == dialog.open())
+                        {
 
+                        }
                     }
                     catch (CheckstylePluginException ex)
                     {
-                        CheckstyleLog.warningDialog(getShell(), Messages.bind(
+                        CheckstyleLog.warningDialog(mPropertyPage.getShell(), Messages.bind(
                                 Messages.CheckstylePreferencePage_msgProjectRelativeConfigNoFound,
-                                mProject, config.getLocation()), ex);
-                    }
-                    finally
-                    {
-                        config.setContext(null);
+                                project, config.getLocation()), ex);
                     }
                 }
             }

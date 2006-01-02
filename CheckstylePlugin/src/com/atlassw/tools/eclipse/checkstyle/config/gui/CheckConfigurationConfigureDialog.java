@@ -18,7 +18,7 @@
 //
 //============================================================================
 
-package com.atlassw.tools.eclipse.checkstyle.preferences;
+package com.atlassw.tools.eclipse.checkstyle.config.gui;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -68,7 +68,7 @@ import org.eclipse.swt.widgets.Text;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.Messages;
-import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
+import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationWorkingCopy;
 import com.atlassw.tools.eclipse.checkstyle.config.Module;
 import com.atlassw.tools.eclipse.checkstyle.config.meta.MetadataFactory;
 import com.atlassw.tools.eclipse.checkstyle.config.meta.RuleGroupMetadata;
@@ -92,7 +92,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
     //
 
     /** The current check configuration. */
-    private ICheckConfiguration mConfiguration;
+    private CheckConfigurationWorkingCopy mConfiguration;
 
     /** TreeViewer showing the known modules from the meta data. */
     private TreeViewer mTreeViewer;
@@ -140,7 +140,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
      * @param parentShell the parent shell
      * @param config the check configuration
      */
-    public CheckConfigurationConfigureDialog(Shell parentShell, ICheckConfiguration config)
+    public CheckConfigurationConfigureDialog(Shell parentShell, CheckConfigurationWorkingCopy config)
     {
         super(parentShell);
         setShellStyle(getShellStyle() | SWT.RESIZE | SWT.MAX);
@@ -1034,11 +1034,11 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
             {
                 result = false;
             }
-            else if (mCurrentGroup == moduleGroup || moduleGroup == null)
+            else if (mCurrentGroup == moduleGroup)
             {
                 result = true;
             }
-
+      
             return result;
         }
     }

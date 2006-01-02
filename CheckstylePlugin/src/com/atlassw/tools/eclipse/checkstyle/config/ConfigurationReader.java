@@ -210,7 +210,14 @@ public final class ConfigurationReader
                 if (name.equals(XMLTags.SEVERITY_TAG) && module.getMetaData() != null
                         && module.getMetaData().hasSeverity())
                 {
-                    module.setSeverity(SeverityLevel.getInstance(value));
+                    try
+                    {
+                        module.setSeverity(SeverityLevel.getInstance(value));
+                    }
+                    catch (IllegalArgumentException e)
+                    {
+                        module.setSeverity(SeverityLevel.WARNING);
+                    }
                 }
                 else if (module.getMetaData() != null)
                 {
@@ -242,6 +249,10 @@ public final class ConfigurationReader
                 {
                     module.setLastEnabledSeverity(SeverityLevel.getInstance(value));
                 }
+                // else if (XMLTags.INTERNAL_NAME_TAG.equals(name))
+                // {
+                //
+                // }
                 else
                 {
                     module.getCustomMetaData().put(name, value);

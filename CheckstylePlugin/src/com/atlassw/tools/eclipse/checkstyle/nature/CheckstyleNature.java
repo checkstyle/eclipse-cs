@@ -105,9 +105,7 @@ public class CheckstyleNature implements IProjectNature
     }
 
     /**
-     * Remove the nature from the project.
-     * 
-     * @see org.eclipse.core.resources.IProjectNature#deconfigure()
+     * {@inheritDoc}
      */
     public void deconfigure() throws CoreException
     {
@@ -144,7 +142,7 @@ public class CheckstyleNature implements IProjectNature
     }
 
     /**
-     * @see org.eclipse.core.resources.IProjectNature#getProject()
+     * {@inheritDoc}
      */
     public IProject getProject()
     {
@@ -152,7 +150,7 @@ public class CheckstyleNature implements IProjectNature
     }
 
     /**
-     * @see org.eclipse.core.resources.IProjectNature#setProject(IProject)
+     * {@inheritDoc}
      */
     public void setProject(IProject project)
     {

@@ -70,6 +70,12 @@ public final class ConfigurationTypes
     /** constant for the creatable attribute. */
     private static final String ATTR_CREATABLE = "creatable"; //$NON-NLS-1$
 
+    /** constant for the creatable attribute. */
+    private static final String ATTR_EDITABLE = "editable"; //$NON-NLS-1$
+
+    /** constant for the creatable attribute. */
+    private static final String ATTR_CONFIGURABLE = "configurable"; //$NON-NLS-1$
+
     /** the configuration types configured to the extension point. */
     private static final Map CONFIGURATION_TYPES = new LinkedHashMap();
 
@@ -103,10 +109,14 @@ public final class ConfigurationTypes
                 String definingPluginId = elements[i].getDeclaringExtension().getNamespace();
                 boolean isCreatable = Boolean.valueOf(elements[i].getAttribute(ATTR_CREATABLE))
                         .booleanValue();
+                boolean isEditable = Boolean.valueOf(elements[i].getAttribute(ATTR_EDITABLE))
+                        .booleanValue();
+                boolean isConfigurable = Boolean.valueOf(
+                        elements[i].getAttribute(ATTR_CONFIGURABLE)).booleanValue();
 
-                IConfigurationType configType = new ConfigurationType();
-                configType.initialize(name, internalName, implClass, editorClass, icon,
-                        definingPluginId, isCreatable);
+                IConfigurationType configType = (IConfigurationType) implClass.newInstance();
+                configType.initialize(name, internalName, editorClass, icon, definingPluginId,
+                        isCreatable, isEditable, isConfigurable);
 
                 CONFIGURATION_TYPES.put(internalName, configType);
             }

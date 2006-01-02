@@ -59,7 +59,7 @@ public class NonSrcDirsFilter extends AbstractFilter
     //
 
     /**
-     * @see IFilter#accept(java.lang.Object)
+     * {@inheritDoc}
      */
     public boolean accept(Object element)
     {

@@ -18,13 +18,14 @@
 //
 //============================================================================
 
-package com.atlassw.tools.eclipse.checkstyle.preferences;
+package com.atlassw.tools.eclipse.checkstyle.config.gui;
 
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
+
 
 /**
  * Provides the labels for the audit configuration list display.
@@ -33,21 +34,23 @@ public class CheckConfigurationLabelProvider extends LabelProvider implements IT
 {
 
     /**
-     * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
+     * {@inheritDoc}
      */
     public String getText(Object element)
     {
         String text = super.getText(element);
         if (element instanceof ICheckConfiguration)
         {
-            text = ((ICheckConfiguration) element).getName();
+            ICheckConfiguration checkConfig = (ICheckConfiguration) element;
+
+            text = checkConfig.getName() + " " + (checkConfig.isGlobal() ? " - (Global)" : " - (Local)");
         }
 
         return text;
     }
 
     /**
-     * @see org.eclipse.jface.viewers.LabelProvider#getImage(java.lang.Object)
+     * {@inheritDoc}
      */
     public Image getImage(Object element)
     {
@@ -55,7 +58,7 @@ public class CheckConfigurationLabelProvider extends LabelProvider implements IT
     }
 
     /**
-     * @see ITableLabelProvider#getColumnText(Object, int)
+     * {@inheritDoc}
      */
     public String getColumnText(Object element, int columnIndex)
     {
@@ -80,7 +83,7 @@ public class CheckConfigurationLabelProvider extends LabelProvider implements IT
     }
 
     /**
-     * @see ITableLabelProvider#getColumnImage(Object, int)
+     * {@inheritDoc}
      */
     public Image getColumnImage(Object element, int columnIndex)
     {
