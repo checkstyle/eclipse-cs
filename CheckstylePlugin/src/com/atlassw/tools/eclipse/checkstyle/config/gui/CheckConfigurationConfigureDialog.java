@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -77,6 +78,9 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginImages;
 import com.atlassw.tools.eclipse.checkstyle.util.SWTUtil;
+import com.atlassw.tools.eclipse.checkstyle.util.table.EnhancedCheckBoxTableViewer;
+import com.atlassw.tools.eclipse.checkstyle.util.table.ITableComparableProvider;
+import com.atlassw.tools.eclipse.checkstyle.util.table.ITableSettingsProvider;
 import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
 
 /**
@@ -101,7 +105,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
     private Button mAddButton;
 
     /** The table viewer showing the configured modules. */
-    private CheckboxTableViewer mTableViewer;
+    private EnhancedCheckBoxTableViewer mTableViewer;
 
     /** Button to remove a module. */
     private Button mRemoveButton;
@@ -317,8 +321,11 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
         column4.setText(Messages.CheckConfigurationConfigureDialog_colComment);
         tableLayout.addColumnData(new ColumnWeightData(35));
 
-        mTableViewer = new CheckboxTableViewer(table);
-        mTableViewer.setLabelProvider(new ModuleLabelProvider());
+        mTableViewer = new EnhancedCheckBoxTableViewer(table);
+        ModuleLabelProvider multiProvider = new ModuleLabelProvider();
+        mTableViewer.setLabelProvider(multiProvider);
+        mTableViewer.setTableComparableProvider(multiProvider);
+        mTableViewer.setTableSettingsProvider(multiProvider);
         mTableViewer.setContentProvider(new ArrayContentProvider());
         mTableViewer.addFilter(mGroupFilter);
 
@@ -326,6 +333,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
         mTableViewer.addSelectionChangedListener(mController);
         mTableViewer.addCheckStateListener(mController);
         mTableViewer.getTable().addKeyListener(mController);
+        mTableViewer.installEnhancements();
 
         Composite buttons = new Composite(mConfiguredModulesGroup, SWT.NULL);
         GridLayout layout = new GridLayout(2, true);
@@ -941,12 +949,12 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
      * 
      * @author Lars Ködderitzsch
      */
-    private class ModuleLabelProvider extends LabelProvider implements ITableLabelProvider
+    private class ModuleLabelProvider extends LabelProvider implements ITableLabelProvider,
+            ITableComparableProvider, ITableSettingsProvider
     {
 
         /**
-         * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnImage(java.lang.Object,
-         *      int)
+         * {@inheritDoc}
          */
         public Image getColumnImage(Object element, int columnIndex)
         {
@@ -954,8 +962,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
         }
 
         /**
-         * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnText(java.lang.Object,
-         *      int)
+         * {@inheritDoc}
          */
         public String getColumnText(Object element, int columnIndex)
         {
@@ -987,6 +994,38 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
                 }
             }
             return text;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public Comparable getComparableValue(Object element, int col)
+        {
+            if (element instanceof Module && col == 0)
+            {
+                return SeverityLevel.IGNORE.equals(((Module) element).getSeverity()) ? new Integer(
+                        0) : new Integer(1);
+            }
+
+            return getColumnText(element, col);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public IDialogSettings getTableSettings()
+        {
+            String concreteViewId = CheckConfigurationConfigureDialog.class.getName();
+
+            IDialogSettings workbenchSettings = CheckstylePlugin.getDefault().getDialogSettings();
+            IDialogSettings settings = workbenchSettings.getSection(concreteViewId);
+
+            if (settings == null)
+            {
+                settings = workbenchSettings.addNewSection(concreteViewId);
+            }
+
+            return settings;
         }
     }
 
@@ -1038,7 +1077,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
             {
                 result = true;
             }
-      
+
             return result;
         }
     }

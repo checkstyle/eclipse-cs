@@ -20,17 +20,15 @@
 
 package com.atlassw.tools.eclipse.checkstyle.config.gui;
 
-import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 
-
 /**
  * Provides the labels for the audit configuration list display.
  */
-public class CheckConfigurationLabelProvider extends LabelProvider implements ITableLabelProvider
+public class CheckConfigurationLabelProvider extends LabelProvider
 {
 
     /**
@@ -43,7 +41,8 @@ public class CheckConfigurationLabelProvider extends LabelProvider implements IT
         {
             ICheckConfiguration checkConfig = (ICheckConfiguration) element;
 
-            text = checkConfig.getName() + " " + (checkConfig.isGlobal() ? " - (Global)" : " - (Local)");
+            text = checkConfig.getName() + " "
+                    + (checkConfig.isGlobal() ? " - (Global)" : " - (Local)");
         }
 
         return text;
@@ -54,45 +53,13 @@ public class CheckConfigurationLabelProvider extends LabelProvider implements IT
      */
     public Image getImage(Object element)
     {
-        return getColumnImage(element, 0);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public String getColumnText(Object element, int columnIndex)
-    {
-        String result = element.toString();
-        if (element instanceof ICheckConfiguration)
-        {
-            ICheckConfiguration cfg = (ICheckConfiguration) element;
-            if (columnIndex == 0)
-            {
-                result = cfg.getName();
-            }
-            if (columnIndex == 1)
-            {
-                result = cfg.getLocation();
-            }
-            if (columnIndex == 2)
-            {
-                result = cfg.getType().getName();
-            }
-        }
-        return result;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public Image getColumnImage(Object element, int columnIndex)
-    {
         Image image = null;
-        if (element instanceof ICheckConfiguration && columnIndex == 0)
+        if (element instanceof ICheckConfiguration)
         {
             image = ((ICheckConfiguration) element).getType().getTypeImage();
         }
 
         return image;
     }
+
 }

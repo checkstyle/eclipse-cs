@@ -26,6 +26,7 @@ package com.atlassw.tools.eclipse.checkstyle.config.gui;
 import java.io.File;
 import java.util.ArrayList;
 
+import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnWeightData;
@@ -33,6 +34,7 @@ import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.TableLayout;
@@ -41,6 +43,7 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -55,6 +58,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 
+import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationFactory;
@@ -66,6 +70,9 @@ import com.atlassw.tools.eclipse.checkstyle.config.configtypes.IConfigurationTyp
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfigurationFactory;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
+import com.atlassw.tools.eclipse.checkstyle.util.table.EnhancedTableViewer;
+import com.atlassw.tools.eclipse.checkstyle.util.table.ITableComparableProvider;
+import com.atlassw.tools.eclipse.checkstyle.util.table.ITableSettingsProvider;
 
 /**
  * This class represents a preference page that is contributed to the
@@ -84,7 +91,7 @@ public class CheckConfigurationWorkingSetEditor
     // attributes
     //
 
-    private TableViewer mViewer;
+    private EnhancedTableViewer mViewer;
 
     private Button mAddButton;
 
@@ -266,13 +273,16 @@ public class CheckConfigurationWorkingSetEditor
         column3.setText(Messages.CheckstylePreferencePage_colType);
         tableLayout.addColumnData(new ColumnWeightData(30));
 
-        mViewer = new TableViewer(table);
-        mViewer.setLabelProvider(new CheckConfigurationLabelProvider());
+        mViewer = new EnhancedTableViewer(table);
+        ConfigurationLabelProvider multiProvider = new ConfigurationLabelProvider();
+        mViewer.setLabelProvider(multiProvider);
+        mViewer.setTableComparableProvider(multiProvider);
+        mViewer.setTableSettingsProvider(multiProvider);
         mViewer.setContentProvider(new ArrayContentProvider());
-        mViewer.setSorter(new CheckConfigurationViewerSorter());
         mViewer.setInput(mWorkingSet.getWorkingCopies());
         mViewer.addDoubleClickListener(mController);
         mViewer.addSelectionChangedListener(mController);
+        mViewer.installEnhancements();
 
         return table;
     }
@@ -598,7 +608,8 @@ public class CheckConfigurationWorkingSetEditor
         //
         try
         {
-            if (ProjectConfigurationFactory.isCheckConfigInUse(checkConfig.getSourceCheckConfiguration()))
+            if (ProjectConfigurationFactory.isCheckConfigInUse(checkConfig
+                    .getSourceCheckConfiguration()))
             {
                 MessageDialog.openInformation(getShell(),
 
@@ -657,6 +668,70 @@ public class CheckConfigurationWorkingSetEditor
         {
             CheckstyleLog
                     .errorDialog(getShell(), ErrorMessages.msgErrorFailedExportConfig, e, true);
+        }
+    }
+
+    private class ConfigurationLabelProvider extends CheckConfigurationLabelProvider implements
+            ITableLabelProvider, ITableComparableProvider, ITableSettingsProvider
+    {
+
+        /**
+         * {@inheritDoc}
+         */
+        public String getColumnText(Object element, int columnIndex)
+        {
+            String result = element.toString();
+            if (element instanceof ICheckConfiguration)
+            {
+                ICheckConfiguration cfg = (ICheckConfiguration) element;
+                if (columnIndex == 0)
+                {
+                    result = cfg.getName();
+                }
+                if (columnIndex == 1)
+                {
+                    result = cfg.getLocation();
+                }
+                if (columnIndex == 2)
+                {
+                    result = cfg.getType().getName();
+                }
+            }
+            return result;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public Image getColumnImage(Object element, int columnIndex)
+        {
+            return columnIndex == 0 ? getImage(element) : null;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public Comparable getComparableValue(Object element, int col)
+        {
+            return getColumnText(element, col);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public IDialogSettings getTableSettings()
+        {
+            String concreteViewId = CheckConfigurationWorkingSetEditor.class.getName();
+
+            IDialogSettings workbenchSettings = CheckstylePlugin.getDefault().getDialogSettings();
+            IDialogSettings settings = workbenchSettings.getSection(concreteViewId);
+
+            if (settings == null)
+            {
+                settings = workbenchSettings.addNewSection(concreteViewId);
+            }
+
+            return settings;
         }
     }
 }

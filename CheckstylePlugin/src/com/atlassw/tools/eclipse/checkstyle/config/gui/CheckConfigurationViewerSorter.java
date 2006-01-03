@@ -20,17 +20,6 @@
 
 package com.atlassw.tools.eclipse.checkstyle.config.gui;
 
-//=================================================
-// Imports from java namespace
-//=================================================
-
-//=================================================
-// Imports from javax namespace
-//=================================================
-
-//=================================================
-// Imports from com namespace
-//=================================================
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
 
@@ -41,33 +30,10 @@ import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
  */
 public class CheckConfigurationViewerSorter extends ViewerSorter
 {
-    //=================================================
-    // Public static final variables.
-    //=================================================
 
-    //=================================================
-    // Static class variables.
-    //=================================================
-
-    //=================================================
-    // Instance member variables.
-    //=================================================
-
-    //=================================================
-    // Constructors & finalizer.
-    //=================================================
-
-    /**
-     * Default constructor.
-     */
-    public CheckConfigurationViewerSorter()
-    {
-        super();
-    }
-
-    //=================================================
-    // Methods.
-    //=================================================
+    //
+    // methods
+    //
 
     /**
      * {@inheritDoc}

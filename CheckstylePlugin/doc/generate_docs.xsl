@@ -4,7 +4,7 @@
 	<!-- parameter to control wheter the navigational menu should be included. -->
 	<xsl:param name="style"/>
 	<!-- output as XHTML 1.1 -->
-	<xsl:output encoding="UTF-8" method="xml" indent="yes" doctype-public="-//W3C//DTD XHTML
+	<xsl:output encoding="UTF-8" method="html" indent="yes" doctype-public="-//W3C//DTD XHTML
 		1.1//EN" doctype-system="http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"/>
 	<!-- root template -->
 	<xsl:template match="/">
@@ -69,10 +69,10 @@
 			select="/*[local-name()='html']/*[local-name()='head']/*[local-name()='meta' and
 			@name='section']/@content"/>
 		<div class="buttons">
-			<a href="index.html" style="padding-top: 58px; border-top: 0px solid #FFFFFF; background-image: url(images/eclipse-cs.png); background-repeat: no-repeat;">
-				<!--<img src="images/eclipse-cs.png" alt="eclipse-cs Logo"/>-->
-				The Checkstyle Plug-in for Eclipse
-			</a>
+			<a href="index.html" style="padding-top: 58px; border-top: 0px solid #FFFFFF;
+				background-image: url(images/eclipse-cs.png); background-repeat: no-repeat;">
+				<!--<img src="images/eclipse-cs.png" alt="eclipse-cs Logo"/>--> The Checkstyle
+				Plug-in for Eclipse </a>
 			<a href="screen_shots.html" class="level1">Screenshots</a>
 			<a href="release_notes.html" class="level1">Release Notes</a>
 			<a href="faq.html" class="level1">FAQ</a>
@@ -176,7 +176,9 @@
 						<tr>
 							<td colspan="3" style="text-align: center;">
 								<textarea cols="25" rows="7" name="ratingcomments"
-									style="font-siz:10px;">Please input a comment on why you like or dislike the Eclipse Checkstyle Plug-in.</textarea>
+									style="font-siz:10px;">
+									<xsl:text> </xsl:text>
+								</textarea>
 							</td>
 						</tr>
 						<tr>
