@@ -27,7 +27,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -72,6 +74,9 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration
     /** The edited description of the configuration. */
     private String mEditedDescription;
 
+    /** The map of additional data for this configuration. */
+    private Map mAdditionalData = new HashMap();
+
     /** flags if the configuration is dirty. */
     private boolean mIsDirty;
 
@@ -97,6 +102,8 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration
     {
         mCheckConfiguration = checkConfigToEdit;
         mWorkingSet = workingSet;
+
+        mAdditionalData.putAll(checkConfigToEdit.getAdditionalData());
     }
 
     /**
@@ -112,7 +119,7 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration
     {
 
         mWorkingSet = workingSet;
-        mCheckConfiguration = new CheckConfiguration(null, null, null, configType, global);
+        mCheckConfiguration = new CheckConfiguration(null, null, null, configType, global, null);
     }
 
     //
@@ -219,7 +226,7 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration
      */
     public boolean isDirty()
     {
-        return mIsDirty;
+        return mIsDirty || !mAdditionalData.equals(mCheckConfiguration.getAdditionalData());
     }
 
     /**
@@ -366,6 +373,14 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration
     public IConfigurationType getType()
     {
         return getSourceCheckConfiguration().getType();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Map getAdditionalData()
+    {
+        return mAdditionalData;
     }
 
     /**

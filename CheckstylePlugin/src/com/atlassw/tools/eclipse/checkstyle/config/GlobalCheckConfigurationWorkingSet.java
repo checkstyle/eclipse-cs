@@ -340,6 +340,30 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
 
             handler.startElement(new String(), XMLTags.CHECK_CONFIG_TAG, XMLTags.CHECK_CONFIG_TAG,
                     attrs);
+
+            Iterator addDataIterator = config.getAdditionalData().keySet().iterator();
+
+            if (addDataIterator.hasNext())
+            {
+                handler.ignorableWhitespace(new char[] { '\n' }, 0, 1);
+            }
+
+            while (addDataIterator.hasNext())
+            {
+                String key = (String) addDataIterator.next();
+                String value = (String) config.getAdditionalData().get(key);
+
+                attrs = new AttributesImpl();
+                attrs.addAttribute(new String(), XMLTags.NAME_TAG, XMLTags.NAME_TAG, null, key);
+                attrs.addAttribute(new String(), XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, null, value);
+
+                handler.startElement(new String(), XMLTags.ADDITIONAL_DATA_TAG,
+                        XMLTags.ADDITIONAL_DATA_TAG, attrs);
+                handler.endElement(new String(), XMLTags.ADDITIONAL_DATA_TAG,
+                        XMLTags.ADDITIONAL_DATA_TAG);
+                handler.ignorableWhitespace(new char[] { '\n' }, 0, 1);
+            }
+
             handler.endElement(new String(), XMLTags.CHECK_CONFIG_TAG, XMLTags.CHECK_CONFIG_TAG);
             handler.ignorableWhitespace(new char[] { '\n' }, 0, 1);
         }

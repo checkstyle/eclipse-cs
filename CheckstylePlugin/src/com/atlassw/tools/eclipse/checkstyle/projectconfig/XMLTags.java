@@ -84,6 +84,9 @@ public class XMLTags
     /** check configuration type tag. */
     public static final String TYPE_TAG = "type"; //$NON-NLS-1$
 
+    /** additional data tag. */
+    public static final String ADDITIONAL_DATA_TAG = "additional-data"; //$NON-NLS-1$ 
+
     // =================================================
     // Static class variables.
     // =================================================

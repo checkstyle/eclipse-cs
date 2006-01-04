@@ -23,6 +23,9 @@ package com.atlassw.tools.eclipse.checkstyle.config;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.IConfigurationType;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
@@ -57,6 +60,9 @@ public class CheckConfiguration implements ICheckConfiguration
     /** flags if the configuration is global. */
     private boolean mIsGlobal;
 
+    /** Map containing additional data for this check configuration. */
+    private Map mAdditionalData;
+
     //
     // methods
     //
@@ -70,15 +76,25 @@ public class CheckConfiguration implements ICheckConfiguration
      * @param type the check configuration type
      * @param global determines if the check configuration is a global
      *            configuration
+     * @param additionalData a map of additional data for this configuration
      */
     public CheckConfiguration(String name, String location, String description,
-            IConfigurationType type, boolean global)
+            IConfigurationType type, boolean global, Map additionalData)
     {
         mName = name;
         mLocation = location;
         mDescription = description;
         mConfigType = type;
         mIsGlobal = global;
+
+        if (additionalData != null)
+        {
+            mAdditionalData = Collections.unmodifiableMap(additionalData);
+        }
+        else
+        {
+            mAdditionalData = Collections.unmodifiableMap(new HashMap());
+        }
     }
 
     /**
@@ -111,6 +127,14 @@ public class CheckConfiguration implements ICheckConfiguration
     public IConfigurationType getType()
     {
         return mConfigType;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Map getAdditionalData()
+    {
+        return mAdditionalData;
     }
 
     /**

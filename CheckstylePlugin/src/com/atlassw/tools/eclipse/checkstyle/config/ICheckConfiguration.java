@@ -22,6 +22,7 @@ package com.atlassw.tools.eclipse.checkstyle.config;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Map;
 
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.IConfigurationType;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
@@ -62,6 +63,13 @@ public interface ICheckConfiguration
      * @return the configuration type
      */
     IConfigurationType getType();
+
+    /**
+     * Gets additional data for this configuration.
+     * 
+     * @return the additional data in form of a Map
+     */
+    Map getAdditionalData();
 
     /**
      * Gets the property resolver for this configuration used to expand property

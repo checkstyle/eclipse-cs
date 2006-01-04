@@ -32,8 +32,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
@@ -320,7 +322,7 @@ public final class CheckConfigurationFactory
             IConfigurationType configType = ConfigurationTypes.getByInternalName("builtin"); //$NON-NLS-1$
 
             ICheckConfiguration checkConfig = new CheckConfiguration(name, location, description,
-                    configType, true);
+                    configType, true, null);
             sConfigurations.add(checkConfig);
         }
     }
@@ -392,6 +394,21 @@ public final class CheckConfigurationFactory
         /** Flags if the old plugin configuration file format was detected. */
         private boolean mOldFileFormat;
 
+        /** The name of the current check configuration. */
+        private String mCurrentName;
+
+        /** The location of the current check configuration. */
+        private String mCurrentLocation;
+
+        /** The description of the current check configuration. */
+        private String mCurrentDescription;
+
+        /** The configuration type of the current configuration. */
+        private IConfigurationType mCurrentConfigType;
+
+        /** Additional data for the current configuration. */
+        private Map mCurrentAddValues;
+
         /**
          * Return the configurations this handler built.
          * 
@@ -413,8 +430,7 @@ public final class CheckConfigurationFactory
         }
 
         /**
-         * @see org.xml.sax.helpers.DefaultHandler#startElement(java.lang.String,
-         *      java.lang.String, java.lang.String, org.xml.sax.Attributes)
+         * {@inheritDoc}
          */
         public void startElement(String uri, String localName, String qName, Attributes attributes)
             throws SAXException
@@ -432,17 +448,35 @@ public final class CheckConfigurationFactory
 
             else if (!mOldFileFormat && XMLTags.CHECK_CONFIG_TAG.equals(qName))
             {
+                mCurrentName = attributes.getValue(XMLTags.NAME_TAG);
+                mCurrentDescription = attributes.getValue(XMLTags.DESCRIPTION_TAG);
+                mCurrentLocation = attributes.getValue(XMLTags.LOCATION_TAG);
+
+                String type = attributes.getValue(XMLTags.TYPE_TAG);
+                mCurrentConfigType = ConfigurationTypes.getByInternalName(type);
+
+                mCurrentAddValues = new HashMap();
+            }
+            else if (!mOldFileFormat && XMLTags.ADDITIONAL_DATA_TAG.equalsIgnoreCase(qName))
+            {
+                mCurrentAddValues.put(attributes.getValue(XMLTags.NAME_TAG), attributes
+                        .getValue(XMLTags.VALUE_TAG));
+            }
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public void endElement(String uri, String localName, String qName) throws SAXException
+        {
+            if (!mOldFileFormat && XMLTags.CHECK_CONFIG_TAG.equals(qName))
+            {
                 try
                 {
-                    String name = attributes.getValue(XMLTags.NAME_TAG);
-                    String description = attributes.getValue(XMLTags.DESCRIPTION_TAG);
-                    String location = attributes.getValue(XMLTags.LOCATION_TAG);
-                    String type = attributes.getValue(XMLTags.TYPE_TAG);
 
-                    IConfigurationType configType = ConfigurationTypes.getByInternalName(type);
-
-                    ICheckConfiguration checkConfig = new CheckConfiguration(name, location,
-                            description, configType, true);
+                    ICheckConfiguration checkConfig = new CheckConfiguration(mCurrentName,
+                            mCurrentLocation, mCurrentDescription, mCurrentConfigType, true,
+                            mCurrentAddValues);
                     mConfigurations.add(checkConfig);
                 }
                 catch (Exception e)

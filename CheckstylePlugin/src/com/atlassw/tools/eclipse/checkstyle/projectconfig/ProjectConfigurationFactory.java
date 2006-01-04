@@ -26,7 +26,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.sax.TransformerHandler;
@@ -367,6 +370,23 @@ public final class ProjectConfigurationFactory
         xmlOut
                 .startElement(new String(), XMLTags.CHECK_CONFIG_TAG, XMLTags.CHECK_CONFIG_TAG,
                         attrs);
+
+        Iterator addDataIterator = checkConfig.getAdditionalData().keySet().iterator();
+        while (addDataIterator.hasNext())
+        {
+            String key = (String) addDataIterator.next();
+            String value = (String) checkConfig.getAdditionalData().get(key);
+
+            attrs = new AttributesImpl();
+            attrs.addAttribute(new String(), XMLTags.NAME_TAG, XMLTags.NAME_TAG, null, key);
+            attrs.addAttribute(new String(), XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, null, value);
+
+            xmlOut.startElement(new String(), XMLTags.ADDITIONAL_DATA_TAG,
+                    XMLTags.ADDITIONAL_DATA_TAG, attrs);
+            xmlOut.endElement(new String(), XMLTags.ADDITIONAL_DATA_TAG,
+                    XMLTags.ADDITIONAL_DATA_TAG);
+        }
+
         xmlOut.endElement(new String(), XMLTags.CHECK_CONFIG_TAG, XMLTags.CHECK_CONFIG_TAG);
         xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
     }
@@ -524,6 +544,21 @@ public final class ProjectConfigurationFactory
         /** the current filter. */
         private IFilter mCurrentFilter;
 
+        /** The name of the current check configuration. */
+        private String mCurrentName;
+
+        /** The location of the current check configuration. */
+        private String mCurrentLocation;
+
+        /** The description of the current check configuration. */
+        private String mCurrentDescription;
+
+        /** The configuration type of the current configuration. */
+        private IConfigurationType mCurrentConfigType;
+
+        /** Additional data for the current configuration. */
+        private Map mCurrentAddValues;
+
         //
         // methods
         //
@@ -564,19 +599,14 @@ public final class ProjectConfigurationFactory
                 else if (XMLTags.CHECK_CONFIG_TAG.equals(qName))
                 {
 
-                    String name = attributes.getValue(XMLTags.NAME_TAG);
-                    String location = attributes.getValue(XMLTags.LOCATION_TAG);
+                    mCurrentName = attributes.getValue(XMLTags.NAME_TAG);
+                    mCurrentDescription = attributes.getValue(XMLTags.DESCRIPTION_TAG);
+                    mCurrentLocation = attributes.getValue(XMLTags.LOCATION_TAG);
+
                     String type = attributes.getValue(XMLTags.TYPE_TAG);
-                    String description = attributes.getValue(XMLTags.DESCRIPTION_TAG);
+                    mCurrentConfigType = ConfigurationTypes.getByInternalName(type);
 
-                    IConfigurationType configType = ConfigurationTypes.getByInternalName(type);
-
-                    ICheckConfiguration checkConfig = new CheckConfiguration(name, location,
-                            description, configType, false);
-
-                    CheckConfigurationWorkingCopy workingCopy = mProjectConfig
-                            .getCheckConfigWorkingSet().newWorkingCopy(checkConfig);
-                    mProjectConfig.getCheckConfigWorkingSet().addCheckConfiguration(workingCopy);
+                    mCurrentAddValues = new HashMap();
                 }
                 else if (XMLTags.FILESET_TAG.equals(qName))
                 {
@@ -641,6 +671,31 @@ public final class ProjectConfigurationFactory
             catch (CheckstylePluginException e)
             {
                 throw new SAXException(e);
+            }
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public void endElement(String uri, String localName, String qName) throws SAXException
+        {
+            if (XMLTags.CHECK_CONFIG_TAG.equals(qName))
+            {
+                try
+                {
+
+                    ICheckConfiguration checkConfig = new CheckConfiguration(mCurrentName,
+                            mCurrentLocation, mCurrentDescription, mCurrentConfigType, false,
+                            mCurrentAddValues);
+
+                    CheckConfigurationWorkingCopy workingCopy = mProjectConfig
+                            .getCheckConfigWorkingSet().newWorkingCopy(checkConfig);
+                    mProjectConfig.getCheckConfigWorkingSet().addCheckConfiguration(workingCopy);
+                }
+                catch (Exception e)
+                {
+                    throw new SAXException(e);
+                }
             }
         }
     }
