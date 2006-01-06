@@ -21,8 +21,6 @@
 package com.atlassw.tools.eclipse.checkstyle.config.configtypes;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -64,15 +62,6 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor
 
     /** check box to set if the configuration should be cached. */
     private Button mChkCacheConfig;
-
-    /** check box to set if http basic authentication will be used. */
-    private Button mChkUseBasicAuthentication;
-
-    /** the user name for http basic authentication support. */
-    private Text mUserName;
-
-    /** the password for http basic authentication support. */
-    private Text mPassword;
 
     //
     // methods
@@ -139,46 +128,6 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor
         gd.horizontalSpan = 2;
         mChkCacheConfig.setLayoutData(gd);
 
-        mChkUseBasicAuthentication = new Button(advancedGroup, SWT.CHECK);
-        mChkUseBasicAuthentication.setText("Use HTTP-Basic authentication");
-        gd = new GridData(GridData.FILL_HORIZONTAL);
-        gd.horizontalSpan = 2;
-        mChkUseBasicAuthentication.setLayoutData(gd);
-        mChkUseBasicAuthentication.addSelectionListener(new SelectionListener()
-        {
-
-            public void widgetSelected(SelectionEvent e)
-            {
-                mUserName.setEnabled(mChkUseBasicAuthentication.getSelection());
-                mPassword.setEnabled(mChkUseBasicAuthentication.getSelection());
-            }
-
-            public void widgetDefaultSelected(SelectionEvent e)
-            {
-            // NOOP
-            }
-        });
-
-        Label lblUserName = new Label(advancedGroup, SWT.NULL);
-        lblUserName.setText("Username:");
-        gd = new GridData();
-        gd.verticalAlignment = GridData.VERTICAL_ALIGN_BEGINNING;
-        lblUserName.setLayoutData(gd);
-
-        mUserName = new Text(advancedGroup, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
-        gd = new GridData(GridData.FILL_HORIZONTAL);
-        mUserName.setLayoutData(gd);
-
-        Label lblPassword = new Label(advancedGroup, SWT.NULL);
-        lblPassword.setText("Password:");
-        gd = new GridData();
-        gd.verticalAlignment = GridData.VERTICAL_ALIGN_BEGINNING;
-        lblPassword.setLayoutData(gd);
-
-        mPassword = new Text(advancedGroup, SWT.LEFT | SWT.PASSWORD | SWT.BORDER);
-        gd = new GridData(GridData.FILL_HORIZONTAL);
-        mPassword.setLayoutData(gd);
-
         return contents;
     }
 
@@ -205,27 +154,6 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor
         mChkCacheConfig.setSelection(Boolean.valueOf(
                 (String) mWorkingCopy.getAdditionalData().get(
                         RemoteConfigurationType.KEY_CACHE_CONFIG)).booleanValue());
-
-        mChkUseBasicAuthentication.setSelection(Boolean.valueOf(
-                (String) mWorkingCopy.getAdditionalData().get(
-                        RemoteConfigurationType.KEY_USE_BASIC_AUTH)).booleanValue());
-
-        mUserName.setEnabled(mChkUseBasicAuthentication.getSelection());
-        mPassword.setEnabled(mChkUseBasicAuthentication.getSelection());
-
-        String userName = (String) mWorkingCopy.getAdditionalData().get(
-                RemoteConfigurationType.KEY_USERNAME);
-        if (userName != null)
-        {
-            mUserName.setText(userName);
-        }
-
-        String password = (String) mWorkingCopy.getAdditionalData().get(
-                RemoteConfigurationType.KEY_PASSWORD);
-        if (password != null)
-        {
-            mPassword.setText(password);
-        }
     }
 
     /**
@@ -233,6 +161,10 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor
      */
     public CheckConfigurationWorkingCopy getEditedWorkingCopy() throws CheckstylePluginException
     {
+
+        mWorkingCopy.setName(mConfigName.getText());
+        mWorkingCopy.setLocation(mLocation.getText());
+        mWorkingCopy.setDescription(mDescription.getText());
 
         mWorkingCopy.getAdditionalData().put(RemoteConfigurationType.KEY_CACHE_CONFIG,
                 "" + mChkCacheConfig.getSelection());
@@ -247,25 +179,6 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor
                     mWorkingCopy.getName() + "_" + (mWorkingCopy.isGlobal() ? "global" : "local")
                             + "_cache.xml");
         }
-
-        mWorkingCopy.getAdditionalData().put(RemoteConfigurationType.KEY_USE_BASIC_AUTH,
-                "" + mChkUseBasicAuthentication.getSelection());
-
-        if (mUserName.getText() != null && mUserName.getText().trim().length() != 0)
-        {
-            mWorkingCopy.getAdditionalData().put(RemoteConfigurationType.KEY_USERNAME,
-                    mUserName.getText());
-        }
-
-        if (mPassword.getText() != null && mPassword.getText().trim().length() != 0)
-        {
-            mWorkingCopy.getAdditionalData().put(RemoteConfigurationType.KEY_PASSWORD,
-                    mPassword.getText());
-        }
-
-        mWorkingCopy.setName(mConfigName.getText());
-        mWorkingCopy.setLocation(mLocation.getText());
-        mWorkingCopy.setDescription(mDescription.getText());
 
         return mWorkingCopy;
     }

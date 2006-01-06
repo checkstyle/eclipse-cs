@@ -28,13 +28,32 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.Authenticator;
 import java.net.MalformedURLException;
+import java.net.PasswordAuthentication;
 import java.net.URL;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
@@ -57,17 +76,11 @@ public class RemoteConfigurationType extends ConfigurationType
     /** Key to access the path of the cached configuration file. */
     public static final String KEY_CACHE_FILE_LOCATION = "cache-file-location";
 
-    /** Key to access if http-basic authentication should be used. */
-    public static final String KEY_USE_BASIC_AUTH = "use-http-basic-auth";
-
     /** Key to access the username. */
     public static final String KEY_USERNAME = "username";
 
     /** Key to access the password. */
     public static final String KEY_PASSWORD = "password";
-
-    /** A static key to encrypt username/password values. */
-    public static final String SIMPLE_ECRYPTION_KEY = "jldf20984029kdj204308bfjks98";
 
     /**
      * {@inheritDoc}
@@ -131,6 +144,17 @@ public class RemoteConfigurationType extends ConfigurationType
     {
         super.notifyCheckConfigRemoved(checkConfiguration);
 
+        // remove authentication info
+        try
+        {
+            Platform.flushAuthorizationInfo(resolveLocation(checkConfiguration), "", "");
+            RemoteConfigAuthenticator.removeCachedAuthInfo(checkConfiguration);
+        }
+        catch (CoreException e)
+        {
+            CheckstyleLog.log(e);
+        }
+
         boolean useCacheFile = Boolean.valueOf(
                 (String) checkConfiguration.getAdditionalData().get(KEY_CACHE_CONFIG))
                 .booleanValue();
@@ -181,20 +205,22 @@ public class RemoteConfigurationType extends ConfigurationType
         throws CheckstylePluginException
     {
 
-        // TODO http authentication
-        boolean useHttpAuth = Boolean.valueOf(
-                (String) checkConfig.getAdditionalData().get(KEY_USE_BASIC_AUTH)).booleanValue();
-
         InputStream inStream = null;
 
         try
         {
+            Authenticator.setDefault(new RemoteConfigAuthenticator(checkConfig));
+
             URL configURL = resolveLocation(checkConfig);
             inStream = new BufferedInputStream(configURL.openStream());
         }
         catch (IOException e)
         {
             CheckstylePluginException.rethrow(e);
+        }
+        finally
+        {
+            Authenticator.setDefault(null);
         }
 
         return inStream;
@@ -350,4 +376,233 @@ public class RemoteConfigurationType extends ConfigurationType
         return bundle;
     }
 
+    /**
+     * Support for http authentication.
+     * 
+     * @author Lars Ködderitzsch
+     */
+    private static class RemoteConfigAuthenticator extends Authenticator
+    {
+        /** Map to store the authentication info for this session. */
+        private static Map sAuthInfoSessionCache = Collections.synchronizedMap(new HashMap());
+
+        /** The check configuration. */
+        private ICheckConfiguration mConfiguration;
+
+        /**
+         * Creates the authenticator.
+         * 
+         * @param checkConfiguration the check configuration
+         */
+        public RemoteConfigAuthenticator(ICheckConfiguration checkConfiguration)
+        {
+            mConfiguration = checkConfiguration;
+        }
+
+        /**
+         * Removes the authentication info from the session cache.
+         * 
+         * @param checkConfiguration the check configuration
+         */
+        public static void removeCachedAuthInfo(ICheckConfiguration checkConfiguration)
+        {
+            sAuthInfoSessionCache.remove(checkConfiguration.getLocation());
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        protected PasswordAuthentication getPasswordAuthentication()
+        {
+
+            PasswordAuthentication auth = null;
+
+            try
+            {
+
+                // check if already authenticated in this session
+                auth = (PasswordAuthentication) sAuthInfoSessionCache.get(mConfiguration
+                        .getLocation());
+
+                // load from internal keyring
+                if (auth == null)
+                {
+
+                    URL url = new URL(mConfiguration.getLocation());
+
+                    Map authInfo = Platform.getAuthorizationInfo(url, "", "");
+
+                    if (authInfo == null || authInfo.get(KEY_PASSWORD) == null)
+                    {
+
+                        // Display display = Display.getDefault();
+                        Shell shell = new Shell((Display) null);
+                        AuthenticationDialog authDialog = new AuthenticationDialog(shell,
+                                mConfiguration.getLocation(), authInfo != null ? (String) authInfo
+                                        .get(KEY_USERNAME) : null);
+
+                        if (Dialog.OK == authDialog.open())
+                        {
+                            authInfo = new HashMap();
+
+                            authInfo.put(KEY_USERNAME, authDialog.getUsername());
+
+                            if (authDialog.savePassword())
+                            {
+                                authInfo.put(KEY_PASSWORD, authDialog.getPassword());
+                            }
+
+                            // store authorization info to the internal key ring
+                            Platform.addAuthorizationInfo(url, "", "", authInfo);
+
+                            authInfo.put(KEY_PASSWORD, authDialog.getPassword());
+
+                            auth = new PasswordAuthentication((String) authInfo.get(KEY_USERNAME),
+                                    ((String) authInfo.get(KEY_PASSWORD)).toCharArray());
+                        }
+                        else
+                        {
+                            auth = null;
+                        }
+                    }
+                    else
+                    {
+                        auth = new PasswordAuthentication((String) authInfo.get(KEY_USERNAME),
+                                ((String) authInfo.get(KEY_PASSWORD)).toCharArray());
+                    }
+                }
+
+                // put into cache
+                if (auth != null)
+                {
+                    sAuthInfoSessionCache.put(mConfiguration.getLocation(), auth);
+                }
+            }
+            catch (MalformedURLException e)
+            {
+                CheckstyleLog.log(e);
+            }
+            catch (CoreException e)
+            {
+                CheckstyleLog.log(e);
+            }
+            return auth;
+        }
+
+        /**
+         * The dialog to input authentication.
+         * 
+         * @author Lars Ködderitzsch
+         */
+        private class AuthenticationDialog extends TitleAreaDialog
+        {
+
+            private Text mTxtUserName;
+
+            private Text mTxtPassword;
+
+            private Button mChkSavePassword;
+
+            private String mRemoteURL;
+
+            private String mUsername;
+
+            private String mPassword;
+
+            private boolean mSavePassword;
+
+            /**
+             * Creates the authentication dialog.
+             * 
+             * @param parentShell the shell
+             */
+            protected AuthenticationDialog(Shell parentShell, String remoteURL, String userName)
+            {
+                super(parentShell);
+                mRemoteURL = remoteURL;
+                mUsername = userName;
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            protected Control createDialogArea(Composite parent)
+            {
+
+                Composite composite = (Composite) super.createDialogArea(parent);
+
+                Composite mainConposite = new Composite(composite, SWT.NULL);
+                mainConposite.setLayoutData(new GridData(GridData.FILL_BOTH));
+                mainConposite.setLayout(new GridLayout(2, false));
+
+                Label lblUserName = new Label(mainConposite, SWT.NULL);
+                lblUserName.setText("Username:");
+                lblUserName.setLayoutData(new GridData());
+
+                mTxtUserName = new Text(mainConposite, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
+                mTxtUserName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+                if (mUsername != null)
+                {
+                    mTxtUserName.setText(mUsername);
+                }
+
+                Label lblPassword = new Label(mainConposite, SWT.NULL);
+                lblPassword.setText("Password:");
+                lblPassword.setLayoutData(new GridData());
+
+                mTxtPassword = new Text(mainConposite, SWT.LEFT | SWT.PASSWORD | SWT.BORDER);
+                mTxtPassword.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+                mChkSavePassword = new Button(mainConposite, SWT.CHECK);
+                mChkSavePassword.setText("Save password");
+                GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+                gd.horizontalSpan = 2;
+                mChkSavePassword.setLayoutData(gd);
+
+                this.setTitle("Authentication requested by remote server");
+                this.setMessage(NLS.bind("Input authentication info for the remote location:\n{0}",
+                        mRemoteURL));
+                // this.setTitleImage(CheckstylePluginImages
+                // .getImage(CheckstylePluginImages.PLUGIN_LOGO));
+                return mainConposite;
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            protected void okPressed()
+            {
+
+                mUsername = mTxtUserName.getText();
+                mPassword = mTxtPassword.getText();
+                mSavePassword = mChkSavePassword.getSelection();
+
+                super.okPressed();
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            protected void configureShell(Shell newShell)
+            {
+                newShell.setText("Input authentication info");
+                super.configureShell(newShell);
+            }
+
+            public String getUsername()
+            {
+                return mUsername;
+            }
+
+            public String getPassword()
+            {
+                return mPassword;
+            }
+
+            public boolean savePassword()
+            {
+                return mSavePassword;
+            }
+        }
+    }
 }
