@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.atlassw.tools.eclipse.checkstyle.config.meta.ConfigPropertyMetadata;
+import com.atlassw.tools.eclipse.checkstyle.config.meta.MetadataFactory;
 import com.atlassw.tools.eclipse.checkstyle.config.meta.RuleMetadata;
 import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
 
@@ -235,10 +236,20 @@ public class Module implements Cloneable
      */
     public void setSeverity(SeverityLevel severityLevel)
     {
-        if (mMetaData.hasSeverity())
-        {
-            SeverityLevel defaultLevel = getMetaData().getDefaultSeverityLevel();
 
+        SeverityLevel defaultLevel = null;
+
+        if (mMetaData != null && mMetaData.hasSeverity())
+        {
+            defaultLevel = getMetaData().getDefaultSeverityLevel();
+        }
+        else if (mMetaData == null)
+        {
+            defaultLevel = MetadataFactory.getDefaultSeverity();
+        }
+
+        if (defaultLevel != null)
+        {
             if (severityLevel.equals(defaultLevel))
             {
                 mSeverityLevel = null;

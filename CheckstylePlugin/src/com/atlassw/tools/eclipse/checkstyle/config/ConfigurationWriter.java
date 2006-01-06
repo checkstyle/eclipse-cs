@@ -165,22 +165,9 @@ public final class ConfigurationWriter
         // Start the module
         AttributesImpl attr = new AttributesImpl();
         attr.addAttribute(new String(), XMLTags.NAME_TAG, XMLTags.NAME_TAG, null, module
-                .getMetaData().getCheckstyleModuleName());
+                .getMetaData().getInternalName());
         xmlOut.startElement(new String(), XMLTags.MODULE_TAG, XMLTags.MODULE_TAG, attr);
         xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
-
-        if (!module.getMetaData().getCheckstyleModuleName().equals(
-                module.getMetaData().getInternalName()))
-        {
-            attr = new AttributesImpl();
-            attr.addAttribute(new String(), XMLTags.NAME_TAG, XMLTags.NAME_TAG, null,
-                    XMLTags.INTERNAL_NAME_TAG);
-            attr.addAttribute(new String(), XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, null, module
-                    .getMetaData().getInternalName());
-            xmlOut.startElement(new String(), XMLTags.METADATA_TAG, XMLTags.METADATA_TAG, attr);
-            xmlOut.endElement(new String(), XMLTags.METADATA_TAG, XMLTags.METADATA_TAG);
-            xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
-        }
 
         // Write comment
         if (module.getComment() != null && module.getComment().trim().length() != 0)

@@ -336,10 +336,6 @@ public final class CheckConfigurationFactory
         try
         {
 
-            // load builtin configurations to make duplicate name detection
-            // possible
-            loadBuiltinConfigurations();
-
             // get inputstream to the current oldstyle config
             IPath configPath = CheckstylePlugin.getDefault().getStateLocation();
             configPath = configPath.append(CHECKSTYLE_CONFIG_FILE);

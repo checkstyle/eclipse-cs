@@ -50,12 +50,6 @@ public class RuleMetadata
     /** The internal name of the module. */
     private String mInternalName;
 
-    /**
-     * The optional checkstyle module name in case that differs from the
-     * internal name.
-     */
-    private String mCheckstyleModuleName;
-
     /** The internal name of the parent module. */
     private String mParent;
 
@@ -95,8 +89,6 @@ public class RuleMetadata
      * 
      * @param ruleName the name of the rule
      * @param internalName the internal name of the rule
-     * @param checkstyleModuleName the checkstyle module name, if it differs
-     *            from the internal name
      * @param parent the parent module name
      * @param defaultSeverity the default severity level
      * @param hidden <code>true</code> if the module should be hidden from the
@@ -109,13 +101,12 @@ public class RuleMetadata
      *            once in a checkstyle configuration
      * @param group the group the module belongs to
      */
-    public RuleMetadata(String ruleName, String internalName, String checkstyleModuleName,
-            String parent, SeverityLevel defaultSeverity, boolean hidden, boolean hasSeverity,
-            boolean deletable, boolean isSingleton, RuleGroupMetadata group)
+    public RuleMetadata(String ruleName, String internalName, String parent,
+            SeverityLevel defaultSeverity, boolean hidden, boolean hasSeverity, boolean deletable,
+            boolean isSingleton, RuleGroupMetadata group)
     {
         mName = ruleName;
         mInternalName = internalName;
-        mCheckstyleModuleName = checkstyleModuleName;
         mParent = parent;
         mDefaultSeverityLevel = defaultSeverity;
         mIsHidden = hidden;
@@ -199,17 +190,6 @@ public class RuleMetadata
     public String getInternalName()
     {
         return mInternalName;
-    }
-
-    /**
-     * Returns the module name to be written into the checkstyle configuration
-     * file.
-     * 
-     * @return the checkstyle module name
-     */
-    public String getCheckstyleModuleName()
-    {
-        return mCheckstyleModuleName != null ? mCheckstyleModuleName : mInternalName;
     }
 
     /**

@@ -249,10 +249,6 @@ public final class ConfigurationReader
                 {
                     module.setLastEnabledSeverity(SeverityLevel.getInstance(value));
                 }
-                // else if (XMLTags.INTERNAL_NAME_TAG.equals(name))
-                // {
-                //
-                // }
                 else
                 {
                     module.getCustomMetaData().put(name, value);

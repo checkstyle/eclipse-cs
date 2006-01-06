@@ -199,7 +199,7 @@ public final class MetadataFactory
         }
 
         RuleGroupMetadata otherGroup = getRuleGroupMetadata(XMLTags.OTHER_GROUP);
-        RuleMetadata ruleMeta = new RuleMetadata(module.getName(), module.getName(), null, parent,
+        RuleMetadata ruleMeta = new RuleMetadata(module.getName(), module.getName(), parent,
                 MetadataFactory.getDefaultSeverity(), false, true, true, false, otherGroup);
         module.setMetaData(ruleMeta);
         sRuleMetadata.put(ruleMeta.getInternalName(), ruleMeta);
@@ -464,9 +464,6 @@ public final class MetadataFactory
 
                     String name = attributes.getValue(XMLTags.NAME_TAG).trim();
                     String internalName = attributes.getValue(XMLTags.INTERNAL_NAME_TAG).trim();
-                    String checkstylModuleName = attributes
-                            .getValue(XMLTags.CHECKSTYLE_MODULE_NAME_TAG) != null ? attributes
-                            .getValue(XMLTags.CHECKSTYLE_MODULE_NAME_TAG).trim() : null;
 
                     String parentName = attributes.getValue(XMLTags.PARENT_TAG) != null ? attributes
                             .getValue(XMLTags.PARENT_TAG).trim()
@@ -480,9 +477,8 @@ public final class MetadataFactory
                             attributes.getValue(XMLTags.IS_SINGLETON_TAG)).booleanValue();
 
                     // create rule metadata
-                    mCurrentRule = new RuleMetadata(name, internalName, checkstylModuleName,
-                            parentName, severity, hidden, hasSeverity, deletable, isSingleton,
-                            mCurrentGroup);
+                    mCurrentRule = new RuleMetadata(name, internalName, parentName, severity,
+                            hidden, hasSeverity, deletable, isSingleton, mCurrentGroup);
                     mCurrentGroup.getRuleMetadata().add(mCurrentRule);
 
                     // register internal name

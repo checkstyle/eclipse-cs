@@ -68,8 +68,8 @@ public final class CheckConfigurationMigrator
      * @param workingSet the configuration working set
      * @throws CheckstylePluginException error migrating the configurations
      */
-    public static void migrate(InputStream checkConfigsFile, ICheckConfigurationWorkingSet workingSet)
-        throws CheckstylePluginException
+    public static void migrate(InputStream checkConfigsFile,
+            ICheckConfigurationWorkingSet workingSet) throws CheckstylePluginException
     {
 
         try
@@ -157,6 +157,14 @@ public final class CheckConfigurationMigrator
                                         .format(new Date()));
                         mCurrentConfiguration.setName(name + nameAddition);
                     }
+
+                    // create the location of the new internal configuration
+                    if (mCurrentConfiguration.getLocation() == null)
+                    {
+                        String location = "internal_config_" + "_" + System.currentTimeMillis()
+                                + ".xml";
+                        mCurrentConfiguration.setLocation(location);
+                    }
                 }
                 else if (XMLTags.RULE_CONFIG_TAG.equals(qName))
                 {
@@ -175,7 +183,9 @@ public final class CheckConfigurationMigrator
                         mCurrentModule = new Module(classname);
                     }
 
-                    mCurrentModule.setSeverity(SeverityLevel.getInstance(severity));
+                    SeverityLevel level = SeverityLevel.getInstance(severity);
+
+                    mCurrentModule.setSeverity(level != null ? level : SeverityLevel.WARNING);
                     mCurrentConfigModules.add(mCurrentModule);
                 }
                 else if (XMLTags.CONFIG_PROPERTY_TAG.equals(qName))

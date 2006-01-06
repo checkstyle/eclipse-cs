@@ -41,11 +41,6 @@
 	
 	The 'internal-name' attribute defines the logical name of the module.
 	
-	The 'checkstyle-module-name' can be used if the internal-name differs from the actual name
-		of the checkstyle module that needs to be written to the checkstyle configuration file.
-		Most likely this will only be used by users adopting checkstyle for other languages than
-		java and want to reuse existing implementations of standard checkstyle checks.
-	
 	The 'parent' element defines if the module is a file set check (Checker as parent)
 		or a regular 'TreeWalker' check.
 		
@@ -68,7 +63,6 @@
 <!ATTLIST rule-metadata
 	name					CDATA			#REQUIRED
 	internal-name			NMTOKEN			#REQUIRED
-	checkstyle-module-name	NMTOKEN			#IMPLIED
 	parent					NMTOKEN			#REQUIRED
 	hasSeverity				(true|false)	"true"
 	hidden					(true|false)	"false"
