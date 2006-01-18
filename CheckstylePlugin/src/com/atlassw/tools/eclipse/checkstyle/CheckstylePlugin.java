@@ -33,6 +33,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.dialogs.MessageDialogWithToggle;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.osgi.framework.BundleContext;
 
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.EclipseLogHandler;
@@ -147,6 +148,15 @@ public class CheckstylePlugin extends AbstractUIPlugin
     {
         super();
         sPlugin = this;
+    }
+
+    // =================================================
+    // Methods.
+    // =================================================
+
+    public void start(BundleContext context) throws Exception
+    {
+        super.start(context);
 
         try
         {
@@ -161,10 +171,6 @@ public class CheckstylePlugin extends AbstractUIPlugin
             CheckstyleLog.log(ioe);
         }
     }
-
-    // =================================================
-    // Methods.
-    // =================================================
 
     /**
      * Returns the shared instance.
