@@ -152,7 +152,7 @@
 							<td style="text-align: left;">
 								<select name="rating">
 									<option selected="selected">--</option>
-									<option>10</option>
+									<option value="10">10 - Really great</option>
 									<option>9</option>
 									<option>8</option>
 									<option>7</option>
@@ -161,11 +161,8 @@
 									<option>4</option>
 									<option>3</option>
 									<option>2</option>
-									<option>1</option>
+									<option value="1">1 - Abysmal</option>
 								</select>
-							</td>
-							<td style="text-align: left;">
-								<span style="font-size: 9px;">(10 best, 1 worst)</span>
 							</td>
 						</tr>
 						<tr>
@@ -174,7 +171,7 @@
 							</td>
 						</tr>
 						<tr>
-							<td colspan="3" style="text-align: center;">
+							<td colspan="2" style="text-align: center;">
 								<textarea cols="25" rows="7" name="ratingcomments"
 									style="font-siz:10px;">
 									<xsl:text> </xsl:text>
@@ -182,7 +179,7 @@
 							</td>
 						</tr>
 						<tr>
-							<td style="text-align: center;" colspan="3">
+							<td style="text-align: center;" colspan="2">
 								<input type="hidden" name="ratinglid" value="376"/>
 								<input type="hidden" name="ratinguser" value="outside"/>
 								<input type="hidden" name="req" value="addrating"/>

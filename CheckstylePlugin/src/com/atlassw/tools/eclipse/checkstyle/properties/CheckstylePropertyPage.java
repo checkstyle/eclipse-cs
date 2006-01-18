@@ -71,8 +71,9 @@ import com.atlassw.tools.eclipse.checkstyle.config.gui.CheckConfigurationWorking
 import com.atlassw.tools.eclipse.checkstyle.nature.CheckstyleNature;
 import com.atlassw.tools.eclipse.checkstyle.nature.ConfigureDeconfigureNatureJob;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileSet;
-import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfiguration;
+import com.atlassw.tools.eclipse.checkstyle.projectconfig.IProjectConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfigurationFactory;
+import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfigurationWorkingCopy;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.IFilter;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.IFilterEditor;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
@@ -121,14 +122,8 @@ public class CheckstylePropertyPage extends PropertyPage
     /** controller of this page. */
     private PageController mPageController;
 
-    /** the the original project configuration. */
-    private ProjectConfiguration mProjectConfigOrig;
-
     /** the actual working data for this form. */
-    private ProjectConfiguration mProjectConfig;
-
-    /** the project. */
-    private IProject mProject;
+    private ProjectConfigurationWorkingCopy mProjectConfig;
 
     /** the local configurations working set editor. */
     private CheckConfigurationWorkingSetEditor mWorkingSetEditor;
@@ -144,7 +139,7 @@ public class CheckstylePropertyPage extends PropertyPage
      * 
      * @return the project configuration
      */
-    public ProjectConfiguration getProjectConfiguration()
+    public ProjectConfigurationWorkingCopy getProjectConfigurationWorkingCopy()
     {
         return mProjectConfig;
     }
@@ -162,16 +157,19 @@ public class CheckstylePropertyPage extends PropertyPage
             //
             // Get the project.
             //
+
+            IProject project = null;
             IResource resource = (IResource) element;
             if (resource.getType() == IResource.PROJECT)
             {
-                mProject = (IProject) resource;
+                project = (IProject) resource;
             }
 
-            mProjectConfigOrig = ProjectConfigurationFactory.getConfiguration(mProject);
-            mProjectConfig = (ProjectConfiguration) mProjectConfigOrig.clone();
+            IProjectConfiguration projectConfig = ProjectConfigurationFactory
+                    .getConfiguration(project);
+            mProjectConfig = new ProjectConfigurationWorkingCopy(projectConfig);
 
-            mCheckstyleActivated = mProject.hasNature(CheckstyleNature.NATURE_ID);
+            mCheckstyleActivated = project.hasNature(CheckstyleNature.NATURE_ID);
         }
         catch (CoreException e)
         {
@@ -374,16 +372,6 @@ public class CheckstylePropertyPage extends PropertyPage
         this.mBtnEditFilter.setText(Messages.CheckstylePropertyPage_btnChangeFilter);
         this.mBtnEditFilter.addSelectionListener(this.mPageController);
 
-        // don't show readonly filters
-        // mFilterList.addFilter(new ViewerFilter()
-        // {
-        // public boolean select(Viewer viewer, Object parentElement, Object
-        // element)
-        // {
-        // return !((IFilter) element).isReadonly();
-        // }
-        // });
-
         fd = new FormData();
         fd.top = new FormAttachment(0, 3);
         fd.right = new FormAttachment(100, -3);
@@ -408,19 +396,21 @@ public class CheckstylePropertyPage extends PropertyPage
         this.mTxtFilterDescription.setLayoutData(fd);
 
         // intialize filter list
-        IFilter[] filterDefs = mProjectConfig.getFilters();
+        List filterDefs = mProjectConfig.getFilters();
         this.mFilterList.setInput(filterDefs);
 
         // set the checked state
-        for (int i = 0; i < filterDefs.length; i++)
+        for (int i = 0; i < filterDefs.size(); i++)
         {
-            this.mFilterList.setChecked(filterDefs[i], filterDefs[i].isEnabled());
+            IFilter filter = (IFilter) filterDefs.get(i);
+            this.mFilterList.setChecked(filter, filter.isEnabled());
         }
 
         // set the readonly state
-        for (int i = 0; i < filterDefs.length; i++)
+        for (int i = 0; i < filterDefs.size(); i++)
         {
-            this.mFilterList.setGrayed(filterDefs[i], filterDefs[i].isReadonly());
+            IFilter filter = (IFilter) filterDefs.get(i);
+            this.mFilterList.setGrayed(filter, filter.isReadonly());
         }
 
         this.mBtnEditFilter.setEnabled(false);
@@ -432,10 +422,11 @@ public class CheckstylePropertyPage extends PropertyPage
     {
 
         mWorkingSetEditor = new CheckConfigurationWorkingSetEditor(mProjectConfig
-                .getCheckConfigWorkingSet(), false);
+                .getLocalCheckConfigWorkingSet(), false);
         Control editorControl = mWorkingSetEditor.createContents(parent);
         editorControl.setLayoutData(new GridData(GridData.FILL_BOTH));
 
+        // TODO add message what to do with local configurations
         // setMessage("Use this page to set up check configurtation that are
         // local to this project.\nThe check configurations data will be stored
         // with the .checkstyle file,\nallowing for improved teamworking
@@ -487,28 +478,64 @@ public class CheckstylePropertyPage extends PropertyPage
         try
         {
 
-            // save the edited form data
-            ProjectConfigurationFactory.setConfiguration(mProjectConfig, mProject);
+            IProject project = mProjectConfig.getProject();
+
+            // save the edited project configuration
+            if (mProjectConfig.isDirty())
+            {
+                System.out.println("Project configuration saved");
+                mProjectConfig.store();
+            }
 
             boolean checkstyleEnabled = mChkEnable.getSelection();
-            boolean needRebuild = !this.mProjectConfigOrig.equals(this.mProjectConfig);
+
+            boolean needRebuild = mProjectConfig.isDirty();
+            needRebuild = needRebuild
+                    || mProjectConfig.getLocalCheckConfigWorkingSet().getAffectedProjects()
+                            .contains(project);
+            needRebuild = needRebuild
+                    || mProjectConfig.getGlobalCheckConfigWorkingSet().getAffectedProjects()
+                            .contains(project);
 
             // check if checkstyle nature has to be configured/deconfigured
             if (checkstyleEnabled != mCheckstyleActivated)
             {
 
                 ConfigureDeconfigureNatureJob configOperation = new ConfigureDeconfigureNatureJob(
-                        mProject, CheckstyleNature.NATURE_ID);
+                        project, CheckstyleNature.NATURE_ID);
                 configOperation.setRule(ResourcesPlugin.getWorkspace().getRoot());
                 configOperation.schedule();
                 needRebuild = true;
             }
 
-            // check if a rebuild is necessary
-            if (checkstyleEnabled && needRebuild)
+            IPreferenceStore prefStore = CheckstylePlugin.getDefault().getPreferenceStore();
+            String promptRebuildPref = prefStore
+                    .getString(CheckstylePlugin.PREF_ASK_BEFORE_REBUILD);
+
+            boolean doRebuild = MessageDialogWithToggle.ALWAYS.equals(promptRebuildPref)
+                    && needRebuild;
+
+            //
+            // Prompt for rebuild
+            //
+            if (MessageDialogWithToggle.PROMPT.equals(promptRebuildPref) && needRebuild)
             {
 
-                BuildProjectJob rebuildOperation = new BuildProjectJob(mProject,
+                // TODO give other texts
+                MessageDialogWithToggle dialog = MessageDialogWithToggle.openYesNoQuestion(
+                        getShell(), Messages.CheckstylePreferencePage_titleRebuild,
+                        Messages.CheckstylePreferencePage_msgRebuild,
+                        Messages.CheckstylePreferencePage_nagRebuild, false, prefStore,
+                        CheckstylePlugin.PREF_ASK_BEFORE_REBUILD);
+
+                doRebuild = dialog.getReturnCode() == IDialogConstants.YES_ID;
+            }
+
+            // check if a rebuild is necessary
+            if (checkstyleEnabled && doRebuild)
+            {
+
+                BuildProjectJob rebuildOperation = new BuildProjectJob(project,
                         IncrementalProjectBuilder.FULL_BUILD);
                 rebuildOperation.setRule(ResourcesPlugin.getWorkspace().getRoot());
                 rebuildOperation.schedule();
@@ -695,7 +722,7 @@ public class CheckstylePropertyPage extends PropertyPage
                         Class editorClass = aFilterDef.getEditorClass();
 
                         IFilterEditor editableFilter = (IFilterEditor) editorClass.newInstance();
-                        editableFilter.setInputProject(mProject);
+                        editableFilter.setInputProject(mProjectConfig.getProject());
                         editableFilter.setFilterData(aFilterDef.getFilterData());
 
                         if (Window.OK == editableFilter.openEditor(getShell()))

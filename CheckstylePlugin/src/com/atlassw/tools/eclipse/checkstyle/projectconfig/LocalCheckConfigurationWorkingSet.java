@@ -21,8 +21,11 @@
 package com.atlassw.tools.eclipse.checkstyle.projectconfig;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationWorkingCopy;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
@@ -43,6 +46,9 @@ public class LocalCheckConfigurationWorkingSet implements ICheckConfigurationWor
     // attributes
     //
 
+    /** The project configuration. */
+    private IProjectConfiguration mProjectConfig;
+
     /** The internal list of working copies belonging to this working set. */
     private List mWorkingCopies;
 
@@ -54,12 +60,25 @@ public class LocalCheckConfigurationWorkingSet implements ICheckConfigurationWor
     //
 
     /**
-     * Creates a working set to manage global configurations.
+     * Creates a working set to manage local configurations.
+     * 
+     * @param projectConfig the project configuration
+     * @param checkConfigs the list of local check configurations
      */
-    LocalCheckConfigurationWorkingSet()
+    LocalCheckConfigurationWorkingSet(IProjectConfiguration projectConfig, List checkConfigs)
     {
+
+        mProjectConfig = projectConfig;
         mWorkingCopies = new ArrayList();
         mDeletedConfigurations = new ArrayList();
+
+        Iterator iter = checkConfigs.iterator();
+        while (iter.hasNext())
+        {
+            ICheckConfiguration cfg = (ICheckConfiguration) iter.next();
+            CheckConfigurationWorkingCopy workingCopy = new CheckConfigurationWorkingCopy(cfg, this);
+            mWorkingCopies.add(workingCopy);
+        }
     }
 
     //
@@ -117,11 +136,33 @@ public class LocalCheckConfigurationWorkingSet implements ICheckConfigurationWor
     }
 
     /**
-     * Check to see if a check configuration is using an already existing name.
-     * 
-     * @param configuration The check configuration
-     * 
-     * @return <code>true</code>= in use, <code>false</code>= not in use.
+     * {@inheritDoc}
+     */
+    public boolean isDirty()
+    {
+        if (mDeletedConfigurations.size() > 0)
+        {
+            return true;
+        }
+
+        boolean dirty = false;
+        Iterator it = mWorkingCopies.iterator();
+        while (it.hasNext())
+        {
+
+            CheckConfigurationWorkingCopy workingCopy = (CheckConfigurationWorkingCopy) it.next();
+            dirty = workingCopy.isDirty();
+
+            if (dirty)
+            {
+                break;
+            }
+        }
+        return dirty;
+    }
+
+    /**
+     * {@inheritDoc}
      */
     public boolean isNameCollision(CheckConfigurationWorkingCopy configuration)
 
@@ -141,6 +182,29 @@ public class LocalCheckConfigurationWorkingSet implements ICheckConfigurationWor
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public Collection getAffectedProjects() throws CheckstylePluginException
+    {
+        Set projects = new HashSet();
+
+        CheckConfigurationWorkingCopy[] workingCopies = this.getWorkingCopies();
+        for (int i = 0; i < workingCopies.length; i++)
+        {
+
+            // skip non dirty configurations
+            if (workingCopies[i].hasConfigurationChanged()
+                    && mProjectConfig.isConfigInUse(workingCopies[i]))
+            {
+                projects.add(mProjectConfig.getProject());
+                break;
+            }
+        }
+
+        return projects;
+    }
+
+    /**
      * Notifies the check configurations that have been deleted.
      * 
      * @throws CheckstylePluginException an exception while notifiing for
@@ -157,4 +221,5 @@ public class LocalCheckConfigurationWorkingSet implements ICheckConfigurationWor
             checkConfig.getType().notifyCheckConfigRemoved(checkConfig);
         }
     }
+
 }

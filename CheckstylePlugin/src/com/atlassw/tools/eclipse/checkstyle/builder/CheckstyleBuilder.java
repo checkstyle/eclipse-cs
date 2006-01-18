@@ -47,7 +47,7 @@ import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.nature.CheckstyleNature;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileSet;
-import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfiguration;
+import com.atlassw.tools.eclipse.checkstyle.projectconfig.IProjectConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfigurationFactory;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.IFilter;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
@@ -170,7 +170,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
             //
             // get the project configuration
             //
-            ProjectConfiguration config = null;
+            IProjectConfiguration config = null;
             try
             {
                 config = ProjectConfigurationFactory.getConfiguration(project);
@@ -187,14 +187,17 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
             // get the delta of the latest changes
             IResourceDelta resourceDelta = getDelta(project);
 
+            IFilter[] filters = (IFilter[]) config.getFilters().toArray(
+                    new IFilter[config.getFilters().size()]);
+
             // find the files for the build
             if (resourceDelta != null)
             {
-                files = getFiles(resourceDelta, config.getEnabledFilters());
+                files = getFiles(resourceDelta, filters);
             }
             else
             {
-                files = getFiles(project, config.getEnabledFilters());
+                files = getFiles(project, filters);
             }
 
             handleBuildSelection(files, config, monitor, project, kind);
@@ -212,7 +215,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
      * @param kind the kind of build
      * @throws CoreException if the build fails
      */
-    protected void handleBuildSelection(Collection resources, ProjectConfiguration configuration,
+    protected void handleBuildSelection(Collection resources, IProjectConfiguration configuration,
             IProgressMonitor monitor, IProject project, int kind) throws CoreException
     {
 
@@ -231,7 +234,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
             // File sets that share the same check configuration merge into
             // one Auditor.
             //
-            List fileSets = configuration.getEnabledFileSets();
+            List fileSets = configuration.getFileSets();
 
             Map audits = new HashMap();
 
@@ -241,21 +244,28 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
 
                 FileSet fileSet = (FileSet) fileSets.get(i);
 
+                // skip not enabled filesets
+                if (!fileSet.isEnabled())
+                {
+                    continue;
+                }
+
+                ICheckConfiguration checkConfig = fileSet.getCheckConfig();
+                if (checkConfig == null)
+                {
+                    throw new CheckstylePluginException(NLS.bind(ErrorMessages.errorNoCheckConfig,
+                            project.getName()));
+                }
+
                 // get an already created audit from the map
-                Auditor audit = (Auditor) audits.get(fileSet.getCheckConfigName());
+                Auditor audit = (Auditor) audits.get(checkConfig);
 
                 // create the audit with the file sets check configuration
                 if (audit == null)
                 {
-                    ICheckConfiguration checkConfig = fileSet.getCheckConfig();
-                    if (checkConfig == null)
-                    {
-                        throw new CheckstylePluginException(NLS.bind(
-                                ErrorMessages.errorNoCheckConfig, project.getName()));
-                    }
 
                     audit = new Auditor(checkConfig);
-                    audits.put(fileSet.getCheckConfigName(), audit);
+                    audits.put(checkConfig, audit);
                 }
 
                 // check which files belong to the file set
@@ -263,21 +273,28 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
                 while (it.hasNext())
                 {
 
-                    IFile file = (IFile) it.next();
+                    IResource resource = (IResource) it.next();
 
-                    // if file set includes file add to the audit
-                    if (fileSet.includesFile(file))
+                    if (resource instanceof IFile)
                     {
-                        audit.addFile(file);
+                        IFile file = (IFile) resource;
 
-                        // remove markers on this file
-                        file.deleteMarkers(CheckstyleMarker.MARKER_ID, false, IResource.DEPTH_ZERO);
+                        // if file set includes file add to the audit
+                        if (fileSet.includesFile(file))
+                        {
+                            audit.addFile(file);
 
-                        // remove markers from package to prevent packagehtml
-                        // messages
-                        // from accumulatin
-                        file.getParent().deleteMarkers(CheckstyleMarker.MARKER_ID, false,
-                                IResource.DEPTH_ZERO);
+                            // remove markers on this file
+                            file.deleteMarkers(CheckstyleMarker.MARKER_ID, false,
+                                    IResource.DEPTH_ZERO);
+
+                            // remove markers from package to prevent
+                            // packagehtml
+                            // messages
+                            // from accumulatin
+                            file.getParent().deleteMarkers(CheckstyleMarker.MARKER_ID, false,
+                                    IResource.DEPTH_ZERO);
+                        }
                     }
                 }
             }
@@ -334,7 +351,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
                 for (int j = 0; j < filters.length; j++)
                 {
 
-                    if (!filters[j].accept(child))
+                    if (filters[j].isEnabled() && !filters[j].accept(child))
                     {
                         goesThrough = false;
                         break;
@@ -385,7 +402,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
             for (int j = 0; j < filters.length; j++)
             {
 
-                if (!filters[j].accept(child))
+                if (filters[j].isEnabled() && !filters[j].accept(child))
                 {
                     goesThrough = false;
                     break;

@@ -22,12 +22,17 @@ package com.atlassw.tools.eclipse.checkstyle.projectconfig;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.eclipse.core.resources.IProject;
+
+import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationWorkingCopy;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
-import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfigurationWorkingSet;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.IFilter;
 
 /**
@@ -36,21 +41,24 @@ import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.IFilter;
  * 
  * @author Lars Ködderitzsch
  */
-public class ProjectConfiguration implements Cloneable
+public class ProjectConfiguration implements Cloneable, IProjectConfiguration
 {
 
     //
     // attributes
     //
 
+    /** The project. */
+    private IProject mProject;
+
     /** The local check configurations. */
-    private ICheckConfigurationWorkingSet mCheckConfigWorkingSet;
+    private List mLocalCheckConfigs;
 
     /** the file sets. */
-    private List mFileSets = new LinkedList();
+    private List mFileSets;
 
     /** the filters. */
-    private IFilter[] mFilters;
+    private List mFilters;
 
     /** Flags if the simple file set editor should be used. */
     private boolean mUseSimpleConfig = true;
@@ -61,11 +69,48 @@ public class ProjectConfiguration implements Cloneable
 
     /**
      * Default constructor.
+     * 
+     * @param project the project
+     * @param localConfigs the list of local check configurations
+     * @param fileSets the list of configured file sets
+     * @param filters the filters
+     * @param useSimpleConfig <code>true</code> if simple configuration is
+     *            used
      */
-    public ProjectConfiguration()
+    public ProjectConfiguration(IProject project, List localConfigs, List fileSets, List filters,
+            boolean useSimpleConfig)
     {
-        mFilters = PluginFilters.getConfiguredFilters();
-        mCheckConfigWorkingSet = new LocalCheckConfigurationWorkingSet();
+        mProject = project;
+        mLocalCheckConfigs = localConfigs != null ? Collections.unmodifiableList(localConfigs)
+                : Collections.unmodifiableList(new ArrayList());
+        mFileSets = fileSets != null ? Collections.unmodifiableList(fileSets) : Collections
+                .unmodifiableList(new ArrayList());
+
+        // build list of filters
+        List standardFilters = Arrays.asList(PluginFilters.getConfiguredFilters());
+        mFilters = new ArrayList(standardFilters);
+
+        if (filters != null)
+        {
+            // merge with filters configured for the project
+            for (int i = 0, size = mFilters.size(); i < size; i++)
+            {
+
+                IFilter standardFilter = (IFilter) mFilters.get(i);
+
+                for (int j = 0, size2 = filters.size(); j < size2; j++)
+                {
+                    IFilter configuredFilter = (IFilter) filters.get(j);
+
+                    if (standardFilter.getInternalName().equals(configuredFilter.getInternalName()))
+                    {
+                        mFilters.set(i, configuredFilter);
+                    }
+                }
+            }
+        }
+
+        mFilters = Collections.unmodifiableList(mFilters);
     }
 
     //
@@ -73,42 +118,23 @@ public class ProjectConfiguration implements Cloneable
     //
 
     /**
-     * Returns the check configuration working set for local configurations.
-     * 
-     * @return the local configurations working set
+     * {@inheritDoc}
      */
-    public ICheckConfigurationWorkingSet getCheckConfigWorkingSet()
+    public IProject getProject()
     {
-        return mCheckConfigWorkingSet;
+        return mProject;
     }
 
     /**
-     * Returns a project local check configuration by its name.
-     * 
-     * @param name the configurations name
-     * @return the check configuration or <code>null</code>, if no local
-     *         configuration with this name exists
+     * {@inheritDoc}
      */
-    public ICheckConfiguration getLocalCheckConfigByName(String name)
+    public List getLocalCheckConfigurations()
     {
-        ICheckConfiguration config = null;
-        ICheckConfiguration[] configs = mCheckConfigWorkingSet.getWorkingCopies();
-        for (int i = 0; i < configs.length; i++)
-        {
-            if (configs[i].getName().equals(name))
-            {
-                config = configs[i];
-                break;
-            }
-        }
-
-        return config;
+        return mLocalCheckConfigs;
     }
 
     /**
-     * Returns the file sets configured for the project.
-     * 
-     * @return the file sets
+     * {@inheritDoc}
      */
     public List getFileSets()
     {
@@ -116,107 +142,15 @@ public class ProjectConfiguration implements Cloneable
     }
 
     /**
-     * Gets all enabled file sets from this configuration.
-     * 
-     * @return all enabled file sets
+     * {@inheritDoc}
      */
-    public List getEnabledFileSets()
-    {
-
-        List fileSets = getFileSets();
-        List result = new LinkedList();
-        for (Iterator iter = fileSets.iterator(); iter.hasNext();)
-        {
-            FileSet fileSet = (FileSet) iter.next();
-            if (fileSet.isEnabled())
-            {
-                result.add(fileSet);
-            }
-        }
-
-        return result;
-    }
-
-    /**
-     * Gets the filters of this file set.
-     * 
-     * @return the filters
-     */
-    public IFilter[] getFilters()
+    public List getFilters()
     {
         return mFilters;
     }
 
     /**
-     * Gets the enabled filters of this file set.
-     * 
-     * @return the enabled filters
-     */
-    public IFilter[] getEnabledFilters()
-    {
-        List filters = new ArrayList();
-        int size = mFilters != null ? mFilters.length : 0;
-        for (int i = 0; i < size; i++)
-        {
-            if (mFilters[i].isEnabled())
-            {
-                filters.add(mFilters[i]);
-            }
-        }
-
-        return (IFilter[]) filters.toArray(new IFilter[filters.size()]);
-    }
-
-    /**
-     * Returns the filter that has the given internal name. If no filter has
-     * this name <code>null</code> is returned.
-     * 
-     * @param name the internal name
-     * @return the filter or <code>null</code>
-     */
-    public IFilter getFilterByIntenalName(String name)
-    {
-
-        IFilter filter = null;
-
-        for (int i = 0; i < mFilters.length; i++)
-        {
-            if (mFilters[i].getInternalName().equals(name))
-            {
-                filter = mFilters[i];
-                break;
-            }
-        }
-
-        return filter;
-    }
-
-    /**
-     * Sets the filters of this file set.
-     * 
-     * @param filters the filters
-     */
-    public void setFilters(IFilter[] filters)
-    {
-        mFilters = filters;
-    }
-
-    /**
-     * Sets if the simple configuration should be used.
-     * 
-     * @param useSimpleConfig true if the project uses the simple fileset
-     *            configuration
-     */
-    public void setUseSimpleConfig(boolean useSimpleConfig)
-    {
-        mUseSimpleConfig = useSimpleConfig;
-    }
-
-    /**
-     * Returns if the simple configuration should be used.
-     * 
-     * @return <code>true</code>, if this project uses the simple
-     *         configuration, <code>false</code> otherwise
+     * {@inheritDoc}
      */
     public boolean isUseSimpleConfig()
     {
@@ -227,7 +161,7 @@ public class ProjectConfiguration implements Cloneable
      * Checks if this project configuration uses the given checkstyle
      * configuration.
      * 
-     * @param configName the configuration name
+     * @param configuration the check configuration
      * @return <code>true</code>, if the project config uses the checkstyle
      *         config, <code>false</code> otherwise
      */
@@ -240,7 +174,11 @@ public class ProjectConfiguration implements Cloneable
         while (iter.hasNext())
         {
             FileSet fileSet = (FileSet) iter.next();
-            if (configuration.equals(fileSet.getCheckConfig()))
+            ICheckConfiguration checkConfig = fileSet.getCheckConfig();
+            if (configuration.equals(checkConfig)
+                    || (checkConfig instanceof CheckConfigurationWorkingCopy && configuration
+                            .equals(((CheckConfigurationWorkingCopy) checkConfig)
+                                    .getSourceCheckConfiguration())))
             {
                 result = true;
                 break;
@@ -259,28 +197,29 @@ public class ProjectConfiguration implements Cloneable
         {
             clone = (ProjectConfiguration) super.clone();
             clone.mFileSets = new LinkedList();
-            clone.setUseSimpleConfig(this.isUseSimpleConfig());
+            clone.mUseSimpleConfig = mUseSimpleConfig;
 
             // clone file sets
+            List clonedFileSets = new ArrayList();
             Iterator iter = getFileSets().iterator();
             while (iter.hasNext())
             {
-                clone.getFileSets().add(((FileSet) iter.next()).clone());
+                clonedFileSets.add(((FileSet) iter.next()).clone());
             }
+            clone.mFileSets = clonedFileSets;
 
             // clone filters
-            IFilter[] filters = getFilters();
-            int size = filters != null ? filters.length : 0;
-            IFilter[] clonedFilters = new IFilter[size];
-            for (int i = 0; i < size; i++)
+            List clonedFilters = new ArrayList();
+            iter = getFilters().iterator();
+            while (iter.hasNext())
             {
-                clonedFilters[i] = (IFilter) filters[i].clone();
+                clonedFilters.add(((IFilter) iter.next()).clone());
             }
-            clone.setFilters(clonedFilters);
+            clone.mFilters = clonedFilters;
         }
         catch (CloneNotSupportedException e)
         {
-            throw new InternalError();
+            throw new InternalError(); // should never happen
         }
 
         return clone;
@@ -300,21 +239,10 @@ public class ProjectConfiguration implements Cloneable
         {
             return true;
         }
-        ProjectConfiguration otherConfig = (ProjectConfiguration) obj;
-        if (isUseSimpleConfig() != otherConfig.isUseSimpleConfig())
-        {
-            return false;
-        }
-        if (!getFileSets().equals(otherConfig.getFileSets()))
-        {
-            return false;
-        }
-        if (!Arrays.equals(getFilters(), otherConfig.getFilters()))
-        {
-            return false;
-        }
-
-        return true;
+        ProjectConfiguration rhs = (ProjectConfiguration) obj;
+        return new EqualsBuilder().append(mProject, rhs.mProject).append(mLocalCheckConfigs,
+                rhs.mLocalCheckConfigs).append(mUseSimpleConfig, rhs.mUseSimpleConfig).append(
+                mFileSets, rhs.mFileSets).append(mFilters, rhs.mFilters).isEquals();
     }
 
     /**
@@ -322,21 +250,7 @@ public class ProjectConfiguration implements Cloneable
      */
     public int hashCode()
     {
-        // a "nice" prime number, see Java Report, April 2000
-        final int prime = 1000003;
-
-        int result = 1;
-        result = (result * prime) + Boolean.valueOf(mUseSimpleConfig).hashCode();
-        result = (result * prime) + mFileSets.hashCode();
-
-        int size = mFilters != null ? mFilters.length : 0;
-        for (int i = 0; i < size; i++)
-        {
-            result = (result * prime) + (mFilters[i] != null ? mFilters[i].hashCode() : 0);
-        }
-
-        // could not use it because only available in jdk1.5
-        // result = (result * prime) + Arrays.hashCode(mFilters);
-        return result;
+        return new HashCodeBuilder(984759323, 1000003).append(mProject).append(mLocalCheckConfigs)
+                .append(mUseSimpleConfig).append(mFileSets).append(mFilters).toHashCode();
     }
 }

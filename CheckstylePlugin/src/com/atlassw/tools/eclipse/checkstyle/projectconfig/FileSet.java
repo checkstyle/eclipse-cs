@@ -24,6 +24,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.eclipse.core.resources.IFile;
 
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
@@ -164,83 +166,6 @@ public class FileSet implements Cloneable
     }
 
     /**
-     * {@inheritDoc}
-     */
-    public Object clone()
-    {
-        try
-        {
-            FileSet clone = (FileSet) super.clone();
-
-            //clone filesets
-            List clonedPatterns = new LinkedList();
-            Iterator it = mFileMatchPatterns.iterator();
-            while (it.hasNext())
-            {
-                clonedPatterns.add(((FileMatchPattern) it.next()).clone());
-            }
-            clone.mFileMatchPatterns = clonedPatterns;
-
-            return clone;
-        }
-        catch (CloneNotSupportedException e)
-        {
-            throw new InternalError();
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public boolean equals(Object obj)
-    {
-
-        if (obj == null || !(obj instanceof FileSet))
-        {
-            return false;
-        }
-        if (this == obj)
-        {
-            return true;
-        }
-        FileSet otherFileSet = (FileSet) obj;
-        if (!mName.equals(otherFileSet.mName) || mEnabled != otherFileSet.mEnabled)
-        {
-            return false;
-        }
-        if (getCheckConfigName() != null
-                && !getCheckConfigName().equals(otherFileSet.getCheckConfigName()))
-        {
-            return false;
-        }
-        if (!mFileMatchPatterns.equals(otherFileSet.mFileMatchPatterns))
-        {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public int hashCode()
-    {
-        // a "nice" prime number, see Java Report, April 2000
-        final int prime = 1000003;
-
-        int result = 1;
-        result = (result * prime) + Boolean.valueOf(mEnabled).hashCode();
-        result = (result * prime) + (mName != null ? mName.hashCode() : 0);
-        result = (result * prime)
-                + (getCheckConfigName() != null ? getCheckConfigName().hashCode() : 0);
-        result = (result * prime)
-                + (mFileMatchPatterns != null ? mFileMatchPatterns.hashCode() : 0);
-
-        return result;
-    }
-
-    /**
      * Tests a file to see if its included in the file set.
      * 
      * @param file The file to test.
@@ -276,13 +201,58 @@ public class FileSet implements Cloneable
     }
 
     /**
-     * @return The name of the check configuration used by the
-     *         <code>FileSet</code>.
+     * {@inheritDoc}
      */
-    public String getCheckConfigName()
+    public Object clone()
     {
-        String result = mCheckConfig != null ? mCheckConfig.getName() : null;
-        return result;
+        try
+        {
+            FileSet clone = (FileSet) super.clone();
+
+            // clone filesets
+            List clonedPatterns = new LinkedList();
+            Iterator it = mFileMatchPatterns.iterator();
+            while (it.hasNext())
+            {
+                clonedPatterns.add(((FileMatchPattern) it.next()).clone());
+            }
+            clone.mFileMatchPatterns = clonedPatterns;
+
+            return clone;
+        }
+        catch (CloneNotSupportedException e)
+        {
+            throw new InternalError(); // should never happen
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean equals(Object obj)
+    {
+
+        if (obj == null || !(obj instanceof FileSet))
+        {
+            return false;
+        }
+        if (this == obj)
+        {
+            return true;
+        }
+        FileSet rhs = (FileSet) obj;
+        return new EqualsBuilder().append(mEnabled, rhs.mEnabled).append(mName, rhs.mName).append(
+                mFileMatchPatterns, rhs.mFileMatchPatterns).append(mCheckConfig, rhs.mCheckConfig)
+                .isEquals();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int hashCode()
+    {
+        return new HashCodeBuilder(987349, 1000003).append(mEnabled).append(mName).append(
+                mCheckConfig).append(mFileMatchPatterns).toHashCode();
     }
 
 }

@@ -27,6 +27,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.IConfigurationType;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
@@ -213,7 +216,19 @@ public class CheckConfiguration implements ICheckConfiguration
      */
     public boolean equals(Object obj)
     {
-        return this.hashCode() == obj.hashCode();
+        if (obj == null || !(obj instanceof ICheckConfiguration))
+        {
+            return false;
+        }
+        if (this == obj)
+        {
+            return true;
+        }
+        ICheckConfiguration rhs = (ICheckConfiguration) obj;
+        return new EqualsBuilder().append(getName(), rhs.getName()).append(getLocation(),
+                rhs.getLocation()).append(getDescription(), rhs.getDescription()).append(getType(),
+                rhs.getType()).append(isGlobal(), rhs.isGlobal()).append(getAdditionalData(),
+                rhs.getAdditionalData()).isEquals();
     }
 
     /**
@@ -221,15 +236,8 @@ public class CheckConfiguration implements ICheckConfiguration
      */
     public int hashCode()
     {
-        // a "nice" prime number, see Java Report, April 2000
-        final int prime = 1000003;
-
-        int result = 1;
-        result = (result * prime) + (mName != null ? mName.hashCode() : 0);
-        result = (result * prime) + (mLocation != null ? mLocation.hashCode() : 0);
-        result = (result * prime) + (mDescription != null ? mDescription.hashCode() : 0);
-        result = (result * prime) + Boolean.valueOf(mIsGlobal).hashCode();
-
-        return result;
+        return new HashCodeBuilder(928729, 1000003).append(getName()).append(getLocation()).append(
+                getDescription()).append(getType()).append(isGlobal()).append(getAdditionalData())
+                .toHashCode();
     }
 }

@@ -20,6 +20,8 @@
 
 package com.atlassw.tools.eclipse.checkstyle.config;
 
+import java.util.Collection;
+
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.IConfigurationType;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
@@ -91,4 +93,20 @@ public interface ICheckConfigurationWorkingSet
      */
     void store() throws CheckstylePluginException;
 
+    /**
+     * Determines if the working set changed.
+     * 
+     * @return <code>true</code> if the working set changed,
+     *         <code>false</code> otherwise
+     */
+    boolean isDirty();
+
+    /**
+     * Returns a collection of projects affected by the changes of the working
+     * set.
+     * 
+     * @return the collection of affected projects
+     * @throws CheckstylePluginException unexprected error
+     */
+    Collection getAffectedProjects() throws CheckstylePluginException;
 }

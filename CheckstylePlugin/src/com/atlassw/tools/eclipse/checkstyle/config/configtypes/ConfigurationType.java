@@ -25,6 +25,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 
@@ -187,4 +189,35 @@ public abstract class ConfigurationType implements IConfigurationType
     // standard is that nothing happens
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public boolean equals(Object obj)
+    {
+
+        if (obj == null || !(obj instanceof ConfigurationType))
+        {
+            return false;
+        }
+        if (this == obj)
+        {
+            return true;
+        }
+        ConfigurationType rhs = (ConfigurationType) obj;
+        return new EqualsBuilder().append(mName, rhs.mName)
+                .append(mInternalName, rhs.mInternalName).append(mEditorClass, rhs.mEditorClass)
+                .append(mIcon, rhs.mIcon).append(mIsCreatable, rhs.mIsCreatable).append(
+                        mIsEditable, rhs.mIsEditable).append(mIsConfigurable, rhs.mIsConfigurable)
+                .isEquals();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int hashCode()
+    {
+        return new HashCodeBuilder(82713903, 1000003).append(mName).append(mInternalName).append(
+                mEditorClass).append(mIcon).append(mIsCreatable).append(mIsEditable).append(
+                mIsConfigurable).toHashCode();
+    }
 }

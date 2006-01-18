@@ -23,6 +23,8 @@ package com.atlassw.tools.eclipse.checkstyle.util.table;
 import java.text.Collator;
 
 import org.eclipse.jface.dialogs.IDialogSettings;
+import org.eclipse.jface.viewers.ColumnPixelData;
+import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
@@ -99,6 +101,9 @@ public class EnhancedTableViewer extends TableViewer
     public EnhancedTableViewer(Table table)
     {
         super(table);
+
+        // table.setLayout(new TableLayout()
+        // {});
     }
 
     /**
@@ -158,7 +163,6 @@ public class EnhancedTableViewer extends TableViewer
     public void setTableSettingsProvider(ITableSettingsProvider settingsProvider)
     {
         mSettingsProvider = settingsProvider;
-        restoreState();
     }
 
     /**
@@ -181,7 +185,6 @@ public class EnhancedTableViewer extends TableViewer
     {
 
         this.getTable().removeSelectionListener(mTableListener);
-        this.getTable().addSelectionListener(mTableListener);
 
         TableColumn[] columns = this.getTable().getColumns();
         for (int i = 0, size = columns.length; i < size; i++)
@@ -189,7 +192,14 @@ public class EnhancedTableViewer extends TableViewer
 
             columns[i].removeSelectionListener(mTableListener);
             columns[i].removeControlListener(mTableListener);
+        }
 
+        restoreState();
+
+        this.getTable().addSelectionListener(mTableListener);
+
+        for (int i = 0, size = columns.length; i < size; i++)
+        {
             columns[i].addSelectionListener(mTableListener);
             columns[i].addControlListener(mTableListener);
         }
@@ -216,7 +226,11 @@ public class EnhancedTableViewer extends TableViewer
         TableColumn[] columns = this.getTable().getColumns();
         for (int i = 0, size = columns.length; i < size; i++)
         {
-            settings.put(TAG_COLUMN_WIDTH + i, columns[i].getWidth());
+            int width = columns[i].getWidth();
+            if (width > 0)
+            {
+                settings.put(TAG_COLUMN_WIDTH + i, width);
+            }
         }
 
         // store the selection
@@ -252,6 +266,9 @@ public class EnhancedTableViewer extends TableViewer
             mSortDirection = DIRECTION_FORWARD;
         }
 
+        TableLayout layout = new TableLayout();
+        boolean columnsAdded = false;
+
         // store the column widths
         TableColumn[] columns = this.getTable().getColumns();
         for (int i = 0, size = columns.length; i < size; i++)
@@ -259,11 +276,17 @@ public class EnhancedTableViewer extends TableViewer
             try
             {
                 columns[i].setWidth(settings.getInt(TAG_COLUMN_WIDTH + i));
+                layout.addColumnData(new ColumnPixelData(settings.getInt(TAG_COLUMN_WIDTH + i)));
+                columnsAdded = true;
             }
             catch (NumberFormatException e)
             {
                 // NOOP
             }
+        }
+        if (columnsAdded)
+        {
+            this.getTable().setLayout(layout);
         }
 
         // restore the selection
@@ -326,14 +349,16 @@ public class EnhancedTableViewer extends TableViewer
                 }
 
                 resort();
+                saveState();
             }
-
-            saveState();
         }
 
         public void controlResized(ControlEvent e)
         {
-            saveState();
+            if (e.getSource() instanceof TableColumn)
+            {
+                saveState();
+            }
         }
 
         public void widgetDefaultSelected(SelectionEvent e)

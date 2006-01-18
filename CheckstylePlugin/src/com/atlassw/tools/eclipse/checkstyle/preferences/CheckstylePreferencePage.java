@@ -21,10 +21,6 @@
 package com.atlassw.tools.eclipse.checkstyle.preferences;
 
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
 
 import org.eclipse.core.runtime.Preferences;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -58,11 +54,9 @@ import com.atlassw.tools.eclipse.checkstyle.builder.CheckerFactory;
 import com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleBuilder;
 import com.atlassw.tools.eclipse.checkstyle.builder.PackageNamesLoader;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationFactory;
-import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationWorkingCopy;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfigurationWorkingSet;
 import com.atlassw.tools.eclipse.checkstyle.config.gui.CheckConfigurationWorkingSetEditor;
 import com.atlassw.tools.eclipse.checkstyle.config.meta.MetadataFactory;
-import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfigurationFactory;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginImages;
@@ -414,7 +408,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
                     || (markerLimitNow != markerLimitOriginal) || mRebuildAll;
 
             // Get projects that need rebuild considering the changes
-            Collection projectsToBuild = getProjectsToRebuild();
+            Collection projectsToBuild = mWorkingSet.getAffectedProjects();
 
             IPreferenceStore prefStore = CheckstylePlugin.getDefault().getPreferenceStore();
             String promptRebuildPref = prefStore
@@ -467,41 +461,6 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         }
 
         return true;
-    }
-
-    /**
-     * Finds all projects that should be rebuilt consifering the changes to the
-     * check configurations.
-     * 
-     * @return the projects that need to be rebuilt
-     * @throws CheckstylePluginException an unexpected exception ocurred
-     */
-    private Collection getProjectsToRebuild() throws CheckstylePluginException
-    {
-
-        Set projects = new HashSet();
-
-        CheckConfigurationWorkingCopy[] workingCopies = mWorkingSet.getWorkingCopies();
-        for (int i = 0; i < workingCopies.length; i++)
-        {
-
-            // skip non dirty configurations
-            if (!workingCopies[i].isDirty())
-            {
-                continue;
-            }
-
-            List usingProjects = ProjectConfigurationFactory
-                    .getProjectsUsingConfig(workingCopies[i].getSourceCheckConfiguration());
-
-            Iterator it2 = usingProjects.iterator();
-            while (it2.hasNext())
-            {
-                projects.add(it2.next());
-            }
-        }
-
-        return projects;
     }
 
     /**

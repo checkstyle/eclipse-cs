@@ -22,6 +22,8 @@ package com.atlassw.tools.eclipse.checkstyle.projectconfig.filters;
 
 import java.util.List;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.eclipse.core.resources.IResource;
 
 /**
@@ -104,15 +106,29 @@ public class FileTypesFilter extends AbstractFilter
     /**
      * {@inheritDoc}
      */
-    public int hashCode()
+    public boolean equals(Object o)
     {
 
-        // a "nice" prime number, see Java Report, April 2000
-        final int prime = 1000003;
+        if (o == null || !(o instanceof FileTypesFilter))
+        {
+            return false;
+        }
+        if (this == o)
+        {
+            return true;
+        }
 
-        int result = super.hashCode();
-        result = (result * prime) + (this.mFileTypes != null ? this.mFileTypes.hashCode() : 0);
+        FileTypesFilter rhs = (FileTypesFilter) o;
+        return new EqualsBuilder().appendSuper(super.equals(o)).append(mFileTypes, rhs.mFileTypes)
+                .isEquals();
+    }
 
-        return result;
+    /**
+     * {@inheritDoc}
+     */
+    public int hashCode()
+    {
+        return new HashCodeBuilder(7834681, 1000003).appendSuper(super.hashCode()).append(
+                mFileTypes).toHashCode();
     }
 }

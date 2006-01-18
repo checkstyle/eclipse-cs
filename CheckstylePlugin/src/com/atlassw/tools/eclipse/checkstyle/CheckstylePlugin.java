@@ -24,6 +24,8 @@ package com.atlassw.tools.eclipse.checkstyle;
 // Imports from java namespace
 //=================================================
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -31,6 +33,9 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.dialogs.MessageDialogWithToggle;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
+import com.atlassw.tools.eclipse.checkstyle.util.EclipseLogHandler;
 
 /**
  * The main plugin class to be used in the desktop.
@@ -142,6 +147,19 @@ public class CheckstylePlugin extends AbstractUIPlugin
     {
         super();
         sPlugin = this;
+
+        try
+        {
+            Logger checkstyleErrorLog = Logger
+                    .getLogger("com.puppycrawl.tools.checkstyle.ExceptionLog");
+
+            checkstyleErrorLog.addHandler(new EclipseLogHandler(this));
+            checkstyleErrorLog.setLevel(Level.ALL);
+        }
+        catch (Exception ioe)
+        {
+            CheckstyleLog.log(ioe);
+        }
     }
 
     // =================================================
@@ -167,7 +185,7 @@ public class CheckstylePlugin extends AbstractUIPlugin
     {
         return ResourcesPlugin.getWorkspace();
     }
-    
+
     /**
      * Helper method to get the current plattform locale.
      * 

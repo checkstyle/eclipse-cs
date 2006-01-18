@@ -30,7 +30,6 @@ import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
-import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.ICheckStateListener;
@@ -328,12 +327,12 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
         mTableViewer.setTableSettingsProvider(multiProvider);
         mTableViewer.setContentProvider(new ArrayContentProvider());
         mTableViewer.addFilter(mGroupFilter);
+        mTableViewer.installEnhancements();
 
         mTableViewer.addDoubleClickListener(mController);
         mTableViewer.addSelectionChangedListener(mController);
         mTableViewer.addCheckStateListener(mController);
         mTableViewer.getTable().addKeyListener(mController);
-        mTableViewer.installEnhancements();
 
         Composite buttons = new Composite(mConfiguredModulesGroup, SWT.NULL);
         GridLayout layout = new GridLayout(2, true);

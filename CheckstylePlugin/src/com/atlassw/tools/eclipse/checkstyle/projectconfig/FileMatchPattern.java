@@ -24,6 +24,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
@@ -33,25 +36,25 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
  */
 public class FileMatchPattern implements Cloneable
 {
-    //=================================================
+    // =================================================
     // Public static final variables.
-    //=================================================
+    // =================================================
 
-    //=================================================
+    // =================================================
     // Static class variables.
-    //=================================================
+    // =================================================
 
-    //=================================================
+    // =================================================
     // Instance member variables.
-    //=================================================
+    // =================================================
 
     private boolean mIsIncludePattern = true;
 
     private Pattern mRegexPattern;
 
-    //=================================================
+    // =================================================
     // Constructors & finalizer.
-    //=================================================
+    // =================================================
 
     /**
      * Construct a new <code>FileMatchPattern</code>.
@@ -65,9 +68,9 @@ public class FileMatchPattern implements Cloneable
         setMatchPattern(pattern);
     }
 
-    //=================================================
+    // =================================================
     // Methods.
-    //=================================================
+    // =================================================
 
     /**
      * Returns the match pattern.
@@ -98,7 +101,7 @@ public class FileMatchPattern implements Cloneable
         }
         catch (PatternSyntaxException e)
         {
-            CheckstylePluginException.rethrow(e); //wrap the exception
+            CheckstylePluginException.rethrow(e); // wrap the exception
         }
     }
 
@@ -169,14 +172,10 @@ public class FileMatchPattern implements Cloneable
         {
             return true;
         }
-        FileMatchPattern otherPattern = (FileMatchPattern) obj;
-        if (!mRegexPattern.pattern().equals(otherPattern.mRegexPattern.pattern())
-                || mIsIncludePattern != otherPattern.mIsIncludePattern)
-        {
-            return false;
-        }
 
-        return true;
+        FileMatchPattern rhs = (FileMatchPattern) obj;
+        return new EqualsBuilder().append(mIsIncludePattern, rhs.mIsIncludePattern).append(
+                mRegexPattern, rhs.mRegexPattern).isEquals();
     }
 
     /**
@@ -184,15 +183,7 @@ public class FileMatchPattern implements Cloneable
      */
     public int hashCode()
     {
-        //a "nice" prime number, see Java Report, April 2000
-        final int prime = 1000003;
-
-        int result = 1;
-        result = (result * prime) + Boolean.valueOf(mIsIncludePattern).hashCode();
-        result = (result * prime)
-                + (mRegexPattern != null ? mRegexPattern.pattern().hashCode() : 0);
-
-        return result;
+        return new HashCodeBuilder(7687, 1000003).append(mIsIncludePattern).append(mRegexPattern)
+                .toHashCode();
     }
-
 }

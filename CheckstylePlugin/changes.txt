@@ -1,3 +1,14 @@
+
+
+4.2.0
+
+Bridged internal Checkstyle logging (error log) with the Eclipse Error Log.
+This way exceptions thrown by Checkstyle checks (standard or custom) appear in the Error Log View.
+This greatly enhances debugging of custom checks used with the plugin.
+
+
+
+
 ###################
 # Important note: #
 ###################

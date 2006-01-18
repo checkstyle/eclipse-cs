@@ -25,8 +25,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.xml.transform.sax.TransformerHandler;
 
@@ -40,8 +43,9 @@ import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.BuiltInConfigurationType;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.IConfigurationType;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileSet;
-import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfiguration;
+import com.atlassw.tools.eclipse.checkstyle.projectconfig.IProjectConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfigurationFactory;
+import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfigurationWorkingCopy;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.atlassw.tools.eclipse.checkstyle.util.XMLUtil;
 
@@ -145,11 +149,63 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
     }
 
     /**
-     * Check to see if a check configuration is using an already existing name.
-     * 
-     * @param configuration The check configuration
-     * 
-     * @return <code>true</code>= in use, <code>false</code>= not in use.
+     * {@inheritDoc}
+     */
+    public boolean isDirty()
+    {
+        if (mDeletedConfigurations.size() > 0)
+        {
+            return true;
+        }
+
+        boolean dirty = false;
+        Iterator it = mWorkingCopies.iterator();
+        while (it.hasNext())
+        {
+
+            CheckConfigurationWorkingCopy workingCopy = (CheckConfigurationWorkingCopy) it.next();
+            dirty = workingCopy.isDirty();
+
+            if (dirty)
+            {
+                break;
+            }
+        }
+        return dirty;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Collection getAffectedProjects() throws CheckstylePluginException
+    {
+        Set projects = new HashSet();
+
+        CheckConfigurationWorkingCopy[] workingCopies = this.getWorkingCopies();
+        for (int i = 0; i < workingCopies.length; i++)
+        {
+
+            // skip non dirty configurations
+            if (!workingCopies[i].hasConfigurationChanged())
+            {
+                continue;
+            }
+
+            List usingProjects = ProjectConfigurationFactory
+                    .getProjectsUsingConfig(workingCopies[i]);
+
+            Iterator it2 = usingProjects.iterator();
+            while (it2.hasNext())
+            {
+                projects.add(it2.next());
+            }
+        }
+
+        return projects;
+    }
+
+    /**
+     * {@inheritDoc}
      */
     public boolean isNameCollision(CheckConfigurationWorkingCopy configuration)
 
@@ -190,24 +246,27 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
                     && !checkConfig.getName().equals(original.getName()))
             {
 
-                List projects = ProjectConfigurationFactory.getProjectsUsingConfig(original);
+                List projects = ProjectConfigurationFactory.getProjectsUsingConfig(checkConfig);
                 Iterator it2 = projects.iterator();
 
                 while (it2.hasNext())
                 {
 
                     IProject project = (IProject) it2.next();
-                    ProjectConfiguration projectConfig = ProjectConfigurationFactory
+                    IProjectConfiguration projectConfig = ProjectConfigurationFactory
                             .getConfiguration(project);
 
-                    List fileSets = projectConfig.getFileSets();
+                    ProjectConfigurationWorkingCopy workingCopy = new ProjectConfigurationWorkingCopy(
+                            projectConfig);
+
+                    List fileSets = workingCopy.getFileSets();
                     Iterator it3 = fileSets.iterator();
                     while (it3.hasNext())
                     {
                         FileSet fileSet = (FileSet) it3.next();
 
                         // Check if the fileset uses the check config
-                        if (original.getName().equals(fileSet.getCheckConfigName()))
+                        if (original.equals(fileSet.getCheckConfig()))
                         {
                             // set the new check configuration
                             fileSet.setCheckConfig(checkConfig);
@@ -215,7 +274,10 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
                     }
 
                     // store the project configuration
-                    ProjectConfigurationFactory.setConfiguration(projectConfig, project);
+                    if (workingCopy.isDirty())
+                    {
+                        workingCopy.store();
+                    }
                 }
             }
         }

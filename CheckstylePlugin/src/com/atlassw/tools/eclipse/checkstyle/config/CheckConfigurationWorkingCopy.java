@@ -31,6 +31,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
@@ -78,7 +80,7 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration
     private Map mAdditionalData = new HashMap();
 
     /** flags if the configuration is dirty. */
-    private boolean mIsDirty;
+    private boolean mHasConfigChanged;
 
     //
     // constructors
@@ -190,8 +192,6 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration
             {
                 mEditedLocation = location;
                 isConfigurationAvailable();
-
-                mIsDirty = true;
             }
             catch (Exception e)
             {
@@ -219,14 +219,30 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration
 
     /**
      * Flags if the working copy changed compared to the original check
-     * configuration.
+     * configuration and needs to be saved.
      * 
      * @return <code>true</code> if the working copy has changes over the
      *         original check configuration
      */
     public boolean isDirty()
     {
-        return mIsDirty || !mAdditionalData.equals(mCheckConfiguration.getAdditionalData());
+        return !this.equals(mCheckConfiguration);
+    }
+
+    /**
+     * Determines if the checkstyle configuration of this working copy changed.
+     * This is used to determine if specific projects need to rebuild
+     * afterwards.
+     * 
+     * @return <code>true</code> if the checkstyle configuration changed.
+     */
+    public boolean hasConfigurationChanged()
+    {
+
+        return mHasConfigChanged
+                || !(new EqualsBuilder().append(getLocation(), mCheckConfiguration.getLocation())
+                        .append(getAdditionalData(), mCheckConfiguration.getAdditionalData())
+                        .isEquals());
     }
 
     /**
@@ -310,7 +326,7 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration
                 }
             }
 
-            mIsDirty = true;
+            mHasConfigChanged = true;
         }
         catch (IOException e)
         {
@@ -452,5 +468,35 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration
     public boolean isGlobal()
     {
         return mCheckConfiguration.isGlobal();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean equals(Object obj)
+    {
+        if (obj == null || !(obj instanceof ICheckConfiguration))
+        {
+            return false;
+        }
+        if (this == obj)
+        {
+            return true;
+        }
+        ICheckConfiguration rhs = (ICheckConfiguration) obj;
+        return new EqualsBuilder().append(getName(), rhs.getName()).append(getLocation(),
+                rhs.getLocation()).append(getDescription(), rhs.getDescription()).append(getType(),
+                rhs.getType()).append(isGlobal(), rhs.isGlobal()).append(getAdditionalData(),
+                rhs.getAdditionalData()).isEquals();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int hashCode()
+    {
+        return new HashCodeBuilder(928729, 1000003).append(getName()).append(getLocation()).append(
+                getDescription()).append(getType()).append(isGlobal()).append(getAdditionalData())
+                .toHashCode();
     }
 }

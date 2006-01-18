@@ -218,10 +218,6 @@ public class RemoteConfigurationType extends ConfigurationType
         {
             CheckstylePluginException.rethrow(e);
         }
-        finally
-        {
-            Authenticator.setDefault(null);
-        }
 
         return inStream;
     }

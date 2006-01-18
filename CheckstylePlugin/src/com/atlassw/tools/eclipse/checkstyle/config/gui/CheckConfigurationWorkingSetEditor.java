@@ -20,9 +20,6 @@
 
 package com.atlassw.tools.eclipse.checkstyle.config.gui;
 
-//=================================================
-// Imports from java namespace
-//=================================================
 import java.io.File;
 import java.util.ArrayList;
 
@@ -75,14 +72,9 @@ import com.atlassw.tools.eclipse.checkstyle.util.table.ITableComparableProvider;
 import com.atlassw.tools.eclipse.checkstyle.util.table.ITableSettingsProvider;
 
 /**
- * This class represents a preference page that is contributed to the
- * Preferences dialog. By subclassing <samp>FieldEditorPreferencePage </samp>,
- * we can use the field support built into JFace that allows us to create a page
- * that is small and knows how to save, restore and apply itself.
- * <p>
- * This page is used to modify preferences only. They are stored in the
- * preference store that belongs to the main plug-in class. That way,
- * preferences can be accessed directly via the preference store.
+ * This class provides the editor GUI for a check configuration working set.
+ * 
+ * @author Lars Ködderitzsch
  */
 public class CheckConfigurationWorkingSetEditor
 {
@@ -278,11 +270,12 @@ public class CheckConfigurationWorkingSetEditor
         mViewer.setLabelProvider(multiProvider);
         mViewer.setTableComparableProvider(multiProvider);
         mViewer.setTableSettingsProvider(multiProvider);
+        mViewer.installEnhancements();
+
         mViewer.setContentProvider(new ArrayContentProvider());
         mViewer.setInput(mWorkingSet.getWorkingCopies());
         mViewer.addDoubleClickListener(mController);
         mViewer.addSelectionChangedListener(mController);
-        mViewer.installEnhancements();
 
         return table;
     }
@@ -671,6 +664,12 @@ public class CheckConfigurationWorkingSetEditor
         }
     }
 
+    /**
+     * Label provider for the check configuration table. Implements also support
+     * for table sorting and storing of the table settings.
+     * 
+     * @author Lars Ködderitzsch
+     */
     private class ConfigurationLabelProvider extends CheckConfigurationLabelProvider implements
             ITableLabelProvider, ITableComparableProvider, ITableSettingsProvider
     {
@@ -721,7 +720,7 @@ public class CheckConfigurationWorkingSetEditor
          */
         public IDialogSettings getTableSettings()
         {
-            String concreteViewId = CheckConfigurationWorkingSetEditor.class.getName();
+            String concreteViewId = mWorkingSet.getClass().getName();
 
             IDialogSettings workbenchSettings = CheckstylePlugin.getDefault().getDialogSettings();
             IDialogSettings settings = workbenchSettings.getSection(concreteViewId);

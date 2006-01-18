@@ -20,10 +20,13 @@
 
 package com.atlassw.tools.eclipse.checkstyle.properties;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -44,13 +47,9 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import com.atlassw.tools.eclipse.checkstyle.Messages;
-import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationFactory;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationWorkingCopy;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
-import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfigurationWorkingSet;
-import com.atlassw.tools.eclipse.checkstyle.config.TemporaryCheckConfigurationWorkingSet;
 import com.atlassw.tools.eclipse.checkstyle.config.gui.CheckConfigurationConfigureDialog;
-import com.atlassw.tools.eclipse.checkstyle.config.gui.CheckConfigurationContentProvider;
 import com.atlassw.tools.eclipse.checkstyle.config.gui.CheckConfigurationLabelProvider;
 import com.atlassw.tools.eclipse.checkstyle.config.gui.CheckConfigurationViewerSorter;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileMatchPattern;
@@ -121,10 +120,12 @@ public class SimpleFileSetsEditor implements IFileSetsEditor
 
         if (config == null)
         {
-            List allConfigs = CheckConfigurationFactory.getCheckConfigurations();
-            if (allConfigs.size() > 0)
+            CheckConfigurationWorkingCopy[] allConfigs = mPropertyPage
+                    .getProjectConfigurationWorkingCopy().getGlobalCheckConfigWorkingSet()
+                    .getWorkingCopies();
+            if (allConfigs.length > 0)
             {
-                config = (ICheckConfiguration) allConfigs.get(0);
+                config = (ICheckConfiguration) allConfigs[0];
             }
         }
 
@@ -164,7 +165,7 @@ public class SimpleFileSetsEditor implements IFileSetsEditor
         this.mBtnManageConfigs.setLayoutData(fd);
 
         mComboViewer = new ComboViewer(configArea);
-        mComboViewer.setContentProvider(new CheckConfigurationContentProvider());
+        mComboViewer.setContentProvider(new ArrayContentProvider());
         mComboViewer.setLabelProvider(new CheckConfigurationLabelProvider());
         mComboViewer.setSorter(new CheckConfigurationViewerSorter());
         mComboViewer.getControl().setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -195,7 +196,13 @@ public class SimpleFileSetsEditor implements IFileSetsEditor
         this.mTxtConfigDescription.setLayoutData(fd);
 
         // init the check configuration combo
-        mComboViewer.setInput(mPropertyPage.getProjectConfiguration());
+        List configurations = new ArrayList();
+        configurations.addAll(Arrays.asList(mPropertyPage.getProjectConfigurationWorkingCopy()
+                .getLocalCheckConfigWorkingSet().getWorkingCopies()));
+        configurations.addAll(Arrays.asList(mPropertyPage.getProjectConfigurationWorkingCopy()
+                .getGlobalCheckConfigWorkingSet().getWorkingCopies()));
+        mComboViewer.setInput(configurations);
+
         if (mDefaultFileSet.getCheckConfig() != null)
         {
             mComboViewer.setSelection(new StructuredSelection(mDefaultFileSet.getCheckConfig()));
@@ -237,17 +244,7 @@ public class SimpleFileSetsEditor implements IFileSetsEditor
                     {
                         config.isConfigurationAvailable();
 
-                        CheckConfigurationWorkingCopy workingCopy = null;
-
-                        if (config instanceof CheckConfigurationWorkingCopy)
-                        {
-                            workingCopy = (CheckConfigurationWorkingCopy) config;
-                        }
-                        else
-                        {
-                            ICheckConfigurationWorkingSet tmpWorkingSet = new TemporaryCheckConfigurationWorkingSet();
-                            workingCopy = tmpWorkingSet.newWorkingCopy(config);
-                        }
+                        CheckConfigurationWorkingCopy workingCopy = (CheckConfigurationWorkingCopy) config;
 
                         CheckConfigurationConfigureDialog dialog = new CheckConfigurationConfigureDialog(
                                 mTxtConfigDescription.getShell(), workingCopy);
@@ -286,7 +283,8 @@ public class SimpleFileSetsEditor implements IFileSetsEditor
             if (config != null)
             {
                 mDefaultFileSet.setCheckConfig(config);
-                mTxtConfigDescription.setText(config.getDescription());
+                mTxtConfigDescription.setText(config.getDescription() != null ? config
+                        .getDescription() : "");
             }
             else
             {

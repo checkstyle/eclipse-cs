@@ -23,6 +23,8 @@ package com.atlassw.tools.eclipse.checkstyle.projectconfig.filters;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -114,15 +116,28 @@ public class PackageFilter extends AbstractFilter
     /**
      * {@inheritDoc}
      */
-    public int hashCode()
+    public boolean equals(Object o)
     {
 
-        //a "nice" prime number, see Java Report, April 2000
-        final int prime = 1000003;
+        if (o == null || !(o instanceof PackageFilter))
+        {
+            return false;
+        }
+        if (this == o)
+        {
+            return true;
+        }
 
-        int result = super.hashCode();
-        result = (result * prime) + (this.mData != null ? this.mData.hashCode() : 0);
+        PackageFilter rhs = (PackageFilter) o;
+        return new EqualsBuilder().appendSuper(super.equals(o)).append(mData, rhs.mData).isEquals();
+    }
 
-        return result;
+    /**
+     * {@inheritDoc}
+     */
+    public int hashCode()
+    {
+        return new HashCodeBuilder(7834681, 1000003).appendSuper(super.hashCode()).append(mData)
+                .toHashCode();
     }
 }

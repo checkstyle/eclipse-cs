@@ -119,7 +119,7 @@ public final class PluginFilters
 
                 filter.setEnabled(defaultState);
 
-                //Load initial filter data
+                // Load initial filter data
                 List data = new ArrayList();
                 IConfigurationElement[] dataTags = elements[i].getChildren(TAG_DATA);
                 int size = dataTags != null ? dataTags.length : 0;
@@ -147,7 +147,7 @@ public final class PluginFilters
     /** Hidden default constructor. */
     private PluginFilters()
     {
-    //NOOP
+    // NOOP
     }
 
     //
@@ -162,10 +162,10 @@ public final class PluginFilters
     public static IFilter[] getConfiguredFilters()
     {
 
-        //Copy the prototypes for the client
+        // Copy the prototypes for the client
         IFilter[] mFilter = new IFilter[FILTER_PROTOTYPES.length];
 
-        //Clone and set the state of the filter
+        // Clone and set the state of the filter
         for (int i = 0; i < mFilter.length; i++)
         {
             mFilter[i] = (IFilter) FILTER_PROTOTYPES[i].clone();
@@ -177,17 +177,17 @@ public final class PluginFilters
     /**
      * Gets a filter prototype by name.
      * 
-     * @param name the filter name
+     * @param internalName the filters internal name
      * @return the filter prototype or <code>null</code>
      */
-    public static IFilter getByName(String name)
+    public static IFilter getByInternalName(String internalName)
     {
 
         IFilter filter = null;
 
         for (int i = 0; i < FILTER_PROTOTYPES.length; i++)
         {
-            if (FILTER_PROTOTYPES[i].getName().equals(name))
+            if (FILTER_PROTOTYPES[i].getInternalName().equals(internalName))
             {
                 filter = (IFilter) FILTER_PROTOTYPES[i].clone();
                 break;

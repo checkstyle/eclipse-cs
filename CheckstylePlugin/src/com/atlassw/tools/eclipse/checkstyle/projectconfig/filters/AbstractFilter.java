@@ -22,6 +22,9 @@ package com.atlassw.tools.eclipse.checkstyle.projectconfig.filters;
 
 import java.util.List;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 /**
  * Base implementation of a filter.
  * 
@@ -35,16 +38,16 @@ public abstract class AbstractFilter implements IFilter
     //
 
     /** name of the filter. */
-    private String  mFilterName;
+    private String mFilterName;
 
     /** internal name of the filter. */
-    private String  mInternalName;
+    private String mInternalName;
 
     /** description of the filter. */
-    private String  mFilterDescription;
+    private String mFilterDescription;
 
     /** class for the editor of this filter. */
-    private Class   mFilterEditor;
+    private Class mFilterEditor;
 
     /** flags if the filter is selected. */
     private boolean mSelected;
@@ -148,7 +151,7 @@ public abstract class AbstractFilter implements IFilter
      */
     public List getFilterData()
     {
-        //NOOP
+        // NOOP
         return null;
     }
 
@@ -157,7 +160,7 @@ public abstract class AbstractFilter implements IFilter
      */
     public void setFilterData(List filterData)
     {
-    //NOOP
+    // NOOP
     }
 
     /**
@@ -192,7 +195,7 @@ public abstract class AbstractFilter implements IFilter
      */
     public boolean equals(Object o)
     {
-        if (o == null)
+        if (o == null || !(o instanceof AbstractFilter))
         {
             return false;
         }
@@ -200,7 +203,12 @@ public abstract class AbstractFilter implements IFilter
         {
             return true;
         }
-        return this.hashCode() == o.hashCode();
+
+        AbstractFilter rhs = (AbstractFilter) o;
+        return new EqualsBuilder().append(mFilterName, rhs.mFilterName).append(mInternalName,
+                rhs.mInternalName).append(mFilterDescription, rhs.mFilterDescription).append(
+                mFilterEditor, rhs.mFilterEditor).append(mSelected, rhs.mSelected).append(
+                mReadonly, rhs.mReadonly).isEquals();
     }
 
     /**
@@ -208,20 +216,8 @@ public abstract class AbstractFilter implements IFilter
      */
     public int hashCode()
     {
-        //a "nice" prime number, see Java Report, April 2000
-        final int prime = 1000003;
-
-        int result = 1;
-
-        result = (result * prime) + (this.mFilterName != null ? this.mFilterName.hashCode() : 0);
-        result = (result * prime)
-                + (this.mFilterDescription != null ? this.mFilterDescription.hashCode() : 0);
-        result = (result * prime)
-                + (this.mFilterEditor != null ? this.mFilterEditor.hashCode() : 0);
-        result = (result * prime) + Boolean.valueOf(mSelected).hashCode();
-        result = (result * prime) + Boolean.valueOf(mReadonly).hashCode();
-
-        return result;
+        return new HashCodeBuilder(389793, 1000003).append(mFilterName).append(mInternalName)
+                .append(mFilterDescription).append(mFilterEditor).append(mSelected).append(
+                        mReadonly).toHashCode();
     }
-
 }

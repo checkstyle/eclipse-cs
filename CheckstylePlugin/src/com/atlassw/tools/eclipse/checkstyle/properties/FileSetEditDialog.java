@@ -23,6 +23,8 @@ package com.atlassw.tools.eclipse.checkstyle.properties;
 //=================================================
 // Imports from java namespace
 //=================================================
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -77,10 +79,7 @@ import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationWorkingCopy;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
-import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfigurationWorkingSet;
-import com.atlassw.tools.eclipse.checkstyle.config.TemporaryCheckConfigurationWorkingSet;
 import com.atlassw.tools.eclipse.checkstyle.config.gui.CheckConfigurationConfigureDialog;
-import com.atlassw.tools.eclipse.checkstyle.config.gui.CheckConfigurationContentProvider;
 import com.atlassw.tools.eclipse.checkstyle.config.gui.CheckConfigurationLabelProvider;
 import com.atlassw.tools.eclipse.checkstyle.config.gui.CheckConfigurationViewerSorter;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileMatchPattern;
@@ -243,8 +242,7 @@ public class FileSetEditDialog extends TitleAreaDialog
         comboComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
         mComboViewer = new ComboViewer(comboComposite);
-        mComboViewer.setContentProvider(new CheckConfigurationContentProvider());
-        mComboViewer.setInput(mPropertyPage.getProjectConfiguration());
+        mComboViewer.setContentProvider(new ArrayContentProvider());
         mComboViewer.setLabelProvider(new CheckConfigurationLabelProvider());
         mComboViewer.setSorter(new CheckConfigurationViewerSorter());
         mComboViewer.getControl().setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -383,6 +381,14 @@ public class FileSetEditDialog extends TitleAreaDialog
      */
     private void initializeControls()
     {
+
+        // init the check configuration combo
+        List configurations = new ArrayList();
+        configurations.addAll(Arrays.asList(mPropertyPage.getProjectConfigurationWorkingCopy()
+                .getLocalCheckConfigWorkingSet().getWorkingCopies()));
+        configurations.addAll(Arrays.asList(mPropertyPage.getProjectConfigurationWorkingCopy()
+                .getGlobalCheckConfigWorkingSet().getWorkingCopies()));
+        mComboViewer.setInput(configurations);
 
         this.setTitleImage(CheckstylePluginImages.getImage(CheckstylePluginImages.PLUGIN_LOGO));
         this.setMessage(Messages.FileSetEditDialog_message);
@@ -703,17 +709,7 @@ public class FileSetEditDialog extends TitleAreaDialog
                     {
                         config.isConfigurationAvailable();
 
-                        CheckConfigurationWorkingCopy workingCopy = null;
-
-                        if (config instanceof CheckConfigurationWorkingCopy)
-                        {
-                            workingCopy = (CheckConfigurationWorkingCopy) config;
-                        }
-                        else
-                        {
-                            ICheckConfigurationWorkingSet tmpWorkingSet = new TemporaryCheckConfigurationWorkingSet();
-                            workingCopy = tmpWorkingSet.newWorkingCopy(config);
-                        }
+                        CheckConfigurationWorkingCopy workingCopy = (CheckConfigurationWorkingCopy) config;
 
                         CheckConfigurationConfigureDialog dialog = new CheckConfigurationConfigureDialog(
                                 getShell(), workingCopy);

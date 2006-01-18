@@ -120,6 +120,8 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
         super.create();
         initialize();
     }
+    
+    
 
     /**
      * Creates the dialogs main contents.
