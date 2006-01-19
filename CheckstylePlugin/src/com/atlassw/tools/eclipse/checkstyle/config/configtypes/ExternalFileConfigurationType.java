@@ -30,6 +30,7 @@ import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
@@ -93,9 +94,27 @@ public class ExternalFileConfigurationType extends ConfigurationType
      */
     public boolean isConfigurable(ICheckConfiguration checkConfiguration)
     {
+
+        String location = checkConfiguration.getLocation();
+
+        try
+        {
+            // support dynamic locations for external configurations
+
+            while (PropertyUtil.hasUnresolvedProperties(location))
+            {
+                location = PropertyUtil.replaceProperties(location, DYNAMIC_LOC_RESOLVER);
+            }
+        }
+        catch (CheckstyleException e)
+        {
+            CheckstyleLog.log(e);
+            return false;
+        }
+        
         // The configuration can be changed when the external configuration file
         // can is writable
-        return new File(checkConfiguration.getLocation()).canWrite();
+        return new File(location).canWrite();
     }
 
     /**
