@@ -359,7 +359,7 @@ public class ComplexFileSetsEditor implements IFileSetsEditor
     class FileSetLabelProvider extends LabelProvider implements ITableLabelProvider
     {
 
-        private CheckConfigurationLabelProvider checkConfigLabelProvider = new CheckConfigurationLabelProvider();
+        private CheckConfigurationLabelProvider mCheckConfigLabelProvider = new CheckConfigurationLabelProvider();
 
         /**
          * @see ITableLabelProvider#getColumnText(Object, int)
@@ -381,7 +381,7 @@ public class ComplexFileSetsEditor implements IFileSetsEditor
                         break;
 
                     case 2:
-                        result = fileSet.getCheckConfig() != null ? checkConfigLabelProvider
+                        result = fileSet.getCheckConfig() != null ? mCheckConfigLabelProvider
                                 .getText(fileSet.getCheckConfig()) : ""; //$NON-NLS-1$
                         break;
 

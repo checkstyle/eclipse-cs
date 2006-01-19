@@ -20,11 +20,6 @@
 
 package com.atlassw.tools.eclipse.checkstyle.properties;
 
-//=================================================
-// Imports from java namespace
-//=================================================
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -34,7 +29,6 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
@@ -710,10 +704,8 @@ public class FileSetEditDialog extends TitleAreaDialog
                         CheckConfigurationConfigureDialog dialog = new CheckConfigurationConfigureDialog(
                                 getShell(), workingCopy);
                         dialog.setBlockOnOpen(true);
-                        if (Dialog.OK == dialog.open())
-                        {
+                        dialog.open();
 
-                        }
                     }
                     catch (CheckstylePluginException ex)
                     {

@@ -20,13 +20,9 @@
 
 package com.atlassw.tools.eclipse.checkstyle.properties;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -243,10 +239,7 @@ public class SimpleFileSetsEditor implements IFileSetsEditor
                         CheckConfigurationConfigureDialog dialog = new CheckConfigurationConfigureDialog(
                                 mTxtConfigDescription.getShell(), workingCopy);
                         dialog.setBlockOnOpen(true);
-                        if (Dialog.OK == dialog.open() && workingCopy.isDirty())
-                        {
-
-                        }
+                        dialog.open();
                     }
                     catch (CheckstylePluginException ex)
                     {

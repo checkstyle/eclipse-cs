@@ -178,7 +178,8 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
             catch (CheckstylePluginException e)
             {
                 Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID,
-                        IStatus.ERROR, e.getMessage() != null ? e.getMessage() : ErrorMessages.CheckstyleBuilder_msgErrorUnknown, e);
+                        IStatus.ERROR, e.getMessage() != null ? e.getMessage()
+                                : ErrorMessages.CheckstyleBuilder_msgErrorUnknown, e);
                 throw new CoreException(status);
             }
 
