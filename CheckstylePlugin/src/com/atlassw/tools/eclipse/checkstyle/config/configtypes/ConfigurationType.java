@@ -177,7 +177,14 @@ public abstract class ConfigurationType implements IConfigurationType
     public PropertyResolver getPropertyResolver(ICheckConfiguration checkConfiguration)
         throws CheckstylePluginException
     {
-        return new StandardPropertyResolver(resolveLocation(checkConfiguration).getFile());
+
+        MultiPropertyResolver multiResolver = new MultiPropertyResolver();
+        multiResolver.addPropertyResolver(new StandardPropertyResolver(resolveLocation(
+                checkConfiguration).getFile()));
+        multiResolver.addPropertyResolver(new ClasspathVariableResolver());
+        multiResolver.addPropertyResolver(new SystemPropertyResolver());
+
+        return multiResolver;
     }
 
     /**

@@ -184,6 +184,8 @@ public class RemoteConfigurationType extends ConfigurationType
 
         MultiPropertyResolver multiResolver = new MultiPropertyResolver();
         multiResolver.addPropertyResolver(new StandardPropertyResolver(location));
+        multiResolver.addPropertyResolver(new ClasspathVariableResolver());
+        multiResolver.addPropertyResolver(new SystemPropertyResolver());
 
         ResourceBundle bundle = getBundle(location);
         if (bundle != null)
@@ -557,8 +559,8 @@ public class RemoteConfigurationType extends ConfigurationType
                 mChkSavePassword.setLayoutData(gd);
 
                 this.setTitle(Messages.RemoteConfigurationType_titleRemoteAuth);
-                this.setMessage(NLS.bind(Messages.RemoteConfigurationType_msgRemoteAuth,
-                        mRemoteURL));
+                this.setMessage(NLS
+                        .bind(Messages.RemoteConfigurationType_msgRemoteAuth, mRemoteURL));
                 // this.setTitleImage(CheckstylePluginImages
                 // .getImage(CheckstylePluginImages.PLUGIN_LOGO));
                 return mainConposite;

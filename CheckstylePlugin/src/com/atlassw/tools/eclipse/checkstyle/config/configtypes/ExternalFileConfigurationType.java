@@ -85,6 +85,8 @@ public class ExternalFileConfigurationType extends ConfigurationType
 
         MultiPropertyResolver multiResolver = new MultiPropertyResolver();
         multiResolver.addPropertyResolver(new StandardPropertyResolver(location));
+        multiResolver.addPropertyResolver(new ClasspathVariableResolver());
+        multiResolver.addPropertyResolver(new SystemPropertyResolver());
 
         ResourceBundle bundle = getBundle(location);
         if (bundle != null)

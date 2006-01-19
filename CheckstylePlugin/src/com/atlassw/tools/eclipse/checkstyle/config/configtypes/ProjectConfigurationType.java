@@ -101,6 +101,8 @@ public class ProjectConfigurationType extends ConfigurationType
 
         MultiPropertyResolver multiResolver = new MultiPropertyResolver();
         multiResolver.addPropertyResolver(new StandardPropertyResolver(resolvedLocation));
+        multiResolver.addPropertyResolver(new ClasspathVariableResolver());
+        multiResolver.addPropertyResolver(new SystemPropertyResolver());
 
         ResourceBundle bundle = getBundle(resolvedLocation);
         if (bundle != null)
