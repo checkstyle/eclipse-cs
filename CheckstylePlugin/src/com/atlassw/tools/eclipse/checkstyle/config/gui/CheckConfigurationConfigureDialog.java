@@ -406,8 +406,6 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
     private void initialize()
     {
 
-        mTreeViewer.setInput(MetadataFactory.getRuleGroupMetadata());
-
         try
         {
             mModules = mConfiguration.getModules();
@@ -437,6 +435,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
         mAddButton.setEnabled(mConfiguration.isConfigurable());
         mRemoveButton.setEnabled(mConfiguration.isConfigurable());
 
+        mTreeViewer.setInput(MetadataFactory.getRuleGroupMetadata());
         ISelection initialSelection = new StructuredSelection(MetadataFactory
                 .getRuleGroupMetadata().get(0));
         mTreeViewer.setSelection(initialSelection);
@@ -701,6 +700,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
                                     mIsDirty = true;
                                     mTableViewer.refresh(true);
                                     refreshTableViewerState();
+                                    mTreeViewer.refresh();
                                 }
                             }
                             else
@@ -709,6 +709,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
                                 mIsDirty = true;
                                 mTableViewer.refresh(true);
                                 refreshTableViewerState();
+                                mTreeViewer.refresh();
                             }
                         }
                         catch (CheckstylePluginException e)
@@ -747,6 +748,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
                             mIsDirty = true;
                             mTableViewer.refresh(true);
                             refreshTableViewerState();
+                            mTreeViewer.refresh();
                         }
                     }
                 }
@@ -898,14 +900,20 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
      * 
      * @author Lars Ködderitzsch
      */
-    private static class MetaDataLabelProvider extends LabelProvider
+    private class MetaDataLabelProvider extends LabelProvider
     {
 
-        private static Image sModuleGroupImage = CheckstylePlugin.imageDescriptorFromPlugin(
+        private Image sModuleGroupImage = CheckstylePlugin.imageDescriptorFromPlugin(
                 CheckstylePlugin.PLUGIN_ID, "icons/modulegroup.gif").createImage(); //$NON-NLS-1$
 
-        private static Image sModuleImage = CheckstylePlugin.imageDescriptorFromPlugin(
+        private Image sModuleGroupUsedImage = CheckstylePlugin.imageDescriptorFromPlugin(
+                CheckstylePlugin.PLUGIN_ID, "icons/modulegroup_used.gif").createImage(); //$NON-NLS-1$
+
+        private Image sModuleImage = CheckstylePlugin.imageDescriptorFromPlugin(
                 CheckstylePlugin.PLUGIN_ID, "icons/module.gif").createImage(); //$NON-NLS-1$
+
+        private Image sModuleUsedImage = CheckstylePlugin.imageDescriptorFromPlugin(
+                CheckstylePlugin.PLUGIN_ID, "icons/module_used.gif").createImage(); //$NON-NLS-1$
 
         /**
          * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
@@ -933,13 +941,55 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
 
             if (element instanceof RuleGroupMetadata)
             {
-                image = sModuleGroupImage;
+                image = isGroupUsed((RuleGroupMetadata) element) ? sModuleGroupUsedImage
+                        : sModuleGroupImage;
             }
             else if (element instanceof RuleMetadata)
             {
-                image = sModuleImage;
+
+                image = isMetadataUsed((RuleMetadata) element) ? sModuleUsedImage : sModuleImage;
             }
             return image;
+        }
+
+        private boolean isGroupUsed(RuleGroupMetadata group)
+        {
+            boolean used = true;
+
+            Iterator it = group.getRuleMetadata().iterator();
+            while (it.hasNext())
+            {
+
+                RuleMetadata metadata = (RuleMetadata) it.next();
+
+                if (!isMetadataUsed(metadata))
+                {
+                    used = false;
+                    break;
+                }
+            }
+            return used;
+        }
+
+        private boolean isMetadataUsed(RuleMetadata metadata)
+        {
+            boolean used = false;
+            if (mModules != null)
+            {
+                Iterator it = mModules.iterator();
+                while (it.hasNext())
+                {
+                    Module module = (Module) it.next();
+
+                    if (metadata.equals(module.getMetaData()))
+                    {
+                        used = true;
+                        break;
+                    }
+                }
+            }
+
+            return used;
         }
     }
 
