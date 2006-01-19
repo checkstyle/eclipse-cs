@@ -165,7 +165,7 @@ public class SimpleFileSetsEditor implements IFileSetsEditor
         this.mBtnManageConfigs.setLayoutData(fd);
 
         mComboViewer = new ComboViewer(configArea);
-        mComboViewer.setContentProvider(new ArrayContentProvider());
+        mComboViewer.setContentProvider(new CheckConfigurationContentProvider());
         mComboViewer.setLabelProvider(new CheckConfigurationLabelProvider());
         mComboViewer.setSorter(new CheckConfigurationViewerSorter());
         mComboViewer.getControl().setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -196,13 +196,7 @@ public class SimpleFileSetsEditor implements IFileSetsEditor
         this.mTxtConfigDescription.setLayoutData(fd);
 
         // init the check configuration combo
-        List configurations = new ArrayList();
-        configurations.addAll(Arrays.asList(mPropertyPage.getProjectConfigurationWorkingCopy()
-                .getLocalCheckConfigWorkingSet().getWorkingCopies()));
-        configurations.addAll(Arrays.asList(mPropertyPage.getProjectConfigurationWorkingCopy()
-                .getGlobalCheckConfigWorkingSet().getWorkingCopies()));
-        mComboViewer.setInput(configurations);
-
+        mComboViewer.setInput(mPropertyPage.getProjectConfigurationWorkingCopy());
         if (mDefaultFileSet.getCheckConfig() != null)
         {
             mComboViewer.setSelection(new StructuredSelection(mDefaultFileSet.getCheckConfig()));

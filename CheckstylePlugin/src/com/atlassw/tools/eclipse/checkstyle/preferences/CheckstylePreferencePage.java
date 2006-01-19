@@ -333,10 +333,10 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         mWorkingSetEditor = new CheckConfigurationWorkingSetEditor(mWorkingSet, true);
         Control editorControl = mWorkingSetEditor.createContents(configComposite);
         FormData fd = new FormData();
-        fd.left = new FormAttachment(0);
-        fd.top = new FormAttachment(0);
-        fd.right = new FormAttachment(100);
-        fd.bottom = new FormAttachment(100);
+        fd.left = new FormAttachment(0, 3);
+        fd.top = new FormAttachment(0, 3);
+        fd.right = new FormAttachment(100, -3);
+        fd.bottom = new FormAttachment(100, -3);
         editorControl.setLayoutData(fd);
 
         return configComposite;

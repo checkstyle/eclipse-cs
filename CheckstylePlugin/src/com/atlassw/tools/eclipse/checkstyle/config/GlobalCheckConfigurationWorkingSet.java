@@ -46,6 +46,7 @@ import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileSet;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.IProjectConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfigurationFactory;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfigurationWorkingCopy;
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.atlassw.tools.eclipse.checkstyle.util.XMLUtil;
 
@@ -131,10 +132,25 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
     /**
      * {@inheritDoc}
      */
-    public void removeCheckConfiguration(CheckConfigurationWorkingCopy checkConfig)
+    public boolean removeCheckConfiguration(CheckConfigurationWorkingCopy checkConfig)
     {
-        mWorkingCopies.remove(checkConfig);
-        mDeletedConfigurations.add(checkConfig);
+        boolean used = true;
+        try
+        {
+            used = ProjectConfigurationFactory.isCheckConfigInUse(checkConfig
+                    .getSourceCheckConfiguration());
+
+            if (!used)
+            {
+                mWorkingCopies.remove(checkConfig);
+                mDeletedConfigurations.add(checkConfig);
+            }
+        }
+        catch (CheckstylePluginException e)
+        {
+            CheckstyleLog.log(e);
+        }
+        return !used;
     }
 
     /**

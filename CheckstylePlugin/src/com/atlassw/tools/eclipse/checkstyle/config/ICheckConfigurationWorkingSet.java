@@ -79,11 +79,16 @@ public interface ICheckConfigurationWorkingSet
     void addCheckConfiguration(CheckConfigurationWorkingCopy checkConfig);
 
     /**
-     * Removes a working copy from the working set.
+     * Removes a working copy from the working set. Returns <code>true</code>
+     * if the configuration could be removed, <code>false</code> if it could
+     * not be removed because it is being used.
      * 
      * @param checkConfig the working copy to remove
+     * @return <code>true</code> if the configuration was removed,
+     *         <code>false</code> if it is being used and therefor cannot be
+     *         removed
      */
-    void removeCheckConfiguration(CheckConfigurationWorkingCopy checkConfig);
+    boolean removeCheckConfiguration(CheckConfigurationWorkingCopy checkConfig);
 
     /**
      * Stores the working set (it configurations) to persistence.

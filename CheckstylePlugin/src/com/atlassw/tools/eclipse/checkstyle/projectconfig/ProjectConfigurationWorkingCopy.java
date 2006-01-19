@@ -122,7 +122,7 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
 
                 if (standardFilter.getInternalName().equals(configuredFilter.getInternalName()))
                 {
-                    mFilters.set(i, configuredFilter);
+                    mFilters.set(i, configuredFilter.clone());
                 }
             }
         }
@@ -219,6 +219,21 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
     public boolean isDirty()
     {
         return !this.equals(mProjectConfig) || mLocalConfigWorkingSet.isDirty();
+    }
+
+    /**
+     * Determines if a rebuild is needed for the project of this project
+     * configuration. A rebuild is not needed when only some local config was
+     * added which is not used by the project.
+     * 
+     * @return <code>true</code> if rebuild is needed.
+     * @throws CheckstylePluginException an unexpected exception occurred
+     */
+    public boolean isRebuildNeeded() throws CheckstylePluginException
+    {
+        return !this.equals(mProjectConfig)
+                || mLocalConfigWorkingSet.getAffectedProjects().contains(getProject())
+                || mGlobalConfigWorkingSet.getAffectedProjects().contains(getProject());
     }
 
     /**

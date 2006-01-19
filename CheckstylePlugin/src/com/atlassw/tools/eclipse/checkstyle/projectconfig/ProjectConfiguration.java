@@ -111,6 +111,8 @@ public class ProjectConfiguration implements Cloneable, IProjectConfiguration
         }
 
         mFilters = Collections.unmodifiableList(mFilters);
+
+        mUseSimpleConfig = useSimpleConfig;
     }
 
     //

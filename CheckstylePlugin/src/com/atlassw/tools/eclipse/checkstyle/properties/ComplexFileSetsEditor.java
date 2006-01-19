@@ -35,6 +35,8 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableLayout;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -397,6 +399,34 @@ public class ComplexFileSetsEditor implements IFileSetsEditor
         public Image getColumnImage(Object element, int columnIndex)
         {
             return null;
+        }
+    }
+
+    /**
+     * Sorts CheckConfiguration objects into their display order.
+     */
+    public class FileSetViewerSorter extends ViewerSorter
+    {
+
+        /**
+         * {@inheritDoc}
+         */
+        public int compare(Viewer viewer, Object e1, Object e2)
+        {
+            int result = 0;
+
+            if ((e1 instanceof FileSet) && (e2 instanceof FileSet))
+            {
+                FileSet fileSet1 = (FileSet) e1;
+                FileSet fileSet2 = (FileSet) e2;
+
+                String name1 = fileSet1.getName();
+                String name2 = fileSet2.getName();
+
+                result = name1.compareTo(name2);
+            }
+
+            return result;
         }
     }
 }

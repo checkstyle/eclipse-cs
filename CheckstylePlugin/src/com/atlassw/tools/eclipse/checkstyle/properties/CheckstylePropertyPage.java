@@ -32,6 +32,7 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialogWithToggle;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.resource.JFaceColors;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
@@ -52,9 +53,11 @@ import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.TabFolder;
@@ -216,8 +219,8 @@ public class CheckstylePropertyPage extends PropertyPage
 
             FormData fd = new FormData();
             // fd.left = new FormAttachment(this.mChkEnable, 0, SWT.RIGHT);
-            fd.top = new FormAttachment(0);
-            fd.right = new FormAttachment(100);
+            fd.top = new FormAttachment(0, 3);
+            fd.right = new FormAttachment(100, -3);
             this.mChkSimpleConfig.setLayoutData(fd);
 
             // create the checkbox to enabel/disable checkstyle
@@ -227,28 +230,28 @@ public class CheckstylePropertyPage extends PropertyPage
             this.mChkEnable.setSelection(mCheckstyleActivated);
 
             fd = new FormData();
-            fd.left = new FormAttachment(0);
-            fd.top = new FormAttachment(0);
-            fd.right = new FormAttachment(this.mChkSimpleConfig, 0, SWT.LEFT);
+            fd.left = new FormAttachment(0, 3);
+            fd.top = new FormAttachment(0, 3);
+            fd.right = new FormAttachment(this.mChkSimpleConfig, 3, SWT.LEFT);
             this.mChkEnable.setLayoutData(fd);
 
             // create the configuration area
             mFileSetsContainer = new Composite(container, SWT.NULL);
             Control configArea = createFileSetsArea(mFileSetsContainer);
             fd = new FormData();
-            fd.left = new FormAttachment(0);
+            fd.left = new FormAttachment(0, 3);
             fd.top = new FormAttachment(this.mChkEnable, 6, SWT.BOTTOM);
-            fd.right = new FormAttachment(100);
+            fd.right = new FormAttachment(100, -3);
             fd.bottom = new FormAttachment(45);
             configArea.setLayoutData(fd);
 
             // create the filter area
             Control filterArea = createFilterArea(container);
             fd = new FormData();
-            fd.left = new FormAttachment(0);
+            fd.left = new FormAttachment(0, 3);
             fd.top = new FormAttachment(configArea, 3, SWT.BOTTOM);
-            fd.right = new FormAttachment(100);
-            fd.bottom = new FormAttachment(100);
+            fd.right = new FormAttachment(100, -3);
+            fd.bottom = new FormAttachment(100, -3);
             fd.width = 500;
             filterArea.setLayoutData(fd);
 
@@ -257,11 +260,11 @@ public class CheckstylePropertyPage extends PropertyPage
 
             TabItem mainItem = new TabItem(mMainTab, SWT.NULL);
             mainItem.setControl(container);
-            mainItem.setText("Main");
+            mainItem.setText(Messages.CheckstylePropertyPage_tabMain);
 
             TabItem localItem = new TabItem(mMainTab, SWT.NULL);
             localItem.setControl(localConfigArea);
-            localItem.setText("Local Check Configurations");
+            localItem.setText(Messages.CheckstylePropertyPage_tabCheckConfigs);
 
         }
         catch (CheckstylePluginException e)
@@ -421,19 +424,22 @@ public class CheckstylePropertyPage extends PropertyPage
     private Control createLocalConfigArea(Composite parent)
     {
 
+        Composite noteAndEditor = new Composite(parent, SWT.NULL);
+        noteAndEditor.setLayout(new GridLayout(1, false));
+        noteAndEditor.setLayoutData(new GridData(GridData.FILL_BOTH));
+
+        Label lblHint = new Label(noteAndEditor, SWT.WRAP);
+        lblHint.setText(Messages.CheckstylePropertyPage_msgLocalConfigs);
+        GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+        gd.widthHint = 200;
+        lblHint.setLayoutData(gd);
+
         mWorkingSetEditor = new CheckConfigurationWorkingSetEditor(mProjectConfig
                 .getLocalCheckConfigWorkingSet(), false);
-        Control editorControl = mWorkingSetEditor.createContents(parent);
+        Control editorControl = mWorkingSetEditor.createContents(noteAndEditor);
         editorControl.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-        // TODO add message what to do with local configurations
-        // setMessage("Use this page to set up check configurtation that are
-        // local to this project.\nThe check configurations data will be stored
-        // with the .checkstyle file,\nallowing for improved teamworking
-        // support\nas other team members won't have to set up\nthe check
-        // configuration in the workspace preferences.");
-
-        return editorControl;
+        return noteAndEditor;
     }
 
     /**
@@ -483,19 +489,11 @@ public class CheckstylePropertyPage extends PropertyPage
             // save the edited project configuration
             if (mProjectConfig.isDirty())
             {
-                System.out.println("Project configuration saved");
                 mProjectConfig.store();
             }
 
             boolean checkstyleEnabled = mChkEnable.getSelection();
-
-            boolean needRebuild = mProjectConfig.isDirty();
-            needRebuild = needRebuild
-                    || mProjectConfig.getLocalCheckConfigWorkingSet().getAffectedProjects()
-                            .contains(project);
-            needRebuild = needRebuild
-                    || mProjectConfig.getGlobalCheckConfigWorkingSet().getAffectedProjects()
-                            .contains(project);
+            boolean needRebuild = mProjectConfig.isRebuildNeeded();
 
             // check if checkstyle nature has to be configured/deconfigured
             if (checkstyleEnabled != mCheckstyleActivated)
@@ -508,37 +506,43 @@ public class CheckstylePropertyPage extends PropertyPage
                 needRebuild = true;
             }
 
-            IPreferenceStore prefStore = CheckstylePlugin.getDefault().getPreferenceStore();
-            String promptRebuildPref = prefStore
-                    .getString(CheckstylePlugin.PREF_ASK_BEFORE_REBUILD);
-
-            boolean doRebuild = MessageDialogWithToggle.ALWAYS.equals(promptRebuildPref)
-                    && needRebuild;
-
-            //
-            // Prompt for rebuild
-            //
-            if (MessageDialogWithToggle.PROMPT.equals(promptRebuildPref) && needRebuild)
+            // if a rebuild is advised, check/prompt if the rebuild should
+            // really be done.
+            if (needRebuild)
             {
 
-                // TODO give other texts
-                MessageDialogWithToggle dialog = MessageDialogWithToggle.openYesNoQuestion(
-                        getShell(), Messages.CheckstylePreferencePage_titleRebuild,
-                        Messages.CheckstylePreferencePage_msgRebuild,
-                        Messages.CheckstylePreferencePage_nagRebuild, false, prefStore,
-                        CheckstylePlugin.PREF_ASK_BEFORE_REBUILD);
+                IPreferenceStore prefStore = CheckstylePlugin.getDefault().getPreferenceStore();
+                String promptRebuildPref = prefStore
+                        .getString(CheckstylePlugin.PREF_ASK_BEFORE_REBUILD);
 
-                doRebuild = dialog.getReturnCode() == IDialogConstants.YES_ID;
-            }
+                boolean doRebuild = MessageDialogWithToggle.ALWAYS.equals(promptRebuildPref)
+                        && needRebuild;
 
-            // check if a rebuild is necessary
-            if (checkstyleEnabled && doRebuild)
-            {
+                //
+                // Prompt for rebuild
+                //
+                if (MessageDialogWithToggle.PROMPT.equals(promptRebuildPref) && needRebuild)
+                {
 
-                BuildProjectJob rebuildOperation = new BuildProjectJob(project,
-                        IncrementalProjectBuilder.FULL_BUILD);
-                rebuildOperation.setRule(ResourcesPlugin.getWorkspace().getRoot());
-                rebuildOperation.schedule();
+                    // TODO give other texts
+                    MessageDialogWithToggle dialog = MessageDialogWithToggle.openYesNoQuestion(
+                            getShell(), Messages.CheckstylePropertyPage_titleRebuild,
+                            Messages.CheckstylePropertyPage_msgRebuild,
+                            Messages.CheckstylePropertyPage_nagRebuild, false, prefStore,
+                            CheckstylePlugin.PREF_ASK_BEFORE_REBUILD);
+
+                    doRebuild = dialog.getReturnCode() == IDialogConstants.YES_ID;
+                }
+
+                // check if a rebuild is necessary
+                if (checkstyleEnabled && doRebuild)
+                {
+
+                    BuildProjectJob rebuildOperation = new BuildProjectJob(project,
+                            IncrementalProjectBuilder.FULL_BUILD);
+                    rebuildOperation.setRule(ResourcesPlugin.getWorkspace().getRoot());
+                    rebuildOperation.schedule();
+                }
             }
         }
         catch (CheckstylePluginException e)

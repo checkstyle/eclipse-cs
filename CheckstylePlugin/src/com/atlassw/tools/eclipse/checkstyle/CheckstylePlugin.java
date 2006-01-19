@@ -154,6 +154,9 @@ public class CheckstylePlugin extends AbstractUIPlugin
     // Methods.
     // =================================================
 
+    /**
+     * {@inheritDoc}
+     */
     public void start(BundleContext context) throws Exception
     {
         super.start(context);

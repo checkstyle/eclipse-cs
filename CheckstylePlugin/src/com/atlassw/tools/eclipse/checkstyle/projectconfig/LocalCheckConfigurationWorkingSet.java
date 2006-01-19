@@ -121,10 +121,18 @@ public class LocalCheckConfigurationWorkingSet implements ICheckConfigurationWor
     /**
      * {@inheritDoc}
      */
-    public void removeCheckConfiguration(CheckConfigurationWorkingCopy checkConfig)
+    public boolean removeCheckConfiguration(CheckConfigurationWorkingCopy checkConfig)
     {
-        mWorkingCopies.remove(checkConfig);
-        mDeletedConfigurations.add(checkConfig);
+
+        boolean inUse = mProjectConfig.isConfigInUse(checkConfig);
+
+        if (!inUse)
+        {
+            mWorkingCopies.remove(checkConfig);
+            mDeletedConfigurations.add(checkConfig);
+        }
+
+        return !inUse;
     }
 
     /**

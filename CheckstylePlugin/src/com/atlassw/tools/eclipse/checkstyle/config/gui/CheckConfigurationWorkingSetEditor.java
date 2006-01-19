@@ -155,18 +155,18 @@ public class CheckConfigurationWorkingSetEditor
 
         Control rightButtons = createButtonBar(configComposite);
         FormData fd = new FormData();
-        fd.top = new FormAttachment(0, 3);
-        fd.right = new FormAttachment(100, -3);
-        fd.bottom = new FormAttachment(100, -3);
+        fd.top = new FormAttachment(0);
+        fd.right = new FormAttachment(100);
+        fd.bottom = new FormAttachment(100);
         rightButtons.setLayoutData(fd);
 
         Composite tableAndDesc = new Composite(configComposite, SWT.NULL);
         tableAndDesc.setLayout(new FormLayout());
         fd = new FormData();
-        fd.left = new FormAttachment(0, 3);
-        fd.top = new FormAttachment(0, 3);
+        fd.left = new FormAttachment(0);
+        fd.top = new FormAttachment(0);
         fd.right = new FormAttachment(rightButtons, -3, SWT.LEFT);
-        fd.bottom = new FormAttachment(100, -3);
+        fd.bottom = new FormAttachment(100, 0);
         tableAndDesc.setLayoutData(fd);
 
         Control table = createConfigTable(tableAndDesc);
@@ -181,7 +181,7 @@ public class CheckConfigurationWorkingSetEditor
         descArea.setLayout(new FormLayout());
         fd = new FormData();
         fd.left = new FormAttachment(0);
-        fd.top = new FormAttachment(table, 3);
+        fd.top = new FormAttachment(table, 0);
         fd.right = new FormAttachment(mIsShowUsage ? 60 : 100);
         fd.bottom = new FormAttachment(100);
         descArea.setLayoutData(fd);
@@ -190,7 +190,7 @@ public class CheckConfigurationWorkingSetEditor
         lblDescription.setText(Messages.CheckstylePreferencePage_lblDescription);
         fd = new FormData();
         fd.left = new FormAttachment(0);
-        fd.top = new FormAttachment(0);
+        fd.top = new FormAttachment(3);
         fd.right = new FormAttachment(100);
         lblDescription.setLayoutData(fd);
 
@@ -208,7 +208,7 @@ public class CheckConfigurationWorkingSetEditor
             Composite usageArea = new Composite(tableAndDesc, SWT.NULL);
             usageArea.setLayout(new FormLayout());
             fd = new FormData();
-            fd.left = new FormAttachment(60, 3);
+            fd.left = new FormAttachment(60, 0);
             fd.top = new FormAttachment(table, 3);
             fd.right = new FormAttachment(100);
             fd.bottom = new FormAttachment(100);
@@ -595,14 +595,23 @@ public class CheckConfigurationWorkingSetEditor
             return;
         }
 
-        //
-        // Make sure the check config is not in use. Don't let it be
-        // deleted if it is.
-        //
-        try
+        boolean confirm = MessageDialog.openQuestion(getShell(),
+                Messages.CheckstylePreferencePage_titleDelete, NLS.bind(
+                        Messages.CheckstylePreferencePage_msgDelete, checkConfig.getName()));
+        if (confirm)
         {
-            if (ProjectConfigurationFactory.isCheckConfigInUse(checkConfig
-                    .getSourceCheckConfiguration()))
+
+            //
+            // Make sure the check config is not in use. Don't let it be
+            // deleted if it is.
+            //
+            if (mWorkingSet.removeCheckConfiguration(checkConfig))
+            {
+
+                mViewer.setInput(mWorkingSet.getWorkingCopies());
+                mViewer.refresh();
+            }
+            else
             {
                 MessageDialog.openInformation(getShell(),
 
@@ -610,22 +619,6 @@ public class CheckConfigurationWorkingSetEditor
                         Messages.CheckstylePreferencePage_msgCantDelete, checkConfig.getName()));
                 return;
             }
-        }
-        catch (CheckstylePluginException e)
-        {
-            CheckstyleLog.errorDialog(getShell(), e, true);
-            return;
-        }
-
-        boolean confirm = MessageDialog.openQuestion(getShell(),
-                Messages.CheckstylePreferencePage_titleDelete, NLS.bind(
-                        Messages.CheckstylePreferencePage_msgDelete, checkConfig.getName()));
-        if (confirm)
-        {
-            mWorkingSet.removeCheckConfiguration(checkConfig);
-
-            mViewer.setInput(mWorkingSet.getWorkingCopies());
-            mViewer.refresh();
         }
     }
 

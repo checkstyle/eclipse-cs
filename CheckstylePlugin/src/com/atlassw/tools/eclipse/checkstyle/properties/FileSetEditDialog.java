@@ -46,6 +46,7 @@ import org.eclipse.jface.viewers.ICheckStateListener;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -242,7 +243,7 @@ public class FileSetEditDialog extends TitleAreaDialog
         comboComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
         mComboViewer = new ComboViewer(comboComposite);
-        mComboViewer.setContentProvider(new ArrayContentProvider());
+        mComboViewer.setContentProvider(new CheckConfigurationContentProvider());
         mComboViewer.setLabelProvider(new CheckConfigurationLabelProvider());
         mComboViewer.setSorter(new CheckConfigurationViewerSorter());
         mComboViewer.getControl().setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -383,12 +384,7 @@ public class FileSetEditDialog extends TitleAreaDialog
     {
 
         // init the check configuration combo
-        List configurations = new ArrayList();
-        configurations.addAll(Arrays.asList(mPropertyPage.getProjectConfigurationWorkingCopy()
-                .getLocalCheckConfigWorkingSet().getWorkingCopies()));
-        configurations.addAll(Arrays.asList(mPropertyPage.getProjectConfigurationWorkingCopy()
-                .getGlobalCheckConfigWorkingSet().getWorkingCopies()));
-        mComboViewer.setInput(configurations);
+        mComboViewer.setInput(mPropertyPage.getProjectConfigurationWorkingCopy());
 
         this.setTitleImage(CheckstylePluginImages.getImage(CheckstylePluginImages.PLUGIN_LOGO));
         this.setMessage(Messages.FileSetEditDialog_message);
@@ -765,6 +761,47 @@ public class FileSetEditDialog extends TitleAreaDialog
             IStructuredSelection selection = (IStructuredSelection) event.getSelection();
             ICheckConfiguration config = (ICheckConfiguration) selection.getFirstElement();
             mFileSet.setCheckConfig(config);
+        }
+    }
+
+    /**
+     * Provides the labels for the FileSet list display.
+     */
+    class FileMatchPatternLabelProvider extends LabelProvider implements ITableLabelProvider
+    {
+
+        /**
+         * @see ITableLabelProvider#getColumnText(Object, int)
+         */
+        public String getColumnText(Object element, int columnIndex)
+        {
+            String result = element.toString();
+            if (element instanceof FileMatchPattern)
+            {
+                FileMatchPattern pattern = (FileMatchPattern) element;
+                switch (columnIndex)
+                {
+                    case 0:
+                        result = new String();
+                        break;
+
+                    case 1:
+                        result = pattern.getMatchPattern();
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+            return result;
+        }
+
+        /**
+         * @see ITableLabelProvider#getColumnImage(Object, int)
+         */
+        public Image getColumnImage(Object element, int columnIndex)
+        {
+            return null;
         }
     }
 }

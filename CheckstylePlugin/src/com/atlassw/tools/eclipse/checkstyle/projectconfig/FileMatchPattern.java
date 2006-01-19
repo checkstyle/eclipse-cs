@@ -52,6 +52,8 @@ public class FileMatchPattern implements Cloneable
 
     private Pattern mRegexPattern;
 
+    private String mPatternString;
+
     // =================================================
     // Constructors & finalizer.
     // =================================================
@@ -98,6 +100,7 @@ public class FileMatchPattern implements Cloneable
         try
         {
             mRegexPattern = Pattern.compile(pattern);
+            mPatternString = pattern;
         }
         catch (PatternSyntaxException e)
         {
@@ -175,7 +178,7 @@ public class FileMatchPattern implements Cloneable
 
         FileMatchPattern rhs = (FileMatchPattern) obj;
         return new EqualsBuilder().append(mIsIncludePattern, rhs.mIsIncludePattern).append(
-                mRegexPattern, rhs.mRegexPattern).isEquals();
+                mPatternString, rhs.mPatternString).isEquals();
     }
 
     /**
@@ -183,7 +186,7 @@ public class FileMatchPattern implements Cloneable
      */
     public int hashCode()
     {
-        return new HashCodeBuilder(7687, 1000003).append(mIsIncludePattern).append(mRegexPattern)
+        return new HashCodeBuilder(7687, 1000003).append(mIsIncludePattern).append(mPatternString)
                 .toHashCode();
     }
 }
