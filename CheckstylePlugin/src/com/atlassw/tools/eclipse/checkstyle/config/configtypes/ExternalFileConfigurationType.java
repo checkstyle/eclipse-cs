@@ -32,6 +32,7 @@ import java.util.ResourceBundle;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
+import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 
 /**
  * Implementation of a check configuration that uses an exteral checkstyle
@@ -41,6 +42,17 @@ import com.puppycrawl.tools.checkstyle.PropertyResolver;
  */
 public class ExternalFileConfigurationType extends ConfigurationType
 {
+
+    /** Property resolver used to add dynamic location support. */
+    private static final PropertyResolver DYNAMIC_LOC_RESOLVER;
+
+    static
+    {
+        MultiPropertyResolver resolver = new MultiPropertyResolver();
+        resolver.addPropertyResolver(new ClasspathVariableResolver());
+        resolver.addPropertyResolver(new SystemPropertyResolver());
+        DYNAMIC_LOC_RESOLVER = resolver;
+    }
 
     //
     // methods
@@ -55,9 +67,21 @@ public class ExternalFileConfigurationType extends ConfigurationType
 
         try
         {
-            return new File(checkConfiguration.getLocation()).toURL();
+            String location = checkConfiguration.getLocation();
+
+            // support dynamic locations for external configurations
+            while (PropertyUtil.hasUnresolvedProperties(location))
+            {
+                location = PropertyUtil.replaceProperties(location, DYNAMIC_LOC_RESOLVER);
+            }
+
+            return new File(location).toURL();
         }
         catch (MalformedURLException e)
+        {
+            CheckstylePluginException.rethrow(e);
+        }
+        catch (CheckstyleException e)
         {
             CheckstylePluginException.rethrow(e);
         }
@@ -82,6 +106,19 @@ public class ExternalFileConfigurationType extends ConfigurationType
     {
 
         String location = checkConfiguration.getLocation();
+
+        try
+        {
+            // support dynamic locations for external configurations
+            while (PropertyUtil.hasUnresolvedProperties(location))
+            {
+                location = PropertyUtil.replaceProperties(location, DYNAMIC_LOC_RESOLVER);
+            }
+        }
+        catch (CheckstyleException e)
+        {
+            CheckstylePluginException.rethrow(e);
+        }
 
         MultiPropertyResolver multiResolver = new MultiPropertyResolver();
         multiResolver.addPropertyResolver(new StandardPropertyResolver(location));
