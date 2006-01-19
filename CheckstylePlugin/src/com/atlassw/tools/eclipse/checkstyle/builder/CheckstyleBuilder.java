@@ -50,7 +50,6 @@ import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileSet;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.IProjectConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfigurationFactory;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.IFilter;
-import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
 /**
