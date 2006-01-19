@@ -359,5 +359,27 @@ public final class Messages extends NLS
     private Messages()
     {}
 
+    public static String FileSetEditDialog_msgBuildTestResults;
+
+    public static String RemoteConfigurationType_msgRemoteCachingFailed;
+
+    public static String RemoteConfigurationType_lblUserName;
+
+    public static String RemoteConfigurationType_lblPassword;
+
+    public static String RemoteConfigurationType_btnSavePassword;
+
+    public static String RemoteConfigurationType_titleRemoteAuth;
+
+    public static String RemoteConfigurationType_msgRemoteAuth;
+
+    public static String RemoteConfigurationType_titleAuthentication;
+
+    public static String ProjectConfigurationType_msgFileNotFound;
+
+    public static String RemoteConfigurationEditor_titleAdvancedOptions;
+
+    public static String RemoteConfigurationEditor_btnCacheRemoteConfig;
+
     // CHECKSTYLE:ON
 }

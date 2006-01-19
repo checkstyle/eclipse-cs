@@ -145,7 +145,7 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor
         if (mWorkingCopy.getLocation() == null)
         {
 
-            String location = "internal_config_" + "_" + System.currentTimeMillis() + ".xml";
+            String location = "internal_config_" + "_" + System.currentTimeMillis() + ".xml"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             mWorkingCopy.setLocation(location);
         }
         mWorkingCopy.setDescription(mDescription.getText());

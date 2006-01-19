@@ -100,7 +100,7 @@ public final class ConfigurationWriter
             TransformerHandler xmlOut = XMLUtil.writeWithSax(out);
             xmlOut.startDocument();
 
-            String comment = "This configuration file was written by the eclipse-cs plugin configuration editor";
+            String comment = "This configuration file was written by the eclipse-cs plugin configuration editor"; //$NON-NLS-1$
             xmlOut.comment(comment.toCharArray(), 0, comment.length());
             xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
             xmlOut.startDTD(XMLTags.MODULE_TAG, "-//Puppy Crawl//DTD Check Configuration 1.2//EN", //$NON-NLS-1$
@@ -109,8 +109,8 @@ public final class ConfigurationWriter
             xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
 
             // write out name and description as comment
-            String description = "\n" + checkConfig.getName() + ":\n"
-                    + checkConfig.getDescription() + "\n";
+            String description = "\n" + checkConfig.getName() + ":\n" //$NON-NLS-1$ //$NON-NLS-2$
+                    + checkConfig.getDescription() + "\n"; //$NON-NLS-1$
             xmlOut.comment(description.toCharArray(), 0, description.length());
             xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
 
@@ -285,7 +285,7 @@ public final class ConfigurationWriter
             String childParent = tmp.getMetaData().getParentModule();
 
             // only the checker module has no parent
-            if (parentInternalName == null && childParent.equals("Root"))
+            if (parentInternalName == null && childParent.equals("Root")) //$NON-NLS-1$
             {
                 childModules.add(tmp);
             }

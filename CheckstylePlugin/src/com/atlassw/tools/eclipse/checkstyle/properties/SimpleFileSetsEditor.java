@@ -278,7 +278,7 @@ public class SimpleFileSetsEditor implements IFileSetsEditor
             {
                 mDefaultFileSet.setCheckConfig(config);
                 mTxtConfigDescription.setText(config.getDescription() != null ? config
-                        .getDescription() : "");
+                        .getDescription() : ""); //$NON-NLS-1$
             }
             else
             {

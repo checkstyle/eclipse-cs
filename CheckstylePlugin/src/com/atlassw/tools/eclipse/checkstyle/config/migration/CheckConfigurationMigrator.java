@@ -161,8 +161,8 @@ public final class CheckConfigurationMigrator
                     // create the location of the new internal configuration
                     if (mCurrentConfiguration.getLocation() == null)
                     {
-                        String location = "internal_config_" + "_" + System.currentTimeMillis()
-                                + ".xml";
+                        String location = "internal_config_" + "_" + System.currentTimeMillis() //$NON-NLS-1$ //$NON-NLS-2$
+                                + ".xml"; //$NON-NLS-1$
                         mCurrentConfiguration.setLocation(location);
                     }
                 }

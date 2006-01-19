@@ -131,7 +131,7 @@ public class CheckstylePropertyPage extends PropertyPage
     /** the local configurations working set editor. */
     private CheckConfigurationWorkingSetEditor mWorkingSetEditor;
 
-    private boolean mCheckstyleActivated;
+    private boolean mCheckstyleInitiallyActivated;
 
     //
     // methods
@@ -172,7 +172,7 @@ public class CheckstylePropertyPage extends PropertyPage
                     .getConfiguration(project);
             mProjectConfig = new ProjectConfigurationWorkingCopy(projectConfig);
 
-            mCheckstyleActivated = project.hasNature(CheckstyleNature.NATURE_ID);
+            mCheckstyleInitiallyActivated = project.hasNature(CheckstyleNature.NATURE_ID);
         }
         catch (CoreException e)
         {
@@ -227,7 +227,7 @@ public class CheckstylePropertyPage extends PropertyPage
             this.mChkEnable = new Button(container, SWT.CHECK);
             this.mChkEnable.setText(Messages.CheckstylePropertyPage_btnActivateCheckstyle);
             this.mChkEnable.addSelectionListener(this.mPageController);
-            this.mChkEnable.setSelection(mCheckstyleActivated);
+            this.mChkEnable.setSelection(mCheckstyleInitiallyActivated);
 
             fd = new FormData();
             fd.left = new FormAttachment(0, 3);
@@ -496,19 +496,20 @@ public class CheckstylePropertyPage extends PropertyPage
             boolean needRebuild = mProjectConfig.isRebuildNeeded();
 
             // check if checkstyle nature has to be configured/deconfigured
-            if (checkstyleEnabled != mCheckstyleActivated)
+            if (checkstyleEnabled != mCheckstyleInitiallyActivated)
             {
 
                 ConfigureDeconfigureNatureJob configOperation = new ConfigureDeconfigureNatureJob(
                         project, CheckstyleNature.NATURE_ID);
                 configOperation.setRule(ResourcesPlugin.getWorkspace().getRoot());
                 configOperation.schedule();
-                needRebuild = true;
+
+                needRebuild = needRebuild || !mCheckstyleInitiallyActivated;
             }
 
             // if a rebuild is advised, check/prompt if the rebuild should
             // really be done.
-            if (needRebuild)
+            if (checkstyleEnabled && needRebuild)
             {
 
                 IPreferenceStore prefStore = CheckstylePlugin.getDefault().getPreferenceStore();

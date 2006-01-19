@@ -171,7 +171,7 @@ public final class CheckerFactory
 
         // build cache key using the project name as a part to do per project
         // caching
-        String key = project.getName() + "#" + config;
+        String key = project.getName() + "#" + config; //$NON-NLS-1$
 
         // try the cache
         Checker checker = (Checker) sCheckerMap.get(key);

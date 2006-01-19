@@ -31,6 +31,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.osgi.util.NLS;
 
+import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
@@ -61,7 +62,7 @@ public class ProjectConfigurationType extends ConfigurationType
             }
             else
             {
-                throw new CheckstylePluginException(NLS.bind("Could not find {0}",
+                throw new CheckstylePluginException(NLS.bind(Messages.ProjectConfigurationType_msgFileNotFound,
                         checkConfiguration.getLocation()));
             }
         }

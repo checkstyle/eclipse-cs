@@ -20,9 +20,6 @@
 
 package com.atlassw.tools.eclipse.checkstyle;
 
-//=================================================
-// Imports from java namespace
-//=================================================
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -164,7 +161,7 @@ public class CheckstylePlugin extends AbstractUIPlugin
         try
         {
             Logger checkstyleErrorLog = Logger
-                    .getLogger("com.puppycrawl.tools.checkstyle.ExceptionLog");
+                    .getLogger("com.puppycrawl.tools.checkstyle.ExceptionLog"); //$NON-NLS-1$
 
             checkstyleErrorLog.addHandler(new EclipseLogHandler(this));
             checkstyleErrorLog.setLevel(Level.ALL);

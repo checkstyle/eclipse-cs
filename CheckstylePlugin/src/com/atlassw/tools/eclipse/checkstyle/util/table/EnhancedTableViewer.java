@@ -51,16 +51,16 @@ public class EnhancedTableViewer extends TableViewer
     //
 
     /** Key for the column index in the persistence store. */
-    private static final String TAG_COLUMN_INDEX = "sortColumn";
+    private static final String TAG_COLUMN_INDEX = "sortColumn"; //$NON-NLS-1$
 
     /** Key for the sort direction in the persistence store. */
-    private static final String TAG_SORT_DIRECTION = "sortDirection";
+    private static final String TAG_SORT_DIRECTION = "sortDirection"; //$NON-NLS-1$
 
     /** Key for the widths in the persistence store. */
-    private static final String TAG_COLUMN_WIDTH = "colWidth";
+    private static final String TAG_COLUMN_WIDTH = "colWidth"; //$NON-NLS-1$
 
     /** Key for the selection index in the persistence store. */
-    private static final String TAG_CURRENT_SELECTION = "selectedRow";
+    private static final String TAG_CURRENT_SELECTION = "selectedRow"; //$NON-NLS-1$
 
     /** Integer constant for the forward sort direction value. */
     private static final int DIRECTION_FORWARD = 1;

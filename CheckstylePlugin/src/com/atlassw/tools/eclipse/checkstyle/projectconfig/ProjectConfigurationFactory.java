@@ -325,6 +325,11 @@ public final class ProjectConfigurationFactory
 
                     mCurrentAddValues = new HashMap();
                 }
+                else if (XMLTags.ADDITIONAL_DATA_TAG.equalsIgnoreCase(qName))
+                {
+                    mCurrentAddValues.put(attributes.getValue(XMLTags.NAME_TAG), attributes
+                            .getValue(XMLTags.VALUE_TAG));
+                }
                 else if (XMLTags.FILESET_TAG.equals(qName))
                 {
 

@@ -581,7 +581,7 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
 
             attr.addAttribute(new String(), XMLTags.CHECK_CONFIG_NAME_TAG,
                     XMLTags.CHECK_CONFIG_NAME_TAG, null, checkConfig.getName());
-            attr.addAttribute(new String(), XMLTags.LOCAL_TAG, XMLTags.LOCAL_TAG, null, ""
+            attr.addAttribute(new String(), XMLTags.LOCAL_TAG, XMLTags.LOCAL_TAG, null, "" //$NON-NLS-1$
                     + !checkConfig.isGlobal());
         }
 

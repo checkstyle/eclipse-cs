@@ -56,6 +56,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
+import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
@@ -71,16 +72,16 @@ public class RemoteConfigurationType extends ConfigurationType
 {
 
     /** Key to access the information if the configuration should be cached. */
-    public static final String KEY_CACHE_CONFIG = "cache-file";
+    public static final String KEY_CACHE_CONFIG = "cache-file"; //$NON-NLS-1$
 
     /** Key to access the path of the cached configuration file. */
-    public static final String KEY_CACHE_FILE_LOCATION = "cache-file-location";
+    public static final String KEY_CACHE_FILE_LOCATION = "cache-file-location"; //$NON-NLS-1$
 
     /** Key to access the username. */
-    public static final String KEY_USERNAME = "username";
+    public static final String KEY_USERNAME = "username"; //$NON-NLS-1$
 
     /** Key to access the password. */
-    public static final String KEY_PASSWORD = "password";
+    public static final String KEY_PASSWORD = "password"; //$NON-NLS-1$
 
     /**
      * {@inheritDoc}
@@ -147,7 +148,7 @@ public class RemoteConfigurationType extends ConfigurationType
         // remove authentication info
         try
         {
-            Platform.flushAuthorizationInfo(resolveLocation(checkConfiguration), "", "");
+            Platform.flushAuthorizationInfo(resolveLocation(checkConfiguration), "", ""); //$NON-NLS-1$ //$NON-NLS-2$
             RemoteConfigAuthenticator.removeCachedAuthInfo(checkConfiguration);
         }
         catch (CoreException e)
@@ -301,13 +302,13 @@ public class RemoteConfigurationType extends ConfigurationType
         }
         catch (IOException e)
         {
-            CheckstyleLog.log(e, NLS.bind("Could not cache remote configuration {0} ({1})",
+            CheckstyleLog.log(e, NLS.bind(Messages.RemoteConfigurationType_msgRemoteCachingFailed,
                     checkConfig.getName(), checkConfig.getLocation()));
             return false;
         }
         catch (CheckstylePluginException e)
         {
-            CheckstyleLog.log(e, NLS.bind("Could not cache remote configuration {0} ({1})",
+            CheckstyleLog.log(e, NLS.bind("Could not cache remote configuration {0} ({1})", //$NON-NLS-1$
                     checkConfig.getName(), checkConfig.getLocation()));
             return false;
         }
@@ -426,7 +427,7 @@ public class RemoteConfigurationType extends ConfigurationType
 
                     URL url = new URL(mConfiguration.getLocation());
 
-                    Map authInfo = Platform.getAuthorizationInfo(url, "", "");
+                    Map authInfo = Platform.getAuthorizationInfo(url, "", ""); //$NON-NLS-1$ //$NON-NLS-2$
 
                     if (authInfo == null || authInfo.get(KEY_PASSWORD) == null)
                     {
@@ -449,7 +450,7 @@ public class RemoteConfigurationType extends ConfigurationType
                             }
 
                             // store authorization info to the internal key ring
-                            Platform.addAuthorizationInfo(url, "", "", authInfo);
+                            Platform.addAuthorizationInfo(url, "", "", authInfo); //$NON-NLS-1$ //$NON-NLS-2$
 
                             authInfo.put(KEY_PASSWORD, authDialog.getPassword());
 
@@ -532,7 +533,7 @@ public class RemoteConfigurationType extends ConfigurationType
                 mainConposite.setLayout(new GridLayout(2, false));
 
                 Label lblUserName = new Label(mainConposite, SWT.NULL);
-                lblUserName.setText("Username:");
+                lblUserName.setText(Messages.RemoteConfigurationType_lblUserName);
                 lblUserName.setLayoutData(new GridData());
 
                 mTxtUserName = new Text(mainConposite, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
@@ -543,20 +544,20 @@ public class RemoteConfigurationType extends ConfigurationType
                 }
 
                 Label lblPassword = new Label(mainConposite, SWT.NULL);
-                lblPassword.setText("Password:");
+                lblPassword.setText(Messages.RemoteConfigurationType_lblPassword);
                 lblPassword.setLayoutData(new GridData());
 
                 mTxtPassword = new Text(mainConposite, SWT.LEFT | SWT.PASSWORD | SWT.BORDER);
                 mTxtPassword.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
                 mChkSavePassword = new Button(mainConposite, SWT.CHECK);
-                mChkSavePassword.setText("Save password");
+                mChkSavePassword.setText(Messages.RemoteConfigurationType_btnSavePassword);
                 GridData gd = new GridData(GridData.FILL_HORIZONTAL);
                 gd.horizontalSpan = 2;
                 mChkSavePassword.setLayoutData(gd);
 
-                this.setTitle("Authentication requested by remote server");
-                this.setMessage(NLS.bind("Input authentication info for the remote location:\n{0}",
+                this.setTitle(Messages.RemoteConfigurationType_titleRemoteAuth);
+                this.setMessage(NLS.bind(Messages.RemoteConfigurationType_msgRemoteAuth,
                         mRemoteURL));
                 // this.setTitleImage(CheckstylePluginImages
                 // .getImage(CheckstylePluginImages.PLUGIN_LOGO));
@@ -581,7 +582,7 @@ public class RemoteConfigurationType extends ConfigurationType
              */
             protected void configureShell(Shell newShell)
             {
-                newShell.setText("Input authentication info");
+                newShell.setText(Messages.RemoteConfigurationType_titleAuthentication);
                 super.configureShell(newShell);
             }
 

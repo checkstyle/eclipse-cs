@@ -116,14 +116,14 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor
         mDescription.setLayoutData(gd);
 
         Group advancedGroup = new Group(contents, SWT.NULL);
-        advancedGroup.setText("Advanced options");
+        advancedGroup.setText(Messages.RemoteConfigurationEditor_titleAdvancedOptions);
         gd = new GridData(GridData.FILL_HORIZONTAL);
         gd.horizontalSpan = 2;
         advancedGroup.setLayoutData(gd);
         advancedGroup.setLayout(new GridLayout(2, false));
 
         mChkCacheConfig = new Button(advancedGroup, SWT.CHECK);
-        mChkCacheConfig.setText("Cache configuration file");
+        mChkCacheConfig.setText(Messages.RemoteConfigurationEditor_btnCacheRemoteConfig);
         gd = new GridData(GridData.FILL_HORIZONTAL);
         gd.horizontalSpan = 2;
         mChkCacheConfig.setLayoutData(gd);
@@ -167,7 +167,7 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor
         mWorkingCopy.setDescription(mDescription.getText());
 
         mWorkingCopy.getAdditionalData().put(RemoteConfigurationType.KEY_CACHE_CONFIG,
-                "" + mChkCacheConfig.getSelection());
+                "" + mChkCacheConfig.getSelection()); //$NON-NLS-1$
 
         // set the cachefile name
         if (mChkCacheConfig.getSelection()
@@ -176,8 +176,8 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor
         {
             mWorkingCopy.getAdditionalData().put(
                     RemoteConfigurationType.KEY_CACHE_FILE_LOCATION,
-                    mWorkingCopy.getName() + "_" + (mWorkingCopy.isGlobal() ? "global" : "local")
-                            + "_cache.xml");
+                    mWorkingCopy.getName() + "_" + (mWorkingCopy.isGlobal() ? "global" : "local") //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                            + "_cache.xml"); //$NON-NLS-1$
         }
 
         return mWorkingCopy;

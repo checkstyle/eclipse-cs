@@ -331,7 +331,7 @@ public final class SWTUtil
                 // Hack to get the initial size computed for this dialog
                 try
                 {
-                    Method getInitialSizeMethod = Window.class.getDeclaredMethod("getInitialSize",
+                    Method getInitialSizeMethod = Window.class.getDeclaredMethod("getInitialSize", //$NON-NLS-1$
                             null);
                     getInitialSizeMethod.setAccessible(true);
                     initialSize = (Point) getInitialSizeMethod.invoke(mDialog, null);

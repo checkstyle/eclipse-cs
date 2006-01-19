@@ -421,7 +421,7 @@ public class FileSetEditDialog extends TitleAreaDialog
             public void run()
             {
 
-                mMatchGroup.setText("Building test results...");
+                mMatchGroup.setText(Messages.FileSetEditDialog_msgBuildTestResults);
 
                 try
                 {

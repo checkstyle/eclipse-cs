@@ -30,7 +30,7 @@ import org.eclipse.osgi.util.NLS;
  */
 public final class ErrorMessages extends NLS
 {
-    //CHECKSTYLE:OFF
+    // CHECKSTYLE:OFF
 
     private static final String BUNDLE_NAME = "com.atlassw.tools.eclipse.checkstyle.errormessages"; //$NON-NLS-1$
 
@@ -103,21 +103,21 @@ public final class ErrorMessages extends NLS
 
     public static String msgErrorFailedExportConfig;
 
-	public static String CheckstyleLog_msgStatusPrefix;
+    public static String CheckstyleLog_msgStatusPrefix;
 
-	public static String CheckstyleLog_titleInternalError;
+    public static String CheckstyleLog_titleInternalError;
 
-	public static String CheckstyleLog_titleWarning;
+    public static String CheckstyleLog_titleWarning;
 
     public static String errorWhileBuildingProject;
 
     public static String errorWhileOpeningEditor;
 
     public static String errorWhileDisplayingDuplicates;
-    
+
     public static String errorFilesetWithoutCheckConfig;
 
-    public static String errorFailedAutoCreatingConfig;
+    public static String CheckstyleBuilder_msgErrorUnknown;
 
-    //  CHECKSTYLE:ON
+    // CHECKSTYLE:ON
 }
