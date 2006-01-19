@@ -522,8 +522,6 @@ public class CheckstylePropertyPage extends PropertyPage
                 //
                 if (MessageDialogWithToggle.PROMPT.equals(promptRebuildPref) && needRebuild)
                 {
-
-                    // TODO give other texts
                     MessageDialogWithToggle dialog = MessageDialogWithToggle.openYesNoQuestion(
                             getShell(), Messages.CheckstylePropertyPage_titleRebuild,
                             Messages.CheckstylePropertyPage_msgRebuild,

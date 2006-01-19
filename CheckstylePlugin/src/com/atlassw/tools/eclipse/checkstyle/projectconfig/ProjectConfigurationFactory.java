@@ -96,7 +96,6 @@ public final class ProjectConfigurationFactory
     public static IProjectConfiguration getConfiguration(IProject project)
         throws CheckstylePluginException
     {
-        // TODO Cache the project configurations
         return loadFromPersistence(project);
     }
 

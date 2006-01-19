@@ -290,9 +290,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
                                     IResource.DEPTH_ZERO);
 
                             // remove markers from package to prevent
-                            // packagehtml
-                            // messages
-                            // from accumulatin
+                            // packagehtml messages from accumulatin
                             file.getParent().deleteMarkers(CheckstyleMarker.MARKER_ID, false,
                                     IResource.DEPTH_ZERO);
                         }
@@ -313,7 +311,6 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
         }
         catch (CheckstylePluginException e)
         {
-            CheckstyleLog.log(e); // TODO check if this is needed
             Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR, e
                     .getLocalizedMessage(), e);
             throw new CoreException(status);
