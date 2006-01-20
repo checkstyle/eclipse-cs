@@ -33,6 +33,7 @@ import org.eclipse.swt.widgets.Text;
 
 import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationWorkingCopy;
+import com.atlassw.tools.eclipse.checkstyle.config.gui.CheckConfigurationPropertiesDialog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
 /**
@@ -134,7 +135,8 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor
     /**
      * {@inheritDoc}
      */
-    public void initialize(CheckConfigurationWorkingCopy checkConfiguration)
+    public void initialize(CheckConfigurationWorkingCopy checkConfiguration,
+            CheckConfigurationPropertiesDialog dialog)
     {
         mWorkingCopy = checkConfiguration;
 
@@ -174,8 +176,7 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor
                 && mWorkingCopy.getAdditionalData().get(
                         RemoteConfigurationType.KEY_CACHE_FILE_LOCATION) == null)
         {
-            mWorkingCopy.getAdditionalData().put(
-                    RemoteConfigurationType.KEY_CACHE_FILE_LOCATION,
+            mWorkingCopy.getAdditionalData().put(RemoteConfigurationType.KEY_CACHE_FILE_LOCATION,
                     mWorkingCopy.getName() + "_" + (mWorkingCopy.isGlobal() ? "global" : "local") //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                             + "_cache.xml"); //$NON-NLS-1$
         }

@@ -25,6 +25,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationWorkingCopy;
+import com.atlassw.tools.eclipse.checkstyle.config.gui.CheckConfigurationPropertiesDialog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
 /**
@@ -39,8 +40,10 @@ public interface ICheckConfigurationEditor
      * Initializes the configuration editor with its properties.
      * 
      * @param checkConfiguration the working copy
+     * @param dialog the dialog
      */
-    void initialize(CheckConfigurationWorkingCopy checkConfiguration);
+    void initialize(CheckConfigurationWorkingCopy checkConfiguration,
+            CheckConfigurationPropertiesDialog dialog);
 
     /**
      * Create the editor control.

@@ -43,6 +43,7 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationWorkingCopy;
+import com.atlassw.tools.eclipse.checkstyle.config.gui.CheckConfigurationPropertiesDialog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
 /**
@@ -183,7 +184,8 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor
     /**
      * {@inheritDoc}
      */
-    public void initialize(CheckConfigurationWorkingCopy checkConfiguration)
+    public void initialize(CheckConfigurationWorkingCopy checkConfiguration,
+            CheckConfigurationPropertiesDialog dialog)
     {
         mWorkingCopy = checkConfiguration;
 

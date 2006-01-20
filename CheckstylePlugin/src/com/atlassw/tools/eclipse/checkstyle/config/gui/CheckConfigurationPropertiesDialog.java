@@ -120,8 +120,6 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
         super.create();
         initialize();
     }
-    
-    
 
     /**
      * Creates the dialogs main contents.
@@ -212,7 +210,8 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
                         }
                         mCheckConfig.setDescription(oldDescr);
                     }
-                    mConfigurationEditor.initialize(mCheckConfig);
+                    mConfigurationEditor.initialize(mCheckConfig,
+                            CheckConfigurationPropertiesDialog.this);
                 }
             }
         });
@@ -311,7 +310,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
             mConfigType.setSelection(new StructuredSelection(types[0]), true);
 
             createConfigurationEditor(types[0]);
-            mConfigurationEditor.initialize(mCheckConfig);
+            mConfigurationEditor.initialize(mCheckConfig, this);
         }
         else
         {
@@ -325,7 +324,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
             mConfigType.setSelection(new StructuredSelection(mCheckConfig.getType()), true);
             createConfigurationEditor(mCheckConfig.getType());
 
-            mConfigurationEditor.initialize(mCheckConfig);
+            mConfigurationEditor.initialize(mCheckConfig, this);
         }
 
     }

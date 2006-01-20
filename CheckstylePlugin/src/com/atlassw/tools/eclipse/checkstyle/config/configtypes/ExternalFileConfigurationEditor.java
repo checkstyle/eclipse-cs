@@ -35,6 +35,7 @@ import org.eclipse.swt.widgets.Text;
 
 import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationWorkingCopy;
+import com.atlassw.tools.eclipse.checkstyle.config.gui.CheckConfigurationPropertiesDialog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
 /**
@@ -155,7 +156,8 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
     /**
      * {@inheritDoc}
      */
-    public void initialize(CheckConfigurationWorkingCopy checkConfiguration)
+    public void initialize(CheckConfigurationWorkingCopy checkConfiguration,
+            CheckConfigurationPropertiesDialog dialog)
     {
         mWorkingCopy = checkConfiguration;
 

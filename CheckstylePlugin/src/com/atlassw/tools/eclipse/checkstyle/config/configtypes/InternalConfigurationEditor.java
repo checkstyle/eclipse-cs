@@ -20,17 +20,27 @@
 
 package com.atlassw.tools.eclipse.checkstyle.config.configtypes;
 
+import java.io.File;
+
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import com.atlassw.tools.eclipse.checkstyle.Messages;
+import com.atlassw.tools.eclipse.checkstyle.config.CheckConfiguration;
+import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationFactory;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationWorkingCopy;
+import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
+import com.atlassw.tools.eclipse.checkstyle.config.gui.CheckConfigurationPropertiesDialog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
 /**
@@ -46,6 +56,9 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor
     // attributes
     //
 
+    /** The properties dialog. */
+    private CheckConfigurationPropertiesDialog mDialog;
+
     /** the working copy this editor edits. */
     private CheckConfigurationWorkingCopy mWorkingCopy;
 
@@ -57,6 +70,9 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor
 
     /** the text containing the description. */
     private Text mDescription;
+
+    /** button to import an existing configuration. */
+    private Button mBtnImport;
 
     //
     // methods
@@ -111,15 +127,60 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor
         gd.grabExcessVerticalSpace = true;
         mDescription.setLayoutData(gd);
 
+        mBtnImport = new Button(contents, SWT.PUSH);
+        mBtnImport.setText("Import...");
+        gd = new GridData();
+        gd.widthHint = 75;
+        gd.horizontalSpan = 2;
+        gd.horizontalAlignment = GridData.END;
+        mBtnImport.setLayoutData(gd);
+
+        mBtnImport.addSelectionListener(new SelectionListener()
+        {
+
+            public void widgetSelected(SelectionEvent e)
+            {
+                try
+                {
+                    ICheckConfiguration targetConfig = getEditedWorkingCopy();
+
+                    FileDialog fileDialog = new FileDialog(mConfigName.getShell());
+                    fileDialog.setText("Choose Checkstyle configuration file to import");
+                    fileDialog.setFilterExtensions(new String[] { "*.xml", "*.*" });
+
+                    String configFileString = fileDialog.open();
+                    if (configFileString != null && new File(configFileString).exists())
+                    {
+                        ICheckConfiguration tmpSourceConfig = new CheckConfiguration("dummy",
+                                configFileString, null, new ExternalFileConfigurationType(), true,
+                                null);
+
+                        CheckConfigurationFactory.copyConfiguration(tmpSourceConfig, targetConfig);
+                    }
+                }
+                catch (CheckstylePluginException ex)
+                {
+                    mDialog.setErrorMessage(ex.getLocalizedMessage());
+                }
+            }
+
+            public void widgetDefaultSelected(SelectionEvent e)
+            {
+            // NOOP
+            }
+        });
+
         return contents;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void initialize(CheckConfigurationWorkingCopy checkConfiguration)
+    public void initialize(CheckConfigurationWorkingCopy checkConfiguration,
+            CheckConfigurationPropertiesDialog dialog)
     {
         mWorkingCopy = checkConfiguration;
+        mDialog = dialog;
 
         if (mWorkingCopy.getName() != null)
         {
