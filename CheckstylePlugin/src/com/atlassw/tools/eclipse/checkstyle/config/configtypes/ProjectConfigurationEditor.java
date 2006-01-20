@@ -31,6 +31,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
@@ -73,6 +74,12 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor
 
     /** the text containing the description. */
     private Text mDescription;
+
+    /**
+     * check box to set if the configuration file is not editable by the
+     * configuration editor.
+     */
+    private Button mChkProtectConfig;
 
     //
     // methods
@@ -178,6 +185,19 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor
         gd.grabExcessVerticalSpace = true;
         mDescription.setLayoutData(gd);
 
+        Group advancedGroup = new Group(contents, SWT.NULL);
+        advancedGroup.setText(Messages.RemoteConfigurationEditor_titleAdvancedOptions);
+        gd = new GridData(GridData.FILL_HORIZONTAL);
+        gd.horizontalSpan = 2;
+        advancedGroup.setLayoutData(gd);
+        advancedGroup.setLayout(new GridLayout(2, false));
+
+        mChkProtectConfig = new Button(advancedGroup, SWT.CHECK);
+        mChkProtectConfig.setText("Protect Checkstyle configuration file");
+        gd = new GridData(GridData.FILL_HORIZONTAL);
+        gd.horizontalSpan = 2;
+        mChkProtectConfig.setLayoutData(gd);
+
         return contents;
     }
 
@@ -201,6 +221,10 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor
         {
             mDescription.setText(mWorkingCopy.getDescription());
         }
+
+        mChkProtectConfig.setSelection(Boolean.valueOf(
+                (String) mWorkingCopy.getAdditionalData().get(
+                        ExternalFileConfigurationType.KEY_PROTECT_CONFIG)).booleanValue());
     }
 
     /**
@@ -211,6 +235,9 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor
         mWorkingCopy.setName(mConfigName.getText());
         mWorkingCopy.setLocation(mLocation.getText());
         mWorkingCopy.setDescription(mDescription.getText());
+
+        mWorkingCopy.getAdditionalData().put(ExternalFileConfigurationType.KEY_PROTECT_CONFIG,
+                "" + mChkProtectConfig.getSelection()); //$NON-NLS-1$
 
         return mWorkingCopy;
     }

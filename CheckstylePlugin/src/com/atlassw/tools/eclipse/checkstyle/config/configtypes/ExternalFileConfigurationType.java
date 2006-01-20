@@ -44,6 +44,9 @@ import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 public class ExternalFileConfigurationType extends ConfigurationType
 {
 
+    /** Key to access the information if the configuration is protected. */
+    public static final String KEY_PROTECT_CONFIG = "protect-config-file"; //$NON-NLS-1$
+
     /** Property resolver used to add dynamic location support. */
     private static final PropertyResolver DYNAMIC_LOC_RESOLVER;
 
@@ -95,26 +98,39 @@ public class ExternalFileConfigurationType extends ConfigurationType
     public boolean isConfigurable(ICheckConfiguration checkConfiguration)
     {
 
-        String location = checkConfiguration.getLocation();
+        boolean isConfigurable = true;
 
-        try
+        boolean isProtected = Boolean.valueOf(
+                (String) checkConfiguration.getAdditionalData().get(KEY_PROTECT_CONFIG))
+                .booleanValue();
+        isConfigurable = !isProtected;
+
+        if (!isProtected)
         {
-            // support dynamic locations for external configurations
 
-            while (PropertyUtil.hasUnresolvedProperties(location))
+            String location = checkConfiguration.getLocation();
+
+            try
             {
-                location = PropertyUtil.replaceProperties(location, DYNAMIC_LOC_RESOLVER);
+
+                // support dynamic locations for external configurations
+                while (PropertyUtil.hasUnresolvedProperties(location))
+                {
+                    location = PropertyUtil.replaceProperties(location, DYNAMIC_LOC_RESOLVER);
+                }
             }
+            catch (CheckstyleException e)
+            {
+                CheckstyleLog.log(e);
+                isConfigurable = false;
+            }
+
+            // The configuration can be changed when the external configuration
+            // file
+            // can is writable
+            isConfigurable = new File(location).canWrite();
         }
-        catch (CheckstyleException e)
-        {
-            CheckstyleLog.log(e);
-            return false;
-        }
-        
-        // The configuration can be changed when the external configuration file
-        // can is writable
-        return new File(location).canWrite();
+        return isConfigurable;
     }
 
     /**

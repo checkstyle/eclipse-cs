@@ -33,6 +33,7 @@ import org.eclipse.osgi.util.NLS;
 
 import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
 
@@ -44,6 +45,9 @@ import com.puppycrawl.tools.checkstyle.PropertyResolver;
  */
 public class ProjectConfigurationType extends ConfigurationType
 {
+
+    /** Key to access the information if the configuration is protected. */
+    public static final String KEY_PROTECT_CONFIG = "protect-config-file"; //$NON-NLS-1$
 
     /**
      * {@inheritDoc}
@@ -62,8 +66,9 @@ public class ProjectConfigurationType extends ConfigurationType
             }
             else
             {
-                throw new CheckstylePluginException(NLS.bind(Messages.ProjectConfigurationType_msgFileNotFound,
-                        checkConfiguration.getLocation()));
+                throw new CheckstylePluginException(NLS.bind(
+                        Messages.ProjectConfigurationType_msgFileNotFound, checkConfiguration
+                                .getLocation()));
             }
         }
         catch (MalformedURLException e)
@@ -78,16 +83,30 @@ public class ProjectConfigurationType extends ConfigurationType
      */
     public boolean isConfigurable(ICheckConfiguration checkConfiguration)
     {
-        // The configuration can be changed when the external configuration file
-        // can is writable
-        try
+        boolean isConfigurable = true;
+
+        boolean isProtected = Boolean.valueOf(
+                (String) checkConfiguration.getAdditionalData().get(KEY_PROTECT_CONFIG))
+                .booleanValue();
+        isConfigurable = !isProtected;
+
+        if (!isProtected)
         {
-            return new File(resolveLocation(checkConfiguration).getFile()).canWrite();
+
+            // The configuration can be changed when the external configuration
+            // file can is writable
+            try
+            {
+                isConfigurable = new File(resolveLocation(checkConfiguration).getFile()).canWrite();
+            }
+            catch (CheckstylePluginException e)
+            {
+                CheckstyleLog.log(e);
+                isConfigurable = false;
+            }
+
         }
-        catch (CheckstylePluginException e)
-        {
-            return false;
-        }
+        return isConfigurable;
     }
 
     /**
