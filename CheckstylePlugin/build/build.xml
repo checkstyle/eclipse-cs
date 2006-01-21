@@ -111,7 +111,7 @@
 		<!-- copy the plugin contents to the tmp dir -->
 		<copy todir="${dist.basedir.tmpdir}/">
 			<fileset dir="${basedir}">
-				<include name="${checkstyle.jar}" />
+				<include name="lib/**" />
 				<include name="extension-libraries/**" />
 				<include name="plugin.xml" />
 				<include name="*.properties" />
