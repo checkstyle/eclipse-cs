@@ -179,6 +179,7 @@ public abstract class ConfigurationType implements IConfigurationType
     {
 
         MultiPropertyResolver multiResolver = new MultiPropertyResolver();
+        multiResolver.addPropertyResolver(new ResolvablePropertyResolver(checkConfiguration));
         multiResolver.addPropertyResolver(new StandardPropertyResolver(resolveLocation(
                 checkConfiguration).getFile()));
         multiResolver.addPropertyResolver(new ClasspathVariableResolver());

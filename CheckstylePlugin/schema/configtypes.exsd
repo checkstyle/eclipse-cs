@@ -108,6 +108,13 @@ The class is required to implement &lt;link&gt;com.atlassw.tools.eclipse.checkst
                </documentation>
             </annotation>
          </attribute>
+         <attribute name="additionalPropertySupport" type="boolean" use="default" value="true">
+            <annotation>
+               <documentation>
+                  Flags if the configuration supports storing of addtional Checkstyle property values.
+               </documentation>
+            </annotation>
+         </attribute>
       </complexType>
    </element>
 

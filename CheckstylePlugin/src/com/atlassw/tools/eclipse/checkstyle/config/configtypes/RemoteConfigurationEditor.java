@@ -71,6 +71,15 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor
     /**
      * {@inheritDoc}
      */
+    public void initialize(CheckConfigurationWorkingCopy checkConfiguration,
+            CheckConfigurationPropertiesDialog dialog)
+    {
+        mWorkingCopy = checkConfiguration;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public Control createEditorControl(Composite parent, final Shell shell)
     {
 
@@ -129,17 +138,6 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor
         gd.horizontalSpan = 2;
         mChkCacheConfig.setLayoutData(gd);
 
-        return contents;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void initialize(CheckConfigurationWorkingCopy checkConfiguration,
-            CheckConfigurationPropertiesDialog dialog)
-    {
-        mWorkingCopy = checkConfiguration;
-
         if (mWorkingCopy.getName() != null)
         {
             mConfigName.setText(mWorkingCopy.getName());
@@ -156,6 +154,8 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor
         mChkCacheConfig.setSelection(Boolean.valueOf(
                 (String) mWorkingCopy.getAdditionalData().get(
                         RemoteConfigurationType.KEY_CACHE_CONFIG)).booleanValue());
+
+        return contents;
     }
 
     /**

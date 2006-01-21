@@ -29,6 +29,8 @@ import java.util.List;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 import org.eclipse.core.resources.IProject;
 
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationWorkingCopy;
@@ -254,5 +256,13 @@ public class ProjectConfiguration implements Cloneable, IProjectConfiguration
     {
         return new HashCodeBuilder(984759323, 1000003).append(mProject).append(mLocalCheckConfigs)
                 .append(mUseSimpleConfig).append(mFileSets).append(mFilters).toHashCode();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String toString()
+    {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
     }
 }

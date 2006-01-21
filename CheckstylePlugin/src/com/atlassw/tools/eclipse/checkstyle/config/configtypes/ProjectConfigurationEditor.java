@@ -88,6 +88,15 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor
     /**
      * {@inheritDoc}
      */
+    public void initialize(CheckConfigurationWorkingCopy checkConfiguration,
+            CheckConfigurationPropertiesDialog dialog)
+    {
+        mWorkingCopy = checkConfiguration;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public Control createEditorControl(Composite parent, final Shell shell)
     {
 
@@ -193,21 +202,10 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor
         advancedGroup.setLayout(new GridLayout(2, false));
 
         mChkProtectConfig = new Button(advancedGroup, SWT.CHECK);
-        mChkProtectConfig.setText("Protect Checkstyle configuration file");
+        mChkProtectConfig.setText(Messages.ProjectConfigurationEditor_chkProtectConfigFile);
         gd = new GridData(GridData.FILL_HORIZONTAL);
         gd.horizontalSpan = 2;
         mChkProtectConfig.setLayoutData(gd);
-
-        return contents;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void initialize(CheckConfigurationWorkingCopy checkConfiguration,
-            CheckConfigurationPropertiesDialog dialog)
-    {
-        mWorkingCopy = checkConfiguration;
 
         if (mWorkingCopy.getName() != null)
         {
@@ -225,6 +223,8 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor
         mChkProtectConfig.setSelection(Boolean.valueOf(
                 (String) mWorkingCopy.getAdditionalData().get(
                         ExternalFileConfigurationType.KEY_PROTECT_CONFIG)).booleanValue());
+
+        return contents;
     }
 
     /**

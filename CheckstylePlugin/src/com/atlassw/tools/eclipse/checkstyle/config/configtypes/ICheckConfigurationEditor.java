@@ -46,7 +46,8 @@ public interface ICheckConfigurationEditor
             CheckConfigurationPropertiesDialog dialog);
 
     /**
-     * Create the editor control.
+     * Create the editor control. This method is always called after the
+     * initialize method.
      * 
      * @param parent the parent composite
      * @param shell the parent shell

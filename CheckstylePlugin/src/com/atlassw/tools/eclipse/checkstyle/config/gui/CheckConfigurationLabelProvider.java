@@ -23,6 +23,7 @@ package com.atlassw.tools.eclipse.checkstyle.config.gui;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
+import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 
 /**
@@ -41,8 +42,10 @@ public class CheckConfigurationLabelProvider extends LabelProvider
         {
             ICheckConfiguration checkConfig = (ICheckConfiguration) element;
 
-            text = checkConfig.getName() + " "
-                    + (checkConfig.isGlobal() ? " - (Global)" : " - (Local)");
+            text = checkConfig.getName()
+                    + " " //$NON-NLS-1$
+                    + (checkConfig.isGlobal() ? Messages.CheckConfigurationLabelProvider_suffixGlobal
+                            : Messages.CheckConfigurationLabelProvider_suffixLocal);
         }
 
         return text;

@@ -20,6 +20,9 @@
 
 package com.atlassw.tools.eclipse.checkstyle.config.gui;
 
+import java.util.List;
+
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
@@ -28,18 +31,23 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
 import com.atlassw.tools.eclipse.checkstyle.Messages;
+import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationTester;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationWorkingCopy;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfigurationWorkingSet;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.ConfigurationTypes;
@@ -61,6 +69,9 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
     //
     // attributes
     //
+
+    /** Button to add the additional properties dialog. */
+    private Button mBtnProperties;
 
     /** the working set. */
     private ICheckConfigurationWorkingSet mWorkingSet;
@@ -191,7 +202,6 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
                 {
                     IConfigurationType type = (IConfigurationType) ((IStructuredSelection) event
                             .getSelection()).getFirstElement();
-                    createConfigurationEditor(type);
 
                     if (mConfigType.getCombo().isEnabled())
                     {
@@ -210,8 +220,8 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
                         }
                         mCheckConfig.setDescription(oldDescr);
                     }
-                    mConfigurationEditor.initialize(mCheckConfig,
-                            CheckConfigurationPropertiesDialog.this);
+
+                    createConfigurationEditor(mCheckConfig);
                 }
             }
         });
@@ -224,6 +234,50 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
         fd = new GridData(GridData.FILL_HORIZONTAL);
         fd.horizontalSpan = 2;
         mEditorPlaceHolder.setLayoutData(fd);
+
+        return composite;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected Control createButtonBar(Composite parent)
+    {
+
+        Composite composite = new Composite(parent, SWT.NONE);
+        GridLayout layout = new GridLayout(3, false);
+        layout.marginHeight = 0;
+        layout.marginWidth = 0;
+        composite.setLayout(layout);
+        composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+        mBtnProperties = new Button(composite, SWT.PUSH);
+        mBtnProperties.setText(Messages.CheckConfigurationPropertiesDialog_btnAdditionalProps);
+        GridData gd = new GridData();
+        gd.horizontalAlignment = GridData.BEGINNING;
+        gd.horizontalIndent = 5;
+        mBtnProperties.setLayoutData(gd);
+
+        mBtnProperties.addSelectionListener(new SelectionListener()
+        {
+
+            public void widgetSelected(SelectionEvent e)
+            {
+                ResolvablePropertiesDialog dialog = new ResolvablePropertiesDialog(getShell(),
+                        mCheckConfig);
+                dialog.open();
+            }
+
+            public void widgetDefaultSelected(SelectionEvent e)
+            {
+            // NOOP
+            }
+        });
+
+        Control buttonBar = super.createButtonBar(composite);
+        gd = new GridData(GridData.FILL_HORIZONTAL);
+        gd.horizontalAlignment = GridData.END;
+        buttonBar.setLayoutData(gd);
 
         return composite;
     }
@@ -247,7 +301,38 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
         {
             // Check if the configuration is valid
             mCheckConfig = mConfigurationEditor.getEditedWorkingCopy();
-            super.okPressed();
+
+            CheckConfigurationTester tester = new CheckConfigurationTester(mCheckConfig);
+            List unresolvedProps = tester.getUnresolvedProperties();
+
+            if (!unresolvedProps.isEmpty())
+            {
+
+                MessageDialog dialog = new MessageDialog(getShell(),
+                        Messages.CheckConfigurationPropertiesDialog_titleUnresolvedProps, null,
+                        NLS.bind(Messages.CheckConfigurationPropertiesDialog_msgUnresolvedProps,
+                                "" + unresolvedProps.size()), MessageDialog.WARNING, //$NON-NLS-1$
+                        new String[] { Messages.CheckConfigurationPropertiesDialog_btnEditProps,
+                            Messages.CheckConfigurationPropertiesDialog_btnContinue,
+                            Messages.CheckConfigurationPropertiesDialog_btnCancel }, 0);
+                int result = dialog.open();
+
+                if (0 == result)
+                {
+                    ResolvablePropertiesDialog propsDialog = new ResolvablePropertiesDialog(
+                            getShell(), mCheckConfig);
+                    propsDialog.open();
+                    return;
+                }
+                else if (1 == result)
+                {
+                    super.okPressed();
+                }
+                else if (2 == result)
+                {
+                    return;
+                }
+            }
         }
         catch (CheckstylePluginException e)
         {
@@ -260,14 +345,15 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
      * 
      * @param configType the configuration type
      */
-    private void createConfigurationEditor(IConfigurationType configType)
+    private void createConfigurationEditor(CheckConfigurationWorkingCopy config)
     {
 
-        Class editorClass = configType.getLocationEditorClass();
+        Class editorClass = config.getType().getLocationEditorClass();
 
         try
         {
             mConfigurationEditor = (ICheckConfigurationEditor) editorClass.newInstance();
+            mConfigurationEditor.initialize(config, this);
 
             // remove old editor
             Control[] controls = mEditorPlaceHolder.getChildren();
@@ -285,6 +371,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
             Point initialSize = this.getInitialSize();
             getShell().setSize(initialSize);
 
+            mBtnProperties.setEnabled(mCheckConfig.getType().isEditable());
         }
         catch (Exception ex)
         {
@@ -309,8 +396,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
             mConfigType.setInput(types);
             mConfigType.setSelection(new StructuredSelection(types[0]), true);
 
-            createConfigurationEditor(types[0]);
-            mConfigurationEditor.initialize(mCheckConfig, this);
+            createConfigurationEditor(mCheckConfig);
         }
         else
         {
@@ -322,10 +408,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
 
             // type of existing configs cannot be changed
             mConfigType.setSelection(new StructuredSelection(mCheckConfig.getType()), true);
-            createConfigurationEditor(mCheckConfig.getType());
-
-            mConfigurationEditor.initialize(mCheckConfig, this);
+            createConfigurationEditor(mCheckConfig);
         }
-
     }
 }

@@ -45,6 +45,7 @@ import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationFactory;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
+import com.atlassw.tools.eclipse.checkstyle.config.ResolvableProperty;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.ConfigurationTypes;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.IConfigurationType;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.IFilter;
@@ -261,6 +262,9 @@ public final class ProjectConfigurationFactory
         /** Additional data for the current configuration. */
         private Map mCurrentAddValues;
 
+        /** List of resolvable properties for the current configuration. */
+        private List mResolvableProperties;
+
         //
         // constructors
         //
@@ -323,11 +327,21 @@ public final class ProjectConfigurationFactory
                     mCurrentConfigType = ConfigurationTypes.getByInternalName(type);
 
                     mCurrentAddValues = new HashMap();
+                    mResolvableProperties = new ArrayList();
                 }
                 else if (XMLTags.ADDITIONAL_DATA_TAG.equalsIgnoreCase(qName))
                 {
                     mCurrentAddValues.put(attributes.getValue(XMLTags.NAME_TAG), attributes
                             .getValue(XMLTags.VALUE_TAG));
+                }
+                else if (XMLTags.PROPERTY_TAG.equals(qName))
+                {
+
+                    String name = attributes.getValue(XMLTags.NAME_TAG);
+                    String value = attributes.getValue(XMLTags.VALUE_TAG);
+
+                    ResolvableProperty prop = new ResolvableProperty(name, value);
+                    mResolvableProperties.add(prop);
                 }
                 else if (XMLTags.FILESET_TAG.equals(qName))
                 {
@@ -416,7 +430,7 @@ public final class ProjectConfigurationFactory
 
                     ICheckConfiguration checkConfig = new CheckConfiguration(mCurrentName,
                             mCurrentLocation, mCurrentDescription, mCurrentConfigType, false,
-                            mCurrentAddValues);
+                            mResolvableProperties, mCurrentAddValues);
 
                     mCheckConfigs.add(checkConfig);
                 }

@@ -26,6 +26,8 @@ import java.util.regex.PatternSyntaxException;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 
 import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
@@ -188,5 +190,13 @@ public class FileMatchPattern implements Cloneable
     {
         return new HashCodeBuilder(7687, 1000003).append(mIsIncludePattern).append(mPatternString)
                 .toHashCode();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String toString()
+    {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
     }
 }

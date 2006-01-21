@@ -24,6 +24,8 @@ import java.util.List;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 
 /**
  * Base implementation of a filter.
@@ -219,5 +221,13 @@ public abstract class AbstractFilter implements IFilter
         return new HashCodeBuilder(389793, 1000003).append(mFilterName).append(mInternalName)
                 .append(mFilterDescription).append(mFilterEditor).append(mSelected).append(
                         mReadonly).toHashCode();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String toString()
+    {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
     }
 }

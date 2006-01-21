@@ -81,6 +81,16 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor
     /**
      * {@inheritDoc}
      */
+    public void initialize(CheckConfigurationWorkingCopy checkConfiguration,
+            CheckConfigurationPropertiesDialog dialog)
+    {
+        mWorkingCopy = checkConfiguration;
+        mDialog = dialog;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public Control createEditorControl(Composite parent, final Shell shell)
     {
 
@@ -128,7 +138,7 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor
         mDescription.setLayoutData(gd);
 
         mBtnImport = new Button(contents, SWT.PUSH);
-        mBtnImport.setText("Import...");
+        mBtnImport.setText(Messages.InternalConfigurationEditor_btnImport);
         gd = new GridData();
         gd.widthHint = 75;
         gd.horizontalSpan = 2;
@@ -145,15 +155,16 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor
                     ICheckConfiguration targetConfig = getEditedWorkingCopy();
 
                     FileDialog fileDialog = new FileDialog(mConfigName.getShell());
-                    fileDialog.setText("Choose Checkstyle configuration file to import");
-                    fileDialog.setFilterExtensions(new String[] { "*.xml", "*.*" });
+                    fileDialog.setText(Messages.InternalConfigurationEditor_titleImportDialog);
+                    fileDialog.setFilterExtensions(new String[] { "*.xml", "*.*" }); //$NON-NLS-1$ //$NON-NLS-2$
 
                     String configFileString = fileDialog.open();
                     if (configFileString != null && new File(configFileString).exists())
                     {
-                        ICheckConfiguration tmpSourceConfig = new CheckConfiguration("dummy",
+                        ICheckConfiguration tmpSourceConfig = new CheckConfiguration(
+                                "dummy", //$NON-NLS-1$
                                 configFileString, null, new ExternalFileConfigurationType(), true,
-                                null);
+                                null, null);
 
                         CheckConfigurationFactory.copyConfiguration(tmpSourceConfig, targetConfig);
                     }
@@ -170,18 +181,6 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor
             }
         });
 
-        return contents;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void initialize(CheckConfigurationWorkingCopy checkConfiguration,
-            CheckConfigurationPropertiesDialog dialog)
-    {
-        mWorkingCopy = checkConfiguration;
-        mDialog = dialog;
-
         if (mWorkingCopy.getName() != null)
         {
             mConfigName.setText(mWorkingCopy.getName());
@@ -194,6 +193,8 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor
         {
             mDescription.setText(mWorkingCopy.getDescription());
         }
+
+        return contents;
     }
 
     /**

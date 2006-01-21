@@ -45,6 +45,7 @@ import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationFactory;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationWorkingCopy;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfigurationWorkingSet;
+import com.atlassw.tools.eclipse.checkstyle.config.ResolvableProperty;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.BuiltInConfigurationType;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.IFilter;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
@@ -504,6 +505,9 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
             TransformerHandler xmlOut) throws SAXException, CheckstylePluginException
     {
 
+        // TODO refactor to avoid code duplication with
+        // GlobalCheckConfigurationWorkingSet
+
         // don't store built-in configurations to persistence or local
         // configurations
         if (checkConfig.getType() instanceof BuiltInConfigurationType || checkConfig.isGlobal())
@@ -527,6 +531,30 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
         xmlOut
                 .startElement(new String(), XMLTags.CHECK_CONFIG_TAG, XMLTags.CHECK_CONFIG_TAG,
                         attrs);
+
+        // Write resolvable properties
+        Iterator propsIterator = checkConfig.getResolvableProperties().iterator();
+
+        if (propsIterator.hasNext())
+        {
+            xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
+        }
+
+        while (propsIterator.hasNext())
+        {
+
+            ResolvableProperty prop = (ResolvableProperty) propsIterator.next();
+
+            attrs = new AttributesImpl();
+            attrs.addAttribute(new String(), XMLTags.NAME_TAG, XMLTags.NAME_TAG, null, prop
+                    .getPropertyName());
+            attrs.addAttribute(new String(), XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, null, prop
+                    .getValue());
+
+            xmlOut.startElement(new String(), XMLTags.PROPERTY_TAG, XMLTags.PROPERTY_TAG, attrs);
+            xmlOut.endElement(new String(), XMLTags.PROPERTY_TAG, XMLTags.PROPERTY_TAG);
+            xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
+        }
 
         Iterator addDataIterator = checkConfig.getAdditionalData().keySet().iterator();
         while (addDataIterator.hasNext())

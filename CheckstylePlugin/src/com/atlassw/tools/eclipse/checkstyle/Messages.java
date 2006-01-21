@@ -310,20 +310,6 @@ public final class Messages extends NLS
 
     public static String ProjectConfigurationLocationEditor_titleSelectConfigFile;
 
-    public static String ResolvablePropertyEditDialog_lblValue;
-
-    public static String ResolvablePropertyEditDialog_lblVariable;
-
-    public static String ResolvablePropertyEditDialog_titlePropertyValueEditor;
-
-    public static String ResolvePropertyValuesDialog_colValue;
-
-    public static String ResolvePropertyValuesDialog_colVariable;
-
-    public static String ResolvePropertyValuesDialog_lblname;
-
-    public static String ResolvePropertyValuesDialog_titleResolveProperties;
-
     public static String RuleConfigurationEditDialog_btnDefaul;
 
     public static String RuleConfigurationEditDialog_btnSortTokens;
@@ -380,6 +366,72 @@ public final class Messages extends NLS
     public static String RemoteConfigurationEditor_titleAdvancedOptions;
 
     public static String RemoteConfigurationEditor_btnCacheRemoteConfig;
+
+    public static String ExternalFileConfigurationEditor_btnProtectConfigFile;
+
+    public static String ProjectConfigurationEditor_chkProtectConfigFile;
+
+    public static String InternalConfigurationEditor_btnImport;
+
+    public static String InternalConfigurationEditor_titleImportDialog;
+
+    public static String CheckConfigurationLabelProvider_suffixGlobal;
+
+    public static String CheckConfigurationLabelProvider_suffixLocal;
+
+    public static String CheckConfigurationPropertiesDialog_btnAdditionalProps;
+
+    public static String CheckConfigurationPropertiesDialog_titleUnresolvedProps;
+
+    public static String CheckConfigurationPropertiesDialog_msgUnresolvedProps;
+
+    public static String CheckConfigurationPropertiesDialog_btnEditProps;
+
+    public static String CheckConfigurationPropertiesDialog_btnContinue;
+
+    public static String CheckConfigurationPropertiesDialog_btnCancel;
+
+    public static String ResolvablePropertyEditDialog_titleMessageArea;
+
+    public static String ResolvablePropertyEditDialog_msgEditProperty;
+
+    public static String ResolvablePropertyEditDialog_lblName;
+
+    public static String ResolvablePropertyEditDialog_lblValue;
+
+    public static String ResolvablePropertyEditDialog_msgMissingName;
+
+    public static String ResolvablePropertyEditDialog_msgMissingValue;
+
+    public static String ResolvablePropertyEditDialog_titleDialog;
+
+    public static String ResolvablePropertiesDialog_titleMessageArea;
+
+    public static String ResolvablePropertiesDialog_msgAdditionalProperties;
+
+    public static String ResolvablePropertiesDialog_colName;
+
+    public static String ResolvablePropertiesDialog_colValue;
+
+    public static String ResolvablePropertiesDialog_btnAdd;
+
+    public static String ResolvablePropertiesDialog_btnEdit;
+
+    public static String ResolvablePropertiesDialog_btnRemove;
+
+    public static String ResolvablePropertiesDialog_btnFind;
+
+    public static String ResolvablePropertiesDialog_titleDialog;
+
+    public static String ResolvablePropertiesDialog_msgMissingPropertyValue;
+
+    public static String ResolvablePropertiesDialog_titleRemoveConfirmation;
+
+    public static String ResolvablePropertiesDialog_msgRemoveConfirmation;
+
+    public static String ResolvablePropertiesDialog_titleFoundProperties;
+
+    public static String ResolvablePropertiesDialog_msgFoundProperties;
 
     // CHECKSTYLE:ON
 }

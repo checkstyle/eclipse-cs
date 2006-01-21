@@ -903,16 +903,16 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
     private class MetaDataLabelProvider extends LabelProvider
     {
 
-        private Image sModuleGroupImage = CheckstylePlugin.imageDescriptorFromPlugin(
+        private Image mModuleGroupImage = CheckstylePlugin.imageDescriptorFromPlugin(
                 CheckstylePlugin.PLUGIN_ID, "icons/modulegroup.gif").createImage(); //$NON-NLS-1$
 
-        private Image sModuleGroupUsedImage = CheckstylePlugin.imageDescriptorFromPlugin(
+        private Image mModuleGroupUsedImage = CheckstylePlugin.imageDescriptorFromPlugin(
                 CheckstylePlugin.PLUGIN_ID, "icons/modulegroup_used.gif").createImage(); //$NON-NLS-1$
 
-        private Image sModuleImage = CheckstylePlugin.imageDescriptorFromPlugin(
+        private Image mModuleImage = CheckstylePlugin.imageDescriptorFromPlugin(
                 CheckstylePlugin.PLUGIN_ID, "icons/module.gif").createImage(); //$NON-NLS-1$
 
-        private Image sModuleUsedImage = CheckstylePlugin.imageDescriptorFromPlugin(
+        private Image mModuleUsedImage = CheckstylePlugin.imageDescriptorFromPlugin(
                 CheckstylePlugin.PLUGIN_ID, "icons/module_used.gif").createImage(); //$NON-NLS-1$
 
         /**
@@ -941,13 +941,13 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
 
             if (element instanceof RuleGroupMetadata)
             {
-                image = isGroupUsed((RuleGroupMetadata) element) ? sModuleGroupUsedImage
-                        : sModuleGroupImage;
+                image = isGroupUsed((RuleGroupMetadata) element) ? mModuleGroupUsedImage
+                        : mModuleGroupImage;
             }
             else if (element instanceof RuleMetadata)
             {
 
-                image = isMetadataUsed((RuleMetadata) element) ? sModuleUsedImage : sModuleImage;
+                image = isMetadataUsed((RuleMetadata) element) ? mModuleUsedImage : mModuleImage;
             }
             return image;
         }

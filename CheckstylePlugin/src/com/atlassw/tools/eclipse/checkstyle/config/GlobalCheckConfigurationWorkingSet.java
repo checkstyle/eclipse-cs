@@ -419,6 +419,32 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
             handler.startElement(new String(), XMLTags.CHECK_CONFIG_TAG, XMLTags.CHECK_CONFIG_TAG,
                     attrs);
 
+            // Write resolvable properties
+            Iterator propsIterator = config.getResolvableProperties().iterator();
+
+            if (propsIterator.hasNext())
+            {
+                handler.ignorableWhitespace(new char[] { '\n' }, 0, 1);
+            }
+
+            while (propsIterator.hasNext())
+            {
+
+                ResolvableProperty prop = (ResolvableProperty) propsIterator.next();
+
+                attrs = new AttributesImpl();
+                attrs.addAttribute(new String(), XMLTags.NAME_TAG, XMLTags.NAME_TAG, null, prop
+                        .getPropertyName());
+                attrs.addAttribute(new String(), XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, null, prop
+                        .getValue());
+
+                handler.startElement(new String(), XMLTags.PROPERTY_TAG, XMLTags.PROPERTY_TAG,
+                        attrs);
+                handler.endElement(new String(), XMLTags.PROPERTY_TAG, XMLTags.PROPERTY_TAG);
+                handler.ignorableWhitespace(new char[] { '\n' }, 0, 1);
+            }
+
+            // Additional data
             Iterator addDataIterator = config.getAdditionalData().keySet().iterator();
 
             if (addDataIterator.hasNext())
@@ -449,5 +475,4 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
         handler.endElement(new String(), XMLTags.CHECKSTYLE_ROOT_TAG, XMLTags.CHECKSTYLE_ROOT_TAG);
         handler.endDocument();
     }
-
 }

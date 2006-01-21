@@ -217,6 +217,7 @@
             creatable="false"
             editable="false"
             configurable="false"
+            additionalPropertySupport="false"
             icon="icons/configtype_builtin.gif"
             class="com.atlassw.tools.eclipse.checkstyle.config.configtypes.BuiltInConfigurationType"
             editorClass="com.atlassw.tools.eclipse.checkstyle.config.configtypes.BuiltInConfigurationEditor">
@@ -227,6 +228,7 @@
             creatable="true"
             editable="true"
             configurable="true"
+            additionalPropertySupport="true"
             icon="icons/configtype_internal.gif"
             class="com.atlassw.tools.eclipse.checkstyle.config.configtypes.InternalConfigurationType"
             editorClass="com.atlassw.tools.eclipse.checkstyle.config.configtypes.InternalConfigurationEditor">
@@ -237,6 +239,7 @@
             creatable="true"
             editable="true"
             configurable="true"
+            additionalPropertySupport="true"
             icon="icons/configtype_external.gif"
             class="com.atlassw.tools.eclipse.checkstyle.config.configtypes.ExternalFileConfigurationType"
             editorClass="com.atlassw.tools.eclipse.checkstyle.config.configtypes.ExternalFileConfigurationEditor">
@@ -247,6 +250,7 @@
             creatable="true"
             editable="true"
             configurable="false"
+            additionalPropertySupport="true"
             icon="icons/configtype_remote.gif"
             class="com.atlassw.tools.eclipse.checkstyle.config.configtypes.RemoteConfigurationType"
             editorClass="com.atlassw.tools.eclipse.checkstyle.config.configtypes.RemoteConfigurationEditor">
@@ -257,6 +261,7 @@
             creatable="true"
             editable="true"
             configurable="true"
+            additionalPropertySupport="true"
             icon="icons/configtype_project.gif"
             class="com.atlassw.tools.eclipse.checkstyle.config.configtypes.ProjectConfigurationType"
             editorClass="com.atlassw.tools.eclipse.checkstyle.config.configtypes.ProjectConfigurationEditor">

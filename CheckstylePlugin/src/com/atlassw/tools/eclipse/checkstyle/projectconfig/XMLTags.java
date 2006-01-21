@@ -87,6 +87,9 @@ public class XMLTags
     /** additional data tag. */
     public static final String ADDITIONAL_DATA_TAG = "additional-data"; //$NON-NLS-1$ 
 
+    /** tag for a resolvable property. */
+    public static final String PROPERTY_TAG = "property"; //$NON-NLS-1$
+
     // =================================================
     // Static class variables.
     // =================================================

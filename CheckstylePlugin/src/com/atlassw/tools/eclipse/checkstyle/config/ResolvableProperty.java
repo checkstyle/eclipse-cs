@@ -20,66 +20,58 @@
 
 package com.atlassw.tools.eclipse.checkstyle.config;
 
-//=================================================
-// Imports from java namespace
-//=================================================
-
-//=================================================
-// Imports from javax namespace
-//=================================================
-
-//=================================================
-// Imports from com namespace
-//=================================================
-
-//=================================================
-// Imports from org namespace
-//=================================================
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
- *  Represents a configuration property who's value must be resolved.
+ * Represents a configuration property who's value must be resolved.
+ * 
+ * @author David Schneider
+ * @author Lars Ködderitzsch
  */
-public class ResolvableProperty
+public class ResolvableProperty implements Cloneable
 {
-	//=================================================
+    // =================================================
     // Public static final variables.
-    //=================================================
+    // =================================================
 
-    //=================================================
+    // =================================================
     // Static class variables.
-    //=================================================
+    // =================================================
 
-    //=================================================
+    // =================================================
     // Instance member variables.
-    //=================================================
-    
+    // =================================================
+
     /** The name of the property. */
-    private String   mPropertyName;
-    
-    /** The correlating tag. */
-    private String   mCorrelationTag;
-    
+    private String mPropertyName;
+
     /** The property value. */
-    private String   mValue;
+    private String mValue;
 
-    //=================================================
+    // =================================================
     // Constructors & finalizer.
-    //=================================================
-
-    //=================================================
-    // Methods.
-    //=================================================
+    // =================================================
 
     /**
-     * @return  The correlation tag for the property.
+     * Creates a resolvable property.
+     * 
+     * @param propertyName the name of the property
+     * @param value the value of the property
      */
-    public String getCorrelationTag()
+    public ResolvableProperty(String propertyName, String value)
     {
-        return mCorrelationTag;
+        setPropertyName(propertyName);
+        setValue(value);
     }
 
+    // =================================================
+    // Methods.
+    // =================================================
+
     /**
-     * @return  The value of the property.
+     * @return The value of the property.
      */
     public String getValue()
     {
@@ -87,7 +79,7 @@ public class ResolvableProperty
     }
 
     /**
-     * @return  The property's name.
+     * @return The property's name.
      */
     public String getPropertyName()
     {
@@ -95,15 +87,7 @@ public class ResolvableProperty
     }
 
     /**
-     * @param string Correlation tag value.
-     */
-    public void setCorrelationTag(String string)
-    {
-        mCorrelationTag = string;
-    }
-
-    /**
-     * @param string  Value for the property.
+     * @param string Value for the property.
      */
     public void setValue(String string)
     {
@@ -111,11 +95,61 @@ public class ResolvableProperty
     }
 
     /**
-     * @param string  The property's name.
+     * @param string The property's name.
      */
     public void setPropertyName(String string)
     {
         mPropertyName = string;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public boolean equals(Object obj)
+    {
+        if (obj == null || !(obj instanceof ResolvableProperty))
+        {
+            return false;
+        }
+        if (this == obj)
+        {
+            return true;
+        }
+        ResolvableProperty rhs = (ResolvableProperty) obj;
+        return new EqualsBuilder().append(mPropertyName, rhs.mPropertyName).append(mValue,
+                rhs.mValue).isEquals();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int hashCode()
+    {
+        return new HashCodeBuilder(32234343, 1000003).append(mPropertyName).append(mValue)
+                .toHashCode();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Object clone()
+    {
+        try
+        {
+            ResolvableProperty clone = (ResolvableProperty) super.clone();
+            return clone;
+        }
+        catch (CloneNotSupportedException e)
+        {
+            throw new InternalError(); // should never happen
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String toString()
+    {
+        return ToStringBuilder.reflectionToString(this);
+    }
 }

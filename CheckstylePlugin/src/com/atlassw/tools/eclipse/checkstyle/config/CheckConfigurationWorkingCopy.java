@@ -27,7 +27,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -54,7 +56,7 @@ import com.puppycrawl.tools.checkstyle.PropertyResolver;
  * 
  * @author Lars Ködderitzsch
  */
-public class CheckConfigurationWorkingCopy implements ICheckConfiguration
+public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Cloneable
 {
 
     //
@@ -75,6 +77,9 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration
 
     /** The edited description of the configuration. */
     private String mEditedDescription;
+
+    /** The list of resolvable properties. */
+    private List mProperties = new ArrayList();
 
     /** The map of additional data for this configuration. */
     private Map mAdditionalData = new HashMap();
@@ -106,6 +111,13 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration
         mWorkingSet = workingSet;
 
         mAdditionalData.putAll(checkConfigToEdit.getAdditionalData());
+
+        List props = checkConfigToEdit.getResolvableProperties();
+        Iterator it = props.iterator();
+        while (it.hasNext())
+        {
+            mProperties.add(((ResolvableProperty) it.next()).clone());
+        }
     }
 
     /**
@@ -121,7 +133,8 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration
     {
 
         mWorkingSet = workingSet;
-        mCheckConfiguration = new CheckConfiguration(null, null, null, configType, global, null);
+        mCheckConfiguration = new CheckConfiguration(null, null, null, configType, global, null,
+                null);
     }
 
     //
@@ -238,10 +251,11 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration
      */
     public boolean hasConfigurationChanged()
     {
-
         return mHasConfigChanged
                 || !(new EqualsBuilder().append(getLocation(), mCheckConfiguration.getLocation())
-                        .append(getAdditionalData(), mCheckConfiguration.getAdditionalData())
+                        .append(getResolvableProperties(),
+                                mCheckConfiguration.getResolvableProperties()).append(
+                                getAdditionalData(), mCheckConfiguration.getAdditionalData())
                         .isEquals());
     }
 
@@ -402,6 +416,14 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration
     /**
      * {@inheritDoc}
      */
+    public List getResolvableProperties()
+    {
+        return mProperties;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public URL isConfigurationAvailable() throws CheckstylePluginException
     {
         URL configLocation = null;
@@ -486,8 +508,9 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration
         ICheckConfiguration rhs = (ICheckConfiguration) obj;
         return new EqualsBuilder().append(getName(), rhs.getName()).append(getLocation(),
                 rhs.getLocation()).append(getDescription(), rhs.getDescription()).append(getType(),
-                rhs.getType()).append(isGlobal(), rhs.isGlobal()).append(getAdditionalData(),
-                rhs.getAdditionalData()).isEquals();
+                rhs.getType()).append(isGlobal(), rhs.isGlobal()).append(getResolvableProperties(),
+                rhs.getResolvableProperties()).append(getAdditionalData(), rhs.getAdditionalData())
+                .isEquals();
     }
 
     /**
@@ -496,7 +519,36 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration
     public int hashCode()
     {
         return new HashCodeBuilder(928729, 1000003).append(getName()).append(getLocation()).append(
-                getDescription()).append(getType()).append(isGlobal()).append(getAdditionalData())
-                .toHashCode();
+                getDescription()).append(getType()).append(isGlobal()).append(
+                getResolvableProperties()).append(getAdditionalData()).toHashCode();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Object clone()
+    {
+
+        CheckConfigurationWorkingCopy clone = null;
+
+        try
+        {
+            clone = (CheckConfigurationWorkingCopy) super.clone();
+
+            clone.mAdditionalData = new HashMap();
+            clone.mAdditionalData.putAll(this.mAdditionalData);
+
+            clone.mProperties = new ArrayList();
+            Iterator it = this.mProperties.iterator();
+            while (it.hasNext())
+            {
+                clone.mProperties.add(((ResolvableProperty) it.next()).clone());
+            }
+        }
+        catch (CloneNotSupportedException e)
+        {
+            throw new InternalError(); // this should never happen
+        }
+        return clone;
     }
 }

@@ -23,8 +23,10 @@ package com.atlassw.tools.eclipse.checkstyle.config;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -63,6 +65,9 @@ public class CheckConfiguration implements ICheckConfiguration
     /** flags if the configuration is global. */
     private boolean mIsGlobal;
 
+    /** The list of resolvable properties. */
+    private List mProperties;
+
     /** Map containing additional data for this check configuration. */
     private Map mAdditionalData;
 
@@ -79,10 +84,12 @@ public class CheckConfiguration implements ICheckConfiguration
      * @param type the check configuration type
      * @param global determines if the check configuration is a global
      *            configuration
+     * @param properties the list of properties configured for this check
+     *            configuration
      * @param additionalData a map of additional data for this configuration
      */
     public CheckConfiguration(String name, String location, String description,
-            IConfigurationType type, boolean global, Map additionalData)
+            IConfigurationType type, boolean global, List properties, Map additionalData)
     {
         mName = name;
         mLocation = location;
@@ -98,6 +105,9 @@ public class CheckConfiguration implements ICheckConfiguration
         {
             mAdditionalData = Collections.unmodifiableMap(new HashMap());
         }
+
+        mProperties = properties != null ? Collections.unmodifiableList(properties) : Collections
+                .unmodifiableList(new ArrayList());
     }
 
     /**
@@ -138,6 +148,14 @@ public class CheckConfiguration implements ICheckConfiguration
     public Map getAdditionalData()
     {
         return mAdditionalData;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public List getResolvableProperties()
+    {
+        return mProperties;
     }
 
     /**
@@ -227,8 +245,9 @@ public class CheckConfiguration implements ICheckConfiguration
         ICheckConfiguration rhs = (ICheckConfiguration) obj;
         return new EqualsBuilder().append(getName(), rhs.getName()).append(getLocation(),
                 rhs.getLocation()).append(getDescription(), rhs.getDescription()).append(getType(),
-                rhs.getType()).append(isGlobal(), rhs.isGlobal()).append(getAdditionalData(),
-                rhs.getAdditionalData()).isEquals();
+                rhs.getType()).append(isGlobal(), rhs.isGlobal()).append(getResolvableProperties(),
+                rhs.getResolvableProperties()).append(getAdditionalData(), rhs.getAdditionalData())
+                .isEquals();
     }
 
     /**
@@ -237,7 +256,7 @@ public class CheckConfiguration implements ICheckConfiguration
     public int hashCode()
     {
         return new HashCodeBuilder(928729, 1000003).append(getName()).append(getLocation()).append(
-                getDescription()).append(getType()).append(isGlobal()).append(getAdditionalData())
-                .toHashCode();
+                getDescription()).append(getType()).append(isGlobal()).append(
+                getResolvableProperties()).append(getAdditionalData()).toHashCode();
     }
 }

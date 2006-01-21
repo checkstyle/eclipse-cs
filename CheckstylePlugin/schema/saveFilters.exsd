@@ -7,6 +7,7 @@
       </appInfo>
       <documentation>
          This extension point can be used to provide a filter that is invoked when a checkstyle configuration is saved by the configuration editor.
+A save filter can modify the order of modules, add modules required in a certain context or remove modules that are unneccessary.
       </documentation>
    </annotation>
 

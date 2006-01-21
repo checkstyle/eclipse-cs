@@ -183,6 +183,7 @@ public class RemoteConfigurationType extends ConfigurationType
         String location = checkConfiguration.getLocation();
 
         MultiPropertyResolver multiResolver = new MultiPropertyResolver();
+        multiResolver.addPropertyResolver(new ResolvablePropertyResolver(checkConfiguration));
         multiResolver.addPropertyResolver(new StandardPropertyResolver(location));
         multiResolver.addPropertyResolver(new ClasspathVariableResolver());
         multiResolver.addPropertyResolver(new SystemPropertyResolver());

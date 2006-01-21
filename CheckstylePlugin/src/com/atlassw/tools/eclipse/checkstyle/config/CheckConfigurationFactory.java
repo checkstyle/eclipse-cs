@@ -20,9 +20,6 @@
 
 package com.atlassw.tools.eclipse.checkstyle.config;
 
-//=================================================
-// Imports from java namespace
-//=================================================
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -322,7 +319,7 @@ public final class CheckConfigurationFactory
             IConfigurationType configType = ConfigurationTypes.getByInternalName("builtin"); //$NON-NLS-1$
 
             ICheckConfiguration checkConfig = new CheckConfiguration(name, location, description,
-                    configType, true, null);
+                    configType, true, null, null);
             sConfigurations.add(checkConfig);
         }
     }
@@ -405,6 +402,9 @@ public final class CheckConfigurationFactory
         /** Additional data for the current configuration. */
         private Map mCurrentAddValues;
 
+        /** List of resolvable properties for this configuration. */
+        private List mResolvableProperties;
+
         /**
          * Return the configurations this handler built.
          * 
@@ -452,11 +452,21 @@ public final class CheckConfigurationFactory
                 mCurrentConfigType = ConfigurationTypes.getByInternalName(type);
 
                 mCurrentAddValues = new HashMap();
+                mResolvableProperties = new ArrayList();
             }
-            else if (!mOldFileFormat && XMLTags.ADDITIONAL_DATA_TAG.equalsIgnoreCase(qName))
+            else if (!mOldFileFormat && XMLTags.ADDITIONAL_DATA_TAG.equals(qName))
             {
                 mCurrentAddValues.put(attributes.getValue(XMLTags.NAME_TAG), attributes
                         .getValue(XMLTags.VALUE_TAG));
+            }
+            else if (!mOldFileFormat && XMLTags.PROPERTY_TAG.equals(qName))
+            {
+
+                String name = attributes.getValue(XMLTags.NAME_TAG);
+                String value = attributes.getValue(XMLTags.VALUE_TAG);
+
+                ResolvableProperty prop = new ResolvableProperty(name, value);
+                mResolvableProperties.add(prop);
             }
         }
 
@@ -472,7 +482,7 @@ public final class CheckConfigurationFactory
 
                     ICheckConfiguration checkConfig = new CheckConfiguration(mCurrentName,
                             mCurrentLocation, mCurrentDescription, mCurrentConfigType, true,
-                            mCurrentAddValues);
+                            mResolvableProperties, mCurrentAddValues);
                     mConfigurations.add(checkConfig);
                 }
                 catch (Exception e)

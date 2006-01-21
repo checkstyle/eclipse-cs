@@ -119,6 +119,7 @@ public class ProjectConfigurationType extends ConfigurationType
         String resolvedLocation = resolveLocation(checkConfiguration).getFile();
 
         MultiPropertyResolver multiResolver = new MultiPropertyResolver();
+        multiResolver.addPropertyResolver(new ResolvablePropertyResolver(checkConfiguration));
         multiResolver.addPropertyResolver(new StandardPropertyResolver(resolvedLocation));
         multiResolver.addPropertyResolver(new ClasspathVariableResolver());
         multiResolver.addPropertyResolver(new SystemPropertyResolver());
