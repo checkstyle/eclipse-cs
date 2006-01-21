@@ -161,6 +161,7 @@ public class SimpleFileSetsEditor implements IFileSetsEditor
         this.mBtnManageConfigs.setLayoutData(fd);
 
         mComboViewer = new ComboViewer(configArea);
+        mComboViewer.getCombo().setVisibleItemCount(10);
         mComboViewer.setContentProvider(new CheckConfigurationContentProvider());
         mComboViewer.setLabelProvider(new CheckConfigurationLabelProvider());
         mComboViewer.setSorter(new CheckConfigurationViewerSorter());

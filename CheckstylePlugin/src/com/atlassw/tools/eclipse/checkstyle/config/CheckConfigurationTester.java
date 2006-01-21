@@ -143,8 +143,9 @@ public class CheckConfigurationTester
                     mUnresolvedProperties.add(prop);
                 }
             }
-
-            return "dummy"; //$NON-NLS-1$
+            // return warning to prevent hiccups with properties used in module
+            // severity. Bad hack, I know :-(
+            return "warning"; //$NON-NLS-1$
         }
 
         /**

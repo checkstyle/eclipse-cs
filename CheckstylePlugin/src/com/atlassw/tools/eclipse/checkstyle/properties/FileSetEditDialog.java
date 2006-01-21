@@ -237,6 +237,7 @@ public class FileSetEditDialog extends TitleAreaDialog
         comboComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
         mComboViewer = new ComboViewer(comboComposite);
+        mComboViewer.getCombo().setVisibleItemCount(10);
         mComboViewer.setContentProvider(new CheckConfigurationContentProvider());
         mComboViewer.setLabelProvider(new CheckConfigurationLabelProvider());
         mComboViewer.setSorter(new CheckConfigurationViewerSorter());

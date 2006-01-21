@@ -333,6 +333,10 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
                     return;
                 }
             }
+            else
+            {
+                super.okPressed();
+            }
         }
         catch (CheckstylePluginException e)
         {
