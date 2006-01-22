@@ -145,13 +145,22 @@ public class PackageFilterEditor implements IFilterEditor
 
                 IPath path = new Path((String) mFilterData.get(i));
 
-                selectedElements.add(this.mInputProject.findMember(path));
+                IResource selElement = this.mInputProject.findMember(path);
+                if (selElement != null)
+                {
+                    selectedElements.add(selElement);
+                }
 
                 // get all parent elements to expand
                 while (path.segmentCount() > 0)
                 {
                     path = path.removeLastSegments(1);
-                    expandedElements.add(this.mInputProject.findMember(path));
+
+                    IResource expElement = this.mInputProject.findMember(path);
+                    if (expElement != null)
+                    {
+                        expandedElements.add(expElement);
+                    }
                 }
             }
 
@@ -187,7 +196,6 @@ public class PackageFilterEditor implements IFilterEditor
      * container members.
      * 
      * @author Lars Ködderitzsch
-     * 
      */
     private class SourceFolderContentProvider implements ITreeContentProvider
     {
