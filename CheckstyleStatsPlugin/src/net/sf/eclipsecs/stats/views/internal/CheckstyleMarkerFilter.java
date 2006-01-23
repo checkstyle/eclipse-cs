@@ -407,8 +407,8 @@ public class CheckstyleMarkerFilter implements Cloneable
 
             if ((setting = settings.get(TAG_WORKING_SET)) != null)
             {
-                setWorkingSet(CheckstylePlugin.getDefault().getWorkbench()
-                        .getWorkingSetManager().getWorkingSet(setting));
+                setWorkingSet(CheckstylePlugin.getDefault().getWorkbench().getWorkingSetManager()
+                        .getWorkingSet(setting));
             }
 
             if ((setting = settings.get(TAG_SELECT_BY_SEVERITY)) != null)
@@ -629,7 +629,7 @@ public class CheckstyleMarkerFilter implements Cloneable
     {
         HashSet projects = new HashSet();
 
-        for (int idx = 0; idx < resources.length; idx++)
+        for (int idx = 0, size = resources != null ? resources.length : 0; idx < size; idx++)
         {
             projects.add(resources[idx].getProject());
         }
