@@ -31,7 +31,8 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.preferences.IPreferencesService;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
@@ -229,8 +230,9 @@ public final class CheckerFactory
         checker.setLocaleLanguage(platformLocale.getLanguage());
         checker.setLocaleCountry(platformLocale.getCountry());
 
-        IPreferenceStore prefStore = CheckstylePlugin.getDefault().getPreferenceStore();
-        if (!prefStore.getBoolean(CheckstylePlugin.PREF_DISABLE_PROJ_CLASSLOADER))
+        IPreferencesService prefStore = Platform.getPreferencesService();
+        if (!prefStore.getBoolean(CheckstylePlugin.PLUGIN_ID,
+                CheckstylePlugin.PREF_DISABLE_PROJ_CLASSLOADER, false, null))
         {
             checker.setClassloader(sSharedClassLoader);
         }

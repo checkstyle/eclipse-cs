@@ -1,8 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?><fileset-config file-format-version="1.1.0" simple-config="true">
-<fileset name="Alle" enabled="true" check-config-name="Production Files" type="project" location="CheckConfig_Checkstyle.xml" description=""><file-match-pattern match-pattern="." include-pattern="true"/>
+<?xml version="1.0" encoding="UTF-8"?><fileset-config file-format-version="1.2.0" simple-config="true">
+<local-check-config name="eclipse-cs Production Checks" location="/CheckstylePlugin_Head/CheckConfig_Checkstyle.xml" type="project" description=""><additional-data name="protect-config-file" value="false"/></local-check-config>
+<fileset name="Alle" enabled="true" check-config-name="eclipse-cs Production Checks" local="true">
+<file-match-pattern match-pattern="." include-pattern="true"/>
 </fileset>
-<filter name="FilesFromPackage" enabled="true"><filter-data value="src/com/atlassw/tools/eclipse/checkstyle/util/regex"/>
+<filter name="FilesFromPackage" enabled="true">
+<filter-data value="src/com/atlassw/tools/eclipse/checkstyle/util/regex"/>
 <filter-data value="nls"/>
 </filter>
-<filter name="NonSrcDirs" enabled="true"/>
+<filter name="NonSrcDirs" enabled="true">
+</filter>
 </fileset-config>

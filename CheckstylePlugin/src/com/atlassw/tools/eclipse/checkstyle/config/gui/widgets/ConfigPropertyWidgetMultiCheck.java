@@ -29,9 +29,12 @@ import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 import java.util.StringTokenizer;
 
-import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.util.IPropertyChangeListener;
-import org.eclipse.jface.util.PropertyChangeEvent;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.preferences.IPreferencesService;
+import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences.IPreferenceChangeListener;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences.PreferenceChangeEvent;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -50,7 +53,7 @@ import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
  * Configuration widget for selecting multiple values with check boxes.
  */
 public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstractBase implements
-        IPropertyChangeListener
+        IPreferenceChangeListener
 {
     // =================================================
     // Public static final variables.
@@ -104,10 +107,16 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
 
         if (mTable == null)
         {
-            IPreferenceStore prefStore = CheckstylePlugin.getDefault().getPreferenceStore();
-            mTranslateTokens = prefStore.getBoolean(CheckstylePlugin.PREF_TRANSLATE_TOKENS);
-            mSortTokens = prefStore.getBoolean(CheckstylePlugin.PREF_SORT_TOKENS);
-            prefStore.addPropertyChangeListener(this);
+
+            IPreferencesService prefStore = Platform.getPreferencesService();
+            mTranslateTokens = prefStore.getBoolean(CheckstylePlugin.PLUGIN_ID,
+                    CheckstylePlugin.PREF_TRANSLATE_TOKENS, true, null);
+            mSortTokens = prefStore.getBoolean(CheckstylePlugin.PLUGIN_ID,
+                    CheckstylePlugin.PREF_SORT_TOKENS, false, null);
+
+            IEclipsePreferences instanceScope = new InstanceScope()
+                    .getNode(CheckstylePlugin.PLUGIN_ID);
+            instanceScope.addPreferenceChangeListener(this);
 
             mTable = CheckboxTableViewer.newCheckList(parent, SWT.V_SCROLL | SWT.BORDER);
             mTable.setContentProvider(new ArrayContentProvider());
@@ -128,8 +137,9 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
 
                 public void widgetDisposed(DisposeEvent e)
                 {
-                    IPreferenceStore prefStore = CheckstylePlugin.getDefault().getPreferenceStore();
-                    prefStore.removePropertyChangeListener(ConfigPropertyWidgetMultiCheck.this);
+                    IEclipsePreferences prefStore = new InstanceScope()
+                            .getNode(CheckstylePlugin.PLUGIN_ID);
+                    prefStore.removePreferenceChangeListener(ConfigPropertyWidgetMultiCheck.this);
                 }
             });
         }
@@ -210,17 +220,16 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
     /**
      * {@inheritDoc}
      */
-    public void propertyChange(PropertyChangeEvent event)
+    public void preferenceChange(PreferenceChangeEvent event)
     {
-
-        if (CheckstylePlugin.PREF_TRANSLATE_TOKENS.equals(event.getProperty()))
+        if (CheckstylePlugin.PREF_TRANSLATE_TOKENS.equals(event.getKey()))
         {
-            mTranslateTokens = ((Boolean) event.getNewValue()).booleanValue();
+            mTranslateTokens = Boolean.valueOf((String) event.getNewValue()).booleanValue();
             mTable.refresh(true);
         }
-        if (CheckstylePlugin.PREF_SORT_TOKENS.equals(event.getProperty()))
+        if (CheckstylePlugin.PREF_SORT_TOKENS.equals(event.getKey()))
         {
-            mSortTokens = ((Boolean) event.getNewValue()).booleanValue();
+            mSortTokens = Boolean.valueOf((String) event.getNewValue()).booleanValue();
             installSorter(mSortTokens);
         }
     }
@@ -258,4 +267,5 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
         }
 
     }
+
 }

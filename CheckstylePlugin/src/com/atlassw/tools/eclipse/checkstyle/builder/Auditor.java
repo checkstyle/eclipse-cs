@@ -41,11 +41,11 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Preferences;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.preferences.IPreferencesService;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.internal.corext.util.CodeFormatterUtil;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
@@ -119,8 +119,9 @@ public class Auditor
         //
         // check wether to include rule names
         //
-        Preferences prefs = CheckstylePlugin.getDefault().getPluginPreferences();
-        mAddRuleName = prefs.getBoolean(CheckstylePlugin.PREF_INCLUDE_RULE_NAMES);
+        IPreferencesService prefs = Platform.getPreferencesService();
+        mAddRuleName = prefs.getBoolean(CheckstylePlugin.PLUGIN_ID,
+                CheckstylePlugin.PREF_INCLUDE_RULE_NAMES, false, null);
     }
 
     // =================================================
@@ -343,9 +344,11 @@ public class Auditor
             }
 
             // init the marker limitation
-            IPreferenceStore prefStore = CheckstylePlugin.getDefault().getPreferenceStore();
-            mLimitMarkers = prefStore.getBoolean(CheckstylePlugin.PREF_LIMIT_MARKERS_PER_RESOURCE);
-            mMarkerLimit = prefStore.getInt(CheckstylePlugin.PREF_MARKER_AMOUNT_LIMIT);
+            IPreferencesService prefStore = Platform.getPreferencesService();
+            mLimitMarkers = prefStore.getBoolean(CheckstylePlugin.PLUGIN_ID,
+                    CheckstylePlugin.PREF_LIMIT_MARKERS_PER_RESOURCE, false, null);
+            mMarkerLimit = prefStore.getInt(CheckstylePlugin.PLUGIN_ID,
+                    CheckstylePlugin.PREF_MARKER_AMOUNT_LIMIT, CheckstylePlugin.MARKER_LIMIT, null);
         }
 
         public void fileStarted(AuditEvent event)

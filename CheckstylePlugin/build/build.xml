@@ -42,7 +42,7 @@
 	<!-- ==================================================== -->
 	<!--   DISTRIBUTION TARGET                                -->
 	<!-- ==================================================== -->
-	<target name="build.dist" depends="build.bindist,build.srcdist,build.local.update.site,build.plugin.website" />
+	<target name="build.dist" depends="build.bindist,build.srcdist,build.local.update.site,include.fragments,build.plugin.website" />
 
 
 	<!-- ==================================================== -->
@@ -151,12 +151,12 @@
 
 		<!-- The other way around is easier, just include all but the ouput directories -->
 		<zip destfile="${dist.basedir}/${src.dist.file}" update="false">
-			<fileset dir="${basedir}" includes="**/*">
+			<zipfileset dir="${basedir}" prefix="${project.name}" includes="**/*">
 				<exclude name="dist/**" />
 				<exclude name="bin/**" />
 				<exclude name="binnls/**" />
 				<exclude name="build/env.properties" />
-			</fileset>
+			</zipfileset>
 		</zip>
 	</target>
 
@@ -179,6 +179,23 @@
 
 		<!-- remove the temp directory -->
 		<delete dir="${dist.basedir.tmpdir}" failonerror="false" quiet="true" />
+	</target>
+
+	<!-- ==================================================== -->
+	<!--   MERGES ADDITIONAL FRAGMENTS INTO THE DISTRIBUTION  -->
+	<!-- ==================================================== -->
+	<target name="include.fragments" depends="build.bindist,build.srcdist,build.local.update.site">
+
+		<ant dir="../CheckstyleStatsPlugin" antfile="build/build.xml" inheritall="false">
+			<property name="plugin.bin.zip" value="${dist.basedir}/${bin.dist.file}" />
+			<property name="plugin.src.zip" value="${dist.basedir}/${src.dist.file}" />
+			<property name="update.site.file" value="${dist.basedir}/${update.site.file}" />	
+			<property name="eclipse.plugin.dir" value="${eclipse.plugin.dir}" />
+			<property name="workspace" value="${workspace}" />
+			<property name="eclipse.version" value="${eclipse.version}" />
+			<property name="dist.basedir" value="${dist.basedir}" />
+			<reference refid="build.classpath" />
+		</ant>
 	</target>
 
 	<!-- ==================================================== -->

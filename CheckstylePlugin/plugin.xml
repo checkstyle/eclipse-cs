@@ -21,6 +21,12 @@
             primary="true">
       </toc>
    </extension>
+   
+   <extension
+        point="org.eclipse.core.runtime.preferences">
+        <initializer class="com.atlassw.tools.eclipse.checkstyle.preferences.PrefsInitializer"/>
+    </extension>
+    
    <extension
          point="org.eclipse.ui.preferencePages">
       <page

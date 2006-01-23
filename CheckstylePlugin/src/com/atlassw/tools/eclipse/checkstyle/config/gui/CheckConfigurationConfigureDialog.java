@@ -24,10 +24,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.preferences.IPreferencesService;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.ColumnWeightData;
@@ -65,6 +68,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
+import org.osgi.service.prefs.BackingStoreException;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.Messages;
@@ -372,18 +376,27 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
         mBtnOpenModuleOnAdd.setLayoutData(gd);
 
         // Init the translate tokens preference
-        IPreferenceStore prefStore = CheckstylePlugin.getDefault().getPreferenceStore();
-        mBtnOpenModuleOnAdd.setSelection(prefStore
-                .getBoolean(CheckstylePlugin.PREF_OPEN_MODULE_EDITOR));
+        IPreferencesService prefStore = Platform.getPreferencesService();
+        mBtnOpenModuleOnAdd.setSelection(prefStore.getBoolean(CheckstylePlugin.PLUGIN_ID,
+                CheckstylePlugin.PREF_OPEN_MODULE_EDITOR, true, null));
         mBtnOpenModuleOnAdd.addSelectionListener(new SelectionListener()
         {
 
             public void widgetSelected(SelectionEvent e)
             {
                 // store translation preference
-                IPreferenceStore prefStore = CheckstylePlugin.getDefault().getPreferenceStore();
-                prefStore.setValue(CheckstylePlugin.PREF_OPEN_MODULE_EDITOR, ((Button) e.widget)
+                IEclipsePreferences prefStore = new InstanceScope()
+                        .getNode(CheckstylePlugin.PLUGIN_ID);
+                prefStore.putBoolean(CheckstylePlugin.PREF_OPEN_MODULE_EDITOR, ((Button) e.widget)
                         .getSelection());
+                try
+                {
+                    prefStore.flush();
+                }
+                catch (BackingStoreException e1)
+                {
+                    CheckstyleLog.log(e1);
+                }
             }
 
             public void widgetDefaultSelected(SelectionEvent e)
@@ -654,8 +667,9 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
         {
             if (mConfiguration.isConfigurable())
             {
-                IPreferenceStore prefStore = CheckstylePlugin.getDefault().getPreferenceStore();
-                boolean openOnAdd = prefStore.getBoolean(CheckstylePlugin.PREF_OPEN_MODULE_EDITOR);
+                IPreferencesService prefStore = Platform.getPreferencesService();
+                boolean openOnAdd = prefStore.getBoolean(CheckstylePlugin.PLUGIN_ID,
+                        CheckstylePlugin.PREF_OPEN_MODULE_EDITOR, true, null);
 
                 Iterator it = ((IStructuredSelection) selection).iterator();
                 while (it.hasNext())

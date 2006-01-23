@@ -22,7 +22,10 @@ package com.atlassw.tools.eclipse.checkstyle.preferences;
 
 import java.util.Collection;
 
-import org.eclipse.core.runtime.Preferences;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.preferences.IPreferencesService;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialogWithToggle;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -46,6 +49,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.osgi.service.prefs.BackingStoreException;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
@@ -194,7 +198,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         //
         // Get the preferences.
         //
-        Preferences prefs = CheckstylePlugin.getDefault().getPluginPreferences();
+        IPreferencesService prefs = Platform.getPreferencesService();
 
         //
         // Create a combo with the rebuild options
@@ -212,8 +216,9 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         mRebuildIfNeeded = new Combo(rebuildComposite, SWT.READ_ONLY);
         mRebuildIfNeeded.setItems(new String[] { MessageDialogWithToggle.PROMPT,
             MessageDialogWithToggle.ALWAYS, MessageDialogWithToggle.NEVER });
-        mRebuildIfNeeded.select(mRebuildIfNeeded.indexOf(prefs
-                .getString(CheckstylePlugin.PREF_ASK_BEFORE_REBUILD)));
+        mRebuildIfNeeded.select(mRebuildIfNeeded.indexOf(prefs.getString(
+                CheckstylePlugin.PLUGIN_ID, CheckstylePlugin.PREF_ASK_BEFORE_REBUILD,
+                MessageDialogWithToggle.PROMPT, null)));
 
         //
         // Create button to purge the checker cache
@@ -237,8 +242,8 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         //
         mWarnBeforeLosingFilesets = new Button(generalComposite, SWT.CHECK);
         mWarnBeforeLosingFilesets.setText(Messages.CheckstylePreferencePage_lblWarnFilesets);
-        mWarnBeforeLosingFilesets.setSelection(prefs
-                .getBoolean(CheckstylePlugin.PREF_FILESET_WARNING));
+        mWarnBeforeLosingFilesets.setSelection(prefs.getBoolean(CheckstylePlugin.PLUGIN_ID,
+                CheckstylePlugin.PREF_FILESET_WARNING, true, null));
 
         //
         // Create the "Include rule name" check box.
@@ -251,8 +256,8 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
 
         mIncludeRuleNamesButton = new Button(includeRuleNamesComposite, SWT.CHECK);
         mIncludeRuleNamesButton.setText(Messages.CheckstylePreferencePage_lblIncludeRulenames);
-        mIncludeRuleNamesButton.setSelection(prefs
-                .getBoolean(CheckstylePlugin.PREF_INCLUDE_RULE_NAMES));
+        mIncludeRuleNamesButton.setSelection(prefs.getBoolean(CheckstylePlugin.PLUGIN_ID,
+                CheckstylePlugin.PREF_INCLUDE_RULE_NAMES, false, null));
 
         Label lblRebuildNote = new Label(includeRuleNamesComposite, SWT.NULL);
         lblRebuildNote.setImage(CheckstylePluginImages.getImage(CheckstylePluginImages.HELP_ICON));
@@ -270,15 +275,15 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
 
         mLimitCheckstyleMarkers = new Button(limitMarkersComposite, SWT.CHECK);
         mLimitCheckstyleMarkers.setText(Messages.CheckstylePreferencePage_lblLimitMarker);
-        mLimitCheckstyleMarkers.setSelection(prefs
-                .getBoolean(CheckstylePlugin.PREF_LIMIT_MARKERS_PER_RESOURCE));
+        mLimitCheckstyleMarkers.setSelection(prefs.getBoolean(CheckstylePlugin.PLUGIN_ID,
+                CheckstylePlugin.PREF_LIMIT_MARKERS_PER_RESOURCE, false, null));
 
         mTxtMarkerLimit = new Text(limitMarkersComposite, SWT.SINGLE | SWT.BORDER);
         mTxtMarkerLimit.setTextLimit(5);
         SWTUtil.addOnlyDigitInputSupport(mTxtMarkerLimit);
 
-        mTxtMarkerLimit.setText(Integer.toString(prefs
-                .getInt(CheckstylePlugin.PREF_MARKER_AMOUNT_LIMIT)));
+        mTxtMarkerLimit.setText(Integer.toString(prefs.getInt(CheckstylePlugin.PLUGIN_ID,
+                CheckstylePlugin.PREF_MARKER_AMOUNT_LIMIT, CheckstylePlugin.MARKER_LIMIT, null)));
         gd = new GridData();
         gd.widthHint = 30;
         mTxtMarkerLimit.setLayoutData(gd);
@@ -300,8 +305,8 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
 
         mDisableClassloader = new Button(disableClassloaderComposite, SWT.CHECK);
         mDisableClassloader.setText(Messages.CheckstylePreferencePage_lblDisableClassloader);
-        mDisableClassloader.setSelection(prefs
-                .getBoolean(CheckstylePlugin.PREF_DISABLE_PROJ_CLASSLOADER));
+        mDisableClassloader.setSelection(prefs.getBoolean(CheckstylePlugin.PLUGIN_ID,
+                CheckstylePlugin.PREF_DISABLE_PROJ_CLASSLOADER, false, null));
         mDisableClassloader
                 .setToolTipText(Messages.CheckstylePreferencePage_lblDisableClassloaderNote);
 
@@ -365,42 +370,47 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
             //
             // Save the general preferences.
             //
-            Preferences prefs = CheckstylePlugin.getDefault().getPluginPreferences();
-            prefs.setValue(CheckstylePlugin.PREF_ASK_BEFORE_REBUILD, mRebuildIfNeeded
+            IPreferencesService prefService = Platform.getPreferencesService();
+            IEclipsePreferences prefs = new InstanceScope().getNode(CheckstylePlugin.PLUGIN_ID);
+            prefs.put(CheckstylePlugin.PREF_ASK_BEFORE_REBUILD, mRebuildIfNeeded
                     .getItem(mRebuildIfNeeded.getSelectionIndex()));
 
             //
             // Save the classloader preferences.
             //
-            prefs.setValue(CheckstylePlugin.PREF_DISABLE_PROJ_CLASSLOADER, mDisableClassloader
+            prefs.putBoolean(CheckstylePlugin.PREF_DISABLE_PROJ_CLASSLOADER, mDisableClassloader
                     .getSelection());
 
             //
             // fileset warning preference
             //
             boolean warnFileSetsNow = mWarnBeforeLosingFilesets.getSelection();
-            prefs.setValue(CheckstylePlugin.PREF_FILESET_WARNING, warnFileSetsNow);
+            prefs.putBoolean(CheckstylePlugin.PREF_FILESET_WARNING, warnFileSetsNow);
 
             //
             // Include rule names preference.
             //
             boolean includeRuleNamesNow = mIncludeRuleNamesButton.getSelection();
-            boolean includeRuleNamesOriginal = prefs
-                    .getBoolean(CheckstylePlugin.PREF_INCLUDE_RULE_NAMES);
-            prefs.setValue(CheckstylePlugin.PREF_INCLUDE_RULE_NAMES, includeRuleNamesNow);
+            boolean includeRuleNamesOriginal = prefService.getBoolean(CheckstylePlugin.PLUGIN_ID,
+                    CheckstylePlugin.PREF_INCLUDE_RULE_NAMES, false, null);
+            prefs.putBoolean(CheckstylePlugin.PREF_INCLUDE_RULE_NAMES, includeRuleNamesNow);
 
             //
             // Limit markers preference
             //
 
             boolean limitMarkersNow = mLimitCheckstyleMarkers.getSelection();
-            boolean limitMarkersOriginal = prefs
-                    .getBoolean(CheckstylePlugin.PREF_LIMIT_MARKERS_PER_RESOURCE);
-            prefs.setValue(CheckstylePlugin.PREF_LIMIT_MARKERS_PER_RESOURCE, limitMarkersNow);
+            boolean limitMarkersOriginal = prefService.getBoolean(CheckstylePlugin.PLUGIN_ID,
+                    CheckstylePlugin.PREF_LIMIT_MARKERS_PER_RESOURCE, false, null);
+            prefs.putBoolean(CheckstylePlugin.PREF_LIMIT_MARKERS_PER_RESOURCE, limitMarkersNow);
 
             int markerLimitNow = Integer.parseInt(mTxtMarkerLimit.getText());
-            int markerLimitOriginal = prefs.getInt(CheckstylePlugin.PREF_MARKER_AMOUNT_LIMIT);
-            prefs.setValue(CheckstylePlugin.PREF_MARKER_AMOUNT_LIMIT, markerLimitNow);
+            int markerLimitOriginal = prefService.getInt(CheckstylePlugin.PLUGIN_ID,
+                    CheckstylePlugin.PREF_MARKER_AMOUNT_LIMIT, CheckstylePlugin.MARKER_LIMIT, null);
+            prefs.putInt(CheckstylePlugin.PREF_MARKER_AMOUNT_LIMIT, markerLimitNow);
+
+            // save the preferences
+            prefs.flush();
 
             // See if all projects need rebuild
             boolean needRebuildAllProjects = (includeRuleNamesNow != includeRuleNamesOriginal)
@@ -455,6 +465,11 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
             }
         }
         catch (CheckstylePluginException e)
+        {
+            CheckstyleLog.errorDialog(getShell(), NLS.bind(
+                    ErrorMessages.errorFailedSavePreferences, e.getLocalizedMessage()), e, true);
+        }
+        catch (BackingStoreException e)
         {
             CheckstyleLog.errorDialog(getShell(), NLS.bind(
                     ErrorMessages.errorFailedSavePreferences, e.getLocalizedMessage()), e, true);

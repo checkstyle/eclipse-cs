@@ -27,8 +27,6 @@ import java.util.logging.Logger;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.jface.dialogs.MessageDialogWithToggle;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -208,24 +206,5 @@ public class CheckstylePlugin extends AbstractUIPlugin
         String variant = parts.length > 2 ? parts[2] : ""; //$NON-NLS-1$
 
         return new Locale(language, country, variant);
-    }
-
-    /**
-     * Initialize the default preferences.
-     */
-    protected void initializeDefaultPluginPreferences()
-    {
-        IPreferenceStore prefStore = getPreferenceStore();
-
-        prefStore.setDefault(PREF_INCLUDE_RULE_NAMES, false);
-        prefStore.setDefault(PREF_FILESET_WARNING, true);
-        prefStore.setDefault(PREF_ASK_BEFORE_REBUILD, MessageDialogWithToggle.PROMPT);
-        prefStore.setDefault(PREF_TRANSLATE_TOKENS, true);
-        prefStore.setDefault(PREF_SORT_TOKENS, false);
-        prefStore.setDefault(PREF_OPEN_MODULE_EDITOR, true);
-        prefStore.setDefault(PREF_DUPLICATED_CODE_MIN_LINES, DUPLICATED_CODE_MIN_LINES);
-        prefStore.setDefault(PREF_LIMIT_MARKERS_PER_RESOURCE, false);
-        prefStore.setDefault(PREF_MARKER_AMOUNT_LIMIT, MARKER_LIMIT);
-        prefStore.setDefault(PREF_DISABLE_PROJ_CLASSLOADER, false);
     }
 }

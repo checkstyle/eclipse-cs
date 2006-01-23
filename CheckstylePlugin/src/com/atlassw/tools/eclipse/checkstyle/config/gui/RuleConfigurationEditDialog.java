@@ -26,10 +26,13 @@ package com.atlassw.tools.eclipse.checkstyle.config.gui;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.preferences.IPreferencesService;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -48,6 +51,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.osgi.service.prefs.BackingStoreException;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.Messages;
@@ -105,9 +109,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
      * Constructor.
      * 
      * @param parent Parent shell.
-     * 
      * @param rule Rule being edited.
-     * 
      * @throws CheckstylePluginException Error during processing.
      */
     RuleConfigurationEditDialog(Shell parent, Module rule, boolean readonly, String title)
@@ -200,17 +202,27 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
         mBtnTranslate.setLayoutData(gd);
 
         // Init the translate tokens preference
-        IPreferenceStore prefStore = CheckstylePlugin.getDefault().getPreferenceStore();
-        mBtnTranslate.setSelection(prefStore.getBoolean(CheckstylePlugin.PREF_TRANSLATE_TOKENS));
+        IPreferencesService prefStore = Platform.getPreferencesService();
+        mBtnTranslate.setSelection(prefStore.getBoolean(CheckstylePlugin.PLUGIN_ID,
+                CheckstylePlugin.PREF_TRANSLATE_TOKENS, true, null));
         mBtnTranslate.addSelectionListener(new SelectionListener()
         {
 
             public void widgetSelected(SelectionEvent e)
             {
                 // store translation preference
-                IPreferenceStore prefStore = CheckstylePlugin.getDefault().getPreferenceStore();
-                prefStore.setValue(CheckstylePlugin.PREF_TRANSLATE_TOKENS, ((Button) e.widget)
+                IEclipsePreferences prefStore = new InstanceScope()
+                        .getNode(CheckstylePlugin.PLUGIN_ID);
+                prefStore.putBoolean(CheckstylePlugin.PREF_TRANSLATE_TOKENS, ((Button) e.widget)
                         .getSelection());
+                try
+                {
+                    prefStore.flush();
+                }
+                catch (BackingStoreException e1)
+                {
+                    CheckstyleLog.log(e1);
+                }
             }
 
             public void widgetDefaultSelected(SelectionEvent e)
@@ -227,16 +239,26 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
         mBtnSort.setLayoutData(gd);
 
         // Init the sort tokens preference
-        mBtnSort.setSelection(prefStore.getBoolean(CheckstylePlugin.PREF_SORT_TOKENS));
+        mBtnSort.setSelection(prefStore.getBoolean(CheckstylePlugin.PLUGIN_ID,
+                CheckstylePlugin.PREF_SORT_TOKENS, false, null));
         mBtnSort.addSelectionListener(new SelectionListener()
         {
 
             public void widgetSelected(SelectionEvent e)
             {
                 // store translation preference
-                IPreferenceStore prefStore = CheckstylePlugin.getDefault().getPreferenceStore();
-                prefStore.setValue(CheckstylePlugin.PREF_SORT_TOKENS, ((Button) e.widget)
+                IEclipsePreferences prefStore = new InstanceScope()
+                        .getNode(CheckstylePlugin.PLUGIN_ID);
+                prefStore.putBoolean(CheckstylePlugin.PREF_SORT_TOKENS, ((Button) e.widget)
                         .getSelection());
+                try
+                {
+                    prefStore.flush();
+                }
+                catch (BackingStoreException e1)
+                {
+                    CheckstyleLog.log(e1);
+                }
             }
 
             public void widgetDefaultSelected(SelectionEvent e)

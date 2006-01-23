@@ -39,8 +39,12 @@
 
    <plugin
          id="com.atlassw.tools.eclipse.checkstyle"
-         download-size="2800"
-         install-size="7000"
-         version="4.0.1"/>
-
+         download-size="3200"
+         install-size="7500"
+         version="4.0.90"/>
+   <plugin
+         id="net.sf.eclipsecs.stats"
+         download-size="1300"
+         install-size="1700"
+         version="0.2.0"/>
 </feature>
