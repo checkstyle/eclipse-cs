@@ -21,6 +21,8 @@ package net.sf.eclipsecs.stats;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 
+import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
+
 /**
  * The plugins preferences initializer.
  * 
@@ -42,7 +44,7 @@ public class PrefsInitializer extends AbstractPreferenceInitializer
      */
     public void initializeDefaultPreferences()
     {
-        StatsCheckstylePlugin.getDefault().getPluginPreferences().setDefault(
+        CheckstylePlugin.getDefault().getPluginPreferences().setDefault(
             PROPS_SHOW_ALL_CATEGORIES, false);
     }
 

@@ -23,10 +23,10 @@ package net.sf.eclipsecs.stats.util;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.sf.eclipsecs.stats.StatsCheckstylePlugin;
-
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
+
+import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 
 /**
  * Manages and caches images for the plugin.
@@ -50,12 +50,12 @@ public final class CheckstyleStatsPluginImages
 
     static
     {
-        FILTER_ICON = StatsCheckstylePlugin.imageDescriptorFromPlugin(
-            StatsCheckstylePlugin.PLUGIN_ID, "icons/filter_16.gif"); //$NON-NLS-1$
-        LIST_VIEW_ICON = StatsCheckstylePlugin.imageDescriptorFromPlugin(
-            StatsCheckstylePlugin.PLUGIN_ID, "icons/listingView.gif"); //$NON-NLS-1$
-        GRAPH_VIEW_ICON = StatsCheckstylePlugin.imageDescriptorFromPlugin(
-            StatsCheckstylePlugin.PLUGIN_ID, "icons/graphView.gif"); //$NON-NLS-1$
+        FILTER_ICON = CheckstylePlugin.imageDescriptorFromPlugin(
+                CheckstylePlugin.PLUGIN_ID, "icons/filter_16.gif"); //$NON-NLS-1$
+        LIST_VIEW_ICON = CheckstylePlugin.imageDescriptorFromPlugin(
+                CheckstylePlugin.PLUGIN_ID, "icons/listingView.gif"); //$NON-NLS-1$
+        GRAPH_VIEW_ICON = CheckstylePlugin.imageDescriptorFromPlugin(
+                CheckstylePlugin.PLUGIN_ID, "icons/graphView.gif"); //$NON-NLS-1$
     }
 
     /** Hidden default constructor. */

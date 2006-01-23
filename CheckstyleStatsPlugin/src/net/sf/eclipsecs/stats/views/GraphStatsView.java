@@ -24,12 +24,10 @@ import java.awt.Frame;
 
 import net.sf.eclipsecs.stats.Messages;
 import net.sf.eclipsecs.stats.PrefsInitializer;
-import net.sf.eclipsecs.stats.StatsCheckstylePlugin;
 import net.sf.eclipsecs.stats.data.Stats;
 import net.sf.eclipsecs.stats.util.CheckstyleStatsPluginImages;
 import net.sf.eclipsecs.stats.views.internal.FiltersAction;
 
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
@@ -53,6 +51,9 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PiePlot3D;
 import org.jfree.ui.RectangleInsets;
 import org.jfree.util.Rotation;
+
+import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 
 /**
  * View that shows a graph for the Checkstyle marker distribution.
@@ -215,9 +216,8 @@ public class GraphStatsView extends AbstractStatsView
                 }
                 catch (PartInitException e)
                 {
-                    StatsCheckstylePlugin.log(IStatus.ERROR, NLS.bind(
-                            Messages.GraphStatsView_unableToOpenListingView,
-                            MarkerStatsView.VIEW_ID), e);
+                    CheckstyleLog.log(e, NLS.bind(Messages.GraphStatsView_unableToOpenListingView,
+                            MarkerStatsView.VIEW_ID));
                     // TODO : mettre message d'erreur à l'utilisateur
                 }
             }
@@ -241,7 +241,7 @@ public class GraphStatsView extends AbstractStatsView
                             mPieDataset.setShowAllCategories(mShowAllCategoriesAction.isChecked());
 
                             // update the preference
-                            StatsCheckstylePlugin.getDefault().getPreferenceStore().setValue(
+                            CheckstylePlugin.getDefault().getPreferenceStore().setValue(
                                     PrefsInitializer.PROPS_SHOW_ALL_CATEGORIES,
                                     mShowAllCategoriesAction.isChecked());
 
@@ -254,7 +254,7 @@ public class GraphStatsView extends AbstractStatsView
         mShowAllCategoriesAction.setToolTipText(Messages.GraphStatsView_displayAllCategories);
         mShowAllCategoriesAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages()
                 .getImageDescriptor(ISharedImages.IMG_OBJ_ELEMENT));
-        mShowAllCategoriesAction.setChecked(StatsCheckstylePlugin.getDefault().getPreferenceStore()
+        mShowAllCategoriesAction.setChecked(CheckstylePlugin.getDefault().getPreferenceStore()
                 .getBoolean(PrefsInitializer.PROPS_SHOW_ALL_CATEGORIES));
 
     }

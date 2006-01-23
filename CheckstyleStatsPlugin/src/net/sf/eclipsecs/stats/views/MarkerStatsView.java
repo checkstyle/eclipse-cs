@@ -25,18 +25,13 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import net.sf.eclipsecs.stats.Messages;
-import net.sf.eclipsecs.stats.StatsCheckstylePlugin;
 import net.sf.eclipsecs.stats.data.MarkerStat;
 import net.sf.eclipsecs.stats.data.Stats;
 import net.sf.eclipsecs.stats.util.CheckstyleStatsPluginImages;
 import net.sf.eclipsecs.stats.views.internal.FiltersAction;
-import net.sf.eclipsecs.stats.views.table.EnhancedTableViewer;
-import net.sf.eclipsecs.stats.views.table.ITableComparableProvider;
-import net.sf.eclipsecs.stats.views.table.ITableSettingsProvider;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IContributionItem;
@@ -72,6 +67,11 @@ import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
+
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
+import com.atlassw.tools.eclipse.checkstyle.util.table.EnhancedTableViewer;
+import com.atlassw.tools.eclipse.checkstyle.util.table.ITableComparableProvider;
+import com.atlassw.tools.eclipse.checkstyle.util.table.ITableSettingsProvider;
 
 /**
  * View that displays statistics about checkstyle markers.
@@ -373,8 +373,8 @@ public class MarkerStatsView extends AbstractStatsView
                 }
                 catch (PartInitException e)
                 {
-                    StatsCheckstylePlugin.log(IStatus.ERROR, NLS.bind(
-                            Messages.MarkerStatsView_unableToOpenGraph, GraphStatsView.VIEW_ID), e);
+                    CheckstyleLog.log(e, NLS.bind(Messages.MarkerStatsView_unableToOpenGraph,
+                            GraphStatsView.VIEW_ID));
                     // TODO : mettre message d'erreur à l'utilisateur
                 }
             }
@@ -449,8 +449,7 @@ public class MarkerStatsView extends AbstractStatsView
                     }
                     catch (PartInitException e)
                     {
-                        StatsCheckstylePlugin.log(IStatus.ERROR,
-                                Messages.MarkerStatsView_unableToShowMarker, e);
+                        CheckstyleLog.log(e, Messages.MarkerStatsView_unableToShowMarker);
                         // TODO : mettre message d'erreur à l'utilisateur
                     }
                 }

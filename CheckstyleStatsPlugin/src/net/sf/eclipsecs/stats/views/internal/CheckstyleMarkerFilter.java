@@ -27,8 +27,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
-import net.sf.eclipsecs.stats.StatsCheckstylePlugin;
-
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -39,6 +37,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.ui.IWorkingSet;
 
+import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleMarker;
 
 /**
@@ -408,7 +407,7 @@ public class CheckstyleMarkerFilter implements Cloneable
 
             if ((setting = settings.get(TAG_WORKING_SET)) != null)
             {
-                setWorkingSet(StatsCheckstylePlugin.getDefault().getWorkbench()
+                setWorkingSet(CheckstylePlugin.getDefault().getWorkbench()
                         .getWorkingSetManager().getWorkingSet(setting));
             }
 

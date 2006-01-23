@@ -1,19 +1,10 @@
 Manifest-Version: 1.0
 Bundle-Name: Checkstyle Statistics Plug-in
 Bundle-SymbolicName: net.sf.eclipsecs.stats; singleton=true
-Bundle-Version: 0.1.1
+Bundle-Version: 0.2.0
 Bundle-ClassPath: StatsCheckstyle.jar,
  lib/jcommon-1.0.0.jar,
  lib/jfreechart-1.0.0.jar
-Bundle-Activator: net.sf.eclipsecs.stats.StatsCheckstylePlugin
-Bundle-Localization: plugin
-Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime,
- com.atlassw.tools.eclipse.checkstyle,
- org.eclipse.core.resources,
- org.eclipse.jface.text,
- org.eclipse.jdt.core,
- org.eclipse.ui.ide,
- org.eclipse.ui.workbench.texteditor
-Eclipse-AutoStart: true
+Bundle-Localization: fragment
+Fragment-Host: com.atlassw.tools.eclipse.checkstyle
 Bundle-Vendor: Fabrice Bellingard, Lars Ködderitzsch

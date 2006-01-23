@@ -27,7 +27,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.sf.eclipsecs.stats.Messages;
-import net.sf.eclipsecs.stats.StatsCheckstylePlugin;
 import net.sf.eclipsecs.stats.data.CreateStatsJob;
 import net.sf.eclipsecs.stats.data.Stats;
 import net.sf.eclipsecs.stats.views.internal.CheckstyleMarkerFilter;
@@ -62,6 +61,7 @@ import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.progress.IWorkbenchSiteProgressService;
 import org.eclipse.ui.progress.WorkbenchJob;
 
+import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleMarker;
 
 /**
@@ -271,7 +271,7 @@ public abstract class AbstractStatsView extends ViewPart
 
         String concreteViewId = getViewId();
 
-        IDialogSettings workbenchSettings = StatsCheckstylePlugin.getDefault().getDialogSettings();
+        IDialogSettings workbenchSettings = CheckstylePlugin.getDefault().getDialogSettings();
         IDialogSettings settings = workbenchSettings.getSection(concreteViewId);
 
         if (settings == null)

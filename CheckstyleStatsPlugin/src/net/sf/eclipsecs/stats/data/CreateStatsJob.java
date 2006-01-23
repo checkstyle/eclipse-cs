@@ -17,6 +17,7 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 //============================================================================
+
 package net.sf.eclipsecs.stats.data;
 
 import java.util.HashMap;
@@ -27,7 +28,6 @@ import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
 import net.sf.eclipsecs.stats.Messages;
-import net.sf.eclipsecs.stats.StatsCheckstylePlugin;
 import net.sf.eclipsecs.stats.views.internal.CheckstyleMarkerFilter;
 
 import org.eclipse.core.resources.IMarker;
@@ -39,9 +39,11 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
+import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleMarker;
 import com.atlassw.tools.eclipse.checkstyle.config.meta.MetadataFactory;
 import com.atlassw.tools.eclipse.checkstyle.config.meta.RuleMetadata;
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 
 /**
  * Job implementation that builds the data objects for the statistic views.
@@ -56,8 +58,7 @@ public class CreateStatsJob extends Job
     //
 
     /** Regexp to find {0}-like strings. */
-    private static final Pattern REGEXP_HOLES = Pattern
-        .compile("\\{[0-9]+(\\S)*\\}"); //$NON-NLS-1$
+    private static final Pattern REGEXP_HOLES = Pattern.compile("\\{[0-9]+(\\S)*\\}"); //$NON-NLS-1$
 
     /** Regexp to find suites of ' character. */
     private static final Pattern REGEXP_QUOTE = Pattern.compile("'+"); //$NON-NLS-1$
@@ -79,8 +80,7 @@ public class CreateStatsJob extends Job
     /**
      * Creates the job.
      * 
-     * @param filter
-     *            the marker filter to analyze
+     * @param filter the marker filter to analyze
      */
     public CreateStatsJob(CheckstyleMarkerFilter filter)
     {
@@ -100,9 +100,8 @@ public class CreateStatsJob extends Job
         try
         {
 
-            int wholeAmountOfMarkers = ResourcesPlugin.getWorkspace().getRoot()
-                .findMarkers(CheckstyleMarker.MARKER_ID, true,
-                    IResource.DEPTH_INFINITE).length;
+            int wholeAmountOfMarkers = ResourcesPlugin.getWorkspace().getRoot().findMarkers(
+                    CheckstyleMarker.MARKER_ID, true, IResource.DEPTH_INFINITE).length;
 
             IMarker[] markers = mFilter.findMarkers(monitor);
 
@@ -119,17 +118,14 @@ public class CreateStatsJob extends Job
                 }
                 catch (CoreException e)
                 {
-                    StatsCheckstylePlugin.log(IStatus.WARNING,
-                        Messages.CreateStatsJob_errorAnalyzingMarkers, e);
+                    CheckstyleLog.log(e, Messages.CreateStatsJob_errorAnalyzingMarkers);
                 }
 
                 // check that the message is not empty
                 if (message == null || message.trim().length() == 0)
                 {
                     // cela ne devrait pas arriver, mais bon, on laisse faire
-                    StatsCheckstylePlugin.log(IStatus.WARNING,
-                        Messages.CreateStatsJob_markerMessageShouldntBeEmpty,
-                        null);
+                    CheckstyleLog.log(null, Messages.CreateStatsJob_markerMessageShouldntBeEmpty);
                     continue;
                 }
 
@@ -140,8 +136,7 @@ public class CreateStatsJob extends Job
                     // 1ere fois qu'on rencontre un marqueur de ce type
                     MarkerStat newMarkerStat = new MarkerStat(message);
                     newMarkerStat.addMarker(markers[i]);
-                    markerStats.put(newMarkerStat.getIdentifiant(),
-                        newMarkerStat);
+                    markerStats.put(newMarkerStat.getIdentifiant(), newMarkerStat);
                 }
                 else
                 {
@@ -150,13 +145,12 @@ public class CreateStatsJob extends Job
                 }
             }
 
-            mStats = new Stats(markerStats.values(), markers.length,
-                wholeAmountOfMarkers);
+            mStats = new Stats(markerStats.values(), markers.length, wholeAmountOfMarkers);
         }
         catch (CoreException e)
         {
-            return new Status(IStatus.ERROR, StatsCheckstylePlugin.PLUGIN_ID,
-                IStatus.OK, Messages.CreateStatsJob_errorAnalyzingMarkers, e);
+            return new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.OK,
+                    Messages.CreateStatsJob_errorAnalyzingMarkers, e);
         }
 
         return Status.OK_STATUS;
@@ -192,16 +186,13 @@ public class CreateStatsJob extends Job
         return resourceBundle.getString(key);
     }
 
-    private static String getUnlocalizedMessage(IMarker marker)
-        throws CoreException
+    private static String getUnlocalizedMessage(IMarker marker) throws CoreException
     {
         String key = (String) marker.getAttribute(CheckstyleMarker.MESSAGE_KEY);
-        RuleMetadata ruleMetadata = MetadataFactory
-            .getRuleMetadata((String) marker
+        RuleMetadata ruleMetadata = MetadataFactory.getRuleMetadata((String) marker
                 .getAttribute(CheckstyleMarker.MODULE_NAME));
 
-        for (Iterator iter = ruleMetadata.getAlternativeNames().iterator(); iter
-            .hasNext();)
+        for (Iterator iter = ruleMetadata.getAlternativeNames().iterator(); iter.hasNext();)
         {
             String checker = (String) iter.next();
             try
@@ -222,8 +213,7 @@ public class CreateStatsJob extends Job
     /**
      * Cleans the unlocalized message so that it is more readable.
      * 
-     * @param message :
-     *            the message to clean
+     * @param message : the message to clean
      * @return the cleaned message
      */
     private static String cleanMessage(String message)

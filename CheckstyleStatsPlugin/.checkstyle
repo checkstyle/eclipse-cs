@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?><fileset-config file-format-version="1.1.0" simple-config="true">
-<fileset name="Alle" enabled="true" check-config-name="Conventions PLUGIN CHEKSTYLE" type="project" location="CheckConfig_Checkstyle.xml" description=""><file-match-pattern match-pattern="." include-pattern="true"/>
+<fileset name="Alle" enabled="true" check-config-name="Sun Checks" type="builtin" location="sun_checks.xml" description="Checkstyle-Konfiguration zur Prüfung der Sun-Coding-Konventionen."><file-match-pattern match-pattern="." include-pattern="true"/>
 </fileset>
 </fileset-config>
