@@ -14,6 +14,74 @@
             <tbody>
                 <tr>
                     <td>
+                        <a id="r4_1_0_beta">
+                            <h3>Release 4.1.0 beta</h3>
+                        </a>
+                        <p> Version 4.1.0 introduces the "local configuration" scheme which allows
+                            to set up check configurations private to a project. The check
+                            configuration data will be stored inside the projects .checkstyle
+                            file.<br/> This allows for a true self contained Checkstyle setup for
+                            projects, further enhancing teamworking support as no additional setup
+                            in the developers workspace is required.<br/> At the same time the well
+                            known "per workspace" setup of Checkstyle configurations (now called
+                            "global configurations") remains intact, allowing for set up of check
+                            configurations that can be used by multiple project.</p>
+                        <p> There are now new ways to resolve properties within Checkstyle
+                            configuration files:<ul>
+                                <li>Resolve properties from Classpath variables</li>
+                                <li>Resolve properties from System/Environment properties (passed
+                                    into the Eclipse JVM via the -D parameter) </li>
+                                <li>Reintroduced in 4.1.0 is that you can input properties as you
+                                    set up the configuration. The plugin will find unresolved
+                                    properties and asks for you to input the values.</li>
+                            </ul></p>
+                        <p> The way Project relative configurations work has changed a bit. Now they
+                            are relative to exactly one project instead of possibly multiple
+                            projects. This achieves a more expectable behaviour and allows new
+                            configuration deployment schemes, for instance to use a configuration
+                            file that lies relative to another project in the workspace.<br/>
+                            <b>Important note: </b><br/>Project relative configurations set up with
+                            previous versions will initially produce errors until they are
+                            reconfigured with the new 4.1.0 release.</p>
+                        <p> The internal Checkstyle logging (error log) was bridged with the Eclipse
+                            Error Log. This way exceptions thrown by Checkstyle checks (standard or
+                            custom) appear in the Error Log View. This greatly enhances debugging of
+                            custom checks used with the plugin.</p>
+                        <p> Version 4.1.0 now directly contains the new Statistics plugin addition
+                            which adds 2 views to Eclipse which make handling of large amounts of
+                            Checkstyle violations very much easier.</p>
+                        <p> A lot of other features have been implemented and bugs been resolved, as
+                            you can judge from the list below: </p>
+                        <h4>Bugs resolved:</h4>
+                        <ul>
+                            <li>1381855 Extra files in plugin distribution?</li>
+                            <li>1381858 Inactive scroll bar</li>
+                            <li>1387885 Checkstyle configuration file trashed</li>
+                            <li>1392149 NoWhitespaceBefore check is all or nothing</li>
+                            <li>1268680 internal_config_*.xml files not deleted with config.</li>
+                            <li>1340936 Problem with configuration name conflict</li>
+                            <li>1330232 multiple metadata entries of one check with different parent</li>
+                            <li>1382457 .checkstyle file touched when there are no changes</li>
+                            <li>1371777 Problem with external configuration file and teamworking</li>
+                            <li>1412189 error while trying to set "exclude files from packages" opt
+                            </li>
+                        </ul>
+                        <h4>Feature requests:</h4>
+                        <ul>
+                            <li>1258461 Cache Remote Configuration</li>
+                            <li>1252841 Remote Config file requiring authentication (needs testing)</li>
+                            <li>1233683 Support per project suppressions.xml</li>
+                            <li>1296196 Project-relative configurations from other projects</li>
+                            <li>1296196 Project-relative configurations from other projects</li>
+                            <li>745756 Allow storing of checkstyle configuration in project</li>
+                            <li>1371642 Inconsistent rebuild behaviour</li>
+                            <li>1340908 Order modules by name</li>
+                            <li>1381881 Use java classpath variables as properties</li>
+                            <li>1384663 Enable external configuration locations to be dynamic</li>
+                            <li>1268602 Ability to import into internal configuration.</li>
+                            <li>1259430 Cannot specify values for variables</li>
+                            <li>1235654 NPE in ResourceBundleProperyResolver</li>
+                        </ul>
                         <a id="r4_0_1">
                             <h3>Release 4.0.1</h3>
                         </a>
@@ -465,6 +533,8 @@
                     <td valign="top">
                         <div class="box releaselist">
                             <h3>Releases</h3>
+                            <a href="#r4_1_0_beta">Release 4.1.0 beta</a>
+                            <br/>
                             <a href="#r4_0_1">Release 4.0.1</a>
                             <br/>
                             <a href="#r4_0_0final">Release 4.0.0 final</a>

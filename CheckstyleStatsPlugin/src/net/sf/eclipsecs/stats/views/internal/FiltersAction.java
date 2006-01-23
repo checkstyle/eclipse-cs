@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2005  David Schneider, Lars Ködderitzsch, Fabrice Bellingard
+// Copyright (C) 2002-2006  David Schneider, Lars Ködderitzsch, Fabrice Bellingard
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -53,7 +53,7 @@ public class FiltersAction extends Action
      */
     public FiltersAction(AbstractStatsView view)
     {
-        super(Messages.FiltersAction_text); // TODO externalize
+        super(Messages.FiltersAction_text);
         setImageDescriptor(CheckstyleStatsPluginImages.FILTER_ICON);
         setToolTipText(Messages.FiltersAction_tooltip);
         this.mStatsView = view;

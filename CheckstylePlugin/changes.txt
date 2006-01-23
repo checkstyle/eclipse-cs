@@ -1,278 +1,61 @@
-
-
-4.2.0
-
-Bridged internal Checkstyle logging (error log) with the Eclipse Error Log.
-This way exceptions thrown by Checkstyle checks (standard or custom) appear in the Error Log View.
-This greatly enhances debugging of custom checks used with the plugin.
-
-
-
-
 ###################
 # Important note: #
 ###################
 After installation of this plugin eclipse must be restarted with the -clean option at least once.
 That is: <path-to-my-eclipse-install>/eclipse.exe -clean
 
-The plugin version 4.0.0 does not support eclipse 2.x.x any more. 
+The plugin version 4.x.x does not support eclipse 2.x.x any more. 
 Make sure you got an eclipse 3.0 or higher installation you are installing this plugin to.
 
-Eclipse Checkstyle Plugin v4.0.1
----------------------------------
+Eclipse Checkstyle Plugin v4.0.90 (4.1.0 beta)
+----------------------------------------------
 
-This is a bugfix release that incorporates the Checkstyle 4.1 release,
-which comes with several bugfixes in the Checkstyle core.
-No changes have been made to the plug-in itself since the last release.
+Version 4.1.0 introduces the "local configuration" scheme which allows to set up check configurations private to a project.
+The check configuration data will be stored inside the projects .checkstyle file.
+This allows for a true self contained Checkstyle setup for projects, further enhancing teamworking support as
+no additional setup in the developers workspace is required.
+At the same time the well known "per workspace" setup of Checkstyle configurations (now called "global configurations")
+remains intact, allowing for set up of check configurations that can be used by multiple project.
 
+There are now new ways to resolve properties within Checkstyle configuration files:
+ * properties can be resolved from Classpath variables
+ * properties can be resolved from System/Environment properties (passed into eclipse via the -D paramter)
+ * Reintroduced in 4.1.0 is that you can input properties as you set up the configuration. The plugin will find
+   unresolved properties and asks for you to input the values.
+   
+The way Project relative configurations work has changed a bit. Now they are relative to exactly one project
+instead of possibly multiple projects. This achieves a more expectable behaviour and allows new configuration
+deployment schemes, for instance to use a configuration file that lies relative to another project in the 
+workspace.
 
-Eclipse Checkstyle Plugin v4.0.0
----------------------------------
+The internal Checkstyle logging (error log) was bridged with the Eclipse Error Log.
+This way exceptions thrown by Checkstyle checks (standard or custom) appear in the Error Log View.
+This greatly enhances debugging of custom checks used with the plugin.
 
-Final Release
--------------
-
-Updated to use Checkstyle 4.0 final
-Handling of checkstyle_packages.xml files has changed again, the intermediate solution from beta6 won't work anymore.
-Be sure to check out the updated documentation.
-
-Important Note: 
-The eclipse-cs update site is now officially released! 
-Using the update mechanism of Eclipse can save you the hassle of a by hand install.
-Be sure to check out the documentation on www.eclipse-cs.sourceforge.net for more detail.
-
-Bugs:
-1352322 	checks get hidden when redefining group-metadata
-1340884 	Ignore checkbox can be broken
-1330193 	unexpected behaviour with deletable="false" in metadata
-1328840 	lack of ImportControl support
-1324819 	Checker/Treewalker not hidden and in category 'Other'
-1322079 	Label hidden in configuration editor
-1305354 	Cannot exclude packages
-1292831 	messages_xx.properties not detected
-1322079 	Label hidden in configuration editor
-
-RFE:
-1340855 	Double click on group name behaviour
-1333015 	Sort tokens in "Edit module config" window
-1304768 	Provide extension point for built-in configurations
-1286034 	provide extension point to add custom checks
-
-
-Release beta6:
---------------
-
-Updated to use Checkstyle 4.0 beta 6.
-The new plugin version brings vastly improved support for custom checks.
-Users providing custom checks are now able to define metadata for this checks.
-Use this metadata to get you checks fully integrated into the plugin.
-Please see the updated documentation on this topic.
-
-Teamworking support has been improved as well - when a project is now setup up to use checkstyle
-and the .checkstyle file ist shared through a repository
-no additional steps are needed to set up the plugin when a team member checks out the project from the repository.
-Please see the updated documentation on this topic as well.
+A lot of other features have been implemented and bugs been resolved, as you can judge from the list below:
 
 Bugs:
-1285998 	error with jre 1.4.2_06 on win2000
-1276613 	custom metadata not detected
-1267504 	No output seen from Checkstyle under Eclipse 3.1
-1267123 	checkstyle on non-java projects
-1266138 	Strange localization
-1265965 	checkstyle 4.0 very very very slow with eclipse 3
-1260852 	Cosmetic: Annotation icons do not show in preferences
-1260129 	PackageFilter GUI is broken
+1381855 	Extra files in plugin distribution?
+1381858 	Inactive scroll bar
+1387885 	Checkstyle configuration file trashed
+1392149 	NoWhitespaceBefore check is all or nothing
+1268680 	internal_config_*.xml files not deleted with config.
+1340936 	Problem with configuration name conflict
+1330232 	multiple metadata entries of one check with different parent
+1382457 	.checkstyle file touched when there are no changes
+1371777 	Problem with external configuration file and teamworking
+1412189  	error while trying to set "exclude files from packages" opt  
 
 RFE:
-1283480 	More on configuring variables
-1225561 	Move checkstyle-config.xml to project root
-741543 		Allow user defined check rules
-1234748 	Support custom packages
+1258461 	Cache Remote Configuration
+1252841 	Remote Config file requiring authentication (needs testing)
+1233683 	Support per project suppressions.xml
+1296196 	Project-relative configurations from other projects
 745756 		Allow storing of checkstyle configuration in project
-
-Release beta5:
---------------
-
-Updated to use Checkstyle 4.0 beta 5.
-Introduces French (thanks Fabrice Belingard) and German translations.
-Apart from this mostly bug fixes.
-
-Important: Note that the usage-Checks have been removed from the official Checkstyle 4.0 beta5 distribution and are therefore not contained within the plugin any more.
-Checkstyle configurations that use these checks will fail until the usage-Checks are removed.
-
-Bugs:
-1252252	StackOverflow Error
-1251194	Resource out of sync after performing changes to config
-1217447	TreeWalker: exception - java.lang.NoClassDefFoundError
-1218510	Typo in Checkstyle Configuration
-1222784	No icon when code is "folded/collapsed"
-1232089	Repeated 'Checkstyle Classpath for project' messages
-1233444	.checkstyle file touched even when no changes made to config
-1234062	Problem with generic handling
-1236418	Unable to write checkstyle plugin config file
-1236864	Inacurrate Marker placement with Tabs *** Thanks go to Scott Severtson ***
-1232696	Usage checks should be removed
-
-RFE:
-1233689	Reevaluate problems on check refresh
-755830	&quot;Disabled&quot; option for checks
-
-
-
-Release beta4:
---------------
-
-Checkstyle Eclipse Plugin 4.0.0 beta3 had to be quickly pulled because of a critical bug in Checkstyle 4.0 beta3.
-If you installed plugin version 4.0.0 beta3 please consider upgrading to this version.
-
-* Updated to Checkstyle 4.0 beta4
-
-Bugs:
-1217357	NullPointerException in UnOpenedFilesFilter
-
-Release beta3:
---------------
-
-* Some bugfixes
-* Documentation fully updated (but not yet reviewed)
-* Updated to Checkstyle 4.0 beta3
-
-
-Bugs:
-1213014	changes to suppressions file require restart
-1212545	property file in "project relative" configuration
-1086440	Reports are in the Eclipse Problems View
-1203108	Additional metadata is removed
-1204531	Checkbox always sets severity to warning
-
-
-
-Release beta2:
---------------
-
-* Minor usability enhancements in configuration editor (multiple selection and adding from the tree, option to skip opening the module editor on add action)
-* Keyboard support for configuration editor (remove modules using DEL or <-, add modules using SPACE or ->)
-* Added button to configure a checkstyle configuration from the properties page
-* Added FileInSyncFilter that excludes all files from the checks that are in sync with the CVS repository
-* Added control to the preferences page to see which projects use a specific check configuration
-* Reworked file set editor gui
-* Added content assist for regular expressions in file set editor and check configuration gui
-* Added button to configure a check configuration from the properties page (Usability shortcut)
-* Some documentation updated - work still in progress
-
-
-Bugs:
-1202812 Checkbox value changes are not persisted
-1202435	NPE on "Export" with 4.0 beta Eclipse 3.02
-1196130	Configuration Editor broken with duplicate checks
-1196084	Can't use eclipse variables on SuppressionFilter
-
-RFE:
-750183	add a get started paragraph or page
-
-
-Release beta1:
---------------
-
-* Uses checkstyle-4.0-beta2
-* Improved rebuild logic - now rebuilds only necessary projects
-* Integrated Duplicate Code View - Thanks to Fabrice Bellingard
-* Jar files containing own checks can now integrated more easily 
-  - Just drop your .jar file in the extension-libraries directory
-    and add your jar-File to the Bundle-ClassPath entry in the MANIFEST.MF.
-    Restart eclipse with -clean option afterwards at least once.
-    Use your checkstyle configuration file containing your custom checks with the plugin.
-
-Patches:
-1123128	Duplicated Code Checker
-
-RFE's:
-1022915	Support for eclipse variables
-758117	Don't rebuild everything - or ask before doing so
-796155	Allow other jars to be added
-741543	Allow user defined check rules
-
-Bugs:
-1177797	RuntimeException
-1084281	Many classes flagged as "with errors" with eclipse 3.1.0M3
-996575	NoClassDefFoundError in v. 3.4.1
-913098	Cannot add new check jars
-
-
-
-Release alpha4:
----------------
-
-This release revises much of the inner workings of the checkstyle plugin as well as the plugin GUI.
-Currently there is no updated user doc, this will be included with the 4.0.0 final release.
-Be warned that some things might work slightly different now (especially the GUI). But it should not
-be too hard to figure out.
-
-* Plugin now uses plain checkstyle configuration files
-* Now able to use checkstyle configuration files located somewhere in the file systems (External Configuration)
-* Possible to use checkstyle configuration files from a remote URL (Remote Configuration)
-* Possible to use project relative checkstyle configurations (Project Relative Configuration)
-* ALL checkstyle modules are now supported including Header Checks, Fileset Checks (for instance StrictDuplicateCheck) and Filters
-* All modules can be configured from the GUI
-* Completely reworked the configuration GUI
-* Added 'Default' option to the module (rule) configuration dialog so that default settings can easily be restored
-* Modules can now be easily enabled/disabled using a checkbox
-* Checkstyle tokens can now be translated into a more readable form in the configuration GUI
-* Existing check configurations (old format) are migrated to the new configuration format
-* Improved the annotations for eclipse editors so that errors and infos are shown in a similar way
-* Added filter to exclude files from non source directories
-
-
-RFE's:
-1186986	Scan only source files from configured source paths
-1163353	Suppression filters do not work
-978202	URL checkstyle config download
-905061	Support for Duplicate Code Analysis
-887874	Missing support for modules.
-772913	allow header checks
-758563	Use meaningful tokens
-758558	ditch changing labels next to checkboxes
-758555	Enabling/disabling rules using checkboxes
-745756	Allow storing of checkstyle configuration in project
-758560	Rework file set editor page
-905675	Support eclipse development
-
-Bugs;
-1146104	Plugin ignores SuppressionCommentFilter
-1098141	Configuration editor has tabs outside its window
-978112	Import of checkstyle config dumps with non supported checks
-974583	bug in configuration editor layout hides options
-890956	Problems with Import of checkstyle-configuration
-878118	Suppression File no longer works since 3.2
-
-Patches:
-1123128	Duplicated Code Checker
-
-
-Release alpha2/3:
------------------
-* Added simplified project configuration
-* Added filter facility
-* Added filter for write protected files
-* Added filter for files not opened in editor
-* Added package filter
-
-
-Bugs fixed:
-1176430: Config Problem
-
-
-Release alpha1:
----------------
-* Support for checkstyle 4.0 beta1
-* Supports Eclipse 3.1 M5
-* All checking processes are now run as background jobs
-* Added editor annotations for checkstyle warnings
-
-
-Note: Eclipse 2.x.x is no more supported
-
-Patch 1096720: Use of jobs api + filter facility 
-Patch 1064092: Make eclipse-cs a 3.x-style plugin 
-Patch 1064046: Remove xerces dependency 
-
+1371642 	Inconsistent rebuild behaviour
+1340908 	Order modules by name
+1381881 	Use java classpath variables as properties
+1384663 	Enable external configuration locations to be dynamic
+1268602 	Ability to import into internal configuration.
+1259430 	Cannot specify values for variables
+1235654 	NPE in ResourceBundleProperyResolver

@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2005  David Schneider, Lars Ködderitzsch, Fabrice Bellingard
+// Copyright (C) 2002-2006  David Schneider, Lars Ködderitzsch, Fabrice Bellingard
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -481,11 +481,18 @@ public class MarkerStatsView extends AbstractStatsView
         {
 
             Stats stats = getStats();
-
-            String text = NLS.bind(Messages.MarkerStatsView_lblOverviewMessage, new Object[] {
-                new Integer(stats.getMarkerCount()), new Integer(stats.getMarkerStats().size()),
-                new Integer(stats.getMarkerCountAll()) });
-            mDescLabel.setText(text);
+            if (stats != null)
+            {
+                String text = NLS.bind(Messages.MarkerStatsView_lblOverviewMessage, new Object[] {
+                    new Integer(stats.getMarkerCount()),
+                    new Integer(stats.getMarkerStats().size()),
+                    new Integer(stats.getMarkerCountAll()) });
+                mDescLabel.setText(text);
+            }
+            else
+            {
+                mDescLabel.setText("");
+            }
         }
         else
         {
