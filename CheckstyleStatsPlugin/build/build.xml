@@ -63,7 +63,7 @@
 		<getEclipseClasspath workspace="${workspace}" projectName="${project.name}" classpathId="fragment.classpath" />
 
 		<!-- compile -->
-		<javac srcdir="${basedir}/src" destdir="${dist.basedir.tmpdir}/bin" classpathref="fragment.classpath" source="1.4" />
+		<javac srcdir="${basedir}/src" destdir="${dist.basedir.tmpdir}/bin" classpathref="fragment.classpath" source="1.4" debug="on"/>
 
 		<!-- copy properties and other stuff -->
 		<copy todir="${dist.basedir.tmpdir}/bin">

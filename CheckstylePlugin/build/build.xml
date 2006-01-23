@@ -80,8 +80,8 @@
 		<getEclipseClasspath workspace="${workspace}" projectName="${project.name}" classpathId="build.classpath" />
 
 		<!-- compile -->
-		<javac srcdir="${basedir}/src" destdir="${dist.basedir.tmpdir}/bin" classpathref="build.classpath" source="1.4" />
-		<javac srcdir="${basedir}/nls" destdir="${dist.basedir.tmpdir}/binnls" classpathref="build.classpath" source="1.4" />
+		<javac srcdir="${basedir}/src" destdir="${dist.basedir.tmpdir}/bin" classpathref="build.classpath" source="1.4" debug="on"/>
+		<javac srcdir="${basedir}/nls" destdir="${dist.basedir.tmpdir}/binnls" classpathref="build.classpath" source="1.4" debug="on"/>
 
 		<!-- copy properties and other stuff -->
 		<copy todir="${dist.basedir.tmpdir}/bin">
