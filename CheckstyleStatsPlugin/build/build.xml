@@ -9,7 +9,13 @@
 	<!-- file and directory settings -->
 	<property name="fragment.name" value="net.sf.eclipsecs.stats_${fragment.version}" />
 
-	<property name="dist.basedir" value="${basedir}/dist/" />
+	<!-- conditionalize the result dist dir -->
+	<condition property="dist.basedir" value="${basedir}/dist/">
+		<not>
+			<isset property="dist.basedir" />
+		</not>
+	</condition>
+
 	<property name="dist.basedir.tmpdir" value="${basedir}/dist/tmp" />
 
 	<!-- file names for the files to be distributed -->
@@ -38,7 +44,7 @@
 	<!-- ==================================================== -->
 	<!--   DISTRIBUTION TARGET                                -->
 	<!-- ==================================================== -->
-	<target name="build.dist" depends="build.bindist,build.srcdist,merge.into.plugin.bin.zip,merge.into.plugin.src.zip" />
+	<target name="build.dist" depends="build.bindist,build.srcdist,merge.into.plugin.bin.zip,merge.into.plugin.src.zip,merge.into.update.site" />
 
 	<!-- ==================================================== -->
 	<!--   COMPILE TARGET                                     -->
@@ -52,7 +58,7 @@
 		<path id="org.eclipse.pde.core.requiredPlugins">
 			<path refid="build.classpath" />
 		</path>
-		
+
 		<!-- read the eclipse classpath -->
 		<getEclipseClasspath workspace="${workspace}" projectName="${project.name}" classpathId="fragment.classpath" />
 
@@ -132,12 +138,19 @@
 		<zip destfile="${plugin.bin.zip}" update="true">
 			<zipfileset src="${dist.basedir}/${bin.dist.file}" includes="**/*" />
 		</zip>
+		<delete file="${dist.basedir}/${bin.dist.file}"/>
 	</target>
 
 	<target name="merge.into.plugin.src.zip" if="plugin.src.zip">
 		<zip destfile="${plugin.src.zip}" update="true">
 			<zipfileset src="${dist.basedir}/${src.dist.file}" includes="**/*" prefix="${project.name}" />
 		</zip>
+		<delete file="${dist.basedir}/${src.dist.file}"/>
 	</target>
 
+	<target name="merge.into.update.site" if="update.site.file">
+		<zip destfile="${update.site.file}" update="true">
+			<zipfileset dir="${dist.basedir}" prefix="plugins" includes="${fragment.jar.file}" />
+		</zip>
+	</target>	
 </project>

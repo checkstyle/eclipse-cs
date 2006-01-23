@@ -17,11 +17,16 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 //============================================================================
+
 package net.sf.eclipsecs.stats;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
+import org.eclipse.core.runtime.preferences.DefaultScope;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.osgi.service.prefs.BackingStoreException;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 
 /**
  * The plugins preferences initializer.
@@ -44,8 +49,17 @@ public class PrefsInitializer extends AbstractPreferenceInitializer
      */
     public void initializeDefaultPreferences()
     {
-        CheckstylePlugin.getDefault().getPluginPreferences().setDefault(
-            PROPS_SHOW_ALL_CATEGORIES, false);
+        IEclipsePreferences prefs = new DefaultScope().getNode(CheckstylePlugin.PLUGIN_ID);
+        prefs.putBoolean(PROPS_SHOW_ALL_CATEGORIES, false);
+
+        try
+        {
+            prefs.flush();
+        }
+        catch (BackingStoreException e)
+        {
+            CheckstyleLog.log(e);
+        }
     }
 
 }
