@@ -22,7 +22,6 @@ package com.atlassw.tools.eclipse.checkstyle.builder;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -45,7 +44,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.IPreferencesService;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.internal.corext.util.CodeFormatterUtil;
+import org.eclipse.jdt.core.formatter.DefaultCodeFormatterConstants;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
@@ -324,23 +323,16 @@ public class Auditor
             try
             {
 
-                // In Eclipse 3.1 there can be project specific settings for
-                // tabwidtdh etc.
-                // Here reflection is used to maintain compatibility with
-                // Eclipse 3.0
-                Method getTabWidht3_1Style = CodeFormatterUtil.class.getMethod("getTabWidth", //$NON-NLS-1$
-                        new Class[] { IJavaProject.class });
-
                 IJavaProject javaProject = JavaCore.create(project);
+                mTabWidth = getTabWidth(javaProject);
 
-                Integer width = (Integer) getTabWidht3_1Style.invoke(null,
-                        new Object[] { javaProject });
-                mTabWidth = width.intValue();
             }
-            catch (Exception e)
+            catch (NumberFormatException e)
             {
-                // we're in Eclipse 3.0 - fall back to the std method
-                mTabWidth = CodeFormatterUtil.getTabWidth();
+                CheckstyleLog.log(e, "Could not determine tab width setting, using default of 4");
+
+                // fall back to a reasonable default
+                mTabWidth = 4;
             }
 
             // init the marker limitation
@@ -591,6 +583,39 @@ public class Auditor
                 return Messages.Auditor_txtUnknownModule;
             }
             return metaData.getRuleName();
+        }
+
+        private int getTabWidth(IJavaProject javaProject) throws NumberFormatException
+        {
+
+            /*
+             * If the tab-char is SPACE, FORMATTER_INDENTATION_SIZE is not used
+             * by the core formatter. We piggy back the visual tab length
+             * setting in that preference in that case.
+             */
+            String key;
+            if (JavaCore.SPACE.equals(getCoreOption(javaProject,
+                    DefaultCodeFormatterConstants.FORMATTER_TAB_CHAR)))
+            {
+                key = DefaultCodeFormatterConstants.FORMATTER_INDENTATION_SIZE;
+            }
+            else
+            {
+                key = DefaultCodeFormatterConstants.FORMATTER_TAB_SIZE;
+            }
+
+            String tabWithString = getCoreOption(javaProject, key);
+
+            return Integer.parseInt(tabWithString);
+        }
+
+        private String getCoreOption(IJavaProject project, String key)
+        {
+            if (project == null)
+            {
+                return JavaCore.getOption(key);
+            }
+            return project.getOption(key, true);
         }
     }
 }
