@@ -29,6 +29,7 @@ import org.eclipse.core.resources.IProject;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.IContextAware;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.MultiPropertyResolver;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
+import com.atlassw.tools.eclipse.checkstyle.util.CustomLibrariesClassLoader;
 import com.puppycrawl.tools.checkstyle.ConfigurationLoader;
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
@@ -93,14 +94,28 @@ public class CheckConfigurationTester
             resolver = multiResolver;
         }
 
+        // store the current context class loader
+        ClassLoader contextClassloader = Thread.currentThread().getContextClassLoader();
+
         try
         {
+
+            // get the classloader that is able to load classes from custom jars
+            // within the extension-libraries dir
+            ClassLoader customClassLoader = CustomLibrariesClassLoader.get();
+            Thread.currentThread().setContextClassLoader(customClassLoader);
+
             ConfigurationLoader.loadConfiguration(
                     mCheckConfiguration.openConfigurationFileStream(), resolver, false);
         }
         catch (CheckstyleException e)
         {
             CheckstylePluginException.rethrow(e);
+        }
+        finally
+        {
+            // restore the original classloader
+            Thread.currentThread().setContextClassLoader(contextClassloader);
         }
 
         return collector.getUnresolvedProperties();
