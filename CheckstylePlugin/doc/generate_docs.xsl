@@ -156,8 +156,7 @@
 							</td>
 							<td style="text-align: left;">
 								<select name="rating">
-									<option selected="selected">--</option>
-									<option value="10">10 - Really great</option>
+									<option selected="selected" value="10">10 - Really great!</option>
 									<option>9</option>
 									<option>8</option>
 									<option>7</option>
