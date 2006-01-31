@@ -25,6 +25,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.atlassw.tools.eclipse.checkstyle.quickfixes.ICheckstyleMarkerResolution;
 import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
 
 /**
@@ -76,6 +77,9 @@ public class RuleMetadata
 
     /** Alternative names, including the name of the Checkstyle checker class. */
     private Collection mAlternativeNames;
+    
+    /** Collection fo quick fixes for this module. */
+    private Collection mQuickfixes;
 
     /** Determines if the module is a singleton. */
     private boolean mIsSingleton;
@@ -114,6 +118,7 @@ public class RuleMetadata
         mIsDeletable = deletable;
         mGroup = group;
         mAlternativeNames = new ArrayList();
+        mQuickfixes = new ArrayList();
         mIsSingleton = isSingleton;
     }
 
@@ -139,6 +144,26 @@ public class RuleMetadata
     public Collection getAlternativeNames()
     {
         return mAlternativeNames;
+    }
+    
+    /**
+     * Adds a quickfixfor this rule.
+     * 
+     * @param quickfix the quickfix
+     */
+    public void addQuickfix(ICheckstyleMarkerResolution quickfix)
+    {
+        mQuickfixes.add(quickfix);
+    }
+
+    /**
+     * Returns the list quickfixes for this module.
+     * 
+     * @return a collection of ICheckstyleMarkerResolution
+     */
+    public Collection getQuickfixes()
+    {
+        return mQuickfixes;
     }
 
     /**

@@ -85,7 +85,7 @@ public boolean isSomething()
             <enumeration option-provider="com.atlassw.tools.eclipse.checkstyle.config.meta.VisibilityOptionsProvider">
             </enumeration>
          </property-metadata>
-         <property-metadata name="excludeScope" datatype="SingleSelect">
+         <property-metadata name="excludeScope" datatype="SingleSelect" default-value="nothing">
             <description>visibility scope where Javadoc comments are not checked.</description>
             <enumeration option-provider="com.atlassw.tools.eclipse.checkstyle.config.meta.VisibilityOptionsProvider">
             </enumeration>

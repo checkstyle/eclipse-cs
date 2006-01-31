@@ -466,7 +466,6 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
 
         xmlOut.startElement(new String(), XMLTags.FILESET_CONFIG_TAG, XMLTags.FILESET_CONFIG_TAG,
                 attr);
-        xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
 
         ICheckConfiguration[] workingCopies = config.getLocalCheckConfigWorkingSet()
                 .getWorkingCopies();
@@ -534,12 +533,6 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
 
         // Write resolvable properties
         Iterator propsIterator = checkConfig.getResolvableProperties().iterator();
-
-        if (propsIterator.hasNext())
-        {
-            xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
-        }
-
         while (propsIterator.hasNext())
         {
 
@@ -553,7 +546,6 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
 
             xmlOut.startElement(new String(), XMLTags.PROPERTY_TAG, XMLTags.PROPERTY_TAG, attrs);
             xmlOut.endElement(new String(), XMLTags.PROPERTY_TAG, XMLTags.PROPERTY_TAG);
-            xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
         }
 
         Iterator addDataIterator = checkConfig.getAdditionalData().keySet().iterator();
@@ -573,7 +565,6 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
         }
 
         xmlOut.endElement(new String(), XMLTags.CHECK_CONFIG_TAG, XMLTags.CHECK_CONFIG_TAG);
-        xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
     }
 
     /**
@@ -614,7 +605,6 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
         }
 
         xmlOut.startElement(new String(), XMLTags.FILESET_TAG, XMLTags.FILESET_TAG, attr);
-        xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
 
         // write patterns
         List patterns = fileSet.getFileMatchPatterns();
@@ -625,7 +615,6 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
         }
 
         xmlOut.endElement(new String(), XMLTags.FILESET_TAG, XMLTags.FILESET_TAG);
-        xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
     }
 
     /**
@@ -649,7 +638,6 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
                 XMLTags.FILE_MATCH_PATTERN_TAG, attr);
         xmlOut.endElement(new String(), XMLTags.FILE_MATCH_PATTERN_TAG,
                 XMLTags.FILE_MATCH_PATTERN_TAG);
-        xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
     }
 
     /**
@@ -677,7 +665,6 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
                 new String() + filter.isEnabled());
 
         xmlOut.startElement(new String(), XMLTags.FILTER_TAG, XMLTags.FILTER_TAG, attr);
-        xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
 
         List data = filter.getFilterData();
         int size = data != null ? data.size() : 0;
@@ -691,11 +678,8 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
             xmlOut.startElement(new String(), XMLTags.FILTER_DATA_TAG, XMLTags.FILTER_DATA_TAG,
                     attr);
             xmlOut.endElement(new String(), XMLTags.FILTER_DATA_TAG, XMLTags.FILTER_DATA_TAG);
-            xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
         }
 
         xmlOut.endElement(new String(), XMLTags.FILTER_TAG, XMLTags.FILTER_TAG);
-        xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
-
     }
 }

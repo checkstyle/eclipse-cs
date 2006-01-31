@@ -109,9 +109,9 @@ public final class ConfigurationWriter
             xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
 
             // write out name and description as comment
-            String description = "\n" + checkConfig.getName() + ":\n" //$NON-NLS-1$ //$NON-NLS-2$
-                    + checkConfig.getDescription() + "\n"; //$NON-NLS-1$
+            String description = checkConfig.getName() + "    " + checkConfig.getDescription();
             xmlOut.comment(description.toCharArray(), 0, description.length());
+
             xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
 
             // find the root module (Checker)
@@ -167,7 +167,6 @@ public final class ConfigurationWriter
         attr.addAttribute(new String(), XMLTags.NAME_TAG, XMLTags.NAME_TAG, null, module
                 .getMetaData().getInternalName());
         xmlOut.startElement(new String(), XMLTags.MODULE_TAG, XMLTags.MODULE_TAG, attr);
-        xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
 
         // Write comment
         if (module.getComment() != null && module.getComment().trim().length() != 0)
@@ -179,7 +178,6 @@ public final class ConfigurationWriter
                     .getComment());
             xmlOut.startElement(new String(), XMLTags.METADATA_TAG, XMLTags.METADATA_TAG, attr);
             xmlOut.endElement(new String(), XMLTags.METADATA_TAG, XMLTags.METADATA_TAG);
-            xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
         }
 
         // Write last enabled severity level
@@ -192,7 +190,6 @@ public final class ConfigurationWriter
                     .getLastEnabledSeverity().getName());
             xmlOut.startElement(new String(), XMLTags.METADATA_TAG, XMLTags.METADATA_TAG, attr);
             xmlOut.endElement(new String(), XMLTags.METADATA_TAG, XMLTags.METADATA_TAG);
-            xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
         }
 
         // write custom metadata
@@ -208,7 +205,6 @@ public final class ConfigurationWriter
             attr.addAttribute(new String(), XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, null, value);
             xmlOut.startElement(new String(), XMLTags.METADATA_TAG, XMLTags.METADATA_TAG, attr);
             xmlOut.endElement(new String(), XMLTags.METADATA_TAG, XMLTags.METADATA_TAG);
-            xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
         }
 
         // Write severity only if it differs from the parents severity
@@ -223,7 +219,6 @@ public final class ConfigurationWriter
 
             xmlOut.startElement(new String(), XMLTags.PROPERTY_TAG, XMLTags.PROPERTY_TAG, attr);
             xmlOut.endElement(new String(), XMLTags.PROPERTY_TAG, XMLTags.PROPERTY_TAG);
-            xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
 
             // set the parent severity for child modules
             severity = module.getSeverity();
@@ -247,7 +242,6 @@ public final class ConfigurationWriter
 
                 xmlOut.startElement(new String(), XMLTags.PROPERTY_TAG, XMLTags.PROPERTY_TAG, attr);
                 xmlOut.endElement(new String(), XMLTags.PROPERTY_TAG, XMLTags.PROPERTY_TAG);
-                xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
             }
         }
 
@@ -259,7 +253,6 @@ public final class ConfigurationWriter
         }
 
         xmlOut.endElement(new String(), XMLTags.MODULE_TAG, XMLTags.MODULE_TAG);
-        xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
     }
 
     /**

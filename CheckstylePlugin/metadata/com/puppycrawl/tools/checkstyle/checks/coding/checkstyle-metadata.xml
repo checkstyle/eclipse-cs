@@ -46,6 +46,7 @@ Methods
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.EmptyStatementCheck"/>
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.EmptyStatementCheck"/>
          <description>Detects empty statements (standalone ;).</description>
+         <quickfix classname="com.atlassw.tools.eclipse.checkstyle.quickfixes.EmptyStatementQuickfix"/>
       </rule-metadata>
       
       <rule-metadata name="Equals and HashCode" internal-name="EqualsHashCode" parent="TreeWalker">

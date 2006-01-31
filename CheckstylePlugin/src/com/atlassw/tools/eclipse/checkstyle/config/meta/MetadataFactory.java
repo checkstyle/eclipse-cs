@@ -45,6 +45,7 @@ import com.atlassw.tools.eclipse.checkstyle.builder.PackageNamesLoader;
 import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
 import com.atlassw.tools.eclipse.checkstyle.config.Module;
 import com.atlassw.tools.eclipse.checkstyle.config.XMLTags;
+import com.atlassw.tools.eclipse.checkstyle.quickfixes.ICheckstyleMarkerResolution;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.atlassw.tools.eclipse.checkstyle.util.CustomLibrariesClassLoader;
@@ -136,7 +137,6 @@ public final class MetadataFactory
      * Get metadata for a check rule.
      * 
      * @param name The rule's name within the checkstyle configuration file.
-     * 
      * @return The metadata.
      */
     public static RuleMetadata getRuleMetadata(String name)
@@ -529,6 +529,16 @@ public final class MetadataFactory
                 {
                     mCurrentProperty.getPropertyEnumeration().add(
                             attributes.getValue(XMLTags.VALUE_TAG));
+                }
+                else if (XMLTags.QUCKFIX_TAG.equals(qName))
+                {
+                    String className = attributes.getValue(XMLTags.CLASSNAME_TAG);
+
+                    Class quickfixClass = Class.forName(className);
+
+                    ICheckstyleMarkerResolution quickfix = (ICheckstyleMarkerResolution) quickfixClass
+                            .newInstance();
+                    mCurrentRule.addQuickfix(quickfix);
                 }
             }
             catch (CheckstylePluginException e)

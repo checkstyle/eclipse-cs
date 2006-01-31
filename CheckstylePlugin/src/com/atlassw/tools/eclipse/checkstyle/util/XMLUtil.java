@@ -105,9 +105,7 @@ public final class XMLUtil
      * given name the child returned is undefined.
      * 
      * @param parent The parent node.
-     * 
      * @param childName The node name of the child node.
-     * 
      * @return The requested child node or <code>null</code> if no child with
      *         the requested name is found.
      */
@@ -138,7 +136,6 @@ public final class XMLUtil
      * Get the value of the text node that is passed in.
      * 
      * @param node The node to work on
-     * 
      * @return Text value of the tag element
      */
     public static String getNodeTextValue(Node node)
@@ -167,9 +164,7 @@ public final class XMLUtil
      * Get the value of a node attribute.
      * 
      * @param node The nade to get the attribute from.
-     * 
      * @param attrName Name of the attribute.
-     * 
      * @return Value of the attribute or <code>null</code> if the attribute
      *         was not found.
      */
@@ -200,13 +195,9 @@ public final class XMLUtil
      * Add a new Element and its value to an input Document.
      * 
      * @param document Document to add to
-     * 
      * @param parent Parent element to add new element to
-     * 
      * @param tagName Element tag name to add
-     * 
      * @param value Value of new Element
-     * 
      * @return Element Newly added Element
      */
     public static Element addElementAndValue(Document document, Element parent, String tagName,
@@ -224,11 +215,8 @@ public final class XMLUtil
      * Add a new Element to an input Document.
      * 
      * @param document Document to add to
-     * 
      * @param parent Parent element to add new element to
-     * 
      * @param tagName Element tag name to add
-     * 
      * @return Element Newly added Element
      */
     public static Element addElement(Document document, Element parent, String tagName)
@@ -285,7 +273,6 @@ public final class XMLUtil
      * Create a document from the contents of a stream.
      * 
      * @param inStream Stream to read from.
-     * 
      * @return Resulting Document.
      * @throws ParserConfigurationException error creating the DOM parser
      * @throws IOException error reading from the input stream
@@ -307,10 +294,7 @@ public final class XMLUtil
      * Serialize Document into String Rep.
      * 
      * @param doc - Document to be serialized
-     * 
      * @param indent - boolean indicating whether or not to indent tags
-     * 
-     * 
      * @return String - Serialized string representation of doc
      * @throws TransformerConfigurationException error creating the transformer
      * @throws TransformerException error serializing the document
@@ -403,14 +387,23 @@ public final class XMLUtil
 
         SAXTransformerFactory saxFactory = (SAXTransformerFactory) sTransformerFactory;
 
+        StreamResult result = new StreamResult(out);
+
         // uses identity transformation (in==out)
-        Transformer transformer = saxFactory.newTransformer();
+        TransformerHandler handler = saxFactory.newTransformerHandler();
+        Transformer transformer = handler.getTransformer();
         transformer.setOutputProperty(OutputKeys.METHOD, "xml"); //$NON-NLS-1$
         transformer.setOutputProperty(OutputKeys.INDENT, "yes"); //$NON-NLS-1$
         transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8"); //$NON-NLS-1$
-        StreamResult result = new StreamResult(out);
+        try
+        {
+            transformer.setOutputProperty("{http://xml.apache.org/xalan}indent-amount", "4");
+        }
+        catch (IllegalArgumentException e)
+        {
+            //seemingly not a xalan processor
+        }
 
-        TransformerHandler handler = saxFactory.newTransformerHandler();
         handler.setResult(result);
 
         return handler;

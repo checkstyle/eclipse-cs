@@ -59,7 +59,7 @@
 	The 'singleton' module is used to specify if the module should occur only once in
 		a checkstyle configuration. This will be taken into account by the configuration editor.
 	-->
-<!ELEMENT rule-metadata (alternative-name+,description?,property-metadata*)>
+<!ELEMENT rule-metadata (alternative-name+,description?,property-metadata*,quickfix*)>
 <!ATTLIST rule-metadata
 	name					CDATA			#REQUIRED
 	internal-name			NMTOKEN			#REQUIRED
@@ -135,3 +135,12 @@
 <!ATTLIST property-value-option
 	value			CDATA					#REQUIRED>
 	
+<!--
+    Defines a marker resolution (quickfix) for the module.
+    Quickfixes are required to implement the 
+    com.atlassw.tools.eclipse.checkstyle.quickfixes.ICheckstyleMarkerResolution 
+    interface.
+    -->
+<!ELEMENT quickfix EMPTY>
+<!ATTLIST quickfix
+    classname       NMTOKEN                #REQUIRED>

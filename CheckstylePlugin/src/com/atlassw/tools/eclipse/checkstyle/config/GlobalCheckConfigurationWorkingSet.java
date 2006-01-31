@@ -388,7 +388,6 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
 
         handler.startElement(new String(), XMLTags.CHECKSTYLE_ROOT_TAG,
                 XMLTags.CHECKSTYLE_ROOT_TAG, attrs);
-        handler.ignorableWhitespace(new char[] { '\n' }, 0, 1);
 
         Iterator it = configurations.iterator();
         while (it.hasNext())
@@ -421,12 +420,6 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
 
             // Write resolvable properties
             Iterator propsIterator = config.getResolvableProperties().iterator();
-
-            if (propsIterator.hasNext())
-            {
-                handler.ignorableWhitespace(new char[] { '\n' }, 0, 1);
-            }
-
             while (propsIterator.hasNext())
             {
 
@@ -441,17 +434,10 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
                 handler.startElement(new String(), XMLTags.PROPERTY_TAG, XMLTags.PROPERTY_TAG,
                         attrs);
                 handler.endElement(new String(), XMLTags.PROPERTY_TAG, XMLTags.PROPERTY_TAG);
-                handler.ignorableWhitespace(new char[] { '\n' }, 0, 1);
             }
 
             // Additional data
             Iterator addDataIterator = config.getAdditionalData().keySet().iterator();
-
-            if (addDataIterator.hasNext())
-            {
-                handler.ignorableWhitespace(new char[] { '\n' }, 0, 1);
-            }
-
             while (addDataIterator.hasNext())
             {
                 String key = (String) addDataIterator.next();
@@ -465,11 +451,9 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
                         XMLTags.ADDITIONAL_DATA_TAG, attrs);
                 handler.endElement(new String(), XMLTags.ADDITIONAL_DATA_TAG,
                         XMLTags.ADDITIONAL_DATA_TAG);
-                handler.ignorableWhitespace(new char[] { '\n' }, 0, 1);
             }
 
             handler.endElement(new String(), XMLTags.CHECK_CONFIG_TAG, XMLTags.CHECK_CONFIG_TAG);
-            handler.ignorableWhitespace(new char[] { '\n' }, 0, 1);
         }
 
         handler.endElement(new String(), XMLTags.CHECKSTYLE_ROOT_TAG, XMLTags.CHECKSTYLE_ROOT_TAG);
