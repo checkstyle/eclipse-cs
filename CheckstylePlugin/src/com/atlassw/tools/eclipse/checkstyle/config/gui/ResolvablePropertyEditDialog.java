@@ -29,7 +29,14 @@ package com.atlassw.tools.eclipse.checkstyle.config.gui;
 //=================================================
 
 import org.apache.commons.lang.StringUtils;
+import org.eclipse.jface.contentassist.SubjectControlContentAssistant;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
+import org.eclipse.jface.text.DefaultInformationControl;
+import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.IInformationControl;
+import org.eclipse.jface.text.IInformationControlCreator;
+import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
+import org.eclipse.jface.text.contentassist.IContentAssistant;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -38,6 +45,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.contentassist.ContentAssistHandler;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.Messages;
@@ -103,6 +111,9 @@ public class ResolvablePropertyEditDialog extends TitleAreaDialog
         mTxtValue.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         mTxtValue.setText(mProperty.getValue() != null ? mProperty.getValue() : ""); //$NON-NLS-1$
 
+        // integrate content assist
+        ContentAssistHandler.createHandlerForText(mTxtValue, createContentAssistant());
+
         return composite;
     }
 
@@ -150,4 +161,36 @@ public class ResolvablePropertyEditDialog extends TitleAreaDialog
         super.configureShell(shell);
         shell.setText(Messages.ResolvablePropertyEditDialog_titleDialog);
     }
+
+    /**
+     * Creates the content assistant.
+     * 
+     * @return the content assistant
+     */
+    private SubjectControlContentAssistant createContentAssistant()
+    {
+
+        final SubjectControlContentAssistant contentAssistant = new SubjectControlContentAssistant();
+
+        contentAssistant.setRestoreCompletionProposalSize(CheckstylePlugin.getDefault()
+                .getDialogSettings());
+
+        IContentAssistProcessor processor = new PropertiesContentAssistProcessor();
+        contentAssistant.setContentAssistProcessor(processor, IDocument.DEFAULT_CONTENT_TYPE);
+        contentAssistant
+                .setContextInformationPopupOrientation(IContentAssistant.CONTEXT_INFO_ABOVE);
+        contentAssistant.setInformationControlCreator(new IInformationControlCreator()
+        {
+            /*
+             * @see IInformationControlCreator#createInformationControl(Shell)
+             */
+            public IInformationControl createInformationControl(Shell parent)
+            {
+                return new DefaultInformationControl(parent);
+            }
+        });
+
+        return contentAssistant;
+    }
+
 }

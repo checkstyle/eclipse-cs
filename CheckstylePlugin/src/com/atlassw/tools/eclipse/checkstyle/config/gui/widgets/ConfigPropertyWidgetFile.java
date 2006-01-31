@@ -31,6 +31,13 @@ package com.atlassw.tools.eclipse.checkstyle.config.gui.widgets;
 //=================================================
 // Imports from com namespace
 //=================================================
+import org.eclipse.jface.contentassist.SubjectControlContentAssistant;
+import org.eclipse.jface.text.DefaultInformationControl;
+import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.IInformationControl;
+import org.eclipse.jface.text.IInformationControlCreator;
+import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
+import org.eclipse.jface.text.contentassist.IContentAssistant;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -40,10 +47,14 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.contentassist.ContentAssistHandler;
 
+import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
+import com.atlassw.tools.eclipse.checkstyle.config.gui.PropertiesContentAssistProcessor;
 
 /**
  * A string property configuration widget.
@@ -106,6 +117,9 @@ public class ConfigPropertyWidgetFile extends ConfigPropertyWidgetAbstractBase
             mTextWidget = new Text(mContents, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
             GridData gd = new GridData(GridData.FILL_HORIZONTAL);
             mTextWidget.setLayoutData(gd);
+
+            // integrate content assist
+            ContentAssistHandler.createHandlerForText(mTextWidget, createContentAssistant());
 
             mBtnBrowse = new Button(mContents, SWT.PUSH);
             mBtnBrowse.setText(Messages.ConfigPropertyWidgetFile_btnBrowse0);
@@ -171,5 +185,36 @@ public class ConfigPropertyWidgetFile extends ConfigPropertyWidgetAbstractBase
     {
         String defaultValue = getConfigProperty().getMetaData().getDefaultValue();
         mTextWidget.setText(defaultValue != null ? defaultValue : ""); //$NON-NLS-1$
+    }
+
+    /**
+     * Creates the content assistant.
+     * 
+     * @return the content assistant
+     */
+    private SubjectControlContentAssistant createContentAssistant()
+    {
+
+        final SubjectControlContentAssistant contentAssistant = new SubjectControlContentAssistant();
+
+        contentAssistant.setRestoreCompletionProposalSize(CheckstylePlugin.getDefault()
+                .getDialogSettings());
+
+        IContentAssistProcessor processor = new PropertiesContentAssistProcessor();
+        contentAssistant.setContentAssistProcessor(processor, IDocument.DEFAULT_CONTENT_TYPE);
+        contentAssistant
+                .setContextInformationPopupOrientation(IContentAssistant.CONTEXT_INFO_ABOVE);
+        contentAssistant.setInformationControlCreator(new IInformationControlCreator()
+        {
+            /*
+             * @see IInformationControlCreator#createInformationControl(Shell)
+             */
+            public IInformationControl createInformationControl(Shell parent)
+            {
+                return new DefaultInformationControl(parent);
+            }
+        });
+
+        return contentAssistant;
     }
 }
