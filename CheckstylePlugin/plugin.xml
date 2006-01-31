@@ -90,6 +90,19 @@
             name="MessageKey">
       </attribute>
    </extension>   
+   
+<!--
+	Provide marker resolutions
+	-->   
+	<!--
+   <extension
+         point="org.eclipse.ui.ide.markerResolution">
+      <markerResolutionGenerator
+            markerType="com.atlassw.tools.eclipse.checkstyle.CheckstyleMarker"
+            class="com.atlassw.tools.eclipse.checkstyle.quickfixes.CheckstyleMarkerResolutionGenerator">
+      </markerResolutionGenerator>
+   </extension>
+   -->
 
 <!--
    Annotation-support for checkstyle markers
