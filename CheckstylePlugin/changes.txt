@@ -7,6 +7,19 @@ That is: <path-to-my-eclipse-install>/eclipse.exe -clean
 The plugin version 4.x.x does not support eclipse 2.x.x any more. 
 Make sure you got an eclipse 3.0 or higher installation you are installing this plugin to.
 
+Eclipse Checkstyle Plugin v4.0.91 (4.1.0 beta2)
+----------------------------------------------
+
+Bugs:
+1419133  Check Configuration Properties error
+1416397  Headless build in RAD 6.0 fails (needs confirmation)
+
+RFE:
+1420578  Pretty print .checkstyle
+1419551  Add Content Assist to Properties Editor
+
+
+
 Eclipse Checkstyle Plugin v4.0.90 (4.1.0 beta)
 ----------------------------------------------
 
@@ -31,6 +44,8 @@ workspace.
 The internal Checkstyle logging (error log) was bridged with the Eclipse Error Log.
 This way exceptions thrown by Checkstyle checks (standard or custom) appear in the Error Log View.
 This greatly enhances debugging of custom checks used with the plugin.
+
+Version 4.1.0 now directly contains the new Statistics plugin addition which adds 2 views to Eclipse which make handling of large amounts of Checkstyle violations very much easier.
 
 A lot of other features have been implemented and bugs been resolved, as you can judge from the list below:
 
