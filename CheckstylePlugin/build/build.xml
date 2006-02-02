@@ -80,12 +80,13 @@
 		<getEclipseClasspath workspace="${workspace}" projectName="${project.name}" classpathId="build.classpath" />
 
 		<!-- compile -->
-		<javac srcdir="${basedir}/src" destdir="${dist.basedir.tmpdir}/bin" classpathref="build.classpath" source="1.4" debug="on"/>
-		<javac srcdir="${basedir}/nls" destdir="${dist.basedir.tmpdir}/binnls" classpathref="build.classpath" source="1.4" debug="on"/>
+		<javac srcdir="${basedir}/src" destdir="${dist.basedir.tmpdir}/bin" classpathref="build.classpath" source="1.4" debug="on" />
+		<javac srcdir="${basedir}/nls" destdir="${dist.basedir.tmpdir}/binnls" classpathref="build.classpath" source="1.4" debug="on" />
 
 		<!-- copy properties and other stuff -->
 		<copy todir="${dist.basedir.tmpdir}/bin">
 			<fileset dir="${basedir}/src" includes="**/*.properties" />
+			<fileset dir="${basedir}/src" includes="**/*.xsl" />
 		</copy>
 	</target>
 
@@ -189,7 +190,7 @@
 		<ant dir="../CheckstyleStatsPlugin" antfile="build/build.xml" inheritall="false">
 			<property name="plugin.bin.zip" value="${dist.basedir}/${bin.dist.file}" />
 			<property name="plugin.src.zip" value="${dist.basedir}/${src.dist.file}" />
-			<property name="update.site.file" value="${dist.basedir}/${update.site.file}" />	
+			<property name="update.site.file" value="${dist.basedir}/${update.site.file}" />
 			<property name="eclipse.plugin.dir" value="${eclipse.plugin.dir}" />
 			<property name="workspace" value="${workspace}" />
 			<property name="eclipse.version" value="${eclipse.version}" />
