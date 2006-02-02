@@ -374,11 +374,22 @@ public class ProjectClassLoader extends ClassLoader
             // remove the project part from the source path
             libPath = libPath.removeFirstSegments(projPath.segmentCount());
 
-            // get the file handle for the library
-            IFile file = project.getFile(libPath);
+            //fixes 1422937 - Thanks to Peter Hendriks
+            if (!libPath.isEmpty()) // added check
+            {
 
-            // get the absolute path for the library file
-            libPath = file.getLocation();
+                // get the file handle for the library
+                IFile file = project.getFile(libPath);
+
+                // get the absolute path for the library file
+                libPath = file.getLocation();
+
+            }
+            else
+            {
+                // fallback to project root when libPath is empty
+                libPath = project.getLocation();
+            }
         }
         else
         {
