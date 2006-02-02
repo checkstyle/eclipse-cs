@@ -12,7 +12,7 @@
    <feature url="http://osdn.dl.sourceforge.net/sourceforge/eclipse-cs/com.atlassw.tools.eclipse.checkstyle_4.0.90-feature.jar" id="com.atlassw.tools.eclipse.checkstyle" version="4.0.90">
       <category name="Checkstyle (beta)"/>
    </feature>
-   <feature url="http://osdn.dl.sourceforge.net/sourceforge/eclipse-cs/com.atlassw.tools.eclipse.checkstyle_4.0.91-feature.jar" id="com.atlassw.tools.eclipse.checkstyle" version="4.0.90">
+   <feature url="http://osdn.dl.sourceforge.net/sourceforge/eclipse-cs/com.atlassw.tools.eclipse.checkstyle_4.0.91-feature.jar" id="com.atlassw.tools.eclipse.checkstyle" version="4.0.91">
       <category name="Checkstyle (beta)"/>
    </feature>
    <archive path="plugins/com.atlassw.tools.eclipse.checkstyle_4.0.0.jar" url="http://osdn.dl.sourceforge.net/sourceforge/eclipse-cs/com.atlassw.tools.eclipse.checkstyle_4.0.0_2.jar"/>
