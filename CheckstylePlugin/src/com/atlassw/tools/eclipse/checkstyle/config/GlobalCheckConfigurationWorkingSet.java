@@ -318,7 +318,7 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
 
             // Write the configuration document by pushing sax events through
             // the transformer handler
-            TransformerHandler xmlOut = XMLUtil.writeWithSax(byteOut);
+            TransformerHandler xmlOut = XMLUtil.writeWithSax(byteOut, null, null);
 
             writeConfigurations(xmlOut, mWorkingCopies);
 
@@ -381,13 +381,15 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
         throws SAXException
     {
 
+        String emptyString = new String();
+
         handler.startDocument();
         AttributesImpl attrs = new AttributesImpl();
-        attrs.addAttribute(new String(), XMLTags.VERSION_TAG, XMLTags.VERSION_TAG, null,
+        attrs.addAttribute(emptyString, XMLTags.VERSION_TAG, XMLTags.VERSION_TAG, emptyString,
                 CheckConfigurationFactory.CURRENT_CONFIG_FILE_FORMAT_VERSION);
 
-        handler.startElement(new String(), XMLTags.CHECKSTYLE_ROOT_TAG,
-                XMLTags.CHECKSTYLE_ROOT_TAG, attrs);
+        handler.startElement(emptyString, XMLTags.CHECKSTYLE_ROOT_TAG, XMLTags.CHECKSTYLE_ROOT_TAG,
+                attrs);
 
         Iterator it = configurations.iterator();
         while (it.hasNext())
@@ -403,19 +405,19 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
             }
 
             attrs = new AttributesImpl();
-            attrs.addAttribute(new String(), XMLTags.NAME_TAG, XMLTags.NAME_TAG, null, config
+            attrs.addAttribute(emptyString, XMLTags.NAME_TAG, XMLTags.NAME_TAG, emptyString, config
                     .getName());
-            attrs.addAttribute(new String(), XMLTags.LOCATION_TAG, XMLTags.LOCATION_TAG, null,
-                    config.getLocation());
-            attrs.addAttribute(new String(), XMLTags.TYPE_TAG, XMLTags.TYPE_TAG, null, config
+            attrs.addAttribute(emptyString, XMLTags.LOCATION_TAG, XMLTags.LOCATION_TAG,
+                    emptyString, config.getLocation());
+            attrs.addAttribute(emptyString, XMLTags.TYPE_TAG, XMLTags.TYPE_TAG, emptyString, config
                     .getType().getInternalName());
             if (config.getDescription() != null)
             {
-                attrs.addAttribute(new String(), XMLTags.DESCRIPTION_TAG, XMLTags.DESCRIPTION_TAG,
-                        null, config.getDescription());
+                attrs.addAttribute(emptyString, XMLTags.DESCRIPTION_TAG, XMLTags.DESCRIPTION_TAG,
+                        emptyString, config.getDescription());
             }
 
-            handler.startElement(new String(), XMLTags.CHECK_CONFIG_TAG, XMLTags.CHECK_CONFIG_TAG,
+            handler.startElement(emptyString, XMLTags.CHECK_CONFIG_TAG, XMLTags.CHECK_CONFIG_TAG,
                     attrs);
 
             // Write resolvable properties
@@ -426,14 +428,15 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
                 ResolvableProperty prop = (ResolvableProperty) propsIterator.next();
 
                 attrs = new AttributesImpl();
-                attrs.addAttribute(new String(), XMLTags.NAME_TAG, XMLTags.NAME_TAG, null, prop
-                        .getPropertyName());
-                attrs.addAttribute(new String(), XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, null, prop
-                        .getValue());
+                attrs.addAttribute(emptyString, XMLTags.NAME_TAG, XMLTags.NAME_TAG, emptyString,
+                        prop.getPropertyName());
+                attrs.addAttribute(emptyString, XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, emptyString,
+                        prop.getValue());
 
-                handler.startElement(new String(), XMLTags.PROPERTY_TAG, XMLTags.PROPERTY_TAG,
-                        attrs);
-                handler.endElement(new String(), XMLTags.PROPERTY_TAG, XMLTags.PROPERTY_TAG);
+                handler
+                        .startElement(emptyString, XMLTags.PROPERTY_TAG, XMLTags.PROPERTY_TAG,
+                                attrs);
+                handler.endElement(emptyString, XMLTags.PROPERTY_TAG, XMLTags.PROPERTY_TAG);
             }
 
             // Additional data
@@ -444,19 +447,21 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
                 String value = (String) config.getAdditionalData().get(key);
 
                 attrs = new AttributesImpl();
-                attrs.addAttribute(new String(), XMLTags.NAME_TAG, XMLTags.NAME_TAG, null, key);
-                attrs.addAttribute(new String(), XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, null, value);
+                attrs.addAttribute(emptyString, XMLTags.NAME_TAG, XMLTags.NAME_TAG, emptyString,
+                        key);
+                attrs.addAttribute(emptyString, XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, emptyString,
+                        value);
 
-                handler.startElement(new String(), XMLTags.ADDITIONAL_DATA_TAG,
+                handler.startElement(emptyString, XMLTags.ADDITIONAL_DATA_TAG,
                         XMLTags.ADDITIONAL_DATA_TAG, attrs);
-                handler.endElement(new String(), XMLTags.ADDITIONAL_DATA_TAG,
+                handler.endElement(emptyString, XMLTags.ADDITIONAL_DATA_TAG,
                         XMLTags.ADDITIONAL_DATA_TAG);
             }
 
-            handler.endElement(new String(), XMLTags.CHECK_CONFIG_TAG, XMLTags.CHECK_CONFIG_TAG);
+            handler.endElement(emptyString, XMLTags.CHECK_CONFIG_TAG, XMLTags.CHECK_CONFIG_TAG);
         }
 
-        handler.endElement(new String(), XMLTags.CHECKSTYLE_ROOT_TAG, XMLTags.CHECKSTYLE_ROOT_TAG);
+        handler.endElement(emptyString, XMLTags.CHECKSTYLE_ROOT_TAG, XMLTags.CHECKSTYLE_ROOT_TAG);
         handler.endDocument();
     }
 }

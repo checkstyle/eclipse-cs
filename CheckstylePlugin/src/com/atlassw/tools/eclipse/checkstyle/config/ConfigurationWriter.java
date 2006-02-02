@@ -97,19 +97,20 @@ public final class ConfigurationWriter
             // pass the configured modules through the save filters
             SaveFilters.process(modules);
 
-            TransformerHandler xmlOut = XMLUtil.writeWithSax(out);
+            TransformerHandler xmlOut = XMLUtil.writeWithSax(out,
+                    "-//Puppy Crawl//DTD Check Configuration 1.2//EN",
+                    "http://www.puppycrawl.com/dtds/configuration_1_2.dtd");
             xmlOut.startDocument();
 
-            String comment = "This configuration file was written by the eclipse-cs plugin configuration editor"; //$NON-NLS-1$
+            String comment = "\n\tThis configuration file was written by the eclipse-cs plugin configuration editor\n"; //$NON-NLS-1$
             xmlOut.comment(comment.toCharArray(), 0, comment.length());
-            xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
-            xmlOut.startDTD(XMLTags.MODULE_TAG, "-//Puppy Crawl//DTD Check Configuration 1.2//EN", //$NON-NLS-1$
-                    "http://www.puppycrawl.com/dtds/configuration_1_2.dtd"); //$NON-NLS-1$
-            xmlOut.endDTD();
-            xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
 
             // write out name and description as comment
-            String description = checkConfig.getName() + "    " + checkConfig.getDescription();
+            String description = "\nCheckstyle-Configuration: "
+                    + checkConfig.getName()
+                    + "\nDescription:\n"
+                    + (checkConfig.getDescription() != null ? checkConfig.getDescription() + "\n"
+                            : "none\n");
             xmlOut.comment(description.toCharArray(), 0, description.length());
 
             xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
@@ -162,34 +163,36 @@ public final class ConfigurationWriter
 
         List childs = getChildModules(module, remainingModules);
 
+        String emptyString = new String();
+
         // Start the module
         AttributesImpl attr = new AttributesImpl();
-        attr.addAttribute(new String(), XMLTags.NAME_TAG, XMLTags.NAME_TAG, null, module
+        attr.addAttribute(emptyString, XMLTags.NAME_TAG, XMLTags.NAME_TAG, emptyString, module
                 .getMetaData().getInternalName());
-        xmlOut.startElement(new String(), XMLTags.MODULE_TAG, XMLTags.MODULE_TAG, attr);
+        xmlOut.startElement(emptyString, XMLTags.MODULE_TAG, XMLTags.MODULE_TAG, attr);
 
         // Write comment
         if (module.getComment() != null && module.getComment().trim().length() != 0)
         {
             attr = new AttributesImpl();
-            attr.addAttribute(new String(), XMLTags.NAME_TAG, XMLTags.NAME_TAG, null,
+            attr.addAttribute(emptyString, XMLTags.NAME_TAG, XMLTags.NAME_TAG, emptyString,
                     XMLTags.COMMENT_ID);
-            attr.addAttribute(new String(), XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, null, module
-                    .getComment());
-            xmlOut.startElement(new String(), XMLTags.METADATA_TAG, XMLTags.METADATA_TAG, attr);
-            xmlOut.endElement(new String(), XMLTags.METADATA_TAG, XMLTags.METADATA_TAG);
+            attr.addAttribute(emptyString, XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, emptyString,
+                    module.getComment());
+            xmlOut.startElement(emptyString, XMLTags.METADATA_TAG, XMLTags.METADATA_TAG, attr);
+            xmlOut.endElement(emptyString, XMLTags.METADATA_TAG, XMLTags.METADATA_TAG);
         }
 
         // Write last enabled severity level
         if (module.getLastEnabledSeverity() != null)
         {
             attr = new AttributesImpl();
-            attr.addAttribute(new String(), XMLTags.NAME_TAG, XMLTags.NAME_TAG, null,
+            attr.addAttribute(emptyString, XMLTags.NAME_TAG, XMLTags.NAME_TAG, emptyString,
                     XMLTags.LAST_ENABLED_SEVERITY_ID);
-            attr.addAttribute(new String(), XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, null, module
-                    .getLastEnabledSeverity().getName());
-            xmlOut.startElement(new String(), XMLTags.METADATA_TAG, XMLTags.METADATA_TAG, attr);
-            xmlOut.endElement(new String(), XMLTags.METADATA_TAG, XMLTags.METADATA_TAG);
+            attr.addAttribute(emptyString, XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, emptyString,
+                    module.getLastEnabledSeverity().getName());
+            xmlOut.startElement(emptyString, XMLTags.METADATA_TAG, XMLTags.METADATA_TAG, attr);
+            xmlOut.endElement(emptyString, XMLTags.METADATA_TAG, XMLTags.METADATA_TAG);
         }
 
         // write custom metadata
@@ -201,10 +204,12 @@ public final class ConfigurationWriter
             String value = (String) module.getCustomMetaData().get(name);
 
             attr = new AttributesImpl();
-            attr.addAttribute(new String(), XMLTags.NAME_TAG, XMLTags.NAME_TAG, null, name);
-            attr.addAttribute(new String(), XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, null, value);
-            xmlOut.startElement(new String(), XMLTags.METADATA_TAG, XMLTags.METADATA_TAG, attr);
-            xmlOut.endElement(new String(), XMLTags.METADATA_TAG, XMLTags.METADATA_TAG);
+            attr.addAttribute(emptyString, XMLTags.NAME_TAG, XMLTags.NAME_TAG, emptyString, name);
+            attr
+                    .addAttribute(emptyString, XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, emptyString,
+                            value);
+            xmlOut.startElement(emptyString, XMLTags.METADATA_TAG, XMLTags.METADATA_TAG, attr);
+            xmlOut.endElement(emptyString, XMLTags.METADATA_TAG, XMLTags.METADATA_TAG);
         }
 
         // Write severity only if it differs from the parents severity
@@ -212,13 +217,13 @@ public final class ConfigurationWriter
         {
 
             attr = new AttributesImpl();
-            attr.addAttribute(new String(), XMLTags.NAME_TAG, XMLTags.NAME_TAG, null,
+            attr.addAttribute(emptyString, XMLTags.NAME_TAG, XMLTags.NAME_TAG, emptyString,
                     XMLTags.SEVERITY_TAG);
-            attr.addAttribute(new String(), XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, null, module
-                    .getSeverity().getName());
+            attr.addAttribute(emptyString, XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, emptyString,
+                    module.getSeverity().getName());
 
-            xmlOut.startElement(new String(), XMLTags.PROPERTY_TAG, XMLTags.PROPERTY_TAG, attr);
-            xmlOut.endElement(new String(), XMLTags.PROPERTY_TAG, XMLTags.PROPERTY_TAG);
+            xmlOut.startElement(emptyString, XMLTags.PROPERTY_TAG, XMLTags.PROPERTY_TAG, attr);
+            xmlOut.endElement(emptyString, XMLTags.PROPERTY_TAG, XMLTags.PROPERTY_TAG);
 
             // set the parent severity for child modules
             severity = module.getSeverity();
@@ -235,13 +240,13 @@ public final class ConfigurationWriter
                     && !property.getValue().equals(property.getMetaData().getDefaultValue()))
             {
                 attr = new AttributesImpl();
-                attr.addAttribute(new String(), XMLTags.NAME_TAG, XMLTags.NAME_TAG, null, property
-                        .getMetaData().getName());
-                attr.addAttribute(new String(), XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, null,
+                attr.addAttribute(emptyString, XMLTags.NAME_TAG, XMLTags.NAME_TAG, emptyString,
+                        property.getMetaData().getName());
+                attr.addAttribute(emptyString, XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, emptyString,
                         property.getValue());
 
-                xmlOut.startElement(new String(), XMLTags.PROPERTY_TAG, XMLTags.PROPERTY_TAG, attr);
-                xmlOut.endElement(new String(), XMLTags.PROPERTY_TAG, XMLTags.PROPERTY_TAG);
+                xmlOut.startElement(emptyString, XMLTags.PROPERTY_TAG, XMLTags.PROPERTY_TAG, attr);
+                xmlOut.endElement(emptyString, XMLTags.PROPERTY_TAG, XMLTags.PROPERTY_TAG);
             }
         }
 
@@ -252,7 +257,7 @@ public final class ConfigurationWriter
             writeModule((Module) it.next(), xmlOut, severity, remainingModules);
         }
 
-        xmlOut.endElement(new String(), XMLTags.MODULE_TAG, XMLTags.MODULE_TAG);
+        xmlOut.endElement(emptyString, XMLTags.MODULE_TAG, XMLTags.MODULE_TAG);
     }
 
     /**

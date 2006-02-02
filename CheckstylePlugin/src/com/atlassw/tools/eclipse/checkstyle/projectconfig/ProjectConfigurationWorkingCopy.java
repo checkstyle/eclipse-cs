@@ -398,7 +398,7 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
 
             // Write the configuration document by pushing sax events through
             // the transformer handler
-            TransformerHandler xmlOut = XMLUtil.writeWithSax(pipeOut);
+            TransformerHandler xmlOut = XMLUtil.writeWithSax(pipeOut, null, null);
 
             writeProjectConfig(config, xmlOut);
 
@@ -458,13 +458,15 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
 
         xmlOut.startDocument();
 
-        AttributesImpl attr = new AttributesImpl();
-        attr.addAttribute(new String(), XMLTags.FORMAT_VERSION_TAG, XMLTags.FORMAT_VERSION_TAG,
-                null, ProjectConfigurationFactory.CURRENT_FILE_FORMAT_VERSION);
-        attr.addAttribute(new String(), XMLTags.SIMPLE_CONFIG_TAG, XMLTags.SIMPLE_CONFIG_TAG, null,
-                new String() + config.isUseSimpleConfig());
+        String emptyString = new String();
 
-        xmlOut.startElement(new String(), XMLTags.FILESET_CONFIG_TAG, XMLTags.FILESET_CONFIG_TAG,
+        AttributesImpl attr = new AttributesImpl();
+        attr.addAttribute(emptyString, XMLTags.FORMAT_VERSION_TAG, XMLTags.FORMAT_VERSION_TAG,
+                emptyString, ProjectConfigurationFactory.CURRENT_FILE_FORMAT_VERSION);
+        attr.addAttribute(emptyString, XMLTags.SIMPLE_CONFIG_TAG, XMLTags.SIMPLE_CONFIG_TAG,
+                emptyString, emptyString + config.isUseSimpleConfig());
+
+        xmlOut.startElement(emptyString, XMLTags.FILESET_CONFIG_TAG, XMLTags.FILESET_CONFIG_TAG,
                 attr);
 
         ICheckConfiguration[] workingCopies = config.getLocalCheckConfigWorkingSet()
@@ -488,7 +490,7 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
             writeFilter((IFilter) filters.get(i), xmlOut);
         }
 
-        xmlOut.endElement(new String(), XMLTags.FILESET_CONFIG_TAG, XMLTags.FILESET_CONFIG_TAG);
+        xmlOut.endElement(emptyString, XMLTags.FILESET_CONFIG_TAG, XMLTags.FILESET_CONFIG_TAG);
         xmlOut.endDocument();
     }
 
@@ -514,22 +516,22 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
             return;
         }
 
+        String emptyString = new String();
+
         AttributesImpl attrs = new AttributesImpl();
-        attrs.addAttribute(new String(), XMLTags.NAME_TAG, XMLTags.NAME_TAG, null, checkConfig
-                .getName());
-        attrs.addAttribute(new String(), XMLTags.LOCATION_TAG, XMLTags.LOCATION_TAG, null,
+        attrs.addAttribute(emptyString, XMLTags.NAME_TAG, XMLTags.NAME_TAG, emptyString,
+                checkConfig.getName());
+        attrs.addAttribute(emptyString, XMLTags.LOCATION_TAG, XMLTags.LOCATION_TAG, emptyString,
                 checkConfig.getLocation());
-        attrs.addAttribute(new String(), XMLTags.TYPE_TAG, XMLTags.TYPE_TAG, null, checkConfig
-                .getType().getInternalName());
+        attrs.addAttribute(emptyString, XMLTags.TYPE_TAG, XMLTags.TYPE_TAG, emptyString,
+                checkConfig.getType().getInternalName());
         if (checkConfig.getDescription() != null)
         {
-            attrs.addAttribute(new String(), XMLTags.DESCRIPTION_TAG, XMLTags.DESCRIPTION_TAG,
-                    null, checkConfig.getDescription());
+            attrs.addAttribute(emptyString, XMLTags.DESCRIPTION_TAG, XMLTags.DESCRIPTION_TAG,
+                    emptyString, checkConfig.getDescription());
         }
 
-        xmlOut
-                .startElement(new String(), XMLTags.CHECK_CONFIG_TAG, XMLTags.CHECK_CONFIG_TAG,
-                        attrs);
+        xmlOut.startElement(emptyString, XMLTags.CHECK_CONFIG_TAG, XMLTags.CHECK_CONFIG_TAG, attrs);
 
         // Write resolvable properties
         Iterator propsIterator = checkConfig.getResolvableProperties().iterator();
@@ -539,13 +541,13 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
             ResolvableProperty prop = (ResolvableProperty) propsIterator.next();
 
             attrs = new AttributesImpl();
-            attrs.addAttribute(new String(), XMLTags.NAME_TAG, XMLTags.NAME_TAG, null, prop
+            attrs.addAttribute(emptyString, XMLTags.NAME_TAG, XMLTags.NAME_TAG, emptyString, prop
                     .getPropertyName());
-            attrs.addAttribute(new String(), XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, null, prop
+            attrs.addAttribute(emptyString, XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, emptyString, prop
                     .getValue());
 
-            xmlOut.startElement(new String(), XMLTags.PROPERTY_TAG, XMLTags.PROPERTY_TAG, attrs);
-            xmlOut.endElement(new String(), XMLTags.PROPERTY_TAG, XMLTags.PROPERTY_TAG);
+            xmlOut.startElement(emptyString, XMLTags.PROPERTY_TAG, XMLTags.PROPERTY_TAG, attrs);
+            xmlOut.endElement(emptyString, XMLTags.PROPERTY_TAG, XMLTags.PROPERTY_TAG);
         }
 
         Iterator addDataIterator = checkConfig.getAdditionalData().keySet().iterator();
@@ -555,16 +557,18 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
             String value = (String) checkConfig.getAdditionalData().get(key);
 
             attrs = new AttributesImpl();
-            attrs.addAttribute(new String(), XMLTags.NAME_TAG, XMLTags.NAME_TAG, null, key);
-            attrs.addAttribute(new String(), XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, null, value);
+            attrs.addAttribute(emptyString, XMLTags.NAME_TAG, XMLTags.NAME_TAG, emptyString, key);
+            attrs.addAttribute(emptyString, XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, emptyString,
+                    value);
 
-            xmlOut.startElement(new String(), XMLTags.ADDITIONAL_DATA_TAG,
+            xmlOut.startElement(emptyString, XMLTags.ADDITIONAL_DATA_TAG,
                     XMLTags.ADDITIONAL_DATA_TAG, attrs);
-            xmlOut.endElement(new String(), XMLTags.ADDITIONAL_DATA_TAG,
-                    XMLTags.ADDITIONAL_DATA_TAG);
+            xmlOut
+                    .endElement(emptyString, XMLTags.ADDITIONAL_DATA_TAG,
+                            XMLTags.ADDITIONAL_DATA_TAG);
         }
 
-        xmlOut.endElement(new String(), XMLTags.CHECK_CONFIG_TAG, XMLTags.CHECK_CONFIG_TAG);
+        xmlOut.endElement(emptyString, XMLTags.CHECK_CONFIG_TAG, XMLTags.CHECK_CONFIG_TAG);
     }
 
     /**
@@ -586,25 +590,26 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
                             .getName()));
         }
 
-        AttributesImpl attr = new AttributesImpl();
-        attr
-                .addAttribute(new String(), XMLTags.NAME_TAG, XMLTags.NAME_TAG, null, fileSet
-                        .getName());
+        String emptyString = new String();
 
-        attr.addAttribute(new String(), XMLTags.ENABLED_TAG, XMLTags.ENABLED_TAG, null,
-                new String() + fileSet.isEnabled());
+        AttributesImpl attr = new AttributesImpl();
+        attr.addAttribute(emptyString, XMLTags.NAME_TAG, XMLTags.NAME_TAG, emptyString, fileSet
+                .getName());
+
+        attr.addAttribute(emptyString, XMLTags.ENABLED_TAG, XMLTags.ENABLED_TAG, emptyString,
+                emptyString + fileSet.isEnabled());
 
         ICheckConfiguration checkConfig = fileSet.getCheckConfig();
         if (checkConfig != null)
         {
 
-            attr.addAttribute(new String(), XMLTags.CHECK_CONFIG_NAME_TAG,
-                    XMLTags.CHECK_CONFIG_NAME_TAG, null, checkConfig.getName());
-            attr.addAttribute(new String(), XMLTags.LOCAL_TAG, XMLTags.LOCAL_TAG, null, "" //$NON-NLS-1$
-                    + !checkConfig.isGlobal());
+            attr.addAttribute(emptyString, XMLTags.CHECK_CONFIG_NAME_TAG,
+                    XMLTags.CHECK_CONFIG_NAME_TAG, emptyString, checkConfig.getName());
+            attr.addAttribute(emptyString, XMLTags.LOCAL_TAG, XMLTags.LOCAL_TAG, emptyString,
+                    emptyString + !checkConfig.isGlobal());
         }
 
-        xmlOut.startElement(new String(), XMLTags.FILESET_TAG, XMLTags.FILESET_TAG, attr);
+        xmlOut.startElement(emptyString, XMLTags.FILESET_TAG, XMLTags.FILESET_TAG, attr);
 
         // write patterns
         List patterns = fileSet.getFileMatchPatterns();
@@ -614,7 +619,7 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
             writeMatchPattern((FileMatchPattern) patterns.get(i), xmlOut);
         }
 
-        xmlOut.endElement(new String(), XMLTags.FILESET_TAG, XMLTags.FILESET_TAG);
+        xmlOut.endElement(emptyString, XMLTags.FILESET_TAG, XMLTags.FILESET_TAG);
     }
 
     /**
@@ -628,15 +633,18 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
         throws SAXException
     {
 
-        AttributesImpl attr = new AttributesImpl();
-        attr.addAttribute(new String(), XMLTags.MATCH_PATTERN_TAG, XMLTags.MATCH_PATTERN_TAG, null,
-                pattern.getMatchPattern() != null ? pattern.getMatchPattern() : ""); //$NON-NLS-1$
-        attr.addAttribute(new String(), XMLTags.INCLUDE_PATTERN_TAG, XMLTags.INCLUDE_PATTERN_TAG,
-                null, new String() + pattern.isIncludePattern());
+        String emptyString = new String();
 
-        xmlOut.startElement(new String(), XMLTags.FILE_MATCH_PATTERN_TAG,
+        AttributesImpl attr = new AttributesImpl();
+        attr.addAttribute(emptyString, XMLTags.MATCH_PATTERN_TAG, XMLTags.MATCH_PATTERN_TAG,
+                emptyString, pattern.getMatchPattern() != null ? pattern.getMatchPattern()
+                        : emptyString);
+        attr.addAttribute(emptyString, XMLTags.INCLUDE_PATTERN_TAG, XMLTags.INCLUDE_PATTERN_TAG,
+                emptyString, emptyString + pattern.isIncludePattern());
+
+        xmlOut.startElement(emptyString, XMLTags.FILE_MATCH_PATTERN_TAG,
                 XMLTags.FILE_MATCH_PATTERN_TAG, attr);
-        xmlOut.endElement(new String(), XMLTags.FILE_MATCH_PATTERN_TAG,
+        xmlOut.endElement(emptyString, XMLTags.FILE_MATCH_PATTERN_TAG,
                 XMLTags.FILE_MATCH_PATTERN_TAG);
     }
 
@@ -658,13 +666,15 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
             return;
         }
 
-        AttributesImpl attr = new AttributesImpl();
-        attr.addAttribute(new String(), XMLTags.NAME_TAG, XMLTags.NAME_TAG, null, filter
-                .getInternalName());
-        attr.addAttribute(new String(), XMLTags.ENABLED_TAG, XMLTags.ENABLED_TAG, null,
-                new String() + filter.isEnabled());
+        String emptyString = new String();
 
-        xmlOut.startElement(new String(), XMLTags.FILTER_TAG, XMLTags.FILTER_TAG, attr);
+        AttributesImpl attr = new AttributesImpl();
+        attr.addAttribute(emptyString, XMLTags.NAME_TAG, XMLTags.NAME_TAG, emptyString, filter
+                .getInternalName());
+        attr.addAttribute(emptyString, XMLTags.ENABLED_TAG, XMLTags.ENABLED_TAG, emptyString,
+                emptyString + filter.isEnabled());
+
+        xmlOut.startElement(emptyString, XMLTags.FILTER_TAG, XMLTags.FILTER_TAG, attr);
 
         List data = filter.getFilterData();
         int size = data != null ? data.size() : 0;
@@ -672,14 +682,15 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
         {
 
             attr = new AttributesImpl();
-            attr.addAttribute(new String(), XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, null,
+            attr.addAttribute(emptyString, XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, emptyString,
                     (String) data.get(i));
 
-            xmlOut.startElement(new String(), XMLTags.FILTER_DATA_TAG, XMLTags.FILTER_DATA_TAG,
-                    attr);
-            xmlOut.endElement(new String(), XMLTags.FILTER_DATA_TAG, XMLTags.FILTER_DATA_TAG);
+            xmlOut
+                    .startElement(emptyString, XMLTags.FILTER_DATA_TAG, XMLTags.FILTER_DATA_TAG,
+                            attr);
+            xmlOut.endElement(emptyString, XMLTags.FILTER_DATA_TAG, XMLTags.FILTER_DATA_TAG);
         }
 
-        xmlOut.endElement(new String(), XMLTags.FILTER_TAG, XMLTags.FILTER_TAG);
+        xmlOut.endElement(emptyString, XMLTags.FILTER_TAG, XMLTags.FILTER_TAG);
     }
 }

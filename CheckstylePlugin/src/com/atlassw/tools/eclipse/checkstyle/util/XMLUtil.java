@@ -23,6 +23,7 @@ package com.atlassw.tools.eclipse.checkstyle.util;
 //=================================================
 // Imports from java namespace
 //=================================================
+import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,6 +40,7 @@ import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
+import javax.xml.transform.Templates;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -47,6 +49,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXTransformerFactory;
 import javax.xml.transform.sax.TransformerHandler;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
@@ -378,30 +381,41 @@ public final class XMLUtil
      * can send sax events to the transformer and receive a similar output.
      * 
      * @param out the output stream the handler writes to
+     * @param doctypePublic the public doctype id or <code>null</code>
+     * @param doctypeSystem the system doctype id or <code>null</code>
      * @return the transformer handler where sax events can be sent to.
      * @throws TransformerConfigurationException error creating the transformer
      */
-    public static TransformerHandler writeWithSax(OutputStream out)
-        throws TransformerConfigurationException
+    public static TransformerHandler writeWithSax(OutputStream out, String doctypePublic,
+            String doctypeSystem) throws TransformerConfigurationException
     {
 
         SAXTransformerFactory saxFactory = (SAXTransformerFactory) sTransformerFactory;
+        Templates templates = null;
+
+        try
+        {
+            InputStream in = new BufferedInputStream(XMLUtil.class
+                    .getResourceAsStream("identity.xsl"));
+            templates = saxFactory.newTemplates(new StreamSource(in));
+            in.close();
+        }
+        catch (IOException e)
+        {
+            throw new TransformerConfigurationException(e);
+        }
 
         StreamResult result = new StreamResult(out);
 
         // uses identity transformation (in==out)
-        TransformerHandler handler = saxFactory.newTransformerHandler();
-        Transformer transformer = handler.getTransformer();
-        transformer.setOutputProperty(OutputKeys.METHOD, "xml"); //$NON-NLS-1$
-        transformer.setOutputProperty(OutputKeys.INDENT, "yes"); //$NON-NLS-1$
-        transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8"); //$NON-NLS-1$
-        try
+        TransformerHandler handler = saxFactory.newTransformerHandler(templates);
+        if (doctypePublic != null)
         {
-            transformer.setOutputProperty("{http://xml.apache.org/xalan}indent-amount", "4");
+            handler.getTransformer().setOutputProperty(OutputKeys.DOCTYPE_PUBLIC, doctypePublic);
         }
-        catch (IllegalArgumentException e)
+        if (doctypeSystem != null)
         {
-            //seemingly not a xalan processor
+            handler.getTransformer().setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, doctypeSystem);
         }
 
         handler.setResult(result);

@@ -140,7 +140,6 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor
         mBtnImport = new Button(contents, SWT.PUSH);
         mBtnImport.setText(Messages.InternalConfigurationEditor_btnImport);
         gd = new GridData();
-        gd.widthHint = 75;
         gd.horizontalSpan = 2;
         gd.horizontalAlignment = GridData.END;
         mBtnImport.setLayoutData(gd);
@@ -161,8 +160,7 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor
                     String configFileString = fileDialog.open();
                     if (configFileString != null && new File(configFileString).exists())
                     {
-                        ICheckConfiguration tmpSourceConfig = new CheckConfiguration(
-                                "dummy", //$NON-NLS-1$
+                        ICheckConfiguration tmpSourceConfig = new CheckConfiguration("dummy", //$NON-NLS-1$
                                 configFileString, null, new ExternalFileConfigurationType(), true,
                                 null, null);
 
