@@ -20,27 +20,46 @@
 
 package com.atlassw.tools.eclipse.checkstyle.quickfixes;
 
+import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
-import org.eclipse.jdt.core.dom.EmptyStatement;
+import org.eclipse.jdt.core.dom.SwitchCase;
+import org.eclipse.jdt.core.dom.SwitchStatement;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
+import org.eclipse.jdt.core.dom.rewrite.ListRewrite;
+import org.eclipse.jdt.internal.ui.JavaPluginImages;
 import org.eclipse.jface.text.IRegion;
+import org.eclipse.swt.graphics.Image;
 
-public class EmptyStatementQuickfix extends AbstractASTResolution
+public class MissingSwitchDefaultQuickfix extends AbstractASTResolution
 {
+
+    public Image getImage()
+    {
+        // TODO Auto-generated method stub
+        return JavaPluginImages.get(JavaPluginImages.IMG_CORRECTION_ADD);
+    }
 
     protected ASTVisitor handleGetCorrectingASTVisitor(final ASTRewrite rewrite,
             final IRegion lineInfo)
     {
-
+        // TODO Auto-generated method stub
         return new ASTVisitor()
         {
-            public boolean visit(EmptyStatement node)
+
+            public boolean visit(SwitchStatement node)
             {
                 int pos = node.getStartPosition();
-                if (pos >= lineInfo.getOffset()
-                        && pos <= (lineInfo.getOffset() + lineInfo.getLength()))
+                if (pos > lineInfo.getOffset()
+                        && pos < (lineInfo.getOffset() + lineInfo.getLength()))
                 {
-                    rewrite.remove(node, null);
+                    SwitchCase defNode = node.getAST().newSwitchCase();
+                    defNode.setExpression(null);
+                    ListRewrite listRewrite = rewrite.getListRewrite(node,
+                            SwitchStatement.STATEMENTS_PROPERTY);
+                    listRewrite.insertLast(defNode, null);
+                    ASTNode comment = listRewrite.getASTRewrite().createStringPlaceholder(
+                            "// TODO add default case statements", ASTNode.LINE_COMMENT);
+                    listRewrite.insertLast(comment, null);
                     return true;
                 }
                 return false;
@@ -50,12 +69,11 @@ public class EmptyStatementQuickfix extends AbstractASTResolution
 
     public String getDescription()
     {
-        return "Removes the superfluous semicolon";
+        return "Add default case";
     }
 
     public String getLabel()
     {
-        return "Remove Semicolon";
+        return "Add default case";
     }
-
 }

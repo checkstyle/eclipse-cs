@@ -257,6 +257,7 @@ Rationale: often times developers will misname one or more of these methods and 
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.MissingSwitchDefaultCheck"/>
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.MissingSwitchDefaultCheck"/>
          <description>Checks that switch statement has "default" clause. Rationale: It's usually a good idea to introduce a default case in every switch statement. Even if the developer is sure that all currently possible cases are covered, this should be expressed in the default branch, e.g. by using an assertion. This way the code is protected aginst later changes, e.g. introduction of new types in an enumeration type.</description>
+         <quickfix classname="com.atlassw.tools.eclipse.checkstyle.quickfixes.MissingSwitchDefaultQuickfix"/>
       </rule-metadata>
       
       <rule-metadata name="Modified Control Variable" internal-name="ModifiedControlVariable" parent="TreeWalker">
