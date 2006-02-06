@@ -54,8 +54,8 @@ public class MissingSwitchDefaultQuickfix extends AbstractASTResolution
             public boolean visit(SwitchStatement node)
             {
                 int pos = node.getStartPosition();
-                if (pos > lineInfo.getOffset()
-                        && pos < (lineInfo.getOffset() + lineInfo.getLength()))
+                if (pos >= lineInfo.getOffset()
+                        && pos <= (lineInfo.getOffset() + lineInfo.getLength()))
                 {
                     SwitchCase defNode = node.getAST().newSwitchCase();
                     defNode.setExpression(null);
