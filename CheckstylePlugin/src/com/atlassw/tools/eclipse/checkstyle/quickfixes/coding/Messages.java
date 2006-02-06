@@ -47,5 +47,9 @@ public class Messages extends NLS
 
     public static String MissingSwitchDefaultQuickfix_label;
 
+    public static String DefaultComesLastQuickfix_description;
+
+    public static String DefaultComesLastQuickfix_label;
+
 }
 // CHECKSTYLE:ON
