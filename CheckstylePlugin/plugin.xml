@@ -93,8 +93,7 @@
    
 <!--
 	Provide marker resolutions
-	-->   
-	<!--
+	-->
    <extension
          point="org.eclipse.ui.ide.markerResolution">
       <markerResolutionGenerator
@@ -102,7 +101,7 @@
             class="com.atlassw.tools.eclipse.checkstyle.quickfixes.CheckstyleMarkerResolutionGenerator">
       </markerResolutionGenerator>
    </extension>
-   -->
+   
 
 <!--
    Annotation-support for checkstyle markers

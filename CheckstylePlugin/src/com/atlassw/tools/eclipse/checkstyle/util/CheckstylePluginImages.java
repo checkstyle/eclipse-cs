@@ -51,6 +51,15 @@ public abstract class CheckstylePluginImages
     /** Image descriptor for the help icon. */
     public static final ImageDescriptor HELP_ICON;
 
+    /** Image descriptor for the add correction icon. */
+    public static final ImageDescriptor CORRECTION_ADD;
+
+    /** Image descriptor for the change correction icon. */
+    public static final ImageDescriptor CORRECTION_CHANGE;
+
+    /** Image descriptor for the remove correction icon. */
+    public static final ImageDescriptor CORRECTION_REMOVE;
+
     /** Image cache. */
     private static final Map CACHED_IMAGES = new HashMap();
 
@@ -67,6 +76,12 @@ public abstract class CheckstylePluginImages
                 "icons/checkstyle_info.gif"); //$NON-NLS-1$
         HELP_ICON = CheckstylePlugin.imageDescriptorFromPlugin(CheckstylePlugin.PLUGIN_ID,
                 "icons/help.gif"); //$NON-NLS-1$
+        CORRECTION_ADD = CheckstylePlugin.imageDescriptorFromPlugin(CheckstylePlugin.PLUGIN_ID,
+                "icons/add_correction.gif"); //$NON-NLS-1$
+        CORRECTION_CHANGE = CheckstylePlugin.imageDescriptorFromPlugin(CheckstylePlugin.PLUGIN_ID,
+                "icons/correction_change.gif"); //$NON-NLS-1$
+        CORRECTION_REMOVE = CheckstylePlugin.imageDescriptorFromPlugin(CheckstylePlugin.PLUGIN_ID,
+                "icons/remove_correction.gif"); //$NON-NLS-1$
     }
 
     /**
