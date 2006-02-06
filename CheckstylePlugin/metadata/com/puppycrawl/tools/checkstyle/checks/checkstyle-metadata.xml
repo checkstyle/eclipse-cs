@@ -59,7 +59,7 @@ WARNING: This is a very powerful and flexible check, but, at the same time, it i
                <property-value-option value="LITERAL_CATCH"/>
             </enumeration>
          </property-metadata>
-         <quickfix classname="com.atlassw.tools.eclipse.checkstyle.quickfixes.FinalParameterQuickfix"/>
+         <quickfix classname="com.atlassw.tools.eclipse.checkstyle.quickfixes.misc.FinalParametersQuickfix"/>
       </rule-metadata>
       
       <rule-metadata name="Generic Illegal Regexp" internal-name="GenericIllegalRegexp" parent="TreeWalker">

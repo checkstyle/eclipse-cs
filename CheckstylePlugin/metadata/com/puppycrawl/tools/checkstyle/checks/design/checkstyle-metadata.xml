@@ -9,6 +9,7 @@
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.design.DesignForExtensionCheck"/>
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.DesignForExtensionCheck"/>
          <description>Checks that classes are designed for extension. More specifically, it enforces a programming style where superclasses provide empty "hooks" that can be implemented by subclasses. The exact rule is that nonprivate, nonstatic methods of classes that can be subclassed must either be a) abstract or b) final or c) have an empty implementation.  Rationale: This API design style protects superclasses against beeing broken by subclasses. The downside is that subclasses are limited in their flexibility, in particular they cannot prevent execution of code in the superclass, but that also means that subclasses cannot corrupt the state of the superclass by forgetting to call the super method.</description>
+      	 <quickfix classname="com.atlassw.tools.eclipse.checkstyle.quickfixes.design.DesignForExtensionQuickfix"/>
       </rule-metadata>
       
       <rule-metadata name="Final Class" internal-name="FinalClass" parent="TreeWalker">
