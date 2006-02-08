@@ -20,6 +20,7 @@
 
 package net.sf.eclipsecs.stats.views;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -27,6 +28,9 @@ import java.util.Iterator;
 import net.sf.eclipsecs.stats.Messages;
 import net.sf.eclipsecs.stats.data.MarkerStat;
 import net.sf.eclipsecs.stats.data.Stats;
+import net.sf.eclipsecs.stats.export.IStatsExporter;
+import net.sf.eclipsecs.stats.export.StatsExporterException;
+import net.sf.eclipsecs.stats.export.StatsExporterFactory;
 import net.sf.eclipsecs.stats.util.CheckstyleStatsPluginImages;
 import net.sf.eclipsecs.stats.views.internal.FiltersAction;
 
@@ -41,6 +45,7 @@ import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.IDialogSettings;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -58,6 +63,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Table;
@@ -124,11 +130,20 @@ public class MarkerStatsView extends AbstractStatsView
     /** Opens the editor and shows the error in the code. */
     private Action mShowErrorAction;
 
+    /** Exports the error listing as a report. */
+    private Action mExportErrorsAction;
+
     /** The current violation category to show in details view. */
     private String mCurrentDetailCategory;
 
     /** The state if the view is currently drilled down to details. */
     private boolean mIsDrilledDown;
+    
+    /** The last folder used to store the generated reports */
+    private String mLastExportFolderName;
+    
+    /** The last file name used to store the generated reports */
+    private String mLastExportFileName = "CheckstyleStatsExport";
 
     //
     // methods
@@ -323,6 +338,7 @@ public class MarkerStatsView extends AbstractStatsView
     protected void initToolBar(IToolBarManager tbm)
     {
         tbm.add(mChartAction);
+        tbm.add(mExportErrorsAction);
         tbm.add(new Separator());
         tbm.add(mDrillBackAction);
         tbm.add(mDrillDownAction);
@@ -375,7 +391,7 @@ public class MarkerStatsView extends AbstractStatsView
                 {
                     CheckstyleLog.log(e, NLS.bind(Messages.MarkerStatsView_unableToOpenGraph,
                             GraphStatsView.VIEW_ID));
-                    // TODO : mettre message d'erreur à l'utilisateur
+                    // TODO : Open information dialog to notify the user
                 }
             }
         };
@@ -434,6 +450,7 @@ public class MarkerStatsView extends AbstractStatsView
         mDrillBackAction.setDisabledImageDescriptor(PlatformUI.getWorkbench().getSharedImages()
                 .getImageDescriptor(ISharedImages.IMG_TOOL_BACK_DISABLED));
 
+        // action used to show a specific error in the editor
         mShowErrorAction = new Action()
         {
             public void run()
@@ -450,7 +467,7 @@ public class MarkerStatsView extends AbstractStatsView
                     catch (PartInitException e)
                     {
                         CheckstyleLog.log(e, Messages.MarkerStatsView_unableToShowMarker);
-                        // TODO : mettre message d'erreur à l'utilisateur
+                        // TODO : Open information dialog to notify the user
                     }
                 }
             }
@@ -459,6 +476,52 @@ public class MarkerStatsView extends AbstractStatsView
         mShowErrorAction.setToolTipText(Messages.MarkerStatsView_displayErrorTooltip);
         mShowErrorAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages()
                 .getImageDescriptor(IDE.SharedImages.IMG_OPEN_MARKER));
+
+        // Action used export the error listing as a report
+        mExportErrorsAction = new Action()
+        {
+            public void run()
+            {
+                FileDialog dialog = new FileDialog(getSite().getShell());
+                dialog
+                    .setText(Messages.MarkerStatsView_chooseFolderToExportReport);
+                dialog.setFileName(mLastExportFileName);
+                if (mLastExportFolderName != null)
+                {
+                    dialog.setFilterPath(mLastExportFolderName);
+                }
+                String selectedFilePath = dialog.open();
+                if (selectedFilePath != null)
+                {
+                    File selectedFile = new File(selectedFilePath);
+                    mLastExportFileName = selectedFile.getName();
+                    mLastExportFolderName = selectedFile.getParentFile()
+                        .getAbsolutePath();
+                    try
+                    {
+                        // TODO For the moment, only generate RTF but could to
+                        // PDF and more later...
+                        IStatsExporter statsExporter = StatsExporterFactory
+                            .createStatsExporter("rtf");
+                        // TODO Add here a map containing preference from the user
+                        statsExporter.initialize(null);
+                        statsExporter.generate(getStats(), selectedFile);
+                    }
+                    catch (StatsExporterException e)
+                    {
+                        CheckstyleLog.log(e,
+                            Messages.MarkerStatsView_reportGenerationFailed);
+                        MessageDialog.openError(getSite().getShell(), 
+                            Messages.MarkerStatsView_reportGenerationFailed, 
+                            Messages.MarkerStatsView_reportGenerationFailed 
+                            + "\n" + e.getMessage());
+                    }
+                }
+            }
+        };
+        mExportErrorsAction.setText(Messages.MarkerStatsView_exportErrorsAsReport);
+        mExportErrorsAction.setToolTipText(Messages.MarkerStatsView_exportErrorsAsReportTooltip);
+        mExportErrorsAction.setImageDescriptor(CheckstyleStatsPluginImages.EXPORT_REPORT_ICON);
     }
 
     /**

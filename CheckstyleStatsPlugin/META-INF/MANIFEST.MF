@@ -4,7 +4,8 @@ Bundle-SymbolicName: net.sf.eclipsecs.stats; singleton=true
 Bundle-Version: 0.2.0
 Bundle-ClassPath: StatsCheckstyle.jar,
  lib/jcommon-1.0.0.jar,
- lib/jfreechart-1.0.0.jar
+ lib/jfreechart-1.0.1.jar,
+ lib/itext-1.3.jar
 Bundle-Localization: fragment
 Fragment-Host: com.atlassw.tools.eclipse.checkstyle
 Bundle-Vendor: Fabrice Bellingard, Lars Ködderitzsch

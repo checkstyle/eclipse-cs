@@ -45,6 +45,9 @@ public final class CheckstyleStatsPluginImages
     /** Image descriptor for the graph view icon. */
     public static final ImageDescriptor GRAPH_VIEW_ICON;
 
+    /** Image descriptor for the graph view icon. */
+    public static final ImageDescriptor EXPORT_REPORT_ICON;
+
     /** Image cache. */
     private static final Map CACHED_IMAGES = new HashMap();
 
@@ -56,6 +59,8 @@ public final class CheckstyleStatsPluginImages
                 CheckstylePlugin.PLUGIN_ID, "icons/listingView.gif"); //$NON-NLS-1$
         GRAPH_VIEW_ICON = CheckstylePlugin.imageDescriptorFromPlugin(
                 CheckstylePlugin.PLUGIN_ID, "icons/graphView.gif"); //$NON-NLS-1$
+        EXPORT_REPORT_ICON = CheckstylePlugin.imageDescriptorFromPlugin(
+            CheckstylePlugin.PLUGIN_ID, "icons/exportReport.gif"); //$NON-NLS-1$
     }
 
     /** Hidden default constructor. */

@@ -82,6 +82,14 @@ public final class Messages extends NLS
 
     public static String MarkerStatsView_displayChartTooltip;
 
+    public static String MarkerStatsView_chooseFolderToExportReport;
+
+    public static String MarkerStatsView_exportErrorsAsReport;
+
+    public static String MarkerStatsView_exportErrorsAsReportTooltip;
+
+    public static String MarkerStatsView_reportGenerationFailed;
+
     public static String MarkerStatsView_showDetails;
 
     public static String MarkerStatsView_showDetailsTooltip;
