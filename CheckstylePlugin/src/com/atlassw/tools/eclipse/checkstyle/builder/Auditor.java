@@ -42,9 +42,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.IPreferencesService;
-import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.core.formatter.DefaultCodeFormatterConstants;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
@@ -53,6 +51,7 @@ import org.eclipse.ui.texteditor.MarkerUtilities;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.Messages;
+import com.atlassw.tools.eclipse.checkstyle.config.ConfigurationReader;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.config.meta.MetadataFactory;
 import com.atlassw.tools.eclipse.checkstyle.config.meta.RuleMetadata;
@@ -168,11 +167,15 @@ public class Auditor
             monitor.beginTask(NLS.bind(Messages.Auditor_msgCheckingConfig, mCheckConfiguration
                     .getName()), filesToAudit.length);
 
+            // find out tabwidth setting
+            int tabWidth = ConfigurationReader.getTabWidth(mCheckConfiguration
+                    .openConfigurationFileStream());
+
             // create checker
             checker = CheckerFactory.createChecker(mCheckConfiguration, project);
 
             // create and add listener
-            listener = new CheckstyleAuditListener(project);
+            listener = new CheckstyleAuditListener(project, tabWidth);
             checker.addListener(listener);
 
             // create and add filter for RuntimeExceptions reported by
@@ -316,24 +319,11 @@ public class Auditor
         /** the count of markers generated for the current resource. */
         private int mMarkerCount;
 
-        public CheckstyleAuditListener(IProject project)
+        public CheckstyleAuditListener(IProject project, int tabWidth)
         {
             mProject = project;
 
-            try
-            {
-
-                IJavaProject javaProject = JavaCore.create(project);
-                mTabWidth = getTabWidth(javaProject);
-
-            }
-            catch (NumberFormatException e)
-            {
-                CheckstyleLog.log(e, "Could not determine tab width setting, using default of 4");
-
-                // fall back to a reasonable default
-                mTabWidth = 4;
-            }
+            mTabWidth = tabWidth;
 
             // init the marker limitation
             IPreferencesService prefStore = Platform.getPreferencesService();
@@ -583,39 +573,6 @@ public class Auditor
                 return Messages.Auditor_txtUnknownModule;
             }
             return metaData.getRuleName();
-        }
-
-        private int getTabWidth(IJavaProject javaProject) throws NumberFormatException
-        {
-
-            /*
-             * If the tab-char is SPACE, FORMATTER_INDENTATION_SIZE is not used
-             * by the core formatter. We piggy back the visual tab length
-             * setting in that preference in that case.
-             */
-            String key;
-            if (JavaCore.SPACE.equals(getCoreOption(javaProject,
-                    DefaultCodeFormatterConstants.FORMATTER_TAB_CHAR)))
-            {
-                key = DefaultCodeFormatterConstants.FORMATTER_INDENTATION_SIZE;
-            }
-            else
-            {
-                key = DefaultCodeFormatterConstants.FORMATTER_TAB_SIZE;
-            }
-
-            String tabWithString = getCoreOption(javaProject, key);
-
-            return Integer.parseInt(tabWithString);
-        }
-
-        private String getCoreOption(IJavaProject project, String key)
-        {
-            if (project == null)
-            {
-                return JavaCore.getOption(key);
-            }
-            return project.getOption(key, true);
         }
     }
 }
