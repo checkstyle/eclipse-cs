@@ -91,6 +91,7 @@
                <property-value-option value="LITERAL_WHILE"/>
             </enumeration>
          </property-metadata>
+         <quickfix classname="com.atlassw.tools.eclipse.checkstyle.quickfixes.blocks.NeedBracesQuickfix"/>
       </rule-metadata>
       
       <rule-metadata name="Right Curly Brace Placement" internal-name="RightCurly" parent="TreeWalker">
