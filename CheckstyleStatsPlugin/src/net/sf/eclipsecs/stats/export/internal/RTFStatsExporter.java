@@ -30,17 +30,22 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import net.sf.eclipsecs.stats.Messages;
+import net.sf.eclipsecs.stats.data.CreateStatsJob;
 import net.sf.eclipsecs.stats.data.MarkerStat;
 import net.sf.eclipsecs.stats.data.Stats;
 import net.sf.eclipsecs.stats.export.StatsExporterException;
 
+import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.osgi.util.NLS;
 
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.lowagie.text.Cell;
 import com.lowagie.text.Chunk;
 import com.lowagie.text.Document;
@@ -66,6 +71,12 @@ public class RTFStatsExporter extends AbstractStatsExporter
 
     private int mMainFontSize;
 
+    private RtfFont mainFont;
+
+    private RtfFont pageHeaderAndFooterFont;
+
+    private RtfFont tableHeaderAndFooterFont;
+
     /**
      * {@inheritDoc}
      * 
@@ -74,7 +85,7 @@ public class RTFStatsExporter extends AbstractStatsExporter
     public void initialize(Map props) throws StatsExporterException
     {
         mMainFontName = "Verdana";
-        mMainFontSize = 12;
+        mMainFontSize = 10;
         // String fontName;
         // Object font = props.get(PROPS_MAIN_FONT_NAME);
         // if (font instanceof String)
@@ -94,12 +105,11 @@ public class RTFStatsExporter extends AbstractStatsExporter
      * {@inheritDoc}
      * 
      * @see net.sf.eclipsecs.stats.export.internal.AbstractStatsExporter#doGenerate(net.sf.eclipsecs.stats.data.Stats,
-     *      java.io.File)
+     *      java.util.List, java.io.File)
      */
-    protected void doGenerate(Stats stats, File outputFile)
+    protected void doGenerate(Stats stats, List details, File outputFile)
         throws StatsExporterException
     {
-
         File exportFile = getRealExportFile(outputFile);
 
         try
@@ -107,31 +117,19 @@ public class RTFStatsExporter extends AbstractStatsExporter
             Document doc = new Document();
             RtfWriter2.getInstance(doc, new FileOutputStream(exportFile));
 
-            RtfFont mainFont = new RtfFont(mMainFontName, mMainFontSize);
-            RtfFont pageHeaderAndFooterFont = new RtfFont(mMainFontName, 10,
+            // init the fonts
+            mainFont = new RtfFont(mMainFontName, mMainFontSize);
+            pageHeaderAndFooterFont = new RtfFont(mMainFontName, 9,
                 Font.BOLDITALIC, new Color(200, 200, 200));
-            RtfFont tableHeaderAndFooterFont = new RtfFont(mMainFontName,
+            tableHeaderAndFooterFont = new RtfFont(mMainFontName,
                 mMainFontSize, Font.BOLD);
 
-            Paragraph p = new Paragraph("Checkstyle statistics",
-                pageHeaderAndFooterFont);
-            p.setAlignment(Element.ALIGN_CENTER);
-            HeaderFooter header = new RtfHeaderFooter(p);
-            doc.setHeader(header);
-
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
-            p = new Paragraph("Généré le : "
-                + simpleDateFormat.format(new Date()), pageHeaderAndFooterFont);
-            p.setAlignment(Element.ALIGN_CENTER);
-            RtfHeaderFooterGroup footer = new RtfHeaderFooterGroup();
-            footer
-                .setHeaderFooter(
-                    new RtfHeaderFooter(p),
-                    com.lowagie.text.rtf.headerfooter.RtfHeaderFooter.DISPLAY_ALL_PAGES);
-            doc.setFooter(footer);
+            // creates headers and footers
+            createHeaderAndFooter(doc);
 
             doc.open();
 
+            // introduces the report
             doc.add(new Paragraph(""));
 
             String intro = NLS.bind(
@@ -139,57 +137,43 @@ public class RTFStatsExporter extends AbstractStatsExporter
                         new Integer(stats.getMarkerCount()),
                         new Integer(stats.getMarkerStats().size()),
                         new Integer(stats.getMarkerCountAll()) });
-            p = new Paragraph(intro, mainFont);
+            Paragraph p = new Paragraph(intro, mainFont);
             doc.add(p);
 
             doc.add(new Paragraph(""));
 
-            Table table = new Table(2);
-            table.setSpaceInsideCell(10);
-            table.setAlignment(Element.ALIGN_LEFT);
-            table.setWidth(100);
-            table.setWidths(new float[] { 80, 20 });
+            // generates the summary of the stats
+            createSummaryTable(stats, doc);
 
-            Cell typeHeader = new Cell(new Chunk(
-                Messages.MarkerStatsView_kindOfErrorColumn,
-                tableHeaderAndFooterFont));
-            typeHeader.setHorizontalAlignment(Element.ALIGN_CENTER);
-            typeHeader.setHeader(true);
-            table.addCell(typeHeader);
-            Cell countHeader = new Cell(new Chunk(
-                Messages.MarkerStatsView_numberOfErrorsColumn,
-                tableHeaderAndFooterFont));
-            countHeader.setHorizontalAlignment(Element.ALIGN_CENTER);
-            countHeader.setHeader(true);
-            table.addCell(countHeader);
-
-            ArrayList markerStatsSortedList = new ArrayList(stats
-                .getMarkerStats());
-            Collections.sort(markerStatsSortedList, new Comparator()
+            // if there are details, print the details
+            if (details.size() > 0)
             {
-                public int compare(Object arg0, Object arg1)
+                try
                 {
-                    MarkerStat markerStat0 = (MarkerStat) arg0;
-                    MarkerStat markerStat1 = (MarkerStat) arg1;
-                    return markerStat1.getCount() - markerStat0.getCount();
-                }
-            });
-            Cell typeCell;
-            Cell countCell;
-            for (Iterator iter = markerStatsSortedList.iterator(); iter
-                .hasNext();)
-            {
-                MarkerStat markerStat = (MarkerStat) iter.next();
-                typeCell = new Cell(new Chunk(markerStat.getIdentifiant(),
-                    mainFont));
-                table.addCell(typeCell);
-                countCell = new Cell(new Chunk(markerStat.getCount() + "",
-                    mainFont));
-                countCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-                table.addCell(countCell);
-            }
+                    // introduces the detail section
+                    String category = CreateStatsJob
+                        .getUnlocalizedMessage((IMarker) details.get(0));
+                    category = CreateStatsJob.cleanMessage(category);
+                    String detailText = NLS.bind(
+                        Messages.MarkerStatsView_lblDetailMessage,
+                        new Object[] { category, new Integer(details.size()) });
+                    p = new Paragraph(detailText, mainFont);
+                    doc.add(p);
 
-            doc.add(table);
+                    // and generates the table with the details
+                    createDetailSection(details, doc);
+
+                }
+                catch (CoreException e)
+                {
+                    // TODO improve the message and i18n...
+                    doc.add(new Paragraph(
+                        "An error occured while reading the selected markers",
+                        mainFont));
+                    CheckstyleLog.log(e,
+                        "An error occured while reading the selected markers");
+                }
+            }
 
             doc.close();
         }
@@ -201,6 +185,130 @@ public class RTFStatsExporter extends AbstractStatsExporter
         {
             throw new StatsExporterException(e);
         }
+    }
+
+    private void createDetailSection(List details, Document doc)
+        throws CoreException, DocumentException
+    {
+        Table table = new Table(4);
+        table.setSpaceInsideCell(10);
+        table.setAlignment(Element.ALIGN_LEFT);
+        table.setWidth(100);
+        table.setWidths(new float[] { 30, 30, 10, 30 });
+
+        Cell resourceHeader = new Cell(new Chunk(
+            Messages.MarkerStatsView_fileColumn, tableHeaderAndFooterFont));
+        resourceHeader.setHorizontalAlignment(Element.ALIGN_CENTER);
+        resourceHeader.setHeader(true);
+        table.addCell(resourceHeader);
+        Cell folderHeader = new Cell(new Chunk(
+            Messages.MarkerStatsView_folderColumn, tableHeaderAndFooterFont));
+        folderHeader.setHorizontalAlignment(Element.ALIGN_CENTER);
+        folderHeader.setHeader(true);
+        table.addCell(folderHeader);
+        Cell lineHeader = new Cell(new Chunk(
+            Messages.MarkerStatsView_lineColumn, tableHeaderAndFooterFont));
+        lineHeader.setHorizontalAlignment(Element.ALIGN_CENTER);
+        lineHeader.setHeader(true);
+        table.addCell(lineHeader);
+        Cell messageHeader = new Cell(new Chunk(
+            Messages.MarkerStatsView_messageColumn, tableHeaderAndFooterFont));
+        messageHeader.setHorizontalAlignment(Element.ALIGN_CENTER);
+        messageHeader.setHeader(true);
+        table.addCell(messageHeader);
+
+        Cell resourceCell;
+        Cell fileCell;
+        Cell lineCell;
+        Cell messageCell;
+        for (Iterator iter = details.iterator(); iter.hasNext();)
+        {
+            IMarker marker = (IMarker) iter.next();
+            resourceCell = new Cell(new Chunk(marker.getResource().getName(),
+                mainFont));
+            table.addCell(resourceCell);
+            fileCell = new Cell(new Chunk(marker.getResource().getParent()
+                .getFullPath().toString(), mainFont));
+            table.addCell(fileCell);
+            lineCell = new Cell(new Chunk(marker.getAttribute(
+                IMarker.LINE_NUMBER).toString(), mainFont));
+            lineCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell(lineCell);
+            messageCell = new Cell(new Chunk(marker.getAttribute(
+                IMarker.MESSAGE).toString(), mainFont));
+            table.addCell(messageCell);
+        }
+
+        doc.add(table);
+    }
+
+    private void createSummaryTable(Stats stats, Document doc)
+        throws DocumentException
+    {
+        Table table = new Table(2);
+        table.setSpaceInsideCell(10);
+        table.setAlignment(Element.ALIGN_LEFT);
+        table.setWidth(100);
+        table.setWidths(new float[] { 80, 20 });
+
+        Cell typeHeader = new Cell(new Chunk(
+            Messages.MarkerStatsView_kindOfErrorColumn,
+            tableHeaderAndFooterFont));
+        typeHeader.setHorizontalAlignment(Element.ALIGN_CENTER);
+        typeHeader.setHeader(true);
+        table.addCell(typeHeader);
+        Cell countHeader = new Cell(new Chunk(
+            Messages.MarkerStatsView_numberOfErrorsColumn,
+            tableHeaderAndFooterFont));
+        countHeader.setHorizontalAlignment(Element.ALIGN_CENTER);
+        countHeader.setHeader(true);
+        table.addCell(countHeader);
+
+        ArrayList markerStatsSortedList = new ArrayList(stats.getMarkerStats());
+        Collections.sort(markerStatsSortedList, new Comparator()
+        {
+            public int compare(Object arg0, Object arg1)
+            {
+                MarkerStat markerStat0 = (MarkerStat) arg0;
+                MarkerStat markerStat1 = (MarkerStat) arg1;
+                return markerStat1.getCount() - markerStat0.getCount();
+            }
+        });
+        Cell typeCell;
+        Cell countCell;
+        for (Iterator iter = markerStatsSortedList.iterator(); iter.hasNext();)
+        {
+            MarkerStat markerStat = (MarkerStat) iter.next();
+            typeCell = new Cell(
+                new Chunk(markerStat.getIdentifiant(), mainFont));
+            table.addCell(typeCell);
+            countCell = new Cell(
+                new Chunk(markerStat.getCount() + "", mainFont));
+            countCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell(countCell);
+        }
+
+        doc.add(table);
+    }
+
+    private void createHeaderAndFooter(Document doc)
+    {
+        Paragraph p = new Paragraph("Checkstyle statistics",
+            pageHeaderAndFooterFont);
+        p.setAlignment(Element.ALIGN_CENTER);
+        HeaderFooter header = new RtfHeaderFooter(p);
+        doc.setHeader(header);
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
+        p = new Paragraph("Généré le : " + simpleDateFormat.format(new Date()),
+            pageHeaderAndFooterFont);
+        p.setAlignment(Element.ALIGN_CENTER);
+        RtfHeaderFooterGroup footer = new RtfHeaderFooterGroup();
+        footer
+            .setHeaderFooter(
+                new RtfHeaderFooter(p),
+                com.lowagie.text.rtf.headerfooter.RtfHeaderFooter.DISPLAY_ALL_PAGES);
+        doc.setFooter(footer);
     }
 
     /**

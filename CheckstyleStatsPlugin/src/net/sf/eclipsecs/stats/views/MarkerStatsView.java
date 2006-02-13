@@ -22,8 +22,10 @@ package net.sf.eclipsecs.stats.views;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import net.sf.eclipsecs.stats.Messages;
 import net.sf.eclipsecs.stats.data.MarkerStat;
@@ -503,9 +505,20 @@ public class MarkerStatsView extends AbstractStatsView
                         // PDF and more later...
                         IStatsExporter statsExporter = StatsExporterFactory
                             .createStatsExporter("rtf");
-                        // TODO Add here a map containing preference from the user
+                        // TODO Add here a map containing preference from the
+                        // user
                         statsExporter.initialize(null);
-                        statsExporter.generate(getStats(), selectedFile);
+                        List details = null;
+                        if (mIsDrilledDown)
+                        {
+                            Object[] currentDetails = ( (IStructuredContentProvider) mDetailViewer.getContentProvider()).getElements(getStats());
+                            details = Arrays.asList(currentDetails);                            
+                        }
+                        else
+                        {
+                            details = new ArrayList();
+                        }
+                        statsExporter.generate(getStats(), details, selectedFile);
                     }
                     catch (StatsExporterException e)
                     {

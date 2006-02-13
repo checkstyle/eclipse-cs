@@ -21,6 +21,7 @@
 package net.sf.eclipsecs.stats.export;
 
 import java.io.File;
+import java.util.List;
 import java.util.Map;
 
 import net.sf.eclipsecs.stats.data.Stats;
@@ -63,12 +64,15 @@ public interface IStatsExporter
      * 
      * @param stats
      *            the Checkstyle statistics we want to export
+     * @param details
+     *            the list of markers detailed for one of a Checkstyle error
+     *            category
      * @param outputFile
      *            the file into which the stats will be exported
      * @throws StatsExporterException
      *             if an error occurs while generating the document
      */
-    void generate(Stats stats, File outputFile)
+    void generate(Stats stats, List details, File outputFile)
         throws StatsExporterException;
 
 }

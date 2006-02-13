@@ -21,6 +21,7 @@
 package net.sf.eclipsecs.stats.export.internal;
 
 import java.io.File;
+import java.util.List;
 
 import net.sf.eclipsecs.stats.data.Stats;
 import net.sf.eclipsecs.stats.export.IStatsExporter;
@@ -37,9 +38,9 @@ public abstract class AbstractStatsExporter implements IStatsExporter
      * {@inheritDoc}
      * 
      * @see net.sf.eclipsecs.stats.export.IStatsExporter#generate(net.sf.eclipsecs.stats.data.Stats,
-     *      java.io.File)
+     *      java.util.List, java.io.File)
      */
-    public void generate(Stats stats, File outputFile)
+    public void generate(Stats stats, List details, File outputFile)
         throws StatsExporterException
     {
         // checks if the values provided are correct
@@ -49,12 +50,11 @@ public abstract class AbstractStatsExporter implements IStatsExporter
         }
         if (outputFile == null)
         {
-            throw new StatsExporterException(
-                "The output file is null...");
+            throw new StatsExporterException("The output file is null...");
         }
 
         // and if everything's fine, go!
-        doGenerate(stats, outputFile);
+        doGenerate(stats, details, outputFile);
     }
 
     /**
@@ -62,11 +62,14 @@ public abstract class AbstractStatsExporter implements IStatsExporter
      * 
      * @param stats
      *            the Checkstyle statistics we want to export
+     * @param details
+     *            the list of markers detailed for one of a Checkstyle error
+     *            category
      * @param outputFile
      *            the file into which the stats will be exported
      * @throws StatsExporterException
      *             if an error occurs while generating the document
      */
-    protected abstract void doGenerate(Stats stats, File outputFile)
-        throws StatsExporterException;
+    protected abstract void doGenerate(Stats stats, List details,
+        File outputFile) throws StatsExporterException;
 }

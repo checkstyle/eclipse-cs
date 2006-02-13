@@ -186,7 +186,7 @@ public class CreateStatsJob extends Job
         return resourceBundle.getString(key);
     }
 
-    private static String getUnlocalizedMessage(IMarker marker) throws CoreException
+    public static String getUnlocalizedMessage(IMarker marker) throws CoreException
     {
         String key = (String) marker.getAttribute(CheckstyleMarker.MESSAGE_KEY);
         RuleMetadata ruleMetadata = MetadataFactory.getRuleMetadata((String) marker
@@ -216,7 +216,7 @@ public class CreateStatsJob extends Job
      * @param message : the message to clean
      * @return the cleaned message
      */
-    private static String cleanMessage(String message)
+    public static String cleanMessage(String message)
     {
         // replacements
         String finalMessage = REGEXP_HOLES.matcher(message).replaceAll("X"); //$NON-NLS-1$
