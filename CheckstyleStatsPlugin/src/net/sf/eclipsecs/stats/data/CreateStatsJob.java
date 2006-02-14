@@ -93,7 +93,7 @@ public class CreateStatsJob extends Job
     //
 
     /**
-     * @see org.eclipse.core.internal.jobs.InternalJob#run(org.eclipse.core.runtime.IProgressMonitor)
+     * @see InternalJob#run(org.eclipse.core.runtime.IProgressMonitor)
      */
     protected IStatus run(IProgressMonitor monitor)
     {

@@ -27,6 +27,11 @@ package net.sf.eclipsecs.stats.export;
 public class StatsExporterException extends Exception
 {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -6505543852255163847L;
+
     public StatsExporterException()
     {
         super();

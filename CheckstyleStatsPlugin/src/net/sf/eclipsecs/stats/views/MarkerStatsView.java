@@ -486,7 +486,7 @@ public class MarkerStatsView extends AbstractStatsView
             {
                 FileDialog dialog = new FileDialog(getSite().getShell());
                 dialog
-                    .setText(Messages.MarkerStatsView_chooseFolderToExportReport);
+                    .setText(Messages.MarkerStatsView_chooseFileToExport);
                 dialog.setFileName(mLastExportFileName);
                 if (mLastExportFolderName != null)
                 {
@@ -505,7 +505,7 @@ public class MarkerStatsView extends AbstractStatsView
                         // PDF and more later...
                         IStatsExporter statsExporter = StatsExporterFactory
                             .createStatsExporter("rtf");
-                        // TODO Add here a map containing preference from the
+                        // TODO Add here a map containing preferences of the
                         // user
                         statsExporter.initialize(null);
                         List details = null;

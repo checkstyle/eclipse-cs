@@ -21,6 +21,9 @@
 package net.sf.eclipsecs.stats.views;
 
 import java.awt.Frame;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import net.sf.eclipsecs.stats.Messages;
 import net.sf.eclipsecs.stats.PrefsInitializer;
@@ -32,6 +35,7 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.awt.SWT_AWT;
@@ -39,6 +43,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PartInitException;
@@ -48,6 +53,9 @@ import org.jfree.chart.ChartMouseEvent;
 import org.jfree.chart.ChartMouseListener;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.encoders.ImageEncoder;
+import org.jfree.chart.encoders.ImageEncoderFactory;
+import org.jfree.chart.encoders.ImageFormat;
 import org.jfree.chart.plot.PiePlot3D;
 import org.jfree.ui.RectangleInsets;
 import org.jfree.util.Rotation;
@@ -91,10 +99,17 @@ public class GraphStatsView extends AbstractStatsView
     /** Action to go back to the marker overview view. */
     private Action mListingAction;
 
-    /**
-     * Permet l'affichage ou pas de toutes les catégories.
-     */
+    /** Allows to show all the categories or not */
     private Action mShowAllCategoriesAction;
+
+    /** Exports the error listing as a report. */
+    private Action mExportGraphAsImageAction;
+    
+    /** The last folder used to store the generated reports */
+    private String mLastExportFolderName;
+    
+    /** The last file name used to store the generated reports */
+    private String mLastExportFileName = "CheckstyleStatsExport";
 
     //
     // methods
@@ -173,6 +188,7 @@ public class GraphStatsView extends AbstractStatsView
     protected void initToolBar(IToolBarManager tbm)
     {
         tbm.add(mListingAction);
+        tbm.add(mExportGraphAsImageAction);
         tbm.add(new Separator());
         tbm.add(mShowAllCategoriesAction);
         tbm.add(new FiltersAction(this));
@@ -256,6 +272,49 @@ public class GraphStatsView extends AbstractStatsView
                 .getImageDescriptor(ISharedImages.IMG_OBJ_ELEMENT));
         mShowAllCategoriesAction.setChecked(CheckstylePlugin.getDefault().getPreferenceStore()
                 .getBoolean(PrefsInitializer.PROPS_SHOW_ALL_CATEGORIES));
+
+        // Action used export the error listing as a report
+        mExportGraphAsImageAction = new Action()
+        {
+            public void run()
+            {
+                FileDialog dialog = new FileDialog(getSite().getShell());
+                dialog.setText(Messages.MarkerStatsView_chooseFileToExport);
+                dialog.setFileName(mLastExportFileName);
+                if (mLastExportFolderName != null)
+                {
+                    dialog.setFilterPath(mLastExportFolderName);
+                }
+                String selectedFilePath = dialog.open();
+                if (selectedFilePath != null)
+                {
+                    File selectedFile = new File(selectedFilePath);
+                    mLastExportFileName = selectedFile.getName();
+                    mLastExportFolderName = selectedFile.getParentFile()
+                        .getAbsolutePath();
+                    
+                    try
+                    {
+                        // TODO : the user should be able to choose the type of image, the width 
+                        // and the height of the buffered image
+                        ImageEncoder imageEncoder = ImageEncoderFactory.newInstance(ImageFormat.PNG);
+                        imageEncoder.encode(mGraph.createBufferedImage(800, 600), new FileOutputStream(selectedFile));
+                    }
+                    catch (IOException e)
+                    {
+                        CheckstyleLog.log(e,
+                            Messages.MarkerStatsView_graphExportFailed);
+                        MessageDialog.openError(getSite().getShell(), 
+                            Messages.MarkerStatsView_graphExportFailed, 
+                            Messages.MarkerStatsView_graphExportFailed 
+                            + "\n" + e.getMessage());
+                    }
+                }
+            }
+        };
+        mExportGraphAsImageAction.setText(Messages.MarkerStatsView_exportGraphAsImage);
+        mExportGraphAsImageAction.setToolTipText(Messages.MarkerStatsView_exportGraphAsImageTooltip);
+        mExportGraphAsImageAction.setImageDescriptor(CheckstyleStatsPluginImages.EXPORT_REPORT_ICON);
 
     }
 
