@@ -22,6 +22,7 @@ package net.sf.eclipsecs.stats.export.internal;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 
 import net.sf.eclipsecs.stats.data.Stats;
 import net.sf.eclipsecs.stats.export.IStatsExporter;
@@ -34,6 +35,48 @@ import net.sf.eclipsecs.stats.export.StatsExporterException;
  */
 public abstract class AbstractStatsExporter implements IStatsExporter
 {
+    private String mMainFontName;
+
+    private int mMainFontSize;
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see net.sf.eclipsecs.stats.export.IStatsExporter#initialize(java.util.Map)
+     */
+    public void initialize(Map props) throws StatsExporterException
+    {
+        if (props == null)
+        {
+            // use the defaults
+            mMainFontName = DEFAULT_MAIN_FONT_NAME;
+            mMainFontSize = DEFAULT_MAIN_FONT_SIZE.intValue();
+        }
+        else
+        {
+            // Font name
+            Object font = props.get(PROPS_MAIN_FONT_NAME);
+            if (font instanceof String)
+            {
+                mMainFontName = (String) font;
+            }
+            else
+            {
+                mMainFontName = DEFAULT_MAIN_FONT_NAME;
+            }
+            // Font size
+            Object size = props.get(PROPS_MAIN_FONT_SIZE);
+            if (size instanceof Integer)
+            {
+                mMainFontSize = ((Integer) size).intValue();
+            }
+            else
+            {
+                mMainFontSize = DEFAULT_MAIN_FONT_SIZE.intValue();
+            }
+        }
+    }
+
     /**
      * {@inheritDoc}
      * 
@@ -72,4 +115,20 @@ public abstract class AbstractStatsExporter implements IStatsExporter
      */
     protected abstract void doGenerate(Stats stats, List details,
         File outputFile) throws StatsExporterException;
+
+    /**
+     * @return Returns the mMainFontName.
+     */
+    protected String getMainFontName()
+    {
+        return mMainFontName;
+    }
+
+    /**
+     * @return Returns the mMainFontSize.
+     */
+    protected int getMainFontSize()
+    {
+        return mMainFontSize;
+    }
 }

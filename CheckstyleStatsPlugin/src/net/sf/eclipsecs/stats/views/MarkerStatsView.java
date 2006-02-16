@@ -505,8 +505,13 @@ public class MarkerStatsView extends AbstractStatsView
                         // PDF and more later...
                         IStatsExporter statsExporter = StatsExporterFactory
                             .createStatsExporter("rtf");
-                        // TODO Add here a map containing preferences of the
-                        // user
+                        // TODO Put user preferences in the map
+                        /*
+                        HashMap propsMap = new HashMap();
+                        propsMap.put(IStatsExporter.PROPS_MAIN_FONT_NAME, "Arial");
+                        propsMap.put(IStatsExporter.PROPS_MAIN_FONT_SIZE, new Integer(9));
+                        statsExporter.initialize(propsMap);
+                        */
                         statsExporter.initialize(null);
                         List details = null;
                         if (mIsDrilledDown)

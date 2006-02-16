@@ -44,7 +44,7 @@ public interface IStatsExporter
     static final String DEFAULT_MAIN_FONT_NAME = "Verdana";
 
     /** The default font size */
-    static final Integer DEFAULT_MAIN_FONT_SIZE = new Integer(12);
+    static final Integer DEFAULT_MAIN_FONT_SIZE = new Integer(10);
 
     /**
      * Initializes the stats exporter with the properties specified in the map.

@@ -31,7 +31,6 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import net.sf.eclipsecs.stats.Messages;
 import net.sf.eclipsecs.stats.data.CreateStatsJob;
@@ -67,39 +66,11 @@ import com.lowagie.text.rtf.headerfooter.RtfHeaderFooterGroup;
  */
 public class RTFStatsExporter extends AbstractStatsExporter
 {
-    private String mMainFontName;
-
-    private int mMainFontSize;
-
     private RtfFont mainFont;
 
     private RtfFont pageHeaderAndFooterFont;
 
     private RtfFont tableHeaderAndFooterFont;
-
-    /**
-     * {@inheritDoc}
-     * 
-     * @see net.sf.eclipsecs.stats.export.IStatsExporter#initialize(java.util.Map)
-     */
-    public void initialize(Map props) throws StatsExporterException
-    {
-        mMainFontName = "Verdana";
-        mMainFontSize = 10;
-        // String fontName;
-        // Object font = props.get(PROPS_MAIN_FONT_NAME);
-        // if (font instanceof String)
-        // {
-        // fontName = (String) font;
-        // }
-        // else
-        // {
-        // fontName = DEFAULT_MAIN_FONT_NAME;
-        // }
-        //
-        // Integer fontSize;
-        // // TO BE CONTINUED...
-    }
 
     /**
      * {@inheritDoc}
@@ -118,11 +89,11 @@ public class RTFStatsExporter extends AbstractStatsExporter
             RtfWriter2.getInstance(doc, new FileOutputStream(exportFile));
 
             // init the fonts
-            mainFont = new RtfFont(mMainFontName, mMainFontSize);
-            pageHeaderAndFooterFont = new RtfFont(mMainFontName, 9,
+            mainFont = new RtfFont(getMainFontName(), getMainFontSize());
+            pageHeaderAndFooterFont = new RtfFont(getMainFontName(), 9,
                 Font.BOLDITALIC, new Color(200, 200, 200));
-            tableHeaderAndFooterFont = new RtfFont(mMainFontName,
-                mMainFontSize, Font.BOLD);
+            tableHeaderAndFooterFont = new RtfFont(getMainFontName(),
+                getMainFontSize(), Font.BOLD);
 
             // creates headers and footers
             createHeaderAndFooter(doc);

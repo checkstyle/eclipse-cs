@@ -109,7 +109,7 @@ public class GraphStatsView extends AbstractStatsView
     private String mLastExportFolderName;
     
     /** The last file name used to store the generated reports */
-    private String mLastExportFileName = "CheckstyleStatsExport";
+    private String mLastExportFileName = "CheckstyleStatsGraph";
 
     //
     // methods
@@ -288,6 +288,11 @@ public class GraphStatsView extends AbstractStatsView
                 String selectedFilePath = dialog.open();
                 if (selectedFilePath != null)
                 {
+                    // TODO : the user should be able to choose the type of image...
+                    if (!selectedFilePath.endsWith(".png"))
+                    {
+                        selectedFilePath += ".png";
+                    }
                     File selectedFile = new File(selectedFilePath);
                     mLastExportFileName = selectedFile.getName();
                     mLastExportFolderName = selectedFile.getParentFile()
