@@ -140,10 +140,10 @@ public class MarkerStatsView extends AbstractStatsView
 
     /** The state if the view is currently drilled down to details. */
     private boolean mIsDrilledDown;
-    
+
     /** The last folder used to store the generated reports */
     private String mLastExportFolderName;
-    
+
     /** The last file name used to store the generated reports */
     private String mLastExportFileName = "CheckstyleStatsExport";
 
@@ -485,8 +485,7 @@ public class MarkerStatsView extends AbstractStatsView
             public void run()
             {
                 FileDialog dialog = new FileDialog(getSite().getShell());
-                dialog
-                    .setText(Messages.MarkerStatsView_chooseFileToExport);
+                dialog.setText(Messages.MarkerStatsView_chooseFileToExport);
                 dialog.setFileName(mLastExportFileName);
                 if (mLastExportFolderName != null)
                 {
@@ -497,27 +496,28 @@ public class MarkerStatsView extends AbstractStatsView
                 {
                     File selectedFile = new File(selectedFilePath);
                     mLastExportFileName = selectedFile.getName();
-                    mLastExportFolderName = selectedFile.getParentFile()
-                        .getAbsolutePath();
+                    mLastExportFolderName = selectedFile.getParentFile().getAbsolutePath();
                     try
                     {
                         // TODO For the moment, only generate RTF but could to
                         // PDF and more later...
                         IStatsExporter statsExporter = StatsExporterFactory
-                            .createStatsExporter("rtf");
+                                .createStatsExporter("rtf");
                         // TODO Put user preferences in the map
                         /*
-                        HashMap propsMap = new HashMap();
-                        propsMap.put(IStatsExporter.PROPS_MAIN_FONT_NAME, "Arial");
-                        propsMap.put(IStatsExporter.PROPS_MAIN_FONT_SIZE, new Integer(9));
-                        statsExporter.initialize(propsMap);
-                        */
+                         * HashMap propsMap = new HashMap();
+                         * propsMap.put(IStatsExporter.PROPS_MAIN_FONT_NAME,
+                         * "Arial");
+                         * propsMap.put(IStatsExporter.PROPS_MAIN_FONT_SIZE, new
+                         * Integer(9)); statsExporter.initialize(propsMap);
+                         */
                         statsExporter.initialize(null);
                         List details = null;
                         if (mIsDrilledDown)
                         {
-                            Object[] currentDetails = ( (IStructuredContentProvider) mDetailViewer.getContentProvider()).getElements(getStats());
-                            details = Arrays.asList(currentDetails);                            
+                            Object[] currentDetails = ((IStructuredContentProvider) mDetailViewer
+                                    .getContentProvider()).getElements(getStats());
+                            details = Arrays.asList(currentDetails);
                         }
                         else
                         {
@@ -527,12 +527,11 @@ public class MarkerStatsView extends AbstractStatsView
                     }
                     catch (StatsExporterException e)
                     {
-                        CheckstyleLog.log(e,
-                            Messages.MarkerStatsView_reportGenerationFailed);
-                        MessageDialog.openError(getSite().getShell(), 
-                            Messages.MarkerStatsView_reportGenerationFailed, 
-                            Messages.MarkerStatsView_reportGenerationFailed 
-                            + "\n" + e.getMessage());
+                        CheckstyleLog.log(e, Messages.MarkerStatsView_reportGenerationFailed);
+                        MessageDialog.openError(getSite().getShell(),
+                                Messages.MarkerStatsView_reportGenerationFailed,
+                                Messages.MarkerStatsView_reportGenerationFailed + "\n"
+                                        + e.getMessage());
                     }
                 }
             }
@@ -892,10 +891,11 @@ public class MarkerStatsView extends AbstractStatsView
                         break;
                 }
             }
-            catch (CoreException e)
+            catch (Exception e)
             {
                 // Can't do anything: let's put a default value
                 text = Messages.MarkerStatsView_unknownProblem;
+                CheckstyleLog.log(e);
             }
 
             return text;
