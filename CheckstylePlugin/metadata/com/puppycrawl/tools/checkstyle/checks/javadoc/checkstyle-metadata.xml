@@ -65,6 +65,9 @@ public boolean isSomething()
 }
               </description>
          </property-metadata>
+         <property-metadata name="logLoadErrors" datatype="Boolean" default-value="false">
+            <description>This check may needs to load exception classes mentioned in the @throws tag to check whether they are RuntimeExceptions. If loading the class fails, this property allows to control checkstyle's error handling. If set to false (the default) a classpath configuration problem is assumed and the TreeWalker stops operating on the class completely. If set to true, checkstyle assumes a typo or refactoring problem in the javadoc and logs the problem in the normal checkstyle report (potentially masking a configuration error).</description>
+         </property-metadata>      
          <property-metadata name="tokens" datatype="MultiCheck" default-value="METHOD_DEF,CTOR_DEF">
             <description>Tokens to check.</description>
             <enumeration>
@@ -72,6 +75,7 @@ public boolean isSomething()
                <property-value-option value="CTOR_DEF"/>
             </enumeration>
          </property-metadata>
+         
       </rule-metadata>
       
       <rule-metadata name="Style Javadoc" internal-name="JavadocStyle" parent="TreeWalker">
@@ -155,7 +159,28 @@ public boolean isSomething()
             </enumeration>
          </property-metadata>
       </rule-metadata>
+      
+      <rule-metadata name="Write Tag" internal-name="WriteTag" parent="TreeWalker">
+         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.javadoc.WriteTagCheck"/>
+         <description>Outputs a JavaDoc tag as information. Can be used e.g. with the stylesheets that sort the report by author name. To define the format for a tag, set property tagFormat to a regular expression. This check uses two different severity levels. The normal one is used for reporting when the tag is missing. The additional one (tagSeverity) is used for the level of reporting when the tag exists.</description>
+         <property-metadata name="tag" datatype="String">
+            <description>Name of tag</description>
+         </property-metadata>
+         <property-metadata name="tagFormat" datatype="Regex">
+            <description>Format of tag</description>
+         </property-metadata>
+         <property-metadata name="tagSeverity" datatype="SingleSelect" default-value="info">
+            <description>Severity level when tag is found and printed</description>
+            <enumeration>
+               <property-value-option value="error"/>
+               <property-value-option value="warning"/>
+               <property-value-option value="info"/>
+               <property-value-option value="ignore"/>
+            </enumeration>
+         </property-metadata>
+      </rule-metadata>      
+      
    </rule-group-metadata>
-   
+    
 </checkstyle-metadata>
 
