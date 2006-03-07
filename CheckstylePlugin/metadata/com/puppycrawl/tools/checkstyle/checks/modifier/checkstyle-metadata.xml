@@ -23,6 +23,7 @@
                <property-value-option value="ANNOTATION_FIELD_DEF"/>
             </enumeration>
          </property-metadata>
+         <quickfix classname="com.atlassw.tools.eclipse.checkstyle.quickfixes.modifier.RedundantModifierQuickfix"/>
       </rule-metadata>
       
    </rule-group-metadata>

@@ -105,7 +105,10 @@ public abstract class AbstractASTResolution implements ICheckstyleMarkerResoluti
             ASTParser astParser = ASTParser.newParser(AST.JLS3);
 
             // only create a partial AST
-            astParser.setFocalPosition(lineInfo.getOffset());
+            if (handleGetCreateOnlyPartialAST())
+            {
+                astParser.setFocalPosition(lineInfo.getOffset());
+            }
             astParser.setSource(workingCopy);
 
             ASTNode ast = astParser.createAST(monitor);
@@ -167,5 +170,16 @@ public abstract class AbstractASTResolution implements ICheckstyleMarkerResoluti
      */
     protected abstract ASTVisitor handleGetCorrectingASTVisitor(ASTRewrite astRewrite,
             IRegion lineInfo);
+
+    /**
+     * Determines if only a partial AST should be created (optimization).
+     * 
+     * @return <code>true</code> if only a partial AST should be created
+     *         <code>false</code> otherwise
+     */
+    protected boolean handleGetCreateOnlyPartialAST()
+    {
+        return true;
+    }
 
 }

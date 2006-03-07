@@ -171,7 +171,6 @@ public class NeedBracesQuickfix extends AbstractASTResolution
      */
     public String getDescription()
     {
-        // TODO Auto-generated method stub
         return Messages.NeedBracesQuickfix_description;
     }
 
@@ -180,7 +179,6 @@ public class NeedBracesQuickfix extends AbstractASTResolution
      */
     public String getLabel()
     {
-        // TODO Auto-generated method stub
         return Messages.NeedBracesQuickfix_label;
     }
 
