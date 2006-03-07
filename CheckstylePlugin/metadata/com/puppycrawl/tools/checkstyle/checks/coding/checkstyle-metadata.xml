@@ -191,12 +191,15 @@ Rationale: Helps reduce coupling on concrete classes. In addition abstract class
          <property-metadata name="illegalClassNames" datatype="String" default-value="java.util.GregorianCalendar, java.util.Hashtable, java.util.HashSet, java.util.HashMap, java.util.ArrayList, java.util.LinkedList, java.util.LinkedHashMap, java.util.LinkedHashSet, java.util.TreeSet, java.util.TreeMap, java.util.Vector">
             <description>classes that should not be used as types in variable declarations, return values or parameters.</description>
          </property-metadata>
+         <property-metadata name="legalAbstractClassNames" datatype="String">
+            <description>abstract classes that may be used as types. </description>
+         </property-metadata>
          <property-metadata name="ignoredMethodNames" datatype="String" default-value="getInitialContext, getEnvironment">
             <description>methods that should not be checked.</description>
          </property-metadata>
          <property-metadata name="format" datatype="Regex" default-value="^(.*[\.])?Abstract.*$">
             <description>pattern for illegal class name </description>
-         </property-metadata>         
+         </property-metadata>  
       </rule-metadata>
       
       <rule-metadata name="Inner Assignment" internal-name="InnerAssignment" parent="TreeWalker">
@@ -333,6 +336,9 @@ Rationale: Parameter assignment is often considered poor programming practice. F
          </property-metadata>
          <property-metadata name="allowSubclasses" datatype="Boolean" default-value="false">
             <description>Whether subclass of another declared exception is allowed in throws clause.</description>
+         </property-metadata>
+         <property-metadata name="logLoadErrors" datatype="Boolean" default-value="false">
+            <description>This check may needs to load exception classes mentioned in the @throws tag to check whether they are RuntimeExceptions. If loading the class fails, this property allows to control checkstyle's error handling. If set to false (the default) a classpath configuration problem is assumed and the TreeWalker stops operating on the class completely. If set to true, checkstyle assumes a typo or refactoring problem in the javadoc and logs the problem in the normal checkstyle report (potentially masking a configuration error).</description>
          </property-metadata>
       </rule-metadata>
       
