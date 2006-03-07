@@ -22,7 +22,7 @@
 	<property name="update.site.file" value="${plugin.name}${plugin.version.postfix}-updatesite.zip" />
 
 	<!-- define ant4eclipse (used for compilation support) -->
-	<taskdef resource="net/sf/ant4eclipse/antlib.xml" classpath="${basedir}/build/ant4eclipse-0.2.1.jar" />
+	<taskdef resource="net/sf/ant4eclipse/antlib.xml" classpath="${basedir}/build/ant4eclipse-0.3.2.jar" />
 
 	<!-- ==================================================== -->
 	<!--   CLEAN TARGET                                       -->
@@ -52,24 +52,25 @@
 
 		<!-- resolve the org.eclipse.pde.core.requiredPlugins needed by ant4eclipse -->
 		<path id="org.eclipse.pde.core.requiredPlugins">
-			<pathelement location="${eclipse.plugin.dir}/org.eclipse.core.resources_${eclipse.version}.jar" />
-			<pathelement location="${eclipse.plugin.dir}/org.eclipse.ui_${eclipse.version}.jar" />
-			<pathelement location="${eclipse.plugin.dir}/org.eclipse.swt_${eclipse.version}.jar" />
-			<pathelement location="${eclipse.plugin.dir}/org.eclipse.jface_${eclipse.version}.jar" />
-			<pathelement location="${eclipse.plugin.dir}/org.eclipse.core.commands_${eclipse.version}.jar" />
-			<pathelement location="${eclipse.plugin.dir}/org.eclipse.ui.workbench_${eclipse.version}.jar" />
-			<pathelement location="${eclipse.plugin.dir}/org.eclipse.jface.text_${eclipse.version}.jar" />
-			<pathelement location="${eclipse.plugin.dir}/org.eclipse.text_${eclipse.version}.jar" />
-			<pathelement location="${eclipse.plugin.dir}/org.eclipse.jdt.core_${eclipse.version}.jar" />
-			<pathelement location="${eclipse.plugin.dir}/org.eclipse.core.runtime_${eclipse.version}.jar" />
-			<pathelement location="${eclipse.plugin.dir}/org.eclipse.osgi_${eclipse.version}.jar" />
-			<pathelement location="${eclipse.plugin.dir}/org.eclipse.ui.ide_${eclipse.version}.jar" />
-			<pathelement location="${eclipse.plugin.dir}/org.eclipse.jdt.ui_${eclipse.version}.jar" />
-			<pathelement location="${eclipse.plugin.dir}/org.eclipse.ui.workbench.texteditor_${eclipse.version}.jar" />
-			<pathelement location="${eclipse.plugin.dir}/org.eclipse.ui.editors_${eclipse.version}.jar" />
-			<pathelement location="${eclipse.plugin.dir}/org.eclipse.core.filebuffers_${eclipse.version}.jar" />
-			<pathelement location="${eclipse.plugin.dir}/org.eclipse.team.cvs.core_${eclipse.version}.jar" />
-			<pathelement location="${eclipse.plugin.dir}/org.eclipse.team.core_${eclipse.version}.jar" />
+			<fileset dir="${eclipse.plugin.dir}">
+				<include name="org.eclipse.core.resources_*.jar"/>
+				<include name="org.eclipse.swt_*.jar"/>
+				<include name="org.eclipse.jface_*.jar"/>
+				<include name="org.eclipse.core.commands_*.jar"/>
+				<include name="org.eclipse.ui.workbench_*.jar"/>
+				<include name="org.eclipse.jface.text_*.jar"/>
+				<include name="org.eclipse.text_*.jar"/>
+				<include name="org.eclipse.jdt.core_*.jar"/>
+				<include name="org.eclipse.core.runtime_*.jar"/>
+				<include name="org.eclipse.osgi_*.jar"/>
+				<include name="org.eclipse.ui.ide_*.jar"/>
+				<include name="org.eclipse.jdt.ui_*.jar"/>
+				<include name="org.eclipse.ui.workbench.texteditor_*.jar"/>
+				<include name="org.eclipse.ui.editors_*.jar"/>
+				<include name="org.eclipse.core.filebuffers_*.jar"/>
+				<include name="org.eclipse.team.cvs.core_*.jar"/>
+				<include name="org.eclipse.team.core_*.jar"/>
+			</fileset>
 		</path>
 
 		<!-- init -->
@@ -77,7 +78,7 @@
 		<mkdir dir="${dist.basedir.tmpdir}/binnls" />
 
 		<!-- read the eclipse classpath -->
-		<getEclipseClasspath workspace="${workspace}" projectName="${project.name}" classpathId="build.classpath" />
+		<getEclipseClasspath project="${basedir}" classpathId="build.classpath" />
 
 		<!-- compile -->
 		<javac srcdir="${basedir}/src" destdir="${dist.basedir.tmpdir}/bin" classpathref="build.classpath" source="1.4" debug="on" />
