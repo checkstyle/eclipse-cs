@@ -178,12 +178,6 @@ public class Auditor
             listener = new CheckstyleAuditListener(project, tabWidth);
             checker.addListener(listener);
 
-            // create and add filter for RuntimeExceptions reported by
-            // RedundantThrowsCheck
-            // BUGS 1177797, 996575
-            runtimeExceptionFilter = new RuntimeExceptionFilter();
-            checker.addFilter(runtimeExceptionFilter);
-
             // reconfigure the shared classloader for the current
             // project
             if (project.hasNature(JavaCore.NATURE_ID))
@@ -262,24 +256,6 @@ public class Auditor
         }
 
         return (File[]) files.toArray(new File[files.size()]);
-    }
-
-    /**
-     * Filter implementation to filter java.lang.RuntimeException errors that
-     * are reportet from RedundantThrowsCheck.
-     * 
-     * @author Lars Ködderitzsch
-     */
-    private class RuntimeExceptionFilter implements Filter
-    {
-
-        /**
-         * @see Filter#accept(com.puppycrawl.tools.checkstyle.api.AuditEvent)
-         */
-        public boolean accept(AuditEvent aEvent)
-        {
-            return aEvent.getMessage().indexOf(RuntimeException.class.getName()) == -1;
-        }
     }
 
     /**
