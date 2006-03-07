@@ -11,6 +11,7 @@
          <property-metadata name="javaStyle" datatype="Boolean" default-value="true">
             <description>Controls whether to enforce Java style (true) or C style (false).</description>
          </property-metadata>
+         <!--<quickfix classname="com.atlassw.tools.eclipse.checkstyle.quickfixes.misc.ArrayTypeStyleQuickfix"/>-->
       </rule-metadata>
       
       <rule-metadata name="Descendent Token Check" internal-name="DescendantToken" parent="TreeWalker">
@@ -157,6 +158,9 @@ His comments on being hard to maintain when the size of the line changes are eve
          <property-metadata name="format" datatype="Regex" default-value="^[\s\}\);]*$">
             <description>pattern for string allowed before comment.</description>
          </property-metadata>
+         <property-metadata name="legalComment" datatype="Regex">
+            <description>pattern for text of trailing comment which is allowed. (this pattern will not be applied to multiline comments and text of comment will be trimmed before matching) </description>
+         </property-metadata>         
       </rule-metadata>
       
       <rule-metadata name="Uncommented Main" internal-name="UncommentedMain" parent="TreeWalker">
