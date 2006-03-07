@@ -42,7 +42,7 @@ for (
          <property-metadata name="allowLineBreaks" datatype="Boolean" default-value="true">
             <description>Whether whitespace is allowed if the token is at a linebreak.</description>
          </property-metadata>
-         <property-metadata name="tokens" datatype="MultiCheck" default-value="ARRAY_INIT,BNOT,DEC,DOT,INC,LNOT,UNARY_MINUS,UNARY_PLUS">
+         <property-metadata name="tokens" datatype="MultiCheck" default-value="ARRAY_INIT,BNOT,DEC,DOT,INC,LNOT,UNARY_MINUS,UNARY_PLUS,TYPECAST">
             <description>Tokens to check.</description>
             <enumeration>
                <property-value-option value="ARRAY_INIT"/>
@@ -53,6 +53,7 @@ for (
                <property-value-option value="LNOT"/>
                <property-value-option value="UNARY_MINUS"/>
                <property-value-option value="UNARY_PLUS"/>
+               <property-value-option value="TYPECAST"/>
             </enumeration>
          </property-metadata>
       </rule-metadata>
