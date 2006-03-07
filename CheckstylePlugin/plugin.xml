@@ -44,6 +44,7 @@
             nameFilter="*"
             class="com.atlassw.tools.eclipse.checkstyle.properties.CheckstylePropertyPage"
             id="com.atlassw.tools.eclipse.checkstyle.properties.CheckstylePropertyPage">
+      		<filter name="open" value="true"/>
       </page>
    </extension>
    <extension
