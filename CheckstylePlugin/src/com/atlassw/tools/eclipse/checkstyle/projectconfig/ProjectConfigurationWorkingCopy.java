@@ -36,7 +36,10 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.ui.internal.ide.dialogs.ProjectReferencePage;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
@@ -47,6 +50,7 @@ import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfigurationWorkingSet;
 import com.atlassw.tools.eclipse.checkstyle.config.ResolvableProperty;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.BuiltInConfigurationType;
+import com.atlassw.tools.eclipse.checkstyle.config.configtypes.ProjectConfigurationType;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.IFilter;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.atlassw.tools.eclipse.checkstyle.util.XMLUtil;
@@ -385,7 +389,7 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
     /**
      * Store the audit configurations to the persistent state storage.
      */
-    private static void storeToPersistence(ProjectConfigurationWorkingCopy config)
+    private void storeToPersistence(ProjectConfigurationWorkingCopy config)
         throws CheckstylePluginException
     {
 
@@ -452,7 +456,7 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
      * @param xmlOut the transformer handler receiving the events
      * @throws SAXException error writing
      */
-    private static void writeProjectConfig(ProjectConfigurationWorkingCopy config,
+    private void writeProjectConfig(ProjectConfigurationWorkingCopy config,
             TransformerHandler xmlOut) throws SAXException, CheckstylePluginException
     {
 
@@ -502,8 +506,8 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
      * @throws SAXException error writing
      * @throws CheckstylePluginException
      */
-    private static void writeLocalConfiguration(ICheckConfiguration checkConfig,
-            TransformerHandler xmlOut) throws SAXException, CheckstylePluginException
+    private void writeLocalConfiguration(ICheckConfiguration checkConfig, TransformerHandler xmlOut)
+        throws SAXException, CheckstylePluginException
     {
 
         // TODO refactor to avoid code duplication with
@@ -516,13 +520,31 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
             return;
         }
 
+        // RFE 1420212
+        String location = checkConfig.getLocation();
+        if (checkConfig.getType() instanceof ProjectConfigurationType)
+        {
+            IProject project = mProjectConfig.getProject();
+            IWorkspaceRoot root = project.getWorkspace().getRoot();
+            IFile configFile = root.getFile(new Path(location));
+            IProject configFileProject = configFile.getProject();
+
+            // if the configuration is in *same* project don't store project
+            // path
+            // part
+            if (project.equals(configFileProject))
+            {
+                location = configFile.getProjectRelativePath().toString();
+            }
+        }
+
         String emptyString = new String();
 
         AttributesImpl attrs = new AttributesImpl();
         attrs.addAttribute(emptyString, XMLTags.NAME_TAG, XMLTags.NAME_TAG, emptyString,
                 checkConfig.getName());
         attrs.addAttribute(emptyString, XMLTags.LOCATION_TAG, XMLTags.LOCATION_TAG, emptyString,
-                checkConfig.getLocation());
+                location);
         attrs.addAttribute(emptyString, XMLTags.TYPE_TAG, XMLTags.TYPE_TAG, emptyString,
                 checkConfig.getType().getInternalName());
         if (checkConfig.getDescription() != null)
@@ -579,7 +601,7 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
      * @param xmlOut the transformer handler receiving the events
      * @throws SAXException error writing
      */
-    private static void writeFileSet(FileSet fileSet, IProject project, TransformerHandler xmlOut)
+    private void writeFileSet(FileSet fileSet, IProject project, TransformerHandler xmlOut)
         throws SAXException, CheckstylePluginException
     {
 
@@ -629,7 +651,7 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
      * @param xmlOut the transformer handler receiving the events
      * @throws SAXException error writing
      */
-    private static void writeMatchPattern(FileMatchPattern pattern, TransformerHandler xmlOut)
+    private void writeMatchPattern(FileMatchPattern pattern, TransformerHandler xmlOut)
         throws SAXException
     {
 
@@ -655,7 +677,7 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
      * @param xmlOut the transformer handler receiving the events
      * @throws SAXException error writing
      */
-    private static void writeFilter(IFilter filter, TransformerHandler xmlOut) throws SAXException
+    private void writeFilter(IFilter filter, TransformerHandler xmlOut) throws SAXException
     {
 
         // write only filters that are actually changed

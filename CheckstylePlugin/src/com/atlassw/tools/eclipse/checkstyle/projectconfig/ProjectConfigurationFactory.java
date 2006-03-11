@@ -34,6 +34,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.osgi.util.NLS;
@@ -48,6 +49,7 @@ import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.config.ResolvableProperty;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.ConfigurationTypes;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.IConfigurationType;
+import com.atlassw.tools.eclipse.checkstyle.config.configtypes.ProjectConfigurationType;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.IFilter;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.atlassw.tools.eclipse.checkstyle.util.XMLUtil;
@@ -89,9 +91,7 @@ public final class ProjectConfigurationFactory
      * project.
      * 
      * @param project The project to get <code>FileSet</code>'s for.
-     * 
      * @return The <code>ProjectConfiguration</code> instance.
-     * 
      * @throws CheckstylePluginException Error during processing.
      */
     public static IProjectConfiguration getConfiguration(IProject project)
@@ -325,6 +325,19 @@ public final class ProjectConfigurationFactory
 
                     String type = attributes.getValue(XMLTags.TYPE_TAG);
                     mCurrentConfigType = ConfigurationTypes.getByInternalName(type);
+
+                    if (mCurrentConfigType instanceof ProjectConfigurationType)
+                    {
+                        // RFE 1420212
+                        // treat config files relative to *THIS* project
+                        IWorkspaceRoot root = mProject.getWorkspace().getRoot();
+                        // test if the location contains the project name
+                        if (root.findMember(mCurrentLocation) == null)
+                        {
+                            mCurrentLocation = mProject.getFullPath().append(mCurrentLocation)
+                                    .toString();
+                        }
+                    }
 
                     mCurrentAddValues = new HashMap();
                     mResolvableProperties = new ArrayList();
