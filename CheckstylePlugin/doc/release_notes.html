@@ -14,22 +14,47 @@
             <tbody>
                 <tr>
                     <td>
-                        <a id="r4_1_0_beta2">
-                            <h3>Release 4.1.0 beta2</h3>
-                        </a>
+                        <a id="r4_1_0_beta3"> </a>
+                        <h3>Release 4.1.0 beta3</h3>
+                        <p> Sports a recent Checkstyle build from Checkstyle Head stream
+                            (2006/03/07).<br/> The Statistics Plugin now supports saving reports (in
+                            rtf format) from the Statistics views (Thanks Fabrice).<br/>
+                            <br/> We also started on implementing a quickfix feature. Using these
+                            you can fix some checkstyle warnings very easy - similar to quickfixes
+                            the Eclipse Java Editor offers.<br/> Currently quickfixes are
+                            implemented for the following Checkstyle checks:</p>
+                        <ul>
+                            <li>NeedBraces</li>
+                            <li>DefaultComesLast</li>
+                            <li>EmptyStatement</li>
+                            <li>MissingSwitchDefault</li>
+                            <li>DesignForExtension</li>
+                            <li>FinalParameters</li>
+                            <li>RedundantModifier</li>
+                        </ul>
                         <h4>Bugs resolved:</h4>
                         <ul>
-                            <li>1419133  Check Configuration Properties error</li>
-                            <li>1416397  Headless build in RAD 6.0 fails (needs confirmation)</li>
+                            <li>1422937 Eclipse builder fails when a project is used as class folder</li>
+                            <li>1428571 Exception clicking on entry in "Checkstyle violations" view</li>
+                            <li>1443066 NPE when checking Checkstyle properties on a closed
+                            project</li>
+                        </ul>
+                        <h4>Feature requests:</h4>
+                        <ul> </ul>
+                        <a id="r4_1_0_beta2"> </a>
+                        <h3>Release 4.1.0 beta2</h3>
+                        <h4>Bugs resolved:</h4>
+                        <ul>
+                            <li>1419133 Check Configuration Properties error</li>
+                            <li>1416397 Headless build in RAD 6.0 fails (needs confirmation)</li>
                         </ul>
                         <h4>Feature requests:</h4>
                         <ul>
-                            <li>1420578  Pretty print .checkstyle</li>
-                            <li>1419551  Add Content Assist to Properties Editor</li>
-                        </ul>                                      
-                        <a id="r4_1_0_beta">
-                            <h3>Release 4.1.0 beta</h3>
-                        </a>
+                            <li>1420578 Pretty print .checkstyle</li>
+                            <li>1419551 Add Content Assist to Properties Editor</li>
+                        </ul>
+                        <a id="r4_1_0_beta"> </a>
+                        <h3>Release 4.1.0 beta</h3>
                         <p> Version 4.1.0 introduces the "local configuration" scheme which allows
                             to set up check configurations private to a project. The check
                             configuration data will be stored inside the projects .checkstyle
@@ -40,14 +65,15 @@
                             "global configurations") remains intact, allowing for set up of check
                             configurations that can be used by multiple project.</p>
                         <p> There are now new ways to resolve properties within Checkstyle
-                            configuration files:<ul>
-                                <li>Resolve properties from Classpath variables</li>
-                                <li>Resolve properties from System/Environment properties (passed
-                                    into the Eclipse JVM via the -D parameter) </li>
-                                <li>Reintroduced in 4.1.0 is that you can input properties as you
-                                    set up the configuration. The plugin will find unresolved
-                                    properties and asks for you to input the values.</li>
-                            </ul></p>
+                            configuration files:</p>
+                        <ul>
+                            <li>Resolve properties from Classpath variables</li>
+                            <li>Resolve properties from System/Environment properties (passed into
+                                the Eclipse JVM via the -D parameter) </li>
+                            <li>Reintroduced in 4.1.0 is that you can input properties as you set up
+                                the configuration. The plugin will find unresolved properties and
+                                asks for you to input the values.</li>
+                        </ul>
                         <p> The way Project relative configurations work has changed a bit. Now they
                             are relative to exactly one project instead of possibly multiple
                             projects. This achieves a more expectable behaviour and allows new
@@ -95,15 +121,13 @@
                             <li>1259430 Cannot specify values for variables</li>
                             <li>1235654 NPE in ResourceBundleProperyResolver</li>
                         </ul>
-                        <a id="r4_0_1">
-                            <h3>Release 4.0.1</h3>
-                        </a>
+                        <a id="r4_0_1"> </a>
+                        <h3>Release 4.0.1</h3>
                         <p> This is a bugfix release that incorporates the Checkstyle 4.1 release,
                             which comes with several bugfixes in the Checkstyle core. No changes
                             have been made to the plug-in itself since the last release. </p>
-                        <a id="r4_0_0final">
-                            <h3>Release 4.0.0 final</h3>
-                        </a>
+                        <a id="r4_0_0final"> </a>
+                        <h3>Release 4.0.0 final</h3>
                         <ul>
                             <li>Updated to use Checkstyle 4.0 final.</li>
                             <li>Handling of checkstyle_packages.xml files has changed again, the
@@ -134,9 +158,8 @@
                             <li>1304768 Provide extension point for built-in configurations</li>
                             <li>1286034 provide extension point to add custom checks</li>
                         </ul>
-                        <a id="r4_0_0b6">
-                            <h3>Release 4.0.0b6</h3>
-                        </a>
+                        <a id="r4_0_0b6"> </a>
+                        <h3>Release 4.0.0b6</h3>
                         <ul>
                             <li>Updated to use Checkstyle 4.0 beta 6.</li>
                             <li>The new plugin version brings vastly improved support for custom
@@ -170,9 +193,8 @@
                             <li>741543 Allow user defined check rules</li>
                             <li>745756 Allow storing of checkstyle configuration in project</li>
                         </ul>
-                        <a id="r4_0_0b5">
-                            <h3>Release 4.0.0b5</h3>
-                        </a>
+                        <a id="r4_0_0b5"> </a>
+                        <h3>Release 4.0.0b5</h3>
                         <ul>
                             <li>Updated to use Checkstyle 4.0 beta 5.</li>
                             <li>Introduces French (thanks Fabrice Bellingard) and German
@@ -206,9 +228,8 @@
                             <li>1233689 Reevaluate problems on check refresh</li>
                             <li>755830 &quot;Disabled&quot; option for checks</li>
                         </ul>
-                        <a id="r4_0_0b4">
-                            <h3>Release 4.0.0b4</h3>
-                        </a>
+                        <a id="r4_0_0b4"> </a>
+                        <h3>Release 4.0.0b4</h3>
                         <ul>
                             <li>Updated to Checkstyle 4.0 beta4</li>
                         </ul>
@@ -216,9 +237,8 @@
                         <ul>
                             <li>1217357 NullPointerException in UnOpenedFilesFilter</li>
                         </ul>
-                        <a id="r4_0_0b3">
-                            <h3>Release 4.0.0b3</h3>
-                        </a>
+                        <a id="r4_0_0b3"> </a>
+                        <h3>Release 4.0.0b3</h3>
                         <ul>
                             <li>Uses Checkstyle 4.0 beta3</li>
                             <li>Documentation fully updated (but not yet reviewed)</li>
@@ -232,9 +252,8 @@
                             <li>1203108 Additional metadata is removed</li>
                             <li>1204531 Checkbox always sets severity to warning</li>
                         </ul>
-                        <a id="r4_0_0b2">
-                            <h3>Release 4.0.0b2</h3>
-                        </a>
+                        <a id="r4_0_0b2"> </a>
+                        <h3>Release 4.0.0b2</h3>
                         <ul>
                             <li>Minor usability enhancements in configuration editor (multiple
                                 selection and adding from the tree, option to skip opening the
@@ -266,9 +285,8 @@
                             <li>1196084 Can&#39;t use eclipse variables on
                             SuppressionFilter</li>
                         </ul>
-                        <a id="r4_0_0b1">
-                            <h3>Release 4.0.0b1</h3>
-                        </a>
+                        <a id="r4_0_0b1"> </a>
+                        <h3>Release 4.0.0b1</h3>
                         <ul>
                             <li>Uses checkstyle-4.0-beta2</li>
                             <li>Improved rebuild logic - now rebuilds only necessary projects</li>
@@ -299,9 +317,8 @@
                         <ul>
                             <li>1123128 Duplicated Code Checker</li>
                         </ul>
-                        <a id="r4_0_0a4">
-                            <h3>Release 4.0.0a4</h3>
-                        </a>
+                        <a id="r4_0_0a4"> </a>
+                        <h3>Release 4.0.0a4</h3>
                         <ul>
                             <li>Plugin now uses plain checkstyle configuration files</li>
                             <li>Now able to use checkstyle configuration files located somewhere in
@@ -349,9 +366,8 @@
                             <li>890956 Problems with Import of checkstyle-configuration</li>
                             <li>878118 Suppression File no longer works since 3.2</li>
                         </ul>
-                        <a id="r4_0_0a3">
-                            <h3>Release 4.0.0a3</h3>
-                        </a>
+                        <a id="r4_0_0a3"> </a>
+                        <h3>Release 4.0.0a3</h3>
                         <ul>
                             <li>Fixes incompatibility with jdk1.4.x introduced in alpha2</li>
                         </ul>
@@ -359,9 +375,8 @@
                         <ul>
                             <li>1176430: Config Problem</li>
                         </ul>
-                        <a id="r4_0_0a2">
-                            <h3>Release 4.0.0a2</h3>
-                        </a>
+                        <a id="r4_0_0a2"> </a>
+                        <h3>Release 4.0.0a2</h3>
                         <ul>
                             <li>Fixes some problems with 4.0.0alpha1</li>
                             <li>New filter facility allows more dynamic exclusion of files</li>
@@ -376,9 +391,8 @@
                         <ul>
                             <li>1175793: v4.0.0alpha does not give any problem markers</li>
                         </ul>
-                        <a id="r4_0_0a">
-                            <h3>Release 4.0.0a</h3>
-                        </a>
+                        <a id="r4_0_0a"> </a>
+                        <h3>Release 4.0.0a</h3>
                         <ul>
                             <li>Updated to Checkstyle 4.0 beta1 - Support for Java 5.0 features</li>
                             <li>Now works with Eclipse 3.0 and greater (3.1 M5 tested)</li>
@@ -396,9 +410,8 @@
                             <li>Patch 1064092: Make eclipse-cs a 3.x-style plugin</li>
                             <li>Patch 1064046: Remove xerces dependency</li>
                         </ul>
-                        <a id="r3_5_0">
-                            <h3>Release 3.5.0</h3>
-                        </a>
+                        <a id="r3_5_0"> </a>
+                        <h3>Release 3.5.0</h3>
                         <ul>
                             <li>Updated to Checkstyle 3.5.</li>
                             <li><b>Note:</b> This is likely to be the last release supported on
@@ -406,9 +419,8 @@
                                 Eclipse 3.0 plug-in and will not be compatable with Eclipse
                             2.x.</li>
                         </ul>
-                        <a id="r3_4_1">
-                            <h3>Release 3.4.1</h3>
-                        </a>
+                        <a id="r3_4_1"> </a>
+                        <h3>Release 3.4.1</h3>
                         <h4>Bugs Resolved:</h4>
                         <ul>
                             <li>991820: Very slow builder</li>
@@ -428,9 +440,8 @@
                                 bug.</li>
                             <li>Added some optimizations to improve build performance.</li>
                         </ul>
-                        <a id="r3_4_0">
-                            <h3>Release 3.4.0</h3>
-                        </a>
+                        <a id="r3_4_0"> </a>
+                        <h3>Release 3.4.0</h3>
                         <ul>
                             <li>Updated to include Checkstyle 3.4.</li>
                             <li><b>Note:</b> This release has only been tested with Eclipse 2.1.x.
@@ -438,9 +449,8 @@
                             <li><b>Note:</b> Support for Eclipse 3.0 is in the works and will be
                                 released as soon as possible.</li>
                         </ul>
-                        <a id="r3_3_2">
-                            <h3>Release 3.3.2</h3>
-                        </a>
+                        <a id="r3_3_2"> </a>
+                        <h3>Release 3.3.2</h3>
                         <h4>Bugs Resolved:</h4>
                         <ul>
                             <li>883468: Calling method missing from Eclipse 2.0.x</li>
@@ -448,9 +458,8 @@
                             <li>886271: Checkstyle fails to get class information for Exception</li>
                             <li>887849: Property value bugs</li>
                         </ul>
-                        <a id="r3_3_1">
-                            <h3>Release 3.3.1</h3>
-                        </a>
+                        <a id="r3_3_1"> </a>
+                        <h3>Release 3.3.1</h3>
                         <h4>Bugs Resolved:</h4>
                         <ul>
                             <li>878261: Error in plugin-eclipse2-0-x.xml</li>
@@ -463,9 +472,8 @@
                             <li>750399: Copy check configurations</li>
                             <li>754423: Include rule name in message to user</li>
                         </ul>
-                        <a id="r3_3_0">
-                            <h3>Release 3.3.0</h3>
-                        </a>
+                        <a id="r3_3_0"> </a>
+                        <h3>Release 3.3.0</h3>
                         <h4>Bugs Resolved:</h4>
                         <ul>
                             <li>872279: Import Plugin Config produces duplicate entry</li>
@@ -484,9 +492,8 @@
                         <ul>
                             <li>Updated to include Checkstyle v3.3.</li>
                         </ul>
-                        <a id="r3_2_0">
-                            <h3>Release 3.2.0</h3>
-                        </a>
+                        <a id="r3_2_0"> </a>
+                        <h3>Release 3.2.0</h3>
                         <p><b>
                                 <i>Important Note:</i>
                             </b> If you are using version 2.0.x of Eclipse or version 5.0.x of WSAD
@@ -502,9 +509,8 @@
                         <ul>
                             <li>Updates to include Checkstyle v3.2.</li>
                         </ul>
-                        <a id="r3_1_1">
-                            <h3>Release 3.1.1</h3>
-                        </a>
+                        <a id="r3_1_1"> </a>
+                        <h3>Release 3.1.1</h3>
                         <h4>Bugs Fixed:</h4>
                         <ul>
                             <li>744773: Unknown property type for empty block rule.</li>
@@ -529,9 +535,8 @@
                                 that is not in the workspace.</li>
                             <li>Improved performance of check initialization.</li>
                         </ul>
-                        <a id="r3_1_0">
-                            <h3>Release 3.1.0</h3>
-                        </a>
+                        <a id="r3_1_0"> </a>
+                        <h3>Release 3.1.0</h3>
                         <ul>
                             <li>Support for Checkstyle version 3.1</li>
                             <li>Support for multiple check configurations within your workspace at
@@ -546,6 +551,8 @@
                     <td valign="top">
                         <div class="box releaselist">
                             <h3>Releases</h3>
+                            <a href="#r4_1_0_beta3">Release 4.1.0 beta3</a>
+                            <br/>
                             <a href="#r4_1_0_beta2">Release 4.1.0 beta2</a>
                             <br/>
                             <a href="#r4_1_0_beta">Release 4.1.0 beta</a>

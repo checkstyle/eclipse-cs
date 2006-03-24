@@ -20,87 +20,102 @@
 
 package com.atlassw.tools.eclipse.checkstyle.quickfixes.misc;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IMarker;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jdt.core.IJavaElement;
-import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.internal.ui.JavaPlugin;
-import org.eclipse.jdt.internal.ui.JavaPluginImages;
-import org.eclipse.jdt.ui.JavaUI;
-import org.eclipse.jface.text.BadLocationException;
-import org.eclipse.jface.text.IDocument;
+import java.util.Iterator;
+import java.util.List;
+
+import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.ASTVisitor;
+import org.eclipse.jdt.core.dom.MethodDeclaration;
+import org.eclipse.jdt.core.dom.Modifier;
+import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
+import org.eclipse.jdt.core.dom.Modifier.ModifierKeyword;
+import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
+import org.eclipse.jface.text.IRegion;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.text.edits.InsertEdit;
-import org.eclipse.text.edits.MalformedTreeException;
-import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.part.FileEditorInput;
 
-import com.atlassw.tools.eclipse.checkstyle.quickfixes.ICheckstyleMarkerResolution;
+import com.atlassw.tools.eclipse.checkstyle.quickfixes.AbstractASTResolution;
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginImages;
 
-public class FinalParametersQuickfix implements ICheckstyleMarkerResolution
+/**
+ * Quickfix implementation which adds final modifiers to parameters in method
+ * declarations.
+ * 
+ * @author Levon Saldamli
+ * @author Lars Ködderitzsch
+ */
+public class FinalParametersQuickfix extends AbstractASTResolution
 {
 
+    /** The length of the javadoc comment declaration. */
+    private static final int JAVADOC_COMMENT_LENGTH = 6;
+
+    /**
+     * {@inheritDoc}
+     */
+    protected ASTVisitor handleGetCorrectingASTVisitor(final ASTRewrite astRewrite,
+            final IRegion lineInfo)
+    {
+        return new ASTVisitor()
+        {
+
+            public boolean visit(MethodDeclaration node)
+            {
+                // recalculate start position because optional javadoc is mixed
+                // into the original start position
+                int pos = node.getStartPosition()
+                        + (node.getJavadoc() != null ? node.getJavadoc().getLength()
+                                + JAVADOC_COMMENT_LENGTH : 0);
+                if (pos >= lineInfo.getOffset()
+                        && pos <= (lineInfo.getOffset() + lineInfo.getLength()))
+                {
+
+                    List parameters = node.parameters();
+                    Iterator it = parameters.iterator();
+                    while (it.hasNext())
+                    {
+                        // add final keyword to non-final parameters
+                        SingleVariableDeclaration param = (SingleVariableDeclaration) it.next();
+                        if (!Modifier.isFinal(param.getModifiers()))
+                        {
+                            SingleVariableDeclaration copy = (SingleVariableDeclaration) ASTNode
+                                    .copySubtree(node.getAST(), param);
+                            Modifier finalModifier = node.getAST().newModifier(
+                                    ModifierKeyword.FINAL_KEYWORD);
+                            copy.modifiers().add(finalModifier);
+
+                            astRewrite.replace(param, copy, null);
+                        }
+                    }
+
+                    return true;
+                }
+                return false;
+            }
+        };
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public String getDescription()
     {
-        return "Add final modifier to parameter declaration";
+        return Messages.FinalParametersQuickfix_description;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String getLabel()
     {
-        return "Change to final parameter";
+        return Messages.FinalParametersQuickfix_label;
     }
 
-    public boolean canFix(IMarker marker)
-    {
-        if (marker.getAttribute("MessageKey", "-").equals("final.parameter"))
-        {
-            return true;
-        }
-        return false;
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     public Image getImage()
     {
-        // TODO Remove dependency to jdt internal class
-        return JavaPluginImages.get(JavaPluginImages.IMG_CORRECTION_CHANGE);
+        return CheckstylePluginImages.getImage(CheckstylePluginImages.CORRECTION_ADD);
     }
 
-    public void run(IMarker marker)
-    {
-        IResource resource = marker.getResource();
-
-        int charStart = marker.getAttribute("charStart", -1);
-
-        if (resource instanceof IFile && charStart >= 0)
-        {
-            IFile file = (IFile) resource;
-            // TODO Remove dependency to jdt internal class
-            JavaPlugin plugin = JavaPlugin.getDefault();
-
-            IEditorInput input = new FileEditorInput(file);
-
-            IDocument doc = plugin.getCompilationUnitDocumentProvider().getDocument(input);
-            if (doc != null)
-            {
-                final InsertEdit edit = new InsertEdit(charStart, "final ");
-                try
-                {
-                    edit.apply(doc);
-                }
-                catch (MalformedTreeException e)
-                {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-                catch (BadLocationException e)
-                {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
 }

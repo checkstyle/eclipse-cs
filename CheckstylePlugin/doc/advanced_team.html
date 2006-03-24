@@ -14,40 +14,33 @@
             manage and share files among the team members. <br/> The Eclipse Checkstyle plug-in
             supports working in a team environment with a repository. <br/> The following discussion
             provides the information you need to know when working in a team environment.</p>
-        <p>Check Configurations are defined in your workspace preferences. Since they are part of
-            your workspace&#39;s preferences they are stored on your local file system by
-            Eclipse in a location that is not shared via your team repository. To share a Check
-            Configuration with other team members have one team member define the Check
-            Configuration to be used by the team and then distribute that Checkstyle configuration
-            file to all the team members.</p>
-        <p>One approach for distributing the file is to put it on your companies intranet server.
-            Have each team member using this configuration by creating a remote check configuration
-            using the file&#39;s intranet URL.</p>
-        <p>
-            <img src="images/remote_configuration.png" alt="Remote Configuration"/>
-        </p>
-        <p>Another option to store the Checkstyle configuration file within your eclipse project and
-            put it under version control. Have each team member using this configuration by creating
-            a project relative check configuration.</p>
-        <p>
-            <img src="images/project_relative_configuration.png" alt="Project Relative
-                Configuration"/>
-        </p>
-        <p>This even allows you to have project specific configurations in each project with the
-            same configuration file name. Each if these project use then the same project specific
-            configuration set up in the preferences. <br/> When Checkstyle is invoked on the project
-            the specific configuration file is loaded and used with the project.</p>
-        <p>Once Checkstyle is configured for a project via the project&#39;s properties page the
-            plug-in will create a file named .checkstyle in root of the project. This file can then
-            be shared with all the team members via the repository just as the .project and
-            .classpath files are. <br/> When a team member checks out the project from the
-            repository the Eclipse Checkstyle Plug-In will be already set up for this project - no
-            additional setup steps are required.</p>
-        <p><b>
-                <i>Important Note:</i>
-            </b> The team working support has been improved with the plug-in version 4.0.0 beta6. In
-            order to get the new features the .checkstyle file for your project need to be rewritten
-            once by the new plug-in version. To achieve this just change a small thing within the
-            plug-ins project properties, Apply the change and then undo it again.</p>
+        <p>Traditionally Check Configurations were defined in your workspace preferences alone.<br/>
+            They were stored on your local file system by Eclipse in a location that is not shared
+            via your team repository (in the plugins state location inside the workspace).<br/> This
+            made it hard to consistently share Check Configuration setups among development teams.</p>
+        <p>While release 4.0.0 of the eclipse-cs plugin contained some features to ease this problem
+            version 4.1.0 completely and thorougly solves this problem.</p>
+        <p>Version 4.1.0 does this by separating Global and Local Check Configurations.</p>
+        <p><strong>Global Configurations</strong> resemble the traditional configuration in the
+            workspace preferences, known from previous releases.<br/>Global Check Configuration
+            setups are stored in the plugins state location like before.<br/>This means that these
+            cannot be shared via team repository<br/>On the positive side Global Configurations can
+            be used by multiple projects.<br/><img src="images/global_configs.jpg" alt="Global Check
+                Configurations"/></p>
+        <p><strong>Local Configurations</strong> are introduced with version 4.1.0 of the
+            plugin.<br/>Local Configurations are set up on the Checkstyle properties page of a
+            project, note the new tab <em>Local Check Configurations</em><br/>This works very much
+            like configuring check configurations in the workspace preferences, except that Local
+            Check Configurations are stored within the <em>.checkstyle</em> file within the project
+            root.<br/>This means that you can share the .checkstyle file of your project via team
+            repository because all necessary information for the Local Configurations are stored
+            therein.<br/>This way when a developer checks out the project from the repository the
+            project setup will already be complete and the eclipse-cs plugin ready to use for this
+            project.<br/>Of course Local Check Configurations can only be used by the project they
+            are configured for.<br/><img src="images/local_configs.jpg" alt="Local Check
+                Configurations"/></p>
+        <p><strong>Hint:</strong> Team configurations work best when using the <a
+                href="advanced_configtypes.html#Project">Project Relative configuration type</a> or
+            the <a href="advanced_configtypes.html#Remote">Remote configuration type.</a></p>
     </body>
 </html>

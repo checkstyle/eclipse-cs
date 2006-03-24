@@ -193,8 +193,6 @@
 			<property name="plugin.src.zip" value="${dist.basedir}/${src.dist.file}" />
 			<property name="update.site.file" value="${dist.basedir}/${update.site.file}" />
 			<property name="eclipse.plugin.dir" value="${eclipse.plugin.dir}" />
-			<property name="workspace" value="${workspace}" />
-			<property name="eclipse.version" value="${eclipse.version}" />
 			<property name="dist.basedir" value="${dist.basedir}" />
 			<reference refid="build.classpath" />
 		</ant>

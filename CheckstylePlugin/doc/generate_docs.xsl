@@ -139,11 +139,6 @@
 					class="level2">Downloads</a>
 			</xsl:if>
 		</div>
-		<div style="margin-left: 52px; margin-top: 5px;">
-			<a href="http://www.eclipsecon.org/">
-				<img border="0" src="http://www.eclipsecon.org/2006/images/banner125x125.gif"/>
-			</a>
-		</div>
 		<div class="box navsection-box">
 			<h3>Rate this plug-in<br/>@ Eclipse Plugin Central!</h3>
 			<form method="post" action="http://www.eclipseplugincentral.com/Web_Links+main.html"
@@ -219,8 +214,8 @@
 	<xsl:template name="header">
 		<table class="header" cellspacing="0" cellpadding="0">
 			<tr>
-				<td style="text-align: left; height: 75px; width=100%">
-					<img src="images/banner.png" alt="eclipse-cs Banner"/>
+				<td style="text-align: left; width=100%">
+					<img src="images/banner.gif" alt="eclipse-cs Banner"/>
 				</td>
 				<td style="vertical-align: middle; width: 75px; height: 75px;">
 					<a href="http://sourceforge.net/" class="imagelink">

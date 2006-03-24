@@ -2,7 +2,7 @@
 <feature
       id="com.atlassw.tools.eclipse.checkstyle"
       label="%feature.label"
-      version="4.0.91"
+      version="4.0.92"
       provider-name="%feature.provider_name"
       image="eclipse-cs_inverted.png">
 
@@ -41,10 +41,10 @@
          id="com.atlassw.tools.eclipse.checkstyle"
          download-size="3200"
          install-size="7500"
-         version="4.0.91"/>
+         version="4.0.92"/>
    <plugin
          id="net.sf.eclipsecs.stats"
          download-size="1300"
          install-size="1700"
-         version="0.2.1"/>
+         version="0.2.2"/>
 </feature>
