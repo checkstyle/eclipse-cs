@@ -146,15 +146,7 @@ public class RemoteConfigurationType extends ConfigurationType
         super.notifyCheckConfigRemoved(checkConfiguration);
 
         // remove authentication info
-        try
-        {
-            Platform.flushAuthorizationInfo(resolveLocation(checkConfiguration), "", ""); //$NON-NLS-1$ //$NON-NLS-2$
-            RemoteConfigAuthenticator.removeCachedAuthInfo(checkConfiguration);
-        }
-        catch (CoreException e)
-        {
-            CheckstyleLog.log(e);
-        }
+        RemoteConfigAuthenticator.removeCachedAuthInfo(checkConfiguration);
 
         boolean useCacheFile = Boolean.valueOf(
                 (String) checkConfiguration.getAdditionalData().get(KEY_CACHE_CONFIG))
@@ -381,7 +373,7 @@ public class RemoteConfigurationType extends ConfigurationType
      * 
      * @author Lars Ködderitzsch
      */
-    private static class RemoteConfigAuthenticator extends Authenticator
+    protected static class RemoteConfigAuthenticator extends Authenticator
     {
         /** Map to store the authentication info for this session. */
         private static Map sAuthInfoSessionCache = Collections.synchronizedMap(new HashMap());
@@ -405,8 +397,21 @@ public class RemoteConfigurationType extends ConfigurationType
          * @param checkConfiguration the check configuration
          */
         public static void removeCachedAuthInfo(ICheckConfiguration checkConfiguration)
+            throws CheckstylePluginException
         {
             sAuthInfoSessionCache.remove(checkConfiguration.getLocation());
+            try
+            {
+                if (checkConfiguration.getLocation() != null)
+                {
+                    Platform.flushAuthorizationInfo(checkConfiguration.getType().resolveLocation(
+                            checkConfiguration), "", ""); //$NON-NLS-1$ //$NON-NLS-2$
+                }
+            }
+            catch (CoreException e)
+            {
+                CheckstylePluginException.rethrow(e);
+            }
         }
 
         /**

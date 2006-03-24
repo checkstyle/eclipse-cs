@@ -21,6 +21,8 @@
 package com.atlassw.tools.eclipse.checkstyle.config.configtypes;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -34,6 +36,7 @@ import org.eclipse.swt.widgets.Text;
 import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationWorkingCopy;
 import com.atlassw.tools.eclipse.checkstyle.config.gui.CheckConfigurationPropertiesDialog;
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
 /**
@@ -63,6 +66,9 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor
 
     /** check box to set if the configuration should be cached. */
     private Button mChkCacheConfig;
+
+    /** button to reset remote authentication credentials. */
+    private Button mBtnResetCredentials;
 
     //
     // methods
@@ -137,6 +143,32 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor
         gd = new GridData(GridData.FILL_HORIZONTAL);
         gd.horizontalSpan = 2;
         mChkCacheConfig.setLayoutData(gd);
+
+        mBtnResetCredentials = new Button(advancedGroup, SWT.PUSH);
+        mBtnResetCredentials.setText(Messages.RemoteConfigurationEditor_btnResetRemoteAuth);
+        mBtnResetCredentials.setLayoutData(new GridData());
+        mBtnResetCredentials.addSelectionListener(new SelectionListener()
+        {
+
+            public void widgetSelected(SelectionEvent e)
+            {
+                // remove authentication info
+                try
+                {
+                    RemoteConfigurationType.RemoteConfigAuthenticator
+                            .removeCachedAuthInfo(mWorkingCopy);
+                }
+                catch (CheckstylePluginException e1)
+                {
+                    CheckstyleLog.errorDialog(shell, e1, true);
+                }
+            }
+
+            public void widgetDefaultSelected(SelectionEvent e)
+            {
+            // NOOP
+            }
+        });
 
         if (mWorkingCopy.getName() != null)
         {

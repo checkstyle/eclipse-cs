@@ -433,5 +433,7 @@ public final class Messages extends NLS
 
     public static String ResolvablePropertiesDialog_msgFoundProperties;
 
+    public static String RemoteConfigurationEditor_btnResetRemoteAuth;
+
     // CHECKSTYLE:ON
 }
