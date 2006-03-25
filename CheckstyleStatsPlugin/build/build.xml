@@ -24,7 +24,7 @@
 	<property name="fragment.jar.file" value="${fragment.name}.jar" />
 
 	<!-- define ant4eclipse (used for compilation support) -->
-	<taskdef resource="net/sf/ant4eclipse/antlib.xml" classpath="${basedir}/build/ant4eclipse-0.2.1.jar" />
+	<taskdef resource="net/sf/ant4eclipse/antlib.xml" classpath="${basedir}/build/ant4eclipse-0.3.2.jar" />
 
 	<!-- ==================================================== -->
 	<!--   CLEAN TARGET                                       -->
@@ -60,7 +60,7 @@
 		</path>
 
 		<!-- read the eclipse classpath -->
-		<getEclipseClasspath workspace="${workspace}" projectName="${project.name}" classpathId="fragment.classpath" />
+		<getEclipseClasspath project="${basedir}" classpathId="fragment.classpath" />
 
 		<!-- compile -->
 		<javac srcdir="${basedir}/src" destdir="${dist.basedir.tmpdir}/bin" classpathref="fragment.classpath" source="1.4" debug="on"/>

@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-Name: Checkstyle Statistics Plug-in
 Bundle-SymbolicName: net.sf.eclipsecs.stats; singleton=true
-Bundle-Version: 0.2.0
+Bundle-Version: 0.2.2
 Bundle-ClassPath: StatsCheckstyle.jar,
  lib/jcommon-1.0.0.jar,
  lib/jfreechart-1.0.1.jar,
