@@ -327,6 +327,10 @@ public class ProjectClassLoader extends ClassLoader
             // get the absolute path for the folder
             sourcePath = sourceFolder.getLocation();
         }
+        else if (projPath.equals(sourcePath))
+        {
+            sourcePath = project.getLocation();
+        }
 
         // try to add the path to the classpath
         handlePath(sourcePath, cpURLs);
@@ -374,7 +378,7 @@ public class ProjectClassLoader extends ClassLoader
             // remove the project part from the source path
             libPath = libPath.removeFirstSegments(projPath.segmentCount());
 
-            //fixes 1422937 - Thanks to Peter Hendriks
+            // fixes 1422937 - Thanks to Peter Hendriks
             if (!libPath.isEmpty()) // added check
             {
 
