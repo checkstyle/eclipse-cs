@@ -39,7 +39,6 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.ui.internal.ide.dialogs.ProjectReferencePage;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
