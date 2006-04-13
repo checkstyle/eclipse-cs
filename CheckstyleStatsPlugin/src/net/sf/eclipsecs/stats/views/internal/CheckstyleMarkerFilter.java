@@ -512,10 +512,13 @@ public class CheckstyleMarkerFilter implements Cloneable
 
         for (int i = 0, size = resources.length; i < size; i++)
         {
-            Collection markers = Arrays.asList(resources[i].findMarkers(CheckstyleMarker.MARKER_ID,
-                    true, depth));
+            if (resources[i].isAccessible())
+            {
+                Collection markers = Arrays.asList(resources[i].findMarkers(
+                        CheckstyleMarker.MARKER_ID, true, depth));
 
-            resultList.addAll(markers);
+                resultList.addAll(markers);
+            }
         }
 
         if (mSelectBySeverity)

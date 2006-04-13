@@ -74,7 +74,8 @@ public class GraphPieDataset extends AbstractDataset implements PieDataset
     public void setStats(Stats stats)
     {
 
-        Collection markerStatCollection = stats.getMarkerStats();
+        Collection markerStatCollection = stats != null ? stats.getMarkerStats()
+                : Collections.EMPTY_LIST;
         mData = new DefaultKeyedValues();
 
         // markers que l'on comptera dans une catégorie "Autres" car ils

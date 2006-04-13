@@ -37,7 +37,6 @@ import net.sf.eclipsecs.stats.util.CheckstyleStatsPluginImages;
 import net.sf.eclipsecs.stats.views.internal.FiltersAction;
 
 import org.eclipse.core.resources.IMarker;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IContributionItem;
@@ -75,6 +74,7 @@ import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
+import org.eclipse.ui.texteditor.MarkerUtilities;
 
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.table.EnhancedTableViewer;
@@ -141,10 +141,10 @@ public class MarkerStatsView extends AbstractStatsView
     /** The state if the view is currently drilled down to details. */
     private boolean mIsDrilledDown;
 
-    /** The last folder used to store the generated reports */
+    /** The last folder used to store the generated reports. */
     private String mLastExportFolderName;
 
-    /** The last file name used to store the generated reports */
+    /** The last file name used to store the generated reports. */
     private String mLastExportFileName = "CheckstyleStatsExport";
 
     //
@@ -222,11 +222,15 @@ public class MarkerStatsView extends AbstractStatsView
         table.setLinesVisible(true);
         table.setHeaderVisible(true);
 
-        TableColumn idCol = new TableColumn(table, SWT.LEFT, 0);
+        TableColumn severityCol = new TableColumn(table, SWT.CENTER, 0);
+        severityCol.setWidth(20);
+        severityCol.setResizable(false);
+
+        TableColumn idCol = new TableColumn(table, SWT.LEFT, 1);
         idCol.setText(Messages.MarkerStatsView_kindOfErrorColumn);
         idCol.setWidth(400);
 
-        TableColumn countCol = new TableColumn(table, SWT.CENTER, 1);
+        TableColumn countCol = new TableColumn(table, SWT.CENTER, 2);
         countCol.setText(Messages.MarkerStatsView_numberOfErrorsColumn);
         countCol.pack();
 
@@ -279,19 +283,23 @@ public class MarkerStatsView extends AbstractStatsView
         table.setLinesVisible(true);
         table.setHeaderVisible(true);
 
-        TableColumn idCol = new TableColumn(table, SWT.LEFT, 0);
+        TableColumn severityCol = new TableColumn(table, SWT.CENTER, 0);
+        severityCol.setWidth(20);
+        severityCol.setResizable(false);
+
+        TableColumn idCol = new TableColumn(table, SWT.LEFT, 1);
         idCol.setText(Messages.MarkerStatsView_fileColumn);
         idCol.setWidth(150);
 
-        TableColumn folderCol = new TableColumn(table, SWT.LEFT, 1);
+        TableColumn folderCol = new TableColumn(table, SWT.LEFT, 2);
         folderCol.setText(Messages.MarkerStatsView_folderColumn);
         folderCol.setWidth(300);
 
-        TableColumn countCol = new TableColumn(table, SWT.CENTER, 2);
+        TableColumn countCol = new TableColumn(table, SWT.CENTER, 3);
         countCol.setText(Messages.MarkerStatsView_lineColumn);
         countCol.pack();
 
-        TableColumn messageCol = new TableColumn(table, SWT.LEFT, 3);
+        TableColumn messageCol = new TableColumn(table, SWT.LEFT, 4);
         messageCol.setText(Messages.MarkerStatsView_messageColumn);
         messageCol.setWidth(300);
 
@@ -632,50 +640,6 @@ public class MarkerStatsView extends AbstractStatsView
         });
     }
 
-    // private void initFromSettings()
-    // {
-    //
-    // IDialogSettings settings = getDialogSettings();
-    //
-    // IDialogSettings masterSection = settings.getSection(TAG_SECTION_MASTER);
-    // IDialogSettings detailSection = settings.getSection(TAG_SECTION_DETAIL);
-    // if (masterSection == null)
-    // {
-    // masterSection = settings.addNewSection(TAG_SECTION_MASTER);
-    // }
-    // if (detailSection == null)
-    // {
-    // detailSection = settings.addNewSection(TAG_SECTION_DETAIL);
-    // }
-    //
-    // // restore table settings
-    // ((TableSortSupport)
-    // mMasterViewer.getSorter()).restoreState(masterSection);
-    // ((TableSortSupport)
-    // mDetailViewer.getSorter()).restoreState(detailSection);
-    // }
-    //
-    // private void storeToSettings()
-    // {
-    //
-    // IDialogSettings settings = getDialogSettings();
-    //
-    // IDialogSettings masterSection = settings.getSection(TAG_SECTION_MASTER);
-    // IDialogSettings detailSection = settings.getSection(TAG_SECTION_DETAIL);
-    // if (masterSection == null)
-    // {
-    // masterSection = settings.addNewSection(TAG_SECTION_MASTER);
-    // }
-    // if (detailSection == null)
-    // {
-    // detailSection = settings.addNewSection(TAG_SECTION_DETAIL);
-    // }
-    //
-    // // store the table settings
-    // ((TableSortSupport) mMasterViewer.getSorter()).saveState(masterSection);
-    // ((TableSortSupport) mDetailViewer.getSorter()).saveState(detailSection);
-    // }
-
     /**
      * Content provider for the master table viewer.
      * 
@@ -790,10 +754,10 @@ public class MarkerStatsView extends AbstractStatsView
 
             switch (index)
             {
-                case 0:
+                case 1:
                     text = stat.getIdentifiant();
                     break;
-                case 1:
+                case 2:
                     text = stat.getCount() + ""; //$NON-NLS-1$
                     break;
 
@@ -811,7 +775,28 @@ public class MarkerStatsView extends AbstractStatsView
          */
         public Image getColumnImage(Object obj, int index)
         {
-            return null;
+            Image image = null;
+            MarkerStat stat = (MarkerStat) obj;
+
+            if (index == 0)
+            {
+                int severity = stat.getMaxSeverity();
+                ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
+
+                if (IMarker.SEVERITY_ERROR == severity)
+                {
+                    image = sharedImages.getImage(ISharedImages.IMG_OBJS_ERROR_TSK);
+                }
+                else if (IMarker.SEVERITY_WARNING == severity)
+                {
+                    image = sharedImages.getImage(ISharedImages.IMG_OBJS_WARN_TSK);
+                }
+                else if (IMarker.SEVERITY_INFO == severity)
+                {
+                    image = sharedImages.getImage(ISharedImages.IMG_OBJS_INFO_TSK);
+                }
+            }
+            return image;
         }
 
         public Comparable getComparableValue(Object element, int colIndex)
@@ -822,9 +807,12 @@ public class MarkerStatsView extends AbstractStatsView
             switch (colIndex)
             {
                 case 0:
-                    comparable = stat.getIdentifiant();
+                    comparable = new Integer(stat.getMaxSeverity());
                     break;
                 case 1:
+                    comparable = stat.getIdentifiant();
+                    break;
+                case 2:
                     comparable = new Integer(stat.getCount());
                     break;
 
@@ -873,16 +861,16 @@ public class MarkerStatsView extends AbstractStatsView
             {
                 switch (index)
                 {
-                    case 0:
+                    case 1:
                         text = marker.getResource().getName();
                         break;
-                    case 1:
+                    case 2:
                         text = marker.getResource().getParent().getFullPath().toString();
                         break;
-                    case 2:
+                    case 3:
                         text = marker.getAttribute(IMarker.LINE_NUMBER).toString();
                         break;
-                    case 3:
+                    case 4:
                         text = marker.getAttribute(IMarker.MESSAGE).toString();
                         break;
 
@@ -907,7 +895,28 @@ public class MarkerStatsView extends AbstractStatsView
          */
         public Image getColumnImage(Object obj, int index)
         {
-            return null;
+            Image image = null;
+            IMarker marker = (IMarker) obj;
+
+            if (index == 0)
+            {
+                int severity = MarkerUtilities.getSeverity(marker);
+                ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
+
+                if (IMarker.SEVERITY_ERROR == severity)
+                {
+                    image = sharedImages.getImage(ISharedImages.IMG_OBJS_ERROR_TSK);
+                }
+                else if (IMarker.SEVERITY_WARNING == severity)
+                {
+                    image = sharedImages.getImage(ISharedImages.IMG_OBJS_WARN_TSK);
+                }
+                else if (IMarker.SEVERITY_INFO == severity)
+                {
+                    image = sharedImages.getImage(ISharedImages.IMG_OBJS_INFO_TSK);
+                }
+            }
+            return image;
         }
 
         public Comparable getComparableValue(Object element, int colIndex)
@@ -918,16 +927,20 @@ public class MarkerStatsView extends AbstractStatsView
             switch (colIndex)
             {
                 case 0:
-                    comparable = marker.getResource().getName();
+                    comparable = new Integer(marker.getAttribute(IMarker.SEVERITY,
+                            Integer.MAX_VALUE));
                     break;
                 case 1:
-                    comparable = marker.getResource().getParent().getFullPath().toString();
+                    comparable = marker.getResource().getName();
                     break;
                 case 2:
+                    comparable = marker.getResource().getParent().getFullPath().toString();
+                    break;
+                case 3:
                     comparable = new Integer(marker.getAttribute(IMarker.LINE_NUMBER,
                             Integer.MAX_VALUE));
                     break;
-                case 3:
+                case 4:
                     comparable = marker.getAttribute(IMarker.MESSAGE, "").toString();
                     break;
 

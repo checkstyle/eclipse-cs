@@ -17,12 +17,14 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 //============================================================================
+
 package net.sf.eclipsecs.stats.data;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 import org.eclipse.core.resources.IMarker;
+import org.eclipse.ui.texteditor.MarkerUtilities;
 
 /**
  * Objet qui donne des statistiques sur les marqueurs.
@@ -44,11 +46,15 @@ public class MarkerStat implements Comparable
     private Collection mMarkers;
 
     /**
+     * The maximum severity for this marker group.
+     */
+    private int mMaxSeverity;
+
+    /**
      * Crée un MarkerStat pour un marqueur Checkstyle correspondant à
      * l'identifiant passé en paramètre.
      * 
-     * @param identifiant :
-     *            le message du marqueur Checkstyle
+     * @param identifiant : le message du marqueur Checkstyle
      */
     public MarkerStat(String identifiant)
     {
@@ -60,12 +66,17 @@ public class MarkerStat implements Comparable
     /**
      * Reference the marker as one fo this category.
      * 
-     * @param marker :
-     *            the marker to add to this category
+     * @param marker : the marker to add to this category
      */
     public void addMarker(IMarker marker)
     {
         mMarkers.add(marker);
+
+        int severity = MarkerUtilities.getSeverity(marker);
+        if (severity > mMaxSeverity)
+        {
+            mMaxSeverity = severity;
+        }
     }
 
     /**
@@ -101,6 +112,16 @@ public class MarkerStat implements Comparable
     public int getCount()
     {
         return mMarkers.size();
+    }
+
+    /**
+     * Returns the maximum severity level occurring in this group.
+     * 
+     * @return the maximum severity level
+     */
+    public int getMaxSeverity()
+    {
+        return mMaxSeverity;
     }
 
     /**

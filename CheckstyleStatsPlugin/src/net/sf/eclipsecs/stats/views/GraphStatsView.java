@@ -99,16 +99,16 @@ public class GraphStatsView extends AbstractStatsView
     /** Action to go back to the marker overview view. */
     private Action mListingAction;
 
-    /** Allows to show all the categories or not */
+    /** Allows to show all the categories or not. */
     private Action mShowAllCategoriesAction;
 
     /** Exports the error listing as a report. */
     private Action mExportGraphAsImageAction;
     
-    /** The last folder used to store the generated reports */
+    /** The last folder used to store the generated reports. */
     private String mLastExportFolderName;
     
-    /** The last file name used to store the generated reports */
+    /** The last file name used to store the generated reports. */
     private String mLastExportFileName = "CheckstyleStatsGraph";
 
     //
