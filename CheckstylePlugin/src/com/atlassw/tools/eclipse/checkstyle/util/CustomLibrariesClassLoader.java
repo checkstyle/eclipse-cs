@@ -121,6 +121,12 @@ public final class CustomLibrariesClassLoader
 
         File[] jarFiles = extensionLibsDir.listFiles(new JarFileFilter());
 
+        // this can happen on "unexploded" install
+        if (jarFiles == null)
+        {
+            return new URL[0];
+        }
+
         URL[] jarURLs = new URL[jarFiles.length];
         for (int i = 0; i < jarFiles.length; i++)
         {
