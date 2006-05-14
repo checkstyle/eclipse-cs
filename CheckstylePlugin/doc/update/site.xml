@@ -3,29 +3,29 @@
    <description url="http://eclipse-cs.sourceforge.net/update">
       Eclipse Checkstyle Plug-in Update Site
    </description>
-   <feature url="http://osdn.dl.sourceforge.net/sourceforge/eclipse-cs/com.atlassw.tools.eclipse.checkstyle_4.0.0-feature_2.jar" id="com.atlassw.tools.eclipse.checkstyle" version="4.0.0">
+   <feature url="http://kent.dl.sourceforge.net/sourceforge/eclipse-cs/com.atlassw.tools.eclipse.checkstyle_4.0.0-feature_2.jar" id="com.atlassw.tools.eclipse.checkstyle" version="4.0.0">
       <category name="Checkstyle"/>
    </feature>
-   <feature url="http://osdn.dl.sourceforge.net/sourceforge/eclipse-cs/com.atlassw.tools.eclipse.checkstyle_4.0.1-feature.jar" id="com.atlassw.tools.eclipse.checkstyle" version="4.0.1">
+   <feature url="http://kent.dl.sourceforge.net/sourceforge/eclipse-cs/com.atlassw.tools.eclipse.checkstyle_4.0.1-feature.jar" id="com.atlassw.tools.eclipse.checkstyle" version="4.0.1">
       <category name="Checkstyle"/>
    </feature>
-   <feature url="http://osdn.dl.sourceforge.net/sourceforge/eclipse-cs/com.atlassw.tools.eclipse.checkstyle_4.0.90-feature.jar" id="com.atlassw.tools.eclipse.checkstyle" version="4.0.90">
+   <feature url="http://kent.dl.sourceforge.net/sourceforge/eclipse-cs/com.atlassw.tools.eclipse.checkstyle_4.0.90-feature.jar" id="com.atlassw.tools.eclipse.checkstyle" version="4.0.90">
       <category name="Checkstyle (beta)"/>
    </feature>
-   <feature url="http://osdn.dl.sourceforge.net/sourceforge/eclipse-cs/com.atlassw.tools.eclipse.checkstyle_4.0.91-feature.jar" id="com.atlassw.tools.eclipse.checkstyle" version="4.0.91">
+   <feature url="http://kent.dl.sourceforge.net/sourceforge/eclipse-cs/com.atlassw.tools.eclipse.checkstyle_4.0.91-feature.jar" id="com.atlassw.tools.eclipse.checkstyle" version="4.0.91">
       <category name="Checkstyle (beta)"/>
    </feature>
-   <feature url="http://osdn.dl.sourceforge.net/sourceforge/eclipse-cs/com.atlassw.tools.eclipse.checkstyle_4.0.92-feature.jar" id="com.atlassw.tools.eclipse.checkstyle" version="4.0.92">
+   <feature url="http://kent.dl.sourceforge.net/sourceforge/eclipse-cs/com.atlassw.tools.eclipse.checkstyle_4.0.92-feature.jar" id="com.atlassw.tools.eclipse.checkstyle" version="4.0.92">
       <category name="Checkstyle (beta)"/>
    </feature>
-   <archive path="plugins/com.atlassw.tools.eclipse.checkstyle_4.0.0.jar" url="http://osdn.dl.sourceforge.net/sourceforge/eclipse-cs/com.atlassw.tools.eclipse.checkstyle_4.0.0_2.jar"/>
-   <archive path="plugins/com.atlassw.tools.eclipse.checkstyle_4.0.1.jar" url="http://osdn.dl.sourceforge.net/sourceforge/eclipse-cs/com.atlassw.tools.eclipse.checkstyle_4.0.1_2.jar"/>
-   <archive path="plugins/com.atlassw.tools.eclipse.checkstyle_4.0.90.jar" url="http://osdn.dl.sourceforge.net/sourceforge/eclipse-cs/com.atlassw.tools.eclipse.checkstyle_4.0.90.jar"/>
-   <archive path="plugins/com.atlassw.tools.eclipse.checkstyle_4.0.91.jar" url="http://osdn.dl.sourceforge.net/sourceforge/eclipse-cs/com.atlassw.tools.eclipse.checkstyle_4.0.91.jar"/>
-   <archive path="plugins/com.atlassw.tools.eclipse.checkstyle_4.0.92.jar" url="http://osdn.dl.sourceforge.net/sourceforge/eclipse-cs/com.atlassw.tools.eclipse.checkstyle_4.0.92.jar"/>
-   <archive path="plugins/net.sf.eclipsecs.stats_0.2.0.jar" url="http://osdn.dl.sourceforge.net/sourceforge/eclipse-cs/net.sf.eclipsecs.stats_0.2.0.jar"/>
-   <archive path="plugins/net.sf.eclipsecs.stats_0.2.1.jar" url="http://osdn.dl.sourceforge.net/sourceforge/eclipse-cs/net.sf.eclipsecs.stats_0.2.1.jar"/>
-   <archive path="plugins/net.sf.eclipsecs.stats_0.2.2.jar" url="http://osdn.dl.sourceforge.net/sourceforge/eclipse-cs/net.sf.eclipsecs.stats_0.2.2.jar"/>
+   <archive path="plugins/com.atlassw.tools.eclipse.checkstyle_4.0.0.jar" url="http://kent.dl.sourceforge.net/sourceforge/eclipse-cs/com.atlassw.tools.eclipse.checkstyle_4.0.0_2.jar"/>
+   <archive path="plugins/com.atlassw.tools.eclipse.checkstyle_4.0.1.jar" url="http://kent.dl.sourceforge.net/sourceforge/eclipse-cs/com.atlassw.tools.eclipse.checkstyle_4.0.1_2.jar"/>
+   <archive path="plugins/com.atlassw.tools.eclipse.checkstyle_4.0.90.jar" url="http://kent.dl.sourceforge.net/sourceforge/eclipse-cs/com.atlassw.tools.eclipse.checkstyle_4.0.90.jar"/>
+   <archive path="plugins/com.atlassw.tools.eclipse.checkstyle_4.0.91.jar" url="http://kent.dl.sourceforge.net/sourceforge/eclipse-cs/com.atlassw.tools.eclipse.checkstyle_4.0.91.jar"/>
+   <archive path="plugins/com.atlassw.tools.eclipse.checkstyle_4.0.92.jar" url="http://kent.dl.sourceforge.net/sourceforge/eclipse-cs/com.atlassw.tools.eclipse.checkstyle_4.0.92.jar"/>
+   <archive path="plugins/net.sf.eclipsecs.stats_0.2.0.jar" url="http://kent.dl.sourceforge.net/sourceforge/eclipse-cs/net.sf.eclipsecs.stats_0.2.0.jar"/>
+   <archive path="plugins/net.sf.eclipsecs.stats_0.2.1.jar" url="http://kent.dl.sourceforge.net/sourceforge/eclipse-cs/net.sf.eclipsecs.stats_0.2.1.jar"/>
+   <archive path="plugins/net.sf.eclipsecs.stats_0.2.2.jar" url="http://kent.dl.sourceforge.net/sourceforge/eclipse-cs/net.sf.eclipsecs.stats_0.2.2.jar"/>
    <category-def name="Checkstyle" label="Eclipse Checkstyle Plug-in">
       <description>
          Integrates Checkstyle with Eclipse
