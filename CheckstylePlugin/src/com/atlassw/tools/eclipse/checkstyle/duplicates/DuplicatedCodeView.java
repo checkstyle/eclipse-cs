@@ -204,8 +204,8 @@ public class DuplicatedCodeView extends ViewPart
                             false, IResource.DEPTH_ZERO);
                     for (int i = 0; i < markers.length; i++)
                     {
-                        if (STRICT_DUPLICATE_CODE_MODULE_NAME.equals(
-                            markers[i].getAttribute(CheckstyleMarker.MODULE_NAME)))
+                        if (STRICT_DUPLICATE_CODE_MODULE_NAME.equals(markers[i]
+                                .getAttribute(CheckstyleMarker.MODULE_NAME)))
                         {
                             result = true;
                             break;
@@ -232,7 +232,7 @@ public class DuplicatedCodeView extends ViewPart
     {
         public void resourceChanged(final IResourceChangeEvent event)
         {
-            //update in UI thread
+            // update in UI thread
             Display.getDefault().asyncExec(new Runnable()
             {
                 public void run()
@@ -315,7 +315,7 @@ public class DuplicatedCodeView extends ViewPart
     {
         IActionBars bars = getViewSite().getActionBars();
         mDrillDownAdapter.addNavigationActions(bars.getToolBarManager());
-        
+
         // Adds a refresh button
         IAction mRefreshAction = new Action()
         {
@@ -325,30 +325,28 @@ public class DuplicatedCodeView extends ViewPart
                 {
                     protected IStatus run(IProgressMonitor monitor)
                     {
-                        IProject[] projects = ResourcesPlugin.getWorkspace()
-                            .getRoot().getProjects();
+                        IProject[] projects = ResourcesPlugin.getWorkspace().getRoot()
+                                .getProjects();
                         for (int i = 0; i < projects.length; i++)
                         {
                             IProject project = projects[i];
                             try
                             {
-                                if (project
-                                    .hasNature(CheckstyleNature.NATURE_ID))
+                                if (project.hasNature(CheckstyleNature.NATURE_ID))
                                 {
-                                    project.build(
-                                        IncrementalProjectBuilder.FULL_BUILD,
-                                        CheckstyleBuilder.BUILDER_ID, null,
-                                        monitor);
+                                    project.build(IncrementalProjectBuilder.FULL_BUILD,
+                                            CheckstyleBuilder.BUILDER_ID, null, monitor);
                                 }
                             }
                             catch (CoreException e)
                             {
                                 CheckstyleLog
-                                    .errorDialog(
-                                        mViewer.getControl().getShell(),
-                                        NLS.bind(
-                                                ErrorMessages.errorWhileBuildingProject,
-                                                project.getName()), e, true);
+                                        .log(e, NLS.bind(ErrorMessages.errorWhileBuildingProject,
+                                                project.getName()));
+                                return new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID,
+                                        IStatus.OK, NLS.bind(
+                                                ErrorMessages.errorWhileBuildingProject, project
+                                                        .getName()), e);
                             }
                         }
                         Display.getDefault().asyncExec(new Runnable()
@@ -367,9 +365,8 @@ public class DuplicatedCodeView extends ViewPart
         };
         mRefreshAction.setText(Messages.DuplicatedCodeView_refreshAction);
         mRefreshAction.setToolTipText(Messages.DuplicatedCodeView_refreshActionTooltip);
-        ImageDescriptor descriptor = CheckstylePlugin
-            .imageDescriptorFromPlugin(CheckstylePlugin.PLUGIN_ID,
-                "icons/refresh.gif"); //$NON-NLS-1$
+        ImageDescriptor descriptor = CheckstylePlugin.imageDescriptorFromPlugin(
+                CheckstylePlugin.PLUGIN_ID, "icons/refresh.gif"); //$NON-NLS-1$
         mRefreshAction.setImageDescriptor(descriptor);
         bars.getToolBarManager().add(mRefreshAction);
     }
@@ -434,8 +431,7 @@ public class DuplicatedCodeView extends ViewPart
             }
         };
         mOpenSourceFileAction.setText(Messages.DuplicatedCodeView_openSourceAction);
-        mOpenSourceFileAction
-                .setToolTipText(Messages.DuplicatedCodeView_openSourceActionTooltip);
+        mOpenSourceFileAction.setToolTipText(Messages.DuplicatedCodeView_openSourceActionTooltip);
         mOpenSourceFileAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages()
                 .getImageDescriptor(ISharedImages.IMG_TOOL_FORWARD));
     }
@@ -519,18 +515,14 @@ public class DuplicatedCodeView extends ViewPart
                 start = document.getLineOffset(firstLine - 1);
             }
             // Same comment here
-            int end = document.getLineOffset(lastLine - 2)
-                + document.getLineLength(lastLine - 2);
+            int end = document.getLineOffset(lastLine - 2) + document.getLineLength(lastLine - 2);
             editor.selectAndReveal(start, end - start - 1);
         }
         catch (BadLocationException e)
         {
 
-            CheckstyleLog
-                .errorDialog(
-                    mViewer.getControl().getShell(),
-                    ErrorMessages.errorWhileDisplayingDuplicates,
-                    e, true);
+            CheckstyleLog.errorDialog(mViewer.getControl().getShell(),
+                    ErrorMessages.errorWhileDisplayingDuplicates, e, true);
         }
     }
 
