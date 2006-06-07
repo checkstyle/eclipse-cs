@@ -4,8 +4,9 @@
 	<!-- parameter to control wheter the navigational menu should be included. -->
 	<xsl:param name="style"/>
 	<!-- output as XHTML 1.1 -->
-	<xsl:output encoding="UTF-8" method="html" indent="yes" doctype-public="-//W3C//DTD XHTML
-		1.1//EN" doctype-system="http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"/>
+	<xsl:output encoding="UTF-8" method="html" indent="yes"
+		doctype-public="-//W3C//DTD XHTML   1.1//EN"
+		doctype-system="http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"/>
 	<!-- root template -->
 	<xsl:template match="/">
 		<html>
@@ -66,11 +67,10 @@
 	<!-- renders the left hand side bar containing the navigation and other things -->
 	<xsl:template name="navigation">
 		<xsl:variable name="section"
-			select="/*[local-name()='html']/*[local-name()='head']/*[local-name()='meta' and
-			@name='section']/@content"/>
+			select="/*[local-name()='html']/*[local-name()='head']/*[local-name()='meta' and    @name='section']/@content"/>
 		<div class="buttons">
-			<a href="index.html" style="padding-top: 58px; border-top: 0px solid #FFFFFF;
-				background-image: url(images/eclipse-cs.png); background-repeat: no-repeat;">
+			<a href="index.html"
+				style="padding-top: 58px; border-top: 0px solid #FFFFFF;     background-image: url(images/eclipse-cs.png); background-repeat: no-repeat;">
 				<!--<img src="images/eclipse-cs.png" alt="eclipse-cs Logo"/>--> The Checkstyle
 				Plug-in for Eclipse </a>
 			<a href="screen_shots.html" class="level1">Screenshots</a>
@@ -141,6 +141,11 @@
 		</div>
 		<div class="box navsection-box">
 			<h3>Rate this plug-in<br/>@ Eclipse Plugin Central!</h3>
+			<p> Due to a spam vote attack the voting form sadly needed to be pulled off the
+				site.<br/> Please visit <a
+					href="http://www.eclipseplugincentral.com/Web_Links-index-req-viewlink-cid-456.html"
+					>Eclipse Plugin Central</a> to cast your vote until a secure solution can be found.</p>
+			<!--
 			<form method="post" action="http://www.eclipseplugincentral.com/Web_Links+main.html"
 				style="width:100%">
 				<table border="0" width="100%" cellspacing="0" cellpadding="0">
@@ -188,6 +193,7 @@
 					</tbody>
 				</table>
 			</form>
+			-->
 		</div>
 		<div class="box navsection-box">
 			<h3>Kindly endorsed by</h3>

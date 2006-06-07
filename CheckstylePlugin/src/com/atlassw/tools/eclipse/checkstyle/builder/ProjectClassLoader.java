@@ -133,20 +133,18 @@ public class ProjectClassLoader extends ClassLoader
         // }
 
         URL[] projClassPath = getProjectClassPath(project);
-
-        // // log the complete classpath to track down these pesky
-        // // NoClassDefFound-Errors
-        // StringBuffer buf = new StringBuffer();
-        // buf.append("Checkstyle Classpath for
-        // project\"").append(project.getName()).append("\":");
-        // for (int i = 0; i < projClassPath.length; i++)
-        // {
-        // buf.append("\n").append(projClassPath[i].toExternalForm());
-        // }
-        // IStatus status = new Status(IStatus.INFO, CheckstylePlugin.PLUGIN_ID,
-        // IStatus.OK, buf
-        // .toString(), null);
-        // CheckstylePlugin.getDefault().getLog().log(status);
+        
+//        // log the complete classpath to track down these pesky
+//        // NoClassDefFound-Errors
+//        StringBuffer buf = new StringBuffer();
+//        buf.append("Checkstyle Classpath for project\"").append(project.getName()).append("\":");
+//        for (int i = 0; i < projClassPath.length; i++)
+//        {
+//            buf.append("\n").append(projClassPath[i].toExternalForm());
+//        }
+//        IStatus status = new Status(IStatus.INFO, CheckstylePlugin.PLUGIN_ID, IStatus.OK, buf
+//                .toString(), null);
+//        CheckstylePlugin.getDefault().getLog().log(status);
 
         this.mDelegateClassLoader = new URLClassLoader(projClassPath, this.mParentClassLoader,
                 this.mStreamHandlerFactory);

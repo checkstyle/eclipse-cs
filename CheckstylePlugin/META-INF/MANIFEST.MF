@@ -1,6 +1,7 @@
 Manifest-Version: 1.0
 Bundle-Name: Checkstyle Plug-in
-Bundle-SymbolicName: com.atlassw.tools.eclipse.checkstyle; singleton=true
+Bundle-ManifestVersion: 2
+Bundle-SymbolicName: com.atlassw.tools.eclipse.checkstyle;singleton:=true
 Bundle-Version: 4.0.92
 Bundle-ClassPath: CheckstylePlugin.jar,NLS.jar,CheckstyleMetadata.jar,lib/checkstyle-all-4.2.jar,lib/commons-lang-2.1.jar
 Bundle-Activator: com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin
@@ -58,3 +59,4 @@ Provide-Package: com.atlassw.tools.eclipse.checkstyle,
  com.puppycrawl.tools.checkstyle.filters,
  com.puppycrawl.tools.checkstyle.grammars,
  com.puppycrawl.tools.checkstyle.gui
+
