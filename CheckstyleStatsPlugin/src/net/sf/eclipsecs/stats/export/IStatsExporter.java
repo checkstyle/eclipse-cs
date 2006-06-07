@@ -35,16 +35,16 @@ import net.sf.eclipsecs.stats.data.Stats;
 public interface IStatsExporter
 {
     /** Key for the main font used to generate the report. Must be a String. */
-    static final String PROPS_MAIN_FONT_NAME = "generator.main.font.name";
+    String PROPS_MAIN_FONT_NAME = "generator.main.font.name";
 
     /** Key for the main font size. Must be an Integer. */
-    static final String PROPS_MAIN_FONT_SIZE = "generator.main.font.size";
+    String PROPS_MAIN_FONT_SIZE = "generator.main.font.size";
 
-    /** The default main font */
-    static final String DEFAULT_MAIN_FONT_NAME = "Verdana";
+    /** The default main font. */
+    String DEFAULT_MAIN_FONT_NAME = "Verdana";
 
-    /** The default font size */
-    static final Integer DEFAULT_MAIN_FONT_SIZE = new Integer(10);
+    /** The default font size. */
+    Integer DEFAULT_MAIN_FONT_SIZE = new Integer(10);
 
     /**
      * Initializes the stats exporter with the properties specified in the map.
