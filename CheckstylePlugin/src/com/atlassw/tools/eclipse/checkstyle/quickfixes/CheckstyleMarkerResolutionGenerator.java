@@ -75,24 +75,29 @@ public class CheckstyleMarkerResolutionGenerator implements IMarkerResolutionGen
     public boolean hasResolutions(IMarker marker)
     {
 
+        boolean hasAtLeastOneFix = false;
+
         // check if there is at least one fix that really applies to the module
         String moduleName = marker.getAttribute(CheckstyleMarker.MODULE_NAME, null);
 
         RuleMetadata metadata = MetadataFactory.getRuleMetadata(moduleName);
-        Collection quickfixes = metadata.getQuickfixes();
 
-        boolean hasAtLeastOneFix = false;
-
-        Iterator it = quickfixes.iterator();
-        while (it.hasNext())
+        if (metadata != null)
         {
 
-            ICheckstyleMarkerResolution fix = (ICheckstyleMarkerResolution) it.next();
+            Collection quickfixes = metadata.getQuickfixes();
 
-            if (fix.canFix(marker))
+            Iterator it = quickfixes.iterator();
+            while (it.hasNext())
             {
-                hasAtLeastOneFix = true;
-                break;
+
+                ICheckstyleMarkerResolution fix = (ICheckstyleMarkerResolution) it.next();
+
+                if (fix.canFix(marker))
+                {
+                    hasAtLeastOneFix = true;
+                    break;
+                }
             }
         }
         return hasAtLeastOneFix;
