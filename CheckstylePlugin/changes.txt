@@ -7,6 +7,18 @@ That is: <path-to-my-eclipse-install>/eclipse.exe -clean
 The plugin version 4.x.x does not support eclipse 2.x.x any more. 
 Make sure you got an eclipse 3.0 or higher installation you are installing this plugin to.
 
+Eclipse Checkstyle Plugin v4.0.93 (4.1.0 beta4)
+----------------------------------------------
+
+Minor bugfix release. Uses a new snapshot from Checkstyle CVS head.
+
+Bugs:
+1464012  Fixed ProjectClassLoader issue
+1466967  Violations tab and closed project  
+1487954  Eclipse 3.2RC4 doesn't find any updates  
+1478288  "Invalid thread access" when Checkstyle run. 
+
+
 Eclipse Checkstyle Plugin v4.0.92 (4.1.0 beta3)
 ----------------------------------------------
 
