@@ -807,7 +807,7 @@ public class MarkerStatsView extends AbstractStatsView
             switch (colIndex)
             {
                 case 0:
-                    comparable = new Integer(stat.getMaxSeverity());
+                    comparable = new Integer(stat.getMaxSeverity() * -1);
                     break;
                 case 1:
                     comparable = stat.getIdentifiant();
@@ -928,7 +928,8 @@ public class MarkerStatsView extends AbstractStatsView
             {
                 case 0:
                     comparable = new Integer(marker.getAttribute(IMarker.SEVERITY,
-                            Integer.MAX_VALUE));
+                            Integer.MAX_VALUE)
+                            * -1);
                     break;
                 case 1:
                     comparable = marker.getResource().getName();
