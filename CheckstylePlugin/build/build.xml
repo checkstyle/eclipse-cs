@@ -53,23 +53,23 @@
 		<!-- resolve the org.eclipse.pde.core.requiredPlugins needed by ant4eclipse -->
 		<path id="org.eclipse.pde.core.requiredPlugins">
 			<fileset dir="${eclipse.plugin.dir}">
-				<include name="org.eclipse.core.resources_*.jar"/>
-				<include name="org.eclipse.swt_*.jar"/>
-				<include name="org.eclipse.jface_*.jar"/>
-				<include name="org.eclipse.core.commands_*.jar"/>
-				<include name="org.eclipse.ui.workbench_*.jar"/>
-				<include name="org.eclipse.jface.text_*.jar"/>
-				<include name="org.eclipse.text_*.jar"/>
-				<include name="org.eclipse.jdt.core_*.jar"/>
-				<include name="org.eclipse.core.runtime_*.jar"/>
-				<include name="org.eclipse.osgi_*.jar"/>
-				<include name="org.eclipse.ui.ide_*.jar"/>
-				<include name="org.eclipse.jdt.ui_*.jar"/>
-				<include name="org.eclipse.ui.workbench.texteditor_*.jar"/>
-				<include name="org.eclipse.ui.editors_*.jar"/>
-				<include name="org.eclipse.core.filebuffers_*.jar"/>
-				<include name="org.eclipse.team.cvs.core_*.jar"/>
-				<include name="org.eclipse.team.core_*.jar"/>
+				<include name="org.eclipse.core.resources_*.jar" />
+				<include name="org.eclipse.swt_*.jar" />
+				<include name="org.eclipse.jface_*.jar" />
+				<include name="org.eclipse.core.commands_*.jar" />
+				<include name="org.eclipse.ui.workbench_*.jar" />
+				<include name="org.eclipse.jface.text_*.jar" />
+				<include name="org.eclipse.text_*.jar" />
+				<include name="org.eclipse.jdt.core_*.jar" />
+				<include name="org.eclipse.core.runtime_*.jar" />
+				<include name="org.eclipse.osgi_*.jar" />
+				<include name="org.eclipse.ui.ide_*.jar" />
+				<include name="org.eclipse.jdt.ui_*.jar" />
+				<include name="org.eclipse.ui.workbench.texteditor_*.jar" />
+				<include name="org.eclipse.ui.editors_*.jar" />
+				<include name="org.eclipse.core.filebuffers_*.jar" />
+				<include name="org.eclipse.team.cvs.core_*.jar" />
+				<include name="org.eclipse.team.core_*.jar" />
 			</fileset>
 		</path>
 
@@ -99,7 +99,6 @@
 
 		<!-- prefix paths within the binary dist file -->
 		<property name="plugins.path" value="plugins/${plugin.name}" />
-		<property name="features.path" value="features/${plugin.name}" />
 
 		<!-- jar the contents of the output dirs into the tmp directory -->
 		<jar destfile="${dist.basedir.tmpdir}/CheckstylePlugin.jar" basedir="${dist.basedir.tmpdir}/bin" index="true" />
@@ -131,16 +130,12 @@
 		<!-- zip the contents into the binary dist file -->
 		<zip destfile="${dist.basedir}/${bin.dist.file}" update="false">
 			<zipfileset dir="${dist.basedir.tmpdir}" prefix="${plugins.path}" includes="**/*" />
-			<zipfileset dir="${feature.project.dir}" prefix="${features.path}" includes="**/*" />
 		</zip>
 
 		<!-- build the jars for the update site -->
 		<zip destfile="${dist.basedir}/${plugin.jar.file}">
 			<zipfileset dir="${dist.basedir.tmpdir}" includes="**/*" />
 		</zip>
-		<jar destfile="${dist.basedir}/${feature.jar.file}">
-			<zipfileset dir="${feature.project.dir}" includes="**/*" />
-		</jar>
 
 		<!-- remove the temp directory -->
 		<delete dir="${dist.basedir.tmpdir}" failonerror="false" quiet="true" />
@@ -163,9 +158,43 @@
 	</target>
 
 	<!-- ==================================================== -->
+	<!--   BUILDS THE FEATURE                                 -->
+	<!-- ==================================================== -->
+	<target name="build.feature" depends="build.bindist" description="Builds the feature.jar">
+
+		<!-- prefix paths within the binary dist file -->
+		<property name="features.path" value="features/${plugin.name}" />
+
+		<!-- copy the plugin contents to the tmp dir -->
+		<copy todir="${dist.basedir.tmpdir}">
+			<fileset dir="${basedir}">
+				<include name="feature/**" />
+			</fileset>
+		</copy>
+
+		<!-- copy the feature.xml template -->
+		<copy file="${basedir}/build/feature.xml.template" tofile="${dist.basedir.tmpdir}/feature/feature.xml" />
+		<replace file="${dist.basedir.tmpdir}/feature/feature.xml" token="@plugin.version@" value="${plugin.version}" />
+		<replace file="${dist.basedir.tmpdir}/feature/feature.xml" token="@stats.fragment.version@" value="${stats.fragment.version}" />
+		
+		<!-- zip the contents into the binary dist file -->
+		<zip destfile="${dist.basedir}/${bin.dist.file}" update="true">
+			<zipfileset dir="${dist.basedir.tmpdir}/feature" prefix="${features.path}" includes="**/*" />
+		</zip>
+
+		<!-- build the feature.jar -->
+		<jar destfile="${dist.basedir}/${feature.jar.file}">
+			<zipfileset dir="${dist.basedir.tmpdir}/feature" includes="**/*" />
+		</jar>
+
+		<!-- remove the temp directory -->
+		<delete dir="${dist.basedir.tmpdir}/feature" failonerror="false" quiet="true" />
+	</target>
+
+	<!-- ==================================================== -->
 	<!--   BUILDS A LOCAL UPDATE SITE                         -->
 	<!-- ==================================================== -->
-	<target name="build.local.update.site" depends="build.bindist" description="Builds a local update site">
+	<target name="build.local.update.site" depends="build.feature" description="Builds a local update site">
 
 		<!-- prepare the site.xml file -->
 		<copy file="${basedir}/build/local-site.template" tofile="${dist.basedir.tmpdir}/site.xml" />
@@ -234,28 +263,4 @@
 			<mapper type="glob" from="*.shtml" to="*.shtml" />
 		</xslt>
 	</target>
-
-	<!-- ==================================================== -->
-	<!--   Release through Sourceforge File Release System    -->
-	<!-- ==================================================== -->
-	<!--
-	<taskdef name="sfpublish" classname="org.apache.tools.ant.taskdefs.optional.sourceforge.SourceForgePublish" />
-
-	<target name="sampletarget">
-
-		<tstamp>
-			<format property="release_date" pattern="MM/dd/yyyy hh:mm" locale="en" unit="minute" />
-		</tstamp>
-
-		<sfpublish releasename="v${4.0.0}${}" packagename="Eclipse Checkstyle Plug-in" packagehidden="no" hidden="yes" projectshortname="eclipse-cs" projectname="Eclipse Checkstyle Plug-in" username="myUsername" password="myPassword" releasedate="${release_date}">
-			<filespec file="${dist.basedir}/${bin.dist.file}" filetype="zip_file" processortype="platform_independent" />
-			<filespec file="${dist.basedir}/${src.dist.file}" filetype="zip_file" processortype="platform_independent" />
-		</sfpublish>
-		<sfpublish releasename="v${4.0.0}${plugin.version.postfix}" packagename="eclipse-cs Update Site" packagehidden="no" hidden="yes" projectshortname="eclipse-cs" projectname="Eclipse Checkstyle Plug-in" username="myUsername" password="myPassword" releasedate="${release_date}">
-			<filespec file="${dist.basedir}/${plugin.jar.file}" filetype="jar_file" processortype="platform_independent" />
-			<filespec file="${dist.basedir}/${feature.jar.file}" filetype="jar_file" processortype="platform_independent" />
-		</sfpublish>
-	</target>
-	-->
-
 </project>
