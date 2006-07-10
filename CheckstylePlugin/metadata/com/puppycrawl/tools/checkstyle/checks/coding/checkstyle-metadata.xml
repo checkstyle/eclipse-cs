@@ -340,6 +340,9 @@ Rationale: Parameter assignment is often considered poor programming practice. F
          <property-metadata name="logLoadErrors" datatype="Boolean" default-value="false">
             <description>This check may needs to load exception classes mentioned in the @throws tag to check whether they are RuntimeExceptions. If loading the class fails, this property allows to control checkstyle's error handling. If set to false (the default) a classpath configuration problem is assumed and the TreeWalker stops operating on the class completely. If set to true, checkstyle assumes a typo or refactoring problem in the javadoc and logs the problem in the normal checkstyle report (potentially masking a configuration error).</description>
          </property-metadata>
+         <property-metadata name="suppressLoadErrors" datatype="Boolean" default-value="false">
+            <description>Controls whether to show class loading errors in the checkstyle report.</description>
+         </property-metadata>  
       </rule-metadata>
       
       <rule-metadata name="Require This" internal-name="RequireThis" parent="TreeWalker">
