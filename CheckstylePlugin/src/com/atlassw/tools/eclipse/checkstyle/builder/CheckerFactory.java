@@ -30,6 +30,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.WeakHashMap;
 
+import org.apache.commons.collections.ReferenceMap;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.IPreferencesService;
@@ -76,7 +77,7 @@ public final class CheckerFactory
     {
 
         // Use synchronized collections to avoid concurrent modification
-        sCheckerMap = Collections.synchronizedMap(new WeakHashMap());
+        sCheckerMap = Collections.synchronizedMap(new ReferenceMap());
         sModifiedMap = Collections.synchronizedMap(new HashMap());
 
         sSharedClassLoader = new ProjectClassLoader();
@@ -114,7 +115,11 @@ public final class CheckerFactory
 
         URL configLocation = config.isConfigurationAvailable();
 
-        Checker checker = tryCheckerCache(configLocation, project);
+        // build cache key using the project name as a part to do per project
+        // caching
+        String cacheKey = project.getName() + "#" + configLocation; //$NON-NLS-1$
+
+        Checker checker = tryCheckerCache(configLocation, cacheKey);
 
         // no cache hit
         if (checker == null)
@@ -132,8 +137,8 @@ public final class CheckerFactory
 
             // store checker in cache
             Long modified = new Long(configLocation.openConnection().getLastModified());
-            sCheckerMap.put(configLocation, checker);
-            sModifiedMap.put(configLocation, modified);
+            sCheckerMap.put(cacheKey, checker);
+            sModifiedMap.put(cacheKey, modified);
         }
 
         return checker;
@@ -163,34 +168,30 @@ public final class CheckerFactory
      * Tries to reuse an already configured checker for this configuration.
      * 
      * @param config the configuration file
-     * @param project the project
+     * @param cacheKey the key for cache access
      * @return the cached checker or null
      * @throws IOException the config file could not be read
      */
-    private static Checker tryCheckerCache(URL config, IProject project) throws IOException
+    private static Checker tryCheckerCache(URL config, String cacheKey) throws IOException
     {
 
-        // build cache key using the project name as a part to do per project
-        // caching
-        String key = project.getName() + "#" + config; //$NON-NLS-1$
-
         // try the cache
-        Checker checker = (Checker) sCheckerMap.get(key);
+        Checker checker = (Checker) sCheckerMap.get(cacheKey);
 
         // if cache hit
         if (checker != null)
         {
 
             // compare modification times of the configs
-            Long oldTime = (Long) sModifiedMap.get(key);
+            Long oldTime = (Long) sModifiedMap.get(cacheKey);
             Long newTime = new Long(config.openConnection().getLastModified());
 
             // no match - remove checker from cache
             if (oldTime == null || oldTime.compareTo(newTime) != 0)
             {
                 checker = null;
-                sCheckerMap.remove(key);
-                sModifiedMap.remove(key);
+                sCheckerMap.remove(cacheKey);
+                sModifiedMap.remove(cacheKey);
             }
         }
         return checker;
@@ -202,7 +203,6 @@ public final class CheckerFactory
      * 
      * @param inStream stream to the configuration file
      * @param propResolver a property resolver null
-     * @param entityResolver a custom entity resolver
      * @return the newly created Checker
      * @throws CheckstyleException an exception during the creation of the
      *             checker occured
