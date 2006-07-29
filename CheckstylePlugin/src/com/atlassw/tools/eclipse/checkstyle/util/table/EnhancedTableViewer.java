@@ -96,7 +96,9 @@ public class EnhancedTableViewer extends TableViewer
     //
 
     /**
-     * {@inheritDoc}
+     * Creates the EnhancedTableViewer for the given table.
+     * 
+     * @param table the table to create the viewer for
      */
     public EnhancedTableViewer(Table table)
     {
@@ -107,7 +109,10 @@ public class EnhancedTableViewer extends TableViewer
     }
 
     /**
-     * {@inheritDoc}
+     * Creates the EnhancedTableViewer for the given parent and style.
+     * 
+     * @param parent parent composite
+     * @param style the style
      */
     public EnhancedTableViewer(Composite parent, int style)
     {
@@ -115,7 +120,9 @@ public class EnhancedTableViewer extends TableViewer
     }
 
     /**
-     * {@inheritDoc}
+     * Creates the EnhancedTableViewer within the given parent composite.
+     * 
+     * @param parent parent composite
      */
     public EnhancedTableViewer(Composite parent)
     {
@@ -179,7 +186,6 @@ public class EnhancedTableViewer extends TableViewer
      * This method installs the enhancements over the standard TableViewer. This
      * method must be called only after all columns are set up for the
      * associated table.
-     * 
      */
     public void installEnhancements()
     {

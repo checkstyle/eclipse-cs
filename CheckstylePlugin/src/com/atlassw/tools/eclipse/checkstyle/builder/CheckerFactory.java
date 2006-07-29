@@ -28,7 +28,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.WeakHashMap;
 
 import org.apache.commons.collections.ReferenceMap;
 import org.eclipse.core.resources.IProject;

@@ -614,9 +614,9 @@ public class CheckConfigurationWorkingSetEditor
             else
             {
                 MessageDialog.openInformation(getShell(),
-
-                Messages.CheckstylePreferencePage_titleCantDelete, Messages.bind(
-                        Messages.CheckstylePreferencePage_msgCantDelete, checkConfig.getName()));
+                        Messages.CheckstylePreferencePage_titleCantDelete, Messages.bind(
+                                Messages.CheckstylePreferencePage_msgCantDelete, checkConfig
+                                        .getName()));
                 return;
             }
         }

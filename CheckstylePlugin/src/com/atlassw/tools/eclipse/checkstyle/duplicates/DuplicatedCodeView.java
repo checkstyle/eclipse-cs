@@ -250,9 +250,7 @@ public class DuplicatedCodeView extends ViewPart
     {}
 
     /**
-     * Cf. method below.
-     * 
-     * @see org.eclipse.ui.IWorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
+     * {@inheritDoc}
      */
     public void createPartControl(Composite parent)
     {

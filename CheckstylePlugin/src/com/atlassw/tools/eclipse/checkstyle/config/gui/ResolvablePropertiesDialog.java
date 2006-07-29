@@ -159,8 +159,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog
         // set the logo
         this.setTitleImage(CheckstylePluginImages.getImage(CheckstylePluginImages.PLUGIN_LOGO));
         this.setTitle(Messages.ResolvablePropertiesDialog_titleMessageArea);
-        this
-                .setMessage(Messages.ResolvablePropertiesDialog_msgAdditionalProperties);
+        this.setMessage(Messages.ResolvablePropertiesDialog_msgAdditionalProperties);
 
         Composite composite = (Composite) super.createDialogArea(parent);
 
@@ -287,8 +286,9 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog
 
             if (StringUtils.trimToNull(prop.getValue()) == null)
             {
-                this.setErrorMessage(NLS.bind(Messages.ResolvablePropertiesDialog_msgMissingPropertyValue, prop
-                        .getPropertyName()));
+                this.setErrorMessage(NLS.bind(
+                        Messages.ResolvablePropertiesDialog_msgMissingPropertyValue, prop
+                                .getPropertyName()));
                 return;
             }
         }
@@ -394,13 +394,13 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog
 
             if (prop == null)
             {
-                prop = new ResolvableProperty(null, null);
+                ResolvableProperty newProp = new ResolvableProperty(null, null);
 
                 ResolvablePropertyEditDialog dialog = new ResolvablePropertyEditDialog(getShell(),
-                        prop);
+                        newProp);
                 if (Dialog.OK == dialog.open())
                 {
-                    mResolvableProperties.add(prop);
+                    mResolvableProperties.add(newProp);
                     mTableViewer.refresh();
                 }
             }
@@ -417,7 +417,8 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog
 
         private void removePropertyItems()
         {
-            boolean confirm = MessageDialog.openQuestion(getShell(), Messages.ResolvablePropertiesDialog_titleRemoveConfirmation,
+            boolean confirm = MessageDialog.openQuestion(getShell(),
+                    Messages.ResolvablePropertiesDialog_titleRemoveConfirmation,
                     Messages.ResolvablePropertiesDialog_msgRemoveConfirmation);
             if (confirm)
             {

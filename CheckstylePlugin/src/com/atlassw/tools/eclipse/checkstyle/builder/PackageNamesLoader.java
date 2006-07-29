@@ -75,7 +75,9 @@ public final class PackageNamesLoader extends AbstractLoader
         super(DTD_PUBLIC_ID, DTD_RESOURCE_NAME);
     }
 
-    /** @see org.xml.sax.helpers.DefaultHandler * */
+    /**
+     * {@inheritDoc}
+     */
     public void startElement(String aNamespaceURI, String aLocalName, String aQName,
             Attributes aAtts) throws SAXException
     {
@@ -91,7 +93,9 @@ public final class PackageNamesLoader extends AbstractLoader
         }
     }
 
-    /** @see org.xml.sax.helpers.DefaultHandler * */
+    /**
+     * {@inheritDoc}
+     */
     public void endElement(String aNamespaceURI, String aLocalName, String aQName)
     {
         if (aQName.equals("package")) //$NON-NLS-1$

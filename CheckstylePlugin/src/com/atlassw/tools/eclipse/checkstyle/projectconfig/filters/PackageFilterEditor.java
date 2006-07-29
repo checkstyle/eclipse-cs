@@ -205,88 +205,105 @@ public class PackageFilterEditor implements IFilterEditor
          */
         public Object[] getChildren(Object parentElement)
         {
-            List children = new ArrayList();
+            List children = null;
 
             if (parentElement instanceof IProject)
             {
 
                 IProject project = (IProject) parentElement;
-
-                if (project.isAccessible())
-                {
-
-                    try
-                    {
-
-                        IJavaProject javaProject = JavaCore.create(project);
-                        if (javaProject.exists())
-                        {
-
-                            IPackageFragmentRoot[] packageRoots = javaProject
-                                    .getAllPackageFragmentRoots();
-
-                            for (int i = 0, size = packageRoots.length; i < size; i++)
-                            {
-
-                                // special case - project itself is package root
-                                if (project.equals(packageRoots[i].getResource()))
-                                {
-
-                                    IResource[] members = project.members();
-                                    for (int j = 0; j < members.length; j++)
-                                    {
-                                        if (members[j].getType() != IResource.FILE)
-                                        {
-                                            children.add(members[j]);
-                                        }
-                                    }
-                                }
-                                else if (!packageRoots[i].isArchive())
-                                {
-                                    children.add(packageRoots[i].getResource());
-                                }
-                            }
-                        }
-                    }
-                    catch (JavaModelException e)
-                    {
-                        CheckstyleLog.log(e);
-                    }
-                    catch (CoreException e)
-                    {
-                        // this should never happen because we call
-                        // #isAccessible before invoking #members
-                    }
-                }
-
+                children = handleProject(project);
             }
             else if (parentElement instanceof IContainer)
             {
 
                 IContainer container = (IContainer) parentElement;
-                if (container.isAccessible())
-                {
-                    try
-                    {
-                        IResource[] members = container.members();
-                        for (int i = 0; i < members.length; i++)
-                        {
-                            if (members[i].getType() != IResource.FILE)
-                            {
-                                children.add(members[i]);
-                            }
-                        }
-                        return children.toArray();
-                    }
-                    catch (CoreException e)
-                    {
-                        // this should never happen because we call
-                        // #isAccessible before invoking #members
-                    }
-                }
+                children = handleContainer(container);
+            }
+            else
+            {
+                children = new ArrayList();
             }
 
             return children.toArray();
+        }
+
+        private List handleProject(IProject project)
+        {
+            List children = new ArrayList();
+
+            if (project.isAccessible())
+            {
+
+                try
+                {
+
+                    IJavaProject javaProject = JavaCore.create(project);
+                    if (javaProject.exists())
+                    {
+
+                        IPackageFragmentRoot[] packageRoots = javaProject
+                                .getAllPackageFragmentRoots();
+
+                        for (int i = 0, size = packageRoots.length; i < size; i++)
+                        {
+
+                            // special case - project itself is package root
+                            if (project.equals(packageRoots[i].getResource()))
+                            {
+
+                                IResource[] members = project.members();
+                                for (int j = 0; j < members.length; j++)
+                                {
+                                    if (members[j].getType() != IResource.FILE)
+                                    {
+                                        children.add(members[j]);
+                                    }
+                                }
+                            }
+                            else if (!packageRoots[i].isArchive())
+                            {
+                                children.add(packageRoots[i].getResource());
+                            }
+                        }
+                    }
+                }
+                catch (JavaModelException e)
+                {
+                    CheckstyleLog.log(e);
+                }
+                catch (CoreException e)
+                {
+                    // this should never happen because we call
+                    // #isAccessible before invoking #members
+                }
+            }
+            return children;
+        }
+
+        private List handleContainer(IContainer container)
+        {
+            List children;
+            children = new ArrayList();
+            if (container.isAccessible())
+            {
+                try
+                {
+                    IResource[] members = container.members();
+                    for (int i = 0; i < members.length; i++)
+                    {
+                        if (members[i].getType() != IResource.FILE)
+                        {
+                            children.add(members[i]);
+                        }
+                    }
+                }
+                catch (CoreException e)
+                {
+                    // this should never happen because we call
+                    // #isAccessible before invoking #members
+                }
+            }
+            return children;
         }
 
         /**

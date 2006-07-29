@@ -73,9 +73,7 @@ public class DuplicatedCodeAction implements IObjectActionDelegate
     }
 
     /**
-     * Cf. method below.
-     * 
-     * @see IObjectActionDelegate#setActivePart(IAction, IWorkbenchPart)
+     * {@inheritDoc}
      */
     public void setActivePart(IAction action, IWorkbenchPart targetPart)
     {
@@ -83,9 +81,7 @@ public class DuplicatedCodeAction implements IObjectActionDelegate
     }
 
     /**
-     * Cf. method below.
-     * 
-     * @seeorg.eclipse.ui.IActionDelegate#run(IAction)
+     * {@inheritDoc}
      */
     public void run(IAction action)
     {
@@ -241,9 +237,7 @@ public class DuplicatedCodeAction implements IObjectActionDelegate
     }
 
     /**
-     * Cf. method below.
-     * 
-     * @see org.eclipse.ui.IActionDelegate#selectionChanged(IAction, ISelection)
+     * {@inheritDoc}
      */
     public void selectionChanged(IAction action, ISelection selection)
     {
