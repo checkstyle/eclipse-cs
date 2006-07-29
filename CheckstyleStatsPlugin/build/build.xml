@@ -24,7 +24,7 @@
 	<property name="fragment.jar.file" value="${fragment.name}.jar" />
 
 	<!-- define ant4eclipse (used for compilation support) -->
-	<taskdef resource="net/sf/ant4eclipse/antlib.xml" classpath="${basedir}/build/ant4eclipse-0.3.2.jar" />
+	<taskdef resource="net/sf/ant4eclipse/antlib.xml" classpath="${basedir}/build/ant4eclipse-0.4.1.jar" />
 
 	<!-- ==================================================== -->
 	<!--   CLEAN TARGET                                       -->
@@ -54,16 +54,11 @@
 		<!-- init -->
 		<mkdir dir="${dist.basedir.tmpdir}/bin" />
 
-		<!-- compile classpath -->
-		<path id="org.eclipse.pde.core.requiredPlugins">
-			<path refid="build.classpath" />
-		</path>
-
 		<!-- read the eclipse classpath -->
-		<getEclipseClasspath project="${basedir}" classpathId="fragment.classpath" />
+		<getEclipseClasspath project="${basedir}" classpathId="fragment.classpath" targetPlatformLocation="${eclipse.platform.dir}" />
 
 		<!-- compile -->
-		<javac srcdir="${basedir}/src" destdir="${dist.basedir.tmpdir}/bin" classpathref="fragment.classpath" source="1.4" debug="on"/>
+		<javac srcdir="${basedir}/src" destdir="${dist.basedir.tmpdir}/bin" classpathref="fragment.classpath" source="1.4" debug="on" />
 
 		<!-- copy properties and other stuff -->
 		<copy todir="${dist.basedir.tmpdir}/bin">
@@ -122,12 +117,12 @@
 
 		<!-- The other way around is easier, just include all but the ouput directories -->
 		<zip destfile="${dist.basedir}/${src.dist.file}" update="false">
-			<fileset dir="${basedir}" includes="**/*">
+			<zipfileset dir="${basedir}" includes="**/*" prefix="CheckstyleStatsPlugin">
 				<exclude name=".settings/**" />
 				<exclude name="dist/**" />
 				<exclude name="bin/**" />
 				<exclude name="build/env.properties" />
-			</fileset>
+			</zipfileset>
 		</zip>
 	</target>
 
@@ -138,19 +133,19 @@
 		<zip destfile="${plugin.bin.zip}" update="true">
 			<zipfileset src="${dist.basedir}/${bin.dist.file}" includes="**/*" />
 		</zip>
-		<delete file="${dist.basedir}/${bin.dist.file}"/>
+		<delete file="${dist.basedir}/${bin.dist.file}" />
 	</target>
 
 	<target name="merge.into.plugin.src.zip" if="plugin.src.zip">
 		<zip destfile="${plugin.src.zip}" update="true">
-			<zipfileset src="${dist.basedir}/${src.dist.file}" includes="**/*" prefix="${project.name}" />
+			<zipfileset src="${dist.basedir}/${src.dist.file}" includes="**/*"/>
 		</zip>
-		<delete file="${dist.basedir}/${src.dist.file}"/>
+		<delete file="${dist.basedir}/${src.dist.file}" />
 	</target>
 
 	<target name="merge.into.update.site" if="update.site.file">
 		<zip destfile="${update.site.file}" update="true">
 			<zipfileset dir="${dist.basedir}" prefix="plugins" includes="${fragment.jar.file}" />
 		</zip>
-	</target>	
+	</target>
 </project>

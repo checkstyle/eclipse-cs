@@ -22,7 +22,7 @@
 	<property name="update.site.file" value="${plugin.name}${plugin.version.postfix}-updatesite.zip" />
 
 	<!-- define ant4eclipse (used for compilation support) -->
-	<taskdef resource="net/sf/ant4eclipse/antlib.xml" classpath="${basedir}/build/ant4eclipse-0.3.2.jar" />
+	<taskdef resource="net/sf/ant4eclipse/antlib.xml" classpath="${basedir}/build/ant4eclipse-0.4.1.jar" />
 
 	<!-- ==================================================== -->
 	<!--   CLEAN TARGET                                       -->
@@ -50,35 +50,12 @@
 	<!-- ==================================================== -->
 	<target name="compile.sources" depends="build.target.area">
 
-		<!-- resolve the org.eclipse.pde.core.requiredPlugins needed by ant4eclipse -->
-		<path id="org.eclipse.pde.core.requiredPlugins">
-			<fileset dir="${eclipse.plugin.dir}">
-				<include name="org.eclipse.core.resources_*.jar" />
-				<include name="org.eclipse.swt_*.jar" />
-				<include name="org.eclipse.jface_*.jar" />
-				<include name="org.eclipse.core.commands_*.jar" />
-				<include name="org.eclipse.ui.workbench_*.jar" />
-				<include name="org.eclipse.jface.text_*.jar" />
-				<include name="org.eclipse.text_*.jar" />
-				<include name="org.eclipse.jdt.core_*.jar" />
-				<include name="org.eclipse.core.runtime_*.jar" />
-				<include name="org.eclipse.osgi_*.jar" />
-				<include name="org.eclipse.ui.ide_*.jar" />
-				<include name="org.eclipse.jdt.ui_*.jar" />
-				<include name="org.eclipse.ui.workbench.texteditor_*.jar" />
-				<include name="org.eclipse.ui.editors_*.jar" />
-				<include name="org.eclipse.core.filebuffers_*.jar" />
-				<include name="org.eclipse.team.cvs.core_*.jar" />
-				<include name="org.eclipse.team.core_*.jar" />
-			</fileset>
-		</path>
-
 		<!-- init -->
 		<mkdir dir="${dist.basedir.tmpdir}/bin" />
 		<mkdir dir="${dist.basedir.tmpdir}/binnls" />
 
 		<!-- read the eclipse classpath -->
-		<getEclipseClasspath project="${basedir}" classpathId="build.classpath" />
+		<getEclipseClasspath project="${basedir}" classpathId="build.classpath" targetPlatformLocation="${eclipse.platform.dir}"/>
 
 		<!-- compile -->
 		<javac srcdir="${basedir}/src" destdir="${dist.basedir.tmpdir}/bin" classpathref="build.classpath" source="1.4" debug="on" />
@@ -147,8 +124,8 @@
 	<target name="build.srcdist" depends="build.target.area" description="Builds the source distribution file">
 
 		<!-- The other way around is easier, just include all but the ouput directories -->
-		<zip destfile="${dist.basedir}/${src.dist.file}" update="false">
-			<zipfileset dir="${basedir}" prefix="${project.name}" includes="**/*">
+		<zip destfile="${dist.basedir}/${src.dist.file}" update="false" >
+			<zipfileset dir="${basedir}" prefix="CheckstylePlugin" includes="**/*">
 				<exclude name="dist/**" />
 				<exclude name="bin/**" />
 				<exclude name="binnls/**" />
@@ -223,7 +200,6 @@
 			<property name="update.site.file" value="${dist.basedir}/${update.site.file}" />
 			<property name="eclipse.plugin.dir" value="${eclipse.plugin.dir}" />
 			<property name="dist.basedir" value="${dist.basedir}" />
-			<reference refid="build.classpath" />
 		</ant>
 	</target>
 
