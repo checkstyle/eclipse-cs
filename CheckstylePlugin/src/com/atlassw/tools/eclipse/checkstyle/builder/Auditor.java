@@ -379,11 +379,16 @@ public class Auditor
                                 new Integer(IMarker.PRIORITY_NORMAL));
                         mMarkerAttributes.put(IMarker.SEVERITY, new Integer(
                                 getSeverityValue(severity)));
+
                         MarkerUtilities.setLineNumber(mMarkerAttributes, error.getLine());
                         MarkerUtilities.setMessage(mMarkerAttributes, getMessage(error));
 
                         // calculate offset for editor annotations
                         calculateMarkerOffset(error, mMarkerAttributes);
+
+                        // enables own category under Java Problem Type
+                        // setting for Problems view (RFE 1530366)
+                        mMarkerAttributes.put("categoryId", new Integer(250));
 
                         // create a marker for the actual resource
                         MarkerUtilities.createMarker(mResource, mMarkerAttributes,

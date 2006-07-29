@@ -81,6 +81,9 @@
       <super
             type="org.eclipse.core.resources.textmarker">
       </super>
+      <super	
+      		type="org.eclipse.jdt.core.problem">
+      </super>
       <persistent
             value="true">
       </persistent>
@@ -90,6 +93,7 @@
       <attribute
             name="MessageKey">
       </attribute>
+      <attribute name="categoryId"/>
    </extension>   
    
 <!--
@@ -410,6 +414,19 @@
             category="com.atlassw.tools.eclipse.checkstyle.category"
             name="%DuplicatedCodeView.name"
             id="com.atlassw.tools.eclipse.checkstyle.duplicatesView"/>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.ide.markerSupport">
+         
+         <markerGroupingEntry id="com.atlassw.tools.eclipse.checkstyle.CheckstyleMarker"
+        	markerGrouping="org.eclipse.jdt.ui.java_marker_category"
+        	label="%CheckstyleMarker.name"
+        	priority="0"/>
+        	
+       	 <markerAttributeGrouping markerType="org.eclipse.jdt.core.problem" attribute="categoryId">
+		 	<markerAttributeMapping value="250" markerGroupingEntry="com.atlassw.tools.eclipse.checkstyle.CheckstyleMarker"/>
+   		 </markerAttributeGrouping>
    </extension>
    
 </plugin>
