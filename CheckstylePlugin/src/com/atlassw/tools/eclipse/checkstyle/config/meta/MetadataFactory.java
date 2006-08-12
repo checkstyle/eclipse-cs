@@ -172,8 +172,9 @@ public final class MetadataFactory
      * delivered with the plugin.
      * 
      * @param module the module
+     * @return the generic metadata built
      */
-    public static void createGenericMetadata(Module module)
+    public static RuleMetadata createGenericMetadata(Module module)
     {
 
         String parent = null;
@@ -214,6 +215,7 @@ public final class MetadataFactory
                     property.getName(), null);
             property.setMetaData(meta);
         }
+        return ruleMeta;
     }
 
     /**

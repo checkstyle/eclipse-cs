@@ -53,6 +53,7 @@ import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.config.ConfigurationReader;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
+import com.atlassw.tools.eclipse.checkstyle.config.Module;
 import com.atlassw.tools.eclipse.checkstyle.config.meta.MetadataFactory;
 import com.atlassw.tools.eclipse.checkstyle.config.meta.RuleMetadata;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
@@ -368,13 +369,18 @@ public class Auditor
 
                         RuleMetadata metaData = MetadataFactory.getRuleMetadata(error
                                 .getSourceName());
-                        if (metaData != null)
+
+                        // create generic metadata if none can be found
+                        if (metaData == null)
                         {
-                            mMarkerAttributes.put(CheckstyleMarker.MODULE_NAME, metaData
-                                    .getInternalName());
-                            mMarkerAttributes.put(CheckstyleMarker.MESSAGE_KEY, error
-                                    .getLocalizedMessage().getKey());
+                            Module module = new Module(error.getSourceName());
+                            metaData = MetadataFactory.createGenericMetadata(module); 
                         }
+
+                        mMarkerAttributes.put(CheckstyleMarker.MODULE_NAME, metaData
+                                .getInternalName());
+                        mMarkerAttributes.put(CheckstyleMarker.MESSAGE_KEY, error
+                                .getLocalizedMessage().getKey());
                         mMarkerAttributes.put(IMarker.PRIORITY,
                                 new Integer(IMarker.PRIORITY_NORMAL));
                         mMarkerAttributes.put(IMarker.SEVERITY, new Integer(

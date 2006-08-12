@@ -20,8 +20,10 @@
 
 package net.sf.eclipsecs.stats.data;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -192,7 +194,18 @@ public class CreateStatsJob extends Job
         RuleMetadata ruleMetadata = MetadataFactory.getRuleMetadata((String) marker
                 .getAttribute(CheckstyleMarker.MODULE_NAME));
 
-        for (Iterator iter = ruleMetadata.getAlternativeNames().iterator(); iter.hasNext();)
+        // for some unknown reason there is no metadata or key
+        if (key == null || ruleMetadata == null)
+        {
+            // return the actual message
+            return (String) marker.getAttribute(IMarker.MESSAGE);
+        }
+
+        List namesToCheck = new ArrayList();
+        namesToCheck.add(ruleMetadata.getInternalName());
+        namesToCheck.addAll(ruleMetadata.getAlternativeNames());
+
+        for (Iterator iter = namesToCheck.iterator(); iter.hasNext();)
         {
             String checker = (String) iter.next();
             try
@@ -206,8 +219,8 @@ public class CreateStatsJob extends Job
             }
         }
 
-        // none was found: return the key name
-        return key;
+        // none was found: return the current message
+        return (String) marker.getAttribute(IMarker.MESSAGE);
     }
 
     /**
