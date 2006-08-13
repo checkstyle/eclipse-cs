@@ -29,11 +29,11 @@ import net.sf.eclipsecs.stats.export.internal.RTFStatsExporter;
  */
 public class StatsExporterFactory
 {
-    /** RTF exporter type */
+    /** RTF exporter type. */
     public static final String RTF = "rtf";
 
     /**
-     * Constructor
+     * Constructor.
      */
     private StatsExporterFactory()
     {

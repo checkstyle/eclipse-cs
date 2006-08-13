@@ -284,7 +284,7 @@ public class RTFStatsExporter extends AbstractStatsExporter
 
     /**
      * From the File given by the user, computes the real name of the output
-     * file
+     * file.
      * 
      * @param outputFile
      *            the output file as given by the user

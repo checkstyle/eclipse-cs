@@ -73,6 +73,8 @@
 				style="padding-top: 58px; border-top: 0px solid #FFFFFF;     background-image: url(images/eclipse-cs.png); background-repeat: no-repeat;">
 				<!--<img src="images/eclipse-cs.png" alt="eclipse-cs Logo"/>--> The Checkstyle
 				Plug-in for Eclipse </a>
+			<a href="https://sourceforge.net/project/showfiles.php?group_id=80344"
+				class="level1">Downloads</a>
 			<a href="screen_shots.html" class="level1">Screenshots</a>
 			<a href="release_notes.html" class="level1">Release Notes</a>
 			<a href="faq.html" class="level1">FAQ</a>
@@ -135,8 +137,6 @@
 					class="level2">File a feature request</a>
 				<a href="https://sourceforge.net/forum/?group_id=80344" class="level2">Get help in
 					the Forums</a>
-				<a href="https://sourceforge.net/project/showfiles.php?group_id=80344"
-					class="level2">Downloads</a>
 			</xsl:if>
 		</div>
 		<div class="box navsection-box">

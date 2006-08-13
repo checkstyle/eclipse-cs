@@ -21,7 +21,7 @@
 package net.sf.eclipsecs.stats.export;
 
 /**
- * Exception that can occur during a report generation
+ * Exception that can occur during a report generation.
  * @author Fabrice BELLINGARD
  */
 public class StatsExporterException extends Exception
