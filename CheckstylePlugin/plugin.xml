@@ -422,10 +422,10 @@
          <markerGroupingEntry id="com.atlassw.tools.eclipse.checkstyle.CheckstyleMarker"
         	markerGrouping="org.eclipse.jdt.ui.java_marker_category"
         	label="%CheckstyleMarker.name"
-        	priority="0"/>
+        	priority="1"/>
         	
        	 <markerAttributeGrouping markerType="org.eclipse.jdt.core.problem" attribute="categoryId">
-		 	<markerAttributeMapping value="250" markerGroupingEntry="com.atlassw.tools.eclipse.checkstyle.CheckstyleMarker"/>
+		 	<markerAttributeMapping value="999" markerGroupingEntry="com.atlassw.tools.eclipse.checkstyle.CheckstyleMarker"/>
    		 </markerAttributeGrouping>
    </extension>
    

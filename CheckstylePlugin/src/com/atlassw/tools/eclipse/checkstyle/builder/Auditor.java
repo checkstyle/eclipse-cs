@@ -394,7 +394,7 @@ public class Auditor
 
                         // enables own category under Java Problem Type
                         // setting for Problems view (RFE 1530366)
-                        mMarkerAttributes.put("categoryId", new Integer(250));
+                        mMarkerAttributes.put("categoryId", new Integer(999));
 
                         // create a marker for the actual resource
                         MarkerUtilities.createMarker(mResource, mMarkerAttributes,
