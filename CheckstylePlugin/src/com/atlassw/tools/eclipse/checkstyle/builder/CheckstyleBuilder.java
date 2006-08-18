@@ -30,6 +30,7 @@ import java.util.Map;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceDelta;
@@ -41,9 +42,11 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.ui.texteditor.MarkerUtilities;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
+import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.nature.CheckstyleNature;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileSet;
@@ -162,45 +165,75 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
 
         // get the associated project for this builder
         IProject project = getProject();
+        
+        //remove project level error markers
+        project.deleteMarkers(CheckstyleMarker.MARKER_ID, false, IResource.DEPTH_ZERO);
 
-        if (project != null)
+        if (CheckstyleNature.hasCorrectBuilderOrder(project))
         {
 
-            //
-            // get the project configuration
-            //
-            IProjectConfiguration config = null;
-            try
+            if (project != null)
             {
-                config = ProjectConfigurationFactory.getConfiguration(project);
+
+                //
+                // get the project configuration
+                //
+                IProjectConfiguration config = null;
+                try
+                {
+                    config = ProjectConfigurationFactory.getConfiguration(project);
+                }
+                catch (CheckstylePluginException e)
+                {
+                    Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID,
+                            IStatus.ERROR, e.getMessage() != null ? e.getMessage()
+                                    : ErrorMessages.CheckstyleBuilder_msgErrorUnknown, e);
+                    throw new CoreException(status);
+                }
+
+                Collection files = null;
+
+                // get the delta of the latest changes
+                IResourceDelta resourceDelta = getDelta(project);
+
+                IFilter[] filters = (IFilter[]) config.getFilters().toArray(
+                        new IFilter[config.getFilters().size()]);
+
+                // find the files for the build
+                if (resourceDelta != null)
+                {
+                    files = getFiles(resourceDelta, filters);
+                }
+                else
+                {
+                    files = getFiles(project, filters);
+                }
+
+                handleBuildSelection(files, config, monitor, project, kind);
             }
-            catch (CheckstylePluginException e)
-            {
-                Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID,
-                        IStatus.ERROR, e.getMessage() != null ? e.getMessage()
-                                : ErrorMessages.CheckstyleBuilder_msgErrorUnknown, e);
-                throw new CoreException(status);
-            }
+        }
+        else
+        {
 
-            Collection files = null;
+            // the builder order is wrong. Refuse to check and create a error
+            // marker.
 
-            // get the delta of the latest changes
-            IResourceDelta resourceDelta = getDelta(project);
+            // remove all existing Checkstyle markers
+            project.deleteMarkers(CheckstyleMarker.MARKER_ID, false, IResource.DEPTH_INFINITE);
 
-            IFilter[] filters = (IFilter[]) config.getFilters().toArray(
-                    new IFilter[config.getFilters().size()]);
+            Map markerAttributes = new HashMap();
+            markerAttributes.put(IMarker.PRIORITY, new Integer(IMarker.PRIORITY_HIGH));
+            markerAttributes.put(IMarker.SEVERITY, new Integer(IMarker.SEVERITY_ERROR));
+            markerAttributes.put(IMarker.MESSAGE, NLS.bind(
+                    Messages.CheckstyleBuilder_msgWrongBuilderOrder, project.getName()));
 
-            // find the files for the build
-            if (resourceDelta != null)
-            {
-                files = getFiles(resourceDelta, filters);
-            }
-            else
-            {
-                files = getFiles(project, filters);
-            }
+            // enables own category under Java Problem Type
+            // setting for Problems view (RFE 1530366)
+            markerAttributes.put("categoryId", new Integer(999)); //$NON-NLS-1$
 
-            handleBuildSelection(files, config, monitor, project, kind);
+            // create a marker for the actual resource
+            MarkerUtilities.createMarker(project, markerAttributes, CheckstyleMarker.MARKER_ID);
+
         }
 
         return new IProject[] { project };

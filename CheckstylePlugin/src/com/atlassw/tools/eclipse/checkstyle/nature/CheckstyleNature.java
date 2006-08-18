@@ -32,6 +32,7 @@ import org.eclipse.core.resources.IProjectNature;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.jdt.core.JavaCore;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleBuilder;
@@ -96,7 +97,7 @@ public class CheckstyleNature implements IProjectNature
             command.setBuilderName(CheckstyleBuilder.BUILDER_ID);
             ICommand[] newCommands = new ICommand[commands.length + 1];
 
-            // Add it before other builders.
+            // Add it after the other builders.
             System.arraycopy(commands, 0, newCommands, 0, commands.length);
             newCommands[commands.length] = command;
             description.setBuildSpec(newCommands);
@@ -155,6 +156,39 @@ public class CheckstyleNature implements IProjectNature
     public void setProject(IProject project)
     {
         mProject = project;
+    }
+
+    /**
+     * Checks if the ordering of the builders of the given project is correct,
+     * more specifically if the CheckstyleBuilder is set to run after the
+     * JavaBuilder.
+     * 
+     * @param project the project to check
+     * @return <code>true</code> if the builder order for this project is
+     *         correct, <code>false</code> otherwise
+     * @throws CoreException error getting project description
+     */
+    public static boolean hasCorrectBuilderOrder(IProject project) throws CoreException
+    {
+        IProjectDescription description = project.getDescription();
+        ICommand[] commands = description.getBuildSpec();
+
+        int javaBuilderIndex = -1;
+        int checkstyleBuilderIndex = -1;
+
+        for (int i = 0; i < commands.length; i++)
+        {
+
+            if (commands[i].getBuilderName().equals(CheckstyleBuilder.BUILDER_ID))
+            {
+                checkstyleBuilderIndex = i;
+            }
+            else if (commands[i].getBuilderName().equals(JavaCore.BUILDER_ID))
+            {
+                javaBuilderIndex = i;
+            }
+        }
+        return javaBuilderIndex < checkstyleBuilderIndex;
     }
 
 }

@@ -108,6 +108,8 @@ public final class Messages extends NLS
 
     public static String CheckConfigurationPropertiesDialog_titleCheckProperties;
 
+    public static String CheckstyleBuilder_msgWrongBuilderOrder;
+
     public static String CheckstylePreferencePage_btnConfigure;
 
     public static String CheckstylePreferencePage_btnCopy;
