@@ -66,9 +66,8 @@ public class MissingSwitchDefaultQuickfix extends AbstractASTResolution
                             Messages.MissingSwitchDefaultQuickfix_defaultCaseComment,
                             ASTNode.LINE_COMMENT);
                     listRewrite.insertLast(comment, null);
-                    return true;
                 }
-                return false;
+                return true;
             }
         };
     }

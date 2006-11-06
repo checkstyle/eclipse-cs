@@ -27,6 +27,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.AST;
@@ -34,12 +35,14 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
+import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.text.BadLocationException;
-import org.eclipse.jface.text.Document;
+import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.text.edits.MalformedTreeException;
 import org.eclipse.text.edits.TextEdit;
+import org.eclipse.ui.IEditorPart;
 
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 
@@ -81,8 +84,10 @@ public abstract class AbstractASTResolution implements ICheckstyleMarkerResoluti
             return;
         }
 
-        ICompilationUnit compilationUnit = JavaCore.createCompilationUnitFrom((IFile) resource);
-
+        //ICompilationUnit compilationUnit = JavaCore.createCompilationUnitFrom((IFile) resource);
+        
+        ICompilationUnit compilationUnit = getCompilationUnit(marker);
+        
         if (compilationUnit == null)
         {
             return;
@@ -95,8 +100,15 @@ public abstract class AbstractASTResolution implements ICheckstyleMarkerResoluti
             IProgressMonitor monitor = new NullProgressMonitor();
 
             workingCopy = compilationUnit.getWorkingCopy(monitor);
-            String source = workingCopy.getBuffer().getContents();
-            Document doc = new Document(source);
+            //String source = workingCopy.getBuffer().getContents();
+            IDocument doc;
+            
+            IEditorPart part = JavaUI.openInEditor(workingCopy);
+            doc = JavaUI.getDocumentProvider().getDocument(part.getEditorInput());
+            
+//            if (part instanceof ITextEditor) {
+//            	((ITextEditor)part).selectAndReveal(offset, length);
+//            }
 
             // determine the source region if the line where the marker lies
             int lineNumber = ((Integer) marker.getAttribute(IMarker.LINE_NUMBER)).intValue();
@@ -118,15 +130,15 @@ public abstract class AbstractASTResolution implements ICheckstyleMarkerResoluti
             ast.accept(handleGetCorrectingASTVisitor(rewrite, lineInfo));
 
             // rewrite all recorded changes to the document
-            TextEdit edit = rewrite.rewriteAST(doc, null);
+            TextEdit edit = rewrite.rewriteAST(doc, workingCopy.getJavaProject().getOptions(true));
             edit.apply(doc);
 
             // update of the compilation unit
-            workingCopy.getBuffer().setContents(doc.get());
+            //workingCopy.getBuffer().setContents(doc.get());
             workingCopy.reconcile(ICompilationUnit.NO_AST, false, null, null);
 
             // Commit changes
-            workingCopy.commitWorkingCopy(false, null);
+            //workingCopy.commitWorkingCopy(false, null);
         }
         catch (CoreException e)
         {
@@ -157,7 +169,18 @@ public abstract class AbstractASTResolution implements ICheckstyleMarkerResoluti
         }
     }
 
-    /**
+	private static ICompilationUnit getCompilationUnit(IMarker marker) 
+	{
+		IResource res = marker.getResource();
+		if (res instanceof IFile && res.isAccessible()) {
+			IJavaElement element = JavaCore.create((IFile) res);
+			if (element instanceof ICompilationUnit)
+				return (ICompilationUnit) element;
+		}
+		return null;
+	}
+
+	/**
      * Template method to be implemented by concrete quickfix implementations.
      * These must provide their fixing modification through an AST visitor, more
      * specifically by doing the neccessary modifications through the given
