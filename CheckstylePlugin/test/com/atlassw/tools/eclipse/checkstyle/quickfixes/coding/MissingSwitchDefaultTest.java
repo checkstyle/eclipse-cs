@@ -56,22 +56,30 @@ public class MissingSwitchDefaultTest {
 	"}\n" +
 	"}\n";
 
+	private Document doc;
+
+	private ASTNode ast;
+
+	private MissingSwitchDefaultQuickfix fix;
+
+	private ASTRewrite rewrite;
+
 	@Before
 	public void Setup()
 	{
-		
+		doc = new Document(testSource);
+		ASTParser parser = ASTParser.newParser(AST.JLS3);
+		parser.setSource(doc.get().toCharArray());
+		ast = parser.createAST(new NullProgressMonitor());
+		fix = new MissingSwitchDefaultQuickfix();
+		rewrite = ASTRewrite.create(ast.getAST());
 	}
+		
 	
 	@Test
 	public void testMissingSwitch() throws Exception
 	{
-		Document doc = new Document(testSource);
-		ASTParser parser = ASTParser.newParser(AST.JLS3);
-		parser.setSource(doc.get().toCharArray());
-		ASTNode ast = parser.createAST(new NullProgressMonitor());
-		MissingSwitchDefaultQuickfix fix = new MissingSwitchDefaultQuickfix();
-		ASTRewrite rewrite = ASTRewrite.create(ast.getAST());
-        IRegion lineInfo = doc.getLineInformation(2);
+		IRegion lineInfo = doc.getLineInformation(2);
 		ast.accept(fix.handleGetCorrectingASTVisitor(rewrite, lineInfo));
 
 		TextEdit edit = rewrite.rewriteAST(doc, null);
@@ -82,12 +90,6 @@ public class MissingSwitchDefaultTest {
 	@Test
 	public void testMissingSwitchInner() throws Exception
 	{
-		Document doc = new Document(testSource);
-		ASTParser parser = ASTParser.newParser(AST.JLS3);
-		parser.setSource(doc.get().toCharArray());
-		ASTNode ast = parser.createAST(new NullProgressMonitor());
-		MissingSwitchDefaultQuickfix fix = new MissingSwitchDefaultQuickfix();
-		ASTRewrite rewrite = ASTRewrite.create(ast.getAST());
         IRegion lineInfo = doc.getLineInformation(5);
 		ast.accept(fix.handleGetCorrectingASTVisitor(rewrite, lineInfo));
 
