@@ -8,6 +8,7 @@
 	<classpathentry exported="true" kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry exported="true" kind="lib" path="lib/commons-lang-2.1.jar" sourcepath="D:/_libs/commons-lang-2.1/src"/>
 	<classpathentry kind="lib" path="lib/checkstyle-all-4.2.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="var" path="JMOCK_HOME/jmock-1.1.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

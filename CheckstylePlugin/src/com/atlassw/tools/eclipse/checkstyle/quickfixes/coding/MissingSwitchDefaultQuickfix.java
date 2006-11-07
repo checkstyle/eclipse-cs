@@ -67,7 +67,7 @@ public class MissingSwitchDefaultQuickfix extends AbstractASTResolution
                             ASTNode.LINE_COMMENT);
                     listRewrite.insertLast(comment, null);
                 }
-                return true;
+                return true; // also visit children
             }
         };
     }

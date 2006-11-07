@@ -54,9 +54,8 @@ public class EmptyStatementQuickfix extends AbstractASTResolution
                         && pos <= (lineInfo.getOffset() + lineInfo.getLength()))
                 {
                     rewrite.remove(node, null);
-                    return true;
                 }
-                return false;
+                return true;
             }
         };
     }

@@ -100,9 +100,8 @@ public class RedundantModifierQuickfix extends AbstractASTResolution
                             rewrite.remove(modifier, null);
                         }
                     }
-                    return true;
                 }
-                return false;
+                return true;
             }
 
             public boolean visit(FieldDeclaration node)
@@ -146,9 +145,8 @@ public class RedundantModifierQuickfix extends AbstractASTResolution
                             rewrite.remove(modifier, null);
                         }
                     }
-                    return true;
                 }
-                return false;
+                return true;
             }
 
             public boolean visit(AnnotationTypeMemberDeclaration node)
@@ -183,9 +181,8 @@ public class RedundantModifierQuickfix extends AbstractASTResolution
                             rewrite.remove(modifier, null);
                         }
                     }
-                    return true;
                 }
-                return false;
+                return true;
             }
         };
     }

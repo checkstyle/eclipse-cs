@@ -60,7 +60,7 @@ public class ArrayTypeStyleQuickfix extends AbstractASTResolution
 
                     rewrite.replace(node, copy, null);
                 }
-                return false;
+                return true;
             }
         };
     }

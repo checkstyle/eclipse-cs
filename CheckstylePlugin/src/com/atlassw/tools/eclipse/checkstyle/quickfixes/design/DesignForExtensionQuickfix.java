@@ -125,10 +125,8 @@ public class DesignForExtensionQuickfix extends AbstractASTResolution
 
                         astRewrite.replace(node, copy, null);
                     }
-
-                    return true;
                 }
-                return false;
+                return true;
             }
         };
     }

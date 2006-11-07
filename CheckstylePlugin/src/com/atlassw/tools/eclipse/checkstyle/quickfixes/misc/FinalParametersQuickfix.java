@@ -86,10 +86,8 @@ public class FinalParametersQuickfix extends AbstractASTResolution
                             astRewrite.replace(param, copy, null);
                         }
                     }
-
-                    return true;
                 }
-                return false;
+                return true;
             }
         };
     }

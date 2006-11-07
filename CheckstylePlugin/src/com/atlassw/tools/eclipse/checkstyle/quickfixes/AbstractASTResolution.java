@@ -28,14 +28,12 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
-import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
-import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
@@ -51,129 +49,127 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
  * 
  * @author Lars Ködderitzsch
  */
-public abstract class AbstractASTResolution implements ICheckstyleMarkerResolution
-{
+public abstract class AbstractASTResolution implements
+		ICheckstyleMarkerResolution {
 
-    /**
-     * {@inheritDoc}
-     */
-    public boolean canFix(IMarker marker)
-    {
-        return true;
-    }
+	private IJavaCoreFactory javaCoreFactory;
+	private IJavaUIFactory javaUIFactory;
 
-    /**
-     * {@inheritDoc}
-     */
-    public Image getImage()
-    {
-        // default implementation returns no image
-        return null;
-    }
+	public AbstractASTResolution() {
+		this(new JavaCoreFactory(), new JavaUIFactory());
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public void run(IMarker marker)
-    {
+	public AbstractASTResolution(IJavaCoreFactory jcFactory,
+			IJavaUIFactory juiFactory) {
+		this.javaCoreFactory = jcFactory;
+		this.javaUIFactory = juiFactory;
+	}
 
-        IResource resource = marker.getResource();
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean canFix(IMarker marker) {
+		return true;
+	}
 
-        if (!(resource instanceof IFile))
-        {
-            return;
-        }
+	/**
+	 * {@inheritDoc}
+	 */
+	public Image getImage() {
+		// default implementation returns no image
+		return null;
+	}
 
-        //ICompilationUnit compilationUnit = JavaCore.createCompilationUnitFrom((IFile) resource);
-        
-        ICompilationUnit compilationUnit = getCompilationUnit(marker);
-        
-        if (compilationUnit == null)
-        {
-            return;
-        }
+	/**
+	 * {@inheritDoc}
+	 */
+	public void run(IMarker marker) {
 
-        ICompilationUnit workingCopy = null;
+		IResource resource = marker.getResource();
 
-        try
-        {
-            IProgressMonitor monitor = new NullProgressMonitor();
+		if (!(resource instanceof IFile)) {
+			return;
+		}
 
-            workingCopy = compilationUnit.getWorkingCopy(monitor);
-            //String source = workingCopy.getBuffer().getContents();
-            IDocument doc;
-            
-            IEditorPart part = JavaUI.openInEditor(workingCopy);
-            doc = JavaUI.getDocumentProvider().getDocument(part.getEditorInput());
-            
-//            if (part instanceof ITextEditor) {
-//            	((ITextEditor)part).selectAndReveal(offset, length);
-//            }
+		// ICompilationUnit compilationUnit =
+		// JavaCore.createCompilationUnitFrom((IFile) resource);
+		ICompilationUnit compilationUnit = getCompilationUnit(marker);
 
-            // determine the source region if the line where the marker lies
-            int lineNumber = ((Integer) marker.getAttribute(IMarker.LINE_NUMBER)).intValue();
-            IRegion lineInfo = doc.getLineInformation(lineNumber == 0 ? 0 : lineNumber - 1);
+		if (compilationUnit == null) {
+			return;
+		}
 
-            ASTParser astParser = ASTParser.newParser(AST.JLS3);
+		ICompilationUnit workingCopy = null;
 
-            // only create a partial AST
-            if (handleGetCreateOnlyPartialAST())
-            {
-                astParser.setFocalPosition(lineInfo.getOffset());
-            }
-            astParser.setSource(workingCopy);
+		try {
+			IProgressMonitor monitor = new NullProgressMonitor();
 
-            ASTNode ast = astParser.createAST(monitor);
+			workingCopy = compilationUnit.getWorkingCopy(monitor);
+			IEditorPart part = javaUIFactory.openInEditor(workingCopy);
+			IDocument doc = javaUIFactory.getDocumentProvider().getDocument(
+					part.getEditorInput());
+			// String source = workingCopy.getBuffer().getContents();
 
-            // collect the changes from the concrete quickfix
-            ASTRewrite rewrite = ASTRewrite.create(ast.getAST());
-            ast.accept(handleGetCorrectingASTVisitor(rewrite, lineInfo));
+			// if (part instanceof ITextEditor) {
+			// ((ITextEditor)part).selectAndReveal(offset, length);
+			// }
 
-            // rewrite all recorded changes to the document
-            TextEdit edit = rewrite.rewriteAST(doc, workingCopy.getJavaProject().getOptions(true));
-            edit.apply(doc);
+			// determine the source region if the line where the marker lies
+			int lineNumber = ((Integer) marker
+					.getAttribute(IMarker.LINE_NUMBER)).intValue();
+			IRegion lineInfo = doc.getLineInformation(lineNumber == 0 ? 0
+					: lineNumber - 1);
 
-            // update of the compilation unit
-            //workingCopy.getBuffer().setContents(doc.get());
-            workingCopy.reconcile(ICompilationUnit.NO_AST, false, null, null);
+			// int markerStart = ((Integer)
+			// marker.getAttribute(IMarker.CHAR_START)).intValue();
+			ASTParser astParser = ASTParser.newParser(AST.JLS3);
 
-            // Commit changes
-            //workingCopy.commitWorkingCopy(false, null);
-        }
-        catch (CoreException e)
-        {
-            CheckstyleLog.log(e, "Error processing quickfix");
-        }
-        catch (MalformedTreeException e)
-        {
-            CheckstyleLog.log(e, "Error processing quickfix");
-        }
-        catch (BadLocationException e)
-        {
-            CheckstyleLog.log(e, "Error processing quickfix");
-        }
-        finally
-        {
-            if (workingCopy != null)
-            {
-                // Destroy working copy
-                try
-                {
-                    workingCopy.discardWorkingCopy();
-                }
-                catch (JavaModelException e)
-                {
-                    CheckstyleLog.log(e);
-                }
-            }
-        }
-    }
+			// only create a partial AST
+			if (handleGetCreateOnlyPartialAST()) {
+				astParser.setFocalPosition(lineInfo.getOffset());
+				// astParser.setFocalPosition(markerStart);
+			}
+			astParser.setSource(workingCopy);
 
-	private static ICompilationUnit getCompilationUnit(IMarker marker) 
-	{
+			ASTNode ast = astParser.createAST(monitor);
+
+			// collect the changes from the concrete quickfix
+			ASTRewrite rewrite = ASTRewrite.create(ast.getAST());
+			ast.accept(handleGetCorrectingASTVisitor(rewrite, lineInfo));
+
+			// rewrite all recorded changes to the document
+			TextEdit edit = rewrite.rewriteAST(doc, workingCopy
+					.getJavaProject().getOptions(true));
+			edit.apply(doc);
+
+			// update of the compilation unit
+			// workingCopy.getBuffer().setContents(doc.get());
+			workingCopy.reconcile(ICompilationUnit.NO_AST, false, null, null);
+
+			// Commit changes
+			// workingCopy.commitWorkingCopy(false, null);
+		} catch (CoreException e) {
+			CheckstyleLog.log(e, "Error processing quickfix");
+		} catch (MalformedTreeException e) {
+			CheckstyleLog.log(e, "Error processing quickfix");
+		} catch (BadLocationException e) {
+			CheckstyleLog.log(e, "Error processing quickfix");
+		} finally {
+			if (workingCopy != null) {
+				// Destroy working copy
+				try {
+					workingCopy.discardWorkingCopy();
+				} catch (JavaModelException e) {
+					CheckstyleLog.log(e);
+				}
+			}
+		}
+	}
+
+	private ICompilationUnit getCompilationUnit(IMarker marker) {
 		IResource res = marker.getResource();
 		if (res instanceof IFile && res.isAccessible()) {
-			IJavaElement element = JavaCore.create((IFile) res);
+			IJavaElement element = javaCoreFactory.create((IFile) res);
 			if (element instanceof ICompilationUnit)
 				return (ICompilationUnit) element;
 		}
@@ -181,28 +177,28 @@ public abstract class AbstractASTResolution implements ICheckstyleMarkerResoluti
 	}
 
 	/**
-     * Template method to be implemented by concrete quickfix implementations.
-     * These must provide their fixing modification through an AST visitor, more
-     * specifically by doing the neccessary modifications through the given
-     * ASTRewrite object.
-     * 
-     * @param astRewrite the ASTRewrite object where modifications should be
-     *            added
-     * @param lineInfo the IRegion for the line containing the marker to fix
-     * @return the modifying AST visitor
-     */
-    protected abstract ASTVisitor handleGetCorrectingASTVisitor(ASTRewrite astRewrite,
-            IRegion lineInfo);
+	 * Template method to be implemented by concrete quickfix implementations.
+	 * These must provide their fixing modification through an AST visitor, more
+	 * specifically by doing the neccessary modifications through the given
+	 * ASTRewrite object.
+	 * 
+	 * @param astRewrite
+	 *            the ASTRewrite object where modifications should be added
+	 * @param lineInfo
+	 *            the IRegion for the line containing the marker to fix
+	 * @return the modifying AST visitor
+	 */
+	protected abstract ASTVisitor handleGetCorrectingASTVisitor(
+			ASTRewrite astRewrite, IRegion lineInfo);
 
-    /**
-     * Determines if only a partial AST should be created (optimization).
-     * 
-     * @return <code>true</code> if only a partial AST should be created
-     *         <code>false</code> otherwise
-     */
-    protected boolean handleGetCreateOnlyPartialAST()
-    {
-        return true;
-    }
+	/**
+	 * Determines if only a partial AST should be created (optimization).
+	 * 
+	 * @return <code>true</code> if only a partial AST should be created
+	 *         <code>false</code> otherwise
+	 */
+	protected boolean handleGetCreateOnlyPartialAST() {
+		return true;
+	}
 
 }

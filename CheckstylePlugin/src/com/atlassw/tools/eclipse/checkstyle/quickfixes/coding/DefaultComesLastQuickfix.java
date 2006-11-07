@@ -88,9 +88,8 @@ public class DefaultComesLastQuickfix extends AbstractASTResolution
                             }
                         }
                     }
-                    return true;
                 }
-                return false;
+                return true;
             }
         };
     }
