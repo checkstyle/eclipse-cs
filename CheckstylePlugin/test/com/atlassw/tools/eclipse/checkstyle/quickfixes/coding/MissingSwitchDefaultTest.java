@@ -13,10 +13,11 @@ import org.eclipse.jface.text.IRegion;
 import org.eclipse.text.edits.TextEdit;
 import org.junit.*;
 import org.junit.Assert;
+import com.atlassw.tools.eclipse.checkstyle.quickfixes.Utility;
 
 public class MissingSwitchDefaultTest {
 
-	private String testSource = "public class A {\n" +
+	private String source = "public class A {\n" +
 			"public void foo() {\n" +
 			"switch(a) {\n" +
 			"case 1: bar(); break;\n" +
@@ -28,74 +29,52 @@ public class MissingSwitchDefaultTest {
 			"}\n" +
 			"}\n";
 
-	private String testSourceRes1 = "public class A {\n" +
-	"public void foo() {\n" +
-	"switch(a) {\n" +
-	"case 1: bar(); break;\n" +
-	"case 2:\n" +
-	"switch(b) {\n" +
-	"case 3: bar(); break;\n" +
-	"}; break;\n" +
-	"	default:\n" + 
-	"		// TODO add default case statements\n" +
-	"}\n" +
-	"}\n" +
-	"}\n";
-
-	private String testSourceRes2 = "public class A {\n" +
-	"public void foo() {\n" +
-	"switch(a) {\n" +
-	"case 1: bar(); break;\n" +
-	"case 2:\n" +
-	"switch(b) {\n" +
-	"case 3: bar(); break;\n" +
-	"	default:\n" + 
-	"		// TODO add default case statements\n" +
-	"}; break;\n" +
-	"}\n" +
-	"}\n" +
-	"}\n";
-
-	private Document doc;
-
-	private ASTNode ast;
 
 	private MissingSwitchDefaultQuickfix fix;
 
-	private ASTRewrite rewrite;
-
 	@Before
-	public void Setup()
+	public void setUp()
 	{
-		doc = new Document(testSource);
-		ASTParser parser = ASTParser.newParser(AST.JLS3);
-		parser.setSource(doc.get().toCharArray());
-		ast = parser.createAST(new NullProgressMonitor());
 		fix = new MissingSwitchDefaultQuickfix();
-		rewrite = ASTRewrite.create(ast.getAST());
 	}
-		
 	
 	@Test
 	public void testMissingSwitch() throws Exception
 	{
-		IRegion lineInfo = doc.getLineInformation(2);
-		ast.accept(fix.handleGetCorrectingASTVisitor(rewrite, lineInfo));
-
-		TextEdit edit = rewrite.rewriteAST(doc, null);
-        edit.apply(doc);
-        Assert.assertEquals(testSourceRes1, doc.get());
+		String expected1 = "public class A {\n" +
+		"public void foo() {\n" +
+		"switch(a) {\n" +
+		"case 1: bar(); break;\n" +
+		"case 2:\n" +
+		"switch(b) {\n" +
+		"case 3: bar(); break;\n" +
+		"}; break;\n" +
+		"	default:\n" + 
+		"		// TODO add default case statements\n" +
+		"}\n" +
+		"}\n" +
+		"}\n";
+		Utility.commonTestFix(source, expected1, fix, 2);
 	}
 	
 	@Test
 	public void testMissingSwitchInner() throws Exception
 	{
-        IRegion lineInfo = doc.getLineInformation(5);
-		ast.accept(fix.handleGetCorrectingASTVisitor(rewrite, lineInfo));
+		String expected2 = "public class A {\n" +
+		"public void foo() {\n" +
+		"switch(a) {\n" +
+		"case 1: bar(); break;\n" +
+		"case 2:\n" +
+		"switch(b) {\n" +
+		"case 3: bar(); break;\n" +
+		"	default:\n" + 
+		"		// TODO add default case statements\n" +
+		"}; break;\n" +
+		"}\n" +
+		"}\n" +
+		"}\n";
 
-		TextEdit edit = rewrite.rewriteAST(doc, null);
-        edit.apply(doc);
-        Assert.assertEquals(testSourceRes2, doc.get());
+		Utility.commonTestFix(source, expected2, fix, 5);
 	}
 
 }
