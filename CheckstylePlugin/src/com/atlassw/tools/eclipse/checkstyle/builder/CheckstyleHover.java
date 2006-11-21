@@ -34,6 +34,6 @@ public class CheckstyleHover extends AbstractAnnotationHover
      */
     public CheckstyleHover()
     {
-        super(true);
+        super(false);
     }
 }
