@@ -11,7 +11,7 @@
          <property-metadata name="javaStyle" datatype="Boolean" default-value="true">
             <description>Controls whether to enforce Java style (true) or C style (false).</description>
          </property-metadata>
-         <!--<quickfix classname="com.atlassw.tools.eclipse.checkstyle.quickfixes.misc.ArrayTypeStyleQuickfix"/>-->
+         <quickfix classname="com.atlassw.tools.eclipse.checkstyle.quickfixes.misc.ArrayTypeStyleQuickfix"/>
       </rule-metadata>
       
       <rule-metadata name="Descendent Token Check" internal-name="DescendantToken" parent="TreeWalker">
