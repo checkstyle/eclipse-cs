@@ -260,7 +260,8 @@ public class PackageFilterEditor implements IFilterEditor
                                     }
                                 }
                             }
-                            else if (!packageRoots[i].isArchive())
+                            else if (!packageRoots[i].isArchive()
+                                    && packageRoots[i].getParent().equals(javaProject))
                             {
                                 children.add(packageRoots[i].getResource());
                             }
