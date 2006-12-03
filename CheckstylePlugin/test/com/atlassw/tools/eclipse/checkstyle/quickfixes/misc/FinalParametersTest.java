@@ -1,22 +1,16 @@
+
 package com.atlassw.tools.eclipse.checkstyle.quickfixes.misc;
 
-import org.junit.Test;
+import java.io.InputStream;
 
-import com.atlassw.tools.eclipse.checkstyle.quickfixes.Utility;
+import com.atlassw.tools.eclipse.checkstyle.quickfixes.AbstractQuickfixTestCase;
 
-public class FinalParametersTest {
+public class FinalParametersTest extends AbstractQuickfixTestCase
+{
 
-	@Test
-	public void firstFinal() throws Exception {
-		String source = "public class A {\n"
-				+ "public void foo(int a, int b) {\n" + "}\n" + "}\n";
-
-		String expected = "public class A {\n"
-				+ "public void foo(final int a, final int b) {\n" + "}\n"
-				+ "}\n";
-		FinalParametersQuickfix fix = new FinalParametersQuickfix();
-		Utility.commonTestFix(source, expected, fix, 1);
-	}
-
-	// TODO should fixes fix one parameter at a time? How to fix that?
+    public void testFinalParameters() throws Exception
+    {
+        InputStream testData = this.getClass().getResourceAsStream("FinalParametersInput.xml");
+        testQuickfix(testData, new FinalParametersQuickfix());
+    }
 }

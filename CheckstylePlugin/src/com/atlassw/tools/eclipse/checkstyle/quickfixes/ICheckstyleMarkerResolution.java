@@ -39,4 +39,12 @@ public interface ICheckstyleMarkerResolution extends IMarkerResolution2
      *         <code>false</code> otherwise.
      */
     boolean canFix(IMarker marker);
+
+    /**
+     * Sets if the quickfix automatically commits the changes (saves the file).
+     * 
+     * @param autoCommit <code>true</code> if changes are automatically
+     *            committed
+     */
+    void setAutoCommitChanges(boolean autoCommit);
 }

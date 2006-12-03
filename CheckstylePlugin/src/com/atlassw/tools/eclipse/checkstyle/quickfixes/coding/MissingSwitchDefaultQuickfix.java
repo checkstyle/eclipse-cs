@@ -20,12 +20,9 @@
 
 package com.atlassw.tools.eclipse.checkstyle.quickfixes.coding;
 
-import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.SwitchCase;
 import org.eclipse.jdt.core.dom.SwitchStatement;
-import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
-import org.eclipse.jdt.core.dom.rewrite.ListRewrite;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.swt.graphics.Image;
 
@@ -44,8 +41,8 @@ public class MissingSwitchDefaultQuickfix extends AbstractASTResolution
     /**
      * {@inheritDoc}
      */
-    protected ASTVisitor handleGetCorrectingASTVisitor(final ASTRewrite rewrite,
-            final IRegion lineInfo)
+    protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
+            final int markerStartOffset)
     {
 
         return new ASTVisitor()
@@ -53,19 +50,12 @@ public class MissingSwitchDefaultQuickfix extends AbstractASTResolution
 
             public boolean visit(SwitchStatement node)
             {
-                int pos = node.getStartPosition();
-                if (pos >= lineInfo.getOffset()
-                        && pos <= (lineInfo.getOffset() + lineInfo.getLength()))
+                if (containsPosition(lineInfo, node.getStartPosition()))
                 {
                     SwitchCase defNode = node.getAST().newSwitchCase();
                     defNode.setExpression(null);
-                    ListRewrite listRewrite = rewrite.getListRewrite(node,
-                            SwitchStatement.STATEMENTS_PROPERTY);
-                    listRewrite.insertLast(defNode, null);
-                    ASTNode comment = listRewrite.getASTRewrite().createStringPlaceholder(
-                            Messages.MissingSwitchDefaultQuickfix_defaultCaseComment,
-                            ASTNode.LINE_COMMENT);
-                    listRewrite.insertLast(comment, null);
+                    node.statements().add(defNode);
+                    node.statements().add(node.getAST().newBreakStatement());
                 }
                 return true; // also visit children
             }

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quickfix-test-data>
+    <testcase>
+        <input fix-line="2">
+public class A {
+    public void foo(int a, int b) {
+        do
+            foo(1,2);
+        while (true);
+    }
+}
+        </input>
+        <result>
+public class A {
+    public void foo(int a, int b) {
+        do {
+            foo(1,2);
+        } while (true);
+    }
+}
+        </result>
+    </testcase>
+</quickfix-test-data>

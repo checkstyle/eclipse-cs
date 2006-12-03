@@ -20,27 +20,36 @@
 
 package com.atlassw.tools.eclipse.checkstyle.quickfixes;
 
+import java.util.Iterator;
+
+import org.eclipse.core.filebuffers.FileBuffers;
+import org.eclipse.core.filebuffers.ITextFileBuffer;
+import org.eclipse.core.filebuffers.ITextFileBufferManager;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
-import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.ASTVisitor;
-import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
+import org.eclipse.jface.text.Position;
+import org.eclipse.jface.text.source.Annotation;
+import org.eclipse.jface.text.source.IAnnotationModel;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.text.edits.MalformedTreeException;
 import org.eclipse.text.edits.TextEdit;
-import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.texteditor.MarkerAnnotation;
 
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 
@@ -49,156 +58,204 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
  * 
  * @author Lars Ködderitzsch
  */
-public abstract class AbstractASTResolution implements
-		ICheckstyleMarkerResolution {
+public abstract class AbstractASTResolution implements ICheckstyleMarkerResolution
+{
 
-	private IJavaCoreFactory javaCoreFactory;
-	private IJavaUIFactory javaUIFactory;
+    private boolean mAutoCommit;
 
-	public AbstractASTResolution() {
-		this(new JavaCoreFactory(), new JavaUIFactory());
-	}
+    /**
+     * {@inheritDoc}
+     */
+    public boolean canFix(IMarker marker)
+    {
+        return true;
+    }
 
-	public AbstractASTResolution(IJavaCoreFactory jcFactory,
-			IJavaUIFactory juiFactory) {
-		this.javaCoreFactory = jcFactory;
-		this.javaUIFactory = juiFactory;
-	}
+    /**
+     * {@inheritDoc}
+     */
+    public void setAutoCommitChanges(boolean autoCommit)
+    {
+        mAutoCommit = autoCommit;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public boolean canFix(IMarker marker) {
-		return true;
-	}
+    /**
+     * {@inheritDoc}
+     */
+    public Image getImage()
+    {
+        // default implementation returns no image
+        return null;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public Image getImage() {
-		// default implementation returns no image
-		return null;
-	}
+    /**
+     * {@inheritDoc}
+     */
+    public void run(IMarker marker)
+    {
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public void run(IMarker marker) {
+        IResource resource = marker.getResource();
 
-		IResource resource = marker.getResource();
+        if (!(resource instanceof IFile))
+        {
+            return;
+        }
 
-		if (!(resource instanceof IFile)) {
-			return;
-		}
+        ICompilationUnit compilationUnit = getCompilationUnit(marker);
 
-		// ICompilationUnit compilationUnit =
-		// JavaCore.createCompilationUnitFrom((IFile) resource);
-		ICompilationUnit compilationUnit = getCompilationUnit(marker);
+        if (compilationUnit == null)
+        {
+            return;
+        }
 
-		if (compilationUnit == null) {
-			return;
-		}
+        ITextFileBufferManager bufferManager = null;
 
-		ICompilationUnit workingCopy = null;
+        IPath path = compilationUnit.getPath();
 
-		try {
-			IProgressMonitor monitor = new NullProgressMonitor();
+        try
+        {
+            IProgressMonitor monitor = new NullProgressMonitor();
 
-			workingCopy = compilationUnit.getWorkingCopy(monitor);
-			IEditorPart part = javaUIFactory.openInEditor(workingCopy);
-			IDocument doc = javaUIFactory.getDocumentProvider().getDocument(
-					part.getEditorInput());
-			// String source = workingCopy.getBuffer().getContents();
+            // reimplemented according to this article
+            // http://www.eclipse.org/articles/Article-JavaCodeManipulation_AST/index.html
+            bufferManager = FileBuffers.getTextFileBufferManager();
+            bufferManager.connect(path, null);
 
-			// if (part instanceof ITextEditor) {
-			// ((ITextEditor)part).selectAndReveal(offset, length);
-			// }
+            ITextFileBuffer textFileBuffer = bufferManager.getTextFileBuffer(path);
 
-			// determine the source region if the line where the marker lies
-			int lineNumber = ((Integer) marker
-					.getAttribute(IMarker.LINE_NUMBER)).intValue();
-			IRegion lineInfo = doc.getLineInformation(lineNumber == 0 ? 0
-					: lineNumber - 1);
+            IDocument document = textFileBuffer.getDocument();
+            IAnnotationModel annotationModel = textFileBuffer.getAnnotationModel();
 
-			// int markerStart = ((Integer)
-			// marker.getAttribute(IMarker.CHAR_START)).intValue();
-			ASTParser astParser = ASTParser.newParser(AST.JLS3);
+            MarkerAnnotation annotation = getMarkerAnnotation(annotationModel, marker);
+            Position pos = annotationModel.getPosition(annotation);
 
-			// only create a partial AST
-			if (handleGetCreateOnlyPartialAST()) {
-				astParser.setFocalPosition(lineInfo.getOffset());
-				// astParser.setFocalPosition(markerStart);
-			}
-			astParser.setSource(workingCopy);
+            IRegion lineInfo = document.getLineInformationOfOffset(pos.getOffset());
+            int markerStart = pos.getOffset();
 
-			ASTNode ast = astParser.createAST(monitor);
+            ASTParser astParser = ASTParser.newParser(AST.JLS3);
+            astParser.setKind(ASTParser.K_COMPILATION_UNIT);
+            astParser.setSource(compilationUnit);
 
-			// collect the changes from the concrete quickfix
-			ASTRewrite rewrite = ASTRewrite.create(ast.getAST());
-			ast.accept(handleGetCorrectingASTVisitor(rewrite, lineInfo));
+            CompilationUnit ast = (CompilationUnit) astParser.createAST(monitor);
+            ast.recordModifications();
 
-			// rewrite all recorded changes to the document
-			TextEdit edit = rewrite.rewriteAST(doc, workingCopy
-					.getJavaProject().getOptions(true));
-			edit.apply(doc);
+            ast.accept(handleGetCorrectingASTVisitor(lineInfo, markerStart));
 
-			// update of the compilation unit
-			// workingCopy.getBuffer().setContents(doc.get());
-			workingCopy.reconcile(ICompilationUnit.NO_AST, false, null, null);
+            // rewrite all recorded changes to the document
+            TextEdit edit = ast
+                    .rewrite(document, compilationUnit.getJavaProject().getOptions(true));
+            edit.apply(document);
 
-			// Commit changes
-			// workingCopy.commitWorkingCopy(false, null);
-		} catch (CoreException e) {
-			CheckstyleLog.log(e, "Error processing quickfix");
-		} catch (MalformedTreeException e) {
-			CheckstyleLog.log(e, "Error processing quickfix");
-		} catch (BadLocationException e) {
-			CheckstyleLog.log(e, "Error processing quickfix");
-		} finally {
-			if (workingCopy != null) {
-				// Destroy working copy
-				try {
-					workingCopy.discardWorkingCopy();
-				} catch (JavaModelException e) {
-					CheckstyleLog.log(e);
-				}
-			}
-		}
-	}
+            // commit changes to underlying file
+            if (mAutoCommit)
+            {
+                textFileBuffer.commit(monitor, false);
+            }
+        }
+        catch (CoreException e)
+        {
+            CheckstyleLog.log(e, "Error processing quickfix");
+        }
+        catch (MalformedTreeException e)
+        {
+            CheckstyleLog.log(e, "Error processing quickfix");
+        }
+        catch (BadLocationException e)
+        {
+            CheckstyleLog.log(e, "Error processing quickfix");
+        }
+        finally
+        {
 
-	private ICompilationUnit getCompilationUnit(IMarker marker) {
-		IResource res = marker.getResource();
-		if (res instanceof IFile && res.isAccessible()) {
-			IJavaElement element = javaCoreFactory.create((IFile) res);
-			if (element instanceof ICompilationUnit)
-				return (ICompilationUnit) element;
-		}
-		return null;
-	}
+            if (bufferManager != null)
+            {
+                try
+                {
+                    bufferManager.disconnect(path, null);
+                }
+                catch (CoreException e)
+                {
+                    CheckstyleLog.log(e, "Error processing quickfix");
+                }
+            }
+        }
+    }
 
-	/**
-	 * Template method to be implemented by concrete quickfix implementations.
-	 * These must provide their fixing modification through an AST visitor, more
-	 * specifically by doing the neccessary modifications through the given
-	 * ASTRewrite object.
-	 * 
-	 * @param astRewrite
-	 *            the ASTRewrite object where modifications should be added
-	 * @param lineInfo
-	 *            the IRegion for the line containing the marker to fix
-	 * @return the modifying AST visitor
-	 */
-	protected abstract ASTVisitor handleGetCorrectingASTVisitor(
-			ASTRewrite astRewrite, IRegion lineInfo);
+    /**
+     * Template method to be implemented by concrete quickfix implementations.
+     * These must provide their fixing modification through an AST visitor, more
+     * specifically by doing the neccessary modifications directly on the
+     * visited AST nodes. The AST itself will recored modification.
+     * 
+     * @param lineInfo the IRegion for the line containing the marker to fix
+     * @param markerStartOffset the actual offset where the problem marker
+     *            starts
+     * @return the modifying AST visitor
+     */
+    protected abstract ASTVisitor handleGetCorrectingASTVisitor(IRegion lineInfo,
+            int markerStartOffset);
 
-	/**
-	 * Determines if only a partial AST should be created (optimization).
-	 * 
-	 * @return <code>true</code> if only a partial AST should be created
-	 *         <code>false</code> otherwise
-	 */
-	protected boolean handleGetCreateOnlyPartialAST() {
-		return true;
-	}
+    /**
+     * Determines if the given position lies within the boundaries of the
+     * ASTNode.
+     * 
+     * @param node the ASTNode
+     * @param position the position to check for
+     * @return <code>true</code> if the position is within the ASTNode
+     */
+    protected boolean containsPosition(ASTNode node, int position)
+    {
+        return node.getStartPosition() <= position
+                && position <= node.getStartPosition() + node.getLength();
+    }
 
+    /**
+     * Determines if the given position lies within the boundaries of the
+     * region.
+     * 
+     * @param region the region
+     * @param position the position to check for
+     * @return <code>true</code> if the position is within the region
+     */
+    protected boolean containsPosition(IRegion region, int position)
+    {
+        return region.getOffset() <= position
+                && position <= region.getOffset() + region.getLength();
+    }
+
+    private ICompilationUnit getCompilationUnit(IMarker marker)
+    {
+        IResource res = marker.getResource();
+        if (res instanceof IFile && res.isAccessible())
+        {
+            IJavaElement element = JavaCore.create((IFile) res);
+            if (element instanceof ICompilationUnit)
+            {
+                return (ICompilationUnit) element;
+            }
+        }
+        return null;
+    }
+
+    private MarkerAnnotation getMarkerAnnotation(IAnnotationModel annotationModel, IMarker marker)
+    {
+
+        Iterator it = annotationModel.getAnnotationIterator();
+        while (it.hasNext())
+        {
+            Annotation tmp = (Annotation) it.next();
+
+            if (tmp instanceof MarkerAnnotation)
+            {
+
+                IMarker theMarker = ((MarkerAnnotation) tmp).getMarker();
+
+                if (theMarker.equals(marker))
+                {
+                    return (MarkerAnnotation) tmp;
+                }
+            }
+        }
+        return null;
+    }
 }

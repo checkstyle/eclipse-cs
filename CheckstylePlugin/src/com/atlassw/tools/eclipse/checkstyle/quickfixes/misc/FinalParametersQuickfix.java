@@ -20,16 +20,10 @@
 
 package com.atlassw.tools.eclipse.checkstyle.quickfixes.misc;
 
-import java.util.Iterator;
-import java.util.List;
-
-import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
-import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jdt.core.dom.Modifier.ModifierKeyword;
-import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.swt.graphics.Image;
 
@@ -46,46 +40,24 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginImages;
 public class FinalParametersQuickfix extends AbstractASTResolution
 {
 
-    /** The length of the javadoc comment declaration. */
-    private static final int JAVADOC_COMMENT_LENGTH = 6;
-
     /**
      * {@inheritDoc}
      */
-    protected ASTVisitor handleGetCorrectingASTVisitor(final ASTRewrite astRewrite,
-            final IRegion lineInfo)
+    protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
+            final int markerStartOffset)
     {
         return new ASTVisitor()
         {
 
-            public boolean visit(MethodDeclaration node)
+            public boolean visit(SingleVariableDeclaration node)
             {
-                // recalculate start position because optional javadoc is mixed
-                // into the original start position
-                int pos = node.getStartPosition()
-                        + (node.getJavadoc() != null ? node.getJavadoc().getLength()
-                                + JAVADOC_COMMENT_LENGTH : 0);
-                if (pos >= lineInfo.getOffset()
-                        && pos <= (lineInfo.getOffset() + lineInfo.getLength()))
+                if (containsPosition(lineInfo, markerStartOffset)
+                        && !Modifier.isFinal(node.getModifiers()))
                 {
 
-                    List parameters = node.parameters();
-                    Iterator it = parameters.iterator();
-                    while (it.hasNext())
-                    {
-                        // add final keyword to non-final parameters
-                        SingleVariableDeclaration param = (SingleVariableDeclaration) it.next();
-                        if (!Modifier.isFinal(param.getModifiers()))
-                        {
-                            SingleVariableDeclaration copy = (SingleVariableDeclaration) ASTNode
-                                    .copySubtree(node.getAST(), param);
-                            Modifier finalModifier = node.getAST().newModifier(
-                                    ModifierKeyword.FINAL_KEYWORD);
-                            copy.modifiers().add(finalModifier);
-
-                            astRewrite.replace(param, copy, null);
-                        }
-                    }
+                    Modifier finalModifier = node.getAST().newModifier(
+                            ModifierKeyword.FINAL_KEYWORD);
+                    node.modifiers().add(finalModifier);
                 }
                 return true;
             }

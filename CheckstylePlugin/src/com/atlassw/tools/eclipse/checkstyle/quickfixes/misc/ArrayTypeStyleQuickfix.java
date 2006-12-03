@@ -31,7 +31,6 @@ import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jdt.core.dom.Type;
 import org.eclipse.jdt.core.dom.VariableDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
-import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.swt.graphics.Image;
 
@@ -49,8 +48,8 @@ public class ArrayTypeStyleQuickfix extends AbstractASTResolution
     /**
      * {@inheritDoc}
      */
-    protected ASTVisitor handleGetCorrectingASTVisitor(final ASTRewrite rewrite,
-            final IRegion lineInfo, final int markerStartOffset)
+    protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
+            final int markerStartOffset)
     {
 
         return new ASTVisitor()
@@ -65,12 +64,9 @@ public class ArrayTypeStyleQuickfix extends AbstractASTResolution
                     if (isCStyle(node.fragments()))
                     {
 
-                        VariableDeclarationStatement copy = (VariableDeclarationStatement) ASTNode
-                                .copySubtree(node.getAST(), node);
-
                         int dimensions = 0;
 
-                        List fragments = copy.fragments();
+                        List fragments = node.fragments();
                         for (int i = 0, size = fragments.size(); i < size; i++)
                         {
                             VariableDeclaration decl = (VariableDeclaration) fragments.get(i);
@@ -83,34 +79,28 @@ public class ArrayTypeStyleQuickfix extends AbstractASTResolution
                         }
 
                         // wrap current type into ArrayType
-                        ArrayType arrayType = createArrayType(copy.getType(), dimensions);
-                        copy.setType(arrayType);
+                        ArrayType arrayType = createArrayType(node.getType(), dimensions);
+                        node.setType(arrayType);
 
-                        rewrite.replace(node, copy, null);
                     }
                     else if (isJavaStyle(node.getType()))
                     {
 
-                        VariableDeclarationStatement copy = (VariableDeclarationStatement) ASTNode
-                                .copySubtree(node.getAST(), node);
+                        int dimensions = ((ArrayType) node.getType()).getDimensions();
 
-                        int dimensions = ((ArrayType) copy.getType()).getDimensions();
-
-                        List fragments = copy.fragments();
+                        List fragments = node.fragments();
                         for (int i = 0, size = fragments.size(); i < size; i++)
                         {
                             VariableDeclaration decl = (VariableDeclaration) fragments.get(i);
                             decl.setExtraDimensions(dimensions);
                         }
 
-                        Type elementType = (Type) ASTNode.copySubtree(copy.getAST(),
-                                ((ArrayType) copy.getType()).getElementType());
-                        copy.setType(elementType);
-
-                        rewrite.replace(node, copy, null);
+                        Type elementType = (Type) ASTNode.copySubtree(node.getAST(),
+                                ((ArrayType) node.getType()).getElementType());
+                        node.setType(elementType);
                     }
                 }
-                return false;
+                return true;
             }
 
             public boolean visit(SingleVariableDeclaration node)
@@ -120,34 +110,23 @@ public class ArrayTypeStyleQuickfix extends AbstractASTResolution
                 {
                     if (isCStyle(node))
                     {
-
-                        SingleVariableDeclaration copy = (SingleVariableDeclaration) ASTNode
-                                .copySubtree(node.getAST(), node);
-
                         // wrap the existing type into an array type
-                        copy.setType(createArrayType(copy.getType(), copy.getExtraDimensions()));
-                        copy.setExtraDimensions(0);
-
-                        rewrite.replace(node, copy, null);
+                        node.setType(createArrayType(node.getType(), node.getExtraDimensions()));
+                        node.setExtraDimensions(0);
                     }
                     else if (isJavaStyle(node.getType()))
                     {
 
-                        SingleVariableDeclaration copy = (SingleVariableDeclaration) ASTNode
-                                .copySubtree(node.getAST(), node);
-
-                        ArrayType arrayType = (ArrayType) copy.getType();
-                        Type elementType = (Type) ASTNode.copySubtree(copy.getAST(), arrayType
+                        ArrayType arrayType = (ArrayType) node.getType();
+                        Type elementType = (Type) ASTNode.copySubtree(node.getAST(), arrayType
                                 .getElementType());
 
-                        copy.setType(elementType);
-                        copy.setExtraDimensions(arrayType.getDimensions());
-
-                        rewrite.replace(node, copy, null);
+                        node.setType(elementType);
+                        node.setExtraDimensions(arrayType.getDimensions());
                     }
                 }
 
-                return false;
+                return true;
             }
 
             public boolean visit(FieldDeclaration node)
@@ -159,12 +138,9 @@ public class ArrayTypeStyleQuickfix extends AbstractASTResolution
                     if (isCStyle(node.fragments()))
                     {
 
-                        FieldDeclaration copy = (FieldDeclaration) ASTNode.copySubtree(node
-                                .getAST(), node);
-
                         int dimensions = 0;
 
-                        List fragments = copy.fragments();
+                        List fragments = node.fragments();
                         for (int i = 0, size = fragments.size(); i < size; i++)
                         {
                             VariableDeclaration decl = (VariableDeclaration) fragments.get(i);
@@ -177,34 +153,27 @@ public class ArrayTypeStyleQuickfix extends AbstractASTResolution
                         }
 
                         // wrap current type into ArrayType
-                        ArrayType arrayType = createArrayType(copy.getType(), dimensions);
-                        copy.setType(arrayType);
-
-                        rewrite.replace(node, copy, null);
+                        ArrayType arrayType = createArrayType(node.getType(), dimensions);
+                        node.setType(arrayType);
                     }
                     else if (isJavaStyle(node.getType()))
                     {
 
-                        FieldDeclaration copy = (FieldDeclaration) ASTNode.copySubtree(node
-                                .getAST(), node);
+                        int dimensions = ((ArrayType) node.getType()).getDimensions();
 
-                        int dimensions = ((ArrayType) copy.getType()).getDimensions();
-
-                        List fragments = copy.fragments();
+                        List fragments = node.fragments();
                         for (int i = 0, size = fragments.size(); i < size; i++)
                         {
                             VariableDeclaration decl = (VariableDeclaration) fragments.get(i);
                             decl.setExtraDimensions(dimensions);
                         }
 
-                        Type elementType = (Type) ASTNode.copySubtree(copy.getAST(),
-                                ((ArrayType) copy.getType()).getElementType());
-                        copy.setType(elementType);
-
-                        rewrite.replace(node, copy, null);
+                        Type elementType = (Type) ASTNode.copySubtree(node.getAST(),
+                                ((ArrayType) node.getType()).getElementType());
+                        node.setType(elementType);
                     }
                 }
-                return false;
+                return true;
             }
 
             private boolean isJavaStyle(Type type)
@@ -240,18 +209,6 @@ public class ArrayTypeStyleQuickfix extends AbstractASTResolution
                 return arrayType;
             }
         };
-    }
-
-    protected boolean containsPosition(ASTNode node, int position)
-    {
-        return node.getStartPosition() <= position
-                && position <= node.getStartPosition() + node.getLength();
-    }
-
-    protected boolean containsPosition(IRegion region, int position)
-    {
-        return region.getOffset() <= position
-                && position <= region.getOffset() + region.getLength();
     }
 
     /**

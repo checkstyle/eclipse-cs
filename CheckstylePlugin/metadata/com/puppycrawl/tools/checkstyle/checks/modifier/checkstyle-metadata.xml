@@ -9,6 +9,7 @@
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.modifier.ModifierOrderCheck"/>
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.ModifierOrderCheck"/>
          <description>Checks that the order of modifiers conforms to the suggestions in the Java Language specification, sections 8.1.1, 8.3.1 and 8.4.3. The correct order is: public, protected, private, abstract, static, final, transient, volatile, synchronized, native, strictfp.</description>
+         <quickfix classname="com.atlassw.tools.eclipse.checkstyle.quickfixes.modifier.ModifierOrderQuickfix"/>
       </rule-metadata>
       
       <rule-metadata name="Redundant Modifier" internal-name="RedundantModifier" parent="TreeWalker">

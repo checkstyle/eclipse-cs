@@ -36,6 +36,10 @@ public class Messages extends NLS
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);
     }
 
+    public static String ModifierOrderQuickfix_description;
+
+    public static String ModifierOrderQuickfix_label;
+
     public static String RedundantModifierQuickfix_description;
 
     public static String RedundantModifierQuickfix_label;

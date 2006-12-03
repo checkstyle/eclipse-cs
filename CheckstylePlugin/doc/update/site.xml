@@ -3,15 +3,15 @@
    <description url="http://eclipse-cs.sourceforge.net/update">
       Eclipse Checkstyle Plug-in Update Site
    </description>
-   <feature url="http://downloads.sourceforge.net/eclipse-cs/com.atlassw.tools.eclipse.checkstyle_4.0.1-feature.jar" id="com.atlassw.tools.eclipse.checkstyle" version="4.0.1">
+   <feature url="http://downloads.sourceforge.net/eclipse-cs/com.atlassw.tools.eclipse.checkstyle_4.0.1-feature.jar?big_mirror=1" id="com.atlassw.tools.eclipse.checkstyle" version="4.0.1">
       <category name="Checkstyle"/>
    </feature>
-   <feature url="http://downloads.sourceforge.net/eclipse-cs/com.atlassw.tools.eclipse.checkstyle_4.1.1-feature.jar" id="com.atlassw.tools.eclipse.checkstyle" version="4.1.1">
+   <feature url="http://downloads.sourceforge.net/eclipse-cs/com.atlassw.tools.eclipse.checkstyle_4.1.1-feature.jar?big_mirror=1" id="com.atlassw.tools.eclipse.checkstyle" version="4.1.1">
       <category name="Checkstyle"/>
    </feature>
-   <archive path="plugins/com.atlassw.tools.eclipse.checkstyle_4.0.1.jar" url="http://downloads.sourceforge.net/eclipse-cs/com.atlassw.tools.eclipse.checkstyle_4.0.1_2.jar"/>
-   <archive path="plugins/com.atlassw.tools.eclipse.checkstyle_4.1.1.jar" url="http://downloads.sourceforge.net/eclipse-cs/com.atlassw.tools.eclipse.checkstyle_4.1.1.jar"/>
-   <archive path="plugins/net.sf.eclipsecs.stats_1.0.1.jar" url="http://downloads.sourceforge.net/eclipse-cs/net.sf.eclipsecs.stats_1.0.1.jar"/>
+   <archive path="plugins/com.atlassw.tools.eclipse.checkstyle_4.0.1.jar" url="http://downloads.sourceforge.net/eclipse-cs/com.atlassw.tools.eclipse.checkstyle_4.0.1_2.jar?big_mirror=1"/>
+   <archive path="plugins/com.atlassw.tools.eclipse.checkstyle_4.1.1.jar" url="http://downloads.sourceforge.net/eclipse-cs/com.atlassw.tools.eclipse.checkstyle_4.1.1.jar?big_mirror=1"/>
+   <archive path="plugins/net.sf.eclipsecs.stats_1.0.1.jar" url="http://downloads.sourceforge.net/eclipse-cs/net.sf.eclipsecs.stats_1.0.1.jar?big_mirror=1"/>
    <category-def name="Checkstyle" label="Eclipse Checkstyle Plug-in">
       <description>
          Integrates Checkstyle with Eclipse

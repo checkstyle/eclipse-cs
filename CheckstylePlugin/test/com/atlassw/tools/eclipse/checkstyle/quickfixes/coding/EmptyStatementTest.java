@@ -1,29 +1,22 @@
+
 package com.atlassw.tools.eclipse.checkstyle.quickfixes.coding;
 
-import org.junit.Before;
-import org.junit.Test;
-import com.atlassw.tools.eclipse.checkstyle.quickfixes.Utility;
+import java.io.InputStream;
 
-public class EmptyStatementTest {
+import com.atlassw.tools.eclipse.checkstyle.quickfixes.AbstractQuickfixTestCase;
 
-	private EmptyStatementQuickfix fix;
+public class EmptyStatementTest extends AbstractQuickfixTestCase
+{
 
-	@Before
-	public void setup() {
-		fix = new EmptyStatementQuickfix();
-	}
-	
-	@Test
-	public void emptyStatement() throws Exception {
-		String source = "public class A {\n" +
-				"	public void foo() {\n" +
-				"		;\n" +
-				"	}\n" +
-				"}";
-		String expected = "public class A {\n" +
-		"	public void foo() {\n" +
-		"	}\n" +
-		"}";
-		Utility.commonTestFix(source, expected, fix, 2);
-	}
+    public void testEmptyStatement() throws Exception
+    {
+        InputStream testData = this.getClass().getResourceAsStream("EmptyStatementInput.xml");
+        testQuickfix(testData, new EmptyStatementQuickfix());
+    }
+
+    public void testEmptyStatementNeg() throws Exception
+    {
+        InputStream testData = this.getClass().getResourceAsStream("EmptyStatementInputNeg.xml");
+        testQuickfix(testData, new EmptyStatementQuickfix());
+    }
 }

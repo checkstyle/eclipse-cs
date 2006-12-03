@@ -66,7 +66,8 @@ public class CheckstyleMarkerResolutionGenerator implements IMarkerResolutionGen
             }
         }
 
-        return (IMarkerResolution[]) fixes.toArray(new IMarkerResolution[fixes.size()]);
+        return (ICheckstyleMarkerResolution[]) fixes.toArray(new ICheckstyleMarkerResolution[fixes
+                .size()]);
     }
 
     /**

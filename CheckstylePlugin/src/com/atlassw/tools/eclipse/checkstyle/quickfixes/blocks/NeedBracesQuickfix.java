@@ -29,7 +29,6 @@ import org.eclipse.jdt.core.dom.ForStatement;
 import org.eclipse.jdt.core.dom.IfStatement;
 import org.eclipse.jdt.core.dom.Statement;
 import org.eclipse.jdt.core.dom.WhileStatement;
-import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.swt.graphics.Image;
 
@@ -47,25 +46,22 @@ public class NeedBracesQuickfix extends AbstractASTResolution
     /**
      * {@inheritDoc}
      */
-    protected ASTVisitor handleGetCorrectingASTVisitor(final ASTRewrite astRewrite,
-            final IRegion lineInfo)
+    protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
+            final int markerStartOffset)
     {
         return new ASTVisitor()
         {
             public boolean visit(IfStatement node)
             {
+
                 int nodePos = node.getStartPosition();
                 int nodeEnd = nodePos + node.getLength();
-                if ((nodePos >= lineInfo.getOffset() 
-                		&& nodePos <= (lineInfo.getOffset() + lineInfo.getLength()))
-                     || (nodePos <= lineInfo.getOffset() 
-                    		 && nodeEnd >= lineInfo.getOffset() + lineInfo.getLength()))
+                if ((nodePos >= lineInfo.getOffset() && nodePos <= (lineInfo.getOffset() + lineInfo
+                        .getLength()))
+                        || (nodePos <= lineInfo.getOffset() && nodeEnd >= lineInfo.getOffset()
+                                + lineInfo.getLength()))
                 {
-                    IfStatement copy = (IfStatement) ASTNode.copySubtree(node.getAST(), node);
-
-                    bracifyIfStatement(copy);
-
-                    astRewrite.replace(node, copy, null);
+                    bracifyIfStatement(node);
                 }
 
                 return true;
@@ -82,11 +78,12 @@ public class NeedBracesQuickfix extends AbstractASTResolution
                 // change the then statement to a block if necessary
                 if (!(ifStatement.getThenStatement() instanceof Block))
                 {
-                	if (ifStatement.getThenStatement() instanceof IfStatement)
-                	{
-                		bracifyIfStatement((IfStatement) ifStatement.getThenStatement());
-                	}
-                    Block block = createBracifiedCopy(ifStatement.getAST(), ifStatement.getThenStatement());
+                    if (ifStatement.getThenStatement() instanceof IfStatement)
+                    {
+                        bracifyIfStatement((IfStatement) ifStatement.getThenStatement());
+                    }
+                    Block block = createBracifiedCopy(ifStatement.getAST(), ifStatement
+                            .getThenStatement());
                     ifStatement.setThenStatement(block);
                 }
 
@@ -105,26 +102,22 @@ public class NeedBracesQuickfix extends AbstractASTResolution
                     else
                     {
                         // change the else statement to a block
-//                        Block block = ifStatement.getAST().newBlock();
-//                        block.statements().add(ASTNode.copySubtree(block.getAST(), elseStatement));
-                        Block block = createBracifiedCopy(ifStatement.getAST(), ifStatement.getElseStatement());
+                        // Block block = ifStatement.getAST().newBlock();
+                        // block.statements().add(ASTNode.copySubtree(block.getAST(),
+                        // elseStatement));
+                        Block block = createBracifiedCopy(ifStatement.getAST(), ifStatement
+                                .getElseStatement());
                         ifStatement.setElseStatement(block);
                     }
                 }
             }
-            
+
             public boolean visit(ForStatement node)
             {
-                int pos = node.getStartPosition();
-                if (pos >= lineInfo.getOffset()
-                        && pos <= (lineInfo.getOffset() + lineInfo.getLength()))
+                if (containsPosition(lineInfo, node.getStartPosition()))
                 {
-
-                    ForStatement copy = (ForStatement) ASTNode.copySubtree(node.getAST(), node);
-                    Block block = createBracifiedCopy(copy.getAST(), copy.getBody());
-                    copy.setBody(block);
-
-                    astRewrite.replace(node, copy, null);
+                    Block block = createBracifiedCopy(node.getAST(), node.getBody());
+                    node.setBody(block);
                 }
 
                 return true;
@@ -132,16 +125,10 @@ public class NeedBracesQuickfix extends AbstractASTResolution
 
             public boolean visit(DoStatement node)
             {
-                int pos = node.getStartPosition();
-                if (pos >= lineInfo.getOffset()
-                        && pos <= (lineInfo.getOffset() + lineInfo.getLength()))
+                if (containsPosition(lineInfo, node.getStartPosition()))
                 {
-
-                    DoStatement copy = (DoStatement) ASTNode.copySubtree(node.getAST(), node);
-                    Block block = createBracifiedCopy(copy.getAST(), copy.getBody());
-                    copy.setBody(block);
-
-                    astRewrite.replace(node, copy, null);
+                    Block block = createBracifiedCopy(node.getAST(), node.getBody());
+                    node.setBody(block);
                 }
 
                 return true;
@@ -149,26 +136,20 @@ public class NeedBracesQuickfix extends AbstractASTResolution
 
             public boolean visit(WhileStatement node)
             {
-                int pos = node.getStartPosition();
-                if (pos >= lineInfo.getOffset()
-                        && pos <= (lineInfo.getOffset() + lineInfo.getLength()))
+                if (containsPosition(lineInfo, node.getStartPosition()))
                 {
-
-                    WhileStatement copy = (WhileStatement) ASTNode.copySubtree(node.getAST(), node);
-                    Block block = createBracifiedCopy(copy.getAST(), copy.getBody());
-                    copy.setBody(block);
-
-                    astRewrite.replace(node, copy, null);
+                    Block block = createBracifiedCopy(node.getAST(), node.getBody());
+                    node.setBody(block);
                 }
 
-                return false;
+                return true;
             }
-            
+
             private Block createBracifiedCopy(AST ast, Statement body)
             {
-            	Block block = ast.newBlock();
-            	block.statements().add(ASTNode.copySubtree(block.getAST(), body));
-            	return block;
+                Block block = ast.newBlock();
+                block.statements().add(ASTNode.copySubtree(block.getAST(), body));
+                return block;
             }
         };
     }

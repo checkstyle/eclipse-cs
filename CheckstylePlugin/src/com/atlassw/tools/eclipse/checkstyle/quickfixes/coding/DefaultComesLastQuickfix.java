@@ -20,12 +20,13 @@
 
 package com.atlassw.tools.eclipse.checkstyle.quickfixes.coding;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.SwitchCase;
 import org.eclipse.jdt.core.dom.SwitchStatement;
-import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
-import org.eclipse.jdt.core.dom.rewrite.ListRewrite;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.swt.graphics.Image;
 
@@ -44,8 +45,8 @@ public class DefaultComesLastQuickfix extends AbstractASTResolution
     /**
      * {@inheritDoc}
      */
-    protected ASTVisitor handleGetCorrectingASTVisitor(final ASTRewrite rewrite,
-            final IRegion lineInfo)
+    protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
+            final int markerStartOffset)
     {
 
         return new ASTVisitor()
@@ -53,25 +54,19 @@ public class DefaultComesLastQuickfix extends AbstractASTResolution
 
             public boolean visit(SwitchCase node)
             {
-                int pos = node.getStartPosition();
-                if (pos >= lineInfo.getOffset()
-                        && pos <= (lineInfo.getOffset() + lineInfo.getLength()))
+
+                if (containsPosition(lineInfo, node.getStartPosition()))
                 {
 
-                    if (node.isDefault())
+                    if (node.isDefault() && !isLastSwitchCase(node))
                     {
                         SwitchStatement switchStatement = (SwitchStatement) node.getParent();
-                        ListRewrite listRewrite = rewrite.getListRewrite(switchStatement,
-                                SwitchStatement.STATEMENTS_PROPERTY);
 
+                        List defaultCaseStatements = new ArrayList();
+                        defaultCaseStatements.add(node);
+
+                        // collect all statements belonging to the default case
                         int defaultStatementIndex = switchStatement.statements().indexOf(node);
-
-                        // move default statement to last position
-                        listRewrite.remove(node, null);
-                        listRewrite.insertLast(node, null);
-
-                        // also move all following statements unit the next
-                        // switch case to last.
                         for (int i = defaultStatementIndex + 1; i < switchStatement.statements()
                                 .size(); i++)
                         {
@@ -79,14 +74,36 @@ public class DefaultComesLastQuickfix extends AbstractASTResolution
 
                             if (!(tmpNode instanceof SwitchCase))
                             {
-                                listRewrite.remove(tmpNode, null);
-                                listRewrite.insertLast(tmpNode, null);
+                                defaultCaseStatements.add(tmpNode);
                             }
                             else
                             {
                                 break;
                             }
                         }
+
+                        // move the statements to the end of the statement list
+                        switchStatement.statements().removeAll(defaultCaseStatements);
+                        switchStatement.statements().addAll(defaultCaseStatements);
+                    }
+                }
+                return true;
+            }
+
+            private boolean isLastSwitchCase(SwitchCase switchCase)
+            {
+
+                SwitchStatement switchStatement = (SwitchStatement) switchCase.getParent();
+
+                // collect all statements belonging to the default case
+                int defaultStatementIndex = switchStatement.statements().indexOf(switchCase);
+                for (int i = defaultStatementIndex + 1; i < switchStatement.statements().size(); i++)
+                {
+                    ASTNode tmpNode = (ASTNode) switchStatement.statements().get(i);
+
+                    if (tmpNode instanceof SwitchCase)
+                    {
+                        return false;
                     }
                 }
                 return true;

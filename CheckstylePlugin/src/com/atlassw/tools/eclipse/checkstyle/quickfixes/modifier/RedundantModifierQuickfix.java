@@ -33,7 +33,6 @@ import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.core.dom.Modifier.ModifierKeyword;
-import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.swt.graphics.Image;
 
@@ -54,8 +53,8 @@ public class RedundantModifierQuickfix extends AbstractASTResolution
     /**
      * {@inheritDoc}
      */
-    protected ASTVisitor handleGetCorrectingASTVisitor(final ASTRewrite rewrite,
-            final IRegion lineInfo)
+    protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
+            final int markerStartOffset)
     {
 
         return new ASTVisitor()
@@ -68,8 +67,7 @@ public class RedundantModifierQuickfix extends AbstractASTResolution
                 int pos = node.getStartPosition()
                         + (node.getJavadoc() != null ? node.getJavadoc().getLength()
                                 + JAVADOC_COMMENT_LENGTH : 0);
-                if (pos >= lineInfo.getOffset()
-                        && pos <= (lineInfo.getOffset() + lineInfo.getLength()))
+                if (containsPosition(lineInfo, pos))
                 {
 
                     List redundantKeyWords = Collections.EMPTY_LIST;
@@ -89,17 +87,7 @@ public class RedundantModifierQuickfix extends AbstractASTResolution
                         }
                     }
 
-                    List modifiers = node.modifiers();
-                    Iterator it = modifiers.iterator();
-
-                    while (it.hasNext())
-                    {
-                        Modifier modifier = (Modifier) it.next();
-                        if (redundantKeyWords.contains(modifier.getKeyword()))
-                        {
-                            rewrite.remove(modifier, null);
-                        }
-                    }
+                    deleteRedundantModifiers(node.modifiers(), redundantKeyWords);
                 }
                 return true;
             }
@@ -111,8 +99,7 @@ public class RedundantModifierQuickfix extends AbstractASTResolution
                 int pos = node.getStartPosition()
                         + (node.getJavadoc() != null ? node.getJavadoc().getLength()
                                 + JAVADOC_COMMENT_LENGTH : 0);
-                if (pos >= lineInfo.getOffset()
-                        && pos <= (lineInfo.getOffset() + lineInfo.getLength()))
+                if (containsPosition(lineInfo, pos))
                 {
                     List redundantKeyWords = Collections.EMPTY_LIST;
 
@@ -134,17 +121,7 @@ public class RedundantModifierQuickfix extends AbstractASTResolution
                             ModifierKeyword.FINAL_KEYWORD, ModifierKeyword.STATIC_KEYWORD });
                     }
 
-                    List modifiers = node.modifiers();
-                    Iterator it = modifiers.iterator();
-
-                    while (it.hasNext())
-                    {
-                        Modifier modifier = (Modifier) it.next();
-                        if (redundantKeyWords.contains(modifier.getKeyword()))
-                        {
-                            rewrite.remove(modifier, null);
-                        }
-                    }
+                    deleteRedundantModifiers(node.modifiers(), redundantKeyWords);
                 }
                 return true;
             }
@@ -157,42 +134,37 @@ public class RedundantModifierQuickfix extends AbstractASTResolution
                 int pos = node.getStartPosition()
                         + (node.getJavadoc() != null ? node.getJavadoc().getLength()
                                 + JAVADOC_COMMENT_LENGTH : 0);
-                if (pos >= lineInfo.getOffset()
-                        && pos <= (lineInfo.getOffset() + lineInfo.getLength()))
+                if (containsPosition(lineInfo, pos))
                 {
-                    List redundantKeyWords = Collections.EMPTY_LIST;
 
                     if (node.getParent() instanceof AnnotationTypeDeclaration)
                     {
 
-                        redundantKeyWords = Arrays.asList(new Object[] {
+                        List redundantKeyWords = Arrays.asList(new Object[] {
                             ModifierKeyword.PUBLIC_KEYWORD, ModifierKeyword.ABSTRACT_KEYWORD,
                             ModifierKeyword.FINAL_KEYWORD, ModifierKeyword.STATIC_KEYWORD });
+
+                        deleteRedundantModifiers(node.modifiers(), redundantKeyWords);
                     }
 
-                    List modifiers = node.modifiers();
-                    Iterator it = modifiers.iterator();
-
-                    while (it.hasNext())
-                    {
-                        Modifier modifier = (Modifier) it.next();
-                        if (redundantKeyWords.contains(modifier.getKeyword()))
-                        {
-                            rewrite.remove(modifier, null);
-                        }
-                    }
                 }
                 return true;
             }
-        };
-    }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected boolean handleGetCreateOnlyPartialAST()
-    {
-        return false;
+            private void deleteRedundantModifiers(List modifiers, List redundantModifierKeywords)
+            {
+                Iterator it = modifiers.iterator();
+
+                while (it.hasNext())
+                {
+                    Modifier modifier = (Modifier) it.next();
+                    if (redundantModifierKeywords.contains(modifier.getKeyword()))
+                    {
+                        modifier.delete();
+                    }
+                }
+            }
+        };
     }
 
     /**

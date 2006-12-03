@@ -96,6 +96,15 @@
       <attribute name="categoryId"/>
    </extension>   
    
+	<extension point="org.eclipse.ui.editors.markerUpdaters"> 
+		<updater 
+			id="org.eclipse.ui.texteditor.BasicMarkerUpdater" 
+			class="org.eclipse.ui.texteditor.BasicMarkerUpdater"
+			markerType="org.eclipse.core.resources.markers"> 
+		</updater> 
+	</extension> 
+   
+   
 <!--
 	Provide marker resolutions
 	-->
@@ -429,4 +438,29 @@
    		 </markerAttributeGrouping>
    </extension>
    
+   
+	<extension
+		point="org.eclipse.ui.popupMenus">
+	  	<objectContribution 
+	    	objectClass="org.eclipse.core.resources.IFile"
+	    	adaptable="true"
+	    	id="com.atlassw.tools.eclipse.checkstyle.FixCheckstyleMarkersAction">
+	 		<action
+	       		label="%FixCheckstyleMarkersAction.label"
+	       		class="com.atlassw.tools.eclipse.checkstyle.quickfixes.FixCheckstyleMarkersAction"
+	       		enablesFor="1"
+	       		id="com.atlassw.tools.eclipse.checkstyle.FixCheckstyleMarkersAction">
+	    		<selection
+	          		name="*.java"
+	          		class="org.eclipse.core.resources.IFile">
+	    		</selection>
+	    		<selection
+	          		class="org.eclipse.jdt.core.ICompilationUnit">
+	    		</selection>
+	    		<selection
+	          		class="org.eclipse.jdt.core.IType">
+	    		</selection>
+	 		</action>
+	  	</objectContribution>
+	</extension>
 </plugin>

@@ -21,8 +21,9 @@
 package com.atlassw.tools.eclipse.checkstyle.quickfixes.coding;
 
 import org.eclipse.jdt.core.dom.ASTVisitor;
+import org.eclipse.jdt.core.dom.ChildPropertyDescriptor;
 import org.eclipse.jdt.core.dom.EmptyStatement;
-import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
+import org.eclipse.jdt.core.dom.StructuralPropertyDescriptor;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.swt.graphics.Image;
 
@@ -41,21 +42,28 @@ public class EmptyStatementQuickfix extends AbstractASTResolution
     /**
      * {@inheritDoc}
      */
-    protected ASTVisitor handleGetCorrectingASTVisitor(final ASTRewrite rewrite,
-            final IRegion lineInfo)
+    protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
+            final int markerStartPosition)
     {
 
         return new ASTVisitor()
         {
             public boolean visit(EmptyStatement node)
             {
-                int pos = node.getStartPosition();
-                if (pos >= lineInfo.getOffset()
-                        && pos <= (lineInfo.getOffset() + lineInfo.getLength()))
+                if (containsPosition(lineInfo, node.getStartPosition()))
                 {
-                    rewrite.remove(node, null);
+
+                    // early exit if the statement is mandatory, e.g. only
+                    // statement in a for-statement without block
+                    StructuralPropertyDescriptor p = node.getLocationInParent();
+                    if (p.isChildProperty() && ((ChildPropertyDescriptor) p).isMandatory())
+                    {
+                        return false;
+                    }
+
+                    node.delete();
                 }
-                return true;
+                return false;
             }
         };
     }

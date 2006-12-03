@@ -9,6 +9,7 @@
     <filter name="FilesFromPackage" enabled="true">
         <filter-data value="src/com/atlassw/tools/eclipse/checkstyle/util/regex"/>
         <filter-data value="nls"/>
+        <filter-data value="test"/>
     </filter>
     <filter name="NonSrcDirs" enabled="true"/>
 </fileset-config>
