@@ -78,7 +78,8 @@ public class RedundantModifierQuickfix extends AbstractASTResolution
                         if (type.isInterface())
                         {
                             redundantKeyWords = Arrays.asList(new Object[] {
-                                ModifierKeyword.PUBLIC_KEYWORD, ModifierKeyword.ABSTRACT_KEYWORD });
+                                ModifierKeyword.PUBLIC_KEYWORD, ModifierKeyword.ABSTRACT_KEYWORD,
+                                ModifierKeyword.FINAL_KEYWORD });
                         }
                         else if (Modifier.isFinal(type.getModifiers()))
                         {
@@ -160,7 +161,7 @@ public class RedundantModifierQuickfix extends AbstractASTResolution
                     Modifier modifier = (Modifier) it.next();
                     if (redundantModifierKeywords.contains(modifier.getKeyword()))
                     {
-                        modifier.delete();
+                        it.remove();
                     }
                 }
             }

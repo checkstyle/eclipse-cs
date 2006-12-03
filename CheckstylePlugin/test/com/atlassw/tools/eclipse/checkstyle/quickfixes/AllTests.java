@@ -6,6 +6,8 @@ import com.atlassw.tools.eclipse.checkstyle.quickfixes.coding.DefaultComesLastTe
 import com.atlassw.tools.eclipse.checkstyle.quickfixes.coding.EmptyStatementTest;
 import com.atlassw.tools.eclipse.checkstyle.quickfixes.coding.MissingSwitchDefaultTest;
 import com.atlassw.tools.eclipse.checkstyle.quickfixes.misc.FinalParametersTest;
+import com.atlassw.tools.eclipse.checkstyle.quickfixes.modifier.ModifierOrderTest;
+import com.atlassw.tools.eclipse.checkstyle.quickfixes.modifier.RedundantModifierTest;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -22,6 +24,9 @@ public class AllTests
         suite.addTestSuite(EmptyStatementTest.class);
         suite.addTestSuite(MissingSwitchDefaultTest.class);
         suite.addTestSuite(FinalParametersTest.class);
+
+        suite.addTestSuite(ModifierOrderTest.class);
+        suite.addTestSuite(RedundantModifierTest.class);
         // $JUnit-END$
         return suite;
     }

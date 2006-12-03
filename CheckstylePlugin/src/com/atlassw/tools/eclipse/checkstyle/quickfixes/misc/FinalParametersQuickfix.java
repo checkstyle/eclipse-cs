@@ -51,7 +51,7 @@ public class FinalParametersQuickfix extends AbstractASTResolution
 
             public boolean visit(SingleVariableDeclaration node)
             {
-                if (containsPosition(lineInfo, markerStartOffset)
+                if (containsPosition(node, markerStartOffset)
                         && !Modifier.isFinal(node.getModifiers()))
                 {
 
