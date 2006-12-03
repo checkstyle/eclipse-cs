@@ -95,16 +95,7 @@
       </attribute>
       <attribute name="categoryId"/>
    </extension>   
-   
-	<extension point="org.eclipse.ui.editors.markerUpdaters"> 
-		<updater 
-			id="org.eclipse.ui.texteditor.BasicMarkerUpdater" 
-			class="org.eclipse.ui.texteditor.BasicMarkerUpdater"
-			markerType="org.eclipse.core.resources.markers"> 
-		</updater> 
-	</extension> 
-   
-   
+      
 <!--
 	Provide marker resolutions
 	-->
