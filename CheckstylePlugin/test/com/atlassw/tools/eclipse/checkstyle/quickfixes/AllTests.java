@@ -5,6 +5,8 @@ import com.atlassw.tools.eclipse.checkstyle.quickfixes.blocks.NeedBracesTest;
 import com.atlassw.tools.eclipse.checkstyle.quickfixes.coding.DefaultComesLastTest;
 import com.atlassw.tools.eclipse.checkstyle.quickfixes.coding.EmptyStatementTest;
 import com.atlassw.tools.eclipse.checkstyle.quickfixes.coding.MissingSwitchDefaultTest;
+import com.atlassw.tools.eclipse.checkstyle.quickfixes.design.DesignForExtensionTest;
+import com.atlassw.tools.eclipse.checkstyle.quickfixes.misc.ArrayTypeStyleTest;
 import com.atlassw.tools.eclipse.checkstyle.quickfixes.misc.FinalParametersTest;
 import com.atlassw.tools.eclipse.checkstyle.quickfixes.modifier.ModifierOrderTest;
 import com.atlassw.tools.eclipse.checkstyle.quickfixes.modifier.RedundantModifierTest;
@@ -19,12 +21,23 @@ public class AllTests
     {
         TestSuite suite = new TestSuite("Test for com.atlassw.tools.eclipse.checkstyle.quickfixes");
         // $JUnit-BEGIN$
+
+        // blocks
         suite.addTestSuite(NeedBracesTest.class);
+
+        // coding
         suite.addTestSuite(DefaultComesLastTest.class);
         suite.addTestSuite(EmptyStatementTest.class);
         suite.addTestSuite(MissingSwitchDefaultTest.class);
+
+        // design
+        suite.addTestSuite(DesignForExtensionTest.class);
+
+        // misc
+        suite.addTestSuite(ArrayTypeStyleTest.class);
         suite.addTestSuite(FinalParametersTest.class);
 
+        // modifier
         suite.addTestSuite(ModifierOrderTest.class);
         suite.addTestSuite(RedundantModifierTest.class);
         // $JUnit-END$
