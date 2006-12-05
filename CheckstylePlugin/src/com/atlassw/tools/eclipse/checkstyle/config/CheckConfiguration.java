@@ -20,7 +20,6 @@
 
 package com.atlassw.tools.eclipse.checkstyle.config;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
@@ -29,11 +28,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.IConfigurationType;
-import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
 
@@ -205,18 +204,7 @@ public class CheckConfiguration implements ICheckConfiguration
         }
         finally
         {
-            if (in != null)
-            {
-                try
-                {
-                    in.close();
-                }
-                catch (IOException e)
-                {
-                    // we tried to be nice
-                    CheckstyleLog.log(e);
-                }
-            }
+            IOUtils.closeQuietly(in);
         }
         return configLocation;
     }

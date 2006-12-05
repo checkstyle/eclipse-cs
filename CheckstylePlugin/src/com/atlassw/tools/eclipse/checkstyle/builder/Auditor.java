@@ -22,6 +22,7 @@ package com.atlassw.tools.eclipse.checkstyle.builder;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -29,6 +30,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.io.IOUtils;
 import org.eclipse.core.filebuffers.FileBuffers;
 import org.eclipse.core.filebuffers.ITextFileBufferManager;
 import org.eclipse.core.resources.IFile;
@@ -154,6 +156,7 @@ public class Auditor
         // store the current context class loader
         ClassLoader contextClassloader = Thread.currentThread().getContextClassLoader();
 
+        InputStream configStream = null;
         try
         {
 
@@ -169,8 +172,8 @@ public class Auditor
                     .getName()), filesToAudit.length);
 
             // find out tabwidth setting
-            int tabWidth = ConfigurationReader.getTabWidth(mCheckConfiguration
-                    .openConfigurationFileStream());
+            configStream = mCheckConfiguration.openConfigurationFileStream();
+            int tabWidth = ConfigurationReader.getTabWidth(configStream);
 
             // create checker
             checker = CheckerFactory.createChecker(mCheckConfiguration, project);
@@ -205,6 +208,8 @@ public class Auditor
         finally
         {
             monitor.done();
+
+            IOUtils.closeQuietly(configStream);
 
             // Cleanup listener and filter
             if (checker != null)
@@ -374,7 +379,7 @@ public class Auditor
                         if (metaData == null)
                         {
                             Module module = new Module(error.getSourceName());
-                            metaData = MetadataFactory.createGenericMetadata(module); 
+                            metaData = MetadataFactory.createGenericMetadata(module);
                         }
 
                         mMarkerAttributes.put(CheckstyleMarker.MODULE_NAME, metaData

@@ -34,6 +34,7 @@ import java.util.TreeMap;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.commons.io.IOUtils;
 import org.eclipse.osgi.util.NLS;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
@@ -299,14 +300,7 @@ public final class MetadataFactory
                 }
                 finally
                 {
-                    try
-                    {
-                        metadataStream.close();
-                    }
-                    catch (Exception e)
-                    {
-                        // We tried to be nice and close the stream.
-                    }
+                    IOUtils.closeQuietly(metadataStream);
                 }
             }
         }

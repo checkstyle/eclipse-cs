@@ -20,9 +20,22 @@
 
 package com.atlassw.tools.eclipse.checkstyle.config.configtypes;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+
+import org.apache.commons.io.IOUtils;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -44,6 +57,7 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationWorkingCopy;
+import com.atlassw.tools.eclipse.checkstyle.config.ConfigurationWriter;
 import com.atlassw.tools.eclipse.checkstyle.config.gui.CheckConfigurationPropertiesDialog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
@@ -233,12 +247,84 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor
     public CheckConfigurationWorkingCopy getEditedWorkingCopy() throws CheckstylePluginException
     {
         mWorkingCopy.setName(mConfigName.getText());
-        mWorkingCopy.setLocation(mLocation.getText());
         mWorkingCopy.setDescription(mDescription.getText());
 
         mWorkingCopy.getAdditionalData().put(ExternalFileConfigurationType.KEY_PROTECT_CONFIG,
                 "" + mChkProtectConfig.getSelection()); //$NON-NLS-1$
 
+        try
+        {
+            mWorkingCopy.setLocation(mLocation.getText());
+        }
+        catch (CheckstylePluginException e)
+        {
+            String location = mLocation.getText();
+
+            if (ensureFileExists(location))
+            {
+                mWorkingCopy.setLocation(mLocation.getText());
+            }
+            else
+            {
+                throw e;
+            }
+        }
+
         return mWorkingCopy;
+    }
+
+    /**
+     * Helper method trying to ensure that the file location provided by the
+     * user exists. If that is not the case it prompts the user if an empty
+     * configuration file should be created.
+     * 
+     * @param location the configuration file location
+     * @throws CheckstylePluginException error when trying to ensure the
+     *             location file existance
+     */
+    private boolean ensureFileExists(String location) throws CheckstylePluginException
+    {
+
+        IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(location));
+
+        if (!file.exists())
+        {
+            boolean confirm = MessageDialog.openQuestion(mBtnBrowse.getShell(),
+                    Messages.ExternalFileConfigurationEditor_titleFileDoesNotExist,
+                    Messages.ExternalFileConfigurationEditor_msgFileDoesNotExist);
+            if (confirm)
+            {
+                OutputStream out = null;
+                try
+                {
+                    File trueFile = file.getLocation().toFile();
+
+                    trueFile.getParentFile().mkdirs();
+                    out = new BufferedOutputStream(new FileOutputStream(trueFile));
+                    ConfigurationWriter.writeNewConfiguration(out, mWorkingCopy);
+
+                    file.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+                }
+                catch (IOException ioe)
+                {
+                    CheckstylePluginException.rethrow(ioe);
+                }
+                catch (CoreException e)
+                {
+                    CheckstylePluginException.rethrow(e);
+                }
+                finally
+                {
+                    IOUtils.closeQuietly(out);
+                }
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

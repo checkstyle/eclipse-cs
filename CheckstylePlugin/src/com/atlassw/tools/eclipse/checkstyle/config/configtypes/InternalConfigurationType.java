@@ -28,6 +28,7 @@ import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.apache.commons.io.IOUtils;
 import org.eclipse.core.runtime.IPath;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
@@ -77,14 +78,7 @@ public class InternalConfigurationType extends ConfigurationType
             }
             finally
             {
-                try
-                {
-                    out.close();
-                }
-                catch (Exception e)
-                {
-                    // can do nothing about it
-                }
+                IOUtils.closeQuietly(out);
             }
         }
 

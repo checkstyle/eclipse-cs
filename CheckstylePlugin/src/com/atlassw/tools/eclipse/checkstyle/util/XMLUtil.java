@@ -51,6 +51,7 @@ import javax.xml.transform.sax.TransformerHandler;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import org.apache.commons.io.IOUtils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
@@ -393,16 +394,15 @@ public final class XMLUtil
         SAXTransformerFactory saxFactory = (SAXTransformerFactory) sTransformerFactory;
         Templates templates = null;
 
+        InputStream in = null;
         try
         {
-            InputStream in = new BufferedInputStream(XMLUtil.class
-                    .getResourceAsStream("identity.xsl"));
+            in = new BufferedInputStream(XMLUtil.class.getResourceAsStream("identity.xsl"));
             templates = saxFactory.newTemplates(new StreamSource(in));
-            in.close();
         }
-        catch (IOException e)
+        finally
         {
-            throw new TransformerConfigurationException(e);
+            IOUtils.closeQuietly(in);
         }
 
         StreamResult result = new StreamResult(out);

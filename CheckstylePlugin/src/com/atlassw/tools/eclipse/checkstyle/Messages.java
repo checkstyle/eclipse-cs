@@ -240,6 +240,10 @@ public final class Messages extends NLS
 
     public static String DuplicatedCodeView_runningCheckstyleToRefresh;
 
+    public static String ExternalFileConfigurationEditor_msgFileDoesNotExist;
+
+    public static String ExternalFileConfigurationEditor_titleFileDoesNotExist;
+
     public static String FileConfigurationLocationEditor_btnBrowse;
 
     public static String FileMatchPatternEditDialog_chkIncludesFiles;

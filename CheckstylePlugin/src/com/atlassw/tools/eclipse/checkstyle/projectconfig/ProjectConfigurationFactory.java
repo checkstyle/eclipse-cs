@@ -31,6 +31,7 @@ import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.commons.io.IOUtils;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
@@ -189,17 +190,7 @@ public final class ProjectConfigurationFactory
 
         finally
         {
-            if (inStream != null)
-            {
-                try
-                {
-                    inStream.close();
-                }
-                catch (IOException e)
-                {
-                    // Nothing can be done about it.
-                }
-            }
+            IOUtils.closeQuietly(inStream);
         }
 
         return configuration;

@@ -31,6 +31,7 @@ import java.util.List;
 
 import javax.xml.transform.sax.TransformerHandler;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.eclipse.core.resources.IFile;
@@ -429,22 +430,8 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
         }
         finally
         {
-            try
-            {
-                pipeOut.close();
-            }
-            catch (Exception e1)
-            {
-                // can nothing do about it
-            }
-            try
-            {
-                pipeIn.close();
-            }
-            catch (Exception e1)
-            {
-                // can nothing do about it
-            }
+            IOUtils.closeQuietly(pipeIn);
+            IOUtils.closeQuietly(pipeOut);
         }
     }
 

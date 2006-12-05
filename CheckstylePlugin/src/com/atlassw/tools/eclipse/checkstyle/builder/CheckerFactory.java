@@ -30,6 +30,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.apache.commons.collections.ReferenceMap;
+import org.apache.commons.io.IOUtils;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.IPreferencesService;
@@ -132,7 +133,16 @@ public final class CheckerFactory
                 ((IContextAware) resolver).setProjectContext(project);
             }
 
-            checker = createCheckerInternal(config.openConfigurationFileStream(), resolver);
+            InputStream in = null;
+            try
+            {
+                in = config.openConfigurationFileStream();
+                checker = createCheckerInternal(in, resolver);
+            }
+            finally
+            {
+                IOUtils.closeQuietly(in);
+            }
 
             // store checker in cache
             Long modified = new Long(configLocation.openConnection().getLastModified());

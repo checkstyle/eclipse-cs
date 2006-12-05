@@ -20,6 +20,14 @@
 
 package com.atlassw.tools.eclipse.checkstyle.config.configtypes;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+
+import org.apache.commons.io.IOUtils;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -36,6 +44,7 @@ import org.eclipse.swt.widgets.Text;
 
 import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationWorkingCopy;
+import com.atlassw.tools.eclipse.checkstyle.config.ConfigurationWriter;
 import com.atlassw.tools.eclipse.checkstyle.config.gui.CheckConfigurationPropertiesDialog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
@@ -204,14 +213,82 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
      */
     public CheckConfigurationWorkingCopy getEditedWorkingCopy() throws CheckstylePluginException
     {
-        mWorkingCopy.setName(mConfigName.getText());
-        mWorkingCopy.setLocation(mLocation.getText());
-        mWorkingCopy.setDescription(mDescription.getText());
 
+        mWorkingCopy.setName(mConfigName.getText());
+        mWorkingCopy.setDescription(mDescription.getText());
         mWorkingCopy.getAdditionalData().put(ExternalFileConfigurationType.KEY_PROTECT_CONFIG,
                 "" + mChkProtectConfig.getSelection()); //$NON-NLS-1$
+
+        try
+        {
+            mWorkingCopy.setLocation(mLocation.getText());
+        }
+        catch (CheckstylePluginException e)
+        {
+            String location = mLocation.getText();
+
+            if (ensureFileExists(location))
+            {
+                mWorkingCopy.setLocation(mLocation.getText());
+            }
+            else
+            {
+                throw e;
+            }
+        }
 
         return mWorkingCopy;
     }
 
+    /**
+     * Helper method trying to ensure that the file location provided by the
+     * user exists. If that is not the case it prompts the user if an empty
+     * configuration file should be created.
+     * 
+     * @param location the configuration file location
+     * @throws CheckstylePluginException error when trying to ensure the
+     *             location file existance
+     */
+    private boolean ensureFileExists(String location) throws CheckstylePluginException
+    {
+        MultiPropertyResolver resolver = new MultiPropertyResolver();
+        resolver.addPropertyResolver(new ClasspathVariableResolver());
+        resolver.addPropertyResolver(new SystemPropertyResolver());
+
+        // support dynamic location strings
+        String resolvedLocation = ExternalFileConfigurationType.resolveDynamicLocation(location);
+
+        File file = new File(resolvedLocation);
+        if (!file.exists())
+        {
+            boolean confirm = MessageDialog.openQuestion(mBtnBrowse.getShell(),
+                    Messages.ExternalFileConfigurationEditor_titleFileDoesNotExist,
+                    Messages.ExternalFileConfigurationEditor_msgFileDoesNotExist);
+            if (confirm)
+            {
+                OutputStream out = null;
+                try
+                {
+                    file.getParentFile().mkdirs();
+                    out = new BufferedOutputStream(new FileOutputStream(file));
+                    ConfigurationWriter.writeNewConfiguration(out, mWorkingCopy);
+                }
+                catch (IOException ioe)
+                {
+                    CheckstylePluginException.rethrow(ioe);
+                }
+                finally
+                {
+                    IOUtils.closeQuietly(out);
+                }
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

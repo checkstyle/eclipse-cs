@@ -24,10 +24,13 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
+
+import org.apache.commons.io.IOUtils;
 
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
@@ -63,6 +66,34 @@ public class ExternalFileConfigurationType extends ConfigurationType
     //
 
     /**
+     * Tries to resolve a dynamic location into the real file path.
+     * 
+     * @param location the probably unresolved location string
+     * @return the resolved location
+     * @throws CheckstylePluginException unexpected error while resolving the
+     *             dynamic properties
+     */
+    public static String resolveDynamicLocation(String location) throws CheckstylePluginException
+    {
+
+        String newLocation = location;
+
+        try
+        {
+            // support dynamic locations for external configurations
+            while (PropertyUtil.hasUnresolvedProperties(newLocation))
+            {
+                newLocation = PropertyUtil.replaceProperties(newLocation, DYNAMIC_LOC_RESOLVER);
+            }
+        }
+        catch (CheckstyleException e)
+        {
+            CheckstylePluginException.rethrow(e);
+        }
+        return newLocation;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public URL resolveLocation(ICheckConfiguration checkConfiguration)
@@ -74,18 +105,11 @@ public class ExternalFileConfigurationType extends ConfigurationType
             String location = checkConfiguration.getLocation();
 
             // support dynamic locations for external configurations
-            while (PropertyUtil.hasUnresolvedProperties(location))
-            {
-                location = PropertyUtil.replaceProperties(location, DYNAMIC_LOC_RESOLVER);
-            }
+            location = resolveDynamicLocation(location);
 
             return new File(location).toURL();
         }
         catch (MalformedURLException e)
-        {
-            CheckstylePluginException.rethrow(e);
-        }
-        catch (CheckstyleException e)
         {
             CheckstylePluginException.rethrow(e);
         }
@@ -114,12 +138,9 @@ public class ExternalFileConfigurationType extends ConfigurationType
             {
 
                 // support dynamic locations for external configurations
-                while (PropertyUtil.hasUnresolvedProperties(location))
-                {
-                    location = PropertyUtil.replaceProperties(location, DYNAMIC_LOC_RESOLVER);
-                }
+                location = resolveDynamicLocation(location);
             }
-            catch (CheckstyleException e)
+            catch (CheckstylePluginException e)
             {
                 CheckstyleLog.log(e);
                 isConfigurable = false;
@@ -142,18 +163,8 @@ public class ExternalFileConfigurationType extends ConfigurationType
 
         String location = checkConfiguration.getLocation();
 
-        try
-        {
-            // support dynamic locations for external configurations
-            while (PropertyUtil.hasUnresolvedProperties(location))
-            {
-                location = PropertyUtil.replaceProperties(location, DYNAMIC_LOC_RESOLVER);
-            }
-        }
-        catch (CheckstyleException e)
-        {
-            CheckstylePluginException.rethrow(e);
-        }
+        // support dynamic locations for external configurations
+        location = resolveDynamicLocation(location);
 
         MultiPropertyResolver multiResolver = new MultiPropertyResolver();
         multiResolver.addPropertyResolver(new ResolvablePropertyResolver(checkConfiguration));
@@ -180,7 +191,7 @@ public class ExternalFileConfigurationType extends ConfigurationType
     {
 
         ResourceBundle bundle = null;
-
+        InputStream in = null;
         try
         {
 
@@ -198,12 +209,17 @@ public class ExternalFileConfigurationType extends ConfigurationType
 
             File propertyFile = new File(propsLocation + ".properties"); //$NON-NLS-1$
 
-            bundle = new PropertyResourceBundle(new BufferedInputStream(new FileInputStream(
-                    propertyFile)));
+            in = new BufferedInputStream(new FileInputStream(propertyFile));
+            bundle = new PropertyResourceBundle(in);
         }
         catch (IOException ioe)
         {
             // we won't load the bundle then
+            CheckstyleLog.log(ioe);
+        }
+        finally
+        {
+            IOUtils.closeQuietly(in);
         }
 
         return bundle;

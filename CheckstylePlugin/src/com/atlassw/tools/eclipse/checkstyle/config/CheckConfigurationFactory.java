@@ -34,6 +34,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.io.IOUtils;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IPath;
@@ -107,7 +108,6 @@ public final class CheckConfigurationFactory
      * Get an <code>CheckConfiguration</code> instance by its name.
      * 
      * @param name Name of the requested instance.
-     * 
      * @return The requested instance or <code>null</code> if the named
      *         instance could not be found.
      */
@@ -186,9 +186,7 @@ public final class CheckConfigurationFactory
      * format.
      * 
      * @param file File to write too.
-     * 
      * @param config List of check configurations to write out.
-     * 
      * @throws CheckstylePluginException Error during export.
      */
     public static void exportConfiguration(File file, ICheckConfiguration config)
@@ -205,12 +203,7 @@ public final class CheckConfigurationFactory
             in = config.openConfigurationFileStream();
             out = new BufferedOutputStream(new FileOutputStream(file));
 
-            byte[] buf = new byte[512];
-            int i = 0;
-            while ((i = in.read(buf)) > -1)
-            {
-                out.write(buf, 0, i);
-            }
+            IOUtils.copy(in, out);
         }
         catch (Exception e)
         {
@@ -218,23 +211,8 @@ public final class CheckConfigurationFactory
         }
         finally
         {
-
-            try
-            {
-                in.close();
-            }
-            catch (Exception e1)
-            {
-                // NOOP
-            }
-            try
-            {
-                out.close();
-            }
-            catch (Exception e2)
-            {
-                // NOOP
-            }
+            IOUtils.closeQuietly(in);
+            IOUtils.closeQuietly(out);
         }
     }
 
@@ -284,17 +262,7 @@ public final class CheckConfigurationFactory
 
         finally
         {
-            if (inStream != null)
-            {
-                try
-                {
-                    inStream.close();
-                }
-                catch (Exception e)
-                {
-                    // Nothing can be done about it.
-                }
-            }
+            IOUtils.closeQuietly(inStream);
         }
     }
 
@@ -354,23 +322,8 @@ public final class CheckConfigurationFactory
 
         finally
         {
-
-            try
-            {
-                inStream.close();
-            }
-            catch (Exception e)
-            {
-                // Nothing can be done about it.
-            }
-            try
-            {
-                defaultConfigStream.close();
-            }
-            catch (Exception e)
-            {
-                // Nothing can be done about it.
-            }
+            IOUtils.closeQuietly(inStream);
+            IOUtils.closeQuietly(defaultConfigStream);
         }
     }
 

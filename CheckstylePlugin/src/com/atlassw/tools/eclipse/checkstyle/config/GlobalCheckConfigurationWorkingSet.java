@@ -33,6 +33,7 @@ import java.util.Set;
 
 import javax.xml.transform.sax.TransformerHandler;
 
+import org.apache.commons.io.IOUtils;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.xml.sax.SAXException;
@@ -333,22 +334,8 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
         }
         finally
         {
-            try
-            {
-                byteOut.close();
-            }
-            catch (Exception e1)
-            {
-                // can nothing do about it
-            }
-            try
-            {
-                out.close();
-            }
-            catch (Exception e1)
-            {
-                // can nothing do about it
-            }
+            IOUtils.closeQuietly(byteOut);
+            IOUtils.closeQuietly(out);
         }
     }
 

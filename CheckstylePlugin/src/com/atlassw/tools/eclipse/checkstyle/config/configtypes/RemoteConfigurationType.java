@@ -38,6 +38,7 @@ import java.util.Map;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
+import org.apache.commons.io.IOUtils;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
@@ -214,6 +215,10 @@ public class RemoteConfigurationType extends ConfigurationType
         {
             CheckstylePluginException.rethrow(e);
         }
+        finally
+        {
+            IOUtils.closeQuietly(inStream);
+        }
 
         return inStream;
     }
@@ -246,6 +251,10 @@ public class RemoteConfigurationType extends ConfigurationType
         catch (IOException e)
         {
             CheckstylePluginException.rethrow(e);
+        }
+        finally
+        {
+            IOUtils.closeQuietly(inStream);
         }
 
         return inStream;
@@ -309,22 +318,8 @@ public class RemoteConfigurationType extends ConfigurationType
         }
         finally
         {
-            try
-            {
-                inStream.close();
-            }
-            catch (Exception e)
-            {
-                // we tried to be nice
-            }
-            try
-            {
-                outStream.close();
-            }
-            catch (Exception e)
-            {
-                // we tried to be nice
-            }
+            IOUtils.closeQuietly(inStream);
+            IOUtils.closeQuietly(outStream);
         }
         return true;
     }
@@ -339,7 +334,7 @@ public class RemoteConfigurationType extends ConfigurationType
     {
 
         ResourceBundle bundle = null;
-
+        InputStream in = null;
         try
         {
 
@@ -358,11 +353,17 @@ public class RemoteConfigurationType extends ConfigurationType
 
             URL propUrl = new URL(propsLocation + ".properties"); //$NON-NLS-1$
 
-            bundle = new PropertyResourceBundle(new BufferedInputStream(propUrl.openStream()));
+            in = new BufferedInputStream(propUrl.openStream());
+            bundle = new PropertyResourceBundle(in);
         }
         catch (IOException ioe)
         {
             // we won't load the bundle then
+            CheckstyleLog.log(ioe);
+        }
+        finally
+        {
+            IOUtils.closeQuietly(in);
         }
 
         return bundle;

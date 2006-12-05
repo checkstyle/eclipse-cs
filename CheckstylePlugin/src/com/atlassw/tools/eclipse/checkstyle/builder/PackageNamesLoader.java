@@ -31,6 +31,7 @@ import java.util.Stack;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.commons.io.IOUtils;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -197,10 +198,7 @@ public final class PackageNamesLoader extends AbstractLoader
                     }
                     finally
                     {
-                        if (iStream != null)
-                        {
-                            iStream.close();
-                        }
+                        IOUtils.closeQuietly(iStream);
                     }
                 }
             }

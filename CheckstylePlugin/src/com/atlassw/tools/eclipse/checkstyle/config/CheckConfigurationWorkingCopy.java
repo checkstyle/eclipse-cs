@@ -33,6 +33,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.eclipse.core.resources.IFile;
@@ -46,7 +47,6 @@ import org.eclipse.osgi.util.NLS;
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.IConfigurationType;
-import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
 
@@ -281,14 +281,7 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
         }
         finally
         {
-            try
-            {
-                in.close();
-            }
-            catch (Exception e)
-            {
-                // Can do nothing
-            }
+            IOUtils.closeQuietly(in);
         }
 
         return result;
@@ -348,22 +341,8 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
         }
         finally
         {
-            try
-            {
-                byteOut.close();
-            }
-            catch (Exception e)
-            {
-                // Can do nothing
-            }
-            try
-            {
-                out.close();
-            }
-            catch (Exception e)
-            {
-                // Can do nothing
-            }
+            IOUtils.closeQuietly(byteOut);
+            IOUtils.closeQuietly(out);
         }
     }
 
@@ -436,18 +415,7 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
         }
         finally
         {
-            if (in != null)
-            {
-                try
-                {
-                    in.close();
-                }
-                catch (IOException e)
-                {
-                    // we tried to be nice
-                    CheckstyleLog.log(e);
-                }
-            }
+            IOUtils.closeQuietly(in);
         }
         return configLocation;
     }

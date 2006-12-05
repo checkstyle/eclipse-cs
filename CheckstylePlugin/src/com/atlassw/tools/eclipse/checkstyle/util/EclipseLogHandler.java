@@ -34,7 +34,7 @@ import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 
 /**
  * Logging-Handler implementation for the java.util.logging API to allow using
- * the logging API to log events that get directly passed into the interal
+ * the logging API to log events that get directly passed into the internal
  * eclipse logging.<br/> This class act as bridge from java.util.logging to
  * eclipse logging.
  * 

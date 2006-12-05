@@ -20,10 +20,12 @@
 
 package com.atlassw.tools.eclipse.checkstyle.config;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.io.IOUtils;
 import org.eclipse.core.resources.IProject;
 
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.IContextAware;
@@ -97,6 +99,7 @@ public class CheckConfigurationTester
         // store the current context class loader
         ClassLoader contextClassloader = Thread.currentThread().getContextClassLoader();
 
+        InputStream in = null;
         try
         {
 
@@ -105,8 +108,8 @@ public class CheckConfigurationTester
             ClassLoader customClassLoader = CustomLibrariesClassLoader.get();
             Thread.currentThread().setContextClassLoader(customClassLoader);
 
-            ConfigurationLoader.loadConfiguration(
-                    mCheckConfiguration.openConfigurationFileStream(), resolver, false);
+            in = mCheckConfiguration.openConfigurationFileStream();
+            ConfigurationLoader.loadConfiguration(in, resolver, false);
         }
         catch (CheckstyleException e)
         {
@@ -114,6 +117,8 @@ public class CheckConfigurationTester
         }
         finally
         {
+            IOUtils.closeQuietly(in);
+
             // restore the original classloader
             Thread.currentThread().setContextClassLoader(contextClassloader);
         }
