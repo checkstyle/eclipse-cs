@@ -21,6 +21,7 @@
 package com.atlassw.tools.eclipse.checkstyle.config.configtypes;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -163,6 +164,25 @@ public final class ConfigurationTypes
 
         return (IConfigurationType[]) creatableTypes.toArray(new IConfigurationType[creatableTypes
                 .size()]);
+    }
+
+    /**
+     * Returns the available configuration types that can be configured, mean
+     * the configuration file can by principle be written as it lays in the
+     * local filesystem.
+     * 
+     * @return the configurable configuration types.
+     */
+    public static IConfigurationType[] getConfigurableConfigTypes()
+    {
+        List configurableTypes = new ArrayList();
+        configurableTypes.addAll(Arrays.asList(getCreatableConfigTypes()));
+
+        IConfigurationType remoteType = getByInternalName("remote");
+        configurableTypes.remove(remoteType);
+
+        return (IConfigurationType[]) configurableTypes
+                .toArray(new IConfigurationType[configurableTypes.size()]);
     }
 
     /**

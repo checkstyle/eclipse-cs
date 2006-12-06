@@ -548,21 +548,16 @@ public class CheckConfigurationWorkingSetEditor
         try
         {
 
-            // create a new internal check configuration
-
-            IConfigurationType internalType = ConfigurationTypes.getByInternalName("internal"); //$NON-NLS-1$
-            CheckConfigurationWorkingCopy newConfig = mWorkingSet.newWorkingCopy(internalType);
-
-            newConfig.setName(NLS.bind(Messages.CheckstylePreferencePage_CopyOfAddition,
-                    sourceConfig.getName()));
-            newConfig.setDescription(sourceConfig.getDescription());
-
             // Open the properties dialog to change default name and description
             CheckConfigurationPropertiesDialog dialog = new CheckConfigurationPropertiesDialog(
-                    getShell(), newConfig, mWorkingSet);
+                    getShell(), null, mWorkingSet);
+            dialog.setTemplateConfiguration(sourceConfig);
+
             dialog.setBlockOnOpen(true);
             if (CheckConfigurationPropertiesDialog.OK == dialog.open())
             {
+
+                CheckConfigurationWorkingCopy newConfig = dialog.getCheckConfiguration();
 
                 // Copy the source configuration into the new internal config
                 CheckConfigurationFactory.copyConfiguration(sourceConfig, newConfig);

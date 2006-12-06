@@ -49,6 +49,7 @@ import org.eclipse.swt.widgets.Shell;
 import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationTester;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationWorkingCopy;
+import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfigurationWorkingSet;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.ConfigurationTypes;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.ICheckConfigurationEditor;
@@ -88,6 +89,9 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
     /** the editor for the configuration location. */
     private ICheckConfigurationEditor mConfigurationEditor;
 
+    /** The template configuration for a new config. */
+    private ICheckConfiguration mTemplate;
+
     //
     // constructor
     //
@@ -111,6 +115,16 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
     //
     // methods
     //
+
+    /**
+     * Sets the template for a new check configuration.
+     * 
+     * @param template the template configuration
+     */
+    public void setTemplateConfiguration(ICheckConfiguration template)
+    {
+        this.mTemplate = template;
+    }
 
     /**
      * Get the check configuration from the editor.
@@ -392,12 +406,34 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
 
         if (mCheckConfig == null)
         {
-            this.setTitle(Messages.CheckConfigurationPropertiesDialog_titleCheckConfig);
-            this.setMessage(Messages.CheckConfigurationPropertiesDialog_msgCreateNewCheckConfig);
 
-            IConfigurationType[] types = ConfigurationTypes.getCreatableConfigTypes();
+            IConfigurationType[] types = mTemplate != null ? ConfigurationTypes
+                    .getConfigurableConfigTypes() : ConfigurationTypes.getCreatableConfigTypes();
 
             mCheckConfig = mWorkingSet.newWorkingCopy(types[0]);
+
+            if (mTemplate != null)
+            {
+
+                this.setTitle(NLS.bind(
+                        Messages.CheckConfigurationPropertiesDialog_titleCopyConfiguration,
+                        mTemplate.getName()));
+                this.setMessage(Messages.CheckConfigurationPropertiesDialog_msgCopyConfiguration);
+
+                String nameProposal = NLS.bind(
+                        Messages.CheckConfigurationPropertiesDialog_CopyOfAddition, mTemplate
+                                .getName());
+                setUniqueName(mCheckConfig, nameProposal);
+                mCheckConfig.setDescription(mTemplate.getDescription());
+                mCheckConfig.getResolvableProperties().add(mTemplate.getResolvableProperties());
+            }
+            else
+            {
+                this.setTitle(Messages.CheckConfigurationPropertiesDialog_titleCheckConfig);
+                this
+                        .setMessage(Messages.CheckConfigurationPropertiesDialog_msgCreateNewCheckConfig);
+            }
+
             mConfigType.setInput(types);
             mConfigType.setSelection(new StructuredSelection(types[0]), true);
 
@@ -414,6 +450,32 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
             // type of existing configs cannot be changed
             mConfigType.setSelection(new StructuredSelection(mCheckConfig.getType()), true);
             createConfigurationEditor(mCheckConfig);
+        }
+    }
+
+    /**
+     * Creates a non conflicting name out of a name proposal.
+     * 
+     * @param config the working copy to set the name on
+     * @param checkConfigName the name proposal
+     */
+    private void setUniqueName(CheckConfigurationWorkingCopy config, String checkConfigName)
+    {
+        String uniqueName = checkConfigName;
+
+        int counter = 2;
+        while (true)
+        {
+            try
+            {
+                config.setName(uniqueName);
+                break;
+            }
+            catch (CheckstylePluginException e)
+            {
+                uniqueName = checkConfigName + " (" + counter + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+                counter++;
+            }
         }
     }
 }

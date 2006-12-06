@@ -100,6 +100,8 @@ public final class Messages extends NLS
 
     public static String CheckConfigurationPropertiesDialog_lblName;
 
+    public static String CheckConfigurationPropertiesDialog_msgCopyConfiguration;
+
     public static String CheckConfigurationPropertiesDialog_msgCreateNewCheckConfig;
 
     public static String CheckConfigurationPropertiesDialog_msgEditCheckConfig;
@@ -107,6 +109,8 @@ public final class Messages extends NLS
     public static String CheckConfigurationPropertiesDialog_titleCheckConfig;
 
     public static String CheckConfigurationPropertiesDialog_titleCheckProperties;
+
+    public static String CheckConfigurationPropertiesDialog_titleCopyConfiguration;
 
     public static String CheckstyleBuilder_msgWrongBuilderOrder;
 
@@ -130,7 +134,7 @@ public final class Messages extends NLS
 
     public static String CheckstylePreferencePage_colType;
 
-    public static String CheckstylePreferencePage_CopyOfAddition;
+    public static String CheckConfigurationPropertiesDialog_CopyOfAddition;
 
     public static String CheckstylePreferencePage_lblDescription;
 
