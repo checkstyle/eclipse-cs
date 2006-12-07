@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quickfix-test-data>
+    <testcase>
+        <input fix-line="1" position="26">
+public class A {
+    private long test = 1l;
+    public void foo(int a, int b) {
+    }
+}
+        </input>
+        <result>
+public class A {
+    private long test = 1L;
+    public void foo(int a, int b) {
+    }
+}
+        </result>
+    </testcase>
+</quickfix-test-data>

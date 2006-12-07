@@ -177,6 +177,7 @@ Rationale: main() method can be often used for debug puposes. Thus most of main(
       <rule-metadata name="Upper Ell" internal-name="UpperEll" parent="TreeWalker">
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.UpperEllCheck"/>
          <description>Checks that long constants are defined with an upper ell. That is ' L' and not 'l'. This is in accordance to the Java Language Specification, Section 3.10.1.  Rationale: The lower case letter l looks a lot like the digit 1.</description>
+      	 <quickfix classname="com.atlassw.tools.eclipse.checkstyle.quickfixes.misc.UpperEllQuickfix"/>
       </rule-metadata>
       
       <rule-metadata name="Regexp" internal-name="Regexp" parent="TreeWalker">

@@ -8,6 +8,7 @@ import com.atlassw.tools.eclipse.checkstyle.quickfixes.coding.MissingSwitchDefau
 import com.atlassw.tools.eclipse.checkstyle.quickfixes.design.DesignForExtensionTest;
 import com.atlassw.tools.eclipse.checkstyle.quickfixes.misc.ArrayTypeStyleTest;
 import com.atlassw.tools.eclipse.checkstyle.quickfixes.misc.FinalParametersTest;
+import com.atlassw.tools.eclipse.checkstyle.quickfixes.misc.UpperEllTest;
 import com.atlassw.tools.eclipse.checkstyle.quickfixes.modifier.ModifierOrderTest;
 import com.atlassw.tools.eclipse.checkstyle.quickfixes.modifier.RedundantModifierTest;
 
@@ -36,6 +37,7 @@ public class AllTests
         // misc
         suite.addTestSuite(ArrayTypeStyleTest.class);
         suite.addTestSuite(FinalParametersTest.class);
+        suite.addTestSuite(UpperEllTest.class);
 
         // modifier
         suite.addTestSuite(ModifierOrderTest.class);
