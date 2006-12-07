@@ -43,7 +43,8 @@ import com.atlassw.tools.eclipse.checkstyle.quickfixes.AbstractASTResolution;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginImages;
 
 /**
- * Quickfix implementation that removes redundant modifiers.
+ * Quickfix implementation that orders modifiers into the suggested order by the
+ * JLS.
  * 
  * @author Lars Ködderitzsch
  */

@@ -38,7 +38,8 @@ import com.atlassw.tools.eclipse.checkstyle.quickfixes.AbstractASTResolution;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginImages;
 
 /**
- * Quickfix implementation moves the array declaration.
+ * Quickfix implementation which moves the array declaration (C-style to
+ * Java-style and reverse).
  * 
  * @author Lars Ködderitzsch
  */
