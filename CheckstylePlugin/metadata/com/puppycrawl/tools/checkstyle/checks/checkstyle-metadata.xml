@@ -172,6 +172,7 @@ Rationale: main() method can be often used for debug puposes. Thus most of main(
          <property-metadata name="excludedClasses" datatype="Regex" default-value="^$">
             <description>pattern for qualified names of classes which ar allowed to have main method.</description>
          </property-metadata>
+         <quickfix classname="com.atlassw.tools.eclipse.checkstyle.quickfixes.misc.UncommentedMainQuickfix"/>
       </rule-metadata>
       
       <rule-metadata name="Upper Ell" internal-name="UpperEll" parent="TreeWalker">

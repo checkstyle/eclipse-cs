@@ -127,6 +127,14 @@ public abstract class AbstractASTResolution implements ICheckstyleMarkerResoluti
             IAnnotationModel annotationModel = textFileBuffer.getAnnotationModel();
 
             MarkerAnnotation annotation = getMarkerAnnotation(annotationModel, marker);
+
+            // if the annotation is null it means that is was probably deleted
+            // by a previous quickfix
+            if (annotation == null)
+            {
+                return;
+            }
+
             Position pos = annotationModel.getPosition(annotation);
 
             IRegion lineInfo = document.getLineInformationOfOffset(pos.getOffset());

@@ -45,6 +45,10 @@ public class Messages extends NLS
 
     public static String FinalParametersQuickfix_label;
 
+    public static String UncommentedMainQuickfix_description;
+
+    public static String UncommentedMainQuickfix_label;
+
     public static String UpperEllQuickfix_description;
 
     public static String UpperEllQuickfix_label;
