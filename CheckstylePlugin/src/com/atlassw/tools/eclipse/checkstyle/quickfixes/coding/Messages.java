@@ -41,6 +41,10 @@ public class Messages extends NLS
 
     public static String EmptyStatementQuickfix_label;
 
+    public static String FinalLocalVariableQuickfix_description;
+
+    public static String FinalLocalVariableQuickfix_label;
+
     public static String MissingSwitchDefaultQuickfix_defaultCaseComment;
 
     public static String MissingSwitchDefaultQuickfix_description;

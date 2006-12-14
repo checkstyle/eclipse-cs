@@ -18,11 +18,12 @@
 //
 //============================================================================
 
-package com.atlassw.tools.eclipse.checkstyle.quickfixes.misc;
+package com.atlassw.tools.eclipse.checkstyle.quickfixes.coding;
 
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
+import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
 import org.eclipse.jdt.core.dom.Modifier.ModifierKeyword;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.swt.graphics.Image;
@@ -37,7 +38,7 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginImages;
  * @author Levon Saldamli
  * @author Lars Ködderitzsch
  */
-public class FinalParametersQuickfix extends AbstractASTResolution
+public class FinalLocalVariableQuickfix extends AbstractASTResolution
 {
 
     /**
@@ -63,6 +64,21 @@ public class FinalParametersQuickfix extends AbstractASTResolution
                 }
                 return true;
             }
+
+            public boolean visit(VariableDeclarationStatement node)
+            {
+                if (containsPosition(node, markerStartOffset)
+                        && !Modifier.isFinal(node.getModifiers()))
+                {
+                    if (!Modifier.isFinal(node.getModifiers()))
+                    {
+                        Modifier finalModifier = node.getAST().newModifier(
+                                ModifierKeyword.FINAL_KEYWORD);
+                        node.modifiers().add(finalModifier);
+                    }
+                }
+                return true;
+            }
         };
     }
 
@@ -71,7 +87,7 @@ public class FinalParametersQuickfix extends AbstractASTResolution
      */
     public String getDescription()
     {
-        return Messages.FinalParametersQuickfix_description;
+        return Messages.FinalLocalVariableQuickfix_description;
     }
 
     /**
@@ -79,7 +95,7 @@ public class FinalParametersQuickfix extends AbstractASTResolution
      */
     public String getLabel()
     {
-        return Messages.FinalParametersQuickfix_label;
+        return Messages.FinalLocalVariableQuickfix_label;
     }
 
     /**

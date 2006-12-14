@@ -89,6 +89,7 @@ Note: the check works in assumption that there is no unreachable code in the cas
                <property-value-option value="VARIABLE_DEF"/>
             </enumeration>
          </property-metadata>
+         <quickfix classname="com.atlassw.tools.eclipse.checkstyle.quickfixes.coding.FinalLocalVariableQuickfix"/>
       </rule-metadata>
       
       <rule-metadata name="Hidden Field" internal-name="HiddenField" parent="TreeWalker">
