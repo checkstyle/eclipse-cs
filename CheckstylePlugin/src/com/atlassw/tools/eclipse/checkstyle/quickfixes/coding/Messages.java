@@ -51,5 +51,9 @@ public class Messages extends NLS
 
     public static String DefaultComesLastQuickfix_label;
 
+    public static String StringLiteralEqualityQuickfix_description;
+
+    public static String StringLiteralEqualityQuickfix_label;
+
 }
 // CHECKSTYLE:ON

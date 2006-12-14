@@ -387,6 +387,7 @@ Rationale: Too many return points can be indication that code is attempting to d
 
 Rationale: Novice Java programmers often use code like if (x == "something") when they mean if ("something".equals(x)). 
          </description>
+         <quickfix classname="com.atlassw.tools.eclipse.checkstyle.quickfixes.coding.StringLiteralEqualityQuickfix"/>
       </rule-metadata>
       
       <rule-metadata name="SuperClone" internal-name="SuperClone" parent="TreeWalker">

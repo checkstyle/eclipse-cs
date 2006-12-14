@@ -5,6 +5,7 @@ import com.atlassw.tools.eclipse.checkstyle.quickfixes.blocks.NeedBracesTest;
 import com.atlassw.tools.eclipse.checkstyle.quickfixes.coding.DefaultComesLastTest;
 import com.atlassw.tools.eclipse.checkstyle.quickfixes.coding.EmptyStatementTest;
 import com.atlassw.tools.eclipse.checkstyle.quickfixes.coding.MissingSwitchDefaultTest;
+import com.atlassw.tools.eclipse.checkstyle.quickfixes.coding.StringLiteralEqualityTest;
 import com.atlassw.tools.eclipse.checkstyle.quickfixes.design.DesignForExtensionTest;
 import com.atlassw.tools.eclipse.checkstyle.quickfixes.misc.ArrayTypeStyleTest;
 import com.atlassw.tools.eclipse.checkstyle.quickfixes.misc.FinalParametersTest;
@@ -31,6 +32,7 @@ public class AllTests
         suite.addTestSuite(DefaultComesLastTest.class);
         suite.addTestSuite(EmptyStatementTest.class);
         suite.addTestSuite(MissingSwitchDefaultTest.class);
+        suite.addTestSuite(StringLiteralEqualityTest.class);
 
         // design
         suite.addTestSuite(DesignForExtensionTest.class);
