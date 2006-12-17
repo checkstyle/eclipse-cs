@@ -4,6 +4,8 @@
 	<classpathentry output="binnls" kind="src" path="nls"/>
 	<classpathentry output="metadata" kind="src" path="metadata"/>
 	<classpathentry kind="src" path="test"/>
+	<classpathentry exported="true" kind="lib" path="lib/commons-codec-1.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/commons-httpclient-3.0.1.jar"/>
 	<classpathentry exported="true" sourcepath="D:/_libs/commons-io-1.2/commons-io-1.2-src-ide.zip" kind="lib" path="lib/commons-io-1.2.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.pde.core.requiredPlugins"/>

@@ -34,6 +34,12 @@
             class="com.atlassw.tools.eclipse.checkstyle.preferences.CheckstylePreferencePage"
             id="com.atlassw.tools.eclipse.checkstyle.preferences.CheckstylePreferencePage">
       </page>
+      <page
+            name="%VotingPage.name"
+            class="com.atlassw.tools.eclipse.checkstyle.voting.VotingPreferencePage"
+            id="com.atlassw.tools.eclipse.checkstyle.voting"
+      		category="com.atlassw.tools.eclipse.checkstyle.preferences.CheckstylePreferencePage">
+      </page>
    </extension>
    <extension
          point="org.eclipse.ui.propertyPages">

@@ -7,6 +7,44 @@ That is: <path-to-my-eclipse-install>/eclipse.exe -clean
 The plugin version 4.x.x does not support eclipse 2.x.x any more. 
 Make sure you got an eclipse 3.0 or higher installation you are installing this plugin to.
 
+Eclipse Checkstyle Plugin v4.2.0
+----------------------------------------------
+This release concentrates on extending the quickfix functionality, 
+which was rudimetarily introduced in version 4.1.0.
+A new context menu action ('Apply Checkstyle fixes') was added to the Java editor and other views
+(e.g. Package Explorer) which - when invoked - tries to apply all exiting quickfixes to 
+the Checkstyle violations in the selected file.
+
+Additionaly new quickfixes were implemented for the following Checkstyle checks:
+FinalLocalVariable
+StringLiteralEquality
+FinalClass
+ArrayTypeStyle
+UncommentedMain
+UpperEll
+ModifierOrder
+
+Apart from that a few bugs were fixed as well as features implemented.
+
+Please note the new Voting section in the Checkstyle plugins preferences.
+If you like to tell us your opinion about the plugin please use this to cast your vote.
+
+Bugs:
+1600492 	Javadocs not displayed when mouse hovers over a java element
+1601570 	Package selection dialog (Pacakge filter) shows too much
+1579086 	MissingSwitchDefault Quickfix doesn't work proper
+1608976 	Need Braces QuickFix is not working as expected
+
+RFE:
+1541488 	Plugin should check builder order
+1423948 	Quickfix
+1464521 	Copying configurations
+1607736 	Implement quickfix for UpperEll
+1607735 	Implement quickfix for UncommentedMain
+1607729 	Implement quickfix for StringLiteralEquality
+1607728 	Implement quickfix for FinalLocalVariable
+1607732 	Implement quickfix for FinalClass
+
 Eclipse Checkstyle Plugin v4.1.1
 ----------------------------------------------
 Fixes some minor issues.

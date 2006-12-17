@@ -141,10 +141,10 @@
 		</div>
 		<div class="box navsection-box">
 			<h3>Rate this plug-in<br/>@ Eclipse Plugin Central!</h3>
-			<p> Due to a spam vote attack the voting form sadly needed to be pulled off the
-				site.<br/> Please visit <a
+			<p> Due to spambots the voting form sadly needed to be pulled off the
+				site.<br/> Please cast your vote over at <a
 					href="http://www.eclipseplugincentral.com/Web_Links-index-req-viewlink-cid-456.html"
-					>Eclipse Plugin Central</a> to cast your vote until a secure solution can be found.</p>
+					>Eclipse Plugin Central</a> or use the "voting client" built into the plugin (since 4.2.0 under Checkstyle preferences).</p>
 			<!--
 			<form method="post" action="http://www.eclipseplugincentral.com/Web_Links+main.html"
 				style="width:100%">
