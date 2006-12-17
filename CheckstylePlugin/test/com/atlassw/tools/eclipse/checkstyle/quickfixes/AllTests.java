@@ -8,6 +8,7 @@ import com.atlassw.tools.eclipse.checkstyle.quickfixes.coding.FinalLocalVariable
 import com.atlassw.tools.eclipse.checkstyle.quickfixes.coding.MissingSwitchDefaultTest;
 import com.atlassw.tools.eclipse.checkstyle.quickfixes.coding.StringLiteralEqualityTest;
 import com.atlassw.tools.eclipse.checkstyle.quickfixes.design.DesignForExtensionTest;
+import com.atlassw.tools.eclipse.checkstyle.quickfixes.design.FinalClassTest;
 import com.atlassw.tools.eclipse.checkstyle.quickfixes.misc.ArrayTypeStyleTest;
 import com.atlassw.tools.eclipse.checkstyle.quickfixes.misc.FinalParametersTest;
 import com.atlassw.tools.eclipse.checkstyle.quickfixes.misc.UncommentedMainTest;
@@ -38,6 +39,7 @@ public class AllTests
 
         // design
         suite.addTestSuite(DesignForExtensionTest.class);
+        suite.addTestSuite(FinalClassTest.class);
 
         // misc
         suite.addTestSuite(ArrayTypeStyleTest.class);

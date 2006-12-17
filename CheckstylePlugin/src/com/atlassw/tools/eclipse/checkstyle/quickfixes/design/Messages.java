@@ -40,6 +40,10 @@ public class Messages extends NLS
     public static String DesignForExtensionQuickfix_description;
 
     public static String DesignForExtensionQuickfix_label;
+
+    public static String FinalClassQuickfix_description;
+
+    public static String FinalClassQuickfix_label;
 }
 // CHECKSTYLE:ON
 

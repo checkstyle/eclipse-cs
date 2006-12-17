@@ -16,6 +16,7 @@
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.design.FinalClassCheck"/>
          <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.FinalClassCheck"/>
          <description>Checks that a class which has only private constructors is declared as final.</description>
+         <quickfix classname="com.atlassw.tools.eclipse.checkstyle.quickfixes.design.FinalClassQuickfix"/>
       </rule-metadata>
       
       <rule-metadata name="Hide Utility Class Constructor" internal-name="HideUtilityClassConstructor" parent="TreeWalker">
