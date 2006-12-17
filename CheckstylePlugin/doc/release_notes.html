@@ -14,6 +14,50 @@
             <tbody>
                 <tr>
                     <td>
+                        <a id="r4_2_0"> </a>
+                        <h3>Release 4.2.0</h3>
+                        <p>This release concentrates on extending the quickfix functionality, 
+                            which was rudimetarily introduced in version 4.1.0.
+                            A new context menu action ('Apply Checkstyle fixes') was added to the Java editor and other views
+                            (e.g. Package Explorer) which - when invoked - tries to apply all exiting quickfixes to 
+                            the Checkstyle violations in the selected file.
+                        </p>
+                        <p>    
+                            Additionaly new quickfixes were implemented for the following Checkstyle checks:
+                        </p>
+                        <ul> 
+                            <li>FinalLocalVariable</li>
+                            <li>StringLiteralEquality</li>
+                            <li>FinalClass</li>
+                            <li>ArrayTypeStyle</li>
+                            <li>UncommentedMain</li>
+                            <li>UpperEll</li>
+                            <li>ModifierOrder</li>
+                        </ul>  
+                         <p>  
+                            Apart from that a few bugs were fixed as well as features implemented.
+                         </p>
+                         <p>   
+                            Please note the new Voting section in the Checkstyle plugins preferences.
+                            If you like to tell us your opinion about the plugin please use this to cast your vote.</p>
+                        <h4>Bugs resolved:</h4>
+                        <ul>
+                            <li>1600492 Javadocs not displayed when mouse hovers over a java element</li>
+                            <li>1601570 Package selection dialog (Pacakge filter) shows too much</li>
+                            <li>1579086 MissingSwitchDefault Quickfix doesn't work proper</li>
+                            <li>1608976 Need Braces QuickFix is not working as expected</li>
+                        </ul>
+                        <h4>Feature requests:</h4>
+                        <ul>
+                            <li>1541488 Plugin should check builder order</li>
+                            <li>1423948 Quickfix</li>
+                            <li>1464521 Copying configurations</li>
+                            <li>1607736 Implement quickfix for UpperEll</li>
+                            <li>1607735 Implement quickfix for UncommentedMain</li>
+                            <li>1607729 Implement quickfix for StringLiteralEquality</li>
+                            <li>1607728 Implement quickfix for FinalLocalVariable</li>
+                            <li>1607732 Implement quickfix for FinalClass</li>
+                        </ul>                        
                         <a id="r4_1_1"> </a>
                         <h3>Release 4.1.1</h3>
                         <p>Fixes some minor issues.</p>
@@ -590,6 +634,8 @@
                     <td valign="top">
                         <div class="box releaselist">
                             <h3>Releases</h3>
+                            <a href="#r4_2_0">Release 4.2.0</a>
+                            <br/>
                             <a href="#r4_1_1">Release 4.1.1</a>
                             <br/>
                             <a href="#r4_1_0_final">Release 4.1.0 final</a>
