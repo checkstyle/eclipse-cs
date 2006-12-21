@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.ObjectUtils;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IPath;
@@ -178,6 +179,15 @@ public final class CheckConfigurationFactory
     {
         // use the export function ;-)
         String targetFile = target.isConfigurationAvailable().getFile();
+
+        String sourceFile = source.isConfigurationAvailable().getFile();
+
+        // copying from a file to the same file will destroy it.
+        if (ObjectUtils.equals(targetFile, sourceFile))
+        {
+            return;
+        }
+
         exportConfiguration(new File(targetFile), source);
     }
 
