@@ -29,6 +29,9 @@ Apart from that a few bugs were fixed as well as features implemented.
 Please note the new Voting section in the Checkstyle plugins preferences.
 If you like to tell us your opinion about the plugin please use this to cast your vote.
 
+We've given the plugin a test run on Eclipse 3.3M4 with no obvious problems, so it can be
+expected to run on the Eclipse 3.3 Milestones.
+
 Bugs:
 1600492 	Javadocs not displayed when mouse hovers over a java element
 1601570 	Package selection dialog (Pacakge filter) shows too much

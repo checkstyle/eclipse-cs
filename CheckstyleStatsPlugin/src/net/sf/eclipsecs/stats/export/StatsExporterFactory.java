@@ -27,7 +27,7 @@ import net.sf.eclipsecs.stats.export.internal.RTFStatsExporter;
  * 
  * @author Fabrice BELLINGARD
  */
-public class StatsExporterFactory
+public final class StatsExporterFactory
 {
     /** RTF exporter type. */
     public static final String RTF = "rtf";
@@ -36,18 +36,16 @@ public class StatsExporterFactory
      * Constructor.
      */
     private StatsExporterFactory()
-    {
-    }
+    {}
 
     /**
      * Creates an object that know how to export the Stats.
      * 
-     * @param type
-     *            the kind of file to export to. For example, "rtf" or "pdf".
+     * @param type the kind of file to export to. For example, "rtf" or "pdf".
      * @return the stats exporter object
+     * @throws StatsExporterException exception when exporting stats
      */
-    public static IStatsExporter createStatsExporter(String type)
-        throws StatsExporterException
+    public static IStatsExporter createStatsExporter(String type) throws StatsExporterException
     {
         IStatsExporter exporter = null;
         if (RTF.equals(type))
@@ -56,8 +54,7 @@ public class StatsExporterFactory
         }
         else
         {
-            throw new StatsExporterException(
-                "Unsupported kind of file ot export the stats to.");
+            throw new StatsExporterException("Unsupported kind of file ot export the stats to.");
         }
         return exporter;
     }
