@@ -133,7 +133,7 @@
 				<a href="{$path-prefix}extending_filters.html" class="level2">Creating a custom plug-in filter</a>
 			</xsl:if>
 			<xsl:if test="$section != 'project'">
-				<a href="news.shtml" class="level1"><img src="{$path-prefix}images/plus.gif" alt=""/>eclipse-cs
+				<a href="{$path-prefix}news.shtml" class="level1"><img src="{$path-prefix}images/plus.gif" alt=""/>eclipse-cs
 					project</a>
 			</xsl:if>
 			<xsl:if test="$section = 'project'">
