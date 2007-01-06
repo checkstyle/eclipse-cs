@@ -215,10 +215,6 @@ public class RemoteConfigurationType extends ConfigurationType
         {
             CheckstylePluginException.rethrow(e);
         }
-        finally
-        {
-            IOUtils.closeQuietly(inStream);
-        }
 
         return inStream;
     }
@@ -251,10 +247,6 @@ public class RemoteConfigurationType extends ConfigurationType
         catch (IOException e)
         {
             CheckstylePluginException.rethrow(e);
-        }
-        finally
-        {
-            IOUtils.closeQuietly(inStream);
         }
 
         return inStream;

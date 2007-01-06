@@ -209,7 +209,7 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
             catch (Exception e)
             {
                 mEditedLocation = oldLocation;
-                throw new CheckstylePluginException(NLS
+                CheckstylePluginException.rethrow(e, NLS
                         .bind(ErrorMessages.errorResolveConfigLocation, location, e
                                 .getLocalizedMessage()));
             }
