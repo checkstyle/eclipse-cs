@@ -104,6 +104,6 @@ public class CheckstylePluginException extends Exception
      */
     public static void rethrow(Throwable t) throws CheckstylePluginException
     {
-        rethrow(t, t.getLocalizedMessage());
+        rethrow(t, t.getMessage());
     }
 }
