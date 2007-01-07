@@ -73,19 +73,20 @@
 	<!-- renders the left hand side bar containing the navigation and other things -->
 	<xsl:template name="navigation">
 		<div class="buttons">
-			<a href="{$path-prefix}index.html"
+			<a href="{$path-prefix}index.shtml"
 				style="padding-top: 58px; border-top: 0px solid #FFFFFF;     background-image: url({$path-prefix}images/eclipse-cs.png); background-repeat: no-repeat;"
 				> The Checkstyle Plug-in for Eclipse </a>
 			<a href="https://sourceforge.net/project/showfiles.php?group_id=80344" class="level1"
 				>Downloads</a>
 			<a href="{$path-prefix}screen_shots.html" class="level1">Screenshots</a>
 			<xsl:if test="$section != 'releases'">
-				<a href="{$path-prefix}releasenotes/4.2.0/release_notes.html" class="level1"><img
+				<a href="{$path-prefix}releasenotes/4.2.1/release_notes.html" class="level1"><img
 					src="{$path-prefix}images/plus.gif" alt=""/>Release Notes</a>
 			</xsl:if>
 			<xsl:if test="$section = 'releases'">
-				<a href="{$path-prefix}releasenotes/4.2.0/release_notes.html" class="level1"><img
+				<a href="{$path-prefix}releasenotes/4.2.1/release_notes.html" class="level1"><img
 					src="{$path-prefix}images/minus.gif" alt=""/>Release Notes</a>
+				<a href="{$path-prefix}releasenotes/4.2.1/release_notes.html" class="level2">Release 4.2.1</a>
 				<a href="{$path-prefix}releasenotes/4.2.0/release_notes.html" class="level2">Release 4.2.0</a>
 				<a href="{$path-prefix}releasenotes/release_notes_older.html" class="level2">Older releases</a>
 			</xsl:if>

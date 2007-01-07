@@ -85,40 +85,9 @@
                 href="http://sourceforge.net/donate/index.php?group_id=80344">here</a>.</p>
         <p>Thank you! <br/> The Checkstyle Plug-in dev team</p>
         <h2>-- Donors --</h2>
-        <table>
-            <tr>
-                <td>
-                    <a href="http://sourceforge.net/users/aguther/">aguther</a>
-                    <a class="imagelink"
-                        href="http://sourceforge.net/help/icon_legend.php?context=group_donor&amp;uname=aguther&amp;this_group=80344&amp;return_to=%2F">
-                        <img src="http://images.sourceforge.net/images/icons/prj_2.png" alt="Project
-                            Donor" width="16" height="16"/>
-                    </a>
-                </td>
-                <td>
-                    <span class="donorcomment">Thank you very much for this great eclipse
-                    plug-in</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <a href="http://sourceforge.net/users/markygoldstein/">markygoldstein</a>
-                    <a class="imagelink"
-                        href="http://sourceforge.net/help/icon_legend.php?context=site_donor&amp;uname=markygoldstein&amp;return_to=%2F">
-                        <img src="http://images.sourceforge.net/images/icons/sf_3.png"
-                            alt="SourceForge.net                     Donor" width="16" height="16"/>
-                    </a>
-                    <a class="imagelink"
-                        href="http://sourceforge.net/help/icon_legend.php?context=group_donor&amp;uname=markygoldstein&amp;this_group=80344&amp;return_to=%2F">
-                        <img src="http://images.sourceforge.net/images/icons/prj_3.png" alt="Project
-                            Donor" width="16" height="16"/>
-                    </a>
-                </td>
-                <td>
-                    <span class="donorcomment">Marky Goldstein</span>
-                </td>
-            </tr>
-        </table>
+        <p>
+        	<!--#include virtual="/proj-donors.cache" -->
+        </p>
         <p>Thank you very much for your donations!</p>
     </body>
 </html>
