@@ -122,19 +122,16 @@
       <type
       		name="com.atlassw.tools.eclipse.checkstyle.error"         
             markerType="com.atlassw.tools.eclipse.checkstyle.CheckstyleMarker"
-            super="org.eclipse.ui.workbench.texteditor.error"
             markerSeverity="2">
       </type>
       <type
       		name="com.atlassw.tools.eclipse.checkstyle.warning"         
             markerType="com.atlassw.tools.eclipse.checkstyle.CheckstyleMarker"
-            super="org.eclipse.ui.workbench.texteditor.warning"
             markerSeverity="1">
       </type>
       <type
       		name="com.atlassw.tools.eclipse.checkstyle.info"         
             markerType="com.atlassw.tools.eclipse.checkstyle.CheckstyleMarker"
-            super="org.eclipse.ui.workbench.texteditor.info"
             markerSeverity="0">
       </type>
    </extension>
