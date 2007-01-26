@@ -263,7 +263,7 @@
 						<img src="{$path-prefix}images/top_button_left.gif" alt="Back to top"/>
 					</a>
 				</td>
-				<td class="copyright"> Copyright &#xA9; 2002-2006 David Schneider, <a
+				<td class="copyright"> Copyright &#xA9; 2002-2007 David Schneider, <a
 						href="http://www.koedderitzsch.net">Lars Ködderitzsch</a>. All Rights
 					Reserved. </td>
 				<td style="width: 35px">

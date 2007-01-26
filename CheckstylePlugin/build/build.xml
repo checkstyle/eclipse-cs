@@ -210,13 +210,13 @@
 		<copy todir="${dist.basedir.tmpdir}/doc">
 			<fileset dir="${basedir}/doc" includes="*.css" />
 			<fileset dir="${basedir}/doc" includes="images/**" />
-			<fileset dir="${basedir}/doc" includes="releasenotes/**" />
+			<fileset dir="${basedir}/doc" includes="releasenotes/**/*.jpg" />
 		</copy>
 		<copy todir="${dist.basedir.tmpdir}/doc/csdocs">
 			<fileset dir="${checkstyle.docs.dir}" includes="**/*" />
 		</copy>
 
-		<xslt style="${basedir}/doc/generate_docs.xsl" basedir="${basedir}/doc" includes="*.*html" destdir="${dist.basedir.tmpdir}/doc" />
+		<xslt style="${basedir}/doc/generate_docs.xsl" basedir="${basedir}/doc" includes="**/*.*html" destdir="${dist.basedir.tmpdir}/doc" />
 	</target>
 
 	<!-- ==================================================== -->
