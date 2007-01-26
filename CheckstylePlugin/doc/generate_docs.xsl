@@ -80,12 +80,13 @@
 				>Downloads</a>
 			<a href="{$path-prefix}screen_shots.html" class="level1">Screenshots</a>
 			<xsl:if test="$section != 'releases'">
-				<a href="{$path-prefix}releasenotes/4.2.1/release_notes.html" class="level1"><img
+				<a href="{$path-prefix}releasenotes/4.3.0/release_notes.html" class="level1"><img
 					src="{$path-prefix}images/plus.gif" alt=""/>Release Notes</a>
 			</xsl:if>
 			<xsl:if test="$section = 'releases'">
-				<a href="{$path-prefix}releasenotes/4.2.1/release_notes.html" class="level1"><img
+				<a href="{$path-prefix}releasenotes/4.3.0/release_notes.html" class="level1"><img
 					src="{$path-prefix}images/minus.gif" alt=""/>Release Notes</a>
+				<a href="{$path-prefix}releasenotes/4.3.0/release_notes.html" class="level2">Release 4.3.0</a>
 				<a href="{$path-prefix}releasenotes/4.2.1/release_notes.html" class="level2">Release 4.2.1</a>
 				<a href="{$path-prefix}releasenotes/4.2.0/release_notes.html" class="level2">Release 4.2.0</a>
 				<a href="{$path-prefix}releasenotes/release_notes_older.html" class="level2">Older releases</a>
