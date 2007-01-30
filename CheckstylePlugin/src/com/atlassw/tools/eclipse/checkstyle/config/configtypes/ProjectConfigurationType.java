@@ -22,11 +22,14 @@ package com.atlassw.tools.eclipse.checkstyle.config.configtypes;
 
 import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
+import org.apache.commons.io.IOUtils;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.osgi.util.NLS;
@@ -142,6 +145,7 @@ public class ProjectConfigurationType extends ConfigurationType
     {
 
         ResourceBundle bundle = null;
+        InputStream in = null;
 
         try
         {
@@ -162,11 +166,18 @@ public class ProjectConfigurationType extends ConfigurationType
 
             URL propertyFile = f.toURL();
 
-            bundle = new PropertyResourceBundle(new BufferedInputStream(propertyFile.openStream()));
+            in = new BufferedInputStream(propertyFile.openStream());
+            bundle = new PropertyResourceBundle(in);
         }
-        catch (Exception ioe)
+        catch (IOException ioe)
         {
             // we won't load the bundle then
+            // disabled logging bug #1647602
+            // CheckstyleLog.log(ioe);
+        }
+        finally
+        {
+            IOUtils.closeQuietly(in);
         }
 
         return bundle;

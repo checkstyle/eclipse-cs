@@ -351,7 +351,8 @@ public class RemoteConfigurationType extends ConfigurationType
         catch (IOException ioe)
         {
             // we won't load the bundle then
-            CheckstyleLog.log(ioe);
+            //disabled logging bug #1647602
+            //CheckstyleLog.log(ioe); 
         }
         finally
         {
