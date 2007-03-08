@@ -10,8 +10,8 @@
     </head>
     <body>
         <h2>-- Introduction --</h2>
-        <p>
-        	The eclipse-cs Checkstyle plug-in integrates the well-known source code analyzer Checkstyle into today's leading IDE - Eclipse.<br/>
+        <p> The eclipse-cs Checkstyle plug-in integrates the well-known source code analyzer
+            Checkstyle into today's leading IDE - Eclipse.<br/>
             <a href="http://checkstyle.sourceforge.net/">Checkstyle</a> is a development tool
             written by Oliver Burn to help you ensure that your Java code adheres to a set of coding
             standards. Checkstyle does this by inspecting your Java source code and pointing out
@@ -23,6 +23,19 @@
         <p>With the Checkstyle Eclipse plug-in your code is constantly inspected for problems.
             Within the Eclipse workbench you are notified of problems via the Eclipse Problems View
             and source code annotations just as you would see with compiler errors or warnings.</p>
+        <table>
+            <tr>
+                <td>
+                    <a class="imagelink" style="margin-left:40px;"
+                        href="http://www.eclipse.org/org/press-release/20070306eclipsecommunityawards.php">
+                        <img src="images/winner.jpg" height="120" width="144"
+                            alt="Eclipse Community Award 2007 Winner"/>
+                    </a>
+                </td>
+                <td style="vertical-align:middle;">The Eclipse Checkstyle plug-in won the Eclipse Community Award 2007 in the
+                    category of "Best Open Source Eclipse-based Developer tool".</td>
+            </tr>
+        </table>
         <h2>-- Download &amp; Installation --</h2>
         <p>The first way to install the Eclipse Checkstyle Plug-in is via the <a
                 href="http://eclipse-cs.sourceforge.net/update/">update site</a>.</p>
@@ -86,7 +99,7 @@
         <p>Thank you! <br/> The Checkstyle Plug-in dev team</p>
         <h2>-- Donors --</h2>
         <p>
-        	<!--#include virtual="/proj-donors.cache" -->
+            <!--#include virtual="/proj-donors.cache" -->
         </p>
         <p>Thank you very much for your donations!</p>
     </body>
