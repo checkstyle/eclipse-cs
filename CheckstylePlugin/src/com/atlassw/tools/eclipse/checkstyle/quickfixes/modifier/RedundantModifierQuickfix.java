@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.AnnotationTypeDeclaration;
 import org.eclipse.jdt.core.dom.AnnotationTypeMemberDeclaration;
@@ -158,10 +159,15 @@ public class RedundantModifierQuickfix extends AbstractASTResolution
 
                 while (it.hasNext())
                 {
-                    Modifier modifier = (Modifier) it.next();
-                    if (redundantModifierKeywords.contains(modifier.getKeyword()))
+                    ASTNode node = (ASTNode) it.next();
+
+                    if (node instanceof Modifier)
                     {
-                        it.remove();
+                        Modifier modifier = (Modifier) node;
+                        if (redundantModifierKeywords.contains(modifier.getKeyword()))
+                        {
+                            it.remove();
+                        }
                     }
                 }
             }

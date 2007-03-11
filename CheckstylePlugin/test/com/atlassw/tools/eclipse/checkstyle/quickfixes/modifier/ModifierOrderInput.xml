@@ -40,4 +40,19 @@ public class A {
 }
         </result>
     </testcase>
+    <testcase>
+        <input fix-line="1">
+public class A {
+    @Override
+    static final public void foo(int a, int b) {
+    }
+}
+        </input>
+        <result>
+public class A {
+    @Override public static final void foo(int a, int b) {
+    }
+}
+        </result>
+    </testcase>
 </quickfix-test-data>

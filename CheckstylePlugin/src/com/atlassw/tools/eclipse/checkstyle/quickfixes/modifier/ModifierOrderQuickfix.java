@@ -32,6 +32,7 @@ import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.AnnotationTypeMemberDeclaration;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
+import org.eclipse.jdt.core.dom.MarkerAnnotation;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
@@ -80,7 +81,7 @@ public class ModifierOrderQuickfix extends AbstractASTResolution
         Iterator it = modifiers.iterator();
         while (it.hasNext())
         {
-            Modifier mod = (Modifier) it.next();
+            ASTNode mod = (ASTNode) it.next();
             copies.add(ASTNode.copySubtree(mod.getAST(), mod));
         }
 
@@ -89,6 +90,11 @@ public class ModifierOrderQuickfix extends AbstractASTResolution
         {
             public int compare(Object arg0, Object arg1)
             {
+                if (!(arg0 instanceof Modifier) || !(arg1 instanceof Modifier))
+                {
+                    return 0;
+                }
+
                 Modifier m1 = (Modifier) arg0;
                 Modifier m2 = (Modifier) arg1;
 
