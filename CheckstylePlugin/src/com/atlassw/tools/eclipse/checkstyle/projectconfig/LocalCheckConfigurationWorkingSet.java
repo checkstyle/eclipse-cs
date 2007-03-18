@@ -27,6 +27,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.core.resources.IProject;
+
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationWorkingCopy;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfigurationWorkingSet;
@@ -187,6 +189,16 @@ public class LocalCheckConfigurationWorkingSet implements ICheckConfigurationWor
             }
         }
         return result;
+    }
+
+    /**
+     * Returns the project of the local check configuration working set.
+     * 
+     * @return the project
+     */
+    public IProject getProject()
+    {
+        return mProjectConfig.getProject();
     }
 
     /**

@@ -375,34 +375,6 @@
    </extension>  
 
    <!--
-   Action that launches the duplicates analysis
-   -->
-   <!--
-   <extension
-         point="org.eclipse.ui.popupMenus">
-      <objectContribution
-            adaptable="true"
-            objectClass="org.eclipse.core.resources.IResource"
-            nameFilter="*"
-            id="com.atlassw.tools.eclipse.checkstyle.projectcontribution">
-         <menu
-               label="Checkstyle"
-               path="additions"
-               id="com.atlassw.tools.eclipse.checkstyle.menu">
-            <separator name="group1"/>
-         </menu>
-         <action
-               enablesFor="*"
-               label="Search duplicated code"
-               icon="icons/duplicatedCode.gif"
-               class="com.atlassw.tools.eclipse.checkstyle.duplicates.DuplicatedCodeAction"
-               menubarPath="com.atlassw.tools.eclipse.checkstyle.menu/group1"
-               id="com.atlassw.tools.eclipse.checkstyle.duplicatesAction"/>
-      </objectContribution>
-   </extension>
-   -->
-   
-   <!--
    View that displays the duplicates
    -->
    <extension
@@ -432,17 +404,34 @@
    		 </markerAttributeGrouping>
    </extension>
    
-   
+   <!-- Popupmenu action for the 'Apply Checkstyle fixes' action -->
 	<extension
 		point="org.eclipse.ui.popupMenus">
 	  	<objectContribution 
 	    	objectClass="org.eclipse.core.resources.IFile"
 	    	adaptable="true"
 	    	id="com.atlassw.tools.eclipse.checkstyle.FixCheckstyleMarkersAction">
+	 		<menu
+          		id="Checkstyle.menu"
+          		label="%Checkstyle.menu"
+          		path="additions">
+	 		</menu>
+	 		<visibility>
+	 			<or>
+	 				<objectClass name="org.eclipse.jdt.core.ICompilationUnit"/>
+	 				<objectClass name="org.eclipse.jdt.core.IType"/>
+	 				<and>
+	 					<objectClass name="org.eclipse.core.resources.IFile"/>
+	 					<objectState name="extension" value="java"/>
+	 				</and>	
+				</or>
+	 		</visibility>
 	 		<action
 	       		label="%FixCheckstyleMarkersAction.label"
 	       		class="com.atlassw.tools.eclipse.checkstyle.quickfixes.FixCheckstyleMarkersAction"
 	       		enablesFor="1"
+	       		menubarPath="Checkstyle.menu/additions"
+	       		tooltip="%FixCheckstyleMarkersAction.tooltip"
 	       		id="com.atlassw.tools.eclipse.checkstyle.FixCheckstyleMarkersAction">
 	    		<selection
 	          		name="*.java"
@@ -457,4 +446,57 @@
 	 		</action>
 	  	</objectContribution>
 	</extension>
+	
+	<!-- Popupmenu action for the 'Configure Project(s) from blueprint...' action -->
+	<extension
+		point="org.eclipse.ui.popupMenus">
+	  	<objectContribution 
+	    	objectClass="org.eclipse.core.resources.IProject"
+	    	adaptable="true"
+	    	id="com.atlassw.tools.eclipse.checkstyle.bulk">
+	 		<menu
+          		id="Checkstyle.menu"
+          		label="%Checkstyle.menu"
+          		path="additions">
+	 		</menu>
+	 		<visibility>
+	 			<objectClass name="org.eclipse.core.resources.IProject"/>
+	 		</visibility>
+	 		<action
+	       		label="%DeactivateProjectsPrintAction.label"
+	       		class="com.atlassw.tools.eclipse.checkstyle.projectconfig.DeactivateProjectsPrintAction"
+	       		enablesFor="+"
+	       		menubarPath="Checkstyle.menu/additions"
+	       		tooltip="%DeactivateProjectsPrintAction.tooltip"
+	       		id="com.atlassw.tools.eclipse.checkstyle.projectconfig.DeactivateProjectsPrintAction">
+	    		<selection
+	          		class="org.eclipse.core.resources.IProject">
+	    		</selection>
+	 		</action>
+	 		<action
+	       		label="%ActivateProjectsPrintAction.label"
+	       		class="com.atlassw.tools.eclipse.checkstyle.projectconfig.ActivateProjectsPrintAction"
+	       		enablesFor="+"
+	       		menubarPath="Checkstyle.menu/additions"
+	       		tooltip="%ActivateProjectsPrintAction.tooltip"
+	       		id="com.atlassw.tools.eclipse.checkstyle.projectconfig.ActivateProjectsPrintAction">
+	    		<selection
+	          		class="org.eclipse.core.resources.IProject">
+	    		</selection>
+	 		</action>
+	 		<action
+	       		label="%ConfigureProjectFromBluePrintAction.label"
+	       		class="com.atlassw.tools.eclipse.checkstyle.projectconfig.ConfigureProjectFromBluePrintAction"
+	       		enablesFor="+"
+	       		menubarPath="Checkstyle.menu/additions"
+	       		tooltip="%ConfigureProjectFromBluePrintAction.tooltip"
+	       		id="com.atlassw.tools.eclipse.checkstyle.ConfigureProjectFromBluePrintAction">
+	    		<selection
+	          		class="org.eclipse.core.resources.IProject">
+	    		</selection>
+	 		</action>
+	  	</objectContribution>
+	</extension>	
+	
+	
 </plugin>
