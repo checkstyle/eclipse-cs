@@ -31,6 +31,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
@@ -58,7 +59,10 @@ import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationWorkingCopy;
 import com.atlassw.tools.eclipse.checkstyle.config.ConfigurationWriter;
+import com.atlassw.tools.eclipse.checkstyle.config.GlobalCheckConfigurationWorkingSet;
+import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfigurationWorkingSet;
 import com.atlassw.tools.eclipse.checkstyle.config.gui.CheckConfigurationPropertiesDialog;
+import com.atlassw.tools.eclipse.checkstyle.projectconfig.LocalCheckConfigurationWorkingSet;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
 /**
@@ -76,6 +80,9 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor
 
     /** the working copy this editor edits. */
     private CheckConfigurationWorkingCopy mWorkingCopy;
+
+    /** the parent dialog element. */
+    private CheckConfigurationPropertiesDialog mCheckConfigDialog;
 
     /** the text field containing the config name. */
     private Text mConfigName;
@@ -106,6 +113,7 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor
             CheckConfigurationPropertiesDialog dialog)
     {
         mWorkingCopy = checkConfiguration;
+        mCheckConfigDialog = dialog;
     }
 
     /**
@@ -260,6 +268,18 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor
         {
             String location = mLocation.getText();
 
+            ICheckConfigurationWorkingSet ws = mCheckConfigDialog.getCheckConfigurationWorkingSet();
+            IPath tmp = new Path(location);
+            boolean isFirstPartProject = ResourcesPlugin.getWorkspace().getRoot().getProject(
+                    tmp.segment(0)).exists();
+
+            if (ws instanceof LocalCheckConfigurationWorkingSet && !isFirstPartProject)
+            {
+                location = ((LocalCheckConfigurationWorkingSet) ws).getProject().getFullPath()
+                        .append(location).toString();
+                mLocation.setText(location);
+            }
+
             if (ensureFileExists(location))
             {
                 mWorkingCopy.setLocation(mLocation.getText());
@@ -285,7 +305,15 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor
     private boolean ensureFileExists(String location) throws CheckstylePluginException
     {
 
-        IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(location));
+        IFile file = null;
+        try
+        {
+            file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(location));
+        }
+        catch (IllegalArgumentException e)
+        {
+            CheckstylePluginException.rethrow(e);
+        }
 
         if (!file.exists())
         {

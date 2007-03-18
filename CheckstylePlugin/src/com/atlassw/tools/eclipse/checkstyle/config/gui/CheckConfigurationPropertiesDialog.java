@@ -117,6 +117,16 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
     //
 
     /**
+     * Returns the working set this dialog is operating on.
+     * 
+     * @return the check configuration working set
+     */
+    public ICheckConfigurationWorkingSet getCheckConfigurationWorkingSet()
+    {
+        return mWorkingSet;
+    }
+
+    /**
      * Sets the template for a new check configuration.
      * 
      * @param template the template configuration
