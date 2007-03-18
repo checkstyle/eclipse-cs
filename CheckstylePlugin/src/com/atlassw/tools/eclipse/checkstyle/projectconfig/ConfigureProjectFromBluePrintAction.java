@@ -203,7 +203,8 @@ public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegat
             }
             catch (CheckstylePluginException e)
             {
-                return new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, e.getMessage(), e);
+                return new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.OK, e
+                        .getMessage(), e);
             }
 
             return Status.OK_STATUS;
