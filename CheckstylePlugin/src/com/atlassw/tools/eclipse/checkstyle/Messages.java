@@ -228,6 +228,8 @@ public final class Messages extends NLS
 
     public static String ConfigPropertyWidgetFile_btnBrowse0;
 
+    public static String ConfigPropertyWidgetRegex_msgRegexTestString;
+
     public static String ConfigureDeconfigureNatureJob_msgTaksAddingNature;
 
     public static String DuplicatedCodeView_openSourceAction;
