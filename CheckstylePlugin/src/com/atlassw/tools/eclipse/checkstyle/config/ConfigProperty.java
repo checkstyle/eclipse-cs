@@ -27,17 +27,17 @@ import com.atlassw.tools.eclipse.checkstyle.config.meta.ConfigPropertyMetadata;
  */
 public class ConfigProperty implements Comparable, Cloneable
 {
-    //=================================================
+    // =================================================
     // Public static final variables.
-    //=================================================
+    // =================================================
 
-    //=================================================
+    // =================================================
     // Static class variables.
-    //=================================================
+    // =================================================
 
-    //=================================================
+    // =================================================
     // Instance member variables.
-    //=================================================
+    // =================================================
 
     /** The name of the property. */
     private String mName;
@@ -48,9 +48,9 @@ public class ConfigProperty implements Comparable, Cloneable
     /** The meta data of the property. */
     private ConfigPropertyMetadata mMetaData;
 
-    //=================================================
+    // =================================================
     // Constructors & finalizer.
-    //=================================================
+    // =================================================
 
     /**
      * Constructor.
@@ -60,7 +60,8 @@ public class ConfigProperty implements Comparable, Cloneable
     public ConfigProperty(ConfigPropertyMetadata metaData)
     {
 
-        this(metaData.getName(), metaData.getDefaultValue());
+        this(metaData.getName(), metaData.getOverrideDefault() != null ? metaData
+                .getOverrideDefault() : metaData.getDefaultValue());
         setMetaData(metaData);
     }
 
@@ -76,9 +77,9 @@ public class ConfigProperty implements Comparable, Cloneable
         setValue(value);
     }
 
-    //=================================================
+    // =================================================
     // Methods.
-    //=================================================
+    // =================================================
 
     /**
      * Get the property's name.
@@ -160,7 +161,7 @@ public class ConfigProperty implements Comparable, Cloneable
         }
         catch (CloneNotSupportedException e)
         {
-            throw new InternalError(); //Should not happen
+            throw new InternalError(); // Should not happen
         }
     }
 }

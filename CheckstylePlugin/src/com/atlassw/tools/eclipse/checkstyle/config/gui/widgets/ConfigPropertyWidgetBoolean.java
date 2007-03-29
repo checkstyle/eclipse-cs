@@ -38,29 +38,30 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
+import com.atlassw.tools.eclipse.checkstyle.config.meta.ConfigPropertyMetadata;
 
 /**
  * Boolean configuration widget.
  */
 public class ConfigPropertyWidgetBoolean extends ConfigPropertyWidgetAbstractBase
 {
-    //=================================================
+    // =================================================
     // Public static final variables.
-    //=================================================
+    // =================================================
 
-    //=================================================
+    // =================================================
     // Static class variables.
-    //=================================================
+    // =================================================
 
-    //=================================================
+    // =================================================
     // Instance member variables.
-    //=================================================
+    // =================================================
 
     private Button mCheckbox;
 
-    //=================================================
+    // =================================================
     // Constructors & finalizer.
-    //=================================================
+    // =================================================
 
     /**
      * Creates the widget.
@@ -73,9 +74,9 @@ public class ConfigPropertyWidgetBoolean extends ConfigPropertyWidgetAbstractBas
         super(parent, prop);
     }
 
-    //=================================================
+    // =================================================
     // Methods.
-    //=================================================
+    // =================================================
 
     /**
      * @see ConfigPropertyWidgetAbstractBase#getValueWidget(org.eclipse.swt.widgets.Composite)
@@ -86,7 +87,7 @@ public class ConfigPropertyWidgetBoolean extends ConfigPropertyWidgetAbstractBas
         {
 
             //
-            //  Create a check box for selecting true or false.
+            // Create a check box for selecting true or false.
             //
 
             mCheckbox = new Button(parent, SWT.CHECK);
@@ -112,7 +113,9 @@ public class ConfigPropertyWidgetBoolean extends ConfigPropertyWidgetAbstractBas
      */
     public void restorePropertyDefault()
     {
-        String defaultValue = getConfigProperty().getMetaData().getDefaultValue();
+        ConfigPropertyMetadata metadata = getConfigProperty().getMetaData();
+        String defaultValue = metadata.getOverrideDefault() != null ? metadata.getOverrideDefault()
+                : metadata.getDefaultValue();
         mCheckbox.setSelection(Boolean.valueOf(defaultValue).booleanValue());
     }
 }

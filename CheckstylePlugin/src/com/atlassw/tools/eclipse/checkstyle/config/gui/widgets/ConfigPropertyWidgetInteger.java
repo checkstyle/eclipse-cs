@@ -38,6 +38,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 
 import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
+import com.atlassw.tools.eclipse.checkstyle.config.meta.ConfigPropertyMetadata;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.atlassw.tools.eclipse.checkstyle.util.SWTUtil;
 
@@ -123,7 +124,9 @@ public class ConfigPropertyWidgetInteger extends ConfigPropertyWidgetAbstractBas
      */
     public void restorePropertyDefault()
     {
-        String defaultValue = getConfigProperty().getMetaData().getDefaultValue();
+        ConfigPropertyMetadata metadata = getConfigProperty().getMetaData();
+        String defaultValue = metadata.getOverrideDefault() != null ? metadata.getOverrideDefault()
+                : metadata.getDefaultValue();
         mTextWidget.setText(defaultValue != null ? defaultValue : new String());
     }
 

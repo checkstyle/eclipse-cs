@@ -30,6 +30,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
+import com.atlassw.tools.eclipse.checkstyle.config.meta.ConfigPropertyMetadata;
 
 /**
  * Configuration widget that allows for selecting one value from a set of
@@ -119,7 +120,9 @@ public class ConfigPropertyWidgetSingleSelect extends ConfigPropertyWidgetAbstra
      */
     public void restorePropertyDefault()
     {
-        String defaultValue = getConfigProperty().getMetaData().getDefaultValue();
+        ConfigPropertyMetadata metadata = getConfigProperty().getMetaData();
+        String defaultValue = metadata.getOverrideDefault() != null ? metadata.getOverrideDefault()
+                : metadata.getDefaultValue();
         if (defaultValue == null)
         {
             mComboItem.select(0);

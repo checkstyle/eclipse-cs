@@ -60,6 +60,7 @@ import org.eclipse.ui.contentassist.ContentAssistHandler;
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
+import com.atlassw.tools.eclipse.checkstyle.config.meta.ConfigPropertyMetadata;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.atlassw.tools.eclipse.checkstyle.util.regex.RegExContentAssistProcessor;
 
@@ -200,7 +201,9 @@ public class ConfigPropertyWidgetRegex extends ConfigPropertyWidgetAbstractBase
      */
     public void restorePropertyDefault()
     {
-        String defaultValue = getConfigProperty().getMetaData().getDefaultValue();
+        ConfigPropertyMetadata metadata = getConfigProperty().getMetaData();
+        String defaultValue = metadata.getOverrideDefault() != null ? metadata.getOverrideDefault()
+                : metadata.getDefaultValue();
         mTextWidget.setText(defaultValue != null ? defaultValue : ""); //$NON-NLS-1$
     }
 

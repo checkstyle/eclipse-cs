@@ -131,6 +131,9 @@ public class XMLTags
     /** tag for a default property value. */
     public static final String DEFAULT_VALUE_TAG = "default-value"; //$NON-NLS-1$
 
+    /** tag for a default property value differing from Checkstyle's default. */
+    public static final String DEFAULT_VALUE_OVERRIDE_TAG = "override-default-value"; //$NON-NLS-1$
+
     /** tag for the hidden flag. */
     public static final String HIDDEN_TAG = "hidden"; //$NON-NLS-1$
 
@@ -142,10 +145,9 @@ public class XMLTags
 
     /** tag to flag if a module is a singleton. */
     public static final String IS_SINGLETON_TAG = "singleton"; //$NON-NLS-1$
-    
+
     /** tag for the quickfix element. */
     public static final String QUCKFIX_TAG = "quickfix";
-    
 
     //
     // tags for the checkstyle configuration

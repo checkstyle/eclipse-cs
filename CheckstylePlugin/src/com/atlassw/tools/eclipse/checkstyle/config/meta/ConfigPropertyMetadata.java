@@ -41,17 +41,17 @@ import com.atlassw.tools.eclipse.checkstyle.Messages;
  */
 public class ConfigPropertyMetadata
 {
-    //=================================================
+    // =================================================
     // Public static final variables.
-    //=================================================
+    // =================================================
 
-    //=================================================
+    // =================================================
     // Static class variables.
-    //=================================================
+    // =================================================
 
-    //=================================================
+    // =================================================
     // Instance member variables.
-    //=================================================
+    // =================================================
 
     /** The type of the property data. */
     private ConfigPropertyType mDatatype;
@@ -62,15 +62,18 @@ public class ConfigPropertyMetadata
     /** The default value of the property. */
     private String mDefaultValue;
 
+    /** A differing default value from the Checkstyle core. */
+    private String mOverrideDefaultValue;
+
     /** The description of the property. */
     private String mDescription;
 
     /** The list of possible property values. */
     private List mEnumeration = new ArrayList();
 
-    //=================================================
+    // =================================================
     // Constructors & finalizer.
-    //=================================================
+    // =================================================
 
     /**
      * Creates the property metadata.
@@ -79,17 +82,19 @@ public class ConfigPropertyMetadata
      * @param name the name of the property
      * @param defaultValue the default value
      */
-    public ConfigPropertyMetadata(ConfigPropertyType type, String name, String defaultValue)
+    public ConfigPropertyMetadata(ConfigPropertyType type, String name, String defaultValue,
+            String overrideDefaultValue)
     {
         mDatatype = type;
         mName = name;
         mDefaultValue = defaultValue;
+        mOverrideDefaultValue = overrideDefaultValue;
         mDescription = Messages.ConfigPropertyMetadata_txtNoDescription;
     }
 
-    //=================================================
+    // =================================================
     // Methods.
-    //=================================================
+    // =================================================
 
     /**
      * Get the property's datatype.
@@ -139,6 +144,17 @@ public class ConfigPropertyMetadata
     public String getDefaultValue()
     {
         return mDefaultValue;
+    }
+
+    /**
+     * Returns a default value differing from the Checkstye default for this
+     * property.
+     * 
+     * @return The differing checkstyle default value.
+     */
+    public String getOverrideDefault()
+    {
+        return mOverrideDefaultValue;
     }
 
     /**

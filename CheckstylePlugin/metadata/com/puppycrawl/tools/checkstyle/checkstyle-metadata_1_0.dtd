@@ -97,7 +97,11 @@
 	
 	The 'datatype' attribute determines which kind of data the property contains.
 	
-	The 'default' attribute is used to specify the default value of the property.
+	The 'default-value' attribute is used to specify the default value of the property.
+	
+	The 'override-default-value' attribute can be used to specify a default value that
+	differs from the Checkstyle default. For instance this is used to provide different
+	defaults for the logLoadError and suppressLoadError properties of the AbstractTypeAware checks.
 	
 	Properties of data type 'MultiCheck' and 'SingleSelect' can (better must) be provided
 	with an 'enumeration' child element which specifies the valid enumeration values for
@@ -107,7 +111,8 @@
 <!ATTLIST property-metadata
 	name			NMTOKEN					#REQUIRED
 	datatype		(Boolean|Integer|String|Regex|SingleSelect|MultiCheck|File|Hidden)	#REQUIRED
-	default-value	CDATA					#IMPLIED>
+	default-value	CDATA					#IMPLIED
+	override-default-value CDATA          #IMPLIED>
 
 
 <!--

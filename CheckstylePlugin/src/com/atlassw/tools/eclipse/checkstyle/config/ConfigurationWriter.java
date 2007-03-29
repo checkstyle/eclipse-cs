@@ -28,6 +28,8 @@ import java.util.List;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.sax.TransformerHandler;
 
+import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.lang.StringUtils;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
@@ -236,8 +238,9 @@ public final class ConfigurationWriter
         {
             ConfigProperty property = (ConfigProperty) it.next();
             // write property only if it differs from the default value
-            if (property.getValue() != null && property.getValue().trim().length() != 0
-                    && !property.getValue().equals(property.getMetaData().getDefaultValue()))
+            String value = StringUtils.trimToNull(property.getValue());
+            if (value != null
+                    && !ObjectUtils.equals(value, property.getMetaData().getDefaultValue()))
             {
                 attr = new AttributesImpl();
                 attr.addAttribute(emptyString, XMLTags.NAME_TAG, XMLTags.NAME_TAG, emptyString,

@@ -140,13 +140,18 @@ public abstract class ConfigPropertyWidgetAbstractBase implements IConfigPropert
         // in order of precidents:
         //
         // 1) the existing value
-        // 2) the default value, if specified
-        // 3) blank
+        // 2) a default value overriding the checkstyle default
+        // 3) the checkstyle default value, if specified
+        // 4) blank
         //
         String initValue = null;
         if (mProp != null)
         {
             initValue = mProp.getValue();
+        }
+        if (initValue == null)
+        {
+            initValue = mProp.getMetaData().getOverrideDefault();
         }
         if (initValue == null)
         {

@@ -35,6 +35,7 @@ import java.util.TreeMap;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.osgi.util.NLS;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
@@ -213,7 +214,7 @@ public final class MetadataFactory
 
             ConfigProperty property = (ConfigProperty) properties.get(i);
             ConfigPropertyMetadata meta = new ConfigPropertyMetadata(ConfigPropertyType.STRING,
-                    property.getName(), null);
+                    property.getName(), null, null);
             property.setMetaData(meta);
         }
         return ruleMeta;
@@ -486,13 +487,13 @@ public final class MetadataFactory
                             .getValue(XMLTags.DATATYPE_TAG));
 
                     String name = attributes.getValue(XMLTags.NAME_TAG).trim();
-                    String defaultValue = attributes.getValue(XMLTags.DEFAULT_VALUE_TAG);
-                    if (defaultValue != null)
-                    {
-                        defaultValue = defaultValue.trim();
-                    }
+                    String defaultValue = StringUtils.trim(attributes
+                            .getValue(XMLTags.DEFAULT_VALUE_TAG));
+                    String overrideDefaultValue = StringUtils.trim(attributes
+                            .getValue(XMLTags.DEFAULT_VALUE_OVERRIDE_TAG));
 
-                    mCurrentProperty = new ConfigPropertyMetadata(type, name, defaultValue);
+                    mCurrentProperty = new ConfigPropertyMetadata(type, name, defaultValue,
+                            overrideDefaultValue);
 
                     // add to current rule
                     mCurrentRule.getPropertyMetadata().add(mCurrentProperty);

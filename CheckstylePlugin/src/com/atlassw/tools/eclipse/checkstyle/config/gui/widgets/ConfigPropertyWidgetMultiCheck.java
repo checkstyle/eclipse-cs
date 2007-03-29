@@ -48,6 +48,7 @@ import org.eclipse.swt.widgets.Control;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
+import com.atlassw.tools.eclipse.checkstyle.config.meta.ConfigPropertyMetadata;
 
 /**
  * Configuration widget for selecting multiple values with check boxes.
@@ -199,7 +200,9 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
      */
     public void restorePropertyDefault()
     {
-        String defaultValue = getConfigProperty().getMetaData().getDefaultValue();
+        ConfigPropertyMetadata metadata = getConfigProperty().getMetaData();
+        String defaultValue = metadata.getOverrideDefault() != null ? metadata.getOverrideDefault()
+                : metadata.getDefaultValue();
         List result = new LinkedList();
 
         if (defaultValue != null)
