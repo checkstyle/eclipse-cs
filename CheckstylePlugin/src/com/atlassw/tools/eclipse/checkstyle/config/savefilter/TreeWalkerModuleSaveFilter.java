@@ -70,7 +70,7 @@ public class TreeWalkerModuleSaveFilter implements ISaveFilter
         if (!containsTreeWalkerModule && containsTreeWalkerDependantModule)
         {
             Module treeWalker = new Module(MetadataFactory
-                    .getRuleMetadata(XMLTags.TREEWALKER_MODULE));
+                    .getRuleMetadata(XMLTags.TREEWALKER_MODULE), false);
             configuredModules.add(0, treeWalker);
         }
 

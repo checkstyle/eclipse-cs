@@ -72,7 +72,7 @@ public class FileContentsHolderSaveFilter implements ISaveFilter
         if (!containsFileContentsHolderModule && containsSuppressionCommentFilterModule)
         {
             Module fileContentsHolder = new Module(MetadataFactory
-                    .getRuleMetadata(XMLTags.FILECONTENTSHOLDER_MODULE));
+                    .getRuleMetadata(XMLTags.FILECONTENTSHOLDER_MODULE), false);
             configuredModules.add(0, fileContentsHolder);
         }
 

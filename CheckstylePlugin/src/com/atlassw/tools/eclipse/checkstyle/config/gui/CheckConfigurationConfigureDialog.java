@@ -699,7 +699,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
                                 return;
                             }
 
-                            Module workingCopy = new Module(metadata);
+                            Module workingCopy = new Module(metadata, false);
 
                             if (openOnAdd)
                             {

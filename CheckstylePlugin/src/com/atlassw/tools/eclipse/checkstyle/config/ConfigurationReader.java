@@ -224,7 +224,7 @@ public final class ConfigurationReader
                 Module module = null;
                 if (metadata != null)
                 {
-                    module = new Module(metadata);
+                    module = new Module(metadata, true);
                 }
                 else
                 {

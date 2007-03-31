@@ -57,7 +57,8 @@ public class CheckerModuleSaveFilter implements ISaveFilter
         // add checker module if it is not contained in the configured modules
         if (!containsCheckerModule)
         {
-            Module checker = new Module(MetadataFactory.getRuleMetadata(XMLTags.CHECKER_MODULE));
+            Module checker = new Module(MetadataFactory.getRuleMetadata(XMLTags.CHECKER_MODULE),
+                    false);
             configuredModules.add(0, checker);
         }
     }

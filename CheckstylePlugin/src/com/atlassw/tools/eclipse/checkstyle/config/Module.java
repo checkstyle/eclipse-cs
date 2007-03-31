@@ -73,8 +73,10 @@ public class Module implements Cloneable
      * Creates a module with the according meta data.
      * 
      * @param metaData the meta data
+     * @param withDefaults determines if the properties should be initialized
+     *            with the Checkstyle default values
      */
-    public Module(RuleMetadata metaData)
+    public Module(RuleMetadata metaData, boolean withDefaults)
     {
         mMetaData = metaData;
 
@@ -90,6 +92,11 @@ public class Module implements Cloneable
                 ConfigPropertyMetadata propMeta = (ConfigPropertyMetadata) propMetas.get(i);
                 ConfigProperty property = new ConfigProperty(propMeta);
                 getProperties().add(property);
+
+                if (withDefaults)
+                {
+                    property.setValue(propMeta.getDefaultValue());
+                }
             }
         }
     }

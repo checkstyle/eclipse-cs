@@ -176,7 +176,7 @@ public final class CheckConfigurationMigrator
 
                     if (metaData != null)
                     {
-                        mCurrentModule = new Module(metaData);
+                        mCurrentModule = new Module(metaData, false);
                     }
                     else
                     {
