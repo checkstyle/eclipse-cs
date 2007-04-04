@@ -316,11 +316,27 @@ public final class Messages extends NLS
 
     public static String PackageFilterEditor2_titleFilterPackages;
 
+    public static String ProjectConfigurationEditor_msgNoProjectInWorkspace;
+
     public static String ProjectConfigurationLocationEditor_btnBrowse;
 
     public static String ProjectConfigurationLocationEditor_msgSelectConfigFile;
 
     public static String ProjectConfigurationLocationEditor_titleSelectConfigFile;
+
+    public static String PropertiesContentAssistProcessor_basedir;
+
+    public static String PropertiesContentAssistProcessor_configLoc;
+
+    public static String PropertiesContentAssistProcessor_projectLoc;
+
+    public static String PropertiesContentAssistProcessor_samedir;
+
+    public static String PropertiesContentAssistProcessor_workspaceLoc;
+
+    public static String ResolvablePropertiesDialog_msgNoUnresolvedProps;
+
+    public static String ResolvablePropertiesDialog_titleNoUnresolvedProps;
 
     public static String RuleConfigurationEditDialog_btnDefaul;
 

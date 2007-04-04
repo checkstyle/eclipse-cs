@@ -287,9 +287,19 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
 
             public void widgetSelected(SelectionEvent e)
             {
-                ResolvablePropertiesDialog dialog = new ResolvablePropertiesDialog(getShell(),
-                        mCheckConfig);
-                dialog.open();
+
+                try
+                {
+                    mConfigurationEditor.getEditedWorkingCopy();
+
+                    ResolvablePropertiesDialog dialog = new ResolvablePropertiesDialog(getShell(),
+                            mCheckConfig);
+                    dialog.open();
+                }
+                catch (CheckstylePluginException ex)
+                {
+                    setErrorMessage(ex.getLocalizedMessage());
+                }
             }
 
             public void widgetDefaultSelected(SelectionEvent e)

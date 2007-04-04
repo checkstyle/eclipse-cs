@@ -351,8 +351,8 @@ public class RemoteConfigurationType extends ConfigurationType
         catch (IOException ioe)
         {
             // we won't load the bundle then
-            //disabled logging bug #1647602
-            //CheckstyleLog.log(ioe); 
+            // disabled logging bug #1647602
+            // CheckstyleLog.log(ioe);
         }
         finally
         {
@@ -486,6 +486,37 @@ public class RemoteConfigurationType extends ConfigurationType
                 CheckstyleLog.log(e);
             }
             return auth;
+        }
+
+        /**
+         * Test if the authentication request originated from the Checkstyle
+         * plugin.
+         * 
+         * @return <code>true</code> if the authentication request came from
+         *         the Checkstyle plugin, <code>false</code> otherwise
+         */
+        private boolean originatesFromCheckstylePlugin()
+        {
+
+            String pluginPackage = CheckstylePlugin.class.getName().substring(0,
+                    CheckstylePlugin.class.getName().lastIndexOf('.'));
+
+            try
+            {
+                throw new Exception();
+            }
+            catch (Exception e)
+            {
+                StackTraceElement[] elements = e.getStackTrace();
+                for (int i = 0; i < elements.length; i++)
+                {
+                    if (elements[i].getClassName().startsWith(pluginPackage))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         /**

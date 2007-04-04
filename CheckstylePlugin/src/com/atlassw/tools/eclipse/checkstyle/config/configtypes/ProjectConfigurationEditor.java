@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -37,6 +38,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -268,6 +270,11 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor
         {
             String location = mLocation.getText();
 
+            if (StringUtils.trimToNull(location) == null)
+            {
+                throw e;
+            }
+
             ICheckConfigurationWorkingSet ws = mCheckConfigDialog.getCheckConfigurationWorkingSet();
             IPath tmp = new Path(location);
             boolean isFirstPartProject = ResourcesPlugin.getWorkspace().getRoot().getProject(
@@ -278,6 +285,11 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor
                 location = ((LocalCheckConfigurationWorkingSet) ws).getProject().getFullPath()
                         .append(location).toString();
                 mLocation.setText(location);
+            }
+            else if (ws instanceof GlobalCheckConfigurationWorkingSet && !isFirstPartProject)
+            {
+                throw new CheckstylePluginException(NLS.bind(Messages.ProjectConfigurationEditor_msgNoProjectInWorkspace,
+                        tmp.segment(0)));
             }
 
             if (ensureFileExists(location))
@@ -315,7 +327,7 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor
             CheckstylePluginException.rethrow(e);
         }
 
-        if (!file.exists())
+        if (!file.exists() && file.getLocation() != null)
         {
             boolean confirm = MessageDialog.openQuestion(mBtnBrowse.getShell(),
                     Messages.ExternalFileConfigurationEditor_titleFileDoesNotExist,
@@ -327,7 +339,10 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor
                 {
                     File trueFile = file.getLocation().toFile();
 
-                    trueFile.getParentFile().mkdirs();
+                    if (trueFile.getParentFile() != null)
+                    {
+                        trueFile.getParentFile().mkdirs();
+                    }
                     out = new BufferedOutputStream(new FileOutputStream(trueFile));
                     ConfigurationWriter.writeNewConfiguration(out, mWorkingCopy);
 

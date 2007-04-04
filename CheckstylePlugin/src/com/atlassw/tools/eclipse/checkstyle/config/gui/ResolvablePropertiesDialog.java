@@ -483,6 +483,14 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog
                         mTableViewer.refresh();
                     }
                 }
+                else
+                {
+                    MessageDialog
+                            .openInformation(
+                                    getShell(),
+                                    Messages.ResolvablePropertiesDialog_titleNoUnresolvedProps,
+                                    Messages.ResolvablePropertiesDialog_msgNoUnresolvedProps);
+                }
             }
             catch (CheckstylePluginException e)
             {

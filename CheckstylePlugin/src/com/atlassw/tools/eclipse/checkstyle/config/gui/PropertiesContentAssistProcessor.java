@@ -33,6 +33,8 @@ import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.jface.text.contentassist.IContextInformationValidator;
 
+import com.atlassw.tools.eclipse.checkstyle.Messages;
+
 /**
  * Provides content assist for builtin properties.
  * 
@@ -111,16 +113,16 @@ public class PropertiesContentAssistProcessor implements IContentAssistProcessor
         // TODO translate the descriptions
 
         proposals.add(new CompletionProposal(basedir, documentOffset, 0, basedir.length(), null,
-                basedir, null, "Maps to the current project directory."));
+                basedir, null, Messages.PropertiesContentAssistProcessor_basedir));
         proposals.add(new CompletionProposal(projectLoc, documentOffset, 0, projectLoc.length(),
-                null, projectLoc, null, "Same as ${basedir}."));
+                null, projectLoc, null, Messages.PropertiesContentAssistProcessor_projectLoc));
         proposals.add(new CompletionProposal(workspaceLoc, documentOffset, 0,
                 workspaceLoc.length(), null, workspaceLoc, null,
-                "Maps to the current Eclipse workspace directorys."));
+                Messages.PropertiesContentAssistProcessor_workspaceLoc));
         proposals.add(new CompletionProposal(configLoc, documentOffset, 0, configLoc.length(),
-                null, configLoc, null, "Maps to the directory the configuration file lies in."));
+                null, configLoc, null, Messages.PropertiesContentAssistProcessor_configLoc));
         proposals.add(new CompletionProposal(samedir, documentOffset, 0, samedir.length(), null,
-                samedir, null, "Same as ${config_loc}."));
+                samedir, null, Messages.PropertiesContentAssistProcessor_samedir));
 
         return (ICompletionProposal[]) proposals.toArray(new ICompletionProposal[proposals.size()]);
     }

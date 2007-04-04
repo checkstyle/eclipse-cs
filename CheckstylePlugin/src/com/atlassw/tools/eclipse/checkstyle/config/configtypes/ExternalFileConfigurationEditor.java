@@ -26,7 +26,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -227,7 +229,7 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
         {
             String location = mLocation.getText();
 
-            if (ensureFileExists(location))
+            if (StringUtils.trimToNull(location) != null && ensureFileExists(location))
             {
                 mWorkingCopy.setLocation(mLocation.getText());
             }
@@ -269,7 +271,10 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
                 OutputStream out = null;
                 try
                 {
-                    file.getParentFile().mkdirs();
+                    if (file.getParentFile() != null)
+                    {
+                        file.getParentFile().mkdirs();
+                    }
                     out = new BufferedOutputStream(new FileOutputStream(file));
                     ConfigurationWriter.writeNewConfiguration(out, mWorkingCopy);
                 }

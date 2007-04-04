@@ -178,7 +178,7 @@ public final class ConfigurationTypes
         List configurableTypes = new ArrayList();
         configurableTypes.addAll(Arrays.asList(getCreatableConfigTypes()));
 
-        IConfigurationType remoteType = getByInternalName("remote");
+        IConfigurationType remoteType = getByInternalName("remote"); //$NON-NLS-1$
         configurableTypes.remove(remoteType);
 
         return (IConfigurationType[]) configurableTypes
