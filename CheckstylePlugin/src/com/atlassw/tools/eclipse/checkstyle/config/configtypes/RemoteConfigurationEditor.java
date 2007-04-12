@@ -208,9 +208,14 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor
                 && mWorkingCopy.getAdditionalData().get(
                         RemoteConfigurationType.KEY_CACHE_FILE_LOCATION) == null)
         {
+
+            long currentTime = System.currentTimeMillis();
+
             mWorkingCopy.getAdditionalData().put(RemoteConfigurationType.KEY_CACHE_FILE_LOCATION,
-                    mWorkingCopy.getName() + "_" + (mWorkingCopy.isGlobal() ? "global" : "local") //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                            + "_cache.xml"); //$NON-NLS-1$
+                    mWorkingCopy.getName() + "_" + currentTime + "_cache.xml"); //$NON-NLS-1$ $NON-NLS-2$
+            mWorkingCopy.getAdditionalData().put(
+                    RemoteConfigurationType.KEY_CACHE_PROPS_FILE_LOCATION,
+                    mWorkingCopy.getName() + "_" + currentTime + "_cache.properties"); //$NON-NLS-1$ $NON-NLS-2$
         }
 
         return mWorkingCopy;

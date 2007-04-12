@@ -22,12 +22,14 @@ package com.atlassw.tools.eclipse.checkstyle.config.configtypes;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Field;
 import java.net.Authenticator;
 import java.net.MalformedURLException;
 import java.net.PasswordAuthentication;
@@ -78,6 +80,9 @@ public class RemoteConfigurationType extends ConfigurationType
     /** Key to access the path of the cached configuration file. */
     public static final String KEY_CACHE_FILE_LOCATION = "cache-file-location"; //$NON-NLS-1$
 
+    /** Key to access the path of the cached property file. */
+    public static final String KEY_CACHE_PROPS_FILE_LOCATION = "cache-props-file-location"; //$NON-NLS-1$
+
     /** Key to access the username. */
     public static final String KEY_USERNAME = "username"; //$NON-NLS-1$
 
@@ -99,22 +104,32 @@ public class RemoteConfigurationType extends ConfigurationType
 
         if (useCacheFile)
         {
-            synchronizeCacheFile(checkConfiguration);
+            inStream = synchronizeCacheFile(checkConfiguration);
         }
 
-        try
+        if (inStream == null)
         {
-            inStream = getStreamFromOriginalLocation(checkConfiguration);
-        }
-        catch (CheckstylePluginException e)
-        {
-            if (useCacheFile)
+            try
             {
-                inStream = getStreamFromCacheFile(checkConfiguration);
+                inStream = getStreamFromOriginalLocation(checkConfiguration);
             }
-            else
+            catch (IOException e)
             {
-                throw e;
+                if (useCacheFile)
+                {
+                    try
+                    {
+                        inStream = getStreamFromCacheFile(checkConfiguration);
+                    }
+                    catch (IOException ioe)
+                    {
+                        CheckstylePluginException.rethrow(ioe);
+                    }
+                }
+                else
+                {
+                    CheckstylePluginException.rethrow(e);
+                }
             }
         }
 
@@ -129,7 +144,7 @@ public class RemoteConfigurationType extends ConfigurationType
     {
         try
         {
-            return new URL(checkConfiguration.getLocation());
+            return resolveLocationInternal(checkConfiguration);
         }
         catch (MalformedURLException e)
         {
@@ -181,7 +196,7 @@ public class RemoteConfigurationType extends ConfigurationType
         multiResolver.addPropertyResolver(new ClasspathVariableResolver());
         multiResolver.addPropertyResolver(new SystemPropertyResolver());
 
-        ResourceBundle bundle = getBundle(location);
+        ResourceBundle bundle = getBundle(checkConfiguration);
         if (bundle != null)
         {
             multiResolver.addPropertyResolver(new ResourceBundlePropertyResolver(bundle));
@@ -191,30 +206,35 @@ public class RemoteConfigurationType extends ConfigurationType
     }
 
     /**
+     * Internal helper method to resolve the location string the a URL.
+     * 
+     * @param checkConfiguration the check configuration
+     * @return the resolved location URL
+     * @throws MalformedURLException if the location string could not form a
+     *             valid URL
+     */
+    private URL resolveLocationInternal(ICheckConfiguration checkConfiguration)
+        throws MalformedURLException
+    {
+        return new URL(checkConfiguration.getLocation());
+    }
+
+    /**
      * Method to get the input stream for the remote location config file.
      * 
      * @param checkConfig the check configuration
      * @return the input stream
-     * @throws CheckstylePluginException error getting the stream (remote
-     *             location not reachable)
+     * @throws IOException error getting the stream (remote location not
+     *             reachable)
      */
     private InputStream getStreamFromOriginalLocation(ICheckConfiguration checkConfig)
-        throws CheckstylePluginException
+        throws IOException
     {
 
         InputStream inStream = null;
 
-        try
-        {
-            Authenticator.setDefault(new RemoteConfigAuthenticator(checkConfig));
-
-            URL configURL = resolveLocation(checkConfig);
-            inStream = new BufferedInputStream(configURL.openStream());
-        }
-        catch (IOException e)
-        {
-            CheckstylePluginException.rethrow(e);
-        }
+        URL configURL = resolveLocationInternal(checkConfig);
+        inStream = readFromURLWithAuthentication(configURL, checkConfig);
 
         return inStream;
     }
@@ -224,11 +244,9 @@ public class RemoteConfigurationType extends ConfigurationType
      * 
      * @param checkConfig the check configuration
      * @return the input stream
-     * @throws CheckstylePluginException error getting the stream (file does not
-     *             exist)
+     * @throws IOException error getting the stream (file does not exist)
      */
-    private InputStream getStreamFromCacheFile(ICheckConfiguration checkConfig)
-        throws CheckstylePluginException
+    private InputStream getStreamFromCacheFile(ICheckConfiguration checkConfig) throws IOException
     {
         String cacheFileLocation = (String) checkConfig.getAdditionalData().get(
                 KEY_CACHE_FILE_LOCATION);
@@ -239,15 +257,8 @@ public class RemoteConfigurationType extends ConfigurationType
 
         InputStream inStream = null;
 
-        try
-        {
-            URL configURL = cacheFile.toURL();
-            inStream = new BufferedInputStream(configURL.openStream());
-        }
-        catch (IOException e)
-        {
-            CheckstylePluginException.rethrow(e);
-        }
+        URL configURL = cacheFile.toURL();
+        inStream = new BufferedInputStream(configURL.openStream());
 
         return inStream;
     }
@@ -260,7 +271,7 @@ public class RemoteConfigurationType extends ConfigurationType
      * @return <code>true</code> if the synchronization was successful,
      *         <code>false</code> otherwise
      */
-    private boolean synchronizeCacheFile(ICheckConfiguration checkConfig)
+    private InputStream synchronizeCacheFile(ICheckConfiguration checkConfig)
     {
 
         String cacheFileLocation = (String) checkConfig.getAdditionalData().get(
@@ -283,46 +294,67 @@ public class RemoteConfigurationType extends ConfigurationType
             // temporary output stream to ensure the input is fully fetched
             // before writing to the actual cache file
             ByteArrayOutputStream tmpOut = new ByteArrayOutputStream();
-
-            byte[] buf = new byte[512];
-            int len = 0;
-            while ((len = inStream.read(buf)) > -1)
-            {
-                tmpOut.write(buf, 0, len);
-            }
+            IOUtils.copy(inStream, tmpOut);
 
             // finally write to the cache file
             outStream = new BufferedOutputStream(new FileOutputStream(cacheFile));
-            outStream.write(tmpOut.toByteArray());
-            outStream.flush();
+            IOUtils.write(tmpOut.toByteArray(), outStream);
+
+            inStream.reset();
         }
         catch (IOException e)
         {
             CheckstyleLog.log(e, NLS.bind(Messages.RemoteConfigurationType_msgRemoteCachingFailed,
                     checkConfig.getName(), checkConfig.getLocation()));
-            return false;
-        }
-        catch (CheckstylePluginException e)
-        {
-            CheckstyleLog.log(e, NLS.bind("Could not cache remote configuration {0} ({1})", //$NON-NLS-1$
-                    checkConfig.getName(), checkConfig.getLocation()));
-            return false;
         }
         finally
         {
-            IOUtils.closeQuietly(inStream);
             IOUtils.closeQuietly(outStream);
         }
-        return true;
+
+        // do the same for the properties
+
+        String propsCacheFileLocation = (String) checkConfig.getAdditionalData().get(
+                KEY_CACHE_PROPS_FILE_LOCATION);
+
+        IPath propsCacheFilePath = CheckstylePlugin.getDefault().getStateLocation();
+        propsCacheFilePath = propsCacheFilePath.append(propsCacheFileLocation);
+        File propsCacheFile = propsCacheFilePath.toFile();
+
+        OutputStream propsOutStream = null;
+        InputStream propsInStream = null;
+
+        try
+        {
+            propsInStream = getBundleStreamFromOriginalLocation(checkConfig);
+
+            ByteArrayOutputStream tmpOut = new ByteArrayOutputStream();
+            IOUtils.copy(propsInStream, tmpOut);
+
+            propsOutStream = new BufferedOutputStream(new FileOutputStream(propsCacheFile));
+            IOUtils.write(tmpOut.toByteArray(), propsOutStream);
+        }
+        catch (IOException e)
+        {
+            // ignore this since there simply might be no properties file
+        }
+        finally
+        {
+            IOUtils.closeQuietly(propsInStream);
+            IOUtils.closeQuietly(propsOutStream);
+        }
+
+        return inStream;
     }
 
     /**
      * Helper method to get the resource bundle for this configuration.
      * 
      * @param location the configuration file location
+     * @param checkConfig the check configuration
      * @return the resource bundle or <code>null</code> if no bundle exists
      */
-    private static ResourceBundle getBundle(String location)
+    private ResourceBundle getBundle(ICheckConfiguration checkConfig)
     {
 
         ResourceBundle bundle = null;
@@ -330,22 +362,25 @@ public class RemoteConfigurationType extends ConfigurationType
         try
         {
 
-            // Strip file extension
-            String propsLocation = null;
+            boolean useCacheFile = Boolean.valueOf(
+                    (String) checkConfig.getAdditionalData().get(KEY_CACHE_CONFIG)).booleanValue();
 
-            int lastPointIndex = location.lastIndexOf("."); //$NON-NLS-1$
-            if (lastPointIndex > -1)
+            try
             {
-                propsLocation = location.substring(0, lastPointIndex);
+                in = getBundleStreamFromOriginalLocation(checkConfig);
             }
-            else
+            catch (IOException e)
             {
-                propsLocation = location;
+                if (useCacheFile)
+                {
+                    in = getBundleStreamFromCacheFile(checkConfig);
+                }
+                else
+                {
+                    throw e;
+                }
             }
 
-            URL propUrl = new URL(propsLocation + ".properties"); //$NON-NLS-1$
-
-            in = new BufferedInputStream(propUrl.openStream());
             bundle = new PropertyResourceBundle(in);
         }
         catch (IOException ioe)
@@ -360,6 +395,108 @@ public class RemoteConfigurationType extends ConfigurationType
         }
 
         return bundle;
+    }
+
+    /**
+     * Helper method to get the resource bundle stream for this configuration.
+     * 
+     * @param location the configuration file location
+     * @param checkConfig the check configuration
+     * @return the resource bundle or <code>null</code> if no bundle exists
+     */
+    private InputStream getBundleStreamFromOriginalLocation(ICheckConfiguration checkConfig)
+        throws IOException
+    {
+
+        String location = checkConfig.getLocation();
+
+        // Strip file extension
+        String propsLocation = null;
+
+        int lastPointIndex = location.lastIndexOf("."); //$NON-NLS-1$
+        if (lastPointIndex > -1)
+        {
+            propsLocation = location.substring(0, lastPointIndex);
+        }
+        else
+        {
+            propsLocation = location;
+        }
+
+        URL propUrl = new URL(propsLocation + ".properties"); //$NON-NLS-1$
+
+        ByteArrayInputStream in = readFromURLWithAuthentication(propUrl, checkConfig);
+        return in;
+    }
+
+    /**
+     * Method to get the internally cached properties file from a previously
+     * acessible remote config.
+     * 
+     * @param checkConfig the check configuration
+     * @return the input stream
+     * @throws CheckstylePluginException error getting the stream (file does not
+     *             exist)
+     */
+    private InputStream getBundleStreamFromCacheFile(ICheckConfiguration checkConfig)
+        throws IOException
+    {
+        String cacheFileLocation = (String) checkConfig.getAdditionalData().get(
+                KEY_CACHE_PROPS_FILE_LOCATION);
+
+        IPath cacheFilePath = CheckstylePlugin.getDefault().getStateLocation();
+        cacheFilePath = cacheFilePath.append(cacheFileLocation);
+        File cacheFile = cacheFilePath.toFile();
+
+        InputStream inStream = null;
+
+        URL configURL = cacheFile.toURL();
+        inStream = new BufferedInputStream(configURL.openStream());
+
+        return inStream;
+    }
+
+    /**
+     * Reads the content of the given URL supporting authentication. Returns a
+     * ByteArrayInputStream containing all the content. The returned stream does
+     * not need to be closed easing resource handling.
+     * 
+     * @param url the URL to load from
+     * @param checkConfig the check configuration, used to access authentication
+     *            data if needed
+     * @return the complete contents of the URL as a ByteArrayInputStream
+     * @throws IOException exception loading from the URL
+     */
+    private ByteArrayInputStream readFromURLWithAuthentication(URL url,
+            ICheckConfiguration checkConfig) throws IOException
+    {
+
+        ByteArrayInputStream byteIn = null;
+
+        synchronized(Authenticator.class)
+        {
+
+            InputStream remoteStream = null;
+
+            Authenticator oldAuthenticator = RemoteConfigAuthenticator.getDefault();
+
+            try
+            {
+
+                Authenticator.setDefault(new RemoteConfigAuthenticator(checkConfig));
+                remoteStream = url.openStream();
+                byte[] data = IOUtils.toByteArray(remoteStream);
+
+                byteIn = new ByteArrayInputStream(data);
+            }
+            finally
+            {
+                IOUtils.closeQuietly(remoteStream);
+                Authenticator.setDefault(oldAuthenticator);
+            }
+        }
+
+        return byteIn;
     }
 
     /**
@@ -383,6 +520,43 @@ public class RemoteConfigurationType extends ConfigurationType
         public RemoteConfigAuthenticator(ICheckConfiguration checkConfiguration)
         {
             mConfiguration = checkConfiguration;
+        }
+
+        /**
+         * Hacked together a piece of code to get the current default
+         * authenticator. Can't believe the API is that bad...
+         * 
+         * @return the current Authenticator
+         */
+        public static Authenticator getDefault()
+        {
+
+            Authenticator currentDefault = null;
+
+            try
+            {
+
+                // Hack to get the current authenticator
+                Field[] fields = Authenticator.class.getDeclaredFields();
+                for (int i = 0; i < fields.length; i++)
+                {
+                    if (Authenticator.class.equals(fields[i].getType()))
+                    {
+                        fields[i].setAccessible(true);
+                        currentDefault = (Authenticator) fields[i].get(Authenticator.class);
+                        break;
+                    }
+                }
+            }
+            catch (IllegalArgumentException e)
+            {
+                CheckstyleLog.log(e);
+            }
+            catch (IllegalAccessException e)
+            {
+                CheckstyleLog.log(e);
+            }
+            return currentDefault;
         }
 
         /**
@@ -427,7 +601,7 @@ public class RemoteConfigurationType extends ConfigurationType
                 if (auth == null)
                 {
 
-                    URL url = new URL(mConfiguration.getLocation());
+                    URL url = mConfiguration.getType().resolveLocation(mConfiguration);
 
                     Map authInfo = Platform.getAuthorizationInfo(url, "", ""); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -477,7 +651,7 @@ public class RemoteConfigurationType extends ConfigurationType
                     sAuthInfoSessionCache.put(mConfiguration.getLocation(), auth);
                 }
             }
-            catch (MalformedURLException e)
+            catch (CheckstylePluginException e)
             {
                 CheckstyleLog.log(e);
             }
@@ -486,37 +660,6 @@ public class RemoteConfigurationType extends ConfigurationType
                 CheckstyleLog.log(e);
             }
             return auth;
-        }
-
-        /**
-         * Test if the authentication request originated from the Checkstyle
-         * plugin.
-         * 
-         * @return <code>true</code> if the authentication request came from
-         *         the Checkstyle plugin, <code>false</code> otherwise
-         */
-        private boolean originatesFromCheckstylePlugin()
-        {
-
-            String pluginPackage = CheckstylePlugin.class.getName().substring(0,
-                    CheckstylePlugin.class.getName().lastIndexOf('.'));
-
-            try
-            {
-                throw new Exception();
-            }
-            catch (Exception e)
-            {
-                StackTraceElement[] elements = e.getStackTrace();
-                for (int i = 0; i < elements.length; i++)
-                {
-                    if (elements[i].getClassName().startsWith(pluginPackage))
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
         }
 
         /**
