@@ -35,6 +35,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
+import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.nature.CheckstyleNature;
 import com.atlassw.tools.eclipse.checkstyle.nature.ConfigureDeconfigureNatureJob;
 
@@ -92,7 +93,7 @@ public class DeactivateProjectsPrintAction implements IObjectActionDelegate
 
         public BulkCheckstyleActivateJob(Collection projectsToDeactivate)
         {
-            super("Dectivate Checkstyle...");
+            super(Messages.DeactivateProjectsPrintAction_msgDeactivateSelectedProjects);
             this.mProjectsToDeactivate = projectsToDeactivate;
         }
 

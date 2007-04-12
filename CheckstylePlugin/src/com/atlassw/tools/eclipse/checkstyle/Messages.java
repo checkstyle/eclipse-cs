@@ -40,6 +40,8 @@ public final class Messages extends NLS
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);
     }
 
+    public static String ActivateProjectsPrintAction_msgActivateSelectedProjects;
+
     public static String Auditor_msgCheckingConfig;
 
     public static String Auditor_msgCheckingFile;
@@ -231,6 +233,14 @@ public final class Messages extends NLS
     public static String ConfigPropertyWidgetRegex_msgRegexTestString;
 
     public static String ConfigureDeconfigureNatureJob_msgTaksAddingNature;
+
+    public static String ConfigureProjectFromBluePrintAction_msgConfiguringFromBluePrint;
+
+    public static String ConfigureProjectFromBluePrintAction_msgSelectBlueprintProject;
+
+    public static String ConfigureProjectFromBluePrintAction_titleSelectBlueprintProject;
+
+    public static String DeactivateProjectsPrintAction_msgDeactivateSelectedProjects;
 
     public static String DuplicatedCodeView_openSourceAction;
 

@@ -159,7 +159,7 @@ public class CheckstylePlugin extends AbstractUIPlugin
         try
         {
             Logger checkstyleErrorLog = Logger
-                    .getLogger("com.puppycrawl.tools.checkstyle.ExceptionLog"); //$NON-NLS-1$
+                    .getLogger("com.puppycrawl.tools.checkstyle.checks.ClassResolver"); //$NON-NLS-1$
 
             checkstyleErrorLog.addHandler(new EclipseLogHandler(this));
             checkstyleErrorLog.setLevel(Level.ALL);

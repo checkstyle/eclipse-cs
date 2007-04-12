@@ -43,6 +43,7 @@ import org.eclipse.ui.dialogs.ListSelectionDialog;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
+import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationWorkingCopy;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfigurationWorkingSet;
@@ -103,8 +104,8 @@ public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegat
         dialog.setContentProvider(new ArrayContentProvider());
         dialog.setLabelProvider(new WorkbenchLabelProvider());
         dialog
-                .setMessage("Select blueprint project for the Checkstyle configuration of the selected projects");
-        dialog.setTitle("Select blueprint project");
+                .setMessage(Messages.ConfigureProjectFromBluePrintAction_msgSelectBlueprintProject);
+        dialog.setTitle(Messages.ConfigureProjectFromBluePrintAction_titleSelectBlueprintProject);
         if (ListDialog.OK == dialog.open())
         {
 
@@ -135,7 +136,7 @@ public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegat
 
         public BulkConfigureJob(IProject blueprint, Collection projectsToConfigure)
         {
-            super("Configuring projects from blueprint");
+            super(Messages.ConfigureProjectFromBluePrintAction_msgConfiguringFromBluePrint);
             this.mBlueprint = blueprint;
             this.mProjectsToConfigure = projectsToConfigure;
         }
