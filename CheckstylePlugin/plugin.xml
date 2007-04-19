@@ -411,11 +411,6 @@
 	    	objectClass="org.eclipse.core.resources.IFile"
 	    	adaptable="true"
 	    	id="com.atlassw.tools.eclipse.checkstyle.FixCheckstyleMarkersAction">
-	 		<menu
-          		id="Checkstyle.menu"
-          		label="%Checkstyle.menu"
-          		path="additions">
-	 		</menu>
 	 		<visibility>
 	 			<or>
 	 				<objectClass name="org.eclipse.jdt.core.ICompilationUnit"/>
@@ -430,8 +425,9 @@
 	       		label="%FixCheckstyleMarkersAction.label"
 	       		class="com.atlassw.tools.eclipse.checkstyle.quickfixes.FixCheckstyleMarkersAction"
 	       		enablesFor="1"
-	       		menubarPath="Checkstyle.menu/additions"
+	       		menubarPath="additions"
 	       		tooltip="%FixCheckstyleMarkersAction.tooltip"
+	       		definitionId="CheckstylePlugin.ApplyCheckstyleFixes"
 	       		id="com.atlassw.tools.eclipse.checkstyle.FixCheckstyleMarkersAction">
 	    		<selection
 	          		name="*.java"
@@ -446,6 +442,25 @@
 	 		</action>
 	  	</objectContribution>
 	</extension>
+	<extension
+		point="org.eclipse.ui.commands">
+		<command
+			categoryId="org.eclipse.jdt.ui.category.source"
+			description="%FixCheckstyleMarkersAction.tooltip"
+			id="CheckstylePlugin.ApplyCheckstyleFixes"
+			name="%FixCheckstyleMarkersAction.label"
+			defaultHandler="com.atlassw.tools.eclipse.checkstyle.quickfixes.FixCheckstyleMarkersHandler">
+		</command>
+	</extension>	
+	<extension 
+		point="org.eclipse.ui.bindings">
+		<key
+			sequence="M1+M3+C"
+			commandId="CheckstylePlugin.ApplyCheckstyleFixes"
+			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+			contextId="org.eclipse.jdt.ui.javaEditorScope" />>
+	</extension>
+	
 	
 	<!-- Popupmenu action for the 'Configure Project(s) from blueprint...' action -->
 	<extension
