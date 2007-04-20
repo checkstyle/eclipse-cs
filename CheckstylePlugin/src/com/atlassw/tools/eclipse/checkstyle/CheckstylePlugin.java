@@ -27,16 +27,21 @@ import java.util.logging.Logger;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.ui.IStartup;
+import org.eclipse.ui.IWindowListener;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
+import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.CheckFileOnOpenPartListener;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.EclipseLogHandler;
 
 /**
  * The main plugin class to be used in the desktop.
  */
-public class CheckstylePlugin extends AbstractUIPlugin
+public class CheckstylePlugin extends AbstractUIPlugin implements IStartup
 {
     // =================================================
     // Public static final variables.
@@ -163,6 +168,7 @@ public class CheckstylePlugin extends AbstractUIPlugin
 
             checkstyleErrorLog.addHandler(new EclipseLogHandler(this));
             checkstyleErrorLog.setLevel(Level.ALL);
+
         }
         catch (Exception ioe)
         {
@@ -207,4 +213,52 @@ public class CheckstylePlugin extends AbstractUIPlugin
 
         return new Locale(language, country, variant);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void earlyStartup()
+    {
+        final IWorkbench workbench = getWorkbench();
+        workbench.addWindowListener(mWindowListener);
+
+        workbench.getDisplay().asyncExec(new Runnable()
+        {
+            public void run()
+            {
+                IWorkbenchWindow window = workbench.getActiveWorkbenchWindow();
+                if (window != null)
+                {
+                    // remove listener first for safety, we don't want register
+                    // the same listener twice accidently
+                    window.getPartService().removePartListener(mPartListener);
+                    window.getPartService().addPartListener(mPartListener);
+                }
+            }
+        });
+    }
+
+    private CheckFileOnOpenPartListener mPartListener = new CheckFileOnOpenPartListener();
+
+    private IWindowListener mWindowListener = new IWindowListener()
+    {
+
+        public void windowOpened(IWorkbenchWindow window)
+        {
+            window.getPartService().addPartListener(mPartListener);
+        }
+
+        public void windowActivated(IWorkbenchWindow window)
+        {}
+
+        public void windowClosed(IWorkbenchWindow window)
+        {
+            window.getPartService().removePartListener(mPartListener);
+
+        }
+
+        public void windowDeactivated(IWorkbenchWindow window)
+        {}
+
+    };
 }
