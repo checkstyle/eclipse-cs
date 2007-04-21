@@ -45,23 +45,23 @@ import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
  */
 public final class CheckstyleLog
 {
-    //=================================================
+    // =================================================
     // Public static final variables.
-    //=================================================
+    // =================================================
 
-    //=================================================
+    // =================================================
     // Static class variables.
-    //=================================================
+    // =================================================
 
     private static ILog sLog;
 
-    //=================================================
+    // =================================================
     // Instance member variables.
-    //=================================================
+    // =================================================
 
-    //=================================================
+    // =================================================
     // Constructors & finalizer.
-    //=================================================
+    // =================================================
 
     private CheckstyleLog()
     {}
@@ -71,9 +71,9 @@ public final class CheckstyleLog
         sLog = CheckstylePlugin.getDefault().getLog();
     }
 
-    //=================================================
+    // =================================================
     // Methods.
-    //=================================================
+    // =================================================
 
     /**
      * Logs the exceptions.
@@ -109,8 +109,7 @@ public final class CheckstyleLog
     public static void errorDialog(Shell shell, String message, Throwable t, boolean log)
     {
 
-        Status status = new Status(Status.ERROR, CheckstylePlugin.PLUGIN_ID, Status.OK, t
-                .getLocalizedMessage(), t);
+        Status status = new Status(Status.ERROR, CheckstylePlugin.PLUGIN_ID, Status.OK, message, t);
 
         String msg = NLS.bind(ErrorMessages.errorDialogMainMessage, message);
         ErrorDialog.openError(shell, ErrorMessages.CheckstyleLog_titleInternalError, msg, status);

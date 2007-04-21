@@ -198,7 +198,6 @@ public class CheckFileOnOpenPartListener implements IPartListener2
                             && ((UnOpenedFilesFilter) filters.get(i)).isEnabled())
                     {
                         unOpenedFilesFilterActive = true;
-                        break;
                     }
 
                     // check if the file would be filtered out

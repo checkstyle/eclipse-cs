@@ -360,7 +360,13 @@
             internal-name="FilesInSync"
             description="%FilesInSyncFilter.description"
             class="com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.FilesInSyncFilter">
-      </filter>       
+      </filter> 
+      <filter
+            name="%FilesInSyncFilter2.label"
+            internal-name="FilesInSync2"
+            description="%FilesInSyncFilter2.description"
+            class="com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.FilesInSyncFilter2">
+      </filter>         
    </extension>
    
  <!-- 
