@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IPreferencesService;
@@ -52,8 +53,12 @@ import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
@@ -101,6 +106,9 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
     /** The current check configuration. */
     private CheckConfigurationWorkingCopy mConfiguration;
 
+    /** Text field used to filter the module tree. */
+    private Text mTxtTreeFilter;
+
     /** TreeViewer showing the known modules from the meta data. */
     private TreeViewer mTreeViewer;
 
@@ -136,6 +144,12 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
 
     /** Flags if the check configuration was changed. */
     private boolean mIsDirty;
+
+    /** The default text for the filter text field. */
+    private String mDefaultFilterText = "Input filter text here";
+
+    /** The tree filter. */
+    private TreeFilter mTreeFilter = new TreeFilter();
 
     //
     // constructors
@@ -252,6 +266,33 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
         Group knownModules = new Group(parent, SWT.NULL);
         knownModules.setLayout(new GridLayout());
         knownModules.setText(Messages.CheckConfigurationConfigureDialog_lblKnownModules);
+
+        mTxtTreeFilter = new Text(knownModules, SWT.SINGLE | SWT.BORDER);
+        mTxtTreeFilter.setText(mDefaultFilterText);
+        mTxtTreeFilter.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        mTxtTreeFilter.addModifyListener(mController);
+
+        // select all of the default text on focus gain
+        mTxtTreeFilter.addFocusListener(new FocusListener()
+        {
+            public void focusGained(FocusEvent e)
+            {
+                if (mDefaultFilterText.equals(mTxtTreeFilter.getText()))
+                {
+                    getShell().getDisplay().asyncExec(new Runnable()
+                    {
+
+                        public void run()
+                        {
+                            mTxtTreeFilter.selectAll();
+                        }
+                    });
+                }
+            }
+
+            public void focusLost(FocusEvent e)
+            {}
+        });
 
         mTreeViewer = new TreeViewer(knownModules, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL
                 | SWT.BORDER);
@@ -460,7 +501,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
      * @author Lars Ködderitzsch
      */
     private class PageController implements ISelectionChangedListener, ICheckStateListener,
-            IDoubleClickListener, SelectionListener, KeyListener
+            IDoubleClickListener, SelectionListener, KeyListener, ModifyListener
     {
 
         /**
@@ -526,6 +567,25 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
                 {
                     newModule(mTreeViewer.getSelection());
                 }
+            }
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public void modifyText(ModifyEvent e)
+        {
+            if (!mDefaultFilterText.equals(mTxtTreeFilter.getText())
+                    && StringUtils.trimToNull(mTxtTreeFilter.getText()) != null)
+            {
+                mTreeViewer.addFilter(mTreeFilter);
+                mTreeViewer.refresh();
+                //mTreeViewer.expandAll();
+            }
+            else
+            {
+                mTreeViewer.removeFilter(mTreeFilter);
+                mTreeViewer.refresh();
             }
         }
 
@@ -818,6 +878,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
             }
             return containsModule;
         }
+
     }
 
     /**
@@ -1142,6 +1203,64 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
             }
 
             return result;
+        }
+    }
+
+    /**
+     * Filter implementation that filters the module tree with respect of a
+     * filter text field to input a search word.
+     * 
+     * @author Lars Ködderitzsch
+     */
+    private class TreeFilter extends ViewerFilter
+    {
+
+        public boolean select(Viewer viewer, Object parentElement, Object element)
+        {
+            boolean result = true;
+
+            String filterText = mTxtTreeFilter.getText();
+
+            if (element instanceof RuleMetadata)
+            {
+                result = selectRule((RuleMetadata) element, filterText);
+            }
+            else if (element instanceof RuleGroupMetadata)
+            {
+                result = selectGroup((RuleGroupMetadata) element, filterText);
+            }
+
+            return result;
+        }
+
+        private boolean selectRule(RuleMetadata element, String filterText)
+        {
+            boolean passes = StringUtils.containsIgnoreCase(element.getRuleName(), filterText);
+
+            if (!passes)
+            {
+                passes = StringUtils.containsIgnoreCase(element.getDescription(), filterText);
+            }
+
+            return passes;
+        }
+
+        private boolean selectGroup(RuleGroupMetadata group, String filterText)
+        {
+            boolean hasAtLeastOneMatchingChild = false;
+
+            List rules = group.getRuleMetadata();
+            for (int i = 0, size = rules.size(); i < size; i++)
+            {
+                RuleMetadata element = (RuleMetadata) rules.get(i);
+                if (selectRule(element, filterText))
+                {
+                    hasAtLeastOneMatchingChild = true;
+                    break;
+                }
+            }
+
+            return hasAtLeastOneMatchingChild;
         }
     }
 }
