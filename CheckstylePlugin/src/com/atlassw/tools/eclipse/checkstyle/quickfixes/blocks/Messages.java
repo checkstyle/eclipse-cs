@@ -36,6 +36,10 @@ public class Messages extends NLS
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);
     }
 
+    public static String AvoidNextedBlocksQuickfix_description;
+
+    public static String AvoidNextedBlocksQuickfix_label;
+
     public static String NeedBracesQuickfix_description;
 
     public static String NeedBracesQuickfix_label;

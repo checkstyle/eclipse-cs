@@ -12,6 +12,7 @@
          <property-metadata name="allowInSwitchCase" datatype="Boolean" default-value="false">
             <description>Allow nested blocks in case statements</description>
          </property-metadata>
+         <quickfix classname="com.atlassw.tools.eclipse.checkstyle.quickfixes.blocks.AvoidNextedBlocksQuickfix"/>
       </rule-metadata>
       
       <rule-metadata name="Empty Block" internal-name="EmptyBlock" parent="TreeWalker">

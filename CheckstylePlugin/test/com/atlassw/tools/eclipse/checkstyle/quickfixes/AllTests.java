@@ -1,6 +1,7 @@
 
 package com.atlassw.tools.eclipse.checkstyle.quickfixes;
 
+import com.atlassw.tools.eclipse.checkstyle.quickfixes.blocks.AvoidNestedBlocksTest;
 import com.atlassw.tools.eclipse.checkstyle.quickfixes.blocks.NeedBracesTest;
 import com.atlassw.tools.eclipse.checkstyle.quickfixes.coding.DefaultComesLastTest;
 import com.atlassw.tools.eclipse.checkstyle.quickfixes.coding.EmptyStatementTest;
@@ -28,6 +29,7 @@ public class AllTests
         // $JUnit-BEGIN$
 
         // blocks
+        suite.addTestSuite(AvoidNestedBlocksTest.class);
         suite.addTestSuite(NeedBracesTest.class);
 
         // coding

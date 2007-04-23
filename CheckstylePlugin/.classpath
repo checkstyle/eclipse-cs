@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry output="binnls" kind="src" path="nls"/>
-	<classpathentry output="metadata" kind="src" path="metadata"/>
-	<classpathentry kind="src" path="test"/>
-	<classpathentry exported="true" kind="lib" path="lib/commons-codec-1.3.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/commons-httpclient-3.0.1.jar"/>
-	<classpathentry exported="true" sourcepath="D:/_libs/commons-io-1.2/commons-io-1.2-src-ide.zip" kind="lib" path="lib/commons-io-1.2.jar"/>
-	<classpathentry kind="lib" path="lib/checkstyle-all-4.3.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry exported="true" kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-	<classpathentry exported="true" sourcepath="D:/_libs/commons-lang-2.1/src" kind="lib" path="lib/commons-lang-2.1.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3.8.1"/>
-	<classpathentry kind="output" path="bin"/>
+	<classpathentry path="src" kind="src"/>
+	<classpathentry path="nls" output="binnls" kind="src"/>
+	<classpathentry path="metadata" output="metadata" kind="src"/>
+	<classpathentry path="test" kind="src"/>
+	<classpathentry path="lib/commons-codec-1.3.jar" exported="true" kind="lib"/>
+	<classpathentry path="lib/commons-httpclient-3.0.1.jar" exported="true" kind="lib"/>
+	<classpathentry sourcepath="D:/_libs/commons-io-1.2/commons-io-1.2-src-ide.zip" path="lib/commons-io-1.2.jar" exported="true" kind="lib"/>
+	<classpathentry path="lib/checkstyle-all-4.3.jar" kind="lib"/>
+	<classpathentry path="lib/commons-lang-2.3.jar" kind="lib"/>
+	<classpathentry path="org.eclipse.jdt.launching.JRE_CONTAINER" kind="con"/>
+	<classpathentry path="org.eclipse.pde.core.requiredPlugins" exported="true" kind="con"/>
+	<classpathentry path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3.8.1" kind="con"/>
+	<classpathentry path="bin" kind="output"/>
 </classpath>
