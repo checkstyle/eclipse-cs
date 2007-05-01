@@ -106,13 +106,18 @@
                <property-value-option value="alone"/>
             </enumeration>
          </property-metadata>
-         <property-metadata name="tokens" datatype="MultiCheck" default-value="LITERAL_CATCH,LITERAL_ELSE,LITERAL_TRY">
+         <property-metadata name="tokens" datatype="MultiCheck" default-value="LITERAL_TRY,LITERAL_CATCH,LITERAL_FINALLY,LITERAL_IF,LITERAL_ELSE">
             <description>Blocks to check.</description>
             <enumeration>
-               <property-value-option value="LITERAL_CATCH"/>
-               <property-value-option value="LITERAL_ELSE"/>
                <property-value-option value="LITERAL_TRY"/>
+               <property-value-option value="LITERAL_CATCH"/>
+               <property-value-option value="LITERAL_FINALLY"/>
+               <property-value-option value="LITERAL_IF"/>
+               <property-value-option value="LITERAL_ELSE"/>
             </enumeration>
+         </property-metadata>
+         <property-metadata name="shouldStartLine" datatype="Boolean" default-value="true">
+            <description>Should we check if '}' starts line.</description>
          </property-metadata>
       </rule-metadata>
    </rule-group-metadata>
