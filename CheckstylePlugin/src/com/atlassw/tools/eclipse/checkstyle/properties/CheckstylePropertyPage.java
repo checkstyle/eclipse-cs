@@ -456,7 +456,7 @@ public class CheckstylePropertyPage extends PropertyPage
             {
                 try
                 {
-                    checkConfig.isConfigurationAvailable();
+                    checkConfig.getCheckstyleConfiguration();
                 }
                 catch (CheckstylePluginException e)
                 {

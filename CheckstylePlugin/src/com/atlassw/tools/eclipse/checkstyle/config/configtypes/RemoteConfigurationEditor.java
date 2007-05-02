@@ -20,9 +20,10 @@
 
 package com.atlassw.tools.eclipse.checkstyle.config.configtypes;
 
+import java.net.PasswordAuthentication;
+
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -67,8 +68,9 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor
     /** check box to set if the configuration should be cached. */
     private Button mChkCacheConfig;
 
-    /** button to reset remote authentication credentials. */
-    private Button mBtnResetCredentials;
+    private Text mUserName;
+
+    private Text mPassword;
 
     //
     // methods
@@ -131,6 +133,33 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor
         gd.grabExcessVerticalSpace = true;
         mDescription.setLayoutData(gd);
 
+        Group credentialsGroup = new Group(contents, SWT.NULL);
+        credentialsGroup.setText("Authentication credentials (if needed):");
+        gd = new GridData(GridData.FILL_HORIZONTAL);
+        gd.horizontalSpan = 2;
+        credentialsGroup.setLayoutData(gd);
+        credentialsGroup.setLayout(new GridLayout(2, false));
+
+        Label lblUserName = new Label(credentialsGroup, SWT.NULL);
+        lblUserName.setText("Username:");
+        gd = new GridData();
+        lblUserName.setLayoutData(gd);
+
+        mUserName = new Text(credentialsGroup, SWT.SINGLE | SWT.BORDER);
+        gd = new GridData();
+        gd.widthHint = 100;
+        mUserName.setLayoutData(gd);
+
+        Label lblPassword = new Label(credentialsGroup, SWT.NULL);
+        lblPassword.setText("Password:");
+        gd = new GridData();
+        lblPassword.setLayoutData(gd);
+
+        mPassword = new Text(credentialsGroup, SWT.SINGLE | SWT.BORDER | SWT.PASSWORD);
+        gd = new GridData();
+        gd.widthHint = 100;
+        mPassword.setLayoutData(gd);
+
         Group advancedGroup = new Group(contents, SWT.NULL);
         advancedGroup.setText(Messages.RemoteConfigurationEditor_titleAdvancedOptions);
         gd = new GridData(GridData.FILL_HORIZONTAL);
@@ -143,32 +172,6 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor
         gd = new GridData(GridData.FILL_HORIZONTAL);
         gd.horizontalSpan = 2;
         mChkCacheConfig.setLayoutData(gd);
-
-        mBtnResetCredentials = new Button(advancedGroup, SWT.PUSH);
-        mBtnResetCredentials.setText(Messages.RemoteConfigurationEditor_btnResetRemoteAuth);
-        mBtnResetCredentials.setLayoutData(new GridData());
-        mBtnResetCredentials.addSelectionListener(new SelectionListener()
-        {
-
-            public void widgetSelected(SelectionEvent e)
-            {
-                // remove authentication info
-                try
-                {
-                    RemoteConfigurationType.RemoteConfigAuthenticator
-                            .removeCachedAuthInfo(mWorkingCopy);
-                }
-                catch (CheckstylePluginException e1)
-                {
-                    CheckstyleLog.errorDialog(shell, e1, true);
-                }
-            }
-
-            public void widgetDefaultSelected(SelectionEvent e)
-            {
-            // NOOP
-            }
-        });
 
         if (mWorkingCopy.getName() != null)
         {
@@ -187,6 +190,22 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor
                 (String) mWorkingCopy.getAdditionalData().get(
                         RemoteConfigurationType.KEY_CACHE_CONFIG)).booleanValue());
 
+        try
+        {
+            PasswordAuthentication auth = RemoteConfigurationType.RemoteConfigAuthenticator
+                    .getPasswordAuthentication(mWorkingCopy.getResolvedConfigurationFileURL());
+
+            if (auth != null)
+            {
+                mUserName.setText(auth.getUserName());
+                mPassword.setText(new String(auth.getPassword()));
+            }
+        }
+        catch (CheckstylePluginException e)
+        {
+            CheckstyleLog.errorDialog(shell, e, true);
+        }
+
         return contents;
     }
 
@@ -195,13 +214,6 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor
      */
     public CheckConfigurationWorkingCopy getEditedWorkingCopy() throws CheckstylePluginException
     {
-
-        mWorkingCopy.setName(mConfigName.getText());
-        mWorkingCopy.setLocation(mLocation.getText());
-        mWorkingCopy.setDescription(mDescription.getText());
-
-        mWorkingCopy.getAdditionalData().put(RemoteConfigurationType.KEY_CACHE_CONFIG,
-                "" + mChkCacheConfig.getSelection()); //$NON-NLS-1$
 
         // set the cachefile name
         if (mChkCacheConfig.getSelection()
@@ -216,6 +228,26 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor
             mWorkingCopy.getAdditionalData().put(
                     RemoteConfigurationType.KEY_CACHE_PROPS_FILE_LOCATION,
                     mWorkingCopy.getName() + "_" + currentTime + "_cache.properties"); //$NON-NLS-1$ $NON-NLS-2$
+        }
+
+        mWorkingCopy.setName(mConfigName.getText());
+        mWorkingCopy.setLocation(mLocation.getText());
+        mWorkingCopy.setDescription(mDescription.getText());
+
+        mWorkingCopy.getAdditionalData().put(RemoteConfigurationType.KEY_CACHE_CONFIG,
+                "" + mChkCacheConfig.getSelection()); //$NON-NLS-1$
+
+        // store credentials if necessary
+        if (StringUtils.trimToNull(mUserName.getText()) != null
+                || StringUtils.trimToNull(mPassword.getText()) != null)
+        {
+            RemoteConfigurationType.RemoteConfigAuthenticator.storeCredentials(mWorkingCopy
+                    .getResolvedConfigurationFileURL(), mUserName.getText(), mPassword.getText());
+        }
+        else
+        {
+            RemoteConfigurationType.RemoteConfigAuthenticator.removeCachedAuthInfo(mWorkingCopy
+                    .getResolvedConfigurationFileURL());
         }
 
         return mWorkingCopy;

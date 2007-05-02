@@ -53,6 +53,7 @@ import org.eclipse.ui.texteditor.MarkerUtilities;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.Messages;
+import com.atlassw.tools.eclipse.checkstyle.config.CheckstyleConfigurationFile;
 import com.atlassw.tools.eclipse.checkstyle.config.ConfigurationReader;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.config.Module;
@@ -141,6 +142,8 @@ public class Auditor
         throws CheckstylePluginException
     {
 
+        //System.out.println("----> Auditing: " + mFiles.size());
+
         // skip if there are no files to check
         if (mFiles.isEmpty() || project == null)
         {
@@ -172,11 +175,14 @@ public class Auditor
                     .getName()), filesToAudit.length);
 
             // find out tabwidth setting
-            configStream = mCheckConfiguration.openConfigurationFileStream();
+            CheckstyleConfigurationFile checkConfigFile = mCheckConfiguration
+                    .getCheckstyleConfiguration();
+
+            configStream = checkConfigFile.getCheckConfigFileStream();
             int tabWidth = ConfigurationReader.getTabWidth(configStream);
 
             // create checker
-            checker = CheckerFactory.createChecker(mCheckConfiguration, project);
+            checker = CheckerFactory.createChecker(checkConfigFile, project);
 
             // create and add listener
             listener = new CheckstyleAuditListener(project, tabWidth);

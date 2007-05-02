@@ -20,21 +20,14 @@
 
 package com.atlassw.tools.eclipse.checkstyle.config.configtypes;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.apache.commons.io.IOUtils;
 import org.eclipse.core.runtime.IPath;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
-import com.atlassw.tools.eclipse.checkstyle.config.ConfigurationWriter;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
-import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
 /**
@@ -47,50 +40,30 @@ public class InternalConfigurationType extends ConfigurationType
 {
 
     /**
+     * Resolves the location inside the plugins workspace state location.
+     * 
+     * @param location the location
+     * @return the resolved location in the workspace
+     */
+    public static String resolveLocationInWorkspace(String location)
+    {
+
+        IPath configPath = CheckstylePlugin.getDefault().getStateLocation();
+        configPath = configPath.append(location);
+        return configPath.toString();
+    }
+
+    /**
      * {@inheritDoc}
      */
-    public URL resolveLocation(ICheckConfiguration checkConfiguration)
-        throws CheckstylePluginException
+    protected URL resolveLocation(ICheckConfiguration checkConfiguration) throws IOException
     {
-        IPath configPath = CheckstylePlugin.getDefault().getStateLocation();
-        configPath = configPath.append(checkConfiguration.getLocation());
-        File configFile = configPath.toFile();
+        String location = checkConfiguration.getLocation();
 
-        if (!configFile.exists())
-        {
-            // create a new basic configuration file
-            OutputStream out = null;
+        // resolve the location in the workspace
+        location = resolveLocationInWorkspace(location);
 
-            try
-            {
-                out = new BufferedOutputStream(new FileOutputStream(configFile));
-                ConfigurationWriter.writeNewConfiguration(out, checkConfiguration);
-            }
-            catch (IOException e)
-            {
-                // Should not happen
-                CheckstyleLog.log(e);
-            }
-            catch (CheckstylePluginException e)
-            {
-                // Should not happen
-                CheckstyleLog.log(e);
-            }
-            finally
-            {
-                IOUtils.closeQuietly(out);
-            }
-        }
-
-        try
-        {
-            return configFile.toURL();
-        }
-        catch (MalformedURLException e)
-        {
-            CheckstylePluginException.rethrow(e);
-        }
-        return null;
+        return new File(location).toURL();
     }
 
     /**
@@ -102,11 +75,9 @@ public class InternalConfigurationType extends ConfigurationType
         super.notifyCheckConfigRemoved(checkConfiguration);
 
         // remove the configuration file from the workspace metadata
-        URL configFileURL = resolveLocation(checkConfiguration);
-
+        URL configFileURL = checkConfiguration.getResolvedConfigurationFileURL();
         if (configFileURL != null)
         {
-
             File configFile = new File(configFileURL.getFile());
             configFile.delete();
         }

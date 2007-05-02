@@ -18,7 +18,7 @@
 //
 //============================================================================
 
-package com.atlassw.tools.eclipse.checkstyle.projectconfig;
+package com.atlassw.tools.eclipse.checkstyle.actions;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -44,7 +44,7 @@ import com.atlassw.tools.eclipse.checkstyle.nature.ConfigureDeconfigureNatureJob
  * 
  * @author Lars Koedderitzsch
  */
-public class DeactivateProjectsPrintAction implements IObjectActionDelegate
+public class DeactivateProjectsAction implements IObjectActionDelegate
 {
 
     private IWorkbenchPart mPart;

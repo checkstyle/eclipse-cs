@@ -516,8 +516,7 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
             IProject configFileProject = configFile.getProject();
 
             // if the configuration is in *same* project don't store project
-            // path
-            // part
+            // path part
             if (project.equals(configFileProject))
             {
                 location = configFile.getProjectRelativePath().toString();

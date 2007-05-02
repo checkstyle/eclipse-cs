@@ -165,8 +165,8 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
 
         // get the associated project for this builder
         IProject project = getProject();
-        
-        //remove project level error markers
+
+        // remove project level error markers
         project.deleteMarkers(CheckstyleMarker.MARKER_ID, false, IResource.DEPTH_ZERO);
 
         if (CheckstyleNature.hasCorrectBuilderOrder(project))
@@ -251,6 +251,8 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
     protected void handleBuildSelection(Collection resources, IProjectConfiguration configuration,
             IProgressMonitor monitor, IProject project, int kind) throws CoreException
     {
+
+        //System.out.println(new java.util.Date() + " kind: " + kind + " files: " + resources.size());
 
         // on full build remove all previous checkstyle markers
         if (kind == IncrementalProjectBuilder.FULL_BUILD)

@@ -20,17 +20,9 @@
 
 package com.atlassw.tools.eclipse.checkstyle.config.configtypes;
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.PropertyResourceBundle;
-import java.util.ResourceBundle;
-
-import org.apache.commons.io.IOUtils;
 
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
@@ -96,24 +88,24 @@ public class ExternalFileConfigurationType extends ConfigurationType
     /**
      * {@inheritDoc}
      */
-    public URL resolveLocation(ICheckConfiguration checkConfiguration)
-        throws CheckstylePluginException
+    protected URL resolveLocation(ICheckConfiguration checkConfiguration) throws IOException
     {
 
+        String location = checkConfiguration.getLocation();
+
+        // support dynamic locations for external configurations
         try
         {
-            String location = checkConfiguration.getLocation();
-
-            // support dynamic locations for external configurations
             location = resolveDynamicLocation(location);
-
-            return new File(location).toURL();
         }
-        catch (MalformedURLException e)
+        catch (CheckstylePluginException e)
         {
-            CheckstylePluginException.rethrow(e);
+            CheckstyleLog.log(e);
+            throw new IOException(e.getMessage());
         }
-        return null;
+
+        return new File(location).toURL();
+
     }
 
     /**
@@ -152,78 +144,6 @@ public class ExternalFileConfigurationType extends ConfigurationType
             isConfigurable = new File(location).canWrite();
         }
         return isConfigurable;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public PropertyResolver getPropertyResolver(ICheckConfiguration checkConfiguration)
-        throws CheckstylePluginException
-    {
-
-        String location = checkConfiguration.getLocation();
-
-        // support dynamic locations for external configurations
-        location = resolveDynamicLocation(location);
-
-        MultiPropertyResolver multiResolver = new MultiPropertyResolver();
-        multiResolver.addPropertyResolver(new ResolvablePropertyResolver(checkConfiguration));
-        multiResolver.addPropertyResolver(new StandardPropertyResolver(location));
-        multiResolver.addPropertyResolver(new ClasspathVariableResolver());
-        multiResolver.addPropertyResolver(new SystemPropertyResolver());
-
-        ResourceBundle bundle = getBundle(location);
-        if (bundle != null)
-        {
-            multiResolver.addPropertyResolver(new ResourceBundlePropertyResolver(bundle));
-        }
-
-        return multiResolver;
-    }
-
-    /**
-     * Helper method to get the resource bundle for this configuration.
-     * 
-     * @param location the location of the configuration file
-     * @return the resource bundle or <code>null</code> if no bundle exists
-     */
-    private static ResourceBundle getBundle(String location)
-    {
-
-        ResourceBundle bundle = null;
-        InputStream in = null;
-        try
-        {
-
-            // Strip file extension
-            String propsLocation = null;
-            int lastPointIndex = location.lastIndexOf("."); //$NON-NLS-1$
-            if (lastPointIndex > -1)
-            {
-                propsLocation = location.substring(0, lastPointIndex);
-            }
-            else
-            {
-                propsLocation = location;
-            }
-
-            File propertyFile = new File(propsLocation + ".properties"); //$NON-NLS-1$
-
-            in = new BufferedInputStream(new FileInputStream(propertyFile));
-            bundle = new PropertyResourceBundle(in);
-        }
-        catch (IOException ioe)
-        {
-            // we won't load the bundle then
-            //disabled logging bug #1647602
-            //CheckstyleLog.log(ioe); 
-        }
-        finally
-        {
-            IOUtils.closeQuietly(in);
-        }
-
-        return bundle;
     }
 
 }

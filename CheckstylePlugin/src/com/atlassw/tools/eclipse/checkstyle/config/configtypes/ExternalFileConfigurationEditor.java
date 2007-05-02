@@ -26,7 +26,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -253,9 +252,6 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
      */
     private boolean ensureFileExists(String location) throws CheckstylePluginException
     {
-        MultiPropertyResolver resolver = new MultiPropertyResolver();
-        resolver.addPropertyResolver(new ClasspathVariableResolver());
-        resolver.addPropertyResolver(new SystemPropertyResolver());
 
         // support dynamic location strings
         String resolvedLocation = ExternalFileConfigurationType.resolveDynamicLocation(location);

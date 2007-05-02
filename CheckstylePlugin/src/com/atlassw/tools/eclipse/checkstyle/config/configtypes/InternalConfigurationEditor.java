@@ -20,8 +20,14 @@
 
 package com.atlassw.tools.eclipse.checkstyle.config.configtypes;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -39,6 +45,7 @@ import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationFactory;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationWorkingCopy;
+import com.atlassw.tools.eclipse.checkstyle.config.ConfigurationWriter;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.config.gui.CheckConfigurationPropertiesDialog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
@@ -160,7 +167,8 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor
                     String configFileString = fileDialog.open();
                     if (configFileString != null && new File(configFileString).exists())
                     {
-                        ICheckConfiguration tmpSourceConfig = new CheckConfiguration("dummy", //$NON-NLS-1$
+                        ICheckConfiguration tmpSourceConfig = new CheckConfiguration(
+                                "dummy", //$NON-NLS-1$
                                 configFileString, null, new ExternalFileConfigurationType(), true,
                                 null, null);
 
@@ -206,10 +214,66 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor
         {
 
             String location = "internal_config_" + "_" + System.currentTimeMillis() + ".xml"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            mWorkingCopy.setLocation(location);
+            try
+            {
+                mWorkingCopy.setLocation(location);
+            }
+            catch (CheckstylePluginException e)
+            {
+                if (StringUtils.trimToNull(location) != null && ensureFileExists(location))
+                {
+                    mWorkingCopy.setLocation(mLocation.getText());
+                }
+                else
+                {
+                    throw e;
+                }
+            }
         }
         mWorkingCopy.setDescription(mDescription.getText());
 
         return mWorkingCopy;
+    }
+
+    /**
+     * Helper method trying to ensure that the file location provided by the
+     * user exists. If that is not the case it prompts the user if an empty
+     * configuration file should be created.
+     * 
+     * @param location the configuration file location
+     * @throws CheckstylePluginException error when trying to ensure the
+     *             location file existance
+     */
+    private boolean ensureFileExists(String location) throws CheckstylePluginException
+    {
+
+        String resolvedLocation = InternalConfigurationType.resolveLocationInWorkspace(location);
+
+        File file = new File(resolvedLocation);
+        if (!file.exists())
+        {
+
+            OutputStream out = null;
+            try
+            {
+                if (file.getParentFile() != null)
+                {
+                    file.getParentFile().mkdirs();
+                }
+                out = new BufferedOutputStream(new FileOutputStream(file));
+                ConfigurationWriter.writeNewConfiguration(out, mWorkingCopy);
+            }
+            catch (IOException ioe)
+            {
+                CheckstylePluginException.rethrow(ioe);
+            }
+            finally
+            {
+                IOUtils.closeQuietly(out);
+            }
+            return true;
+        }
+
+        return true;
     }
 }

@@ -468,7 +468,37 @@
 			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
 			contextId="org.eclipse.jdt.ui.javaEditorScope" />>
 	</extension>
-	
+
+	<!-- Popupmenu actions to check selected files on demand -->
+	<extension
+		point="org.eclipse.ui.popupMenus">
+	  	<objectContribution 
+	    	objectClass="org.eclipse.core.resources.IResource"
+	    	adaptable="true"
+	    	id="com.atlassw.tools.eclipse.checkstyle.ondemand">
+	 		<menu
+          		id="Checkstyle.menu"
+          		label="%Checkstyle.menu"
+          		path="ondemand">
+	 		</menu>
+	 		<action
+	       		label="%ClearSelectedFilesAction.label"
+	       		class="com.atlassw.tools.eclipse.checkstyle.actions.ClearSelecedFilesAction"
+	       		enablesFor="+"
+	       		menubarPath="Checkstyle.menu/ondemand"
+	       		tooltip="%ClearSelectedFilesAction.tooltip"
+	       		id="com.atlassw.tools.eclipse.checkstyle.actions.ClearSelecedFilesAction">
+	 		</action>
+	 		<action
+	       		label="%CheckSelectedFilesAction.label"
+	       		class="com.atlassw.tools.eclipse.checkstyle.actions.CheckSelecedFilesAction"
+	       		enablesFor="+"
+	       		menubarPath="Checkstyle.menu/ondemand"
+	       		tooltip="%CheckSelectedFilesAction.tooltip"
+	       		id="com.atlassw.tools.eclipse.checkstyle.actions.CheckSelecedFilesAction">
+	 		</action>
+	  	</objectContribution>
+	</extension>		
 	
 	<!-- Popupmenu action for the 'Configure Project(s) from blueprint...' action -->
 	<extension
@@ -487,7 +517,7 @@
 	 		</visibility>
 	 		<action
 	       		label="%DeactivateProjectsPrintAction.label"
-	       		class="com.atlassw.tools.eclipse.checkstyle.projectconfig.DeactivateProjectsPrintAction"
+	       		class="com.atlassw.tools.eclipse.checkstyle.actions.DeactivateProjectsAction"
 	       		enablesFor="+"
 	       		menubarPath="Checkstyle.menu/additions"
 	       		tooltip="%DeactivateProjectsPrintAction.tooltip"
@@ -498,7 +528,7 @@
 	 		</action>
 	 		<action
 	       		label="%ActivateProjectsPrintAction.label"
-	       		class="com.atlassw.tools.eclipse.checkstyle.projectconfig.ActivateProjectsPrintAction"
+	       		class="com.atlassw.tools.eclipse.checkstyle.actions.ActivateProjectsAction"
 	       		enablesFor="+"
 	       		menubarPath="Checkstyle.menu/additions"
 	       		tooltip="%ActivateProjectsPrintAction.tooltip"
@@ -509,7 +539,7 @@
 	 		</action>
 	 		<action
 	       		label="%ConfigureProjectFromBluePrintAction.label"
-	       		class="com.atlassw.tools.eclipse.checkstyle.projectconfig.ConfigureProjectFromBluePrintAction"
+	       		class="com.atlassw.tools.eclipse.checkstyle.actions.ConfigureProjectFromBluePrintAction"
 	       		enablesFor="+"
 	       		menubarPath="Checkstyle.menu/additions"
 	       		tooltip="%ConfigureProjectFromBluePrintAction.tooltip"

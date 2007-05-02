@@ -20,17 +20,21 @@
 
 package com.atlassw.tools.eclipse.checkstyle.config.configtypes;
 
-import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.net.URLConnection;
+import java.util.PropertyResourceBundle;
+import java.util.ResourceBundle;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
+import com.atlassw.tools.eclipse.checkstyle.config.CheckstyleConfigurationFile;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
@@ -152,40 +156,158 @@ public abstract class ConfigurationType implements IConfigurationType
     /**
      * {@inheritDoc}
      */
-    public InputStream openConfigurationFileStream(ICheckConfiguration checkConfiguration)
+    public URL getResolvedConfigurationFileURL(ICheckConfiguration checkConfiguration)
         throws CheckstylePluginException
     {
-
-        InputStream inStream = null;
+        URL url = null;
 
         try
         {
-            URL configURL = resolveLocation(checkConfiguration);
-            inStream = new BufferedInputStream(configURL.openStream());
+            url = resolveLocation(checkConfiguration);
+        }
+        catch (IOException e)
+        {
+            CheckstylePluginException.rethrow(e);
+        }
+        return url;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public CheckstyleConfigurationFile getCheckstyleConfiguration(
+            ICheckConfiguration checkConfiguration) throws CheckstylePluginException
+    {
+
+        CheckstyleConfigurationFile data = new CheckstyleConfigurationFile();
+
+        try
+        {
+
+            // resolve the true configuration file URL
+            data.setResolvedConfigFileURL(resolveLocation(checkConfiguration));
+
+            URLConnection connection = data.getResolvedConfigFileURL().openConnection();
+            connection.connect();
+
+            // get last modification timestamp
+            data.setModificationStamp(connection.getLastModified());
+
+            // get the configuration file data
+            byte[] configurationFileData = getBytesFromURLConnection(connection);
+            data.setCheckConfigFileBytes(configurationFileData);
+
+            // get the properties bundle
+            byte[] additionalPropertiesBytes = getAdditionPropertiesBundleBytes(data
+                    .getResolvedConfigFileURL());
+            data.setAdditionalPropertyBundleBytes(additionalPropertiesBytes);
+
+            // get the property resolver
+            PropertyResolver resolver = getPropertyResolver(checkConfiguration, data);
+            data.setPropertyResolver(resolver);
+
         }
         catch (IOException e)
         {
             CheckstylePluginException.rethrow(e);
         }
 
-        return inStream;
+        return data;
     }
 
     /**
-     * {@inheritDoc}
+     * Returns the URL of the checkstyle configuration file. Implementors are
+     * not expected to open any connection to the URL.
+     * 
+     * @param checkConfiguration the actual check configuration
+     * @return the URL of the checkstyle configuration file
+     * @throws IOException error while resolving the url
      */
-    public PropertyResolver getPropertyResolver(ICheckConfiguration checkConfiguration)
-        throws CheckstylePluginException
+    protected abstract URL resolveLocation(ICheckConfiguration checkConfiguration)
+        throws IOException;
+
+    protected byte[] getAdditionPropertiesBundleBytes(URL checkConfigURL) throws IOException
+    {
+
+        String location = checkConfigURL.toString();
+
+        // Strip file extension
+        String propsLocation = null;
+        int lastPointIndex = location.lastIndexOf("."); //$NON-NLS-1$
+        if (lastPointIndex > -1)
+        {
+            propsLocation = location.substring(0, lastPointIndex);
+        }
+        else
+        {
+            propsLocation = location;
+        }
+
+        propsLocation = propsLocation + ".properties"; //$NON-NLS-1$
+
+        try
+        {
+
+            URL propertyFileURL = new URL(propsLocation);
+            URLConnection connection = propertyFileURL.openConnection();
+
+            return getBytesFromURLConnection(connection);
+        }
+        catch (IOException e)
+        {
+            // we won't load the bundle then
+            // disabled logging bug #1647602
+            // CheckstyleLog.log(ioe);
+        }
+        return null;
+    }
+
+    /**
+     * Gets the property resolver for this configuration type used to expand
+     * property values within the checkstyle configuration.
+     * 
+     * @param checkConfiguration the actual check configuration
+     * @return the property resolver
+     * @throws IOException error creating the property resolver
+     */
+    protected PropertyResolver getPropertyResolver(ICheckConfiguration config,
+            CheckstyleConfigurationFile configFile) throws IOException
     {
 
         MultiPropertyResolver multiResolver = new MultiPropertyResolver();
-        multiResolver.addPropertyResolver(new ResolvablePropertyResolver(checkConfiguration));
-        multiResolver.addPropertyResolver(new StandardPropertyResolver(resolveLocation(
-                checkConfiguration).getFile()));
+        multiResolver.addPropertyResolver(new ResolvablePropertyResolver(config));
+        multiResolver.addPropertyResolver(new StandardPropertyResolver(configFile
+                .getResolvedConfigFileURL().getFile()));
         multiResolver.addPropertyResolver(new ClasspathVariableResolver());
         multiResolver.addPropertyResolver(new SystemPropertyResolver());
 
+        if (configFile.getAdditionalPropertiesBundleStream() != null)
+        {
+            ResourceBundle bundle = new PropertyResourceBundle(configFile
+                    .getAdditionalPropertiesBundleStream());
+            multiResolver.addPropertyResolver(new ResourceBundlePropertyResolver(bundle));
+        }
+
         return multiResolver;
+    }
+
+    protected byte[] getBytesFromURLConnection(URLConnection connection) throws IOException
+    {
+
+        byte[] configurationFileData = null;
+
+        InputStream in = null;
+
+        try
+        {
+            in = connection.getInputStream();
+            configurationFileData = IOUtils.toByteArray(in);
+        }
+        finally
+        {
+            IOUtils.closeQuietly(in);
+        }
+        return configurationFileData;
     }
 
     /**

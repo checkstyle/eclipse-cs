@@ -20,14 +20,13 @@
 
 package com.atlassw.tools.eclipse.checkstyle.config.configtypes;
 
-import java.io.InputStream;
 import java.net.URL;
 
 import org.eclipse.swt.graphics.Image;
 
+import com.atlassw.tools.eclipse.checkstyle.config.CheckstyleConfigurationFile;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
-import com.puppycrawl.tools.checkstyle.PropertyResolver;
 
 /**
  * Interface for a configuration type.
@@ -110,41 +109,27 @@ public interface IConfigurationType
     boolean isConfigurable(ICheckConfiguration checkConfiguration);
 
     /**
-     * Gets the property resolver for this configuration type used to expand
-     * property values within the checkstyle configuration.
-     * 
-     * @param checkConfiguration the actual check configuration
-     * @return the property resolver
-     * @throws CheckstylePluginException error creating the property resolver
-     */
-    PropertyResolver getPropertyResolver(ICheckConfiguration checkConfiguration)
-        throws CheckstylePluginException;
-
-    /**
-     * Returns the URL of the checkstyle configuration file.
-     * 
-     * @param checkConfiguration the actual check configuration
-     * @return the URL of the checkstyle configuration file
-     * @throws CheckstylePluginException error while creating the url
-     */
-    URL resolveLocation(ICheckConfiguration checkConfiguration) throws CheckstylePluginException;
-
-    /**
-     * Opens an input stream to the Checkstyle configuration file.
-     * 
-     * @param checkConfiguration the actual check configuration
-     * @return input stream to the Checkstyle configuration file
-     * @throws CheckstylePluginException error opening the stream
-     */
-    InputStream openConfigurationFileStream(ICheckConfiguration checkConfiguration)
-        throws CheckstylePluginException;
-
-    /**
      * Notifies that a check configuration has been removed.
      * 
      * @param checkConfiguration the check configuration which was removed
      * @throws CheckstylePluginException error while processing the notification
      */
     void notifyCheckConfigRemoved(ICheckConfiguration checkConfiguration)
+        throws CheckstylePluginException;
+
+    /**
+     * Returns the resolved location URL of the Checkstyle configuration file
+     * configured for the given check configuration. Clients should not try to
+     * open an actual stream to the configuration file, since this might not
+     * work directly.
+     * 
+     * @param checkConfiguration the check configuration
+     * @return the Checkstyle configuration file location as URL
+     * @throws CheckstylePluginException exception while resolving the URL
+     */
+    URL getResolvedConfigurationFileURL(ICheckConfiguration checkConfiguration)
+        throws CheckstylePluginException;
+
+    CheckstyleConfigurationFile getCheckstyleConfiguration(ICheckConfiguration checkConfiguration)
         throws CheckstylePluginException;
 }

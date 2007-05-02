@@ -73,7 +73,9 @@ public class CheckConfigurationTester
     public List getUnresolvedProperties() throws CheckstylePluginException
     {
 
-        PropertyResolver resolver = mCheckConfiguration.getPropertyResolver();
+        CheckstyleConfigurationFile configFile = mCheckConfiguration.getCheckstyleConfiguration();
+
+        PropertyResolver resolver = configFile.getPropertyResolver();
 
         // set the project context if the property resolver needs the
         // context
@@ -108,7 +110,7 @@ public class CheckConfigurationTester
             ClassLoader customClassLoader = CustomLibrariesClassLoader.get();
             Thread.currentThread().setContextClassLoader(customClassLoader);
 
-            in = mCheckConfiguration.openConfigurationFileStream();
+            in = configFile.getCheckConfigFileStream();
             ConfigurationLoader.loadConfiguration(in, resolver, false);
         }
         catch (CheckstyleException e)

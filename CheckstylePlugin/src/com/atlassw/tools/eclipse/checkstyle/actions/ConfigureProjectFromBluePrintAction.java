@@ -18,7 +18,7 @@
 //
 //============================================================================
 
-package com.atlassw.tools.eclipse.checkstyle.projectconfig;
+package com.atlassw.tools.eclipse.checkstyle.actions;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -47,6 +47,9 @@ import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationWorkingCopy;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfigurationWorkingSet;
+import com.atlassw.tools.eclipse.checkstyle.projectconfig.IProjectConfiguration;
+import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfigurationFactory;
+import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfigurationWorkingCopy;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 

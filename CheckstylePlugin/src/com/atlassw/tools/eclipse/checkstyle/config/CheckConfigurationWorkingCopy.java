@@ -204,7 +204,9 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
             try
             {
                 mEditedLocation = location;
-                isConfigurationAvailable();
+
+                // test if configuration file exists
+                getCheckstyleConfiguration();
             }
             catch (Exception e)
             {
@@ -276,7 +278,7 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
 
         try
         {
-            in = openConfigurationFileStream();
+            in = getCheckstyleConfiguration().getCheckConfigFileStream();
             result = ConfigurationReader.read(in);
         }
         finally
@@ -302,7 +304,6 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
         ByteArrayOutputStream byteOut = null;
         try
         {
-            System.out.println("Writing to: " + isConfigurationAvailable()); //$NON-NLS-1$
 
             // First write to a byte array outputstream
             // because otherwise in an error case the original
@@ -312,7 +313,7 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
             ConfigurationWriter.write(byteOut, modules, this);
 
             // all went ok, write to the file
-            String configFile = isConfigurationAvailable().getFile();
+            String configFile = getResolvedConfigurationFileURL().getFile();
             out = new BufferedOutputStream(new FileOutputStream(configFile));
             out.write(byteOut.toByteArray());
 
@@ -334,6 +335,9 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
             }
 
             mHasConfigChanged = true;
+
+            // throw away the cached Checkstyle configurations
+            CheckConfigurationFactory.refresh();
         }
         catch (IOException e)
         {
@@ -403,37 +407,18 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
     /**
      * {@inheritDoc}
      */
-    public URL isConfigurationAvailable() throws CheckstylePluginException
+    public URL getResolvedConfigurationFileURL() throws CheckstylePluginException
     {
-        URL configLocation = null;
-
-        InputStream in = null;
-        try
-        {
-            in = openConfigurationFileStream();
-            configLocation = getType().resolveLocation(this);
-        }
-        finally
-        {
-            IOUtils.closeQuietly(in);
-        }
-        return configLocation;
+        return getType().getResolvedConfigurationFileURL(this);
     }
 
     /**
      * {@inheritDoc}
      */
-    public PropertyResolver getPropertyResolver() throws CheckstylePluginException
+    public CheckstyleConfigurationFile getCheckstyleConfiguration()
+        throws CheckstylePluginException
     {
-        return getType().getPropertyResolver(this);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public InputStream openConfigurationFileStream() throws CheckstylePluginException
-    {
-        return getType().openConfigurationFileStream(this);
+        return getType().getCheckstyleConfiguration(this);
     }
 
     /**

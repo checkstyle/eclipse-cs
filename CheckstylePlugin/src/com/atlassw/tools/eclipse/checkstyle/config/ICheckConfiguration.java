@@ -20,14 +20,12 @@
 
 package com.atlassw.tools.eclipse.checkstyle.config;
 
-import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.IConfigurationType;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
-import com.puppycrawl.tools.checkstyle.PropertyResolver;
 
 /**
  * Interface for a check configuration object.
@@ -80,34 +78,6 @@ public interface ICheckConfiguration
     List getResolvableProperties();
 
     /**
-     * Gets the property resolver for this configuration used to expand property
-     * values within the checkstyle configuration.
-     * 
-     * @return the property resolver
-     * @throws CheckstylePluginException error creating the property resolver
-     */
-    PropertyResolver getPropertyResolver() throws CheckstylePluginException;
-
-    /**
-     * Checks if the checkstyle configuration file is available. If the
-     * configuration file is available the method call exits normally. Otherwise
-     * a CheckstylePluginException will be thrown, specifing what went wrong.
-     * 
-     * @return the URL of the configuration file
-     * @throws CheckstylePluginException if the Checkstyle configuration file is
-     *             not available
-     */
-    URL isConfigurationAvailable() throws CheckstylePluginException;
-
-    /**
-     * Opens an input stream to the configuration file.
-     * 
-     * @return input stream to the configuration file
-     * @throws CheckstylePluginException error opening the stream
-     */
-    InputStream openConfigurationFileStream() throws CheckstylePluginException;
-
-    /**
      * Determines if the configuration properties are editable by the user.
      * 
      * @return <code>true</code>, if the configuration is editable
@@ -131,4 +101,27 @@ public interface ICheckConfiguration
      *         globally
      */
     boolean isGlobal();
+
+    /**
+     * Returns the resolved location URL of the Checkstyle configuration file
+     * configured for this check configuration. Clients should not try to open
+     * an actual stream to the configuration file, since this is not guaranteed
+     * to work.
+     * 
+     * @return the Checkstyle configuration file location as URL
+     * @throws CheckstylePluginException exception while resolving the URL
+     */
+    URL getResolvedConfigurationFileURL() throws CheckstylePluginException;
+
+    /**
+     * Get all data of the Checkstyle configuration (file data, additional
+     * properties...) in one go. This is done to optimize the number of accesses
+     * that must be done on the configuration files.
+     * 
+     * @return all Checkstyle configuration file data necessary to create a
+     *         checker
+     * @throws CheckstylePluginException exception while getting the Checkstyle
+     *             configuration file data
+     */
+    CheckstyleConfigurationFile getCheckstyleConfiguration() throws CheckstylePluginException;
 }

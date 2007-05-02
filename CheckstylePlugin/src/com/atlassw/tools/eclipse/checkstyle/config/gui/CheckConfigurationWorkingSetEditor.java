@@ -512,7 +512,7 @@ public class CheckConfigurationWorkingSetEditor
             try
             {
                 // test if file exists
-                config.isConfigurationAvailable();
+                config.getCheckstyleConfiguration();
 
                 CheckConfigurationConfigureDialog dialog = new CheckConfigurationConfigureDialog(
                         getShell(), config);

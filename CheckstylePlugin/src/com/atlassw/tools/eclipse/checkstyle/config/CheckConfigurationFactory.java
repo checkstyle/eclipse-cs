@@ -178,9 +178,9 @@ public final class CheckConfigurationFactory
         throws CheckstylePluginException
     {
         // use the export function ;-)
-        String targetFile = target.isConfigurationAvailable().getFile();
+        String targetFile = target.getResolvedConfigurationFileURL().getFile();
 
-        String sourceFile = source.isConfigurationAvailable().getFile();
+        String sourceFile = source.getResolvedConfigurationFileURL().getFile();
 
         // copying from a file to the same file will destroy it.
         if (ObjectUtils.equals(targetFile, sourceFile))
@@ -210,7 +210,7 @@ public final class CheckConfigurationFactory
         {
 
             // Just copy the checkstyle configuration
-            in = config.openConfigurationFileStream();
+            in = config.getCheckstyleConfiguration().getCheckConfigFileStream();
             out = new BufferedOutputStream(new FileOutputStream(file));
 
             IOUtils.copy(in, out);

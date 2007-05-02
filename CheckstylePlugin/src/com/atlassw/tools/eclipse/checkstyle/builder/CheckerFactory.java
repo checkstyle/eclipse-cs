@@ -36,6 +36,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.IPreferencesService;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
+import com.atlassw.tools.eclipse.checkstyle.config.CheckstyleConfigurationFile;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.IContextAware;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
@@ -102,24 +103,24 @@ public final class CheckerFactory
     /**
      * Creates a checker for a given configuration file.
      * 
-     * @param config the check configuration
+     * @param config the check configuration data
      * @param project the project to create the checker for
      * @return the checker for the given configuration file
      * @throws CheckstyleException the configuration file had errors
      * @throws IOException the config file could not be read
      * @throws CheckstylePluginException the configuration could not be read
      */
-    public static Checker createChecker(ICheckConfiguration config, IProject project)
+    public static Checker createChecker(CheckstyleConfigurationFile config, IProject project)
         throws CheckstyleException, IOException, CheckstylePluginException
     {
 
-        URL configLocation = config.isConfigurationAvailable();
+        URL configLocation = config.getResolvedConfigFileURL();
 
         // build cache key using the project name as a part to do per project
         // caching
         String cacheKey = project.getName() + "#" + configLocation; //$NON-NLS-1$
 
-        Checker checker = tryCheckerCache(configLocation, cacheKey);
+        Checker checker = tryCheckerCache(cacheKey, config.getModificationStamp());
 
         // no cache hit
         if (checker == null)
@@ -136,7 +137,7 @@ public final class CheckerFactory
             InputStream in = null;
             try
             {
-                in = config.openConfigurationFileStream();
+                in = config.getCheckConfigFileStream();
                 checker = createCheckerInternal(in, resolver);
             }
             finally
@@ -145,7 +146,7 @@ public final class CheckerFactory
             }
 
             // store checker in cache
-            Long modified = new Long(configLocation.openConnection().getLastModified());
+            Long modified = new Long(config.getModificationStamp());
             sCheckerMap.put(cacheKey, checker);
             sModifiedMap.put(cacheKey, modified);
         }
@@ -181,7 +182,8 @@ public final class CheckerFactory
      * @return the cached checker or null
      * @throws IOException the config file could not be read
      */
-    private static Checker tryCheckerCache(URL config, String cacheKey) throws IOException
+    private static Checker tryCheckerCache(String cacheKey, long modificationStamp)
+        throws IOException
     {
 
         // try the cache
@@ -193,7 +195,7 @@ public final class CheckerFactory
 
             // compare modification times of the configs
             Long oldTime = (Long) sModifiedMap.get(cacheKey);
-            Long newTime = new Long(config.openConnection().getLastModified());
+            Long newTime = new Long(modificationStamp);
 
             // no match - remove checker from cache
             if (oldTime == null || oldTime.compareTo(newTime) != 0)

@@ -20,13 +20,16 @@
 
 package com.atlassw.tools.eclipse.checkstyle.config.configtypes;
 
+import java.io.IOException;
 import java.net.URL;
 
 import org.eclipse.core.runtime.Path;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
+import com.atlassw.tools.eclipse.checkstyle.config.CheckstyleConfigurationFile;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
+import com.puppycrawl.tools.checkstyle.PropertyResolver;
 
 /**
  * Implementation of the configuration type for a built in check configuration,
@@ -40,9 +43,25 @@ public class BuiltInConfigurationType extends ConfigurationType
     /**
      * {@inheritDoc}
      */
-    public URL resolveLocation(ICheckConfiguration checkConfiguration)
-        throws CheckstylePluginException
+    protected URL resolveLocation(ICheckConfiguration checkConfiguration) throws IOException
     {
         return CheckstylePlugin.getDefault().find(new Path(checkConfiguration.getLocation()));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected byte[] getAdditionPropertiesBundleBytes(URL checkConfigURL) throws IOException
+    {
+        // just returns null since additional property file is not needed nor
+        // supported
+        return null;
+    }
+
+    protected PropertyResolver getPropertyResolver(ICheckConfiguration config,
+            CheckstyleConfigurationFile configFile) throws IOException
+    {
+        // no properties to resolve with builtin configurations
+        return null;
     }
 }

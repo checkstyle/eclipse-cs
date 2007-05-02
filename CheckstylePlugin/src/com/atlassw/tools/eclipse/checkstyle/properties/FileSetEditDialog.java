@@ -698,7 +698,7 @@ public class FileSetEditDialog extends TitleAreaDialog
 
                     try
                     {
-                        config.isConfigurationAvailable();
+                        config.getCheckstyleConfiguration();
 
                         CheckConfigurationWorkingCopy workingCopy = (CheckConfigurationWorkingCopy) config;
 

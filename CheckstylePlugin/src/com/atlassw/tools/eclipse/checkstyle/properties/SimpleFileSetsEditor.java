@@ -233,7 +233,7 @@ public class SimpleFileSetsEditor implements IFileSetsEditor
 
                     try
                     {
-                        config.isConfigurationAvailable();
+                        config.getCheckstyleConfiguration();
 
                         CheckConfigurationWorkingCopy workingCopy = (CheckConfigurationWorkingCopy) config;
 

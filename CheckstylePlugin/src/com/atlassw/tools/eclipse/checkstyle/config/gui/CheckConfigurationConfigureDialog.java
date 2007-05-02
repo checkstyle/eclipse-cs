@@ -106,6 +106,9 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
     /** The current check configuration. */
     private CheckConfigurationWorkingCopy mConfiguration;
 
+    /** Flags if the Check configuration can be modified. */
+    private boolean mConfigurable;
+
     /** Text field used to filter the module tree. */
     private Text mTxtTreeFilter;
 
@@ -247,7 +250,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
         {
             // only write the modules back if the config is configurable
             // and was actually changed
-            if (mConfiguration.isConfigurable() && mIsDirty)
+            if (mConfigurable && mIsDirty)
             {
                 mConfiguration.setModules(mModules);
             }
@@ -460,6 +463,8 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
     private void initialize()
     {
 
+        mConfigurable = mConfiguration.isConfigurable();
+
         try
         {
             mModules = mConfiguration.getModules();
@@ -474,7 +479,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
         this.setTitle(NLS.bind(Messages.CheckConfigurationConfigureDialog_titleMessageArea,
                 mConfiguration.getType().getName(), mConfiguration.getName()));
 
-        if (mConfiguration.isConfigurable())
+        if (mConfigurable)
         {
             this.setMessage(Messages.CheckConfigurationConfigureDialog_msgEditConfig);
         }
@@ -486,8 +491,8 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
         // set the logo
         this.setTitleImage(CheckstylePluginImages.getImage(CheckstylePluginImages.PLUGIN_LOGO));
 
-        mAddButton.setEnabled(mConfiguration.isConfigurable());
-        mRemoveButton.setEnabled(mConfiguration.isConfigurable());
+        mAddButton.setEnabled(mConfigurable);
+        mRemoveButton.setEnabled(mConfigurable);
 
         mTreeViewer.setInput(MetadataFactory.getRuleGroupMetadata());
         ISelection initialSelection = new StructuredSelection(MetadataFactory
@@ -580,7 +585,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
             {
                 mTreeViewer.addFilter(mTreeFilter);
                 mTreeViewer.refresh();
-                //mTreeViewer.expandAll();
+                // mTreeViewer.expandAll();
             }
             else
             {
@@ -610,7 +615,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
          */
         public void checkStateChanged(CheckStateChangedEvent event)
         {
-            if (mConfiguration.isConfigurable())
+            if (mConfigurable)
             {
                 Module module = (Module) event.getElement();
 
@@ -700,10 +705,9 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
                     Module workingCopy = (Module) m.clone();
 
                     RuleConfigurationEditDialog dialog = new RuleConfigurationEditDialog(
-                            getShell(), workingCopy, !mConfiguration.isConfigurable(),
+                            getShell(), workingCopy, !mConfigurable,
                             Messages.CheckConfigurationConfigureDialog_titleModuleConfigEditor);
-                    if (RuleConfigurationEditDialog.OK == dialog.open()
-                            && mConfiguration.isConfigurable())
+                    if (RuleConfigurationEditDialog.OK == dialog.open() && mConfigurable)
                     {
                         mModules.set(mModules.indexOf(m), workingCopy);
                         mIsDirty = true;
@@ -725,7 +729,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
          */
         private void newModule(ISelection selection)
         {
-            if (mConfiguration.isConfigurable())
+            if (mConfigurable)
             {
                 IPreferencesService prefStore = Platform.getPreferencesService();
                 boolean openOnAdd = prefStore.getBoolean(CheckstylePlugin.PLUGIN_ID,
@@ -765,10 +769,10 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
                             {
 
                                 RuleConfigurationEditDialog dialog = new RuleConfigurationEditDialog(
-                                        getShell(), workingCopy, !mConfiguration.isConfigurable(),
+                                        getShell(), workingCopy, !mConfigurable,
                                         Messages.CheckConfigurationConfigureDialog_titleNewModule);
                                 if (RuleConfigurationEditDialog.OK == dialog.open()
-                                        && mConfiguration.isConfigurable())
+                                        && mConfigurable)
                                 {
                                     mModules.add(workingCopy);
                                     mIsDirty = true;
@@ -804,7 +808,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
         private void removeModule(ISelection selection)
         {
 
-            if (!selection.isEmpty() && mConfiguration.isConfigurable())
+            if (!selection.isEmpty() && mConfigurable)
             {
 
                 if (MessageDialog.openConfirm(getShell(),
@@ -840,7 +844,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
             for (int i = 0; i < size; i++)
             {
                 Module module = (Module) mModules.get(i);
-                if (mConfiguration.isConfigurable())
+                if (mConfigurable)
                 {
                     mTableViewer.setChecked(module, !SeverityLevel.IGNORE.equals(module
                             .getSeverity())

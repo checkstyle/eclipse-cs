@@ -20,7 +20,6 @@
 
 package com.atlassw.tools.eclipse.checkstyle.config;
 
-import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,13 +27,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.IConfigurationType;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
-import com.puppycrawl.tools.checkstyle.PropertyResolver;
 
 /**
  * Base implementation of a check configuration. Leaves the specific tasks to
@@ -69,6 +66,12 @@ public class CheckConfiguration implements ICheckConfiguration
 
     /** Map containing additional data for this check configuration. */
     private Map mAdditionalData;
+
+    /** Cached data of the Checkstyle configuration file. */
+    private CheckstyleConfigurationFile mCheckstyleConfigurationFile;
+
+    /** Time stamp when the cached configuration file data expires. */
+    private long mExpirationTime = 0;
 
     //
     // methods
@@ -184,37 +187,26 @@ public class CheckConfiguration implements ICheckConfiguration
     /**
      * {@inheritDoc}
      */
-    public PropertyResolver getPropertyResolver() throws CheckstylePluginException
+    public URL getResolvedConfigurationFileURL() throws CheckstylePluginException
     {
-        return mConfigType.getPropertyResolver(this);
+        return getType().getResolvedConfigurationFileURL(this);
     }
 
     /**
      * {@inheritDoc}
      */
-    public URL isConfigurationAvailable() throws CheckstylePluginException
+    public CheckstyleConfigurationFile getCheckstyleConfiguration()
+        throws CheckstylePluginException
     {
-        URL configLocation = null;
+        long currentTime = System.currentTimeMillis();
 
-        InputStream in = null;
-        try
+        if (mCheckstyleConfigurationFile == null || currentTime > mExpirationTime)
         {
-            in = openConfigurationFileStream();
-            configLocation = mConfigType.resolveLocation(this);
+            mCheckstyleConfigurationFile = getType().getCheckstyleConfiguration(this);
+            mExpirationTime = currentTime + 1000 * 60 * 60; // 1 hour
         }
-        finally
-        {
-            IOUtils.closeQuietly(in);
-        }
-        return configLocation;
-    }
 
-    /**
-     * {@inheritDoc}
-     */
-    public InputStream openConfigurationFileStream() throws CheckstylePluginException
-    {
-        return mConfigType.openConfigurationFileStream(this);
+        return mCheckstyleConfigurationFile;
     }
 
     /**

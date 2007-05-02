@@ -109,7 +109,8 @@ public final class CheckstyleLog
     public static void errorDialog(Shell shell, String message, Throwable t, boolean log)
     {
 
-        Status status = new Status(Status.ERROR, CheckstylePlugin.PLUGIN_ID, Status.OK, message, t);
+        Status status = new Status(Status.ERROR, CheckstylePlugin.PLUGIN_ID, Status.OK,
+                message != null ? message : "", t);
 
         String msg = NLS.bind(ErrorMessages.errorDialogMainMessage, message);
         ErrorDialog.openError(shell, ErrorMessages.CheckstyleLog_titleInternalError, msg, status);
