@@ -469,37 +469,6 @@
 			contextId="org.eclipse.jdt.ui.javaEditorScope" />>
 	</extension>
 
-	<!-- Popupmenu actions to check selected files on demand -->
-	<extension
-		point="org.eclipse.ui.popupMenus">
-	  	<objectContribution 
-	    	objectClass="org.eclipse.core.resources.IResource"
-	    	adaptable="true"
-	    	id="com.atlassw.tools.eclipse.checkstyle.ondemand">
-	 		<menu
-          		id="Checkstyle.menu"
-          		label="%Checkstyle.menu"
-          		path="ondemand">
-	 		</menu>
-	 		<action
-	       		label="%ClearSelectedFilesAction.label"
-	       		class="com.atlassw.tools.eclipse.checkstyle.actions.ClearSelecedFilesAction"
-	       		enablesFor="+"
-	       		menubarPath="Checkstyle.menu/ondemand"
-	       		tooltip="%ClearSelectedFilesAction.tooltip"
-	       		id="com.atlassw.tools.eclipse.checkstyle.actions.ClearSelecedFilesAction">
-	 		</action>
-	 		<action
-	       		label="%CheckSelectedFilesAction.label"
-	       		class="com.atlassw.tools.eclipse.checkstyle.actions.CheckSelecedFilesAction"
-	       		enablesFor="+"
-	       		menubarPath="Checkstyle.menu/ondemand"
-	       		tooltip="%CheckSelectedFilesAction.tooltip"
-	       		id="com.atlassw.tools.eclipse.checkstyle.actions.CheckSelecedFilesAction">
-	 		</action>
-	  	</objectContribution>
-	</extension>		
-	
 	<!-- Popupmenu action for the 'Configure Project(s) from blueprint...' action -->
 	<extension
 		point="org.eclipse.ui.popupMenus">
@@ -511,6 +480,9 @@
           		id="Checkstyle.menu"
           		label="%Checkstyle.menu"
           		path="additions">
+          		<separator
+                  	name="xbatch">
+            	</separator>
 	 		</menu>
 	 		<visibility>
 	 			<objectClass name="org.eclipse.core.resources.IProject"/>
@@ -519,7 +491,7 @@
 	       		label="%DeactivateProjectsPrintAction.label"
 	       		class="com.atlassw.tools.eclipse.checkstyle.actions.DeactivateProjectsAction"
 	       		enablesFor="+"
-	       		menubarPath="Checkstyle.menu/additions"
+	       		menubarPath="Checkstyle.menu/xbatch"
 	       		tooltip="%DeactivateProjectsPrintAction.tooltip"
 	       		id="com.atlassw.tools.eclipse.checkstyle.projectconfig.DeactivateProjectsPrintAction">
 	    		<selection
@@ -530,7 +502,7 @@
 	       		label="%ActivateProjectsPrintAction.label"
 	       		class="com.atlassw.tools.eclipse.checkstyle.actions.ActivateProjectsAction"
 	       		enablesFor="+"
-	       		menubarPath="Checkstyle.menu/additions"
+	       		menubarPath="Checkstyle.menu/xbatch"
 	       		tooltip="%ActivateProjectsPrintAction.tooltip"
 	       		id="com.atlassw.tools.eclipse.checkstyle.projectconfig.ActivateProjectsPrintAction">
 	    		<selection
@@ -541,7 +513,7 @@
 	       		label="%ConfigureProjectFromBluePrintAction.label"
 	       		class="com.atlassw.tools.eclipse.checkstyle.actions.ConfigureProjectFromBluePrintAction"
 	       		enablesFor="+"
-	       		menubarPath="Checkstyle.menu/additions"
+	       		menubarPath="Checkstyle.menu/xbatch"
 	       		tooltip="%ConfigureProjectFromBluePrintAction.tooltip"
 	       		id="com.atlassw.tools.eclipse.checkstyle.ConfigureProjectFromBluePrintAction">
 	    		<selection
@@ -551,5 +523,37 @@
 	  	</objectContribution>
 	</extension>	
 	
-	
+	<!-- Popupmenu actions to check selected files on demand -->
+	<extension
+		point="org.eclipse.ui.popupMenus">
+	  	<objectContribution 
+	    	objectClass="org.eclipse.core.resources.IResource"
+	    	adaptable="true"
+	    	id="com.atlassw.tools.eclipse.checkstyle.ondemand">
+	 		<menu
+          		id="Checkstyle.menu"
+          		label="%Checkstyle.menu"
+          		path="additions">
+          		<separator
+                  	name="ondemand">
+            	</separator>
+	 		</menu>
+	 		<action
+	       		label="%ClearSelectedFilesAction.label"
+	       		class="com.atlassw.tools.eclipse.checkstyle.actions.ClearSelectedFilesAction"
+	       		enablesFor="+"
+	       		menubarPath="Checkstyle.menu/ondemand"
+	       		tooltip="%ClearSelectedFilesAction.tooltip"
+	       		id="com.atlassw.tools.eclipse.checkstyle.actions.ClearSelectedFilesAction">
+	 		</action>
+	 		<action
+	       		label="%CheckSelectedFilesAction.label"
+	       		class="com.atlassw.tools.eclipse.checkstyle.actions.CheckSelectedFilesAction"
+	       		enablesFor="+"
+	       		menubarPath="Checkstyle.menu/ondemand"
+	       		tooltip="%CheckSelectedFilesAction.tooltip"
+	       		id="com.atlassw.tools.eclipse.checkstyle.actions.CheckSelectedFilesAction">
+	 		</action>
+	  	</objectContribution>
+	</extension>			
 </plugin>
