@@ -130,6 +130,17 @@ public interface IConfigurationType
     URL getResolvedConfigurationFileURL(ICheckConfiguration checkConfiguration)
         throws CheckstylePluginException;
 
+    /**
+     * Get all data of the Checkstyle configuration (file data, additional
+     * properties...) in one go. This is done to optimize the number of accesses
+     * that must be done on the configuration files.
+     * 
+     * @param checkConfiguration the check configuration to get the data from
+     * @return all Checkstyle configuration file data necessary to create a
+     *         checker
+     * @throws CheckstylePluginException exception while getting the Checkstyle
+     *             configuration file data
+     */
     CheckstyleConfigurationFile getCheckstyleConfiguration(ICheckConfiguration checkConfiguration)
         throws CheckstylePluginException;
 }

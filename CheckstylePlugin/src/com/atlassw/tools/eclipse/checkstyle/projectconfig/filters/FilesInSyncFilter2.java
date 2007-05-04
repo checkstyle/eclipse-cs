@@ -24,7 +24,6 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.team.core.RepositoryProvider;
 import org.eclipse.team.core.TeamException;
@@ -33,7 +32,6 @@ import org.eclipse.team.core.synchronize.SyncInfo;
 import org.osgi.framework.Bundle;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
-import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 
 /**

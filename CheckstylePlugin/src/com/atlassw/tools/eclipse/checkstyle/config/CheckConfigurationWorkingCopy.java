@@ -48,7 +48,6 @@ import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.IConfigurationType;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
-import com.puppycrawl.tools.checkstyle.PropertyResolver;
 
 /**
  * This class acts as wrapper around check configurations to add editing

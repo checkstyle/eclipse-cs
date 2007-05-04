@@ -22,29 +22,20 @@ package com.atlassw.tools.eclipse.checkstyle.actions;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
-import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.builder.RunCheckstyleOnFilesJob;
-import com.atlassw.tools.eclipse.checkstyle.nature.CheckstyleNature;
-import com.atlassw.tools.eclipse.checkstyle.nature.ConfigureDeconfigureNatureJob;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 
 /**

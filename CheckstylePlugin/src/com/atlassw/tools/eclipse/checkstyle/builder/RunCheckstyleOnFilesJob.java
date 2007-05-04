@@ -51,12 +51,22 @@ public class RunCheckstyleOnFilesJob extends WorkspaceJob
 
     private List mFilesToCheck;
 
+    /**
+     * Creates the job for a list of <code>IFile</code> objects.
+     * 
+     * @param files the files to check
+     */
     public RunCheckstyleOnFilesJob(List files)
     {
         super(Messages.RunCheckstyleOnFilesJob_title);
         mFilesToCheck = files;
     }
 
+    /**
+     * Creates the job for a single file.
+     * 
+     * @param file the file to check
+     */
     public RunCheckstyleOnFilesJob(IFile file)
     {
         super(Messages.RunCheckstyleOnFilesJob_title);

@@ -24,7 +24,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
@@ -39,8 +38,6 @@ import org.eclipse.ui.IWorkbenchPart;
 
 import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleMarker;
-import com.atlassw.tools.eclipse.checkstyle.nature.CheckstyleNature;
-import com.atlassw.tools.eclipse.checkstyle.nature.ConfigureDeconfigureNatureJob;
 
 /**
  * Action to diable Checkstyle on one ore more projects.
