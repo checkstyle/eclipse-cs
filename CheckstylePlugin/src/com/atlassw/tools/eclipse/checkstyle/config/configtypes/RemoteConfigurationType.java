@@ -55,6 +55,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
+import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckstyleConfigurationFile;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
@@ -104,7 +105,7 @@ public class RemoteConfigurationType extends ConfigurationType
         synchronized(Authenticator.class)
         {
 
-            String currentRedirects = System.getProperty("http.maxRedirects");
+            String currentRedirects = System.getProperty("http.maxRedirects"); //$NON-NLS-1$
 
             Authenticator oldAuthenticator = RemoteConfigAuthenticator.getDefault();
             try
@@ -122,7 +123,7 @@ public class RemoteConfigurationType extends ConfigurationType
                 try
                 {
 
-                    System.setProperty("http.maxRedirects", "3");
+                    System.setProperty("http.maxRedirects", "3"); //$NON-NLS-1$ //$NON-NLS-2$
 
                     URLConnection connection = data.getResolvedConfigFileURL().openConnection();
 
@@ -184,11 +185,11 @@ public class RemoteConfigurationType extends ConfigurationType
 
                 if (currentRedirects != null)
                 {
-                    System.setProperty("http.maxRedirects", currentRedirects);
+                    System.setProperty("http.maxRedirects", currentRedirects); //$NON-NLS-1$
                 }
                 else
                 {
-                    System.getProperties().remove("http.maxRedirects");
+                    System.getProperties().remove("http.maxRedirects"); //$NON-NLS-1$
                 }
             }
 
@@ -303,7 +304,7 @@ public class RemoteConfigurationType extends ConfigurationType
         }
         catch (IOException e)
         {
-            CheckstyleLog.log(e, NLS.bind(Messages.RemoteConfigurationType_msgRemoteCachingFailed,
+            CheckstyleLog.log(e, NLS.bind(ErrorMessages.RemoteConfigurationType_msgRemoteCachingFailed,
                     checkConfig.getName(), checkConfig.getLocation()));
         }
 
@@ -358,13 +359,13 @@ public class RemoteConfigurationType extends ConfigurationType
 
                         // add to 401ed URLs
                         sFailedWith401URLs.add(connection.getURL().toString());
-                        throw new IOException("401: Bad credentials");
+                        throw new IOException(ErrorMessages.RemoteConfigurationType_msgUnAuthorized);
                     }
                 }
                 else
                 {
                     // don't retry since we just get another 401
-                    throw new IOException("401: Bad credentials");
+                    throw new IOException(ErrorMessages.RemoteConfigurationType_msgUnAuthorized);
                 }
             }
 

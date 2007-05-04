@@ -149,7 +149,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
     private boolean mIsDirty;
 
     /** The default text for the filter text field. */
-    private String mDefaultFilterText = "Input filter text here";
+    private String mDefaultFilterText = Messages.CheckConfigurationConfigureDialog_defaultFilterText;
 
     /** The tree filter. */
     private TreeFilter mTreeFilter = new TreeFilter();

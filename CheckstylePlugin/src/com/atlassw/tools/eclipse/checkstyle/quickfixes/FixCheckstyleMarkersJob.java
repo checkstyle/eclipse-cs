@@ -30,6 +30,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.progress.UIJob;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
+import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleMarker;
 
 /**
@@ -49,7 +50,7 @@ public class FixCheckstyleMarkersJob extends UIJob
      */
     public FixCheckstyleMarkersJob(IFile file)
     {
-        super("Fix Checkstyle markers");
+        super(Messages.FixCheckstyleMarkersJob_title);
         this.mFile = file;
     }
 

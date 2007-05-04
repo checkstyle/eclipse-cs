@@ -134,14 +134,14 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor
         mDescription.setLayoutData(gd);
 
         Group credentialsGroup = new Group(contents, SWT.NULL);
-        credentialsGroup.setText("Authentication credentials (if needed):");
+        credentialsGroup.setText(Messages.RemoteConfigurationEditor_titleCredentialsGroup);
         gd = new GridData(GridData.FILL_HORIZONTAL);
         gd.horizontalSpan = 2;
         credentialsGroup.setLayoutData(gd);
         credentialsGroup.setLayout(new GridLayout(2, false));
 
         Label lblUserName = new Label(credentialsGroup, SWT.NULL);
-        lblUserName.setText("Username:");
+        lblUserName.setText(Messages.RemoteConfigurationEditor_lblUserName);
         gd = new GridData();
         lblUserName.setLayoutData(gd);
 
@@ -151,7 +151,7 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor
         mUserName.setLayoutData(gd);
 
         Label lblPassword = new Label(credentialsGroup, SWT.NULL);
-        lblPassword.setText("Password:");
+        lblPassword.setText(Messages.RemoteConfigurationEditor_lblPassword);
         gd = new GridData();
         lblPassword.setLayoutData(gd);
 
@@ -224,10 +224,10 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor
             long currentTime = System.currentTimeMillis();
 
             mWorkingCopy.getAdditionalData().put(RemoteConfigurationType.KEY_CACHE_FILE_LOCATION,
-                    mWorkingCopy.getName() + "_" + currentTime + "_cache.xml"); //$NON-NLS-1$ $NON-NLS-2$
+                    mWorkingCopy.getName() + "_" + currentTime + "_cache.xml"); //$NON-NLS-1$ //$NON-NLS-2$ $NON-NLS-2$
             mWorkingCopy.getAdditionalData().put(
                     RemoteConfigurationType.KEY_CACHE_PROPS_FILE_LOCATION,
-                    mWorkingCopy.getName() + "_" + currentTime + "_cache.properties"); //$NON-NLS-1$ $NON-NLS-2$
+                    mWorkingCopy.getName() + "_" + currentTime + "_cache.properties"); //$NON-NLS-1$ //$NON-NLS-2$ $NON-NLS-2$
         }
 
         mWorkingCopy.setName(mConfigName.getText());

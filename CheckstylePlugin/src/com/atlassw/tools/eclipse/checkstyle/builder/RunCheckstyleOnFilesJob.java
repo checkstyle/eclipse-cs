@@ -36,6 +36,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
+import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.IProjectConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfigurationFactory;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
@@ -52,13 +53,13 @@ public class RunCheckstyleOnFilesJob extends WorkspaceJob
 
     public RunCheckstyleOnFilesJob(List files)
     {
-        super("Checking files...");
+        super(Messages.RunCheckstyleOnFilesJob_title);
         mFilesToCheck = files;
     }
 
     public RunCheckstyleOnFilesJob(IFile file)
     {
-        super("Checking files...");
+        super(Messages.RunCheckstyleOnFilesJob_title);
         mFilesToCheck = new ArrayList();
         mFilesToCheck.add(file);
     }

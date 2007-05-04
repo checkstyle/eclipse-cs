@@ -385,7 +385,7 @@ public final class ConfigurationReader
             {
                 String proName = attributes.getValue(XMLTags.NAME_TAG);
 
-                if ("tabWidth".equals(proName))
+                if ("tabWidth".equals(proName)) //$NON-NLS-1$
                 {
                     mTabWidth = Integer.parseInt(attributes.getValue(XMLTags.VALUE_TAG));
                 }

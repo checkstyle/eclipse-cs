@@ -68,6 +68,8 @@ public final class Messages extends NLS
 
     public static String CheckConfigurationConfigureDialog_colSeverity;
 
+    public static String CheckConfigurationConfigureDialog_defaultFilterText;
+
     public static String CheckConfigurationConfigureDialog_lblConfiguredModules;
 
     public static String CheckConfigurationConfigureDialog_lblDescription;
@@ -212,6 +214,8 @@ public final class Messages extends NLS
 
     public static String CheckstylePropertyPage_msgLocalConfigs;
 
+    public static String ClearSelectedFilesAction_title;
+
     public static String ComplexFileSetsEditor_btnAdd;
 
     public static String ComplexFileSetsEditor_btnEdit;
@@ -318,6 +322,8 @@ public final class Messages extends NLS
 
     public static String FileTypesFilterEditor_title;
 
+    public static String FixCheckstyleMarkersJob_title;
+
     public static String PackageFilterEditor_msgFilterPackages;
 
     public static String PackageFilterEditor_titleFilterPackages;
@@ -343,6 +349,12 @@ public final class Messages extends NLS
     public static String PropertiesContentAssistProcessor_samedir;
 
     public static String PropertiesContentAssistProcessor_workspaceLoc;
+
+    public static String RemoteConfigurationEditor_lblPassword;
+
+    public static String RemoteConfigurationEditor_lblUserName;
+
+    public static String RemoteConfigurationEditor_titleCredentialsGroup;
 
     public static String ResolvablePropertiesDialog_msgNoUnresolvedProps;
 
@@ -371,6 +383,8 @@ public final class Messages extends NLS
     public static String RuleConfigurationEditDialog_titleRestoreDefault;
 
     public static String RuleConfigurationEditDialog_titleRuleConfigEditor;
+
+    public static String RunCheckstyleOnFilesJob_title;
 
     public static String SimpleFileSetsEditor_btnManageConfigs;
 

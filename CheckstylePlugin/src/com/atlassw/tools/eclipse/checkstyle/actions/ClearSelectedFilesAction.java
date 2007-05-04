@@ -96,7 +96,7 @@ public class ClearSelectedFilesAction implements IObjectActionDelegate
 
         public ClearMarkersJob(Collection resourcesToClear)
         {
-            super("Remove Checkstyle markers");
+            super(Messages.ClearSelectedFilesAction_title);
             this.mResourcesToClear = resourcesToClear;
         }
 

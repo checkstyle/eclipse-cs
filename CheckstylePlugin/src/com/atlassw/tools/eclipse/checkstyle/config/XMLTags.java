@@ -147,7 +147,7 @@ public class XMLTags
     public static final String IS_SINGLETON_TAG = "singleton"; //$NON-NLS-1$
 
     /** tag for the quickfix element. */
-    public static final String QUCKFIX_TAG = "quickfix";
+    public static final String QUCKFIX_TAG = "quickfix"; //$NON-NLS-1$
 
     //
     // tags for the checkstyle configuration

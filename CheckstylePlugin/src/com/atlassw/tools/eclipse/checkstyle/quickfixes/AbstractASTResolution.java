@@ -51,6 +51,7 @@ import org.eclipse.text.edits.MalformedTreeException;
 import org.eclipse.text.edits.TextEdit;
 import org.eclipse.ui.texteditor.MarkerAnnotation;
 
+import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 
 /**
@@ -162,15 +163,15 @@ public abstract class AbstractASTResolution implements ICheckstyleMarkerResoluti
         }
         catch (CoreException e)
         {
-            CheckstyleLog.log(e, "Error processing quickfix");
+            CheckstyleLog.log(e, ErrorMessages.AbstractASTResolution_msgErrorQuickfix);
         }
         catch (MalformedTreeException e)
         {
-            CheckstyleLog.log(e, "Error processing quickfix");
+            CheckstyleLog.log(e, "Error processing quickfix"); //$NON-NLS-1$
         }
         catch (BadLocationException e)
         {
-            CheckstyleLog.log(e, "Error processing quickfix");
+            CheckstyleLog.log(e, "Error processing quickfix"); //$NON-NLS-1$
         }
         finally
         {
@@ -183,7 +184,7 @@ public abstract class AbstractASTResolution implements ICheckstyleMarkerResoluti
                 }
                 catch (CoreException e)
                 {
-                    CheckstyleLog.log(e, "Error processing quickfix");
+                    CheckstyleLog.log(e, "Error processing quickfix"); //$NON-NLS-1$
                 }
             }
         }

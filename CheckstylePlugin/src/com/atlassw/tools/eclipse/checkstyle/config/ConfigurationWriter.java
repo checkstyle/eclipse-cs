@@ -100,19 +100,19 @@ public final class ConfigurationWriter
             SaveFilters.process(modules);
 
             TransformerHandler xmlOut = XMLUtil.writeWithSax(out,
-                    "-//Puppy Crawl//DTD Check Configuration 1.2//EN",
-                    "http://www.puppycrawl.com/dtds/configuration_1_2.dtd");
+                    "-//Puppy Crawl//DTD Check Configuration 1.2//EN", //$NON-NLS-1$
+                    "http://www.puppycrawl.com/dtds/configuration_1_2.dtd"); //$NON-NLS-1$
             xmlOut.startDocument();
 
             String comment = "\n\tThis configuration file was written by the eclipse-cs plugin configuration editor\n"; //$NON-NLS-1$
             xmlOut.comment(comment.toCharArray(), 0, comment.length());
 
             // write out name and description as comment
-            String description = "\nCheckstyle-Configuration: "
+            String description = "\nCheckstyle-Configuration: " //$NON-NLS-1$
                     + checkConfig.getName()
-                    + "\nDescription:\n"
-                    + (checkConfig.getDescription() != null ? checkConfig.getDescription() + "\n"
-                            : "none\n");
+                    + "\nDescription:\n" //$NON-NLS-1$
+                    + (checkConfig.getDescription() != null ? checkConfig.getDescription() + "\n" //$NON-NLS-1$
+                            : "none\n"); //$NON-NLS-1$
             xmlOut.comment(description.toCharArray(), 0, description.length());
 
             xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);

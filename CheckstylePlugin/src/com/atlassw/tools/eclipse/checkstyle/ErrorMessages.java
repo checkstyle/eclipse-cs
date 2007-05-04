@@ -43,6 +43,8 @@ public final class ErrorMessages extends NLS
         NLS.initializeMessages(BUNDLE_NAME, ErrorMessages.class);
     }
 
+    public static String AbstractASTResolution_msgErrorQuickfix;
+
     public static String errorDialogMainMessage;
 
     public static String errorUnknownInternalError;
@@ -118,6 +120,10 @@ public final class ErrorMessages extends NLS
     public static String errorFilesetWithoutCheckConfig;
 
     public static String CheckstyleBuilder_msgErrorUnknown;
+
+    public static String RemoteConfigurationType_msgRemoteCachingFailed;
+
+    public static String RemoteConfigurationType_msgUnAuthorized;
 
     // CHECKSTYLE:ON
 }

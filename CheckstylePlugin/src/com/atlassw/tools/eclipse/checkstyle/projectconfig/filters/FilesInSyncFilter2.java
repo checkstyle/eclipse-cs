@@ -54,7 +54,7 @@ public class FilesInSyncFilter2 extends AbstractFilter
         if (!isCorrectEclipseVersion())
         {
             Status status = new Status(Status.ERROR, CheckstylePlugin.PLUGIN_ID, Status.OK,
-                    "FilesInSyncFilter2 only supported since Eclipse 3.2 and greater", null);
+                    "FilesInSyncFilter2 only supported since Eclipse 3.2 and greater", null); //$NON-NLS-1$
             CheckstylePlugin.getDefault().getLog().log(status);
             return true;
         }
@@ -107,7 +107,7 @@ public class FilesInSyncFilter2 extends AbstractFilter
         else if (selected)
         {
             CheckstyleLog.errorDialog(Display.getDefault().getActiveShell(),
-                    "This filter is only supported since Eclipse 3.2 and greater", null, false);
+                    "This filter is only supported since Eclipse 3.2 and greater", null, false); //$NON-NLS-1$
         }
     }
 
@@ -115,11 +115,11 @@ public class FilesInSyncFilter2 extends AbstractFilter
     {
         // Check for the team plugin version
         // since the used API is only since 3.2.0
-        Bundle teamCorePlugin = Platform.getBundle("org.eclipse.team.core");
+        Bundle teamCorePlugin = Platform.getBundle("org.eclipse.team.core"); //$NON-NLS-1$
         String version = (String) teamCorePlugin.getHeaders().get(
                 org.osgi.framework.Constants.BUNDLE_VERSION);
 
-        return "3.2.0".compareTo(version) < 1;
+        return "3.2.0".compareTo(version) < 1; //$NON-NLS-1$
     }
 
 }

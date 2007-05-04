@@ -397,7 +397,7 @@ public final class XMLUtil
         InputStream in = null;
         try
         {
-            in = new BufferedInputStream(XMLUtil.class.getResourceAsStream("identity.xsl"));
+            in = new BufferedInputStream(XMLUtil.class.getResourceAsStream("identity.xsl")); //$NON-NLS-1$
             templates = saxFactory.newTemplates(new StreamSource(in));
         }
         finally
