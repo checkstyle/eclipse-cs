@@ -583,6 +583,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
             if (!mDefaultFilterText.equals(mTxtTreeFilter.getText())
                     && StringUtils.trimToNull(mTxtTreeFilter.getText()) != null)
             {
+                mTreeViewer.removeFilter(mTreeFilter);
                 mTreeViewer.addFilter(mTreeFilter);
                 mTreeViewer.refresh();
                 // mTreeViewer.expandAll();

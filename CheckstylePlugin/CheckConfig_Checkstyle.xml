@@ -114,6 +114,9 @@ Description:
             <property name="max" value="2"/>
         </module>
         <module name="FallThrough"/>
+        <module name="Header">
+            <property name="headerFile" value="${samedir}/header.txt"/>
+        </module>
     </module>
     <module name="SuppressionCommentFilter"/>
 </module>

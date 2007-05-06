@@ -189,21 +189,25 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor
         mChkCacheConfig.setSelection(Boolean.valueOf(
                 (String) mWorkingCopy.getAdditionalData().get(
                         RemoteConfigurationType.KEY_CACHE_CONFIG)).booleanValue());
-
-        try
+        
+        if (mWorkingCopy.getLocation() != null)
         {
-            PasswordAuthentication auth = RemoteConfigurationType.RemoteConfigAuthenticator
-                    .getPasswordAuthentication(mWorkingCopy.getResolvedConfigurationFileURL());
-
-            if (auth != null)
+            try
             {
-                mUserName.setText(auth.getUserName());
-                mPassword.setText(new String(auth.getPassword()));
+
+                PasswordAuthentication auth = RemoteConfigurationType.RemoteConfigAuthenticator
+                        .getPasswordAuthentication(mWorkingCopy.getResolvedConfigurationFileURL());
+
+                if (auth != null)
+                {
+                    mUserName.setText(auth.getUserName());
+                    mPassword.setText(new String(auth.getPassword()));
+                }
             }
-        }
-        catch (CheckstylePluginException e)
-        {
-            CheckstyleLog.errorDialog(shell, e, true);
+            catch (CheckstylePluginException e)
+            {
+                CheckstyleLog.errorDialog(shell, e, true);
+            }
         }
 
         return contents;

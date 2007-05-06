@@ -84,8 +84,10 @@
 						src="{$path-prefix}images/plus.gif" alt=""/>Release Notes</a>
 			</xsl:if>
 			<xsl:if test="$section = 'releases'">
-				<a href="{$path-prefix}releasenotes/4.3.0/release_notes.html" class="level1"><img
+				<a href="{$path-prefix}releasenotes/4.3.1/release_notes.html" class="level1"><img
 						src="{$path-prefix}images/minus.gif" alt=""/>Release Notes</a>
+				<a href="{$path-prefix}releasenotes/4.3.1/release_notes.html" class="level2">Release
+					4.3.1</a>
 				<a href="{$path-prefix}releasenotes/4.3.0/release_notes.html" class="level2">Release
 					4.3.0</a>
 				<a href="{$path-prefix}releasenotes/4.2.1/release_notes.html" class="level2">Release
@@ -268,6 +270,7 @@
 				<td style="text-align: left; width=100%">
 					<img src="{$path-prefix}images/banner.gif" alt="eclipse-cs Banner"/>
 				</td>
+				<!--
 				<td>
 					<a href="http://www.eclipsecon.org/2007/">
 						<img border="0" style="margin-right:10px;"
@@ -275,6 +278,7 @@
 							width="125" alt="EclipseCon 2007"/>
 					</a>
 				</td>
+				-->
 				<td style="vertical-align: middle; width: 75px; height: 75px;">
 					<a href="http://sourceforge.net/" class="imagelink">
 						<img

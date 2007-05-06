@@ -3,7 +3,7 @@
     <local-check-config name="eclipse-cs Production Checks" location="CheckConfig_Checkstyle.xml" type="project" description="">
         <additional-data name="protect-config-file" value="false"/>
     </local-check-config>
-    <fileset name="all" enabled="true" check-config-name="eclipse-cs Production Checks" local="true">
+    <fileset name="Alle" enabled="true" check-config-name="eclipse-cs Production Checks" local="true">
         <file-match-pattern match-pattern="." include-pattern="true"/>
     </fileset>
     <filter name="FilesFromPackage" enabled="true">

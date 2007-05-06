@@ -81,6 +81,8 @@ public class ConfigPropertyMetadata
      * @param type the property type
      * @param name the name of the property
      * @param defaultValue the default value
+     * @param overrideDefaultValue a default value which overrides the
+     *            Checkstyle default
      */
     public ConfigPropertyMetadata(ConfigPropertyType type, String name, String defaultValue,
             String overrideDefaultValue)
