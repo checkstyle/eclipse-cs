@@ -15,10 +15,14 @@
    <feature url="http://downloads.sourceforge.net/eclipse-cs/com.atlassw.tools.eclipse.checkstyle_4.3.0-feature.jar?use_mirror=mesh" id="com.atlassw.tools.eclipse.checkstyle" version="4.3.0">
       <category name="Checkstyle"/>
    </feature>
+   <feature url="http://downloads.sourceforge.net/eclipse-cs/com.atlassw.tools.eclipse.checkstyle_4.3.1-feature.jar?use_mirror=mesh" id="com.atlassw.tools.eclipse.checkstyle" version="4.3.1">
+      <category name="Checkstyle"/>
+   </feature>
    <archive path="plugins/com.atlassw.tools.eclipse.checkstyle_4.0.1.jar" url="http://downloads.sourceforge.net/eclipse-cs/com.atlassw.tools.eclipse.checkstyle_4.0.1_2.jar?use_mirror=mesh"/>
    <archive path="plugins/com.atlassw.tools.eclipse.checkstyle_4.1.1.jar" url="http://downloads.sourceforge.net/eclipse-cs/com.atlassw.tools.eclipse.checkstyle_4.1.1.jar?use_mirror=mesh"/>
    <archive path="plugins/com.atlassw.tools.eclipse.checkstyle_4.2.1.jar" url="http://downloads.sourceforge.net/eclipse-cs/com.atlassw.tools.eclipse.checkstyle_4.2.1.jar?use_mirror=mesh"/>
    <archive path="plugins/com.atlassw.tools.eclipse.checkstyle_4.3.0.jar" url="http://downloads.sourceforge.net/eclipse-cs/com.atlassw.tools.eclipse.checkstyle_4.3.0.jar?use_mirror=mesh"/>
+   <archive path="plugins/com.atlassw.tools.eclipse.checkstyle_4.3.1.jar" url="http://downloads.sourceforge.net/eclipse-cs/com.atlassw.tools.eclipse.checkstyle_4.3.1.jar?use_mirror=mesh"/>
    <archive path="plugins/net.sf.eclipsecs.stats_1.0.1.jar" url="http://downloads.sourceforge.net/eclipse-cs/net.sf.eclipsecs.stats_1.0.1.jar?use_mirror=mesh"/>
    <category-def name="Checkstyle" label="Eclipse Checkstyle Plug-in">
       <description>

@@ -154,7 +154,7 @@ public class RemoteConfigurationType extends ConfigurationType
                 data.setPropertyResolver(resolver);
 
                 // write to cache file
-                if (originalFileSuccess)
+                if (originalFileSuccess && useCacheFile)
                 {
                     writeToCacheFile(checkConfiguration, configurationFileData,
                             additionalPropertiesBytes);
@@ -290,8 +290,9 @@ public class RemoteConfigurationType extends ConfigurationType
         }
         catch (IOException e)
         {
-            CheckstyleLog.log(e, NLS.bind(ErrorMessages.RemoteConfigurationType_msgRemoteCachingFailed,
-                    checkConfig.getName(), checkConfig.getLocation()));
+            CheckstyleLog.log(e, NLS.bind(
+                    ErrorMessages.RemoteConfigurationType_msgRemoteCachingFailed, checkConfig
+                            .getName(), checkConfig.getLocation()));
         }
 
         if (bundleBytes != null)
@@ -462,8 +463,9 @@ public class RemoteConfigurationType extends ConfigurationType
 
             if (authInfo != null)
             {
-                auth = new PasswordAuthentication((String) authInfo.get(KEY_USERNAME),
-                        ((String) authInfo.get(KEY_PASSWORD)).toCharArray());
+                auth = new PasswordAuthentication((String) authInfo.get(KEY_USERNAME), authInfo
+                        .get(KEY_PASSWORD) != null ? ((String) authInfo.get(KEY_PASSWORD))
+                        .toCharArray() : new char[0]);
             }
 
             return auth;
