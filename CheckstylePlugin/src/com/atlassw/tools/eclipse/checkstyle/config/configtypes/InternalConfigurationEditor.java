@@ -222,7 +222,7 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor
             {
                 if (StringUtils.trimToNull(location) != null && ensureFileExists(location))
                 {
-                    mWorkingCopy.setLocation(mLocation.getText());
+                    mWorkingCopy.setLocation(location);
                 }
                 else
                 {
