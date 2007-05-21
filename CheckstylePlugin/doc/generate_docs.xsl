@@ -80,7 +80,7 @@
 				>Downloads</a>
 			<a href="{$path-prefix}screen_shots.html" class="level1">Screenshots</a>
 			<xsl:if test="$section != 'releases'">
-				<a href="{$path-prefix}releasenotes/4.3.0/release_notes.html" class="level1"><img
+				<a href="{$path-prefix}releasenotes/4.3.1/release_notes.html" class="level1"><img
 						src="{$path-prefix}images/plus.gif" alt=""/>Release Notes</a>
 			</xsl:if>
 			<xsl:if test="$section = 'releases'">
