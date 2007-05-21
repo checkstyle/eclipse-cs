@@ -87,7 +87,7 @@ public class GraphStatsView extends AbstractStatsView
     /** The label containing the view description. */
     private Label mLabelDesc;
 
-    /** The composite to harbor the Swing JFreeChart control. */
+    /** The composite to harbor the JFreeChart control. */
     private Composite mEmbeddedComposite;
 
     /** The graph component. */
@@ -104,10 +104,10 @@ public class GraphStatsView extends AbstractStatsView
 
     /** Exports the error listing as a report. */
     private Action mExportGraphAsImageAction;
-    
+
     /** The last folder used to store the generated reports. */
     private String mLastExportFolderName;
-    
+
     /** The last file name used to store the generated reports. */
     private String mLastExportFileName = "CheckstyleStatsGraph";
 
@@ -138,17 +138,15 @@ public class GraphStatsView extends AbstractStatsView
         gridData.grabExcessHorizontalSpace = true;
         mLabelDesc.setLayoutData(gridData);
 
-        // the composite to harbor the Swing chart control
-        mEmbeddedComposite = new Composite(parent, SWT.EMBEDDED);
-        mEmbeddedComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
-
         // create the date set for the chart
         mPieDataset = new GraphPieDataset();
         mPieDataset.setShowAllCategories(mShowAllCategoriesAction.isChecked());
+        mGraph = createChart(mPieDataset);
 
         // creates the chart component
+        mEmbeddedComposite = new Composite(parent, SWT.EMBEDDED);
+        mEmbeddedComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
         Frame fileTableFrame = SWT_AWT.new_Frame(mEmbeddedComposite);
-        mGraph = createChart(mPieDataset);
         ChartPanel panel = new ChartPanel(mGraph);
         fileTableFrame.add(panel);
 
@@ -167,6 +165,11 @@ public class GraphStatsView extends AbstractStatsView
 
             }
         });
+
+// experimental usage of JFreeChart SWT
+// // the composite to harbor the Swing chart control
+// mEmbeddedComposite = new ChartComposite(parent, SWT.NONE, mGraph, true);
+// mEmbeddedComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
 
         // initialize the view data
         refresh();
@@ -288,38 +291,41 @@ public class GraphStatsView extends AbstractStatsView
                 String selectedFilePath = dialog.open();
                 if (selectedFilePath != null)
                 {
-                    // TODO : the user should be able to choose the type of image...
+                    // TODO : the user should be able to choose the type of
+                    // image...
                     if (!selectedFilePath.endsWith(".png"))
                     {
                         selectedFilePath += ".png";
                     }
                     File selectedFile = new File(selectedFilePath);
                     mLastExportFileName = selectedFile.getName();
-                    mLastExportFolderName = selectedFile.getParentFile()
-                        .getAbsolutePath();
-                    
+                    mLastExportFolderName = selectedFile.getParentFile().getAbsolutePath();
+
                     try
                     {
-                        // TODO : the user should be able to choose the type of image, the width 
+                        // TODO : the user should be able to choose the type of
+                        // image, the width
                         // and the height of the buffered image
-                        ImageEncoder imageEncoder = ImageEncoderFactory.newInstance(ImageFormat.PNG);
-                        imageEncoder.encode(mGraph.createBufferedImage(800, 600), new FileOutputStream(selectedFile));
+                        ImageEncoder imageEncoder = ImageEncoderFactory
+                                .newInstance(ImageFormat.PNG);
+                        imageEncoder.encode(mGraph.createBufferedImage(800, 600),
+                                new FileOutputStream(selectedFile));
                     }
                     catch (IOException e)
                     {
-                        CheckstyleLog.log(e,
-                            Messages.MarkerStatsView_graphExportFailed);
-                        MessageDialog.openError(getSite().getShell(), 
-                            Messages.MarkerStatsView_graphExportFailed, 
-                            Messages.MarkerStatsView_graphExportFailed 
-                            + "\n" + e.getMessage());
+                        CheckstyleLog.log(e, Messages.MarkerStatsView_graphExportFailed);
+                        MessageDialog.openError(getSite().getShell(),
+                                Messages.MarkerStatsView_graphExportFailed,
+                                Messages.MarkerStatsView_graphExportFailed + "\n" + e.getMessage());
                     }
                 }
             }
         };
         mExportGraphAsImageAction.setText(Messages.MarkerStatsView_exportGraphAsImage);
-        mExportGraphAsImageAction.setToolTipText(Messages.MarkerStatsView_exportGraphAsImageTooltip);
-        mExportGraphAsImageAction.setImageDescriptor(CheckstyleStatsPluginImages.EXPORT_REPORT_ICON);
+        mExportGraphAsImageAction
+                .setToolTipText(Messages.MarkerStatsView_exportGraphAsImageTooltip);
+        mExportGraphAsImageAction
+                .setImageDescriptor(CheckstyleStatsPluginImages.EXPORT_REPORT_ICON);
 
     }
 
