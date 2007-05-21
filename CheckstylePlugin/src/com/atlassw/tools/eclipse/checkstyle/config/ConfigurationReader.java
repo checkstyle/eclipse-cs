@@ -24,12 +24,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.osgi.util.NLS;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
@@ -121,38 +123,65 @@ public final class ConfigurationReader
     }
 
     /**
-     * Determines the tabwidht setting of this configuration.
+     * Gets additional data about the Checkstyle configuration. This data is
+     * used by the plugin for special purposes, like determining the correct
+     * offset of a checkstyle violation.
      * 
-     * @param in input stream to the configuration
-     * @return the tabwidth setting
+     * @param in the input stream
+     * @return the additional configuration data
      * @throws CheckstylePluginException error while reading the configuration
      */
-    public static int getTabWidth(InputStream in) throws CheckstylePluginException
+    public static AdditionalConfigData getAdditionalConfigData(InputStream in)
+        throws CheckstylePluginException
     {
 
-        int tabWidth = 0;
+        List modules = read(in);
 
-        try
-        {
-            TabWidthInspector inspector = new TabWidthInspector();
-            XMLUtil.parseWithSAX(in, inspector);
+        Map messages = new HashMap();
+        int tabWidth = 8;
 
-            tabWidth = inspector.getTabWidth();
-        }
-        catch (ParserConfigurationException e)
+        Iterator it = modules.iterator();
+        while (it.hasNext())
         {
-            CheckstylePluginException.rethrow(e);
-        }
-        catch (SAXException e)
-        {
-            CheckstylePluginException.rethrow(e);
-        }
-        catch (IOException e)
-        {
-            CheckstylePluginException.rethrow(e);
+
+            Module module = (Module) it.next();
+
+            if (module.getCustomMessage() != null)
+            {
+                String id = module.getId();
+
+                if (id == null && module.getMetaData() != null)
+                {
+                    id = module.getMetaData().getInternalName();
+                }
+
+                if (id == null)
+                {
+                    id = module.getName();
+                }
+
+                messages.put(id, module.getCustomMessage());
+            }
+            if (module.getMetaData() != null
+                    && module.getMetaData().getInternalName().equals(XMLTags.TREEWALKER_MODULE))
+            {
+
+                ConfigProperty prop = module.getProperty("tabWidth"); //$NON-NLS-1$
+
+                String tabWidthProp = prop.getValue() != null ? prop.getValue() : prop
+                        .getMetaData().getDefaultValue();
+                try
+                {
+                    tabWidth = Integer.parseInt(tabWidthProp);
+                }
+                catch (Exception e)
+                {
+                    // ignore
+                }
+            }
         }
 
-        return tabWidth;
+        return new AdditionalConfigData(tabWidth, messages);
     }
 
     /**
@@ -252,6 +281,10 @@ public final class ConfigurationReader
                         module.setSeverity(SeverityLevel.WARNING);
                     }
                 }
+                else if (name.equals(XMLTags.ID_TAG))
+                {
+                    module.setId(StringUtils.trimToNull(value));
+                }
                 else if (module.getMetaData() != null)
                 {
                     ConfigProperty property = module.getProperty(name);
@@ -277,6 +310,10 @@ public final class ConfigurationReader
                 if (XMLTags.COMMENT_ID.equals(name))
                 {
                     module.setComment(value);
+                }
+                else if (XMLTags.CUSTOM_MESSAGE_ID.equals(name))
+                {
+                    module.setCustomMessage(value);
                 }
                 else if (XMLTags.LAST_ENABLED_SEVERITY_ID.equals(name))
                 {
@@ -310,86 +347,49 @@ public final class ConfigurationReader
     }
 
     /**
-     * Determines the tabwidth setting of the check configuration.
+     * Holds additional data about the Checkstyle configuration file, for
+     * special uses.
      * 
-     * @author Lars Ködderitzsch
+     * @author Lars Koedderitzsch
      */
-    private static class TabWidthInspector extends DefaultHandler
+    public static class AdditionalConfigData
     {
 
-        private int mTabWidth = 8; // default setting of tabwidth on TreeWalker
+        private int mTabWidth;
 
-        private boolean mIsInTreeWalker;
+        private Map mCustomMessages;
 
+        /**
+         * @param tabWidth the tab width setting of the Checkstyle configuration
+         * @param customMessages the custom messages defined in the
+         *            configuration
+         */
+        public AdditionalConfigData(int tabWidth, Map customMessages)
+        {
+            super();
+            mTabWidth = tabWidth;
+            mCustomMessages = customMessages;
+        }
+
+        /**
+         * The tab width of the check configuration.
+         * 
+         * @return the tab width setting
+         */
         public int getTabWidth()
         {
             return mTabWidth;
         }
 
         /**
-         * {@inheritDoc}
+         * Returns the custom messages of the check configuration, keyed by
+         * module id or module name if no id is set.
+         * 
+         * @return the custom messages
          */
-        public InputSource resolveEntity(String publicId, String systemId) throws SAXException
+        public Map getCustomMessages()
         {
-            if (PUBLIC2INTERNAL_DTD_MAP.containsKey(publicId))
-            {
-                final String dtdResourceName = (String) PUBLIC2INTERNAL_DTD_MAP.get(publicId);
-                final InputStream dtdIS = getClass().getClassLoader().getResourceAsStream(
-                        dtdResourceName);
-                if (dtdIS == null)
-                {
-                    throw new SAXException(NLS.bind(ErrorMessages.msgErrorLoadingCheckstyleDTD,
-                            dtdResourceName));
-                }
-                return new InputSource(dtdIS);
-            }
-            // This is a hack to workaround problem with SAX
-            // DefaultHeader.resolveEntity():
-            // sometimes it throws SAX- and IO- exceptions
-            // sometime SAX only :(
-            try
-            {
-                if (false)
-                {
-                    throw new IOException(""); //$NON-NLS-1$
-                }
-                return super.resolveEntity(publicId, systemId);
-            }
-            catch (IOException e)
-            {
-                throw new SAXException("" + e, e); //$NON-NLS-1$
-            }
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        public void startElement(String uri, String localName, String qName, Attributes attributes)
-            throws SAXException
-        {
-
-            if (XMLTags.MODULE_TAG.equals(qName))
-            {
-                String name = attributes.getValue(XMLTags.NAME_TAG);
-
-                if (XMLTags.TREEWALKER_MODULE.equals(name))
-                {
-                    mIsInTreeWalker = true;
-                }
-                else
-                {
-                    mIsInTreeWalker = false;
-                }
-            }
-            else if (XMLTags.PROPERTY_TAG.equals(qName) && mIsInTreeWalker)
-            {
-                String proName = attributes.getValue(XMLTags.NAME_TAG);
-
-                if ("tabWidth".equals(proName)) //$NON-NLS-1$
-                {
-                    mTabWidth = Integer.parseInt(attributes.getValue(XMLTags.VALUE_TAG));
-                }
-            }
+            return mCustomMessages;
         }
     }
 }

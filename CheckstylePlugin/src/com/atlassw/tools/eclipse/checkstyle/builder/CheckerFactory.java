@@ -37,6 +37,8 @@ import org.eclipse.core.runtime.preferences.IPreferencesService;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckstyleConfigurationFile;
+import com.atlassw.tools.eclipse.checkstyle.config.ConfigurationReader;
+import com.atlassw.tools.eclipse.checkstyle.config.ConfigurationReader.AdditionalConfigData;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.IContextAware;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.puppycrawl.tools.checkstyle.Checker;
@@ -63,6 +65,9 @@ public final class CheckerFactory
     /** Map containing the modification times of configs. */
     private static Map sModifiedMap;
 
+    /** Map containing additional data about the check configurations. */
+    private static Map sAdditionalDataMap;
+
     /** the shared classloader for the checkers. */
     private static ProjectClassLoader sSharedClassLoader;
 
@@ -79,6 +84,7 @@ public final class CheckerFactory
         // Use synchronized collections to avoid concurrent modification
         sCheckerMap = Collections.synchronizedMap(new ReferenceMap());
         sModifiedMap = Collections.synchronizedMap(new HashMap());
+        sAdditionalDataMap = Collections.synchronizedMap(new HashMap());
 
         sSharedClassLoader = new ProjectClassLoader();
     }
@@ -154,6 +160,41 @@ public final class CheckerFactory
     }
 
     /**
+     * Determines the additional data for a given configuration file.
+     * 
+     * @param config the check configuration data
+     * @param project the project to create the checker for
+     * @return the checker for the given configuration file
+     * @throws CheckstyleException the configuration file had errors
+     * @throws IOException the config file could not be read
+     * @throws CheckstylePluginException the configuration could not be read
+     */
+    public static ConfigurationReader.AdditionalConfigData getAdditionalData(
+            CheckstyleConfigurationFile config, IProject project) throws CheckstyleException,
+        IOException, CheckstylePluginException
+    {
+
+        URL configLocation = config.getResolvedConfigFileURL();
+
+        // build cache key using the project name as a part to do per project
+        // caching
+        String cacheKey = project.getName() + "#" + configLocation; //$NON-NLS-1$
+
+        ConfigurationReader.AdditionalConfigData additionalData = (AdditionalConfigData) sAdditionalDataMap
+                .get(cacheKey);
+
+        // no cache hit - create the additional data
+        if (additionalData == null)
+        {
+            additionalData = ConfigurationReader.getAdditionalConfigData(config
+                    .getCheckConfigFileStream());
+            sAdditionalDataMap.put(cacheKey, additionalData);
+        }
+
+        return additionalData;
+    }
+
+    /**
      * Returns the shared classloader which is used by all checkers created by
      * this factory.
      * 
@@ -171,6 +212,7 @@ public final class CheckerFactory
     {
         sCheckerMap.clear();
         sModifiedMap.clear();
+        sAdditionalDataMap.clear();
     }
 
     /**
@@ -202,6 +244,7 @@ public final class CheckerFactory
                 checker = null;
                 sCheckerMap.remove(cacheKey);
                 sModifiedMap.remove(cacheKey);
+                sAdditionalDataMap.remove(cacheKey);
             }
         }
         return checker;

@@ -26,6 +26,7 @@ package com.atlassw.tools.eclipse.checkstyle.config.gui;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IPreferencesService;
@@ -89,6 +90,10 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
 
     private Text mCommentText;
 
+    private Text mIdText;
+
+    private Text mCustomMessageText;
+
     private ComboViewer mSeverityCombo;
 
     private IConfigPropertyWidget[] mConfigPropertyWidgets;
@@ -145,6 +150,20 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
 
         mCommentText = new Text(dialog, SWT.SINGLE | SWT.BORDER);
         mCommentText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+        Label idLabel = new Label(dialog, SWT.NULL);
+        idLabel.setText(Messages.RuleConfigurationEditDialog_lblId);
+        idLabel.setLayoutData(new GridData());
+
+        mIdText = new Text(dialog, SWT.SINGLE | SWT.BORDER);
+        mIdText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+        Label customMessageLabel = new Label(dialog, SWT.NULL);
+        customMessageLabel.setText(Messages.RuleConfigurationEditDialog_lblCustomMessage);
+        customMessageLabel.setLayoutData(new GridData());
+
+        mCustomMessageText = new Text(dialog, SWT.SINGLE | SWT.BORDER);
+        mCustomMessageText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
         // Build severity
         Label lblSeverity = new Label(dialog, SWT.NULL);
@@ -306,6 +325,19 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
         {
             mCommentText.setText(comment);
         }
+
+        String id = mRule.getId();
+        if (id != null)
+        {
+            mIdText.setText(id);
+        }
+
+        String customMessage = mRule.getCustomMessage();
+        if (customMessage != null)
+        {
+            mCustomMessageText.setText(customMessage);
+        }
+
         mCommentText.setEditable(!mReadonly);
 
         mSeverityCombo.setInput(SEVERITY_LEVELS);
@@ -377,10 +409,14 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
             CheckstyleLog.log(e);
         }
 
-        //
         // Get the comment.
-        //
-        String comment = mCommentText.getText();
+        String comment = StringUtils.trimToNull(mCommentText.getText());
+
+        // Get the id
+        String id = StringUtils.trimToNull(mIdText.getText());
+
+        // Get the custom message
+        String customMessage = StringUtils.trimToNull(mCustomMessageText.getText());
 
         //
         // Build a new collection of configuration properties.
@@ -418,6 +454,8 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
         //
         mRule.setSeverity(severity);
         mRule.setComment(comment);
+        mRule.setId(id);
+        mRule.setCustomMessage(customMessage);
 
         super.okPressed();
 

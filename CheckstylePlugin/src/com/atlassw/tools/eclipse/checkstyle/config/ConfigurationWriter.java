@@ -104,15 +104,20 @@ public final class ConfigurationWriter
                     "http://www.puppycrawl.com/dtds/configuration_1_2.dtd"); //$NON-NLS-1$
             xmlOut.startDocument();
 
-            String comment = "\n\tThis configuration file was written by the eclipse-cs plugin configuration editor\n"; //$NON-NLS-1$
+            String lineSeperator = System.getProperty("line.separator"); //$NON-NLS-1$
+
+            String comment = lineSeperator
+                    + "    This configuration file was written by the eclipse-cs plugin configuration editor" + lineSeperator; //$NON-NLS-1$
             xmlOut.comment(comment.toCharArray(), 0, comment.length());
 
             // write out name and description as comment
-            String description = "\nCheckstyle-Configuration: " //$NON-NLS-1$
+            String description = lineSeperator
+                    + "    Checkstyle-Configuration: " //$NON-NLS-1$
                     + checkConfig.getName()
-                    + "\nDescription:\n" //$NON-NLS-1$
-                    + (checkConfig.getDescription() != null ? checkConfig.getDescription() + "\n" //$NON-NLS-1$
-                            : "none\n"); //$NON-NLS-1$
+                    + lineSeperator
+                    + "    Description: " //$NON-NLS-1$
+                    + (StringUtils.trimToNull(checkConfig.getDescription()) != null ? lineSeperator
+                            + checkConfig.getDescription() + lineSeperator : "none" + lineSeperator); //$NON-NLS-1$
             xmlOut.comment(description.toCharArray(), 0, description.length());
 
             xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
@@ -174,13 +179,25 @@ public final class ConfigurationWriter
         xmlOut.startElement(emptyString, XMLTags.MODULE_TAG, XMLTags.MODULE_TAG, attr);
 
         // Write comment
-        if (module.getComment() != null && module.getComment().trim().length() != 0)
+        if (StringUtils.trimToNull(module.getComment()) != null)
         {
             attr = new AttributesImpl();
             attr.addAttribute(emptyString, XMLTags.NAME_TAG, XMLTags.NAME_TAG, emptyString,
                     XMLTags.COMMENT_ID);
             attr.addAttribute(emptyString, XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, emptyString,
                     module.getComment());
+            xmlOut.startElement(emptyString, XMLTags.METADATA_TAG, XMLTags.METADATA_TAG, attr);
+            xmlOut.endElement(emptyString, XMLTags.METADATA_TAG, XMLTags.METADATA_TAG);
+        }
+
+        // Write custom message
+        if (StringUtils.trimToNull(module.getCustomMessage()) != null)
+        {
+            attr = new AttributesImpl();
+            attr.addAttribute(emptyString, XMLTags.NAME_TAG, XMLTags.NAME_TAG, emptyString,
+                    XMLTags.CUSTOM_MESSAGE_ID);
+            attr.addAttribute(emptyString, XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, emptyString,
+                    module.getCustomMessage());
             xmlOut.startElement(emptyString, XMLTags.METADATA_TAG, XMLTags.METADATA_TAG, attr);
             xmlOut.endElement(emptyString, XMLTags.METADATA_TAG, XMLTags.METADATA_TAG);
         }
@@ -229,6 +246,19 @@ public final class ConfigurationWriter
 
             // set the parent severity for child modules
             severity = module.getSeverity();
+        }
+
+        // write module id
+        if (StringUtils.trimToNull(module.getId()) != null)
+        {
+            attr = new AttributesImpl();
+            attr.addAttribute(emptyString, XMLTags.NAME_TAG, XMLTags.NAME_TAG, emptyString,
+                    XMLTags.ID_TAG);
+            attr.addAttribute(emptyString, XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, emptyString,
+                    module.getId());
+
+            xmlOut.startElement(emptyString, XMLTags.PROPERTY_TAG, XMLTags.PROPERTY_TAG, attr);
+            xmlOut.endElement(emptyString, XMLTags.PROPERTY_TAG, XMLTags.PROPERTY_TAG);
         }
 
         // write properties of the module

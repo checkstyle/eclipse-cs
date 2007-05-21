@@ -368,6 +368,10 @@ public final class Messages extends NLS
 
     public static String RuleConfigurationEditDialog_lblComment;
 
+    public static String RuleConfigurationEditDialog_lblCustomMessage;
+
+    public static String RuleConfigurationEditDialog_lblId;
+
     public static String RuleConfigurationEditDialog_lblProperties;
 
     public static String RuleConfigurationEditDialog_lblSeverity;

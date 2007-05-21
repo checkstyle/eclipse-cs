@@ -180,8 +180,14 @@ public class XMLTags
     /** tag for the severity property. */
     public static final String SEVERITY_TAG = "severity"; //$NON-NLS-1$
 
+    /** tag for the id property. */
+    public static final String ID_TAG = "id"; //$NON-NLS-1$
+
     /** constant for the comment meta data stored with the modules. */
     public static final String COMMENT_ID = CheckstylePlugin.PLUGIN_ID + ".comment"; //$NON-NLS-1$
+
+    /** constant for the custom message meta data stored with the modules. */
+    public static final String CUSTOM_MESSAGE_ID = CheckstylePlugin.PLUGIN_ID + ".customMessage"; //$NON-NLS-1$
 
     /** constant for the lastEnabledSeverity meta data stored with the modules. */
     public static final String LAST_ENABLED_SEVERITY_ID = CheckstylePlugin.PLUGIN_ID

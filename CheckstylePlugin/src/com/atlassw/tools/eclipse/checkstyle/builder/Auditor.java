@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.filebuffers.FileBuffers;
 import org.eclipse.core.filebuffers.ITextFileBufferManager;
 import org.eclipse.core.resources.IFile;
@@ -142,7 +143,7 @@ public class Auditor
         throws CheckstylePluginException
     {
 
-        //System.out.println("----> Auditing: " + mFiles.size());
+        // System.out.println("----> Auditing: " + mFiles.size());
 
         // skip if there are no files to check
         if (mFiles.isEmpty() || project == null)
@@ -179,13 +180,16 @@ public class Auditor
                     .getCheckstyleConfiguration();
 
             configStream = checkConfigFile.getCheckConfigFileStream();
-            int tabWidth = ConfigurationReader.getTabWidth(configStream);
 
             // create checker
             checker = CheckerFactory.createChecker(checkConfigFile, project);
 
+            // get the additional data
+            ConfigurationReader.AdditionalConfigData additionalData = CheckerFactory
+                    .getAdditionalData(checkConfigFile, project);
+
             // create and add listener
-            listener = new CheckstyleAuditListener(project, tabWidth);
+            listener = new CheckstyleAuditListener(project, additionalData);
             checker.addListener(listener);
 
             // reconfigure the shared classloader for the current
@@ -280,8 +284,8 @@ public class Auditor
     private class CheckstyleAuditListener implements AuditListener
     {
 
-        /** The tab width set within eclipse. */
-        private int mTabWidth;
+        /** Additional data about the Checkstyle configuration. */
+        private ConfigurationReader.AdditionalConfigData mAdditionalConfigData;
 
         /** the project. */
         private IProject mProject;
@@ -307,11 +311,12 @@ public class Auditor
         /** the count of markers generated for the current resource. */
         private int mMarkerCount;
 
-        public CheckstyleAuditListener(IProject project, int tabWidth)
+        public CheckstyleAuditListener(IProject project,
+                ConfigurationReader.AdditionalConfigData additionalData)
         {
             mProject = project;
 
-            mTabWidth = tabWidth;
+            mAdditionalConfigData = additionalData;
 
             // init the marker limitation
             IPreferencesService prefStore = Platform.getPreferencesService();
@@ -390,8 +395,7 @@ public class Auditor
 
                         mMarkerAttributes.put(CheckstyleMarker.MODULE_NAME, metaData
                                 .getInternalName());
-                        mMarkerAttributes.put(CheckstyleMarker.MESSAGE_KEY, error
-                                .getLocalizedMessage().getKey());
+                        mMarkerAttributes.put(CheckstyleMarker.MESSAGE_KEY, getMessageKey(error));
                         mMarkerAttributes.put(IMarker.PRIORITY,
                                 new Integer(IMarker.PRIORITY_NORMAL));
                         mMarkerAttributes.put(IMarker.SEVERITY, new Integer(
@@ -516,7 +520,7 @@ public class Auditor
                 char c = line.charAt(i);
                 if (c == '\t')
                 {
-                    calculatedColumn += mTabWidth;
+                    calculatedColumn += mAdditionalConfigData.getTabWidth();
                 }
                 else
                 {
@@ -553,7 +557,24 @@ public class Auditor
 
         private String getMessage(AuditEvent error)
         {
-            String message = error.getMessage();
+
+            String moduleId = error.getModuleId();
+
+            if (moduleId == null)
+            {
+                RuleMetadata metaData = MetadataFactory.getRuleMetadata(error.getSourceName());
+                if (metaData != null)
+                {
+                    moduleId = metaData.getInternalName();
+                }
+            }
+
+            String message = (String) mAdditionalConfigData.getCustomMessages().get(moduleId);
+            if (StringUtils.trimToNull(message) == null)
+            {
+                message = error.getMessage();
+            }
+
             if (mAddRuleName)
             {
                 StringBuffer buffer = new StringBuffer(getRuleName(error));
@@ -561,6 +582,29 @@ public class Auditor
                 message = buffer.toString();
             }
             return message;
+        }
+
+        private String getMessageKey(AuditEvent error)
+        {
+
+            String moduleId = error.getModuleId();
+
+            if (moduleId == null)
+            {
+                RuleMetadata metaData = MetadataFactory.getRuleMetadata(error.getSourceName());
+                if (metaData != null)
+                {
+                    moduleId = metaData.getInternalName();
+                }
+            }
+
+            String messageKey = (String) mAdditionalConfigData.getCustomMessages().get(moduleId);
+            if (StringUtils.trimToNull(messageKey) == null)
+            {
+                messageKey = error.getLocalizedMessage().getKey();
+            }
+
+            return messageKey;
         }
 
         private String getRuleName(AuditEvent error)

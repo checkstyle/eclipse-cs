@@ -56,6 +56,12 @@ public class Module implements Cloneable
     /** the comment of the module. */
     private String mComment;
 
+    /** the id of the module. */
+    private String mId;
+
+    /** the custom message for this module. */
+    private String mCustomMessage;
+
     /** the severity level. */
     private SeverityLevel mSeverityLevel;
 
@@ -119,6 +125,48 @@ public class Module implements Cloneable
     public String getName()
     {
         return mMetaData != null ? mMetaData.getRuleName() : mName;
+    }
+
+    /**
+     * Returns the unique id of the module.
+     * 
+     * @return the id
+     */
+    public String getId()
+    {
+        return mId;
+    }
+
+    /**
+     * Sets the unique id of the module.
+     * 
+     * @param id the id to set
+     */
+    public void setId(String id)
+    {
+        mId = id;
+    }
+
+    /**
+     * Returns the custom message to display instead of Checkstyle's default
+     * message.
+     * 
+     * @return the customMessage
+     */
+    public String getCustomMessage()
+    {
+        return mCustomMessage;
+    }
+
+    /**
+     * Sets the custom message to display instead of Checkstyle's default
+     * message.
+     * 
+     * @param customMessage the customMessage to set
+     */
+    public void setCustomMessage(String customMessage)
+    {
+        mCustomMessage = customMessage;
     }
 
     /**
