@@ -201,7 +201,7 @@ public class CheckFileOnOpenPartListener implements IPartListener2
                     }
 
                     // check if the file would be filtered out
-                    if (filter.isEnabled())
+                    if (filter.isEnabled() && !(filter instanceof UnOpenedFilesFilter))
                     {
                         filtered = filtered || !filter.accept(file);
                     }

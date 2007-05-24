@@ -14,7 +14,9 @@
    <!-- defines the extension point to contribute custom configuration save filters -->
    <extension-point id="saveFilters" name="Configuration save filters" schema="schema/saveFilters.exsd"/>
    
-   <extension point="org.eclipse.ui.startup"/>
+   <extension point="org.eclipse.ui.startup">
+   	  <startup class="com.atlassw.tools.eclipse.checkstyle.CheckstylePluginStartup"/>
+   </extension>
    
    <extension
          point="org.eclipse.help.toc">

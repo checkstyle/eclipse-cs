@@ -41,7 +41,7 @@ import com.atlassw.tools.eclipse.checkstyle.util.EclipseLogHandler;
 /**
  * The main plugin class to be used in the desktop.
  */
-public class CheckstylePlugin extends AbstractUIPlugin implements IStartup
+public class CheckstylePlugin extends AbstractUIPlugin
 {
     // =================================================
     // Public static final variables.
@@ -174,6 +174,25 @@ public class CheckstylePlugin extends AbstractUIPlugin implements IStartup
         {
             CheckstyleLog.log(ioe);
         }
+
+        // add listeners for the Check-On-Open support
+        final IWorkbench workbench = getWorkbench();
+        workbench.addWindowListener(mWindowListener);
+
+        workbench.getDisplay().asyncExec(new Runnable()
+        {
+            public void run()
+            {
+                IWorkbenchWindow window = workbench.getActiveWorkbenchWindow();
+                if (window != null)
+                {
+                    // remove listener first for safety, we don't want register
+                    // the same listener twice accidently
+                    window.getPartService().removePartListener(mPartListener);
+                    window.getPartService().addPartListener(mPartListener);
+                }
+            }
+        });
     }
 
     /**
@@ -212,30 +231,6 @@ public class CheckstylePlugin extends AbstractUIPlugin implements IStartup
         String variant = parts.length > 2 ? parts[2] : ""; //$NON-NLS-1$
 
         return new Locale(language, country, variant);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void earlyStartup()
-    {
-        final IWorkbench workbench = getWorkbench();
-        workbench.addWindowListener(mWindowListener);
-
-        workbench.getDisplay().asyncExec(new Runnable()
-        {
-            public void run()
-            {
-                IWorkbenchWindow window = workbench.getActiveWorkbenchWindow();
-                if (window != null)
-                {
-                    // remove listener first for safety, we don't want register
-                    // the same listener twice accidently
-                    window.getPartService().removePartListener(mPartListener);
-                    window.getPartService().addPartListener(mPartListener);
-                }
-            }
-        });
     }
 
     private CheckFileOnOpenPartListener mPartListener = new CheckFileOnOpenPartListener();
