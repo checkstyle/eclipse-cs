@@ -44,6 +44,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
+import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationFactory;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
@@ -157,7 +158,14 @@ public final class ProjectConfigurationFactory
         boolean exists = file.exists();
         if (!exists)
         {
-            return new ProjectConfiguration(project, null, null, null, true);
+
+            List checkConfigs = CheckConfigurationFactory.getCheckConfigurations();
+            FileSet standardFileSet = new FileSet(Messages.SimpleFileSetsEditor_nameAllFileset,
+                    (ICheckConfiguration) checkConfigs.get(0));
+            standardFileSet.getFileMatchPatterns().add(new FileMatchPattern(".*"));
+
+            List fileSets = Arrays.asList(new Object[] { standardFileSet });
+            return new ProjectConfiguration(project, null, fileSets, null, true);
         }
 
         InputStream inStream = null;
