@@ -32,10 +32,13 @@
                             alt="Eclipse Community Award 2007 Winner"/>
                     </a>
                 </td>
-                <td style="vertical-align:middle;">The Eclipse Checkstyle plug-in won the Eclipse Community Award 2007 in the
-                    category of "Best Open Source Eclipse-based Developer tool".</td>
+                <td style="vertical-align:middle;">The Eclipse Checkstyle plug-in won the Eclipse
+                    Community Award 2007 in the category of "Best Open Source Eclipse-based
+                    Developer tool".</td>
             </tr>
         </table>
+        <p style="color: red;"><b>Attention Rational Application Developer (RAD) 6/7 users:</b>
+            Please read <a href="rad_usage.html">here</a>!</p>
         <h2>-- Download &amp; Installation --</h2>
         <p>The first way to install the Eclipse Checkstyle Plug-in is via the <a
                 href="http://eclipse-cs.sourceforge.net/update/">update site</a>.</p>

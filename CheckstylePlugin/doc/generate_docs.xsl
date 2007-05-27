@@ -97,7 +97,7 @@
 				<a href="{$path-prefix}releasenotes/release_notes_older.html" class="level2">Older
 					releases</a>
 			</xsl:if>
-
+			<a href="{$path-prefix}rad_usage.html" class="level1">RAD 6/7 issues</a>
 			<a href="{$path-prefix}faq.html" class="level1">FAQ</a>
 			<a href="{$path-prefix}troubleshooting.html" class="level1">Troubleshooting</a>
 			<xsl:if test="$section != 'docs-basic'">

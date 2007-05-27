@@ -24,12 +24,14 @@
 			<topic label="Creating a custom plug-in filter"		href="doc/extending_filters.html"/>
 		</topic>
 	</topic>
-	<topic label="Release notes"                   			href="doc/releasenotes/4.3.0/release_notes.html">
+	<topic label="Release notes"                   			href="doc/releasenotes/4.3.1/release_notes.html">
+		<topic label="Release 4.3.1"						href="doc/releasenotes/4.3.1/release_notes.html"/>
 		<topic label="Release 4.3.0"						href="doc/releasenotes/4.3.0/release_notes.html"/>
 		<topic label="Release 4.2.1"						href="doc/releasenotes/4.2.1/release_notes.html"/>
 		<topic label="Release 4.2.0"						href="doc/releasenotes/4.2.0/release_notes.html"/>
 		<topic label="Older releases"						href="doc/releasenotes/release_notes_older.html"/>
 	</topic>
+	<topic label="RAD 6/7 issues"							href="doc/rad_usage.html"/>
 	<topic label="FAQ"										href="doc/faq.html"/>
 	<topic label="Troubleshooting"                   		href="doc/troubleshooting.html"/>
 	<topic label="Checkstyle documentation"         	 	href="doc/csdocs/index.html"/>

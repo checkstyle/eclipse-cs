@@ -12,6 +12,17 @@
         <h2>-- <b>F</b>requently <b>A</b>sked (<b>A</b>nd <b>U</b>nasked) <b>Q</b>uestions --</h2>
         <p>If you feel there is a very obvious, essential question missing please drop us a note on
             the mailing list or enter a bug report.</p>
+        <p><b>Q: <br/>
+            </b>I am getting error markers on all my files which saying:<br/>Unable to get class
+            information for XYZ<br/>How to get rid of them?</p>
+        <p><b>A: <br/>
+            </b>If you are using RAD 6/7 or run Eclipse on IBMs J9 VM please read <a
+                href="rad_usage.html">here</a>.<br/>In other cases modify your Checkstyle
+            configuration file, setting the <b>logLoadErrors</b> property of the
+            <b>JavadocMethod</b> and <b>RedundantThrows</b> check to <em>true</em>. You can do this
+            via the plugins Configuration editor (recommended) or manually be adding the property to
+            your Checkstyle configuration XML file(s).</p>
+        <hr/>
         <p><b>Q:</b>
             <br/> I just dropped plug-in version x.x.x in Eclipse (replacing version z.z.z, which
             was working great) and I&#39;m having some trouble using it. <br/> When I go to

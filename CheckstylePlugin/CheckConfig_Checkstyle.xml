@@ -71,7 +71,8 @@ Description:
         <module name="Indentation"/>
         <module name="JavadocMethod">
             <property name="scope" value="public"/>
-            <property name="tokens" value="METHOD_DEF, CTOR_DEF"/>
+            <property name="logLoadErrors" value="true"/>
+            <property name="suppressLoadErrors" value="true"/>
         </module>
         <module name="JavadocStyle">
             <property name="tokens" value="INTERFACE_DEF, CLASS_DEF, METHOD_DEF, CTOR_DEF, VARIABLE_DEF"/>
@@ -116,6 +117,10 @@ Description:
         <module name="FallThrough"/>
         <module name="Header">
             <property name="headerFile" value="${samedir}/header.txt"/>
+        </module>
+        <module name="RedundantThrows">
+            <property name="logLoadErrors" value="true"/>
+            <property name="suppressLoadErrors" value="true"/>
         </module>
     </module>
     <module name="SuppressionCommentFilter"/>
