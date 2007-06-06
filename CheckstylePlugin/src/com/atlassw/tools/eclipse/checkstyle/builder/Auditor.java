@@ -160,7 +160,6 @@ public class Auditor
         // store the current context class loader
         ClassLoader contextClassloader = Thread.currentThread().getContextClassLoader();
 
-        InputStream configStream = null;
         try
         {
 
@@ -175,18 +174,12 @@ public class Auditor
             monitor.beginTask(NLS.bind(Messages.Auditor_msgCheckingConfig, mCheckConfiguration
                     .getName()), filesToAudit.length);
 
-            // find out tabwidth setting
-            CheckstyleConfigurationFile checkConfigFile = mCheckConfiguration
-                    .getCheckstyleConfiguration();
-
-            configStream = checkConfigFile.getCheckConfigFileStream();
-
             // create checker
-            checker = CheckerFactory.createChecker(checkConfigFile, project);
+            checker = CheckerFactory.createChecker(mCheckConfiguration, project);
 
             // get the additional data
             ConfigurationReader.AdditionalConfigData additionalData = CheckerFactory
-                    .getAdditionalData(checkConfigFile, project);
+                    .getAdditionalData(mCheckConfiguration, project);
 
             // create and add listener
             listener = new CheckstyleAuditListener(project, additionalData);
@@ -218,8 +211,6 @@ public class Auditor
         finally
         {
             monitor.done();
-
-            IOUtils.closeQuietly(configStream);
 
             // Cleanup listener and filter
             if (checker != null)
