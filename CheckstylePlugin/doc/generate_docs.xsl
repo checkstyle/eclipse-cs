@@ -11,7 +11,7 @@
 
 	<!-- output as XHTML 1.1 -->
 	<xsl:output encoding="UTF-8" method="xml" indent="yes"
-		doctype-public="-//W3C//DTD XHTML   1.1//EN"
+		doctype-public="-//W3C//DTD XHTML 1.1//EN"
 		doctype-system="http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"/>
 	<!-- root template -->
 	<xsl:template match="/">
@@ -170,17 +170,30 @@
 					the Forums</a>
 			</xsl:if>
 		</div>
-		<!--
-		<div class="box navsection-box">
-			<h3>Winner of the Eclipse Community Award 2007<br/>"Best Open Source Eclipse-based
-				Developer tool"</h3>
-			<a class="imagelink" style="margin-left:40px;"
-				href="http://www.eclipse.org/org/press-release/20070306eclipsecommunityawards.php">
-				<img src="images/winner.jpg" height="120" width="144"
-					alt="Eclipse Community Award 2007 Winner"/>
+
+		<div style="margin-top: 5px; text-align: center; background-color: #cddeff;">
+			<!--
+			<a href="http://www.eclipse.org/europa/">
+				<img src="http://www.eclipse.org/europa/images/europa.jpg" border="0"
+					alt="The Next Total Eclipse" title="Europa"/>
 			</a>
+			-->
+			<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000"
+				codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0"
+				width="160" height="140" id="europa" align="middle">
+				<param name="allowScriptAccess" value="sameDomain"/>
+				<param name="movie" value="http://www.eclipse.org/europa/images/europa.swf"/>
+				<param name="quality" value="high"/>
+				<param name="scale" value="noscale"/>
+				<param name="bgcolor" value="#ffffff"/>
+				<embed src="http://www.eclipse.org/europa/images/europa.swf" quality="high"
+					scale="noscale" bgcolor="#ffffff" width="160" height="140" name="europa"
+					align="middle" allowScriptAccess="sameDomain"
+					type="application/x-shockwave-flash"
+					pluginspage="http://www.macromedia.com/go/getflashplayer"/>
+			</object>
 		</div>
-		-->
+
 		<!--
 		<div class="box navsection-box">
 			<h3>Rate this plug-in<br/>@ Eclipse Plugin Central!</h3>
