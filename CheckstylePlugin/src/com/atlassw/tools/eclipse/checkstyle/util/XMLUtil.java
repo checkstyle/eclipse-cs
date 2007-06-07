@@ -235,10 +235,9 @@ public final class XMLUtil
      * Create a new Document.
      * 
      * @return Document Newly created Document
-     * @throws DOMException error creating the document
      * @throws ParserConfigurationException error creating DOM parser
      */
-    public static Document newDocument() throws DOMException, ParserConfigurationException
+    public static Document newDocument() throws ParserConfigurationException
     {
         Document document = null;
 
@@ -300,11 +299,10 @@ public final class XMLUtil
      * @param doc - Document to be serialized
      * @param indent - boolean indicating whether or not to indent tags
      * @return String - Serialized string representation of doc
-     * @throws TransformerConfigurationException error creating the transformer
      * @throws TransformerException error serializing the document
      */
     public static String serializeDocument(Document doc, boolean indent)
-        throws TransformerConfigurationException, TransformerException
+        throws TransformerException
     {
 
         String result = null;
@@ -332,11 +330,9 @@ public final class XMLUtil
      * 
      * @param doc - Document to be serialized
      * @return String - Serialized string representation of doc
-     * @throws TransformerConfigurationException error creating the transformer
      * @throws TransformerException error serializing the document
      */
-    public static String serializeDocument(Document doc) throws TransformerConfigurationException,
-        TransformerException
+    public static String serializeDocument(Document doc) throws TransformerException
     {
         return serializeDocument(doc, false);
     }

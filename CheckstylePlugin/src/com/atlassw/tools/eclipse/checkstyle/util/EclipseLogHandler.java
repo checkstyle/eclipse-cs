@@ -98,7 +98,7 @@ public class EclipseLogHandler extends Handler
     /**
      * {@inheritDoc}
      */
-    public void close() throws SecurityException
+    public void close()
     {
     // NOOP
     }
