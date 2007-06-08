@@ -39,11 +39,11 @@
                 <p><b>Disable J9s class garbage collection:</b><br/>As suggested in the <a
                         href="http://www-1.ibm.com/support/docview.wss?rs=2044&amp;context=SSCM72&amp;dc=DB520&amp;uid=swg21256946&amp;loc=en_US&amp;cs=UTF-8&amp;lang=en&amp;rss=ct2044rational"
                         >technote</a> it is possible to disable J9s class data garbage collection,
-                    using the <b>-Xnoclassgc</b> option in rational.ini, which is placed in RADs
+                    using the <b>-Xnoclassgc</b> option in eclipse.ini, which is placed in RADs
                     installation folder.<br/>With this option the project classloader <b>does
                     not</b> need to be disabled. The downside however is that RAD accumulates more
                     memory and might run into OutOfMemory errors more often (avg. once per work day
-                    - this is my personal experience, mileage my vary).<br/>TODO: add rational.ini
+                    - this is my personal experience, mileage my vary).<br/>TODO: add eclipse.ini
                     sample</p>
             </li>
         </ol>
