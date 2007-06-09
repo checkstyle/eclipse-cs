@@ -87,7 +87,7 @@
 				<a href="{$path-prefix}releasenotes/4.3.2/release_notes.html" class="level1"><img
 						src="{$path-prefix}images/minus.gif" alt=""/>Release Notes</a>
 				<a href="{$path-prefix}releasenotes/4.3.2/release_notes.html" class="level2">Release
-					4.3.1</a>
+					4.3.2</a>
 				<a href="{$path-prefix}releasenotes/4.3.1/release_notes.html" class="level2">Release
 					4.3.1</a>
 				<a href="{$path-prefix}releasenotes/4.3.0/release_notes.html" class="level2">Release
