@@ -254,6 +254,12 @@ public class RemoteConfigurationType extends ConfigurationType
         String cacheFileLocation = (String) checkConfig.getAdditionalData().get(
                 KEY_CACHE_PROPS_FILE_LOCATION);
 
+        //bug 1748626
+        if (cacheFileLocation == null)
+        {
+            return null;
+        }
+
         try
         {
             IPath cacheFilePath = CheckstylePlugin.getDefault().getStateLocation();
