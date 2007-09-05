@@ -28,6 +28,7 @@ import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
@@ -39,6 +40,7 @@ import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.IProjectConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfigurationFactory;
+import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.IFilter;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
 /**
@@ -95,6 +97,8 @@ public class RunCheckstyleOnFilesJob extends WorkspaceJob
                 IProjectConfiguration checkConfig = ProjectConfigurationFactory
                         .getConfiguration(project);
 
+                filter(files, checkConfig);
+
                 CheckstyleBuilder builder = new CheckstyleBuilder();
                 builder.handleBuildSelection(files, checkConfig, monitor, project,
                         IncrementalProjectBuilder.INCREMENTAL_BUILD);
@@ -133,4 +137,26 @@ public class RunCheckstyleOnFilesJob extends WorkspaceJob
         return projectFilesMap;
     }
 
+    private void filter(List files, IProjectConfiguration projectConfig)
+    {
+
+        List filters = projectConfig.getFilters();
+        Iterator it = filters.iterator();
+        while (it.hasNext())
+        {
+            IFilter filter = (IFilter) it.next();
+
+            Iterator filesIt = files.iterator();
+            while (filesIt.hasNext())
+            {
+
+                IResource file = (IResource) filesIt.next();
+
+                if (filter.isEnabled() && !filter.accept(file))
+                {
+                    filesIt.remove();
+                }
+            }
+        }
+    }
 }
