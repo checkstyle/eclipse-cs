@@ -57,6 +57,7 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.IWorkingSet;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.progress.IWorkbenchSiteProgressService;
 import org.eclipse.ui.progress.WorkbenchJob;
@@ -331,20 +332,19 @@ public abstract class AbstractStatsView extends ViewPart
                         .hasNext();)
                 {
                     Object object = iterator.next();
-                    if (object instanceof IAdaptable)
+                    if (object instanceof IWorkingSet)
                     {
-                        IResource resource = (IResource) ((IAdaptable) object)
-                                .getAdapter(IResource.class);
 
-                        if (resource == null)
+                        IWorkingSet workingSet = (IWorkingSet) object;
+                        IAdaptable[] elements = workingSet.getElements();
+                        for (int i = 0; i < elements.length; i++)
                         {
-                            resource = (IResource) ((IAdaptable) object).getAdapter(IFile.class);
+                            considerAdaptable(elements[i], resources);
                         }
-
-                        if (resource != null)
-                        {
-                            resources.add(resource);
-                        }
+                    }
+                    else if (object instanceof IAdaptable)
+                    {
+                        considerAdaptable((IAdaptable) object, resources);
                     }
                 }
             }
@@ -360,6 +360,22 @@ public abstract class AbstractStatsView extends ViewPart
             mFocusedResources = focusedResources;
             getFilter().setFocusResource(focusedResources);
             refresh();
+        }
+    }
+
+    private void considerAdaptable(IAdaptable adaptable, Collection resources)
+    {
+
+        IResource resource = (IResource) adaptable.getAdapter(IResource.class);
+
+        if (resource == null)
+        {
+            resource = (IResource) adaptable.getAdapter(IFile.class);
+        }
+
+        if (resource != null)
+        {
+            resources.add(resource);
         }
     }
 
