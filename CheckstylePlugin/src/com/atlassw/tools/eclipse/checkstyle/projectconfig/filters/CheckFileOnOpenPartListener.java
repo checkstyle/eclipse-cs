@@ -180,7 +180,7 @@ public class CheckFileOnOpenPartListener implements IPartListener2
         try
         {
             // check if checkstyle is enabled on the project
-            if (project.hasNature(CheckstyleNature.NATURE_ID))
+            if (project.isAccessible() && project.hasNature(CheckstyleNature.NATURE_ID))
             {
 
                 IProjectConfiguration config = ProjectConfigurationFactory
