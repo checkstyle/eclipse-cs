@@ -80,12 +80,14 @@
 				>Downloads</a>
 			<a href="{$path-prefix}screen_shots.html" class="level1">Screenshots</a>
 			<xsl:if test="$section != 'releases'">
-				<a href="{$path-prefix}releasenotes/4.3.2/release_notes.html" class="level1"><img
+				<a href="{$path-prefix}releasenotes/4.3.3/release_notes.html" class="level1"><img
 						src="{$path-prefix}images/plus.gif" alt=""/>Release Notes</a>
 			</xsl:if>
 			<xsl:if test="$section = 'releases'">
-				<a href="{$path-prefix}releasenotes/4.3.2/release_notes.html" class="level1"><img
+				<a href="{$path-prefix}releasenotes/4.3.3/release_notes.html" class="level1"><img
 						src="{$path-prefix}images/minus.gif" alt=""/>Release Notes</a>
+				<a href="{$path-prefix}releasenotes/4.3.3/release_notes.html" class="level2">Release
+					4.3.3</a>
 				<a href="{$path-prefix}releasenotes/4.3.2/release_notes.html" class="level2">Release
 					4.3.2</a>
 				<a href="{$path-prefix}releasenotes/4.3.1/release_notes.html" class="level2">Release
@@ -172,14 +174,10 @@
 					the Forums</a>
 			</xsl:if>
 		</div>
+		
 
 		<div style="margin-top: 5px; text-align: center; background-color: #cddeff;">
-			<!--
-			<a href="http://www.eclipse.org/europa/">
-				<img src="http://www.eclipse.org/europa/images/europa.jpg" border="0"
-					alt="The Next Total Eclipse" title="Europa"/>
-			</a>
-			-->
+
 			<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000"
 				codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0"
 				width="160" height="140" id="europa" align="middle">
@@ -196,64 +194,6 @@
 			</object>
 		</div>
 
-		<!--
-		<div class="box navsection-box">
-			<h3>Rate this plug-in<br/>@ Eclipse Plugin Central!</h3>
-			<p> Due to spambots the voting form sadly needed to be pulled off the site.<br/> Please
-				cast your vote over at <a
-					href="http://www.eclipseplugincentral.com/Web_Links-index-req-viewlink-cid-456.html"
-					>Eclipse Plugin Central</a> or use the "voting client" built into the plugin
-				(since 4.2.0 under Checkstyle preferences).</p>
-			
-			<form method="post" action="http://www.eclipseplugincentral.com/Web_Links+main.html"
-				style="width:100%">
-				<table border="0" width="100%" cellspacing="0" cellpadding="0">
-					<tbody>
-						<tr>
-							<td style="text-align: left;">
-								<span>Rating:</span>
-							</td>
-							<td style="text-align: left;">
-								<select name="rating">
-									<option selected="selected" value="10">10 - Really great!</option>
-									<option>9</option>
-									<option>8</option>
-									<option>7</option>
-									<option>6</option>
-									<option>5</option>
-									<option>4</option>
-									<option>3</option>
-									<option>2</option>
-									<option value="1">1 - Abysmal</option>
-								</select>
-							</td>
-						</tr>
-						<tr>
-							<td style="text-align: left;">
-								<span>Comment:</span>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="2" style="text-align: center;">
-								<textarea cols="25" rows="7" name="ratingcomments"
-									style="font-siz:10px;">
-									<xsl:text> </xsl:text>
-								</textarea>
-							</td>
-						</tr>
-						<tr>
-							<td style="text-align: center;" colspan="2">
-								<input type="hidden" name="ratinglid" value="376"/>
-								<input type="hidden" name="ratinguser" value="outside"/>
-								<input type="hidden" name="req" value="addrating"/>
-								<input type="submit" value="Vote!"/>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</form>
-		</div>
-		-->
 		<div class="box navsection-box">
 			<h3>Kindly endorsed by</h3>
 			<a href="http://www.ej-technologies.com/products/jprofiler/overview.html"
