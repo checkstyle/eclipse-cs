@@ -20,8 +20,12 @@
 
 package com.atlassw.tools.eclipse.checkstyle.config.migration;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,6 +33,7 @@ import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.commons.io.IOUtils;
 import org.eclipse.osgi.util.NLS;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -37,11 +42,13 @@ import org.xml.sax.helpers.DefaultHandler;
 import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationWorkingCopy;
 import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
+import com.atlassw.tools.eclipse.checkstyle.config.ConfigurationWriter;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfigurationWorkingSet;
 import com.atlassw.tools.eclipse.checkstyle.config.Module;
 import com.atlassw.tools.eclipse.checkstyle.config.XMLTags;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.ConfigurationTypes;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.IConfigurationType;
+import com.atlassw.tools.eclipse.checkstyle.config.configtypes.InternalConfigurationType;
 import com.atlassw.tools.eclipse.checkstyle.config.meta.MetadataFactory;
 import com.atlassw.tools.eclipse.checkstyle.config.meta.RuleMetadata;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
@@ -163,6 +170,9 @@ public final class CheckConfigurationMigrator
                     {
                         String location = "internal_config_" + "_" + System.currentTimeMillis() //$NON-NLS-1$ //$NON-NLS-2$
                                 + ".xml"; //$NON-NLS-1$
+
+                        //ensureFileExists(location);
+
                         mCurrentConfiguration.setLocation(location);
                     }
                 }
@@ -215,6 +225,49 @@ public final class CheckConfigurationMigrator
             {
                 throw new SAXException(e);
             }
+        }
+
+        /**
+         * Helper method trying to ensure that the file location provided by the
+         * user exists. If that is not the case it prompts the user if an empty
+         * configuration file should be created.
+         * 
+         * @param location the configuration file location
+         * @throws CheckstylePluginException error when trying to ensure the
+         *             location file existance
+         */
+        private boolean ensureFileExists(String location) throws CheckstylePluginException
+        {
+
+            String resolvedLocation = InternalConfigurationType
+                    .resolveLocationInWorkspace(location);
+
+            File file = new File(resolvedLocation);
+            if (!file.exists())
+            {
+
+                OutputStream out = null;
+                try
+                {
+                    if (file.getParentFile() != null)
+                    {
+                        file.getParentFile().mkdirs();
+                    }
+                    out = new BufferedOutputStream(new FileOutputStream(file));
+                    ConfigurationWriter.writeNewConfiguration(out, mCurrentConfiguration);
+                }
+                catch (IOException ioe)
+                {
+                    CheckstylePluginException.rethrow(ioe);
+                }
+                finally
+                {
+                    IOUtils.closeQuietly(out);
+                }
+                return true;
+            }
+
+            return true;
         }
 
         /**
