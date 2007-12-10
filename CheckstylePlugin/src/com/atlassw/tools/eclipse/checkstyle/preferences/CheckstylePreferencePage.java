@@ -99,6 +99,8 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
 
     private Button mIncludeRuleNamesButton;
 
+    private Button mIncludeModuleIdButton;
+
     private Button mLimitCheckstyleMarkers;
 
     private Button mDisableClassloader;
@@ -265,6 +267,25 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         SWTUtil.addTooltipOnPressSupport(lblRebuildNote);
 
         //
+        // Create the "Include rule name" check box.
+        //
+        Composite includeModuleIdComposite = new Composite(generalComposite, SWT.NULL);
+        gridLayout = new GridLayout(2, false);
+        gridLayout.marginHeight = 0;
+        gridLayout.marginWidth = 0;
+        includeModuleIdComposite.setLayout(gridLayout);
+
+        mIncludeModuleIdButton = new Button(includeModuleIdComposite, SWT.CHECK);
+        mIncludeModuleIdButton.setText(Messages.CheckstylePreferencePage_lblIncludeModuleIds);
+        mIncludeModuleIdButton.setSelection(prefs.getBoolean(CheckstylePlugin.PLUGIN_ID,
+                CheckstylePlugin.PREF_INCLUDE_MODULE_IDS, false, null));
+
+        lblRebuildNote = new Label(includeModuleIdComposite, SWT.NULL);
+        lblRebuildNote.setImage(CheckstylePluginImages.getImage(CheckstylePluginImages.HELP_ICON));
+        lblRebuildNote.setToolTipText(Messages.CheckstylePreferencePage_txtSuggestRebuild);
+        SWTUtil.addTooltipOnPressSupport(lblRebuildNote);
+
+        //
         // Create the "limit markers" check box and text field combination
         //
         Composite limitMarkersComposite = new Composite(generalComposite, SWT.NULL);
@@ -396,6 +417,14 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
             prefs.putBoolean(CheckstylePlugin.PREF_INCLUDE_RULE_NAMES, includeRuleNamesNow);
 
             //
+            // Include module id preference.
+            //
+            boolean includeModuleIdNow = mIncludeModuleIdButton.getSelection();
+            boolean includeModuleIdOriginal = prefService.getBoolean(CheckstylePlugin.PLUGIN_ID,
+                    CheckstylePlugin.PREF_INCLUDE_MODULE_IDS, false, null);
+            prefs.putBoolean(CheckstylePlugin.PREF_INCLUDE_MODULE_IDS, includeModuleIdNow);
+
+            //
             // Limit markers preference
             //
 
@@ -414,6 +443,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
 
             // See if all projects need rebuild
             boolean needRebuildAllProjects = (includeRuleNamesNow != includeRuleNamesOriginal)
+                    || (includeModuleIdNow != includeModuleIdOriginal)
                     || (limitMarkersNow != limitMarkersOriginal)
                     || (markerLimitNow != markerLimitOriginal) || mRebuildAll;
 

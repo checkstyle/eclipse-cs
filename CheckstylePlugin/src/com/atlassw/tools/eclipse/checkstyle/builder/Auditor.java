@@ -99,6 +99,9 @@ public class Auditor
     /** Add the check rule name to the message? */
     private boolean mAddRuleName = false;
 
+    /** Add the check module id to the message? */
+    private boolean mAddModuleId = false;
+
     /** Reference to the file buffer manager. */
     private final ITextFileBufferManager mFileBufferManager = FileBuffers
             .getTextFileBufferManager();
@@ -122,6 +125,8 @@ public class Auditor
         IPreferencesService prefs = Platform.getPreferencesService();
         mAddRuleName = prefs.getBoolean(CheckstylePlugin.PLUGIN_ID,
                 CheckstylePlugin.PREF_INCLUDE_RULE_NAMES, false, null);
+        mAddModuleId = prefs.getBoolean(CheckstylePlugin.PLUGIN_ID,
+                CheckstylePlugin.PREF_INCLUDE_MODULE_IDS, false, null);
     }
 
     // =================================================
@@ -563,13 +568,28 @@ public class Auditor
                 message = error.getMessage();
             }
 
+            StringBuffer prefix = new StringBuffer();
             if (mAddRuleName)
             {
-                StringBuffer buffer = new StringBuffer(getRuleName(error));
-                buffer.append(": ").append(message); //$NON-NLS-1$
-                message = buffer.toString();
+                prefix.append(getRuleName(error));
             }
-            return message;
+            if (mAddModuleId && error.getModuleId() != null)
+            {
+                if (prefix.length() > 0)
+                {
+                    prefix.append(" - "); //$NON-NLS-1$
+                }
+                prefix.append(error.getModuleId());
+            }
+
+            StringBuffer buf = new StringBuffer();
+            if (prefix.length() > 0)
+            {
+                buf.append(prefix).append(": "); //$NON-NLS-1$
+            }
+            buf.append(message);
+
+            return buf.toString();
         }
 
         private String getMessageKey(AuditEvent error)

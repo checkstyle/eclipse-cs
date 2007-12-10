@@ -56,6 +56,12 @@ public class CheckstylePlugin extends AbstractUIPlugin
     public static final String PREF_INCLUDE_RULE_NAMES = "include.rule.names"; //$NON-NLS-1$
 
     /**
+     * Preference name indicating if module ids are to be included in violation
+     * messages.
+     */
+    public static final String PREF_INCLUDE_MODULE_IDS = "include.module.ids"; //$NON-NLS-1$
+
+    /**
      * Preference name indication if the user should be warned of possibly
      * losing fileset configurations if he switches from advanced to simple
      * fileset configuration.

@@ -148,6 +148,8 @@ public final class Messages extends NLS
 
     public static String CheckstylePreferencePage_lblGeneralSettings;
 
+    public static String CheckstylePreferencePage_lblIncludeModuleIds;
+
     public static String CheckstylePreferencePage_lblIncludeRulenames;
 
     public static String CheckstylePreferencePage_lblLimitMarker;
@@ -259,6 +261,10 @@ public final class Messages extends NLS
     public static String DuplicatedCodeView_refreshActionTooltip;
 
     public static String DuplicatedCodeView_runningCheckstyleToRefresh;
+
+    public static String errorFailedRebuild;
+
+    public static String errorFailedSavePreferences;
 
     public static String ExternalFileConfigurationEditor_msgFileDoesNotExist;
 
