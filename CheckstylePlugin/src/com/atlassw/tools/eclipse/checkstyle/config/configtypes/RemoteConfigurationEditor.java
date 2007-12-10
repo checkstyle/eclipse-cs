@@ -20,7 +20,9 @@
 
 package com.atlassw.tools.eclipse.checkstyle.config.configtypes;
 
+import java.net.MalformedURLException;
 import java.net.PasswordAuthentication;
+import java.net.URL;
 
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.swt.SWT;
@@ -189,7 +191,7 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor
         mChkCacheConfig.setSelection(Boolean.valueOf(
                 (String) mWorkingCopy.getAdditionalData().get(
                         RemoteConfigurationType.KEY_CACHE_CONFIG)).booleanValue());
-        
+
         if (mWorkingCopy.getLocation() != null)
         {
             try
@@ -234,25 +236,32 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor
                     mWorkingCopy.getName() + "_" + currentTime + "_cache.properties"); //$NON-NLS-1$ //$NON-NLS-2$ $NON-NLS-2$
         }
 
+        // store credentials if necessary
+        try
+        {
+            if (StringUtils.trimToNull(mUserName.getText()) != null
+                    || StringUtils.trimToNull(mPassword.getText()) != null)
+            {
+                RemoteConfigurationType.RemoteConfigAuthenticator.storeCredentials(new URL(
+                        mLocation.getText()), mUserName.getText(), mPassword.getText());
+            }
+            else
+            {
+                RemoteConfigurationType.RemoteConfigAuthenticator.removeCachedAuthInfo(new URL(
+                        mLocation.getText()));
+            }
+        }
+        catch (MalformedURLException e)
+        {
+            CheckstylePluginException.rethrow(e);
+        }
+
         mWorkingCopy.setName(mConfigName.getText());
         mWorkingCopy.setLocation(mLocation.getText());
         mWorkingCopy.setDescription(mDescription.getText());
 
         mWorkingCopy.getAdditionalData().put(RemoteConfigurationType.KEY_CACHE_CONFIG,
                 "" + mChkCacheConfig.getSelection()); //$NON-NLS-1$
-
-        // store credentials if necessary
-        if (StringUtils.trimToNull(mUserName.getText()) != null
-                || StringUtils.trimToNull(mPassword.getText()) != null)
-        {
-            RemoteConfigurationType.RemoteConfigAuthenticator.storeCredentials(mWorkingCopy
-                    .getResolvedConfigurationFileURL(), mUserName.getText(), mPassword.getText());
-        }
-        else
-        {
-            RemoteConfigurationType.RemoteConfigAuthenticator.removeCachedAuthInfo(mWorkingCopy
-                    .getResolvedConfigurationFileURL());
-        }
 
         return mWorkingCopy;
     }
