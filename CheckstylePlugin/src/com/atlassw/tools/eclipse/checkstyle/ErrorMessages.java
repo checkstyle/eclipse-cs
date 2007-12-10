@@ -121,6 +121,10 @@ public final class ErrorMessages extends NLS
 
     public static String CheckstyleBuilder_msgErrorUnknown;
 
+    public static String RemoteConfigurationType_errorFileNotFound;
+
+    public static String RemoteConfigurationType_errorUnknownHost;
+
     public static String RemoteConfigurationType_msgRemoteCachingFailed;
 
     public static String RemoteConfigurationType_msgUnAuthorized;

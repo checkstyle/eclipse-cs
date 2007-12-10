@@ -21,6 +21,7 @@
 package com.atlassw.tools.eclipse.checkstyle.config.configtypes;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
@@ -29,6 +30,7 @@ import java.net.HttpURLConnection;
 import java.net.PasswordAuthentication;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -161,6 +163,16 @@ public class RemoteConfigurationType extends ConfigurationType
                 }
 
             }
+            catch (UnknownHostException e)
+            {
+                CheckstylePluginException.rethrow(e, NLS.bind(
+                        ErrorMessages.RemoteConfigurationType_errorUnknownHost, e.getMessage()));
+            }
+            catch (FileNotFoundException e)
+            {
+                CheckstylePluginException.rethrow(e, NLS.bind(
+                        ErrorMessages.RemoteConfigurationType_errorFileNotFound, e.getMessage()));
+            }
             catch (IOException e)
             {
                 CheckstylePluginException.rethrow(e);
@@ -254,7 +266,7 @@ public class RemoteConfigurationType extends ConfigurationType
         String cacheFileLocation = (String) checkConfig.getAdditionalData().get(
                 KEY_CACHE_PROPS_FILE_LOCATION);
 
-        //bug 1748626
+        // bug 1748626
         if (cacheFileLocation == null)
         {
             return null;
