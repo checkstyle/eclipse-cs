@@ -79,6 +79,9 @@ public class XMLTags
     /** location tag. */
     public static final String LOCATION_TAG = "location"; //$NON-NLS-1$
 
+    /** default tag. */
+    public static final String DEFAULT_CHECK_CONFIG_TAG = "default-check-configuration"; //$NON-NLS-1$
+
     /** additional data tag. */
     public static final String ADDITIONAL_DATA_TAG = "additional-data"; //$NON-NLS-1$ 
 

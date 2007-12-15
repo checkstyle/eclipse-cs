@@ -70,6 +70,9 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
     /** List of working copies that were deleted from the working set. */
     private List mDeletedConfigurations;
 
+    /** The default check configuration to be used for unconfigured projects. */
+    private CheckConfigurationWorkingCopy mDefaultCheckConfig;
+
     //
     // constructors
     //
@@ -78,8 +81,9 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
      * Creates a working set to manage global configurations.
      * 
      * @param checkConfigs the list of global check configurations
+     * @param defaultConfig the defaul check configuration
      */
-    GlobalCheckConfigurationWorkingSet(List checkConfigs)
+    GlobalCheckConfigurationWorkingSet(List checkConfigs, ICheckConfiguration defaultConfig)
     {
         mWorkingCopies = new ArrayList();
         mDeletedConfigurations = new ArrayList();
@@ -90,6 +94,11 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
             ICheckConfiguration cfg = (ICheckConfiguration) iter.next();
             CheckConfigurationWorkingCopy workingCopy = new CheckConfigurationWorkingCopy(cfg, this);
             mWorkingCopies.add(workingCopy);
+
+            if (cfg == defaultConfig)
+            {
+                mDefaultCheckConfig = workingCopy;
+            }
         }
     }
 
@@ -131,6 +140,27 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
     }
 
     /**
+     * Returns the default check configuration or <code>null</code> if none is
+     * set.
+     * 
+     * @return the default check configuration
+     */
+    public CheckConfigurationWorkingCopy getDefaultCheckConfig()
+    {
+        return mDefaultCheckConfig;
+    }
+
+    /**
+     * Sets the default check configuration.
+     * 
+     * @param defaultCheckConfig the default check configuration
+     */
+    public void setDefaultCheckConfig(CheckConfigurationWorkingCopy defaultCheckConfig)
+    {
+        this.mDefaultCheckConfig = defaultCheckConfig;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public boolean removeCheckConfiguration(CheckConfigurationWorkingCopy checkConfig)
@@ -144,6 +174,13 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
             if (!used)
             {
                 mWorkingCopies.remove(checkConfig);
+
+                // reset default check config
+                if (mDefaultCheckConfig == checkConfig)
+                {
+                    mDefaultCheckConfig = null;
+                }
+
                 mDeletedConfigurations.add(checkConfig);
             }
         }
@@ -321,7 +358,7 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
             // the transformer handler
             TransformerHandler xmlOut = XMLUtil.writeWithSax(byteOut, null, null);
 
-            writeConfigurations(xmlOut, mWorkingCopies);
+            writeConfigurations(xmlOut, mWorkingCopies, mDefaultCheckConfig);
 
             // write to the file after the serialization was successful
             // prevents corrupted files in case of error
@@ -364,8 +401,8 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
      * @param handler the transformer handler
      * @throws SAXException error writing the configurations
      */
-    private static void writeConfigurations(TransformerHandler handler, List configurations)
-        throws SAXException
+    private static void writeConfigurations(TransformerHandler handler, List configurations,
+            CheckConfigurationWorkingCopy defaultConfig) throws SAXException
     {
 
         String emptyString = new String();
@@ -374,6 +411,11 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
         AttributesImpl attrs = new AttributesImpl();
         attrs.addAttribute(emptyString, XMLTags.VERSION_TAG, XMLTags.VERSION_TAG, emptyString,
                 CheckConfigurationFactory.CURRENT_CONFIG_FILE_FORMAT_VERSION);
+        if (defaultConfig != null)
+        {
+            attrs.addAttribute(emptyString, XMLTags.DEFAULT_CHECK_CONFIG_TAG,
+                    XMLTags.DEFAULT_CHECK_CONFIG_TAG, emptyString, defaultConfig.getName());
+        }
 
         handler.startElement(emptyString, XMLTags.CHECKSTYLE_ROOT_TAG, XMLTags.CHECKSTYLE_ROOT_TAG,
                 attrs);

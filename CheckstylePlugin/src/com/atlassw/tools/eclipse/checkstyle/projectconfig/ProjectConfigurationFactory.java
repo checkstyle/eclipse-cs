@@ -159,9 +159,8 @@ public final class ProjectConfigurationFactory
         if (!exists)
         {
 
-            List checkConfigs = CheckConfigurationFactory.getCheckConfigurations();
             FileSet standardFileSet = new FileSet(Messages.SimpleFileSetsEditor_nameAllFileset,
-                    (ICheckConfiguration) checkConfigs.get(0));
+                    CheckConfigurationFactory.getDefaultCheckConfiguration());
             standardFileSet.getFileMatchPatterns().add(new FileMatchPattern(".*"));
 
             List fileSets = Arrays.asList(new Object[] { standardFileSet });

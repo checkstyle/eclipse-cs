@@ -24,6 +24,7 @@ import java.text.Collator;
 
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.viewers.ColumnPixelData;
+import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
@@ -273,24 +274,30 @@ public class EnhancedTableViewer extends TableViewer
         }
 
         TableLayout layout = new TableLayout();
-        boolean columnsAdded = false;
+        boolean allColumnsHaveStoredData = true;
 
         // store the column widths
         TableColumn[] columns = this.getTable().getColumns();
         for (int i = 0, size = columns.length; i < size; i++)
         {
+
             try
             {
-                columns[i].setWidth(settings.getInt(TAG_COLUMN_WIDTH + i));
-                layout.addColumnData(new ColumnPixelData(settings.getInt(TAG_COLUMN_WIDTH + i)));
-                columnsAdded = true;
+                int width = settings.getInt(TAG_COLUMN_WIDTH + i);
+                columns[i].setWidth(width);
+                layout.addColumnData(new ColumnPixelData(width));
             }
             catch (NumberFormatException e)
             {
-                // NOOP
+                // probably a new column
+                allColumnsHaveStoredData = false;
             }
         }
-        if (columnsAdded)
+
+        // if no all columns have stored width data then probably a new
+        // columns has been added, in this case fall back to the default
+        // weighted layout
+        if (allColumnsHaveStoredData)
         {
             this.getTable().setLayout(layout);
         }

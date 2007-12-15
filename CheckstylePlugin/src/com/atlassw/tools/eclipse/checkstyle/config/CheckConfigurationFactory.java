@@ -85,6 +85,8 @@ public final class CheckConfigurationFactory
      */
     private static List sConfigurations = Collections.synchronizedList(new ArrayList());
 
+    private static ICheckConfiguration sDefaultCheckConfig;
+
     static
     {
         refresh();
@@ -140,13 +142,32 @@ public final class CheckConfigurationFactory
     }
 
     /**
+     * Returns the default check configuration if one is set, if none is set the
+     * Sun Checks built-in configuration will be returned.
+     * 
+     * @return the default check configuration to use with unconfigured projects
+     */
+    public static ICheckConfiguration getDefaultCheckConfiguration()
+    {
+        if (sDefaultCheckConfig != null)
+        {
+            return sDefaultCheckConfig;
+        }
+        else
+        {
+            return (ICheckConfiguration) sConfigurations.get(0);
+        }
+    }
+
+    /**
      * Creates a new working set from the existing configurations.
      * 
      * @return a new configuration working set
      */
     public static ICheckConfigurationWorkingSet newWorkingSet()
     {
-        return new GlobalCheckConfigurationWorkingSet(sConfigurations);
+        return new GlobalCheckConfigurationWorkingSet(sConfigurations,
+                getDefaultCheckConfiguration());
     }
 
     /**
@@ -159,6 +180,7 @@ public final class CheckConfigurationFactory
             sConfigurations.clear();
             loadBuiltinConfigurations();
             loadFromPersistence();
+
         }
         catch (CheckstylePluginException e)
         {
@@ -263,6 +285,19 @@ public final class CheckConfigurationFactory
             else
             {
                 sConfigurations.addAll(handler.getConfigurations());
+
+                String defaultConfigName = handler.getDefaultCheckConfigurationName();
+
+                Iterator it = sConfigurations.iterator();
+                while (it.hasNext())
+                {
+
+                    ICheckConfiguration config = (ICheckConfiguration) it.next();
+                    if (config.getName().equals(defaultConfigName))
+                    {
+                        sDefaultCheckConfig = config;
+                    }
+                }
             }
         }
         catch (Exception e)
@@ -368,6 +403,9 @@ public final class CheckConfigurationFactory
         /** List of resolvable properties for this configuration. */
         private List mResolvableProperties;
 
+        /** The default check configuration name. */
+        private String mDefaultConfigName;
+
         /**
          * Return the configurations this handler built.
          * 
@@ -376,6 +414,17 @@ public final class CheckConfigurationFactory
         public List getConfigurations()
         {
             return mConfigurations;
+        }
+
+        /**
+         * Returns the default check configuration name or <code>null</code>
+         * if none was specified.
+         * 
+         * @return the default check configuration name or <code>null</code>
+         */
+        public String getDefaultCheckConfigurationName()
+        {
+            return mDefaultConfigName;
         }
 
         /**
@@ -403,6 +452,8 @@ public final class CheckConfigurationFactory
                 {
                     mOldFileFormat = true;
                 }
+
+                mDefaultConfigName = attributes.getValue(XMLTags.DEFAULT_CHECK_CONFIG_TAG);
             }
 
             else if (!mOldFileFormat && XMLTags.CHECK_CONFIG_TAG.equals(qName))
@@ -447,6 +498,7 @@ public final class CheckConfigurationFactory
                             mCurrentLocation, mCurrentDescription, mCurrentConfigType, true,
                             mResolvableProperties, mCurrentAddValues);
                     mConfigurations.add(checkConfig);
+
                 }
                 catch (Exception e)
                 {

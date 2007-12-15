@@ -60,6 +60,9 @@ public abstract class CheckstylePluginImages
     /** Image descriptor for the remove correction icon. */
     public static final ImageDescriptor CORRECTION_REMOVE;
 
+    /** Image descriptor for the tick icon. */
+    public static final ImageDescriptor TICK_ICON;
+
     /** Image cache. */
     private static final Map CACHED_IMAGES = new HashMap();
 
@@ -82,6 +85,8 @@ public abstract class CheckstylePluginImages
                 "icons/correction_change.gif"); //$NON-NLS-1$
         CORRECTION_REMOVE = CheckstylePlugin.imageDescriptorFromPlugin(CheckstylePlugin.PLUGIN_ID,
                 "icons/remove_correction.gif"); //$NON-NLS-1$
+        TICK_ICON = CheckstylePlugin.imageDescriptorFromPlugin(CheckstylePlugin.PLUGIN_ID,
+                "icons/tick.gif"); //$NON-NLS-1$
     }
 
     /**

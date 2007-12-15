@@ -60,11 +60,13 @@ import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationFactory;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationWorkingCopy;
+import com.atlassw.tools.eclipse.checkstyle.config.GlobalCheckConfigurationWorkingSet;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfigurationWorkingSet;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfigurationFactory;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginImages;
 import com.atlassw.tools.eclipse.checkstyle.util.table.EnhancedTableViewer;
 import com.atlassw.tools.eclipse.checkstyle.util.table.ITableComparableProvider;
 import com.atlassw.tools.eclipse.checkstyle.util.table.ITableSettingsProvider;
@@ -92,6 +94,8 @@ public class CheckConfigurationWorkingSetEditor
     private Button mCopyButton;
 
     private Button mRemoveButton;
+
+    private Button mDefaultButton;
 
     private Button mExportButton;
 
@@ -263,6 +267,13 @@ public class CheckConfigurationWorkingSetEditor
         column3.setText(Messages.CheckstylePreferencePage_colType);
         tableLayout.addColumnData(new ColumnWeightData(30));
 
+        if (mWorkingSet instanceof GlobalCheckConfigurationWorkingSet)
+        {
+            TableColumn column4 = new TableColumn(table, SWT.NULL);
+            column4.setText(Messages.CheckstylePreferencePage_colDefault);
+            tableLayout.addColumnData(new ColumnWeightData(12));
+        }
+
         mViewer = new EnhancedTableViewer(table);
         ConfigurationLabelProvider multiProvider = new ConfigurationLabelProvider();
         mViewer.setLabelProvider(multiProvider);
@@ -335,6 +346,19 @@ public class CheckConfigurationWorkingSetEditor
         fd.right = new FormAttachment(100);
         mRemoveButton.setLayoutData(fd);
 
+        mDefaultButton = new Button(rightButtons, SWT.PUSH);
+        mDefaultButton.setText(Messages.CheckstylePreferencePage_btnDefault);
+        mDefaultButton.addSelectionListener(mController);
+        mDefaultButton.setToolTipText(Messages.CheckstylePreferencePage_txtDefault);
+        if (mWorkingSet instanceof GlobalCheckConfigurationWorkingSet)
+        {
+            fd = new FormData();
+            fd.left = new FormAttachment(0);
+            fd.top = new FormAttachment(mRemoveButton, 3, SWT.BOTTOM);
+            fd.right = new FormAttachment(100);
+            mDefaultButton.setLayoutData(fd);
+        }
+
         mExportButton = new Button(rightButtons, SWT.PUSH);
         mExportButton.setText(Messages.CheckstylePreferencePage_btnExport);
         mExportButton.addSelectionListener(mController);
@@ -390,6 +414,11 @@ public class CheckConfigurationWorkingSetEditor
                     && mViewer.getSelection() instanceof IStructuredSelection)
             {
                 removeCheckConfig();
+            }
+            else if (mDefaultButton == e.widget
+                    && mViewer.getSelection() instanceof IStructuredSelection)
+            {
+                setDefaultCheckConfig();
             }
             else if (mExportButton == e.widget
                     && mViewer.getSelection() instanceof IStructuredSelection)
@@ -615,6 +644,27 @@ public class CheckConfigurationWorkingSetEditor
         }
     }
 
+    private void setDefaultCheckConfig()
+    {
+        IStructuredSelection selection = (IStructuredSelection) mViewer.getSelection();
+        CheckConfigurationWorkingCopy checkConfig = (CheckConfigurationWorkingCopy) selection
+                .getFirstElement();
+        if (checkConfig == null)
+        {
+            //
+            // Nothing is selected.
+            //
+            return;
+        }
+
+        if (mWorkingSet instanceof GlobalCheckConfigurationWorkingSet)
+        {
+            ((GlobalCheckConfigurationWorkingSet) mWorkingSet).setDefaultCheckConfig(checkConfig);
+        }
+
+        mViewer.refresh();
+    }
+
     /**
      * Export a configuration.
      */
@@ -681,6 +731,10 @@ public class CheckConfigurationWorkingSetEditor
                 {
                     result = cfg.getType().getName();
                 }
+                if (columnIndex == 3)
+                {
+                    result = "";
+                }
             }
             return result;
         }
@@ -690,7 +744,30 @@ public class CheckConfigurationWorkingSetEditor
          */
         public Image getColumnImage(Object element, int columnIndex)
         {
-            return columnIndex == 0 ? getImage(element) : null;
+            Image image = null;
+            switch (columnIndex)
+            {
+                case 0:
+                    image = getImage(element);
+                    break;
+                case 3:
+                    ICheckConfiguration cfg = (ICheckConfiguration) element;
+                    if (mWorkingSet instanceof GlobalCheckConfigurationWorkingSet)
+                    {
+
+                        if (((GlobalCheckConfigurationWorkingSet) mWorkingSet)
+                                .getDefaultCheckConfig() == cfg)
+                        {
+                            image = CheckstylePluginImages
+                                    .getImage(CheckstylePluginImages.TICK_ICON);
+                        }
+                    }
+                    break;
+                default:
+                    image = null;
+                    break;
+            }
+            return image;
         }
 
         /**

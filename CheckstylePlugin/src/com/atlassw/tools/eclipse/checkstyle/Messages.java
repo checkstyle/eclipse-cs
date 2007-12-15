@@ -132,11 +132,17 @@ public final class Messages extends NLS
 
     public static String CheckstylePreferencePage_btnRemove;
 
+    public static String CheckstylePreferencePage_btnDefault;
+
+    public static String CheckstylePreferencePage_txtDefault;
+
     public static String CheckstylePreferencePage_colCheckConfig;
 
     public static String CheckstylePreferencePage_colLocation;
 
     public static String CheckstylePreferencePage_colType;
+
+    public static String CheckstylePreferencePage_colDefault;
 
     public static String CheckConfigurationPropertiesDialog_CopyOfAddition;
 
