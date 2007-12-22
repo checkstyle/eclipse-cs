@@ -174,7 +174,14 @@
 					the Forums</a>
 			</xsl:if>
 		</div>
-		
+
+		<div style="margin-top: 5px; text-align: center; background-color: #cddeff;">
+			<a href="http://www.ohloh.net/projects/6568?ref=sample">
+				<script type="text/javascript"
+					src="http://www.ohloh.net/projects/6568/widgets/project_partner_badge"> function
+					dummy() { } </script>
+			</a>
+		</div>
 
 		<div style="margin-top: 5px; text-align: center; background-color: #cddeff;">
 
