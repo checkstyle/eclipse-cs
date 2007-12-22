@@ -8,7 +8,6 @@
 	<classpathentry exported="true" kind="lib" path="lib/commons-httpclient-3.0.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/commons-io-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/commons-lang-2.3.jar"/>
-	<classpathentry kind="lib" path="build/ant4eclipse-0.5.0.rc1.jar" sourcepath="build/ant4eclipse-0.5.0.rc1-src.zip"/>
 	<classpathentry kind="lib" path="lib/checkstyle-all-4.4.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
