@@ -30,10 +30,14 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.MissingResourceException;
+import java.util.PropertyResourceBundle;
+import java.util.ResourceBundle;
 import java.util.TreeMap;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.osgi.util.NLS;
@@ -264,8 +268,6 @@ public final class MetadataFactory
             ClassLoader customsLoader = CustomLibrariesClassLoader.get();
             Thread.currentThread().setContextClassLoader(customsLoader);
 
-            MetaDataHandler metadataHandler = new MetaDataHandler();
-
             Collection potentialMetadataFiles = getAllPotentialMetadataFiles();
             Iterator it = potentialMetadataFiles.iterator();
             while (it.hasNext())
@@ -278,6 +280,8 @@ public final class MetadataFactory
                     metadataStream = customsLoader.getResourceAsStream(metadataFile);
                     if (metadataStream != null)
                     {
+                        MetaDataHandler metadataHandler = new MetaDataHandler(
+                                getMetadataI18NBundle(metadataFile));
                         XMLUtil.parseWithSAX(metadataStream, metadataHandler, true);
                     }
                 }
@@ -338,6 +342,27 @@ public final class MetadataFactory
     }
 
     /**
+     * Returns the ResourceBundle for the given meta data file contained i18n'ed
+     * names and descriptions.
+     * 
+     * @param metadataFile
+     * @return the corresponding ResourceBundle for the metadata file or
+     *         <code>null</code> if none exists
+     */
+    private static ResourceBundle getMetadataI18NBundle(String metadataFile)
+    {
+        String bundle = metadataFile.substring(0, metadataFile.length() - 4).replace("/", ".");
+        try
+        {
+            return PropertyResourceBundle.getBundle(bundle);
+        }
+        catch (MissingResourceException e)
+        {
+            return null;
+        }
+    }
+
+    /**
      * SAX-Handler for parsing of the metadata file.
      * 
      * @author Lars Ködderitzsch
@@ -364,6 +389,8 @@ public final class MetadataFactory
         /** StringBuffer containing the description. */
         private StringBuffer mDescription;
 
+        private ResourceBundle mI18NBundle;
+
         // /**
         // * @see
         // org.xml.sax.ext.EntityResolver2#getExternalSubset(java.lang.String,
@@ -378,6 +405,11 @@ public final class MetadataFactory
         // getClass().getClassLoader().getResourceAsStream(DTD_RESOURCE_NAME);
         // return new InputSource(dtdIS);
         // }
+
+        public MetaDataHandler(ResourceBundle i18nBundle)
+        {
+            mI18NBundle = i18nBundle;
+        }
 
         /*
          * 
@@ -427,6 +459,7 @@ public final class MetadataFactory
                 {
 
                     String groupName = attributes.getValue(XMLTags.NAME_TAG).trim();
+                    groupName = localize(groupName);
 
                     mCurrentGroup = getRuleGroupMetadata(groupName);
 
@@ -474,8 +507,8 @@ public final class MetadataFactory
                             attributes.getValue(XMLTags.IS_SINGLETON_TAG)).booleanValue();
 
                     // create rule metadata
-                    mCurrentRule = new RuleMetadata(name, internalName, parentName, severity,
-                            hidden, hasSeverity, deletable, isSingleton, mCurrentGroup);
+                    mCurrentRule = new RuleMetadata(localize(name), internalName, parentName,
+                            severity, hidden, hasSeverity, deletable, isSingleton, mCurrentGroup);
                     mCurrentGroup.getRuleMetadata().add(mCurrentRule);
 
                     // register internal name
@@ -554,6 +587,7 @@ public final class MetadataFactory
             {
                 throw new SAXException(e.getLocalizedMessage(), e);
             }
+
         }
 
         /**
@@ -578,11 +612,11 @@ public final class MetadataFactory
                 String description = mDescription.toString();
                 if (mCurrentProperty != null)
                 {
-                    mCurrentProperty.setDescription(description);
+                    mCurrentProperty.setDescription(localize(description));
                 }
                 else if (mCurrentRule != null)
                 {
-                    mCurrentRule.setDescription(description);
+                    mCurrentRule.setDescription(localize(description));
                 }
             }
         }
@@ -606,5 +640,23 @@ public final class MetadataFactory
         {
             throw e;
         }
+
+        private String localize(String localizationCandidate)
+        {
+
+            if (mI18NBundle != null && localizationCandidate.startsWith("%"))
+            {
+                try
+                {
+                    return mI18NBundle.getString(localizationCandidate.substring(1));
+                }
+                catch (MissingResourceException e)
+                {
+                    return localizationCandidate;
+                }
+            }
+            return localizationCandidate;
+        }
+
     }
 }

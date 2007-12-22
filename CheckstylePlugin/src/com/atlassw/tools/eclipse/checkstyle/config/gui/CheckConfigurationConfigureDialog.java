@@ -52,6 +52,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
@@ -130,8 +131,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
     /** Group containing the table viewer. */
     private Group mConfiguredModulesGroup;
 
-    /** Textarea showing the description of a module. */
-    private Text mTxtDescription;
+    private Browser mBrowserDescription;
 
     /** Checkbox handling if the module editor is opened on add action. */
     private Button mBtnOpenModuleOnAdd;
@@ -208,11 +208,10 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
         lblDescription.setText(Messages.CheckConfigurationConfigureDialog_lblDescription);
         lblDescription.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-        mTxtDescription = new Text(contents, SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.READ_ONLY
-                | SWT.BORDER | SWT.VERTICAL);
+        mBrowserDescription = new Browser(contents, SWT.BORDER);
         gd = new GridData(GridData.FILL_HORIZONTAL);
         gd.heightHint = 100;
-        mTxtDescription.setLayoutData(gd);
+        mBrowserDescription.setLayoutData(gd);
 
         // initialize the data
         initialize();
@@ -685,8 +684,13 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
                 }
             }
 
-            mTxtDescription.setText(description != null ? description
+            StringBuffer buf = new StringBuffer();
+            buf.append("<html><body style=\"margin: 3px; font-size: 11px; ");
+            buf.append("font-family: verdana, 'trebuchet MS', helvetica, sans-serif;\">");
+            buf.append(description != null ? description
                     : Messages.CheckConfigurationConfigureDialog_txtNoDescription);
+            buf.append("</body></html>");
+            mBrowserDescription.setText(buf.toString());
         }
 
         /**

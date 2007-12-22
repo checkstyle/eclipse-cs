@@ -3,428 +3,377 @@
 "-//eclipse-cs//DTD Check Metadata 1.0//EN"
 "http://eclipse-cs.sourceforge.net/dtds/checkstyle-metadata_1_0.dtd">
 <checkstyle-metadata>
- <rule-group-metadata name="Coding Problems" priority="900">
-   
-      <rule-metadata name="Avoid Inline Conditionals" internal-name="AvoidInlineConditionals" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.AvoidInlineConditionalsCheck"/>
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.AvoidInlineConditionalsCheck"/>
-         <description>Detects inline conditionals. Rationale: Some developers find inline conditionals hard to read, so their company's coding standards forbids them.</description>
-      </rule-metadata>
-      
-      <rule-metadata name="Covariant Equals" internal-name="CovariantEquals" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.CovariantEqualsCheck"/>
-         <description>Checks that classes that define a covariant equals() method also override method equals(java.lang.Object). Inspired by findbugs. 
+    <rule-group-metadata name="%Coding.group" priority="900">
 
-Rationale: Mistakenly defining a covariant equals() method without overriding method equals(java.lang.Object) can produce unexpected runtime behaviour.     </description>
-      </rule-metadata>
-      
-      <rule-metadata name="Default Comes Last" internal-name="DefaultComesLast" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.DefaultComesLastCheck"/>
-         <description>Check that the default is after all the cases in a switch statement. 
+        <rule-metadata name="%AvoidInlineConditionals.name" internal-name="AvoidInlineConditionals" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.AvoidInlineConditionalsCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.AvoidInlineConditionalsCheck"/>
+            <description>%AvoidInlineConditionals.desc</description>
+        </rule-metadata>
 
-Rationale: Java allows default anywhere within the switch statement. But it is more readable if it comes after the last case</description>
-      	 <quickfix classname="com.atlassw.tools.eclipse.checkstyle.quickfixes.coding.DefaultComesLastQuickfix"/>
-      </rule-metadata>
-      
-      <rule-metadata name="Declaration Order Check" internal-name="DeclarationOrder" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.DeclarationOrderCheck"/>
-         <description>According to Code Conventions for the Java Programming Language , the parts of a class or interface declaration should appear in the following order 
+        <rule-metadata name="%CovariantEquals.name" internal-name="CovariantEquals" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.CovariantEqualsCheck"/>
+            <description>%CovariantEquals.desc</description>
+        </rule-metadata>
 
-Class (static) variables. First the public class variables, then the protected, then package level (no access modifier), and then the private. 
-Instance variables. First the public class variables, then the protected, then package level (no access modifier), and then the private. 
-Constructors 
-Methods 
-         </description>
-      </rule-metadata>
-      
-      <rule-metadata name="Double Checked Locking" internal-name="DoubleCheckedLocking" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.DoubleCheckedLockingCheck"/>
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.DoubleCheckedLockingCheck"/>
-         <description>The "double-checked locking" idiom (DCL) tries to avoid the runtime cost of synchronization. The problem with the DCL idiom in Java is that it just does not work correctly. Using it introduces bugs that are extremely hard to track down and reproduce.</description>
-      </rule-metadata>
-      
-      <rule-metadata name="Empty Statement" internal-name="EmptyStatement" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.EmptyStatementCheck"/>
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.EmptyStatementCheck"/>
-         <description>Detects empty statements (standalone ;).</description>
-         <quickfix classname="com.atlassw.tools.eclipse.checkstyle.quickfixes.coding.EmptyStatementQuickfix"/>
-      </rule-metadata>
-      
-      <rule-metadata name="Equals and HashCode" internal-name="EqualsHashCode" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.EqualsHashCodeCheck"/>
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.EqualsHashCodeCheck"/>
-         <description>Checks that classes that override equals() also override hashCode().</description>
-      </rule-metadata>
-      
-      <rule-metadata name="Explicit Initialization" internal-name="ExplicitInitialization" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.ExplicitInitializationCheck"/>
-         <description>Checks if any class or object member explicitly initialized to default for its type value (null for object references, zero for numeric types and char and false for booolean.
+        <rule-metadata name="%DefaultComesLast.name" internal-name="DefaultComesLast" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.DefaultComesLastCheck"/>
+            <description>%DefaultComesLast.desc</description>
+            <quickfix classname="com.atlassw.tools.eclipse.checkstyle.quickfixes.coding.DefaultComesLastQuickfix"/>
+        </rule-metadata>
 
-Rationale: each instance variable gets initialized twice, to the same value. Java initializes each instance variable to its default value (0 or null) before performing any initialization specified in the code. So in this case, x gets initialized to 0 twice, and bar gets initialized to null twice. So there is a minor inefficiency. This style of coding is a hold-over from C/C++ style coding, and it shows that the developer isn't really confident that Java really initializes instance variables to default values.
-         </description>
-      </rule-metadata>
-      
-      <rule-metadata name="Fall Through" internal-name="FallThrough" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.FallThroughCheck"/>
-         <description>Checks for fall through in switch statements Finds locations where a case contains Java code - but lacks a break, return, throw or continue statement. 
+        <rule-metadata name="%DeclarationOrder.name" internal-name="DeclarationOrder" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.DeclarationOrderCheck"/>
+            <description>%DeclarationOrder.desc</description>
+        </rule-metadata>
 
-The check honores special comments to supress the warning. By default the text "fallthru", "fall through", "fallthrough", "falls through" and "fallsthrough" are recognized (case sensitive). The comment containing this words must be a one-liner and must be on the last none-empty line before the case triggering the warning or on the same line before the case (ugly, but possible). 
+        <rule-metadata name="%DoubleCheckedLocking.name" internal-name="DoubleCheckedLocking" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.DoubleCheckedLockingCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.DoubleCheckedLockingCheck"/>
+            <description>%DoubleCheckedLocking.desc</description>
+        </rule-metadata>
 
-Note: the check works in assumption that there is no unreachable code in the case.</description>
-		 <property-metadata name="checkLastCaseGroup" datatype="Boolean" default-value="false">
-            <description>Whether we need to check last case group or not.</description>
-         </property-metadata>
-		 <property-metadata name="reliefPattern" datatype="Regex" default-value="fallthru|falls? ?through">
-            <description>Regular expression to match the relief comment that supresses the warning about a fall through. </description>
-         </property-metadata>
-      </rule-metadata>
-      
-      <rule-metadata name="Final Local Variable" internal-name="FinalLocalVariable" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.FinalLocalVariableCheck"/>
-         <description>Checks that local variables that never have their values changed are declared final. The check can be configured to also check that unchanged parameters are declared final.         </description>
-         <property-metadata name="tokens" datatype="MultiCheck" default-value="VARIABLE_DEF">
-            <description>Tokens to check.</description>
-            <enumeration>
-               <property-value-option value="PARAMETER_DEF"/>
-               <property-value-option value="VARIABLE_DEF"/>
-            </enumeration>
-         </property-metadata>
-         <quickfix classname="com.atlassw.tools.eclipse.checkstyle.quickfixes.coding.FinalLocalVariableQuickfix"/>
-      </rule-metadata>
-      
-      <rule-metadata name="Hidden Field" internal-name="HiddenField" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.HiddenFieldCheck"/>
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.HiddenFieldCheck"/>
-         <description>Checks that a local variable or a parameter does not shadow a field that is defined in the same class.</description>
-         <property-metadata name="tokens" datatype="MultiCheck" default-value="PARAMETER_DEF,VARIABLE_DEF">
-            <description>Tokens to check.</description>
-            <enumeration>
-               <property-value-option value="PARAMETER_DEF"/>
-               <property-value-option value="VARIABLE_DEF"/>
-            </enumeration>
-         </property-metadata>
-         <property-metadata name="ignoreFormat" datatype="Regex">
-            <description>pattern for names to ignore</description>
-         </property-metadata>
-         <property-metadata name="ignoreConstructorParameter" datatype="Boolean" default-value="false">
-            <description>Controls whether to ignore constructor parameters.</description>
-         </property-metadata>
-         <property-metadata name="ignoreSetter" datatype="Boolean" default-value="false">
-            <description>Controls whether to ignore the parameter of a property setter method, where the property setter method for field "xyz" has name "setXyz", one parameter named "xyz", and return type void.</description>
-         </property-metadata>
-         <property-metadata name="ignoreAbstractMethods" datatype="Boolean" default-value="false">
-         	<description>Controls whether to ignore parameters of abstract methods.</description>
-         </property-metadata>
-      </rule-metadata>
-      
-      <rule-metadata name="Illegal Instantiation" internal-name="IllegalInstantiation" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.IllegalInstantiationCheck"/>
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.IllegalInstantiationCheck"/>
-         <description>Checks for illegal instantiations where a factory method is preferred.  Rationale: Depending on the project, for some classes it might be preferable to create instances through factory methods rather than calling the constructor.  A simple example is the java.lang.Boolean class. In order to save memory and CPU cycles, it is preferable to use the predefined constants TRUE and FALSE. Constructor invocations should be replaced by calls to Boolean.valueOf().  Some extremely performance sensitive projects may require the use of factory methods for other classes as well, to enforce the usage of number caches or object pools.</description>
-         <property-metadata name="classes" datatype="String">
-            <description>Comman seperated list of classes that should not be instantiated.</description>
-         </property-metadata>
-      </rule-metadata>
-      
-      <rule-metadata name="Illegal Catch" internal-name="IllegalCatch" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.IllegalCatchCheck"/>
-         <description>Catching java.lang.Exception, java.lang.Error or java.lang.RuntimeException is almost never acceptable. 
+        <rule-metadata name="%EmptyStatement.name" internal-name="EmptyStatement" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.EmptyStatementCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.EmptyStatementCheck"/>
+            <description>%EmptyStatement.desc</description>
+            <quickfix classname="com.atlassw.tools.eclipse.checkstyle.quickfixes.coding.EmptyStatementQuickfix"/>
+        </rule-metadata>
 
-Rationale: Junior developers often simply catch Exception in an attempt to handle multiple exception classes. This unfortunately leads to code that inadvertantly catchs NPE, OutOfMemoryErrors, etc. </description>
-         <property-metadata name="illegalClassNames" datatype="String" default-value="java.lang.Exception, java.lang.Throwable, java.lang.RuntimeException">
-            <description>exception class names to reject</description>
-         </property-metadata>
-      </rule-metadata>
-      
-      <rule-metadata name="Illegal Throws" internal-name="IllegalThrows" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.IllegalThrowsCheck"/>
-         <description>This check can be used to ensure that types are not declared to be thrown. Declaring to throw java.lang.Error or java.lang.RuntimeException is almost never acceptable.</description>
-         <property-metadata name="illegalClassNames" datatype="String" default-value="java.lang.Throwable, java.lang.Error, java.lang.RuntimeException">
-            <description>throw class names to reject</description>
-         </property-metadata>
-      </rule-metadata>
-      
-      <rule-metadata name="Illegal Tokens" internal-name="IllegalToken" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.IllegalTokenCheck"/>
-         <description>Checks for illegal tokens. 
+        <rule-metadata name="%EqualsHashCode.name" internal-name="EqualsHashCode" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.EqualsHashCodeCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.EqualsHashCodeCheck"/>
+            <description>%EqualsHashCode.desc</description>
+        </rule-metadata>
 
-Rational: Certain language features often lead to hard to maintain code or are non-obvious to novice developers. Other features may be discouraged in certain frameworks, such as not having native methods in EJB components. </description>
-         <property-metadata name="tokens" datatype="MultiCheck" default-value="LITERAL_SWITCH,POST_INC,POST_DEC">
-            <description>Tokens to check.</description>
-            <enumeration option-provider="com.atlassw.tools.eclipse.checkstyle.config.meta.AllTokensProvider">
-            </enumeration>
-         </property-metadata>
-      </rule-metadata>
-      
-      <rule-metadata name="Illegal Tokens Text" internal-name="IllegalTokenText" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.IllegalTokenTextCheck"/>
-         <description>Checks for illegal token text.</description>
-         <property-metadata name="tokens" datatype="MultiCheck">
-            <description>Tokens to check.</description>
-			<enumeration option-provider="com.atlassw.tools.eclipse.checkstyle.config.meta.AllTokensProvider">
-            </enumeration>
-         </property-metadata>
-         <property-metadata name="format" datatype="Regex" default-value="^$">
-            <description>illegal pattern</description>
-         </property-metadata>
-         <property-metadata name="ignoreCase" datatype="Boolean" default-value="false">
-            <description>Controls whether to ignore case when matching.</description>
-         </property-metadata>
-         <property-metadata name="message" datatype="String">
-            <description>Message which is used to notify about violations; if empty then the default message is used.</description>
-         </property-metadata>
-      </rule-metadata>
-      
-      <rule-metadata name="Illegal Type" internal-name="IllegalType" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.IllegalTypeCheck"/>
-         <description>Checks that particular class are never used as types in variable declarations, return values or parameters. Includes a pattern check that by default disallows abstract classes. 
+        <rule-metadata name="%ExplicitInitialization.name" internal-name="ExplicitInitialization" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.ExplicitInitializationCheck"/>
+            <description>%ExplicitInitialization.desc</description>
+        </rule-metadata>
 
-Rationale: Helps reduce coupling on concrete classes. In addition abstract classes should be thought of a convenience base class implementations of interfaces and as such are not types themsleves.
-         </description>
-         <property-metadata name="tokens" datatype="MultiCheck" default-value="PARAMETER_DEF,VARIABLE_DEF,METHOD_DEF">
-            <description>Tokens to check.</description>
-            <enumeration>
-               <property-value-option value="METHOD_DEF"/>
-               <property-value-option value="PARAMETER_DEF"/>
-               <property-value-option value="VARIABLE_DEF"/>
-            </enumeration>
-         </property-metadata>
-         <property-metadata name="illegalClassNames" datatype="String" default-value="java.util.GregorianCalendar, java.util.Hashtable, java.util.HashSet, java.util.HashMap, java.util.ArrayList, java.util.LinkedList, java.util.LinkedHashMap, java.util.LinkedHashSet, java.util.TreeSet, java.util.TreeMap, java.util.Vector">
-            <description>classes that should not be used as types in variable declarations, return values or parameters.</description>
-         </property-metadata>
-         <property-metadata name="legalAbstractClassNames" datatype="String">
-            <description>abstract classes that may be used as types. </description>
-         </property-metadata>
-         <property-metadata name="ignoredMethodNames" datatype="String" default-value="getInitialContext, getEnvironment">
-            <description>methods that should not be checked.</description>
-         </property-metadata>
-         <property-metadata name="format" datatype="Regex" default-value="^(.*[\.])?Abstract.*$">
-            <description>pattern for illegal class name </description>
-         </property-metadata>  
-      </rule-metadata>
-      
-      <rule-metadata name="Inner Assignment" internal-name="InnerAssignment" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.InnerAssignmentCheck"/>
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.InnerAssignmentCheck"/>
-         <description>Checks for assignments in subexpressions, such as in "String s = Integer.toString(i = 2);".  Rationale: With the exception of for iterators, all assignments should occur in their own toplevel statement to increase readability. With inner assignments like the above it is difficult to see all places where a variable is set.</description>
-         <property-metadata name="tokens" datatype="MultiCheck" default-value="ASSIGN,BAND_ASSIGN,BOR_ASSIGN,BSR_ASSIGN,BXOR_ASSIGN,DIV_ASSIGN,MINUS_ASSIGN,MOD_ASSIGN,PLUS_ASSIGN,SL_ASSIGN,SR_ASSIGN,STAR_ASSIGN">
-            <description>Tokens to check.</description>
-            <enumeration>
-               <property-value-option value="ASSIGN"/>
-               <property-value-option value="BAND_ASSIGN"/>
-               <property-value-option value="BOR_ASSIGN"/>
-               <property-value-option value="BSR_ASSIGN"/>
-               <property-value-option value="BXOR_ASSIGN"/>
-               <property-value-option value="DIV_ASSIGN"/>
-               <property-value-option value="MINUS_ASSIGN"/>
-               <property-value-option value="MOD_ASSIGN"/>
-               <property-value-option value="PLUS_ASSIGN"/>
-               <property-value-option value="SL_ASSIGN"/>
-               <property-value-option value="SR_ASSIGN"/>
-               <property-value-option value="STAR_ASSIGN"/>
-            </enumeration>
-         </property-metadata>
-      </rule-metadata>
-      
-      <rule-metadata name="Junit Test Case" internal-name="JUnitTestCase" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.JUnitTestCaseCheck"/>
-         <description>Ensures that the setUp(), tearDown()methods are named correctly, have no arguments, return void and are either public or protected.
-Also ensures that suite() is named correctly, have no arguments, return junit.framewotk.Test, public and static. 
+        <rule-metadata name="%FallThrough.name" internal-name="FallThrough" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.FallThroughCheck"/>
+            <description>%FallThrough.desc</description>
+            <property-metadata name="checkLastCaseGroup" datatype="Boolean" default-value="false">
+                <description>%FallThrough.checkLastCaseGroup</description>
+            </property-metadata>
+            <property-metadata name="reliefPattern" datatype="Regex" default-value="fallthru|falls? ?through">
+                <description>%FallThrough.reliefPattern</description>
+            </property-metadata>
+        </rule-metadata>
 
-Rationale: often times developers will misname one or more of these methods and not realise that the method is not being called. 
-         </description>
-      </rule-metadata>
-      
-      <rule-metadata name="Magic Number" internal-name="MagicNumber" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck"/>
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.MagicNumberCheck"/>
-         <description>Checks that there are no "magic numbers", where a magic number is a numeric literal that is not defined as a constant.</description>
-         <property-metadata name="ignoreNumbers" datatype="String" default-value="-1, 0, 1, 2">
-            <description>Comman seperated list of non-Magic numbers.</description>
-         </property-metadata>
-         <property-metadata name="tokens" datatype="MultiCheck" default-value="NUM_DOUBLE,NUM_FLOAT,NUM_INT,NUM_LONG">
-            <description>Tokens to check.</description>
-            <enumeration>
-               <property-value-option value="NUM_DOUBLE"/>
-               <property-value-option value="NUM_FLOAT"/>
-               <property-value-option value="NUM_INT"/>
-               <property-value-option value="NUM_LONG"/>
-            </enumeration>
-         </property-metadata>
-      </rule-metadata>
-      
-      <rule-metadata name="Missing Constructor" internal-name="MissingCtor" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.MissingCtorCheck"/>
-         <description>Checks that classes (except abtract one) define a ctor and don't rely on the default one.</description>
-      </rule-metadata>
-      
-      <rule-metadata name="Missing Switch Default" internal-name="MissingSwitchDefault" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.MissingSwitchDefaultCheck"/>
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.MissingSwitchDefaultCheck"/>
-         <description>Checks that switch statement has "default" clause. Rationale: It's usually a good idea to introduce a default case in every switch statement. Even if the developer is sure that all currently possible cases are covered, this should be expressed in the default branch, e.g. by using an assertion. This way the code is protected aginst later changes, e.g. introduction of new types in an enumeration type.</description>
-         <quickfix classname="com.atlassw.tools.eclipse.checkstyle.quickfixes.coding.MissingSwitchDefaultQuickfix"/>
-      </rule-metadata>
-      
-      <rule-metadata name="Modified Control Variable" internal-name="ModifiedControlVariable" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.ModifiedControlVariableCheck"/>
-         <description> Check for ensuring that for loop control variables are not modified inside the for block. An example is:
-      
-for (int i = 0; i &lt; 1; i++) {
-    i++;
-}
+        <rule-metadata name="%FinalLocalVariable.name" internal-name="FinalLocalVariable" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.FinalLocalVariableCheck"/>
+            <description>%FinalLocalVariable.desc</description>
+            <property-metadata name="tokens" datatype="MultiCheck" default-value="VARIABLE_DEF">
+                <description>%FinalLocalVariable.tokens</description>
+                <enumeration>
+                    <property-value-option value="PARAMETER_DEF"/>
+                    <property-value-option value="VARIABLE_DEF"/>
+                </enumeration>
+            </property-metadata>
+            <quickfix classname="com.atlassw.tools.eclipse.checkstyle.quickfixes.coding.FinalLocalVariableQuickfix"/>
+        </rule-metadata>
 
-Rationale: If the control variable is modified inside the loop body, the program flow becomes more difficult to follow. An option is to replace the for loop with a while loop. </description>
-      </rule-metadata>
-      
-      <rule-metadata name="Multiple String Literals" internal-name="MultipleStringLiterals" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.MultipleStringLiteralsCheck"/>
-         <description> Checks for multiple occurrences of the same string literal within a single file.
+        <rule-metadata name="%HiddenField.name" internal-name="HiddenField" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.HiddenFieldCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.HiddenFieldCheck"/>
+            <description>%HiddenField.desc</description>
+            <property-metadata name="tokens" datatype="MultiCheck" default-value="PARAMETER_DEF,VARIABLE_DEF">
+                <description>%HiddenField.tokens</description>
+                <enumeration>
+                    <property-value-option value="PARAMETER_DEF"/>
+                    <property-value-option value="VARIABLE_DEF"/>
+                </enumeration>
+            </property-metadata>
+            <property-metadata name="ignoreFormat" datatype="Regex">
+                <description>%HiddenField.ignoreFormat</description>
+            </property-metadata>
+            <property-metadata name="ignoreConstructorParameter" datatype="Boolean" default-value="false">
+                <description>%HiddenField.ignoreConstructorParameter</description>
+            </property-metadata>
+            <property-metadata name="ignoreSetter" datatype="Boolean" default-value="false">
+                <description>%HiddenField.ignoreSetter</description>
+            </property-metadata>
+            <property-metadata name="ignoreAbstractMethods" datatype="Boolean" default-value="false">
+                <description>%HiddenField.ignoreAbstractMethods</description>
+            </property-metadata>
+        </rule-metadata>
 
-Rationale: Code duplication makes maintenance more difficult, so it can be better to replace the multiple occurrences with a constant.</description>
-         
-         <property-metadata name="allowedDuplicates" datatype="Integer" default-value="1">
-            <description> The maximum number of occurences to allow without generating a warning</description>
-         </property-metadata>
-         <property-metadata name="ignoreStringsRegexp" datatype="Regex" default-value="^&quot;&quot;$">
-            <description> Regexp pattern for ignored strings (with quotation marks)</description>
-         </property-metadata>               
-      </rule-metadata>
-      
-      <rule-metadata name="Multiple Variable Declaration" internal-name="MultipleVariableDeclarations" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.MultipleVariableDeclarationsCheck"/>
-         <description>Checks that each variable declaration is in its own statement and on its own line. 
+        <rule-metadata name="%IllegalInstantiation.name" internal-name="IllegalInstantiation" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.IllegalInstantiationCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.IllegalInstantiationCheck"/>
+            <description>%IllegalInstantiation.desc</description>
+            <property-metadata name="classes" datatype="String">
+                <description>%IllegalInstantiation.classes</description>
+            </property-metadata>
+        </rule-metadata>
 
-Rationale: the SUN Code conventions chapter 6.1 recommends that declarations should be one per line/statement</description>
-      </rule-metadata>
-      
-      <rule-metadata name="Nested If Depth" internal-name="NestedIfDepth" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.NestedIfDepthCheck"/>
-         <description>Restricts nested if-else blocks to a specified depth (default = 1). </description>
-         <property-metadata name="max" datatype="Integer" default-value="1">
-            <description>allowed nesting depth</description>
-         </property-metadata>
-      </rule-metadata>
-      
-      <rule-metadata name="Nested Try Depth" internal-name="NestedTryDepth" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.NestedTryDepthCheck"/>
-         <description>Restricts nested try-catch blocks to a specified depth (default = 1). </description>
-         <property-metadata name="max" datatype="Integer" default-value="1">
-            <description>allowed nesting depth</description>
-         </property-metadata>
-      </rule-metadata>
-      
-      <rule-metadata name="Package Declaration" internal-name="PackageDeclaration" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.PackageDeclarationCheck"/>
-         <description>Ensure a class is has a package declaration. 
+        <rule-metadata name="%IllegalCatch.name" internal-name="IllegalCatch" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.IllegalCatchCheck"/>
+            <description>%IllegalCatch.desc</description>
+            <property-metadata name="illegalClassNames" datatype="String"
+                default-value="java.lang.Exception, java.lang.Throwable, java.lang.RuntimeException">
+                <description>%IllegalCatch.illegalClassNames</description>
+            </property-metadata>
+        </rule-metadata>
 
-Rationale: Classes that live in the null package cannot be imported. Many novice developers are not aware of this. </description>
-      </rule-metadata>
-      
-      <rule-metadata name="Parameter Assignment" internal-name="ParameterAssignment" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.ParameterAssignmentCheck"/>
-         <description>Disallow assignment of parameters.
+        <rule-metadata name="%IllegalThrows.name" internal-name="IllegalThrows" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.IllegalThrowsCheck"/>
+            <description>%IllegalThrows.desc</description>
+            <property-metadata name="illegalClassNames" datatype="String"
+                default-value="java.lang.Throwable, java.lang.Error, java.lang.RuntimeException">
+                <description>%IllegalThrows.illegalClassNames</description>
+            </property-metadata>
+        </rule-metadata>
 
-Rationale: Parameter assignment is often considered poor programming practice. Forcing developers to declare parameters as final is often onerous. Having a check ensure that parameters are never assigned would give the best of both worlds.
-         </description>
-      </rule-metadata>
-      
-      <rule-metadata name="Redundant Throws" internal-name="RedundantThrows" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.RedundantThrowsCheck"/>
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.RedundantThrowsCheck"/>
-         <description>Checks for redundant exceptions declared in throws clause such as duplicates, unchecked exceptions or subclasses of another declared exception.</description>
-         <property-metadata name="allowUnchecked" datatype="Boolean" default-value="false">
-            <description>Whether unchecked exceptions in throws are allowed or not.</description>
-         </property-metadata>
-         <property-metadata name="allowSubclasses" datatype="Boolean" default-value="false">
-            <description>Whether subclass of another declared exception is allowed in throws clause.</description>
-         </property-metadata>
-         <property-metadata name="logLoadErrors" datatype="Boolean" default-value="false" override-default-value="true">
-            <description>This check may needs to load exception classes mentioned in the @throws tag to check whether they are RuntimeExceptions. If loading the class fails, this property allows to control checkstyle's error handling. If set to false (the default) a classpath configuration problem is assumed and the TreeWalker stops operating on the class completely. If set to true, checkstyle assumes a typo or refactoring problem in the javadoc and logs the problem in the normal checkstyle report (potentially masking a configuration error).</description>
-         </property-metadata>
-         <property-metadata name="suppressLoadErrors" datatype="Boolean" default-value="false" override-default-value="true">
-            <description>Controls whether to show class loading errors in the checkstyle report.</description>
-         </property-metadata>  
-      </rule-metadata>
-      
-      <rule-metadata name="Require This" internal-name="RequireThis" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.RequireThisCheck"/>
-         <description>Checks that code doesn't rely on the "this." default, i.e. references to instance variables and methods of the present object are explicitly of the form "this.varName" or "this.methodName(args)". </description>
-         <property-metadata name="checkFields" datatype="Boolean" default-value="true">
-            <description>whether we should check fields usage or not</description>
-         </property-metadata>
-         <property-metadata name="checkMethods" datatype="Boolean" default-value="true">
-            <description>whether we should check methods usage or not</description>
-         </property-metadata>
-      </rule-metadata>
-      
-      <rule-metadata name="Return Count" internal-name="ReturnCount" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.ReturnCountCheck"/>
-         <description>Restrict the number of return statements. Default = 2. 
+        <rule-metadata name="%IllegalToken.name" internal-name="IllegalToken" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.IllegalTokenCheck"/>
+            <description>%IllegalToken.desc</description>
+            <property-metadata name="tokens" datatype="MultiCheck" default-value="LITERAL_SWITCH,POST_INC,POST_DEC">
+                <description>%IllegalToken.tokens</description>
+                <enumeration option-provider="com.atlassw.tools.eclipse.checkstyle.config.meta.AllTokensProvider"/>
+            </property-metadata>
+        </rule-metadata>
 
-Rationale: Too many return points can be indication that code is attempting to do too much or may be difficult to understand. </description>
-         <property-metadata name="max" datatype="Integer" default-value="2">
-            <description>maximum allowed number of return statments</description>
-         </property-metadata>
-         <property-metadata name="format" datatype="Regex" default-value="^equals$ (empty)">
-            <description>method names to ignore</description>
-         </property-metadata>
-      </rule-metadata>
-      
-      <rule-metadata name="Simplify Boolean Expression" internal-name="SimplifyBooleanExpression" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.SimplifyBooleanExpressionCheck"/>
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.SimplifyBooleanExpressionCheck"/>
-         <description>Checks for overly complicated boolean expressions. Currently finds code like if (b == true), b || true, !false, etc.</description>
-      </rule-metadata>
-      
-      <rule-metadata name="Simplify Boolean Return" internal-name="SimplifyBooleanReturn" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.SimplifyBooleanReturnCheck"/>
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.SimplifyBooleanReturnCheck"/>
-         <description>Checks for overly complicated boolean return statements.</description>
-      </rule-metadata>
-      
-      <rule-metadata name="String Literal Equality" internal-name="StringLiteralEquality" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.StringLiteralEqualityCheck"/>
-         <description>Checks that string literals are not used with == or !=. 
+        <rule-metadata name="%IllegalTokenText.name" internal-name="IllegalTokenText" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.IllegalTokenTextCheck"/>
+            <description>%IllegalTokenText.desc</description>
+            <property-metadata name="tokens" datatype="MultiCheck">
+                <description>%IllegalTokenText.tokens</description>
+                <enumeration option-provider="com.atlassw.tools.eclipse.checkstyle.config.meta.AllTokensProvider"/>
+            </property-metadata>
+            <property-metadata name="format" datatype="Regex" default-value="^$">
+                <description>%IllegalTokenText.format</description>
+            </property-metadata>
+            <property-metadata name="ignoreCase" datatype="Boolean" default-value="false">
+                <description>%IllegalTokenText.ignoreCase</description>
+            </property-metadata>
+            <property-metadata name="message" datatype="String">
+                <description>%IllegalTokenText.message</description>
+            </property-metadata>
+        </rule-metadata>
 
-Rationale: Novice Java programmers often use code like if (x == "something") when they mean if ("something".equals(x)). 
-         </description>
-         <quickfix classname="com.atlassw.tools.eclipse.checkstyle.quickfixes.coding.StringLiteralEqualityQuickfix"/>
-      </rule-metadata>
-      
-      <rule-metadata name="SuperClone" internal-name="SuperClone" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.SuperCloneCheck"/>
-         <description>Checks that an overriding clone() method invokes super.clone().        </description>
-      </rule-metadata>
-      
-      <rule-metadata name="SuperFinalize" internal-name="SuperFinalize" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.SuperFinalizeCheck"/>
-         <description>Checks that an overriding finalize() method invokes super.finalize().</description>
-      </rule-metadata>
-      
-      <rule-metadata name="Trailing Array Comma" internal-name="ArrayTrailingComma" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.ArrayTrailingCommaCheck"/>
-         <description>
-Checks that array initialization contains a trailing comma. 
-      int[] a = new int[] 
-      {
-          1, 
-          2, 
-          3, 
-      }; 
-      
-The check allows to not add a comma if both left and right curlys are on the same line. 
+        <rule-metadata name="%IllegalType.name" internal-name="IllegalType" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.IllegalTypeCheck"/>
+            <description>%IllegalType.desc</description>
+            <property-metadata name="tokens" datatype="MultiCheck" default-value="PARAMETER_DEF,VARIABLE_DEF,METHOD_DEF">
+                <description>%IllegalType.tokens</description>
+                <enumeration>
+                    <property-value-option value="METHOD_DEF"/>
+                    <property-value-option value="PARAMETER_DEF"/>
+                    <property-value-option value="VARIABLE_DEF"/>
+                </enumeration>
+            </property-metadata>
+            <property-metadata name="illegalClassNames" datatype="String"
+                default-value="java.util.GregorianCalendar, java.util.Hashtable, java.util.HashSet, java.util.HashMap, java.util.ArrayList, java.util.LinkedList, java.util.LinkedHashMap, java.util.LinkedHashSet, java.util.TreeSet, java.util.TreeMap, java.util.Vector">
+                <description>%IllegalType.illegalClassNames</description>
+            </property-metadata>
+            <property-metadata name="legalAbstractClassNames" datatype="String">
+                <description>%IllegalType.legalAbstractClassNames</description>
+            </property-metadata>
+            <property-metadata name="ignoredMethodNames" datatype="String"
+                default-value="getInitialContext, getEnvironment">
+                <description>%IllegalType.ignoredMethodNames</description>
+            </property-metadata>
+            <property-metadata name="format" datatype="Regex" default-value="^(.*[\.])?Abstract.*$">
+                <description>%IllegalType.format</description>
+            </property-metadata>
+        </rule-metadata>
 
-      return new int[] { 0 };
-      
-Rationale: Putting this comma in makes it easier to change the order of the elements or add new elements on the end. 
-         </description>
-      </rule-metadata>
-      
-      <rule-metadata name="Unnecessary Parentheses" internal-name="UnnecessaryParentheses" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.UnnecessaryParenthesesCheck"/>
-         <description>Checks for the use of unnecessary parentheses. </description>
-      </rule-metadata>
-      
-   </rule-group-metadata>
+        <rule-metadata name="%InnerAssignment.name" internal-name="InnerAssignment" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.InnerAssignmentCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.InnerAssignmentCheck"/>
+            <description>%InnerAssignment.desc</description>
+            <property-metadata name="tokens" datatype="MultiCheck"
+                default-value="ASSIGN,BAND_ASSIGN,BOR_ASSIGN,BSR_ASSIGN,BXOR_ASSIGN,DIV_ASSIGN,MINUS_ASSIGN,MOD_ASSIGN,PLUS_ASSIGN,SL_ASSIGN,SR_ASSIGN,STAR_ASSIGN">
+                <description>%InnerAssignment.tokens</description>
+                <enumeration>
+                    <property-value-option value="ASSIGN"/>
+                    <property-value-option value="BAND_ASSIGN"/>
+                    <property-value-option value="BOR_ASSIGN"/>
+                    <property-value-option value="BSR_ASSIGN"/>
+                    <property-value-option value="BXOR_ASSIGN"/>
+                    <property-value-option value="DIV_ASSIGN"/>
+                    <property-value-option value="MINUS_ASSIGN"/>
+                    <property-value-option value="MOD_ASSIGN"/>
+                    <property-value-option value="PLUS_ASSIGN"/>
+                    <property-value-option value="SL_ASSIGN"/>
+                    <property-value-option value="SR_ASSIGN"/>
+                    <property-value-option value="STAR_ASSIGN"/>
+                </enumeration>
+            </property-metadata>
+        </rule-metadata>
+
+        <rule-metadata name="%JUnitTestCase.name" internal-name="JUnitTestCase" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.JUnitTestCaseCheck"/>
+            <description>%JUnitTestCase.desc</description>
+        </rule-metadata>
+
+        <rule-metadata name="%MagicNumber.name" internal-name="MagicNumber" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.MagicNumberCheck"/>
+            <description>%MagicNumber.desc</description>
+            <property-metadata name="ignoreNumbers" datatype="String" default-value="-1, 0, 1, 2">
+                <description>%MagicNumber.ignoreNumbers</description>
+            </property-metadata>
+            <property-metadata name="tokens" datatype="MultiCheck" default-value="NUM_DOUBLE,NUM_FLOAT,NUM_INT,NUM_LONG">
+                <description>%MagicNumber.tokens</description>
+                <enumeration>
+                    <property-value-option value="NUM_DOUBLE"/>
+                    <property-value-option value="NUM_FLOAT"/>
+                    <property-value-option value="NUM_INT"/>
+                    <property-value-option value="NUM_LONG"/>
+                </enumeration>
+            </property-metadata>
+        </rule-metadata>
+
+        <rule-metadata name="%MissingCtor.name" internal-name="MissingCtor" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.MissingCtorCheck"/>
+            <description>%MissingCtor.desc</description>
+        </rule-metadata>
+
+        <rule-metadata name="%MissingSwitchDefault.name" internal-name="MissingSwitchDefault" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.MissingSwitchDefaultCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.MissingSwitchDefaultCheck"/>
+            <description>%MissingSwitchDefault.desc</description>
+            <quickfix classname="com.atlassw.tools.eclipse.checkstyle.quickfixes.coding.MissingSwitchDefaultQuickfix"/>
+        </rule-metadata>
+
+        <rule-metadata name="%ModifiedControlVariable.name" internal-name="ModifiedControlVariable" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.ModifiedControlVariableCheck"/>
+            <description>%ModifiedControlVariable.desc</description>
+        </rule-metadata>
+
+        <rule-metadata name="%MultipleStringLiterals.name" internal-name="MultipleStringLiterals" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.MultipleStringLiteralsCheck"/>
+            <description>%MultipleStringLiterals.desc</description>
+            <property-metadata name="allowedDuplicates" datatype="Integer" default-value="1">
+                <description>%MultipleStringLiterals.allowedDuplicates</description>
+            </property-metadata>
+            <property-metadata name="ignoreStringsRegexp" datatype="Regex" default-value="^&quot;&quot;$">
+                <description>%MultipleStringLiterals.ignoreStringsRegexp</description>
+            </property-metadata>
+            <property-metadata name="ignoreOccurrenceContext" datatype="MultiCheck" default-value="ANNOTATION">
+                <description>%MultipleStringLiterals.ignoreOccurrenceContext</description>
+                <enumeration option-provider="com.atlassw.tools.eclipse.checkstyle.config.meta.AllTokensProvider"/>
+            </property-metadata>
+        </rule-metadata>
+
+        <rule-metadata name="%MultipleVariableDeclarations.name" internal-name="MultipleVariableDeclarations"
+            parent="TreeWalker">
+            <alternative-name
+                internal-name="com.puppycrawl.tools.checkstyle.checks.coding.MultipleVariableDeclarationsCheck"/>
+            <description>%MultipleVariableDeclarations.desc</description>
+        </rule-metadata>
+
+        <rule-metadata name="%NestedIfDepth.name" internal-name="NestedIfDepth" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.NestedIfDepthCheck"/>
+            <description>%NestedIfDepth.desc</description>
+            <property-metadata name="max" datatype="Integer" default-value="1">
+                <description>%NestedIfDepth.max</description>
+            </property-metadata>
+        </rule-metadata>
+
+        <rule-metadata name="%NestedTryDepth.name" internal-name="NestedTryDepth" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.NestedTryDepthCheck"/>
+            <description>%NestedTryDepth.desc</description>
+            <property-metadata name="max" datatype="Integer" default-value="1">
+                <description>%NestedTryDepth.max</description>
+            </property-metadata>
+        </rule-metadata>
+
+        <rule-metadata name="%PackageDeclaration.name" internal-name="PackageDeclaration" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.PackageDeclarationCheck"/>
+            <description>%PackageDeclaration.desc</description>
+        </rule-metadata>
+
+        <rule-metadata name="%ParameterAssignment.name" internal-name="ParameterAssignment" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.ParameterAssignmentCheck"/>
+            <description>%ParameterAssignment.desc</description>
+        </rule-metadata>
+
+        <rule-metadata name="%RedundantThrows.name" internal-name="RedundantThrows" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.RedundantThrowsCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.RedundantThrowsCheck"/>
+            <description>%RedundantThrows.desc</description>
+            <property-metadata name="allowUnchecked" datatype="Boolean" default-value="false">
+                <description>%RedundantThrows.allowUnchecked</description>
+            </property-metadata>
+            <property-metadata name="allowSubclasses" datatype="Boolean" default-value="false">
+                <description>%RedundantThrows.allowSubclasses</description>
+            </property-metadata>
+            <property-metadata name="logLoadErrors" datatype="Boolean" default-value="false"
+                override-default-value="true">
+                <description>%RedundantThrows.logLoadErrors</description>
+            </property-metadata>
+            <property-metadata name="suppressLoadErrors" datatype="Boolean" default-value="false"
+                override-default-value="true">
+                <description>%RedundantThrows.suppressLoadErrors</description>
+            </property-metadata>
+        </rule-metadata>
+
+        <rule-metadata name="%RequireThis.name" internal-name="RequireThis" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.RequireThisCheck"/>
+            <description>%RequireThis.desc</description>
+            <property-metadata name="checkFields" datatype="Boolean" default-value="true">
+                <description>%RequireThis.checkFields</description>
+            </property-metadata>
+            <property-metadata name="checkMethods" datatype="Boolean" default-value="true">
+                <description>%RequireThis.checkMethods</description>
+            </property-metadata>
+        </rule-metadata>
+
+        <rule-metadata name="%ReturnCount.name" internal-name="ReturnCount" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.ReturnCountCheck"/>
+            <description>%ReturnCount.desc</description>
+            <property-metadata name="max" datatype="Integer" default-value="2">
+                <description>%ReturnCount.max</description>
+            </property-metadata>
+            <property-metadata name="format" datatype="Regex" default-value="^equals$ (empty)">
+                <description>%ReturnCount.format</description>
+            </property-metadata>
+        </rule-metadata>
+
+        <rule-metadata name="%SimplifyBooleanExpression.name" internal-name="SimplifyBooleanExpression"
+            parent="TreeWalker">
+            <alternative-name
+                internal-name="com.puppycrawl.tools.checkstyle.checks.coding.SimplifyBooleanExpressionCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.SimplifyBooleanExpressionCheck"/>
+            <description>%SimplifyBooleanExpression.desc</description>
+        </rule-metadata>
+
+        <rule-metadata name="%SimplifyBooleanReturn.name" internal-name="SimplifyBooleanReturn" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.SimplifyBooleanReturnCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.SimplifyBooleanReturnCheck"/>
+            <description>%SimplifyBooleanReturn.desc</description>
+        </rule-metadata>
+
+        <rule-metadata name="%StringLiteralEquality.name" internal-name="StringLiteralEquality" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.StringLiteralEqualityCheck"/>
+            <description>%StringLiteralEquality.desc</description>
+            <quickfix classname="com.atlassw.tools.eclipse.checkstyle.quickfixes.coding.StringLiteralEqualityQuickfix"/>
+        </rule-metadata>
+
+        <rule-metadata name="%SuperClone.name" internal-name="SuperClone" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.SuperCloneCheck"/>
+            <description>%SuperClone.desc</description>
+        </rule-metadata>
+
+        <rule-metadata name="%SuperFinalize.name" internal-name="SuperFinalize" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.SuperFinalizeCheck"/>
+            <description>%SuperFinalize.desc</description>
+        </rule-metadata>
+
+        <rule-metadata name="%ArrayTrailingComma.name" internal-name="ArrayTrailingComma" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.ArrayTrailingCommaCheck"/>
+            <description>%ArrayTrailingComma.desc</description>
+        </rule-metadata>
+
+        <rule-metadata name="%UnnecessaryParentheses.name" internal-name="UnnecessaryParentheses" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.UnnecessaryParenthesesCheck"/>
+            <description>%UnnecessaryParentheses.desc</description>
+        </rule-metadata>
+
+    </rule-group-metadata>
 </checkstyle-metadata>
-

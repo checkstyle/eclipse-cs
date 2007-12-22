@@ -3,66 +3,66 @@
 "-//eclipse-cs//DTD Check Metadata 1.0//EN"
 "http://eclipse-cs.sourceforge.net/dtds/checkstyle-metadata_1_0.dtd">
 <checkstyle-metadata>
-      <rule-group-metadata name="Imports" priority="400">
-   
-      <rule-metadata name="Avoid Star (Demand) Imports" internal-name="AvoidStarImport" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.imports.AvoidStarImportCheck"/>
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.AvoidStarImportCheck"/>
-         <description>Checks for use of demand import statements.</description>
-         <property-metadata name="excludes" datatype="String">
-            <description>packages where star imports are allowed. Note that this property is not recursive, subpackages of excluded packages are not automatically excluded.</description>
-         </property-metadata>
-      </rule-metadata>
-      
-      <rule-metadata name="Illegal Imports" internal-name="IllegalImport" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.imports.IllegalImportCheck"/>
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.IllegalImportCheck"/>
-         <description>Checks for imports from a set of illegal packages.</description>
-         <property-metadata name="illegalPkgs" datatype="String" default-value="sun">
-            <description>Comma (',') seperated list of illegal packages.</description>
-         </property-metadata>
-      </rule-metadata>
-      
-      <rule-metadata name="Import Order Check" internal-name="ImportOrder" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.imports.ImportOrderCheck"/>
-         <description>Checks the ordering/grouping of imports. Ensures that groups of imports come in a specific order (e.g., java. comes first, javax. comes first, then everything else) and imports within each group are in lexicographic order. </description>
-         <property-metadata name="groups" datatype="String">
-            <description>list of imports groups (every group identified by string it's started)</description>
-         </property-metadata>
-         <property-metadata name="ordered" datatype="Boolean" default-value="true">
-            <description>whether imports within group should be sorted</description>
-         </property-metadata>
-         <property-metadata name="separated" datatype="Boolean" default-value="false">
-            <description>whether imports groups should be separated by, at least, one blank line</description>
-         </property-metadata>
-         <property-metadata name="caseSensitive" datatype="Boolean" default-value="true">
-            <description>whether strings comprision should be case sensitive or not</description>
-         </property-metadata>
-      </rule-metadata>
-      
-      <rule-metadata name="Redundant Imports" internal-name="RedundantImport" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.imports.RedundantImportCheck"/>
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.RedundantImportCheck"/>
-         <description>Checks for redundant import statements. An import statement is considered redundant if: 1) It is a duplicate of another import. This is, when a class is imported more than once; or 2) The class imported is from the java.lang package, e.g. importing java.lang.String; or 3) The class imported is from the same package. </description>
-      </rule-metadata>
-      
-      <rule-metadata name="Unused Imports" internal-name="UnusedImports" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.imports.UnusedImportsCheck"/>
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.UnusedImportsCheck"/>
-         <description>Checks for unused import statements.</description>
-      </rule-metadata>
-     
-      <rule-metadata name="Import Control" internal-name="ImportControl" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.imports.ImportControlCheck"/>
-         <description>Controls what can be imported in each package. Useful for ensuring that application layering rules are not violated, especially on large projects.
-The DTD for a import control XML document is at http://www.puppycrawl.com/dtds/import_control_1_0.dtd. It contains documentation on each of the elements and attributes. 
-		 </description>
-         <property-metadata name="file" datatype="File">
-            <description>Name of the file containing the import control configuration.</description>
-         </property-metadata>         
-      </rule-metadata>
-      
-   </rule-group-metadata>
-   
-</checkstyle-metadata>
+    <rule-group-metadata name="%Imports.group" priority="400">
 
+        <rule-metadata name="%AvoidStarImport.name" internal-name="AvoidStarImport" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.imports.AvoidStarImportCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.AvoidStarImportCheck"/>
+            <description>%AvoidStarImport.desc</description>
+            <property-metadata name="excludes" datatype="String">
+                <description>%AvoidStarImport.excludes</description>
+            </property-metadata>
+        </rule-metadata>
+
+        <rule-metadata name="%IllegalImport.name" internal-name="IllegalImport" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.imports.IllegalImportCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.IllegalImportCheck"/>
+            <description>%IllegalImport.desc</description>
+            <property-metadata name="illegalPkgs" datatype="String" default-value="sun">
+                <description>%IllegalImport.illegalPkgs</description>
+            </property-metadata>
+        </rule-metadata>
+
+        <rule-metadata name="%ImportOrder.name" internal-name="ImportOrder" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.imports.ImportOrderCheck"/>
+            <description>%ImportOrder.desc</description>
+            <property-metadata name="groups" datatype="String">
+                <description>%ImportOrder.groups</description>
+            </property-metadata>
+            <property-metadata name="ordered" datatype="Boolean" default-value="true">
+                <description>%ImportOrder.ordered</description>
+            </property-metadata>
+            <property-metadata name="separated" datatype="Boolean" default-value="false">
+                <description>%ImportOrder.separated</description>
+            </property-metadata>
+            <property-metadata name="caseSensitive" datatype="Boolean" default-value="true">
+                <description>%ImportOrder.caseSensitive</description>
+            </property-metadata>
+        </rule-metadata>
+
+        <rule-metadata name="%RedundantImport.name" internal-name="RedundantImport" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.imports.RedundantImportCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.RedundantImportCheck"/>
+            <description>%RedundantImport.desc</description>
+        </rule-metadata>
+
+        <rule-metadata name="%UnusedImports.name" internal-name="UnusedImports" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.imports.UnusedImportsCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.UnusedImportsCheck"/>
+            <description>%UnusedImports.desc</description>
+        </rule-metadata>
+
+        <rule-metadata name="%ImportControl.name" internal-name="ImportControl" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.imports.ImportControlCheck"/>
+            <description>%ImportControl.desc</description>
+            <property-metadata name="file" datatype="File">
+                <description>%ImportControl.file</description>
+            </property-metadata>
+            <property-metadata name="url" datatype="String">
+                <description>%ImportControl.url</description>
+            </property-metadata>
+        </rule-metadata>
+
+    </rule-group-metadata>
+
+</checkstyle-metadata>

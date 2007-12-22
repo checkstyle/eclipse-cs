@@ -3,187 +3,170 @@
 "-//eclipse-cs//DTD Check Metadata 1.0//EN"
 "http://eclipse-cs.sourceforge.net/dtds/checkstyle-metadata_1_0.dtd">
 <checkstyle-metadata>
-       <rule-group-metadata name="Javadoc Comments" priority="100">
-   
-	  <rule-metadata name="Package Html" internal-name="PackageHtml" parent="Checker">
-      	 <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.javadoc.PackageHtmlCheck"/>
-      	 <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.PackageHtmlCheck"/>
-      	 <description>Checks that a package.html file exists for each package. More specifically, checks that each java file has a package.html sibling.</description>
-         <property-metadata name="fileExtensions" datatype="String" default-value="java">
-            <description>file type extension to identify java files. Setting this property is typically only required if your java source files are preprocessed and the original files do not have the extension .java</description>
-         </property-metadata>
-      </rule-metadata>
-   
-      <rule-metadata name="Method Javadoc" internal-name="JavadocMethod" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocMethodCheck"/>
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.JavadocMethodCheck"/>        
-         <description>Checks to ensure that the following tags exist (if required): @return, @param, @throws or @exception, @see or {@inheritDoc}.</description>
-         <property-metadata name="scope" datatype="SingleSelect" default-value="private">
-            <description>Visibility scope where Javadoc comments are checked.</description>
-            <enumeration option-provider="com.atlassw.tools.eclipse.checkstyle.config.meta.VisibilityOptionsProvider">
-            </enumeration>
-         </property-metadata>
-         <property-metadata name="excludeScope" datatype="SingleSelect" default-value="nothing">
-            <description>visibility scope where Javadoc comments are not checked</description>
-            <enumeration option-provider="com.atlassw.tools.eclipse.checkstyle.config.meta.VisibilityOptionsProvider">
-            </enumeration>
-         </property-metadata>
-         <property-metadata name="allowUndeclaredRTE" datatype="Boolean" default-value="false">
-            <description>Whether to allow documented exceptions that are not declared if they are a subclass of java.lang.RuntimeException.</description>
-         </property-metadata>
-         <property-metadata name="allowThrowsTagsForSubclasses" datatype="Boolean" default-value="false">
-            <description>Whether to allow documented exceptions that are subclass of one of declared exception.</description>
-         </property-metadata>
-         <property-metadata name="allowMissingParamTags" datatype="Boolean" default-value="false">
-            <description>Whether to ignore errors when a method has parameters but does not have matching param tags in the javadoc.</description>
-         </property-metadata>
-         <property-metadata name="allowMissingThrowsTags" datatype="Boolean" default-value="false">
-            <description>Whether to ignore errors when a method declares that it throws exceptions but does have matching throws tags in the javadoc.</description>
-         </property-metadata>
-         <property-metadata name="allowMissingReturnTag" datatype="Boolean" default-value="false">
-            <description>Whether to ignore errors when a method returns non-void type does have a return tag in the javadoc.</description>
-         </property-metadata>
-         <property-metadata name="allowMissingJavadoc" datatype="Boolean" default-value="false">
-            <description>Whether to ignore errors when a method javadoc is missed</description>
-         </property-metadata>
-         <property-metadata name="allowMissingPropertyJavadoc" datatype="Boolean" default-value="false">
-            <description>Whether to allow missing Javadoc on accessor methods for properties (setters and getters). The setter and getter methods must match exactly the structures below.
+    <rule-group-metadata name="%Javadoc.group" priority="100">
 
-public void setNumber(final int number)
-{
-    mNumber = number;
-}
+        <rule-metadata name="%PackageHtml.name" internal-name="PackageHtml" parent="Checker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.javadoc.PackageHtmlCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.PackageHtmlCheck"/>
+            <description>%PackageHtml.desc</description>
+            <property-metadata name="fileExtensions" datatype="String" default-value="java">
+                <description>%PackageHtml.fileExtensions</description>
+            </property-metadata>
+        </rule-metadata>
 
-public int getNumber()
-{
-    return mNumber;
-}
+        <rule-metadata name="%JavadocMethod.name" internal-name="JavadocMethod" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocMethodCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.JavadocMethodCheck"/>
+            <description>%JavadocMethod.desc</description>
+            <property-metadata name="scope" datatype="SingleSelect" default-value="private">
+                <description>%JavadocMethod.scope</description>
+                <enumeration
+                    option-provider="com.atlassw.tools.eclipse.checkstyle.config.meta.VisibilityOptionsProvider"/>
+            </property-metadata>
+            <property-metadata name="excludeScope" datatype="SingleSelect" default-value="nothing">
+                <description>%JavadocMethod.excludeScope</description>
+                <enumeration
+                    option-provider="com.atlassw.tools.eclipse.checkstyle.config.meta.VisibilityOptionsProvider"/>
+            </property-metadata>
+            <property-metadata name="allowUndeclaredRTE" datatype="Boolean" default-value="false">
+                <description>%JavadocMethod.allowUndeclaredRTE</description>
+            </property-metadata>
+            <property-metadata name="allowThrowsTagsForSubclasses" datatype="Boolean" default-value="false">
+                <description>%JavadocMethod.allowThrowsTagsForSubclasses</description>
+            </property-metadata>
+            <property-metadata name="allowMissingParamTags" datatype="Boolean" default-value="false">
+                <description>%JavadocMethod.allowMissingParamTags</description>
+            </property-metadata>
+            <property-metadata name="allowMissingThrowsTags" datatype="Boolean" default-value="false">
+                <description>%JavadocMethod.allowMissingThrowsTags</description>
+            </property-metadata>
+            <property-metadata name="allowMissingReturnTag" datatype="Boolean" default-value="false">
+                <description>%JavadocMethod.allowMissingReturnTag</description>
+            </property-metadata>
+            <property-metadata name="allowMissingJavadoc" datatype="Boolean" default-value="false">
+                <description>%JavadocMethod.allowMissingJavadoc</description>
+            </property-metadata>
+            <property-metadata name="allowMissingPropertyJavadoc" datatype="Boolean" default-value="false">
+                <description>%JavadocMethod.allowMissingPropertyJavadoc</description>
+            </property-metadata>
+            <property-metadata name="logLoadErrors" datatype="Boolean" default-value="false"
+                override-default-value="true">
+                <description>%JavadocMethod.logLoadErrors</description>
+            </property-metadata>
+            <property-metadata name="suppressLoadErrors" datatype="Boolean" default-value="false"
+                override-default-value="true">
+                <description>%JavadocMethod.suppressLoadErrors</description>
+            </property-metadata>
+            <property-metadata name="tokens" datatype="MultiCheck" default-value="METHOD_DEF,CTOR_DEF">
+                <description>%JavadocMethod.tokens</description>
+                <enumeration>
+                    <property-value-option value="METHOD_DEF"/>
+                    <property-value-option value="CTOR_DEF"/>
+                </enumeration>
+            </property-metadata>
 
-public boolean isSomething()
-{
-    return false;
-}
-              </description>
-         </property-metadata>
-         <property-metadata name="logLoadErrors" datatype="Boolean" default-value="false" override-default-value="true">
-            <description>This check may need to load exception classes mentioned in the @throws tag to check whether they are RuntimeExceptions. If loading the class fails, this property allows to control checkstyle's error handling. If set to false (the default) a classpath configuration problem is assumed and the TreeWalker stops operating on the class completely. If set to true, checkstyle assumes a typo or refactoring problem in the javadoc and logs the problem in the normal checkstyle report (potentially masking a configuration error).</description>
-         </property-metadata>  
-         <property-metadata name="suppressLoadErrors" datatype="Boolean" default-value="false" override-default-value="true">
-            <description>Controls whether to show class loading errors in the checkstyle report.</description>
-         </property-metadata>       
-         <property-metadata name="tokens" datatype="MultiCheck" default-value="METHOD_DEF,CTOR_DEF">
-            <description>Tokens to check.</description>
-            <enumeration>
-               <property-value-option value="METHOD_DEF"/>
-               <property-value-option value="CTOR_DEF"/>
-            </enumeration>
-         </property-metadata>
-         
-      </rule-metadata>
-      
-      <rule-metadata name="Style Javadoc" internal-name="JavadocStyle" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocStyleCheck"/>       
-         <description>Validates Javadoc comments to help ensure they are well formed. The following checks are performed: 
-         1.Ensures the first sentence ends with proper punctuation (That is a period, question mark, or exclamation mark). Javadoc automatically places the first sentence in the method summary table and index. With out proper punctuation the Javadoc may be malformed. 
-         2.Check text for incomplete HTML tags. Verifies that HTML tags have corresponding end tags and issues an "Unclosed HTML tag found:" error if not. An "Extra HTML tag found:" error is issued if an end tag is found without a previous open tag. 
-       </description>
-         <property-metadata name="scope" datatype="SingleSelect" default-value="private">
-            <description>Visibility scope where Javadoc comments are checked.</description>
-            <enumeration option-provider="com.atlassw.tools.eclipse.checkstyle.config.meta.VisibilityOptionsProvider">
-            </enumeration>
-         </property-metadata>
-         <property-metadata name="excludeScope" datatype="SingleSelect" default-value="nothing">
-            <description>visibility scope where Javadoc comments are not checked.</description>
-            <enumeration option-provider="com.atlassw.tools.eclipse.checkstyle.config.meta.VisibilityOptionsProvider">
-            </enumeration>
-         </property-metadata>
-         <property-metadata name="checkEmptyJavadoc" datatype="Boolean" default-value="false">
-            <description>Whether to check if the Javadoc is missing a describing text.</description>
-         </property-metadata>
-         <property-metadata name="checkFirstSentence" datatype="Boolean" default-value="true">
-            <description>Whether to check the first sentence for proper end of sentence.</description>
-         </property-metadata>
-         <property-metadata name="checkHtml" datatype="Boolean" default-value="true">
-            <description>Whether to check for incomplete html tags.</description>
-         </property-metadata>
-         <property-metadata name="tokens" datatype="MultiCheck" default-value="INTERFACE_DEF,CLASS_DEF,METHOD_DEF,CTOR_DEF,VARIABLE_DEF">
-            <description>Tokens to check.</description>
-            <enumeration>
-               <property-value-option value="INTERFACE_DEF"/>
-               <property-value-option value="CLASS_DEF"/>
-               <property-value-option value="METHOD_DEF"/>
-               <property-value-option value="CTOR_DEF"/>
-               <property-value-option value="VARIABLE_DEF"/>
-            </enumeration>
-         </property-metadata>
-      </rule-metadata>
-      
-      <rule-metadata name="Type Javadoc" internal-name="JavadocType" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocTypeCheck"/>
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.JavadocTypeCheck"/>
-         <description>Checks Javadoc comments for class and interface definitions.</description>
-         <property-metadata name="excludeScope" datatype="SingleSelect" default-value="nothing">
-            <description>visibility scope where Javadoc comments are not checked</description>
-            <enumeration option-provider="com.atlassw.tools.eclipse.checkstyle.config.meta.VisibilityOptionsProvider">
-            </enumeration>
-         </property-metadata>
-         <property-metadata name="scope" datatype="SingleSelect" default-value="private">
-            <description>Visibility scope where Javadoc comments are checked.</description>
-            <enumeration option-provider="com.atlassw.tools.eclipse.checkstyle.config.meta.VisibilityOptionsProvider">
-            </enumeration>
-         </property-metadata>
-         <property-metadata name="authorFormat" datatype="Regex">
-            <description>Pattern for @author tag.</description>
-         </property-metadata>
-         <property-metadata name="versionFormat" datatype="Regex">
-            <description>Pattern for @version tag.</description>
-         </property-metadata>
-         <property-metadata name="tokens" datatype="MultiCheck" default-value="CLASS_DEF,INTERFACE_DEF">
-            <description>Tokens to check.</description>
-            <enumeration>
-               <property-value-option value="CLASS_DEF"/>
-               <property-value-option value="INTERFACE_DEF"/>
-            </enumeration>
-         </property-metadata>
-      </rule-metadata>
+        </rule-metadata>
 
-      <rule-metadata name="Variable Javadoc" internal-name="JavadocVariable" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocVariableCheck"/>
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.JavadocVariableCheck"/>
-         <description>Checks that variables have Javadoc comments.</description>
-         <property-metadata name="excludeScope" datatype="SingleSelect" default-value="nothing">
-            <description>visibility scope where Javadoc comments are not checked</description>
-            <enumeration option-provider="com.atlassw.tools.eclipse.checkstyle.config.meta.VisibilityOptionsProvider">
-            </enumeration>
-         </property-metadata>
-         <property-metadata name="scope" datatype="SingleSelect" default-value="private">
-            <description>Visibility scope where Javadoc comments are checked.</description>
-            <enumeration option-provider="com.atlassw.tools.eclipse.checkstyle.config.meta.VisibilityOptionsProvider">
-            </enumeration>
-         </property-metadata>
-      </rule-metadata>
-      
-      <rule-metadata name="Write Tag" internal-name="WriteTag" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.javadoc.WriteTagCheck"/>
-         <description>Outputs a JavaDoc tag as information. Can be used e.g. with the stylesheets that sort the report by author name. To define the format for a tag, set property tagFormat to a regular expression. This check uses two different severity levels. The normal one is used for reporting when the tag is missing. The additional one (tagSeverity) is used for the level of reporting when the tag exists.</description>
-         <property-metadata name="tag" datatype="String">
-            <description>Name of tag</description>
-         </property-metadata>
-         <property-metadata name="tagFormat" datatype="Regex">
-            <description>Format of tag</description>
-         </property-metadata>
-         <property-metadata name="tagSeverity" datatype="SingleSelect" default-value="info">
-            <description>Severity level when tag is found and printed</description>
-            <enumeration>
-               <property-value-option value="error"/>
-               <property-value-option value="warning"/>
-               <property-value-option value="info"/>
-               <property-value-option value="ignore"/>
-            </enumeration>
-         </property-metadata>
-      </rule-metadata>      
-      
-   </rule-group-metadata>
-    
+        <rule-metadata name="%JavadocStyle.name" internal-name="JavadocStyle" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocStyleCheck"/>
+            <description>%JavadocStyle.desc</description>
+            <property-metadata name="scope" datatype="SingleSelect" default-value="private">
+                <description>%JavadocStyle.scope</description>
+                <enumeration
+                    option-provider="com.atlassw.tools.eclipse.checkstyle.config.meta.VisibilityOptionsProvider"/>
+            </property-metadata>
+            <property-metadata name="excludeScope" datatype="SingleSelect" default-value="nothing">
+                <description>%JavadocStyle.excludeScope</description>
+                <enumeration
+                    option-provider="com.atlassw.tools.eclipse.checkstyle.config.meta.VisibilityOptionsProvider"/>
+            </property-metadata>
+            <property-metadata name="checkEmptyJavadoc" datatype="Boolean" default-value="false">
+                <description>%JavadocStyle.checkEmptyJavadoc</description>
+            </property-metadata>
+            <property-metadata name="checkFirstSentence" datatype="Boolean" default-value="true">
+                <description>%JavadocStyle.checkFirstSentence</description>
+            </property-metadata>
+            <property-metadata name="checkHtml" datatype="Boolean" default-value="true">
+                <description>%JavadocStyle.checkHtml</description>
+            </property-metadata>
+            <property-metadata name="tokens" datatype="MultiCheck"
+                default-value="INTERFACE_DEF,CLASS_DEF,METHOD_DEF,CTOR_DEF,VARIABLE_DEF">
+                <description>%JavadocStyle.tokens</description>
+                <enumeration>
+                    <property-value-option value="INTERFACE_DEF"/>
+                    <property-value-option value="CLASS_DEF"/>
+                    <property-value-option value="METHOD_DEF"/>
+                    <property-value-option value="CTOR_DEF"/>
+                    <property-value-option value="VARIABLE_DEF"/>
+                </enumeration>
+            </property-metadata>
+        </rule-metadata>
+
+        <rule-metadata name="%JavadocType.name" internal-name="JavadocType" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocTypeCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.JavadocTypeCheck"/>
+            <description>%JavadocType.desc</description>
+            <property-metadata name="excludeScope" datatype="SingleSelect" default-value="nothing">
+                <description>%JavadocType.excludeScope</description>
+                <enumeration
+                    option-provider="com.atlassw.tools.eclipse.checkstyle.config.meta.VisibilityOptionsProvider"/>
+            </property-metadata>
+            <property-metadata name="scope" datatype="SingleSelect" default-value="private">
+                <description>%JavadocType.scope</description>
+                <enumeration
+                    option-provider="com.atlassw.tools.eclipse.checkstyle.config.meta.VisibilityOptionsProvider"/>
+            </property-metadata>
+            <property-metadata name="authorFormat" datatype="Regex">
+                <description>%JavadocType.authorFormat</description>
+            </property-metadata>
+            <property-metadata name="versionFormat" datatype="Regex">
+                <description>%JavadocType.versionFormat</description>
+            </property-metadata>
+            <property-metadata name="tokens" datatype="MultiCheck" default-value="CLASS_DEF,INTERFACE_DEF">
+                <description>%JavadocType.tokens</description>
+                <enumeration>
+                    <property-value-option value="CLASS_DEF"/>
+                    <property-value-option value="INTERFACE_DEF"/>
+                </enumeration>
+            </property-metadata>
+        </rule-metadata>
+
+        <rule-metadata name="%JavadocVariable.name" internal-name="JavadocVariable" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocVariableCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.JavadocVariableCheck"/>
+            <description>%JavadocVariable.desc</description>
+            <property-metadata name="excludeScope" datatype="SingleSelect" default-value="nothing">
+                <description>%JavadocVariable.excludeScope</description>
+                <enumeration
+                    option-provider="com.atlassw.tools.eclipse.checkstyle.config.meta.VisibilityOptionsProvider"/>
+            </property-metadata>
+            <property-metadata name="scope" datatype="SingleSelect" default-value="private">
+                <description>%JavadocVariable.scope</description>
+                <enumeration
+                    option-provider="com.atlassw.tools.eclipse.checkstyle.config.meta.VisibilityOptionsProvider"/>
+            </property-metadata>
+        </rule-metadata>
+
+        <rule-metadata name="%WriteTag.name" internal-name="WriteTag" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.javadoc.WriteTagCheck"/>
+            <description>%WriteTag.desc</description>
+            <property-metadata name="tag" datatype="String">
+                <description>%WriteTag.tag</description>
+            </property-metadata>
+            <property-metadata name="tagFormat" datatype="Regex">
+                <description>%WriteTag.tagFormat</description>
+            </property-metadata>
+            <property-metadata name="tagSeverity" datatype="SingleSelect" default-value="info">
+                <description>%WriteTag.tagSeverity</description>
+                <enumeration>
+                    <property-value-option value="error"/>
+                    <property-value-option value="warning"/>
+                    <property-value-option value="info"/>
+                    <property-value-option value="ignore"/>
+                </enumeration>
+            </property-metadata>
+        </rule-metadata>
+
+    </rule-group-metadata>
+
 </checkstyle-metadata>
-

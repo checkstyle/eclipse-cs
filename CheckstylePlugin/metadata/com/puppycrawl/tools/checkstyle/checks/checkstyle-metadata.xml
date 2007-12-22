@@ -3,342 +3,247 @@
 "-//eclipse-cs//DTD Check Metadata 1.0//EN"
 "http://eclipse-cs.sourceforge.net/dtds/checkstyle-metadata_1_0.dtd">
 <checkstyle-metadata>
-<rule-group-metadata name="Miscellaneous" priority="1300">
-   
-      <rule-metadata name="Array Type Style" internal-name="ArrayTypeStyle" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.ArrayTypeStyleCheck"/>
-         <description>Checks the style of array type definitions. Some like Java-style: public static void main(String[] args) and some like C-style: public static void main(String args[]).</description>
-         <property-metadata name="javaStyle" datatype="Boolean" default-value="true">
-            <description>Controls whether to enforce Java style (true) or C style (false).</description>
-         </property-metadata>
-         <quickfix classname="com.atlassw.tools.eclipse.checkstyle.quickfixes.misc.ArrayTypeStyleQuickfix"/>
-      </rule-metadata>
-      
-      <rule-metadata name="Descendent Token Check" internal-name="DescendantToken" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.DescendantTokenCheck"/>
-         <description>Checks for restricted tokens beneath other tokens. 
+    <rule-group-metadata name="%Miscellaneous.group" priority="1300">
 
-WARNING: This is a very powerful and flexible check, but, at the same time, it is low level and very implementation dependent because its results depend on the grammar we use to build abstract syntax trees. Thus we recomend using other checks when they provide the desired funcionality. All in all, this check just works on the level of an abstract tree and knows nothing about language structures. </description>
-         <property-metadata name="tokens" datatype="MultiCheck">
-            <description>Tokens to check.</description>
-            <enumeration option-provider="com.atlassw.tools.eclipse.checkstyle.config.meta.AllTokensProvider">
-            </enumeration>
-         </property-metadata>
-         <property-metadata name="limitedTokens" datatype="MultiCheck">
-            <description>Tokens to check.</description>
-            <enumeration option-provider="com.atlassw.tools.eclipse.checkstyle.config.meta.AllTokensProvider">
-            </enumeration>
-         </property-metadata>
-         <property-metadata name="minimumDepth" datatype="Integer" default-value="0">
-            <description>the mimimum depth for descendant counts</description>
-         </property-metadata>
-         <property-metadata name="maximumDepth" datatype="Integer" default-value="2147483647">
-            <description>the maximum depth for descendant counts</description>
-         </property-metadata>
-         <property-metadata name="minimumNumber" datatype="Integer" default-value="0">
-            <description>a minimum count for descendants</description>
-         </property-metadata>
-         <property-metadata name="maximumNumber" datatype="Integer" default-value="2147483647">
-            <description>a maximum count for descendants</description>
-         </property-metadata>
-         <property-metadata name="minimumMessage" datatype="String">
-            <description>error message when minimum count not reached </description>
-         </property-metadata>
-         <property-metadata name="maximumMessage" datatype="String">
-            <description>error message when maximum count exceeded</description>
-         </property-metadata>
-      </rule-metadata>
-      
-      <rule-metadata name="Final Parameters" internal-name="FinalParameters" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.FinalParametersCheck"/>
-         <description>Check that method/constructor parameters are final. Interface methods are not checked - the final keyword does not make sense for interface method parameters as there is no code that could modify the parameter.  Rationale: Changing the value of parameters during the execution of the method's algorithm can be confusing and should be avoided. A great way to let the Java compiler prevent this coding style is to declare parameters final.</description>
-         <property-metadata name="tokens" datatype="MultiCheck" default-value="METHOD_DEF,CTOR_DEF">
-            <description>Tokens to check.</description>
-            <enumeration>
-               <property-value-option value="METHOD_DEF"/>
-               <property-value-option value="CTOR_DEF"/>
-               <property-value-option value="LITERAL_CATCH"/>
-            </enumeration>
-         </property-metadata>
-         <quickfix classname="com.atlassw.tools.eclipse.checkstyle.quickfixes.misc.FinalParametersQuickfix"/>
-      </rule-metadata>
-      
-      <rule-metadata name="Generic Illegal Regexp" internal-name="GenericIllegalRegexp" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.GenericIllegalRegexpCheck"/>
-         <description>A generic check for code problems - the user can search for any pattern.  For example: exception.printStacktrace(), System.out.println(), System.exit(), etc.</description>
-         <property-metadata name="format" datatype="Regex" default-value="^$">
-            <description>Pattern to check for.</description>
-         </property-metadata>
-         <property-metadata name="ignoreCase" datatype="Boolean" default-value="false">
-            <description>Controls whether to ignore case when searching.</description>
-         </property-metadata>
-         <property-metadata name="ignoreComments" datatype="Boolean" default-value="false">
-            <description>Controls whether to ignore text in comments when searching.</description>
-         </property-metadata>
-         <property-metadata name="message" datatype="String">
-            <description>Message which is used to notify about violations, if empty then default(hard-coded) message is used.</description>
-         </property-metadata>
-      </rule-metadata>
-      
-      <rule-metadata name="Indentation" internal-name="Indentation" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.indentation.IndentationCheck"/>
-         <description>Checks correct indentation of Java Code. 
+        <rule-metadata name="%ArrayTypeStyle.name" internal-name="ArrayTypeStyle" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.ArrayTypeStyleCheck"/>
+            <description>%ArrayTypeStyle.desc</description>
+            <property-metadata name="javaStyle" datatype="Boolean" default-value="true">
+                <description>%ArrayTypeStyle.javaStyle</description>
+            </property-metadata>
+            <quickfix classname="com.atlassw.tools.eclipse.checkstyle.quickfixes.misc.ArrayTypeStyleQuickfix"/>
+        </rule-metadata>
 
-The basic idea behind this is that while pretty printers are sometimes convienent for bulk reformats of legacy code, they often either aren't configurable enough or just can't anticipate how format should be done. Sometimes this is personal preference, other times it is practical experience. In any case, this check should just ensure that a minimal set of indentation rules are followed.       </description>
-         <property-metadata name="basicOffset" datatype="Integer" default-value="4">
-            <description>how many spaces to use for new indentation level</description>
-         </property-metadata>
-         <property-metadata name="braceAdjustment" datatype="Integer" default-value="0">
-            <description>how far brace should be indented when on next line</description>
-         </property-metadata>
-         <property-metadata name="caseIndent" datatype="Integer" default-value="4">
-            <description>how much to indent a case label</description>
-         </property-metadata>
-      </rule-metadata>
-      
-      <rule-metadata name="New Line At End Of File" internal-name="NewlineAtEndOfFile" parent="Checker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.NewlineAtEndOfFileCheck"/>
-         <description>Checks whether files end with a new line. 
+        <rule-metadata name="%DescendantToken.name" internal-name="DescendantToken" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.DescendantTokenCheck"/>
+            <description>%DescendantToken.desc</description>
+            <property-metadata name="tokens" datatype="MultiCheck">
+                <description>%DescendantToken.tokens</description>
+                <enumeration option-provider="com.atlassw.tools.eclipse.checkstyle.config.meta.AllTokensProvider"/>
+            </property-metadata>
+            <property-metadata name="limitedTokens" datatype="MultiCheck">
+                <description>%DescendantToken.limitedTokens</description>
+                <enumeration option-provider="com.atlassw.tools.eclipse.checkstyle.config.meta.AllTokensProvider"
+                > </enumeration>
+            </property-metadata>
+            <property-metadata name="minimumDepth" datatype="Integer" default-value="0">
+                <description>%DescendantToken.minimumDepth</description>
+            </property-metadata>
+            <property-metadata name="maximumDepth" datatype="Integer" default-value="2147483647">
+                <description>%DescendantToken.maximumDepth</description>
+            </property-metadata>
+            <property-metadata name="minimumNumber" datatype="Integer" default-value="0">
+                <description>%DescendantToken.minimumNumber</description>
+            </property-metadata>
+            <property-metadata name="maximumNumber" datatype="Integer" default-value="2147483647">
+                <description>%DescendantToken.maximumNumber</description>
+            </property-metadata>
+            <property-metadata name="minimumMessage" datatype="String">
+                <description>%DescendantToken.minimumMessage</description>
+            </property-metadata>
+            <property-metadata name="maximumMessage" datatype="String">
+                <description>%DescendantToken.maximumMessage</description>
+            </property-metadata>
+        </rule-metadata>
 
-Rationale: Any source files and text files in general should end with a newline character, especially when using SCM systems such as CVS. CVS will even print a warning when it encounters a file that doesn't end with a newline.</description>
-         <property-metadata name="lineSeparator" datatype="SingleSelect" default-value="system">
-            <description>type of line separator </description>
-            <enumeration>
-               <property-value-option value="system"/>
-               <property-value-option value="crlf"/>
-               <property-value-option value="cr"/>
-               <property-value-option value="lf"/>
-            </enumeration>            
-         </property-metadata>
-         <property-metadata name="fileExtensions" datatype="String">
-            <description>file type extension of the files to check.</description>
-         </property-metadata>
-      </rule-metadata>      
-           
-      <rule-metadata name="Required Regular Expression" internal-name="RequiredRegexp" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.RequiredRegexpCheck"/>
-         <description> A check that makes sure that a specified pattern exists in the code, e.g. a required legal text. It does not care about where in the file the pattern is</description>
-         <property-metadata name="format" datatype="Regex" default-value="^$">
-            <description> required pattern</description>
-         </property-metadata>
-      </rule-metadata>
-      
-      <rule-metadata name="Todo Comment" internal-name="TodoComment" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.TodoCommentCheck"/>
-         <description>A check for TODO: comments. Actually it is a generic regular expression matcher on Java comments. To check for other patterns in Java comments, set property format.</description>
-         <property-metadata name="format" datatype="Regex" default-value="TODO:">
-            <description>Regular expression definging pattern to look for.</description>
-         </property-metadata>
-      </rule-metadata>
-      
-      <rule-metadata name="Translation" internal-name="Translation" parent="Checker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.TranslationCheck"/>
-         <description>A FileSetCheck that ensures the correct translation of code by checking property files for consistency regarding their keys. Two property files describing one and the same context are consistent if they contain the same keys.</description>
-         <property-metadata name="fileExtensions" datatype="String" default-value="properties">
-            <description>file type extension to identify translation files. Setting this property is typically only required if your translation files are preprocessed and the original files do not have the extension .properties</description>
-         </property-metadata>
-      </rule-metadata>      
-            
-      <rule-metadata name="Trailing Comment" internal-name="TrailingComment" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.TrailingCommentCheck"/>
-         <description>The check to ensure that requires that comments be the only thing on a line. For the case of // comments that means that the only thing that should precede it is whitespace. It doesn't check comments if they do not end line, i.e. it accept the following: Thread.sleep( 10 &lt;some comment here&gt; ); Format property is intended to deal with the "} // while" example. 
+        <rule-metadata name="%FinalParameters.name" internal-name="FinalParameters" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.FinalParametersCheck"/>
+            <description>%FinalParameters.desc</description>
+            <property-metadata name="tokens" datatype="MultiCheck" default-value="METHOD_DEF,CTOR_DEF">
+                <description>%FinalParameters.tokens</description>
+                <enumeration>
+                    <property-value-option value="METHOD_DEF"/>
+                    <property-value-option value="CTOR_DEF"/>
+                    <property-value-option value="LITERAL_CATCH"/>
+                </enumeration>
+            </property-metadata>
+            <quickfix classname="com.atlassw.tools.eclipse.checkstyle.quickfixes.misc.FinalParametersQuickfix"/>
+        </rule-metadata>
 
-Rationale: Steve McConnel in "Code Complete" suggests that endline comments are a bad practice. An end line comment would be one that is on the same line as actual code. For example: 
+        <rule-metadata name="%GenericIllegalRegexp.name" internal-name="GenericIllegalRegexp" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.GenericIllegalRegexpCheck"/>
+            <description>%GenericIllegalRegexp.desc</description>
+            <property-metadata name="format" datatype="Regex" default-value="^$">
+                <description>%GenericIllegalRegexp.format</description>
+            </property-metadata>
+            <property-metadata name="ignoreCase" datatype="Boolean" default-value="false">
+                <description>%GenericIllegalRegexp.ignoreCase</description>
+            </property-metadata>
+            <property-metadata name="ignoreComments" datatype="Boolean" default-value="false">
+                <description>%GenericIllegalRegexp.ignoreComments</description>
+            </property-metadata>
+            <property-metadata name="message" datatype="String">
+                <description>%GenericIllegalRegexp.message</description>
+            </property-metadata>
+        </rule-metadata>
 
-       a = b + c;      // Some insightful comment
-       d = e / f;        // Another comment for this line
-      
-Quoting "Code Complete" for the justfication: 
-"The comments have to be aligned so that they do not interfere with the visual structure of the code. If you don't align them neatly, they'll make your listing look like it's been through a washing machine." 
-"Endline comments tend to be hard to format...It takes time to align them. Such time is not spent learning more about the code; it's dedicated solely to the tedious task of pressing the spacebar or tab key." 
-"Endline comments are also hard to maintain. If the code on any line containing an endline comment grows, it bumps the comment farther out, and all the other endline comments will have to bumped out to match. Styles that are hard to maintain aren't maintained...." 
-"Endline comments also tend to be cryptic. The right side of the line doesn't offer much room and the desire to keep the comment on one line means the comment must be short. Work then goes into making the line as short as possible instead of as clear as possible. The comment usually ends up as cryptic as possible...." 
-"A systemic problem with endline comments is that it's hard to write a meaningful comment for one line of code. Most endline comments just repeat the line of code, which hurts more than it helps." 
-His comments on being hard to maintain when the size of the line changes are even more important in the age of automated refactorings. </description>
-         <property-metadata name="format" datatype="Regex" default-value="^[\s\}\);]*$">
-            <description>pattern for string allowed before comment.</description>
-         </property-metadata>
-         <property-metadata name="legalComment" datatype="Regex">
-            <description>pattern for text of trailing comment which is allowed. (this pattern will not be applied to multiline comments and text of comment will be trimmed before matching) </description>
-         </property-metadata>         
-      </rule-metadata>
-      
-      <rule-metadata name="Uncommented Main" internal-name="UncommentedMain" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.UncommentedMainCheck"/>
-         <description>Checks for uncommented main() methods (debugging leftovers). 
+        <rule-metadata name="%Indentation.name" internal-name="Indentation" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.indentation.IndentationCheck"/>
+            <description>%Indentation.desc</description>
+            <property-metadata name="basicOffset" datatype="Integer" default-value="4">
+                <description>%Indentation.basicOffset</description>
+            </property-metadata>
+            <property-metadata name="braceAdjustment" datatype="Integer" default-value="0">
+                <description>%Indentation.braceAdjustment</description>
+            </property-metadata>
+            <property-metadata name="caseIndent" datatype="Integer" default-value="4">
+                <description>%Indentation.caseIndent</description>
+            </property-metadata>
+        </rule-metadata>
 
-Rationale: main() method can be often used for debug puposes. Thus most of main() method should be removed/commented out of the sources. 
-</description>
-         <property-metadata name="excludedClasses" datatype="Regex" default-value="^$">
-            <description>pattern for qualified names of classes which ar allowed to have main method.</description>
-         </property-metadata>
-         <quickfix classname="com.atlassw.tools.eclipse.checkstyle.quickfixes.misc.UncommentedMainQuickfix"/>
-      </rule-metadata>
-      
-      <rule-metadata name="Upper Ell" internal-name="UpperEll" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.UpperEllCheck"/>
-         <description>Checks that long constants are defined with an upper ell. That is ' L' and not 'l'. This is in accordance to the Java Language Specification, Section 3.10.1.  Rationale: The lower case letter l looks a lot like the digit 1.</description>
-      	 <quickfix classname="com.atlassw.tools.eclipse.checkstyle.quickfixes.misc.UpperEllQuickfix"/>
-      </rule-metadata>
-      
-      <rule-metadata name="Regexp" internal-name="Regexp" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.RegexpCheck"/>
-         <description>A check that makes sure that a specified pattern exists, exists less than a set number of times, or does not exist in the file. 
+        <rule-metadata name="%NewlineAtEndOfFile.name" internal-name="NewlineAtEndOfFile" parent="Checker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.NewlineAtEndOfFileCheck"/>
+            <description>%NewlineAtEndOfFile.desc</description>
+            <property-metadata name="lineSeparator" datatype="SingleSelect" default-value="system">
+                <description>%NewlineAtEndOfFile.lineSeperator</description>
+                <enumeration>
+                    <property-value-option value="system"/>
+                    <property-value-option value="crlf"/>
+                    <property-value-option value="cr"/>
+                    <property-value-option value="lf"/>
+                </enumeration>
+            </property-metadata>
+            <property-metadata name="fileExtensions" datatype="String">
+                <description>%NewlineAtEndOfFile.fileExtensions</description>
+            </property-metadata>
+        </rule-metadata>
 
-This check combines all the functionality provided by RegexpHeader, GenericIllegalRegexp and RequiredRegexp, except supplying the regular expression from a file. 
+        <rule-metadata name="%RequiredRegexp.name" internal-name="RequiredRegexp" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.RequiredRegexpCheck"/>
+            <description>%RequiredRegexp.desc</description>
+            <property-metadata name="format" datatype="Regex" default-value="^$">
+                <description>%RequiredRegexp.format</description>
+            </property-metadata>
+        </rule-metadata>
 
-It differs from them in that it works in multiline mode. It's regular expression can span multiple lines and it checks this against the whole file at once. The others work in singleline mode. Their single or multiple regular expressions can only span one line. They check each of these against each line in the file in turn. 
+        <rule-metadata name="%TodoComment.name" internal-name="TodoComment" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.TodoCommentCheck"/>
+            <description>%TodoComment.desc</description>
+            <property-metadata name="format" datatype="Regex" default-value="TODO:">
+                <description>%TodoComment.format</description>
+            </property-metadata>
+        </rule-metadata>
 
-Note: Because of the different mode of operation there may be some changes in the regular expressions used to achieve a particular end. 
+        <rule-metadata name="%Translation.name" internal-name="Translation" parent="Checker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.TranslationCheck"/>
+            <description>%Translation.desc</description>
+            <property-metadata name="fileExtensions" datatype="String" default-value="properties">
+                <description>%Translation.fileExtensions</description>
+            </property-metadata>
+        </rule-metadata>
 
-In multiline mode... 
+        <rule-metadata name="%TrailingComment.name" internal-name="TrailingComment" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.TrailingCommentCheck"/>
+            <description>%TrailingComment.desc</description>
+            <property-metadata name="format" datatype="Regex" default-value="^[\s\}\);]*$">
+                <description>%TrailingComment.format</description>
+            </property-metadata>
+            <property-metadata name="legalComment" datatype="Regex">
+                <description>%TrailingComment.legalComment</description>
+            </property-metadata>
+        </rule-metadata>
 
-^ means beginning of a line, as oposed to beginning of input. 
-For beginning of input use \A. 
-$ means end of a line, as oposed to end of input. 
-For end of input use \Z. 
-Each line in the file is terminated with a newline character. 
+        <rule-metadata name="%UncommentedMain.name" internal-name="UncommentedMain" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.UncommentedMainCheck"/>
+            <description>%UncommentedMain.desc</description>
+            <property-metadata name="excludedClasses" datatype="Regex" default-value="^$">
+                <description>%UncommentedMain.excludedClasses</description>
+            </property-metadata>
+            <quickfix classname="com.atlassw.tools.eclipse.checkstyle.quickfixes.misc.UncommentedMainQuickfix"/>
+        </rule-metadata>
 
-Note: Not all regexp engines are created equal. Some provide extra functions that others do not and some elements of the syntax may vary. This check makes use of the java.util.regex package, please check its documentation for details of how to construct a regular expression to achive a particular goal. 
+        <rule-metadata name="%UpperEll.name" internal-name="UpperEll" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.UpperEllCheck"/>
+            <description>%UpperEll.desc</description>
+            <quickfix classname="com.atlassw.tools.eclipse.checkstyle.quickfixes.misc.UpperEllQuickfix"/>
+        </rule-metadata>
 
-Note: When entering a regular expression as a parameter in the xml config file you must also take into account the xml rules. e.g. if you want to match a &lt; symbol you need to enter &amp;lt;. The regular expression should be entered on one line. 
-</description>
-         <property-metadata name="format" datatype="Regex" default-value="$^">
-            <description>Regular expression pattern.</description>
-         </property-metadata>
-         <property-metadata name="message" datatype="String" default-value="">
-            <description>message which is used to notify about violations, if empty then default(hard-coded) message is used. </description>
-         </property-metadata>     
-         <property-metadata name="illegalPattern" datatype="Boolean" default-value="false">
-            <description>Controls whether the pattern is required or illegal. </description>
-         </property-metadata>  
-         <property-metadata name="duplicateLimit" datatype="Integer" default-value="-1">
-            <description>Controls whether to check for duplicates of a required pattern, any negative value means no checking for duplicates, any positive value is used as the maximum number of allowed duplicates, if the limit is exceeded errors will be logged. </description>
-         </property-metadata>
-         <property-metadata name="errorLimit" datatype="Integer" default-value="100">
-            <description>Controls the maximum number of errors before the check will abort. </description>
-         </property-metadata>    
-         <property-metadata name="ignoreComments" datatype="Boolean" default-value="false">
-            <description>Controls whether to ignore matches found within comments. </description>
-         </property-metadata>                     
-      </rule-metadata>      
-   </rule-group-metadata>
-   
-  
-   <rule-group-metadata name="J2EE" priority="1400">
-   
-      <rule-metadata name="Entity Bean" internal-name="j2ee.EntityBean" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.j2ee.EntityBeanCheck"/>
-         <description>Checks that a direct entity bean, i.e. a class that directly implements javax.ejb.EntityBean, satisfies these class requirements:
-  - The class is defined as public.
-  - The class cannot be defined as final.
-  - It contains a public constructor with no parameters.
-  - It must not define the finalize method.
-          </description>
-         <property-metadata name="persistence" datatype="SingleSelect" default-value="mixed">
-            <description>This property represents the policy for checking entity beans according to whether the beans have bean-managed persistence, container-managed persistence, or mixed persistence.</description>
-            <enumeration>
-               <property-value-option value="bean"/>
-               <property-value-option value="container"/>
-               <property-value-option value="mixed"/>
-            </enumeration>
-         </property-metadata>
-      </rule-metadata>
-      
-      <rule-metadata name="Final Static" internal-name="j2ee.FinalStatic" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.j2ee.FinalStaticCheck"/>
-         <description>Checks that all static fields are declared final. 
+        <rule-metadata name="%Regexp.name" internal-name="Regexp" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.RegexpCheck"/>
+            <description>%Regexp.desc</description>
+            <property-metadata name="format" datatype="Regex" default-value="$^">
+                <description>%Regexp.format</description>
+            </property-metadata>
+            <property-metadata name="message" datatype="String" default-value="">
+                <description>%Regexp.message</description>
+            </property-metadata>
+            <property-metadata name="illegalPattern" datatype="Boolean" default-value="false">
+                <description>%Regexp.illegalPattern</description>
+            </property-metadata>
+            <property-metadata name="duplicateLimit" datatype="Integer" default-value="-1">
+                <description>%Regexp.duplicateLimit</description>
+            </property-metadata>
+            <property-metadata name="errorLimit" datatype="Integer" default-value="100">
+                <description>%Regexp.errorLimit </description>
+            </property-metadata>
+            <property-metadata name="ignoreComments" datatype="Boolean" default-value="false">
+                <description>%Regexp.ignoreComments</description>
+            </property-metadata>
+        </rule-metadata>
+    </rule-group-metadata>
 
-Rational: This check ensures consistent runtime semantics so that EJB containers have the flexibility to distribute instances across multiple JVMs.
-          </description>
-      </rule-metadata>
-      
-      <rule-metadata name="Local Home Interface" internal-name="j2ee.LocalHomeInterface" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.j2ee.LocalHomeInterfaceCheck"/>
-         <description>Checks that a direct local home interface, i.e. an interface that directly extends javax.ejb.EJBLocalHome, satisfies these requirements: 
 
-  - The return type of all create&lt;METHOD&gt;(...) methods is not void, because the return type must be the bean's local interface. 
-  - The throws clause of all create&lt;METHOD&gt;(...) methods defines the javax.ejb.CreateException. 
-  - The throws clause of all methods does not define the java.rmi.RemoteException. 
+    <rule-group-metadata name="%J2EE.group" priority="1400">
 
-Reference: Enterprise JavaBeansTM Specification,Version 2.0, sections 6.4 and 9.6.
-          </description>
-      </rule-metadata>
-      
-      <rule-metadata name="Local Interface" internal-name="j2ee.LocalInterface" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.j2ee.LocalInterfaceCheck"/>
-         <description>Checks that a direct local interface, i.e. an interface that directly extends javax.ejb.EJBLocalObject, satisfies these requirements: 
+        <rule-metadata name="%j2ee.EntityBean.name" internal-name="j2ee.EntityBean" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.j2ee.EntityBeanCheck"/>
+            <description>%j2ee.EntityBean.desc</description>
+            <property-metadata name="persistence" datatype="SingleSelect" default-value="mixed">
+                <description>%j2ee.EntityBean.persistence</description>
+                <enumeration>
+                    <property-value-option value="bean"/>
+                    <property-value-option value="container"/>
+                    <property-value-option value="mixed"/>
+                </enumeration>
+            </property-metadata>
+        </rule-metadata>
 
-  - The throws clause of all methods does not define the java.rmi.RemoteException. 
+        <rule-metadata name="%j2ee.FinalStatic.name" internal-name="j2ee.FinalStatic" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.j2ee.FinalStaticCheck"/>
+            <description>%j2ee.FinalStatic.desc</description>
+        </rule-metadata>
 
-Reference: Enterprise JavaBeansTM Specification,Version 2.0, section 9.10. 
-          </description>
-      </rule-metadata>
-      
-      <rule-metadata name="Message Bean" internal-name="j2ee.MessageBean" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.j2ee.MessageBeanCheck"/>
-         <description>Checks that a direct message bean, i.e. a class that directly implements javax.ejb.MessageDrivenBean and javax.jms.MessageListener, satisfies these class requirements: 
+        <rule-metadata name="%j2ee.LocalHomeInterface.name" internal-name="j2ee.LocalHomeInterface" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.j2ee.LocalHomeInterfaceCheck"/>
+            <description>%j2ee.LocalHomeInterface.desc</description>
+        </rule-metadata>
 
-  - The class is defined as public. 
-  - The class cannot be defined as final. 
-  - The class cannot be defined as abstract. 
-  - It contains a public constructor with no parameters. 
-  - It must not define the finalize method. 
-  - It defines an ejbCreate() method this is public, not final, not static, has no parameters, and has return type void. 
+        <rule-metadata name="%j2ee.LocalInterface.name" internal-name="j2ee.LocalInterface" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.j2ee.LocalInterfaceCheck"/>
+            <description>%j2ee.LocalInterface.desc</description>
+        </rule-metadata>
 
-Reference: Enterprise JavaBeans™ Specification,Version 2.0, section 15.7. 
-          </description>
-      </rule-metadata>
-      
-      <rule-metadata name="Remote Home Interface" internal-name="j2ee.RemoteHomeInterface" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.j2ee.RemoteHomeInterfaceCheck"/>
-         <description>Checks that a direct remote home interface, i.e. an interface that directly extends javax.ejb.EJBHome, satisfies these requirements: 
+        <rule-metadata name="%j2ee.MessageBean.name" internal-name="j2ee.MessageBean" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.j2ee.MessageBeanCheck"/>
+            <description>%j2ee.MessageBean.desc</description>
+        </rule-metadata>
 
-  - The return type of all create&lt;METHOD&gt;(...) methods is not void, because the return type must be the bean's remote interface. 
-  - The throws clause of all create&lt;METHOD&gt;(...) methods defines the javax.ejb.CreateException. 
-  - The throws clause of all methods defines the java.rmi.RemoteException. 
+        <rule-metadata name="%j2ee.RemoteHomeInterface.name" internal-name="j2ee.RemoteHomeInterface"
+            parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.j2ee.RemoteHomeInterfaceCheck"/>
+            <description>%j2ee.RemoteHomeInterface.desc</description>
+        </rule-metadata>
 
-Reference: Enterprise JavaBeansTM Specification,Version 2.0, sections 6.3 and 9.5. 
-          </description>
-      </rule-metadata>
-      
-      <rule-metadata name="Remote Interface" internal-name="j2ee.RemoteInterface" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.j2ee.RemoteInterfaceCheck"/>
-         <description>Checks that a direct remote interface, i.e. an interface that directly extends javax.ejb.EJBObject, satisfies these requirements: 
+        <rule-metadata name="%j2ee.RemoteInterface.name" internal-name="j2ee.RemoteInterface" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.j2ee.RemoteInterfaceCheck"/>
+            <description>%j2ee.RemoteInterface.desc</description>
+        </rule-metadata>
 
-  - The throws clause of all methods defines the java.rmi.RemoteException. 
+        <rule-metadata name="%j2ee.SessionBean.name" internal-name="j2ee.SessionBean" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.j2ee.SessionBeanCheck"/>
+            <description>%j2ee.SessionBean.desc</description>
+        </rule-metadata>
 
-Reference: Enterprise JavaBeansTM Specification,Version 2.0, section 9.9. 
-          </description>
-      </rule-metadata>
-      
-      <rule-metadata name="Session Bean" internal-name="j2ee.SessionBean" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.j2ee.SessionBeanCheck"/>
-         <description>Checks that a direct session bean, i.e. a class that directly implements javax.ejb.SessionBean, satisfies these class requirements: 
+        <rule-metadata name="%j2ee.ThisParameter.name" internal-name="j2ee.ThisParameter" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.j2ee.ThisParameterCheck"/>
+            <description>%j2ee.ThisParameter.desc</description>
+        </rule-metadata>
 
-  - The class is defined as public. 
-  - The class cannot be defined as final. 
-  - The class cannot be defined as abstract. 
-  - It contains a public constructor with no parameters. 
-  - It must not define the finalize method. 
-  - It defines an ejbCreate&lt;METHOD&gt;() method this is public, not final, not static, and has return type void. 
+        <rule-metadata name="%j2ee.ThisReturn.name" internal-name="j2ee.ThisReturn" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.j2ee.ThisReturnCheck"/>
+            <description>%j2ee.ThisReturn.desc</description>
+        </rule-metadata>
 
-Reference: Enterprise JavaBeans™ Specification,Version 2.0, section 7.10. 
-          </description>
-      </rule-metadata>
-      
-      <rule-metadata name="This Parameter" internal-name="j2ee.ThisParameter" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.j2ee.ThisParameterCheck"/>
-         <description>Checks that this is not a parameter of any method calls or constructors for a bean. Instead, you must use the result of the getEJBObject() available in SessionContext or EntityContext. 
-          </description>
-      </rule-metadata>
-      
-      <rule-metadata name="This Return" internal-name="j2ee.ThisReturn" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.j2ee.ThisReturnCheck"/>
-         <description>Checks that this is not returned by a bean method. Instead, you must use the result of the getEJBObject() available in SessionContext or EntityContext.
-          </description>
-      </rule-metadata>
-      
-   </rule-group-metadata>
-   
+    </rule-group-metadata>
+
 </checkstyle-metadata>

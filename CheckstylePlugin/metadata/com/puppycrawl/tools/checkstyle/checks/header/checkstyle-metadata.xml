@@ -3,63 +3,58 @@
 "-//eclipse-cs//DTD Check Metadata 1.0//EN"
 "http://eclipse-cs.sourceforge.net/dtds/checkstyle-metadata_1_0.dtd">
 <checkstyle-metadata>
-   <rule-group-metadata name="Headers" priority="300">
+    <rule-group-metadata name="%Headers.group" priority="300">
 
-      <rule-metadata name="Header" internal-name="Header" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.header.HeaderCheck"/>
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.HeaderCheck"/>
-         <description>Checks that a source file begins with a specified header. Property headerFile specifies a file that contains the required header. Alternatively, the header specification can be set directly in the header property without the need for an external file.</description>
-         <property-metadata name="headerFile" datatype="File">
-            <description>name of the file containing the required header.</description>
-         </property-metadata>
-         <property-metadata name="header" datatype="String">
-            <description>the required header specified inline. Individual header lines must be separated by the string "\n" (even on platforms with a different line separator).</description>
-         </property-metadata>
-         <property-metadata name="ignoreLines" datatype="String">
-            <description>line numbers to ignore (comma separated)</description>
-         </property-metadata>
-      </rule-metadata>   
+        <rule-metadata name="%Header.name" internal-name="Header" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.header.HeaderCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.HeaderCheck"/>
+            <description>%Header.desc</description>
+            <property-metadata name="headerFile" datatype="File">
+                <description>%Header.headerFile</description>
+            </property-metadata>
+            <property-metadata name="header" datatype="String">
+                <description>%Header.header</description>
+            </property-metadata>
+            <property-metadata name="ignoreLines" datatype="String">
+                <description>%Header.ignoreLines</description>
+            </property-metadata>
+        </rule-metadata>
 
-      <rule-metadata name="Regular Expression Header" internal-name="RegexpHeader" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.header.RegexpHeaderCheck"/>
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.RegexpHeaderCheck"/>
-         <description>Checks the header of a source file against a header that contains a regular expression for each line of the source header. 
+        <rule-metadata name="%RegexpHeader.name" internal-name="RegexpHeader" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.header.RegexpHeaderCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.RegexpHeaderCheck"/>
+            <description>%RegexpHeader.desc</description>
+            <property-metadata name="headerFile" datatype="File">
+                <description>%RegexpHeader.headerFile</description>
+            </property-metadata>
+            <property-metadata name="header" datatype="String">
+                <description>%RegexpHeader.header</description>
+            </property-metadata>
+            <property-metadata name="multiLines" datatype="String">
+                <description>%RegexpHeader.multiLines</description>
+            </property-metadata>
+        </rule-metadata>
 
-Rationale: In some projects checking against a fixed header is not sufficient, e.g. the header might require a copyright line where the year information is not static.</description>
-         <property-metadata name="headerFile" datatype="File">
-            <description>name of the file containing the required header.</description>
-         </property-metadata>
-         <property-metadata name="header" datatype="String">
-            <description>the required header specified inline. Individual header lines must be separated by the string "\n" (even on platforms with a different line separator), and regular expressions must not span multiple lines.</description>
-         </property-metadata>
-         <property-metadata name="multiLines" datatype="String">
-            <description>line numbers to repeat (zero or more times)</description>
-         </property-metadata>
-      </rule-metadata>   
-
-      <rule-metadata name="Cross Language Regexp Header" internal-name="CrossLanguageRegexpHeader" parent="Checker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.header.CrossLanguageRegexpHeaderCheck"/>
-         <description>Checks the header of each source file against a header that contains a regular expression for each line of the source header. 
-            
-            This check is very similar to the RegexpHeader check above. However it has Checker as it's parent module, so it is not limited to java source code, and allows checking headers of other file types as well. 
-            
-            Different programming languages have different comment synatx rules, but all of them start a comment with a non-word character. Hence you can often use the non-word character class to abstract away the concrete comment syntax and allow checking the header for different languages with a single header definition.</description>
-         <property-metadata name="charset" datatype="String">
-            <description>name of the file charset</description>
-         </property-metadata>
-         <property-metadata name="fileExtensions" datatype="String" default-value="java, txt, properties, html, jsp, xml, wsdl, js, css, idl, c, cc, cpp, cxx, h, cs, sh, py, bat">
-            <description>file type extensions to identify the file types to check. Must only contain text files, not binary files like bitmap graphics.</description>
-         </property-metadata>         
-         <property-metadata name="headerFile" datatype="File">
-            <description>name of the file containing the required header.</description>
-         </property-metadata>
-         <property-metadata name="header" datatype="String">
-            <description>the required header specified inline. Individual header lines must be separated by the string "\n" (even on platforms with a different line separator), and regular expressions must not span multiple lines.</description>
-         </property-metadata>
-         <property-metadata name="multiLines" datatype="String">
-            <description>line numbers to repeat (zero or more times)</description>
-         </property-metadata>
-      </rule-metadata>           
-   </rule-group-metadata>
+        <rule-metadata name="%CrossLanguageRegexpHeader.name" internal-name="CrossLanguageRegexpHeader" parent="Checker">
+            <alternative-name
+                internal-name="com.puppycrawl.tools.checkstyle.checks.header.CrossLanguageRegexpHeaderCheck"/>
+            <description>%CrossLanguageRegexpHeader.desc</description>
+            <property-metadata name="charset" datatype="String">
+                <description>name of the file charset</description>
+            </property-metadata>
+            <property-metadata name="fileExtensions" datatype="String"
+                default-value="java, txt, properties, html, jsp, xml, wsdl, js, css, idl, c, cc, cpp, cxx, h, cs, sh, py, bat">
+                <description>%CrossLanguageRegexpHeader.fileExtensions</description>
+            </property-metadata>
+            <property-metadata name="headerFile" datatype="File">
+                <description>%CrossLanguageRegexpHeader.headerFile</description>
+            </property-metadata>
+            <property-metadata name="header" datatype="String">
+                <description>%CrossLanguageRegexpHeader.header</description>
+            </property-metadata>
+            <property-metadata name="multiLines" datatype="String">
+                <description>%CrossLanguageRegexpHeader.multiLines</description>
+            </property-metadata>
+        </rule-metadata>
+    </rule-group-metadata>
 </checkstyle-metadata>
-

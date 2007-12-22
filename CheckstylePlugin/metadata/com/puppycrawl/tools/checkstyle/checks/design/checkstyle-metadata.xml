@@ -3,75 +3,69 @@
 "-//eclipse-cs//DTD Check Metadata 1.0//EN"
 "http://eclipse-cs.sourceforge.net/dtds/checkstyle-metadata_1_0.dtd">
 <checkstyle-metadata>
-   <rule-group-metadata name="Class Design" priority="1000">
-   
-      <rule-metadata name="Design For Extension" internal-name="DesignForExtension" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.design.DesignForExtensionCheck"/>
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.DesignForExtensionCheck"/>
-         <description>Checks that classes are designed for extension. More specifically, it enforces a programming style where superclasses provide empty "hooks" that can be implemented by subclasses. The exact rule is that nonprivate, nonstatic methods of classes that can be subclassed must either be a) abstract or b) final or c) have an empty implementation.  Rationale: This API design style protects superclasses against beeing broken by subclasses. The downside is that subclasses are limited in their flexibility, in particular they cannot prevent execution of code in the superclass, but that also means that subclasses cannot corrupt the state of the superclass by forgetting to call the super method.</description>
-      	 <quickfix classname="com.atlassw.tools.eclipse.checkstyle.quickfixes.design.DesignForExtensionQuickfix"/>
-      </rule-metadata>
-      
-      <rule-metadata name="Final Class" internal-name="FinalClass" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.design.FinalClassCheck"/>
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.FinalClassCheck"/>
-         <description>Checks that a class which has only private constructors is declared as final.</description>
-         <quickfix classname="com.atlassw.tools.eclipse.checkstyle.quickfixes.design.FinalClassQuickfix"/>
-      </rule-metadata>
-      
-      <rule-metadata name="Hide Utility Class Constructor" internal-name="HideUtilityClassConstructor" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.design.HideUtilityClassConstructorCheck"/>
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.HideUtilityClassConstructorCheck"/>         
-         <description>Make sure that utility classes (classes that contain only static methods) do not have a public constructor.  Rationale: Instantiating utility classes does not make sense. Hence the constructors should either be private or (if you want to allow subclassing) protected. A common mistake is forgetting to hide the default constructor.</description>
-      </rule-metadata>
-      
-      <rule-metadata name="Interface Is Type" internal-name="InterfaceIsType" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.design.InterfaceIsTypeCheck"/>
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.InterfaceIsTypeCheck"/>       
-         <description>Implements Bloch, Effective Java, Item 17 - Use Interfaces only to define types.  According to Bloch, an interface should describe a type. It is therefore inappropriate to define an interface that does not contain any methods but only constants. The Standard class javax.swing.SwingConstants is an example of a class that would be flagged by this check.</description>
-         <property-metadata name="allowMarkerInterfaces" datatype="Boolean" default-value="true">
-            <description>Controls whether marker interfaces like Serializable are allowed.</description>
-         </property-metadata>
-      </rule-metadata>
-      
-      <rule-metadata name="Mutable Exception" internal-name="MutableException" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.design.MutableExceptionCheck"/>
-         <description>Ensures that exceptions (defined as any class name conforming to some regular expression) are immutable. That is, have only final fields. 
+    <rule-group-metadata name="%Design.group" priority="1000">
 
-The current algorithm is very simple it checks that all members of exception are final. User can still mutates an exception's instance (e.g. Throwable has setStackTrace(StackTraceElement[] stackTrace) method which changes stack trace). But, at least, all information provided by this exception type is unchangable. 
+        <rule-metadata name="%DesignForExtension.name" internal-name="DesignForExtension" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.design.DesignForExtensionCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.DesignForExtensionCheck"/>
+            <description>%DesignForExtension.desc</description>
+            <quickfix classname="com.atlassw.tools.eclipse.checkstyle.quickfixes.design.DesignForExtensionQuickfix"/>
+        </rule-metadata>
 
-Rationale: Exception instances should represent an error condition. Having non final fields not only allows the state to be modified by accident and therefore mask the original condition but also allows developers to accidentally forget to initialise state thereby leading to code catching the exception to draw incorrect conclusions based on the state.      </description>
-         <property-metadata name="format" datatype="Regex" default-value="^.*Exception$|^.*Error$">
-            <description>pattern for name of exception class.</description>
-         </property-metadata>
-      </rule-metadata>
-      
-      <rule-metadata name="Throws Count" internal-name="ThrowsCount" parent="TreeWalker">
-      	 <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.design.ThrowsCountCheck"/>
-         <description>Restricts throws statements to a specified count (default = 1). 
+        <rule-metadata name="%FinalClass.name" internal-name="FinalClass" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.design.FinalClassCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.FinalClassCheck"/>
+            <description>%FinalClass.desc</description>
+            <quickfix classname="com.atlassw.tools.eclipse.checkstyle.quickfixes.design.FinalClassQuickfix"/>
+        </rule-metadata>
 
-Rationale: Exceptions form part of a methods interface. Declaring a method to throw too many differently rooted exceptions makes exception handling onerous and leads to poor programming practices such as catch (Exception). This check forces developers to put exceptions into a heirachy such that in the simplest case, only one type of exception need be checked for by a caller but allows any sub-classes to be caught specifically if necessary. 
-         </description>
-         <property-metadata name="max" datatype="Integer" default-value="1">
-            <description>maximum allowed number of throws statments</description>
-         </property-metadata>
-      </rule-metadata>
-      
-      <rule-metadata name="Visibility Modifier" internal-name="VisibilityModifier" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.design.VisibilityModifierCheck"/>
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.VisibilityModifierCheck"/>
-         <description>Checks visibility of class members. Only static final members may be public; other class members must be private unless property protectedAllowed or packageAllowed is set.</description>
-         <property-metadata name="packageAllowed" datatype="Boolean" default-value="false">
-            <description>Whether package visible members are allowed or not.</description>
-         </property-metadata>
-         <property-metadata name="protectedAllowed" datatype="Boolean" default-value="false">
-            <description>Whether protected members are allowed or not.</description>
-         </property-metadata>
-         <property-metadata name="publicMemberPattern" datatype="Regex" default-value="^serialVersionUID">
-            <description>Pattern for public members that should be ignored.</description>
-         </property-metadata>
-      </rule-metadata>
-      
-   </rule-group-metadata>
+        <rule-metadata name="%HideUtilityClassConstructor.name" internal-name="HideUtilityClassConstructor"
+            parent="TreeWalker">
+            <alternative-name
+                internal-name="com.puppycrawl.tools.checkstyle.checks.design.HideUtilityClassConstructorCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.HideUtilityClassConstructorCheck"/>
+            <description>%HideUtilityClassConstructor.desc</description>
+        </rule-metadata>
+
+        <rule-metadata name="%InterfaceIsType.name" internal-name="InterfaceIsType" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.design.InterfaceIsTypeCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.InterfaceIsTypeCheck"/>
+            <description>%InterfaceIsType.desc</description>
+            <property-metadata name="allowMarkerInterfaces" datatype="Boolean" default-value="true">
+                <description>%InterfaceIsType.allowMarkerInterfaces</description>
+            </property-metadata>
+        </rule-metadata>
+
+        <rule-metadata name="%MutableException.name" internal-name="MutableException" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.design.MutableExceptionCheck"/>
+            <description>%MutableException.desc</description>
+            <property-metadata name="format" datatype="Regex" default-value="^.*Exception$|^.*Error$">
+                <description>%MutableException.format</description>
+            </property-metadata>
+        </rule-metadata>
+
+        <rule-metadata name="%ThrowsCount.name" internal-name="ThrowsCount" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.design.ThrowsCountCheck"/>
+            <description>%ThrowsCount.desc</description>
+            <property-metadata name="max" datatype="Integer" default-value="1">
+                <description>%ThrowsCount.max</description>
+            </property-metadata>
+        </rule-metadata>
+
+        <rule-metadata name="%VisibilityModifier.name" internal-name="VisibilityModifier" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.design.VisibilityModifierCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.VisibilityModifierCheck"/>
+            <description>%VisibilityModifier.desc</description>
+            <property-metadata name="packageAllowed" datatype="Boolean" default-value="false">
+                <description>%VisibilityModifier.packageAllowed</description>
+            </property-metadata>
+            <property-metadata name="protectedAllowed" datatype="Boolean" default-value="false">
+                <description>%VisibilityModifier.protectedAllowed</description>
+            </property-metadata>
+            <property-metadata name="publicMemberPattern" datatype="Regex" default-value="^serialVersionUID">
+                <description>%VisibilityModifier.publicMemberPattern</description>
+            </property-metadata>
+        </rule-metadata>
+
+    </rule-group-metadata>
 </checkstyle-metadata>
-

@@ -3,31 +3,31 @@
 "-//eclipse-cs//DTD Check Metadata 1.0//EN"
 "http://eclipse-cs.sourceforge.net/dtds/checkstyle-metadata_1_0.dtd">
 <checkstyle-metadata>
-  <rule-group-metadata name="Modifiers" priority="700">
-   
-      <rule-metadata name="Modifier Order" internal-name="ModifierOrder" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.modifier.ModifierOrderCheck"/>
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.ModifierOrderCheck"/>
-         <description>Checks that the order of modifiers conforms to the suggestions in the Java Language specification, sections 8.1.1, 8.3.1 and 8.4.3. The correct order is: public, protected, private, abstract, static, final, transient, volatile, synchronized, native, strictfp.</description>
-         <quickfix classname="com.atlassw.tools.eclipse.checkstyle.quickfixes.modifier.ModifierOrderQuickfix"/>
-      </rule-metadata>
-      
-      <rule-metadata name="Redundant Modifier" internal-name="RedundantModifier" parent="TreeWalker">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.modifier.RedundantModifierCheck"/>
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.RedundantModifierCheck"/>
-         <description>Checks that method declarations in interfaces include neither the public modifier nor the abstract modifier (see the Java Language specification, section 9.4).  Also checks that variable declarations in interfaces include none of the following modifiers: public, static, final (variables in interface definitions are constants and have these modifiers implicitly, see the Java Language specification, section 9.3).</description>
-         <property-metadata name="tokens" datatype="MultiCheck" default-value="METHOD_DEF,VARIABLE_DEF,ANNOTATION_FIELD_DEF">
-            <description>Tokens to check.</description>
-            <enumeration>
-               <property-value-option value="METHOD_DEF"/>
-               <property-value-option value="VARIABLE_DEF"/>
-               <property-value-option value="ANNOTATION_FIELD_DEF"/>
-            </enumeration>
-         </property-metadata>
-         <quickfix classname="com.atlassw.tools.eclipse.checkstyle.quickfixes.modifier.RedundantModifierQuickfix"/>
-      </rule-metadata>
-      
-   </rule-group-metadata>
-   
-</checkstyle-metadata>
+    <rule-group-metadata name="%Modifiers.group" priority="700">
 
+        <rule-metadata name="%ModifierOrder.name" internal-name="ModifierOrder" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.modifier.ModifierOrderCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.ModifierOrderCheck"/>
+            <description>%ModifierOrder.desc</description>
+            <quickfix classname="com.atlassw.tools.eclipse.checkstyle.quickfixes.modifier.ModifierOrderQuickfix"/>
+        </rule-metadata>
+
+        <rule-metadata name="%RedundantModifier.name" internal-name="RedundantModifier" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.modifier.RedundantModifierCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.RedundantModifierCheck"/>
+            <description>%RedundantModifier.desc</description>
+            <property-metadata name="tokens" datatype="MultiCheck"
+                default-value="METHOD_DEF,VARIABLE_DEF,ANNOTATION_FIELD_DEF">
+                <description>%RedundantModifier.tokens</description>
+                <enumeration>
+                    <property-value-option value="METHOD_DEF"/>
+                    <property-value-option value="VARIABLE_DEF"/>
+                    <property-value-option value="ANNOTATION_FIELD_DEF"/>
+                </enumeration>
+            </property-metadata>
+            <quickfix classname="com.atlassw.tools.eclipse.checkstyle.quickfixes.modifier.RedundantModifierQuickfix"/>
+        </rule-metadata>
+
+    </rule-group-metadata>
+
+</checkstyle-metadata>

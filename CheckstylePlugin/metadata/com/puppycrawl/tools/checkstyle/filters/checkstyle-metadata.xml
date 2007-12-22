@@ -2,63 +2,60 @@
 <!DOCTYPE checkstyle-metadata PUBLIC
 "-//eclipse-cs//DTD Check Metadata 1.0//EN"
 "http://eclipse-cs.sourceforge.net/dtds/checkstyle-metadata_1_0.dtd">
-<checkstyle-metadata> 
-  <rule-group-metadata name="Filters" priority="1700"> 	
-   
-      <rule-metadata name="Severity Match Filter" internal-name="SeverityMatchFilter" parent="Checker" hasSeverity="false">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.filters.SeverityMatchFilter"/>
-         <description>Filter SeverityMatchFilter decides audit events according to the severity level of the event.</description>
-         <property-metadata name="severity" datatype="SingleSelect" default-value="error">
-            <description>the severity level of this filter.</description>
-            <enumeration>
-              <property-value-option value="error"/>
-              <property-value-option value="warning"/>
-              <property-value-option value="info"/>
-              <property-value-option value="ignore"/>
-            </enumeration>    
-         </property-metadata>
-         <property-metadata name="acceptOnMatch " datatype="Boolean" default-value="true">
-            <description>If acceptOnMatch is true, then the filter accepts an audit event if and only if there is a match between the event's severity level and property severity. If acceptOnMatch is false, then the filter accepts an audit event if and only if there is not a match between the event's severity level and property severity.</description>
-         </property-metadata>
-      </rule-metadata>   
-   
-      <rule-metadata name="Suppression Filter" internal-name="SuppressionFilter" parent="Checker" hasSeverity="false">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.filters.SuppressionFilter"/>
-         <description>Filter SuppressionFilter rejects audit events for Check errors according to a suppressions XML document in a file. If there is no configured suppressions file, the Filter accepts all audit events.</description>
-         <property-metadata name="file" datatype="File">
-            <description>the name of the suppressions XML document file.</description>
-         </property-metadata>
-      </rule-metadata>     
+<checkstyle-metadata>
+    <rule-group-metadata name="%Filters.group" priority="1700">
 
-      <rule-metadata name="Suppression Comment Filter" internal-name="SuppressionCommentFilter" parent="Checker" hasSeverity="false">
-         <alternative-name internal-name="com.puppycrawl.tools.checkstyle.filters.SuppressionCommentFilter"/>
-         <description>Filter SuppressionCommentFilter uses pairs of comments to suppress audit events. 
+        <rule-metadata name="%SeverityMatchFilter.name" internal-name="SeverityMatchFilter" parent="Checker"
+            hasSeverity="false">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.filters.SeverityMatchFilter"/>
+            <description>%SeverityMatchFilter.desc</description>
+            <property-metadata name="severity" datatype="SingleSelect" default-value="error">
+                <description>%SeverityMatchFilter.severity</description>
+                <enumeration>
+                    <property-value-option value="error"/>
+                    <property-value-option value="warning"/>
+                    <property-value-option value="info"/>
+                    <property-value-option value="ignore"/>
+                </enumeration>
+            </property-metadata>
+            <property-metadata name="acceptOnMatch " datatype="Boolean" default-value="true">
+                <description>%SeverityMatchFilter.acceptOnMatch</description>
+            </property-metadata>
+        </rule-metadata>
 
-Rationale: Sometimes there are legitimate reasons for violating a check. When this is a matter of the code in question and not personal preference, the best place to override the policy is in the code itself. Semi-structured comments can be associated with the check. This is sometimes superior to a separate suppressions file, which must be kept up-to-date as the source file is edited. 
+        <rule-metadata name="%SuppressionFilter.name" internal-name="SuppressionFilter" parent="Checker"
+            hasSeverity="false">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.filters.SuppressionFilter"/>
+            <description>%SuppressionFilter.desc</description>
+            <property-metadata name="file" datatype="File">
+                <description>%SuppressionFilter.file</description>
+            </property-metadata>
+        </rule-metadata>
 
-Usage: This filter only works in conjunction with a FileContentsHolder, since that check makes the suppression comments in the .java files available sub rosa. A configuration that includes this filter must configure FileContentsHolder as a child module of TreeWalker. 
+        <rule-metadata name="%SuppressionCommentFilter.name" internal-name="SuppressionCommentFilter" parent="Checker"
+            hasSeverity="false">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.filters.SuppressionCommentFilter"/>
+            <description>%SuppressionCommentFilter.desc</description>
+            <property-metadata name="offCommentFormat" datatype="Regex" default-value="CHECKSTYLE\:OFF">
+                <description>%SuppressionCommentFilter.offCommentFormat</description>
+            </property-metadata>
+            <property-metadata name="onCommentFormat" datatype="Regex" default-value="CHECKSTYLE\:ON">
+                <description>%SuppressionCommentFilter.onCommentFormat</description>
+            </property-metadata>
+            <property-metadata name="checkFormat" datatype="Regex" default-value=".*">
+                <description>%SuppressionCommentFilter.checkFormat</description>
+            </property-metadata>
+            <property-metadata name="messageFormat" datatype="Regex">
+                <description>%SuppressionCommentFilter.messageFormat</description>
+            </property-metadata>
+            <property-metadata name="checkCPP" datatype="Boolean" default-value="true">
+                <description>%SuppressionCommentFilter.checkCPP</description>
+            </property-metadata>
+            <property-metadata name="checkC" datatype="Boolean" default-value="true">
+                <description>%SuppressionCommentFilter.checkC</description>
+            </property-metadata>
+        </rule-metadata>
 
-</description>
-         <property-metadata name="offCommentFormat" datatype="Regex" default-value="CHECKSTYLE\:OFF">
-            <description>comment pattern to trigger filter to begin suppression.</description>
-         </property-metadata>
-         <property-metadata name="onCommentFormat" datatype="Regex" default-value="CHECKSTYLE\:ON">
-            <description>comment pattern to trigger filter to end suppression.</description>
-         </property-metadata>
-         <property-metadata name="checkFormat" datatype="Regex" default-value=".*">
-            <description>check pattern to suppress.</description>
-         </property-metadata>
-         <property-metadata name="messageFormat" datatype="Regex">
-            <description>message pattern to suppress.</description>
-         </property-metadata>
-         <property-metadata name="checkCPP" datatype="Boolean" default-value="true">
-            <description>whether to check C++ style comments (//)</description>
-         </property-metadata>
-         <property-metadata name="checkC" datatype="Boolean" default-value="true">
-            <description>whether to check C style comments (/* ... */)</description>
-         </property-metadata>
-      </rule-metadata>    
-   
-   </rule-group-metadata>   
-     
+    </rule-group-metadata>
+
 </checkstyle-metadata>
