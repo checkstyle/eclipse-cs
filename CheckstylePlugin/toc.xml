@@ -24,8 +24,10 @@
 			<topic label="Creating a custom plug-in filter"		href="doc/extending_filters.html"/>
 		</topic>
 	</topic>
-	<topic label="Release notes"                   			href="doc/releasenotes/4.3.2/release_notes.html">
-		<topic label="Release 4.3.1"						href="doc/releasenotes/4.3.2/release_notes.html"/>
+	<topic label="Release notes"                   			href="doc/releasenotes/4.4.0/release_notes.html">
+	    <topic label="Release 4.4.0"						href="doc/releasenotes/4.4.0/release_notes.html"/>
+	    <topic label="Release 4.3.3"						href="doc/releasenotes/4.3.3/release_notes.html"/>
+	    <topic label="Release 4.3.2"						href="doc/releasenotes/4.3.2/release_notes.html"/>
 		<topic label="Release 4.3.1"						href="doc/releasenotes/4.3.1/release_notes.html"/>
 		<topic label="Release 4.3.0"						href="doc/releasenotes/4.3.0/release_notes.html"/>
 		<topic label="Release 4.2.1"						href="doc/releasenotes/4.2.1/release_notes.html"/>
