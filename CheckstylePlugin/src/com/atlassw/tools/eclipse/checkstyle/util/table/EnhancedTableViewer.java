@@ -24,7 +24,6 @@ import java.text.Collator;
 
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.viewers.ColumnPixelData;
-import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
