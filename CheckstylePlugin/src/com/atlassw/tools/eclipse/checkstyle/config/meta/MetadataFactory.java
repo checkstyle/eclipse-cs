@@ -37,7 +37,6 @@ import java.util.TreeMap;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.osgi.util.NLS;
@@ -351,7 +350,7 @@ public final class MetadataFactory
      */
     private static ResourceBundle getMetadataI18NBundle(String metadataFile)
     {
-        String bundle = metadataFile.substring(0, metadataFile.length() - 4).replace("/", ".");
+        String bundle = metadataFile.substring(0, metadataFile.length() - 4).replace('/', '.');
         try
         {
             return PropertyResourceBundle.getBundle(bundle);
