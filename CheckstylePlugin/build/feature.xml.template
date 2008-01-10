@@ -46,5 +46,6 @@
          id="net.sf.eclipsecs.stats"
          download-size="1300"
          install-size="1700"
-         version="@stats.fragment.version@"/>
+         version="@stats.fragment.version@"
+	 fragment="true"/>
 </feature>
