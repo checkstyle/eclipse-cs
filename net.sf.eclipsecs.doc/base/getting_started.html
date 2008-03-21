@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "xhtml11-flat.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8"/>
+        <meta name="section" content="docs-basic"/>
+        <link type="text/css" href="style.css" rel="stylesheet"/>
+        <title>Getting Started</title>
+    </head>
+    <body>
+        <h2>-- Getting Started --</h2>
+        <p>There are only a few things you need to do to get up and running using the Checkstyle
+            plug-in. The first thing is to understand a few basic concepts about how the plug-in
+            works.</p>
+        <p><b>Basic Concepts <br/>
+            </b> The Checkstyle Plug-in uses a project builder to check your project files with
+            Checkstyle. So whenever you build your project your files will be checked by Checkstyle
+            as well. <br/> This goes so far that even if you edit a single file in your Eclipse
+            editor this file will immediately get checked by Checkstyle on file save (assuming the
+            Eclipse auto-build feature is enabled) - giving you immediate feedback about the changes
+            you made. <br/> To use a simple analogy - the Checkstyle Plug-in works very much like a
+            compiler but instead of producing <i>.class</i> files it produces warnings where your
+            code violates the Checkstyle rules. <br/> The violations Checkstyle finds in your code
+            are accessible in the Eclipse Problems View and are additionally annotated in the code
+            editor.</p>
+        <p>The set of rules used to check your code is not fixed but highly configurable. <br/> A
+            Check Configuration specifies which check rules you want to inspect your code, the
+            configuration settings for each rule, and the severity level of the message if the rule
+            finds a problem. <br/> Once defined a Check Configuration can be used across multiple
+            projects. The Checkstyle Plug-in comes with one Check Configuration already defined.
+            <br/> You can create own Check Configurations using the comfortable Check Configuration
+            Editor that comes with the plug-in or even use an existing Checkstyle Configuration file
+            from an external location.</p>
+        <p><b>Got it, how to go on from here?</b>
+            <br/> To learn how to <a href="basic_setup_project.html">set up a project</a> to use the
+            Checkstyle Plug-in read <a href="basic_setup_project.html">here</a> - how to <a
+                href="basic_creating_config.html">create your own check configuration</a> read <a
+                href="basic_creating_config.html">here</a> .</p>
+    </body>
+</html>

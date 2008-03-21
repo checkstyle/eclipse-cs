@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "xhtml11-flat.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8"/>
+        <meta name="section" content="docs-ext"/>
+        <link type="text/css" href="style.css" rel="stylesheet"/>
+        <title>Providing a build-in configuration</title>
+    </head>
+    <body>
+        <h2>-- Providing a build-in configuration --</h2>
+        <p>By providing a <a href="extending_fragments.html">fragment</a> the plug-in enables you to
+            roll out an immutable Checkstyle configuration to your team members.<br/> This is
+            especially powerful if you distribute your fragment via a corporate update site</p>
+        <p>You can provide such a built-in configuration by the use of the <span class="code-blue"
+                >com.atlassw.tools.eclipse.checkstyle.configurations</span> extension point.</p>
+        <p>Simply package you configuration file with your fragment and add a similar entry (see
+            example below) to your <span class="code-blue">fragment.xml</span>. <br/>
+            <br/>
+        </p>
+        <p>
+            <b>Example:</b>
+        </p>
+        <p>
+            <span class="code-blue">&lt;extension</span>
+            <br/>
+            <span class="code-blue">&#160;&#160;&#160;&#160;id=</span>
+            <span class="code-green">&quot;com.mychecks&quot;</span>
+            <br/>
+            <span class="code-blue">&#160;&#160;&#160;&#160;point=</span>
+            <span class="code-green"
+                >&quot;com.atlassw.tools.eclipse.checkstyle.configurations&quot;</span>
+            <span class="code-blue">&gt;</span>
+            <br/>
+            <span class="code-blue"
+                >&#160;&#160;&#160;&#160;&lt;check-configuration</span>
+            <br/>
+            <span class="code-blue"
+                >&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;name=</span>
+            <span class="code-green">&quot;My built-in configuration&quot;</span>
+            <br/>
+            <span class="code-blue"
+                >&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;description=</span>
+            <span class="code-green">&quot;The mandatory set of checkstyle rules for my
+                company.&quot;</span>
+            <br/>
+            <span class="code-blue"
+                >&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;location=</span>
+            <span class="code-green">&quot;my-custom-builtin-configuration.xml&quot;</span>
+            <span class="code-blue">&gt;</span>
+            <br/>
+            <span class="code-blue"
+                >&#160;&#160;&#160;&#160;&lt;/check-configuration&gt;</span>
+            <br/>
+            <span class="code-blue">&lt;/extension&gt;</span>
+            <br/>
+        </p>
+    </body>
+</html>

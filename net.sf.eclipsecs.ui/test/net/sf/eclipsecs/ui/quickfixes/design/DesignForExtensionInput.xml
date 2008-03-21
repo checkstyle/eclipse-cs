@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quickfix-test-data>
+    <testcase>
+        <input fix-line="1">
+public class A {
+    public void foo(int a, int b) {
+    }
+}
+        </input>
+        <result>
+public class A {
+    public final void foo(int a, int b) {
+    }
+}
+        </result>
+    </testcase>
+</quickfix-test-data>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "xhtml11-flat.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8"/>
+        <meta name="section" content="main"/>
+        <link type="text/css" href="style.css" rel="stylesheet"/>
+        <title>Issues with RAD 6/7</title>
+    </head>
+    <body>
+        <h2>Important information for Rational Application Developer (RAD) 6/7 users</h2>
+        <p>Due to a bug in IBMs J9 VM on which RAD runs, out of the box usage of the Eclipse
+            Checkstyle Plugin will with almost certainty lead to crashes of RAD.</p>
+        <p>The problem is acknowledged by IBM, considering this <a
+                href="http://www-1.ibm.com/support/docview.wss?rs=2044&amp;context=SSCM72&amp;dc=DB520&amp;uid=swg21256946&amp;loc=en_US&amp;cs=UTF-8&amp;lang=en&amp;rss=ct2044rational"
+                >technote</a>.<br/>However, even as there is a official bug report open at IBM since
+            July 2006 this problem has not been fixed yet, although the above mentioned technote
+            seems to point at a specific problem location.</p>
+        <p>Luckily there are two options to work around the VM crash issues:</p>
+        <ol>
+            <li>
+                <p>
+                    <b>Disable the plugins project classloader:</b>
+                    <br/>Go to Window->Preferences->Checkstyle and tick the <em>Disable project
+                        classloader</em> checkbox.<br/>
+                    <b>Important: </b><br/>It is absolutely crucial to do a minor change to your
+                    Checkstyle configuration.<br/>There are currently two checks in Checkstyle which
+                    load class information of the code to be checked.<br/>Those two checks are
+                        <b>JavadocMethod</b> and <b>RedundantThrows</b>.<br/>Both checks have a
+                    setting called <b>logLoadErrors</b>, which must be set to
+                    <em>true</em>.<br/>Failure to do so will result in Checkstyle throwing
+                    RuntimeException on the attempted classloading. These RuntimeExceptions manifest
+                    themselves in the plugin as error markes in the checked source files, all with a
+                    problem description like: Unable to find class information for XYZ.</p>
+            </li>
+
+            <li>
+                <p><b>Disable J9s class garbage collection:</b><br/>As suggested in the <a
+                        href="http://www-1.ibm.com/support/docview.wss?rs=2044&amp;context=SSCM72&amp;dc=DB520&amp;uid=swg21256946&amp;loc=en_US&amp;cs=UTF-8&amp;lang=en&amp;rss=ct2044rational"
+                        >technote</a> it is possible to disable J9s class data garbage collection,
+                    using the <b>-Xnoclassgc</b> option in eclipse.ini, which is placed in RADs
+                    installation folder.<br/>With this option the project classloader <b>does
+                    not</b> need to be disabled. The downside however is that RAD accumulates more
+                    memory and might run into OutOfMemory errors more often (avg. once per work day
+                    - this is my personal experience, mileage my vary).<br/>TODO: add eclipse.ini
+                    sample</p>
+            </li>
+        </ol>
+        <p>If you have strong ties to IBM or a nice and shiny support contract, please help us get
+            this problem fixed once and for all. Please lobby your IBM contact person or product
+            support to fix the VM bug.<br/>Thank you!</p>
+    </body>
+</html>

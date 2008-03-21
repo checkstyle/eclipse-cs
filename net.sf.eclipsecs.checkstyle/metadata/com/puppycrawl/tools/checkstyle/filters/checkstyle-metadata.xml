@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE checkstyle-metadata PUBLIC
+"-//eclipse-cs//DTD Check Metadata 1.0//EN"
+"http://eclipse-cs.sourceforge.net/dtds/checkstyle-metadata_1_0.dtd">
+<checkstyle-metadata>
+    <rule-group-metadata name="%Filters.group" priority="1700">
+
+        <rule-metadata name="%SeverityMatchFilter.name" internal-name="SeverityMatchFilter" parent="Checker"
+            hasSeverity="false">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.filters.SeverityMatchFilter"/>
+            <description>%SeverityMatchFilter.desc</description>
+            <property-metadata name="severity" datatype="SingleSelect" default-value="error">
+                <description>%SeverityMatchFilter.severity</description>
+                <enumeration>
+                    <property-value-option value="error"/>
+                    <property-value-option value="warning"/>
+                    <property-value-option value="info"/>
+                    <property-value-option value="ignore"/>
+                </enumeration>
+            </property-metadata>
+            <property-metadata name="acceptOnMatch " datatype="Boolean" default-value="true">
+                <description>%SeverityMatchFilter.acceptOnMatch</description>
+            </property-metadata>
+        </rule-metadata>
+
+        <rule-metadata name="%SuppressionFilter.name" internal-name="SuppressionFilter" parent="Checker"
+            hasSeverity="false">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.filters.SuppressionFilter"/>
+            <description>%SuppressionFilter.desc</description>
+            <property-metadata name="file" datatype="File">
+                <description>%SuppressionFilter.file</description>
+            </property-metadata>
+        </rule-metadata>
+
+        <rule-metadata name="%SuppressionCommentFilter.name" internal-name="SuppressionCommentFilter" parent="Checker"
+            hasSeverity="false">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.filters.SuppressionCommentFilter"/>
+            <description>%SuppressionCommentFilter.desc</description>
+            <property-metadata name="offCommentFormat" datatype="Regex" default-value="CHECKSTYLE\:OFF">
+                <description>%SuppressionCommentFilter.offCommentFormat</description>
+            </property-metadata>
+            <property-metadata name="onCommentFormat" datatype="Regex" default-value="CHECKSTYLE\:ON">
+                <description>%SuppressionCommentFilter.onCommentFormat</description>
+            </property-metadata>
+            <property-metadata name="checkFormat" datatype="Regex" default-value=".*">
+                <description>%SuppressionCommentFilter.checkFormat</description>
+            </property-metadata>
+            <property-metadata name="messageFormat" datatype="Regex">
+                <description>%SuppressionCommentFilter.messageFormat</description>
+            </property-metadata>
+            <property-metadata name="checkCPP" datatype="Boolean" default-value="true">
+                <description>%SuppressionCommentFilter.checkCPP</description>
+            </property-metadata>
+            <property-metadata name="checkC" datatype="Boolean" default-value="true">
+                <description>%SuppressionCommentFilter.checkC</description>
+            </property-metadata>
+        </rule-metadata>
+
+    </rule-group-metadata>
+
+</checkstyle-metadata>

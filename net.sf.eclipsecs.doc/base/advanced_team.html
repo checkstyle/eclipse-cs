@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "xhtml11-flat.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8"/>
+        <meta name="section" content="docs-adv"/>
+        <link type="text/css" href="style.css" rel="stylesheet"/>
+        <title>Working with a Team Repository</title>
+    </head>
+    <body>
+        <h2>-- Working with a Team Repository --</h2>
+        <p>Most software projects involve more then one person and a team repository is used to
+            manage and share files among the team members. <br/> The Eclipse Checkstyle plug-in
+            supports working in a team environment with a repository. <br/> The following discussion
+            provides the information you need to know when working in a team environment.</p>
+        <p>Traditionally Check Configurations were defined in your workspace preferences alone.<br/>
+            They were stored on your local file system by Eclipse in a location that is not shared
+            via your team repository (in the plugins state location inside the workspace).<br/> This
+            made it hard to consistently share Check Configuration setups among development teams.</p>
+        <p>While release 4.0.0 of the eclipse-cs plugin contained some features to ease this problem
+            version 4.1.0 completely and thorougly solves this problem.</p>
+        <p>Version 4.1.0 does this by separating Global and Local Check Configurations.</p>
+        <p><strong>Global Configurations</strong> resemble the traditional configuration in the
+            workspace preferences, known from previous releases.<br/>Global Check Configuration
+            setups are stored in the plugins state location like before.<br/>This means that these
+            cannot be shared via team repository<br/>On the positive side Global Configurations can
+            be used by multiple projects.<br/><img src="images/global_configs.jpg" alt="Global Check
+                Configurations"/></p>
+        <p><strong>Local Configurations</strong> are introduced with version 4.1.0 of the
+            plugin.<br/>Local Configurations are set up on the Checkstyle properties page of a
+            project, note the new tab <em>Local Check Configurations</em><br/>This works very much
+            like configuring check configurations in the workspace preferences, except that Local
+            Check Configurations are stored within the <em>.checkstyle</em> file within the project
+            root.<br/>This means that you can share the .checkstyle file of your project via team
+            repository because all necessary information for the Local Configurations are stored
+            therein.<br/>This way when a developer checks out the project from the repository the
+            project setup will already be complete and the eclipse-cs plugin ready to use for this
+            project.<br/>Of course Local Check Configurations can only be used by the project they
+            are configured for.<br/><img src="images/local_configs.jpg" alt="Local Check
+                Configurations"/></p>
+        <p><strong>Hint:</strong> Team configurations work best when using the <a
+                href="advanced_configtypes.html#Project">Project Relative configuration type</a> or
+            the <a href="advanced_configtypes.html#Remote">Remote configuration type.</a></p>
+    </body>
+</html>

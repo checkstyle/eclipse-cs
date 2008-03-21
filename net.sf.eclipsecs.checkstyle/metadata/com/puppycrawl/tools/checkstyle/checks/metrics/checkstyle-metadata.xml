@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE checkstyle-metadata PUBLIC
+"-//eclipse-cs//DTD Check Metadata 1.0//EN"
+"http://eclipse-cs.sourceforge.net/dtds/checkstyle-metadata_1_0.dtd">
+<checkstyle-metadata>
+    <rule-group-metadata name="%Metrics.group" priority="1200">
+
+        <rule-metadata name="%BooleanExpressionComplexity.name" internal-name="BooleanExpressionComplexity"
+            parent="TreeWalker">
+            <alternative-name
+                internal-name="com.puppycrawl.tools.checkstyle.checks.metrics.BooleanExpressionComplexityCheck"/>
+            <description>%BooleanExpressionComplexity.desc</description>
+            <property-metadata name="max" datatype="Integer" default-value="3">
+                <description>%BooleanExpressionComplexity.max</description>
+            </property-metadata>
+            <property-metadata name="tokens" datatype="MultiCheck" default-value="LAND,BAND,LOR,BOR,BXOR">
+                <description>%BooleanExpressionComplexity.tokens</description>
+                <enumeration>
+                    <property-value-option value="LAND"/>
+                    <property-value-option value="BAND"/>
+                    <property-value-option value="LOR"/>
+                    <property-value-option value="BOR"/>
+                    <property-value-option value="BXOR"/>
+                </enumeration>
+            </property-metadata>
+        </rule-metadata>
+
+        <rule-metadata name="%ClassDataAbstractionCoupling.name" internal-name="ClassDataAbstractionCoupling"
+            parent="TreeWalker">
+            <alternative-name
+                internal-name="com.puppycrawl.tools.checkstyle.checks.metrics.ClassDataAbstractionCouplingCheck"/>
+            <description>%ClassDataAbstractionCoupling.desc</description>
+            <property-metadata name="max" datatype="Integer" default-value="7">
+                <description>%ClassDataAbstractionCoupling.max</description>
+            </property-metadata>
+        </rule-metadata>
+
+        <rule-metadata name="%ClassFanOutComplexity.name" internal-name="ClassFanOutComplexity" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.metrics.ClassFanOutComplexityCheck"/>
+            <description>%ClassFanOutComplexity.desc</description>
+            <property-metadata name="max" datatype="Integer" default-value="20">
+                <description>%ClassFanOutComplexity.max</description>
+            </property-metadata>
+        </rule-metadata>
+
+        <rule-metadata name="%CyclomaticComplexity.name" internal-name="CyclomaticComplexity" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.metrics.CyclomaticComplexityCheck"/>
+            <description>%CyclomaticComplexity.desc</description>
+            <property-metadata name="max" datatype="Integer" default-value="10">
+                <description>%CyclomaticComplexity.max</description>
+            </property-metadata>
+        </rule-metadata>
+
+        <rule-metadata name="%JavaNCSS.name" internal-name="JavaNCSS" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.metrics.JavaNCSSCheck"/>
+            <description>%JavaNCSS.desc</description>
+            <property-metadata name="methodMaximum" datatype="Integer" default-value="50">
+                <description>%JavaNCSS.methodMaximum</description>
+            </property-metadata>
+            <property-metadata name="classMaximum" datatype="Integer" default-value="1500">
+                <description>%JavaNCSS.classMaximum</description>
+            </property-metadata>
+            <property-metadata name="fileMaximum" datatype="Integer" default-value="2000">
+                <description>%JavaNCSS.fileMaximum</description>
+            </property-metadata>
+        </rule-metadata>
+
+        <rule-metadata name="%NPathComplexity.name" internal-name="NPathComplexity" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.metrics.NPathComplexityCheck"/>
+            <description>%NPathComplexity.desc</description>
+            <property-metadata name="max" datatype="Integer" default-value="200">
+                <description>%NPathComplexity.max</description>
+            </property-metadata>
+        </rule-metadata>
+
+    </rule-group-metadata>
+</checkstyle-metadata>

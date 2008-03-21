@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quickfix-test-data>
+    <testcase>
+        <input fix-line="2">
+public class A {
+    public void foo(int a, int b) {
+        if(x == "") {
+        }
+    }
+}
+        </input>
+        <result>
+public class A {
+    public void foo(int a, int b) {
+        if("".equals(x)) {
+        }
+    }
+}
+        </result>
+    </testcase>
+    <testcase>
+        <input fix-line="2">
+public class A {
+    public void foo(int a, int b) {
+        if(x != "") {
+        }
+    }
+}
+        </input>
+        <result>
+public class A {
+    public void foo(int a, int b) {
+        if(!"".equals(x)) {
+        }
+    }
+}
+        </result>
+    </testcase>
+</quickfix-test-data>

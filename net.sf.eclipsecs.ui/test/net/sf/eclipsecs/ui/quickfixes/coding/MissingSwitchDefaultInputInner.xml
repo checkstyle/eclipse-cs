@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quickfix-test-data>
+    <testcase>
+        <input fix-line="4">
+public class A {
+    public void foo(int a, int b) {
+        switch(a) {
+            case 1:
+                switch (b) {
+                    case 1:
+                        break;
+                }
+                break;
+            default :
+                break;
+        }
+    }
+}
+        </input>
+        <result>
+public class A {
+    public void foo(int a, int b) {
+        switch(a) {
+            case 1:
+                switch (b) {
+                    case 1:
+                        break;
+                    default :
+                        break;
+                }
+                break;
+            default :
+                break;
+        }
+    }
+}
+        </result>
+    </testcase>
+</quickfix-test-data>

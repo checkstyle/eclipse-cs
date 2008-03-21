@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "xhtml11-flat.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8"/>
+        <meta name="section" content="docs-adv"/>
+        <link type="text/css" href="style.css" rel="stylesheet"/>
+        <title>Expanding Properties</title>
+    </head>
+    <body>
+        <h2>-- Expanding Properties within Checkstyle configuration files --</h2>
+        <p>Checkstyle contains a <a href="http://checkstyle.sourceforge.net/config.html#Properties"
+                >feature</a> that lets you define module properties in a way that they can expanded
+            dynamically when the configuration is loaded. <br/> Such a property is defined using the
+            well known <span class="code-blue">${property_name}</span> notation.</p>
+        <p>Normally these properties are resolved from command line or ant properties. <br/> Of
+            course this does not work within the plug-in so using a checkstyle configuration
+            containing such expandable properties will probably fail.</p>
+        <p>But as you might have thought there are some features in place to help you out in this
+            case.</p>
+        <p>When a Check Configuration is set up the plugin will check the Checkstyle configuration
+            file for unresolved properties.<br/>When found the plugin will warn you that this
+            configuration cannot be used until those properties can be resolved.<br/> To resolve
+            such properties you have a variety of options. </p>
+        <h3>Built-in properties</h3>
+        <p>First there are some properties that are automatically expanded by the plug-in:</p>
+        <ul>
+            <li>
+                <p><span class="code-blue">${basedir}</span> - gets mapped to the current project
+                    directory</p>
+            </li>
+            <li>
+                <p><span class="code-blue">${project_loc}</span> - same as <span class="code-blue"
+                        >${basedir}</span></p>
+            </li>
+            <li>
+                <p><span class="code-blue">${workspace_loc}</span> - gets mapped to the current
+                    Eclipse workspace directory</p>
+            </li>
+            <li>
+                <p><span class="code-blue">${config_loc}</span> &amp; <span class="code-blue"
+                        >${samedir}</span> - get mapped to the directory the configuration file lies
+                    in</p>
+            </li>
+        </ul>
+        <h3>Resolving from .properties file</h3>
+        <p>If you have more properties that need to be expanded there is another feature for you.</p>
+        <p>Using External, Remote or Project Relative Configuration you can write the properties you
+            need to be expanded into a <span class="code-blue">.properties</span> file that lies in
+            the same directory as the configuration file and has the same name. <br/> For instance:</p>
+        <p><span class="code-blue">D:/path/to/my/config/myCheckConfiguration.xml</span>
+            <br/> can resolve properties defined in <br/>
+            <span class="code-blue">D:/path/to/my/config/myCheckConfiguration.properties</span></p>
+        <p>Expandable properties within your configuration file will then be resolved from the
+            corresponding <span class="code-blue">.properties</span> file.</p>
+        <h3>Resolving from Classpath Variables and Environment properties</h3>
+        <p>New in 4.1.0 is that you can resolve properties from Classpath Variables (set up in
+            workspace preferences) and from Environment Properties.<br/>Note that these need to be
+            passed into the VM Eclipse runs on using the famous -D parameter.</p>
+        <h3>Additional properties configured with the Check Configuration</h3>
+        <p>If all this stuff doesn't suit your needs there is another option for
+            you.<br/>Reintroduced in 4.1.0 is support for storing properties with the Check
+            Configuration setup.<br/>You might have already noted the new <em>Additional
+                properties...</em> button located in the lower left of a Check Configuration setup
+            dialog.<br/>Pressing this button will lead you to another dialog where you can input
+            properties and their values<br/>To aid in this task the plugin offers to find unresolved
+            properties for you.<br/>Properties set up here will be stored with the Check
+            Configuration data, for Global Configurations within the plugins workspace state
+            location, for Local Configurations within the <em>.checkstyle</em> file. </p>
+        <p>Note that the plug-in supports &#39;property chaining&#39; to let you use
+            &#39;properties within properties&#39;. <br/> With this feature you can write
+            something like this in your <span class="code-blue">.properties</span> file: <br/>
+            <span class="code-blue">property1=abc <br/> property2=${property1}def</span>
+            <br/> Using <span class="code-blue">${property2}</span> in your checkstyle configuration
+            will then be resolved to: <span class="code-blue">abcdef</span></p>
+    </body>
+</html>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "xhtml11-flat.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8"/>
+        <meta name="section" content="main"/>
+        <link type="text/css" href="style.css" rel="stylesheet"/>
+        <title>The Checkstyle Plug-in for Eclipse</title>
+    </head>
+    <body>
+        <h2>-- Introduction --</h2>
+        <p> The eclipse-cs Checkstyle plug-in integrates the well-known source code analyzer
+            Checkstyle into today's leading IDE - Eclipse.<br/>
+            <a href="http://checkstyle.sourceforge.net/">Checkstyle</a> is a development tool
+            written by Oliver Burn to help you ensure that your Java code adheres to a set of coding
+            standards. Checkstyle does this by inspecting your Java source code and pointing out
+            items that deviate from a defined set of coding rules. The full Checkstyle distribution
+            is included with the Checkstyle plug-in. In addition to using the Eclipse Checkstyle
+            plug-in you can also use Checkstyle from the command line or as part of an Ant build.
+            For more information about using Checkstyle outside of Eclipse see the <a
+                href="http://checkstyle.sourceforge.net/">Checkstyle documentation</a>.</p>
+        <p>With the Checkstyle Eclipse plug-in your code is constantly inspected for problems.
+            Within the Eclipse workbench you are notified of problems via the Eclipse Problems View
+            and source code annotations just as you would see with compiler errors or warnings.</p>
+        <table>
+            <tr>
+                <td>
+                    <a class="imagelink" style="margin-left:40px;"
+                        href="http://www.eclipse.org/org/press-release/20070306eclipsecommunityawards.php">
+                        <img src="images/winner.jpg" height="120" width="144"
+                            alt="Eclipse Community Award 2007 Winner"/>
+                    </a>
+                </td>
+                <td style="vertical-align:middle;">The Eclipse Checkstyle plug-in won the Eclipse
+                    Community Award 2007 in the category of "Best Open Source Eclipse-based
+                    Developer tool".</td>
+            </tr>
+        </table>
+        <p style="color: red;"><b>Attention Rational Application Developer (RAD) 6/7 users:</b>
+            Please read <a href="rad_usage.html">here</a>!</p>
+        <h2>-- Download &amp; Installation --</h2>
+        <p>The first way to install the Eclipse Checkstyle Plug-in is via the <a
+                href="http://eclipse-cs.sourceforge.net/update/">update site</a>.</p>
+        <ol>
+            <li> Within Eclipse go to <strong>
+                    <em>Help-&gt;Software Updates-&gt;Find and Install</em>
+                </strong>
+            </li>
+            <li> Choose <strong>
+                    <em>Search for new features to install</em>
+                </strong> and press <strong>
+                    <em>Next</em>
+                </strong>
+            </li>
+            <li> Create a <strong>
+                    <em>New Remote Site...</em>
+                </strong>
+            </li>
+            <li> Input a name to your liking (for instance <i>Checkstyle Plug-in</i>) and input the
+                following URL: <span class="code-blue"
+                >http://eclipse-cs.sourceforge.net/update</span>
+            </li>
+            <li> Click your way through the following pages to install the plug-in. </li>
+        </ol>
+        <p>Alternatively the Checkstyle Eclipse Plug-in can be downloaded from the <a
+                href="http://sourceforge.net/projects/eclipse-cs/">Eclipse Checkstyle Plug-in's
+                SourceForge project page</a>. The download package consists of a single zip file
+            that contains both the Checkstyle Plug-in and the Checkstyle core engine.</p>
+        <p>Once you have downloaded the distribution zip file extract its contents. First, exit from
+            Eclipse. Next, copy the <span class="code-blue"
+                    >com.atlassw.tools.eclipse.checkstyle_<b>&lt;version&gt;</b></span>
+            folder to your Eclipse plug-in folder and restart Eclipse. That's all there is to it,
+            you are now ready to run Checkstyle.</p>
+        <p>
+            <b>
+                <i>Important Note:</i>
+            </b>If you did not use the update site to install the plug-in please make sure to
+            restart Eclipse with the <span class="code-blue">-clean</span> option at least once.
+            This is because Eclipse caches a lot of information about plug-ins. In case you just
+            updated the plug-in from a previous version this information cached by Eclipse is not up
+            to date - resulting in the plug-in failing with ClassNotFoundExceptions and other
+            serious issues.</p>
+        <p>
+            <b>
+                <i>Important Note:</i>
+            </b>As of plug-in release 4.0.0 only Eclipse 3.0 and newer is supported. Eclipse 2.x.x
+            support is discontinued. Please use older plug-in versions with Eclipse 2.x.x. -
+            downloadable from the <a href="http://sourceforge.net/projects/eclipse-cs/">SourceForge
+                Project Page</a>
+        </p>
+        <h2>-- Support this project --</h2>
+        <p>Developing and testing all the nifty features you see in the plug-in takes a considerable
+            amount of time. <br/> This project is developed by its team members purely in their free
+            time - so we're not in for the money but the fun.</p>
+        <p>However, if you are using the Checkstyle Plug-in in your production environment you are
+            probably saving a lot of money because of the increased code quality that the plug-in
+            helps you to enforce. <br/> So if you really like this plug-in you might want to
+            consider a donation for the Checkstyle Plug-in Project. <br/> Donations can my made via
+            PayPal ranging from $5 to $250. More info about donating to this project can be found <a
+                href="http://sourceforge.net/donate/index.php?group_id=80344">here</a>.</p>
+        <p>Thank you! <br/> The Checkstyle Plug-in dev team</p>
+        <h2>-- Donors --</h2>
+        <p>
+            <!--#include virtual="/proj-donors.cache" -->
+        </p>
+        <p>Thank you very much for your donations!</p>
+    </body>
+</html>

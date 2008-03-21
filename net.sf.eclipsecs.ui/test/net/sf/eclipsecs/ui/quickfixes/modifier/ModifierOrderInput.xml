@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quickfix-test-data>
+    <testcase>
+        <input fix-line="0">
+final public class A {
+    public void foo(int a, int b) {
+    }
+}
+        </input>
+        <result>
+public final class A {
+    public void foo(int a, int b) {
+    }
+}
+        </result>
+    </testcase>
+    <testcase>
+        <input fix-line="1">
+public class A {
+    static final public void foo(int a, int b) {
+    }
+}
+        </input>
+        <result>
+public class A {
+    public static final void foo(int a, int b) {
+    }
+}
+        </result>
+    </testcase>
+    <testcase>
+        <input fix-line="1">
+public class A {
+    static final public int i = 0;
+}
+        </input>
+        <result>
+public class A {
+    public static final int i = 0;
+}
+        </result>
+    </testcase>
+    <testcase>
+        <input fix-line="1">
+public class A {
+    @Override
+    static final public void foo(int a, int b) {
+    }
+}
+        </input>
+        <result>
+public class A {
+    @Override public static final void foo(int a, int b) {
+    }
+}
+        </result>
+    </testcase>
+</quickfix-test-data>

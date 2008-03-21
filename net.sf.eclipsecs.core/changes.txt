@@ -1,0 +1,185 @@
+###################
+# Important note: #
+###################
+After installation of this plugin eclipse must be restarted with the -clean option at least once.
+That is: <path-to-my-eclipse-install>/eclipse.exe -clean
+
+The plugin version 4.x.x does not support eclipse 2.x.x any more. 
+Make sure you got an eclipse 3.0 or higher installation you are installing this plugin to.
+
+Eclipse Checkstyle Plugin v4.2.0
+----------------------------------------------
+This release concentrates on extending the quickfix functionality, 
+which was rudimetarily introduced in version 4.1.0.
+A new context menu action ('Apply Checkstyle fixes') was added to the Java editor and other views
+(e.g. Package Explorer) which - when invoked - tries to apply all exiting quickfixes to 
+the Checkstyle violations in the selected file.
+
+Additionaly new quickfixes were implemented for the following Checkstyle checks:
+FinalLocalVariable
+StringLiteralEquality
+FinalClass
+ArrayTypeStyle
+UncommentedMain
+UpperEll
+ModifierOrder
+
+Apart from that a few bugs were fixed as well as features implemented.
+
+Please note the new Voting section in the Checkstyle plugins preferences.
+If you like to tell us your opinion about the plugin please use this to cast your vote.
+
+We've given the plugin a test run on Eclipse 3.3M4 with no obvious problems, so it can be
+expected to run on the Eclipse 3.3 Milestones.
+
+Bugs:
+1600492 	Javadocs not displayed when mouse hovers over a java element
+1601570 	Package selection dialog (Pacakge filter) shows too much
+1579086 	MissingSwitchDefault Quickfix doesn't work proper
+1608976 	Need Braces QuickFix is not working as expected
+
+RFE:
+1541488 	Plugin should check builder order
+1423948 	Quickfix
+1464521 	Copying configurations
+1607736 	Implement quickfix for UpperEll
+1607735 	Implement quickfix for UncommentedMain
+1607729 	Implement quickfix for StringLiteralEquality
+1607728 	Implement quickfix for FinalLocalVariable
+1607732 	Implement quickfix for FinalClass
+
+Eclipse Checkstyle Plugin v4.1.1
+----------------------------------------------
+Fixes some minor issues.
+
+Bugs:
+1538317 NullPointerException
+1530368 Refresh config button on project
+
+RFE:
+1530366 Java Problem Type
+
+
+
+Eclipse Checkstyle Plugin v4.1.0 final
+----------------------------------------------
+Final release of Eclipse Checkstyle Plugin 4.1.0.
+Uses the recently released Checkstyle 4.2.
+
+Bugs:
+1504122  Violations tab column widths
+
+Eclipse Checkstyle Plugin v4.0.93 (4.1.0 beta4)
+----------------------------------------------
+
+Minor bugfix release. Uses a new snapshot from Checkstyle CVS head.
+
+Bugs:
+1464012  Fixed ProjectClassLoader issue
+1466967  Violations tab and closed project  
+1487954  Eclipse 3.2RC4 doesn't find any updates  
+1478288  "Invalid thread access" when Checkstyle run. 
+
+
+Eclipse Checkstyle Plugin v4.0.92 (4.1.0 beta3)
+----------------------------------------------
+
+Sports a recent Checkstyle build from Checkstyle Head stream (2006/03/24).
+The Statistics Plugin now supports saving reports (in rtf format) from the Statistics views.
+
+We also started on implementing a quickfix feature. Using these you can fix some checkstyle warnings
+very easy - similar to quickfixes the Eclipse Java Editor offers.
+Currently quickfixes are implemented for the following Checkstyle checks:
+NeedBraces
+DefaultComesLast
+EmptyStatement
+MissingSwitchDefault
+DesignForExtension
+FinalParameters
+RedundantModifier
+
+IMPORTANT:
+Please note that this new feature is to be considered experimental 
+- so be sure you archived your sources before applying those quickfixes.
+All changes made by quickfixes should be undoable in the editor though 
+- so serious problems are not expected.
+
+
+Bugs:
+1422937  Eclipse builder fails when a project is used as class folder
+1428571  Exception clicking on entry in "Checkstyle violations" view
+1443066  NPE when checking Checkstyle properties on a closed project
+1437937  Quickfix bug if not updated
+
+RFE:
+1420212  Project name with relative configuration 
+1252841  Remote Config file requiring authentication  (added button to reset login data) 
+
+
+Eclipse Checkstyle Plugin v4.0.91 (4.1.0 beta2)
+----------------------------------------------
+
+Bugs:
+1419133  Check Configuration Properties error
+1416397  Headless build in RAD 6.0 fails (needs confirmation)
+
+RFE:
+1420578  Pretty print .checkstyle
+1419551  Add Content Assist to Properties Editor
+
+
+
+Eclipse Checkstyle Plugin v4.0.90 (4.1.0 beta)
+----------------------------------------------
+
+Version 4.1.0 introduces the "local configuration" scheme which allows to set up check configurations private to a project.
+The check configuration data will be stored inside the projects .checkstyle file.
+This allows for a true self contained Checkstyle setup for projects, further enhancing teamworking support as
+no additional setup in the developers workspace is required.
+At the same time the well known "per workspace" setup of Checkstyle configurations (now called "global configurations")
+remains intact, allowing for set up of check configurations that can be used by multiple project.
+
+There are now new ways to resolve properties within Checkstyle configuration files:
+ * properties can be resolved from Classpath variables
+ * properties can be resolved from System/Environment properties (passed into eclipse via the -D paramter)
+ * Reintroduced in 4.1.0 is that you can input properties as you set up the configuration. The plugin will find
+   unresolved properties and asks for you to input the values.
+   
+The way Project relative configurations work has changed a bit. Now they are relative to exactly one project
+instead of possibly multiple projects. This achieves a more expectable behaviour and allows new configuration
+deployment schemes, for instance to use a configuration file that lies relative to another project in the 
+workspace.
+
+The internal Checkstyle logging (error log) was bridged with the Eclipse Error Log.
+This way exceptions thrown by Checkstyle checks (standard or custom) appear in the Error Log View.
+This greatly enhances debugging of custom checks used with the plugin.
+
+Version 4.1.0 now directly contains the new Statistics plugin addition which adds 2 views to Eclipse which make handling of large amounts of Checkstyle violations very much easier.
+
+A lot of other features have been implemented and bugs been resolved, as you can judge from the list below:
+
+Bugs:
+1381855 	Extra files in plugin distribution?
+1381858 	Inactive scroll bar
+1387885 	Checkstyle configuration file trashed
+1392149 	NoWhitespaceBefore check is all or nothing
+1268680 	internal_config_*.xml files not deleted with config.
+1340936 	Problem with configuration name conflict
+1330232 	multiple metadata entries of one check with different parent
+1382457 	.checkstyle file touched when there are no changes
+1371777 	Problem with external configuration file and teamworking
+1412189  	error while trying to set "exclude files from packages" opt  
+
+RFE:
+1258461 	Cache Remote Configuration
+1252841 	Remote Config file requiring authentication (needs testing)
+1233683 	Support per project suppressions.xml
+1296196 	Project-relative configurations from other projects
+745756 		Allow storing of checkstyle configuration in project
+1371642 	Inconsistent rebuild behaviour
+1340908 	Order modules by name
+1381881 	Use java classpath variables as properties
+1384663 	Enable external configuration locations to be dynamic
+1268602 	Ability to import into internal configuration.
+1259430 	Cannot specify values for variables
+1235654 	NPE in ResourceBundleProperyResolver

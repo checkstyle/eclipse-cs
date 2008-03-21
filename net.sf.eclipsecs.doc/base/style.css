@@ -1,0 +1,262 @@
+/* Page styles */
+html {
+	height: 100%;
+	width: 100%;
+}
+
+body {
+	border: 0px;
+	margin: 0px;
+	padding: 0px;
+	height: 100%;
+	width: 100%;
+	color: #000000;
+	background-color: #ffffff;
+	font-family: verdana, "trebuchet MS", helvetica, sans-serif;
+}
+
+/* Header styles */
+h2{
+	color: #FFFFFF;
+	background-color: #003399;
+	text-align: center;
+	font-size: 14px;
+	margin-top: 0px;
+	border-bottom: 5px solid #cddeff;
+	letter-spacing: 3px;
+}
+
+h3 {
+	font-size: 12px;
+	margin-left: 10px;
+	text-decoration: none;
+	color: #000000;
+	background-color: #ffffff;
+}
+
+h4 {
+	font-size: 11px;
+	margin-left: 10px;
+}
+
+
+/* Text block styles */
+p {
+	margin-left: 10px;
+	margin-right: 10px;
+	line-height: 1.5;
+	font-size: 11px;
+}
+
+table, ul, ol {
+	line-height: 1.5;
+	font-size: 11px;
+}
+
+pre{
+	margin-left: 10px;
+	margin-right: 10px;
+	font-family: "Courier New", Courier, monospace;
+	font-size: 12px;
+}
+
+/* Styles for simple links */
+a, a:hover {
+	color:#003399;
+	background-color: #FFFFFF;
+	text-decoration: underline;
+}
+
+a:hover {
+	color: #6699ff;
+}
+
+img{
+	text-align:left;
+	border:0px;
+}
+
+.imagelink, .imagelink:hover {
+	text-decoration: none;
+}
+
+
+td{
+	vertical-align: top;
+}
+
+.maintable{
+	height: 100%;
+	width: 100%;
+	text-align: left;
+	border: 0px;
+}
+
+.navsection {
+	height: 100%;
+	width: 230px;
+	color: #003399;
+	background-color: #cddeff;
+	margin-top: -4px;
+	text-align: left;
+}
+
+.navsection a {
+	color:#003399;
+	background-color: #cddeff;
+}
+.navsection a:hover {
+	color: #6699ff;
+	background-color: #cddeff;
+
+}
+
+.mainsection{
+	width: 100%;
+	height: 100%;
+	border-left: 10px solid #cddeff;
+	border-right: 10px solid #cddeff;
+}
+
+.header {
+	border: 0px;
+	width: 100%;
+	color: #003399;
+	background-color: #cddeff;
+}
+.header a {
+	color:#003399;
+	background-color: #cddeff;
+}
+.header a:hover {
+	color: #6699ff;
+	background-color: #cddeff;
+}
+
+.content {
+	height: 100%; 
+	border-left: 1px solid #003399;
+	border-right: 1px solid #003399;
+	padding-bottom:10px;
+	color: #000000;
+	background-color: #ffffff;
+}
+
+.footer, .footer a, .footer a:hover{
+	color:#003399;
+	background-color: #cddeff;
+	text-decoration: none;
+}
+
+.copyright{
+	color:#003399;
+	background-color: #cddeff;
+	font-family: "Courier New", Courier, monospace;
+	font-size: 14px;
+	vertical-align: middle;
+	padding-left: 20px;
+	border-top: 1px solid #003399;
+	white-space: nowrap;
+}
+
+/* Styles used to color source code */
+.code-lightblue, .code-blue, .code-green, .code-black, .code-purple {
+	font-family: "Courier New", Courier, monospace;
+	font-size: 14px;
+	background-color: #FFFFFF;
+}
+.code-lightblue {
+	color: #3f5fbf;
+}
+.code-blue{
+	color: #000080;
+}
+.code-green{
+	color: #008000;
+}
+.code-black{
+	color: #000000;
+}
+.code-purple{
+	color: #7f0055;
+}
+
+/* Styles for the navigational buttons */
+.buttons {
+	width: 230px;
+	color: #000000;
+	background-color: #FFFFFF; 
+}
+
+.buttons a, .buttons a:hover {
+	color: #FFFFFF;
+	background-color: #003399;
+	padding: 2px 0px 2px 3px;
+	display: block;
+	border-left: 10px solid #6699FF;
+	text-decoration: none;
+	text-align: left;
+	border-top: 1px solid #FFFFFF;
+	font-size: 11px;
+	white-space: nowrap;
+}
+
+.buttons a:hover {
+	border-left: 10px solid #FFFFFF;
+}
+
+.buttons a img {
+	margin-right: 3px;
+}
+
+.level2{
+	text-indent: 0px;
+}
+.level2{
+	text-indent: 20px;
+}
+
+.box {
+	display: block;
+	border: 1px solid #003399;
+	margin-top: 5px;
+	padding: 0px 3px 3px 3px;
+	color: #000000;
+	background-color: #FFFFFF;
+}
+
+.box h3{
+	font-weight: bold;
+	background-color: #003399;
+	color: #FFFFFF;
+	text-align: center;
+	margin: 0px -3px 3px -3px;
+	text-decoration:none;
+	border-bottom: 3px solid #cddeff;
+	font-size: 11px;
+}
+
+.box form{
+	margin: 5px 0px 0px 0px;
+}
+
+.navsection-box {
+	color: #000000;
+	background-color: #cddeff; 
+}
+
+.donorcomment {
+	font-family: verdana, arial, geneva, sans-serif; 
+	font-size: 11px; 
+	color: #000000;
+	background-color: #FFFFFF; 
+	font-style: italic; 
+}
+
+.releaselist {
+	margin-top: 0px;
+}
+
+.releaselist a {
+	white-space: nowrap;
+}

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="net.sf.eclipsecs"
+      label="%feature.label"
+      version="0.0.0"
+      provider-name="%feature.provider_name">
+
+   <description url="%description.url">
+      This feature integreates Checkstyle into Eclipse.
+   </description>
+
+   <copyright>
+      %copyright.text
+   </copyright>
+
+   <license url="license.html">
+      %license.text
+   </license>
+
+   <url>
+      <update label="%updateSiteName" url="http://eclipse-cs.sourceforge.net/update"/>
+      <discovery label="%updateSiteName" url="http://eclipse-cs.sourceforge.net/update"/>
+   </url>
+
+   <requires>
+      <import plugin="org.eclipse.jface"/>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.jface.text"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.ui.editors"/>
+      <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="org.eclipse.jdt.core"/>
+      <import plugin="org.eclipse.jdt.ui"/>
+      <import plugin="org.eclipse.ui.workbench.texteditor"/>
+      <import plugin="org.eclipse.team.cvs.core"/>
+      <import plugin="org.eclipse.team.core"/>
+   </requires>
+
+   <plugin
+         id="net.sf.eclipsecs.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.sf.eclipsecs.doc"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.sf.eclipsecs.checkstyle"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.sf.eclipsecs.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

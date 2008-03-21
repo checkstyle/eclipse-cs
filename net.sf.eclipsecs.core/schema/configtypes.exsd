@@ -1,0 +1,151 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="net.sf.eclipsecs.core">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="net.sf.eclipsecs.core" id="configurationtypes" name="configurationtypes"/>
+      </appInfo>
+      <documentation>
+         This extension point can be used to provide custom confifuration types.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <complexType>
+         <sequence>
+            <element ref="configuration-type" minOccurs="1" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The extension point id this contribution shall apply to
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  A unique id for the extension.
+The id is used to identify the specific filter set.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  The human readable name of this extension.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="configuration-type">
+      <annotation>
+         <documentation>
+            Element to define a configuration type.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The fully qualified class name of the configuration type implementation.
+The class must implement &lt;link&gt;net.sf.eclipsecs.core.config.configtypes.IConfigurationType&lt;/link&gt;.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The human readable name of this name of this configuration type.
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="internal-name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The internal name of the configuration type. This might safely be used as key in maps.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="creatable" type="boolean" use="default" value="true">
+            <annotation>
+               <documentation>
+                  Flags if a configuration of this type can be created by the user.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="editable" type="boolean" use="default" value="true">
+            <annotation>
+               <documentation>
+                  Flags if the configuration properties can be edited for check configurations of this type.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="configurable" type="boolean" use="default" value="true">
+            <annotation>
+               <documentation>
+                  Flags if the checkstyle configuration itself can be edited.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="additionalPropertySupport" type="boolean" use="default" value="true">
+            <annotation>
+               <documentation>
+                  Flags if the configuration supports storing of addtional Checkstyle property values.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         4.0.0
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         [Enter extension point usage example here.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         [Enter API information here.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         [Enter information about supplied implementation of this extension point.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         
+      </documentation>
+   </annotation>
+
+</schema>

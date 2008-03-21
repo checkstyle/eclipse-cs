@@ -1,0 +1,59 @@
+<project name="CheckstylePluginDocs" default="build.dist" basedir="../">
+
+	<!-- get the environment properties specific to each developer machine -->
+	<property file="${basedir}/build/env.properties" />
+
+
+	<!-- ==================================================== -->
+	<!--   CLEAN TARGET                                       -->
+	<!-- ==================================================== -->
+	<target name="clean" description="Cleans any directories and generated files">
+		<delete dir="${basedir}/doc" includes="**" excludes=".cvsignore" failonerror="false" quiet="true" />
+		<delete dir="${basedir}/website" includes="**" excludes=".cvsignore" failonerror="false" quiet="true" />
+	</target>
+
+	<!-- ==================================================== -->
+	<!--   DISTRIBUTION TARGET                                -->
+	<!-- ==================================================== -->
+	<target name="build.dist" depends="clean,build.plugin.docs,build.plugin.website" />
+
+	<!-- ==================================================== -->
+	<!--   BUILD THE PLUGIN ONLINE DOCUMENTATION              -->
+	<!-- ==================================================== -->
+	<target name="build.plugin.docs">
+		<copy todir="${basedir}/doc">
+			<fileset dir="${basedir}/base" includes="*.css" />
+			<fileset dir="${basedir}/base" includes="images/**" />
+			<fileset dir="${basedir}/base" includes="releasenotes/**/*.jpg" />
+		</copy>
+
+		<ant antfile="${checkstyle.dir}/build.xml" inheritall="false" target="xdocs">
+			<property name="xdocs.dest" value="${basedir}/doc/csdocs" />
+		</ant>
+
+		<xslt style="${basedir}/build/generate_docs.xsl" basedir="${basedir}/base" includes="**/*.*html" destdir="${basedir}/doc" />
+	</target>
+
+	<!-- ==================================================== -->
+	<!--   BUILD THE PLUGIN WEBSITE                           -->
+	<!-- ==================================================== -->
+	<target name="build.plugin.website">
+		<copy todir="${basedir}/website">
+			<fileset dir="${basedir}/base" includes="*.css" />
+			<fileset dir="${basedir}/base" includes="images/**" />
+			<fileset dir="${basedir}/base" includes="update/**" />
+			<fileset dir="${basedir}/base" includes="releasenotes/**/*.jpg" />
+		</copy>
+		<copy todir="${dist.basedir}/website/dtds" flatten="true">
+			<fileset dir="${basedir}/../net.sf.eclipsecs.checkstyle/src" includes="**/*.dtd" />
+		</copy>
+
+		<xslt style="${basedir}/build/generate_docs.xsl" basedir="${basedir}/base" includes="**/*.html" destdir="${basedir}/website">
+			<param name="style" expression="website" />
+		</xslt>
+		<xslt style="${basedir}/build/generate_docs.xsl" basedir="${basedir}/base" includes="*.shtml" destdir="${basedir}/website">
+			<param name="style" expression="website" />
+			<mapper type="glob" from="*.shtml" to="*.shtml" />
+		</xslt>
+	</target>
+</project>

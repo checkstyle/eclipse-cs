@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "xhtml11-flat.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8"/>
+        <meta name="section" content="docs-ext"/>
+        <link type="text/css" href="style.css" rel="stylesheet"/>
+        <title>Writing a custom plug-in filter</title>
+    </head>
+    <body>
+        <h2>-- Writing a custom plug-in filter --</h2>
+        <p>As you surely know by now, the Eclipse Checkstyle Plug-in sports filters to exclude files
+            from the checks.<br/> These filters are available on the plug-ins project properties
+            page.</p>
+        <p><img src="images/properties_simple_checked.png" alt="Properties page"/>
+            <br/> If filters are activated for a project they exclude certain files of the project
+            from the checks based on their specific implementation.</p>
+        <p>Many useful filters are <a href="advanced_filters.html">already coming</a> with the
+            plug-in distribution.<br/> However you may need to implement other filters that are very
+            specific to your environment.</p>
+        <p>To enable you to write your own filters the plug-in defines an extension point for
+            filters <span class="code-blue"
+            >com.atlassw.tools.eclipse.checkstyle.filters</span>.<br/> To define and write your own
+            filter you need to know how the Eclipse plug-in extension scheme works.<br/> Please
+            understand that we can hardly give you a tutorial on how Eclipse plug-ins are
+            developed.<br/> The target is to provide a so called fragment, that extends the plugin
+            in some points (through the extension points) but is no full plugin by itself. How to
+            create a feature is explained <a href="extending_fragments.html">here</a>. <br/>
+            <br/>
+        </p>
+        <p>Example:</p>
+        <p>Using the <span class="code-blue">com.atlassw.tools.eclipse.checkstyle.filters</span>
+            extension point in your <span class="code-blue">fragment.xml</span></p>
+        <p>
+            <span class="code-blue">&lt;extension</span>
+            <br/>
+            <span class="code-blue">&#160;&#160;&#160;&#160;id=</span>
+            <span class="code-green">&quot;checkstyle.CheckstyleFilters&quot;</span>
+            <br/>
+            <span class="code-blue">&#160;&#160;&#160;&#160;point=</span>
+            <span class="code-green"
+                >&quot;com.atlassw.tools.eclipse.checkstyle.filters&quot;</span>
+            <span class="code-blue">&gt;</span>
+            <br/>
+            <span class="code-blue">&#160;&#160;&#160;&#160;&lt;filter</span>
+            <br/>
+            <span class="code-blue"
+                >&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;name=</span>
+            <span class="code-green">&quot;%WriteProtectedFilter.label&quot;</span>
+            <br/>
+            <span class="code-blue"
+                >&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;internal-name=</span>
+            <span class="code-green">&quot;WriteProtectedFiles&quot;</span>
+            <br/>
+            <span class="code-blue"
+                >&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;description=</span>
+            <span class="code-green">&quot;%WriteProtectedFilter.description&quot;</span>
+            <br/>
+            <span class="code-blue"
+                >&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;class=</span>
+            <span class="code-green"
+                >&quot;com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.WriteProtectedFilter&quot;</span>
+            <span class="code-blue">&gt;</span>
+            <br/>
+            <span class="code-blue">&#160;&#160;&#160;&#160;&lt;/filter&gt;</span>
+            <br/>
+            <span class="code-blue">&lt;/extension&gt;</span>
+            <br/>
+        </p>
+        <p>The filter implementation class must implement the <span class="code-blue"
+                >com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.IFilter</span>
+            interface.<br/> To make life a bit easier for you there is the <span class="code-blue"
+                >com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.AbstractFilter</span>
+            class which implements already most of the filter interface.</p>
+        <p>A simple filter implementation (like <span class="code-blue">WriteProtectedFilter</span>)
+            looks like this:</p>
+        <p>
+            <span class="code-black">
+                <b>
+                    <span class="code-purple">public&#160;class</span>
+                </b> &#160;WriteProtectedFilter <b>
+                    <span class="code-purple">&#160;extends</span>
+                </b> &#160;AbstractFilter<br/> {<br/>
+                <span class="code-lightblue">&#160;&#160;/**</span><br/>
+                <span class="code-lightblue">&#160;&#160;&#160;*</span>
+                <b>
+                    <span class="code-lightblue">&#160;@see</span>
+                </b>
+                <span class="code-lightblue">&#160;IFilter#accept(java.lang.Object)</span><br/>
+                <span class="code-lightblue">&#160;&#160;&#160;*/</span><br/>
+                <b>
+                    <span class="code-purple">&#160;&#160;public</span>
+                </b><b>
+                    <span class="code-purple">&#160;boolean</span>
+                </b>&#160;accept(Object element)<br/> &#160;&#160;{<br/>
+                <b>
+                    <span class="code-purple">&#160;&#160;&#160;&#160;boolean</span>
+                </b>&#160;passes = <b>
+                    <span class="code-purple">true</span>
+                </b><span class="code-black">;</span><br/>
+                <b>
+                    <span class="code-purple">&#160;&#160;&#160;&#160;if</span>
+                </b>&#160;(element <b>
+                    <span class="code-purple">instanceof</span>
+                </b>&#160;IResource)<br/> &#160;&#160;&#160;&#160;{<br/>
+                &#160;&#160;&#160;&#160;&#160;&#160;passes = !((IResource)
+                element).isReadOnly();<br/> &#160;&#160;&#160;&#160;}<br/>
+                <b>
+                    <span class="code-purple">&#160;&#160;&#160;&#160;return</span>
+                </b>&#160;passes;<br/> &#160;&#160;}<br/> }<br/>
+            </span>
+        </p>
+        <p>We hope you get the idea.<br/> To get further insight how this stuff is working we
+            recommend looking into the plug-ins sources as all filters coming with the plug-in are
+            using this mechanism too.</p>
+    </body>
+</html>

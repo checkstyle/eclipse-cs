@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "xhtml11-flat.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8"/>
+    	<meta name="section" content="docs-ext"/>
+        <link type="text/css" href="style.css" rel="stylesheet"/>
+        <title>Using custom checks</title>
+    </head>
+    <body>
+        <h2>-- Using custom checks --</h2>
+        <p>One great feature of Checkstyle is its extentablity. You can easily write own checks as
+            explained <a href="http://checkstyle.sourceforge.net/writingchecks.html">here</a> .</p>
+        <p>Once you have written your check you surely want to use them with the plug-in.</p>
+        <p>There are a few steps you must take to accomplish this:</p>
+        <ol>
+            <li>
+                <p>Write your custom checks and prepare to package them into a <span
+                        class="code-blue">.jar</span> file</p>
+            </li>
+            <li>
+                <p>(Optional) Create a Checkstyle packages definition file named <span
+                        class="code-blue">checkstyle_packages.xml</span>. This file must be packaged
+                    directly into the root of your jar.<br/> In doing so you are able to define your
+                    checks in your configuration file using the logical check name - instead of
+                    needing to provide the fully qualified class name of your check.<br/> For more
+                    info about the checkstyle packages files please read here: <a
+                        href="http://checkstyle.sourceforge.net/config.html#Packages"
+                        >http://checkstyle.sourceforge.net/config.html#Packages</a> . <br/> Contrary
+                    to what the referenced documentations says you don't need to include the
+                    standard checkstyle packages in your <span class="code-blue"
+                        >checkstyle_packages.xml</span> file. </p>
+            </li>
+            <li>
+                <p>(Optional) Provide metadata for your custom checks.<br/> By providing metadata
+                    your checks will facilitate the full capabilities of the plug-ins configuration
+                    editor - this means you will be able to configure them using the plug-in's
+                    configuration editor just like the standard checkstyle modules. <br/> To define
+                    the metadata you need to write a file named <span class="code-blue"
+                        >checkstyle-metadata.xml</span> which is to be placed into the package (or
+                    packages) your check classed lie in.<br/>
+                    <b>In order to let the plug-in find your metadata you need to declare the
+                        package within the custom <span class="code-blue"
+                        >checkstyle_packages.xml</span> file (see point 2).</b>
+                    <br/> The structure of the metadata is explained <a
+                        href="extending_custom_metadata.html">here</a> . <br/> The metadata file
+                    must adhere to this dtd: <a
+                        href="http://eclipse-cs.sourceforge.net/dtds/checkstyle-metadata_1_0.dtd"
+                        >http://eclipse-cs.sourceforge.net/dtds/checkstyle-metadata_1_0.dtd</a> .
+                    <br/> So it would be a good idea to include this document type declaration to
+                    your metadata file:</p>
+                <pre>
+                    <span class="code-black"> &lt;!DOCTYPE checkstyle-metadata PUBLIC
+                        &quot;-//eclipse-cs//DTD Check Metadata 1.0//EN&quot;
+                        &quot;http://eclipse-cs.sourceforge.net/dtds/checkstyle-metadata_1_0.dtd&quot;&gt;</span>
+                </pre>
+                <p>This way you can validate your metadata file against the dtd using your preferred
+                    XML editor before packaging it into your custom <span class="code-blue"
+                    >.jar</span>.<br/> Please see the <a href="extending_custom_metadata.html"
+                    >dtd</a> as a reference for the structure, meaning and features the metadata can
+                    possibly provide. <br/> For further examples for metadata files and pointers how
+                    to achieve on or another feature please see the metadata inside the <span
+                        class="code-blue">CheckstyleMetadata.jar</span> inside the plug-in
+                    directory.</p>
+            </li>
+            <li>
+                <p>Finally package your <span class="code-blue">.jar</span> file together.<br/> Go
+                    to <span class="code-blue"
+                        >&lt;path-to-my-eclipse&gt;/plug-ins/com.atlassw.tools.eclipse.checkstyle_x.x.x</span>
+                    directory and copy the <span class="code-blue">.jar</span> into the <span
+                        class="code-blue">extension-libraries</span> directory</p>
+            </li>
+            <li>
+                <p>Either restart eclipse or hit the <img src="images/refresh.gif" alt="Refresh
+                        button"/> button within the plug-ins preference page to let the plug-in pick
+                    up the changes.<br/> If you were successful in creating and deploying your
+                    custom metadata your checks will show up in the configuration editor- like the
+                    build-in checks.</p>
+            </li>
+            <li>
+                <p>If you provided custom metadata for your checks you will be able to fully
+                    configure them using the plug-in's configuration editor. If you did not provide
+                    custom metadata some limitations in the configuration editor will apply: </p>
+                <ul>
+                    <li>
+                        <p>You cannot add your custom checks via the configuration editor, because
+                            your checks are not known to the plugin.<br/> This means you need to
+                            write your checkstyle configuration file by hand using a text editor. Be
+                            sure to include all properties of your modules within the module
+                            configuration so you can at least edit the properties afterwards in the
+                            Checkstyle Plug-in Configuration Editor.</p>
+                    </li>
+                    <li>
+                        <p>If you remove your custom checks from the configuration using the
+                            configuration editor you cannot re-add them using the configuration
+                            editor.</p>
+                    </li>
+                    <li>
+                        <p>Your hand added custom checks will show up in the <i>Other</i> section of
+                            the configuration editor.</p>
+                    </li>
+                </ul>
+            </li>
+        </ol>
+        <h3>Example:</h3>
+        <p>Structure of a custom check jar:<br/>
+            <img src="images/example_custom_jar.gif" alt="Structure of a custom check jar"/>
+        </p>
+        <p>Content of the <span class="code-blue">checkstyle_packages.xml</span> file in this case:</p>
+        <pre> &lt;?xml version=&quot;1.0&quot;
+            encoding=&quot;UTF-8&quot;?&gt; &lt;!DOCTYPE checkstyle-packages PUBLIC
+            &quot;-//Puppy Crawl//DTD Package Names 1.0//EN&quot;
+            &quot;http://www.puppycrawl.com/dtds/packages_1_0.dtd&quot;&gt;
+            &lt;checkstyle-packages&gt; &lt;package
+            name=&quot;com.custom.mychecks&quot;/&gt;
+            &lt;/checkstyle-packages&gt;</pre>
+    </body>
+</html>

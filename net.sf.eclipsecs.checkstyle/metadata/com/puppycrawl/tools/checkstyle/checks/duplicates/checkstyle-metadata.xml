@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE checkstyle-metadata PUBLIC
+"-//eclipse-cs//DTD Check Metadata 1.0//EN"
+"http://eclipse-cs.sourceforge.net/dtds/checkstyle-metadata_1_0.dtd">
+<checkstyle-metadata>
+    <rule-group-metadata name="%Duplicates.group" priority="1100">
+
+        <rule-metadata name="%StrictDuplicateCode.name" internal-name="StrictDuplicateCode" parent="Checker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.duplicates.StrictDuplicateCodeCheck"/>
+            <description>%StrictDuplicateCode.desc</description>
+            <property-metadata name="min" datatype="Integer" default-value="12">
+                <description>%StrictDuplicateCode.min</description>
+            </property-metadata>
+            <property-metadata name="charset" datatype="String">
+                <description>%StrictDuplicateCode.charset</description>
+            </property-metadata>
+        </rule-metadata>
+
+    </rule-group-metadata>
+</checkstyle-metadata>

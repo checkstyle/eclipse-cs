@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.1"?>
+<plugin>
+
+    <!-- defines the extension point to contribute custom configuration type. -->
+    <extension-point
+        id="configurationtypes"
+        name="Configuration types"
+        schema="schema/configtypes.exsd"/>
+
+    <!-- defines the extension point to contribute default checkstyle configurations to the checkstyle plugin -->
+    <extension-point
+        id="configurations"
+        name="Checkstyle configurations"
+        schema="schema/configurations.exsd"/>
+
+    <!-- defines the extension point to contribute custom filters to the checkstyle plugin -->
+    <extension-point
+        id="filters"
+        name="Checkstyle filters"
+        schema="schema/filters.exsd"/>
+
+    <!-- defines the extension point to contribute custom configuration save filters -->
+    <extension-point
+        id="saveFilters"
+        name="Configuration save filters"
+        schema="schema/saveFilters.exsd"/>
+
+    <extension
+        id="CheckstyleBuilder"
+        name="%CheckstyleBuilder.name"
+        point="org.eclipse.core.resources.builders">
+        <builder>
+            <run
+                class="net.sf.eclipsecs.core.builder.CheckstyleBuilder"> </run>
+        </builder>
+    </extension>
+    <extension
+        id="CheckstyleNature"
+        name="%CheckstyleNature.name"
+        point="org.eclipse.core.resources.natures">
+        <runtime>
+            <run
+                class="net.sf.eclipsecs.core.nature.CheckstyleNature"> </run>
+        </runtime>
+    </extension>
+    
+    <extension
+        point="org.eclipse.core.runtime.preferences">
+        <initializer
+            class="net.sf.eclipsecs.core.CheckstylePluginPrefs"/>
+    </extension>
+
+    <!--
+        Marker for displaying checkstyle warnings
+    -->
+    <extension
+        id="CheckstyleMarker"
+        name="%CheckstyleMarker.name"
+        point="org.eclipse.core.resources.markers">
+        <super
+            type="org.eclipse.core.resources.problemmarker"/>
+        <super
+            type="org.eclipse.core.resources.textmarker"/>
+        <super
+            type="org.eclipse.jdt.core.problem"/>
+        <persistent
+            value="true"/>
+        <attribute
+            name="ModuleName"/>
+        <attribute
+            name="MessageKey"/>
+        <attribute
+            name="categoryId"/>
+    </extension>
+
+
+    <!-- 
+        Standard plugin check configuration types
+    -->
+    <extension
+        id="checkstyle.CheckConfigurationTypes"
+        point="net.sf.eclipsecs.core.configurationtypes">
+        <configuration-type
+            name="%BuiltinCheckConfiguration.label"
+            internal-name="builtin"
+            creatable="false"
+            editable="false"
+            configurable="false"
+            additionalPropertySupport="false"
+            class="net.sf.eclipsecs.core.config.configtypes.BuiltInConfigurationType"/>
+        <configuration-type
+            name="%InternalCheckConfiguration.label"
+            internal-name="internal"
+            creatable="true"
+            editable="true"
+            configurable="true"
+            additionalPropertySupport="true"
+            class="net.sf.eclipsecs.core.config.configtypes.InternalConfigurationType"/>
+        <configuration-type
+            name="%ExternalFileCheckConfiguration.label"
+            internal-name="external"
+            creatable="true"
+            editable="true"
+            configurable="true"
+            additionalPropertySupport="true"
+            class="net.sf.eclipsecs.core.config.configtypes.ExternalFileConfigurationType"/>
+        <configuration-type
+            name="%RemoteCheckConfiguration.label"
+            internal-name="remote"
+            creatable="true"
+            editable="true"
+            configurable="false"
+            additionalPropertySupport="true"
+            class="net.sf.eclipsecs.core.config.configtypes.RemoteConfigurationType"/>
+        <configuration-type
+            name="%ProjectRelativeCheckConfiguration.label"
+            internal-name="project"
+            creatable="true"
+            editable="true"
+            configurable="true"
+            additionalPropertySupport="true"
+            class="net.sf.eclipsecs.core.config.configtypes.ProjectConfigurationType"/>
+    </extension>
+
+    <!-- 
+        Standard plugin check configurations
+    -->
+    <extension
+        id="checkstyle.CheckConfiguration"
+        point="net.sf.eclipsecs.core.configurations">
+        <check-configuration
+            name="Sun Checks"
+            location="sun_checks.xml"
+            description="%SunChecks.description"/>
+        <check-configuration
+            name="Sun Checks (Eclipse)"
+            location="sun_checks_eclipse.xml"
+            description="%SunChecksEclipse.description"/>
+    </extension>
+
+    <!-- 
+        Standard checkstyle filters
+    -->
+    <extension
+        id="checkstyle.CheckstyleFilters"
+        point="net.sf.eclipsecs.core.filters">
+        <!-- this should be the first filter, since it filters out many files with little effort. -->
+        <filter
+            name="%FileTypesFilter.label"
+            internal-name="FileTypesFilter"
+            description="%FileTypesFilter.description"
+            class="net.sf.eclipsecs.core.projectconfig.filters.FileTypesFilter"
+            readonly="true"
+            selected="true">
+            <data
+                value="java"/>
+            <data
+                value="properties"/>
+        </filter>
+        <filter
+            name="%WriteProtectedFilter.label"
+            internal-name="WriteProtectedFiles"
+            description="%WriteProtectedFilter.description"
+            class="net.sf.eclipsecs.core.projectconfig.filters.WriteProtectedFilter"> </filter>
+        <filter
+            name="%UnOpenedFilesFilter.label"
+            internal-name="UnOpenedFiles"
+            description="%UnOpenedFilesFilter.description"
+            class="net.sf.eclipsecs.core.projectconfig.filters.UnOpenedFilesFilter"/>
+        <filter
+            internal-name="FilesFromPackage"
+            name="%PackageFilter.label"
+            description="%PackageFilter.description"
+            class="net.sf.eclipsecs.core.projectconfig.filters.PackageFilter"/>
+        <filter
+            name="%NonSrcDirsFilter.label"
+            internal-name="NonSrcDirs"
+            description="%NonSrcDirsFilter.description"
+            class="net.sf.eclipsecs.core.projectconfig.filters.NonSrcDirsFilter"/>
+        <filter
+            name="%FilesInSyncFilter.label"
+            internal-name="FilesInSync"
+            description="%FilesInSyncFilter.description"
+            class="net.sf.eclipsecs.core.projectconfig.filters.FilesInSyncFilter"/>
+    </extension>
+
+    <!-- 
+        Standard checkstyle save filters
+    -->
+    <extension
+        id="checkstyle.SaveFilters"
+        point="net.sf.eclipsecs.core.saveFilters">
+
+        <saveFilter
+            class="net.sf.eclipsecs.core.config.savefilter.CheckerModuleSaveFilter"/>
+        <saveFilter
+            class="net.sf.eclipsecs.core.config.savefilter.FileContentsHolderSaveFilter"/>
+        <saveFilter
+            class="net.sf.eclipsecs.core.config.savefilter.TreeWalkerModuleSaveFilter"/>
+        <saveFilter
+            class="net.sf.eclipsecs.core.config.savefilter.SortingSaveFilter"/>
+    </extension>
+
+</plugin>

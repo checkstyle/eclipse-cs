@@ -1,0 +1,31 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Eclipse Checkstyle Ui Plug-in
+Bundle-SymbolicName: net.sf.eclipsecs.ui;singleton:=true
+Bundle-Version: 0.0.0
+Bundle-Vendor: Lars Ködderitzsch
+Bundle-Activator: net.sf.eclipsecs.ui.CheckstyleUIPlugin
+Bundle-Localization: plugin
+Require-Bundle: net.sf.eclipsecs.checkstyle,
+ net.sf.eclipsecs.core,
+ org.eclipse.core.runtime,
+ org.eclipse.core.resources,
+ org.eclipse.jdt.core,
+ org.eclipse.jdt.ui,
+ org.eclipse.jface.text,
+ org.eclipse.team.core,
+ org.eclipse.team.cvs.core;resolution:=optional,
+ org.eclipse.ui,
+ org.eclipse.ui.editors,
+ org.eclipse.ui.ide,
+ org.eclipse.ui.workbench.texteditor
+Bundle-ClassPath: CheckstyleUIPlugin.jar,
+ lib/itext-2.0.1.jar,
+ lib/jcommon-1.0.9.jar,
+ lib/jfreechart-1.0.5.jar,
+ lib/jfreechart-1.0.5-swt.jar,
+ lib/commons-httpclient-3.0.1.jar,
+ lib/commons-codec-1.3.jar
+Eclipse-LazyStart: true
+
+

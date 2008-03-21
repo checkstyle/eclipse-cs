@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE checkstyle-metadata PUBLIC
+"-//eclipse-cs//DTD Check Metadata 1.0//EN"
+"http://eclipse-cs.sourceforge.net/dtds/checkstyle-metadata_1_0.dtd">
+<checkstyle-metadata>
+    <rule-group-metadata name="%Imports.group" priority="400">
+
+        <rule-metadata name="%AvoidStarImport.name" internal-name="AvoidStarImport" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.imports.AvoidStarImportCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.AvoidStarImportCheck"/>
+            <description>%AvoidStarImport.desc</description>
+            <property-metadata name="excludes" datatype="String">
+                <description>%AvoidStarImport.excludes</description>
+            </property-metadata>
+        </rule-metadata>
+
+        <rule-metadata name="%IllegalImport.name" internal-name="IllegalImport" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.imports.IllegalImportCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.IllegalImportCheck"/>
+            <description>%IllegalImport.desc</description>
+            <property-metadata name="illegalPkgs" datatype="String" default-value="sun">
+                <description>%IllegalImport.illegalPkgs</description>
+            </property-metadata>
+        </rule-metadata>
+
+        <rule-metadata name="%ImportOrder.name" internal-name="ImportOrder" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.imports.ImportOrderCheck"/>
+            <description>%ImportOrder.desc</description>
+            <property-metadata name="groups" datatype="String">
+                <description>%ImportOrder.groups</description>
+            </property-metadata>
+            <property-metadata name="ordered" datatype="Boolean" default-value="true">
+                <description>%ImportOrder.ordered</description>
+            </property-metadata>
+            <property-metadata name="separated" datatype="Boolean" default-value="false">
+                <description>%ImportOrder.separated</description>
+            </property-metadata>
+            <property-metadata name="caseSensitive" datatype="Boolean" default-value="true">
+                <description>%ImportOrder.caseSensitive</description>
+            </property-metadata>
+        </rule-metadata>
+
+        <rule-metadata name="%RedundantImport.name" internal-name="RedundantImport" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.imports.RedundantImportCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.RedundantImportCheck"/>
+            <description>%RedundantImport.desc</description>
+        </rule-metadata>
+
+        <rule-metadata name="%UnusedImports.name" internal-name="UnusedImports" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.imports.UnusedImportsCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.UnusedImportsCheck"/>
+            <description>%UnusedImports.desc</description>
+        </rule-metadata>
+
+        <rule-metadata name="%ImportControl.name" internal-name="ImportControl" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.imports.ImportControlCheck"/>
+            <description>%ImportControl.desc</description>
+            <property-metadata name="file" datatype="File">
+                <description>%ImportControl.file</description>
+            </property-metadata>
+            <property-metadata name="url" datatype="String">
+                <description>%ImportControl.url</description>
+            </property-metadata>
+        </rule-metadata>
+
+    </rule-group-metadata>
+
+</checkstyle-metadata>
