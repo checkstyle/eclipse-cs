@@ -51,7 +51,7 @@
             <property-metadata name="max" datatype="Integer" default-value="80">
                 <description>%LineLength.max</description>
             </property-metadata>
-            <property-metadata name="tabWidth" datatype="Integer" default-value="4">
+            <property-metadata name="tabWidth" datatype="Integer" default-value="8">
                 <description>%LineLength.tabWidth</description>
             </property-metadata>
         </rule-metadata>
