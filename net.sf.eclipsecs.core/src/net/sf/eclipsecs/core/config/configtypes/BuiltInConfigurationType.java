@@ -70,9 +70,12 @@ public class BuiltInConfigurationType extends ConfigurationType {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected PropertyResolver getPropertyResolver(ICheckConfiguration config,
             CheckstyleConfigurationFile configFile) {
-        // no properties to resolve with builtin configurations
-        return null;
+
+        return new BuiltInFilePropertyResolver(resolveLocation(config).toString());
     }
 }
