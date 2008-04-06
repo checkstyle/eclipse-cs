@@ -32,8 +32,9 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 
 /**
- * Register for the filters thats use the <i>net.sf.eclipsecs.core.checkstyleFilter
- * </i> extension point. Checkstyle filters can be enabled per project.
+ * Register for the filters thats use the
+ * <i>net.sf.eclipsecs.core.checkstyleFilter </i> extension point. Checkstyle
+ * filters can be enabled per project.
  * 
  * @author Lars Ködderitzsch
  */
@@ -73,9 +74,8 @@ public final class SaveFilters {
 
             try {
 
-                Class<?> filterClass = Class.forName(elements[i].getAttribute(ATTR_CLASS));
-
-                ISaveFilter filter = (ISaveFilter) filterClass.newInstance();
+                ISaveFilter filter = (ISaveFilter) elements[i]
+                        .createExecutableExtension(ATTR_CLASS);
                 filters.add(filter);
             }
             catch (Exception e) {

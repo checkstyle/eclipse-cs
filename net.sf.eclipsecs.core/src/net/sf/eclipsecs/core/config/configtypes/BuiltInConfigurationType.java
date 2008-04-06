@@ -22,11 +22,13 @@ package net.sf.eclipsecs.core.config.configtypes;
 
 import java.net.URL;
 
-import net.sf.eclipsecs.core.CheckstylePlugin;
 import net.sf.eclipsecs.core.config.CheckstyleConfigurationFile;
 import net.sf.eclipsecs.core.config.ICheckConfiguration;
 
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
+import org.osgi.framework.Bundle;
 
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
 
@@ -39,10 +41,24 @@ import com.puppycrawl.tools.checkstyle.PropertyResolver;
 public class BuiltInConfigurationType extends ConfigurationType {
 
     /**
+     * constant for the contributor key. It stores the id of the plugin which
+     * contributes the built in configuration, so that the file can be retrieved
+     * properly.
+     */
+    public static final String CONTRIBUTOR_KEY = "contributor";
+
+    /**
      * {@inheritDoc}
      */
     protected URL resolveLocation(ICheckConfiguration checkConfiguration) {
-        return CheckstylePlugin.getDefault().find(new Path(checkConfiguration.getLocation()));
+
+        String contributorName = checkConfiguration.getAdditionalData().get(CONTRIBUTOR_KEY);
+
+        Bundle contributor = Platform.getBundle(contributorName);
+        URL locationUrl = FileLocator.find(contributor, new Path(checkConfiguration.getLocation()),
+                null);
+
+        return locationUrl;
     }
 
     /**

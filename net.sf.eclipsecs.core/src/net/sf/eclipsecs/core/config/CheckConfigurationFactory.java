@@ -35,6 +35,7 @@ import java.util.Map;
 
 import net.sf.eclipsecs.core.CheckstylePlugin;
 import net.sf.eclipsecs.core.Messages;
+import net.sf.eclipsecs.core.config.configtypes.BuiltInConfigurationType;
 import net.sf.eclipsecs.core.config.configtypes.ConfigurationTypes;
 import net.sf.eclipsecs.core.config.configtypes.IConfigurationType;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
@@ -275,10 +276,14 @@ public final class CheckConfigurationFactory {
             String description = elements[i].getAttribute(XMLTags.DESCRIPTION_TAG);
             String location = elements[i].getAttribute(XMLTags.LOCATION_TAG);
 
-            IConfigurationType configType = ConfigurationTypes.getByInternalName("builtin"); //$NON-NLS-1$
+            IConfigurationType configType = new BuiltInConfigurationType();
+
+            Map<String, String> additionalData = new HashMap<String, String>();
+            additionalData.put(BuiltInConfigurationType.CONTRIBUTOR_KEY, elements[i]
+                    .getContributor().getName());
 
             ICheckConfiguration checkConfig = new CheckConfiguration(name, location, description,
-                    configType, true, null, null);
+                    configType, true, null, additionalData);
             sConfigurations.add(checkConfig);
         }
     }

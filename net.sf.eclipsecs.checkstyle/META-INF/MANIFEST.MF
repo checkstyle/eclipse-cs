@@ -6,7 +6,8 @@ Bundle-Version: 0.0.0
 Eclipse-LazyStart: true
 Bundle-Vendor: David Schneider, Lars Ködderitzsch
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Export-Package: antlr;
+Export-Package: .,
+ antlr;
   uses:="antlr.collections.impl,
    antlr.debug,
    antlr.ASdebug,
@@ -56,23 +57,6 @@ Export-Package: antlr;
  com.puppycrawl.tools.checkstyle.doclets;uses:="com.sun.javadoc",
  com.puppycrawl.tools.checkstyle.filters;uses:="com.puppycrawl.tools.checkstyle.api,org.xml.sax",
  com.puppycrawl.tools.checkstyle.grammars;uses:="antlr.collections.impl,antlr.collections,antlr",
- com.puppycrawl.tools.checkstyle.gui;
-  uses:="com.puppycrawl.tools.checkstyle.api,
-   javax.swing.border,
-   javax.swing.tree,
-   javax.swing,
-   javax.swing.table,
-   javax.swing.event",
- org.apache.commons.beanutils;uses:="org.apache.commons.collections",
- org.apache.commons.beanutils.converters;uses:="org.apache.commons.beanutils",
- org.apache.commons.beanutils.locale;uses:="org.apache.commons.beanutils,org.apache.commons.collections",
- org.apache.commons.beanutils.locale.converters;uses:="org.apache.commons.beanutils.locale",
- org.apache.commons.cli,
- org.apache.commons.collections;uses:="org.apache.commons.collections.iterators",
- org.apache.commons.collections.comparators;uses:="org.apache.commons.collections",
- org.apache.commons.collections.iterators;uses:="org.apache.commons.collections",
- org.apache.commons.logging,
- org.apache.commons.logging.impl;x-internal:=true
+ org.apache.commons.collections;uses:="org.apache.commons.collections.iterators"
 Bundle-ClassPath: checkstyle-all-5.0-SNAPSHOT.jar,
  checkstyle-metadata.jar
-

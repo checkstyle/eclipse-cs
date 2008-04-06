@@ -49,14 +49,14 @@ public final class PluginFilterEditors {
     private static final String ATTR_CLASS = "class"; //$NON-NLS-1$
 
     /** the filter prototypes configured to the extension point. */
-    private static Map<String, Class<?>> sFilterEditorClasses;
+    private static Map<String, Class<? extends IFilterEditor>> sFilterEditorClasses;
 
     /**
      * Initialize the configured to the filter extension point.
      */
     static {
 
-        sFilterEditorClasses = new HashMap<String, Class<?>>();
+        sFilterEditorClasses = new HashMap<String, Class<? extends IFilterEditor>>();
 
         IExtensionRegistry pluginRegistry = Platform.getExtensionRegistry();
 
@@ -68,9 +68,10 @@ public final class PluginFilterEditors {
             try {
 
                 String filter = elements[i].getAttribute(ATTR_FILTER);
-                Class<?> editorClass = Class.forName(elements[i].getAttribute(ATTR_CLASS));
 
-                sFilterEditorClasses.put(filter, editorClass);
+                IFilterEditor editor = (IFilterEditor) elements[i]
+                        .createExecutableExtension(ATTR_CLASS);
+                sFilterEditorClasses.put(filter, editor.getClass());
             }
             catch (Exception e) {
                 CheckstyleLog.log(e);
@@ -104,12 +105,13 @@ public final class PluginFilterEditors {
      */
     public static IFilterEditor getNewEditor(IFilter filter) throws CheckstylePluginException {
 
-        Class<?> editorClass = sFilterEditorClasses.get(filter.getInternalName());
+        Class<? extends IFilterEditor> editorClass = sFilterEditorClasses.get(filter
+                .getInternalName());
 
         if (editorClass != null) {
 
             try {
-                IFilterEditor editor = (IFilterEditor) editorClass.newInstance();
+                IFilterEditor editor = editorClass.newInstance();
                 return editor;
             }
             catch (InstantiationException e) {

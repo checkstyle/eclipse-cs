@@ -261,6 +261,7 @@ public final class CheckerFactory {
 
         // create and configure checker
         Checker checker = new Checker();
+        checker.setModuleClassLoader(CheckerFactory.class.getClassLoader());
 
         // set the eclipse platform locale
         Locale platformLocale = CheckstylePlugin.getPlatformLocale();

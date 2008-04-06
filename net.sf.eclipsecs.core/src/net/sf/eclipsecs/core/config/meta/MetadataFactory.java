@@ -32,10 +32,12 @@ import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.TreeMap;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import net.sf.eclipsecs.core.CheckstylePlugin;
 import net.sf.eclipsecs.core.config.ConfigProperty;
 import net.sf.eclipsecs.core.config.Module;
 import net.sf.eclipsecs.core.config.Severity;
@@ -218,16 +220,17 @@ public final class MetadataFactory {
      */
     private static void doInitialization() throws CheckstylePluginException {
 
-        Collection<String> potentialMetadataFiles = getAllPotentialMetadataFiles();
+        ClassLoader classLoader = MetadataFactory.class.getClassLoader();
+        Collection<String> potentialMetadataFiles = getAllPotentialMetadataFiles(classLoader);
         for (String metadataFile : potentialMetadataFiles) {
 
             InputStream metadataStream = null;
+
             try {
-                metadataStream = Thread.currentThread().getContextClassLoader()
-                        .getResourceAsStream(metadataFile);
+                metadataStream = classLoader.getResourceAsStream(metadataFile);
                 if (metadataStream != null) {
-                    MetaDataHandler metadataHandler = new MetaDataHandler(
-                            getMetadataI18NBundle(metadataFile));
+                    MetaDataHandler metadataHandler = new MetaDataHandler(getMetadataI18NBundle(
+                            metadataFile, classLoader));
                     XMLUtil.parseWithSAX(metadataStream, metadataHandler, true);
                 }
             }
@@ -259,22 +262,20 @@ public final class MetadataFactory {
      * @return the collection of potential metadata files.
      * @throws CheckstylePluginException an unexpected exception ocurred
      */
-    private static Collection<String> getAllPotentialMetadataFiles()
+    private static Collection<String> getAllPotentialMetadataFiles(ClassLoader classLoader)
         throws CheckstylePluginException {
 
         Collection<String> potentialMetadataFiles = new ArrayList<String>();
 
-        List<String> packages = null;
+        Set<String> packages = null;
         try {
-            packages = PackageNamesLoader.getPackageNames(Thread.currentThread()
-                    .getContextClassLoader());
+            packages = PackageNamesLoader.getPackageNames(classLoader);
         }
         catch (CheckstyleException e) {
             CheckstylePluginException.rethrow(e);
         }
 
-        for (int i = 0, size = packages.size(); i < size; i++) {
-            String packageName = packages.get(i);
+        for (String packageName : packages) {
             String metaFileLocation = packageName.replace('.', '/') + METADATA_FILENAME;
             potentialMetadataFiles.add(metaFileLocation);
         }
@@ -290,10 +291,11 @@ public final class MetadataFactory {
      * @return the corresponding ResourceBundle for the metadata file or
      *         <code>null</code> if none exists
      */
-    private static ResourceBundle getMetadataI18NBundle(String metadataFile) {
+    private static ResourceBundle getMetadataI18NBundle(String metadataFile, ClassLoader classLoader) {
         String bundle = metadataFile.substring(0, metadataFile.length() - 4).replace('/', '.');
         try {
-            return PropertyResourceBundle.getBundle(bundle);
+            return PropertyResourceBundle.getBundle(bundle, CheckstylePlugin.getPlatformLocale(),
+                    classLoader);
         }
         catch (MissingResourceException e) {
             return null;

@@ -61,7 +61,7 @@ public final class ConfigurationTypesUI {
     private static final String ATTR_ICON = "icon"; //$NON-NLS-1$
 
     /** the configuration types configured to the extension point. */
-    private static final Map<String, Class<?>> CONFIGURATION_TYPE_EDITORS;
+    private static final Map<String, Class<? extends ICheckConfigurationEditor>> CONFIGURATION_TYPE_EDITORS;
 
     /** Map of icon paths for the configuration types. */
     private static final Map<String, String> CONFIGATION_TYPE_ICONS;
@@ -71,7 +71,7 @@ public final class ConfigurationTypesUI {
      */
     static {
 
-        CONFIGURATION_TYPE_EDITORS = new HashMap<String, Class<?>>();
+        CONFIGURATION_TYPE_EDITORS = new HashMap<String, Class<? extends ICheckConfigurationEditor>>();
         CONFIGATION_TYPE_ICONS = new HashMap<String, String>();
 
         IExtensionRegistry pluginRegistry = Platform.getExtensionRegistry();
@@ -84,10 +84,13 @@ public final class ConfigurationTypesUI {
             try {
 
                 String internalName = elements[i].getAttribute(ATTR_NAME);
-                Class<?> editorClass = Class.forName(elements[i].getAttribute(ATTR_CLASS));
+
+                ICheckConfigurationEditor editor = (ICheckConfigurationEditor) elements[i]
+                        .createExecutableExtension(ATTR_CLASS);
+
                 String iconPath = elements[i].getAttribute(ATTR_ICON);
 
-                CONFIGURATION_TYPE_EDITORS.put(internalName, editorClass);
+                CONFIGURATION_TYPE_EDITORS.put(internalName, editor.getClass());
                 CONFIGATION_TYPE_ICONS.put(internalName, iconPath);
             }
             catch (Exception e) {
@@ -112,13 +115,13 @@ public final class ConfigurationTypesUI {
     public static ICheckConfigurationEditor getNewEditor(IConfigurationType configType)
         throws CheckstylePluginException {
 
-        Class<?> editorClass = CONFIGURATION_TYPE_EDITORS.get(configType.getInternalName());
+        Class<? extends ICheckConfigurationEditor> editorClass = CONFIGURATION_TYPE_EDITORS
+                .get(configType.getInternalName());
 
         if (editorClass != null) {
 
             try {
-                ICheckConfigurationEditor editor = (ICheckConfigurationEditor) editorClass
-                        .newInstance();
+                ICheckConfigurationEditor editor = editorClass.newInstance();
                 return editor;
             }
             catch (InstantiationException e) {

@@ -31,8 +31,9 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 
 /**
- * Register for the filters thats use the <i>net.sf.eclipsecs.core.checkstyleFilter
- * </i> extension point. Checkstyle filters can be enabled per project.
+ * Register for the filters thats use the
+ * <i>net.sf.eclipsecs.core.checkstyleFilter </i> extension point. Checkstyle
+ * filters can be enabled per project.
  * 
  * @author Lars Ködderitzsch
  */
@@ -92,15 +93,13 @@ public final class PluginFilters {
 
             try {
 
-                Class<?> filterClass = Class.forName(elements[i].getAttribute(ATTR_CLASS));
-
                 String name = elements[i].getAttribute(ATTR_NAME);
                 String internalName = elements[i].getAttribute(ATTR_INTERNAL_NAME);
                 String desc = elements[i].getAttribute(ATTR_DESCRIPTION);
                 boolean readOnly = Boolean.valueOf(elements[i].getAttribute(ATTR_READONLY))
                         .booleanValue();
 
-                IFilter filter = (IFilter) filterClass.newInstance();
+                IFilter filter = (IFilter) elements[i].createExecutableExtension(ATTR_CLASS);
                 filter.initialize(name, internalName, desc, readOnly);
 
                 boolean defaultState = Boolean.valueOf(elements[i].getAttribute(ATTR_SELECTED))

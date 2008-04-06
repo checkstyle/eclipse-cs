@@ -17,6 +17,7 @@ Require-Bundle: net.sf.eclipsecs.checkstyle,
  org.eclipse.core.filebuffers,
  org.eclipse.jface.text
 Eclipse-LazyStart: true
+Eclipse-BuddyPolicy: dependent
 Export-Package: net.sf.eclipsecs.core,
  net.sf.eclipsecs.core.builder,
  net.sf.eclipsecs.core.config,
