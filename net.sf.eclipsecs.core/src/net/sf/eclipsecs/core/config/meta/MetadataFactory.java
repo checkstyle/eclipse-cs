@@ -220,7 +220,7 @@ public final class MetadataFactory {
      */
     private static void doInitialization() throws CheckstylePluginException {
 
-        ClassLoader classLoader = MetadataFactory.class.getClassLoader();
+        ClassLoader classLoader = CheckstylePlugin.class.getClassLoader();
         Collection<String> potentialMetadataFiles = getAllPotentialMetadataFiles(classLoader);
         for (String metadataFile : potentialMetadataFiles) {
 

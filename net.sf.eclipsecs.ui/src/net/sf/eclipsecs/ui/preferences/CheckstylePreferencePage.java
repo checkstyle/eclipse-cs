@@ -27,7 +27,6 @@ import net.sf.eclipsecs.core.builder.CheckerFactory;
 import net.sf.eclipsecs.core.builder.CheckstyleBuilder;
 import net.sf.eclipsecs.core.config.CheckConfigurationFactory;
 import net.sf.eclipsecs.core.config.ICheckConfigurationWorkingSet;
-import net.sf.eclipsecs.core.config.meta.MetadataFactory;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
 import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
@@ -474,7 +473,6 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         public void widgetSelected(SelectionEvent e) {
             if (mPurgeCacheButton == e.widget) {
                 CheckerFactory.cleanup();
-                MetadataFactory.refresh();
                 mRebuildAll = true;
             }
         }
