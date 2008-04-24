@@ -37,6 +37,7 @@ import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
 import net.sf.eclipsecs.ui.stats.Messages;
 import net.sf.eclipsecs.ui.stats.views.internal.CheckstyleMarkerFilter;
 
+import org.apache.commons.lang.ObjectUtils;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -63,16 +64,32 @@ public class CreateStatsJob extends Job {
     private final CheckstyleMarkerFilter mFilter;
 
     /** The statistics data object. */
-    private Stats mStats = null;
+    private Stats mStats;
+
+    /** The job family this job belongs to. */
+    private final String mFamily;
 
     /**
      * Creates the job.
      * 
      * @param filter the marker filter to analyze
      */
-    public CreateStatsJob(CheckstyleMarkerFilter filter) {
+    public CreateStatsJob(CheckstyleMarkerFilter filter, String family) {
         super(Messages.CreateStatsJob_msgAnalyzeMarkers);
         mFilter = (CheckstyleMarkerFilter) filter.clone();
+        mFamily = family;
+    }
+
+    @Override
+    public boolean shouldSchedule() {
+
+        Job[] similarJobs = getJobManager().find(mFamily);
+        return similarJobs.length == 0;
+    }
+
+    @Override
+    public boolean belongsTo(Object family) {
+        return ObjectUtils.equals(mFamily, family);
     }
 
     protected IStatus run(IProgressMonitor monitor) {

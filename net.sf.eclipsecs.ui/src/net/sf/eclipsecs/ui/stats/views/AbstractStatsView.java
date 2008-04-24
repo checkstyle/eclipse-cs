@@ -220,7 +220,8 @@ public abstract class AbstractStatsView extends ViewPart {
                 .getAdapter(IWorkbenchSiteProgressService.class);
 
         // rebuild statistics data
-        CreateStatsJob job = new CreateStatsJob(getFilter());
+        CreateStatsJob job = new CreateStatsJob(getFilter(), getViewId());
+        job.setPriority(Job.DECORATE);
         job.setRule(ResourcesPlugin.getWorkspace().getRoot());
         job.addJobChangeListener(new JobChangeAdapter() {
             public void done(IJobChangeEvent event) {
@@ -232,12 +233,11 @@ public abstract class AbstractStatsView extends ViewPart {
                         return Status.OK_STATUS;
                     }
                 };
-                uiJob.setPriority(Job.INTERACTIVE);
+                uiJob.setPriority(Job.DECORATE);
                 uiJob.setSystem(true);
                 uiJob.schedule();
             }
         });
-
         service.schedule(job, 0, true);
     }
 
