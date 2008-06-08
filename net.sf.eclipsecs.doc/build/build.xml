@@ -3,8 +3,8 @@
 	<!-- get the environment properties specific to each developer machine -->
 	<property file="${basedir}/build/env.properties" />
 
-	<property name="dist.docs" value="${basedir}/dist/docs" />
-	<property name="dist.web" value="${basedir}/dist/web" />
+	<property name="dist.docs" value="${basedir}/docs" />
+	<property name="dist.web" value="${basedir}/web" />
 
 	<!-- ==================================================== -->
 	<!--   CLEAN TARGET                                       -->
