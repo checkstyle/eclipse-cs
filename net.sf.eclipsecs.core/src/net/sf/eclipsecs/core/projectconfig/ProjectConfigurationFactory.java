@@ -220,6 +220,8 @@ public final class ProjectConfigurationFactory {
         /** The filters. */
         private List<IFilter> mFilters;
 
+        private List<String> mFilterData;
+
         /** Additional data for the current configuration. */
         private Map<String, String> mCurrentAddValues;
 
@@ -355,12 +357,11 @@ public final class ProjectConfigurationFactory {
                                 attributes.getValue(XMLTags.ENABLED_TAG)).booleanValue());
 
                         // set an empty list for the filter data
-                        mCurrentFilter.setFilterData(new ArrayList<String>());
-                        mFilters.add(mCurrentFilter);
+                        mFilterData = new ArrayList<String>();
                     }
                 }
                 else if (XMLTags.FILTER_DATA_TAG.equals(qName) && mCurrentFilter != null) {
-                    mCurrentFilter.getFilterData().add(attributes.getValue(XMLTags.VALUE_TAG));
+                    mFilterData.add(attributes.getValue(XMLTags.VALUE_TAG));
                 }
 
             }
@@ -385,6 +386,10 @@ public final class ProjectConfigurationFactory {
                 catch (Exception e) {
                     throw new SAXException(e);
                 }
+            }
+            else if (XMLTags.FILTER_TAG.equals(qName)) {
+                mCurrentFilter.setFilterData(mFilterData);
+                mFilters.add(mCurrentFilter);
             }
         }
     }

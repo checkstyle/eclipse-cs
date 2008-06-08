@@ -25,6 +25,7 @@ import java.util.List;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -37,7 +38,16 @@ import org.eclipse.core.runtime.Path;
  */
 public class PackageFilter extends AbstractFilter {
 
+    /**
+     * Marker string in the filter data, if present the subpackes of a filtered
+     * package are not recursivly excluded, but only the filtered package
+     * itself.
+     */
+    public static final String RECURSE_OFF_MARKER = "<recurse=false>";
+
     private List<String> mData = new ArrayList<String>();
+
+    private boolean mExcludeSubPackages = true;
 
     /**
      * {@inheritDoc}
@@ -50,13 +60,32 @@ public class PackageFilter extends AbstractFilter {
 
             IResource resource = (IResource) element;
 
-            IPath projRelativPath = resource.getProjectRelativePath();
+            IContainer folder = null;
+
+            if (resource instanceof IContainer) {
+                folder = (IContainer) resource;
+            }
+            else {
+                folder = resource.getParent();
+            }
+
+            IPath projRelativPath = folder.getProjectRelativePath();
 
             int size = mData != null ? mData.size() : 0;
             for (int i = 0; i < size; i++) {
 
-                IPath filteredPath = new Path(mData.get(i));
-                if (filteredPath.isPrefixOf(projRelativPath)) {
+                String el = mData.get(i);
+
+                if (RECURSE_OFF_MARKER.equals(el)) {
+                    continue;
+                }
+
+                IPath filteredPath = new Path(el);
+                if (mExcludeSubPackages && filteredPath.isPrefixOf(projRelativPath)) {
+                    goesThrough = false;
+                    break;
+                }
+                else if (!mExcludeSubPackages && filteredPath.equals(projRelativPath)) {
                     goesThrough = false;
                     break;
                 }
@@ -74,6 +103,10 @@ public class PackageFilter extends AbstractFilter {
         }
 
         mData = filterData;
+
+        if (mData.contains(RECURSE_OFF_MARKER)) {
+            mExcludeSubPackages = false;
+        }
     }
 
     /**
