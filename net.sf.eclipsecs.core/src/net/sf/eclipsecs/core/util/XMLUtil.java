@@ -20,25 +20,15 @@
 
 package net.sf.eclipsecs.core.util;
 
-import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Templates;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.sax.SAXTransformerFactory;
-import javax.xml.transform.sax.TransformerHandler;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
 
-import org.apache.commons.io.IOUtils;
 import org.dom4j.Document;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XMLWriter;
@@ -91,47 +81,6 @@ public final class XMLUtil {
         SAXParser parser = sSAXParserFactory.newSAXParser();
 
         parser.parse(in, handler);
-    }
-
-    /**
-     * Creates a transformer handler that writes to the given output stream. You
-     * can send sax events to the transformer and receive a similar output.
-     * 
-     * @param out the output stream the handler writes to
-     * @param doctypePublic the public doctype id or <code>null</code>
-     * @param doctypeSystem the system doctype id or <code>null</code>
-     * @return the transformer handler where sax events can be sent to.
-     * @throws TransformerConfigurationException error creating the transformer
-     */
-    public static TransformerHandler writeWithSax(OutputStream out, String doctypePublic,
-            String doctypeSystem) throws TransformerConfigurationException {
-
-        SAXTransformerFactory saxFactory = (SAXTransformerFactory) sTransformerFactory;
-        Templates templates = null;
-
-        InputStream in = null;
-        try {
-            in = new BufferedInputStream(XMLUtil.class.getResourceAsStream("identity.xsl")); //$NON-NLS-1$
-            templates = saxFactory.newTemplates(new StreamSource(in));
-        }
-        finally {
-            IOUtils.closeQuietly(in);
-        }
-
-        StreamResult result = new StreamResult(out);
-
-        // uses identity transformation (in==out)
-        TransformerHandler handler = saxFactory.newTransformerHandler(templates);
-        if (doctypePublic != null) {
-            handler.getTransformer().setOutputProperty(OutputKeys.DOCTYPE_PUBLIC, doctypePublic);
-        }
-        if (doctypeSystem != null) {
-            handler.getTransformer().setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, doctypeSystem);
-        }
-
-        handler.setResult(result);
-
-        return handler;
     }
 
     /**
