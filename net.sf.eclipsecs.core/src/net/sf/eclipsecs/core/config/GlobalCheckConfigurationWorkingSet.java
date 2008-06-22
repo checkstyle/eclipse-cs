@@ -21,17 +21,15 @@
 package net.sf.eclipsecs.core.config;
 
 import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import javax.xml.transform.sax.TransformerHandler;
 
 import net.sf.eclipsecs.core.CheckstylePlugin;
 import net.sf.eclipsecs.core.Messages;
@@ -46,10 +44,11 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
 import net.sf.eclipsecs.core.util.XMLUtil;
 
 import org.apache.commons.io.IOUtils;
+import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.AttributesImpl;
 
 /**
  * Working set implementation that manages global configurations configured for
@@ -286,31 +285,24 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
     private void storeToPersistence() throws CheckstylePluginException {
 
         BufferedOutputStream out = null;
-        ByteArrayOutputStream byteOut = null;
+
         try {
 
             IPath configPath = CheckstylePlugin.getDefault().getStateLocation();
             configPath = configPath.append(CheckConfigurationFactory.CHECKSTYLE_CONFIG_FILE);
             File configFile = configPath.toFile();
 
-            byteOut = new ByteArrayOutputStream();
+            Document doc = createCheckConfigurationsDocument(mWorkingCopies, mDefaultCheckConfig);
 
-            // Write the configuration document by pushing sax events through
-            // the transformer handler
-            TransformerHandler xmlOut = XMLUtil.writeWithSax(byteOut, null, null);
-
-            writeConfigurations(xmlOut, mWorkingCopies, mDefaultCheckConfig);
-
-            // write to the file after the serialization was successful
+            // write to the file after the document creation was successful
             // prevents corrupted files in case of error
             out = new BufferedOutputStream(new FileOutputStream(configFile));
-            out.write(byteOut.toByteArray());
+            out.write(XMLUtil.toByteArray(doc));
         }
-        catch (Exception e) {
+        catch (IOException e) {
             CheckstylePluginException.rethrow(e, Messages.errorWritingConfigFile);
         }
         finally {
-            IOUtils.closeQuietly(byteOut);
             IOUtils.closeQuietly(out);
         }
     }
@@ -329,29 +321,20 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
     }
 
     /**
-     * Writes to check configurations through the transformer handler by passing
-     * SAX events to it.
-     * 
-     * @param handler the transformer handler
-     * @throws SAXException error writing the configurations
+     * Transforms the check configurations to a document.
      */
-    private static void writeConfigurations(TransformerHandler handler,
+    private static Document createCheckConfigurationsDocument(
             List<CheckConfigurationWorkingCopy> configurations,
-            CheckConfigurationWorkingCopy defaultConfig) throws SAXException {
+            CheckConfigurationWorkingCopy defaultConfig) {
 
-        String emptyString = new String();
-
-        handler.startDocument();
-        AttributesImpl attrs = new AttributesImpl();
-        attrs.addAttribute(emptyString, XMLTags.VERSION_TAG, XMLTags.VERSION_TAG, emptyString,
+        Document doc = DocumentHelper.createDocument();
+        Element root = doc.addElement(XMLTags.CHECKSTYLE_ROOT_TAG);
+        root.addAttribute(XMLTags.VERSION_TAG,
                 CheckConfigurationFactory.CURRENT_CONFIG_FILE_FORMAT_VERSION);
-        if (defaultConfig != null) {
-            attrs.addAttribute(emptyString, XMLTags.DEFAULT_CHECK_CONFIG_TAG,
-                    XMLTags.DEFAULT_CHECK_CONFIG_TAG, emptyString, defaultConfig.getName());
-        }
 
-        handler.startElement(emptyString, XMLTags.CHECKSTYLE_ROOT_TAG, XMLTags.CHECKSTYLE_ROOT_TAG,
-                attrs);
+        if (defaultConfig != null) {
+            root.addAttribute(XMLTags.DEFAULT_CHECK_CONFIG_TAG, defaultConfig.getName());
+        }
 
         for (ICheckConfiguration config : configurations) {
 
@@ -361,58 +344,29 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
                 continue;
             }
 
-            attrs = new AttributesImpl();
-            attrs.addAttribute(emptyString, XMLTags.NAME_TAG, XMLTags.NAME_TAG, emptyString, config
-                    .getName());
-            attrs.addAttribute(emptyString, XMLTags.LOCATION_TAG, XMLTags.LOCATION_TAG,
-                    emptyString, config.getLocation());
-            attrs.addAttribute(emptyString, XMLTags.TYPE_TAG, XMLTags.TYPE_TAG, emptyString, config
-                    .getType().getInternalName());
+            Element configEl = root.addElement(XMLTags.CHECK_CONFIG_TAG);
+            configEl.addAttribute(XMLTags.NAME_TAG, config.getName());
+            configEl.addAttribute(XMLTags.LOCATION_TAG, config.getLocation());
+            configEl.addAttribute(XMLTags.TYPE_TAG, config.getType().getInternalName());
             if (config.getDescription() != null) {
-                attrs.addAttribute(emptyString, XMLTags.DESCRIPTION_TAG, XMLTags.DESCRIPTION_TAG,
-                        emptyString, config.getDescription());
+                configEl.addAttribute(XMLTags.DESCRIPTION_TAG, config.getDescription());
             }
-
-            handler.startElement(emptyString, XMLTags.CHECK_CONFIG_TAG, XMLTags.CHECK_CONFIG_TAG,
-                    attrs);
 
             // Write resolvable properties
             for (ResolvableProperty prop : config.getResolvableProperties()) {
 
-                attrs = new AttributesImpl();
-                attrs.addAttribute(emptyString, XMLTags.NAME_TAG, XMLTags.NAME_TAG, emptyString,
-                        prop.getPropertyName());
-                attrs.addAttribute(emptyString, XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, emptyString,
-                        prop.getValue());
-
-                handler
-                        .startElement(emptyString, XMLTags.PROPERTY_TAG, XMLTags.PROPERTY_TAG,
-                                attrs);
-                handler.endElement(emptyString, XMLTags.PROPERTY_TAG, XMLTags.PROPERTY_TAG);
+                Element propEl = configEl.addElement(XMLTags.PROPERTY_TAG);
+                propEl.addAttribute(XMLTags.NAME_TAG, prop.getPropertyName());
+                propEl.addAttribute(XMLTags.VALUE_TAG, prop.getValue());
             }
 
-            // Additional data
             for (Map.Entry<String, String> entry : config.getAdditionalData().entrySet()) {
 
-                String key = entry.getKey();
-                String value = entry.getValue();
-
-                attrs = new AttributesImpl();
-                attrs.addAttribute(emptyString, XMLTags.NAME_TAG, XMLTags.NAME_TAG, emptyString,
-                        key);
-                attrs.addAttribute(emptyString, XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, emptyString,
-                        value);
-
-                handler.startElement(emptyString, XMLTags.ADDITIONAL_DATA_TAG,
-                        XMLTags.ADDITIONAL_DATA_TAG, attrs);
-                handler.endElement(emptyString, XMLTags.ADDITIONAL_DATA_TAG,
-                        XMLTags.ADDITIONAL_DATA_TAG);
+                Element addEl = configEl.addElement(XMLTags.ADDITIONAL_DATA_TAG);
+                addEl.addAttribute(XMLTags.NAME_TAG, entry.getKey());
+                addEl.addAttribute(XMLTags.VALUE_TAG, entry.getValue());
             }
-
-            handler.endElement(emptyString, XMLTags.CHECK_CONFIG_TAG, XMLTags.CHECK_CONFIG_TAG);
         }
-
-        handler.endElement(emptyString, XMLTags.CHECKSTYLE_ROOT_TAG, XMLTags.CHECKSTYLE_ROOT_TAG);
-        handler.endDocument();
+        return doc;
     }
 }

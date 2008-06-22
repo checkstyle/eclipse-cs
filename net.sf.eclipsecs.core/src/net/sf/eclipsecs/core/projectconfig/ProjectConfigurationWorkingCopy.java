@@ -29,8 +29,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import javax.xml.transform.sax.TransformerHandler;
-
 import net.sf.eclipsecs.core.Messages;
 import net.sf.eclipsecs.core.config.CheckConfigurationFactory;
 import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
@@ -46,14 +44,15 @@ import net.sf.eclipsecs.core.util.XMLUtil;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.osgi.util.NLS;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.AttributesImpl;
 
 /**
  * A modifiable project configuration implementation.
@@ -359,20 +358,15 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
 
             pipeOut = new ByteArrayOutputStream();
 
-            // Write the configuration document by pushing sax events through
-            // the transformer handler
-            TransformerHandler xmlOut = XMLUtil.writeWithSax(pipeOut, null, null);
-
-            writeProjectConfig(config, xmlOut);
-
-            pipeIn = new ByteArrayInputStream(pipeOut.toByteArray());
+            Document docu = writeProjectConfig(config);
+            pipeIn = new ByteArrayInputStream(XMLUtil.toByteArray(docu));
 
             // create or overwrite the .checkstyle file
             IProject project = config.getProject();
             IFile file = project.getFile(ProjectConfigurationFactory.PROJECT_CONFIGURATION_FILE);
             if (!file.exists()) {
                 file.create(pipeIn, true, null);
-                file.setLocal(true, IResource.DEPTH_INFINITE, null);
+                file.refreshLocal(IResource.DEPTH_INFINITE, null);
             }
             else {
                 file.setContents(pipeIn, true, true, null);
@@ -394,54 +388,42 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
      * Produces the sax events to write a project configuration.
      * 
      * @param config the configuration
-     * @param xmlOut the transformer handler receiving the events
-     * @throws SAXException error writing
      */
-    private void writeProjectConfig(ProjectConfigurationWorkingCopy config,
-            TransformerHandler xmlOut) throws SAXException, CheckstylePluginException {
+    private Document writeProjectConfig(ProjectConfigurationWorkingCopy config)
+        throws CheckstylePluginException {
 
-        xmlOut.startDocument();
+        Document doc = DocumentHelper.createDocument();
 
-        String emptyString = new String();
-
-        AttributesImpl attr = new AttributesImpl();
-        attr.addAttribute(emptyString, XMLTags.FORMAT_VERSION_TAG, XMLTags.FORMAT_VERSION_TAG,
-                emptyString, ProjectConfigurationFactory.CURRENT_FILE_FORMAT_VERSION);
-        attr.addAttribute(emptyString, XMLTags.SIMPLE_CONFIG_TAG, XMLTags.SIMPLE_CONFIG_TAG,
-                emptyString, emptyString + config.isUseSimpleConfig());
-
-        xmlOut.startElement(emptyString, XMLTags.FILESET_CONFIG_TAG, XMLTags.FILESET_CONFIG_TAG,
-                attr);
+        Element root = doc.addElement(XMLTags.FILESET_CONFIG_TAG);
+        root.addAttribute(XMLTags.FORMAT_VERSION_TAG,
+                ProjectConfigurationFactory.CURRENT_FILE_FORMAT_VERSION);
+        root.addAttribute(XMLTags.SIMPLE_CONFIG_TAG, Boolean.toString(config.isUseSimpleConfig()));
 
         ICheckConfiguration[] workingCopies = config.getLocalCheckConfigWorkingSet()
                 .getWorkingCopies();
         for (int i = 0; i < workingCopies.length; i++) {
-            writeLocalConfiguration(workingCopies[i], xmlOut);
+            writeLocalConfiguration(workingCopies[i], root);
         }
 
         for (FileSet fileSet : config.getFileSets()) {
-            writeFileSet(fileSet, config.getProject(), xmlOut);
+            writeFileSet(fileSet, config.getProject(), root);
         }
 
         // write filters
         for (IFilter filter : config.getFilters()) {
-            writeFilter(filter, xmlOut);
+            writeFilter(filter, root);
         }
 
-        xmlOut.endElement(emptyString, XMLTags.FILESET_CONFIG_TAG, XMLTags.FILESET_CONFIG_TAG);
-        xmlOut.endDocument();
+        return doc;
     }
 
     /**
      * Writes a local check configuration.
      * 
      * @param checkConfig the local check configuration
-     * @param xmlOut the transformer handler receiving the events
-     * @throws SAXException error writing
-     * @throws CheckstylePluginException
+     * @param docRoot the root element of the project configuration
      */
-    private void writeLocalConfiguration(ICheckConfiguration checkConfig, TransformerHandler xmlOut)
-        throws SAXException {
+    private void writeLocalConfiguration(ICheckConfiguration checkConfig, Element docRoot) {
 
         // TODO refactor to avoid code duplication with
         // GlobalCheckConfigurationWorkingSet
@@ -467,50 +449,29 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
             }
         }
 
-        String emptyString = new String();
-
-        AttributesImpl attrs = new AttributesImpl();
-        attrs.addAttribute(emptyString, XMLTags.NAME_TAG, XMLTags.NAME_TAG, emptyString,
-                checkConfig.getName());
-        attrs.addAttribute(emptyString, XMLTags.LOCATION_TAG, XMLTags.LOCATION_TAG, emptyString,
-                location);
-        attrs.addAttribute(emptyString, XMLTags.TYPE_TAG, XMLTags.TYPE_TAG, emptyString,
-                checkConfig.getType().getInternalName());
+        Element configEl = docRoot.addElement(XMLTags.CHECK_CONFIG_TAG);
+        configEl.addAttribute(XMLTags.NAME_TAG, checkConfig.getName());
+        configEl.addAttribute(XMLTags.LOCATION_TAG, location);
+        configEl.addAttribute(XMLTags.TYPE_TAG, checkConfig.getType().getInternalName());
         if (checkConfig.getDescription() != null) {
-            attrs.addAttribute(emptyString, XMLTags.DESCRIPTION_TAG, XMLTags.DESCRIPTION_TAG,
-                    emptyString, checkConfig.getDescription());
+            configEl.addAttribute(XMLTags.DESCRIPTION_TAG, checkConfig.getDescription());
         }
-
-        xmlOut.startElement(emptyString, XMLTags.CHECK_CONFIG_TAG, XMLTags.CHECK_CONFIG_TAG, attrs);
 
         // Write resolvable properties
         for (ResolvableProperty prop : checkConfig.getResolvableProperties()) {
 
-            attrs = new AttributesImpl();
-            attrs.addAttribute(emptyString, XMLTags.NAME_TAG, XMLTags.NAME_TAG, emptyString, prop
-                    .getPropertyName());
-            attrs.addAttribute(emptyString, XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, emptyString, prop
-                    .getValue());
-
-            xmlOut.startElement(emptyString, XMLTags.PROPERTY_TAG, XMLTags.PROPERTY_TAG, attrs);
-            xmlOut.endElement(emptyString, XMLTags.PROPERTY_TAG, XMLTags.PROPERTY_TAG);
+            Element propEl = configEl.addElement(XMLTags.PROPERTY_TAG);
+            propEl.addAttribute(XMLTags.NAME_TAG, prop.getPropertyName());
+            propEl.addAttribute(XMLTags.VALUE_TAG, prop.getValue());
         }
 
+        // Write additional data
         for (Map.Entry<String, String> entry : checkConfig.getAdditionalData().entrySet()) {
-            attrs = new AttributesImpl();
-            attrs.addAttribute(emptyString, XMLTags.NAME_TAG, XMLTags.NAME_TAG, emptyString, entry
-                    .getKey());
-            attrs.addAttribute(emptyString, XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, emptyString,
-                    entry.getValue());
 
-            xmlOut.startElement(emptyString, XMLTags.ADDITIONAL_DATA_TAG,
-                    XMLTags.ADDITIONAL_DATA_TAG, attrs);
-            xmlOut
-                    .endElement(emptyString, XMLTags.ADDITIONAL_DATA_TAG,
-                            XMLTags.ADDITIONAL_DATA_TAG);
+            Element addEl = configEl.addElement(XMLTags.ADDITIONAL_DATA_TAG);
+            addEl.addAttribute(XMLTags.NAME_TAG, entry.getKey());
+            addEl.addAttribute(XMLTags.VALUE_TAG, entry.getValue());
         }
-
-        xmlOut.endElement(emptyString, XMLTags.CHECK_CONFIG_TAG, XMLTags.CHECK_CONFIG_TAG);
     }
 
     /**
@@ -518,78 +479,45 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
      * 
      * @param fileSet the file set
      * @param project the project
-     * @param xmlOut the transformer handler receiving the events
-     * @throws SAXException error writing
+     * @param docRoot the root element of the project configuration
      */
-    private void writeFileSet(FileSet fileSet, IProject project, TransformerHandler xmlOut)
-        throws SAXException, CheckstylePluginException {
+    private void writeFileSet(FileSet fileSet, IProject project, Element docRoot)
+        throws CheckstylePluginException {
 
         if (fileSet.getCheckConfig() == null) {
             throw new CheckstylePluginException(NLS.bind(Messages.errorFilesetWithoutCheckConfig,
                     fileSet.getName(), project.getName()));
         }
 
-        String emptyString = new String();
-
-        AttributesImpl attr = new AttributesImpl();
-        attr.addAttribute(emptyString, XMLTags.NAME_TAG, XMLTags.NAME_TAG, emptyString, fileSet
-                .getName());
-
-        attr.addAttribute(emptyString, XMLTags.ENABLED_TAG, XMLTags.ENABLED_TAG, emptyString,
-                emptyString + fileSet.isEnabled());
+        Element fileSetEl = docRoot.addElement(XMLTags.FILESET_TAG);
+        fileSetEl.addAttribute(XMLTags.NAME_TAG, fileSet.getName());
+        fileSetEl.addAttribute(XMLTags.ENABLED_TAG, Boolean.toString(fileSet.isEnabled()));
 
         ICheckConfiguration checkConfig = fileSet.getCheckConfig();
         if (checkConfig != null) {
 
-            attr.addAttribute(emptyString, XMLTags.CHECK_CONFIG_NAME_TAG,
-                    XMLTags.CHECK_CONFIG_NAME_TAG, emptyString, checkConfig.getName());
-            attr.addAttribute(emptyString, XMLTags.LOCAL_TAG, XMLTags.LOCAL_TAG, emptyString,
-                    emptyString + !checkConfig.isGlobal());
+            fileSetEl.addAttribute(XMLTags.CHECK_CONFIG_NAME_TAG, checkConfig.getName());
+            fileSetEl.addAttribute(XMLTags.LOCAL_TAG, Boolean.toString(!checkConfig.isGlobal()));
         }
-
-        xmlOut.startElement(emptyString, XMLTags.FILESET_TAG, XMLTags.FILESET_TAG, attr);
 
         // write patterns
         for (FileMatchPattern pattern : fileSet.getFileMatchPatterns()) {
-            writeMatchPattern(pattern, xmlOut);
+
+            Element patternEl = fileSetEl.addElement(XMLTags.FILE_MATCH_PATTERN_TAG);
+            patternEl.addAttribute(XMLTags.MATCH_PATTERN_TAG,
+                    pattern.getMatchPattern() != null ? pattern.getMatchPattern() : "");
+            patternEl.addAttribute(XMLTags.INCLUDE_PATTERN_TAG, Boolean.toString(pattern
+                    .isIncludePattern()));
         }
-
-        xmlOut.endElement(emptyString, XMLTags.FILESET_TAG, XMLTags.FILESET_TAG);
-    }
-
-    /**
-     * Produces the sax events to write the file match pattern to xml.
-     * 
-     * @param pattern the pattern
-     * @param xmlOut the transformer handler receiving the events
-     * @throws SAXException error writing
-     */
-    private void writeMatchPattern(FileMatchPattern pattern, TransformerHandler xmlOut)
-        throws SAXException {
-
-        String emptyString = new String();
-
-        AttributesImpl attr = new AttributesImpl();
-        attr.addAttribute(emptyString, XMLTags.MATCH_PATTERN_TAG, XMLTags.MATCH_PATTERN_TAG,
-                emptyString, pattern.getMatchPattern() != null ? pattern.getMatchPattern()
-                        : emptyString);
-        attr.addAttribute(emptyString, XMLTags.INCLUDE_PATTERN_TAG, XMLTags.INCLUDE_PATTERN_TAG,
-                emptyString, emptyString + pattern.isIncludePattern());
-
-        xmlOut.startElement(emptyString, XMLTags.FILE_MATCH_PATTERN_TAG,
-                XMLTags.FILE_MATCH_PATTERN_TAG, attr);
-        xmlOut.endElement(emptyString, XMLTags.FILE_MATCH_PATTERN_TAG,
-                XMLTags.FILE_MATCH_PATTERN_TAG);
     }
 
     /**
      * Produces the sax events to write a filter to xml.
      * 
      * @param filter the filter
-     * @param xmlOut the transformer handler receiving the events
-     * @throws SAXException error writing
+     * @param docRoot the root element of the project configuration
      */
-    private void writeFilter(IFilter filter, TransformerHandler xmlOut) throws SAXException {
+    private void writeFilter(IFilter filter, Element docRoot) {
 
         // write only filters that are actually changed
         // (enabled or contain data)
@@ -598,30 +526,17 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
             return;
         }
 
-        String emptyString = new String();
-
-        AttributesImpl attr = new AttributesImpl();
-        attr.addAttribute(emptyString, XMLTags.NAME_TAG, XMLTags.NAME_TAG, emptyString, filter
-                .getInternalName());
-        attr.addAttribute(emptyString, XMLTags.ENABLED_TAG, XMLTags.ENABLED_TAG, emptyString,
-                emptyString + filter.isEnabled());
-
-        xmlOut.startElement(emptyString, XMLTags.FILTER_TAG, XMLTags.FILTER_TAG, attr);
+        Element filterEl = docRoot.addElement(XMLTags.FILTER_TAG);
+        filterEl.addAttribute(XMLTags.NAME_TAG, filter.getInternalName());
+        filterEl.addAttribute(XMLTags.ENABLED_TAG, Boolean.toString(filter.isEnabled()));
 
         List<String> data = filter.getFilterData();
         if (data != null) {
             for (String item : data) {
 
-                attr = new AttributesImpl();
-                attr.addAttribute(emptyString, XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, emptyString,
-                        item);
-
-                xmlOut.startElement(emptyString, XMLTags.FILTER_DATA_TAG, XMLTags.FILTER_DATA_TAG,
-                        attr);
-                xmlOut.endElement(emptyString, XMLTags.FILTER_DATA_TAG, XMLTags.FILTER_DATA_TAG);
+                Element dataEl = filterEl.addElement(XMLTags.FILTER_DATA_TAG);
+                dataEl.addAttribute(XMLTags.VALUE_TAG, item);
             }
         }
-
-        xmlOut.endElement(emptyString, XMLTags.FILTER_TAG, XMLTags.FILTER_TAG);
     }
 }

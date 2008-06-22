@@ -20,13 +20,11 @@
 
 package net.sf.eclipsecs.core.config;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.sax.TransformerHandler;
 
 import net.sf.eclipsecs.core.Messages;
 import net.sf.eclipsecs.core.config.savefilter.SaveFilters;
@@ -35,8 +33,10 @@ import net.sf.eclipsecs.core.util.XMLUtil;
 
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.AttributesImpl;
+import org.dom4j.Branch;
+import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
 
 /**
  * Writes the modules of a checkstyle configuration to an output stream.
@@ -82,16 +82,15 @@ public final class ConfigurationWriter {
             // pass the configured modules through the save filters
             SaveFilters.process(modules);
 
-            TransformerHandler xmlOut = XMLUtil.writeWithSax(out,
-                    "-//Puppy Crawl//DTD Check Configuration 1.2//EN", //$NON-NLS-1$
-                    "http://www.puppycrawl.com/dtds/configuration_1_2.dtd"); //$NON-NLS-1$
-            xmlOut.startDocument();
+            Document doc = DocumentHelper.createDocument();
+            doc.addDocType(XMLTags.MODULE_TAG, "-//Puppy Crawl//DTD Check Configuration 1.2//EN",
+                    "http://www.puppycrawl.com/dtds/configuration_1_2.dtd");
 
             String lineSeperator = System.getProperty("line.separator"); //$NON-NLS-1$
 
             String comment = lineSeperator
                     + "    This configuration file was written by the eclipse-cs plugin configuration editor" + lineSeperator; //$NON-NLS-1$
-            xmlOut.comment(comment.toCharArray(), 0, comment.length());
+            doc.addComment(comment);
 
             // write out name and description as comment
             String description = lineSeperator
@@ -101,9 +100,7 @@ public final class ConfigurationWriter {
                     + "    Description: " //$NON-NLS-1$
                     + (StringUtils.trimToNull(checkConfig.getDescription()) != null ? lineSeperator
                             + checkConfig.getDescription() + lineSeperator : "none" + lineSeperator); //$NON-NLS-1$
-            xmlOut.comment(description.toCharArray(), 0, description.length());
-
-            xmlOut.ignorableWhitespace(new char[] { '\n' }, 0, 1);
+            doc.addComment(description);
 
             // find the root module (Checker)
             // the root module is the only module that has no parent
@@ -116,16 +113,12 @@ public final class ConfigurationWriter {
                 throw new CheckstylePluginException(Messages.errorMoreThanOneRootModule);
             }
 
-            writeModule(rootModules.get(0), xmlOut, null, modules);
+            writeModule(rootModules.get(0), doc, null, modules);
 
-            xmlOut.endDocument();
+            out.write(XMLUtil.toByteArray(doc));
         }
-        catch (TransformerConfigurationException e) {
+        catch (IOException e) {
             CheckstylePluginException.rethrow(e);
-        }
-        catch (SAXException e) {
-            Exception ex = e.getException() != null ? e.getException() : e;
-            CheckstylePluginException.rethrow(ex);
         }
     }
 
@@ -133,13 +126,12 @@ public final class ConfigurationWriter {
      * Writes a module to the transformer handler.
      * 
      * @param module the module to write
-     * @param xmlOut the transformer handler
+     * @param parent the parent element
      * @param parentSeverity the severity of the parent module
      * @param remainingModules the list of remaining (possibly child) modules
-     * @throws SAXException error producing the sax events
      */
-    private static void writeModule(Module module, TransformerHandler xmlOut,
-            Severity parentSeverity, List<Module> remainingModules) throws SAXException {
+    private static void writeModule(Module module, Branch parent, Severity parentSeverity,
+            List<Module> remainingModules) {
 
         Severity severity = parentSeverity;
 
@@ -148,73 +140,48 @@ public final class ConfigurationWriter {
 
         List<Module> childs = getChildModules(module, remainingModules);
 
-        String emptyString = new String();
-
         // Start the module
-        AttributesImpl attr = new AttributesImpl();
-        attr.addAttribute(emptyString, XMLTags.NAME_TAG, XMLTags.NAME_TAG, emptyString, module
-                .getMetaData().getInternalName());
-        xmlOut.startElement(emptyString, XMLTags.MODULE_TAG, XMLTags.MODULE_TAG, attr);
+        Element moduleEl = parent.addElement(XMLTags.MODULE_TAG);
+        moduleEl.addAttribute(XMLTags.NAME_TAG, module.getMetaData().getInternalName());
 
         // Write comment
         if (StringUtils.trimToNull(module.getComment()) != null) {
-            attr = new AttributesImpl();
-            attr.addAttribute(emptyString, XMLTags.NAME_TAG, XMLTags.NAME_TAG, emptyString,
-                    XMLTags.COMMENT_ID);
-            attr.addAttribute(emptyString, XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, emptyString,
-                    module.getComment());
-            xmlOut.startElement(emptyString, XMLTags.METADATA_TAG, XMLTags.METADATA_TAG, attr);
-            xmlOut.endElement(emptyString, XMLTags.METADATA_TAG, XMLTags.METADATA_TAG);
+
+            Element metaEl = moduleEl.addElement(XMLTags.METADATA_TAG);
+            metaEl.addAttribute(XMLTags.NAME_TAG, XMLTags.COMMENT_ID);
+            metaEl.addAttribute(XMLTags.VALUE_TAG, module.getComment());
         }
 
         // Write custom message
         if (StringUtils.trimToNull(module.getCustomMessage()) != null) {
-            attr = new AttributesImpl();
-            attr.addAttribute(emptyString, XMLTags.NAME_TAG, XMLTags.NAME_TAG, emptyString,
-                    XMLTags.CUSTOM_MESSAGE_ID);
-            attr.addAttribute(emptyString, XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, emptyString,
-                    module.getCustomMessage());
-            xmlOut.startElement(emptyString, XMLTags.METADATA_TAG, XMLTags.METADATA_TAG, attr);
-            xmlOut.endElement(emptyString, XMLTags.METADATA_TAG, XMLTags.METADATA_TAG);
+
+            Element metaEl = moduleEl.addElement(XMLTags.METADATA_TAG);
+            metaEl.addAttribute(XMLTags.NAME_TAG, XMLTags.CUSTOM_MESSAGE_ID);
+            metaEl.addAttribute(XMLTags.VALUE_TAG, module.getCustomMessage());
         }
 
         // Write last enabled severity level
         if (module.getLastEnabledSeverity() != null) {
-            attr = new AttributesImpl();
-            attr.addAttribute(emptyString, XMLTags.NAME_TAG, XMLTags.NAME_TAG, emptyString,
-                    XMLTags.LAST_ENABLED_SEVERITY_ID);
-            attr.addAttribute(emptyString, XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, emptyString,
-                    module.getLastEnabledSeverity().name());
-            xmlOut.startElement(emptyString, XMLTags.METADATA_TAG, XMLTags.METADATA_TAG, attr);
-            xmlOut.endElement(emptyString, XMLTags.METADATA_TAG, XMLTags.METADATA_TAG);
+
+            Element metaEl = moduleEl.addElement(XMLTags.METADATA_TAG);
+            metaEl.addAttribute(XMLTags.NAME_TAG, XMLTags.LAST_ENABLED_SEVERITY_ID);
+            metaEl.addAttribute(XMLTags.VALUE_TAG, module.getLastEnabledSeverity().name());
         }
 
         // write custom metadata
         for (Map.Entry<String, String> entry : module.getCustomMetaData().entrySet()) {
 
-            String name = entry.getKey();
-            String value = entry.getValue();
-
-            attr = new AttributesImpl();
-            attr.addAttribute(emptyString, XMLTags.NAME_TAG, XMLTags.NAME_TAG, emptyString, name);
-            attr
-                    .addAttribute(emptyString, XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, emptyString,
-                            value);
-            xmlOut.startElement(emptyString, XMLTags.METADATA_TAG, XMLTags.METADATA_TAG, attr);
-            xmlOut.endElement(emptyString, XMLTags.METADATA_TAG, XMLTags.METADATA_TAG);
+            Element metaEl = moduleEl.addElement(XMLTags.METADATA_TAG);
+            metaEl.addAttribute(XMLTags.NAME_TAG, entry.getKey());
+            metaEl.addAttribute(XMLTags.VALUE_TAG, entry.getValue());
         }
 
         // Write severity only if it differs from the parents severity
         if (module.getSeverity() != null && !module.getSeverity().equals(parentSeverity)) {
 
-            attr = new AttributesImpl();
-            attr.addAttribute(emptyString, XMLTags.NAME_TAG, XMLTags.NAME_TAG, emptyString,
-                    XMLTags.SEVERITY_TAG);
-            attr.addAttribute(emptyString, XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, emptyString,
-                    module.getSeverity().name());
-
-            xmlOut.startElement(emptyString, XMLTags.PROPERTY_TAG, XMLTags.PROPERTY_TAG, attr);
-            xmlOut.endElement(emptyString, XMLTags.PROPERTY_TAG, XMLTags.PROPERTY_TAG);
+            Element propertyEl = moduleEl.addElement(XMLTags.PROPERTY_TAG);
+            propertyEl.addAttribute(XMLTags.NAME_TAG, XMLTags.SEVERITY_TAG);
+            propertyEl.addAttribute(XMLTags.VALUE_TAG, module.getSeverity().name());
 
             // set the parent severity for child modules
             severity = module.getSeverity();
@@ -222,14 +189,10 @@ public final class ConfigurationWriter {
 
         // write module id
         if (StringUtils.trimToNull(module.getId()) != null) {
-            attr = new AttributesImpl();
-            attr.addAttribute(emptyString, XMLTags.NAME_TAG, XMLTags.NAME_TAG, emptyString,
-                    XMLTags.ID_TAG);
-            attr.addAttribute(emptyString, XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, emptyString,
-                    module.getId());
 
-            xmlOut.startElement(emptyString, XMLTags.PROPERTY_TAG, XMLTags.PROPERTY_TAG, attr);
-            xmlOut.endElement(emptyString, XMLTags.PROPERTY_TAG, XMLTags.PROPERTY_TAG);
+            Element propertyEl = moduleEl.addElement(XMLTags.PROPERTY_TAG);
+            propertyEl.addAttribute(XMLTags.NAME_TAG, XMLTags.ID_TAG);
+            propertyEl.addAttribute(XMLTags.VALUE_TAG, module.getId());
         }
 
         // write properties of the module
@@ -239,23 +202,17 @@ public final class ConfigurationWriter {
             String value = StringUtils.trimToNull(property.getValue());
             if (value != null
                     && !ObjectUtils.equals(value, property.getMetaData().getDefaultValue())) {
-                attr = new AttributesImpl();
-                attr.addAttribute(emptyString, XMLTags.NAME_TAG, XMLTags.NAME_TAG, emptyString,
-                        property.getMetaData().getName());
-                attr.addAttribute(emptyString, XMLTags.VALUE_TAG, XMLTags.VALUE_TAG, emptyString,
-                        property.getValue());
 
-                xmlOut.startElement(emptyString, XMLTags.PROPERTY_TAG, XMLTags.PROPERTY_TAG, attr);
-                xmlOut.endElement(emptyString, XMLTags.PROPERTY_TAG, XMLTags.PROPERTY_TAG);
+                Element propertyEl = moduleEl.addElement(XMLTags.PROPERTY_TAG);
+                propertyEl.addAttribute(XMLTags.NAME_TAG, property.getMetaData().getName());
+                propertyEl.addAttribute(XMLTags.VALUE_TAG, property.getValue());
             }
         }
 
         // write child modules recursivly
         for (Module child : childs) {
-            writeModule(child, xmlOut, severity, remainingModules);
+            writeModule(child, moduleEl, severity, remainingModules);
         }
-
-        xmlOut.endElement(emptyString, XMLTags.MODULE_TAG, XMLTags.MODULE_TAG);
     }
 
     /**

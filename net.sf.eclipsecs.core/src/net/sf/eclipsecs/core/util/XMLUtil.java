@@ -21,6 +21,7 @@
 package net.sf.eclipsecs.core.util;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -38,13 +39,9 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import org.apache.commons.io.IOUtils;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
+import org.dom4j.Document;
+import org.dom4j.io.OutputFormat;
+import org.dom4j.io.XMLWriter;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -61,119 +58,6 @@ public final class XMLUtil {
      * Private constructor to prevent instances.
      */
     private XMLUtil() {}
-
-    /**
-     * Get a named child node. If there is more then one child node with the
-     * given name the child returned is undefined.
-     * 
-     * @param parent The parent node.
-     * @param childName The node name of the child node.
-     * @return The requested child node or <code>null</code> if no child with
-     *         the requested name is found.
-     */
-    public static Node getChildNode(Node parent, String childName) {
-        Node result = null;
-
-        if (parent != null) {
-            NodeList childList = parent.getChildNodes();
-            int childCount = childList.getLength();
-            for (int i = 0; i < childCount; i++) {
-                Node child = childList.item(i);
-                String nodeName = child.getNodeName();
-                if (nodeName.equals(childName)) {
-                    result = child;
-                    break;
-                }
-            }
-        }
-
-        return result;
-    }
-
-    /**
-     * Get the value of the text node that is passed in.
-     * 
-     * @param node The node to work on
-     * @return Text value of the tag element
-     */
-    public static String getNodeTextValue(Node node) {
-        String nodeValue = null;
-
-        if (node != null) {
-            NodeList childNodes = node.getChildNodes();
-
-            if (childNodes.getLength() > 0) {
-                Node childNode = childNodes.item(0);
-
-                if (childNode.getNodeType() == Node.TEXT_NODE
-                        || childNode.getNodeType() == Node.CDATA_SECTION_NODE) {
-                    nodeValue = childNode.getNodeValue();
-                }
-            }
-        }
-        return nodeValue;
-    }
-
-    /**
-     * Get the value of a node attribute.
-     * 
-     * @param node The nade to get the attribute from.
-     * @param attrName Name of the attribute.
-     * @return Value of the attribute or <code>null</code> if the attribute
-     *         was not found.
-     */
-    public static String getNodeAttributeValue(Node node, String attrName) {
-        String result = null;
-        if (node == null) {
-            return result;
-        }
-
-        NamedNodeMap attrs = node.getAttributes();
-        Node attr = attrs.getNamedItem(attrName);
-
-        if (attr instanceof Attr) {
-            result = ((Attr) attr).getValue();
-        }
-        else {
-            result = getNodeTextValue(attr);
-        }
-
-        return result;
-    }
-
-    /**
-     * Add a new Element and its value to an input Document.
-     * 
-     * @param document Document to add to
-     * @param parent Parent element to add new element to
-     * @param tagName Element tag name to add
-     * @param value Value of new Element
-     * @return Element Newly added Element
-     */
-    public static Element addElementAndValue(Document document, Element parent, String tagName,
-            String value) {
-        Element element = document.createElement(tagName);
-        parent.appendChild(element);
-        Text text = document.createTextNode(value);
-        element.appendChild(text);
-
-        return element;
-    }
-
-    /**
-     * Add a new Element to an input Document.
-     * 
-     * @param document Document to add to
-     * @param parent Parent element to add new element to
-     * @param tagName Element tag name to add
-     * @return Element Newly added Element
-     */
-    public static Element addElement(Document document, Element parent, String tagName) {
-        Element element = document.createElement(tagName);
-        parent.appendChild(element);
-
-        return element;
-    }
 
     /**
      * Parses an input stream with a sax parser using the given default handler.
@@ -248,6 +132,25 @@ public final class XMLUtil {
         handler.setResult(result);
 
         return handler;
+    }
+
+    /**
+     * Creates a pretty printed representation of the document as a byte array.
+     * 
+     * @param document the document
+     * @return the document as a byte array (UTF-8)
+     * @throws IOException Exception while serializing the document
+     */
+    public static byte[] toByteArray(Document document) throws IOException {
+
+        ByteArrayOutputStream byteOut = new ByteArrayOutputStream(512);
+
+        // Pretty print the document to System.out
+        OutputFormat format = OutputFormat.createPrettyPrint();
+        XMLWriter writer = new XMLWriter(byteOut, format);
+        writer.write(document);
+
+        return byteOut.toByteArray();
     }
 
 }
