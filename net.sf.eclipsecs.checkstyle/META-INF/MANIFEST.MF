@@ -27,6 +27,8 @@ Export-Package: .,
    antlr.collections,
    javax.swing.event",
  antlr.preprocessor;uses:="antlr.collections.impl,antlr",
+ com.google.common.base,
+ com.google.common.collect,
  com.puppycrawl.tools.checkstyle;
   uses:="com.puppycrawl.tools.checkstyle.api,
    org.apache.tools.ant.types,
@@ -56,7 +58,6 @@ Export-Package: .,
  com.puppycrawl.tools.checkstyle.checks.whitespace;uses:="com.puppycrawl.tools.checkstyle.api,com.puppycrawl.tools.checkstyle.checks",
  com.puppycrawl.tools.checkstyle.doclets;uses:="com.sun.javadoc",
  com.puppycrawl.tools.checkstyle.filters;uses:="com.puppycrawl.tools.checkstyle.api,org.xml.sax",
- com.puppycrawl.tools.checkstyle.grammars;uses:="antlr.collections.impl,antlr.collections,antlr",
- org.apache.commons.collections;uses:="org.apache.commons.collections.iterators"
+ com.puppycrawl.tools.checkstyle.grammars;uses:="antlr.collections.impl,antlr.collections,antlr"
 Bundle-ClassPath: checkstyle-all-5.0-SNAPSHOT.jar,
  checkstyle-metadata.jar

@@ -36,10 +36,11 @@ import net.sf.eclipsecs.core.config.ConfigurationReader.AdditionalConfigData;
 import net.sf.eclipsecs.core.config.configtypes.IContextAware;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
-import org.apache.commons.collections.ReferenceMap;
 import org.apache.commons.io.IOUtils;
 import org.eclipse.core.resources.IProject;
 
+import com.google.common.base.ReferenceType;
+import com.google.common.collect.ReferenceMap;
 import com.puppycrawl.tools.checkstyle.Checker;
 import com.puppycrawl.tools.checkstyle.ConfigurationLoader;
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
@@ -79,7 +80,8 @@ public final class CheckerFactory {
     static {
 
         // Use synchronized collections to avoid concurrent modification
-        sCheckerMap = Collections.synchronizedMap(new ReferenceMap());
+        sCheckerMap = Collections.synchronizedMap(new ReferenceMap<String, Checker>(
+                ReferenceType.STRONG, ReferenceType.SOFT));
         sModifiedMap = Collections.synchronizedMap(new HashMap<String, Long>());
         sAdditionalDataMap = Collections
                 .synchronizedMap(new HashMap<String, AdditionalConfigData>());
@@ -155,7 +157,7 @@ public final class CheckerFactory {
      * @return the checker for the given configuration file
      * @throws CheckstylePluginException the configuration could not be read
      */
-    public static ConfigurationReader.AdditionalConfigData getAdditionalData(
+    public final static ConfigurationReader.AdditionalConfigData getAdditionalData(
             ICheckConfiguration config, IProject project) throws CheckstylePluginException {
 
         String cacheKey = getCacheKey(config, project);
