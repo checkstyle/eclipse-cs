@@ -27,10 +27,9 @@ import java.util.List;
 import net.sf.eclipsecs.core.builder.CheckstyleMarker;
 import net.sf.eclipsecs.core.config.meta.MetadataFactory;
 import net.sf.eclipsecs.core.config.meta.RuleMetadata;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
+import net.sf.eclipsecs.core.util.CheckstyleLog;
 
 import org.eclipse.core.resources.IMarker;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IMarkerResolution;
 import org.eclipse.ui.IMarkerResolutionGenerator2;
 
@@ -107,13 +106,13 @@ public class CheckstyleMarkerResolutionGenerator implements IMarkerResolutionGen
             }
         }
         catch (InstantiationException e) {
-            CheckstyleUIPlugin.errorDialog(Display.getCurrent().getActiveShell(), e, false);
+            CheckstyleLog.log(e);
         }
         catch (ClassNotFoundException e) {
-            CheckstyleUIPlugin.errorDialog(Display.getCurrent().getActiveShell(), e, false);
+            CheckstyleLog.log(e);
         }
         catch (IllegalAccessException e) {
-            CheckstyleUIPlugin.errorDialog(Display.getCurrent().getActiveShell(), e, false);
+            CheckstyleLog.log(e);
         }
         return fixes;
     }

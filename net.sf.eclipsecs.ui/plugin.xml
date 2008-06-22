@@ -218,15 +218,6 @@
             icon="icons/checkstyle_info.gif"/>
     </extension>
 
-    <extension
-        point="org.eclipse.jdt.ui.javaEditorTextHovers">
-        <hover
-            label="%CheckstyleMarker.name"
-            activate="true"
-            class="net.sf.eclipsecs.ui.CheckstyleHover"
-            id="net.sf.eclipsecs.ui.CheckstyleHover"/>
-    </extension>
-
     <!--
    View that displays the duplicates
    -->
@@ -265,7 +256,7 @@
             priority="1"/>
 
         <markerAttributeGrouping
-            markerType="org.eclipse.jdt.core.problem"
+            markerType="net.sf.eclipsecs.CheckstyleMarker"
             attribute="categoryId">
             <markerAttributeMapping
                 value="999"

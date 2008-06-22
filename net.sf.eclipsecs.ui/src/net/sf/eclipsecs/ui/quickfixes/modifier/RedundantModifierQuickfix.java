@@ -40,14 +40,12 @@ import org.eclipse.jdt.core.dom.Modifier.ModifierKeyword;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.swt.graphics.Image;
 
-
 /**
  * Quickfix implementation that removes redundant modifiers.
  * 
  * @author Lars Ködderitzsch
  */
-public class RedundantModifierQuickfix extends AbstractASTResolution
-{
+public class RedundantModifierQuickfix extends AbstractASTResolution {
 
     /** The length of the javadoc comment declaration. */
     private static final int JAVADOC_COMMENT_LENGTH = 6;
@@ -56,37 +54,25 @@ public class RedundantModifierQuickfix extends AbstractASTResolution
      * {@inheritDoc}
      */
     protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
-            final int markerStartOffset)
-    {
+            final int markerStartOffset) {
 
-        return new ASTVisitor()
-        {
+        return new ASTVisitor() {
 
-            public boolean visit(MethodDeclaration node)
-            {
-                // recalculate start position because optional javadoc is mixed
-                // into the original start position
-                int pos = node.getStartPosition()
-                        + (node.getJavadoc() != null ? node.getJavadoc().getLength()
-                                + JAVADOC_COMMENT_LENGTH : 0);
-                if (containsPosition(lineInfo, pos))
-                {
+            public boolean visit(MethodDeclaration node) {
 
-                    List redundantKeyWords = Collections.EMPTY_LIST;
+                if (containsPosition(node, markerStartOffset)) {
+                    List<ModifierKeyword> redundantKeyWords = Collections.emptyList();
 
-                    if (node.getParent() instanceof TypeDeclaration)
-                    {
+                    if (node.getParent() instanceof TypeDeclaration) {
                         TypeDeclaration type = (TypeDeclaration) node.getParent();
-                        if (type.isInterface())
-                        {
-                            redundantKeyWords = Arrays.asList(new Object[] {
+                        if (type.isInterface()) {
+                            redundantKeyWords = Arrays.asList(new ModifierKeyword[] {
                                 ModifierKeyword.PUBLIC_KEYWORD, ModifierKeyword.ABSTRACT_KEYWORD,
                                 ModifierKeyword.FINAL_KEYWORD });
                         }
-                        else if (Modifier.isFinal(type.getModifiers()))
-                        {
+                        else if (Modifier.isFinal(type.getModifiers())) {
                             redundantKeyWords = Arrays
-                                    .asList(new Object[] { ModifierKeyword.FINAL_KEYWORD });
+                                    .asList(new ModifierKeyword[] { ModifierKeyword.FINAL_KEYWORD });
                         }
                     }
 
@@ -95,31 +81,26 @@ public class RedundantModifierQuickfix extends AbstractASTResolution
                 return true;
             }
 
-            public boolean visit(FieldDeclaration node)
-            {
+            public boolean visit(FieldDeclaration node) {
                 // recalculate start position because optional javadoc is mixed
                 // into the original start position
                 int pos = node.getStartPosition()
                         + (node.getJavadoc() != null ? node.getJavadoc().getLength()
                                 + JAVADOC_COMMENT_LENGTH : 0);
-                if (containsPosition(lineInfo, pos))
-                {
-                    List redundantKeyWords = Collections.EMPTY_LIST;
+                if (containsPosition(lineInfo, pos)) {
+                    List<ModifierKeyword> redundantKeyWords = Collections.emptyList();
 
-                    if (node.getParent() instanceof TypeDeclaration)
-                    {
+                    if (node.getParent() instanceof TypeDeclaration) {
                         TypeDeclaration type = (TypeDeclaration) node.getParent();
-                        if (type.isInterface())
-                        {
-                            redundantKeyWords = Arrays.asList(new Object[] {
+                        if (type.isInterface()) {
+                            redundantKeyWords = Arrays.asList(new ModifierKeyword[] {
                                 ModifierKeyword.PUBLIC_KEYWORD, ModifierKeyword.ABSTRACT_KEYWORD,
                                 ModifierKeyword.FINAL_KEYWORD, ModifierKeyword.STATIC_KEYWORD });
                         }
                     }
-                    else if (node.getParent() instanceof AnnotationTypeDeclaration)
-                    {
+                    else if (node.getParent() instanceof AnnotationTypeDeclaration) {
 
-                        redundantKeyWords = Arrays.asList(new Object[] {
+                        redundantKeyWords = Arrays.asList(new ModifierKeyword[] {
                             ModifierKeyword.PUBLIC_KEYWORD, ModifierKeyword.ABSTRACT_KEYWORD,
                             ModifierKeyword.FINAL_KEYWORD, ModifierKeyword.STATIC_KEYWORD });
                     }
@@ -129,23 +110,21 @@ public class RedundantModifierQuickfix extends AbstractASTResolution
                 return true;
             }
 
-            public boolean visit(AnnotationTypeMemberDeclaration node)
-            {
+            public boolean visit(AnnotationTypeMemberDeclaration node) {
 
                 // recalculate start position because optional javadoc is mixed
                 // into the original start position
                 int pos = node.getStartPosition()
                         + (node.getJavadoc() != null ? node.getJavadoc().getLength()
                                 + JAVADOC_COMMENT_LENGTH : 0);
-                if (containsPosition(lineInfo, pos))
-                {
+                if (containsPosition(lineInfo, pos)) {
 
-                    if (node.getParent() instanceof AnnotationTypeDeclaration)
-                    {
+                    if (node.getParent() instanceof AnnotationTypeDeclaration) {
 
-                        List redundantKeyWords = Arrays.asList(new Object[] {
-                            ModifierKeyword.PUBLIC_KEYWORD, ModifierKeyword.ABSTRACT_KEYWORD,
-                            ModifierKeyword.FINAL_KEYWORD, ModifierKeyword.STATIC_KEYWORD });
+                        List<ModifierKeyword> redundantKeyWords = Arrays
+                                .asList(new ModifierKeyword[] { ModifierKeyword.PUBLIC_KEYWORD,
+                                    ModifierKeyword.ABSTRACT_KEYWORD,
+                                    ModifierKeyword.FINAL_KEYWORD, ModifierKeyword.STATIC_KEYWORD });
 
                         deleteRedundantModifiers(node.modifiers(), redundantKeyWords);
                     }
@@ -154,19 +133,17 @@ public class RedundantModifierQuickfix extends AbstractASTResolution
                 return true;
             }
 
-            private void deleteRedundantModifiers(List modifiers, List redundantModifierKeywords)
-            {
-                Iterator it = modifiers.iterator();
+            private void deleteRedundantModifiers(List<ASTNode> modifiers,
+                    List<ModifierKeyword> redundantModifierKeywords) {
 
-                while (it.hasNext())
-                {
-                    ASTNode node = (ASTNode) it.next();
+                Iterator<ASTNode> it = modifiers.iterator();
 
-                    if (node instanceof Modifier)
-                    {
+                while (it.hasNext()) {
+                    ASTNode node = it.next();
+
+                    if (node instanceof Modifier) {
                         Modifier modifier = (Modifier) node;
-                        if (redundantModifierKeywords.contains(modifier.getKeyword()))
-                        {
+                        if (redundantModifierKeywords.contains(modifier.getKeyword())) {
                             it.remove();
                         }
                     }
@@ -178,24 +155,21 @@ public class RedundantModifierQuickfix extends AbstractASTResolution
     /**
      * {@inheritDoc}
      */
-    public String getDescription()
-    {
+    public String getDescription() {
         return Messages.RedundantModifierQuickfix_description;
     }
 
     /**
      * {@inheritDoc}
      */
-    public String getLabel()
-    {
+    public String getLabel() {
         return Messages.RedundantModifierQuickfix_label;
     }
 
     /**
      * {@inheritDoc}
      */
-    public Image getImage()
-    {
+    public Image getImage() {
         return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.CORRECTION_REMOVE);
     }
 
