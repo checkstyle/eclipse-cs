@@ -145,7 +145,7 @@ public class FileSet implements Cloneable {
      */
     public boolean includesFile(IFile file) {
         boolean result = false;
-        String filePath = file.getProjectRelativePath().toOSString();
+        String filePath = file.getProjectRelativePath().toString();
 
         for (FileMatchPattern pattern : mFileMatchPatterns) {
             boolean matches = pattern.isMatch(filePath);

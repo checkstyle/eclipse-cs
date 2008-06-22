@@ -51,7 +51,7 @@ public class StandardPropertyResolver implements PropertyResolver, IContextAware
     private IProject mProject;
 
     /** the location of the configuration file. */
-    private String mConfigLocation;
+    private final String mConfigLocation;
 
     /**
      * Creates the BuiltInPropertyResolver.
@@ -76,10 +76,10 @@ public class StandardPropertyResolver implements PropertyResolver, IContextAware
 
         String value = null;
         if (WORKSPACE_LOC.equals(property)) {
-            value = ResourcesPlugin.getWorkspace().getRoot().getLocation().toOSString();
+            value = ResourcesPlugin.getWorkspace().getRoot().getLocation().toString();
         }
         else if ((PROJECT_LOC.equals(property) || BASEDIR_LOC.equals(property)) && mProject != null) {
-            value = mProject.getLocation().toOSString();
+            value = mProject.getLocation().toString();
         }
         else if ((SAMEDIR_LOC.equals(property) || CONFIG_LOC.equals(property))
                 && mConfigLocation != null) {

@@ -70,13 +70,13 @@ public class Auditor {
     private static final int MONITOR_INTERVAL = 10;
 
     /** The check configuration the auditor uses. */
-    private ICheckConfiguration mCheckConfiguration;
+    private final ICheckConfiguration mCheckConfiguration;
 
     /** The progress monitor. */
     private IProgressMonitor mMonitor;
 
     /** Map containing the file resources to audit. */
-    private Map<String, IFile> mFiles = new HashMap<String, IFile>();
+    private final Map<String, IFile> mFiles = new HashMap<String, IFile>();
 
     /** Add the check rule name to the message? */
     private boolean mAddRuleName = false;
@@ -181,7 +181,7 @@ public class Auditor {
      * @param file the file
      */
     public void addFile(IFile file) {
-        mFiles.put(file.getLocation().toOSString(), file);
+        mFiles.put(file.getLocation().toString(), file);
     }
 
     /**
@@ -218,10 +218,10 @@ public class Auditor {
     private class CheckstyleAuditListener implements AuditListener {
 
         /** Additional data about the Checkstyle configuration. */
-        private ConfigurationReader.AdditionalConfigData mAdditionalConfigData;
+        private final ConfigurationReader.AdditionalConfigData mAdditionalConfigData;
 
         /** the project. */
-        private IProject mProject;
+        private final IProject mProject;
 
         /** The file currently being checked. */
         private IResource mResource;
@@ -233,13 +233,13 @@ public class Auditor {
         private int mMonitorCounter;
 
         /** map containing the marker data. */
-        private Map<String, Object> mMarkerAttributes = new HashMap<String, Object>();
+        private final Map<String, Object> mMarkerAttributes = new HashMap<String, Object>();
 
         /** flags if the amount of markers should be limited. */
-        private boolean mLimitMarkers;
+        private final boolean mLimitMarkers;
 
         /** the max amount of markers per resource. */
-        private int mMarkerLimit;
+        private final int mMarkerLimit;
 
         /** the count of markers generated for the current resource. */
         private int mMarkerCount;

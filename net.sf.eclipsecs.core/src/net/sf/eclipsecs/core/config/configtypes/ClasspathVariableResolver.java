@@ -38,6 +38,6 @@ public class ClasspathVariableResolver implements PropertyResolver {
     public String resolve(String aName) {
 
         IPath var = JavaCore.getClasspathVariable(aName);
-        return var != null ? var.toOSString() : null;
+        return var != null ? var.toString() : null;
     }
 }

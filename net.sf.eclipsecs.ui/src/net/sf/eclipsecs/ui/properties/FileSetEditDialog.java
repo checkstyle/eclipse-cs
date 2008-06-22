@@ -314,7 +314,7 @@ public class FileSetEditDialog extends TitleAreaDialog {
             public String getText(Object element) {
                 String text = ""; //$NON-NLS-1$
                 if (element instanceof IFile) {
-                    text = ((IFile) element).getProjectRelativePath().toOSString();
+                    text = ((IFile) element).getProjectRelativePath().toString();
                 }
                 return text;
             }
