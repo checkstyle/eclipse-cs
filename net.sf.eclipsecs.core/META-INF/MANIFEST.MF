@@ -5,7 +5,8 @@ Bundle-SymbolicName: net.sf.eclipsecs.core;singleton:=true
 Bundle-Version: 0.0.0
 Bundle-ClassPath: CheckstylePlugin.jar,
  lib/commons-lang-2.3.jar,
- lib/commons-io-1.2.jar
+ lib/commons-io-1.2.jar,
+ lib/dom4j-1.6.1.jar
 Bundle-Activator: net.sf.eclipsecs.core.CheckstylePlugin
 Bundle-Vendor: David Schneider
 Bundle-Localization: plugin
