@@ -20,15 +20,12 @@
 
 package net.sf.eclipsecs.core.projectconfig;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.xml.parsers.ParserConfigurationException;
 
 import net.sf.eclipsecs.core.Messages;
 import net.sf.eclipsecs.core.config.CheckConfiguration;
@@ -40,9 +37,12 @@ import net.sf.eclipsecs.core.config.configtypes.IConfigurationType;
 import net.sf.eclipsecs.core.config.configtypes.ProjectConfigurationType;
 import net.sf.eclipsecs.core.projectconfig.filters.IFilter;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.core.util.XMLUtil;
 
 import org.apache.commons.io.IOUtils;
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
@@ -50,9 +50,6 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.osgi.util.NLS;
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * Used to manage the life cycle of FileSet objects.
@@ -62,6 +59,11 @@ public final class ProjectConfigurationFactory {
     static final String PROJECT_CONFIGURATION_FILE = ".checkstyle"; //$NON-NLS-1$
 
     static final String CURRENT_FILE_FORMAT_VERSION = "1.2.0"; //$NON-NLS-1$
+
+    /** constant list of supported file versions. */
+    private static final List<String> SUPPORTED_VERSIONS = Arrays.asList("1.0.0", //$NON-NLS-1$
+            "1.1.0", //$NON-NLS-2$
+            CURRENT_FILE_FORMAT_VERSION);
 
     private ProjectConfigurationFactory() {}
 
@@ -141,25 +143,14 @@ public final class ProjectConfigurationFactory {
         try {
             inStream = file.getContents(true);
 
-            ProjectConfigFileHandler handler = new ProjectConfigFileHandler(project);
-            XMLUtil.parseWithSAX(inStream, handler);
-
-            configuration = handler.getConfiguration();
+            configuration = getProjectConfiguration(inStream, project);
         }
-        catch (CoreException ce) {
-            CheckstylePluginException.rethrow(ce);
+        catch (DocumentException e) {
+            CheckstylePluginException.rethrow(e);
         }
-        catch (SAXException se) {
-            Exception ex = se.getException() != null ? se.getException() : se;
-            CheckstylePluginException.rethrow(ex);
+        catch (CoreException e) {
+            CheckstylePluginException.rethrow(e);
         }
-        catch (ParserConfigurationException pe) {
-            CheckstylePluginException.rethrow(pe);
-        }
-        catch (IOException ioe) {
-            CheckstylePluginException.rethrow(ioe);
-        }
-
         finally {
             IOUtils.closeQuietly(inStream);
         }
@@ -167,230 +158,159 @@ public final class ProjectConfigurationFactory {
         return configuration;
     }
 
-    /**
-     * Sax-Handler for parsing the checkstyle plugin project configuration file.
-     * 
-     * @author Lars Ködderitzsch
-     */
-    private static class ProjectConfigFileHandler extends DefaultHandler {
+    private static IProjectConfiguration getProjectConfiguration(InputStream in, IProject project)
+        throws DocumentException, CheckstylePluginException {
 
-        //
-        // constants
-        //
+        SAXReader reader = new SAXReader();
+        Document document = reader.read(in);
 
-        /** constant list of supported file versions. */
-        private static final List<String> SUPPORTED_VERSIONS = Arrays.asList("1.0.0", //$NON-NLS-1$
-                "1.1.0", //$NON-NLS-2$
-                CURRENT_FILE_FORMAT_VERSION);
+        Element root = document.getRootElement();
 
-        //
-        // attributes
-        //
-
-        /** The project. */
-        private final IProject mProject;
-
-        /** the file set currently built. */
-        private FileSet mCurrentFileSet;
-
-        /** the current filter. */
-        private IFilter mCurrentFilter;
-
-        /** The name of the current check configuration. */
-        private String mCurrentName;
-
-        /** The location of the current check configuration. */
-        private String mCurrentLocation;
-
-        /** The description of the current check configuration. */
-        private String mCurrentDescription;
-
-        /** The configuration type of the current configuration. */
-        private IConfigurationType mCurrentConfigType;
-
-        /** if the project configuration uses simple configuration. */
-        private boolean mUseSimpleConfig;
-
-        /** The list of configurations. */
-        private List<ICheckConfiguration> mCheckConfigs;
-
-        /** The list of file sets. */
-        private List<FileSet> mFileSets;
-
-        /** The filters. */
-        private List<IFilter> mFilters;
-
-        private List<String> mFilterData;
-
-        /** Additional data for the current configuration. */
-        private Map<String, String> mCurrentAddValues;
-
-        /** List of resolvable properties for the current configuration. */
-        private List<ResolvableProperty> mResolvableProperties;
-
-        //
-        // constructors
-        //
-
-        public ProjectConfigFileHandler(IProject project) {
-            mProject = project;
+        String version = root.attributeValue(XMLTags.FORMAT_VERSION_TAG);
+        if (!SUPPORTED_VERSIONS.contains(version)) {
+            throw new CheckstylePluginException(NLS.bind(Messages.errorUnknownFileFormat, version));
         }
 
-        //
-        // methods
-        //
+        boolean useSimpleConfig = Boolean.valueOf(root.attributeValue(XMLTags.SIMPLE_CONFIG_TAG))
+                .booleanValue();
 
-        /**
-         * Returns the project configuration.
-         * 
-         * @return the project configuration
-         */
-        public IProjectConfiguration getConfiguration() {
-            return new ProjectConfiguration(mProject, mCheckConfigs, mFileSets, mFilters,
-                    mUseSimpleConfig);
+        List<ICheckConfiguration> checkConfigs = getLocalCheckConfigs(root, project);
+        List<FileSet> fileSets = getFileSets(root, checkConfigs);
+        List<IFilter> filters = getFilters(root);
+
+        return new ProjectConfiguration(project, checkConfigs, fileSets, filters, useSimpleConfig);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static List<ICheckConfiguration> getLocalCheckConfigs(Element root, IProject project) {
+
+        List<ICheckConfiguration> configurations = new ArrayList<ICheckConfiguration>();
+
+        List<Element> configElements = root.elements(XMLTags.CHECK_CONFIG_TAG);
+
+        for (Element configEl : configElements) {
+
+            String name = configEl.attributeValue(XMLTags.NAME_TAG);
+            String description = configEl.attributeValue(XMLTags.DESCRIPTION_TAG);
+            String location = configEl.attributeValue(XMLTags.LOCATION_TAG);
+
+            String type = configEl.attributeValue(XMLTags.TYPE_TAG);
+            IConfigurationType configType = ConfigurationTypes.getByInternalName(type);
+
+            if (configType instanceof ProjectConfigurationType) {
+                // RFE 1420212
+                // treat config files relative to *THIS* project
+                IWorkspaceRoot workspaceRoot = project.getWorkspace().getRoot();
+                // test if the location contains the project name
+                if (workspaceRoot.findMember(location) == null) {
+                    location = project.getFullPath().append(location).toString();
+                }
+            }
+
+            // get resolvable properties
+            List<ResolvableProperty> props = new ArrayList<ResolvableProperty>();
+            List<Element> propertiesElements = configEl.elements(XMLTags.PROPERTY_TAG);
+            for (Element propsEl : propertiesElements) {
+
+                ResolvableProperty prop = new ResolvableProperty(propsEl
+                        .attributeValue(XMLTags.NAME_TAG), propsEl
+                        .attributeValue(XMLTags.VALUE_TAG));
+                props.add(prop);
+            }
+
+            // get additional data
+            Map<String, String> additionalData = new HashMap<String, String>();
+            List<Element> dataElements = configEl.elements(XMLTags.ADDITIONAL_DATA_TAG);
+            for (Element dataEl : dataElements) {
+
+                additionalData.put(dataEl.attributeValue(XMLTags.NAME_TAG), dataEl
+                        .attributeValue(XMLTags.VALUE_TAG));
+            }
+
+            ICheckConfiguration checkConfig = new CheckConfiguration(name, location, description,
+                    configType, false, props, additionalData);
+            configurations.add(checkConfig);
         }
 
-        /**
-         * @see org.xml.sax.helpers.DefaultHandler#startElement(java.lang.String,
-         *      java.lang.String, java.lang.String, org.xml.sax.Attributes)
-         */
-        public void startElement(String uri, String localName, String qName, Attributes attributes)
-            throws SAXException {
+        return configurations;
+    }
 
-            try {
+    @SuppressWarnings("unchecked")
+    private static List<FileSet> getFileSets(Element root,
+            List<ICheckConfiguration> localCheckConfigs) throws CheckstylePluginException {
 
-                if (XMLTags.FILESET_CONFIG_TAG.equals(qName)) {
-                    String version = attributes.getValue(XMLTags.FORMAT_VERSION_TAG);
-                    if (!SUPPORTED_VERSIONS.contains(version)) {
-                        throw new CheckstylePluginException(NLS.bind(
-                                Messages.errorUnknownFileFormat, version));
-                    }
+        List<FileSet> fileSets = new ArrayList<FileSet>();
 
-                    mUseSimpleConfig = Boolean.valueOf(
-                            attributes.getValue(XMLTags.SIMPLE_CONFIG_TAG)).booleanValue();
+        List<Element> fileSetElements = root.elements(XMLTags.FILESET_TAG);
+        for (Element fileSetEl : fileSetElements) {
 
-                    mCheckConfigs = new ArrayList<ICheckConfiguration>();
-                    mFileSets = new ArrayList<FileSet>();
-                    mFilters = new ArrayList<IFilter>();
-                }
-                else if (XMLTags.CHECK_CONFIG_TAG.equals(qName)) {
+            boolean local = Boolean.valueOf(fileSetEl.attributeValue(XMLTags.LOCAL_TAG))
+                    .booleanValue();
 
-                    mCurrentName = attributes.getValue(XMLTags.NAME_TAG);
-                    mCurrentDescription = attributes.getValue(XMLTags.DESCRIPTION_TAG);
-                    mCurrentLocation = attributes.getValue(XMLTags.LOCATION_TAG);
+            FileSet fileSet = new FileSet();
+            fileSet.setName(fileSetEl.attributeValue(XMLTags.NAME_TAG));
+            fileSet.setEnabled(Boolean.valueOf(fileSetEl.attributeValue(XMLTags.ENABLED_TAG))
+                    .booleanValue());
 
-                    String type = attributes.getValue(XMLTags.TYPE_TAG);
-                    mCurrentConfigType = ConfigurationTypes.getByInternalName(type);
-
-                    if (mCurrentConfigType instanceof ProjectConfigurationType) {
-                        // RFE 1420212
-                        // treat config files relative to *THIS* project
-                        IWorkspaceRoot root = mProject.getWorkspace().getRoot();
-                        // test if the location contains the project name
-                        if (root.findMember(mCurrentLocation) == null) {
-                            mCurrentLocation = mProject.getFullPath().append(mCurrentLocation)
-                                    .toString();
-                        }
-                    }
-
-                    mCurrentAddValues = new HashMap<String, String>();
-                    mResolvableProperties = new ArrayList<ResolvableProperty>();
-                }
-                else if (XMLTags.ADDITIONAL_DATA_TAG.equalsIgnoreCase(qName)) {
-                    mCurrentAddValues.put(attributes.getValue(XMLTags.NAME_TAG), attributes
-                            .getValue(XMLTags.VALUE_TAG));
-                }
-                else if (XMLTags.PROPERTY_TAG.equals(qName)) {
-
-                    String name = attributes.getValue(XMLTags.NAME_TAG);
-                    String value = attributes.getValue(XMLTags.VALUE_TAG);
-
-                    ResolvableProperty prop = new ResolvableProperty(name, value);
-                    mResolvableProperties.add(prop);
-                }
-                else if (XMLTags.FILESET_TAG.equals(qName)) {
-
-                    String name = attributes.getValue(XMLTags.CHECK_CONFIG_NAME_TAG);
-                    boolean local = Boolean.valueOf(attributes.getValue(XMLTags.LOCAL_TAG))
-                            .booleanValue();
-
-                    mCurrentFileSet = new FileSet();
-                    mCurrentFileSet.setName(attributes.getValue(XMLTags.NAME_TAG));
-                    mCurrentFileSet.setEnabled(Boolean.valueOf(
-                            attributes.getValue(XMLTags.ENABLED_TAG)).booleanValue());
-
-                    ICheckConfiguration checkConfig = null;
-
-                    if (local) {
-                        for (ICheckConfiguration tmp : mCheckConfigs) {
-                            if (tmp.getName().equals(name)) {
-                                checkConfig = tmp;
-                            }
-                        }
-                    }
-                    else {
-                        checkConfig = CheckConfigurationFactory.getByName(name);
-                    }
-
-                    mCurrentFileSet.setCheckConfig(checkConfig);
-
-                    // set an empty list for the patterns to store
-                    mCurrentFileSet.setFileMatchPatterns(new ArrayList<FileMatchPattern>());
-
-                    mFileSets.add(mCurrentFileSet);
-                }
-                else if (XMLTags.FILE_MATCH_PATTERN_TAG.equals(qName)) {
-
-                    FileMatchPattern pattern = new FileMatchPattern(attributes
-                            .getValue(XMLTags.MATCH_PATTERN_TAG));
-                    pattern.setIsIncludePattern(Boolean.valueOf(
-                            attributes.getValue(XMLTags.INCLUDE_PATTERN_TAG)).booleanValue());
-                    mCurrentFileSet.getFileMatchPatterns().add(pattern);
-                }
-
-                else if (XMLTags.FILTER_TAG.equals(qName)) {
-                    mCurrentFilter = PluginFilters.getByInternalName(attributes
-                            .getValue(XMLTags.NAME_TAG));
-
-                    if (mCurrentFilter != null) {
-                        mCurrentFilter.setEnabled(Boolean.valueOf(
-                                attributes.getValue(XMLTags.ENABLED_TAG)).booleanValue());
-
-                        // set an empty list for the filter data
-                        mFilterData = new ArrayList<String>();
+            // find the referenced check configuration
+            ICheckConfiguration checkConfig = null;
+            String checkConfigName = fileSetEl.attributeValue(XMLTags.CHECK_CONFIG_NAME_TAG);
+            if (local) {
+                for (ICheckConfiguration tmp : localCheckConfigs) {
+                    if (tmp.getName().equals(checkConfigName)) {
+                        checkConfig = tmp;
+                        break;
                     }
                 }
-                else if (XMLTags.FILTER_DATA_TAG.equals(qName) && mCurrentFilter != null) {
-                    mFilterData.add(attributes.getValue(XMLTags.VALUE_TAG));
-                }
-
             }
-            catch (CheckstylePluginException e) {
-                throw new SAXException(e);
+            else {
+                checkConfig = CheckConfigurationFactory.getByName(checkConfigName);
             }
+
+            fileSet.setCheckConfig(checkConfig);
+
+            // get patterns
+            List<FileMatchPattern> patterns = new ArrayList<FileMatchPattern>();
+            List<Element> patternElements = fileSetEl.elements(XMLTags.FILE_MATCH_PATTERN_TAG);
+            for (Element patternEl : patternElements) {
+                FileMatchPattern pattern = new FileMatchPattern(patternEl
+                        .attributeValue(XMLTags.MATCH_PATTERN_TAG));
+                pattern.setIsIncludePattern(Boolean.valueOf(
+                        patternEl.attributeValue(XMLTags.INCLUDE_PATTERN_TAG)).booleanValue());
+                patterns.add(pattern);
+            }
+            fileSet.setFileMatchPatterns(patterns);
+
+            fileSets.add(fileSet);
         }
 
-        /**
-         * {@inheritDoc}
-         */
-        public void endElement(String uri, String localName, String qName) throws SAXException {
-            if (XMLTags.CHECK_CONFIG_TAG.equals(qName)) {
-                try {
+        return fileSets;
+    }
 
-                    ICheckConfiguration checkConfig = new CheckConfiguration(mCurrentName,
-                            mCurrentLocation, mCurrentDescription, mCurrentConfigType, false,
-                            mResolvableProperties, mCurrentAddValues);
+    @SuppressWarnings("unchecked")
+    private static List<IFilter> getFilters(Element root) {
 
-                    mCheckConfigs.add(checkConfig);
-                }
-                catch (Exception e) {
-                    throw new SAXException(e);
-                }
+        List<IFilter> filters = new ArrayList<IFilter>();
+
+        List<Element> filterElements = root.elements(XMLTags.FILTER_TAG);
+        for (Element filterEl : filterElements) {
+
+            IFilter filter = PluginFilters.getByInternalName(filterEl
+                    .attributeValue(XMLTags.NAME_TAG));
+            filter.setEnabled(Boolean.valueOf(filterEl.attributeValue(XMLTags.ENABLED_TAG))
+                    .booleanValue());
+
+            // get the filter data
+            List<String> filterData = new ArrayList<String>();
+            List<Element> dataElements = filterEl.elements(XMLTags.FILTER_DATA_TAG);
+            for (Element dataEl : dataElements) {
+                filterData.add(dataEl.attributeValue(XMLTags.VALUE_TAG));
             }
-            else if (XMLTags.FILTER_TAG.equals(qName)) {
-                mCurrentFilter.setFilterData(mFilterData);
-                mFilters.add(mCurrentFilter);
-            }
+            filter.setFilterData(filterData);
+
+            filters.add(filter);
         }
+
+        return filters;
     }
 }
