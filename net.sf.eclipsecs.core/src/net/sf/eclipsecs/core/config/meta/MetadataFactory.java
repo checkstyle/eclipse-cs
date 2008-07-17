@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -471,8 +472,20 @@ public final class MetadataFactory {
 
                         Class<?> providerClass = Class.forName(optionProvider);
 
-                        IOptionProvider provider = (IOptionProvider) providerClass.newInstance();
-                        mCurrentProperty.getPropertyEnumeration().addAll(provider.getOptions());
+                        if (IOptionProvider.class.isAssignableFrom(providerClass)) {
+
+                            IOptionProvider provider = (IOptionProvider) providerClass
+                                    .newInstance();
+                            mCurrentProperty.getPropertyEnumeration().addAll(provider.getOptions());
+                        }
+                        else if (Enum.class.isAssignableFrom(providerClass)) {
+
+                            EnumSet<?> values = EnumSet.allOf((Class<Enum>) providerClass);
+                            for (Enum e : values) {
+                                mCurrentProperty.getPropertyEnumeration().add(
+                                        e.name().toLowerCase());
+                            }
+                        }
                     }
                 }
                 else if (XMLTags.PROPERTY_VALUE_OPTIONS_TAG.equals(qName)) {

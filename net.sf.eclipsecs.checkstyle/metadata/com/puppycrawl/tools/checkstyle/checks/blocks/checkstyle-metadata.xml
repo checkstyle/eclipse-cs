@@ -21,10 +21,7 @@
             <description>%EmptyBlock.desc</description>
             <property-metadata name="option" datatype="SingleSelect" default-value="stmt">
                 <description>%EmptyBlock.option</description>
-                <enumeration>
-                    <property-value-option value="text"/>
-                    <property-value-option value="stmt"/>
-                </enumeration>
+                <enumeration option-provider="com.puppycrawl.tools.checkstyle.checks.blocks.BlockOption"/>
             </property-metadata>
             <property-metadata name="tokens" datatype="MultiCheck"
                 default-value="LITERAL_CATCH,LITERAL_DO,LITERAL_ELSE,LITERAL_FINALLY,LITERAL_IF,LITERAL_FOR,LITERAL_TRY,LITERAL_WHILE,STATIC_INIT">
@@ -49,11 +46,7 @@
             <description>%LeftCurly.desc</description>
             <property-metadata name="option" datatype="SingleSelect" default-value="eol">
                 <description>%LeftCurly.option</description>
-                <enumeration>
-                    <property-value-option value="eol"/>
-                    <property-value-option value="nl"/>
-                    <property-value-option value="nlow"/>
-                </enumeration>
+                <enumeration option-provider="com.puppycrawl.tools.checkstyle.checks.blocks.LeftCurlyOption"/>
             </property-metadata>
             <property-metadata name="maxLineLength" datatype="Integer" default-value="80">
                 <description>%LeftCurly.maxLineLength</description>
@@ -104,10 +97,7 @@
             <description>%RightCurly.desc</description>
             <property-metadata name="option" datatype="SingleSelect" default-value="same">
                 <description>%RightCurly.option</description>
-                <enumeration>
-                    <property-value-option value="same"/>
-                    <property-value-option value="alone"/>
-                </enumeration>
+                <enumeration option-provider="com.puppycrawl.tools.checkstyle.checks.blocks.RightCurlyOption"/>
             </property-metadata>
             <property-metadata name="tokens" datatype="MultiCheck"
                 default-value="LITERAL_TRY,LITERAL_CATCH,LITERAL_FINALLY,LITERAL_IF,LITERAL_ELSE">

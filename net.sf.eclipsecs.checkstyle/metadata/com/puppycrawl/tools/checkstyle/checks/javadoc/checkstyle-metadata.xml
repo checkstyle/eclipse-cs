@@ -20,12 +20,12 @@
             <property-metadata name="scope" datatype="SingleSelect" default-value="private">
                 <description>%JavadocMethod.scope</description>
                 <enumeration
-                    option-provider="net.sf.eclipsecs.core.config.meta.VisibilityOptionsProvider"/>
+                    option-provider="com.puppycrawl.tools.checkstyle.api.Scope"/>
             </property-metadata>
             <property-metadata name="excludeScope" datatype="SingleSelect" default-value="nothing">
                 <description>%JavadocMethod.excludeScope</description>
                 <enumeration
-                    option-provider="net.sf.eclipsecs.core.config.meta.VisibilityOptionsProvider"/>
+                    option-provider="com.puppycrawl.tools.checkstyle.api.Scope"/>
             </property-metadata>
             <property-metadata name="allowUndeclaredRTE" datatype="Boolean" default-value="false">
                 <description>%JavadocMethod.allowUndeclaredRTE</description>
@@ -72,12 +72,12 @@
             <property-metadata name="scope" datatype="SingleSelect" default-value="private">
                 <description>%JavadocStyle.scope</description>
                 <enumeration
-                    option-provider="net.sf.eclipsecs.core.config.meta.VisibilityOptionsProvider"/>
+                    option-provider="com.puppycrawl.tools.checkstyle.api.Scope"/>
             </property-metadata>
             <property-metadata name="excludeScope" datatype="SingleSelect" default-value="nothing">
                 <description>%JavadocStyle.excludeScope</description>
                 <enumeration
-                    option-provider="net.sf.eclipsecs.core.config.meta.VisibilityOptionsProvider"/>
+                    option-provider="com.puppycrawl.tools.checkstyle.api.Scope"/>
             </property-metadata>
             <property-metadata name="checkEmptyJavadoc" datatype="Boolean" default-value="false">
                 <description>%JavadocStyle.checkEmptyJavadoc</description>
@@ -111,12 +111,12 @@
             <property-metadata name="excludeScope" datatype="SingleSelect" default-value="nothing">
                 <description>%JavadocType.excludeScope</description>
                 <enumeration
-                    option-provider="net.sf.eclipsecs.core.config.meta.VisibilityOptionsProvider"/>
+                    option-provider="com.puppycrawl.tools.checkstyle.api.Scope"/>
             </property-metadata>
             <property-metadata name="scope" datatype="SingleSelect" default-value="private">
                 <description>%JavadocType.scope</description>
                 <enumeration
-                    option-provider="net.sf.eclipsecs.core.config.meta.VisibilityOptionsProvider"/>
+                    option-provider="com.puppycrawl.tools.checkstyle.api.Scope"/>
             </property-metadata>
             <property-metadata name="authorFormat" datatype="Regex">
                 <description>%JavadocType.authorFormat</description>
@@ -140,12 +140,12 @@
             <property-metadata name="excludeScope" datatype="SingleSelect" default-value="nothing">
                 <description>%JavadocVariable.excludeScope</description>
                 <enumeration
-                    option-provider="net.sf.eclipsecs.core.config.meta.VisibilityOptionsProvider"/>
+                    option-provider="com.puppycrawl.tools.checkstyle.api.Scope"/>
             </property-metadata>
             <property-metadata name="scope" datatype="SingleSelect" default-value="private">
                 <description>%JavadocVariable.scope</description>
                 <enumeration
-                    option-provider="net.sf.eclipsecs.core.config.meta.VisibilityOptionsProvider"/>
+                    option-provider="com.puppycrawl.tools.checkstyle.api.Scope"/>
             </property-metadata>
         </rule-metadata>
 

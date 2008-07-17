@@ -16,10 +16,7 @@
             <description>%EmptyForInitializerPad.desc</description>
             <property-metadata name="option" datatype="SingleSelect" default-value="nospace">
                 <description>%EmptyForInitializerPad.option</description>
-                <enumeration>
-                    <property-value-option value="nospace"/>
-                    <property-value-option value="space"/>
-                </enumeration>
+                <enumeration option-provider="com.puppycrawl.tools.checkstyle.checks.whitespace.PadOption"/>
             </property-metadata>
         </rule-metadata>
 
@@ -29,10 +26,7 @@
             <description>%EmptyForIteratorPad.desc</description>
             <property-metadata name="option" datatype="SingleSelect" default-value="nospace">
                 <description>%EmptyForIteratorPad.option</description>
-                <enumeration>
-                    <property-value-option value="nospace"/>
-                    <property-value-option value="space"/>
-                </enumeration>
+                <enumeration option-provider="com.puppycrawl.tools.checkstyle.checks.whitespace.PadOption"/>
             </property-metadata>
         </rule-metadata>
 
@@ -84,10 +78,7 @@
             <description>%OperatorWrap.desc</description>
             <property-metadata name="option" datatype="SingleSelect" default-value="nl">
                 <description>%OperatorWrap.option</description>
-                <enumeration>
-                    <property-value-option value="eol"/>
-                    <property-value-option value="nl"/>
-                </enumeration>
+                <enumeration option-provider="com.puppycrawl.tools.checkstyle.checks.whitespace.OperatorWrapOption"/>
             </property-metadata>
             <property-metadata name="tokens" datatype="MultiCheck"
                 default-value="BAND,BOR,BSR,BXOR,COLON,DIV,EQUAL,GE,GT,LAND,LE,LITERAL_INSTANCEOF,LOR,LT,MINUS,MOD,NOT_EQUAL,PLUS,QUESTION,SL,SR,STAR">
@@ -139,10 +130,7 @@
             </property-metadata>
             <property-metadata name="option" datatype="SingleSelect" default-value="nospace">
                 <description>%MethodParamPad.option</description>
-                <enumeration>
-                    <property-value-option value="nospace"/>
-                    <property-value-option value="space"/>
-                </enumeration>
+                <enumeration option-provider="com.puppycrawl.tools.checkstyle.checks.whitespace.PadOption"/>
             </property-metadata>
             <property-metadata name="tokens" datatype="MultiCheck"
                 default-value="CTOR_DEF,LITERAL_NEW,METHOD_CALL,METHOD_DEF,SUPER_CTOR_CALL">
@@ -163,10 +151,7 @@
             <description>%ParenPad.desc</description>
             <property-metadata name="option" datatype="SingleSelect" default-value="nospace">
                 <description>%ParenPad.option</description>
-                <enumeration>
-                    <property-value-option value="nospace"/>
-                    <property-value-option value="space"/>
-                </enumeration>
+                <enumeration option-provider="com.puppycrawl.tools.checkstyle.checks.whitespace.PadOption"/>
             </property-metadata>
             <property-metadata name="tokens" datatype="MultiCheck"
                 default-value="CTOR_CALL,LPAREN,METHOD_CALL,RPAREN,SUPER_CTOR_CALL">
@@ -192,10 +177,7 @@
             <description>%TypecastParenPad.desc</description>
             <property-metadata name="option" datatype="SingleSelect" default-value="nospace">
                 <description>%TypecastParenPad.option</description>
-                <enumeration>
-                    <property-value-option value="nospace"/>
-                    <property-value-option value="space"/>
-                </enumeration>
+                <enumeration option-provider="com.puppycrawl.tools.checkstyle.checks.whitespace.PadOption"/>
             </property-metadata>
             <property-metadata name="tokens" datatype="MultiCheck" default-value="TYPECAST,RPAREN">
                 <description>%TypecastParenPad.tokens</description>
