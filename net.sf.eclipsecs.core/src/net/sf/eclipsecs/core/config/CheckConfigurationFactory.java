@@ -25,6 +25,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -40,17 +41,17 @@ import net.sf.eclipsecs.core.config.configtypes.ConfigurationTypes;
 import net.sf.eclipsecs.core.config.configtypes.IConfigurationType;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.core.util.XMLUtil;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.ObjectUtils;
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * Used to manage the life cycle of <code>CheckConfiguration</code> objects.
@@ -89,8 +90,8 @@ public final class CheckConfigurationFactory {
      * Get an <code>CheckConfiguration</code> instance by its name.
      * 
      * @param name Name of the requested instance.
-     * @return The requested instance or <code>null</code> if the named
-     *         instance could not be found.
+     * @return The requested instance or <code>null</code> if the named instance
+     *         could not be found.
      */
     public static ICheckConfiguration getByName(String name) {
 
@@ -232,29 +233,38 @@ public final class CheckConfigurationFactory {
                 inStream = new BufferedInputStream(new FileInputStream(configFile));
             }
 
-            CheckConfigurationsFileHandler handler = new CheckConfigurationsFileHandler();
-            XMLUtil.parseWithSAX(inStream, handler);
+            SAXReader reader = new SAXReader();
+            Document document = reader.read(inStream);
 
-            if (handler.isOldFileFormat()) {
-                throw new CheckstylePluginException(
-                        "eclipse-cs version 3.x type configuration files are not supported anymore.");
+            Element root = document.getRootElement();
+
+            String version = root.attributeValue(XMLTags.VERSION_TAG);
+            if (!CURRENT_CONFIG_FILE_FORMAT_VERSION.equals(version)) {
+
+                // the old (pre 4.0.0) configuration files aren't supported
+                // anymore
+                CheckstyleLog
+                        .log(null,
+                                "eclipse-cs version 3.x type configuration files are not supported anymore.");
+                return;
             }
-            else {
-                sConfigurations.addAll(handler.getConfigurations());
 
-                String defaultConfigName = handler.getDefaultCheckConfigurationName();
+            String defaultConfigName = root.attributeValue(XMLTags.DEFAULT_CHECK_CONFIG_TAG);
 
-                for (ICheckConfiguration config : sConfigurations) {
-                    if (config.getName().equals(defaultConfigName)) {
-                        sDefaultCheckConfig = config;
-                    }
+            sConfigurations.addAll(getGlobalCheckConfigurations(root));
+
+            for (ICheckConfiguration config : sConfigurations) {
+                if (config.getName().equals(defaultConfigName)) {
+                    sDefaultCheckConfig = config;
                 }
             }
         }
-        catch (Exception e) {
+        catch (IOException e) {
             CheckstylePluginException.rethrow(e, Messages.errorLoadingConfigFile);
         }
-
+        catch (DocumentException e) {
+            CheckstylePluginException.rethrow(e, Messages.errorLoadingConfigFile);
+        }
         finally {
             IOUtils.closeQuietly(inStream);
         }
@@ -289,123 +299,50 @@ public final class CheckConfigurationFactory {
     }
 
     /**
-     * SAX-DefaultHandler for parsing the check-configurations file.
+     * Gets the check configurations from the configuration file document.
      * 
-     * @author Lars Ködderitzsch
+     * @param root the root element of the plugins central configuration file
+     * @return the global check configurations configured therein
      */
-    private static class CheckConfigurationsFileHandler extends DefaultHandler {
-        /** the configurations read from the xml. */
-        private final List<ICheckConfiguration> mConfigurations = new ArrayList<ICheckConfiguration>();
+    private static List<ICheckConfiguration> getGlobalCheckConfigurations(Element root) {
 
-        /** Flags if the old plugin configuration file format was detected. */
-        private boolean mOldFileFormat;
+        List<ICheckConfiguration> configs = new ArrayList<ICheckConfiguration>();
 
-        /** The name of the current check configuration. */
-        private String mCurrentName;
+        List<Element> configElements = root.elements(XMLTags.CHECK_CONFIG_TAG);
 
-        /** The location of the current check configuration. */
-        private String mCurrentLocation;
+        for (Element configEl : configElements) {
 
-        /** The description of the current check configuration. */
-        private String mCurrentDescription;
+            String name = configEl.attributeValue(XMLTags.NAME_TAG);
+            String description = configEl.attributeValue(XMLTags.DESCRIPTION_TAG);
+            String location = configEl.attributeValue(XMLTags.LOCATION_TAG);
 
-        /** The configuration type of the current configuration. */
-        private IConfigurationType mCurrentConfigType;
+            String type = configEl.attributeValue(XMLTags.TYPE_TAG);
+            IConfigurationType configType = ConfigurationTypes.getByInternalName(type);
 
-        /** Additional data for the current configuration. */
-        private Map<String, String> mCurrentAddValues;
+            // get resolvable properties
+            List<ResolvableProperty> props = new ArrayList<ResolvableProperty>();
+            List<Element> propertiesElements = configEl.elements(XMLTags.PROPERTY_TAG);
+            for (Element propsEl : propertiesElements) {
 
-        /** List of resolvable properties for this configuration. */
-        private List<ResolvableProperty> mResolvableProperties;
-
-        /** The default check configuration name. */
-        private String mDefaultConfigName;
-
-        /**
-         * Return the configurations this handler built.
-         * 
-         * @return the configurations
-         */
-        public List<ICheckConfiguration> getConfigurations() {
-            return mConfigurations;
-        }
-
-        /**
-         * Returns the default check configuration name or <code>null</code>
-         * if none was specified.
-         * 
-         * @return the default check configuration name or <code>null</code>
-         */
-        public String getDefaultCheckConfigurationName() {
-            return mDefaultConfigName;
-        }
-
-        /**
-         * Returns if the old plugin file format was detected.
-         * 
-         * @return <code>true</code> if the old file format was detected
-         */
-        public boolean isOldFileFormat() {
-            return mOldFileFormat;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        public void startElement(String uri, String localName, String qName, Attributes attributes) {
-
-            if (XMLTags.CHECKSTYLE_ROOT_TAG.equals(qName)) {
-                String version = attributes.getValue(XMLTags.VERSION_TAG);
-
-                if (!CURRENT_CONFIG_FILE_FORMAT_VERSION.equals(version)) {
-                    mOldFileFormat = true;
-                }
-
-                mDefaultConfigName = attributes.getValue(XMLTags.DEFAULT_CHECK_CONFIG_TAG);
+                ResolvableProperty prop = new ResolvableProperty(propsEl
+                        .attributeValue(XMLTags.NAME_TAG), propsEl
+                        .attributeValue(XMLTags.VALUE_TAG));
+                props.add(prop);
             }
 
-            else if (!mOldFileFormat && XMLTags.CHECK_CONFIG_TAG.equals(qName)) {
-                mCurrentName = attributes.getValue(XMLTags.NAME_TAG);
-                mCurrentDescription = attributes.getValue(XMLTags.DESCRIPTION_TAG);
-                mCurrentLocation = attributes.getValue(XMLTags.LOCATION_TAG);
+            // get additional data
+            Map<String, String> additionalData = new HashMap<String, String>();
+            List<Element> dataElements = configEl.elements(XMLTags.ADDITIONAL_DATA_TAG);
+            for (Element dataEl : dataElements) {
 
-                String type = attributes.getValue(XMLTags.TYPE_TAG);
-                mCurrentConfigType = ConfigurationTypes.getByInternalName(type);
-
-                mCurrentAddValues = new HashMap<String, String>();
-                mResolvableProperties = new ArrayList<ResolvableProperty>();
+                additionalData.put(dataEl.attributeValue(XMLTags.NAME_TAG), dataEl
+                        .attributeValue(XMLTags.VALUE_TAG));
             }
-            else if (!mOldFileFormat && XMLTags.ADDITIONAL_DATA_TAG.equals(qName)) {
-                mCurrentAddValues.put(attributes.getValue(XMLTags.NAME_TAG), attributes
-                        .getValue(XMLTags.VALUE_TAG));
-            }
-            else if (!mOldFileFormat && XMLTags.PROPERTY_TAG.equals(qName)) {
 
-                String name = attributes.getValue(XMLTags.NAME_TAG);
-                String value = attributes.getValue(XMLTags.VALUE_TAG);
-
-                ResolvableProperty prop = new ResolvableProperty(name, value);
-                mResolvableProperties.add(prop);
-            }
+            ICheckConfiguration checkConfig = new CheckConfiguration(name, location, description,
+                    configType, true, props, additionalData);
+            configs.add(checkConfig);
         }
-
-        /**
-         * {@inheritDoc}
-         */
-        public void endElement(String uri, String localName, String qName) throws SAXException {
-            if (!mOldFileFormat && XMLTags.CHECK_CONFIG_TAG.equals(qName)) {
-                try {
-
-                    ICheckConfiguration checkConfig = new CheckConfiguration(mCurrentName,
-                            mCurrentLocation, mCurrentDescription, mCurrentConfigType, true,
-                            mResolvableProperties, mCurrentAddValues);
-                    mConfigurations.add(checkConfig);
-
-                }
-                catch (Exception e) {
-                    throw new SAXException(e);
-                }
-            }
-        }
+        return configs;
     }
 }
