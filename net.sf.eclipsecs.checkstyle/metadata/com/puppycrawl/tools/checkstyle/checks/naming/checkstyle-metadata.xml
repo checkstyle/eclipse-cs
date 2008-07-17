@@ -12,11 +12,31 @@
                 <description>%AbstractClassName.format</description>
             </property-metadata>
         </rule-metadata>
+        
+        <rule-metadata name="%ClassTypeParameterName.name" internal-name="ClassTypeParameterName" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.naming.ClassTypeParameterNameCheck"/>
+            <description>%ClassTypeParameterName.desc</description>
+            <property-metadata name="format" datatype="Regex" default-value="^[A-Z]$">
+                <description>%ClassTypeParameterName.format</description>
+            </property-metadata>
+        </rule-metadata>
 
         <rule-metadata name="%ConstantName.name" internal-name="ConstantName" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.naming.ConstantNameCheck"/>
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.ConstantNameCheck"/>
             <description>%ConstantName.desc</description>
+            <property-metadata name="applyToPublic" datatype="Boolean" default-value="true">
+                <description>%ConstantName.applyToPublic</description>
+            </property-metadata>
+            <property-metadata name="applyToProtected" datatype="Boolean" default-value="true">
+                <description>%ConstantName.applyToProtected</description>
+            </property-metadata>
+            <property-metadata name="applyToPackage" datatype="Boolean" default-value="true">
+                <description>%ConstantName.applyToPackage</description>
+            </property-metadata>
+            <property-metadata name="applyToPrivate" datatype="Boolean" default-value="true">
+                <description>%ConstantName.applyToPrivate</description>
+            </property-metadata>
             <property-metadata name="format" datatype="Regex" default-value="^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$">
                 <description>%ConstantName.format</description>
             </property-metadata>
@@ -76,6 +96,14 @@
                 <description>%MethodName.format</description>
             </property-metadata>
         </rule-metadata>
+        
+        <rule-metadata name="%MethodTypeParameterName.name" internal-name="MethodTypeParameterName" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.naming.MethodTypeParameterNameCheck"/>
+            <description>%MethodTypeParameterName.desc</description>
+            <property-metadata name="format" datatype="Regex" default-value="^[A-Z]$">
+                <description>%MethodTypeParameterName.format</description>
+            </property-metadata>
+        </rule-metadata>
 
         <rule-metadata name="%PackageName.name" internal-name="PackageName" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.naming.PackageNameCheck"/>
@@ -99,6 +127,18 @@
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.naming.StaticVariableNameCheck"/>
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.StaticVariableNameCheck"/>
             <description>%StaticVariableName.desc</description>
+            <property-metadata name="applyToPublic" datatype="Boolean" default-value="true">
+                <description>%StaticVariableName.applyToPublic</description>
+            </property-metadata>
+            <property-metadata name="applyToProtected" datatype="Boolean" default-value="true">
+                <description>%StaticVariableName.applyToProtected</description>
+            </property-metadata>
+            <property-metadata name="applyToPackage" datatype="Boolean" default-value="true">
+                <description>%StaticVariableName.applyToPackage</description>
+            </property-metadata>
+            <property-metadata name="applyToPrivate" datatype="Boolean" default-value="true">
+                <description>%StaticVariableName.applyToPrivate</description>
+            </property-metadata>
             <property-metadata name="format" datatype="Regex" default-value="^[a-z][a-zA-Z0-9]*$">
                 <description>%StaticVariableName.format</description>
             </property-metadata>
@@ -108,6 +148,18 @@
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.naming.TypeNameCheck"/>
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.TypeNameCheck"/>
             <description>%TypeName.desc</description>
+            <property-metadata name="applyToPublic" datatype="Boolean" default-value="true">
+                <description>%TypeName.applyToPublic</description>
+            </property-metadata>
+            <property-metadata name="applyToProtected" datatype="Boolean" default-value="true">
+                <description>%TypeName.applyToProtected</description>
+            </property-metadata>
+            <property-metadata name="applyToPackage" datatype="Boolean" default-value="true">
+                <description>%TypeName.applyToPackage</description>
+            </property-metadata>
+            <property-metadata name="applyToPrivate" datatype="Boolean" default-value="true">
+                <description>%TypeName.applyToPrivate</description>
+            </property-metadata>
             <property-metadata name="format" datatype="Regex" default-value="^[A-Z][a-zA-Z0-9]*$">
                 <description>%TypeName.format</description>
             </property-metadata>

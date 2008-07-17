@@ -40,6 +40,11 @@
             <quickfix classname="net.sf.eclipsecs.quickfixes.coding.EmptyStatementQuickfix"/>
         </rule-metadata>
 
+        <rule-metadata name="%EqualsAvoidNull.name" internal-name="EqualsAvoidNull" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.EqualsAvoidNullCheck"/>
+            <description>%EqualsAvoidNull.desc</description>
+        </rule-metadata>
+
         <rule-metadata name="%EqualsHashCode.name" internal-name="EqualsHashCode" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.EqualsHashCodeCheck"/>
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.EqualsHashCodeCheck"/>
@@ -282,6 +287,11 @@
                 <description>%NestedTryDepth.max</description>
             </property-metadata>
         </rule-metadata>
+        
+        <rule-metadata name="%NoClone.name" internal-name="NoClone" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.NoCloneCheck"/>
+            <description>%NoClone.desc</description>
+        </rule-metadata>        
         
         <rule-metadata name="%NoFinalizer.name" internal-name="NoFinalizer" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.NoFinalizerCheck"/>

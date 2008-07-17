@@ -85,6 +85,9 @@
             <property-metadata name="checkFirstSentence" datatype="Boolean" default-value="true">
                 <description>%JavadocStyle.checkFirstSentence</description>
             </property-metadata>
+            <property-metadata name="endOfSentenceFormat" datatype="Regex" default-value="([.?!][ \t\n\r\f&lt;])|([.?!]$)">
+                <description>%JavadocStyle.endOfSentenceFormat</description>
+            </property-metadata>
             <property-metadata name="checkHtml" datatype="Boolean" default-value="true">
                 <description>%JavadocStyle.checkHtml</description>
             </property-metadata>

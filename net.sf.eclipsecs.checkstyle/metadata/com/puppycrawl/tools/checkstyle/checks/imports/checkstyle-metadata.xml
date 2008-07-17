@@ -14,6 +14,14 @@
             </property-metadata>
         </rule-metadata>
 
+        <rule-metadata name="%AvoidStaticImport.name" internal-name="AvoidStaticImport" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.imports.AvoidStaticImportCheck"/>
+            <description>%AvoidStaticImport.desc</description>
+            <property-metadata name="excludes" datatype="String">
+                <description>%AvoidStaticImport.excludes</description>
+            </property-metadata>
+        </rule-metadata>
+
         <rule-metadata name="%IllegalImport.name" internal-name="IllegalImport" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.imports.IllegalImportCheck"/>
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.IllegalImportCheck"/>
