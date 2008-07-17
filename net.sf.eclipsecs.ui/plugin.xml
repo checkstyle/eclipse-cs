@@ -90,29 +90,6 @@
     </extension>
 
     <!--
-	Marker for displaying checkstyle warnings
-	-->
-    <extension
-        id="CheckstyleMarker"
-        name="%CheckstyleMarker.name"
-        point="org.eclipse.core.resources.markers">
-        <super
-            type="org.eclipse.core.resources.problemmarker"/>
-        <super
-            type="org.eclipse.core.resources.textmarker"/>
-        <super
-            type="org.eclipse.jdt.core.problem"/>
-        <persistent
-            value="true"/>
-        <attribute
-            name="ModuleName"/>
-        <attribute
-            name="MessageKey"/>
-        <attribute
-            name="categoryId"/>
-    </extension>
-
-    <!--
 	Provide marker resolutions
 	-->
     <extension
@@ -250,17 +227,17 @@
         point="org.eclipse.ui.ide.markerSupport">
 
         <markerGroupingEntry
-            id="net.sf.eclipsecs.CheckstyleMarker"
+            id="net.sf.eclipsecs.core.CheckstyleMarker"
             markerGrouping="org.eclipse.jdt.ui.java_marker_category"
             label="%CheckstyleMarker.name"
             priority="1"/>
 
         <markerAttributeGrouping
-            markerType="net.sf.eclipsecs.CheckstyleMarker"
+            markerType="net.sf.eclipsecs.core.CheckstyleMarker"
             attribute="categoryId">
             <markerAttributeMapping
                 value="999"
-                markerGroupingEntry="net.sf.eclipsecs.CheckstyleMarker"/>
+                markerGroupingEntry="net.sf.eclipsecs.core.CheckstyleMarker"/>
         </markerAttributeGrouping>
     </extension>
 
