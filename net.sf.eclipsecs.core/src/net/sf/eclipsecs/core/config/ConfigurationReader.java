@@ -67,6 +67,8 @@ public final class ConfigurationReader {
                 "com/puppycrawl/tools/checkstyle/configuration_1_1.dtd"); //$NON-NLS-1$
         PUBLIC2INTERNAL_DTD_MAP.put("-//Puppy Crawl//DTD Check Configuration 1.2//EN", //$NON-NLS-1$
                 "com/puppycrawl/tools/checkstyle/configuration_1_2.dtd"); //$NON-NLS-1$
+        PUBLIC2INTERNAL_DTD_MAP.put("-//Puppy Crawl//DTD Check Configuration 1.3//EN", //$NON-NLS-1$
+                "com/puppycrawl/tools/checkstyle/configuration_1_3.dtd"); //$NON-NLS-1$
     }
 
     //
