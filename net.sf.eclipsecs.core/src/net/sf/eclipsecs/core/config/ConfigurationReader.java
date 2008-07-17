@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2007  David Schneider, Lars Ködderitzsch
+// Copyright (C) 2002-2008  David Schneider, Lars Ködderitzsch
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -128,24 +128,10 @@ public final class ConfigurationReader {
 
         List<Module> modules = read(in);
 
-        Map<String, String> messages = new HashMap<String, String>();
         int tabWidth = 8;
 
         for (Module module : modules) {
 
-            if (module.getCustomMessage() != null) {
-                String id = module.getId();
-
-                if (id == null && module.getMetaData() != null) {
-                    id = module.getMetaData().getInternalName();
-                }
-
-                if (id == null) {
-                    id = module.getName();
-                }
-
-                messages.put(id, module.getCustomMessage());
-            }
             if (module.getMetaData() != null
                     && module.getMetaData().getInternalName().equals(XMLTags.TREEWALKER_MODULE)) {
 
@@ -162,7 +148,7 @@ public final class ConfigurationReader {
             }
         }
 
-        return new AdditionalConfigData(tabWidth, messages);
+        return new AdditionalConfigData(tabWidth);
     }
 
     /**
@@ -261,6 +247,13 @@ public final class ConfigurationReader {
                     module.getProperties().add(property);
                 }
             }
+            else if (XMLTags.MESSAGE_TAG.equals(qName)) {
+                String key = attributes.getValue(XMLTags.KEY_TAG);
+                String value = attributes.getValue(XMLTags.VALUE_TAG);
+
+                Module module = mCurrentStack.peek();
+                module.getCustomMessages().put(key, value);
+            }
             else if (XMLTags.METADATA_TAG.equals(qName)) {
                 String name = attributes.getValue(XMLTags.NAME_TAG);
                 String value = attributes.getValue(XMLTags.VALUE_TAG);
@@ -268,9 +261,6 @@ public final class ConfigurationReader {
                 Module module = mCurrentStack.peek();
                 if (XMLTags.COMMENT_ID.equals(name)) {
                     module.setComment(value);
-                }
-                else if (XMLTags.CUSTOM_MESSAGE_ID.equals(name)) {
-                    module.setCustomMessage(value);
                 }
                 else if (XMLTags.LAST_ENABLED_SEVERITY_ID.equals(name)) {
                     module.setLastEnabledSeverity(Severity.valueOf(value));
@@ -308,17 +298,12 @@ public final class ConfigurationReader {
 
         private final int mTabWidth;
 
-        private final Map<String, String> mCustomMessages;
-
         /**
          * @param tabWidth the tab width setting of the Checkstyle configuration
-         * @param customMessages the custom messages defined in the
-         *            configuration
          */
-        public AdditionalConfigData(int tabWidth, Map<String, String> customMessages) {
+        public AdditionalConfigData(int tabWidth) {
             super();
             mTabWidth = tabWidth;
-            mCustomMessages = customMessages;
         }
 
         /**
@@ -328,16 +313,6 @@ public final class ConfigurationReader {
          */
         public int getTabWidth() {
             return mTabWidth;
-        }
-
-        /**
-         * Returns the custom messages of the check configuration, keyed by
-         * module id or module name if no id is set.
-         * 
-         * @return the custom messages
-         */
-        public Map<String, String> getCustomMessages() {
-            return mCustomMessages;
         }
     }
 }

@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2007  David Schneider, Lars Ködderitzsch
+// Copyright (C) 2002-2008  David Schneider, Lars Ködderitzsch
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -36,7 +36,6 @@ import net.sf.eclipsecs.core.config.meta.RuleMetadata;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
-import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.filebuffers.FileBuffers;
 import org.eclipse.core.filebuffers.ITextFileBufferManager;
 import org.eclipse.core.resources.IFile;
@@ -315,7 +314,8 @@ public class Auditor {
 
                         mMarkerAttributes.put(CheckstyleMarker.MODULE_NAME, metaData
                                 .getInternalName());
-                        mMarkerAttributes.put(CheckstyleMarker.MESSAGE_KEY, getMessageKey(error));
+                        mMarkerAttributes.put(CheckstyleMarker.MESSAGE_KEY, error
+                                .getLocalizedMessage().getKey());
                         mMarkerAttributes.put(IMarker.PRIORITY,
                                 new Integer(IMarker.PRIORITY_NORMAL));
                         mMarkerAttributes.put(IMarker.SEVERITY, new Integer(
@@ -468,10 +468,7 @@ public class Auditor {
                 }
             }
 
-            String message = mAdditionalConfigData.getCustomMessages().get(moduleId);
-            if (StringUtils.trimToNull(message) == null) {
-                message = error.getMessage();
-            }
+            String message = error.getMessage();
 
             StringBuffer prefix = new StringBuffer();
             if (mAddRuleName) {
@@ -491,25 +488,6 @@ public class Auditor {
             buf.append(message);
 
             return buf.toString();
-        }
-
-        private String getMessageKey(AuditEvent error) {
-
-            String moduleId = error.getModuleId();
-
-            if (moduleId == null) {
-                RuleMetadata metaData = MetadataFactory.getRuleMetadata(error.getSourceName());
-                if (metaData != null) {
-                    moduleId = metaData.getInternalName();
-                }
-            }
-
-            String messageKey = mAdditionalConfigData.getCustomMessages().get(moduleId);
-            if (StringUtils.trimToNull(messageKey) == null) {
-                messageKey = error.getLocalizedMessage().getKey();
-            }
-
-            return messageKey;
         }
 
         private String getRuleName(AuditEvent error) {

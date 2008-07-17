@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2007  David Schneider, Lars Ködderitzsch
+// Copyright (C) 2002-2008  David Schneider, Lars Ködderitzsch
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -152,30 +152,6 @@ public final class ConfigurationWriter {
             metaEl.addAttribute(XMLTags.VALUE_TAG, module.getComment());
         }
 
-        // Write custom message
-        if (StringUtils.trimToNull(module.getCustomMessage()) != null) {
-
-            Element metaEl = moduleEl.addElement(XMLTags.METADATA_TAG);
-            metaEl.addAttribute(XMLTags.NAME_TAG, XMLTags.CUSTOM_MESSAGE_ID);
-            metaEl.addAttribute(XMLTags.VALUE_TAG, module.getCustomMessage());
-        }
-
-        // Write last enabled severity level
-        if (module.getLastEnabledSeverity() != null) {
-
-            Element metaEl = moduleEl.addElement(XMLTags.METADATA_TAG);
-            metaEl.addAttribute(XMLTags.NAME_TAG, XMLTags.LAST_ENABLED_SEVERITY_ID);
-            metaEl.addAttribute(XMLTags.VALUE_TAG, module.getLastEnabledSeverity().name());
-        }
-
-        // write custom metadata
-        for (Map.Entry<String, String> entry : module.getCustomMetaData().entrySet()) {
-
-            Element metaEl = moduleEl.addElement(XMLTags.METADATA_TAG);
-            metaEl.addAttribute(XMLTags.NAME_TAG, entry.getKey());
-            metaEl.addAttribute(XMLTags.VALUE_TAG, entry.getValue());
-        }
-
         // Write severity only if it differs from the parents severity
         if (module.getSeverity() != null && !module.getSeverity().equals(parentSeverity)) {
 
@@ -207,6 +183,30 @@ public final class ConfigurationWriter {
                 propertyEl.addAttribute(XMLTags.NAME_TAG, property.getMetaData().getName());
                 propertyEl.addAttribute(XMLTags.VALUE_TAG, property.getValue());
             }
+        }
+
+        // write custom messages
+        for (Map.Entry<String, String> entry : module.getCustomMessages().entrySet()) {
+
+            Element metaEl = moduleEl.addElement(XMLTags.MESSAGE_TAG);
+            metaEl.addAttribute(XMLTags.KEY_TAG, entry.getKey());
+            metaEl.addAttribute(XMLTags.VALUE_TAG, entry.getValue());
+        }
+
+        // write custom metadata
+        for (Map.Entry<String, String> entry : module.getCustomMetaData().entrySet()) {
+
+            Element metaEl = moduleEl.addElement(XMLTags.METADATA_TAG);
+            metaEl.addAttribute(XMLTags.NAME_TAG, entry.getKey());
+            metaEl.addAttribute(XMLTags.VALUE_TAG, entry.getValue());
+        }
+
+        // Write last enabled severity level
+        if (module.getLastEnabledSeverity() != null) {
+
+            Element metaEl = moduleEl.addElement(XMLTags.METADATA_TAG);
+            metaEl.addAttribute(XMLTags.NAME_TAG, XMLTags.LAST_ENABLED_SEVERITY_ID);
+            metaEl.addAttribute(XMLTags.VALUE_TAG, module.getLastEnabledSeverity().name());
         }
 
         // write child modules recursivly

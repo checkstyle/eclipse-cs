@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2007  David Schneider, Lars Ködderitzsch
+// Copyright (C) 2002-2008  David Schneider, Lars Ködderitzsch
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -160,6 +160,12 @@ public class XMLTags {
     /** tag for a checkstyle module property. */
     public static final String PROPERTY_TAG = "property"; //$NON-NLS-1$
 
+    /** tag for a checkstyle custom message. */
+    public static final String MESSAGE_TAG = "message"; //$NON-NLS-1$
+
+    /** tag for a checkstyle message key. */
+    public static final String KEY_TAG = "key"; //$NON-NLS-1$
+
     /** tag for the severity property. */
     public static final String SEVERITY_TAG = "severity"; //$NON-NLS-1$
 
@@ -168,9 +174,6 @@ public class XMLTags {
 
     /** constant for the comment meta data stored with the modules. */
     public static final String COMMENT_ID = CheckstylePlugin.PLUGIN_ID + ".comment"; //$NON-NLS-1$
-
-    /** constant for the custom message meta data stored with the modules. */
-    public static final String CUSTOM_MESSAGE_ID = CheckstylePlugin.PLUGIN_ID + ".customMessage"; //$NON-NLS-1$
 
     /** constant for the lastEnabledSeverity meta data stored with the modules. */
     public static final String LAST_ENABLED_SEVERITY_ID = CheckstylePlugin.PLUGIN_ID

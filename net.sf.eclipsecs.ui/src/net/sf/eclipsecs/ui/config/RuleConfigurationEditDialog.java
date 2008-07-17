@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2007  David Schneider, Lars Ködderitzsch
+// Copyright (C) 2002-2008  David Schneider, Lars Ködderitzsch
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -71,7 +71,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
 
     private Text mIdText;
 
-    private Text mCustomMessageText;
+    // private Text mCustomMessageText;
 
     private ComboViewer mSeverityCombo;
 
@@ -129,8 +129,9 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
         customMessageLabel.setText(Messages.RuleConfigurationEditDialog_lblCustomMessage);
         customMessageLabel.setLayoutData(new GridData());
 
-        mCustomMessageText = new Text(dialog, SWT.SINGLE | SWT.BORDER);
-        mCustomMessageText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        // mCustomMessageText = new Text(dialog, SWT.SINGLE | SWT.BORDER);
+        // mCustomMessageText.setLayoutData(new
+        // GridData(GridData.FILL_HORIZONTAL));
 
         // Build severity
         Label lblSeverity = new Label(dialog, SWT.NULL);
@@ -274,14 +275,14 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
             mIdText.setText(id);
         }
 
-        String customMessage = mRule.getCustomMessage();
-        if (customMessage != null) {
-            mCustomMessageText.setText(customMessage);
-        }
-
-        mIdText.setEditable(!mReadonly);
-        mCustomMessageText.setEditable(!mReadonly);
-        mCommentText.setEditable(!mReadonly);
+        // String customMessage = mRule.getCustomMessage();
+        // if (customMessage != null) {
+        // mCustomMessageText.setText(customMessage);
+        // }
+        //
+        // mIdText.setEditable(!mReadonly);
+        // mCustomMessageText.setEditable(!mReadonly);
+        // mCommentText.setEditable(!mReadonly);
 
         mSeverityCombo.setInput(Severity.values());
         mSeverityCombo.getCombo().setEnabled(!mReadonly);
@@ -348,7 +349,8 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
         String id = StringUtils.trimToNull(mIdText.getText());
 
         // Get the custom message
-        String customMessage = StringUtils.trimToNull(mCustomMessageText.getText());
+        // String customMessage =
+        // StringUtils.trimToNull(mCustomMessageText.getText());
 
         //
         // Build a new collection of configuration properties.
@@ -383,7 +385,6 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
         mRule.setSeverity(severity);
         mRule.setComment(comment);
         mRule.setId(id);
-        mRule.setCustomMessage(customMessage);
 
         super.okPressed();
 

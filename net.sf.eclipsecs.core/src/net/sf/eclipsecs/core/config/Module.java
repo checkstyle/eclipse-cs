@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2007  David Schneider, Lars Ködderitzsch
+// Copyright (C) 2002-2008  David Schneider, Lars Ködderitzsch
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -58,8 +58,8 @@ public class Module implements Cloneable {
     /** the id of the module. */
     private String mId;
 
-    /** the custom message for this module. */
-    private String mCustomMessage;
+    /** the custom messages for this module. */
+    private final Map<String, String> mCustomMessages = new HashMap<String, String>();
 
     /** the severity level. */
     private Severity mSeverityLevel;
@@ -68,7 +68,7 @@ public class Module implements Cloneable {
     private Severity mLastEnabledSeverity;
 
     /** map containing unknown custom metadata of the module. */
-    private Map<String, String> mCustomMetaData = new HashMap<String, String>();
+    private final Map<String, String> mCustomMetaData = new HashMap<String, String>();
 
     //
     // constructors
@@ -139,23 +139,13 @@ public class Module implements Cloneable {
     }
 
     /**
-     * Returns the custom message to display instead of Checkstyle's default
+     * Returns the custom messagess to display instead of Checkstyle's default
      * message.
      * 
      * @return the customMessage
      */
-    public String getCustomMessage() {
-        return mCustomMessage;
-    }
-
-    /**
-     * Sets the custom message to display instead of Checkstyle's default
-     * message.
-     * 
-     * @param customMessage the customMessage to set
-     */
-    public void setCustomMessage(String customMessage) {
-        mCustomMessage = customMessage;
+    public Map<String, String> getCustomMessages() {
+        return mCustomMessages;
     }
 
     /**
