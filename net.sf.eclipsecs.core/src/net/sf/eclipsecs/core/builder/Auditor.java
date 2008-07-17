@@ -191,7 +191,7 @@ public class Auditor {
      * @return the file resource or <code>null</code>
      */
     private IFile getFile(String fileName) {
-        return mFiles.get(fileName);
+        return mFiles.get(new Path(fileName).toString());
     }
 
     /**
