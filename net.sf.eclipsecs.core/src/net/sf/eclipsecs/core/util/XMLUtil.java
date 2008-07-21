@@ -23,6 +23,7 @@ package net.sf.eclipsecs.core.util;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -32,6 +33,8 @@ import javax.xml.transform.TransformerFactory;
 import org.dom4j.Document;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XMLWriter;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -102,4 +105,43 @@ public final class XMLUtil {
         return byteOut.toByteArray();
     }
 
+    /**
+     * Entity resolver which handles mapping public DTDs to internal DTD
+     * resource.
+     * 
+     * @author Lars Koedderitzsch
+     */
+    public static class InternalDtdEntityResolver implements EntityResolver {
+
+        private final Map<String, String> mPublic2InternalDtdMap;
+
+        /**
+         * Creates the entity resolver using a mapping of public DTD name to
+         * internal DTD resource.
+         * 
+         * @param public2InternalDtdMap the public2internal DTD mapping
+         */
+        public InternalDtdEntityResolver(Map<String, String> public2InternalDtdMap) {
+            mPublic2InternalDtdMap = public2InternalDtdMap;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public InputSource resolveEntity(String publicId, String systemId) throws SAXException {
+
+            if (mPublic2InternalDtdMap.containsKey(publicId)) {
+
+                final String dtdResourceName = mPublic2InternalDtdMap.get(publicId);
+
+                final InputStream dtdIS = getClass().getClassLoader().getResourceAsStream(
+                        dtdResourceName);
+                if (dtdIS == null) {
+                    throw new SAXException("Unable to load internal dtd " + dtdResourceName); //$NON-NLS-1$
+                }
+                return new InputSource(dtdIS);
+            }
+            return null;
+        }
+    }
 }

@@ -33,43 +33,45 @@ import net.sf.eclipsecs.core.config.Severity;
 public class RuleMetadata {
 
     /** The diplay name of the module. */
-    private String mName;
+    private final String mName;
 
     /** The internal name of the module. */
-    private String mInternalName;
+    private final String mInternalName;
 
     /** The internal name of the parent module. */
-    private String mParent;
+    private final String mParent;
 
     /** The description of the module. */
     private String mDescription;
 
     /** Determines if the module is hidden. */
-    private boolean mIsHidden;
+    private final boolean mIsHidden;
 
     /** Determines if the module has a severity. */
-    private boolean mHasSeverity;
+    private final boolean mHasSeverity;
 
     /** Determines if the module can be deleted. */
-    private boolean mIsDeletable;
+    private final boolean mIsDeletable;
 
     /** The default severity. */
-    private Severity mDefaultSeverityLevel;
+    private final Severity mDefaultSeverityLevel;
 
     /** The list of property metadata. */
-    private List<ConfigPropertyMetadata> mConfigPropMetadata = new LinkedList<ConfigPropertyMetadata>();
+    private final List<ConfigPropertyMetadata> mConfigPropMetadata = new LinkedList<ConfigPropertyMetadata>();
 
     /** The group. */
-    private RuleGroupMetadata mGroup;
+    private final RuleGroupMetadata mGroup;
 
     /** Alternative names, including the name of the Checkstyle checker class. */
-    private Collection<String> mAlternativeNames;
+    private final Collection<String> mAlternativeNames;
 
     /** Collection fo quick fixes for this module. */
-    private Collection<String> mQuickfixes;
+    private final Collection<String> mQuickfixes;
+
+    private final Collection<String> mMessageKeys;
 
     /** Determines if the module is a singleton. */
-    private boolean mIsSingleton;
+    private final boolean mIsSingleton;
 
     /**
      * Creates a rule metadata.
@@ -101,6 +103,7 @@ public class RuleMetadata {
         mGroup = group;
         mAlternativeNames = new ArrayList<String>();
         mQuickfixes = new ArrayList<String>();
+        mMessageKeys = new ArrayList<String>();
         mIsSingleton = isSingleton;
     }
 
@@ -138,6 +141,24 @@ public class RuleMetadata {
      */
     public Collection<String> getQuickfixClassNames() {
         return mQuickfixes;
+    }
+
+    /**
+     * Adds a message key to this module metadata.
+     * 
+     * @param messageKey the message key to add
+     */
+    public void addMessageKey(String messageKey) {
+        mMessageKeys.add(messageKey);
+    }
+
+    /**
+     * Returns the collection of message keys used by this module.
+     * 
+     * @return the list of message keys
+     */
+    public Collection<String> getMessageKeys() {
+        return mMessageKeys;
     }
 
     /**

@@ -132,6 +132,9 @@ public class XMLTags {
     /** tag for the quickfix element. */
     public static final String QUCKFIX_TAG = "quickfix"; //$NON-NLS-1$
 
+    /** tag for the message key element. */
+    public static final String MESSAGEKEY_TAG = "message-key"; //$NON-NLS-1$
+
     //
     // tags for the checkstyle configuration
     //

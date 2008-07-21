@@ -20,7 +20,6 @@
 
 package net.sf.eclipsecs.core.config.meta;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,8 +35,6 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.TreeMap;
 
-import javax.xml.parsers.ParserConfigurationException;
-
 import net.sf.eclipsecs.core.CheckstylePlugin;
 import net.sf.eclipsecs.core.config.ConfigProperty;
 import net.sf.eclipsecs.core.config.Module;
@@ -45,16 +42,13 @@ import net.sf.eclipsecs.core.config.Severity;
 import net.sf.eclipsecs.core.config.XMLTags;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.core.util.XMLUtil;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.eclipse.osgi.util.NLS;
-import org.xml.sax.Attributes;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
-import org.xml.sax.helpers.DefaultHandler;
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
 
 import com.puppycrawl.tools.checkstyle.PackageNamesLoader;
 import com.puppycrawl.tools.checkstyle.api.AbstractFileSetCheck;
@@ -64,6 +58,9 @@ import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
  * This class is the factory for all Checkstyle rule metadata.
  */
 public final class MetadataFactory {
+
+    /** Map containing the public - internal DTD mapping. */
+    private static final Map<String, String> PUBLIC2INTERNAL_DTD_MAP = new HashMap<String, String>();
 
     /** Metadata for the rule groups. */
     private static Map<String, RuleGroupMetadata> sRuleGroupMetadata;
@@ -89,6 +86,11 @@ public final class MetadataFactory {
      * Static initializer.
      */
     static {
+        PUBLIC2INTERNAL_DTD_MAP.put("-//eclipse-cs//DTD Check Metadata 1.0//EN", //$NON-NLS-1$
+                "/com/puppycrawl/tools/checkstyle/checkstyle-metadata_1_0.dtd"); //$NON-NLS-1$
+        PUBLIC2INTERNAL_DTD_MAP.put("-//eclipse-cs//DTD Check Metadata 1.1//EN", //$NON-NLS-1$
+                "/com/puppycrawl/tools/checkstyle/checkstyle-metadata_1_1.dtd"); //$NON-NLS-1$
+
         refresh();
     }
 
@@ -230,23 +232,12 @@ public final class MetadataFactory {
             try {
                 metadataStream = classLoader.getResourceAsStream(metadataFile);
                 if (metadataStream != null) {
-                    MetaDataHandler metadataHandler = new MetaDataHandler(getMetadataI18NBundle(
-                            metadataFile, classLoader));
-                    XMLUtil.parseWithSAX(metadataStream, metadataHandler, true);
+
+                    ResourceBundle metadataBundle = getMetadataI18NBundle(metadataFile, classLoader);
+                    parseMetadata(metadataStream, metadataBundle);
                 }
             }
-            catch (SAXParseException e) {
-                CheckstyleLog.log(e, NLS.bind("Could not parse metadata file {0} at {1}:{2}", //$NON-NLS-1$
-                        new Object[] { metadataFile, new Integer(e.getLineNumber()),
-                            new Integer(e.getColumnNumber()) }));
-            }
-            catch (SAXException e) {
-                CheckstyleLog.log(e, "Could not read metadata " + metadataFile); //$NON-NLS-1$
-            }
-            catch (ParserConfigurationException e) {
-                CheckstyleLog.log(e, "Could not read metadata " + metadataFile); //$NON-NLS-1$
-            }
-            catch (IOException e) {
+            catch (DocumentException e) {
                 CheckstyleLog.log(e, "Could not read metadata " + metadataFile); //$NON-NLS-1$
             }
             finally {
@@ -303,266 +294,195 @@ public final class MetadataFactory {
         }
     }
 
-    /**
-     * SAX-Handler for parsing of the metadata file.
-     * 
-     * @author Lars Ködderitzsch
-     */
-    private static class MetaDataHandler extends DefaultHandler {
+    @SuppressWarnings("unchecked")
+    private static void parseMetadata(InputStream metadataStream, ResourceBundle metadataBundle)
+        throws DocumentException, CheckstylePluginException {
 
-        private static final String DTD_PUBLIC_ID = "-//eclipse-cs//DTD Check Metadata 1.0//EN"; //$NON-NLS-1$
+        SAXReader reader = new SAXReader();
+        Document document = reader.read(metadataStream);
 
-        private static final String DTD_RESOURCE_NAME = "/com/puppycrawl/tools/checkstyle/checkstyle-metadata_1_0.dtd"; //$NON-NLS-1$
+        List<Element> groupElements = document.getRootElement().elements(
+                XMLTags.RULE_GROUP_METADATA_TAG);
 
-        /** the current rule group. */
-        private RuleGroupMetadata mCurrentGroup;
+        for (Element groupEl : groupElements) {
 
-        /** the current rule meta data. */
-        private RuleMetadata mCurrentRule;
+            String groupName = groupEl.attributeValue(XMLTags.NAME_TAG).trim();
+            groupName = localize(groupName, metadataBundle);
 
-        /** the current property. */
-        private ConfigPropertyMetadata mCurrentProperty;
+            RuleGroupMetadata group = getRuleGroupMetadata(groupName);
 
-        /** flags if we're inside a description element. */
-        private boolean mInDescriptionElement;
+            if (group == null) {
 
-        /** StringBuffer containing the description. */
-        private StringBuffer mDescription;
+                boolean hidden = Boolean.valueOf(groupEl.attributeValue(XMLTags.HIDDEN_TAG))
+                        .booleanValue();
+                int priority = 0;
+                try {
+                    priority = Integer.parseInt(groupEl.attributeValue(XMLTags.PRIORITY_TAG));
+                }
+                catch (Exception e) {
+                    CheckstyleLog.log(e);
+                    priority = Integer.MAX_VALUE;
+                }
 
-        private final ResourceBundle mI18NBundle;
+                group = new RuleGroupMetadata(groupName, hidden, priority);
+                sRuleGroupMetadata.put(groupName, group);
+            }
 
-        // /**
-        // * @see
-        // org.xml.sax.ext.EntityResolver2#getExternalSubset(java.lang.String,
-        // * java.lang.String)
-        // */
-        // public InputSource getExternalSubset(String name, String baseURI)
-        // throws SAXException,
-        // IOException
-        // {
-        //
-        // InputStream dtdIS =
-        // getClass().getClassLoader().getResourceAsStream(DTD_RESOURCE_NAME);
-        // return new InputSource(dtdIS);
-        // }
-
-        public MetaDataHandler(ResourceBundle i18nBundle) {
-            mI18NBundle = i18nBundle;
+            // process the modules
+            processModules(groupEl, group, metadataBundle);
         }
+    }
 
-        /*
-         * 
-         */
-        public InputSource resolveEntity(String publicId, String systemId) throws SAXException {
-            if (DTD_PUBLIC_ID.equals(publicId)) {
+    @SuppressWarnings("unchecked")
+    private static void processModules(Element groupElement, RuleGroupMetadata groupMetadata,
+            ResourceBundle metadataBundle) throws CheckstylePluginException {
 
-                final InputStream dtdIS = getClass().getClassLoader().getResourceAsStream(
-                        DTD_RESOURCE_NAME);
-                if (dtdIS == null) {
-                    throw new SAXException("Unable to load internal dtd " + DTD_RESOURCE_NAME); //$NON-NLS-1$
-                }
-                return new InputSource(dtdIS);
+        List<Element> moduleElements = groupElement.elements(XMLTags.RULE_METADATA_TAG);
+        for (Element moduleEl : moduleElements) {
+
+            // default severity
+            String defaultSeverity = moduleEl.attributeValue(XMLTags.DEFAULT_SEVERITY_TAG);
+            Severity severity = defaultSeverity == null || defaultSeverity.trim().length() == 0 ? getDefaultSeverity()
+                    : Severity.valueOf(defaultSeverity);
+
+            String name = moduleEl.attributeValue(XMLTags.NAME_TAG).trim();
+            name = localize(name, metadataBundle);
+            String internalName = moduleEl.attributeValue(XMLTags.INTERNAL_NAME_TAG).trim();
+
+            String parentName = moduleEl.attributeValue(XMLTags.PARENT_TAG) != null ? moduleEl
+                    .attributeValue(XMLTags.PARENT_TAG).trim() : null;
+            boolean hidden = Boolean.valueOf(moduleEl.attributeValue(XMLTags.HIDDEN_TAG))
+                    .booleanValue();
+            boolean hasSeverity = !"false"
+                    .equals(moduleEl.attributeValue(XMLTags.HAS_SEVERITY_TAG));
+            boolean deletable = !"false".equals(moduleEl.attributeValue(XMLTags.DELETABLE_TAG)); //$NON-NLS-1$
+            boolean isSingleton = Boolean
+                    .valueOf(moduleEl.attributeValue(XMLTags.IS_SINGLETON_TAG)).booleanValue();
+
+            // create rule metadata
+            RuleMetadata module = new RuleMetadata(name, internalName, parentName, severity,
+                    hidden, hasSeverity, deletable, isSingleton, groupMetadata);
+            groupMetadata.getRuleMetadata().add(module);
+
+            // register internal name
+            sRuleMetadata.put(internalName, module);
+
+            // process description
+            String description = moduleEl.elementTextTrim(XMLTags.DESCRIPTION_TAG);
+            description = localize(description, metadataBundle);
+            module.setDescription(description);
+
+            // process properties
+            processProperties(moduleEl, module, metadataBundle);
+
+            // process alternative names
+            for (Element altNameEl : (List<Element>) moduleEl
+                    .elements(XMLTags.ALTERNATIVE_NAME_TAG)) {
+
+                String alternativeName = altNameEl.attributeValue(XMLTags.INTERNAL_NAME_TAG);
+
+                // register alternative name
+                sAlternativeNamesMap.put(alternativeName, module);
+                module.addAlternativeName(alternativeName);
             }
-            // This is a hack to workaround problem with SAX
-            // DefaultHeader.resolveEntity():
-            // sometimes it throws SAX- and IO- exceptions
-            // sometime SAX only :(
-            try {
-                if (false) {
-                    throw new IOException(""); //$NON-NLS-1$
-                }
-                return super.resolveEntity(publicId, systemId);
+
+            // process quickfixes
+            for (Element quickfixEl : (List<Element>) moduleEl.elements(XMLTags.QUCKFIX_TAG)) {
+
+                String quickfixClassName = quickfixEl.attributeValue(XMLTags.CLASSNAME_TAG);
+                module.addQuickfix(quickfixClassName);
             }
-            catch (IOException e) {
-                throw new SAXException("" + e, e); //$NON-NLS-1$
+
+            // process message keys
+            for (Element quickfixEl : (List<Element>) moduleEl.elements(XMLTags.MESSAGEKEY_TAG)) {
+
+                String messageKey = quickfixEl.attributeValue(XMLTags.KEY_TAG);
+                module.addMessageKey(messageKey);
             }
         }
+    }
 
-        /**
-         * @see org.xml.sax.helpers.DefaultHandler#startElement(java.lang.String,
-         *      java.lang.String, java.lang.String, org.xml.sax.Attributes)
-         */
-        public void startElement(String uri, String localName, String qName, Attributes attributes)
-            throws SAXException {
-            try {
+    @SuppressWarnings("unchecked")
+    private static void processProperties(Element moduleElement, RuleMetadata moduleMetadata,
+            ResourceBundle metadataBundle) throws CheckstylePluginException {
 
-                if (XMLTags.RULE_GROUP_METADATA_TAG.equals(qName)) {
+        List<Element> propertyElements = moduleElement.elements(XMLTags.PROPERTY_METADATA_TAG);
+        for (Element propertyEl : propertyElements) {
 
-                    String groupName = attributes.getValue(XMLTags.NAME_TAG).trim();
-                    groupName = localize(groupName);
+            ConfigPropertyType type = ConfigPropertyType.valueOf(propertyEl
+                    .attributeValue(XMLTags.DATATYPE_TAG));
 
-                    mCurrentGroup = getRuleGroupMetadata(groupName);
+            String name = propertyEl.attributeValue(XMLTags.NAME_TAG).trim();
+            String defaultValue = StringUtils.trim(propertyEl
+                    .attributeValue(XMLTags.DEFAULT_VALUE_TAG));
+            String overrideDefaultValue = StringUtils.trim(propertyEl
+                    .attributeValue(XMLTags.DEFAULT_VALUE_OVERRIDE_TAG));
 
-                    if (mCurrentGroup == null) {
+            ConfigPropertyMetadata property = new ConfigPropertyMetadata(type, name, defaultValue,
+                    overrideDefaultValue);
 
-                        boolean hidden = Boolean.valueOf(attributes.getValue(XMLTags.HIDDEN_TAG))
-                                .booleanValue();
-                        int priority = 0;
-                        try {
-                            priority = Integer.parseInt(attributes.getValue(XMLTags.PRIORITY_TAG));
-                        }
-                        catch (Exception e) {
-                            CheckstyleLog.log(e);
-                            priority = Integer.MAX_VALUE;
-                        }
+            moduleMetadata.getPropertyMetadata().add(property);
 
-                        // Create the groups
-                        mCurrentGroup = new RuleGroupMetadata(groupName, hidden, priority);
-                        sRuleGroupMetadata.put(groupName, mCurrentGroup);
-                    }
-                }
-                else if (XMLTags.RULE_METADATA_TAG.equals(qName)) {
-                    // default severity
-                    String defaultSeverity = attributes.getValue(XMLTags.DEFAULT_SEVERITY_TAG);
-                    Severity severity = defaultSeverity == null
-                            || defaultSeverity.trim().length() == 0 ? getDefaultSeverity()
-                            : Severity.valueOf(defaultSeverity);
+            // get description
+            String description = propertyEl.elementTextTrim(XMLTags.DESCRIPTION_TAG);
+            description = localize(description, metadataBundle);
+            property.setDescription(description);
 
-                    String name = attributes.getValue(XMLTags.NAME_TAG).trim();
-                    String internalName = attributes.getValue(XMLTags.INTERNAL_NAME_TAG).trim();
+            // get property enumeration values
+            Element enumEl = propertyEl.element(XMLTags.ENUMERATION_TAG);
+            if (enumEl != null) {
+                String optionProvider = enumEl.attributeValue(XMLTags.OPTION_PROVIDER);
+                if (optionProvider != null) {
 
-                    String parentName = attributes.getValue(XMLTags.PARENT_TAG) != null ? attributes
-                            .getValue(XMLTags.PARENT_TAG).trim()
-                            : null;
-                    boolean hidden = Boolean.valueOf(attributes.getValue(XMLTags.HIDDEN_TAG))
-                            .booleanValue();
-                    boolean hasSeverity = !"false".equals(attributes //$NON-NLS-1$
-                            .getValue(XMLTags.HAS_SEVERITY_TAG));
-                    boolean deletable = !"false".equals(attributes.getValue(XMLTags.DELETABLE_TAG)); //$NON-NLS-1$
-                    boolean isSingleton = Boolean.valueOf(
-                            attributes.getValue(XMLTags.IS_SINGLETON_TAG)).booleanValue();
-
-                    // create rule metadata
-                    mCurrentRule = new RuleMetadata(localize(name), internalName, parentName,
-                            severity, hidden, hasSeverity, deletable, isSingleton, mCurrentGroup);
-                    mCurrentGroup.getRuleMetadata().add(mCurrentRule);
-
-                    // register internal name
-                    sRuleMetadata.put(internalName, mCurrentRule);
-                }
-                else if (XMLTags.PROPERTY_METADATA_TAG.equals(qName)) {
-                    ConfigPropertyType type = ConfigPropertyType.valueOf(attributes
-                            .getValue(XMLTags.DATATYPE_TAG));
-
-                    String name = attributes.getValue(XMLTags.NAME_TAG).trim();
-                    String defaultValue = StringUtils.trim(attributes
-                            .getValue(XMLTags.DEFAULT_VALUE_TAG));
-                    String overrideDefaultValue = StringUtils.trim(attributes
-                            .getValue(XMLTags.DEFAULT_VALUE_OVERRIDE_TAG));
-
-                    mCurrentProperty = new ConfigPropertyMetadata(type, name, defaultValue,
-                            overrideDefaultValue);
-
-                    // add to current rule
-                    mCurrentRule.getPropertyMetadata().add(mCurrentProperty);
-                }
-                else if (XMLTags.ALTERNATIVE_NAME_TAG.equals(qName)) {
-                    // register alternative name
-                    sAlternativeNamesMap.put(attributes.getValue(XMLTags.INTERNAL_NAME_TAG),
-                            mCurrentRule);
-                    mCurrentRule.addAlternativeName(attributes.getValue(XMLTags.INTERNAL_NAME_TAG));
-                }
-                else if (XMLTags.DESCRIPTION_TAG.equals(qName)) {
-                    mInDescriptionElement = true;
-                    mDescription = new StringBuffer();
-                }
-                else if (XMLTags.ENUMERATION_TAG.equals(qName)) {
-                    String optionProvider = attributes.getValue(XMLTags.OPTION_PROVIDER);
-                    if (optionProvider != null) {
-
+                    try {
                         Class<?> providerClass = Class.forName(optionProvider);
 
                         if (IOptionProvider.class.isAssignableFrom(providerClass)) {
 
                             IOptionProvider provider = (IOptionProvider) providerClass
                                     .newInstance();
-                            mCurrentProperty.getPropertyEnumeration().addAll(provider.getOptions());
+                            property.getPropertyEnumeration().addAll(provider.getOptions());
                         }
                         else if (Enum.class.isAssignableFrom(providerClass)) {
 
                             EnumSet<?> values = EnumSet.allOf((Class<Enum>) providerClass);
                             for (Enum e : values) {
-                                mCurrentProperty.getPropertyEnumeration().add(
-                                        e.name().toLowerCase());
+                                property.getPropertyEnumeration().add(e.name().toLowerCase());
                             }
                         }
                     }
+                    catch (ClassNotFoundException e) {
+                        CheckstylePluginException.rethrow(e);
+                    }
+                    catch (InstantiationException e) {
+                        CheckstylePluginException.rethrow(e);
+                    }
+                    catch (IllegalAccessException e) {
+                        CheckstylePluginException.rethrow(e);
+                    }
                 }
-                else if (XMLTags.PROPERTY_VALUE_OPTIONS_TAG.equals(qName)) {
-                    mCurrentProperty.getPropertyEnumeration().add(
-                            attributes.getValue(XMLTags.VALUE_TAG));
-                }
-                else if (XMLTags.QUCKFIX_TAG.equals(qName)) {
-                    String className = attributes.getValue(XMLTags.CLASSNAME_TAG);
-                    mCurrentRule.addQuickfix(className);
-                }
-            }
-            catch (ClassNotFoundException e) {
-                throw new SAXException(e.getLocalizedMessage(), e);
-            }
-            catch (InstantiationException e) {
-                throw new SAXException(e.getLocalizedMessage(), e);
-            }
-            catch (IllegalAccessException e) {
-                throw new SAXException(e.getLocalizedMessage(), e);
-            }
 
-        }
-
-        /**
-         * @see org.xml.sax.helpers.DefaultHandler#endElement(java.lang.String,
-         *      java.lang.String, java.lang.String)
-         */
-        public void endElement(String uri, String localName, String qName) {
-            if (XMLTags.RULE_METADATA_TAG.equals(qName)) {
-                mCurrentRule = null;
-            }
-
-            else if (XMLTags.PROPERTY_METADATA_TAG.equals(qName)) {
-                mCurrentProperty = null;
-            }
-            else if (XMLTags.DESCRIPTION_TAG.equals(qName)) {
-                mInDescriptionElement = false;
-                // Set the description to the current element
-                String description = mDescription.toString();
-                if (mCurrentProperty != null) {
-                    mCurrentProperty.setDescription(localize(description));
-                }
-                else if (mCurrentRule != null) {
-                    mCurrentRule.setDescription(localize(description));
+                // get explicit enumeration option values
+                for (Element optionEl : (List<Element>) enumEl
+                        .elements(XMLTags.PROPERTY_VALUE_OPTIONS_TAG)) {
+                    property.getPropertyEnumeration().add(
+                            optionEl.attributeValue(XMLTags.VALUE_TAG));
                 }
             }
         }
+    }
 
-        /**
-         * @see org.xml.sax.helpers.DefaultHandler#characters(char[], int, int)
-         */
-        public void characters(char[] ch, int start, int length) {
+    private static String localize(String localizationCandidate, ResourceBundle metadataBundle) {
 
-            if (mInDescriptionElement) {
-                mDescription.append(ch, start, length);
+        if (metadataBundle != null && localizationCandidate != null
+                && localizationCandidate.startsWith("%")) {
+            try {
+                return metadataBundle.getString(localizationCandidate.substring(1));
+            }
+            catch (MissingResourceException e) {
+                return localizationCandidate;
             }
         }
-
-        /**
-         * @see org.xml.sax.ErrorHandler#error(org.xml.sax.SAXParseException)
-         */
-        public void error(SAXParseException e) throws SAXException {
-            throw e;
-        }
-
-        private String localize(String localizationCandidate) {
-
-            if (mI18NBundle != null && localizationCandidate.startsWith("%")) {
-                try {
-                    return mI18NBundle.getString(localizationCandidate.substring(1));
-                }
-                catch (MissingResourceException e) {
-                    return localizationCandidate;
-                }
-            }
-            return localizationCandidate;
-        }
-
+        return localizationCandidate;
     }
 }
