@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE checkstyle-metadata PUBLIC
-"-//eclipse-cs//DTD Check Metadata 1.0//EN"
-"http://eclipse-cs.sourceforge.net/dtds/checkstyle-metadata_1_0.dtd">
+"-//eclipse-cs//DTD Check Metadata 1.1//EN"
+"http://eclipse-cs.sourceforge.net/dtds/checkstyle-metadata_1_1.dtd">
 <checkstyle-metadata>
     <rule-group-metadata name="%Blocks.group" priority="800">
 
@@ -13,6 +13,7 @@
                 <description>%AvoidNestedBlocks.allowInSwitchCase</description>
             </property-metadata>
             <quickfix classname="net.sf.eclipsecs.quickfixes.blocks.AvoidNextedBlocksQuickfix"/>
+            <message-key key="block.nested"/>
         </rule-metadata>
 
         <rule-metadata name="%EmptyBlock.name" internal-name="EmptyBlock" parent="TreeWalker">
@@ -38,6 +39,8 @@
                     <property-value-option value="STATIC_INIT"/>
                 </enumeration>
             </property-metadata>
+            <message-key key="block.noStmt"/>
+            <message-key key="block.empty"/>
         </rule-metadata>
 
         <rule-metadata name="%LeftCurly.name" internal-name="LeftCurly" parent="TreeWalker">
@@ -71,6 +74,8 @@
                     <property-value-option value="METHOD_DEF"/>
                 </enumeration>
             </property-metadata>
+            <message-key key="line.new"/>
+            <message-key key="line.previous"/>
         </rule-metadata>
 
         <rule-metadata name="%NeedBraces.name" internal-name="NeedBraces" parent="TreeWalker">
@@ -89,6 +94,7 @@
                 </enumeration>
             </property-metadata>
             <quickfix classname="net.sf.eclipsecs.quickfixes.blocks.NeedBracesQuickfix"/>
+            <message-key key="needBraces"/>
         </rule-metadata>
 
         <rule-metadata name="%RightCurly.name" internal-name="RightCurly" parent="TreeWalker">
@@ -113,6 +119,9 @@
             <property-metadata name="shouldStartLine" datatype="Boolean" default-value="true">
                 <description>%RightCurly.shouldStartLine</description>
             </property-metadata>
+            <message-key key="line.alone"/>
+            <message-key key="line.same"/>
+            <message-key key="line.new"/>
         </rule-metadata>
     </rule-group-metadata>
 </checkstyle-metadata>
