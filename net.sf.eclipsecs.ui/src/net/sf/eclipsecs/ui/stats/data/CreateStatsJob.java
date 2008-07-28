@@ -20,18 +20,13 @@
 
 package net.sf.eclipsecs.ui.stats.data;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
-import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
 import net.sf.eclipsecs.core.builder.CheckstyleMarker;
 import net.sf.eclipsecs.core.config.meta.MetadataFactory;
-import net.sf.eclipsecs.core.config.meta.RuleMetadata;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
 import net.sf.eclipsecs.ui.stats.Messages;
@@ -173,32 +168,14 @@ public class CreateStatsJob extends Job {
 
     public static String getUnlocalizedMessage(IMarker marker) throws CoreException {
         String key = (String) marker.getAttribute(CheckstyleMarker.MESSAGE_KEY);
-        RuleMetadata ruleMetadata = MetadataFactory.getRuleMetadata((String) marker
-                .getAttribute(CheckstyleMarker.MODULE_NAME));
+        String moduleInternalName = (String) marker.getAttribute(CheckstyleMarker.MODULE_NAME);
 
-        // for some unknown reason there is no metadata or key
-        if (key == null || ruleMetadata == null) {
-            // return the actual message
-            return (String) marker.getAttribute(IMarker.MESSAGE);
+        String standardMessage = MetadataFactory.getStandardMessage(key, moduleInternalName);
+
+        if (standardMessage == null) {
+            standardMessage = (String) marker.getAttribute(IMarker.MESSAGE);
         }
-
-        List namesToCheck = new ArrayList();
-        namesToCheck.add(ruleMetadata.getInternalName());
-        namesToCheck.addAll(ruleMetadata.getAlternativeNames());
-
-        for (Iterator iter = namesToCheck.iterator(); iter.hasNext();) {
-            String checker = (String) iter.next();
-            try {
-                String message = getMessageBundle(checker, key);
-                return message;
-            }
-            catch (MissingResourceException e) {
-                // let's continue to check the other alternative names
-            }
-        }
-
-        // none was found: return the current message
-        return (String) marker.getAttribute(IMarker.MESSAGE);
+        return standardMessage;
     }
 
     /**

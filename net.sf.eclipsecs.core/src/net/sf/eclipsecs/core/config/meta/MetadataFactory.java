@@ -202,6 +202,60 @@ public final class MetadataFactory {
     }
 
     /**
+     * Returns Checkstyles standard message for a given module name and message
+     * key.
+     * 
+     * @param messageKey the message key
+     * @param moduleInternalName the module name
+     * @return Checkstyles standard message for this module and key
+     */
+    public static String getStandardMessage(String messageKey, String moduleInternalName) {
+
+        RuleMetadata rule = getRuleMetadata(moduleInternalName);
+        return getStandardMessage(messageKey, rule);
+    }
+
+    /**
+     * Returns Checkstyles standard message for a given module and message key.
+     * 
+     * @param messageKey the message key
+     * @param rule the module metadata
+     * @return Checkstyles standard message for this module and key
+     */
+    public static String getStandardMessage(String messageKey, RuleMetadata rule) {
+
+        // for some unknown reason there is no metadata or key
+        if (messageKey == null || rule == null) {
+            return null;
+        }
+
+        List<String> namesToCheck = new ArrayList<String>();
+        namesToCheck.add(rule.getInternalName());
+        namesToCheck.addAll(rule.getAlternativeNames());
+
+        for (String moduleClass : namesToCheck) {
+            try {
+
+                int endIndex = moduleClass.lastIndexOf('.');
+                String messages = "messages"; //$NON-NLS-1$
+                if (endIndex >= 0) {
+                    String packageName = moduleClass.substring(0, endIndex);
+                    messages = packageName + "." + messages; //$NON-NLS-1$
+                }
+                ResourceBundle resourceBundle = ResourceBundle.getBundle(messages, CheckstylePlugin
+                        .getPlatformLocale(), CheckstylePlugin.class.getClassLoader());
+
+                String message = resourceBundle.getString(messageKey);
+                return message;
+            }
+            catch (MissingResourceException e) {
+                // let's continue to check the other alternative names
+            }
+        }
+        return null;
+    }
+
+    /**
      * Refreshes the metadata.
      */
     public static synchronized void refresh() {
