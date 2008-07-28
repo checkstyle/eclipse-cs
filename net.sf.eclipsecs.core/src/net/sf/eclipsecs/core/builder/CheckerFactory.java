@@ -157,7 +157,7 @@ public final class CheckerFactory {
      * @return the checker for the given configuration file
      * @throws CheckstylePluginException the configuration could not be read
      */
-    public final static ConfigurationReader.AdditionalConfigData getAdditionalData(
+    public static ConfigurationReader.AdditionalConfigData getAdditionalData(
             ICheckConfiguration config, IProject project) throws CheckstylePluginException {
 
         String cacheKey = getCacheKey(config, project);
