@@ -42,6 +42,7 @@ import net.sf.eclipsecs.core.config.Severity;
 import net.sf.eclipsecs.core.config.XMLTags;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
+import net.sf.eclipsecs.core.util.XMLUtil;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
@@ -353,6 +354,7 @@ public final class MetadataFactory {
         throws DocumentException, CheckstylePluginException {
 
         SAXReader reader = new SAXReader();
+        reader.setEntityResolver(new XMLUtil.InternalDtdEntityResolver(PUBLIC2INTERNAL_DTD_MAP));
         Document document = reader.read(metadataStream);
 
         List<Element> groupElements = document.getRootElement().elements(

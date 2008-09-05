@@ -28,7 +28,6 @@ import java.util.Map;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import javax.xml.transform.TransformerFactory;
 
 import org.dom4j.Document;
 import org.dom4j.io.OutputFormat;
@@ -44,8 +43,6 @@ import org.xml.sax.helpers.DefaultHandler;
 public final class XMLUtil {
 
     private static SAXParserFactory sSAXParserFactory = SAXParserFactory.newInstance();
-
-    private static TransformerFactory sTransformerFactory = TransformerFactory.newInstance();
 
     /**
      * Private constructor to prevent instances.
