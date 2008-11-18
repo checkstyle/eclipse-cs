@@ -5,7 +5,7 @@ Bundle-SymbolicName: net.sf.eclipsecs.ui;singleton:=true
 Bundle-Version: 0.0.0
 Bundle-Vendor: Lars Ködderitzsch
 Bundle-Activator: net.sf.eclipsecs.ui.CheckstyleUIPlugin
-Bundle-Localization: plugin
+Bundle-Localization: ui
 Require-Bundle: net.sf.eclipsecs.checkstyle,
  net.sf.eclipsecs.core,
  org.eclipse.core.runtime,
