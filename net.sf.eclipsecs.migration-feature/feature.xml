@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="net.sf.eclipsecs.migration"
+      label="%feature.label"
+      provider-name="%feature.provider_name"
+      version="0.0.0">
+
+   <description url="%description.url">
+      This feature integreates Checkstyle into Eclipse.
+   </description>
+
+   <copyright>
+      %copyright.text
+   </copyright>
+
+   <license url="license.html">
+      %license.text
+   </license>
+
+   <url>
+      <update label="%updateSiteName" url="http://eclipse-cs.sourceforge.net/update"/>
+      <discovery label="%updateSiteName" url="http://eclipse-cs.sourceforge.net/update"/>
+   </url>
+
+   <requires>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="net.sf.eclipsecs.core"/>
+   </requires>
+
+   <plugin
+         id="net.sf.eclipsecs.migration"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>
