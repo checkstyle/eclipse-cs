@@ -35,8 +35,8 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
 import org.eclipse.core.resources.IProject;
 
 /**
- * Working set implementation that manages global configurations configured for
- * the Eclipse workspace.
+ * Working set implementation that manages local configurations configured for
+ * the project.
  * 
  * @author Lars Ködderitzsch
  */
@@ -47,13 +47,13 @@ public class LocalCheckConfigurationWorkingSet implements ICheckConfigurationWor
     //
 
     /** The project configuration. */
-    private IProjectConfiguration mProjectConfig;
+    private final IProjectConfiguration mProjectConfig;
 
     /** The internal list of working copies belonging to this working set. */
-    private List<CheckConfigurationWorkingCopy> mWorkingCopies;
+    private final List<CheckConfigurationWorkingCopy> mWorkingCopies;
 
     /** List of working copies that were deleted from the working set. */
-    private List<CheckConfigurationWorkingCopy> mDeletedConfigurations;
+    private final List<CheckConfigurationWorkingCopy> mDeletedConfigurations;
 
     //
     // constructors
