@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    This configuration file was written by the eclipse-cs plugin configuration editor
+-->
+<!--
+    Checkstyle-Configuration: Test
+    Description: none
+-->
+<!DOCTYPE module PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.2//EN" "http://www.puppycrawl.com/dtds/configuration_1_2.dtd">
+<module name="Checker">
+    <property name="severity" value="warning"/>
+    <module name="TreeWalker">
+        
+        <module name="MethodLimit">
+            <property name="customMessage" value="Man, only {0} methods allowed."/>
+            <property name="max" value="1"/>
+        </module>
+        
+        <module name="MethodLimit"/>
+        
+        <module name="Header">
+            <property name="headerFile" value="${config_loc}/java.header"/>
+        </module>
+    </module>
+</module>

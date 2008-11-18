@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.1"?>
+<plugin>
+
+    <!-- 
+        Sample builtin check configuration
+    -->
+    <extension
+        id="checkstyle.CheckConfiguration"
+        point="net.sf.eclipsecs.core.configurations">
+        <check-configuration
+            name="Sample Builtin Checks"
+            location="sample_checks.xml"
+            description="Sample Built-in configuration"/>
+    </extension>
+
+    <!-- 
+        Sample checkstyle plugin filter
+    -->
+    <extension
+        id="checkstyle.CheckstyleFilters"
+        point="net.sf.eclipsecs.core.filters">
+        <filter
+            name="Sample Filter"
+            internal-name="SampleFilter"
+            description="Sample Filter (doing nothing)"
+            class="net.sf.eclipsecs.sample.filter.SampleFilter"/>
+    </extension>
+
+</plugin>

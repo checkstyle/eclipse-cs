@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE checkstyle-metadata PUBLIC
+"-//eclipse-cs//DTD Check Metadata 1.1//EN"
+"http://eclipse-cs.sourceforge.net/dtds/checkstyle-metadata_1_1.dtd">
+<checkstyle-metadata>
+    <rule-group-metadata name="My custom checks" priority="1600">
+
+        <rule-metadata name="%MethodLimit.name" internal-name="MethodLimit" parent="TreeWalker">
+            <alternative-name internal-name="net.sf.eclipsecs.sample.checks.MethodLimitCheck"/>
+            <description>%MethodLimit.desc</description>
+            <property-metadata name="max" datatype="Integer" default-value="30">
+                <description>The maximum number of allowed methods.</description>
+            </property-metadata>
+        </rule-metadata>
+    </rule-group-metadata>
+</checkstyle-metadata>
