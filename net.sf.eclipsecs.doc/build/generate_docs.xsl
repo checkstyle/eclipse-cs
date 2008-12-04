@@ -265,6 +265,14 @@
                     class="level2">Creating a custom plug-in filter</a>
             </xsl:if>
             <xsl:if
+                test="$section != 'docs-ext'">
+                <a
+                    href="{$path-prefix}maven.html"
+                    class="level1"><img
+                        src="{$path-prefix}images/plus.gif"
+                        alt=""/>Synchronization with maven-checkstyle-plugin</a>
+            </xsl:if>            
+            <xsl:if
                 test="$section != 'project'">
                 <a
                     href="{$path-prefix}news.shtml"
