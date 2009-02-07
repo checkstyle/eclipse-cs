@@ -262,6 +262,12 @@
                     <property-value-option value="WILDCARD_TYPE"/>
                 </enumeration>
             </property-metadata>
+            <property-metadata name="allowEmptyConstructors" datatype="Boolean" default-value="false">
+                <description>%WhitespaceAround.allowEmptyConstructors</description>
+            </property-metadata>
+            <property-metadata name="allowEmptyMethods" datatype="Boolean" default-value="false">
+                <description>%WhitespaceAround.allowEmptyMethods</description>
+            </property-metadata>
         </rule-metadata>
 
     </rule-group-metadata>
