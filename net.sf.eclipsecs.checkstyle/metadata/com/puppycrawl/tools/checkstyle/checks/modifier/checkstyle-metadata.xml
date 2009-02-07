@@ -9,7 +9,7 @@
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.modifier.ModifierOrderCheck"/>
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.ModifierOrderCheck"/>
             <description>%ModifierOrder.desc</description>
-            <quickfix classname="net.sf.eclipsecs.quickfixes.modifier.ModifierOrderQuickfix"/>
+            <quickfix classname="net.sf.eclipsecs.ui.quickfixes.modifier.ModifierOrderQuickfix"/>
         </rule-metadata>
 
         <rule-metadata name="%RedundantModifier.name" internal-name="RedundantModifier" parent="TreeWalker">
@@ -25,7 +25,7 @@
                     <property-value-option value="ANNOTATION_FIELD_DEF"/>
                 </enumeration>
             </property-metadata>
-            <quickfix classname="net.sf.eclipsecs.quickfixes.modifier.RedundantModifierQuickfix"/>
+            <quickfix classname="net.sf.eclipsecs.ui.quickfixes.modifier.RedundantModifierQuickfix"/>
         </rule-metadata>
 
     </rule-group-metadata>

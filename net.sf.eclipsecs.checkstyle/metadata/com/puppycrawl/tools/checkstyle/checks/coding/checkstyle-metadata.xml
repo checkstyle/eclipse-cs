@@ -19,7 +19,7 @@
         <rule-metadata name="%DefaultComesLast.name" internal-name="DefaultComesLast" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.DefaultComesLastCheck"/>
             <description>%DefaultComesLast.desc</description>
-            <quickfix classname="net.sf.eclipsecs.quickfixes.coding.DefaultComesLastQuickfix"/>
+            <quickfix classname="net.sf.eclipsecs.ui.quickfixes.coding.DefaultComesLastQuickfix"/>
         </rule-metadata>
 
         <rule-metadata name="%DeclarationOrder.name" internal-name="DeclarationOrder" parent="TreeWalker">
@@ -37,7 +37,7 @@
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.EmptyStatementCheck"/>
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.EmptyStatementCheck"/>
             <description>%EmptyStatement.desc</description>
-            <quickfix classname="net.sf.eclipsecs.quickfixes.coding.EmptyStatementQuickfix"/>
+            <quickfix classname="net.sf.eclipsecs.ui.quickfixes.coding.EmptyStatementQuickfix"/>
         </rule-metadata>
 
         <rule-metadata name="%EqualsAvoidNull.name" internal-name="EqualsAvoidNull" parent="TreeWalker">
@@ -77,7 +77,7 @@
                     <property-value-option value="VARIABLE_DEF"/>
                 </enumeration>
             </property-metadata>
-            <quickfix classname="net.sf.eclipsecs.quickfixes.coding.FinalLocalVariableQuickfix"/>
+            <quickfix classname="net.sf.eclipsecs.ui.quickfixes.coding.FinalLocalVariableQuickfix"/>
         </rule-metadata>
 
         <rule-metadata name="%HiddenField.name" internal-name="HiddenField" parent="TreeWalker">
@@ -242,7 +242,7 @@
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.MissingSwitchDefaultCheck"/>
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.MissingSwitchDefaultCheck"/>
             <description>%MissingSwitchDefault.desc</description>
-            <quickfix classname="net.sf.eclipsecs.quickfixes.coding.MissingSwitchDefaultQuickfix"/>
+            <quickfix classname="net.sf.eclipsecs.ui.quickfixes.coding.MissingSwitchDefaultQuickfix"/>
         </rule-metadata>
 
         <rule-metadata name="%ModifiedControlVariable.name" internal-name="ModifiedControlVariable" parent="TreeWalker">
@@ -367,7 +367,7 @@
         <rule-metadata name="%StringLiteralEquality.name" internal-name="StringLiteralEquality" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.StringLiteralEqualityCheck"/>
             <description>%StringLiteralEquality.desc</description>
-            <quickfix classname="net.sf.eclipsecs.quickfixes.coding.StringLiteralEqualityQuickfix"/>
+            <quickfix classname="net.sf.eclipsecs.ui.quickfixes.coding.StringLiteralEqualityQuickfix"/>
         </rule-metadata>
 
         <rule-metadata name="%SuperClone.name" internal-name="SuperClone" parent="TreeWalker">

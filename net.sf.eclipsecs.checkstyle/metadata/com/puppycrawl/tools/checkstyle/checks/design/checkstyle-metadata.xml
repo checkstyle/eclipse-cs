@@ -9,14 +9,14 @@
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.design.DesignForExtensionCheck"/>
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.DesignForExtensionCheck"/>
             <description>%DesignForExtension.desc</description>
-            <quickfix classname="net.sf.eclipsecs.quickfixes.design.DesignForExtensionQuickfix"/>
+            <quickfix classname="net.sf.eclipsecs.ui.quickfixes.design.DesignForExtensionQuickfix"/>
         </rule-metadata>
 
         <rule-metadata name="%FinalClass.name" internal-name="FinalClass" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.design.FinalClassCheck"/>
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.FinalClassCheck"/>
             <description>%FinalClass.desc</description>
-            <quickfix classname="net.sf.eclipsecs.quickfixes.design.FinalClassQuickfix"/>
+            <quickfix classname="net.sf.eclipsecs.ui.quickfixes.design.FinalClassQuickfix"/>
         </rule-metadata>
 
         <rule-metadata name="%HideUtilityClassConstructor.name" internal-name="HideUtilityClassConstructor"

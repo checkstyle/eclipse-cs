@@ -297,18 +297,22 @@ public final class ProjectConfigurationFactory {
 
             IFilter filter = PluginFilters.getByInternalName(filterEl
                     .attributeValue(XMLTags.NAME_TAG));
-            filter.setEnabled(Boolean.valueOf(filterEl.attributeValue(XMLTags.ENABLED_TAG))
-                    .booleanValue());
 
-            // get the filter data
-            List<String> filterData = new ArrayList<String>();
-            List<Element> dataElements = filterEl.elements(XMLTags.FILTER_DATA_TAG);
-            for (Element dataEl : dataElements) {
-                filterData.add(dataEl.attributeValue(XMLTags.VALUE_TAG));
+            // guard against unknown/retired filters
+            if (filter == null) {
+                filter.setEnabled(Boolean.valueOf(filterEl.attributeValue(XMLTags.ENABLED_TAG))
+                        .booleanValue());
+
+                // get the filter data
+                List<String> filterData = new ArrayList<String>();
+                List<Element> dataElements = filterEl.elements(XMLTags.FILTER_DATA_TAG);
+                for (Element dataEl : dataElements) {
+                    filterData.add(dataEl.attributeValue(XMLTags.VALUE_TAG));
+                }
+                filter.setFilterData(filterData);
+
+                filters.add(filter);
             }
-            filter.setFilterData(filterData);
-
-            filters.add(filter);
         }
 
         return filters;

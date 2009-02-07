@@ -11,7 +11,7 @@
             <property-metadata name="javaStyle" datatype="Boolean" default-value="true">
                 <description>%ArrayTypeStyle.javaStyle</description>
             </property-metadata>
-            <quickfix classname="net.sf.eclipsecs.quickfixes.misc.ArrayTypeStyleQuickfix"/>
+            <quickfix classname="net.sf.eclipsecs.ui.quickfixes.misc.ArrayTypeStyleQuickfix"/>
         </rule-metadata>
 
         <rule-metadata name="%DescendantToken.name" internal-name="DescendantToken" parent="TreeWalker">
@@ -57,7 +57,7 @@
                     <property-value-option value="LITERAL_CATCH"/>
                 </enumeration>
             </property-metadata>
-            <quickfix classname="net.sf.eclipsecs.quickfixes.misc.FinalParametersQuickfix"/>
+            <quickfix classname="net.sf.eclipsecs.ui.quickfixes.misc.FinalParametersQuickfix"/>
         </rule-metadata>
 
         <rule-metadata name="%GenericIllegalRegexp.name" internal-name="GenericIllegalRegexp" parent="TreeWalker">
@@ -149,13 +149,13 @@
             <property-metadata name="excludedClasses" datatype="Regex" default-value="^$">
                 <description>%UncommentedMain.excludedClasses</description>
             </property-metadata>
-            <quickfix classname="net.sf.eclipsecs.quickfixes.misc.UncommentedMainQuickfix"/>
+            <quickfix classname="net.sf.eclipsecs.ui.quickfixes.misc.UncommentedMainQuickfix"/>
         </rule-metadata>
 
         <rule-metadata name="%UpperEll.name" internal-name="UpperEll" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.UpperEllCheck"/>
             <description>%UpperEll.desc</description>
-            <quickfix classname="net.sf.eclipsecs.quickfixes.misc.UpperEllQuickfix"/>
+            <quickfix classname="net.sf.eclipsecs.ui.quickfixes.misc.UpperEllQuickfix"/>
         </rule-metadata>
 
         <rule-metadata name="%Regexp.name" internal-name="Regexp" parent="TreeWalker">

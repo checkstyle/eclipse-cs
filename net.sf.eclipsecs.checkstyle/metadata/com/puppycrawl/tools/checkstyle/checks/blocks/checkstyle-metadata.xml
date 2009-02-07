@@ -12,7 +12,7 @@
             <property-metadata name="allowInSwitchCase" datatype="Boolean" default-value="false">
                 <description>%AvoidNestedBlocks.allowInSwitchCase</description>
             </property-metadata>
-            <quickfix classname="net.sf.eclipsecs.quickfixes.blocks.AvoidNextedBlocksQuickfix"/>
+            <quickfix classname="net.sf.eclipsecs.ui.quickfixes.blocks.AvoidNextedBlocksQuickfix"/>
             <message-key key="block.nested"/>
         </rule-metadata>
 
@@ -93,7 +93,7 @@
                     <property-value-option value="LITERAL_WHILE"/>
                 </enumeration>
             </property-metadata>
-            <quickfix classname="net.sf.eclipsecs.quickfixes.blocks.NeedBracesQuickfix"/>
+            <quickfix classname="net.sf.eclipsecs.ui.quickfixes.blocks.NeedBracesQuickfix"/>
             <message-key key="needBraces"/>
         </rule-metadata>
 
