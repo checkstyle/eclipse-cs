@@ -25,63 +25,22 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
 import org.dom4j.Document;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XMLWriter;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * Provides utility methods for XML manipulations.
  */
 public final class XMLUtil {
 
-    private static SAXParserFactory sSAXParserFactory = SAXParserFactory.newInstance();
-
     /**
      * Private constructor to prevent instances.
      */
     private XMLUtil() {}
-
-    /**
-     * Parses an input stream with a sax parser using the given default handler.
-     * 
-     * @param in the input stream
-     * @param handler the default handler receiving the sax events
-     * @throws ParserConfigurationException error creating the sax parser
-     * @throws SAXException error parsing the input stream
-     * @throws IOException error reading the input stream
-     */
-    public static void parseWithSAX(InputStream in, DefaultHandler handler)
-        throws ParserConfigurationException, SAXException, IOException {
-
-        parseWithSAX(in, handler, false);
-    }
-
-    /**
-     * Validated and parses an input stream with a sax parser using the given
-     * default handler.
-     * 
-     * @param in the input stream
-     * @param handler the default handler receiving the sax events
-     * @param validate <code>true</code> if the xml should be validated.
-     * @throws ParserConfigurationException error creating the sax parser
-     * @throws SAXException error parsing the input stream
-     * @throws IOException error reading the input stream
-     */
-    public static void parseWithSAX(InputStream in, DefaultHandler handler, boolean validate)
-        throws ParserConfigurationException, SAXException, IOException {
-        sSAXParserFactory.setValidating(validate);
-        SAXParser parser = sSAXParserFactory.newSAXParser();
-
-        parser.parse(in, handler);
-    }
 
     /**
      * Creates a pretty printed representation of the document as a byte array.

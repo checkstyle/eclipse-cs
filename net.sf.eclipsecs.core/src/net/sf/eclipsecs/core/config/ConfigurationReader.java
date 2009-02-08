@@ -20,28 +20,23 @@
 
 package net.sf.eclipsecs.core.config;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Stack;
 
-import javax.xml.parsers.ParserConfigurationException;
-
-import net.sf.eclipsecs.core.Messages;
 import net.sf.eclipsecs.core.config.meta.MetadataFactory;
 import net.sf.eclipsecs.core.config.meta.RuleMetadata;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 import net.sf.eclipsecs.core.util.XMLUtil;
 
 import org.apache.commons.lang.StringUtils;
-import org.eclipse.osgi.util.NLS;
-import org.xml.sax.Attributes;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.Element;
+import org.dom4j.VisitorSupport;
+import org.dom4j.io.SAXReader;
 
 /**
  * Utitlity class to read a checkstyle configuration and transform to the
@@ -96,19 +91,17 @@ public final class ConfigurationReader {
 
         List<Module> rules = null;
         try {
-            ConfigurationHandler handler = new ConfigurationHandler();
-            XMLUtil.parseWithSAX(in, handler);
-            rules = handler.getRules();
+
+            SAXReader reader = new SAXReader();
+            reader
+                    .setEntityResolver(new XMLUtil.InternalDtdEntityResolver(
+                            PUBLIC2INTERNAL_DTD_MAP));
+            Document document = reader.read(in);
+
+            rules = getModules(document);
         }
-        catch (SAXException se) {
-            Exception ex = se.getException() != null ? se.getException() : se;
+        catch (DocumentException ex) {
             CheckstylePluginException.rethrow(ex);
-        }
-        catch (ParserConfigurationException pe) {
-            CheckstylePluginException.rethrow(pe);
-        }
-        catch (IOException ioe) {
-            CheckstylePluginException.rethrow(ioe);
         }
 
         return rules != null ? rules : new ArrayList<Module>();
@@ -151,139 +144,114 @@ public final class ConfigurationReader {
         return new AdditionalConfigData(tabWidth);
     }
 
-    /**
-     * SAX-Handler for parsing checkstyle configurations and building modules.
-     * 
-     * @author Lars Ködderitzsch
-     */
-    private static class ConfigurationHandler extends DefaultHandler {
+    private static List<Module> getModules(Document document) {
 
-        /** The list of modules. */
-        private final List<Module> mRules = new ArrayList<Module>();
+        final List<Module> modules = new ArrayList<Module>();
 
-        /** The current modules being built. */
-        private final Stack<Module> mCurrentStack = new Stack<Module>();
+        document.accept(new VisitorSupport() {
 
-        public List<Module> getRules() {
-            return mRules;
-        }
+            @Override
+            public void visit(Element node) {
 
-        /**
-         * {@inheritDoc}
-         */
-        public InputSource resolveEntity(String publicId, String systemId) throws SAXException {
-            if (PUBLIC2INTERNAL_DTD_MAP.containsKey(publicId)) {
-                final String dtdResourceName = PUBLIC2INTERNAL_DTD_MAP.get(publicId);
-                final InputStream dtdIS = getClass().getClassLoader().getResourceAsStream(
-                        dtdResourceName);
-                if (dtdIS == null) {
-                    throw new SAXException(NLS.bind(Messages.msgErrorLoadingCheckstyleDTD,
-                            dtdResourceName));
-                }
-                return new InputSource(dtdIS);
-            }
-            // This is a hack to workaround problem with SAX
-            // DefaultHeader.resolveEntity():
-            // sometimes it throws SAX- and IO- exceptions
-            // sometime SAX only :(
-            try {
-                if (false) {
-                    throw new IOException(""); //$NON-NLS-1$
-                }
-                return super.resolveEntity(publicId, systemId);
-            }
-            catch (IOException e) {
-                throw new SAXException("" + e, e); //$NON-NLS-1$
-            }
-        }
+                if (XMLTags.MODULE_TAG.equals(node.getName())) {
 
-        /**
-         * {@inheritDoc}
-         */
-        public void startElement(String uri, String localName, String qName, Attributes attributes) {
+                    String name = node.attributeValue(XMLTags.NAME_TAG);
 
-            if (XMLTags.MODULE_TAG.equals(qName)) {
-                String name = attributes.getValue(XMLTags.NAME_TAG);
-
-                RuleMetadata metadata = MetadataFactory.getRuleMetadata(name);
-                Module module = null;
-                if (metadata != null) {
-                    module = new Module(metadata, true);
-                }
-                else {
-                    module = new Module(name);
-                }
-
-                mRules.add(module);
-                mCurrentStack.push(module);
-            }
-            else if (XMLTags.PROPERTY_TAG.equals(qName)) {
-                String name = attributes.getValue(XMLTags.NAME_TAG);
-                String value = attributes.getValue(XMLTags.VALUE_TAG);
-
-                Module module = mCurrentStack.peek();
-                if (name.equals(XMLTags.SEVERITY_TAG) && module.getMetaData() != null
-                        && module.getMetaData().hasSeverity()) {
-                    try {
-                        module.setSeverity(Severity.valueOf(value));
+                    RuleMetadata metadata = MetadataFactory.getRuleMetadata(name);
+                    Module module = null;
+                    if (metadata != null) {
+                        module = new Module(metadata, true);
                     }
-                    catch (IllegalArgumentException e) {
-                        module.setSeverity(Severity.warning);
+                    else {
+                        module = new Module(name);
                     }
-                }
-                else if (name.equals(XMLTags.ID_TAG)) {
-                    module.setId(StringUtils.trimToNull(value));
-                }
-                else if (module.getMetaData() != null) {
-                    ConfigProperty property = module.getProperty(name);
-                    if (property != null) {
-                        property.setValue(value);
+
+                    addProperties(node, module);
+                    addMessages(node, module);
+                    addMetadata(node, module);
+
+                    // if the module has not metadata attached we create some
+                    // generic metadata
+                    if (module.getMetaData() == null) {
+                        MetadataFactory.createGenericMetadata(module);
                     }
-                    // properties that are not within the meta data are omitted
-                }
-                else {
-                    // if module has no meta data defined create property
-                    ConfigProperty property = new ConfigProperty(name, value);
-                    module.getProperties().add(property);
+
+                    modules.add(module);
                 }
             }
-            else if (XMLTags.MESSAGE_TAG.equals(qName)) {
-                String key = attributes.getValue(XMLTags.KEY_TAG);
-                String value = attributes.getValue(XMLTags.VALUE_TAG);
+        });
+        return modules;
+    }
 
-                Module module = mCurrentStack.peek();
-                module.getCustomMessages().put(key, value);
+    private static void addProperties(Element moduleEl, Module module) {
+
+        @SuppressWarnings("unchecked")
+        List<Element> propertyEls = moduleEl.elements(XMLTags.PROPERTY_TAG);
+
+        for (Element propertyEl : propertyEls) {
+
+            String name = propertyEl.attributeValue(XMLTags.NAME_TAG);
+            String value = propertyEl.attributeValue(XMLTags.VALUE_TAG);
+
+            if (name.equals(XMLTags.SEVERITY_TAG) && module.getMetaData() != null
+                    && module.getMetaData().hasSeverity()) {
+                try {
+                    module.setSeverity(Severity.valueOf(value));
+                }
+                catch (IllegalArgumentException e) {
+                    module.setSeverity(Severity.warning);
+                }
             }
-            else if (XMLTags.METADATA_TAG.equals(qName)) {
-                String name = attributes.getValue(XMLTags.NAME_TAG);
-                String value = attributes.getValue(XMLTags.VALUE_TAG);
-
-                Module module = mCurrentStack.peek();
-                if (XMLTags.COMMENT_ID.equals(name)) {
-                    module.setComment(value);
+            else if (name.equals(XMLTags.ID_TAG)) {
+                module.setId(StringUtils.trimToNull(value));
+            }
+            else if (module.getMetaData() != null) {
+                ConfigProperty property = module.getProperty(name);
+                if (property != null) {
+                    property.setValue(value);
                 }
-                else if (XMLTags.LAST_ENABLED_SEVERITY_ID.equals(name)) {
-                    module.setLastEnabledSeverity(Severity.valueOf(value));
-                }
-                else {
-                    module.getCustomMetaData().put(name, value);
-                }
+                // properties that are not within the meta data are omitted
+            }
+            else {
+                // if module has no meta data defined create property
+                ConfigProperty property = new ConfigProperty(name, value);
+                module.getProperties().add(property);
             }
         }
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        public void endElement(String uri, String localName, String qName) {
+    private static void addMessages(Element moduleEl, Module module) {
 
-            if (XMLTags.MODULE_TAG.equals(qName)) {
+        @SuppressWarnings("unchecked")
+        List<Element> messageEls = moduleEl.elements(XMLTags.MESSAGE_TAG);
 
-                // if the module has not metadata attached we create some
-                // generic metadata
-                Module module = mCurrentStack.pop();
-                if (module.getMetaData() == null) {
-                    MetadataFactory.createGenericMetadata(module);
-                }
+        for (Element messageEl : messageEls) {
+
+            String key = messageEl.attributeValue(XMLTags.KEY_TAG);
+            String value = messageEl.attributeValue(XMLTags.VALUE_TAG);
+
+            module.getCustomMessages().put(key, value);
+        }
+    }
+
+    private static void addMetadata(Element moduleEl, Module module) {
+
+        @SuppressWarnings("unchecked")
+        List<Element> metaEls = moduleEl.elements(XMLTags.METADATA_TAG);
+
+        for (Element metaEl : metaEls) {
+
+            String name = metaEl.attributeValue(XMLTags.NAME_TAG);
+            String value = metaEl.attributeValue(XMLTags.VALUE_TAG);
+
+            if (XMLTags.COMMENT_ID.equals(name)) {
+                module.setComment(value);
+            }
+            else if (XMLTags.LAST_ENABLED_SEVERITY_ID.equals(name)) {
+                module.setLastEnabledSeverity(Severity.valueOf(value));
+            }
+            else {
+                module.getCustomMetaData().put(name, value);
             }
         }
     }
