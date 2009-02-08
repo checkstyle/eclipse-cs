@@ -62,12 +62,6 @@ public class CheckstylePluginPrefs extends AbstractPreferenceInitializer {
      */
     public static final String PREF_MARKER_AMOUNT_LIMIT = "marker.amount.limit"; //$NON-NLS-1$
 
-    /**
-     * Preference name indicating if the project classloader feature should be
-     * disabled. This can help with worspace crashes with RAD 6.0.
-     */
-    public static final String PREF_DISABLE_PROJ_CLASSLOADER = "diable.project.classloader"; //$NON-NLS-1$
-
     /** Default value for the marker limitation. */
     public static final int MARKER_LIMIT = 100;
 
@@ -82,7 +76,6 @@ public class CheckstylePluginPrefs extends AbstractPreferenceInitializer {
         prefs.putBoolean(PREF_INCLUDE_MODULE_IDS, false);
         prefs.putBoolean(PREF_LIMIT_MARKERS_PER_RESOURCE, false);
         prefs.putInt(PREF_MARKER_AMOUNT_LIMIT, MARKER_LIMIT);
-        prefs.putBoolean(PREF_DISABLE_PROJ_CLASSLOADER, false);
 
         try {
             prefs.flush();

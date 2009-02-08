@@ -28,7 +28,6 @@ import java.util.Locale;
 import java.util.Map;
 
 import net.sf.eclipsecs.core.CheckstylePlugin;
-import net.sf.eclipsecs.core.CheckstylePluginPrefs;
 import net.sf.eclipsecs.core.config.CheckstyleConfigurationFile;
 import net.sf.eclipsecs.core.config.ConfigurationReader;
 import net.sf.eclipsecs.core.config.ICheckConfiguration;
@@ -269,10 +268,7 @@ public final class CheckerFactory {
         Locale platformLocale = CheckstylePlugin.getPlatformLocale();
         checker.setLocaleLanguage(platformLocale.getLanguage());
         checker.setLocaleCountry(platformLocale.getCountry());
-
-        if (!CheckstylePluginPrefs.getBoolean(CheckstylePluginPrefs.PREF_DISABLE_PROJ_CLASSLOADER)) {
-            checker.setClassloader(sSharedClassLoader);
-        }
+        checker.setClassloader(sSharedClassLoader);
 
         checker.configure(configuration);
 

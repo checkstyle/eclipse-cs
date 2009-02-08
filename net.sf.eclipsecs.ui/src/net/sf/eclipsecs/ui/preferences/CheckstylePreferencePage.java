@@ -83,8 +83,6 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
 
     private Button mLimitCheckstyleMarkers;
 
-    private Button mDisableClassloader;
-
     private Text mTxtMarkerLimit;
 
     private CheckConfigurationWorkingSetEditor mWorkingSetEditor;
@@ -278,30 +276,6 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         lblRebuildNote.setToolTipText(Messages.CheckstylePreferencePage_txtSuggestRebuild);
         SWTUtil.addTooltipOnPressSupport(lblRebuildNote);
 
-        //
-        // Create the "disable classloader" check box
-        //
-
-        Composite disableClassloaderComposite = new Composite(generalComposite, SWT.NULL);
-        gridLayout = new GridLayout(2, false);
-        gridLayout.marginHeight = 0;
-        gridLayout.marginWidth = 0;
-        disableClassloaderComposite.setLayout(gridLayout);
-
-        mDisableClassloader = new Button(disableClassloaderComposite, SWT.CHECK);
-        mDisableClassloader.setText(Messages.CheckstylePreferencePage_lblDisableClassloader);
-        mDisableClassloader.setSelection(CheckstylePluginPrefs
-                .getBoolean(CheckstylePluginPrefs.PREF_DISABLE_PROJ_CLASSLOADER));
-        mDisableClassloader
-                .setToolTipText(Messages.CheckstylePreferencePage_lblDisableClassloaderNote);
-
-        Label lblDisableClassloader = new Label(disableClassloaderComposite, SWT.NULL);
-        lblDisableClassloader.setImage(CheckstyleUIPluginImages
-                .getImage(CheckstyleUIPluginImages.HELP_ICON));
-        lblDisableClassloader
-                .setToolTipText(Messages.CheckstylePreferencePage_lblDisableClassloaderNote);
-        SWTUtil.addTooltipOnPressSupport(lblDisableClassloader);
-
         return generalComposite;
     }
 
@@ -353,12 +327,6 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
             //
             CheckstyleUIPluginPrefs.setString(CheckstyleUIPluginPrefs.PREF_ASK_BEFORE_REBUILD,
                     mRebuildIfNeeded.getItem(mRebuildIfNeeded.getSelectionIndex()));
-
-            //
-            // Save the classloader preferences.
-            //
-            CheckstylePluginPrefs.setBoolean(CheckstylePluginPrefs.PREF_DISABLE_PROJ_CLASSLOADER,
-                    mDisableClassloader.getSelection());
 
             //
             // fileset warning preference
