@@ -286,7 +286,7 @@ public final class CheckConfigurationFactory {
             String description = elements[i].getAttribute(XMLTags.DESCRIPTION_TAG);
             String location = elements[i].getAttribute(XMLTags.LOCATION_TAG);
 
-            IConfigurationType configType = new BuiltInConfigurationType();
+            IConfigurationType configType = ConfigurationTypes.getByInternalName("builtin");
 
             Map<String, String> additionalData = new HashMap<String, String>();
             additionalData.put(BuiltInConfigurationType.CONTRIBUTOR_KEY, elements[i]
