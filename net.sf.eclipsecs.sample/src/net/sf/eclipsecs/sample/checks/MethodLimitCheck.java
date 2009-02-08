@@ -25,7 +25,7 @@ public class MethodLimitCheck extends Check {
         int methodDefs = objBlock.getChildCount(TokenTypes.METHOD_DEF);
         // report error if limit is reached
         if (methodDefs > max) {
-            log(ast.getLineNo(), "too many methods, only {0} are allowed", max);
+            log(ast.getLineNo(), "methodlimit", max);
         }
     }
 }
