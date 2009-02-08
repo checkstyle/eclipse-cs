@@ -118,6 +118,28 @@ public final class ProjectConfigurationFactory {
     }
 
     /**
+     * Creates a default project configuration for the given projects, using the
+     * default globbal check configuration.
+     * 
+     * @param project the project
+     * @return the default project configuration
+     */
+    public static IProjectConfiguration createDefaultProjectConfiguration(IProject project) {
+
+        FileSet standardFileSet = new FileSet(Messages.SimpleFileSetsEditor_nameAllFileset,
+                CheckConfigurationFactory.getDefaultCheckConfiguration());
+        try {
+            standardFileSet.getFileMatchPatterns().add(new FileMatchPattern(".*"));
+        }
+        catch (CheckstylePluginException e) {
+            throw new RuntimeException(e);
+        }
+
+        List<FileSet> fileSets = Arrays.asList(standardFileSet);
+        return new ProjectConfiguration(project, null, fileSets, null, true);
+    }
+
+    /**
      * Load the audit configurations from the persistent state storage.
      */
     private static IProjectConfiguration loadFromPersistence(IProject project)
@@ -130,19 +152,12 @@ public final class ProjectConfigurationFactory {
         IFile file = project.getFile(PROJECT_CONFIGURATION_FILE);
         boolean exists = file.exists();
         if (!exists) {
-
-            FileSet standardFileSet = new FileSet(Messages.SimpleFileSetsEditor_nameAllFileset,
-                    CheckConfigurationFactory.getDefaultCheckConfiguration());
-            standardFileSet.getFileMatchPatterns().add(new FileMatchPattern(".*"));
-
-            List<FileSet> fileSets = Arrays.asList(standardFileSet);
-            return new ProjectConfiguration(project, null, fileSets, null, true);
+            return createDefaultProjectConfiguration(project);
         }
 
         InputStream inStream = null;
         try {
             inStream = file.getContents(true);
-
             configuration = getProjectConfiguration(inStream, project);
         }
         catch (DocumentException e) {

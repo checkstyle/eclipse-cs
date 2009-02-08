@@ -31,6 +31,7 @@ import net.sf.eclipsecs.core.projectconfig.IProjectConfiguration;
 import net.sf.eclipsecs.core.projectconfig.ProjectConfigurationFactory;
 import net.sf.eclipsecs.core.projectconfig.ProjectConfigurationWorkingCopy;
 import net.sf.eclipsecs.core.projectconfig.filters.IFilter;
+import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
 import net.sf.eclipsecs.ui.CheckstyleUIPluginPrefs;
@@ -147,13 +148,14 @@ public class CheckstylePropertyPage extends PropertyPage {
     public void setElement(IAdaptable element) {
         super.setElement(element);
 
+        IProject project = null;
+
         try {
 
             //
             // Get the project.
             //
 
-            IProject project = null;
             IResource resource = (IResource) element;
             if (resource.getType() == IResource.PROJECT) {
                 project = (IProject) resource;
@@ -166,12 +168,26 @@ public class CheckstylePropertyPage extends PropertyPage {
             mCheckstyleInitiallyActivated = project.hasNature(CheckstyleNature.NATURE_ID);
         }
         catch (CoreException e) {
-            CheckstyleUIPlugin
-                    .errorDialog(getShell(), Messages.errorOpeningPropertiesPage, e, true);
+            handleConfigFileError(e, project);
         }
         catch (CheckstylePluginException e) {
-            CheckstyleUIPlugin
-                    .errorDialog(getShell(), Messages.errorOpeningPropertiesPage, e, true);
+            handleConfigFileError(e, project);
+        }
+    }
+
+    private void handleConfigFileError(Exception e, IProject project) {
+
+        CheckstyleLog.log(e, Messages.errorOpeningPropertiesPage);
+        CheckstyleUIPlugin.warningDialog(null, Messages.errorOpeningPropertiesPage, e);
+
+        IProjectConfiguration projectConfig = ProjectConfigurationFactory
+                .createDefaultProjectConfiguration(project);
+        mProjectConfig = new ProjectConfigurationWorkingCopy(projectConfig);
+        try {
+            mCheckstyleInitiallyActivated = project.hasNature(CheckstyleNature.NATURE_ID);
+        }
+        catch (CoreException e1) {
+            CheckstyleUIPlugin.errorDialog(null, e1.getMessage(), e1, true);
         }
     }
 
@@ -419,23 +435,26 @@ public class CheckstylePropertyPage extends PropertyPage {
      * {@inheritDoc}
      */
     public boolean isValid() {
-        // check if all check configurations resolve
-        List<FileSet> fileSets = mProjectConfig.getFileSets();
-        for (FileSet fileset : fileSets) {
-            ICheckConfiguration checkConfig = fileset.getCheckConfig();
-            if (checkConfig != null) {
-                try {
-                    checkConfig.getCheckstyleConfiguration();
-                }
-                catch (CheckstylePluginException e) {
-                    CheckstyleUIPlugin.warningDialog(getShell(), NLS.bind(
-                            Messages.errorCannotResolveCheckLocation, checkConfig.getLocation(),
-                            checkConfig.getName()), e);
-                    return false;
+
+        if (mProjectConfig != null) {
+            // check if all check configurations resolve
+            List<FileSet> fileSets = mProjectConfig.getFileSets();
+            for (FileSet fileset : fileSets) {
+                ICheckConfiguration checkConfig = fileset.getCheckConfig();
+                if (checkConfig != null) {
+                    try {
+                        checkConfig.getCheckstyleConfiguration();
+                    }
+                    catch (CheckstylePluginException e) {
+                        setErrorMessage(NLS.bind(Messages.errorCannotResolveCheckLocation,
+                                checkConfig.getLocation(), checkConfig.getName()));
+                        return false;
+                    }
                 }
             }
         }
 
+        setErrorMessage(null);
         return true;
     }
 
@@ -518,8 +537,7 @@ public class CheckstylePropertyPage extends PropertyPage {
             ICheckStateListener, IDoubleClickListener {
 
         /**
-         * @see org.eclipse.swt.events.SelectionListener#widgetSelected(
-         *      org.eclipse.swt.events.SelectionEvent)
+         * @see org.eclipse.swt.events.SelectionListener#widgetSelected(org.eclipse.swt.events.SelectionEvent)
          */
         public void widgetSelected(SelectionEvent e) {
 
@@ -529,9 +547,12 @@ public class CheckstylePropertyPage extends PropertyPage {
 
                 ISelection selection = mFilterList.getSelection();
                 openFilterEditor(selection);
+                getContainer().updateButtons();
             }
             if (source == mMainTab) {
                 mFileSetsEditor.refresh();
+                getContainer().updateButtons();
+
             }
             else if (source == mChkSimpleConfig) {
                 try {
@@ -626,8 +647,7 @@ public class CheckstylePropertyPage extends PropertyPage {
         }
 
         /**
-         * @see org.eclipse.jface.viewers.IDoubleClickListener#doubleClick(
-         *      org.eclipse.jface.viewers.DoubleClickEvent)
+         * @see org.eclipse.jface.viewers.IDoubleClickListener#doubleClick(org.eclipse.jface.viewers.DoubleClickEvent)
          */
         public void doubleClick(DoubleClickEvent event) {
 
