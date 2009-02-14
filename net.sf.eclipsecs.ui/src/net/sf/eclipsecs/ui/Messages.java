@@ -362,6 +362,12 @@ public final class Messages extends NLS {
 
     public static String RuleConfigurationEditDialog_msgRestoreDefault;
 
+    public static String RuleConfigurationEditDialog_tabAdvanced;
+
+    public static String RuleConfigurationEditDialog_tabGeneral;
+
+    public static String RuleConfigurationEditDialog_titleCustMsg;
+
     public static String RuleConfigurationEditDialog_titleRestoreDefault;
 
     public static String RuleConfigurationEditDialog_titleRuleConfigEditor;

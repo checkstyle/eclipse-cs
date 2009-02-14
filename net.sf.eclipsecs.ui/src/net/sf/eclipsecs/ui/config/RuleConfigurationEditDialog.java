@@ -20,12 +20,17 @@
 
 package net.sf.eclipsecs.ui.config;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import net.sf.eclipsecs.core.config.ConfigProperty;
 import net.sf.eclipsecs.core.config.Module;
 import net.sf.eclipsecs.core.config.Severity;
+import net.sf.eclipsecs.core.config.meta.MetadataFactory;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
@@ -57,6 +62,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.TabFolder;
+import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
 import org.osgi.service.prefs.BackingStoreException;
 
@@ -67,11 +74,11 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
 
     private final Module mRule;
 
+    private TabFolder mMainTab;
+
     private Text mCommentText;
 
     private Text mIdText;
-
-    // private Text mCustomMessageText;
 
     private ComboViewer mSeverityCombo;
 
@@ -80,6 +87,8 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
     private Button mBtnTranslate;
 
     private Button mBtnSort;
+
+    private Map<String, Text> mCustomMessages;
 
     private boolean mReadonly = false;
 
@@ -105,40 +114,36 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
     protected Control createDialogArea(Composite parent) {
         Composite composite = (Composite) super.createDialogArea(parent);
 
-        Composite dialog = new Composite(composite, SWT.NONE);
-        dialog.setLayoutData(new GridData(GridData.FILL_BOTH));
+        mMainTab = new TabFolder(composite, SWT.NULL);
+        mMainTab.setLayoutData(new GridData(GridData.FILL_BOTH));
+
+        Composite generalSettings = createGeneralSection();
+        Composite advancedSettings = createAdvancedSection();
+
+        TabItem mainItem = new TabItem(mMainTab, SWT.NULL);
+        mainItem.setControl(generalSettings);
+        mainItem.setText(Messages.RuleConfigurationEditDialog_tabGeneral);
+
+        TabItem advancedItem = new TabItem(mMainTab, SWT.NULL);
+        advancedItem.setControl(advancedSettings);
+        advancedItem.setText(Messages.RuleConfigurationEditDialog_tabAdvanced);
+
+        initialize();
+        return composite;
+    }
+
+    private Composite createGeneralSection() {
+        Composite generalSettings = new Composite(mMainTab, SWT.NULL);
+        generalSettings.setLayoutData(new GridData(GridData.FILL_BOTH));
         GridLayout layout = new GridLayout(2, false);
-        dialog.setLayout(layout);
-
-        // Build comment
-        Label commentLabel = new Label(dialog, SWT.NULL);
-        commentLabel.setText(Messages.RuleConfigurationEditDialog_lblComment);
-        commentLabel.setLayoutData(new GridData());
-
-        mCommentText = new Text(dialog, SWT.SINGLE | SWT.BORDER);
-        mCommentText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-        Label idLabel = new Label(dialog, SWT.NULL);
-        idLabel.setText(Messages.RuleConfigurationEditDialog_lblId);
-        idLabel.setLayoutData(new GridData());
-
-        mIdText = new Text(dialog, SWT.SINGLE | SWT.BORDER);
-        mIdText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-        Label customMessageLabel = new Label(dialog, SWT.NULL);
-        customMessageLabel.setText(Messages.RuleConfigurationEditDialog_lblCustomMessage);
-        customMessageLabel.setLayoutData(new GridData());
-
-        // mCustomMessageText = new Text(dialog, SWT.SINGLE | SWT.BORDER);
-        // mCustomMessageText.setLayoutData(new
-        // GridData(GridData.FILL_HORIZONTAL));
+        generalSettings.setLayout(layout);
 
         // Build severity
-        Label lblSeverity = new Label(dialog, SWT.NULL);
+        Label lblSeverity = new Label(generalSettings, SWT.NULL);
         lblSeverity.setText(Messages.RuleConfigurationEditDialog_lblSeverity);
         lblSeverity.setLayoutData(new GridData());
 
-        mSeverityCombo = new ComboViewer(dialog);
+        mSeverityCombo = new ComboViewer(generalSettings);
         mSeverityCombo.setContentProvider(new ArrayContentProvider());
         mSeverityCombo.setLabelProvider(new LabelProvider() {
             /**
@@ -150,7 +155,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
         });
         mSeverityCombo.getControl().setLayoutData(new GridData());
 
-        Group properties = new Group(dialog, SWT.NULL);
+        Group properties = new Group(generalSettings, SWT.NULL);
         properties.setLayout(new GridLayout(3, false));
         properties.setText(Messages.RuleConfigurationEditDialog_lblProperties);
         GridData gd = new GridData(GridData.FILL_BOTH);
@@ -163,9 +168,72 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
 
             properties.dispose();
         }
+        return generalSettings;
+    }
 
-        initialize();
-        return composite;
+    private Composite createAdvancedSection() {
+
+        Composite advancedSettings = new Composite(mMainTab, SWT.NULL);
+        advancedSettings.setLayoutData(new GridData(GridData.FILL_BOTH));
+        GridLayout layout = new GridLayout(2, false);
+        advancedSettings.setLayout(layout);
+
+        // Build comment
+        Label commentLabel = new Label(advancedSettings, SWT.NULL);
+        commentLabel.setText(Messages.RuleConfigurationEditDialog_lblComment);
+        commentLabel.setLayoutData(new GridData());
+
+        mCommentText = new Text(advancedSettings, SWT.SINGLE | SWT.BORDER);
+        mCommentText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+        Label idLabel = new Label(advancedSettings, SWT.NULL);
+        idLabel.setText(Messages.RuleConfigurationEditDialog_lblId);
+        idLabel.setLayoutData(new GridData());
+
+        mIdText = new Text(advancedSettings, SWT.SINGLE | SWT.BORDER);
+        mIdText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+        Group messagesGroup = new Group(advancedSettings, SWT.NULL);
+        messagesGroup.setText(Messages.RuleConfigurationEditDialog_titleCustMsg);
+        messagesGroup.setLayout(new GridLayout(2, false));
+        GridData d = new GridData(GridData.FILL_HORIZONTAL);
+        d.horizontalSpan = 2;
+        messagesGroup.setLayoutData(d);
+
+        mCustomMessages = new HashMap<String, Text>();
+
+        // take keys from metadata as well as predefined from the
+        // configuration. This way we don't lose keys not defined in metadata.
+        Set<String> msgKeys = new TreeSet<String>();
+        msgKeys.addAll(mRule.getMetaData().getMessageKeys());
+        msgKeys.addAll(mRule.getCustomMessages().keySet());
+
+        for (String msgKey : msgKeys) {
+
+            Label msgLabel = new Label(messagesGroup, SWT.NULL);
+            msgLabel.setText(msgKey);
+            msgLabel.setLayoutData(new GridData());
+
+            Text msgText = new Text(messagesGroup, SWT.SINGLE | SWT.BORDER | SWT.SEARCH);
+            msgText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+            String standardMessage = MetadataFactory.getStandardMessage(msgKey, mRule.getMetaData()
+                    .getInternalName());
+            if (standardMessage == null) {
+                standardMessage = ""; //$NON-NLS-1$
+            }
+            msgText.setMessage(standardMessage);
+
+            String message = mRule.getCustomMessages().get(msgKey);
+            if (StringUtils.trimToNull(message) != null) {
+                msgText.setText(message);
+            }
+            msgText.setEnabled(!mReadonly);
+
+            mCustomMessages.put(msgKey, msgText);
+        }
+
+        return advancedSettings;
     }
 
     protected Control createButtonBar(Composite parent) {
@@ -275,14 +343,9 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
             mIdText.setText(id);
         }
 
-        // String customMessage = mRule.getCustomMessage();
-        // if (customMessage != null) {
-        // mCustomMessageText.setText(customMessage);
-        // }
-        //
-        // mIdText.setEditable(!mReadonly);
+        mIdText.setEnabled(!mReadonly);
         // mCustomMessageText.setEditable(!mReadonly);
-        // mCommentText.setEditable(!mReadonly);
+        mCommentText.setEnabled(!mReadonly);
 
         mSeverityCombo.setInput(Severity.values());
         mSeverityCombo.getCombo().setEnabled(!mReadonly);
@@ -349,8 +412,13 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
         String id = StringUtils.trimToNull(mIdText.getText());
 
         // Get the custom message
-        // String customMessage =
-        // StringUtils.trimToNull(mCustomMessageText.getText());
+        for (Map.Entry<String, Text> entry : mCustomMessages.entrySet()) {
+
+            String message = StringUtils.trimToNull(entry.getValue().getText());
+            if (message != null) {
+                mRule.getCustomMessages().put(entry.getKey(), message);
+            }
+        }
 
         //
         // Build a new collection of configuration properties.
