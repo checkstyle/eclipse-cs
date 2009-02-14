@@ -247,8 +247,14 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
     /**
      * {@inheritDoc}
      */
-    public List<CheckConfigurationWorkingCopy> getLocalCheckConfigurations() {
-        return Arrays.asList(mLocalConfigWorkingSet.getWorkingCopies());
+    public List<ICheckConfiguration> getLocalCheckConfigurations() {
+
+        List<ICheckConfiguration> l = new ArrayList<ICheckConfiguration>();
+        for (ICheckConfiguration c : mLocalConfigWorkingSet.getWorkingCopies()) {
+            l.add(c);
+        }
+
+        return l;
     }
 
     /**

@@ -424,6 +424,7 @@ public class RemoteConfigurationType extends ConfigurationType {
 
             PasswordAuthentication auth = null;
 
+            @SuppressWarnings("unchecked")
             Map<String, String> authInfo = Platform.getAuthorizationInfo(
                     resolvedCheckConfigurationURL, "", ""); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -445,6 +446,7 @@ public class RemoteConfigurationType extends ConfigurationType {
             throws CheckstylePluginException {
             sFailedWith401URLs.remove(resolvedCheckConfigurationURL.toString());
             try {
+
                 Platform.flushAuthorizationInfo(resolvedCheckConfigurationURL, "", ""); //$NON-NLS-1$ //$NON-NLS-2$
             }
             catch (CoreException e) {

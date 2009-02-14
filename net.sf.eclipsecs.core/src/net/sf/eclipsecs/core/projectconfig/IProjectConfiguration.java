@@ -67,8 +67,8 @@ public interface IProjectConfiguration {
     /**
      * Returns if the simple configuration should be used.
      * 
-     * @return <code>true</code>, if this project uses the simple
-     *         configuration, <code>false</code> otherwise
+     * @return <code>true</code>, if this project uses the simple configuration,
+     *         <code>false</code> otherwise
      */
     boolean isUseSimpleConfig();
 

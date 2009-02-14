@@ -126,6 +126,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     protected final IProject[] build(final int kind, final Map args, final IProgressMonitor monitor)
         throws CoreException {
 

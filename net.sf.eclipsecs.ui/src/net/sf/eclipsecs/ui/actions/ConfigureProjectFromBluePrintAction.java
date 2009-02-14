@@ -119,9 +119,9 @@ public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegat
      */
     private class BulkConfigureJob extends WorkspaceJob {
 
-        private IProject mBlueprint;
+        private final IProject mBlueprint;
 
-        private Collection<IProject> mProjectsToConfigure;
+        private final Collection<IProject> mProjectsToConfigure;
 
         public BulkConfigureJob(IProject blueprint, Collection<IProject> projectsToConfigure) {
             super(Messages.ConfigureProjectFromBluePrintAction_msgConfiguringFromBluePrint);
@@ -156,9 +156,13 @@ public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegat
                     ICheckConfigurationWorkingSet checkConfigsWorkingSet = workingCopy
                             .getLocalCheckConfigWorkingSet();
 
-                    for (CheckConfigurationWorkingCopy localConfig : workingCopy
+                    for (ICheckConfiguration localConfig : workingCopy
                             .getLocalCheckConfigurations()) {
-                        checkConfigsWorkingSet.removeCheckConfiguration(localConfig);
+
+                        if (localConfig instanceof CheckConfigurationWorkingCopy) {
+                            checkConfigsWorkingSet
+                                    .removeCheckConfiguration((CheckConfigurationWorkingCopy) localConfig);
+                        }
                     }
 
                     // TODO consider copying internal configurations
