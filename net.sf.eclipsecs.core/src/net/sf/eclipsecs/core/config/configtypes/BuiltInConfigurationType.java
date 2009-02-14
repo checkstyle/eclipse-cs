@@ -75,7 +75,11 @@ public class BuiltInConfigurationType extends ConfigurationType {
      */
     protected PropertyResolver getPropertyResolver(ICheckConfiguration config,
             CheckstyleConfigurationFile configFile) {
+        MultiPropertyResolver resolver = new MultiPropertyResolver();
+        resolver.addPropertyResolver(new ResolvablePropertyResolver(config));
+        resolver.addPropertyResolver(new BuiltInFilePropertyResolver(resolveLocation(config)
+                .toString()));
 
-        return new BuiltInFilePropertyResolver(resolveLocation(config).toString());
+        return resolver;
     }
 }

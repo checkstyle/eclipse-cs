@@ -292,8 +292,15 @@ public final class CheckConfigurationFactory {
             additionalData.put(BuiltInConfigurationType.CONTRIBUTOR_KEY, elements[i]
                     .getContributor().getName());
 
+            List<ResolvableProperty> props = new ArrayList<ResolvableProperty>();
+            IConfigurationElement[] propEls = elements[i].getChildren(XMLTags.PROPERTY_TAG);
+            for (IConfigurationElement propEl : propEls) {
+                props.add(new ResolvableProperty(propEl.getAttribute(XMLTags.NAME_TAG), propEl
+                        .getAttribute(XMLTags.VALUE_TAG)));
+            }
+
             ICheckConfiguration checkConfig = new CheckConfiguration(name, location, description,
-                    configType, true, null, additionalData);
+                    configType, true, props, additionalData);
             sConfigurations.add(checkConfig);
         }
     }
@@ -304,6 +311,7 @@ public final class CheckConfigurationFactory {
      * @param root the root element of the plugins central configuration file
      * @return the global check configurations configured therein
      */
+    @SuppressWarnings("unchecked")
     private static List<ICheckConfiguration> getGlobalCheckConfigurations(Element root) {
 
         List<ICheckConfiguration> configs = new ArrayList<ICheckConfiguration>();
