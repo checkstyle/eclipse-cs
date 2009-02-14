@@ -32,7 +32,7 @@
             </property-metadata>
         </rule-metadata>
 
-        <rule-metadata name="%FileLength.name" internal-name="FileLength" parent="TreeWalker">
+        <rule-metadata name="%FileLength.name" internal-name="FileLength" parent="Checker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.sizes.FileLengthCheck"/>
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.FileLengthCheck"/>
             <description>%FileLength.desc</description>
@@ -91,5 +91,12 @@
             </property-metadata>
         </rule-metadata>
 
+        <rule-metadata name="%OuterTypeNumber.name" internal-name="OuterTypeNumber" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.sizes.OuterTypeNumber"/>
+            <description>%OuterTypeNumber.desc</description>
+            <property-metadata name="max" datatype="Integer" default-value="1">
+                <description>%OuterTypeNumber.max</description>
+            </property-metadata>
+        </rule-metadata>
     </rule-group-metadata>
 </checkstyle-metadata>

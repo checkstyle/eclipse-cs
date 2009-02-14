@@ -188,6 +188,14 @@
             </property-metadata>
         </rule-metadata>
 
+        <rule-metadata name="%FileTabCharacter.name" internal-name="FileTabCharacter" parent="Checker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.whitespace.FileTabCharacterCheck"/>
+            <description>%FileTabCharacter.desc</description>
+            <property-metadata name="eachLine" datatype="Boolean" default-value="false">
+                <description>%FileTabCharacter.eachLine</description>
+            </property-metadata>
+        </rule-metadata>
+
         <rule-metadata name="%WhitespaceAfter.name" internal-name="WhitespaceAfter" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.whitespace.WhitespaceAfterCheck"/>
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.WhitespaceAfterCheck"/>

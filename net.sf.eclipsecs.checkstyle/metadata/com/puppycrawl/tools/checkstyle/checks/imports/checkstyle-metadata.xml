@@ -34,6 +34,16 @@
         <rule-metadata name="%ImportOrder.name" internal-name="ImportOrder" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.imports.ImportOrderCheck"/>
             <description>%ImportOrder.desc</description>
+            <property-metadata name="option" datatype="SingleSelect" default-value="under">
+                <description>%ImportOrder.option</description>
+                <enumeration>
+                    <property-value-option value="top"/>
+                    <property-value-option value="above"/>
+                    <property-value-option value="inflow"/>
+                    <property-value-option value="under"/>
+                    <property-value-option value="bottom"/>
+                </enumeration>
+            </property-metadata>            
             <property-metadata name="groups" datatype="String">
                 <description>%ImportOrder.groups</description>
             </property-metadata>

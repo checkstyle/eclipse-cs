@@ -38,6 +38,9 @@
             <property-metadata name="maximumNumber" datatype="Integer" default-value="2147483647">
                 <description>%DescendantToken.maximumNumber</description>
             </property-metadata>
+            <property-metadata name="sumTokenCounts" datatype="Boolean" default-value="false">
+                <description>%DescendantToken.sumTokenCounts</description>
+            </property-metadata>
             <property-metadata name="minimumMessage" datatype="String">
                 <description>%DescendantToken.minimumMessage</description>
             </property-metadata>
