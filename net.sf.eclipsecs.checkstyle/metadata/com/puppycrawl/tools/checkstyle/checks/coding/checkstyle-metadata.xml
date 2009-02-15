@@ -9,28 +9,37 @@
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.AvoidInlineConditionalsCheck"/>
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.AvoidInlineConditionalsCheck"/>
             <description>%AvoidInlineConditionals.desc</description>
+            <message-key key="inline.conditional.avoid"/>
         </rule-metadata>
 
         <rule-metadata name="%CovariantEquals.name" internal-name="CovariantEquals" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.CovariantEqualsCheck"/>
             <description>%CovariantEquals.desc</description>
+            <message-key key="covariant.equals"/>
         </rule-metadata>
 
         <rule-metadata name="%DefaultComesLast.name" internal-name="DefaultComesLast" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.DefaultComesLastCheck"/>
             <description>%DefaultComesLast.desc</description>
             <quickfix classname="net.sf.eclipsecs.ui.quickfixes.coding.DefaultComesLastQuickfix"/>
+            <message-key key="default.comes.last"/>
         </rule-metadata>
 
         <rule-metadata name="%DeclarationOrder.name" internal-name="DeclarationOrder" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.DeclarationOrderCheck"/>
             <description>%DeclarationOrder.desc</description>
+            <message-key key="declaration.order.constructor"/>
+            <message-key key="declaration.order.method"/>
+            <message-key key="declaration.order.static"/>
+            <message-key key="declaration.order.instance"/>
+            <message-key key="declaration.order.access"/>
         </rule-metadata>
 
         <rule-metadata name="%DoubleCheckedLocking.name" internal-name="DoubleCheckedLocking" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.DoubleCheckedLockingCheck"/>
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.DoubleCheckedLockingCheck"/>
             <description>%DoubleCheckedLocking.desc</description>
+            <message-key key="doublechecked.locking.avoid"/>
         </rule-metadata>
 
         <rule-metadata name="%EmptyStatement.name" internal-name="EmptyStatement" parent="TreeWalker">
@@ -38,22 +47,26 @@
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.EmptyStatementCheck"/>
             <description>%EmptyStatement.desc</description>
             <quickfix classname="net.sf.eclipsecs.ui.quickfixes.coding.EmptyStatementQuickfix"/>
+            <message-key key="empty.statement"/>
         </rule-metadata>
 
         <rule-metadata name="%EqualsAvoidNull.name" internal-name="EqualsAvoidNull" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.EqualsAvoidNullCheck"/>
             <description>%EqualsAvoidNull.desc</description>
+            <message-key key="equals.avoid.null"/>
         </rule-metadata>
 
         <rule-metadata name="%EqualsHashCode.name" internal-name="EqualsHashCode" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.EqualsHashCodeCheck"/>
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.EqualsHashCodeCheck"/>
             <description>%EqualsHashCode.desc</description>
+            <message-key key="equals.noHashCode"/>
         </rule-metadata>
 
         <rule-metadata name="%ExplicitInitialization.name" internal-name="ExplicitInitialization" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.ExplicitInitializationCheck"/>
             <description>%ExplicitInitialization.desc</description>
+            <message-key key="explicit.init"/>
         </rule-metadata>
 
         <rule-metadata name="%FallThrough.name" internal-name="FallThrough" parent="TreeWalker">
@@ -65,6 +78,8 @@
             <property-metadata name="reliefPattern" datatype="Regex" default-value="fallthru|falls? ?through">
                 <description>%FallThrough.reliefPattern</description>
             </property-metadata>
+            <message-key key="fall.through"/>
+            <message-key key="fall.through.last"/>
         </rule-metadata>
 
         <rule-metadata name="%FinalLocalVariable.name" internal-name="FinalLocalVariable" parent="TreeWalker">
@@ -78,6 +93,7 @@
                 </enumeration>
             </property-metadata>
             <quickfix classname="net.sf.eclipsecs.ui.quickfixes.coding.FinalLocalVariableQuickfix"/>
+            <message-key key="final.variable"/>
         </rule-metadata>
 
         <rule-metadata name="%HiddenField.name" internal-name="HiddenField" parent="TreeWalker">
@@ -103,6 +119,7 @@
             <property-metadata name="ignoreAbstractMethods" datatype="Boolean" default-value="false">
                 <description>%HiddenField.ignoreAbstractMethods</description>
             </property-metadata>
+            <message-key key="hidden.field"/>
         </rule-metadata>
 
         <rule-metadata name="%IllegalInstantiation.name" internal-name="IllegalInstantiation" parent="TreeWalker">
@@ -112,6 +129,7 @@
             <property-metadata name="classes" datatype="String">
                 <description>%IllegalInstantiation.classes</description>
             </property-metadata>
+            <message-key key="instantiation.avoid"/>
         </rule-metadata>
 
         <rule-metadata name="%IllegalCatch.name" internal-name="IllegalCatch" parent="TreeWalker">
@@ -121,6 +139,7 @@
                 default-value="java.lang.Exception, java.lang.Throwable, java.lang.RuntimeException">
                 <description>%IllegalCatch.illegalClassNames</description>
             </property-metadata>
+            <message-key key="illegal.catch"/>
         </rule-metadata>
 
         <rule-metadata name="%IllegalThrows.name" internal-name="IllegalThrows" parent="TreeWalker">
@@ -130,6 +149,7 @@
                 default-value="java.lang.Throwable, java.lang.Error, java.lang.RuntimeException">
                 <description>%IllegalThrows.illegalClassNames</description>
             </property-metadata>
+            <message-key key="illegal.throw"/>
         </rule-metadata>
 
         <rule-metadata name="%IllegalToken.name" internal-name="IllegalToken" parent="TreeWalker">
@@ -139,6 +159,7 @@
                 <description>%IllegalToken.tokens</description>
                 <enumeration option-provider="net.sf.eclipsecs.core.config.meta.AllTokensProvider"/>
             </property-metadata>
+            <message-key key="illegal.token"/>
         </rule-metadata>
 
         <rule-metadata name="%IllegalTokenText.name" internal-name="IllegalTokenText" parent="TreeWalker">
@@ -157,6 +178,7 @@
             <property-metadata name="message" datatype="String">
                 <description>%IllegalTokenText.message</description>
             </property-metadata>
+            <message-key key="illegal.token.text"/>
         </rule-metadata>
 
         <rule-metadata name="%IllegalType.name" internal-name="IllegalType" parent="TreeWalker">
@@ -184,6 +206,7 @@
             <property-metadata name="format" datatype="Regex" default-value="^(.*[\.])?Abstract.*$">
                 <description>%IllegalType.format</description>
             </property-metadata>
+            <message-key key="illegal.type"/>
         </rule-metadata>
 
         <rule-metadata name="%InnerAssignment.name" internal-name="InnerAssignment" parent="TreeWalker">
@@ -208,11 +231,18 @@
                     <property-value-option value="STAR_ASSIGN"/>
                 </enumeration>
             </property-metadata>
+            <message-key key="assignment.inner.avoid"/>
         </rule-metadata>
 
         <rule-metadata name="%JUnitTestCase.name" internal-name="JUnitTestCase" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.JUnitTestCaseCheck"/>
             <description>%JUnitTestCase.desc</description>
+            <message-key key="junit.method.name"/>
+            <message-key key="junit.method.public.and.static"/>
+            <message-key key="junit.method.return.type"/>
+            <message-key key="junit.method.protected.or.public"/>
+            <message-key key="junit.method.static"/>
+            <message-key key="junit.method.parameters"/>
         </rule-metadata>
 
         <rule-metadata name="%MagicNumber.name" internal-name="MagicNumber" parent="TreeWalker">
@@ -231,11 +261,13 @@
                     <property-value-option value="NUM_LONG"/>
                 </enumeration>
             </property-metadata>
+            <message-key key="magic.number"/>
         </rule-metadata>
 
         <rule-metadata name="%MissingCtor.name" internal-name="MissingCtor" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.MissingCtorCheck"/>
             <description>%MissingCtor.desc</description>
+            <message-key key="missing.ctor"/>
         </rule-metadata>
 
         <rule-metadata name="%MissingSwitchDefault.name" internal-name="MissingSwitchDefault" parent="TreeWalker">
@@ -243,6 +275,7 @@
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.MissingSwitchDefaultCheck"/>
             <description>%MissingSwitchDefault.desc</description>
             <quickfix classname="net.sf.eclipsecs.ui.quickfixes.coding.MissingSwitchDefaultQuickfix"/>
+            <message-key key="missing.switch.default"/>
         </rule-metadata>
 
         <rule-metadata name="%ModifiedControlVariable.name" internal-name="ModifiedControlVariable" parent="TreeWalker">
@@ -263,6 +296,7 @@
                 <description>%MultipleStringLiterals.ignoreOccurrenceContext</description>
                 <enumeration option-provider="net.sf.eclipsecs.core.config.meta.AllTokensProvider"/>
             </property-metadata>
+            <message-key key="multiple.string.literal"/>
         </rule-metadata>
 
         <rule-metadata name="%MultipleVariableDeclarations.name" internal-name="MultipleVariableDeclarations"
@@ -270,6 +304,8 @@
             <alternative-name
                 internal-name="com.puppycrawl.tools.checkstyle.checks.coding.MultipleVariableDeclarationsCheck"/>
             <description>%MultipleVariableDeclarations.desc</description>
+            <message-key key="multiple.variable.declarations.comma"/>
+            <message-key key="multiple.variable.declarations"/>
         </rule-metadata>
 
         <rule-metadata name="%NestedIfDepth.name" internal-name="NestedIfDepth" parent="TreeWalker">
@@ -278,6 +314,7 @@
             <property-metadata name="max" datatype="Integer" default-value="1">
                 <description>%NestedIfDepth.max</description>
             </property-metadata>
+            <message-key key="nested.if.depth"/>
         </rule-metadata>
 
         <rule-metadata name="%NestedTryDepth.name" internal-name="NestedTryDepth" parent="TreeWalker">
@@ -286,26 +323,31 @@
             <property-metadata name="max" datatype="Integer" default-value="1">
                 <description>%NestedTryDepth.max</description>
             </property-metadata>
+            <message-key key="nested.try.depth"/>
         </rule-metadata>
         
         <rule-metadata name="%NoClone.name" internal-name="NoClone" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.NoCloneCheck"/>
             <description>%NoClone.desc</description>
+            <message-key key="avoid.clone.method"/>
         </rule-metadata>        
         
         <rule-metadata name="%NoFinalizer.name" internal-name="NoFinalizer" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.NoFinalizerCheck"/>
             <description>%NoFinalizer.desc</description>
+            <message-key key="avoid.finalizer.method"/>
         </rule-metadata>
         
         <rule-metadata name="%PackageDeclaration.name" internal-name="PackageDeclaration" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.PackageDeclarationCheck"/>
             <description>%PackageDeclaration.desc</description>
+            <message-key key="missing.package.declaration"/>
         </rule-metadata>
 
         <rule-metadata name="%ParameterAssignment.name" internal-name="ParameterAssignment" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.ParameterAssignmentCheck"/>
             <description>%ParameterAssignment.desc</description>
+            <message-key key="parameter.assignment"/>
         </rule-metadata>
 
         <rule-metadata name="%RedundantThrows.name" internal-name="RedundantThrows" parent="TreeWalker">
@@ -326,6 +368,10 @@
                 override-default-value="true">
                 <description>%RedundantThrows.suppressLoadErrors</description>
             </property-metadata>
+            <message-key key="redundant.throws.classInfo"/>
+            <message-key key="redundant.throws.unchecked"/>
+            <message-key key="redundant.throws.duplicate"/>
+            <message-key key="redundant.throws.subclass"/>
         </rule-metadata>
 
         <rule-metadata name="%RequireThis.name" internal-name="RequireThis" parent="TreeWalker">
@@ -337,6 +383,9 @@
             <property-metadata name="checkMethods" datatype="Boolean" default-value="true">
                 <description>%RequireThis.checkMethods</description>
             </property-metadata>
+            <message-key key="require.this.variable"/>
+            <message-key key="require.this.unfound.variable"/>
+            <message-key key="require.this.method"/>
         </rule-metadata>
 
         <rule-metadata name="%ReturnCount.name" internal-name="ReturnCount" parent="TreeWalker">
@@ -348,6 +397,7 @@
             <property-metadata name="format" datatype="Regex" default-value="^equals$ (empty)">
                 <description>%ReturnCount.format</description>
             </property-metadata>
+            <message-key key="return.count"/>
         </rule-metadata>
 
         <rule-metadata name="%SimplifyBooleanExpression.name" internal-name="SimplifyBooleanExpression"
@@ -356,38 +406,50 @@
                 internal-name="com.puppycrawl.tools.checkstyle.checks.coding.SimplifyBooleanExpressionCheck"/>
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.SimplifyBooleanExpressionCheck"/>
             <description>%SimplifyBooleanExpression.desc</description>
+            <message-key key="simplify.expression"/>
         </rule-metadata>
 
         <rule-metadata name="%SimplifyBooleanReturn.name" internal-name="SimplifyBooleanReturn" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.SimplifyBooleanReturnCheck"/>
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.SimplifyBooleanReturnCheck"/>
             <description>%SimplifyBooleanReturn.desc</description>
+            <message-key key="simplify.boolreturn"/>
         </rule-metadata>
 
         <rule-metadata name="%StringLiteralEquality.name" internal-name="StringLiteralEquality" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.StringLiteralEqualityCheck"/>
             <description>%StringLiteralEquality.desc</description>
             <quickfix classname="net.sf.eclipsecs.ui.quickfixes.coding.StringLiteralEqualityQuickfix"/>
+            <message-key key="string.literal.equality"/>
         </rule-metadata>
 
         <rule-metadata name="%SuperClone.name" internal-name="SuperClone" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.SuperCloneCheck"/>
             <description>%SuperClone.desc</description>
+            <message-key key="missing.super.call"/>
         </rule-metadata>
 
         <rule-metadata name="%SuperFinalize.name" internal-name="SuperFinalize" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.SuperFinalizeCheck"/>
             <description>%SuperFinalize.desc</description>
+            <message-key key="missing.super.call"/>
         </rule-metadata>
 
         <rule-metadata name="%ArrayTrailingComma.name" internal-name="ArrayTrailingComma" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.ArrayTrailingCommaCheck"/>
             <description>%ArrayTrailingComma.desc</description>
+            <message-key key="array.trailing.comma"/>
         </rule-metadata>
 
         <rule-metadata name="%UnnecessaryParentheses.name" internal-name="UnnecessaryParentheses" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.UnnecessaryParenthesesCheck"/>
             <description>%UnnecessaryParentheses.desc</description>
+            <message-key key="unnecessary.paren.assign"/>
+            <message-key key="unnecessary.paren.expr"/>
+            <message-key key="unnecessary.paren.ident"/>
+            <message-key key="unnecessary.paren.literal"/>
+            <message-key key="unnecessary.paren.return"/>
+            <message-key key="unnecessary.paren.string"/>
         </rule-metadata>
 
     </rule-group-metadata>
