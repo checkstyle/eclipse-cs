@@ -21,6 +21,7 @@
 package net.sf.eclipsecs.core.builder;
 
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
@@ -37,6 +38,7 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
 import org.apache.commons.io.IOUtils;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 
 import com.google.common.base.ReferenceType;
 import com.google.common.collect.ReferenceMap;
@@ -133,7 +135,7 @@ public final class CheckerFactory {
             InputStream in = null;
             try {
                 in = configFileData.getCheckConfigFileStream();
-                checker = createCheckerInternal(in, resolver);
+                checker = createCheckerInternal(in, resolver, project);
             }
             finally {
                 IOUtils.closeQuietly(in);
@@ -249,12 +251,14 @@ public final class CheckerFactory {
      * 
      * @param inStream stream to the configuration file
      * @param propResolver a property resolver null
+     * @param project the project
      * @return the newly created Checker
      * @throws CheckstyleException an exception during the creation of the
      *             checker occured
      */
-    private static Checker createCheckerInternal(InputStream inStream, PropertyResolver propResolver)
-        throws CheckstyleException {
+    private static Checker createCheckerInternal(InputStream inStream,
+            PropertyResolver propResolver, IProject project) throws CheckstyleException,
+        CheckstylePluginException {
 
         // load configuration
         Configuration configuration = ConfigurationLoader.loadConfiguration(inStream, propResolver,
@@ -263,6 +267,15 @@ public final class CheckerFactory {
         // create and configure checker
         Checker checker = new Checker();
         checker.setModuleClassLoader(CheckstylePlugin.class.getClassLoader());
+        try {
+            checker.setCharset(project.getDefaultCharset());
+        }
+        catch (UnsupportedEncodingException e) {
+            CheckstylePluginException.rethrow(e);
+        }
+        catch (CoreException e) {
+            CheckstylePluginException.rethrow(e);
+        }
 
         // set the eclipse platform locale
         Locale platformLocale = CheckstylePlugin.getPlatformLocale();
