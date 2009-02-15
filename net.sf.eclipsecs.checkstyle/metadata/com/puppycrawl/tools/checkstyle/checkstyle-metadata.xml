@@ -14,6 +14,9 @@
             <property-metadata name="localeLanguage" datatype="String">
                 <description>%Checker.localeLanguage</description>
             </property-metadata>
+            <property-metadata name="charset" datatype="String">
+                <description>%Checker.charset</description>
+            </property-metadata>
         </rule-metadata>
 
         <rule-metadata name="%TreeWalker.name" internal-name="TreeWalker" parent="Checker" singleton="true">
@@ -27,9 +30,6 @@
             </property-metadata>
             <property-metadata name="fileExtensions" datatype="String" default-value="java">
                 <description>%TreeWalker.fileExtensions</description>
-            </property-metadata>
-            <property-metadata name="charset" datatype="String">
-                <description>%TreeWalker.charset</description>
             </property-metadata>
         </rule-metadata>
     </rule-group-metadata>
