@@ -10,6 +10,7 @@
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.DesignForExtensionCheck"/>
             <description>%DesignForExtension.desc</description>
             <quickfix classname="net.sf.eclipsecs.ui.quickfixes.design.DesignForExtensionQuickfix"/>
+            <message-key key="design.forExtension"/>
         </rule-metadata>
 
         <rule-metadata name="%FinalClass.name" internal-name="FinalClass" parent="TreeWalker">
@@ -17,6 +18,7 @@
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.FinalClassCheck"/>
             <description>%FinalClass.desc</description>
             <quickfix classname="net.sf.eclipsecs.ui.quickfixes.design.FinalClassQuickfix"/>
+            <message-key key="final.class"/>
         </rule-metadata>
 
         <rule-metadata name="%HideUtilityClassConstructor.name" internal-name="HideUtilityClassConstructor"
@@ -25,6 +27,7 @@
                 internal-name="com.puppycrawl.tools.checkstyle.checks.design.HideUtilityClassConstructorCheck"/>
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.HideUtilityClassConstructorCheck"/>
             <description>%HideUtilityClassConstructor.desc</description>
+            <message-key key="hide.utility.class"/>
         </rule-metadata>
 
         <rule-metadata name="%InterfaceIsType.name" internal-name="InterfaceIsType" parent="TreeWalker">
@@ -34,6 +37,7 @@
             <property-metadata name="allowMarkerInterfaces" datatype="Boolean" default-value="true">
                 <description>%InterfaceIsType.allowMarkerInterfaces</description>
             </property-metadata>
+            <message-key key="interface.type"/>
         </rule-metadata>
 
         <rule-metadata name="%MutableException.name" internal-name="MutableException" parent="TreeWalker">
@@ -42,6 +46,7 @@
             <property-metadata name="format" datatype="Regex" default-value="^.*Exception$|^.*Error$">
                 <description>%MutableException.format</description>
             </property-metadata>
+            <message-key key="mutable.exception"/>
         </rule-metadata>
 
         <rule-metadata name="%ThrowsCount.name" internal-name="ThrowsCount" parent="TreeWalker">
@@ -50,6 +55,7 @@
             <property-metadata name="max" datatype="Integer" default-value="1">
                 <description>%ThrowsCount.max</description>
             </property-metadata>
+            <message-key key="throws.count"/>
         </rule-metadata>
 
         <rule-metadata name="%VisibilityModifier.name" internal-name="VisibilityModifier" parent="TreeWalker">
@@ -65,6 +71,7 @@
             <property-metadata name="publicMemberPattern" datatype="Regex" default-value="^serialVersionUID">
                 <description>%VisibilityModifier.publicMemberPattern</description>
             </property-metadata>
+            <message-key key="variable.notPrivate"/>
         </rule-metadata>
 
     </rule-group-metadata>

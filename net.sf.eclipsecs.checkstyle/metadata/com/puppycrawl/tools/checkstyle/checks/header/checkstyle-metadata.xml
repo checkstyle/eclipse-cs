@@ -21,6 +21,8 @@
             <property-metadata name="ignoreLines" datatype="String">
                 <description>%Header.ignoreLines</description>
             </property-metadata>
+            <message-key key="header.missing"/>
+            <message-key key="header.mismatch"/>
         </rule-metadata>
 
         <rule-metadata name="%RegexpHeader.name" internal-name="RegexpHeader" parent="Checker">
@@ -39,6 +41,8 @@
             <property-metadata name="multiLines" datatype="String">
                 <description>%RegexpHeader.multiLines</description>
             </property-metadata>
+            <message-key key="header.missing"/>
+            <message-key key="header.mismatch"/>
         </rule-metadata>
 
     </rule-group-metadata>

@@ -12,6 +12,7 @@
             <property-metadata name="excludes" datatype="String">
                 <description>%AvoidStarImport.excludes</description>
             </property-metadata>
+            <message-key key="import.avoidStar"/>
         </rule-metadata>
 
         <rule-metadata name="%AvoidStaticImport.name" internal-name="AvoidStaticImport" parent="TreeWalker">
@@ -20,6 +21,7 @@
             <property-metadata name="excludes" datatype="String">
                 <description>%AvoidStaticImport.excludes</description>
             </property-metadata>
+            <message-key key="import.avoidStatic"/>
         </rule-metadata>
 
         <rule-metadata name="%IllegalImport.name" internal-name="IllegalImport" parent="TreeWalker">
@@ -29,6 +31,7 @@
             <property-metadata name="illegalPkgs" datatype="String" default-value="sun">
                 <description>%IllegalImport.illegalPkgs</description>
             </property-metadata>
+            <message-key key="import.illegal"/>
         </rule-metadata>
 
         <rule-metadata name="%ImportOrder.name" internal-name="ImportOrder" parent="TreeWalker">
@@ -56,18 +59,24 @@
             <property-metadata name="caseSensitive" datatype="Boolean" default-value="true">
                 <description>%ImportOrder.caseSensitive</description>
             </property-metadata>
+            <message-key key="import.ordering"/>
+            <message-key key="import.separation"/>
         </rule-metadata>
 
         <rule-metadata name="%RedundantImport.name" internal-name="RedundantImport" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.imports.RedundantImportCheck"/>
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.RedundantImportCheck"/>
             <description>%RedundantImport.desc</description>
+            <message-key key="import.lang"/>
+            <message-key key="import.same"/>
+            <message-key key="import.duplicate"/>
         </rule-metadata>
 
         <rule-metadata name="%UnusedImports.name" internal-name="UnusedImports" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.imports.UnusedImportsCheck"/>
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.UnusedImportsCheck"/>
             <description>%UnusedImports.desc</description>
+            <message-key key="import.unused"/>
         </rule-metadata>
 
         <rule-metadata name="%ImportControl.name" internal-name="ImportControl" parent="TreeWalker">
@@ -79,6 +88,9 @@
             <property-metadata name="url" datatype="String">
                 <description>%ImportControl.url</description>
             </property-metadata>
+            <message-key key="import.control.missing.file"/>
+            <message-key key="import.control.disallowed"/>
+            <message-key key="import.control.unknown.pkg"/>
         </rule-metadata>
 
     </rule-group-metadata>

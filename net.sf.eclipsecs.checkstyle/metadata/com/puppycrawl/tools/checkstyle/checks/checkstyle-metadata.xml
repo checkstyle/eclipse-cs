@@ -92,6 +92,8 @@
             <property-metadata name="caseIndent" datatype="Integer" default-value="4">
                 <description>%Indentation.caseIndent</description>
             </property-metadata>
+            <message-key key="indentation.error"/>
+            <message-key key="indentation.child.error"/>
         </rule-metadata>
 
         <rule-metadata name="%NewlineAtEndOfFile.name" internal-name="NewlineAtEndOfFile" parent="Checker">
