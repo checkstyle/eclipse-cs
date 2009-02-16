@@ -8,6 +8,10 @@
         <rule-metadata name="%GenericWhitespace.name" internal-name="GenericWhitespace" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.whitespace.GenericWhitespaceCheck"/>
             <description>%GenericWhitespace.desc</description>
+            <message-key key="ws.preceded"/>
+            <message-key key="ws.followed"/>
+            <message-key key="ws.illegalFollow"/>
+            <message-key key="ws.notPreceded"/>
         </rule-metadata>
 
         <rule-metadata name="%EmptyForInitializerPad.name" internal-name="EmptyForInitializerPad" parent="TreeWalker">
@@ -18,6 +22,8 @@
                 <description>%EmptyForInitializerPad.option</description>
                 <enumeration option-provider="com.puppycrawl.tools.checkstyle.checks.whitespace.PadOption"/>
             </property-metadata>
+            <message-key key="ws.preceded"/>
+            <message-key key="ws.notPreceded"/>
         </rule-metadata>
 
         <rule-metadata name="%EmptyForIteratorPad.name" internal-name="EmptyForIteratorPad" parent="TreeWalker">
@@ -28,6 +34,8 @@
                 <description>%EmptyForIteratorPad.option</description>
                 <enumeration option-provider="com.puppycrawl.tools.checkstyle.checks.whitespace.PadOption"/>
             </property-metadata>
+            <message-key key="ws.followed"/>
+            <message-key key="ws.notFollowed"/>
         </rule-metadata>
 
         <rule-metadata name="%NoWhitespaceAfter.name" internal-name="NoWhitespaceAfter" parent="TreeWalker">
@@ -52,6 +60,7 @@
                     <property-value-option value="TYPECAST"/>
                 </enumeration>
             </property-metadata>
+            <message-key key="ws.followed"/>
         </rule-metadata>
 
         <rule-metadata name="%NoWhitespaceBefore.name" internal-name="NoWhitespaceBefore" parent="TreeWalker">
@@ -70,6 +79,7 @@
                     <property-value-option value="POST_INC"/>
                 </enumeration>
             </property-metadata>
+            <message-key key="ws.preceded"/>
         </rule-metadata>
 
         <rule-metadata name="%OperatorWrap.name" internal-name="OperatorWrap" parent="TreeWalker">
@@ -120,6 +130,8 @@
                     <property-value-option value="STAR_ASSIGN"/>
                 </enumeration>
             </property-metadata>
+            <message-key key="line.new"/>
+            <message-key key="line.previous"/>
         </rule-metadata>
 
         <rule-metadata name="%MethodParamPad.name" internal-name="MethodParamPad" parent="TreeWalker">
@@ -143,6 +155,9 @@
                     <property-value-option value="SUPER_CTOR_CALL"/>
                 </enumeration>
             </property-metadata>
+            <message-key key="line.previous"/>
+            <message-key key="ws.preceded"/>
+            <message-key key="ws.notPreceded"/>
         </rule-metadata>
 
         <rule-metadata name="%ParenPad.name" internal-name="ParenPad" parent="TreeWalker">
@@ -164,12 +179,17 @@
                     <property-value-option value="SUPER_CTOR_CALL"/>
                 </enumeration>
             </property-metadata>
+            <message-key key="ws.followed"/>
+            <message-key key="ws.notFollowed"/>
+            <message-key key="ws.preceded"/>
+            <message-key key="ws.notPreceded"/>
         </rule-metadata>
 
         <rule-metadata name="%TabCharacter.name" internal-name="TabCharacter" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.whitespace.TabCharacterCheck"/>
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.TabCharacterCheck"/>
             <description>%TabCharacter.desc</description>
+            <message-key key="containsTab"/>
         </rule-metadata>
 
         <rule-metadata name="%TypecastParenPad.name" internal-name="TypecastParenPad" parent="TreeWalker">
@@ -186,6 +206,10 @@
                     <property-value-option value="TYPECAST"/>
                 </enumeration>
             </property-metadata>
+            <message-key key="ws.followed"/>
+            <message-key key="ws.notFollowed"/>
+            <message-key key="ws.preceded"/>
+            <message-key key="ws.notPreceded"/>
         </rule-metadata>
 
         <rule-metadata name="%FileTabCharacter.name" internal-name="FileTabCharacter" parent="Checker">
@@ -194,6 +218,8 @@
             <property-metadata name="eachLine" datatype="Boolean" default-value="false">
                 <description>%FileTabCharacter.eachLine</description>
             </property-metadata>
+            <message-key key="containsTab"/>
+            <message-key key="file.containsTab"/>
         </rule-metadata>
 
         <rule-metadata name="%WhitespaceAfter.name" internal-name="WhitespaceAfter" parent="TreeWalker">
@@ -208,6 +234,7 @@
                     <property-value-option value="TYPECAST"/>
                 </enumeration>
             </property-metadata>
+            <message-key key="ws.notFollowed"/>
         </rule-metadata>
 
         <rule-metadata name="%WhitespaceAround.name" internal-name="WhitespaceAround" parent="TreeWalker">
@@ -276,6 +303,8 @@
             <property-metadata name="allowEmptyMethods" datatype="Boolean" default-value="false">
                 <description>%WhitespaceAround.allowEmptyMethods</description>
             </property-metadata>
+            <message-key key="ws.notPreceded"/>
+            <message-key key="ws.notFollowed"/>
         </rule-metadata>
 
     </rule-group-metadata>

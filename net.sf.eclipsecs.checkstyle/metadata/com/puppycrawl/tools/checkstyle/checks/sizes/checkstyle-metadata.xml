@@ -11,6 +11,7 @@
             <property-metadata name="max" datatype="Integer" default-value="20">
                 <description>%AnonInnerLength.max</description>
             </property-metadata>
+            <message-key key="maxLen.anonInner"/>
         </rule-metadata>
 
         <rule-metadata name="%ExecutableStatementCount.name" internal-name="ExecutableStatementCount"
@@ -30,6 +31,7 @@
                     <property-value-option value="CTOR_DEF"/>
                 </enumeration>
             </property-metadata>
+            <message-key key="executableStatementCount"/>
         </rule-metadata>
 
         <rule-metadata name="%FileLength.name" internal-name="FileLength" parent="Checker">
@@ -39,6 +41,7 @@
             <property-metadata name="max" datatype="Integer" default-value="2000">
                 <description>%FileLength.max</description>
             </property-metadata>
+            <message-key key="maxLen.file"/>
         </rule-metadata>
 
         <rule-metadata name="%LineLength.name" internal-name="LineLength" parent="TreeWalker">
@@ -54,6 +57,7 @@
             <property-metadata name="tabWidth" datatype="Integer" default-value="8">
                 <description>%LineLength.tabWidth</description>
             </property-metadata>
+            <message-key key="maxLineLen"/>
         </rule-metadata>
 
         <rule-metadata name="%MethodLength.name" internal-name="MethodLength" parent="TreeWalker">
@@ -73,6 +77,7 @@
                     <property-value-option value="CTOR_DEF"/>
                 </enumeration>
             </property-metadata>
+            <message-key key="maxLen.method"/>
         </rule-metadata>
 
         <rule-metadata name="%ParameterNumber.name" internal-name="ParameterNumber" parent="TreeWalker">
@@ -89,6 +94,7 @@
                     <property-value-option value="CTOR_DEF"/>
                 </enumeration>
             </property-metadata>
+            <message-key key="maxParam"/>
         </rule-metadata>
 
         <rule-metadata name="%OuterTypeNumber.name" internal-name="OuterTypeNumber" parent="TreeWalker">
@@ -97,6 +103,7 @@
             <property-metadata name="max" datatype="Integer" default-value="1">
                 <description>%OuterTypeNumber.max</description>
             </property-metadata>
+            <message-key key="maxOuterTypes"/>
         </rule-metadata>
     </rule-group-metadata>
 </checkstyle-metadata>
