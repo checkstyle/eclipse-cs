@@ -93,7 +93,7 @@ public abstract class CheckstyleUIPluginImages {
     static {
 
         PLUGIN_LOGO = CheckstyleUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
-                "icons/eclipse-cs_inverted.png"); //$NON-NLS-1$
+                "icons/eclipse-cs-little.png"); //$NON-NLS-1$
         MARKER_ERROR = CheckstyleUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
                 "icons/checkstyle_error.gif"); //$NON-NLS-1$
         MARKER_WARNING = CheckstyleUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
