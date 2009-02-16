@@ -23,6 +23,7 @@
                     <property-value-option value="BXOR"/>
                 </enumeration>
             </property-metadata>
+            <message-key key="booleanExpressionComplexity"/>
         </rule-metadata>
 
         <rule-metadata name="%ClassDataAbstractionCoupling.name" internal-name="ClassDataAbstractionCoupling"
@@ -33,6 +34,7 @@
             <property-metadata name="max" datatype="Integer" default-value="7">
                 <description>%ClassDataAbstractionCoupling.max</description>
             </property-metadata>
+            <message-key key="classDataAbstractionCoupling"/>
         </rule-metadata>
 
         <rule-metadata name="%ClassFanOutComplexity.name" internal-name="ClassFanOutComplexity" parent="TreeWalker">
@@ -41,6 +43,7 @@
             <property-metadata name="max" datatype="Integer" default-value="20">
                 <description>%ClassFanOutComplexity.max</description>
             </property-metadata>
+            <message-key key="classFanOutComplexity"/>
         </rule-metadata>
 
         <rule-metadata name="%CyclomaticComplexity.name" internal-name="CyclomaticComplexity" parent="TreeWalker">
@@ -49,6 +52,7 @@
             <property-metadata name="max" datatype="Integer" default-value="10">
                 <description>%CyclomaticComplexity.max</description>
             </property-metadata>
+            <message-key key="cyclomaticComplexity"/>
         </rule-metadata>
 
         <rule-metadata name="%JavaNCSS.name" internal-name="JavaNCSS" parent="TreeWalker">
@@ -63,6 +67,9 @@
             <property-metadata name="fileMaximum" datatype="Integer" default-value="2000">
                 <description>%JavaNCSS.fileMaximum</description>
             </property-metadata>
+            <message-key key="ncss.method"/>
+            <message-key key="ncss.class"/>
+            <message-key key="ncss.file"/>
         </rule-metadata>
 
         <rule-metadata name="%NPathComplexity.name" internal-name="NPathComplexity" parent="TreeWalker">
@@ -71,6 +78,7 @@
             <property-metadata name="max" datatype="Integer" default-value="200">
                 <description>%NPathComplexity.max</description>
             </property-metadata>
+            <message-key key="npathComplexity"/>
         </rule-metadata>
 
     </rule-group-metadata>

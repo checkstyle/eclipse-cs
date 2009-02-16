@@ -11,6 +11,8 @@
             <property-metadata name="allowLegacy" datatype="Boolean" default-value="false">
                 <description>%JavadocPackage.allowLegacy</description>
             </property-metadata>
+            <message-key key="javadoc.legacyPackageHtml"/>
+            <message-key key="javadoc.packageInfo"/>
         </rule-metadata>
 
         <rule-metadata name="%JavadocMethod.name" internal-name="JavadocMethod" parent="TreeWalker">
@@ -63,7 +65,14 @@
                     <property-value-option value="CTOR_DEF"/>
                 </enumeration>
             </property-metadata>
-
+            <message-key key="javadoc.missing"/>
+            <message-key key="javadoc.classInfo"/>
+            <message-key key="javadoc.unusedTagGeneral"/>
+            <message-key key="javadoc.invalidInheritDoc"/>
+            <message-key key="javadoc.unusedTag"/>
+            <message-key key="javadoc.expectedTag"/>
+            <message-key key="javadoc.return.duplicate"/>
+            <message-key key="javadoc.return.expected"/>
         </rule-metadata>
 
         <rule-metadata name="%JavadocStyle.name" internal-name="JavadocStyle" parent="TreeWalker">
@@ -102,6 +111,12 @@
                     <property-value-option value="VARIABLE_DEF"/>
                 </enumeration>
             </property-metadata>
+            <message-key key="javadoc.missing"/>
+            <message-key key="javadoc.noperiod"/>
+            <message-key key="javadoc.empty"/>
+            <message-key key="javadoc.incompleteTag"/>
+            <message-key key="javadoc.extrahtml"/>
+            <message-key key="javadoc.unclosedhtml"/>
         </rule-metadata>
 
         <rule-metadata name="%JavadocType.name" internal-name="JavadocType" parent="TreeWalker">
@@ -131,6 +146,11 @@
                     <property-value-option value="INTERFACE_DEF"/>
                 </enumeration>
             </property-metadata>
+            <message-key key="javadoc.missing"/>
+            <message-key key="type.tagFormat"/>
+            <message-key key="type.missingTag"/>
+            <message-key key="javadoc.unusedTag"/>
+            <message-key key="javadoc.unusedTagGeneral"/>
         </rule-metadata>
 
         <rule-metadata name="%JavadocVariable.name" internal-name="JavadocVariable" parent="TreeWalker">
@@ -147,6 +167,7 @@
                 <enumeration
                     option-provider="com.puppycrawl.tools.checkstyle.api.Scope"/>
             </property-metadata>
+            <message-key key="javadoc.missing"/>
         </rule-metadata>
 
         <rule-metadata name="%WriteTag.name" internal-name="WriteTag" parent="TreeWalker">
@@ -167,8 +188,10 @@
                     <property-value-option value="ignore"/>
                 </enumeration>
             </property-metadata>
+            <message-key key="type.missingTag"/>
+            <message-key key="type.tagFormat"/>
+            <message-key key="javadoc.writeTag"/>
         </rule-metadata>
 
     </rule-group-metadata>
-
 </checkstyle-metadata>
