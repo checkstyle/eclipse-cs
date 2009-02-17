@@ -12,6 +12,7 @@
                 <description>%ArrayTypeStyle.javaStyle</description>
             </property-metadata>
             <quickfix classname="net.sf.eclipsecs.ui.quickfixes.misc.ArrayTypeStyleQuickfix"/>
+            <message-key key="array.type.style"/>
         </rule-metadata>
 
         <rule-metadata name="%DescendantToken.name" internal-name="DescendantToken" parent="TreeWalker">
@@ -47,6 +48,8 @@
             <property-metadata name="maximumMessage" datatype="String">
                 <description>%DescendantToken.maximumMessage</description>
             </property-metadata>
+            <message-key key="descendant.token.sum.min"/>
+            <message-key key="descendant.token.sum.max"/>
         </rule-metadata>
 
         <rule-metadata name="%FinalParameters.name" internal-name="FinalParameters" parent="TreeWalker">
@@ -61,9 +64,10 @@
                 </enumeration>
             </property-metadata>
             <quickfix classname="net.sf.eclipsecs.ui.quickfixes.misc.FinalParametersQuickfix"/>
+            <message-key key="final.parameter"/>
         </rule-metadata>
 
-        <rule-metadata name="%GenericIllegalRegexp.name" internal-name="GenericIllegalRegexp" parent="TreeWalker">
+        <!-- rule-metadata name="%GenericIllegalRegexp.name" internal-name="GenericIllegalRegexp" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.GenericIllegalRegexpCheck"/>
             <description>%GenericIllegalRegexp.desc</description>
             <property-metadata name="format" datatype="Regex" default-value="^$">
@@ -78,7 +82,7 @@
             <property-metadata name="message" datatype="String">
                 <description>%GenericIllegalRegexp.message</description>
             </property-metadata>
-        </rule-metadata>
+        </rule-metadata-->
 
         <rule-metadata name="%Indentation.name" internal-name="Indentation" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.indentation.IndentationCheck"/>
@@ -111,15 +115,17 @@
             <property-metadata name="fileExtensions" datatype="String">
                 <description>%NewlineAtEndOfFile.fileExtensions</description>
             </property-metadata>
+            <message-key key="noNewlineAtEOF"/>
+            <message-key key="unable.open"/>
         </rule-metadata>
 
-        <rule-metadata name="%RequiredRegexp.name" internal-name="RequiredRegexp" parent="TreeWalker">
+        <!-- rule-metadata name="%RequiredRegexp.name" internal-name="RequiredRegexp" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.RequiredRegexpCheck"/>
             <description>%RequiredRegexp.desc</description>
             <property-metadata name="format" datatype="Regex" default-value="^$">
                 <description>%RequiredRegexp.format</description>
             </property-metadata>
-        </rule-metadata>
+        </rule-metadata-->
 
         <rule-metadata name="%TodoComment.name" internal-name="TodoComment" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.TodoCommentCheck"/>
@@ -127,6 +133,7 @@
             <property-metadata name="format" datatype="Regex" default-value="TODO:">
                 <description>%TodoComment.format</description>
             </property-metadata>
+            <message-key key="todo.match"/>
         </rule-metadata>
 
         <rule-metadata name="%Translation.name" internal-name="Translation" parent="Checker">
@@ -135,6 +142,9 @@
             <property-metadata name="fileExtensions" datatype="String" default-value="properties">
                 <description>%Translation.fileExtensions</description>
             </property-metadata>
+            <message-key key="general.fileNotFound"/>
+            <message-key key="general.exception"/>
+            <message-key key="translation.missingKey"/>
         </rule-metadata>
 
         <rule-metadata name="%TrailingComment.name" internal-name="TrailingComment" parent="TreeWalker">
@@ -146,6 +156,7 @@
             <property-metadata name="legalComment" datatype="Regex">
                 <description>%TrailingComment.legalComment</description>
             </property-metadata>
+            <message-key key="trailing.comments"/>
         </rule-metadata>
 
         <rule-metadata name="%UncommentedMain.name" internal-name="UncommentedMain" parent="TreeWalker">
@@ -155,12 +166,14 @@
                 <description>%UncommentedMain.excludedClasses</description>
             </property-metadata>
             <quickfix classname="net.sf.eclipsecs.ui.quickfixes.misc.UncommentedMainQuickfix"/>
+            <message-key key="uncommented.main"/>
         </rule-metadata>
 
         <rule-metadata name="%UpperEll.name" internal-name="UpperEll" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.UpperEllCheck"/>
             <description>%UpperEll.desc</description>
             <quickfix classname="net.sf.eclipsecs.ui.quickfixes.misc.UpperEllQuickfix"/>
+            <message-key key="upperEll"/>
         </rule-metadata>
 
         <rule-metadata name="%Regexp.name" internal-name="Regexp" parent="TreeWalker">
@@ -184,7 +197,10 @@
             <property-metadata name="ignoreComments" datatype="Boolean" default-value="false">
                 <description>%Regexp.ignoreComments</description>
             </property-metadata>
+            <message-key key="illegal.regexp"/>
+            <message-key key="duplicate.regexp"/>
+            <message-key key="required.regexp"/>
         </rule-metadata>
-    </rule-group-metadata>
 
+    </rule-group-metadata>
 </checkstyle-metadata>

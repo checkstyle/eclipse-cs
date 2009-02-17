@@ -17,6 +17,8 @@
             <property-metadata name="charset" datatype="String">
                 <description>%Checker.charset</description>
             </property-metadata>
+            <message-key key="general.fileNotFound"/>
+            <message-key key="general.exception"/>
         </rule-metadata>
 
         <rule-metadata name="%TreeWalker.name" internal-name="TreeWalker" parent="Checker" singleton="true">
@@ -31,6 +33,7 @@
             <property-metadata name="fileExtensions" datatype="String" default-value="java">
                 <description>%TreeWalker.fileExtensions</description>
             </property-metadata>
+            <message-key key="general.exception"/>
         </rule-metadata>
     </rule-group-metadata>
 
