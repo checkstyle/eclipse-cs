@@ -1,0 +1,7 @@
+feature@net.sf.eclipsecs=COPY,D:/_projects/checkstyle,net.sf.eclipsecs-feature
+plugin@net.sf.eclipsecs.core=COPY,D:/_projects/checkstyle,net.sf.eclipsecs.core
+plugin@net.sf.eclipsecs.doc=COPY,D:/_projects/checkstyle,net.sf.eclipsecs.doc
+plugin@net.sf.eclipsecs.checkstyle=COPY,D:/_projects/checkstyle,net.sf.eclipsecs.checkstyle
+plugin@net.sf.eclipsecs.ui=COPY,D:/_projects/checkstyle,net.sf.eclipsecs.ui
+feature@net.sf.eclipsecs.migration=COPY,D:/_projects/checkstyle,net.sf.eclipsecs.migration-feature
+plugin@net.sf.eclipsecs.migration=COPY,D:/_projects/checkstyle,net.sf.eclipsecs.migration
