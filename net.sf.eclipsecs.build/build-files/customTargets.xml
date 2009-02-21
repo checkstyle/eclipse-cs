@@ -8,61 +8,62 @@
 			<equals arg1="${buildType}" arg2="I" />
 		</or>
 	</condition>
-	
+
 	<property file="${buildHome}/pluginbuilder.config" />
-	
+
 	<property file="${buildDirectory}/version.properties" />
 	<property name="buildLabel" value="${buildType}-${version.full}" />
 	<property name="buildId" value="${version.full}" />
-	
+
 	<condition property="isCVSOrCopy" value="true">
 		<or>
-			<equals arg1="${pluginbuilder.is.cvs}" arg2="true"/>
-			<equals arg1="${pluginbuilder.is.copy}" arg2="true"/>
+			<equals arg1="${pluginbuilder.is.cvs}" arg2="true" />
+			<equals arg1="${pluginbuilder.is.copy}" arg2="true" />
 		</or>
 	</condition>
 	<condition property="isSVN" value="true">
-		<equals arg1="${pluginbuilder.is.svn}" arg2="true"/>
+		<equals arg1="${pluginbuilder.is.svn}" arg2="true" />
 	</condition>
 	<condition property="isRunTests" value="true">
-		<equals arg1="${pluginbuilder.is.runtests}" arg2="true"/>
+		<equals arg1="${pluginbuilder.is.runtests}" arg2="true" />
 	</condition>
-	
-	
+
+
 	<target name="allElements">
 		<condition property="isFetch" value="true">
-			<equals arg1="${target}" arg2="fetchElement"/>
+			<equals arg1="${target}" arg2="fetchElement" />
 		</condition>
-	    <condition property="is.svn.fetch" value="true">
-	 		<and>
-		  		<equals arg1="${target}" arg2="fetchElement"/>
-				<equals arg1="${pluginbuilder.is.svn}" arg2="true"/>
+		<condition property="is.svn.fetch" value="true">
+			<and>
+				<equals arg1="${target}" arg2="fetchElement" />
+				<equals arg1="${pluginbuilder.is.svn}" arg2="true" />
 			</and>
-	    </condition>
-	
-		<antcall target="allElementsExceptSvnFetch"/>
-		<antcall target="fetchSubversion"/>
+		</condition>
+
+		<antcall target="allElementsExceptSvnFetch" />
+		<antcall target="fetchSubversion" />
 	</target>
-	
-	<import file="allElements.xml"/>
-	<import file="subversionSupport.xml"/>
-	
-	
+
+	<import file="allElements.xml" />
+	<import file="subversionSupport.xml" />
+
+
 	<!-- ===================================================================== -->
 	<!-- Check out map files from correct repository -->
 	<!-- Replace values for cvsRoot, package and mapVersionTag as desired. -->
 	<!-- ===================================================================== -->
 	<target name="getMapFiles" if="isCVSOrCopy">
-		<echo message="Copying map files."/>
+		<echo message="Copying map files." />
 		<copy todir="${buildDirectory}/maps">
-			<fileset dir="${buildHome}/maps" includes="*.map"></fileset>
+			<fileset dir="${buildHome}/maps" includes="*.map">
+			</fileset>
 		</copy>
 	</target>
-	
+
 	<!-- ===================================================================== -->
 	<!-- Steps to do before setup -->
 	<!-- ===================================================================== -->
-	<target name="preSetup">	
+	<target name="preSetup">
 	</target>
 	<!-- ===================================================================== -->
 	<!-- Steps to do after setup but before starting the build proper -->
@@ -79,44 +80,48 @@
 	<!-- ===================================================================== -->
 	<target name="postFetch">
 		<condition property="is.fetch" value="true">
-			<available file="${buildDirectory}/plugins"/>
+			<available file="${buildDirectory}/plugins" />
 		</condition>
-		<fail unless="is.fetch" message="There was no plug-in fetched. Was the configuration generated? Is the repository correct?"/>
-		<antcall target="replaceVersions"/>		
+		<fail unless="is.fetch" message="There was no plug-in fetched. Was the configuration generated? Is the repository correct?" />
+		<antcall target="replaceVersions" />
+
+		<!-- build plugin docs -->
+		<ant antfile="${buildDirectory}/plugins/net.sf.eclipsecs.doc/build/build.xml" target="build.plugin.docs">
+			<property name="basedir" value="${buildDirectory}/plugins/net.sf.eclipsecs.doc" />
+		</ant>
+
+		<!-- build checkstyle docs -->
+		<property name="checkstyle.dir" value="${buildHome}/../checkstyle"/>
+		<ant antfile="${checkstyle.dir}/build.xml" inheritall="false" target="xdocs">
+			<property name="basedir" value="${checkstyle.dir}" />
+			<property name="xdocs.dest" value="${buildDirectory}/plugins/net.sf.eclipsecs.doc/docs/csdocs" />
+		</ant>
 	</target>
-	
+
 	<target name="replaceVersions">
 		<fail unless="version.full" message="Property version.full must be set" />
 		<fail unless="version.qualifier" message="Property version.qualifier must be set" />
-	
-		<echo message="Updating versions in feature and plugin manifests. Full version: ${version.full}, qualifier: ${version.qualifier}"/>
-		<replaceregexp
-            match="(&lt;feature[^&gt;]*version=)&quot;0.0.0&quot;"
-            replace="\1&quot;${version.full}&quot;"
-			byline="false"
-			flags="s">
-			  <fileset dir="${buildDirectory}/features" includes="**/feature.xml"/>
+
+		<echo message="Updating versions in feature and plugin manifests. Full version: ${version.full}, qualifier: ${version.qualifier}" />
+		<replaceregexp match="(&lt;feature[^&gt;]*version=)&quot;0.0.0&quot;" replace="\1&quot;${version.full}&quot;" byline="false" flags="s">
+			<fileset dir="${buildDirectory}/features" includes="**/feature.xml" />
 		</replaceregexp>
-		<replaceregexp
-            match="(&lt;feature[^&gt;]*version=&quot;.*)qualifier&quot;"
-            replace="\1${version.qualifier}&quot;"
-			byline="false"
-			flags="s">
-			  <fileset dir="${buildDirectory}/features" includes="**/feature.xml"/>
+		<replaceregexp match="(&lt;feature[^&gt;]*version=&quot;.*)qualifier&quot;" replace="\1${version.qualifier}&quot;" byline="false" flags="s">
+			<fileset dir="${buildDirectory}/features" includes="**/feature.xml" />
 		</replaceregexp>
 		<!-- in a manual build started with export from the feature.xml, there is no
 			need to replace the versions in the plugin.xml files if they are set to 0.0.0,
 			but here it needs to be -->
 		<replace dir="${buildDirectory}/plugins">
-			<include name="**/plugin.xml"/>
+			<include name="**/plugin.xml" />
 			<replacefilter token="0.0.0" value="${version.full}" />
 		</replace>
 		<replace dir="${buildDirectory}/plugins">
-			<include name="**/META-INF/MANIFEST.MF"/>
+			<include name="**/META-INF/MANIFEST.MF" />
 			<replacefilter token="Bundle-Version: 0.0.0" value="Bundle-Version: ${version.full}" />
 			<replacefilter token="qualifier" value="${version.qualifier}" />
-		</replace>	
-	</target>	
+		</replace>
+	</target>
 	<!-- ===================================================================== -->
 	<!-- Steps to do before generating the build scripts. -->
 	<!-- ===================================================================== -->
@@ -155,7 +160,7 @@
 	<!-- ===================================================================== -->
 	<target name="prePackage">
 	</target>
-	
+
 	<target name="postPackage">
 		<!-- copy build results for rcp build -->
 		<copy todir="${buildResultsDirectory}" flatten="true">
@@ -168,40 +173,40 @@
 	<!-- ===================================================================== -->
 	<property name="buildResultsDirectory" value="${buildDirectory}/results" />
 	<target name="postBuild" depends="-prepareBuildResultsDirectory" unless="no.postBuild">
-		<antcall target="runTests"/>
+		<antcall target="runTests" />
 		<copy todir="${buildResultsDirectory}" flatten="true">
 			<fileset dir="${buildDirectory}" includes="${buildType}-**/*.zip" />
 		</copy>
 		<condition property="is.External.Postbuild">
-			<available file="${buildHome}/build-files/postBuild.xml"/>
+			<available file="${buildHome}/build-files/postBuild.xml" />
 		</condition>
-		<antcall target="callExternalPostBuild"/>
+		<antcall target="callExternalPostBuild" />
 	</target>
 	<!-- ===================================================================== -->
 	<!-- Run tests. -->
 	<!-- ===================================================================== -->
 	<target name="runTests" if="isRunTests">
-		<property name="automatedTestsHome" location="${buildHome}/build-files/automatedTests"/>
+		<property name="automatedTestsHome" location="${buildHome}/build-files/automatedTests" />
 
 		<ant antfile="${automatedTestsHome}/run-tests.xml" target="run" dir="${automatedTestsHome}">
-			<property name="test.result.dir" value="${buildResultsDirectory}/testresults"/>
+			<property name="test.result.dir" value="${buildResultsDirectory}/testresults" />
 		</ant>
-	</target>	
+	</target>
 	<!--======================================================-->
 	<!-- Gather build results  -->
 	<!-- ==================================================== -->
 	<target name="-prepareBuildResultsDirectory">
 		<echo message="Creating ${buildResultsDirectory}" />
-		<mkdir dir="${buildResultsDirectory}" />	
+		<mkdir dir="${buildResultsDirectory}" />
 	</target>
 
 	<!--======================================================-->
 	<!-- Call External post build file if available -->
 	<!-- ==================================================== -->
 	<target name="callExternalPostBuild" if="is.External.Postbuild">
-		<ant antfile="${buildHome}/build-files/postBuild.xml"/>
+		<ant antfile="${buildHome}/build-files/postBuild.xml" />
 	</target>
-	
+
 	<target name="noDefault">
 		<echo message="You must specify a target when invoking this file" />
 	</target>

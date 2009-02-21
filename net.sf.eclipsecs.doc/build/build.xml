@@ -29,10 +29,6 @@
 			<fileset dir="${basedir}/base" includes="releasenotes/**/*.jpg" />
 		</copy>
 
-		<ant antfile="${checkstyle.dir}/build.xml" inheritall="false" target="xdocs">
-			<property name="xdocs.dest" value="${dist.docs}/csdocs" />
-		</ant>
-
 		<xslt style="${basedir}/build/generate_docs.xsl" basedir="${basedir}/base" includes="**/*.*html" destdir="${dist.docs}" />
 	</target>
 
