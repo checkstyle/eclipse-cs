@@ -130,8 +130,8 @@ public final class ConfigurationReader {
 
                 ConfigProperty prop = module.getProperty("tabWidth"); //$NON-NLS-1$
 
-                String tabWidthProp = prop.getValue() != null ? prop.getValue() : prop
-                        .getMetaData().getDefaultValue();
+                String tabWidthProp = prop != null && prop.getValue() != null ? prop.getValue()
+                        : prop.getMetaData().getDefaultValue();
                 try {
                     tabWidth = Integer.parseInt(tabWidthProp);
                 }
