@@ -55,6 +55,30 @@
                 <description>%SuppressionCommentFilter.checkC</description>
             </property-metadata>
         </rule-metadata>
+        
+        <rule-metadata name="%SuppressWithNearbyCommentFilter.name" internal-name="SuppressWithNearbyCommentFilter" parent="Checker"
+            hasSeverity="false">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.filters.SuppressWithNearbyCommentFilter"/>
+            <description>%SuppressWithNearbyCommentFilter.desc</description>
+            <property-metadata name="commentFormat" datatype="Regex" default-value="SUPPRESS CHECKSTYLE (\w+)">
+                <description>%SuppressWithNearbyCommentFilter.commentFormat</description>
+            </property-metadata>
+            <property-metadata name="checkFormat" datatype="Regex" default-value="$1">
+                <description>%SuppressWithNearbyCommentFilter.checkFormat</description>
+            </property-metadata>
+            <property-metadata name="messageFormat" datatype="Regex">
+                <description>%SuppressWithNearbyCommentFilter.messageFormat</description>
+            </property-metadata>
+            <property-metadata name="influenceFormat" datatype="Regex" default-value="0">
+                <description>%SuppressWithNearbyCommentFilter.influenceFormat</description>
+            </property-metadata>
+            <property-metadata name="checkCPP" datatype="Boolean" default-value="true">
+                <description>%SuppressWithNearbyCommentFilter.checkCPP</description>
+            </property-metadata>
+            <property-metadata name="checkC" datatype="Boolean" default-value="true">
+                <description>%SuppressWithNearbyCommentFilter.checkC</description>
+            </property-metadata>
+        </rule-metadata>
 
     </rule-group-metadata>
 

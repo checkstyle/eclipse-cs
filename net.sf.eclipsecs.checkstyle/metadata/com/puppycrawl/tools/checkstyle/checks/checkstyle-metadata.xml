@@ -67,23 +67,6 @@
             <message-key key="final.parameter"/>
         </rule-metadata>
 
-        <!-- rule-metadata name="%GenericIllegalRegexp.name" internal-name="GenericIllegalRegexp" parent="TreeWalker">
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.GenericIllegalRegexpCheck"/>
-            <description>%GenericIllegalRegexp.desc</description>
-            <property-metadata name="format" datatype="Regex" default-value="^$">
-                <description>%GenericIllegalRegexp.format</description>
-            </property-metadata>
-            <property-metadata name="ignoreCase" datatype="Boolean" default-value="false">
-                <description>%GenericIllegalRegexp.ignoreCase</description>
-            </property-metadata>
-            <property-metadata name="ignoreComments" datatype="Boolean" default-value="false">
-                <description>%GenericIllegalRegexp.ignoreComments</description>
-            </property-metadata>
-            <property-metadata name="message" datatype="String">
-                <description>%GenericIllegalRegexp.message</description>
-            </property-metadata>
-        </rule-metadata-->
-
         <rule-metadata name="%Indentation.name" internal-name="Indentation" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.indentation.IndentationCheck"/>
             <description>%Indentation.desc</description>
@@ -118,15 +101,7 @@
             <message-key key="noNewlineAtEOF"/>
             <message-key key="unable.open"/>
         </rule-metadata>
-
-        <!-- rule-metadata name="%RequiredRegexp.name" internal-name="RequiredRegexp" parent="TreeWalker">
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.RequiredRegexpCheck"/>
-            <description>%RequiredRegexp.desc</description>
-            <property-metadata name="format" datatype="Regex" default-value="^$">
-                <description>%RequiredRegexp.format</description>
-            </property-metadata>
-        </rule-metadata-->
-
+        
         <rule-metadata name="%TodoComment.name" internal-name="TodoComment" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.TodoCommentCheck"/>
             <description>%TodoComment.desc</description>

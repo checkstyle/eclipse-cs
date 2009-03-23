@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE checkstyle-metadata PUBLIC
+"-//eclipse-cs//DTD Check Metadata 1.1//EN"
+"http://eclipse-cs.sourceforge.net/dtds/checkstyle-metadata_1_1.dtd">
+<checkstyle-metadata>
+    <rule-group-metadata name="%Regexp.group" priority="650">
+
+        <rule-metadata name="%RegexpSingleline.name" internal-name="RegexpSingleline" parent="Checker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.regexp.RegexpSinglelineCheck"/>
+            <description>%RegexpSingleline.desc</description>
+            <property-metadata name="format" datatype="Regex" default-value="^$">
+                <description>%RegexpSingleline.format</description>
+            </property-metadata>
+            <property-metadata name="message" datatype="String">
+                <description>%RegexpSingleline.message</description>
+            </property-metadata>
+            <property-metadata name="ignoreCase" datatype="Boolean" default-value="false">
+                <description>%RegexpSingleline.ignoreCase</description>
+            </property-metadata>
+            <property-metadata name="minimum" datatype="Integer" default-value="0">
+                <description>%RegexpSingleline.minimum</description>
+            </property-metadata>
+            <property-metadata name="maximum" datatype="Integer" default-value="0">
+                <description>%RegexpSingleline.maximum</description>
+            </property-metadata>
+        </rule-metadata>
+        
+        <rule-metadata name="%RegexpMultiline.name" internal-name="RegexpMultiline" parent="Checker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.regexp.RegexpMultilineCheck"/>
+            <description>%RegexpMultiline.desc</description>
+            <property-metadata name="format" datatype="Regex" default-value="^$">
+                <description>%RegexpMultiline.format</description>
+            </property-metadata>
+            <property-metadata name="message" datatype="String">
+                <description>%RegexpMultiline.message</description>
+            </property-metadata>
+            <property-metadata name="ignoreCase" datatype="Boolean" default-value="false">
+                <description>%RegexpMultiline.ignoreCase</description>
+            </property-metadata>
+            <property-metadata name="minimum" datatype="Integer" default-value="0">
+                <description>%RegexpMultiline.minimum</description>
+            </property-metadata>
+            <property-metadata name="maximum" datatype="Integer" default-value="0">
+                <description>%RegexpMultiline.maximum</description>
+            </property-metadata>
+        </rule-metadata>
+
+        <rule-metadata name="%RegexpSinglelineJava.name" internal-name="RegexpSingleline" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.regexp.RegexpSinglelineJavaCheck"/>
+            <description>%RegexpSinglelineJava.desc</description>
+            <property-metadata name="format" datatype="Regex" default-value="^$">
+                <description>%RegexpSinglelineJava.format</description>
+            </property-metadata>
+            <property-metadata name="message" datatype="String">
+                <description>%RegexpSinglelineJava.message</description>
+            </property-metadata>
+            <property-metadata name="ignoreCase" datatype="Boolean" default-value="false">
+                <description>%RegexpSinglelineJava.ignoreCase</description>
+            </property-metadata>
+            <property-metadata name="minimum" datatype="Integer" default-value="0">
+                <description>%RegexpSinglelineJava.minimum</description>
+            </property-metadata>
+            <property-metadata name="maximum" datatype="Integer" default-value="0">
+                <description>%RegexpSinglelineJava.maximum</description>
+            </property-metadata>
+            <property-metadata name="ignoreComments" datatype="Boolean" default-value="false">
+                <description>%RegexpSinglelineJava.ignoreComments</description>
+            </property-metadata>
+        </rule-metadata>
+
+    </rule-group-metadata>
+
+</checkstyle-metadata>
