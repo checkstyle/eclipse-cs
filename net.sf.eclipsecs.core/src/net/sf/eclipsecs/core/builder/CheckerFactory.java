@@ -40,8 +40,7 @@ import org.apache.commons.io.IOUtils;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 
-import com.google.common.base.ReferenceType;
-import com.google.common.collect.ReferenceMap;
+import com.google.common.collect.MapMaker;
 import com.puppycrawl.tools.checkstyle.Checker;
 import com.puppycrawl.tools.checkstyle.ConfigurationLoader;
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
@@ -81,8 +80,7 @@ public final class CheckerFactory {
     static {
 
         // Use synchronized collections to avoid concurrent modification
-        sCheckerMap = Collections.synchronizedMap(new ReferenceMap<String, Checker>(
-                ReferenceType.STRONG, ReferenceType.SOFT));
+        sCheckerMap = new MapMaker().softValues().makeMap();
         sModifiedMap = Collections.synchronizedMap(new HashMap<String, Long>());
         sAdditionalDataMap = Collections
                 .synchronizedMap(new HashMap<String, AdditionalConfigData>());
