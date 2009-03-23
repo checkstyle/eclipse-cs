@@ -64,11 +64,11 @@ public class ConfigPropertyWidgetRegex extends ConfigPropertyWidgetAbstractBase 
 
     private Text mRegexTestWidget;
 
-    private String mDefaultMessage = Messages.ConfigPropertyWidgetRegex_msgRegexTestString;
+    private final String mDefaultMessage = Messages.ConfigPropertyWidgetRegex_msgRegexTestString;
 
-    private Color mRedColor;
+    private final Color mRedColor;
 
-    private Color mGreenColor;
+    private final Color mGreenColor;
 
     private Color mTextBgColor;
 
@@ -94,7 +94,7 @@ public class ConfigPropertyWidgetRegex extends ConfigPropertyWidgetAbstractBase 
 
             mContents = new Composite(parent, SWT.NULL);
             mContents.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-            GridLayout layout = new GridLayout(2, false);
+            GridLayout layout = new GridLayout(2, true);
             layout.marginWidth = 0;
             layout.marginHeight = 0;
             mContents.setLayout(layout);
