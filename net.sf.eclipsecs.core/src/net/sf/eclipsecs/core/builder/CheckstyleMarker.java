@@ -25,7 +25,11 @@ import net.sf.eclipsecs.core.CheckstylePlugin;
 /**
  * Represents the Checkstyle file marker.
  */
-public class CheckstyleMarker {
+public final class CheckstyleMarker {
+
+    private CheckstyleMarker() {
+    // NOOP
+    }
 
     /** ID for the CheckstyleMarker. */
     public static final String MARKER_ID = CheckstylePlugin.PLUGIN_ID + ".CheckstyleMarker"; //$NON-NLS-1$

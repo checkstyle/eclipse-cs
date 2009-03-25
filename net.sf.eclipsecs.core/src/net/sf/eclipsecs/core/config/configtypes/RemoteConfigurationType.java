@@ -419,6 +419,14 @@ public class RemoteConfigurationType extends ConfigurationType {
             }
         }
 
+        /**
+         * Returns the stored authentication for the given check configuration
+         * URL.
+         * 
+         * @param resolvedCheckConfigurationURL the configuration URL
+         * @return the authentication object or <code>null</code> if none is
+         *         stored
+         */
         public static PasswordAuthentication getPasswordAuthentication(
                 URL resolvedCheckConfigurationURL) {
 
@@ -441,6 +449,8 @@ public class RemoteConfigurationType extends ConfigurationType {
          * Removes the authentication info from the session cache.
          * 
          * @param resolvedCheckConfigurationURL the check configuration URL
+         * @throws CheckstylePluginException if the authentication could not be
+         *             removed
          */
         public static void removeCachedAuthInfo(URL resolvedCheckConfigurationURL)
             throws CheckstylePluginException {

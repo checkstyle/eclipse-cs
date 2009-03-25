@@ -23,7 +23,11 @@ package net.sf.eclipsecs.core.projectconfig;
 /**
  * Defines XML tages used in configuration files.
  */
-public class XMLTags {
+public final class XMLTags {
+
+    private XMLTags() {
+    // NOOP
+    }
 
     static final String FILESET_CONFIG_TAG = "fileset-config"; //$NON-NLS-1$
 
