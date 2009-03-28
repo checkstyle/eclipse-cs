@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "xhtml11-flat.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8"/>
+        <link type="text/css" href="style.css" rel="stylesheet"/>
+        <title>The Checkstyle Plug-in for Eclipse</title>
+    </head>
+    <body id="content">
+        <h2>-- Download &amp; Installation --</h2>
+        <p>The first way to install the Eclipse Checkstyle Plug-in is via the <a
+                href="http://eclipse-cs.sourceforge.net/update/">update site</a>.</p>
+        <ol>
+            <li> Within Eclipse go to <strong>
+                    <em>Help-&gt;Software Updates-&gt;Find and Install</em>
+                </strong>
+            </li>
+            <li> Choose <strong>
+                    <em>Search for new features to install</em>
+                </strong> and press <strong>
+                    <em>Next</em>
+                </strong>
+            </li>
+            <li> Create a <strong>
+                    <em>New Remote Site...</em>
+                </strong>
+            </li>
+            <li> Input a name to your liking (for instance <i>Checkstyle Plug-in</i>) and input the following URL: <span
+                    class="code-blue">http://eclipse-cs.sourceforge.net/update</span>
+            </li>
+            <li> Click your way through the following pages to install the plug-in. </li>
+        </ol>
+        <p>Alternatively the Checkstyle Eclipse Plug-in can be downloaded from the <a
+                href="http://sourceforge.net/projects/eclipse-cs/">Eclipse Checkstyle Plug-in's SourceForge project
+                page</a>. The download package consists of a single zip file that contains both the Checkstyle Plug-in
+            and the Checkstyle core engine.</p>
+        <p>Once you have downloaded the distribution zip file extract its contents. First, exit from Eclipse. Next, copy
+            the <span class="code-blue">com.atlassw.tools.eclipse.checkstyle_<b>&lt;version&gt;</b></span>
+            folder to your Eclipse plug-in folder and restart Eclipse. That's all there is to it, you are now ready to
+            run Checkstyle.</p>
+        <p>
+            <b>
+                <i>Important Note:</i>
+            </b>If you did not use the update site to install the plug-in please make sure to restart Eclipse with the
+                <span class="code-blue">-clean</span> option at least once. This is because Eclipse caches a lot of
+            information about plug-ins. In case you just updated the plug-in from a previous version this information
+            cached by Eclipse is not up to date - resulting in the plug-in failing with ClassNotFoundExceptions and
+            other serious issues.</p>
+        <p>
+            <b>
+                <i>Important Note:</i>
+            </b>As of plug-in release 4.0.0 only Eclipse 3.0 and newer is supported. Eclipse 2.x.x support is
+            discontinued. Please use older plug-in versions with Eclipse 2.x.x. - downloadable from the <a
+                href="http://sourceforge.net/projects/eclipse-cs/">SourceForge Project Page</a>
+        </p>
+    </body>
+</html>

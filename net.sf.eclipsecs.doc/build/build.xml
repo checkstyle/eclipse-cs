@@ -25,6 +25,8 @@
 	<target name="build.plugin.docs">
 		<copy todir="${dist.docs}">
 			<fileset dir="${basedir}/base" includes="*.css" />
+			<fileset dir="${basedir}/base" includes="*.js" />
+			<fileset dir="${basedir}/base" includes="yui/**" />
 			<fileset dir="${basedir}/base" includes="images/**" />
 			<fileset dir="${basedir}/base" includes="releasenotes/**/*.jpg" />
 		</copy>
@@ -38,6 +40,8 @@
 	<target name="build.plugin.website">
 		<copy todir="${dist.web}">
 			<fileset dir="${basedir}/base" includes="*.css" />
+			<fileset dir="${basedir}/base" includes="*.js" />
+			<fileset dir="${basedir}/base" includes="yui/**" />
 			<fileset dir="${basedir}/base" includes="images/**" />
 			<fileset dir="${basedir}/base" includes="update/**" />
 			<fileset dir="${basedir}/base" includes="releasenotes/**/*.jpg" />
