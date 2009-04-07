@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: eclipse-cs 4.x.x -> 5.0.0 Migration Plug-in
 Bundle-SymbolicName: net.sf.eclipsecs.migration;singleton:=true
 Bundle-Version: 0.0.0
-Bundle-Vendor: Lars Ködderitzsch
+Bundle-Vendor: Lars Koedderitzsch
 Require-Bundle: net.sf.eclipsecs.core,
  org.eclipse.core.resources,
  org.eclipse.core.runtime,

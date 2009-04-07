@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Eclipse Checkstyle Ui Plug-in
 Bundle-SymbolicName: net.sf.eclipsecs.ui;singleton:=true
 Bundle-Version: 0.0.0
-Bundle-Vendor: Lars Ködderitzsch
+Bundle-Vendor: Lars Koedderitzsch
 Bundle-Activator: net.sf.eclipsecs.ui.CheckstyleUIPlugin
 Bundle-Localization: ui
 Require-Bundle: net.sf.eclipsecs.checkstyle,
