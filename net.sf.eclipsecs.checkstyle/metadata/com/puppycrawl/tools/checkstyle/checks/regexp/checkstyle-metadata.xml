@@ -45,7 +45,7 @@
             </property-metadata>
         </rule-metadata>
 
-        <rule-metadata name="%RegexpSinglelineJava.name" internal-name="RegexpSingleline" parent="TreeWalker">
+        <rule-metadata name="%RegexpSinglelineJava.name" internal-name="RegexpSinglelineJava" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.regexp.RegexpSinglelineJavaCheck"/>
             <description>%RegexpSinglelineJava.desc</description>
             <property-metadata name="format" datatype="Regex" default-value="^$">
