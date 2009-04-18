@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE checkstyle-metadata PUBLIC
+"-//eclipse-cs//DTD Check Metadata 1.1//EN"
+"http://eclipse-cs.sourceforge.net/dtds/checkstyle-metadata_1_1.dtd">
+<checkstyle-metadata>
+    <rule-group-metadata name="%Annotation.group" priority="100">
+
+        <rule-metadata name="%AnnotationUseStyle.name" internal-name="AnnotationUseStyle" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.annotation.AnnotationUseStyleCheck"/>
+            <description>%AnnotationUseStyle.desc</description>
+            <property-metadata name="elementStyle" datatype="SingleSelect" default-value="compact_no_array">
+                <description>%AnnotationUseStyle.elementStyle</description>
+                <enumeration>
+                    <property-value-option value="expanded"/>
+                    <property-value-option value="compact"/>
+                    <property-value-option value="compact_no_array"/>
+                    <property-value-option value="ignore"/>
+                </enumeration>
+            </property-metadata>
+            <property-metadata name="closingParens" datatype="SingleSelect" default-value="never">
+                <description>%AnnotationUseStyle.closingParens</description>
+                <enumeration>
+                    <property-value-option value="always"/>
+                    <property-value-option value="never"/>
+                    <property-value-option value="ignore"/>
+                </enumeration>
+            </property-metadata>
+            <property-metadata name="trailingArrayComma" datatype="SingleSelect" default-value="never">
+                <description>%AnnotationUseStyle.trailingArrayComma</description>
+                <enumeration>
+                    <property-value-option value="always"/>
+                    <property-value-option value="never"/>
+                    <property-value-option value="ignore"/>
+                </enumeration>
+            </property-metadata>
+            <message-key key="annotation.incorrect.style"/>
+            <message-key key="annotation.trailing.comma.missing"/>
+            <message-key key="annotation.trailing.comma.present"/>
+            <message-key key="annotation.parens.missing"/>
+            <message-key key="annotation.parens.present"/>
+        </rule-metadata>
+
+        <rule-metadata name="%MissingDeprecated.name" internal-name="MissingDeprecated" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.annotation.MissingDeprecatedCheck"/>
+            <description>%MissingDeprecated.desc</description>
+            <message-key key="annotation.missing.deprecated"/>
+            <message-key key="javadoc.duplicateTag"/>
+            <message-key key="javadoc.missing"/>
+        </rule-metadata>
+
+        <rule-metadata name="%MissingOverride.name" internal-name="MissingOverride" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.annotation.MissingOverrideCheck"/>
+            <description>%MissingOverride.desc</description>
+            <property-metadata name="javaFiveCompatibility " datatype="Boolean" default-value="false">
+                <description>%MissingOverride.javaFiveCompatibility</description>
+            </property-metadata>
+            <message-key key="tag.not.valid.on"/>
+            <message-key key="annotation.missing.override"/>
+        </rule-metadata>
+
+        <rule-metadata name="%PackageAnnotation.name" internal-name="PackageAnnotation" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.annotation.PackageAnnotationCheck"/>
+            <description>%PackageAnnotation.desc</description>
+            <message-key key="annotation.package.location"/>
+        </rule-metadata>
+
+        <rule-metadata name="%SuppressWarnings.name" internal-name="SuppressWarnings" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.annotation.SuppressWarningsCheck"/>
+            <description>%SuppressWarnings.desc</description>
+            <property-metadata name="format" datatype="Regex" default-value="^$|^\s+$">
+                <description>%SuppressWarnings.format</description>
+            </property-metadata>
+            <property-metadata name="tokens" datatype="MultiCheck"
+                default-value="CLASS_DEF,INTERFACE_DEF,ENUM_DEF,ANNOTATION_DEF,ANNOTATION_FIELD_DEF,ENUM_CONSTANT_DEF,PARAMETER_DEF,VARIABLE_DEF,METHOD_DEF,CTOR_DEF">
+                <description>%SuppressWarnings.tokens</description>
+                <enumeration>
+                    <property-value-option value="CLASS_DEF"/>
+                    <property-value-option value="INTERFACE_DEF"/>
+                    <property-value-option value="ENUM_DEF"/>
+                    <property-value-option value="ANNOTATION_DEF"/>
+                    <property-value-option value="ANNOTATION_FIELD_DEF"/>
+                    <property-value-option value="ENUM_CONSTANT_DEF"/>
+                    <property-value-option value="PARAMETER_DEF"/>
+                    <property-value-option value="VARIABLE_DEF"/>
+                    <property-value-option value="METHOD_DEF"/>
+                    <property-value-option value="CTOR_DEF"/>
+                </enumeration>
+            </property-metadata>
+            <message-key key="suppressed.warning.not.allowed"/>
+        </rule-metadata>
+
+    </rule-group-metadata>
+</checkstyle-metadata>
