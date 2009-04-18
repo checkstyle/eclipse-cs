@@ -19,7 +19,7 @@ Require-Bundle: net.sf.eclipsecs.checkstyle,
  org.eclipse.ui.editors,
  org.eclipse.ui.ide,
  org.eclipse.ui.workbench.texteditor
-Bundle-ClassPath: CheckstyleUIPlugin.jar,
+Bundle-ClassPath: .,
  lib/itext-2.0.1.jar,
  lib/jcommon-1.0.9.jar,
  lib/jfreechart-1.0.5.jar,

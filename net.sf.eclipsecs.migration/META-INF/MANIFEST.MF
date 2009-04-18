@@ -8,3 +8,4 @@ Require-Bundle: net.sf.eclipsecs.core,
  org.eclipse.core.resources,
  org.eclipse.core.runtime,
  org.eclipse.ui
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
