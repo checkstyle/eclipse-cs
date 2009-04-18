@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.maven.ide.eclipse.checkstyle"
+      label="%feature.label"
+      version="0.0.2"
+      provider-name="%feature.provider_name">
+
+   <description url="%description.url">
+      %description.text
+   </description>
+
+   <copyright>
+      %copyright.text
+   </copyright>
+
+   <license url="license.html">
+      %license.text
+   </license>
+
+   <url>
+      <update label="%updateSiteName" url="http://eclipse-cs.sourceforge.net/update"/>
+      <discovery label="%updateSiteName" url="http://eclipse-cs.sourceforge.net/update"/>
+   </url>
+
+   <requires>
+      <import feature="net.sf.eclipsecs" version="0.0.0"/>
+   </requires>
+
+   <plugin
+         id="org.maven.ide.eclipse.checkstyle"
+         download-size="0"
+         install-size="0"
+         version="0.0.2"
+         unpack="false"/>
+
+</feature>
