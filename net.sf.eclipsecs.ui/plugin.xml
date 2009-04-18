@@ -208,19 +208,19 @@
             icon="icons/duplicatedCode.gif"
             category="net.sf.eclipsecs.category"
             name="%DuplicatedCodeView.name"
-            id="net.sf.eclipsecs.duplicatesView"/>
+            id="net.sf.eclipsecs.ui.duplicates.DuplicatedCodeView"/>
         <view
             name="%MarkerStatsView.name"
             icon="icons/listingView.gif"
             category="net.sf.eclipsecs.category"
             class="net.sf.eclipsecs.ui.stats.views.MarkerStatsView"
-            id="net.sf.eclipsecs.stats.views.MarkerStatsView"/>
+            id="net.sf.eclipsecs.ui.stats.views.MarkerStatsView"/>
         <view
             name="%GraphStatsView.name"
             icon="icons/graphView.gif"
             category="net.sf.eclipsecs.category"
             class="net.sf.eclipsecs.ui.stats.views.GraphStatsView"
-            id="net.sf.eclipsecs.stats.views.GraphStatsView"/>
+            id="net.sf.eclipsecs.ui.stats.views.GraphStatsView"/>
     </extension>
     
     <extension
