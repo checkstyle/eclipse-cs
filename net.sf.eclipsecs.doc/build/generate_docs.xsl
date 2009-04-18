@@ -101,10 +101,15 @@
                             </li>
                             <li class="yuimenuitem">
                                 <a class="yuimenuitemlabel"
-                                    href="{$path-prefix}releasenotes/5.0.0beta2/release_notes.html">Release Notes</a>
+                                    href="{$path-prefix}releasenotes/5.0.0beta3/release_notes.html">Release Notes</a>
                                 <div id="releasnotes" class="yuimenu">
                                     <div class="bd">
                                         <ul class="first-of-type">
+                                            <li class="yuimenuitem">
+                                                <a class="yuimenuitemlabel"
+                                                    href="{$path-prefix}releasenotes/5.0.0beta3/release_notes.html">
+                                                    Release 5.0.0beta3</a>
+                                            </li>
                                             <li class="yuimenuitem">
                                                 <a class="yuimenuitemlabel"
                                                     href="{$path-prefix}releasenotes/5.0.0beta2/release_notes.html">
@@ -178,13 +183,9 @@
                                                 <a class="yuimenuitemlabel" href="{$path-prefix}faq.html"> FAQ </a>
                                             </li>
                                             <li class="yuimenuitem">
-                                                <a class="yuimenuitemlabel" href="{$path-prefix}troubleshooting.html">
-                                                    Troubleshooting</a>
-                                            </li>
-                                            <li class="yuimenuitem">
                                                 <a class="yuimenuitemlabel"
                                                     href="https://sourceforge.net/forum/?group_id=80344"> Get help in
-                                                    the Forums</a>
+                                                    the forums</a>
                                             </li>
                                             <li class="yuimenuitem">
                                                 <a class="yuimenuitemlabel"

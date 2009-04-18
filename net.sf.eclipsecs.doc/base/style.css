@@ -52,6 +52,7 @@ body {
 #content p {
     line-height: 1.5;
     font-size: 11px;
+    margin-bottom: 5px;
 }
 #content table, ul, ol {
     line-height: 1.5;
