@@ -5,5 +5,5 @@ plugin@net.sf.eclipsecs.checkstyle=COPY,D:/_projects/checkstyle,net.sf.eclipsecs
 plugin@net.sf.eclipsecs.ui=COPY,D:/_projects/checkstyle,net.sf.eclipsecs.ui
 feature@net.sf.eclipsecs.migration=COPY,D:/_projects/checkstyle,net.sf.eclipsecs.migration-feature
 plugin@net.sf.eclipsecs.migration=COPY,D:/_projects/checkstyle,net.sf.eclipsecs.migration
-feature@org.mave.ide.eclipse.checkstyle=COPY,D:/_projects/checkstyle,org.maven.id.eclipse.checkstyle-feature
+feature@org.maven.ide.eclipse.checkstyle=COPY,D:/_projects/checkstyle,org.maven.ide.eclipse.checkstyle-feature
 plugin@org.maven.ide.eclipse.checkstyle=COPY,D:/_projects/checkstyle,org.maven.ide.eclipse.checkstyle
