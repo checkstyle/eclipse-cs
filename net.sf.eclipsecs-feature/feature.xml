@@ -27,6 +27,11 @@
          version="0.0.0"
          optional="true"/>
 
+   <includes
+         id="org.mave.ide.eclipse.checkstyle"
+         version="0.0.0"
+         optional="true"/>
+
    <requires>
       <import plugin="org.eclipse.jface"/>
       <import plugin="org.eclipse.ui"/>

@@ -7,7 +7,7 @@ Bundle-Vendor: Nicolas De Loof
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources;bundle-version="3.3.0",
- net.sf.eclipsecs.core;bundle-version="0.0.0",
+ net.sf.eclipsecs.core,
  org.maven.ide.components.maven_embedder;bundle-version="2.1.0",
  org.maven.ide.eclipse;bundle-version="0.9.6",
  org.maven.ide.eclipse.jdt;bundle-version="0.9.6"
