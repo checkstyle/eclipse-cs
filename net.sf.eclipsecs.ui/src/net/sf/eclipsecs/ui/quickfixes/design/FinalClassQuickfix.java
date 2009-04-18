@@ -24,6 +24,7 @@ import java.util.List;
 
 import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
 import net.sf.eclipsecs.ui.quickfixes.AbstractASTResolution;
+import net.sf.eclipsecs.ui.quickfixes.Messages;
 import net.sf.eclipsecs.ui.quickfixes.modifier.ModifierOrderQuickfix;
 
 import org.eclipse.jdt.core.dom.ASTVisitor;
@@ -33,15 +34,13 @@ import org.eclipse.jdt.core.dom.Modifier.ModifierKeyword;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.swt.graphics.Image;
 
-
 /**
  * Quickfix implementation which adds the final modifiers a method declaration.
  * 
  * @author Levon Saldamli
  * @author Lars Ködderitzsch
  */
-public class FinalClassQuickfix extends AbstractASTResolution
-{
+public class FinalClassQuickfix extends AbstractASTResolution {
 
     /** The length of the javadoc comment declaration. */
     private static final int JAVADOC_COMMENT_LENGTH = 6;
@@ -50,23 +49,18 @@ public class FinalClassQuickfix extends AbstractASTResolution
      * {@inheritDoc}
      */
     protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
-            final int markerStartOffset)
-    {
-        return new ASTVisitor()
-        {
+            final int markerStartOffset) {
+        return new ASTVisitor() {
 
-            public boolean visit(TypeDeclaration node)
-            {
+            public boolean visit(TypeDeclaration node) {
                 // recalculate start position because optional javadoc is mixed
                 // into the original start position
                 int pos = node.getStartPosition()
                         + (node.getJavadoc() != null ? node.getJavadoc().getLength()
                                 + JAVADOC_COMMENT_LENGTH : 0);
-                if (containsPosition(lineInfo, pos))
-                {
+                if (containsPosition(lineInfo, pos)) {
 
-                    if (!Modifier.isFinal(node.getModifiers()))
-                    {
+                    if (!Modifier.isFinal(node.getModifiers())) {
 
                         Modifier finalModifier = node.getAST().newModifier(
                                 ModifierKeyword.FINAL_KEYWORD);
@@ -87,24 +81,21 @@ public class FinalClassQuickfix extends AbstractASTResolution
     /**
      * {@inheritDoc}
      */
-    public String getDescription()
-    {
+    public String getDescription() {
         return Messages.FinalClassQuickfix_description;
     }
 
     /**
      * {@inheritDoc}
      */
-    public String getLabel()
-    {
+    public String getLabel() {
         return Messages.FinalClassQuickfix_label;
     }
 
     /**
      * {@inheritDoc}
      */
-    public Image getImage()
-    {
+    public Image getImage() {
         return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.CORRECTION_ADD);
     }
 }

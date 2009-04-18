@@ -27,6 +27,7 @@ import java.util.List;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
 import net.sf.eclipsecs.ui.quickfixes.AbstractASTResolution;
+import net.sf.eclipsecs.ui.quickfixes.Messages;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
@@ -41,8 +42,8 @@ import org.eclipse.swt.graphics.Image;
 import com.sun.xml.internal.ws.util.StringUtils;
 
 /**
- * Quickfix implementation that replaces a string literal comparison using == or !=
- * with a proper equals() comparison.
+ * Quickfix implementation that replaces a string literal comparison using == or
+ * != with a proper equals() comparison.
  * 
  * @author Lars Ködderitzsch
  */

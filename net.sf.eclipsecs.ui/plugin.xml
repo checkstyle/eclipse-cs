@@ -65,7 +65,7 @@
     <extension
         point="org.eclipse.ui.preferencePages">
         <page
-            name="Checkstyle"
+            name="%CheckstylePreferencePage.name"
             class="net.sf.eclipsecs.ui.preferences.CheckstylePreferencePage"
             id="net.sf.eclipsecs.preferences.CheckstylePreferencePage"/>
         <page
@@ -229,7 +229,7 @@
         <markerGroupingEntry
             id="net.sf.eclipsecs.core.CheckstyleMarker"
             markerGrouping="org.eclipse.jdt.ui.java_marker_category"
-            label="%CheckstyleMarker.name"
+            label="%CheckstyleMarker.name" 
             priority="1"/>
 
         <markerAttributeGrouping

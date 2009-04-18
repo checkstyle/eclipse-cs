@@ -25,6 +25,7 @@ import java.util.List;
 
 import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
 import net.sf.eclipsecs.ui.quickfixes.AbstractASTResolution;
+import net.sf.eclipsecs.ui.quickfixes.Messages;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
@@ -33,34 +34,27 @@ import org.eclipse.jdt.core.dom.SwitchStatement;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.swt.graphics.Image;
 
-
 /**
  * Quickfix implementation that moves the default case of a switch statement to
  * the last position.
  * 
  * @author Lars Ködderitzsch
  */
-public class DefaultComesLastQuickfix extends AbstractASTResolution
-{
+public class DefaultComesLastQuickfix extends AbstractASTResolution {
 
     /**
      * {@inheritDoc}
      */
     protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
-            final int markerStartOffset)
-    {
+            final int markerStartOffset) {
 
-        return new ASTVisitor()
-        {
+        return new ASTVisitor() {
 
-            public boolean visit(SwitchCase node)
-            {
+            public boolean visit(SwitchCase node) {
 
-                if (containsPosition(lineInfo, node.getStartPosition()))
-                {
+                if (containsPosition(lineInfo, node.getStartPosition())) {
 
-                    if (node.isDefault() && !isLastSwitchCase(node))
-                    {
+                    if (node.isDefault() && !isLastSwitchCase(node)) {
                         SwitchStatement switchStatement = (SwitchStatement) node.getParent();
 
                         List defaultCaseStatements = new ArrayList();
@@ -69,16 +63,13 @@ public class DefaultComesLastQuickfix extends AbstractASTResolution
                         // collect all statements belonging to the default case
                         int defaultStatementIndex = switchStatement.statements().indexOf(node);
                         for (int i = defaultStatementIndex + 1; i < switchStatement.statements()
-                                .size(); i++)
-                        {
+                                .size(); i++) {
                             ASTNode tmpNode = (ASTNode) switchStatement.statements().get(i);
 
-                            if (!(tmpNode instanceof SwitchCase))
-                            {
+                            if (!(tmpNode instanceof SwitchCase)) {
                                 defaultCaseStatements.add(tmpNode);
                             }
-                            else
-                            {
+                            else {
                                 break;
                             }
                         }
@@ -91,19 +82,16 @@ public class DefaultComesLastQuickfix extends AbstractASTResolution
                 return true;
             }
 
-            private boolean isLastSwitchCase(SwitchCase switchCase)
-            {
+            private boolean isLastSwitchCase(SwitchCase switchCase) {
 
                 SwitchStatement switchStatement = (SwitchStatement) switchCase.getParent();
 
                 // collect all statements belonging to the default case
                 int defaultStatementIndex = switchStatement.statements().indexOf(switchCase);
-                for (int i = defaultStatementIndex + 1; i < switchStatement.statements().size(); i++)
-                {
+                for (int i = defaultStatementIndex + 1; i < switchStatement.statements().size(); i++) {
                     ASTNode tmpNode = (ASTNode) switchStatement.statements().get(i);
 
-                    if (tmpNode instanceof SwitchCase)
-                    {
+                    if (tmpNode instanceof SwitchCase) {
                         return false;
                     }
                 }
@@ -115,24 +103,21 @@ public class DefaultComesLastQuickfix extends AbstractASTResolution
     /**
      * {@inheritDoc}
      */
-    public String getDescription()
-    {
+    public String getDescription() {
         return Messages.DefaultComesLastQuickfix_description;
     }
 
     /**
      * {@inheritDoc}
      */
-    public String getLabel()
-    {
+    public String getLabel() {
         return Messages.DefaultComesLastQuickfix_label;
     }
 
     /**
      * {@inheritDoc}
      */
-    public Image getImage()
-    {
+    public Image getImage() {
         return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.CORRECTION_CHANGE);
     }
 }

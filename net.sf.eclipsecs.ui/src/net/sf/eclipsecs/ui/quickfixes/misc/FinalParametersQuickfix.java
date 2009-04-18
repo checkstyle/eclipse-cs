@@ -22,6 +22,7 @@ package net.sf.eclipsecs.ui.quickfixes.misc;
 
 import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
 import net.sf.eclipsecs.ui.quickfixes.AbstractASTResolution;
+import net.sf.eclipsecs.ui.quickfixes.Messages;
 
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.Modifier;
@@ -30,7 +31,6 @@ import org.eclipse.jdt.core.dom.Modifier.ModifierKeyword;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.swt.graphics.Image;
 
-
 /**
  * Quickfix implementation which adds final modifiers to parameters in method
  * declarations.
@@ -38,25 +38,19 @@ import org.eclipse.swt.graphics.Image;
  * @author Levon Saldamli
  * @author Lars Ködderitzsch
  */
-public class FinalParametersQuickfix extends AbstractASTResolution
-{
+public class FinalParametersQuickfix extends AbstractASTResolution {
 
     /**
      * {@inheritDoc}
      */
     protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
-            final int markerStartOffset)
-    {
-        return new ASTVisitor()
-        {
+            final int markerStartOffset) {
+        return new ASTVisitor() {
 
-            public boolean visit(SingleVariableDeclaration node)
-            {
+            public boolean visit(SingleVariableDeclaration node) {
                 if (containsPosition(node, markerStartOffset)
-                        && !Modifier.isFinal(node.getModifiers()))
-                {
-                    if (!Modifier.isFinal(node.getModifiers()))
-                    {
+                        && !Modifier.isFinal(node.getModifiers())) {
+                    if (!Modifier.isFinal(node.getModifiers())) {
                         Modifier finalModifier = node.getAST().newModifier(
                                 ModifierKeyword.FINAL_KEYWORD);
                         node.modifiers().add(finalModifier);
@@ -70,24 +64,21 @@ public class FinalParametersQuickfix extends AbstractASTResolution
     /**
      * {@inheritDoc}
      */
-    public String getDescription()
-    {
+    public String getDescription() {
         return Messages.FinalParametersQuickfix_description;
     }
 
     /**
      * {@inheritDoc}
      */
-    public String getLabel()
-    {
+    public String getLabel() {
         return Messages.FinalParametersQuickfix_label;
     }
 
     /**
      * {@inheritDoc}
      */
-    public Image getImage()
-    {
+    public Image getImage() {
         return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.CORRECTION_ADD);
     }
 

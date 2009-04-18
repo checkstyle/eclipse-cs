@@ -23,10 +23,7 @@
    </url>
 
    <requires>
-      <import plugin="org.eclipse.core.resources"/>
-      <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.eclipse.ui"/>
-      <import plugin="net.sf.eclipsecs.core"/>
+      <import feature="net.sf.eclipsecs" version="0.0.0"/>
    </requires>
 
    <plugin

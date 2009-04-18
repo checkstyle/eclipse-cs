@@ -22,6 +22,7 @@ package net.sf.eclipsecs.ui.quickfixes.coding;
 
 import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
 import net.sf.eclipsecs.ui.quickfixes.AbstractASTResolution;
+import net.sf.eclipsecs.ui.quickfixes.Messages;
 
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.SwitchCase;
@@ -29,30 +30,24 @@ import org.eclipse.jdt.core.dom.SwitchStatement;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.swt.graphics.Image;
 
-
 /**
  * Quickfix implementation that add a missing default statement to a switch
  * case.
  * 
  * @author Levon Saldamli
  */
-public class MissingSwitchDefaultQuickfix extends AbstractASTResolution
-{
+public class MissingSwitchDefaultQuickfix extends AbstractASTResolution {
 
     /**
      * {@inheritDoc}
      */
     protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
-            final int markerStartOffset)
-    {
+            final int markerStartOffset) {
 
-        return new ASTVisitor()
-        {
+        return new ASTVisitor() {
 
-            public boolean visit(SwitchStatement node)
-            {
-                if (containsPosition(lineInfo, node.getStartPosition()))
-                {
+            public boolean visit(SwitchStatement node) {
+                if (containsPosition(lineInfo, node.getStartPosition())) {
                     SwitchCase defNode = node.getAST().newSwitchCase();
                     defNode.setExpression(null);
                     node.statements().add(defNode);
@@ -66,24 +61,21 @@ public class MissingSwitchDefaultQuickfix extends AbstractASTResolution
     /**
      * {@inheritDoc}
      */
-    public String getDescription()
-    {
+    public String getDescription() {
         return Messages.MissingSwitchDefaultQuickfix_description;
     }
 
     /**
      * {@inheritDoc}
      */
-    public String getLabel()
-    {
+    public String getLabel() {
         return Messages.MissingSwitchDefaultQuickfix_label;
     }
 
     /**
      * {@inheritDoc}
      */
-    public Image getImage()
-    {
+    public Image getImage() {
         return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.CORRECTION_ADD);
     }
 }

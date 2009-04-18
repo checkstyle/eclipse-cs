@@ -18,24 +18,52 @@
 //
 //============================================================================
 
-package net.sf.eclipsecs.ui.quickfixes.coding;
+package net.sf.eclipsecs.ui.quickfixes;
 
+//CHECKSTYLE:OFF
 import org.eclipse.osgi.util.NLS;
 
-// CHECKSTYLE:OFF
+public class Messages extends NLS {
+    private static final String BUNDLE_NAME = "net.sf.eclipsecs.ui.quickfixes.messages"; //$NON-NLS-1$
 
-public class Messages extends NLS
-{
-    private static final String BUNDLE_NAME = "net.sf.eclipsecs.ui.quickfixes.coding.messages"; //$NON-NLS-1$
+    private Messages() {}
 
-    private Messages()
-    {}
-
-    static
-    {
+    static {
         // initialize resource bundle
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);
     }
+
+    public static String ModifierOrderQuickfix_description;
+
+    public static String ModifierOrderQuickfix_label;
+
+    public static String RedundantModifierQuickfix_description;
+
+    public static String RedundantModifierQuickfix_label;
+
+    public static String ArrayTypeStyleQuickfix_description;
+
+    public static String ArrayTypeStyleQuickfix_label;
+
+    public static String FinalParametersQuickfix_description;
+
+    public static String FinalParametersQuickfix_label;
+
+    public static String UncommentedMainQuickfix_description;
+
+    public static String UncommentedMainQuickfix_label;
+
+    public static String UpperEllQuickfix_description;
+
+    public static String UpperEllQuickfix_label;
+
+    public static String DesignForExtensionQuickfix_description;
+
+    public static String DesignForExtensionQuickfix_label;
+
+    public static String FinalClassQuickfix_description;
+
+    public static String FinalClassQuickfix_label;
 
     public static String EmptyStatementQuickfix_description;
 
@@ -59,5 +87,12 @@ public class Messages extends NLS
 
     public static String StringLiteralEqualityQuickfix_label;
 
+    public static String AvoidNextedBlocksQuickfix_description;
+
+    public static String AvoidNextedBlocksQuickfix_label;
+
+    public static String NeedBracesQuickfix_description;
+
+    public static String NeedBracesQuickfix_label;
 }
 // CHECKSTYLE:ON

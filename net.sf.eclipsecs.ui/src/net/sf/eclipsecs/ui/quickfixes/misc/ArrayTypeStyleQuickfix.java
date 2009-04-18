@@ -25,6 +25,7 @@ import java.util.List;
 
 import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
 import net.sf.eclipsecs.ui.quickfixes.AbstractASTResolution;
+import net.sf.eclipsecs.ui.quickfixes.Messages;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
@@ -37,43 +38,34 @@ import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.swt.graphics.Image;
 
-
 /**
  * Quickfix implementation which moves the array declaration (C-style to
  * Java-style and reverse).
  * 
  * @author Lars Ködderitzsch
  */
-public class ArrayTypeStyleQuickfix extends AbstractASTResolution
-{
+public class ArrayTypeStyleQuickfix extends AbstractASTResolution {
 
     /**
      * {@inheritDoc}
      */
     protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
-            final int markerStartOffset)
-    {
+            final int markerStartOffset) {
 
-        return new ASTVisitor()
-        {
+        return new ASTVisitor() {
 
-            public boolean visit(VariableDeclarationStatement node)
-            {
+            public boolean visit(VariableDeclarationStatement node) {
 
-                if (containsPosition(node, markerStartOffset))
-                {
+                if (containsPosition(node, markerStartOffset)) {
 
-                    if (isCStyle(node.fragments()))
-                    {
+                    if (isCStyle(node.fragments())) {
 
                         int dimensions = 0;
 
                         List fragments = node.fragments();
-                        for (int i = 0, size = fragments.size(); i < size; i++)
-                        {
+                        for (int i = 0, size = fragments.size(); i < size; i++) {
                             VariableDeclaration decl = (VariableDeclaration) fragments.get(i);
-                            if (decl.getExtraDimensions() > dimensions)
-                            {
+                            if (decl.getExtraDimensions() > dimensions) {
                                 dimensions = decl.getExtraDimensions();
 
                             }
@@ -85,14 +77,12 @@ public class ArrayTypeStyleQuickfix extends AbstractASTResolution
                         node.setType(arrayType);
 
                     }
-                    else if (isJavaStyle(node.getType()))
-                    {
+                    else if (isJavaStyle(node.getType())) {
 
                         int dimensions = ((ArrayType) node.getType()).getDimensions();
 
                         List fragments = node.fragments();
-                        for (int i = 0, size = fragments.size(); i < size; i++)
-                        {
+                        for (int i = 0, size = fragments.size(); i < size; i++) {
                             VariableDeclaration decl = (VariableDeclaration) fragments.get(i);
                             decl.setExtraDimensions(dimensions);
                         }
@@ -105,19 +95,15 @@ public class ArrayTypeStyleQuickfix extends AbstractASTResolution
                 return true;
             }
 
-            public boolean visit(SingleVariableDeclaration node)
-            {
+            public boolean visit(SingleVariableDeclaration node) {
 
-                if (containsPosition(node, markerStartOffset))
-                {
-                    if (isCStyle(node))
-                    {
+                if (containsPosition(node, markerStartOffset)) {
+                    if (isCStyle(node)) {
                         // wrap the existing type into an array type
                         node.setType(createArrayType(node.getType(), node.getExtraDimensions()));
                         node.setExtraDimensions(0);
                     }
-                    else if (isJavaStyle(node.getType()))
-                    {
+                    else if (isJavaStyle(node.getType())) {
 
                         ArrayType arrayType = (ArrayType) node.getType();
                         Type elementType = (Type) ASTNode.copySubtree(node.getAST(), arrayType
@@ -131,23 +117,18 @@ public class ArrayTypeStyleQuickfix extends AbstractASTResolution
                 return true;
             }
 
-            public boolean visit(FieldDeclaration node)
-            {
+            public boolean visit(FieldDeclaration node) {
 
-                if (containsPosition(node, markerStartOffset))
-                {
+                if (containsPosition(node, markerStartOffset)) {
 
-                    if (isCStyle(node.fragments()))
-                    {
+                    if (isCStyle(node.fragments())) {
 
                         int dimensions = 0;
 
                         List fragments = node.fragments();
-                        for (int i = 0, size = fragments.size(); i < size; i++)
-                        {
+                        for (int i = 0, size = fragments.size(); i < size; i++) {
                             VariableDeclaration decl = (VariableDeclaration) fragments.get(i);
-                            if (decl.getExtraDimensions() > dimensions)
-                            {
+                            if (decl.getExtraDimensions() > dimensions) {
                                 dimensions = decl.getExtraDimensions();
 
                             }
@@ -158,14 +139,12 @@ public class ArrayTypeStyleQuickfix extends AbstractASTResolution
                         ArrayType arrayType = createArrayType(node.getType(), dimensions);
                         node.setType(arrayType);
                     }
-                    else if (isJavaStyle(node.getType()))
-                    {
+                    else if (isJavaStyle(node.getType())) {
 
                         int dimensions = ((ArrayType) node.getType()).getDimensions();
 
                         List fragments = node.fragments();
-                        for (int i = 0, size = fragments.size(); i < size; i++)
-                        {
+                        for (int i = 0, size = fragments.size(); i < size; i++) {
                             VariableDeclaration decl = (VariableDeclaration) fragments.get(i);
                             decl.setExtraDimensions(dimensions);
                         }
@@ -178,33 +157,27 @@ public class ArrayTypeStyleQuickfix extends AbstractASTResolution
                 return true;
             }
 
-            private boolean isJavaStyle(Type type)
-            {
+            private boolean isJavaStyle(Type type) {
                 return type instanceof ArrayType;
             }
 
-            private boolean isCStyle(VariableDeclaration decl)
-            {
+            private boolean isCStyle(VariableDeclaration decl) {
                 return decl.getExtraDimensions() > 0;
             }
 
-            private boolean isCStyle(List fragments)
-            {
+            private boolean isCStyle(List fragments) {
 
                 Iterator it = fragments.iterator();
-                while (it.hasNext())
-                {
+                while (it.hasNext()) {
                     VariableDeclaration decl = (VariableDeclaration) it.next();
-                    if (isCStyle(decl))
-                    {
+                    if (isCStyle(decl)) {
                         return true;
                     }
                 }
                 return false;
             }
 
-            private ArrayType createArrayType(Type componentType, int dimensions)
-            {
+            private ArrayType createArrayType(Type componentType, int dimensions) {
                 Type type = (Type) ASTNode.copySubtree(componentType.getAST(), componentType);
                 ArrayType arrayType = componentType.getAST().newArrayType(type, dimensions);
 
@@ -216,24 +189,21 @@ public class ArrayTypeStyleQuickfix extends AbstractASTResolution
     /**
      * {@inheritDoc}
      */
-    public String getDescription()
-    {
+    public String getDescription() {
         return Messages.ArrayTypeStyleQuickfix_description;
     }
 
     /**
      * {@inheritDoc}
      */
-    public String getLabel()
-    {
+    public String getLabel() {
         return Messages.ArrayTypeStyleQuickfix_label;
     }
 
     /**
      * {@inheritDoc}
      */
-    public Image getImage()
-    {
+    public Image getImage() {
         return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.CORRECTION_CHANGE);
     }
 

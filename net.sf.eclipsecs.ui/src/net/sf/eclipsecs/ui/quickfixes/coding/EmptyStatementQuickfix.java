@@ -22,6 +22,7 @@ package net.sf.eclipsecs.ui.quickfixes.coding;
 
 import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
 import net.sf.eclipsecs.ui.quickfixes.AbstractASTResolution;
+import net.sf.eclipsecs.ui.quickfixes.Messages;
 
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.ChildPropertyDescriptor;
@@ -30,35 +31,28 @@ import org.eclipse.jdt.core.dom.StructuralPropertyDescriptor;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.swt.graphics.Image;
 
-
 /**
  * Quickfix implementation that removes an empty statement (unneccessary
  * semicolon).
  * 
  * @author Lars Ködderitzsch
  */
-public class EmptyStatementQuickfix extends AbstractASTResolution
-{
+public class EmptyStatementQuickfix extends AbstractASTResolution {
 
     /**
      * {@inheritDoc}
      */
     protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
-            final int markerStartPosition)
-    {
+            final int markerStartPosition) {
 
-        return new ASTVisitor()
-        {
-            public boolean visit(EmptyStatement node)
-            {
-                if (containsPosition(lineInfo, node.getStartPosition()))
-                {
+        return new ASTVisitor() {
+            public boolean visit(EmptyStatement node) {
+                if (containsPosition(lineInfo, node.getStartPosition())) {
 
                     // early exit if the statement is mandatory, e.g. only
                     // statement in a for-statement without block
                     StructuralPropertyDescriptor p = node.getLocationInParent();
-                    if (p.isChildProperty() && ((ChildPropertyDescriptor) p).isMandatory())
-                    {
+                    if (p.isChildProperty() && ((ChildPropertyDescriptor) p).isMandatory()) {
                         return false;
                     }
 
@@ -72,24 +66,21 @@ public class EmptyStatementQuickfix extends AbstractASTResolution
     /**
      * {@inheritDoc}
      */
-    public String getDescription()
-    {
+    public String getDescription() {
         return Messages.EmptyStatementQuickfix_description;
     }
 
     /**
      * {@inheritDoc}
      */
-    public String getLabel()
-    {
+    public String getLabel() {
         return Messages.EmptyStatementQuickfix_label;
     }
 
     /**
      * {@inheritDoc}
      */
-    public Image getImage()
-    {
+    public Image getImage() {
         return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.CORRECTION_REMOVE);
     }
 

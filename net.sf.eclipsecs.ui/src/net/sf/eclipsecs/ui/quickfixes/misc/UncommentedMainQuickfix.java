@@ -22,12 +22,12 @@ package net.sf.eclipsecs.ui.quickfixes.misc;
 
 import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
 import net.sf.eclipsecs.ui.quickfixes.AbstractASTResolution;
+import net.sf.eclipsecs.ui.quickfixes.Messages;
 
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.swt.graphics.Image;
-
 
 /**
  * Quickfix implementation which removes uncommented main methods (debugging
@@ -35,8 +35,7 @@ import org.eclipse.swt.graphics.Image;
  * 
  * @author Lars Ködderitzsch
  */
-public class UncommentedMainQuickfix extends AbstractASTResolution
-{
+public class UncommentedMainQuickfix extends AbstractASTResolution {
 
     /** The length of the javadoc comment declaration. */
     private static final int JAVADOC_COMMENT_LENGTH = 6;
@@ -45,13 +44,10 @@ public class UncommentedMainQuickfix extends AbstractASTResolution
      * {@inheritDoc}
      */
     protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
-            final int markerStartOffset)
-    {
-        return new ASTVisitor()
-        {
+            final int markerStartOffset) {
+        return new ASTVisitor() {
 
-            public boolean visit(MethodDeclaration node)
-            {
+            public boolean visit(MethodDeclaration node) {
                 // recalculate start position because optional javadoc is mixed
                 // into the original start position
                 int pos = node.getStartPosition()
@@ -70,24 +66,21 @@ public class UncommentedMainQuickfix extends AbstractASTResolution
     /**
      * {@inheritDoc}
      */
-    public String getDescription()
-    {
+    public String getDescription() {
         return Messages.UncommentedMainQuickfix_description;
     }
 
     /**
      * {@inheritDoc}
      */
-    public String getLabel()
-    {
+    public String getLabel() {
         return Messages.UncommentedMainQuickfix_label;
     }
 
     /**
      * {@inheritDoc}
      */
-    public Image getImage()
-    {
+    public Image getImage() {
         return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.CORRECTION_REMOVE);
     }
 }

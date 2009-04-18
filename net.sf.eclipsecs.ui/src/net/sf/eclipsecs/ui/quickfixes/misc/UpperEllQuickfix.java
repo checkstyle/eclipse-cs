@@ -22,12 +22,12 @@ package net.sf.eclipsecs.ui.quickfixes.misc;
 
 import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
 import net.sf.eclipsecs.ui.quickfixes.AbstractASTResolution;
+import net.sf.eclipsecs.ui.quickfixes.Messages;
 
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.NumberLiteral;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.swt.graphics.Image;
-
 
 /**
  * Quickfix implementation which changes lowercase 'l' occurrances in long
@@ -35,22 +35,17 @@ import org.eclipse.swt.graphics.Image;
  * 
  * @author Lars Ködderitzsch
  */
-public class UpperEllQuickfix extends AbstractASTResolution
-{
+public class UpperEllQuickfix extends AbstractASTResolution {
 
     /**
      * {@inheritDoc}
      */
     protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
-            final int markerStartOffset)
-    {
-        return new ASTVisitor()
-        {
+            final int markerStartOffset) {
+        return new ASTVisitor() {
 
-            public boolean visit(NumberLiteral node)
-            {
-                if (containsPosition(node, markerStartOffset))
-                {
+            public boolean visit(NumberLiteral node) {
+                if (containsPosition(node, markerStartOffset)) {
 
                     String token = node.getToken();
                     if (token.endsWith("l")) //$NON-NLS-1$
@@ -67,24 +62,21 @@ public class UpperEllQuickfix extends AbstractASTResolution
     /**
      * {@inheritDoc}
      */
-    public String getDescription()
-    {
+    public String getDescription() {
         return Messages.UpperEllQuickfix_description;
     }
 
     /**
      * {@inheritDoc}
      */
-    public String getLabel()
-    {
+    public String getLabel() {
         return Messages.UpperEllQuickfix_label;
     }
 
     /**
      * {@inheritDoc}
      */
-    public Image getImage()
-    {
+    public Image getImage() {
         return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.CORRECTION_CHANGE);
     }
 
