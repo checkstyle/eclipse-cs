@@ -18,35 +18,32 @@
         <html>
             <head>
                 <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8"/>
-                <title> eclipse-cs: <xsl:value-of
+                <title>eclipse-cs: <xsl:value-of
                         select="/*[local-name()='html']/*[local-name()='head']/*[local-name()='title']"/>
                 </title>
+
+                <!-- Dependency source files -->
+                <script type="text/javascript" src="{$path-prefix}yui/build/yahoo-dom-event/yahoo-dom-event.js"><xsl:comment/></script>
+                <script type="text/javascript" src="{$path-prefix}yui/build/animation/animation-min.js"><xsl:comment/></script>
+                <script type="text/javascript" src="{$path-prefix}yui/build/container/container_core-min.js"><xsl:comment/></script>
+
+                <!-- Menu source file -->
+                <script type="text/javascript" src="{$path-prefix}yui/build/menu/menu-min.js"><xsl:comment/></script>
+
+                <!-- Page-specific script -->
+                <script type="text/javascript" src="{$path-prefix}menu.js"><xsl:comment/></script>
+
+                <!-- FancyZoom scripts -->
+                <script src="{$path-prefix}fancyzoom/js-global/FancyZoom.js" type="text/javascript"><xsl:comment/></script>
+                <script src="{$path-prefix}fancyzoom/js-global/FancyZoomHTML.js" type="text/javascript"><xsl:comment/></script>
+
+                <script type="text/javascript">
+                    YAHOO.util.Event.onContentReady("content", setupZoom);</script>
 
                 <link rel="stylesheet" type="text/css"
                     href="{$path-prefix}yui/build/reset-fonts-grids/reset-fonts-grids.css"/>
                 <link rel="stylesheet" type="text/css" href="{$path-prefix}yui/build/menu/assets/skins/sam/menu.css"/>
                 <link rel="stylesheet" type="text/css" href="{$path-prefix}style.css"/>
-
-                <!-- Dependency source files -->
-                <script type="text/javascript" src="{$path-prefix}yui/build/yahoo-dom-event/yahoo-dom-event.js">
-{
-                    }</script>
-                <script type="text/javascript" src="{$path-prefix}yui/build/animation/animation-min.js">
-{
-                    }</script>
-                <script type="text/javascript" src="{$path-prefix}yui/build/container/container_core-min.js">
-{
-                    }</script>
-
-                <!-- Menu source file -->
-                <script type="text/javascript" src="{$path-prefix}yui/build/menu/menu-min.js">
-{
-                    }</script>
-
-                <!-- Page-specific script -->
-                <script type="text/javascript" src="{$path-prefix}menu.js">
-{
-                    }</script>
 
             </head>
             <body class="yui-skin-sam">
@@ -173,8 +170,7 @@
                                 </div>
                             </li>
                             <li class="yuimenuitem">
-                                <a class="yuimenuitemlabel"
-                                    href="{$path-prefix}releasenotes/5.0.0beta2/release_notes.html">Get Help</a>
+                                <a class="yuimenuitemlabel" href="#">Get Help</a>
                                 <div id="gethelp" class="yuimenu">
                                     <div class="bd">
                                         <ul class="first-of-type">
@@ -315,7 +311,7 @@
                 </div>
             </li>
             <li class="yuimenubaritem">
-                <a class="yuimenubaritemlabel" href="#">eclipse-cs project</a>
+                <a class="yuimenubaritemlabel" href="#">eclipse-cs Project</a>
                 <div id="project" class="yuimenu">
                     <div class="bd">
                         <ul>
@@ -343,20 +339,17 @@
                         <img src="{$path-prefix}images/eclipse-cs_logo.png" alt="eclipse-cs Banner" width="246"
                             height="75"/>
                     </td>
-                    <td style="vertical-align: middle; width: 75px; height: 75px;">
-                        <a href="http://sourceforge.net/" class="imagelink">
-                            <img src="http://sourceforge.net/sflogo.php?group_id=80344&amp;amp;type=1"
-                                alt="SourceForge.net Logo"/>
-                        </a>
-                        <a href="http://sourceforge.net/donate/index.php?group_id=80344" class="imagelink">
-                            <img src="http://images.sourceforge.net/images/project-support.jpg"
-                                alt="Support This Project"/>
+
+                    <td style="vertical-align: middle; width: 150px; height: 75px;">
+                        <a href="http://sourceforge.net/projects/eclipse-cs">
+                            <img src="http://sflogo.sourceforge.net/sflogo.php?group_id=80344&amp;type=14"
+                                width="150" height="40"
+                                alt="Get Eclipse Checkstyle Plug-in at SourceForge.net. Fast, secure and Free Open Source software downloads"
+                            />
                         </a>
                     </td>
                     <td style="padding-left: 10px; vertical-align: middle; width: 203px; height: 75px;">
-                        <script type="text/javascript" src="http://www.ohloh.net/p/6568/widgets/project_partner_badge.js">
-{
-                        }</script>
+                        <script type="text/javascript" src="http://www.ohloh.net/p/6568/widgets/project_partner_badge.js"><xsl:comment/></script>
                     </td>
                 </tr>
             </table>

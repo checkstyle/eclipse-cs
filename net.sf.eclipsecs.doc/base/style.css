@@ -17,8 +17,8 @@ body {
 #content {
     color: #000000;
     background-color: #ffffff;
-    padding-left: 5px;
-    padding-right: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
     padding-bottom: 10px;
     border-left: 1px #7E90B2 solid;
     border-right: 1px #7E90B2 solid;
@@ -29,11 +29,13 @@ body {
     background-color: #7E90B2;
     text-align: center;
     font-size: 14px;
+    font-weight: bold;
     font-variant: small-caps;
     margin-top: 5px;
     border-bottom: 5px solid #cddeff;
-    margin-left: -5px;
-    margin-right: -5px;
+    margin-left: -15px;
+    margin-right: -15px;
+    margin-bottom: 10px;
 }
 #content h3 {
     font-size: 12px;
@@ -48,8 +50,6 @@ body {
 }
 /* Text block styles */
 #content p {
-    margin-left: 10px;
-    margin-right: 10px;
     line-height: 1.5;
     font-size: 11px;
 }
@@ -58,10 +58,16 @@ body {
     font-size: 11px;
 }
 #content pre {
-    margin-left: 10px;
-    margin-right: 10px;
     font-family: "Courier New", Courier, monospace;
     font-size: 12px;
+}
+#content ol li {
+    list-style: decimal;
+    margin-left: 30px;
+}
+#content ul li {
+    list-style: disc;
+    margin-left: 20px;
 }
 /* Styles for simple links */
 #content a, a:hover {
@@ -89,6 +95,54 @@ body {
 }
 #footer a:hover {
     color: #6699ff;
+}
+.screenshot {
+    width: 128px;
+    height: 128px;
+}
+.screenshot span {
+    border: 1px #7E90B2 solid;
+    text-decoration: none;
+    width: 128px;
+    height: 128px;
+    overflow:hidden;
+    margin: 5px;
+    padding:5px;
+    background-repeat: no-repeat;
+    background-position: center;
+    float:left;
+    cursor:pointer;
+}
+.screenshot-lt {
+    width: 64px;
+    height: 64px;
+}
+.screenshot-lt span {
+    border: 1px #7E90B2 solid;
+    text-decoration: none;
+    width: 64px;
+    height: 64px;
+    overflow:hidden;
+    margin: 5px;
+    padding:5px;
+    background-repeat: no-repeat;
+    background-position: center;
+    float:left;
+    cursor:pointer;
+}
+#stats {
+    border: 1px #7E90B2 solid;
+    margin-left: 10px;
+}
+#stats h2 {
+    color: #FFFFFF;
+    background-color: #7E90B2;
+    text-align: center;
+    font-size: 10px;
+    font-weight: bold;
+    font-variant: small-caps;
+    margin: 0px;
+    border-bottom: 0px;
 }
 /* Styles used to color source code */
 .code-lightblue, .code-blue, .code-green, .code-black, .code-purple {

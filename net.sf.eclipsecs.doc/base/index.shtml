@@ -10,22 +10,28 @@
     </head>
     <body id="content">
         <h2>-- Introduction --</h2>
+
+        <div id="stats" style="float:right">
+            <script type="text/javascript" src="http://www.ohloh.net/p/6568/widgets/project_cocomo.js"><!--
+--></script>
+        </div>
         <p> The eclipse-cs Checkstyle plug-in integrates the well-known source code analyzer Checkstyle into today's
             leading IDE - Eclipse.<br/>
-            <a href="http://checkstyle.sourceforge.net/">Checkstyle</a> is a development tool written by Oliver Burn to
-            help you ensure that your Java code adheres to a set of coding standards. Checkstyle does this by inspecting
-            your Java source code and pointing out items that deviate from a defined set of coding rules. The full
-            Checkstyle distribution is included with the Checkstyle plug-in. In addition to using the Eclipse Checkstyle
-            plug-in you can also use Checkstyle from the command line or as part of an Ant build. For more information
-            about using Checkstyle outside of Eclipse see the <a href="http://checkstyle.sourceforge.net/">Checkstyle
-                documentation</a>.</p>
+            <a href="http://checkstyle.sourceforge.net/">Checkstyle</a> is a Open Source development tool written by
+            Oliver Burn, Lars Kühne and others to help you ensure that your Java code adheres to a set of coding
+            standards. Checkstyle does this by inspecting your Java source code and pointing out items that deviate from
+            a defined set of coding rules.<br/>Apart from using the Eclipse Checkstyle plug-in you can also use
+            Checkstyle from the command line or as part of an Ant build.<br/>For more information about using Checkstyle
+            outside of Eclipse see the <a href="http://checkstyle.sourceforge.net/">Checkstyle documentation</a>.</p>
+
         <p>With the Checkstyle Eclipse plug-in your code is constantly inspected for problems. Within the Eclipse
             workbench you are notified of problems via the Eclipse Problems View and source code annotations just as you
-            would see with compiler errors or warnings.</p>
+            would see with compiler errors or warnings.<br/>Visit our <a href="screen_shots.html">screenshots page</a>
+            to get a clue.</p>
         <table>
             <tr>
                 <td>
-                    <a class="imagelink" style="margin-left:40px;"
+                    <a class="imagelink" style="margin-left:20px;"
                         href="http://www.eclipse.org/org/press-release/20070306eclipsecommunityawards.php">
                         <img src="images/winner.jpg" height="120" width="144" alt="Eclipse Community Award 2007 Winner"
                         />
@@ -35,7 +41,7 @@
                     in the category of "Best Open Source Eclipse-based Developer tool".</td>
             </tr>
         </table>
-        <h2>-- eclipse-cs Donors --</h2>
+        <h2 style="clear: both">-- eclipse-cs Donors --</h2>
         <p>
             <!--#include virtual="/proj-donors.cache" -->
         </p>

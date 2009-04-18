@@ -4,12 +4,76 @@
     <head>
         <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8"/>
         <link type="text/css" href="style.css" rel="stylesheet"/>
-        <title>The Checkstyle Plug-in for Eclipse</title>
+        <title>Download &amp; Installation</title>
+        <script src="fancyzoom/js-global/FancyZoom.js" type="text/javascript"><!--
+--></script>
+        <script src="fancyzoom/js-global/FancyZoomHTML.js" type="text/javascript"><!--
+--></script>
     </head>
-    <body id="content">
-        <h2>-- Download &amp; Installation --</h2>
-        <p>The first way to install the Eclipse Checkstyle Plug-in is via the <a
-                href="http://eclipse-cs.sourceforge.net/update/">update site</a>.</p>
+    <body onload="setupZoom();" id="content">
+        <h2>-- Installation on Eclipse 3.4 (and later) --</h2>
+        <p>The recommeded way to install the plugin on Eclipse 3.4 (and later) is via the plugin update site <a
+                href="http://eclipse-cs.sf.net/update/">http://eclipse-cs.sf.net/update/</a><br/><br/></p>
+
+        <table cellspacing="10">
+            <tr style="vertical-align: top;">
+                <td>1. In Eclipse go to <strong>
+                        <em>Help-&gt;Software Updates...</em>
+                    </strong>
+                    <a class="screenshot-lt" title="Go to Help-&gt;Software Updates..."
+                        href="images/install/snap0.png">
+                        <span style="background-image: url(images/install/thumbs/snap0.png);">&nbsp;</span>
+                    </a>
+                </td>
+                <td>2. Add a new installation site and provide <span style="white-space: nowrap;">
+                        <strong>
+                            <em>http://eclipse-cs.sf.net/update</em>
+                        </strong>
+                    </span> as location URL. <a class="screenshot-lt" title="Add the eclipse-cs update site"
+                        href="images/install/snap1.png">
+                        <span style="background-image: url(images/install/thumbs/snap1.png);"><!----></span>
+                    </a>
+                </td>
+            </tr>
+            <tr style="vertical-align: top;">
+                <td>3. Mark the plugin version you would like to install, as well as future optional features, then
+                    press <strong>
+                        <em>Install...</em>
+                    </strong><a class="screenshot-lt" title="Check the plugin version to install and optional features"
+                        href="images/install/snap2.png">
+                        <span style="background-image: url(images/install/thumbs/snap2.png);"><!----></span>
+                    </a>
+                </td>
+                <td>4. Review and confirm the plugins to install <a class="screenshot-lt"
+                        title="Review and confirm the plugins to install" href="images/install/snap3.png">
+                        <span style="background-image: url(images/install/thumbs/snap3.png);"><!----></span>
+                    </a>
+                </td>
+            </tr>
+            <tr style="vertical-align: top;">
+                <td>5. Restart Eclipse <a class="screenshot-lt" title="Restart Eclipse" href="images/install/snap4.png">
+                        <span style="background-image: url(images/install/thumbs/snap4.png);"><!----></span>
+                    </a>
+                </td>
+            </tr>
+        </table>
+        <p style="clear:both"><br/>Alternatively the Checkstyle Eclipse Plug-in can be downloaded from the <a
+                href="http://sourceforge.net/project/showfiles.php?group_id=80344&amp;package_id=107587">Eclipse
+                Checkstyle Plug-in's SourceForge download site</a>.<br/> The download consists of a archived update site
+            (file name <code>net.sf.eclipsecs-x.x.x.buildstamp-updatesite.zip</code>), containing all mandatory and
+            optional parts of the plugin.<br/>The plugin can be installed from the archived update site in the following
+            ways: </p>
+        <ul>
+            <li>via Eclipse's P2 Installation Manager similar as described above, pointing to the archive file
+                instead</li>
+            <li>extracted into Eclipse's <code>dropins</code> folder. Anyway this is not particularly recommended, so if
+                you don't know what I am talking about, don't bother.</li>
+        </ul>
+
+        <h2>-- Installation on Eclipse 3.2/3.3 --</h2>
+
+        <p>The recommeded way to install the Eclipse Checkstyle Plug-in on Eclipse 3.2/3.3 is via the <a
+                href="http://eclipse-cs.sf.net/update/">update site</a>.<br/><br/></p>
         <ol>
             <li> Within Eclipse go to <strong>
                     <em>Help-&gt;Software Updates-&gt;Find and Install</em>
@@ -26,32 +90,13 @@
                 </strong>
             </li>
             <li> Input a name to your liking (for instance <i>Checkstyle Plug-in</i>) and input the following URL: <span
-                    class="code-blue">http://eclipse-cs.sourceforge.net/update</span>
+                    class="code-blue">http://eclipse-cs.sf.net/update</span>
             </li>
             <li> Click your way through the following pages to install the plug-in. </li>
+            <li> Restart Eclipse </li>
         </ol>
-        <p>Alternatively the Checkstyle Eclipse Plug-in can be downloaded from the <a
-                href="http://sourceforge.net/projects/eclipse-cs/">Eclipse Checkstyle Plug-in's SourceForge project
-                page</a>. The download package consists of a single zip file that contains both the Checkstyle Plug-in
-            and the Checkstyle core engine.</p>
-        <p>Once you have downloaded the distribution zip file extract its contents. First, exit from Eclipse. Next, copy
-            the <span class="code-blue">com.atlassw.tools.eclipse.checkstyle_<b>&lt;version&gt;</b></span>
-            folder to your Eclipse plug-in folder and restart Eclipse. That's all there is to it, you are now ready to
-            run Checkstyle.</p>
-        <p>
-            <b>
-                <i>Important Note:</i>
-            </b>If you did not use the update site to install the plug-in please make sure to restart Eclipse with the
-                <span class="code-blue">-clean</span> option at least once. This is because Eclipse caches a lot of
-            information about plug-ins. In case you just updated the plug-in from a previous version this information
-            cached by Eclipse is not up to date - resulting in the plug-in failing with ClassNotFoundExceptions and
-            other serious issues.</p>
-        <p>
-            <b>
-                <i>Important Note:</i>
-            </b>As of plug-in release 4.0.0 only Eclipse 3.0 and newer is supported. Eclipse 2.x.x support is
-            discontinued. Please use older plug-in versions with Eclipse 2.x.x. - downloadable from the <a
-                href="http://sourceforge.net/projects/eclipse-cs/">SourceForge Project Page</a>
-        </p>
+        <p><br/>Alternatively the Checkstyle Eclipse Plug-in can be downloaded from the <a
+                href="http://sourceforge.net/project/showfiles.php?group_id=80344&amp;package_id=107587">Eclipse
+                Checkstyle Plug-in's SourceForge project download site</a>.</p>
     </body>
 </html>
