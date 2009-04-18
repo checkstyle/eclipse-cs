@@ -10,7 +10,7 @@
     	
         <antcall target="-generateUpdateSite"/>
     	<antcall target="-createNightlyBuildSiteXml"/>
-    	<zip destfile="${buildResultsDirectory}/updateSite-${version.full}.zip" basedir="${UpdateSiteStagingLocation}"/>
+    	<zip destfile="${buildResultsDirectory}/net.sf.eclipsecs-${version.full}-updatesite.zip" basedir="${UpdateSiteStagingLocation}"/>
     	<antcall target="deleteSiteXml"/>
     	<copy todir="${UpdateSiteFinalLocation}">
     		<fileset dir="${UpdateSiteStagingLocation}" includes="**"/>
