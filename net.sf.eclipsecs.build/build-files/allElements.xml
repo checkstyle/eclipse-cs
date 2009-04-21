@@ -10,6 +10,14 @@
 			<property name="type" value="feature" />
 			<property name="id" value="net.sf.eclipsecs" />
 		</ant>
+		<ant antfile="${genericTargets}" target="${target}">
+			<property name="type" value="feature" />
+			<property name="id" value="net.sf.eclipsecs.migration" />
+		</ant>
+		<ant antfile="${genericTargets}" target="${target}">
+			<property name="type" value="feature" />
+			<property name="id" value="org.maven.ide.eclipse.checkstyle" />
+		</ant>
 		
 	</target>
 
@@ -22,6 +30,16 @@
 	
 	<!-- generated assemble targets -->	     
 	<target name="assemble.net.sf.eclipsecs">
+		<ant antfile="${assembleScriptName}" dir="${buildDirectory}">
+			<property name="zipargs" value="" />
+		</ant>
+	</target>
+	<target name="assemble.net.sf.eclipsecs.migration">
+		<ant antfile="${assembleScriptName}" dir="${buildDirectory}">
+			<property name="zipargs" value="" />
+		</ant>
+	</target>
+	<target name="assemble.org.maven.ide.eclipse.checkstyle">
 		<ant antfile="${assembleScriptName}" dir="${buildDirectory}">
 			<property name="zipargs" value="" />
 		</ant>
