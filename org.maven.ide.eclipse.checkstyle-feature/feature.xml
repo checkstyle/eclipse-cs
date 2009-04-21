@@ -17,11 +17,6 @@
       %license.text
    </license>
 
-   <url>
-      <update label="%updateSiteName" url="http://eclipse-cs.sourceforge.net/update"/>
-      <discovery label="%updateSiteName" url="http://eclipse-cs.sourceforge.net/update"/>
-   </url>
-
    <requires>
       <import feature="net.sf.eclipsecs" version="0.0.0"/>
    </requires>

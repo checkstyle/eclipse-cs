@@ -2,11 +2,11 @@
 <feature
       id="net.sf.eclipsecs"
       label="%feature.label"
-      provider-name="%feature.provider_name"
-      version="0.0.0">
+      version="0.0.0"
+      provider-name="%feature.provider_name">
 
    <description url="%description.url">
-      This feature integreates Checkstyle into Eclipse.
+      %description.text
    </description>
 
    <copyright>
@@ -18,33 +18,21 @@
    </license>
 
    <url>
-      <update label="%updateSiteName" url="http://eclipse-cs.sourceforge.net/update"/>
-      <discovery label="%updateSiteName" url="http://eclipse-cs.sourceforge.net/update"/>
+      <update label="%updateSiteName" url="http://eclipse-cs.sf.net/update"/>
    </url>
 
-   <includes
-         id="net.sf.eclipsecs.migration"
-         version="0.0.0"
-         optional="true"/>
-
-   <includes
-         id="org.maven.ide.eclipse.checkstyle"
-         version="0.0.0"
-         optional="true"/>
-
    <requires>
-      <import plugin="org.eclipse.jface"/>
-      <import plugin="org.eclipse.ui"/>
-      <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.eclipse.jface.text"/>
+      <import plugin="org.eclipse.core.runtime" version="3.2.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.jdt.core"/>
+      <import plugin="org.eclipse.team.core"/>
+      <import plugin="org.eclipse.core.filebuffers"/>
+      <import plugin="org.eclipse.jface.text"/>
+      <import plugin="org.eclipse.jdt.ui"/>
+      <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.ui.editors"/>
       <import plugin="org.eclipse.ui.ide"/>
-      <import plugin="org.eclipse.jdt.core"/>
-      <import plugin="org.eclipse.jdt.ui"/>
       <import plugin="org.eclipse.ui.workbench.texteditor"/>
-      <import plugin="org.eclipse.team.cvs.core"/>
-      <import plugin="org.eclipse.team.core"/>
    </requires>
 
    <plugin

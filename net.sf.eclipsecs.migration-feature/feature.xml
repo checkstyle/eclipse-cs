@@ -2,11 +2,11 @@
 <feature
       id="net.sf.eclipsecs.migration"
       label="%feature.label"
-      provider-name="%feature.provider_name"
-      version="0.0.0">
+      version="0.0.0"
+      provider-name="%feature.provider_name">
 
    <description url="%description.url">
-      This feature integreates Checkstyle into Eclipse.
+      %description.text
    </description>
 
    <copyright>
@@ -16,11 +16,6 @@
    <license url="license.html">
       %license.text
    </license>
-
-   <url>
-      <update label="%updateSiteName" url="http://eclipse-cs.sourceforge.net/update"/>
-      <discovery label="%updateSiteName" url="http://eclipse-cs.sourceforge.net/update"/>
-   </url>
 
    <requires>
       <import feature="net.sf.eclipsecs" version="0.0.0"/>
