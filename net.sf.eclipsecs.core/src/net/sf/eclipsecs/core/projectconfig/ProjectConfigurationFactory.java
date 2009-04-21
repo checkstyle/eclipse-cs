@@ -314,7 +314,7 @@ public final class ProjectConfigurationFactory {
                     .attributeValue(XMLTags.NAME_TAG));
 
             // guard against unknown/retired filters
-            if (filter == null) {
+            if (filter != null) {
                 filter.setEnabled(Boolean.valueOf(filterEl.attributeValue(XMLTags.ENABLED_TAG))
                         .booleanValue());
 

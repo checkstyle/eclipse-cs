@@ -19,6 +19,7 @@ Require-Bundle: net.sf.eclipsecs.checkstyle,
  org.eclipse.jface.text
 Eclipse-LazyStart: true
 Eclipse-BuddyPolicy: registered
+Bundle-Localization: core
 Export-Package: net.sf.eclipsecs.core,
  net.sf.eclipsecs.core.builder,
  net.sf.eclipsecs.core.config,
@@ -31,6 +32,4 @@ Export-Package: net.sf.eclipsecs.core,
  net.sf.eclipsecs.core.util,
  org.apache.commons.io,
  org.apache.commons.lang
-Bundle-Localization: plugin
-
 

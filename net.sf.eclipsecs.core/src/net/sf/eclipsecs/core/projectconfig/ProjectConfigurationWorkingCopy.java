@@ -537,7 +537,7 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
         filterEl.addAttribute(XMLTags.ENABLED_TAG, Boolean.toString(filter.isEnabled()));
 
         List<String> data = filter.getFilterData();
-        if (data != null) {
+        if (data != null && !data.isEmpty()) {
             for (String item : data) {
 
                 Element dataEl = filterEl.addElement(XMLTags.FILTER_DATA_TAG);
