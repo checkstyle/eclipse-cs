@@ -60,15 +60,15 @@ body {
 }
 #content pre {
     font-family: "Courier New", Courier, monospace;
-    font-size: 12px;
+    font-size: 11px;
 }
 #content ol li {
     list-style: decimal;
-    margin-left: 30px;
+    margin-left: 10px;
 }
 #content ul li {
     list-style: disc;
-    margin-left: 20px;
+    margin-left: 10px;
 }
 /* Styles for simple links */
 #content a, a:hover {
@@ -81,6 +81,11 @@ body {
 #content img {
     text-align:left;
     border:0px;
+}
+#content code {
+    font-family: "Courier New", Courier, monospace;
+    font-size: 12px;
+    color: #000080;
 }
 #footer {
     color:#7E90B2;
@@ -148,7 +153,7 @@ body {
 /* Styles used to color source code */
 .code-lightblue, .code-blue, .code-green, .code-black, .code-purple {
     font-family: "Courier New", Courier, monospace;
-    font-size: 14px;
+    font-size: 12px;
     background-color: #FFFFFF;
 }
 .code-lightblue {

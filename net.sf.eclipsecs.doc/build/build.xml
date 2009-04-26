@@ -46,6 +46,8 @@
 			<fileset dir="${basedir}/base" includes="fancyzoom/**" />
 			<fileset dir="${basedir}/base" includes="images/**" />
 			<fileset dir="${basedir}/base" includes="update/**" />
+			<fileset dir="${basedir}/base" includes="dtds/**" />
+			<fileset dir="${basedir}/base" includes="psf/**" />
 			<fileset dir="${basedir}/base" includes="releasenotes/**/*.jpg" />
 		</copy>
 		<copy todir="${dist.web}/dtds" flatten="true">

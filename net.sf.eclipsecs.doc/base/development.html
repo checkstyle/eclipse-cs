@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "xhtml11-flat.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8"/>
+        <link type="text/css" href="style.css" rel="stylesheet"/>
+        <title>Extending the eclipse-cs plugin</title>
+    </head>
+    <body id="content">
+        <h2>-- eclipse-cs development environment --</h2>
+        <p>It should come to no surprise that eclipse-cs development takes place in Eclipse.<br/>Currently the
+            precondition is a Eclipse 3.2 (or newer) with PDE plugin installed.</p>
+        <p>Import one of the following team project sets into your workspace, depending on your level of CVS access:</p>
+        <ul>
+            <li>
+                <a href="psf/net.sf.eclipsecs_anonymous.psf">Team project set for Anonymous CVS access</a>
+            </li>
+            <li>
+                <a href="psf/net.sf.eclipsecs_ssh.psf">Team project set for committer access (SSH)</a>
+            </li>
+        </ul>
+        <p>That should be all for starters.</p>
+        <p>If you want to do a binary build of the plugin you need to go to the <code>net.sf.eclipsecs.build</code>
+            project, which contains the PDE build for eclipse-cs.</p>
+        <p>There adapt properties <code>buildHome</code>, <code>buildDirectory</code> and <code>eclipseDir</code> to
+            your local directories.</p>
+        <p>After that you should be able to run the build by executing the <code>build.xml</code>, results will appear
+            in the directory which you configured as <code>buildDirectory</code>. Note that the build has only been
+            tested with Eclipse 3.4 and 3.5, mileage may differ with older Eclipse versions.</p>
+    </body>
+</html>

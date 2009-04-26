@@ -40,8 +40,8 @@
                 <script type="text/javascript">
                     YAHOO.util.Event.onContentReady("content", setupZoom);</script>
 
-                <link rel="stylesheet" type="text/css"
-                    href="{$path-prefix}yui/build/reset-fonts-grids/reset-fonts-grids.css"/>
+                <!--link rel="stylesheet" type="text/css"
+                    href="{$path-prefix}yui/build/reset-fonts-grids/reset-fonts-grids.css"/-->
                 <link rel="stylesheet" type="text/css" href="{$path-prefix}yui/build/menu/assets/skins/sam/menu.css"/>
                 <link rel="stylesheet" type="text/css" href="{$path-prefix}style.css"/>
 
@@ -217,6 +217,10 @@
                     <div class="bd">
                         <ul>
                             <li class="yuimenuitem">
+                                <a class="yuimenuitemlabel" href="{$path-prefix}downloads.html">Download &amp;
+                                    Installation</a>
+                            </li>
+                            <li class="yuimenuitem">
                                 <a class="yuimenuitemlabel"
                                     href="https://sourceforge.net/project/showfiles.php?group_id=80344">SourceForge
                                     Download Page</a>
@@ -283,21 +287,17 @@
                 </div>
             </li>
             <li class="yuimenubaritem">
-                <a class="yuimenubaritemlabel" href="#">Extending The Plugin</a>
+                <a class="yuimenubaritemlabel" href="{$path-prefix}extending.html">Plugin extensions</a>
                 <div id="extensiondocs" class="yuimenu">
                     <div class="bd">
                         <ul>
                             <li class="yuimenuitem">
-                                <a class="yuimenuitemlabel" href="{$path-prefix}extending_custom_checks.html">Using
-                                    custom checks</a>
+                                <a class="yuimenuitemlabel" href="{$path-prefix}extending.html">Building an extension
+                                    plugin</a>
                             </li>
                             <li class="yuimenuitem">
-                                <a class="yuimenuitemlabel" href="{$path-prefix}extending_custom_metadata.html"
-                                    >Checkstyle module metadata</a>
-                            </li>
-                            <li class="yuimenuitem">
-                                <a class="yuimenuitemlabel" href="{$path-prefix}extending_fragments.html">Building an
-                                    extension plugin</a>
+                                <a class="yuimenuitemlabel" href="{$path-prefix}extending_custom_checks.html"> Custom
+                                    Checkstyle modules</a>
                             </li>
                             <li class="yuimenuitem">
                                 <a class="yuimenuitemlabel" href="{$path-prefix}extending_builtin_configurations.html"
@@ -306,6 +306,10 @@
                             <li class="yuimenuitem">
                                 <a class="yuimenuitemlabel" href="{$path-prefix}extending_filters.html">Custom plugin
                                     filters</a>
+                            </li>
+                            <li class="yuimenuitem">
+                                <a class="yuimenuitemlabel" href="{$path-prefix}development.html"> eclipse-cs
+                                    development environment</a>
                             </li>
                         </ul>
                     </div>
