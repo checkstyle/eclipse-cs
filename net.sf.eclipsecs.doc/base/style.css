@@ -1,7 +1,6 @@
 /* Page styles */
 html {
     background-color: #B9CC90;
-    height: 100%;
     color: #000000;
 }
 body {
@@ -14,6 +13,11 @@ body {
     border-left: 1px #7E90B2 solid;
     border-right: 1px #7E90B2 solid;
 }
+#googleads {
+	margin-top: 5px;
+	text-align: center;
+}
+
 #content {
     color: #000000;
     background-color: #ffffff;
@@ -78,7 +82,7 @@ body {
 #content a:hover {
     color: #6699ff;
 }
-#content img {
+#content img, #header img {
     text-align:left;
     border:0px;
 }

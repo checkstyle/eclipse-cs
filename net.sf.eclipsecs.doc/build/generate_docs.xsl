@@ -3,70 +3,95 @@
     <!--
 		parameter to control wheter the navigational menu should be included.
 	-->
-    <xsl:param name="style"/>
+    <xsl:param name="style" />
 
     <xsl:variable name="section"
-        select="/*[local-name()='html']/*[local-name()='head']/*[local-name()='meta' and @name='section']/@content"/>
+        select="/*[local-name()='html']/*[local-name()='head']/*[local-name()='meta' and @name='section']/@content" />
     <xsl:variable name="path-prefix"
-        select="/*[local-name()='html']/*[local-name()='head']/*[local-name()='meta' and @name='path-prefix']/@content"/>
+        select="/*[local-name()='html']/*[local-name()='head']/*[local-name()='meta' and @name='path-prefix']/@content" />
 
     <!-- output as XHTML 1.1 -->
     <xsl:output encoding="UTF-8" method="xml" indent="yes" doctype-public="-//W3C//DTD XHTML 1.1//EN"
-        doctype-system="http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"/>
+        doctype-system="http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd" />
     <!-- root template -->
     <xsl:template match="/">
         <html>
             <head>
-                <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8"/>
-                <title>eclipse-cs: <xsl:value-of
-                        select="/*[local-name()='html']/*[local-name()='head']/*[local-name()='title']"/>
+                <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8" />
+                <title>
+                    eclipse-cs:
+                    <xsl:value-of select="/*[local-name()='html']/*[local-name()='head']/*[local-name()='title']" />
                 </title>
 
                 <!-- Dependency source files -->
-                <script type="text/javascript" src="{$path-prefix}yui/build/yahoo-dom-event/yahoo-dom-event.js"><xsl:comment/></script>
-                <script type="text/javascript" src="{$path-prefix}yui/build/animation/animation-min.js"><xsl:comment/></script>
-                <script type="text/javascript" src="{$path-prefix}yui/build/container/container_core-min.js"><xsl:comment/></script>
+                <script type="text/javascript" src="{$path-prefix}yui/build/yahoo-dom-event/yahoo-dom-event.js">
+                    <xsl:comment />
+                </script>
+                <script type="text/javascript" src="{$path-prefix}yui/build/animation/animation-min.js">
+                    <xsl:comment />
+                </script>
+                <script type="text/javascript" src="{$path-prefix}yui/build/container/container_core-min.js">
+                    <xsl:comment />
+                </script>
 
                 <!-- Menu source file -->
-                <script type="text/javascript" src="{$path-prefix}yui/build/menu/menu-min.js"><xsl:comment/></script>
+                <script type="text/javascript" src="{$path-prefix}yui/build/menu/menu-min.js">
+                    <xsl:comment />
+                </script>
 
                 <!-- Page-specific script -->
-                <script type="text/javascript" src="{$path-prefix}menu.js"><xsl:comment/></script>
+                <script type="text/javascript" src="{$path-prefix}menu.js">
+                    <xsl:comment />
+                </script>
 
                 <!-- FancyZoom scripts -->
-                <script src="{$path-prefix}fancyzoom/js-global/FancyZoom.js" type="text/javascript"><xsl:comment/></script>
-                <script src="{$path-prefix}fancyzoom/js-global/FancyZoomHTML.js" type="text/javascript"><xsl:comment/></script>
+                <script src="{$path-prefix}fancyzoom/js-global/FancyZoom.js" type="text/javascript">
+                    <xsl:comment />
+                </script>
+                <script src="{$path-prefix}fancyzoom/js-global/FancyZoomHTML.js" type="text/javascript">
+                    <xsl:comment />
+                </script>
 
-                <script type="text/javascript">
-                    YAHOO.util.Event.onContentReady("content", setupZoom);</script>
+                <script type="text/javascript"> YAHOO.util.Event.onContentReady("content", setupZoom);</script>
 
-                <!--link rel="stylesheet" type="text/css"
-                    href="{$path-prefix}yui/build/reset-fonts-grids/reset-fonts-grids.css"/-->
-                <link rel="stylesheet" type="text/css" href="{$path-prefix}yui/build/menu/assets/skins/sam/menu.css"/>
-                <link rel="stylesheet" type="text/css" href="{$path-prefix}style.css"/>
+                <link rel="stylesheet" type="text/css" href="{$path-prefix}yui/build/grids/grids-min.css" />
+                <link rel="stylesheet" type="text/css" href="{$path-prefix}yui/build/menu/assets/skins/sam/menu.css" />
+                <link rel="stylesheet" type="text/css" href="{$path-prefix}style.css" />
 
             </head>
             <body class="yui-skin-sam">
-                <div id="doc4" class="yui-t7">
+                <div id="doc" class="yui-t7">
                     <div id="hd" role="banner">
-                        <xsl:call-template name="header"/>
+                        <xsl:call-template name="header" />
                     </div>
                     <div id="bd" role="main">
                         <div id="yui-main">
-                            <div class="yui-b">
+                            <div class="yui-g">
                                 <div id="mainmenu" class="yuimenubar yuimenubarnav">
                                     <div class="bd">
-                                        <xsl:call-template name="navigation"/>
+                                        <xsl:call-template name="navigation" />
                                     </div>
                                 </div>
+                                <div id="googleads">
+                                    <script type="text/javascript">
+                                        <xsl:comment>
+                                            google_ad_client = "pub-9204862326418919"; /* 728x90, created 5/5/09 */
+                                            google_ad_slot = "6310931050"; google_ad_width = 728; google_ad_height = 90;
+                                            //
+                                        </xsl:comment>
+                                    </script>
+                                    <script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+                                        <xsl:comment />
+                                    </script>
+                                </div>
                                 <div id="content">
-                                    <xsl:apply-templates select="/*[local-name()='html']/*[local-name()='body']"/>
+                                    <xsl:apply-templates select="/*[local-name()='html']/*[local-name()='body']" />
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div id="ft" role="contentinfo">
-                        <xsl:call-template name="footer"/>
+                        <xsl:call-template name="footer" />
                     </div>
                 </div>
             </body>
@@ -75,15 +100,15 @@
 
     <!-- template to simply copy the input site's content -->
     <xsl:template match="/*[local-name()='html']/*[local-name()='body']">
-        <xsl:apply-templates/>
+        <xsl:apply-templates />
     </xsl:template>
     <xsl:template match="*">
         <xsl:copy>
-            <xsl:apply-templates select="@* | node() | comment() | processing-instruction()"/>
+            <xsl:apply-templates select="@* | node() | comment() | processing-instruction()" />
         </xsl:copy>
     </xsl:template>
     <xsl:template match="@* | text() | comment() | processing-instruction()">
-        <xsl:copy/>
+        <xsl:copy />
     </xsl:template>
 
     <!--
@@ -100,74 +125,64 @@
                                 <a class="yuimenuitemlabel" href="{$path-prefix}news.shtml">News</a>
                             </li>
                             <li class="yuimenuitem">
-                                <a class="yuimenuitemlabel"
-                                    href="{$path-prefix}releasenotes/5.0.0beta3/release_notes.html">Release Notes</a>
+                                <a class="yuimenuitemlabel" href="{$path-prefix}releasenotes/5.0.0beta4/release_notes.html">Release Notes</a>
                                 <div id="releasnotes" class="yuimenu">
                                     <div class="bd">
                                         <ul class="first-of-type">
                                             <li class="yuimenuitem">
-                                                <a class="yuimenuitemlabel"
-                                                    href="{$path-prefix}releasenotes/5.0.0beta3/release_notes.html">
+                                                <a class="yuimenuitemlabel" href="{$path-prefix}releasenotes/5.0.0beta4/release_notes.html">
+                                                    Release 5.0.0beta4</a>
+                                            </li>
+                                            <li class="yuimenuitem">
+                                                <a class="yuimenuitemlabel" href="{$path-prefix}releasenotes/5.0.0beta3/release_notes.html">
                                                     Release 5.0.0beta3</a>
                                             </li>
                                             <li class="yuimenuitem">
-                                                <a class="yuimenuitemlabel"
-                                                    href="{$path-prefix}releasenotes/5.0.0beta2/release_notes.html">
+                                                <a class="yuimenuitemlabel" href="{$path-prefix}releasenotes/5.0.0beta2/release_notes.html">
                                                     Release 5.0.0beta2</a>
                                             </li>
                                             <li class="yuimenuitem">
-                                                <a class="yuimenuitemlabel"
-                                                    href="{$path-prefix}releasenotes/5.0.0beta1/release_notes.html">
+                                                <a class="yuimenuitemlabel" href="{$path-prefix}releasenotes/5.0.0beta1/release_notes.html">
                                                     Release 5.0.0beta1</a>
                                             </li>
                                             <li class="yuimenuitem">
-                                                <a class="yuimenuitemlabel"
-                                                    href="{$path-prefix}releasenotes/4.4.2/release_notes.html"> Release
+                                                <a class="yuimenuitemlabel" href="{$path-prefix}releasenotes/4.4.2/release_notes.html"> Release
                                                     4.4.2</a>
                                             </li>
                                             <li class="yuimenuitem">
-                                                <a class="yuimenuitemlabel"
-                                                    href="{$path-prefix}releasenotes/4.4.1/release_notes.html"> Release
+                                                <a class="yuimenuitemlabel" href="{$path-prefix}releasenotes/4.4.1/release_notes.html"> Release
                                                     4.4.1</a>
                                             </li>
                                             <li class="yuimenuitem">
-                                                <a class="yuimenuitemlabel"
-                                                    href="{$path-prefix}releasenotes/4.4.0/release_notes.html"> Release
+                                                <a class="yuimenuitemlabel" href="{$path-prefix}releasenotes/4.4.0/release_notes.html"> Release
                                                     4.4.0</a>
                                             </li>
                                             <li class="yuimenuitem">
-                                                <a class="yuimenuitemlabel"
-                                                    href="{$path-prefix}releasenotes/4.3.3/release_notes.html"> Release
+                                                <a class="yuimenuitemlabel" href="{$path-prefix}releasenotes/4.3.3/release_notes.html"> Release
                                                     4.3.3</a>
                                             </li>
                                             <li class="yuimenuitem">
-                                                <a class="yuimenuitemlabel"
-                                                    href="{$path-prefix}releasenotes/4.3.2/release_notes.html"> Release
+                                                <a class="yuimenuitemlabel" href="{$path-prefix}releasenotes/4.3.2/release_notes.html"> Release
                                                     4.3.2</a>
                                             </li>
                                             <li class="yuimenuitem">
-                                                <a class="yuimenuitemlabel"
-                                                    href="{$path-prefix}releasenotes/4.3.1/release_notes.html"> Release
+                                                <a class="yuimenuitemlabel" href="{$path-prefix}releasenotes/4.3.1/release_notes.html"> Release
                                                     4.3.1</a>
                                             </li>
                                             <li class="yuimenuitem">
-                                                <a class="yuimenuitemlabel"
-                                                    href="{$path-prefix}releasenotes/4.3.0/release_notes.html"> Release
+                                                <a class="yuimenuitemlabel" href="{$path-prefix}releasenotes/4.3.0/release_notes.html"> Release
                                                     4.3.0</a>
                                             </li>
                                             <li class="yuimenuitem">
-                                                <a class="yuimenuitemlabel"
-                                                    href="{$path-prefix}releasenotes/4.2.1/release_notes.html"> Release
+                                                <a class="yuimenuitemlabel" href="{$path-prefix}releasenotes/4.2.1/release_notes.html"> Release
                                                     4.2.1</a>
                                             </li>
                                             <li class="yuimenuitem">
-                                                <a class="yuimenuitemlabel"
-                                                    href="{$path-prefix}releasenotes/4.2.0/release_notes.html"> Release
+                                                <a class="yuimenuitemlabel" href="{$path-prefix}releasenotes/4.2.0/release_notes.html"> Release
                                                     4.2.0</a>
                                             </li>
                                             <li class="yuimenuitem">
-                                                <a class="yuimenuitemlabel"
-                                                    href="{$path-prefix}releasenotes/release_notes_older.html"> Older
+                                                <a class="yuimenuitemlabel" href="{$path-prefix}releasenotes/release_notes_older.html"> Older
                                                     releases</a>
                                             </li>
                                         </ul>
@@ -183,19 +198,18 @@
                                                 <a class="yuimenuitemlabel" href="{$path-prefix}faq.html"> FAQ </a>
                                             </li>
                                             <li class="yuimenuitem">
-                                                <a class="yuimenuitemlabel"
-                                                    href="https://sourceforge.net/forum/?group_id=80344"> Get help in
+                                                <a class="yuimenuitemlabel" href="https://sourceforge.net/forum/?group_id=80344"> Get help in
                                                     the forums</a>
                                             </li>
                                             <li class="yuimenuitem">
                                                 <a class="yuimenuitemlabel"
-                                                    href="http://sourceforge.net/tracker/?atid=559494&amp;group_id=80344&amp;func=browse"
-                                                    > Report a bug</a>
+                                                    href="http://sourceforge.net/tracker/?atid=559494&amp;group_id=80344&amp;func=browse">
+                                                    Report a bug</a>
                                             </li>
                                             <li class="yuimenuitem">
                                                 <a class="yuimenuitemlabel"
-                                                    href="http://sourceforge.net/tracker/?atid=559494&amp;group_id=80344&amp;func=browse"
-                                                    > File a feature request</a>
+                                                    href="http://sourceforge.net/tracker/?atid=559494&amp;group_id=80344&amp;func=browse">
+                                                    File a feature request</a>
                                             </li>
                                         </ul>
                                     </div>
