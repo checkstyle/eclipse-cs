@@ -5,7 +5,7 @@ Bundle-SymbolicName: org.maven.ide.eclipse.checkstyle;singleton:=true
 Bundle-Version: 0.0.3
 Bundle-Vendor: Nicolas De Loof
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Require-Bundle: org.eclipse.core.runtime,
+Require-Bundle: org.eclipse.core.runtime;bundle-version="3.3.0",
  org.eclipse.core.resources;bundle-version="3.3.0",
  net.sf.eclipsecs.core,
  org.maven.ide.components.maven_embedder;bundle-version="2.1.0",
