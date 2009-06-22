@@ -17,15 +17,17 @@
         <topic label="m2eclipse Synchronization" href="docs/maven.html"/>
     </topic>
     <topic label="Extending the Checkstyle Plug-in">
-        <topic label="Using custom checks" href="docs/extending_custom_checks.html">
-            <topic label="Metadata explained" href="docs/extending_custom_metadata.html"/>
-        </topic>
-        <topic label="Providing a plug-in fragment" href="docs/extending_fragments.html">
-            <topic label="Provide a built-in configuration" href="docs/extending_builtin_configurations.html"/>
-            <topic label="Creating a custom plug-in filter" href="docs/extending_filters.html"/>
-        </topic>
+        <topic label="Building an extension plugin" href="docs/extending.html"/>
+        <topic label="Custom Checkstyle modules" href="docs/extending_custom_checks.html"/>
+        <topic label="Providing a built-in configuration"
+            href="docs/extending_builtin_configurations.html"/>
+        <topic label="Custom plug-in filters" href="docs/extending_filters.html"/>
+        <topic label="Development environment" href="docs/development.html"/>
     </topic>
-    <topic label="Release notes" href="docs/releasenotes/5.0.0beta2/release_notes.html">
+    <topic label="Release notes" href="docs/releasenotes/5.0.0final/release_notes.html">
+        <topic label="Release 5.0.0final" href="docs/releasenotes/5.0.0final/release_notes.html"/>
+        <topic label="Release 5.0.0beta4" href="docs/releasenotes/5.0.0beta4/release_notes.html"/>
+        <topic label="Release 5.0.0beta3" href="docs/releasenotes/5.0.0beta3/release_notes.html"/>
         <topic label="Release 5.0.0beta2" href="docs/releasenotes/5.0.0beta2/release_notes.html"/>
         <topic label="Release 5.0.0beta1" href="docs/releasenotes/5.0.0beta1/release_notes.html"/>
         <topic label="Release 4.4.2" href="docs/releasenotes/4.4.2/release_notes.html"/>
@@ -41,6 +43,5 @@
     </topic>
     <topic label="RAD 6/7 issues" href="docs/rad_usage.html"/>
     <topic label="FAQ" href="docs/faq.html"/>
-    <topic label="Troubleshooting" href="docs/troubleshooting.html"/>
     <topic label="Checkstyle documentation" href="docs/csdocs/index.html"/>
 </toc>

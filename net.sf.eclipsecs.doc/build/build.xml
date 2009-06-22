@@ -29,7 +29,10 @@
 			<fileset dir="${basedir}/base" includes="yui/**" />
 			<fileset dir="${basedir}/base" includes="fancyzoom/**" />
 			<fileset dir="${basedir}/base" includes="images/**" />
+			<fileset dir="${basedir}/base" includes="dtds/**" />
+			<fileset dir="${basedir}/base" includes="psf/**" />
 			<fileset dir="${basedir}/base" includes="releasenotes/**/*.jpg" />
+			<fileset dir="${basedir}/base" includes="releasenotes/**/*.png" />
 		</copy>
 
 		<xslt style="${basedir}/build/generate_docs.xsl" basedir="${basedir}/base" includes="**/*.*html" destdir="${dist.docs}" />
@@ -49,6 +52,7 @@
 			<fileset dir="${basedir}/base" includes="dtds/**" />
 			<fileset dir="${basedir}/base" includes="psf/**" />
 			<fileset dir="${basedir}/base" includes="releasenotes/**/*.jpg" />
+			<fileset dir="${basedir}/base" includes="releasenotes/**/*.png" />
 		</copy>
 		<copy todir="${dist.web}/dtds" flatten="true">
 			<fileset dir="${basedir}/../net.sf.eclipsecs.core/src" includes="**/*.dtd" />
