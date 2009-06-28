@@ -6,18 +6,18 @@
         <category name="Checkstyle"/>
     </feature>
 
-    <feature url="http://downloads.sourceforge.net/eclipse-cs/net.sf.eclipsecs_5.0.0.200904261759-beta4-feature.jar"
-        id="net.sf.eclipsecs" version="5.0.0.200904261759-beta4">
-        <category name="Beta"/>
+    <feature url="http://downloads.sourceforge.net/eclipse-cs/net.sf.eclipsecs_${version}-feature.jar"
+        id="net.sf.eclipsecs" version="${version}">
+        <category name="Checkstyle"/>
     </feature>
     <feature
-        url="http://downloads.sourceforge.net/eclipse-cs/net.sf.eclipsecs.migration_5.0.0.200904261759-beta4-feature.jar"
-        id="net.sf.eclipsecs.migration" version="5.0.0.200904261759-beta4">
-        <category name="Beta"/>
+        url="http://downloads.sourceforge.net/eclipse-cs/net.sf.eclipsecs.migration_${version}-feature.jar"
+        id="net.sf.eclipsecs.migration" version="${version}">
+        <category name="Checkstyle"/>
     </feature>
     <feature url="http://downloads.sourceforge.net/eclipse-cs/org.maven.ide.eclipse.checkstyle_0.0.3-feature.jar"
         id="org.maven.ide.eclipse.checkstyle" version="0.0.3">
-        <category name="Beta"/>
+        <category name="Checkstyle"/>
     </feature>
 
     <archive path="plugins/com.atlassw.tools.eclipse.checkstyle_4.4.2.jar"
@@ -25,16 +25,16 @@
     <archive path="plugins/net.sf.eclipsecs.stats_1.0.4.jar"
         url="http://downloads.sourceforge.net/eclipse-cs/net.sf.eclipsecs.stats_1.0.4.jar"/>
 
-    <archive path="plugins/net.sf.eclipsecs.checkstyle_5.0.0.200904261759-beta4.jar"
-        url="http://downloads.sourceforge.net/eclipse-cs/net.sf.eclipsecs.checkstyle_5.0.0.200904261759-beta4.jar"/>
-    <archive path="plugins/net.sf.eclipsecs.core_5.0.0.200904261759-beta4.jar"
-        url="http://downloads.sourceforge.net/eclipse-cs/net.sf.eclipsecs.core_5.0.0.200904261759-beta4.jar"/>
-    <archive path="plugins/net.sf.eclipsecs.doc_5.0.0.200904261759-beta4.jar"
-        url="http://downloads.sourceforge.net/eclipse-cs/net.sf.eclipsecs.doc_5.0.0.200904261759-beta4.jar"/>
-    <archive path="plugins/net.sf.eclipsecs.migration_5.0.0.200904261759-beta4.jar"
-        url="http://downloads.sourceforge.net/eclipse-cs/net.sf.eclipsecs.migration_5.0.0.200904261759-beta4.jar"/>
-    <archive path="plugins/net.sf.eclipsecs.ui_5.0.0.200904261759-beta4.jar"
-        url="http://downloads.sourceforge.net/eclipse-cs/net.sf.eclipsecs.ui_5.0.0.200904261759-beta4.jar"/>
+    <archive path="plugins/net.sf.eclipsecs.checkstyle_${version}.jar"
+        url="http://downloads.sourceforge.net/eclipse-cs/net.sf.eclipsecs.checkstyle_${version}.jar"/>
+    <archive path="plugins/net.sf.eclipsecs.core_${version}.jar"
+        url="http://downloads.sourceforge.net/eclipse-cs/net.sf.eclipsecs.core_${version}.jar"/>
+    <archive path="plugins/net.sf.eclipsecs.doc_${version}.jar"
+        url="http://downloads.sourceforge.net/eclipse-cs/net.sf.eclipsecs.doc_${version}.jar"/>
+    <archive path="plugins/net.sf.eclipsecs.migration_${version}.jar"
+        url="http://downloads.sourceforge.net/eclipse-cs/net.sf.eclipsecs.migration_${version}.jar"/>
+    <archive path="plugins/net.sf.eclipsecs.ui_${version}.jar"
+        url="http://downloads.sourceforge.net/eclipse-cs/net.sf.eclipsecs.ui_${version}.jar"/>
     <archive path="plugins/org.maven.ide.eclipse.checkstyle_0.0.3.jar"
         url="http://downloads.sourceforge.net/eclipse-cs/org.maven.ide.eclipse.checkstyle_0.0.3.jar"/>
 
@@ -42,8 +42,8 @@
         <description> Integrates Checkstyle with Eclipse </description>
     </category-def>
 
-    <category-def name="Beta" label="Eclipse Checkstyle Plug-in (Beta Releases)">
+    <!--category-def name="Beta" label="Eclipse Checkstyle Plug-in (Beta Releases)">
         <description> Integrates Checkstyle with Eclipse. This category contains beta releases. </description>
-    </category-def>
+    </category-def -->
 
 </site>

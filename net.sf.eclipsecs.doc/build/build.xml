@@ -65,5 +65,8 @@
 			<param name="style" expression="website" />
 			<mapper type="glob" from="*.shtml" to="*.shtml" />
 		</xslt>
+
+		<replace file="${dist.web}/update/site.xml" token="${version}" value="${version.full}" />
+
 	</target>
 </project>

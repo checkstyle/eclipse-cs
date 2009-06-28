@@ -113,7 +113,7 @@
 		<property name="buildResultsDirectory" value="${buildDirectory}/results" />
 		
 		<java classname="org.eclipse.equinox.launcher.Main" fork="true" 
-			failonerror="true" errorproperty="build.stderr">
+			failonerror="true" errorproperty="build.stderr" outputproperty="build.stdout">
 			<arg value="-ws" />
 			<arg value="${ws}" />
 			<arg value="-os" />

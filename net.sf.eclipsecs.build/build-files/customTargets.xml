@@ -91,10 +91,17 @@
 		</ant>
 
 		<!-- build checkstyle docs -->
-		<property name="checkstyle.dir" value="${buildHome}/../checkstyle"/>
+		<property name="checkstyle.dir" value="${buildHome}/../checkstyle" />
 		<ant antfile="${checkstyle.dir}/build.xml" inheritall="false" target="xdocs">
 			<property name="basedir" value="${checkstyle.dir}" />
 			<property name="xdocs.dest" value="${buildDirectory}/plugins/net.sf.eclipsecs.doc/docs/csdocs" />
+		</ant>
+
+		<!-- build website -->
+		<mkdir dir="${buildDirectory}/website" />
+		<ant antfile="${buildDirectory}/plugins/net.sf.eclipsecs.doc/build/build.xml" target="build.plugin.website">
+			<property name="basedir" value="${buildDirectory}/plugins/net.sf.eclipsecs.doc" />
+			<property name="dist.web" value="${buildDirectory}/website" />
 		</ant>
 	</target>
 
@@ -166,6 +173,8 @@
 		<copy todir="${buildResultsDirectory}" flatten="true">
 			<fileset dir="${buildDirectory}" includes="${buildType}-**/*.zip" />
 		</copy>
+
+
 	</target>
 
 	<!-- ===================================================================== -->
@@ -181,6 +190,12 @@
 			<available file="${buildHome}/build-files/postBuild.xml" />
 		</condition>
 		<antcall target="callExternalPostBuild" />
+
+		<!-- prepare update site files -->
+		<renameext fromextension=".jar" toextension="-feature.jar" srcdir="${buildDirectory}/updatesite/features/" includes="*.jar" />
+		<copy todir="${buildResultsDirectory}/updatesite/" flatten="true">
+			<fileset dir="${buildDirectory}/updatesite/" includes="**/*.jar" />
+		</copy>
 	</target>
 	<!-- ===================================================================== -->
 	<!-- Run tests. -->
