@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2008  David Schneider, Lars Ködderitzsch
+// Copyright (C) 2002-2009  David Schneider, Lars Ködderitzsch
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -81,7 +81,7 @@ public class ModifierOrderQuickfix extends AbstractASTResolution
         List copies = new ArrayList();
         Iterator it = modifiers.iterator();
         while (it.hasNext())
-        {
+ {
             ASTNode mod = (ASTNode) it.next();
             copies.add(ASTNode.copySubtree(mod.getAST(), mod));
         }
