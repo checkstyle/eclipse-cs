@@ -71,7 +71,7 @@
             <message-key key="javadoc.invalidInheritDoc"/>
             <message-key key="javadoc.unusedTag"/>
             <message-key key="javadoc.expectedTag"/>
-            <message-key key="javadoc.return.duplicate"/>
+            <message-key key="javadoc.duplicateTag"/>
             <message-key key="javadoc.return.expected"/>
         </rule-metadata>
 
