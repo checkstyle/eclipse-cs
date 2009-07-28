@@ -185,13 +185,6 @@
             <message-key key="ws.notPreceded"/>
         </rule-metadata>
 
-        <rule-metadata name="%TabCharacter.name" internal-name="TabCharacter" parent="TreeWalker">
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.whitespace.TabCharacterCheck"/>
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.TabCharacterCheck"/>
-            <description>%TabCharacter.desc</description>
-            <message-key key="containsTab"/>
-        </rule-metadata>
-
         <rule-metadata name="%TypecastParenPad.name" internal-name="TypecastParenPad" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.whitespace.TypecastParenPadCheck"/>
             <description>%TypecastParenPad.desc</description>
@@ -214,6 +207,9 @@
 
         <rule-metadata name="%FileTabCharacter.name" internal-name="FileTabCharacter" parent="Checker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.whitespace.FileTabCharacterCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.whitespace.TabCharacterCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.TabCharacterCheck"/>
+            <alternative-name internal-name="TabCharacter"/>
             <description>%FileTabCharacter.desc</description>
             <property-metadata name="eachLine" datatype="Boolean" default-value="false">
                 <description>%FileTabCharacter.eachLine</description>
