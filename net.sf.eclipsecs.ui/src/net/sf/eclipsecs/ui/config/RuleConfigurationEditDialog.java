@@ -52,6 +52,8 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
@@ -59,6 +61,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
@@ -214,15 +217,35 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
             msgLabel.setText(msgKey);
             msgLabel.setLayoutData(new GridData());
 
-            Text msgText = new Text(messagesGroup, SWT.SINGLE | SWT.BORDER | SWT.SEARCH);
+            final Text msgText = new Text(messagesGroup, SWT.SINGLE | SWT.BORDER ); //| SWT.SEARCH see below
             msgText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-            String standardMessage = MetadataFactory.getStandardMessage(msgKey, mRule.getMetaData()
+            final String standardMessage = MetadataFactory.getStandardMessage(msgKey, mRule.getMetaData()
                     .getInternalName());
-            if (standardMessage == null) {
-                standardMessage = ""; //$NON-NLS-1$
+            
+            //msgText.setMessage(standardMessage); //a nice solution, sadly only for Eclipse 3.3+
+            
+            //alternative for above 
+            if (standardMessage != null) {
+                msgText.setText(standardMessage);
             }
-            msgText.setMessage(standardMessage);
+            msgText.addFocusListener(new FocusListener() {
+
+                public void focusGained(FocusEvent e) {
+                    Display.getCurrent().asyncExec(new Runnable() {
+
+                        public void run() {
+                            if (msgText.getText().equals(standardMessage)) {
+                            	msgText.selectAll();
+                            }
+                        }
+                    });
+                }
+
+                public void focusLost(FocusEvent e) {
+                // NOOP
+                }
+            });
 
             String message = mRule.getCustomMessages().get(msgKey);
             if (StringUtils.trimToNull(message) != null) {
@@ -413,10 +436,21 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
 
         // Get the custom message
         for (Map.Entry<String, Text> entry : mCustomMessages.entrySet()) {
+            
+            String msgKey = entry.getKey();
+            
+            String standardMessage = MetadataFactory.getStandardMessage(msgKey, mRule.getMetaData()
+                    .getInternalName());
+            if (standardMessage == null) {
+                standardMessage = ""; //$NON-NLS-1$
+            }
 
             String message = StringUtils.trimToNull(entry.getValue().getText());
-            if (message != null) {
-                mRule.getCustomMessages().put(entry.getKey(), message);
+            if (message != null && !message.equals(standardMessage)) {
+                mRule.getCustomMessages().put(msgKey, message);
+            }
+            else {
+            	mRule.getCustomMessages().remove(msgKey);
             }
         }
 
