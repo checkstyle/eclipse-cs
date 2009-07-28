@@ -199,7 +199,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
         lblDescription.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
         mBrowserDescription = new Browser(contents, SWT.BORDER);
-        gd = new GridData(GridData.FILL_HORIZONTAL);
+        gd = new GridData(GridData.FILL_BOTH);
         gd.heightHint = 100;
         mBrowserDescription.setLayoutData(gd);
 
