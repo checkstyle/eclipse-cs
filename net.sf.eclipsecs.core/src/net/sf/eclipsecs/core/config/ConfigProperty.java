@@ -36,14 +36,19 @@ public class ConfigProperty implements Comparable<ConfigProperty>, Cloneable {
     /** The meta data of the property. */
     private ConfigPropertyMetadata mMetaData;
 
+    /** Signals that the property value is actually a ${}-like reference. */
+    private boolean mPropertyReference;
+
     /**
      * Constructor.
      * 
-     * @param metaData the property meta data
+     * @param metaData
+     *            the property meta data
      */
     public ConfigProperty(ConfigPropertyMetadata metaData) {
 
-        this(metaData.getName(), metaData.getOverrideDefault() != null ? metaData
+        this(metaData.getName(),
+            metaData.getOverrideDefault() != null ? metaData
                 .getOverrideDefault() : metaData.getDefaultValue());
         setMetaData(metaData);
     }
@@ -51,8 +56,10 @@ public class ConfigProperty implements Comparable<ConfigProperty>, Cloneable {
     /**
      * Constructor.
      * 
-     * @param name Property name.
-     * @param value Property value.
+     * @param name
+     *            Property name.
+     * @param value
+     *            Property value.
      */
     public ConfigProperty(String name, String value) {
         setName(name);
@@ -71,7 +78,8 @@ public class ConfigProperty implements Comparable<ConfigProperty>, Cloneable {
     /**
      * Set the property's name.
      * 
-     * @param name The new name.
+     * @param name
+     *            The new name.
      */
     public void setName(String name) {
         mName = name;
@@ -89,7 +97,8 @@ public class ConfigProperty implements Comparable<ConfigProperty>, Cloneable {
     /**
      * Sets the value.
      * 
-     * @param value The value to set
+     * @param value
+     *            The value to set
      */
     public void setValue(String value) {
         mValue = value;
@@ -107,10 +116,32 @@ public class ConfigProperty implements Comparable<ConfigProperty>, Cloneable {
     /**
      * Sets the meta data for this property.
      * 
-     * @param metaData the meta data
+     * @param metaData
+     *            the meta data
      */
     public void setMetaData(ConfigPropertyMetadata metaData) {
         mMetaData = metaData;
+    }
+
+    /**
+     * Returns if the property value is/contains a ${}-style property reference.
+     * 
+     * @return <code>true</code> if the value is a property reference,
+     *         <code>false</code> otherwise
+     */
+    public boolean isPropertyReference() {
+        return mPropertyReference;
+    }
+
+    /**
+     * Sets if the property value is/contains a ${}-style property reference.
+     * 
+     * @param propertyReference
+     *            <code>true</code> if the value is a property reference,
+     *            <code>false</code> otherwise
+     */
+    public void setPropertyReference(boolean propertyReference) {
+        this.mPropertyReference = propertyReference;
     }
 
     /**

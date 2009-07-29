@@ -32,26 +32,33 @@ import org.eclipse.swt.widgets.Shell;
  */
 public final class ConfigPropertyWidgetFactory {
 
-    private ConfigPropertyWidgetFactory() {}
+    private ConfigPropertyWidgetFactory() {
+    }
 
     /**
      * Creates a property widget for the given property.
      * 
-     * @param parent the parent component
-     * @param prop the property
-     * @param shell the parent shell
+     * @param parent
+     *            the parent component
+     * @param prop
+     *            the property
+     * @param shell
+     *            the parent shell
      * @return the widget or <code>null</code> if the property type is unknown
      */
-    public static IConfigPropertyWidget createWidget(Composite parent, ConfigProperty prop,
-            Shell shell) {
+    public static IConfigPropertyWidget createWidget(Composite parent,
+        ConfigProperty prop, Shell shell) {
         IConfigPropertyWidget widget = null;
 
         ConfigPropertyType type = prop.getMetaData().getDatatype();
 
-        if (type.equals(ConfigPropertyType.String)) {
+        if (prop.isPropertyReference()) {
             widget = new ConfigPropertyWidgetString(parent, prop);
         }
-        if (type.equals(ConfigPropertyType.StringArray)) {
+        else if (type.equals(ConfigPropertyType.String)) {
+            widget = new ConfigPropertyWidgetString(parent, prop);
+        }
+        else if (type.equals(ConfigPropertyType.StringArray)) {
             widget = new ConfigPropertyWidgetString(parent, prop);
         }
         else if (type.equals(ConfigPropertyType.Integer)) {
