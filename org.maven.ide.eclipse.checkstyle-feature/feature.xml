@@ -2,7 +2,7 @@
 <feature
       id="org.maven.ide.eclipse.checkstyle"
       label="%feature.label"
-      version="0.0.3"
+      version="0.0.4"
       provider-name="%feature.provider_name">
 
    <description url="%description.url">
@@ -18,14 +18,14 @@
    </license>
 
    <requires>
-      <import feature="net.sf.eclipsecs" version="0.0.0"/>
+      <import feature="net.sf.eclipsecs"/>
    </requires>
 
    <plugin
          id="org.maven.ide.eclipse.checkstyle"
          download-size="0"
          install-size="0"
-         version="0.0.3"
+         version="0.0.4"
          unpack="false"/>
 
 </feature>
