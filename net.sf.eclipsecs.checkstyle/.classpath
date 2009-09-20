@@ -3,6 +3,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="metadata"/>
-	<classpathentry exported="true" kind="lib" path="checkstyle-all-5.0.jar" sourcepath="net.sf.eclipsecs.checkstylesrc.zip"/>
+	<classpathentry exported="true" kind="lib" path="checkstyle-all-5.0.jar" sourcepath="/checkstyle"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
