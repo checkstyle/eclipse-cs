@@ -23,6 +23,7 @@ package net.sf.eclipsecs.core.config.configtypes;
 import java.io.IOException;
 import java.net.URL;
 
+import org.apache.commons.io.FileUtils;
 import org.eclipse.core.runtime.FileLocator;
 
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
@@ -75,7 +76,7 @@ public class BuiltInFilePropertyResolver implements PropertyResolver {
                 URL bundleLocatedURL = new URL(value);
                 URL fileURL = FileLocator.toFileURL(bundleLocatedURL);
 
-                value = fileURL.getFile();
+                value = FileUtils.toFile(fileURL).toString();
             }
             catch (IOException e) {
                 throw new CheckstyleException(e.getMessage(), e);

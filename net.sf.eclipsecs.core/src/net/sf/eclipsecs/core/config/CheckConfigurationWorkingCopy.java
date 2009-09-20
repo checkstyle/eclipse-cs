@@ -22,6 +22,7 @@ package net.sf.eclipsecs.core.config;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,6 +38,7 @@ import net.sf.eclipsecs.core.Messages;
 import net.sf.eclipsecs.core.config.configtypes.IConfigurationType;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -266,7 +268,7 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
             ConfigurationWriter.write(byteOut, modules, this);
 
             // all went ok, write to the file
-            String configFile = getResolvedConfigurationFileURL().getFile();
+            String configFile = FileUtils.toFile(getResolvedConfigurationFileURL()).toString();
             out = new BufferedOutputStream(new FileOutputStream(configFile));
             out.write(byteOut.toByteArray());
 

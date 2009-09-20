@@ -28,6 +28,7 @@ import net.sf.eclipsecs.core.CheckstylePlugin;
 import net.sf.eclipsecs.core.config.ICheckConfiguration;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
+import org.apache.commons.io.FileUtils;
 import org.eclipse.core.runtime.IPath;
 
 /**
@@ -41,7 +42,8 @@ public class InternalConfigurationType extends ConfigurationType {
     /**
      * Resolves the location inside the plugins workspace state location.
      * 
-     * @param location the location
+     * @param location
+     *            the location
      * @return the resolved location in the workspace
      */
     public static String resolveLocationInWorkspace(String location) {
@@ -54,7 +56,8 @@ public class InternalConfigurationType extends ConfigurationType {
     /**
      * {@inheritDoc}
      */
-    protected URL resolveLocation(ICheckConfiguration checkConfiguration) throws IOException {
+    protected URL resolveLocation(ICheckConfiguration checkConfiguration)
+        throws IOException {
         String location = checkConfiguration.getLocation();
 
         // resolve the location in the workspace
@@ -71,9 +74,10 @@ public class InternalConfigurationType extends ConfigurationType {
         super.notifyCheckConfigRemoved(checkConfiguration);
 
         // remove the configuration file from the workspace metadata
-        URL configFileURL = checkConfiguration.getResolvedConfigurationFileURL();
+        URL configFileURL = checkConfiguration
+            .getResolvedConfigurationFileURL();
         if (configFileURL != null) {
-            File configFile = new File(configFileURL.getFile());
+            File configFile = FileUtils.toFile(configFileURL);
             configFile.delete();
         }
     }

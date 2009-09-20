@@ -30,6 +30,7 @@ import net.sf.eclipsecs.core.config.ICheckConfiguration;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
+import org.apache.commons.io.FileUtils;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.osgi.util.NLS;
@@ -48,17 +49,18 @@ public class ProjectConfigurationType extends ConfigurationType {
     /**
      * {@inheritDoc}
      */
-    protected URL resolveLocation(ICheckConfiguration checkConfiguration) throws IOException {
-        IResource configFileResource = ResourcesPlugin.getWorkspace().getRoot().findMember(
-                checkConfiguration.getLocation());
+    protected URL resolveLocation(ICheckConfiguration checkConfiguration)
+        throws IOException {
+        IResource configFileResource = ResourcesPlugin.getWorkspace().getRoot()
+            .findMember(checkConfiguration.getLocation());
 
         if (configFileResource != null) {
             return configFileResource.getLocation().toFile().toURI().toURL();
         }
         else {
             throw new FileNotFoundException(NLS.bind(
-                    Messages.ProjectConfigurationType_msgFileNotFound, checkConfiguration
-                            .getLocation()));
+                Messages.ProjectConfigurationType_msgFileNotFound,
+                checkConfiguration.getLocation()));
         }
     }
 
@@ -69,7 +71,8 @@ public class ProjectConfigurationType extends ConfigurationType {
         boolean isConfigurable = true;
 
         boolean isProtected = Boolean.valueOf(
-                checkConfiguration.getAdditionalData().get(KEY_PROTECT_CONFIG)).booleanValue();
+            checkConfiguration.getAdditionalData().get(KEY_PROTECT_CONFIG))
+            .booleanValue();
         isConfigurable = !isProtected;
 
         if (!isProtected) {
@@ -77,8 +80,9 @@ public class ProjectConfigurationType extends ConfigurationType {
             // The configuration can be changed when the external configuration
             // file can is writable
             try {
-                isConfigurable = new File(checkConfiguration.getResolvedConfigurationFileURL()
-                        .getFile()).canWrite();
+                isConfigurable = FileUtils.toFile(
+                    checkConfiguration.getResolvedConfigurationFileURL())
+                    .canWrite();
             }
             catch (CheckstylePluginException e) {
                 CheckstyleLog.log(e);
