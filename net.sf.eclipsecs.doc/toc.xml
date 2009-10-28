@@ -24,7 +24,9 @@
         <topic label="Custom plug-in filters" href="docs/extending_filters.html"/>
         <topic label="Development environment" href="docs/development.html"/>
     </topic>
-    <topic label="Release notes" href="docs/releasenotes/5.0.0final/release_notes.html">
+    <topic label="Release notes" href="docs/releasenotes/5.0.2/release_notes.html">
+        <topic label="Release 5.0.2" href="docs/releasenotes/5.0.2/release_notes.html"/>
+        <topic label="Release 5.0.1" href="docs/releasenotes/5.0.1/release_notes.html"/>
         <topic label="Release 5.0.0final" href="docs/releasenotes/5.0.0final/release_notes.html"/>
         <topic label="Release 5.0.0beta4" href="docs/releasenotes/5.0.0beta4/release_notes.html"/>
         <topic label="Release 5.0.0beta3" href="docs/releasenotes/5.0.0beta3/release_notes.html"/>

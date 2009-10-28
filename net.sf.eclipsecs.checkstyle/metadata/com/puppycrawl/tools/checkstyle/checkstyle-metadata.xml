@@ -8,6 +8,9 @@
         <rule-metadata name="%Checker.name" internal-name="Checker" parent="Root" singleton="true">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.Checker"/>
             <description>%Checker.desc</description>
+            <property-metadata name="basedir" datatype="String">
+                <description>%Checker.basedir</description>
+            </property-metadata>
             <property-metadata name="localeCountry" datatype="String">
                 <description>%Checker.localeCountry</description>
             </property-metadata>
@@ -21,7 +24,8 @@
             <message-key key="general.exception"/>
         </rule-metadata>
 
-        <rule-metadata name="%TreeWalker.name" internal-name="TreeWalker" parent="Checker" singleton="true">
+        <rule-metadata name="%TreeWalker.name" internal-name="TreeWalker" parent="Checker"
+            singleton="true">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.TreeWalker"/>
             <description>%TreeWalker.desc</description>
             <property-metadata name="cacheFile" datatype="File">
@@ -42,9 +46,10 @@
    -->
     <rule-group-metadata name="Internal" priority="1600" hidden="true">
 
-        <rule-metadata name="%FileContentsHolder.name" internal-name="FileContentsHolder" parent="TreeWalker"
-            hidden="true" deletable="false" singleton="true">
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.FileContentsHolder"/>
+        <rule-metadata name="%FileContentsHolder.name" internal-name="FileContentsHolder"
+            parent="TreeWalker" hidden="true" deletable="false" singleton="true">
+            <alternative-name
+                internal-name="com.puppycrawl.tools.checkstyle.checks.FileContentsHolder"/>
         </rule-metadata>
     </rule-group-metadata>
 </checkstyle-metadata>

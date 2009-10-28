@@ -15,10 +15,10 @@
         id="net.sf.eclipsecs.migration" version="${version}">
         <category name="Checkstyle"/>
     </feature>
-    <feature url="http://downloads.sourceforge.net/eclipse-cs/org.maven.ide.eclipse.checkstyle_0.0.4-feature.jar"
+    <!--feature url="http://downloads.sourceforge.net/eclipse-cs/org.maven.ide.eclipse.checkstyle_0.0.4-feature.jar"
         id="org.maven.ide.eclipse.checkstyle" version="0.0.4">
         <category name="Checkstyle"/>
-    </feature>
+    </feature-->
 
     <archive path="plugins/com.atlassw.tools.eclipse.checkstyle_4.4.3.jar"
         url="http://downloads.sourceforge.net/eclipse-cs/com.atlassw.tools.eclipse.checkstyle_4.4.3.jar"/>
@@ -35,8 +35,8 @@
         url="http://downloads.sourceforge.net/eclipse-cs/net.sf.eclipsecs.migration_${version}.jar"/>
     <archive path="plugins/net.sf.eclipsecs.ui_${version}.jar"
         url="http://downloads.sourceforge.net/eclipse-cs/net.sf.eclipsecs.ui_${version}.jar"/>
-    <archive path="plugins/org.maven.ide.eclipse.checkstyle_0.0.4.jar"
-        url="http://downloads.sourceforge.net/eclipse-cs/org.maven.ide.eclipse.checkstyle_0.0.4.jar"/>
+    <!--archive path="plugins/org.maven.ide.eclipse.checkstyle_0.0.4.jar"
+        url="http://downloads.sourceforge.net/eclipse-cs/org.maven.ide.eclipse.checkstyle_0.0.4.jar"/-->
 
     <category-def name="Checkstyle" label="Eclipse Checkstyle Plug-in">
         <description> Integrates Checkstyle with Eclipse </description>
