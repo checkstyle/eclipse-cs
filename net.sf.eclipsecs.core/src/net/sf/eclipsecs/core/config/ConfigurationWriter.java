@@ -167,8 +167,7 @@ public final class ConfigurationWriter {
 
         // Write severity only if it differs from the parents severity
         if (module.getSeverity() != null
-            && !Severity.inherit.equals(module.getSeverity())
-            && !module.getSeverity().equals(parentSeverity)) {
+            && !Severity.inherit.equals(module.getSeverity())) {
 
             Element propertyEl = moduleEl.addElement(XMLTags.PROPERTY_TAG);
             propertyEl.addAttribute(XMLTags.NAME_TAG, XMLTags.SEVERITY_TAG);
