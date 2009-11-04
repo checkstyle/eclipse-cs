@@ -20,6 +20,7 @@
 
 package net.sf.eclipsecs.core.config.configtypes;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -236,9 +237,17 @@ public abstract class ConfigurationType implements IConfigurationType {
         MultiPropertyResolver multiResolver = new MultiPropertyResolver();
         multiResolver
             .addPropertyResolver(new ResolvablePropertyResolver(config));
-        multiResolver
-            .addPropertyResolver(new StandardPropertyResolver(FileUtils.toFile(
-                configFile.getResolvedConfigFileURL()).toString()));
+
+        File f = FileUtils.toFile(configFile.getResolvedConfigFileURL());
+        if (f != null) {
+            multiResolver.addPropertyResolver(new StandardPropertyResolver(f
+                .toString()));
+        }
+        else {
+            multiResolver.addPropertyResolver(new StandardPropertyResolver(
+                configFile.getResolvedConfigFileURL().toString()));
+        }
+
         multiResolver.addPropertyResolver(new ClasspathVariableResolver());
         multiResolver.addPropertyResolver(new SystemPropertyResolver());
 
