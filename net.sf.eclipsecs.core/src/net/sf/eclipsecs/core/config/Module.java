@@ -62,7 +62,7 @@ public class Module implements Cloneable {
     private final Map<String, String> mCustomMessages = new HashMap<String, String>();
 
     /** the severity level. */
-    private Severity mSeverityLevel;
+    private Severity mSeverityLevel = Severity.inherit;
 
     /** the last severity level before setting to ignored. */
     private Severity mLastEnabledSeverity;
@@ -98,6 +98,10 @@ public class Module implements Cloneable {
                 if (withDefaults) {
                     property.setValue(propMeta.getDefaultValue());
                 }
+            }
+            
+            if (metaData.getDefaultSeverityLevel()!=null) {
+                mSeverityLevel = metaData.getDefaultSeverityLevel();
             }
         }
     }
@@ -271,8 +275,8 @@ public class Module implements Cloneable {
                 mSeverityLevel = null;
                 setLastEnabledSeverity(null);
             }
-            else if (SeverityLevel.IGNORE.equals(severityLevel)) {
-                if (mSeverityLevel != null && !SeverityLevel.IGNORE.equals(mSeverityLevel)) {
+            else if (Severity.ignore.equals(severityLevel)) {
+                if (mSeverityLevel != null && !Severity.ignore.equals(mSeverityLevel)) {
                     setLastEnabledSeverity(mSeverityLevel);
                 }
 

@@ -28,6 +28,9 @@ package net.sf.eclipsecs.core.config;
  */
 public enum Severity {
 
+    /** Unspecified severity level, inherited from parent module. */
+    inherit, 
+    
     /** Severity level 'ignore'. */
     ignore,
 

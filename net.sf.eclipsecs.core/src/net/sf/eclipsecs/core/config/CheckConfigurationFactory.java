@@ -173,18 +173,18 @@ public final class CheckConfigurationFactory {
     public static void copyConfiguration(ICheckConfiguration source,
         ICheckConfiguration target) throws CheckstylePluginException {
         // use the export function ;-)
-        String targetFile = FileUtils.toFile(
-            target.getResolvedConfigurationFileURL()).toString();
+        File targetFile = FileUtils.toFile(target
+            .getResolvedConfigurationFileURL());
 
-        String sourceFile = FileUtils.toFile(
-            source.getResolvedConfigurationFileURL()).toString();
+        File sourceFile = FileUtils.toFile(source
+            .getResolvedConfigurationFileURL());
 
         // copying from a file to the same file will destroy it.
         if (ObjectUtils.equals(targetFile, sourceFile)) {
             return;
         }
 
-        exportConfiguration(new File(targetFile), source);
+        exportConfiguration(targetFile, source);
     }
 
     /**

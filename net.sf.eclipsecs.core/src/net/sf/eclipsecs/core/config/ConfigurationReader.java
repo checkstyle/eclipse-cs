@@ -218,7 +218,7 @@ public final class ConfigurationReader {
                     module.setSeverity(Severity.valueOf(value));
                 }
                 catch (IllegalArgumentException e) {
-                    module.setSeverity(Severity.warning);
+                    module.setSeverity(Severity.inherit);
                 }
             }
             else if (name.equals(XMLTags.ID_TAG)) {

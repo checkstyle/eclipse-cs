@@ -199,7 +199,7 @@ public final class MetadataFactory {
      * @return the default severity.
      */
     public static Severity getDefaultSeverity() {
-        return Severity.warning;
+        return Severity.inherit;
     }
 
     /**

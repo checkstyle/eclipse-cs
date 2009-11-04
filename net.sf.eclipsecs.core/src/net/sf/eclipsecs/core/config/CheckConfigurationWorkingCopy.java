@@ -268,14 +268,14 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
             ConfigurationWriter.write(byteOut, modules, this);
 
             // all went ok, write to the file
-            String configFile = FileUtils.toFile(getResolvedConfigurationFileURL()).toString();
+            File configFile = FileUtils.toFile(getResolvedConfigurationFileURL());
             out = new BufferedOutputStream(new FileOutputStream(configFile));
             out.write(byteOut.toByteArray());
 
             // refresh the files if within the workspace
             // Bug 1251194 - Resource out of sync after performing changes to
             // config
-            IPath path = new Path(configFile);
+            IPath path = new Path(configFile.toString());
             IFile[] files = CheckstylePlugin.getWorkspace().getRoot().findFilesForLocation(path);
             for (int i = 0; i < files.length; i++) {
                 try {
