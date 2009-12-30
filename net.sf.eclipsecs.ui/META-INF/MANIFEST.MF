@@ -22,9 +22,7 @@ Bundle-ClassPath: .,
  lib/itext-2.0.1.jar,
  lib/jcommon-1.0.9.jar,
  lib/jfreechart-1.0.5.jar,
- lib/jfreechart-1.0.5-swt.jar,
- lib/commons-httpclient-3.0.1.jar,
- lib/commons-codec-1.3.jar
+ lib/jfreechart-1.0.5-swt.jar
 Eclipse-LazyStart: true
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-Localization: plugin

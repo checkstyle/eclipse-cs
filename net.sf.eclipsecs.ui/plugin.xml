@@ -68,11 +68,6 @@
             name="%CheckstylePreferencePage.name"
             class="net.sf.eclipsecs.ui.preferences.CheckstylePreferencePage"
             id="net.sf.eclipsecs.preferences.CheckstylePreferencePage"/>
-        <page
-            name="%VotingPage.name"
-            class="net.sf.eclipsecs.ui.voting.VotingPreferencePage"
-            id="net.sf.eclipsecs.voting"
-            category="net.sf.eclipsecs.preferences.CheckstylePreferencePage"/>
     </extension>
     <extension
         point="org.eclipse.ui.propertyPages">
