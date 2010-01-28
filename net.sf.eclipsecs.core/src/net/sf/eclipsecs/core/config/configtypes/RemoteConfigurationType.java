@@ -81,25 +81,29 @@ public class RemoteConfigurationType extends ConfigurationType {
      * {@inheritDoc}
      */
     public CheckstyleConfigurationFile getCheckstyleConfiguration(
-            ICheckConfiguration checkConfiguration) throws CheckstylePluginException {
+        ICheckConfiguration checkConfiguration)
+        throws CheckstylePluginException {
 
         boolean useCacheFile = Boolean.valueOf(
-                checkConfiguration.getAdditionalData().get(KEY_CACHE_CONFIG)).booleanValue();
+            checkConfiguration.getAdditionalData().get(KEY_CACHE_CONFIG))
+            .booleanValue();
 
         CheckstyleConfigurationFile data = new CheckstyleConfigurationFile();
 
-        synchronized(Authenticator.class) {
+        synchronized (Authenticator.class) {
 
             String currentRedirects = System.getProperty("http.maxRedirects"); //$NON-NLS-1$
 
-            Authenticator oldAuthenticator = RemoteConfigAuthenticator.getDefault();
+            Authenticator oldAuthenticator = RemoteConfigAuthenticator
+                .getDefault();
             try {
 
                 // resolve the true configuration file URL
-                data.setResolvedConfigFileURL(resolveLocation(checkConfiguration));
+                data
+                    .setResolvedConfigFileURL(resolveLocation(checkConfiguration));
 
                 Authenticator.setDefault(new RemoteConfigAuthenticator(data
-                        .getResolvedConfigFileURL()));
+                    .getResolvedConfigFileURL()));
 
                 boolean originalFileSuccess = false;
                 byte[] configurationFileData = null;
@@ -108,7 +112,8 @@ public class RemoteConfigurationType extends ConfigurationType {
 
                     System.setProperty("http.maxRedirects", "3"); //$NON-NLS-1$ //$NON-NLS-2$
 
-                    URLConnection connection = data.getResolvedConfigFileURL().openConnection();
+                    URLConnection connection = data.getResolvedConfigFileURL()
+                        .openConnection();
 
                     // get the configuration file data
                     configurationFileData = getBytesFromURLConnection(connection);
@@ -133,32 +138,36 @@ public class RemoteConfigurationType extends ConfigurationType {
                 byte[] additionalPropertiesBytes = null;
                 if (originalFileSuccess) {
                     additionalPropertiesBytes = getAdditionPropertiesBundleBytes(data
-                            .getResolvedConfigFileURL());
+                        .getResolvedConfigFileURL());
                 }
                 else if (useCacheFile) {
                     additionalPropertiesBytes = getBytesFromCacheBundleFile(checkConfiguration);
                 }
 
-                data.setAdditionalPropertyBundleBytes(additionalPropertiesBytes);
+                data
+                    .setAdditionalPropertyBundleBytes(additionalPropertiesBytes);
 
                 // get the property resolver
-                PropertyResolver resolver = getPropertyResolver(checkConfiguration, data);
+                PropertyResolver resolver = getPropertyResolver(
+                    checkConfiguration, data);
                 data.setPropertyResolver(resolver);
 
                 // write to cache file
                 if (originalFileSuccess && useCacheFile) {
                     writeToCacheFile(checkConfiguration, configurationFileData,
-                            additionalPropertiesBytes);
+                        additionalPropertiesBytes);
                 }
 
             }
             catch (UnknownHostException e) {
                 CheckstylePluginException.rethrow(e, NLS.bind(
-                        Messages.RemoteConfigurationType_errorUnknownHost, e.getMessage()));
+                    Messages.RemoteConfigurationType_errorUnknownHost, e
+                        .getMessage()));
             }
             catch (FileNotFoundException e) {
                 CheckstylePluginException.rethrow(e, NLS.bind(
-                        Messages.RemoteConfigurationType_errorFileNotFound, e.getMessage()));
+                    Messages.RemoteConfigurationType_errorFileNotFound, e
+                        .getMessage()));
             }
             catch (IOException e) {
                 CheckstylePluginException.rethrow(e);
@@ -181,7 +190,8 @@ public class RemoteConfigurationType extends ConfigurationType {
     /**
      * {@inheritDoc}
      */
-    protected URL resolveLocation(ICheckConfiguration checkConfiguration) throws IOException {
+    protected URL resolveLocation(ICheckConfiguration checkConfiguration)
+        throws IOException {
         return new URL(checkConfiguration.getLocation());
     }
 
@@ -194,17 +204,19 @@ public class RemoteConfigurationType extends ConfigurationType {
 
         // remove authentication info
         RemoteConfigAuthenticator.removeCachedAuthInfo(checkConfiguration
-                .getResolvedConfigurationFileURL());
+            .getResolvedConfigurationFileURL());
 
         boolean useCacheFile = Boolean.valueOf(
-                checkConfiguration.getAdditionalData().get(KEY_CACHE_CONFIG)).booleanValue();
+            checkConfiguration.getAdditionalData().get(KEY_CACHE_CONFIG))
+            .booleanValue();
 
         if (useCacheFile) {
             // remove the cached configuration file from the workspace metadata
-            String cacheFileLocation = checkConfiguration.getAdditionalData().get(
-                    KEY_CACHE_FILE_LOCATION);
+            String cacheFileLocation = checkConfiguration.getAdditionalData()
+                .get(KEY_CACHE_FILE_LOCATION);
 
-            IPath cacheFilePath = CheckstylePlugin.getDefault().getStateLocation();
+            IPath cacheFilePath = CheckstylePlugin.getDefault()
+                .getStateLocation();
             cacheFilePath = cacheFilePath.append(cacheFileLocation);
             File cacheFile = cacheFilePath.toFile();
             cacheFile.delete();
@@ -214,12 +226,16 @@ public class RemoteConfigurationType extends ConfigurationType {
     /**
      * Method to get an input stream to the cached configuration file.
      * 
-     * @param checkConfig the check configuration
+     * @param checkConfig
+     *            the check configuration
      * @return the input stream
-     * @throws IOException error getting the stream (file does not exist)
+     * @throws IOException
+     *             error getting the stream (file does not exist)
      */
-    private byte[] getBytesFromCacheFile(ICheckConfiguration checkConfig) throws IOException {
-        String cacheFileLocation = checkConfig.getAdditionalData().get(KEY_CACHE_FILE_LOCATION);
+    private byte[] getBytesFromCacheFile(ICheckConfiguration checkConfig)
+        throws IOException {
+        String cacheFileLocation = checkConfig.getAdditionalData().get(
+            KEY_CACHE_FILE_LOCATION);
 
         IPath cacheFilePath = CheckstylePlugin.getDefault().getStateLocation();
         cacheFilePath = cacheFilePath.append(cacheFileLocation);
@@ -234,14 +250,16 @@ public class RemoteConfigurationType extends ConfigurationType {
     /**
      * Method to get an input stream to the cached bundle file.
      * 
-     * @param checkConfig the check configuration
+     * @param checkConfig
+     *            the check configuration
      * @return the input stream
-     * @throws IOException error getting the stream (file does not exist)
+     * @throws IOException
+     *             error getting the stream (file does not exist)
      */
     private byte[] getBytesFromCacheBundleFile(ICheckConfiguration checkConfig) {
 
         String cacheFileLocation = checkConfig.getAdditionalData().get(
-                KEY_CACHE_PROPS_FILE_LOCATION);
+            KEY_CACHE_PROPS_FILE_LOCATION);
 
         // bug 1748626
         if (cacheFileLocation == null) {
@@ -249,7 +267,8 @@ public class RemoteConfigurationType extends ConfigurationType {
         }
 
         try {
-            IPath cacheFilePath = CheckstylePlugin.getDefault().getStateLocation();
+            IPath cacheFilePath = CheckstylePlugin.getDefault()
+                .getStateLocation();
             cacheFilePath = cacheFilePath.append(cacheFileLocation);
             File cacheFile = cacheFilePath.toFile();
 
@@ -266,10 +285,11 @@ public class RemoteConfigurationType extends ConfigurationType {
         return null;
     }
 
-    private void writeToCacheFile(ICheckConfiguration checkConfig, byte[] configFileBytes,
-            byte[] bundleBytes) {
+    private void writeToCacheFile(ICheckConfiguration checkConfig,
+        byte[] configFileBytes, byte[] bundleBytes) {
 
-        String cacheFileLocation = checkConfig.getAdditionalData().get(KEY_CACHE_FILE_LOCATION);
+        String cacheFileLocation = checkConfig.getAdditionalData().get(
+            KEY_CACHE_FILE_LOCATION);
 
         IPath cacheFilePath = CheckstylePlugin.getDefault().getStateLocation();
         cacheFilePath = cacheFilePath.append(cacheFileLocation);
@@ -279,17 +299,20 @@ public class RemoteConfigurationType extends ConfigurationType {
             FileUtils.writeByteArrayToFile(cacheFile, configFileBytes);
         }
         catch (IOException e) {
-            CheckstyleLog.log(e, NLS.bind(Messages.RemoteConfigurationType_msgRemoteCachingFailed,
-                    checkConfig.getName(), checkConfig.getLocation()));
+            CheckstyleLog.log(e, NLS.bind(
+                Messages.RemoteConfigurationType_msgRemoteCachingFailed,
+                checkConfig.getName(), checkConfig.getLocation()));
         }
 
         if (bundleBytes != null) {
 
-            String propsCacheFileLocation = checkConfig.getAdditionalData().get(
-                    KEY_CACHE_PROPS_FILE_LOCATION);
+            String propsCacheFileLocation = checkConfig.getAdditionalData()
+                .get(KEY_CACHE_PROPS_FILE_LOCATION);
 
-            IPath propsCacheFilePath = CheckstylePlugin.getDefault().getStateLocation();
-            propsCacheFilePath = propsCacheFilePath.append(propsCacheFileLocation);
+            IPath propsCacheFilePath = CheckstylePlugin.getDefault()
+                .getStateLocation();
+            propsCacheFilePath = propsCacheFilePath
+                .append(propsCacheFileLocation);
             File propsCacheFile = propsCacheFilePath.toFile();
 
             try {
@@ -301,7 +324,8 @@ public class RemoteConfigurationType extends ConfigurationType {
         }
     }
 
-    protected byte[] getBytesFromURLConnection(URLConnection connection) throws IOException {
+    protected byte[] getBytesFromURLConnection(URLConnection connection)
+        throws IOException {
 
         byte[] configurationFileData = null;
         InputStream in = null;
@@ -309,14 +333,16 @@ public class RemoteConfigurationType extends ConfigurationType {
 
             if (connection instanceof HttpURLConnection) {
 
-                if (!sFailedWith401URLs.contains(connection.getURL().toString())) {
+                if (!sFailedWith401URLs
+                    .contains(connection.getURL().toString())) {
 
                     HttpURLConnection httpConn = (HttpURLConnection) connection;
                     httpConn.setInstanceFollowRedirects(true);
                     httpConn.connect();
                     if (httpConn.getResponseCode() == HttpURLConnection.HTTP_UNAUTHORIZED) {
                         try {
-                            RemoteConfigAuthenticator.removeCachedAuthInfo(connection.getURL());
+                            RemoteConfigAuthenticator
+                                .removeCachedAuthInfo(connection.getURL());
                         }
                         catch (CheckstylePluginException e) {
                             CheckstyleLog.log(e);
@@ -324,14 +350,20 @@ public class RemoteConfigurationType extends ConfigurationType {
 
                         // add to 401ed URLs
                         sFailedWith401URLs.add(connection.getURL().toString());
-                        throw new IOException(Messages.RemoteConfigurationType_msgUnAuthorized);
+                        throw new IOException(
+                            Messages.RemoteConfigurationType_msgUnAuthorized);
                     }
                 }
                 else {
                     // don't retry since we just get another 401
-                    throw new IOException(Messages.RemoteConfigurationType_msgUnAuthorized);
+                    throw new IOException(
+                        Messages.RemoteConfigurationType_msgUnAuthorized);
                 }
             }
+
+            //set timeouts - bug 2941010
+            connection.setConnectTimeout(60000);
+            connection.setReadTimeout(60000);
 
             in = connection.getInputStream();
             configurationFileData = IOUtils.toByteArray(in);
@@ -356,7 +388,8 @@ public class RemoteConfigurationType extends ConfigurationType {
         /**
          * Creates the authenticator.
          * 
-         * @param resolvedCheckConfigurationURL the check configuration URL
+         * @param resolvedCheckConfigurationURL
+         *            the check configuration URL
          */
         public RemoteConfigAuthenticator(URL resolvedCheckConfigurationURL) {
             mResolvedCheckConfigurationURL = resolvedCheckConfigurationURL;
@@ -379,7 +412,8 @@ public class RemoteConfigurationType extends ConfigurationType {
                 for (int i = 0; i < fields.length; i++) {
                     if (Authenticator.class.equals(fields[i].getType())) {
                         fields[i].setAccessible(true);
-                        currentDefault = (Authenticator) fields[i].get(Authenticator.class);
+                        currentDefault = (Authenticator) fields[i]
+                            .get(Authenticator.class);
                         break;
                     }
                 }
@@ -396,12 +430,15 @@ public class RemoteConfigurationType extends ConfigurationType {
         /**
          * Stores the credentials to the key ring.
          * 
-         * @param resolvedCheckConfigurationURL the url
-         * @param userName the user name
-         * @param password the password
+         * @param resolvedCheckConfigurationURL
+         *            the url
+         * @param userName
+         *            the user name
+         * @param password
+         *            the password
          */
-        public static void storeCredentials(URL resolvedCheckConfigurationURL, String userName,
-                String password) {
+        public static void storeCredentials(URL resolvedCheckConfigurationURL,
+            String userName, String password) {
 
             try {
                 Map<String, String> authInfo = new HashMap<String, String>();
@@ -410,9 +447,11 @@ public class RemoteConfigurationType extends ConfigurationType {
                 authInfo.put(KEY_PASSWORD, password);
 
                 // store authorization info to the internal key ring
-                Platform.addAuthorizationInfo(resolvedCheckConfigurationURL, "", "", authInfo); //$NON-NLS-1$ //$NON-NLS-2$
+                Platform.addAuthorizationInfo(resolvedCheckConfigurationURL,
+                    "", "", authInfo); //$NON-NLS-1$ //$NON-NLS-2$
 
-                sFailedWith401URLs.remove(resolvedCheckConfigurationURL.toString());
+                sFailedWith401URLs.remove(resolvedCheckConfigurationURL
+                    .toString());
             }
             catch (CoreException e) {
                 CheckstyleLog.log(e);
@@ -423,23 +462,24 @@ public class RemoteConfigurationType extends ConfigurationType {
          * Returns the stored authentication for the given check configuration
          * URL.
          * 
-         * @param resolvedCheckConfigurationURL the configuration URL
+         * @param resolvedCheckConfigurationURL
+         *            the configuration URL
          * @return the authentication object or <code>null</code> if none is
          *         stored
          */
         public static PasswordAuthentication getPasswordAuthentication(
-                URL resolvedCheckConfigurationURL) {
+            URL resolvedCheckConfigurationURL) {
 
             PasswordAuthentication auth = null;
 
             @SuppressWarnings("unchecked")
             Map<String, String> authInfo = Platform.getAuthorizationInfo(
-                    resolvedCheckConfigurationURL, "", ""); //$NON-NLS-1$ //$NON-NLS-2$
+                resolvedCheckConfigurationURL, "", ""); //$NON-NLS-1$ //$NON-NLS-2$
 
             if (authInfo != null) {
-                auth = new PasswordAuthentication(authInfo.get(KEY_USERNAME), authInfo
-                        .get(KEY_PASSWORD) != null ? (authInfo.get(KEY_PASSWORD)).toCharArray()
-                        : new char[0]);
+                auth = new PasswordAuthentication(authInfo.get(KEY_USERNAME),
+                    authInfo.get(KEY_PASSWORD) != null ? (authInfo
+                        .get(KEY_PASSWORD)).toCharArray() : new char[0]);
             }
 
             return auth;
@@ -448,16 +488,18 @@ public class RemoteConfigurationType extends ConfigurationType {
         /**
          * Removes the authentication info from the session cache.
          * 
-         * @param resolvedCheckConfigurationURL the check configuration URL
-         * @throws CheckstylePluginException if the authentication could not be
-         *             removed
+         * @param resolvedCheckConfigurationURL
+         *            the check configuration URL
+         * @throws CheckstylePluginException
+         *             if the authentication could not be removed
          */
-        public static void removeCachedAuthInfo(URL resolvedCheckConfigurationURL)
-            throws CheckstylePluginException {
+        public static void removeCachedAuthInfo(
+            URL resolvedCheckConfigurationURL) throws CheckstylePluginException {
             sFailedWith401URLs.remove(resolvedCheckConfigurationURL.toString());
             try {
 
-                Platform.flushAuthorizationInfo(resolvedCheckConfigurationURL, "", ""); //$NON-NLS-1$ //$NON-NLS-2$
+                Platform.flushAuthorizationInfo(resolvedCheckConfigurationURL,
+                    "", ""); //$NON-NLS-1$ //$NON-NLS-2$
             }
             catch (CoreException e) {
                 CheckstylePluginException.rethrow(e);
