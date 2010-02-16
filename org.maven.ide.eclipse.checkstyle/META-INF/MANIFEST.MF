@@ -2,13 +2,14 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: eclipse-cs m2eclipse configurator
 Bundle-SymbolicName: org.maven.ide.eclipse.checkstyle;singleton:=true
-Bundle-Version: 0.0.4
+Bundle-Version: 0.10.0
 Bundle-Vendor: Nicolas De Loof
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Require-Bundle: org.eclipse.core.runtime;bundle-version="3.3.0",
- org.eclipse.core.resources;bundle-version="3.3.0",
+Require-Bundle: org.eclipse.core.runtime;bundle-version="3.5.0",
+ org.eclipse.core.resources;bundle-version="3.5.0",
  net.sf.eclipsecs.core,
- org.maven.ide.components.maven_embedder;bundle-version="2.1.0",
- org.maven.ide.eclipse;bundle-version="0.9.7",
- org.maven.ide.eclipse.jdt;bundle-version="0.9.7"
+ org.maven.ide.eclipse;bundle-version="0.10.0",
+ org.maven.ide.eclipse.jdt;bundle-version="0.10.0",
+ org.maven.ide.eclipse.maven_embedder;bundle-version="0.10.0",
+ org.eclipse.ui.workbench;bundle-version="3.5.0"
 Import-Package: org.eclipse.ui.console
