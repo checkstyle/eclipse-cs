@@ -25,13 +25,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
-import org.apache.maven.artifact.resolver.ArtifactResolutionException;
-import org.apache.maven.embedder.MavenEmbedder;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.maven.ide.eclipse.project.configurator.AbstractProjectConfigurator;
 
 /**
@@ -110,10 +109,12 @@ public abstract class AbstractMavenPluginProjectConfigurator
      * Create a classloader based on the plugin artifact and dependencies, if any
      * 
      * @param mavenProject the maven project that declares the plugin
-     * @param embedder maven embedder to resolve maven artifacts and dependencies
+     * @param maven maven maven to resolve maven artifacts and dependencies
      * @param plugin the maven plugin
      */
-    protected ClassLoader getPluginClassLoader( Plugin mavenPlugin, MavenProject mavenProject, MavenEmbedder embedder )
+    protected ClassLoader getPluginClassLoader( Plugin mavenPlugin, MavenProject mavenProject,
+        IProgressMonitor monitor )
+        throws CoreException
     {
         // Let's default to the current context classloader
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
@@ -122,38 +123,7 @@ public abstract class AbstractMavenPluginProjectConfigurator
         List<URL> jars = new LinkedList<URL>();
 
         // add the plugin artifact
-        Artifact pluginArtifact = resolvePluginArtifact( mavenPlugin, mavenProject, embedder );
-
-        // TODO use mavenEmbedder to resolve the configured plugin dependencies
-        // and use them to build the classloader
-
-        //
-        // // The pluginArtifact is available in local repository
-        // Model pluginPOM = embedder.readModel( pluginArtifact.getFile() );
-        //
-        // // Add plugin dependencies (overrides or supplements) declared by the project
-        // List<Dependency> dependencies = mavenPlugin.getDependencies();
-        // if ( dependencies != null )
-        // {
-        // for ( Dependency dependency : dependencies )
-        // {
-        // if ( pluginPOM.getDependencies().contains( dependency ) )
-        // {
-        // // The declared <plugin><dependency> is used to override
-        // // the default plugin dependencies
-        // pluginPOM.getDependencyManagement().addDependency( dependency );
-        // }
-        // else
-        // {
-        // // Add as dependency
-        // pluginPOM.addDependency( dependency );
-        // }
-        // }
-        // }
-        //
-        // // resolve plugins dependencies
-        // embedder.readProjectWithDependencies( ??? )
-        //
+        Artifact pluginArtifact = resolvePluginArtifact( mavenPlugin, mavenProject, monitor );
 
         if ( !pluginArtifact.isResolved() )
         {
@@ -169,36 +139,22 @@ public abstract class AbstractMavenPluginProjectConfigurator
             }
             catch ( MalformedURLException e )
             {
-                embedder.getLogger().error( "Could not create URL for artifact: " + pluginArtifact.getFile() );
+                console.logError( "Could not create URL for artifact: " + pluginArtifact.getFile() );
             }
         }
 
-        List dependencies = mavenPlugin.getDependencies();
+        List<Dependency> dependencies = mavenPlugin.getDependencies();
         if ( dependencies != null && dependencies.size() > 0 )
         {
-            for ( int i = 0; i < dependencies.size(); i++ )
+            for ( Dependency dependency : dependencies )
             {
-                Dependency dependency = (Dependency) dependencies.get( i );
-
                 // create artifact based on dependency
                 Artifact artifact =
-                    embedder.createArtifact( dependency.getGroupId(), dependency.getArtifactId(),
-                                             dependency.getVersion(), dependency.getScope(), dependency.getType() );
-
-                // resolve artifact to repository
-                try
-                {
-                    embedder.resolve( artifact, mavenProject.getRemoteArtifactRepositories(),
-                                      embedder.getLocalRepository() );
-                }
-                catch ( ArtifactResolutionException e )
-                {
-                    embedder.getLogger().error( "Could not resolve artifact: " + artifact );
-                }
-                catch ( ArtifactNotFoundException e )
-                {
-                    embedder.getLogger().error( "Could not find artifact: " + artifact );
-                }
+                    maven.resolve( dependency.getGroupId(), dependency.getArtifactId(),
+                                      dependency.getVersion(), dependency.getScope(), 
+                                      dependency.getType(), 
+                                      mavenProject.getRemoteArtifactRepositories(),
+                                      monitor );
 
                 // add artifact and its dependencies to list of jars
                 if ( artifact.isResolved() )
@@ -210,7 +166,7 @@ public abstract class AbstractMavenPluginProjectConfigurator
                     }
                     catch ( MalformedURLException e )
                     {
-                        embedder.getLogger().error( "Could not create URL for artifact: " + artifact.getFile() );
+                        console.logError( "Could not create URL for artifact: " + artifact.getFile() );
                     }
                 }
             }
@@ -221,40 +177,20 @@ public abstract class AbstractMavenPluginProjectConfigurator
         return classLoader;
     }
 
-    private Artifact resolvePluginArtifact( Plugin mavenPlugin, MavenProject mavenProject, MavenEmbedder embedder )
+    private Artifact resolvePluginArtifact( Plugin mavenPlugin, MavenProject mavenProject,
+        IProgressMonitor monitor )
+        throws CoreException
     {
-        Artifact pluginArtifact = null;
-        try
+        String groupId = mavenPlugin.getGroupId();
+        String artifactId = mavenPlugin.getArtifactId();
+        String version = mavenPlugin.getVersion();
+        if ( version == null )
         {
-            String version = mavenPlugin.getVersion();
-            if ( version == null )
-            {
-                version = Artifact.LATEST_VERSION;
-            }
+            version = Artifact.LATEST_VERSION;
+        }
+        return maven.resolve( groupId, artifactId, version, "compile", "maven-plugin",
+            mavenProject.getRemoteArtifactRepositories(), monitor );
 
-            pluginArtifact =
-                embedder.createArtifact( mavenPlugin.getGroupId(), mavenPlugin.getArtifactId(), version, "compile",
-                                         "maven-plugin" );
-        }
-        catch ( Exception e )
-        {
-            embedder.getLogger().error( "Could not create classpath", e );
-        }
-
-        try
-        {
-            embedder.resolve( pluginArtifact, mavenProject.getRemoteArtifactRepositories(),
-                              embedder.getLocalRepository() );
-        }
-        catch ( ArtifactResolutionException e )
-        {
-            embedder.getLogger().error( "Could not resolve artifact: " + pluginArtifact );
-        }
-        catch ( ArtifactNotFoundException e )
-        {
-            embedder.getLogger().error( "Could not find artifact: " + pluginArtifact );
-        }
-        return pluginArtifact;
     }
 
     /**

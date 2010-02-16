@@ -44,7 +44,6 @@ import net.sf.eclipsecs.core.projectconfig.ProjectConfigurationFactory;
 import net.sf.eclipsecs.core.projectconfig.ProjectConfigurationWorkingCopy;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
-import org.apache.maven.embedder.MavenEmbedder;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.StringInputStream;
@@ -77,20 +76,15 @@ public class CheckstyleProjectConfigurator extends AbstractMavenPluginProjectCon
     private final IConfigurationType remoteConfigurationType = ConfigurationTypes
             .getByInternalName("remote");
 
-    /**
-     * {@inheritDoc}
-     * 
-     * @see org.maven.ide.eclipse.project.configurator.AbstractProjectConfigurator#configure(org.apache.maven.embedder.MavenEmbedder,
-     *      org.maven.ide.eclipse.project.configurator.ProjectConfigurationRequest,
-     *      org.eclipse.core.runtime.IProgressMonitor)
-     */
     @Override
-    public void configure(MavenEmbedder embedder, ProjectConfigurationRequest request,
-            IProgressMonitor monitor) throws CoreException {
+    public void configure( ProjectConfigurationRequest request, IProgressMonitor monitor )
+        throws CoreException
+    {
         monitor.beginTask("Checkstyle configuration update", 2);
         Plugin plugin = getCheckstylePlugin(request.getMavenProject());
-        if (plugin != null) {
-            createOrUpdateEclispeCS(embedder, request.getMavenProject(), plugin, request
+        if ( plugin != null )
+        {
+            createOrUpdateEclispeCS( request.getMavenProject(), plugin, request
                     .getProject(), monitor);
             addNature(request.getProject(), CheckstyleNature.NATURE_ID, monitor);
         }
@@ -101,15 +95,16 @@ public class CheckstyleProjectConfigurator extends AbstractMavenPluginProjectCon
      * Configure the eclipse Checkstyle plugin based on maven plugin
      * configuration and resources
      */
-    private void createOrUpdateEclispeCS(MavenEmbedder embedder, MavenProject mavenProject,
-            Plugin mavenPlugin, IProject project, IProgressMonitor monitor) throws CoreException {
+    private void createOrUpdateEclispeCS( MavenProject mavenProject, Plugin mavenPlugin,
+        IProject project, IProgressMonitor monitor )
+        throws CoreException
+    {
         try {
             IProjectConfiguration pc = ProjectConfigurationFactory.getConfiguration(project);
             ProjectConfigurationWorkingCopy workingCopy = new ProjectConfigurationWorkingCopy(pc);
             workingCopy.setUseSimpleConfig(false);
 
-            ClassLoader pluginClassLoader = getPluginClassLoader(mavenPlugin, mavenProject,
-                    embedder);
+            ClassLoader pluginClassLoader = getPluginClassLoader( mavenPlugin, mavenProject, monitor );
             URL ruleSet = extractConfiguredCSLocation(mavenPlugin, pluginClassLoader);
             if (ruleSet == null) {
                 return;
@@ -131,9 +126,7 @@ public class CheckstyleProjectConfigurator extends AbstractMavenPluginProjectCon
             List props = checkConfig.getResolvableProperties();
             props.clear();
             for (Map.Entry entry : properties.entrySet()) {
-                props
-                        .add(new ResolvableProperty((String) entry.getKey(), (String) entry
-                                .getValue()));
+                props.add( new ResolvableProperty( (String) entry.getKey(), (String) entry.getValue() ) );
             }
 
             monitor.worked(1);
@@ -141,8 +134,9 @@ public class CheckstyleProjectConfigurator extends AbstractMavenPluginProjectCon
                 workingCopy.store();
             }
         }
-        catch (CheckstylePluginException cpe) {
-            embedder.getLogger().error("Failed to configure Checkstyle plugin", cpe);
+        catch ( CheckstylePluginException cpe )
+        {
+            console.logError( "Failed to configure Checkstyle plugin " + cpe );
         }
     }
 
