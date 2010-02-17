@@ -49,6 +49,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.osgi.util.NLS;
+import org.xml.sax.InputSource;
 
 /**
  * This class acts as wrapper around check configurations to add editing
@@ -56,7 +57,8 @@ import org.eclipse.osgi.util.NLS;
  * 
  * @author Lars Ködderitzsch
  */
-public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Cloneable {
+public class CheckConfigurationWorkingCopy implements ICheckConfiguration,
+    Cloneable {
 
     /** The source check configuration of the working copy. */
     private final ICheckConfiguration mCheckConfiguration;
@@ -85,17 +87,20 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
     /**
      * Creates a new working copy from an existing check configuration.
      * 
-     * @param checkConfigToEdit the existing check configuration
-     * @param workingSet the working set this working copy belongs to
+     * @param checkConfigToEdit
+     *            the existing check configuration
+     * @param workingSet
+     *            the working set this working copy belongs to
      */
     public CheckConfigurationWorkingCopy(ICheckConfiguration checkConfigToEdit,
-            ICheckConfigurationWorkingSet workingSet) {
+        ICheckConfigurationWorkingSet workingSet) {
         mCheckConfiguration = checkConfigToEdit;
         mWorkingSet = workingSet;
 
         mAdditionalData.putAll(checkConfigToEdit.getAdditionalData());
 
-        List<ResolvableProperty> props = checkConfigToEdit.getResolvableProperties();
+        List<ResolvableProperty> props = checkConfigToEdit
+            .getResolvableProperties();
         for (ResolvableProperty prop : props) {
             mProperties.add(prop.clone());
         }
@@ -104,17 +109,20 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
     /**
      * Creates a working copy for a new check configuration.
      * 
-     * @param configType the type of the new configuration
-     * @param workingSet the working set this working copy belongs to
-     * @param global <code>true</code> if the new configuration is a global
+     * @param configType
+     *            the type of the new configuration
+     * @param workingSet
+     *            the working set this working copy belongs to
+     * @param global
+     *            <code>true</code> if the new configuration is a global
      *            configuration
      */
     public CheckConfigurationWorkingCopy(IConfigurationType configType,
-            ICheckConfigurationWorkingSet workingSet, boolean global) {
+        ICheckConfigurationWorkingSet workingSet, boolean global) {
 
         mWorkingSet = workingSet;
-        mCheckConfiguration = new CheckConfiguration(null, null, null, configType, global, null,
-                null);
+        mCheckConfiguration = new CheckConfiguration(null, null, null,
+            configType, global, null, null);
     }
 
     /**
@@ -129,10 +137,11 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
     /**
      * Changes the name of the check configuration.
      * 
-     * @param name the new name
-     * @throws CheckstylePluginException if name is <code>null</code> or empty
-     *             or a name collision with an existing check configuration
-     *             exists
+     * @param name
+     *            the new name
+     * @throws CheckstylePluginException
+     *             if name is <code>null</code> or empty or a name collision
+     *             with an existing check configuration exists
      */
     public void setName(String name) throws CheckstylePluginException {
 
@@ -148,7 +157,8 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
             // Check if the new name is in use
             if (mWorkingSet.isNameCollision(this)) {
                 mEditedName = oldName;
-                throw new CheckstylePluginException(NLS.bind(Messages.errorConfigNameInUse, name));
+                throw new CheckstylePluginException(NLS.bind(
+                    Messages.errorConfigNameInUse, name));
             }
         }
     }
@@ -156,9 +166,11 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
     /**
      * Changes the location of the Checkstyle configuration file.
      * 
-     * @param location the new location of Checkstyle configuration file
-     * @throws CheckstylePluginException if location is <code>null</code> or
-     *             empty or the Checkstyle configuration file cannot be resolved
+     * @param location
+     *            the new location of Checkstyle configuration file
+     * @throws CheckstylePluginException
+     *             if location is <code>null</code> or empty or the Checkstyle
+     *             configuration file cannot be resolved
      */
     public void setLocation(String location) throws CheckstylePluginException {
         if (location == null || location.trim().length() == 0) {
@@ -176,8 +188,9 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
             }
             catch (Exception e) {
                 mEditedLocation = oldLocation;
-                CheckstylePluginException.rethrow(e, NLS.bind(Messages.errorResolveConfigLocation,
-                        location, e.getLocalizedMessage()));
+                CheckstylePluginException.rethrow(e, NLS.bind(
+                    Messages.errorResolveConfigLocation, location, e
+                        .getLocalizedMessage()));
             }
         }
     }
@@ -185,7 +198,8 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
     /**
      * Sets a new description for the check configuration.
      * 
-     * @param description the new description
+     * @param description
+     *            the new description
      */
     public void setDescription(String description) {
         String oldDescription = getDescription();
@@ -214,11 +228,12 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
      */
     public boolean hasConfigurationChanged() {
         return mHasConfigChanged
-                || !(new EqualsBuilder().append(getLocation(), mCheckConfiguration.getLocation())
-                        .append(getResolvableProperties(),
-                                mCheckConfiguration.getResolvableProperties()).append(
-                                getAdditionalData(), mCheckConfiguration.getAdditionalData())
-                        .isEquals());
+            || !(new EqualsBuilder().append(getLocation(),
+                mCheckConfiguration.getLocation()).append(
+                getResolvableProperties(),
+                mCheckConfiguration.getResolvableProperties()).append(
+                getAdditionalData(), mCheckConfiguration.getAdditionalData())
+                .isEquals());
     }
 
     /**
@@ -227,20 +242,20 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
      * <code>net.sf.eclipsecs.core.config.Module</code>.
      * 
      * @return the list of configured modules in this Checkstyle configuration
-     * @throws CheckstylePluginException error when reading the Checkstyle
-     *             configuration file
+     * @throws CheckstylePluginException
+     *             error when reading the Checkstyle configuration file
      */
     public List<Module> getModules() throws CheckstylePluginException {
         List<Module> result = null;
 
-        InputStream in = null;
+        InputSource in = null;
 
         try {
-            in = getCheckstyleConfiguration().getCheckConfigFileStream();
+            in = getCheckstyleConfiguration().getCheckConfigFileInputSource();
             result = ConfigurationReader.read(in);
         }
         finally {
-            IOUtils.closeQuietly(in);
+            IOUtils.closeQuietly(in.getByteStream());
         }
 
         return result;
@@ -249,12 +264,14 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
     /**
      * Stores the (edited) list of modules to the Checkstyle configuration file.
      * 
-     * @param modules the list of modules to store into the Checkstyle
-     *            configuration file
-     * @throws CheckstylePluginException error storing the Checkstyle
-     *             configuration
+     * @param modules
+     *            the list of modules to store into the Checkstyle configuration
+     *            file
+     * @throws CheckstylePluginException
+     *             error storing the Checkstyle configuration
      */
-    public void setModules(List<Module> modules) throws CheckstylePluginException {
+    public void setModules(List<Module> modules)
+        throws CheckstylePluginException {
 
         OutputStream out = null;
         ByteArrayOutputStream byteOut = null;
@@ -268,7 +285,8 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
             ConfigurationWriter.write(byteOut, modules, this);
 
             // all went ok, write to the file
-            File configFile = FileUtils.toFile(getResolvedConfigurationFileURL());
+            File configFile = FileUtils
+                .toFile(getResolvedConfigurationFileURL());
             out = new BufferedOutputStream(new FileOutputStream(configFile));
             out.write(byteOut.toByteArray());
 
@@ -276,10 +294,12 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
             // Bug 1251194 - Resource out of sync after performing changes to
             // config
             IPath path = new Path(configFile.toString());
-            IFile[] files = CheckstylePlugin.getWorkspace().getRoot().findFilesForLocation(path);
+            IFile[] files = CheckstylePlugin.getWorkspace().getRoot()
+                .findFilesForLocation(path);
             for (int i = 0; i < files.length; i++) {
                 try {
-                    files[i].refreshLocal(IResource.DEPTH_ZERO, new NullProgressMonitor());
+                    files[i].refreshLocal(IResource.DEPTH_ZERO,
+                        new NullProgressMonitor());
                 }
                 catch (CoreException e) {
                     // NOOP - just ignore
@@ -308,23 +328,24 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
      * {@inheritDoc}
      */
     public String getName() {
-        return mEditedName != null ? mEditedName : getSourceCheckConfiguration().getName();
+        return mEditedName != null ? mEditedName
+            : getSourceCheckConfiguration().getName();
     }
 
     /**
      * {@inheritDoc}
      */
     public String getDescription() {
-        return mEditedDescription != null ? mEditedDescription : getSourceCheckConfiguration()
-                .getDescription();
+        return mEditedDescription != null ? mEditedDescription
+            : getSourceCheckConfiguration().getDescription();
     }
 
     /**
      * {@inheritDoc}
      */
     public String getLocation() {
-        return mEditedLocation != null ? mEditedLocation : getSourceCheckConfiguration()
-                .getLocation();
+        return mEditedLocation != null ? mEditedLocation
+            : getSourceCheckConfiguration().getLocation();
     }
 
     /**
@@ -351,7 +372,8 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
     /**
      * {@inheritDoc}
      */
-    public URL getResolvedConfigurationFileURL() throws CheckstylePluginException {
+    public URL getResolvedConfigurationFileURL()
+        throws CheckstylePluginException {
         return getType().getResolvedConfigurationFileURL(this);
     }
 
@@ -395,20 +417,22 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
             return true;
         }
         ICheckConfiguration rhs = (ICheckConfiguration) obj;
-        return new EqualsBuilder().append(getName(), rhs.getName()).append(getLocation(),
-                rhs.getLocation()).append(getDescription(), rhs.getDescription()).append(getType(),
-                rhs.getType()).append(isGlobal(), rhs.isGlobal()).append(getResolvableProperties(),
-                rhs.getResolvableProperties()).append(getAdditionalData(), rhs.getAdditionalData())
-                .isEquals();
+        return new EqualsBuilder().append(getName(), rhs.getName()).append(
+            getLocation(), rhs.getLocation()).append(getDescription(),
+            rhs.getDescription()).append(getType(), rhs.getType()).append(
+            isGlobal(), rhs.isGlobal()).append(getResolvableProperties(),
+            rhs.getResolvableProperties()).append(getAdditionalData(),
+            rhs.getAdditionalData()).isEquals();
     }
 
     /**
      * {@inheritDoc}
      */
     public int hashCode() {
-        return new HashCodeBuilder(928729, 1000003).append(getName()).append(getLocation()).append(
-                getDescription()).append(getType()).append(isGlobal()).append(
-                getResolvableProperties()).append(getAdditionalData()).toHashCode();
+        return new HashCodeBuilder(928729, 1000003).append(getName()).append(
+            getLocation()).append(getDescription()).append(getType()).append(
+            isGlobal()).append(getResolvableProperties()).append(
+            getAdditionalData()).toHashCode();
     }
 
     /**

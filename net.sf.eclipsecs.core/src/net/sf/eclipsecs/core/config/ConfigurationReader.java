@@ -38,6 +38,7 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.VisitorSupport;
 import org.dom4j.io.SAXReader;
+import org.xml.sax.InputSource;
 
 /**
  * Utitlity class to read a checkstyle configuration and transform to the
@@ -97,7 +98,7 @@ public final class ConfigurationReader {
      * @throws CheckstylePluginException
      *             error while reading the configuration
      */
-    public static List<Module> read(InputStream in)
+    public static List<Module> read(InputSource in)
         throws CheckstylePluginException {
 
         List<Module> rules = null;
@@ -128,7 +129,7 @@ public final class ConfigurationReader {
      * @throws CheckstylePluginException
      *             error while reading the configuration
      */
-    public static AdditionalConfigData getAdditionalConfigData(InputStream in)
+    public static AdditionalConfigData getAdditionalConfigData(InputSource in)
         throws CheckstylePluginException {
 
         List<Module> modules = read(in);

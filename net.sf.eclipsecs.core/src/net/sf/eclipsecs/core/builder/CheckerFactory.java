@@ -20,7 +20,6 @@
 
 package net.sf.eclipsecs.core.builder;
 
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.net.URL;
@@ -40,6 +39,7 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
 import org.apache.commons.io.IOUtils;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.xml.sax.InputSource;
 
 import com.google.common.collect.MapMaker;
 import com.puppycrawl.tools.checkstyle.Checker;
@@ -137,13 +137,13 @@ public final class CheckerFactory {
                 ((IContextAware) resolver).setProjectContext(project);
             }
 
-            InputStream in = null;
+            InputSource in = null;
             try {
-                in = configFileData.getCheckConfigFileStream();
+                in = configFileData.getCheckConfigFileInputSource();
                 checker = createCheckerInternal(in, resolver, project);
             }
             finally {
-                IOUtils.closeQuietly(in);
+                IOUtils.closeQuietly(in.getByteStream());
             }
 
             // store checker in cache
@@ -178,9 +178,17 @@ public final class CheckerFactory {
         if (additionalData == null) {
             CheckstyleConfigurationFile configFileData = config
                 .getCheckstyleConfiguration();
-            additionalData = ConfigurationReader
-                .getAdditionalConfigData(configFileData
-                    .getCheckConfigFileStream());
+
+            InputSource in = null;
+            try {
+                in = configFileData.getCheckConfigFileInputSource();
+                additionalData = ConfigurationReader
+                    .getAdditionalConfigData(in);
+            }
+            finally {
+                IOUtils.closeQuietly(in.getByteStream());
+            }
+
             sAdditionalDataMap.put(cacheKey, additionalData);
         }
 
@@ -269,8 +277,11 @@ public final class CheckerFactory {
      * Creates a new checker and configures it with the given configuration
      * file.
      * 
-     * @param inStream
-     *            stream to the configuration file
+     * @param input
+     *            the input source for the configuration file
+     * @param configFileUri
+     *            the URI of the configuration file, or <code>null</code> if it
+     *            could not be determined
      * @param propResolver
      *            a property resolver null
      * @param project
@@ -279,13 +290,13 @@ public final class CheckerFactory {
      * @throws CheckstyleException
      *             an exception during the creation of the checker occured
      */
-    private static Checker createCheckerInternal(InputStream inStream,
+    private static Checker createCheckerInternal(InputSource input,
         PropertyResolver propResolver, IProject project)
         throws CheckstyleException, CheckstylePluginException {
 
         // load configuration
         Configuration configuration = ConfigurationLoader.loadConfiguration(
-            inStream, propResolver, true);
+            input, propResolver, true);
 
         // create and configure checker
         Checker checker = new Checker();

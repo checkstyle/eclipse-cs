@@ -23,6 +23,8 @@ package net.sf.eclipsecs.core.config;
 import java.io.ByteArrayInputStream;
 import java.net.URL;
 
+import org.xml.sax.InputSource;
+
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
 
 /**
@@ -55,9 +57,25 @@ public class CheckstyleConfigurationFile {
     }
 
     /**
+     * Returns a SAX input source of the Checkstyle configuration file. The
+     * resolved URL of the configuration file will be set as SystemId to allow
+     * for parser resolution of relative entities.
+     * 
+     * @return a SAX input source of the
+     */
+    public InputSource getCheckConfigFileInputSource() {
+
+        InputSource in = new InputSource(getCheckConfigFileStream());
+        in.setSystemId(getResolvedConfigFileURL().toString());
+
+        return in;
+    }
+
+    /**
      * Sets the content of the Checkstyle configuration file as a byte array.
      * 
-     * @param checkConfigFileBytes the Checkstyle configuration file contents
+     * @param checkConfigFileBytes
+     *            the Checkstyle configuration file contents
      */
     public void setCheckConfigFileBytes(byte[] checkConfigFileBytes) {
         mCheckConfigFileBytes = checkConfigFileBytes;
@@ -80,10 +98,11 @@ public class CheckstyleConfigurationFile {
      * Sets the content of an addtional property bundle which contains values
      * for property references in the Checkstyle configuration file.
      * 
-     * @param additionalPropertyBundleBytes the content of the additional
-     *            property bundle
+     * @param additionalPropertyBundleBytes
+     *            the content of the additional property bundle
      */
-    public void setAdditionalPropertyBundleBytes(byte[] additionalPropertyBundleBytes) {
+    public void setAdditionalPropertyBundleBytes(
+        byte[] additionalPropertyBundleBytes) {
         mAdditionalPropertyBundleBytes = additionalPropertyBundleBytes;
     }
 
@@ -99,7 +118,8 @@ public class CheckstyleConfigurationFile {
     /**
      * Sets the modification timestamp of the Checkstyle configuration file.
      * 
-     * @param modificationStamp the modification timestamp
+     * @param modificationStamp
+     *            the modification timestamp
      */
     public void setModificationStamp(long modificationStamp) {
         this.mModificationStamp = modificationStamp;
@@ -119,15 +139,15 @@ public class CheckstyleConfigurationFile {
     /**
      * Sets the resolved URL of the Checkstyle configuration file.
      * 
-     * @param resolvedConfigFileURL the resolved URL
+     * @param resolvedConfigFileURL
+     *            the resolved URL
      */
     public void setResolvedConfigFileURL(URL resolvedConfigFileURL) {
         this.mResolvedConfigFileURL = resolvedConfigFileURL;
     }
 
     /**
-     * Returns the property resolver or <code>null</code> if none has been
-     * set.
+     * Returns the property resolver or <code>null</code> if none has been set.
      * 
      * @return the property resolver
      */
@@ -138,7 +158,8 @@ public class CheckstyleConfigurationFile {
     /**
      * Sets the property resolver for this Checkstyle configuration.
      * 
-     * @param propertyResolver the property resolver
+     * @param propertyResolver
+     *            the property resolver
      */
     public void setPropertyResolver(PropertyResolver propertyResolver) {
         mPropertyResolver = propertyResolver;
