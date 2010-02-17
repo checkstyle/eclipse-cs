@@ -21,6 +21,9 @@
             <property-metadata name="ignoreLines" datatype="String">
                 <description>%Header.ignoreLines</description>
             </property-metadata>
+            <property-metadata name="fileExtensions" datatype="String">
+                <description>%Header.fileExtensions</description>
+            </property-metadata>
             <message-key key="header.missing"/>
             <message-key key="header.mismatch"/>
         </rule-metadata>
@@ -40,6 +43,9 @@
             </property-metadata>
             <property-metadata name="multiLines" datatype="String">
                 <description>%RegexpHeader.multiLines</description>
+            </property-metadata>
+            <property-metadata name="fileExtensions" datatype="String">
+                <description>%RegexpHeader.fileExtensions</description>
             </property-metadata>
             <message-key key="header.missing"/>
             <message-key key="header.mismatch"/>
