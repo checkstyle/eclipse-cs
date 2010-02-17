@@ -27,6 +27,7 @@ Export-Package: .,
    antlr.collections,
    javax.swing.event",
  antlr.preprocessor;uses:="antlr.collections.impl,antlr",
+ com.google.common.annotations,
  com.google.common.base,
  com.google.common.base.internal,
  com.google.common.collect,
@@ -72,4 +73,4 @@ Export-Package: .,
  org.apache.commons.logging,
  org.apache.commons.logging.impl
 Bundle-ClassPath: .,
- checkstyle-all-5.0.jar
+ checkstyle-all-5.1.jar

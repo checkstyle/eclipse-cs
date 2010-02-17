@@ -139,6 +139,9 @@
             <property-metadata name="versionFormat" datatype="Regex">
                 <description>%JavadocType.versionFormat</description>
             </property-metadata>
+            <property-metadata name="allowUnknownTags" datatype="Boolean" default-value="false">
+                <description>%JavadocType.allowUnknownTags</description>
+            </property-metadata>
             <property-metadata name="tokens" datatype="MultiCheck" default-value="CLASS_DEF,INTERFACE_DEF">
                 <description>%JavadocType.tokens</description>
                 <enumeration>
@@ -146,6 +149,7 @@
                     <property-value-option value="INTERFACE_DEF"/>
                 </enumeration>
             </property-metadata>
+
             <message-key key="javadoc.missing"/>
             <message-key key="type.tagFormat"/>
             <message-key key="type.missingTag"/>
