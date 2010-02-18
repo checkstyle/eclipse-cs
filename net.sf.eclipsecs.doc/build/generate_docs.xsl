@@ -136,11 +136,16 @@
                             </li>
                             <li class="yuimenuitem">
                                 <a class="yuimenuitemlabel"
-                                    href="{$path-prefix}releasenotes/5.0.3/release_notes.html"
+                                    href="{$path-prefix}releasenotes/5.1.0/release_notes.html"
                                     >Release Notes</a>
                                 <div id="releasnotes" class="yuimenu">
                                     <div class="bd">
                                         <ul class="first-of-type">
+                                            <li class="yuimenuitem">
+                                                <a class="yuimenuitemlabel"
+                                                    href="{$path-prefix}releasenotes/5.1.0/release_notes.html"
+                                                    > Release 5.1.0</a>
+                                            </li>
                                             <li class="yuimenuitem">
                                                 <a class="yuimenuitemlabel"
                                                     href="{$path-prefix}releasenotes/5.0.3/release_notes.html"
@@ -462,8 +467,8 @@
 
     <!-- renders the footer of the page -->
     <xsl:template name="footer">
-        <div id="footer"> Copyright &#xA9; 2002-2009 David Schneider, <a
-                href="http://www.koedderitzsch.net">Lars Ködderitzsch</a>. All Rights Reserved.
+        <div id="footer"> Copyright &#xA9; 2002-2010 David Schneider, <a
+                href="http://www.koedderitzsch.net">Lars Ködderitzsch</a> and others. All Rights Reserved.
         </div>
     </xsl:template>
 </xsl:stylesheet>

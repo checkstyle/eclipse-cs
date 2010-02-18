@@ -2,7 +2,7 @@
 <feature
       id="org.maven.ide.eclipse.checkstyle"
       label="%feature.label"
-      version="0.0.4"
+      version="0.10.0"
       provider-name="%feature.provider_name">
 
    <description url="%description.url">
@@ -25,7 +25,7 @@
          id="org.maven.ide.eclipse.checkstyle"
          download-size="0"
          install-size="0"
-         version="0.0.4"
+         version="0.10.0"
          unpack="false"/>
 
 </feature>

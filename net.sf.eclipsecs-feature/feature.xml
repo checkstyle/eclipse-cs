@@ -3,7 +3,8 @@
       id="net.sf.eclipsecs"
       label="%feature.label"
       version="0.0.0"
-      provider-name="%feature.provider_name">
+      provider-name="%feature.provider_name"
+      plugin="net.sf.eclipsecs.ui">
 
    <description url="%description.url">
       %description.text
@@ -53,8 +54,7 @@
          id="net.sf.eclipsecs.checkstyle"
          download-size="0"
          install-size="0"
-         version="0.0.0"
-         unpack="true"/>
+         version="0.0.0"/>
 
    <plugin
          id="net.sf.eclipsecs.ui"
