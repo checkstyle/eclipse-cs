@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: eclipse-cs m2eclipse configurator
 Bundle-SymbolicName: org.maven.ide.eclipse.checkstyle;singleton:=true
 Bundle-Version: 0.10.0
-Bundle-Vendor: Nicolas De Loof
+Bundle-Vendor: http://eclipse-cs.sf.net/
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Require-Bundle: org.eclipse.core.runtime;bundle-version="3.5.0",
  org.eclipse.core.resources;bundle-version="3.5.0",

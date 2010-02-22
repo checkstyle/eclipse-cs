@@ -4,7 +4,7 @@ Bundle-Name: Checkstyle Core Library
 Bundle-SymbolicName: net.sf.eclipsecs.checkstyle
 Bundle-Version: 0.0.0
 Eclipse-LazyStart: true
-Bundle-Vendor: David Schneider, Lars Koedderitzsch
+Bundle-Vendor: http://eclipse-cs.sf.net/
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Export-Package: .,
  antlr;
