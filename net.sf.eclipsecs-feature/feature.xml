@@ -4,7 +4,7 @@
       label="%feature.label"
       version="0.0.0"
       provider-name="%feature.provider_name"
-      plugin="net.sf.eclipsecs.ui">
+      plugin="net.sf.eclipsecs.branding">
 
    <description url="%description.url">
       %description.text
@@ -35,6 +35,13 @@
       <import plugin="org.eclipse.ui.ide"/>
       <import plugin="org.eclipse.ui.workbench.texteditor"/>
    </requires>
+   
+   <plugin
+         id="net.sf.eclipsecs.branding"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
    <plugin
          id="net.sf.eclipsecs.core"
