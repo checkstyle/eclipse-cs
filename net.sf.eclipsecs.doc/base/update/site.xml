@@ -25,6 +25,8 @@
     <archive path="plugins/net.sf.eclipsecs.stats_1.0.5.jar"
         url="http://downloads.sourceforge.net/eclipse-cs/net.sf.eclipsecs.stats_1.0.5.jar"/>
 
+    <archive path="plugins/net.sf.eclipsecs.branding_${version}.jar"
+        url="http://downloads.sourceforge.net/eclipse-cs/net.sf.eclipsecs.branding_${version}.jar"/>
     <archive path="plugins/net.sf.eclipsecs.checkstyle_${version}.jar"
         url="http://downloads.sourceforge.net/eclipse-cs/net.sf.eclipsecs.checkstyle_${version}.jar"/>
     <archive path="plugins/net.sf.eclipsecs.core_${version}.jar"
