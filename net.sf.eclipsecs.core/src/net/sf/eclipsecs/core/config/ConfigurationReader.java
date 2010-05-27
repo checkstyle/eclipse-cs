@@ -20,7 +20,6 @@
 
 package net.sf.eclipsecs.core.config;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -104,14 +103,14 @@ public final class ConfigurationReader {
         List<Module> rules = null;
         try {
 
-            SAXReader reader = new SAXReader();
+            final SAXReader reader = new SAXReader();
             reader.setEntityResolver(new XMLUtil.InternalDtdEntityResolver(
                 PUBLIC2INTERNAL_DTD_MAP));
-            Document document = reader.read(in);
+            final Document document = reader.read(in);
 
             rules = getModules(document);
         }
-        catch (DocumentException ex) {
+        catch (final DocumentException ex) {
             CheckstylePluginException.rethrow(ex);
         }
 
@@ -129,28 +128,29 @@ public final class ConfigurationReader {
      * @throws CheckstylePluginException
      *             error while reading the configuration
      */
+
     public static AdditionalConfigData getAdditionalConfigData(InputSource in)
         throws CheckstylePluginException {
 
-        List<Module> modules = read(in);
+        final List<Module> modules = read(in);
 
         int tabWidth = 8;
 
-        for (Module module : modules) {
+        for (final Module module : modules) {
 
-            if (module.getMetaData() != null
+            if ((module.getMetaData() != null)
                 && module.getMetaData().getInternalName().equals(
                     XMLTags.TREEWALKER_MODULE)) {
 
-                ConfigProperty prop = module.getProperty("tabWidth"); //$NON-NLS-1$
+                final ConfigProperty prop = module.getProperty("tabWidth"); //$NON-NLS-1$
 
-                String tabWidthProp = prop != null && prop.getValue() != null ? prop
-                    .getValue()
-                    : prop.getMetaData().getDefaultValue();
+                final String tabWidthProp = (prop != null)
+                    && (prop.getValue() != null) ? prop.getValue() : prop
+                    .getMetaData().getDefaultValue();
                 try {
                     tabWidth = Integer.parseInt(tabWidthProp);
                 }
-                catch (Exception e) {
+                catch (final Exception e) {
                     // ignore
                 }
             }
@@ -159,20 +159,20 @@ public final class ConfigurationReader {
         return new AdditionalConfigData(tabWidth);
     }
 
-    private static List<Module> getModules(Document document) {
+    private static List<Module> getModules(final Document document) {
 
         final List<Module> modules = new ArrayList<Module>();
 
         document.accept(new VisitorSupport() {
 
             @Override
-            public void visit(Element node) {
+            public void visit(final Element node) {
 
                 if (XMLTags.MODULE_TAG.equals(node.getName())) {
 
-                    String name = node.attributeValue(XMLTags.NAME_TAG);
+                    final String name = node.attributeValue(XMLTags.NAME_TAG);
 
-                    RuleMetadata metadata = MetadataFactory
+                    final RuleMetadata metadata = MetadataFactory
                         .getRuleMetadata(name);
                     Module module = null;
                     if (metadata != null) {
@@ -199,26 +199,28 @@ public final class ConfigurationReader {
         return modules;
     }
 
-    private static void addProperties(Element moduleEl, Module module) {
+    private static void addProperties(final Element moduleEl,
+        final Module module) {
 
         @SuppressWarnings("unchecked")
-        List<Element> propertyEls = moduleEl.elements(XMLTags.PROPERTY_TAG);
+        final List<Element> propertyEls = moduleEl
+            .elements(XMLTags.PROPERTY_TAG);
 
-        for (Element propertyEl : propertyEls) {
+        for (final Element propertyEl : propertyEls) {
 
-            String name = propertyEl.attributeValue(XMLTags.NAME_TAG);
-            String value = propertyEl.attributeValue(XMLTags.VALUE_TAG);
+            final String name = propertyEl.attributeValue(XMLTags.NAME_TAG);
+            final String value = propertyEl.attributeValue(XMLTags.VALUE_TAG);
 
-            boolean isPropertyRef = value != null
+            final boolean isPropertyRef = (value != null)
                 && PROPERTY_REF_PATTERN.matcher(value).matches();
 
             if (name.equals(XMLTags.SEVERITY_TAG)
-                && module.getMetaData() != null
+                && (module.getMetaData() != null)
                 && module.getMetaData().hasSeverity()) {
                 try {
                     module.setSeverity(Severity.valueOf(value));
                 }
-                catch (IllegalArgumentException e) {
+                catch (final IllegalArgumentException e) {
                     module.setSeverity(Severity.inherit);
                 }
             }
@@ -227,7 +229,7 @@ public final class ConfigurationReader {
             }
             else if (module.getMetaData() != null) {
 
-                ConfigProperty property = module.getProperty(name);
+                final ConfigProperty property = module.getProperty(name);
                 if (property != null) {
                     property.setValue(value);
                     property.setPropertyReference(isPropertyRef);
@@ -237,36 +239,36 @@ public final class ConfigurationReader {
             }
             else {
                 // if module has no meta data defined create property
-                ConfigProperty property = new ConfigProperty(name, value);
+                final ConfigProperty property = new ConfigProperty(name, value);
                 property.setPropertyReference(isPropertyRef);
                 module.getProperties().add(property);
             }
         }
     }
 
-    private static void addMessages(Element moduleEl, Module module) {
+    private static void addMessages(final Element moduleEl, final Module module) {
 
         @SuppressWarnings("unchecked")
-        List<Element> messageEls = moduleEl.elements(XMLTags.MESSAGE_TAG);
+        final List<Element> messageEls = moduleEl.elements(XMLTags.MESSAGE_TAG);
 
-        for (Element messageEl : messageEls) {
+        for (final Element messageEl : messageEls) {
 
-            String key = messageEl.attributeValue(XMLTags.KEY_TAG);
-            String value = messageEl.attributeValue(XMLTags.VALUE_TAG);
+            final String key = messageEl.attributeValue(XMLTags.KEY_TAG);
+            final String value = messageEl.attributeValue(XMLTags.VALUE_TAG);
 
             module.getCustomMessages().put(key, value);
         }
     }
 
-    private static void addMetadata(Element moduleEl, Module module) {
+    private static void addMetadata(final Element moduleEl, final Module module) {
 
         @SuppressWarnings("unchecked")
-        List<Element> metaEls = moduleEl.elements(XMLTags.METADATA_TAG);
+        final List<Element> metaEls = moduleEl.elements(XMLTags.METADATA_TAG);
 
-        for (Element metaEl : metaEls) {
+        for (final Element metaEl : metaEls) {
 
-            String name = metaEl.attributeValue(XMLTags.NAME_TAG);
-            String value = metaEl.attributeValue(XMLTags.VALUE_TAG);
+            final String name = metaEl.attributeValue(XMLTags.NAME_TAG);
+            final String value = metaEl.attributeValue(XMLTags.VALUE_TAG);
 
             if (XMLTags.COMMENT_ID.equals(name)) {
                 module.setComment(value);
@@ -294,7 +296,7 @@ public final class ConfigurationReader {
          * @param tabWidth
          *            the tab width setting of the Checkstyle configuration
          */
-        public AdditionalConfigData(int tabWidth) {
+        public AdditionalConfigData(final int tabWidth) {
             super();
             mTabWidth = tabWidth;
         }

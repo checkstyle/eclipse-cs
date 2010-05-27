@@ -4,7 +4,7 @@
   <local-check-config name="eclipse-cs Conventions" location="/net.sf.eclipsecs.core/CheckConfig_Checkstyle.xml" type="project" description="">
     <additional-data name="protect-config-file" value="false"/>
   </local-check-config>
-  <fileset name="Alle" enabled="true" check-config-name="eclipse-cs Conventions" local="true">
+  <fileset name="all" enabled="true" check-config-name="eclipse-cs Conventions" local="true">
     <file-match-pattern match-pattern="." include-pattern="true"/>
   </fileset>
   <filter name="FilesFromPackage" enabled="true">

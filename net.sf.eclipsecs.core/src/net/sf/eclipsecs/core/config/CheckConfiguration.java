@@ -46,22 +46,22 @@ public class CheckConfiguration implements ICheckConfiguration {
     //
 
     /** the displayable name of the configuration. */
-    private String mName;
+    private final String mName;
 
     /** the location of the checkstyle configuration file. */
-    private String mLocation;
+    private final String mLocation;
 
     /** the description of the configuration. */
-    private String mDescription;
+    private final String mDescription;
 
     /** the configuration type. */
-    private IConfigurationType mConfigType;
+    private final IConfigurationType mConfigType;
 
     /** flags if the configuration is global. */
-    private boolean mIsGlobal;
+    private final boolean mIsGlobal;
 
     /** The list of resolvable properties. */
-    private List<ResolvableProperty> mProperties;
+    private final List<ResolvableProperty> mProperties;
 
     /** Map containing additional data for this check configuration. */
     private Map<String, String> mAdditionalData;
@@ -79,19 +79,26 @@ public class CheckConfiguration implements ICheckConfiguration {
     /**
      * Creates a check configuration instance.
      * 
-     * @param name the name of the check configuration
-     * @param location the location of the check configuration
-     * @param description the description of the check configuration
-     * @param type the check configuration type
-     * @param global determines if the check configuration is a global
+     * @param name
+     *            the name of the check configuration
+     * @param location
+     *            the location of the check configuration
+     * @param description
+     *            the description of the check configuration
+     * @param type
+     *            the check configuration type
+     * @param global
+     *            determines if the check configuration is a global
      *            configuration
-     * @param properties the list of properties configured for this check
-     *            configuration
-     * @param additionalData a map of additional data for this configuration
+     * @param properties
+     *            the list of properties configured for this check configuration
+     * @param additionalData
+     *            a map of additional data for this configuration
      */
-    public CheckConfiguration(String name, String location, String description,
-            IConfigurationType type, boolean global, List<ResolvableProperty> properties,
-            Map<String, String> additionalData) {
+    public CheckConfiguration(final String name, final String location,
+        final String description, final IConfigurationType type,
+        final boolean global, final List<ResolvableProperty> properties,
+        final Map<String, String> additionalData) {
         mName = name;
         mLocation = location;
         mDescription = description;
@@ -102,11 +109,13 @@ public class CheckConfiguration implements ICheckConfiguration {
             mAdditionalData = Collections.unmodifiableMap(additionalData);
         }
         else {
-            mAdditionalData = Collections.unmodifiableMap(new HashMap<String, String>());
+            mAdditionalData = Collections
+                .unmodifiableMap(new HashMap<String, String>());
         }
 
-        mProperties = properties != null ? Collections.unmodifiableList(properties) : Collections
-                .unmodifiableList(new ArrayList<ResolvableProperty>());
+        mProperties = properties != null ? Collections
+            .unmodifiableList(properties) : Collections
+            .unmodifiableList(new ArrayList<ResolvableProperty>());
     }
 
     /**
@@ -175,7 +184,8 @@ public class CheckConfiguration implements ICheckConfiguration {
     /**
      * {@inheritDoc}
      */
-    public URL getResolvedConfigurationFileURL() throws CheckstylePluginException {
+    public URL getResolvedConfigurationFileURL()
+        throws CheckstylePluginException {
         return getType().getResolvedConfigurationFileURL(this);
     }
 
@@ -184,10 +194,12 @@ public class CheckConfiguration implements ICheckConfiguration {
      */
     public CheckstyleConfigurationFile getCheckstyleConfiguration()
         throws CheckstylePluginException {
-        long currentTime = System.currentTimeMillis();
+        final long currentTime = System.currentTimeMillis();
 
-        if (mCheckstyleConfigurationFile == null || currentTime > mExpirationTime) {
-            mCheckstyleConfigurationFile = getType().getCheckstyleConfiguration(this);
+        if ((mCheckstyleConfigurationFile == null)
+            || (currentTime > mExpirationTime)) {
+            mCheckstyleConfigurationFile = getType()
+                .getCheckstyleConfiguration(this);
             mExpirationTime = currentTime + 1000 * 60 * 60; // 1 hour
         }
 
@@ -197,27 +209,31 @@ public class CheckConfiguration implements ICheckConfiguration {
     /**
      * {@inheritDoc}
      */
-    public boolean equals(Object obj) {
-        if (obj == null || !(obj instanceof ICheckConfiguration)) {
+    @Override
+    public boolean equals(final Object obj) {
+        if ((obj == null) || !(obj instanceof ICheckConfiguration)) {
             return false;
         }
         if (this == obj) {
             return true;
         }
-        ICheckConfiguration rhs = (ICheckConfiguration) obj;
-        return new EqualsBuilder().append(getName(), rhs.getName()).append(getLocation(),
-                rhs.getLocation()).append(getDescription(), rhs.getDescription()).append(getType(),
-                rhs.getType()).append(isGlobal(), rhs.isGlobal()).append(getResolvableProperties(),
-                rhs.getResolvableProperties()).append(getAdditionalData(), rhs.getAdditionalData())
-                .isEquals();
+        final ICheckConfiguration rhs = (ICheckConfiguration) obj;
+        return new EqualsBuilder().append(getName(), rhs.getName()).append(
+            getLocation(), rhs.getLocation()).append(getDescription(),
+            rhs.getDescription()).append(getType(), rhs.getType()).append(
+            isGlobal(), rhs.isGlobal()).append(getResolvableProperties(),
+            rhs.getResolvableProperties()).append(getAdditionalData(),
+            rhs.getAdditionalData()).isEquals();
     }
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
-        return new HashCodeBuilder(928729, 1000003).append(getName()).append(getLocation()).append(
-                getDescription()).append(getType()).append(isGlobal()).append(
-                getResolvableProperties()).append(getAdditionalData()).toHashCode();
+        return new HashCodeBuilder(928729, 1000003).append(getName()).append(
+            getLocation()).append(getDescription()).append(getType()).append(
+            isGlobal()).append(getResolvableProperties()).append(
+            getAdditionalData()).toHashCode();
     }
 }

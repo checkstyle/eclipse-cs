@@ -348,6 +348,36 @@
     <extension
         point="org.eclipse.ui.popupMenus">
         <objectContribution
+            objectClass="org.eclipse.core.resources.IProject"
+            adaptable="true"
+            id="net.sf.eclipsecs.bulk">
+            <menu
+                id="Checkstyle.menu"
+                label="%Checkstyle.menu"
+                path="additions">
+                <separator
+                    name="xbatch"/>
+            </menu>
+            <!--
+            Activate this menu-point for Transformingaction from Formatter-Profile to Checkstyle-Setting
+            <action
+                label="%FormatterTransformingAction.label"
+                class="net.sf.eclipsecs.ui.actions.FormatterTransformingAction"
+                enablesFor="+"
+                menubarPath="Checkstyle.menu/ondemand"
+                tooltip="%FormatterTransformingTooltip.tooltip"
+                id="net.sf.eclipsecs.actions.FormatterTransformingAction"/>
+            -->
+            <action
+                label="%CheckstyleTransformingAction.label"
+                class="net.sf.eclipsecs.ui.actions.CheckstyleTransformingAction"
+                enablesFor="+"
+                menubarPath="Checkstyle.menu/ondemand"
+                tooltip="%CheckstyleTransformingTooltip.tooltip"
+                id="net.sf.eclipsecs.actions.CheckstyleTransformingAction"/>
+        </objectContribution>
+        
+        <objectContribution
             objectClass="org.eclipse.core.resources.IResource"
             adaptable="true"
             id="net.sf.eclipsecs.ondemand">
@@ -358,6 +388,20 @@
                 <separator
                     name="ondemand"/>
             </menu>
+            <action
+                label="%FormatterTransformingAction.label"
+                class="net.sf.eclipsecs.ui.actions.FormatterTransformingAction"
+                enablesFor="+"
+                menubarPath="Checkstyle.menu/ondemand"
+                tooltip="%FormatterTransformingTooltip.tooltip"
+                id="net.sf.eclipsecs.actions.FormatterTransformingAction"/>
+            <action
+                label="%CheckstyleTransformingAction.label"
+                class="net.sf.eclipsecs.ui.actions.CheckstyleTransformingAction"
+                enablesFor="+"
+                menubarPath="Checkstyle.menu/ondemand"
+                tooltip="%CheckstyleTransformingTooltip.tooltip"
+                id="net.sf.eclipsecs.actions.CheckstyleTransformingAction"/>
             <action
                 label="%ClearSelectedFilesAction.label"
                 class="net.sf.eclipsecs.ui.actions.ClearSelectedFilesAction"
