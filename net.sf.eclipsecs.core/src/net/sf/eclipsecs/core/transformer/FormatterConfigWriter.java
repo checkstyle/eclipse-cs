@@ -20,29 +20,42 @@
 
 package net.sf.eclipsecs.core.transformer;
 
-import java.util.Date;
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
-import org.eclipse.core.runtime.preferences.InstanceScope;
+import net.sf.eclipsecs.core.util.CheckstyleLog;
+
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.preferences.IScopeContext;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.internal.ui.preferences.PreferencesAccess;
+import org.eclipse.jdt.internal.ui.preferences.formatter.FormatterProfileManager;
+import org.eclipse.jdt.internal.ui.preferences.formatter.FormatterProfileStore;
+import org.eclipse.jdt.internal.ui.preferences.formatter.ProfileManager;
+import org.eclipse.jdt.internal.ui.preferences.formatter.ProfileVersioner;
+import org.eclipse.jdt.internal.ui.preferences.formatter.ProfileManager.CustomProfile;
+import org.eclipse.jdt.internal.ui.preferences.formatter.ProfileManager.Profile;
+import org.eclipse.jdt.ui.JavaUI;
 import org.osgi.service.prefs.BackingStoreException;
-import org.osgi.service.prefs.Preferences;
 
 /**
  * Class for writing a new eclipse-configuration-file. Gets used by class
  * Transformer. A new eclipse-formatter-profile gets added.
  * 
  * @author Lukas Frena
+ * @author Lars Koedderitzsch
  */
+@SuppressWarnings("restriction")
 public class FormatterConfigWriter {
     /** A eclipse-configuration. */
     private final FormatterConfiguration mConfiguration;
 
-    /** XML-Tag for the new profile. */
-    private final String mNewProfileTag;
-
     /** Name of new createt profile. */
     private final String mNewProfileName;
+
+    private IProject mProject;
 
     /**
      * Constructor to create a new instance of class FormatterConfigWriter.
@@ -50,13 +63,12 @@ public class FormatterConfigWriter {
      * @param settings
      *            A eclipse-configuration.
      */
-    public FormatterConfigWriter(final FormatterConfiguration settings) {
+    public FormatterConfigWriter(IProject project,
+        final FormatterConfiguration settings) {
         mConfiguration = settings;
+        mProject = project;
 
-        final Date date = new Date();
-        mNewProfileName = "Eclipse-cs " + date.toString();
-        mNewProfileTag = "<profile kind=\"CodeFormatterProfile\" name=\""
-            + mNewProfileName + "\" version=\"11\">\n";
+        mNewProfileName = "eclipse-cs " + mProject.getName();
         writeSettings();
     }
 
@@ -65,85 +77,78 @@ public class FormatterConfigWriter {
      */
     private void writeSettings() {
         // read the Eclipse-Preferences for manipulation
-        final Preferences uiPreferences = new InstanceScope()
-            .getNode("org.eclipse.jdt.ui");
 
-        writeLocalSettings(uiPreferences, mConfiguration.getLocalSettings());
-        writeGlobalSettings(uiPreferences, mConfiguration.getGlobalSettings());
-
-        try {
-            uiPreferences.flush();
-        }
-        catch (final BackingStoreException e) {
-            Logger.writeln("unable to store new profile: " + e);
-        }
+        writeLocalSettings(mConfiguration.getLocalSettings());
     }
 
     /**
      * Method for writing all formatter-settings to disc.
      * 
-     * @param uiPreferences
-     *            Link to java-Preferences.
      * @param settings
      *            All the settings.
      */
-    private void writeLocalSettings(final Preferences uiPreferences,
-        final Map<String, String> settings) {
-        final Preferences corePreferences = new InstanceScope()
-            .getNode("org.eclipse.jdt.core");
+    private void writeLocalSettings(final Map<String, String> settings) {
 
-        final Iterator<String> setIt = settings.keySet().iterator();
-        String setting;
+        PreferencesAccess access = PreferencesAccess.getOriginalPreferences();
 
-        String profiles = "";
-        final String[] profile = uiPreferences.get(
-            "org.eclipse.jdt.ui.formatterprofiles", "default").split(
-            "<profiles version=.*>");
-        profiles = profile[0] + "<profiles version=\"11\">\n" + mNewProfileTag;
+        IScopeContext instanceScope = access.getInstanceScope();
+        IScopeContext scope = access.getProjectScope(mProject);
 
-        while (setIt.hasNext()) {
-            setting = setIt.next();
-            profiles = profiles + "<setting id=\"" + setting + "\" value=\""
-                + settings.get(setting) + "\"/>\n";
-            corePreferences.put(setting, settings.get(setting));
-        }
-        profiles = profiles + "</profile>\n";
-        if (profile[1].equals("\n")) {
-            profiles = profiles + "</profiles>";
-        }
+        ProfileVersioner versioner = new ProfileVersioner();
 
+        FormatterProfileStore profilesStore = new FormatterProfileStore(
+            versioner);
         try {
-            corePreferences.flush();
-        }
-        catch (final BackingStoreException e) {
-            Logger.writeln("unable to store new profile: " + e);
-        }
 
-        for (int i = 1; i < profile.length; i++) {
-            profiles = profiles + profile[i];
+            @SuppressWarnings("unchecked")
+            List<Profile> profiles = profilesStore.readProfiles(instanceScope);
+
+            if (profiles == null) {
+                profiles = new ArrayList<Profile>();
+            }
+
+            ProfileManager manager = new FormatterProfileManager(profiles,
+                scope, access, versioner);
+
+            CustomProfile myProfile = (CustomProfile) manager
+                .getProfile(ProfileManager.ID_PREFIX + mNewProfileName);
+
+            if (myProfile == null) {
+                // take current settings and create new profile
+                Profile current = manager.getSelected();
+                myProfile = new CustomProfile(mNewProfileName, current
+                    .getSettings(), versioner.getCurrentVersion(), versioner
+                    .getProfileKind());
+                manager.addProfile(myProfile);
+            }
+
+            @SuppressWarnings("unchecked")
+            Map<String, String> joinedSettings = myProfile.getSettings();
+            joinedSettings.putAll(settings);
+
+            myProfile.setSettings(joinedSettings);
+            manager.setSelected(myProfile);
+
+            // writes profiles to the workspace profile store
+            profilesStore.writeProfiles(manager.getSortedProfiles(),
+                instanceScope);
+
+            // commits changes to the project profile settings
+            manager.commitChanges(scope);
+
+            scope.getNode(JavaUI.ID_PLUGIN).flush();
+            scope.getNode(JavaCore.PLUGIN_ID).flush();
+            if (scope != instanceScope) {
+                instanceScope.getNode(JavaUI.ID_PLUGIN).flush();
+                instanceScope.getNode(JavaCore.PLUGIN_ID).flush();
+            }
+
         }
-
-        uiPreferences.put("org.eclipse.jdt.ui.formatterprofiles", profiles);
-    }
-
-    /**
-     * Method for writing all editor-settings to disc.
-     * 
-     * @param uiPreferences
-     *            Link to java-Preferences.
-     * @param settings
-     *            All the settings.
-     */
-    private void writeGlobalSettings(final Preferences uiPreferences,
-        final Map<String, String> settings) {
-        final Iterator<String> setIt = settings.keySet().iterator();
-        String setting;
-
-        while (setIt.hasNext()) {
-            setting = setIt.next();
-            uiPreferences.put(setting, settings.get(setting));
+        catch (CoreException e) {
+            CheckstyleLog.log(e, "Error storing formatter profile");
         }
-        uiPreferences.put("formatter_profile", "_" + mNewProfileName);
-        uiPreferences.put("formatter_settings_version", "11");
+        catch (BackingStoreException e) {
+            CheckstyleLog.log(e, "Error storing formatter profile");
+        }
     }
 }

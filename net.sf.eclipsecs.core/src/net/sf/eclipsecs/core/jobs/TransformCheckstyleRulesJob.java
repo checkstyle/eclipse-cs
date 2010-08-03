@@ -123,7 +123,7 @@ public class TransformCheckstyleRulesJob extends WorkspaceJob {
             printRules(rules);
 
             final CheckstyleTransformer transformer = new CheckstyleTransformer(
-                rules);
+                selection, rules);
             transformer.transformRules();
         }
         catch (final FileNotFoundException e) {

@@ -58,6 +58,8 @@ public final class XMLTags {
     static final String VALUE_TAG = "value"; //$NON-NLS-1$
 
     static final String SIMPLE_CONFIG_TAG = "simple-config"; //$NON-NLS-1$
+    
+    static final String SYNC_FORMATTER_TAG = "sync-formatter"; //$NON-NLS-1$
 
     /** common description tag. */
     public static final String DESCRIPTION_TAG = "description"; //$NON-NLS-1$

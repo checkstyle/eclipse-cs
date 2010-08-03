@@ -33,6 +33,7 @@ public final class Messages extends NLS {
 
     private static final String BUNDLE_NAME = "net.sf.eclipsecs.ui.messages"; //$NON-NLS-1$
 
+
     static {
         // initialize resource bundle
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);
@@ -199,6 +200,8 @@ public final class Messages extends NLS {
     public static String CheckstylePropertyPage_nagRebuild;
 
     public static String CheckstylePropertyPage_msgLocalConfigs;
+
+    public static String CheckstylePropertyPage_btnSyncFormatter;
 
     public static String ClearSelectedFilesAction_title;
 

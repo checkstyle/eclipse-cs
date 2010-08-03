@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.core.resources.IProject;
+
 import com.puppycrawl.tools.checkstyle.api.Configuration;
 
 /**
@@ -38,6 +40,8 @@ public class CheckstyleTransformer {
 
     /** The list of checkstyle-rules delivered in the constructor. */
     private final List<Configuration> mRules;
+    
+    private IProject mProject;
 
     /**
      * The list with all TransformationClass-instances loaded in method
@@ -51,7 +55,8 @@ public class CheckstyleTransformer {
      * @param ruleList
      *            A list of checkstyle-rules.
      */
-    public CheckstyleTransformer(final List<Configuration> ruleList) {
+    public CheckstyleTransformer(IProject project, final List<Configuration> ruleList) {
+        mProject = project;
         mRules = ruleList;
 
         final List<String> classnames = new ArrayList<String>();
@@ -116,7 +121,7 @@ public class CheckstyleTransformer {
      */
     public void transformRules() {
         loadRuleConfigurations();
-        new FormatterConfigWriter(mFormatterSetting);
+        new FormatterConfigWriter(mProject, mFormatterSetting);
     }
 
     /**

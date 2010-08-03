@@ -45,7 +45,8 @@ public interface IProjectConfiguration {
      * Returns the list of check configurations locally configured for this
      * project.
      * 
-     * @param <T> the type of check configurations
+     * @param <T>
+     *            the type of check configurations
      * @return the list of local check configurations
      */
     <T extends ICheckConfiguration> List<T> getLocalCheckConfigurations();
@@ -76,9 +77,18 @@ public interface IProjectConfiguration {
      * Checks if this project configuration uses the given checkstyle
      * configuration.
      * 
-     * @param configuration the check configuration
+     * @param configuration
+     *            the check configuration
      * @return <code>true</code>, if the project config uses the checkstyle
      *         config, <code>false</code> otherwise
      */
     boolean isConfigInUse(ICheckConfiguration configuration);
+
+    /**
+     * Returns if the formatter synching feature is enabled.
+     * 
+     * @return <code>true</code> if checkstyle settings are synched into
+     *         formatter settings.
+     */
+    boolean isSyncFormatter();
 }

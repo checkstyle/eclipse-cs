@@ -388,6 +388,7 @@
                 <separator
                     name="ondemand"/>
             </menu>
+            <!--
             <action
                 label="%FormatterTransformingAction.label"
                 class="net.sf.eclipsecs.ui.actions.FormatterTransformingAction"
@@ -402,6 +403,8 @@
                 menubarPath="Checkstyle.menu/ondemand"
                 tooltip="%CheckstyleTransformingTooltip.tooltip"
                 id="net.sf.eclipsecs.actions.CheckstyleTransformingAction"/>
+            -->
+            
             <action
                 label="%ClearSelectedFilesAction.label"
                 class="net.sf.eclipsecs.ui.actions.ClearSelectedFilesAction"
