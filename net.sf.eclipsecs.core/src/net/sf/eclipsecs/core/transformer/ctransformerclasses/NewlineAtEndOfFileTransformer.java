@@ -27,8 +27,7 @@ public class NewlineAtEndOfFileTransformer extends CTransformationClass {
 
     @Override
     public FormatterConfiguration transformRule() {
-        useLocalSetting(
-            "org.eclipse.jdt.core.formatter.insert_new_line_at_end_of_file_if_missing",
+        userFormatterSetting("insert_new_line_at_end_of_file_if_missing",
             "insert");
         return getFormatterSetting();
     }

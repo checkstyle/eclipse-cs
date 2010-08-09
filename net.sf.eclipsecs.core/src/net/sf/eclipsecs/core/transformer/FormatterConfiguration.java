@@ -32,10 +32,10 @@ import java.util.Map;
  */
 public class FormatterConfiguration {
     /** Map containing all eclipse editor-settings. */
-    private final Map<String, String> mGlobalSettings = new HashMap<String, String>();
+    private final Map<String, String> mCleanupSettings = new HashMap<String, String>();
 
     /** Map containing all eclipse formatter-settings. */
-    private final Map<String, String> mLocalSettings = new HashMap<String, String>();
+    private final Map<String, String> mFormatterSettings = new HashMap<String, String>();
 
     /**
      * Creates new instance of class FormatterConfiguration.
@@ -51,8 +51,8 @@ public class FormatterConfiguration {
      * @param val
      *            The value of this setting.
      */
-    public void addGlobalSetting(final String setting, final String val) {
-        mGlobalSettings.put(setting, val);
+    public void addCleanupSetting(final String setting, final String val) {
+        mCleanupSettings.put(setting, val);
     }
 
     /**
@@ -63,8 +63,8 @@ public class FormatterConfiguration {
      * @param val
      *            The value of this setting.
      */
-    public void addLocalSetting(final String setting, final String val) {
-        mLocalSettings.put(setting, val);
+    public void addFormatterSetting(final String setting, final String val) {
+        mFormatterSettings.put(setting, val);
     }
 
     /**
@@ -72,8 +72,8 @@ public class FormatterConfiguration {
      * 
      * @return Returns the global settings.
      */
-    public Map<String, String> getGlobalSettings() {
-        return mGlobalSettings;
+    public Map<String, String> getCleanupSettings() {
+        return mCleanupSettings;
     }
 
     /**
@@ -81,8 +81,8 @@ public class FormatterConfiguration {
      * 
      * @return Returns the local settings.
      */
-    public Map<String, String> getLocalSettings() {
-        return mLocalSettings;
+    public Map<String, String> getFormatterSettings() {
+        return mFormatterSettings;
     }
 
     /**
@@ -93,36 +93,36 @@ public class FormatterConfiguration {
      */
     public void addConfiguration(final FormatterConfiguration settings) {
         // add local settings
-        final Map<String, String> localSettings = settings.getLocalSettings();
+        final Map<String, String> localSettings = settings.getFormatterSettings();
         final Collection<String> localKeys = localSettings.keySet();
         final Iterator<String> localIt = localKeys.iterator();
         String local;
         while (localIt.hasNext()) {
             local = localIt.next();
-            if (mLocalSettings.containsKey(local)) {
-                if (!mLocalSettings.get(local).equals(localSettings.get(local))) {
-                    Logger.writeln("already containing local rule " + local
-                        + " with other attributes, it gets overwritten!");
+            if (mFormatterSettings.containsKey(local)) {
+                if (!mFormatterSettings.get(local).equals(localSettings.get(local))) {
+                    // Logger.writeln("already containing local rule " + local
+                    // + " with other attributes, it gets overwritten!");
                 }
             }
-            addLocalSetting(local, localSettings.get(local));
+            addFormatterSetting(local, localSettings.get(local));
         }
 
         // add global settings
-        final Map<String, String> globalSettings = settings.getGlobalSettings();
+        final Map<String, String> globalSettings = settings.getCleanupSettings();
         final Collection<String> globalKeys = globalSettings.keySet();
         final Iterator<String> globalIt = globalKeys.iterator();
         String global;
         while (globalIt.hasNext()) {
             global = globalIt.next();
-            if (mGlobalSettings.containsKey(global)) {
-                if (!getGlobalSettings().get(global).equals(
+            if (mCleanupSettings.containsKey(global)) {
+                if (!getCleanupSettings().get(global).equals(
                     globalSettings.get(global))) {
-                    Logger.writeln("already containing global rule " + global
-                        + " with other attributes, it gets overwritten!");
+//                    Logger.writeln("already containing global rule " + global
+//                        + " with other attributes, it gets overwritten!");
                 }
             }
-            addGlobalSetting(global, settings.getGlobalSettings().get(global));
+            addCleanupSetting(global, settings.getCleanupSettings().get(global));
         }
     }
 }

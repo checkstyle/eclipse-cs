@@ -37,13 +37,10 @@ public class IndentationTransformer extends CTransformationClass {
             val = "4";
         }
         // TODO attributes braceAdjustment caseIndent
-        useLocalSetting(
-            "org.eclipse.jdt.core.formatter.use_tabs_only_for_leading_indentations",
-            "false");
-        useLocalSetting("org.eclipse.jdt.core.formatter.tabulation.char",
-            "space");
-        useLocalSetting("org.eclipse.jdt.core.formatter.indentation.size", val);
-        useLocalSetting("org.eclipse.jdt.core.formatter.tabulation.size", val);
+        userFormatterSetting("use_tabs_only_for_leading_indentations", "false");
+        userFormatterSetting("tabulation.char", "space");
+        userFormatterSetting("indentation.size", val);
+        userFormatterSetting("tabulation.size", val);
 
         val = getAttribute("caseIndent");
         if (val == null) {
@@ -51,13 +48,11 @@ public class IndentationTransformer extends CTransformationClass {
         }
 
         if (val.equals("4")) {
-            useLocalSetting(
-                "org.eclipse.jdt.core.formatter.indent_switchstatements_compare_to_switch",
+            userFormatterSetting("indent_switchstatements_compare_to_switch",
                 "true");
         }
         else if (val.equals("0")) {
-            useLocalSetting(
-                "org.eclipse.jdt.core.formatter.indent_switchstatements_compare_to_switch",
+            userFormatterSetting("indent_switchstatements_compare_to_switch",
                 "false");
         }
         return getFormatterSetting();

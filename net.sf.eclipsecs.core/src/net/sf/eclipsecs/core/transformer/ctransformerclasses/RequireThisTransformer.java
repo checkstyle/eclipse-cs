@@ -32,20 +32,15 @@ import net.sf.eclipsecs.core.transformer.CTransformationClass;
 public class RequireThisTransformer extends CTransformationClass {
     @Override
     public FormatterConfiguration transformRule() {
-        useGlobalSetting(
-            "sp_cleanup.always_use_this_for_non_static_field_access", "true");
-        useGlobalSetting("sp_cleanup.use_this_for_non_static_field_access",
+        useCleanupSetting("always_use_this_for_non_static_field_access", "true");
+        useCleanupSetting("use_this_for_non_static_field_access", "true");
+        useCleanupSetting("always_use_this_for_non_static_method_access",
             "true");
-        useGlobalSetting(
-            "sp_cleanup.always_use_this_for_non_static_method_access", "true");
-        useGlobalSetting(
-            "sp_cleanup.use_this_for_non_static_method_access_only_if_necessary",
-            "false");
-        useGlobalSetting("sp_cleanup.use_this_for_non_static_method_access",
-            "true");
-        useGlobalSetting(
-            "sp_cleanup.use_this_for_non_static_field_access_only_if_necessary",
-            "false");
+        useCleanupSetting(
+            "use_this_for_non_static_method_access_only_if_necessary", "false");
+        useCleanupSetting("use_this_for_non_static_method_access", "true");
+        useCleanupSetting(
+            "use_this_for_non_static_field_access_only_if_necessary", "false");
         return getFormatterSetting();
     }
 }

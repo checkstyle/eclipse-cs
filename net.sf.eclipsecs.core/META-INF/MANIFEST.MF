@@ -35,7 +35,9 @@ Export-Package: net.sf.eclipsecs.core,
  net.sf.eclipsecs.core.util,
  org.apache.commons.io,
  org.apache.commons.lang
-Import-Package: org.eclipse.jdt.internal.ui.preferences,
+Import-Package: org.eclipse.jdt.internal.corext.fix,
+ org.eclipse.jdt.internal.ui.preferences,
+ org.eclipse.jdt.internal.ui.preferences.cleanup,
  org.eclipse.jdt.internal.ui.preferences.formatter,
  org.eclipse.ui.part
 

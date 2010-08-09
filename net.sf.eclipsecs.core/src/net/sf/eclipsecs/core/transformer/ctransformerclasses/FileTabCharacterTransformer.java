@@ -32,11 +32,8 @@ import net.sf.eclipsecs.core.transformer.CTransformationClass;
 public class FileTabCharacterTransformer extends CTransformationClass {
     @Override
     public FormatterConfiguration transformRule() {
-        useLocalSetting(
-            "org.eclipse.jdt.core.formatter.use_tabs_only_for_leading_indentations",
-            "false");
-        useLocalSetting("org.eclipse.jdt.core.formatter.tabulation.char",
-            "space");
+        userFormatterSetting("use_tabs_only_for_leading_indentations", "false");
+        userFormatterSetting("tabulation.char", "space");
         return getFormatterSetting();
     }
 

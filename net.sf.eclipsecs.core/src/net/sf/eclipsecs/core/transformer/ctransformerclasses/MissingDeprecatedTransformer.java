@@ -32,9 +32,8 @@ import net.sf.eclipsecs.core.transformer.CTransformationClass;
 public class MissingDeprecatedTransformer extends CTransformationClass {
     @Override
     public FormatterConfiguration transformRule() {
-        useGlobalSetting("sp_cleanup.add_missing_annotations", "true");
-        useGlobalSetting("sp_cleanup.add_missing_deprecated_annotations",
-            "true");
+        useCleanupSetting("add_missing_annotations", "true");
+        useCleanupSetting("add_missing_deprecated_annotations", "true");
         return getFormatterSetting();
     }
 }

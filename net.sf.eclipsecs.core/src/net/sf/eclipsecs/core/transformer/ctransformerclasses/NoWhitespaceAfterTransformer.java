@@ -46,20 +46,17 @@ public class NoWhitespaceAfterTransformer extends CTransformationClass {
         while (args.hasMoreTokens()) {
             token = args.nextToken();
             if (token.equals("DEC") || token.equals("INC")) {
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_after_prefix_operator",
+                userFormatterSetting("insert_space_after_prefix_operator",
                     "do not insert");
             }
             else if (token.equals("UNARY_MINUS") || token.equals("LNOT")
                 || token.equals("UNARY_PLUS") || token.equals("BNOT")) {
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_after_unary_operator",
+                userFormatterSetting("insert_space_after_unary_operator",
                     "do not insert");
             }
             else if (token.equals("TYPECAST")) {
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_after_closing_paren_in_cast",
-                    "do not insert");
+                userFormatterSetting(
+                    "insert_space_after_closing_paren_in_cast", "do not insert");
             }
         }
         return getFormatterSetting();

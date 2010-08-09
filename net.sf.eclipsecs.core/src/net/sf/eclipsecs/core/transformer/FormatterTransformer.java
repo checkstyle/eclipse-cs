@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import net.sf.eclipsecs.core.util.CheckstylePluginException;
+
 /**
  * The Class for transforming the formatter-settings to Checkstyle-rules. A new
  * checkstyle-xml file gets generated.
@@ -49,11 +51,12 @@ public class FormatterTransformer {
      * @param rules
      *            A configuration of formatter-rules.
      */
-    public FormatterTransformer(final FormatterConfiguration rules) {
+    public FormatterTransformer(final FormatterConfiguration rules)
+        throws CheckstylePluginException {
         mFormatterSetting = rules;
 
         final List<String> classnames = new ArrayList<String>();
-        final Iterator<String> it = mFormatterSetting.getLocalSettings()
+        final Iterator<String> it = mFormatterSetting.getFormatterSettings()
             .keySet().iterator();
         String help;
         String[] tokens;
@@ -80,9 +83,10 @@ public class FormatterTransformer {
      * @param classnames
      *            A list of names of which classes get loaded.
      */
-    private void loadTransformationClasses(final List<String> classnames) {
+    private void loadTransformationClasses(final List<String> classnames)
+        throws CheckstylePluginException {
         final Iterator<String> nameit = classnames.iterator();
-        final Iterator<String> ruleit = mFormatterSetting.getLocalSettings()
+        final Iterator<String> ruleit = mFormatterSetting.getFormatterSettings()
             .keySet().iterator();
         String name;
         String rule;
@@ -96,24 +100,20 @@ public class FormatterTransformer {
                 final FTransformationClass transObj = (FTransformationClass) transformationClass
                     .newInstance();
 
-                transObj.setValue(mFormatterSetting.getLocalSettings()
+                transObj.setValue(mFormatterSetting.getFormatterSettings()
                     .get(rule));
 
                 mTransformationClasses.add(transObj);
 
-                Logger.writeln("using " + name + " to transform rule \"" + rule
-                    + "\"");
             }
             catch (final ClassNotFoundException e) {
-                Logger.writeln("no class for rule \"" + rule.split("\\.")[5]
-                    + "\"");
+                // NOOP no appropriate transformer class present
             }
             catch (final InstantiationException e) {
-                Logger.writeln("unable to instantiate transformationclass: "
-                    + e);
+                CheckstylePluginException.rethrow(e);
             }
             catch (final IllegalAccessException e) {
-                Logger.writeln("illegal acces to transformationclass: " + e);
+                CheckstylePluginException.rethrow(e);
             }
         }
     }

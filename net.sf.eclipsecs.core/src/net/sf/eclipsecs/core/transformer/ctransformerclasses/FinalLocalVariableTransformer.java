@@ -44,14 +44,14 @@ public class FinalLocalVariableTransformer extends CTransformationClass {
         while (args.hasMoreTokens()) {
             token = args.nextToken();
             if (token.equals("VARIABLE_DEF")) {
-                useGlobalSetting("sp_cleanup.make_local_variable_final", "true");
-                useGlobalSetting("sp_cleanup.make_private_fields_final", "true");
+                useCleanupSetting("make_local_variable_final", "true");
+                useCleanupSetting("make_private_fields_final", "true");
             }
             else if (token.equals("PARAMETER_DEF")) {
-                useGlobalSetting("sp_cleanup.make_parameters_final", "true");
+                useCleanupSetting("make_parameters_final", "true");
             }
         }
-        useGlobalSetting("sp_cleanup.make_variable_declarations_final", "true");
+        useCleanupSetting("make_variable_declarations_final", "true");
         return getFormatterSetting();
     }
 }

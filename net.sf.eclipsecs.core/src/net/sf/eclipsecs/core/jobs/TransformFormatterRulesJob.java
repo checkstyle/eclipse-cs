@@ -21,16 +21,16 @@
 package net.sf.eclipsecs.core.jobs;
 
 import java.io.FileNotFoundException;
-import java.util.Iterator;
-import java.util.Set;
 
+import net.sf.eclipsecs.core.CheckstylePlugin;
 import net.sf.eclipsecs.core.transformer.FormatterConfigParser;
 import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 import net.sf.eclipsecs.core.transformer.FormatterTransformer;
-import net.sf.eclipsecs.core.transformer.Logger;
+import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.resources.WorkspaceJob;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -48,31 +48,17 @@ public class TransformFormatterRulesJob extends WorkspaceJob {
      */
     public TransformFormatterRulesJob() {
         super("transformFormatter");
-        System.out.println("drinn!!!!!!!!!");
-        Logger.initialize(null);
-    }
-
-    /**
-     * Method for printing all the found rules.
-     * 
-     * @param rules
-     *            A set of formatter-rules.
-     */
-    private static void printRules(final Set<String> rules) {
-        Logger.writeln("\nfound these rules: ");
-
-        final Iterator<String> it = rules.iterator();
-        while (it.hasNext()) {
-            Logger.write(it.next() + ", ");
-        }
-        Logger.writeln("\n");
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public IStatus runInWorkspace(final IProgressMonitor arg0) {
+    public IStatus runInWorkspace(final IProgressMonitor arg0)
+        throws CoreException {
+
+        // TODO this way of loading formatter profiles is very dubious, to say
+        // the least, refer to FormatterConfigWriter for a better API
         final String workspace = ResourcesPlugin.getWorkspace().getRoot()
             .getLocation().toString();
 
@@ -85,24 +71,24 @@ public class TransformFormatterRulesJob extends WorkspaceJob {
             parser = new FormatterConfigParser(configLocation);
         }
         catch (final FileNotFoundException e) {
-            System.err.println("formatter-configuration-file " + configLocation
-                + " not found");
-            Logger.close();
             return Status.CANCEL_STATUS;
         }
         final FormatterConfiguration rules = parser.parseRules();
 
         if (rules == null) {
-            Logger.close();
             return Status.CANCEL_STATUS;
         }
 
-        printRules(rules.getLocalSettings().keySet());
+        try {
+            FormatterTransformer transformer = new FormatterTransformer(rules);
+            transformer.transformRules(workspace + "/test-checkstyle.xml");
+        }
+        catch (CheckstylePluginException e) {
+            Status status = new Status(IStatus.ERROR,
+                CheckstylePlugin.PLUGIN_ID, IStatus.ERROR, e.getMessage(), e);
+            throw new CoreException(status);
+        }
 
-        final FormatterTransformer transformer = new FormatterTransformer(rules);
-        transformer.transformRules(workspace + "/test-checkstyle.xml");
-
-        Logger.close();
         return Status.OK_STATUS;
     }
 }

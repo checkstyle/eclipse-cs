@@ -33,8 +33,7 @@ public class NoWhitespaceBeforeTransformer extends CTransformationClass {
     @Override
     public FormatterConfiguration transformRule() {
         // TODO tokens SEMI DOT
-        useLocalSetting(
-            "org.eclipse.jdt.core.formatter.insert_space_before_postfix_operator",
+        userFormatterSetting("insert_space_before_postfix_operator",
             "do not insert");
         return getFormatterSetting();
     }

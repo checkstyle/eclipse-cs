@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import net.sf.eclipsecs.core.util.CheckstylePluginException;
+
 import org.eclipse.core.resources.IProject;
 
 import com.puppycrawl.tools.checkstyle.api.Configuration;
@@ -40,7 +42,7 @@ public class CheckstyleTransformer {
 
     /** The list of checkstyle-rules delivered in the constructor. */
     private final List<Configuration> mRules;
-    
+
     private IProject mProject;
 
     /**
@@ -55,18 +57,19 @@ public class CheckstyleTransformer {
      * @param ruleList
      *            A list of checkstyle-rules.
      */
-    public CheckstyleTransformer(IProject project, final List<Configuration> ruleList) {
+    public CheckstyleTransformer(IProject project,
+        final List<Configuration> ruleList) throws CheckstylePluginException {
         mProject = project;
         mRules = ruleList;
 
         final List<String> classnames = new ArrayList<String>();
         final Iterator<Configuration> it = mRules.iterator();
-        Configuration help;
+
         while (it.hasNext()) {
-            help = it.next();
+            Configuration item = it.next();
             classnames
                 .add("net.sf.eclipsecs.core.transformer.ctransformerclasses."
-                    + help.getName() + "Transformer");
+                    + item.getName() + "Transformer");
         }
 
         loadTransformationClasses(classnames);
@@ -80,7 +83,8 @@ public class CheckstyleTransformer {
      * @param classnames
      *            A list of names of which classes get loaded.
      */
-    private void loadTransformationClasses(final List<String> classnames) {
+    private void loadTransformationClasses(final List<String> classnames)
+        throws CheckstylePluginException {
         final Iterator<String> nameit = classnames.iterator();
         final Iterator<Configuration> ruleit = mRules.iterator();
         String name;
@@ -95,18 +99,17 @@ public class CheckstyleTransformer {
                     .newInstance();
                 transObj.setRule(rule);
                 mTransformationClasses.add(transObj);
-                Logger.writeln("using " + name + " to transform rule \""
-                    + rule.getName() + "\"");
+                // Logger.writeln("using " + name + " to transform rule \""
+                // + rule.getName() + "\"");
             }
             catch (final ClassNotFoundException e) {
-                Logger.writeln("no class for rule \"" + rule.getName() + "\"");
+                // NOOP there is just no appropriate transformer class
             }
             catch (final InstantiationException e) {
-                Logger.writeln("unable to instantiate transformationclass: "
-                    + e);
+                CheckstylePluginException.rethrow(e);
             }
             catch (final IllegalAccessException e) {
-                Logger.writeln("illegal acces to transformationclass: " + e);
+                CheckstylePluginException.rethrow(e);
             }
         }
     }

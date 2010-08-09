@@ -55,88 +55,73 @@ public class ParenPadTransformer extends CTransformationClass {
         while (tokens.hasMoreTokens()) {
             token = tokens.nextToken();
             if (token.equals("LPAREN")) {
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_parenthesized_expression",
+                userFormatterSetting(
+                    "insert_space_after_opening_paren_in_parenthesized_expression",
                     option);
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_while",
+                userFormatterSetting(
+                    "insert_space_after_opening_paren_in_while", option);
+                userFormatterSetting("insert_space_after_opening_paren_in_for",
                     option);
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_for",
+                userFormatterSetting("insert_space_after_opening_paren_in_if",
                     option);
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_if",
+                userFormatterSetting(
+                    "insert_space_after_opening_paren_in_switch", option);
+                userFormatterSetting(
+                    "insert_space_after_opening_paren_in_synchronized", option);
+                userFormatterSetting(
+                    "insert_space_after_opening_paren_in_catch", option);
+                userFormatterSetting(
+                    "insert_space_after_opening_paren_in_method_invocation",
                     option);
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_switch",
+                userFormatterSetting(
+                    "insert_space_after_opening_paren_in_annotation", option);
+                userFormatterSetting(
+                    "insert_space_after_opening_paren_in_constructor_declaration",
                     option);
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_synchronized",
-                    option);
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_catch",
-                    option);
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_method_invocation",
-                    option);
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_annotation",
-                    option);
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_constructor_declaration",
-                    option);
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_enum_constant",
-                    option);
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_method_declaration",
+                userFormatterSetting(
+                    "insert_space_after_opening_paren_in_enum_constant", option);
+                userFormatterSetting(
+                    "insert_space_after_opening_paren_in_method_declaration",
                     option);
             }
             else if (token.equals("RPAREN")) {
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_before_closing_paren_in_parenthesized_expression",
+                userFormatterSetting(
+                    "insert_space_before_closing_paren_in_parenthesized_expression",
                     option);
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_before_closing_paren_in_while",
+                userFormatterSetting(
+                    "insert_space_before_closing_paren_in_while", option);
+                userFormatterSetting(
+                    "insert_space_before_closing_paren_in_for", option);
+                userFormatterSetting("insert_space_before_closing_paren_in_if",
                     option);
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_before_closing_paren_in_for",
+                userFormatterSetting(
+                    "insert_space_before_closing_paren_in_switch", option);
+                userFormatterSetting(
+                    "insert_space_before_closing_paren_in_synchronized", option);
+                userFormatterSetting(
+                    "insert_space_before_closing_paren_in_catch", option);
+                userFormatterSetting(
+                    "insert_space_before_closing_paren_in_method_invocation",
                     option);
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_before_closing_paren_in_if",
+                userFormatterSetting(
+                    "insert_space_before_closing_paren_in_method_declaration",
                     option);
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_before_closing_paren_in_switch",
+                userFormatterSetting(
+                    "insert_space_before_closing_paren_in_constructor_declaration",
                     option);
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_before_closing_paren_in_synchronized",
+                userFormatterSetting(
+                    "insert_space_before_closing_paren_in_enum_constant",
                     option);
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_before_closing_paren_in_catch",
-                    option);
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_before_closing_paren_in_method_invocation",
-                    option);
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_before_closing_paren_in_method_declaration",
-                    option);
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_before_closing_paren_in_constructor_declaration",
-                    option);
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_before_closing_paren_in_enum_constant",
-                    option);
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_before_closing_paren_in_annotation",
-                    option);
+                userFormatterSetting(
+                    "insert_space_before_closing_paren_in_annotation", option);
             }
             else if (token.equals("CTOR_CALL") || token.equals("METHOD_CALL")
                 || token.equals("SUPER_CTOR_CALL")) {
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_before_closing_paren_in_method_invocation",
+                userFormatterSetting(
+                    "insert_space_before_closing_paren_in_method_invocation",
                     option);
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_method_invocation",
+                userFormatterSetting(
+                    "insert_space_after_opening_paren_in_method_invocation",
                     option);
             }
         }

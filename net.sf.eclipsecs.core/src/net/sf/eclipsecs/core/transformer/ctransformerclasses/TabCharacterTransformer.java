@@ -33,9 +33,7 @@ public class TabCharacterTransformer extends CTransformationClass {
 
     @Override
     public FormatterConfiguration transformRule() {
-        useLocalSetting(
-            "org.eclipse.jdt.core.formatter.use_tabs_only_for_leading_indentations",
-            "false");
+        userFormatterSetting("use_tabs_only_for_leading_indentations", "false");
         return getFormatterSetting();
     }
 

@@ -57,19 +57,16 @@ public class RightCurlyTransformer extends CTransformationClass {
         while (token.hasMoreTokens()) {
             tok = token.nextToken();
             if (tok.equals("LITERAL_CATCH")) {
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_new_line_before_catch_in_try_statement",
-                    option);
+                userFormatterSetting(
+                    "insert_new_line_before_catch_in_try_statement", option);
             }
             else if (tok.equals("LITERAL_FINALLY")) {
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_new_line_before_finally_in_try_statement",
-                    option);
+                userFormatterSetting(
+                    "insert_new_line_before_finally_in_try_statement", option);
             }
             else if (tok.equals("LITERAL_ELSE")) {
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_new_line_before_else_in_if_statement",
-                    option);
+                userFormatterSetting(
+                    "insert_new_line_before_else_in_if_statement", option);
             }
         }
         return getFormatterSetting();

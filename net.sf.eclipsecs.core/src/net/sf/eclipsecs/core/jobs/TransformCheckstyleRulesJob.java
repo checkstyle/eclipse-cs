@@ -20,25 +20,31 @@
 
 package net.sf.eclipsecs.core.jobs;
 
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.List;
 
+import net.sf.eclipsecs.core.CheckstylePlugin;
+import net.sf.eclipsecs.core.config.CheckstyleConfigurationFile;
+import net.sf.eclipsecs.core.config.ICheckConfiguration;
+import net.sf.eclipsecs.core.config.configtypes.IContextAware;
 import net.sf.eclipsecs.core.projectconfig.FileSet;
 import net.sf.eclipsecs.core.projectconfig.IProjectConfiguration;
 import net.sf.eclipsecs.core.projectconfig.ProjectConfigurationFactory;
-import net.sf.eclipsecs.core.transformer.CheckstyleParser;
 import net.sf.eclipsecs.core.transformer.CheckstyleTransformer;
-import net.sf.eclipsecs.core.transformer.Logger;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
+import org.apache.commons.io.IOUtils;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.WorkspaceJob;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.xml.sax.InputSource;
 
+import com.puppycrawl.tools.checkstyle.ConfigurationLoader;
+import com.puppycrawl.tools.checkstyle.PropertyResolver;
+import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.puppycrawl.tools.checkstyle.api.Configuration;
 
 /**
@@ -50,91 +56,97 @@ import com.puppycrawl.tools.checkstyle.api.Configuration;
  */
 public class TransformCheckstyleRulesJob extends WorkspaceJob {
     /** Selected project in workspace. */
-    IProject selection;
+    IProject mProject;
 
     /**
      * Job for transforming checkstyle to formatter-rules.
      * 
-     * @param selection
+     * @param project
      *            The current selected project in the workspace.
      */
-    public TransformCheckstyleRulesJob(final IProject selection) {
+    public TransformCheckstyleRulesJob(final IProject project) {
         super("transformCheckstyle");
 
-        this.selection = selection;
-        Logger.initialize(selection);
-    }
-
-    /**
-     * Method for getting the location of the default
-     * checkstyle-configuration-file.
-     * 
-     * @return InputStream to the checkstyle-config file.
-     */
-    private InputStream getConfigStream() {
-        try {
-            final IProjectConfiguration conf = ProjectConfigurationFactory
-                .getConfiguration(selection);
-            final Iterator<FileSet> it = conf.getFileSets().iterator();
-
-            return it.next().getCheckConfig().getCheckstyleConfiguration()
-                .getCheckConfigFileStream();
-        }
-        catch (final CheckstylePluginException e1) {
-            e1.printStackTrace();
-        }
-        return null;
-    }
-
-    /**
-     * Method for printing all the found rules.
-     * 
-     * @param rules
-     *            A list of checkstyle-rules.
-     */
-    private static void printRules(final List<Configuration> rules) {
-        Logger.writeln("found these rules: ");
-
-        final Iterator<Configuration> it = rules.iterator();
-        while (it.hasNext()) {
-            Logger.write(it.next().getName() + ", ");
-        }
-        Logger.writeln("\n");
+        this.mProject = project;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public IStatus runInWorkspace(final IProgressMonitor arg0) {
-        InputStream config = null;
+    public IStatus runInWorkspace(final IProgressMonitor arg0)
+        throws CoreException {
 
-        config = getConfigStream();
-
-        CheckstyleParser parser;
         try {
-            parser = new CheckstyleParser(config);
-            final List<Configuration> rules = parser.parseRules();
+            final IProjectConfiguration conf = ProjectConfigurationFactory
+                .getConfiguration(mProject);
 
-            if (rules == null) {
-                Logger.close();
+            final List<Configuration> rules = new ArrayList<Configuration>();
+
+            // collect rules from all configured filesets
+            for (FileSet fs : conf.getFileSets()) {
+
+                ICheckConfiguration checkConfig = fs.getCheckConfig();
+
+                CheckstyleConfigurationFile configFile = checkConfig
+                    .getCheckstyleConfiguration();
+
+                PropertyResolver resolver = configFile.getPropertyResolver();
+
+                // set the project context if the property resolver needs the
+                // context
+                if (resolver instanceof IContextAware) {
+                    ((IContextAware) resolver).setProjectContext(mProject);
+                }
+
+                InputSource in = null;
+                try {
+                    in = configFile.getCheckConfigFileInputSource();
+
+                    Configuration configuration = ConfigurationLoader
+                        .loadConfiguration(in, resolver, true);
+
+                    // flatten the nested configuration tree into a list
+                    recurseConfiguration(configuration, rules);
+                }
+                finally {
+                    IOUtils.closeQuietly(in.getByteStream());
+                }
+            }
+
+            if (rules.isEmpty()) {
                 return Status.CANCEL_STATUS;
             }
-            printRules(rules);
 
             final CheckstyleTransformer transformer = new CheckstyleTransformer(
-                selection, rules);
+                mProject, rules);
             transformer.transformRules();
         }
-        catch (final FileNotFoundException e) {
-            Logger.writeln("checkstyle-configuration-file does not exist");
-            Logger.close();
-            return Status.CANCEL_STATUS;
+        catch (CheckstyleException e) {
+            Status status = new Status(IStatus.ERROR,
+                CheckstylePlugin.PLUGIN_ID, IStatus.ERROR, e.getMessage(), e);
+            throw new CoreException(status);
+        }
+        catch (CheckstylePluginException e) {
+            Status status = new Status(IStatus.ERROR,
+                CheckstylePlugin.PLUGIN_ID, IStatus.ERROR, e.getMessage(), e);
+            throw new CoreException(status);
         }
 
-        Logger
-            .writeln("\nNew Eclipse-Formatter-Profile got created and activated!");
-        Logger.close();
         return Status.OK_STATUS;
+    }
+
+    private static void recurseConfiguration(Configuration module,
+        List<Configuration> flatModules) {
+
+        flatModules.add(module);
+
+        Configuration[] childs = module.getChildren();
+        if (childs != null && childs.length > 0) {
+
+            for (Configuration child : childs) {
+                recurseConfiguration(child, flatModules);
+            }
+        }
     }
 }

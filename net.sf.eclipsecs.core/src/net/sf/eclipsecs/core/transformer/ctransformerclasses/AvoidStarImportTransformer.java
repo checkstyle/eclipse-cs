@@ -33,8 +33,8 @@ public class AvoidStarImportTransformer extends CTransformationClass {
 
     @Override
     public FormatterConfiguration transformRule() {
-        useGlobalSetting("sp_cleanup.organize_imports", "true");
-        useGlobalSetting("sp_cleanup.remove_unused_imports", "true");
+        useCleanupSetting("organize_imports", "true");
+        useCleanupSetting("remove_unused_imports", "true");
         return getFormatterSetting();
     }
 

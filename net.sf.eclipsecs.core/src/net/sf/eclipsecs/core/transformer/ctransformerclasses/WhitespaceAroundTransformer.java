@@ -52,11 +52,9 @@ public class WhitespaceAroundTransformer extends CTransformationClass {
                 || tok.equals("MINUS_ASSIGN") || tok.equals("MOD_ASSIGN")
                 || tok.equals("PLUS_ASSIGN") || tok.equals("SL_ASSIGN")
                 || tok.equals("SR_ASSIGN") || tok.equals("STAR_ASSIGN")) {
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_after_assignment_operator",
+                userFormatterSetting("insert_space_after_assignment_operator",
                     "insert");
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_before_assignment_operator",
+                userFormatterSetting("insert_space_before_assignment_operator",
                     "insert");
             }
             else if ((tok.equals("BAND") || tok.equals("BOR")
@@ -66,107 +64,92 @@ public class WhitespaceAroundTransformer extends CTransformationClass {
                 || tok.equals("LT") || tok.equals("MINUS") || tok.equals("MOD")
                 || tok.equals("NOT_EQUAL") || tok.equals("PLUS")
                 || tok.equals("SL") || tok.equals("SR") || tok.equals("STAR"))) {
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_after_binary_operator",
+                userFormatterSetting("insert_space_after_binary_operator",
                     "insert");
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_before_binary_operator",
+                userFormatterSetting("insert_space_before_binary_operator",
                     "insert");
             }
             else if (tok.equals("COLON")) {
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_before_colon_in_for",
+                userFormatterSetting("insert_space_before_colon_in_for",
                     "insert");
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_after_colon_in_for",
+                userFormatterSetting("insert_space_after_colon_in_for",
                     "insert");
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_before_colon_in_conditional",
-                    "insert");
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_after_colon_in_conditional",
+                userFormatterSetting(
+                    "insert_space_before_colon_in_conditional", "insert");
+                userFormatterSetting("insert_space_after_colon_in_conditional",
                     "insert");
             }
             else if (tok.equals("QUESTION")) {
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_after_question_in_conditional",
-                    "insert");
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_before_question_in_conditional",
-                    "insert");
+                userFormatterSetting(
+                    "insert_space_after_question_in_conditional", "insert");
+                userFormatterSetting(
+                    "insert_space_before_question_in_conditional", "insert");
             }
             else if (tok.equals("LCURLY")) {
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_before_opening_brace_in_type_declaration",
+                userFormatterSetting(
+                    "insert_space_before_opening_brace_in_type_declaration",
                     "insert");
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_after_opening_brace_in_array_initializer",
+                userFormatterSetting(
+                    "insert_space_after_opening_brace_in_array_initializer",
                     "insert");
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_before_opening_brace_in_annotation_type_declaration",
+                userFormatterSetting(
+                    "insert_space_before_opening_brace_in_annotation_type_declaration",
                     "insert");
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_before_opening_brace_in_block",
+                userFormatterSetting(
+                    "insert_space_before_opening_brace_in_block", "insert");
+                userFormatterSetting(
+                    "insert_space_before_opening_brace_in_method_declaration",
                     "insert");
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_before_opening_brace_in_method_declaration",
+                userFormatterSetting(
+                    "insert_space_before_opening_brace_in_enum_declaration",
                     "insert");
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_before_opening_brace_in_enum_declaration",
+                userFormatterSetting(
+                    "insert_space_before_opening_brace_in_constructor_declaration",
                     "insert");
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_before_opening_brace_in_constructor_declaration",
+                userFormatterSetting(
+                    "insert_space_before_opening_brace_in_enum_constant",
                     "insert");
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_before_opening_brace_in_enum_constant",
+                userFormatterSetting(
+                    "insert_space_before_opening_brace_in_switch", "insert");
+                userFormatterSetting(
+                    "insert_space_before_opening_brace_in_anonymous_type_declaration",
                     "insert");
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_before_opening_brace_in_switch",
-                    "insert");
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_before_opening_brace_in_anonymous_type_declaration",
-                    "insert");
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_before_opening_brace_in_array_initializer",
+                userFormatterSetting(
+                    "insert_space_before_opening_brace_in_array_initializer",
                     "insert");
             }
             else if (tok.equals("RCURLY")) {
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_after_closing_brace_in_block",
-                    "insert");
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_before_closing_brace_in_array_initializer",
+                userFormatterSetting(
+                    "insert_space_after_closing_brace_in_block", "insert");
+                userFormatterSetting(
+                    "insert_space_before_closing_brace_in_array_initializer",
                     "insert");
             }
             else if (tok.equals("LITERAL_CATCH")) {
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_before_opening_paren_in_catch",
-                    "insert");
+                userFormatterSetting(
+                    "insert_space_before_opening_paren_in_catch", "insert");
             }
             else if (tok.equals("LITERAL_FOR")) {
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_before_opening_paren_in_for",
-                    "insert");
+                userFormatterSetting(
+                    "insert_space_before_opening_paren_in_for", "insert");
             }
             else if (tok.equals("LITERAL_IF")) {
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_before_opening_paren_in_if",
+                userFormatterSetting("insert_space_before_opening_paren_in_if",
                     "insert");
             }
             else if (tok.equals("LITERAL_RETURN")) {
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_before_parenthesized_expression_in_return",
+                userFormatterSetting(
+                    "insert_space_before_parenthesized_expression_in_return",
                     "insert");
             }
             else if (tok.equals("LITERAL_SYNCHRONIZED")) {
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_before_opening_paren_in_synchronized",
+                userFormatterSetting(
+                    "insert_space_before_opening_paren_in_synchronized",
                     "insert");
             }
             else if (tok.equals("LITERAL_WHILE")) {
-                useLocalSetting(
-                    "org.eclipse.jdt.core.formatter.insert_space_before_opening_paren_in_while",
-                    "insert");
+                userFormatterSetting(
+                    "insert_space_before_opening_paren_in_while", "insert");
             }
         }
         return getFormatterSetting();

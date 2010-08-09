@@ -36,9 +36,8 @@ public class LineLengthTransformer extends CTransformationClass {
         if (val == null) {
             val = "80";
         }
-        useLocalSetting("org.eclipse.jdt.core.formatter.lineSplit", val);
-        useLocalSetting("org.eclipse.jdt.core.formatter.comment.line_length",
-            val);
+        userFormatterSetting("lineSplit", val);
+        userFormatterSetting("comment.line_length", val);
         return getFormatterSetting();
     }
 }

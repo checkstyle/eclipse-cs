@@ -33,8 +33,8 @@ public class FinalParametersTransformer extends CTransformationClass {
     @Override
     public FormatterConfiguration transformRule() {
         // TODO tokens
-        useGlobalSetting("sp_cleanup.make_variable_declarations_final", "true");
-        useGlobalSetting("sp_cleanup.make_parameters_final", "true");
+        useCleanupSetting("make_variable_declarations_final", "true");
+        useCleanupSetting("make_parameters_final", "true");
         return getFormatterSetting();
     }
 }

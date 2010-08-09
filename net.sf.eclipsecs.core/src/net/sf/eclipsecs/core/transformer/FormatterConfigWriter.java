@@ -30,10 +30,16 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.internal.corext.fix.CleanUpConstants;
+import org.eclipse.jdt.internal.corext.fix.CleanUpPreferenceUtil;
 import org.eclipse.jdt.internal.ui.preferences.PreferencesAccess;
+import org.eclipse.jdt.internal.ui.preferences.cleanup.CleanUpProfileManager;
+import org.eclipse.jdt.internal.ui.preferences.cleanup.CleanUpProfileVersioner;
 import org.eclipse.jdt.internal.ui.preferences.formatter.FormatterProfileManager;
 import org.eclipse.jdt.internal.ui.preferences.formatter.FormatterProfileStore;
+import org.eclipse.jdt.internal.ui.preferences.formatter.IProfileVersioner;
 import org.eclipse.jdt.internal.ui.preferences.formatter.ProfileManager;
+import org.eclipse.jdt.internal.ui.preferences.formatter.ProfileStore;
 import org.eclipse.jdt.internal.ui.preferences.formatter.ProfileVersioner;
 import org.eclipse.jdt.internal.ui.preferences.formatter.ProfileManager.CustomProfile;
 import org.eclipse.jdt.internal.ui.preferences.formatter.ProfileManager.Profile;
@@ -77,8 +83,72 @@ public class FormatterConfigWriter {
      */
     private void writeSettings() {
         // read the Eclipse-Preferences for manipulation
+        writeCleanupSettings(mConfiguration.getCleanupSettings());
+        writeFormatterSettings(mConfiguration.getFormatterSettings());
+    }
 
-        writeLocalSettings(mConfiguration.getLocalSettings());
+    @SuppressWarnings("unchecked")
+    private void writeCleanupSettings(final Map<String, String> settings) {
+
+        PreferencesAccess access = PreferencesAccess.getOriginalPreferences();
+
+        IScopeContext instanceScope = access.getInstanceScope();
+        IScopeContext scope = access.getProjectScope(mProject);
+
+        IProfileVersioner versioner = new CleanUpProfileVersioner();
+        ProfileStore profilesStore = new ProfileStore(
+            CleanUpConstants.CLEANUP_PROFILES, versioner);
+        try {
+
+            List<Profile> profiles = profilesStore.readProfiles(instanceScope);
+
+            if (profiles == null) {
+                profiles = new ArrayList<Profile>();
+            }
+            profiles.addAll(CleanUpPreferenceUtil.getBuiltInProfiles());
+
+            ProfileManager manager = new CleanUpProfileManager(profiles, scope,
+                access, versioner);
+
+            CustomProfile myProfile = (CustomProfile) manager
+                .getProfile(ProfileManager.ID_PREFIX + mNewProfileName);
+
+            if (myProfile == null) {
+                // take current settings and create new profile
+                Profile current = manager.getSelected();
+                myProfile = new CustomProfile(mNewProfileName, current
+                    .getSettings(), versioner.getCurrentVersion(), versioner
+                    .getProfileKind());
+                manager.addProfile(myProfile);
+            }
+
+            Map<String, String> joinedSettings = myProfile.getSettings();
+            joinedSettings.putAll(settings);
+
+            myProfile.setSettings(joinedSettings);
+            manager.setSelected(myProfile);
+
+            // writes profiles to the workspace profile store
+            profilesStore.writeProfiles(manager.getSortedProfiles(),
+                instanceScope);
+
+            // commits changes to the project profile settings
+            manager.commitChanges(scope);
+
+            scope.getNode(JavaUI.ID_PLUGIN).flush();
+            scope.getNode(JavaCore.PLUGIN_ID).flush();
+            if (scope != instanceScope) {
+                instanceScope.getNode(JavaUI.ID_PLUGIN).flush();
+                instanceScope.getNode(JavaCore.PLUGIN_ID).flush();
+            }
+
+        }
+        catch (CoreException e) {
+            CheckstyleLog.log(e, "Error storing cleanup profile");
+        }
+        catch (BackingStoreException e) {
+            CheckstyleLog.log(e, "Error storing cleanup profile");
+        }
     }
 
     /**
@@ -87,17 +157,15 @@ public class FormatterConfigWriter {
      * @param settings
      *            All the settings.
      */
-    private void writeLocalSettings(final Map<String, String> settings) {
+    private void writeFormatterSettings(final Map<String, String> settings) {
 
         PreferencesAccess access = PreferencesAccess.getOriginalPreferences();
 
         IScopeContext instanceScope = access.getInstanceScope();
         IScopeContext scope = access.getProjectScope(mProject);
 
-        ProfileVersioner versioner = new ProfileVersioner();
-
-        FormatterProfileStore profilesStore = new FormatterProfileStore(
-            versioner);
+        IProfileVersioner versioner = new ProfileVersioner();
+        ProfileStore profilesStore = new FormatterProfileStore(versioner);
         try {
 
             @SuppressWarnings("unchecked")

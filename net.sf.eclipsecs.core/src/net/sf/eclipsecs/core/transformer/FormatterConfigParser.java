@@ -70,12 +70,11 @@ public class FormatterConfigParser {
             while ((line = mReader.readLine()) != null) {
                 if (line.startsWith("org.eclipse.jdt.core.formatter.")) {
                     tokens = line.split("=");
-                    mRules.addLocalSetting(tokens[0], tokens[1]);
+                    mRules.addFormatterSetting(tokens[0], tokens[1]);
                 }
             }
         }
         catch (final IOException e) {
-            Logger.writeln("unable to read formatter-configuration-file");
             return null;
         }
 

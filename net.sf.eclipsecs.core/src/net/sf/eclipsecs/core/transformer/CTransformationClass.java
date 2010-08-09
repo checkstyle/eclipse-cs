@@ -60,9 +60,9 @@ public abstract class CTransformationClass {
             try {
                 mAttributes.put(att, rule.getAttribute(att));
             }
-            catch (final CheckstyleException e) {
-                Logger.writeln("an error occured while parsing an attribute: "
-                    + e);
+            catch (CheckstyleException e) {
+                // shouldn't happen since we only use existing attribute names
+                throw new RuntimeException(e);
             }
         }
     }
@@ -87,8 +87,9 @@ public abstract class CTransformationClass {
      * @param val
      *            The value for the rule.
      */
-    public final void useLocalSetting(final String rule, final String val) {
-        mFormatterSetting.addLocalSetting(rule, val);
+    public final void userFormatterSetting(final String rule, final String val) {
+        mFormatterSetting.addFormatterSetting("org.eclipse.jdt.core.formatter."
+            + rule, val);
     }
 
     /**
@@ -100,8 +101,8 @@ public abstract class CTransformationClass {
      * @param val
      *            The value for the rule.
      */
-    public final void useGlobalSetting(final String rule, final String val) {
-        mFormatterSetting.addGlobalSetting(rule, val);
+    public final void useCleanupSetting(final String rule, final String val) {
+        mFormatterSetting.addCleanupSetting("cleanup." + rule, val);
     }
 
     /**

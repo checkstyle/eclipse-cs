@@ -20,11 +20,15 @@
 
 package net.sf.eclipsecs.core.transformer;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Iterator;
+
+import net.sf.eclipsecs.core.util.CheckstyleLog;
+
+import org.apache.commons.io.IOUtils;
 
 /**
  * Class for writing the checkstyle configuration to a xml-file.
@@ -34,7 +38,7 @@ import java.util.Iterator;
  */
 public class CheckstyleFileWriter {
     /** An object containing all settings for the checkstyle-file. */
-    private final CheckstyleSetting mCheckstyleSetting;;
+    private final CheckstyleSetting mCheckstyleSetting;
 
     /**
      * Creates new instance of class CheckstyleFileWriter.
@@ -48,28 +52,18 @@ public class CheckstyleFileWriter {
         final String file) {
         mCheckstyleSetting = setting;
 
-        FileWriter fw = null;
+        FileOutputStream fw = null;
         try {
-            fw = new FileWriter(file);
-        }
-        catch (final IOException e) {
-            Logger.writeln("unable to write file " + file);
-        }
-        final BufferedWriter bw = new BufferedWriter(fw);
 
-        try {
-            writeXMLFile(bw);
+            fw = new FileOutputStream(file);
+            writeXMLFile(fw);
         }
         catch (final IOException e) {
-            Logger.writeln("error on writing to file " + file);
-        }
 
-        try {
-            bw.flush();
-            bw.close();
+            CheckstyleLog.log(e);
         }
-        catch (final IOException e) {
-            Logger.writeln("couldn't close checkstyle xml-file" + file);
+        finally {
+            IOUtils.closeQuietly(fw);
         }
     }
 
@@ -79,15 +73,17 @@ public class CheckstyleFileWriter {
      * @param bw
      *            BufferedWriter to outputfile.
      */
-    private void writeXMLFile(final BufferedWriter bw) throws IOException {
-        bw.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-        bw.write("<module name=\"Checker\">\n");
-        bw.write("<property name=\"severity\" value=\"warning\"/>\n");
+    private void writeXMLFile(final OutputStream bw) throws IOException {
+        bw.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+            .getBytes("UTF-8"));
+        bw.write("<module name=\"Checker\">\n".getBytes("UTF-8"));
+        bw.write("<property name=\"severity\" value=\"warning\"/>\n"
+            .getBytes("UTF-8"));
         writeModules(mCheckstyleSetting.getmCheckerModules(), bw);
-        bw.write("<module name=\"TreeWalker\">\n");
+        bw.write("<module name=\"TreeWalker\">\n".getBytes("UTF-8"));
         writeModules(mCheckstyleSetting.getmTreeWalkerModules(), bw);
-        bw.write("</module>\n");
-        bw.write("</module>\n");
+        bw.write("</module>\n".getBytes("UTF-8"));
+        bw.write("</module>\n".getBytes("UTF-8"));
     }
 
     /**
@@ -98,7 +94,7 @@ public class CheckstyleFileWriter {
      */
     private void writeModules(
         final HashMap<String, HashMap<String, String>> modules,
-        final BufferedWriter bw) throws IOException {
+        final OutputStream bw) throws IOException {
 
         final Iterator<String> modit = modules.keySet().iterator();
         String module;
@@ -106,12 +102,14 @@ public class CheckstyleFileWriter {
         while (modit.hasNext()) {
             module = modit.next();
             if (modules.get(module) == null) {
-                bw.write("<module name=\"" + module + "\"/>\n");
+                bw.write(("<module name=\"" + module + "\"/>\n")
+                    .getBytes("UTF-8"));
             }
             else {
-                bw.write("<module name=\"" + module + "\">\n");
+                bw.write(("<module name=\"" + module + "\">\n")
+                    .getBytes("UTF-8"));
                 writeProperty(modules.get(module), bw);
-                bw.write("</module>\n");
+                bw.write("</module>\n".getBytes("UTF-8"));
             }
         }
     }
@@ -123,14 +121,14 @@ public class CheckstyleFileWriter {
      *            A HashMap containing all properties.
      */
     private void writeProperty(final HashMap<String, String> properties,
-        final BufferedWriter bw) throws IOException {
+        final OutputStream bw) throws IOException {
         final Iterator<String> propit = properties.keySet().iterator();
         String prop;
 
         while (propit.hasNext()) {
             prop = propit.next();
-            bw.write("<property name=\"" + prop + "\" value=\""
-                + properties.get(prop) + "\"/>\n");
+            bw.write(("<property name=\"" + prop + "\" value=\""
+                + properties.get(prop) + "\"/>\n").getBytes("UTF-8"));
         }
     }
 }

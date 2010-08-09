@@ -43,12 +43,9 @@ public class TypecastParenPadTransformer extends CTransformationClass {
         else {
             option = "do not insert";
         }
-        useLocalSetting(
-            "org.eclipse.jdt.core.formatter.insert_space_before_closing_paren_in_cast",
+        userFormatterSetting("insert_space_before_closing_paren_in_cast",
             option);
-        useLocalSetting(
-            "org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_cast",
-            option);
+        userFormatterSetting("insert_space_after_opening_paren_in_cast", option);
         return getFormatterSetting();
     }
 

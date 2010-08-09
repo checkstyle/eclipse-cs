@@ -33,11 +33,10 @@ public class NeedBracesTransformer extends CTransformationClass {
 
     @Override
     public FormatterConfiguration transformRule() {
-        useGlobalSetting("sp_cleanup.use_blocks", "true");
-        useGlobalSetting("sp_cleanup.never_use_blocks", "false");
-        useGlobalSetting("sp_cleanup.use_blocks_only_for_return_and_throw",
-            "false");
-        useGlobalSetting("sp_cleanup.always_use_blocks", "true");
+        useCleanupSetting("use_blocks", "true");
+        useCleanupSetting("never_use_blocks", "false");
+        useCleanupSetting("use_blocks_only_for_return_and_throw", "false");
+        useCleanupSetting("always_use_blocks", "true");
         return getFormatterSetting();
     }
 

@@ -121,9 +121,6 @@ public class CheckstyleSetting {
                         if (!mCheckerModules.get(module).get(property).equals(
                             setting.getmCheckerModules().get(module).get(
                                 property))) {
-                            Logger.writeln("already containing checker-module "
-                                + module + " with property " + property
-                                + " with different values, keeping old!");
                         }
                     }
                 }
@@ -155,12 +152,6 @@ public class CheckstyleSetting {
                             .equals(
                                 setting.getmTreeWalkerModules().get(module)
                                     .get(property))) {
-                            Logger
-                                .writeln("already containing treewalker-module "
-                                    + module
-                                    + " with property "
-                                    + property
-                                    + " with different values, keeping old!");
                         }
                     }
                 }

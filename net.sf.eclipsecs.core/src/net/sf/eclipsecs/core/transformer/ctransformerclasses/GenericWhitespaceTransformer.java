@@ -32,29 +32,27 @@ import net.sf.eclipsecs.core.transformer.CTransformationClass;
 public class GenericWhitespaceTransformer extends CTransformationClass {
     @Override
     public FormatterConfiguration transformRule() {
-        useLocalSetting(
-            "org.eclipse.jdt.core.formatter.insert_space_before_question_in_wildcard",
+        userFormatterSetting("insert_space_before_question_in_wildcard",
             "do not insert");
-        useLocalSetting(
-            "org.eclipse.jdt.core.formatter.insert_space_before_closing_angle_bracket_in_type_arguments",
+        userFormatterSetting(
+            "insert_space_before_closing_angle_bracket_in_type_arguments",
             "do not insert");
-        useLocalSetting(
-            "org.eclipse.jdt.core.formatter.insert_space_after_question_in_wildcard",
+        userFormatterSetting("insert_space_after_question_in_wildcard",
             "do not insert");
-        useLocalSetting(
-            "org.eclipse.jdt.core.formatter.insert_space_after_opening_angle_bracket_in_type_arguments",
+        userFormatterSetting(
+            "insert_space_after_opening_angle_bracket_in_type_arguments",
             "do not insert");
-        useLocalSetting(
-            "org.eclipse.jdt.core.formatter.insert_space_before_closing_angle_bracket_in_parameterized_type_reference",
+        userFormatterSetting(
+            "insert_space_before_closing_angle_bracket_in_parameterized_type_reference",
             "do not insert");
-        useLocalSetting(
-            "org.eclipse.jdt.core.formatter.insert_space_after_opening_angle_bracket_in_type_parameters",
+        userFormatterSetting(
+            "insert_space_after_opening_angle_bracket_in_type_parameters",
             "do not insert");
-        useLocalSetting(
-            "org.eclipse.jdt.core.formatter.insert_space_before_closing_angle_bracket_in_type_parameters",
+        userFormatterSetting(
+            "insert_space_before_closing_angle_bracket_in_type_parameters",
             "do not insert");
-        useLocalSetting(
-            "org.eclipse.jdt.core.formatter.insert_space_after_opening_angle_bracket_in_parameterized_type_reference",
+        userFormatterSetting(
+            "insert_space_after_opening_angle_bracket_in_parameterized_type_reference",
             "do not insert");
         return getFormatterSetting();
     }
