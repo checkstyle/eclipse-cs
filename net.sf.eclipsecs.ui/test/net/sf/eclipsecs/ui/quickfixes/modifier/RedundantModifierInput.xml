@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <quickfix-test-data>
     <testcase>
-        <input fix-line="1">
+        <input fix-line="1" position="4">
 public final class A {
     public final void foo(int a, int b) {
     }
@@ -15,7 +15,7 @@ public final class A {
         </result>
     </testcase>
     <testcase>
-        <input fix-line="1">
+        <input fix-line="1" position="4">
 public interface A {
     final public void foo(int a, int b);
 }
@@ -27,7 +27,7 @@ public interface A {
         </result>
     </testcase>
     <testcase>
-        <input fix-line="1">
+        <input fix-line="1" position="4">
 public interface A {
     static final public int i = 0;
 }

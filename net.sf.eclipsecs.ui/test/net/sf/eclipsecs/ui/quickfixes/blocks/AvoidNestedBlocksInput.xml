@@ -37,7 +37,8 @@ public class A {
 public class A {
     public void foo(int a, int b) {
         switch(0) {
-        case 0: System.out.println("test");
+        case 0: 
+        System.out.println("test");
                 break;
             default:
             break;

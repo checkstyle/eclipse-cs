@@ -8,7 +8,7 @@ import net.sf.eclipsecs.ui.quickfixes.blocks.AvoidNextedBlocksQuickfix;
 
 public class AvoidNestedBlocksTest extends AbstractQuickfixTestCase {
 
-    public void testNeedBracesIf() throws Exception {
+    public void testAvoidNestedBlocks() throws Exception {
         InputStream testData = this.getClass().getResourceAsStream("AvoidNestedBlocksInput.xml");
         testQuickfix(testData, new AvoidNextedBlocksQuickfix());
     }

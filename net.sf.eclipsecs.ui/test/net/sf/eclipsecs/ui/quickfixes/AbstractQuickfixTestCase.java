@@ -1,4 +1,3 @@
-
 package net.sf.eclipsecs.ui.quickfixes;
 
 import java.io.InputStream;
@@ -29,28 +28,39 @@ import org.w3c.dom.NodeList;
 
 public class AbstractQuickfixTestCase extends TestCase {
 
-    protected void testQuickfix(InputStream testdataStream, AbstractASTResolution quickfix)
-        throws Exception {
+    protected void testQuickfix(InputStream testdataStream,
+        AbstractASTResolution quickfix) throws Exception {
         QuickfixTestData[] testdata = getTestData(testdataStream);
 
         for (int i = 0; i < testdata.length; i++) {
 
             org.eclipse.jface.text.Document doc = new org.eclipse.jface.text.Document(
-                    testdata[i].input);
+                testdata[i].input);
             ASTParser parser = ASTParser.newParser(AST.JLS3);
             parser.setSource(doc.get().toCharArray());
             CompilationUnit compUnit = (CompilationUnit) parser
-                    .createAST(new NullProgressMonitor());
+                .createAST(new NullProgressMonitor());
             compUnit.recordModifications();
             IRegion region = doc.getLineInformation(testdata[i].line);
 
             int markerStartOffset = region.getOffset() + testdata[i].position;
 
-            compUnit.accept(quickfix.handleGetCorrectingASTVisitor(region, markerStartOffset));
+            compUnit.accept(quickfix.handleGetCorrectingASTVisitor(region,
+                markerStartOffset));
 
             Map options = new HashMap();
-            options.put(DefaultCodeFormatterConstants.FORMATTER_TAB_CHAR, JavaCore.SPACE);
+            options.put(DefaultCodeFormatterConstants.FORMATTER_TAB_CHAR,
+                JavaCore.SPACE);
             options.put(DefaultCodeFormatterConstants.FORMATTER_TAB_SIZE, "4");
+            options
+                .put(
+                    DefaultCodeFormatterConstants.FORMATTER_INDENT_SWITCHSTATEMENTS_COMPARE_TO_CASES,
+                    "true");
+            options
+                .put(
+                    DefaultCodeFormatterConstants.FORMATTER_INDENT_SWITCHSTATEMENTS_COMPARE_TO_SWITCH,
+                    "true");
+
 
             TextEdit edit = compUnit.rewrite(doc, options);
             edit.apply(doc);
@@ -60,7 +70,8 @@ public class AbstractQuickfixTestCase extends TestCase {
 
     }
 
-    private QuickfixTestData[] getTestData(InputStream testDataStream) throws Exception {
+    private QuickfixTestData[] getTestData(InputStream testDataStream)
+        throws Exception {
 
         List testdata = new ArrayList();
 
@@ -73,7 +84,8 @@ public class AbstractQuickfixTestCase extends TestCase {
         for (int i = 0, size = nl.getLength(); i < size; i++) {
             Element testCase = (Element) nl.item(i);
 
-            Element input = (Element) testCase.getElementsByTagName("input").item(0);
+            Element input = (Element) testCase.getElementsByTagName("input")
+                .item(0);
             int line = Integer.parseInt(input.getAttribute("fix-line"));
 
             int position = 0;
@@ -81,7 +93,8 @@ public class AbstractQuickfixTestCase extends TestCase {
                 position = Integer.parseInt(input.getAttribute("position"));
             }
 
-            Element result = (Element) testCase.getElementsByTagName("result").item(0);
+            Element result = (Element) testCase.getElementsByTagName("result")
+                .item(0);
 
             String inputString = input.getFirstChild().getNodeValue().trim();
             String resultString = result.getFirstChild().getNodeValue().trim();
@@ -94,7 +107,8 @@ public class AbstractQuickfixTestCase extends TestCase {
 
             testdata.add(td);
         }
-        return (QuickfixTestData[]) testdata.toArray(new QuickfixTestData[testdata.size()]);
+        return (QuickfixTestData[]) testdata
+            .toArray(new QuickfixTestData[testdata.size()]);
     }
 
     private class QuickfixTestData {

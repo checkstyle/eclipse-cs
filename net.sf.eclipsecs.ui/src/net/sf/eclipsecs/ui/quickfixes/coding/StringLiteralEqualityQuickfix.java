@@ -40,7 +40,6 @@ import org.eclipse.jdt.core.dom.StringLiteral;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.swt.graphics.Image;
 
-
 /**
  * Quickfix implementation that replaces a string literal comparison using == or
  * != with a proper equals() comparison.
@@ -53,7 +52,7 @@ public class StringLiteralEqualityQuickfix extends AbstractASTResolution {
      * {@inheritDoc}
      */
     protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
-            final int markerStartPosition) {
+        final int markerStartPosition) {
 
         return new ASTVisitor() {
 
@@ -78,18 +77,23 @@ public class StringLiteralEqualityQuickfix extends AbstractASTResolution {
 
                     Expression replacementNode = null;
 
-                    MethodInvocation equalsInvocation = node.getAST().newMethodInvocation();
-                    equalsInvocation.setName(node.getAST().newSimpleName("equals")); //$NON-NLS-1$
-                    equalsInvocation.setExpression((Expression) ASTNode.copySubtree(node.getAST(),
-                            literal));
+                    MethodInvocation equalsInvocation = node.getAST()
+                        .newMethodInvocation();
+                    equalsInvocation.setName(node.getAST().newSimpleName(
+                        "equals")); //$NON-NLS-1$
+                    equalsInvocation.setExpression((Expression) ASTNode
+                        .copySubtree(node.getAST(), literal));
                     equalsInvocation.arguments().add(
-                            ASTNode.copySubtree(node.getAST(), otherOperand));
+                        ASTNode.copySubtree(node.getAST(), otherOperand));
 
                     // if the string was compared with != create a not
                     // expression
-                    if (node.getOperator().equals(InfixExpression.Operator.NOT_EQUALS)) {
-                        PrefixExpression prefixExpression = node.getAST().newPrefixExpression();
-                        prefixExpression.setOperator(PrefixExpression.Operator.NOT);
+                    if (node.getOperator().equals(
+                        InfixExpression.Operator.NOT_EQUALS)) {
+                        PrefixExpression prefixExpression = node.getAST()
+                            .newPrefixExpression();
+                        prefixExpression
+                            .setOperator(PrefixExpression.Operator.NOT);
                         prefixExpression.setOperand(equalsInvocation);
                         replacementNode = prefixExpression;
                     }
@@ -106,8 +110,10 @@ public class StringLiteralEqualityQuickfix extends AbstractASTResolution {
              * Replaces the given node with the replacement node (using
              * reflection since I am not aware of a proper API to do this).
              * 
-             * @param node the node to replace
-             * @param replacementNode the replacement
+             * @param node
+             *            the node to replace
+             * @param replacementNode
+             *            the replacement
              */
             private void replaceNode(ASTNode node, ASTNode replacementNode) {
 
@@ -116,16 +122,33 @@ public class StringLiteralEqualityQuickfix extends AbstractASTResolution {
 
                         String property = node.getLocationInParent().getId();
 
-                        String setterMethodName = "set" + StringUtils.capitalize(property);
+                        String setterMethodName = "set"
+                            + StringUtils.capitalize(property);
 
-                        Method setterMethod = node.getParent().getClass().getMethod(
-                                setterMethodName, ASTNode.class);
-                        setterMethod.invoke(node.getParent(), replacementNode);
+                        Class testClass = node.getClass();
+
+                        while (testClass != null) {
+
+                            try {
+                                Method setterMethod = node.getParent()
+                                    .getClass().getMethod(setterMethodName,
+                                        testClass);
+                                setterMethod.invoke(node.getParent(),
+                                    replacementNode);
+                                break;
+                            }
+                            catch (NoSuchMethodException e) {
+                                testClass = testClass.getSuperclass();
+                            }
+                        }
+
                     }
                     else if (node.getLocationInParent().isChildListProperty()) {
-                        Method listMethod = node.getParent().getClass().getMethod(
-                                node.getLocationInParent().getId(), (Class<?>[]) null);
-                        List list = (List) listMethod.invoke(node.getParent(), (Object[]) null);
+                        Method listMethod = node.getParent().getClass()
+                            .getMethod(node.getLocationInParent().getId(),
+                                (Class<?>[]) null);
+                        List list = (List) listMethod.invoke(node.getParent(),
+                            (Object[]) null);
                         list.set(list.indexOf(node), replacementNode);
                     }
                 }
@@ -160,6 +183,7 @@ public class StringLiteralEqualityQuickfix extends AbstractASTResolution {
      * {@inheritDoc}
      */
     public Image getImage() {
-        return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.CORRECTION_CHANGE);
+        return CheckstyleUIPluginImages
+            .getImage(CheckstyleUIPluginImages.CORRECTION_CHANGE);
     }
 }
