@@ -55,7 +55,21 @@
                 </script>
 
                 <script type="text/javascript">
-                    YAHOO.util.Event.onContentReady("content", setupZoom);</script>
+                YAHOO.util.Event.onContentReady("content", setupZoom);</script>
+                
+                <script type="text/javascript">
+                <!--//--><![CDATA[//><!--
+                    (function() {
+                        var s = document.createElement('script'), t = document.getElementsByTagName('script')[0];
+                        
+                        s.type = 'text/javascript';
+                        s.async = true;
+                        s.src = 'http://api.flattr.com/js/0.5.0/load.js?mode=auto';
+                        
+                        t.parentNode.insertBefore(s, t);
+                    })();//--><!]]>
+                </script>
+
 
                 <link rel="stylesheet" type="text/css"
                     href="{$path-prefix}yui/build/grids/grids-min.css"/>
@@ -429,11 +443,11 @@
         <div id="header">
             <table width="100%" cellspacing="0" cellpadding="0">
                 <tr>
-                    <td style="text-align: left; width=100%" rowspan="2">
+                    <td style="text-align: left; width=100%">
                         <img src="{$path-prefix}images/eclipse-cs_logo.png" alt="eclipse-cs Banner"
                             width="246" height="75"/>
                     </td>
-
+                    
                     <td
                         style="vertical-align: bottom; height: 75px; text-align: right; padding-right: 20px; padding-bottom: 10px;">
                         <xsl:if test="$style = 'website'">
@@ -447,11 +461,14 @@
                                     <input type="submit" name="sa" value="Search"/>
                                 </div>
                             </form>
-
+                            
                             <script type="text/javascript" src="http://www.google.com/coop/cse/brand?form=cse-search-box&amp;lang=en"><xsl:comment/></script>
                         </xsl:if>
                     </td>
-
+                    <td>
+                        <a class="FlattrButton" style="display:none;"
+                            href="http://eclipse-cs.sourceforge.net/"></a>
+                    </td>
                     <td
                         style="vertical-align: middle; width: 155px; height: 75px; padding-right: 5px;">
                         <a href="http://sourceforge.net/projects/eclipse-cs">
@@ -463,7 +480,6 @@
                         </a>
                         <script type="text/javascript" src="http://www.ohloh.net/p/6568/widgets/project_thin_badge.js"><xsl:comment/></script>
                     </td>
-
                 </tr>
             </table>
         </div>
