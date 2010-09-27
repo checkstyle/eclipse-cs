@@ -21,6 +21,12 @@
             <message-key key="final.class"/>
         </rule-metadata>
 
+        <rule-metadata name="%InnerTypeLast.name" internal-name="InnerTypeLast" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.design.InnerTypeLastCheck"/>
+            <description>%InnerTypeLast.desc</description>
+            <message-key key="arrangement.members.before.inner"/>
+        </rule-metadata>
+
         <rule-metadata name="%HideUtilityClassConstructor.name" internal-name="HideUtilityClassConstructor"
             parent="TreeWalker">
             <alternative-name

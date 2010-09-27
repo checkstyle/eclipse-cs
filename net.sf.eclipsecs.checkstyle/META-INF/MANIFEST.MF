@@ -66,6 +66,7 @@ Export-Package: .,
  com.puppycrawl.tools.checkstyle.gui,
  org.apache.commons.beanutils,
  org.apache.commons.beanutils.converters,
+ org.apache.commons.beanutils.expression,
  org.apache.commons.beanutils.locale,
  org.apache.commons.beanutils.locale.converters,
  org.apache.commons.cli,
@@ -73,4 +74,4 @@ Export-Package: .,
  org.apache.commons.logging,
  org.apache.commons.logging.impl
 Bundle-ClassPath: .,
- checkstyle-all-5.1.jar
+ checkstyle-5.2-all.jar
