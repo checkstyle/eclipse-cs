@@ -48,7 +48,7 @@ public class AbstractQuickfixTestCase extends TestCase {
             compUnit.accept(quickfix.handleGetCorrectingASTVisitor(region,
                 markerStartOffset));
 
-            Map options = new HashMap();
+            Map<String, String> options = new HashMap<String, String>();
             options.put(DefaultCodeFormatterConstants.FORMATTER_TAB_CHAR,
                 JavaCore.SPACE);
             options.put(DefaultCodeFormatterConstants.FORMATTER_TAB_SIZE, "4");
@@ -61,7 +61,6 @@ public class AbstractQuickfixTestCase extends TestCase {
                     DefaultCodeFormatterConstants.FORMATTER_INDENT_SWITCHSTATEMENTS_COMPARE_TO_SWITCH,
                     "true");
 
-
             TextEdit edit = compUnit.rewrite(doc, options);
             edit.apply(doc);
 
@@ -73,7 +72,7 @@ public class AbstractQuickfixTestCase extends TestCase {
     private QuickfixTestData[] getTestData(InputStream testDataStream)
         throws Exception {
 
-        List testdata = new ArrayList();
+        List<QuickfixTestData> testdata = new ArrayList<QuickfixTestData>();
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
@@ -107,8 +106,7 @@ public class AbstractQuickfixTestCase extends TestCase {
 
             testdata.add(td);
         }
-        return (QuickfixTestData[]) testdata
-            .toArray(new QuickfixTestData[testdata.size()]);
+        return testdata.toArray(new QuickfixTestData[testdata.size()]);
     }
 
     private class QuickfixTestData {

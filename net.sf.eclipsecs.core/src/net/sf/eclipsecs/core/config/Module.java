@@ -29,8 +29,6 @@ import net.sf.eclipsecs.core.config.meta.ConfigPropertyMetadata;
 import net.sf.eclipsecs.core.config.meta.MetadataFactory;
 import net.sf.eclipsecs.core.config.meta.RuleMetadata;
 
-import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
-
 /**
  * Object representing a module from a checkstyle configuration. Can be
  * augumented with meta data.

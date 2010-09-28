@@ -22,7 +22,6 @@ package net.sf.eclipsecs.ui.stats.data;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
 import net.sf.eclipsecs.core.builder.CheckstyleMarker;
@@ -50,7 +49,8 @@ import org.eclipse.core.runtime.jobs.Job;
 public class CreateStatsJob extends Job {
 
     /** Regexp to find {0}-like strings. */
-    private static final Pattern REGEXP_HOLES = Pattern.compile("\\{[0-9]+(\\S)*\\}"); //$NON-NLS-1$
+    private static final Pattern REGEXP_HOLES = Pattern
+        .compile("\\{[0-9]+(\\S)*\\}"); //$NON-NLS-1$
 
     /** Regexp to find suites of ' character. */
     private static final Pattern REGEXP_QUOTE = Pattern.compile("'+"); //$NON-NLS-1$
@@ -67,7 +67,8 @@ public class CreateStatsJob extends Job {
     /**
      * Creates the job.
      * 
-     * @param filter the marker filter to analyze
+     * @param filter
+     *            the marker filter to analyze
      */
     public CreateStatsJob(CheckstyleMarkerFilter filter, String family) {
         super(Messages.CreateStatsJob_msgAnalyzeMarkers);
@@ -90,12 +91,15 @@ public class CreateStatsJob extends Job {
     protected IStatus run(IProgressMonitor monitor) {
         try {
 
-            int wholeAmountOfMarkers = ResourcesPlugin.getWorkspace().getRoot().findMarkers(
-                    CheckstyleMarker.MARKER_ID, true, IResource.DEPTH_INFINITE).length;
+            int wholeAmountOfMarkers = ResourcesPlugin
+                .getWorkspace()
+                .getRoot()
+                .findMarkers(CheckstyleMarker.MARKER_ID, true,
+                    IResource.DEPTH_INFINITE).length;
 
             IMarker[] markers = mFilter.findMarkers(monitor);
 
-            Map markerStats = new HashMap();
+            Map<String, MarkerStat> markerStats = new HashMap<String, MarkerStat>();
 
             for (int i = 0, size = markers.length; i < size; i++) {
 
@@ -103,37 +107,38 @@ public class CreateStatsJob extends Job {
                 try {
                     message = getUnlocalizedMessage(markers[i]);
                     message = cleanMessage(message);
-                }
-                catch (CoreException e) {
-                    CheckstyleLog.log(e, Messages.CreateStatsJob_errorAnalyzingMarkers);
+                } catch (CoreException e) {
+                    CheckstyleLog.log(e,
+                        Messages.CreateStatsJob_errorAnalyzingMarkers);
                 }
 
                 // check that the message is not empty
                 if (message == null || message.trim().length() == 0) {
                     // cela ne devrait pas arriver, mais bon, on laisse faire
-                    CheckstyleLog.log(null, Messages.CreateStatsJob_markerMessageShouldntBeEmpty);
+                    CheckstyleLog.log(null,
+                        Messages.CreateStatsJob_markerMessageShouldntBeEmpty);
                     continue;
                 }
 
                 // puis on recherche
-                MarkerStat stat = (MarkerStat) markerStats.get(message);
+                MarkerStat stat = markerStats.get(message);
                 if (stat == null) {
                     // 1ere fois qu'on rencontre un marqueur de ce type
                     MarkerStat newMarkerStat = new MarkerStat(message);
                     newMarkerStat.addMarker(markers[i]);
-                    markerStats.put(newMarkerStat.getIdentifiant(), newMarkerStat);
-                }
-                else {
+                    markerStats.put(newMarkerStat.getIdentifiant(),
+                        newMarkerStat);
+                } else {
                     // on augmente juste le nombre d'occurence
                     stat.addMarker(markers[i]);
                 }
             }
 
-            mStats = new Stats(markerStats.values(), markers.length, wholeAmountOfMarkers);
-        }
-        catch (CoreException e) {
-            return new Status(IStatus.ERROR, CheckstyleUIPlugin.PLUGIN_ID, IStatus.OK,
-                    Messages.CreateStatsJob_errorAnalyzingMarkers, e);
+            mStats = new Stats(markerStats.values(), markers.length,
+                wholeAmountOfMarkers);
+        } catch (CoreException e) {
+            return new Status(IStatus.ERROR, CheckstyleUIPlugin.PLUGIN_ID,
+                IStatus.OK, Messages.CreateStatsJob_errorAnalyzingMarkers, e);
         }
 
         return Status.OK_STATUS;
@@ -148,29 +153,14 @@ public class CreateStatsJob extends Job {
         return mStats;
     }
 
-    /**
-     * Returns.
-     * 
-     * @param aClassName
-     * @param key
-     * @return
-     */
-    private static String getMessageBundle(String aClassName, String key) {
-        int endIndex = aClassName.lastIndexOf('.');
-        String messages = "messages"; //$NON-NLS-1$
-        if (endIndex >= 0) {
-            String packageName = aClassName.substring(0, endIndex);
-            messages = packageName + "." + messages; //$NON-NLS-1$
-        }
-        ResourceBundle resourceBundle = ResourceBundle.getBundle(messages);
-        return resourceBundle.getString(key);
-    }
-
-    public static String getUnlocalizedMessage(IMarker marker) throws CoreException {
+    public static String getUnlocalizedMessage(IMarker marker)
+        throws CoreException {
         String key = (String) marker.getAttribute(CheckstyleMarker.MESSAGE_KEY);
-        String moduleInternalName = (String) marker.getAttribute(CheckstyleMarker.MODULE_NAME);
+        String moduleInternalName = (String) marker
+            .getAttribute(CheckstyleMarker.MODULE_NAME);
 
-        String standardMessage = MetadataFactory.getStandardMessage(key, moduleInternalName);
+        String standardMessage = MetadataFactory.getStandardMessage(key,
+            moduleInternalName);
 
         if (standardMessage == null) {
             standardMessage = (String) marker.getAttribute(IMarker.MESSAGE);
@@ -181,7 +171,8 @@ public class CreateStatsJob extends Job {
     /**
      * Cleans the unlocalized message so that it is more readable.
      * 
-     * @param message : the message to clean
+     * @param message
+     *            : the message to clean
      * @return the cleaned message
      */
     public static String cleanMessage(String message) {

@@ -67,12 +67,12 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
     /**
      * Runs the Checkstyle builder on a project.
      * 
-     * @param project Project to be built.
+     * @param project
+     *            Project to be built.
      */
     public static void buildProject(final IProject project) {
         // uses the new Jobs API to run the build in the background
-        BuildProjectJob buildJob = new BuildProjectJob(project,
-                IncrementalProjectBuilder.FULL_BUILD);
+        BuildProjectJob buildJob = new BuildProjectJob(project, IncrementalProjectBuilder.FULL_BUILD);
         buildJob.setRule(ResourcesPlugin.getWorkspace().getRoot());
         buildJob.schedule();
     }
@@ -80,7 +80,8 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
     /**
      * Run the Checkstyle builder on all open projects in the workspace.
      * 
-     * @throws CheckstylePluginException Error during the build.
+     * @throws CheckstylePluginException
+     *             Error during the build.
      */
     public static void buildAllProjects() throws CheckstylePluginException {
         IWorkspace workspace = ResourcesPlugin.getWorkspace();
@@ -90,14 +91,14 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
     }
 
     /**
-     * Builds all checkstyle enabled projects that are open from the given
-     * collection of projects.
+     * Builds all checkstyle enabled projects that are open from the given collection of projects.
      * 
-     * @param projects the projects to build
-     * @throws CheckstylePluginException Error during the build
+     * @param projects
+     *            the projects to build
+     * @throws CheckstylePluginException
+     *             Error during the build
      */
-    public static void buildProjects(final Collection<IProject> projects)
-        throws CheckstylePluginException {
+    public static void buildProjects(final Collection<IProject> projects) throws CheckstylePluginException {
 
         // Build only open projects with Checkstyle enabled
         List<IProject> checkstyleProjects = new ArrayList<IProject>();
@@ -105,8 +106,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
         for (IProject project : projects) {
 
             try {
-                if (project.exists() && project.isOpen()
-                        && project.hasNature(CheckstyleNature.NATURE_ID)) {
+                if (project.exists() && project.isOpen() && project.hasNature(CheckstyleNature.NATURE_ID)) {
                     checkstyleProjects.add(project);
                 }
             }
@@ -116,9 +116,8 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
         }
 
         // uses the new Jobs API to run the build in the background
-        BuildProjectJob buildJob = new BuildProjectJob(checkstyleProjects
-                .toArray(new IProject[checkstyleProjects.size()]),
-                IncrementalProjectBuilder.FULL_BUILD);
+        BuildProjectJob buildJob = new BuildProjectJob(checkstyleProjects.toArray(new IProject[checkstyleProjects
+            .size()]), IncrementalProjectBuilder.FULL_BUILD);
         buildJob.setRule(ResourcesPlugin.getWorkspace().getRoot());
         buildJob.schedule();
     }
@@ -126,9 +125,9 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
-    protected final IProject[] build(final int kind, final Map args, final IProgressMonitor monitor)
-        throws CoreException {
+    @Override
+    protected final IProject[] build(final int kind, @SuppressWarnings("rawtypes") final Map args,
+        final IProgressMonitor monitor) throws CoreException {
 
         // get the associated project for this builder
         IProject project = getProject();
@@ -146,9 +145,8 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
                 config = ProjectConfigurationFactory.getConfiguration(project);
             }
             catch (CheckstylePluginException e) {
-                Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID,
-                        IStatus.ERROR, e.getMessage() != null ? e.getMessage()
-                                : Messages.CheckstyleBuilder_msgErrorUnknown, e);
+                Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR,
+                    e.getMessage() != null ? e.getMessage() : Messages.CheckstyleBuilder_msgErrorUnknown, e);
                 throw new CoreException(status);
             }
 
@@ -157,8 +155,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
             // get the delta of the latest changes
             IResourceDelta resourceDelta = getDelta(project);
 
-            IFilter[] filters = config.getFilters()
-                    .toArray(new IFilter[config.getFilters().size()]);
+            IFilter[] filters = config.getFilters().toArray(new IFilter[config.getFilters().size()]);
 
             // find the files for the build
             if (resourceDelta != null) {
@@ -182,8 +179,8 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
             Map<String, Object> markerAttributes = new HashMap<String, Object>();
             markerAttributes.put(IMarker.PRIORITY, new Integer(IMarker.PRIORITY_HIGH));
             markerAttributes.put(IMarker.SEVERITY, new Integer(IMarker.SEVERITY_ERROR));
-            markerAttributes.put(IMarker.MESSAGE, NLS.bind(
-                    Messages.CheckstyleBuilder_msgWrongBuilderOrder, project.getName()));
+            markerAttributes.put(IMarker.MESSAGE,
+                NLS.bind(Messages.CheckstyleBuilder_msgWrongBuilderOrder, project.getName()));
 
             // enables own category under Java Problem Type
             // setting for Problems view (RFE 1530366)
@@ -200,17 +197,24 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
     /**
      * Builds the selected resources.
      * 
-     * @param resources the resourcesto build
-     * @param configuration the project configuration
-     * @param monitor the progress monitor
-     * @param project the built project
-     * @param kind the kind of build
-     * @param <T> the resource type parameter
-     * @throws CoreException if the build fails
+     * @param resources
+     *            the resourcesto build
+     * @param configuration
+     *            the project configuration
+     * @param monitor
+     *            the progress monitor
+     * @param project
+     *            the built project
+     * @param kind
+     *            the kind of build
+     * @param <T>
+     *            the resource type parameter
+     * @throws CoreException
+     *             if the build fails
      */
     public final <T extends IResource> void handleBuildSelection(final Collection<T> resources,
-            final IProjectConfiguration configuration, final IProgressMonitor monitor,
-            final IProject project, final int kind) throws CoreException {
+        final IProjectConfiguration configuration, final IProgressMonitor monitor, final IProject project,
+        final int kind) throws CoreException {
 
         // System.out.println(new java.util.Date() + " kind: " + kind + " files:
         // " + resources.size());
@@ -241,8 +245,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
 
                 ICheckConfiguration checkConfig = fileSet.getCheckConfig();
                 if (checkConfig == null) {
-                    throw new CheckstylePluginException(NLS.bind(Messages.errorNoCheckConfig,
-                            project.getName()));
+                    throw new CheckstylePluginException(NLS.bind(Messages.errorNoCheckConfig, project.getName()));
                 }
 
                 // get an already created audit from the map
@@ -266,13 +269,11 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
                             audit.addFile(file);
 
                             // remove markers on this file
-                            file.deleteMarkers(CheckstyleMarker.MARKER_ID, false,
-                                    IResource.DEPTH_ZERO);
+                            file.deleteMarkers(CheckstyleMarker.MARKER_ID, false, IResource.DEPTH_ZERO);
 
                             // remove markers from package to prevent
                             // packagehtml messages from accumulatin
-                            file.getParent().deleteMarkers(CheckstyleMarker.MARKER_ID, false,
-                                    IResource.DEPTH_ZERO);
+                            file.getParent().deleteMarkers(CheckstyleMarker.MARKER_ID, false, IResource.DEPTH_ZERO);
                         }
                     }
                 }
@@ -287,8 +288,8 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
             }
         }
         catch (CheckstylePluginException e) {
-            Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR, e
-                    .getLocalizedMessage(), e);
+            Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR,
+                e.getLocalizedMessage(), e);
             throw new CoreException(status);
         }
     }
@@ -296,10 +297,13 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
     /**
      * Get the files for the build by analyzing the resource delta.
      * 
-     * @param delta the delta of changes
-     * @param filters filters to exclude elements from the check
+     * @param delta
+     *            the delta of changes
+     * @param filters
+     *            filters to exclude elements from the check
      * @return collection of files to build
-     * @throws CoreException an unexpected error occurred
+     * @throws CoreException
+     *             an unexpected error occurred
      */
     private Collection<IResource> getResources(final IResourceDelta delta, final IFilter[] filters)
         throws CoreException {
@@ -347,10 +351,13 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
     /**
      * Get all files to build from a given container.
      * 
-     * @param container the container
-     * @param filters filters to exclude elements from the check
+     * @param container
+     *            the container
+     * @param filters
+     *            filters to exclude elements from the check
      * @return collection of files to build
-     * @throws CoreException an unexpected error occurred
+     * @throws CoreException
+     *             an unexpected error occurred
      */
     private Collection<IResource> getResources(final IContainer container, final IFilter[] filters)
         throws CoreException {

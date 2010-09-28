@@ -20,7 +20,6 @@
 
 package net.sf.eclipsecs.core.config;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
