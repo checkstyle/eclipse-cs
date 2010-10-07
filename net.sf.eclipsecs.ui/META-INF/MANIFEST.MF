@@ -20,9 +20,8 @@ Require-Bundle: net.sf.eclipsecs.checkstyle,
  org.eclipse.ui.workbench.texteditor
 Bundle-ClassPath: .,
  lib/itext-2.0.1.jar,
- lib/jcommon-1.0.9.jar,
- lib/jfreechart-1.0.5.jar,
- lib/jfreechart-1.0.5-swt.jar
+ lib/jcommon-1.0.16.jar,
+ lib/jfreechart-1.0.13.jar
 Eclipse-LazyStart: true
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-Localization: plugin
