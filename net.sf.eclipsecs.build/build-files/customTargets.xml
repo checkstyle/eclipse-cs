@@ -10,7 +10,7 @@
 	</condition>
 
 	<property file="${buildHome}/pluginbuilder.config" />
-
+	<property name="maven.home" value="D:/_tools/apache-maven-2.2.1" />
 	<property file="${buildDirectory}/version.properties" />
 	<property name="buildLabel" value="${buildType}-${version.full}" />
 	<property name="buildId" value="${version.full}" />
@@ -90,12 +90,39 @@
 			<property name="basedir" value="${buildDirectory}/plugins/net.sf.eclipsecs.doc" />
 		</ant>
 
-		<!-- build checkstyle docs -->
+		<!-- build checkstyle docs 
 		<property name="checkstyle.dir" value="${buildHome}/../checkstyle" />
+
+		<macrodef name="maven">
+			<attribute name="options" default="" />
+			<attribute name="goal" />
+			<attribute name="basedir" />
+			<attribute name="resultproperty" default="maven.result" />
+			<element name="args" implicit="true" optional="true" />
+			<sequential>
+				<java classname="org.codehaus.classworlds.Launcher" fork="true" dir="@{basedir}" resultproperty="@{resultproperty}">
+					<jvmarg value="-Xmx512m" />
+					<classpath>
+						<fileset dir="${maven.home}/boot">
+							<include name="*.jar" />
+						</fileset>
+						<fileset dir="${maven.home}/lib">
+							<include name="*.jar" />
+						</fileset>
+					</classpath>
+					<sysproperty key="classworlds.conf" value="${maven.home}/bin/m2.conf" />
+					<sysproperty key="maven.home" value="${maven.home}" />
+					<arg line="- -batch-mode @{options} @{goal}" />
+				</java>
+			</sequential>
+		</macrodef>
+
+		<maven basedir="${checkstyle.dir}" goal="clean" options="skipTests=true"/>
+
 		<ant antfile="${checkstyle.dir}/build.xml" inheritall="false" target="xdocs">
 			<property name="basedir" value="${checkstyle.dir}" />
 			<property name="xdocs.dest" value="${buildDirectory}/plugins/net.sf.eclipsecs.doc/docs/csdocs" />
-		</ant>
+		</ant-->
 
 		<!-- build website -->
 		<mkdir dir="${buildDirectory}/website" />

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<fileset-config file-format-version="1.2.0" simple-config="true">
+<fileset-config file-format-version="1.2.0" simple-config="true" sync-formatter="true">
   <local-check-config name="eclipse-cs Production Checks" location="CheckConfig_Checkstyle.xml" type="project" description="">
     <additional-data name="protect-config-file" value="false"/>
   </local-check-config>
