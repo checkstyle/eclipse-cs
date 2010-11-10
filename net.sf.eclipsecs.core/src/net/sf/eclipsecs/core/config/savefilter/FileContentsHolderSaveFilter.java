@@ -41,37 +41,39 @@ public class FileContentsHolderSaveFilter implements ISaveFilter {
         // the FileContentsHolder module is needed if it is not configured and
         // the SuppressionCommentFilter module is configured
         boolean containsFileContentsHolderModule = false;
-        boolean containsSuppressionCommentFilterModule = false;
+        boolean needsFileContentsHolderModule = false;
         Module configuredFileContentsHolder = null;
 
         for (int i = 0, size = configuredModules.size(); i < size; i++) {
 
             Module module = configuredModules.get(i);
+            String internalName = module.getMetaData().getInternalName();
 
-            if (XMLTags.FILECONTENTSHOLDER_MODULE.equals(module.getMetaData().getInternalName())) {
+            if (XMLTags.FILECONTENTSHOLDER_MODULE.equals(internalName)) {
                 containsFileContentsHolderModule = true;
                 configuredFileContentsHolder = module;
             }
-
-            if (XMLTags.SUPRESSIONCOMMENTFILTER_MODULE.equals(module.getMetaData()
-                    .getInternalName())) {
-                containsSuppressionCommentFilterModule = true;
+            else if (XMLTags.SUPRESSIONCOMMENTFILTER_MODULE.equals(internalName)) {
+                needsFileContentsHolderModule = true;
+            }
+            else if (XMLTags.SUPRESSWITHNEARBYCOMMENTFILTER_MODULE.equals(internalName)) {
+                needsFileContentsHolderModule = true;
             }
 
-            if (containsFileContentsHolderModule && containsSuppressionCommentFilterModule) {
+            if (containsFileContentsHolderModule && needsFileContentsHolderModule) {
                 break;
             }
         }
 
-        // add the TreeWalker if needed
-        if (!containsFileContentsHolderModule && containsSuppressionCommentFilterModule) {
-            Module fileContentsHolder = new Module(MetadataFactory
-                    .getRuleMetadata(XMLTags.FILECONTENTSHOLDER_MODULE), false);
+        // add the FileContentsHolder if needed
+        if (!containsFileContentsHolderModule && needsFileContentsHolderModule) {
+            Module fileContentsHolder = new Module(MetadataFactory.getRuleMetadata(XMLTags.FILECONTENTSHOLDER_MODULE),
+                false);
             configuredModules.add(0, fileContentsHolder);
         }
 
-        // remove the TreeWalker if not needed
-        else if (containsFileContentsHolderModule && !containsSuppressionCommentFilterModule) {
+        // remove the FileContentsHolder if not needed
+        else if (containsFileContentsHolderModule && !needsFileContentsHolderModule) {
             configuredModules.remove(configuredFileContentsHolder);
         }
     }
