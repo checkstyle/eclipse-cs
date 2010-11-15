@@ -28,7 +28,7 @@ import net.sf.eclipsecs.core.CheckstylePlugin;
 public final class XMLTags {
 
     private XMLTags() {
-    // NOOP
+        // NOOP
     }
 
     //
@@ -155,6 +155,9 @@ public final class XMLTags {
     /** Constant for the name of the SuppressionCommentFiler module. */
     public static final String SUPRESSIONCOMMENTFILTER_MODULE = "SuppressionCommentFilter"; //$NON-NLS-1$
 
+    /** Constant for the name of the SuppressWithNearbyCommentFilter module. */
+    public static final String SUPRESSWITHNEARBYCOMMENTFILTER_MODULE = "SuppressWithNearbyCommentFilter"; //$NON-NLS-1$
+
     /** Constant for the name of the Other group. */
     public static final String OTHER_GROUP = "Other"; //$NON-NLS-1$
 
@@ -183,8 +186,7 @@ public final class XMLTags {
     public static final String COMMENT_ID = CheckstylePlugin.PLUGIN_ID + ".comment"; //$NON-NLS-1$
 
     /** constant for the lastEnabledSeverity meta data stored with the modules. */
-    public static final String LAST_ENABLED_SEVERITY_ID = CheckstylePlugin.PLUGIN_ID
-            + ".lastEnabledSeverity"; //$NON-NLS-1$
+    public static final String LAST_ENABLED_SEVERITY_ID = CheckstylePlugin.PLUGIN_ID + ".lastEnabledSeverity"; //$NON-NLS-1$
 
     //
     // tags for the old proprietary check configuration

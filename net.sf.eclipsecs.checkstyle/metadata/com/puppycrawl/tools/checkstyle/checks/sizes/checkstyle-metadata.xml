@@ -6,47 +6,46 @@
     <rule-group-metadata name="%Sizes.group" priority="500">
 
         <rule-metadata name="%AnonInnerLength.name" internal-name="AnonInnerLength" parent="TreeWalker">
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.sizes.AnonInnerLengthCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.sizes.AnonInnerLengthCheck" />
             <description>%AnonInnerLength.desc</description>
             <property-metadata name="max" datatype="Integer" default-value="20">
                 <description>%AnonInnerLength.max</description>
             </property-metadata>
-            <message-key key="maxLen.anonInner"/>
+            <message-key key="maxLen.anonInner" />
         </rule-metadata>
 
         <rule-metadata name="%ExecutableStatementCount.name" internal-name="ExecutableStatementCount"
             parent="TreeWalker">
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.sizes.ExecutableStatementCountCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.sizes.ExecutableStatementCountCheck" />
             <description>%ExecutableStatementCount.desc</description>
             <property-metadata name="max" datatype="Integer" default-value="30">
                 <description>%ExecutableStatementCount.max</description>
             </property-metadata>
-            <property-metadata name="tokens" datatype="MultiCheck"
-                default-value="CTOR_DEF,METHOD_DEF,INSTANCE_INIT,STATIC_INIT">
+            <property-metadata name="tokens" datatype="MultiCheck" default-value="CTOR_DEF,METHOD_DEF,INSTANCE_INIT,STATIC_INIT">
                 <description>%ExecutableStatementCount.tokens</description>
                 <enumeration>
-                    <property-value-option value="INSTANCE_INIT"/>
-                    <property-value-option value="STATIC_INIT"/>
-                    <property-value-option value="METHOD_DEF"/>
-                    <property-value-option value="CTOR_DEF"/>
+                    <property-value-option value="INSTANCE_INIT" />
+                    <property-value-option value="STATIC_INIT" />
+                    <property-value-option value="METHOD_DEF" />
+                    <property-value-option value="CTOR_DEF" />
                 </enumeration>
             </property-metadata>
-            <message-key key="executableStatementCount"/>
+            <message-key key="executableStatementCount" />
         </rule-metadata>
 
         <rule-metadata name="%FileLength.name" internal-name="FileLength" parent="Checker">
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.sizes.FileLengthCheck"/>
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.FileLengthCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.sizes.FileLengthCheck" />
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.FileLengthCheck" />
             <description>%FileLength.desc</description>
             <property-metadata name="max" datatype="Integer" default-value="2000">
                 <description>%FileLength.max</description>
             </property-metadata>
-            <message-key key="maxLen.file"/>
+            <message-key key="maxLen.file" />
         </rule-metadata>
 
         <rule-metadata name="%LineLength.name" internal-name="LineLength" parent="TreeWalker">
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.sizes.LineLengthCheck"/>
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.LineLengthCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.sizes.LineLengthCheck" />
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.LineLengthCheck" />
             <description>%LineLength.desc</description>
             <property-metadata name="ignorePattern" datatype="Regex" default-value="^$">
                 <description>%LineLength.ignorePattern</description>
@@ -57,12 +56,12 @@
             <property-metadata name="tabWidth" datatype="Integer" default-value="8">
                 <description>%LineLength.tabWidth</description>
             </property-metadata>
-            <message-key key="maxLineLen"/>
+            <message-key key="maxLineLen" />
         </rule-metadata>
 
         <rule-metadata name="%MethodLength.name" internal-name="MethodLength" parent="TreeWalker">
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.sizes.MethodLengthCheck"/>
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.MethodLengthCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.sizes.MethodLengthCheck" />
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.MethodLengthCheck" />
             <description>%MethodLength.desc</description>
             <property-metadata name="max" datatype="Integer" default-value="150">
                 <description>%MethodLength.max</description>
@@ -73,16 +72,16 @@
             <property-metadata name="tokens" datatype="MultiCheck" default-value="METHOD_DEF,CTOR_DEF">
                 <description>%MethodLength.tokens</description>
                 <enumeration>
-                    <property-value-option value="METHOD_DEF"/>
-                    <property-value-option value="CTOR_DEF"/>
+                    <property-value-option value="METHOD_DEF" />
+                    <property-value-option value="CTOR_DEF" />
                 </enumeration>
             </property-metadata>
-            <message-key key="maxLen.method"/>
+            <message-key key="maxLen.method" />
         </rule-metadata>
 
         <rule-metadata name="%ParameterNumber.name" internal-name="ParameterNumber" parent="TreeWalker">
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.sizes.ParameterNumberCheck"/>
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.ParameterNumberCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.sizes.ParameterNumberCheck" />
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.ParameterNumberCheck" />
             <description>%ParameterNumber.desc</description>
             <property-metadata name="max" datatype="Integer" default-value="7">
                 <description>%ParameterNumber.max</description>
@@ -90,20 +89,45 @@
             <property-metadata name="tokens" datatype="MultiCheck" default-value="METHOD_DEF,CTOR_DEF">
                 <description>%ParameterNumber.tokens</description>
                 <enumeration>
-                    <property-value-option value="METHOD_DEF"/>
-                    <property-value-option value="CTOR_DEF"/>
+                    <property-value-option value="METHOD_DEF" />
+                    <property-value-option value="CTOR_DEF" />
                 </enumeration>
             </property-metadata>
-            <message-key key="maxParam"/>
+            <message-key key="maxParam" />
         </rule-metadata>
 
         <rule-metadata name="%OuterTypeNumber.name" internal-name="OuterTypeNumber" parent="TreeWalker">
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.sizes.OuterTypeNumber"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.sizes.OuterTypeNumberCheck" />
             <description>%OuterTypeNumber.desc</description>
             <property-metadata name="max" datatype="Integer" default-value="1">
                 <description>%OuterTypeNumber.max</description>
             </property-metadata>
-            <message-key key="maxOuterTypes"/>
+            <message-key key="maxOuterTypes" />
+        </rule-metadata>
+
+        <rule-metadata name="%MethodCount.name" internal-name="MethodCount" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.sizes.MethodCountCheck" />
+            <description>%MethodCount.desc</description>
+            <property-metadata name="maxTotal" datatype="Integer" default-value="100">
+                <description>%MethodCount.maxTotal</description>
+            </property-metadata>
+            <property-metadata name="maxPrivate" datatype="Integer" default-value="100">
+                <description>%MethodCount.maxPrivate</description>
+            </property-metadata>
+            <property-metadata name="maxPackage" datatype="Integer" default-value="100">
+                <description>%MethodCount.maxPackage</description>
+            </property-metadata>
+            <property-metadata name="maxProtected" datatype="Integer" default-value="100">
+                <description>%MethodCount.maxProtected</description>
+            </property-metadata>
+            <property-metadata name="maxPublic" datatype="Integer" default-value="100">
+                <description>%MethodCount.maxPublic</description>
+            </property-metadata>
+            <message-key key="too.many.privateMethods" />
+            <message-key key="too.many.packageMethods" />
+            <message-key key="too.many.protectedMethods" />
+            <message-key key="too.many.publicMethods" />
+            <message-key key="too.many.methods" />
         </rule-metadata>
     </rule-group-metadata>
 </checkstyle-metadata>

@@ -50,8 +50,7 @@
             <property-metadata name="allowMissingPropertyJavadoc" datatype="Boolean" default-value="false">
                 <description>%JavadocMethod.allowMissingPropertyJavadoc</description>
             </property-metadata>
-            <property-metadata name="logLoadErrors" datatype="Boolean" default-value="false"
-                override-default-value="true">
+            <property-metadata name="logLoadErrors" datatype="Boolean" default-value="true">
                 <description>%JavadocMethod.logLoadErrors</description>
             </property-metadata>
             <property-metadata name="suppressLoadErrors" datatype="Boolean" default-value="false"

@@ -270,6 +270,9 @@
                     <property-value-option value="NUM_LONG" />
                 </enumeration>
             </property-metadata>
+            <property-metadata name="ignoreHashCodeMethod" datatype="Boolean" default-value="false">
+                <description>%MagicNumber.ignoreHashCodeMethod</description>
+            </property-metadata>
             <message-key key="magic.number" />
         </rule-metadata>
 
@@ -317,6 +320,15 @@
             <message-key key="multiple.variable.declarations" />
         </rule-metadata>
 
+        <rule-metadata name="%NestedForDepth.name" internal-name="NestedForDepth" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.NestedForDepthCheck" />
+            <description>%NestedForDepth.desc</description>
+            <property-metadata name="max" datatype="Integer" default-value="1">
+                <description>%NestedForDepth.max</description>
+            </property-metadata>
+            <message-key key="nested.for.depth" />
+        </rule-metadata>
+        
         <rule-metadata name="%NestedIfDepth.name" internal-name="NestedIfDepth" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.NestedIfDepthCheck" />
             <description>%NestedIfDepth.desc</description>
@@ -350,7 +362,11 @@
         <rule-metadata name="%PackageDeclaration.name" internal-name="PackageDeclaration" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.PackageDeclarationCheck" />
             <description>%PackageDeclaration.desc</description>
+            <property-metadata name="ignoreDirectoryName" datatype="Boolean" default-value="false">
+                <description>%PackageDeclaration.ignoreDirectoryName</description>
+            </property-metadata>
             <message-key key="missing.package.declaration" />
+            <message-key key="package.dir.mismatch" />
         </rule-metadata>
 
         <rule-metadata name="%ParameterAssignment.name" internal-name="ParameterAssignment" parent="TreeWalker">
@@ -369,8 +385,7 @@
             <property-metadata name="allowSubclasses" datatype="Boolean" default-value="false">
                 <description>%RedundantThrows.allowSubclasses</description>
             </property-metadata>
-            <property-metadata name="logLoadErrors" datatype="Boolean" default-value="false"
-                override-default-value="true">
+            <property-metadata name="logLoadErrors" datatype="Boolean" default-value="true">
                 <description>%RedundantThrows.logLoadErrors</description>
             </property-metadata>
             <property-metadata name="suppressLoadErrors" datatype="Boolean" default-value="false"
@@ -460,5 +475,10 @@
             <message-key key="unnecessary.paren.string" />
         </rule-metadata>
 
+        <rule-metadata name="%OneStatementPerLine.name" internal-name="OneStatementPerLine" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.OneStatementPerLineCheck" />
+            <description>%OneStatementPerLine.desc</description>
+            <message-key key="multiple.statements.line" />
+        </rule-metadata>
     </rule-group-metadata>
 </checkstyle-metadata>
