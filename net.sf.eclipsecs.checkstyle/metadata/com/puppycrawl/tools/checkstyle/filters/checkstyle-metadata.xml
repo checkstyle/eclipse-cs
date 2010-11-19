@@ -63,7 +63,7 @@
             <property-metadata name="commentFormat" datatype="Regex" default-value="SUPPRESS CHECKSTYLE (\w+)">
                 <description>%SuppressWithNearbyCommentFilter.commentFormat</description>
             </property-metadata>
-            <property-metadata name="checkFormat" datatype="Regex" default-value="$1">
+            <property-metadata name="checkFormat" datatype="Regex" default-value=".*">
                 <description>%SuppressWithNearbyCommentFilter.checkFormat</description>
             </property-metadata>
             <property-metadata name="messageFormat" datatype="Regex">
