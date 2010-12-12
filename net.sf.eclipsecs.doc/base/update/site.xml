@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
     <description url="http://eclipse-cs.sourceforge.net/update"> Eclipse Checkstyle Plug-in Update Site </description>
-    <feature url="http://downloads.sourceforge.net/eclipse-cs/com.atlassw.tools.eclipse.checkstyle_4.4.3-feature.jar"
-        id="com.atlassw.tools.eclipse.checkstyle" version="4.4.3">
-        <category name="Checkstyle"/>
-    </feature>
 
     <feature url="http://downloads.sourceforge.net/eclipse-cs/net.sf.eclipsecs_${version}-feature.jar"
         id="net.sf.eclipsecs" version="${version}">
@@ -15,15 +11,10 @@
         id="net.sf.eclipsecs.migration" version="${version}">
         <category name="Checkstyle"/>
     </feature>
-    <!--feature url="http://downloads.sourceforge.net/eclipse-cs/org.maven.ide.eclipse.checkstyle_0.0.4-feature.jar"
-        id="org.maven.ide.eclipse.checkstyle" version="0.0.4">
+    <!--feature url="http://downloads.sourceforge.net/eclipse-cs/org.maven.ide.eclipse.checkstyle_0.10.2-feature.jar"
+        id="org.maven.ide.eclipse.checkstyle" version="0.10.2">
         <category name="Checkstyle"/>
     </feature-->
-
-    <archive path="plugins/com.atlassw.tools.eclipse.checkstyle_4.4.3.jar"
-        url="http://downloads.sourceforge.net/eclipse-cs/com.atlassw.tools.eclipse.checkstyle_4.4.3.jar"/>
-    <archive path="plugins/net.sf.eclipsecs.stats_1.0.5.jar"
-        url="http://downloads.sourceforge.net/eclipse-cs/net.sf.eclipsecs.stats_1.0.5.jar"/>
 
     <archive path="plugins/net.sf.eclipsecs.branding_${version}.jar"
         url="http://downloads.sourceforge.net/eclipse-cs/net.sf.eclipsecs.branding_${version}.jar"/>
@@ -37,15 +28,11 @@
         url="http://downloads.sourceforge.net/eclipse-cs/net.sf.eclipsecs.migration_${version}.jar"/>
     <archive path="plugins/net.sf.eclipsecs.ui_${version}.jar"
         url="http://downloads.sourceforge.net/eclipse-cs/net.sf.eclipsecs.ui_${version}.jar"/>
-    <!--archive path="plugins/org.maven.ide.eclipse.checkstyle_0.0.4.jar"
-        url="http://downloads.sourceforge.net/eclipse-cs/org.maven.ide.eclipse.checkstyle_0.0.4.jar"/-->
+    <!--archive path="plugins/org.maven.ide.eclipse.checkstyle_0.10.2.jar"
+        url="http://downloads.sourceforge.net/eclipse-cs/org.maven.ide.eclipse.checkstyle_0.10.2.jar"/-->
 
     <category-def name="Checkstyle" label="Eclipse Checkstyle Plug-in">
         <description> Integrates Checkstyle with Eclipse </description>
     </category-def>
-
-    <!--category-def name="Beta" label="Eclipse Checkstyle Plug-in (Beta Releases)">
-        <description> Integrates Checkstyle with Eclipse. This category contains beta releases. </description>
-    </category-def -->
 
 </site>
