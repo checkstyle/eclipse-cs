@@ -43,7 +43,6 @@ import org.eclipse.jdt.internal.ui.preferences.formatter.ProfileStore;
 import org.eclipse.jdt.internal.ui.preferences.formatter.ProfileVersioner;
 import org.eclipse.jdt.internal.ui.preferences.formatter.ProfileManager.CustomProfile;
 import org.eclipse.jdt.internal.ui.preferences.formatter.ProfileManager.Profile;
-import org.eclipse.jdt.ui.JavaUI;
 import org.osgi.service.prefs.BackingStoreException;
 
 /**
@@ -55,6 +54,9 @@ import org.osgi.service.prefs.BackingStoreException;
  */
 @SuppressWarnings("restriction")
 public class FormatterConfigWriter {
+    
+    private final static String JDT_UI_PLUGINID = "org.eclipse.jdt.ui";
+    
     /** A eclipse-configuration. */
     private final FormatterConfiguration mConfiguration;
 
@@ -135,10 +137,10 @@ public class FormatterConfigWriter {
             // commits changes to the project profile settings
             manager.commitChanges(scope);
 
-            scope.getNode(JavaUI.ID_PLUGIN).flush();
+            scope.getNode(JDT_UI_PLUGINID).flush();
             scope.getNode(JavaCore.PLUGIN_ID).flush();
             if (scope != instanceScope) {
-                instanceScope.getNode(JavaUI.ID_PLUGIN).flush();
+                instanceScope.getNode(JDT_UI_PLUGINID).flush();
                 instanceScope.getNode(JavaCore.PLUGIN_ID).flush();
             }
 
@@ -204,10 +206,10 @@ public class FormatterConfigWriter {
             // commits changes to the project profile settings
             manager.commitChanges(scope);
 
-            scope.getNode(JavaUI.ID_PLUGIN).flush();
+            scope.getNode(JDT_UI_PLUGINID).flush();
             scope.getNode(JavaCore.PLUGIN_ID).flush();
             if (scope != instanceScope) {
-                instanceScope.getNode(JavaUI.ID_PLUGIN).flush();
+                instanceScope.getNode(JDT_UI_PLUGINID).flush();
                 instanceScope.getNode(JavaCore.PLUGIN_ID).flush();
             }
 
