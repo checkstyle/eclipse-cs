@@ -1,0 +1,107 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>net.sf.eclipsecs</groupId>
+    <artifactId>net.sf.eclipsecs.parent</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+    <name>net.sf.eclipsecs.parent</name>
+
+    <modules>
+
+        <module>../net.sf.eclipsecs.branding</module>
+        <module>../net.sf.eclipsecs.checkstyle</module>
+        <module>../net.sf.eclipsecs.core</module>
+        <module>../net.sf.eclipsecs.doc</module>
+        <module>../net.sf.eclipsecs.sample</module>
+        <module>../net.sf.eclipsecs.ui</module>
+        <module>../net.sf.eclipsecs-feature</module>
+        <module>../net.sf.eclipsecs.migration</module>
+        <module>../net.sf.eclipsecs.migration-feature</module>
+        <!-- <module>../org.maven.ide.eclipse.checkstyle</module>
+        <module>../org.maven.ide.eclipse.checkstyle-feature</module>-->
+        <module>../net.sf.eclipsecs-updatesite</module>
+    </modules>
+
+    <properties>
+        <tycho-version>0.10.0</tycho-version>
+    </properties>
+
+    <scm>
+        <connection>scm:cvs:pserver:anonymous:@dev.eclipse.org:/cvsroot/eclipse</connection>
+        <developerConnection>scm:cvs:pserver:anonymous:@dev.eclipse.org:/cvsroot/eclipse</developerConnection>
+    </scm>
+    <build>
+        <!--  <finalName>${project.artifactId}-${buildNumber}</finalName>-->
+        <plugins>
+            <plugin>
+                <groupId>org.sonatype.tycho</groupId>
+                <artifactId>tycho-maven-plugin</artifactId>
+                <version>${tycho-version}</version>
+                <extensions>true</extensions>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.tycho</groupId>
+                <artifactId>maven-osgi-packaging-plugin</artifactId>
+                <version>${tycho-version}</version>
+                <configuration>
+                    <strictVersions>false</strictVersions>
+                    <archiveSite>true</archiveSite>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.tycho</groupId>
+                <artifactId>target-platform-configuration</artifactId>
+                <version>${tycho-version}</version>
+                <configuration>
+                    <resolver>p2</resolver>
+                </configuration>
+            </plugin>
+
+            <!--
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>buildnumber-maven-plugin</artifactId>
+                <version>1.0-beta-4</version>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>create</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <revisionOnScmFailure>XXX</revisionOnScmFailure>
+                    <doCheck>false</doCheck>
+                    <doUpdate>false</doUpdate>
+
+                    <format>{0,date,yyyyMMddHHmmss}</format>
+                    <items>
+                        <item>timestamp</item>
+                    </items>
+                </configuration>
+            </plugin>
+           -->
+        </plugins>
+    </build>
+
+    <repositories>
+        <repository>
+            <id>helios</id>
+            <layout>p2</layout>
+            <url>http://download.eclipse.org/releases/helios</url>
+        </repository>
+        <repository>
+            <id>m2eclipse</id>
+            <layout>p2</layout>
+            <url>http://m2eclipse.sonatype.org/sites/m2e</url>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>Codehaus</id>
+            <url>https://nexus.codehaus.org/content/repositories/releases/</url>
+        </pluginRepository>
+    </pluginRepositories>
+</project>
