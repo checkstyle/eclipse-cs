@@ -150,11 +150,16 @@
                             </li>
                             <li class="yuimenuitem">
                                 <a class="yuimenuitemlabel"
-                                    href="{$path-prefix}releasenotes/5.2.0/release_notes.html"
+                                    href="{$path-prefix}releasenotes/5.3.0/release_notes.html"
                                     >Release Notes</a>
                                 <div id="releasnotes" class="yuimenu">
                                     <div class="bd">
                                         <ul class="first-of-type">
+                                            <li class="yuimenuitem">
+                                                <a class="yuimenuitemlabel"
+                                                    href="{$path-prefix}releasenotes/5.3.0/release_notes.html"
+                                                    > Release 5.3.0</a>
+                                            </li>
                                             <li class="yuimenuitem">
                                                 <a class="yuimenuitemlabel"
                                                     href="{$path-prefix}releasenotes/5.2.0/release_notes.html"
