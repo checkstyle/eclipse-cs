@@ -149,6 +149,7 @@
 		<replace dir="${buildDirectory}/plugins">
 			<include name="**/plugin.xml" />
 			<replacefilter token="0.0.0" value="${version.full}" />
+			<replacefilter token="qualifier" value="${version.qualifier}" />
 		</replace>
 		<replace dir="${buildDirectory}/plugins">
 			<include name="**/META-INF/MANIFEST.MF" />

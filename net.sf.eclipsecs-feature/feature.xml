@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<feature
+<feature version="5.3.0.qualifier"
       id="net.sf.eclipsecs"
       label="%feature.label"
-      version="5.3.0.qualifier"
       provider-name="%feature.provider_name"
       plugin="net.sf.eclipsecs.branding">
 
