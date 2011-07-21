@@ -141,13 +141,10 @@
     <xsl:template name="navigation">
         <ul class="first-of-type">
             <li class="yuimenubaritem first-of-type">
-                <a class="yuimenubaritemlabel" href="{$path-prefix}index.shtml">Main</a>
+                <a class="yuimenubaritemlabel" href="{$path-prefix}index.html">Main</a>
                 <div id="main" class="yuimenu">
                     <div class="bd">
                         <ul>
-                            <li class="yuimenuitem">
-                                <a class="yuimenuitemlabel" href="{$path-prefix}news.shtml">News</a>
-                            </li>
                             <li class="yuimenuitem">
                                 <a class="yuimenuitemlabel"
                                     href="{$path-prefix}releasenotes/5.3.0/release_notes.html"
@@ -454,8 +451,10 @@
             <table width="100%" cellspacing="0" cellpadding="0">
                 <tr>
                     <td style="text-align: left; width=100%">
-                        <img src="{$path-prefix}images/eclipse-cs_logo.png" alt="eclipse-cs Banner"
-                            width="246" height="75"/>
+                        <a href="{$path-prefix}index.html" class="imagelink">
+                            <img src="{$path-prefix}images/eclipse-cs_logo.png" alt="eclipse-cs Banner"
+                                width="246" height="75" />
+                        </a>
                     </td>
                     
                     <td
@@ -498,7 +497,7 @@
 
     <!-- renders the footer of the page -->
     <xsl:template name="footer">
-        <div id="footer"> Copyright &#xA9; 2002-2010 David Schneider, <a
+        <div id="footer"> Copyright &#xA9; 2002-2011 David Schneider, <a
                 href="http://www.koedderitzsch.net">Lars Ködderitzsch</a> and others. All Rights Reserved.
         </div>
     </xsl:template>

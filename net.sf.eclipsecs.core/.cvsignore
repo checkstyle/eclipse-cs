@@ -2,3 +2,4 @@ bin
 dist
 .settings/
 target
+pom.xml.versionsBackup

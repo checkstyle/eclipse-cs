@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.sf.eclipsecs</groupId>
     <artifactId>net.sf.eclipsecs.parent</artifactId>
-    <version>1.0.0</version>
+    <version>5.4.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>net.sf.eclipsecs.parent</name>
 
@@ -18,13 +18,12 @@
         <module>../net.sf.eclipsecs-feature</module>
         <module>../net.sf.eclipsecs.migration</module>
         <module>../net.sf.eclipsecs.migration-feature</module>
-        <!-- <module>../org.maven.ide.eclipse.checkstyle</module>
-        <module>../org.maven.ide.eclipse.checkstyle-feature</module>-->
+        <!-- <module>../org.maven.ide.eclipse.checkstyle</module> <module>../org.maven.ide.eclipse.checkstyle-feature</module> -->
         <module>../net.sf.eclipsecs-updatesite</module>
     </modules>
 
     <properties>
-        <tycho-version>0.10.0</tycho-version>
+        <tycho-version>0.12.0</tycho-version>
     </properties>
 
     <scm>
@@ -32,16 +31,16 @@
         <developerConnection>scm:cvs:pserver:anonymous:@dev.eclipse.org:/cvsroot/eclipse</developerConnection>
     </scm>
     <build>
-        <!--  <finalName>${project.artifactId}-${buildNumber}</finalName>-->
+        <!-- <finalName>${project.artifactId}-${buildNumber}</finalName> -->
         <plugins>
             <plugin>
-                <groupId>org.sonatype.tycho</groupId>
+                <groupId>org.eclipse.tycho</groupId>
                 <artifactId>tycho-maven-plugin</artifactId>
                 <version>${tycho-version}</version>
                 <extensions>true</extensions>
             </plugin>
             <plugin>
-                <groupId>org.sonatype.tycho</groupId>
+                <groupId>org.eclipse.tycho</groupId>
                 <artifactId>maven-osgi-packaging-plugin</artifactId>
                 <version>${tycho-version}</version>
                 <configuration>
@@ -50,7 +49,7 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.sonatype.tycho</groupId>
+                <groupId>org.eclipse.tycho</groupId>
                 <artifactId>target-platform-configuration</artifactId>
                 <version>${tycho-version}</version>
                 <configuration>
@@ -58,32 +57,37 @@
                 </configuration>
             </plugin>
 
-            <!--
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>buildnumber-maven-plugin</artifactId>
-                <version>1.0-beta-4</version>
-                <executions>
-                    <execution>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>create</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <revisionOnScmFailure>XXX</revisionOnScmFailure>
-                    <doCheck>false</doCheck>
-                    <doUpdate>false</doUpdate>
-
-                    <format>{0,date,yyyyMMddHHmmss}</format>
-                    <items>
-                        <item>timestamp</item>
-                    </items>
-                </configuration>
-            </plugin>
-           -->
-        </plugins>
+            <!-- <plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>buildnumber-maven-plugin</artifactId> <version>1.0-beta-4</version> 
+                <executions> <execution> <phase>validate</phase> <goals> <goal>create</goal> </goals> </execution> </executions> <configuration> 
+                <revisionOnScmFailure>XXX</revisionOnScmFailure> <doCheck>false</doCheck> <doUpdate>false</doUpdate> <format>{0,date,yyyyMMddHHmmss}</format> 
+                <items> <item>timestamp</item> </items> </configuration> </plugin> -->
+  
+                <plugin>
+                    <groupId>org.eclipse.m2e</groupId>
+                    <artifactId>lifecycle-mapping</artifactId>
+                    <version>1.0.0</version>
+                    <configuration>
+                        <lifecycleMappingMetadata>
+                            <pluginExecutions>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>org.eclipse.tycho</groupId>
+                                        <artifactId>tycho-compiler-plugin</artifactId>
+                                        <versionRange>[0.12.0,)</versionRange>
+                                        <goals>
+                                            <goal>compile</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <execute />
+                                    </action>
+                                </pluginExecution>
+                            </pluginExecutions>
+                        </lifecycleMappingMetadata>
+                    </configuration>
+                </plugin>
+            </plugins>
+      
     </build>
 
     <repositories>
@@ -92,11 +96,7 @@
             <layout>p2</layout>
             <url>http://download.eclipse.org/releases/helios</url>
         </repository>
-        <repository>
-            <id>m2eclipse</id>
-            <layout>p2</layout>
-            <url>http://m2eclipse.sonatype.org/sites/m2e</url>
-        </repository>
+        <!-- <repository> <id>m2eclipse</id> <layout>p2</layout> <url>http://m2eclipse.sonatype.org/sites/m2e</url> </repository> -->
     </repositories>
     <pluginRepositories>
         <pluginRepository>
