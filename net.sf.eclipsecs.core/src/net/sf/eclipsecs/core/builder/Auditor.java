@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2010  David Schneider, Lars Ködderitzsch
+// Copyright (C) 2002-2011  David Schneider, Lars Ködderitzsch
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -46,6 +46,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jface.text.BadLocationException;
@@ -257,6 +258,11 @@ public class Auditor {
         }
 
         public void fileStarted(AuditEvent event) {
+            
+            if (mMonitor.isCanceled()) {
+                throw new OperationCanceledException();
+            }
+            
             // get the current IFile reference
             mResource = getFile(event.getFileName());
             mMarkerCount = 0;

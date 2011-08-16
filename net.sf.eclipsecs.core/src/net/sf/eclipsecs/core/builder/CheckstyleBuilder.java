@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2010  David Schneider, Lars Ködderitzsch
+// Copyright (C) 2002-2011  David Schneider, Lars Ködderitzsch
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -50,6 +50,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.osgi.util.NLS;
 
@@ -282,7 +283,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
             // run all auditors
             for (Auditor audit : audits.values()) {
                 if (monitor.isCanceled()) {
-                    break;
+                    throw new OperationCanceledException();
                 }
                 audit.runAudit(project, monitor);
             }
