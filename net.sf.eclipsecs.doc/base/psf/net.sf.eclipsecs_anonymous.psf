@@ -2,15 +2,15 @@
 <psf version="2.0">
 <provider id="org.eclipse.team.cvs.core.cvsnature">
 <project reference="1.0,:pserver:anonymous@eclipse-cs.cvs.sourceforge.net:/cvsroot/eclipse-cs,net.sf.eclipsecs-feature,net.sf.eclipsecs-feature"/>
-<project reference="1.0,:pserver:anonymous@eclipse-cs.cvs.sourceforge.net:/cvsroot/eclipse-cs,net.sf.eclipsecs.build,net.sf.eclipsecs.build"/>
+<project reference="1.0,:pserver:anonymous@eclipse-cs.cvs.sourceforge.net:/cvsroot/eclipse-cs,net.sf.eclipsecs-updatesite,net.sf.eclipsecs-updatesite"/>
+<project reference="1.0,:pserver:anonymous@eclipse-cs.cvs.sourceforge.net:/cvsroot/eclipse-cs,net.sf.eclipsecs.branding,net.sf.eclipsecs.branding"/>
 <project reference="1.0,:pserver:anonymous@eclipse-cs.cvs.sourceforge.net:/cvsroot/eclipse-cs,net.sf.eclipsecs.checkstyle,net.sf.eclipsecs.checkstyle"/>
 <project reference="1.0,:pserver:anonymous@eclipse-cs.cvs.sourceforge.net:/cvsroot/eclipse-cs,net.sf.eclipsecs.core,net.sf.eclipsecs.core"/>
 <project reference="1.0,:pserver:anonymous@eclipse-cs.cvs.sourceforge.net:/cvsroot/eclipse-cs,net.sf.eclipsecs.doc,net.sf.eclipsecs.doc"/>
 <project reference="1.0,:pserver:anonymous@eclipse-cs.cvs.sourceforge.net:/cvsroot/eclipse-cs,net.sf.eclipsecs.migration,net.sf.eclipsecs.migration"/>
 <project reference="1.0,:pserver:anonymous@eclipse-cs.cvs.sourceforge.net:/cvsroot/eclipse-cs,net.sf.eclipsecs.migration-feature,net.sf.eclipsecs.migration-feature"/>
+<project reference="1.0,:pserver:anonymous@eclipse-cs.cvs.sourceforge.net:/cvsroot/eclipse-cs,net.sf.eclipsecs.parent,net.sf.eclipsecs.parent"/>
 <project reference="1.0,:pserver:anonymous@eclipse-cs.cvs.sourceforge.net:/cvsroot/eclipse-cs,net.sf.eclipsecs.sample,net.sf.eclipsecs.sample"/>
 <project reference="1.0,:pserver:anonymous@eclipse-cs.cvs.sourceforge.net:/cvsroot/eclipse-cs,net.sf.eclipsecs.ui,net.sf.eclipsecs.ui"/>
-<project reference="1.0,:pserver:anonymous@eclipse-cs.cvs.sourceforge.net:/cvsroot/eclipse-cs,org.maven.ide.eclipse.checkstyle,org.maven.ide.eclipse.checkstyle"/>
-<project reference="1.0,:pserver:anonymous@eclipse-cs.cvs.sourceforge.net:/cvsroot/eclipse-cs,org.maven.ide.eclipse.checkstyle-feature,org.maven.ide.eclipse.checkstyle-feature"/>
 </provider>
 </psf>

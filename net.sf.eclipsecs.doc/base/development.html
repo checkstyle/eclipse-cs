@@ -21,12 +21,9 @@
             </li>
         </ul>
         <p>That should be all for starters.</p>
-        <p>If you want to do a binary build of the plugin you need to go to the <code>net.sf.eclipsecs.build</code>
-            project, which contains the PDE build for eclipse-cs.</p>
-        <p>There adapt properties <code>buildHome</code>, <code>buildDirectory</code> and <code>eclipseDir</code> to
-            your local directories.</p>
-        <p>After that you should be able to run the build by executing the <code>build.xml</code>, results will appear
-            in the directory which you configured as <code>buildDirectory</code>. Note that the build has only been
-            tested with Eclipse 3.4 and 3.5, mileage may differ with older Eclipse versions.</p>
+        
+        <h2>-- Building release packages --</h2>
+        <p>If you want to do a binary build of the plugin you need an installation of <a href="http://maven.apache.org/download.html">Maven 3</a> on your system.</p>
+        <p>Simply run <code>mvn clean install</code> on the <code>net.sf.eclipsecs.parent</code> project and find the result (fully blown p2 update site) under <code>net.sf.eclipsecs-updatesite/target</code>.</p>
     </body>
 </html>
