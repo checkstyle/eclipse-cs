@@ -19,12 +19,13 @@
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.RedundantModifierCheck"/>
             <description>%RedundantModifier.desc</description>
             <property-metadata name="tokens" datatype="MultiCheck"
-                default-value="METHOD_DEF,VARIABLE_DEF,ANNOTATION_FIELD_DEF">
+                default-value="METHOD_DEF,VARIABLE_DEF,ANNOTATION_FIELD_DEF,INTERFACE_DEF">
                 <description>%RedundantModifier.tokens</description>
                 <enumeration>
                     <property-value-option value="METHOD_DEF"/>
                     <property-value-option value="VARIABLE_DEF"/>
                     <property-value-option value="ANNOTATION_FIELD_DEF"/>
+                    <property-value-option value="INTERFACE_DEF"/>
                 </enumeration>
             </property-metadata>
             <quickfix classname="net.sf.eclipsecs.ui.quickfixes.modifier.RedundantModifierQuickfix"/>

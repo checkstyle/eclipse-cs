@@ -63,6 +63,9 @@
         <rule-metadata name="%EqualsAvoidNull.name" internal-name="EqualsAvoidNull" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.EqualsAvoidNullCheck" />
             <description>%EqualsAvoidNull.desc</description>
+            <property-metadata name="ignoreEqualsIgnoreCase" datatype="Boolean" default-value="false">
+                <description>%EqualsAvoidNull.ignoreEqualsIgnoreCase</description>
+            </property-metadata>
             <message-key key="equals.avoid.null" />
         </rule-metadata>
 
@@ -158,6 +161,10 @@
             <property-metadata name="illegalClassNames" datatype="String"
                 default-value="java.lang.Throwable, java.lang.Error, java.lang.RuntimeException">
                 <description>%IllegalThrows.illegalClassNames</description>
+            </property-metadata>
+            <property-metadata name="ignoredMethodNames" datatype="String"
+                default-value="finalize">
+                <description>%IllegalThrows.ignoredMethodNames</description>
             </property-metadata>
             <message-key key="illegal.throw" />
         </rule-metadata>
@@ -258,9 +265,6 @@
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck" />
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.MagicNumberCheck" />
             <description>%MagicNumber.desc</description>
-            <property-metadata name="ignoreNumbers" datatype="String" default-value="-1, 0, 1, 2">
-                <description>%MagicNumber.ignoreNumbers</description>
-            </property-metadata>
             <property-metadata name="tokens" datatype="MultiCheck" default-value="NUM_DOUBLE,NUM_FLOAT,NUM_INT,NUM_LONG">
                 <description>%MagicNumber.tokens</description>
                 <enumeration>
@@ -270,8 +274,14 @@
                     <property-value-option value="NUM_LONG" />
                 </enumeration>
             </property-metadata>
+            <property-metadata name="ignoreNumbers" datatype="String" default-value="-1, 0, 1, 2">
+                <description>%MagicNumber.ignoreNumbers</description>
+            </property-metadata>
             <property-metadata name="ignoreHashCodeMethod" datatype="Boolean" default-value="false">
                 <description>%MagicNumber.ignoreHashCodeMethod</description>
+            </property-metadata>
+            <property-metadata name="ignoreAnnotation" datatype="Boolean" default-value="false">
+                <description>%MagicNumber.ignoreAnnotation</description>
             </property-metadata>
             <message-key key="magic.number" />
         </rule-metadata>
