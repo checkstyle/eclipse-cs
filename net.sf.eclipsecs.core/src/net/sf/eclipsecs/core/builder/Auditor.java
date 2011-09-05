@@ -85,13 +85,13 @@ public class Auditor {
     private boolean mAddModuleId = false;
 
     /** Reference to the file buffer manager. */
-    private final ITextFileBufferManager mFileBufferManager = FileBuffers
-            .getTextFileBufferManager();
+    private final ITextFileBufferManager mFileBufferManager = FileBuffers.getTextFileBufferManager();
 
     /**
      * Creates an auditor.
      * 
-     * @param checkConfiguration the check configuraton to use during audit.
+     * @param checkConfiguration
+     *            the check configuraton to use during audit.
      */
     public Auditor(ICheckConfiguration checkConfiguration) {
         mCheckConfiguration = checkConfiguration;
@@ -99,22 +99,21 @@ public class Auditor {
         //
         // check wether to include rule names and/or module id
         //
-        mAddRuleName = CheckstylePluginPrefs
-                .getBoolean(CheckstylePluginPrefs.PREF_INCLUDE_RULE_NAMES);
-        mAddModuleId = CheckstylePluginPrefs
-                .getBoolean(CheckstylePluginPrefs.PREF_INCLUDE_MODULE_IDS);
+        mAddRuleName = CheckstylePluginPrefs.getBoolean(CheckstylePluginPrefs.PREF_INCLUDE_RULE_NAMES);
+        mAddModuleId = CheckstylePluginPrefs.getBoolean(CheckstylePluginPrefs.PREF_INCLUDE_MODULE_IDS);
     }
 
     /**
      * Runs the audit on the files associated with the auditor.
      * 
-     * @param project the project is needed to build the correct classpath for
-     *            the checker
-     * @param monitor the progress monitor
-     * @throws CheckstylePluginException error processing the audit
+     * @param project
+     *            the project is needed to build the correct classpath for the checker
+     * @param monitor
+     *            the progress monitor
+     * @throws CheckstylePluginException
+     *             error processing the audit
      */
-    public void runAudit(IProject project, IProgressMonitor monitor)
-        throws CheckstylePluginException {
+    public void runAudit(IProject project, IProgressMonitor monitor) throws CheckstylePluginException {
 
         // System.out.println("----> Auditing: " + mFiles.size());
 
@@ -126,7 +125,7 @@ public class Auditor {
         mMonitor = monitor;
 
         Checker checker = null;
-        AuditListener listener = null;
+        CheckstyleAuditListener listener = null;
         Filter runtimeExceptionFilter = null;
 
         try {
@@ -134,15 +133,15 @@ public class Auditor {
             List<File> filesToAudit = getFilesList();
 
             // begin task
-            monitor.beginTask(NLS.bind(Messages.Auditor_msgCheckingConfig, mCheckConfiguration
-                    .getName()), filesToAudit.size());
+            monitor.beginTask(NLS.bind(Messages.Auditor_msgCheckingConfig, mCheckConfiguration.getName()),
+                filesToAudit.size());
 
             // create checker
             checker = CheckerFactory.createChecker(mCheckConfiguration, project);
 
             // get the additional data
-            ConfigurationReader.AdditionalConfigData additionalData = CheckerFactory
-                    .getAdditionalData(mCheckConfiguration, project);
+            ConfigurationReader.AdditionalConfigData additionalData = CheckerFactory.getAdditionalData(
+                mCheckConfiguration, project);
 
             // create and add listener
             listener = new CheckstyleAuditListener(project, additionalData);
@@ -164,6 +163,12 @@ public class Auditor {
         catch (CheckstyleException e) {
             CheckstylePluginException.rethrow(e);
         }
+        catch (RuntimeException e) {
+            if (listener != null) {
+                listener.cleanup();
+            }
+            throw e;
+        }
         finally {
             monitor.done();
 
@@ -178,7 +183,8 @@ public class Auditor {
     /**
      * Add a file to the audit.
      * 
-     * @param file the file
+     * @param file
+     *            the file
      */
     public void addFile(IFile file) {
         mFiles.put(file.getLocation().toString(), file);
@@ -187,7 +193,8 @@ public class Auditor {
     /**
      * Get a file resource by the file name.
      * 
-     * @param fileName the file name
+     * @param fileName
+     *            the file name
      * @return the file resource or <code>null</code>
      */
     private IFile getFile(String fileName) {
@@ -195,8 +202,7 @@ public class Auditor {
     }
 
     /**
-     * Helper method to get an array of java.io.Files. This array gets passed to
-     * the checker.
+     * Helper method to get an array of java.io.Files. This array gets passed to the checker.
      * 
      * @return
      */
@@ -209,8 +215,8 @@ public class Auditor {
     }
 
     /**
-     * Implementation of the audit listener. This listener creates markers on
-     * the file resources if checkstyle messages are reported.
+     * Implementation of the audit listener. This listener creates markers on the file resources if checkstyle messages
+     * are reported.
      * 
      * @author David Schneider
      * @author Lars Ködderitzsch
@@ -244,25 +250,25 @@ public class Auditor {
         /** the count of markers generated for the current resource. */
         private int mMarkerCount;
 
-        public CheckstyleAuditListener(IProject project,
-                ConfigurationReader.AdditionalConfigData additionalData) {
+        /** keep track which file paths have been connected with the BufferManager. */
+        private List<IPath> mConnectedFileBufferPaths = new ArrayList<IPath>();
+
+        public CheckstyleAuditListener(IProject project, ConfigurationReader.AdditionalConfigData additionalData) {
             mProject = project;
 
             mAdditionalConfigData = additionalData;
 
             // init the marker limitation
-            mLimitMarkers = CheckstylePluginPrefs
-                    .getBoolean(CheckstylePluginPrefs.PREF_LIMIT_MARKERS_PER_RESOURCE);
-            mMarkerLimit = CheckstylePluginPrefs
-                    .getInt(CheckstylePluginPrefs.PREF_MARKER_AMOUNT_LIMIT);
+            mLimitMarkers = CheckstylePluginPrefs.getBoolean(CheckstylePluginPrefs.PREF_LIMIT_MARKERS_PER_RESOURCE);
+            mMarkerLimit = CheckstylePluginPrefs.getInt(CheckstylePluginPrefs.PREF_MARKER_AMOUNT_LIMIT);
         }
 
         public void fileStarted(AuditEvent event) {
-            
+
             if (mMonitor.isCanceled()) {
                 throw new OperationCanceledException();
             }
-            
+
             // get the current IFile reference
             mResource = getFile(event.getFileName());
             mMarkerCount = 0;
@@ -271,16 +277,11 @@ public class Auditor {
 
                 // begin subtask
                 if (mMonitorCounter == 0) {
-                    mMonitor.subTask(NLS
-                            .bind(Messages.Auditor_msgCheckingFile, mResource.getName()));
+                    mMonitor.subTask(NLS.bind(Messages.Auditor_msgCheckingFile, mResource.getName()));
                 }
 
                 // increment monitor-counter
                 this.mMonitorCounter++;
-
-                // invalidate the last document
-                mDocument = null;
-
             }
             else {
 
@@ -290,8 +291,7 @@ public class Auditor {
                 IPath projectPath = mProject.getLocation();
                 if (projectPath.isPrefixOf(dirPath)) {
                     // find the resource with a project relative path
-                    mResource = mProject.findMember(dirPath.removeFirstSegments(projectPath
-                            .segmentCount()));
+                    mResource = mProject.findMember(dirPath.removeFirstSegments(projectPath.segmentCount()));
                 }
                 else {
                     // if the resource is not inside the project, take project
@@ -309,8 +309,7 @@ public class Auditor {
 
                     if (!severity.equals(SeverityLevel.IGNORE) && mResource != null) {
 
-                        RuleMetadata metaData = MetadataFactory.getRuleMetadata(error
-                                .getSourceName());
+                        RuleMetadata metaData = MetadataFactory.getRuleMetadata(error.getSourceName());
 
                         // create generic metadata if none can be found
                         if (metaData == null) {
@@ -318,16 +317,11 @@ public class Auditor {
                             metaData = MetadataFactory.createGenericMetadata(module);
                         }
 
-                        mMarkerAttributes.put(CheckstyleMarker.MODULE_NAME, metaData
-                                .getInternalName());
-                        mMarkerAttributes.put(CheckstyleMarker.MESSAGE_KEY, error
-                                .getLocalizedMessage().getKey());
-                        mMarkerAttributes.put(IMarker.PRIORITY,
-                                new Integer(IMarker.PRIORITY_NORMAL));
-                        mMarkerAttributes.put(IMarker.SEVERITY, new Integer(
-                                getSeverityValue(severity)));
-                        mMarkerAttributes
-                                .put(IMarker.LINE_NUMBER, Integer.valueOf(error.getLine()));
+                        mMarkerAttributes.put(CheckstyleMarker.MODULE_NAME, metaData.getInternalName());
+                        mMarkerAttributes.put(CheckstyleMarker.MESSAGE_KEY, error.getLocalizedMessage().getKey());
+                        mMarkerAttributes.put(IMarker.PRIORITY, new Integer(IMarker.PRIORITY_NORMAL));
+                        mMarkerAttributes.put(IMarker.SEVERITY, new Integer(getSeverityValue(severity)));
+                        mMarkerAttributes.put(IMarker.LINE_NUMBER, Integer.valueOf(error.getLine()));
                         mMarkerAttributes.put(IMarker.MESSAGE, getMessage(error));
 
                         // calculate offset for editor annotations
@@ -364,27 +358,42 @@ public class Auditor {
                 mMonitor.worked(MONITOR_INTERVAL);
                 mMonitorCounter = 0;
             }
+
+            disconnectFileBuffer(mResource);
+            mDocument = null;
         }
 
-        public void auditFinished(AuditEvent event) {}
+        public void auditFinished(AuditEvent event) {
+            cleanup();
+        }
 
-        public void auditStarted(AuditEvent event) {}
+        public void auditStarted(AuditEvent event) {
+        }
+
+        public void cleanup() {
+
+            mDocument = null;
+
+            // disconnect any leftover buffer paths, in case of an unexpected abortion
+            for (IPath p : mConnectedFileBufferPaths) {
+                disconnectFileBuffer(p);
+            }
+        }
 
         /**
          * Calculates the offset information for the editor annotations.
          * 
-         * @param error the audit error
-         * @param markerAttributes the marker attributes
+         * @param error
+         *            the audit error
+         * @param markerAttributes
+         *            the marker attributes
          * @throws CoreException
          */
-        private void calculateMarkerOffset(AuditEvent error, Map<String, Object> markerAttributes)
-            throws CoreException {
+        private void calculateMarkerOffset(AuditEvent error, Map<String, Object> markerAttributes) throws CoreException {
 
             // lazy create the document for the current file
-            if (mDocument == null && mResource instanceof IFile) {
-                IPath path = mResource.getFullPath();
-                mFileBufferManager.connect(path, new NullProgressMonitor());
-                mDocument = mFileBufferManager.getTextFileBuffer(path).getDocument();
+            if (mDocument == null) {
+                mDocument = connectFileBuffer(mResource);
             }
 
             // Provide offset information for the marker to make
@@ -394,8 +403,7 @@ public class Auditor {
 
                     int line = error.getLine();
 
-                    IRegion lineInformation = mDocument
-                            .getLineInformation(line == 0 ? 0 : line - 1);
+                    IRegion lineInformation = mDocument.getLineInformation(line == 0 ? 0 : line - 1);
                     int lineOffset = lineInformation.getOffset();
                     int lineLength = lineInformation.getLength();
 
@@ -406,8 +414,7 @@ public class Auditor {
                     int offset = getOffsetFromColumn(lineData, error.getColumn());
 
                     markerAttributes.put(IMarker.CHAR_START, Integer.valueOf(lineOffset + offset));
-                    markerAttributes
-                            .put(IMarker.CHAR_END, Integer.valueOf(lineOffset + lineLength));
+                    markerAttributes.put(IMarker.CHAR_END, Integer.valueOf(lineOffset + lineLength));
                 }
                 catch (BadLocationException e) {
                     // seems to happen quite often so its no use to log since we
@@ -417,13 +424,56 @@ public class Auditor {
             }
         }
 
+        private IDocument connectFileBuffer(IResource resource) {
+
+            if (!(resource instanceof IFile)) {
+                return null;
+            }
+
+            IDocument document = null;
+
+            try {
+                IPath path = resource.getFullPath();
+                mFileBufferManager.connect(path, new NullProgressMonitor());
+
+                mConnectedFileBufferPaths.add(path);
+                document = mFileBufferManager.getTextFileBuffer(path).getDocument();
+            }
+            catch (CoreException e) {
+                CheckstyleLog.log(e);
+            }
+            return document;
+        }
+
+        private void disconnectFileBuffer(IResource resource) {
+
+            if (!(resource instanceof IFile)) {
+                return;
+            }
+
+            IPath path = mResource.getFullPath();
+            disconnectFileBuffer(path);
+        }
+
+        private void disconnectFileBuffer(IPath path) {
+
+            try {
+                mFileBufferManager.disconnect(path, new NullProgressMonitor());
+                mConnectedFileBufferPaths.remove(path);
+            }
+            catch (CoreException e) {
+                CheckstyleLog.log(e);
+            }
+        }
+
         /**
-         * Calculates the offset for the given column within this line. This is
-         * done to get a correct offset if tab characters are used within this
-         * line.
+         * Calculates the offset for the given column within this line. This is done to get a correct offset if tab
+         * characters are used within this line.
          * 
-         * @param line the line as string
-         * @param column the column
+         * @param line
+         *            the line as string
+         * @param column
+         *            the column
          * @return the true offset of this column within the line
          */
         private int getOffsetFromColumn(String line, int column) {
