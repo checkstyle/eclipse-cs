@@ -264,6 +264,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
         mTxtTreeFilter.setText(mDefaultFilterText);
         mTxtTreeFilter.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         mTxtTreeFilter.addModifyListener(mController);
+        mTxtTreeFilter.addKeyListener(mController);
 
         // select all of the default text on focus gain
         mTxtTreeFilter.addFocusListener(new FocusListener() {
@@ -525,11 +526,20 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
                 if (e.character == SWT.DEL || e.keyCode == SWT.ARROW_LEFT) {
                     removeModule(mTableViewer.getSelection());
                 }
-            }
-            if (e.widget == mTreeViewer.getTree()) {
+            } else if (e.widget == mTreeViewer.getTree()) {
                 if (e.keyCode == SWT.ARROW_RIGHT || e.character == ' ') {
-                    newModule(mTreeViewer.getSelection());
+
+                    IStructuredSelection selection = (IStructuredSelection) mTreeViewer
+                        .getSelection();
+                    Object element = selection.getFirstElement();
+
+                    if (element instanceof RuleMetadata) {
+                        newModule(mTreeViewer.getSelection());
+                    }
                 }
+            } else if (e.widget == mTxtTreeFilter
+                && e.keyCode == SWT.ARROW_DOWN) {
+                mTreeViewer.getTree().forceFocus();
             }
         }
 
