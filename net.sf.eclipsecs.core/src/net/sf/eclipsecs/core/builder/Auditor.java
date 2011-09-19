@@ -23,8 +23,10 @@ package net.sf.eclipsecs.core.builder;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import net.sf.eclipsecs.core.CheckstylePluginPrefs;
 import net.sf.eclipsecs.core.Messages;
@@ -251,7 +253,7 @@ public class Auditor {
         private int mMarkerCount;
 
         /** keep track which file paths have been connected with the BufferManager. */
-        private List<IPath> mConnectedFileBufferPaths = new ArrayList<IPath>();
+        private Set<IPath> mConnectedFileBufferPaths = new HashSet<IPath>();
 
         public CheckstyleAuditListener(IProject project, ConfigurationReader.AdditionalConfigData additionalData) {
             mProject = project;
@@ -458,8 +460,11 @@ public class Auditor {
         private void disconnectFileBuffer(IPath path) {
 
             try {
-                mFileBufferManager.disconnect(path, new NullProgressMonitor());
-                mConnectedFileBufferPaths.remove(path);
+
+                if (mConnectedFileBufferPaths.contains(path)) {
+                    mFileBufferManager.disconnect(path, new NullProgressMonitor());
+                    mConnectedFileBufferPaths.remove(path);
+                }
             }
             catch (CoreException e) {
                 CheckstyleLog.log(e);
