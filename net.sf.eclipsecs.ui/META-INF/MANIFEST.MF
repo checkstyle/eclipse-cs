@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Eclipse Checkstyle Ui Plug-in
 Bundle-SymbolicName: net.sf.eclipsecs.ui;singleton:=true
-Bundle-Version: 5.4.0.qualifier
+Bundle-Version: 5.4.1.qualifier
 Bundle-Vendor: http://eclipse-cs.sf.net/
 Bundle-Activator: net.sf.eclipsecs.ui.CheckstyleUIPlugin
 Require-Bundle: net.sf.eclipsecs.checkstyle,
