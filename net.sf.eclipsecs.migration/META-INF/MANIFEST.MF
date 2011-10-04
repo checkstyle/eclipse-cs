@@ -4,8 +4,9 @@ Bundle-Name: eclipse-cs 4.x.x -> 5.0.0 Migration Plug-in
 Bundle-SymbolicName: net.sf.eclipsecs.migration;singleton:=true
 Bundle-Version: 5.4.1.qualifier
 Bundle-Vendor: http://eclipse-cs.sf.net/
-Require-Bundle: net.sf.eclipsecs.core,
- org.eclipse.core.resources,
- org.eclipse.core.runtime,
- org.eclipse.ui
+Require-Bundle: net.sf.eclipsecs.core
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Import-Package: org.eclipse.core.resources,
+ org.eclipse.core.runtime,
+ org.eclipse.core.runtime.jobs,
+ org.eclipse.ui
