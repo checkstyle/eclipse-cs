@@ -3,13 +3,13 @@
     <parent>
         <artifactId>net.sf.eclipsecs.parent</artifactId>
         <groupId>net.sf.eclipsecs</groupId>
-        <version>5.4.1-SNAPSHOT</version>
+        <version>5.5.0-SNAPSHOT</version>
         <relativePath>../net.sf.eclipsecs.parent</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.sf.eclipsecs</groupId>
     <artifactId>net.sf.eclipsecs.feature</artifactId>
-    <version>5.4.1-SNAPSHOT</version>
+    <version>5.5.0-SNAPSHOT</version>
     <packaging>eclipse-feature</packaging>
     <name>eclipse-cs Feature</name>
 </project>

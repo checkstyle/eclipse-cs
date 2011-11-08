@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<feature version="5.4.1.qualifier"
+<feature version="5.5.0.qualifier"
       id="net.sf.eclipsecs"
       label="%feature.label"
       provider-name="%feature.provider_name"
@@ -39,34 +39,34 @@
          id="net.sf.eclipsecs.branding"
          download-size="0"
          install-size="0"
-         version="5.4.1.qualifier"
+         version="5.5.0.qualifier"
          unpack="false"/>
 
    <plugin
          id="net.sf.eclipsecs.core"
          download-size="0"
          install-size="0"
-         version="5.4.1.qualifier"
+         version="5.5.0.qualifier"
          unpack="false"/>
 
    <plugin
          id="net.sf.eclipsecs.doc"
          download-size="0"
          install-size="0"
-         version="5.4.1.qualifier"
+         version="5.5.0.qualifier"
          unpack="false"/>
 
    <plugin
          id="net.sf.eclipsecs.checkstyle"
          download-size="0"
          install-size="0"
-         version="5.4.1.qualifier"/>
+         version="5.5.0.qualifier"/>
 
    <plugin
          id="net.sf.eclipsecs.ui"
          download-size="0"
          install-size="0"
-         version="5.4.1.qualifier"
+         version="5.5.0.qualifier"
          unpack="false"/>
 
 </feature>

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<site url="http://sourceforge.net/projects/eclipse-cs/files/updatesite/5.4.1/">
+<site url="http://sourceforge.net/projects/eclipse-cs/files/updatesite/5.5.0/">
    <description name="Eclipse Checkstyle Plugin" url="http://eclipse-cs.sourceforge.net/update">
       Eclipse Checkstyle Plugin Update Site
    </description>
-   <feature url="features/net.sf.eclipsecs_5.4.1.qualifier.jar" id="net.sf.eclipsecs" version="5.4.1.qualifier">
+   <feature url="features/net.sf.eclipsecs_5.5.0.qualifier.jar" id="net.sf.eclipsecs" version="5.5.0.qualifier">
       <category name="Checkstyle"/>
    </feature>
-   <feature url="features/net.sf.eclipsecs.migration_5.4.1.qualifier.jar" id="net.sf.eclipsecs.migration" version="5.4.1.qualifier">
+   <feature url="features/net.sf.eclipsecs.migration_5.5.0.qualifier.jar" id="net.sf.eclipsecs.migration" version="5.5.0.qualifier">
       <category name="Checkstyle"/>
    </feature>
    <category-def name="Checkstyle" label="Checkstyle"/>

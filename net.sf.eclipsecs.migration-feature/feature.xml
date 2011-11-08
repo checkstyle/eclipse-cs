@@ -2,7 +2,7 @@
 <feature
       id="net.sf.eclipsecs.migration"
       label="%feature.label"
-      version="5.4.1.qualifier"
+      version="5.5.0.qualifier"
       provider-name="%feature.provider_name">
 
    <description url="%description.url">
@@ -25,7 +25,7 @@
          id="net.sf.eclipsecs.migration"
          download-size="0"
          install-size="0"
-         version="5.4.1.qualifier"
+         version="5.5.0.qualifier"
          unpack="false"/>
 
 </feature>
