@@ -31,7 +31,7 @@
         <developerConnection>scm:cvs:pserver:anonymous:@dev.eclipse.org:/cvsroot/eclipse</developerConnection>
     </scm>
     <build>
-        <!-- <finalName>${project.artifactId}-${buildNumber}</finalName> -->
+        <finalName>${project.artifactId}_${unqualifiedVersion}.${buildQualifier}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.eclipse.tycho</groupId>
@@ -46,6 +46,18 @@
                 <configuration>
                     <strictVersions>false</strictVersions>
                     <archiveSite>true</archiveSite>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.eclipse.tycho</groupId>
+                <artifactId>tycho-packaging-plugin</artifactId>
+                <version>${tycho-version}</version>
+                <configuration>
+                    <archiveSite>true</archiveSite>
+                    <archive>
+                        <addMavenDescriptor>false</addMavenDescriptor>
+                    </archive>
                 </configuration>
             </plugin>
             <plugin>
@@ -82,7 +94,6 @@
                 </configuration>
             </plugin>
         </plugins>
-
     </build>
 
     <repositories>

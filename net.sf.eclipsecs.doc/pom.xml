@@ -14,31 +14,134 @@
     <name>eclipse-cs Documentation Plugin</name>
 
     <build>
+
         <plugins>
             <plugin>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <version>1.6</version>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>2.4.1</version>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>docs</directory>
+                            <includes>
+                                <include>**/*</include>
+                            </includes>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.5</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                </configuration>
                 <executions>
                     <execution>
-                        <phase>prepare-package</phase>
-                        <configuration>
-                            <target>
-
-                                <!-- build plugin docs -->
-                                <ant antfile="build/build.xml" target="build.plugin.docs">
-                                </ant>
-
-                                <!-- build website -->
-                                <mkdir dir="${project.build.directory}/website" />
-                                <ant antfile="build/build.xml" target="build.plugin.website">
-                                    <property name="dist.web" value="${project.build.directory}/website" />
-                                    <property name="version.full" value="${project.version}" />
-                                </ant>
-                            </target>
-                        </configuration>
+                        <id>website</id>
+                        <phase>process-resources</phase>
                         <goals>
-                            <goal>run</goal>
+                            <goal>copy-resources</goal>
                         </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/website</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/resources</directory>
+                                    <!-- Copy update-site files with filtering to replace version/timestamp -->
+                                    <includes>
+                                        <include>update/**/*</include>
+                                    </includes>
+                                    <filtering>true</filtering>
+                                </resource>
+                                <resource>
+                                    <directory>src/main/resources</directory>
+                                    <!-- Copy all the rest except *.html (xslt-transformed) and update site files (see above) -->
+                                    <includes>
+                                        <include>**/*</include>
+                                    </includes>
+                                    <excludes>
+                                        <exclude>**/*.html</exclude>
+                                        <exclude>update/**/*</exclude>
+                                    </excludes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>docs</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/docs</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/resources</directory>
+                                    <!-- Copy all except *.html (xslt-transformed) and update site files (not needed) -->
+                                    <includes>
+                                        <include>**/*</include>
+                                    </includes>
+                                    <excludes>
+                                        <exclude>**/*.html</exclude>
+                                        <exclude>update/**</exclude>
+                                    </excludes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>xml-maven-plugin</artifactId>
+                <version>1.0</version>
+                <executions>
+                    <execution>
+                        <id>transform-website</id>
+                        <goals>
+                            <goal>transform</goal>
+                        </goals>
+                        <configuration>
+                            <transformationSets>
+                                <transformationSet>
+                                    <dir>src/main/resources</dir>
+                                    <includes>
+                                        <include>**/*.html</include>
+                                    </includes>
+                                    <stylesheet>src/main/xslt/generate_docs.xsl</stylesheet>
+                                    <outputDir>${project.build.directory}/website</outputDir>
+                                    <parameters>
+                                        <parameter>
+                                            <name>style</name>
+                                            <value>website</value>
+                                        </parameter>
+                                    </parameters>
+                                </transformationSet>
+                            </transformationSets>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>transform-docs</id>
+                        <goals>
+                            <goal>transform</goal>
+                        </goals>
+                        <configuration>
+                            <transformationSets>
+                                <transformationSet>
+                                    <dir>src/main/resources</dir>
+                                    <includes>
+                                        <include>**/*.html</include>
+                                    </includes>
+                                    <stylesheet>src/main/xslt/generate_docs.xsl</stylesheet>
+                                    <outputDir>${basedir}/docs</outputDir>
+                                </transformationSet>
+                            </transformationSets>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
