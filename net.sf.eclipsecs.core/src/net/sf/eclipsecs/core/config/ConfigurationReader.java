@@ -40,15 +40,13 @@ import org.dom4j.io.SAXReader;
 import org.xml.sax.InputSource;
 
 /**
- * Utitlity class to read a checkstyle configuration and transform to the
- * plugins module objects.
+ * Utitlity class to read a checkstyle configuration and transform to the plugins module objects.
  * 
  * @author Lars Ködderitzsch
  */
 public final class ConfigurationReader {
 
-    private static final Pattern PROPERTY_REF_PATTERN = Pattern
-        .compile("^.*\\$\\{.*\\}.*$");
+    private static final Pattern PROPERTY_REF_PATTERN = Pattern.compile("^.*\\$\\{.*\\}.*$");
 
     //
     // Mapping from public DTD to internal dtd resource.
@@ -60,17 +58,13 @@ public final class ConfigurationReader {
 
     static {
 
-        PUBLIC2INTERNAL_DTD_MAP.put(
-            "-//Puppy Crawl//DTD Check Configuration 1.0//EN", //$NON-NLS-1$
+        PUBLIC2INTERNAL_DTD_MAP.put("-//Puppy Crawl//DTD Check Configuration 1.0//EN", //$NON-NLS-1$
             "com/puppycrawl/tools/checkstyle/configuration_1_0.dtd"); //$NON-NLS-1$
-        PUBLIC2INTERNAL_DTD_MAP.put(
-            "-//Puppy Crawl//DTD Check Configuration 1.1//EN", //$NON-NLS-1$
+        PUBLIC2INTERNAL_DTD_MAP.put("-//Puppy Crawl//DTD Check Configuration 1.1//EN", //$NON-NLS-1$
             "com/puppycrawl/tools/checkstyle/configuration_1_1.dtd"); //$NON-NLS-1$
-        PUBLIC2INTERNAL_DTD_MAP.put(
-            "-//Puppy Crawl//DTD Check Configuration 1.2//EN", //$NON-NLS-1$
+        PUBLIC2INTERNAL_DTD_MAP.put("-//Puppy Crawl//DTD Check Configuration 1.2//EN", //$NON-NLS-1$
             "com/puppycrawl/tools/checkstyle/configuration_1_2.dtd"); //$NON-NLS-1$
-        PUBLIC2INTERNAL_DTD_MAP.put(
-            "-//Puppy Crawl//DTD Check Configuration 1.3//EN", //$NON-NLS-1$
+        PUBLIC2INTERNAL_DTD_MAP.put("-//Puppy Crawl//DTD Check Configuration 1.3//EN", //$NON-NLS-1$
             "com/puppycrawl/tools/checkstyle/configuration_1_3.dtd"); //$NON-NLS-1$
     }
 
@@ -88,8 +82,8 @@ public final class ConfigurationReader {
     //
 
     /**
-     * Reads the checkstyle configuration from the given stream an returs a list
-     * of all modules within this configuration.
+     * Reads the checkstyle configuration from the given stream an returs a list of all modules within this
+     * configuration.
      * 
      * @param in
      *            the stream the configuration is loaded from
@@ -97,15 +91,13 @@ public final class ConfigurationReader {
      * @throws CheckstylePluginException
      *             error while reading the configuration
      */
-    public static List<Module> read(InputSource in)
-        throws CheckstylePluginException {
+    public static List<Module> read(InputSource in) throws CheckstylePluginException {
 
         List<Module> rules = null;
         try {
 
             final SAXReader reader = new SAXReader();
-            reader.setEntityResolver(new XMLUtil.InternalDtdEntityResolver(
-                PUBLIC2INTERNAL_DTD_MAP));
+            reader.setEntityResolver(new XMLUtil.InternalDtdEntityResolver(PUBLIC2INTERNAL_DTD_MAP));
             final Document document = reader.read(in);
 
             rules = getModules(document);
@@ -118,9 +110,8 @@ public final class ConfigurationReader {
     }
 
     /**
-     * Gets additional data about the Checkstyle configuration. This data is
-     * used by the plugin for special purposes, like determining the correct
-     * offset of a checkstyle violation.
+     * Gets additional data about the Checkstyle configuration. This data is used by the plugin for special purposes,
+     * like determining the correct offset of a checkstyle violation.
      * 
      * @param in
      *            the input stream
@@ -129,8 +120,7 @@ public final class ConfigurationReader {
      *             error while reading the configuration
      */
 
-    public static AdditionalConfigData getAdditionalConfigData(InputSource in)
-        throws CheckstylePluginException {
+    public static AdditionalConfigData getAdditionalConfigData(InputSource in) throws CheckstylePluginException {
 
         final List<Module> modules = read(in);
 
@@ -139,20 +129,28 @@ public final class ConfigurationReader {
         for (final Module module : modules) {
 
             if ((module.getMetaData() != null)
-                && module.getMetaData().getInternalName().equals(
-                    XMLTags.TREEWALKER_MODULE)) {
+                && module.getMetaData().getInternalName().equals(XMLTags.TREEWALKER_MODULE)) {
 
                 final ConfigProperty prop = module.getProperty("tabWidth"); //$NON-NLS-1$
 
-                final String tabWidthProp = (prop != null)
-                    && (prop.getValue() != null) ? prop.getValue() : prop
-                    .getMetaData().getDefaultValue();
+                String tabWidthProp = null;
+
+                if (prop != null) {
+                    tabWidthProp = prop.getValue();
+                }
+
+                if (tabWidthProp == null && prop != null && prop.getMetaData() != null) {
+                    tabWidthProp = prop.getMetaData().getDefaultValue();
+                }
+
                 try {
                     tabWidth = Integer.parseInt(tabWidthProp);
                 }
                 catch (final Exception e) {
                     // ignore
                 }
+
+                break;
             }
         }
 
@@ -172,8 +170,7 @@ public final class ConfigurationReader {
 
                     final String name = node.attributeValue(XMLTags.NAME_TAG);
 
-                    final RuleMetadata metadata = MetadataFactory
-                        .getRuleMetadata(name);
+                    final RuleMetadata metadata = MetadataFactory.getRuleMetadata(name);
                     Module module = null;
                     if (metadata != null) {
                         module = new Module(metadata, true);
@@ -199,23 +196,19 @@ public final class ConfigurationReader {
         return modules;
     }
 
-    private static void addProperties(final Element moduleEl,
-        final Module module) {
+    private static void addProperties(final Element moduleEl, final Module module) {
 
         @SuppressWarnings("unchecked")
-        final List<Element> propertyEls = moduleEl
-            .elements(XMLTags.PROPERTY_TAG);
+        final List<Element> propertyEls = moduleEl.elements(XMLTags.PROPERTY_TAG);
 
         for (final Element propertyEl : propertyEls) {
 
             final String name = propertyEl.attributeValue(XMLTags.NAME_TAG);
             final String value = propertyEl.attributeValue(XMLTags.VALUE_TAG);
 
-            final boolean isPropertyRef = (value != null)
-                && PROPERTY_REF_PATTERN.matcher(value).matches();
+            final boolean isPropertyRef = (value != null) && PROPERTY_REF_PATTERN.matcher(value).matches();
 
-            if (name.equals(XMLTags.SEVERITY_TAG)
-                && (module.getMetaData() != null)
+            if (name.equals(XMLTags.SEVERITY_TAG) && (module.getMetaData() != null)
                 && module.getMetaData().hasSeverity()) {
                 try {
                     module.setSeverity(Severity.valueOf(value));
@@ -283,8 +276,7 @@ public final class ConfigurationReader {
     }
 
     /**
-     * Holds additional data about the Checkstyle configuration file, for
-     * special uses.
+     * Holds additional data about the Checkstyle configuration file, for special uses.
      * 
      * @author Lars Koedderitzsch
      */
