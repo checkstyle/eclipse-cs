@@ -77,6 +77,7 @@ public class CheckSelectedFilesAction implements IObjectActionDelegate {
             addFileResources(mSelection.toList(), filesToCheck);
 
             RunCheckstyleOnFilesJob job = new RunCheckstyleOnFilesJob(filesToCheck);
+            job.setRule(job);
             job.schedule();
         }
         catch (CoreException e) {

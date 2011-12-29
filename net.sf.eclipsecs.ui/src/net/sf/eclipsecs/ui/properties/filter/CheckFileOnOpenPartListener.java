@@ -20,6 +20,9 @@
 
 package net.sf.eclipsecs.ui.properties.filter;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import net.sf.eclipsecs.core.builder.CheckstyleMarker;
@@ -42,30 +45,48 @@ import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.part.FileEditorInput;
 
 /**
- * PartListener implementation that listenes for opening editor parts and runs
- * Checkstyle on the opened file if the UnOpenedFileFilter is active.
+ * PartListener implementation that listenes for opening editor parts and runs Checkstyle on the opened file if the
+ * UnOpenedFileFilter is active.
  * 
- * @see https://sourceforge.net/tracker/index.php?func=detail&aid=1647245&group_id=80344&atid=559497).
+ * @see https ://sourceforge.net/tracker/index.php?func=detail&aid=1647245&group_id =80344&atid=559497).
  * @author Lars Ködderitzsch
  */
 public class CheckFileOnOpenPartListener implements IPartListener2 {
+
+    /**
+     * Register multiple parts as opened at once. Used during workspace startup.
+     * 
+     * @param parts
+     *            the opened parts
+     */
+    public void partsOpened(Collection<IWorkbenchPartReference> parts) {
+
+        List<IFile> filesToCheck = new ArrayList<IFile>();
+
+        for (IWorkbenchPartReference partRef : parts) {
+
+            IFile editorFile = getEditorFile(partRef);
+            if (editorFile != null) {
+                UnOpenedFilesFilter.addOpenedFile(editorFile);
+            }
+
+            // check if the opened part is a editor
+            // and the editors file need to be checked
+            if (editorFile != null && isFileAffected(editorFile)) {
+                filesToCheck.add(editorFile);
+            }
+        }
+
+        RunCheckstyleOnFilesJob job = new RunCheckstyleOnFilesJob(filesToCheck);
+        job.schedule();
+    }
 
     /**
      * {@inheritDoc}
      */
     public void partOpened(IWorkbenchPartReference partRef) {
 
-        IFile editorFile = getEditorFile(partRef);
-        if (editorFile != null) {
-            UnOpenedFilesFilter.addOpenedFile(editorFile);
-        }
-
-        // check if the opened part is a editor
-        // and the editors file need to be checked
-        if (editorFile != null && isFileAffected(editorFile)) {
-            RunCheckstyleOnFilesJob job = new RunCheckstyleOnFilesJob(editorFile);
-            job.schedule();
-        }
+        partsOpened(Collections.singleton(partRef));
     }
 
     /**
@@ -94,50 +115,50 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
      * {@inheritDoc}
      */
     public void partActivated(IWorkbenchPartReference partRef) {
-    // NOOP
+        // NOOP
     }
 
     /**
      * {@inheritDoc}
      */
     public void partBroughtToTop(IWorkbenchPartReference partRef) {
-    // NOOP
+        // NOOP
     }
 
     /**
      * {@inheritDoc}
      */
     public void partDeactivated(IWorkbenchPartReference partRef) {
-    // NOOP
+        // NOOP
     }
 
     /**
      * {@inheritDoc}
      */
     public void partHidden(IWorkbenchPartReference partRef) {
-    // NOOP
+        // NOOP
     }
 
     /**
      * {@inheritDoc}
      */
     public void partInputChanged(IWorkbenchPartReference partRef) {
-    // NOOP
+        // NOOP
     }
 
     /**
      * {@inheritDoc}
      */
     public void partVisible(IWorkbenchPartReference partRef) {
-    // NOOP
+        // NOOP
     }
 
     /**
      * Returns the file behind the referenced workbench part.
      * 
-     * @param partRef the workbench part in question
-     * @return the editors file or <code>null</code> if the workbench part is
-     *         no file based editor
+     * @param partRef
+     *            the workbench part in question
+     * @return the editors file or <code>null</code> if the workbench part is no file based editor
      */
     private IFile getEditorFile(IWorkbenchPartReference partRef) {
 
@@ -157,12 +178,11 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
     }
 
     /**
-     * Checks if the given file is affected by the UnOpenedFilesFilter and needs
-     * to be handled on editor open/close.
+     * Checks if the given file is affected by the UnOpenedFilesFilter and needs to be handled on editor open/close.
      * 
-     * @param file the file to check
-     * @return <code>true</code> if the file is affected, <code>false</code>
-     *         otherwise
+     * @param file
+     *            the file to check
+     * @return <code>true</code> if the file is affected, <code>false</code> otherwise
      */
     private boolean isFileAffected(IFile file) {
 
@@ -174,8 +194,7 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
             // check if checkstyle is enabled on the project
             if (project.isAccessible() && project.hasNature(CheckstyleNature.NATURE_ID)) {
 
-                IProjectConfiguration config = ProjectConfigurationFactory
-                        .getConfiguration(project);
+                IProjectConfiguration config = ProjectConfigurationFactory.getConfiguration(project);
 
                 // now check if the UnOpenedFilesFilter is active
                 boolean unOpenedFilesFilterActive = false;
@@ -183,8 +202,7 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
                 List<IFilter> filters = config.getFilters();
                 for (IFilter filter : filters) {
 
-                    if (filter instanceof UnOpenedFilesFilter
-                            && ((UnOpenedFilesFilter) filter).isEnabled()) {
+                    if (filter instanceof UnOpenedFilesFilter && ((UnOpenedFilesFilter) filter).isEnabled()) {
                         unOpenedFilesFilterActive = true;
                     }
 

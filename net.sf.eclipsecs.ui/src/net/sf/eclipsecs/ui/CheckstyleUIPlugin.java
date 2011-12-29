@@ -20,6 +20,8 @@
 
 package net.sf.eclipsecs.ui;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Locale;
 
 import net.sf.eclipsecs.core.util.CheckstyleLog;
@@ -36,6 +38,7 @@ import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IWindowListener;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -75,24 +78,27 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
                 for (IWorkbenchWindow window : windows) {
 
                     if (window != null) {
-                        // remove listener first for safety, we don't want
-                        // register the same listener twice accidently
-                        window.getPartService().removePartListener(
-                            mPartListener);
-                        window.getPartService().addPartListener(mPartListener);
+
+                        // collect open editors and have then run against Checkstyle if appropriate
+                        Collection<IWorkbenchPartReference> parts = new HashSet<IWorkbenchPartReference>();
 
                         // add already opened files to the filter
                         // bugfix for 2923044
                         IWorkbenchPage[] pages = window.getPages();
                         for (IWorkbenchPage page : pages) {
 
-                            IEditorReference[] editorRefs = page
-                                .getEditorReferences();
-
+                            IEditorReference[] editorRefs = page.getEditorReferences();
                             for (IEditorReference ref : editorRefs) {
-                                mPartListener.partOpened(ref);
+                                parts.add(ref);
                             }
                         }
+
+                        mPartListener.partsOpened(parts);
+
+                        // remove listener first for safety, we don't want
+                        // register the same listener twice accidently
+                        window.getPartService().removePartListener(mPartListener);
+                        window.getPartService().addPartListener(mPartListener);
                     }
                 }
             }
@@ -155,15 +161,13 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
      * @param log
      *            <code>true</code> if the exception should be logged
      */
-    public static void errorDialog(Shell shell, String message, Throwable t,
-        boolean log) {
+    public static void errorDialog(Shell shell, String message, Throwable t, boolean log) {
 
-        Status status = new Status(Status.ERROR, CheckstyleUIPlugin.PLUGIN_ID,
-            Status.OK, message != null ? message : "", t); //$NON-NLS-1$
+        Status status = new Status(Status.ERROR, CheckstyleUIPlugin.PLUGIN_ID, Status.OK, message != null ? message
+            : "", t); //$NON-NLS-1$
 
         String msg = NLS.bind(Messages.errorDialogMainMessage, message);
-        ErrorDialog.openError(shell, Messages.CheckstyleLog_titleInternalError,
-            msg, status);
+        ErrorDialog.openError(shell, Messages.CheckstyleLog_titleInternalError, msg, status);
 
         if (log) {
             CheckstyleLog.log(t);
@@ -195,11 +199,9 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
      *            the exception
      */
     public static void warningDialog(Shell shell, String message, Throwable t) {
-        Status status = new Status(Status.WARNING,
-            CheckstyleUIPlugin.PLUGIN_ID, Status.OK, t.getLocalizedMessage(), t);
+        Status status = new Status(Status.WARNING, CheckstyleUIPlugin.PLUGIN_ID, Status.OK, t.getLocalizedMessage(), t);
 
-        ErrorDialog.openError(shell, Messages.CheckstyleLog_titleWarning,
-            message, status);
+        ErrorDialog.openError(shell, Messages.CheckstyleLog_titleWarning, message, status);
     }
 
     private final CheckFileOnOpenPartListener mPartListener = new CheckFileOnOpenPartListener();

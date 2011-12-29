@@ -42,35 +42,56 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.ISchedulingRule;
 
 /**
  * Job that invokes Checkstyle on a list of workspace files.
  * 
  * @author Lars Ködderitzsch
  */
-public class RunCheckstyleOnFilesJob extends WorkspaceJob {
+public class RunCheckstyleOnFilesJob extends WorkspaceJob implements ISchedulingRule {
 
     private List<IFile> mFilesToCheck;
 
     /**
      * Creates the job for a list of <code>IFile</code> objects.
      * 
-     * @param files the files to check
+     * @param files
+     *            the files to check
      */
     public RunCheckstyleOnFilesJob(final List<IFile> files) {
         super(Messages.RunCheckstyleOnFilesJob_title);
-        mFilesToCheck = files;
+        mFilesToCheck = new ArrayList<IFile>(files);
+
+        setRule(this);
     }
 
     /**
      * Creates the job for a single file.
      * 
-     * @param file the file to check
+     * @param file
+     *            the file to check
      */
     public RunCheckstyleOnFilesJob(final IFile file) {
         super(Messages.RunCheckstyleOnFilesJob_title);
         mFilesToCheck = new ArrayList<IFile>();
         mFilesToCheck.add(file);
+
+        setRule(this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean contains(ISchedulingRule arg0) {
+        return arg0 instanceof RunCheckstyleOnFilesJob;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isConflicting(ISchedulingRule arg0) {
+        return arg0 instanceof RunCheckstyleOnFilesJob;
     }
 
     /**
@@ -87,19 +108,18 @@ public class RunCheckstyleOnFilesJob extends WorkspaceJob {
                 IProject project = entry.getKey();
                 List<IFile> files = entry.getValue();
 
-                IProjectConfiguration checkConfig = ProjectConfigurationFactory
-                        .getConfiguration(project);
+                IProjectConfiguration checkConfig = ProjectConfigurationFactory.getConfiguration(project);
 
                 filter(files, checkConfig);
 
                 CheckstyleBuilder builder = new CheckstyleBuilder();
                 builder.handleBuildSelection(files, checkConfig, monitor, project,
-                        IncrementalProjectBuilder.INCREMENTAL_BUILD);
+                    IncrementalProjectBuilder.INCREMENTAL_BUILD);
             }
         }
         catch (CheckstylePluginException e) {
-            Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR, e
-                    .getLocalizedMessage(), e);
+            Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR,
+                e.getLocalizedMessage(), e);
             throw new CoreException(status);
         }
         return Status.OK_STATUS;
