@@ -3,13 +3,13 @@
     <parent>
         <artifactId>net.sf.eclipsecs.parent</artifactId>
         <groupId>net.sf.eclipsecs</groupId>
-        <version>5.5.0-SNAPSHOT</version>
+        <version>5.5.1-SNAPSHOT</version>
         <relativePath>../net.sf.eclipsecs.parent</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.sf.eclipsecs</groupId>
     <artifactId>net.sf.eclipsecs.core</artifactId>
-    <version>5.5.0-SNAPSHOT</version>
+    <version>5.5.1-SNAPSHOT</version>
     <packaging>eclipse-plugin</packaging>
     <name>eclipse-cs Core Plugin</name>
 </project>

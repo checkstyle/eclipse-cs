@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.sf.eclipsecs</groupId>
     <artifactId>net.sf.eclipsecs.parent</artifactId>
-    <version>5.5.0-SNAPSHOT</version>
+    <version>5.5.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>net.sf.eclipsecs.parent</name>
 
@@ -16,14 +16,14 @@
         <module>../net.sf.eclipsecs.sample</module>
         <module>../net.sf.eclipsecs.ui</module>
         <module>../net.sf.eclipsecs-feature</module>
-        <module>../net.sf.eclipsecs.migration</module>
-        <module>../net.sf.eclipsecs.migration-feature</module>
+        <!-- <module>../net.sf.eclipsecs.migration</module> -->
+        <!-- <module>../net.sf.eclipsecs.migration-feature</module> -->
         <!-- <module>../org.maven.ide.eclipse.checkstyle</module> <module>../org.maven.ide.eclipse.checkstyle-feature</module> -->
         <module>../net.sf.eclipsecs-updatesite</module>
     </modules>
 
     <properties>
-        <tycho-version>0.12.0</tycho-version>
+        <tycho-version>0.14.1</tycho-version>
     </properties>
 
     <scm>
@@ -39,15 +39,6 @@
                 <version>${tycho-version}</version>
                 <extensions>true</extensions>
             </plugin>
-            <plugin>
-                <groupId>org.eclipse.tycho</groupId>
-                <artifactId>maven-osgi-packaging-plugin</artifactId>
-                <version>${tycho-version}</version>
-                <configuration>
-                    <strictVersions>false</strictVersions>
-                    <archiveSite>true</archiveSite>
-                </configuration>
-            </plugin>
 
             <plugin>
                 <groupId>org.eclipse.tycho</groupId>
@@ -55,6 +46,7 @@
                 <version>${tycho-version}</version>
                 <configuration>
                     <archiveSite>true</archiveSite>
+                    <strictVersions>false</strictVersions>
                     <archive>
                         <addMavenDescriptor>false</addMavenDescriptor>
                     </archive>
@@ -69,45 +61,20 @@
                 </configuration>
             </plugin>
 
-            <plugin>
-                <groupId>org.eclipse.m2e</groupId>
-                <artifactId>lifecycle-mapping</artifactId>
-                <version>1.0.0</version>
-                <configuration>
-                    <lifecycleMappingMetadata>
-                        <pluginExecutions>
-                            <pluginExecution>
-                                <pluginExecutionFilter>
-                                    <groupId>org.eclipse.tycho</groupId>
-                                    <artifactId>tycho-compiler-plugin</artifactId>
-                                    <versionRange>[0.12.0,)</versionRange>
-                                    <goals>
-                                        <goal>compile</goal>
-                                    </goals>
-                                </pluginExecutionFilter>
-                                <action>
-                                    <execute />
-                                </action>
-                            </pluginExecution>
-                        </pluginExecutions>
-                    </lifecycleMappingMetadata>
-                </configuration>
-            </plugin>
+            <!-- <plugin> <groupId>org.eclipse.m2e</groupId> <artifactId>lifecycle-mapping</artifactId> <version>1.0.0</version> 
+                <configuration> <lifecycleMappingMetadata> <pluginExecutions> <pluginExecution> <pluginExecutionFilter> <groupId>org.eclipse.tycho</groupId> 
+                <artifactId>tycho-compiler-plugin</artifactId> <versionRange>[0.14.1,)</versionRange> <goals> <goal>compile</goal> </goals> 
+                </pluginExecutionFilter> <action> <execute /> </action> </pluginExecution> </pluginExecutions> </lifecycleMappingMetadata> 
+                </configuration> </plugin> -->
         </plugins>
     </build>
 
     <repositories>
         <repository>
-            <id>helios</id>
+            <id>indigo</id>
             <layout>p2</layout>
-            <url>http://download.eclipse.org/releases/indigo</url>
+            <url>http://download.jboss.org/jbosstools/updates/indigo/</url>
         </repository>
         <!-- <repository> <id>m2eclipse</id> <layout>p2</layout> <url>http://m2eclipse.sonatype.org/sites/m2e</url> </repository> -->
     </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>Codehaus</id>
-            <url>https://nexus.codehaus.org/content/repositories/releases/</url>
-        </pluginRepository>
-    </pluginRepositories>
 </project>

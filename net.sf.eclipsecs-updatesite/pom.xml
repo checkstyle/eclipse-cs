@@ -3,31 +3,20 @@
     <parent>
         <artifactId>net.sf.eclipsecs.parent</artifactId>
         <groupId>net.sf.eclipsecs</groupId>
-        <version>5.5.0-SNAPSHOT</version>
+        <version>5.5.1-SNAPSHOT</version>
         <relativePath>../net.sf.eclipsecs.parent</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.sf.eclipsecs</groupId>
     <artifactId>net.sf.eclipsecs-updatesite</artifactId>
-    <version>5.5.0-SNAPSHOT</version>
+    <version>5.5.1-SNAPSHOT</version>
     <packaging>eclipse-update-site</packaging>
     <name>eclipse-cs Update Site</name>
 
     <build>
         <plugins>
             <plugin>
-                <groupId>org.eclipse.tycho</groupId>
-                <artifactId>maven-osgi-packaging-plugin</artifactId>
-                <version>${tycho-version}</version>
-                <configuration>
-                    <strictVersions>false</strictVersions>
-                    <archiveSite>true</archiveSite>
-                </configuration>
-            </plugin>
-
-            <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
-
                 <configuration>
                     <descriptors>
                         <descriptor>update-site-assembly.xml</descriptor>
