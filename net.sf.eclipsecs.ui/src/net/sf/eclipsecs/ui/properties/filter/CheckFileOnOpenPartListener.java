@@ -38,10 +38,18 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IEditorReference;
+import org.eclipse.ui.IElementFactory;
+import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchPartReference;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.internal.EditorReference;
+import org.eclipse.ui.internal.IWorkbenchConstants;
 import org.eclipse.ui.part.FileEditorInput;
 
 /**
@@ -162,19 +170,66 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
      */
     private IFile getEditorFile(IWorkbenchPartReference partRef) {
 
-        IFile file = null;
-        IWorkbenchPart part = partRef.getPart(true);
+        if (!(partRef instanceof IEditorReference)) {
+            return null;
+        }
 
-        if (part instanceof IEditorPart) {
+        IFile file = null;
+        IWorkbenchPart part = partRef.getPart(false); // fix for 3522695
+        // do *NOT* restore the part here to prevent startup issues with large number of opened files
+        // instead use a different path the rip the input file reference
+
+        IEditorInput input = null;
+
+        if (part != null && part instanceof IEditorPart) {
 
             IEditorPart editor = (IEditorPart) part;
-
-            if (editor.getEditorInput() instanceof FileEditorInput) {
-
-                file = ((FileEditorInput) editor.getEditorInput()).getFile();
-            }
+            input = editor.getEditorInput();
         }
+        else {
+
+            // fix for 3522695 - rip input file from editor ref without initializing the actual part
+            EditorReference editRef = (EditorReference) partRef;
+            input = getRestoredInput(editRef);
+        }
+
+        if (input instanceof FileEditorInput) {
+            file = ((FileEditorInput) input).getFile();
+        }
+
         return file;
+    }
+
+    private IEditorInput getRestoredInput(EditorReference e) {
+
+        IMemento editorMem = e.getMemento();
+        if (editorMem == null) {
+            return null;
+        }
+        IMemento inputMem = editorMem.getChild(IWorkbenchConstants.TAG_INPUT);
+        String factoryID = null;
+        if (inputMem != null) {
+            factoryID = inputMem.getString(IWorkbenchConstants.TAG_FACTORY_ID);
+        }
+        if (factoryID == null) {
+            return null;
+        }
+        IAdaptable input = null;
+
+        IElementFactory factory = PlatformUI.getWorkbench().getElementFactory(factoryID);
+        if (factory == null) {
+            return null;
+        }
+
+        input = factory.createElement(inputMem);
+        if (input == null) {
+            return null;
+        }
+
+        if (!(input instanceof IEditorInput)) {
+            return null;
+        }
+        return (IEditorInput) input;
     }
 
     /**
