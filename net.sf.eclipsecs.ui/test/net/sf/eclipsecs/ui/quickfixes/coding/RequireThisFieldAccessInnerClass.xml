@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quickfix-test-data>
+    <testcase>
+        <input fix-line="4" position="12">
+public class A {
+    private int i = 0;
+    public class B {
+        public void foo() {
+            i = 1;
+        }
+    }
+}
+        </input>
+        <result>
+public class A {
+    private int i = 0;
+    public class B {
+        public void foo() {
+            A.this.i = 1;
+        }
+    }
+}
+        </result>
+    </testcase>
+    <testcase>
+        <input fix-line="5" position="16">
+public class A {
+    private int i = 0;
+    public class B {
+        public class C {
+            public void foo() {
+                i = 1;
+            }
+        }
+    }
+}
+        </input>
+        <result>
+public class A {
+    private int i = 0;
+    public class B {
+        public class C {
+            public void foo() {
+                A.this.i = 1;
+            }
+        }
+    }
+}
+        </result>
+    </testcase>
+    <testcase>
+        <input fix-line="6" position="16">
+public class A {
+    private int i = 0;
+    public class B {
+        private int i = 0;
+        public class C {
+            public void foo() {
+                i = 1;
+            }
+        }
+    }
+}
+        </input>
+        <result>
+public class A {
+    private int i = 0;
+    public class B {
+        private int i = 0;
+        public class C {
+            public void foo() {
+                B.this.i = 1;
+            }
+        }
+    }
+}
+        </result>
+    </testcase>
+</quickfix-test-data>

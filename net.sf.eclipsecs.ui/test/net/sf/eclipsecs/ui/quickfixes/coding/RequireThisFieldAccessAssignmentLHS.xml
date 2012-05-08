@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quickfix-test-data>
+    <testcase>
+        <input fix-line="3" position="8">
+public class A {
+    private int i = 0;
+    public void foo() {
+        i = 1;
+    }
+}
+        </input>
+        <result>
+public class A {
+    private int i = 0;
+    public void foo() {
+        this.i = 1;
+    }
+}
+        </result>
+    </testcase>
+</quickfix-test-data>

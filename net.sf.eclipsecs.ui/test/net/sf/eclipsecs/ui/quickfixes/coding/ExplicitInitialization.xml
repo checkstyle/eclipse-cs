@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quickfix-test-data>
+    <testcase>
+        <input fix-line="1" position="8">
+public class A {
+    int i = 0;
+}
+        </input>
+        <result>
+public class A {
+    int i;
+}
+        </result>
+    </testcase>
+    <testcase>
+        <input fix-line="1" position="8">
+public class A {
+    int i = 0, j = 0;
+}
+        </input>
+        <result>
+public class A {
+    int i, j = 0;
+}
+        </result>
+    </testcase>
+    <testcase>
+        <input fix-line="1" position="15">
+public class A {
+    int i = 0, j = 0;
+}
+        </input>
+        <result>
+public class A {
+    int i = 0, j;
+}
+        </result>
+    </testcase>
+</quickfix-test-data>

@@ -79,6 +79,7 @@
         <rule-metadata name="%ExplicitInitialization.name" internal-name="ExplicitInitialization" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.ExplicitInitializationCheck" />
             <description>%ExplicitInitialization.desc</description>
+            <quickfix classname="net.sf.eclipsecs.ui.quickfixes.coding.ExplicitInitializationQuickfix"/>
             <message-key key="explicit.init" />
         </rule-metadata>
 
@@ -417,6 +418,7 @@
             <property-metadata name="checkMethods" datatype="Boolean" default-value="true">
                 <description>%RequireThis.checkMethods</description>
             </property-metadata>
+            <quickfix classname="net.sf.eclipsecs.ui.quickfixes.coding.RequireThisQuickfix" />
             <message-key key="require.this.variable" />
             <message-key key="require.this.unfound.variable" />
             <message-key key="require.this.method" />
@@ -446,6 +448,7 @@
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.SimplifyBooleanReturnCheck" />
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.SimplifyBooleanReturnCheck" />
             <description>%SimplifyBooleanReturn.desc</description>
+            <quickfix classname="net.sf.eclipsecs.ui.quickfixes.coding.SimplifyBooleanReturnQuickfix"/>
             <message-key key="simplify.boolreturn" />
         </rule-metadata>
 

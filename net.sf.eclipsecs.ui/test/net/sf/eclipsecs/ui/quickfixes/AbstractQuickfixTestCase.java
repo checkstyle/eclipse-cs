@@ -11,7 +11,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
-import net.sf.eclipsecs.ui.quickfixes.AbstractASTResolution;
 
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -28,8 +27,17 @@ import org.w3c.dom.NodeList;
 
 public class AbstractQuickfixTestCase extends TestCase {
 
-    protected void testQuickfix(InputStream testdataStream,
-        AbstractASTResolution quickfix) throws Exception {
+    protected void testQuickfix(final String testDataXml, final AbstractASTResolution quickfix) throws Exception {
+        InputStream stream = getClass().getResourceAsStream(testDataXml);
+        assertNotNull("Cannot find resource " + testDataXml + " in package " + getClass().getPackage().getName(), stream);
+        try {
+            testQuickfix(stream, quickfix);
+        } finally {
+            stream.close();
+        }
+    }
+
+    protected void testQuickfix(InputStream testdataStream, AbstractASTResolution quickfix) throws Exception {
         QuickfixTestData[] testdata = getTestData(testdataStream);
 
         for (int i = 0; i < testdata.length; i++) {

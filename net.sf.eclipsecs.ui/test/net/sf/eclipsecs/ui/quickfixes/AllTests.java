@@ -7,8 +7,11 @@ import net.sf.eclipsecs.ui.quickfixes.blocks.AvoidNestedBlocksTest;
 import net.sf.eclipsecs.ui.quickfixes.blocks.NeedBracesTest;
 import net.sf.eclipsecs.ui.quickfixes.coding.DefaultComesLastTest;
 import net.sf.eclipsecs.ui.quickfixes.coding.EmptyStatementTest;
+import net.sf.eclipsecs.ui.quickfixes.coding.ExplicitInitializationTest;
 import net.sf.eclipsecs.ui.quickfixes.coding.FinalLocalVariableTest;
 import net.sf.eclipsecs.ui.quickfixes.coding.MissingSwitchDefaultTest;
+import net.sf.eclipsecs.ui.quickfixes.coding.RequireThisTest;
+import net.sf.eclipsecs.ui.quickfixes.coding.SimplifyBooleanReturnTest;
 import net.sf.eclipsecs.ui.quickfixes.coding.StringLiteralEqualityTest;
 import net.sf.eclipsecs.ui.quickfixes.design.DesignForExtensionTest;
 import net.sf.eclipsecs.ui.quickfixes.design.FinalClassTest;
@@ -35,6 +38,9 @@ public class AllTests {
         suite.addTestSuite(FinalLocalVariableTest.class);
         suite.addTestSuite(MissingSwitchDefaultTest.class);
         suite.addTestSuite(StringLiteralEqualityTest.class);
+        suite.addTestSuite(RequireThisTest.class);
+        suite.addTestSuite(ExplicitInitializationTest.class);
+        suite.addTestSuite(SimplifyBooleanReturnTest.class);
 
         // design
         suite.addTestSuite(DesignForExtensionTest.class);

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quickfix-test-data>
+    <testcase>
+        <input fix-line="3" position="29">
+public class A {
+    private int i = 0;
+    public void foo() {
+        int[] a = new int[] {i, i};
+    }
+}
+        </input>
+        <result>
+public class A {
+    private int i = 0;
+    public void foo() {
+        int[] a = new int[] {this.i, i};
+    }
+}
+        </result>
+    </testcase>
+    <testcase>
+        <input fix-line="3" position="32">
+public class A {
+    private int i = 0;
+    public void foo() {
+        int[] a = new int[] {i, i};
+    }
+}
+        </input>
+        <result>
+public class A {
+    private int i = 0;
+    public void foo() {
+        int[] a = new int[] {i, this.i};
+    }
+}
+        </result>
+    </testcase>
+</quickfix-test-data>

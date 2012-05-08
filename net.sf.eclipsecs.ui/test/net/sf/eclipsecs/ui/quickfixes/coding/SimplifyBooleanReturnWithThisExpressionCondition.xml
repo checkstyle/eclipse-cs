@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quickfix-test-data>
+    <testcase>
+        <input fix-line="2" position="8">
+public class Boolean {
+    public boolean foo() {
+        if (Boolean.this) {
+            return true;
+        } else { 
+            return false;
+        }
+    }
+}
+        </input>
+        <result>
+public class Boolean {
+    public boolean foo() {
+        return Boolean.this;
+    }
+}
+        </result>
+    </testcase>
+    <testcase>
+        <input fix-line="2" position="8">
+public class Boolean {
+    public boolean foo() {
+        if (Boolean.this) {
+            return false;
+        } else { 
+            return true;
+        }
+    }
+}
+        </input>
+        <result>
+public class Boolean {
+    public boolean foo() {
+        return !Boolean.this;
+    }
+}
+        </result>
+    </testcase>
+</quickfix-test-data>

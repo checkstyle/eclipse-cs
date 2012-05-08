@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quickfix-test-data>
+    <testcase>
+        <input fix-line="4" position="12">
+public class A {
+    public int bar() {}
+    public class B {
+        public void foo() {
+            bar();
+        }
+    }
+}
+        </input>
+        <result>
+public class A {
+    public int bar() {}
+    public class B {
+        public void foo() {
+            A.this.bar();
+        }
+    }
+}
+        </result>
+    </testcase>
+    <testcase>
+        <input fix-line="5" position="16">
+public class A {
+    public int bar() {}
+    public class B {
+        public class C {
+            public void foo() {
+                bar();
+            }
+        }
+    }
+}
+        </input>
+        <result>
+public class A {
+    public int bar() {}
+    public class B {
+        public class C {
+            public void foo() {
+                A.this.bar();
+            }
+        }
+    }
+}
+        </result>
+    </testcase>
+    <testcase>
+        <input fix-line="6" position="16">
+public class A {
+    public int bar() {}
+    public class B {
+        public int bar() {}
+        public class C {
+            public void foo() {
+                bar();
+            }
+        }
+    }
+}
+        </input>
+        <result>
+public class A {
+    public int bar() {}
+    public class B {
+        public int bar() {}
+        public class C {
+            public void foo() {
+                B.this.bar();
+            }
+        }
+    }
+}
+        </result>
+    </testcase>
+</quickfix-test-data>

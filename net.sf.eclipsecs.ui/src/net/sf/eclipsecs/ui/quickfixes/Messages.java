@@ -73,6 +73,22 @@ public class Messages extends NLS {
 
     public static String FinalLocalVariableQuickfix_label;
 
+    public static String RequireThisQuickfix_description;
+
+    public static String RequireThisQuickfix_label;
+
+    public static String ExplicitInitializationQuickfix_description;
+
+    public static String ExplicitInitializationQuickfix_errorMessageFieldName;
+
+    public static String ExplicitInitializationQuickfix_label;
+
+    public static String ExplicitInitializationQuickfix_unknownFieldName;
+
+    public static String SimplifyBooleanReturnQuickfix_description;
+
+    public static String SimplifyBooleanReturnQuickfix_label;
+
     public static String MissingSwitchDefaultQuickfix_defaultCaseComment;
 
     public static String MissingSwitchDefaultQuickfix_description;

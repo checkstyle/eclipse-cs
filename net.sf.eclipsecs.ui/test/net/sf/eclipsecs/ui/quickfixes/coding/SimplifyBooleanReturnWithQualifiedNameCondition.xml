@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quickfix-test-data>
+    <testcase>
+        <input fix-line="2" position="8">
+public class A {
+    public boolean foo() {
+        if (B.b) {
+            return true;
+        } else { 
+            return false;
+        }
+    }
+    static class B {
+        static boolean b;
+    }
+}
+        </input>
+        <result>
+public class A {
+    public boolean foo() {
+        return B.b;
+    }
+    static class B {
+        static boolean b;
+    }
+}
+        </result>
+    </testcase>
+    <testcase>
+        <input fix-line="2" position="8">
+public class A {
+    public boolean foo() {
+        if (B.b) {
+            return false;
+        } else { 
+            return true;
+        }
+    }
+    static class B {
+        static boolean b;
+    }
+}
+        </input>
+        <result>
+public class A {
+    public boolean foo() {
+        return !B.b;
+    }
+    static class B {
+        static boolean b;
+    }
+}
+        </result>
+    </testcase>
+</quickfix-test-data>

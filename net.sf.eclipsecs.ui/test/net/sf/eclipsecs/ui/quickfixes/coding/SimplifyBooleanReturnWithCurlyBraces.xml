@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quickfix-test-data>
+    <testcase>
+        <input fix-line="2" position="8">
+public class A {
+    public boolean foo() {
+        if (1 > 2) {
+            return true;
+        } else { 
+            return false;
+        }
+    }
+}
+        </input>
+        <result>
+public class A {
+    public boolean foo() {
+        return 1 > 2;
+    }
+}
+        </result>
+    </testcase>
+    <testcase>
+        <input fix-line="2" position="8">
+public class A {
+    public boolean foo() {
+        if (1 > 2) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+}
+        </input>
+        <result>
+public class A {
+    public boolean foo() {
+        return !(1 > 2);
+    }
+}
+        </result>
+    </testcase>
+</quickfix-test-data>

@@ -21,6 +21,7 @@
 package net.sf.eclipsecs.ui.quickfixes;
 
 import java.util.Iterator;
+import java.util.List;
 
 import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.ui.Messages;
@@ -43,6 +44,7 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.StructuralPropertyDescriptor;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
@@ -58,6 +60,7 @@ import org.eclipse.ui.texteditor.MarkerAnnotation;
  * Abstract base class for marker resolutions using AST rewrite techniques.
  * 
  * @author Lars Ködderitzsch
+ * @author Philip Graf
  */
 public abstract class AbstractASTResolution implements ICheckstyleMarkerResolution {
 
@@ -211,6 +214,52 @@ public abstract class AbstractASTResolution implements ICheckstyleMarkerResoluti
     protected boolean containsPosition(IRegion region, int position) {
         return region.getOffset() <= position
                 && position <= region.getOffset() + region.getLength();
+    }
+
+    /**
+     * Returns a deep copy of the subtree of AST nodes rooted at the given node. The resulting nodes are owned by the
+     * same AST as the given node. Even if the given node has a parent, the
+     * result node will be unparented.
+     * <p>
+     * Source range information on the original nodes is automatically copied to the new nodes. Client properties (
+     * <code>properties</code>) are not carried over.
+     * </p>
+     * <p>
+     * The node's <code>AST</code> and the target <code>AST</code> must support the same API level.
+     * </p>
+     * @param node the node to copy, or <code>null</code> if none
+     * 
+     * @return the copied node, or <code>null</code> if <code>node</code> is <code>null</code>
+     */
+    @SuppressWarnings("unchecked")
+    protected <T extends ASTNode> T copy(final T node) {
+        return (T) ASTNode.copySubtree(node.getAST(), node);
+    }
+
+    /**
+     * Replaces a node in an AST with another node. If the replacement is successful the original node is deleted.
+     * 
+     * @param node The node to replace.
+     * @param replacement The replacement node.
+     * @return <code>true</code> if the node was successfully replaced.
+     */
+    protected boolean replace(final ASTNode node, final ASTNode replacement) {
+        final ASTNode parent = node.getParent();
+        final StructuralPropertyDescriptor descriptor = node.getLocationInParent();
+        if (descriptor != null) {
+            if (descriptor.isChildProperty()) {
+                parent.setStructuralProperty(descriptor, replacement);
+                node.delete();
+                return true;
+            } else if (descriptor.isChildListProperty()) {
+                @SuppressWarnings("unchecked")
+                final List<ASTNode> children = (List<ASTNode>) parent.getStructuralProperty(descriptor);
+                children.set(children.indexOf(node), replacement);
+                node.delete();
+                return true;
+            }
+        }
+        return false;
     }
 
     private ICompilationUnit getCompilationUnit(IMarker marker) {
