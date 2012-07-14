@@ -6,11 +6,12 @@
     <rule-group-metadata name="My custom checks" priority="1600">
 
         <rule-metadata name="%MethodLimit.name" internal-name="MethodLimit" parent="TreeWalker">
-            <alternative-name internal-name="net.sf.eclipsecs.sample.checks.MethodLimitCheck"/>
+            <alternative-name internal-name="net.sf.eclipsecs.sample.checks.MethodLimitCheck" />
             <description>%MethodLimit.desc</description>
             <property-metadata name="max" datatype="Integer" default-value="30">
                 <description>The maximum number of allowed methods.</description>
             </property-metadata>
+            <quickfix classname="net.sf.eclipsecs.sample.checks.MethodLimitQuickfix" />
         </rule-metadata>
     </rule-group-metadata>
 </checkstyle-metadata>
