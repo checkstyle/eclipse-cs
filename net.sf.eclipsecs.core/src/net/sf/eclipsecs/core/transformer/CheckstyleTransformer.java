@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import net.sf.eclipsecs.core.CheckstylePlugin;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
 import org.eclipse.core.resources.IProject;
@@ -31,8 +32,8 @@ import org.eclipse.core.resources.IProject;
 import com.puppycrawl.tools.checkstyle.api.Configuration;
 
 /**
- * The Class for transforming the checkstyle-rules into
- * eclipse-formatter-settings. A new formatter-profile gets created.
+ * The Class for transforming the checkstyle-rules into eclipse-formatter-settings. A new formatter-profile gets
+ * created.
  * 
  * @author Lukas Frena
  */
@@ -46,8 +47,7 @@ public class CheckstyleTransformer {
     private IProject mProject;
 
     /**
-     * The list with all TransformationClass-instances loaded in method
-     * loadTransformationClasses().
+     * The list with all TransformationClass-instances loaded in method loadTransformationClasses().
      */
     private final List<CTransformationClass> mTransformationClasses = new ArrayList<CTransformationClass>();
 
@@ -57,8 +57,7 @@ public class CheckstyleTransformer {
      * @param ruleList
      *            A list of checkstyle-rules.
      */
-    public CheckstyleTransformer(IProject project,
-        final List<Configuration> ruleList) throws CheckstylePluginException {
+    public CheckstyleTransformer(IProject project, final List<Configuration> ruleList) throws CheckstylePluginException {
         mProject = project;
         mRules = ruleList;
 
@@ -67,24 +66,20 @@ public class CheckstyleTransformer {
 
         while (it.hasNext()) {
             Configuration item = it.next();
-            classnames
-                .add("net.sf.eclipsecs.core.transformer.ctransformerclasses."
-                    + item.getName() + "Transformer");
+            classnames.add("net.sf.eclipsecs.core.transformer.ctransformerclasses." + item.getName() + "Transformer");
         }
 
         loadTransformationClasses(classnames);
     }
 
     /**
-     * Loads all transformationclasses that are needed to recognize the
-     * checkstyle-rules. A instance of every loaded class is stored in the field
-     * transformationClasses. Gets called by the constructor.
+     * Loads all transformationclasses that are needed to recognize the checkstyle-rules. A instance of every loaded
+     * class is stored in the field transformationClasses. Gets called by the constructor.
      * 
      * @param classnames
      *            A list of names of which classes get loaded.
      */
-    private void loadTransformationClasses(final List<String> classnames)
-        throws CheckstylePluginException {
+    private void loadTransformationClasses(final List<String> classnames) throws CheckstylePluginException {
         final Iterator<String> nameit = classnames.iterator();
         final Iterator<Configuration> ruleit = mRules.iterator();
         String name;
@@ -94,9 +89,8 @@ public class CheckstyleTransformer {
             name = nameit.next();
             rule = ruleit.next();
             try {
-                transformationClass = Class.forName(name);
-                final CTransformationClass transObj = (CTransformationClass) transformationClass
-                    .newInstance();
+                transformationClass = CheckstylePlugin.getDefault().getAddonExtensionClassLoader().loadClass(name);
+                final CTransformationClass transObj = (CTransformationClass) transformationClass.newInstance();
                 transObj.setRule(rule);
                 mTransformationClasses.add(transObj);
                 // Logger.writeln("using " + name + " to transform rule \""
@@ -115,12 +109,10 @@ public class CheckstyleTransformer {
     }
 
     /**
-     * Method for starting transforming. Converts all checkstyle-rules to a new
-     * eclipse-formatter-profile.
+     * Method for starting transforming. Converts all checkstyle-rules to a new eclipse-formatter-profile.
      * 
      * @param path
-     *            The path to the .settings folder with
-     *            eclipse-configuration-files
+     *            The path to the .settings folder with eclipse-configuration-files
      */
     public void transformRules() {
         loadRuleConfigurations();
@@ -128,13 +120,12 @@ public class CheckstyleTransformer {
     }
 
     /**
-     * Method which handles every single checkstyle-rule. For every rule it
-     * calls the appropriate transformerclass. Gets called by transformRules().
+     * Method which handles every single checkstyle-rule. For every rule it calls the appropriate transformerclass. Gets
+     * called by transformRules().
      */
     private void loadRuleConfigurations() {
         FormatterConfiguration settings;
-        final Iterator<CTransformationClass> it = mTransformationClasses
-            .iterator();
+        final Iterator<CTransformationClass> it = mTransformationClasses.iterator();
         while (it.hasNext()) {
             settings = it.next().transformRule();
             mFormatterSetting.addConfiguration(settings);

@@ -24,11 +24,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import net.sf.eclipsecs.core.CheckstylePlugin;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
 /**
- * The Class for transforming the formatter-settings to Checkstyle-rules. A new
- * checkstyle-xml file gets generated.
+ * The Class for transforming the formatter-settings to Checkstyle-rules. A new checkstyle-xml file gets generated.
  * 
  * @author Lukas Frena
  */
@@ -40,8 +40,7 @@ public class FormatterTransformer {
     private final CheckstyleSetting mCheckstyleSetting = new CheckstyleSetting();
 
     /**
-     * The list with all TransformationClass-instances loaded in method
-     * loadTransformationClasses().
+     * The list with all TransformationClass-instances loaded in method loadTransformationClasses().
      */
     private final List<FTransformationClass> mTransformationClasses = new ArrayList<FTransformationClass>();
 
@@ -51,13 +50,11 @@ public class FormatterTransformer {
      * @param rules
      *            A configuration of formatter-rules.
      */
-    public FormatterTransformer(final FormatterConfiguration rules)
-        throws CheckstylePluginException {
+    public FormatterTransformer(final FormatterConfiguration rules) throws CheckstylePluginException {
         mFormatterSetting = rules;
 
         final List<String> classnames = new ArrayList<String>();
-        final Iterator<String> it = mFormatterSetting.getFormatterSettings()
-            .keySet().iterator();
+        final Iterator<String> it = mFormatterSetting.getFormatterSettings().keySet().iterator();
         String help;
         String[] tokens;
         String className;
@@ -76,18 +73,15 @@ public class FormatterTransformer {
     }
 
     /**
-     * Loads all transformationclasses that are needed to recognize the
-     * formatter-settings. A instance of every loaded class is stored in the
-     * field transformationClasses. Gets called by the constructor.
+     * Loads all transformationclasses that are needed to recognize the formatter-settings. A instance of every loaded
+     * class is stored in the field transformationClasses. Gets called by the constructor.
      * 
      * @param classnames
      *            A list of names of which classes get loaded.
      */
-    private void loadTransformationClasses(final List<String> classnames)
-        throws CheckstylePluginException {
+    private void loadTransformationClasses(final List<String> classnames) throws CheckstylePluginException {
         final Iterator<String> nameit = classnames.iterator();
-        final Iterator<String> ruleit = mFormatterSetting.getFormatterSettings()
-            .keySet().iterator();
+        final Iterator<String> ruleit = mFormatterSetting.getFormatterSettings().keySet().iterator();
         String name;
         String rule;
         Class<?> transformationClass;
@@ -95,13 +89,11 @@ public class FormatterTransformer {
             name = nameit.next();
             rule = ruleit.next();
             try {
-                transformationClass = Class.forName(name);
+                transformationClass = CheckstylePlugin.getDefault().getAddonExtensionClassLoader().loadClass(name);
 
-                final FTransformationClass transObj = (FTransformationClass) transformationClass
-                    .newInstance();
+                final FTransformationClass transObj = (FTransformationClass) transformationClass.newInstance();
 
-                transObj.setValue(mFormatterSetting.getFormatterSettings()
-                    .get(rule));
+                transObj.setValue(mFormatterSetting.getFormatterSettings().get(rule));
 
                 mTransformationClasses.add(transObj);
 
@@ -119,8 +111,7 @@ public class FormatterTransformer {
     }
 
     /**
-     * Method for starting transforming. Converts all formatter-settings to
-     * checkstyle-rules.
+     * Method for starting transforming. Converts all formatter-settings to checkstyle-rules.
      * 
      * @param path
      *            The path where the checkstyle-xml file gets generated.
@@ -131,13 +122,12 @@ public class FormatterTransformer {
     }
 
     /**
-     * Method which handles every single formatter-setting. For every rule it
-     * calls the appropriate transformerclass. Gets called by transformRules().
+     * Method which handles every single formatter-setting. For every rule it calls the appropriate transformerclass.
+     * Gets called by transformRules().
      */
     private void loadRuleConfigurations() {
         CheckstyleSetting settings;
-        final Iterator<FTransformationClass> it = mTransformationClasses
-            .iterator();
+        final Iterator<FTransformationClass> it = mTransformationClasses.iterator();
         while (it.hasNext()) {
             settings = it.next().transformRule();
             mCheckstyleSetting.addSetting(settings);

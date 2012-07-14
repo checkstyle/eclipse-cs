@@ -70,8 +70,7 @@ public final class MetadataFactory {
     private static Map<String, RuleMetadata> sRuleMetadata;
 
     /**
-     * Mapping for all rules, keyed by alternative rule names (full qualified,
-     * old full qualified).
+     * Mapping for all rules, keyed by alternative rule names (full qualified, old full qualified).
      */
     private static Map<String, RuleMetadata> sAlternativeNamesMap;
 
@@ -81,16 +80,17 @@ public final class MetadataFactory {
     /**
      * Private constructor to prevent instantiation.
      */
-    private MetadataFactory() {}
+    private MetadataFactory() {
+    }
 
     /**
      * Static initializer.
      */
     static {
         PUBLIC2INTERNAL_DTD_MAP.put("-//eclipse-cs//DTD Check Metadata 1.0//EN", //$NON-NLS-1$
-                "/com/puppycrawl/tools/checkstyle/checkstyle-metadata_1_0.dtd"); //$NON-NLS-1$
+            "/com/puppycrawl/tools/checkstyle/checkstyle-metadata_1_0.dtd"); //$NON-NLS-1$
         PUBLIC2INTERNAL_DTD_MAP.put("-//eclipse-cs//DTD Check Metadata 1.1//EN", //$NON-NLS-1$
-                "/com/puppycrawl/tools/checkstyle/checkstyle-metadata_1_1.dtd"); //$NON-NLS-1$
+            "/com/puppycrawl/tools/checkstyle/checkstyle-metadata_1_1.dtd"); //$NON-NLS-1$
 
         refresh();
     }
@@ -102,8 +102,7 @@ public final class MetadataFactory {
      */
     public static List<RuleGroupMetadata> getRuleGroupMetadata() {
 
-        List<RuleGroupMetadata> groups = new ArrayList<RuleGroupMetadata>(sRuleGroupMetadata
-                .values());
+        List<RuleGroupMetadata> groups = new ArrayList<RuleGroupMetadata>(sRuleGroupMetadata.values());
         Collections.sort(groups, new Comparator<RuleGroupMetadata>() {
 
             public int compare(RuleGroupMetadata arg0, RuleGroupMetadata arg1) {
@@ -120,7 +119,8 @@ public final class MetadataFactory {
     /**
      * Get metadata for a check rule.
      * 
-     * @param name The rule's name within the checkstyle configuration file.
+     * @param name
+     *            The rule's name within the checkstyle configuration file.
      * @return The metadata.
      */
     public static RuleMetadata getRuleMetadata(String name) {
@@ -141,7 +141,8 @@ public final class MetadataFactory {
     /**
      * Returns the metadata for a rule group.
      * 
-     * @param name the group name
+     * @param name
+     *            the group name
      * @return the RuleGroupMetadata object or <code>null</code>
      */
     public static RuleGroupMetadata getRuleGroupMetadata(String name) {
@@ -149,10 +150,10 @@ public final class MetadataFactory {
     }
 
     /**
-     * Creates a set of generic metadata for a module that has no metadata
-     * delivered with the plugin.
+     * Creates a set of generic metadata for a module that has no metadata delivered with the plugin.
      * 
-     * @param module the module
+     * @param module
+     *            the module
      * @return the generic metadata built
      */
     public static RuleMetadata createGenericMetadata(Module module) {
@@ -160,7 +161,9 @@ public final class MetadataFactory {
         String parent = null;
         try {
 
-            Class<?> checkClass = Class.forName(module.getName());
+            Class<?> checkClass = CheckstylePlugin.getDefault().getAddonExtensionClassLoader()
+                .loadClass(module.getName());
+
             Object moduleInstance = checkClass.newInstance();
 
             if (moduleInstance instanceof AbstractFileSetCheck) {
@@ -177,7 +180,7 @@ public final class MetadataFactory {
 
         RuleGroupMetadata otherGroup = getRuleGroupMetadata(XMLTags.OTHER_GROUP);
         RuleMetadata ruleMeta = new RuleMetadata(module.getName(), module.getName(), parent,
-                MetadataFactory.getDefaultSeverity(), false, true, true, false, otherGroup);
+            MetadataFactory.getDefaultSeverity(), false, true, true, false, otherGroup);
         module.setMetaData(ruleMeta);
         sRuleMetadata.put(ruleMeta.getInternalName(), ruleMeta);
 
@@ -186,8 +189,8 @@ public final class MetadataFactory {
         for (int i = 0; i < size; i++) {
 
             ConfigProperty property = properties.get(i);
-            ConfigPropertyMetadata meta = new ConfigPropertyMetadata(ConfigPropertyType.String,
-                    property.getName(), null, null);
+            ConfigPropertyMetadata meta = new ConfigPropertyMetadata(ConfigPropertyType.String, property.getName(),
+                null, null);
             property.setMetaData(meta);
         }
         return ruleMeta;
@@ -203,11 +206,12 @@ public final class MetadataFactory {
     }
 
     /**
-     * Returns Checkstyles standard message for a given module name and message
-     * key.
+     * Returns Checkstyles standard message for a given module name and message key.
      * 
-     * @param messageKey the message key
-     * @param moduleInternalName the module name
+     * @param messageKey
+     *            the message key
+     * @param moduleInternalName
+     *            the module name
      * @return Checkstyles standard message for this module and key
      */
     public static String getStandardMessage(String messageKey, String moduleInternalName) {
@@ -219,8 +223,10 @@ public final class MetadataFactory {
     /**
      * Returns Checkstyles standard message for a given module and message key.
      * 
-     * @param messageKey the message key
-     * @param rule the module metadata
+     * @param messageKey
+     *            the message key
+     * @param rule
+     *            the module metadata
      * @return Checkstyles standard message for this module and key
      */
     public static String getStandardMessage(String messageKey, RuleMetadata rule) {
@@ -243,8 +249,8 @@ public final class MetadataFactory {
                     String packageName = moduleClass.substring(0, endIndex);
                     messages = packageName + "." + messages; //$NON-NLS-1$
                 }
-                ResourceBundle resourceBundle = ResourceBundle.getBundle(messages, CheckstylePlugin
-                        .getPlatformLocale(), CheckstylePlugin.class.getClassLoader());
+                ResourceBundle resourceBundle = ResourceBundle.getBundle(messages,
+                    CheckstylePlugin.getPlatformLocale(), CheckstylePlugin.class.getClassLoader());
 
                 String message = resourceBundle.getString(messageKey);
                 return message;
@@ -274,11 +280,12 @@ public final class MetadataFactory {
     /**
      * Initializes the meta data from the xml file.
      * 
-     * @throws CheckstylePluginException error loading the meta data file
+     * @throws CheckstylePluginException
+     *             error loading the meta data file
      */
     private static void doInitialization() throws CheckstylePluginException {
 
-        ClassLoader classLoader = CheckstylePlugin.class.getClassLoader();
+        ClassLoader classLoader = CheckstylePlugin.getDefault().getAddonExtensionClassLoader();
         Collection<String> potentialMetadataFiles = getAllPotentialMetadataFiles(classLoader);
         for (String metadataFile : potentialMetadataFiles) {
 
@@ -302,12 +309,12 @@ public final class MetadataFactory {
     }
 
     /**
-     * Helper method to get all potential metadata files using the
-     * checkstyle_packages.xml as base where to look. It is not guaranteed that
-     * the files returned acutally exist.
+     * Helper method to get all potential metadata files using the checkstyle_packages.xml as base where to look. It is
+     * not guaranteed that the files returned acutally exist.
      * 
      * @return the collection of potential metadata files.
-     * @throws CheckstylePluginException an unexpected exception ocurred
+     * @throws CheckstylePluginException
+     *             an unexpected exception ocurred
      */
     private static Collection<String> getAllPotentialMetadataFiles(ClassLoader classLoader)
         throws CheckstylePluginException {
@@ -331,18 +338,15 @@ public final class MetadataFactory {
     }
 
     /**
-     * Returns the ResourceBundle for the given meta data file contained i18n'ed
-     * names and descriptions.
+     * Returns the ResourceBundle for the given meta data file contained i18n'ed names and descriptions.
      * 
      * @param metadataFile
-     * @return the corresponding ResourceBundle for the metadata file or
-     *         <code>null</code> if none exists
+     * @return the corresponding ResourceBundle for the metadata file or <code>null</code> if none exists
      */
     private static ResourceBundle getMetadataI18NBundle(String metadataFile, ClassLoader classLoader) {
         String bundle = metadataFile.substring(0, metadataFile.length() - 4).replace('/', '.');
         try {
-            return PropertyResourceBundle.getBundle(bundle, CheckstylePlugin.getPlatformLocale(),
-                    classLoader);
+            return PropertyResourceBundle.getBundle(bundle, CheckstylePlugin.getPlatformLocale(), classLoader);
         }
         catch (MissingResourceException e) {
             return null;
@@ -357,8 +361,7 @@ public final class MetadataFactory {
         reader.setEntityResolver(new XMLUtil.InternalDtdEntityResolver(PUBLIC2INTERNAL_DTD_MAP));
         Document document = reader.read(metadataStream);
 
-        List<Element> groupElements = document.getRootElement().elements(
-                XMLTags.RULE_GROUP_METADATA_TAG);
+        List<Element> groupElements = document.getRootElement().elements(XMLTags.RULE_GROUP_METADATA_TAG);
 
         for (Element groupEl : groupElements) {
 
@@ -369,8 +372,7 @@ public final class MetadataFactory {
 
             if (group == null) {
 
-                boolean hidden = Boolean.valueOf(groupEl.attributeValue(XMLTags.HIDDEN_TAG))
-                        .booleanValue();
+                boolean hidden = Boolean.valueOf(groupEl.attributeValue(XMLTags.HIDDEN_TAG)).booleanValue();
                 int priority = 0;
                 try {
                     priority = Integer.parseInt(groupEl.attributeValue(XMLTags.PRIORITY_TAG));
@@ -391,7 +393,7 @@ public final class MetadataFactory {
 
     @SuppressWarnings("unchecked")
     private static void processModules(Element groupElement, RuleGroupMetadata groupMetadata,
-            ResourceBundle metadataBundle) throws CheckstylePluginException {
+        ResourceBundle metadataBundle) throws CheckstylePluginException {
 
         List<Element> moduleElements = groupElement.elements(XMLTags.RULE_METADATA_TAG);
         for (Element moduleEl : moduleElements) {
@@ -399,25 +401,22 @@ public final class MetadataFactory {
             // default severity
             String defaultSeverity = moduleEl.attributeValue(XMLTags.DEFAULT_SEVERITY_TAG);
             Severity severity = defaultSeverity == null || defaultSeverity.trim().length() == 0 ? getDefaultSeverity()
-                    : Severity.valueOf(defaultSeverity);
+                : Severity.valueOf(defaultSeverity);
 
             String name = moduleEl.attributeValue(XMLTags.NAME_TAG).trim();
             name = localize(name, metadataBundle);
             String internalName = moduleEl.attributeValue(XMLTags.INTERNAL_NAME_TAG).trim();
 
-            String parentName = moduleEl.attributeValue(XMLTags.PARENT_TAG) != null ? moduleEl
-                    .attributeValue(XMLTags.PARENT_TAG).trim() : null;
-            boolean hidden = Boolean.valueOf(moduleEl.attributeValue(XMLTags.HIDDEN_TAG))
-                    .booleanValue();
-            boolean hasSeverity = !"false"
-                    .equals(moduleEl.attributeValue(XMLTags.HAS_SEVERITY_TAG));
+            String parentName = moduleEl.attributeValue(XMLTags.PARENT_TAG) != null ? moduleEl.attributeValue(
+                XMLTags.PARENT_TAG).trim() : null;
+            boolean hidden = Boolean.valueOf(moduleEl.attributeValue(XMLTags.HIDDEN_TAG)).booleanValue();
+            boolean hasSeverity = !"false".equals(moduleEl.attributeValue(XMLTags.HAS_SEVERITY_TAG));
             boolean deletable = !"false".equals(moduleEl.attributeValue(XMLTags.DELETABLE_TAG)); //$NON-NLS-1$
-            boolean isSingleton = Boolean
-                    .valueOf(moduleEl.attributeValue(XMLTags.IS_SINGLETON_TAG)).booleanValue();
+            boolean isSingleton = Boolean.valueOf(moduleEl.attributeValue(XMLTags.IS_SINGLETON_TAG)).booleanValue();
 
             // create rule metadata
-            RuleMetadata module = new RuleMetadata(name, internalName, parentName, severity,
-                    hidden, hasSeverity, deletable, isSingleton, groupMetadata);
+            RuleMetadata module = new RuleMetadata(name, internalName, parentName, severity, hidden, hasSeverity,
+                deletable, isSingleton, groupMetadata);
             groupMetadata.getRuleMetadata().add(module);
 
             // register internal name
@@ -432,8 +431,7 @@ public final class MetadataFactory {
             processProperties(moduleEl, module, metadataBundle);
 
             // process alternative names
-            for (Element altNameEl : (List<Element>) moduleEl
-                    .elements(XMLTags.ALTERNATIVE_NAME_TAG)) {
+            for (Element altNameEl : (List<Element>) moduleEl.elements(XMLTags.ALTERNATIVE_NAME_TAG)) {
 
                 String alternativeName = altNameEl.attributeValue(XMLTags.INTERNAL_NAME_TAG);
 
@@ -460,22 +458,19 @@ public final class MetadataFactory {
 
     @SuppressWarnings("unchecked")
     private static void processProperties(Element moduleElement, RuleMetadata moduleMetadata,
-            ResourceBundle metadataBundle) throws CheckstylePluginException {
+        ResourceBundle metadataBundle) throws CheckstylePluginException {
 
         List<Element> propertyElements = moduleElement.elements(XMLTags.PROPERTY_METADATA_TAG);
         for (Element propertyEl : propertyElements) {
 
-            ConfigPropertyType type = ConfigPropertyType.valueOf(propertyEl
-                    .attributeValue(XMLTags.DATATYPE_TAG));
+            ConfigPropertyType type = ConfigPropertyType.valueOf(propertyEl.attributeValue(XMLTags.DATATYPE_TAG));
 
             String name = propertyEl.attributeValue(XMLTags.NAME_TAG).trim();
-            String defaultValue = StringUtils.trim(propertyEl
-                    .attributeValue(XMLTags.DEFAULT_VALUE_TAG));
+            String defaultValue = StringUtils.trim(propertyEl.attributeValue(XMLTags.DEFAULT_VALUE_TAG));
             String overrideDefaultValue = StringUtils.trim(propertyEl
-                    .attributeValue(XMLTags.DEFAULT_VALUE_OVERRIDE_TAG));
+                .attributeValue(XMLTags.DEFAULT_VALUE_OVERRIDE_TAG));
 
-            ConfigPropertyMetadata property = new ConfigPropertyMetadata(type, name, defaultValue,
-                    overrideDefaultValue);
+            ConfigPropertyMetadata property = new ConfigPropertyMetadata(type, name, defaultValue, overrideDefaultValue);
 
             moduleMetadata.getPropertyMetadata().add(property);
 
@@ -491,12 +486,12 @@ public final class MetadataFactory {
                 if (optionProvider != null) {
 
                     try {
-                        Class<?> providerClass = Class.forName(optionProvider);
+                        Class<?> providerClass = CheckstylePlugin.getDefault().getAddonExtensionClassLoader()
+                            .loadClass(optionProvider);
 
                         if (IOptionProvider.class.isAssignableFrom(providerClass)) {
 
-                            IOptionProvider provider = (IOptionProvider) providerClass
-                                    .newInstance();
+                            IOptionProvider provider = (IOptionProvider) providerClass.newInstance();
                             property.getPropertyEnumeration().addAll(provider.getOptions());
                         }
                         else if (Enum.class.isAssignableFrom(providerClass)) {
@@ -519,10 +514,8 @@ public final class MetadataFactory {
                 }
 
                 // get explicit enumeration option values
-                for (Element optionEl : (List<Element>) enumEl
-                        .elements(XMLTags.PROPERTY_VALUE_OPTIONS_TAG)) {
-                    property.getPropertyEnumeration().add(
-                            optionEl.attributeValue(XMLTags.VALUE_TAG));
+                for (Element optionEl : (List<Element>) enumEl.elements(XMLTags.PROPERTY_VALUE_OPTIONS_TAG)) {
+                    property.getPropertyEnumeration().add(optionEl.attributeValue(XMLTags.VALUE_TAG));
                 }
             }
         }
@@ -530,8 +523,7 @@ public final class MetadataFactory {
 
     private static String localize(String localizationCandidate, ResourceBundle metadataBundle) {
 
-        if (metadataBundle != null && localizationCandidate != null
-                && localizationCandidate.startsWith("%")) {
+        if (metadataBundle != null && localizationCandidate != null && localizationCandidate.startsWith("%")) {
             try {
                 return metadataBundle.getString(localizationCandidate.substring(1));
             }

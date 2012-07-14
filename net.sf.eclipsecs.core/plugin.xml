@@ -2,6 +2,12 @@
 <?eclipse version="3.1"?>
 <plugin>
 
+    <!-- defines the extension point to contribute Checkstyle addons. -->
+    <extension-point
+        id="checkstyleAddonProvider"
+        name="Checkstyle Addon provider"
+        schema="schema/checkstyleAddonProvider.exsd"/>
+
     <!-- defines the extension point to contribute custom configuration type. -->
     <extension-point
         id="configurationtypes"

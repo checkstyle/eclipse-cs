@@ -2,6 +2,12 @@
 <?eclipse version="3.1"?>
 <plugin>
 
+    <!-- defines the extension point to contribute custom quickfixes. -->
+    <extension-point
+        id="checkstyleQuickfixProvider"
+        name="Checkstyle Quickfix provider"
+        schema="schema/checkstyleQuickfixProvider.exsd"/>
+
     <!-- defines the extension point to contribute custom filter editors for plugin filters -->
     <extension-point
         id="filtereditors"

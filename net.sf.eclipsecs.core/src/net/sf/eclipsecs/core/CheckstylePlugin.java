@@ -26,6 +26,7 @@ import java.util.logging.Logger;
 
 import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.core.util.EclipseLogHandler;
+import net.sf.eclipsecs.core.util.ExtensionClassLoader;
 
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -41,8 +42,13 @@ public class CheckstylePlugin extends Plugin {
     /** Identifier of the plug-in. */
     public static final String PLUGIN_ID = "net.sf.eclipsecs.core"; //$NON-NLS-1$
 
+    /** Extension point id for Checkstyle addon providers. */
+    private static final String ADDON_PROVIDER_EXT_PT_ID = PLUGIN_ID + ".checkstyleAddonProvider"; //$NON-NLS-1$
+
     /** The shared instance. */
     private static CheckstylePlugin sPlugin;
+
+    private ClassLoader mAddonExtensionClassLoader;
 
     /**
      * The constructor.
@@ -58,9 +64,10 @@ public class CheckstylePlugin extends Plugin {
     public void start(BundleContext context) throws Exception {
         super.start(context);
 
+        mAddonExtensionClassLoader = new ExtensionClassLoader(context.getBundle(), ADDON_PROVIDER_EXT_PT_ID);
+
         try {
-            Logger checkstyleErrorLog = Logger
-                    .getLogger("com.puppycrawl.tools.checkstyle.ExceptionLog"); //$NON-NLS-1$
+            Logger checkstyleErrorLog = Logger.getLogger("com.puppycrawl.tools.checkstyle.ExceptionLog"); //$NON-NLS-1$
 
             checkstyleErrorLog.addHandler(new EclipseLogHandler(this));
             checkstyleErrorLog.setLevel(Level.ALL);
@@ -104,5 +111,9 @@ public class CheckstylePlugin extends Plugin {
         String variant = parts.length > 2 ? parts[2] : ""; //$NON-NLS-1$
 
         return new Locale(language, country, variant);
+    }
+
+    public ClassLoader getAddonExtensionClassLoader() {
+        return mAddonExtensionClassLoader;
     }
 }

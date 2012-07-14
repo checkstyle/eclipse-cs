@@ -28,6 +28,7 @@ import net.sf.eclipsecs.core.builder.CheckstyleMarker;
 import net.sf.eclipsecs.core.config.meta.MetadataFactory;
 import net.sf.eclipsecs.core.config.meta.RuleMetadata;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
+import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.ui.IMarkerResolution;
@@ -98,10 +99,10 @@ public class CheckstyleMarkerResolutionGenerator implements IMarkerResolutionGen
 
             for (String quickfixClassName : ruleMetadata.getQuickfixClassNames()) {
 
-                Class<?> quickfixClass = Class.forName(quickfixClassName);
+                Class<?> quickfixClass = CheckstyleUIPlugin.getDefault().getQuickfixExtensionClassLoader()
+                    .loadClass(quickfixClassName);
 
-                ICheckstyleMarkerResolution fix = (ICheckstyleMarkerResolution) quickfixClass
-                        .newInstance();
+                ICheckstyleMarkerResolution fix = (ICheckstyleMarkerResolution) quickfixClass.newInstance();
                 fixes.add(fix);
             }
         }
