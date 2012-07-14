@@ -38,7 +38,7 @@ import org.eclipse.swt.graphics.Image;
  * 
  * @author Lars Ködderitzsch
  */
-public class AvoidNextedBlocksQuickfix extends AbstractASTResolution {
+public class AvoidNestedBlocksQuickfix extends AbstractASTResolution {
 
     /**
      * {@inheritDoc}

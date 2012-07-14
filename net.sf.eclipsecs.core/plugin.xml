@@ -157,6 +157,11 @@
                 value="properties"/>
         </filter>
         <filter
+            name="%NonSrcDirsFilter.label"
+            internal-name="NonSrcDirs"
+            description="%NonSrcDirsFilter.description"
+            class="net.sf.eclipsecs.core.projectconfig.filters.NonSrcDirsFilter"/>
+        <filter
             name="%WriteProtectedFilter.label"
             internal-name="WriteProtectedFiles"
             description="%WriteProtectedFilter.description"
@@ -171,11 +176,7 @@
             name="%PackageFilter.label"
             description="%PackageFilter.description"
             class="net.sf.eclipsecs.core.projectconfig.filters.PackageFilter"/>
-        <filter
-            name="%NonSrcDirsFilter.label"
-            internal-name="NonSrcDirs"
-            description="%NonSrcDirsFilter.description"
-            class="net.sf.eclipsecs.core.projectconfig.filters.NonSrcDirsFilter"/>
+
         <filter
             name="%FilesInSyncFilter.label"
             internal-name="FilesInSync"
