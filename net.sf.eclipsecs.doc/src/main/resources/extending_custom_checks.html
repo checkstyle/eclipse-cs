@@ -3,19 +3,30 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "xhtml11-flat.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
-        <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8"/>
-        <link type="text/css" href="style.css" rel="stylesheet"/>
+        <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8" />
+        <link type="text/css" href="style.css" rel="stylesheet" />
         <title>Providing custom checks</title>
     </head>
     <body id="content">
         <h2>-- Providing custom checks --</h2>
-        <p>One great feature of Checkstyle is its extentablity. You can easily write own checks as explained <a
-                href="http://checkstyle.sourceforge.net/writingchecks.html">here</a>.<br/> To hook your checks into the
-            eclipse-cs plugin you need to provide them as a plugin themself.</p>
-        <p>In the further steps I am - for the sake of simplicity - assuming that you start off with the <a
-                href="extending.html">sample plugin</a> the eclipse-cs project provides.<br/>If not then you are
-            supposedly proficient enough with eclipse plugin development that you figure on your own. After all it's not
-            rocket sience, is it?</p>
+        <p>
+            One great feature of Checkstyle is its extentablity. You can easily write own checks as explained
+            <a href="http://checkstyle.sourceforge.net/writingchecks.html">here</a>
+            .
+            <br />
+            To hook your checks into the
+            eclipse-cs plugin you need to provide them as a plugin themself.
+        </p>
+        <p>
+            In the further steps I am - for the sake of simplicity - assuming that you start off with the
+            <a href="extending.html">sample plugin</a>
+            the eclipse-cs project provides.
+            <br />
+            If not then you are
+            supposedly proficient enough with eclipse plugin development that you figure on your own.
+            After all it's not
+            rocket sience, is it?
+        </p>
         <p>If done correctly, you even will be able to use your plugin jar file for adding your custom checks to a
             Checkstyle Ant/Maven/CmdLine target - without the need for further modification.</p>
         <ol>
@@ -23,62 +34,126 @@
                 <p>Write your custom checks, putting them in your extension projects source folder</p>
             </li>
             <li>
-                <p>Edit the <code>checkstyle_packages.xml</code> and add the Java package(s) where your custom checks
-                    reside there.<br/> In doing so you will be able to define your checks in your configuration file
-                    using the logical check name - instead of needing to provide the fully qualified class name of your
-                    check.<br/> For more info about the checkstyle packages files please read here: <a
-                        href="http://checkstyle.sourceforge.net/config.html#Packages"
-                        >http://checkstyle.sourceforge.net/config.html#Packages</a></p>
+                <p>
+                    Edit the
+                    <code>checkstyle_packages.xml</code>
+                    and add the Java package(s) where your custom checks
+                    reside there.
+                    <br />
+                    In doing so you will be able to define your checks in your configuration file
+                    using the logical check
+                    name - instead of needing to provide the fully qualified class name of your
+                    check.
+                    <br />
+                    For more info about the checkstyle packages files please read here:
+                    <a href="http://checkstyle.sourceforge.net/config.html#Packages">http://checkstyle.sourceforge.net/config.html#Packages</a>
+                </p>
             </li>
             <li>
-                <p>Note that your extension plugin must register itself as buddy to the
-                        <code>net.sf.eclipsecs.core</code> plugin, in order for the custom check classes to be loadable
-                    by that very plugin.<br/>To do that just make sure the <code>META-INF/MANIFEST.MF</code> file of
-                    your plugin contains this entry: <code>Eclipse-RegisterBuddy: net.sf.eclipsecs.core</code><br/>That
-                    is already the case for the sample plugin.</p>
+                <p>
+                    Create a plugin.xml in your project root and declare the plugin providing checkstyle addons:
+                    <br />
+                    <code>
+                        &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+                        <br />
+                        &lt;?eclipse version="3.1"?&gt;
+                        <br />
+                        &lt;plugin&gt;
+                        <br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;&lt;!--
+                        This plugin provides custom Checkstyle modules. --&gt;
+                        <br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;&lt;extension
+                        point="net.sf.eclipsecs.core.checkstyleAddonProvider" /&gt;
+                        <br />
+                        &lt;/plugin&gt;
+                    </code>
+                    <br />
+                    <br />
+                    <b>Note:</b>
+                    Previous to eclipse-cs 5.5.1 is was necessarily for the extension plugin to configure
+                    buddy-classloading.
+                    <br />
+                    Entry in
+                    <code>META-INF/MANIFEST.MF</code>
+                    :
+                    <br />
+                    <code>Eclipse-RegisterBuddy: net.sf.eclipsecs.core</code>
+                </p>
             </li>
             <li>
-                <p>(Optional) Provide metadata for your custom checks.<br/> By providing metadata your checks will
-                    facilitate the full capabilities of the plug-ins configuration editor - this means you will be able
-                    to configure them using the plug-in's configuration editor just like the standard checkstyle
-                    modules. <br/> To define the metadata you need to write a file named
-                        <code>checkstyle-metadata.xml</code> which is to be placed into the package (or packages) your
-                    check classed lie in.<br/>
-                    <b>In order to let the plug-in find your metadata you need to declare the package within your
-                            <code>checkstyle_packages.xml</code> file (see point 2).</b>
-                    <br/> The metadata file must adhere to this dtd: <a
-                        href="http://eclipse-cs.sourceforge.net/dtds/checkstyle-metadata_1_1.dtd"
-                        >http://eclipse-cs.sourceforge.net/dtds/checkstyle-metadata_1_1.dtd</a> . <br/> So it would be a
-                    good idea to include this document type declaration to your metadata file:</p>
+                <p>
+                    (Optional) Provide metadata for your custom checks.
+                    <br />
+                    By providing metadata your checks will
+                    facilitate the full capabilities of the plug-ins configuration
+                    editor - this means you will be able
+                    to configure them using the plug-in's configuration editor just
+                    like the standard checkstyle
+                    modules.
+                    <br />
+                    To define the metadata you need to write a file named
+                    <code>checkstyle-metadata.xml</code>
+                    which is to be placed into the package (or packages) your
+                    check classed lie in.
+                    <br />
+                    <b>
+                        In order to let the plug-in find your metadata you need to declare the package within your
+                        <code>checkstyle_packages.xml</code>
+                        file (see point 2).
+                    </b>
+                    <br />
+                    The metadata file must adhere to this dtd:
+                    <a href="http://eclipse-cs.sourceforge.net/dtds/checkstyle-metadata_1_1.dtd">http://eclipse-cs.sourceforge.net/dtds/checkstyle-metadata_1_1.dtd</a>
+                    .
+                    <br />
+                    So it would be a
+                    good idea to include this document type declaration to your metadata file:
+                </p>
 
-                <pre><code>&lt;!DOCTYPE checkstyle-metadata 
-    PUBLIC &quot;-//eclipse-cs//DTD Check Metadata 1.1//EN&quot;
-    &quot;http://eclipse-cs.sourceforge.net/dtds/checkstyle-metadata_1_1.dtd&quot;&gt;</code></pre>
+                <pre>
+                    <code>&lt;!DOCTYPE checkstyle-metadata
+                        PUBLIC &quot;-//eclipse-cs//DTD Check Metadata 1.1//EN&quot;
+                        &quot;http://eclipse-cs.sourceforge.net/dtds/checkstyle-metadata_1_1.dtd&quot;&gt;</code>
+                </pre>
                 <p>This way you can validate your metadata file against the dtd using your preferred XML editor.</p>
-                <p>The dtd file itself contains an abundance of documentation on the tags and their attributes, further
-                    further practical reference you may want to peek into the <code>net.sf.eclipsecs.checkstyle</code>
-                    plugin, where all the metadata for the standard Checkstyle modules resides.</p>
+                <p>
+                    The dtd file itself contains an abundance of documentation on the tags and their attributes, further
+                    further practical reference you may want to peek into the
+                    <code>net.sf.eclipsecs.checkstyle</code>
+                    plugin, where all the metadata for the standard Checkstyle modules resides.
+                </p>
             </li>
 
             <li>
-                <p>If you provided custom metadata for your checks you will be able to fully configure them using the
-                    plug-in's configuration editor, after you installed your plugin into your Eclipse.<br/>If you did
-                    not provide custom metadata some limitations in the configuration editor will apply: </p>
+                <p>
+                    If you provided custom metadata for your checks you will be able to fully configure them using the
+                    plug-in's configuration editor, after you installed your plugin into your Eclipse.
+                    <br />
+                    If you did
+                    not provide custom metadata some limitations in the configuration editor will apply:
+                </p>
                 <ul>
                     <li>
-                        <p>You cannot add your custom checks via the configuration editor, because your checks are not
-                            known to the plugin.<br/> This means you need to write your checkstyle configuration file by
-                            hand using a text editor. Be sure to include all properties of your modules within the
-                            module configuration so you can at least edit the properties afterwards in the Checkstyle
-                            Plug-in Configuration Editor.</p>
+                        <p>
+                            You cannot add your custom checks via the configuration editor, because your checks are not
+                            known to the plugin.
+                            <br />
+                            This means you need to write your checkstyle configuration file by hand using a text editor.
+                            Be sure to include all properties of your modules within the module configuration so you can
+                            at least edit the properties afterwards in the Checkstyle Plug-in Configuration Editor.
+                        </p>
                     </li>
                     <li>
                         <p>If you remove your custom checks from the configuration using the configuration editor you
                             cannot re-add them using the configuration editor.</p>
                     </li>
                     <li>
-                        <p>Your hand added custom checks will show up in the <i>Other</i> section of the configuration
-                            editor.</p>
+                        <p>
+                            Your hand added custom checks will show up in the
+                            <i>Other</i>
+                            section of the configuration editor.
+                        </p>
                     </li>
                 </ul>
             </li>
