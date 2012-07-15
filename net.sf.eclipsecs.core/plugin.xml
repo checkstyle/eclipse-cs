@@ -149,24 +149,12 @@
     <extension
         id="checkstyle.CheckstyleFilters"
         point="net.sf.eclipsecs.core.filters">
-        <!-- this should be the first filter, since it filters out many files with little effort. -->
-        <filter
-            name="%FileTypesFilter.label"
-            internal-name="FileTypesFilter"
-            description="%FileTypesFilter.description"
-            class="net.sf.eclipsecs.core.projectconfig.filters.FileTypesFilter"
-            readonly="true"
-            selected="true">
-            <data
-                value="java"/>
-            <data
-                value="properties"/>
-        </filter>
         <filter
             name="%NonSrcDirsFilter.label"
             internal-name="NonSrcDirs"
             description="%NonSrcDirsFilter.description"
-            class="net.sf.eclipsecs.core.projectconfig.filters.NonSrcDirsFilter"/>
+            class="net.sf.eclipsecs.core.projectconfig.filters.NonSrcDirsFilter"
+            selected="true"/>
         <filter
             name="%WriteProtectedFilter.label"
             internal-name="WriteProtectedFiles"
