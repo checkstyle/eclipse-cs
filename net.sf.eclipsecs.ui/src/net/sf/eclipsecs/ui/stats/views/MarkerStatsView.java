@@ -20,21 +20,15 @@
 
 package net.sf.eclipsecs.ui.stats.views;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 
 import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
 import net.sf.eclipsecs.ui.stats.Messages;
 import net.sf.eclipsecs.ui.stats.data.MarkerStat;
 import net.sf.eclipsecs.ui.stats.data.Stats;
-import net.sf.eclipsecs.ui.stats.export.IStatsExporter;
-import net.sf.eclipsecs.ui.stats.export.StatsExporterException;
-import net.sf.eclipsecs.ui.stats.export.StatsExporterFactory;
 import net.sf.eclipsecs.ui.stats.views.internal.FiltersAction;
 import net.sf.eclipsecs.ui.util.table.EnhancedTableViewer;
 import net.sf.eclipsecs.ui.util.table.ITableComparableProvider;
@@ -50,7 +44,6 @@ import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.IDialogSettings;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -68,7 +61,6 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Table;
@@ -129,9 +121,6 @@ public class MarkerStatsView extends AbstractStatsView {
 
     /** Opens the editor and shows the error in the code. */
     private Action mShowErrorAction;
-
-    /** Exports the error listing as a report. */
-    private Action mExportErrorsAction;
 
     /** The current violation category to show in details view. */
     private String mCurrentDetailCategory;
@@ -203,12 +192,13 @@ public class MarkerStatsView extends AbstractStatsView {
     /**
      * Creates the table viewer for the master view.
      * 
-     * @param parent the parent composite
+     * @param parent
+     *            the parent composite
      * @return the master table viewer
      */
     private EnhancedTableViewer createMasterView(Composite parent) {
-        EnhancedTableViewer masterViewer = new EnhancedTableViewer(parent, SWT.H_SCROLL
-                | SWT.V_SCROLL | SWT.SINGLE | SWT.FULL_SELECTION);
+        EnhancedTableViewer masterViewer = new EnhancedTableViewer(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.SINGLE
+            | SWT.FULL_SELECTION);
         GridData gridData = new GridData(GridData.FILL_BOTH);
         masterViewer.getControl().setLayoutData(gridData);
 
@@ -260,13 +250,14 @@ public class MarkerStatsView extends AbstractStatsView {
     /**
      * Creates the table viewer for the detail view.
      * 
-     * @param parent the parent composite
+     * @param parent
+     *            the parent composite
      * @return the detail table viewer
      */
     private EnhancedTableViewer createDetailView(Composite parent) {
         // le tableau
-        EnhancedTableViewer detailViewer = new EnhancedTableViewer(parent, SWT.H_SCROLL
-                | SWT.V_SCROLL | SWT.SINGLE | SWT.FULL_SELECTION);
+        EnhancedTableViewer detailViewer = new EnhancedTableViewer(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.SINGLE
+            | SWT.FULL_SELECTION);
         GridData gridData = new GridData(GridData.FILL_BOTH);
         detailViewer.getControl().setLayoutData(gridData);
 
@@ -336,7 +327,6 @@ public class MarkerStatsView extends AbstractStatsView {
      */
     protected void initToolBar(IToolBarManager tbm) {
         tbm.add(mChartAction);
-        tbm.add(mExportErrorsAction);
         tbm.add(new Separator());
         tbm.add(mDrillBackAction);
         tbm.add(mDrillDownAction);
@@ -379,8 +369,7 @@ public class MarkerStatsView extends AbstractStatsView {
                     getSite().getWorkbenchWindow().getActivePage().showView(GraphStatsView.VIEW_ID);
                 }
                 catch (PartInitException e) {
-                    CheckstyleLog.log(e, NLS.bind(Messages.MarkerStatsView_unableToOpenGraph,
-                            GraphStatsView.VIEW_ID));
+                    CheckstyleLog.log(e, NLS.bind(Messages.MarkerStatsView_unableToOpenGraph, GraphStatsView.VIEW_ID));
                     // TODO : Open information dialog to notify the user
                 }
             }
@@ -392,8 +381,7 @@ public class MarkerStatsView extends AbstractStatsView {
         // action used to display the detail of a specific error type
         mDrillDownAction = new Action() {
             public void run() {
-                IStructuredSelection selection = (IStructuredSelection) mMasterViewer
-                        .getSelection();
+                IStructuredSelection selection = (IStructuredSelection) mMasterViewer.getSelection();
                 if (selection.getFirstElement() instanceof MarkerStat) {
                     MarkerStat markerStat = (MarkerStat) selection.getFirstElement();
 
@@ -411,9 +399,9 @@ public class MarkerStatsView extends AbstractStatsView {
         mDrillDownAction.setText(Messages.MarkerStatsView_showDetails);
         mDrillDownAction.setToolTipText(Messages.MarkerStatsView_showDetailsTooltip);
         mDrillDownAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages()
-                .getImageDescriptor(ISharedImages.IMG_TOOL_FORWARD));
+            .getImageDescriptor(ISharedImages.IMG_TOOL_FORWARD));
         mDrillDownAction.setDisabledImageDescriptor(PlatformUI.getWorkbench().getSharedImages()
-                .getImageDescriptor(ISharedImages.IMG_TOOL_FORWARD_DISABLED));
+            .getImageDescriptor(ISharedImages.IMG_TOOL_FORWARD_DISABLED));
 
         // action used to go back to the master view
         mDrillBackAction = new Action() {
@@ -431,15 +419,14 @@ public class MarkerStatsView extends AbstractStatsView {
         mDrillBackAction.setText(Messages.MarkerStatsView_actionBack);
         mDrillBackAction.setToolTipText(Messages.MarkerStatsView_actionBackTooltip);
         mDrillBackAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages()
-                .getImageDescriptor(ISharedImages.IMG_TOOL_BACK));
+            .getImageDescriptor(ISharedImages.IMG_TOOL_BACK));
         mDrillBackAction.setDisabledImageDescriptor(PlatformUI.getWorkbench().getSharedImages()
-                .getImageDescriptor(ISharedImages.IMG_TOOL_BACK_DISABLED));
+            .getImageDescriptor(ISharedImages.IMG_TOOL_BACK_DISABLED));
 
         // action used to show a specific error in the editor
         mShowErrorAction = new Action() {
             public void run() {
-                IStructuredSelection selection = (IStructuredSelection) mDetailViewer
-                        .getSelection();
+                IStructuredSelection selection = (IStructuredSelection) mDetailViewer.getSelection();
                 if (selection.getFirstElement() instanceof IMarker) {
                     IMarker marker = (IMarker) selection.getFirstElement();
                     try {
@@ -455,60 +442,8 @@ public class MarkerStatsView extends AbstractStatsView {
         mShowErrorAction.setText(Messages.MarkerStatsView_displayError);
         mShowErrorAction.setToolTipText(Messages.MarkerStatsView_displayErrorTooltip);
         mShowErrorAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages()
-                .getImageDescriptor(IDE.SharedImages.IMG_OPEN_MARKER));
+            .getImageDescriptor(IDE.SharedImages.IMG_OPEN_MARKER));
 
-        // Action used export the error listing as a report
-        mExportErrorsAction = new Action() {
-            public void run() {
-                FileDialog dialog = new FileDialog(getSite().getShell());
-                dialog.setText(Messages.MarkerStatsView_chooseFileToExport);
-                dialog.setFileName(mLastExportFileName);
-                if (mLastExportFolderName != null) {
-                    dialog.setFilterPath(mLastExportFolderName);
-                }
-                String selectedFilePath = dialog.open();
-                if (selectedFilePath != null) {
-                    File selectedFile = new File(selectedFilePath);
-                    mLastExportFileName = selectedFile.getName();
-                    mLastExportFolderName = selectedFile.getParentFile().getAbsolutePath();
-                    try {
-                        // TODO For the moment, only generate RTF but could to
-                        // PDF and more later...
-                        IStatsExporter statsExporter = StatsExporterFactory
-                                .createStatsExporter("rtf");
-                        // TODO Put user preferences in the map
-                        /*
-                         * HashMap propsMap = new HashMap();
-                         * propsMap.put(IStatsExporter.PROPS_MAIN_FONT_NAME,
-                         * "Arial");
-                         * propsMap.put(IStatsExporter.PROPS_MAIN_FONT_SIZE, new
-                         * Integer(9)); statsExporter.initialize(propsMap);
-                         */
-                        statsExporter.initialize(null);
-                        List details = null;
-                        if (mIsDrilledDown) {
-                            Object[] currentDetails = ((IStructuredContentProvider) mDetailViewer
-                                    .getContentProvider()).getElements(getStats());
-                            details = Arrays.asList(currentDetails);
-                        }
-                        else {
-                            details = new ArrayList();
-                        }
-                        statsExporter.generate(getStats(), details, selectedFile);
-                    }
-                    catch (StatsExporterException e) {
-                        CheckstyleLog.log(e, Messages.MarkerStatsView_reportGenerationFailed);
-                        MessageDialog.openError(getSite().getShell(),
-                                Messages.MarkerStatsView_reportGenerationFailed,
-                                Messages.MarkerStatsView_reportGenerationFailed + "\n"
-                                        + e.getMessage());
-                    }
-                }
-            }
-        };
-        mExportErrorsAction.setText(Messages.MarkerStatsView_exportErrorsAsReport);
-        mExportErrorsAction.setToolTipText(Messages.MarkerStatsView_exportErrorsAsReportTooltip);
-        mExportErrorsAction.setImageDescriptor(CheckstyleUIPluginImages.EXPORT_REPORT_ICON);
     }
 
     /**
@@ -528,10 +463,9 @@ public class MarkerStatsView extends AbstractStatsView {
 
             Stats stats = getStats();
             if (stats != null) {
-                String text = NLS.bind(Messages.MarkerStatsView_lblOverviewMessage, new Object[] {
-                    new Integer(stats.getMarkerCount()),
-                    new Integer(stats.getMarkerStats().size()),
-                    new Integer(stats.getMarkerCountAll()) });
+                String text = NLS.bind(Messages.MarkerStatsView_lblOverviewMessage,
+                    new Object[] { new Integer(stats.getMarkerCount()), new Integer(stats.getMarkerStats().size()),
+                        new Integer(stats.getMarkerCountAll()) });
                 mDescLabel.setText(text);
             }
             else {
@@ -540,8 +474,8 @@ public class MarkerStatsView extends AbstractStatsView {
         }
         else {
 
-            String text = NLS.bind(Messages.MarkerStatsView_lblDetailMessage, new Object[] {
-                mCurrentDetailCategory, new Integer(mDetailViewer.getTable().getItemCount()) });
+            String text = NLS.bind(Messages.MarkerStatsView_lblDetailMessage, new Object[] { mCurrentDetailCategory,
+                new Integer(mDetailViewer.getTable().getItemCount()) });
             mDescLabel.setText(text);
         }
     }
@@ -549,7 +483,8 @@ public class MarkerStatsView extends AbstractStatsView {
     /**
      * Adds the actions to the tableviewer context menu.
      * 
-     * @param actions a collection of IAction objets
+     * @param actions
+     *            a collection of IAction objets
      */
     private void hookContextMenu(final Collection actions, StructuredViewer viewer) {
         MenuManager menuMgr = new MenuManager();
@@ -577,7 +512,8 @@ public class MarkerStatsView extends AbstractStatsView {
     /**
      * Specifies which action will be run when double clicking on the viewer.
      * 
-     * @param action the IAction to add
+     * @param action
+     *            the IAction to add
      */
     private void hookDoubleClickAction(final IAction action, StructuredViewer viewer) {
         viewer.addDoubleClickListener(new IDoubleClickListener() {
@@ -676,10 +612,9 @@ public class MarkerStatsView extends AbstractStatsView {
      * @author Lars Ködderitzsch
      */
     private class MasterViewMultiProvider extends LabelProvider implements ITableLabelProvider,
-            ITableComparableProvider, ITableSettingsProvider {
+        ITableComparableProvider, ITableSettingsProvider {
         /**
-         * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnText(java.lang.Object,
-         *      int)
+         * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnText(java.lang.Object, int)
          */
         public String getColumnText(Object obj, int index) {
             MarkerStat stat = (MarkerStat) obj;
@@ -702,8 +637,7 @@ public class MarkerStatsView extends AbstractStatsView {
         }
 
         /**
-         * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnImage(java.lang.Object,
-         *      int)
+         * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnImage(java.lang.Object, int)
          */
         public Image getColumnImage(Object obj, int index) {
             Image image = null;
@@ -769,10 +703,9 @@ public class MarkerStatsView extends AbstractStatsView {
      * @author Lars Ködderitzsch
      */
     private class DetailViewMultiProvider extends LabelProvider implements ITableLabelProvider,
-            ITableComparableProvider, ITableSettingsProvider {
+        ITableComparableProvider, ITableSettingsProvider {
         /**
-         * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnText(java.lang.Object,
-         *      int)
+         * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnText(java.lang.Object, int)
          */
         public String getColumnText(Object obj, int index) {
             IMarker marker = (IMarker) obj;
@@ -808,8 +741,7 @@ public class MarkerStatsView extends AbstractStatsView {
         }
 
         /**
-         * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnImage(java.lang.Object,
-         *      int)
+         * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnImage(java.lang.Object, int)
          */
         public Image getColumnImage(Object obj, int index) {
             Image image = null;
@@ -838,9 +770,7 @@ public class MarkerStatsView extends AbstractStatsView {
 
             switch (colIndex) {
                 case 0:
-                    comparable = new Integer(marker.getAttribute(IMarker.SEVERITY,
-                            Integer.MAX_VALUE)
-                            * -1);
+                    comparable = new Integer(marker.getAttribute(IMarker.SEVERITY, Integer.MAX_VALUE) * -1);
                     break;
                 case 1:
                     comparable = marker.getResource().getName();
@@ -849,8 +779,7 @@ public class MarkerStatsView extends AbstractStatsView {
                     comparable = marker.getResource().getParent().getFullPath().toString();
                     break;
                 case 3:
-                    comparable = new Integer(marker.getAttribute(IMarker.LINE_NUMBER,
-                            Integer.MAX_VALUE));
+                    comparable = new Integer(marker.getAttribute(IMarker.LINE_NUMBER, Integer.MAX_VALUE));
                     break;
                 case 4:
                     comparable = marker.getAttribute(IMarker.MESSAGE, "").toString();
