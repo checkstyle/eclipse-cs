@@ -45,13 +45,6 @@
             <message-key key="declaration.order.access" />
         </rule-metadata>
 
-        <rule-metadata name="%DoubleCheckedLocking.name" internal-name="DoubleCheckedLocking" parent="TreeWalker">
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.DoubleCheckedLockingCheck" />
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.DoubleCheckedLockingCheck" />
-            <description>%DoubleCheckedLocking.desc</description>
-            <message-key key="doublechecked.locking.avoid" />
-        </rule-metadata>
-
         <rule-metadata name="%EmptyStatement.name" internal-name="EmptyStatement" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.EmptyStatementCheck" />
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.EmptyStatementCheck" />
