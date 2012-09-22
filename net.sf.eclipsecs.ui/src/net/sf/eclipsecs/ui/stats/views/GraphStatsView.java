@@ -20,11 +20,9 @@
 
 package net.sf.eclipsecs.ui.stats.views;
 
-import java.awt.Frame;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.MouseEvent;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -50,7 +48,6 @@ import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.IDialogSettings;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -63,14 +60,12 @@ import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.awt.SWT_AWT;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Table;
@@ -84,13 +79,10 @@ import org.eclipse.ui.texteditor.MarkerUtilities;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartMouseEvent;
 import org.jfree.chart.ChartMouseListener;
-import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.encoders.ImageEncoder;
-import org.jfree.chart.encoders.ImageEncoderFactory;
-import org.jfree.chart.encoders.ImageFormat;
 import org.jfree.chart.entity.PieSectionEntity;
-import org.jfree.chart.plot.PiePlot3D;
+import org.jfree.chart.plot.PiePlot;
+import org.jfree.experimental.chart.swt.ChartComposite;
 import org.jfree.ui.RectangleInsets;
 import org.jfree.util.Rotation;
 import org.osgi.service.prefs.BackingStoreException;
@@ -149,15 +141,6 @@ public class GraphStatsView extends AbstractStatsView {
 
     /** Allows to show all the categories or not. */
     private Action mShowAllCategoriesAction;
-
-    /** Exports the error listing as a report. */
-    private Action mExportGraphAsImageAction;
-
-    /** The last folder used to store the generated reports. */
-    private String mLastExportFolderName;
-
-    /** The last file name used to store the generated reports. */
-    private String mLastExportFileName = "CheckstyleStatsGraph";
 
     /** The current violation category to show in details view. */
     private String mCurrentDetailCategory;
@@ -228,29 +211,28 @@ public class GraphStatsView extends AbstractStatsView {
         mGraph = createChart(mPieDataset);
 
         // creates the chart component
-        Composite embeddedComposite = new Composite(parent, SWT.EMBEDDED);
-        embeddedComposite.setLayoutData(new GridData(GridData.FILL_VERTICAL));
-        Frame fileTableFrame = SWT_AWT.new_Frame(embeddedComposite);
-        ChartPanel panel = new ChartPanel(mGraph);
-        panel.setPopupMenu(null);
+        // Composite embeddedComposite = new Composite(parent, SWT.EMBEDDED | SWT.NO_BACKGROUND);
+        // embeddedComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-        fileTableFrame.add(panel);
+        // experimental usage of JFreeChart SWT
+        // the composite to harbor the Swing chart control
+        ChartComposite embeddedComposite = new ChartComposite(parent, SWT.NONE, mGraph, true);
+        embeddedComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-        panel.addChartMouseListener(new ChartMouseListener() {
+        embeddedComposite.addChartMouseListener(new ChartMouseListener() {
 
             public void chartMouseClicked(final ChartMouseEvent event) {
 
                 MouseEvent trigger = event.getTrigger();
-                if (trigger.getButton() == MouseEvent.BUTTON1
-                    && trigger.getClickCount() == 2
-                    && event.getEntity() instanceof PieSectionEntity) {
+                if (trigger.getButton() == MouseEvent.BUTTON1 && event.getEntity() instanceof PieSectionEntity) {
+
+                    // && trigger.getClickCount() == 2 //doubleclick not correctly detected with the SWT composite
 
                     mMasterComposite.getDisplay().syncExec(new Runnable() {
 
                         public void run() {
                             mIsDrilledDown = true;
-                            mCurrentDetailCategory = (String) ((PieSectionEntity) event
-                                .getEntity()).getSectionKey();
+                            mCurrentDetailCategory = (String) ((PieSectionEntity) event.getEntity()).getSectionKey();
                             mStackLayout.topControl = mDetailViewer.getTable();
                             mMainSection.layout();
                             mDetailViewer.setInput(mDetailViewer.getInput());
@@ -260,18 +242,15 @@ public class GraphStatsView extends AbstractStatsView {
                         }
                     });
                 }
+                else {
+                    event.getTrigger().consume();
+                }
             }
 
             public void chartMouseMoved(ChartMouseEvent event) {
                 // NOOP
             }
         });
-
-        // experimental usage of JFreeChart SWT
-        // // the composite to harbor the Swing chart control
-        // mEmbeddedComposite = new ChartComposite(parent, SWT.NONE, mGraph,
-        // true);
-        // mEmbeddedComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
 
         return embeddedComposite;
     }
@@ -285,8 +264,8 @@ public class GraphStatsView extends AbstractStatsView {
      */
     private EnhancedTableViewer createDetailView(Composite parent) {
         // le tableau
-        EnhancedTableViewer detailViewer = new EnhancedTableViewer(parent,
-            SWT.H_SCROLL | SWT.V_SCROLL | SWT.SINGLE | SWT.FULL_SELECTION);
+        EnhancedTableViewer detailViewer = new EnhancedTableViewer(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.SINGLE
+            | SWT.FULL_SELECTION);
         GridData gridData = new GridData(GridData.FILL_BOTH);
         detailViewer.getControl().setLayoutData(gridData);
 
@@ -324,12 +303,11 @@ public class GraphStatsView extends AbstractStatsView {
         detailViewer.installEnhancements();
 
         // add selection listener to maintain action state
-        detailViewer
-            .addSelectionChangedListener(new ISelectionChangedListener() {
-                public void selectionChanged(SelectionChangedEvent event) {
-                    updateActions();
-                }
-            });
+        detailViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+            public void selectionChanged(SelectionChangedEvent event) {
+                updateActions();
+            }
+        });
 
         // hooks the action to double click
         hookDoubleClickAction(mShowErrorAction, detailViewer);
@@ -354,40 +332,34 @@ public class GraphStatsView extends AbstractStatsView {
         mListingAction = new Action() {
             public void run() {
                 try {
-                    getSite().getWorkbenchWindow().getActivePage()
-                        .showView(MarkerStatsView.VIEW_ID);
-                } catch (PartInitException e) {
-                    CheckstyleLog.log(e, NLS.bind(
-                        Messages.GraphStatsView_unableToOpenListingView,
-                        MarkerStatsView.VIEW_ID));
+                    getSite().getWorkbenchWindow().getActivePage().showView(MarkerStatsView.VIEW_ID);
+                }
+                catch (PartInitException e) {
+                    CheckstyleLog.log(e,
+                        NLS.bind(Messages.GraphStatsView_unableToOpenListingView, MarkerStatsView.VIEW_ID));
                     // TODO : mettre message d'erreur à l'utilisateur
                 }
             }
         };
         mListingAction.setText(Messages.GraphStatsView_displayListing);
         mListingAction.setToolTipText(Messages.GraphStatsView_displayListing);
-        mListingAction
-            .setImageDescriptor(CheckstyleUIPluginImages.LIST_VIEW_ICON);
+        mListingAction.setImageDescriptor(CheckstyleUIPluginImages.LIST_VIEW_ICON);
 
-        mShowAllCategoriesAction = new Action(
-            Messages.GraphStatsView_displayAllCategories, Action.AS_CHECK_BOX) {
+        mShowAllCategoriesAction = new Action(Messages.GraphStatsView_displayAllCategories, Action.AS_CHECK_BOX) {
             public void run() {
                 Display.getDefault().asyncExec(new Runnable() {
                     public void run() {
-                        if (!mMasterComposite.isDisposed()
-                            && mMasterComposite.isVisible()) {
+                        if (!mMasterComposite.isDisposed() && mMasterComposite.isVisible()) {
                             // on averti le dataset
-                            mPieDataset
-                                .setShowAllCategories(mShowAllCategoriesAction
-                                    .isChecked());
+                            mPieDataset.setShowAllCategories(mShowAllCategoriesAction.isChecked());
 
                             // update the preference
                             try {
-                                CheckstyleUIPluginPrefs
-                                    .setBoolean(
-                                        CheckstyleUIPluginPrefs.PREF_STATS_SHOW_ALL_CATEGORIES,
-                                        mShowAllCategoriesAction.isChecked());
-                            } catch (BackingStoreException e1) {
+                                CheckstyleUIPluginPrefs.setBoolean(
+                                    CheckstyleUIPluginPrefs.PREF_STATS_SHOW_ALL_CATEGORIES,
+                                    mShowAllCategoriesAction.isChecked());
+                            }
+                            catch (BackingStoreException e1) {
                                 CheckstyleLog.log(e1);
                             }
                             refresh();
@@ -396,62 +368,11 @@ public class GraphStatsView extends AbstractStatsView {
                 });
             }
         };
-        mShowAllCategoriesAction
-            .setToolTipText(Messages.GraphStatsView_displayAllCategories);
-        mShowAllCategoriesAction.setImageDescriptor(PlatformUI.getWorkbench()
-            .getSharedImages()
+        mShowAllCategoriesAction.setToolTipText(Messages.GraphStatsView_displayAllCategories);
+        mShowAllCategoriesAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages()
             .getImageDescriptor(ISharedImages.IMG_OBJ_ELEMENT));
-        mShowAllCategoriesAction
-            .setChecked(CheckstyleUIPluginPrefs
-                .getBoolean(CheckstyleUIPluginPrefs.PREF_STATS_SHOW_ALL_CATEGORIES));
-
-        // Action used export the error listing as a report
-        mExportGraphAsImageAction = new Action() {
-            public void run() {
-                FileDialog dialog = new FileDialog(getSite().getShell());
-                dialog.setText(Messages.MarkerStatsView_chooseFileToExport);
-                dialog.setFileName(mLastExportFileName);
-                if (mLastExportFolderName != null) {
-                    dialog.setFilterPath(mLastExportFolderName);
-                }
-                String selectedFilePath = dialog.open();
-                if (selectedFilePath != null) {
-                    // TODO : the user should be able to choose the type of
-                    // image...
-                    if (!selectedFilePath.endsWith(".png")) {
-                        selectedFilePath += ".png";
-                    }
-                    File selectedFile = new File(selectedFilePath);
-                    mLastExportFileName = selectedFile.getName();
-                    mLastExportFolderName = selectedFile.getParentFile()
-                        .getAbsolutePath();
-
-                    try {
-                        // TODO : the user should be able to choose the type of
-                        // image, the width
-                        // and the height of the buffered image
-                        ImageEncoder imageEncoder = ImageEncoderFactory
-                            .newInstance(ImageFormat.PNG);
-                        imageEncoder.encode(
-                            mGraph.createBufferedImage(800, 600),
-                            new FileOutputStream(selectedFile));
-                    } catch (IOException e) {
-                        CheckstyleLog.log(e,
-                            Messages.MarkerStatsView_graphExportFailed);
-                        MessageDialog.openError(getSite().getShell(),
-                            Messages.MarkerStatsView_graphExportFailed,
-                            Messages.MarkerStatsView_graphExportFailed + "\n"
-                                + e.getMessage());
-                    }
-                }
-            }
-        };
-        mExportGraphAsImageAction
-            .setText(Messages.MarkerStatsView_exportGraphAsImage);
-        mExportGraphAsImageAction
-            .setToolTipText(Messages.MarkerStatsView_exportGraphAsImageTooltip);
-        mExportGraphAsImageAction
-            .setImageDescriptor(CheckstyleUIPluginImages.EXPORT_REPORT_ICON);
+        mShowAllCategoriesAction.setChecked(CheckstyleUIPluginPrefs
+            .getBoolean(CheckstyleUIPluginPrefs.PREF_STATS_SHOW_ALL_CATEGORIES));
 
         // action used to go back to the master view
         mDrillBackAction = new Action() {
@@ -466,36 +387,31 @@ public class GraphStatsView extends AbstractStatsView {
             }
         };
         mDrillBackAction.setText(Messages.MarkerStatsView_actionBack);
-        mDrillBackAction
-            .setToolTipText(Messages.MarkerStatsView_actionBackTooltip);
-        mDrillBackAction.setImageDescriptor(PlatformUI.getWorkbench()
-            .getSharedImages().getImageDescriptor(ISharedImages.IMG_TOOL_BACK));
-        mDrillBackAction.setDisabledImageDescriptor(PlatformUI.getWorkbench()
-            .getSharedImages()
+        mDrillBackAction.setToolTipText(Messages.MarkerStatsView_actionBackTooltip);
+        mDrillBackAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages()
+            .getImageDescriptor(ISharedImages.IMG_TOOL_BACK));
+        mDrillBackAction.setDisabledImageDescriptor(PlatformUI.getWorkbench().getSharedImages()
             .getImageDescriptor(ISharedImages.IMG_TOOL_BACK_DISABLED));
 
         // action used to show a specific error in the editor
         mShowErrorAction = new Action() {
             public void run() {
-                IStructuredSelection selection = (IStructuredSelection) mDetailViewer
-                    .getSelection();
+                IStructuredSelection selection = (IStructuredSelection) mDetailViewer.getSelection();
                 if (selection.getFirstElement() instanceof IMarker) {
                     IMarker marker = (IMarker) selection.getFirstElement();
                     try {
                         IDE.openEditor(getSite().getPage(), marker);
-                    } catch (PartInitException e) {
-                        CheckstyleLog.log(e,
-                            Messages.MarkerStatsView_unableToShowMarker);
+                    }
+                    catch (PartInitException e) {
+                        CheckstyleLog.log(e, Messages.MarkerStatsView_unableToShowMarker);
                         // TODO : Open information dialog to notify the user
                     }
                 }
             }
         };
         mShowErrorAction.setText(Messages.MarkerStatsView_displayError);
-        mShowErrorAction
-            .setToolTipText(Messages.MarkerStatsView_displayErrorTooltip);
-        mShowErrorAction.setImageDescriptor(PlatformUI.getWorkbench()
-            .getSharedImages()
+        mShowErrorAction.setToolTipText(Messages.MarkerStatsView_displayErrorTooltip);
+        mShowErrorAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages()
             .getImageDescriptor(IDE.SharedImages.IMG_OPEN_MARKER));
 
     }
@@ -514,9 +430,9 @@ public class GraphStatsView extends AbstractStatsView {
      */
     protected void initToolBar(IToolBarManager tbm) {
         tbm.add(mListingAction);
-        tbm.add(mExportGraphAsImageAction);
         tbm.add(new Separator());
-        tbm.add(mShowAllCategoriesAction);
+        tbm.add(mDrillBackAction);
+        // tbm.add(mShowAllCategoriesAction);
         tbm.add(new FiltersAction(this));
     }
 
@@ -525,9 +441,7 @@ public class GraphStatsView extends AbstractStatsView {
      */
     private void updateActions() {
         mDrillBackAction.setEnabled(mIsDrilledDown);
-        mShowErrorAction.setEnabled(mIsDrilledDown
-            && !mDetailViewer.getSelection().isEmpty());
-        mExportGraphAsImageAction.setEnabled(!mIsDrilledDown);
+        mShowErrorAction.setEnabled(mIsDrilledDown && !mDetailViewer.getSelection().isEmpty());
     }
 
     /**
@@ -536,8 +450,7 @@ public class GraphStatsView extends AbstractStatsView {
      * @param action
      *            the IAction to add
      */
-    private void hookDoubleClickAction(final IAction action,
-        StructuredViewer viewer) {
+    private void hookDoubleClickAction(final IAction action, StructuredViewer viewer) {
         viewer.addDoubleClickListener(new IDoubleClickListener() {
             public void doubleClick(DoubleClickEvent event) {
                 action.run();
@@ -551,8 +464,7 @@ public class GraphStatsView extends AbstractStatsView {
      * @param actions
      *            a collection of IAction objets
      */
-    private void hookContextMenu(final Collection actions,
-        StructuredViewer viewer) {
+    private void hookContextMenu(final Collection actions, StructuredViewer viewer) {
         MenuManager menuMgr = new MenuManager();
         menuMgr.setRemoveAllWhenShown(true);
         menuMgr.addMenuListener(new IMenuListener() {
@@ -561,12 +473,12 @@ public class GraphStatsView extends AbstractStatsView {
                     Object item = iter.next();
                     if (item instanceof IContributionItem) {
                         manager.add((IContributionItem) item);
-                    } else if (item instanceof IAction) {
+                    }
+                    else if (item instanceof IAction) {
                         manager.add((IAction) item);
                     }
                 }
-                manager.add(new Separator(
-                    IWorkbenchActionConstants.MB_ADDITIONS));
+                manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
             }
         });
         Menu menu = menuMgr.createContextMenu(viewer.getControl());
@@ -605,10 +517,11 @@ public class GraphStatsView extends AbstractStatsView {
      * @return le diagramme
      */
     private JFreeChart createChart(GraphPieDataset piedataset) {
-        JFreeChart jfreechart = ChartFactory.createPieChart3D(null, piedataset,
-            false, true, false);
+        JFreeChart jfreechart = ChartFactory.createPieChart3D(null, piedataset, false, true, false);
+        jfreechart.setAntiAlias(true);
+        jfreechart.setTextAntiAlias(true);
 
-        PiePlot3D pieplot3d = (PiePlot3D) jfreechart.getPlot();
+        PiePlot pieplot3d = (PiePlot) jfreechart.getPlot();
         pieplot3d.setInsets(new RectangleInsets(0, 0, 0, 0));
         final double angle = 290D;
         pieplot3d.setStartAngle(angle);
@@ -616,6 +529,18 @@ public class GraphStatsView extends AbstractStatsView {
         final float foreground = 0.5F;
         pieplot3d.setForegroundAlpha(foreground);
         pieplot3d.setNoDataMessage(Messages.GraphStatsView_noDataToDisplay);
+        pieplot3d.setCircular(true);
+
+        pieplot3d.setOutlinePaint(null);
+        pieplot3d.setLabelFont(new Font("SansSerif", Font.PLAIN, 10));
+        pieplot3d.setLabelGap(0.02);
+        pieplot3d.setLabelOutlinePaint(null);
+        pieplot3d.setLabelShadowPaint(null);
+        pieplot3d.setLabelBackgroundPaint(Color.WHITE);
+        pieplot3d.setBackgroundPaint(Color.WHITE);
+
+        pieplot3d.setInteriorGap(0.02);
+        pieplot3d.setMaximumLabelWidth(0.20);
 
         return jfreechart;
     }
@@ -630,18 +555,18 @@ public class GraphStatsView extends AbstractStatsView {
             Stats stats = getStats();
             if (stats != null) {
                 String text = NLS.bind(Messages.GraphStatsView_lblViewMessage,
-                    new Object[] { new Integer(stats.getMarkerCount()),
-                        new Integer(stats.getMarkerStats().size()),
+                    new Object[] { new Integer(stats.getMarkerCount()), new Integer(stats.getMarkerStats().size()),
                         new Integer(stats.getMarkerCountAll()) });
                 mLabelDesc.setText(text);
-            } else {
+            }
+            else {
                 mLabelDesc.setText("");
             }
-        } else {
+        }
+        else {
 
-            String text = NLS.bind(Messages.MarkerStatsView_lblDetailMessage,
-                new Object[] { mCurrentDetailCategory,
-                    new Integer(mDetailViewer.getTable().getItemCount()) });
+            String text = NLS.bind(Messages.MarkerStatsView_lblDetailMessage, new Object[] { mCurrentDetailCategory,
+                new Integer(mDetailViewer.getTable().getItemCount()) });
             mLabelDesc.setText(text);
         }
     }
@@ -665,8 +590,7 @@ public class GraphStatsView extends AbstractStatsView {
                 Iterator it = markerStats.iterator();
                 while (it.hasNext()) {
                     MarkerStat markerStat = (MarkerStat) it.next();
-                    if (markerStat.getIdentifiant().equals(
-                        mCurrentDetailCategory)) {
+                    if (markerStat.getIdentifiant().equals(mCurrentDetailCategory)) {
                         mCurrentDetails = markerStat.getMarkers().toArray();
                         break;
                     }
@@ -698,11 +622,10 @@ public class GraphStatsView extends AbstractStatsView {
      * 
      * @author Lars Ködderitzsch
      */
-    private class DetailViewMultiProvider extends LabelProvider implements
-        ITableLabelProvider, ITableComparableProvider, ITableSettingsProvider {
+    private class DetailViewMultiProvider extends LabelProvider implements ITableLabelProvider,
+        ITableComparableProvider, ITableSettingsProvider {
         /**
-         * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnText(java.lang.Object,
-         *      int)
+         * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnText(java.lang.Object, int)
          */
         public String getColumnText(Object obj, int index) {
             IMarker marker = (IMarker) obj;
@@ -714,12 +637,10 @@ public class GraphStatsView extends AbstractStatsView {
                         text = marker.getResource().getName();
                         break;
                     case 2:
-                        text = marker.getResource().getParent().getFullPath()
-                            .toString();
+                        text = marker.getResource().getParent().getFullPath().toString();
                         break;
                     case 3:
-                        text = marker.getAttribute(IMarker.LINE_NUMBER)
-                            .toString();
+                        text = marker.getAttribute(IMarker.LINE_NUMBER).toString();
                         break;
                     case 4:
                         text = marker.getAttribute(IMarker.MESSAGE).toString();
@@ -729,7 +650,8 @@ public class GraphStatsView extends AbstractStatsView {
                         text = ""; //$NON-NLS-1$
                         break;
                 }
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 // Can't do anything: let's put a default value
                 text = Messages.MarkerStatsView_unknownProblem;
                 CheckstyleLog.log(e);
@@ -739,8 +661,7 @@ public class GraphStatsView extends AbstractStatsView {
         }
 
         /**
-         * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnImage(java.lang.Object,
-         *      int)
+         * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnImage(java.lang.Object, int)
          */
         public Image getColumnImage(Object obj, int index) {
             Image image = null;
@@ -748,18 +669,16 @@ public class GraphStatsView extends AbstractStatsView {
 
             if (index == 0) {
                 int severity = MarkerUtilities.getSeverity(marker);
-                ISharedImages sharedImages = PlatformUI.getWorkbench()
-                    .getSharedImages();
+                ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
 
                 if (IMarker.SEVERITY_ERROR == severity) {
-                    image = sharedImages
-                        .getImage(ISharedImages.IMG_OBJS_ERROR_TSK);
-                } else if (IMarker.SEVERITY_WARNING == severity) {
-                    image = sharedImages
-                        .getImage(ISharedImages.IMG_OBJS_WARN_TSK);
-                } else if (IMarker.SEVERITY_INFO == severity) {
-                    image = sharedImages
-                        .getImage(ISharedImages.IMG_OBJS_INFO_TSK);
+                    image = sharedImages.getImage(ISharedImages.IMG_OBJS_ERROR_TSK);
+                }
+                else if (IMarker.SEVERITY_WARNING == severity) {
+                    image = sharedImages.getImage(ISharedImages.IMG_OBJS_WARN_TSK);
+                }
+                else if (IMarker.SEVERITY_INFO == severity) {
+                    image = sharedImages.getImage(ISharedImages.IMG_OBJS_INFO_TSK);
                 }
             }
             return image;
@@ -771,23 +690,19 @@ public class GraphStatsView extends AbstractStatsView {
 
             switch (colIndex) {
                 case 0:
-                    comparable = new Integer(marker.getAttribute(
-                        IMarker.SEVERITY, Integer.MAX_VALUE) * -1);
+                    comparable = new Integer(marker.getAttribute(IMarker.SEVERITY, Integer.MAX_VALUE) * -1);
                     break;
                 case 1:
                     comparable = marker.getResource().getName();
                     break;
                 case 2:
-                    comparable = marker.getResource().getParent().getFullPath()
-                        .toString();
+                    comparable = marker.getResource().getParent().getFullPath().toString();
                     break;
                 case 3:
-                    comparable = new Integer(marker.getAttribute(
-                        IMarker.LINE_NUMBER, Integer.MAX_VALUE));
+                    comparable = new Integer(marker.getAttribute(IMarker.LINE_NUMBER, Integer.MAX_VALUE));
                     break;
                 case 4:
-                    comparable = marker.getAttribute(IMarker.MESSAGE, "")
-                        .toString();
+                    comparable = marker.getAttribute(IMarker.MESSAGE, "").toString();
                     break;
 
                 default:
@@ -802,8 +717,7 @@ public class GraphStatsView extends AbstractStatsView {
 
             IDialogSettings mainSettings = getDialogSettings();
 
-            IDialogSettings settings = mainSettings
-                .getSection(TAG_SECTION_DETAIL);
+            IDialogSettings settings = mainSettings.getSection(TAG_SECTION_DETAIL);
 
             if (settings == null) {
                 settings = mainSettings.addNewSection(TAG_SECTION_DETAIL);
