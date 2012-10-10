@@ -20,15 +20,9 @@
 
 package net.sf.eclipsecs.ui.quickfixes;
 
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
-
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.jdt.core.IJavaElement;
-import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -36,8 +30,7 @@ import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
 /**
- * This action tries to run all quickfixes for markers on a selected compilation
- * unit.
+ * This action tries to run all quickfixes for markers on a selected compilation unit.
  * 
  * @author Lars Ködderitzsch
  */
@@ -82,15 +75,6 @@ public class FixCheckstyleMarkersAction implements IObjectActionDelegate {
 
         IFile file = (IFile) ((IAdaptable) element).getAdapter(IFile.class);
         if (file != null) {
-
-            // open the file the editor
-            try {
-                IJavaElement javaElement = JavaCore.create(file);
-                JavaUI.openInEditor(javaElement);
-            }
-            catch (CoreException e) {
-                CheckstyleUIPlugin.errorDialog(mWorkBenchPart.getSite().getShell(), e, true);
-            }
 
             // call the fixing job
             Job job = new FixCheckstyleMarkersJob(file);

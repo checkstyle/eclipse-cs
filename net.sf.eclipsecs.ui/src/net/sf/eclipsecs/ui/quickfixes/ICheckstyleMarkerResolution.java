@@ -20,6 +20,8 @@
 
 package net.sf.eclipsecs.ui.quickfixes;
 
+import net.sf.eclipsecs.core.config.meta.RuleMetadata;
+
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.ui.IMarkerResolution2;
 
@@ -33,17 +35,25 @@ public interface ICheckstyleMarkerResolution extends IMarkerResolution2 {
     /**
      * Checks if this quickfix can actually fix the marker occurrance.
      * 
-     * @param marker the marker to potentially be fixed.
-     * @return <code>true</code> if this quickfix can fix the marker,
-     *         <code>false</code> otherwise.
+     * @param marker
+     *            the marker to potentially be fixed.
+     * @return <code>true</code> if this quickfix can fix the marker, <code>false</code> otherwise.
      */
     boolean canFix(IMarker marker);
 
     /**
      * Sets if the quickfix automatically commits the changes (saves the file).
      * 
-     * @param autoCommit <code>true</code> if changes are automatically
-     *            committed
+     * @param autoCommit
+     *            <code>true</code> if changes are automatically committed
      */
     void setAutoCommitChanges(boolean autoCommit);
+
+    /**
+     * Sets the metadata for the checkstyle rule to which this quickfix implementation applies.
+     * 
+     * @param metadata
+     *            the checkstyle rule metadata
+     */
+    void setRuleMetaData(RuleMetadata metadata);
 }

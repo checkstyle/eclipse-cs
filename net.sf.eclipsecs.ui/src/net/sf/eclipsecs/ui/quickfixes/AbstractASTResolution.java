@@ -20,9 +20,13 @@
 
 package net.sf.eclipsecs.ui.quickfixes;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
+import net.sf.eclipsecs.core.builder.CheckstyleMarker;
+import net.sf.eclipsecs.core.config.meta.RuleMetadata;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.ui.Messages;
 
@@ -45,6 +49,7 @@ import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.StructuralPropertyDescriptor;
+import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
@@ -55,6 +60,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.text.edits.MalformedTreeException;
 import org.eclipse.text.edits.TextEdit;
 import org.eclipse.ui.texteditor.MarkerAnnotation;
+import org.eclipse.ui.views.markers.WorkbenchMarkerResolution;
 
 /**
  * Abstract base class for marker resolutions using AST rewrite techniques.
@@ -62,15 +68,33 @@ import org.eclipse.ui.texteditor.MarkerAnnotation;
  * @author Lars Ködderitzsch
  * @author Philip Graf
  */
-public abstract class AbstractASTResolution implements ICheckstyleMarkerResolution {
+public abstract class AbstractASTResolution extends WorkbenchMarkerResolution implements ICheckstyleMarkerResolution {
 
     private boolean mAutoCommit;
+
+    private RuleMetadata mMetaData;
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setRuleMetaData(RuleMetadata metadata) {
+        this.mMetaData = metadata;
+    }
 
     /**
      * {@inheritDoc}
      */
     public boolean canFix(IMarker marker) {
-        return true;
+
+        String moduleName = marker.getAttribute(CheckstyleMarker.MODULE_NAME, null);
+        try {
+            return CheckstyleMarker.MARKER_ID.equals(marker.getType())
+                && (mMetaData.getInternalName().equals(moduleName) || mMetaData.getAlternativeNames().contains(
+                    moduleName));
+        }
+        catch (CoreException e) {
+            throw new IllegalStateException(e);
+        }
     }
 
     /**
@@ -86,6 +110,21 @@ public abstract class AbstractASTResolution implements ICheckstyleMarkerResoluti
     public Image getImage() {
         // default implementation returns no image
         return null;
+    }
+
+    @Override
+    public IMarker[] findOtherMarkers(IMarker[] markers) {
+
+        Set<IMarker> candidates = new HashSet<IMarker>();
+
+        for (IMarker m : markers) {
+
+            if (canFix(m)) {
+                candidates.add(m);
+            }
+        }
+
+        return candidates.toArray(new IMarker[candidates.size()]);
     }
 
     /**
@@ -110,7 +149,11 @@ public abstract class AbstractASTResolution implements ICheckstyleMarkerResoluti
         IPath path = compilationUnit.getPath();
 
         try {
+
             IProgressMonitor monitor = new NullProgressMonitor();
+
+            // open the file the editor
+            JavaUI.openInEditor(compilationUnit);
 
             // reimplemented according to this article
             // http://www.eclipse.org/articles/Article-JavaCodeManipulation_AST/index.html
@@ -145,8 +188,7 @@ public abstract class AbstractASTResolution implements ICheckstyleMarkerResoluti
             ast.accept(handleGetCorrectingASTVisitor(lineInfo, markerStart));
 
             // rewrite all recorded changes to the document
-            TextEdit edit = ast
-                    .rewrite(document, compilationUnit.getJavaProject().getOptions(true));
+            TextEdit edit = ast.rewrite(document, compilationUnit.getJavaProject().getOptions(true));
             edit.apply(document);
 
             // commit changes to underlying file
@@ -162,8 +204,7 @@ public abstract class AbstractASTResolution implements ICheckstyleMarkerResoluti
         }
         catch (BadLocationException e) {
             CheckstyleLog.log(e, Messages.AbstractASTResolution_msgErrorQuickfix);
-        }
-        finally {
+        } finally {
 
             if (bufferManager != null) {
                 try {
@@ -177,49 +218,47 @@ public abstract class AbstractASTResolution implements ICheckstyleMarkerResoluti
     }
 
     /**
-     * Template method to be implemented by concrete quickfix implementations.
-     * These must provide their fixing modification through an AST visitor, more
-     * specifically by doing the neccessary modifications directly on the
+     * Template method to be implemented by concrete quickfix implementations. These must provide their fixing
+     * modification through an AST visitor, more specifically by doing the neccessary modifications directly on the
      * visited AST nodes. The AST itself will recored modification.
      * 
-     * @param lineInfo the IRegion for the line containing the marker to fix
-     * @param markerStartOffset the actual offset where the problem marker
-     *            starts
+     * @param lineInfo
+     *            the IRegion for the line containing the marker to fix
+     * @param markerStartOffset
+     *            the actual offset where the problem marker starts
      * @return the modifying AST visitor
      */
-    protected abstract ASTVisitor handleGetCorrectingASTVisitor(IRegion lineInfo,
-            int markerStartOffset);
+    protected abstract ASTVisitor handleGetCorrectingASTVisitor(IRegion lineInfo, int markerStartOffset);
 
     /**
-     * Determines if the given position lies within the boundaries of the
-     * ASTNode.
+     * Determines if the given position lies within the boundaries of the ASTNode.
      * 
-     * @param node the ASTNode
-     * @param position the position to check for
+     * @param node
+     *            the ASTNode
+     * @param position
+     *            the position to check for
      * @return <code>true</code> if the position is within the ASTNode
      */
     protected boolean containsPosition(ASTNode node, int position) {
-        return node.getStartPosition() <= position
-                && position <= node.getStartPosition() + node.getLength();
+        return node.getStartPosition() <= position && position <= node.getStartPosition() + node.getLength();
     }
 
     /**
-     * Determines if the given position lies within the boundaries of the
-     * region.
+     * Determines if the given position lies within the boundaries of the region.
      * 
-     * @param region the region
-     * @param position the position to check for
+     * @param region
+     *            the region
+     * @param position
+     *            the position to check for
      * @return <code>true</code> if the position is within the region
      */
     protected boolean containsPosition(IRegion region, int position) {
-        return region.getOffset() <= position
-                && position <= region.getOffset() + region.getLength();
+        return region.getOffset() <= position && position <= region.getOffset() + region.getLength();
     }
 
     /**
      * Returns a deep copy of the subtree of AST nodes rooted at the given node. The resulting nodes are owned by the
-     * same AST as the given node. Even if the given node has a parent, the
-     * result node will be unparented.
+     * same AST as the given node. Even if the given node has a parent, the result node will be unparented.
      * <p>
      * Source range information on the original nodes is automatically copied to the new nodes. Client properties (
      * <code>properties</code>) are not carried over.
@@ -227,7 +266,9 @@ public abstract class AbstractASTResolution implements ICheckstyleMarkerResoluti
      * <p>
      * The node's <code>AST</code> and the target <code>AST</code> must support the same API level.
      * </p>
-     * @param node the node to copy, or <code>null</code> if none
+     * 
+     * @param node
+     *            the node to copy, or <code>null</code> if none
      * 
      * @return the copied node, or <code>null</code> if <code>node</code> is <code>null</code>
      */
@@ -239,8 +280,10 @@ public abstract class AbstractASTResolution implements ICheckstyleMarkerResoluti
     /**
      * Replaces a node in an AST with another node. If the replacement is successful the original node is deleted.
      * 
-     * @param node The node to replace.
-     * @param replacement The replacement node.
+     * @param node
+     *            The node to replace.
+     * @param replacement
+     *            The replacement node.
      * @return <code>true</code> if the node was successfully replaced.
      */
     protected boolean replace(final ASTNode node, final ASTNode replacement) {
@@ -251,7 +294,8 @@ public abstract class AbstractASTResolution implements ICheckstyleMarkerResoluti
                 parent.setStructuralProperty(descriptor, replacement);
                 node.delete();
                 return true;
-            } else if (descriptor.isChildListProperty()) {
+            }
+            else if (descriptor.isChildListProperty()) {
                 @SuppressWarnings("unchecked")
                 final List<ASTNode> children = (List<ASTNode>) parent.getStructuralProperty(descriptor);
                 children.set(children.indexOf(node), replacement);

@@ -103,6 +103,7 @@ public class CheckstyleMarkerResolutionGenerator implements IMarkerResolutionGen
                     .loadClass(quickfixClassName);
 
                 ICheckstyleMarkerResolution fix = (ICheckstyleMarkerResolution) quickfixClass.newInstance();
+                fix.setRuleMetaData(ruleMetadata);
                 fixes.add(fix);
             }
         }
