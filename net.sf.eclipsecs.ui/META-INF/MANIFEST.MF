@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Eclipse Checkstyle Ui Plug-in
 Bundle-SymbolicName: net.sf.eclipsecs.ui;singleton:=true
-Bundle-Version: 5.6.0.qualifier
+Bundle-Version: 5.6.1.qualifier
 Bundle-Vendor: http://eclipse-cs.sf.net/
 Bundle-Activator: net.sf.eclipsecs.ui.CheckstyleUIPlugin
 Require-Bundle: net.sf.eclipsecs.core
@@ -57,6 +57,7 @@ Import-Package: org.eclipse.core.commands,
  org.eclipse.ui.plugin,
  org.eclipse.ui.progress,
  org.eclipse.ui.texteditor,
+ org.eclipse.ui.views.markers,
  org.osgi.framework,
  org.osgi.service.prefs
 
