@@ -30,6 +30,7 @@ import net.sf.eclipsecs.ui.properties.filter.CheckFileOnOpenPartListener;
 
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.IProduct;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.ErrorDialog;
@@ -76,8 +77,6 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
 
         // add listeners for the Check-On-Open support
         final IWorkbench workbench = getWorkbench();
-        workbench.addWindowListener(mWindowListener);
-
         workbench.getDisplay().asyncExec(new Runnable() {
             public void run() {
 
@@ -109,6 +108,8 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
                         window.getPartService().addPartListener(mPartListener);
                     }
                 }
+
+                workbench.addWindowListener(mWindowListener);
             }
         });
 
@@ -120,6 +121,15 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
         // free cached images
         CheckstyleUIPluginImages.clearCachedImages();
         super.stop(context);
+    }
+
+    /**
+     * @return <code>true</code> if we're running on an Eclipse 3 platform.
+     */
+    public static boolean isE3() {
+
+        IProduct pr = Platform.getProduct();
+        return pr.getProperty("Version").startsWith("3");
     }
 
     /**

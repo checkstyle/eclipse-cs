@@ -20,6 +20,9 @@
 
 package net.sf.eclipsecs.ui.properties.filter;
 
+import java.io.StringReader;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -34,6 +37,7 @@ import net.sf.eclipsecs.core.projectconfig.filters.IFilter;
 import net.sf.eclipsecs.core.projectconfig.filters.UnOpenedFilesFilter;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
+import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -48,6 +52,8 @@ import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.WorkbenchException;
+import org.eclipse.ui.XMLMemento;
 import org.eclipse.ui.internal.EditorReference;
 import org.eclipse.ui.internal.IWorkbenchConstants;
 import org.eclipse.ui.part.FileEditorInput;
@@ -56,7 +62,7 @@ import org.eclipse.ui.part.FileEditorInput;
  * PartListener implementation that listenes for opening editor parts and runs Checkstyle on the opened file if the
  * UnOpenedFileFilter is active.
  * 
- * @see https ://sourceforge.net/tracker/index.php?func=detail&aid=1647245&group_id =80344&atid=559497).
+ * @see https://sourceforge.net/tracker/index.php?func=detail&aid=1647245&group_id =80344&atid=559497).
  * @author Lars Ködderitzsch
  */
 public class CheckFileOnOpenPartListener implements IPartListener2 {
@@ -201,8 +207,12 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
     }
 
     private IEditorInput getRestoredInput(EditorReference e) {
+        
+        IMemento editorMem = null;
+        if (CheckstyleUIPlugin.isE3()) {
+            editorMem = getMementoE3(e);
+        }
 
-        IMemento editorMem = e.getMemento();
         if (editorMem == null) {
             return null;
         }
@@ -230,6 +240,49 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
             return null;
         }
         return (IEditorInput) input;
+    }
+
+    private IMemento getMementoE4(EditorReference e) {
+
+        org.eclipse.e4.ui.model.application.MApplicationElement model = e.getModel();
+
+        String memento = model.getPersistedState().get("memento");
+
+        if (memento != null) {
+
+            try {
+                return XMLMemento.createReadRoot(new StringReader(memento));
+            }
+            catch (WorkbenchException e1) {
+                CheckstyleLog.log(e1);
+            }
+        }
+        return null;
+
+    }
+
+    private IMemento getMementoE3(IEditorReference e) {
+
+        try {
+            Method getMementoMethod = e.getClass().getMethod("getMemento", (Class<?>) null);
+            getMementoMethod.setAccessible(true);
+
+            IMemento memento = (IMemento) getMementoMethod.invoke(e, null);
+            return memento;
+        }
+        catch (NoSuchMethodException e1) {
+            CheckstyleLog.log(e1);
+        }
+        catch (SecurityException e1) {
+            CheckstyleLog.log(e1);
+        }
+        catch (IllegalAccessException e1) {
+            CheckstyleLog.log(e1);
+        }
+        catch (InvocationTargetException e1) {
+            CheckstyleLog.log(e1);
+        }
+        return null;
     }
 
     /**

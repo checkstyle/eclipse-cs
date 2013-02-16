@@ -5,12 +5,12 @@ Bundle-SymbolicName: net.sf.eclipsecs.ui;singleton:=true
 Bundle-Version: 5.6.1.qualifier
 Bundle-Vendor: http://eclipse-cs.sf.net/
 Bundle-Activator: net.sf.eclipsecs.ui.CheckstyleUIPlugin
+Bundle-ActivationPolicy: lazy
 Require-Bundle: net.sf.eclipsecs.core
 Bundle-ClassPath: .,
  lib/jfreechart-1.0.14.jar,
  lib/jfreechart-1.0.14-swt.jar,
  lib/jcommon-1.0.16.jar
-Eclipse-LazyStart: true
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-Localization: plugin
 Export-Package: net.sf.eclipsecs.ui,
@@ -23,6 +23,7 @@ Import-Package: org.eclipse.core.commands,
  org.eclipse.core.runtime,
  org.eclipse.core.runtime.jobs,
  org.eclipse.core.runtime.preferences,
+ org.eclipse.e4.ui.model.application;resolution:=optional,
  org.eclipse.jdt.core,
  org.eclipse.jdt.core.dom,
  org.eclipse.jdt.ui,

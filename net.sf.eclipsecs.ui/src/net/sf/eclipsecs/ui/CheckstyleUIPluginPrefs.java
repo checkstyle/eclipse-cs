@@ -39,51 +39,43 @@ import org.osgi.service.prefs.BackingStoreException;
 public class CheckstyleUIPluginPrefs extends AbstractPreferenceInitializer {
 
     /**
-     * Preference name indication if the user should be warned of possibly
-     * losing fileset configurations if he switches from advanced to simple
-     * fileset configuration.
+     * Preference name indication if the user should be warned of possibly losing fileset configurations if he switches
+     * from advanced to simple fileset configuration.
      */
     public static final String PREF_FILESET_WARNING = "warn.before.losing.filesets"; //$NON-NLS-1$
 
     /**
-     * Preference name indication if the user should be asked before rebuilding
-     * projects.
+     * Preference name indication if the user should be asked before rebuilding projects.
      */
     public static final String PREF_ASK_BEFORE_REBUILD = "ask.before.rebuild"; //$NON-NLS-1$
 
     /**
-     * Preference name indicating if the checkstyle tokens within the module
-     * editor should be translated.
+     * Preference name indicating if the checkstyle tokens within the module editor should be translated.
      */
     public static final String PREF_TRANSLATE_TOKENS = "translate.checkstyle.tokens"; //$NON-NLS-1$
 
     /**
-     * Preference name indicating if the checkstyle tokens within the module
-     * editor should be sorted.
+     * Preference name indicating if the checkstyle tokens within the module editor should be sorted.
      */
     public static final String PREF_SORT_TOKENS = "translate.sort.tokens"; //$NON-NLS-1$
 
     /**
-     * Preference name indicating if the module editor should be opened when
-     * adding a module.
+     * Preference name indicating if the module editor should be opened when adding a module.
      */
     public static final String PREF_OPEN_MODULE_EDITOR = "open.module.editor.on.add"; //$NON-NLS-1$
 
     /**
-     * Preference name indicating the minimum amount of lines that is used for
-     * the checker analysis.
+     * Preference name indicating the minimum amount of lines that is used for the checker analysis.
      */
     public static final String PREF_DUPLICATED_CODE_MIN_LINES = "checker.strictDuplicatedCode.minLines"; //$NON-NLS-1$
 
     /**
-     * Default value for the minimum amount of lines that is used for the
-     * checker analysis.
+     * Default value for the minimum amount of lines that is used for the checker analysis.
      */
     public static final int DUPLICATED_CODE_MIN_LINES = 20;
 
     /**
-     * Preference name indicating if all categories should be shown in the
-     * statistics views.
+     * Preference name indicating if all categories should be shown in the statistics views.
      */
     public static final String PREF_STATS_SHOW_ALL_CATEGORIES = "show_all_categories"; //$NON-NLS-1$
 
@@ -93,7 +85,7 @@ public class CheckstyleUIPluginPrefs extends AbstractPreferenceInitializer {
     @Override
     public void initializeDefaultPreferences() {
 
-        IEclipsePreferences prefs = new DefaultScope().getNode(CheckstyleUIPlugin.PLUGIN_ID);
+        IEclipsePreferences prefs = DefaultScope.INSTANCE.getNode(CheckstyleUIPlugin.PLUGIN_ID);
 
         prefs.putBoolean(PREF_FILESET_WARNING, true);
         prefs.put(PREF_ASK_BEFORE_REBUILD, MessageDialogWithToggle.PROMPT);
@@ -114,7 +106,8 @@ public class CheckstyleUIPluginPrefs extends AbstractPreferenceInitializer {
     /**
      * Returns a string preference for the given preference id.
      * 
-     * @param prefId the preference id
+     * @param prefId
+     *            the preference id
      * @return the string result
      */
     public static String getString(String prefId) {
@@ -126,7 +119,8 @@ public class CheckstyleUIPluginPrefs extends AbstractPreferenceInitializer {
     /**
      * Returns a boolean preference for the given preference id.
      * 
-     * @param prefId the preference id
+     * @param prefId
+     *            the preference id
      * @return the boolean result
      */
     public static boolean getBoolean(String prefId) {
@@ -138,7 +132,8 @@ public class CheckstyleUIPluginPrefs extends AbstractPreferenceInitializer {
     /**
      * Returns an integer preference for the given preference id.
      * 
-     * @param prefId the preference id
+     * @param prefId
+     *            the preference id
      * @return the integer result
      */
     public static int getInt(String prefId) {
@@ -150,10 +145,12 @@ public class CheckstyleUIPluginPrefs extends AbstractPreferenceInitializer {
     /**
      * Set a string preference for the given preference id.
      * 
-     * @param prefId the preference id
-     * @param value the string value
-     * @throws BackingStoreException if this operation cannot be completed due
-     *             to a failure in the backing store, or inability to
+     * @param prefId
+     *            the preference id
+     * @param value
+     *            the string value
+     * @throws BackingStoreException
+     *             if this operation cannot be completed due to a failure in the backing store, or inability to
      *             communicate with it.
      */
     public static void setString(String prefId, String value) throws BackingStoreException {
@@ -166,10 +163,12 @@ public class CheckstyleUIPluginPrefs extends AbstractPreferenceInitializer {
     /**
      * Set a boolean preference for the given preference id.
      * 
-     * @param prefId the preference id
-     * @param value the boolean value
-     * @throws BackingStoreException if this operation cannot be completed due
-     *             to a failure in the backing store, or inability to
+     * @param prefId
+     *            the preference id
+     * @param value
+     *            the boolean value
+     * @throws BackingStoreException
+     *             if this operation cannot be completed due to a failure in the backing store, or inability to
      *             communicate with it.
      */
     public static void setBoolean(String prefId, boolean value) throws BackingStoreException {
@@ -182,10 +181,12 @@ public class CheckstyleUIPluginPrefs extends AbstractPreferenceInitializer {
     /**
      * Set a int preference for the given preference id.
      * 
-     * @param prefId the preference id
-     * @param value the boolean value
-     * @throws BackingStoreException if this operation cannot be completed due
-     *             to a failure in the backing store, or inability to
+     * @param prefId
+     *            the preference id
+     * @param value
+     *            the boolean value
+     * @throws BackingStoreException
+     *             if this operation cannot be completed due to a failure in the backing store, or inability to
      *             communicate with it.
      */
     public static void setInt(String prefId, int value) throws BackingStoreException {
