@@ -40,6 +40,9 @@
             <property-metadata name="max" datatype="Integer" default-value="2000">
                 <description>%FileLength.max</description>
             </property-metadata>
+            <property-metadata name="fileExtensions" datatype="String">
+                <description>%FileLength.fileExtensions</description>
+            </property-metadata>
             <message-key key="maxLen.file" />
         </rule-metadata>
 

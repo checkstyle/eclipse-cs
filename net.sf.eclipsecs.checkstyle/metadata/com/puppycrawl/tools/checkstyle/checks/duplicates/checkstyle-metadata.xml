@@ -14,6 +14,9 @@
             <property-metadata name="charset" datatype="String">
                 <description>%StrictDuplicateCode.charset</description>
             </property-metadata>
+            <property-metadata name="fileExtensions" datatype="String">
+                <description>%StrictDuplicateCode.fileExtensions</description>
+            </property-metadata>
             <message-key key="duplicates.lines"/>
         </rule-metadata>
 

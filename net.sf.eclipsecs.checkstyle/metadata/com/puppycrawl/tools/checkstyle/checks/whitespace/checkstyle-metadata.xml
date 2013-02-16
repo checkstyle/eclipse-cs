@@ -213,6 +213,9 @@
             <property-metadata name="eachLine" datatype="Boolean" default-value="false">
                 <description>%FileTabCharacter.eachLine</description>
             </property-metadata>
+            <property-metadata name="fileExtensions" datatype="String">
+                <description>%FileTabCharacter.fileExtensions</description>
+            </property-metadata>
             <message-key key="containsTab" />
             <message-key key="file.containsTab" />
         </rule-metadata>

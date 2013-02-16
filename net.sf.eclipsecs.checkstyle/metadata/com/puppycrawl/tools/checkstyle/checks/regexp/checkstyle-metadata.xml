@@ -23,6 +23,9 @@
             <property-metadata name="maximum" datatype="Integer" default-value="0">
                 <description>%RegexpSingleline.maximum</description>
             </property-metadata>
+            <property-metadata name="fileExtensions" datatype="String">
+                <description>%RegexpSingleline.fileExtensions</description>
+            </property-metadata>
         </rule-metadata>
         
         <rule-metadata name="%RegexpMultiline.name" internal-name="RegexpMultiline" parent="Checker">
@@ -42,6 +45,9 @@
             </property-metadata>
             <property-metadata name="maximum" datatype="Integer" default-value="0">
                 <description>%RegexpMultiline.maximum</description>
+            </property-metadata>
+            <property-metadata name="fileExtensions" datatype="String">
+                <description>%RegexpMultiline.fileExtensions</description>
             </property-metadata>
         </rule-metadata>
 
