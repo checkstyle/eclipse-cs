@@ -9,9 +9,9 @@ Bundle-ClassPath: .,
  lib/commons-io-1.2.jar,
  lib/dom4j-1.6.1.jar
 Bundle-Activator: net.sf.eclipsecs.core.CheckstylePlugin
+Bundle-ActivationPolicy: lazy
 Bundle-Vendor: http://eclipse-cs.sf.net/
 Require-Bundle: net.sf.eclipsecs.checkstyle
-Eclipse-LazyStart: true
 Eclipse-BuddyPolicy: registered
 Bundle-Localization: core
 Export-Package: net.sf.eclipsecs.core,
@@ -31,6 +31,7 @@ Import-Package: org.eclipse.core.filebuffers,
  org.eclipse.core.runtime;version="3.2.0",
  org.eclipse.core.runtime.jobs,
  org.eclipse.core.runtime.preferences,
+ org.eclipse.equinox.security.storage,
  org.eclipse.jdt.core,
  org.eclipse.jdt.internal.corext.fix,
  org.eclipse.jdt.internal.ui.preferences,
