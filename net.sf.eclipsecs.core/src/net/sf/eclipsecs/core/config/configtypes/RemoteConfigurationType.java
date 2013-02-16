@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.net.Authenticator;
 import java.net.HttpURLConnection;
@@ -31,9 +32,9 @@ import java.net.PasswordAuthentication;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
-import java.util.HashMap;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import net.sf.eclipsecs.core.CheckstylePlugin;
@@ -45,9 +46,11 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Platform;
+import org.eclipse.equinox.security.storage.EncodingUtils;
+import org.eclipse.equinox.security.storage.ISecurePreferences;
+import org.eclipse.equinox.security.storage.SecurePreferencesFactory;
+import org.eclipse.equinox.security.storage.StorageException;
 import org.eclipse.osgi.util.NLS;
 
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
@@ -408,17 +411,20 @@ public class RemoteConfigurationType extends ConfigurationType {
         public static void storeCredentials(URL resolvedCheckConfigurationURL, String userName, String password) {
 
             try {
-                Map<String, String> authInfo = new HashMap<String, String>();
-
-                authInfo.put(KEY_USERNAME, userName);
-                authInfo.put(KEY_PASSWORD, password);
 
                 // store authorization info to the internal key ring
-                Platform.addAuthorizationInfo(resolvedCheckConfigurationURL, "", "", authInfo); //$NON-NLS-1$ //$NON-NLS-2$
+                ISecurePreferences prefs = SecurePreferencesFactory.getDefault().node(
+                    getSecureStoragePath(resolvedCheckConfigurationURL));
+
+                prefs.put(KEY_USERNAME, userName, false);
+                prefs.put(KEY_PASSWORD, password, true);
 
                 sFailedWith401URLs.remove(resolvedCheckConfigurationURL.toString());
             }
-            catch (CoreException e) {
+            catch (CheckstylePluginException e) {
+                CheckstyleLog.log(e);
+            }
+            catch (StorageException e) {
                 CheckstyleLog.log(e);
             }
         }
@@ -434,12 +440,23 @@ public class RemoteConfigurationType extends ConfigurationType {
 
             PasswordAuthentication auth = null;
 
-            @SuppressWarnings("unchecked")
-            Map<String, String> authInfo = Platform.getAuthorizationInfo(resolvedCheckConfigurationURL, "", ""); //$NON-NLS-1$ //$NON-NLS-2$
+            try {
 
-            if (authInfo != null) {
-                auth = new PasswordAuthentication(authInfo.get(KEY_USERNAME),
-                    authInfo.get(KEY_PASSWORD) != null ? (authInfo.get(KEY_PASSWORD)).toCharArray() : new char[0]);
+                ISecurePreferences prefs = SecurePreferencesFactory.getDefault().node(
+                    getSecureStoragePath(resolvedCheckConfigurationURL));
+
+                String userName = prefs.get(KEY_USERNAME, null);
+                String password = prefs.get(KEY_PASSWORD, null);
+
+                if (userName != null && password != null) {
+                    auth = new PasswordAuthentication(userName, password.toCharArray());
+                }
+            }
+            catch (CheckstylePluginException e) {
+                CheckstyleLog.log(e);
+            }
+            catch (StorageException e) {
+                CheckstyleLog.log(e);
             }
 
             return auth;
@@ -455,12 +472,14 @@ public class RemoteConfigurationType extends ConfigurationType {
          */
         public static void removeCachedAuthInfo(URL resolvedCheckConfigurationURL) throws CheckstylePluginException {
             sFailedWith401URLs.remove(resolvedCheckConfigurationURL.toString());
-            try {
 
-                Platform.flushAuthorizationInfo(resolvedCheckConfigurationURL, "", ""); //$NON-NLS-1$ //$NON-NLS-2$
-            }
-            catch (CoreException e) {
-                CheckstylePluginException.rethrow(e);
+            String storagePath = getSecureStoragePath(resolvedCheckConfigurationURL);
+
+            if (SecurePreferencesFactory.getDefault().nodeExists(storagePath)) {
+
+                ISecurePreferences prefs = SecurePreferencesFactory.getDefault().node(
+                    getSecureStoragePath(resolvedCheckConfigurationURL));
+                prefs.removeNode();
             }
         }
 
@@ -470,5 +489,27 @@ public class RemoteConfigurationType extends ConfigurationType {
         protected PasswordAuthentication getPasswordAuthentication() {
             return getPasswordAuthentication(mResolvedCheckConfigurationURL);
         }
+
+        private static String getSecureStoragePath(URL resolvedCheckConfigurationURL) throws CheckstylePluginException {
+
+            // convert the config url to a hash, because storage paths can only be 128 chars long
+            // and config URLs are very likely to be longer
+            String urlHash = null;
+
+            try {
+
+                MessageDigest d = MessageDigest.getInstance("MD5");
+                byte[] hash = d.digest(resolvedCheckConfigurationURL.toExternalForm().getBytes("UTF-8"));
+                urlHash = EncodingUtils.encodeBase64(hash);
+            }
+            catch (NoSuchAlgorithmException e) {
+                CheckstylePluginException.rethrow(e);
+            }
+            catch (UnsupportedEncodingException e) {
+                CheckstylePluginException.rethrow(e);
+            }
+            return "eclipse-cs/" + urlHash;
+        }
+
     }
 }
