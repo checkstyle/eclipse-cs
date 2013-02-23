@@ -207,7 +207,7 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
     }
 
     private IEditorInput getRestoredInput(EditorReference e) {
-        
+
         IMemento editorMem = null;
         if (CheckstyleUIPlugin.isE3()) {
             editorMem = getMementoE3(e);
@@ -264,7 +264,7 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
     private IMemento getMementoE3(IEditorReference e) {
 
         try {
-            Method getMementoMethod = e.getClass().getMethod("getMemento", (Class<?>) null);
+            Method getMementoMethod = e.getClass().getMethod("getMemento", new Class<?>[0]);
             getMementoMethod.setAccessible(true);
 
             IMemento memento = (IMemento) getMementoMethod.invoke(e, null);

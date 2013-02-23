@@ -61,6 +61,8 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
 
     private ClassLoader mQuickfixExtensionClassLoader;
 
+    private static Boolean isE3;
+
     /**
      * The constructor.
      */
@@ -128,8 +130,19 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
      */
     public static boolean isE3() {
 
-        IProduct pr = Platform.getProduct();
-        return pr.getProperty("Version").startsWith("3");
+        if (isE3 == null) {
+
+            IProduct pr = Platform.getProduct();
+
+            if (pr != null) {
+                isE3 = pr.getDefiningBundle().getVersion().getMajor() == 3;
+            }
+            else {
+                isE3 = true;
+            }
+        }
+
+        return isE3;
     }
 
     /**
