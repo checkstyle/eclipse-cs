@@ -28,8 +28,10 @@ import java.util.List;
 import java.util.Map;
 
 import net.sf.eclipsecs.core.CheckstylePlugin;
+import net.sf.eclipsecs.core.CheckstylePluginPrefs;
 import net.sf.eclipsecs.core.Messages;
 import net.sf.eclipsecs.core.config.ICheckConfiguration;
+import net.sf.eclipsecs.core.jobs.AuditorJob;
 import net.sf.eclipsecs.core.jobs.BuildProjectJob;
 import net.sf.eclipsecs.core.nature.CheckstyleNature;
 import net.sf.eclipsecs.core.projectconfig.FileSet;
@@ -225,6 +227,9 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
             project.deleteMarkers(CheckstyleMarker.MARKER_ID, false, IResource.DEPTH_INFINITE);
         }
 
+        boolean backgroundFullBuild = CheckstylePluginPrefs
+            .getBoolean(CheckstylePluginPrefs.PREF_BACKGROUND_FULL_BUILD);
+
         try {
 
             //
@@ -285,7 +290,15 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
                 if (monitor.isCanceled()) {
                     throw new OperationCanceledException();
                 }
-                audit.runAudit(project, monitor);
+
+                if (backgroundFullBuild && kind == FULL_BUILD) {
+
+                    AuditorJob j = new AuditorJob(project, audit);
+                    j.schedule();
+                }
+                else {
+                    audit.runAudit(project, monitor);
+                }
             }
         }
         catch (CheckstylePluginException e) {

@@ -60,14 +60,12 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.osgi.service.prefs.BackingStoreException;
 
 /**
- * This class represents a preference page that is contributed to the
- * Preferences dialog. By subclassing <samp>FieldEditorPreferencePage </samp>,
- * we can use the field support built into JFace that allows us to create a page
- * that is small and knows how to save, restore and apply itself.
+ * This class represents a preference page that is contributed to the Preferences dialog. By subclassing
+ * <samp>FieldEditorPreferencePage </samp>, we can use the field support built into JFace that allows us to create a
+ * page that is small and knows how to save, restore and apply itself.
  * <p>
- * This page is used to modify preferences only. They are stored in the
- * preference store that belongs to the main plug-in class. That way,
- * preferences can be accessed directly via the preference store.
+ * This page is used to modify preferences only. They are stored in the preference store that belongs to the main
+ * plug-in class. That way, preferences can be accessed directly via the preference store.
  */
 public class CheckstylePreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 
@@ -84,6 +82,8 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
     private Button mLimitCheckstyleMarkers;
 
     private Text mTxtMarkerLimit;
+
+    private Button mBackgroundFullBuild;
 
     private CheckConfigurationWorkingSetEditor mWorkingSetEditor;
 
@@ -107,7 +107,8 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
     /**
      * Sets the default values of the preferences.
      */
-    private void initializeDefaults() {}
+    private void initializeDefaults() {
+    }
 
     /**
      * {@inheritDoc}
@@ -150,7 +151,8 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
     /**
      * Create the area with the general preference settings.
      * 
-     * @param parent the parent composite
+     * @param parent
+     *            the parent composite
      * @return the general area
      */
     private Composite createGeneralContents(Composite parent) {
@@ -177,18 +179,17 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         lblRebuild.setText(Messages.CheckstylePreferencePage_lblRebuild);
 
         mRebuildIfNeeded = new Combo(rebuildComposite, SWT.READ_ONLY);
-        mRebuildIfNeeded.setItems(new String[] { MessageDialogWithToggle.PROMPT,
-            MessageDialogWithToggle.ALWAYS, MessageDialogWithToggle.NEVER });
+        mRebuildIfNeeded.setItems(new String[] { MessageDialogWithToggle.PROMPT, MessageDialogWithToggle.ALWAYS,
+            MessageDialogWithToggle.NEVER });
         mRebuildIfNeeded.select(mRebuildIfNeeded.indexOf(CheckstyleUIPluginPrefs
-                .getString(CheckstyleUIPluginPrefs.PREF_ASK_BEFORE_REBUILD)));
+            .getString(CheckstyleUIPluginPrefs.PREF_ASK_BEFORE_REBUILD)));
 
         //
         // Create button to purge the checker cache
         //
 
         mPurgeCacheButton = new Button(rebuildComposite, SWT.FLAT);
-        mPurgeCacheButton.setImage(CheckstyleUIPluginImages
-                .getImage(CheckstyleUIPluginImages.REFRESH_ICON));
+        mPurgeCacheButton.setImage(CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.REFRESH_ICON));
         mPurgeCacheButton.setToolTipText(Messages.CheckstylePreferencePage_btnRefreshCheckerCache);
         mPurgeCacheButton.addSelectionListener(mController);
         GridData gd = new GridData();
@@ -204,7 +205,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         mWarnBeforeLosingFilesets = new Button(generalComposite, SWT.CHECK);
         mWarnBeforeLosingFilesets.setText(Messages.CheckstylePreferencePage_lblWarnFilesets);
         mWarnBeforeLosingFilesets.setSelection(CheckstyleUIPluginPrefs
-                .getBoolean(CheckstyleUIPluginPrefs.PREF_FILESET_WARNING));
+            .getBoolean(CheckstyleUIPluginPrefs.PREF_FILESET_WARNING));
 
         //
         // Create the "Include rule name" check box.
@@ -218,11 +219,10 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         mIncludeRuleNamesButton = new Button(includeRuleNamesComposite, SWT.CHECK);
         mIncludeRuleNamesButton.setText(Messages.CheckstylePreferencePage_lblIncludeRulenames);
         mIncludeRuleNamesButton.setSelection(CheckstylePluginPrefs
-                .getBoolean(CheckstylePluginPrefs.PREF_INCLUDE_RULE_NAMES));
+            .getBoolean(CheckstylePluginPrefs.PREF_INCLUDE_RULE_NAMES));
 
         Label lblRebuildNote = new Label(includeRuleNamesComposite, SWT.NULL);
-        lblRebuildNote.setImage(CheckstyleUIPluginImages
-                .getImage(CheckstyleUIPluginImages.HELP_ICON));
+        lblRebuildNote.setImage(CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.HELP_ICON));
         lblRebuildNote.setToolTipText(Messages.CheckstylePreferencePage_txtSuggestRebuild);
         SWTUtil.addTooltipOnPressSupport(lblRebuildNote);
 
@@ -238,11 +238,10 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         mIncludeModuleIdButton = new Button(includeModuleIdComposite, SWT.CHECK);
         mIncludeModuleIdButton.setText(Messages.CheckstylePreferencePage_lblIncludeModuleIds);
         mIncludeModuleIdButton.setSelection(CheckstylePluginPrefs
-                .getBoolean(CheckstylePluginPrefs.PREF_INCLUDE_MODULE_IDS));
+            .getBoolean(CheckstylePluginPrefs.PREF_INCLUDE_MODULE_IDS));
 
         lblRebuildNote = new Label(includeModuleIdComposite, SWT.NULL);
-        lblRebuildNote.setImage(CheckstyleUIPluginImages
-                .getImage(CheckstyleUIPluginImages.HELP_ICON));
+        lblRebuildNote.setImage(CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.HELP_ICON));
         lblRebuildNote.setToolTipText(Messages.CheckstylePreferencePage_txtSuggestRebuild);
         SWTUtil.addTooltipOnPressSupport(lblRebuildNote);
 
@@ -258,23 +257,36 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         mLimitCheckstyleMarkers = new Button(limitMarkersComposite, SWT.CHECK);
         mLimitCheckstyleMarkers.setText(Messages.CheckstylePreferencePage_lblLimitMarker);
         mLimitCheckstyleMarkers.setSelection(CheckstylePluginPrefs
-                .getBoolean(CheckstylePluginPrefs.PREF_LIMIT_MARKERS_PER_RESOURCE));
+            .getBoolean(CheckstylePluginPrefs.PREF_LIMIT_MARKERS_PER_RESOURCE));
 
         mTxtMarkerLimit = new Text(limitMarkersComposite, SWT.SINGLE | SWT.BORDER);
         mTxtMarkerLimit.setTextLimit(5);
         SWTUtil.addOnlyDigitInputSupport(mTxtMarkerLimit);
 
         mTxtMarkerLimit.setText(Integer.toString(CheckstylePluginPrefs
-                .getInt(CheckstylePluginPrefs.PREF_MARKER_AMOUNT_LIMIT)));
+            .getInt(CheckstylePluginPrefs.PREF_MARKER_AMOUNT_LIMIT)));
         gd = new GridData();
         gd.widthHint = 30;
         mTxtMarkerLimit.setLayoutData(gd);
 
         lblRebuildNote = new Label(limitMarkersComposite, SWT.NULL);
-        lblRebuildNote.setImage(CheckstyleUIPluginImages
-                .getImage(CheckstyleUIPluginImages.HELP_ICON));
+        lblRebuildNote.setImage(CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.HELP_ICON));
         lblRebuildNote.setToolTipText(Messages.CheckstylePreferencePage_txtSuggestRebuild);
         SWTUtil.addTooltipOnPressSupport(lblRebuildNote);
+
+        //
+        // Create the "Run Checkstyle in background on full builds" check box.
+        //
+        Composite backgroundFullBuildComposite = new Composite(generalComposite, SWT.NULL);
+        gridLayout = new GridLayout(2, false);
+        gridLayout.marginHeight = 0;
+        gridLayout.marginWidth = 0;
+        backgroundFullBuildComposite.setLayout(gridLayout);
+
+        mBackgroundFullBuild = new Button(backgroundFullBuildComposite, SWT.CHECK);
+        mBackgroundFullBuild.setText(Messages.CheckstylePreferencePage_txtBackgroundFullBuild0);
+        mBackgroundFullBuild.setSelection(CheckstylePluginPrefs
+            .getBoolean(CheckstylePluginPrefs.PREF_BACKGROUND_FULL_BUILD));
 
         return generalComposite;
     }
@@ -282,7 +294,8 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
     /**
      * Creates the content regarding the management of check configurations.
      * 
-     * @param parent the parent composite
+     * @param parent
+     *            the parent composite
      * @return the configuration area
      */
     private Composite createCheckConfigContents(Composite parent) {
@@ -308,7 +321,8 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
     /**
      * {@inheritDoc}
      */
-    public void init(IWorkbench workbench) {}
+    public void init(IWorkbench workbench) {
+    }
 
     /**
      * {@inheritDoc}
@@ -326,32 +340,29 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
             // Save the general preferences.
             //
             CheckstyleUIPluginPrefs.setString(CheckstyleUIPluginPrefs.PREF_ASK_BEFORE_REBUILD,
-                    mRebuildIfNeeded.getItem(mRebuildIfNeeded.getSelectionIndex()));
+                mRebuildIfNeeded.getItem(mRebuildIfNeeded.getSelectionIndex()));
 
             //
             // fileset warning preference
             //
             boolean warnFileSetsNow = mWarnBeforeLosingFilesets.getSelection();
-            CheckstyleUIPluginPrefs.setBoolean(CheckstyleUIPluginPrefs.PREF_FILESET_WARNING,
-                    warnFileSetsNow);
+            CheckstyleUIPluginPrefs.setBoolean(CheckstyleUIPluginPrefs.PREF_FILESET_WARNING, warnFileSetsNow);
 
             //
             // Include rule names preference.
             //
             boolean includeRuleNamesNow = mIncludeRuleNamesButton.getSelection();
             boolean includeRuleNamesOriginal = CheckstylePluginPrefs
-                    .getBoolean(CheckstylePluginPrefs.PREF_INCLUDE_RULE_NAMES);
-            CheckstylePluginPrefs.setBoolean(CheckstylePluginPrefs.PREF_INCLUDE_RULE_NAMES,
-                    includeRuleNamesNow);
+                .getBoolean(CheckstylePluginPrefs.PREF_INCLUDE_RULE_NAMES);
+            CheckstylePluginPrefs.setBoolean(CheckstylePluginPrefs.PREF_INCLUDE_RULE_NAMES, includeRuleNamesNow);
 
             //
             // Include module id preference.
             //
             boolean includeModuleIdNow = mIncludeModuleIdButton.getSelection();
             boolean includeModuleIdOriginal = CheckstylePluginPrefs
-                    .getBoolean(CheckstylePluginPrefs.PREF_INCLUDE_MODULE_IDS);
-            CheckstylePluginPrefs.setBoolean(CheckstylePluginPrefs.PREF_INCLUDE_MODULE_IDS,
-                    includeModuleIdNow);
+                .getBoolean(CheckstylePluginPrefs.PREF_INCLUDE_MODULE_IDS);
+            CheckstylePluginPrefs.setBoolean(CheckstylePluginPrefs.PREF_INCLUDE_MODULE_IDS, includeModuleIdNow);
 
             //
             // Limit markers preference
@@ -359,43 +370,43 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
 
             boolean limitMarkersNow = mLimitCheckstyleMarkers.getSelection();
             boolean limitMarkersOriginal = CheckstylePluginPrefs
-                    .getBoolean(CheckstylePluginPrefs.PREF_LIMIT_MARKERS_PER_RESOURCE);
-            CheckstylePluginPrefs.setBoolean(CheckstylePluginPrefs.PREF_LIMIT_MARKERS_PER_RESOURCE,
-                    limitMarkersNow);
+                .getBoolean(CheckstylePluginPrefs.PREF_LIMIT_MARKERS_PER_RESOURCE);
+            CheckstylePluginPrefs.setBoolean(CheckstylePluginPrefs.PREF_LIMIT_MARKERS_PER_RESOURCE, limitMarkersNow);
 
             int markerLimitNow = Integer.parseInt(mTxtMarkerLimit.getText());
-            int markerLimitOriginal = CheckstylePluginPrefs
-                    .getInt(CheckstylePluginPrefs.PREF_MARKER_AMOUNT_LIMIT);
-            CheckstylePluginPrefs.setInt(CheckstylePluginPrefs.PREF_MARKER_AMOUNT_LIMIT,
-                    markerLimitNow);
+            int markerLimitOriginal = CheckstylePluginPrefs.getInt(CheckstylePluginPrefs.PREF_MARKER_AMOUNT_LIMIT);
+            CheckstylePluginPrefs.setInt(CheckstylePluginPrefs.PREF_MARKER_AMOUNT_LIMIT, markerLimitNow);
+
+            //
+            // Include background build preference.
+            //
+            boolean runInBackgroundNow = mBackgroundFullBuild.getSelection();
+            CheckstylePluginPrefs.setBoolean(CheckstylePluginPrefs.PREF_BACKGROUND_FULL_BUILD, runInBackgroundNow);
 
             // See if all projects need rebuild
             boolean needRebuildAllProjects = (includeRuleNamesNow != includeRuleNamesOriginal)
-                    || (includeModuleIdNow != includeModuleIdOriginal)
-                    || (limitMarkersNow != limitMarkersOriginal)
-                    || (markerLimitNow != markerLimitOriginal) || mRebuildAll;
+                || (includeModuleIdNow != includeModuleIdOriginal) || (limitMarkersNow != limitMarkersOriginal)
+                || (markerLimitNow != markerLimitOriginal) || mRebuildAll;
 
             // Get projects that need rebuild considering the changes
             Collection<IProject> projectsToBuild = mWorkingSet.getAffectedProjects();
 
             String promptRebuildPref = CheckstyleUIPluginPrefs
-                    .getString(CheckstyleUIPluginPrefs.PREF_ASK_BEFORE_REBUILD);
+                .getString(CheckstyleUIPluginPrefs.PREF_ASK_BEFORE_REBUILD);
 
             boolean rebuild = MessageDialogWithToggle.ALWAYS.equals(promptRebuildPref)
-                    && (needRebuildAllProjects || projectsToBuild.size() > 0);
+                && (needRebuildAllProjects || projectsToBuild.size() > 0);
 
             //
             // Prompt for rebuild
             //
             if (MessageDialogWithToggle.PROMPT.equals(promptRebuildPref)
-                    && (needRebuildAllProjects || projectsToBuild.size() > 0)) {
+                && (needRebuildAllProjects || projectsToBuild.size() > 0)) {
 
-                MessageDialogWithToggle dialog = MessageDialogWithToggle.openYesNoQuestion(
-                        getShell(), Messages.CheckstylePreferencePage_titleRebuild,
-                        Messages.CheckstylePreferencePage_msgRebuild,
-                        Messages.CheckstylePreferencePage_nagRebuild, false, CheckstyleUIPlugin
-                                .getDefault().getPreferenceStore(),
-                        CheckstyleUIPluginPrefs.PREF_ASK_BEFORE_REBUILD);
+                MessageDialogWithToggle dialog = MessageDialogWithToggle.openYesNoQuestion(getShell(),
+                    Messages.CheckstylePreferencePage_titleRebuild, Messages.CheckstylePreferencePage_msgRebuild,
+                    Messages.CheckstylePreferencePage_nagRebuild, false, CheckstyleUIPlugin.getDefault()
+                        .getPreferenceStore(), CheckstyleUIPluginPrefs.PREF_ASK_BEFORE_REBUILD);
 
                 rebuild = dialog.getReturnCode() == IDialogConstants.YES_ID;
             }
@@ -411,18 +422,18 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
 
                 }
                 catch (CheckstylePluginException e) {
-                    CheckstyleUIPlugin.errorDialog(getShell(), NLS.bind(
-                            Messages.errorFailedRebuild, e.getMessage()), e, true);
+                    CheckstyleUIPlugin.errorDialog(getShell(), NLS.bind(Messages.errorFailedRebuild, e.getMessage()),
+                        e, true);
                 }
             }
         }
         catch (CheckstylePluginException e) {
-            CheckstyleUIPlugin.errorDialog(getShell(), NLS.bind(
-                    Messages.errorFailedSavePreferences, e.getLocalizedMessage()), e, true);
+            CheckstyleUIPlugin.errorDialog(getShell(),
+                NLS.bind(Messages.errorFailedSavePreferences, e.getLocalizedMessage()), e, true);
         }
         catch (BackingStoreException e) {
-            CheckstyleUIPlugin.errorDialog(getShell(), NLS.bind(
-                    Messages.errorFailedSavePreferences, e.getLocalizedMessage()), e, true);
+            CheckstyleUIPlugin.errorDialog(getShell(),
+                NLS.bind(Messages.errorFailedSavePreferences, e.getLocalizedMessage()), e, true);
         }
 
         return true;

@@ -91,7 +91,7 @@ public class RunCheckstyleOnFilesJob extends WorkspaceJob implements IScheduling
      * {@inheritDoc}
      */
     public boolean isConflicting(ISchedulingRule arg0) {
-        return arg0 instanceof RunCheckstyleOnFilesJob;
+        return arg0 instanceof RunCheckstyleOnFilesJob || arg0 instanceof AuditorJob;
     }
 
     /**

@@ -119,6 +119,8 @@ public final class Messages extends NLS {
 
     public static String CheckstylePreferencePage_btnDefault;
 
+    public static String CheckstylePreferencePage_txtBackgroundFullBuild0;
+
     public static String CheckstylePreferencePage_txtDefault;
 
     public static String CheckstylePreferencePage_colCheckConfig;

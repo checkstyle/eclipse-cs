@@ -33,10 +33,21 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
 
+/**
+ * Classloader implementation which can load classes and resources from bundles implementing a specific extension point.
+ * 
+ * @author Lars Koedderitzsch
+ */
 public class ExtensionClassLoader extends ClassLoader {
 
     private List<Bundle> mBundles;
 
+    /**
+     * @param sourceBundle
+     *            the source bundle defining the extension
+     * @param extensionPointId
+     *            the extension point id
+     */
     public ExtensionClassLoader(Bundle sourceBundle, String extensionPointId) {
 
         mBundles = new ArrayList<Bundle>();

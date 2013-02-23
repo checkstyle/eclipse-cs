@@ -23,8 +23,7 @@ package net.sf.eclipsecs.core;
 import org.eclipse.osgi.util.NLS;
 
 /**
- * Class providing messages for the checkstyle plugin. Uses the eclipse new nls
- * mechanism.
+ * Class providing messages for the checkstyle plugin. Uses the eclipse new nls mechanism.
  * 
  * @author Lars Ködderitzsch
  */
@@ -38,13 +37,16 @@ public final class Messages extends NLS {
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);
     }
 
-    private Messages() {}
+    private Messages() {
+    }
 
     public static String Auditor_msgCheckingConfig;
 
     public static String Auditor_msgCheckingFile;
 
     public static String Auditor_txtUnknownModule;
+
+    public static String AuditorJob_msgBuildProject;
 
     public static String BuildProjectJob_msgBuildAllProjects;
 

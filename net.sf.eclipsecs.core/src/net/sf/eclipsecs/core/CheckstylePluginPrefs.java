@@ -31,36 +31,36 @@ import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.osgi.service.prefs.BackingStoreException;
 
 /**
- * Class for handling preferences of the <code>net.sf.eclipsecs.core</code>
- * plugin.
+ * Class for handling preferences of the <code>net.sf.eclipsecs.core</code> plugin.
  * 
  * @author Lars Ködderitzsch
  */
 public class CheckstylePluginPrefs extends AbstractPreferenceInitializer {
 
     /**
-     * Preference name indicating if rule names are to be included in violation
-     * messages.
+     * Preference name indicating if rule names are to be included in violation messages.
      */
     public static final String PREF_INCLUDE_RULE_NAMES = "include.rule.names"; //$NON-NLS-1$
 
     /**
-     * Preference name indicating if module ids are to be included in violation
-     * messages.
+     * Preference name indicating if module ids are to be included in violation messages.
      */
     public static final String PREF_INCLUDE_MODULE_IDS = "include.module.ids"; //$NON-NLS-1$
 
     /**
-     * Preference name indicating if the number of checkstyle warning generated
-     * per file should be limited.
+     * Preference name indicating if the number of checkstyle warning generated per file should be limited.
      */
     public static final String PREF_LIMIT_MARKERS_PER_RESOURCE = "limit.markers.per.resource"; //$NON-NLS-1$
 
     /**
-     * Preference name for the preference that stores the limit of markers per
-     * resource.
+     * Preference name for the preference that stores the limit of markers per resource.
      */
     public static final String PREF_MARKER_AMOUNT_LIMIT = "marker.amount.limit"; //$NON-NLS-1$
+
+    /**
+     * Preference name for the preference to execute Checkstyle on full builds in the background.
+     */
+    public static final String PREF_BACKGROUND_FULL_BUILD = "background.full.build"; //$NON-NLS-1$
 
     /** Default value for the marker limitation. */
     public static final int MARKER_LIMIT = 100;
@@ -71,11 +71,12 @@ public class CheckstylePluginPrefs extends AbstractPreferenceInitializer {
     @Override
     public void initializeDefaultPreferences() {
 
-        IEclipsePreferences prefs = new DefaultScope().getNode(CheckstylePlugin.PLUGIN_ID);
+        IEclipsePreferences prefs = DefaultScope.INSTANCE.getNode(CheckstylePlugin.PLUGIN_ID);
         prefs.putBoolean(PREF_INCLUDE_RULE_NAMES, false);
         prefs.putBoolean(PREF_INCLUDE_MODULE_IDS, false);
         prefs.putBoolean(PREF_LIMIT_MARKERS_PER_RESOURCE, false);
         prefs.putInt(PREF_MARKER_AMOUNT_LIMIT, MARKER_LIMIT);
+        prefs.putBoolean(PREF_BACKGROUND_FULL_BUILD, false);
 
         try {
             prefs.flush();
@@ -88,7 +89,8 @@ public class CheckstylePluginPrefs extends AbstractPreferenceInitializer {
     /**
      * Returns a boolean preference for the given preference id.
      * 
-     * @param prefId the preference id
+     * @param prefId
+     *            the preference id
      * @return the boolean result
      */
     public static boolean getBoolean(String prefId) {
@@ -100,7 +102,8 @@ public class CheckstylePluginPrefs extends AbstractPreferenceInitializer {
     /**
      * Returns an integer preference for the given preference id.
      * 
-     * @param prefId the preference id
+     * @param prefId
+     *            the preference id
      * @return the integer result
      */
     public static int getInt(String prefId) {
@@ -112,15 +115,17 @@ public class CheckstylePluginPrefs extends AbstractPreferenceInitializer {
     /**
      * Set a boolean preference for the given preference id.
      * 
-     * @param prefId the preference id
-     * @param value the boolean value
-     * @throws BackingStoreException if this operation cannot be completed due
-     *             to a failure in the backing store, or inability to
+     * @param prefId
+     *            the preference id
+     * @param value
+     *            the boolean value
+     * @throws BackingStoreException
+     *             if this operation cannot be completed due to a failure in the backing store, or inability to
      *             communicate with it.
      */
     public static void setBoolean(String prefId, boolean value) throws BackingStoreException {
 
-        IEclipsePreferences prefs = new InstanceScope().getNode(CheckstylePlugin.PLUGIN_ID);
+        IEclipsePreferences prefs = InstanceScope.INSTANCE.getNode(CheckstylePlugin.PLUGIN_ID);
         prefs.putBoolean(prefId, value);
         prefs.flush();
     }
@@ -128,15 +133,17 @@ public class CheckstylePluginPrefs extends AbstractPreferenceInitializer {
     /**
      * Set a int preference for the given preference id.
      * 
-     * @param prefId the preference id
-     * @param value the boolean value
-     * @throws BackingStoreException if this operation cannot be completed due
-     *             to a failure in the backing store, or inability to
+     * @param prefId
+     *            the preference id
+     * @param value
+     *            the boolean value
+     * @throws BackingStoreException
+     *             if this operation cannot be completed due to a failure in the backing store, or inability to
      *             communicate with it.
      */
     public static void setInt(String prefId, int value) throws BackingStoreException {
 
-        IEclipsePreferences prefs = new InstanceScope().getNode(CheckstylePlugin.PLUGIN_ID);
+        IEclipsePreferences prefs = InstanceScope.INSTANCE.getNode(CheckstylePlugin.PLUGIN_ID);
         prefs.putInt(prefId, value);
         prefs.flush();
     }

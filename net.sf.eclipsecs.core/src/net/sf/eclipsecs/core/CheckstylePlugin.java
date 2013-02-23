@@ -113,6 +113,9 @@ public class CheckstylePlugin extends Plugin {
         return new Locale(language, country, variant);
     }
 
+    /**
+     * @return the classloader to use when potentially accessing classes from extending plugins.
+     */
     public ClassLoader getAddonExtensionClassLoader() {
         return mAddonExtensionClassLoader;
     }
