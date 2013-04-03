@@ -21,10 +21,10 @@
 package net.sf.eclipsecs.core.projectconfig.filters;
 
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourceAttributes;
 
 /**
- * Implementation of a filter that filters all ressources that are write
- * protected.
+ * Implementation of a filter that filters all ressources that are write protected.
  * 
  * @author Lars Ködderitzsch
  */
@@ -38,7 +38,9 @@ public class WriteProtectedFilter extends AbstractFilter {
         boolean goesThrough = true;
 
         if (element instanceof IResource) {
-            goesThrough = !((IResource) element).getResourceAttributes().isReadOnly();
+
+            ResourceAttributes attrs = ((IResource) element).getResourceAttributes();
+            goesThrough = attrs != null && !attrs.isReadOnly();
         }
         return goesThrough;
     }
