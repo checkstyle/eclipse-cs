@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import net.sf.eclipsecs.core.builder.CheckstyleMarker;
 import net.sf.eclipsecs.core.jobs.RunCheckstyleOnFilesJob;
@@ -54,7 +55,6 @@ import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.WorkbenchException;
 import org.eclipse.ui.XMLMemento;
-import org.eclipse.ui.internal.EditorReference;
 import org.eclipse.ui.internal.IWorkbenchConstants;
 import org.eclipse.ui.part.FileEditorInput;
 
@@ -195,7 +195,7 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
         else {
 
             // fix for 3522695 - rip input file from editor ref without initializing the actual part
-            EditorReference editRef = (EditorReference) partRef;
+            IEditorReference editRef = (IEditorReference) partRef;
             input = getRestoredInput(editRef);
         }
 
@@ -206,11 +206,14 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
         return file;
     }
 
-    private IEditorInput getRestoredInput(EditorReference e) {
+    private IEditorInput getRestoredInput(IEditorReference e) {
 
         IMemento editorMem = null;
         if (CheckstyleUIPlugin.isE3()) {
             editorMem = getMementoE3(e);
+        }
+        else {
+            editorMem = getMementoE4(e);
         }
 
         if (editorMem == null) {
@@ -242,21 +245,50 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
         return (IEditorInput) input;
     }
 
-    private IMemento getMementoE4(EditorReference e) {
+    private IMemento getMementoE4(IEditorReference e) {
 
-        org.eclipse.e4.ui.model.application.MApplicationElement model = e.getModel();
+        try {
 
-        String memento = model.getPersistedState().get("memento");
+            // can't use this as long as were still supporting E3
+            // org.eclipse.e4.ui.model.application.MApplicationElement model = e.getModel();
+            // Map<String, String> state = model.getPersistedState()
 
-        if (memento != null) {
+            Method getModelMethod = e.getClass().getMethod("getModel", new Class<?>[0]);
+            getModelMethod.setAccessible(true);
 
-            try {
-                return XMLMemento.createReadRoot(new StringReader(memento));
-            }
-            catch (WorkbenchException e1) {
-                CheckstyleLog.log(e1);
+            Object model = getModelMethod.invoke(e, null);
+
+            Method getPersistedStateMethod = model.getClass().getMethod("getPersistedState", new Class<?>[0]);
+            getPersistedStateMethod.setAccessible(true);
+
+            @SuppressWarnings("unchecked")
+            Map<String, String> state = (Map<String, String>) getPersistedStateMethod.invoke(model, null);
+
+            String memento = state.get("memento");
+
+            if (memento != null) {
+
+                try {
+                    return XMLMemento.createReadRoot(new StringReader(memento));
+                }
+                catch (WorkbenchException e1) {
+                    CheckstyleLog.log(e1);
+                }
             }
         }
+        catch (NoSuchMethodException e1) {
+            CheckstyleLog.log(e1);
+        }
+        catch (SecurityException e1) {
+            CheckstyleLog.log(e1);
+        }
+        catch (IllegalAccessException e1) {
+            CheckstyleLog.log(e1);
+        }
+        catch (InvocationTargetException e1) {
+            CheckstyleLog.log(e1);
+        }
+
         return null;
 
     }
@@ -264,6 +296,9 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
     private IMemento getMementoE3(IEditorReference e) {
 
         try {
+
+            // the direct method vanished from E4 EditorReference class
+            // in order to build on E4 we need to do this the dirty way via reflection
             Method getMementoMethod = e.getClass().getMethod("getMemento", new Class<?>[0]);
             getMementoMethod.setAccessible(true);
 
