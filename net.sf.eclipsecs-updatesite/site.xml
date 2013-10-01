@@ -3,11 +3,11 @@
    <description name="Eclipse Checkstyle Plugin" url="http://eclipse-cs.sourceforge.net/update">
       Eclipse Checkstyle Plugin Update Site
    </description>
-   <feature url="features/net.sf.eclipsecs_5.6.1.qualifier.jar" id="net.sf.eclipsecs" version="5.6.1.qualifier">
+   <feature url="features/net.sf.eclipsecs_5.6.2.qualifier.jar" id="net.sf.eclipsecs" version="5.6.2.qualifier">
       <category name="Checkstyle"/>
    </feature>
    <!--
-   <feature url="features/net.sf.eclipsecs.migration_5.6.1.qualifier.jar" id="net.sf.eclipsecs.migration" version="5.6.1.qualifier">
+   <feature url="features/net.sf.eclipsecs.migration_5.6.2.qualifier.jar" id="net.sf.eclipsecs.migration" version="5.6.2.qualifier">
       <category name="Checkstyle"/>
    </feature>
    -->
