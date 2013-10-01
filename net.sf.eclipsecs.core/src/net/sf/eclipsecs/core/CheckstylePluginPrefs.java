@@ -65,6 +65,8 @@ public class CheckstylePluginPrefs extends AbstractPreferenceInitializer {
     /** Default value for the marker limitation. */
     public static final int MARKER_LIMIT = 100;
 
+    private static final InstanceScope INSTANCE = new InstanceScope();
+
     /**
      * {@inheritDoc}
      */
@@ -125,7 +127,7 @@ public class CheckstylePluginPrefs extends AbstractPreferenceInitializer {
      */
     public static void setBoolean(String prefId, boolean value) throws BackingStoreException {
 
-        IEclipsePreferences prefs = InstanceScope.INSTANCE.getNode(CheckstylePlugin.PLUGIN_ID);
+        IEclipsePreferences prefs = INSTANCE.getNode(CheckstylePlugin.PLUGIN_ID);
         prefs.putBoolean(prefId, value);
         prefs.flush();
     }
@@ -143,7 +145,7 @@ public class CheckstylePluginPrefs extends AbstractPreferenceInitializer {
      */
     public static void setInt(String prefId, int value) throws BackingStoreException {
 
-        IEclipsePreferences prefs = InstanceScope.INSTANCE.getNode(CheckstylePlugin.PLUGIN_ID);
+        IEclipsePreferences prefs = INSTANCE.getNode(CheckstylePlugin.PLUGIN_ID);
         prefs.putInt(prefId, value);
         prefs.flush();
     }
