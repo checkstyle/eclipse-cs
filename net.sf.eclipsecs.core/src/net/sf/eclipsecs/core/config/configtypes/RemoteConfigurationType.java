@@ -501,6 +501,9 @@ public class RemoteConfigurationType extends ConfigurationType {
                 MessageDigest d = MessageDigest.getInstance("MD5");
                 byte[] hash = d.digest(resolvedCheckConfigurationURL.toExternalForm().getBytes("UTF-8"));
                 urlHash = EncodingUtils.encodeBase64(hash);
+
+                urlHash = urlHash.replace('/', '_');
+                urlHash = urlHash.replace('\\', '_');
             }
             catch (NoSuchAlgorithmException e) {
                 CheckstylePluginException.rethrow(e);
@@ -510,6 +513,5 @@ public class RemoteConfigurationType extends ConfigurationType {
             }
             return "eclipse-cs/" + urlHash;
         }
-
     }
 }
