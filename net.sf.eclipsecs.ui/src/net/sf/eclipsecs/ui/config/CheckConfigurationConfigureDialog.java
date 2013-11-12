@@ -730,6 +730,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
                                 mTableViewer.refresh(true);
                                 refreshTableViewerState();
                                 mTreeViewer.refresh();
+                                mTreeViewer.getTree().forceFocus();
                             }
                         } else {
                             mModules.add(workingCopy);
