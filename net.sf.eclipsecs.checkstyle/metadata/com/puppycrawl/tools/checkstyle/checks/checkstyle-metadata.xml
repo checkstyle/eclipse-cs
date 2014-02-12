@@ -79,6 +79,9 @@
             <property-metadata name="caseIndent" datatype="Integer" default-value="4">
                 <description>%Indentation.caseIndent</description>
             </property-metadata>
+            <property-metadata name="throwsIndent" datatype="Integer" default-value="4">
+                <description>%Indentation.throwsIndent</description>
+            </property-metadata>
             <message-key key="indentation.error" />
             <message-key key="indentation.child.error" />
         </rule-metadata>
@@ -178,9 +181,19 @@
         </rule-metadata>
 
         <rule-metadata name="%OuterTypeFilename.name" internal-name="OuterTypeFilename" parent="TreeWalker">
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.OuterTypeFilename" />
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.OuterTypeFilenameCheck" />
             <description>%OuterTypeFilename.desc</description>
             <message-key key="type.file.mismatch" />
+        </rule-metadata>
+
+        <rule-metadata name="%UniqueProperties.name" internal-name="UniqueProperties" parent="Checker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.UniquePropertiesCheck" />
+            <description>%UniqueProperties.desc</description>
+            <property-metadata name="fileExtensions" datatype="String" default-value="properties">
+                <description>%UniqueProperties.fileExtensions</description>
+            </property-metadata>
+            <message-key key="properties.duplicateproperty" />
+            <message-key key="unable.open.cause" />
         </rule-metadata>
     </rule-group-metadata>
 </checkstyle-metadata>

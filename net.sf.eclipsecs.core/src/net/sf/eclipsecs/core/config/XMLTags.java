@@ -158,6 +158,12 @@ public final class XMLTags {
     /** Constant for the name of the SuppressWithNearbyCommentFilter module. */
     public static final String SUPRESSWITHNEARBYCOMMENTFILTER_MODULE = "SuppressWithNearbyCommentFilter"; //$NON-NLS-1$
 
+    /** Constant for the name of the SuppressWarningsHolder module. */
+    public static final String SUPPRESSWARNINGSHOLDER_MODULE = "SuppressWarningsHolder"; //$NON-NLS-1$
+
+    /** Constant for the name of the SuppressWarningsFilter module. */
+    public static final String SUPPRESSWARNINGSFILTER_MODULE = "SuppressWarningsFilter"; //$NON-NLS-1$
+
     /** Constant for the name of the Other group. */
     public static final String OTHER_GROUP = "Other"; //$NON-NLS-1$
 

@@ -51,5 +51,10 @@
             <alternative-name
                 internal-name="com.puppycrawl.tools.checkstyle.checks.FileContentsHolder"/>
         </rule-metadata>
+        <rule-metadata name="%SuppressWarningsHolder.name" internal-name="SuppressWarningsHolder"
+            parent="TreeWalker" hidden="true" deletable="false" singleton="true">
+            <alternative-name
+                internal-name="com.puppycrawl.tools.checkstyle.checks.SuppressWarningsHolder"/>
+        </rule-metadata>
     </rule-group-metadata>
 </checkstyle-metadata>
