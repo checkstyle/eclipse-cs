@@ -484,7 +484,7 @@
     <!-- renders the footer of the page -->
     <xsl:template name="footer">
         <div id="footer">
-            Copyright &#xA9; 2002-2013 David Schneider,
+            Copyright &#xA9; 2002-2014 David Schneider,
             <a href="http://www.koedderitzsch.net">Lars Ködderitzsch</a>
             and others. All Rights Reserved.
         </div>
