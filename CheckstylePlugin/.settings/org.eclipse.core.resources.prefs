@@ -1,8 +1,0 @@
-#Sun Dec 17 23:11:20 CET 2006
-eclipse.preferences.version=1
-encoding//src/com/atlassw/tools/eclipse/checkstyle/quickfixes/blocks/messages.properties=8859_1
-encoding//src/com/atlassw/tools/eclipse/checkstyle/quickfixes/coding/messages.properties=8859_1
-encoding//src/com/atlassw/tools/eclipse/checkstyle/quickfixes/design/messages.properties=8859_1
-encoding//src/com/atlassw/tools/eclipse/checkstyle/quickfixes/misc/messages.properties=8859_1
-encoding//src/com/atlassw/tools/eclipse/checkstyle/quickfixes/modifier/messages.properties=8859_1
-encoding//src/com/atlassw/tools/eclipse/checkstyle/voting/messages.properties=8859_1
