@@ -161,6 +161,11 @@
             description="%WriteProtectedFilter.description"
             class="net.sf.eclipsecs.core.projectconfig.filters.WriteProtectedFilter"> </filter>
         <filter
+            name="%DerivedFilesFilter.label"
+            internal-name="DerivedFiles"
+            description="%DerivedFilesFilter.description"
+            class="net.sf.eclipsecs.core.projectconfig.filters.DerivedFilesFilter"> </filter>
+        <filter
             name="%UnOpenedFilesFilter.label"
             internal-name="UnOpenedFiles"
             description="%UnOpenedFilesFilter.description"
