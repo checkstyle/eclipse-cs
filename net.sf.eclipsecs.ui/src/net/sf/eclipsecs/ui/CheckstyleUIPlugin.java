@@ -132,12 +132,15 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
 
         if (isE3 == null) {
 
-            IProduct pr = Platform.getProduct();
+            // previous checking on the platform product version has not been reliable, since there are e4 based
+            // products with a 3 as major version (e.g. Spring Tools Suite).
+            try {
 
-            if (pr != null) {
-                isE3 = pr.getDefiningBundle().getVersion().getMajor() == 3;
+                // instead now check for the presence of a known e4 class
+                Class.forName("org.eclipse.e4.ui.model.application.MApplicationElement");
+                isE3 = false;
             }
-            else {
+            catch (ClassNotFoundException e) {
                 isE3 = true;
             }
         }
