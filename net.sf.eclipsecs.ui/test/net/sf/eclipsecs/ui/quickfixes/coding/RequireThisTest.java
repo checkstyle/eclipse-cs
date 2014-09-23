@@ -24,6 +24,10 @@ public class RequireThisTest extends AbstractQuickfixTestCase {
         testQuickfix("RequireThisMethodInvocation.xml", new RequireThisQuickfix());
     }
 
+    public void testRequireThisMethodInvocationWithParam() throws Exception {
+        testQuickfix("RequireThisMethodInvocationWithParam.xml", new RequireThisQuickfix());
+    }
+
     public void testRequireThisMethodInvocationAssignmentRHS() throws Exception {
         testQuickfix("RequireThisMethodInvocationAssignmentRHS.xml", new RequireThisQuickfix());
     }
