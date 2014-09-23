@@ -65,7 +65,7 @@ public class RequireThisQuickfix extends AbstractASTResolution {
             @Override
             public boolean visit(final MethodInvocation node) {
                 if (containsPosition(node, markerStartOffset)) {
-                    replace(node, findMethodReplacement(node.getName(), node, 0));
+                    replace(node, findMethodReplacement(node.getName(), node, node, 0));
                 }
                 return false;
             }
@@ -92,7 +92,7 @@ public class RequireThisQuickfix extends AbstractASTResolution {
                 final AST ast = name.getAST();
                 final FieldAccess fieldAccess = ast.newFieldAccess();
                 final ThisExpression thisExpr = ast.newThisExpression();
-                if(type != null) {
+                if (type != null) {
                     thisExpr.setQualifier(copy(type.getName()));
                 }
                 fieldAccess.setExpression(thisExpr);
@@ -100,29 +100,30 @@ public class RequireThisQuickfix extends AbstractASTResolution {
                 return fieldAccess;
             }
 
-            private Expression findMethodReplacement(final SimpleName name, final ASTNode node, int typeLevel) {
-                final ASTNode parent = node.getParent();
+            private Expression findMethodReplacement(final SimpleName name, ASTNode contextNode,
+                final MethodInvocation node, int typeLevel) {
+                final ASTNode parent = contextNode.getParent();
                 if (parent instanceof TypeDeclaration) {
                     typeLevel++;
                     final TypeDeclaration type = (TypeDeclaration) parent;
                     for (final MethodDeclaration methodDeclaration : type.getMethods()) {
                         if (name.getFullyQualifiedName().equals(methodDeclaration.getName().getFullyQualifiedName())) {
-                            return createMethodInvocationReplacement(typeLevel == 1 ? null : type, name);
+                            return createMethodInvocationReplacement(typeLevel == 1 ? null : type, node);
                         }
                     }
                 }
-                return findMethodReplacement(name, parent, typeLevel);
+                return findMethodReplacement(name, parent, node, typeLevel);
             }
 
-            private Expression createMethodInvocationReplacement(final TypeDeclaration type, final SimpleName name) {
-                final AST ast = name.getAST();
-                final MethodInvocation methodInvocation = ast.newMethodInvocation();
+            private Expression createMethodInvocationReplacement(final TypeDeclaration type,
+                MethodInvocation origMethodInvocation) {
+                final AST ast = origMethodInvocation.getAST();
+                final MethodInvocation methodInvocation = copy(origMethodInvocation);
                 final ThisExpression thisExpr = ast.newThisExpression();
-                if(type != null) {
+                if (type != null) {
                     thisExpr.setQualifier(copy(type.getName()));
                 }
                 methodInvocation.setExpression(thisExpr);
-                methodInvocation.setName(copy(name));
                 return methodInvocation;
             }
 
