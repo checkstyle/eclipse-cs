@@ -377,13 +377,7 @@ public class GraphStatsView extends AbstractStatsView {
         // action used to go back to the master view
         mDrillBackAction = new Action() {
             public void run() {
-                mIsDrilledDown = false;
-                mCurrentDetailCategory = null;
-                mStackLayout.topControl = mMasterComposite;
-                mMainSection.layout();
-
-                updateActions();
-                updateLabel();
+                drillBack();
             }
         };
         mDrillBackAction.setText(Messages.MarkerStatsView_actionBack);
@@ -442,6 +436,16 @@ public class GraphStatsView extends AbstractStatsView {
     private void updateActions() {
         mDrillBackAction.setEnabled(mIsDrilledDown);
         mShowErrorAction.setEnabled(mIsDrilledDown && !mDetailViewer.getSelection().isEmpty());
+    }
+
+    private void drillBack() {
+        mIsDrilledDown = false;
+        mCurrentDetailCategory = null;
+        mStackLayout.topControl = mMasterComposite;
+        mMainSection.layout();
+
+        updateActions();
+        updateLabel();
     }
 
     /**
@@ -503,9 +507,14 @@ public class GraphStatsView extends AbstractStatsView {
             mPieDataset.setStats(getStats());
             mDetailViewer.setInput(getStats());
 
-            // update the actions and the label
-            updateActions();
-            updateLabel();
+            if (mIsDrilledDown && mDetailViewer.getTable().getItemCount() == 0) {
+                drillBack();
+            }
+            else {
+                // update the actions and the label
+                updateActions();
+                updateLabel();
+            }
         }
     }
 

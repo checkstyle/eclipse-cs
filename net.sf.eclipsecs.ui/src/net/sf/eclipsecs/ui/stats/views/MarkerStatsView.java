@@ -350,9 +350,14 @@ public class MarkerStatsView extends AbstractStatsView {
             mMasterViewer.setInput(getStats());
             mDetailViewer.setInput(getStats());
 
-            // update the actions and the label
-            updateActions();
-            updateLabel();
+            if (mIsDrilledDown && mDetailViewer.getTable().getItemCount() == 0) {
+                drillBack();
+            }
+            else {
+                // update the actions and the label
+                updateActions();
+                updateLabel();
+            }
         }
     }
 
@@ -406,15 +411,9 @@ public class MarkerStatsView extends AbstractStatsView {
         // action used to go back to the master view
         mDrillBackAction = new Action() {
             public void run() {
-                mIsDrilledDown = false;
-                mCurrentDetailCategory = null;
-                mStackLayout.topControl = mMasterViewer.getTable();
-                mMainSection.layout();
-                mMasterViewer.refresh();
-
-                updateActions();
-                updateLabel();
+                drillBack();
             }
+
         };
         mDrillBackAction.setText(Messages.MarkerStatsView_actionBack);
         mDrillBackAction.setToolTipText(Messages.MarkerStatsView_actionBackTooltip);
@@ -453,6 +452,17 @@ public class MarkerStatsView extends AbstractStatsView {
         mDrillBackAction.setEnabled(mIsDrilledDown);
         mDrillDownAction.setEnabled(!mIsDrilledDown && !mMasterViewer.getSelection().isEmpty());
         mShowErrorAction.setEnabled(mIsDrilledDown && !mDetailViewer.getSelection().isEmpty());
+    }
+
+    private void drillBack() {
+        mIsDrilledDown = false;
+        mCurrentDetailCategory = null;
+        mStackLayout.topControl = mMasterViewer.getTable();
+        mMainSection.layout();
+        mMasterViewer.refresh();
+
+        updateActions();
+        updateLabel();
     }
 
     /**
