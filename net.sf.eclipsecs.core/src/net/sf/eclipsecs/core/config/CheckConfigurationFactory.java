@@ -221,6 +221,54 @@ public final class CheckConfigurationFactory {
     }
 
     /**
+     * Transfers the internal checkstyle settings and configurations to a new workspace.
+     * 
+     * @param targetWorkspaceRoot
+     *            the target workspace root
+     * @throws CheckstylePluginException
+     *             if the transfer failed
+     */
+    public static void transferInternalConfiguration(IPath targetWorkspaceRoot) throws CheckstylePluginException {
+
+        IPath targetStateLocation = getTargetStateLocation(targetWorkspaceRoot);
+
+        File targetLocationFile = targetStateLocation.toFile();
+
+        try {
+
+            targetLocationFile.mkdirs();
+
+            FileUtils.copyDirectoryToDirectory(CheckstylePlugin.getDefault().getStateLocation().toFile(),
+                targetLocationFile);
+        }
+        catch (IllegalStateException e) {
+            CheckstylePluginException.rethrow(e);
+        }
+        catch (IOException e) {
+            CheckstylePluginException.rethrow(e);
+        }
+    }
+
+    private static IPath getTargetStateLocation(IPath newWorkspaceRoot) {
+
+        IPath currentWorkspaceRoot = Platform.getLocation();
+        IPath currentStateLocation = CheckstylePlugin.getDefault().getStateLocation();
+
+        if (currentStateLocation == null) {
+            return null;
+        }
+        int segmentsToRemove = currentStateLocation.matchingFirstSegments(currentWorkspaceRoot);
+
+        // Strip it down to the extension
+        currentStateLocation = currentStateLocation.removeFirstSegments(segmentsToRemove);
+
+        // Now add to the target workspace root
+        IPath targetStateLocation = newWorkspaceRoot.append(currentStateLocation);
+        return targetStateLocation;
+
+    }
+
+    /**
      * Load the check configurations from the persistent state storage.
      */
     private static void loadFromPersistence() throws CheckstylePluginException {
@@ -229,9 +277,7 @@ public final class CheckConfigurationFactory {
 
         try {
 
-            IPath configPath = CheckstylePlugin.getDefault().getStateLocation();
-            configPath = configPath.append(CHECKSTYLE_CONFIG_FILE);
-            File configFile = configPath.toFile();
+            File configFile = getInternalConfigurationFile();
 
             //
             // Make sure the files exists, it might not.
@@ -276,6 +322,13 @@ public final class CheckConfigurationFactory {
         finally {
             IOUtils.closeQuietly(inStream);
         }
+    }
+
+    private static File getInternalConfigurationFile() {
+        IPath configPath = CheckstylePlugin.getDefault().getStateLocation();
+        configPath = configPath.append(CHECKSTYLE_CONFIG_FILE);
+        File configFile = configPath.toFile();
+        return configFile;
     }
 
     /**

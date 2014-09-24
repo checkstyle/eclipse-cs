@@ -67,7 +67,16 @@
         <initializer
             class="net.sf.eclipsecs.ui.CheckstyleUIPluginPrefs"/>
     </extension>
-
+    <extension
+        point="org.eclipse.ui.preferenceTransfer">
+        <settingsTransfer
+            id="net.sf.eclipsecs.settings"
+            name="%CheckstylePreferenceTransfer.name" 
+            class="net.sf.eclipsecs.ui.preferences.CheckstyleSettingsTransfer">
+            <description>%CheckstylePreferenceTransfer.description</description>
+        </settingsTransfer>
+    </extension>
+    
     <extension
         point="org.eclipse.ui.preferencePages">
         <page

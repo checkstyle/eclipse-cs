@@ -23,8 +23,7 @@ package net.sf.eclipsecs.ui;
 import org.eclipse.osgi.util.NLS;
 
 /**
- * Class providing messages for the checkstyle plugin. Uses the eclipse new nls
- * mechanism.
+ * Class providing messages for the checkstyle plugin. Uses the eclipse new nls mechanism.
  * 
  * @author Lars Ködderitzsch
  */
@@ -32,7 +31,6 @@ public final class Messages extends NLS {
     // CHECKSTYLE:OFF
 
     private static final String BUNDLE_NAME = "net.sf.eclipsecs.ui.messages"; //$NON-NLS-1$
-
 
     static {
         // initialize resource bundle
@@ -385,7 +383,8 @@ public final class Messages extends NLS {
 
     public static String SimpleFileSetsEditor_titleSimpleConfig;
 
-    private Messages() {}
+    private Messages() {
+    }
 
     public static String FileSetEditDialog_msgBuildTestResults;
 
@@ -484,6 +483,8 @@ public final class Messages extends NLS {
     public static String errorWhileOpeningEditor;
 
     public static String errorWhileDisplayingDuplicates;
+
+    public static String CheckstylePreferenceTransfer_name;
 
     // CHECKSTYLE:ON
 }
