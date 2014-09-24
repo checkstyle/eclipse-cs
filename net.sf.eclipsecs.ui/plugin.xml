@@ -69,6 +69,16 @@
     </extension>
     <extension
         point="org.eclipse.ui.preferenceTransfer">
+        <transfer
+              id="net.sf.eclipsecs.ui.transfer"
+              name="%CheckstylePreferenceTransfer.name"
+              icon="icons/checkstyle_error.gif">
+           <mapping
+                 scope="instance" >
+                 <entry node="net.sf.eclipsecs.core"/>
+                 <entry node="net.sf.eclipsecs.ui"/>
+           </mapping>
+        </transfer>
         <settingsTransfer
             id="net.sf.eclipsecs.settings"
             name="%CheckstylePreferenceTransfer.name" 

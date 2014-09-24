@@ -238,8 +238,8 @@ public final class CheckConfigurationFactory {
 
             targetLocationFile.mkdirs();
 
-            FileUtils.copyDirectoryToDirectory(CheckstylePlugin.getDefault().getStateLocation().toFile(),
-                targetLocationFile);
+            FileUtils
+                .copyDirectory(CheckstylePlugin.getDefault().getStateLocation().toFile(), targetLocationFile, true);
         }
         catch (IllegalStateException e) {
             CheckstylePluginException.rethrow(e);
