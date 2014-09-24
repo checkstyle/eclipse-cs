@@ -2,9 +2,9 @@
 <!-- Schema file written by PDE -->
 <schema targetNamespace="net.sf.eclipsecs.core" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
-      <appinfo>
+      <appInfo>
          <meta.schema plugin="net.sf.eclipsecs.core" id="filters" name="filters"/>
-      </appinfo>
+      </appInfo>
       <documentation>
          This extension point can be used to provide specific filter sets.
       </documentation>
@@ -12,9 +12,9 @@
 
    <element name="extension">
       <annotation>
-         <appinfo>
+         <appInfo>
             <meta.element />
-         </appinfo>
+         </appInfo>
       </annotation>
       <complexType>
          <sequence>
@@ -67,15 +67,23 @@ The id is used to identify the specific filter set.
                <documentation>
                   A description of the check configuration.
                </documentation>
-               <appinfo>
+               <appInfo>
                   <meta.attribute translatable="true"/>
-               </appinfo>
+               </appInfo>
             </annotation>
          </attribute>
          <attribute name="location" type="string" use="required">
             <annotation>
                <documentation>
                   The path to the checkstyle configuration file inside the plugin.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="default-weight" type="string">
+            <annotation>
+               <documentation>
+                  Defines the &quot;weight&quot; of a builtin configuration upon determining the default check configuration to use, if no other workspace default has been set and no project configuration exists. The built-in check configuration with the highest weight will be selected as out-of-the-box default. This allows for extension providers to define own builtin configurations with their plugin extension, which will become automatically used as default.
+The all-time default configuration &quot;Sun Checks&quot; is defined with default-weight=&quot;1&quot;, so in order to have a extension builtin config chosen as default, make sure its default-weight value is higher than that. If default-weight is not defined a value of 0 (zero) is assumed.
                </documentation>
             </annotation>
          </attribute>
@@ -107,36 +115,36 @@ The id is used to identify the specific filter set.
    </element>
 
    <annotation>
-      <appinfo>
+      <appInfo>
          <meta.section type="since"/>
-      </appinfo>
+      </appInfo>
       <documentation>
          4.0.0
       </documentation>
    </annotation>
 
    <annotation>
-      <appinfo>
+      <appInfo>
          <meta.section type="examples"/>
-      </appinfo>
+      </appInfo>
       <documentation>
          [Enter extension point usage example here.]
       </documentation>
    </annotation>
 
    <annotation>
-      <appinfo>
+      <appInfo>
          <meta.section type="apiInfo"/>
-      </appinfo>
+      </appInfo>
       <documentation>
          [Enter API information here.]
       </documentation>
    </annotation>
 
    <annotation>
-      <appinfo>
+      <appInfo>
          <meta.section type="implementation"/>
-      </appinfo>
+      </appInfo>
       <documentation>
          [Enter information about supplied implementation of this extension point.]
       </documentation>

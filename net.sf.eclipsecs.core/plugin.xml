@@ -136,7 +136,8 @@
         <check-configuration
             name="Sun Checks"
             location="sun_checks.xml"
-            description="%SunChecks.description"/>
+            description="%SunChecks.description"
+            default-weight="1"/>
         <check-configuration
             name="Sun Checks (Eclipse)"
             location="sun_checks_eclipse.xml"

@@ -51,8 +51,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 
 /**
- * Working set implementation that manages global configurations configured for
- * the Eclipse workspace.
+ * Working set implementation that manages global configurations configured for the Eclipse workspace.
  * 
  * @author Lars Ködderitzsch
  */
@@ -67,17 +66,23 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
     /** The default check configuration to be used for unconfigured projects. */
     private CheckConfigurationWorkingCopy mDefaultCheckConfig;
 
+    /** The default built-in check configuration to be used for unconfigured projects. */
+    private ICheckConfiguration mDefaultBuiltInCheckConfig;
+
     /**
      * Creates a working set to manage global configurations.
      * 
-     * @param checkConfigs the list of global check configurations
-     * @param defaultConfig the defaul check configuration
+     * @param checkConfigs
+     *            the list of global check configurations
+     * @param defaultConfig
+     *            the defaul check configuration
      */
-    GlobalCheckConfigurationWorkingSet(List<ICheckConfiguration> checkConfigs,
-            ICheckConfiguration defaultConfig) {
+    GlobalCheckConfigurationWorkingSet(List<ICheckConfiguration> checkConfigs, ICheckConfiguration defaultConfig,
+        ICheckConfiguration defaultBuiltInCheckConfiguration) {
 
         mWorkingCopies = new ArrayList<CheckConfigurationWorkingCopy>();
         mDeletedConfigurations = new ArrayList<CheckConfigurationWorkingCopy>();
+        mDefaultBuiltInCheckConfig = defaultBuiltInCheckConfiguration;
 
         for (ICheckConfiguration cfg : checkConfigs) {
 
@@ -119,8 +124,7 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
     }
 
     /**
-     * Returns the default check configuration or <code>null</code> if none is
-     * set.
+     * Returns the default check configuration or <code>null</code> if none is set.
      * 
      * @return the default check configuration
      */
@@ -131,7 +135,8 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
     /**
      * Sets the default check configuration.
      * 
-     * @param defaultCheckConfig the default check configuration
+     * @param defaultCheckConfig
+     *            the default check configuration
      */
     public void setDefaultCheckConfig(CheckConfigurationWorkingCopy defaultCheckConfig) {
         this.mDefaultCheckConfig = defaultCheckConfig;
@@ -143,8 +148,7 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
     public boolean removeCheckConfiguration(CheckConfigurationWorkingCopy checkConfig) {
         boolean used = true;
         try {
-            used = ProjectConfigurationFactory.isCheckConfigInUse(checkConfig
-                    .getSourceCheckConfiguration());
+            used = ProjectConfigurationFactory.isCheckConfigInUse(checkConfig.getSourceCheckConfiguration());
 
             if (!used) {
                 mWorkingCopies.remove(checkConfig);
@@ -207,8 +211,7 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
                 continue;
             }
 
-            List<IProject> usingProjects = ProjectConfigurationFactory
-                    .getProjectsUsingConfig(workingCopies[i]);
+            List<IProject> usingProjects = ProjectConfigurationFactory.getProjectsUsingConfig(workingCopies[i]);
 
             for (IProject proj : usingProjects) {
                 projects.add(proj);
@@ -234,11 +237,12 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
     }
 
     /**
-     * Updates the project configurations that use the changed check
-     * configurations.
+     * Updates the project configurations that use the changed check configurations.
      * 
-     * @param configurations the check configurations
-     * @throws CheckstylePluginException an unexpected exception occurred
+     * @param configurations
+     *            the check configurations
+     * @throws CheckstylePluginException
+     *             an unexpected exception occurred
      */
     private void updateProjectConfigurations() throws CheckstylePluginException {
 
@@ -247,18 +251,14 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
             ICheckConfiguration original = checkConfig.getSourceCheckConfiguration();
 
             // only if the name of the check config differs from the original
-            if (original != null && original.getName() != null
-                    && !checkConfig.getName().equals(original.getName())) {
+            if (original != null && original.getName() != null && !checkConfig.getName().equals(original.getName())) {
 
-                List<IProject> projects = ProjectConfigurationFactory
-                        .getProjectsUsingConfig(checkConfig);
+                List<IProject> projects = ProjectConfigurationFactory.getProjectsUsingConfig(checkConfig);
                 for (IProject project : projects) {
 
-                    IProjectConfiguration projectConfig = ProjectConfigurationFactory
-                            .getConfiguration(project);
+                    IProjectConfiguration projectConfig = ProjectConfigurationFactory.getConfiguration(project);
 
-                    ProjectConfigurationWorkingCopy workingCopy = new ProjectConfigurationWorkingCopy(
-                            projectConfig);
+                    ProjectConfigurationWorkingCopy workingCopy = new ProjectConfigurationWorkingCopy(projectConfig);
 
                     List<FileSet> fileSets = workingCopy.getFileSets();
                     for (FileSet fileSet : fileSets) {
@@ -292,7 +292,14 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
             configPath = configPath.append(CheckConfigurationFactory.CHECKSTYLE_CONFIG_FILE);
             File configFile = configPath.toFile();
 
-            Document doc = createCheckConfigurationsDocument(mWorkingCopies, mDefaultCheckConfig);
+            ICheckConfiguration defaultConfig = mDefaultCheckConfig;
+
+            // don't store as default when it's already the built-in default
+            if (defaultConfig != null && defaultConfig.getName().equals(mDefaultBuiltInCheckConfig.getName())) {
+                defaultConfig = null;
+            }
+
+            Document doc = createCheckConfigurationsDocument(mWorkingCopies, defaultConfig);
 
             // write to the file after the document creation was successful
             // prevents corrupted files in case of error
@@ -310,8 +317,8 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
     /**
      * Notifies the check configurations that have been deleted.
      * 
-     * @throws CheckstylePluginException an exception while notifiing for
-     *             deletion
+     * @throws CheckstylePluginException
+     *             an exception while notifiing for deletion
      */
     private void notifyDeletedCheckConfigs() throws CheckstylePluginException {
 
@@ -323,14 +330,12 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
     /**
      * Transforms the check configurations to a document.
      */
-    private static Document createCheckConfigurationsDocument(
-            List<CheckConfigurationWorkingCopy> configurations,
-            CheckConfigurationWorkingCopy defaultConfig) {
+    private static Document createCheckConfigurationsDocument(List<CheckConfigurationWorkingCopy> configurations,
+        ICheckConfiguration defaultConfig) {
 
         Document doc = DocumentHelper.createDocument();
         Element root = doc.addElement(XMLTags.CHECKSTYLE_ROOT_TAG);
-        root.addAttribute(XMLTags.VERSION_TAG,
-                CheckConfigurationFactory.CURRENT_CONFIG_FILE_FORMAT_VERSION);
+        root.addAttribute(XMLTags.VERSION_TAG, CheckConfigurationFactory.CURRENT_CONFIG_FILE_FORMAT_VERSION);
 
         if (defaultConfig != null) {
             root.addAttribute(XMLTags.DEFAULT_CHECK_CONFIG_TAG, defaultConfig.getName());

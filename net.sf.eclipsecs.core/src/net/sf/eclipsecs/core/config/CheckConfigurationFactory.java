@@ -69,17 +69,17 @@ public final class CheckConfigurationFactory {
     protected static final String CURRENT_CONFIG_FILE_FORMAT_VERSION = VERSION_5_0_0;
 
     /** constant for the extension point id. */
-    private static final String CONFIGS_EXTENSION_POINT = CheckstylePlugin.PLUGIN_ID
-        + ".configurations"; //$NON-NLS-1$
+    private static final String CONFIGS_EXTENSION_POINT = CheckstylePlugin.PLUGIN_ID + ".configurations"; //$NON-NLS-1$
 
     /**
-     * List of known check configurations. Synchronized because of possible
-     * concurrend access.
+     * List of known check configurations. Synchronized because of possible concurrend access.
      */
     private static List<ICheckConfiguration> sConfigurations = Collections
         .synchronizedList(new ArrayList<ICheckConfiguration>());
 
     private static ICheckConfiguration sDefaultCheckConfig;
+
+    private static ICheckConfiguration sDefaultBuiltInConfig;
 
     static {
         refresh();
@@ -93,8 +93,7 @@ public final class CheckConfigurationFactory {
      * 
      * @param name
      *            Name of the requested instance.
-     * @return The requested instance or <code>null</code> if the named instance
-     *         could not be found.
+     * @return The requested instance or <code>null</code> if the named instance could not be found.
      */
     public static ICheckConfiguration getByName(String name) {
 
@@ -117,14 +116,17 @@ public final class CheckConfigurationFactory {
     }
 
     /**
-     * Returns the default check configuration if one is set, if none is set the
-     * Sun Checks built-in configuration will be returned.
+     * Returns the default check configuration if one is set, if none is set the Sun Checks built-in configuration will
+     * be returned.
      * 
      * @return the default check configuration to use with unconfigured projects
      */
     public static ICheckConfiguration getDefaultCheckConfiguration() {
         if (sDefaultCheckConfig != null) {
             return sDefaultCheckConfig;
+        }
+        else if (sDefaultBuiltInConfig != null) {
+            return sDefaultBuiltInConfig;
         }
         else if (sConfigurations.size() > 0) {
             return sConfigurations.get(0);
@@ -140,8 +142,8 @@ public final class CheckConfigurationFactory {
      * @return a new configuration working set
      */
     public static ICheckConfigurationWorkingSet newWorkingSet() {
-        return new GlobalCheckConfigurationWorkingSet(sConfigurations,
-            getDefaultCheckConfiguration());
+        return new GlobalCheckConfigurationWorkingSet(sConfigurations, getDefaultCheckConfiguration(),
+            sDefaultBuiltInConfig);
     }
 
     /**
@@ -149,6 +151,8 @@ public final class CheckConfigurationFactory {
      */
     public static void refresh() {
         try {
+            sDefaultCheckConfig = null;
+            sDefaultBuiltInConfig = null;
             sConfigurations.clear();
             loadBuiltinConfigurations();
             loadFromPersistence();
@@ -160,8 +164,7 @@ public final class CheckConfigurationFactory {
     }
 
     /**
-     * Copy the checkstyle configuration of a check configuration into another
-     * configuration.
+     * Copy the checkstyle configuration of a check configuration into another configuration.
      * 
      * @param source
      *            the source check configuration
@@ -170,14 +173,12 @@ public final class CheckConfigurationFactory {
      * @throws CheckstylePluginException
      *             Error copying the configuration
      */
-    public static void copyConfiguration(ICheckConfiguration source,
-        ICheckConfiguration target) throws CheckstylePluginException {
+    public static void copyConfiguration(ICheckConfiguration source, ICheckConfiguration target)
+        throws CheckstylePluginException {
         // use the export function ;-)
-        File targetFile = FileUtils.toFile(target
-            .getResolvedConfigurationFileURL());
+        File targetFile = FileUtils.toFile(target.getResolvedConfigurationFileURL());
 
-        File sourceFile = FileUtils.toFile(source
-            .getResolvedConfigurationFileURL());
+        File sourceFile = FileUtils.toFile(source.getResolvedConfigurationFileURL());
 
         // copying from a file to the same file will destroy it.
         if (ObjectUtils.equals(targetFile, sourceFile)) {
@@ -188,8 +189,7 @@ public final class CheckConfigurationFactory {
     }
 
     /**
-     * Write check configurations to an external file in standard Checkstyle
-     * format.
+     * Write check configurations to an external file in standard Checkstyle format.
      * 
      * @param file
      *            File to write too.
@@ -198,8 +198,7 @@ public final class CheckConfigurationFactory {
      * @throws CheckstylePluginException
      *             Error during export.
      */
-    public static void exportConfiguration(File file, ICheckConfiguration config)
-        throws CheckstylePluginException {
+    public static void exportConfiguration(File file, ICheckConfiguration config) throws CheckstylePluginException {
 
         InputStream in = null;
         OutputStream out = null;
@@ -241,8 +240,7 @@ public final class CheckConfigurationFactory {
                 return;
             }
             else {
-                inStream = new BufferedInputStream(new FileInputStream(
-                    configFile));
+                inStream = new BufferedInputStream(new FileInputStream(configFile));
             }
 
             SAXReader reader = new SAXReader();
@@ -255,30 +253,25 @@ public final class CheckConfigurationFactory {
 
                 // the old (pre 4.0.0) configuration files aren't supported
                 // anymore
-                CheckstyleLog
-                    .log(null,
-                        "eclipse-cs version 3.x type configuration files are not supported anymore.");
+                CheckstyleLog.log(null, "eclipse-cs version 3.x type configuration files are not supported anymore.");
                 return;
             }
 
-            String defaultConfigName = root
-                .attributeValue(XMLTags.DEFAULT_CHECK_CONFIG_TAG);
+            String defaultConfigName = root.attributeValue(XMLTags.DEFAULT_CHECK_CONFIG_TAG);
 
             sConfigurations.addAll(getGlobalCheckConfigurations(root));
 
             for (ICheckConfiguration config : sConfigurations) {
-                if (config.getName().equals(defaultConfigName)) {
+                if (config.getName().equals(defaultConfigName) && config != sDefaultBuiltInConfig) {
                     sDefaultCheckConfig = config;
                 }
             }
         }
         catch (IOException e) {
-            CheckstylePluginException.rethrow(e,
-                Messages.errorLoadingConfigFile);
+            CheckstylePluginException.rethrow(e, Messages.errorLoadingConfigFile);
         }
         catch (DocumentException e) {
-            CheckstylePluginException.rethrow(e,
-                Messages.errorLoadingConfigFile);
+            CheckstylePluginException.rethrow(e, Messages.errorLoadingConfigFile);
         }
         finally {
             IOUtils.closeQuietly(inStream);
@@ -286,42 +279,49 @@ public final class CheckConfigurationFactory {
     }
 
     /**
-     * Loads the built-in check configurations defined in plugin.xml or custom
-     * fragments.
+     * Loads the built-in check configurations defined in plugin.xml or custom fragments.
      */
     private static void loadBuiltinConfigurations() {
 
         IExtensionRegistry pluginRegistry = Platform.getExtensionRegistry();
 
-        IConfigurationElement[] elements = pluginRegistry
-            .getConfigurationElementsFor(CONFIGS_EXTENSION_POINT);
+        IConfigurationElement[] elements = pluginRegistry.getConfigurationElementsFor(CONFIGS_EXTENSION_POINT);
+
+        int currentMaxDefaultWeight = -1;
+
+        ICheckConfiguration defaultBuiltInCheckConfig = null;
 
         for (int i = 0; i < elements.length; i++) {
             String name = elements[i].getAttribute(XMLTags.NAME_TAG);
-            String description = elements[i]
-                .getAttribute(XMLTags.DESCRIPTION_TAG);
+            String description = elements[i].getAttribute(XMLTags.DESCRIPTION_TAG);
             String location = elements[i].getAttribute(XMLTags.LOCATION_TAG);
 
-            IConfigurationType configType = ConfigurationTypes
-                .getByInternalName("builtin");
+            String defaultWeightAsString = elements[i].getAttribute(XMLTags.DEFAULT_WEIGHT);
+            int defaultWeight = defaultWeightAsString != null ? Integer.parseInt(defaultWeightAsString) : 0;
+
+            IConfigurationType configType = ConfigurationTypes.getByInternalName("builtin");
 
             Map<String, String> additionalData = new HashMap<String, String>();
-            additionalData.put(BuiltInConfigurationType.CONTRIBUTOR_KEY,
-                elements[i].getContributor().getName());
+            additionalData.put(BuiltInConfigurationType.CONTRIBUTOR_KEY, elements[i].getContributor().getName());
 
             List<ResolvableProperty> props = new ArrayList<ResolvableProperty>();
-            IConfigurationElement[] propEls = elements[i]
-                .getChildren(XMLTags.PROPERTY_TAG);
+            IConfigurationElement[] propEls = elements[i].getChildren(XMLTags.PROPERTY_TAG);
             for (IConfigurationElement propEl : propEls) {
-                props.add(new ResolvableProperty(propEl
-                    .getAttribute(XMLTags.NAME_TAG), propEl
+                props.add(new ResolvableProperty(propEl.getAttribute(XMLTags.NAME_TAG), propEl
                     .getAttribute(XMLTags.VALUE_TAG)));
             }
 
-            ICheckConfiguration checkConfig = new CheckConfiguration(name,
-                location, description, configType, true, props, additionalData);
+            ICheckConfiguration checkConfig = new CheckConfiguration(name, location, description, configType, true,
+                props, additionalData);
             sConfigurations.add(checkConfig);
+
+            if (defaultWeight > currentMaxDefaultWeight) {
+                currentMaxDefaultWeight = defaultWeight;
+                defaultBuiltInCheckConfig = checkConfig;
+            }
         }
+
+        sDefaultBuiltInConfig = defaultBuiltInCheckConfig;
     }
 
     /**
@@ -332,8 +332,7 @@ public final class CheckConfigurationFactory {
      * @return the global check configurations configured therein
      */
     @SuppressWarnings("unchecked")
-    private static List<ICheckConfiguration> getGlobalCheckConfigurations(
-        Element root) {
+    private static List<ICheckConfiguration> getGlobalCheckConfigurations(Element root) {
 
         List<ICheckConfiguration> configs = new ArrayList<ICheckConfiguration>();
 
@@ -342,38 +341,32 @@ public final class CheckConfigurationFactory {
         for (Element configEl : configElements) {
 
             String name = configEl.attributeValue(XMLTags.NAME_TAG);
-            String description = configEl
-                .attributeValue(XMLTags.DESCRIPTION_TAG);
+            String description = configEl.attributeValue(XMLTags.DESCRIPTION_TAG);
             String location = configEl.attributeValue(XMLTags.LOCATION_TAG);
 
             String type = configEl.attributeValue(XMLTags.TYPE_TAG);
-            IConfigurationType configType = ConfigurationTypes
-                .getByInternalName(type);
+            IConfigurationType configType = ConfigurationTypes.getByInternalName(type);
 
             // get resolvable properties
             List<ResolvableProperty> props = new ArrayList<ResolvableProperty>();
-            List<Element> propertiesElements = configEl
-                .elements(XMLTags.PROPERTY_TAG);
+            List<Element> propertiesElements = configEl.elements(XMLTags.PROPERTY_TAG);
             for (Element propsEl : propertiesElements) {
 
-                ResolvableProperty prop = new ResolvableProperty(propsEl
-                    .attributeValue(XMLTags.NAME_TAG), propsEl
-                    .attributeValue(XMLTags.VALUE_TAG));
+                ResolvableProperty prop = new ResolvableProperty(propsEl.attributeValue(XMLTags.NAME_TAG),
+                    propsEl.attributeValue(XMLTags.VALUE_TAG));
                 props.add(prop);
             }
 
             // get additional data
             Map<String, String> additionalData = new HashMap<String, String>();
-            List<Element> dataElements = configEl
-                .elements(XMLTags.ADDITIONAL_DATA_TAG);
+            List<Element> dataElements = configEl.elements(XMLTags.ADDITIONAL_DATA_TAG);
             for (Element dataEl : dataElements) {
 
-                additionalData.put(dataEl.attributeValue(XMLTags.NAME_TAG),
-                    dataEl.attributeValue(XMLTags.VALUE_TAG));
+                additionalData.put(dataEl.attributeValue(XMLTags.NAME_TAG), dataEl.attributeValue(XMLTags.VALUE_TAG));
             }
 
-            ICheckConfiguration checkConfig = new CheckConfiguration(name,
-                location, description, configType, true, props, additionalData);
+            ICheckConfiguration checkConfig = new CheckConfiguration(name, location, description, configType, true,
+                props, additionalData);
             configs.add(checkConfig);
         }
         return configs;

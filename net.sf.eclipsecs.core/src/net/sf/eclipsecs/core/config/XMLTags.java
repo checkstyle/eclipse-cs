@@ -220,4 +220,11 @@ public final class XMLTags {
     /** package tag. */
     public static final String PACKAGE_TAG = "package"; //$NON-NLS-1$
 
+    //
+    // custom tags used by eclipse-cs extension points
+    //
+
+    /** default weight of a builtin configuration. */
+    public static final String DEFAULT_WEIGHT = "default-weight"; //$NON-NLS-1$
+
 }
