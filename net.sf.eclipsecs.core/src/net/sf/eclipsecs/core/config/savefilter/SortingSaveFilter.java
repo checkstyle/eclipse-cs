@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2014  David Schneider, Lars Ködderitzsch
+// Copyright (C) 2002-2014  David Schneider, Lars KÃ¶dderitzsch
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -30,7 +30,7 @@ import net.sf.eclipsecs.core.config.XMLTags;
 /**
  * Save filter that sorts modules in a certain order.
  * 
- * @author Lars Ködderitzsch
+ * @author Lars KÃ¶dderitzsch
  */
 public class SortingSaveFilter implements ISaveFilter {
 
@@ -47,7 +47,7 @@ public class SortingSaveFilter implements ISaveFilter {
      * Comparator to sort modules so that Checker and TreeWalker come first.
      * This is done because of a bug in SuppressionCommentFilter.
      * 
-     * @author Lars Ködderitzsch
+     * @author Lars KÃ¶dderitzsch
      */
     private static class ModuleComparator implements Comparator<Module> {
 

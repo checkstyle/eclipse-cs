@@ -50,7 +50,7 @@ import org.osgi.service.prefs.BackingStoreException;
  * gets added.
  * 
  * @author Lukas Frena
- * @author Lars Koedderitzsch
+ * @author Lars Ködderitzsch
  */
 @SuppressWarnings("restriction")
 public class FormatterConfigWriter {

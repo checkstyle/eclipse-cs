@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2014  David Schneider, Lars K�dderitzsch
+// Copyright (C) 2002-2014  David Schneider, Lars Ködderitzsch
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -36,7 +36,7 @@ import org.osgi.framework.Bundle;
 /**
  * Classloader implementation which can load classes and resources from bundles implementing a specific extension point.
  * 
- * @author Lars Koedderitzsch
+ * @author Lars Ködderitzsch
  */
 public class ExtensionClassLoader extends ClassLoader {
 

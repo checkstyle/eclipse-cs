@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2006  David Schneider, Lars Ködderitzsch, Fabrice Bellingard
+// Copyright (C) 2002-2006  David Schneider, Lars KÃ¶dderitzsch, Fabrice Bellingard
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -23,18 +23,18 @@ package net.sf.eclipsecs.ui.stats.data;
 import java.util.Collection;
 
 /**
- * Classe qui véhicule les statistiques Checkstyle. Elle contient notamment la
- * liste des différentes erreurs avec leur comptage.
+ * Classe qui vÃ©hicule les statistiques Checkstyle. Elle contient notamment la
+ * liste des diffÃ©rentes erreurs avec leur comptage.
  * 
  * @author Fabrice BELLINGARD
  */
 public class Stats {
 
-    /** Liste des différentes erreurs. */
+    /** Liste des diffÃ©rentes erreurs. */
     private Collection mMarkerStats;
 
     /**
-     * Nombre de marqueurs scannés.
+     * Nombre de marqueurs scannÃ©s.
      */
     private int mMarkerCount;
 
@@ -45,7 +45,7 @@ public class Stats {
      * Constructeur.
      * 
      * @param markerStats la liste des MarkerStats
-     * @param markerCount le nombre de marqueurs scannés
+     * @param markerCount le nombre de marqueurs scannÃ©s
      * @param markerCountWhole the number of all checkstyle markers in the
      *            workspace
      */

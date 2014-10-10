@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2014  David Schneider, Lars Ködderitzsch
+// Copyright (C) 2002-2014  David Schneider, Lars KÃ¶dderitzsch
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -58,7 +58,7 @@ import org.eclipse.swt.widgets.Text;
  * Simple file sets editor producing only one file set that contains all files.
  * Only the check configuration can be chosen.
  * 
- * @author Lars Ködderitzsch
+ * @author Lars KÃ¶dderitzsch
  */
 public class SimpleFileSetsEditor implements IFileSetsEditor {
 
@@ -192,7 +192,7 @@ public class SimpleFileSetsEditor implements IFileSetsEditor {
     /**
      * Controller for this file set editor.
      * 
-     * @author Lars Ködderitzsch
+     * @author Lars KÃ¶dderitzsch
      */
     private class Controller implements SelectionListener, ISelectionChangedListener {
 

@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2014  David Schneider, Lars Ködderitzsch
+// Copyright (C) 2002-2014  David Schneider, Lars KÃ¶dderitzsch
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -24,7 +24,7 @@ package net.sf.eclipsecs.core.config;
  * Enumeration for Checkstyle's severity levels. The intent is to decouple
  * highler level funtions (UI) from dealing with Checkstyle code API.
  * 
- * @author Lars Ködderitzsch
+ * @author Lars KÃ¶dderitzsch
  */
 public enum Severity {
 

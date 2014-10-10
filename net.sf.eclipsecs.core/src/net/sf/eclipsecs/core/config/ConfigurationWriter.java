@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2014  David Schneider, Lars Ködderitzsch
+// Copyright (C) 2002-2014  David Schneider, Lars KÃ¶dderitzsch
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -41,7 +41,7 @@ import org.dom4j.Element;
 /**
  * Writes the modules of a checkstyle configuration to an output stream.
  * 
- * @author Lars Ködderitzsch
+ * @author Lars KÃ¶dderitzsch
  */
 public final class ConfigurationWriter {
 

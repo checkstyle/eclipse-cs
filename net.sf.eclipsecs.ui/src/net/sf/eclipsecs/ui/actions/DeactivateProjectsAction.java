@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2014  David Schneider, Lars K�dderitzsch
+// Copyright (C) 2002-2014  David Schneider, Lars Ködderitzsch
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -41,7 +41,7 @@ import org.eclipse.ui.IWorkbenchPart;
 /**
  * Action to diable Checkstyle on one ore more projects.
  * 
- * @author Lars Koedderitzsch
+ * @author Lars Ködderitzsch
  */
 public class DeactivateProjectsAction implements IObjectActionDelegate {
 
@@ -75,7 +75,7 @@ public class DeactivateProjectsAction implements IObjectActionDelegate {
     /**
      * Activates Checkstyle on a collection of projects.
      * 
-     * @author Lars Koedderitzsch
+     * @author Lars Ködderitzsch
      */
     private class BulkCheckstyleActivateJob extends WorkspaceJob {
 

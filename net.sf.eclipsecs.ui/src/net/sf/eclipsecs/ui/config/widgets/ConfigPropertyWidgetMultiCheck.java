@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2014  David Schneider, Lars Ködderitzsch
+// Copyright (C) 2002-2014  David Schneider, Lars KÃ¶dderitzsch
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -199,7 +199,7 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
     /**
      * Label provider to translate checkstyle tokens into readable form.
      * 
-     * @author Lars Ködderitzsch
+     * @author Lars KÃ¶dderitzsch
      */
     private class TokenLabelProvider extends LabelProvider {
 

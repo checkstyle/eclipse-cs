@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2014  David Schneider, Lars Ködderitzsch
+// Copyright (C) 2002-2014  David Schneider, Lars KÃ¶dderitzsch
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -50,7 +50,7 @@ import org.eclipse.swt.widgets.Text;
 /**
  * Some widely used helper funktionality regarding SWT shortcomings.
  * 
- * @author Lars Ködderitzsch
+ * @author Lars KÃ¶dderitzsch
  */
 public final class SWTUtil {
 
@@ -102,7 +102,7 @@ public final class SWTUtil {
     /**
      * Listener that adds tooltip-on-press support.
      * 
-     * @author Lars Ködderitzsch
+     * @author Lars KÃ¶dderitzsch
      */
     private static final class TooltipOnPressListener extends MouseAdapter implements
             MouseTrackListener {
@@ -161,7 +161,7 @@ public final class SWTUtil {
     /**
      * Verifier that allows only digits to be input.
      * 
-     * @author Lars Ködderitzsch
+     * @author Lars KÃ¶dderitzsch
      */
     private static final class OnlyDigitsVerifyListener implements VerifyListener {
 
@@ -199,7 +199,7 @@ public final class SWTUtil {
      * Listener that adds resize support ((re)storing of size and location
      * information).
      * 
-     * @author Lars Ködderitzsch
+     * @author Lars KÃ¶dderitzsch
      */
     private static final class ShellResizeSupportListener extends ShellAdapter implements
             ControlListener, DisposeListener {

@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2014  David Schneider, Lars Ködderitzsch
+// Copyright (C) 2002-2014  David Schneider, Lars KÃ¶dderitzsch
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -37,7 +37,7 @@ import org.eclipse.ui.texteditor.ITextEditor;
  * Command handler to enable key-binding support for the "Apply Checkstyle
  * fixes" action.
  * 
- * @author Lars Ködderitzsch
+ * @author Lars KÃ¶dderitzsch
  */
 public class FixCheckstyleMarkersHandler extends AbstractHandler {
 

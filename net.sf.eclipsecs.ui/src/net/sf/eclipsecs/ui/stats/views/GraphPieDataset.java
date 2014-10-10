@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2006  David Schneider, Lars Ködderitzsch, Fabrice Bellingard
+// Copyright (C) 2002-2006  David Schneider, Lars KÃ¶dderitzsch, Fabrice Bellingard
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -34,10 +34,10 @@ import org.jfree.data.general.AbstractDataset;
 import org.jfree.data.general.PieDataset;
 
 /**
- * Implémentation d'un PieDataset pour fournir les données à afficher au graph.
+ * ImplÃ©mentation d'un PieDataset pour fournir les donnÃ©es Ã  afficher au graph.
  * 
- * Copié de DefaultPieDataset car celui-ci ne permettait pas d'être vidé de ses
- * données dynamiquement. Le code ajouté est balisé en début de classe.
+ * CopiÃ© de DefaultPieDataset car celui-ci ne permettait pas d'Ãªtre vidÃ© de ses
+ * donnÃ©es dynamiquement. Le code ajoutÃ© est balisÃ© en dÃ©but de classe.
  * 
  * @see org.jfree.data.general.DefaultPieDataset
  * @author Fabrice BELLINGARD
@@ -45,14 +45,14 @@ import org.jfree.data.general.PieDataset;
 public class GraphPieDataset extends AbstractDataset implements PieDataset
 {
 
-    // --------------- RAJOUT : début ---------------
+    // --------------- RAJOUT : dÃ©but ---------------
 
     /** Serialization support across different class versions. */
     private static final long serialVersionUID = 9010212577897074893L;
 
     /**
-     * Pourcentage minimum en dessous duquel une catégorie d'erreur est mise
-     * dans la catégorie "Autres" opur l'affichage du camember.
+     * Pourcentage minimum en dessous duquel une catÃ©gorie d'erreur est mise
+     * dans la catÃ©gorie "Autres" opur l'affichage du camember.
      */
     private static final int POURCENTAGE_MIN = 1;
 
@@ -62,7 +62,7 @@ public class GraphPieDataset extends AbstractDataset implements PieDataset
     private static final int CENT = 100;
 
     /**
-     * Afficher ou pas toutes les catégories.
+     * Afficher ou pas toutes les catÃ©gories.
      */
     private boolean mShowAllCategories;
 
@@ -78,8 +78,8 @@ public class GraphPieDataset extends AbstractDataset implements PieDataset
                 : Collections.EMPTY_LIST;
         mData = new DefaultKeyedValues();
 
-        // markers que l'on comptera dans une catégorie "Autres" car ils
-        // représentent trop peu de %
+        // markers que l'on comptera dans une catÃ©gorie "Autres" car ils
+        // reprÃ©sentent trop peu de %
         int leftCount = 0;
         float mCount = new Float(stats.getMarkerCount()).floatValue();
         // et on remplit
@@ -95,7 +95,7 @@ public class GraphPieDataset extends AbstractDataset implements PieDataset
             }
             else
             {
-                // on ne veut pas montrer toutes les catégories : on fait le tri
+                // on ne veut pas montrer toutes les catÃ©gories : on fait le tri
                 if (percentage > POURCENTAGE_MIN)
                 {
                     setValue(markerStat.getIdentifiant(), percentage);
@@ -108,15 +108,15 @@ public class GraphPieDataset extends AbstractDataset implements PieDataset
         }
         if (!mShowAllCategories && leftCount != 0)
         {
-            // on ne veut pas montrer toutes les catégories, et certaines
-            // n'ont pas été prises en compte : on les mets dans "Autres"
+            // on ne veut pas montrer toutes les catÃ©gories, et certaines
+            // n'ont pas Ã©tÃ© prises en compte : on les mets dans "Autres"
             setValue(Messages.GraphPieDataset_otherCategories, CENT * leftCount / mCount);
         }
         fireDatasetChanged();
     }
 
     /**
-     * Remet à zéro les données du graphe en enlevant tout.
+     * Remet Ã  zÃ©ro les donnÃ©es du graphe en enlevant tout.
      */
     public void removeValues()
     {

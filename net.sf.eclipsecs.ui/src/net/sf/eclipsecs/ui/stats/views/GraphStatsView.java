@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2006  David Schneider, Lars Ködderitzsch, Fabrice Bellingard
+// Copyright (C) 2002-2006  David Schneider, Lars KÃ¶dderitzsch, Fabrice Bellingard
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -91,7 +91,7 @@ import org.osgi.service.prefs.BackingStoreException;
  * View that shows a graph for the Checkstyle marker distribution.
  * 
  * @author Fabrice BELLINGARD
- * @author Lars Ködderitzsch
+ * @author Lars KÃ¶dderitzsch
  */
 
 public class GraphStatsView extends AbstractStatsView {
@@ -337,7 +337,7 @@ public class GraphStatsView extends AbstractStatsView {
                 catch (PartInitException e) {
                     CheckstyleLog.log(e,
                         NLS.bind(Messages.GraphStatsView_unableToOpenListingView, MarkerStatsView.VIEW_ID));
-                    // TODO : mettre message d'erreur à l'utilisateur
+                    // TODO : mettre message d'erreur Ã  l'utilisateur
                 }
             }
         };
@@ -519,10 +519,10 @@ public class GraphStatsView extends AbstractStatsView {
     }
 
     /**
-     * Crée le graphe JFreeChart.
+     * CrÃ©e le graphe JFreeChart.
      * 
      * @param piedataset
-     *            : la source de données à afficher
+     *            : la source de donnÃ©es Ã  afficher
      * @return le diagramme
      */
     private JFreeChart createChart(GraphPieDataset piedataset) {
@@ -583,7 +583,7 @@ public class GraphStatsView extends AbstractStatsView {
     /**
      * Content provider for the detail table viewer.
      * 
-     * @author Lars Ködderitzsch
+     * @author Lars KÃ¶dderitzsch
      */
     private class DetailContentProvider implements IStructuredContentProvider {
         private Object[] mCurrentDetails;
@@ -629,7 +629,7 @@ public class GraphStatsView extends AbstractStatsView {
     /**
      * Label provider for the detail table viewer.
      * 
-     * @author Lars Ködderitzsch
+     * @author Lars KÃ¶dderitzsch
      */
     private class DetailViewMultiProvider extends LabelProvider implements ITableLabelProvider,
         ITableComparableProvider, ITableSettingsProvider {

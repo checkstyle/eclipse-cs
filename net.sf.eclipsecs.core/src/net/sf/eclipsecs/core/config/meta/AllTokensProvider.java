@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2014  David Schneider, Lars Ködderitzsch
+// Copyright (C) 2002-2014  David Schneider, Lars KÃ¶dderitzsch
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -31,7 +31,7 @@ import com.puppycrawl.tools.checkstyle.api.TokenTypes;
  * is used for modules that allow all tokens as options - which is very tedious
  * to maintain in the metadata.
  * 
- * @author Lars Ködderitzsch
+ * @author Lars KÃ¶dderitzsch
  */
 public class AllTokensProvider implements IOptionProvider {
 

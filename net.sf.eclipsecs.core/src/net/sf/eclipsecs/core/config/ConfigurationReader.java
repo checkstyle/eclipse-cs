@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2014  David Schneider, Lars Ködderitzsch
+// Copyright (C) 2002-2014  David Schneider, Lars KÃ¶dderitzsch
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -42,7 +42,7 @@ import org.xml.sax.InputSource;
 /**
  * Utitlity class to read a checkstyle configuration and transform to the plugins module objects.
  * 
- * @author Lars Ködderitzsch
+ * @author Lars KÃ¶dderitzsch
  */
 public final class ConfigurationReader {
 
@@ -278,7 +278,7 @@ public final class ConfigurationReader {
     /**
      * Holds additional data about the Checkstyle configuration file, for special uses.
      * 
-     * @author Lars Koedderitzsch
+     * @author Lars KÃ¶dderitzsch
      */
     public static class AdditionalConfigData {
 

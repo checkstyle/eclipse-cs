@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2006  David Schneider, Lars Ködderitzsch, Fabrice Bellingard
+// Copyright (C) 2002-2006  David Schneider, Lars KÃ¶dderitzsch, Fabrice Bellingard
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -50,8 +50,8 @@ public class MarkerStat implements Comparable {
     private int mMaxSeverity;
 
     /**
-     * Crée un MarkerStat pour un marqueur Checkstyle correspondant à
-     * l'identifiant passé en paramètre.
+     * CrÃ©e un MarkerStat pour un marqueur Checkstyle correspondant Ã 
+     * l'identifiant passÃ© en paramÃ¨tre.
      * 
      * @param identifiant : le message du marqueur Checkstyle
      */

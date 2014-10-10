@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2014  David Schneider, Lars Ködderitzsch
+// Copyright (C) 2002-2014  David Schneider, Lars KÃ¶dderitzsch
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -63,7 +63,7 @@ import org.eclipse.ui.part.FileEditorInput;
  * UnOpenedFileFilter is active.
  * 
  * @see https://sourceforge.net/tracker/index.php?func=detail&aid=1647245&group_id =80344&atid=559497).
- * @author Lars Ködderitzsch
+ * @author Lars KÃ¶dderitzsch
  */
 public class CheckFileOnOpenPartListener implements IPartListener2 {
 

@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2014  David Schneider, Lars Ködderitzsch
+// Copyright (C) 2002-2014  David Schneider, Lars KÃ¶dderitzsch
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -46,7 +46,7 @@ import org.eclipse.swt.widgets.Text;
 /**
  * Editor dialog for the package filter.
  * 
- * @author Lars Ködderitzsch
+ * @author Lars KÃ¶dderitzsch
  */
 public class FileTypesFilterEditor implements IFilterEditor {
 
@@ -106,7 +106,7 @@ public class FileTypesFilterEditor implements IFilterEditor {
     /**
      * Dialog to edit file types to check.
      * 
-     * @author Lars Ködderitzsch
+     * @author Lars KÃ¶dderitzsch
      */
     private class FileTypesDialog extends Dialog {
 

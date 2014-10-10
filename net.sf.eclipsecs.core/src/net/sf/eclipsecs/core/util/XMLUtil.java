@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2014  David Schneider, Lars K�dderitzsch
+// Copyright (C) 2002-2014  David Schneider, Lars Ködderitzsch
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -65,7 +65,7 @@ public final class XMLUtil {
      * Entity resolver which handles mapping public DTDs to internal DTD
      * resource.
      * 
-     * @author Lars Koedderitzsch
+     * @author Lars Ködderitzsch
      */
     public static class InternalDtdEntityResolver implements EntityResolver {
 

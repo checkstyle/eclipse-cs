@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2014  David Schneider, Lars Ködderitzsch
+// Copyright (C) 2002-2014  David Schneider, Lars KÃ¶dderitzsch
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -44,7 +44,7 @@ import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
  * </ul>
  * .
  * 
- * @author Lars Ködderitzsch
+ * @author Lars KÃ¶dderitzsch
  */
 public class CheckConfigurationTester {
 
@@ -117,7 +117,7 @@ public class CheckConfigurationTester {
      * resolver. This is used to find unresolved properties after all other
      * property reolvers have been asked.
      * 
-     * @author Lars Ködderitzsch
+     * @author Lars KÃ¶dderitzsch
      */
     private static class MissingPropertyCollector implements PropertyResolver {
 

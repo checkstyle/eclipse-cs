@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2014  David Schneider, Lars Ködderitzsch
+// Copyright (C) 2002-2014  David Schneider, Lars KÃ¶dderitzsch
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -33,7 +33,7 @@ import org.eclipse.swt.graphics.Image;
  * Quickfix implementation which changes lowercase 'l' occurrances in long
  * literals into uppercase 'L' to enchance readability.
  * 
- * @author Lars Ködderitzsch
+ * @author Lars KÃ¶dderitzsch
  */
 public class UpperEllQuickfix extends AbstractASTResolution {
 

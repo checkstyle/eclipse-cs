@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2014  David Schneider, Lars K�dderitzsch
+// Copyright (C) 2002-2014  David Schneider, Lars Ködderitzsch
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -231,7 +231,7 @@ public class ConfigPropertyWidgetRegex extends ConfigPropertyWidgetAbstractBase 
     /**
      * Simple key listener to test the regular expression.
      * 
-     * @author Lars Koedderitzsch
+     * @author Lars Ködderitzsch
      */
     private class RegexTestListener implements KeyListener {
 

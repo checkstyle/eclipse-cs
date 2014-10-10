@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2014  David Schneider, Lars Ködderitzsch
+// Copyright (C) 2002-2014  David Schneider, Lars KÃ¶dderitzsch
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -40,7 +40,7 @@ import org.eclipse.osgi.util.NLS;
  * deconfigured. Otherwise if the project is not configured with this nature,
  * the nature will be configured for this project
  * 
- * @author Lars Ködderitzsch
+ * @author Lars KÃ¶dderitzsch
  */
 public class ConfigureDeconfigureNatureJob extends WorkspaceJob {
 

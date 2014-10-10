@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2006  David Schneider, Lars Ködderitzsch, Fabrice Bellingard
+// Copyright (C) 2002-2006  David Schneider, Lars KÃ¶dderitzsch, Fabrice Bellingard
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -66,7 +66,7 @@ import org.eclipse.ui.dialogs.IWorkingSetSelectionDialog;
 /**
  * Dialog to edit the marker filter.
  * 
- * @author Lars Ködderitzsch
+ * @author Lars KÃ¶dderitzsch
  */
 public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
 
@@ -418,7 +418,7 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
     /**
      * The controller for this dialog.
      * 
-     * @author Lars Ködderitzsch
+     * @author Lars KÃ¶dderitzsch
      */
     private class PageController implements SelectionListener {
 
@@ -501,7 +501,7 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
     /**
      * Dialog to edit regular expressions to filter by.
      * 
-     * @author Lars Ködderitzsch
+     * @author Lars KÃ¶dderitzsch
      */
     private class RegexDialog extends TitleAreaDialog {
 

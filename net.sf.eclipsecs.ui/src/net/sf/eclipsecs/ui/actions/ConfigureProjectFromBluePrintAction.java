@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2014  David Schneider, Lars K�dderitzsch
+// Copyright (C) 2002-2014  David Schneider, Lars Ködderitzsch
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -52,7 +52,7 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
  * Action to configure one ore more projects at once by using another project as
  * blueprint.
  * 
- * @author Lars Koedderitzsch
+ * @author Lars Ködderitzsch
  */
 public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegate {
 
@@ -115,7 +115,7 @@ public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegat
      * Job implementation that configures several projects from a blueprint
      * project.
      * 
-     * @author Lars Koedderitzsch
+     * @author Lars Ködderitzsch
      */
     private class BulkConfigureJob extends WorkspaceJob {
 

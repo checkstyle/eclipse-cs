@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2014  David Schneider, Lars Ködderitzsch, Fabrice Bellingard
+// Copyright (C) 2002-2014  David Schneider, Lars KÃ¶dderitzsch, Fabrice Bellingard
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -42,7 +42,7 @@ import org.eclipse.swt.widgets.TableColumn;
  * This subclass of <code>TableViewer</code> adds easier sorting support and
  * support for storing table settings (column width, sorter state).
  * 
- * @author Lars Ködderitzsch
+ * @author Lars KÃ¶dderitzsch
  */
 public class EnhancedTableViewer extends TableViewer {
     //
@@ -302,7 +302,7 @@ public class EnhancedTableViewer extends TableViewer {
     /**
      * Listener for header clicks and resize events.
      * 
-     * @author Lars Ködderitzsch
+     * @author Lars KÃ¶dderitzsch
      */
     private class TableListener implements SelectionListener, ControlListener {
 
@@ -347,7 +347,7 @@ public class EnhancedTableViewer extends TableViewer {
      * Sorter implementation that uses the values provided by the comparable
      * provider to sort the table.
      * 
-     * @author Lars Ködderitzsch
+     * @author Lars KÃ¶dderitzsch
      */
     private class TableSorter extends ViewerSorter {
 

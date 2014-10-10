@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2014  David Schneider, Lars Ködderitzsch
+// Copyright (C) 2002-2014  David Schneider, Lars KÃ¶dderitzsch
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -74,7 +74,7 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
 /**
  * This class provides the editor GUI for a check configuration working set.
  * 
- * @author Lars Ködderitzsch
+ * @author Lars KÃ¶dderitzsch
  */
 public class CheckConfigurationWorkingSetEditor {
 
@@ -369,7 +369,7 @@ public class CheckConfigurationWorkingSetEditor {
     /**
      * Controller for this page.
      * 
-     * @author Lars Ködderitzsch
+     * @author Lars KÃ¶dderitzsch
      */
     private class PageController implements SelectionListener, IDoubleClickListener,
             ISelectionChangedListener {
@@ -641,7 +641,7 @@ public class CheckConfigurationWorkingSetEditor {
      * Label provider for the check configuration table. Implements also support
      * for table sorting and storing of the table settings.
      * 
-     * @author Lars Ködderitzsch
+     * @author Lars KÃ¶dderitzsch
      */
     private class ConfigurationLabelProvider extends CheckConfigurationLabelProvider implements
             ITableLabelProvider, ITableComparableProvider, ITableSettingsProvider {

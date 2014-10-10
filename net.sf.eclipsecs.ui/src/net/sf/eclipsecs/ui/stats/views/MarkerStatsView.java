@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2006  David Schneider, Lars Ködderitzsch, Fabrice Bellingard
+// Copyright (C) 2002-2006  David Schneider, Lars KÃ¶dderitzsch, Fabrice Bellingard
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -76,7 +76,7 @@ import org.eclipse.ui.texteditor.MarkerUtilities;
  * View that displays statistics about checkstyle markers.
  * 
  * @author Fabrice BELLINGARD
- * @author Lars Ködderitzsch
+ * @author Lars KÃ¶dderitzsch
  */
 public class MarkerStatsView extends AbstractStatsView {
 
@@ -536,7 +536,7 @@ public class MarkerStatsView extends AbstractStatsView {
     /**
      * Content provider for the master table viewer.
      * 
-     * @author Lars Ködderitzsch
+     * @author Lars KÃ¶dderitzsch
      */
     private class MasterContentProvider implements IStructuredContentProvider {
         private Object[] mCurrentMarkerStats;
@@ -573,7 +573,7 @@ public class MarkerStatsView extends AbstractStatsView {
     /**
      * Content provider for the detail table viewer.
      * 
-     * @author Lars Ködderitzsch
+     * @author Lars KÃ¶dderitzsch
      */
     private class DetailContentProvider implements IStructuredContentProvider {
         private Object[] mCurrentDetails;
@@ -619,7 +619,7 @@ public class MarkerStatsView extends AbstractStatsView {
     /**
      * Label provider for the master table viewer.
      * 
-     * @author Lars Ködderitzsch
+     * @author Lars KÃ¶dderitzsch
      */
     private class MasterViewMultiProvider extends LabelProvider implements ITableLabelProvider,
         ITableComparableProvider, ITableSettingsProvider {
@@ -710,7 +710,7 @@ public class MarkerStatsView extends AbstractStatsView {
     /**
      * Label provider for the detail table viewer.
      * 
-     * @author Lars Ködderitzsch
+     * @author Lars KÃ¶dderitzsch
      */
     private class DetailViewMultiProvider extends LabelProvider implements ITableLabelProvider,
         ITableComparableProvider, ITableSettingsProvider {

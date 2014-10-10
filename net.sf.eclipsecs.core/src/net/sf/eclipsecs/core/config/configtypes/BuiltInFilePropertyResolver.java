@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2014  David Schneider, Lars K�dderitzsch
+// Copyright (C) 2002-2014  David Schneider, Lars Ködderitzsch
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -33,7 +33,7 @@ import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
  * Adds support for additional checkstyle config files (header, suppressions
  * etc.) to be delivered with a builtin configuration.
  * 
- * @author Lars Koedderitzsch
+ * @author Lars Ködderitzsch
  */
 public class BuiltInFilePropertyResolver implements PropertyResolver {
 

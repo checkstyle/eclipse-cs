@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2006  David Schneider, Lars Ködderitzsch, Fabrice Bellingard
+// Copyright (C) 2002-2006  David Schneider, Lars KÃ¶dderitzsch, Fabrice Bellingard
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -68,7 +68,7 @@ import org.eclipse.ui.progress.WorkbenchJob;
  * Abstract view that gathers common behaviour for the stats views.
  * 
  * @author Fabrice BELLINGARD
- * @author Lars Ködderitzsch
+ * @author Lars KÃ¶dderitzsch
  */
 public abstract class AbstractStatsView extends ViewPart {
 

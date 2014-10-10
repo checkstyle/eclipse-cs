@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2014  David Schneider, Lars Ködderitzsch, Fabrice Bellingard
+// Copyright (C) 2002-2014  David Schneider, Lars KÃ¶dderitzsch, Fabrice Bellingard
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -26,7 +26,7 @@ import org.eclipse.jface.dialogs.IDialogSettings;
  * Interface for implementations that provide settings where the
  * <code>EnhancedTableViewer</code> can store its current state.
  * 
- * @author Lars Ködderitzsch
+ * @author Lars KÃ¶dderitzsch
  */
 public interface ITableSettingsProvider {
 

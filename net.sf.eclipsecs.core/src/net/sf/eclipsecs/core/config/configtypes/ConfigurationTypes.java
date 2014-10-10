@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2014  David Schneider, Lars Ködderitzsch
+// Copyright (C) 2002-2014  David Schneider, Lars KÃ¶dderitzsch
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -37,7 +37,7 @@ import org.eclipse.core.runtime.Platform;
  * Register for the configuration types thats use the
  * <i>net.sf.eclipsecs.core.configurationtypes </i> extension point.
  * 
- * @author Lars Ködderitzsch
+ * @author Lars KÃ¶dderitzsch
  */
 public final class ConfigurationTypes {
 

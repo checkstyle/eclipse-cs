@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2014  David Schneider, Lars Ködderitzsch
+// Copyright (C) 2002-2014  David Schneider, Lars KÃ¶dderitzsch
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -64,7 +64,7 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
 /**
  * Editor dialog for the package filter.
  * 
- * @author Lars Ködderitzsch
+ * @author Lars KÃ¶dderitzsch
  */
 public class PackageFilterEditor implements IFilterEditor {
 
@@ -200,7 +200,7 @@ public class PackageFilterEditor implements IFilterEditor {
      * Content provider that provides the source folders of a project and their
      * container members.
      * 
-     * @author Lars Ködderitzsch
+     * @author Lars KÃ¶dderitzsch
      */
     private class SourceFolderContentProvider implements ITreeContentProvider {
 

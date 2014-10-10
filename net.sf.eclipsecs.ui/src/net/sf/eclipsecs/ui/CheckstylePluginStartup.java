@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2014  David Schneider, Lars K�dderitzsch
+// Copyright (C) 2002-2014  David Schneider, Lars Ködderitzsch
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -27,7 +27,7 @@ import org.eclipse.ui.IStartup;
  * startup behaviour a non-PluginActivator class is required to implement
  * IStartup.
  * 
- * @author Lars Koedderitzsch
+ * @author Lars Ködderitzsch
  */
 public class CheckstylePluginStartup implements IStartup {
 

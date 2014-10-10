@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2014  David Schneider, Lars Ködderitzsch
+// Copyright (C) 2002-2014  David Schneider, Lars KÃ¶dderitzsch
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -83,7 +83,7 @@ import org.eclipse.ui.dialogs.PropertyPage;
 /**
  * Property page for projects to enable checkstyle audit.
  * 
- * @author Lars Ködderitzsch
+ * @author Lars KÃ¶dderitzsch
  */
 public class CheckstylePropertyPage extends PropertyPage {
 
@@ -576,7 +576,7 @@ public class CheckstylePropertyPage extends PropertyPage {
      * This class works as controller for the page. It listenes for events to
      * occur and handles the pages context.
      * 
-     * @author Lars Ködderitzsch
+     * @author Lars KÃ¶dderitzsch
      */
     private class PageController extends SelectionAdapter implements
         ISelectionChangedListener, ICheckStateListener, IDoubleClickListener {

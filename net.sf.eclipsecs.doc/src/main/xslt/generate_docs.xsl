@@ -485,7 +485,7 @@
     <xsl:template name="footer">
         <div id="footer">
             Copyright &#xA9; 2002-2014 David Schneider,
-            <a href="http://www.koedderitzsch.net">Lars Ködderitzsch</a>
+            <a href="http://www.koedderitzsch.net">Lars KÃ¶dderitzsch</a>
             and others. All Rights Reserved.
         </div>
     </xsl:template>

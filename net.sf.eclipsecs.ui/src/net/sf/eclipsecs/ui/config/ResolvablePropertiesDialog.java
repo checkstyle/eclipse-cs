@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2002-2014  David Schneider, Lars Ködderitzsch
+// Copyright (C) 2002-2014  David Schneider, Lars KÃ¶dderitzsch
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -70,7 +70,7 @@ import org.eclipse.swt.widgets.TableColumn;
  * Dialog to show/edit the properties (name, location, description) of a check
  * configuration. Also used to create new check configurations.
  * 
- * @author Lars Ködderitzsch
+ * @author Lars KÃ¶dderitzsch
  */
 public class ResolvablePropertiesDialog extends TitleAreaDialog {
 
@@ -300,7 +300,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
     /**
      * Controller for this dialog.
      * 
-     * @author Lars Ködderitzsch
+     * @author Lars KÃ¶dderitzsch
      */
     private class Controller implements SelectionListener, IDoubleClickListener, KeyListener {
 
@@ -451,7 +451,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
      * Label provider for the check configuration table. Implements also support
      * for table sorting and storing of the table settings.
      * 
-     * @author Lars Ködderitzsch
+     * @author Lars KÃ¶dderitzsch
      */
     private class PropertiesLabelProvider extends LabelProvider implements ITableLabelProvider,
             ITableComparableProvider, ITableSettingsProvider {
