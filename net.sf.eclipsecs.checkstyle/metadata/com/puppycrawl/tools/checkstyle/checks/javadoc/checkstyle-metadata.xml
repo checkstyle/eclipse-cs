@@ -21,13 +21,11 @@
             <description>%JavadocMethod.desc</description>
             <property-metadata name="scope" datatype="SingleSelect" default-value="private">
                 <description>%JavadocMethod.scope</description>
-                <enumeration
-                    option-provider="com.puppycrawl.tools.checkstyle.api.Scope"/>
+                <enumeration option-provider="com.puppycrawl.tools.checkstyle.api.Scope"/>
             </property-metadata>
             <property-metadata name="excludeScope" datatype="SingleSelect" default-value="nothing">
                 <description>%JavadocMethod.excludeScope</description>
-                <enumeration
-                    option-provider="com.puppycrawl.tools.checkstyle.api.Scope"/>
+                <enumeration option-provider="com.puppycrawl.tools.checkstyle.api.Scope"/>
             </property-metadata>
             <property-metadata name="allowUndeclaredRTE" datatype="Boolean" default-value="false">
                 <description>%JavadocMethod.allowUndeclaredRTE</description>
@@ -79,13 +77,11 @@
             <description>%JavadocStyle.desc</description>
             <property-metadata name="scope" datatype="SingleSelect" default-value="private">
                 <description>%JavadocStyle.scope</description>
-                <enumeration
-                    option-provider="com.puppycrawl.tools.checkstyle.api.Scope"/>
+                <enumeration option-provider="com.puppycrawl.tools.checkstyle.api.Scope"/>
             </property-metadata>
             <property-metadata name="excludeScope" datatype="SingleSelect" default-value="nothing">
                 <description>%JavadocStyle.excludeScope</description>
-                <enumeration
-                    option-provider="com.puppycrawl.tools.checkstyle.api.Scope"/>
+                <enumeration option-provider="com.puppycrawl.tools.checkstyle.api.Scope"/>
             </property-metadata>
             <property-metadata name="checkEmptyJavadoc" datatype="Boolean" default-value="false">
                 <description>%JavadocStyle.checkEmptyJavadoc</description>
@@ -93,7 +89,8 @@
             <property-metadata name="checkFirstSentence" datatype="Boolean" default-value="true">
                 <description>%JavadocStyle.checkFirstSentence</description>
             </property-metadata>
-            <property-metadata name="endOfSentenceFormat" datatype="Regex" default-value="([.?!][ \t\n\r\f&lt;])|([.?!]$)">
+            <property-metadata name="endOfSentenceFormat" datatype="Regex"
+                default-value="([.?!][ \t\n\r\f&lt;])|([.?!]$)">
                 <description>%JavadocStyle.endOfSentenceFormat</description>
             </property-metadata>
             <property-metadata name="checkHtml" datatype="Boolean" default-value="true">
@@ -124,13 +121,11 @@
             <description>%JavadocType.desc</description>
             <property-metadata name="excludeScope" datatype="SingleSelect" default-value="nothing">
                 <description>%JavadocType.excludeScope</description>
-                <enumeration
-                    option-provider="com.puppycrawl.tools.checkstyle.api.Scope"/>
+                <enumeration option-provider="com.puppycrawl.tools.checkstyle.api.Scope"/>
             </property-metadata>
             <property-metadata name="scope" datatype="SingleSelect" default-value="private">
                 <description>%JavadocType.scope</description>
-                <enumeration
-                    option-provider="com.puppycrawl.tools.checkstyle.api.Scope"/>
+                <enumeration option-provider="com.puppycrawl.tools.checkstyle.api.Scope"/>
             </property-metadata>
             <property-metadata name="authorFormat" datatype="Regex">
                 <description>%JavadocType.authorFormat</description>
@@ -162,13 +157,14 @@
             <description>%JavadocVariable.desc</description>
             <property-metadata name="excludeScope" datatype="SingleSelect" default-value="nothing">
                 <description>%JavadocVariable.excludeScope</description>
-                <enumeration
-                    option-provider="com.puppycrawl.tools.checkstyle.api.Scope"/>
+                <enumeration option-provider="com.puppycrawl.tools.checkstyle.api.Scope"/>
             </property-metadata>
             <property-metadata name="scope" datatype="SingleSelect" default-value="private">
                 <description>%JavadocVariable.scope</description>
-                <enumeration
-                    option-provider="com.puppycrawl.tools.checkstyle.api.Scope"/>
+                <enumeration option-provider="com.puppycrawl.tools.checkstyle.api.Scope"/>
+            </property-metadata>
+            <property-metadata name="ignoreNamePattern" datatype="Regex">
+                <description>%JavadocVariable.ignoreNamePattern</description>
             </property-metadata>
             <message-key key="javadoc.missing"/>
         </rule-metadata>
