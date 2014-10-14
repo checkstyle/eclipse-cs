@@ -1,4 +1,3 @@
-
 package net.sf.eclipsecs.sample.checks;
 
 import com.puppycrawl.tools.checkstyle.api.Check;

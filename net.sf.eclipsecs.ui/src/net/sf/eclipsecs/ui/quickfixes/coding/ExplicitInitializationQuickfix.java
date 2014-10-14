@@ -40,12 +40,12 @@ import org.eclipse.swt.graphics.Image;
 
 /**
  * Quickfix implementation which removes the explicit default initialization of a class or object member.
- * 
+ *
  * @author Philip Graf
  */
 public class ExplicitInitializationQuickfix extends AbstractASTResolution {
 
-    private String fieldName = Messages.ExplicitInitializationQuickfix_unknownFieldName;
+    private String mFieldName = Messages.ExplicitInitializationQuickfix_unknownFieldName;
 
     /**
      * {@inheritDoc}
@@ -67,16 +67,21 @@ public class ExplicitInitializationQuickfix extends AbstractASTResolution {
             in.read(buffer, 0, buffer.length);
             in.close();
             final String snippet = new String(buffer, resource.getCharset());
-            fieldName = snippet.substring(0, snippet.indexOf('=')).trim();
-        } catch (final CoreException e) {
+            mFieldName = snippet.substring(0, snippet.indexOf('=')).trim();
+        }
+        catch (final CoreException e) {
             handleRetrieveFieldNameException(e);
-        } catch (final IOException e) {
+        }
+        catch (final IOException e) {
             handleRetrieveFieldNameException(e);
-        } catch (final IndexOutOfBoundsException e) {
+        }
+        catch (final IndexOutOfBoundsException e) {
             handleRetrieveFieldNameException(e);
-        } catch (final ClassCastException e) {
+        }
+        catch (final ClassCastException e) {
             handleRetrieveFieldNameException(e);
-        } catch (final NullPointerException e) {
+        }
+        catch (final NullPointerException e) {
             handleRetrieveFieldNameException(e);
         }
     }
@@ -106,14 +111,14 @@ public class ExplicitInitializationQuickfix extends AbstractASTResolution {
      * {@inheritDoc}
      */
     public String getDescription() {
-        return NLS.bind(Messages.ExplicitInitializationQuickfix_description, fieldName);
+        return NLS.bind(Messages.ExplicitInitializationQuickfix_description, mFieldName);
     }
 
     /**
      * {@inheritDoc}
      */
     public String getLabel() {
-        return NLS.bind(Messages.ExplicitInitializationQuickfix_label, fieldName);
+        return NLS.bind(Messages.ExplicitInitializationQuickfix_label, mFieldName);
     }
 
     /**

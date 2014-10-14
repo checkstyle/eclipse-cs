@@ -15,15 +15,16 @@ import org.eclipse.osgi.util.NLS;
 
 /**
  * RegEx messages. Helper class to get NLSed messages.
- * 
+ *
  * @since 3.1
  */
+@SuppressWarnings({ "visibilitymodifier", "staticvariablename", "javadocvariable" })
 public final class RegExMessages extends NLS {
 
     private static final String BUNDLE_NAME = RegExMessages.class.getName();
 
     private RegExMessages() {
-    // Do not instantiate
+        // Do not instantiate
     }
 
     static {

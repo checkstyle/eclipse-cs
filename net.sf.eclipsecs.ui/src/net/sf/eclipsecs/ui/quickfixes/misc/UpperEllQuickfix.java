@@ -30,9 +30,9 @@ import org.eclipse.jface.text.IRegion;
 import org.eclipse.swt.graphics.Image;
 
 /**
- * Quickfix implementation which changes lowercase 'l' occurrances in long
- * literals into uppercase 'L' to enchance readability.
- * 
+ * Quickfix implementation which changes lowercase 'l' occurrances in long literals into uppercase 'L' to enchance
+ * readability.
+ *
  * @author Lars Ködderitzsch
  */
 public class UpperEllQuickfix extends AbstractASTResolution {
@@ -40,16 +40,14 @@ public class UpperEllQuickfix extends AbstractASTResolution {
     /**
      * {@inheritDoc}
      */
-    protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
-            final int markerStartOffset) {
+    protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo, final int markerStartOffset) {
         return new ASTVisitor() {
 
             public boolean visit(NumberLiteral node) {
                 if (containsPosition(node, markerStartOffset)) {
 
                     String token = node.getToken();
-                    if (token.endsWith("l")) //$NON-NLS-1$
-                    {
+                    if (token.endsWith("l")) { //$NON-NLS-1$
                         token = token.replace('l', 'L');
                         node.setToken(token);
                     }

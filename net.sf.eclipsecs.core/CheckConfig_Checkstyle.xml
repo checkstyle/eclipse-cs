@@ -5,7 +5,7 @@
     This configuration file was written by the eclipse-cs plugin configuration editor
 -->
 <!--
-    Checkstyle-Configuration: eclipse-cs Conventions
+    Checkstyle-Configuration: eclipse-cs Production Checks
     Description: none
 -->
 <module name="Checker">
@@ -118,9 +118,9 @@
   <module name="FileLength">
     <property name="max" value="1500"/>
   </module>
-  <module name="Header">
-    <property name="headerFile" value="${samedir}/header.txt"/>
-  </module>
   <module name="SuppressionCommentFilter"/>
   <module name="SuppressWarningsFilter"/>
+  <module name="RegexpHeader">
+    <property name="headerFile" value="${samedir}/header.txt"/>
+  </module>
 </module>

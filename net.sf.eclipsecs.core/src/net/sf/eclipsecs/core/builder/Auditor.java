@@ -91,7 +91,7 @@ public class Auditor {
 
     /**
      * Creates an auditor.
-     * 
+     *
      * @param checkConfiguration
      *            the check configuraton to use during audit.
      */
@@ -107,7 +107,7 @@ public class Auditor {
 
     /**
      * Runs the audit on the files associated with the auditor.
-     * 
+     *
      * @param project
      *            the project is needed to build the correct classpath for the checker
      * @param monitor
@@ -184,7 +184,7 @@ public class Auditor {
 
     /**
      * Add a file to the audit.
-     * 
+     *
      * @param file
      *            the file
      */
@@ -194,7 +194,7 @@ public class Auditor {
 
     /**
      * Get a file resource by the file name.
-     * 
+     *
      * @param fileName
      *            the file name
      * @return the file resource or <code>null</code>
@@ -205,7 +205,7 @@ public class Auditor {
 
     /**
      * Helper method to get an array of java.io.Files. This array gets passed to the checker.
-     * 
+     *
      * @return
      */
     private List<File> getFilesList() {
@@ -219,7 +219,7 @@ public class Auditor {
     /**
      * Implementation of the audit listener. This listener creates markers on the file resources if checkstyle messages
      * are reported.
-     * 
+     *
      * @author David Schneider
      * @author Lars Ködderitzsch
      */
@@ -384,7 +384,7 @@ public class Auditor {
 
         /**
          * Calculates the offset information for the editor annotations.
-         * 
+         *
          * @param error
          *            the audit error
          * @param markerAttributes
@@ -474,7 +474,7 @@ public class Auditor {
         /**
          * Calculates the offset for the given column within this line. This is done to get a correct offset if tab
          * characters are used within this line.
-         * 
+         *
          * @param line
          *            the line as string
          * @param column

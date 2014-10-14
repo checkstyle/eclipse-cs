@@ -43,56 +43,46 @@ import org.eclipse.jdt.core.dom.Modifier.ModifierKeyword;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.swt.graphics.Image;
 
-
 /**
- * Quickfix implementation that orders modifiers into the suggested order by the
- * JLS.
- * 
+ * Quickfix implementation that orders modifiers into the suggested order by the JLS.
+ *
  * @author Lars Ködderitzsch
  */
-public class ModifierOrderQuickfix extends AbstractASTResolution
-{
+public class ModifierOrderQuickfix extends AbstractASTResolution {
 
     /**
-     * List containing modifier keywords in the order proposed by Java Language
-     * specification, sections 8.1.1, 8.3.1 and 8.4.3.
+     * List containing modifier keywords in the order proposed by Java Language specification, sections 8.1.1, 8.3.1 and
+     * 8.4.3.
      */
-    private static final List MODIFIER_ORDER = Arrays.asList(new Object[] {
-        ModifierKeyword.PUBLIC_KEYWORD, ModifierKeyword.PROTECTED_KEYWORD,
-        ModifierKeyword.PRIVATE_KEYWORD, ModifierKeyword.ABSTRACT_KEYWORD,
-        ModifierKeyword.STATIC_KEYWORD, ModifierKeyword.FINAL_KEYWORD,
-        ModifierKeyword.TRANSIENT_KEYWORD, ModifierKeyword.VOLATILE_KEYWORD,
-        ModifierKeyword.SYNCHRONIZED_KEYWORD, ModifierKeyword.NATIVE_KEYWORD,
+    private static final List MODIFIER_ORDER = Arrays.asList(new Object[] { ModifierKeyword.PUBLIC_KEYWORD,
+        ModifierKeyword.PROTECTED_KEYWORD, ModifierKeyword.PRIVATE_KEYWORD, ModifierKeyword.ABSTRACT_KEYWORD,
+        ModifierKeyword.STATIC_KEYWORD, ModifierKeyword.FINAL_KEYWORD, ModifierKeyword.TRANSIENT_KEYWORD,
+        ModifierKeyword.VOLATILE_KEYWORD, ModifierKeyword.SYNCHRONIZED_KEYWORD, ModifierKeyword.NATIVE_KEYWORD,
         ModifierKeyword.STRICTFP_KEYWORD, });
 
     /** The length of the javadoc comment declaration. */
     private static final int JAVADOC_COMMENT_LENGTH = 6;
 
     /**
-     * Reorders the given list of <code>Modifier</code> nodes into their
-     * suggested order by the JLS.
-     * 
-     * @param modifiers the list of modifiers to reorder
+     * Reorders the given list of <code>Modifier</code> nodes into their suggested order by the JLS.
+     *
+     * @param modifiers
+     *            the list of modifiers to reorder
      * @return the reordered list of modifiers
      */
-    public static List reOrderModifiers(List modifiers)
-    {
+    public static List reOrderModifiers(List modifiers) {
 
         List copies = new ArrayList();
         Iterator it = modifiers.iterator();
-        while (it.hasNext())
- {
+        while (it.hasNext()) {
             ASTNode mod = (ASTNode) it.next();
             copies.add(ASTNode.copySubtree(mod.getAST(), mod));
         }
 
         // oder modifiers to correct order
-        Collections.sort(copies, new Comparator()
-        {
-            public int compare(Object arg0, Object arg1)
-            {
-                if (!(arg0 instanceof Modifier) || !(arg1 instanceof Modifier))
-                {
+        Collections.sort(copies, new Comparator() {
+            public int compare(Object arg0, Object arg1) {
+                if (!(arg0 instanceof Modifier) || !(arg1 instanceof Modifier)) {
                     return 0;
                 }
 
@@ -112,43 +102,33 @@ public class ModifierOrderQuickfix extends AbstractASTResolution
     /**
      * {@inheritDoc}
      */
-    protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
-            final int markerStartOffset)
-    {
+    protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo, final int markerStartOffset) {
 
-        return new ASTVisitor()
-        {
+        return new ASTVisitor() {
 
-            public boolean visit(TypeDeclaration node)
-            {
+            public boolean visit(TypeDeclaration node) {
                 return visitBodyDecl(node);
             }
 
-            public boolean visit(MethodDeclaration node)
-            {
+            public boolean visit(MethodDeclaration node) {
                 return visitBodyDecl(node);
             }
 
-            public boolean visit(FieldDeclaration node)
-            {
+            public boolean visit(FieldDeclaration node) {
                 return visitBodyDecl(node);
             }
 
-            public boolean visit(AnnotationTypeMemberDeclaration node)
-            {
+            public boolean visit(AnnotationTypeMemberDeclaration node) {
                 return visitBodyDecl(node);
             }
 
-            private boolean visitBodyDecl(BodyDeclaration node)
-            {
+            private boolean visitBodyDecl(BodyDeclaration node) {
 
                 // recalculate start position because optional javadoc is mixed
                 // into the original start position
                 int pos = node.getStartPosition()
-                        + (node.getJavadoc() != null ? node.getJavadoc().getLength()
-                                + JAVADOC_COMMENT_LENGTH : 0);
-                if (containsPosition(lineInfo, pos))
-                {
+                    + (node.getJavadoc() != null ? node.getJavadoc().getLength() + JAVADOC_COMMENT_LENGTH : 0);
+                if (containsPosition(lineInfo, pos)) {
                     List reorderedModifiers = reOrderModifiers(node.modifiers());
                     node.modifiers().clear();
                     node.modifiers().addAll(reorderedModifiers);
@@ -161,24 +141,21 @@ public class ModifierOrderQuickfix extends AbstractASTResolution
     /**
      * {@inheritDoc}
      */
-    public String getDescription()
-    {
+    public String getDescription() {
         return Messages.ModifierOrderQuickfix_description;
     }
 
     /**
      * {@inheritDoc}
      */
-    public String getLabel()
-    {
+    public String getLabel() {
         return Messages.ModifierOrderQuickfix_label;
     }
 
     /**
      * {@inheritDoc}
      */
-    public Image getImage()
-    {
+    public Image getImage() {
         return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.CORRECTION_CHANGE);
     }
 

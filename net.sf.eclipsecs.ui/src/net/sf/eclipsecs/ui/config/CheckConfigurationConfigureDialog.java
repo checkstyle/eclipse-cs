@@ -92,7 +92,7 @@ import org.osgi.service.prefs.BackingStoreException;
 
 /**
  * Enhanced checkstyle configuration editor.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
@@ -153,14 +153,13 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
 
     /**
      * Creates the configuration dialog.
-     * 
+     *
      * @param parentShell
      *            the parent shell
      * @param config
      *            the check configuration
      */
-    public CheckConfigurationConfigureDialog(Shell parentShell,
-        CheckConfigurationWorkingCopy config) {
+    public CheckConfigurationConfigureDialog(Shell parentShell, CheckConfigurationWorkingCopy config) {
         super(parentShell);
         setShellStyle(getShellStyle() | SWT.RESIZE | SWT.MAX);
         mConfiguration = config;
@@ -172,7 +171,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
 
     /**
      * Creates the dialogs main contents.
-     * 
+     *
      * @param parent
      *            the parent composite
      */
@@ -200,8 +199,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
         sashForm.setWeights(new int[] { 30, 70 });
 
         Label lblDescription = new Label(contents, SWT.NULL);
-        lblDescription
-            .setText(Messages.CheckConfigurationConfigureDialog_lblDescription);
+        lblDescription.setText(Messages.CheckConfigurationConfigureDialog_lblDescription);
         lblDescription.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
         mBrowserDescription = new Browser(contents, SWT.BORDER);
@@ -221,9 +219,8 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
     public void create() {
         super.create();
 
-        SWTUtil.addResizeSupport(this, CheckstyleUIPlugin.getDefault()
-            .getDialogSettings(), CheckConfigurationConfigureDialog.class
-            .getName());
+        SWTUtil.addResizeSupport(this, CheckstyleUIPlugin.getDefault().getDialogSettings(),
+            CheckConfigurationConfigureDialog.class.getName());
     }
 
     /**
@@ -231,8 +228,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
      */
     protected void configureShell(Shell newShell) {
         super.configureShell(newShell);
-        newShell
-            .setText(Messages.CheckConfigurationConfigureDialog_titleCheckConfigurationDialog);
+        newShell.setText(Messages.CheckConfigurationConfigureDialog_titleCheckConfigurationDialog);
     }
 
     /**
@@ -246,7 +242,8 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
             if (mConfigurable && mIsDirty) {
                 mConfiguration.setModules(mModules);
             }
-        } catch (CheckstylePluginException e) {
+        }
+        catch (CheckstylePluginException e) {
             CheckstyleUIPlugin.errorDialog(getShell(), e, true);
         }
 
@@ -257,8 +254,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
 
         Group knownModules = new Group(parent, SWT.NULL);
         knownModules.setLayout(new GridLayout());
-        knownModules
-            .setText(Messages.CheckConfigurationConfigureDialog_lblKnownModules);
+        knownModules.setText(Messages.CheckConfigurationConfigureDialog_lblKnownModules);
 
         mTxtTreeFilter = new Text(knownModules, SWT.SINGLE | SWT.BORDER);
         mTxtTreeFilter.setText(mDefaultFilterText);
@@ -283,10 +279,8 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
             }
         });
 
-        mTreeViewer = new TreeViewer(knownModules, SWT.MULTI | SWT.H_SCROLL
-            | SWT.V_SCROLL | SWT.BORDER);
-        mTreeViewer.getControl()
-            .setLayoutData(new GridData(GridData.FILL_BOTH));
+        mTreeViewer = new TreeViewer(knownModules, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
+        mTreeViewer.getControl().setLayoutData(new GridData(GridData.FILL_BOTH));
         mTreeViewer.setContentProvider(new MetaDataContentProvider());
         mTreeViewer.setLabelProvider(new MetaDataLabelProvider());
         mTreeViewer.addSelectionChangedListener(mController);
@@ -296,12 +290,12 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
         // filter hidden elements
         mTreeViewer.addFilter(new ViewerFilter() {
 
-            public boolean select(Viewer viewer, Object parentElement,
-                Object element) {
+            public boolean select(Viewer viewer, Object parentElement, Object element) {
                 boolean passes = true;
                 if (element instanceof RuleGroupMetadata) {
                     passes = !((RuleGroupMetadata) element).isHidden();
-                } else if (element instanceof RuleMetadata) {
+                }
+                else if (element instanceof RuleMetadata) {
                     passes = !((RuleMetadata) element).isHidden();
                 }
                 return passes;
@@ -324,8 +318,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
         mConfiguredModulesGroup.setLayout(new GridLayout());
         mConfiguredModulesGroup.setText("\0"); //$NON-NLS-1$
 
-        Table table = new Table(mConfiguredModulesGroup, SWT.CHECK | SWT.BORDER
-            | SWT.MULTI | SWT.FULL_SELECTION);
+        Table table = new Table(mConfiguredModulesGroup, SWT.CHECK | SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION);
         table.setLayoutData(new GridData(GridData.FILL_BOTH));
         table.setHeaderVisible(true);
         table.setLinesVisible(true);
@@ -372,14 +365,12 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
         buttons.setLayoutData(new GridData());
 
         mRemoveButton = new Button(buttons, SWT.PUSH);
-        mRemoveButton
-            .setText((Messages.CheckConfigurationConfigureDialog_btnRemove));
+        mRemoveButton.setText((Messages.CheckConfigurationConfigureDialog_btnRemove));
         mRemoveButton.setLayoutData(new GridData());
         mRemoveButton.addSelectionListener(mController);
 
         mEditButton = new Button(buttons, SWT.PUSH);
-        mEditButton
-            .setText((Messages.CheckConfigurationConfigureDialog_btnOpen));
+        mEditButton.setText((Messages.CheckConfigurationConfigureDialog_btnOpen));
         mEditButton.setLayoutData(new GridData());
         mEditButton.addSelectionListener(mController);
 
@@ -396,8 +387,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
         composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
         mBtnOpenModuleOnAdd = new Button(composite, SWT.CHECK);
-        mBtnOpenModuleOnAdd
-            .setText(Messages.CheckConfigurationConfigureDialog_btnOpenModuleOnAdd);
+        mBtnOpenModuleOnAdd.setText(Messages.CheckConfigurationConfigureDialog_btnOpenModuleOnAdd);
         GridData gd = new GridData();
         gd.horizontalAlignment = GridData.BEGINNING;
         gd.horizontalIndent = 5;
@@ -411,10 +401,10 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
             public void widgetSelected(SelectionEvent e) {
                 // store translation preference
                 try {
-                    CheckstyleUIPluginPrefs.setBoolean(
-                        CheckstyleUIPluginPrefs.PREF_OPEN_MODULE_EDITOR,
+                    CheckstyleUIPluginPrefs.setBoolean(CheckstyleUIPluginPrefs.PREF_OPEN_MODULE_EDITOR,
                         ((Button) e.widget).getSelection());
-                } catch (BackingStoreException e1) {
+                }
+                catch (BackingStoreException e1) {
                     CheckstyleLog.log(e1);
                 }
             }
@@ -441,48 +431,45 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
 
         try {
             mModules = mConfiguration.getModules();
-        } catch (CheckstylePluginException e) {
+        }
+        catch (CheckstylePluginException e) {
             mModules = new ArrayList<Module>();
             CheckstyleUIPlugin.errorDialog(getShell(), e, true);
         }
         mTableViewer.setInput(mModules);
 
-        this.setTitle(NLS.bind(
-            Messages.CheckConfigurationConfigureDialog_titleMessageArea,
-            mConfiguration.getType().getName(), mConfiguration.getName()));
+        this.setTitle(NLS.bind(Messages.CheckConfigurationConfigureDialog_titleMessageArea, mConfiguration.getType()
+            .getName(), mConfiguration.getName()));
 
         if (mConfigurable) {
             this.setMessage(Messages.CheckConfigurationConfigureDialog_msgEditConfig);
-        } else {
+        }
+        else {
             this.setMessage(Messages.CheckConfigurationConfigureDialog_msgReadonlyConfig);
         }
 
         // set the logo
-        this.setTitleImage(CheckstyleUIPluginImages
-            .getImage(CheckstyleUIPluginImages.PLUGIN_LOGO));
+        this.setTitleImage(CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.PLUGIN_LOGO));
 
         mAddButton.setEnabled(mConfigurable);
         mRemoveButton.setEnabled(mConfigurable);
 
         mTreeViewer.setInput(MetadataFactory.getRuleGroupMetadata());
 
-        List<RuleGroupMetadata> checkGroups = MetadataFactory
-            .getRuleGroupMetadata();
+        List<RuleGroupMetadata> checkGroups = MetadataFactory.getRuleGroupMetadata();
         if (!checkGroups.isEmpty()) {
-            ISelection initialSelection = new StructuredSelection(
-                checkGroups.get(0));
+            ISelection initialSelection = new StructuredSelection(checkGroups.get(0));
             mTreeViewer.setSelection(initialSelection);
         }
     }
 
     /**
      * Controller for this page.
-     * 
+     *
      * @author Lars Ködderitzsch
      */
-    private class PageController implements ISelectionChangedListener,
-        ICheckStateListener, IDoubleClickListener, SelectionListener,
-        KeyListener, ModifyListener {
+    private class PageController implements ISelectionChangedListener, ICheckStateListener, IDoubleClickListener,
+        SelectionListener, KeyListener, ModifyListener {
 
         /**
          * @see IDoubleClickListener#doubleClick(org.eclipse.jface.viewers.DoubleClickEvent)
@@ -490,15 +477,15 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
         public void doubleClick(DoubleClickEvent event) {
             if (event.getViewer() == mTableViewer) {
                 openModule(event.getSelection());
-            } else if (event.getViewer() == mTreeViewer) {
-                IStructuredSelection selection = (IStructuredSelection) event
-                    .getSelection();
+            }
+            else if (event.getViewer() == mTreeViewer) {
+                IStructuredSelection selection = (IStructuredSelection) event.getSelection();
                 Object element = selection.getFirstElement();
 
                 if (element instanceof RuleGroupMetadata) {
-                    mTreeViewer.setExpandedState(element,
-                        !mTreeViewer.getExpandedState(element));
-                } else {
+                    mTreeViewer.setExpandedState(element, !mTreeViewer.getExpandedState(element));
+                }
+                else {
                     newModule(event.getSelection());
                 }
             }
@@ -511,9 +498,11 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
 
             if (mEditButton == e.widget) {
                 openModule(mTableViewer.getSelection());
-            } else if (mAddButton == e.widget) {
+            }
+            else if (mAddButton == e.widget) {
                 newModule(mTreeViewer.getSelection());
-            } else if (mRemoveButton == e.widget) {
+            }
+            else if (mRemoveButton == e.widget) {
                 removeModule(mTableViewer.getSelection());
             }
         }
@@ -526,19 +515,19 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
                 if (e.character == SWT.DEL || e.keyCode == SWT.ARROW_LEFT) {
                     removeModule(mTableViewer.getSelection());
                 }
-            } else if (e.widget == mTreeViewer.getTree()) {
+            }
+            else if (e.widget == mTreeViewer.getTree()) {
                 if (e.keyCode == SWT.ARROW_RIGHT || e.character == ' ') {
 
-                    IStructuredSelection selection = (IStructuredSelection) mTreeViewer
-                        .getSelection();
+                    IStructuredSelection selection = (IStructuredSelection) mTreeViewer.getSelection();
                     Object element = selection.getFirstElement();
 
                     if (element instanceof RuleMetadata) {
                         newModule(mTreeViewer.getSelection());
                     }
                 }
-            } else if (e.widget == mTxtTreeFilter
-                && e.keyCode == SWT.ARROW_DOWN) {
+            }
+            else if (e.widget == mTxtTreeFilter && e.keyCode == SWT.ARROW_DOWN) {
                 mTreeViewer.getTree().forceFocus();
             }
         }
@@ -557,7 +546,8 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
 
                 mTreeViewer.refresh();
                 mTreeViewer.expandAll();
-            } else {
+            }
+            else {
                 mTreeViewer.removeFilter(mTreeFilter);
                 mTreeViewer.refresh();
             }
@@ -589,11 +579,12 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
                     Severity lastEnabled = module.getLastEnabledSeverity();
                     if (lastEnabled != null) {
                         module.setSeverity(lastEnabled);
-                    } else {
-                        module.setSeverity(module.getMetaData()
-                            .getDefaultSeverityLevel());
                     }
-                } else {
+                    else {
+                        module.setSeverity(module.getMetaData().getDefaultSeverityLevel());
+                    }
+                }
+                else {
                     module.setSeverity(Severity.ignore);
                 }
                 mIsDirty = true;
@@ -607,36 +598,32 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
          */
         public void selectionChanged(SelectionChangedEvent event) {
 
-            IStructuredSelection selection = (IStructuredSelection) event
-                .getSelection();
+            IStructuredSelection selection = (IStructuredSelection) event.getSelection();
 
             Object element = selection.getFirstElement();
             String description = null;
 
             if (element instanceof RuleGroupMetadata) {
                 mGroupFilter.setCurrentGroup((RuleGroupMetadata) element);
-                mConfiguredModulesGroup
-                    .setText(NLS
-                        .bind(
-                            Messages.CheckConfigurationConfigureDialog_lblConfiguredModules,
-                            ((RuleGroupMetadata) element).getGroupName()));
+                mConfiguredModulesGroup.setText(NLS.bind(
+                    Messages.CheckConfigurationConfigureDialog_lblConfiguredModules,
+                    ((RuleGroupMetadata) element).getGroupName()));
                 mTableViewer.refresh();
 
                 refreshTableViewerState();
-            } else if (element instanceof RuleMetadata) {
+            }
+            else if (element instanceof RuleMetadata) {
 
                 description = ((RuleMetadata) element).getDescription();
-                mGroupFilter.setCurrentGroup(((RuleMetadata) element)
-                    .getGroup());
-                mConfiguredModulesGroup
-                    .setText(NLS
-                        .bind(
-                            Messages.CheckConfigurationConfigureDialog_lblConfiguredModules,
-                            ((RuleMetadata) element).getGroup().getGroupName()));
+                mGroupFilter.setCurrentGroup(((RuleMetadata) element).getGroup());
+                mConfiguredModulesGroup.setText(NLS.bind(
+                    Messages.CheckConfigurationConfigureDialog_lblConfiguredModules, ((RuleMetadata) element)
+                        .getGroup().getGroupName()));
                 mTableViewer.refresh();
                 refreshTableViewerState();
 
-            } else if (element instanceof Module) {
+            }
+            else if (element instanceof Module) {
                 RuleMetadata meta = ((Module) element).getMetaData();
                 if (meta != null) {
                     description = meta.getDescription();
@@ -646,33 +633,27 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
             StringBuffer buf = new StringBuffer();
             buf.append("<html><body style=\"margin: 3px; font-size: 11px; ");
             buf.append("font-family: verdana, 'trebuchet MS', helvetica, sans-serif;\">");
-            buf.append(description != null ? description
-                : Messages.CheckConfigurationConfigureDialog_txtNoDescription);
+            buf.append(description != null ? description : Messages.CheckConfigurationConfigureDialog_txtNoDescription);
             buf.append("</body></html>");
             mBrowserDescription.setText(buf.toString());
         }
 
         /**
          * Opens the module editor for the current selection.
-         * 
+         *
          * @param selection
          *            the selection
          */
         private void openModule(ISelection selection) {
 
-            Module m = (Module) ((IStructuredSelection) selection)
-                .getFirstElement();
+            Module m = (Module) ((IStructuredSelection) selection).getFirstElement();
             if (m != null) {
 
                 Module workingCopy = m.clone();
 
-                RuleConfigurationEditDialog dialog = new RuleConfigurationEditDialog(
-                    getShell(),
-                    workingCopy,
-                    !mConfigurable,
-                    Messages.CheckConfigurationConfigureDialog_titleModuleConfigEditor);
-                if (RuleConfigurationEditDialog.OK == dialog.open()
-                    && mConfigurable) {
+                RuleConfigurationEditDialog dialog = new RuleConfigurationEditDialog(getShell(), workingCopy,
+                    !mConfigurable, Messages.CheckConfigurationConfigureDialog_titleModuleConfigEditor);
+                if (RuleConfigurationEditDialog.OK == dialog.open() && mConfigurable) {
                     mModules.set(mModules.indexOf(m), workingCopy);
                     mIsDirty = true;
                     mTableViewer.refresh(true);
@@ -683,34 +664,31 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
 
         /**
          * Creates a module editor for the current selection.
-         * 
+         *
          * @param selection
          *            the selection
          */
         private void newModule(ISelection selection) {
             if (mConfigurable) {
-                boolean openOnAdd = CheckstyleUIPluginPrefs
-                    .getBoolean(CheckstyleUIPluginPrefs.PREF_OPEN_MODULE_EDITOR);
+                boolean openOnAdd = CheckstyleUIPluginPrefs.getBoolean(CheckstyleUIPluginPrefs.PREF_OPEN_MODULE_EDITOR);
 
                 Iterator it = ((IStructuredSelection) selection).iterator();
                 while (it.hasNext()) {
                     Object selectedElement = it.next();
                     if (selectedElement instanceof RuleGroupMetadata) {
                         // if group is selected add all modules from this group
-                        List<RuleMetadata> rules = ((RuleGroupMetadata) selectedElement)
-                            .getRuleMetadata();
+                        List<RuleMetadata> rules = ((RuleGroupMetadata) selectedElement).getRuleMetadata();
 
-                        IStructuredSelection allRulesOfGroupSelection = new StructuredSelection(
-                            rules);
+                        IStructuredSelection allRulesOfGroupSelection = new StructuredSelection(rules);
                         newModule(allRulesOfGroupSelection);
-                    } else if (selectedElement instanceof RuleMetadata) {
+                    }
+                    else if (selectedElement instanceof RuleMetadata) {
 
                         RuleMetadata metadata = (RuleMetadata) selectedElement;
 
                         // check if the module is a singleton and already
                         // configured
-                        if (metadata.isSingleton()
-                            && isAlreadyConfigured(metadata)) {
+                        if (metadata.isSingleton() && isAlreadyConfigured(metadata)) {
                             return;
                         }
 
@@ -718,13 +696,9 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
 
                         if (openOnAdd) {
 
-                            RuleConfigurationEditDialog dialog = new RuleConfigurationEditDialog(
-                                getShell(),
-                                workingCopy,
-                                !mConfigurable,
-                                Messages.CheckConfigurationConfigureDialog_titleNewModule);
-                            if (RuleConfigurationEditDialog.OK == dialog.open()
-                                && mConfigurable) {
+                            RuleConfigurationEditDialog dialog = new RuleConfigurationEditDialog(getShell(),
+                                workingCopy, !mConfigurable, Messages.CheckConfigurationConfigureDialog_titleNewModule);
+                            if (RuleConfigurationEditDialog.OK == dialog.open() && mConfigurable) {
                                 mModules.add(workingCopy);
                                 mIsDirty = true;
                                 mTableViewer.refresh(true);
@@ -732,7 +706,8 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
                                 mTreeViewer.refresh();
                                 mTreeViewer.getTree().forceFocus();
                             }
-                        } else {
+                        }
+                        else {
                             mModules.add(workingCopy);
                             mIsDirty = true;
                             mTableViewer.refresh(true);
@@ -747,7 +722,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
 
         /**
          * Creates a module editor for the current selection.
-         * 
+         *
          * @param selection
          *            the selection
          */
@@ -755,14 +730,11 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
 
             if (!selection.isEmpty() && mConfigurable) {
 
-                if (MessageDialog
-                    .openConfirm(
-                        getShell(),
-                        Messages.CheckConfigurationConfigureDialog_titleRemoveModules,
-                        Messages.CheckConfigurationConfigureDialog_msgRemoveModules)) {
+                if (MessageDialog.openConfirm(getShell(),
+                    Messages.CheckConfigurationConfigureDialog_titleRemoveModules,
+                    Messages.CheckConfigurationConfigureDialog_msgRemoveModules)) {
 
-                    Iterator<Module> it = ((IStructuredSelection) selection)
-                        .iterator();
+                    Iterator<Module> it = ((IStructuredSelection) selection).iterator();
                     while (it.hasNext()) {
                         Module m = it.next();
                         if (m.getMetaData().isDeletable()) {
@@ -787,15 +759,13 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
             for (int i = 0; i < size; i++) {
                 Module module = mModules.get(i);
                 if (mConfigurable) {
-                    mTableViewer.setChecked(module,
-                        !Severity.ignore.equals(module.getSeverity())
-                            || !module.getMetaData().hasSeverity());
-                } else {
-                    mTableViewer.setChecked(module,
-                        !Severity.ignore.equals(module.getSeverity())
-                            || !module.getMetaData().hasSeverity());
-                    mTableViewer.setGrayed(module,
-                        !Severity.ignore.equals(module.getSeverity()));
+                    mTableViewer.setChecked(module, !Severity.ignore.equals(module.getSeverity())
+                        || !module.getMetaData().hasSeverity());
+                }
+                else {
+                    mTableViewer.setChecked(module, !Severity.ignore.equals(module.getSeverity())
+                        || !module.getMetaData().hasSeverity());
+                    mTableViewer.setGrayed(module, !Severity.ignore.equals(module.getSeverity()));
                 }
             }
         }
@@ -823,7 +793,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
 
     /**
      * TreeContentProvider that provides the structure of the rule metadata.
-     * 
+     *
      * @author Lars Ködderitzsch
      */
     private class MetaDataContentProvider implements ITreeContentProvider {
@@ -846,9 +816,9 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
             Object[] children = null;
             if (parentElement instanceof List) {
                 children = getElements(parentElement);
-            } else if (parentElement instanceof RuleGroupMetadata) {
-                children = ((RuleGroupMetadata) parentElement)
-                    .getRuleMetadata().toArray();
+            }
+            else if (parentElement instanceof RuleGroupMetadata) {
+                children = ((RuleGroupMetadata) parentElement).getRuleMetadata().toArray();
             }
 
             return children;
@@ -872,9 +842,9 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
             boolean hasChildren = false;
 
             if (element instanceof RuleGroupMetadata) {
-                hasChildren = ((RuleGroupMetadata) element).getRuleMetadata()
-                    .size() > 0;
-            } else if (element instanceof RuleMetadata) {
+                hasChildren = ((RuleGroupMetadata) element).getRuleMetadata().size() > 0;
+            }
+            else if (element instanceof RuleMetadata) {
                 hasChildren = false;
             }
             return hasChildren;
@@ -898,7 +868,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
 
     /**
      * Label-provider for meta data information.
-     * 
+     *
      * @author Lars Ködderitzsch
      */
     private class MetaDataLabelProvider extends LabelProvider {
@@ -910,7 +880,8 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
             String text = null;
             if (element instanceof RuleGroupMetadata) {
                 text = ((RuleGroupMetadata) element).getGroupName();
-            } else if (element instanceof RuleMetadata) {
+            }
+            else if (element instanceof RuleMetadata) {
                 text = ((RuleMetadata) element).getRuleName();
             }
             return text;
@@ -924,15 +895,14 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
 
             if (element instanceof RuleGroupMetadata) {
                 image = isGroupUsed((RuleGroupMetadata) element) ? CheckstyleUIPluginImages
-                    .getImage(CheckstyleUIPluginImages.MODULEGROUP_TICKED_ICON)
-                    : CheckstyleUIPluginImages
-                        .getImage(CheckstyleUIPluginImages.MODULEGROUP_ICON);
-            } else if (element instanceof RuleMetadata) {
+                    .getImage(CheckstyleUIPluginImages.MODULEGROUP_TICKED_ICON) : CheckstyleUIPluginImages
+                    .getImage(CheckstyleUIPluginImages.MODULEGROUP_ICON);
+            }
+            else if (element instanceof RuleMetadata) {
 
                 image = isMetadataUsed((RuleMetadata) element) ? CheckstyleUIPluginImages
-                    .getImage(CheckstyleUIPluginImages.MODULE_TICKED_ICON)
-                    : CheckstyleUIPluginImages
-                        .getImage(CheckstyleUIPluginImages.MODULE_ICON);
+                    .getImage(CheckstyleUIPluginImages.MODULE_TICKED_ICON) : CheckstyleUIPluginImages
+                    .getImage(CheckstyleUIPluginImages.MODULE_ICON);
             }
             return image;
         }
@@ -968,11 +938,11 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
 
     /**
      * Label provider for the table showing the configured modules.
-     * 
+     *
      * @author Lars Ködderitzsch
      */
-    private class ModuleLabelProvider extends LabelProvider implements
-        ITableLabelProvider, ITableComparableProvider, ITableSettingsProvider {
+    private class ModuleLabelProvider extends LabelProvider implements ITableLabelProvider, ITableComparableProvider,
+        ITableSettingsProvider {
 
         /**
          * {@inheritDoc}
@@ -996,16 +966,13 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
                         text = new String();
                         break;
                     case 1:
-                        text = module.getName() != null ? module.getName()
-                            : new String();
+                        text = module.getName() != null ? module.getName() : new String();
                         break;
                     case 2:
-                        text = module.getSeverity() != null ? module
-                            .getSeverity().name() : new String();
+                        text = module.getSeverity() != null ? module.getSeverity().name() : new String();
                         break;
                     case 3:
-                        text = module.getComment() != null ? module
-                            .getComment() : new String();
+                        text = module.getComment() != null ? module.getComment() : new String();
                         break;
                     default:
                         text = new String();
@@ -1020,8 +987,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
          */
         public Comparable getComparableValue(Object element, int col) {
             if (element instanceof Module && col == 0) {
-                return Severity.ignore.equals(((Module) element).getSeverity()) ? new Integer(
-                    0) : new Integer(1);
+                return Severity.ignore.equals(((Module) element).getSeverity()) ? new Integer(0) : new Integer(1);
             }
 
             return getColumnText(element, col);
@@ -1031,13 +997,10 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
          * {@inheritDoc}
          */
         public IDialogSettings getTableSettings() {
-            String concreteViewId = CheckConfigurationConfigureDialog.class
-                .getName();
+            String concreteViewId = CheckConfigurationConfigureDialog.class.getName();
 
-            IDialogSettings workbenchSettings = CheckstyleUIPlugin.getDefault()
-                .getDialogSettings();
-            IDialogSettings settings = workbenchSettings
-                .getSection(concreteViewId);
+            IDialogSettings workbenchSettings = CheckstyleUIPlugin.getDefault().getDialogSettings();
+            IDialogSettings settings = workbenchSettings.getSection(concreteViewId);
 
             if (settings == null) {
                 settings = workbenchSettings.addNewSection(concreteViewId);
@@ -1048,9 +1011,8 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
     }
 
     /**
-     * Viewer filter that includes all modules that belong to the currently
-     * selected group.
-     * 
+     * Viewer filter that includes all modules that belong to the currently selected group.
+     *
      * @author Lars Ködderitzsch
      */
     private class RuleGroupModuleFilter extends ViewerFilter {
@@ -1060,7 +1022,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
 
         /**
          * Sets the current rule group.
-         * 
+         *
          * @param groupMetaData
          */
         public void setCurrentGroup(RuleGroupMetadata groupMetaData) {
@@ -1068,11 +1030,10 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
         }
 
         /**
-         * @see org.eclipse.jface.viewers.ViewerFilter#select(org.eclipse.jface.viewers.Viewer,
-         *      java.lang.Object, java.lang.Object)
+         * @see org.eclipse.jface.viewers.ViewerFilter#select(org.eclipse.jface.viewers.Viewer, java.lang.Object,
+         *      java.lang.Object)
          */
-        public boolean select(Viewer viewer, Object parentElement,
-            Object element) {
+        public boolean select(Viewer viewer, Object parentElement, Object element) {
             boolean result = false;
 
             Module module = (Module) element;
@@ -1086,7 +1047,8 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
 
             if (mCurrentGroup == null || metaData.isHidden()) {
                 result = false;
-            } else if (mCurrentGroup == moduleGroup) {
+            }
+            else if (mCurrentGroup == moduleGroup) {
                 result = true;
             }
 
@@ -1095,22 +1057,21 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
     }
 
     /**
-     * Filter implementation that filters the module tree with respect of a
-     * filter text field to input a search word.
-     * 
+     * Filter implementation that filters the module tree with respect of a filter text field to input a search word.
+     *
      * @author Lars Ködderitzsch
      */
     private class TreeFilter extends ViewerFilter {
 
-        public boolean select(Viewer viewer, Object parentElement,
-            Object element) {
+        public boolean select(Viewer viewer, Object parentElement, Object element) {
             boolean result = true;
 
             String filterText = mTxtTreeFilter.getText();
 
             if (element instanceof RuleMetadata) {
                 result = selectRule((RuleMetadata) element, filterText);
-            } else if (element instanceof RuleGroupMetadata) {
+            }
+            else if (element instanceof RuleGroupMetadata) {
                 result = selectGroup((RuleGroupMetadata) element, filterText);
             }
 
@@ -1119,12 +1080,9 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
 
         private boolean selectRule(RuleMetadata element, String filterText) {
 
-            boolean passes = StringUtils.containsIgnoreCase(
-                element.getRuleName(), filterText)
-                || StringUtils.containsIgnoreCase(element.getInternalName(),
-                    filterText)
-                || StringUtils.containsIgnoreCase(element.getDescription(),
-                    filterText);
+            boolean passes = StringUtils.containsIgnoreCase(element.getRuleName(), filterText)
+                || StringUtils.containsIgnoreCase(element.getInternalName(), filterText)
+                || StringUtils.containsIgnoreCase(element.getDescription(), filterText);
 
             return passes;
         }

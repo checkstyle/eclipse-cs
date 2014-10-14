@@ -48,14 +48,14 @@ import org.osgi.service.prefs.BackingStoreException;
 /**
  * Class for writing a new eclipse-configuration-file. Gets used by class Transformer. A new eclipse-formatter-profile
  * gets added.
- * 
+ *
  * @author Lukas Frena
  * @author Lars Ködderitzsch
  */
 @SuppressWarnings("restriction")
 public class FormatterConfigWriter {
 
-    private final static String JDT_UI_PLUGINID = "org.eclipse.jdt.ui";
+    private static final String JDT_UI_PLUGINID = "org.eclipse.jdt.ui";
 
     /** A eclipse-configuration. */
     private final FormatterConfiguration mConfiguration;
@@ -67,7 +67,9 @@ public class FormatterConfigWriter {
 
     /**
      * Constructor to create a new instance of class FormatterConfigWriter.
-     * 
+     *
+     * @param project
+     *            the project whose formatter settings should be written
      * @param settings
      *            A eclipse-configuration.
      */
@@ -148,7 +150,7 @@ public class FormatterConfigWriter {
 
     /**
      * Method for writing all formatter-settings to disc.
-     * 
+     *
      * @param settings
      *            All the settings.
      */

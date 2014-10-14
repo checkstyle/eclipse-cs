@@ -69,7 +69,7 @@ import org.eclipse.swt.widgets.TableColumn;
 /**
  * Dialog to show/edit the properties (name, location, description) of a check
  * configuration. Also used to create new check configurations.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public class ResolvablePropertiesDialog extends TitleAreaDialog {
@@ -108,7 +108,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
 
     /**
      * Creates the properties dialog for check configurations.
-     * 
+     *
      * @param parent the parent shell
      * @param checkConfig the check configuration to edit
      */
@@ -124,9 +124,8 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
 
     /**
      * Get the check configuration from the editor.
-     * 
+     *
      * @return the check configuration
-     * @throws CheckstylePluginException if the data is not valid
      */
     public CheckConfigurationWorkingCopy getCheckConfiguration() {
         return mCheckConfig;
@@ -145,7 +144,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
 
     /**
      * Creates the dialogs main contents.
-     * 
+     *
      * @param parent the parent composite
      */
     protected Control createDialogArea(Composite parent) {
@@ -299,7 +298,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
 
     /**
      * Controller for this dialog.
-     * 
+     *
      * @author Lars Ködderitzsch
      */
     private class Controller implements SelectionListener, IDoubleClickListener, KeyListener {
@@ -450,7 +449,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
     /**
      * Label provider for the check configuration table. Implements also support
      * for table sorting and storing of the table settings.
-     * 
+     *
      * @author Lars Ködderitzsch
      */
     private class PropertiesLabelProvider extends LabelProvider implements ITableLabelProvider,

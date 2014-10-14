@@ -67,7 +67,7 @@ public final class XMLTags {
     public static final String DEFAULT_CHECK_CONFIG_TAG = "default-check-configuration"; //$NON-NLS-1$
 
     /** additional data tag. */
-    public static final String ADDITIONAL_DATA_TAG = "additional-data"; //$NON-NLS-1$ 
+    public static final String ADDITIONAL_DATA_TAG = "additional-data"; //$NON-NLS-1$
 
     //
     // tags for the metadata file

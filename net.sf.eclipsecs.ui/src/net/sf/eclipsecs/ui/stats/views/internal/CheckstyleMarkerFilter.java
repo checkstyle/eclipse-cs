@@ -41,9 +41,8 @@ import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.ui.IWorkingSet;
 
 /**
- * Filter class for Checkstyle markers. This filter is used by the Checkstyle
- * statistics views.
- * 
+ * Filter class for Checkstyle markers. This filter is used by the Checkstyle statistics views.
+ *
  * @author Lars Ködderitzsch
  */
 public class CheckstyleMarkerFilter implements Cloneable {
@@ -126,25 +125,27 @@ public class CheckstyleMarkerFilter implements Cloneable {
 
     /**
      * Searches the workspace for markers that pass this filter.
-     * 
-     * @param mon the progress monitor
+     *
+     * @param mon
+     *            the progress monitor
      * @return the array of Checkstyle markers that pass this filter.
-     * @throws CoreException an unexpected error occurred
+     * @throws CoreException
+     *             an unexpected error occurred
      */
     public IMarker[] findMarkers(IProgressMonitor mon) throws CoreException {
 
         List unfiltered = Collections.EMPTY_LIST;
 
         if (!isEnabled()) {
-            unfiltered = findCheckstyleMarkers(new IResource[] { ResourcesPlugin.getWorkspace()
-                    .getRoot() }, IResource.DEPTH_INFINITE, mon);
+            unfiltered = findCheckstyleMarkers(new IResource[] { ResourcesPlugin.getWorkspace().getRoot() },
+                IResource.DEPTH_INFINITE, mon);
         }
         else {
 
             switch (getOnResource()) {
                 case ON_ANY_RESOURCE: {
-                    unfiltered = findCheckstyleMarkers(new IResource[] { ResourcesPlugin
-                            .getWorkspace().getRoot() }, IResource.DEPTH_INFINITE, mon);
+                    unfiltered = findCheckstyleMarkers(new IResource[] { ResourcesPlugin.getWorkspace().getRoot() },
+                        IResource.DEPTH_INFINITE, mon);
                     break;
                 }
                 case ON_SELECTED_RESOURCE_ONLY: {
@@ -152,18 +153,16 @@ public class CheckstyleMarkerFilter implements Cloneable {
                     break;
                 }
                 case ON_SELECTED_RESOURCE_AND_CHILDREN: {
-                    unfiltered = findCheckstyleMarkers(mFocusResources, IResource.DEPTH_INFINITE,
-                            mon);
+                    unfiltered = findCheckstyleMarkers(mFocusResources, IResource.DEPTH_INFINITE, mon);
                     break;
                 }
                 case ON_ANY_RESOURCE_OF_SAME_PROJECT: {
-                    unfiltered = findCheckstyleMarkers(getProjects(mFocusResources),
-                            IResource.DEPTH_INFINITE, mon);
+                    unfiltered = findCheckstyleMarkers(getProjects(mFocusResources), IResource.DEPTH_INFINITE, mon);
                     break;
                 }
                 case ON_WORKING_SET: {
-                    unfiltered = findCheckstyleMarkers(getResourcesInWorkingSet(mWorkingSet),
-                            IResource.DEPTH_INFINITE, mon);
+                    unfiltered = findCheckstyleMarkers(getResourcesInWorkingSet(mWorkingSet), IResource.DEPTH_INFINITE,
+                        mon);
                     break;
                 }
                 default: {
@@ -180,21 +179,16 @@ public class CheckstyleMarkerFilter implements Cloneable {
     }
 
     /**
-     * @return
-     * <ul>
-     * <li><code>MarkerFilter.ON_ANY_RESOURCE</code> if showing items
-     * associated with any resource.</li>
-     * <li><code>MarkerFilter.ON_SELECTED_RESOURCE_ONLY</code> if showing
-     * items associated with the selected resource within the workbench.</li>
-     * <li><code>MarkerFilter.ON_SELECTED_RESOURCE_AND_CHILDREN</code> if
-     * showing items associated with the selected resource within the workbench
-     * and its children.</li>
-     * <li><code>MarkerFilter.ON_ANY_RESOURCE_OF_SAME_PROJECT</code> if
-     * showing items in the same project as the selected resource within the
-     * workbench.</li>
-     * <li><code>MarkerFilter.ON_WORKING_SET</code> if showing items in some
-     * working set.</li>
-     * </ul>
+     * @return <ul>
+     *         <li><code>MarkerFilter.ON_ANY_RESOURCE</code> if showing items associated with any resource.</li>
+     *         <li><code>MarkerFilter.ON_SELECTED_RESOURCE_ONLY</code> if showing items associated with the selected
+     *         resource within the workbench.</li>
+     *         <li><code>MarkerFilter.ON_SELECTED_RESOURCE_AND_CHILDREN</code> if showing items associated with the
+     *         selected resource within the workbench and its children.</li>
+     *         <li><code>MarkerFilter.ON_ANY_RESOURCE_OF_SAME_PROJECT</code> if showing items in the same project as the
+     *         selected resource within the workbench.</li>
+     *         <li><code>MarkerFilter.ON_WORKING_SET</code> if showing items in some working set.</li>
+     *         </ul>
      */
     public int getOnResource() {
         return mOnResource;
@@ -202,8 +196,9 @@ public class CheckstyleMarkerFilter implements Cloneable {
 
     /**
      * Sets the type of filtering by selection.
-     * 
-     * @param onResource must be one of:
+     *
+     * @param onResource
+     *            must be one of:
      *            <ul>
      *            <li><code>MarkerFilter.ON_ANY_RESOURCE</code></li>
      *            <li><code>MarkerFilter.ON_SELECTED_RESOURCE_ONLY</code></li>
@@ -227,19 +222,19 @@ public class CheckstyleMarkerFilter implements Cloneable {
 
     /**
      * Sets the focused resources.
-     * 
-     * @param resources the focuse resources
+     *
+     * @param resources
+     *            the focuse resources
      */
     public void setFocusResource(IResource[] resources) {
         mFocusResources = resources;
     }
 
     /**
-     * @return
-     * <ul>
-     * <li><code>true</code> if the filter is enabled.</li>
-     * <li><code>false</code> if the filter is not enabled.</li>
-     * </ul>
+     * @return <ul>
+     *         <li><code>true</code> if the filter is enabled.</li>
+     *         <li><code>false</code> if the filter is not enabled.</li>
+     *         </ul>
      */
     public boolean isEnabled() {
         return mEnabled;
@@ -247,16 +242,16 @@ public class CheckstyleMarkerFilter implements Cloneable {
 
     /**
      * Sets the enablement state of the filter.
-     * 
-     * @param enabled the enablement
+     *
+     * @param enabled
+     *            the enablement
      */
     public void setEnabled(boolean enabled) {
         this.mEnabled = enabled;
     }
 
     /**
-     * @return the current working set or <code>null</code> if no working set
-     *         is defined.
+     * @return the current working set or <code>null</code> if no working set is defined.
      */
     public IWorkingSet getWorkingSet() {
         return mWorkingSet;
@@ -264,8 +259,9 @@ public class CheckstyleMarkerFilter implements Cloneable {
 
     /**
      * Sets the current working set.
-     * 
-     * @param workingSet the working set
+     *
+     * @param workingSet
+     *            the working set
      */
     public void setWorkingSet(IWorkingSet workingSet) {
         this.mWorkingSet = workingSet;
@@ -273,7 +269,7 @@ public class CheckstyleMarkerFilter implements Cloneable {
 
     /**
      * Returns if the markers will be selected by severity.
-     * 
+     *
      * @return <code>true</code> if markers will be selected by severity
      */
     public boolean getSelectBySeverity() {
@@ -282,9 +278,9 @@ public class CheckstyleMarkerFilter implements Cloneable {
 
     /**
      * Sets if the markers will be selected by severity.
-     * 
-     * @param selectBySeverity <code>true</code> if markers will be selected
-     *            by severity
+     *
+     * @param selectBySeverity
+     *            <code>true</code> if markers will be selected by severity
      */
     public void setSelectBySeverity(boolean selectBySeverity) {
         this.mSelectBySeverity = selectBySeverity;
@@ -292,7 +288,7 @@ public class CheckstyleMarkerFilter implements Cloneable {
 
     /**
      * Returns the severity.
-     * 
+     *
      * @return the severity
      */
     public int getSeverity() {
@@ -301,8 +297,9 @@ public class CheckstyleMarkerFilter implements Cloneable {
 
     /**
      * Sets the severity.
-     * 
-     * @param severity the severity
+     *
+     * @param severity
+     *            the severity
      */
     public void setSeverity(int severity) {
         this.mSeverity = severity;
@@ -310,7 +307,7 @@ public class CheckstyleMarkerFilter implements Cloneable {
 
     /**
      * Returns if the regex filter is enabled.
-     * 
+     *
      * @return <code>true</code> if the regex filter is enabled
      */
     public boolean isFilterByRegex() {
@@ -319,9 +316,9 @@ public class CheckstyleMarkerFilter implements Cloneable {
 
     /**
      * Sets if the regex filter is enabled.
-     * 
-     * @param filterByRegex <code>true</code> if messages are filtered by the
-     *            regular expressions
+     *
+     * @param filterByRegex
+     *            <code>true</code> if messages are filtered by the regular expressions
      */
     public void setFilterByRegex(boolean filterByRegex) {
         mFilterByRegex = filterByRegex;
@@ -329,7 +326,7 @@ public class CheckstyleMarkerFilter implements Cloneable {
 
     /**
      * Returns the regular expressions.
-     * 
+     *
      * @return the regular expressions
      */
     public List getFilterRegex() {
@@ -338,8 +335,9 @@ public class CheckstyleMarkerFilter implements Cloneable {
 
     /**
      * Sets the list of regular expressions.
-     * 
-     * @param filterRegex the list of regular expression to filter by
+     *
+     * @param filterRegex
+     *            the list of regular expression to filter by
      */
     public void setFilterRegex(List filterRegex) {
         mFilterRegex = filterRegex;
@@ -347,8 +345,9 @@ public class CheckstyleMarkerFilter implements Cloneable {
 
     /**
      * Restors the state of the filter from the given dialog settings.
-     * 
-     * @param dialogSettings the dialog settings
+     *
+     * @param dialogSettings
+     *            the dialog settings
      */
     public void restoreState(IDialogSettings dialogSettings) {
         resetState();
@@ -356,12 +355,13 @@ public class CheckstyleMarkerFilter implements Cloneable {
 
         if (settings != null) {
 
-            String setting = null;
-            if ((setting = settings.get(TAG_ENABLED)) != null) {
+            String setting = settings.get(TAG_ENABLED);
+            if (setting != null) {
                 mEnabled = Boolean.valueOf(setting).booleanValue();
             }
 
-            if ((setting = settings.get(TAG_ON_RESOURCE)) != null) {
+            setting = settings.get(TAG_ON_RESOURCE);
+            if (setting != null) {
                 try {
                     mOnResource = Integer.parseInt(setting);
                 }
@@ -370,16 +370,19 @@ public class CheckstyleMarkerFilter implements Cloneable {
                 }
             }
 
-            if ((setting = settings.get(TAG_WORKING_SET)) != null) {
+            setting = settings.get(TAG_WORKING_SET);
+            if (setting != null) {
                 setWorkingSet(CheckstyleUIPlugin.getDefault().getWorkbench().getWorkingSetManager()
-                        .getWorkingSet(setting));
+                    .getWorkingSet(setting));
             }
 
-            if ((setting = settings.get(TAG_SELECT_BY_SEVERITY)) != null) {
+            setting = settings.get(TAG_SELECT_BY_SEVERITY);
+            if (setting != null) {
                 mSelectBySeverity = Boolean.valueOf(setting).booleanValue();
             }
 
-            if ((setting = settings.get(TAG_SEVERITY)) != null) {
+            setting = settings.get(TAG_SEVERITY);
+            if (setting != null) {
                 try {
                     mSeverity = Integer.parseInt(setting);
                 }
@@ -388,7 +391,8 @@ public class CheckstyleMarkerFilter implements Cloneable {
                 }
             }
 
-            if ((setting = settings.get(TAG_SELECT_BY_REGEX)) != null) {
+            setting = settings.get(TAG_SELECT_BY_REGEX);
+            if (setting != null) {
                 mFilterByRegex = Boolean.valueOf(setting).booleanValue();
             }
 
@@ -401,8 +405,9 @@ public class CheckstyleMarkerFilter implements Cloneable {
 
     /**
      * Saves the state of the filter into the given dialog settings.
-     * 
-     * @param dialogSettings the dialog settings
+     *
+     * @param dialogSettings
+     *            the dialog settings
      */
     public void saveState(IDialogSettings dialogSettings) {
         if (dialogSettings != null) {
@@ -425,8 +430,7 @@ public class CheckstyleMarkerFilter implements Cloneable {
             settings.put(TAG_SELECT_BY_REGEX, mFilterByRegex);
 
             if (mFilterRegex != null) {
-                settings.put(TAG_REGULAR_EXPRESSIONS, (String[]) mFilterRegex
-                        .toArray(new String[mFilterRegex.size()]));
+                settings.put(TAG_REGULAR_EXPRESSIONS, (String[]) mFilterRegex.toArray(new String[mFilterRegex.size()]));
             }
         }
     }
@@ -446,14 +450,16 @@ public class CheckstyleMarkerFilter implements Cloneable {
 
     /**
      * Returns a list of all markers in the given set of resources.
-     * 
-     * @param resources the resources
-     * @param depth the depth with which the markers are searched
-     * @param mon the progress monitor
+     *
+     * @param resources
+     *            the resources
+     * @param depth
+     *            the depth with which the markers are searched
+     * @param mon
+     *            the progress monitor
      * @throws CoreException
      */
-    private List findCheckstyleMarkers(IResource[] resources, int depth, IProgressMonitor mon)
-        throws CoreException {
+    private List findCheckstyleMarkers(IResource[] resources, int depth, IProgressMonitor mon) throws CoreException {
         if (resources == null) {
             return Collections.EMPTY_LIST;
         }
@@ -462,8 +468,7 @@ public class CheckstyleMarkerFilter implements Cloneable {
 
         for (int i = 0, size = resources.length; i < size; i++) {
             if (resources[i].isAccessible()) {
-                Collection markers = Arrays.asList(resources[i].findMarkers(
-                        CheckstyleMarker.MARKER_ID, true, depth));
+                Collection markers = Arrays.asList(resources[i].findMarkers(CheckstyleMarker.MARKER_ID, true, depth));
 
                 resultList.addAll(markers);
             }
@@ -496,8 +501,9 @@ public class CheckstyleMarkerFilter implements Cloneable {
 
     /**
      * Selects markers by its severity.
-     * 
-     * @param item the marker
+     *
+     * @param item
+     *            the marker
      * @return <code>true</code> if the marker is selected
      */
     private boolean selectBySeverity(IMarker item) {
@@ -519,8 +525,9 @@ public class CheckstyleMarkerFilter implements Cloneable {
 
     /**
      * Selects marker by matching the message against regular expressions.
-     * 
-     * @param item the marker
+     *
+     * @param item
+     *            the marker
      * @return <code>true</code> if the marker is selected
      */
     private boolean selectByRegex(IMarker item) {
@@ -545,8 +552,9 @@ public class CheckstyleMarkerFilter implements Cloneable {
 
     /**
      * Returns the set of projects that contain the given set of resources.
-     * 
-     * @param resources the resources
+     *
+     * @param resources
+     *            the resources
      * @return the array of projects for the given resources
      */
     private static IProject[] getProjects(IResource[] resources) {
@@ -556,8 +564,9 @@ public class CheckstyleMarkerFilter implements Cloneable {
 
     /**
      * Returns the set of projects that contain the given set of resources.
-     * 
-     * @param resources the resources
+     *
+     * @param resources
+     *            the resources
      * @return the collection of projects for the given resources
      */
     public static Collection getProjectsAsCollection(IResource[] resources) {
@@ -571,8 +580,9 @@ public class CheckstyleMarkerFilter implements Cloneable {
 
     /**
      * Returns all resources within the working set.
-     * 
-     * @param workingSet the working set
+     *
+     * @param workingSet
+     *            the working set
      * @return the array of resources from the given working set
      */
     private static IResource[] getResourcesInWorkingSet(IWorkingSet workingSet) {
@@ -596,7 +606,7 @@ public class CheckstyleMarkerFilter implements Cloneable {
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @see java.lang.Object#clone()
      */
     public Object clone() {

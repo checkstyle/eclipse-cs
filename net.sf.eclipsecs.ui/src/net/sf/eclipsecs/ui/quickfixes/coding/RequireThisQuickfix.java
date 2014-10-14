@@ -43,7 +43,7 @@ import org.eclipse.swt.graphics.Image;
 
 /**
  * Quickfix implementation which adds the <code>this</code> qualifier to a field access or method invocation.
- * 
+ *
  * @author Philip Graf
  */
 public class RequireThisQuickfix extends AbstractASTResolution {
@@ -71,21 +71,24 @@ public class RequireThisQuickfix extends AbstractASTResolution {
             }
 
             private Expression findFieldReplacement(final SimpleName name, final ASTNode node, int typeLevel) {
+
+                int level = typeLevel;
+
                 final ASTNode parent = node.getParent();
                 if (parent instanceof TypeDeclaration) {
-                    typeLevel++;
+                    level++;
                     final TypeDeclaration type = (TypeDeclaration) parent;
                     for (final FieldDeclaration fieldDeclaration : type.getFields()) {
                         @SuppressWarnings("unchecked")
                         final List<VariableDeclarationFragment> fragments = fieldDeclaration.fragments();
                         for (final VariableDeclarationFragment fragment : fragments) {
                             if (name.getFullyQualifiedName().equals(fragment.getName().getFullyQualifiedName())) {
-                                return createFieldAccessReplacement(typeLevel == 1 ? null : type, name);
+                                return createFieldAccessReplacement(level == 1 ? null : type, name);
                             }
                         }
                     }
                 }
-                return findFieldReplacement(name, parent, typeLevel);
+                return findFieldReplacement(name, parent, level);
             }
 
             private FieldAccess createFieldAccessReplacement(final TypeDeclaration type, final SimpleName name) {
@@ -102,17 +105,20 @@ public class RequireThisQuickfix extends AbstractASTResolution {
 
             private Expression findMethodReplacement(final SimpleName name, ASTNode contextNode,
                 final MethodInvocation node, int typeLevel) {
+
+                int level = typeLevel;
+
                 final ASTNode parent = contextNode.getParent();
                 if (parent instanceof TypeDeclaration) {
-                    typeLevel++;
+                    level++;
                     final TypeDeclaration type = (TypeDeclaration) parent;
                     for (final MethodDeclaration methodDeclaration : type.getMethods()) {
                         if (name.getFullyQualifiedName().equals(methodDeclaration.getName().getFullyQualifiedName())) {
-                            return createMethodInvocationReplacement(typeLevel == 1 ? null : type, node);
+                            return createMethodInvocationReplacement(level == 1 ? null : type, node);
                         }
                     }
                 }
-                return findMethodReplacement(name, parent, node, typeLevel);
+                return findMethodReplacement(name, parent, node, level);
             }
 
             private Expression createMethodInvocationReplacement(final TypeDeclaration type,

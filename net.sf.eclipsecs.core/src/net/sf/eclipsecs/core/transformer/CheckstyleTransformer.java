@@ -34,7 +34,7 @@ import com.puppycrawl.tools.checkstyle.api.Configuration;
 /**
  * The Class for transforming the checkstyle-rules into eclipse-formatter-settings. A new formatter-profile gets
  * created.
- * 
+ *
  * @author Lukas Frena
  */
 public class CheckstyleTransformer {
@@ -53,9 +53,13 @@ public class CheckstyleTransformer {
 
     /**
      * Creates a new instance of class CheckstyleTransformer.
-     * 
+     *
+     * @param project
+     *            the project the transformer is operating on
      * @param ruleList
      *            A list of checkstyle-rules.
+     * @throws CheckstylePluginException
+     *             if an unexpected internal exception occurred
      */
     public CheckstyleTransformer(IProject project, final List<Configuration> ruleList) throws CheckstylePluginException {
         mProject = project;
@@ -75,7 +79,7 @@ public class CheckstyleTransformer {
     /**
      * Loads all transformationclasses that are needed to recognize the checkstyle-rules. A instance of every loaded
      * class is stored in the field transformationClasses. Gets called by the constructor.
-     * 
+     *
      * @param classnames
      *            A list of names of which classes get loaded.
      */
@@ -110,9 +114,6 @@ public class CheckstyleTransformer {
 
     /**
      * Method for starting transforming. Converts all checkstyle-rules to a new eclipse-formatter-profile.
-     * 
-     * @param path
-     *            The path to the .settings folder with eclipse-configuration-files
      */
     public void transformRules() {
         loadRuleConfigurations();

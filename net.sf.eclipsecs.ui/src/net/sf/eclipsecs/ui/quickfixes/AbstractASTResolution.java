@@ -64,7 +64,7 @@ import org.eclipse.ui.views.markers.WorkbenchMarkerResolution;
 
 /**
  * Abstract base class for marker resolutions using AST rewrite techniques.
- * 
+ *
  * @author Lars Ködderitzsch
  * @author Philip Graf
  */
@@ -204,7 +204,8 @@ public abstract class AbstractASTResolution extends WorkbenchMarkerResolution im
         }
         catch (BadLocationException e) {
             CheckstyleLog.log(e, Messages.AbstractASTResolution_msgErrorQuickfix);
-        } finally {
+        }
+        finally {
 
             if (bufferManager != null) {
                 try {
@@ -221,7 +222,7 @@ public abstract class AbstractASTResolution extends WorkbenchMarkerResolution im
      * Template method to be implemented by concrete quickfix implementations. These must provide their fixing
      * modification through an AST visitor, more specifically by doing the neccessary modifications directly on the
      * visited AST nodes. The AST itself will recored modification.
-     * 
+     *
      * @param lineInfo
      *            the IRegion for the line containing the marker to fix
      * @param markerStartOffset
@@ -232,7 +233,7 @@ public abstract class AbstractASTResolution extends WorkbenchMarkerResolution im
 
     /**
      * Determines if the given position lies within the boundaries of the ASTNode.
-     * 
+     *
      * @param node
      *            the ASTNode
      * @param position
@@ -245,7 +246,7 @@ public abstract class AbstractASTResolution extends WorkbenchMarkerResolution im
 
     /**
      * Determines if the given position lies within the boundaries of the region.
-     * 
+     *
      * @param region
      *            the region
      * @param position
@@ -266,10 +267,10 @@ public abstract class AbstractASTResolution extends WorkbenchMarkerResolution im
      * <p>
      * The node's <code>AST</code> and the target <code>AST</code> must support the same API level.
      * </p>
-     * 
+     *
      * @param node
      *            the node to copy, or <code>null</code> if none
-     * 
+     *
      * @return the copied node, or <code>null</code> if <code>node</code> is <code>null</code>
      */
     @SuppressWarnings("unchecked")
@@ -279,7 +280,7 @@ public abstract class AbstractASTResolution extends WorkbenchMarkerResolution im
 
     /**
      * Replaces a node in an AST with another node. If the replacement is successful the original node is deleted.
-     * 
+     *
      * @param node
      *            The node to replace.
      * @param replacement

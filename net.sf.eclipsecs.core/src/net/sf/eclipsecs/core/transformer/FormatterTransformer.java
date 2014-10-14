@@ -29,7 +29,7 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
 /**
  * The Class for transforming the formatter-settings to Checkstyle-rules. A new checkstyle-xml file gets generated.
- * 
+ *
  * @author Lukas Frena
  */
 public class FormatterTransformer {
@@ -46,9 +46,11 @@ public class FormatterTransformer {
 
     /**
      * Creates a new instance of class CheckstyleTransformer.
-     * 
+     *
      * @param rules
      *            A configuration of formatter-rules.
+     * @throws CheckstylePluginException
+     *             if an unexpected internal exception ocurred
      */
     public FormatterTransformer(final FormatterConfiguration rules) throws CheckstylePluginException {
         mFormatterSetting = rules;
@@ -75,7 +77,7 @@ public class FormatterTransformer {
     /**
      * Loads all transformationclasses that are needed to recognize the formatter-settings. A instance of every loaded
      * class is stored in the field transformationClasses. Gets called by the constructor.
-     * 
+     *
      * @param classnames
      *            A list of names of which classes get loaded.
      */
@@ -112,7 +114,7 @@ public class FormatterTransformer {
 
     /**
      * Method for starting transforming. Converts all formatter-settings to checkstyle-rules.
-     * 
+     *
      * @param path
      *            The path where the checkstyle-xml file gets generated.
      */

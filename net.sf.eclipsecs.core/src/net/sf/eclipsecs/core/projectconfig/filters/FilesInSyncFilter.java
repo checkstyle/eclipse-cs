@@ -31,7 +31,7 @@ import org.eclipse.team.core.synchronize.SyncInfo;
 
 /**
  * Filters all files that are in sync with the source repository.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public class FilesInSyncFilter extends AbstractFilter {
@@ -56,22 +56,29 @@ public class FilesInSyncFilter extends AbstractFilter {
                     Subscriber subscriber = provider.getSubscriber();
 
                     if (subscriber != null) {
-
-                        try {
-                            SyncInfo synchInfo = subscriber.getSyncInfo(file);
-
-                            if (synchInfo != null) {
-                                int kind = synchInfo.getKind();
-                                passes = (SyncInfo.getDirection(kind) & SyncInfo.OUTGOING) == SyncInfo.OUTGOING;
-                            }
-                        }
-                        catch (TeamException e) {
-                            CheckstyleLog.log(e);
-                        }
+                        passes = hasChanges(file, subscriber);
                     }
                 }
             }
         }
         return passes;
+    }
+
+    private boolean hasChanges(IFile file, Subscriber subscriber) {
+
+        boolean hasChanges = false;
+
+        try {
+            SyncInfo synchInfo = subscriber.getSyncInfo(file);
+
+            if (synchInfo != null) {
+                int kind = synchInfo.getKind();
+                hasChanges = (SyncInfo.getDirection(kind) & SyncInfo.OUTGOING) == SyncInfo.OUTGOING;
+            }
+        }
+        catch (TeamException e) {
+            CheckstyleLog.log(e);
+        }
+        return hasChanges;
     }
 }

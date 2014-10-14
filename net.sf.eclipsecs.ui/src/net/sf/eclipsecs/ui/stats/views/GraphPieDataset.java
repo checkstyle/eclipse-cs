@@ -35,15 +35,14 @@ import org.jfree.data.general.PieDataset;
 
 /**
  * Implémentation d'un PieDataset pour fournir les données à afficher au graph.
- * 
- * Copié de DefaultPieDataset car celui-ci ne permettait pas d'être vidé de ses
- * données dynamiquement. Le code ajouté est balisé en début de classe.
- * 
+ *
+ * Copié de DefaultPieDataset car celui-ci ne permettait pas d'être vidé de ses données dynamiquement. Le code ajouté
+ * est balisé en début de classe.
+ *
  * @see org.jfree.data.general.DefaultPieDataset
  * @author Fabrice BELLINGARD
  */
-public class GraphPieDataset extends AbstractDataset implements PieDataset
-{
+public class GraphPieDataset extends AbstractDataset implements PieDataset {
 
     // --------------- RAJOUT : début ---------------
 
@@ -51,8 +50,8 @@ public class GraphPieDataset extends AbstractDataset implements PieDataset
     private static final long serialVersionUID = 9010212577897074893L;
 
     /**
-     * Pourcentage minimum en dessous duquel une catégorie d'erreur est mise
-     * dans la catégorie "Autres" opur l'affichage du camember.
+     * Pourcentage minimum en dessous duquel une catégorie d'erreur est mise dans la catégorie "Autres" opur l'affichage
+     * du camember.
      */
     private static final int POURCENTAGE_MIN = 1;
 
@@ -68,14 +67,13 @@ public class GraphPieDataset extends AbstractDataset implements PieDataset
 
     /**
      * Remplit le Dataset avec les valeurs de la collection de MarkerStat.
-     * 
-     * @param stats the Checkstyle violation stats
+     *
+     * @param stats
+     *            the Checkstyle violation stats
      */
-    public void setStats(Stats stats)
-    {
+    public void setStats(Stats stats) {
 
-        Collection markerStatCollection = stats != null ? stats.getMarkerStats()
-                : Collections.EMPTY_LIST;
+        Collection markerStatCollection = stats != null ? stats.getMarkerStats() : Collections.EMPTY_LIST;
         mData = new DefaultKeyedValues();
 
         // markers que l'on comptera dans une catégorie "Autres" car ils
@@ -83,31 +81,25 @@ public class GraphPieDataset extends AbstractDataset implements PieDataset
         int leftCount = 0;
         float mCount = new Float(stats.getMarkerCount()).floatValue();
         // et on remplit
-        for (Iterator iter = markerStatCollection.iterator(); iter.hasNext();)
-        {
+        for (Iterator iter = markerStatCollection.iterator(); iter.hasNext();) {
             MarkerStat markerStat = (MarkerStat) iter.next();
 
             // on calcule le %
             float percentage = CENT * markerStat.getCount() / mCount;
-            if (mShowAllCategories)
-            {
+            if (mShowAllCategories) {
                 setValue(markerStat.getIdentifiant(), percentage);
             }
-            else
-            {
+            else {
                 // on ne veut pas montrer toutes les catégories : on fait le tri
-                if (percentage > POURCENTAGE_MIN)
-                {
+                if (percentage > POURCENTAGE_MIN) {
                     setValue(markerStat.getIdentifiant(), percentage);
                 }
-                else
-                {
+                else {
                     leftCount += markerStat.getCount();
                 }
             }
         }
-        if (!mShowAllCategories && leftCount != 0)
-        {
+        if (!mShowAllCategories && leftCount != 0) {
             // on ne veut pas montrer toutes les catégories, et certaines
             // n'ont pas été prises en compte : on les mets dans "Autres"
             setValue(Messages.GraphPieDataset_otherCategories, CENT * leftCount / mCount);
@@ -118,19 +110,18 @@ public class GraphPieDataset extends AbstractDataset implements PieDataset
     /**
      * Remet à zéro les données du graphe en enlevant tout.
      */
-    public void removeValues()
-    {
+    public void removeValues() {
         mData = new DefaultKeyedValues();
         fireDatasetChanged();
     }
 
     /**
      * The showAllCategories to set.
-     * 
-     * @param showAllCategories The showAllCategories to set.
+     *
+     * @param showAllCategories
+     *            The showAllCategories to set.
      */
-    public void setShowAllCategories(boolean showAllCategories)
-    {
+    public void setShowAllCategories(boolean showAllCategories) {
         this.mShowAllCategories = showAllCategories;
     }
 
@@ -142,44 +133,40 @@ public class GraphPieDataset extends AbstractDataset implements PieDataset
     /**
      * Constructs a new dataset, initially empty.
      */
-    public GraphPieDataset()
-    {
+    public GraphPieDataset() {
         this.mData = new DefaultKeyedValues();
     }
 
     /**
      * Returns the number of items in the dataset.
-     * 
+     *
      * @return the item count.
      */
-    public int getItemCount()
-    {
+    public int getItemCount() {
         return this.mData.getItemCount();
     }
 
     /**
      * Returns the categories in the dataset. The returned list is unmodifiable.
-     * 
+     *
      * @return the categories in the dataset.
      */
-    public List getKeys()
-    {
+    public List getKeys() {
         return Collections.unmodifiableList(this.mData.getKeys());
     }
 
     /**
      * Returns the key for an item.
-     * 
-     * @param item the item index (zero-based).
-     * 
+     *
+     * @param item
+     *            the item index (zero-based).
+     *
      * @return the category.
      */
-    public Comparable getKey(final int item)
-    {
+    public Comparable getKey(final int item) {
 
         Comparable result = null;
-        if (getItemCount() > item)
-        {
+        if (getItemCount() > item) {
             result = this.mData.getKey(item);
         }
         return result;
@@ -188,13 +175,13 @@ public class GraphPieDataset extends AbstractDataset implements PieDataset
 
     /**
      * Returns the index for a key.
-     * 
-     * @param key the key.
-     * 
+     *
+     * @param key
+     *            the key.
+     *
      * @return the key index.
      */
-    public int getIndex(final Comparable key)
-    {
+    public int getIndex(final Comparable key) {
 
         return this.mData.getIndex(key);
 
@@ -202,17 +189,16 @@ public class GraphPieDataset extends AbstractDataset implements PieDataset
 
     /**
      * Returns a value.
-     * 
-     * @param item the value index.
-     * 
+     *
+     * @param item
+     *            the value index.
+     *
      * @return the value (possibly <code>null</code>).
      */
-    public Number getValue(final int item)
-    {
+    public Number getValue(final int item) {
 
         Number result = null;
-        if (getItemCount() > item)
-        {
+        if (getItemCount() > item) {
             result = this.mData.getValue(item);
         }
         return result;
@@ -221,17 +207,16 @@ public class GraphPieDataset extends AbstractDataset implements PieDataset
 
     /**
      * Returns the data value associated with a key.
-     * 
-     * @param key the key (<code>null</code> not permitted).
-     * 
+     *
+     * @param key
+     *            the key (<code>null</code> not permitted).
+     *
      * @return the value (possibly <code>null</code>).
      */
-    public Number getValue(final Comparable key)
-    {
+    public Number getValue(final Comparable key) {
 
         // check arguments...
-        if (key == null)
-        {
+        if (key == null) {
             throw new IllegalArgumentException("PieDataset: null key not allowed."); //$NON-NLS-1$
         }
 
@@ -242,12 +227,13 @@ public class GraphPieDataset extends AbstractDataset implements PieDataset
 
     /**
      * Sets the data value for a key.
-     * 
-     * @param key the key.
-     * @param value the value.
+     *
+     * @param key
+     *            the key.
+     * @param value
+     *            the value.
      */
-    public void setValue(final Comparable key, final Number value)
-    {
+    public void setValue(final Comparable key, final Number value) {
 
         this.mData.setValue(key, value);
         fireDatasetChanged();
@@ -256,12 +242,13 @@ public class GraphPieDataset extends AbstractDataset implements PieDataset
 
     /**
      * Sets the data value for a key.
-     * 
-     * @param key the key.
-     * @param value the value.
+     *
+     * @param key
+     *            the key.
+     * @param value
+     *            the value.
      */
-    public void setValue(final Comparable key, final double value)
-    {
+    public void setValue(final Comparable key, final double value) {
         setValue(key, new Double(value));
     }
 }

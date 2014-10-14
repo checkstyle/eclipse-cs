@@ -48,19 +48,19 @@ import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.puppycrawl.tools.checkstyle.api.Configuration;
 
 /**
- * Job who starts transforming the checkstyle-rules to
- * eclipse-formatter-settings.
- * 
+ * Job which starts transforming the checkstyle-rules to eclipse-formatter-settings.
+ *
  * @author Lukas Frena
- * 
+ *
  */
 public class TransformCheckstyleRulesJob extends WorkspaceJob {
+
     /** Selected project in workspace. */
-    IProject mProject;
+    private IProject mProject;
 
     /**
      * Job for transforming checkstyle to formatter-rules.
-     * 
+     *
      * @param project
      *            The current selected project in the workspace.
      */
@@ -74,12 +74,10 @@ public class TransformCheckstyleRulesJob extends WorkspaceJob {
      * {@inheritDoc}
      */
     @Override
-    public IStatus runInWorkspace(final IProgressMonitor arg0)
-        throws CoreException {
+    public IStatus runInWorkspace(final IProgressMonitor arg0) throws CoreException {
 
         try {
-            final IProjectConfiguration conf = ProjectConfigurationFactory
-                .getConfiguration(mProject);
+            final IProjectConfiguration conf = ProjectConfigurationFactory.getConfiguration(mProject);
 
             final List<Configuration> rules = new ArrayList<Configuration>();
 
@@ -88,8 +86,7 @@ public class TransformCheckstyleRulesJob extends WorkspaceJob {
 
                 ICheckConfiguration checkConfig = fs.getCheckConfig();
 
-                CheckstyleConfigurationFile configFile = checkConfig
-                    .getCheckstyleConfiguration();
+                CheckstyleConfigurationFile configFile = checkConfig.getCheckstyleConfiguration();
 
                 PropertyResolver resolver = configFile.getPropertyResolver();
 
@@ -103,8 +100,7 @@ public class TransformCheckstyleRulesJob extends WorkspaceJob {
                 try {
                     in = configFile.getCheckConfigFileInputSource();
 
-                    Configuration configuration = ConfigurationLoader
-                        .loadConfiguration(in, resolver, true);
+                    Configuration configuration = ConfigurationLoader.loadConfiguration(in, resolver, true);
 
                     // flatten the nested configuration tree into a list
                     recurseConfiguration(configuration, rules);
@@ -118,26 +114,22 @@ public class TransformCheckstyleRulesJob extends WorkspaceJob {
                 return Status.CANCEL_STATUS;
             }
 
-            final CheckstyleTransformer transformer = new CheckstyleTransformer(
-                mProject, rules);
+            final CheckstyleTransformer transformer = new CheckstyleTransformer(mProject, rules);
             transformer.transformRules();
         }
         catch (CheckstyleException e) {
-            Status status = new Status(IStatus.ERROR,
-                CheckstylePlugin.PLUGIN_ID, IStatus.ERROR, e.getMessage(), e);
+            Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR, e.getMessage(), e);
             throw new CoreException(status);
         }
         catch (CheckstylePluginException e) {
-            Status status = new Status(IStatus.ERROR,
-                CheckstylePlugin.PLUGIN_ID, IStatus.ERROR, e.getMessage(), e);
+            Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR, e.getMessage(), e);
             throw new CoreException(status);
         }
 
         return Status.OK_STATUS;
     }
 
-    private static void recurseConfiguration(Configuration module,
-        List<Configuration> flatModules) {
+    private static void recurseConfiguration(Configuration module, List<Configuration> flatModules) {
 
         flatModules.add(module);
 

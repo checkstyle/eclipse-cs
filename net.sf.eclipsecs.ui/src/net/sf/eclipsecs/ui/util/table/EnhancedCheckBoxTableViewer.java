@@ -9,6 +9,7 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 
+// CHECKSTYLE:OFF
 package net.sf.eclipsecs.ui.util.table;
 
 import java.util.ArrayList;
@@ -34,96 +35,80 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Widget;
 
 /**
- * A concrete viewer based on an SWT <code>Table</code> control with
- * checkboxes on each node.
+ * A concrete viewer based on an SWT <code>Table</code> control with checkboxes on each node.
  * <p>
- * This class is not intended to be subclassed outside the viewer framework. It
- * is designed to be instantiated with a pre-existing SWT table control and
- * configured with a domain-specific content provider, label provider, element
- * filter (optional), and element sorter (optional).
+ * This class is not intended to be subclassed outside the viewer framework. It is designed to be instantiated with a
+ * pre-existing SWT table control and configured with a domain-specific content provider, label provider, element filter
+ * (optional), and element sorter (optional).
  * </p>
  */
 public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements ICheckable {
 
-    // CHECKSTYLE:OFF
-
     /**
-     * List of check state listeners (element type:
-     * <code>ICheckStateListener</code>).
+     * List of check state listeners (element type: <code>ICheckStateListener</code>).
      */
     private final ListenerList checkStateListeners = new ListenerList(3);
 
     /**
-     * Creates a table viewer on a newly-created table control under the given
-     * parent. The table control is created using the SWT style bits:
-     * <code>SWT.CHECK</code> and <code>SWT.BORDER</code>. The table has
-     * one column. The viewer has no input, no content provider, a default label
-     * provider, no sorter, and no filters.
+     * Creates a table viewer on a newly-created table control under the given parent. The table control is created
+     * using the SWT style bits: <code>SWT.CHECK</code> and <code>SWT.BORDER</code>. The table has one column. The
+     * viewer has no input, no content provider, a default label provider, no sorter, and no filters.
      * <p>
-     * This is equivalent to calling
-     * <code>new CheckboxTableViewer(parent, SWT.BORDER)</code>. See that
-     * constructor for more details.
+     * This is equivalent to calling <code>new CheckboxTableViewer(parent, SWT.BORDER)</code>. See that constructor for
+     * more details.
      * </p>
-     * 
-     * @param parent the parent control
-     * @deprecated use newCheckList(Composite, int) or new
-     *             CheckboxTableViewer(Table) instead (see below for details)
+     *
+     * @param parent
+     *            the parent control
+     * @deprecated use newCheckList(Composite, int) or new CheckboxTableViewer(Table) instead (see below for details)
      */
     public EnhancedCheckBoxTableViewer(Composite parent) {
         this(parent, SWT.BORDER);
     }
 
     /**
-     * Creates a table viewer on a newly-created table control under the given
-     * parent. The table control is created using the given SWT style bits, plus
-     * the <code>SWT.CHECK</code> style bit. The table has one column. The
-     * viewer has no input, no content provider, a default label provider, no
-     * sorter, and no filters.
+     * Creates a table viewer on a newly-created table control under the given parent. The table control is created
+     * using the given SWT style bits, plus the <code>SWT.CHECK</code> style bit. The table has one column. The viewer
+     * has no input, no content provider, a default label provider, no sorter, and no filters.
      * <p>
-     * This also adds a <code>TableColumn</code> for the single column, and
-     * sets a <code>TableLayout</code> on the table which sizes the column to
-     * fill the table for its initial sizing, but does nothing on subsequent
-     * resizes.
+     * This also adds a <code>TableColumn</code> for the single column, and sets a <code>TableLayout</code> on the table
+     * which sizes the column to fill the table for its initial sizing, but does nothing on subsequent resizes.
      * </p>
      * <p>
-     * If the caller just needs to show a single column with no header, it is
-     * preferable to use the <code>newCheckList</code> factory method instead,
-     * since SWT properly handles the initial sizing and subsequent resizes in
-     * this case.
+     * If the caller just needs to show a single column with no header, it is preferable to use the
+     * <code>newCheckList</code> factory method instead, since SWT properly handles the initial sizing and subsequent
+     * resizes in this case.
      * </p>
      * <p>
-     * If the caller adds its own columns, uses
-     * <code>Table.setHeadersVisible(true)</code>, or needs to handle dynamic
-     * resizing of the table, it is recommended to create the <code>Table</code>
-     * itself, specifying the <code>SWT.CHECK</code> style bit (along with any
-     * other style bits needed), and use
-     * <code>new CheckboxTableViewer(Table)</code> rather than this
-     * constructor.
+     * If the caller adds its own columns, uses <code>Table.setHeadersVisible(true)</code>, or needs to handle dynamic
+     * resizing of the table, it is recommended to create the <code>Table</code> itself, specifying the
+     * <code>SWT.CHECK</code> style bit (along with any other style bits needed), and use
+     * <code>new CheckboxTableViewer(Table)</code> rather than this constructor.
      * </p>
-     * 
-     * @param parent the parent control
-     * @param style SWT style bits
-     * @deprecated use newCheckList(Composite, int) or new
-     *             CheckboxTableViewer(Table) instead (see above for details)
+     *
+     * @param parent
+     *            the parent control
+     * @param style
+     *            SWT style bits
+     * @deprecated use newCheckList(Composite, int) or new CheckboxTableViewer(Table) instead (see above for details)
      */
     public EnhancedCheckBoxTableViewer(Composite parent, int style) {
         this(createTable(parent, style));
     }
 
     /**
-     * Creates a table viewer on a newly-created table control under the given
-     * parent. The table control is created using the given SWT style bits, plus
-     * the <code>SWT.CHECK</code> style bit. The table shows its contents in a
-     * single column, with no header. The viewer has no input, no content
-     * provider, a default label provider, no sorter, and no filters.
+     * Creates a table viewer on a newly-created table control under the given parent. The table control is created
+     * using the given SWT style bits, plus the <code>SWT.CHECK</code> style bit. The table shows its contents in a
+     * single column, with no header. The viewer has no input, no content provider, a default label provider, no sorter,
+     * and no filters.
      * <p>
-     * No <code>TableColumn</code> is added. SWT does not require a
-     * <code>TableColumn</code> if showing only a single column with no
-     * header. SWT correctly handles the initial sizing and subsequent resizes
-     * in this case.
-     * 
-     * @param parent the parent control
-     * @param style SWT style bits
+     * No <code>TableColumn</code> is added. SWT does not require a <code>TableColumn</code> if showing only a single
+     * column with no header. SWT correctly handles the initial sizing and subsequent resizes in this case.
+     *
+     * @param parent
+     *            the parent control
+     * @param style
+     *            SWT style bits
      * @since 2.0
      */
     public static EnhancedCheckBoxTableViewer newCheckList(Composite parent, int style) {
@@ -132,12 +117,11 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
     }
 
     /**
-     * Creates a table viewer on the given table control. The
-     * <code>SWT.CHECK</code> style bit must be set on the given table
-     * control. The viewer has no input, no content provider, a default label
-     * provider, no sorter, and no filters.
-     * 
-     * @param table the table control
+     * Creates a table viewer on the given table control. The <code>SWT.CHECK</code> style bit must be set on the given
+     * table control. The viewer has no input, no content provider, a default label provider, no sorter, and no filters.
+     *
+     * @param table
+     *            the table control
      */
     public EnhancedCheckBoxTableViewer(Table table) {
         super(table);
@@ -152,9 +136,11 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
 
     /**
      * Creates a new table control with one column.
-     * 
-     * @param parent the parent control
-     * @param style style bits
+     *
+     * @param parent
+     *            the parent control
+     * @param style
+     *            style bits
      * @return a new table control
      */
     protected static Table createTable(Composite parent, int style) {
@@ -174,11 +160,11 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
     }
 
     /**
-     * Notifies any check state listeners that a check state changed has been
-     * received. Only listeners registered at the time this method is called are
-     * notified.
-     * 
-     * @param event a check state changed event
+     * Notifies any check state listeners that a check state changed has been received. Only listeners registered at the
+     * time this method is called are notified.
+     *
+     * @param event
+     *            a check state changed event
      * @see ICheckStateListener#checkStateChanged
      */
     private void fireCheckStateChanged(final CheckStateChangedEvent event) {
@@ -205,13 +191,12 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
     }
 
     /**
-     * Returns a list of elements corresponding to checked table items in this
-     * viewer.
+     * Returns a list of elements corresponding to checked table items in this viewer.
      * <p>
-     * This method is typically used when preserving the interesting state of a
-     * viewer; <code>setCheckedElements</code> is used during the restore.
+     * This method is typically used when preserving the interesting state of a viewer; <code>setCheckedElements</code>
+     * is used during the restore.
      * </p>
-     * 
+     *
      * @return the array of checked elements
      * @see #setCheckedElements
      */
@@ -229,10 +214,10 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
 
     /**
      * Returns the grayed state of the given element.
-     * 
-     * @param element the element
-     * @return <code>true</code> if the element is grayed, and
-     *         <code>false</code> if not grayed
+     *
+     * @param element
+     *            the element
+     * @return <code>true</code> if the element is grayed, and <code>false</code> if not grayed
      */
     public boolean getGrayed(Object element) {
         Widget widget = findItem(element);
@@ -245,10 +230,10 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
     /**
      * Returns a list of elements corresponding to grayed nodes in this viewer.
      * <p>
-     * This method is typically used when preserving the interesting state of a
-     * viewer; <code>setGrayedElements</code> is used during the restore.
+     * This method is typically used when preserving the interesting state of a viewer; <code>setGrayedElements</code>
+     * is used during the restore.
      * </p>
-     * 
+     *
      * @return the array of grayed elements
      * @see #setGrayedElements
      */
@@ -326,11 +311,10 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
     }
 
     /**
-     * Sets to the given value the checked state for all elements in this
-     * viewer.
-     * 
-     * @param state <code>true</code> if the element should be checked, and
-     *            <code>false</code> if it should be unchecked
+     * Sets to the given value the checked state for all elements in this viewer.
+     *
+     * @param state
+     *            <code>true</code> if the element should be checked, and <code>false</code> if it should be unchecked
      */
     public void setAllChecked(boolean state) {
         TableItem[] children = getTable().getItems();
@@ -342,9 +326,9 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
 
     /**
      * Sets to the given value the grayed state for all elements in this viewer.
-     * 
-     * @param state <code>true</code> if the element should be grayed, and
-     *            <code>false</code> if it should be ungrayed
+     *
+     * @param state
+     *            <code>true</code> if the element should be grayed, and <code>false</code> if it should be ungrayed
      */
     public void setAllGrayed(boolean state) {
         TableItem[] children = getTable().getItems();
@@ -368,15 +352,15 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
     }
 
     /**
-     * Sets which nodes are checked in this viewer. The given list contains the
-     * elements that are to be checked; all other nodes are to be unchecked.
+     * Sets which nodes are checked in this viewer. The given list contains the elements that are to be checked; all
+     * other nodes are to be unchecked.
      * <p>
-     * This method is typically used when restoring the interesting state of a
-     * viewer captured by an earlier call to <code>getCheckedElements</code>.
+     * This method is typically used when restoring the interesting state of a viewer captured by an earlier call to
+     * <code>getCheckedElements</code>.
      * </p>
-     * 
-     * @param elements the list of checked elements (element type:
-     *            <code>Object</code>)
+     *
+     * @param elements
+     *            the list of checked elements (element type: <code>Object</code>)
      * @see #getCheckedElements
      */
     public void setCheckedElements(Object[] elements) {
@@ -401,12 +385,13 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
 
     /**
      * Sets the grayed state for the given element in this viewer.
-     * 
-     * @param element the element
-     * @param state <code>true</code> if the item should be grayed, and
-     *            <code>false</code> if it should be ungrayed
-     * @return <code>true</code> if the element is visible and the gray state
-     *         could be set, and <code>false</code> otherwise
+     *
+     * @param element
+     *            the element
+     * @param state
+     *            <code>true</code> if the item should be grayed, and <code>false</code> if it should be ungrayed
+     * @return <code>true</code> if the element is visible and the gray state could be set, and <code>false</code>
+     *         otherwise
      */
     public boolean setGrayed(Object element, boolean state) {
         Assert.isNotNull(element);
@@ -419,14 +404,15 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
     }
 
     /**
-     * Sets which nodes are grayed in this viewer. The given list contains the
-     * elements that are to be grayed; all other nodes are to be ungrayed.
+     * Sets which nodes are grayed in this viewer. The given list contains the elements that are to be grayed; all other
+     * nodes are to be ungrayed.
      * <p>
-     * This method is typically used when restoring the interesting state of a
-     * viewer captured by an earlier call to <code>getGrayedElements</code>.
+     * This method is typically used when restoring the interesting state of a viewer captured by an earlier call to
+     * <code>getGrayedElements</code>.
      * </p>
-     * 
-     * @param elements the array of grayed elements
+     *
+     * @param elements
+     *            the array of grayed elements
      * @see #getGrayedElements
      */
     public void setGrayedElements(Object[] elements) {
@@ -450,10 +436,10 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
     }
 
     /**
-     * Returns a new hashtable using the given capacity and this viewer's
-     * element comparer.
-     * 
-     * @param capacity the initial capacity of the hashtable
+     * Returns a new hashtable using the given capacity and this viewer's element comparer.
+     *
+     * @param capacity
+     *            the initial capacity of the hashtable
      * @return a new hashtable
      * @since 3.0
      */
@@ -464,8 +450,7 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
     final static class CustomHashtable {
 
         /**
-         * HashMapEntry is an internal class which is used to hold the entries
-         * of a Hashtable.
+         * HashMapEntry is an internal class which is used to hold the entries of a Hashtable.
          */
         private static class HashMapEntry {
             Object key, value;
@@ -545,46 +530,41 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
         public static final int DEFAULT_CAPACITY = 13;
 
         /**
-         * Constructs a new Hashtable using the default capacity and load
-         * factor.
+         * Constructs a new Hashtable using the default capacity and load factor.
          */
         public CustomHashtable() {
             this(13);
         }
 
         /**
-         * Constructs a new Hashtable using the specified capacity and the
-         * default load factor.
-         * 
-         * @param capacity the initial capacity
+         * Constructs a new Hashtable using the specified capacity and the default load factor.
+         *
+         * @param capacity
+         *            the initial capacity
          */
         public CustomHashtable(int capacity) {
             this(capacity, null);
         }
 
         /**
-         * Constructs a new hash table with the default capacity and the given
-         * element comparer.
-         * 
-         * @param comparer the element comparer to use to compare keys and
-         *            obtain hash codes for keys, or <code>null</code> to use
-         *            the normal <code>equals</code> and <code>hashCode</code>
-         *            methods
+         * Constructs a new hash table with the default capacity and the given element comparer.
+         *
+         * @param comparer
+         *            the element comparer to use to compare keys and obtain hash codes for keys, or <code>null</code>
+         *            to use the normal <code>equals</code> and <code>hashCode</code> methods
          */
         public CustomHashtable(IElementComparer comparer) {
             this(DEFAULT_CAPACITY, comparer);
         }
 
         /**
-         * Constructs a new hash table with the given capacity and the given
-         * element comparer.
-         * 
-         * @param capacity the maximum number of elements that can be added
-         *            without rehashing
-         * @param comparer the element comparer to use to compare keys and
-         *            obtain hash codes for keys, or <code>null</code> to use
-         *            the normal <code>equals</code> and <code>hashCode</code>
-         *            methods
+         * Constructs a new hash table with the given capacity and the given element comparer.
+         *
+         * @param capacity
+         *            the maximum number of elements that can be added without rehashing
+         * @param comparer
+         *            the element comparer to use to compare keys and obtain hash codes for keys, or <code>null</code>
+         *            to use the normal <code>equals</code> and <code>hashCode</code> methods
          */
         public CustomHashtable(int capacity, IElementComparer comparer) {
             if (capacity >= 0) {
@@ -601,16 +581,14 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
         }
 
         /**
-         * Constructs a new hash table with enough capacity to hold all keys in
-         * the given hash table, then adds all key/value pairs in the given hash
-         * table to the new one, using the given element comparer.
-         * 
-         * @param capacity the maximum number of elements that can be added
-         *            without rehashing
-         * @param comparer the element comparer to use to compare keys and
-         *            obtain hash codes for keys, or <code>null</code> to use
-         *            the normal <code>equals</code> and <code>hashCode</code>
-         *            methods
+         * Constructs a new hash table with enough capacity to hold all keys in the given hash table, then adds all
+         * key/value pairs in the given hash table to the new one, using the given element comparer.
+         *
+         * @param capacity
+         *            the maximum number of elements that can be added without rehashing
+         * @param comparer
+         *            the element comparer to use to compare keys and obtain hash codes for keys, or <code>null</code>
+         *            to use the normal <code>equals</code> and <code>hashCode</code> methods
          */
         public CustomHashtable(CustomHashtable table, IElementComparer comparer) {
             this(table.size() * 2, comparer);
@@ -628,10 +606,10 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
         }
 
         /**
-         * Answers if this Hashtable contains the specified object as a key of
-         * one of the key/value pairs.
-         * 
-         * @param key the object to look for as a key in this Hashtable
+         * Answers if this Hashtable contains the specified object as a key of one of the key/value pairs.
+         *
+         * @param key
+         *            the object to look for as a key in this Hashtable
          * @return true if object is a key in this Hashtable, false otherwise
          */
         public boolean containsKey(Object key) {
@@ -639,10 +617,9 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
         }
 
         /**
-         * Answers an Enumeration on the values of this Hashtable. The results
-         * of the Enumeration may be affected if the contents of this Hashtable
-         * are modified.
-         * 
+         * Answers an Enumeration on the values of this Hashtable. The results of the Enumeration may be affected if the
+         * contents of this Hashtable are modified.
+         *
          * @return an Enumeration of the values of this Hashtable
          */
         public Enumeration elements() {
@@ -653,12 +630,11 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
         }
 
         /**
-         * Answers the value associated with the specified key in this
-         * Hashtable.
-         * 
-         * @param key the key of the value returned
-         * @return the value associated with the specified key, null if the
-         *         specified key does not exist
+         * Answers the value associated with the specified key in this Hashtable.
+         *
+         * @param key
+         *            the key of the value returned
+         * @return the value associated with the specified key, null if the specified key does not exist
          */
         public Object get(Object key) {
             int index = (hashCode(key) & 0x7FFFFFFF) % elementData.length;
@@ -705,10 +681,9 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
         }
 
         /**
-         * Answers an Enumeration on the keys of this Hashtable. The results of
-         * the Enumeration may be affected if the contents of this Hashtable are
-         * modified.
-         * 
+         * Answers an Enumeration on the keys of this Hashtable. The results of the Enumeration may be affected if the
+         * contents of this Hashtable are modified.
+         *
          * @return an Enumeration of the keys of this Hashtable
          */
         public Enumeration keys() {
@@ -719,14 +694,14 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
         }
 
         /**
-         * Associate the specified value with the specified key in this
-         * Hashtable. If the key already exists, the old value is replaced. The
-         * key and value cannot be null.
-         * 
-         * @param key the key to add
-         * @param value the value to add
-         * @return the old value associated with the specified key, null if the
-         *         key did not exist
+         * Associate the specified value with the specified key in this Hashtable. If the key already exists, the old
+         * value is replaced. The key and value cannot be null.
+         *
+         * @param key
+         *            the key to add
+         * @param value
+         *            the value to add
+         * @return the old value associated with the specified key, null if the key did not exist
          */
         public Object put(Object key, Object value) {
             if (key != null && value != null) {
@@ -761,8 +736,8 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
         }
 
         /**
-         * Increases the capacity of this Hashtable. This method is sent when
-         * the size of this Hashtable exceeds the load factor.
+         * Increases the capacity of this Hashtable. This method is sent when the size of this Hashtable exceeds the
+         * load factor.
          */
         private void rehash() {
             int length = elementData.length << 1;
@@ -794,10 +769,10 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
 
         /**
          * Remove the key/value pair with the specified key from this Hashtable.
-         * 
-         * @param key the key to remove
-         * @return the value associated with the specified key, null if the
-         *         specified key did not exist
+         *
+         * @param key
+         *            the key to remove
+         * @return the value associated with the specified key, null if the specified key did not exist
          */
         public Object remove(Object key) {
             HashMapEntry last = null;
@@ -822,7 +797,7 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
 
         /**
          * Answers the number of key/value pairs in this Hashtable.
-         * 
+         *
          * @return the number of key/value pairs in this Hashtable
          */
         public int size() {
@@ -831,7 +806,7 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
 
         /**
          * Answers the string representation of this Hashtable.
-         * 
+         *
          * @return the string representation of this Hashtable
          */
         public String toString() {

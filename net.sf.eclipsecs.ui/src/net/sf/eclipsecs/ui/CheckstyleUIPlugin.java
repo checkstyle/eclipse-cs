@@ -30,7 +30,6 @@ import net.sf.eclipsecs.ui.properties.filter.CheckFileOnOpenPartListener;
 
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.IProduct;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.ErrorDialog;
@@ -59,9 +58,9 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
     /** The shared instance. */
     private static CheckstyleUIPlugin sPlugin;
 
-    private ClassLoader mQuickfixExtensionClassLoader;
+    private static Boolean sIsE3;
 
-    private static Boolean isE3;
+    private ClassLoader mQuickfixExtensionClassLoader;
 
     /**
      * The constructor.
@@ -130,7 +129,7 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
      */
     public static boolean isE3() {
 
-        if (isE3 == null) {
+        if (sIsE3 == null) {
 
             // previous checking on the platform product version has not been reliable, since there are e4 based
             // products with a 3 as major version (e.g. Spring Tools Suite).
@@ -138,19 +137,19 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
 
                 // instead now check for the presence of a known e4 class
                 Class.forName("org.eclipse.e4.ui.model.application.MApplicationElement");
-                isE3 = false;
+                sIsE3 = false;
             }
             catch (ClassNotFoundException e) {
-                isE3 = true;
+                sIsE3 = true;
             }
         }
 
-        return isE3;
+        return sIsE3;
     }
 
     /**
      * Returns the shared instance.
-     * 
+     *
      * @return The shared plug-in instance.
      */
     public static CheckstyleUIPlugin getDefault() {
@@ -159,7 +158,7 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
 
     /**
      * Returns the workspace instance.
-     * 
+     *
      * @return Workspace instance.
      */
     public static IWorkspace getWorkspace() {
@@ -168,7 +167,7 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
 
     /**
      * Helper method to get the current plattform locale.
-     * 
+     *
      * @return the platform locale
      */
     public static Locale getPlatformLocale() {
@@ -185,7 +184,7 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
 
     /**
      * Open an error dialog for an exception that occurred within the plugin.
-     * 
+     *
      * @param shell
      *            the shell
      * @param message
@@ -210,7 +209,7 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
 
     /**
      * Open an error dialog for an exception that occurred within the plugin.
-     * 
+     *
      * @param shell
      *            the shell
      * @param t
@@ -224,7 +223,7 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
 
     /**
      * Open an warning dialog for an exception that occurred within the plugin.
-     * 
+     *
      * @param shell
      *            the shell
      * @param message
@@ -238,6 +237,9 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
         ErrorDialog.openError(shell, Messages.CheckstyleLog_titleWarning, message, status);
     }
 
+    /**
+     * @return the classloader containing all registered quickfix extensions.
+     */
     public ClassLoader getQuickfixExtensionClassLoader() {
         return mQuickfixExtensionClassLoader;
     }

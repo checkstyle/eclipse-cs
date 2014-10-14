@@ -40,7 +40,7 @@ import org.dom4j.Element;
 
 /**
  * Writes the modules of a checkstyle configuration to an output stream.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public final class ConfigurationWriter {
@@ -52,7 +52,7 @@ public final class ConfigurationWriter {
 
     /**
      * Writes a new checkstyle configuration to the output stream.
-     * 
+     *
      * @param out
      *            the output stream to write to
      * @param checkConfig
@@ -70,7 +70,7 @@ public final class ConfigurationWriter {
 
     /**
      * Writes the modules of the configuration to the output stream.
-     * 
+     *
      * @param out
      *            the ouput stream.
      * @param modules
@@ -132,7 +132,7 @@ public final class ConfigurationWriter {
 
     /**
      * Writes a module to the transformer handler.
-     * 
+     *
      * @param module
      *            the module to write
      * @param parent
@@ -238,7 +238,7 @@ public final class ConfigurationWriter {
 
     /**
      * Returns a list of child modules outgoing from a module.
-     * 
+     *
      * @param module
      *            the parent module
      * @param remainingModules

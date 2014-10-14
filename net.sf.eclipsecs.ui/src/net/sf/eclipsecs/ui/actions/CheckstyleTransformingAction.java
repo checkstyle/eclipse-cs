@@ -31,12 +31,13 @@ import org.eclipse.ui.IWorkbenchPart;
 
 /**
  * Action to start transforming checkstyle-rules to formatter-rules.
- * 
+ *
  * @author lakiluk
  */
 public class CheckstyleTransformingAction implements IObjectActionDelegate {
-    /** Selection in workspace */
-    private ISelection selection;
+
+    /** Selection in workspace. */
+    private ISelection mSelection;
 
     /**
      * {@inheritDoc}
@@ -50,7 +51,7 @@ public class CheckstyleTransformingAction implements IObjectActionDelegate {
      */
     public void run(final IAction arg0) {
         final TransformCheckstyleRulesJob job = new TransformCheckstyleRulesJob(
-            ((IProject) ((IStructuredSelection) selection).getFirstElement()));
+            ((IProject) ((IStructuredSelection) mSelection).getFirstElement()));
         job.schedule();
     }
 
@@ -58,7 +59,7 @@ public class CheckstyleTransformingAction implements IObjectActionDelegate {
      * {@inheritDoc}
      */
     public void selectionChanged(final IAction arg0, final ISelection arg1) {
-        selection = arg1;
+        mSelection = arg1;
     }
 
 }

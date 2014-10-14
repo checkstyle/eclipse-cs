@@ -23,12 +23,16 @@ package net.sf.eclipsecs.core.transformer.ctransformerclasses;
 import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 import net.sf.eclipsecs.core.transformer.CTransformationClass;
 
+/**
+ * Transforms the "New Line At End Of File" checkstyle rule to the respective formatter setting.
+ *
+ * @author Lukas Frena
+ */
 public class NewlineAtEndOfFileTransformer extends CTransformationClass {
 
     @Override
     public FormatterConfiguration transformRule() {
-        userFormatterSetting("insert_new_line_at_end_of_file_if_missing",
-            "insert");
+        userFormatterSetting("insert_new_line_at_end_of_file_if_missing", "insert");
         return getFormatterSetting();
     }
 

@@ -43,14 +43,13 @@ import org.eclipse.core.runtime.jobs.Job;
 
 /**
  * Job implementation that builds the data objects for the statistic views.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public class CreateStatsJob extends Job {
 
     /** Regexp to find {0}-like strings. */
-    private static final Pattern REGEXP_HOLES = Pattern
-        .compile("\\{[0-9]+(\\S)*\\}"); //$NON-NLS-1$
+    private static final Pattern REGEXP_HOLES = Pattern.compile("\\{[0-9]+(\\S)*\\}"); //$NON-NLS-1$
 
     /** Regexp to find suites of ' character. */
     private static final Pattern REGEXP_QUOTE = Pattern.compile("'+"); //$NON-NLS-1$
@@ -66,9 +65,11 @@ public class CreateStatsJob extends Job {
 
     /**
      * Creates the job.
-     * 
+     *
      * @param filter
      *            the marker filter to analyze
+     * @param family
+     *            the job family
      */
     public CreateStatsJob(CheckstyleMarkerFilter filter, String family) {
         super(Messages.CreateStatsJob_msgAnalyzeMarkers);
@@ -91,11 +92,8 @@ public class CreateStatsJob extends Job {
     protected IStatus run(IProgressMonitor monitor) {
         try {
 
-            int wholeAmountOfMarkers = ResourcesPlugin
-                .getWorkspace()
-                .getRoot()
-                .findMarkers(CheckstyleMarker.MARKER_ID, true,
-                    IResource.DEPTH_INFINITE).length;
+            int wholeAmountOfMarkers = ResourcesPlugin.getWorkspace().getRoot()
+                .findMarkers(CheckstyleMarker.MARKER_ID, true, IResource.DEPTH_INFINITE).length;
 
             IMarker[] markers = mFilter.findMarkers(monitor);
 
@@ -107,16 +105,15 @@ public class CreateStatsJob extends Job {
                 try {
                     message = getUnlocalizedMessage(markers[i]);
                     message = cleanMessage(message);
-                } catch (CoreException e) {
-                    CheckstyleLog.log(e,
-                        Messages.CreateStatsJob_errorAnalyzingMarkers);
+                }
+                catch (CoreException e) {
+                    CheckstyleLog.log(e, Messages.CreateStatsJob_errorAnalyzingMarkers);
                 }
 
                 // check that the message is not empty
                 if (message == null || message.trim().length() == 0) {
                     // cela ne devrait pas arriver, mais bon, on laisse faire
-                    CheckstyleLog.log(null,
-                        Messages.CreateStatsJob_markerMessageShouldntBeEmpty);
+                    CheckstyleLog.log(null, Messages.CreateStatsJob_markerMessageShouldntBeEmpty);
                     continue;
                 }
 
@@ -126,19 +123,19 @@ public class CreateStatsJob extends Job {
                     // 1ere fois qu'on rencontre un marqueur de ce type
                     MarkerStat newMarkerStat = new MarkerStat(message);
                     newMarkerStat.addMarker(markers[i]);
-                    markerStats.put(newMarkerStat.getIdentifiant(),
-                        newMarkerStat);
-                } else {
+                    markerStats.put(newMarkerStat.getIdentifiant(), newMarkerStat);
+                }
+                else {
                     // on augmente juste le nombre d'occurence
                     stat.addMarker(markers[i]);
                 }
             }
 
-            mStats = new Stats(markerStats.values(), markers.length,
-                wholeAmountOfMarkers);
-        } catch (CoreException e) {
-            return new Status(IStatus.ERROR, CheckstyleUIPlugin.PLUGIN_ID,
-                IStatus.OK, Messages.CreateStatsJob_errorAnalyzingMarkers, e);
+            mStats = new Stats(markerStats.values(), markers.length, wholeAmountOfMarkers);
+        }
+        catch (CoreException e) {
+            return new Status(IStatus.ERROR, CheckstyleUIPlugin.PLUGIN_ID, IStatus.OK,
+                Messages.CreateStatsJob_errorAnalyzingMarkers, e);
         }
 
         return Status.OK_STATUS;
@@ -146,21 +143,27 @@ public class CreateStatsJob extends Job {
 
     /**
      * Returns the statistics data compiled by the job.
-     * 
+     *
      * @return the statistics data
      */
     public Stats getStats() {
         return mStats;
     }
 
-    public static String getUnlocalizedMessage(IMarker marker)
-        throws CoreException {
+    /**
+     * Returns the standard, untranslated message for a Checkstyle violation marker.
+     *
+     * @param marker
+     *            the marker
+     * @return the untranslated message
+     * @throws CoreException
+     *             error accessing marker attributes
+     */
+    public static String getUnlocalizedMessage(IMarker marker) throws CoreException {
         String key = (String) marker.getAttribute(CheckstyleMarker.MESSAGE_KEY);
-        String moduleInternalName = (String) marker
-            .getAttribute(CheckstyleMarker.MODULE_NAME);
+        String moduleInternalName = (String) marker.getAttribute(CheckstyleMarker.MODULE_NAME);
 
-        String standardMessage = MetadataFactory.getStandardMessage(key,
-            moduleInternalName);
+        String standardMessage = MetadataFactory.getStandardMessage(key, moduleInternalName);
 
         if (standardMessage == null) {
             standardMessage = (String) marker.getAttribute(IMarker.MESSAGE);
@@ -170,7 +173,7 @@ public class CreateStatsJob extends Job {
 
     /**
      * Cleans the unlocalized message so that it is more readable.
-     * 
+     *
      * @param message
      *            : the message to clean
      * @return the cleaned message

@@ -9,6 +9,7 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 
+//CHECKSTYLE:OFF
 package net.sf.eclipsecs.ui.util.regex;
 
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ import org.eclipse.jface.text.contentassist.IContextInformationValidator;
 
 /**
  * Content assist processor for regular expressions.
- * 
+ *
  * @since 3.0
  */
 public final class RegExContentAssistProcessor implements IContentAssistProcessor,
@@ -64,7 +65,7 @@ public final class RegExContentAssistProcessor implements IContentAssistProcesso
 
         /**
          * Creates a new Proposal Computer.
-         * 
+         *
          * @param contentAssistSubjectControl the subject control
          * @param documentOffset the offset
          */
@@ -87,7 +88,7 @@ public final class RegExContentAssistProcessor implements IContentAssistProcesso
 
         /**
          * Computes applicable proposals for the find field.
-         * 
+         *
          * @return the proposals
          */
         public ICompletionProposal[] computeFindProposals() {
@@ -323,7 +324,7 @@ public final class RegExContentAssistProcessor implements IContentAssistProcesso
 
         /**
          * Computes applicable proposals for the replace field.
-         * 
+         *
          * @return the proposals
          */
         public ICompletionProposal[] computeReplaceProposals() {
@@ -346,7 +347,7 @@ public final class RegExContentAssistProcessor implements IContentAssistProcesso
 
         /**
          * Adds a proposal.
-         * 
+         *
          * @param proposal the string to be inserted
          * @param displayString the proposal's label
          * @param additionalInfo the additional information
@@ -358,7 +359,7 @@ public final class RegExContentAssistProcessor implements IContentAssistProcesso
 
         /**
          * Adds a proposal.
-         * 
+         *
          * @param proposal the string to be inserted
          * @param cursorPosition the cursor position after insertion, relative
          *            to the start of the proposal
@@ -373,7 +374,7 @@ public final class RegExContentAssistProcessor implements IContentAssistProcesso
 
         /**
          * Adds a proposal to the priority proposals list.
-         * 
+         *
          * @param proposal the string to be inserted
          * @param displayString the proposal's label
          * @param additionalInfo the additional information
@@ -387,7 +388,7 @@ public final class RegExContentAssistProcessor implements IContentAssistProcesso
         /**
          * Adds a proposal. Ensures that existing pre- and postfixes are not
          * duplicated.
-         * 
+         *
          * @param proposal the string to be inserted
          * @param cursorPosition the cursor position after insertion, relative
          *            to the start of the proposal
@@ -426,7 +427,7 @@ public final class RegExContentAssistProcessor implements IContentAssistProcesso
 
         /**
          * Adds a proposal that starts with a backslash.
-         * 
+         *
          * @param proposal the string to be inserted
          * @param displayString the proposal's label
          * @param additionalInfo the additional information

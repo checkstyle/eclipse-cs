@@ -63,7 +63,7 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
 
 /**
  * Editor dialog for the package filter.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public class PackageFilterEditor implements IFilterEditor {
@@ -82,8 +82,8 @@ public class PackageFilterEditor implements IFilterEditor {
      */
     public int openEditor(Shell parent) {
 
-        this.mDialog = new CheckedTreeSelectionDialog(parent, WorkbenchLabelProvider
-                .getDecoratingWorkbenchLabelProvider(), new SourceFolderContentProvider());
+        this.mDialog = new CheckedTreeSelectionDialog(parent,
+            WorkbenchLabelProvider.getDecoratingWorkbenchLabelProvider(), new SourceFolderContentProvider());
 
         // initialize the dialog with the filter data
         initCheckedTreeSelectionDialog();
@@ -179,7 +179,7 @@ public class PackageFilterEditor implements IFilterEditor {
 
     /**
      * Helper method to extract the edited data from the dialog.
-     * 
+     *
      * @return the filter data
      */
     private List<String> getFilterDataFromDialog() {
@@ -197,9 +197,8 @@ public class PackageFilterEditor implements IFilterEditor {
     }
 
     /**
-     * Content provider that provides the source folders of a project and their
-     * container members.
-     * 
+     * Content provider that provides the source folders of a project and their container members.
+     *
      * @author Lars Ködderitzsch
      */
     private class SourceFolderContentProvider implements ITreeContentProvider {
@@ -237,8 +236,7 @@ public class PackageFilterEditor implements IFilterEditor {
                     IJavaProject javaProject = JavaCore.create(project);
                     if (javaProject.exists()) {
 
-                        IPackageFragmentRoot[] packageRoots = javaProject
-                                .getAllPackageFragmentRoots();
+                        IPackageFragmentRoot[] packageRoots = javaProject.getAllPackageFragmentRoots();
 
                         for (int i = 0, size = packageRoots.length; i < size; i++) {
 
@@ -252,8 +250,7 @@ public class PackageFilterEditor implements IFilterEditor {
                                     }
                                 }
                             }
-                            else if (!packageRoots[i].isArchive()
-                                    && packageRoots[i].getParent().equals(javaProject)) {
+                            else if (!packageRoots[i].isArchive() && packageRoots[i].getParent().equals(javaProject)) {
                                 children.add(packageRoots[i].getResource());
                             }
                         }
@@ -314,7 +311,7 @@ public class PackageFilterEditor implements IFilterEditor {
          * @see org.eclipse.jface.viewers.IContentProvider#dispose()
          */
         public void dispose() {
-        // NOOP
+            // NOOP
         }
 
         /**
@@ -322,60 +319,63 @@ public class PackageFilterEditor implements IFilterEditor {
          *      java.lang.Object, java.lang.Object)
          */
         public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-        // NOOP
+            // NOOP
         }
     }
 
     /**
      * A class to select elements out of a tree structure.
-     * 
+     *
      * @since 2.0
      */
     public class CheckedTreeSelectionDialog extends SelectionStatusDialog {
-        private CheckboxTreeViewer fViewer;
+        private CheckboxTreeViewer mViewer;
 
-        private final ILabelProvider fLabelProvider;
+        private final ILabelProvider mLabelProvider;
 
-        private final ITreeContentProvider fContentProvider;
+        private final ITreeContentProvider mContentProvider;
 
         private Button mBtnRecurseSubPackages;
 
-        private Object fInput;
+        private Object mInput;
 
-        private boolean fIsEmpty;
+        private boolean mIsEmpty;
 
-        private int fWidth = 60;
+        private int mWidth = 60;
 
-        private int fHeight = 18;
+        private int mHeight = 18;
 
-        private Object[] fExpandedElements;
+        private Object[] mExpandedElements;
 
         private boolean mRecursivlyExcludeSubPackages = true;
 
         /**
          * Constructs an instance of <code>ElementTreeSelectionDialog</code>.
-         * 
-         * @param parent The shell to parent from.
-         * @param labelProvider the label provider to render the entries
-         * @param contentProvider the content provider to evaluate the tree
-         *            structure
+         *
+         * @param parent
+         *            The shell to parent from.
+         * @param labelProvider
+         *            the label provider to render the entries
+         * @param contentProvider
+         *            the content provider to evaluate the tree structure
          */
         public CheckedTreeSelectionDialog(Shell parent, ILabelProvider labelProvider,
-                ITreeContentProvider contentProvider) {
+            ITreeContentProvider contentProvider) {
             super(parent);
-            fLabelProvider = labelProvider;
-            fContentProvider = contentProvider;
+            mLabelProvider = labelProvider;
+            mContentProvider = contentProvider;
             setResult(new ArrayList<Object>(0));
             setStatusLineAboveButtons(true);
-            fExpandedElements = null;
+            mExpandedElements = null;
             int shellStyle = getShellStyle();
             setShellStyle(shellStyle | SWT.MAX | SWT.RESIZE);
         }
 
         /**
          * Sets the initial selection. Convenience method.
-         * 
-         * @param selection the initial selection.
+         *
+         * @param selection
+         *            the initial selection.
          */
         public void setInitialSelection(Object selection) {
             setInitialSelections(new Object[] { selection });
@@ -383,37 +383,42 @@ public class PackageFilterEditor implements IFilterEditor {
 
         /**
          * Sets the tree input.
-         * 
-         * @param input the tree input.
+         *
+         * @param input
+         *            the tree input.
          */
         public void setInput(Object input) {
-            fInput = input;
+            mInput = input;
         }
 
         /**
          * Expands elements in the tree.
-         * 
-         * @param elements The elements that will be expanded.
+         *
+         * @param elements
+         *            The elements that will be expanded.
          */
         public void setExpandedElements(Object[] elements) {
-            fExpandedElements = elements;
+            mExpandedElements = elements;
         }
 
         /**
          * Sets the size of the tree in unit of characters.
-         * 
-         * @param width the width of the tree.
-         * @param height the height of the tree.
+         *
+         * @param width
+         *            the width of the tree.
+         * @param height
+         *            the height of the tree.
          */
         public void setSize(int width, int height) {
-            fWidth = width;
-            fHeight = height;
+            mWidth = width;
+            mHeight = height;
         }
 
         /**
          * Sets if subtree should be recursivly excluded. Default is true.
-         * 
-         * @param recursivlyExcludeSubTree the recursive checking state
+         *
+         * @param recursivlyExcludeSubTree
+         *            the recursive checking state
          */
         public void setRecursivlyExcludeSubTree(boolean recursivlyExcludeSubTree) {
 
@@ -422,7 +427,7 @@ public class PackageFilterEditor implements IFilterEditor {
 
         /**
          * Returns if the subtrees should be recursivly excluded.
-         * 
+         *
          * @return
          */
         protected boolean isRecursivlyExcludeSubTree() {
@@ -431,11 +436,12 @@ public class PackageFilterEditor implements IFilterEditor {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.jface.window.Window#open()
          */
+        @Override
         public int open() {
-            fIsEmpty = evaluateIfTreeEmpty(fInput);
+            mIsEmpty = evaluateIfTreeEmpty(mInput);
             super.open();
             return getReturnCode();
         }
@@ -453,14 +459,14 @@ public class PackageFilterEditor implements IFilterEditor {
          */
         protected void computeResult() {
 
-            List<Object> checked = Arrays.asList(fViewer.getCheckedElements());
+            List<Object> checked = Arrays.asList(mViewer.getCheckedElements());
 
             if (!mRecursivlyExcludeSubPackages) {
                 setResult(checked);
             }
             else {
 
-                List<Object> grayed = Arrays.asList(fViewer.getGrayedElements());
+                List<Object> grayed = Arrays.asList(mViewer.getGrayedElements());
 
                 List<Object> pureChecked = new ArrayList<Object>(checked);
                 pureChecked.removeAll(grayed);
@@ -495,7 +501,7 @@ public class PackageFilterEditor implements IFilterEditor {
                 }
 
                 public void widgetDefaultSelected(SelectionEvent e) {
-                // NOOP
+                    // NOOP
                 }
             });
 
@@ -509,7 +515,7 @@ public class PackageFilterEditor implements IFilterEditor {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
          */
         protected Control createDialogArea(Composite parent) {
@@ -518,12 +524,12 @@ public class PackageFilterEditor implements IFilterEditor {
             CheckboxTreeViewer treeViewer = createTreeViewer(composite);
 
             GridData data = new GridData(GridData.FILL_BOTH);
-            data.widthHint = convertWidthInCharsToPixels(fWidth);
-            data.heightHint = convertHeightInCharsToPixels(fHeight);
+            data.widthHint = convertWidthInCharsToPixels(mWidth);
+            data.heightHint = convertHeightInCharsToPixels(mHeight);
             Tree treeWidget = treeViewer.getTree();
             treeWidget.setLayoutData(data);
             treeWidget.setFont(parent.getFont());
-            if (fIsEmpty) {
+            if (mIsEmpty) {
                 messageLabel.setEnabled(false);
                 treeWidget.setEnabled(false);
             }
@@ -532,17 +538,18 @@ public class PackageFilterEditor implements IFilterEditor {
 
         /**
          * Creates the tree viewer.
-         * 
-         * @param parent the parent composite
+         *
+         * @param parent
+         *            the parent composite
          * @return the tree viewer
          */
         protected CheckboxTreeViewer createTreeViewer(Composite parent) {
 
-            fViewer = new CheckboxTreeViewer(parent, SWT.BORDER);
-            fViewer.setContentProvider(fContentProvider);
-            fViewer.setLabelProvider(fLabelProvider);
+            mViewer = new CheckboxTreeViewer(parent, SWT.BORDER);
+            mViewer.setContentProvider(mContentProvider);
+            mViewer.setLabelProvider(mLabelProvider);
 
-            fViewer.addCheckStateListener(new ICheckStateListener() {
+            mViewer.addCheckStateListener(new ICheckStateListener() {
                 public void checkStateChanged(CheckStateChangedEvent event) {
 
                     IContainer element = (IContainer) event.getElement();
@@ -551,23 +558,23 @@ public class PackageFilterEditor implements IFilterEditor {
                         setSubElementsGrayedChecked(element, event.getChecked());
                     }
                     else if (isRecursivlyExcludeSubTree() && isGrayed(element)) {
-                        fViewer.setGrayChecked(element, true);
+                        mViewer.setGrayChecked(element, true);
                     }
                 }
             });
 
-            fViewer.setInput(fInput);
-            fViewer.setCheckedElements(getInitialElementSelections().toArray());
+            mViewer.setInput(mInput);
+            mViewer.setCheckedElements(getInitialElementSelections().toArray());
             adaptRecurseBehaviour();
-            if (fExpandedElements != null) {
-                fViewer.setExpandedElements(fExpandedElements);
+            if (mExpandedElements != null) {
+                mViewer.setExpandedElements(mExpandedElements);
             }
 
-            return fViewer;
+            return mViewer;
         }
 
         private boolean evaluateIfTreeEmpty(Object input) {
-            Object[] elements = fContentProvider.getElements(input);
+            Object[] elements = mContentProvider.getElements(input);
 
             return elements.length == 0;
         }
@@ -576,22 +583,22 @@ public class PackageFilterEditor implements IFilterEditor {
 
             if (isRecursivlyExcludeSubTree()) {
 
-                Object[] checked = fViewer.getCheckedElements();
+                Object[] checked = mViewer.getCheckedElements();
                 for (Object element : checked) {
                     setSubElementsGrayedChecked((IContainer) element, true);
                 }
             }
             else {
-                Object[] grayed = fViewer.getGrayedElements();
+                Object[] grayed = mViewer.getGrayedElements();
                 for (Object element : grayed) {
-                    fViewer.setGrayChecked(element, false);
+                    mViewer.setGrayChecked(element, false);
                 }
             }
         }
 
         private boolean isGrayed(Object element) {
 
-            Object[] grayed = fViewer.getGrayedElements();
+            Object[] grayed = mViewer.getGrayedElements();
             return Arrays.asList(grayed).contains(element);
         }
 
@@ -614,7 +621,7 @@ public class PackageFilterEditor implements IFilterEditor {
             }
 
             for (IContainer grayedChild : subContainers) {
-                fViewer.setGrayChecked(grayedChild, checked);
+                mViewer.setGrayChecked(grayedChild, checked);
             }
         }
     }

@@ -25,9 +25,9 @@ import java.util.Iterator;
 
 /**
  * Class for storing all settings of a checkstyle-configuration file.
- * 
+ *
  * @author Lukas Frena
- * 
+ *
  */
 public class CheckstyleSetting {
     /** Map which holds all checker-modules of the configuration. */
@@ -44,7 +44,7 @@ public class CheckstyleSetting {
 
     /**
      * Method for adding a new treewalker-module.
-     * 
+     *
      * @param name
      *            The name of the module.
      * @param properties
@@ -58,7 +58,7 @@ public class CheckstyleSetting {
 
     /**
      * Method for adding a new checker-module.
-     * 
+     *
      * @param name
      *            The name of the module.
      * @param properties
@@ -72,7 +72,7 @@ public class CheckstyleSetting {
 
     /**
      * Method for getting all checker-modules.
-     * 
+     *
      * @return A hashmap containing all checker-modules.
      */
     public HashMap<String, HashMap<String, String>> getmCheckerModules() {
@@ -81,7 +81,7 @@ public class CheckstyleSetting {
 
     /**
      * Method for getting all treewalker-modules.
-     * 
+     *
      * @return A hashmap containing all treewalker-modules.
      */
     public HashMap<String, HashMap<String, String>> getmTreeWalkerModules() {
@@ -90,7 +90,7 @@ public class CheckstyleSetting {
 
     /**
      * Method for adding another instance of type CheckstyleSetting.
-     * 
+     *
      * @param setting
      *            The CheckstyleSetting to add.
      */

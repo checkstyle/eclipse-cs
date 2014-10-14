@@ -26,10 +26,14 @@ import net.sf.eclipsecs.ui.Messages;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.preferences.SettingsTransfer;
 
+/**
+ * Support for transferring internal eclipse-cs workspace settings to another workspace.
+ *
+ * @author Lars Ködderitzsch
+ */
 public class CheckstyleSettingsTransfer extends SettingsTransfer {
 
     @Override
