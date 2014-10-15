@@ -57,11 +57,11 @@
                     <!--// --><![CDATA[//><!--
                     (function() {
                         var s = document.createElement('script'), t = document.getElementsByTagName('script')[0];
-                        
+
                         s.type = 'text/javascript';
                         s.async = true;
                         s.src = 'http://api.flattr.com/js/0.5.0/load.js?mode=auto';
-                        
+
                         t.parentNode.insertBefore(s, t);
                     })();//--><!]]>
                 </script>
@@ -138,11 +138,15 @@
                     <div class="bd">
                         <ul>
                             <li class="yuimenuitem">
-                                <a class="yuimenuitemlabel" href="{$path-prefix}releasenotes/5.7.0/release_notes.html">
+                                <a class="yuimenuitemlabel" href="{$path-prefix}releasenotes/5.8.0/release_notes.html">
                                     Release Notes</a>
                                 <div id="releasnotes" class="yuimenu">
                                     <div class="bd">
                                         <ul class="first-of-type">
+                                            <li class="yuimenuitem">
+                                                <a class="yuimenuitemlabel" href="{$path-prefix}releasenotes/5.8.0/release_notes.html">
+                                                    Release 5.8.0</a>
+                                            </li>
                                             <li class="yuimenuitem">
                                                 <a class="yuimenuitemlabel" href="{$path-prefix}releasenotes/5.7.0/release_notes.html">
                                                     Release 5.7.0</a>
@@ -372,7 +376,7 @@
                                     Preferences
                                 </a>
                             </li>
-                            <!-- li class="yuimenuitem"> <a class="yuimenuitemlabel" href="{$path-prefix}maven.html" >Synchronizing 
+                            <!-- li class="yuimenuitem"> <a class="yuimenuitemlabel" href="{$path-prefix}maven.html" >Synchronizing
                                 with m2eclipse</a> </li -->
                         </ul>
                     </div>
