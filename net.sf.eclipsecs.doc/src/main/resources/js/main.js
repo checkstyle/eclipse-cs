@@ -15,6 +15,10 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $lo
         templateUrl: '/partials/basic/custom-config.html'
     }).when('/filesets', {
         templateUrl: '/partials/advanced/filesets.html'
+    }).when('/filters', {
+        templateUrl: '/partials/advanced/filters.html'
+    }).when('/configtypes', {
+        templateUrl: '/partials/advanced/configtypes.html'
     }).when('/faq', {
         templateUrl: '/partials/faq.html'
     }).otherwise({ redirectTo: '/' });

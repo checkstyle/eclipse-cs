@@ -1,0 +1,76 @@
+<div class="container">
+    <h1>Restrict Checkstyle validation using project filters</h1>
+    <p>The Eclipse Checkstyle Pluin contains a filter facility to exclude certain files from Checkstyle. <br/> Knowing
+        that the plug-in allows you to configure file sets you might ask why there are also filters. <br/> This feature
+        seems to be quite redundant to file sets.</p>
+    <p>Lets think about this some more. <br/> File set let you configure patterns that determine if a file gets included
+        or excluded from the checks based on the file name. <br/> In some situations this is quite sufficient but there
+        are also cases where you want to exclude files based on other properties, for instance if you want to exclude
+        files that are write protected. <br/>
+    </p>
+    <p>The filters are accessible in the bottom section of the Checkstyle Project Properties Page.</p>
+    <p><img src="images/properties_simple_checked.png" alt="Plug-in filters"/>
+        <br/> To enable a filter for your project just select the corresponding check box. <br/> Some filters are
+        configurable, if you select such a filter the <i>Change...</i> button will become enabled. <br/> Pressing the
+            <em>Change...</em> button will open a specific filter editor.</p>
+    <p>The following filters come with the plugin:</p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Filter</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Files outside source directories</td>
+                <td>This filter is enabled by default. Some projects have java sources outside of source folders (for
+                    instance build folders where all sources are copied to for source distribution builds). <br/> With
+                    this filter you can exclude this files from the checks. Again, this can be also achieved by <a
+                        href="#!filesets.html">configuring file sets</a> - but for most cases the filter is easier to
+                    use.</td>
+            </tr>
+            <tr>
+                <td>Write protected files</td>
+                <td>Use this filter if you want to check only writeable files. This filter is particular useful if you
+                    use a versioning system with a Check-In/Check-Out semantic which uses file write protection to
+                    allow/disallow modification. <br/> So you can restrict the Checkstyle Plug-in to only check files
+                    you are actually working on (because you checked them out from the repository).</td>
+            </tr>
+            <tr>
+                <td>Derived (generated) files</td>
+                <td>Excludes project resources which have the <em>Derived</em> flag set, which is typically the case for
+                    generated sources.</td>
+            </tr>
+            <tr>
+                <td>Files not opened in editor</td>
+                <td>You can use this filter to check only files you opened in an Eclipse editor. This is particularly
+                    useful for big projects, as checking all files might lead to unacceptable build times or resource
+                    consumption.<br/>If this filter is enabled a project file which is opened in the editor is
+                    automatically checked upon opening, pointing out the problems in this file. Likewise when the file
+                    is closed the assiciated problem markers are cleared from the Problems view.</td>
+            </tr>
+            <tr>
+                <td>Files from packages</td>
+                <td>This is a configurable filter, allowing you to specify the packages you want to exclude from
+                    checking. You can, of course, get the same result by <a href="#!filesets.html">configuring file
+                        sets</a>, but this variant is much more practical.</td>
+            </tr>
+            <tr>
+                <td>Files in sync with the source repository</td>
+                <td>If your project is based on a source repository (Git, SVN, CVS) you might want to use this filter.
+                    <br/>With this you can limit the checks to the files you actually changed. All other files that are
+                    in sync with the repository (therefore unchanged) are excluded from the checks.<br/>This filter is a
+                    great way to support the application of the <a target="_blank"
+                        href="http://programmer.97things.oreilly.com/wiki/index.php/The_Boy_Scout_Rule">Boy Scout Rule
+                            <i class="fa fa-external-link"> </i></a> (aka <em>Leave the campground cleaner than you
+                        found it.</em>) within your development team.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>The Eclipse Checkstyle Plugin provides an extension point for customer filters which can be used to implement
+        your own filter. Read <a href="#!custom-filters.html">here</a> for more info about <a
+            href="#!custom-filters.html">extending the plugin with filters</a> .</p>
+</div>
