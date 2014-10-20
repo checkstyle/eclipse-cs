@@ -73,7 +73,7 @@ app.directive('googleAd', ['$location', '$timeout', function($location, $timeout
 
             $timeout(function() {
                 (adsbygoogle = window.adsbygoogle || []).push({});
-            }, 100);
+            }, 500);
         }
     };
 }]);
@@ -217,9 +217,6 @@ app.controller('ReleaseNotesCtrl', ['$scope', '$location', function ($scope, $lo
     var init = function () {
 
        var expandAll = $location.search().expandAll;
-
-       console.log(expandAll);
-
        if (expandAll == true) {
             $scope.expandAll();
        }

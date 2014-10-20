@@ -15,21 +15,21 @@
     <!--[if lt IE 9]>
       <script src="3rd-party/html5shim/html5.js"></script>
     <![endif]-->
-    <!-- fav and touch icons -->
   </head>
 
   <body>
     <div id="wrap">
       <header class="navbar navbar-default navbar-fixed-top" role="navigation">
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse"
+            data-ng-init="navCollapsed = true" data-ng-click="navCollapsed = !navCollapsed">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
           <a class="navbar-brand" href="#!/">Eclipse Checkstyle Plugin</a>
         </div>
-        <div class="navbar-collapse collapse navbar-responsive-collapse">
+        <div class="navbar-collapse collapse navbar-responsive-collapse" data-ng-class="{'in':!navCollapsed}">
           <ul class="nav navbar-nav">
             <li><a href="#!releasenotes">What's new</a></li>
             <li class="dropdown">
@@ -74,15 +74,6 @@
               </ul>
             </li>
           </ul>
-          <ul class="nav navbar-nav navbar-right" style="margin-right: 5px">
-            <li class="dropdown">
-              <a href="http://sourceforge.net/projects/eclipse-cs" style="padding: 5px">
-                <img src="http://sflogo.sourceforge.net/sflogo.php?group_id=80344&amp;type=3"
-                  alt="Get Eclipse Checkstyle Plug-in at SourceForge.net. Fast, secure and Free Open Source software downloads"
-                 />
-              </a>
-            </li>
-          </ul>
         </div>
       </header>
       <div id="main" role="main" data-ng-view=""> </div>
@@ -97,12 +88,14 @@
             > </i></a> and the Spacelab theme from <a target="_blank" href="http://bootswatch.com" rel="nofollow"
             >Bootswatch <i class="fa fa-external-link"> </i></a>. Icons from <a target="_blank"
             href="http://fortawesome.github.io/Font-Awesome/" rel="nofollow">Font Awesome <i class="fa fa-external-link"
-            > </i></a>. Powered by <a target="_blank" href="http://sourceforge.net/projects/eclipse-cs">Sourceforge <i
-              class="fa fa-external-link"> </i></a>. </p>
+            > </i></a>. Powered by <a href="http://sourceforge.net/projects/eclipse-cs">
+            <img src="http://sflogo.sourceforge.net/sflogo.php?group_id=80344&amp;type=8"
+              alt="Get Eclipse Checkstyle Plug-in at SourceForge.net. Fast, secure and Free Open Source software downloads"
+             /></a>.</p>
       </div>
     </div>
     <!--  javascript -->
-    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <script src="3rd-party/angular-1.2.26/angular.min.js" data-semver="1.2.26" data-require="angular.js@1.2.x"></script>
     <script src="3rd-party/angular-1.2.26/angular-animate.min.js" data-semver="1.2.26" data-require="angular.js@1.2.x"></script>
     <script src="3rd-party/angular-1.2.26/angular-route.min.js" data-semver="1.2.26" data-require="angular.js@1.2.x"></script>
