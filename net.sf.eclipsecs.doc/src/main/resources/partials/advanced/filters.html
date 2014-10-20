@@ -1,4 +1,6 @@
 <div class="container">
+    <div data-google-ad="" class="container"> </div>
+    <hr/>
     <h1>Restrict Checkstyle validation using project filters</h1>
     <p>The Eclipse Checkstyle Pluin contains a filter facility to exclude certain files from Checkstyle. <br/> Knowing
         that the plug-in allows you to configure file sets you might ask why there are also filters. <br/> This feature
@@ -9,7 +11,7 @@
         files that are write protected. <br/>
     </p>
     <p>The filters are accessible in the bottom section of the Checkstyle Project Properties Page.</p>
-    <p><img src="images/properties_simple_checked.png" alt="Plug-in filters"/>
+    <p><img src="images/properties_simple_checked.png" alt="project filters"/>
         <br/> To enable a filter for your project just select the corresponding check box. <br/> Some filters are
         configurable, if you select such a filter the <i>Change...</i> button will become enabled. <br/> Pressing the
             <em>Change...</em> button will open a specific filter editor.</p>
@@ -28,7 +30,7 @@
                 <td>This filter is enabled by default. Some projects have java sources outside of source folders (for
                     instance build folders where all sources are copied to for source distribution builds). <br/> With
                     this filter you can exclude this files from the checks. Again, this can be also achieved by <a
-                        href="#!filesets.html">configuring file sets</a> - but for most cases the filter is easier to
+                        href="#!filesets">configuring file sets</a> - but for most cases the filter is easier to
                     use.</td>
             </tr>
             <tr>
@@ -54,8 +56,8 @@
             <tr>
                 <td>Files from packages</td>
                 <td>This is a configurable filter, allowing you to specify the packages you want to exclude from
-                    checking. You can, of course, get the same result by <a href="#!filesets.html">configuring file
-                        sets</a>, but this variant is much more practical.</td>
+                    checking. You can, of course, get the same result by <a href="#!filesets">configuring file sets</a>,
+                    but this variant is much more practical.</td>
             </tr>
             <tr>
                 <td>Files in sync with the source repository</td>
@@ -71,6 +73,6 @@
     </table>
 
     <p>The Eclipse Checkstyle Plugin provides an extension point for customer filters which can be used to implement
-        your own filter. Read <a href="#!custom-filters.html">here</a> for more info about <a
-            href="#!custom-filters.html">extending the plugin with filters</a> .</p>
+        your own filter. Read <a href="#!custom-filters">here</a> for more info about <a href="#!custom-filters"
+            >extending the plugin with filters</a> .</p>
 </div>

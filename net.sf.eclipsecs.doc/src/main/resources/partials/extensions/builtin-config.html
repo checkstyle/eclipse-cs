@@ -1,0 +1,45 @@
+<div class="container">
+    <div data-google-ad="" class="container"> </div>
+    <hr/>
+    <h1>Provide a custom built-in configuration</h1>
+    <p>By providing a <a href="#!extensions">extension plugin</a> the eclipse-cs enables you to roll out a immutable
+        Checkstyle configuration to your team members.<br/> This is especially powerful if you distribute your plugin
+        via a corporate update site</p>
+    <p>You can provide such a built-in configuration by the use of the <code>net.sf.eclipsecs.core.configurations</code>
+        extension point.</p>
+    <p>Simply put your configuration file into the root of the extension plugin project and add a similar entry (see
+        example below) to your <code>plugin.xml</code>. <br/>
+        <br/>
+    </p>
+    <p>
+        <b>Example:</b>
+    </p>
+    <pre><code>
+&lt;extension
+    id="checkstyle.CheckConfiguration"
+    point="net.sf.eclipsecs.core.configurations"&gt;
+    &lt;check-configuration
+        name="Sample Builtin Checks"
+        location="sample_checks.xml"
+        description="Sample Built-in configuration"&gt;
+        &lt;property name="maxLineLength" value="50"/&gt;
+     &lt;/check-configuration&gt;
+&lt;/extension&gt;
+        </code></pre>
+    <p>
+        <b>Example 2 - custom built-in config to become the default configuration (highest default-weight wins):</b>
+    </p>
+    <pre><code>
+&lt;extension
+    id="checkstyle.CheckConfiguration"
+    point="net.sf.eclipsecs.core.configurations"&gt;
+    &lt;check-configuration
+        name="Sample Builtin Checks"
+        location="sample_checks.xml"
+        description="Sample Built-in configuration"
+        default-weight="10"&gt;
+        &lt;property name="maxLineLength" value="50"/&gt;
+     &lt;/check-configuration&gt;
+&lt;/extension&gt;
+        </code></pre>
+</div>

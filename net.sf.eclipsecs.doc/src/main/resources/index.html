@@ -2,12 +2,12 @@
 <html lang="en" data-ng-app="eclipse-cs">
   <head>
     <meta charset="utf-8" />
-    <title>The Checkstyle Plug-in for Eclipse</title>
+    <title>Eclipse Checkstyle Plugin</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Eclipse Checkstyle Plugin (eclipse-cs) web page" />
     <meta name="author" content="Lars Ködderitzsch" />
     <!-- stylesheets -->
-    <link href="3rd-party/bootstrap-3.2.0/css/bootstrap.min.css" rel="stylesheet" data-semver="3.2.0"
+    <link href="3rd-party/bootstrap-3.2.0/css/bootstrap-spacelab.min.css" rel="stylesheet" data-semver="3.2.0"
       data-require="bootstrap-css" />
     <link href="3rd-party/font-awesome-4.2.0/css/font-awesome.min.css" rel="stylesheet" data-semver="4.2.0" />
     <link rel="stylesheet" href="css/style.css" />
@@ -31,7 +31,7 @@
         </div>
         <div class="navbar-collapse collapse navbar-responsive-collapse">
           <ul class="nav navbar-nav">
-            <li><a href="#/releasenotes">What's new</a></li>
+            <li><a href="#!releasenotes">What's new</a></li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Getting started <b class="caret"></b></a>
               <ul class="dropdown-menu">
@@ -46,19 +46,18 @@
               <ul class="dropdown-menu">
                 <li><a href="#!filters">Plugin filters</a></li>
                 <li><a href="#!configtypes">Configuration types</a></li>
-                <li><a href="#">Team configuration best practices</a></li>
-                <li><a href="#">Expanding property placeholders</a></li>
+                <li><a href="#!properties">Expanding property placeholders</a></li>
                 <li><a href="#!filesets">Using filesets</a></li>
-                <li><a href="#">Advanced preferences</a></li>
+                <li><a href="#!preferences">Advanced preferences</a></li>
               </ul>
             </li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Plugin extensions <b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li><a href="#">Building an extension plugin</a></li>
-                <li><a href="#">Custom Checkstyle modules</a></li>
-                <li><a href="#">Provide a built-in Checkstyle configuration</a></li>
-                <li><a href="#">Custom plugin filters</a></li>
+                <li><a href="#!extensions">Building an extension plugin</a></li>
+                <li><a href="#!custom-checks">Custom Checkstyle modules</a></li>
+                <li><a href="#!builtin-config">Custom built-in Checkstyle configurations</a></li>
+                <li><a href="#!custom-filters">Custom plugin filters</a></li>
               </ul>
             </li>
             <li class="dropdown">
@@ -66,9 +65,12 @@
               <ul class="dropdown-menu">
                 <li><a href="#!faq">FAQ</a></li>
                 <li class="divider"></li>
-                <li><a href="#">Ask on the forums <i class="fa fa-external-link"></i></a></li>
-                <li><a href="#">File a bug <i class="fa fa-external-link"></i></a></li>
-                <li><a href="#">Request a feature <i class="fa fa-external-link"></i></a></li>
+                <li><a target="_blank" href="https://sourceforge.net/p/eclipse-cs/discussion/?source=navbar">Ask on the
+                    forums <i class="fa fa-external-link"></i></a></li>
+                <li><a target="_blank" href="https://sourceforge.net/p/eclipse-cs/bugs/">File a bug <i
+                      class="fa fa-external-link"></i></a></li>
+                <li><a target="_blank" href="https://sourceforge.net/p/eclipse-cs/feature-requests/">Request a feature
+                      <i class="fa fa-external-link"></i></a></li>
               </ul>
             </li>
           </ul>
@@ -88,20 +90,23 @@
     </div>
     <div id="footer">
       <div class="container">
-        <p class="muted credit"> Copyright &#xA9; 2002-2014. Designed and built by <a href="http://koedderitzsch.net"
-            target="_blank">Lars Ködderitzsch <i class="fa fa-external-link"></i></a>. Powered by <a
-            href="http://sourceforge.net/projects/eclipse-cs">
-            <img src="http://sflogo.sourceforge.net/sflogo.php?group_id=80344&amp;type=8"
-              alt="Get Eclipse Checkstyle Plug-in at SourceForge.net. Fast, secure and Free Open Source software downloads" />
-            <i class="fa fa-external-link"></i>
-          </a>. </p>
+        <p class="muted credit">Copyright &#xA9; 2002-2014. Designed and built by <a href="http://koedderitzsch.net"
+            target="_blank">Lars Ködderitzsch <i class="fa fa-external-link"></i></a>.<br />Based on <a target="_blank"
+            href="https://angularjs.org/" rel="nofollow">AngularJS <i class="fa fa-external-link"> </i></a>, <a
+            target="_blank" href="http://getbootstrap.com" rel="nofollow">Bootstrap <i class="fa fa-external-link"
+            > </i></a> and the Spacelab theme from <a target="_blank" href="http://bootswatch.com" rel="nofollow"
+            >Bootswatch <i class="fa fa-external-link"> </i></a>. Icons from <a target="_blank"
+            href="http://fortawesome.github.io/Font-Awesome/" rel="nofollow">Font Awesome <i class="fa fa-external-link"
+            > </i></a>. Powered by <a target="_blank" href="http://sourceforge.net/projects/eclipse-cs">Sourceforge <i
+              class="fa fa-external-link"> </i></a>. </p>
       </div>
     </div>
     <!--  javascript -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <script src="3rd-party/angular-1.2.26/angular.min.js" data-semver="1.2.26" data-require="angular.js@1.2.x"></script>
+    <script src="3rd-party/angular-1.2.26/angular-animate.min.js" data-semver="1.2.26" data-require="angular.js@1.2.x"></script>
     <script src="3rd-party/angular-1.2.26/angular-route.min.js" data-semver="1.2.26" data-require="angular.js@1.2.x"></script>
     <script src="3rd-party/angular-bootstrap/ui-bootstrap-tpls-0.11.2.min.js" data-semver="0.11.2" data-require="angular.js@1.2.x"></script>
     <script src="js/main.js"></script>
-    <script src="js/directives/flattr.js"></script>
   </body>
 </html>

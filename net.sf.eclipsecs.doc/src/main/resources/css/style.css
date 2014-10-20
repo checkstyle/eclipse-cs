@@ -19,6 +19,13 @@ html, body {
     margin: 0 auto -60px;
 }
 
+#adcontainer {
+    margin-bottom: 10px;
+}
+
+#ad {
+}
+
 #main {
     padding-top: 60px;
     padding-bottom: 20px;
@@ -37,7 +44,7 @@ html, body {
 }
 
 #footer .credit {
-    margin: 20px 0;
+    margin: 10px 0;
 }
 
 /* Lastly, apply responsive CSS fixes as necessary */

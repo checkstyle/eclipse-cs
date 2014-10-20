@@ -8,19 +8,23 @@
                     <p style="margin-bottom: 5px;">
                         <a class="btn btn-primary btn-outline-inverse btn-lg" target="_blank"
                             href="http://marketplace.eclipse.org/marketplace-client-intro?mpc_install=150"
-                            title="Drag and drop this link into a running Eclipse Indigo/Kepler/Luna workspace to install Checkstyle Plugin"
-                                ><i class="fa fa-plug"> </i> Install <sup>*</sup></a>
+                            title="Drag and drop this link into a running Eclipse Indigo/Kepler/Luna workspace to install the Eclipse Checkstyle Plugin"
+                                ><i class="fa fa-plug"> </i> Install <sup>1</sup></a>
                         <a class="btn btn-primary btn-outline-inverse btn-lg" target="_blank"
-                            href="https://sourceforge.net/projects/eclipse-cs/files/latest/download"><i
-                                class="fa fa-download"> </i> Download</a>
+                            href="https://sourceforge.net/projects/eclipse-cs/files/latest/download"
+                            title="Download the latest release as update site archive"><i class="fa fa-download"> </i>
+                            Download <sup>2</sup></a>
                         <a class="btn btn-default btn-outline-inverse btn-lg" target="_blank"
-                            href="https://sourceforge.net/p/eclipse-cs/git/ci/master/tree/"><i class="fa fa-code"> </i>
-                            Code</a>
+                            href="https://sourceforge.net/p/eclipse-cs/git/ci/master/tree/"
+                            title="Browse/clone code at SourceForge"><i class="fa fa-code"> </i> Code</a>
                     </p>
-                    <small><sup>*</sup> Install via Eclipse Marketplace. Drag and drop this link into a running Eclipse
-                        Indigo/Kepler/Luna workspace.</small>
+                    <small><sup>1 </sup>Install via Eclipse Marketplace. Drag and drop this link into a running Eclipse
+                        Indigo/Kepler/Luna workspace</small>
+                    <br/>
+                    <small><sup>2 </sup>Latest release 5.8.0, based on Checkstyle 5.8, see <a href="#!releasenotes"
+                            >release notes</a></small>
                 </div>
-                <div id="award-badge" class="col-md-2 panel panel-default">
+                <div id="award-badge" class="col-md-2 panel panel-default" style="margin-top: 20px;">
                     <div class="panel-body">
                         <a href="http://www.eclipse.org/org/press-release/20070306eclipsecommunityawards.php">
                             <img class="center-block" src="images/winner.jpg" height="120" width="144"
@@ -38,29 +42,34 @@
             </div>
         </div>
     </div>
+
+    <div data-google-ad="" class="container"> </div>
+
     <div class="container">
+        <hr/>
         <div class="row">
             <div class="col-md-4">
                 <h2>What is it?</h2>
-                <p>The Eclipse Checkstyle Plugin (aka eclipse-cs) integrates the static source code analyzer <a
-                        href="http://checkstyle.sourceforge.net/">Checkstyle <i class="fa fa-external-link"> </i></a>
-                    into the Eclipse IDE.<br/>Checkstyle is a Open Source development tool to help you ensure that your
-                    Java code adheres to a set of coding standards. Checkstyle does this by inspecting your Java source
-                    code and pointing out items that deviate from a defined set of coding rules. </p>
+                <p class="text-justify">The Eclipse Checkstyle Plugin (aka eclipse-cs) integrates the static source code
+                    analyzer <a href="http://checkstyle.sourceforge.net/">Checkstyle <i class="fa fa-external-link"
+                        > </i></a> into the Eclipse IDE.<br/>Checkstyle is a Open Source development tool to help you
+                    ensure that your Java code adheres to a set of coding standards. Checkstyle does this by inspecting
+                    your Java source code and pointing out items that deviate from a defined set of coding rules. </p>
             </div>
             <div class="col-md-4">
                 <h2>What does it do?</h2>
-                <p>With the Checkstyle Eclipse Plugin your code is constantly inspected for coding standard deviations.
-                    Within the Eclipse workbench you are immediately notified of problems via the Eclipse Problems View
-                    and source code annotations similar to compiler errors or warnings.<br/> This ensures an extremely
-                    short feedback loop right at the developers fingertips.</p>
+                <p class="text-justify">With the Checkstyle Eclipse Plugin your code is constantly inspected for coding
+                    standard deviations. Within the Eclipse workbench you are immediately notified of problems via the
+                    Eclipse Problems View and source code annotations similar to compiler errors or warnings.<br/> This
+                    ensures an extremely short feedback loop right at the developers fingertips.</p>
             </div>
             <div class="col-md-4">
                 <h2>Why would I use it?</h2>
-                <p>If your development team consists of more than one person, then obviously a common ground for coding
-                    standards (formatting rules, line lengths etc.) must be agreed upon - even if it is just for
-                    practical reasons to avoid superficial, format related merge conflicts.<br/>Checkstyle (and the
-                    Eclipse Checkstyle Plugin for that matter) helps you define and easily apply those common rules.</p>
+                <p class="text-justify">If your development team consists of more than one person, then obviously a
+                    common ground for coding standards (formatting rules, line lengths etc.) must be agreed upon - even
+                    if it is just for practical reasons to avoid superficial, format related merge
+                    conflicts.<br/>Checkstyle (and the Eclipse Checkstyle Plugin for that matter) helps you define and
+                    easily apply those common rules.</p>
             </div>
         </div>
         <hr/>
@@ -84,24 +93,25 @@
                 <h2>Basic concepts</h2>
                 <div class="row">
                     <div class="col-md-6">
-                        <p> The plugin uses a project builder to check your project files with Checkstyle. Assuming the
-                            Eclipse Auto-Build feature is enabled each modification of a project file will immediately
-                            get checked by Checkstyle on file save - giving you immediate feedback about the changes you
-                            made. To use a simple analogy, the Checkstyle Plug-in works very much like a compiler but
-                            instead of producing <em>.class</em> files it produces warnings where your code violates the
-                            Checkstyle rules. The discovered deviations are accessible in the Eclipse Problems View, as
-                            code editor annotations and via additional Checkstyle violations views.<br/>Learn <a
-                                href="#!project-setup">here</a> how to activate Checkstyle for a project.</p>
+                        <p class="text-justify"> The plugin uses a project builder to check your project files with
+                            Checkstyle. Assuming the Eclipse Auto-Build feature is enabled each modification of a
+                            project file will immediately get checked by Checkstyle on file save - giving you immediate
+                            feedback about the changes you made. To use a simple analogy, the Checkstyle Plug-in works
+                            very much like a compiler but instead of producing <em>.class</em> files it produces
+                            warnings where your code violates the Checkstyle rules. The discovered deviations are
+                            accessible in the Eclipse Problems View, as code editor annotations and via additional
+                            Checkstyle violations views.<br/>Learn <a href="#!project-setup">here</a> how to activate
+                            Checkstyle for a project.</p>
                     </div>
                     <div class="col-md-6">
-                        <p>The set of rules used to check your code is highly configurable. A Checkstyle configuration
-                            specifies which check rules are validated against your code and with which severity
-                            violations will be reported. Once defined a Checkstyle configuration can be used across
-                            multiple projects. The plugin comes with several pre-defined Checkstyle configurations.<br/>
-                            You can create custom configurations using the plugin's Checkstyle configuration editor or
-                            even use an existing Checkstyle configuration file from an external location.<br/>A short
-                            introduction into creating your own Checkstyle configurations can be found <a
-                                href="#!custom-config">here</a>.</p>
+                        <p class="text-justify">The set of rules used to check your code is highly configurable. A
+                            Checkstyle configuration specifies which check rules are validated against your code and
+                            with which severity violations will be reported. Once defined a Checkstyle configuration can
+                            be used across multiple projects. The plugin comes with several pre-defined Checkstyle
+                            configurations.<br/> You can create custom configurations using the plugin's Checkstyle
+                            configuration editor or even use an existing Checkstyle configuration file from an external
+                            location.<br/>A short introduction into creating your own Checkstyle configurations can be
+                            found <a href="#!custom-config">here</a>.</p>
                     </div>
                 </div>
             </div>
@@ -188,6 +198,18 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 well">
+                <h2>Build it yourself</h2>
+                <p>Git repository URL: <code>git://git.code.sf.net/p/eclipse-cs/git</code></p>
+                <p>Clone the git repository (or create a fork @Sourceforge) and import all projects into your Eclipse
+                    workspace.</p>
+                <p>To build an update site bundle package you will require Apache Maven (3.2.x should do fine).<br/>Open
+                    a command line in project <code>net.sf.eclipsecs.parent</code> and invoke <code>mvn clean
+                        install</code>.<br/><br/>Find the installable bundle in
+                        <code>net.sf.eclipsecs-updatesite/target</code>.</p>
             </div>
         </div>
     </div>

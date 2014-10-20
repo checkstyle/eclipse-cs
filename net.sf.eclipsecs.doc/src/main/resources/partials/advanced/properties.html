@@ -1,0 +1,54 @@
+<div class="container">
+    <div data-google-ad="" class="container"> </div>
+    <hr/>
+    <h1>Property expansion in Checkstyle configuration files</h1>
+    <p>Checkstyle contains a <a target="_blank" href="http://checkstyle.sourceforge.net/config.html#Properties">feature
+                <i class="fa fa-external-link"> </i></a> that lets you define module properties in a way that they can
+        expanded dynamically when the configuration is loaded. <br/> Such a property is defined using the well known
+            <code>${property_name}</code> notation.</p>
+    <p>Normally these properties are resolved from command line or ant properties. <br/> Of course this does not work
+        within the plug-in so using a checkstyle configuration containing such expandable properties will probably
+        fail.</p>
+    <p>But as you might have thought there are some features in place to help you out in this case.</p>
+    <p>When a Check Configuration is set up the plugin will check the Checkstyle configuration file for unresolved
+        properties.<br/>When found the plugin will warn you that this configuration cannot be used until those
+        properties can be resolved.<br/> To resolve such properties you have a variety of options. </p>
+    <h3>Built-in properties</h3>
+    <p>First there are some properties that are automatically expanded by the plug-in:</p>
+    <ul>
+        <li>
+            <p><code>${basedir}</code> &amp; <code>${project_loc}</code> - gets mapped to the current project
+                directory</p>
+        </li>
+        <li>
+            <p><code>${workspace_loc}</code> - gets mapped to the current Eclipse workspace directory</p>
+        </li>
+        <li>
+            <p><code>${config_loc}</code> &amp; <code>${samedir}</code> - get mapped to the directory the configuration
+                file lies in</p>
+        </li>
+    </ul>
+    <h3>Resolving from .properties file</h3>
+    <p>If you have more properties that need to be expanded there is another feature for you.</p>
+    <p>Using External, Remote or Project Relative Configuration can be expanded from a <code>.properties</code> file in
+        the same directory as the Checkstyle configuration file having the same name (except the file extension).<br/>
+        For instance:</p>
+    <p><code>C:/path/to/my/config/myCheckConfiguration.xml</code>
+        <br/> can resolve properties defined in <br/>
+        <code>C:/path/to/my/config/myCheckConfiguration.properties</code></p>
+    <h3>Resolving from Classpath Variables and Environment properties</h3>
+    <p>Additionally properties can be resolved from Classpath Variables (set up in workspace preferences) and from
+        Environment Properties, passed into the Eclipse JVM using the <em>-D</em> parameter.</p>
+    <h3>Additional properties configured with the Check Configuration</h3>
+    <p>If all this stuff doesn't suit your needs the plugin supports storing properties with the Check Configuration
+        setup.<br/>You might have already noted the <em>Additional properties...</em> button located in the lower left
+        of a Check Configuration setup dialog.<br/>Pressing this button will lead you to another dialog where you can
+        input properties and their values<br/>To aid in this task the plugin offers to find unresolved properties for
+        you.<br/>Properties set up here will be stored with the Check Configuration data, for Global Configurations
+        within the plugins workspace state location, for Local Configurations within the <em>.checkstyle</em> file. </p>
+    <p>Note that the plug-in supports &#39;property chaining&#39; to let you use &#39;properties within properties&#39;.
+        <br/> With this feature you can write something like this in your <code>.properties</code> file: <br/>
+        <code>property1=abc</code><br/><code>property2=${property1}def</code>
+        <br/> Using <code>${property2}</code> in your checkstyle configuration will then be resolved to:
+            <code>abcdef</code></p>
+</div>

@@ -1,0 +1,60 @@
+<div class="container">
+    <div data-google-ad="" class="container"> </div>
+    <hr/>
+    <h1>Advanced Preference Settings</h1>
+    <p>This page explains the meaning of the other preferences on the plugin's preference page.</p>
+    <p>
+        <img src="images/default_preferences.png" alt="Checkstyle preferences"/>
+    </p>
+    <ul>
+        <li>
+            <p><b>Rebuild projects if needed</b><br/> Determines the plugin's behavior when a configuration is changed
+                via the configuration editor. This option can be set to automatically rebuild the affected projects,
+                never to rebuild these projects or be prompted whether to rebuild.</p>
+        </li>
+        <li>
+            <p><b>Warn before losing configured file sets</b><br/>Set if the plugin should warn you when you are about
+                to lose configured file sets in the project properties. This can happen if you switch from an advanced
+                project configuration using file sets to the simple setting.</p>
+        </li>
+        <li>
+            <p><b>Include rule names in violation messages</b><br/>Controls if the name of the Checkstyle module
+                reporting a problem is prepended to the message produced. If enabled this can be used to sort the
+                problems via the Problems View alphabetically and group the warnings together.</p>
+        </li>
+        <li>
+            <p><b>Include module id (if available) in violation messages</b><br/>In a Checkstyle configuration file each
+                module can be assigned a unique id. This can be used to distinguish multiple instances of the same
+                Checkstyle module using different settings. This preference setting controls whether this module id is
+                being prepended to the Checkstyle messages produced.</p>
+        </li>
+        <li>
+            <p><b>Limit Checkstyle markers per resource to</b><br/>Use this to limit the maximum amount of markers
+                reported for a single file.<br/> A potential reason to use this is to avoid performance issues in case a
+                huge amount of problems is reported for single files.</p>
+        </li>
+        <li>
+            <p><b>Limit Checkstyle markers per resource to</b><br/>Use this to limit the maximum amount of markers
+                reported for a single file.<br/> Reason is that a massive amount of markers (>10000) can seriously bog
+                down your Eclipse.<br/> Try this setting if you are experiencing such troubles.</p>
+        </li>
+        <li>
+            <p><b>Run Checkstyle in background on full builds</b><br/>By default Checkstyle execution runs within
+                Eclipses build infrastructure, which means a full project build will only finish once the Checkstyle
+                analysis has concluded. For very large projects this may be impractical, in which case you can use this
+                setting to decouple the Checkstyle execution from the Eclipse build. In this case Checkstyle will still
+                be triggered upon project build but will not block the build itself.</p>
+        </li>
+        <li>
+            <p>
+                <b>The tiny reload button (upper right)</b>
+                <br/>For performance reasons the plugin interally caches Checkstyle configurations (that is not the
+                configuation file but the resulting in-memory object structure of Checkstyle modules). Modifications to
+                the Checkstyle configuration file itself are discovered by the plugin automatically and the caches will
+                be properly updated. However, a checkstyle configuration file can also reference supplemental
+                configuration files (header definitions, suppression files etc.). At this point the plugin is not smart
+                enough to detect modifications to theses additional files. If you're modifying such files you may need
+                to manually clear the plugin's internal caches by using this little button.</p>
+        </li>
+    </ul>
+</div>
