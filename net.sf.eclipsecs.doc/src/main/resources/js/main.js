@@ -12,29 +12,29 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $lo
     }).when('/releasenotes', {
         templateUrl: '/partials/releasenotes.html'
     }).when('/install', {
-        templateUrl: '/partials/basic/install.html'
+        templateUrl: '/partials/install.html'
     }).when('/project-setup', {
-        templateUrl: '/partials/basic/project-setup.html'
+        templateUrl: '/partials/project-setup.html'
     }).when('/custom-config', {
-        templateUrl: '/partials/basic/custom-config.html'
+        templateUrl: '/partials/custom-config.html'
     }).when('/filesets', {
-        templateUrl: '/partials/advanced/filesets.html'
+        templateUrl: '/partials/filesets.html'
     }).when('/filters', {
-        templateUrl: '/partials/advanced/filters.html'
+        templateUrl: '/partials/filters.html'
     }).when('/configtypes', {
-        templateUrl: '/partials/advanced/configtypes.html'
+        templateUrl: '/partials/configtypes.html'
     }).when('/properties', {
-        templateUrl: '/partials/advanced/properties.html'
+        templateUrl: '/partials/properties.html'
     }).when('/preferences', {
-        templateUrl: '/partials/advanced/preferences.html'
+        templateUrl: '/partials/preferences.html'
     }).when('/extensions', {
-        templateUrl: '/partials/extensions/extensions.html'
+        templateUrl: '/partials/extensions.html'
     }).when('/custom-checks', {
-        templateUrl: '/partials/extensions/custom-checks.html'
+        templateUrl: '/partials/custom-checks.html'
     }).when('/custom-filters', {
-        templateUrl: '/partials/extensions/custom-filters.html'
+        templateUrl: '/partials/custom-filters.html'
     }).when('/builtin-config', {
-        templateUrl: '/partials/extensions/builtin-config.html'
+        templateUrl: '/partials/builtin-config.html'
     }).when('/faq', {
         templateUrl: '/partials/faq.html'
     }).otherwise({ redirectTo: '/' });
