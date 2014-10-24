@@ -58,7 +58,7 @@ public class ModifierOrderQuickfix extends AbstractASTResolution {
         ModifierKeyword.PROTECTED_KEYWORD, ModifierKeyword.PRIVATE_KEYWORD, ModifierKeyword.ABSTRACT_KEYWORD,
         ModifierKeyword.STATIC_KEYWORD, ModifierKeyword.FINAL_KEYWORD, ModifierKeyword.TRANSIENT_KEYWORD,
         ModifierKeyword.VOLATILE_KEYWORD, ModifierKeyword.SYNCHRONIZED_KEYWORD, ModifierKeyword.NATIVE_KEYWORD,
-        ModifierKeyword.STRICTFP_KEYWORD, });
+        ModifierKeyword.STRICTFP_KEYWORD, ModifierKeyword.DEFAULT_KEYWORD, });
 
     /** The length of the javadoc comment declaration. */
     private static final int JAVADOC_COMMENT_LENGTH = 6;
