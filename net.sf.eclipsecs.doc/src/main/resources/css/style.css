@@ -33,6 +33,17 @@ html, body {
     margin: 10px 0;
 }
 
+.ad-container {
+    height: 280px;
+}
+
+/* Small devices (tablets, 530px and up) */
+@media (min-width: 530px) {
+    .ad-container {
+        height: 60px;
+    }
+}
+
 /* Small devices (tablets, 768px and up) */
 @media (min-width: 768px) {
 
@@ -70,6 +81,10 @@ html, body {
 
     #footer .credit {
         margin: 10px 0;
+    }
+
+    .ad-container {
+        height: 80px;
     }
 }
 

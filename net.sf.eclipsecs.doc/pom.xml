@@ -57,12 +57,11 @@
                                 </resource>
                                 <resource>
                                     <directory>src/main/resources</directory>
-                                    <!-- Copy all the rest except *.html (xslt-transformed) and update site files (see above) -->
+                                    <!-- Copy all the rest except update site files (see above) -->
                                     <includes>
                                         <include>**/*</include>
                                     </includes>
                                     <excludes>
-                                        <exclude>**/*.html</exclude>
                                         <exclude>update/**/*</exclude>
                                     </excludes>
                                 </resource>
@@ -85,7 +84,6 @@
                                         <include>**/*</include>
                                     </includes>
                                     <excludes>
-                                        <exclude>**/*.html</exclude>
                                         <exclude>update/**</exclude>
                                     </excludes>
                                 </resource>

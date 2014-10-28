@@ -1,61 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?NLS TYPE="org.eclipse.help.toc"?>
 
-<toc label="Checkstyle Plug-in" topic="docs/index.html">
-    <topic label="Getting Started" href="docs/getting_started.html">
-        <topic label="Setting up a project" href="docs/basic_setup_project.html"/>
-        <topic label="Creating a checkstyle configuration" href="docs/basic_creating_config.html"/>
+<toc label="Checkstyle Plug-in" topic="docs/main.html">
+    <topic label="Getting Started">
+        <topic label="Setting up a project" href="docs/main.html#!/project-setup"/>
+        <topic label="Creating a checkstyle configuration" href="docs/main.html#!/custom-config"/>
     </topic>
     <topic label="Advanced topics">
-        <topic label="Configuring File Sets" href="docs/advanced_file_sets.html"/>
-        <topic label="Using the plug-in filters" href="docs/advanced_filters.html"/>
-        <topic label="Configuration types" href="docs/advanced_configtypes.html"/>
-        <topic label="Working with a Team Repository" href="docs/advanced_team.html"/>
-        <topic label="Using Regular Expressions" href="docs/advanced_regularexpressions.html"/>
-        <topic label="Expanding properties" href="docs/advanced_properties.html"/>
-        <topic label="Advanced Preferences" href="docs/advanced_preferences.html"/>
-        <!-- topic label="m2eclipse Synchronization" href="docs/maven.html"/ -->
+        <topic label="Configuring File Sets" href="docs/main.html#!/filesets"/>
+        <topic label="Using the plug-in filters" href="docs/main.html#!/filters"/>
+        <topic label="Configuration types" href="docs/main.html#!/configtypes"/>
+        <topic label="Expanding properties" href="docs/main.html#!/properties"/>
+        <topic label="Advanced Preferences" href="docs/main.html#!/preferences"/>
     </topic>
     <topic label="Extending the Checkstyle Plug-in">
-        <topic label="Building an extension plugin" href="docs/extending.html"/>
-        <topic label="Custom Checkstyle modules" href="docs/extending_custom_checks.html"/>
-        <topic label="Providing a built-in configuration"
-            href="docs/extending_builtin_configurations.html"/>
-        <topic label="Custom plug-in filters" href="docs/extending_filters.html"/>
-        <topic label="Development environment" href="docs/development.html"/>
+        <topic label="Building an extension plugin" href="docs/main.html#!/extensions"/>
+        <topic label="Custom Checkstyle modules" href="docs/main.html#!/custom-checks"/>
+        <topic label="Providing a built-in configuration" href="docs/main.html#!/builtin-config"/>
+        <topic label="Custom plug-in filters" href="docs/main.html#!/custom-filters"/>
     </topic>
-    <topic label="Release notes" href="docs/releasenotes/5.8.0/release_notes.html">
-        <topic label="Release 5.8.0" href="docs/releasenotes/5.8.0/release_notes.html"/>
-        <topic label="Release 5.7.0" href="docs/releasenotes/5.7.0/release_notes.html"/>
-        <topic label="Release 5.6.1" href="docs/releasenotes/5.6.1/release_notes.html"/>
-        <topic label="Release 5.6.0" href="docs/releasenotes/5.6.0/release_notes.html"/>
-        <topic label="Release 5.5.0" href="docs/releasenotes/5.5.0/release_notes.html"/>
-        <topic label="Release 5.4.1" href="docs/releasenotes/5.4.1/release_notes.html"/>
-        <topic label="Release 5.4.0" href="docs/releasenotes/5.4.0/release_notes.html"/>
-        <topic label="Release 5.3.0" href="docs/releasenotes/5.3.0/release_notes.html"/>
-        <topic label="Release 5.2.0" href="docs/releasenotes/5.2.0/release_notes.html"/>
-        <topic label="Release 5.1.0" href="docs/releasenotes/5.1.1/release_notes.html"/>
-        <topic label="Release 5.1.0" href="docs/releasenotes/5.1.0/release_notes.html"/>
-        <topic label="Release 5.0.3" href="docs/releasenotes/5.0.3/release_notes.html"/>
-        <topic label="Release 5.0.2" href="docs/releasenotes/5.0.2/release_notes.html"/>
-        <topic label="Release 5.0.1" href="docs/releasenotes/5.0.1/release_notes.html"/>
-        <topic label="Release 5.0.0final" href="docs/releasenotes/5.0.0final/release_notes.html"/>
-        <topic label="Release 5.0.0beta4" href="docs/releasenotes/5.0.0beta4/release_notes.html"/>
-        <topic label="Release 5.0.0beta3" href="docs/releasenotes/5.0.0beta3/release_notes.html"/>
-        <topic label="Release 5.0.0beta2" href="docs/releasenotes/5.0.0beta2/release_notes.html"/>
-        <topic label="Release 5.0.0beta1" href="docs/releasenotes/5.0.0beta1/release_notes.html"/>
-        <topic label="Release 4.4.2" href="docs/releasenotes/4.4.2/release_notes.html"/>
-        <topic label="Release 4.4.1" href="docs/releasenotes/4.4.1/release_notes.html"/>
-        <topic label="Release 4.4.0" href="docs/releasenotes/4.4.0/release_notes.html"/>
-        <topic label="Release 4.3.3" href="docs/releasenotes/4.3.3/release_notes.html"/>
-        <topic label="Release 4.3.2" href="docs/releasenotes/4.3.2/release_notes.html"/>
-        <topic label="Release 4.3.1" href="docs/releasenotes/4.3.1/release_notes.html"/>
-        <topic label="Release 4.3.0" href="docs/releasenotes/4.3.0/release_notes.html"/>
-        <topic label="Release 4.2.1" href="docs/releasenotes/4.2.1/release_notes.html"/>
-        <topic label="Release 4.2.0" href="docs/releasenotes/4.2.0/release_notes.html"/>
-        <topic label="Older releases" href="docs/releasenotes/release_notes_older.html"/>
-    </topic>
-    <topic label="RAD 6/7 issues" href="docs/rad_usage.html"/>
-    <topic label="FAQ" href="docs/faq.html"/>
+    <topic label="Release notes" href="docs/main.html#!/releasenotes"/>
+    <topic label="FAQ" href="docs/main.html#!/faq"/>
     <topic label="Checkstyle documentation" href="http://checkstyle.sourceforge.net/"/>
 </toc>

@@ -8,35 +8,35 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $lo
     $locationProvider.hashPrefix('!');
 
     $routeProvider.when('/', {
-        templateUrl: '/partials/index.html'
+        templateUrl: 'partials/index.html'
     }).when('/releasenotes', {
-        templateUrl: '/partials/releasenotes.html'
+        templateUrl: 'partials/releasenotes.html'
     }).when('/install', {
-        templateUrl: '/partials/install.html'
+        templateUrl: 'partials/install.html'
     }).when('/project-setup', {
-        templateUrl: '/partials/project-setup.html'
+        templateUrl: 'partials/project-setup.html'
     }).when('/custom-config', {
-        templateUrl: '/partials/custom-config.html'
+        templateUrl: 'partials/custom-config.html'
     }).when('/filesets', {
-        templateUrl: '/partials/filesets.html'
+        templateUrl: 'partials/filesets.html'
     }).when('/filters', {
-        templateUrl: '/partials/filters.html'
+        templateUrl: 'partials/filters.html'
     }).when('/configtypes', {
-        templateUrl: '/partials/configtypes.html'
+        templateUrl: 'partials/configtypes.html'
     }).when('/properties', {
-        templateUrl: '/partials/properties.html'
+        templateUrl: 'partials/properties.html'
     }).when('/preferences', {
-        templateUrl: '/partials/preferences.html'
+        templateUrl: 'partials/preferences.html'
     }).when('/extensions', {
-        templateUrl: '/partials/extensions.html'
+        templateUrl: 'partials/extensions.html'
     }).when('/custom-checks', {
-        templateUrl: '/partials/custom-checks.html'
+        templateUrl: 'partials/custom-checks.html'
     }).when('/custom-filters', {
-        templateUrl: '/partials/custom-filters.html'
+        templateUrl: 'partials/custom-filters.html'
     }).when('/builtin-config', {
-        templateUrl: '/partials/builtin-config.html'
+        templateUrl: 'partials/builtin-config.html'
     }).when('/faq', {
-        templateUrl: '/partials/faq.html'
+        templateUrl: 'partials/faq.html'
     }).otherwise({ redirectTo: '/' });
 
 }]);
@@ -60,20 +60,28 @@ app.directive('flattrButton', function() {
 /**
  * Custom directive for Google Ad integration.
  */
-app.directive('googleAd', ['$location', '$timeout', function($location, $timeout) {
+app.directive('googleAd', ['$rootScope', '$location', '$timeout', '$window', function($rootScope, $location, $timeout, $window) {
     return {
         restrict: 'A',
-        templateUrl: '/partials/google-ad.html',
+        replace: true,
+        templateUrl: 'partials/google-ad.html',
         controller: function() {
 
-            if ($location.host() == 'localhost') {
+            if ($location.host() == 'localhost' || $location.host() == '127.0.0.1') {
                 console.log('We\'re on localhost, skipping ad push');
                 return;
             }
 
+            $rootScope.showAd = true;
+
             $timeout(function() {
                 (adsbygoogle = window.adsbygoogle || []).push({});
             }, 500);
+
+            var w = angular.element($window);
+            w.bind('resize', function() {
+                //
+            });
         }
     };
 }]);
@@ -81,130 +89,11 @@ app.directive('googleAd', ['$location', '$timeout', function($location, $timeout
 /**
  * Controller for the release notes page.
  */
-app.controller('ReleaseNotesCtrl', ['$scope', '$location', function ($scope, $location) {
+app.controller('ReleaseNotesCtrl', ['$scope', '$location', '$http', function ($scope, $location, $http) {
 
-    $scope.releases = [
-      {
-        version: "Release 5.8.0",
-        template: "/partials/releases/5.8.0/release_notes.html",
-        open: true
-      },
-      {
-        version: "Release 5.7.0",
-        template: "/partials/releases/5.7.0/release_notes.html",
-        open: true
-      },
-      {
-        version: "Release 5.6.1",
-        template: "/partials/releases/5.6.1/release_notes.html",
-        open: true
-      },
-      {
-        version: "Release 5.6.0",
-        template: "/partials/releases/5.6.0/release_notes.html",
-        open: true
-      },
-      {
-        version: "Release 5.5.0",
-        template: "/partials/releases/5.5.0/release_notes.html"
-      },
-      {
-        version: "Release 5.4.1",
-        template: "/partials/releases/5.4.1/release_notes.html"
-      },
-      {
-        version: "Release 5.4.0",
-        template: "/partials/releases/5.4.0/release_notes.html"
-      },
-      {
-        version: "Release 5.3.0",
-        template: "/partials/releases/5.3.0/release_notes.html"
-      },
-      {
-        version: "Release 5.2.0",
-        template: "/partials/releases/5.2.0/release_notes.html"
-      },
-      {
-        version: "Release 5.1.1",
-        template: "/partials/releases/5.1.1/release_notes.html"
-      },
-      {
-        version: "Release 5.1.0",
-        template: "/partials/releases/5.1.0/release_notes.html"
-      },
-      {
-        version: "Release 5.0.3",
-        template: "/partials/releases/5.0.3/release_notes.html"
-      },
-      {
-        version: "Release 5.0.2",
-        template: "/partials/releases/5.0.2/release_notes.html"
-      },
-      {
-        version: "Release 5.0.1",
-        template: "/partials/releases/5.0.1/release_notes.html"
-      },
-      {
-        version: "Release 5.0.0-final",
-        template: "/partials/releases/5.0.0final/release_notes.html"
-      },
-      {
-        version: "Release 5.0.0-beta4",
-        template: "/partials/releases/5.0.0beta4/release_notes.html"
-      },
-      {
-        version: "Release 5.0.0-beta3",
-        template: "/partials/releases/5.0.0beta3/release_notes.html"
-      },
-      {
-        version: "Release 5.0.0-beta2",
-        template: "/partials/releases/5.0.0beta2/release_notes.html"
-      },
-      {
-        version: "Release 5.0.0-beta1",
-        template: "/partials/releases/5.0.0beta1/release_notes.html"
-      },
-      {
-        version: "Release 4.4.2",
-        template: "/partials/releases/4.4.2/release_notes.html"
-      },
-      {
-        version: "Release 4.4.1",
-        template: "/partials/releases/4.4.1/release_notes.html"
-      },
-      {
-        version: "Release 4.4.0",
-        template: "/partials/releases/4.4.0/release_notes.html"
-      },
-      {
-        version: "Release 4.3.3",
-        template: "/partials/releases/4.3.3/release_notes.html"
-      },
-      {
-        version: "Release 4.3.2",
-        template: "/partials/releases/4.3.2/release_notes.html"
-      },
-      {
-        version: "Release 4.3.1",
-        template: "/partials/releases/4.3.1/release_notes.html"
-      },
-      {
-        version: "Release 4.3.0",
-        template: "/partials/releases/4.3.0/release_notes.html"
-      },
-      {
-        version: "Release 4.2.1",
-        template: "/partials/releases/4.2.1/release_notes.html"
-      },
-      {
-        version: "Release 4.2.0",
-        template: "/partials/releases/4.2.0/release_notes.html"
-      },
-      {
-        version: "Older releases",
-        template: "/partials/releases/release_notes_older.html"
-      }
-    ];
+    $http.get('releases.json').success(function(data, status, headers, config) {
+        $scope.releases = data;
+    });
 
     /** Set all releases to expanded. **/
     $scope.expandAll = function() {
@@ -212,7 +101,6 @@ app.controller('ReleaseNotesCtrl', ['$scope', '$location', function ($scope, $lo
             release.open = true;
         });
     };
-
 
     var init = function () {
 
@@ -232,31 +120,31 @@ app.controller('ScreenshotsCtrl', function ($scope) {
 
     $scope.slides = [
         {
-            image: '/images/screenshots/eclipsecs0000.png',
+            image: 'images/screenshots/eclipsecs0000.png',
             text: 'Checkstyle violations annotated in the Java editor'
         },
         {
-            image: '/images/screenshots/eclipsecs0013.png',
+            image: 'images/screenshots/eclipsecs0013.png',
             text: 'Checkstyle violations chart with drilldown capability'
         },
         {
-            image: '/images/screenshots/eclipsecs0011.png',
+            image: 'images/screenshots/eclipsecs0011.png',
             text: 'Checkstyle violations view, group violations by type'
         },
         {
-            image: '/images/screenshots/eclipsecs0012.png',
+            image: 'images/screenshots/eclipsecs0012.png',
             text: 'Drill down into violation categories'
         },
         {
-            image: '/images/screenshots/eclipsecs0001.png',
+            image: 'images/screenshots/eclipsecs0001.png',
             text: 'Checkstyle Project configuration (simple)'
         },
         {
-            image: '/images/screenshots/eclipsecs0006.png',
+            image: 'images/screenshots/eclipsecs0006.png',
             text: 'Checkstyle workspace preferences and setup of global check configurations'
         },
         {
-            image: '/images/screenshots/eclipsecs0008.png',
+            image: 'images/screenshots/eclipsecs0008.png',
             text: 'Checkstyle configuration editor, assemble your own Checkstyle setup'
         }
     ];

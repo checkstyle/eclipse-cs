@@ -13,7 +13,7 @@
                 wiggling. The default key sequence is Ctrl+Alt+C (or corresponding on Mac).<br/>
                 <br/>
                 <img alt="key-binding for the 'Apply Checkstyle fixes'"
-                    src="/partials/releases/4.3.1/quickfixes_keybinding.jpg"/>
+                    src="partials/releases/4.3.1/quickfixes_keybinding.jpg"/>
             </p>
             <p> Additionaly new quickfixes were implemented for the following Checkstyle checks: </p>
             <ul>
@@ -26,12 +26,12 @@
             <p>A new implementation of the FileInSyncFilter provides general support for Team API compliant team
                 providers.<br/> Using this filter only files with an outgoing change are going to be checked by
                 Checkstyle.<br/> Note that since filter will only be working in Eclipse 3.2.0 and greater.<br/><br/>
-                <img alt="New FileInSyncFilter" src="/partials/releases/4.3.1/fileinsyncfilter.jpg"/></p>
+                <img alt="New FileInSyncFilter" src="partials/releases/4.3.1/fileinsyncfilter.jpg"/></p>
             <p>The usefulness of the OpenFilesFilter, which when applied will only check files that are opened in the
                 editor, was greatly enhanced by a new feature that automatically checks a file once when it is
                 opened.<br/>In reverse if a file is closed the checkstyle markers for this file are removed.<br/>Try it
                 out, especially with a large workspace using this filter will greatly enhances the Checkstyle experience.<br/><br/>
-                <img alt="OpenFilesFilter" src="/partials/releases/4.3.1/openfilesfilter.jpg"/></p>
+                <img alt="OpenFilesFilter" src="partials/releases/4.3.1/openfilesfilter.jpg"/></p>
         </li>
         <li>
             <p>Configuration editor improvements</p>
@@ -39,11 +39,11 @@
                 filtered to these modules where the filter text appears in either the module name or
                 description.<br/>Note that there is nothing sophisticated behind this filtering, it is just based on
                 plain String comparison.<br/><br/>
-                <img alt="Filtered Module tree" src="/partials/releases/4.3.1/treefiltering.jpg"/></p>
+                <img alt="Filtered Module tree" src="partials/releases/4.3.1/treefiltering.jpg"/></p>
             <p> Whereever a regular expression can be provided to customize a Checkstyle modules behaviour there is now
                 right next to it a text field where you can input a test string to see if the regular expression matches.<br/><br/>
-                <img alt="Regex testing" src="/partials/releases/4.3.1/regextesting.jpg"/>
-                <img alt="Regex testing" src="/partials/releases/4.3.1/regextesting2.jpg"/></p>
+                <img alt="Regex testing" src="partials/releases/4.3.1/regextesting.jpg"/>
+                <img alt="Regex testing" src="partials/releases/4.3.1/regextesting2.jpg"/></p>
         </li>
         <li>
             <p>Bulk configuration of projects</p>
@@ -54,7 +54,7 @@
                 workspace and invoke the 'Configure project(s) from blueprint' action.<br/>In the dialog which will now
                 appear you can select the project, which will serve as blueprint for the configuration of the other
                 selected projects.<br/>In this case the blueprint will be the one project you configured in step one.<br/><br/>
-                <img alt="Bulk project configuration" src="/partials/releases/4.3.1/bulkconfiguration.jpg"/></p>
+                <img alt="Bulk project configuration" src="partials/releases/4.3.1/bulkconfiguration.jpg"/></p>
             <p>Note that this process does <b>not</b> enable Checkstyle on the affected projects.<br/>To deal with this
                 another two new actions have been added to deal with activating/deactivation of Checkstyle for multiple
                 projects.</p>
@@ -64,14 +64,14 @@
             <p>For those who don't want to have the plugin constantly inspecting their code we added a new feature to
                 run Checkstyle on demand on the files selected in the Package Explorer/Navigator.<br/>A second action
                 can be used to remove the Checkstyle markers from the selected files.<br/><br/><img
-                    alt="Run Checkstyle on demand" src="/partials/releases/4.3.1/ondemand.jpg"/></p>
+                    alt="Run Checkstyle on demand" src="partials/releases/4.3.1/ondemand.jpg"/></p>
         </li>
         <li>
             <p>Authentication credentials for secured remote Checkstyle configurations must now be provided in the
                 Remote Configurations properties.<br/>The authentication dialog popping up in previous versions is gone
                 for good.<br/><br/>
                 <img alt="New input location for authentication credentials"
-                    src="/partials/releases/4.3.1/credentials.jpg"/></p>
+                    src="partials/releases/4.3.1/credentials.jpg"/></p>
         </li>
     </ul>
     <h3>Bugfixes</h3>

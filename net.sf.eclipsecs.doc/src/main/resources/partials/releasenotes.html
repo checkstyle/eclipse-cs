@@ -1,13 +1,13 @@
 <div class="container" data-ng-controller="ReleaseNotesCtrl">
-    <div data-google-ad="" class="container"> </div>
-    <hr/>
+    <div data-google-ad=""> </div>
+
     <h1>Release notes <button class="btn btn-primary btn-sm" data-ng-click="expandAll()"><i class="fa fa-plus-square-o"
             > </i> Expand all</button></h1>
     <accordion data-close-others="false">
         <accordion-group data-ng-repeat="release in releases" data-is-open="release.open">
             <accordion-heading>
                 <div class="row">
-                    <div class="col-md-12"> Release {{release.version}} <div class="pull-right"><i class=" fa"
+                    <div class="col-md-12">{{release.version}} <div class="pull-right"><i class=" fa"
                                 data-ng-class="{'fa-angle-down': release.open, 'fa-angle-right': !release.open}"
                             > </i></div>
                     </div>

@@ -8,7 +8,7 @@
     <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>http://eclipse-cs.sourceforge.net/#!/releasenotes?expandAll</loc>
+    <loc>http://eclipse-cs.sourceforge.net/#!/releasenotes</loc>
     <lastmod>2014-10-24T20:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
   </url>

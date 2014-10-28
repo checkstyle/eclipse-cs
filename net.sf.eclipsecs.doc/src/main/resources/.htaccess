@@ -13,12 +13,8 @@ Redirect 301 /extending_custom_checks.html /#!/custom-checks
 Redirect 301 /extending_builtin_configurations.html /#!/builtin-config
 Redirect 301 /extending_filters.html /#!/custom-filters
 Redirect 301 /faq.html /#!/faq
+Redirect 301 /development.html /
 Redirect 301 /developers.html /
 Redirect 301 /screen_shots.html /
 Redirect 301 /getting_started.html /
-Redirect 301 /releasenotes/5.0.0beta3/release_notes.html /#!/releasenotes
-Redirect 301 /releasenotes/5.0.2/release_notes.html /#!/releasenotes
-Redirect 301 /releasenotes/5.1.0/release_notes.html /#!/releasenotes
-Redirect 301 /releasenotes/5.3.0/release_notes.html /#!/releasenotes
-Redirect 301 /releasenotes/5.5.0/release_notes.html /#!/releasenotes
-Redirect 301 /releasenotes/5.7.0/release_notes.html /#!/releasenotes
+RedirectMatch 301 /releasenotes/(.*/)?release_notes.*\.html /#!/releasenotes
