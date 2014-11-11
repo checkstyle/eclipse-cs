@@ -89,5 +89,21 @@
             <message-key key="suppressed.warning.not.allowed"/>
         </rule-metadata>
 
+        <rule-metadata name="%AnnotationLocation.name" internal-name="AnnotationLocation" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.javadoc.AnnotationLocationCheck"/>
+            <description>%AnnotationLocation.desc</description>
+            <property-metadata name="allowSamelineSingleParameterlessAnnotation" datatype="Boolean"
+                default-value="true">
+                <description>%AnnotationLocation.allowSamelineSingleParameterlessAnnotation</description>
+            </property-metadata>
+            <property-metadata name="allowSamelineParametrizedAnnotation" datatype="Boolean" default-value="false">
+                <description>%AnnotationLocation.allowSamelineParametrizedAnnotation</description>
+            </property-metadata>
+            <property-metadata name="allowSamelineMultipleAnnotations" datatype="Boolean" default-value="false">
+                <description>%AnnotationLocation.allowSamelineMultipleAnnotations</description>
+            </property-metadata>
+            <message-key key="annotation.location.alone"/>
+            <message-key key="annotation.location"/>
+        </rule-metadata>
     </rule-group-metadata>
 </checkstyle-metadata>

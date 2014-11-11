@@ -19,6 +19,15 @@
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocMethodCheck"/>
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.JavadocMethodCheck"/>
             <description>%JavadocMethod.desc</description>
+            <property-metadata name="minLineCount" datatype="Integer" default-value="-1">
+                <description>%JavadocMethod.minLineCount</description>
+            </property-metadata>
+            <property-metadata name="allowedAnnotations" datatype="String">
+                <description>%JavadocMethod.allowedAnnotations</description>
+            </property-metadata>
+            <property-metadata name="validateThrows" datatype="Boolean" default-value="false">
+                <description>%JavadocMethod.validateThrows</description>
+            </property-metadata>
             <property-metadata name="scope" datatype="SingleSelect" default-value="private">
                 <description>%JavadocMethod.scope</description>
                 <enumeration option-provider="com.puppycrawl.tools.checkstyle.api.Scope"/>
@@ -190,6 +199,81 @@
             <message-key key="type.missingTag"/>
             <message-key key="type.tagFormat"/>
             <message-key key="javadoc.writeTag"/>
+        </rule-metadata>
+
+        <rule-metadata name="%NonEmptyAtclauseDescription.name" internal-name="NonEmptyAtclauseDescription"
+            parent="TreeWalker">
+            <alternative-name
+                internal-name="com.puppycrawl.tools.checkstyle.checks.javadoc.NonEmptyAtclauseDescriptionCheck"/>
+            <description>%NonEmptyAtclauseDescription.desc</description>
+            <property-metadata name="tokens" datatype="MultiCheck"
+                default-value="PARAM_LITERAL,RETURN_LITERAL,THROWS_LITERAL,DEPRECATED_LITERAL">
+                <description>%NonEmptyAtclauseDescription.tokens</description>
+                <enumeration>
+                    <property-value-option value="PARAM_LITERAL"/>
+                    <property-value-option value="RETURN_LITERAL"/>
+                    <property-value-option value="THROWS_LITERAL"/>
+                    <property-value-option value="DEPRECATED_LITERAL"/>
+                </enumeration>
+            </property-metadata>
+            <message-key key="non.empty.atclause"/>
+        </rule-metadata>
+
+        <rule-metadata name="%JavadocTagContinuationIndentation.name" internal-name="JavadocTagContinuationIndentation"
+            parent="TreeWalker">
+            <alternative-name
+                internal-name="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocTagContinuationIndentationCheck"/>
+            <description>%JavadocTagContinuationIndentation.desc</description>
+            <property-metadata name="offset" datatype="Integer" default-value="4">
+                <description>%JavadocTagContinuationIndentation.offset</description>
+            </property-metadata>
+            <message-key key="tag.continuation.indent"/>
+        </rule-metadata>
+
+        <rule-metadata name="%SummaryJavadoc.name" internal-name="SummaryJavadoc" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.javadoc.SummaryJavadocCheck"/>
+            <description>%SummaryJavadoc.desc</description>
+            <property-metadata name="forbiddenSummaryFragments" datatype="Regex" default-value="^$">
+                <description>%SummaryJavadoc.forbiddenSummaryFragments</description>
+            </property-metadata>
+            <message-key key="summary.first.sentence"/>
+            <message-key key="summary.javaDoc"/>
+        </rule-metadata>
+
+        <rule-metadata name="%AtclauseOrder.name" internal-name="AtclauseOrder" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.javadoc.AtclauseOrderCheck"/>
+            <description>%AtclauseOrder.desc</description>
+            <property-metadata name="target" datatype="MultiCheck"
+                default-value="CLASS_DEF,INTERFACE_DEF,ENUM_DEF,METHOD_DEF,CTOR_DEF,VARIABLE_DEF">
+                <description>%AtclauseOrder.target</description>
+                <enumeration>
+                    <property-value-option value="CLASS_DEF"/>
+                    <property-value-option value="INTERFACE_DEF"/>
+                    <property-value-option value="ENUM_DEF"/>
+                    <property-value-option value="METHOD_DEF"/>
+                    <property-value-option value="CTOR_DEF"/>
+                    <property-value-option value="VARIABLE_DEF"/>
+                </enumeration>
+            </property-metadata>
+            <property-metadata name="tagOrder" datatype="String"
+                default-value="@author,@version,@param,@return,@throws,@exception,@see,@since,@serial,@serialField,@serialData,@deprecated">
+                <description>%AtclauseOrder.tagOrder</description>
+            </property-metadata>
+            <message-key key="at.clause.order"/>
+        </rule-metadata>
+
+        <rule-metadata name="%JavadocParagraph.name" internal-name="JavadocParagraph" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocParagraphCheck"/>
+            <description>%JavadocParagraph.desc</description>
+            <message-key key="javadoc.paragraph.tag.after"/>
+            <message-key key="javadoc.paragraph.redundant.paragraph"/>
+            <message-key key="javadoc.paragraph.line.before"/>
+        </rule-metadata>
+
+        <rule-metadata name="%SingleLineJavadoc.name" internal-name="SingleLineJavadoc" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.javadoc.SingleLineJavadocCheck"/>
+            <description>%SingleLineJavadoc.desc</description>
+            <message-key key="singleline.javadoc"/>
         </rule-metadata>
 
     </rule-group-metadata>
