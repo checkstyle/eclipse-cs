@@ -84,6 +84,9 @@
             <property-metadata name="arrayInitIndent" datatype="Integer" default-value="4">
                 <description>%Indentation.arrayInitIndent</description>
             </property-metadata>
+            <property-metadata name="lineWrappingIndentation" datatype="Integer" default-value="4">
+                <description>%Indentation.lineWrappingIndentation</description>
+            </property-metadata>
             <message-key key="indentation.error"/>
             <message-key key="indentation.child.error"/>
         </rule-metadata>
