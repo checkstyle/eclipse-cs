@@ -53,9 +53,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 /**
- * Implementation of a location editor to input a remote location. Contains just
- * a text field to input the URL.
- * 
+ * Implementation of a location editor to input a remote location. Contains just a text field to input the URL.
+ *
  * @author Lars Ködderitzsch
  */
 public class InternalConfigurationEditor implements ICheckConfigurationEditor {
@@ -89,8 +88,7 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor {
     /**
      * {@inheritDoc}
      */
-    public void initialize(CheckConfigurationWorkingCopy checkConfiguration,
-            CheckConfigurationPropertiesDialog dialog) {
+    public void initialize(CheckConfigurationWorkingCopy checkConfiguration, CheckConfigurationPropertiesDialog dialog) {
         mWorkingCopy = checkConfiguration;
         mDialog = dialog;
     }
@@ -133,8 +131,7 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor {
         gd.horizontalSpan = 2;
         lblDescription.setLayoutData(gd);
 
-        mDescription = new Text(contents, SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.BORDER
-                | SWT.VERTICAL);
+        mDescription = new Text(contents, SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.BORDER | SWT.VERTICAL);
         gd = new GridData(GridData.FILL_BOTH);
         gd.horizontalSpan = 2;
         gd.widthHint = 300;
@@ -162,10 +159,8 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor {
 
                     String configFileString = fileDialog.open();
                     if (configFileString != null && new File(configFileString).exists()) {
-                        ICheckConfiguration tmpSourceConfig = new CheckConfiguration(
-                                "dummy", //$NON-NLS-1$
-                                configFileString, null, new ExternalFileConfigurationType(), true,
-                                null, null);
+                        ICheckConfiguration tmpSourceConfig = new CheckConfiguration("dummy", //$NON-NLS-1$
+                            configFileString, null, new ExternalFileConfigurationType(), true, null, null);
 
                         CheckConfigurationFactory.copyConfiguration(tmpSourceConfig, targetConfig);
                     }
@@ -176,7 +171,7 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor {
             }
 
             public void widgetDefaultSelected(SelectionEvent e) {
-            // NOOP
+                // NOOP
             }
         });
 
@@ -201,7 +196,7 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor {
 
         if (mWorkingCopy.getLocation() == null) {
 
-            String location = "internal_config_" + "_" + System.currentTimeMillis() + ".xml"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            String location = "internal_config_" + System.currentTimeMillis() + ".xml"; //$NON-NLS-1$ //$NON-NLS-2$
             try {
                 mWorkingCopy.setLocation(location);
             }
@@ -220,13 +215,13 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor {
     }
 
     /**
-     * Helper method trying to ensure that the file location provided by the
-     * user exists. If that is not the case it prompts the user if an empty
-     * configuration file should be created.
-     * 
-     * @param location the configuration file location
-     * @throws CheckstylePluginException error when trying to ensure the
-     *             location file existance
+     * Helper method trying to ensure that the file location provided by the user exists. If that is not the case it
+     * prompts the user if an empty configuration file should be created.
+     *
+     * @param location
+     *            the configuration file location
+     * @throws CheckstylePluginException
+     *             error when trying to ensure the location file existance
      */
     private boolean ensureFileExists(String location) throws CheckstylePluginException {
 
