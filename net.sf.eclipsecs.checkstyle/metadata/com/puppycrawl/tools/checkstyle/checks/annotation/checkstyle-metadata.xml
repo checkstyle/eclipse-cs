@@ -90,7 +90,7 @@
         </rule-metadata>
 
         <rule-metadata name="%AnnotationLocation.name" internal-name="AnnotationLocation" parent="TreeWalker">
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.javadoc.AnnotationLocationCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.annotation.AnnotationLocationCheck"/>
             <description>%AnnotationLocation.desc</description>
             <property-metadata name="allowSamelineSingleParameterlessAnnotation" datatype="Boolean"
                 default-value="true">
