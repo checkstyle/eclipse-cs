@@ -236,6 +236,9 @@
             <property-metadata name="forbiddenSummaryFragments" datatype="Regex" default-value="^$">
                 <description>%SummaryJavadoc.forbiddenSummaryFragments</description>
             </property-metadata>
+            <property-metadata name="period" datatype="String" default-value=".">
+                <description>%SummaryJavadoc.period</description>
+            </property-metadata>
             <message-key key="summary.first.sentence"/>
             <message-key key="summary.javaDoc"/>
         </rule-metadata>

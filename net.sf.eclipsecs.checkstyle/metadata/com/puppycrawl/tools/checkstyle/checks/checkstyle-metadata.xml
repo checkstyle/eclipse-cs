@@ -62,6 +62,9 @@
                     <property-value-option value="LITERAL_CATCH"/>
                 </enumeration>
             </property-metadata>
+            <property-metadata name="ignorePrimitiveTypes" datatype="Boolean" default-value="false">
+                <description>%FinalParameters.ignorePrimitiveTypes</description>
+            </property-metadata>
             <quickfix classname="net.sf.eclipsecs.ui.quickfixes.misc.FinalParametersQuickfix"/>
             <message-key key="final.parameter"/>
         </rule-metadata>
@@ -124,6 +127,9 @@
             <description>%Translation.desc</description>
             <property-metadata name="fileExtensions" datatype="String" default-value="properties">
                 <description>%Translation.fileExtensions</description>
+            </property-metadata>
+            <property-metadata name="basenameSeparator" datatype="String" default-value="_">
+                <description>%Translation.basenameSeparator</description>
             </property-metadata>
             <message-key key="general.fileNotFound"/>
             <message-key key="general.exception"/>

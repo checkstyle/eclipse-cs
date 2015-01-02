@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Eclipse Checkstyle Ui Plug-in
 Bundle-SymbolicName: net.sf.eclipsecs.ui;singleton:=true
-Bundle-Version: 6.1.1.qualifier
+Bundle-Version: 6.2.0.qualifier
 Bundle-Vendor: http://eclipse-cs.sf.net/
 Bundle-Activator: net.sf.eclipsecs.ui.CheckstyleUIPlugin
 Bundle-ActivationPolicy: lazy
@@ -11,7 +11,7 @@ Bundle-ClassPath: .,
  lib/jfreechart-1.0.14.jar,
  lib/jfreechart-1.0.14-swt.jar,
  lib/jcommon-1.0.16.jar
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-Localization: plugin
 Export-Package: net.sf.eclipsecs.ui,
  net.sf.eclipsecs.ui.properties.filter,

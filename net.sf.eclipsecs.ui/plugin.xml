@@ -81,12 +81,12 @@
         </transfer>
         <settingsTransfer
             id="net.sf.eclipsecs.settings"
-            name="%CheckstylePreferenceTransfer.name" 
+            name="%CheckstylePreferenceTransfer.name"
             class="net.sf.eclipsecs.ui.preferences.CheckstyleSettingsTransfer">
             <description>%CheckstylePreferenceTransfer.description</description>
         </settingsTransfer>
     </extension>
-    
+
     <extension
         point="org.eclipse.ui.preferencePages">
         <page
@@ -215,20 +215,11 @@
             icon="icons/checkstyle_info.gif"/>
     </extension>
 
-    <!--
-   View that displays the duplicates
-   -->
     <extension
         point="org.eclipse.ui.views">
         <category
             name="Checkstyle"
             id="net.sf.eclipsecs.category"/>
-        <view
-            class="net.sf.eclipsecs.ui.duplicates.DuplicatedCodeView"
-            icon="icons/duplicatedCode.gif"
-            category="net.sf.eclipsecs.category"
-            name="%DuplicatedCodeView.name"
-            id="net.sf.eclipsecs.ui.duplicates.DuplicatedCodeView"/>
         <view
             name="%MarkerStatsView.name"
             icon="icons/listingView.gif"
@@ -242,14 +233,14 @@
             class="net.sf.eclipsecs.ui.stats.views.GraphStatsView"
             id="net.sf.eclipsecs.ui.stats.views.GraphStatsView"/>
     </extension>
-    
+
     <extension
         point="org.eclipse.ui.ide.markerSupport">
 
         <markerGroupingEntry
             id="net.sf.eclipsecs.core.CheckstyleMarker"
             markerGrouping="org.eclipse.jdt.ui.java_marker_category"
-            label="%CheckstyleMarker.name" 
+            label="%CheckstyleMarker.name"
             priority="1"/>
 
         <markerAttributeGrouping
@@ -401,7 +392,7 @@
                 tooltip="%CheckstyleTransformingTooltip.tooltip"
                 id="net.sf.eclipsecs.actions.CheckstyleTransformingAction"/>
         </objectContribution>
-        
+
         <objectContribution
             objectClass="org.eclipse.core.resources.IResource"
             adaptable="true"
@@ -429,7 +420,7 @@
                 tooltip="%CheckstyleTransformingTooltip.tooltip"
                 id="net.sf.eclipsecs.actions.CheckstyleTransformingAction"/>
             -->
-            
+
             <action
                 label="%ClearSelectedFilesAction.label"
                 class="net.sf.eclipsecs.ui.actions.ClearSelectedFilesAction"

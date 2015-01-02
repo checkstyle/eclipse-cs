@@ -89,6 +89,9 @@
             <property-metadata name="max" datatype="Integer" default-value="7">
                 <description>%ParameterNumber.max</description>
             </property-metadata>
+            <property-metadata name="ignoreOverriddenMethods" datatype="Boolean" default-value="false">
+                <description>%ParameterNumber.ignoreOverriddenMethods</description>
+            </property-metadata>
             <property-metadata name="tokens" datatype="MultiCheck" default-value="METHOD_DEF,CTOR_DEF">
                 <description>%ParameterNumber.tokens</description>
                 <enumeration>

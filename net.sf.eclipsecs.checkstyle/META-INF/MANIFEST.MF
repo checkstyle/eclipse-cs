@@ -2,10 +2,10 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Checkstyle Core Library
 Bundle-SymbolicName: net.sf.eclipsecs.checkstyle
-Bundle-Version: 6.1.1.qualifier
+Bundle-Version: 6.2.0.qualifier
 Bundle-Vendor: http://eclipse-cs.sf.net/
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Eclipse-BundleShape: dir
 Export-Package: .,
  antlr;
@@ -50,7 +50,6 @@ Export-Package: .,
  com.puppycrawl.tools.checkstyle.checks.blocks;uses:="com.puppycrawl.tools.checkstyle.api,com.puppycrawl.tools.checkstyle.checks",
  com.puppycrawl.tools.checkstyle.checks.coding;uses:="com.puppycrawl.tools.checkstyle.api,com.puppycrawl.tools.checkstyle.checks",
  com.puppycrawl.tools.checkstyle.checks.design;uses:="com.puppycrawl.tools.checkstyle.api,com.puppycrawl.tools.checkstyle.checks",
- com.puppycrawl.tools.checkstyle.checks.duplicates;uses:="com.puppycrawl.tools.checkstyle.api",
  com.puppycrawl.tools.checkstyle.checks.header;uses:="com.puppycrawl.tools.checkstyle.api",
  com.puppycrawl.tools.checkstyle.checks.imports;uses:="com.puppycrawl.tools.checkstyle.api,com.puppycrawl.tools.checkstyle.checks,org.xml.sax",
  com.puppycrawl.tools.checkstyle.checks.indentation;uses:="com.puppycrawl.tools.checkstyle.api",
@@ -75,4 +74,4 @@ Export-Package: .,
  org.apache.commons.logging,
  org.apache.commons.logging.impl
 Bundle-ClassPath: .,
- checkstyle-6.1.1-all.jar
+ checkstyle-6.2-all.jar

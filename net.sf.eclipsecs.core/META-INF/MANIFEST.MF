@@ -2,8 +2,8 @@ Manifest-Version: 1.0
 Bundle-Name: Checkstyle Plug-in
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: net.sf.eclipsecs.core;singleton:=true
-Bundle-Version: 6.1.1.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-Version: 6.2.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ClassPath: .,
  lib/commons-lang-2.3.jar,
  lib/commons-io-1.2.jar,

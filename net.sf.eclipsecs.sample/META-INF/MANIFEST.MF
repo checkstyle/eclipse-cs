@@ -2,11 +2,11 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: eclipse-cs Extension Sample Plugin
 Bundle-SymbolicName: net.sf.eclipsecs.sample;singleton:=true
-Bundle-Version: 6.1.1.qualifier
+Bundle-Version: 6.2.0.qualifier
 Require-Bundle: net.sf.eclipsecs.checkstyle,
  net.sf.eclipsecs.core,
  net.sf.eclipsecs.ui
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Eclipse-LazyStart: true
 Bundle-Vendor: http://eclipse-cs.sf.net/
 Import-Package: org.eclipse.core.resources,

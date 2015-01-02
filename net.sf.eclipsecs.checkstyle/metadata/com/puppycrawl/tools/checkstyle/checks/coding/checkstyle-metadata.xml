@@ -365,40 +365,13 @@
         <rule-metadata name="%PackageDeclaration.name" internal-name="PackageDeclaration" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.PackageDeclarationCheck"/>
             <description>%PackageDeclaration.desc</description>
-            <property-metadata name="ignoreDirectoryName" datatype="Boolean" default-value="false">
-                <description>%PackageDeclaration.ignoreDirectoryName</description>
-            </property-metadata>
             <message-key key="missing.package.declaration"/>
-            <message-key key="package.dir.mismatch"/>
         </rule-metadata>
 
         <rule-metadata name="%ParameterAssignment.name" internal-name="ParameterAssignment" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.ParameterAssignmentCheck"/>
             <description>%ParameterAssignment.desc</description>
             <message-key key="parameter.assignment"/>
-        </rule-metadata>
-
-        <rule-metadata name="%RedundantThrows.name" internal-name="RedundantThrows" parent="TreeWalker">
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.RedundantThrowsCheck"/>
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.RedundantThrowsCheck"/>
-            <description>%RedundantThrows.desc</description>
-            <property-metadata name="allowUnchecked" datatype="Boolean" default-value="false">
-                <description>%RedundantThrows.allowUnchecked</description>
-            </property-metadata>
-            <property-metadata name="allowSubclasses" datatype="Boolean" default-value="false">
-                <description>%RedundantThrows.allowSubclasses</description>
-            </property-metadata>
-            <property-metadata name="logLoadErrors" datatype="Boolean" default-value="true">
-                <description>%RedundantThrows.logLoadErrors</description>
-            </property-metadata>
-            <property-metadata name="suppressLoadErrors" datatype="Boolean" default-value="false"
-                override-default-value="true">
-                <description>%RedundantThrows.suppressLoadErrors</description>
-            </property-metadata>
-            <message-key key="redundant.throws.classInfo"/>
-            <message-key key="redundant.throws.unchecked"/>
-            <message-key key="redundant.throws.duplicate"/>
-            <message-key key="redundant.throws.subclass"/>
         </rule-metadata>
 
         <rule-metadata name="%RequireThis.name" internal-name="RequireThis" parent="TreeWalker">

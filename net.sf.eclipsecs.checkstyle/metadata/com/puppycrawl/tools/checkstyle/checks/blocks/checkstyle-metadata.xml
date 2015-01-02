@@ -98,6 +98,9 @@
                     <property-value-option value="LITERAL_WHILE"/>
                 </enumeration>
             </property-metadata>
+            <property-metadata name="allowSingleLineIf" datatype="Boolean" default-value="false">
+                <description>%NeedBraces.allowSingleLineIf</description>
+            </property-metadata>
             <quickfix classname="net.sf.eclipsecs.ui.quickfixes.blocks.NeedBracesQuickfix"/>
             <message-key key="needBraces"/>
         </rule-metadata>
