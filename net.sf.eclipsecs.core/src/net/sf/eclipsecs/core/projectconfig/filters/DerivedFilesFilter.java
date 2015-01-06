@@ -24,7 +24,7 @@ import org.eclipse.core.resources.IResource;
 
 /**
  * Implementation of a filter that filters all ressources that are derived (e.g. generated sources).
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public class DerivedFilesFilter extends AbstractFilter {
@@ -37,7 +37,7 @@ public class DerivedFilesFilter extends AbstractFilter {
         boolean goesThrough = true;
 
         if (element instanceof IResource) {
-            goesThrough = !((IResource) element).isDerived();
+            goesThrough = !((IResource) element).isDerived(IResource.CHECK_ANCESTORS);
         }
         return goesThrough;
     }
