@@ -25,6 +25,7 @@ import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -45,12 +46,14 @@ import com.google.common.collect.MapMaker;
 import com.puppycrawl.tools.checkstyle.Checker;
 import com.puppycrawl.tools.checkstyle.ConfigurationLoader;
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
+import com.puppycrawl.tools.checkstyle.TreeWalker;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.puppycrawl.tools.checkstyle.api.Configuration;
+import com.puppycrawl.tools.checkstyle.api.FileSetCheck;
 
 /**
  * Factory class to create (and cache) checker objects.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public final class CheckerFactory {
@@ -105,7 +108,7 @@ public final class CheckerFactory {
 
     /**
      * Creates a checker for a given configuration file.
-     * 
+     *
      * @param config
      *            the check configuration data
      * @param project
@@ -123,6 +126,9 @@ public final class CheckerFactory {
 
         CheckstyleConfigurationFile configFileData = config.getCheckstyleConfiguration();
         Checker checker = tryCheckerCache(cacheKey, configFileData.getModificationStamp());
+
+        // workaround for issue 377
+        applyTreeWalkerCacheWorkaround(checker);
 
         // no cache hit
         if (checker == null) {
@@ -154,7 +160,7 @@ public final class CheckerFactory {
 
     /**
      * Determines the additional data for a given configuration file.
-     * 
+     *
      * @param config
      *            the check configuration
      * @param project
@@ -191,7 +197,7 @@ public final class CheckerFactory {
 
     /**
      * Returns the shared classloader which is used by all checkers created by this factory.
-     * 
+     *
      * @return the shared classloader
      */
     public static ProjectClassLoader getSharedClassLoader() {
@@ -209,7 +215,7 @@ public final class CheckerFactory {
 
     /**
      * Build a unique cache key for the check configuration.
-     * 
+     *
      * @param config
      *            the check configuration
      * @param project
@@ -231,7 +237,7 @@ public final class CheckerFactory {
 
     /**
      * Tries to reuse an already configured checker for this configuration.
-     * 
+     *
      * @param config
      *            the configuration file
      * @param cacheKey
@@ -263,7 +269,7 @@ public final class CheckerFactory {
 
     /**
      * Creates a new checker and configures it with the given configuration file.
-     * 
+     *
      * @param input
      *            the input source for the configuration file
      * @param configFileUri
@@ -331,5 +337,37 @@ public final class CheckerFactory {
         }
 
         return checker;
+    }
+
+    private static void applyTreeWalkerCacheWorkaround(Checker checker) {
+        try {
+            Field fileSetChecksField = Checker.class.getDeclaredField("mFileSetChecks");
+            fileSetChecksField.setAccessible(true);
+
+            @SuppressWarnings("unchecked")
+            List<FileSetCheck> fileSetChecks = (List<FileSetCheck>) fileSetChecksField.get(checker);
+
+            for (FileSetCheck fsc : fileSetChecks) {
+                if (fsc instanceof TreeWalker) {
+                    TreeWalker tw = (TreeWalker) fsc;
+
+                    // only reset when we have a "default cache" without an actual configured cache file.
+                    Field cacheField = TreeWalker.class.getDeclaredField("mCache");
+                    cacheField.setAccessible(true);
+
+                    Object cache = cacheField.get(tw);
+
+                    Field detailsFileField = cache.getClass().getDeclaredField("mDetailsFile");
+                    detailsFileField.setAccessible(true);
+
+                    if (detailsFileField.get(cache) == null) {
+                        tw.setCacheFile(null);
+                    }
+                }
+            }
+        }
+        catch (Exception e) {
+            // Ah, what the heck, I tried. Now get out of my way.
+        }
     }
 }
