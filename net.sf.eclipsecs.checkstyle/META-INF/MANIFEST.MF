@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Checkstyle Core Library
 Bundle-SymbolicName: net.sf.eclipsecs.checkstyle
-Bundle-Version: 6.2.0.qualifier
+Bundle-Version: 6.3.0.qualifier
 Bundle-Vendor: http://eclipse-cs.sf.net/
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
@@ -74,4 +74,4 @@ Export-Package: .,
  org.apache.commons.logging,
  org.apache.commons.logging.impl
 Bundle-ClassPath: .,
- checkstyle-6.2-all.jar
+ checkstyle-6.3-SNAPSHOT-all.jar

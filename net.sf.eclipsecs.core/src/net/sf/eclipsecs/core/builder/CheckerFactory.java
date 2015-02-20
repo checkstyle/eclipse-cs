@@ -314,26 +314,7 @@ public final class CheckerFactory {
         // names, see
         // https://sourceforge.net/tracker/?func=detail&aid=2880044&group_id=80344&atid=559497
         if (checker.getBasedir() != null) {
-
-            // set basedir to null in a hackish way. This is because the regular
-            // setter won't accept null
-            try {
-                Field basedirField = Checker.class.getDeclaredField("mBasedir");
-                basedirField.setAccessible(true);
-                basedirField.set(checker, null);
-            }
-            catch (SecurityException e) {
-                CheckstylePluginException.rethrow(e);
-            }
-            catch (NoSuchFieldException e) {
-                CheckstylePluginException.rethrow(e);
-            }
-            catch (IllegalArgumentException e) {
-                CheckstylePluginException.rethrow(e);
-            }
-            catch (IllegalAccessException e) {
-                CheckstylePluginException.rethrow(e);
-            }
+            checker.setBasedir(null);
         }
 
         return checker;
