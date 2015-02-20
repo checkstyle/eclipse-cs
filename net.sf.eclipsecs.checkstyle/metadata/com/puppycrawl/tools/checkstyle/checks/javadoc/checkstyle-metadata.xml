@@ -71,6 +71,9 @@
                     <property-value-option value="CTOR_DEF"/>
                 </enumeration>
             </property-metadata>
+            <property-metadata name="ignoreMethodNamesRegex" datatype="Regex">
+                <description>%JavadocMethod.ignoreMethodNamesRegex</description>
+            </property-metadata>
             <message-key key="javadoc.missing"/>
             <message-key key="javadoc.classInfo"/>
             <message-key key="javadoc.unusedTagGeneral"/>

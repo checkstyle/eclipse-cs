@@ -122,6 +122,9 @@
             <property-metadata name="ignoreSetter" datatype="Boolean" default-value="false">
                 <description>%HiddenField.ignoreSetter</description>
             </property-metadata>
+            <property-metadata name="setterCanReturnItsClass" datatype="Boolean" default-value="false">
+                <description>%HiddenField.setterCanReturnItsClass</description>
+            </property-metadata>
             <property-metadata name="ignoreAbstractMethods" datatype="Boolean" default-value="false">
                 <description>%HiddenField.ignoreAbstractMethods</description>
             </property-metadata>
@@ -157,6 +160,9 @@
             </property-metadata>
             <property-metadata name="ignoredMethodNames" datatype="String" default-value="finalize">
                 <description>%IllegalThrows.ignoredMethodNames</description>
+            </property-metadata>
+            <property-metadata name="ignoreOverridenMethods" datatype="Boolean" default-value="true">
+                <description>%IllegalThrows.ignoreOverriddenMethods</description>
             </property-metadata>
             <message-key key="illegal.throw"/>
         </rule-metadata>
@@ -214,6 +220,24 @@
             </property-metadata>
             <property-metadata name="format" datatype="Regex" default-value="^(.*[\.])?Abstract.*$">
                 <description>%IllegalType.format</description>
+            </property-metadata>
+            <property-metadata name="memberModifiers" datatype="MultiCheck">
+                <description>%IllegalType.memberModifiers</description>
+                <enumeration>
+                    <property-value-option value="LITERAL_PUBLIC"/>
+                    <property-value-option value="LITERAL_PROTECTED"/>
+                    <property-value-option value="LITERAL_PRIVATE"/>
+                    <property-value-option value="ABSTRACT"/>
+                    <property-value-option value="LITERAL_STATIC"/>
+                    <property-value-option value="FINAL"/>
+                    <property-value-option value="LITERAL_TRANSIENT"/>
+                    <property-value-option value="LITERAL_VOLATILE"/>
+                    <property-value-option value="LITERAL_SYNCHRONIZED"/>
+                    <property-value-option value="LITERAL_NATIVE"/>
+                    <property-value-option value="STRICTFP"/>
+                    <property-value-option value="ANNOTATION"/>
+                    <property-value-option value="LITERAL_DEFAULT"/>
+                </enumeration>
             </property-metadata>
             <message-key key="illegal.type"/>
         </rule-metadata>

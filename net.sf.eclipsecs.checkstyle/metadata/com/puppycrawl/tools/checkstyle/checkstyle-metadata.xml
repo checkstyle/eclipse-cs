@@ -20,6 +20,9 @@
             <property-metadata name="charset" datatype="String">
                 <description>%Checker.charset</description>
             </property-metadata>
+            <property-metadata name="fileExtensions" datatype="String">
+                <description>%Checker.fileExtensions</description>
+            </property-metadata>
             <message-key key="general.fileNotFound"/>
             <message-key key="general.exception"/>
         </rule-metadata>

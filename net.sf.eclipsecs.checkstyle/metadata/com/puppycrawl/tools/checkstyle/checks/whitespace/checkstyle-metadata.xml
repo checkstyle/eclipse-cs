@@ -337,6 +337,9 @@
             <property-metadata name="allowNoEmptyLineBetweenFields" datatype="Boolean" default-value="false">
                 <description>%EmptyLineSeparator.allowNoEmptyLineBetweenFields</description>
             </property-metadata>
+            <property-metadata name="allowMultipleEmptyLines" datatype="Boolean" default-value="true">
+                <description>%EmptyLineSeparator.allowMultipleEmptyLines</description>
+            </property-metadata>
             <message-key key="empty.line.separator"/>
         </rule-metadata>
 

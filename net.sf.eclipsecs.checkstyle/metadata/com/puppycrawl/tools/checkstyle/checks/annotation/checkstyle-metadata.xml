@@ -108,7 +108,7 @@
                 <description>%AnnotationLocation.allowSamelineSingleParameterlessAnnotation</description>
             </property-metadata>
             <property-metadata name="allowSamelineParametrizedAnnotation" datatype="Boolean" default-value="false">
-                <description>%AnnotationLocation.allowSamelineParametrizedAnnotation</description>
+                <description>%AnnotationLocation.allowSamelineParameterizedAnnotation</description>
             </property-metadata>
             <property-metadata name="allowSamelineMultipleAnnotations" datatype="Boolean" default-value="false">
                 <description>%AnnotationLocation.allowSamelineMultipleAnnotations</description>
