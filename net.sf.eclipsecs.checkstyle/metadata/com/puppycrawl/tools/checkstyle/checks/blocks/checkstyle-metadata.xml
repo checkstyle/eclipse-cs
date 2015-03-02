@@ -45,6 +45,18 @@
             <message-key key="block.empty"/>
         </rule-metadata>
 
+        <rule-metadata name="%EmptyCatchBlock.name" internal-name="EmptyCatchBlock" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.blocks.EmptyCatchBlockCheck"/>
+            <description>%EmptyCatchBlock.desc</description>
+            <property-metadata name="exceptionVariableName" datatype="Regex" default-value="^$">
+                <description>%EmptyCatchBlock.exceptionVariableName</description>
+            </property-metadata>
+            <property-metadata name="commentFormat" datatype="Regex" default-value=".*">
+                <description>%EmptyCatchBlock.commentFormat</description>
+            </property-metadata>
+            <message-key key="catch.block.empty"/>
+        </rule-metadata>
+
         <rule-metadata name="%LeftCurly.name" internal-name="LeftCurly" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.blocks.LeftCurlyCheck"/>
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.LeftCurlyCheck"/>
@@ -139,5 +151,7 @@
             <message-key key="line.same"/>
             <message-key key="line.new"/>
         </rule-metadata>
+
+
     </rule-group-metadata>
 </checkstyle-metadata>

@@ -161,7 +161,7 @@
             <property-metadata name="ignoredMethodNames" datatype="String" default-value="finalize">
                 <description>%IllegalThrows.ignoredMethodNames</description>
             </property-metadata>
-            <property-metadata name="ignoreOverridenMethods" datatype="Boolean" default-value="true">
+            <property-metadata name="ignoreOverriddenMethods" datatype="Boolean" default-value="true">
                 <description>%IllegalThrows.ignoreOverriddenMethods</description>
             </property-metadata>
             <message-key key="illegal.throw"/>

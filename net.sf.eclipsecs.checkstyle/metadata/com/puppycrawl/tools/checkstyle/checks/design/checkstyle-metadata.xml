@@ -77,6 +77,10 @@
             <property-metadata name="publicMemberPattern" datatype="Regex" default-value="^serialVersionUID">
                 <description>%VisibilityModifier.publicMemberPattern</description>
             </property-metadata>
+            <property-metadata name="immutableClassNames" datatype="String" default-value="java.lang.String, java.lang.Integer, java.lang.Byte, java.lang.Character, java.lang.Short, java.lang.Boolean, java.lang.Long, java.lang.Double, java.lang.Float, java.lang.StackTraceElement, java.math.BigInteger, java.math.BigDecimal, java.io.File, java.util.Locale, java.util.UUID, java.net.URL, java.net.URI, java.net.Inet4Address, java.net.Inet6Address, java.net.InetSocketAddress,">
+                <description>%VisibilityModifier.immutableClassCanonicalNames</description>
+            </property-metadata>
+
             <message-key key="variable.notPrivate"/>
         </rule-metadata>
 
