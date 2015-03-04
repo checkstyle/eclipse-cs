@@ -1,0 +1,18 @@
+<div>
+    <p>Updates the Checkstyle core version to 6.4.1</p>
+    <p>Please note that this version requires <strong>Java 7 as the minimum runtime environment</strong>. This
+        requires you to run Eclipse on a Java 7 (or newer) JVM in order to use this plugin version.</p>
+    <p>This restriction does not affect the ability to analyze Java 5 or lower level source code.</p>
+    <p>Please further note that with Checkstyle 6.2 the <code>StrictDuplicate</code> and <code>RedundantThrows</code>
+        check have been removed without replacement.<br/> Also the configuration option <code>ignoreDirectoryName</code>
+        of the <code>PackageDeclaration</code> checks has been removed.<br/>If your Checkstyle configuration uses one of
+        those checks/options adaptations will be required in order to use your configuration with this
+        version.<br/>Please read the <a target="_blank" href="http://checkstyle.sourceforge.net/releasenotes.html"
+            >Checkstyle release notes</a> for details.</p>
+    <h3>Bugfixes</h3>
+    <ul>
+        <li>
+            <a href="https://sourceforge.net/p/eclipse-cs/bugs/381/">#381 CheckFileOnOpenPartListener can cause long UI hang at startup </a>
+        </li>
+    </ul>
+</div>
