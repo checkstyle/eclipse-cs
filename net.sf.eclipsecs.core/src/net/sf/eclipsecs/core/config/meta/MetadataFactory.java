@@ -20,7 +20,12 @@
 
 package net.sf.eclipsecs.core.config.meta;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -28,12 +33,14 @@ import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.ResourceBundle.Control;
 
 import net.sf.eclipsecs.core.CheckstylePlugin;
 import net.sf.eclipsecs.core.config.ConfigProperty;
@@ -97,7 +104,7 @@ public final class MetadataFactory {
 
     /**
      * Get a list of metadata objects for all rule groups.
-     * 
+     *
      * @return List of <code>RuleGroupMetadata</code> objects.
      */
     public static List<RuleGroupMetadata> getRuleGroupMetadata() {
@@ -118,7 +125,7 @@ public final class MetadataFactory {
 
     /**
      * Get metadata for a check rule.
-     * 
+     *
      * @param name
      *            The rule's name within the checkstyle configuration file.
      * @return The metadata.
@@ -140,7 +147,7 @@ public final class MetadataFactory {
 
     /**
      * Returns the metadata for a rule group.
-     * 
+     *
      * @param name
      *            the group name
      * @return the RuleGroupMetadata object or <code>null</code>
@@ -151,7 +158,7 @@ public final class MetadataFactory {
 
     /**
      * Creates a set of generic metadata for a module that has no metadata delivered with the plugin.
-     * 
+     *
      * @param module
      *            the module
      * @return the generic metadata built
@@ -198,7 +205,7 @@ public final class MetadataFactory {
 
     /**
      * Returns the default severity level.
-     * 
+     *
      * @return the default severity.
      */
     public static Severity getDefaultSeverity() {
@@ -207,7 +214,7 @@ public final class MetadataFactory {
 
     /**
      * Returns Checkstyles standard message for a given module name and message key.
-     * 
+     *
      * @param messageKey
      *            the message key
      * @param moduleInternalName
@@ -222,7 +229,7 @@ public final class MetadataFactory {
 
     /**
      * Returns Checkstyles standard message for a given module and message key.
-     * 
+     *
      * @param messageKey
      *            the message key
      * @param rule
@@ -250,7 +257,7 @@ public final class MetadataFactory {
                     messages = packageName + "." + messages; //$NON-NLS-1$
                 }
                 ResourceBundle resourceBundle = ResourceBundle.getBundle(messages,
-                    CheckstylePlugin.getPlatformLocale(), CheckstylePlugin.class.getClassLoader());
+                    CheckstylePlugin.getPlatformLocale(), CheckstylePlugin.class.getClassLoader(), new UTF8Control());
 
                 String message = resourceBundle.getString(messageKey);
                 return message;
@@ -260,6 +267,49 @@ public final class MetadataFactory {
             }
         }
         return null;
+    }
+
+    /**
+     * Custom ResourceBundle.Control implementation which allows explicitly read the properties files as UTF-8.
+     *
+     * @author <a href="mailto:nesterenko-aleksey@list.ru">Aleksey Nesterenko</a>
+     */
+    private static class UTF8Control extends Control {
+        @Override
+        public ResourceBundle newBundle(String aBaseName, Locale aLocale, String aFormat, ClassLoader aLoader,
+            boolean aReload) throws IOException {
+            // The below is a copy of the default implementation.
+            final String bundleName = toBundleName(aBaseName, aLocale);
+            final String resourceName = toResourceName(bundleName, "properties");
+            ResourceBundle bundle = null;
+            InputStream stream = null;
+            if (aReload) {
+                final URL url = aLoader.getResource(resourceName);
+                if (url != null) {
+                    final URLConnection connection = url.openConnection();
+                    if (connection != null) {
+                        connection.setUseCaches(false);
+                        stream = connection.getInputStream();
+                    }
+                }
+            }
+            else {
+                stream = aLoader.getResourceAsStream(resourceName);
+            }
+            if (stream != null) {
+                Reader streamReader = null;
+                try {
+                    streamReader = new InputStreamReader(stream, "UTF-8");
+                    // Only this line is changed to make it to read properties files as UTF-8.
+                    bundle = new PropertyResourceBundle(streamReader);
+                }
+                finally {
+                    streamReader.close();
+                    stream.close();
+                }
+            }
+            return bundle;
+        }
     }
 
     /**
@@ -279,7 +329,7 @@ public final class MetadataFactory {
 
     /**
      * Initializes the meta data from the xml file.
-     * 
+     *
      * @throws CheckstylePluginException
      *             error loading the meta data file
      */
@@ -311,7 +361,7 @@ public final class MetadataFactory {
     /**
      * Helper method to get all potential metadata files using the checkstyle_packages.xml as base where to look. It is
      * not guaranteed that the files returned acutally exist.
-     * 
+     *
      * @return the collection of potential metadata files.
      * @throws CheckstylePluginException
      *             an unexpected exception ocurred
@@ -339,7 +389,7 @@ public final class MetadataFactory {
 
     /**
      * Returns the ResourceBundle for the given meta data file contained i18n'ed names and descriptions.
-     * 
+     *
      * @param metadataFile
      * @return the corresponding ResourceBundle for the metadata file or <code>null</code> if none exists
      */
