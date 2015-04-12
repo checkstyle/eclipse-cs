@@ -98,6 +98,9 @@
                     <property-value-option value="VARIABLE_DEF"/>
                 </enumeration>
             </property-metadata>
+            <property-metadata name="validateEnhancedForLoopVariable" datatype="Boolean" default-value="false">
+                <description>%FinalLocalVariable.validateEnhancedForLoopVariable</description>
+            </property-metadata>
             <quickfix classname="net.sf.eclipsecs.ui.quickfixes.coding.FinalLocalVariableQuickfix"/>
             <message-key key="final.variable"/>
         </rule-metadata>

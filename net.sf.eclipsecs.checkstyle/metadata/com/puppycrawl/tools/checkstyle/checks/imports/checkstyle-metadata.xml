@@ -65,6 +65,9 @@
             <property-metadata name="caseSensitive" datatype="Boolean" default-value="true">
                 <description>%ImportOrder.caseSensitive</description>
             </property-metadata>
+            <property-metadata name="sortStaticImportsAlphabetically" datatype="Boolean" default-value="false">
+                <description>%ImportOrder.sortStaticImportsAlphabetically</description>
+            </property-metadata>
             <message-key key="import.ordering"/>
             <message-key key="import.separation"/>
         </rule-metadata>
