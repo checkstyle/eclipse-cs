@@ -28,6 +28,7 @@ import net.sf.eclipsecs.core.builder.CheckstyleBuilder;
 import net.sf.eclipsecs.core.builder.CheckstyleMarker;
 
 import org.eclipse.core.resources.ICommand;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IProjectNature;
@@ -75,7 +76,17 @@ public class CheckstyleNature implements IProjectNature {
             System.arraycopy(commands, 0, newCommands, 0, commands.length);
             newCommands[commands.length] = command;
             description.setBuildSpec(newCommands);
+
+            ensureProjectFileWritable();
+
             mProject.setDescription(description, null);
+        }
+    }
+
+    private void ensureProjectFileWritable() {
+        IFile projectFile = mProject.getFile(".project");
+        if (projectFile.isReadOnly()) {
+            projectFile.setReadOnly(false);
         }
     }
 
@@ -101,6 +112,9 @@ public class CheckstyleNature implements IProjectNature {
 
         ICommand[] newCommands = newCommandsVec.toArray(new ICommand[newCommandsVec.size()]);
         description.setBuildSpec(newCommands);
+
+        ensureProjectFileWritable();
+
         mProject.setDescription(description, new NullProgressMonitor());
 
         // remove checkstyle markers from the project
@@ -123,14 +137,14 @@ public class CheckstyleNature implements IProjectNature {
     }
 
     /**
-     * Checks if the ordering of the builders of the given project is correct,
-     * more specifically if the CheckstyleBuilder is set to run after the
-     * JavaBuilder.
+     * Checks if the ordering of the builders of the given project is correct, more specifically if the
+     * CheckstyleBuilder is set to run after the JavaBuilder.
      * 
-     * @param project the project to check
-     * @return <code>true</code> if the builder order for this project is
-     *         correct, <code>false</code> otherwise
-     * @throws CoreException error getting project description
+     * @param project
+     *            the project to check
+     * @return <code>true</code> if the builder order for this project is correct, <code>false</code> otherwise
+     * @throws CoreException
+     *             error getting project description
      */
     public static boolean hasCorrectBuilderOrder(IProject project) throws CoreException {
         IProjectDescription description = project.getDescription();

@@ -59,8 +59,7 @@ import org.eclipse.osgi.util.NLS;
  * 
  * @author Lars Ködderitzsch
  */
-public class ProjectConfigurationWorkingCopy implements Cloneable,
-    IProjectConfiguration {
+public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfiguration {
 
     //
     // attributes
@@ -112,8 +111,7 @@ public class ProjectConfigurationWorkingCopy implements Cloneable,
         }
 
         // build list of filters
-        List<IFilter> standardFilters = Arrays.asList(PluginFilters
-            .getConfiguredFilters());
+        List<IFilter> standardFilters = Arrays.asList(PluginFilters.getConfiguredFilters());
         mFilters = new ArrayList<IFilter>(standardFilters);
 
         // merge with filters configured for the project
@@ -125,8 +123,7 @@ public class ProjectConfigurationWorkingCopy implements Cloneable,
             for (int j = 0, size2 = configuredFilters.size(); j < size2; j++) {
                 IFilter configuredFilter = configuredFilters.get(j);
 
-                if (standardFilter.getInternalName().equals(
-                    configuredFilter.getInternalName())) {
+                if (standardFilter.getInternalName().equals(configuredFilter.getInternalName())) {
                     mFilters.set(i, configuredFilter.clone());
                 }
             }
@@ -163,13 +160,11 @@ public class ProjectConfigurationWorkingCopy implements Cloneable,
      * 
      * @param name
      *            the configurations name
-     * @return the check configuration or <code>null</code>, if no local
-     *         configuration with this name exists
+     * @return the check configuration or <code>null</code>, if no local configuration with this name exists
      */
     public ICheckConfiguration getLocalCheckConfigByName(String name) {
         ICheckConfiguration config = null;
-        ICheckConfiguration[] configs = mLocalConfigWorkingSet
-            .getWorkingCopies();
+        ICheckConfiguration[] configs = mLocalConfigWorkingSet.getWorkingCopies();
         for (int i = 0; i < configs.length; i++) {
             if (configs[i].getName().equals(name)) {
                 config = configs[i];
@@ -185,13 +180,11 @@ public class ProjectConfigurationWorkingCopy implements Cloneable,
      * 
      * @param name
      *            the configurations name
-     * @return the check configuration or <code>null</code>, if no local
-     *         configuration with this name exists
+     * @return the check configuration or <code>null</code>, if no local configuration with this name exists
      */
     public ICheckConfiguration getGlobalCheckConfigByName(String name) {
         ICheckConfiguration config = null;
-        ICheckConfiguration[] configs = mGlobalConfigWorkingSet
-            .getWorkingCopies();
+        ICheckConfiguration[] configs = mGlobalConfigWorkingSet.getWorkingCopies();
         for (int i = 0; i < configs.length; i++) {
             if (configs[i].getName().equals(name)) {
                 config = configs[i];
@@ -216,8 +209,7 @@ public class ProjectConfigurationWorkingCopy implements Cloneable,
      * Sets if the formatter synching is enabled.
      * 
      * @param syncFormatter
-     *            true if the projects formatter settings should be synced with
-     *            the Checkstyle config
+     *            true if the projects formatter settings should be synced with the Checkstyle config
      */
     public void setSyncFormatter(boolean syncFormatter) {
         mSyncFormatter = syncFormatter;
@@ -233,20 +225,16 @@ public class ProjectConfigurationWorkingCopy implements Cloneable,
     }
 
     /**
-     * Determines if a rebuild is needed for the project of this project
-     * configuration. A rebuild is not needed when only some local config was
-     * added which is not used by the project.
+     * Determines if a rebuild is needed for the project of this project configuration. A rebuild is not needed when
+     * only some local config was added which is not used by the project.
      * 
      * @return <code>true</code> if rebuild is needed.
      * @throws CheckstylePluginException
      *             an unexpected exception occurred
      */
     public boolean isRebuildNeeded() throws CheckstylePluginException {
-        return !this.equals(mProjectConfig)
-            || mLocalConfigWorkingSet.getAffectedProjects().contains(
-                getProject())
-            || mGlobalConfigWorkingSet.getAffectedProjects().contains(
-                getProject());
+        return !this.equals(mProjectConfig) || mLocalConfigWorkingSet.getAffectedProjects().contains(getProject())
+            || mGlobalConfigWorkingSet.getAffectedProjects().contains(getProject());
     }
 
     /**
@@ -322,8 +310,7 @@ public class ProjectConfigurationWorkingCopy implements Cloneable,
             ICheckConfiguration checkConfig = fileSet.getCheckConfig();
             if (configuration.equals(checkConfig)
                 || (checkConfig instanceof CheckConfigurationWorkingCopy && configuration
-                    .equals(((CheckConfigurationWorkingCopy) checkConfig)
-                        .getSourceCheckConfiguration()))) {
+                    .equals(((CheckConfigurationWorkingCopy) checkConfig).getSourceCheckConfiguration()))) {
                 result = true;
                 break;
             }
@@ -374,26 +361,22 @@ public class ProjectConfigurationWorkingCopy implements Cloneable,
         }
         IProjectConfiguration rhs = (IProjectConfiguration) obj;
         return new EqualsBuilder().append(getProject(), rhs.getProject())
-            .append(isUseSimpleConfig(), rhs.isUseSimpleConfig()).append(
-                isSyncFormatter(), rhs.isSyncFormatter()).append(getFileSets(),
-                rhs.getFileSets()).append(getFilters(), rhs.getFilters())
-            .isEquals();
+            .append(isUseSimpleConfig(), rhs.isUseSimpleConfig()).append(isSyncFormatter(), rhs.isSyncFormatter())
+            .append(getFileSets(), rhs.getFileSets()).append(getFilters(), rhs.getFilters()).isEquals();
     }
 
     /**
      * {@inheritDoc}
      */
     public int hashCode() {
-        return new HashCodeBuilder(984759323, 1000003).append(mProjectConfig)
-            .append(mUseSimpleConfig).append(mFileSets).append(mFilters)
-            .toHashCode();
+        return new HashCodeBuilder(984759323, 1000003).append(mProjectConfig).append(mUseSimpleConfig)
+            .append(mFileSets).append(mFilters).toHashCode();
     }
 
     /**
      * Store the audit configurations to the persistent state storage.
      */
-    private void storeToPersistence(ProjectConfigurationWorkingCopy config)
-        throws CheckstylePluginException {
+    private void storeToPersistence(ProjectConfigurationWorkingCopy config) throws CheckstylePluginException {
 
         ByteArrayOutputStream pipeOut = null;
         InputStream pipeIn = null;
@@ -406,22 +389,25 @@ public class ProjectConfigurationWorkingCopy implements Cloneable,
 
             // create or overwrite the .checkstyle file
             IProject project = config.getProject();
-            IFile file = project
-                .getFile(ProjectConfigurationFactory.PROJECT_CONFIGURATION_FILE);
+            IFile file = project.getFile(ProjectConfigurationFactory.PROJECT_CONFIGURATION_FILE);
             if (!file.exists()) {
                 file.create(pipeIn, true, null);
                 file.refreshLocal(IResource.DEPTH_INFINITE, null);
             }
             else {
+
+                if (file.isReadOnly()) {
+                    file.setReadOnly(false);
+                }
+
                 file.setContents(pipeIn, true, true, null);
             }
 
             config.getLocalCheckConfigWorkingSet().store();
         }
         catch (Exception e) {
-            CheckstylePluginException.rethrow(e, NLS.bind(
-                Messages.errorWritingCheckConfigurations, e
-                    .getLocalizedMessage()));
+            CheckstylePluginException.rethrow(e,
+                NLS.bind(Messages.errorWritingCheckConfigurations, e.getLocalizedMessage()));
         }
         finally {
             IOUtils.closeQuietly(pipeIn);
@@ -435,21 +421,16 @@ public class ProjectConfigurationWorkingCopy implements Cloneable,
      * @param config
      *            the configuration
      */
-    private Document writeProjectConfig(ProjectConfigurationWorkingCopy config)
-        throws CheckstylePluginException {
+    private Document writeProjectConfig(ProjectConfigurationWorkingCopy config) throws CheckstylePluginException {
 
         Document doc = DocumentHelper.createDocument();
 
         Element root = doc.addElement(XMLTags.FILESET_CONFIG_TAG);
-        root.addAttribute(XMLTags.FORMAT_VERSION_TAG,
-            ProjectConfigurationFactory.CURRENT_FILE_FORMAT_VERSION);
-        root.addAttribute(XMLTags.SIMPLE_CONFIG_TAG, Boolean.toString(config
-            .isUseSimpleConfig()));
-        root.addAttribute(XMLTags.SYNC_FORMATTER_TAG, Boolean.toString(config
-            .isSyncFormatter()));
+        root.addAttribute(XMLTags.FORMAT_VERSION_TAG, ProjectConfigurationFactory.CURRENT_FILE_FORMAT_VERSION);
+        root.addAttribute(XMLTags.SIMPLE_CONFIG_TAG, Boolean.toString(config.isUseSimpleConfig()));
+        root.addAttribute(XMLTags.SYNC_FORMATTER_TAG, Boolean.toString(config.isSyncFormatter()));
 
-        ICheckConfiguration[] workingCopies = config
-            .getLocalCheckConfigWorkingSet().getWorkingCopies();
+        ICheckConfiguration[] workingCopies = config.getLocalCheckConfigWorkingSet().getWorkingCopies();
         for (int i = 0; i < workingCopies.length; i++) {
             writeLocalConfiguration(workingCopies[i], root);
         }
@@ -474,16 +455,14 @@ public class ProjectConfigurationWorkingCopy implements Cloneable,
      * @param docRoot
      *            the root element of the project configuration
      */
-    private void writeLocalConfiguration(ICheckConfiguration checkConfig,
-        Element docRoot) {
+    private void writeLocalConfiguration(ICheckConfiguration checkConfig, Element docRoot) {
 
         // TODO refactor to avoid code duplication with
         // GlobalCheckConfigurationWorkingSet
 
         // don't store built-in configurations to persistence or local
         // configurations
-        if (checkConfig.getType() instanceof BuiltInConfigurationType
-            || checkConfig.isGlobal()) {
+        if (checkConfig.getType() instanceof BuiltInConfigurationType || checkConfig.isGlobal()) {
             return;
         }
 
@@ -505,11 +484,9 @@ public class ProjectConfigurationWorkingCopy implements Cloneable,
         Element configEl = docRoot.addElement(XMLTags.CHECK_CONFIG_TAG);
         configEl.addAttribute(XMLTags.NAME_TAG, checkConfig.getName());
         configEl.addAttribute(XMLTags.LOCATION_TAG, location);
-        configEl.addAttribute(XMLTags.TYPE_TAG, checkConfig.getType()
-            .getInternalName());
+        configEl.addAttribute(XMLTags.TYPE_TAG, checkConfig.getType().getInternalName());
         if (checkConfig.getDescription() != null) {
-            configEl.addAttribute(XMLTags.DESCRIPTION_TAG, checkConfig
-                .getDescription());
+            configEl.addAttribute(XMLTags.DESCRIPTION_TAG, checkConfig.getDescription());
         }
 
         // Write resolvable properties
@@ -521,8 +498,7 @@ public class ProjectConfigurationWorkingCopy implements Cloneable,
         }
 
         // Write additional data
-        for (Map.Entry<String, String> entry : checkConfig.getAdditionalData()
-            .entrySet()) {
+        for (Map.Entry<String, String> entry : checkConfig.getAdditionalData().entrySet()) {
 
             Element addEl = configEl.addElement(XMLTags.ADDITIONAL_DATA_TAG);
             addEl.addAttribute(XMLTags.NAME_TAG, entry.getKey());
@@ -540,38 +516,31 @@ public class ProjectConfigurationWorkingCopy implements Cloneable,
      * @param docRoot
      *            the root element of the project configuration
      */
-    private void writeFileSet(FileSet fileSet, IProject project, Element docRoot)
-        throws CheckstylePluginException {
+    private void writeFileSet(FileSet fileSet, IProject project, Element docRoot) throws CheckstylePluginException {
 
         if (fileSet.getCheckConfig() == null) {
-            throw new CheckstylePluginException(NLS.bind(
-                Messages.errorFilesetWithoutCheckConfig, fileSet.getName(),
+            throw new CheckstylePluginException(NLS.bind(Messages.errorFilesetWithoutCheckConfig, fileSet.getName(),
                 project.getName()));
         }
 
         Element fileSetEl = docRoot.addElement(XMLTags.FILESET_TAG);
         fileSetEl.addAttribute(XMLTags.NAME_TAG, fileSet.getName());
-        fileSetEl.addAttribute(XMLTags.ENABLED_TAG, Boolean.toString(fileSet
-            .isEnabled()));
+        fileSetEl.addAttribute(XMLTags.ENABLED_TAG, Boolean.toString(fileSet.isEnabled()));
 
         ICheckConfiguration checkConfig = fileSet.getCheckConfig();
         if (checkConfig != null) {
 
-            fileSetEl.addAttribute(XMLTags.CHECK_CONFIG_NAME_TAG, checkConfig
-                .getName());
-            fileSetEl.addAttribute(XMLTags.LOCAL_TAG, Boolean
-                .toString(!checkConfig.isGlobal()));
+            fileSetEl.addAttribute(XMLTags.CHECK_CONFIG_NAME_TAG, checkConfig.getName());
+            fileSetEl.addAttribute(XMLTags.LOCAL_TAG, Boolean.toString(!checkConfig.isGlobal()));
         }
 
         // write patterns
         for (FileMatchPattern pattern : fileSet.getFileMatchPatterns()) {
 
-            Element patternEl = fileSetEl
-                .addElement(XMLTags.FILE_MATCH_PATTERN_TAG);
-            patternEl.addAttribute(XMLTags.MATCH_PATTERN_TAG, pattern
-                .getMatchPattern() != null ? pattern.getMatchPattern() : "");
-            patternEl.addAttribute(XMLTags.INCLUDE_PATTERN_TAG, Boolean
-                .toString(pattern.isIncludePattern()));
+            Element patternEl = fileSetEl.addElement(XMLTags.FILE_MATCH_PATTERN_TAG);
+            patternEl.addAttribute(XMLTags.MATCH_PATTERN_TAG,
+                pattern.getMatchPattern() != null ? pattern.getMatchPattern() : "");
+            patternEl.addAttribute(XMLTags.INCLUDE_PATTERN_TAG, Boolean.toString(pattern.isIncludePattern()));
         }
     }
 
@@ -587,16 +556,14 @@ public class ProjectConfigurationWorkingCopy implements Cloneable,
 
         // write only filters that are actually changed
         // (enabled or contain data)
-        IFilter prototype = PluginFilters.getByInternalName(filter
-            .getInternalName());
+        IFilter prototype = PluginFilters.getByInternalName(filter.getInternalName());
         if (prototype.equals(filter)) {
             return;
         }
 
         Element filterEl = docRoot.addElement(XMLTags.FILTER_TAG);
         filterEl.addAttribute(XMLTags.NAME_TAG, filter.getInternalName());
-        filterEl.addAttribute(XMLTags.ENABLED_TAG, Boolean.toString(filter
-            .isEnabled()));
+        filterEl.addAttribute(XMLTags.ENABLED_TAG, Boolean.toString(filter.isEnabled()));
 
         List<String> data = filter.getFilterData();
         if (data != null && !data.isEmpty()) {

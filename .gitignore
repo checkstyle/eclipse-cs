@@ -1,2 +1,6 @@
 net.sf.eclipsecs.doc/docs/
 net.sf.eclipsecs.checkstyle/bin/
+net.sf.eclipsecs.core/target/
+net.sf.eclipsecs.doc/target/
+net.sf.eclipsecs.sample/target/
+net.sf.eclipsecs.ui/target/
