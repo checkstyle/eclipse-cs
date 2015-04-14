@@ -21,7 +21,7 @@
   },
   {
     "version": "Release 6.1.0",
-    "template": "partials/releases/6.1.0/release_notes.html
+    "template": "partials/releases/6.1.0/release_notes.html"
   },
   {
     "version": "Release 5.9.0",
