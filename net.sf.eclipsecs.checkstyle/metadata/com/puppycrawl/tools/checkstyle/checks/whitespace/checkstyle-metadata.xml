@@ -169,14 +169,28 @@
                 <enumeration option-provider="com.puppycrawl.tools.checkstyle.checks.whitespace.PadOption"/>
             </property-metadata>
             <property-metadata name="tokens" datatype="MultiCheck"
-                default-value="CTOR_CALL,LPAREN,METHOD_CALL,RPAREN,SUPER_CTOR_CALL">
+                default-value="ANNOTATION,ANNOTATION_FIELD_DEF,CTOR_DEF,CTOR_CALL,ENUM_CONSTANT_DEF,EXPR,LITERAL_CATCH,LITERAL_DO,LITERAL_FOR,LITERAL_IF,LITERAL_NEW,LITERAL_SWITCH,LITERAL_SYNCHRONIZED,LITERAL_WHILE,METHOD_CALL,METHOD_DEF,RESOURCE_SPECIFICATION,SUPER_CTOR_CALL,QUESTION">
                 <description>%ParenPad.tokens</description>
                 <enumeration>
+                    <property-value-option value="ANNOTATION"/>
+                    <property-value-option value="ANNOTATION_FIELD_DEF"/>
+                    <property-value-option value="CTOR_DEF"/>
                     <property-value-option value="CTOR_CALL"/>
-                    <property-value-option value="LPAREN"/>
+                    <property-value-option value="ENUM_CONSTANT_DEF"/>
+                    <property-value-option value="EXPR"/>
+                    <property-value-option value="LITERAL_CATCH"/>
+                    <property-value-option value="LITERAL_DO"/>
+                    <property-value-option value="LITERAL_FOR"/>
+                    <property-value-option value="LITERAL_IF"/>
+                    <property-value-option value="LITERAL_NEW"/>
+                    <property-value-option value="LITERAL_SWITCH"/>
+                    <property-value-option value="LITERAL_SYNCHRONIZED"/>
+                    <property-value-option value="LITERAL_WHILE"/>
                     <property-value-option value="METHOD_CALL"/>
-                    <property-value-option value="RPAREN"/>
+                    <property-value-option value="METHOD_DEF"/>
+                    <property-value-option value="RESOURCE_SPECIFICATION"/>
                     <property-value-option value="SUPER_CTOR_CALL"/>
+                    <property-value-option value="QUESTION"/>
                 </enumeration>
             </property-metadata>
             <message-key key="ws.followed"/>

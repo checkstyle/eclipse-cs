@@ -4,7 +4,6 @@
           "http://www.puppycrawl.com/dtds/configuration_1_3.dtd">
 
 <!--
-
     Checkstyle configuration that checks the Google coding conventions from:
     
     -  Google Java Style
@@ -12,11 +11,8 @@
        
     Checkstyle is very configurable. Be sure to read the documentation at
     http://checkstyle.sf.net (or in your downloaded distribution).
-
     Most Checks are configurable, be sure to consult the documentation.
-
     To completely disable a check, just comment it out or delete it from the file.
-
     Authors: Max Vetrenko, Ruslan Diachenko, Roman Ivanov.
     
  -->
@@ -195,8 +191,9 @@
             <message key="name.invalidPattern"
              value="Method name ''{0}'' must match pattern ''{1}''."/>
         </module>
-        <module name="SingleLineJavadoc"/>
+        <module name="SingleLineJavadoc">
             <property name="ignoreInlineTags" value="false"/>
+        </module>
         <module name="EmptyCatchBlock">
             <property name="exceptionVariableName" value="expected"/>
         </module>

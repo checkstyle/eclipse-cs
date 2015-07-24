@@ -279,6 +279,12 @@
         <rule-metadata name="%SingleLineJavadoc.name" internal-name="SingleLineJavadoc" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.javadoc.SingleLineJavadocCheck"/>
             <description>%SingleLineJavadoc.desc</description>
+            <property-metadata name="ignoredTags" datatype="String" default-value="">
+                <description>%SingleLineJavadoc.ignoredTags</description>
+            </property-metadata>
+            <property-metadata name="ignoreInlineTags" datatype="Boolean" default-value="true">
+                <description>%SingleLineJavadoc.ignoreInlineTags</description>
+            </property-metadata>
             <message-key key="singleline.javadoc"/>
         </rule-metadata>
 

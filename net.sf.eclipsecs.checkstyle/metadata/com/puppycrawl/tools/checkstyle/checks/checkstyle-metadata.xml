@@ -107,6 +107,7 @@
                     <property-value-option value="crlf"/>
                     <property-value-option value="cr"/>
                     <property-value-option value="lf"/>
+                    <property-value-option value="lf_cr_crlf"/>
                 </enumeration>
             </property-metadata>
             <property-metadata name="fileExtensions" datatype="String">

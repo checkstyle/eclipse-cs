@@ -303,6 +303,9 @@
             <property-metadata name="ignoreAnnotation" datatype="Boolean" default-value="false">
                 <description>%MagicNumber.ignoreAnnotation</description>
             </property-metadata>
+            <property-metadata name="ignoreFieldDeclaration" datatype="Boolean" default-value="false">
+                <description>%MagicNumber.ignoreFieldDeclaration</description>
+            </property-metadata>
             <message-key key="magic.number"/>
         </rule-metadata>
 
@@ -323,6 +326,9 @@
         <rule-metadata name="%ModifiedControlVariable.name" internal-name="ModifiedControlVariable" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.ModifiedControlVariableCheck"/>
             <description>%ModifiedControlVariable.desc</description>
+            <property-metadata name="skipEnhancedForLoopVariable" datatype="Boolean" default-value="false">
+                <description>%ModifiedControlVariable.skipEnhancedForLoopVariable</description>
+            </property-metadata>
         </rule-metadata>
 
         <rule-metadata name="%MultipleStringLiterals.name" internal-name="MultipleStringLiterals" parent="TreeWalker">

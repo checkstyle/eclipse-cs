@@ -58,8 +58,11 @@
         <rule-metadata name="%ThrowsCount.name" internal-name="ThrowsCount" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.design.ThrowsCountCheck"/>
             <description>%ThrowsCount.desc</description>
-            <property-metadata name="max" datatype="Integer" default-value="1">
+            <property-metadata name="max" datatype="Integer" default-value="4">
                 <description>%ThrowsCount.max</description>
+            </property-metadata>
+            <property-metadata name="ignorePrivateMethods" datatype="Boolean" default-value="true">
+                <description>%ThrowsCount.ignorePrivateMethods</description>
             </property-metadata>
             <message-key key="throws.count"/>
         </rule-metadata>
