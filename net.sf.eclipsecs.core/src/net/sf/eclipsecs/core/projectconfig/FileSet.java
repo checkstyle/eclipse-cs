@@ -25,10 +25,10 @@ import java.util.List;
 
 import net.sf.eclipsecs.core.config.ICheckConfiguration;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.eclipse.core.resources.IFile;
 
 /**
@@ -54,9 +54,10 @@ public class FileSet implements Cloneable {
     /**
      * Default constructor.
      * 
-     * @param name The name of the <code>FileSet</code>
-     * @param checkConfig The name of the <code>CheckConfiguration</code> used
-     *            to check this <code>FileSet</code>.
+     * @param name
+     *            The name of the <code>FileSet</code>
+     * @param checkConfig
+     *            The name of the <code>CheckConfiguration</code> used to check this <code>FileSet</code>.
      */
     public FileSet(String name, ICheckConfiguration checkConfig) {
         setName(name);
@@ -75,7 +76,8 @@ public class FileSet implements Cloneable {
     /**
      * Set the list of <code>FileMatchPattern</code> objects.
      * 
-     * @param list The new list of pattern objects.
+     * @param list
+     *            The new list of pattern objects.
      */
     public void setFileMatchPatterns(List<FileMatchPattern> list) {
         mFileMatchPatterns = list;
@@ -93,7 +95,8 @@ public class FileSet implements Cloneable {
     /**
      * Sets the check configuration used by this file set.
      * 
-     * @param checkConfig the check configuration
+     * @param checkConfig
+     *            the check configuration
      */
     public void setCheckConfig(ICheckConfiguration checkConfig) {
         mCheckConfig = checkConfig;
@@ -111,7 +114,8 @@ public class FileSet implements Cloneable {
     /**
      * Sets the name.
      * 
-     * @param name The name to set
+     * @param name
+     *            The name to set
      */
     public void setName(String name) {
         mName = name;
@@ -129,7 +133,8 @@ public class FileSet implements Cloneable {
     /**
      * Sets the enabled flag.
      * 
-     * @param enabled The enabled to set
+     * @param enabled
+     *            The enabled to set
      */
     public void setEnabled(boolean enabled) {
         mEnabled = enabled;
@@ -138,7 +143,8 @@ public class FileSet implements Cloneable {
     /**
      * Tests a file to see if its included in the file set.
      * 
-     * @param file The file to test.
+     * @param file
+     *            The file to test.
      * @return <code>true</code>= the file is included in the file set,
      *         <p>
      *         <code>false</code>= the file is not included in the file set.
@@ -195,17 +201,16 @@ public class FileSet implements Cloneable {
             return true;
         }
         FileSet rhs = (FileSet) obj;
-        return new EqualsBuilder().append(mEnabled, rhs.mEnabled).append(mName, rhs.mName).append(
-                mFileMatchPatterns, rhs.mFileMatchPatterns).append(mCheckConfig, rhs.mCheckConfig)
-                .isEquals();
+        return new EqualsBuilder().append(mEnabled, rhs.mEnabled).append(mName, rhs.mName)
+            .append(mFileMatchPatterns, rhs.mFileMatchPatterns).append(mCheckConfig, rhs.mCheckConfig).isEquals();
     }
 
     /**
      * {@inheritDoc}
      */
     public int hashCode() {
-        return new HashCodeBuilder(987349, 1000003).append(mEnabled).append(mName).append(
-                mCheckConfig).append(mFileMatchPatterns).toHashCode();
+        return new HashCodeBuilder(987349, 1000003).append(mEnabled).append(mName).append(mCheckConfig)
+            .append(mFileMatchPatterns).toHashCode();
     }
 
     /**

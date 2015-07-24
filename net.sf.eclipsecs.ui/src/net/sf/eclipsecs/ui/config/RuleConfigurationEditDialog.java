@@ -41,7 +41,7 @@ import net.sf.eclipsecs.ui.config.widgets.ConfigPropertyWidgetFactory;
 import net.sf.eclipsecs.ui.config.widgets.IConfigPropertyWidget;
 import net.sf.eclipsecs.ui.util.SWTUtil;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
@@ -99,9 +99,11 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
 
     /**
      * Constructor.
-     * 
-     * @param parent Parent shell.
-     * @param rule Rule being edited.
+     *
+     * @param parent
+     *            Parent shell.
+     * @param rule
+     *            Rule being edited.
      */
     RuleConfigurationEditDialog(Shell parent, Module rule, boolean readonly, String title) {
         super(parent);
@@ -114,6 +116,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
     /**
      * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
      */
+    @Override
     protected Control createDialogArea(Composite parent) {
         Composite composite = (Composite) super.createDialogArea(parent);
 
@@ -152,6 +155,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
             /**
              * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
              */
+            @Override
             public String getText(Object element) {
                 return ((Severity) element).name();
             }
@@ -217,15 +221,15 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
             msgLabel.setText(msgKey);
             msgLabel.setLayoutData(new GridData());
 
-            final Text msgText = new Text(messagesGroup, SWT.SINGLE | SWT.BORDER ); //| SWT.SEARCH see below
+            final Text msgText = new Text(messagesGroup, SWT.SINGLE | SWT.BORDER); // | SWT.SEARCH see below
             msgText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
             final String standardMessage = MetadataFactory.getStandardMessage(msgKey, mRule.getMetaData()
-                    .getInternalName());
-            
-            //msgText.setMessage(standardMessage); //a nice solution, sadly only for Eclipse 3.3+
-            
-            //alternative for above 
+                .getInternalName());
+
+            // msgText.setMessage(standardMessage); //a nice solution, sadly only for Eclipse 3.3+
+
+            // alternative for above
             if (standardMessage != null) {
                 msgText.setText(standardMessage);
             }
@@ -236,14 +240,14 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
 
                         public void run() {
                             if (msgText.getText().equals(standardMessage)) {
-                            	msgText.selectAll();
+                                msgText.selectAll();
                             }
                         }
                     });
                 }
 
                 public void focusLost(FocusEvent e) {
-                // NOOP
+                    // NOOP
                 }
             });
 
@@ -259,6 +263,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
         return advancedSettings;
     }
 
+    @Override
     protected Control createButtonBar(Composite parent) {
 
         Composite composite = new Composite(parent, SWT.NONE);
@@ -276,16 +281,14 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
         mBtnTranslate.setLayoutData(gd);
 
         // Init the translate tokens preference
-        mBtnTranslate.setSelection(CheckstyleUIPluginPrefs
-                .getBoolean(CheckstyleUIPluginPrefs.PREF_TRANSLATE_TOKENS));
+        mBtnTranslate.setSelection(CheckstyleUIPluginPrefs.getBoolean(CheckstyleUIPluginPrefs.PREF_TRANSLATE_TOKENS));
         mBtnTranslate.addSelectionListener(new SelectionListener() {
 
             public void widgetSelected(SelectionEvent e) {
                 // store translation preference
                 try {
-                    CheckstyleUIPluginPrefs.setBoolean(
-                            CheckstyleUIPluginPrefs.PREF_TRANSLATE_TOKENS, ((Button) e.widget)
-                                    .getSelection());
+                    CheckstyleUIPluginPrefs.setBoolean(CheckstyleUIPluginPrefs.PREF_TRANSLATE_TOKENS,
+                        ((Button) e.widget).getSelection());
                 }
                 catch (BackingStoreException e1) {
                     CheckstyleLog.log(e1);
@@ -293,7 +296,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
             }
 
             public void widgetDefaultSelected(SelectionEvent e) {
-            // NOOP
+                // NOOP
             }
         });
 
@@ -305,8 +308,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
         mBtnSort.setLayoutData(gd);
 
         // Init the sort tokens preference
-        mBtnSort.setSelection(CheckstyleUIPluginPrefs
-                .getBoolean(CheckstyleUIPluginPrefs.PREF_SORT_TOKENS));
+        mBtnSort.setSelection(CheckstyleUIPluginPrefs.getBoolean(CheckstyleUIPluginPrefs.PREF_SORT_TOKENS));
         mBtnSort.addSelectionListener(new SelectionListener() {
 
             public void widgetSelected(SelectionEvent e) {
@@ -314,7 +316,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
                 // store translation preference
                 try {
                     CheckstyleUIPluginPrefs.setBoolean(CheckstyleUIPluginPrefs.PREF_SORT_TOKENS,
-                            ((Button) e.widget).getSelection());
+                        ((Button) e.widget).getSelection());
                 }
                 catch (BackingStoreException e1) {
                     CheckstyleLog.log(e1);
@@ -322,7 +324,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
             }
 
             public void widgetDefaultSelected(SelectionEvent e) {
-            // NOOP
+                // NOOP
             }
         });
 
@@ -334,10 +336,11 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
         return composite;
     }
 
+    @Override
     protected void createButtonsForButtonBar(Composite parent) {
 
         Button defautlt = createButton(parent, IDialogConstants.BACK_ID,
-                Messages.RuleConfigurationEditDialog_btnDefaul, false);
+            Messages.RuleConfigurationEditDialog_btnDefaul, false);
         defautlt.setEnabled(!mReadonly);
 
         // create OK and Cancel buttons by default
@@ -347,8 +350,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
 
     private void initialize() {
 
-        this.setTitle(NLS.bind(Messages.RuleConfigurationEditDialog_titleRuleConfigEditor, mRule
-                .getName()));
+        this.setTitle(NLS.bind(Messages.RuleConfigurationEditDialog_titleRuleConfigEditor, mRule.getName()));
         if (!mReadonly) {
             this.setMessage(Messages.RuleConfigurationEditDialog_msgEditRuleConfig);
         }
@@ -387,16 +389,15 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
     /**
      * @see org.eclipse.jface.dialogs.Dialog#buttonPressed(int)
      */
+    @Override
     protected void buttonPressed(int buttonId) {
         if (IDialogConstants.BACK_ID == buttonId) {
 
-            if (MessageDialog.openConfirm(getShell(),
-                    Messages.RuleConfigurationEditDialog_titleRestoreDefault,
-                    Messages.RuleConfigurationEditDialog_msgRestoreDefault)) {
+            if (MessageDialog.openConfirm(getShell(), Messages.RuleConfigurationEditDialog_titleRestoreDefault,
+                Messages.RuleConfigurationEditDialog_msgRestoreDefault)) {
 
                 if (mRule.getMetaData().hasSeverity()) {
-                    mSeverityCombo.setSelection(new StructuredSelection(mRule.getMetaData()
-                            .getDefaultSeverityLevel()));
+                    mSeverityCombo.setSelection(new StructuredSelection(mRule.getMetaData().getDefaultSeverityLevel()));
                     mCommentText.setText(new String());
                 }
 
@@ -415,14 +416,14 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
     /**
      * OK button was selected.
      */
+    @Override
     protected void okPressed() {
         //
         // Get the selected severity level.
         //
         Severity severity = mRule.getSeverity();
         try {
-            severity = (Severity) ((IStructuredSelection) mSeverityCombo.getSelection())
-                    .getFirstElement();
+            severity = (Severity) ((IStructuredSelection) mSeverityCombo.getSelection()).getFirstElement();
         }
         catch (IllegalArgumentException e) {
             CheckstyleLog.log(e);
@@ -436,11 +437,10 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
 
         // Get the custom message
         for (Map.Entry<String, Text> entry : mCustomMessages.entrySet()) {
-            
+
             String msgKey = entry.getKey();
-            
-            String standardMessage = MetadataFactory.getStandardMessage(msgKey, mRule.getMetaData()
-                    .getInternalName());
+
+            String standardMessage = MetadataFactory.getStandardMessage(msgKey, mRule.getMetaData().getInternalName());
             if (standardMessage == null) {
                 standardMessage = ""; //$NON-NLS-1$
             }
@@ -450,7 +450,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
                 mRule.getCustomMessages().put(msgKey, message);
             }
             else {
-            	mRule.getCustomMessages().remove(msgKey);
+                mRule.getCustomMessages().remove(msgKey);
             }
         }
 
@@ -469,9 +469,8 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
                     widget.validate();
                 }
                 catch (CheckstylePluginException e) {
-                    String message = NLS.bind(
-                            Messages.RuleConfigurationEditDialog_msgInvalidPropertyValue, property
-                                    .getMetaData().getName());
+                    String message = NLS.bind(Messages.RuleConfigurationEditDialog_msgInvalidPropertyValue, property
+                        .getMetaData().getName());
                     this.setErrorMessage(message);
                     return;
                 }
@@ -507,8 +506,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
             //
             // Add an input widget for the properties value.
             //
-            mConfigPropertyWidgets[i] = ConfigPropertyWidgetFactory.createWidget(parent, prop,
-                    getShell());
+            mConfigPropertyWidgets[i] = ConfigPropertyWidgetFactory.createWidget(parent, prop, getShell());
             mConfigPropertyWidgets[i].setEnabled(!mReadonly);
         }
     }
@@ -516,20 +514,21 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
     /**
      * @see org.eclipse.jface.window.Window#create()
      */
+    @Override
     public void create() {
         super.create();
 
         // add resize support - for each different module the settings will be
         // stored separately
         SWTUtil.addResizeSupport(this, CheckstyleUIPlugin.getDefault().getDialogSettings(),
-                RuleConfigurationEditDialog.class.getName() + "#" //$NON-NLS-1$
-                        + mRule.getMetaData().getInternalName());
+            RuleConfigurationEditDialog.class.getName() + "#" //$NON-NLS-1$
+                + mRule.getMetaData().getInternalName());
     }
 
     /**
-     * Over-rides method from Window to configure the shell (e.g. the enclosing
-     * window).
+     * Over-rides method from Window to configure the shell (e.g. the enclosing window).
      */
+    @Override
     protected void configureShell(Shell shell) {
         super.configureShell(shell);
 

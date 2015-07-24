@@ -41,8 +41,8 @@ import net.sf.eclipsecs.ui.util.table.EnhancedCheckBoxTableViewer;
 import net.sf.eclipsecs.ui.util.table.ITableComparableProvider;
 import net.sf.eclipsecs.ui.util.table.ITableSettingsProvider;
 
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
@@ -175,6 +175,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
      * @param parent
      *            the parent composite
      */
+    @Override
     protected Control createDialogArea(Composite parent) {
 
         Composite composite = (Composite) super.createDialogArea(parent);
@@ -216,6 +217,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
     /**
      * @see org.eclipse.jface.window.Window#create()
      */
+    @Override
     public void create() {
         super.create();
 
@@ -226,6 +228,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
     /**
      * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
      */
+    @Override
     protected void configureShell(Shell newShell) {
         super.configureShell(newShell);
         newShell.setText(Messages.CheckConfigurationConfigureDialog_titleCheckConfigurationDialog);
@@ -234,6 +237,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
     /**
      * @see org.eclipse.jface.dialogs.Dialog#okPressed()
      */
+    @Override
     protected void okPressed() {
 
         try {
@@ -290,6 +294,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
         // filter hidden elements
         mTreeViewer.addFilter(new ViewerFilter() {
 
+            @Override
             public boolean select(Viewer viewer, Object parentElement, Object element) {
                 boolean passes = true;
                 if (element instanceof RuleGroupMetadata) {
@@ -377,6 +382,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
         return mConfiguredModulesGroup;
     }
 
+    @Override
     protected Control createButtonBar(Composite parent) {
 
         Composite composite = new Composite(parent, SWT.NONE);
@@ -876,6 +882,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
         /**
          * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
          */
+        @Override
         public String getText(Object element) {
             String text = null;
             if (element instanceof RuleGroupMetadata) {
@@ -890,6 +897,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
         /**
          * @see org.eclipse.jface.viewers.LabelProvider#getImage(java.lang.Object)
          */
+        @Override
         public Image getImage(Object element) {
             Image image = null;
 
@@ -1033,6 +1041,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
          * @see org.eclipse.jface.viewers.ViewerFilter#select(org.eclipse.jface.viewers.Viewer, java.lang.Object,
          *      java.lang.Object)
          */
+        @Override
         public boolean select(Viewer viewer, Object parentElement, Object element) {
             boolean result = false;
 
@@ -1063,6 +1072,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
      */
     private class TreeFilter extends ViewerFilter {
 
+        @Override
         public boolean select(Viewer viewer, Object parentElement, Object element) {
             boolean result = true;
 

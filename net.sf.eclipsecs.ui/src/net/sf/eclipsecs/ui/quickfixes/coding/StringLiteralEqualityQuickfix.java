@@ -29,7 +29,7 @@ import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
 import net.sf.eclipsecs.ui.quickfixes.AbstractASTResolution;
 import net.sf.eclipsecs.ui.quickfixes.Messages;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.Expression;
@@ -41,9 +41,8 @@ import org.eclipse.jface.text.IRegion;
 import org.eclipse.swt.graphics.Image;
 
 /**
- * Quickfix implementation that replaces a string literal comparison using == or
- * != with a proper equals() comparison.
- * 
+ * Quickfix implementation that replaces a string literal comparison using == or != with a proper equals() comparison.
+ *
  * @author Lars Ködderitzsch
  */
 public class StringLiteralEqualityQuickfix extends AbstractASTResolution {
@@ -51,11 +50,12 @@ public class StringLiteralEqualityQuickfix extends AbstractASTResolution {
     /**
      * {@inheritDoc}
      */
-    protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
-        final int markerStartPosition) {
+    @Override
+    protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo, final int markerStartPosition) {
 
         return new ASTVisitor() {
 
+            @Override
             public boolean visit(InfixExpression node) {
 
                 if (containsPosition(lineInfo, node.getStartPosition())) {
@@ -77,23 +77,16 @@ public class StringLiteralEqualityQuickfix extends AbstractASTResolution {
 
                     Expression replacementNode = null;
 
-                    MethodInvocation equalsInvocation = node.getAST()
-                        .newMethodInvocation();
-                    equalsInvocation.setName(node.getAST().newSimpleName(
-                        "equals")); //$NON-NLS-1$
-                    equalsInvocation.setExpression((Expression) ASTNode
-                        .copySubtree(node.getAST(), literal));
-                    equalsInvocation.arguments().add(
-                        ASTNode.copySubtree(node.getAST(), otherOperand));
+                    MethodInvocation equalsInvocation = node.getAST().newMethodInvocation();
+                    equalsInvocation.setName(node.getAST().newSimpleName("equals")); //$NON-NLS-1$
+                    equalsInvocation.setExpression((Expression) ASTNode.copySubtree(node.getAST(), literal));
+                    equalsInvocation.arguments().add(ASTNode.copySubtree(node.getAST(), otherOperand));
 
                     // if the string was compared with != create a not
                     // expression
-                    if (node.getOperator().equals(
-                        InfixExpression.Operator.NOT_EQUALS)) {
-                        PrefixExpression prefixExpression = node.getAST()
-                            .newPrefixExpression();
-                        prefixExpression
-                            .setOperator(PrefixExpression.Operator.NOT);
+                    if (node.getOperator().equals(InfixExpression.Operator.NOT_EQUALS)) {
+                        PrefixExpression prefixExpression = node.getAST().newPrefixExpression();
+                        prefixExpression.setOperator(PrefixExpression.Operator.NOT);
                         prefixExpression.setOperand(equalsInvocation);
                         replacementNode = prefixExpression;
                     }
@@ -107,9 +100,9 @@ public class StringLiteralEqualityQuickfix extends AbstractASTResolution {
             }
 
             /**
-             * Replaces the given node with the replacement node (using
-             * reflection since I am not aware of a proper API to do this).
-             * 
+             * Replaces the given node with the replacement node (using reflection since I am not aware of a proper API
+             * to do this).
+             *
              * @param node
              *            the node to replace
              * @param replacementNode
@@ -122,19 +115,16 @@ public class StringLiteralEqualityQuickfix extends AbstractASTResolution {
 
                         String property = node.getLocationInParent().getId();
 
-                        String setterMethodName = "set"
-                            + StringUtils.capitalize(property);
+                        String setterMethodName = "set" + StringUtils.capitalize(property);
 
                         Class testClass = node.getClass();
 
                         while (testClass != null) {
 
                             try {
-                                Method setterMethod = node.getParent()
-                                    .getClass().getMethod(setterMethodName,
-                                        testClass);
-                                setterMethod.invoke(node.getParent(),
-                                    replacementNode);
+                                Method setterMethod = node.getParent().getClass()
+                                    .getMethod(setterMethodName, testClass);
+                                setterMethod.invoke(node.getParent(), replacementNode);
                                 break;
                             }
                             catch (NoSuchMethodException e) {
@@ -145,10 +135,8 @@ public class StringLiteralEqualityQuickfix extends AbstractASTResolution {
                     }
                     else if (node.getLocationInParent().isChildListProperty()) {
                         Method listMethod = node.getParent().getClass()
-                            .getMethod(node.getLocationInParent().getId(),
-                                (Class<?>[]) null);
-                        List list = (List) listMethod.invoke(node.getParent(),
-                            (Object[]) null);
+                            .getMethod(node.getLocationInParent().getId(), (Class<?>[]) null);
+                        List list = (List) listMethod.invoke(node.getParent(), (Object[]) null);
                         list.set(list.indexOf(node), replacementNode);
                     }
                 }
@@ -182,8 +170,8 @@ public class StringLiteralEqualityQuickfix extends AbstractASTResolution {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Image getImage() {
-        return CheckstyleUIPluginImages
-            .getImage(CheckstyleUIPluginImages.CORRECTION_CHANGE);
+        return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.CORRECTION_CHANGE);
     }
 }

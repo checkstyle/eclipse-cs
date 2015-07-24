@@ -23,25 +23,24 @@ package net.sf.eclipsecs.core.projectconfig.filters;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 
 /**
- * filters resources that lie within excluded packages. This filter is used for
- * the checkstyle audit funtion of this plugin.
- * 
+ * filters resources that lie within excluded packages. This filter is used for the checkstyle audit funtion of this
+ * plugin.
+ *
  * @author Lars Ködderitzsch
  */
 public class PackageFilter extends AbstractFilter {
 
     /**
-     * Marker string in the filter data, if present the subpackes of a filtered
-     * package are not recursivly excluded, but only the filtered package
-     * itself.
+     * Marker string in the filter data, if present the subpackes of a filtered package are not recursivly excluded, but
+     * only the filtered package itself.
      */
     public static final String RECURSE_OFF_MARKER = "<recurse=false>";
 
@@ -97,6 +96,7 @@ public class PackageFilter extends AbstractFilter {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setFilterData(List<String> filterData) {
         if (filterData == null) {
             mData = new ArrayList<String>();
@@ -112,6 +112,7 @@ public class PackageFilter extends AbstractFilter {
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<String> getFilterData() {
         return mData;
     }
@@ -119,6 +120,7 @@ public class PackageFilter extends AbstractFilter {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getPresentableFilterData() {
 
         StringBuffer buf = new StringBuffer();
@@ -138,6 +140,7 @@ public class PackageFilter extends AbstractFilter {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object o) {
 
         if (o == null || !(o instanceof PackageFilter)) {
@@ -154,8 +157,8 @@ public class PackageFilter extends AbstractFilter {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
-        return new HashCodeBuilder(7834681, 1000003).appendSuper(super.hashCode()).append(mData)
-                .toHashCode();
+        return new HashCodeBuilder(7834681, 1000003).appendSuper(super.hashCode()).append(mData).toHashCode();
     }
 }

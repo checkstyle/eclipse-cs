@@ -37,12 +37,13 @@ import net.sf.eclipsecs.core.config.ICheckConfiguration;
 import net.sf.eclipsecs.core.config.configtypes.IContextAware;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
-import org.apache.commons.io.IOUtils;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.xml.sax.InputSource;
 
-import com.google.common.collect.MapMaker;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.io.Closeables;
 import com.puppycrawl.tools.checkstyle.Checker;
 import com.puppycrawl.tools.checkstyle.ConfigurationLoader;
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
@@ -63,7 +64,7 @@ public final class CheckerFactory {
     //
 
     /** Map containing the configured checkers. */
-    private static Map<String, Checker> sCheckerMap;
+    private static Cache<String, Checker> sCheckerMap;
 
     /** Map containing the modification times of configs. */
     private static Map<String, Long> sModifiedMap;
@@ -83,8 +84,8 @@ public final class CheckerFactory {
      */
     static {
 
-        // Use synchronized collections to avoid concurrent modification
-        sCheckerMap = new MapMaker().softValues().makeMap();
+        sCheckerMap = CacheBuilder.newBuilder().softValues().build();
+
         sModifiedMap = Collections.synchronizedMap(new HashMap<String, Long>());
         sAdditionalDataMap = Collections.synchronizedMap(new HashMap<String, AdditionalConfigData>());
 
@@ -146,7 +147,7 @@ public final class CheckerFactory {
                 checker = createCheckerInternal(in, resolver, project);
             }
             finally {
-                IOUtils.closeQuietly(in.getByteStream());
+                Closeables.closeQuietly(in.getByteStream());
             }
 
             // store checker in cache
@@ -186,7 +187,7 @@ public final class CheckerFactory {
                 additionalData = ConfigurationReader.getAdditionalConfigData(in);
             }
             finally {
-                IOUtils.closeQuietly(in.getByteStream());
+                Closeables.closeQuietly(in.getByteStream());
             }
 
             sAdditionalDataMap.put(cacheKey, additionalData);
@@ -208,7 +209,7 @@ public final class CheckerFactory {
      * Cleans up the checker cache.
      */
     public static void cleanup() {
-        sCheckerMap.clear();
+        sCheckerMap.invalidateAll();
         sModifiedMap.clear();
         sAdditionalDataMap.clear();
     }
@@ -247,7 +248,7 @@ public final class CheckerFactory {
     private static Checker tryCheckerCache(String cacheKey, long modificationStamp) {
 
         // try the cache
-        Checker checker = sCheckerMap.get(cacheKey);
+        Checker checker = sCheckerMap.getIfPresent(cacheKey);
 
         // if cache hit
         if (checker != null) {
@@ -259,7 +260,7 @@ public final class CheckerFactory {
             // no match - remove checker from cache
             if (oldTime == null || oldTime.compareTo(newTime) != 0) {
                 checker = null;
-                sCheckerMap.remove(cacheKey);
+                sCheckerMap.invalidate(cacheKey);
                 sModifiedMap.remove(cacheKey);
                 sAdditionalDataMap.remove(cacheKey);
             }
@@ -305,7 +306,7 @@ public final class CheckerFactory {
         Locale platformLocale = CheckstylePlugin.getPlatformLocale();
         checker.setLocaleLanguage(platformLocale.getLanguage());
         checker.setLocaleCountry(platformLocale.getCountry());
-        checker.setClassloader(sSharedClassLoader);
+        checker.setClassLoader(sSharedClassLoader);
 
         checker.configure(configuration);
 
@@ -313,9 +314,7 @@ public final class CheckerFactory {
         // of determining workspace resources from checkstyle reported file
         // names, see
         // https://sourceforge.net/tracker/?func=detail&aid=2880044&group_id=80344&atid=559497
-        if (checker.getBasedir() != null) {
-            checker.setBasedir(null);
-        }
+        checker.setBasedir(null);
 
         return checker;
     }

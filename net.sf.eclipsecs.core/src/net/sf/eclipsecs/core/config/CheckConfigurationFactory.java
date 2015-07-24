@@ -33,6 +33,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import net.sf.eclipsecs.core.CheckstylePlugin;
 import net.sf.eclipsecs.core.Messages;
@@ -44,7 +45,6 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.ObjectUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -181,7 +181,7 @@ public final class CheckConfigurationFactory {
         File sourceFile = FileUtils.toFile(source.getResolvedConfigurationFileURL());
 
         // copying from a file to the same file will destroy it.
-        if (ObjectUtils.equals(targetFile, sourceFile)) {
+        if (Objects.equals(targetFile, sourceFile)) {
             return;
         }
 

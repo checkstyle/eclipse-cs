@@ -25,14 +25,14 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import net.sf.eclipsecs.core.Messages;
 import net.sf.eclipsecs.core.config.savefilter.SaveFilters;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 import net.sf.eclipsecs.core.util.XMLUtil;
 
-import org.apache.commons.lang.ObjectUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Branch;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
@@ -60,8 +60,8 @@ public final class ConfigurationWriter {
      * @throws CheckstylePluginException
      *             error writing the checkstyle configuration
      */
-    public static void writeNewConfiguration(OutputStream out,
-        ICheckConfiguration checkConfig) throws CheckstylePluginException {
+    public static void writeNewConfiguration(OutputStream out, ICheckConfiguration checkConfig)
+        throws CheckstylePluginException {
 
         // write an empty list of modules
         // mandatory modules are added automatically
@@ -80,16 +80,15 @@ public final class ConfigurationWriter {
      * @throws CheckstylePluginException
      *             error writing the checkstyle configuration
      */
-    public static void write(OutputStream out, List<Module> modules,
-        ICheckConfiguration checkConfig) throws CheckstylePluginException {
+    public static void write(OutputStream out, List<Module> modules, ICheckConfiguration checkConfig)
+        throws CheckstylePluginException {
 
         try {
             // pass the configured modules through the save filters
             SaveFilters.process(modules);
 
             Document doc = DocumentHelper.createDocument();
-            doc.addDocType(XMLTags.MODULE_TAG,
-                "-//Puppy Crawl//DTD Check Configuration 1.3//EN",
+            doc.addDocType(XMLTags.MODULE_TAG, "-//Puppy Crawl//DTD Check Configuration 1.3//EN",
                 "http://www.puppycrawl.com/dtds/configuration_1_3.dtd");
 
             String lineSeperator = System.getProperty("line.separator"); //$NON-NLS-1$
@@ -105,8 +104,7 @@ public final class ConfigurationWriter {
                 + lineSeperator
                 + "    Description: " //$NON-NLS-1$
                 + (StringUtils.trimToNull(checkConfig.getDescription()) != null ? lineSeperator
-                    + checkConfig.getDescription() + lineSeperator
-                    : "none" + lineSeperator); //$NON-NLS-1$
+                    + checkConfig.getDescription() + lineSeperator : "none" + lineSeperator); //$NON-NLS-1$
             doc.addComment(description);
 
             // find the root module (Checker)
@@ -117,8 +115,7 @@ public final class ConfigurationWriter {
             }
 
             if (rootModules.size() > 1) {
-                throw new CheckstylePluginException(
-                    Messages.errorMoreThanOneRootModule);
+                throw new CheckstylePluginException(Messages.errorMoreThanOneRootModule);
             }
 
             writeModule(rootModules.get(0), doc, null, modules);
@@ -142,8 +139,7 @@ public final class ConfigurationWriter {
      * @param remainingModules
      *            the list of remaining (possibly child) modules
      */
-    private static void writeModule(Module module, Branch parent,
-        Severity parentSeverity, List<Module> remainingModules) {
+    private static void writeModule(Module module, Branch parent, Severity parentSeverity, List<Module> remainingModules) {
 
         Severity severity = parentSeverity;
 
@@ -154,8 +150,7 @@ public final class ConfigurationWriter {
 
         // Start the module
         Element moduleEl = parent.addElement(XMLTags.MODULE_TAG);
-        moduleEl.addAttribute(XMLTags.NAME_TAG, module.getMetaData()
-            .getInternalName());
+        moduleEl.addAttribute(XMLTags.NAME_TAG, module.getMetaData().getInternalName());
 
         // Write comment
         if (StringUtils.trimToNull(module.getComment()) != null) {
@@ -166,13 +161,11 @@ public final class ConfigurationWriter {
         }
 
         // Write severity only if it differs from the parents severity
-        if (module.getSeverity() != null
-            && !Severity.inherit.equals(module.getSeverity())) {
+        if (module.getSeverity() != null && !Severity.inherit.equals(module.getSeverity())) {
 
             Element propertyEl = moduleEl.addElement(XMLTags.PROPERTY_TAG);
             propertyEl.addAttribute(XMLTags.NAME_TAG, XMLTags.SEVERITY_TAG);
-            propertyEl.addAttribute(XMLTags.VALUE_TAG, module.getSeverity()
-                .name());
+            propertyEl.addAttribute(XMLTags.VALUE_TAG, module.getSeverity().name());
 
             // set the parent severity for child modules
             severity = module.getSeverity();
@@ -191,20 +184,16 @@ public final class ConfigurationWriter {
 
             // write property only if it differs from the default value
             String value = StringUtils.trimToNull(property.getValue());
-            if (value != null
-                && !ObjectUtils.equals(value, property.getMetaData()
-                    .getDefaultValue())) {
+            if (value != null && !Objects.equals(value, property.getMetaData().getDefaultValue())) {
 
                 Element propertyEl = moduleEl.addElement(XMLTags.PROPERTY_TAG);
-                propertyEl.addAttribute(XMLTags.NAME_TAG, property
-                    .getMetaData().getName());
+                propertyEl.addAttribute(XMLTags.NAME_TAG, property.getMetaData().getName());
                 propertyEl.addAttribute(XMLTags.VALUE_TAG, property.getValue());
             }
         }
 
         // write custom messages
-        for (Map.Entry<String, String> entry : module.getCustomMessages()
-            .entrySet()) {
+        for (Map.Entry<String, String> entry : module.getCustomMessages().entrySet()) {
 
             Element metaEl = moduleEl.addElement(XMLTags.MESSAGE_TAG);
             metaEl.addAttribute(XMLTags.KEY_TAG, entry.getKey());
@@ -212,8 +201,7 @@ public final class ConfigurationWriter {
         }
 
         // write custom metadata
-        for (Map.Entry<String, String> entry : module.getCustomMetaData()
-            .entrySet()) {
+        for (Map.Entry<String, String> entry : module.getCustomMetaData().entrySet()) {
 
             Element metaEl = moduleEl.addElement(XMLTags.METADATA_TAG);
             metaEl.addAttribute(XMLTags.NAME_TAG, entry.getKey());
@@ -224,10 +212,8 @@ public final class ConfigurationWriter {
         if (module.getLastEnabledSeverity() != null) {
 
             Element metaEl = moduleEl.addElement(XMLTags.METADATA_TAG);
-            metaEl.addAttribute(XMLTags.NAME_TAG,
-                XMLTags.LAST_ENABLED_SEVERITY_ID);
-            metaEl.addAttribute(XMLTags.VALUE_TAG, module
-                .getLastEnabledSeverity().name());
+            metaEl.addAttribute(XMLTags.NAME_TAG, XMLTags.LAST_ENABLED_SEVERITY_ID);
+            metaEl.addAttribute(XMLTags.VALUE_TAG, module.getLastEnabledSeverity().name());
         }
 
         // write child modules recursivly
@@ -245,15 +231,13 @@ public final class ConfigurationWriter {
      *            the list of modules that are yet not written
      * @return the list of child modules
      */
-    private static List<Module> getChildModules(Module module,
-        List<Module> remainingModules) {
+    private static List<Module> getChildModules(Module module, List<Module> remainingModules) {
 
         List<Module> childModules = new ArrayList<Module>();
 
         for (Module tmp : remainingModules) {
 
-            String parentInternalName = module != null ? module.getMetaData()
-                .getInternalName() : null;
+            String parentInternalName = module != null ? module.getMetaData().getInternalName() : null;
             String childParent = tmp.getMetaData().getParentModule();
 
             // only the checker module has no parent

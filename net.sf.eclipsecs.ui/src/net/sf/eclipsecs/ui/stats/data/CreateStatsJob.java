@@ -22,6 +22,7 @@ package net.sf.eclipsecs.ui.stats.data;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 import net.sf.eclipsecs.core.builder.CheckstyleMarker;
@@ -31,7 +32,6 @@ import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
 import net.sf.eclipsecs.ui.stats.Messages;
 import net.sf.eclipsecs.ui.stats.views.internal.CheckstyleMarkerFilter;
 
-import org.apache.commons.lang.ObjectUtils;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -86,9 +86,10 @@ public class CreateStatsJob extends Job {
 
     @Override
     public boolean belongsTo(Object family) {
-        return ObjectUtils.equals(mFamily, family);
+        return Objects.equals(mFamily, family);
     }
 
+    @Override
     protected IStatus run(IProgressMonitor monitor) {
         try {
 

@@ -34,7 +34,7 @@ import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.config.CheckConfigurationPropertiesDialog;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -51,9 +51,9 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 /**
- * Implementation of a file based location editor. Contains a text field with
- * the config file path and a 'Browse...' button opening a file dialog.
- * 
+ * Implementation of a file based location editor. Contains a text field with the config file path and a 'Browse...'
+ * button opening a file dialog.
+ *
  * @author Lars Ködderitzsch
  */
 public class ExternalFileConfigurationEditor implements ICheckConfigurationEditor {
@@ -78,8 +78,7 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
     private Text mDescription;
 
     /**
-     * check box to set if the configuration file is not editable by the
-     * configuration editor.
+     * check box to set if the configuration file is not editable by the configuration editor.
      */
     private Button mChkProtectConfig;
 
@@ -90,8 +89,7 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
     /**
      * {@inheritDoc}
      */
-    public void initialize(CheckConfigurationWorkingCopy checkConfiguration,
-            CheckConfigurationPropertiesDialog dialog) {
+    public void initialize(CheckConfigurationWorkingCopy checkConfiguration, CheckConfigurationPropertiesDialog dialog) {
         mWorkingCopy = checkConfiguration;
     }
 
@@ -150,7 +148,7 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
             }
 
             public void widgetDefaultSelected(SelectionEvent e) {
-            // NOOP
+                // NOOP
             }
         });
 
@@ -160,8 +158,7 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
         gd.horizontalSpan = 2;
         lblDescription.setLayoutData(gd);
 
-        mDescription = new Text(contents, SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.BORDER
-                | SWT.VERTICAL);
+        mDescription = new Text(contents, SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.BORDER | SWT.VERTICAL);
         gd = new GridData(GridData.FILL_BOTH);
         gd.horizontalSpan = 2;
         gd.widthHint = 300;
@@ -194,8 +191,7 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
         }
 
         mChkProtectConfig.setSelection(Boolean.valueOf(
-                mWorkingCopy.getAdditionalData().get(
-                        ExternalFileConfigurationType.KEY_PROTECT_CONFIG)).booleanValue());
+            mWorkingCopy.getAdditionalData().get(ExternalFileConfigurationType.KEY_PROTECT_CONFIG)).booleanValue());
 
         return contents;
     }
@@ -208,7 +204,7 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
         mWorkingCopy.setName(mConfigName.getText());
         mWorkingCopy.setDescription(mDescription.getText());
         mWorkingCopy.getAdditionalData().put(ExternalFileConfigurationType.KEY_PROTECT_CONFIG,
-                "" + mChkProtectConfig.getSelection()); //$NON-NLS-1$
+            "" + mChkProtectConfig.getSelection()); //$NON-NLS-1$
 
         try {
             mWorkingCopy.setLocation(mLocation.getText());
@@ -228,13 +224,13 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
     }
 
     /**
-     * Helper method trying to ensure that the file location provided by the
-     * user exists. If that is not the case it prompts the user if an empty
-     * configuration file should be created.
-     * 
-     * @param location the configuration file location
-     * @throws CheckstylePluginException error when trying to ensure the
-     *             location file existance
+     * Helper method trying to ensure that the file location provided by the user exists. If that is not the case it
+     * prompts the user if an empty configuration file should be created.
+     *
+     * @param location
+     *            the configuration file location
+     * @throws CheckstylePluginException
+     *             error when trying to ensure the location file existance
      */
     private boolean ensureFileExists(String location) throws CheckstylePluginException {
 
@@ -244,8 +240,8 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
         File file = new File(resolvedLocation);
         if (!file.exists()) {
             boolean confirm = MessageDialog.openQuestion(mBtnBrowse.getShell(),
-                    Messages.ExternalFileConfigurationEditor_titleFileDoesNotExist,
-                    Messages.ExternalFileConfigurationEditor_msgFileDoesNotExist);
+                Messages.ExternalFileConfigurationEditor_titleFileDoesNotExist,
+                Messages.ExternalFileConfigurationEditor_msgFileDoesNotExist);
             if (confirm) {
                 OutputStream out = null;
                 try {

@@ -20,9 +20,9 @@
 
 package net.sf.eclipsecs.core.config;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * Represents a configuration property who's value must be resolved.
@@ -41,8 +41,10 @@ public class ResolvableProperty implements Cloneable {
     /**
      * Creates a resolvable property.
      * 
-     * @param propertyName the name of the property
-     * @param value the value of the property
+     * @param propertyName
+     *            the name of the property
+     * @param value
+     *            the value of the property
      */
     public ResolvableProperty(String propertyName, String value) {
         setPropertyName(propertyName);
@@ -64,14 +66,16 @@ public class ResolvableProperty implements Cloneable {
     }
 
     /**
-     * @param string Value for the property.
+     * @param string
+     *            Value for the property.
      */
     public void setValue(String string) {
         mValue = string;
     }
 
     /**
-     * @param string The property's name.
+     * @param string
+     *            The property's name.
      */
     public void setPropertyName(String string) {
         mPropertyName = string;
@@ -88,16 +92,14 @@ public class ResolvableProperty implements Cloneable {
             return true;
         }
         ResolvableProperty rhs = (ResolvableProperty) obj;
-        return new EqualsBuilder().append(mPropertyName, rhs.mPropertyName).append(mValue,
-                rhs.mValue).isEquals();
+        return new EqualsBuilder().append(mPropertyName, rhs.mPropertyName).append(mValue, rhs.mValue).isEquals();
     }
 
     /**
      * {@inheritDoc}
      */
     public int hashCode() {
-        return new HashCodeBuilder(32234343, 1000003).append(mPropertyName).append(mValue)
-                .toHashCode();
+        return new HashCodeBuilder(32234343, 1000003).append(mPropertyName).append(mValue).toHashCode();
     }
 
     /**

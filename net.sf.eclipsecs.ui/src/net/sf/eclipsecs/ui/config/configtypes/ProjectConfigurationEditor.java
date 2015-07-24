@@ -37,7 +37,7 @@ import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.config.CheckConfigurationPropertiesDialog;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -68,9 +68,9 @@ import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 
 /**
- * Implementation of a file based location editor. Contains a text field with
- * the config file path and a 'Browse...' button opening a file dialog.
- * 
+ * Implementation of a file based location editor. Contains a text field with the config file path and a 'Browse...'
+ * button opening a file dialog.
+ *
  * @author Lars Ködderitzsch
  */
 public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
@@ -98,8 +98,7 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
     private Text mDescription;
 
     /**
-     * check box to set if the configuration file is not editable by the
-     * configuration editor.
+     * check box to set if the configuration file is not editable by the configuration editor.
      */
     private Button mChkProtectConfig;
 
@@ -110,8 +109,7 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
     /**
      * {@inheritDoc}
      */
-    public void initialize(CheckConfigurationWorkingCopy checkConfiguration,
-            CheckConfigurationPropertiesDialog dialog) {
+    public void initialize(CheckConfigurationWorkingCopy checkConfiguration, CheckConfigurationPropertiesDialog dialog) {
         mWorkingCopy = checkConfiguration;
         mCheckConfigDialog = dialog;
     }
@@ -160,8 +158,8 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
         mBtnBrowse.addSelectionListener(new SelectionListener() {
 
             public void widgetSelected(SelectionEvent e) {
-                ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(shell,
-                        new WorkbenchLabelProvider(), new WorkbenchContentProvider());
+                ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(shell, new WorkbenchLabelProvider(),
+                    new WorkbenchContentProvider());
                 dialog.setTitle(Messages.ProjectConfigurationLocationEditor_titleSelectConfigFile);
                 dialog.setMessage(Messages.ProjectConfigurationLocationEditor_msgSelectConfigFile);
                 dialog.setBlockOnOpen(true);
@@ -170,11 +168,9 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
                 dialog.setValidator(new ISelectionStatusValidator() {
                     public IStatus validate(Object[] selection) {
                         if (selection.length == 1 && selection[0] instanceof IFile) {
-                            return new Status(IStatus.OK, PlatformUI.PLUGIN_ID, IStatus.ERROR,
-                                    new String(), null);
+                            return new Status(IStatus.OK, PlatformUI.PLUGIN_ID, IStatus.ERROR, new String(), null);
                         }
-                        return new Status(IStatus.ERROR, PlatformUI.PLUGIN_ID, IStatus.ERROR,
-                                new String(), null);
+                        return new Status(IStatus.ERROR, PlatformUI.PLUGIN_ID, IStatus.ERROR, new String(), null);
                     }
                 });
                 if (ElementTreeSelectionDialog.OK == dialog.open()) {
@@ -185,7 +181,7 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
             }
 
             public void widgetDefaultSelected(SelectionEvent e) {
-            // NOOP
+                // NOOP
             }
         });
 
@@ -195,8 +191,7 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
         gd.horizontalSpan = 2;
         lblDescription.setLayoutData(gd);
 
-        mDescription = new Text(contents, SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.BORDER
-                | SWT.VERTICAL);
+        mDescription = new Text(contents, SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.BORDER | SWT.VERTICAL);
         gd = new GridData(GridData.FILL_BOTH);
         gd.horizontalSpan = 2;
         gd.widthHint = 300;
@@ -229,8 +224,7 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
         }
 
         mChkProtectConfig.setSelection(Boolean.valueOf(
-                mWorkingCopy.getAdditionalData().get(
-                        ExternalFileConfigurationType.KEY_PROTECT_CONFIG)).booleanValue());
+            mWorkingCopy.getAdditionalData().get(ExternalFileConfigurationType.KEY_PROTECT_CONFIG)).booleanValue());
 
         return contents;
     }
@@ -243,7 +237,7 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
         mWorkingCopy.setDescription(mDescription.getText());
 
         mWorkingCopy.getAdditionalData().put(ExternalFileConfigurationType.KEY_PROTECT_CONFIG,
-                "" + mChkProtectConfig.getSelection()); //$NON-NLS-1$
+            "" + mChkProtectConfig.getSelection()); //$NON-NLS-1$
 
         try {
             mWorkingCopy.setLocation(mLocation.getText());
@@ -257,18 +251,16 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
 
             ICheckConfigurationWorkingSet ws = mCheckConfigDialog.getCheckConfigurationWorkingSet();
             IPath tmp = new Path(location);
-            boolean isFirstPartProject = ResourcesPlugin.getWorkspace().getRoot().getProject(
-                    tmp.segment(0)).exists();
+            boolean isFirstPartProject = ResourcesPlugin.getWorkspace().getRoot().getProject(tmp.segment(0)).exists();
 
             if (ws instanceof LocalCheckConfigurationWorkingSet && !isFirstPartProject) {
-                location = ((LocalCheckConfigurationWorkingSet) ws).getProject().getFullPath()
-                        .append(location).toString();
+                location = ((LocalCheckConfigurationWorkingSet) ws).getProject().getFullPath().append(location)
+                    .toString();
                 mLocation.setText(location);
             }
             else if (ws instanceof GlobalCheckConfigurationWorkingSet && !isFirstPartProject) {
-                throw new CheckstylePluginException(NLS
-                        .bind(Messages.ProjectConfigurationEditor_msgNoProjectInWorkspace, tmp
-                                .segment(0)));
+                throw new CheckstylePluginException(NLS.bind(
+                    Messages.ProjectConfigurationEditor_msgNoProjectInWorkspace, tmp.segment(0)));
             }
 
             if (ensureFileExists(location)) {
@@ -283,13 +275,13 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
     }
 
     /**
-     * Helper method trying to ensure that the file location provided by the
-     * user exists. If that is not the case it prompts the user if an empty
-     * configuration file should be created.
-     * 
-     * @param location the configuration file location
-     * @throws CheckstylePluginException error when trying to ensure the
-     *             location file existance
+     * Helper method trying to ensure that the file location provided by the user exists. If that is not the case it
+     * prompts the user if an empty configuration file should be created.
+     *
+     * @param location
+     *            the configuration file location
+     * @throws CheckstylePluginException
+     *             error when trying to ensure the location file existance
      */
     private boolean ensureFileExists(String location) throws CheckstylePluginException {
 
@@ -303,8 +295,8 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
 
         if (!file.exists() && file.getLocation() != null) {
             boolean confirm = MessageDialog.openQuestion(mBtnBrowse.getShell(),
-                    Messages.ExternalFileConfigurationEditor_titleFileDoesNotExist,
-                    Messages.ExternalFileConfigurationEditor_msgFileDoesNotExist);
+                Messages.ExternalFileConfigurationEditor_titleFileDoesNotExist,
+                Messages.ExternalFileConfigurationEditor_msgFileDoesNotExist);
             if (confirm) {
                 OutputStream out = null;
                 try {

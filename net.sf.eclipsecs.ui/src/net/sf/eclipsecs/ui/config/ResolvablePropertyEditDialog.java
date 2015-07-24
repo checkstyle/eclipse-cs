@@ -25,7 +25,7 @@ import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
 import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.util.SWTUtil;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jface.contentassist.SubjectControlContentAssistant;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.text.DefaultInformationControl;
@@ -57,9 +57,11 @@ public class ResolvablePropertyEditDialog extends TitleAreaDialog {
 
     /**
      * Constructor for SamplePropertyPage.
-     * 
-     * @param parent Parent shell for the dialog window.
-     * @param prop Property to be edited.
+     *
+     * @param parent
+     *            Parent shell for the dialog window.
+     * @param prop
+     *            Property to be edited.
      */
     ResolvablePropertyEditDialog(Shell parent, ResolvableProperty prop) {
         super(parent);
@@ -70,6 +72,7 @@ public class ResolvablePropertyEditDialog extends TitleAreaDialog {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected Control createDialogArea(Composite parent) {
 
         Composite composite = (Composite) super.createDialogArea(parent);
@@ -101,15 +104,17 @@ public class ResolvablePropertyEditDialog extends TitleAreaDialog {
     /**
      * @see org.eclipse.jface.dialogs.Dialog#create()
      */
+    @Override
     public void create() {
         super.create();
         SWTUtil.addResizeSupport(this, CheckstyleUIPlugin.getDefault().getDialogSettings(),
-                ResolvablePropertyEditDialog.class.getName());
+            ResolvablePropertyEditDialog.class.getName());
     }
 
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void okPressed() {
 
         if (StringUtils.trimToNull(mTxtName.getText()) == null) {
@@ -133,6 +138,7 @@ public class ResolvablePropertyEditDialog extends TitleAreaDialog {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void configureShell(Shell shell) {
         super.configureShell(shell);
         shell.setText(Messages.ResolvablePropertyEditDialog_titleDialog);
@@ -140,20 +146,18 @@ public class ResolvablePropertyEditDialog extends TitleAreaDialog {
 
     /**
      * Creates the content assistant.
-     * 
+     *
      * @return the content assistant
      */
     private SubjectControlContentAssistant createContentAssistant() {
 
         final SubjectControlContentAssistant contentAssistant = new SubjectControlContentAssistant();
 
-        contentAssistant.setRestoreCompletionProposalSize(CheckstyleUIPlugin.getDefault()
-                .getDialogSettings());
+        contentAssistant.setRestoreCompletionProposalSize(CheckstyleUIPlugin.getDefault().getDialogSettings());
 
         IContentAssistProcessor processor = new PropertiesContentAssistProcessor();
         contentAssistant.setContentAssistProcessor(processor, IDocument.DEFAULT_CONTENT_TYPE);
-        contentAssistant
-                .setContextInformationPopupOrientation(IContentAssistant.CONTEXT_INFO_ABOVE);
+        contentAssistant.setContextInformationPopupOrientation(IContentAssistant.CONTEXT_INFO_ABOVE);
         contentAssistant.setInformationControlCreator(new IInformationControlCreator() {
             /*
              * @see IInformationControlCreator#createInformationControl(Shell)

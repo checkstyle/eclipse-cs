@@ -34,8 +34,8 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
 
@@ -72,9 +72,8 @@ public abstract class ConfigurationType implements IConfigurationType {
     /**
      * {@inheritDoc}
      */
-    public void initialize(String name, String internalName,
-        String definingPluginId, boolean creatable, boolean editable,
-        boolean configurable) {
+    public void initialize(String name, String internalName, String definingPluginId, boolean creatable,
+        boolean editable, boolean configurable) {
         mName = name;
         mInternalName = internalName;
         mIsCreatable = creatable;
@@ -120,9 +119,7 @@ public abstract class ConfigurationType implements IConfigurationType {
     /**
      * {@inheritDoc}
      */
-    public URL getResolvedConfigurationFileURL(
-        ICheckConfiguration checkConfiguration)
-        throws CheckstylePluginException {
+    public URL getResolvedConfigurationFileURL(ICheckConfiguration checkConfiguration) throws CheckstylePluginException {
         URL url = null;
 
         try {
@@ -137,8 +134,7 @@ public abstract class ConfigurationType implements IConfigurationType {
     /**
      * {@inheritDoc}
      */
-    public CheckstyleConfigurationFile getCheckstyleConfiguration(
-        ICheckConfiguration checkConfiguration)
+    public CheckstyleConfigurationFile getCheckstyleConfiguration(ICheckConfiguration checkConfiguration)
         throws CheckstylePluginException {
 
         CheckstyleConfigurationFile data = new CheckstyleConfigurationFile();
@@ -148,8 +144,7 @@ public abstract class ConfigurationType implements IConfigurationType {
             // resolve the true configuration file URL
             data.setResolvedConfigFileURL(resolveLocation(checkConfiguration));
 
-            URLConnection connection = data.getResolvedConfigFileURL()
-                .openConnection();
+            URLConnection connection = data.getResolvedConfigFileURL().openConnection();
             connection.connect();
 
             // get last modification timestamp
@@ -160,13 +155,11 @@ public abstract class ConfigurationType implements IConfigurationType {
             data.setCheckConfigFileBytes(configurationFileData);
 
             // get the properties bundle
-            byte[] additionalPropertiesBytes = getAdditionPropertiesBundleBytes(data
-                .getResolvedConfigFileURL());
+            byte[] additionalPropertiesBytes = getAdditionPropertiesBundleBytes(data.getResolvedConfigFileURL());
             data.setAdditionalPropertyBundleBytes(additionalPropertiesBytes);
 
             // get the property resolver
-            PropertyResolver resolver = getPropertyResolver(checkConfiguration,
-                data);
+            PropertyResolver resolver = getPropertyResolver(checkConfiguration, data);
             data.setPropertyResolver(resolver);
 
         }
@@ -178,8 +171,8 @@ public abstract class ConfigurationType implements IConfigurationType {
     }
 
     /**
-     * Returns the URL of the checkstyle configuration file. Implementors are
-     * not expected to open any connection to the URL.
+     * Returns the URL of the checkstyle configuration file. Implementors are not expected to open any connection to the
+     * URL.
      * 
      * @param checkConfiguration
      *            the actual check configuration
@@ -187,8 +180,7 @@ public abstract class ConfigurationType implements IConfigurationType {
      * @throws IOException
      *             error while resolving the url
      */
-    protected abstract URL resolveLocation(
-        ICheckConfiguration checkConfiguration) throws IOException;
+    protected abstract URL resolveLocation(ICheckConfiguration checkConfiguration) throws IOException;
 
     protected byte[] getAdditionPropertiesBundleBytes(URL checkConfigURL) {
 
@@ -222,8 +214,8 @@ public abstract class ConfigurationType implements IConfigurationType {
     }
 
     /**
-     * Gets the property resolver for this configuration type used to expand
-     * property values within the checkstyle configuration.
+     * Gets the property resolver for this configuration type used to expand property values within the checkstyle
+     * configuration.
      * 
      * @param checkConfiguration
      *            the actual check configuration
@@ -231,38 +223,33 @@ public abstract class ConfigurationType implements IConfigurationType {
      * @throws IOException
      *             error creating the property resolver
      */
-    protected PropertyResolver getPropertyResolver(ICheckConfiguration config,
-        CheckstyleConfigurationFile configFile) throws IOException {
+    protected PropertyResolver getPropertyResolver(ICheckConfiguration config, CheckstyleConfigurationFile configFile)
+        throws IOException {
 
         MultiPropertyResolver multiResolver = new MultiPropertyResolver();
-        multiResolver
-            .addPropertyResolver(new ResolvablePropertyResolver(config));
+        multiResolver.addPropertyResolver(new ResolvablePropertyResolver(config));
 
         File f = FileUtils.toFile(configFile.getResolvedConfigFileURL());
         if (f != null) {
-            multiResolver.addPropertyResolver(new StandardPropertyResolver(f
-                .toString()));
+            multiResolver.addPropertyResolver(new StandardPropertyResolver(f.toString()));
         }
         else {
-            multiResolver.addPropertyResolver(new StandardPropertyResolver(
-                configFile.getResolvedConfigFileURL().toString()));
+            multiResolver.addPropertyResolver(new StandardPropertyResolver(configFile.getResolvedConfigFileURL()
+                .toString()));
         }
 
         multiResolver.addPropertyResolver(new ClasspathVariableResolver());
         multiResolver.addPropertyResolver(new SystemPropertyResolver());
 
         if (configFile.getAdditionalPropertiesBundleStream() != null) {
-            ResourceBundle bundle = new PropertyResourceBundle(configFile
-                .getAdditionalPropertiesBundleStream());
-            multiResolver
-                .addPropertyResolver(new ResourceBundlePropertyResolver(bundle));
+            ResourceBundle bundle = new PropertyResourceBundle(configFile.getAdditionalPropertiesBundleStream());
+            multiResolver.addPropertyResolver(new ResourceBundlePropertyResolver(bundle));
         }
 
         return multiResolver;
     }
 
-    protected byte[] getBytesFromURLConnection(URLConnection connection)
-        throws IOException {
+    protected byte[] getBytesFromURLConnection(URLConnection connection) throws IOException {
 
         byte[] configurationFileData = null;
 
@@ -282,8 +269,7 @@ public abstract class ConfigurationType implements IConfigurationType {
      * {@inheritDoc}
      */
     @SuppressWarnings("unused")
-    public void notifyCheckConfigRemoved(ICheckConfiguration checkConfiguration)
-        throws CheckstylePluginException {
+    public void notifyCheckConfigRemoved(ICheckConfiguration checkConfiguration) throws CheckstylePluginException {
         // standard is that nothing happens
     }
 
@@ -299,18 +285,16 @@ public abstract class ConfigurationType implements IConfigurationType {
             return true;
         }
         ConfigurationType rhs = (ConfigurationType) obj;
-        return new EqualsBuilder().append(mName, rhs.mName).append(
-            mInternalName, rhs.mInternalName).append(mIsCreatable,
-            rhs.mIsCreatable).append(mIsEditable, rhs.mIsEditable).append(
-            mIsConfigurable, rhs.mIsConfigurable).isEquals();
+        return new EqualsBuilder().append(mName, rhs.mName).append(mInternalName, rhs.mInternalName)
+            .append(mIsCreatable, rhs.mIsCreatable).append(mIsEditable, rhs.mIsEditable)
+            .append(mIsConfigurable, rhs.mIsConfigurable).isEquals();
     }
 
     /**
      * {@inheritDoc}
      */
     public int hashCode() {
-        return new HashCodeBuilder(82713903, 1000003).append(mName).append(
-            mInternalName).append(mIsCreatable).append(mIsEditable).append(
-            mIsConfigurable).toHashCode();
+        return new HashCodeBuilder(82713903, 1000003).append(mName).append(mInternalName).append(mIsCreatable)
+            .append(mIsEditable).append(mIsConfigurable).toHashCode();
     }
 }

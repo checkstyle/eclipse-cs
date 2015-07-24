@@ -74,7 +74,7 @@ import org.eclipse.ui.texteditor.MarkerUtilities;
 
 /**
  * View that displays statistics about checkstyle markers.
- * 
+ *
  * @author Fabrice BELLINGARD
  * @author Lars Ködderitzsch
  */
@@ -128,12 +128,6 @@ public class MarkerStatsView extends AbstractStatsView {
     /** The state if the view is currently drilled down to details. */
     private boolean mIsDrilledDown;
 
-    /** The last folder used to store the generated reports. */
-    private String mLastExportFolderName;
-
-    /** The last file name used to store the generated reports. */
-    private String mLastExportFileName = "CheckstyleStatsExport";
-
     //
     // methods
     //
@@ -141,6 +135,7 @@ public class MarkerStatsView extends AbstractStatsView {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void createPartControl(Composite parent) {
         super.createPartControl(parent);
 
@@ -184,6 +179,7 @@ public class MarkerStatsView extends AbstractStatsView {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setFocus() {
         super.setFocus();
         mStackLayout.topControl.setFocus();
@@ -191,7 +187,7 @@ public class MarkerStatsView extends AbstractStatsView {
 
     /**
      * Creates the table viewer for the master view.
-     * 
+     *
      * @param parent
      *            the parent composite
      * @return the master table viewer
@@ -249,7 +245,7 @@ public class MarkerStatsView extends AbstractStatsView {
 
     /**
      * Creates the table viewer for the detail view.
-     * 
+     *
      * @param parent
      *            the parent composite
      * @return the detail table viewer
@@ -318,6 +314,7 @@ public class MarkerStatsView extends AbstractStatsView {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void initMenu(IMenuManager menu) {
         menu.add(new FiltersAction(this));
     }
@@ -325,6 +322,7 @@ public class MarkerStatsView extends AbstractStatsView {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void initToolBar(IToolBarManager tbm) {
         tbm.add(mChartAction);
         tbm.add(new Separator());
@@ -336,6 +334,7 @@ public class MarkerStatsView extends AbstractStatsView {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected String getViewId() {
         return VIEW_ID;
     }
@@ -343,6 +342,7 @@ public class MarkerStatsView extends AbstractStatsView {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void handleStatsRebuilt() {
 
         if (mMasterViewer != null && !mMasterViewer.getTable().isDisposed()) {
@@ -363,12 +363,14 @@ public class MarkerStatsView extends AbstractStatsView {
 
     /**
      * See method below.
-     * 
+     *
      * @see net.sf.eclipsecs.stats.views.AbstractStatsView#makeActions()
      */
+    @Override
     protected void makeActions() {
         // Action used to display the pie chart
         mChartAction = new Action() {
+            @Override
             public void run() {
                 try {
                     getSite().getWorkbenchWindow().getActivePage().showView(GraphStatsView.VIEW_ID);
@@ -385,6 +387,7 @@ public class MarkerStatsView extends AbstractStatsView {
 
         // action used to display the detail of a specific error type
         mDrillDownAction = new Action() {
+            @Override
             public void run() {
                 IStructuredSelection selection = (IStructuredSelection) mMasterViewer.getSelection();
                 if (selection.getFirstElement() instanceof MarkerStat) {
@@ -410,6 +413,7 @@ public class MarkerStatsView extends AbstractStatsView {
 
         // action used to go back to the master view
         mDrillBackAction = new Action() {
+            @Override
             public void run() {
                 drillBack();
             }
@@ -424,6 +428,7 @@ public class MarkerStatsView extends AbstractStatsView {
 
         // action used to show a specific error in the editor
         mShowErrorAction = new Action() {
+            @Override
             public void run() {
                 IStructuredSelection selection = (IStructuredSelection) mDetailViewer.getSelection();
                 if (selection.getFirstElement() instanceof IMarker) {
@@ -492,7 +497,7 @@ public class MarkerStatsView extends AbstractStatsView {
 
     /**
      * Adds the actions to the tableviewer context menu.
-     * 
+     *
      * @param actions
      *            a collection of IAction objets
      */
@@ -521,7 +526,7 @@ public class MarkerStatsView extends AbstractStatsView {
 
     /**
      * Specifies which action will be run when double clicking on the viewer.
-     * 
+     *
      * @param action
      *            the IAction to add
      */
@@ -535,7 +540,7 @@ public class MarkerStatsView extends AbstractStatsView {
 
     /**
      * Content provider for the master table viewer.
-     * 
+     *
      * @author Lars Ködderitzsch
      */
     private class MasterContentProvider implements IStructuredContentProvider {
@@ -572,7 +577,7 @@ public class MarkerStatsView extends AbstractStatsView {
 
     /**
      * Content provider for the detail table viewer.
-     * 
+     *
      * @author Lars Ködderitzsch
      */
     private class DetailContentProvider implements IStructuredContentProvider {
@@ -618,7 +623,7 @@ public class MarkerStatsView extends AbstractStatsView {
 
     /**
      * Label provider for the master table viewer.
-     * 
+     *
      * @author Lars Ködderitzsch
      */
     private class MasterViewMultiProvider extends LabelProvider implements ITableLabelProvider,
@@ -709,7 +714,7 @@ public class MarkerStatsView extends AbstractStatsView {
 
     /**
      * Label provider for the detail table viewer.
-     * 
+     *
      * @author Lars Ködderitzsch
      */
     private class DetailViewMultiProvider extends LabelProvider implements ITableLabelProvider,

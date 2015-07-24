@@ -31,7 +31,7 @@ import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
 import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.config.CheckConfigurationPropertiesDialog;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -44,9 +44,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 /**
- * Implementation of a location editor to input a remote location. Contains just
- * a text field to input the URL.
- * 
+ * Implementation of a location editor to input a remote location. Contains just a text field to input the URL.
+ *
  * @author Lars Ködderitzsch
  */
 public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
@@ -81,8 +80,7 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
     /**
      * {@inheritDoc}
      */
-    public void initialize(CheckConfigurationWorkingCopy checkConfiguration,
-            CheckConfigurationPropertiesDialog dialog) {
+    public void initialize(CheckConfigurationWorkingCopy checkConfiguration, CheckConfigurationPropertiesDialog dialog) {
         mWorkingCopy = checkConfiguration;
     }
 
@@ -123,8 +121,7 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
         gd.horizontalSpan = 2;
         lblDescription.setLayoutData(gd);
 
-        mDescription = new Text(contents, SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.BORDER
-                | SWT.VERTICAL);
+        mDescription = new Text(contents, SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.BORDER | SWT.VERTICAL);
         gd = new GridData(GridData.FILL_BOTH);
         gd.horizontalSpan = 2;
         gd.widthHint = 300;
@@ -184,14 +181,13 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
         }
 
         mChkCacheConfig.setSelection(Boolean.valueOf(
-                mWorkingCopy.getAdditionalData().get(RemoteConfigurationType.KEY_CACHE_CONFIG))
-                .booleanValue());
+            mWorkingCopy.getAdditionalData().get(RemoteConfigurationType.KEY_CACHE_CONFIG)).booleanValue());
 
         if (mWorkingCopy.getLocation() != null) {
             try {
 
                 PasswordAuthentication auth = RemoteConfigurationType.RemoteConfigAuthenticator
-                        .getPasswordAuthentication(mWorkingCopy.getResolvedConfigurationFileURL());
+                    .getPasswordAuthentication(mWorkingCopy.getResolvedConfigurationFileURL());
 
                 if (auth != null) {
                     mUserName.setText(auth.getUserName());
@@ -213,28 +209,25 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
 
         // set the cachefile name
         if (mChkCacheConfig.getSelection()
-                && mWorkingCopy.getAdditionalData().get(
-                        RemoteConfigurationType.KEY_CACHE_FILE_LOCATION) == null) {
+            && mWorkingCopy.getAdditionalData().get(RemoteConfigurationType.KEY_CACHE_FILE_LOCATION) == null) {
 
             long currentTime = System.currentTimeMillis();
 
             mWorkingCopy.getAdditionalData().put(RemoteConfigurationType.KEY_CACHE_FILE_LOCATION,
-                    mWorkingCopy.getName() + "_" + currentTime + "_cache.xml"); //$NON-NLS-1$ //$NON-NLS-2$ $NON-NLS-2$
-            mWorkingCopy.getAdditionalData().put(
-                    RemoteConfigurationType.KEY_CACHE_PROPS_FILE_LOCATION,
-                    mWorkingCopy.getName() + "_" + currentTime + "_cache.properties"); //$NON-NLS-1$ //$NON-NLS-2$ $NON-NLS-2$
+                mWorkingCopy.getName() + "_" + currentTime + "_cache.xml"); //$NON-NLS-1$ //$NON-NLS-2$ $NON-NLS-2$
+            mWorkingCopy.getAdditionalData().put(RemoteConfigurationType.KEY_CACHE_PROPS_FILE_LOCATION,
+                mWorkingCopy.getName() + "_" + currentTime + "_cache.properties"); //$NON-NLS-1$ //$NON-NLS-2$ $NON-NLS-2$
         }
 
         // store credentials if necessary
         try {
             if (StringUtils.trimToNull(mUserName.getText()) != null
-                    || StringUtils.trimToNull(mPassword.getText()) != null) {
-                RemoteConfigurationType.RemoteConfigAuthenticator.storeCredentials(new URL(
-                        mLocation.getText()), mUserName.getText(), mPassword.getText());
+                || StringUtils.trimToNull(mPassword.getText()) != null) {
+                RemoteConfigurationType.RemoteConfigAuthenticator.storeCredentials(new URL(mLocation.getText()),
+                    mUserName.getText(), mPassword.getText());
             }
             else {
-                RemoteConfigurationType.RemoteConfigAuthenticator.removeCachedAuthInfo(new URL(
-                        mLocation.getText()));
+                RemoteConfigurationType.RemoteConfigAuthenticator.removeCachedAuthInfo(new URL(mLocation.getText()));
             }
         }
         catch (MalformedURLException e) {
@@ -246,7 +239,7 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
         mWorkingCopy.setDescription(mDescription.getText());
 
         mWorkingCopy.getAdditionalData().put(RemoteConfigurationType.KEY_CACHE_CONFIG,
-                "" + mChkCacheConfig.getSelection()); //$NON-NLS-1$
+            "" + mChkCacheConfig.getSelection()); //$NON-NLS-1$
 
         return mWorkingCopy;
     }

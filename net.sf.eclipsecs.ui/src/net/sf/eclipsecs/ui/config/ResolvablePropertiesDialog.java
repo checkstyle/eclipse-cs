@@ -36,7 +36,7 @@ import net.sf.eclipsecs.ui.util.table.EnhancedTableViewer;
 import net.sf.eclipsecs.ui.util.table.ITableComparableProvider;
 import net.sf.eclipsecs.ui.util.table.ITableSettingsProvider;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -67,8 +67,8 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
 /**
- * Dialog to show/edit the properties (name, location, description) of a check
- * configuration. Also used to create new check configurations.
+ * Dialog to show/edit the properties (name, location, description) of a check configuration. Also used to create new
+ * check configurations.
  *
  * @author Lars Ködderitzsch
  */
@@ -109,8 +109,10 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
     /**
      * Creates the properties dialog for check configurations.
      *
-     * @param parent the parent shell
-     * @param checkConfig the check configuration to edit
+     * @param parent
+     *            the parent shell
+     * @param checkConfig
+     *            the check configuration to edit
      */
     public ResolvablePropertiesDialog(Shell parent, CheckConfigurationWorkingCopy checkConfig) {
         super(parent);
@@ -134,19 +136,22 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
     /**
      * @see org.eclipse.jface.dialogs.Dialog#create()
      */
+    @Override
     public void create() {
         super.create();
         initialize();
 
         SWTUtil.addResizeSupport(this, CheckstyleUIPlugin.getDefault().getDialogSettings(),
-                ResolvablePropertiesDialog.class.getName());
+            ResolvablePropertiesDialog.class.getName());
     }
 
     /**
      * Creates the dialogs main contents.
      *
-     * @param parent the parent composite
+     * @param parent
+     *            the parent composite
      */
+    @Override
     protected Control createDialogArea(Composite parent) {
 
         // set the logo
@@ -219,6 +224,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected Control createButtonBar(Composite parent) {
 
         Composite composite = new Composite(parent, SWT.NONE);
@@ -247,6 +253,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void configureShell(Shell newShell) {
 
         super.configureShell(newShell);
@@ -256,6 +263,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected Point getInitialSize() {
         return new Point(650, 500);
     }
@@ -263,6 +271,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void okPressed() {
 
         // check for properties without value - these must be fixed before
@@ -270,9 +279,8 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
         for (ResolvableProperty prop : mResolvableProperties) {
 
             if (StringUtils.trimToNull(prop.getValue()) == null) {
-                this.setErrorMessage(NLS.bind(
-                        Messages.ResolvablePropertiesDialog_msgMissingPropertyValue, prop
-                                .getPropertyName()));
+                this.setErrorMessage(NLS.bind(Messages.ResolvablePropertiesDialog_msgMissingPropertyValue,
+                    prop.getPropertyName()));
                 return;
             }
         }
@@ -322,7 +330,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
         }
 
         public void widgetDefaultSelected(SelectionEvent e) {
-        // NOOP
+            // NOOP
         }
 
         public void doubleClick(DoubleClickEvent event) {
@@ -343,8 +351,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
                     removePropertyItems();
                 }
                 if (e.character == ' ') {
-                    IStructuredSelection selection = (IStructuredSelection) mTableViewer
-                            .getSelection();
+                    IStructuredSelection selection = (IStructuredSelection) mTableViewer.getSelection();
 
                     ResolvableProperty prop = (ResolvableProperty) selection.getFirstElement();
                     openPropertyItemEditor(prop);
@@ -353,7 +360,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
         }
 
         public void keyPressed(KeyEvent e) {
-        // NOOP
+            // NOOP
         }
 
         private void openPropertyItemEditor(ResolvableProperty prop) {
@@ -361,16 +368,14 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
             if (prop == null) {
                 ResolvableProperty newProp = new ResolvableProperty(null, null);
 
-                ResolvablePropertyEditDialog dialog = new ResolvablePropertyEditDialog(getShell(),
-                        newProp);
+                ResolvablePropertyEditDialog dialog = new ResolvablePropertyEditDialog(getShell(), newProp);
                 if (Dialog.OK == dialog.open()) {
                     mResolvableProperties.add(newProp);
                     mTableViewer.refresh();
                 }
             }
             else {
-                ResolvablePropertyEditDialog dialog = new ResolvablePropertyEditDialog(getShell(),
-                        prop);
+                ResolvablePropertyEditDialog dialog = new ResolvablePropertyEditDialog(getShell(), prop);
                 if (Dialog.OK == dialog.open()) {
                     mTableViewer.refresh();
                 }
@@ -379,8 +384,8 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
 
         private void removePropertyItems() {
             boolean confirm = MessageDialog.openQuestion(getShell(),
-                    Messages.ResolvablePropertiesDialog_titleRemoveConfirmation,
-                    Messages.ResolvablePropertiesDialog_msgRemoveConfirmation);
+                Messages.ResolvablePropertiesDialog_titleRemoveConfirmation,
+                Messages.ResolvablePropertiesDialog_msgRemoveConfirmation);
             if (confirm) {
 
                 IStructuredSelection selection = (IStructuredSelection) mTableViewer.getSelection();
@@ -422,12 +427,12 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
                     it = unresolvedProps.iterator();
                     while (it.hasNext()) {
                         buf.append("\t${").append( //$NON-NLS-1$
-                                it.next().getPropertyName()).append("}\n"); //$NON-NLS-1$
+                            it.next().getPropertyName()).append("}\n"); //$NON-NLS-1$
                     }
 
                     boolean confirm = MessageDialog.openQuestion(getShell(),
-                            Messages.ResolvablePropertiesDialog_titleFoundProperties, NLS.bind(
-                                    Messages.ResolvablePropertiesDialog_msgFoundProperties, buf));
+                        Messages.ResolvablePropertiesDialog_titleFoundProperties,
+                        NLS.bind(Messages.ResolvablePropertiesDialog_msgFoundProperties, buf));
                     if (confirm) {
                         mResolvableProperties.addAll(unresolvedProps);
                         mTableViewer.refresh();
@@ -435,8 +440,8 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
                 }
                 else {
                     MessageDialog.openInformation(getShell(),
-                            Messages.ResolvablePropertiesDialog_titleNoUnresolvedProps,
-                            Messages.ResolvablePropertiesDialog_msgNoUnresolvedProps);
+                        Messages.ResolvablePropertiesDialog_titleNoUnresolvedProps,
+                        Messages.ResolvablePropertiesDialog_msgNoUnresolvedProps);
                 }
             }
             catch (CheckstylePluginException e) {
@@ -447,13 +452,13 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
     }
 
     /**
-     * Label provider for the check configuration table. Implements also support
-     * for table sorting and storing of the table settings.
+     * Label provider for the check configuration table. Implements also support for table sorting and storing of the
+     * table settings.
      *
      * @author Lars Ködderitzsch
      */
     private class PropertiesLabelProvider extends LabelProvider implements ITableLabelProvider,
-            ITableComparableProvider, ITableSettingsProvider {
+        ITableComparableProvider, ITableSettingsProvider {
 
         /**
          * {@inheritDoc}
