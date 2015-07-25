@@ -93,14 +93,6 @@
         <rule-metadata name="%OneTopLevelClass.name" internal-name="OneTopLevelClass" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.design.OneTopLevelClassCheck"/>
             <description>%OneTopLevelClass.desc</description>
-            <property-metadata name="tokens" datatype="MultiCheck">
-                <description>%OneTopLevelClass.tokens</description>
-                <enumeration>
-                    <property-value-option value="CLASS_DEF"/>
-                    <property-value-option value="ENUM_DEF"/>
-                    <property-value-option value="INTERFACE_DEF"/>
-                </enumeration>
-            </property-metadata>
             <message-key key="one.top.level.class"/>
         </rule-metadata>
     </rule-group-metadata>
