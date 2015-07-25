@@ -29,18 +29,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import net.sf.eclipsecs.core.Messages;
-import net.sf.eclipsecs.core.builder.CheckstyleMarker;
-import net.sf.eclipsecs.core.jobs.RunCheckstyleOnFilesJob;
-import net.sf.eclipsecs.core.nature.CheckstyleNature;
-import net.sf.eclipsecs.core.projectconfig.IProjectConfiguration;
-import net.sf.eclipsecs.core.projectconfig.ProjectConfigurationFactory;
-import net.sf.eclipsecs.core.projectconfig.filters.IFilter;
-import net.sf.eclipsecs.core.projectconfig.filters.UnOpenedFilesFilter;
-import net.sf.eclipsecs.core.util.CheckstyleLog;
-import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.WorkspaceJob;
@@ -63,6 +51,18 @@ import org.eclipse.ui.WorkbenchException;
 import org.eclipse.ui.XMLMemento;
 import org.eclipse.ui.internal.IWorkbenchConstants;
 import org.eclipse.ui.part.FileEditorInput;
+
+import net.sf.eclipsecs.core.Messages;
+import net.sf.eclipsecs.core.builder.CheckstyleMarker;
+import net.sf.eclipsecs.core.jobs.RunCheckstyleOnFilesJob;
+import net.sf.eclipsecs.core.nature.CheckstyleNature;
+import net.sf.eclipsecs.core.projectconfig.IProjectConfiguration;
+import net.sf.eclipsecs.core.projectconfig.ProjectConfigurationFactory;
+import net.sf.eclipsecs.core.projectconfig.filters.IFilter;
+import net.sf.eclipsecs.core.projectconfig.filters.UnOpenedFilesFilter;
+import net.sf.eclipsecs.core.util.CheckstyleLog;
+import net.sf.eclipsecs.core.util.CheckstylePluginException;
+import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
 
 /**
  * PartListener implementation that listenes for opening editor parts and runs Checkstyle on the opened file if the
@@ -288,13 +288,13 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
             Method getModelMethod = e.getClass().getMethod("getModel", new Class<?>[0]);
             getModelMethod.setAccessible(true);
 
-            Object model = getModelMethod.invoke(e, null);
+            Object model = getModelMethod.invoke(e, (Object[]) null);
 
             Method getPersistedStateMethod = model.getClass().getMethod("getPersistedState", new Class<?>[0]);
             getPersistedStateMethod.setAccessible(true);
 
             @SuppressWarnings("unchecked")
-            Map<String, String> state = (Map<String, String>) getPersistedStateMethod.invoke(model, null);
+            Map<String, String> state = (Map<String, String>) getPersistedStateMethod.invoke(model, (Object[]) null);
 
             String memento = state.get("memento");
 
@@ -334,7 +334,7 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
             Method getMementoMethod = e.getClass().getMethod("getMemento", new Class<?>[0]);
             getMementoMethod.setAccessible(true);
 
-            IMemento memento = (IMemento) getMementoMethod.invoke(e, null);
+            IMemento memento = (IMemento) getMementoMethod.invoke(e, (Object[]) null);
             return memento;
         }
         catch (NoSuchMethodException e1) {
