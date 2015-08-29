@@ -306,6 +306,11 @@
             <property-metadata name="ignoreFieldDeclaration" datatype="Boolean" default-value="false">
                 <description>%MagicNumber.ignoreFieldDeclaration</description>
             </property-metadata>
+            <property-metadata name="constantWaiverParentToken" datatype="MultiCheck"
+                default-value="ASSIGN,ARRAY_INIT,EXPR,UNARY_PLUS,UNARY_MINUS,TYPECAST,ELIST,STAR,DIV,PLUS,MINUS,LITERAL_NEW,METHOD_CALL">
+                <description>%MagicNumber.constantWaiverParentToken</description>
+                <enumeration option-provider="net.sf.eclipsecs.core.config.meta.AllTokensProvider"/>
+            </property-metadata>
             <message-key key="magic.number"/>
         </rule-metadata>
 
