@@ -97,6 +97,20 @@
             <message-key key="indentation.child.error"/>
         </rule-metadata>
 
+        <rule-metadata name="%CommentsIndentation.name" internal-name="CommentsIndentation" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.indentation.CommentsIndentationCheck"/>
+            <description>%CommentsIndentation.desc</description>
+            <property-metadata name="tokens" datatype="MultiCheck" default-value="SINGLE_LINE_COMMENT,BLOCK_COMMENT_BEGIN">
+                <description>%CommentsIndentation.tokens</description>
+                <enumeration>
+                    <property-value-option value="SINGLE_LINE_COMMENT"/>
+                    <property-value-option value="BLOCK_COMMENT_BEGIN"/>
+                </enumeration>
+            </property-metadata>
+            <message-key key="comments.indentation.single"/>
+            <message-key key="comments.indentation.block"/>
+        </rule-metadata>
+
         <rule-metadata name="%NewlineAtEndOfFile.name" internal-name="NewlineAtEndOfFile" parent="Checker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.NewlineAtEndOfFileCheck"/>
             <description>%NewlineAtEndOfFile.desc</description>
@@ -134,6 +148,9 @@
             </property-metadata>
             <property-metadata name="basenameSeparator" datatype="String" default-value="_">
                 <description>%Translation.basenameSeparator</description>
+            </property-metadata>
+            <property-metadata name="requiredTranslations" datatype="String" default-value="">
+                <description>%Translation.requiredTranslations</description>
             </property-metadata>
             <message-key key="general.fileNotFound"/>
             <message-key key="general.exception"/>
@@ -226,7 +243,7 @@
             <property-metadata name="fileExtensions" datatype="String" default-value="properties">
                 <description>%UniqueProperties.fileExtensions</description>
             </property-metadata>
-            <message-key key="properties.duplicateproperty"/>
+            <message-key key="properties.duplicate.property"/>
             <message-key key="unable.open.cause"/>
         </rule-metadata>
     </rule-group-metadata>

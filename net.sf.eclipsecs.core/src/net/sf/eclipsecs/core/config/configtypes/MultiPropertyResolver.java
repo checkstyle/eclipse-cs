@@ -29,12 +29,11 @@ import com.puppycrawl.tools.checkstyle.PropertyResolver;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 
 /**
- * This property resolver is able to aggregate a list of child property
- * resolvers, where each child resolver looks for different properties and may
- * have different ways of finding properties. The child resolvers are asked to
- * resolve the properties in the order they are added. This PropertyResolver
- * adds the property chaining feature, to allow properties within properties.
- * 
+ * This property resolver is able to aggregate a list of child property resolvers, where each child resolver looks for
+ * different properties and may have different ways of finding properties. The child resolvers are asked to resolve the
+ * properties in the order they are added. This PropertyResolver adds the property chaining feature, to allow properties
+ * within properties.
+ *
  * @author Lars Ködderitzsch
  */
 public class MultiPropertyResolver implements PropertyResolver, IContextAware {
@@ -44,8 +43,9 @@ public class MultiPropertyResolver implements PropertyResolver, IContextAware {
 
     /**
      * Adds a PropertyResolver to this aggregation property resolver.
-     * 
-     * @param resolver the PropertyResolver to add
+     *
+     * @param resolver
+     *            the PropertyResolver to add
      */
     public void addPropertyResolver(PropertyResolver resolver) {
         mChildResolver.add(resolver);
@@ -68,7 +68,7 @@ public class MultiPropertyResolver implements PropertyResolver, IContextAware {
     /**
      * {@inheritDoc}
      */
-    public String resolve(String property) throws CheckstyleException {
+    public String resolve(String property) {
 
         String value = null;
 
@@ -82,9 +82,15 @@ public class MultiPropertyResolver implements PropertyResolver, IContextAware {
             }
         }
 
-        // property chaining - might recurse internally
-        while (PropertyUtil.hasUnresolvedProperties(value)) {
-            value = PropertyUtil.replaceProperties(value, this);
+        try {
+
+            // property chaining - might recurse internally
+            while (PropertyUtil.hasUnresolvedProperties(value)) {
+                value = PropertyUtil.replaceProperties(value, this);
+            }
+        }
+        catch (CheckstyleException e) {
+            throw new RuntimeException(e);
         }
 
         return value;

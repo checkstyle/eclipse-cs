@@ -31,9 +31,6 @@
             <property-metadata name="ignoreConstructors" datatype="Boolean" default-value="false">
                 <description>%DeclarationOrder.ignoreConstructors</description>
             </property-metadata>
-            <property-metadata name="ignoreMethods" datatype="Boolean" default-value="false">
-                <description>%DeclarationOrder.ignoreMethods</description>
-            </property-metadata>
             <property-metadata name="ignoreModifiers" datatype="Boolean" default-value="false">
                 <description>%DeclarationOrder.ignoreModifiers</description>
             </property-metadata>

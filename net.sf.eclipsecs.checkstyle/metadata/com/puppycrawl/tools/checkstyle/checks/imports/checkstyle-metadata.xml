@@ -131,7 +131,8 @@
             </property-metadata>
             <message-key key="custom.import.order.line.separator"/>
             <message-key key="custom.import.order.lex"/>
-            <message-key key="custom.import.order.nongroup.import"/>
+            <message-key key="custom.import.order.nonGroup.import"/>
+            <message-key key="custom.import.order.nonGroup.expected"/>
             <message-key key="custom.import.order"/>
         </rule-metadata>
     </rule-group-metadata>

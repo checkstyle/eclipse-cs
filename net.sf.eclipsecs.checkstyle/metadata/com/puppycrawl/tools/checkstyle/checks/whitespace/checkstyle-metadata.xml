@@ -58,6 +58,8 @@
                     <property-value-option value="UNARY_MINUS"/>
                     <property-value-option value="UNARY_PLUS"/>
                     <property-value-option value="TYPECAST"/>
+                    <property-value-option value="GENERIC_START"/>
+                    <property-value-option value="GENERIC_END"/>
                 </enumeration>
             </property-metadata>
             <message-key key="ws.followed"/>
@@ -70,13 +72,16 @@
             <property-metadata name="allowLineBreaks" datatype="Boolean" default-value="false">
                 <description>%NoWhitespaceBefore.allowLineBreaks</description>
             </property-metadata>
-            <property-metadata name="tokens" datatype="MultiCheck" default-value="SEMI,POST_DEC,POST_INC">
+            <property-metadata name="tokens" datatype="MultiCheck" default-value="COMMA,SEMI,POST_DEC,POST_INC">
                 <description>%NoWhitespaceBefore.tokens</description>
                 <enumeration>
+                    <property-value-option value="COMMA"/>
                     <property-value-option value="SEMI"/>
                     <property-value-option value="DOT"/>
                     <property-value-option value="POST_DEC"/>
                     <property-value-option value="POST_INC"/>
+                    <property-value-option value="GENERIC_START"/>
+                    <property-value-option value="GENERIC_END"/>
                 </enumeration>
             </property-metadata>
             <message-key key="ws.preceded"/>
@@ -308,6 +313,8 @@
                     <property-value-option value="STAR_ASSIGN"/>
                     <property-value-option value="TYPE_EXTENSION_AND"/>
                     <property-value-option value="WILDCARD_TYPE"/>
+                    <property-value-option value="GENERIC_START"/>
+                    <property-value-option value="GENERIC_END"/>
                 </enumeration>
             </property-metadata>
             <property-metadata name="allowEmptyConstructors" datatype="Boolean" default-value="false">

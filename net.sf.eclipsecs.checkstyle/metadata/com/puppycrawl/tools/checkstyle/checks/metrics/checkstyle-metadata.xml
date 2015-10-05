@@ -52,6 +52,9 @@
             <property-metadata name="max" datatype="Integer" default-value="10">
                 <description>%CyclomaticComplexity.max</description>
             </property-metadata>
+            <property-metadata name="switchBlockAsSingleDecisionPoint" datatype="Boolean" default-value="false">
+                <description>%CyclomaticComplexity.switchBlockAsSingleDecisionPoint</description>
+            </property-metadata>
             <message-key key="cyclomaticComplexity"/>
         </rule-metadata>
 

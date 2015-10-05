@@ -27,12 +27,11 @@ import org.apache.commons.io.FileUtils;
 import org.eclipse.core.runtime.FileLocator;
 
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
-import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 
 /**
  * Adds support for additional checkstyle config files (header, suppressions
  * etc.) to be delivered with a builtin configuration.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public class BuiltInFilePropertyResolver implements PropertyResolver {
@@ -47,7 +46,7 @@ public class BuiltInFilePropertyResolver implements PropertyResolver {
 
     /**
      * Creates the resolver.
-     * 
+     *
      * @param builtInConfigLocation the bundle based url of the builtin
      *            configuration file
      */
@@ -58,7 +57,7 @@ public class BuiltInFilePropertyResolver implements PropertyResolver {
     /**
      * {@inheritDoc}
      */
-    public String resolve(String property) throws CheckstyleException {
+    public String resolve(String property) {
 
         String value = null;
 
@@ -79,7 +78,7 @@ public class BuiltInFilePropertyResolver implements PropertyResolver {
                 value = FileUtils.toFile(fileURL).toString();
             }
             catch (IOException e) {
-                throw new CheckstyleException(e.getMessage(), e);
+                throw new RuntimeException(e.getMessage(), e);
             }
         }
 
