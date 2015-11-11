@@ -112,7 +112,10 @@
             </property-metadata>
             <property-metadata name="allowSingleLineStatement" datatype="Boolean" default-value="false">
                 <description>%NeedBraces.allowSingleLineStatement</description>
-            </property-metadata>  
+            </property-metadata>
+            <property-metadata name="allowEmptyLoopBody" datatype="Boolean" default-value="false">
+                <description>%NeedBraces.allowEmptyLoopBody</description>
+            </property-metadata>
             <quickfix classname="net.sf.eclipsecs.ui.quickfixes.blocks.NeedBracesQuickfix"/>
             <message-key key="needBraces"/>
         </rule-metadata>

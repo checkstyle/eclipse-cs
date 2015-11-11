@@ -85,7 +85,7 @@
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.imports.UnusedImportsCheck"/>
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.UnusedImportsCheck"/>
             <description>%UnusedImports.desc</description>
-            <property-metadata name="processJavadoc" datatype="Boolean" default-value="false">
+            <property-metadata name="processJavadoc" datatype="Boolean" default-value="true">
                 <description>%UnusedImports.processJavadoc</description>
             </property-metadata>
             <message-key key="import.unused"/>
