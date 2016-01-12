@@ -249,6 +249,14 @@
             <message-key key="abbreviation.as.word"/>
         </rule-metadata>
 
+        <rule-metadata name="%CatchParameterName.name" internal-name="CatchParameterName" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.naming.CatchParameterNameCheck"/>
+            <description>%CatchParameterName.desc</description>
+            <property-metadata name="format" datatype="Regex" default-value="^(e|t|ex|[a-z][a-z][a-zA-Z]+)$">
+                <description>%CatchParameterName.format</description>
+            </property-metadata>
+            <message-key key="name.invalidPattern"/>
+        </rule-metadata>
     </rule-group-metadata>
 
 </checkstyle-metadata>

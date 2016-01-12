@@ -150,7 +150,7 @@
                 <enumeration option-provider="com.puppycrawl.tools.checkstyle.checks.whitespace.PadOption"/>
             </property-metadata>
             <property-metadata name="tokens" datatype="MultiCheck"
-                default-value="CTOR_DEF,LITERAL_NEW,METHOD_CALL,METHOD_DEF,SUPER_CTOR_CALL">
+                default-value="CTOR_DEF,LITERAL_NEW,METHOD_CALL,METHOD_DEF,SUPER_CTOR_CALL,ENUM_CONSTANT_DEF">
                 <description>%MethodParamPad.tokens</description>
                 <enumeration>
                     <property-value-option value="CTOR_DEF"/>
@@ -158,6 +158,7 @@
                     <property-value-option value="METHOD_CALL"/>
                     <property-value-option value="METHOD_DEF"/>
                     <property-value-option value="SUPER_CTOR_CALL"/>
+                    <property-value-option value="ENUM_CONSTANT_DEF"/>
                 </enumeration>
             </property-metadata>
             <message-key key="line.previous"/>
@@ -328,6 +329,9 @@
             </property-metadata>
             <property-metadata name="allowEmptyLoops" datatype="Boolean" default-value="false">
                 <description>%WhitespaceAround.allowEmptyLoops</description>
+            </property-metadata>
+            <property-metadata name="allowEmptyLambdas" datatype="Boolean" default-value="false">
+                <description>%WhitespaceAround.allowEmptyLambdas</description>
             </property-metadata>
             <property-metadata name="ignoreEnhancedForColon" datatype="Boolean" default-value="true">
                 <description>%WhitespaceAround.ignoreEnhancedForColon</description>
