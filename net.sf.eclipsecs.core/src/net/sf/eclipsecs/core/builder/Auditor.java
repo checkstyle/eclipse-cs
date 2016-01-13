@@ -159,10 +159,11 @@ public class Auditor {
             checker.process(filesToAudit);
 
         }
-        catch (CoreException e) {
-            CheckstylePluginException.rethrow(e);
-        }
+
         catch (CheckstyleException e) {
+            handleCheckstyleFailure(project, e);
+        }
+        catch (CoreException e) {
             CheckstylePluginException.rethrow(e);
         }
         catch (RuntimeException e) {
@@ -179,6 +180,27 @@ public class Auditor {
                 checker.removeListener(listener);
                 checker.removeFilter(runtimeExceptionFilter);
             }
+        }
+    }
+
+    private void handleCheckstyleFailure(IProject project, CheckstyleException e) throws CheckstylePluginException {
+        try {
+
+            CheckstyleLog.log(e);
+
+            // remove pre-existing project level marker
+            project.deleteMarkers(CheckstyleMarker.MARKER_ID, false, IResource.DEPTH_ZERO);
+
+            Map<String, Object> attrs = new HashMap<String, Object>();
+            attrs.put(IMarker.PRIORITY, new Integer(IMarker.PRIORITY_NORMAL));
+            attrs.put(IMarker.SEVERITY, Integer.valueOf(IMarker.SEVERITY_ERROR));
+            attrs.put(IMarker.MESSAGE, Messages.bind(Messages.Auditor_msgMsgCheckstyleInternalError, null));
+
+            IMarker projectMarker = project.createMarker(CheckstyleMarker.MARKER_ID);
+            projectMarker.setAttributes(attrs);
+        }
+        catch (CoreException ce) {
+            CheckstylePluginException.rethrow(e);
         }
     }
 
