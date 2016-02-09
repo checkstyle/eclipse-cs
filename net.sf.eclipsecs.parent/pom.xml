@@ -20,7 +20,7 @@
     </modules>
 
     <properties>
-        <tycho-version>0.21.0</tycho-version>
+        <tycho-version>0.24.0</tycho-version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -36,19 +36,6 @@
                 <artifactId>tycho-maven-plugin</artifactId>
                 <version>${tycho-version}</version>
                 <extensions>true</extensions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.eclipse.tycho</groupId>
-                <artifactId>tycho-packaging-plugin</artifactId>
-                <version>${tycho-version}</version>
-                <configuration>
-                    <archiveSite>true</archiveSite>
-                    <strictVersions>false</strictVersions>
-                    <archive>
-                        <addMavenDescriptor>false</addMavenDescriptor>
-                    </archive>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.eclipse.tycho</groupId>
@@ -85,9 +72,9 @@
 
     <repositories>
         <repository>
-            <id>luna</id>
+            <id>mars</id>
             <layout>p2</layout>
-            <url>http://download.eclipse.org/releases/luna/</url>
+            <url>http://download.eclipse.org/releases/mars/</url>
         </repository>
     </repositories>
 </project>
