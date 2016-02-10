@@ -10,9 +10,7 @@
     <artifactId>net.sf.eclipsecs.doc</artifactId>
     <packaging>eclipse-plugin</packaging>
     <name>eclipse-cs Documentation Plugin</name>
-
     <build>
-
         <plugins>
             <plugin>
                 <artifactId>maven-clean-plugin</artifactId>
