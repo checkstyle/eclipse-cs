@@ -120,4 +120,4 @@ Export-Package: .,
  org.apache.commons.logging,
  org.apache.commons.logging.impl
 Bundle-ClassPath: .,
- checkstyle-6.14.1-all.jar
+ checkstyle-6.16.1-all.jar

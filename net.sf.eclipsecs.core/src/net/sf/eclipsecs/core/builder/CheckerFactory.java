@@ -21,13 +21,10 @@
 package net.sf.eclipsecs.core.builder;
 
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Field;
 import java.net.URL;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import net.sf.eclipsecs.core.CheckstylePlugin;
 import net.sf.eclipsecs.core.config.CheckstyleConfigurationFile;
@@ -47,10 +44,8 @@ import com.google.common.io.Closeables;
 import com.puppycrawl.tools.checkstyle.Checker;
 import com.puppycrawl.tools.checkstyle.ConfigurationLoader;
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
-import com.puppycrawl.tools.checkstyle.TreeWalker;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.puppycrawl.tools.checkstyle.api.Configuration;
-import com.puppycrawl.tools.checkstyle.api.FileSetCheck;
 
 /**
  * Factory class to create (and cache) checker objects.
@@ -86,8 +81,8 @@ public final class CheckerFactory {
 
         sCheckerMap = CacheBuilder.newBuilder().softValues().build();
 
-        sModifiedMap = Collections.synchronizedMap(new HashMap<String, Long>());
-        sAdditionalDataMap = Collections.synchronizedMap(new HashMap<String, AdditionalConfigData>());
+        sModifiedMap = new ConcurrentHashMap<String, Long>();
+        sAdditionalDataMap = new ConcurrentHashMap<String, AdditionalConfigData>();
 
         sSharedClassLoader = new ProjectClassLoader();
     }
@@ -128,8 +123,10 @@ public final class CheckerFactory {
         CheckstyleConfigurationFile configFileData = config.getCheckstyleConfiguration();
         Checker checker = tryCheckerCache(cacheKey, configFileData.getModificationStamp());
 
-        // workaround for issue 377
-        applyTreeWalkerCacheWorkaround(checker);
+        // clear Checkstyle internal caches upon checker reuse
+        if (checker != null) {
+            checker.clearCache();
+        }
 
         // no cache hit
         if (checker == null) {
@@ -317,37 +314,5 @@ public final class CheckerFactory {
         checker.setBasedir(null);
 
         return checker;
-    }
-
-    private static void applyTreeWalkerCacheWorkaround(Checker checker) {
-        try {
-            Field fileSetChecksField = Checker.class.getDeclaredField("mFileSetChecks");
-            fileSetChecksField.setAccessible(true);
-
-            @SuppressWarnings("unchecked")
-            List<FileSetCheck> fileSetChecks = (List<FileSetCheck>) fileSetChecksField.get(checker);
-
-            for (FileSetCheck fsc : fileSetChecks) {
-                if (fsc instanceof TreeWalker) {
-                    TreeWalker tw = (TreeWalker) fsc;
-
-                    // only reset when we have a "default cache" without an actual configured cache file.
-                    Field cacheField = TreeWalker.class.getDeclaredField("mCache");
-                    cacheField.setAccessible(true);
-
-                    Object cache = cacheField.get(tw);
-
-                    Field detailsFileField = cache.getClass().getDeclaredField("mDetailsFile");
-                    detailsFileField.setAccessible(true);
-
-                    if (detailsFileField.get(cache) == null) {
-                        tw.setCacheFile(null);
-                    }
-                }
-            }
-        }
-        catch (Exception e) {
-            // Ah, what the heck, I tried. Now get out of my way.
-        }
     }
 }
