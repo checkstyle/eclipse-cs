@@ -8,26 +8,6 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Eclipse-BundleShape: dir
 Export-Package: .,
- antlr;
-  uses:="antlr.collections.impl,
-   antlr.debug,
-   antlr.ASdebug,
-   antlr.collections",
- antlr.ASdebug;uses:="antlr",
- antlr.actions.cpp;uses:="antlr.collections.impl,antlr",
- antlr.actions.csharp;uses:="antlr.collections.impl,antlr",
- antlr.actions.java;uses:="antlr.collections.impl,antlr",
- antlr.actions.python;uses:="antlr.collections.impl,antlr",
- antlr.build,
- antlr.collections;uses:="antlr",
- antlr.collections.impl;uses:="antlr.collections,antlr",
- antlr.debug;uses:="antlr.collections.impl,antlr",
- antlr.debug.misc;
-  uses:="javax.swing.tree,
-   javax.swing,
-   antlr.collections,
-   javax.swing.event",
- antlr.preprocessor;uses:="antlr.collections.impl,antlr",
  com.google.common.annotations,
  com.google.common.base,
  com.google.common.base.internal,
