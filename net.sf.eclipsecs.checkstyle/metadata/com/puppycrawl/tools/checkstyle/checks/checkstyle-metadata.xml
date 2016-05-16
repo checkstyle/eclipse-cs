@@ -98,9 +98,11 @@
         </rule-metadata>
 
         <rule-metadata name="%CommentsIndentation.name" internal-name="CommentsIndentation" parent="TreeWalker">
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.indentation.CommentsIndentationCheck"/>
+            <alternative-name
+                internal-name="com.puppycrawl.tools.checkstyle.checks.indentation.CommentsIndentationCheck"/>
             <description>%CommentsIndentation.desc</description>
-            <property-metadata name="tokens" datatype="MultiCheck" default-value="SINGLE_LINE_COMMENT,BLOCK_COMMENT_BEGIN">
+            <property-metadata name="tokens" datatype="MultiCheck"
+                default-value="SINGLE_LINE_COMMENT,BLOCK_COMMENT_BEGIN">
                 <description>%CommentsIndentation.tokens</description>
                 <enumeration>
                     <property-value-option value="SINGLE_LINE_COMMENT"/>
@@ -184,32 +186,6 @@
             <description>%UpperEll.desc</description>
             <quickfix classname="net.sf.eclipsecs.ui.quickfixes.misc.UpperEllQuickfix"/>
             <message-key key="upperEll"/>
-        </rule-metadata>
-
-        <rule-metadata name="%Regexp.name" internal-name="Regexp" parent="TreeWalker">
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.RegexpCheck"/>
-            <description>%Regexp.desc</description>
-            <property-metadata name="format" datatype="Regex" default-value="$^">
-                <description>%Regexp.format</description>
-            </property-metadata>
-            <property-metadata name="message" datatype="String" default-value="">
-                <description>%Regexp.message</description>
-            </property-metadata>
-            <property-metadata name="illegalPattern" datatype="Boolean" default-value="false">
-                <description>%Regexp.illegalPattern</description>
-            </property-metadata>
-            <property-metadata name="duplicateLimit" datatype="Integer" default-value="-1">
-                <description>%Regexp.duplicateLimit</description>
-            </property-metadata>
-            <property-metadata name="errorLimit" datatype="Integer" default-value="100">
-                <description>%Regexp.errorLimit </description>
-            </property-metadata>
-            <property-metadata name="ignoreComments" datatype="Boolean" default-value="false">
-                <description>%Regexp.ignoreComments</description>
-            </property-metadata>
-            <message-key key="illegal.regexp"/>
-            <message-key key="duplicate.regexp"/>
-            <message-key key="required.regexp"/>
         </rule-metadata>
 
         <rule-metadata name="%OuterTypeFilename.name" internal-name="OuterTypeFilename" parent="TreeWalker">
