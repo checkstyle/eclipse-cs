@@ -396,6 +396,16 @@
             <message-key key="line.previous"/>
             <message-key key="line.new"/>
         </rule-metadata>
+
+        <rule-metadata name="%SingleSpaceSeparator.name" internal-name="SingleSpaceSeparator" parent="TreeWalker">
+            <alternative-name
+                internal-name="com.puppycrawl.tools.checkstyle.checks.whitespace.SingleSpaceSeparatorCheck"/>
+            <description>%SingleSpaceSeparator.desc</description>
+            <property-metadata name="validateComments" datatype="Boolean" default-value="false">
+                <description>%SingleSpaceSeparator.validateComments</description>
+            </property-metadata>
+            <message-key key="single.space.separator"/>
+        </rule-metadata>
     </rule-group-metadata>
 
 </checkstyle-metadata>

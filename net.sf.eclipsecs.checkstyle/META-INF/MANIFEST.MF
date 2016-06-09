@@ -73,4 +73,4 @@ Export-Package: .,
  org.apache.commons.collections.map,
  org.apache.commons.collections.set
 Bundle-ClassPath: .,
- checkstyle-6.18-all.jar
+ checkstyle-6.19-all.jar

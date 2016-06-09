@@ -432,6 +432,9 @@
             <property-metadata name="max" datatype="Integer" default-value="2">
                 <description>%ReturnCount.max</description>
             </property-metadata>
+            <property-metadata name="maxForVoid" datatype="Integer" default-value="1">
+                <description>%ReturnCount.maxForVoid</description>
+            </property-metadata>
             <property-metadata name="format" datatype="Regex" default-value="^equals$ (empty)">
                 <description>%ReturnCount.format</description>
             </property-metadata>
