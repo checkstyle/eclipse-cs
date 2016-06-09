@@ -51,18 +51,13 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.osgi.util.NLS;
 
 /**
- * ClassLoader to make the contents of a eclipse project accessible for the
- * style checking process. <br/>After construction the classloader can be
- * initialized with a eclipse project. Reinitialization and reuse of the
+ * ClassLoader to make the contents of a eclipse project accessible for the style checking process. <br/>
+ * After construction the classloader can be initialized with a eclipse project. Reinitialization and reuse of the
  * classloader with another project is possible.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public class ProjectClassLoader extends ClassLoader {
-
-    //
-    // attributes
-    //
 
     /** the classloader delegate. */
     private ClassLoader mDelegateClassLoader;
@@ -71,14 +66,9 @@ public class ProjectClassLoader extends ClassLoader {
     private final ClassLoader mParentClassLoader;
 
     /**
-     * the URLStreamHandlerFactory to provide support for non standard
-     * protocols.
+     * the URLStreamHandlerFactory to provide support for non standard protocols.
      */
     private final URLStreamHandlerFactory mStreamHandlerFactory;
-
-    //
-    // constructors
-    //
 
     /**
      * Constructs the classloader.
@@ -89,19 +79,21 @@ public class ProjectClassLoader extends ClassLoader {
 
     /**
      * Constructs the classloader and uses a parent classloader.
-     * 
-     * @param parent the parent classloader
+     *
+     * @param parent
+     *            the parent classloader
      */
     public ProjectClassLoader(ClassLoader parent) {
         this(parent, null);
     }
 
     /**
-     * Constructs the classloader and uses a parent classloader and a handler to
-     * support non-standard protocols.
-     * 
-     * @param parent the parent classloader
-     * @param factory the streamhandler factory
+     * Constructs the classloader and uses a parent classloader and a handler to support non-standard protocols.
+     *
+     * @param parent
+     *            the parent classloader
+     * @param factory
+     *            the streamhandler factory
      */
     public ProjectClassLoader(ClassLoader parent, URLStreamHandlerFactory factory) {
 
@@ -109,14 +101,11 @@ public class ProjectClassLoader extends ClassLoader {
         this.mStreamHandlerFactory = factory;
     }
 
-    //
-    // methods
-    //
-
     /**
      * Initializes this classloader with a given eclipse project.
-     * 
-     * @param project the project
+     *
+     * @param project
+     *            the project
      */
     public void intializeWithProject(IProject project) {
 
@@ -143,47 +132,40 @@ public class ProjectClassLoader extends ClassLoader {
         // CheckstylePlugin.getDefault().getLog().log(status);
 
         this.mDelegateClassLoader = new URLClassLoader(projClassPath, this.mParentClassLoader,
-                this.mStreamHandlerFactory);
+            this.mStreamHandlerFactory);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public Class<?> loadClass(String name) throws ClassNotFoundException {
-
         return this.mDelegateClassLoader.loadClass(name);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public URL getResource(String name) {
-
         return this.mDelegateClassLoader.getResource(name);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public InputStream getResourceAsStream(String name) {
-
         return this.mDelegateClassLoader.getResourceAsStream(name);
     }
 
     /**
-     * Since java.lang.ClassLoader#getResources(java.lang.String) is final
-     * (why?) this method is overridden as a workaround.
-     * 
+     * Since java.lang.ClassLoader#getResources(java.lang.String) is final (why?) this method is overridden as a
+     * workaround.
+     *
      * @see java.lang.ClassLoader#findResources(java.lang.String)
      */
+    @Override
     protected Enumeration<URL> findResources(String name) throws IOException {
         return this.mDelegateClassLoader.getResources(name);
     }
 
     /**
      * Gets the complete classpath for a given project.
-     * 
-     * @param project the project
+     *
+     * @param project
+     *            the project
      * @return the classpath
      */
     private static URL[] getProjectClassPath(IProject project) {
@@ -201,13 +183,16 @@ public class ProjectClassLoader extends ClassLoader {
 
     /**
      * Adds the contents of a project to list of URLs.
-     * 
-     * @param project the project
-     * @param cpURLs the resulting list
-     * @param isReferenced true if a referenced project is processed
+     *
+     * @param project
+     *            the project
+     * @param cpURLs
+     *            the resulting list
+     * @param isReferenced
+     *            true if a referenced project is processed
      */
     private static void addToClassPath(IProject project, List<URL> cpURLs, boolean isReferenced,
-            Collection<IProject> processedProjects) {
+        Collection<IProject> processedProjects) {
 
         try {
 
@@ -251,7 +236,7 @@ public class ProjectClassLoader extends ClassLoader {
 
                     // log as exception
                     CheckstylePluginException ex = new CheckstylePluginException(NLS.bind(
-                            Messages.errorUnknownClasspathEntry, cpEntries[i].getPath()));
+                        Messages.errorUnknownClasspathEntry, cpEntries[i].getPath()));
                     CheckstyleLog.log(ex);
                 }
             }
@@ -263,15 +248,20 @@ public class ProjectClassLoader extends ClassLoader {
 
     /**
      * Helper method to handle a source path.
-     * 
-     * @param project the original project
-     * @param cpURLs the list that is to contain the projects classpath
-     * @param entry the actually processed classpath entry
-     * @param javapProject the java project
-     * @throws JavaModelException an exception with the java project occured
+     *
+     * @param project
+     *            the original project
+     * @param cpURLs
+     *            the list that is to contain the projects classpath
+     * @param entry
+     *            the actually processed classpath entry
+     * @param javapProject
+     *            the java project
+     * @throws JavaModelException
+     *             an exception with the java project occured
      */
     private static void handleSourcePath(IProject project, List<URL> cpURLs, IClasspathEntry entry,
-            IJavaProject javapProject) throws JavaModelException {
+        IJavaProject javapProject) throws JavaModelException {
 
         IPath sourcePath = entry.getPath();
 
@@ -312,12 +302,13 @@ public class ProjectClassLoader extends ClassLoader {
 
     /**
      * Helper method to handle a referenced project for the classpath.
-     * 
-     * @param cpURLs the list that is to contain the projects classpath
-     * @param entry the actually processed classpath entry
+     *
+     * @param cpURLs
+     *            the list that is to contain the projects classpath
+     * @param entry
+     *            the actually processed classpath entry
      */
-    private static void handleRefProject(List<URL> cpURLs, IClasspathEntry entry,
-            Collection<IProject> processedProjects) {
+    private static void handleRefProject(List<URL> cpURLs, IClasspathEntry entry, Collection<IProject> processedProjects) {
 
         // get the referenced project from the workspace
         IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
@@ -331,10 +322,13 @@ public class ProjectClassLoader extends ClassLoader {
 
     /**
      * Helper method to handle a library for the classpath.
-     * 
-     * @param project the original project
-     * @param cpURLs the list that is to contain the projects classpath
-     * @param entry the actually processed classpath entry
+     *
+     * @param project
+     *            the original project
+     * @param cpURLs
+     *            the list that is to contain the projects classpath
+     * @param entry
+     *            the actually processed classpath entry
      */
     private static void handleLibrary(IProject project, List<URL> cpURLs, IClasspathEntry entry) {
 
@@ -377,9 +371,11 @@ public class ProjectClassLoader extends ClassLoader {
 
     /**
      * Helper method to handle an absolute path for the classpath.
-     * 
-     * @param absolutePath the absolute path
-     * @param cpURLs the list that is to contain the projects classpath
+     *
+     * @param absolutePath
+     *            the absolute path
+     * @param cpURLs
+     *            the list that is to contain the projects classpath
      */
     private static void handlePath(IPath absolutePath, List<URL> cpURLs) {
 

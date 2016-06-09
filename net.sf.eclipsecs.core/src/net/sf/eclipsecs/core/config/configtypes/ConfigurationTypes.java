@@ -34,20 +34,14 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 
 /**
- * Register for the configuration types thats use the
- * <i>net.sf.eclipsecs.core.configurationtypes </i> extension point.
- * 
+ * Register for the configuration types thats use the <i>net.sf.eclipsecs.core.configurationtypes </i> extension point.
+ *
  * @author Lars Ködderitzsch
  */
 public final class ConfigurationTypes {
 
-    //
-    // constants
-    //
-
     /** constant for the extension point id. */
-    private static final String CONFIGTYPES_EXTENSION_POINT = CheckstylePlugin.PLUGIN_ID
-            + ".configurationtypes"; //$NON-NLS-1$
+    private static final String CONFIGTYPES_EXTENSION_POINT = CheckstylePlugin.PLUGIN_ID + ".configurationtypes"; //$NON-NLS-1$
 
     /** constant for the name attribute. */
     private static final String ATTR_NAME = "name"; //$NON-NLS-1$
@@ -70,10 +64,6 @@ public final class ConfigurationTypes {
     /** the configuration types configured to the extension point. */
     private static final Map<String, IConfigurationType> CONFIGURATION_TYPES;
 
-    //
-    // Initializer
-    //
-
     /**
      * Initialize the configured to the filter extension point.
      */
@@ -83,8 +73,7 @@ public final class ConfigurationTypes {
 
         IExtensionRegistry pluginRegistry = Platform.getExtensionRegistry();
 
-        IConfigurationElement[] elements = pluginRegistry
-                .getConfigurationElementsFor(CONFIGTYPES_EXTENSION_POINT);
+        IConfigurationElement[] elements = pluginRegistry.getConfigurationElementsFor(CONFIGTYPES_EXTENSION_POINT);
 
         for (int i = 0; i < elements.length; i++) {
 
@@ -93,19 +82,13 @@ public final class ConfigurationTypes {
                 String name = elements[i].getAttribute(ATTR_NAME);
                 String internalName = elements[i].getAttribute(ATTR_INTERNAL_NAME);
 
-                String definingPluginId = elements[i].getDeclaringExtension()
-                        .getNamespaceIdentifier();
-                boolean isCreatable = Boolean.valueOf(elements[i].getAttribute(ATTR_CREATABLE))
-                        .booleanValue();
-                boolean isEditable = Boolean.valueOf(elements[i].getAttribute(ATTR_EDITABLE))
-                        .booleanValue();
-                boolean isConfigurable = Boolean.valueOf(
-                        elements[i].getAttribute(ATTR_CONFIGURABLE)).booleanValue();
+                String definingPluginId = elements[i].getDeclaringExtension().getNamespaceIdentifier();
+                boolean isCreatable = Boolean.valueOf(elements[i].getAttribute(ATTR_CREATABLE)).booleanValue();
+                boolean isEditable = Boolean.valueOf(elements[i].getAttribute(ATTR_EDITABLE)).booleanValue();
+                boolean isConfigurable = Boolean.valueOf(elements[i].getAttribute(ATTR_CONFIGURABLE)).booleanValue();
 
-                IConfigurationType configType = (IConfigurationType) elements[i]
-                        .createExecutableExtension(ATTR_CLASS);
-                configType.initialize(name, internalName, definingPluginId, isCreatable,
-                        isEditable, isConfigurable);
+                IConfigurationType configType = (IConfigurationType) elements[i].createExecutableExtension(ATTR_CLASS);
+                configType.initialize(name, internalName, definingPluginId, isCreatable, isEditable, isConfigurable);
 
                 CONFIGURATION_TYPES.put(internalName, configType);
             }
@@ -115,22 +98,14 @@ public final class ConfigurationTypes {
         }
     }
 
-    //
-    // constructor
-    //
-
     /** Hidden default constructor. */
     private ConfigurationTypes() {
-    // NOOP
+        // NOOP
     }
-
-    //
-    // methods
-    //
 
     /**
      * Returns the available configuration types.
-     * 
+     *
      * @return the configuration types.
      */
     public static IConfigurationType[] getCreatableConfigTypes() {
@@ -146,10 +121,9 @@ public final class ConfigurationTypes {
     }
 
     /**
-     * Returns the available configuration types that can be configured, mean
-     * the configuration file can by principle be written as it lays in the
-     * local filesystem.
-     * 
+     * Returns the available configuration types that can be configured, mean the configuration file can by principle be
+     * written as it lays in the local filesystem.
+     *
      * @return the configurable configuration types.
      */
     public static IConfigurationType[] getConfigurableConfigTypes() {
@@ -165,8 +139,9 @@ public final class ConfigurationTypes {
 
     /**
      * Gets the configuration type by its internal name.
-     * 
-     * @param name the configuration type internal name
+     *
+     * @param name
+     *            the configuration type internal name
      * @return the configuration type or <code>null</code>
      */
     public static IConfigurationType getByInternalName(String name) {
@@ -175,8 +150,9 @@ public final class ConfigurationTypes {
 
     /**
      * Gets the configuration type by its name.
-     * 
-     * @param name the configuration type name
+     *
+     * @param name
+     *            the configuration type name
      * @return the configuration type or <code>null</code>
      */
     public static IConfigurationType getByName(String name) {

@@ -41,7 +41,6 @@ import net.sf.eclipsecs.ui.config.widgets.ConfigPropertyWidgetFactory;
 import net.sf.eclipsecs.ui.config.widgets.IConfigPropertyWidget;
 import net.sf.eclipsecs.ui.util.SWTUtil;
 
-import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
@@ -69,6 +68,8 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
 import org.osgi.service.prefs.BackingStoreException;
+
+import com.google.common.base.Strings;
 
 /**
  * Edit dialog for property values.
@@ -235,9 +236,11 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
             }
             msgText.addFocusListener(new FocusListener() {
 
+                @Override
                 public void focusGained(FocusEvent e) {
                     Display.getCurrent().asyncExec(new Runnable() {
 
+                        @Override
                         public void run() {
                             if (msgText.getText().equals(standardMessage)) {
                                 msgText.selectAll();
@@ -246,13 +249,14 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
                     });
                 }
 
+                @Override
                 public void focusLost(FocusEvent e) {
                     // NOOP
                 }
             });
 
             String message = mRule.getCustomMessages().get(msgKey);
-            if (StringUtils.trimToNull(message) != null) {
+            if (Strings.emptyToNull(message) != null) {
                 msgText.setText(message);
             }
             msgText.setEnabled(!mReadonly);
@@ -284,6 +288,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
         mBtnTranslate.setSelection(CheckstyleUIPluginPrefs.getBoolean(CheckstyleUIPluginPrefs.PREF_TRANSLATE_TOKENS));
         mBtnTranslate.addSelectionListener(new SelectionListener() {
 
+            @Override
             public void widgetSelected(SelectionEvent e) {
                 // store translation preference
                 try {
@@ -295,6 +300,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
                 }
             }
 
+            @Override
             public void widgetDefaultSelected(SelectionEvent e) {
                 // NOOP
             }
@@ -311,6 +317,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
         mBtnSort.setSelection(CheckstyleUIPluginPrefs.getBoolean(CheckstyleUIPluginPrefs.PREF_SORT_TOKENS));
         mBtnSort.addSelectionListener(new SelectionListener() {
 
+            @Override
             public void widgetSelected(SelectionEvent e) {
 
                 // store translation preference
@@ -323,6 +330,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
                 }
             }
 
+            @Override
             public void widgetDefaultSelected(SelectionEvent e) {
                 // NOOP
             }
@@ -430,10 +438,10 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
         }
 
         // Get the comment.
-        String comment = StringUtils.trimToNull(mCommentText.getText());
+        String comment = Strings.emptyToNull(mCommentText.getText());
 
         // Get the id
-        String id = StringUtils.trimToNull(mIdText.getText());
+        String id = Strings.emptyToNull(mIdText.getText());
 
         // Get the custom message
         for (Map.Entry<String, Text> entry : mCustomMessages.entrySet()) {
@@ -445,7 +453,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
                 standardMessage = ""; //$NON-NLS-1$
             }
 
-            String message = StringUtils.trimToNull(entry.getValue().getText());
+            String message = Strings.emptyToNull(entry.getValue().getText());
             if (message != null && !message.equals(standardMessage)) {
                 mRule.getCustomMessages().put(msgKey, message);
             }

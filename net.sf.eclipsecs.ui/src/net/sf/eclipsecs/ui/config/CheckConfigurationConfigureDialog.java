@@ -21,8 +21,10 @@
 package net.sf.eclipsecs.ui.config;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
 import net.sf.eclipsecs.core.config.Module;
@@ -41,8 +43,6 @@ import net.sf.eclipsecs.ui.util.table.EnhancedCheckBoxTableViewer;
 import net.sf.eclipsecs.ui.util.table.ITableComparableProvider;
 import net.sf.eclipsecs.ui.util.table.ITableSettingsProvider;
 
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
@@ -89,6 +89,8 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.osgi.service.prefs.BackingStoreException;
+
+import com.google.common.base.Strings;
 
 /**
  * Enhanced checkstyle configuration editor.
@@ -268,10 +270,12 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
 
         // select all of the default text on focus gain
         mTxtTreeFilter.addFocusListener(new FocusListener() {
+            @Override
             public void focusGained(FocusEvent e) {
                 if (mDefaultFilterText.equals(mTxtTreeFilter.getText())) {
                     getShell().getDisplay().asyncExec(new Runnable() {
 
+                        @Override
                         public void run() {
                             mTxtTreeFilter.selectAll();
                         }
@@ -279,6 +283,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
                 }
             }
 
+            @Override
             public void focusLost(FocusEvent e) {
             }
         });
@@ -404,6 +409,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
             .getBoolean(CheckstyleUIPluginPrefs.PREF_OPEN_MODULE_EDITOR));
         mBtnOpenModuleOnAdd.addSelectionListener(new SelectionListener() {
 
+            @Override
             public void widgetSelected(SelectionEvent e) {
                 // store translation preference
                 try {
@@ -415,6 +421,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
                 }
             }
 
+            @Override
             public void widgetDefaultSelected(SelectionEvent e) {
                 // NOOP
             }
@@ -480,6 +487,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
         /**
          * @see IDoubleClickListener#doubleClick(org.eclipse.jface.viewers.DoubleClickEvent)
          */
+        @Override
         public void doubleClick(DoubleClickEvent event) {
             if (event.getViewer() == mTableViewer) {
                 openModule(event.getSelection());
@@ -500,6 +508,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
         /**
          * @see SelectionListener#widgetSelected(org.eclipse.swt.events.SelectionEvent)
          */
+        @Override
         public void widgetSelected(SelectionEvent e) {
 
             if (mEditButton == e.widget) {
@@ -516,6 +525,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
         /**
          * @see org.eclipse.swt.events.KeyListener#keyReleased(org.eclipse.swt.events.KeyEvent)
          */
+        @Override
         public void keyReleased(KeyEvent e) {
             if (e.widget == mTableViewer.getTable()) {
                 if (e.character == SWT.DEL || e.keyCode == SWT.ARROW_LEFT) {
@@ -541,12 +551,13 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
         /**
          * {@inheritDoc}
          */
+        @Override
         public void modifyText(ModifyEvent e) {
 
             if (!mDefaultFilterText.equals(mTxtTreeFilter.getText())
-                && StringUtils.trimToNull(mTxtTreeFilter.getText()) != null) {
+                && !Strings.isNullOrEmpty(mTxtTreeFilter.getText())) {
 
-                if (!ArrayUtils.contains(mTreeViewer.getFilters(), mTreeViewer)) {
+                if (!Arrays.asList(mTableViewer.getFilters()).contains(mTreeFilter)) {
                     mTreeViewer.addFilter(mTreeFilter);
                 }
 
@@ -562,6 +573,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
         /**
          * @see SelectionListener#widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent)
          */
+        @Override
         public void widgetDefaultSelected(SelectionEvent e) {
             // NOOP
         }
@@ -569,6 +581,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
         /**
          * @see org.eclipse.swt.events.KeyListener#keyPressed(org.eclipse.swt.events.KeyEvent)
          */
+        @Override
         public void keyPressed(KeyEvent e) {
             // NOOP
         }
@@ -576,6 +589,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
         /**
          * @see ICheckStateListener#checkStateChanged(CheckStateChangedEvent)
          */
+        @Override
         public void checkStateChanged(CheckStateChangedEvent event) {
             if (mConfigurable) {
                 Module module = (Module) event.getElement();
@@ -602,6 +616,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
         /**
          * @see ISelectionChangedListener#selectionChanged(SelectionChangedEvent)
          */
+        @Override
         public void selectionChanged(SelectionChangedEvent event) {
 
             IStructuredSelection selection = (IStructuredSelection) event.getSelection();
@@ -807,6 +822,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
         /**
          * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
          */
+        @Override
         public Object[] getElements(Object inputElement) {
             Object[] ruleGroups = null;
             if (inputElement instanceof List) {
@@ -818,6 +834,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
         /**
          * @see org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.Object)
          */
+        @Override
         public Object[] getChildren(Object parentElement) {
             Object[] children = null;
             if (parentElement instanceof List) {
@@ -833,6 +850,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
         /**
          * @see org.eclipse.jface.viewers.ITreeContentProvider#getParent(java.lang.Object)
          */
+        @Override
         public Object getParent(Object element) {
             Object parent = null;
             if (element instanceof RuleMetadata) {
@@ -844,6 +862,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
         /**
          * @see org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java.lang.Object)
          */
+        @Override
         public boolean hasChildren(Object element) {
             boolean hasChildren = false;
 
@@ -859,6 +878,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
         /**
          * @see org.eclipse.jface.viewers.IContentProvider#dispose()
          */
+        @Override
         public void dispose() {
             // NOOP
         }
@@ -867,6 +887,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
          * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface.viewers.Viewer,
          *      java.lang.Object, java.lang.Object)
          */
+        @Override
         public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
             // NOOP
         }
@@ -955,6 +976,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
         /**
          * {@inheritDoc}
          */
+        @Override
         public Image getColumnImage(Object element, int columnIndex) {
             return null;
         }
@@ -962,6 +984,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
         /**
          * {@inheritDoc}
          */
+        @Override
         public String getColumnText(Object element, int columnIndex) {
             String text = null;
 
@@ -993,6 +1016,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
         /**
          * {@inheritDoc}
          */
+        @Override
         public Comparable getComparableValue(Object element, int col) {
             if (element instanceof Module && col == 0) {
                 return Severity.ignore.equals(((Module) element).getSeverity()) ? new Integer(0) : new Integer(1);
@@ -1004,6 +1028,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
         /**
          * {@inheritDoc}
          */
+        @Override
         public IDialogSettings getTableSettings() {
             String concreteViewId = CheckConfigurationConfigureDialog.class.getName();
 
@@ -1090,9 +1115,11 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
 
         private boolean selectRule(RuleMetadata element, String filterText) {
 
-            boolean passes = StringUtils.containsIgnoreCase(element.getRuleName(), filterText)
-                || StringUtils.containsIgnoreCase(element.getInternalName(), filterText)
-                || StringUtils.containsIgnoreCase(element.getDescription(), filterText);
+            Pattern matchPattern = Pattern.compile(Pattern.quote(filterText), Pattern.CASE_INSENSITIVE);
+
+            boolean passes = matchPattern.matcher(element.getRuleName()).find()
+                || matchPattern.matcher(element.getInternalName()).find()
+                || matchPattern.matcher(element.getDescription()).find();
 
             return passes;
         }

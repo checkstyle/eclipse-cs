@@ -32,11 +32,12 @@ import net.sf.eclipsecs.core.config.savefilter.SaveFilters;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 import net.sf.eclipsecs.core.util.XMLUtil;
 
-import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Branch;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
+
+import com.google.common.base.Strings;
 
 /**
  * Writes the modules of a checkstyle configuration to an output stream.
@@ -103,7 +104,7 @@ public final class ConfigurationWriter {
                 + checkConfig.getName()
                 + lineSeperator
                 + "    Description: " //$NON-NLS-1$
-                + (StringUtils.trimToNull(checkConfig.getDescription()) != null ? lineSeperator
+                + (Strings.emptyToNull(checkConfig.getDescription()) != null ? lineSeperator
                     + checkConfig.getDescription() + lineSeperator : "none" + lineSeperator); //$NON-NLS-1$
             doc.addComment(description);
 
@@ -153,7 +154,7 @@ public final class ConfigurationWriter {
         moduleEl.addAttribute(XMLTags.NAME_TAG, module.getMetaData().getInternalName());
 
         // Write comment
-        if (StringUtils.trimToNull(module.getComment()) != null) {
+        if (Strings.emptyToNull(module.getComment()) != null) {
 
             Element metaEl = moduleEl.addElement(XMLTags.METADATA_TAG);
             metaEl.addAttribute(XMLTags.NAME_TAG, XMLTags.COMMENT_ID);
@@ -172,7 +173,7 @@ public final class ConfigurationWriter {
         }
 
         // write module id
-        if (StringUtils.trimToNull(module.getId()) != null) {
+        if (Strings.emptyToNull(module.getId()) != null) {
 
             Element propertyEl = moduleEl.addElement(XMLTags.PROPERTY_TAG);
             propertyEl.addAttribute(XMLTags.NAME_TAG, XMLTags.ID_TAG);
@@ -183,7 +184,7 @@ public final class ConfigurationWriter {
         for (ConfigProperty property : module.getProperties()) {
 
             // write property only if it differs from the default value
-            String value = StringUtils.trimToNull(property.getValue());
+            String value = Strings.emptyToNull(property.getValue());
             if (value != null && !Objects.equals(value, property.getMetaData().getDefaultValue())) {
 
                 Element propertyEl = moduleEl.addElement(XMLTags.PROPERTY_TAG);

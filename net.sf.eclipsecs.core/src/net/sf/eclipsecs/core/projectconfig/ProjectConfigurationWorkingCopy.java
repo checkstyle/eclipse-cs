@@ -21,13 +21,13 @@
 package net.sf.eclipsecs.core.projectconfig;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import net.sf.eclipsecs.core.Messages;
 import net.sf.eclipsecs.core.config.CheckConfigurationFactory;
@@ -41,9 +41,6 @@ import net.sf.eclipsecs.core.projectconfig.filters.IFilter;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 import net.sf.eclipsecs.core.util.XMLUtil;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
@@ -56,14 +53,10 @@ import org.eclipse.osgi.util.NLS;
 
 /**
  * A modifiable project configuration implementation.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfiguration {
-
-    //
-    // attributes
-    //
 
     /** The original, unmodified project configuration. */
     private final IProjectConfiguration mProjectConfig;
@@ -86,13 +79,9 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
     /** if the formatter synching feature is enabled. */
     private boolean mSyncFormatter;
 
-    //
-    // constructors
-    //
-
     /**
      * Creates a working copy of a given project configuration.
-     * 
+     *
      * @param projectConfig
      *            the project configuration
      */
@@ -133,13 +122,9 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
         mSyncFormatter = projectConfig.isSyncFormatter();
     }
 
-    //
-    // methods
-    //
-
     /**
      * Returns the check configuration working set for local configurations.
-     * 
+     *
      * @return the local configurations working set
      */
     public ICheckConfigurationWorkingSet getLocalCheckConfigWorkingSet() {
@@ -148,7 +133,7 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
 
     /**
      * Returns the check configuration working set for global configurations.
-     * 
+     *
      * @return the local configurations working set
      */
     public ICheckConfigurationWorkingSet getGlobalCheckConfigWorkingSet() {
@@ -157,7 +142,7 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
 
     /**
      * Returns a project local check configuration by its name.
-     * 
+     *
      * @param name
      *            the configurations name
      * @return the check configuration or <code>null</code>, if no local configuration with this name exists
@@ -177,7 +162,7 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
 
     /**
      * Returns a project local check configuration by its name.
-     * 
+     *
      * @param name
      *            the configurations name
      * @return the check configuration or <code>null</code>, if no local configuration with this name exists
@@ -197,7 +182,7 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
 
     /**
      * Sets if the simple configuration should be used.
-     * 
+     *
      * @param useSimpleConfig
      *            true if the project uses the simple fileset configuration
      */
@@ -207,7 +192,7 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
 
     /**
      * Sets if the formatter synching is enabled.
-     * 
+     *
      * @param syncFormatter
      *            true if the projects formatter settings should be synced with the Checkstyle config
      */
@@ -217,7 +202,7 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
 
     /**
      * Determines if the project configuration changed.
-     * 
+     *
      * @return <code>true</code> if changed
      */
     public boolean isDirty() {
@@ -227,7 +212,7 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
     /**
      * Determines if a rebuild is needed for the project of this project configuration. A rebuild is not needed when
      * only some local config was added which is not used by the project.
-     * 
+     *
      * @return <code>true</code> if rebuild is needed.
      * @throws CheckstylePluginException
      *             an unexpected exception occurred
@@ -239,7 +224,7 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
 
     /**
      * Stores the project configuration.
-     * 
+     *
      * @throws CheckstylePluginException
      *             error while storing the project configuration
      */
@@ -247,20 +232,12 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
         storeToPersistence(this);
     }
 
-    //
-    // implementation of IProjectConfiguration interface
-    //
-
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public IProject getProject() {
         return mProjectConfig.getProject();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public List<ICheckConfiguration> getLocalCheckConfigurations() {
 
         List<ICheckConfiguration> l = new ArrayList<ICheckConfiguration>();
@@ -271,37 +248,27 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
         return l;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public List<FileSet> getFileSets() {
         return mFileSets;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public List<IFilter> getFilters() {
         return mFilters;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public boolean isUseSimpleConfig() {
         return mUseSimpleConfig;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public boolean isSyncFormatter() {
         return mSyncFormatter;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public boolean isConfigInUse(ICheckConfiguration configuration) {
 
         boolean result = false;
@@ -318,9 +285,7 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
         return result;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public Object clone() {
         ProjectConfigurationWorkingCopy clone = null;
         try {
@@ -348,9 +313,7 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
         return clone;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public boolean equals(Object obj) {
 
         if (obj == null || !(obj instanceof IProjectConfiguration)) {
@@ -360,17 +323,14 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
             return true;
         }
         IProjectConfiguration rhs = (IProjectConfiguration) obj;
-        return new EqualsBuilder().append(getProject(), rhs.getProject())
-            .append(isUseSimpleConfig(), rhs.isUseSimpleConfig()).append(isSyncFormatter(), rhs.isSyncFormatter())
-            .append(getFileSets(), rhs.getFileSets()).append(getFilters(), rhs.getFilters()).isEquals();
+        return Objects.equals(getProject(), rhs.getProject()) && isUseSimpleConfig() == rhs.isUseSimpleConfig()
+            && isSyncFormatter() == rhs.isSyncFormatter() && Objects.equals(getFileSets(), rhs.getFileSets())
+            && Objects.equals(getFilters(), rhs.getFilters());
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public int hashCode() {
-        return new HashCodeBuilder(984759323, 1000003).append(mProjectConfig).append(mUseSimpleConfig)
-            .append(mFileSets).append(mFilters).toHashCode();
+        return Objects.hash(mProjectConfig, mUseSimpleConfig, mFileSets, mFilters);
     }
 
     /**
@@ -378,14 +338,11 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
      */
     private void storeToPersistence(ProjectConfigurationWorkingCopy config) throws CheckstylePluginException {
 
-        ByteArrayOutputStream pipeOut = null;
-        InputStream pipeIn = null;
         try {
 
-            pipeOut = new ByteArrayOutputStream();
-
             Document docu = writeProjectConfig(config);
-            pipeIn = new ByteArrayInputStream(XMLUtil.toByteArray(docu));
+            byte[] data = XMLUtil.toByteArray(docu);
+            InputStream pipeIn = new ByteArrayInputStream(data);
 
             // create or overwrite the .checkstyle file
             IProject project = config.getProject();
@@ -409,15 +366,11 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
             CheckstylePluginException.rethrow(e,
                 NLS.bind(Messages.errorWritingCheckConfigurations, e.getLocalizedMessage()));
         }
-        finally {
-            IOUtils.closeQuietly(pipeIn);
-            IOUtils.closeQuietly(pipeOut);
-        }
     }
 
     /**
      * Produces the sax events to write a project configuration.
-     * 
+     *
      * @param config
      *            the configuration
      */
@@ -449,7 +402,7 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
 
     /**
      * Writes a local check configuration.
-     * 
+     *
      * @param checkConfig
      *            the local check configuration
      * @param docRoot
@@ -508,7 +461,7 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
 
     /**
      * Produces the sax events to write a file set to xml.
-     * 
+     *
      * @param fileSet
      *            the file set
      * @param project
@@ -546,7 +499,7 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
 
     /**
      * Produces the sax events to write a filter to xml.
-     * 
+     *
      * @param filter
      *            the filter
      * @param docRoot

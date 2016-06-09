@@ -148,8 +148,8 @@
             <property-metadata name="fileExtensions" datatype="String" default-value="properties">
                 <description>%Translation.fileExtensions</description>
             </property-metadata>
-            <property-metadata name="basenameSeparator" datatype="String" default-value="_">
-                <description>%Translation.basenameSeparator</description>
+            <property-metadata name="baseName" datatype="Regex" default-value="^messages.*$">
+                <description>%Translation.baseName</description>
             </property-metadata>
             <property-metadata name="requiredTranslations" datatype="String" default-value="">
                 <description>%Translation.requiredTranslations</description>

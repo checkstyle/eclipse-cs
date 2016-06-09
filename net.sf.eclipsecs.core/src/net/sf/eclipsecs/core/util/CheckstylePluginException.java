@@ -30,8 +30,9 @@ public class CheckstylePluginException extends Exception {
 
     /**
      * Exception for the Checkstyle plug-in.
-     * 
-     * @param msg Description of the error.
+     *
+     * @param msg
+     *            Description of the error.
      */
     public CheckstylePluginException(String msg) {
         super(msg);
@@ -39,24 +40,25 @@ public class CheckstylePluginException extends Exception {
 
     /**
      * Exception for the Checkstyle plug-in.
-     * 
-     * @param msg Description of the error.
-     * @param cause the causing exception
+     *
+     * @param msg
+     *            Description of the error.
+     * @param cause
+     *            the causing exception
      */
     private CheckstylePluginException(String msg, Throwable cause) {
         super(msg, cause);
     }
 
-    //
-    // methods
-    //
-
     /**
      * Wraps an exception into a CheckstylePluginException.
-     * 
-     * @param t the exception
-     * @param message an additional exception message
-     * @throws CheckstylePluginException the wrapped exception
+     *
+     * @param t
+     *            the exception
+     * @param message
+     *            an additional exception message
+     * @throws CheckstylePluginException
+     *             the wrapped exception
      */
     public static void rethrow(Throwable t, String message) throws CheckstylePluginException {
         if (t instanceof CheckstylePluginException) {
@@ -69,9 +71,11 @@ public class CheckstylePluginException extends Exception {
 
     /**
      * Wraps an exception into a CheckstylePluginException.
-     * 
-     * @param t the exception
-     * @throws CheckstylePluginException the wrapped exception
+     *
+     * @param t
+     *            the exception
+     * @throws CheckstylePluginException
+     *             the wrapped exception
      */
     public static void rethrow(Throwable t) throws CheckstylePluginException {
         rethrow(t, t.getMessage());

@@ -38,9 +38,9 @@ import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
+import java.util.ResourceBundle.Control;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.ResourceBundle.Control;
 
 import net.sf.eclipsecs.core.CheckstylePlugin;
 import net.sf.eclipsecs.core.config.ConfigProperty;
@@ -51,8 +51,6 @@ import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 import net.sf.eclipsecs.core.util.XMLUtil;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -112,6 +110,7 @@ public final class MetadataFactory {
         List<RuleGroupMetadata> groups = new ArrayList<RuleGroupMetadata>(sRuleGroupMetadata.values());
         Collections.sort(groups, new Comparator<RuleGroupMetadata>() {
 
+            @Override
             public int compare(RuleGroupMetadata arg0, RuleGroupMetadata arg1) {
                 int prio1 = arg0.getPriority();
                 int prio2 = arg1.getPriority();
@@ -339,21 +338,16 @@ public final class MetadataFactory {
         Collection<String> potentialMetadataFiles = getAllPotentialMetadataFiles(classLoader);
         for (String metadataFile : potentialMetadataFiles) {
 
-            InputStream metadataStream = null;
+            try (InputStream metadataStream = classLoader.getResourceAsStream(metadataFile)) {
 
-            try {
-                metadataStream = classLoader.getResourceAsStream(metadataFile);
                 if (metadataStream != null) {
 
                     ResourceBundle metadataBundle = getMetadataI18NBundle(metadataFile, classLoader);
                     parseMetadata(metadataStream, metadataBundle);
                 }
             }
-            catch (DocumentException e) {
+            catch (DocumentException | IOException e) {
                 CheckstyleLog.log(e, "Could not read metadata " + metadataFile); //$NON-NLS-1$
-            }
-            finally {
-                IOUtils.closeQuietly(metadataStream);
             }
         }
     }
@@ -516,9 +510,14 @@ public final class MetadataFactory {
             ConfigPropertyType type = ConfigPropertyType.valueOf(propertyEl.attributeValue(XMLTags.DATATYPE_TAG));
 
             String name = propertyEl.attributeValue(XMLTags.NAME_TAG).trim();
-            String defaultValue = StringUtils.trim(propertyEl.attributeValue(XMLTags.DEFAULT_VALUE_TAG));
-            String overrideDefaultValue = StringUtils.trim(propertyEl
-                .attributeValue(XMLTags.DEFAULT_VALUE_OVERRIDE_TAG));
+            String defaultValue = propertyEl.attributeValue(XMLTags.DEFAULT_VALUE_TAG);
+            if (defaultValue != null) {
+                defaultValue = defaultValue.trim();
+            }
+            String overrideDefaultValue = propertyEl.attributeValue(XMLTags.DEFAULT_VALUE_OVERRIDE_TAG);
+            if (overrideDefaultValue != null) {
+                overrideDefaultValue = overrideDefaultValue.trim();
+            }
 
             ConfigPropertyMetadata property = new ConfigPropertyMetadata(type, name, defaultValue, overrideDefaultValue);
 
@@ -552,15 +551,10 @@ public final class MetadataFactory {
                             }
                         }
                     }
-                    catch (ClassNotFoundException e) {
+                    catch (ReflectiveOperationException e) {
                         CheckstylePluginException.rethrow(e);
                     }
-                    catch (InstantiationException e) {
-                        CheckstylePluginException.rethrow(e);
-                    }
-                    catch (IllegalAccessException e) {
-                        CheckstylePluginException.rethrow(e);
-                    }
+
                 }
 
                 // get explicit enumeration option values

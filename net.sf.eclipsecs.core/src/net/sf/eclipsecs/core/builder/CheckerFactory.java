@@ -54,10 +54,6 @@ import com.puppycrawl.tools.checkstyle.api.Configuration;
  */
 public final class CheckerFactory {
 
-    //
-    // class attributes
-    //
-
     /** Map containing the configured checkers. */
     private static Cache<String, Checker> sCheckerMap;
 
@@ -69,10 +65,6 @@ public final class CheckerFactory {
 
     /** the shared classloader for the checkers. */
     private static ProjectClassLoader sSharedClassLoader;
-
-    //
-    // static initializer
-    //
 
     /**
      * Initialize the cache.
@@ -87,20 +79,12 @@ public final class CheckerFactory {
         sSharedClassLoader = new ProjectClassLoader();
     }
 
-    //
-    // constructors
-    //
-
     /**
      * Hidden utility class constructor.
      */
     private CheckerFactory() {
         // noop
     }
-
-    //
-    // methods
-    //
 
     /**
      * Creates a checker for a given configuration file.

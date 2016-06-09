@@ -51,9 +51,7 @@ public class MultiPropertyResolver implements PropertyResolver, IContextAware {
         mChildResolver.add(resolver);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void setProjectContext(IProject project) {
 
         // propagate context to the childs
@@ -65,9 +63,7 @@ public class MultiPropertyResolver implements PropertyResolver, IContextAware {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public String resolve(String property) {
 
         String value = null;

@@ -28,10 +28,10 @@ import net.sf.eclipsecs.core.config.configtypes.IContextAware;
 import net.sf.eclipsecs.core.config.configtypes.MultiPropertyResolver;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
-import org.apache.commons.io.IOUtils;
 import org.eclipse.core.resources.IProject;
 import org.xml.sax.InputSource;
 
+import com.google.common.io.Closeables;
 import com.puppycrawl.tools.checkstyle.ConfigurationLoader;
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
@@ -43,7 +43,7 @@ import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
  * <li>Checkstyle configuration file contains unresolved properties</li>
  * </ul>
  * .
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public class CheckConfigurationTester {
@@ -55,7 +55,7 @@ public class CheckConfigurationTester {
 
     /**
      * Creates a tester for the given check configuration.
-     * 
+     *
      * @param checkConfiguration
      *            the check configuration to test
      */
@@ -65,16 +65,14 @@ public class CheckConfigurationTester {
 
     /**
      * Tests a configuration if there are unresolved properties.
-     * 
+     *
      * @return the list of unresolved properties as ResolvableProperty values.
      * @throws CheckstylePluginException
      *             most likely the configuration file could not be found
      */
-    public List<ResolvableProperty> getUnresolvedProperties()
-        throws CheckstylePluginException {
+    public List<ResolvableProperty> getUnresolvedProperties() throws CheckstylePluginException {
 
-        CheckstyleConfigurationFile configFile = mCheckConfiguration
-            .getCheckstyleConfiguration();
+        CheckstyleConfigurationFile configFile = mCheckConfiguration.getCheckstyleConfiguration();
 
         PropertyResolver resolver = configFile.getPropertyResolver();
 
@@ -105,28 +103,26 @@ public class CheckConfigurationTester {
             CheckstylePluginException.rethrow(e);
         }
         finally {
-            IOUtils.closeQuietly(in.getByteStream());
+            Closeables.closeQuietly(in.getByteStream());
         }
 
         return collector.getUnresolvedProperties();
     }
 
     /**
-     * A property resolver that itself does not resolve properties but collects
-     * properties that are not being resolved by a given other property
-     * resolver. This is used to find unresolved properties after all other
-     * property reolvers have been asked.
-     * 
+     * A property resolver that itself does not resolve properties but collects properties that are not being resolved
+     * by a given other property resolver. This is used to find unresolved properties after all other property reolvers
+     * have been asked.
+     *
      * @author Lars Ködderitzsch
      */
     private static class MissingPropertyCollector implements PropertyResolver {
 
         /**
-         * Properties that will be ignored, because they can always be resolved
-         * when the configuration is used in the context of a project.
+         * Properties that will be ignored, because they can always be resolved when the configuration is used in the
+         * context of a project.
          */
-        private static final List<String> IGNORE_PROPS = Arrays.asList(
-            "basedir", //$NON-NLS-1$
+        private static final List<String> IGNORE_PROPS = Arrays.asList("basedir", //$NON-NLS-1$
             "project_loc"); //$NON-NLS-1$
 
         /** The list of unresolved properties. */
@@ -135,6 +131,7 @@ public class CheckConfigurationTester {
         /**
          * {@inheritDoc}
          */
+        @Override
         public String resolve(String aName) {
 
             if (!IGNORE_PROPS.contains(aName)) {
@@ -151,9 +148,8 @@ public class CheckConfigurationTester {
         }
 
         /**
-         * The list of unresolved properties containing ResolvableProperty
-         * items.
-         * 
+         * The list of unresolved properties containing ResolvableProperty items.
+         *
          * @return the list of unresolved properties.
          */
         public List<ResolvableProperty> getUnresolvedProperties() {

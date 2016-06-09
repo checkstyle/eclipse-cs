@@ -29,7 +29,7 @@ import com.puppycrawl.tools.checkstyle.PropertyResolver;
 
 /**
  * Resolves properties set up with the check configuration.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public class ResolvablePropertyResolver implements PropertyResolver {
@@ -39,22 +39,20 @@ public class ResolvablePropertyResolver implements PropertyResolver {
 
     /**
      * Creates the resolver for the given check configuration.
-     * 
-     * @param checkConfiguration the check configuration
+     *
+     * @param checkConfiguration
+     *            the check configuration
      */
     public ResolvablePropertyResolver(ICheckConfiguration checkConfiguration) {
         mCheckConfiguration = checkConfiguration;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public String resolve(String aName) {
 
         String value = null;
 
-        List<ResolvableProperty> resolvableProperties = mCheckConfiguration
-                .getResolvableProperties();
+        List<ResolvableProperty> resolvableProperties = mCheckConfiguration.getResolvableProperties();
         for (ResolvableProperty prop : resolvableProperties) {
 
             if (aName.equals(prop.getPropertyName())) {

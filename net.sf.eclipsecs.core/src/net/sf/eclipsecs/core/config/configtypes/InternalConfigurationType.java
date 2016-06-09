@@ -22,26 +22,26 @@ package net.sf.eclipsecs.core.config.configtypes;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import net.sf.eclipsecs.core.CheckstylePlugin;
 import net.sf.eclipsecs.core.config.ICheckConfiguration;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
-import org.apache.commons.io.FileUtils;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.URIUtil;
 
 /**
- * Implementation of the configuration type for a internal check configuration,
- * that is located inside the plugin.
- * 
+ * Implementation of the configuration type for a internal check configuration, that is located inside the plugin.
+ *
  * @author Lars Ködderitzsch
  */
 public class InternalConfigurationType extends ConfigurationType {
 
     /**
      * Resolves the location inside the plugins workspace state location.
-     * 
+     *
      * @param location
      *            the location
      * @return the resolved location in the workspace
@@ -53,11 +53,8 @@ public class InternalConfigurationType extends ConfigurationType {
         return configPath.toString();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected URL resolveLocation(ICheckConfiguration checkConfiguration)
-        throws IOException {
+    @Override
+    protected URL resolveLocation(ICheckConfiguration checkConfiguration) throws IOException {
         String location = checkConfiguration.getLocation();
 
         // resolve the location in the workspace
@@ -66,19 +63,24 @@ public class InternalConfigurationType extends ConfigurationType {
         return new File(location).toURI().toURL();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void notifyCheckConfigRemoved(ICheckConfiguration checkConfiguration)
-        throws CheckstylePluginException {
+    @Override
+    public void notifyCheckConfigRemoved(ICheckConfiguration checkConfiguration) throws CheckstylePluginException {
         super.notifyCheckConfigRemoved(checkConfiguration);
 
         // remove the configuration file from the workspace metadata
-        URL configFileURL = checkConfiguration
-            .getResolvedConfigurationFileURL();
+        URL configFileURL = checkConfiguration.getResolvedConfigurationFileURL();
         if (configFileURL != null) {
-            File configFile = FileUtils.toFile(configFileURL);
-            configFile.delete();
+
+            try {
+                File configFile = URIUtil.toFile(configFileURL.toURI());
+
+                if (configFile != null) {
+                    configFile.delete();
+                }
+            }
+            catch (URISyntaxException e) {
+                CheckstylePluginException.rethrow(e);
+            }
         }
     }
 }

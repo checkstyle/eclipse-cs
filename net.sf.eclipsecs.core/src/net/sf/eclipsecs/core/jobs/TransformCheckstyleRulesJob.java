@@ -33,7 +33,6 @@ import net.sf.eclipsecs.core.projectconfig.ProjectConfigurationFactory;
 import net.sf.eclipsecs.core.transformer.CheckstyleTransformer;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
-import org.apache.commons.io.IOUtils;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
@@ -42,6 +41,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.xml.sax.InputSource;
 
+import com.google.common.io.Closeables;
 import com.puppycrawl.tools.checkstyle.ConfigurationLoader;
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
@@ -106,7 +106,7 @@ public class TransformCheckstyleRulesJob extends WorkspaceJob {
                     recurseConfiguration(configuration, rules);
                 }
                 finally {
-                    IOUtils.closeQuietly(in.getByteStream());
+                    Closeables.closeQuietly(in.getByteStream());
                 }
             }
 

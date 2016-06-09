@@ -22,14 +22,13 @@ package net.sf.eclipsecs.core.projectconfig;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 import net.sf.eclipsecs.core.config.ICheckConfiguration;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import org.eclipse.core.resources.IFile;
+
+import com.google.common.base.MoreObjects;
 
 /**
  * A File Set is a collection of files audited with a common set of audit rules.
@@ -53,7 +52,7 @@ public class FileSet implements Cloneable {
 
     /**
      * Default constructor.
-     * 
+     *
      * @param name
      *            The name of the <code>FileSet</code>
      * @param checkConfig
@@ -66,7 +65,7 @@ public class FileSet implements Cloneable {
 
     /**
      * Returns a list of <code>FileMatchPattern</code> objects.
-     * 
+     *
      * @return List
      */
     public List<FileMatchPattern> getFileMatchPatterns() {
@@ -75,7 +74,7 @@ public class FileSet implements Cloneable {
 
     /**
      * Set the list of <code>FileMatchPattern</code> objects.
-     * 
+     *
      * @param list
      *            The new list of pattern objects.
      */
@@ -85,7 +84,7 @@ public class FileSet implements Cloneable {
 
     /**
      * Get the check configuration used by this file set.
-     * 
+     *
      * @return The check configuration used to audit files in the file set.
      */
     public ICheckConfiguration getCheckConfig() {
@@ -94,7 +93,7 @@ public class FileSet implements Cloneable {
 
     /**
      * Sets the check configuration used by this file set.
-     * 
+     *
      * @param checkConfig
      *            the check configuration
      */
@@ -104,7 +103,7 @@ public class FileSet implements Cloneable {
 
     /**
      * Returns the name.
-     * 
+     *
      * @return String
      */
     public String getName() {
@@ -113,7 +112,7 @@ public class FileSet implements Cloneable {
 
     /**
      * Sets the name.
-     * 
+     *
      * @param name
      *            The name to set
      */
@@ -123,7 +122,7 @@ public class FileSet implements Cloneable {
 
     /**
      * Returns the enabled flag.
-     * 
+     *
      * @return boolean
      */
     public boolean isEnabled() {
@@ -132,7 +131,7 @@ public class FileSet implements Cloneable {
 
     /**
      * Sets the enabled flag.
-     * 
+     *
      * @param enabled
      *            The enabled to set
      */
@@ -142,7 +141,7 @@ public class FileSet implements Cloneable {
 
     /**
      * Tests a file to see if its included in the file set.
-     * 
+     *
      * @param file
      *            The file to test.
      * @return <code>true</code>= the file is included in the file set,
@@ -168,9 +167,7 @@ public class FileSet implements Cloneable {
         return result;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public FileSet clone() {
         try {
             FileSet clone = (FileSet) super.clone();
@@ -189,9 +186,7 @@ public class FileSet implements Cloneable {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public boolean equals(Object obj) {
 
         if (obj == null || !(obj instanceof FileSet)) {
@@ -201,22 +196,19 @@ public class FileSet implements Cloneable {
             return true;
         }
         FileSet rhs = (FileSet) obj;
-        return new EqualsBuilder().append(mEnabled, rhs.mEnabled).append(mName, rhs.mName)
-            .append(mFileMatchPatterns, rhs.mFileMatchPatterns).append(mCheckConfig, rhs.mCheckConfig).isEquals();
+        return mEnabled == rhs.mEnabled && Objects.equals(mName, rhs.mName)
+            && Objects.equals(mFileMatchPatterns, rhs.mFileMatchPatterns)
+            && Objects.equals(mCheckConfig, rhs.mCheckConfig);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public int hashCode() {
-        return new HashCodeBuilder(987349, 1000003).append(mEnabled).append(mName).append(mCheckConfig)
-            .append(mFileMatchPatterns).toHashCode();
+        return Objects.hash(mEnabled, mName, mCheckConfig, mFileMatchPatterns, mCheckConfig);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
+        return MoreObjects.toStringHelper(this).add("enabled", mEnabled).add("name", mName)
+            .add("fileMatchPatterns", mFileMatchPatterns).add("checkConfig", mCheckConfig).toString();
     }
 }

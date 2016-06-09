@@ -27,7 +27,7 @@ import com.puppycrawl.tools.checkstyle.PropertyResolver;
 
 /**
  * Property resolver that resolves some eclipse standard variables.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public class StandardPropertyResolver implements PropertyResolver, IContextAware {
@@ -55,23 +55,20 @@ public class StandardPropertyResolver implements PropertyResolver, IContextAware
 
     /**
      * Creates the BuiltInPropertyResolver.
-     * 
-     * @param configLocation the location of the checkstyle configuration file
+     *
+     * @param configLocation
+     *            the location of the checkstyle configuration file
      */
     public StandardPropertyResolver(String configLocation) {
         mConfigLocation = configLocation;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void setProjectContext(IProject project) {
         mProject = project;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public String resolve(String property) {
 
         String value = null;
@@ -81,13 +78,12 @@ public class StandardPropertyResolver implements PropertyResolver, IContextAware
         else if ((PROJECT_LOC.equals(property) || BASEDIR_LOC.equals(property)) && mProject != null) {
             value = mProject.getLocation().toString();
         }
-        else if ((SAMEDIR_LOC.equals(property) || CONFIG_LOC.equals(property))
-                && mConfigLocation != null) {
+        else if ((SAMEDIR_LOC.equals(property) || CONFIG_LOC.equals(property)) && mConfigLocation != null) {
             String configLocWOBackslashes = mConfigLocation.replace('\\', '/');
 
             int lastSlash = configLocWOBackslashes.lastIndexOf("/"); //$NON-NLS-1$
             if (lastSlash > -1) {
-                value = configLocWOBackslashes.substring(0, lastSlash + 1); //$NON-NLS-1$
+                value = configLocWOBackslashes.substring(0, lastSlash + 1);
             }
         }
 

@@ -31,7 +31,6 @@ import net.sf.eclipsecs.core.config.meta.RuleMetadata;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 import net.sf.eclipsecs.core.util.XMLUtil;
 
-import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -39,9 +38,11 @@ import org.dom4j.VisitorSupport;
 import org.dom4j.io.SAXReader;
 import org.xml.sax.InputSource;
 
+import com.google.common.base.Strings;
+
 /**
  * Utitlity class to read a checkstyle configuration and transform to the plugins module objects.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public final class ConfigurationReader {
@@ -68,23 +69,15 @@ public final class ConfigurationReader {
             "com/puppycrawl/tools/checkstyle/configuration_1_3.dtd"); //$NON-NLS-1$
     }
 
-    //
-    // constructors
-    //
-
     /** Hidden default constructor to prevent instantiation. */
     private ConfigurationReader() {
         // NOOP
     }
 
-    //
-    // methods
-    //
-
     /**
      * Reads the checkstyle configuration from the given stream an returs a list of all modules within this
      * configuration.
-     * 
+     *
      * @param in
      *            the stream the configuration is loaded from
      * @return the list of modules
@@ -112,7 +105,7 @@ public final class ConfigurationReader {
     /**
      * Gets additional data about the Checkstyle configuration. This data is used by the plugin for special purposes,
      * like determining the correct offset of a checkstyle violation.
-     * 
+     *
      * @param in
      *            the input stream
      * @return the additional configuration data
@@ -218,7 +211,7 @@ public final class ConfigurationReader {
                 }
             }
             else if (name.equals(XMLTags.ID_TAG)) {
-                module.setId(StringUtils.trimToNull(value));
+                module.setId(Strings.emptyToNull(value));
             }
             else if (module.getMetaData() != null) {
 
@@ -277,7 +270,7 @@ public final class ConfigurationReader {
 
     /**
      * Holds additional data about the Checkstyle configuration file, for special uses.
-     * 
+     *
      * @author Lars Ködderitzsch
      */
     public static class AdditionalConfigData {
@@ -295,7 +288,7 @@ public final class ConfigurationReader {
 
         /**
          * The tab width of the check configuration.
-         * 
+         *
          * @return the tab width setting
          */
         public int getTabWidth() {

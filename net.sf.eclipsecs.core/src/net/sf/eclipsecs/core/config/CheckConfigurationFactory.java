@@ -28,6 +28,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URISyntaxException;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -43,8 +49,6 @@ import net.sf.eclipsecs.core.config.configtypes.IConfigurationType;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -53,6 +57,9 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.URIUtil;
+
+import com.google.common.io.ByteStreams;
 
 /**
  * Used to manage the life cycle of <code>CheckConfiguration</code> objects.
@@ -90,7 +97,7 @@ public final class CheckConfigurationFactory {
 
     /**
      * Get an <code>CheckConfiguration</code> instance by its name.
-     * 
+     *
      * @param name
      *            Name of the requested instance.
      * @return The requested instance or <code>null</code> if the named instance could not be found.
@@ -108,7 +115,7 @@ public final class CheckConfigurationFactory {
 
     /**
      * Get a list of the currently defined check configurations.
-     * 
+     *
      * @return A list containing all instances.
      */
     public static List<ICheckConfiguration> getCheckConfigurations() {
@@ -118,7 +125,7 @@ public final class CheckConfigurationFactory {
     /**
      * Returns the default check configuration if one is set, if none is set the Sun Checks built-in configuration will
      * be returned.
-     * 
+     *
      * @return the default check configuration to use with unconfigured projects
      */
     public static ICheckConfiguration getDefaultCheckConfiguration() {
@@ -138,7 +145,7 @@ public final class CheckConfigurationFactory {
 
     /**
      * Creates a new working set from the existing configurations.
-     * 
+     *
      * @return a new configuration working set
      */
     public static ICheckConfigurationWorkingSet newWorkingSet() {
@@ -165,7 +172,7 @@ public final class CheckConfigurationFactory {
 
     /**
      * Copy the checkstyle configuration of a check configuration into another configuration.
-     * 
+     *
      * @param source
      *            the source check configuration
      * @param target
@@ -175,22 +182,31 @@ public final class CheckConfigurationFactory {
      */
     public static void copyConfiguration(ICheckConfiguration source, ICheckConfiguration target)
         throws CheckstylePluginException {
-        // use the export function ;-)
-        File targetFile = FileUtils.toFile(target.getResolvedConfigurationFileURL());
 
-        File sourceFile = FileUtils.toFile(source.getResolvedConfigurationFileURL());
+        try {
 
-        // copying from a file to the same file will destroy it.
-        if (Objects.equals(targetFile, sourceFile)) {
-            return;
+            // use the export function ;-)
+            File targetFile;
+
+            targetFile = URIUtil.toFile(target.getResolvedConfigurationFileURL().toURI());
+
+            File sourceFile = URIUtil.toFile(source.getResolvedConfigurationFileURL().toURI());
+
+            // copying from a file to the same file will destroy it.
+            if (Objects.equals(targetFile, sourceFile)) {
+                return;
+            }
+
+            exportConfiguration(targetFile, source);
         }
-
-        exportConfiguration(targetFile, source);
+        catch (URISyntaxException e) {
+            CheckstylePluginException.rethrow(e);
+        }
     }
 
     /**
      * Write check configurations to an external file in standard Checkstyle format.
-     * 
+     *
      * @param file
      *            File to write too.
      * @param config
@@ -200,29 +216,21 @@ public final class CheckConfigurationFactory {
      */
     public static void exportConfiguration(File file, ICheckConfiguration config) throws CheckstylePluginException {
 
-        InputStream in = null;
-        OutputStream out = null;
-
-        try {
+        try (InputStream in = config.getCheckstyleConfiguration().getCheckConfigFileStream();
+            OutputStream out = new BufferedOutputStream(new FileOutputStream(file))) {
 
             // Just copy the checkstyle configuration
-            in = config.getCheckstyleConfiguration().getCheckConfigFileStream();
-            out = new BufferedOutputStream(new FileOutputStream(file));
-
-            IOUtils.copy(in, out);
+            ByteStreams.copy(in, out);
         }
         catch (Exception e) {
             CheckstylePluginException.rethrow(e);
         }
-        finally {
-            IOUtils.closeQuietly(in);
-            IOUtils.closeQuietly(out);
-        }
+
     }
 
     /**
      * Transfers the internal checkstyle settings and configurations to a new workspace.
-     * 
+     *
      * @param targetWorkspaceRoot
      *            the target workspace root
      * @throws CheckstylePluginException
@@ -238,8 +246,24 @@ public final class CheckConfigurationFactory {
 
             targetLocationFile.mkdirs();
 
-            FileUtils
-                .copyDirectory(CheckstylePlugin.getDefault().getStateLocation().toFile(), targetLocationFile, true);
+            final Path sourcePath = CheckstylePlugin.getDefault().getStateLocation().toFile().toPath();
+            final Path targetPath = targetLocationFile.toPath();
+
+            // copy the entire directory contents
+            Files.walkFileTree(sourcePath, new SimpleFileVisitor<Path>() {
+                @Override
+                public FileVisitResult preVisitDirectory(final Path dir, final BasicFileAttributes attrs)
+                    throws IOException {
+                    Files.createDirectories(targetPath.resolve(sourcePath.relativize(dir)));
+                    return FileVisitResult.CONTINUE;
+                }
+
+                @Override
+                public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs) throws IOException {
+                    Files.copy(file, targetPath.resolve(sourcePath.relativize(file)));
+                    return FileVisitResult.CONTINUE;
+                }
+            });
         }
         catch (IllegalStateException e) {
             CheckstylePluginException.rethrow(e);
@@ -273,21 +297,16 @@ public final class CheckConfigurationFactory {
      */
     private static void loadFromPersistence() throws CheckstylePluginException {
 
-        InputStream inStream = null;
+        File configFile = getInternalConfigurationFile();
 
-        try {
+        //
+        // Make sure the files exists, it might not.
+        //
+        if (!configFile.exists()) {
+            return;
+        }
 
-            File configFile = getInternalConfigurationFile();
-
-            //
-            // Make sure the files exists, it might not.
-            //
-            if (!configFile.exists()) {
-                return;
-            }
-            else {
-                inStream = new BufferedInputStream(new FileInputStream(configFile));
-            }
+        try (InputStream inStream = new BufferedInputStream(new FileInputStream(configFile))) {
 
             SAXReader reader = new SAXReader();
             Document document = reader.read(inStream);
@@ -313,14 +332,8 @@ public final class CheckConfigurationFactory {
                 }
             }
         }
-        catch (IOException e) {
+        catch (IOException | DocumentException e) {
             CheckstylePluginException.rethrow(e, Messages.errorLoadingConfigFile);
-        }
-        catch (DocumentException e) {
-            CheckstylePluginException.rethrow(e, Messages.errorLoadingConfigFile);
-        }
-        finally {
-            IOUtils.closeQuietly(inStream);
         }
     }
 
@@ -379,7 +392,7 @@ public final class CheckConfigurationFactory {
 
     /**
      * Gets the check configurations from the configuration file document.
-     * 
+     *
      * @param root
      *            the root element of the plugins central configuration file
      * @return the global check configurations configured therein

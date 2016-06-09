@@ -29,7 +29,6 @@ import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
 import net.sf.eclipsecs.ui.quickfixes.AbstractASTResolution;
 import net.sf.eclipsecs.ui.quickfixes.Messages;
 
-import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.Expression;
@@ -115,7 +114,8 @@ public class StringLiteralEqualityQuickfix extends AbstractASTResolution {
 
                         String property = node.getLocationInParent().getId();
 
-                        String setterMethodName = "set" + StringUtils.capitalize(property);
+                        String capitalizedProperty = property.substring(0, 1).toUpperCase() + property.substring(1);
+                        String setterMethodName = "set" + capitalizedProperty;
 
                         Class testClass = node.getClass();
 
@@ -156,6 +156,7 @@ public class StringLiteralEqualityQuickfix extends AbstractASTResolution {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getDescription() {
         return Messages.StringLiteralEqualityQuickfix_description;
     }
@@ -163,6 +164,7 @@ public class StringLiteralEqualityQuickfix extends AbstractASTResolution {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getLabel() {
         return Messages.StringLiteralEqualityQuickfix_label;
     }

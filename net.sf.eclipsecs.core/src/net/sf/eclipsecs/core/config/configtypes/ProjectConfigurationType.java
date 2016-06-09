@@ -20,8 +20,10 @@
 
 package net.sf.eclipsecs.core.config.configtypes;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import net.sf.eclipsecs.core.Messages;
@@ -29,15 +31,14 @@ import net.sf.eclipsecs.core.config.ICheckConfiguration;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
-import org.apache.commons.io.FileUtils;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.URIUtil;
 import org.eclipse.osgi.util.NLS;
 
 /**
- * Implementation of a check configuration that uses an exteral checkstyle
- * configuration file.
- * 
+ * Implementation of a check configuration that uses an exteral checkstyle configuration file.
+ *
  * @author Lars Ködderitzsch
  */
 public class ProjectConfigurationType extends ConfigurationType {
@@ -45,11 +46,8 @@ public class ProjectConfigurationType extends ConfigurationType {
     /** Key to access the information if the configuration is protected. */
     public static final String KEY_PROTECT_CONFIG = "protect-config-file"; //$NON-NLS-1$
 
-    /**
-     * {@inheritDoc}
-     */
-    protected URL resolveLocation(ICheckConfiguration checkConfiguration)
-        throws IOException {
+    @Override
+    protected URL resolveLocation(ICheckConfiguration checkConfiguration) throws IOException {
         IResource configFileResource = ResourcesPlugin.getWorkspace().getRoot()
             .findMember(checkConfiguration.getLocation());
 
@@ -57,20 +55,16 @@ public class ProjectConfigurationType extends ConfigurationType {
             return configFileResource.getLocation().toFile().toURI().toURL();
         }
         else {
-            throw new FileNotFoundException(NLS.bind(
-                Messages.ProjectConfigurationType_msgFileNotFound,
+            throw new FileNotFoundException(NLS.bind(Messages.ProjectConfigurationType_msgFileNotFound,
                 checkConfiguration.getLocation()));
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public boolean isConfigurable(ICheckConfiguration checkConfiguration) {
         boolean isConfigurable = true;
 
-        boolean isProtected = Boolean.valueOf(
-            checkConfiguration.getAdditionalData().get(KEY_PROTECT_CONFIG))
+        boolean isProtected = Boolean.valueOf(checkConfiguration.getAdditionalData().get(KEY_PROTECT_CONFIG))
             .booleanValue();
         isConfigurable = !isProtected;
 
@@ -79,15 +73,14 @@ public class ProjectConfigurationType extends ConfigurationType {
             // The configuration can be changed when the external configuration
             // file can is writable
             try {
-                isConfigurable = FileUtils.toFile(
-                    checkConfiguration.getResolvedConfigurationFileURL())
-                    .canWrite();
+
+                File file = URIUtil.toFile(checkConfiguration.getResolvedConfigurationFileURL().toURI());
+                isConfigurable = file != null && file.canWrite();
             }
-            catch (CheckstylePluginException e) {
+            catch (CheckstylePluginException | URISyntaxException e) {
                 CheckstyleLog.log(e);
                 isConfigurable = false;
             }
-
         }
         return isConfigurable;
     }

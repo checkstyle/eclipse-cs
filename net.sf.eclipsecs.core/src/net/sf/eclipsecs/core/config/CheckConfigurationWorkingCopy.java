@@ -20,35 +20,34 @@
 
 package net.sf.eclipsecs.core.config;
 
-import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import net.sf.eclipsecs.core.CheckstylePlugin;
 import net.sf.eclipsecs.core.Messages;
 import net.sf.eclipsecs.core.config.configtypes.IConfigurationType;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.URIUtil;
 import org.eclipse.osgi.util.NLS;
 import org.xml.sax.InputSource;
+
+import com.google.common.io.Closeables;
+import com.google.common.io.Files;
 
 /**
  * This class acts as wrapper around check configurations to add editing aspects. Check configurations by themself are
@@ -215,9 +214,9 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
      */
     public boolean hasConfigurationChanged() {
         return mHasConfigChanged
-            || !(new EqualsBuilder().append(getLocation(), mCheckConfiguration.getLocation())
-                .append(getResolvableProperties(), mCheckConfiguration.getResolvableProperties())
-                .append(getAdditionalData(), mCheckConfiguration.getAdditionalData()).isEquals());
+            || !(Objects.equals(getLocation(), mCheckConfiguration.getLocation())
+                && Objects.equals(getResolvableProperties(), mCheckConfiguration.getResolvableProperties()) && Objects
+                    .equals(getAdditionalData(), mCheckConfiguration.getAdditionalData()));
     }
 
     /**
@@ -238,7 +237,7 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
             result = ConfigurationReader.read(in);
         }
         finally {
-            IOUtils.closeQuietly(in.getByteStream());
+            Closeables.closeQuietly(in.getByteStream());
         }
 
         return result;
@@ -254,21 +253,16 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
      */
     public void setModules(List<Module> modules) throws CheckstylePluginException {
 
-        OutputStream out = null;
-        ByteArrayOutputStream byteOut = null;
-        try {
+        try (ByteArrayOutputStream byteOut = new ByteArrayOutputStream();) {
 
             // First write to a byte array outputstream
             // because otherwise in an error case the original
             // file would be destroyed
-            byteOut = new ByteArrayOutputStream();
-
             ConfigurationWriter.write(byteOut, modules, this);
 
             // all went ok, write to the file
-            File configFile = FileUtils.toFile(getResolvedConfigurationFileURL());
-            out = new BufferedOutputStream(new FileOutputStream(configFile));
-            out.write(byteOut.toByteArray());
+            File configFile = URIUtil.toFile(getResolvedConfigurationFileURL().toURI());
+            Files.write(byteOut.toByteArray(), configFile);
 
             // refresh the files if within the workspace
             // Bug 1251194 - Resource out of sync after performing changes to
@@ -289,99 +283,67 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
             // throw away the cached Checkstyle configurations
             CheckConfigurationFactory.refresh();
         }
-        catch (IOException e) {
+        catch (IOException | URISyntaxException e) {
             CheckstylePluginException.rethrow(e);
-        }
-        finally {
-            IOUtils.closeQuietly(byteOut);
-            IOUtils.closeQuietly(out);
         }
     }
 
-    //
-    // Implementation of ICheckConfiguration
-    //
-
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public String getName() {
         return mEditedName != null ? mEditedName : getSourceCheckConfiguration().getName();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public String getDescription() {
         return mEditedDescription != null ? mEditedDescription : getSourceCheckConfiguration().getDescription();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public String getLocation() {
         return mEditedLocation != null ? mEditedLocation : getSourceCheckConfiguration().getLocation();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public IConfigurationType getType() {
         return getSourceCheckConfiguration().getType();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public Map<String, String> getAdditionalData() {
         return mAdditionalData;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public List<ResolvableProperty> getResolvableProperties() {
         return mProperties;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public URL getResolvedConfigurationFileURL() throws CheckstylePluginException {
         return getType().getResolvedConfigurationFileURL(this);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public CheckstyleConfigurationFile getCheckstyleConfiguration() throws CheckstylePluginException {
         return getType().getCheckstyleConfiguration(this);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public boolean isEditable() {
         return getType().isEditable();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public boolean isConfigurable() {
         return getType().isConfigurable(this);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public boolean isGlobal() {
         return mCheckConfiguration.isGlobal();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public boolean equals(Object obj) {
         if (obj == null || !(obj instanceof ICheckConfiguration)) {
             return false;
@@ -390,24 +352,19 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
             return true;
         }
         ICheckConfiguration rhs = (ICheckConfiguration) obj;
-        return new EqualsBuilder().append(getName(), rhs.getName()).append(getLocation(), rhs.getLocation())
-            .append(getDescription(), rhs.getDescription()).append(getType(), rhs.getType())
-            .append(isGlobal(), rhs.isGlobal()).append(getResolvableProperties(), rhs.getResolvableProperties())
-            .append(getAdditionalData(), rhs.getAdditionalData()).isEquals();
+        return Objects.equals(getName(), rhs.getName()) && Objects.equals(getLocation(), rhs.getLocation())
+            && Objects.equals(getDescription(), rhs.getDescription()) && Objects.equals(getType(), rhs.getType())
+            && isGlobal() == rhs.isGlobal() && Objects.equals(getResolvableProperties(), rhs.getResolvableProperties())
+            && Objects.equals(getAdditionalData(), rhs.getAdditionalData());
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public int hashCode() {
-        return new HashCodeBuilder(928729, 1000003).append(getName()).append(getLocation()).append(getDescription())
-            .append(getType()).append(isGlobal()).append(getResolvableProperties()).append(getAdditionalData())
-            .toHashCode();
+        return Objects.hash(getName(), getLocation(), getDescription(), getType(), isGlobal(),
+            getResolvableProperties(), getAdditionalData());
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public CheckConfigurationWorkingCopy clone() {
 
         CheckConfigurationWorkingCopy clone = null;

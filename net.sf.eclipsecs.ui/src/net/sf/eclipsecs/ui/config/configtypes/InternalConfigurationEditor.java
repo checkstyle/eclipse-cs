@@ -37,8 +37,6 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
 import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.config.CheckConfigurationPropertiesDialog;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -51,6 +49,8 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+
+import com.google.common.base.Strings;
 
 /**
  * Implementation of a location editor to input a remote location. Contains just a text field to input the URL.
@@ -88,6 +88,7 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void initialize(CheckConfigurationWorkingCopy checkConfiguration, CheckConfigurationPropertiesDialog dialog) {
         mWorkingCopy = checkConfiguration;
         mDialog = dialog;
@@ -96,6 +97,7 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Control createEditorControl(Composite parent, final Shell shell) {
 
         Composite contents = new Composite(parent, SWT.NULL);
@@ -149,6 +151,7 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor {
 
         mBtnImport.addSelectionListener(new SelectionListener() {
 
+            @Override
             public void widgetSelected(SelectionEvent e) {
                 try {
                     ICheckConfiguration targetConfig = getEditedWorkingCopy();
@@ -170,6 +173,7 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor {
                 }
             }
 
+            @Override
             public void widgetDefaultSelected(SelectionEvent e) {
                 // NOOP
             }
@@ -191,6 +195,7 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor {
     /**
      * {@inheritDoc}
      */
+    @Override
     public CheckConfigurationWorkingCopy getEditedWorkingCopy() throws CheckstylePluginException {
         mWorkingCopy.setName(mConfigName.getText());
 
@@ -201,7 +206,7 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor {
                 mWorkingCopy.setLocation(location);
             }
             catch (CheckstylePluginException e) {
-                if (StringUtils.trimToNull(location) != null && ensureFileExists(location)) {
+                if (Strings.emptyToNull(location) != null && ensureFileExists(location)) {
                     mWorkingCopy.setLocation(location);
                 }
                 else {
@@ -230,20 +235,17 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor {
         File file = new File(resolvedLocation);
         if (!file.exists()) {
 
-            OutputStream out = null;
-            try {
-                if (file.getParentFile() != null) {
-                    file.getParentFile().mkdirs();
-                }
-                out = new BufferedOutputStream(new FileOutputStream(file));
+            if (file.getParentFile() != null) {
+                file.getParentFile().mkdirs();
+            }
+
+            try (OutputStream out = new BufferedOutputStream(new FileOutputStream(file))) {
                 ConfigurationWriter.writeNewConfiguration(out, mWorkingCopy);
             }
             catch (IOException ioe) {
                 CheckstylePluginException.rethrow(ioe);
             }
-            finally {
-                IOUtils.closeQuietly(out);
-            }
+
             return true;
         }
 

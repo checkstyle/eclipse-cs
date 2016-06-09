@@ -32,9 +32,8 @@ import com.puppycrawl.tools.checkstyle.PropertyResolver;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 
 /**
- * Implementation of a check configuration that uses an exteral checkstyle
- * configuration file.
- * 
+ * Implementation of a check configuration that uses an exteral checkstyle configuration file.
+ *
  * @author Lars Ködderitzsch
  */
 public class ExternalFileConfigurationType extends ConfigurationType {
@@ -52,17 +51,14 @@ public class ExternalFileConfigurationType extends ConfigurationType {
         DYNAMIC_LOC_RESOLVER = resolver;
     }
 
-    //
-    // methods
-    //
-
     /**
      * Tries to resolve a dynamic location into the real file path.
-     * 
-     * @param location the probably unresolved location string
+     *
+     * @param location
+     *            the probably unresolved location string
      * @return the resolved location
-     * @throws CheckstylePluginException unexpected error while resolving the
-     *             dynamic properties
+     * @throws CheckstylePluginException
+     *             unexpected error while resolving the dynamic properties
      */
     public static String resolveDynamicLocation(String location) throws CheckstylePluginException {
 
@@ -83,6 +79,7 @@ public class ExternalFileConfigurationType extends ConfigurationType {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected URL resolveLocation(ICheckConfiguration checkConfiguration) throws IOException {
 
         String location = checkConfiguration.getLocation();
@@ -103,12 +100,13 @@ public class ExternalFileConfigurationType extends ConfigurationType {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isConfigurable(ICheckConfiguration checkConfiguration) {
 
         boolean isConfigurable = true;
 
-        boolean isProtected = Boolean.valueOf(
-                checkConfiguration.getAdditionalData().get(KEY_PROTECT_CONFIG)).booleanValue();
+        boolean isProtected = Boolean.valueOf(checkConfiguration.getAdditionalData().get(KEY_PROTECT_CONFIG))
+            .booleanValue();
         isConfigurable = !isProtected;
 
         if (!isProtected) {

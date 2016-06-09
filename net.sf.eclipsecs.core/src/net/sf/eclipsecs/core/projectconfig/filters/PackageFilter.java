@@ -22,9 +22,8 @@ package net.sf.eclipsecs.core.projectconfig.filters;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
@@ -151,7 +150,7 @@ public class PackageFilter extends AbstractFilter {
         }
 
         PackageFilter rhs = (PackageFilter) o;
-        return new EqualsBuilder().appendSuper(super.equals(o)).append(mData, rhs.mData).isEquals();
+        return super.equals(o) && Objects.equals(mData, rhs.mData);
     }
 
     /**
@@ -159,6 +158,6 @@ public class PackageFilter extends AbstractFilter {
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder(7834681, 1000003).appendSuper(super.hashCode()).append(mData).toHashCode();
+        return Objects.hash(super.hashCode(), mData);
     }
 }

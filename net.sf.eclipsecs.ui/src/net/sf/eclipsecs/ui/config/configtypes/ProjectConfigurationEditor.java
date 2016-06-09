@@ -36,8 +36,6 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
 import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.config.CheckConfigurationPropertiesDialog;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -66,6 +64,8 @@ import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 import org.eclipse.ui.dialogs.ISelectionStatusValidator;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
+
+import com.google.common.base.Strings;
 
 /**
  * Implementation of a file based location editor. Contains a text field with the config file path and a 'Browse...'
@@ -109,6 +109,7 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void initialize(CheckConfigurationWorkingCopy checkConfiguration, CheckConfigurationPropertiesDialog dialog) {
         mWorkingCopy = checkConfiguration;
         mCheckConfigDialog = dialog;
@@ -117,6 +118,7 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Control createEditorControl(Composite parent, final Shell shell) {
 
         Composite contents = new Composite(parent, SWT.NULL);
@@ -157,6 +159,7 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
 
         mBtnBrowse.addSelectionListener(new SelectionListener() {
 
+            @Override
             public void widgetSelected(SelectionEvent e) {
                 ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(shell, new WorkbenchLabelProvider(),
                     new WorkbenchContentProvider());
@@ -166,6 +169,7 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
                 dialog.setAllowMultiple(false);
                 dialog.setInput(ResourcesPlugin.getWorkspace().getRoot());
                 dialog.setValidator(new ISelectionStatusValidator() {
+                    @Override
                     public IStatus validate(Object[] selection) {
                         if (selection.length == 1 && selection[0] instanceof IFile) {
                             return new Status(IStatus.OK, PlatformUI.PLUGIN_ID, IStatus.ERROR, new String(), null);
@@ -180,6 +184,7 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
                 }
             }
 
+            @Override
             public void widgetDefaultSelected(SelectionEvent e) {
                 // NOOP
             }
@@ -232,6 +237,7 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
     /**
      * {@inheritDoc}
      */
+    @Override
     public CheckConfigurationWorkingCopy getEditedWorkingCopy() throws CheckstylePluginException {
         mWorkingCopy.setName(mConfigName.getText());
         mWorkingCopy.setDescription(mDescription.getText());
@@ -245,7 +251,7 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
         catch (CheckstylePluginException e) {
             String location = mLocation.getText();
 
-            if (StringUtils.trimToNull(location) == null) {
+            if (Strings.emptyToNull(location) == null) {
                 throw e;
             }
 
@@ -298,27 +304,22 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
                 Messages.ExternalFileConfigurationEditor_titleFileDoesNotExist,
                 Messages.ExternalFileConfigurationEditor_msgFileDoesNotExist);
             if (confirm) {
-                OutputStream out = null;
-                try {
-                    File trueFile = file.getLocation().toFile();
 
-                    if (trueFile.getParentFile() != null) {
-                        trueFile.getParentFile().mkdirs();
-                    }
-                    out = new BufferedOutputStream(new FileOutputStream(trueFile));
+                File trueFile = file.getLocation().toFile();
+
+                if (trueFile.getParentFile() != null) {
+                    trueFile.getParentFile().mkdirs();
+                }
+
+                try (OutputStream out = new BufferedOutputStream(new FileOutputStream(trueFile))) {
+
                     ConfigurationWriter.writeNewConfiguration(out, mWorkingCopy);
-
                     file.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
                 }
-                catch (IOException ioe) {
-                    CheckstylePluginException.rethrow(ioe);
-                }
-                catch (CoreException e) {
+                catch (CoreException | IOException e) {
                     CheckstylePluginException.rethrow(e);
                 }
-                finally {
-                    IOUtils.closeQuietly(out);
-                }
+
                 return true;
             }
             return false;

@@ -33,52 +33,41 @@ import org.osgi.framework.Bundle;
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
 
 /**
- * Implementation of the configuration type for a built in check configuration,
- * that is located inside the plugin.
- * 
+ * Implementation of the configuration type for a built in check configuration, that is located inside the plugin.
+ *
  * @author Lars Ködderitzsch
  */
 public class BuiltInConfigurationType extends ConfigurationType {
 
     /**
-     * constant for the contributor key. It stores the id of the plugin which
-     * contributes the built in configuration, so that the file can be retrieved
-     * properly.
+     * constant for the contributor key. It stores the id of the plugin which contributes the built in configuration, so
+     * that the file can be retrieved properly.
      */
     public static final String CONTRIBUTOR_KEY = "contributor";
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     protected URL resolveLocation(ICheckConfiguration checkConfiguration) {
 
         String contributorName = checkConfiguration.getAdditionalData().get(CONTRIBUTOR_KEY);
 
         Bundle contributor = Platform.getBundle(contributorName);
-        URL locationUrl = FileLocator.find(contributor, new Path(checkConfiguration.getLocation()),
-                null);
+        URL locationUrl = FileLocator.find(contributor, new Path(checkConfiguration.getLocation()), null);
 
         return locationUrl;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     protected byte[] getAdditionPropertiesBundleBytes(URL checkConfigURL) {
         // just returns null since additional property file is not needed nor
         // supported
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected PropertyResolver getPropertyResolver(ICheckConfiguration config,
-            CheckstyleConfigurationFile configFile) {
+    @Override
+    protected PropertyResolver getPropertyResolver(ICheckConfiguration config, CheckstyleConfigurationFile configFile) {
         MultiPropertyResolver resolver = new MultiPropertyResolver();
         resolver.addPropertyResolver(new ResolvablePropertyResolver(config));
-        resolver.addPropertyResolver(new BuiltInFilePropertyResolver(resolveLocation(config)
-                .toString()));
+        resolver.addPropertyResolver(new BuiltInFilePropertyResolver(resolveLocation(config).toString()));
 
         return resolver;
     }

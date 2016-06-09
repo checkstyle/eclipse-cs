@@ -31,17 +31,12 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 
 /**
- * Register for the filters thats use the
- * <i>net.sf.eclipsecs.core.checkstyleFilter </i> extension point. Checkstyle
+ * Register for the filters thats use the <i>net.sf.eclipsecs.core.checkstyleFilter </i> extension point. Checkstyle
  * filters can be enabled per project.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public final class PluginFilters {
-
-    //
-    // constants
-    //
 
     /** constant for the extension point id. */
     private static final String FILTER_EXTENSION_POINT = "net.sf.eclipsecs.core.filters"; //$NON-NLS-1$
@@ -73,10 +68,6 @@ public final class PluginFilters {
     /** the filter prototypes configured to the extension point. */
     private static final IFilter[] FILTER_PROTOTYPES;
 
-    //
-    // Initializer
-    //
-
     /**
      * Initialize the configured to the filter extension point.
      */
@@ -84,8 +75,7 @@ public final class PluginFilters {
 
         IExtensionRegistry pluginRegistry = Platform.getExtensionRegistry();
 
-        IConfigurationElement[] elements = pluginRegistry
-                .getConfigurationElementsFor(FILTER_EXTENSION_POINT);
+        IConfigurationElement[] elements = pluginRegistry.getConfigurationElementsFor(FILTER_EXTENSION_POINT);
 
         List<IFilter> filters = new ArrayList<IFilter>();
 
@@ -96,14 +86,12 @@ public final class PluginFilters {
                 String name = elements[i].getAttribute(ATTR_NAME);
                 String internalName = elements[i].getAttribute(ATTR_INTERNAL_NAME);
                 String desc = elements[i].getAttribute(ATTR_DESCRIPTION);
-                boolean readOnly = Boolean.valueOf(elements[i].getAttribute(ATTR_READONLY))
-                        .booleanValue();
+                boolean readOnly = Boolean.valueOf(elements[i].getAttribute(ATTR_READONLY)).booleanValue();
 
                 IFilter filter = (IFilter) elements[i].createExecutableExtension(ATTR_CLASS);
                 filter.initialize(name, internalName, desc, readOnly);
 
-                boolean defaultState = Boolean.valueOf(elements[i].getAttribute(ATTR_SELECTED))
-                        .booleanValue();
+                boolean defaultState = Boolean.valueOf(elements[i].getAttribute(ATTR_SELECTED)).booleanValue();
 
                 filter.setEnabled(defaultState);
 
@@ -126,22 +114,14 @@ public final class PluginFilters {
         FILTER_PROTOTYPES = filters.toArray(new IFilter[filters.size()]);
     }
 
-    //
-    // constructor
-    //
-
     /** Hidden default constructor. */
     private PluginFilters() {
-    // NOOP
+        // NOOP
     }
-
-    //
-    // methods
-    //
 
     /**
      * Returns the available filters.
-     * 
+     *
      * @return the available filters.
      */
     public static IFilter[] getConfiguredFilters() {
@@ -159,8 +139,9 @@ public final class PluginFilters {
 
     /**
      * Gets a filter prototype by name.
-     * 
-     * @param internalName the filters internal name
+     *
+     * @param internalName
+     *            the filters internal name
      * @return the filter prototype or <code>null</code>
      */
     public static IFilter getByInternalName(String internalName) {

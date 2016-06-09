@@ -20,13 +20,13 @@
 
 package net.sf.eclipsecs.core.config;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
+import java.util.Objects;
+
+import com.google.common.base.MoreObjects;
 
 /**
  * Represents a configuration property who's value must be resolved.
- * 
+ *
  * @author David Schneider
  * @author Lars Ködderitzsch
  */
@@ -40,7 +40,7 @@ public class ResolvableProperty implements Cloneable {
 
     /**
      * Creates a resolvable property.
-     * 
+     *
      * @param propertyName
      *            the name of the property
      * @param value
@@ -81,9 +81,7 @@ public class ResolvableProperty implements Cloneable {
         mPropertyName = string;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public boolean equals(Object obj) {
         if (obj == null || !(obj instanceof ResolvableProperty)) {
             return false;
@@ -92,19 +90,15 @@ public class ResolvableProperty implements Cloneable {
             return true;
         }
         ResolvableProperty rhs = (ResolvableProperty) obj;
-        return new EqualsBuilder().append(mPropertyName, rhs.mPropertyName).append(mValue, rhs.mValue).isEquals();
+        return Objects.equals(mPropertyName, rhs.mPropertyName) && Objects.equals(mValue, rhs.mValue);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public int hashCode() {
-        return new HashCodeBuilder(32234343, 1000003).append(mPropertyName).append(mValue).toHashCode();
+        return Objects.hash(mPropertyName, mValue);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public ResolvableProperty clone() {
         try {
             ResolvableProperty clone = (ResolvableProperty) super.clone();
@@ -115,10 +109,8 @@ public class ResolvableProperty implements Cloneable {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this);
+        return MoreObjects.toStringHelper(this).add("propertyName", mPropertyName).add("value", mValue).toString();
     }
 }

@@ -27,7 +27,7 @@ import com.puppycrawl.tools.checkstyle.PropertyResolver;
 
 /**
  * Property resolver that resolves properties from a resource bundle.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 class ResourceBundlePropertyResolver implements PropertyResolver {
@@ -37,16 +37,15 @@ class ResourceBundlePropertyResolver implements PropertyResolver {
 
     /**
      * Creates the property resolver.
-     * 
-     * @param bundle the resource bundle
+     *
+     * @param bundle
+     *            the resource bundle
      */
     public ResourceBundlePropertyResolver(ResourceBundle bundle) {
         mBundle = bundle;
     }
 
-    /**
-     * @see com.puppycrawl.tools.checkstyle.PropertyResolver#resolve(java.lang.String)
-     */
+    @Override
     public String resolve(String property) {
 
         String value = null;

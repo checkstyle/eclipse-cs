@@ -21,22 +21,16 @@
 package net.sf.eclipsecs.core.projectconfig.filters;
 
 import java.util.List;
+import java.util.Objects;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import com.google.common.base.MoreObjects;
 
 /**
  * Base implementation of a filter.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public abstract class AbstractFilter implements IFilter {
-
-    //
-    // attributes
-    //
 
     /** name of the filter. */
     private String mFilterName;
@@ -53,10 +47,6 @@ public abstract class AbstractFilter implements IFilter {
     /** flags, if the filter is readonly. */
     private boolean mReadonly;
 
-    //
-    // methods
-    //
-
     /**
      * {@inheritDoc}
      */
@@ -70,7 +60,7 @@ public abstract class AbstractFilter implements IFilter {
 
     /**
      * Gets the name of the filter.
-     * 
+     *
      * @return the filter name
      */
     public final String getName() {
@@ -79,7 +69,7 @@ public abstract class AbstractFilter implements IFilter {
 
     /**
      * Gets the internal name of the filter.
-     * 
+     *
      * @return the internal filter name
      */
     public final String getInternalName() {
@@ -88,7 +78,7 @@ public abstract class AbstractFilter implements IFilter {
 
     /**
      * Gets the description of the filter.
-     * 
+     *
      * @return the description
      */
     public final String getDescription() {
@@ -128,7 +118,7 @@ public abstract class AbstractFilter implements IFilter {
      * {@inheritDoc}
      */
     public void setFilterData(List<String> filterData) {
-    // NOOP
+        // NOOP
     }
 
     /**
@@ -166,23 +156,24 @@ public abstract class AbstractFilter implements IFilter {
         }
 
         AbstractFilter rhs = (AbstractFilter) o;
-        return new EqualsBuilder().append(mFilterName, rhs.mFilterName).append(mInternalName,
-                rhs.mInternalName).append(mFilterDescription, rhs.mFilterDescription).append(
-                mSelected, rhs.mSelected).append(mReadonly, rhs.mReadonly).isEquals();
+        return Objects.equals(mFilterName, rhs.mFilterName) && Objects.equals(mInternalName, rhs.mInternalName)
+            && Objects.equals(mFilterDescription, rhs.mFilterDescription) && Objects.equals(mSelected, rhs.mSelected)
+            && Objects.equals(mReadonly, rhs.mReadonly);
     }
 
     /**
      * {@inheritDoc}
      */
     public int hashCode() {
-        return new HashCodeBuilder(389793, 1000003).append(mFilterName).append(mInternalName)
-                .append(mFilterDescription).append(mSelected).append(mReadonly).toHashCode();
+        return Objects.hash(mFilterName, mInternalName, mFilterDescription, mSelected, mReadonly);
     }
 
     /**
      * {@inheritDoc}
      */
     public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
+        return MoreObjects.toStringHelper(this).add("filterName", mFilterName).add("internalName", mInternalName)
+            .add("filterDescription", mFilterDescription).add("selected", mSelected).add("readonly", mReadonly)
+            .toString();
     }
 }

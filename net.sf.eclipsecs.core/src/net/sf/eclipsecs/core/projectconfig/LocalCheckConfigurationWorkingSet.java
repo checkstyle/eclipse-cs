@@ -35,16 +35,11 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
 import org.eclipse.core.resources.IProject;
 
 /**
- * Working set implementation that manages local configurations configured for
- * the project.
- * 
+ * Working set implementation that manages local configurations configured for the project.
+ *
  * @author Lars Ködderitzsch
  */
 public class LocalCheckConfigurationWorkingSet implements ICheckConfigurationWorkingSet {
-
-    //
-    // attributes
-    //
 
     /** The project configuration. */
     private final IProjectConfiguration mProjectConfig;
@@ -55,18 +50,15 @@ public class LocalCheckConfigurationWorkingSet implements ICheckConfigurationWor
     /** List of working copies that were deleted from the working set. */
     private final List<CheckConfigurationWorkingCopy> mDeletedConfigurations;
 
-    //
-    // constructors
-    //
-
     /**
      * Creates a working set to manage local configurations.
-     * 
-     * @param projectConfig the project configuration
-     * @param checkConfigs the list of local check configurations
+     *
+     * @param projectConfig
+     *            the project configuration
+     * @param checkConfigs
+     *            the list of local check configurations
      */
-    LocalCheckConfigurationWorkingSet(IProjectConfiguration projectConfig,
-            List<ICheckConfiguration> checkConfigs) {
+    LocalCheckConfigurationWorkingSet(IProjectConfiguration projectConfig, List<ICheckConfiguration> checkConfigs) {
 
         mProjectConfig = projectConfig;
         mWorkingCopies = new ArrayList<CheckConfigurationWorkingCopy>();
@@ -78,13 +70,10 @@ public class LocalCheckConfigurationWorkingSet implements ICheckConfigurationWor
         }
     }
 
-    //
-    // methods
-    //
-
     /**
      * {@inheritDoc}
      */
+    @Override
     public CheckConfigurationWorkingCopy newWorkingCopy(ICheckConfiguration checkConfig) {
         return new CheckConfigurationWorkingCopy(checkConfig, this);
     }
@@ -92,6 +81,7 @@ public class LocalCheckConfigurationWorkingSet implements ICheckConfigurationWor
     /**
      * {@inheritDoc}
      */
+    @Override
     public CheckConfigurationWorkingCopy newWorkingCopy(IConfigurationType configType) {
         return new CheckConfigurationWorkingCopy(configType, this, false);
     }
@@ -99,6 +89,7 @@ public class LocalCheckConfigurationWorkingSet implements ICheckConfigurationWor
     /**
      * {@inheritDoc}
      */
+    @Override
     public CheckConfigurationWorkingCopy[] getWorkingCopies() {
         return mWorkingCopies.toArray(new CheckConfigurationWorkingCopy[mWorkingCopies.size()]);
     }
@@ -106,6 +97,7 @@ public class LocalCheckConfigurationWorkingSet implements ICheckConfigurationWor
     /**
      * {@inheritDoc}
      */
+    @Override
     public void addCheckConfiguration(CheckConfigurationWorkingCopy checkConfig) {
         mWorkingCopies.add(checkConfig);
     }
@@ -113,6 +105,7 @@ public class LocalCheckConfigurationWorkingSet implements ICheckConfigurationWor
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean removeCheckConfiguration(CheckConfigurationWorkingCopy checkConfig) {
 
         boolean inUse = mProjectConfig.isConfigInUse(checkConfig);
@@ -128,6 +121,7 @@ public class LocalCheckConfigurationWorkingSet implements ICheckConfigurationWor
     /**
      * {@inheritDoc}
      */
+    @Override
     public void store() throws CheckstylePluginException {
         notifyDeletedCheckConfigs();
     }
@@ -135,6 +129,7 @@ public class LocalCheckConfigurationWorkingSet implements ICheckConfigurationWor
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isDirty() {
         if (mDeletedConfigurations.size() > 0) {
             return true;
@@ -154,6 +149,7 @@ public class LocalCheckConfigurationWorkingSet implements ICheckConfigurationWor
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isNameCollision(CheckConfigurationWorkingCopy configuration) {
 
         boolean result = false;
@@ -168,7 +164,7 @@ public class LocalCheckConfigurationWorkingSet implements ICheckConfigurationWor
 
     /**
      * Returns the project of the local check configuration working set.
-     * 
+     *
      * @return the project
      */
     public IProject getProject() {
@@ -178,6 +174,7 @@ public class LocalCheckConfigurationWorkingSet implements ICheckConfigurationWor
     /**
      * {@inheritDoc}
      */
+    @Override
     public Collection<IProject> getAffectedProjects() {
         Set<IProject> projects = new HashSet<IProject>();
 
@@ -185,8 +182,7 @@ public class LocalCheckConfigurationWorkingSet implements ICheckConfigurationWor
         for (int i = 0; i < workingCopies.length; i++) {
 
             // skip non dirty configurations
-            if (workingCopies[i].hasConfigurationChanged()
-                    && mProjectConfig.isConfigInUse(workingCopies[i])) {
+            if (workingCopies[i].hasConfigurationChanged() && mProjectConfig.isConfigInUse(workingCopies[i])) {
                 projects.add(mProjectConfig.getProject());
                 break;
             }
@@ -197,9 +193,9 @@ public class LocalCheckConfigurationWorkingSet implements ICheckConfigurationWor
 
     /**
      * Notifies the check configurations that have been deleted.
-     * 
-     * @throws CheckstylePluginException an exception while notifiing for
-     *             deletion
+     *
+     * @throws CheckstylePluginException
+     *             an exception while notifiing for deletion
      */
     private void notifyDeletedCheckConfigs() throws CheckstylePluginException {
         for (ICheckConfiguration checkConfig : mDeletedConfigurations) {

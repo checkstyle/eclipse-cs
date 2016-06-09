@@ -31,7 +31,6 @@ import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
 import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.config.CheckConfigurationPropertiesDialog;
 
-import org.apache.commons.lang3.StringUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -42,6 +41,8 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+
+import com.google.common.base.Strings;
 
 /**
  * Implementation of a location editor to input a remote location. Contains just a text field to input the URL.
@@ -80,6 +81,7 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void initialize(CheckConfigurationWorkingCopy checkConfiguration, CheckConfigurationPropertiesDialog dialog) {
         mWorkingCopy = checkConfiguration;
     }
@@ -87,6 +89,7 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Control createEditorControl(Composite parent, final Shell shell) {
 
         Composite contents = new Composite(parent, SWT.NULL);
@@ -205,6 +208,7 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
     /**
      * {@inheritDoc}
      */
+    @Override
     public CheckConfigurationWorkingCopy getEditedWorkingCopy() throws CheckstylePluginException {
 
         // set the cachefile name
@@ -221,8 +225,7 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
 
         // store credentials if necessary
         try {
-            if (StringUtils.trimToNull(mUserName.getText()) != null
-                || StringUtils.trimToNull(mPassword.getText()) != null) {
+            if (Strings.emptyToNull(mUserName.getText()) != null || Strings.emptyToNull(mPassword.getText()) != null) {
                 RemoteConfigurationType.RemoteConfigAuthenticator.storeCredentials(new URL(mLocation.getText()),
                     mUserName.getText(), mPassword.getText());
             }

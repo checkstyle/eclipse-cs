@@ -36,7 +36,6 @@ import net.sf.eclipsecs.ui.util.table.EnhancedTableViewer;
 import net.sf.eclipsecs.ui.util.table.ITableComparableProvider;
 import net.sf.eclipsecs.ui.util.table.ITableSettingsProvider;
 
-import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -65,6 +64,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+
+import com.google.common.base.Strings;
 
 /**
  * Dialog to show/edit the properties (name, location, description) of a check configuration. Also used to create new
@@ -278,7 +279,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
         // OK'ing
         for (ResolvableProperty prop : mResolvableProperties) {
 
-            if (StringUtils.trimToNull(prop.getValue()) == null) {
+            if (Strings.emptyToNull(prop.getValue()) == null) {
                 this.setErrorMessage(NLS.bind(Messages.ResolvablePropertiesDialog_msgMissingPropertyValue,
                     prop.getPropertyName()));
                 return;
@@ -311,6 +312,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
      */
     private class Controller implements SelectionListener, IDoubleClickListener, KeyListener {
 
+        @Override
         public void widgetSelected(SelectionEvent e) {
             if (mBtnAdd == e.widget) {
                 openPropertyItemEditor(null);
@@ -329,10 +331,12 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
             }
         }
 
+        @Override
         public void widgetDefaultSelected(SelectionEvent e) {
             // NOOP
         }
 
+        @Override
         public void doubleClick(DoubleClickEvent event) {
             if (!event.getSelection().isEmpty()) {
                 IStructuredSelection selection = (IStructuredSelection) mTableViewer.getSelection();
@@ -345,6 +349,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
         /**
          * @see org.eclipse.swt.events.KeyListener#keyReleased(org.eclipse.swt.events.KeyEvent)
          */
+        @Override
         public void keyReleased(KeyEvent e) {
             if (e.widget == mTableViewer.getTable()) {
                 if (e.character == SWT.DEL) {
@@ -359,6 +364,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
             }
         }
 
+        @Override
         public void keyPressed(KeyEvent e) {
             // NOOP
         }
@@ -463,6 +469,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
         /**
          * {@inheritDoc}
          */
+        @Override
         public String getColumnText(Object element, int columnIndex) {
             String result = element.toString();
             if (element instanceof ResolvableProperty) {
@@ -480,6 +487,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
         /**
          * {@inheritDoc}
          */
+        @Override
         public Image getColumnImage(Object element, int columnIndex) {
             return columnIndex == 0 ? getImage(element) : null;
         }
@@ -487,6 +495,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
         /**
          * {@inheritDoc}
          */
+        @Override
         public Comparable<String> getComparableValue(Object element, int col) {
             return getColumnText(element, col);
         }
@@ -494,6 +503,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
         /**
          * {@inheritDoc}
          */
+        @Override
         public IDialogSettings getTableSettings() {
             String concreteViewId = ResolvablePropertiesDialog.class.getName();
 

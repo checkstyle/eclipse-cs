@@ -33,14 +33,10 @@ import org.eclipse.osgi.util.NLS;
 
 /**
  * Operation which builds a project.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public class BuildProjectJob extends Job {
-
-    //
-    // attributes
-    //
 
     /** the project to build. */
     private IProject[] mProjects;
@@ -48,15 +44,13 @@ public class BuildProjectJob extends Job {
     /** the build kind. */
     private int mKind;
 
-    //
-    // constructors
-    //
-
     /**
      * Creates an operation which builds a project.
-     * 
-     * @param project the project to build
-     * @param buildKind the kind of build to do
+     *
+     * @param project
+     *            the project to build
+     * @param buildKind
+     *            the kind of build to do
      */
     public BuildProjectJob(IProject project, int buildKind) {
         super(NLS.bind(Messages.BuildProjectJob_msgBuildProject, project.getName()));
@@ -66,9 +60,11 @@ public class BuildProjectJob extends Job {
 
     /**
      * Creates an operation which builds a set of project.
-     * 
-     * @param projects the projects to build
-     * @param buildKind the kind of build to do
+     *
+     * @param projects
+     *            the projects to build
+     * @param buildKind
+     *            the kind of build to do
      */
     public BuildProjectJob(IProject[] projects, int buildKind) {
         super(Messages.BuildProjectJob_msgBuildAllProjects);
@@ -77,13 +73,7 @@ public class BuildProjectJob extends Job {
         mKind = buildKind;
     }
 
-    //
-    // methods
-    //
-
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public IStatus run(IProgressMonitor monitor) {
 
         IStatus status = null;

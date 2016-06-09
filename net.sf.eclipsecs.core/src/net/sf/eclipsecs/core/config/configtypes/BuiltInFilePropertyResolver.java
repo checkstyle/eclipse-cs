@@ -21,16 +21,17 @@
 package net.sf.eclipsecs.core.config.configtypes;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 
-import org.apache.commons.io.FileUtils;
 import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.URIUtil;
 
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
 
 /**
- * Adds support for additional checkstyle config files (header, suppressions
- * etc.) to be delivered with a builtin configuration.
+ * Adds support for additional checkstyle config files (header, suppressions etc.) to be delivered with a builtin
+ * configuration.
  *
  * @author Lars Ködderitzsch
  */
@@ -47,8 +48,8 @@ public class BuiltInFilePropertyResolver implements PropertyResolver {
     /**
      * Creates the resolver.
      *
-     * @param builtInConfigLocation the bundle based url of the builtin
-     *            configuration file
+     * @param builtInConfigLocation
+     *            the bundle based url of the builtin configuration file
      */
     public BuiltInFilePropertyResolver(String builtInConfigLocation) {
         mBuiltInConfigLocation = builtInConfigLocation;
@@ -61,8 +62,7 @@ public class BuiltInFilePropertyResolver implements PropertyResolver {
 
         String value = null;
 
-        if ((SAMEDIR_LOC.equals(property) || CONFIG_LOC.equals(property))
-                && mBuiltInConfigLocation != null) {
+        if ((SAMEDIR_LOC.equals(property) || CONFIG_LOC.equals(property)) && mBuiltInConfigLocation != null) {
 
             int lastSlash = mBuiltInConfigLocation.lastIndexOf("/"); //$NON-NLS-1$
             if (lastSlash > -1) {
@@ -75,9 +75,9 @@ public class BuiltInFilePropertyResolver implements PropertyResolver {
                 URL bundleLocatedURL = new URL(value);
                 URL fileURL = FileLocator.toFileURL(bundleLocatedURL);
 
-                value = FileUtils.toFile(fileURL).toString();
+                value = URIUtil.toFile(fileURL.toURI()).getAbsolutePath();
             }
-            catch (IOException e) {
+            catch (IOException | URISyntaxException e) {
                 throw new RuntimeException(e.getMessage(), e);
             }
         }

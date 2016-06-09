@@ -26,23 +26,17 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import net.sf.eclipsecs.core.config.configtypes.IConfigurationType;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-
 /**
  * Base implementation of a check configuration. Leaves the specific tasks to the concrete subclasses.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public class CheckConfiguration implements ICheckConfiguration {
-
-    //
-    // attributes
-    //
 
     /** the displayable name of the configuration. */
     private final String mName;
@@ -71,13 +65,9 @@ public class CheckConfiguration implements ICheckConfiguration {
     /** Time stamp when the cached configuration file data expires. */
     private long mExpirationTime = 0;
 
-    //
-    // methods
-    //
-
     /**
      * Creates a check configuration instance.
-     * 
+     *
      * @param name
      *            the name of the check configuration
      * @param location
@@ -113,79 +103,57 @@ public class CheckConfiguration implements ICheckConfiguration {
             .unmodifiableList(new ArrayList<ResolvableProperty>());
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public String getName() {
         return mName;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public String getLocation() {
         return mLocation;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public String getDescription() {
         return mDescription;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public IConfigurationType getType() {
         return mConfigType;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public Map<String, String> getAdditionalData() {
         return mAdditionalData;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public List<ResolvableProperty> getResolvableProperties() {
         return mProperties;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public boolean isEditable() {
         return mConfigType.isEditable();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public boolean isConfigurable() {
         return mConfigType.isConfigurable(this);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public boolean isGlobal() {
         return mIsGlobal;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public URL getResolvedConfigurationFileURL() throws CheckstylePluginException {
         return getType().getResolvedConfigurationFileURL(this);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public CheckstyleConfigurationFile getCheckstyleConfiguration() throws CheckstylePluginException {
         final long currentTime = System.currentTimeMillis();
 
@@ -197,9 +165,6 @@ public class CheckConfiguration implements ICheckConfiguration {
         return mCheckstyleConfigurationFile;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean equals(final Object obj) {
         if ((obj == null) || !(obj instanceof ICheckConfiguration)) {
@@ -209,19 +174,15 @@ public class CheckConfiguration implements ICheckConfiguration {
             return true;
         }
         final ICheckConfiguration rhs = (ICheckConfiguration) obj;
-        return new EqualsBuilder().append(getName(), rhs.getName()).append(getLocation(), rhs.getLocation())
-            .append(getDescription(), rhs.getDescription()).append(getType(), rhs.getType())
-            .append(isGlobal(), rhs.isGlobal()).append(getResolvableProperties(), rhs.getResolvableProperties())
-            .append(getAdditionalData(), rhs.getAdditionalData()).isEquals();
+        return Objects.equals(getName(), rhs.getName()) && Objects.equals(getLocation(), rhs.getLocation())
+            && Objects.equals(getDescription(), rhs.getDescription()) && Objects.equals(getType(), rhs.getType())
+            && isGlobal() == rhs.isGlobal() && Objects.equals(getResolvableProperties(), rhs.getResolvableProperties())
+            && Objects.equals(getAdditionalData(), rhs.getAdditionalData());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder(928729, 1000003).append(getName()).append(getLocation()).append(getDescription())
-            .append(getType()).append(isGlobal()).append(getResolvableProperties()).append(getAdditionalData())
-            .toHashCode();
+        return Objects.hash(getName(), getLocation(), getDescription(), getType(), isGlobal(),
+            getResolvableProperties(), getAdditionalData());
     }
 }

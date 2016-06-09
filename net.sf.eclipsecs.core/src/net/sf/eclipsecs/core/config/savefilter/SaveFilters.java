@@ -32,31 +32,21 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 
 /**
- * Register for the filters thats use the
- * <i>net.sf.eclipsecs.core.checkstyleFilter </i> extension point. Checkstyle
+ * Register for the filters thats use the <i>net.sf.eclipsecs.core.checkstyleFilter </i> extension point. Checkstyle
  * filters can be enabled per project.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public final class SaveFilters {
 
-    //
-    // constants
-    //
-
     /** constant for the extension point id. */
-    private static final String FILTER_EXTENSION_POINT = CheckstylePlugin.PLUGIN_ID
-            + ".saveFilters"; //$NON-NLS-1$
+    private static final String FILTER_EXTENSION_POINT = CheckstylePlugin.PLUGIN_ID + ".saveFilters"; //$NON-NLS-1$
 
     /** constant for the class attribute. */
     private static final String ATTR_CLASS = "class"; //$NON-NLS-1$
 
     /** the filter prototypes configured to the extension point. */
     private static final ISaveFilter[] SAVE_FILTERS;
-
-    //
-    // Initializer
-    //
 
     /**
      * Initialize the configured to the filter extension point.
@@ -65,8 +55,7 @@ public final class SaveFilters {
 
         IExtensionRegistry pluginRegistry = Platform.getExtensionRegistry();
 
-        IConfigurationElement[] elements = pluginRegistry
-                .getConfigurationElementsFor(FILTER_EXTENSION_POINT);
+        IConfigurationElement[] elements = pluginRegistry.getConfigurationElementsFor(FILTER_EXTENSION_POINT);
 
         List<ISaveFilter> filters = new ArrayList<ISaveFilter>();
 
@@ -74,8 +63,7 @@ public final class SaveFilters {
 
             try {
 
-                ISaveFilter filter = (ISaveFilter) elements[i]
-                        .createExecutableExtension(ATTR_CLASS);
+                ISaveFilter filter = (ISaveFilter) elements[i].createExecutableExtension(ATTR_CLASS);
                 filters.add(filter);
             }
             catch (Exception e) {
@@ -86,24 +74,16 @@ public final class SaveFilters {
         SAVE_FILTERS = filters.toArray(new ISaveFilter[filters.size()]);
     }
 
-    //
-    // constructor
-    //
-
     /** Hidden default constructor. */
     private SaveFilters() {
-    // NOOP
+        // NOOP
     }
-
-    //
-    // methods
-    //
 
     /**
      * Passes the configured modules through the known save filters.
-     * 
-     * @param configuredModules the configured modules of a configuration to be
-     *            written
+     *
+     * @param configuredModules
+     *            the configured modules of a configuration to be written
      */
     public static void process(List<Module> configuredModules) {
         for (int i = 0; i < SAVE_FILTERS.length; i++) {

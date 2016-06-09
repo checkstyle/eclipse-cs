@@ -25,16 +25,15 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
 import net.sf.eclipsecs.core.config.ICheckConfiguration;
 import net.sf.eclipsecs.core.projectconfig.filters.IFilter;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import org.eclipse.core.resources.IProject;
+
+import com.google.common.base.MoreObjects;
 
 /**
  * Represents the configuration for a project. Contains the file sets configured for the project plus the additional
@@ -43,10 +42,6 @@ import org.eclipse.core.resources.IProject;
  * @author Lars Ködderitzsch
  */
 public class ProjectConfiguration implements Cloneable, IProjectConfiguration {
-
-    //
-    // attributes
-    //
 
     /** The project. */
     private IProject mProject;
@@ -65,10 +60,6 @@ public class ProjectConfiguration implements Cloneable, IProjectConfiguration {
 
     /** if formatter synching is enabled. */
     private boolean mSyncFormatter;
-
-    //
-    // constructors
-    //
 
     /**
      * Default constructor.
@@ -120,48 +111,32 @@ public class ProjectConfiguration implements Cloneable, IProjectConfiguration {
         mSyncFormatter = synchFormatter;
     }
 
-    //
-    // methods
-    //
-
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public IProject getProject() {
         return mProject;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public List<ICheckConfiguration> getLocalCheckConfigurations() {
         return mLocalCheckConfigs;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public List<FileSet> getFileSets() {
         return mFileSets;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public List<IFilter> getFilters() {
         return mFilters;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public boolean isUseSimpleConfig() {
         return mUseSimpleConfig;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public boolean isSyncFormatter() {
         return mSyncFormatter;
     }
@@ -173,6 +148,7 @@ public class ProjectConfiguration implements Cloneable, IProjectConfiguration {
      *            the check configuration
      * @return <code>true</code>, if the project config uses the checkstyle config, <code>false</code> otherwise
      */
+    @Override
     public boolean isConfigInUse(ICheckConfiguration configuration) {
 
         boolean result = false;
@@ -189,9 +165,7 @@ public class ProjectConfiguration implements Cloneable, IProjectConfiguration {
         return result;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public ProjectConfiguration clone() {
         ProjectConfiguration clone = null;
         try {
@@ -221,9 +195,7 @@ public class ProjectConfiguration implements Cloneable, IProjectConfiguration {
         return clone;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public boolean equals(Object obj) {
 
         if (obj == null || !(obj instanceof ProjectConfiguration)) {
@@ -233,23 +205,22 @@ public class ProjectConfiguration implements Cloneable, IProjectConfiguration {
             return true;
         }
         ProjectConfiguration rhs = (ProjectConfiguration) obj;
-        return new EqualsBuilder().append(mProject, rhs.mProject).append(mLocalCheckConfigs, rhs.mLocalCheckConfigs)
-            .append(mUseSimpleConfig, rhs.mUseSimpleConfig).append(mSyncFormatter, rhs.mSyncFormatter)
-            .append(mFileSets, rhs.mFileSets).append(mFilters, rhs.mFilters).isEquals();
+
+        return Objects.equals(mProject, rhs.mProject) && Objects.equals(mLocalCheckConfigs, rhs.mLocalCheckConfigs)
+            && Objects.equals(mUseSimpleConfig, rhs.mUseSimpleConfig)
+            && Objects.equals(mSyncFormatter, rhs.mSyncFormatter) && Objects.equals(mFileSets, rhs.mFileSets)
+            && Objects.equals(mFilters, rhs.mFilters);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public int hashCode() {
-        return new HashCodeBuilder(984759323, 1000003).append(mProject).append(mLocalCheckConfigs)
-            .append(mUseSimpleConfig).append(mFileSets).append(mFilters).toHashCode();
+        return Objects.hash(mProject, mLocalCheckConfigs, mUseSimpleConfig, mSyncFormatter, mFileSets, mFilters);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
+        return MoreObjects.toStringHelper(this).add("project", mProject).add("localCheckConfigs", mLocalCheckConfigs)
+            .add("useSimpleConfig", mUseSimpleConfig).add("syncFormatter", mSyncFormatter).add("fileSets", mFileSets)
+            .add("filters", mFilters).toString();
     }
 }

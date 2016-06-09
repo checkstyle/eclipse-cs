@@ -20,6 +20,7 @@
 
 package net.sf.eclipsecs.core.projectconfig;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,7 +39,6 @@ import net.sf.eclipsecs.core.config.configtypes.ProjectConfigurationType;
 import net.sf.eclipsecs.core.projectconfig.filters.IFilter;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
-import org.apache.commons.io.IOUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -62,15 +62,14 @@ public final class ProjectConfigurationFactory {
 
     /** constant list of supported file versions. */
     private static final List<String> SUPPORTED_VERSIONS = Arrays.asList("1.0.0", //$NON-NLS-1$
-        "1.1.0", //$NON-NLS-2$
-        CURRENT_FILE_FORMAT_VERSION);
+        "1.1.0", CURRENT_FILE_FORMAT_VERSION);
 
     private ProjectConfigurationFactory() {
     }
 
     /**
      * Get the <code>ProjectConfiguration</code> object for the specified project.
-     * 
+     *
      * @param project
      *            The project to get <code>FileSet</code>'s for.
      * @return The <code>ProjectConfiguration</code> instance.
@@ -83,7 +82,7 @@ public final class ProjectConfigurationFactory {
 
     /**
      * Check to see if a check configuration is currently in use by any projects.
-     * 
+     *
      * @param checkConfig
      *            The check configuration to check for.
      * @return <code>true</code>= in use, <code>false</code>= not in use.
@@ -96,7 +95,7 @@ public final class ProjectConfigurationFactory {
 
     /**
      * Returns a list of projects using this check configuration.
-     * 
+     *
      * @param checkConfig
      *            the check configuration
      * @return the list of projects using this configuration
@@ -121,7 +120,7 @@ public final class ProjectConfigurationFactory {
 
     /**
      * Creates a default project configuration for the given projects, using the default globbal check configuration.
-     * 
+     *
      * @param project
      *            the project
      * @return the default project configuration
@@ -165,19 +164,11 @@ public final class ProjectConfigurationFactory {
             return createDefaultProjectConfiguration(project);
         }
 
-        InputStream inStream = null;
-        try {
-            inStream = file.getContents(true);
+        try (InputStream inStream = file.getContents(true)) {
             configuration = getProjectConfiguration(inStream, project);
         }
-        catch (DocumentException e) {
+        catch (DocumentException | CoreException | IOException e) {
             CheckstylePluginException.rethrow(e);
-        }
-        catch (CoreException e) {
-            CheckstylePluginException.rethrow(e);
-        }
-        finally {
-            IOUtils.closeQuietly(inStream);
         }
 
         return configuration;

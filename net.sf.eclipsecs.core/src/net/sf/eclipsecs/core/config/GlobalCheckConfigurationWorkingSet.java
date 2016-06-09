@@ -20,9 +20,7 @@
 
 package net.sf.eclipsecs.core.config;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -43,16 +41,17 @@ import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 import net.sf.eclipsecs.core.util.XMLUtil;
 
-import org.apache.commons.io.IOUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 
+import com.google.common.io.Files;
+
 /**
  * Working set implementation that manages global configurations configured for the Eclipse workspace.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWorkingSet {
@@ -71,7 +70,7 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
 
     /**
      * Creates a working set to manage global configurations.
-     * 
+     *
      * @param checkConfigs
      *            the list of global check configurations
      * @param defaultConfig
@@ -98,6 +97,7 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
     /**
      * {@inheritDoc}
      */
+    @Override
     public CheckConfigurationWorkingCopy newWorkingCopy(ICheckConfiguration checkConfig) {
         return new CheckConfigurationWorkingCopy(checkConfig, this);
     }
@@ -105,6 +105,7 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
     /**
      * {@inheritDoc}
      */
+    @Override
     public CheckConfigurationWorkingCopy newWorkingCopy(IConfigurationType configType) {
         return new CheckConfigurationWorkingCopy(configType, this, true);
     }
@@ -112,6 +113,7 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
     /**
      * {@inheritDoc}
      */
+    @Override
     public CheckConfigurationWorkingCopy[] getWorkingCopies() {
         return mWorkingCopies.toArray(new CheckConfigurationWorkingCopy[mWorkingCopies.size()]);
     }
@@ -119,13 +121,14 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
     /**
      * {@inheritDoc}
      */
+    @Override
     public void addCheckConfiguration(CheckConfigurationWorkingCopy checkConfig) {
         mWorkingCopies.add(checkConfig);
     }
 
     /**
      * Returns the default check configuration or <code>null</code> if none is set.
-     * 
+     *
      * @return the default check configuration
      */
     public CheckConfigurationWorkingCopy getDefaultCheckConfig() {
@@ -134,7 +137,7 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
 
     /**
      * Sets the default check configuration.
-     * 
+     *
      * @param defaultCheckConfig
      *            the default check configuration
      */
@@ -145,6 +148,7 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean removeCheckConfiguration(CheckConfigurationWorkingCopy checkConfig) {
         boolean used = true;
         try {
@@ -170,6 +174,7 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
     /**
      * {@inheritDoc}
      */
+    @Override
     public void store() throws CheckstylePluginException {
         updateProjectConfigurations();
         storeToPersistence();
@@ -180,6 +185,7 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isDirty() {
         if (mDeletedConfigurations.size() > 0) {
             return true;
@@ -199,6 +205,7 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
     /**
      * {@inheritDoc}
      */
+    @Override
     public Collection<IProject> getAffectedProjects() throws CheckstylePluginException {
 
         Set<IProject> projects = new HashSet<IProject>();
@@ -224,6 +231,7 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isNameCollision(CheckConfigurationWorkingCopy configuration) {
 
         boolean result = false;
@@ -238,7 +246,7 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
 
     /**
      * Updates the project configurations that use the changed check configurations.
-     * 
+     *
      * @param configurations
      *            the check configurations
      * @throws CheckstylePluginException
@@ -284,8 +292,6 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
      */
     private void storeToPersistence() throws CheckstylePluginException {
 
-        BufferedOutputStream out = null;
-
         try {
 
             IPath configPath = CheckstylePlugin.getDefault().getStateLocation();
@@ -303,20 +309,17 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
 
             // write to the file after the document creation was successful
             // prevents corrupted files in case of error
-            out = new BufferedOutputStream(new FileOutputStream(configFile));
-            out.write(XMLUtil.toByteArray(doc));
+            byte[] data = XMLUtil.toByteArray(doc);
+            Files.write(data, configFile);
         }
         catch (IOException e) {
             CheckstylePluginException.rethrow(e, Messages.errorWritingConfigFile);
-        }
-        finally {
-            IOUtils.closeQuietly(out);
         }
     }
 
     /**
      * Notifies the check configurations that have been deleted.
-     * 
+     *
      * @throws CheckstylePluginException
      *             an exception while notifiing for deletion
      */

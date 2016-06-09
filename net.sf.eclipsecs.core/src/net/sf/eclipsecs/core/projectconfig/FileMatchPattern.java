@@ -20,6 +20,7 @@
 
 package net.sf.eclipsecs.core.projectconfig;
 
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -27,14 +28,10 @@ import java.util.regex.PatternSyntaxException;
 import net.sf.eclipsecs.core.Messages;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import com.google.common.base.MoreObjects;
 
 /**
- * A file match pattern is a pattern used in a regular express to check for
- * matching file names.
+ * A file match pattern is a pattern used in a regular express to check for matching file names.
  */
 public class FileMatchPattern implements Cloneable {
 
@@ -46,9 +43,11 @@ public class FileMatchPattern implements Cloneable {
 
     /**
      * Construct a new <code>FileMatchPattern</code>.
-     * 
-     * @param pattern The new pattern.
-     * @throws CheckstylePluginException Error during processing
+     *
+     * @param pattern
+     *            The new pattern.
+     * @throws CheckstylePluginException
+     *             Error during processing
      */
     public FileMatchPattern(String pattern) throws CheckstylePluginException {
         setMatchPattern(pattern);
@@ -56,7 +55,7 @@ public class FileMatchPattern implements Cloneable {
 
     /**
      * Returns the match pattern.
-     * 
+     *
      * @return String
      */
     public String getMatchPattern() {
@@ -65,9 +64,11 @@ public class FileMatchPattern implements Cloneable {
 
     /**
      * Sets the match pattern.
-     * 
-     * @param pattern The match pattern to set
-     * @throws CheckstylePluginException Error during processing
+     *
+     * @param pattern
+     *            The match pattern to set
+     * @throws CheckstylePluginException
+     *             Error during processing
      */
     public void setMatchPattern(String pattern) throws CheckstylePluginException {
         if ((pattern == null) || (pattern.trim().length() == 0)) {
@@ -84,8 +85,9 @@ public class FileMatchPattern implements Cloneable {
 
     /**
      * Tests a file name to see if it matches the pattern.
-     * 
-     * @param fileName File name to be tested.
+     *
+     * @param fileName
+     *            File name to be tested.
      * @return <code>true</code>= match, <code>false</code>= no match.
      */
     public boolean isMatch(String fileName) {
@@ -99,7 +101,7 @@ public class FileMatchPattern implements Cloneable {
 
     /**
      * Returns the isIncludePattern.
-     * 
+     *
      * @return boolean
      */
     public boolean isIncludePattern() {
@@ -108,8 +110,9 @@ public class FileMatchPattern implements Cloneable {
 
     /**
      * Sets the isIncludePattern.
-     * 
-     * @param isIncludePattern The isIncludePattern to set
+     *
+     * @param isIncludePattern
+     *            The isIncludePattern to set
      */
     public void setIsIncludePattern(boolean isIncludePattern) {
         mIsIncludePattern = isIncludePattern;
@@ -117,7 +120,7 @@ public class FileMatchPattern implements Cloneable {
 
     /**
      * Clone the object.
-     * 
+     *
      * @return The clone
      */
     public FileMatchPattern clone() {
@@ -141,22 +144,22 @@ public class FileMatchPattern implements Cloneable {
         }
 
         FileMatchPattern rhs = (FileMatchPattern) obj;
-        return new EqualsBuilder().append(mIsIncludePattern, rhs.mIsIncludePattern).append(
-                mPatternString, rhs.mPatternString).isEquals();
+        return Objects.equals(mIsIncludePattern, rhs.mIsIncludePattern)
+            && Objects.equals(mPatternString, rhs.mPatternString);
     }
 
     /**
      * {@inheritDoc}
      */
     public int hashCode() {
-        return new HashCodeBuilder(7687, 1000003).append(mIsIncludePattern).append(mPatternString)
-                .toHashCode();
+        return Objects.hash(mIsIncludePattern, mPatternString);
     }
 
     /**
      * {@inheritDoc}
      */
     public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
+        return MoreObjects.toStringHelper(this).add("patternString", mPatternString)
+            .add("isIncludePattern", mIsIncludePattern).toString();
     }
 }

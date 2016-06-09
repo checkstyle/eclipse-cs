@@ -29,6 +29,7 @@ import java.lang.reflect.Field;
 import java.net.Authenticator;
 import java.net.HttpURLConnection;
 import java.net.PasswordAuthentication;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
@@ -44,8 +45,6 @@ import net.sf.eclipsecs.core.config.ICheckConfiguration;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.equinox.security.storage.EncodingUtils;
 import org.eclipse.equinox.security.storage.ISecurePreferences;
@@ -53,11 +52,13 @@ import org.eclipse.equinox.security.storage.SecurePreferencesFactory;
 import org.eclipse.equinox.security.storage.StorageException;
 import org.eclipse.osgi.util.NLS;
 
+import com.google.common.io.ByteStreams;
+import com.google.common.io.Files;
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
 
 /**
  * Implementation of a check configuration that uses an exteral checkstyle configuration file.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public class RemoteConfigurationType extends ConfigurationType {
@@ -82,6 +83,7 @@ public class RemoteConfigurationType extends ConfigurationType {
     /**
      * {@inheritDoc}
      */
+    @Override
     public CheckstyleConfigurationFile getCheckstyleConfiguration(ICheckConfiguration checkConfiguration)
         throws CheckstylePluginException {
 
@@ -159,7 +161,7 @@ public class RemoteConfigurationType extends ConfigurationType {
                 CheckstylePluginException.rethrow(e,
                     NLS.bind(Messages.RemoteConfigurationType_errorFileNotFound, e.getMessage()));
             }
-            catch (IOException e) {
+            catch (IOException | URISyntaxException e) {
                 CheckstylePluginException.rethrow(e);
             }
             finally {
@@ -180,6 +182,7 @@ public class RemoteConfigurationType extends ConfigurationType {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected URL resolveLocation(ICheckConfiguration checkConfiguration) throws IOException {
         return new URL(checkConfiguration.getLocation());
     }
@@ -187,6 +190,7 @@ public class RemoteConfigurationType extends ConfigurationType {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void notifyCheckConfigRemoved(ICheckConfiguration checkConfiguration) throws CheckstylePluginException {
         super.notifyCheckConfigRemoved(checkConfiguration);
 
@@ -209,7 +213,7 @@ public class RemoteConfigurationType extends ConfigurationType {
 
     /**
      * Method to get an input stream to the cached configuration file.
-     * 
+     *
      * @param checkConfig
      *            the check configuration
      * @return the input stream
@@ -231,7 +235,7 @@ public class RemoteConfigurationType extends ConfigurationType {
 
     /**
      * Method to get an input stream to the cached bundle file.
-     * 
+     *
      * @param checkConfig
      *            the check configuration
      * @return the input stream
@@ -274,7 +278,7 @@ public class RemoteConfigurationType extends ConfigurationType {
         File cacheFile = cacheFilePath.toFile();
 
         try {
-            FileUtils.writeByteArrayToFile(cacheFile, configFileBytes);
+            Files.write(configFileBytes, cacheFile);
         }
         catch (IOException e) {
             CheckstyleLog.log(
@@ -292,7 +296,7 @@ public class RemoteConfigurationType extends ConfigurationType {
             File propsCacheFile = propsCacheFilePath.toFile();
 
             try {
-                FileUtils.writeByteArrayToFile(propsCacheFile, bundleBytes);
+                Files.write(bundleBytes, propsCacheFile);
             }
             catch (IOException e) {
                 // ignore this since there simply might be no properties file
@@ -304,52 +308,47 @@ public class RemoteConfigurationType extends ConfigurationType {
     protected byte[] getBytesFromURLConnection(URLConnection connection) throws IOException {
 
         byte[] configurationFileData = null;
-        InputStream in = null;
-        try {
 
-            // set timeouts - bug 2941010
-            connection.setConnectTimeout(10000);
-            connection.setReadTimeout(10000);
+        // set timeouts - bug 2941010
+        connection.setConnectTimeout(10000);
+        connection.setReadTimeout(10000);
 
-            if (connection instanceof HttpURLConnection) {
+        if (connection instanceof HttpURLConnection) {
 
-                if (!sFailedWith401URLs.contains(connection.getURL().toString())) {
+            if (!sFailedWith401URLs.contains(connection.getURL().toString())) {
 
-                    HttpURLConnection httpConn = (HttpURLConnection) connection;
-                    httpConn.setInstanceFollowRedirects(true);
-                    httpConn.connect();
-                    if (httpConn.getResponseCode() == HttpURLConnection.HTTP_UNAUTHORIZED) {
-                        try {
-                            RemoteConfigAuthenticator.removeCachedAuthInfo(connection.getURL());
-                        }
-                        catch (CheckstylePluginException e) {
-                            CheckstyleLog.log(e);
-                        }
-
-                        // add to 401ed URLs
-                        sFailedWith401URLs.add(connection.getURL().toString());
-                        throw new IOException(Messages.RemoteConfigurationType_msgUnAuthorized);
+                HttpURLConnection httpConn = (HttpURLConnection) connection;
+                httpConn.setInstanceFollowRedirects(true);
+                httpConn.connect();
+                if (httpConn.getResponseCode() == HttpURLConnection.HTTP_UNAUTHORIZED) {
+                    try {
+                        RemoteConfigAuthenticator.removeCachedAuthInfo(connection.getURL());
                     }
-                }
-                else {
-                    // don't retry since we just get another 401
+                    catch (CheckstylePluginException e) {
+                        CheckstyleLog.log(e);
+                    }
+
+                    // add to 401ed URLs
+                    sFailedWith401URLs.add(connection.getURL().toString());
                     throw new IOException(Messages.RemoteConfigurationType_msgUnAuthorized);
                 }
             }
-
-            in = connection.getInputStream();
-            configurationFileData = IOUtils.toByteArray(in);
+            else {
+                // don't retry since we just get another 401
+                throw new IOException(Messages.RemoteConfigurationType_msgUnAuthorized);
+            }
         }
-        finally {
-            IOUtils.closeQuietly(in);
 
+        try (InputStream in = connection.getInputStream()) {
+            configurationFileData = ByteStreams.toByteArray(in);
         }
+
         return configurationFileData;
     }
 
     /**
      * Support for http authentication.
-     * 
+     *
      * @author Lars Ködderitzsch
      */
     public static class RemoteConfigAuthenticator extends Authenticator {
@@ -359,7 +358,7 @@ public class RemoteConfigurationType extends ConfigurationType {
 
         /**
          * Creates the authenticator.
-         * 
+         *
          * @param resolvedCheckConfigurationURL
          *            the check configuration URL
          */
@@ -370,7 +369,7 @@ public class RemoteConfigurationType extends ConfigurationType {
         /**
          * Hacked together a piece of code to get the current default authenticator. Can't believe the API is that
          * bad...
-         * 
+         *
          * @return the current Authenticator
          */
         public static Authenticator getDefault() {
@@ -400,7 +399,7 @@ public class RemoteConfigurationType extends ConfigurationType {
 
         /**
          * Stores the credentials to the key ring.
-         * 
+         *
          * @param resolvedCheckConfigurationURL
          *            the url
          * @param userName
@@ -431,7 +430,7 @@ public class RemoteConfigurationType extends ConfigurationType {
 
         /**
          * Returns the stored authentication for the given check configuration URL.
-         * 
+         *
          * @param resolvedCheckConfigurationURL
          *            the configuration URL
          * @return the authentication object or <code>null</code> if none is stored
@@ -464,7 +463,7 @@ public class RemoteConfigurationType extends ConfigurationType {
 
         /**
          * Removes the authentication info from the session cache.
-         * 
+         *
          * @param resolvedCheckConfigurationURL
          *            the check configuration URL
          * @throws CheckstylePluginException
@@ -486,6 +485,7 @@ public class RemoteConfigurationType extends ConfigurationType {
         /**
          * {@inheritDoc}
          */
+        @Override
         protected PasswordAuthentication getPasswordAuthentication() {
             return getPasswordAuthentication(mResolvedCheckConfigurationURL);
         }

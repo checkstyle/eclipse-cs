@@ -28,10 +28,9 @@ import com.puppycrawl.tools.checkstyle.PropertyResolver;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 
 /**
- * Utility class for handling strings that contain properties using the very
- * common ${propertyName} pattern. The code originally comes from the ANT
- * project.
- * 
+ * Utility class for handling strings that contain properties using the very common ${propertyName} pattern. The code
+ * originally comes from the ANT project.
+ *
  * @author Lars Ködderitzsch
  */
 public final class PropertyUtil {
@@ -40,15 +39,17 @@ public final class PropertyUtil {
      * Hidden default constructor.
      */
     private PropertyUtil() {
-    // NOOP
+        // NOOP
     }
 
     /**
      * Checks if the current value has unresolved properties.
-     * 
-     * @param value the value
+     *
+     * @param value
+     *            the value
      * @return the resolved property
-     * @throws CheckstyleException Syntax exception in a property declaration
+     * @throws CheckstyleException
+     *             Syntax exception in a property declaration
      */
     public static boolean hasUnresolvedProperties(String value) throws CheckstyleException {
         if (value != null) {
@@ -62,24 +63,21 @@ public final class PropertyUtil {
     }
 
     /**
-     * Replaces <code>${xxx}</code> style constructions in the given value
-     * with the string value of the corresponding data types. The method is
-     * package visible to facilitate testing.
-     * 
-     * @param aValue The string to be scanned for property references. May be
-     *            <code>null</code>, in which case this method returns
-     *            immediately with no effect.
-     * @param aProps Mapping (String to String) of property names to their
-     *            values. Must not be <code>null</code>.
-     * @throws CheckstyleException if the string contains an opening
-     *             <code>${</code> without a closing <code>}</code>
-     * @return the original string with the properties replaced, or
-     *         <code>null</code> if the original string is <code>null</code>.
-     *         Code copied from ant -
+     * Replaces <code>${xxx}</code> style constructions in the given value with the string value of the corresponding
+     * data types. The method is package visible to facilitate testing.
+     *
+     * @param aValue
+     *            The string to be scanned for property references. May be <code>null</code>, in which case this method
+     *            returns immediately with no effect.
+     * @param aProps
+     *            Mapping (String to String) of property names to their values. Must not be <code>null</code>.
+     * @throws CheckstyleException
+     *             if the string contains an opening <code>${</code> without a closing <code>}</code>
+     * @return the original string with the properties replaced, or <code>null</code> if the original string is
+     *         <code>null</code>. Code copied from ant -
      *         http://cvs.apache.org/viewcvs/jakarta-ant/src/main/org/apache/tools/ant/ProjectHelper.java
      */
-    public static String replaceProperties(String aValue, PropertyResolver aProps)
-        throws CheckstyleException {
+    public static String replaceProperties(String aValue, PropertyResolver aProps) throws CheckstyleException {
         if (aValue == null) {
             return null;
         }
@@ -98,7 +96,7 @@ public final class PropertyUtil {
                 fragment = aProps.resolve(propertyName);
                 if (fragment == null) {
                     throw new CheckstyleException("Property ${" + propertyName //$NON-NLS-1$
-                            + "} has not been set"); //$NON-NLS-1$
+                        + "} has not been set"); //$NON-NLS-1$
                 }
             }
             sb.append(fragment);
@@ -108,24 +106,22 @@ public final class PropertyUtil {
     }
 
     /**
-     * Parses a string containing <code>${xxx}</code> style property
-     * references into two lists. The first list is a collection of text
-     * fragments, while the other is a set of string property names.
-     * <code>null</code> entries in the first list indicate a property
-     * reference from the second list.
-     * 
-     * @param aValue Text to parse. Must not be <code>null</code>.
-     * @param aFragments List to add text fragments to. Must not be
-     *            <code>null</code>.
-     * @param aPropertyRefs List to add property names to. Must not be
-     *            <code>null</code>.
-     * @throws CheckstyleException if the string contains an opening
-     *             <code>${</code> without a closing <code>}</code> Code
-     *             copied from ant -
-     *             http://cvs.apache.org/viewcvs/jakarta-ant/src/main/org/apache/tools/ant/ProjectHelper.java
+     * Parses a string containing <code>${xxx}</code> style property references into two lists. The first list is a
+     * collection of text fragments, while the other is a set of string property names. <code>null</code> entries in the
+     * first list indicate a property reference from the second list.
+     *
+     * @param aValue
+     *            Text to parse. Must not be <code>null</code>.
+     * @param aFragments
+     *            List to add text fragments to. Must not be <code>null</code>.
+     * @param aPropertyRefs
+     *            List to add property names to. Must not be <code>null</code>.
+     * @throws CheckstyleException
+     *             if the string contains an opening <code>${</code> without a closing <code>}</code> Code copied from
+     *             ant - http://cvs.apache.org/viewcvs/jakarta-ant/src/main/org/apache/tools/ant/ProjectHelper.java
      */
-    private static void parsePropertyString(String aValue, List<String> aFragments,
-            List<String> aPropertyRefs) throws CheckstyleException {
+    private static void parsePropertyString(String aValue, List<String> aFragments, List<String> aPropertyRefs)
+        throws CheckstyleException {
 
         int prev = 0;
         int pos;
@@ -149,8 +145,7 @@ public final class PropertyUtil {
                 // peek ahead to see if the next char is a property or not
                 // not a property: insert the char as a literal
                 /*
-                 * fragments.addElement(value.substring(pos + 1, pos + 2)); prev =
-                 * pos + 2;
+                 * fragments.addElement(value.substring(pos + 1, pos + 2)); prev = pos + 2;
                  */
                 if (aValue.charAt(pos + 1) == '$') {
                     // backwards compatibility two $ map to one mode

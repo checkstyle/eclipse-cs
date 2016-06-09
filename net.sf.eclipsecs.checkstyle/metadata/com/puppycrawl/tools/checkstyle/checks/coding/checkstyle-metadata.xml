@@ -418,6 +418,9 @@
             <property-metadata name="checkMethods" datatype="Boolean" default-value="true">
                 <description>%RequireThis.checkMethods</description>
             </property-metadata>
+            <property-metadata name="validateOnlyOverlapping" datatype="Boolean" default-value="true">
+                <description>%RequireThis.validateOnlyOverlapping</description>
+            </property-metadata>
             <quickfix classname="net.sf.eclipsecs.ui.quickfixes.coding.RequireThisQuickfix"/>
             <message-key key="require.this.variable"/>
             <message-key key="require.this.method"/>

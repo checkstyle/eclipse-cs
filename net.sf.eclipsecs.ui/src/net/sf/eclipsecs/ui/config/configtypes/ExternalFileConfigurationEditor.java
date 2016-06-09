@@ -33,8 +33,6 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
 import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.config.CheckConfigurationPropertiesDialog;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -49,6 +47,8 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+
+import com.google.common.base.Strings;
 
 /**
  * Implementation of a file based location editor. Contains a text field with the config file path and a 'Browse...'
@@ -89,6 +89,7 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
     /**
      * {@inheritDoc}
      */
+    @Override
     public void initialize(CheckConfigurationWorkingCopy checkConfiguration, CheckConfigurationPropertiesDialog dialog) {
         mWorkingCopy = checkConfiguration;
     }
@@ -96,6 +97,7 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
     /**
      * {@inheritDoc}
      */
+    @Override
     public Control createEditorControl(Composite parent, final Shell shell) {
 
         Composite contents = new Composite(parent, SWT.NULL);
@@ -137,6 +139,7 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
 
         mBtnBrowse.addSelectionListener(new SelectionListener() {
 
+            @Override
             public void widgetSelected(SelectionEvent e) {
                 FileDialog fileDialog = new FileDialog(shell);
                 fileDialog.setFileName(mLocation.getText());
@@ -147,6 +150,7 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
                 }
             }
 
+            @Override
             public void widgetDefaultSelected(SelectionEvent e) {
                 // NOOP
             }
@@ -199,6 +203,7 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
     /**
      * {@inheritDoc}
      */
+    @Override
     public CheckConfigurationWorkingCopy getEditedWorkingCopy() throws CheckstylePluginException {
 
         mWorkingCopy.setName(mConfigName.getText());
@@ -212,7 +217,7 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
         catch (CheckstylePluginException e) {
             String location = mLocation.getText();
 
-            if (StringUtils.trimToNull(location) != null && ensureFileExists(location)) {
+            if (Strings.emptyToNull(location) != null && ensureFileExists(location)) {
                 mWorkingCopy.setLocation(mLocation.getText());
             }
             else {
@@ -243,19 +248,16 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
                 Messages.ExternalFileConfigurationEditor_titleFileDoesNotExist,
                 Messages.ExternalFileConfigurationEditor_msgFileDoesNotExist);
             if (confirm) {
-                OutputStream out = null;
-                try {
-                    if (file.getParentFile() != null) {
-                        file.getParentFile().mkdirs();
-                    }
-                    out = new BufferedOutputStream(new FileOutputStream(file));
+
+                if (file.getParentFile() != null) {
+                    file.getParentFile().mkdirs();
+                }
+
+                try (OutputStream out = new BufferedOutputStream(new FileOutputStream(file))) {
                     ConfigurationWriter.writeNewConfiguration(out, mWorkingCopy);
                 }
                 catch (IOException ioe) {
                     CheckstylePluginException.rethrow(ioe);
-                }
-                finally {
-                    IOUtils.closeQuietly(out);
                 }
                 return true;
             }

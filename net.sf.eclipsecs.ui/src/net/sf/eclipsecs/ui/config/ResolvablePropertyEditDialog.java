@@ -25,7 +25,6 @@ import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
 import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.util.SWTUtil;
 
-import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jface.contentassist.SubjectControlContentAssistant;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.text.DefaultInformationControl;
@@ -43,6 +42,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.contentassist.ContentAssistHandler;
+
+import com.google.common.base.Strings;
 
 /**
  * Property page.
@@ -117,11 +118,11 @@ public class ResolvablePropertyEditDialog extends TitleAreaDialog {
     @Override
     protected void okPressed() {
 
-        if (StringUtils.trimToNull(mTxtName.getText()) == null) {
+        if (Strings.emptyToNull(mTxtName.getText()) == null) {
             this.setErrorMessage(Messages.ResolvablePropertyEditDialog_msgMissingName);
             return;
         }
-        if (StringUtils.trimToNull(mTxtValue.getText()) == null) {
+        if (Strings.emptyToNull(mTxtValue.getText()) == null) {
             this.setErrorMessage(Messages.ResolvablePropertyEditDialog_msgMissingValue);
             return;
         }
@@ -162,6 +163,7 @@ public class ResolvablePropertyEditDialog extends TitleAreaDialog {
             /*
              * @see IInformationControlCreator#createInformationControl(Shell)
              */
+            @Override
             public IInformationControl createInformationControl(Shell parent) {
                 return new DefaultInformationControl(parent);
             }
