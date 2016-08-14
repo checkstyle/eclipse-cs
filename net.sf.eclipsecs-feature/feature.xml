@@ -22,7 +22,7 @@
    </url>
 
    <requires>
-      <import plugin="org.eclipse.core.runtime" version="3.2.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.core.runtime" version="3.7.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.resources"/>
       <import plugin="org.eclipse.jdt.core"/>
       <import plugin="org.eclipse.team.core"/>
@@ -66,7 +66,6 @@
          id="net.sf.eclipsecs.ui"
          download-size="0"
          install-size="0"
-         version="6.19.1.qualifier"
-         unpack="true"/>
+         version="6.19.1.qualifier"/>
 
 </feature>

@@ -10,4 +10,30 @@
     <artifactId>net.sf.eclipsecs</artifactId>
     <packaging>eclipse-feature</packaging>
     <name>eclipse-cs Feature</name>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.eclipse.tycho.extras</groupId>
+                <artifactId>tycho-source-feature-plugin</artifactId>
+                <version>${tycho-extras-version}</version>
+                <configuration>
+                    <excludes>
+                        <!-- These are bundles and feature that do not have a corresponding source version; NOT the ones 
+                            that we do not want source versions -->
+                        <plugin id="net.sf.eclipsecs.branding" />
+                        <plugin id="net.sf.eclipsecs.doc" />
+                    </excludes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>source-feature</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>source-feature</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

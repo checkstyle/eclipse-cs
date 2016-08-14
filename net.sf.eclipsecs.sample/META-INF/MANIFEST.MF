@@ -6,7 +6,7 @@ Bundle-Version: 6.19.1.qualifier
 Require-Bundle: net.sf.eclipsecs.checkstyle,
  net.sf.eclipsecs.core,
  net.sf.eclipsecs.ui
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Eclipse-LazyStart: true
 Bundle-Vendor: http://eclipse-cs.sf.net/
 Import-Package: org.eclipse.core.resources,

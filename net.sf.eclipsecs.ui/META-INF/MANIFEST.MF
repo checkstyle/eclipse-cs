@@ -11,7 +11,7 @@ Bundle-ClassPath: .,
  lib/jfreechart-1.0.14.jar,
  lib/jfreechart-1.0.14-swt.jar,
  lib/jcommon-1.0.16.jar
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Localization: plugin
 Export-Package: net.sf.eclipsecs.ui,
  net.sf.eclipsecs.ui.properties.filter,

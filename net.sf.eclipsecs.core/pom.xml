@@ -10,4 +10,13 @@
     <artifactId>net.sf.eclipsecs.core</artifactId>
     <packaging>eclipse-plugin</packaging>
     <name>eclipse-cs Core Plugin</name>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.eclipse.tycho</groupId>
+                <artifactId>tycho-source-plugin</artifactId>
+                <version>${tycho-version}</version>
+            </plugin>
+        </plugins>
+    </build>
 </project>

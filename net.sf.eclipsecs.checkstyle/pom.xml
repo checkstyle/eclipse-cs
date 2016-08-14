@@ -10,4 +10,56 @@
     <artifactId>net.sf.eclipsecs.checkstyle</artifactId>
     <packaging>eclipse-plugin</packaging>
     <name>Checkstyle Core Library Plugin</name>
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.8</version>
+                <executions>
+                    <execution>
+                        <phase>prepare-package</phase>
+                        <configuration>
+                            <tasks>
+                                <delete dir="${project.build.directory}/checkstyle-src-unpack" />
+                                <delete dir="${project.build.directory}/checkstyle-src" />
+                                <first id="cssrc">
+                                    <fileset dir="." includes="checkstyle-*-src.zip" />
+                                </first>
+                                <unzip src="${toString:cssrc}" dest="${project.build.directory}/checkstyle-src-unpack">
+                                    <patternset>
+                                        <include name="**/src/main/java/**" />
+                                        <include name="**/src/main/resources/**" />
+                                    </patternset>
+                                </unzip>
+                                <copy todir="${project.build.directory}/checkstyle-src">
+                                    <fileset dir="${project.build.directory}/checkstyle-src-unpack">
+                                        <include name="**/*" />
+                                    </fileset>
+                                    <cutdirsmapper dirs="4" />
+                                </copy>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.eclipse.tycho</groupId>
+                <artifactId>tycho-source-plugin</artifactId>
+                <version>${tycho-version}</version>
+                <configuration>
+                    <additionalFileSets>
+                        <fileSet>
+                            <directory>${project.build.directory}/checkstyle-src/</directory>
+                            <includes>
+                                <include>**/*</include>
+                            </includes>
+                        </fileSet>
+                    </additionalFileSets>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

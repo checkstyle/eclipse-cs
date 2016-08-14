@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <description name="Eclipse Checkstyle Plugin" url="http://eclipse-cs.sourceforge.net/update">
-      Eclipse Checkstyle Plugin Update Site
-   </description>
-   <feature url="features/net.sf.eclipsecs_6.19.1.qualifier.jar" id="net.sf.eclipsecs" version="6.19.1.qualifier">
-      <category name="Checkstyle"/>
-   </feature>
-   <category-def name="Checkstyle" label="Checkstyle">
-      <description>
-         Checkstyle is a development tool to help programmers write Java code that adheres to a coding standard. It automates the process of checking Java code to spare humans of this boring (but important) task. This makes it ideal for projects that want to enforce a coding standard.
-      </description>
-   </category-def>
+    <description name="Eclipse Checkstyle Plugin" url="http://eclipse-cs.sourceforge.net/update">
+        Eclipse Checkstyle Plugin Update Site
+    </description>
+    <feature url="features/net.sf.eclipsecs_6.19.1.qualifier.jar" id="net.sf.eclipsecs" version="6.19.1.qualifier">
+        <category name="Checkstyle" />
+    </feature>
+    <feature url="features/net.sf.eclipsecs.source_6.19.1.qualifier.jar" id="net.sf.eclipsecs.source" version="6.19.1.qualifier">
+        <category name="Checkstyle" />
+    </feature>
+    <category-def name="Checkstyle" label="Checkstyle">
+        <description>
+            Checkstyle is a development tool to help programmers write Java code that adheres to a coding
+            standard. It automates the
+            process of checking Java code to spare humans of this boring (but important) task.
+            This makes it ideal for
+            projects that want to enforce a coding standard.
+        </description>
+    </category-def>
 </site>
