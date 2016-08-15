@@ -38,6 +38,7 @@ Export-Package: .,
  com.puppycrawl.tools.checkstyle.checks.naming;x-friends:="net.sf.eclipsecs.core",
  com.puppycrawl.tools.checkstyle.checks.regexp;x-friends:="net.sf.eclipsecs.core",
  com.puppycrawl.tools.checkstyle.checks.sizes;x-friends:="net.sf.eclipsecs.core",
- com.puppycrawl.tools.checkstyle.checks.whitespace;x-friends:="net.sf.eclipsecs.core"
+ com.puppycrawl.tools.checkstyle.checks.whitespace;x-friends:="net.sf.eclipsecs.core",
+ com.puppycrawl.tools.checkstyle.filters;x-friends:="net.sf.eclipsecs.core"
 Bundle-ClassPath: .,
  checkstyle-7.1-all.jar
