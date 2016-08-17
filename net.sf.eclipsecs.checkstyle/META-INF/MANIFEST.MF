@@ -15,6 +15,7 @@ Export-Package: .,
  antlr.collections;uses:="antlr",
  com.google.common.base;x-friends:="net.sf.eclipsecs.core,net.sf.eclipsecs.ui",
  com.google.common.cache;x-friends:="net.sf.eclipsecs.core",
+ com.google.common.collect,
  com.google.common.io;x-friends:="net.sf.eclipsecs.core",
  com.puppycrawl.tools.checkstyle;x-friends:="net.sf.eclipsecs.core,net.sf.eclipsecs.ui",
  com.puppycrawl.tools.checkstyle.api;
@@ -39,6 +40,8 @@ Export-Package: .,
  com.puppycrawl.tools.checkstyle.checks.regexp;x-friends:="net.sf.eclipsecs.core",
  com.puppycrawl.tools.checkstyle.checks.sizes;x-friends:="net.sf.eclipsecs.core",
  com.puppycrawl.tools.checkstyle.checks.whitespace;x-friends:="net.sf.eclipsecs.core",
- com.puppycrawl.tools.checkstyle.filters;x-friends:="net.sf.eclipsecs.core"
+ com.puppycrawl.tools.checkstyle.filters;x-friends:="net.sf.eclipsecs.core",
+ com.puppycrawl.tools.checkstyle.utils,
+ org.apache.commons.beanutils
 Bundle-ClassPath: .,
  checkstyle-7.1-all.jar
