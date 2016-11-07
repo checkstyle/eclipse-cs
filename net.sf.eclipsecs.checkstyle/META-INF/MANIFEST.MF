@@ -44,4 +44,4 @@ Export-Package: .,
  com.puppycrawl.tools.checkstyle.utils,
  org.apache.commons.beanutils
 Bundle-ClassPath: .,
- checkstyle-7.1-all.jar
+ checkstyle-7.2-all.jar

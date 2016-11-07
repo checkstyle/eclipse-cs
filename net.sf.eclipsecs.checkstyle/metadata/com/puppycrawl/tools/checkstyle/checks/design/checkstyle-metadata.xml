@@ -6,57 +6,60 @@
     <rule-group-metadata name="%Design.group" priority="1000">
 
         <rule-metadata name="%DesignForExtension.name" internal-name="DesignForExtension" parent="TreeWalker">
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.design.DesignForExtensionCheck"/>
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.DesignForExtensionCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.design.DesignForExtensionCheck" />
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.DesignForExtensionCheck" />
             <description>%DesignForExtension.desc</description>
-            <quickfix classname="net.sf.eclipsecs.ui.quickfixes.design.DesignForExtensionQuickfix"/>
-            <message-key key="design.forExtension"/>
+            <property-metadata name="ignoredAnnotations" datatype="String"
+                default-value="Test,Before,After,BeforeClass,AfterClass">
+                <description>%DesignForExtension.ignoredAnnotations</description>
+            </property-metadata>
+            <quickfix classname="net.sf.eclipsecs.ui.quickfixes.design.DesignForExtensionQuickfix" />
+            <message-key key="design.forExtension" />
         </rule-metadata>
 
         <rule-metadata name="%FinalClass.name" internal-name="FinalClass" parent="TreeWalker">
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.design.FinalClassCheck"/>
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.FinalClassCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.design.FinalClassCheck" />
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.FinalClassCheck" />
             <description>%FinalClass.desc</description>
-            <quickfix classname="net.sf.eclipsecs.ui.quickfixes.design.FinalClassQuickfix"/>
-            <message-key key="final.class"/>
+            <quickfix classname="net.sf.eclipsecs.ui.quickfixes.design.FinalClassQuickfix" />
+            <message-key key="final.class" />
         </rule-metadata>
 
         <rule-metadata name="%InnerTypeLast.name" internal-name="InnerTypeLast" parent="TreeWalker">
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.design.InnerTypeLastCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.design.InnerTypeLastCheck" />
             <description>%InnerTypeLast.desc</description>
-            <message-key key="arrangement.members.before.inner"/>
+            <message-key key="arrangement.members.before.inner" />
         </rule-metadata>
 
         <rule-metadata name="%HideUtilityClassConstructor.name" internal-name="HideUtilityClassConstructor"
             parent="TreeWalker">
-            <alternative-name
-                internal-name="com.puppycrawl.tools.checkstyle.checks.design.HideUtilityClassConstructorCheck"/>
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.HideUtilityClassConstructorCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.design.HideUtilityClassConstructorCheck" />
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.HideUtilityClassConstructorCheck" />
             <description>%HideUtilityClassConstructor.desc</description>
-            <message-key key="hide.utility.class"/>
+            <message-key key="hide.utility.class" />
         </rule-metadata>
 
         <rule-metadata name="%InterfaceIsType.name" internal-name="InterfaceIsType" parent="TreeWalker">
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.design.InterfaceIsTypeCheck"/>
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.InterfaceIsTypeCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.design.InterfaceIsTypeCheck" />
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.InterfaceIsTypeCheck" />
             <description>%InterfaceIsType.desc</description>
             <property-metadata name="allowMarkerInterfaces" datatype="Boolean" default-value="true">
                 <description>%InterfaceIsType.allowMarkerInterfaces</description>
             </property-metadata>
-            <message-key key="interface.type"/>
+            <message-key key="interface.type" />
         </rule-metadata>
 
         <rule-metadata name="%MutableException.name" internal-name="MutableException" parent="TreeWalker">
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.design.MutableExceptionCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.design.MutableExceptionCheck" />
             <description>%MutableException.desc</description>
             <property-metadata name="format" datatype="Regex" default-value="^.*Exception$|^.*Error$">
                 <description>%MutableException.format</description>
             </property-metadata>
-            <message-key key="mutable.exception"/>
+            <message-key key="mutable.exception" />
         </rule-metadata>
 
         <rule-metadata name="%ThrowsCount.name" internal-name="ThrowsCount" parent="TreeWalker">
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.design.ThrowsCountCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.design.ThrowsCountCheck" />
             <description>%ThrowsCount.desc</description>
             <property-metadata name="max" datatype="Integer" default-value="4">
                 <description>%ThrowsCount.max</description>
@@ -64,12 +67,12 @@
             <property-metadata name="ignorePrivateMethods" datatype="Boolean" default-value="true">
                 <description>%ThrowsCount.ignorePrivateMethods</description>
             </property-metadata>
-            <message-key key="throws.count"/>
+            <message-key key="throws.count" />
         </rule-metadata>
 
         <rule-metadata name="%VisibilityModifier.name" internal-name="VisibilityModifier" parent="TreeWalker">
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.design.VisibilityModifierCheck"/>
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.VisibilityModifierCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.design.VisibilityModifierCheck" />
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.VisibilityModifierCheck" />
             <description>%VisibilityModifier.desc</description>
             <property-metadata name="packageAllowed" datatype="Boolean" default-value="false">
                 <description>%VisibilityModifier.packageAllowed</description>
@@ -86,19 +89,21 @@
             <property-metadata name="allowPublicImmutableFields" datatype="Boolean" default-value="false">
                 <description>%VisibilityModifier.allowPublicImmutableFields</description>
             </property-metadata>
-            <property-metadata name="immutableClassCanonicalNames" datatype="String" default-value="java.lang.String, java.lang.Integer, java.lang.Byte, java.lang.Character, java.lang.Short, java.lang.Boolean, java.lang.Long, java.lang.Double, java.lang.Float, java.lang.StackTraceElement, java.math.BigInteger, java.math.BigDecimal, java.io.File, java.util.Locale, java.util.UUID, java.net.URL, java.net.URI, java.net.Inet4Address, java.net.Inet6Address, java.net.InetSocketAddress,">
+            <property-metadata name="immutableClassCanonicalNames" datatype="String"
+                default-value="java.lang.String, java.lang.Integer, java.lang.Byte, java.lang.Character, java.lang.Short, java.lang.Boolean, java.lang.Long, java.lang.Double, java.lang.Float, java.lang.StackTraceElement, java.math.BigInteger, java.math.BigDecimal, java.io.File, java.util.Locale, java.util.UUID, java.net.URL, java.net.URI, java.net.Inet4Address, java.net.Inet6Address, java.net.InetSocketAddress,">
                 <description>%VisibilityModifier.immutableClassCanonicalNames</description>
             </property-metadata>
-            <property-metadata name="ignoreAnnotationCanonicalNames" datatype="String" default-value="org.junit.Rule, com.google.common.annotations.VisibleForTesting">
+            <property-metadata name="ignoreAnnotationCanonicalNames" datatype="String"
+                default-value="org.junit.Rule, com.google.common.annotations.VisibleForTesting">
                 <description>%VisibilityModifier.ignoreAnnotationCanonicalNames</description>
             </property-metadata>
-            <message-key key="variable.notPrivate"/>
+            <message-key key="variable.notPrivate" />
         </rule-metadata>
 
         <rule-metadata name="%OneTopLevelClass.name" internal-name="OneTopLevelClass" parent="TreeWalker">
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.design.OneTopLevelClassCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.design.OneTopLevelClassCheck" />
             <description>%OneTopLevelClass.desc</description>
-            <message-key key="one.top.level.class"/>
+            <message-key key="one.top.level.class" />
         </rule-metadata>
     </rule-group-metadata>
 </checkstyle-metadata>
