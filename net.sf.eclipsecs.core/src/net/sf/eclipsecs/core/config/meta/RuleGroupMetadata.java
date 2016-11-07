@@ -24,13 +24,15 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * This class describes a collection of check rules that are logicaly grouped
- * together.
+ * This class describes a collection of check rules that are logicaly grouped together.
  */
 public class RuleGroupMetadata {
 
     /** The name of the group. */
     private String mGroupName;
+
+    /** The description of the group. */
+    private String mDescription;
 
     /** Determines if the group is hidden. */
     private boolean mIsHidden;
@@ -39,17 +41,18 @@ public class RuleGroupMetadata {
     private int mPriority;
 
     /** The list of modules belonging to the group. */
-    private List<RuleMetadata> mRuleMetadata = new LinkedList<RuleMetadata>();
+    private List<RuleMetadata> mRuleMetadata = new LinkedList<>();
 
-    RuleGroupMetadata(String groupName, boolean hidden, int priority) {
+    RuleGroupMetadata(String groupName, String groupDesc, boolean hidden, int priority) {
         mGroupName = groupName;
+        mDescription = groupDesc;
         mIsHidden = hidden;
         mPriority = priority;
     }
 
     /**
      * Returns the group's name.
-     * 
+     *
      * @return Group name
      */
     public final String getGroupName() {
@@ -57,8 +60,17 @@ public class RuleGroupMetadata {
     }
 
     /**
+     * Returns the description of the group.
+     *
+     * @return the description
+     */
+    public String getDescription() {
+        return mDescription;
+    }
+
+    /**
      * Determine if the module is to be hidden from the users sight.
-     * 
+     *
      * @return <code>true</code> if the module is hidden
      */
     public boolean isHidden() {
@@ -67,7 +79,7 @@ public class RuleGroupMetadata {
 
     /**
      * Returns the priority of the group.
-     * 
+     *
      * @return the priority
      */
     public int getPriority() {
@@ -76,7 +88,7 @@ public class RuleGroupMetadata {
 
     /**
      * Returns a list of the group's rule metadata.
-     * 
+     *
      * @return List of <code>RuleMetadata</code> objects.
      */
     public final List<RuleMetadata> getRuleMetadata() {

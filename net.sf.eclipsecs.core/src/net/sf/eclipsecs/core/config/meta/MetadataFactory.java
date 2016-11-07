@@ -42,15 +42,6 @@ import java.util.ResourceBundle.Control;
 import java.util.Set;
 import java.util.TreeMap;
 
-import net.sf.eclipsecs.core.CheckstylePlugin;
-import net.sf.eclipsecs.core.config.ConfigProperty;
-import net.sf.eclipsecs.core.config.Module;
-import net.sf.eclipsecs.core.config.Severity;
-import net.sf.eclipsecs.core.config.XMLTags;
-import net.sf.eclipsecs.core.util.CheckstyleLog;
-import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.core.util.XMLUtil;
-
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -60,13 +51,22 @@ import com.puppycrawl.tools.checkstyle.PackageNamesLoader;
 import com.puppycrawl.tools.checkstyle.api.AbstractFileSetCheck;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 
+import net.sf.eclipsecs.core.CheckstylePlugin;
+import net.sf.eclipsecs.core.config.ConfigProperty;
+import net.sf.eclipsecs.core.config.Module;
+import net.sf.eclipsecs.core.config.Severity;
+import net.sf.eclipsecs.core.config.XMLTags;
+import net.sf.eclipsecs.core.util.CheckstyleLog;
+import net.sf.eclipsecs.core.util.CheckstylePluginException;
+import net.sf.eclipsecs.core.util.XMLUtil;
+
 /**
  * This class is the factory for all Checkstyle rule metadata.
  */
 public final class MetadataFactory {
 
     /** Map containing the public - internal DTD mapping. */
-    private static final Map<String, String> PUBLIC2INTERNAL_DTD_MAP = new HashMap<String, String>();
+    private static final Map<String, String> PUBLIC2INTERNAL_DTD_MAP = new HashMap<>();
 
     /** Metadata for the rule groups. */
     private static Map<String, RuleGroupMetadata> sRuleGroupMetadata;
@@ -107,7 +107,7 @@ public final class MetadataFactory {
      */
     public static List<RuleGroupMetadata> getRuleGroupMetadata() {
 
-        List<RuleGroupMetadata> groups = new ArrayList<RuleGroupMetadata>(sRuleGroupMetadata.values());
+        List<RuleGroupMetadata> groups = new ArrayList<>(sRuleGroupMetadata.values());
         Collections.sort(groups, new Comparator<RuleGroupMetadata>() {
 
             @Override
@@ -242,7 +242,7 @@ public final class MetadataFactory {
             return null;
         }
 
-        List<String> namesToCheck = new ArrayList<String>();
+        List<String> namesToCheck = new ArrayList<>();
         namesToCheck.add(rule.getInternalName());
         namesToCheck.addAll(rule.getAlternativeNames());
 
@@ -255,8 +255,8 @@ public final class MetadataFactory {
                     String packageName = moduleClass.substring(0, endIndex);
                     messages = packageName + "." + messages; //$NON-NLS-1$
                 }
-                ResourceBundle resourceBundle = ResourceBundle.getBundle(messages,
-                    CheckstylePlugin.getPlatformLocale(), CheckstylePlugin.class.getClassLoader(), new UTF8Control());
+                ResourceBundle resourceBundle = ResourceBundle.getBundle(messages, CheckstylePlugin.getPlatformLocale(),
+                    CheckstylePlugin.class.getClassLoader(), new UTF8Control());
 
                 String message = resourceBundle.getString(messageKey);
                 return message;
@@ -315,9 +315,9 @@ public final class MetadataFactory {
      * Refreshes the metadata.
      */
     public static synchronized void refresh() {
-        sRuleGroupMetadata = new TreeMap<String, RuleGroupMetadata>();
-        sRuleMetadata = new HashMap<String, RuleMetadata>();
-        sAlternativeNamesMap = new HashMap<String, RuleMetadata>();
+        sRuleGroupMetadata = new TreeMap<>();
+        sRuleMetadata = new HashMap<>();
+        sAlternativeNamesMap = new HashMap<>();
         try {
             doInitialization();
         }
@@ -363,7 +363,7 @@ public final class MetadataFactory {
     private static Collection<String> getAllPotentialMetadataFiles(ClassLoader classLoader)
         throws CheckstylePluginException {
 
-        Collection<String> potentialMetadataFiles = new ArrayList<String>();
+        Collection<String> potentialMetadataFiles = new ArrayList<>();
 
         Set<String> packages = null;
         try {
@@ -412,6 +412,10 @@ public final class MetadataFactory {
             String groupName = groupEl.attributeValue(XMLTags.NAME_TAG).trim();
             groupName = localize(groupName, metadataBundle);
 
+            // process description
+            String groupDesc = groupEl.elementTextTrim(XMLTags.DESCRIPTION_TAG);
+            groupDesc = localize(groupDesc, metadataBundle);
+
             RuleGroupMetadata group = getRuleGroupMetadata(groupName);
 
             if (group == null) {
@@ -426,7 +430,7 @@ public final class MetadataFactory {
                     priority = Integer.MAX_VALUE;
                 }
 
-                group = new RuleGroupMetadata(groupName, hidden, priority);
+                group = new RuleGroupMetadata(groupName, groupDesc, hidden, priority);
                 sRuleGroupMetadata.put(groupName, group);
             }
 
@@ -451,8 +455,8 @@ public final class MetadataFactory {
             name = localize(name, metadataBundle);
             String internalName = moduleEl.attributeValue(XMLTags.INTERNAL_NAME_TAG).trim();
 
-            String parentName = moduleEl.attributeValue(XMLTags.PARENT_TAG) != null ? moduleEl.attributeValue(
-                XMLTags.PARENT_TAG).trim() : null;
+            String parentName = moduleEl.attributeValue(XMLTags.PARENT_TAG) != null
+                ? moduleEl.attributeValue(XMLTags.PARENT_TAG).trim() : null;
             boolean hidden = Boolean.valueOf(moduleEl.attributeValue(XMLTags.HIDDEN_TAG)).booleanValue();
             boolean hasSeverity = !"false".equals(moduleEl.attributeValue(XMLTags.HAS_SEVERITY_TAG));
             boolean deletable = !"false".equals(moduleEl.attributeValue(XMLTags.DELETABLE_TAG)); //$NON-NLS-1$
@@ -519,7 +523,8 @@ public final class MetadataFactory {
                 overrideDefaultValue = overrideDefaultValue.trim();
             }
 
-            ConfigPropertyMetadata property = new ConfigPropertyMetadata(type, name, defaultValue, overrideDefaultValue);
+            ConfigPropertyMetadata property = new ConfigPropertyMetadata(type, name, defaultValue,
+                overrideDefaultValue);
 
             moduleMetadata.getPropertyMetadata().add(property);
 

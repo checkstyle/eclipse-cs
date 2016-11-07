@@ -26,23 +26,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
-import net.sf.eclipsecs.core.config.Module;
-import net.sf.eclipsecs.core.config.Severity;
-import net.sf.eclipsecs.core.config.meta.MetadataFactory;
-import net.sf.eclipsecs.core.config.meta.RuleGroupMetadata;
-import net.sf.eclipsecs.core.config.meta.RuleMetadata;
-import net.sf.eclipsecs.core.util.CheckstyleLog;
-import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
-import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
-import net.sf.eclipsecs.ui.CheckstyleUIPluginPrefs;
-import net.sf.eclipsecs.ui.Messages;
-import net.sf.eclipsecs.ui.util.SWTUtil;
-import net.sf.eclipsecs.ui.util.table.EnhancedCheckBoxTableViewer;
-import net.sf.eclipsecs.ui.util.table.ITableComparableProvider;
-import net.sf.eclipsecs.ui.util.table.ITableSettingsProvider;
-
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
@@ -91,6 +74,23 @@ import org.eclipse.swt.widgets.Text;
 import org.osgi.service.prefs.BackingStoreException;
 
 import com.google.common.base.Strings;
+
+import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
+import net.sf.eclipsecs.core.config.Module;
+import net.sf.eclipsecs.core.config.Severity;
+import net.sf.eclipsecs.core.config.meta.MetadataFactory;
+import net.sf.eclipsecs.core.config.meta.RuleGroupMetadata;
+import net.sf.eclipsecs.core.config.meta.RuleMetadata;
+import net.sf.eclipsecs.core.util.CheckstyleLog;
+import net.sf.eclipsecs.core.util.CheckstylePluginException;
+import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
+import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
+import net.sf.eclipsecs.ui.CheckstyleUIPluginPrefs;
+import net.sf.eclipsecs.ui.Messages;
+import net.sf.eclipsecs.ui.util.SWTUtil;
+import net.sf.eclipsecs.ui.util.table.EnhancedCheckBoxTableViewer;
+import net.sf.eclipsecs.ui.util.table.ITableComparableProvider;
+import net.sf.eclipsecs.ui.util.table.ITableSettingsProvider;
 
 /**
  * Enhanced checkstyle configuration editor.
@@ -405,8 +405,8 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
         mBtnOpenModuleOnAdd.setLayoutData(gd);
 
         // Init the translate tokens preference
-        mBtnOpenModuleOnAdd.setSelection(CheckstyleUIPluginPrefs
-            .getBoolean(CheckstyleUIPluginPrefs.PREF_OPEN_MODULE_EDITOR));
+        mBtnOpenModuleOnAdd
+            .setSelection(CheckstyleUIPluginPrefs.getBoolean(CheckstyleUIPluginPrefs.PREF_OPEN_MODULE_EDITOR));
         mBtnOpenModuleOnAdd.addSelectionListener(new SelectionListener() {
 
             @Override
@@ -446,13 +446,13 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
             mModules = mConfiguration.getModules();
         }
         catch (CheckstylePluginException e) {
-            mModules = new ArrayList<Module>();
+            mModules = new ArrayList<>();
             CheckstyleUIPlugin.errorDialog(getShell(), e, true);
         }
         mTableViewer.setInput(mModules);
 
-        this.setTitle(NLS.bind(Messages.CheckConfigurationConfigureDialog_titleMessageArea, mConfiguration.getType()
-            .getName(), mConfiguration.getName()));
+        this.setTitle(NLS.bind(Messages.CheckConfigurationConfigureDialog_titleMessageArea,
+            mConfiguration.getType().getName(), mConfiguration.getName()));
 
         if (mConfigurable) {
             this.setMessage(Messages.CheckConfigurationConfigureDialog_msgEditConfig);
@@ -625,21 +625,24 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
             String description = null;
 
             if (element instanceof RuleGroupMetadata) {
-                mGroupFilter.setCurrentGroup((RuleGroupMetadata) element);
-                mConfiguredModulesGroup.setText(NLS.bind(
-                    Messages.CheckConfigurationConfigureDialog_lblConfiguredModules,
-                    ((RuleGroupMetadata) element).getGroupName()));
+
+                RuleGroupMetadata group = (RuleGroupMetadata) element;
+                description = group.getDescription();
+                mGroupFilter.setCurrentGroup(group);
+                mConfiguredModulesGroup.setText(
+                    NLS.bind(Messages.CheckConfigurationConfigureDialog_lblConfiguredModules, group.getGroupName()));
                 mTableViewer.refresh();
 
                 refreshTableViewerState();
             }
             else if (element instanceof RuleMetadata) {
 
-                description = ((RuleMetadata) element).getDescription();
-                mGroupFilter.setCurrentGroup(((RuleMetadata) element).getGroup());
+                RuleMetadata rule = (RuleMetadata) element;
+
+                description = rule.getDescription();
+                mGroupFilter.setCurrentGroup(rule.getGroup());
                 mConfiguredModulesGroup.setText(NLS.bind(
-                    Messages.CheckConfigurationConfigureDialog_lblConfiguredModules, ((RuleMetadata) element)
-                        .getGroup().getGroupName()));
+                    Messages.CheckConfigurationConfigureDialog_lblConfiguredModules, rule.getGroup().getGroupName()));
                 mTableViewer.refresh();
                 refreshTableViewerState();
 
@@ -751,8 +754,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
 
             if (!selection.isEmpty() && mConfigurable) {
 
-                if (MessageDialog.openConfirm(getShell(),
-                    Messages.CheckConfigurationConfigureDialog_titleRemoveModules,
+                if (MessageDialog.openConfirm(getShell(), Messages.CheckConfigurationConfigureDialog_titleRemoveModules,
                     Messages.CheckConfigurationConfigureDialog_msgRemoveModules)) {
 
                     Iterator<Module> it = ((IStructuredSelection) selection).iterator();
@@ -780,12 +782,12 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
             for (int i = 0; i < size; i++) {
                 Module module = mModules.get(i);
                 if (mConfigurable) {
-                    mTableViewer.setChecked(module, !Severity.ignore.equals(module.getSeverity())
-                        || !module.getMetaData().hasSeverity());
+                    mTableViewer.setChecked(module,
+                        !Severity.ignore.equals(module.getSeverity()) || !module.getMetaData().hasSeverity());
                 }
                 else {
-                    mTableViewer.setChecked(module, !Severity.ignore.equals(module.getSeverity())
-                        || !module.getMetaData().hasSeverity());
+                    mTableViewer.setChecked(module,
+                        !Severity.ignore.equals(module.getSeverity()) || !module.getMetaData().hasSeverity());
                     mTableViewer.setGrayed(module, !Severity.ignore.equals(module.getSeverity()));
                 }
             }
@@ -923,15 +925,15 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
             Image image = null;
 
             if (element instanceof RuleGroupMetadata) {
-                image = isGroupUsed((RuleGroupMetadata) element) ? CheckstyleUIPluginImages
-                    .getImage(CheckstyleUIPluginImages.MODULEGROUP_TICKED_ICON) : CheckstyleUIPluginImages
-                    .getImage(CheckstyleUIPluginImages.MODULEGROUP_ICON);
+                image = isGroupUsed((RuleGroupMetadata) element)
+                    ? CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.MODULEGROUP_TICKED_ICON)
+                    : CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.MODULEGROUP_ICON);
             }
             else if (element instanceof RuleMetadata) {
 
-                image = isMetadataUsed((RuleMetadata) element) ? CheckstyleUIPluginImages
-                    .getImage(CheckstyleUIPluginImages.MODULE_TICKED_ICON) : CheckstyleUIPluginImages
-                    .getImage(CheckstyleUIPluginImages.MODULE_ICON);
+                image = isMetadataUsed((RuleMetadata) element)
+                    ? CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.MODULE_TICKED_ICON)
+                    : CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.MODULE_ICON);
             }
             return image;
         }
@@ -970,8 +972,8 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
      *
      * @author Lars Ködderitzsch
      */
-    private class ModuleLabelProvider extends LabelProvider implements ITableLabelProvider, ITableComparableProvider,
-        ITableSettingsProvider {
+    private class ModuleLabelProvider extends LabelProvider
+        implements ITableLabelProvider, ITableComparableProvider, ITableSettingsProvider {
 
         /**
          * {@inheritDoc}

@@ -3,7 +3,8 @@
 "-//eclipse-cs//DTD Check Metadata 1.1//EN"
 "http://eclipse-cs.sourceforge.net/dtds/checkstyle-metadata_1_1.dtd">
 <checkstyle-metadata>
-    <rule-group-metadata name="My custom checks" priority="1600">
+    <rule-group-metadata name="My custom checks"  priority="1600">
+        <description>%MyCustomChecks.desc</description>
 
         <rule-metadata name="%MethodLimit.name" internal-name="MethodLimit" parent="TreeWalker">
             <alternative-name internal-name="net.sf.eclipsecs.sample.checks.MethodLimitCheck" />
