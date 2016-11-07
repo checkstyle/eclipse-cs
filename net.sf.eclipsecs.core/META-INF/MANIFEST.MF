@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-Name: Checkstyle Plug-in
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: net.sf.eclipsecs.core;singleton:=true
-Bundle-Version: 7.1.0.qualifier
+Bundle-Version: 7.2.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ClassPath: .,
  lib/dom4j-1.6.1.jar

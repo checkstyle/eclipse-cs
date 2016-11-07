@@ -2,22 +2,22 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Checkstyle Core Library
 Bundle-SymbolicName: net.sf.eclipsecs.checkstyle
-Bundle-Version: 7.1.0.qualifier
+Bundle-Version: 7.2.0.qualifier
 Bundle-Vendor: http://eclipse-cs.sf.net/
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: .,
- antlr;
+ antlr;version="7.2.0";
   uses:="antlr.collections.impl,
    antlr.collections,
    antlr.ASdebug,
    antlr.debug",
- antlr.collections;uses:="antlr",
- com.google.common.base;x-friends:="net.sf.eclipsecs.core,net.sf.eclipsecs.ui",
- com.google.common.cache;x-friends:="net.sf.eclipsecs.core",
- com.google.common.collect,
- com.google.common.io;x-friends:="net.sf.eclipsecs.core",
- com.puppycrawl.tools.checkstyle;x-friends:="net.sf.eclipsecs.core,net.sf.eclipsecs.ui",
+ antlr.collections;version="7.2.0";uses:="antlr",
+ com.google.common.base;version="7.2.0",
+ com.google.common.cache;version="7.2.0",
+ com.google.common.collect;version="7.2.0",
+ com.google.common.io;version="7.2.0",
+ com.puppycrawl.tools.checkstyle,
  com.puppycrawl.tools.checkstyle.api;
   uses:="org.xml.sax.helpers,
    antlr,
@@ -25,23 +25,23 @@ Export-Package: .,
    org.xml.sax,
    com.google.common.collect,
    com.puppycrawl.tools.checkstyle.grammars",
- com.puppycrawl.tools.checkstyle.checks;x-friends:="net.sf.eclipsecs.core",
- com.puppycrawl.tools.checkstyle.checks.annotation;x-friends:="net.sf.eclipsecs.core",
- com.puppycrawl.tools.checkstyle.checks.blocks;x-friends:="net.sf.eclipsecs.core",
- com.puppycrawl.tools.checkstyle.checks.coding;x-friends:="net.sf.eclipsecs.core",
- com.puppycrawl.tools.checkstyle.checks.design;x-friends:="net.sf.eclipsecs.core",
- com.puppycrawl.tools.checkstyle.checks.header;x-friends:="net.sf.eclipsecs.core",
- com.puppycrawl.tools.checkstyle.checks.imports;x-friends:="net.sf.eclipsecs.core",
- com.puppycrawl.tools.checkstyle.checks.indentation;x-friends:="net.sf.eclipsecs.core",
- com.puppycrawl.tools.checkstyle.checks.javadoc;x-friends:="net.sf.eclipsecs.core",
- com.puppycrawl.tools.checkstyle.checks.metrics;x-friends:="net.sf.eclipsecs.core",
- com.puppycrawl.tools.checkstyle.checks.modifier;x-friends:="net.sf.eclipsecs.core",
- com.puppycrawl.tools.checkstyle.checks.naming;x-friends:="net.sf.eclipsecs.core",
- com.puppycrawl.tools.checkstyle.checks.regexp;x-friends:="net.sf.eclipsecs.core",
- com.puppycrawl.tools.checkstyle.checks.sizes;x-friends:="net.sf.eclipsecs.core",
- com.puppycrawl.tools.checkstyle.checks.whitespace;x-friends:="net.sf.eclipsecs.core",
- com.puppycrawl.tools.checkstyle.filters;x-friends:="net.sf.eclipsecs.core",
+ com.puppycrawl.tools.checkstyle.checks,
+ com.puppycrawl.tools.checkstyle.checks.annotation,
+ com.puppycrawl.tools.checkstyle.checks.blocks,
+ com.puppycrawl.tools.checkstyle.checks.coding,
+ com.puppycrawl.tools.checkstyle.checks.design,
+ com.puppycrawl.tools.checkstyle.checks.header,
+ com.puppycrawl.tools.checkstyle.checks.imports,
+ com.puppycrawl.tools.checkstyle.checks.indentation,
+ com.puppycrawl.tools.checkstyle.checks.javadoc,
+ com.puppycrawl.tools.checkstyle.checks.metrics,
+ com.puppycrawl.tools.checkstyle.checks.modifier,
+ com.puppycrawl.tools.checkstyle.checks.naming,
+ com.puppycrawl.tools.checkstyle.checks.regexp,
+ com.puppycrawl.tools.checkstyle.checks.sizes,
+ com.puppycrawl.tools.checkstyle.checks.whitespace,
+ com.puppycrawl.tools.checkstyle.filters,
  com.puppycrawl.tools.checkstyle.utils,
- org.apache.commons.beanutils
+ org.apache.commons.beanutils;version="7.2.0"
 Bundle-ClassPath: .,
  checkstyle-7.2-all.jar

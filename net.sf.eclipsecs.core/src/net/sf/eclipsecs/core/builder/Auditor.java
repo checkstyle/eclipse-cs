@@ -28,16 +28,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import net.sf.eclipsecs.core.CheckstylePluginPrefs;
-import net.sf.eclipsecs.core.Messages;
-import net.sf.eclipsecs.core.config.ConfigurationReader;
-import net.sf.eclipsecs.core.config.ICheckConfiguration;
-import net.sf.eclipsecs.core.config.Module;
-import net.sf.eclipsecs.core.config.meta.MetadataFactory;
-import net.sf.eclipsecs.core.config.meta.RuleMetadata;
-import net.sf.eclipsecs.core.util.CheckstyleLog;
-import net.sf.eclipsecs.core.util.CheckstylePluginException;
-
 import org.eclipse.core.filebuffers.FileBuffers;
 import org.eclipse.core.filebuffers.ITextFileBufferManager;
 import org.eclipse.core.resources.IFile;
@@ -60,8 +50,17 @@ import com.puppycrawl.tools.checkstyle.Checker;
 import com.puppycrawl.tools.checkstyle.api.AuditEvent;
 import com.puppycrawl.tools.checkstyle.api.AuditListener;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
-import com.puppycrawl.tools.checkstyle.api.Filter;
 import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
+
+import net.sf.eclipsecs.core.CheckstylePluginPrefs;
+import net.sf.eclipsecs.core.Messages;
+import net.sf.eclipsecs.core.config.ConfigurationReader;
+import net.sf.eclipsecs.core.config.ICheckConfiguration;
+import net.sf.eclipsecs.core.config.Module;
+import net.sf.eclipsecs.core.config.meta.MetadataFactory;
+import net.sf.eclipsecs.core.config.meta.RuleMetadata;
+import net.sf.eclipsecs.core.util.CheckstyleLog;
+import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
 /**
  * Performs checking on Java source code.
@@ -78,7 +77,7 @@ public class Auditor {
     private IProgressMonitor mMonitor;
 
     /** Map containing the file resources to audit. */
-    private final Map<String, IFile> mFiles = new HashMap<String, IFile>();
+    private final Map<String, IFile> mFiles = new HashMap<>();
 
     /** Add the check rule name to the message? */
     private boolean mAddRuleName = false;
@@ -128,7 +127,6 @@ public class Auditor {
 
         Checker checker = null;
         CheckstyleAuditListener listener = null;
-        Filter runtimeExceptionFilter = null;
 
         try {
 
@@ -142,8 +140,8 @@ public class Auditor {
             checker = CheckerFactory.createChecker(mCheckConfiguration, project);
 
             // get the additional data
-            ConfigurationReader.AdditionalConfigData additionalData = CheckerFactory.getAdditionalData(
-                mCheckConfiguration, project);
+            ConfigurationReader.AdditionalConfigData additionalData = CheckerFactory
+                .getAdditionalData(mCheckConfiguration, project);
 
             // create and add listener
             listener = new CheckstyleAuditListener(project, additionalData);
@@ -178,7 +176,6 @@ public class Auditor {
             // Cleanup listener and filter
             if (checker != null) {
                 checker.removeListener(listener);
-                checker.removeFilter(runtimeExceptionFilter);
             }
         }
     }
@@ -191,7 +188,7 @@ public class Auditor {
             // remove pre-existing project level marker
             project.deleteMarkers(CheckstyleMarker.MARKER_ID, false, IResource.DEPTH_ZERO);
 
-            Map<String, Object> attrs = new HashMap<String, Object>();
+            Map<String, Object> attrs = new HashMap<>();
             attrs.put(IMarker.PRIORITY, new Integer(IMarker.PRIORITY_NORMAL));
             attrs.put(IMarker.SEVERITY, Integer.valueOf(IMarker.SEVERITY_ERROR));
             attrs.put(IMarker.MESSAGE, Messages.bind(Messages.Auditor_msgMsgCheckstyleInternalError, null));
@@ -231,7 +228,7 @@ public class Auditor {
      * @return
      */
     private List<File> getFilesList() {
-        List<File> files = new ArrayList<File>();
+        List<File> files = new ArrayList<>();
         for (IFile file : mFiles.values()) {
             files.add(file.getLocation().toFile());
         }
@@ -263,7 +260,7 @@ public class Auditor {
         private int mMonitorCounter;
 
         /** map containing the marker data. */
-        private final Map<String, Object> mMarkerAttributes = new HashMap<String, Object>();
+        private final Map<String, Object> mMarkerAttributes = new HashMap<>();
 
         /** flags if the amount of markers should be limited. */
         private final boolean mLimitMarkers;
@@ -275,7 +272,7 @@ public class Auditor {
         private int mMarkerCount;
 
         /** keep track which file paths have been connected with the BufferManager. */
-        private Set<IPath> mConnectedFileBufferPaths = new HashSet<IPath>();
+        private Set<IPath> mConnectedFileBufferPaths = new HashSet<>();
 
         public CheckstyleAuditListener(IProject project, ConfigurationReader.AdditionalConfigData additionalData) {
             mProject = project;
@@ -287,6 +284,7 @@ public class Auditor {
             mMarkerLimit = CheckstylePluginPrefs.getInt(CheckstylePluginPrefs.PREF_MARKER_AMOUNT_LIMIT);
         }
 
+        @Override
         public void fileStarted(AuditEvent event) {
 
             if (mMonitor.isCanceled()) {
@@ -325,6 +323,7 @@ public class Auditor {
             }
         }
 
+        @Override
         public void addError(AuditEvent error) {
             try {
                 if (!mLimitMarkers || mMarkerCount < mMarkerLimit) {
@@ -372,10 +371,12 @@ public class Auditor {
             }
         }
 
+        @Override
         public void addException(AuditEvent event, Throwable throwable) {
             CheckstyleLog.log(throwable);
         }
 
+        @Override
         public void fileFinished(AuditEvent event) {
             // update monitor according to the monitor interval
             if (mMonitorCounter == MONITOR_INTERVAL) {
@@ -387,10 +388,12 @@ public class Auditor {
             mDocument = null;
         }
 
+        @Override
         public void auditFinished(AuditEvent event) {
             cleanup();
         }
 
+        @Override
         public void auditStarted(AuditEvent event) {
         }
 
@@ -413,7 +416,8 @@ public class Auditor {
          *            the marker attributes
          * @throws CoreException
          */
-        private void calculateMarkerOffset(AuditEvent error, Map<String, Object> markerAttributes) throws CoreException {
+        private void calculateMarkerOffset(AuditEvent error, Map<String, Object> markerAttributes)
+            throws CoreException {
 
             // lazy create the document for the current file
             if (mDocument == null) {

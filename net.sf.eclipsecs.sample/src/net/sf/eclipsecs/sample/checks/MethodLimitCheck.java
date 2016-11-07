@@ -1,13 +1,14 @@
 package net.sf.eclipsecs.sample.checks;
 
-import com.puppycrawl.tools.checkstyle.api.Check;
+import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
-public class MethodLimitCheck extends Check {
+public class MethodLimitCheck extends AbstractCheck {
 
     private int max = 30;
 
+    @Override
     public int[] getDefaultTokens() {
         return new int[] { TokenTypes.CLASS_DEF, TokenTypes.INTERFACE_DEF };
     }
@@ -16,6 +17,7 @@ public class MethodLimitCheck extends Check {
         max = limit;
     }
 
+    @Override
     public void visitToken(DetailAST ast) {
         // find the OBJBLOCK node below the CLASS_DEF/INTERFACE_DEF
         DetailAST objBlock = ast.findFirstToken(TokenTypes.OBJBLOCK);
