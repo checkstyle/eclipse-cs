@@ -22,15 +22,15 @@ package net.sf.eclipsecs.core.config.configtypes;
 
 import java.net.URL;
 
-import net.sf.eclipsecs.core.config.CheckstyleConfigurationFile;
-import net.sf.eclipsecs.core.config.ICheckConfiguration;
-
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
 
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
+
+import net.sf.eclipsecs.core.config.CheckstyleConfigurationFile;
+import net.sf.eclipsecs.core.config.ICheckConfiguration;
 
 /**
  * Implementation of the configuration type for a built in check configuration, that is located inside the plugin.
@@ -52,6 +52,11 @@ public class BuiltInConfigurationType extends ConfigurationType {
 
         Bundle contributor = Platform.getBundle(contributorName);
         URL locationUrl = FileLocator.find(contributor, new Path(checkConfiguration.getLocation()), null);
+
+        // suggested by https://sourceforge.net/p/eclipse-cs/bugs/410/
+        if (locationUrl == null) {
+            locationUrl = contributor.getResource(checkConfiguration.getLocation());
+        }
 
         return locationUrl;
     }
