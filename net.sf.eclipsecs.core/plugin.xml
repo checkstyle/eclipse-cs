@@ -77,11 +77,9 @@
     -->
     <extension id="checkstyle.CheckConfiguration" point="net.sf.eclipsecs.core.configurations">
         <check-configuration name="Google Checks" location="google_checks.xml" description="%GoogleChecks.description"
-            default-weight="1"/>
+            default-weight="2"/>
         <check-configuration name="Sun Checks" location="sun_checks.xml" description="%SunChecks.description"
             default-weight="1"/>
-        <check-configuration name="Sun Checks (Eclipse)" location="sun_checks_eclipse.xml"
-            description="%SunChecksEclipse.description"/>
     </extension>
 
     <!--

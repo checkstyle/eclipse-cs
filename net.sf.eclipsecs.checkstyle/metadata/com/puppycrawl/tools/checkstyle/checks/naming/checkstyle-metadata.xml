@@ -152,6 +152,14 @@
             <property-metadata name="format" datatype="Regex" default-value="^[a-z][a-zA-Z0-9]*$">
                 <description>%ParameterName.format</description>
             </property-metadata>
+            <property-metadata name="scope" datatype="SingleSelect" default-value="anoninner">
+                <description>%ParameterName.scope</description>
+                <enumeration option-provider="com.puppycrawl.tools.checkstyle.api.Scope"/>
+            </property-metadata>
+            <property-metadata name="excludeScope" datatype="SingleSelect">
+                <description>%ParameterName.excludeScope</description>
+                <enumeration option-provider="com.puppycrawl.tools.checkstyle.api.Scope"/>
+            </property-metadata>
             <property-metadata name="ignoreOverridden" datatype="Boolean" default-value="false">
                 <description>%ParameterName.ignoreOverridden</description>
             </property-metadata>
