@@ -159,7 +159,12 @@ public class Auditor {
         }
 
         catch (CheckstyleException e) {
-            handleCheckstyleFailure(project, e);
+            if (e.getCause() instanceof OperationCanceledException) {
+                // user requested cancellation, keep silent
+            }
+            else {
+                handleCheckstyleFailure(project, e);
+            }
         }
         catch (CoreException e) {
             CheckstylePluginException.rethrow(e);
