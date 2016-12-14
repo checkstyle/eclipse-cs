@@ -300,6 +300,12 @@
             id="CheckstylePlugin.ApplyCheckstyleFixes"
             name="%FixCheckstyleMarkersAction.label"
             defaultHandler="net.sf.eclipsecs.ui.quickfixes.FixCheckstyleMarkersHandler"/>
+        <command
+            categoryId="net.sf.eclipsecs"
+            description="%PurgeCaches.tooltip"
+            id="CheckstylePlugin.PurgeCaches"
+            name="%PurgeCaches.label"
+            defaultHandler="net.sf.eclipsecs.ui.actions.PurgeCachesHandler"/>
     </extension>
     <extension
         point="org.eclipse.ui.bindings">
@@ -436,5 +442,26 @@
                 tooltip="%CheckSelectedFilesAction.tooltip"
                 id="net.sf.eclipsecs.ui.actions.CheckSelectedFilesAction"/>
         </objectContribution>
+    </extension>
+
+    <extension
+        point="org.eclipse.ui.menus">
+        <menuContribution
+                locationURI="toolbar:org.eclipse.ui.main.toolbar">
+            <toolbar id="net.sf.eclipsecs.commands.toolbar" label="Checkstyle">
+                <command
+                      commandId="CheckstylePlugin.PurgeCaches" 
+                      icon="icons/refresh.gif"
+                      tooltip="%PurgeCaches.label"
+                      id="CheckstylePlugin.PurgeCaches" mode="FORCE_TEXT">
+                </command> 
+            </toolbar>
+        </menuContribution>
+    </extension>
+    <extension
+        point="org.eclipse.ui.perspectiveExtensions">
+        <perspectiveExtension targetID="*">
+            <hiddenToolBarItem id="CheckstylePlugin.PurgeCaches"/>
+        </perspectiveExtension>
     </extension>
 </plugin>
