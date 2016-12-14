@@ -1,5 +1,10 @@
 [
   {
+    "version": "Release 7.3.0",
+    "template": "partials/releases/7.3.0/release_notes.html",
+    "open": true
+  },
+  {
     "version": "Release 7.2.0",
     "template": "partials/releases/7.2.0/release_notes.html",
     "open": true
@@ -16,13 +21,11 @@
   },
   {
     "version": "Release 6.16.0",
-    "template": "partials/releases/6.16.0/release_notes.html",
-    "open": true
+    "template": "partials/releases/6.16.0/release_notes.html"
   },
   {
     "version": "Release 6.14.0",
-    "template": "partials/releases/6.14.0/release_notes.html",
-    "open": true
+    "template": "partials/releases/6.14.0/release_notes.html"
   },
   {
     "version": "Release 6.11.1",
