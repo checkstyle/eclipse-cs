@@ -9,6 +9,6 @@
     </properties>
     <children size='2'>
         <child location='https://sourceforge.net/projects/eclipse-cs/files/updatesite/${unqualifiedVersion}' />
-        <child location='https://sevntu-checkstyle.github.com/sevntu.checkstyle/update-site/' />
+        <child location='https://sevntu-checkstyle.github.io/sevntu.checkstyle/update-site/' />
     </children>
 </repository>
