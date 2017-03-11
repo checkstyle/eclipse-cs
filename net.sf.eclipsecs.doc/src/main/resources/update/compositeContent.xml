@@ -8,7 +8,7 @@
         <property name='p2.timestamp' value='${buildQualifier}' />
     </properties>
     <children size='2'>
-        <child location='https://sourceforge.net/projects/eclipse-cs/files/updatesite/${unqualifiedVersion}' />
+        <child location='https://dl.bintray.com/eclipse-cs/eclipse-cs/${unqualifiedVersion}/' />
         <child location='https://sevntu-checkstyle.github.io/sevntu.checkstyle/update-site/' />
     </children>
 </repository>
