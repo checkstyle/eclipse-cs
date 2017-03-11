@@ -45,20 +45,21 @@
                 <description>%NoWhitespaceAfter.allowLineBreaks</description>
             </property-metadata>
             <property-metadata name="tokens" datatype="MultiCheck"
-                default-value="ARRAY_INIT,BNOT,DEC,DOT,INC,LNOT,UNARY_MINUS,UNARY_PLUS,TYPECAST">
+                default-value="ARRAY_INIT,INC,DEC,UNARY_MINUS,UNARY_PLUS,BNOT,LNOT,DOT,ARRAY_DECLARATOR,INDEX_OP">
                 <description>%NoWhitespaceAfter.tokens</description>
                 <enumeration>
                     <property-value-option value="ARRAY_INIT" />
-                    <property-value-option value="BNOT" />
-                    <property-value-option value="DEC" />
-                    <property-value-option value="DOT" />
                     <property-value-option value="INC" />
-                    <property-value-option value="LNOT" />
+                    <property-value-option value="DEC" />
                     <property-value-option value="UNARY_MINUS" />
                     <property-value-option value="UNARY_PLUS" />
+                    <property-value-option value="BNOT" />
+                    <property-value-option value="LNOT" />
+                    <property-value-option value="DOT" />
                     <property-value-option value="TYPECAST" />
-                    <property-value-option value="GENERIC_START" />
-                    <property-value-option value="GENERIC_END" />
+                    <property-value-option value="ARRAY_DECLARATOR" />
+                    <property-value-option value="INDEX_OP" />
+                    <property-value-option value="LITERAL_SYNCHRONIZED" />
                 </enumeration>
             </property-metadata>
             <message-key key="ws.followed" />
@@ -71,16 +72,17 @@
             <property-metadata name="allowLineBreaks" datatype="Boolean" default-value="false">
                 <description>%NoWhitespaceBefore.allowLineBreaks</description>
             </property-metadata>
-            <property-metadata name="tokens" datatype="MultiCheck" default-value="COMMA,SEMI,POST_DEC,POST_INC">
+            <property-metadata name="tokens" datatype="MultiCheck" default-value="COMMA,SEMI,POST_INC,POST_DEC,ELLIPSIS">
                 <description>%NoWhitespaceBefore.tokens</description>
                 <enumeration>
                     <property-value-option value="COMMA" />
                     <property-value-option value="SEMI" />
-                    <property-value-option value="DOT" />
-                    <property-value-option value="POST_DEC" />
                     <property-value-option value="POST_INC" />
+                    <property-value-option value="POST_DEC" />
+                    <property-value-option value="DOT" />
                     <property-value-option value="GENERIC_START" />
                     <property-value-option value="GENERIC_END" />
+                    <property-value-option value="ELLIPSIS" />
                 </enumeration>
             </property-metadata>
             <message-key key="ws.preceded" />
@@ -246,12 +248,18 @@
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.whitespace.WhitespaceAfterCheck" />
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.WhitespaceAfterCheck" />
             <description>%WhitespaceAfter.desc</description>
-            <property-metadata name="tokens" datatype="MultiCheck" default-value="COMMA,SEMI,TYPECAST">
+            <property-metadata name="tokens" datatype="MultiCheck" default-value="COMMA,SEMI,TYPECAST,LITERAL_IF,LITERAL_ELSE,LITERAL_WHILE,LITERAL_DO,LITERAL_FOR,DO_WHILE">
                 <description>%WhitespaceAfter.tokens</description>
                 <enumeration>
                     <property-value-option value="COMMA" />
                     <property-value-option value="SEMI" />
                     <property-value-option value="TYPECAST" />
+                    <property-value-option value="LITERAL_IF" />
+                    <property-value-option value="LITERAL_ELSE" />
+                    <property-value-option value="LITERAL_WHILE" />
+                    <property-value-option value="LITERAL_DO" />
+                    <property-value-option value="LITERAL_FOR" />
+                    <property-value-option value="DO_WHILE" />
                 </enumeration>
             </property-metadata>
             <message-key key="ws.notFollowed" />
@@ -262,7 +270,7 @@
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.WhitespaceAroundCheck" />
             <description>%WhitespaceAround.desc</description>
             <property-metadata name="tokens" datatype="MultiCheck"
-                default-value="ASSIGN,BAND,BAND_ASSIGN,BOR,BOR_ASSIGN,BSR,BSR_ASSIGN,BXOR,BXOR_ASSIGN,COLON,DIV,DIV_ASSIGN,DO_WHILE,EQUAL,GE,GT,LAMBDA,LAND,LCURLY,LE,LITERAL_ASSERT,LITERAL_CATCH,LITERAL_DO,LITERAL_ELSE,LITERAL_FINALLY,LITERAL_FOR,LITERAL_IF,LITERAL_RETURN,LITERAL_SYNCHRONIZED,LITERAL_TRY,LITERAL_WHILE,LOR,LT,MINUS,MINUS_ASSIGN,MOD,MOD_ASSIGN,NOT_EQUAL,PLUS,PLUS_ASSIGN,QUESTION,RCURLY,SL,SLIST,SL_ASSIGN,SR,SR_ASSIGN,STAR,STAR_ASSIGN,LITERAL_ASSERT,TYPE_EXTENSION_AND,WILDCARD_TYPE">
+                default-value="ASSIGN,BAND,BAND_ASSIGN,BOR,BOR_ASSIGN,BSR,BSR_ASSIGN,BXOR,BXOR_ASSIGN,COLON,DIV,DIV_ASSIGN,DO_WHILE,EQUAL,GE,GT,LAMBDA,LAND,LCURLY,LE,LITERAL_ASSERT,LITERAL_CATCH,LITERAL_DO,LITERAL_ELSE,LITERAL_FINALLY,LITERAL_FOR,LITERAL_IF,LITERAL_RETURN,LITERAL_SWITCH,LITERAL_SYNCHRONIZED,LITERAL_TRY,LITERAL_WHILE,LOR,LT,MINUS,MINUS_ASSIGN,MOD,MOD_ASSIGN,NOT_EQUAL,PLUS,PLUS_ASSIGN,QUESTION,RCURLY,SL,SLIST,SL_ASSIGN,SR,SR_ASSIGN,STAR,STAR_ASSIGN,LITERAL_ASSERT,TYPE_EXTENSION_AND">
                 <description>%WhitespaceAround.tokens</description>
                 <enumeration>
                     <property-value-option value="ASSIGN" />
@@ -335,6 +343,9 @@
             </property-metadata>
             <property-metadata name="allowEmptyLambdas" datatype="Boolean" default-value="false">
                 <description>%WhitespaceAround.allowEmptyLambdas</description>
+            </property-metadata>
+            <property-metadata name="allowEmptyCatches" datatype="Boolean" default-value="false">
+                <description>%WhitespaceAround.allowEmptyCatches</description>
             </property-metadata>
             <property-metadata name="ignoreEnhancedForColon" datatype="Boolean" default-value="true">
                 <description>%WhitespaceAround.ignoreEnhancedForColon</description>

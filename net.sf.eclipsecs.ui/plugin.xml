@@ -305,7 +305,7 @@
             description="%PurgeCaches.tooltip"
             id="CheckstylePlugin.PurgeCaches"
             name="%PurgeCaches.label"
-            defaultHandler="net.sf.eclipsecs.ui.actions.PurgeCachesHandler"/>
+            defaultHandler="net.sf.eclipsecs.ui.actions.PurgeCachesAction"/>
     </extension>
     <extension
         point="org.eclipse.ui.bindings">
@@ -443,25 +443,19 @@
                 id="net.sf.eclipsecs.ui.actions.CheckSelectedFilesAction"/>
         </objectContribution>
     </extension>
-
+    
     <extension
-        point="org.eclipse.ui.menus">
-        <menuContribution
-                locationURI="toolbar:org.eclipse.ui.main.toolbar">
-            <toolbar id="net.sf.eclipsecs.commands.toolbar" label="Checkstyle">
-                <command
-                      commandId="CheckstylePlugin.PurgeCaches" 
-                      icon="icons/refresh.gif"
-                      tooltip="%PurgeCaches.label"
-                      id="CheckstylePlugin.PurgeCaches" mode="FORCE_TEXT">
-                </command> 
-            </toolbar>
-        </menuContribution>
-    </extension>
-    <extension
-        point="org.eclipse.ui.perspectiveExtensions">
-        <perspectiveExtension targetID="*">
-            <hiddenToolBarItem id="CheckstylePlugin.PurgeCaches"/>
-        </perspectiveExtension>
+          point="org.eclipse.ui.actionSets" >
+          <actionSet
+                id="net.sf.eclipsecs.ui.actionSet" visible="false" label="Checkstyle">
+                <action 
+                    id="net.sf.eclipsecs.action.purgecaches"
+                    class="net.sf.eclipsecs.ui.actions.PurgeCachesAction"
+                    toolbarPath="Normal/ZCheckstyle"
+                    icon="icons/refresh.gif"
+                    label="%PurgeCaches.label"
+                    tooltip="%PurgeCaches.tooltip" mode="FORCE_TEXT">
+                </action>
+          </actionSet>
     </extension>
 </plugin>

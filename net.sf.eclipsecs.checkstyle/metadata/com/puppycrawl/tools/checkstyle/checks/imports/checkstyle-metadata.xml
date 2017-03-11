@@ -100,6 +100,9 @@
             <property-metadata name="url" datatype="String">
                 <description>%ImportControl.url</description>
             </property-metadata>
+            <property-metadata name="path" datatype="Regex" default-value=".*">
+                <description>%ImportControl.path</description>
+            </property-metadata>
             <message-key key="import.control.missing.file"/>
             <message-key key="import.control.disallowed"/>
             <message-key key="import.control.unknown.pkg"/>

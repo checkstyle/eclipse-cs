@@ -23,6 +23,9 @@
             <property-metadata name="fileExtensions" datatype="String">
                 <description>%Checker.fileExtensions</description>
             </property-metadata>
+            <property-metadata name="haltOnException" datatype="Boolean" default-value="true">
+                <description>%Checker.haltOnException</description>
+            </property-metadata>
             <message-key key="general.fileNotFound"/>
             <message-key key="general.exception"/>
         </rule-metadata>
