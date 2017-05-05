@@ -17,8 +17,8 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.jface.util.Assert;
-import org.eclipse.jface.util.ListenerList;
 import org.eclipse.jface.util.SafeRunnable;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.ColumnWeightData;
@@ -47,7 +47,7 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
     /**
      * List of check state listeners (element type: <code>ICheckStateListener</code>).
      */
-    private final ListenerList checkStateListeners = new ListenerList(3);
+    private final ListenerList checkStateListeners = new ListenerList();
 
     /**
      * Creates a table viewer on a newly-created table control under the given parent. The table control is created
