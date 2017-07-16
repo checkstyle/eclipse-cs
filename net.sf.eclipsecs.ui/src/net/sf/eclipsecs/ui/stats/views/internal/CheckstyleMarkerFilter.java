@@ -27,9 +27,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
-import net.sf.eclipsecs.core.builder.CheckstyleMarker;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
-
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -39,6 +36,9 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.ui.IWorkingSet;
+
+import net.sf.eclipsecs.core.builder.CheckstyleMarker;
+import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
 
 /**
  * Filter class for Checkstyle markers. This filter is used by the Checkstyle statistics views.
@@ -594,7 +594,7 @@ public class CheckstyleMarkerFilter implements Cloneable {
         List result = new ArrayList(elements.length);
 
         for (int idx = 0; idx < elements.length; idx++) {
-            IResource next = (IResource) elements[idx].getAdapter(IResource.class);
+            IResource next = elements[idx].getAdapter(IResource.class);
 
             if (next != null) {
                 result.add(next);
@@ -609,6 +609,7 @@ public class CheckstyleMarkerFilter implements Cloneable {
      *
      * @see java.lang.Object#clone()
      */
+    @Override
     public Object clone() {
         try {
             return super.clone();

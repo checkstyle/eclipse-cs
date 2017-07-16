@@ -29,6 +29,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourceAttributes;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.osgi.util.NLS;
+
 import net.sf.eclipsecs.core.Messages;
 import net.sf.eclipsecs.core.config.CheckConfigurationFactory;
 import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
@@ -40,16 +51,6 @@ import net.sf.eclipsecs.core.config.configtypes.ProjectConfigurationType;
 import net.sf.eclipsecs.core.projectconfig.filters.IFilter;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 import net.sf.eclipsecs.core.util.XMLUtil;
-
-import org.dom4j.Document;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.osgi.util.NLS;
 
 /**
  * A modifiable project configuration implementation.
@@ -68,10 +69,10 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
     private final ICheckConfigurationWorkingSet mGlobalConfigWorkingSet;
 
     /** the file sets. */
-    private List<FileSet> mFileSets = new LinkedList<FileSet>();
+    private List<FileSet> mFileSets = new LinkedList<>();
 
     /** the filters. */
-    private List<IFilter> mFilters = new LinkedList<IFilter>();
+    private List<IFilter> mFilters = new LinkedList<>();
 
     /** Flags if the simple file set editor should be used. */
     private boolean mUseSimpleConfig;
@@ -101,7 +102,7 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
 
         // build list of filters
         List<IFilter> standardFilters = Arrays.asList(PluginFilters.getConfiguredFilters());
-        mFilters = new ArrayList<IFilter>(standardFilters);
+        mFilters = new ArrayList<>(standardFilters);
 
         // merge with filters configured for the project
         List<IFilter> configuredFilters = projectConfig.getFilters();
@@ -240,7 +241,7 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
     @Override
     public List<ICheckConfiguration> getLocalCheckConfigurations() {
 
-        List<ICheckConfiguration> l = new ArrayList<ICheckConfiguration>();
+        List<ICheckConfiguration> l = new ArrayList<>();
         for (ICheckConfiguration c : mLocalConfigWorkingSet.getWorkingCopies()) {
             l.add(c);
         }
@@ -275,9 +276,8 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
 
         for (FileSet fileSet : getFileSets()) {
             ICheckConfiguration checkConfig = fileSet.getCheckConfig();
-            if (configuration.equals(checkConfig)
-                || (checkConfig instanceof CheckConfigurationWorkingCopy && configuration
-                    .equals(((CheckConfigurationWorkingCopy) checkConfig).getSourceCheckConfiguration()))) {
+            if (configuration.equals(checkConfig) || (checkConfig instanceof CheckConfigurationWorkingCopy
+                && configuration.equals(((CheckConfigurationWorkingCopy) checkConfig).getSourceCheckConfiguration()))) {
                 result = true;
                 break;
             }
@@ -290,7 +290,7 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
         ProjectConfigurationWorkingCopy clone = null;
         try {
             clone = (ProjectConfigurationWorkingCopy) super.clone();
-            clone.mFileSets = new LinkedList<FileSet>();
+            clone.mFileSets = new LinkedList<>();
             clone.setUseSimpleConfig(this.isUseSimpleConfig());
             clone.setSyncFormatter(this.isSyncFormatter());
 
@@ -300,7 +300,7 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
             }
 
             // clone filters
-            List<IFilter> clonedFilters = new ArrayList<IFilter>();
+            List<IFilter> clonedFilters = new ArrayList<>();
             for (IFilter filter : getFilters()) {
                 clonedFilters.add(filter.clone());
             }
@@ -354,7 +354,9 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
             else {
 
                 if (file.isReadOnly()) {
-                    file.setReadOnly(false);
+                    ResourceAttributes attrs = ResourceAttributes.fromFile(file.getFullPath().toFile());
+                    attrs.setReadOnly(true);
+                    file.setResourceAttributes(attrs);
                 }
 
                 file.setContents(pipeIn, true, true, null);
@@ -472,8 +474,8 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
     private void writeFileSet(FileSet fileSet, IProject project, Element docRoot) throws CheckstylePluginException {
 
         if (fileSet.getCheckConfig() == null) {
-            throw new CheckstylePluginException(NLS.bind(Messages.errorFilesetWithoutCheckConfig, fileSet.getName(),
-                project.getName()));
+            throw new CheckstylePluginException(
+                NLS.bind(Messages.errorFilesetWithoutCheckConfig, fileSet.getName(), project.getName()));
         }
 
         Element fileSetEl = docRoot.addElement(XMLTags.FILESET_TAG);

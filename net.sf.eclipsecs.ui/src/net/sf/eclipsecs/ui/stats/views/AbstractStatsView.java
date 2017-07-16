@@ -26,14 +26,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import net.sf.eclipsecs.core.builder.CheckstyleMarker;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
-import net.sf.eclipsecs.ui.stats.Messages;
-import net.sf.eclipsecs.ui.stats.data.CreateStatsJob;
-import net.sf.eclipsecs.ui.stats.data.Stats;
-import net.sf.eclipsecs.ui.stats.views.internal.CheckstyleMarkerFilter;
-import net.sf.eclipsecs.ui.stats.views.internal.CheckstyleMarkerFilterDialog;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarkerDelta;
 import org.eclipse.core.resources.IResource;
@@ -64,9 +56,17 @@ import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.progress.IWorkbenchSiteProgressService;
 import org.eclipse.ui.progress.WorkbenchJob;
 
+import net.sf.eclipsecs.core.builder.CheckstyleMarker;
+import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
+import net.sf.eclipsecs.ui.stats.Messages;
+import net.sf.eclipsecs.ui.stats.data.CreateStatsJob;
+import net.sf.eclipsecs.ui.stats.data.Stats;
+import net.sf.eclipsecs.ui.stats.views.internal.CheckstyleMarkerFilter;
+import net.sf.eclipsecs.ui.stats.views.internal.CheckstyleMarkerFilterDialog;
+
 /**
  * Abstract view that gathers common behaviour for the stats views.
- * 
+ *
  * @author Fabrice BELLINGARD
  * @author Lars Ködderitzsch
  */
@@ -100,15 +100,17 @@ public abstract class AbstractStatsView extends ViewPart {
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @see org.eclipse.ui.IWorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
      */
+    @Override
     public void createPartControl(Composite parent) {
 
         mMainComposite = parent;
 
         // create and register the workspace focus listener
         mFocusListener = new ISelectionListener() {
+            @Override
             public void selectionChanged(IWorkbenchPart part, ISelection selection) {
                 AbstractStatsView.this.focusSelectionChanged(part, selection);
             }
@@ -120,6 +122,7 @@ public abstract class AbstractStatsView extends ViewPart {
 
         // create and register the listener for resource changes
         mResourceListener = new IResourceChangeListener() {
+            @Override
             public void resourceChanged(IResourceChangeEvent event) {
 
                 IMarkerDelta[] markerDeltas = event.findMarkerDeltas(CheckstyleMarker.MARKER_ID,
@@ -140,6 +143,7 @@ public abstract class AbstractStatsView extends ViewPart {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setFocus() {
 
     }
@@ -147,6 +151,7 @@ public abstract class AbstractStatsView extends ViewPart {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void dispose() {
         // IMPORTANT: Deregister listeners
         getSite().getPage().removeSelectionListener(mFocusListener);
@@ -174,7 +179,7 @@ public abstract class AbstractStatsView extends ViewPart {
 
     /**
      * Initializes the action bars of this view.
-     * 
+     *
      * @param actionBars the action bars
      */
     protected void initActionBars(IActionBars actionBars) {
@@ -188,7 +193,7 @@ public abstract class AbstractStatsView extends ViewPart {
 
     /**
      * Returns the filter of this view.
-     * 
+     *
      * @return the filter
      */
     protected final CheckstyleMarkerFilter getFilter() {
@@ -202,7 +207,7 @@ public abstract class AbstractStatsView extends ViewPart {
 
     /**
      * Returns the statistics data.
-     * 
+     *
      * @return the data of this view
      */
     protected final Stats getStats() {
@@ -216,7 +221,7 @@ public abstract class AbstractStatsView extends ViewPart {
      */
     protected final void refresh() {
 
-        IWorkbenchSiteProgressService service = (IWorkbenchSiteProgressService) getSite()
+        IWorkbenchSiteProgressService service = getSite()
                 .getAdapter(IWorkbenchSiteProgressService.class);
 
         // rebuild statistics data
@@ -224,10 +229,12 @@ public abstract class AbstractStatsView extends ViewPart {
         job.setPriority(Job.DECORATE);
         job.setRule(ResourcesPlugin.getWorkspace().getRoot());
         job.addJobChangeListener(new JobChangeAdapter() {
+            @Override
             public void done(IJobChangeEvent event) {
                 mStats = ((CreateStatsJob) event.getJob()).getStats();
                 Job uiJob = new WorkbenchJob(Messages.AbstractStatsView_msgRefreshStats) {
 
+                    @Override
                     public IStatus runInUIThread(IProgressMonitor monitor) {
                         handleStatsRebuilt();
                         return Status.OK_STATUS;
@@ -243,7 +250,7 @@ public abstract class AbstractStatsView extends ViewPart {
 
     /**
      * Returns the dialog settings for this view.
-     * 
+     *
      * @return the dialog settings
      */
     protected final IDialogSettings getDialogSettings() {
@@ -264,7 +271,7 @@ public abstract class AbstractStatsView extends ViewPart {
      * Returns the view id of the concrete view. This is used to make separate
      * filter settings (stored in dialog settings) for different concrete views
      * possible.
-     * 
+     *
      * @return the view id
      */
     protected abstract String getViewId();
@@ -284,7 +291,7 @@ public abstract class AbstractStatsView extends ViewPart {
 
     /**
      * Invoked on selection changes within the workspace.
-     * 
+     *
      * @param part the workbench part the selection occurred
      * @param selection the selection
      */
@@ -332,10 +339,10 @@ public abstract class AbstractStatsView extends ViewPart {
 
     private void considerAdaptable(IAdaptable adaptable, Collection resources) {
 
-        IResource resource = (IResource) adaptable.getAdapter(IResource.class);
+        IResource resource = adaptable.getAdapter(IResource.class);
 
         if (resource == null) {
-            resource = (IResource) adaptable.getAdapter(IFile.class);
+            resource = adaptable.getAdapter(IFile.class);
         }
 
         if (resource != null) {
@@ -349,7 +356,7 @@ public abstract class AbstractStatsView extends ViewPart {
      * given editor input, or <code>null</code> if there is no applicable
      * file. Returns <code>null</code> if the given editor input is
      * <code>null</code>.
-     * 
+     *
      * @param editorInput the editor input, or <code>null</code>
      * @return the file corresponding to the editor input, or <code>null</code>
      */
@@ -372,7 +379,7 @@ public abstract class AbstractStatsView extends ViewPart {
      * Checks if an update of the statistics data is needed, based on the
      * current and previously selected resources. The current filter setting is
      * also taken into consideration.
-     * 
+     *
      * @param oldResources the previously selected resources.
      * @param newResources the currently selected resources
      * @return <code>true</code> if an update of the statistics data is needed

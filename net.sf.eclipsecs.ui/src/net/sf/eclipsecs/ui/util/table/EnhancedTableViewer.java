@@ -22,14 +22,12 @@ package net.sf.eclipsecs.ui.util.table;
 
 import java.text.Collator;
 
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
-
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.viewers.ColumnPixelData;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.viewers.ViewerSorter;
+import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.SelectionEvent;
@@ -38,10 +36,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
+import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
+
 /**
  * This subclass of <code>TableViewer</code> adds easier sorting support and
  * support for storing table settings (column width, sorter state).
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public class EnhancedTableViewer extends TableViewer {
@@ -96,7 +96,7 @@ public class EnhancedTableViewer extends TableViewer {
 
     /**
      * Creates the EnhancedTableViewer for the given table.
-     * 
+     *
      * @param table the table to create the viewer for
      */
     public EnhancedTableViewer(Table table) {
@@ -108,7 +108,7 @@ public class EnhancedTableViewer extends TableViewer {
 
     /**
      * Creates the EnhancedTableViewer for the given parent and style.
-     * 
+     *
      * @param parent parent composite
      * @param style the style
      */
@@ -118,7 +118,7 @@ public class EnhancedTableViewer extends TableViewer {
 
     /**
      * Creates the EnhancedTableViewer within the given parent composite.
-     * 
+     *
      * @param parent parent composite
      */
     public EnhancedTableViewer(Composite parent) {
@@ -131,23 +131,23 @@ public class EnhancedTableViewer extends TableViewer {
 
     /**
      * Sets the comparable provider for this table.
-     * 
+     *
      * @param comparableProvider the comparable provider
      */
     public void setTableComparableProvider(ITableComparableProvider comparableProvider) {
         mComparableProvider = comparableProvider;
 
         if (mComparableProvider != null) {
-            this.setSorter(new TableSorter());
+            this.setComparator(new TableSorter());
         }
         else {
-            this.setSorter(null);
+            this.setComparator(null);
         }
     }
 
     /**
      * Returns the comparable provider.
-     * 
+     *
      * @return the comparable provider
      */
     public ITableComparableProvider getTableComparableProvider() {
@@ -156,7 +156,7 @@ public class EnhancedTableViewer extends TableViewer {
 
     /**
      * Sets the settings provider.
-     * 
+     *
      * @param settingsProvider the settings provider
      */
     public void setTableSettingsProvider(ITableSettingsProvider settingsProvider) {
@@ -165,7 +165,7 @@ public class EnhancedTableViewer extends TableViewer {
 
     /**
      * Returns the settings provider.
-     * 
+     *
      * @return the settings provider
      */
     public ITableSettingsProvider getTableSettingsProvider() {
@@ -291,6 +291,7 @@ public class EnhancedTableViewer extends TableViewer {
     private void resort() {
 
         this.getTable().getDisplay().asyncExec(new Runnable() {
+            @Override
             public void run() {
                 getControl().setRedraw(false);
                 refresh(false);
@@ -301,11 +302,12 @@ public class EnhancedTableViewer extends TableViewer {
 
     /**
      * Listener for header clicks and resize events.
-     * 
+     *
      * @author Lars Ködderitzsch
      */
     private class TableListener implements SelectionListener, ControlListener {
 
+        @Override
         public void widgetSelected(SelectionEvent e) {
 
             if (e.getSource() instanceof TableColumn) {
@@ -328,16 +330,19 @@ public class EnhancedTableViewer extends TableViewer {
             }
         }
 
+        @Override
         public void controlResized(ControlEvent e) {
             if (e.getSource() instanceof TableColumn) {
                 saveState();
             }
         }
 
+        @Override
         public void widgetDefaultSelected(SelectionEvent e) {
         // NOOP
         }
 
+        @Override
         public void controlMoved(ControlEvent e) {
         // NOOP
         }
@@ -346,14 +351,15 @@ public class EnhancedTableViewer extends TableViewer {
     /**
      * Sorter implementation that uses the values provided by the comparable
      * provider to sort the table.
-     * 
+     *
      * @author Lars Ködderitzsch
      */
-    private class TableSorter extends ViewerSorter {
+    private class TableSorter extends ViewerComparator {
 
         /**
          * {@inheritDoc}
          */
+        @Override
         public int compare(Viewer viewer, Object e1, Object e2) {
             Comparable c1 = mComparableProvider.getComparableValue(e1, mSortedColumnIndex);
             Comparable c2 = mComparableProvider.getComparableValue(e2, mSortedColumnIndex);

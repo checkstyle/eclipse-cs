@@ -23,19 +23,20 @@ package net.sf.eclipsecs.core.nature;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sf.eclipsecs.core.CheckstylePlugin;
-import net.sf.eclipsecs.core.builder.CheckstyleBuilder;
-import net.sf.eclipsecs.core.builder.CheckstyleMarker;
-
 import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IProjectNature;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourceAttributes;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.JavaCore;
+
+import net.sf.eclipsecs.core.CheckstylePlugin;
+import net.sf.eclipsecs.core.builder.CheckstyleBuilder;
+import net.sf.eclipsecs.core.builder.CheckstyleMarker;
 
 /**
  * Checkstyle project nature.
@@ -51,6 +52,7 @@ public class CheckstyleNature implements IProjectNature {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void configure() throws CoreException {
 
         //
@@ -83,16 +85,19 @@ public class CheckstyleNature implements IProjectNature {
         }
     }
 
-    private void ensureProjectFileWritable() {
+    private void ensureProjectFileWritable() throws CoreException {
         IFile projectFile = mProject.getFile(".project");
         if (projectFile.isReadOnly()) {
-            projectFile.setReadOnly(false);
+            ResourceAttributes attrs = ResourceAttributes.fromFile(projectFile.getFullPath().toFile());
+            attrs.setReadOnly(true);
+            projectFile.setResourceAttributes(attrs);
         }
     }
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public void deconfigure() throws CoreException {
 
         //
@@ -100,7 +105,7 @@ public class CheckstyleNature implements IProjectNature {
         //
         IProjectDescription description = mProject.getDescription();
         ICommand[] commands = description.getBuildSpec();
-        List<ICommand> newCommandsVec = new ArrayList<ICommand>();
+        List<ICommand> newCommandsVec = new ArrayList<>();
         for (int i = 0; i < commands.length; ++i) {
             if (commands[i].getBuilderName().equals(CheckstyleBuilder.BUILDER_ID)) {
                 continue;
@@ -125,6 +130,7 @@ public class CheckstyleNature implements IProjectNature {
     /**
      * {@inheritDoc}
      */
+    @Override
     public IProject getProject() {
         return mProject;
     }
@@ -132,6 +138,7 @@ public class CheckstyleNature implements IProjectNature {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setProject(IProject project) {
         mProject = project;
     }
@@ -139,7 +146,7 @@ public class CheckstyleNature implements IProjectNature {
     /**
      * Checks if the ordering of the builders of the given project is correct, more specifically if the
      * CheckstyleBuilder is set to run after the JavaBuilder.
-     * 
+     *
      * @param project
      *            the project to check
      * @return <code>true</code> if the builder order for this project is correct, <code>false</code> otherwise

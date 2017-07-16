@@ -20,19 +20,20 @@
 
 package net.sf.eclipsecs.ui.config;
 
-import net.sf.eclipsecs.core.config.ICheckConfiguration;
-
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.viewers.ViewerSorter;
+import org.eclipse.jface.viewers.ViewerComparator;
+
+import net.sf.eclipsecs.core.config.ICheckConfiguration;
 
 /**
  * Sorts CheckConfiguration objects into their display order.
  */
-public class CheckConfigurationViewerSorter extends ViewerSorter {
+public class CheckConfigurationViewerSorter extends ViewerComparator {
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public int compare(Viewer viewer, Object e1, Object e2) {
         int result = 0;
 

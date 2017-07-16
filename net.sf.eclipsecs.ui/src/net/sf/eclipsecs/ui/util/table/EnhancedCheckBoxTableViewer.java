@@ -17,8 +17,8 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.ListenerList;
-import org.eclipse.jface.util.Assert;
 import org.eclipse.jface.util.SafeRunnable;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.ColumnWeightData;
@@ -62,6 +62,7 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
      *            the parent control
      * @deprecated use newCheckList(Composite, int) or new CheckboxTableViewer(Table) instead (see below for details)
      */
+    @Deprecated
     public EnhancedCheckBoxTableViewer(Composite parent) {
         this(parent, SWT.BORDER);
     }
@@ -92,6 +93,7 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
      *            SWT style bits
      * @deprecated use newCheckList(Composite, int) or new CheckboxTableViewer(Table) instead (see above for details)
      */
+    @Deprecated
     public EnhancedCheckBoxTableViewer(Composite parent, int style) {
         this(createTable(parent, style));
     }
@@ -130,6 +132,7 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
     /*
      * (non-Javadoc) Method declared on ICheckable.
      */
+    @Override
     public void addCheckStateListener(ICheckStateListener listener) {
         checkStateListeners.add(listener);
     }
@@ -172,6 +175,7 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
         for (int i = 0; i < array.length; i++) {
             final ICheckStateListener l = (ICheckStateListener) array[i];
             SafeRunnable.run(new SafeRunnable() {
+                @Override
                 public void run() {
                     l.checkStateChanged(event);
                 }
@@ -182,6 +186,7 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
     /*
      * (non-Javadoc) Method declared on ICheckable.
      */
+    @Override
     public boolean getChecked(Object element) {
         Widget widget = findItem(element);
         if (widget instanceof TableItem) {
@@ -252,6 +257,7 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
     /*
      * (non-Javadoc) Method declared on StructuredViewer.
      */
+    @Override
     public void handleSelect(SelectionEvent event) {
         if (event.detail == SWT.CHECK) {
             super.handleSelect(event); // this will change the current
@@ -271,6 +277,7 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
     /*
      * (non-Javadoc) Method declared on Viewer.
      */
+    @Override
     protected void preservingSelection(Runnable updateCode) {
 
         TableItem[] children = getTable().getItems();
@@ -306,6 +313,7 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
     /*
      * (non-Javadoc) Method declared on ICheckable.
      */
+    @Override
     public void removeCheckStateListener(ICheckStateListener listener) {
         checkStateListeners.remove(listener);
     }
@@ -341,6 +349,7 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
     /*
      * (non-Javadoc) Method declared on ICheckable.
      */
+    @Override
     public boolean setChecked(Object element, boolean state) {
         Assert.isNotNull(element);
         Widget widget = findItem(element);
@@ -464,10 +473,12 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
         }
 
         private static final class EmptyEnumerator implements Enumeration {
+            @Override
             public boolean hasMoreElements() {
                 return false;
             }
 
+            @Override
             public Object nextElement() {
                 throw new NoSuchElementException();
             }
@@ -485,6 +496,7 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
                 start = firstSlot;
             }
 
+            @Override
             public boolean hasMoreElements() {
                 if (entry != null) {
                     return true;
@@ -498,6 +510,7 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
                 return false;
             }
 
+            @Override
             public Object nextElement() {
                 if (hasMoreElements()) {
                     Object result = key ? entry.key : entry.value;
@@ -809,6 +822,7 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
          *
          * @return the string representation of this Hashtable
          */
+        @Override
         public String toString() {
             if (size() == 0) {
                 return "{}"; //$NON-NLS-1$

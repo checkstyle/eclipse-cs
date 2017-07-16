@@ -22,17 +22,6 @@ package net.sf.eclipsecs.ui.properties;
 
 import java.util.List;
 
-import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
-import net.sf.eclipsecs.core.config.ICheckConfiguration;
-import net.sf.eclipsecs.core.projectconfig.FileMatchPattern;
-import net.sf.eclipsecs.core.projectconfig.FileSet;
-import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
-import net.sf.eclipsecs.ui.Messages;
-import net.sf.eclipsecs.ui.config.CheckConfigurationConfigureDialog;
-import net.sf.eclipsecs.ui.config.CheckConfigurationLabelProvider;
-import net.sf.eclipsecs.ui.config.CheckConfigurationViewerSorter;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -54,10 +43,21 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
+import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
+import net.sf.eclipsecs.core.config.ICheckConfiguration;
+import net.sf.eclipsecs.core.projectconfig.FileMatchPattern;
+import net.sf.eclipsecs.core.projectconfig.FileSet;
+import net.sf.eclipsecs.core.util.CheckstylePluginException;
+import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
+import net.sf.eclipsecs.ui.Messages;
+import net.sf.eclipsecs.ui.config.CheckConfigurationConfigureDialog;
+import net.sf.eclipsecs.ui.config.CheckConfigurationLabelProvider;
+import net.sf.eclipsecs.ui.config.CheckConfigurationViewerSorter;
+
 /**
  * Simple file sets editor producing only one file set that contains all files.
  * Only the check configuration can be chosen.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public class SimpleFileSetsEditor implements IFileSetsEditor {
@@ -81,7 +81,7 @@ public class SimpleFileSetsEditor implements IFileSetsEditor {
 
     /**
      * Creates the SimpleFileSetsEditor.
-     * 
+     *
      * @param propsPage the property page
      */
     public SimpleFileSetsEditor(CheckstylePropertyPage propsPage) {
@@ -91,6 +91,7 @@ public class SimpleFileSetsEditor implements IFileSetsEditor {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setFileSets(List<FileSet> fileSets) throws CheckstylePluginException {
         mFileSets = fileSets;
 
@@ -117,6 +118,7 @@ public class SimpleFileSetsEditor implements IFileSetsEditor {
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<FileSet> getFileSets() {
         return mFileSets;
     }
@@ -124,6 +126,7 @@ public class SimpleFileSetsEditor implements IFileSetsEditor {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Control createContents(Composite parent) throws CheckstylePluginException {
 
         mController = new Controller();
@@ -145,7 +148,7 @@ public class SimpleFileSetsEditor implements IFileSetsEditor {
         mComboViewer.getCombo().setVisibleItemCount(10);
         mComboViewer.setContentProvider(new CheckConfigurationContentProvider());
         mComboViewer.setLabelProvider(new CheckConfigurationLabelProvider());
-        mComboViewer.setSorter(new CheckConfigurationViewerSorter());
+        mComboViewer.setComparator(new CheckConfigurationViewerSorter());
         mComboViewer.getControl().setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         mComboViewer.addSelectionChangedListener(mController);
         fd = new FormData();
@@ -185,13 +188,14 @@ public class SimpleFileSetsEditor implements IFileSetsEditor {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void refresh() {
         mComboViewer.refresh();
     }
 
     /**
      * Controller for this file set editor.
-     * 
+     *
      * @author Lars Ködderitzsch
      */
     private class Controller implements SelectionListener, ISelectionChangedListener {
@@ -199,6 +203,7 @@ public class SimpleFileSetsEditor implements IFileSetsEditor {
         /**
          * @see SelectionListener#widgetSelected(org.eclipse.swt.events.SelectionEvent)
          */
+        @Override
         public void widgetSelected(SelectionEvent e) {
             if (mBtnManageConfigs == e.widget) {
                 ICheckConfiguration config = mDefaultFileSet.getCheckConfig();
@@ -228,6 +233,7 @@ public class SimpleFileSetsEditor implements IFileSetsEditor {
         /**
          * @see SelectionListener#widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent)
          */
+        @Override
         public void widgetDefaultSelected(SelectionEvent e) {
         // NOOP
         }
@@ -235,6 +241,7 @@ public class SimpleFileSetsEditor implements IFileSetsEditor {
         /**
          * @see ISelectionChangedListener#selectionChanged(SelectionChangedEvent)
          */
+        @Override
         public void selectionChanged(SelectionChangedEvent event) {
             IStructuredSelection selection = (IStructuredSelection) event.getSelection();
             ICheckConfiguration config = (ICheckConfiguration) selection.getFirstElement();

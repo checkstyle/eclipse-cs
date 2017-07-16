@@ -374,7 +374,11 @@ public final class MetadataFactory {
         }
 
         for (String packageName : packages) {
-            String metaFileLocation = packageName.replace('.', '/') + METADATA_FILENAME;
+            String metaFileLocation = packageName.replace('.', '/');
+            if (!metaFileLocation.endsWith("/")) {
+                metaFileLocation = metaFileLocation + "/";
+            }
+            metaFileLocation = metaFileLocation + METADATA_FILENAME;
             potentialMetadataFiles.add(metaFileLocation);
         }
 
@@ -456,7 +460,8 @@ public final class MetadataFactory {
             String internalName = moduleEl.attributeValue(XMLTags.INTERNAL_NAME_TAG).trim();
 
             String parentName = moduleEl.attributeValue(XMLTags.PARENT_TAG) != null
-                ? moduleEl.attributeValue(XMLTags.PARENT_TAG).trim() : null;
+                ? moduleEl.attributeValue(XMLTags.PARENT_TAG).trim()
+                : null;
             boolean hidden = Boolean.valueOf(moduleEl.attributeValue(XMLTags.HIDDEN_TAG)).booleanValue();
             boolean hasSeverity = !"false".equals(moduleEl.attributeValue(XMLTags.HAS_SEVERITY_TAG));
             boolean deletable = !"false".equals(moduleEl.attributeValue(XMLTags.DELETABLE_TAG)); //$NON-NLS-1$

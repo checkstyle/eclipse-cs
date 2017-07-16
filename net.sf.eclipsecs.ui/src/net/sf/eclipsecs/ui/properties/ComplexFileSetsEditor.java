@@ -22,12 +22,6 @@ package net.sf.eclipsecs.ui.properties;
 
 import java.util.List;
 
-import net.sf.eclipsecs.core.projectconfig.FileSet;
-import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
-import net.sf.eclipsecs.ui.Messages;
-import net.sf.eclipsecs.ui.config.CheckConfigurationLabelProvider;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
@@ -41,7 +35,7 @@ import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.viewers.ViewerSorter;
+import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -55,6 +49,12 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+
+import net.sf.eclipsecs.core.projectconfig.FileSet;
+import net.sf.eclipsecs.core.util.CheckstylePluginException;
+import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
+import net.sf.eclipsecs.ui.Messages;
+import net.sf.eclipsecs.ui.config.CheckConfigurationLabelProvider;
 
 /**
  * Property page.
@@ -79,7 +79,7 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
 
     /**
      * Creates the ComplexFileSetsEditor.
-     * 
+     *
      * @param propsPage the property page
      */
     public ComplexFileSetsEditor(CheckstylePropertyPage propsPage) {
@@ -90,6 +90,7 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setFileSets(List<FileSet> fileSets) {
         mFileSets = fileSets;
 
@@ -98,6 +99,7 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<FileSet> getFileSets() {
         return mFileSets;
     }
@@ -105,6 +107,7 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Control createContents(Composite parent) throws CheckstylePluginException {
 
         mComposite = parent;
@@ -147,7 +150,7 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
         mViewer = new CheckboxTableViewer(table);
         mViewer.setLabelProvider(new FileSetLabelProvider());
         mViewer.setContentProvider(new ArrayContentProvider());
-        mViewer.setSorter(new FileSetViewerSorter());
+        mViewer.setComparator(new FileSetViewerSorter());
         mViewer.setInput(mFileSets);
 
         //
@@ -158,12 +161,14 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
         }
 
         mViewer.addDoubleClickListener(new IDoubleClickListener() {
+            @Override
             public void doubleClick(DoubleClickEvent e) {
                 editFileSet();
             }
         });
 
         mViewer.addCheckStateListener(new ICheckStateListener() {
+            @Override
             public void checkStateChanged(CheckStateChangedEvent event) {
                 changeEnabledState(event);
             }
@@ -181,6 +186,7 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
 
         mAddButton = createPushButton(buttons, Messages.ComplexFileSetsEditor_btnAdd);
         mAddButton.addListener(SWT.Selection, new Listener() {
+            @Override
             public void handleEvent(Event evt) {
                 addFileSet();
             }
@@ -188,6 +194,7 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
 
         mEditButton = createPushButton(buttons, Messages.ComplexFileSetsEditor_btnEdit);
         mEditButton.addListener(SWT.Selection, new Listener() {
+            @Override
             public void handleEvent(Event evt) {
                 editFileSet();
             }
@@ -195,6 +202,7 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
 
         mRemoveButton = createPushButton(buttons, Messages.ComplexFileSetsEditor_btnRemove);
         mRemoveButton.addListener(SWT.Selection, new Listener() {
+            @Override
             public void handleEvent(Event evt) {
                 removeFileSet();
             }
@@ -206,6 +214,7 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void refresh() {
     // NOOP
     }
@@ -213,7 +222,7 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
     /**
      * Utility method that creates a push button instance and sets the default
      * layout data.
-     * 
+     *
      * @param parent the parent for the new button
      * @param label the label for the new button
      * @return the newly-created button
@@ -309,6 +318,7 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
         /**
          * @see ITableLabelProvider#getColumnText(Object, int)
          */
+        @Override
         public String getColumnText(Object element, int columnIndex) {
             String result = element.toString();
             if (element instanceof FileSet) {
@@ -338,6 +348,7 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
         /**
          * @see ITableLabelProvider#getColumnImage(Object, int)
          */
+        @Override
         public Image getColumnImage(Object element, int columnIndex) {
             return null;
         }
@@ -346,11 +357,12 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
     /**
      * Sorts CheckConfiguration objects into their display order.
      */
-    public class FileSetViewerSorter extends ViewerSorter {
+    public class FileSetViewerSorter extends ViewerComparator {
 
         /**
          * {@inheritDoc}
          */
+        @Override
         public int compare(Viewer viewer, Object e1, Object e2) {
             int result = 0;
 

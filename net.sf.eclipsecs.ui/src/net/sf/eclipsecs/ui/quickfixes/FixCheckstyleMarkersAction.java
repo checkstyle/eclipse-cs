@@ -31,7 +31,7 @@ import org.eclipse.ui.IWorkbenchPart;
 
 /**
  * This action tries to run all quickfixes for markers on a selected compilation unit.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public class FixCheckstyleMarkersAction implements IObjectActionDelegate {
@@ -45,6 +45,7 @@ public class FixCheckstyleMarkersAction implements IObjectActionDelegate {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void selectionChanged(IAction action, ISelection selection) {
         mSelection = selection;
     }
@@ -52,6 +53,7 @@ public class FixCheckstyleMarkersAction implements IObjectActionDelegate {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setActivePart(IAction action, IWorkbenchPart targetPart) {
         mWorkBenchPart = targetPart;
     }
@@ -59,6 +61,7 @@ public class FixCheckstyleMarkersAction implements IObjectActionDelegate {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void run(IAction action) {
 
         IStructuredSelection selection = null;
@@ -73,7 +76,7 @@ public class FixCheckstyleMarkersAction implements IObjectActionDelegate {
 
         Object element = selection.getFirstElement();
 
-        IFile file = (IFile) ((IAdaptable) element).getAdapter(IFile.class);
+        IFile file = ((IAdaptable) element).getAdapter(IFile.class);
         if (file != null) {
 
             // call the fixing job

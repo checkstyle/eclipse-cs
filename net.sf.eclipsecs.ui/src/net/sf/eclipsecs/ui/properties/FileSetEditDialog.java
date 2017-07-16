@@ -23,20 +23,6 @@ package net.sf.eclipsecs.ui.properties;
 import java.util.LinkedList;
 import java.util.List;
 
-import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
-import net.sf.eclipsecs.core.config.ICheckConfiguration;
-import net.sf.eclipsecs.core.projectconfig.FileMatchPattern;
-import net.sf.eclipsecs.core.projectconfig.FileSet;
-import net.sf.eclipsecs.core.util.CheckstyleLog;
-import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
-import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
-import net.sf.eclipsecs.ui.Messages;
-import net.sf.eclipsecs.ui.config.CheckConfigurationConfigureDialog;
-import net.sf.eclipsecs.ui.config.CheckConfigurationLabelProvider;
-import net.sf.eclipsecs.ui.config.CheckConfigurationViewerSorter;
-import net.sf.eclipsecs.ui.util.SWTUtil;
-
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -83,6 +69,20 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
+
+import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
+import net.sf.eclipsecs.core.config.ICheckConfiguration;
+import net.sf.eclipsecs.core.projectconfig.FileMatchPattern;
+import net.sf.eclipsecs.core.projectconfig.FileSet;
+import net.sf.eclipsecs.core.util.CheckstyleLog;
+import net.sf.eclipsecs.core.util.CheckstylePluginException;
+import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
+import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
+import net.sf.eclipsecs.ui.Messages;
+import net.sf.eclipsecs.ui.config.CheckConfigurationConfigureDialog;
+import net.sf.eclipsecs.ui.config.CheckConfigurationLabelProvider;
+import net.sf.eclipsecs.ui.config.CheckConfigurationViewerSorter;
+import net.sf.eclipsecs.ui.util.SWTUtil;
 
 /**
  * Property page.
@@ -146,7 +146,7 @@ public class FileSetEditDialog extends TitleAreaDialog {
 
     /**
      * Returns the file set edited by the dialog.
-     * 
+     *
      * @return the edited file set
      */
     public FileSet getFileSet() {
@@ -156,6 +156,7 @@ public class FileSetEditDialog extends TitleAreaDialog {
     /**
      * @see org.eclipse.swt.widgets.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
      */
+    @Override
     protected Control createDialogArea(Composite parent) {
 
         Composite composite = (Composite) super.createDialogArea(parent);
@@ -216,7 +217,7 @@ public class FileSetEditDialog extends TitleAreaDialog {
         mComboViewer.getCombo().setVisibleItemCount(10);
         mComboViewer.setContentProvider(new CheckConfigurationContentProvider());
         mComboViewer.setLabelProvider(new CheckConfigurationLabelProvider());
-        mComboViewer.setSorter(new CheckConfigurationViewerSorter());
+        mComboViewer.setComparator(new CheckConfigurationViewerSorter());
         mComboViewer.getControl().setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         mComboViewer.addSelectionChangedListener(mController);
 
@@ -311,6 +312,7 @@ public class FileSetEditDialog extends TitleAreaDialog {
             /**
              * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
              */
+            @Override
             public String getText(Object element) {
                 String text = ""; //$NON-NLS-1$
                 if (element instanceof IFile) {
@@ -322,12 +324,14 @@ public class FileSetEditDialog extends TitleAreaDialog {
             /**
              * @see org.eclipse.jface.viewers.LabelProvider#getImage(java.lang.Object)
              */
+            @Override
             public Image getImage(Object element) {
                 return mDelegate.getImage(element);
             }
         });
         mMatchesViewer.addFilter(new ViewerFilter() {
 
+            @Override
             public boolean select(Viewer viewer, Object parentElement, Object element) {
                 if (element instanceof IFile) {
                     return mFileSet.includesFile((IFile) element);
@@ -373,6 +377,7 @@ public class FileSetEditDialog extends TitleAreaDialog {
         }
 
         getShell().getDisplay().asyncExec(new Runnable() {
+            @Override
             public void run() {
 
                 mMatchGroup.setText(Messages.FileSetEditDialog_msgBuildTestResults);
@@ -402,6 +407,7 @@ public class FileSetEditDialog extends TitleAreaDialog {
     /**
      * @see org.eclipse.jface.window.Window#create()
      */
+    @Override
     public void create() {
         super.create();
 
@@ -413,6 +419,7 @@ public class FileSetEditDialog extends TitleAreaDialog {
      * Over-rides method from Window to configure the shell (e.g. the enclosing
      * window).
      */
+    @Override
     protected void configureShell(Shell shell) {
         super.configureShell(shell);
         shell.setText(Messages.FileSetEditDialog_titleFilesetEditor);
@@ -421,6 +428,7 @@ public class FileSetEditDialog extends TitleAreaDialog {
     /**
      * @see org.eclipse.jface.dialogs.Dialog#okPressed()
      */
+    @Override
     protected void okPressed() {
         //
         // Get the FileSet name.
@@ -447,7 +455,7 @@ public class FileSetEditDialog extends TitleAreaDialog {
     /**
      * Utility method that creates a push button instance and sets the default
      * layout data.
-     * 
+     *
      * @param parent the parent for the new button
      * @param label the label for the new button
      * @return the newly-created button
@@ -553,8 +561,8 @@ public class FileSetEditDialog extends TitleAreaDialog {
     }
 
     private List<IFile> getFiles(IContainer container) throws CoreException {
-        LinkedList<IFile> files = new LinkedList<IFile>();
-        LinkedList<IFolder> folders = new LinkedList<IFolder>();
+        LinkedList<IFile> files = new LinkedList<>();
+        LinkedList<IFolder> folders = new LinkedList<>();
 
         IResource[] children = container.members();
         for (int i = 0; i < children.length; i++) {
@@ -580,7 +588,7 @@ public class FileSetEditDialog extends TitleAreaDialog {
 
     /**
      * Controller of this dialog.
-     * 
+     *
      * @author Lars Ködderitzsch
      */
     private class Controller implements SelectionListener, IDoubleClickListener,
@@ -589,6 +597,7 @@ public class FileSetEditDialog extends TitleAreaDialog {
         /**
          * @see SelectionListener#widgetSelected(org.eclipse.swt.events.SelectionEvent)
          */
+        @Override
         public void widgetSelected(SelectionEvent e) {
             if (e.widget == mAddButton) {
                 addFileMatchPattern();
@@ -639,6 +648,7 @@ public class FileSetEditDialog extends TitleAreaDialog {
         /**
          * @see SelectionListener#widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent)
          */
+        @Override
         public void widgetDefaultSelected(SelectionEvent e) {
         // NOOP
         }
@@ -646,11 +656,13 @@ public class FileSetEditDialog extends TitleAreaDialog {
         /**
          * @see IDoubleClickListener#doubleClick(org.eclipse.jface.viewers.DoubleClickEvent)
          */
+        @Override
         public void doubleClick(DoubleClickEvent event) {
             editFileMatchPattern();
             updateMatchView();
         }
 
+        @Override
         public void checkStateChanged(CheckStateChangedEvent event) {
             if (event.getElement() instanceof FileMatchPattern) {
                 FileMatchPattern pattern = (FileMatchPattern) event.getElement();
@@ -663,6 +675,7 @@ public class FileSetEditDialog extends TitleAreaDialog {
         /**
          * @see ISelectionChangedListener#selectionChanged(SelectionChangedEvent)
          */
+        @Override
         public void selectionChanged(SelectionChangedEvent event) {
             IStructuredSelection selection = (IStructuredSelection) event.getSelection();
             ICheckConfiguration config = (ICheckConfiguration) selection.getFirstElement();
@@ -678,6 +691,7 @@ public class FileSetEditDialog extends TitleAreaDialog {
         /**
          * @see ITableLabelProvider#getColumnText(Object, int)
          */
+        @Override
         public String getColumnText(Object element, int columnIndex) {
             String result = element.toString();
             if (element instanceof FileMatchPattern) {
@@ -701,6 +715,7 @@ public class FileSetEditDialog extends TitleAreaDialog {
         /**
          * @see ITableLabelProvider#getColumnImage(Object, int)
          */
+        @Override
         public Image getColumnImage(Object element, int columnIndex) {
             return null;
         }

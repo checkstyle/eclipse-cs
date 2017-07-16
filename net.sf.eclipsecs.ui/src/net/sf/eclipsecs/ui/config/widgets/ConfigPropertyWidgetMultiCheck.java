@@ -29,25 +29,25 @@ import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 import java.util.StringTokenizer;
 
-import net.sf.eclipsecs.core.config.ConfigProperty;
-import net.sf.eclipsecs.core.config.meta.ConfigPropertyMetadata;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
-import net.sf.eclipsecs.ui.CheckstyleUIPluginPrefs;
-
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences.IPreferenceChangeListener;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences.PreferenceChangeEvent;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.ViewerSorter;
+import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+
+import net.sf.eclipsecs.core.config.ConfigProperty;
+import net.sf.eclipsecs.core.config.meta.ConfigPropertyMetadata;
+import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
+import net.sf.eclipsecs.ui.CheckstyleUIPluginPrefs;
 
 /**
  * Configuration widget for selecting multiple values with check boxes.
@@ -69,18 +69,19 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
 
     /**
      * Creates the widget.
-     * 
+     *
      * @param parent the parent composite
      * @param prop the property
      */
     public ConfigPropertyWidgetMultiCheck(Composite parent, ConfigProperty prop) {
         super(parent, prop);
-        mTokens = new ArrayList<String>(prop.getMetaData().getPropertyEnumeration());
+        mTokens = new ArrayList<>(prop.getMetaData().getPropertyEnumeration());
     }
 
     /**
      * {@inheritDoc}
      */
+    @Override
     protected Control getValueWidget(Composite parent) {
 
         if (mTable == null) {
@@ -110,6 +111,7 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
             // deregister the listener on widget dipose
             mTable.getControl().addDisposeListener(new DisposeListener() {
 
+                @Override
                 public void widgetDisposed(DisposeEvent e) {
                     IEclipsePreferences prefStore = new InstanceScope()
                             .getNode(CheckstyleUIPlugin.PLUGIN_ID);
@@ -124,6 +126,7 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getValue() {
         StringBuffer buffer = new StringBuffer(""); //$NON-NLS-1$
 
@@ -140,7 +143,7 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
     }
 
     private List<String> getInitialValues() {
-        List<String> result = new LinkedList<String>();
+        List<String> result = new LinkedList<>();
         StringTokenizer tokenizer = new StringTokenizer(getInitValue(), ","); //$NON-NLS-1$
         while (tokenizer.hasMoreTokens()) {
             result.add(tokenizer.nextToken().trim());
@@ -152,10 +155,10 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
     private void installSorter(boolean sort) {
         if (sort) {
             Collator collator = Collator.getInstance(CheckstyleUIPlugin.getPlatformLocale());
-            mTable.setSorter(new ViewerSorter(collator));
+            mTable.setComparator(new ViewerComparator(collator));
         }
         else {
-            mTable.setSorter(null);
+            mTable.setComparator(null);
         }
         mTable.refresh();
     }
@@ -163,11 +166,12 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
     /**
      * @see ConfigPropertyWidgetAbstractBase#restorePropertyDefault()
      */
+    @Override
     public void restorePropertyDefault() {
         ConfigPropertyMetadata metadata = getConfigProperty().getMetaData();
         String defaultValue = metadata.getOverrideDefault() != null ? metadata.getOverrideDefault()
                 : metadata.getDefaultValue();
-        List<String> result = new LinkedList<String>();
+        List<String> result = new LinkedList<>();
 
         if (defaultValue != null) {
             StringTokenizer tokenizer = new StringTokenizer(defaultValue, ","); //$NON-NLS-1$
@@ -185,6 +189,7 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
     /**
      * {@inheritDoc}
      */
+    @Override
     public void preferenceChange(PreferenceChangeEvent event) {
         if (CheckstyleUIPluginPrefs.PREF_TRANSLATE_TOKENS.equals(event.getKey())) {
             mTranslateTokens = Boolean.valueOf((String) event.getNewValue()).booleanValue();
@@ -198,7 +203,7 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
 
     /**
      * Label provider to translate checkstyle tokens into readable form.
-     * 
+     *
      * @author Lars Ködderitzsch
      */
     private class TokenLabelProvider extends LabelProvider {
@@ -206,6 +211,7 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
         /**
          * {@inheritDoc}
          */
+        @Override
         public String getText(Object element) {
             String translation = null;
             if (!mTranslateTokens) {
