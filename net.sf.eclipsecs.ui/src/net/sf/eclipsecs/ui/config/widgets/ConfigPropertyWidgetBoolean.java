@@ -34,52 +34,48 @@ import org.eclipse.swt.widgets.Control;
  */
 public class ConfigPropertyWidgetBoolean extends ConfigPropertyWidgetAbstractBase {
 
-    private Button mCheckbox;
+  private Button mCheckbox;
 
-    /**
-     * Creates the widget.
-     * 
-     * @param parent the parent composite
-     * @param prop the property
-     */
-    public ConfigPropertyWidgetBoolean(Composite parent, ConfigProperty prop) {
-        super(parent, prop);
+  /**
+   * Creates the widget.
+   *
+   * @param parent
+   *          the parent composite
+   * @param prop
+   *          the property
+   */
+  public ConfigPropertyWidgetBoolean(Composite parent, ConfigProperty prop) {
+    super(parent, prop);
+  }
+
+  @Override
+  protected Control getValueWidget(Composite parent) {
+    if (mCheckbox == null) {
+
+      //
+      // Create a check box for selecting true or false.
+      //
+
+      mCheckbox = new Button(parent, SWT.CHECK);
+      mCheckbox.setLayoutData(new GridData());
+
+      String initValue = getInitValue();
+      mCheckbox.setSelection(Boolean.valueOf(initValue).booleanValue());
+
     }
+    return mCheckbox;
+  }
 
-    /**
-     * @see ConfigPropertyWidgetAbstractBase#getValueWidget(org.eclipse.swt.widgets.Composite)
-     */
-    protected Control getValueWidget(Composite parent) {
-        if (mCheckbox == null) {
+  @Override
+  public String getValue() {
+    return "" + mCheckbox.getSelection(); //$NON-NLS-1$
+  }
 
-            //
-            // Create a check box for selecting true or false.
-            //
-
-            mCheckbox = new Button(parent, SWT.CHECK);
-            mCheckbox.setLayoutData(new GridData());
-
-            String initValue = getInitValue();
-            mCheckbox.setSelection(Boolean.valueOf(initValue).booleanValue());
-
-        }
-        return mCheckbox;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public String getValue() {
-        return "" + mCheckbox.getSelection(); //$NON-NLS-1$
-    }
-
-    /**
-     * @see ConfigPropertyWidgetAbstractBase#restorePropertyDefault()
-     */
-    public void restorePropertyDefault() {
-        ConfigPropertyMetadata metadata = getConfigProperty().getMetaData();
-        String defaultValue = metadata.getOverrideDefault() != null ? metadata.getOverrideDefault()
-                : metadata.getDefaultValue();
-        mCheckbox.setSelection(Boolean.valueOf(defaultValue).booleanValue());
-    }
+  @Override
+  public void restorePropertyDefault() {
+    ConfigPropertyMetadata metadata = getConfigProperty().getMetaData();
+    String defaultValue = metadata.getOverrideDefault() != null ? metadata.getOverrideDefault()
+            : metadata.getDefaultValue();
+    mCheckbox.setSelection(Boolean.valueOf(defaultValue).booleanValue());
+  }
 }

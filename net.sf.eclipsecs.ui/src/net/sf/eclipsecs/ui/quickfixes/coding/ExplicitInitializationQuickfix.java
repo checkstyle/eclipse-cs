@@ -39,93 +39,95 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.graphics.Image;
 
 /**
- * Quickfix implementation which removes the explicit default initialization of a class or object member.
+ * Quickfix implementation which removes the explicit default initialization of
+ * a class or object member.
  *
  * @author Philip Graf
  */
 public class ExplicitInitializationQuickfix extends AbstractASTResolution {
 
-    private String mFieldName = Messages.ExplicitInitializationQuickfix_unknownFieldName;
+  private String mFieldName = Messages.ExplicitInitializationQuickfix_unknownFieldName;
 
-    /**
-     * {@inheritDoc}
-     */
-    public boolean canFix(final IMarker marker) {
-        retrieveFieldName(marker);
-        return super.canFix(marker);
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean canFix(final IMarker marker) {
+    retrieveFieldName(marker);
+    return super.canFix(marker);
+  }
+
+  private void retrieveFieldName(final IMarker marker) {
+    try {
+      final Map<String, Object> attributes = marker.getAttributes();
+      final int start = (Integer) attributes.get("charStart"); //$NON-NLS-1$
+      final int end = (Integer) attributes.get("charEnd"); //$NON-NLS-1$
+      final IFile resource = (IFile) marker.getResource();
+      final InputStream in = resource.getContents();
+      final byte[] buffer = new byte[end - start];
+      in.skip(start);
+      in.read(buffer, 0, buffer.length);
+      in.close();
+      final String snippet = new String(buffer, resource.getCharset());
+      mFieldName = snippet.substring(0, snippet.indexOf('=')).trim();
+    } catch (final CoreException e) {
+      handleRetrieveFieldNameException(e);
+    } catch (final IOException e) {
+      handleRetrieveFieldNameException(e);
+    } catch (final IndexOutOfBoundsException e) {
+      handleRetrieveFieldNameException(e);
+    } catch (final ClassCastException e) {
+      handleRetrieveFieldNameException(e);
+    } catch (final NullPointerException e) {
+      handleRetrieveFieldNameException(e);
     }
+  }
 
-    private void retrieveFieldName(final IMarker marker) {
-        try {
-            final Map<String, Object> attributes = marker.getAttributes();
-            final int start = (Integer) attributes.get("charStart"); //$NON-NLS-1$
-            final int end = (Integer) attributes.get("charEnd"); //$NON-NLS-1$
-            final IFile resource = (IFile) marker.getResource();
-            final InputStream in = resource.getContents();
-            final byte[] buffer = new byte[end - start];
-            in.skip(start);
-            in.read(buffer, 0, buffer.length);
-            in.close();
-            final String snippet = new String(buffer, resource.getCharset());
-            mFieldName = snippet.substring(0, snippet.indexOf('=')).trim();
+  private void handleRetrieveFieldNameException(final Exception e) {
+    CheckstyleLog.log(e, Messages.ExplicitInitializationQuickfix_errorMessageFieldName);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
+          final int markerStartOffset) {
+    return new ASTVisitor() {
+
+      @Override
+      public boolean visit(final VariableDeclarationFragment node) {
+        if (containsPosition(node, markerStartOffset)) {
+          node.getInitializer().delete();
         }
-        catch (final CoreException e) {
-            handleRetrieveFieldNameException(e);
-        }
-        catch (final IOException e) {
-            handleRetrieveFieldNameException(e);
-        }
-        catch (final IndexOutOfBoundsException e) {
-            handleRetrieveFieldNameException(e);
-        }
-        catch (final ClassCastException e) {
-            handleRetrieveFieldNameException(e);
-        }
-        catch (final NullPointerException e) {
-            handleRetrieveFieldNameException(e);
-        }
-    }
+        return false;
+      }
 
-    private void handleRetrieveFieldNameException(final Exception e) {
-        CheckstyleLog.log(e, Messages.ExplicitInitializationQuickfix_errorMessageFieldName);
-    }
+    };
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo, final int markerStartOffset) {
-        return new ASTVisitor() {
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String getDescription() {
+    return NLS.bind(Messages.ExplicitInitializationQuickfix_description, mFieldName);
+  }
 
-            @Override
-            public boolean visit(final VariableDeclarationFragment node) {
-                if (containsPosition(node, markerStartOffset)) {
-                    node.getInitializer().delete();
-                }
-                return false;
-            }
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String getLabel() {
+    return NLS.bind(Messages.ExplicitInitializationQuickfix_label, mFieldName);
+  }
 
-        };
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public String getDescription() {
-        return NLS.bind(Messages.ExplicitInitializationQuickfix_description, mFieldName);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public String getLabel() {
-        return NLS.bind(Messages.ExplicitInitializationQuickfix_label, mFieldName);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public Image getImage() {
-        return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.CORRECTION_REMOVE);
-    }
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public Image getImage() {
+    return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.CORRECTION_REMOVE);
+  }
 
 }

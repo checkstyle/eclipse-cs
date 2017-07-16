@@ -33,94 +33,97 @@ import org.eclipse.ui.texteditor.MarkerUtilities;
  */
 public class MarkerStat implements Comparable {
 
-    /**
-     * Identifiant du marqueur : dans notre cas, il s'agit du message du
-     * marqueur Checkstyle.
-     */
-    private String mIdentifiant;
+  /**
+   * Identifiant du marqueur : dans notre cas, il s'agit du message du marqueur
+   * Checkstyle.
+   */
+  private String mIdentifiant;
 
-    /**
-     * List of the markers of this categories.
-     */
-    private Collection mMarkers;
+  /**
+   * List of the markers of this categories.
+   */
+  private Collection mMarkers;
 
-    /**
-     * The maximum severity for this marker group.
-     */
-    private int mMaxSeverity;
+  /**
+   * The maximum severity for this marker group.
+   */
+  private int mMaxSeverity;
 
-    /**
-     * Crée un MarkerStat pour un marqueur Checkstyle correspondant à
-     * l'identifiant passé en paramètre.
-     * 
-     * @param identifiant : le message du marqueur Checkstyle
-     */
-    public MarkerStat(String identifiant) {
-        super();
-        this.mIdentifiant = identifiant;
-        mMarkers = new ArrayList();
+  /**
+   * Crée un MarkerStat pour un marqueur Checkstyle correspondant à
+   * l'identifiant passé en paramètre.
+   * 
+   * @param identifiant
+   *          : le message du marqueur Checkstyle
+   */
+  public MarkerStat(String identifiant) {
+    super();
+    this.mIdentifiant = identifiant;
+    mMarkers = new ArrayList();
+  }
+
+  /**
+   * Reference the marker as one fo this category.
+   * 
+   * @param marker
+   *          : the marker to add to this category
+   */
+  public void addMarker(IMarker marker) {
+    mMarkers.add(marker);
+
+    int severity = MarkerUtilities.getSeverity(marker);
+    if (severity > mMaxSeverity) {
+      mMaxSeverity = severity;
     }
+  }
 
-    /**
-     * Reference the marker as one fo this category.
-     * 
-     * @param marker : the marker to add to this category
-     */
-    public void addMarker(IMarker marker) {
-        mMarkers.add(marker);
-
-        int severity = MarkerUtilities.getSeverity(marker);
-        if (severity > mMaxSeverity) {
-            mMaxSeverity = severity;
-        }
+  /**
+   * {@inheritDoc}
+   * 
+   * @see java.lang.Comparable#compareTo(java.lang.Object)
+   */
+  @Override
+  public int compareTo(Object o) {
+    if (o instanceof MarkerStat) {
+      MarkerStat stat = (MarkerStat) o;
+      return mIdentifiant.compareTo(stat.getIdentifiant());
     }
+    return 0;
+  }
 
-    /**
-     * {@inheritDoc}
-     * 
-     * @see java.lang.Comparable#compareTo(java.lang.Object)
-     */
-    public int compareTo(Object o) {
-        if (o instanceof MarkerStat) {
-            MarkerStat stat = (MarkerStat) o;
-            return mIdentifiant.compareTo(stat.getIdentifiant());
-        }
-        return 0;
-    }
+  /**
+   * Returns the list of markers for this category.
+   * 
+   * @return a collection of IMarker
+   */
+  public Collection getMarkers() {
+    return mMarkers;
+  }
 
-    /**
-     * Returns the list of markers for this category.
-     * 
-     * @return a collection of IMarker
-     */
-    public Collection getMarkers() {
-        return mMarkers;
-    }
+  /**
+   * Retourne le nombre d 'occurence.
+   * 
+   * @return Returns the count.
+   */
+  public int getCount() {
+    return mMarkers.size();
+  }
 
-    /**
-     * Retourne le nombre d 'occurence.
-     * 
-     * @return Returns the count.
-     */
-    public int getCount() {
-        return mMarkers.size();
-    }
+  /**
+   * Returns the maximum severity level occurring in this group.
+   * 
+   * @return the maximum severity level
+   */
+  public int getMaxSeverity() {
+    return mMaxSeverity;
+  }
 
-    /**
-     * Returns the maximum severity level occurring in this group.
-     * 
-     * @return the maximum severity level
-     */
-    public int getMaxSeverity() {
-        return mMaxSeverity;
-    }
-
-    /**
-     * Retourne l'identifiant (i.e. le message Checkstyle) de ce MarkerStat.
-     * 
-     * @return Returns the identifiant.
-     */
-    public String getIdentifiant() {
-        return mIdentifiant;
-    }
+  /**
+   * Retourne l'identifiant (i.e. le message Checkstyle) de ce MarkerStat.
+   * 
+   * @return Returns the identifiant.
+   */
+  public String getIdentifiant() {
+    return mIdentifiant;
+  }
 }

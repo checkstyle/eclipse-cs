@@ -39,92 +39,88 @@ import org.eclipse.core.runtime.Platform;
  */
 public final class PluginFilterEditors {
 
-    /** constant for the extension point id. */
-    private static final String FILTER_EXTENSION_POINT = "net.sf.eclipsecs.ui.filtereditors"; //$NON-NLS-1$
+  /** constant for the extension point id. */
+  private static final String FILTER_EXTENSION_POINT = "net.sf.eclipsecs.ui.filtereditors"; //$NON-NLS-1$
 
-    /** constant for the name attribute. */
-    private static final String ATTR_FILTER = "filter"; //$NON-NLS-1$
+  /** constant for the name attribute. */
+  private static final String ATTR_FILTER = "filter"; //$NON-NLS-1$
 
-    /** constant for the name attribute. */
-    private static final String ATTR_CLASS = "class"; //$NON-NLS-1$
+  /** constant for the name attribute. */
+  private static final String ATTR_CLASS = "class"; //$NON-NLS-1$
 
-    /** the filter prototypes configured to the extension point. */
-    private static Map<String, Class<? extends IFilterEditor>> sFilterEditorClasses;
+  /** the filter prototypes configured to the extension point. */
+  private static Map<String, Class<? extends IFilterEditor>> sFilterEditorClasses;
 
-    /**
-     * Initialize the configured to the filter extension point.
-     */
-    static {
+  /**
+   * Initialize the configured to the filter extension point.
+   */
+  static {
 
-        sFilterEditorClasses = new HashMap<String, Class<? extends IFilterEditor>>();
+    sFilterEditorClasses = new HashMap<String, Class<? extends IFilterEditor>>();
 
-        IExtensionRegistry pluginRegistry = Platform.getExtensionRegistry();
+    IExtensionRegistry pluginRegistry = Platform.getExtensionRegistry();
 
-        IConfigurationElement[] elements = pluginRegistry
-                .getConfigurationElementsFor(FILTER_EXTENSION_POINT);
+    IConfigurationElement[] elements = pluginRegistry
+            .getConfigurationElementsFor(FILTER_EXTENSION_POINT);
 
-        for (int i = 0; i < elements.length; i++) {
+    for (int i = 0; i < elements.length; i++) {
 
-            try {
+      try {
 
-                String filter = elements[i].getAttribute(ATTR_FILTER);
+        String filter = elements[i].getAttribute(ATTR_FILTER);
 
-                IFilterEditor editor = (IFilterEditor) elements[i]
-                        .createExecutableExtension(ATTR_CLASS);
-                sFilterEditorClasses.put(filter, editor.getClass());
-            }
-            catch (Exception e) {
-                CheckstyleLog.log(e);
-            }
-        }
+        IFilterEditor editor = (IFilterEditor) elements[i].createExecutableExtension(ATTR_CLASS);
+        sFilterEditorClasses.put(filter, editor.getClass());
+      } catch (Exception e) {
+        CheckstyleLog.log(e);
+      }
     }
+  }
 
-    /** Hidden default constructor. */
-    private PluginFilterEditors() {
+  /** Hidden default constructor. */
+  private PluginFilterEditors() {
     // NOOP
+  }
+
+  /**
+   * Determines if a given filter has an editor.
+   * 
+   * @param filter
+   *          the filter
+   * @return <code>true</code> if the filter has an editor, <code>false</code>
+   *         otherwise.
+   */
+  public static boolean hasEditor(IFilter filter) {
+    return sFilterEditorClasses.containsKey(filter.getInternalName());
+  }
+
+  /**
+   * Creates the filter editor for a given filter.
+   * 
+   * @param filter
+   *          the filter
+   * @return the filter editor
+   * @throws CheckstylePluginException
+   *           if the filter editor could not be instantiated.
+   */
+  public static IFilterEditor getNewEditor(IFilter filter) throws CheckstylePluginException {
+
+    Class<? extends IFilterEditor> editorClass = sFilterEditorClasses.get(filter.getInternalName());
+
+    if (editorClass != null) {
+
+      try {
+        IFilterEditor editor = editorClass.newInstance();
+        return editor;
+      } catch (InstantiationException e) {
+        CheckstylePluginException.rethrow(e);
+      } catch (IllegalAccessException e) {
+        CheckstylePluginException.rethrow(e);
+      } catch (ClassCastException e) {
+        CheckstylePluginException.rethrow(e);
+      }
     }
 
-    /**
-     * Determines if a given filter has an editor.
-     * 
-     * @param filter the filter
-     * @return <code>true</code> if the filter has an editor,
-     *         <code>false</code> otherwise.
-     */
-    public static boolean hasEditor(IFilter filter) {
-        return sFilterEditorClasses.containsKey(filter.getInternalName());
-    }
-
-    /**
-     * Creates the filter editor for a given filter.
-     * 
-     * @param filter the filter
-     * @return the filter editor
-     * @throws CheckstylePluginException if the filter editor could not be
-     *             instantiated.
-     */
-    public static IFilterEditor getNewEditor(IFilter filter) throws CheckstylePluginException {
-
-        Class<? extends IFilterEditor> editorClass = sFilterEditorClasses.get(filter
-                .getInternalName());
-
-        if (editorClass != null) {
-
-            try {
-                IFilterEditor editor = editorClass.newInstance();
-                return editor;
-            }
-            catch (InstantiationException e) {
-                CheckstylePluginException.rethrow(e);
-            }
-            catch (IllegalAccessException e) {
-                CheckstylePluginException.rethrow(e);
-            }
-            catch (ClassCastException e) {
-                CheckstylePluginException.rethrow(e);
-            }
-        }
-
-        return null;
-    }
+    return null;
+  }
 }

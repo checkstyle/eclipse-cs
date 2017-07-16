@@ -20,6 +20,10 @@
 
 package net.sf.eclipsecs.ui.quickfixes;
 
+import net.sf.eclipsecs.core.builder.CheckstyleMarker;
+import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
+import net.sf.eclipsecs.ui.Messages;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
@@ -29,10 +33,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.progress.UIJob;
 
-import net.sf.eclipsecs.core.builder.CheckstyleMarker;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
-import net.sf.eclipsecs.ui.Messages;
-
 /**
  * Job implementation that tries to fix all Checkstyle markers in a file.
  *
@@ -40,48 +40,47 @@ import net.sf.eclipsecs.ui.Messages;
  */
 public class FixCheckstyleMarkersJob extends UIJob {
 
-    private IFile mFile;
+  private IFile mFile;
 
-    /**
-     * Creates the job.
-     *
-     * @param file
-     *            the file to fix
-     */
-    public FixCheckstyleMarkersJob(IFile file) {
-        super(Messages.FixCheckstyleMarkersJob_title);
-        this.mFile = file;
-    }
+  /**
+   * Creates the job.
+   *
+   * @param file
+   *          the file to fix
+   */
+  public FixCheckstyleMarkersJob(IFile file) {
+    super(Messages.FixCheckstyleMarkersJob_title);
+    this.mFile = file;
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public IStatus runInUIThread(IProgressMonitor monitor) {
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public IStatus runInUIThread(IProgressMonitor monitor) {
 
-        try {
+    try {
 
-            CheckstyleMarkerResolutionGenerator generator = new CheckstyleMarkerResolutionGenerator();
+      CheckstyleMarkerResolutionGenerator generator = new CheckstyleMarkerResolutionGenerator();
 
-            IMarker[] markers = mFile.findMarkers(CheckstyleMarker.MARKER_ID, true, IResource.DEPTH_INFINITE);
+      IMarker[] markers = mFile.findMarkers(CheckstyleMarker.MARKER_ID, true,
+              IResource.DEPTH_INFINITE);
 
-            for (int i = 0; i < markers.length; i++) {
+      for (int i = 0; i < markers.length; i++) {
 
-                ICheckstyleMarkerResolution[] resolutions = (ICheckstyleMarkerResolution[]) generator
-                    .getResolutions(markers[i]);
+        ICheckstyleMarkerResolution[] resolutions = (ICheckstyleMarkerResolution[]) generator
+                .getResolutions(markers[i]);
 
-                for (int j = 0; j < resolutions.length; j++) {
-                    resolutions[j].run(markers[i]);
-
-                    break; // stop after the first fix for this marker
-
-                }
-            }
-        }
-        catch (CoreException e) {
-            return new Status(IStatus.ERROR, CheckstyleUIPlugin.PLUGIN_ID, IStatus.OK, e.getMessage(), e);
+        if (resolutions.length > 0) {
+          // only run the first fix for this marker
+          resolutions[0].run(markers[i]);
         }
 
-        return Status.OK_STATUS;
+      }
+    } catch (CoreException e) {
+      return new Status(IStatus.ERROR, CheckstyleUIPlugin.PLUGIN_ID, IStatus.OK, e.getMessage(), e);
     }
+
+    return Status.OK_STATUS;
+  }
 }

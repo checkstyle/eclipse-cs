@@ -35,33 +35,36 @@ import org.eclipse.swt.widgets.Control;
  * @author Lars Ködderitzsch
  */
 public interface IFileSetsEditor {
-    /**
-     * Creates the contents of the file set editor.
-     * 
-     * @param parent the parent component
-     * @return the control
-     * @throws CheckstylePluginException error while creating and initializing
-     *             the control
-     */
-    Control createContents(Composite parent) throws CheckstylePluginException;
+  /**
+   * Creates the contents of the file set editor.
+   * 
+   * @param parent
+   *          the parent component
+   * @return the control
+   * @throws CheckstylePluginException
+   *           error while creating and initializing the control
+   */
+  Control createContents(Composite parent) throws CheckstylePluginException;
 
-    /**
-     * Set the file sets for the editor.
-     * 
-     * @param fileSets the list of file sets
-     * @throws CheckstylePluginException an unexpected exception occurred
-     */
-    void setFileSets(List<FileSet> fileSets) throws CheckstylePluginException;
+  /**
+   * Set the file sets for the editor.
+   * 
+   * @param fileSets
+   *          the list of file sets
+   * @throws CheckstylePluginException
+   *           an unexpected exception occurred
+   */
+  void setFileSets(List<FileSet> fileSets) throws CheckstylePluginException;
 
-    /**
-     * Returns the file sets.
-     * 
-     * @return the list of file sets
-     */
-    List<FileSet> getFileSets();
+  /**
+   * Returns the file sets.
+   * 
+   * @return the list of file sets
+   */
+  List<FileSet> getFileSets();
 
-    /**
-     * Refreshes the view.
-     */
-    void refresh();
+  /**
+   * Refreshes the view.
+   */
+  void refresh();
 }

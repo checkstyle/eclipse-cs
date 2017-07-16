@@ -20,6 +20,10 @@
 
 package net.sf.eclipsecs.core.config.configtypes;
 
+import com.google.common.io.ByteStreams;
+import com.google.common.io.Files;
+import com.puppycrawl.tools.checkstyle.PropertyResolver;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -38,17 +42,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.equinox.security.storage.EncodingUtils;
-import org.eclipse.equinox.security.storage.ISecurePreferences;
-import org.eclipse.equinox.security.storage.SecurePreferencesFactory;
-import org.eclipse.equinox.security.storage.StorageException;
-import org.eclipse.osgi.util.NLS;
-
-import com.google.common.io.ByteStreams;
-import com.google.common.io.Files;
-import com.puppycrawl.tools.checkstyle.PropertyResolver;
-
 import net.sf.eclipsecs.core.CheckstylePlugin;
 import net.sf.eclipsecs.core.Messages;
 import net.sf.eclipsecs.core.config.CheckstyleConfigurationFile;
@@ -56,9 +49,15 @@ import net.sf.eclipsecs.core.config.ICheckConfiguration;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.equinox.security.storage.EncodingUtils;
+import org.eclipse.equinox.security.storage.ISecurePreferences;
+import org.eclipse.equinox.security.storage.SecurePreferencesFactory;
+import org.eclipse.equinox.security.storage.StorageException;
+import org.eclipse.osgi.util.NLS;
+
 /**
- * Implementation of a check configuration that uses an exteral checkstyle
- * configuration file.
+ * Implementation of a check configuration that uses an exteral checkstyle configuration file.
  *
  * @author Lars Ködderitzsch
  */
@@ -86,10 +85,10 @@ public class RemoteConfigurationType extends ConfigurationType {
    */
   @Override
   public CheckstyleConfigurationFile getCheckstyleConfiguration(
-      ICheckConfiguration checkConfiguration) throws CheckstylePluginException {
+          ICheckConfiguration checkConfiguration) throws CheckstylePluginException {
 
     boolean useCacheFile = Boolean
-        .valueOf(checkConfiguration.getAdditionalData().get(KEY_CACHE_CONFIG)).booleanValue();
+            .valueOf(checkConfiguration.getAdditionalData().get(KEY_CACHE_CONFIG)).booleanValue();
 
     CheckstyleConfigurationFile data = new CheckstyleConfigurationFile();
 
@@ -135,7 +134,7 @@ public class RemoteConfigurationType extends ConfigurationType {
         byte[] additionalPropertiesBytes = null;
         if (originalFileSuccess) {
           additionalPropertiesBytes = getAdditionPropertiesBundleBytes(
-              data.getResolvedConfigFileURL());
+                  data.getResolvedConfigFileURL());
         } else if (useCacheFile) {
           additionalPropertiesBytes = getBytesFromCacheBundleFile(checkConfiguration);
         }
@@ -153,10 +152,10 @@ public class RemoteConfigurationType extends ConfigurationType {
 
       } catch (UnknownHostException e) {
         CheckstylePluginException.rethrow(e,
-            NLS.bind(Messages.RemoteConfigurationType_errorUnknownHost, e.getMessage()));
+                NLS.bind(Messages.RemoteConfigurationType_errorUnknownHost, e.getMessage()));
       } catch (FileNotFoundException e) {
         CheckstylePluginException.rethrow(e,
-            NLS.bind(Messages.RemoteConfigurationType_errorFileNotFound, e.getMessage()));
+                NLS.bind(Messages.RemoteConfigurationType_errorFileNotFound, e.getMessage()));
       } catch (IOException | URISyntaxException e) {
         CheckstylePluginException.rethrow(e);
       } finally {
@@ -186,20 +185,20 @@ public class RemoteConfigurationType extends ConfigurationType {
    */
   @Override
   public void notifyCheckConfigRemoved(ICheckConfiguration checkConfiguration)
-      throws CheckstylePluginException {
+          throws CheckstylePluginException {
     super.notifyCheckConfigRemoved(checkConfiguration);
 
     // remove authentication info
     RemoteConfigAuthenticator
-        .removeCachedAuthInfo(checkConfiguration.getResolvedConfigurationFileURL());
+            .removeCachedAuthInfo(checkConfiguration.getResolvedConfigurationFileURL());
 
     boolean useCacheFile = Boolean
-        .valueOf(checkConfiguration.getAdditionalData().get(KEY_CACHE_CONFIG)).booleanValue();
+            .valueOf(checkConfiguration.getAdditionalData().get(KEY_CACHE_CONFIG)).booleanValue();
 
     if (useCacheFile) {
       // remove the cached configuration file from the workspace metadata
       String cacheFileLocation = checkConfiguration.getAdditionalData()
-          .get(KEY_CACHE_FILE_LOCATION);
+              .get(KEY_CACHE_FILE_LOCATION);
 
       IPath cacheFilePath = CheckstylePlugin.getDefault().getStateLocation();
       cacheFilePath = cacheFilePath.append(cacheFileLocation);
@@ -266,7 +265,7 @@ public class RemoteConfigurationType extends ConfigurationType {
   }
 
   private void writeToCacheFile(ICheckConfiguration checkConfig, byte[] configFileBytes,
-      byte[] bundleBytes) {
+          byte[] bundleBytes) {
 
     String cacheFileLocation = checkConfig.getAdditionalData().get(KEY_CACHE_FILE_LOCATION);
 
@@ -278,13 +277,13 @@ public class RemoteConfigurationType extends ConfigurationType {
       Files.write(configFileBytes, cacheFile);
     } catch (IOException e) {
       CheckstyleLog.log(e, NLS.bind(Messages.RemoteConfigurationType_msgRemoteCachingFailed,
-          checkConfig.getName(), checkConfig.getLocation()));
+              checkConfig.getName(), checkConfig.getLocation()));
     }
 
     if (bundleBytes != null) {
 
       String propsCacheFileLocation = checkConfig.getAdditionalData()
-          .get(KEY_CACHE_PROPS_FILE_LOCATION);
+              .get(KEY_CACHE_PROPS_FILE_LOCATION);
 
       IPath propsCacheFilePath = CheckstylePlugin.getDefault().getStateLocation();
       propsCacheFilePath = propsCacheFilePath.append(propsCacheFileLocation);
@@ -359,8 +358,8 @@ public class RemoteConfigurationType extends ConfigurationType {
     }
 
     /**
-     * Hacked together a piece of code to get the current default authenticator.
-     * Can't believe the API is that bad...
+     * Hacked together a piece of code to get the current default authenticator. Can't believe the
+     * API is that bad...
      *
      * @return the current Authenticator
      */
@@ -398,13 +397,13 @@ public class RemoteConfigurationType extends ConfigurationType {
      *          the password
      */
     public static void storeCredentials(URL resolvedCheckConfigurationURL, String userName,
-        String password) {
+            String password) {
 
       try {
 
         // store authorization info to the internal key ring
         ISecurePreferences prefs = SecurePreferencesFactory.getDefault()
-            .node(getSecureStoragePath(resolvedCheckConfigurationURL));
+                .node(getSecureStoragePath(resolvedCheckConfigurationURL));
 
         prefs.put(KEY_USERNAME, userName, false);
         prefs.put(KEY_PASSWORD, password, true);
@@ -417,6 +416,11 @@ public class RemoteConfigurationType extends ConfigurationType {
       }
     }
 
+    @Override
+    protected PasswordAuthentication getPasswordAuthentication() {
+      return getPasswordAuthentication(mResolvedCheckConfigurationURL);
+    }
+
     /**
      * Returns the stored authentication for the given check configuration URL.
      *
@@ -425,14 +429,14 @@ public class RemoteConfigurationType extends ConfigurationType {
      * @return the authentication object or <code>null</code> if none is stored
      */
     public static PasswordAuthentication getPasswordAuthentication(
-        URL resolvedCheckConfigurationURL) {
+            URL resolvedCheckConfigurationURL) {
 
       PasswordAuthentication auth = null;
 
       try {
 
         ISecurePreferences prefs = SecurePreferencesFactory.getDefault()
-            .node(getSecureStoragePath(resolvedCheckConfigurationURL));
+                .node(getSecureStoragePath(resolvedCheckConfigurationURL));
 
         String userName = prefs.get(KEY_USERNAME, null);
         String password = prefs.get(KEY_PASSWORD, null);
@@ -458,7 +462,7 @@ public class RemoteConfigurationType extends ConfigurationType {
      *           if the authentication could not be removed
      */
     public static void removeCachedAuthInfo(URL resolvedCheckConfigurationURL)
-        throws CheckstylePluginException {
+            throws CheckstylePluginException {
       sFailedWith401URLs.remove(resolvedCheckConfigurationURL.toString());
 
       String storagePath = getSecureStoragePath(resolvedCheckConfigurationURL);
@@ -466,21 +470,13 @@ public class RemoteConfigurationType extends ConfigurationType {
       if (SecurePreferencesFactory.getDefault().nodeExists(storagePath)) {
 
         ISecurePreferences prefs = SecurePreferencesFactory.getDefault()
-            .node(getSecureStoragePath(resolvedCheckConfigurationURL));
+                .node(getSecureStoragePath(resolvedCheckConfigurationURL));
         prefs.removeNode();
       }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected PasswordAuthentication getPasswordAuthentication() {
-      return getPasswordAuthentication(mResolvedCheckConfigurationURL);
-    }
-
     private static String getSecureStoragePath(URL resolvedCheckConfigurationURL)
-        throws CheckstylePluginException {
+            throws CheckstylePluginException {
 
       // convert the config url to a hash, because storage paths can only
       // be 128 chars long

@@ -23,19 +23,18 @@ package net.sf.eclipsecs.core.config.meta;
 import java.util.List;
 
 /**
- * Interface for an option provider. This is used to provide dynamic or massive
- * amount of options which would be too difficult to handle in metadata. For
- * instance this is true for module metadata that need all token types as
- * options.
+ * Interface for an option provider. This is used to provide dynamic or massive amount of options
+ * which would be too difficult to handle in metadata. For instance this is true for module metadata
+ * that need all token types as options.
  * 
  * @author Lars Ködderitzsch
  */
 public interface IOptionProvider {
 
-    /**
-     * Returns a list of options.
-     * 
-     * @return the options
-     */
-    List<String> getOptions();
+  /**
+   * Returns a list of options.
+   * 
+   * @return the options
+   */
+  List<String> getOptions();
 }

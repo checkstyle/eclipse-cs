@@ -30,36 +30,32 @@ import org.eclipse.swt.widgets.Control;
  */
 public class ConfigPropertyWidgetHidden extends ConfigPropertyWidgetAbstractBase {
 
-    private String mValue = ""; //$NON-NLS-1$
+  private String mValue = ""; //$NON-NLS-1$
 
-    /**
-     * Creates the widget.
-     * 
-     * @param parent the parent composite
-     * @param prop the property
-     */
-    public ConfigPropertyWidgetHidden(Composite parent, ConfigProperty prop) {
-        super(parent, prop);
-    }
+  /**
+   * Creates the widget.
+   *
+   * @param parent
+   *          the parent composite
+   * @param prop
+   *          the property
+   */
+  public ConfigPropertyWidgetHidden(Composite parent, ConfigProperty prop) {
+    super(parent, prop);
+  }
 
-    /**
-     * @see ConfigPropertyWidgetAbstractBase#getValueWidget(org.eclipse.swt.widgets.Composite)
-     */
-    protected Control getValueWidget(Composite parent) {
-        return null;
-    }
+  @Override
+  protected Control getValueWidget(Composite parent) {
+    return null;
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    public String getValue() {
-        return mValue;
-    }
+  @Override
+  public String getValue() {
+    return mValue;
+  }
 
-    /**
-     * @see ConfigPropertyWidgetAbstractBase#restorePropertyDefault()
-     */
-    public void restorePropertyDefault() {
+  @Override
+  public void restorePropertyDefault() {
     // NOOP
-    }
+  }
 }

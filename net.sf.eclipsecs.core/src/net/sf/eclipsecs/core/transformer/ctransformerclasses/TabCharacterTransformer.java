@@ -20,8 +20,8 @@
 
 package net.sf.eclipsecs.core.transformer.ctransformerclasses;
 
-import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 import net.sf.eclipsecs.core.transformer.CTransformationClass;
+import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 
 /**
  * Wrapperclass for converting the checkstyle-rule TabCharacter to appropriate
@@ -31,10 +31,10 @@ import net.sf.eclipsecs.core.transformer.CTransformationClass;
  */
 public class TabCharacterTransformer extends CTransformationClass {
 
-    @Override
-    public FormatterConfiguration transformRule() {
-        userFormatterSetting("use_tabs_only_for_leading_indentations", "false");
-        return getFormatterSetting();
-    }
+  @Override
+  public FormatterConfiguration transformRule() {
+    userFormatterSetting("use_tabs_only_for_leading_indentations", "false");
+    return getFormatterSetting();
+  }
 
 }

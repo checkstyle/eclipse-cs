@@ -29,16 +29,17 @@ import org.eclipse.core.resources.IResource;
  */
 public class DerivedFilesFilter extends AbstractFilter {
 
-    /**
-     * {@inheritDoc}
-     */
-    public boolean accept(Object element) {
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean accept(Object element) {
 
-        boolean goesThrough = true;
+    boolean goesThrough = true;
 
-        if (element instanceof IResource) {
-            goesThrough = !((IResource) element).isDerived(IResource.CHECK_ANCESTORS);
-        }
-        return goesThrough;
+    if (element instanceof IResource) {
+      goesThrough = !((IResource) element).isDerived(IResource.CHECK_ANCESTORS);
     }
+    return goesThrough;
+  }
 }

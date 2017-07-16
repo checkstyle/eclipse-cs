@@ -34,58 +34,54 @@ import org.eclipse.swt.widgets.Text;
  */
 public class ConfigPropertyWidgetString extends ConfigPropertyWidgetAbstractBase {
 
-    private Text mTextWidget;
+  private Text mTextWidget;
 
-    /**
-     * Creates the widget.
-     * 
-     * @param parent the parent composite
-     * @param prop the property
-     */
-    public ConfigPropertyWidgetString(Composite parent, ConfigProperty prop) {
-        super(parent, prop);
+  /**
+   * Creates the widget.
+   *
+   * @param parent
+   *          the parent composite
+   * @param prop
+   *          the property
+   */
+  public ConfigPropertyWidgetString(Composite parent, ConfigProperty prop) {
+    super(parent, prop);
+  }
+
+  @Override
+  protected Control getValueWidget(Composite parent) {
+
+    if (mTextWidget == null) {
+
+      //
+      // Create a text entry field.
+      //
+      mTextWidget = new Text(parent, SWT.SINGLE | SWT.BORDER);
+      mTextWidget.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+      String initValue = getInitValue();
+      if (initValue != null) {
+        mTextWidget.setText(initValue);
+      }
     }
 
-    /**
-     * @see ConfigPropertyWidgetAbstractBase#getValueWidget(org.eclipse.swt.widgets.Composite)
-     */
-    protected Control getValueWidget(Composite parent) {
+    return mTextWidget;
+  }
 
-        if (mTextWidget == null) {
-
-            //
-            // Create a text entry field.
-            //
-            mTextWidget = new Text(parent, SWT.SINGLE | SWT.BORDER);
-            mTextWidget.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-            String initValue = getInitValue();
-            if (initValue != null) {
-                mTextWidget.setText(initValue);
-            }
-        }
-
-        return mTextWidget;
+  @Override
+  public String getValue() {
+    String result = mTextWidget.getText();
+    if (result == null) {
+      result = ""; //$NON-NLS-1$
     }
+    return result;
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    public String getValue() {
-        String result = mTextWidget.getText();
-        if (result == null) {
-            result = ""; //$NON-NLS-1$
-        }
-        return result;
-    }
-
-    /**
-     * @see ConfigPropertyWidgetAbstractBase#restorePropertyDefault()
-     */
-    public void restorePropertyDefault() {
-        ConfigPropertyMetadata metadata = getConfigProperty().getMetaData();
-        String defaultValue = metadata.getOverrideDefault() != null ? metadata.getOverrideDefault()
-                : metadata.getDefaultValue();
-        mTextWidget.setText(defaultValue != null ? defaultValue : ""); //$NON-NLS-1$
-    }
+  @Override
+  public void restorePropertyDefault() {
+    ConfigPropertyMetadata metadata = getConfigProperty().getMetaData();
+    String defaultValue = metadata.getOverrideDefault() != null ? metadata.getOverrideDefault()
+            : metadata.getDefaultValue();
+    mTextWidget.setText(defaultValue != null ? defaultValue : ""); //$NON-NLS-1$
+  }
 }

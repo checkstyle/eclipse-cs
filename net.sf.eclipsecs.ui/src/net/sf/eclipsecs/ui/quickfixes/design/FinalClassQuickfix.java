@@ -29,8 +29,8 @@ import net.sf.eclipsecs.ui.quickfixes.modifier.ModifierOrderQuickfix;
 
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.Modifier;
-import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.core.dom.Modifier.ModifierKeyword;
+import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.swt.graphics.Image;
 
@@ -42,60 +42,63 @@ import org.eclipse.swt.graphics.Image;
  */
 public class FinalClassQuickfix extends AbstractASTResolution {
 
-    /** The length of the javadoc comment declaration. */
-    private static final int JAVADOC_COMMENT_LENGTH = 6;
+  /** The length of the javadoc comment declaration. */
+  private static final int JAVADOC_COMMENT_LENGTH = 6;
 
-    /**
-     * {@inheritDoc}
-     */
-    protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
-            final int markerStartOffset) {
-        return new ASTVisitor() {
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
+          final int markerStartOffset) {
+    return new ASTVisitor() {
 
-            public boolean visit(TypeDeclaration node) {
-                // recalculate start position because optional javadoc is mixed
-                // into the original start position
-                int pos = node.getStartPosition()
-                        + (node.getJavadoc() != null ? node.getJavadoc().getLength()
-                                + JAVADOC_COMMENT_LENGTH : 0);
-                if (containsPosition(lineInfo, pos)) {
+      @Override
+      public boolean visit(TypeDeclaration node) {
+        // recalculate start position because optional javadoc is mixed
+        // into the original start position
+        int pos = node.getStartPosition() + (node.getJavadoc() != null
+                ? node.getJavadoc().getLength() + JAVADOC_COMMENT_LENGTH
+                : 0);
+        if (containsPosition(lineInfo, pos)) {
 
-                    if (!Modifier.isFinal(node.getModifiers())) {
+          if (!Modifier.isFinal(node.getModifiers())) {
 
-                        Modifier finalModifier = node.getAST().newModifier(
-                                ModifierKeyword.FINAL_KEYWORD);
-                        node.modifiers().add(finalModifier);
+            Modifier finalModifier = node.getAST().newModifier(ModifierKeyword.FINAL_KEYWORD);
+            node.modifiers().add(finalModifier);
 
-                        // reorder modifiers into their correct order
-                        List reorderedModifiers = ModifierOrderQuickfix.reOrderModifiers(node
-                                .modifiers());
-                        node.modifiers().clear();
-                        node.modifiers().addAll(reorderedModifiers);
-                    }
-                }
-                return true;
-            }
-        };
-    }
+            // reorder modifiers into their correct order
+            List reorderedModifiers = ModifierOrderQuickfix.reOrderModifiers(node.modifiers());
+            node.modifiers().clear();
+            node.modifiers().addAll(reorderedModifiers);
+          }
+        }
+        return true;
+      }
+    };
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    public String getDescription() {
-        return Messages.FinalClassQuickfix_description;
-    }
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String getDescription() {
+    return Messages.FinalClassQuickfix_description;
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    public String getLabel() {
-        return Messages.FinalClassQuickfix_label;
-    }
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String getLabel() {
+    return Messages.FinalClassQuickfix_label;
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    public Image getImage() {
-        return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.CORRECTION_ADD);
-    }
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public Image getImage() {
+    return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.CORRECTION_ADD);
+  }
 }

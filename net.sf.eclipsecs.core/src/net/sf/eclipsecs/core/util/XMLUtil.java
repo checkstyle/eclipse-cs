@@ -37,67 +37,69 @@ import org.xml.sax.SAXException;
  */
 public final class XMLUtil {
 
-    /**
-     * Private constructor to prevent instances.
-     */
-    private XMLUtil() {}
+  /**
+   * Private constructor to prevent instances.
+   */
+  private XMLUtil() {
+  }
+
+  /**
+   * Creates a pretty printed representation of the document as a byte array.
+   * 
+   * @param document
+   *          the document
+   * @return the document as a byte array (UTF-8)
+   * @throws IOException
+   *           Exception while serializing the document
+   */
+  public static byte[] toByteArray(Document document) throws IOException {
+
+    ByteArrayOutputStream byteOut = new ByteArrayOutputStream(512);
+
+    // Pretty print the document to System.out
+    OutputFormat format = OutputFormat.createPrettyPrint();
+    XMLWriter writer = new XMLWriter(byteOut, format);
+    writer.write(document);
+
+    return byteOut.toByteArray();
+  }
+
+  /**
+   * Entity resolver which handles mapping public DTDs to internal DTD resource.
+   * 
+   * @author Lars Ködderitzsch
+   */
+  public static class InternalDtdEntityResolver implements EntityResolver {
+
+    private final Map<String, String> mPublic2InternalDtdMap;
 
     /**
-     * Creates a pretty printed representation of the document as a byte array.
+     * Creates the entity resolver using a mapping of public DTD name to internal DTD resource.
      * 
-     * @param document the document
-     * @return the document as a byte array (UTF-8)
-     * @throws IOException Exception while serializing the document
+     * @param public2InternalDtdMap
+     *          the public2internal DTD mapping
      */
-    public static byte[] toByteArray(Document document) throws IOException {
-
-        ByteArrayOutputStream byteOut = new ByteArrayOutputStream(512);
-
-        // Pretty print the document to System.out
-        OutputFormat format = OutputFormat.createPrettyPrint();
-        XMLWriter writer = new XMLWriter(byteOut, format);
-        writer.write(document);
-
-        return byteOut.toByteArray();
+    public InternalDtdEntityResolver(Map<String, String> public2InternalDtdMap) {
+      mPublic2InternalDtdMap = public2InternalDtdMap;
     }
 
     /**
-     * Entity resolver which handles mapping public DTDs to internal DTD
-     * resource.
-     * 
-     * @author Lars Ködderitzsch
+     * {@inheritDoc}
      */
-    public static class InternalDtdEntityResolver implements EntityResolver {
+    @Override
+    public InputSource resolveEntity(String publicId, String systemId) throws SAXException {
 
-        private final Map<String, String> mPublic2InternalDtdMap;
+      if (mPublic2InternalDtdMap.containsKey(publicId)) {
 
-        /**
-         * Creates the entity resolver using a mapping of public DTD name to
-         * internal DTD resource.
-         * 
-         * @param public2InternalDtdMap the public2internal DTD mapping
-         */
-        public InternalDtdEntityResolver(Map<String, String> public2InternalDtdMap) {
-            mPublic2InternalDtdMap = public2InternalDtdMap;
+        final String dtdResourceName = mPublic2InternalDtdMap.get(publicId);
+
+        final InputStream dtdIS = getClass().getClassLoader().getResourceAsStream(dtdResourceName);
+        if (dtdIS == null) {
+          throw new SAXException("Unable to load internal dtd " + dtdResourceName); //$NON-NLS-1$
         }
-
-        /**
-         * {@inheritDoc}
-         */
-        public InputSource resolveEntity(String publicId, String systemId) throws SAXException {
-
-            if (mPublic2InternalDtdMap.containsKey(publicId)) {
-
-                final String dtdResourceName = mPublic2InternalDtdMap.get(publicId);
-
-                final InputStream dtdIS = getClass().getClassLoader().getResourceAsStream(
-                        dtdResourceName);
-                if (dtdIS == null) {
-                    throw new SAXException("Unable to load internal dtd " + dtdResourceName); //$NON-NLS-1$
-                }
-                return new InputSource(dtdIS);
-            }
-            return null;
-        }
+        return new InputSource(dtdIS);
+      }
+      return null;
     }
+  }
 }

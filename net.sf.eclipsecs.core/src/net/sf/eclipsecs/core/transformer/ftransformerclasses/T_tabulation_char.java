@@ -24,15 +24,15 @@ import net.sf.eclipsecs.core.transformer.CheckstyleSetting;
 import net.sf.eclipsecs.core.transformer.FTransformationClass;
 
 /**
- * Transformerclass for converting the formatter-setting tabulation.char to
- * appropriate checkstyle-modules.
+ * Transformerclass for converting the formatter-setting tabulation.char to appropriate
+ * checkstyle-modules.
  * 
  * @author Lukas Frena
  */
 public class T_tabulation_char extends FTransformationClass {
-    @Override
-    public CheckstyleSetting transformRule() {
-        useCheckerModule("FileTabCharacter", null);
-        return getCheckstyleSetting();
-    }
+  @Override
+  public CheckstyleSetting transformRule() {
+    useCheckerModule("FileTabCharacter", null);
+    return getCheckstyleSetting();
+  }
 }

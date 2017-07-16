@@ -35,73 +35,72 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 
 /**
- * Implementation of a filter that filters all ressources that are not within a
- * source directory.
+ * Implementation of a filter that filters all ressources that are not within a source directory.
  * 
  * @author Lars Ködderitzsch
  */
 public class NonSrcDirsFilter extends AbstractFilter {
 
-    /** the current project. */
-    private IProject mCurrentProject;
+  /** the current project. */
+  private IProject mCurrentProject;
 
-    /** the list of source paths of the current project. */
-    private List<IPath> mCurrentSourcePaths;
+  /** the list of source paths of the current project. */
+  private List<IPath> mCurrentSourcePaths;
 
-    /**
-     * {@inheritDoc}
-     */
-    public boolean accept(Object element) {
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean accept(Object element) {
 
-        boolean goesThrough = false;
+    boolean goesThrough = false;
 
-        if (element instanceof IResource) {
-            IResource resource = (IResource) element;
+    if (element instanceof IResource) {
+      IResource resource = (IResource) element;
 
-            IProject project = resource.getProject();
-            if (mCurrentProject != project) {
-                mCurrentSourcePaths = getSourceDirPaths(project);
-                mCurrentProject = project;
-            }
+      IProject project = resource.getProject();
+      if (mCurrentProject != project) {
+        mCurrentSourcePaths = getSourceDirPaths(project);
+        mCurrentProject = project;
+      }
 
-            for (IPath sourcePath : mCurrentSourcePaths) {
-                if (sourcePath.isPrefixOf(resource.getFullPath())) {
-                    goesThrough = true;
-                    break;
-                }
-            }
+      for (IPath sourcePath : mCurrentSourcePaths) {
+        if (sourcePath.isPrefixOf(resource.getFullPath())) {
+          goesThrough = true;
+          break;
         }
-        return goesThrough;
+      }
+    }
+    return goesThrough;
+  }
+
+  /**
+   * Gets all source paths of a project.
+   * 
+   * @param project
+   *          the project
+   * @return the list of source paths
+   */
+  private List<IPath> getSourceDirPaths(IProject project) {
+
+    List<IPath> sourceDirs = new ArrayList<IPath>();
+
+    try {
+      if (project.hasNature(JavaCore.NATURE_ID)) {
+        IJavaProject javaProject = JavaCore.create(project);
+        IClasspathEntry[] cp = javaProject.getResolvedClasspath(true);
+        for (int i = 0; i < cp.length; i++) {
+          if (cp[i].getEntryKind() == IClasspathEntry.CPE_SOURCE) {
+            sourceDirs.add(cp[i].getPath());
+          }
+        }
+      }
+    } catch (JavaModelException e) {
+      CheckstyleLog.log(e);
+    } catch (CoreException e) {
+      CheckstyleLog.log(e);
     }
 
-    /**
-     * Gets all source paths of a project.
-     * 
-     * @param project the project
-     * @return the list of source paths
-     */
-    private List<IPath> getSourceDirPaths(IProject project) {
-
-        List<IPath> sourceDirs = new ArrayList<IPath>();
-
-        try {
-            if (project.hasNature(JavaCore.NATURE_ID)) {
-                IJavaProject javaProject = JavaCore.create(project);
-                IClasspathEntry[] cp = javaProject.getResolvedClasspath(true);
-                for (int i = 0; i < cp.length; i++) {
-                    if (cp[i].getEntryKind() == IClasspathEntry.CPE_SOURCE) {
-                        sourceDirs.add(cp[i].getPath());
-                    }
-                }
-            }
-        }
-        catch (JavaModelException e) {
-            CheckstyleLog.log(e);
-        }
-        catch (CoreException e) {
-            CheckstyleLog.log(e);
-        }
-
-        return sourceDirs;
-    }
+    return sourceDirs;
+  }
 }

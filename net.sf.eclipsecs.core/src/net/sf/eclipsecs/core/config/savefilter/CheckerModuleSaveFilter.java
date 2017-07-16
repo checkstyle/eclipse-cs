@@ -33,29 +33,29 @@ import net.sf.eclipsecs.core.config.meta.MetadataFactory;
  */
 public class CheckerModuleSaveFilter implements ISaveFilter {
 
-    /**
-     * {@inheritDoc}
-     */
-    public void postProcessConfiguredModules(List<Module> configuredModules) {
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void postProcessConfiguredModules(List<Module> configuredModules) {
 
-        boolean containsCheckerModule = false;
+    boolean containsCheckerModule = false;
 
-        for (int i = 0, size = configuredModules.size(); i < size; i++) {
+    for (int i = 0, size = configuredModules.size(); i < size; i++) {
 
-            Module module = configuredModules.get(i);
+      Module module = configuredModules.get(i);
 
-            if (XMLTags.CHECKER_MODULE.equals(module.getMetaData().getInternalName())) {
+      if (XMLTags.CHECKER_MODULE.equals(module.getMetaData().getInternalName())) {
 
-                containsCheckerModule = true;
-                break;
-            }
-        }
-
-        // add checker module if it is not contained in the configured modules
-        if (!containsCheckerModule) {
-            Module checker = new Module(MetadataFactory.getRuleMetadata(XMLTags.CHECKER_MODULE),
-                    false);
-            configuredModules.add(0, checker);
-        }
+        containsCheckerModule = true;
+        break;
+      }
     }
+
+    // add checker module if it is not contained in the configured modules
+    if (!containsCheckerModule) {
+      Module checker = new Module(MetadataFactory.getRuleMetadata(XMLTags.CHECKER_MODULE), false);
+      configuredModules.add(0, checker);
+    }
+  }
 }

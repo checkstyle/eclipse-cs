@@ -31,13 +31,12 @@ import net.sf.eclipsecs.core.config.Module;
  */
 public interface ISaveFilter {
 
-    /**
-     * Post processes the selection of configurad modules. This can be used to
-     * add/remove certain 'special' modules. Implementations are encouraged to
-     * manipulate the list of configured modules.
-     * 
-     * @param configuredModules the configured modules in from this
-     *            configuration
-     */
-    void postProcessConfiguredModules(List<Module> configuredModules);
+  /**
+   * Post processes the selection of configurad modules. This can be used to add/remove certain
+   * 'special' modules. Implementations are encouraged to manipulate the list of configured modules.
+   * 
+   * @param configuredModules
+   *          the configured modules in from this configuration
+   */
+  void postProcessConfiguredModules(List<Module> configuredModules);
 }

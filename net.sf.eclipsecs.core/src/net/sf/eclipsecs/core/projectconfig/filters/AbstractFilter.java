@@ -20,10 +20,10 @@
 
 package net.sf.eclipsecs.core.projectconfig.filters;
 
+import com.google.common.base.MoreObjects;
+
 import java.util.List;
 import java.util.Objects;
-
-import com.google.common.base.MoreObjects;
 
 /**
  * Base implementation of a filter.
@@ -32,148 +32,162 @@ import com.google.common.base.MoreObjects;
  */
 public abstract class AbstractFilter implements IFilter {
 
-    /** name of the filter. */
-    private String mFilterName;
+  /** name of the filter. */
+  private String mFilterName;
 
-    /** internal name of the filter. */
-    private String mInternalName;
+  /** internal name of the filter. */
+  private String mInternalName;
 
-    /** description of the filter. */
-    private String mFilterDescription;
+  /** description of the filter. */
+  private String mFilterDescription;
 
-    /** flags if the filter is selected. */
-    private boolean mSelected;
+  /** flags if the filter is selected. */
+  private boolean mSelected;
 
-    /** flags, if the filter is readonly. */
-    private boolean mReadonly;
+  /** flags, if the filter is readonly. */
+  private boolean mReadonly;
 
-    /**
-     * {@inheritDoc}
-     */
-    public void initialize(String name, String internalName, String desc, boolean readonly) {
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void initialize(String name, String internalName, String desc, boolean readonly) {
 
-        this.mFilterName = name;
-        this.mInternalName = internalName;
-        this.mFilterDescription = desc;
-        this.mReadonly = readonly;
+    this.mFilterName = name;
+    this.mInternalName = internalName;
+    this.mFilterDescription = desc;
+    this.mReadonly = readonly;
+  }
+
+  /**
+   * Gets the name of the filter.
+   *
+   * @return the filter name
+   */
+  @Override
+  public final String getName() {
+    return this.mFilterName;
+  }
+
+  /**
+   * Gets the internal name of the filter.
+   *
+   * @return the internal filter name
+   */
+  @Override
+  public final String getInternalName() {
+    return this.mInternalName;
+  }
+
+  /**
+   * Gets the description of the filter.
+   *
+   * @return the description
+   */
+  @Override
+  public final String getDescription() {
+    return this.mFilterDescription;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean isEnabled() {
+    return mSelected;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void setEnabled(boolean selected) {
+    mSelected = selected;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean isReadonly() {
+    return mReadonly;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public List<String> getFilterData() {
+    // NOOP
+    return null;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void setFilterData(List<String> filterData) {
+    // NOOP
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String getPresentableFilterData() {
+    return null;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public IFilter clone() {
+
+    IFilter o = null;
+    try {
+      o = (IFilter) super.clone();
+    } catch (CloneNotSupportedException cnse) {
+      // this shouldn't happen, since we are Cloneable
+      throw new InternalError();
+    }
+    return o;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean equals(Object o) {
+    if (o == null || !(o instanceof AbstractFilter)) {
+      return false;
+    }
+    if (this == o) {
+      return true;
     }
 
-    /**
-     * Gets the name of the filter.
-     *
-     * @return the filter name
-     */
-    public final String getName() {
-        return this.mFilterName;
-    }
+    AbstractFilter rhs = (AbstractFilter) o;
+    return Objects.equals(mFilterName, rhs.mFilterName)
+            && Objects.equals(mInternalName, rhs.mInternalName)
+            && Objects.equals(mFilterDescription, rhs.mFilterDescription)
+            && Objects.equals(mSelected, rhs.mSelected) && Objects.equals(mReadonly, rhs.mReadonly);
+  }
 
-    /**
-     * Gets the internal name of the filter.
-     *
-     * @return the internal filter name
-     */
-    public final String getInternalName() {
-        return this.mInternalName;
-    }
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public int hashCode() {
+    return Objects.hash(mFilterName, mInternalName, mFilterDescription, mSelected, mReadonly);
+  }
 
-    /**
-     * Gets the description of the filter.
-     *
-     * @return the description
-     */
-    public final String getDescription() {
-        return this.mFilterDescription;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public boolean isEnabled() {
-        return mSelected;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void setEnabled(boolean selected) {
-        mSelected = selected;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public boolean isReadonly() {
-        return mReadonly;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public List<String> getFilterData() {
-        // NOOP
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void setFilterData(List<String> filterData) {
-        // NOOP
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public String getPresentableFilterData() {
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public IFilter clone() {
-
-        IFilter o = null;
-        try {
-            o = (IFilter) super.clone();
-        }
-        catch (CloneNotSupportedException cnse) {
-            // this shouldn't happen, since we are Cloneable
-            throw new InternalError();
-        }
-        return o;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public boolean equals(Object o) {
-        if (o == null || !(o instanceof AbstractFilter)) {
-            return false;
-        }
-        if (this == o) {
-            return true;
-        }
-
-        AbstractFilter rhs = (AbstractFilter) o;
-        return Objects.equals(mFilterName, rhs.mFilterName) && Objects.equals(mInternalName, rhs.mInternalName)
-            && Objects.equals(mFilterDescription, rhs.mFilterDescription) && Objects.equals(mSelected, rhs.mSelected)
-            && Objects.equals(mReadonly, rhs.mReadonly);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public int hashCode() {
-        return Objects.hash(mFilterName, mInternalName, mFilterDescription, mSelected, mReadonly);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public String toString() {
-        return MoreObjects.toStringHelper(this).add("filterName", mFilterName).add("internalName", mInternalName)
-            .add("filterDescription", mFilterDescription).add("selected", mSelected).add("readonly", mReadonly)
-            .toString();
-    }
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper(this).add("filterName", mFilterName)
+            .add("internalName", mInternalName).add("filterDescription", mFilterDescription)
+            .add("selected", mSelected).add("readonly", mReadonly).toString();
+  }
 }

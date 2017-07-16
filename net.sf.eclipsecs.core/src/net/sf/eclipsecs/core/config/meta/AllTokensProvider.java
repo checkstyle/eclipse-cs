@@ -20,45 +20,45 @@
 
 package net.sf.eclipsecs.core.config.meta;
 
+import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.puppycrawl.tools.checkstyle.api.TokenTypes;
-
 /**
- * Class that provides all known tokens from the checkstyle java grammar. This
- * is used for modules that allow all tokens as options - which is very tedious
- * to maintain in the metadata.
+ * Class that provides all known tokens from the checkstyle java grammar. This is used for modules
+ * that allow all tokens as options - which is very tedious to maintain in the metadata.
  * 
  * @author Lars Ködderitzsch
  */
 public class AllTokensProvider implements IOptionProvider {
 
-    /** the list of options. */
-    private static List<String> sAllOptions = new ArrayList<String>();
+  /** the list of options. */
+  private static List<String> sAllOptions = new ArrayList<String>();
 
-    /** Static initializer. Builds the option list. */
-    static {
+  /** Static initializer. Builds the option list. */
+  static {
 
-        final Field[] fields = TokenTypes.class.getDeclaredFields();
-        for (int i = 0; i < fields.length; i++) {
-            final Field f = fields[i];
+    final Field[] fields = TokenTypes.class.getDeclaredFields();
+    for (int i = 0; i < fields.length; i++) {
+      final Field f = fields[i];
 
-            // Only process the int declarations.
-            if (f.getType() != Integer.TYPE) {
-                continue;
-            }
-            sAllOptions.add(f.getName());
-        }
+      // Only process the int declarations.
+      if (f.getType() != Integer.TYPE) {
+        continue;
+      }
+      sAllOptions.add(f.getName());
     }
+  }
 
-    /**
-     * Returns all options.
-     * 
-     * @return the options
-     */
-    public List<String> getOptions() {
-        return sAllOptions;
-    }
+  /**
+   * Returns all options.
+   * 
+   * @return the options
+   */
+  @Override
+  public List<String> getOptions() {
+    return sAllOptions;
+  }
 }

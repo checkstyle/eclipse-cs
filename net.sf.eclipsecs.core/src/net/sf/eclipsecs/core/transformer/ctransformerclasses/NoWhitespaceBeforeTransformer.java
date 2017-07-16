@@ -20,22 +20,21 @@
 
 package net.sf.eclipsecs.core.transformer.ctransformerclasses;
 
-import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 import net.sf.eclipsecs.core.transformer.CTransformationClass;
+import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 
 /**
- * Wrapperclass for converting the checkstyle-rule NoWhitespaceBefore to
- * appropriate eclipse-formatter-rules.
+ * Wrapperclass for converting the checkstyle-rule NoWhitespaceBefore to appropriate
+ * eclipse-formatter-rules.
  * 
  * @author Lukas Frena
  */
 public class NoWhitespaceBeforeTransformer extends CTransformationClass {
-    @Override
-    public FormatterConfiguration transformRule() {
-        // TODO tokens SEMI DOT
-        userFormatterSetting("insert_space_before_postfix_operator",
-            "do not insert");
-        return getFormatterSetting();
-    }
+  @Override
+  public FormatterConfiguration transformRule() {
+    // TODO tokens SEMI DOT
+    userFormatterSetting("insert_space_before_postfix_operator", "do not insert");
+    return getFormatterSetting();
+  }
 
 }

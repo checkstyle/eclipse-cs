@@ -29,11 +29,11 @@ import org.eclipse.core.resources.IProject;
  */
 public interface IContextAware {
 
-    /**
-     * Sets the project context.
-     *
-     * @param project
-     *            the project context
-     */
-    void setProjectContext(IProject project);
+  /**
+   * Sets the project context.
+   *
+   * @param project
+   *          the project context
+   */
+  void setProjectContext(IProject project);
 }

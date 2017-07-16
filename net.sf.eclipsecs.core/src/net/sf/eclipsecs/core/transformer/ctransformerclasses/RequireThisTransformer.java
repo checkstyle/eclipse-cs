@@ -20,8 +20,8 @@
 
 package net.sf.eclipsecs.core.transformer.ctransformerclasses;
 
-import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 import net.sf.eclipsecs.core.transformer.CTransformationClass;
+import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 
 /**
  * Wrapperclass for converting the checkstyle-rule RequireThis to appropriate
@@ -30,17 +30,14 @@ import net.sf.eclipsecs.core.transformer.CTransformationClass;
  * @author Lukas Frena
  */
 public class RequireThisTransformer extends CTransformationClass {
-    @Override
-    public FormatterConfiguration transformRule() {
-        useCleanupSetting("always_use_this_for_non_static_field_access", "true");
-        useCleanupSetting("use_this_for_non_static_field_access", "true");
-        useCleanupSetting("always_use_this_for_non_static_method_access",
-            "true");
-        useCleanupSetting(
-            "use_this_for_non_static_method_access_only_if_necessary", "false");
-        useCleanupSetting("use_this_for_non_static_method_access", "true");
-        useCleanupSetting(
-            "use_this_for_non_static_field_access_only_if_necessary", "false");
-        return getFormatterSetting();
-    }
+  @Override
+  public FormatterConfiguration transformRule() {
+    useCleanupSetting("always_use_this_for_non_static_field_access", "true");
+    useCleanupSetting("use_this_for_non_static_field_access", "true");
+    useCleanupSetting("always_use_this_for_non_static_method_access", "true");
+    useCleanupSetting("use_this_for_non_static_method_access_only_if_necessary", "false");
+    useCleanupSetting("use_this_for_non_static_method_access", "true");
+    useCleanupSetting("use_this_for_non_static_field_access_only_if_necessary", "false");
+    return getFormatterSetting();
+  }
 }

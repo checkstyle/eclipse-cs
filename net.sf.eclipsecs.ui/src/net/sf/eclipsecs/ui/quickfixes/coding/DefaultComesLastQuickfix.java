@@ -42,82 +42,85 @@ import org.eclipse.swt.graphics.Image;
  */
 public class DefaultComesLastQuickfix extends AbstractASTResolution {
 
-    /**
-     * {@inheritDoc}
-     */
-    protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
-            final int markerStartOffset) {
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
+          final int markerStartOffset) {
 
-        return new ASTVisitor() {
+    return new ASTVisitor() {
 
-            public boolean visit(SwitchCase node) {
+      @Override
+      public boolean visit(SwitchCase node) {
 
-                if (containsPosition(lineInfo, node.getStartPosition())) {
+        if (containsPosition(lineInfo, node.getStartPosition())) {
 
-                    if (node.isDefault() && !isLastSwitchCase(node)) {
-                        SwitchStatement switchStatement = (SwitchStatement) node.getParent();
+          if (node.isDefault() && !isLastSwitchCase(node)) {
+            SwitchStatement switchStatement = (SwitchStatement) node.getParent();
 
-                        List defaultCaseStatements = new ArrayList();
-                        defaultCaseStatements.add(node);
+            List defaultCaseStatements = new ArrayList();
+            defaultCaseStatements.add(node);
 
-                        // collect all statements belonging to the default case
-                        int defaultStatementIndex = switchStatement.statements().indexOf(node);
-                        for (int i = defaultStatementIndex + 1; i < switchStatement.statements()
-                                .size(); i++) {
-                            ASTNode tmpNode = (ASTNode) switchStatement.statements().get(i);
+            // collect all statements belonging to the default case
+            int defaultStatementIndex = switchStatement.statements().indexOf(node);
+            for (int i = defaultStatementIndex + 1; i < switchStatement.statements().size(); i++) {
+              ASTNode tmpNode = (ASTNode) switchStatement.statements().get(i);
 
-                            if (!(tmpNode instanceof SwitchCase)) {
-                                defaultCaseStatements.add(tmpNode);
-                            }
-                            else {
-                                break;
-                            }
-                        }
-
-                        // move the statements to the end of the statement list
-                        switchStatement.statements().removeAll(defaultCaseStatements);
-                        switchStatement.statements().addAll(defaultCaseStatements);
-                    }
-                }
-                return true;
+              if (!(tmpNode instanceof SwitchCase)) {
+                defaultCaseStatements.add(tmpNode);
+              } else {
+                break;
+              }
             }
 
-            private boolean isLastSwitchCase(SwitchCase switchCase) {
+            // move the statements to the end of the statement list
+            switchStatement.statements().removeAll(defaultCaseStatements);
+            switchStatement.statements().addAll(defaultCaseStatements);
+          }
+        }
+        return true;
+      }
 
-                SwitchStatement switchStatement = (SwitchStatement) switchCase.getParent();
+      private boolean isLastSwitchCase(SwitchCase switchCase) {
 
-                // collect all statements belonging to the default case
-                int defaultStatementIndex = switchStatement.statements().indexOf(switchCase);
-                for (int i = defaultStatementIndex + 1; i < switchStatement.statements().size(); i++) {
-                    ASTNode tmpNode = (ASTNode) switchStatement.statements().get(i);
+        SwitchStatement switchStatement = (SwitchStatement) switchCase.getParent();
 
-                    if (tmpNode instanceof SwitchCase) {
-                        return false;
-                    }
-                }
-                return true;
-            }
-        };
-    }
+        // collect all statements belonging to the default case
+        int defaultStatementIndex = switchStatement.statements().indexOf(switchCase);
+        for (int i = defaultStatementIndex + 1; i < switchStatement.statements().size(); i++) {
+          ASTNode tmpNode = (ASTNode) switchStatement.statements().get(i);
 
-    /**
-     * {@inheritDoc}
-     */
-    public String getDescription() {
-        return Messages.DefaultComesLastQuickfix_description;
-    }
+          if (tmpNode instanceof SwitchCase) {
+            return false;
+          }
+        }
+        return true;
+      }
+    };
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    public String getLabel() {
-        return Messages.DefaultComesLastQuickfix_label;
-    }
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String getDescription() {
+    return Messages.DefaultComesLastQuickfix_description;
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    public Image getImage() {
-        return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.CORRECTION_CHANGE);
-    }
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String getLabel() {
+    return Messages.DefaultComesLastQuickfix_label;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public Image getImage() {
+    return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.CORRECTION_CHANGE);
+  }
 }

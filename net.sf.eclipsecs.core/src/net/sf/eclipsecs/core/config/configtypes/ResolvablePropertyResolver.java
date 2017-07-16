@@ -20,12 +20,12 @@
 
 package net.sf.eclipsecs.core.config.configtypes;
 
+import com.puppycrawl.tools.checkstyle.PropertyResolver;
+
 import java.util.List;
 
 import net.sf.eclipsecs.core.config.ICheckConfiguration;
 import net.sf.eclipsecs.core.config.ResolvableProperty;
-
-import com.puppycrawl.tools.checkstyle.PropertyResolver;
 
 /**
  * Resolves properties set up with the check configuration.
@@ -34,34 +34,34 @@ import com.puppycrawl.tools.checkstyle.PropertyResolver;
  */
 public class ResolvablePropertyResolver implements PropertyResolver {
 
-    /** The check configuration to resolve from. */
-    private ICheckConfiguration mCheckConfiguration;
+  /** The check configuration to resolve from. */
+  private ICheckConfiguration mCheckConfiguration;
 
-    /**
-     * Creates the resolver for the given check configuration.
-     *
-     * @param checkConfiguration
-     *            the check configuration
-     */
-    public ResolvablePropertyResolver(ICheckConfiguration checkConfiguration) {
-        mCheckConfiguration = checkConfiguration;
+  /**
+   * Creates the resolver for the given check configuration.
+   *
+   * @param checkConfiguration
+   *          the check configuration
+   */
+  public ResolvablePropertyResolver(ICheckConfiguration checkConfiguration) {
+    mCheckConfiguration = checkConfiguration;
+  }
+
+  @Override
+  public String resolve(String aName) {
+
+    String value = null;
+
+    List<ResolvableProperty> resolvableProperties = mCheckConfiguration.getResolvableProperties();
+    for (ResolvableProperty prop : resolvableProperties) {
+
+      if (aName.equals(prop.getPropertyName())) {
+        value = prop.getValue();
+        break;
+      }
     }
 
-    @Override
-    public String resolve(String aName) {
-
-        String value = null;
-
-        List<ResolvableProperty> resolvableProperties = mCheckConfiguration.getResolvableProperties();
-        for (ResolvableProperty prop : resolvableProperties) {
-
-            if (aName.equals(prop.getPropertyName())) {
-                value = prop.getValue();
-                break;
-            }
-        }
-
-        return value;
-    }
+    return value;
+  }
 
 }

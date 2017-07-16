@@ -30,18 +30,19 @@ import org.eclipse.core.resources.ResourceAttributes;
  */
 public class WriteProtectedFilter extends AbstractFilter {
 
-    /**
-     * {@inheritDoc}
-     */
-    public boolean accept(Object element) {
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean accept(Object element) {
 
-        boolean goesThrough = true;
+    boolean goesThrough = true;
 
-        if (element instanceof IResource) {
+    if (element instanceof IResource) {
 
-            ResourceAttributes attrs = ((IResource) element).getResourceAttributes();
-            goesThrough = attrs != null && !attrs.isReadOnly();
-        }
-        return goesThrough;
+      ResourceAttributes attrs = ((IResource) element).getResourceAttributes();
+      goesThrough = attrs != null && !attrs.isReadOnly();
     }
+    return goesThrough;
+  }
 }

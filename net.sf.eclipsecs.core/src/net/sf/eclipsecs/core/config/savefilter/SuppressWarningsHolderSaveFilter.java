@@ -28,50 +28,48 @@ import net.sf.eclipsecs.core.config.meta.MetadataFactory;
 
 /**
  * Special module logic for the SuppressWarningsHolder module.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public class SuppressWarningsHolderSaveFilter implements ISaveFilter {
 
-    /**
-     * {@inheritDoc}
-     */
-    public void postProcessConfiguredModules(List<Module> configuredModules) {
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void postProcessConfiguredModules(List<Module> configuredModules) {
 
-        // the SuppressWarningsHolder module is needed if it is not configured and
-        // the SuppressWarningsFilter module is configured
-        boolean containsSuppressWarningsHolderModule = false;
-        boolean needsSuppressWarningsHolderModule = false;
-        Module configuredSuppressWarningsHolder = null;
+    // the SuppressWarningsHolder module is needed if it is not configured and
+    // the SuppressWarningsFilter module is configured
+    boolean containsSuppressWarningsHolderModule = false;
+    boolean needsSuppressWarningsHolderModule = false;
+    Module configuredSuppressWarningsHolder = null;
 
-        for (int i = 0, size = configuredModules.size(); i < size; i++) {
+    for (int i = 0, size = configuredModules.size(); i < size; i++) {
 
-            Module module = configuredModules.get(i);
-            String internalName = module.getMetaData().getInternalName();
+      Module module = configuredModules.get(i);
+      String internalName = module.getMetaData().getInternalName();
 
-            if (XMLTags.SUPPRESSWARNINGSHOLDER_MODULE.equals(internalName)) {
-                containsSuppressWarningsHolderModule = true;
-                configuredSuppressWarningsHolder = module;
-            }
-            else if (XMLTags.SUPPRESSWARNINGSFILTER_MODULE.equals(internalName)) {
-                needsSuppressWarningsHolderModule = true;
-            }
+      if (XMLTags.SUPPRESSWARNINGSHOLDER_MODULE.equals(internalName)) {
+        containsSuppressWarningsHolderModule = true;
+        configuredSuppressWarningsHolder = module;
+      } else if (XMLTags.SUPPRESSWARNINGSFILTER_MODULE.equals(internalName)) {
+        needsSuppressWarningsHolderModule = true;
+      }
 
-            if (containsSuppressWarningsHolderModule && needsSuppressWarningsHolderModule) {
-                break;
-            }
-        }
-
-        // add the SuppressWarningsHolder if needed
-        if (!containsSuppressWarningsHolderModule && needsSuppressWarningsHolderModule) {
-            Module fileContentsHolder = new Module(
-                MetadataFactory.getRuleMetadata(XMLTags.SUPPRESSWARNINGSHOLDER_MODULE), false);
-            configuredModules.add(0, fileContentsHolder);
-        }
-
-        // remove the SuppressWarningsHolder if not needed
-        else if (containsSuppressWarningsHolderModule && !needsSuppressWarningsHolderModule) {
-            configuredModules.remove(configuredSuppressWarningsHolder);
-        }
+      if (containsSuppressWarningsHolderModule && needsSuppressWarningsHolderModule) {
+        break;
+      }
     }
+
+    // add the SuppressWarningsHolder if needed
+    if (!containsSuppressWarningsHolderModule && needsSuppressWarningsHolderModule) {
+      Module fileContentsHolder = new Module(
+              MetadataFactory.getRuleMetadata(XMLTags.SUPPRESSWARNINGSHOLDER_MODULE), false);
+      configuredModules.add(0, fileContentsHolder);
+    } else if (containsSuppressWarningsHolderModule && !needsSuppressWarningsHolderModule) {
+      // remove the SuppressWarningsHolder if not needed
+      configuredModules.remove(configuredSuppressWarningsHolder);
+    }
+  }
 }

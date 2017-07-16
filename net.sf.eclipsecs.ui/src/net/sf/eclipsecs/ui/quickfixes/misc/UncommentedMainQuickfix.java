@@ -30,57 +30,61 @@ import org.eclipse.jface.text.IRegion;
 import org.eclipse.swt.graphics.Image;
 
 /**
- * Quickfix implementation which removes uncommented main methods (debugging
- * leftovers) from the code.
- * 
+ * Quickfix implementation which removes uncommented main methods (debugging leftovers) from the
+ * code.
+ *
  * @author Lars Ködderitzsch
  */
 public class UncommentedMainQuickfix extends AbstractASTResolution {
 
-    /** The length of the javadoc comment declaration. */
-    private static final int JAVADOC_COMMENT_LENGTH = 6;
+  /** The length of the javadoc comment declaration. */
+  private static final int JAVADOC_COMMENT_LENGTH = 6;
 
-    /**
-     * {@inheritDoc}
-     */
-    protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
-            final int markerStartOffset) {
-        return new ASTVisitor() {
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
+          final int markerStartOffset) {
+    return new ASTVisitor() {
 
-            public boolean visit(MethodDeclaration node) {
-                // recalculate start position because optional javadoc is mixed
-                // into the original start position
-                int pos = node.getStartPosition()
-                        + (node.getJavadoc() != null ? node.getJavadoc().getLength()
-                                + JAVADOC_COMMENT_LENGTH : 0);
-                if (containsPosition(lineInfo, pos)
-                        && node.getName().getFullyQualifiedName().equals("main")) //$NON-NLS-1$
-                {
-                    node.delete();
-                }
-                return true;
-            }
-        };
-    }
+      @Override
+      public boolean visit(MethodDeclaration node) {
+        // recalculate start position because optional javadoc is mixed
+        // into the original start position
+        int pos = node.getStartPosition() + (node.getJavadoc() != null
+                ? node.getJavadoc().getLength() + JAVADOC_COMMENT_LENGTH
+                : 0);
+        if (containsPosition(lineInfo, pos)
+                && node.getName().getFullyQualifiedName().equals("main")) {
+          node.delete();
+        }
+        return true;
+      }
+    };
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    public String getDescription() {
-        return Messages.UncommentedMainQuickfix_description;
-    }
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String getDescription() {
+    return Messages.UncommentedMainQuickfix_description;
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    public String getLabel() {
-        return Messages.UncommentedMainQuickfix_label;
-    }
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String getLabel() {
+    return Messages.UncommentedMainQuickfix_label;
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    public Image getImage() {
-        return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.CORRECTION_REMOVE);
-    }
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public Image getImage() {
+    return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.CORRECTION_REMOVE);
+  }
 }

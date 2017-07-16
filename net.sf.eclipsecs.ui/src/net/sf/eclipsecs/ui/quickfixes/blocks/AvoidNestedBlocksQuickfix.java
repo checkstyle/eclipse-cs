@@ -40,61 +40,63 @@ import org.eclipse.swt.graphics.Image;
  */
 public class AvoidNestedBlocksQuickfix extends AbstractASTResolution {
 
-    /**
-     * {@inheritDoc}
-     */
-    protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
-            final int markerStartOffset) {
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
+          final int markerStartOffset) {
 
-        return new ASTVisitor() {
+    return new ASTVisitor() {
 
-            public boolean visit(Block node) {
+      @Override
+      public boolean visit(Block node) {
 
-                if (containsPosition(lineInfo, node.getStartPosition())) {
+        if (containsPosition(lineInfo, node.getStartPosition())) {
 
-                    if (node.getParent() instanceof Block) {
+          if (node.getParent() instanceof Block) {
 
-                        List statements = ((Block) node.getParent()).statements();
-                        int index = statements.indexOf(node);
+            List statements = ((Block) node.getParent()).statements();
+            int index = statements.indexOf(node);
 
-                        statements.remove(node);
-                        statements.addAll(index, ASTNode.copySubtrees(node.getAST(), node
-                                .statements()));
+            statements.remove(node);
+            statements.addAll(index, ASTNode.copySubtrees(node.getAST(), node.statements()));
 
-                    }
-                    else if (node.getParent() instanceof SwitchStatement) {
+          } else if (node.getParent() instanceof SwitchStatement) {
 
-                        List statements = ((SwitchStatement) node.getParent()).statements();
-                        int index = statements.indexOf(node);
+            List statements = ((SwitchStatement) node.getParent()).statements();
+            int index = statements.indexOf(node);
 
-                        statements.remove(node);
-                        statements.addAll(index, ASTNode.copySubtrees(node.getAST(), node
-                                .statements()));
-                    }
-                }
-                return true;
-            }
-        };
-    }
+            statements.remove(node);
+            statements.addAll(index, ASTNode.copySubtrees(node.getAST(), node.statements()));
+          }
+        }
+        return true;
+      }
+    };
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    public String getDescription() {
-        return Messages.AvoidNextedBlocksQuickfix_description;
-    }
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String getDescription() {
+    return Messages.AvoidNextedBlocksQuickfix_description;
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    public String getLabel() {
-        return Messages.AvoidNextedBlocksQuickfix_label;
-    }
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String getLabel() {
+    return Messages.AvoidNextedBlocksQuickfix_label;
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    public Image getImage() {
-        return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.CORRECTION_REMOVE);
-    }
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public Image getImage() {
+    return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.CORRECTION_REMOVE);
+  }
 }

@@ -43,6 +43,7 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.window.Window;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.dialogs.ListDialog;
@@ -56,138 +57,138 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
  */
 public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegate {
 
-    private IWorkbenchPart mPart;
+  private IWorkbenchPart mPart;
 
-    private Collection<IProject> mSelectedProjects;
+  private Collection<IProject> mSelectedProjects;
 
-    /**
-     * {@inheritDoc}
-     */
-    public void setActivePart(IAction action, IWorkbenchPart targetPart) {
-        mPart = targetPart;
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void setActivePart(IAction action, IWorkbenchPart targetPart) {
+    mPart = targetPart;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  @SuppressWarnings("unchecked")
+  public void selectionChanged(IAction action, ISelection selection) {
+
+    if (selection instanceof IStructuredSelection) {
+      IStructuredSelection sel = (IStructuredSelection) selection;
+      mSelectedProjects = sel.toList();
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void run(IAction action) {
+
+    IProject[] projects = CheckstyleUIPlugin.getWorkspace().getRoot().getProjects();
+    List<IProject> filteredProjects = new ArrayList<IProject>();
+    for (int i = 0; i < projects.length; i++) {
+      filteredProjects.add(projects[i]);
+    }
+
+    filteredProjects.removeAll(mSelectedProjects);
+
+    ListDialog dialog = new ListDialog(mPart.getSite().getShell());
+    dialog.setInput(filteredProjects);
+    dialog.setContentProvider(new ArrayContentProvider());
+    dialog.setLabelProvider(new WorkbenchLabelProvider());
+    dialog.setMessage(Messages.ConfigureProjectFromBluePrintAction_msgSelectBlueprintProject);
+    dialog.setTitle(Messages.ConfigureProjectFromBluePrintAction_titleSelectBlueprintProject);
+    if (Window.OK == dialog.open()) {
+
+      Object[] result = dialog.getResult();
+
+      if (result.length > 0) {
+
+        BulkConfigureJob job = new BulkConfigureJob((IProject) result[0], mSelectedProjects);
+        job.schedule();
+      }
+
+    }
+  }
+
+  /**
+   * Job implementation that configures several projects from a blueprint
+   * project.
+   * 
+   * @author Lars Ködderitzsch
+   */
+  private class BulkConfigureJob extends WorkspaceJob {
+
+    private final IProject mBlueprint;
+
+    private final Collection<IProject> mProjectsToConfigure;
+
+    public BulkConfigureJob(IProject blueprint, Collection<IProject> projectsToConfigure) {
+      super(Messages.ConfigureProjectFromBluePrintAction_msgConfiguringFromBluePrint);
+      this.mBlueprint = blueprint;
+      this.mProjectsToConfigure = projectsToConfigure;
     }
 
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
-    public void selectionChanged(IAction action, ISelection selection) {
+    @Override
+    public IStatus runInWorkspace(IProgressMonitor monitor) {
 
-        if (selection instanceof IStructuredSelection) {
-            IStructuredSelection sel = (IStructuredSelection) selection;
-            mSelectedProjects = sel.toList();
-        }
-    }
+      try {
 
-    /**
-     * {@inheritDoc}
-     */
-    public void run(IAction action) {
+        IProjectConfiguration bluePrintConfig = ProjectConfigurationFactory
+                .getConfiguration(mBlueprint);
 
-        IProject[] projects = CheckstyleUIPlugin.getWorkspace().getRoot().getProjects();
-        List<IProject> filteredProjects = new ArrayList<IProject>();
-        for (int i = 0; i < projects.length; i++) {
-            filteredProjects.add(projects[i]);
-        }
+        List<ICheckConfiguration> bluePrintLocalConfigs = bluePrintConfig
+                .getLocalCheckConfigurations();
 
-        filteredProjects.removeAll(mSelectedProjects);
+        for (IProject configurationTarget : mProjectsToConfigure) {
+          IProjectConfiguration config = ProjectConfigurationFactory
+                  .getConfiguration(configurationTarget);
+          ProjectConfigurationWorkingCopy workingCopy = new ProjectConfigurationWorkingCopy(config);
 
-        ListDialog dialog = new ListDialog(mPart.getSite().getShell());
-        dialog.setInput(filteredProjects);
-        dialog.setContentProvider(new ArrayContentProvider());
-        dialog.setLabelProvider(new WorkbenchLabelProvider());
-        dialog.setMessage(Messages.ConfigureProjectFromBluePrintAction_msgSelectBlueprintProject);
-        dialog.setTitle(Messages.ConfigureProjectFromBluePrintAction_titleSelectBlueprintProject);
-        if (ListDialog.OK == dialog.open()) {
+          // clear filesets and filters
+          workingCopy.getFileSets().clear();
+          workingCopy.getFilters().clear();
 
-            Object[] result = dialog.getResult();
+          // clear local configurations
+          ICheckConfigurationWorkingSet checkConfigsWorkingSet = workingCopy
+                  .getLocalCheckConfigWorkingSet();
 
-            if (result.length > 0) {
+          for (ICheckConfiguration localConfig : workingCopy.getLocalCheckConfigurations()) {
 
-                BulkConfigureJob job = new BulkConfigureJob((IProject) result[0], mSelectedProjects);
-                job.schedule();
+            if (localConfig instanceof CheckConfigurationWorkingCopy) {
+              checkConfigsWorkingSet
+                      .removeCheckConfiguration((CheckConfigurationWorkingCopy) localConfig);
             }
+          }
 
+          // TODO consider copying internal configurations
+
+          // add local configurations from blueprint
+          for (ICheckConfiguration localConfig : bluePrintLocalConfigs) {
+            CheckConfigurationWorkingCopy wk = checkConfigsWorkingSet.newWorkingCopy(localConfig);
+            checkConfigsWorkingSet.addCheckConfiguration(wk);
+          }
+
+          // add filesets and filters
+          workingCopy.setUseSimpleConfig(bluePrintConfig.isUseSimpleConfig());
+          workingCopy.getFileSets().addAll(bluePrintConfig.getFileSets());
+          workingCopy.getFilters().addAll(bluePrintConfig.getFilters());
+
+          workingCopy.store();
         }
+      } catch (CheckstylePluginException e) {
+        return new Status(IStatus.ERROR, CheckstyleUIPlugin.PLUGIN_ID, IStatus.OK, e.getMessage(),
+                e);
+      }
+
+      return Status.OK_STATUS;
     }
-
-    /**
-     * Job implementation that configures several projects from a blueprint
-     * project.
-     * 
-     * @author Lars Ködderitzsch
-     */
-    private class BulkConfigureJob extends WorkspaceJob {
-
-        private final IProject mBlueprint;
-
-        private final Collection<IProject> mProjectsToConfigure;
-
-        public BulkConfigureJob(IProject blueprint, Collection<IProject> projectsToConfigure) {
-            super(Messages.ConfigureProjectFromBluePrintAction_msgConfiguringFromBluePrint);
-            this.mBlueprint = blueprint;
-            this.mProjectsToConfigure = projectsToConfigure;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        public IStatus runInWorkspace(IProgressMonitor monitor) {
-
-            try {
-
-                IProjectConfiguration bluePrintConfig = ProjectConfigurationFactory
-                        .getConfiguration(mBlueprint);
-
-                List<ICheckConfiguration> bluePrintLocalConfigs = bluePrintConfig
-                        .getLocalCheckConfigurations();
-
-                for (IProject configurationTarget : mProjectsToConfigure) {
-                    IProjectConfiguration config = ProjectConfigurationFactory
-                            .getConfiguration(configurationTarget);
-                    ProjectConfigurationWorkingCopy workingCopy = new ProjectConfigurationWorkingCopy(
-                            config);
-
-                    // clear filesets and filters
-                    workingCopy.getFileSets().clear();
-                    workingCopy.getFilters().clear();
-
-                    // clear local configurations
-                    ICheckConfigurationWorkingSet checkConfigsWorkingSet = workingCopy
-                            .getLocalCheckConfigWorkingSet();
-
-                    for (ICheckConfiguration localConfig : workingCopy
-                            .getLocalCheckConfigurations()) {
-
-                        if (localConfig instanceof CheckConfigurationWorkingCopy) {
-                            checkConfigsWorkingSet
-                                    .removeCheckConfiguration((CheckConfigurationWorkingCopy) localConfig);
-                        }
-                    }
-
-                    // TODO consider copying internal configurations
-
-                    // add local configurations from blueprint
-                    for (ICheckConfiguration localConfig : bluePrintLocalConfigs) {
-                        CheckConfigurationWorkingCopy wk = checkConfigsWorkingSet
-                                .newWorkingCopy(localConfig);
-                        checkConfigsWorkingSet.addCheckConfiguration(wk);
-                    }
-
-                    // add filesets and filters
-                    workingCopy.setUseSimpleConfig(bluePrintConfig.isUseSimpleConfig());
-                    workingCopy.getFileSets().addAll(bluePrintConfig.getFileSets());
-                    workingCopy.getFilters().addAll(bluePrintConfig.getFilters());
-
-                    workingCopy.store();
-                }
-            }
-            catch (CheckstylePluginException e) {
-                return new Status(IStatus.ERROR, CheckstyleUIPlugin.PLUGIN_ID, IStatus.OK, e
-                        .getMessage(), e);
-            }
-
-            return Status.OK_STATUS;
-        }
-    }
+  }
 }

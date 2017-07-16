@@ -51,115 +51,117 @@ import org.eclipse.core.runtime.jobs.ISchedulingRule;
  */
 public class RunCheckstyleOnFilesJob extends WorkspaceJob implements ISchedulingRule {
 
-    private List<IFile> mFilesToCheck;
+  private List<IFile> mFilesToCheck;
 
-    /**
-     * Creates the job for a list of <code>IFile</code> objects.
-     * 
-     * @param files
-     *            the files to check
-     */
-    public RunCheckstyleOnFilesJob(final List<IFile> files) {
-        super(Messages.RunCheckstyleOnFilesJob_title);
-        mFilesToCheck = new ArrayList<IFile>(files);
+  /**
+   * Creates the job for a list of <code>IFile</code> objects.
+   * 
+   * @param files
+   *          the files to check
+   */
+  public RunCheckstyleOnFilesJob(final List<IFile> files) {
+    super(Messages.RunCheckstyleOnFilesJob_title);
+    mFilesToCheck = new ArrayList<IFile>(files);
 
-        setRule(this);
+    setRule(this);
+  }
+
+  /**
+   * Creates the job for a single file.
+   * 
+   * @param file
+   *          the file to check
+   */
+  public RunCheckstyleOnFilesJob(final IFile file) {
+    super(Messages.RunCheckstyleOnFilesJob_title);
+    mFilesToCheck = new ArrayList<IFile>();
+    mFilesToCheck.add(file);
+
+    setRule(this);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean contains(ISchedulingRule arg0) {
+    return arg0 instanceof RunCheckstyleOnFilesJob;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean isConflicting(ISchedulingRule arg0) {
+    return arg0 instanceof RunCheckstyleOnFilesJob || arg0 instanceof AuditorJob;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public final IStatus runInWorkspace(final IProgressMonitor monitor) throws CoreException {
+
+    try {
+
+      Map<IProject, List<IFile>> projectFilesMap = getFilesSortedToProject(mFilesToCheck);
+
+      for (Map.Entry<IProject, List<IFile>> entry : projectFilesMap.entrySet()) {
+
+        IProject project = entry.getKey();
+        List<IFile> files = entry.getValue();
+
+        IProjectConfiguration checkConfig = ProjectConfigurationFactory.getConfiguration(project);
+
+        filter(files, checkConfig);
+
+        CheckstyleBuilder builder = new CheckstyleBuilder();
+        builder.handleBuildSelection(files, checkConfig, monitor, project,
+                IncrementalProjectBuilder.INCREMENTAL_BUILD);
+      }
+    } catch (CheckstylePluginException e) {
+      Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR,
+              e.getLocalizedMessage(), e);
+      throw new CoreException(status);
+    }
+    return Status.OK_STATUS;
+  }
+
+  private Map<IProject, List<IFile>> getFilesSortedToProject(final List<IFile> filesToCheck) {
+
+    Map<IProject, List<IFile>> projectFilesMap = new HashMap<IProject, List<IFile>>();
+
+    for (int i = 0, size = filesToCheck.size(); i < size; i++) {
+
+      IFile file = filesToCheck.get(i);
+      IProject project = file.getProject();
+
+      List<IFile> projectFiles = projectFilesMap.get(project);
+      if (projectFiles == null) {
+
+        projectFiles = new ArrayList<IFile>();
+        projectFilesMap.put(project, projectFiles);
+      }
+      projectFiles.add(file);
     }
 
-    /**
-     * Creates the job for a single file.
-     * 
-     * @param file
-     *            the file to check
-     */
-    public RunCheckstyleOnFilesJob(final IFile file) {
-        super(Messages.RunCheckstyleOnFilesJob_title);
-        mFilesToCheck = new ArrayList<IFile>();
-        mFilesToCheck.add(file);
+    return projectFilesMap;
+  }
 
-        setRule(this);
-    }
+  private void filter(final List<IFile> files, final IProjectConfiguration projectConfig) {
 
-    /**
-     * {@inheritDoc}
-     */
-    public boolean contains(ISchedulingRule arg0) {
-        return arg0 instanceof RunCheckstyleOnFilesJob;
-    }
+    List<IFilter> filters = projectConfig.getFilters();
+    for (IFilter filter : filters) {
 
-    /**
-     * {@inheritDoc}
-     */
-    public boolean isConflicting(ISchedulingRule arg0) {
-        return arg0 instanceof RunCheckstyleOnFilesJob || arg0 instanceof AuditorJob;
-    }
+      Iterator<IFile> filesIt = files.iterator();
+      while (filesIt.hasNext()) {
 
-    /**
-     * {@inheritDoc}
-     */
-    public final IStatus runInWorkspace(final IProgressMonitor monitor) throws CoreException {
+        IFile file = filesIt.next();
 
-        try {
-
-            Map<IProject, List<IFile>> projectFilesMap = getFilesSortedToProject(mFilesToCheck);
-
-            for (Map.Entry<IProject, List<IFile>> entry : projectFilesMap.entrySet()) {
-
-                IProject project = entry.getKey();
-                List<IFile> files = entry.getValue();
-
-                IProjectConfiguration checkConfig = ProjectConfigurationFactory.getConfiguration(project);
-
-                filter(files, checkConfig);
-
-                CheckstyleBuilder builder = new CheckstyleBuilder();
-                builder.handleBuildSelection(files, checkConfig, monitor, project,
-                    IncrementalProjectBuilder.INCREMENTAL_BUILD);
-            }
+        if (filter.isEnabled() && !filter.accept(file)) {
+          filesIt.remove();
         }
-        catch (CheckstylePluginException e) {
-            Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR,
-                e.getLocalizedMessage(), e);
-            throw new CoreException(status);
-        }
-        return Status.OK_STATUS;
+      }
     }
-
-    private Map<IProject, List<IFile>> getFilesSortedToProject(final List<IFile> filesToCheck) {
-
-        Map<IProject, List<IFile>> projectFilesMap = new HashMap<IProject, List<IFile>>();
-
-        for (int i = 0, size = filesToCheck.size(); i < size; i++) {
-
-            IFile file = filesToCheck.get(i);
-            IProject project = file.getProject();
-
-            List<IFile> projectFiles = projectFilesMap.get(project);
-            if (projectFiles == null) {
-
-                projectFiles = new ArrayList<IFile>();
-                projectFilesMap.put(project, projectFiles);
-            }
-            projectFiles.add(file);
-        }
-
-        return projectFilesMap;
-    }
-
-    private void filter(final List<IFile> files, final IProjectConfiguration projectConfig) {
-
-        List<IFilter> filters = projectConfig.getFilters();
-        for (IFilter filter : filters) {
-
-            Iterator<IFile> filesIt = files.iterator();
-            while (filesIt.hasNext()) {
-
-                IFile file = filesIt.next();
-
-                if (filter.isEnabled() && !filter.accept(file)) {
-                    filesIt.remove();
-                }
-            }
-        }
-    }
+  }
 }

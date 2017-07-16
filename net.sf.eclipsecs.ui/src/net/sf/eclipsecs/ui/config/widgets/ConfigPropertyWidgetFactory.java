@@ -32,58 +32,49 @@ import org.eclipse.swt.widgets.Shell;
  */
 public final class ConfigPropertyWidgetFactory {
 
-    private ConfigPropertyWidgetFactory() {
+  private ConfigPropertyWidgetFactory() {
+  }
+
+  /**
+   * Creates a property widget for the given property.
+   * 
+   * @param parent
+   *          the parent component
+   * @param prop
+   *          the property
+   * @param shell
+   *          the parent shell
+   * @return the widget or <code>null</code> if the property type is unknown
+   */
+  public static IConfigPropertyWidget createWidget(Composite parent, ConfigProperty prop,
+          Shell shell) {
+    IConfigPropertyWidget widget = null;
+
+    ConfigPropertyType type = prop.getMetaData().getDatatype();
+
+    if (prop.isPropertyReference()) {
+      widget = new ConfigPropertyWidgetString(parent, prop);
+    } else if (type.equals(ConfigPropertyType.String)) {
+      widget = new ConfigPropertyWidgetString(parent, prop);
+    } else if (type.equals(ConfigPropertyType.StringArray)) {
+      widget = new ConfigPropertyWidgetString(parent, prop);
+    } else if (type.equals(ConfigPropertyType.Integer)) {
+      widget = new ConfigPropertyWidgetInteger(parent, prop);
+    } else if (type.equals(ConfigPropertyType.SingleSelect)) {
+      widget = new ConfigPropertyWidgetSingleSelect(parent, prop);
+    } else if (type.equals(ConfigPropertyType.Boolean)) {
+      widget = new ConfigPropertyWidgetBoolean(parent, prop);
+    } else if (type.equals(ConfigPropertyType.MultiCheck)) {
+      widget = new ConfigPropertyWidgetMultiCheck(parent, prop);
+    } else if (type.equals(ConfigPropertyType.Hidden)) {
+      widget = new ConfigPropertyWidgetHidden(parent, prop);
+    } else if (type.equals(ConfigPropertyType.File)) {
+      widget = new ConfigPropertyWidgetFile(parent, prop);
+    } else if (type.equals(ConfigPropertyType.Regex)) {
+      widget = new ConfigPropertyWidgetRegex(parent, prop);
     }
 
-    /**
-     * Creates a property widget for the given property.
-     * 
-     * @param parent
-     *            the parent component
-     * @param prop
-     *            the property
-     * @param shell
-     *            the parent shell
-     * @return the widget or <code>null</code> if the property type is unknown
-     */
-    public static IConfigPropertyWidget createWidget(Composite parent,
-        ConfigProperty prop, Shell shell) {
-        IConfigPropertyWidget widget = null;
-
-        ConfigPropertyType type = prop.getMetaData().getDatatype();
-
-        if (prop.isPropertyReference()) {
-            widget = new ConfigPropertyWidgetString(parent, prop);
-        }
-        else if (type.equals(ConfigPropertyType.String)) {
-            widget = new ConfigPropertyWidgetString(parent, prop);
-        }
-        else if (type.equals(ConfigPropertyType.StringArray)) {
-            widget = new ConfigPropertyWidgetString(parent, prop);
-        }
-        else if (type.equals(ConfigPropertyType.Integer)) {
-            widget = new ConfigPropertyWidgetInteger(parent, prop);
-        }
-        else if (type.equals(ConfigPropertyType.SingleSelect)) {
-            widget = new ConfigPropertyWidgetSingleSelect(parent, prop);
-        }
-        else if (type.equals(ConfigPropertyType.Boolean)) {
-            widget = new ConfigPropertyWidgetBoolean(parent, prop);
-        }
-        else if (type.equals(ConfigPropertyType.MultiCheck)) {
-            widget = new ConfigPropertyWidgetMultiCheck(parent, prop);
-        }
-        else if (type.equals(ConfigPropertyType.Hidden)) {
-            widget = new ConfigPropertyWidgetHidden(parent, prop);
-        }
-        else if (type.equals(ConfigPropertyType.File)) {
-            widget = new ConfigPropertyWidgetFile(parent, prop);
-        }
-        else if (type.equals(ConfigPropertyType.Regex)) {
-            widget = new ConfigPropertyWidgetRegex(parent, prop);
-        }
-
-        widget.initialize();
-        return widget;
-    }
+    widget.initialize();
+    return widget;
+  }
 }

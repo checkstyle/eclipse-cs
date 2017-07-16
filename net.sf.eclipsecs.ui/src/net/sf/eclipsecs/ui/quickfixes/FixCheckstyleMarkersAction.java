@@ -30,59 +30,60 @@ import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
 /**
- * This action tries to run all quickfixes for markers on a selected compilation unit.
+ * This action tries to run all quickfixes for markers on a selected compilation
+ * unit.
  *
  * @author Lars Ködderitzsch
  */
 public class FixCheckstyleMarkersAction implements IObjectActionDelegate {
 
-    /** the selection that occured in the workspace. */
-    private ISelection mSelection;
+  /** the selection that occured in the workspace. */
+  private ISelection mSelection;
 
-    /** the active workbench part. */
-    private IWorkbenchPart mWorkBenchPart;
+  /** the active workbench part. */
+  private IWorkbenchPart mWorkBenchPart;
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void selectionChanged(IAction action, ISelection selection) {
-        mSelection = selection;
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void selectionChanged(IAction action, ISelection selection) {
+    mSelection = selection;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void setActivePart(IAction action, IWorkbenchPart targetPart) {
+    mWorkBenchPart = targetPart;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void run(IAction action) {
+
+    IStructuredSelection selection = null;
+    if (mSelection instanceof IStructuredSelection) {
+      selection = (IStructuredSelection) mSelection;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setActivePart(IAction action, IWorkbenchPart targetPart) {
-        mWorkBenchPart = targetPart;
+    // no valid selection
+    if (selection == null || selection.size() != 1) {
+      return;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void run(IAction action) {
+    Object element = selection.getFirstElement();
 
-        IStructuredSelection selection = null;
-        if (mSelection instanceof IStructuredSelection) {
-            selection = (IStructuredSelection) mSelection;
-        }
+    IFile file = ((IAdaptable) element).getAdapter(IFile.class);
+    if (file != null) {
 
-        // no valid selection
-        if (selection == null || selection.size() != 1) {
-            return;
-        }
-
-        Object element = selection.getFirstElement();
-
-        IFile file = ((IAdaptable) element).getAdapter(IFile.class);
-        if (file != null) {
-
-            // call the fixing job
-            Job job = new FixCheckstyleMarkersJob(file);
-            job.setUser(true);
-            job.schedule();
-        }
+      // call the fixing job
+      Job job = new FixCheckstyleMarkersJob(file);
+      job.setUser(true);
+      job.schedule();
     }
+  }
 }

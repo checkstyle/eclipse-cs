@@ -50,145 +50,142 @@ import org.eclipse.jface.text.IRegion;
 import org.eclipse.swt.graphics.Image;
 
 /**
- * Quickfix implementation which simplifies a boolean if/return statement.
- * 
- * It transforms an if statement like
- * 
+ * Quickfix implementation which simplifies a boolean if/return statement. It transforms an if
+ * statement like
+ *
  * <pre>
  * if (condition) {
- *     return true;
+ *   return true;
  * } else {
- *     return false;
+ *   return false;
  * }
  * </pre>
- * 
+ *
  * into a return statement like
- * 
+ *
  * <pre>
  * return condition;
  * </pre>
- * 
+ *
  * @author Philip Graf
  */
 public class SimplifyBooleanReturnQuickfix extends AbstractASTResolution {
-    
-    /**
-     * If the condition is of one of these expression types, the parantheses are not necessary when negated.
-     * I.e the replacement can be written as <code>!condition</code> instead of <code>!(condition)</code>.
-     */
-    @SuppressWarnings("unchecked")
-    private static final Collection<Class<? extends Expression>> OMIT_PARANETHESES_CLASSES = Arrays.asList(
-        BooleanLiteral.class,
-        FieldAccess.class,
-        MethodInvocation.class,
-        QualifiedName.class,
-        SimpleName.class,
-        ParenthesizedExpression.class,
-        SuperFieldAccess.class,
-        SuperMethodInvocation.class,
-        ThisExpression.class
-    );
 
-    /**
-     * {@inheritDoc}
-     */
-    protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo, final int markerStartOffset) {
-        return new ASTVisitor() {
+  /**
+   * If the condition is of one of these expression types, the parantheses are not necessary when
+   * negated. I.e the replacement can be written as <code>!condition</code> instead of
+   * <code>!(condition)</code>.
+   */
+  private static final Collection<Class<? extends Expression>> OMIT_PARANETHESES_CLASSES = Arrays
+          .asList(BooleanLiteral.class, FieldAccess.class, MethodInvocation.class,
+                  QualifiedName.class, SimpleName.class, ParenthesizedExpression.class,
+                  SuperFieldAccess.class, SuperMethodInvocation.class, ThisExpression.class);
 
-            @Override
-            public boolean visit(final IfStatement node) {
-                if (containsPosition(node, markerStartOffset)) {
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
+          final int markerStartOffset) {
+    return new ASTVisitor() {
 
-                    final Boolean isThenStatementTrue = isReturnStatementTrue(node.getThenStatement());
-                    
-                    if (isThenStatementTrue == null) {
-                        // the AST structure of the if statement is not as expected
-                        return true;
-                    }
-                    
-                    final Expression condition = removeNotFromCondition(node.getExpression());
-                    final boolean isNotCondition = condition != node.getExpression();
-                    
-                    final ReturnStatement replacement;
-                    if (isThenStatementTrue ^ isNotCondition) {
-                        // create replacement: return condition;
-                        replacement = node.getAST().newReturnStatement();
-                        replacement.setExpression(copy(condition));
-                        
-                    } else {
-                        // create replacement: return !(condition);
-                        final AST ast = node.getAST();
-                        replacement = ast.newReturnStatement();
-                        final PrefixExpression not = ast.newPrefixExpression();
-                        not.setOperator(Operator.NOT);
-                        if (omitParantheses(condition)) {
-                            not.setOperand(copy(condition));
-                        } else {
-                            final ParenthesizedExpression parentheses = ast.newParenthesizedExpression();
-                            parentheses.setExpression(copy(condition));
-                            not.setOperand(parentheses);
-                        }
-                        replacement.setExpression(not);
-                    }
-                    replace(node, replacement);
+      @Override
+      public boolean visit(final IfStatement node) {
+        if (containsPosition(node, markerStartOffset)) {
 
-                }
-                return true;
+          final Boolean isThenStatementTrue = isReturnStatementTrue(node.getThenStatement());
+
+          if (isThenStatementTrue == null) {
+            // the AST structure of the if statement is not as expected
+            return true;
+          }
+
+          final Expression condition = removeNotFromCondition(node.getExpression());
+          final boolean isNotCondition = condition != node.getExpression();
+
+          final ReturnStatement replacement;
+          if (isThenStatementTrue ^ isNotCondition) {
+            // create replacement: return condition;
+            replacement = node.getAST().newReturnStatement();
+            replacement.setExpression(copy(condition));
+
+          } else {
+            // create replacement: return !(condition);
+            final AST ast = node.getAST();
+            replacement = ast.newReturnStatement();
+            final PrefixExpression not = ast.newPrefixExpression();
+            not.setOperator(Operator.NOT);
+            if (omitParantheses(condition)) {
+              not.setOperand(copy(condition));
+            } else {
+              final ParenthesizedExpression parentheses = ast.newParenthesizedExpression();
+              parentheses.setExpression(copy(condition));
+              not.setOperand(parentheses);
             }
+            replacement.setExpression(not);
+          }
+          replace(node, replacement);
 
-            private Boolean isReturnStatementTrue(final Statement node) {
-                if (node instanceof ReturnStatement) {
-                    final Expression expression = ((ReturnStatement) node).getExpression();
-                    if (expression instanceof BooleanLiteral) {
-                        return ((BooleanLiteral) expression).booleanValue();
-                    }
-                } else if (node instanceof Block) {
-                    // the return statement might be wrapped in a block statement
-                    @SuppressWarnings("unchecked")
-                    final List<Statement> statements = ((Block) node).statements();
-                    if (statements.size() > 0) {
-                        return isReturnStatementTrue(statements.get(0));
-                    }
-                }
-                return null;
-            }
+        }
+        return true;
+      }
 
-            private Expression removeNotFromCondition(final Expression condition) {
-                if (condition instanceof PrefixExpression) {
-                    final PrefixExpression prefix = (PrefixExpression) condition;
-                    if(PrefixExpression.Operator.NOT.equals(prefix.getOperator())) {
-                        return prefix.getOperand();
-                    }
-                }
-                return condition;
-            }
+      private Boolean isReturnStatementTrue(final Statement node) {
+        if (node instanceof ReturnStatement) {
+          final Expression expression = ((ReturnStatement) node).getExpression();
+          if (expression instanceof BooleanLiteral) {
+            return ((BooleanLiteral) expression).booleanValue();
+          }
+        } else if (node instanceof Block) {
+          // the return statement might be wrapped in a block statement
+          @SuppressWarnings("unchecked")
+          final List<Statement> statements = ((Block) node).statements();
+          if (statements.size() > 0) {
+            return isReturnStatementTrue(statements.get(0));
+          }
+        }
+        return null;
+      }
 
-            private boolean omitParantheses(final Expression condition) {
-                return OMIT_PARANETHESES_CLASSES.contains(condition.getClass());
-            }
+      private Expression removeNotFromCondition(final Expression condition) {
+        if (condition instanceof PrefixExpression) {
+          final PrefixExpression prefix = (PrefixExpression) condition;
+          if (PrefixExpression.Operator.NOT.equals(prefix.getOperator())) {
+            return prefix.getOperand();
+          }
+        }
+        return condition;
+      }
 
-        };
-    }
+      private boolean omitParantheses(final Expression condition) {
+        return OMIT_PARANETHESES_CLASSES.contains(condition.getClass());
+      }
 
-    /**
-     * {@inheritDoc}
-     */
-    public String getDescription() {
-        return Messages.SimplifyBooleanReturnQuickfix_description;
-    }
+    };
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    public String getLabel() {
-        return Messages.SimplifyBooleanReturnQuickfix_label;
-    }
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String getDescription() {
+    return Messages.SimplifyBooleanReturnQuickfix_description;
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    public Image getImage() {
-        return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.CORRECTION_CHANGE);
-    }
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String getLabel() {
+    return Messages.SimplifyBooleanReturnQuickfix_label;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public Image getImage() {
+    return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.CORRECTION_CHANGE);
+  }
 
 }

@@ -28,43 +28,45 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
  */
 public interface IConfigPropertyWidget {
 
-    /**
-     * Initialized the widget and its controls.
-     */
-    void initialize();
+  /**
+   * Initialized the widget and its controls.
+   */
+  void initialize();
 
-    /**
-     * Returns the stringified value of the widget.
-     * 
-     * @return the value as string
-     */
-    String getValue();
+  /**
+   * Returns the stringified value of the widget.
+   * 
+   * @return the value as string
+   */
+  String getValue();
 
-    /**
-     * Returns the property the widget operates on.
-     * 
-     * @return the property
-     */
-    ConfigProperty getConfigProperty();
+  /**
+   * Returns the property the widget operates on.
+   * 
+   * @return the property
+   */
+  ConfigProperty getConfigProperty();
 
-    /**
-     * Enables/disables the widget.
-     * 
-     * @param enabled <code>true</code> if the widget should be enabled,
-     *            <code>false</code> otherwise
-     */
-    void setEnabled(boolean enabled);
+  /**
+   * Enables/disables the widget.
+   * 
+   * @param enabled
+   *          <code>true</code> if the widget should be enabled,
+   *          <code>false</code> otherwise
+   */
+  void setEnabled(boolean enabled);
 
-    /**
-     * Restore the default value of the property for this widget.
-     */
-    void restorePropertyDefault();
+  /**
+   * Restore the default value of the property for this widget.
+   */
+  void restorePropertyDefault();
 
-    /**
-     * Validates the widgets data. A CheckstylePluginException with an
-     * appropriate message is thrown if the data is invalid.
-     * 
-     * @throws CheckstylePluginException thrown if the data is invalid
-     */
-    void validate() throws CheckstylePluginException;
+  /**
+   * Validates the widgets data. A CheckstylePluginException with an appropriate
+   * message is thrown if the data is invalid.
+   * 
+   * @throws CheckstylePluginException
+   *           thrown if the data is invalid
+   */
+  void validate() throws CheckstylePluginException;
 }

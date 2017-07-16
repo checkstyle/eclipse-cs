@@ -20,60 +20,64 @@
 
 package net.sf.eclipsecs.core.config.configtypes;
 
+import com.puppycrawl.tools.checkstyle.PropertyResolver;
+
 import java.net.URL;
+
+import net.sf.eclipsecs.core.config.CheckstyleConfigurationFile;
+import net.sf.eclipsecs.core.config.ICheckConfiguration;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
 
-import com.puppycrawl.tools.checkstyle.PropertyResolver;
-
-import net.sf.eclipsecs.core.config.CheckstyleConfigurationFile;
-import net.sf.eclipsecs.core.config.ICheckConfiguration;
-
 /**
- * Implementation of the configuration type for a built in check configuration, that is located inside the plugin.
+ * Implementation of the configuration type for a built in check configuration, that is located
+ * inside the plugin.
  *
  * @author Lars Ködderitzsch
  */
 public class BuiltInConfigurationType extends ConfigurationType {
 
-    /**
-     * constant for the contributor key. It stores the id of the plugin which contributes the built in configuration, so
-     * that the file can be retrieved properly.
-     */
-    public static final String CONTRIBUTOR_KEY = "contributor";
+  /**
+   * constant for the contributor key. It stores the id of the plugin which contributes the built in
+   * configuration, so that the file can be retrieved properly.
+   */
+  public static final String CONTRIBUTOR_KEY = "contributor";
 
-    @Override
-    protected URL resolveLocation(ICheckConfiguration checkConfiguration) {
+  @Override
+  protected URL resolveLocation(ICheckConfiguration checkConfiguration) {
 
-        String contributorName = checkConfiguration.getAdditionalData().get(CONTRIBUTOR_KEY);
+    String contributorName = checkConfiguration.getAdditionalData().get(CONTRIBUTOR_KEY);
 
-        Bundle contributor = Platform.getBundle(contributorName);
-        URL locationUrl = FileLocator.find(contributor, new Path(checkConfiguration.getLocation()), null);
+    Bundle contributor = Platform.getBundle(contributorName);
+    URL locationUrl = FileLocator.find(contributor, new Path(checkConfiguration.getLocation()),
+            null);
 
-        // suggested by https://sourceforge.net/p/eclipse-cs/bugs/410/
-        if (locationUrl == null) {
-            locationUrl = contributor.getResource(checkConfiguration.getLocation());
-        }
-
-        return locationUrl;
+    // suggested by https://sourceforge.net/p/eclipse-cs/bugs/410/
+    if (locationUrl == null) {
+      locationUrl = contributor.getResource(checkConfiguration.getLocation());
     }
 
-    @Override
-    protected byte[] getAdditionPropertiesBundleBytes(URL checkConfigURL) {
-        // just returns null since additional property file is not needed nor
-        // supported
-        return null;
-    }
+    return locationUrl;
+  }
 
-    @Override
-    protected PropertyResolver getPropertyResolver(ICheckConfiguration config, CheckstyleConfigurationFile configFile) {
-        MultiPropertyResolver resolver = new MultiPropertyResolver();
-        resolver.addPropertyResolver(new ResolvablePropertyResolver(config));
-        resolver.addPropertyResolver(new BuiltInFilePropertyResolver(resolveLocation(config).toString()));
+  @Override
+  protected byte[] getAdditionPropertiesBundleBytes(URL checkConfigURL) {
+    // just returns null since additional property file is not needed nor
+    // supported
+    return null;
+  }
 
-        return resolver;
-    }
+  @Override
+  protected PropertyResolver getPropertyResolver(ICheckConfiguration config,
+          CheckstyleConfigurationFile configFile) {
+    MultiPropertyResolver resolver = new MultiPropertyResolver();
+    resolver.addPropertyResolver(new ResolvablePropertyResolver(config));
+    resolver.addPropertyResolver(
+            new BuiltInFilePropertyResolver(resolveLocation(config).toString()));
+
+    return resolver;
+  }
 }

@@ -32,35 +32,38 @@ import org.eclipse.core.resources.IFile;
  */
 public class UnOpenedFilesFilter extends AbstractFilter {
 
-    private static List<IFile> sOpenedFiles = new ArrayList<IFile>();
+  private static List<IFile> sOpenedFiles = new ArrayList<IFile>();
 
-    /**
-     * Registers a opened file.
-     * 
-     * @param file the file
-     */
-    public static void addOpenedFile(IFile file) {
-        sOpenedFiles.add(file);
+  /**
+   * Registers a opened file.
+   * 
+   * @param file
+   *          the file
+   */
+  public static void addOpenedFile(IFile file) {
+    sOpenedFiles.add(file);
+  }
+
+  /**
+   * Deregisters the opened file.
+   * 
+   * @param file
+   *          the file
+   */
+  public static void removeOpenedFile(IFile file) {
+    sOpenedFiles.remove(file);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean accept(Object element) {
+
+    if (element instanceof IFile) {
+
+      return sOpenedFiles.contains(element);
     }
-
-    /**
-     * Deregisters the opened file.
-     * 
-     * @param file the file
-     */
-    public static void removeOpenedFile(IFile file) {
-        sOpenedFiles.remove(file);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public boolean accept(Object element) {
-
-        if (element instanceof IFile) {
-
-            return sOpenedFiles.contains(element);
-        }
-        return false;
-    }
+    return false;
+  }
 }

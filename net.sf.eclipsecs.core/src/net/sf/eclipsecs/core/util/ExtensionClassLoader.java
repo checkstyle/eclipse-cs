@@ -34,92 +34,94 @@ import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
 
 /**
- * Classloader implementation which can load classes and resources from bundles implementing a specific extension point.
- * 
+ * Classloader implementation which can load classes and resources from bundles implementing a
+ * specific extension point.
+ *
  * @author Lars Ködderitzsch
  */
 public class ExtensionClassLoader extends ClassLoader {
 
-    private List<Bundle> mBundles;
+  private List<Bundle> mBundles;
 
-    /**
-     * @param sourceBundle
-     *            the source bundle defining the extension
-     * @param extensionPointId
-     *            the extension point id
-     */
-    public ExtensionClassLoader(Bundle sourceBundle, String extensionPointId) {
+  /**
+   * Creates the extension classloader.
+   *
+   * @param sourceBundle
+   *          the source bundle defining the extension
+   * @param extensionPointId
+   *          the extension point id
+   */
+  public ExtensionClassLoader(Bundle sourceBundle, String extensionPointId) {
 
-        mBundles = new ArrayList<Bundle>();
+    mBundles = new ArrayList<>();
 
-        mBundles.add(sourceBundle);
+    mBundles.add(sourceBundle);
 
-        IExtensionRegistry pluginRegistry = Platform.getExtensionRegistry();
-        IExtensionPoint extPt = pluginRegistry.getExtensionPoint(extensionPointId);
+    IExtensionRegistry pluginRegistry = Platform.getExtensionRegistry();
+    IExtensionPoint extPt = pluginRegistry.getExtensionPoint(extensionPointId);
 
-        IExtension[] extensions = extPt.getExtensions();
+    IExtension[] extensions = extPt.getExtensions();
 
-        for (IExtension ext : extensions) {
-            String contributorId = ext.getContributor().getName();
-            Bundle extensionBundle = Platform.getBundle(contributorId);
+    for (IExtension ext : extensions) {
+      String contributorId = ext.getContributor().getName();
+      Bundle extensionBundle = Platform.getBundle(contributorId);
 
-            if (extensionBundle != null) {
-                mBundles.add(extensionBundle);
-            }
+      if (extensionBundle != null) {
+        mBundles.add(extensionBundle);
+      }
+    }
+  }
+
+  @Override
+  public Class<?> loadClass(String name) throws ClassNotFoundException {
+
+    Class<?> cl = null;
+
+    for (Bundle bundle : mBundles) {
+
+      try {
+        cl = bundle.loadClass(name);
+        if (cl != null) {
+          break;
         }
+      } catch (ClassNotFoundException e) {
+        // try next
+      }
     }
 
-    @Override
-    public Class<?> loadClass(String name) throws ClassNotFoundException {
-
-        Class<?> cl = null;
-
-        for (Bundle bundle : mBundles) {
-
-            try {
-                cl = bundle.loadClass(name);
-                if (cl != null) {
-                    break;
-                }
-            }
-            catch (ClassNotFoundException e) {
-                // try next
-            }
-        }
-
-        if (cl == null) {
-            throw new ClassNotFoundException(name);
-        }
-
-        return cl;
+    if (cl == null) {
+      throw new ClassNotFoundException(name);
     }
 
-    @Override
-    public URL getResource(String name) {
+    return cl;
+  }
 
-        URL resource = null;
+  @Override
+  public URL getResource(String name) {
 
-        for (Bundle bundle : mBundles) {
-            resource = bundle.getResource(name);
-            if (resource != null) {
-                break;
-            }
-        }
-        return resource;
+    URL resource = null;
+
+    for (Bundle bundle : mBundles) {
+      resource = bundle.getResource(name);
+      if (resource != null) {
+        break;
+      }
     }
+    return resource;
+  }
 
-    @Override
-    public Enumeration<URL> getResources(String name) throws IOException {
+  @Override
+  public Enumeration<URL> getResources(String name) throws IOException {
 
-        List<URL> resources = new ArrayList<URL>();
+    List<URL> resources = new ArrayList<>();
 
-        for (Bundle bundle : mBundles) {
-            Enumeration<URL> bundleResources = bundle.getResources(name);
-            if (bundleResources != null) {
-                resources.addAll(Collections.list(bundleResources));
-            }
-        }
-        return Collections.enumeration(resources);
-
+    for (Bundle bundle : mBundles) {
+      Enumeration<URL> bundleResources = bundle.getResources(name);
+      if (bundleResources != null) {
+        resources.addAll(Collections.list(bundleResources));
+      }
     }
+    return Collections.enumeration(resources);
+
+  }
 }

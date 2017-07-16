@@ -22,36 +22,35 @@ package net.sf.eclipsecs.core.transformer.ctransformerclasses;
 
 import java.util.StringTokenizer;
 
-import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 import net.sf.eclipsecs.core.transformer.CTransformationClass;
+import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 
 /**
- * Wrapperclass for converting the checkstyle-rule FinalLocalVariableWrap to
- * appropriate eclipse-formatter-rules.
+ * Wrapperclass for converting the checkstyle-rule FinalLocalVariableWrap to appropriate
+ * eclipse-formatter-rules.
  * 
  * @author Lukas Frena
  */
 public class FinalLocalVariableTransformer extends CTransformationClass {
-    @Override
-    public FormatterConfiguration transformRule() {
-        String val = getAttribute("tokens");
-        if (val == null) {
-            val = "VARIABLE_DEF";
-        }
-
-        final StringTokenizer args = new StringTokenizer(val, ", ");
-        String token;
-        while (args.hasMoreTokens()) {
-            token = args.nextToken();
-            if (token.equals("VARIABLE_DEF")) {
-                useCleanupSetting("make_local_variable_final", "true");
-                useCleanupSetting("make_private_fields_final", "true");
-            }
-            else if (token.equals("PARAMETER_DEF")) {
-                useCleanupSetting("make_parameters_final", "true");
-            }
-        }
-        useCleanupSetting("make_variable_declarations_final", "true");
-        return getFormatterSetting();
+  @Override
+  public FormatterConfiguration transformRule() {
+    String val = getAttribute("tokens");
+    if (val == null) {
+      val = "VARIABLE_DEF";
     }
+
+    final StringTokenizer args = new StringTokenizer(val, ", ");
+    String token;
+    while (args.hasMoreTokens()) {
+      token = args.nextToken();
+      if (token.equals("VARIABLE_DEF")) {
+        useCleanupSetting("make_local_variable_final", "true");
+        useCleanupSetting("make_private_fields_final", "true");
+      } else if (token.equals("PARAMETER_DEF")) {
+        useCleanupSetting("make_parameters_final", "true");
+      }
+    }
+    useCleanupSetting("make_variable_declarations_final", "true");
+    return getFormatterSetting();
+  }
 }

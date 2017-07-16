@@ -26,58 +26,55 @@ import java.io.FileReader;
 import java.io.IOException;
 
 /**
- * Class for parsing a eclipse-formatter-configuration-file for
- * formatter-settings.
+ * Class for parsing a eclipse-formatter-configuration-file for formatter-settings.
  * 
  * @author Lukas Frena
  */
 public class FormatterConfigParser {
-    /** A FormatterConfiguration with all rules that will be found. */
-    private final FormatterConfiguration mRules = new FormatterConfiguration();
+  /** A FormatterConfiguration with all rules that will be found. */
+  private final FormatterConfiguration mRules = new FormatterConfiguration();
 
-    /** The stream to the configuration-file of the eclipse-formatter. */
-    private final BufferedReader mReader;
+  /** The stream to the configuration-file of the eclipse-formatter. */
+  private final BufferedReader mReader;
 
-    /**
-     * Creates a new Instance of Class FormatterConfigParser.
-     * 
-     * @param configLocation
-     *            The configuration-file of eclipse formatter.
-     * @throws FileNotFoundException
-     *             Gets thrown if config-file can't be found.
-     */
-    public FormatterConfigParser(final String configLocation)
-        throws FileNotFoundException {
+  /**
+   * Creates a new Instance of Class FormatterConfigParser.
+   * 
+   * @param configLocation
+   *          The configuration-file of eclipse formatter.
+   * @throws FileNotFoundException
+   *           Gets thrown if config-file can't be found.
+   */
+  public FormatterConfigParser(final String configLocation) throws FileNotFoundException {
 
-        final FileReader fin = new FileReader(configLocation);
-        mReader = new BufferedReader(fin);
+    final FileReader fin = new FileReader(configLocation);
+    mReader = new BufferedReader(fin);
+  }
+
+  /**
+   * Method for starting parsing for formatter-rules.
+   * 
+   * @return The FormatterConfiguration of formatter-rules found.
+   */
+  public FormatterConfiguration parseRules() {
+    if (mReader == null) {
+      return null;
     }
 
-    /**
-     * Method for starting parsing for formatter-rules.
-     * 
-     * @return The FormatterConfiguration of formatter-rules found.
-     */
-    public FormatterConfiguration parseRules() {
-        if (mReader == null) {
-            return null;
-        }
+    String line = null;
+    String[] tokens = null;
 
-        String line = null;
-        String[] tokens = null;
-
-        try {
-            while ((line = mReader.readLine()) != null) {
-                if (line.startsWith("org.eclipse.jdt.core.formatter.")) {
-                    tokens = line.split("=");
-                    mRules.addFormatterSetting(tokens[0], tokens[1]);
-                }
-            }
+    try {
+      while ((line = mReader.readLine()) != null) {
+        if (line.startsWith("org.eclipse.jdt.core.formatter.")) {
+          tokens = line.split("=");
+          mRules.addFormatterSetting(tokens[0], tokens[1]);
         }
-        catch (final IOException e) {
-            return null;
-        }
-
-        return mRules;
+      }
+    } catch (final IOException e) {
+      return null;
     }
+
+    return mRules;
+  }
 }

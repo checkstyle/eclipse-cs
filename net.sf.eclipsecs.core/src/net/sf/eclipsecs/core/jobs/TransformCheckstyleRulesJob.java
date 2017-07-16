@@ -20,6 +20,12 @@
 
 package net.sf.eclipsecs.core.jobs;
 
+import com.google.common.io.Closeables;
+import com.puppycrawl.tools.checkstyle.ConfigurationLoader;
+import com.puppycrawl.tools.checkstyle.PropertyResolver;
+import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
+import com.puppycrawl.tools.checkstyle.api.Configuration;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,12 +47,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.xml.sax.InputSource;
 
-import com.google.common.io.Closeables;
-import com.puppycrawl.tools.checkstyle.ConfigurationLoader;
-import com.puppycrawl.tools.checkstyle.PropertyResolver;
-import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
-import com.puppycrawl.tools.checkstyle.api.Configuration;
-
 /**
  * Job which starts transforming the checkstyle-rules to eclipse-formatter-settings.
  *
@@ -55,90 +55,89 @@ import com.puppycrawl.tools.checkstyle.api.Configuration;
  */
 public class TransformCheckstyleRulesJob extends WorkspaceJob {
 
-    /** Selected project in workspace. */
-    private IProject mProject;
+  /** Selected project in workspace. */
+  private IProject mProject;
 
-    /**
-     * Job for transforming checkstyle to formatter-rules.
-     *
-     * @param project
-     *            The current selected project in the workspace.
-     */
-    public TransformCheckstyleRulesJob(final IProject project) {
-        super("transformCheckstyle");
+  /**
+   * Job for transforming checkstyle to formatter-rules.
+   *
+   * @param project
+   *          The current selected project in the workspace.
+   */
+  public TransformCheckstyleRulesJob(final IProject project) {
+    super("transformCheckstyle");
 
-        this.mProject = project;
-    }
+    this.mProject = project;
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public IStatus runInWorkspace(final IProgressMonitor arg0) throws CoreException {
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public IStatus runInWorkspace(final IProgressMonitor arg0) throws CoreException {
 
+    try {
+      final IProjectConfiguration conf = ProjectConfigurationFactory.getConfiguration(mProject);
+
+      final List<Configuration> rules = new ArrayList<Configuration>();
+
+      // collect rules from all configured filesets
+      for (FileSet fs : conf.getFileSets()) {
+
+        ICheckConfiguration checkConfig = fs.getCheckConfig();
+
+        CheckstyleConfigurationFile configFile = checkConfig.getCheckstyleConfiguration();
+
+        PropertyResolver resolver = configFile.getPropertyResolver();
+
+        // set the project context if the property resolver needs the
+        // context
+        if (resolver instanceof IContextAware) {
+          ((IContextAware) resolver).setProjectContext(mProject);
+        }
+
+        InputSource in = null;
         try {
-            final IProjectConfiguration conf = ProjectConfigurationFactory.getConfiguration(mProject);
+          in = configFile.getCheckConfigFileInputSource();
 
-            final List<Configuration> rules = new ArrayList<Configuration>();
+          Configuration configuration = ConfigurationLoader.loadConfiguration(in, resolver, true);
 
-            // collect rules from all configured filesets
-            for (FileSet fs : conf.getFileSets()) {
-
-                ICheckConfiguration checkConfig = fs.getCheckConfig();
-
-                CheckstyleConfigurationFile configFile = checkConfig.getCheckstyleConfiguration();
-
-                PropertyResolver resolver = configFile.getPropertyResolver();
-
-                // set the project context if the property resolver needs the
-                // context
-                if (resolver instanceof IContextAware) {
-                    ((IContextAware) resolver).setProjectContext(mProject);
-                }
-
-                InputSource in = null;
-                try {
-                    in = configFile.getCheckConfigFileInputSource();
-
-                    Configuration configuration = ConfigurationLoader.loadConfiguration(in, resolver, true);
-
-                    // flatten the nested configuration tree into a list
-                    recurseConfiguration(configuration, rules);
-                }
-                finally {
-                    Closeables.closeQuietly(in.getByteStream());
-                }
-            }
-
-            if (rules.isEmpty()) {
-                return Status.CANCEL_STATUS;
-            }
-
-            final CheckstyleTransformer transformer = new CheckstyleTransformer(mProject, rules);
-            transformer.transformRules();
+          // flatten the nested configuration tree into a list
+          recurseConfiguration(configuration, rules);
+        } finally {
+          Closeables.closeQuietly(in.getByteStream());
         }
-        catch (CheckstyleException e) {
-            Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR, e.getMessage(), e);
-            throw new CoreException(status);
-        }
-        catch (CheckstylePluginException e) {
-            Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR, e.getMessage(), e);
-            throw new CoreException(status);
-        }
+      }
 
-        return Status.OK_STATUS;
+      if (rules.isEmpty()) {
+        return Status.CANCEL_STATUS;
+      }
+
+      final CheckstyleTransformer transformer = new CheckstyleTransformer(mProject, rules);
+      transformer.transformRules();
+    } catch (CheckstyleException e) {
+      Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR,
+              e.getMessage(), e);
+      throw new CoreException(status);
+    } catch (CheckstylePluginException e) {
+      Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR,
+              e.getMessage(), e);
+      throw new CoreException(status);
     }
 
-    private static void recurseConfiguration(Configuration module, List<Configuration> flatModules) {
+    return Status.OK_STATUS;
+  }
 
-        flatModules.add(module);
+  private static void recurseConfiguration(Configuration module, List<Configuration> flatModules) {
 
-        Configuration[] childs = module.getChildren();
-        if (childs != null && childs.length > 0) {
+    flatModules.add(module);
 
-            for (Configuration child : childs) {
-                recurseConfiguration(child, flatModules);
-            }
-        }
+    Configuration[] childs = module.getChildren();
+    if (childs != null && childs.length > 0) {
+
+      for (Configuration child : childs) {
+        recurseConfiguration(child, flatModules);
+      }
     }
+  }
 }

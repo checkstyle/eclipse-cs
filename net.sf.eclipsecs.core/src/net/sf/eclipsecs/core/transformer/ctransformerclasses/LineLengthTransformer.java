@@ -20,8 +20,8 @@
 
 package net.sf.eclipsecs.core.transformer.ctransformerclasses;
 
-import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 import net.sf.eclipsecs.core.transformer.CTransformationClass;
+import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 
 /**
  * Wrapperclass for converting the checkstyle-rule LineLength to appropriate
@@ -30,14 +30,14 @@ import net.sf.eclipsecs.core.transformer.CTransformationClass;
  * @author Lukas Frena
  */
 public class LineLengthTransformer extends CTransformationClass {
-    @Override
-    public FormatterConfiguration transformRule() {
-        String val = getAttribute("max");
-        if (val == null) {
-            val = "80";
-        }
-        userFormatterSetting("lineSplit", val);
-        userFormatterSetting("comment.line_length", val);
-        return getFormatterSetting();
+  @Override
+  public FormatterConfiguration transformRule() {
+    String val = getAttribute("max");
+    if (val == null) {
+      val = "80";
     }
+    userFormatterSetting("lineSplit", val);
+    userFormatterSetting("comment.line_length", val);
+    return getFormatterSetting();
+  }
 }

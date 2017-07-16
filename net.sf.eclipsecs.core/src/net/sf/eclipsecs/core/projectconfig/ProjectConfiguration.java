@@ -20,6 +20,8 @@
 
 package net.sf.eclipsecs.core.projectconfig;
 
+import com.google.common.base.MoreObjects;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -33,194 +35,197 @@ import net.sf.eclipsecs.core.projectconfig.filters.IFilter;
 
 import org.eclipse.core.resources.IProject;
 
-import com.google.common.base.MoreObjects;
-
 /**
- * Represents the configuration for a project. Contains the file sets configured for the project plus the additional
- * filters.
+ * Represents the configuration for a project. Contains the file sets configured for the project
+ * plus the additional filters.
  *
  * @author Lars Ködderitzsch
  */
 public class ProjectConfiguration implements Cloneable, IProjectConfiguration {
 
-    /** The project. */
-    private IProject mProject;
+  /** The project. */
+  private IProject mProject;
 
-    /** The local check configurations. */
-    private List<ICheckConfiguration> mLocalCheckConfigs;
+  /** The local check configurations. */
+  private List<ICheckConfiguration> mLocalCheckConfigs;
 
-    /** the file sets. */
-    private List<FileSet> mFileSets;
+  /** the file sets. */
+  private List<FileSet> mFileSets;
 
-    /** the filters. */
-    private List<IFilter> mFilters;
+  /** the filters. */
+  private List<IFilter> mFilters;
 
-    /** Flags if the simple file set editor should be used. */
-    private boolean mUseSimpleConfig = true;
+  /** Flags if the simple file set editor should be used. */
+  private boolean mUseSimpleConfig = true;
 
-    /** if formatter synching is enabled. */
-    private boolean mSyncFormatter;
+  /** if formatter synching is enabled. */
+  private boolean mSyncFormatter;
 
-    /**
-     * Default constructor.
-     *
-     * @param project
-     *            the project
-     * @param localConfigs
-     *            the list of local check configurations
-     * @param fileSets
-     *            the list of configured file sets
-     * @param filters
-     *            the filters
-     * @param useSimpleConfig
-     *            <code>true</code> if simple configuration is used
-     * @param synchFormatter
-     *            <code>true</code> if the formatter configuration should be synced to the Checkstyle settings
-     */
-    public ProjectConfiguration(IProject project, List<ICheckConfiguration> localConfigs, List<FileSet> fileSets,
-        List<IFilter> filters, boolean useSimpleConfig, boolean synchFormatter) {
-        mProject = project;
-        mLocalCheckConfigs = localConfigs != null ? Collections.unmodifiableList(localConfigs) : Collections
-            .unmodifiableList(new ArrayList<ICheckConfiguration>());
-        mFileSets = fileSets != null ? Collections.unmodifiableList(fileSets) : Collections
-            .unmodifiableList(new ArrayList<FileSet>());
+  /**
+   * Default constructor.
+   *
+   * @param project
+   *          the project
+   * @param localConfigs
+   *          the list of local check configurations
+   * @param fileSets
+   *          the list of configured file sets
+   * @param filters
+   *          the filters
+   * @param useSimpleConfig
+   *          <code>true</code> if simple configuration is used
+   * @param synchFormatter
+   *          <code>true</code> if the formatter configuration should be synced to the Checkstyle
+   *          settings
+   */
+  public ProjectConfiguration(IProject project, List<ICheckConfiguration> localConfigs,
+          List<FileSet> fileSets, List<IFilter> filters, boolean useSimpleConfig,
+          boolean synchFormatter) {
+    mProject = project;
+    mLocalCheckConfigs = localConfigs != null ? Collections.unmodifiableList(localConfigs)
+            : Collections.unmodifiableList(new ArrayList<ICheckConfiguration>());
+    mFileSets = fileSets != null ? Collections.unmodifiableList(fileSets)
+            : Collections.unmodifiableList(new ArrayList<FileSet>());
 
-        // build list of filters
-        List<IFilter> standardFilters = Arrays.asList(PluginFilters.getConfiguredFilters());
-        mFilters = new ArrayList<IFilter>(standardFilters);
+    // build list of filters
+    List<IFilter> standardFilters = Arrays.asList(PluginFilters.getConfiguredFilters());
+    mFilters = new ArrayList<IFilter>(standardFilters);
 
-        if (filters != null) {
-            // merge with filters configured for the project
-            for (int i = 0, size = mFilters.size(); i < size; i++) {
+    if (filters != null) {
+      // merge with filters configured for the project
+      for (int i = 0, size = mFilters.size(); i < size; i++) {
 
-                IFilter standardFilter = mFilters.get(i);
+        IFilter standardFilter = mFilters.get(i);
 
-                for (int j = 0, size2 = filters.size(); j < size2; j++) {
-                    IFilter configuredFilter = filters.get(j);
+        for (int j = 0, size2 = filters.size(); j < size2; j++) {
+          IFilter configuredFilter = filters.get(j);
 
-                    if (standardFilter.getInternalName().equals(configuredFilter.getInternalName())) {
-                        mFilters.set(i, configuredFilter);
-                    }
-                }
-            }
+          if (standardFilter.getInternalName().equals(configuredFilter.getInternalName())) {
+            mFilters.set(i, configuredFilter);
+          }
         }
-
-        mFilters = Collections.unmodifiableList(mFilters);
-
-        mUseSimpleConfig = useSimpleConfig;
-        mSyncFormatter = synchFormatter;
+      }
     }
 
-    @Override
-    public IProject getProject() {
-        return mProject;
+    mFilters = Collections.unmodifiableList(mFilters);
+
+    mUseSimpleConfig = useSimpleConfig;
+    mSyncFormatter = synchFormatter;
+  }
+
+  @Override
+  public IProject getProject() {
+    return mProject;
+  }
+
+  @Override
+  public List<ICheckConfiguration> getLocalCheckConfigurations() {
+    return mLocalCheckConfigs;
+  }
+
+  @Override
+  public List<FileSet> getFileSets() {
+    return mFileSets;
+  }
+
+  @Override
+  public List<IFilter> getFilters() {
+    return mFilters;
+  }
+
+  @Override
+  public boolean isUseSimpleConfig() {
+    return mUseSimpleConfig;
+  }
+
+  @Override
+  public boolean isSyncFormatter() {
+    return mSyncFormatter;
+  }
+
+  /**
+   * Checks if this project configuration uses the given checkstyle configuration.
+   *
+   * @param configuration
+   *          the check configuration
+   * @return <code>true</code>, if the project config uses the checkstyle config, <code>false</code>
+   *         otherwise
+   */
+  @Override
+  public boolean isConfigInUse(ICheckConfiguration configuration) {
+
+    boolean result = false;
+
+    for (FileSet fileSet : getFileSets()) {
+      ICheckConfiguration checkConfig = fileSet.getCheckConfig();
+      if (configuration.equals(checkConfig) || (checkConfig instanceof CheckConfigurationWorkingCopy
+              && configuration.equals(((CheckConfigurationWorkingCopy) checkConfig)
+                      .getSourceCheckConfiguration()))) {
+        result = true;
+        break;
+      }
+    }
+    return result;
+  }
+
+  @Override
+  public ProjectConfiguration clone() {
+    ProjectConfiguration clone = null;
+    try {
+      clone = (ProjectConfiguration) super.clone();
+      clone.mFileSets = new LinkedList<FileSet>();
+      clone.mUseSimpleConfig = mUseSimpleConfig;
+      clone.mSyncFormatter = mSyncFormatter;
+
+      // clone file sets
+      List<FileSet> clonedFileSets = new ArrayList<FileSet>();
+      for (FileSet fileSet : getFileSets()) {
+        clonedFileSets.add(fileSet.clone());
+      }
+      clone.mFileSets = clonedFileSets;
+
+      // clone filters
+      List<IFilter> clonedFilters = new ArrayList<IFilter>();
+      for (IFilter filter : getFilters()) {
+        clonedFilters.add(filter.clone());
+      }
+      clone.mFilters = clonedFilters;
+    } catch (CloneNotSupportedException e) {
+      throw new InternalError(); // should never happen
     }
 
-    @Override
-    public List<ICheckConfiguration> getLocalCheckConfigurations() {
-        return mLocalCheckConfigs;
+    return clone;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+
+    if (obj == null || !(obj instanceof ProjectConfiguration)) {
+      return false;
     }
-
-    @Override
-    public List<FileSet> getFileSets() {
-        return mFileSets;
+    if (this == obj) {
+      return true;
     }
+    ProjectConfiguration rhs = (ProjectConfiguration) obj;
 
-    @Override
-    public List<IFilter> getFilters() {
-        return mFilters;
-    }
-
-    @Override
-    public boolean isUseSimpleConfig() {
-        return mUseSimpleConfig;
-    }
-
-    @Override
-    public boolean isSyncFormatter() {
-        return mSyncFormatter;
-    }
-
-    /**
-     * Checks if this project configuration uses the given checkstyle configuration.
-     *
-     * @param configuration
-     *            the check configuration
-     * @return <code>true</code>, if the project config uses the checkstyle config, <code>false</code> otherwise
-     */
-    @Override
-    public boolean isConfigInUse(ICheckConfiguration configuration) {
-
-        boolean result = false;
-
-        for (FileSet fileSet : getFileSets()) {
-            ICheckConfiguration checkConfig = fileSet.getCheckConfig();
-            if (configuration.equals(checkConfig)
-                || (checkConfig instanceof CheckConfigurationWorkingCopy && configuration
-                    .equals(((CheckConfigurationWorkingCopy) checkConfig).getSourceCheckConfiguration()))) {
-                result = true;
-                break;
-            }
-        }
-        return result;
-    }
-
-    @Override
-    public ProjectConfiguration clone() {
-        ProjectConfiguration clone = null;
-        try {
-            clone = (ProjectConfiguration) super.clone();
-            clone.mFileSets = new LinkedList<FileSet>();
-            clone.mUseSimpleConfig = mUseSimpleConfig;
-            clone.mSyncFormatter = mSyncFormatter;
-
-            // clone file sets
-            List<FileSet> clonedFileSets = new ArrayList<FileSet>();
-            for (FileSet fileSet : getFileSets()) {
-                clonedFileSets.add(fileSet.clone());
-            }
-            clone.mFileSets = clonedFileSets;
-
-            // clone filters
-            List<IFilter> clonedFilters = new ArrayList<IFilter>();
-            for (IFilter filter : getFilters()) {
-                clonedFilters.add(filter.clone());
-            }
-            clone.mFilters = clonedFilters;
-        }
-        catch (CloneNotSupportedException e) {
-            throw new InternalError(); // should never happen
-        }
-
-        return clone;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-
-        if (obj == null || !(obj instanceof ProjectConfiguration)) {
-            return false;
-        }
-        if (this == obj) {
-            return true;
-        }
-        ProjectConfiguration rhs = (ProjectConfiguration) obj;
-
-        return Objects.equals(mProject, rhs.mProject) && Objects.equals(mLocalCheckConfigs, rhs.mLocalCheckConfigs)
+    return Objects.equals(mProject, rhs.mProject)
+            && Objects.equals(mLocalCheckConfigs, rhs.mLocalCheckConfigs)
             && Objects.equals(mUseSimpleConfig, rhs.mUseSimpleConfig)
-            && Objects.equals(mSyncFormatter, rhs.mSyncFormatter) && Objects.equals(mFileSets, rhs.mFileSets)
-            && Objects.equals(mFilters, rhs.mFilters);
-    }
+            && Objects.equals(mSyncFormatter, rhs.mSyncFormatter)
+            && Objects.equals(mFileSets, rhs.mFileSets) && Objects.equals(mFilters, rhs.mFilters);
+  }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(mProject, mLocalCheckConfigs, mUseSimpleConfig, mSyncFormatter, mFileSets, mFilters);
-    }
+  @Override
+  public int hashCode() {
+    return Objects.hash(mProject, mLocalCheckConfigs, mUseSimpleConfig, mSyncFormatter, mFileSets,
+            mFilters);
+  }
 
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this).add("project", mProject).add("localCheckConfigs", mLocalCheckConfigs)
-            .add("useSimpleConfig", mUseSimpleConfig).add("syncFormatter", mSyncFormatter).add("fileSets", mFileSets)
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper(this).add("project", mProject)
+            .add("localCheckConfigs", mLocalCheckConfigs).add("useSimpleConfig", mUseSimpleConfig)
+            .add("syncFormatter", mSyncFormatter).add("fileSets", mFileSets)
             .add("filters", mFilters).toString();
-    }
+  }
 }

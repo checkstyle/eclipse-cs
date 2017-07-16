@@ -23,6 +23,10 @@ package net.sf.eclipsecs.core.nature;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.sf.eclipsecs.core.CheckstylePlugin;
+import net.sf.eclipsecs.core.builder.CheckstyleBuilder;
+import net.sf.eclipsecs.core.builder.CheckstyleMarker;
+
 import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -34,142 +38,137 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.JavaCore;
 
-import net.sf.eclipsecs.core.CheckstylePlugin;
-import net.sf.eclipsecs.core.builder.CheckstyleBuilder;
-import net.sf.eclipsecs.core.builder.CheckstyleMarker;
-
 /**
  * Checkstyle project nature.
  */
 public class CheckstyleNature implements IProjectNature {
 
-    /** ID for the Checkstyle project nature. */
-    public static final String NATURE_ID = CheckstylePlugin.PLUGIN_ID + ".CheckstyleNature"; //$NON-NLS-1$
+  /** ID for the Checkstyle project nature. */
+  public static final String NATURE_ID = CheckstylePlugin.PLUGIN_ID + ".CheckstyleNature"; //$NON-NLS-1$
 
-    /** The project. */
-    private IProject mProject;
+  /** The project. */
+  private IProject mProject;
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void configure() throws CoreException {
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void configure() throws CoreException {
 
-        //
-        // Add the builder to the project.
-        //
-        IProjectDescription description = mProject.getDescription();
-        ICommand[] commands = description.getBuildSpec();
-        boolean found = false;
-        for (int i = 0; i < commands.length; ++i) {
-            if (commands[i].getBuilderName().equals(CheckstyleBuilder.BUILDER_ID)) {
-                found = true;
-                break;
-            }
-        }
-
-        if (!found) {
-            // add builder to project
-            ICommand command = description.newCommand();
-            command.setBuilderName(CheckstyleBuilder.BUILDER_ID);
-            ICommand[] newCommands = new ICommand[commands.length + 1];
-
-            // Add it after the other builders.
-            System.arraycopy(commands, 0, newCommands, 0, commands.length);
-            newCommands[commands.length] = command;
-            description.setBuildSpec(newCommands);
-
-            ensureProjectFileWritable();
-
-            mProject.setDescription(description, null);
-        }
+    //
+    // Add the builder to the project.
+    //
+    IProjectDescription description = mProject.getDescription();
+    ICommand[] commands = description.getBuildSpec();
+    boolean found = false;
+    for (int i = 0; i < commands.length; ++i) {
+      if (commands[i].getBuilderName().equals(CheckstyleBuilder.BUILDER_ID)) {
+        found = true;
+        break;
+      }
     }
 
-    private void ensureProjectFileWritable() throws CoreException {
-        IFile projectFile = mProject.getFile(".project");
-        if (projectFile.isReadOnly()) {
-            ResourceAttributes attrs = ResourceAttributes.fromFile(projectFile.getFullPath().toFile());
-            attrs.setReadOnly(true);
-            projectFile.setResourceAttributes(attrs);
-        }
+    if (!found) {
+      // add builder to project
+      ICommand command = description.newCommand();
+      command.setBuilderName(CheckstyleBuilder.BUILDER_ID);
+      ICommand[] newCommands = new ICommand[commands.length + 1];
+
+      // Add it after the other builders.
+      System.arraycopy(commands, 0, newCommands, 0, commands.length);
+      newCommands[commands.length] = command;
+      description.setBuildSpec(newCommands);
+
+      ensureProjectFileWritable();
+
+      mProject.setDescription(description, null);
+    }
+  }
+
+  private void ensureProjectFileWritable() throws CoreException {
+    IFile projectFile = mProject.getFile(".project");
+    if (projectFile.isReadOnly()) {
+      ResourceAttributes attrs = ResourceAttributes.fromFile(projectFile.getFullPath().toFile());
+      attrs.setReadOnly(true);
+      projectFile.setResourceAttributes(attrs);
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void deconfigure() throws CoreException {
+
+    //
+    // Remove the builder from the project.
+    //
+    IProjectDescription description = mProject.getDescription();
+    ICommand[] commands = description.getBuildSpec();
+    List<ICommand> newCommandsVec = new ArrayList<>();
+    for (int i = 0; i < commands.length; ++i) {
+      if (commands[i].getBuilderName().equals(CheckstyleBuilder.BUILDER_ID)) {
+        continue;
+      } else {
+        newCommandsVec.add(commands[i]);
+      }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void deconfigure() throws CoreException {
+    ICommand[] newCommands = newCommandsVec.toArray(new ICommand[newCommandsVec.size()]);
+    description.setBuildSpec(newCommands);
 
-        //
-        // Remove the builder from the project.
-        //
-        IProjectDescription description = mProject.getDescription();
-        ICommand[] commands = description.getBuildSpec();
-        List<ICommand> newCommandsVec = new ArrayList<>();
-        for (int i = 0; i < commands.length; ++i) {
-            if (commands[i].getBuilderName().equals(CheckstyleBuilder.BUILDER_ID)) {
-                continue;
-            }
-            else {
-                newCommandsVec.add(commands[i]);
-            }
-        }
+    ensureProjectFileWritable();
 
-        ICommand[] newCommands = newCommandsVec.toArray(new ICommand[newCommandsVec.size()]);
-        description.setBuildSpec(newCommands);
+    mProject.setDescription(description, new NullProgressMonitor());
 
-        ensureProjectFileWritable();
+    // remove checkstyle markers from the project
+    getProject().deleteMarkers(CheckstyleMarker.MARKER_ID, true, IResource.DEPTH_INFINITE);
 
-        mProject.setDescription(description, new NullProgressMonitor());
+  }
 
-        // remove checkstyle markers from the project
-        getProject().deleteMarkers(CheckstyleMarker.MARKER_ID, true, IResource.DEPTH_INFINITE);
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public IProject getProject() {
+    return mProject;
+  }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void setProject(IProject project) {
+    mProject = project;
+  }
+
+  /**
+   * Checks if the ordering of the builders of the given project is correct, more specifically if
+   * the CheckstyleBuilder is set to run after the JavaBuilder.
+   *
+   * @param project
+   *          the project to check
+   * @return <code>true</code> if the builder order for this project is correct, <code>false</code>
+   *         otherwise
+   * @throws CoreException
+   *           error getting project description
+   */
+  public static boolean hasCorrectBuilderOrder(IProject project) throws CoreException {
+    IProjectDescription description = project.getDescription();
+    ICommand[] commands = description.getBuildSpec();
+
+    int javaBuilderIndex = -1;
+    int checkstyleBuilderIndex = -1;
+
+    for (int i = 0; i < commands.length; i++) {
+
+      if (commands[i].getBuilderName().equals(CheckstyleBuilder.BUILDER_ID)) {
+        checkstyleBuilderIndex = i;
+      } else if (commands[i].getBuilderName().equals(JavaCore.BUILDER_ID)) {
+        javaBuilderIndex = i;
+      }
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public IProject getProject() {
-        return mProject;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setProject(IProject project) {
-        mProject = project;
-    }
-
-    /**
-     * Checks if the ordering of the builders of the given project is correct, more specifically if the
-     * CheckstyleBuilder is set to run after the JavaBuilder.
-     *
-     * @param project
-     *            the project to check
-     * @return <code>true</code> if the builder order for this project is correct, <code>false</code> otherwise
-     * @throws CoreException
-     *             error getting project description
-     */
-    public static boolean hasCorrectBuilderOrder(IProject project) throws CoreException {
-        IProjectDescription description = project.getDescription();
-        ICommand[] commands = description.getBuildSpec();
-
-        int javaBuilderIndex = -1;
-        int checkstyleBuilderIndex = -1;
-
-        for (int i = 0; i < commands.length; i++) {
-
-            if (commands[i].getBuilderName().equals(CheckstyleBuilder.BUILDER_ID)) {
-                checkstyleBuilderIndex = i;
-            }
-            else if (commands[i].getBuilderName().equals(JavaCore.BUILDER_ID)) {
-                javaBuilderIndex = i;
-            }
-        }
-        return javaBuilderIndex < checkstyleBuilderIndex;
-    }
+    return javaBuilderIndex < checkstyleBuilderIndex;
+  }
 
 }

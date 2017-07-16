@@ -28,111 +28,113 @@ import net.sf.eclipsecs.core.CheckstylePlugin;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
 /**
- * The Class for transforming the formatter-settings to Checkstyle-rules. A new checkstyle-xml file gets generated.
+ * The Class for transforming the formatter-settings to Checkstyle-rules. A new checkstyle-xml file
+ * gets generated.
  *
  * @author Lukas Frena
  */
 public class FormatterTransformer {
-    /** An object containing all settings for the eclipse-formatter. */
-    private FormatterConfiguration mFormatterSetting = new FormatterConfiguration();
+  /** An object containing all settings for the eclipse-formatter. */
+  private FormatterConfiguration mFormatterSetting = new FormatterConfiguration();
 
-    /** An object containing all settings for the checkstyle-file. */
-    private final CheckstyleSetting mCheckstyleSetting = new CheckstyleSetting();
+  /** An object containing all settings for the checkstyle-file. */
+  private final CheckstyleSetting mCheckstyleSetting = new CheckstyleSetting();
 
-    /**
-     * The list with all TransformationClass-instances loaded in method loadTransformationClasses().
-     */
-    private final List<FTransformationClass> mTransformationClasses = new ArrayList<FTransformationClass>();
+  /**
+   * The list with all TransformationClass-instances loaded in method loadTransformationClasses().
+   */
+  private final List<FTransformationClass> mTransformationClasses = new ArrayList<FTransformationClass>();
 
-    /**
-     * Creates a new instance of class CheckstyleTransformer.
-     *
-     * @param rules
-     *            A configuration of formatter-rules.
-     * @throws CheckstylePluginException
-     *             if an unexpected internal exception ocurred
-     */
-    public FormatterTransformer(final FormatterConfiguration rules) throws CheckstylePluginException {
-        mFormatterSetting = rules;
+  /**
+   * Creates a new instance of class CheckstyleTransformer.
+   *
+   * @param rules
+   *          A configuration of formatter-rules.
+   * @throws CheckstylePluginException
+   *           if an unexpected internal exception ocurred
+   */
+  public FormatterTransformer(final FormatterConfiguration rules) throws CheckstylePluginException {
+    mFormatterSetting = rules;
 
-        final List<String> classnames = new ArrayList<String>();
-        final Iterator<String> it = mFormatterSetting.getFormatterSettings().keySet().iterator();
-        String help;
-        String[] tokens;
-        String className;
-        while (it.hasNext()) {
-            help = it.next();
-            tokens = help.split("\\.");
-            className = "net.sf.eclipsecs.core.transformer.ftransformerclasses.T";
+    final List<String> classnames = new ArrayList<String>();
+    final Iterator<String> it = mFormatterSetting.getFormatterSettings().keySet().iterator();
+    String help;
+    String[] tokens;
+    String className;
+    while (it.hasNext()) {
+      help = it.next();
+      tokens = help.split("\\.");
+      className = "net.sf.eclipsecs.core.transformer.ftransformerclasses.T";
 
-            for (int i = 5; i < tokens.length; i++) {
-                className = className + "_" + tokens[i];
-            }
-            classnames.add(className);
-        }
-
-        loadTransformationClasses(classnames);
+      for (int i = 5; i < tokens.length; i++) {
+        className = className + "_" + tokens[i];
+      }
+      classnames.add(className);
     }
 
-    /**
-     * Loads all transformationclasses that are needed to recognize the formatter-settings. A instance of every loaded
-     * class is stored in the field transformationClasses. Gets called by the constructor.
-     *
-     * @param classnames
-     *            A list of names of which classes get loaded.
-     */
-    private void loadTransformationClasses(final List<String> classnames) throws CheckstylePluginException {
-        final Iterator<String> nameit = classnames.iterator();
-        final Iterator<String> ruleit = mFormatterSetting.getFormatterSettings().keySet().iterator();
-        String name;
-        String rule;
-        Class<?> transformationClass;
-        while (nameit.hasNext() && ruleit.hasNext()) {
-            name = nameit.next();
-            rule = ruleit.next();
-            try {
-                transformationClass = CheckstylePlugin.getDefault().getAddonExtensionClassLoader().loadClass(name);
+    loadTransformationClasses(classnames);
+  }
 
-                final FTransformationClass transObj = (FTransformationClass) transformationClass.newInstance();
+  /**
+   * Loads all transformationclasses that are needed to recognize the formatter-settings. A instance
+   * of every loaded class is stored in the field transformationClasses. Gets called by the
+   * constructor.
+   *
+   * @param classnames
+   *          A list of names of which classes get loaded.
+   */
+  private void loadTransformationClasses(final List<String> classnames)
+          throws CheckstylePluginException {
+    final Iterator<String> nameit = classnames.iterator();
+    final Iterator<String> ruleit = mFormatterSetting.getFormatterSettings().keySet().iterator();
+    String name;
+    String rule;
+    Class<?> transformationClass;
+    while (nameit.hasNext() && ruleit.hasNext()) {
+      name = nameit.next();
+      rule = ruleit.next();
+      try {
+        transformationClass = CheckstylePlugin.getDefault().getAddonExtensionClassLoader()
+                .loadClass(name);
 
-                transObj.setValue(mFormatterSetting.getFormatterSettings().get(rule));
+        final FTransformationClass transObj = (FTransformationClass) transformationClass
+                .newInstance();
 
-                mTransformationClasses.add(transObj);
+        transObj.setValue(mFormatterSetting.getFormatterSettings().get(rule));
 
-            }
-            catch (final ClassNotFoundException e) {
-                // NOOP no appropriate transformer class present
-            }
-            catch (final InstantiationException e) {
-                CheckstylePluginException.rethrow(e);
-            }
-            catch (final IllegalAccessException e) {
-                CheckstylePluginException.rethrow(e);
-            }
-        }
+        mTransformationClasses.add(transObj);
+
+      } catch (final ClassNotFoundException e) {
+        // NOOP no appropriate transformer class present
+      } catch (final InstantiationException e) {
+        CheckstylePluginException.rethrow(e);
+      } catch (final IllegalAccessException e) {
+        CheckstylePluginException.rethrow(e);
+      }
     }
+  }
 
-    /**
-     * Method for starting transforming. Converts all formatter-settings to checkstyle-rules.
-     *
-     * @param path
-     *            The path where the checkstyle-xml file gets generated.
-     */
-    public void transformRules(final String path) {
-        loadRuleConfigurations();
-        new CheckstyleFileWriter(mCheckstyleSetting, path);
-    }
+  /**
+   * Method for starting transforming. Converts all formatter-settings to checkstyle-rules.
+   *
+   * @param path
+   *          The path where the checkstyle-xml file gets generated.
+   */
+  public void transformRules(final String path) {
+    loadRuleConfigurations();
+    new CheckstyleFileWriter(mCheckstyleSetting, path);
+  }
 
-    /**
-     * Method which handles every single formatter-setting. For every rule it calls the appropriate transformerclass.
-     * Gets called by transformRules().
-     */
-    private void loadRuleConfigurations() {
-        CheckstyleSetting settings;
-        final Iterator<FTransformationClass> it = mTransformationClasses.iterator();
-        while (it.hasNext()) {
-            settings = it.next().transformRule();
-            mCheckstyleSetting.addSetting(settings);
-        }
+  /**
+   * Method which handles every single formatter-setting. For every rule it calls the appropriate
+   * transformerclass. Gets called by transformRules().
+   */
+  private void loadRuleConfigurations() {
+    CheckstyleSetting settings;
+    final Iterator<FTransformationClass> it = mTransformationClasses.iterator();
+    while (it.hasNext()) {
+      settings = it.next().transformRule();
+      mCheckstyleSetting.addSetting(settings);
     }
+  }
 }

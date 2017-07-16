@@ -24,91 +24,92 @@ package net.sf.eclipsecs.ui.quickfixes;
 import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
-    private static final String BUNDLE_NAME = "net.sf.eclipsecs.ui.quickfixes.messages"; //$NON-NLS-1$
+  private static final String BUNDLE_NAME = "net.sf.eclipsecs.ui.quickfixes.messages"; //$NON-NLS-1$
 
-    private Messages() {}
+  private Messages() {
+  }
 
-    static {
-        // initialize resource bundle
-        NLS.initializeMessages(BUNDLE_NAME, Messages.class);
-    }
+  static {
+    // initialize resource bundle
+    NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+  }
 
-    public static String ModifierOrderQuickfix_description;
+  public static String ModifierOrderQuickfix_description;
 
-    public static String ModifierOrderQuickfix_label;
+  public static String ModifierOrderQuickfix_label;
 
-    public static String RedundantModifierQuickfix_description;
+  public static String RedundantModifierQuickfix_description;
 
-    public static String RedundantModifierQuickfix_label;
+  public static String RedundantModifierQuickfix_label;
 
-    public static String ArrayTypeStyleQuickfix_description;
+  public static String ArrayTypeStyleQuickfix_description;
 
-    public static String ArrayTypeStyleQuickfix_label;
+  public static String ArrayTypeStyleQuickfix_label;
 
-    public static String FinalParametersQuickfix_description;
+  public static String FinalParametersQuickfix_description;
 
-    public static String FinalParametersQuickfix_label;
+  public static String FinalParametersQuickfix_label;
 
-    public static String UncommentedMainQuickfix_description;
+  public static String UncommentedMainQuickfix_description;
 
-    public static String UncommentedMainQuickfix_label;
+  public static String UncommentedMainQuickfix_label;
 
-    public static String UpperEllQuickfix_description;
+  public static String UpperEllQuickfix_description;
 
-    public static String UpperEllQuickfix_label;
+  public static String UpperEllQuickfix_label;
 
-    public static String DesignForExtensionQuickfix_description;
+  public static String DesignForExtensionQuickfix_description;
 
-    public static String DesignForExtensionQuickfix_label;
+  public static String DesignForExtensionQuickfix_label;
 
-    public static String FinalClassQuickfix_description;
+  public static String FinalClassQuickfix_description;
 
-    public static String FinalClassQuickfix_label;
+  public static String FinalClassQuickfix_label;
 
-    public static String EmptyStatementQuickfix_description;
+  public static String EmptyStatementQuickfix_description;
 
-    public static String EmptyStatementQuickfix_label;
+  public static String EmptyStatementQuickfix_label;
 
-    public static String FinalLocalVariableQuickfix_description;
+  public static String FinalLocalVariableQuickfix_description;
 
-    public static String FinalLocalVariableQuickfix_label;
+  public static String FinalLocalVariableQuickfix_label;
 
-    public static String RequireThisQuickfix_description;
+  public static String RequireThisQuickfix_description;
 
-    public static String RequireThisQuickfix_label;
+  public static String RequireThisQuickfix_label;
 
-    public static String ExplicitInitializationQuickfix_description;
+  public static String ExplicitInitializationQuickfix_description;
 
-    public static String ExplicitInitializationQuickfix_errorMessageFieldName;
+  public static String ExplicitInitializationQuickfix_errorMessageFieldName;
 
-    public static String ExplicitInitializationQuickfix_label;
+  public static String ExplicitInitializationQuickfix_label;
 
-    public static String ExplicitInitializationQuickfix_unknownFieldName;
+  public static String ExplicitInitializationQuickfix_unknownFieldName;
 
-    public static String SimplifyBooleanReturnQuickfix_description;
+  public static String SimplifyBooleanReturnQuickfix_description;
 
-    public static String SimplifyBooleanReturnQuickfix_label;
+  public static String SimplifyBooleanReturnQuickfix_label;
 
-    public static String MissingSwitchDefaultQuickfix_defaultCaseComment;
+  public static String MissingSwitchDefaultQuickfix_defaultCaseComment;
 
-    public static String MissingSwitchDefaultQuickfix_description;
+  public static String MissingSwitchDefaultQuickfix_description;
 
-    public static String MissingSwitchDefaultQuickfix_label;
+  public static String MissingSwitchDefaultQuickfix_label;
 
-    public static String DefaultComesLastQuickfix_description;
+  public static String DefaultComesLastQuickfix_description;
 
-    public static String DefaultComesLastQuickfix_label;
+  public static String DefaultComesLastQuickfix_label;
 
-    public static String StringLiteralEqualityQuickfix_description;
+  public static String StringLiteralEqualityQuickfix_description;
 
-    public static String StringLiteralEqualityQuickfix_label;
+  public static String StringLiteralEqualityQuickfix_label;
 
-    public static String AvoidNextedBlocksQuickfix_description;
+  public static String AvoidNextedBlocksQuickfix_description;
 
-    public static String AvoidNextedBlocksQuickfix_label;
+  public static String AvoidNextedBlocksQuickfix_label;
 
-    public static String NeedBracesQuickfix_description;
+  public static String NeedBracesQuickfix_description;
 
-    public static String NeedBracesQuickfix_label;
+  public static String NeedBracesQuickfix_label;
 }
 // CHECKSTYLE:ON

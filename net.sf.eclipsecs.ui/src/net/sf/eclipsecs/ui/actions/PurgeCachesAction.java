@@ -20,16 +20,17 @@
 
 package net.sf.eclipsecs.ui.actions;
 
+import net.sf.eclipsecs.core.builder.CheckerFactory;
+
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 
-import net.sf.eclipsecs.core.builder.CheckerFactory;
-
 /**
- * Simple handle which clears the CheckerFactory caches in order to force reload of supplementary
- * Checkstyle configuration files (suppressions, import control files etc.).
+ * Simple handle which clears the CheckerFactory caches in order to force reload
+ * of supplementary Checkstyle configuration files (suppressions, import control
+ * files etc.).
  *
  * @author Lars Ködderitzsch
  */

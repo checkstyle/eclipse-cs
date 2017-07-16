@@ -36,74 +36,79 @@ import org.eclipse.swt.widgets.Text;
  */
 public class ConfigPropertyWidgetInteger extends ConfigPropertyWidgetAbstractBase {
 
-    private Text mTextWidget;
+  private Text mTextWidget;
 
-    /**
-     * Creates the widget.
-     * 
-     * @param parent the parent composite
-     * @param prop the property
-     */
-    public ConfigPropertyWidgetInteger(Composite parent, ConfigProperty prop) {
-        super(parent, prop);
+  /**
+   * Creates the widget.
+   * 
+   * @param parent
+   *          the parent composite
+   * @param prop
+   *          the property
+   */
+  public ConfigPropertyWidgetInteger(Composite parent, ConfigProperty prop) {
+    super(parent, prop);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  protected Control getValueWidget(Composite parent) {
+
+    if (mTextWidget == null) {
+
+      //
+      // Create a text entry field.
+      //
+      mTextWidget = new Text(parent, SWT.SINGLE | SWT.BORDER);
+      mTextWidget.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+      SWTUtil.addOnlyDigitInputSupport(mTextWidget);
+
+      String initValue = getInitValue();
+      if (initValue != null) {
+        mTextWidget.setText(initValue);
+      }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected Control getValueWidget(Composite parent) {
+    return mTextWidget;
+  }
 
-        if (mTextWidget == null) {
-
-            //
-            // Create a text entry field.
-            //
-            mTextWidget = new Text(parent, SWT.SINGLE | SWT.BORDER);
-            mTextWidget.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-            SWTUtil.addOnlyDigitInputSupport(mTextWidget);
-
-            String initValue = getInitValue();
-            if (initValue != null) {
-                mTextWidget.setText(initValue);
-            }
-        }
-
-        return mTextWidget;
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String getValue() {
+    String result = mTextWidget.getText();
+    if (result == null) {
+      result = new String();
     }
+    return result;
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    public String getValue() {
-        String result = mTextWidget.getText();
-        if (result == null) {
-            result = new String();
-        }
-        return result;
-    }
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void restorePropertyDefault() {
+    ConfigPropertyMetadata metadata = getConfigProperty().getMetaData();
+    String defaultValue = metadata.getOverrideDefault() != null ? metadata.getOverrideDefault()
+            : metadata.getDefaultValue();
+    mTextWidget.setText(defaultValue != null ? defaultValue : new String());
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void restorePropertyDefault() {
-        ConfigPropertyMetadata metadata = getConfigProperty().getMetaData();
-        String defaultValue = metadata.getOverrideDefault() != null ? metadata.getOverrideDefault()
-                : metadata.getDefaultValue();
-        mTextWidget.setText(defaultValue != null ? defaultValue : new String());
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void validate() throws CheckstylePluginException {
+    try {
+      //
+      // Parse the value to see if an exception gets thrown.
+      //
+      Integer.parseInt(mTextWidget.getText());
+    } catch (NumberFormatException e) {
+      CheckstylePluginException.rethrow(e, e.getLocalizedMessage());
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void validate() throws CheckstylePluginException {
-        try {
-            //
-            // Parse the value to see if an exception gets thrown.
-            //
-            Integer.parseInt(mTextWidget.getText());
-        }
-        catch (NumberFormatException e) {
-            CheckstylePluginException.rethrow(e, e.getLocalizedMessage());
-        }
-    }
+  }
 }

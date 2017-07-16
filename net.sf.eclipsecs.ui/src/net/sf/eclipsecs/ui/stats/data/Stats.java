@@ -30,56 +30,58 @@ import java.util.Collection;
  */
 public class Stats {
 
-    /** Liste des différentes erreurs. */
-    private Collection mMarkerStats;
+  /** Liste des différentes erreurs. */
+  private Collection mMarkerStats;
 
-    /**
-     * Nombre de marqueurs scannés.
-     */
-    private int mMarkerCount;
+  /**
+   * Nombre de marqueurs scannés.
+   */
+  private int mMarkerCount;
 
-    /** The number of all markers in the workspace. */
-    private int mMarkerCountWhole;
+  /** The number of all markers in the workspace. */
+  private int mMarkerCountWhole;
 
-    /**
-     * Constructeur.
-     * 
-     * @param markerStats la liste des MarkerStats
-     * @param markerCount le nombre de marqueurs scannés
-     * @param markerCountWhole the number of all checkstyle markers in the
-     *            workspace
-     */
-    public Stats(Collection markerStats, int markerCount, int markerCountWhole) {
-        super();
-        this.mMarkerStats = markerStats;
-        this.mMarkerCount = markerCount;
-        this.mMarkerCountWhole = markerCountWhole;
-    }
+  /**
+   * Constructeur.
+   * 
+   * @param markerStats
+   *          la liste des MarkerStats
+   * @param markerCount
+   *          le nombre de marqueurs scannés
+   * @param markerCountWhole
+   *          the number of all checkstyle markers in the workspace
+   */
+  public Stats(Collection markerStats, int markerCount, int markerCountWhole) {
+    super();
+    this.mMarkerStats = markerStats;
+    this.mMarkerCount = markerCount;
+    this.mMarkerCountWhole = markerCountWhole;
+  }
 
-    /**
-     * Returns the markerStats.
-     * 
-     * @return Returns the markerStats.
-     */
-    public Collection getMarkerStats() {
-        return mMarkerStats;
-    }
+  /**
+   * Returns the markerStats.
+   * 
+   * @return Returns the markerStats.
+   */
+  public Collection getMarkerStats() {
+    return mMarkerStats;
+  }
 
-    /**
-     * Returns the markerCount.
-     * 
-     * @return Returns the markerCount.
-     */
-    public int getMarkerCount() {
-        return mMarkerCount;
-    }
+  /**
+   * Returns the markerCount.
+   * 
+   * @return Returns the markerCount.
+   */
+  public int getMarkerCount() {
+    return mMarkerCount;
+  }
 
-    /**
-     * Returns the number of all Checkstyle markers in the workspace.
-     * 
-     * @return the number of all Checkstyle markers
-     */
-    public int getMarkerCountAll() {
-        return mMarkerCountWhole;
-    }
+  /**
+   * Returns the number of all Checkstyle markers in the workspace.
+   * 
+   * @return the number of all Checkstyle markers
+   */
+  public int getMarkerCountAll() {
+    return mMarkerCountWhole;
+  }
 }

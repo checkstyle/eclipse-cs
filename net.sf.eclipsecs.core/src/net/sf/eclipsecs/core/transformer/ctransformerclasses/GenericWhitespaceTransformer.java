@@ -20,41 +20,34 @@
 
 package net.sf.eclipsecs.core.transformer.ctransformerclasses;
 
-import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 import net.sf.eclipsecs.core.transformer.CTransformationClass;
+import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 
 /**
- * Wrapperclass for converting the checkstyle-rule GerenricWhitespace to
- * appropriate eclipse-formatter-rules.
+ * Wrapperclass for converting the checkstyle-rule GerenricWhitespace to appropriate
+ * eclipse-formatter-rules.
  * 
  * @author Lukas Frena
  */
 public class GenericWhitespaceTransformer extends CTransformationClass {
-    @Override
-    public FormatterConfiguration transformRule() {
-        userFormatterSetting("insert_space_before_question_in_wildcard",
+  @Override
+  public FormatterConfiguration transformRule() {
+    userFormatterSetting("insert_space_before_question_in_wildcard", "do not insert");
+    userFormatterSetting("insert_space_before_closing_angle_bracket_in_type_arguments",
             "do not insert");
-        userFormatterSetting(
-            "insert_space_before_closing_angle_bracket_in_type_arguments",
+    userFormatterSetting("insert_space_after_question_in_wildcard", "do not insert");
+    userFormatterSetting("insert_space_after_opening_angle_bracket_in_type_arguments",
             "do not insert");
-        userFormatterSetting("insert_space_after_question_in_wildcard",
-            "do not insert");
-        userFormatterSetting(
-            "insert_space_after_opening_angle_bracket_in_type_arguments",
-            "do not insert");
-        userFormatterSetting(
+    userFormatterSetting(
             "insert_space_before_closing_angle_bracket_in_parameterized_type_reference",
             "do not insert");
-        userFormatterSetting(
-            "insert_space_after_opening_angle_bracket_in_type_parameters",
+    userFormatterSetting("insert_space_after_opening_angle_bracket_in_type_parameters",
             "do not insert");
-        userFormatterSetting(
-            "insert_space_before_closing_angle_bracket_in_type_parameters",
+    userFormatterSetting("insert_space_before_closing_angle_bracket_in_type_parameters",
             "do not insert");
-        userFormatterSetting(
-            "insert_space_after_opening_angle_bracket_in_parameterized_type_reference",
+    userFormatterSetting("insert_space_after_opening_angle_bracket_in_parameterized_type_reference",
             "do not insert");
-        return getFormatterSetting();
-    }
+    return getFormatterSetting();
+  }
 
 }

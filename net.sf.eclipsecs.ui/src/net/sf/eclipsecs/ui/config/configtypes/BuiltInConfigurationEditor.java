@@ -42,102 +42,104 @@ import org.eclipse.swt.widgets.Text;
  */
 public class BuiltInConfigurationEditor implements ICheckConfigurationEditor {
 
-    //
-    // attributes
-    //
+  //
+  // attributes
+  //
 
-    /** the working copy this editor edits. */
-    private CheckConfigurationWorkingCopy mWorkingCopy;
+  /** the working copy this editor edits. */
+  private CheckConfigurationWorkingCopy mWorkingCopy;
 
-    /** the text field containing the config name. */
-    private Text mConfigName;
+  /** the text field containing the config name. */
+  private Text mConfigName;
 
-    /** text field containing the location. */
-    private Text mLocation;
+  /** text field containing the location. */
+  private Text mLocation;
 
-    /** the text containing the description. */
-    private Text mDescription;
+  /** the text containing the description. */
+  private Text mDescription;
 
-    //
-    // methods
-    //
+  //
+  // methods
+  //
 
-    /**
-     * {@inheritDoc}
-     */
-    public void initialize(CheckConfigurationWorkingCopy checkConfiguration,
-            CheckConfigurationPropertiesDialog dialog) {
-        mWorkingCopy = checkConfiguration;
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void initialize(CheckConfigurationWorkingCopy checkConfiguration,
+          CheckConfigurationPropertiesDialog dialog) {
+    mWorkingCopy = checkConfiguration;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public Control createEditorControl(Composite parent, final Shell shell) {
+
+    Composite contents = new Composite(parent, SWT.NULL);
+    contents.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+    GridLayout layout = new GridLayout(2, false);
+    layout.marginWidth = 0;
+    layout.marginHeight = 0;
+    contents.setLayout(layout);
+
+    Label lblConfigName = new Label(contents, SWT.NULL);
+    lblConfigName.setText(Messages.CheckConfigurationPropertiesDialog_lblName);
+    GridData gd = new GridData();
+    lblConfigName.setLayoutData(gd);
+
+    mConfigName = new Text(contents, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
+    mConfigName.setEditable(false);
+    gd = new GridData(GridData.FILL_HORIZONTAL);
+    mConfigName.setLayoutData(gd);
+
+    Label lblConfigLocation = new Label(contents, SWT.NULL);
+    lblConfigLocation.setText(Messages.CheckConfigurationPropertiesDialog_lblLocation);
+    gd = new GridData();
+    gd.verticalAlignment = GridData.VERTICAL_ALIGN_BEGINNING;
+    lblConfigLocation.setLayoutData(gd);
+
+    mLocation = new Text(contents, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
+    gd = new GridData(GridData.FILL_HORIZONTAL);
+    mLocation.setLayoutData(gd);
+    mLocation.setEditable(false);
+
+    Label lblDescription = new Label(contents, SWT.NULL);
+    lblDescription.setText(Messages.CheckConfigurationPropertiesDialog_lblDescription);
+    gd = new GridData();
+    gd.horizontalSpan = 2;
+    lblDescription.setLayoutData(gd);
+
+    mDescription = new Text(contents, SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.BORDER | SWT.VERTICAL);
+    mDescription.setEditable(false);
+    gd = new GridData(GridData.FILL_BOTH);
+    gd.horizontalSpan = 2;
+    gd.widthHint = 300;
+    gd.heightHint = 100;
+    gd.grabExcessHorizontalSpace = true;
+    gd.grabExcessVerticalSpace = true;
+    mDescription.setLayoutData(gd);
+
+    if (mWorkingCopy.getName() != null) {
+      mConfigName.setText(mWorkingCopy.getName());
+    }
+    if (mWorkingCopy.getLocation() != null) {
+      mLocation.setText(mWorkingCopy.getLocation());
+    }
+    if (mWorkingCopy.getDescription() != null) {
+      mDescription.setText(mWorkingCopy.getDescription());
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public Control createEditorControl(Composite parent, final Shell shell) {
+    return contents;
+  }
 
-        Composite contents = new Composite(parent, SWT.NULL);
-        contents.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        GridLayout layout = new GridLayout(2, false);
-        layout.marginWidth = 0;
-        layout.marginHeight = 0;
-        contents.setLayout(layout);
-
-        Label lblConfigName = new Label(contents, SWT.NULL);
-        lblConfigName.setText(Messages.CheckConfigurationPropertiesDialog_lblName);
-        GridData gd = new GridData();
-        lblConfigName.setLayoutData(gd);
-
-        mConfigName = new Text(contents, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
-        mConfigName.setEditable(false);
-        gd = new GridData(GridData.FILL_HORIZONTAL);
-        mConfigName.setLayoutData(gd);
-
-        Label lblConfigLocation = new Label(contents, SWT.NULL);
-        lblConfigLocation.setText(Messages.CheckConfigurationPropertiesDialog_lblLocation);
-        gd = new GridData();
-        gd.verticalAlignment = GridData.VERTICAL_ALIGN_BEGINNING;
-        lblConfigLocation.setLayoutData(gd);
-
-        mLocation = new Text(contents, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
-        gd = new GridData(GridData.FILL_HORIZONTAL);
-        mLocation.setLayoutData(gd);
-        mLocation.setEditable(false);
-
-        Label lblDescription = new Label(contents, SWT.NULL);
-        lblDescription.setText(Messages.CheckConfigurationPropertiesDialog_lblDescription);
-        gd = new GridData();
-        gd.horizontalSpan = 2;
-        lblDescription.setLayoutData(gd);
-
-        mDescription = new Text(contents, SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.BORDER
-                | SWT.VERTICAL);
-        mDescription.setEditable(false);
-        gd = new GridData(GridData.FILL_BOTH);
-        gd.horizontalSpan = 2;
-        gd.widthHint = 300;
-        gd.heightHint = 100;
-        gd.grabExcessHorizontalSpace = true;
-        gd.grabExcessVerticalSpace = true;
-        mDescription.setLayoutData(gd);
-
-        if (mWorkingCopy.getName() != null) {
-            mConfigName.setText(mWorkingCopy.getName());
-        }
-        if (mWorkingCopy.getLocation() != null) {
-            mLocation.setText(mWorkingCopy.getLocation());
-        }
-        if (mWorkingCopy.getDescription() != null) {
-            mDescription.setText(mWorkingCopy.getDescription());
-        }
-
-        return contents;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public CheckConfigurationWorkingCopy getEditedWorkingCopy() throws CheckstylePluginException {
-        return mWorkingCopy;
-    }
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public CheckConfigurationWorkingCopy getEditedWorkingCopy() throws CheckstylePluginException {
+    return mWorkingCopy;
+  }
 
 }

@@ -20,10 +20,10 @@
 
 package net.sf.eclipsecs.core.config.configtypes;
 
+import com.puppycrawl.tools.checkstyle.PropertyResolver;
+
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
-
-import com.puppycrawl.tools.checkstyle.PropertyResolver;
 
 /**
  * Property resolver that resolves properties from a resource bundle.
@@ -32,33 +32,32 @@ import com.puppycrawl.tools.checkstyle.PropertyResolver;
  */
 class ResourceBundlePropertyResolver implements PropertyResolver {
 
-    /** the resource bundle. */
-    private ResourceBundle mBundle;
+  /** the resource bundle. */
+  private ResourceBundle mBundle;
 
-    /**
-     * Creates the property resolver.
-     *
-     * @param bundle
-     *            the resource bundle
-     */
-    public ResourceBundlePropertyResolver(ResourceBundle bundle) {
-        mBundle = bundle;
+  /**
+   * Creates the property resolver.
+   *
+   * @param bundle
+   *          the resource bundle
+   */
+  public ResourceBundlePropertyResolver(ResourceBundle bundle) {
+    mBundle = bundle;
+  }
+
+  @Override
+  public String resolve(String property) {
+
+    String value = null;
+
+    if (mBundle != null) {
+      try {
+        value = mBundle.getString(property);
+      } catch (MissingResourceException e) {
+        // ignore
+      }
     }
 
-    @Override
-    public String resolve(String property) {
-
-        String value = null;
-
-        if (mBundle != null) {
-            try {
-                value = mBundle.getString(property);
-            }
-            catch (MissingResourceException e) {
-                // ignore
-            }
-        }
-
-        return value;
-    }
+    return value;
+  }
 }

@@ -32,34 +32,35 @@ import org.eclipse.swt.graphics.Image;
  */
 public class CheckConfigurationLabelProvider extends LabelProvider {
 
-    /**
-     * {@inheritDoc}
-     */
-    public String getText(Object element) {
-        String text = super.getText(element);
-        if (element instanceof ICheckConfiguration) {
-            ICheckConfiguration checkConfig = (ICheckConfiguration) element;
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String getText(Object element) {
+    String text = super.getText(element);
+    if (element instanceof ICheckConfiguration) {
+      ICheckConfiguration checkConfig = (ICheckConfiguration) element;
 
-            text = checkConfig.getName()
-                    + " " //$NON-NLS-1$
-                    + (checkConfig.isGlobal() ? Messages.CheckConfigurationLabelProvider_suffixGlobal
-                            : Messages.CheckConfigurationLabelProvider_suffixLocal);
-        }
-
-        return text;
+      text = checkConfig.getName() + " " //$NON-NLS-1$
+              + (checkConfig.isGlobal() ? Messages.CheckConfigurationLabelProvider_suffixGlobal
+                      : Messages.CheckConfigurationLabelProvider_suffixLocal);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public Image getImage(Object element) {
-        Image image = null;
-        if (element instanceof ICheckConfiguration) {
-            image = ConfigurationTypesUI.getConfigurationTypeImage(((ICheckConfiguration) element)
-                    .getType());
-        }
+    return text;
+  }
 
-        return image;
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public Image getImage(Object element) {
+    Image image = null;
+    if (element instanceof ICheckConfiguration) {
+      image = ConfigurationTypesUI
+              .getConfigurationTypeImage(((ICheckConfiguration) element).getType());
     }
+
+    return image;
+  }
 
 }

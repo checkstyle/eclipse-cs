@@ -20,8 +20,8 @@
 
 package net.sf.eclipsecs.core.transformer.ctransformerclasses;
 
-import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 import net.sf.eclipsecs.core.transformer.CTransformationClass;
+import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 
 /**
  * Wrapperclass for converting the checkstyle-rule NeedBraces to appropriate
@@ -31,13 +31,13 @@ import net.sf.eclipsecs.core.transformer.CTransformationClass;
  */
 public class NeedBracesTransformer extends CTransformationClass {
 
-    @Override
-    public FormatterConfiguration transformRule() {
-        useCleanupSetting("use_blocks", "true");
-        useCleanupSetting("never_use_blocks", "false");
-        useCleanupSetting("use_blocks_only_for_return_and_throw", "false");
-        useCleanupSetting("always_use_blocks", "true");
-        return getFormatterSetting();
-    }
+  @Override
+  public FormatterConfiguration transformRule() {
+    useCleanupSetting("use_blocks", "true");
+    useCleanupSetting("never_use_blocks", "false");
+    useCleanupSetting("use_blocks_only_for_return_and_throw", "false");
+    useCleanupSetting("always_use_blocks", "true");
+    return getFormatterSetting();
+  }
 
 }

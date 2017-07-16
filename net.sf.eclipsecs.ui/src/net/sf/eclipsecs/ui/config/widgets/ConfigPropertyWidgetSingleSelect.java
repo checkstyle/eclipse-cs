@@ -33,74 +33,68 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 /**
- * Configuration widget that allows for selecting one value from a set of
- * values.
+ * Configuration widget that allows for selecting one value from a set of values.
  */
 public class ConfigPropertyWidgetSingleSelect extends ConfigPropertyWidgetAbstractBase {
 
-    private Combo mComboItem;
+  private Combo mComboItem;
 
-    /**
-     * Creates the widget.
-     * 
-     * @param parent the parent composite
-     * @param prop the property
-     */
-    public ConfigPropertyWidgetSingleSelect(Composite parent, ConfigProperty prop) {
-        super(parent, prop);
-    }
+  /**
+   * Creates the widget.
+   *
+   * @param parent
+   *          the parent composite
+   * @param prop
+   *          the property
+   */
+  public ConfigPropertyWidgetSingleSelect(Composite parent, ConfigProperty prop) {
+    super(parent, prop);
+  }
 
-    /**
-     * @see ConfigPropertyWidgetAbstractBase#getValueWidget(org.eclipse.swt.widgets.Composite)
-     */
-    protected Control getValueWidget(Composite parent) {
+  @Override
+  protected Control getValueWidget(Composite parent) {
 
-        if (mComboItem == null) {
+    if (mComboItem == null) {
 
-            //
-            // Create a combo box for selecting a value from the enumeration.
-            //
-            List<String> valueList = getConfigProperty().getMetaData().getPropertyEnumeration();
-            String[] valueLabels = new String[valueList.size()];
-            int initialIndex = 0;
-            String initValue = getInitValue();
-            Iterator<String> iter = valueList.iterator();
-            for (int i = 0; iter.hasNext(); i++) {
-                String value = iter.next();
-                valueLabels[i] = value;
-                if ((initValue != null) && (initValue.equals(value))) {
-                    initialIndex = i;
-                }
-            }
-            mComboItem = new Combo(parent, SWT.NONE | SWT.DROP_DOWN | SWT.READ_ONLY);
-            mComboItem.setLayoutData(new GridData());
-            mComboItem.setItems(valueLabels);
-            mComboItem.select(initialIndex);
+      //
+      // Create a combo box for selecting a value from the enumeration.
+      //
+      List<String> valueList = getConfigProperty().getMetaData().getPropertyEnumeration();
+      String[] valueLabels = new String[valueList.size()];
+      int initialIndex = 0;
+      String initValue = getInitValue();
+      Iterator<String> iter = valueList.iterator();
+      for (int i = 0; iter.hasNext(); i++) {
+        String value = iter.next();
+        valueLabels[i] = value;
+        if ((initValue != null) && (initValue.equals(value))) {
+          initialIndex = i;
         }
-
-        return mComboItem;
+      }
+      mComboItem = new Combo(parent, SWT.NONE | SWT.DROP_DOWN | SWT.READ_ONLY);
+      mComboItem.setLayoutData(new GridData());
+      mComboItem.setItems(valueLabels);
+      mComboItem.select(initialIndex);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public String getValue() {
-        String result = mComboItem.getItem(mComboItem.getSelectionIndex());
-        return result;
-    }
+    return mComboItem;
+  }
 
-    /**
-     * @see ConfigPropertyWidgetAbstractBase#restorePropertyDefault()
-     */
-    public void restorePropertyDefault() {
-        ConfigPropertyMetadata metadata = getConfigProperty().getMetaData();
-        String defaultValue = metadata.getOverrideDefault() != null ? metadata.getOverrideDefault()
-                : metadata.getDefaultValue();
-        if (defaultValue == null) {
-            mComboItem.select(0);
-        }
-        else {
-            mComboItem.select(mComboItem.indexOf(defaultValue));
-        }
+  @Override
+  public String getValue() {
+    String result = mComboItem.getItem(mComboItem.getSelectionIndex());
+    return result;
+  }
+
+  @Override
+  public void restorePropertyDefault() {
+    ConfigPropertyMetadata metadata = getConfigProperty().getMetaData();
+    String defaultValue = metadata.getOverrideDefault() != null ? metadata.getOverrideDefault()
+            : metadata.getDefaultValue();
+    if (defaultValue == null) {
+      mComboItem.select(0);
+    } else {
+      mComboItem.select(mComboItem.indexOf(defaultValue));
     }
+  }
 }

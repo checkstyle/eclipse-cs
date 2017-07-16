@@ -27,26 +27,26 @@ import net.sf.eclipsecs.core.CheckstylePlugin;
  */
 public final class CheckstyleMarker {
 
-    private CheckstyleMarker() {
+  private CheckstyleMarker() {
     // NOOP
-    }
+  }
 
-    /** ID for the CheckstyleMarker. */
-    public static final String MARKER_ID = CheckstylePlugin.PLUGIN_ID + ".CheckstyleMarker"; //$NON-NLS-1$
+  /** ID for the CheckstyleMarker. */
+  public static final String MARKER_ID = CheckstylePlugin.PLUGIN_ID + ".CheckstyleMarker"; //$NON-NLS-1$
 
-    /** Constant for module info additionally stored. */
-    public static final String MODULE_NAME = "ModuleName"; //$NON-NLS-1$
+  /** Constant for module info additionally stored. */
+  public static final String MODULE_NAME = "ModuleName"; //$NON-NLS-1$
 
-    /** Constant for message key info additionally stored. */
-    public static final String MESSAGE_KEY = "MessageKey"; //$NON-NLS-1$
+  /** Constant for message key info additionally stored. */
+  public static final String MESSAGE_KEY = "MessageKey"; //$NON-NLS-1$
 
-    /** Constant for the error marker type. */
-    public static final String ERROR_TYPE = CheckstylePlugin.PLUGIN_ID + ".error"; //$NON-NLS-1$
+  /** Constant for the error marker type. */
+  public static final String ERROR_TYPE = CheckstylePlugin.PLUGIN_ID + ".error"; //$NON-NLS-1$
 
-    /** Constant for the warning marker type. */
-    public static final String WARNING_TYPE = CheckstylePlugin.PLUGIN_ID + ".warning"; //$NON-NLS-1$
+  /** Constant for the warning marker type. */
+  public static final String WARNING_TYPE = CheckstylePlugin.PLUGIN_ID + ".warning"; //$NON-NLS-1$
 
-    /** Constant for the info marker type. */
-    public static final String INFO_TYPE = CheckstylePlugin.PLUGIN_ID + ".info"; //$NON-NLS-1$
+  /** Constant for the info marker type. */
+  public static final String INFO_TYPE = CheckstylePlugin.PLUGIN_ID + ".info"; //$NON-NLS-1$
 
 }

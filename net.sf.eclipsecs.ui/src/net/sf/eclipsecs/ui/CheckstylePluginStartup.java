@@ -31,10 +31,11 @@ import org.eclipse.ui.IStartup;
  */
 public class CheckstylePluginStartup implements IStartup {
 
-    /**
-     * {@inheritDoc}
-     */
-    public void earlyStartup() {
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void earlyStartup() {
     // NOOP
-    }
+  }
 }

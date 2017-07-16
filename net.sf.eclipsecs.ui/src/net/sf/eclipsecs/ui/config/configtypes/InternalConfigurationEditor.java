@@ -20,6 +20,8 @@
 
 package net.sf.eclipsecs.ui.config.configtypes;
 
+import com.google.common.base.Strings;
+
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -50,205 +52,202 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import com.google.common.base.Strings;
-
 /**
- * Implementation of a location editor to input a remote location. Contains just a text field to input the URL.
+ * Implementation of a location editor to input a remote location. Contains just
+ * a text field to input the URL.
  *
  * @author Lars Ködderitzsch
  */
 public class InternalConfigurationEditor implements ICheckConfigurationEditor {
 
-    //
-    // attributes
-    //
+  //
+  // attributes
+  //
 
-    /** The properties dialog. */
-    private CheckConfigurationPropertiesDialog mDialog;
+  /** The properties dialog. */
+  private CheckConfigurationPropertiesDialog mDialog;
 
-    /** the working copy this editor edits. */
-    private CheckConfigurationWorkingCopy mWorkingCopy;
+  /** the working copy this editor edits. */
+  private CheckConfigurationWorkingCopy mWorkingCopy;
 
-    /** the text field containing the config name. */
-    private Text mConfigName;
+  /** the text field containing the config name. */
+  private Text mConfigName;
 
-    /** text field containing the location. */
-    private Text mLocation;
+  /** text field containing the location. */
+  private Text mLocation;
 
-    /** the text containing the description. */
-    private Text mDescription;
+  /** the text containing the description. */
+  private Text mDescription;
 
-    /** button to import an existing configuration. */
-    private Button mBtnImport;
+  /** button to import an existing configuration. */
+  private Button mBtnImport;
 
-    //
-    // methods
-    //
+  //
+  // methods
+  //
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void initialize(CheckConfigurationWorkingCopy checkConfiguration, CheckConfigurationPropertiesDialog dialog) {
-        mWorkingCopy = checkConfiguration;
-        mDialog = dialog;
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void initialize(CheckConfigurationWorkingCopy checkConfiguration,
+          CheckConfigurationPropertiesDialog dialog) {
+    mWorkingCopy = checkConfiguration;
+    mDialog = dialog;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public Control createEditorControl(Composite parent, final Shell shell) {
+
+    Composite contents = new Composite(parent, SWT.NULL);
+    contents.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+    GridLayout layout = new GridLayout(2, false);
+    layout.marginWidth = 0;
+    layout.marginHeight = 0;
+    contents.setLayout(layout);
+
+    Label lblConfigName = new Label(contents, SWT.NULL);
+    lblConfigName.setText(Messages.CheckConfigurationPropertiesDialog_lblName);
+    GridData gd = new GridData();
+    lblConfigName.setLayoutData(gd);
+
+    mConfigName = new Text(contents, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
+    gd = new GridData(GridData.FILL_HORIZONTAL);
+    mConfigName.setLayoutData(gd);
+
+    Label lblConfigLocation = new Label(contents, SWT.NULL);
+    lblConfigLocation.setText(Messages.CheckConfigurationPropertiesDialog_lblLocation);
+    gd = new GridData();
+    gd.verticalAlignment = GridData.VERTICAL_ALIGN_BEGINNING;
+    lblConfigLocation.setLayoutData(gd);
+
+    mLocation = new Text(contents, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
+    mLocation.setEditable(false);
+    gd = new GridData(GridData.FILL_HORIZONTAL);
+    mLocation.setLayoutData(gd);
+
+    Label lblDescription = new Label(contents, SWT.NULL);
+    lblDescription.setText(Messages.CheckConfigurationPropertiesDialog_lblDescription);
+    gd = new GridData();
+    gd.horizontalSpan = 2;
+    lblDescription.setLayoutData(gd);
+
+    mDescription = new Text(contents, SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.BORDER | SWT.VERTICAL);
+    gd = new GridData(GridData.FILL_BOTH);
+    gd.horizontalSpan = 2;
+    gd.widthHint = 300;
+    gd.heightHint = 100;
+    gd.grabExcessHorizontalSpace = true;
+    gd.grabExcessVerticalSpace = true;
+    mDescription.setLayoutData(gd);
+
+    mBtnImport = new Button(contents, SWT.PUSH);
+    mBtnImport.setText(Messages.InternalConfigurationEditor_btnImport);
+    gd = new GridData();
+    gd.horizontalSpan = 2;
+    gd.horizontalAlignment = GridData.END;
+    mBtnImport.setLayoutData(gd);
+
+    mBtnImport.addSelectionListener(new SelectionListener() {
+
+      @Override
+      public void widgetSelected(SelectionEvent e) {
+        try {
+          ICheckConfiguration targetConfig = getEditedWorkingCopy();
+
+          FileDialog fileDialog = new FileDialog(mConfigName.getShell());
+          fileDialog.setText(Messages.InternalConfigurationEditor_titleImportDialog);
+          fileDialog.setFilterExtensions(new String[] { "*.xml", "*.*" }); //$NON-NLS-1$ //$NON-NLS-2$
+
+          String configFileString = fileDialog.open();
+          if (configFileString != null && new File(configFileString).exists()) {
+            ICheckConfiguration tmpSourceConfig = new CheckConfiguration("dummy", //$NON-NLS-1$
+                    configFileString, null, new ExternalFileConfigurationType(), true, null, null);
+
+            CheckConfigurationFactory.copyConfiguration(tmpSourceConfig, targetConfig);
+          }
+        } catch (CheckstylePluginException ex) {
+          mDialog.setErrorMessage(ex.getLocalizedMessage());
+        }
+      }
+
+      @Override
+      public void widgetDefaultSelected(SelectionEvent e) {
+        // NOOP
+      }
+    });
+
+    if (mWorkingCopy.getName() != null) {
+      mConfigName.setText(mWorkingCopy.getName());
+    }
+    if (mWorkingCopy.getLocation() != null) {
+      mLocation.setText(mWorkingCopy.getLocation());
+    }
+    if (mWorkingCopy.getDescription() != null) {
+      mDescription.setText(mWorkingCopy.getDescription());
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Control createEditorControl(Composite parent, final Shell shell) {
+    return contents;
+  }
 
-        Composite contents = new Composite(parent, SWT.NULL);
-        contents.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        GridLayout layout = new GridLayout(2, false);
-        layout.marginWidth = 0;
-        layout.marginHeight = 0;
-        contents.setLayout(layout);
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public CheckConfigurationWorkingCopy getEditedWorkingCopy() throws CheckstylePluginException {
+    mWorkingCopy.setName(mConfigName.getText());
 
-        Label lblConfigName = new Label(contents, SWT.NULL);
-        lblConfigName.setText(Messages.CheckConfigurationPropertiesDialog_lblName);
-        GridData gd = new GridData();
-        lblConfigName.setLayoutData(gd);
+    if (mWorkingCopy.getLocation() == null) {
 
-        mConfigName = new Text(contents, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
-        gd = new GridData(GridData.FILL_HORIZONTAL);
-        mConfigName.setLayoutData(gd);
-
-        Label lblConfigLocation = new Label(contents, SWT.NULL);
-        lblConfigLocation.setText(Messages.CheckConfigurationPropertiesDialog_lblLocation);
-        gd = new GridData();
-        gd.verticalAlignment = GridData.VERTICAL_ALIGN_BEGINNING;
-        lblConfigLocation.setLayoutData(gd);
-
-        mLocation = new Text(contents, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
-        mLocation.setEditable(false);
-        gd = new GridData(GridData.FILL_HORIZONTAL);
-        mLocation.setLayoutData(gd);
-
-        Label lblDescription = new Label(contents, SWT.NULL);
-        lblDescription.setText(Messages.CheckConfigurationPropertiesDialog_lblDescription);
-        gd = new GridData();
-        gd.horizontalSpan = 2;
-        lblDescription.setLayoutData(gd);
-
-        mDescription = new Text(contents, SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.BORDER | SWT.VERTICAL);
-        gd = new GridData(GridData.FILL_BOTH);
-        gd.horizontalSpan = 2;
-        gd.widthHint = 300;
-        gd.heightHint = 100;
-        gd.grabExcessHorizontalSpace = true;
-        gd.grabExcessVerticalSpace = true;
-        mDescription.setLayoutData(gd);
-
-        mBtnImport = new Button(contents, SWT.PUSH);
-        mBtnImport.setText(Messages.InternalConfigurationEditor_btnImport);
-        gd = new GridData();
-        gd.horizontalSpan = 2;
-        gd.horizontalAlignment = GridData.END;
-        mBtnImport.setLayoutData(gd);
-
-        mBtnImport.addSelectionListener(new SelectionListener() {
-
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                try {
-                    ICheckConfiguration targetConfig = getEditedWorkingCopy();
-
-                    FileDialog fileDialog = new FileDialog(mConfigName.getShell());
-                    fileDialog.setText(Messages.InternalConfigurationEditor_titleImportDialog);
-                    fileDialog.setFilterExtensions(new String[] { "*.xml", "*.*" }); //$NON-NLS-1$ //$NON-NLS-2$
-
-                    String configFileString = fileDialog.open();
-                    if (configFileString != null && new File(configFileString).exists()) {
-                        ICheckConfiguration tmpSourceConfig = new CheckConfiguration("dummy", //$NON-NLS-1$
-                            configFileString, null, new ExternalFileConfigurationType(), true, null, null);
-
-                        CheckConfigurationFactory.copyConfiguration(tmpSourceConfig, targetConfig);
-                    }
-                }
-                catch (CheckstylePluginException ex) {
-                    mDialog.setErrorMessage(ex.getLocalizedMessage());
-                }
-            }
-
-            @Override
-            public void widgetDefaultSelected(SelectionEvent e) {
-                // NOOP
-            }
-        });
-
-        if (mWorkingCopy.getName() != null) {
-            mConfigName.setText(mWorkingCopy.getName());
+      String location = "internal_config_" + System.currentTimeMillis() + ".xml"; //$NON-NLS-1$ //$NON-NLS-2$
+      try {
+        mWorkingCopy.setLocation(location);
+      } catch (CheckstylePluginException e) {
+        if (Strings.emptyToNull(location) != null && ensureFileExists(location)) {
+          mWorkingCopy.setLocation(location);
+        } else {
+          throw e;
         }
-        if (mWorkingCopy.getLocation() != null) {
-            mLocation.setText(mWorkingCopy.getLocation());
-        }
-        if (mWorkingCopy.getDescription() != null) {
-            mDescription.setText(mWorkingCopy.getDescription());
-        }
+      }
+    }
+    mWorkingCopy.setDescription(mDescription.getText());
 
-        return contents;
+    return mWorkingCopy;
+  }
+
+  /**
+   * Helper method trying to ensure that the file location provided by the user
+   * exists. If that is not the case it prompts the user if an empty
+   * configuration file should be created.
+   *
+   * @param location
+   *          the configuration file location
+   * @throws CheckstylePluginException
+   *           error when trying to ensure the location file existance
+   */
+  private boolean ensureFileExists(String location) throws CheckstylePluginException {
+
+    String resolvedLocation = InternalConfigurationType.resolveLocationInWorkspace(location);
+
+    File file = new File(resolvedLocation);
+    if (!file.exists()) {
+
+      if (file.getParentFile() != null) {
+        file.getParentFile().mkdirs();
+      }
+
+      try (OutputStream out = new BufferedOutputStream(new FileOutputStream(file))) {
+        ConfigurationWriter.writeNewConfiguration(out, mWorkingCopy);
+      } catch (IOException ioe) {
+        CheckstylePluginException.rethrow(ioe);
+      }
+
+      return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public CheckConfigurationWorkingCopy getEditedWorkingCopy() throws CheckstylePluginException {
-        mWorkingCopy.setName(mConfigName.getText());
-
-        if (mWorkingCopy.getLocation() == null) {
-
-            String location = "internal_config_" + System.currentTimeMillis() + ".xml"; //$NON-NLS-1$ //$NON-NLS-2$
-            try {
-                mWorkingCopy.setLocation(location);
-            }
-            catch (CheckstylePluginException e) {
-                if (Strings.emptyToNull(location) != null && ensureFileExists(location)) {
-                    mWorkingCopy.setLocation(location);
-                }
-                else {
-                    throw e;
-                }
-            }
-        }
-        mWorkingCopy.setDescription(mDescription.getText());
-
-        return mWorkingCopy;
-    }
-
-    /**
-     * Helper method trying to ensure that the file location provided by the user exists. If that is not the case it
-     * prompts the user if an empty configuration file should be created.
-     *
-     * @param location
-     *            the configuration file location
-     * @throws CheckstylePluginException
-     *             error when trying to ensure the location file existance
-     */
-    private boolean ensureFileExists(String location) throws CheckstylePluginException {
-
-        String resolvedLocation = InternalConfigurationType.resolveLocationInWorkspace(location);
-
-        File file = new File(resolvedLocation);
-        if (!file.exists()) {
-
-            if (file.getParentFile() != null) {
-                file.getParentFile().mkdirs();
-            }
-
-            try (OutputStream out = new BufferedOutputStream(new FileOutputStream(file))) {
-                ConfigurationWriter.writeNewConfiguration(out, mWorkingCopy);
-            }
-            catch (IOException ioe) {
-                CheckstylePluginException.rethrow(ioe);
-            }
-
-            return true;
-        }
-
-        return true;
-    }
+    return true;
+  }
 }

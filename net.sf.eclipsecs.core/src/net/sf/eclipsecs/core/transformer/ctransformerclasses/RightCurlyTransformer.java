@@ -22,8 +22,8 @@ package net.sf.eclipsecs.core.transformer.ctransformerclasses;
 
 import java.util.StringTokenizer;
 
-import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 import net.sf.eclipsecs.core.transformer.CTransformationClass;
+import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 
 /**
  * Wrapperclass for converting the checkstyle-rule RightCurly to appropriate
@@ -33,43 +33,37 @@ import net.sf.eclipsecs.core.transformer.CTransformationClass;
  */
 public class RightCurlyTransformer extends CTransformationClass {
 
-    @Override
-    public FormatterConfiguration transformRule() {
-        // TODO token LITERAL_TRY/IF
-        String tokens = getAttribute("tokens");
-        if (tokens == null) {
-            tokens = "LITERAL_TRY, LITERAL_CATCH, LITERAL_FINALLY, LITERAL_IF, LITERAL_ELSE";
-        }
-        final StringTokenizer token = new StringTokenizer(tokens, ", ");
-        String tok;
-
-        String option = getAttribute("option");
-        if (option == null) {
-            option = "same";
-        }
-        if (option.equals("same")) {
-            option = "do not insert";
-        }
-        else {
-            option = "insert";
-        }
-
-        while (token.hasMoreTokens()) {
-            tok = token.nextToken();
-            if (tok.equals("LITERAL_CATCH")) {
-                userFormatterSetting(
-                    "insert_new_line_before_catch_in_try_statement", option);
-            }
-            else if (tok.equals("LITERAL_FINALLY")) {
-                userFormatterSetting(
-                    "insert_new_line_before_finally_in_try_statement", option);
-            }
-            else if (tok.equals("LITERAL_ELSE")) {
-                userFormatterSetting(
-                    "insert_new_line_before_else_in_if_statement", option);
-            }
-        }
-        return getFormatterSetting();
+  @Override
+  public FormatterConfiguration transformRule() {
+    // TODO token LITERAL_TRY/IF
+    String tokens = getAttribute("tokens");
+    if (tokens == null) {
+      tokens = "LITERAL_TRY, LITERAL_CATCH, LITERAL_FINALLY, LITERAL_IF, LITERAL_ELSE";
     }
+    final StringTokenizer token = new StringTokenizer(tokens, ", ");
+    String tok;
+
+    String option = getAttribute("option");
+    if (option == null) {
+      option = "same";
+    }
+    if (option.equals("same")) {
+      option = "do not insert";
+    } else {
+      option = "insert";
+    }
+
+    while (token.hasMoreTokens()) {
+      tok = token.nextToken();
+      if (tok.equals("LITERAL_CATCH")) {
+        userFormatterSetting("insert_new_line_before_catch_in_try_statement", option);
+      } else if (tok.equals("LITERAL_FINALLY")) {
+        userFormatterSetting("insert_new_line_before_finally_in_try_statement", option);
+      } else if (tok.equals("LITERAL_ELSE")) {
+        userFormatterSetting("insert_new_line_before_else_in_if_statement", option);
+      }
+    }
+    return getFormatterSetting();
+  }
 
 }

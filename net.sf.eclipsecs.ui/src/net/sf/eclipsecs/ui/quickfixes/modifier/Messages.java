@@ -23,25 +23,23 @@ package net.sf.eclipsecs.ui.quickfixes.modifier;
 //CHECKSTYLE:OFF
 import org.eclipse.osgi.util.NLS;
 
-public class Messages extends NLS
-{
-    private static final String BUNDLE_NAME = "net.sf.eclipsecs.ui.quickfixes.modifier.messages"; //$NON-NLS-1$
+public class Messages extends NLS {
+  private static final String BUNDLE_NAME = "net.sf.eclipsecs.ui.quickfixes.modifier.messages"; //$NON-NLS-1$
 
-    private Messages()
-    {}
+  private Messages() {
+  }
 
-    static
-    {
-        // initialize resource bundle
-        NLS.initializeMessages(BUNDLE_NAME, Messages.class);
-    }
+  static {
+    // initialize resource bundle
+    NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+  }
 
-    public static String ModifierOrderQuickfix_description;
+  public static String ModifierOrderQuickfix_description;
 
-    public static String ModifierOrderQuickfix_label;
+  public static String ModifierOrderQuickfix_label;
 
-    public static String RedundantModifierQuickfix_description;
+  public static String RedundantModifierQuickfix_description;
 
-    public static String RedundantModifierQuickfix_label;
+  public static String RedundantModifierQuickfix_label;
 }
 // CHECKSTYLE:ON

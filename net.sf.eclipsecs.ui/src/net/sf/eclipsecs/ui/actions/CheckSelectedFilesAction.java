@@ -44,70 +44,73 @@ import org.eclipse.ui.IWorkbenchPart;
  */
 public class CheckSelectedFilesAction implements IObjectActionDelegate {
 
-    private IWorkbenchPart mPart;
+  private IWorkbenchPart mPart;
 
-    private IStructuredSelection mSelection;
+  private IStructuredSelection mSelection;
 
-    /**
-     * {@inheritDoc}
-     */
-    public void setActivePart(IAction action, IWorkbenchPart targetPart) {
-        mPart = targetPart;
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void setActivePart(IAction action, IWorkbenchPart targetPart) {
+    mPart = targetPart;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void selectionChanged(IAction action, ISelection selection) {
+
+    if (selection instanceof IStructuredSelection) {
+      mSelection = (IStructuredSelection) selection;
     }
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void selectionChanged(IAction action, ISelection selection) {
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  @SuppressWarnings("unchecked")
+  public void run(IAction action) {
 
-        if (selection instanceof IStructuredSelection) {
-            mSelection = (IStructuredSelection) selection;
-        }
+    List<IFile> filesToCheck = new ArrayList<IFile>();
+
+    try {
+      addFileResources(mSelection.toList(), filesToCheck);
+
+      RunCheckstyleOnFilesJob job = new RunCheckstyleOnFilesJob(filesToCheck);
+      job.setRule(job);
+      job.schedule();
+    } catch (CoreException e) {
+      CheckstyleUIPlugin.errorDialog(mPart.getSite().getShell(), e, true);
     }
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    @SuppressWarnings("unchecked")
-    public void run(IAction action) {
+  /**
+   * Recursivly add all files contained in the given resource collection to the
+   * second list.
+   * 
+   * @param resources
+   *          list of resource
+   * @param files
+   *          the list of files
+   * @throws CoreException
+   *           en unexpected exception
+   */
+  private void addFileResources(List<IResource> resources, List<IFile> files) throws CoreException {
 
-        List<IFile> filesToCheck = new ArrayList<IFile>();
+    for (IResource resource : resources) {
 
-        try {
-            addFileResources(mSelection.toList(), filesToCheck);
+      if (!resource.isAccessible()) {
+        continue;
+      }
 
-            RunCheckstyleOnFilesJob job = new RunCheckstyleOnFilesJob(filesToCheck);
-            job.setRule(job);
-            job.schedule();
-        }
-        catch (CoreException e) {
-            CheckstyleUIPlugin.errorDialog(mPart.getSite().getShell(), e, true);
-        }
+      if (resource instanceof IFile) {
+        files.add((IFile) resource);
+      } else if (resource instanceof IContainer) {
+        addFileResources(Arrays.asList(((IContainer) resource).members()), files);
+      }
     }
-
-    /**
-     * Recursivly add all files contained in the given resource collection to
-     * the second list.
-     * 
-     * @param resources list of resource
-     * @param files the list of files
-     * @throws CoreException en unexpected exception
-     */
-    private void addFileResources(List<IResource> resources, List<IFile> files)
-        throws CoreException {
-
-        for (IResource resource : resources) {
-
-            if (!resource.isAccessible()) {
-                continue;
-            }
-
-            if (resource instanceof IFile) {
-                files.add((IFile) resource);
-            }
-            else if (resource instanceof IContainer) {
-                addFileResources(Arrays.asList(((IContainer) resource).members()), files);
-            }
-        }
-    }
+  }
 }

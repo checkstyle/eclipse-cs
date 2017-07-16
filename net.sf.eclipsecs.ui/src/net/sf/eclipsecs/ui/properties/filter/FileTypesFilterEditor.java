@@ -50,172 +50,183 @@ import org.eclipse.swt.widgets.Text;
  */
 public class FileTypesFilterEditor implements IFilterEditor {
 
-    /** the dialog for this editor. */
-    private FileTypesDialog mDialog;
+  /** the dialog for this editor. */
+  private FileTypesDialog mDialog;
 
-    /** the filter data. */
-    private List<String> mFilterData;
+  /** the filter data. */
+  private List<String> mFilterData;
 
-    /**
-     * {@inheritDoc}
-     */
-    public int openEditor(Shell parent) {
-        this.mDialog = new FileTypesDialog(parent, mFilterData);
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public int openEditor(Shell parent) {
+    this.mDialog = new FileTypesDialog(parent, mFilterData);
 
-        // open the dialog
-        int retCode = this.mDialog.open();
+    // open the dialog
+    int retCode = this.mDialog.open();
 
-        // actualize the filter data
-        if (Window.OK == retCode) {
-            this.mFilterData = this.getFilterDataFromDialog();
-        }
-
-        return retCode;
+    // actualize the filter data
+    if (Window.OK == retCode) {
+      this.mFilterData = this.getFilterDataFromDialog();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void setInputProject(IProject input) {
+    return retCode;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void setInputProject(IProject input) {
     // NOOP
-    }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void setFilterData(List<String> filterData) {
+    this.mFilterData = new ArrayList<String>(filterData);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public List<String> getFilterData() {
+    return this.mFilterData;
+  }
+
+  /**
+   * Helper method to extract the edited data from the dialog.
+   * 
+   * @return the filter data
+   */
+  private List<String> getFilterDataFromDialog() {
+    return mFilterData;
+  }
+
+  /**
+   * Dialog to edit file types to check.
+   * 
+   * @author Lars Ködderitzsch
+   */
+  private class FileTypesDialog extends Dialog {
+
+    private ListViewer mListViewer;
+
+    private Button mAddButton;
+
+    private Button mRemoveButton;
+
+    private Text mFileTypeText;
+
+    private List<String> mFileTypesList;
 
     /**
-     * {@inheritDoc}
-     */
-    public void setFilterData(List<String> filterData) {
-        this.mFilterData = new ArrayList<String>(filterData);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public List<String> getFilterData() {
-        return this.mFilterData;
-    }
-
-    /**
-     * Helper method to extract the edited data from the dialog.
+     * Creates a file matching pattern editor dialog.
      * 
-     * @return the filter data
+     * @param parentShell
+     *          the parent shell
+     * @param pattern
+     *          the pattern
      */
-    private List<String> getFilterDataFromDialog() {
-        return mFilterData;
+    public FileTypesDialog(Shell parentShell, List<String> fileTypes) {
+      super(parentShell);
+      mFileTypesList = fileTypes;
     }
 
     /**
-     * Dialog to edit file types to check.
-     * 
-     * @author Lars Ködderitzsch
+     * @see Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
      */
-    private class FileTypesDialog extends Dialog {
+    @Override
+    protected Control createDialogArea(Composite parent) {
+      Composite composite = (Composite) super.createDialogArea(parent);
 
-        private ListViewer mListViewer;
+      Composite main = new Composite(composite, SWT.NONE);
+      GridLayout layout = new GridLayout(2, false);
+      layout.marginHeight = 0;
+      layout.marginWidth = 0;
+      main.setLayout(layout);
+      GridData gd = new GridData(GridData.FILL_BOTH);
+      main.setLayoutData(gd);
 
-        private Button mAddButton;
+      mFileTypeText = new Text(main, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
+      gd = new GridData(GridData.FILL_HORIZONTAL);
+      mFileTypeText.setLayoutData(gd);
 
-        private Button mRemoveButton;
+      mAddButton = new Button(main, SWT.PUSH);
+      mAddButton.setText(Messages.FileTypesFilterEditor_btnAdd);
+      gd = new GridData(GridData.FILL_HORIZONTAL);
+      gd.verticalAlignment = SWT.TOP;
+      mAddButton.setLayoutData(gd);
+      mAddButton.addSelectionListener(new SelectionListener() {
 
-        private Text mFileTypeText;
-
-        private List<String> mFileTypesList;
-
-        /**
-         * Creates a file matching pattern editor dialog.
-         * 
-         * @param parentShell the parent shell
-         * @param pattern the pattern
-         */
-        public FileTypesDialog(Shell parentShell, List<String> fileTypes) {
-            super(parentShell);
-            mFileTypesList = fileTypes;
+        @Override
+        public void widgetSelected(SelectionEvent e) {
+          String text = mFileTypeText.getText();
+          if (text.trim().length() > 0) {
+            mFileTypesList.add(mFileTypeText.getText());
+            mListViewer.refresh();
+            mFileTypeText.setText(""); //$NON-NLS-1$
+          }
         }
 
-        /**
-         * @see Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
-         */
-        protected Control createDialogArea(Composite parent) {
-            Composite composite = (Composite) super.createDialogArea(parent);
+        @Override
+        public void widgetDefaultSelected(SelectionEvent e) {
+          // NOOP
+        }
+      });
 
-            Composite main = new Composite(composite, SWT.NONE);
-            GridLayout layout = new GridLayout(2, false);
-            layout.marginHeight = 0;
-            layout.marginWidth = 0;
-            main.setLayout(layout);
-            GridData gd = new GridData(GridData.FILL_BOTH);
-            main.setLayoutData(gd);
+      mListViewer = new ListViewer(main, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
+      mListViewer.setLabelProvider(new LabelProvider());
+      mListViewer.setContentProvider(new ArrayContentProvider());
+      mListViewer.setInput(mFileTypesList);
+      gd = new GridData(GridData.FILL_BOTH);
+      gd.heightHint = 100;
+      gd.widthHint = 150;
+      gd.grabExcessVerticalSpace = true;
+      mListViewer.getControl().setLayoutData(gd);
 
-            mFileTypeText = new Text(main, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
-            gd = new GridData(GridData.FILL_HORIZONTAL);
-            mFileTypeText.setLayoutData(gd);
+      mRemoveButton = new Button(main, SWT.PUSH);
+      mRemoveButton.setText(Messages.FileTypesFilterEditor_btnRemove);
+      gd = new GridData(GridData.FILL_HORIZONTAL);
+      gd.verticalAlignment = SWT.TOP;
+      mRemoveButton.setLayoutData(gd);
+      mRemoveButton.addSelectionListener(new SelectionListener() {
 
-            mAddButton = new Button(main, SWT.PUSH);
-            mAddButton.setText(Messages.FileTypesFilterEditor_btnAdd);
-            gd = new GridData(GridData.FILL_HORIZONTAL);
-            gd.verticalAlignment = SWT.TOP;
-            mAddButton.setLayoutData(gd);
-            mAddButton.addSelectionListener(new SelectionListener() {
-
-                public void widgetSelected(SelectionEvent e) {
-                    String text = mFileTypeText.getText();
-                    if (text.trim().length() > 0) {
-                        mFileTypesList.add(mFileTypeText.getText());
-                        mListViewer.refresh();
-                        mFileTypeText.setText(""); //$NON-NLS-1$
-                    }
-                }
-
-                public void widgetDefaultSelected(SelectionEvent e) {
-                // NOOP
-                }
-            });
-
-            mListViewer = new ListViewer(main, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL
-                    | SWT.BORDER);
-            mListViewer.setLabelProvider(new LabelProvider());
-            mListViewer.setContentProvider(new ArrayContentProvider());
-            mListViewer.setInput(mFileTypesList);
-            gd = new GridData(GridData.FILL_BOTH);
-            gd.heightHint = 100;
-            gd.widthHint = 150;
-            gd.grabExcessVerticalSpace = true;
-            mListViewer.getControl().setLayoutData(gd);
-
-            mRemoveButton = new Button(main, SWT.PUSH);
-            mRemoveButton.setText(Messages.FileTypesFilterEditor_btnRemove);
-            gd = new GridData(GridData.FILL_HORIZONTAL);
-            gd.verticalAlignment = SWT.TOP;
-            mRemoveButton.setLayoutData(gd);
-            mRemoveButton.addSelectionListener(new SelectionListener() {
-
-                public void widgetSelected(SelectionEvent e) {
-                    IStructuredSelection selection = (IStructuredSelection) mListViewer
-                            .getSelection();
-                    mFileTypesList.remove(selection.getFirstElement());
-                    mListViewer.refresh();
-                }
-
-                public void widgetDefaultSelected(SelectionEvent e) {
-                // NOOP
-                }
-            });
-            return main;
+        @Override
+        public void widgetSelected(SelectionEvent e) {
+          IStructuredSelection selection = (IStructuredSelection) mListViewer.getSelection();
+          mFileTypesList.remove(selection.getFirstElement());
+          mListViewer.refresh();
         }
 
-        /**
-         * @see org.eclipse.jface.dialogs.Dialog#okPressed()
-         */
-        protected void okPressed() {
-            super.okPressed();
+        @Override
+        public void widgetDefaultSelected(SelectionEvent e) {
+          // NOOP
         }
-
-        /**
-         * Over-rides method from Window to configure the shell (e.g. the
-         * enclosing window).
-         */
-        protected void configureShell(Shell shell) {
-            super.configureShell(shell);
-            shell.setText(Messages.FileTypesFilterEditor_title);
-        }
+      });
+      return main;
     }
+
+    /**
+     * @see org.eclipse.jface.dialogs.Dialog#okPressed()
+     */
+    @Override
+    protected void okPressed() {
+      super.okPressed();
+    }
+
+    /**
+     * Over-rides method from Window to configure the shell (e.g. the enclosing
+     * window).
+     */
+    @Override
+    protected void configureShell(Shell shell) {
+      super.configureShell(shell);
+      shell.setText(Messages.FileTypesFilterEditor_title);
+    }
+  }
 }

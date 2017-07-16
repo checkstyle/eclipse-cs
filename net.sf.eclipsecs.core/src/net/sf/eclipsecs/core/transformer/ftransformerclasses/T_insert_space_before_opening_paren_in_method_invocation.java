@@ -26,17 +26,17 @@ import net.sf.eclipsecs.core.transformer.CheckstyleSetting;
 import net.sf.eclipsecs.core.transformer.FTransformationClass;
 
 /**
- * Transformerclass for converting the formatter-setting "insert.space.before.opening.paren.in.method.invocation" to
- * appropriate checkstyle-modules.
+ * Transformerclass for converting the formatter-setting
+ * "insert.space.before.opening.paren.in.method.invocation" to appropriate checkstyle-modules.
  *
  * @author Lukas Frena
  */
 public class T_insert_space_before_opening_paren_in_method_invocation extends FTransformationClass {
-    @Override
-    public CheckstyleSetting transformRule() {
-        final HashMap<String, String> properties = new HashMap<String, String>();
-        properties.put("tokens", "METHOD_CALL");
-        useTreeWalkerModule("MethodParamPad", properties);
-        return getCheckstyleSetting();
-    }
+  @Override
+  public CheckstyleSetting transformRule() {
+    final HashMap<String, String> properties = new HashMap<String, String>();
+    properties.put("tokens", "METHOD_CALL");
+    useTreeWalkerModule("MethodParamPad", properties);
+    return getCheckstyleSetting();
+  }
 }

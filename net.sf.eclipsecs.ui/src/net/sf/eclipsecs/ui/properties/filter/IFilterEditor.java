@@ -32,33 +32,36 @@ import org.eclipse.swt.widgets.Shell;
  */
 public interface IFilterEditor {
 
-    /**
-     * Opens the filter editor dialog (blocking).
-     * 
-     * @param parent the parent shell
-     * @return the returncode
-     */
-    int openEditor(Shell parent);
+  /**
+   * Opens the filter editor dialog (blocking).
+   * 
+   * @param parent
+   *          the parent shell
+   * @return the returncode
+   */
+  int openEditor(Shell parent);
 
-    /**
-     * Sets the input for this filter editor.
-     * 
-     * @param input the input
-     */
-    void setInputProject(IProject input);
+  /**
+   * Sets the input for this filter editor.
+   * 
+   * @param input
+   *          the input
+   */
+  void setInputProject(IProject input);
 
-    /**
-     * Sets the actual filter data for the editor.
-     * 
-     * @param filterData the actual filter data
-     */
-    void setFilterData(List<String> filterData);
+  /**
+   * Sets the actual filter data for the editor.
+   * 
+   * @param filterData
+   *          the actual filter data
+   */
+  void setFilterData(List<String> filterData);
 
-    /**
-     * Gets the filter data from the editor.
-     * 
-     * @return the edited filter data
-     */
-    List<String> getFilterData();
+  /**
+   * Gets the filter data from the editor.
+   * 
+   * @return the edited filter data
+   */
+  List<String> getFilterData();
 
 }

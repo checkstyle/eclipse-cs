@@ -20,76 +20,75 @@
 
 package net.sf.eclipsecs.core.config.configtypes;
 
+import com.puppycrawl.tools.checkstyle.PropertyResolver;
+import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
 
-import com.puppycrawl.tools.checkstyle.PropertyResolver;
-import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
-
 /**
- * This property resolver is able to aggregate a list of child property resolvers, where each child resolver looks for
- * different properties and may have different ways of finding properties. The child resolvers are asked to resolve the
- * properties in the order they are added. This PropertyResolver adds the property chaining feature, to allow properties
- * within properties.
+ * This property resolver is able to aggregate a list of child property resolvers, where each child
+ * resolver looks for different properties and may have different ways of finding properties. The
+ * child resolvers are asked to resolve the properties in the order they are added. This
+ * PropertyResolver adds the property chaining feature, to allow properties within properties.
  *
  * @author Lars Ködderitzsch
  */
 public class MultiPropertyResolver implements PropertyResolver, IContextAware {
 
-    /** The list of PropertyResolvers. */
-    private List<PropertyResolver> mChildResolver = new ArrayList<PropertyResolver>();
+  /** The list of PropertyResolvers. */
+  private List<PropertyResolver> mChildResolver = new ArrayList<PropertyResolver>();
 
-    /**
-     * Adds a PropertyResolver to this aggregation property resolver.
-     *
-     * @param resolver
-     *            the PropertyResolver to add
-     */
-    public void addPropertyResolver(PropertyResolver resolver) {
-        mChildResolver.add(resolver);
+  /**
+   * Adds a PropertyResolver to this aggregation property resolver.
+   *
+   * @param resolver
+   *          the PropertyResolver to add
+   */
+  public void addPropertyResolver(PropertyResolver resolver) {
+    mChildResolver.add(resolver);
+  }
+
+  @Override
+  public void setProjectContext(IProject project) {
+
+    // propagate context to the childs
+    for (int i = 0, size = mChildResolver.size(); i < size; i++) {
+      PropertyResolver aChildResolver = mChildResolver.get(i);
+      if (aChildResolver instanceof IContextAware) {
+        ((IContextAware) aChildResolver).setProjectContext(project);
+      }
+    }
+  }
+
+  @Override
+  public String resolve(String property) {
+
+    String value = null;
+
+    for (int i = 0, size = mChildResolver.size(); i < size; i++) {
+
+      PropertyResolver aChildResolver = mChildResolver.get(i);
+      value = aChildResolver.resolve(property);
+
+      if (value != null) {
+        break;
+      }
     }
 
-    @Override
-    public void setProjectContext(IProject project) {
+    try {
 
-        // propagate context to the childs
-        for (int i = 0, size = mChildResolver.size(); i < size; i++) {
-            PropertyResolver aChildResolver = mChildResolver.get(i);
-            if (aChildResolver instanceof IContextAware) {
-                ((IContextAware) aChildResolver).setProjectContext(project);
-            }
-        }
+      // property chaining - might recurse internally
+      while (PropertyUtil.hasUnresolvedProperties(value)) {
+        value = PropertyUtil.replaceProperties(value, this);
+      }
+    } catch (CheckstyleException e) {
+      throw new RuntimeException(e);
     }
 
-    @Override
-    public String resolve(String property) {
-
-        String value = null;
-
-        for (int i = 0, size = mChildResolver.size(); i < size; i++) {
-
-            PropertyResolver aChildResolver = mChildResolver.get(i);
-            value = aChildResolver.resolve(property);
-
-            if (value != null) {
-                break;
-            }
-        }
-
-        try {
-
-            // property chaining - might recurse internally
-            while (PropertyUtil.hasUnresolvedProperties(value)) {
-                value = PropertyUtil.replaceProperties(value, this);
-            }
-        }
-        catch (CheckstyleException e) {
-            throw new RuntimeException(e);
-        }
-
-        return value;
-    }
+    return value;
+  }
 
 }

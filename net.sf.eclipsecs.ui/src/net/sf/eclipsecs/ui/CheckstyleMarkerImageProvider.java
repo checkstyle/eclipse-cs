@@ -34,35 +34,36 @@ import org.eclipse.ui.texteditor.IAnnotationImageProvider;
  */
 public class CheckstyleMarkerImageProvider implements IAnnotationImageProvider {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Image getManagedImage(Annotation annotation) {
-        String type = annotation.getType();
-        if (CheckstyleMarker.ERROR_TYPE.equals(type)) {
-            return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.MARKER_ERROR);
-        }
-        else if (CheckstyleMarker.WARNING_TYPE.equals(type)) {
-            return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.MARKER_WARNING);
-        }
-        else if (CheckstyleMarker.INFO_TYPE.equals(type)) {
-            return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.MARKER_INFO);
-        }
-
-        return null;
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public Image getManagedImage(Annotation annotation) {
+    String type = annotation.getType();
+    if (CheckstyleMarker.ERROR_TYPE.equals(type)) {
+      return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.MARKER_ERROR);
+    } else if (CheckstyleMarker.WARNING_TYPE.equals(type)) {
+      return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.MARKER_WARNING);
+    } else if (CheckstyleMarker.INFO_TYPE.equals(type)) {
+      return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.MARKER_INFO);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public String getImageDescriptorId(Annotation annotation) {
-        return null;
-    }
+    return null;
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    public ImageDescriptor getImageDescriptor(String imageDescritporId) {
-        return null;
-    }
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String getImageDescriptorId(Annotation annotation) {
+    return null;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public ImageDescriptor getImageDescriptor(String imageDescritporId) {
+    return null;
+  }
 }

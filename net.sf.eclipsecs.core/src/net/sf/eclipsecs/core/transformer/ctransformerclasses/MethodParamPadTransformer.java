@@ -22,8 +22,8 @@ package net.sf.eclipsecs.core.transformer.ctransformerclasses;
 
 import java.util.StringTokenizer;
 
-import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 import net.sf.eclipsecs.core.transformer.CTransformationClass;
+import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 
 /**
  * Wrapperclass for converting the checkstyle-rule MethodParamPad to appropriate
@@ -32,36 +32,30 @@ import net.sf.eclipsecs.core.transformer.CTransformationClass;
  * @author Lukas Frena
  */
 public class MethodParamPadTransformer extends CTransformationClass {
-    @Override
-    public FormatterConfiguration transformRule() {
-        String val = getAttribute("tokens");
-        if (val == null) {
-            val = "CTOR_DEF, LITERAL_NEW, METHOD_CALL, METHOD_DEF, SUPER_CTOR_CALL";
-        }
-
-        // TODO tokens LITERAL_NEW
-        final StringTokenizer args = new StringTokenizer(val, ", ");
-        String token;
-        while (args.hasMoreTokens()) {
-            token = args.nextToken();
-            if (token.equals("CTOR_DEF")) {
-                userFormatterSetting(
-                    "insert_space_before_opening_paren_in_constructor_declaration",
-                    "do not insert");
-            }
-            else if (token.equals("METHOD_CALL")
-                || token.equals("SUPER_CTOR_CALL")) {
-                userFormatterSetting(
-                    "insert_space_before_opening_paren_in_method_invocation",
-                    "do not insert");
-            }
-            else if (token.equals("METHOD_DEF")) {
-                userFormatterSetting(
-                    "insert_space_before_opening_paren_in_method_declaration",
-                    "do not insert");
-            }
-        }
-        return getFormatterSetting();
+  @Override
+  public FormatterConfiguration transformRule() {
+    String val = getAttribute("tokens");
+    if (val == null) {
+      val = "CTOR_DEF, LITERAL_NEW, METHOD_CALL, METHOD_DEF, SUPER_CTOR_CALL";
     }
+
+    // TODO tokens LITERAL_NEW
+    final StringTokenizer args = new StringTokenizer(val, ", ");
+    String token;
+    while (args.hasMoreTokens()) {
+      token = args.nextToken();
+      if (token.equals("CTOR_DEF")) {
+        userFormatterSetting("insert_space_before_opening_paren_in_constructor_declaration",
+                "do not insert");
+      } else if (token.equals("METHOD_CALL") || token.equals("SUPER_CTOR_CALL")) {
+        userFormatterSetting("insert_space_before_opening_paren_in_method_invocation",
+                "do not insert");
+      } else if (token.equals("METHOD_DEF")) {
+        userFormatterSetting("insert_space_before_opening_paren_in_method_declaration",
+                "do not insert");
+      }
+    }
+    return getFormatterSetting();
+  }
 
 }

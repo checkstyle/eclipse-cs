@@ -21,25 +21,25 @@
 package net.sf.eclipsecs.core.config;
 
 /**
- * Enumeration for Checkstyle's severity levels. The intent is to decouple
- * highler level funtions (UI) from dealing with Checkstyle code API.
+ * Enumeration for Checkstyle's severity levels. The intent is to decouple highler level funtions
+ * (UI) from dealing with Checkstyle code API.
  * 
  * @author Lars Ködderitzsch
  */
 public enum Severity {
 
-    /** Unspecified severity level, inherited from parent module. */
-    inherit, 
-    
-    /** Severity level 'ignore'. */
-    ignore,
+  /** Unspecified severity level, inherited from parent module. */
+  inherit,
 
-    /** Severity level 'info'. */
-    info,
+  /** Severity level 'ignore'. */
+  ignore,
 
-    /** Severity level 'warning'. */
-    warning,
+  /** Severity level 'info'. */
+  info,
 
-    /** Severity level 'error'. */
-    error
+  /** Severity level 'warning'. */
+  warning,
+
+  /** Severity level 'error'. */
+  error
 }

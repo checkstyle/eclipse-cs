@@ -45,64 +45,67 @@ import org.eclipse.ui.IWorkbenchPart;
  */
 public class ClearSelectedFilesAction implements IObjectActionDelegate {
 
-    private IStructuredSelection mSelection;
+  private IStructuredSelection mSelection;
 
-    /**
-     * {@inheritDoc}
-     */
-    public void setActivePart(IAction action, IWorkbenchPart targetPart) {
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void setActivePart(IAction action, IWorkbenchPart targetPart) {
     // NOOP
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void selectionChanged(IAction action, ISelection selection) {
+
+    if (selection instanceof IStructuredSelection) {
+      mSelection = (IStructuredSelection) selection;
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  @SuppressWarnings("unchecked")
+  public void run(IAction action) {
+
+    List<IResource> resourcesToClear = mSelection.toList();
+
+    ClearMarkersJob job = new ClearMarkersJob(resourcesToClear);
+    job.schedule();
+  }
+
+  /**
+   * Activates Checkstyle on a collection of projects.
+   * 
+   * @author Lars Ködderitzsch
+   */
+  private class ClearMarkersJob extends WorkspaceJob {
+
+    private Collection<IResource> mResourcesToClear;
+
+    public ClearMarkersJob(Collection<IResource> resourcesToClear) {
+      super(Messages.ClearSelectedFilesAction_title);
+      this.mResourcesToClear = resourcesToClear;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void selectionChanged(IAction action, ISelection selection) {
+    @Override
+    public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
 
-        if (selection instanceof IStructuredSelection) {
-            mSelection = (IStructuredSelection) selection;
+      for (IResource resource : mResourcesToClear) {
+        if (resource.isAccessible()) {
+          resource.deleteMarkers(CheckstyleMarker.MARKER_ID, true, IResource.DEPTH_INFINITE);
         }
+      }
+
+      return Status.OK_STATUS;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @SuppressWarnings("unchecked")
-    public void run(IAction action) {
-
-        List<IResource> resourcesToClear = mSelection.toList();
-
-        ClearMarkersJob job = new ClearMarkersJob(resourcesToClear);
-        job.schedule();
-    }
-
-    /**
-     * Activates Checkstyle on a collection of projects.
-     * 
-     * @author Lars Ködderitzsch
-     */
-    private class ClearMarkersJob extends WorkspaceJob {
-
-        private Collection<IResource> mResourcesToClear;
-
-        public ClearMarkersJob(Collection<IResource> resourcesToClear) {
-            super(Messages.ClearSelectedFilesAction_title);
-            this.mResourcesToClear = resourcesToClear;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
-
-            for (IResource resource : mResourcesToClear) {
-                if (resource.isAccessible()) {
-                    resource.deleteMarkers(CheckstyleMarker.MARKER_ID, true,
-                            IResource.DEPTH_INFINITE);
-                }
-            }
-
-            return Status.OK_STATUS;
-        }
-    }
+  }
 }

@@ -22,44 +22,39 @@ package net.sf.eclipsecs.core.transformer.ctransformerclasses;
 
 import java.util.StringTokenizer;
 
-import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 import net.sf.eclipsecs.core.transformer.CTransformationClass;
+import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 
 /**
- * Wrapperclass for converting the checkstyle-rule NoWhitespaceAfter to
- * appropriate eclipse-formatter-rules.
+ * Wrapperclass for converting the checkstyle-rule NoWhitespaceAfter to appropriate
+ * eclipse-formatter-rules.
  * 
  * @author Lukas Frena
  */
 public class NoWhitespaceAfterTransformer extends CTransformationClass {
 
-    @Override
-    public FormatterConfiguration transformRule() {
-        String val = getAttribute("tokens");
-        if (val == null) {
-            val = "ARRAY_INIT, BNOT, DEC, DOT, INC, LNOT, UNARY_MINUS, UNARY_PLUS";
-        }
-
-        final StringTokenizer args = new StringTokenizer(val, ", ");
-        String token;
-        // TODO tokens DOT ARRAY_INIT
-        while (args.hasMoreTokens()) {
-            token = args.nextToken();
-            if (token.equals("DEC") || token.equals("INC")) {
-                userFormatterSetting("insert_space_after_prefix_operator",
-                    "do not insert");
-            }
-            else if (token.equals("UNARY_MINUS") || token.equals("LNOT")
-                || token.equals("UNARY_PLUS") || token.equals("BNOT")) {
-                userFormatterSetting("insert_space_after_unary_operator",
-                    "do not insert");
-            }
-            else if (token.equals("TYPECAST")) {
-                userFormatterSetting(
-                    "insert_space_after_closing_paren_in_cast", "do not insert");
-            }
-        }
-        return getFormatterSetting();
+  @Override
+  public FormatterConfiguration transformRule() {
+    String val = getAttribute("tokens");
+    if (val == null) {
+      val = "ARRAY_INIT, BNOT, DEC, DOT, INC, LNOT, UNARY_MINUS, UNARY_PLUS";
     }
+
+    final StringTokenizer args = new StringTokenizer(val, ", ");
+    String token;
+    // TODO tokens DOT ARRAY_INIT
+    while (args.hasMoreTokens()) {
+      token = args.nextToken();
+      if (token.equals("DEC") || token.equals("INC")) {
+        userFormatterSetting("insert_space_after_prefix_operator", "do not insert");
+      } else if (token.equals("UNARY_MINUS") || token.equals("LNOT") || token.equals("UNARY_PLUS")
+              || token.equals("BNOT")) {
+        userFormatterSetting("insert_space_after_unary_operator", "do not insert");
+      } else if (token.equals("TYPECAST")) {
+        userFormatterSetting("insert_space_after_closing_paren_in_cast", "do not insert");
+      }
+    }
+    return getFormatterSetting();
+  }
 
 }

@@ -30,113 +30,116 @@ import net.sf.eclipsecs.core.Messages;
  */
 public class ConfigPropertyMetadata {
 
-    /** The type of the property data. */
-    private ConfigPropertyType mDatatype;
+  /** The type of the property data. */
+  private ConfigPropertyType mDatatype;
 
-    /** The name of the property. */
-    private String mName;
+  /** The name of the property. */
+  private String mName;
 
-    /** The default value of the property. */
-    private String mDefaultValue;
+  /** The default value of the property. */
+  private String mDefaultValue;
 
-    /** A differing default value from the Checkstyle core. */
-    private String mOverrideDefaultValue;
+  /** A differing default value from the Checkstyle core. */
+  private String mOverrideDefaultValue;
 
-    /** The description of the property. */
-    private String mDescription;
+  /** The description of the property. */
+  private String mDescription;
 
-    /** The list of possible property values. */
-    private List<String> mEnumeration = new ArrayList<String>();
+  /** The list of possible property values. */
+  private List<String> mEnumeration = new ArrayList<String>();
 
-    /**
-     * Creates the property metadata.
-     * 
-     * @param type the property type
-     * @param name the name of the property
-     * @param defaultValue the default value
-     * @param overrideDefaultValue a default value which overrides the
-     *            Checkstyle default
-     */
-    public ConfigPropertyMetadata(ConfigPropertyType type, String name, String defaultValue,
-            String overrideDefaultValue) {
-        mDatatype = type;
-        mName = name;
-        mDefaultValue = defaultValue;
-        mOverrideDefaultValue = overrideDefaultValue;
-        mDescription = Messages.ConfigPropertyMetadata_txtNoDescription;
-    }
+  /**
+   * Creates the property metadata.
+   * 
+   * @param type
+   *          the property type
+   * @param name
+   *          the name of the property
+   * @param defaultValue
+   *          the default value
+   * @param overrideDefaultValue
+   *          a default value which overrides the Checkstyle default
+   */
+  public ConfigPropertyMetadata(ConfigPropertyType type, String name, String defaultValue,
+          String overrideDefaultValue) {
+    mDatatype = type;
+    mName = name;
+    mDefaultValue = defaultValue;
+    mOverrideDefaultValue = overrideDefaultValue;
+    mDescription = Messages.ConfigPropertyMetadata_txtNoDescription;
+  }
 
-    /**
-     * Get the property's datatype.
-     * 
-     * @return The datatype
-     */
-    public ConfigPropertyType getDatatype() {
-        return mDatatype;
-    }
+  /**
+   * Get the property's datatype.
+   * 
+   * @return The datatype
+   */
+  public ConfigPropertyType getDatatype() {
+    return mDatatype;
+  }
 
-    /**
-     * Get the property's name.
-     * 
-     * @return The name
-     */
-    public String getName() {
-        return mName;
-    }
+  /**
+   * Get the property's name.
+   * 
+   * @return The name
+   */
+  public String getName() {
+    return mName;
+  }
 
-    /**
-     * Get the property's description.
-     * 
-     * @return The description
-     */
-    public String getDescription() {
-        return mDescription;
-    }
+  /**
+   * Get the property's description.
+   * 
+   * @return The description
+   */
+  public String getDescription() {
+    return mDescription;
+  }
 
-    /**
-     * Sets the description of this property.
-     * 
-     * @param description the description
-     */
-    public void setDescription(String description) {
-        mDescription = description;
-    }
+  /**
+   * Sets the description of this property.
+   * 
+   * @param description
+   *          the description
+   */
+  public void setDescription(String description) {
+    mDescription = description;
+  }
 
-    /**
-     * Get the default value.
-     * 
-     * @return The default value
-     */
-    public String getDefaultValue() {
-        return mDefaultValue;
-    }
+  /**
+   * Get the default value.
+   * 
+   * @return The default value
+   */
+  public String getDefaultValue() {
+    return mDefaultValue;
+  }
 
-    /**
-     * Returns a default value differing from the Checkstye default for this
-     * property.
-     * 
-     * @return The differing checkstyle default value.
-     */
-    public String getOverrideDefault() {
-        return mOverrideDefaultValue;
-    }
+  /**
+   * Returns a default value differing from the Checkstye default for this property.
+   * 
+   * @return The differing checkstyle default value.
+   */
+  public String getOverrideDefault() {
+    return mOverrideDefaultValue;
+  }
 
-    /**
-     * Get the enumeration of allowable values.
-     * 
-     * @return Enumeration of values
-     */
-    public List<String> getPropertyEnumeration() {
-        return mEnumeration;
-    }
+  /**
+   * Get the enumeration of allowable values.
+   * 
+   * @return Enumeration of values
+   */
+  public List<String> getPropertyEnumeration() {
+    return mEnumeration;
+  }
 
-    /**
-     * Returns the hidden.
-     * 
-     * @return boolean
-     */
-    public boolean isHidden() {
-        return ConfigPropertyType.Hidden.equals(mDatatype);
-    }
+  /**
+   * Returns the hidden.
+   * 
+   * @return boolean
+   */
+  public boolean isHidden() {
+    return ConfigPropertyType.Hidden.equals(mDatatype);
+  }
 
 }

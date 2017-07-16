@@ -29,9 +29,9 @@ import com.puppycrawl.tools.checkstyle.PropertyResolver;
  */
 public class SystemPropertyResolver implements PropertyResolver {
 
-    @Override
-    public String resolve(String property) {
-        // get the system property
-        return System.getProperty(property);
-    }
+  @Override
+  public String resolve(String property) {
+    // get the system property
+    return System.getProperty(property);
+  }
 }

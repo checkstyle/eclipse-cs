@@ -38,44 +38,49 @@ import org.eclipse.swt.graphics.Image;
  */
 public class MissingSwitchDefaultQuickfix extends AbstractASTResolution {
 
-    /**
-     * {@inheritDoc}
-     */
-    protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
-            final int markerStartOffset) {
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
+          final int markerStartOffset) {
 
-        return new ASTVisitor() {
+    return new ASTVisitor() {
 
-            public boolean visit(SwitchStatement node) {
-                if (containsPosition(lineInfo, node.getStartPosition())) {
-                    SwitchCase defNode = node.getAST().newSwitchCase();
-                    defNode.setExpression(null);
-                    node.statements().add(defNode);
-                    node.statements().add(node.getAST().newBreakStatement());
-                }
-                return true; // also visit children
-            }
-        };
-    }
+      @Override
+      public boolean visit(SwitchStatement node) {
+        if (containsPosition(lineInfo, node.getStartPosition())) {
+          SwitchCase defNode = node.getAST().newSwitchCase();
+          defNode.setExpression(null);
+          node.statements().add(defNode);
+          node.statements().add(node.getAST().newBreakStatement());
+        }
+        return true; // also visit children
+      }
+    };
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    public String getDescription() {
-        return Messages.MissingSwitchDefaultQuickfix_description;
-    }
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String getDescription() {
+    return Messages.MissingSwitchDefaultQuickfix_description;
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    public String getLabel() {
-        return Messages.MissingSwitchDefaultQuickfix_label;
-    }
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String getLabel() {
+    return Messages.MissingSwitchDefaultQuickfix_label;
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    public Image getImage() {
-        return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.CORRECTION_ADD);
-    }
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public Image getImage() {
+    return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.CORRECTION_ADD);
+  }
 }

@@ -43,45 +43,43 @@ import org.eclipse.osgi.util.NLS;
  */
 public class ProjectConfigurationType extends ConfigurationType {
 
-    /** Key to access the information if the configuration is protected. */
-    public static final String KEY_PROTECT_CONFIG = "protect-config-file"; //$NON-NLS-1$
+  /** Key to access the information if the configuration is protected. */
+  public static final String KEY_PROTECT_CONFIG = "protect-config-file"; //$NON-NLS-1$
 
-    @Override
-    protected URL resolveLocation(ICheckConfiguration checkConfiguration) throws IOException {
-        IResource configFileResource = ResourcesPlugin.getWorkspace().getRoot()
+  @Override
+  protected URL resolveLocation(ICheckConfiguration checkConfiguration) throws IOException {
+    IResource configFileResource = ResourcesPlugin.getWorkspace().getRoot()
             .findMember(checkConfiguration.getLocation());
 
-        if (configFileResource != null) {
-            return configFileResource.getLocation().toFile().toURI().toURL();
-        }
-        else {
-            throw new FileNotFoundException(NLS.bind(Messages.ProjectConfigurationType_msgFileNotFound,
-                checkConfiguration.getLocation()));
-        }
+    if (configFileResource != null) {
+      return configFileResource.getLocation().toFile().toURI().toURL();
+    } else {
+      throw new FileNotFoundException(NLS.bind(Messages.ProjectConfigurationType_msgFileNotFound,
+              checkConfiguration.getLocation()));
     }
+  }
 
-    @Override
-    public boolean isConfigurable(ICheckConfiguration checkConfiguration) {
-        boolean isConfigurable = true;
+  @Override
+  public boolean isConfigurable(ICheckConfiguration checkConfiguration) {
+    boolean isConfigurable = true;
 
-        boolean isProtected = Boolean.valueOf(checkConfiguration.getAdditionalData().get(KEY_PROTECT_CONFIG))
-            .booleanValue();
-        isConfigurable = !isProtected;
+    boolean isProtected = Boolean
+            .valueOf(checkConfiguration.getAdditionalData().get(KEY_PROTECT_CONFIG)).booleanValue();
+    isConfigurable = !isProtected;
 
-        if (!isProtected) {
+    if (!isProtected) {
 
-            // The configuration can be changed when the external configuration
-            // file can is writable
-            try {
+      // The configuration can be changed when the external configuration
+      // file can is writable
+      try {
 
-                File file = URIUtil.toFile(checkConfiguration.getResolvedConfigurationFileURL().toURI());
-                isConfigurable = file != null && file.canWrite();
-            }
-            catch (CheckstylePluginException | URISyntaxException e) {
-                CheckstyleLog.log(e);
-                isConfigurable = false;
-            }
-        }
-        return isConfigurable;
+        File file = URIUtil.toFile(checkConfiguration.getResolvedConfigurationFileURL().toURI());
+        isConfigurable = file != null && file.canWrite();
+      } catch (CheckstylePluginException | URISyntaxException e) {
+        CheckstyleLog.log(e);
+        isConfigurable = false;
+      }
     }
+    return isConfigurable;
+  }
 }

@@ -27,140 +27,138 @@ import net.sf.eclipsecs.core.config.meta.ConfigPropertyMetadata;
  */
 public class ConfigProperty implements Comparable<ConfigProperty>, Cloneable {
 
-    /** The name of the property. */
-    private String mName;
+  /** The name of the property. */
+  private String mName;
 
-    /** The value of the property. */
-    private String mValue;
+  /** The value of the property. */
+  private String mValue;
 
-    /** The meta data of the property. */
-    private ConfigPropertyMetadata mMetaData;
+  /** The meta data of the property. */
+  private ConfigPropertyMetadata mMetaData;
 
-    /** Signals that the property value is actually a ${}-like reference. */
-    private boolean mPropertyReference;
+  /** Signals that the property value is actually a ${}-like reference. */
+  private boolean mPropertyReference;
 
-    /**
-     * Constructor.
-     * 
-     * @param metaData
-     *            the property meta data
-     */
-    public ConfigProperty(ConfigPropertyMetadata metaData) {
+  /**
+   * Constructor.
+   * 
+   * @param metaData
+   *          the property meta data
+   */
+  public ConfigProperty(ConfigPropertyMetadata metaData) {
 
-        this(metaData.getName(),
-            metaData.getOverrideDefault() != null ? metaData
-                .getOverrideDefault() : metaData.getDefaultValue());
-        setMetaData(metaData);
+    this(metaData.getName(), metaData.getOverrideDefault() != null ? metaData.getOverrideDefault()
+            : metaData.getDefaultValue());
+    setMetaData(metaData);
+  }
+
+  /**
+   * Constructor.
+   * 
+   * @param name
+   *          Property name.
+   * @param value
+   *          Property value.
+   */
+  public ConfigProperty(String name, String value) {
+    setName(name);
+    setValue(value);
+  }
+
+  /**
+   * Get the property's name.
+   * 
+   * @return The name
+   */
+  public String getName() {
+    return mName;
+  }
+
+  /**
+   * Set the property's name.
+   * 
+   * @param name
+   *          The new name.
+   */
+  public void setName(String name) {
+    mName = name;
+  }
+
+  /**
+   * Returns the value.
+   * 
+   * @return String
+   */
+  public String getValue() {
+    return mValue;
+  }
+
+  /**
+   * Sets the value.
+   * 
+   * @param value
+   *          The value to set
+   */
+  public void setValue(String value) {
+    mValue = value;
+  }
+
+  /**
+   * Returns the meta data for this property.
+   * 
+   * @return the meta data
+   */
+  public ConfigPropertyMetadata getMetaData() {
+    return mMetaData;
+  }
+
+  /**
+   * Sets the meta data for this property.
+   * 
+   * @param metaData
+   *          the meta data
+   */
+  public void setMetaData(ConfigPropertyMetadata metaData) {
+    mMetaData = metaData;
+  }
+
+  /**
+   * Returns if the property value is/contains a ${}-style property reference.
+   * 
+   * @return <code>true</code> if the value is a property reference, <code>false</code> otherwise
+   */
+  public boolean isPropertyReference() {
+    return mPropertyReference;
+  }
+
+  /**
+   * Sets if the property value is/contains a ${}-style property reference.
+   * 
+   * @param propertyReference
+   *          <code>true</code> if the value is a property reference, <code>false</code> otherwise
+   */
+  public void setPropertyReference(boolean propertyReference) {
+    this.mPropertyReference = propertyReference;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public int compareTo(ConfigProperty obj) {
+    return this.mName.compareTo(obj.mName);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public ConfigProperty clone() {
+    try {
+      ConfigProperty clone = (ConfigProperty) super.clone();
+      return clone;
+    } catch (CloneNotSupportedException e) {
+      throw new InternalError(); // Should not happen
     }
-
-    /**
-     * Constructor.
-     * 
-     * @param name
-     *            Property name.
-     * @param value
-     *            Property value.
-     */
-    public ConfigProperty(String name, String value) {
-        setName(name);
-        setValue(value);
-    }
-
-    /**
-     * Get the property's name.
-     * 
-     * @return The name
-     */
-    public String getName() {
-        return mName;
-    }
-
-    /**
-     * Set the property's name.
-     * 
-     * @param name
-     *            The new name.
-     */
-    public void setName(String name) {
-        mName = name;
-    }
-
-    /**
-     * Returns the value.
-     * 
-     * @return String
-     */
-    public String getValue() {
-        return mValue;
-    }
-
-    /**
-     * Sets the value.
-     * 
-     * @param value
-     *            The value to set
-     */
-    public void setValue(String value) {
-        mValue = value;
-    }
-
-    /**
-     * Returns the meta data for this property.
-     * 
-     * @return the meta data
-     */
-    public ConfigPropertyMetadata getMetaData() {
-        return mMetaData;
-    }
-
-    /**
-     * Sets the meta data for this property.
-     * 
-     * @param metaData
-     *            the meta data
-     */
-    public void setMetaData(ConfigPropertyMetadata metaData) {
-        mMetaData = metaData;
-    }
-
-    /**
-     * Returns if the property value is/contains a ${}-style property reference.
-     * 
-     * @return <code>true</code> if the value is a property reference,
-     *         <code>false</code> otherwise
-     */
-    public boolean isPropertyReference() {
-        return mPropertyReference;
-    }
-
-    /**
-     * Sets if the property value is/contains a ${}-style property reference.
-     * 
-     * @param propertyReference
-     *            <code>true</code> if the value is a property reference,
-     *            <code>false</code> otherwise
-     */
-    public void setPropertyReference(boolean propertyReference) {
-        this.mPropertyReference = propertyReference;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public int compareTo(ConfigProperty obj) {
-        return this.mName.compareTo(obj.mName);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public ConfigProperty clone() {
-        try {
-            ConfigProperty clone = (ConfigProperty) super.clone();
-            return clone;
-        }
-        catch (CloneNotSupportedException e) {
-            throw new InternalError(); // Should not happen
-        }
-    }
+  }
 }

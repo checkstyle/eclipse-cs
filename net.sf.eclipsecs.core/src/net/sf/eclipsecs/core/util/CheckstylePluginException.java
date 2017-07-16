@@ -25,59 +25,58 @@ package net.sf.eclipsecs.core.util;
  */
 public class CheckstylePluginException extends Exception {
 
-    /** safe serialization support across different versions. */
-    private static final long serialVersionUID = 8173568340314023129L;
+  /** safe serialization support across different versions. */
+  private static final long serialVersionUID = 8173568340314023129L;
 
-    /**
-     * Exception for the Checkstyle plug-in.
-     *
-     * @param msg
-     *            Description of the error.
-     */
-    public CheckstylePluginException(String msg) {
-        super(msg);
-    }
+  /**
+   * Exception for the Checkstyle plug-in.
+   *
+   * @param msg
+   *          Description of the error.
+   */
+  public CheckstylePluginException(String msg) {
+    super(msg);
+  }
 
-    /**
-     * Exception for the Checkstyle plug-in.
-     *
-     * @param msg
-     *            Description of the error.
-     * @param cause
-     *            the causing exception
-     */
-    private CheckstylePluginException(String msg, Throwable cause) {
-        super(msg, cause);
-    }
+  /**
+   * Exception for the Checkstyle plug-in.
+   *
+   * @param msg
+   *          Description of the error.
+   * @param cause
+   *          the causing exception
+   */
+  private CheckstylePluginException(String msg, Throwable cause) {
+    super(msg, cause);
+  }
 
-    /**
-     * Wraps an exception into a CheckstylePluginException.
-     *
-     * @param t
-     *            the exception
-     * @param message
-     *            an additional exception message
-     * @throws CheckstylePluginException
-     *             the wrapped exception
-     */
-    public static void rethrow(Throwable t, String message) throws CheckstylePluginException {
-        if (t instanceof CheckstylePluginException) {
-            throw (CheckstylePluginException) t;
-        }
-        else {
-            throw new CheckstylePluginException(message, t);
-        }
+  /**
+   * Wraps an exception into a CheckstylePluginException.
+   *
+   * @param t
+   *          the exception
+   * @param message
+   *          an additional exception message
+   * @throws CheckstylePluginException
+   *           the wrapped exception
+   */
+  public static void rethrow(Throwable t, String message) throws CheckstylePluginException {
+    if (t instanceof CheckstylePluginException) {
+      throw (CheckstylePluginException) t;
+    } else {
+      throw new CheckstylePluginException(message, t);
     }
+  }
 
-    /**
-     * Wraps an exception into a CheckstylePluginException.
-     *
-     * @param t
-     *            the exception
-     * @throws CheckstylePluginException
-     *             the wrapped exception
-     */
-    public static void rethrow(Throwable t) throws CheckstylePluginException {
-        rethrow(t, t.getMessage());
-    }
+  /**
+   * Wraps an exception into a CheckstylePluginException.
+   *
+   * @param t
+   *          the exception
+   * @throws CheckstylePluginException
+   *           the wrapped exception
+   */
+  public static void rethrow(Throwable t) throws CheckstylePluginException {
+    rethrow(t, t.getMessage());
+  }
 }

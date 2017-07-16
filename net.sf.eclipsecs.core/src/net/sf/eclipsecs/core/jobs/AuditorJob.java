@@ -35,58 +35,60 @@ import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.osgi.util.NLS;
 
 /**
- * Job to de-couple an audit. Used for the "Run Checkstyle in background on full build" functionality.
+ * Job to de-couple an audit. Used for the "Run Checkstyle in background on full build"
+ * functionality.
  * 
  * @author Lars Ködderitzsch
  */
 public class AuditorJob extends WorkspaceJob implements ISchedulingRule {
 
-    private IProject mProject;
+  private IProject mProject;
 
-    private Auditor mAuditor;
+  private Auditor mAuditor;
 
-    /**
-     * Creates an operation which runs a pre-configured auditor.
-     * 
-     * @param project
-     *            the project to build
-     * @param auditor
-     *            the auditor to run
-     */
-    public AuditorJob(IProject project, Auditor auditor) {
-        super(NLS.bind(Messages.AuditorJob_msgBuildProject, project.getName()));
+  /**
+   * Creates an operation which runs a pre-configured auditor.
+   * 
+   * @param project
+   *          the project to build
+   * @param auditor
+   *          the auditor to run
+   */
+  public AuditorJob(IProject project, Auditor auditor) {
+    super(NLS.bind(Messages.AuditorJob_msgBuildProject, project.getName()));
 
-        this.mProject = project;
-        this.mAuditor = auditor;
+    this.mProject = project;
+    this.mAuditor = auditor;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean contains(ISchedulingRule arg0) {
+    return arg0 instanceof AuditorJob;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean isConflicting(ISchedulingRule arg0) {
+    return arg0 instanceof AuditorJob || arg0 instanceof RunCheckstyleOnFilesJob;
+  }
+
+  @Override
+  public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
+
+    try {
+
+      mAuditor.runAudit(mProject, monitor);
+    } catch (CheckstylePluginException e) {
+      Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR,
+              e.getLocalizedMessage(), e);
+      throw new CoreException(status);
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public boolean contains(ISchedulingRule arg0) {
-        return arg0 instanceof AuditorJob;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public boolean isConflicting(ISchedulingRule arg0) {
-        return arg0 instanceof AuditorJob || arg0 instanceof RunCheckstyleOnFilesJob;
-    }
-
-    @Override
-    public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
-
-        try {
-
-            mAuditor.runAudit(mProject, monitor);
-        }
-        catch (CheckstylePluginException e) {
-            Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR,
-                e.getLocalizedMessage(), e);
-            throw new CoreException(status);
-        }
-        return Status.OK_STATUS;
-    }
+    return Status.OK_STATUS;
+  }
 
 }

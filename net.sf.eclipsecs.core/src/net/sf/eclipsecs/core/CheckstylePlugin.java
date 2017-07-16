@@ -39,84 +39,87 @@ import org.osgi.framework.BundleContext;
  */
 public class CheckstylePlugin extends Plugin {
 
-    /** Identifier of the plug-in. */
-    public static final String PLUGIN_ID = "net.sf.eclipsecs.core"; //$NON-NLS-1$
+  /** Identifier of the plug-in. */
+  public static final String PLUGIN_ID = "net.sf.eclipsecs.core"; //$NON-NLS-1$
 
-    /** Extension point id for Checkstyle addon providers. */
-    private static final String ADDON_PROVIDER_EXT_PT_ID = PLUGIN_ID + ".checkstyleAddonProvider"; //$NON-NLS-1$
+  /** Extension point id for Checkstyle addon providers. */
+  private static final String ADDON_PROVIDER_EXT_PT_ID = PLUGIN_ID + ".checkstyleAddonProvider"; //$NON-NLS-1$
 
-    /** The shared instance. */
-    private static CheckstylePlugin sPlugin;
+  /** The shared instance. */
+  private static CheckstylePlugin sPlugin;
 
-    private ClassLoader mAddonExtensionClassLoader;
+  private ClassLoader mAddonExtensionClassLoader;
 
-    /**
-     * The constructor.
-     */
-    public CheckstylePlugin() {
-        super();
-        sPlugin = this;
+  /**
+   * The constructor.
+   */
+  public CheckstylePlugin() {
+    super();
+    sPlugin = this;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void start(BundleContext context) throws Exception {
+    super.start(context);
+
+    mAddonExtensionClassLoader = new ExtensionClassLoader(context.getBundle(),
+            ADDON_PROVIDER_EXT_PT_ID);
+
+    try {
+      Logger checkstyleErrorLog = Logger.getLogger("com.puppycrawl.tools.checkstyle.ExceptionLog"); //$NON-NLS-1$
+
+      checkstyleErrorLog.addHandler(new EclipseLogHandler(this));
+      checkstyleErrorLog.setLevel(Level.ALL);
+
+    } catch (Exception ioe) {
+      CheckstyleLog.log(ioe);
     }
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void start(BundleContext context) throws Exception {
-        super.start(context);
+  /**
+   * Returns the shared instance.
+   *
+   * @return The shared plug-in instance.
+   */
+  public static CheckstylePlugin getDefault() {
+    return sPlugin;
+  }
 
-        mAddonExtensionClassLoader = new ExtensionClassLoader(context.getBundle(), ADDON_PROVIDER_EXT_PT_ID);
+  /**
+   * Returns the workspace instance.
+   *
+   * @return Workspace instance.
+   */
+  public static IWorkspace getWorkspace() {
+    return ResourcesPlugin.getWorkspace();
+  }
 
-        try {
-            Logger checkstyleErrorLog = Logger.getLogger("com.puppycrawl.tools.checkstyle.ExceptionLog"); //$NON-NLS-1$
+  /**
+   * Helper method to get the current plattform locale.
+   *
+   * @return the platform locale
+   */
+  public static Locale getPlatformLocale() {
 
-            checkstyleErrorLog.addHandler(new EclipseLogHandler(this));
-            checkstyleErrorLog.setLevel(Level.ALL);
+    String nl = Platform.getNL();
+    String[] parts = nl.split("_"); //$NON-NLS-1$
 
-        }
-        catch (Exception ioe) {
-            CheckstyleLog.log(ioe);
-        }
-    }
+    String language = parts.length > 0 ? parts[0] : ""; //$NON-NLS-1$
+    String country = parts.length > 1 ? parts[1] : ""; //$NON-NLS-1$
+    String variant = parts.length > 2 ? parts[2] : ""; //$NON-NLS-1$
 
-    /**
-     * Returns the shared instance.
-     * 
-     * @return The shared plug-in instance.
-     */
-    public static CheckstylePlugin getDefault() {
-        return sPlugin;
-    }
+    return new Locale(language, country, variant);
+  }
 
-    /**
-     * Returns the workspace instance.
-     * 
-     * @return Workspace instance.
-     */
-    public static IWorkspace getWorkspace() {
-        return ResourcesPlugin.getWorkspace();
-    }
-
-    /**
-     * Helper method to get the current plattform locale.
-     * 
-     * @return the platform locale
-     */
-    public static Locale getPlatformLocale() {
-
-        String nl = Platform.getNL();
-        String[] parts = nl.split("_"); //$NON-NLS-1$
-
-        String language = parts.length > 0 ? parts[0] : ""; //$NON-NLS-1$
-        String country = parts.length > 1 ? parts[1] : ""; //$NON-NLS-1$
-        String variant = parts.length > 2 ? parts[2] : ""; //$NON-NLS-1$
-
-        return new Locale(language, country, variant);
-    }
-
-    /**
-     * @return the classloader to use when potentially accessing classes from extending plugins.
-     */
-    public ClassLoader getAddonExtensionClassLoader() {
-        return mAddonExtensionClassLoader;
-    }
+  /**
+   * Returns the extension classloader.
+   *
+   * @return the classloader to use when potentially accessing classes from extending plugins.
+   */
+  public ClassLoader getAddonExtensionClassLoader() {
+    return mAddonExtensionClassLoader;
+  }
 }

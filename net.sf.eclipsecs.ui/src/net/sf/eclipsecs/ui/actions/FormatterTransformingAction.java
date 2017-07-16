@@ -34,28 +34,31 @@ import org.eclipse.ui.IWorkbenchPart;
  */
 public class FormatterTransformingAction implements IObjectActionDelegate {
 
-    /**
-     * {@inheritDoc}
-     */
-    public void setActivePart(final IAction arg0, final IWorkbenchPart arg1) {
-        // TODO Auto-generated method stub
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void setActivePart(final IAction arg0, final IWorkbenchPart arg1) {
+    // TODO Auto-generated method stub
 
-    }
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void run(final IAction arg0) {
-        final TransformFormatterRulesJob job = new TransformFormatterRulesJob();
-        job.schedule();
-    }
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void run(final IAction arg0) {
+    final TransformFormatterRulesJob job = new TransformFormatterRulesJob();
+    job.schedule();
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void selectionChanged(final IAction arg0, final ISelection arg1) {
-        // TODO Auto-generated method stub
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void selectionChanged(final IAction arg0, final ISelection arg1) {
+    // TODO Auto-generated method stub
 
-    }
+  }
 
 }

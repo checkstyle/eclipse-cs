@@ -20,6 +20,15 @@
 
 package net.sf.eclipsecs.core.builder;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.io.Closeables;
+import com.puppycrawl.tools.checkstyle.Checker;
+import com.puppycrawl.tools.checkstyle.ConfigurationLoader;
+import com.puppycrawl.tools.checkstyle.PropertyResolver;
+import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
+import com.puppycrawl.tools.checkstyle.api.Configuration;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.Locale;
@@ -38,15 +47,6 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.xml.sax.InputSource;
 
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
-import com.google.common.io.Closeables;
-import com.puppycrawl.tools.checkstyle.Checker;
-import com.puppycrawl.tools.checkstyle.ConfigurationLoader;
-import com.puppycrawl.tools.checkstyle.PropertyResolver;
-import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
-import com.puppycrawl.tools.checkstyle.api.Configuration;
-
 /**
  * Factory class to create (and cache) checker objects.
  *
@@ -54,249 +54,247 @@ import com.puppycrawl.tools.checkstyle.api.Configuration;
  */
 public final class CheckerFactory {
 
-    /** Map containing the configured checkers. */
-    private static Cache<String, Checker> sCheckerMap;
+  /** Map containing the configured checkers. */
+  private static Cache<String, Checker> sCheckerMap;
 
-    /** Map containing the modification times of configs. */
-    private static Map<String, Long> sModifiedMap;
+  /** Map containing the modification times of configs. */
+  private static Map<String, Long> sModifiedMap;
 
-    /** Map containing additional data about the check configurations. */
-    private static Map<String, AdditionalConfigData> sAdditionalDataMap;
+  /** Map containing additional data about the check configurations. */
+  private static Map<String, AdditionalConfigData> sAdditionalDataMap;
 
-    /** the shared classloader for the checkers. */
-    private static ProjectClassLoader sSharedClassLoader;
+  /** the shared classloader for the checkers. */
+  private static ProjectClassLoader sSharedClassLoader;
 
-    /**
-     * Initialize the cache.
-     */
-    static {
+  /**
+   * Initialize the cache.
+   */
+  static {
 
-        sCheckerMap = CacheBuilder.newBuilder().softValues().build();
+    sCheckerMap = CacheBuilder.newBuilder().softValues().build();
 
-        sModifiedMap = new ConcurrentHashMap<String, Long>();
-        sAdditionalDataMap = new ConcurrentHashMap<String, AdditionalConfigData>();
+    sModifiedMap = new ConcurrentHashMap<>();
+    sAdditionalDataMap = new ConcurrentHashMap<>();
 
-        sSharedClassLoader = new ProjectClassLoader();
+    sSharedClassLoader = new ProjectClassLoader();
+  }
+
+  /**
+   * Hidden utility class constructor.
+   */
+  private CheckerFactory() {
+    // noop
+  }
+
+  /**
+   * Creates a checker for a given configuration file.
+   *
+   * @param config
+   *          the check configuration data
+   * @param project
+   *          the project to create the checker for
+   * @return the checker for the given configuration file
+   * @throws CheckstyleException
+   *           the configuration file had errors
+   * @throws CheckstylePluginException
+   *           the configuration could not be read
+   */
+  public static Checker createChecker(ICheckConfiguration config, IProject project)
+          throws CheckstyleException, CheckstylePluginException {
+
+    String cacheKey = getCacheKey(config, project);
+
+    CheckstyleConfigurationFile configFileData = config.getCheckstyleConfiguration();
+    Checker checker = tryCheckerCache(cacheKey, configFileData.getModificationStamp());
+
+    // clear Checkstyle internal caches upon checker reuse
+    if (checker != null) {
+      checker.clearCache();
     }
 
-    /**
-     * Hidden utility class constructor.
-     */
-    private CheckerFactory() {
-        // noop
+    // no cache hit
+    if (checker == null) {
+      PropertyResolver resolver = configFileData.getPropertyResolver();
+
+      // set the project context if the property resolver needs the
+      // context
+      if (resolver instanceof IContextAware) {
+        ((IContextAware) resolver).setProjectContext(project);
+      }
+
+      InputSource in = null;
+      try {
+        in = configFileData.getCheckConfigFileInputSource();
+        checker = createCheckerInternal(in, resolver, project);
+      } finally {
+        Closeables.closeQuietly(in.getByteStream());
+      }
+
+      // store checker in cache
+      Long modified = new Long(configFileData.getModificationStamp());
+      sCheckerMap.put(cacheKey, checker);
+      sModifiedMap.put(cacheKey, modified);
     }
 
-    /**
-     * Creates a checker for a given configuration file.
-     *
-     * @param config
-     *            the check configuration data
-     * @param project
-     *            the project to create the checker for
-     * @return the checker for the given configuration file
-     * @throws CheckstyleException
-     *             the configuration file had errors
-     * @throws CheckstylePluginException
-     *             the configuration could not be read
-     */
-    public static Checker createChecker(ICheckConfiguration config, IProject project) throws CheckstyleException,
-        CheckstylePluginException {
+    return checker;
+  }
 
-        String cacheKey = getCacheKey(config, project);
+  /**
+   * Determines the additional data for a given configuration file.
+   *
+   * @param config
+   *          the check configuration
+   * @param project
+   *          the project to create the checker for
+   * @return the checker for the given configuration file
+   * @throws CheckstylePluginException
+   *           the configuration could not be read
+   */
+  public static ConfigurationReader.AdditionalConfigData getAdditionalData(
+          ICheckConfiguration config, IProject project) throws CheckstylePluginException {
 
-        CheckstyleConfigurationFile configFileData = config.getCheckstyleConfiguration();
-        Checker checker = tryCheckerCache(cacheKey, configFileData.getModificationStamp());
+    String cacheKey = getCacheKey(config, project);
 
-        // clear Checkstyle internal caches upon checker reuse
-        if (checker != null) {
-            checker.clearCache();
-        }
+    AdditionalConfigData additionalData = sAdditionalDataMap.get(cacheKey);
 
-        // no cache hit
-        if (checker == null) {
-            PropertyResolver resolver = configFileData.getPropertyResolver();
+    // no cache hit - create the additional data
+    if (additionalData == null) {
+      CheckstyleConfigurationFile configFileData = config.getCheckstyleConfiguration();
 
-            // set the project context if the property resolver needs the
-            // context
-            if (resolver instanceof IContextAware) {
-                ((IContextAware) resolver).setProjectContext(project);
-            }
+      InputSource in = null;
+      try {
+        in = configFileData.getCheckConfigFileInputSource();
+        additionalData = ConfigurationReader.getAdditionalConfigData(in);
+      } finally {
+        Closeables.closeQuietly(in.getByteStream());
+      }
 
-            InputSource in = null;
-            try {
-                in = configFileData.getCheckConfigFileInputSource();
-                checker = createCheckerInternal(in, resolver, project);
-            }
-            finally {
-                Closeables.closeQuietly(in.getByteStream());
-            }
-
-            // store checker in cache
-            Long modified = new Long(configFileData.getModificationStamp());
-            sCheckerMap.put(cacheKey, checker);
-            sModifiedMap.put(cacheKey, modified);
-        }
-
-        return checker;
+      sAdditionalDataMap.put(cacheKey, additionalData);
     }
 
-    /**
-     * Determines the additional data for a given configuration file.
-     *
-     * @param config
-     *            the check configuration
-     * @param project
-     *            the project to create the checker for
-     * @return the checker for the given configuration file
-     * @throws CheckstylePluginException
-     *             the configuration could not be read
-     */
-    public static ConfigurationReader.AdditionalConfigData getAdditionalData(ICheckConfiguration config,
-        IProject project) throws CheckstylePluginException {
+    return additionalData;
+  }
 
-        String cacheKey = getCacheKey(config, project);
+  /**
+   * Returns the shared classloader which is used by all checkers created by this factory.
+   *
+   * @return the shared classloader
+   */
+  public static ProjectClassLoader getSharedClassLoader() {
+    return sSharedClassLoader;
+  }
 
-        AdditionalConfigData additionalData = sAdditionalDataMap.get(cacheKey);
+  /**
+   * Cleans up the checker cache.
+   */
+  public static void cleanup() {
+    sCheckerMap.invalidateAll();
+    sModifiedMap.clear();
+    sAdditionalDataMap.clear();
+  }
 
-        // no cache hit - create the additional data
-        if (additionalData == null) {
-            CheckstyleConfigurationFile configFileData = config.getCheckstyleConfiguration();
+  /**
+   * Build a unique cache key for the check configuration.
+   *
+   * @param config
+   *          the check configuration
+   * @param project
+   *          the project being checked
+   * @return the unique cache key
+   * @throws CheckstylePluginException
+   *           error getting configuration file data
+   */
+  private static String getCacheKey(ICheckConfiguration config, IProject project)
+          throws CheckstylePluginException {
+    CheckstyleConfigurationFile configFileData = config.getCheckstyleConfiguration();
 
-            InputSource in = null;
-            try {
-                in = configFileData.getCheckConfigFileInputSource();
-                additionalData = ConfigurationReader.getAdditionalConfigData(in);
-            }
-            finally {
-                Closeables.closeQuietly(in.getByteStream());
-            }
+    URL configLocation = configFileData.getResolvedConfigFileURL();
+    String checkConfigName = config.getName() + "#" + (config.isGlobal() ? "Global" : "Local");
 
-            sAdditionalDataMap.put(cacheKey, additionalData);
-        }
+    String cacheKey = project.getName() + "#" + configLocation + "#" + checkConfigName;
 
-        return additionalData;
+    return cacheKey;
+  }
+
+  /**
+   * Tries to reuse an already configured checker for this configuration.
+   *
+   * @param config
+   *          the configuration file
+   * @param cacheKey
+   *          the key for cache access
+   * @return the cached checker or null
+   */
+  private static Checker tryCheckerCache(String cacheKey, long modificationStamp) {
+
+    // try the cache
+    Checker checker = sCheckerMap.getIfPresent(cacheKey);
+
+    // if cache hit
+    if (checker != null) {
+
+      // compare modification times of the configs
+      Long oldTime = sModifiedMap.get(cacheKey);
+      Long newTime = new Long(modificationStamp);
+
+      // no match - remove checker from cache
+      if (oldTime == null || oldTime.compareTo(newTime) != 0) {
+        checker = null;
+        sCheckerMap.invalidate(cacheKey);
+        sModifiedMap.remove(cacheKey);
+        sAdditionalDataMap.remove(cacheKey);
+      }
+    }
+    return checker;
+  }
+
+  /**
+   * Creates a new checker and configures it with the given configuration file.
+   *
+   * @param input
+   *          the input source for the configuration file
+   * @param configFileUri
+   *          the URI of the configuration file, or <code>null</code> if it could not be determined
+   * @param propResolver
+   *          a property resolver null
+   * @param project
+   *          the project
+   * @return the newly created Checker
+   * @throws CheckstyleException
+   *           an exception during the creation of the checker occured
+   */
+  private static Checker createCheckerInternal(InputSource input, PropertyResolver propResolver,
+          IProject project) throws CheckstyleException, CheckstylePluginException {
+
+    // load configuration
+    final Configuration configuration = ConfigurationLoader.loadConfiguration(input, propResolver,
+            true);
+
+    // create and configure checker
+    Checker checker = new Checker();
+    checker.setModuleClassLoader(CheckstylePlugin.getDefault().getAddonExtensionClassLoader());
+    try {
+      checker.setCharset(project.getDefaultCharset());
+    } catch (UnsupportedEncodingException e) {
+      CheckstylePluginException.rethrow(e);
+    } catch (CoreException e) {
+      CheckstylePluginException.rethrow(e);
     }
 
-    /**
-     * Returns the shared classloader which is used by all checkers created by this factory.
-     *
-     * @return the shared classloader
-     */
-    public static ProjectClassLoader getSharedClassLoader() {
-        return sSharedClassLoader;
-    }
+    // set the eclipse platform locale
+    Locale platformLocale = CheckstylePlugin.getPlatformLocale();
+    checker.setLocaleLanguage(platformLocale.getLanguage());
+    checker.setLocaleCountry(platformLocale.getCountry());
+    checker.setClassLoader(sSharedClassLoader);
 
-    /**
-     * Cleans up the checker cache.
-     */
-    public static void cleanup() {
-        sCheckerMap.invalidateAll();
-        sModifiedMap.clear();
-        sAdditionalDataMap.clear();
-    }
+    checker.configure(configuration);
 
-    /**
-     * Build a unique cache key for the check configuration.
-     *
-     * @param config
-     *            the check configuration
-     * @param project
-     *            the project being checked
-     * @return the unique cache key
-     * @throws CheckstylePluginException
-     *             error getting configuration file data
-     */
-    private static String getCacheKey(ICheckConfiguration config, IProject project) throws CheckstylePluginException {
-        CheckstyleConfigurationFile configFileData = config.getCheckstyleConfiguration();
+    // reset the basedir if it is set so it won't get into the plugins way
+    // of determining workspace resources from checkstyle reported file
+    // names, see
+    // https://sourceforge.net/tracker/?func=detail&aid=2880044&group_id=80344&atid=559497
+    checker.setBasedir(null);
 
-        URL configLocation = configFileData.getResolvedConfigFileURL();
-        String checkConfigName = config.getName() + "#" + (config.isGlobal() ? "Global" : "Local");
-
-        String cacheKey = project.getName() + "#" + configLocation + "#" + checkConfigName; //$NON-NLS-1$
-
-        return cacheKey;
-    }
-
-    /**
-     * Tries to reuse an already configured checker for this configuration.
-     *
-     * @param config
-     *            the configuration file
-     * @param cacheKey
-     *            the key for cache access
-     * @return the cached checker or null
-     */
-    private static Checker tryCheckerCache(String cacheKey, long modificationStamp) {
-
-        // try the cache
-        Checker checker = sCheckerMap.getIfPresent(cacheKey);
-
-        // if cache hit
-        if (checker != null) {
-
-            // compare modification times of the configs
-            Long oldTime = sModifiedMap.get(cacheKey);
-            Long newTime = new Long(modificationStamp);
-
-            // no match - remove checker from cache
-            if (oldTime == null || oldTime.compareTo(newTime) != 0) {
-                checker = null;
-                sCheckerMap.invalidate(cacheKey);
-                sModifiedMap.remove(cacheKey);
-                sAdditionalDataMap.remove(cacheKey);
-            }
-        }
-        return checker;
-    }
-
-    /**
-     * Creates a new checker and configures it with the given configuration file.
-     *
-     * @param input
-     *            the input source for the configuration file
-     * @param configFileUri
-     *            the URI of the configuration file, or <code>null</code> if it could not be determined
-     * @param propResolver
-     *            a property resolver null
-     * @param project
-     *            the project
-     * @return the newly created Checker
-     * @throws CheckstyleException
-     *             an exception during the creation of the checker occured
-     */
-    private static Checker createCheckerInternal(InputSource input, PropertyResolver propResolver, IProject project)
-        throws CheckstyleException, CheckstylePluginException {
-
-        // load configuration
-        Configuration configuration = ConfigurationLoader.loadConfiguration(input, propResolver, true);
-
-        // create and configure checker
-        Checker checker = new Checker();
-        checker.setModuleClassLoader(CheckstylePlugin.getDefault().getAddonExtensionClassLoader());
-        try {
-            checker.setCharset(project.getDefaultCharset());
-        }
-        catch (UnsupportedEncodingException e) {
-            CheckstylePluginException.rethrow(e);
-        }
-        catch (CoreException e) {
-            CheckstylePluginException.rethrow(e);
-        }
-
-        // set the eclipse platform locale
-        Locale platformLocale = CheckstylePlugin.getPlatformLocale();
-        checker.setLocaleLanguage(platformLocale.getLanguage());
-        checker.setLocaleCountry(platformLocale.getCountry());
-        checker.setClassLoader(sSharedClassLoader);
-
-        checker.configure(configuration);
-
-        // reset the basedir if it is set so it won't get into the plugins way
-        // of determining workspace resources from checkstyle reported file
-        // names, see
-        // https://sourceforge.net/tracker/?func=detail&aid=2880044&group_id=80344&atid=559497
-        checker.setBasedir(null);
-
-        return checker;
-    }
+    return checker;
+  }
 }

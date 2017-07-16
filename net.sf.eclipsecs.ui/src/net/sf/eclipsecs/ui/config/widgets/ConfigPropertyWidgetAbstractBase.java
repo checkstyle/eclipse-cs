@@ -36,103 +36,107 @@ import org.eclipse.swt.widgets.Label;
  */
 public abstract class ConfigPropertyWidgetAbstractBase implements IConfigPropertyWidget {
 
-    private ConfigProperty mProp;
+  private ConfigProperty mProp;
 
-    private Control mValueWidget;
+  private Control mValueWidget;
 
-    private Composite mParent;
+  private Composite mParent;
 
-    protected ConfigPropertyWidgetAbstractBase(Composite parent, ConfigProperty prop) {
-        mParent = parent;
-        mProp = prop;
+  protected ConfigPropertyWidgetAbstractBase(Composite parent, ConfigProperty prop) {
+    mParent = parent;
+    mProp = prop;
+  }
+
+  /**
+   * @see net.sf.eclipsecs.ui.config.widgets.IConfigPropertyWidget#initialize()
+   */
+  @Override
+  public void initialize() {
+
+    //
+    // Add the property's name.
+    //
+    Label label = new Label(mParent, SWT.NULL);
+    label.setText(mProp.getName() + ":"); //$NON-NLS-1$
+    GridData gd = new GridData();
+    gd.verticalAlignment = SWT.BEGINNING;
+    label.setLayoutData(gd);
+
+    mValueWidget = getValueWidget(mParent);
+    gd = (GridData) mValueWidget.getLayoutData();
+    mValueWidget.setToolTipText(mProp.getMetaData().getDescription());
+
+    // provide a label that shows a tooltip with the property description
+    Label lblPropertyInfo = new Label(mParent, SWT.NULL);
+    gd = new GridData();
+    gd.verticalAlignment = SWT.BEGINNING;
+    lblPropertyInfo.setLayoutData(gd);
+    lblPropertyInfo.setImage(CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.HELP_ICON));
+    lblPropertyInfo.setToolTipText(mProp.getMetaData().getDescription());
+    SWTUtil.addTooltipOnPressSupport(lblPropertyInfo);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void setEnabled(boolean enabled) {
+    mValueWidget.setEnabled(enabled);
+  }
+
+  /**
+   * Returns the widget containing the values.
+   * 
+   * @return the widget containing the value
+   */
+  protected abstract Control getValueWidget(Composite parent);
+
+  /**
+   * @return The property's value.
+   */
+  @Override
+  public abstract String getValue();
+
+  protected String getInitValue() {
+    //
+    // Figure out an initial value for the property. This will be,
+    // in order of precidents:
+    //
+    // 1) the existing value
+    // 2) a default value overriding the checkstyle default
+    // 3) the checkstyle default value, if specified
+    // 4) blank
+    //
+    String initValue = null;
+    if (mProp != null) {
+      initValue = mProp.getValue();
+    }
+    if (initValue == null) {
+      initValue = mProp.getMetaData().getOverrideDefault();
+    }
+    if (initValue == null) {
+      initValue = mProp.getMetaData().getDefaultValue();
+    }
+    if (initValue == null) {
+      initValue = ""; //$NON-NLS-1$
     }
 
-    /**
-     * @see net.sf.eclipsecs.ui.config.widgets.IConfigPropertyWidget#initialize()
-     */
-    public void initialize() {
+    return initValue;
+  }
 
-        //
-        // Add the property's name.
-        //
-        Label label = new Label(mParent, SWT.NULL);
-        label.setText(mProp.getName() + ":"); //$NON-NLS-1$
-        GridData gd = new GridData();
-        gd.verticalAlignment = SWT.BEGINNING;
-        label.setLayoutData(gd);
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public ConfigProperty getConfigProperty() {
+    return mProp;
+  }
 
-        mValueWidget = getValueWidget(mParent);
-        gd = (GridData) mValueWidget.getLayoutData();
-        mValueWidget.setToolTipText(mProp.getMetaData().getDescription());
-
-        // provide a label that shows a tooltip with the property description
-        Label lblPropertyInfo = new Label(mParent, SWT.NULL);
-        gd = new GridData();
-        gd.verticalAlignment = SWT.BEGINNING;
-        lblPropertyInfo.setLayoutData(gd);
-        lblPropertyInfo.setImage(CheckstyleUIPluginImages
-                .getImage(CheckstyleUIPluginImages.HELP_ICON));
-        lblPropertyInfo.setToolTipText(mProp.getMetaData().getDescription());
-        SWTUtil.addTooltipOnPressSupport(lblPropertyInfo);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void setEnabled(boolean enabled) {
-        mValueWidget.setEnabled(enabled);
-    }
-
-    /**
-     * Returns the widget containing the values.
-     * 
-     * @return the widget containing the value
-     */
-    protected abstract Control getValueWidget(Composite parent);
-
-    /**
-     * @return The property's value.
-     */
-    public abstract String getValue();
-
-    protected String getInitValue() {
-        //
-        // Figure out an initial value for the property. This will be,
-        // in order of precidents:
-        //
-        // 1) the existing value
-        // 2) a default value overriding the checkstyle default
-        // 3) the checkstyle default value, if specified
-        // 4) blank
-        //
-        String initValue = null;
-        if (mProp != null) {
-            initValue = mProp.getValue();
-        }
-        if (initValue == null) {
-            initValue = mProp.getMetaData().getOverrideDefault();
-        }
-        if (initValue == null) {
-            initValue = mProp.getMetaData().getDefaultValue();
-        }
-        if (initValue == null) {
-            initValue = ""; //$NON-NLS-1$
-        }
-
-        return initValue;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public ConfigProperty getConfigProperty() {
-        return mProp;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void validate() throws CheckstylePluginException {
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void validate() throws CheckstylePluginException {
     // Nothing to to for most properties
-    }
+  }
 }

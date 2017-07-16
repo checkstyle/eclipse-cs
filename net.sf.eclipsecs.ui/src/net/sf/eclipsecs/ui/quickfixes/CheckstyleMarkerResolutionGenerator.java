@@ -41,81 +41,80 @@ import org.eclipse.ui.IMarkerResolutionGenerator2;
  */
 public class CheckstyleMarkerResolutionGenerator implements IMarkerResolutionGenerator2 {
 
-    /**
-     * {@inheritDoc}
-     */
-    public IMarkerResolution[] getResolutions(IMarker marker) {
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public IMarkerResolution[] getResolutions(IMarker marker) {
 
-        Collection<ICheckstyleMarkerResolution> fixes = new ArrayList<ICheckstyleMarkerResolution>();
+    Collection<ICheckstyleMarkerResolution> fixes = new ArrayList<ICheckstyleMarkerResolution>();
 
-        // get all fixes that apply to this marker instance
-        String moduleName = marker.getAttribute(CheckstyleMarker.MODULE_NAME, null);
+    // get all fixes that apply to this marker instance
+    String moduleName = marker.getAttribute(CheckstyleMarker.MODULE_NAME, null);
 
-        RuleMetadata metadata = MetadataFactory.getRuleMetadata(moduleName);
-        List<ICheckstyleMarkerResolution> potentialFixes = getInstantiatedQuickfixes(metadata);
+    RuleMetadata metadata = MetadataFactory.getRuleMetadata(moduleName);
+    List<ICheckstyleMarkerResolution> potentialFixes = getInstantiatedQuickfixes(metadata);
 
-        for (ICheckstyleMarkerResolution fix : potentialFixes) {
+    for (ICheckstyleMarkerResolution fix : potentialFixes) {
 
-            if (fix.canFix(marker)) {
-                fixes.add(fix);
-            }
-        }
-
-        return fixes.toArray(new ICheckstyleMarkerResolution[fixes.size()]);
+      if (fix.canFix(marker)) {
+        fixes.add(fix);
+      }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public boolean hasResolutions(IMarker marker) {
+    return fixes.toArray(new ICheckstyleMarkerResolution[fixes.size()]);
+  }
 
-        boolean hasAtLeastOneFix = false;
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean hasResolutions(IMarker marker) {
 
-        // check if there is at least one fix that really applies to the module
-        String moduleName = marker.getAttribute(CheckstyleMarker.MODULE_NAME, null);
+    boolean hasAtLeastOneFix = false;
 
-        RuleMetadata metadata = MetadataFactory.getRuleMetadata(moduleName);
+    // check if there is at least one fix that really applies to the module
+    String moduleName = marker.getAttribute(CheckstyleMarker.MODULE_NAME, null);
 
-        if (metadata != null) {
+    RuleMetadata metadata = MetadataFactory.getRuleMetadata(moduleName);
 
-            List<ICheckstyleMarkerResolution> fixes = getInstantiatedQuickfixes(metadata);
+    if (metadata != null) {
 
-            for (ICheckstyleMarkerResolution fix : fixes) {
+      List<ICheckstyleMarkerResolution> fixes = getInstantiatedQuickfixes(metadata);
 
-                if (fix.canFix(marker)) {
-                    hasAtLeastOneFix = true;
-                    break;
-                }
-            }
+      for (ICheckstyleMarkerResolution fix : fixes) {
+
+        if (fix.canFix(marker)) {
+          hasAtLeastOneFix = true;
+          break;
         }
-        return hasAtLeastOneFix;
+      }
     }
+    return hasAtLeastOneFix;
+  }
 
-    private List<ICheckstyleMarkerResolution> getInstantiatedQuickfixes(RuleMetadata ruleMetadata) {
+  private List<ICheckstyleMarkerResolution> getInstantiatedQuickfixes(RuleMetadata ruleMetadata) {
 
-        List<ICheckstyleMarkerResolution> fixes = new ArrayList<ICheckstyleMarkerResolution>();
+    List<ICheckstyleMarkerResolution> fixes = new ArrayList<ICheckstyleMarkerResolution>();
 
-        try {
+    try {
 
-            for (String quickfixClassName : ruleMetadata.getQuickfixClassNames()) {
+      for (String quickfixClassName : ruleMetadata.getQuickfixClassNames()) {
 
-                Class<?> quickfixClass = CheckstyleUIPlugin.getDefault().getQuickfixExtensionClassLoader()
-                    .loadClass(quickfixClassName);
+        Class<?> quickfixClass = CheckstyleUIPlugin.getDefault().getQuickfixExtensionClassLoader()
+                .loadClass(quickfixClassName);
 
-                ICheckstyleMarkerResolution fix = (ICheckstyleMarkerResolution) quickfixClass.newInstance();
-                fix.setRuleMetaData(ruleMetadata);
-                fixes.add(fix);
-            }
-        }
-        catch (InstantiationException e) {
-            CheckstyleLog.log(e);
-        }
-        catch (ClassNotFoundException e) {
-            CheckstyleLog.log(e);
-        }
-        catch (IllegalAccessException e) {
-            CheckstyleLog.log(e);
-        }
-        return fixes;
+        ICheckstyleMarkerResolution fix = (ICheckstyleMarkerResolution) quickfixClass.newInstance();
+        fix.setRuleMetaData(ruleMetadata);
+        fixes.add(fix);
+      }
+    } catch (InstantiationException e) {
+      CheckstyleLog.log(e);
+    } catch (ClassNotFoundException e) {
+      CheckstyleLog.log(e);
+    } catch (IllegalAccessException e) {
+      CheckstyleLog.log(e);
     }
+    return fixes;
+  }
 }

@@ -20,6 +20,8 @@
 
 package net.sf.eclipsecs.core.config.configtypes;
 
+import com.puppycrawl.tools.checkstyle.PropertyResolver;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -27,62 +29,61 @@ import java.net.URL;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.URIUtil;
 
-import com.puppycrawl.tools.checkstyle.PropertyResolver;
-
 /**
- * Adds support for additional checkstyle config files (header, suppressions etc.) to be delivered with a builtin
- * configuration.
+ * Adds support for additional checkstyle config files (header, suppressions etc.) to be delivered
+ * with a builtin configuration.
  *
  * @author Lars Ködderitzsch
  */
 public class BuiltInFilePropertyResolver implements PropertyResolver {
 
-    /** constant for the samedir variable. */
-    private static final String SAMEDIR_LOC = "samedir"; //$NON-NLS-1$
+  /** constant for the samedir variable. */
+  private static final String SAMEDIR_LOC = "samedir"; //$NON-NLS-1$
 
-    /** constant for the config_loc variable. */
-    private static final String CONFIG_LOC = "config_loc"; //$NON-NLS-1$
+  /** constant for the config_loc variable. */
+  private static final String CONFIG_LOC = "config_loc"; //$NON-NLS-1$
 
-    private final String mBuiltInConfigLocation;
+  private final String mBuiltInConfigLocation;
 
-    /**
-     * Creates the resolver.
-     *
-     * @param builtInConfigLocation
-     *            the bundle based url of the builtin configuration file
-     */
-    public BuiltInFilePropertyResolver(String builtInConfigLocation) {
-        mBuiltInConfigLocation = builtInConfigLocation;
+  /**
+   * Creates the resolver.
+   *
+   * @param builtInConfigLocation
+   *          the bundle based url of the builtin configuration file
+   */
+  public BuiltInFilePropertyResolver(String builtInConfigLocation) {
+    mBuiltInConfigLocation = builtInConfigLocation;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String resolve(String property) {
+
+    String value = null;
+
+    if ((SAMEDIR_LOC.equals(property) || CONFIG_LOC.equals(property))
+            && mBuiltInConfigLocation != null) {
+
+      int lastSlash = mBuiltInConfigLocation.lastIndexOf("/"); //$NON-NLS-1$
+      if (lastSlash > -1) {
+        value = mBuiltInConfigLocation.substring(0, lastSlash + 1);
+      }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public String resolve(String property) {
+    if (value != null) {
+      try {
+        URL bundleLocatedURL = new URL(value);
+        URL fileURL = FileLocator.toFileURL(bundleLocatedURL);
 
-        String value = null;
-
-        if ((SAMEDIR_LOC.equals(property) || CONFIG_LOC.equals(property)) && mBuiltInConfigLocation != null) {
-
-            int lastSlash = mBuiltInConfigLocation.lastIndexOf("/"); //$NON-NLS-1$
-            if (lastSlash > -1) {
-                value = mBuiltInConfigLocation.substring(0, lastSlash + 1);
-            }
-        }
-
-        if (value != null) {
-            try {
-                URL bundleLocatedURL = new URL(value);
-                URL fileURL = FileLocator.toFileURL(bundleLocatedURL);
-
-                value = URIUtil.toFile(fileURL.toURI()).getAbsolutePath();
-            }
-            catch (IOException | URISyntaxException e) {
-                throw new RuntimeException(e.getMessage(), e);
-            }
-        }
-
-        return value;
+        value = URIUtil.toFile(fileURL.toURI()).getAbsolutePath();
+      } catch (IOException | URISyntaxException e) {
+        throw new RuntimeException(e.getMessage(), e);
+      }
     }
+
+    return value;
+  }
 
 }

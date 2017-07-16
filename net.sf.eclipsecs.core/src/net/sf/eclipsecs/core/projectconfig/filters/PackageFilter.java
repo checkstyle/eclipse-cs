@@ -30,134 +30,133 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 
 /**
- * filters resources that lie within excluded packages. This filter is used for the checkstyle audit funtion of this
- * plugin.
+ * filters resources that lie within excluded packages. This filter is used for the checkstyle audit
+ * funtion of this plugin.
  *
  * @author Lars Ködderitzsch
  */
 public class PackageFilter extends AbstractFilter {
 
-    /**
-     * Marker string in the filter data, if present the subpackes of a filtered package are not recursivly excluded, but
-     * only the filtered package itself.
-     */
-    public static final String RECURSE_OFF_MARKER = "<recurse=false>";
+  /**
+   * Marker string in the filter data, if present the subpackes of a filtered package are not
+   * recursivly excluded, but only the filtered package itself.
+   */
+  public static final String RECURSE_OFF_MARKER = "<recurse=false>";
 
-    private List<String> mData = new ArrayList<String>();
+  private List<String> mData = new ArrayList<String>();
 
-    private boolean mExcludeSubPackages = true;
+  private boolean mExcludeSubPackages = true;
 
-    /**
-     * {@inheritDoc}
-     */
-    public boolean accept(Object element) {
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean accept(Object element) {
 
-        boolean goesThrough = true;
+    boolean goesThrough = true;
 
-        if (element instanceof IResource) {
+    if (element instanceof IResource) {
 
-            IResource resource = (IResource) element;
+      IResource resource = (IResource) element;
 
-            IContainer folder = null;
+      IContainer folder = null;
 
-            if (resource instanceof IContainer) {
-                folder = (IContainer) resource;
-            }
-            else {
-                folder = resource.getParent();
-            }
+      if (resource instanceof IContainer) {
+        folder = (IContainer) resource;
+      } else {
+        folder = resource.getParent();
+      }
 
-            IPath projRelativPath = folder.getProjectRelativePath();
+      IPath projRelativPath = folder.getProjectRelativePath();
 
-            int size = mData != null ? mData.size() : 0;
-            for (int i = 0; i < size; i++) {
+      int size = mData != null ? mData.size() : 0;
+      for (int i = 0; i < size; i++) {
 
-                String el = mData.get(i);
+        String el = mData.get(i);
 
-                if (RECURSE_OFF_MARKER.equals(el)) {
-                    continue;
-                }
-
-                IPath filteredPath = new Path(el);
-                if (mExcludeSubPackages && filteredPath.isPrefixOf(projRelativPath)) {
-                    goesThrough = false;
-                    break;
-                }
-                else if (!mExcludeSubPackages && filteredPath.equals(projRelativPath)) {
-                    goesThrough = false;
-                    break;
-                }
-            }
-        }
-        return goesThrough;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setFilterData(List<String> filterData) {
-        if (filterData == null) {
-            mData = new ArrayList<String>();
+        if (RECURSE_OFF_MARKER.equals(el)) {
+          continue;
         }
 
-        mData = filterData;
-
-        if (mData.contains(RECURSE_OFF_MARKER)) {
-            mExcludeSubPackages = false;
+        IPath filteredPath = new Path(el);
+        if (mExcludeSubPackages && filteredPath.isPrefixOf(projRelativPath)) {
+          goesThrough = false;
+          break;
+        } else if (!mExcludeSubPackages && filteredPath.equals(projRelativPath)) {
+          goesThrough = false;
+          break;
         }
+      }
+    }
+    return goesThrough;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void setFilterData(List<String> filterData) {
+    if (filterData == null) {
+      mData = new ArrayList<String>();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<String> getFilterData() {
-        return mData;
+    mData = filterData;
+
+    if (mData.contains(RECURSE_OFF_MARKER)) {
+      mExcludeSubPackages = false;
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public List<String> getFilterData() {
+    return mData;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String getPresentableFilterData() {
+
+    StringBuffer buf = new StringBuffer();
+
+    int size = mData != null ? mData.size() : 0;
+    for (int i = 0; i < size; i++) {
+      if (i > 0) {
+        buf.append(", "); //$NON-NLS-1$
+      }
+
+      buf.append(mData.get(i));
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getPresentableFilterData() {
+    return buf.toString();
+  }
 
-        StringBuffer buf = new StringBuffer();
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean equals(Object o) {
 
-        int size = mData != null ? mData.size() : 0;
-        for (int i = 0; i < size; i++) {
-            if (i > 0) {
-                buf.append(", "); //$NON-NLS-1$
-            }
-
-            buf.append(mData.get(i));
-        }
-
-        return buf.toString();
+    if (o == null || !(o instanceof PackageFilter)) {
+      return false;
+    }
+    if (this == o) {
+      return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(Object o) {
+    PackageFilter rhs = (PackageFilter) o;
+    return super.equals(o) && Objects.equals(mData, rhs.mData);
+  }
 
-        if (o == null || !(o instanceof PackageFilter)) {
-            return false;
-        }
-        if (this == o) {
-            return true;
-        }
-
-        PackageFilter rhs = (PackageFilter) o;
-        return super.equals(o) && Objects.equals(mData, rhs.mData);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), mData);
-    }
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public int hashCode() {
+    return Objects.hash(super.hashCode(), mData);
+  }
 }

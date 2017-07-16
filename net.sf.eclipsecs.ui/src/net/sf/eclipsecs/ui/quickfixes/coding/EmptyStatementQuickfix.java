@@ -39,49 +39,54 @@ import org.eclipse.swt.graphics.Image;
  */
 public class EmptyStatementQuickfix extends AbstractASTResolution {
 
-    /**
-     * {@inheritDoc}
-     */
-    protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
-            final int markerStartPosition) {
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
+          final int markerStartPosition) {
 
-        return new ASTVisitor() {
-            public boolean visit(EmptyStatement node) {
-                if (containsPosition(lineInfo, node.getStartPosition())) {
+    return new ASTVisitor() {
+      @Override
+      public boolean visit(EmptyStatement node) {
+        if (containsPosition(lineInfo, node.getStartPosition())) {
 
-                    // early exit if the statement is mandatory, e.g. only
-                    // statement in a for-statement without block
-                    StructuralPropertyDescriptor p = node.getLocationInParent();
-                    if (p.isChildProperty() && ((ChildPropertyDescriptor) p).isMandatory()) {
-                        return false;
-                    }
+          // early exit if the statement is mandatory, e.g. only
+          // statement in a for-statement without block
+          StructuralPropertyDescriptor p = node.getLocationInParent();
+          if (p.isChildProperty() && ((ChildPropertyDescriptor) p).isMandatory()) {
+            return false;
+          }
 
-                    node.delete();
-                }
-                return false;
-            }
-        };
-    }
+          node.delete();
+        }
+        return false;
+      }
+    };
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    public String getDescription() {
-        return Messages.EmptyStatementQuickfix_description;
-    }
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String getDescription() {
+    return Messages.EmptyStatementQuickfix_description;
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    public String getLabel() {
-        return Messages.EmptyStatementQuickfix_label;
-    }
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String getLabel() {
+    return Messages.EmptyStatementQuickfix_label;
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    public Image getImage() {
-        return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.CORRECTION_REMOVE);
-    }
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public Image getImage() {
+    return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.CORRECTION_REMOVE);
+  }
 
 }

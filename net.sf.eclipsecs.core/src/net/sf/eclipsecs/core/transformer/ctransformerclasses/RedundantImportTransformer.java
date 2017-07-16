@@ -20,21 +20,21 @@
 
 package net.sf.eclipsecs.core.transformer.ctransformerclasses;
 
-import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 import net.sf.eclipsecs.core.transformer.CTransformationClass;
+import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 
 /**
- * Wrapperclass for converting the checkstyle-rule RedundantImport to
- * appropriate eclipse-formatter-rules.
+ * Wrapperclass for converting the checkstyle-rule RedundantImport to appropriate
+ * eclipse-formatter-rules.
  * 
  * @author Lukas Frena
  */
 public class RedundantImportTransformer extends CTransformationClass {
-    @Override
-    public FormatterConfiguration transformRule() {
-        useCleanupSetting("organize_imports", "true");
-        useCleanupSetting("remove_unused_imports", "true");
-        return getFormatterSetting();
-    }
+  @Override
+  public FormatterConfiguration transformRule() {
+    useCleanupSetting("organize_imports", "true");
+    useCleanupSetting("remove_unused_imports", "true");
+    return getFormatterSetting();
+  }
 
 }

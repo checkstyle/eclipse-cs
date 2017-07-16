@@ -30,10 +30,10 @@ import org.eclipse.jface.dialogs.IDialogSettings;
  */
 public interface ITableSettingsProvider {
 
-    /**
-     * Provides a settings instance.
-     * 
-     * @return the settings
-     */
-    IDialogSettings getTableSettings();
+  /**
+   * Provides a settings instance.
+   * 
+   * @return the settings
+   */
+  IDialogSettings getTableSettings();
 }

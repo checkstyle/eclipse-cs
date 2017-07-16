@@ -17,6 +17,7 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 //============================================================================
+
 package net.sf.eclipsecs.ui.preferences;
 
 import net.sf.eclipsecs.core.config.CheckConfigurationFactory;
@@ -30,28 +31,29 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.preferences.SettingsTransfer;
 
 /**
- * Support for transferring internal eclipse-cs workspace settings to another workspace.
+ * Support for transferring internal eclipse-cs workspace settings to another
+ * workspace.
  *
  * @author Lars Ködderitzsch
  */
 public class CheckstyleSettingsTransfer extends SettingsTransfer {
 
-    @Override
-    public String getName() {
-        return Messages.CheckstylePreferenceTransfer_name;
+  @Override
+  public String getName() {
+    return Messages.CheckstylePreferenceTransfer_name;
+  }
+
+  @Override
+  public IStatus transferSettings(IPath newWorkspaceRoot) {
+
+    try {
+      CheckConfigurationFactory.transferInternalConfiguration(newWorkspaceRoot);
+    } catch (CheckstylePluginException e) {
+      return new Status(IStatus.ERROR, CheckstyleUIPlugin.PLUGIN_ID,
+              "Checkstyle settings transfer failed", e);
     }
 
-    @Override
-    public IStatus transferSettings(IPath newWorkspaceRoot) {
-
-        try {
-            CheckConfigurationFactory.transferInternalConfiguration(newWorkspaceRoot);
-        }
-        catch (CheckstylePluginException e) {
-            return new Status(IStatus.ERROR, CheckstyleUIPlugin.PLUGIN_ID, "Checkstyle settings transfer failed", e);
-        }
-
-        return Status.OK_STATUS;
-    }
+    return Status.OK_STATUS;
+  }
 
 }

@@ -20,21 +20,21 @@
 
 package net.sf.eclipsecs.core.transformer.ctransformerclasses;
 
-import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 import net.sf.eclipsecs.core.transformer.CTransformationClass;
+import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 
 /**
- * Wrapperclass for converting the checkstyle-rule FileTabCharacter to
- * appropriate eclipse-formatter-rules.
+ * Wrapperclass for converting the checkstyle-rule FileTabCharacter to appropriate
+ * eclipse-formatter-rules.
  * 
  * @author Lukas Frena
  */
 public class FileTabCharacterTransformer extends CTransformationClass {
-    @Override
-    public FormatterConfiguration transformRule() {
-        userFormatterSetting("use_tabs_only_for_leading_indentations", "false");
-        userFormatterSetting("tabulation.char", "space");
-        return getFormatterSetting();
-    }
+  @Override
+  public FormatterConfiguration transformRule() {
+    userFormatterSetting("use_tabs_only_for_leading_indentations", "false");
+    userFormatterSetting("tabulation.char", "space");
+    return getFormatterSetting();
+  }
 
 }

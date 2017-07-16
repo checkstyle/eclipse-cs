@@ -45,64 +45,69 @@ import org.eclipse.ui.IWorkbenchPart;
  */
 public class ActivateProjectsAction implements IObjectActionDelegate {
 
-    private Collection<IProject> mSelectedProjects;
+  private Collection<IProject> mSelectedProjects;
 
-    /**
-     * {@inheritDoc}
-     */
-    public void setActivePart(IAction action, IWorkbenchPart targetPart) {}
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void setActivePart(IAction action, IWorkbenchPart targetPart) {
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    @SuppressWarnings("unchecked")
-    public void selectionChanged(IAction action, ISelection selection) {
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  @SuppressWarnings("unchecked")
+  public void selectionChanged(IAction action, ISelection selection) {
 
-        if (selection instanceof IStructuredSelection) {
-            IStructuredSelection sel = (IStructuredSelection) selection;
-            mSelectedProjects = sel.toList();
-        }
+    if (selection instanceof IStructuredSelection) {
+      IStructuredSelection sel = (IStructuredSelection) selection;
+      mSelectedProjects = sel.toList();
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void run(IAction action) {
+    BulkCheckstyleActivateJob job = new BulkCheckstyleActivateJob(mSelectedProjects);
+    job.schedule();
+  }
+
+  /**
+   * Activates Checkstyle on a collection of projects.
+   * 
+   * @author Lars Ködderitzsch
+   */
+  private class BulkCheckstyleActivateJob extends WorkspaceJob {
+
+    private Collection<IProject> mProjectsToActivate;
+
+    public BulkCheckstyleActivateJob(Collection<IProject> projectsToActivate) {
+      super(Messages.ActivateProjectsPrintAction_msgActivateSelectedProjects);
+      this.mProjectsToActivate = projectsToActivate;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void run(IAction action) {
-        BulkCheckstyleActivateJob job = new BulkCheckstyleActivateJob(mSelectedProjects);
-        job.schedule();
-    }
+    @Override
+    public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
 
-    /**
-     * Activates Checkstyle on a collection of projects.
-     * 
-     * @author Lars Ködderitzsch
-     */
-    private class BulkCheckstyleActivateJob extends WorkspaceJob {
+      for (IProject configurationTarget : mProjectsToActivate) {
 
-        private Collection<IProject> mProjectsToActivate;
+        if (configurationTarget.isOpen()
+                && !configurationTarget.hasNature(CheckstyleNature.NATURE_ID)) {
 
-        public BulkCheckstyleActivateJob(Collection<IProject> projectsToActivate) {
-            super(Messages.ActivateProjectsPrintAction_msgActivateSelectedProjects);
-            this.mProjectsToActivate = projectsToActivate;
+          ConfigureDeconfigureNatureJob job = new ConfigureDeconfigureNatureJob(configurationTarget,
+                  CheckstyleNature.NATURE_ID);
+          job.schedule();
         }
+      }
 
-        /**
-         * {@inheritDoc}
-         */
-        public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
-
-            for (IProject configurationTarget : mProjectsToActivate) {
-
-                if (configurationTarget.isOpen()
-                        && !configurationTarget.hasNature(CheckstyleNature.NATURE_ID)) {
-
-                    ConfigureDeconfigureNatureJob job = new ConfigureDeconfigureNatureJob(
-                            configurationTarget, CheckstyleNature.NATURE_ID);
-                    job.schedule();
-                }
-            }
-
-            return Status.OK_STATUS;
-        }
+      return Status.OK_STATUS;
     }
+  }
 }

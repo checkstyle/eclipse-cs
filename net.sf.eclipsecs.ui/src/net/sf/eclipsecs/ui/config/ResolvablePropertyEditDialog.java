@@ -20,6 +20,8 @@
 
 package net.sf.eclipsecs.ui.config;
 
+import com.google.common.base.Strings;
+
 import net.sf.eclipsecs.core.config.ResolvableProperty;
 import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
 import net.sf.eclipsecs.ui.Messages;
@@ -43,133 +45,132 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.contentassist.ContentAssistHandler;
 
-import com.google.common.base.Strings;
-
 /**
  * Property page.
  */
 public class ResolvablePropertyEditDialog extends TitleAreaDialog {
 
-    private Text mTxtName;
+  private Text mTxtName;
 
-    private Text mTxtValue;
+  private Text mTxtValue;
 
-    private ResolvableProperty mProperty;
+  private ResolvableProperty mProperty;
 
-    /**
-     * Constructor for SamplePropertyPage.
-     *
-     * @param parent
-     *            Parent shell for the dialog window.
-     * @param prop
-     *            Property to be edited.
-     */
-    ResolvablePropertyEditDialog(Shell parent, ResolvableProperty prop) {
-        super(parent);
-        setShellStyle(getShellStyle() | SWT.RESIZE);
-        mProperty = prop;
-    }
+  /**
+   * Constructor for SamplePropertyPage.
+   *
+   * @param parent
+   *          Parent shell for the dialog window.
+   * @param prop
+   *          Property to be edited.
+   */
+  ResolvablePropertyEditDialog(Shell parent, ResolvableProperty prop) {
+    super(parent);
+    setShellStyle(getShellStyle() | SWT.RESIZE);
+    mProperty = prop;
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected Control createDialogArea(Composite parent) {
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  protected Control createDialogArea(Composite parent) {
 
-        Composite composite = (Composite) super.createDialogArea(parent);
-        this.setTitle(Messages.ResolvablePropertyEditDialog_titleMessageArea);
-        this.setMessage(Messages.ResolvablePropertyEditDialog_msgEditProperty);
+    Composite composite = (Composite) super.createDialogArea(parent);
+    this.setTitle(Messages.ResolvablePropertyEditDialog_titleMessageArea);
+    this.setMessage(Messages.ResolvablePropertyEditDialog_msgEditProperty);
 
-        Composite dialog = new Composite(composite, SWT.NONE);
-        dialog.setLayout(new GridLayout(2, false));
-        dialog.setLayoutData(new GridData(GridData.FILL_BOTH));
+    Composite dialog = new Composite(composite, SWT.NONE);
+    dialog.setLayout(new GridLayout(2, false));
+    dialog.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-        Label lblName = new Label(dialog, SWT.NULL);
-        lblName.setText(Messages.ResolvablePropertyEditDialog_lblName);
-        mTxtName = new Text(dialog, SWT.SINGLE | SWT.BORDER);
-        mTxtName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        mTxtName.setText(mProperty.getPropertyName() != null ? mProperty.getPropertyName() : ""); //$NON-NLS-1$
+    Label lblName = new Label(dialog, SWT.NULL);
+    lblName.setText(Messages.ResolvablePropertyEditDialog_lblName);
+    mTxtName = new Text(dialog, SWT.SINGLE | SWT.BORDER);
+    mTxtName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+    mTxtName.setText(mProperty.getPropertyName() != null ? mProperty.getPropertyName() : ""); //$NON-NLS-1$
 
-        Label lblValue = new Label(dialog, SWT.NULL);
-        lblValue.setText(Messages.ResolvablePropertyEditDialog_lblValue);
-        mTxtValue = new Text(dialog, SWT.SINGLE | SWT.BORDER);
-        mTxtValue.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        mTxtValue.setText(mProperty.getValue() != null ? mProperty.getValue() : ""); //$NON-NLS-1$
+    Label lblValue = new Label(dialog, SWT.NULL);
+    lblValue.setText(Messages.ResolvablePropertyEditDialog_lblValue);
+    mTxtValue = new Text(dialog, SWT.SINGLE | SWT.BORDER);
+    mTxtValue.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+    mTxtValue.setText(mProperty.getValue() != null ? mProperty.getValue() : ""); //$NON-NLS-1$
 
-        // integrate content assist
-        ContentAssistHandler.createHandlerForText(mTxtValue, createContentAssistant());
+    // integrate content assist
+    ContentAssistHandler.createHandlerForText(mTxtValue, createContentAssistant());
 
-        return composite;
-    }
+    return composite;
+  }
 
-    /**
-     * @see org.eclipse.jface.dialogs.Dialog#create()
-     */
-    @Override
-    public void create() {
-        super.create();
-        SWTUtil.addResizeSupport(this, CheckstyleUIPlugin.getDefault().getDialogSettings(),
+  /**
+   * @see org.eclipse.jface.dialogs.Dialog#create()
+   */
+  @Override
+  public void create() {
+    super.create();
+    SWTUtil.addResizeSupport(this, CheckstyleUIPlugin.getDefault().getDialogSettings(),
             ResolvablePropertyEditDialog.class.getName());
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  protected void okPressed() {
+
+    if (Strings.emptyToNull(mTxtName.getText()) == null) {
+      this.setErrorMessage(Messages.ResolvablePropertyEditDialog_msgMissingName);
+      return;
+    }
+    if (Strings.emptyToNull(mTxtValue.getText()) == null) {
+      this.setErrorMessage(Messages.ResolvablePropertyEditDialog_msgMissingValue);
+      return;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void okPressed() {
+    //
+    // Get the entered value.
+    //
+    mProperty.setPropertyName(mTxtName.getText());
+    mProperty.setValue(mTxtValue.getText());
 
-        if (Strings.emptyToNull(mTxtName.getText()) == null) {
-            this.setErrorMessage(Messages.ResolvablePropertyEditDialog_msgMissingName);
-            return;
-        }
-        if (Strings.emptyToNull(mTxtValue.getText()) == null) {
-            this.setErrorMessage(Messages.ResolvablePropertyEditDialog_msgMissingValue);
-            return;
-        }
+    super.okPressed();
+  }
 
-        //
-        // Get the entered value.
-        //
-        mProperty.setPropertyName(mTxtName.getText());
-        mProperty.setValue(mTxtValue.getText());
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  protected void configureShell(Shell shell) {
+    super.configureShell(shell);
+    shell.setText(Messages.ResolvablePropertyEditDialog_titleDialog);
+  }
 
-        super.okPressed();
-    }
+  /**
+   * Creates the content assistant.
+   *
+   * @return the content assistant
+   */
+  private SubjectControlContentAssistant createContentAssistant() {
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void configureShell(Shell shell) {
-        super.configureShell(shell);
-        shell.setText(Messages.ResolvablePropertyEditDialog_titleDialog);
-    }
+    final SubjectControlContentAssistant contentAssistant = new SubjectControlContentAssistant();
 
-    /**
-     * Creates the content assistant.
-     *
-     * @return the content assistant
-     */
-    private SubjectControlContentAssistant createContentAssistant() {
+    contentAssistant
+            .setRestoreCompletionProposalSize(CheckstyleUIPlugin.getDefault().getDialogSettings());
 
-        final SubjectControlContentAssistant contentAssistant = new SubjectControlContentAssistant();
+    IContentAssistProcessor processor = new PropertiesContentAssistProcessor();
+    contentAssistant.setContentAssistProcessor(processor, IDocument.DEFAULT_CONTENT_TYPE);
+    contentAssistant.setContextInformationPopupOrientation(IContentAssistant.CONTEXT_INFO_ABOVE);
+    contentAssistant.setInformationControlCreator(new IInformationControlCreator() {
+      /*
+       * @see IInformationControlCreator#createInformationControl(Shell)
+       */
+      @Override
+      public IInformationControl createInformationControl(Shell parent) {
+        return new DefaultInformationControl(parent);
+      }
+    });
 
-        contentAssistant.setRestoreCompletionProposalSize(CheckstyleUIPlugin.getDefault().getDialogSettings());
-
-        IContentAssistProcessor processor = new PropertiesContentAssistProcessor();
-        contentAssistant.setContentAssistProcessor(processor, IDocument.DEFAULT_CONTENT_TYPE);
-        contentAssistant.setContextInformationPopupOrientation(IContentAssistant.CONTEXT_INFO_ABOVE);
-        contentAssistant.setInformationControlCreator(new IInformationControlCreator() {
-            /*
-             * @see IInformationControlCreator#createInformationControl(Shell)
-             */
-            @Override
-            public IInformationControl createInformationControl(Shell parent) {
-                return new DefaultInformationControl(parent);
-            }
-        });
-
-        return contentAssistant;
-    }
+    return contentAssistant;
+  }
 
 }

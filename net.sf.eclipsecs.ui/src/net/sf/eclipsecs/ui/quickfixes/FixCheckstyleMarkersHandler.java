@@ -41,38 +41,39 @@ import org.eclipse.ui.texteditor.ITextEditor;
  */
 public class FixCheckstyleMarkersHandler extends AbstractHandler {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Object execute(ExecutionEvent arg0) throws ExecutionException {
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public Object execute(ExecutionEvent arg0) throws ExecutionException {
 
-        ITextEditor editor = getActiveEditor();
-        IEditorInput input = editor.getEditorInput();
+    ITextEditor editor = getActiveEditor();
+    IEditorInput input = editor.getEditorInput();
 
-        if (input instanceof FileEditorInput) {
+    if (input instanceof FileEditorInput) {
 
-            IFile file = ((FileEditorInput) input).getFile();
+      IFile file = ((FileEditorInput) input).getFile();
 
-            // call the fixing job
-            Job job = new FixCheckstyleMarkersJob(file);
-            job.setUser(true);
-            job.schedule();
-        }
-        return null;
+      // call the fixing job
+      Job job = new FixCheckstyleMarkersJob(file);
+      job.setUser(true);
+      job.schedule();
     }
+    return null;
+  }
 
-    private ITextEditor getActiveEditor() {
-        IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-        if (window != null) {
-            IWorkbenchPage page = window.getActivePage();
-            if (page != null) {
-                IEditorPart editor = page.getActiveEditor();
-                if (editor instanceof ITextEditor) {
-                    return (ITextEditor) editor;
-                }
-            }
+  private ITextEditor getActiveEditor() {
+    IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+    if (window != null) {
+      IWorkbenchPage page = window.getActivePage();
+      if (page != null) {
+        IEditorPart editor = page.getActiveEditor();
+        if (editor instanceof ITextEditor) {
+          return (ITextEditor) editor;
         }
-        return null;
+      }
     }
+    return null;
+  }
 
 }

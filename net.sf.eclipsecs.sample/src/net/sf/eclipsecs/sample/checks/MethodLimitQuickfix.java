@@ -12,50 +12,51 @@ import org.eclipse.swt.graphics.Image;
 
 public class MethodLimitQuickfix extends AbstractASTResolution {
 
-    /**
-     * {@inheritDoc}
-     */
-    protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo, final int markerStartOffset) {
+  /**
+   * {@inheritDoc}
+   */
+  protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
+      final int markerStartOffset) {
 
-        return new ASTVisitor() {
+    return new ASTVisitor() {
 
-            public boolean visit(MethodDeclaration node) {
+      public boolean visit(MethodDeclaration node) {
 
-                Javadoc doc = node.getJavadoc();
+        Javadoc doc = node.getJavadoc();
 
-                if (doc == null) {
-                    doc = node.getAST().newJavadoc();
-                    node.setJavadoc(doc);
-                }
+        if (doc == null) {
+          doc = node.getAST().newJavadoc();
+          node.setJavadoc(doc);
+        }
 
-                TagElement newTag = node.getAST().newTagElement();
-                newTag.setTagName("TODO Added by MethodLimit Sample quickfix");
+        TagElement newTag = node.getAST().newTagElement();
+        newTag.setTagName("TODO Added by MethodLimit Sample quickfix");
 
-                doc.tags().add(0, newTag);
+        doc.tags().add(0, newTag);
 
-                return true;
-            }
-        };
-    }
+        return true;
+      }
+    };
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    public String getDescription() {
-        return "Sample MethodLimit Quickfix";
-    }
+  /**
+   * {@inheritDoc}
+   */
+  public String getDescription() {
+    return "Sample MethodLimit Quickfix";
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    public String getLabel() {
-        return "Sample MethodLimit Quickfix";
-    }
+  /**
+   * {@inheritDoc}
+   */
+  public String getLabel() {
+    return "Sample MethodLimit Quickfix";
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    public Image getImage() {
-        return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.CORRECTION_CHANGE);
-    }
+  /**
+   * {@inheritDoc}
+   */
+  public Image getImage() {
+    return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.CORRECTION_CHANGE);
+  }
 }

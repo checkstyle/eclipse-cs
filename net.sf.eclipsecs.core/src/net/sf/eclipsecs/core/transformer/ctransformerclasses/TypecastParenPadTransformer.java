@@ -20,33 +20,31 @@
 
 package net.sf.eclipsecs.core.transformer.ctransformerclasses;
 
-import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 import net.sf.eclipsecs.core.transformer.CTransformationClass;
+import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 
 /**
- * Wrapperclass for converting the checkstyle-rule TypecastParenPad to
- * appropriate eclipse-formatter-rules.
+ * Wrapperclass for converting the checkstyle-rule TypecastParenPad to appropriate
+ * eclipse-formatter-rules.
  * 
  * @author Lukas Frena
  */
 public class TypecastParenPadTransformer extends CTransformationClass {
 
-    @Override
-    public FormatterConfiguration transformRule() {
-        String option = getAttribute("option");
-        if (option == null) {
-            option = "nospace";
-        }
-        if (option.equals("space")) {
-            option = "insert";
-        }
-        else {
-            option = "do not insert";
-        }
-        userFormatterSetting("insert_space_before_closing_paren_in_cast",
-            option);
-        userFormatterSetting("insert_space_after_opening_paren_in_cast", option);
-        return getFormatterSetting();
+  @Override
+  public FormatterConfiguration transformRule() {
+    String option = getAttribute("option");
+    if (option == null) {
+      option = "nospace";
     }
+    if (option.equals("space")) {
+      option = "insert";
+    } else {
+      option = "do not insert";
+    }
+    userFormatterSetting("insert_space_before_closing_paren_in_cast", option);
+    userFormatterSetting("insert_space_after_opening_paren_in_cast", option);
+    return getFormatterSetting();
+  }
 
 }

@@ -34,44 +34,44 @@ import net.sf.eclipsecs.core.config.XMLTags;
  */
 public class SortingSaveFilter implements ISaveFilter {
 
-    /**
-     * {@inheritDoc}
-     */
-    public void postProcessConfiguredModules(List<Module> configuredModules) {
-        // Sort modules because of
-        // Checkstyle bug #1183749
-        Collections.sort(configuredModules, new ModuleComparator());
-    }
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void postProcessConfiguredModules(List<Module> configuredModules) {
+    // Sort modules because of
+    // Checkstyle bug #1183749
+    Collections.sort(configuredModules, new ModuleComparator());
+  }
+
+  /**
+   * Comparator to sort modules so that Checker and TreeWalker come first. This is done because of a
+   * bug in SuppressionCommentFilter.
+   * 
+   * @author Lars Ködderitzsch
+   */
+  private static class ModuleComparator implements Comparator<Module> {
 
     /**
-     * Comparator to sort modules so that Checker and TreeWalker come first.
-     * This is done because of a bug in SuppressionCommentFilter.
-     * 
-     * @author Lars Ködderitzsch
+     * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
      */
-    private static class ModuleComparator implements Comparator<Module> {
+    @Override
+    public int compare(Module o1, Module o2) {
 
-        /**
-         * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
-         */
-        public int compare(Module o1, Module o2) {
+      String internalName1 = o1.getMetaData().getInternalName();
+      String internalName2 = o2.getMetaData().getInternalName();
 
-            String internalName1 = o1.getMetaData().getInternalName();
-            String internalName2 = o2.getMetaData().getInternalName();
-
-            if (XMLTags.CHECKER_MODULE.equals(internalName1)
-                    || XMLTags.TREEWALKER_MODULE.equals(internalName1)
-                    || XMLTags.FILECONTENTSHOLDER_MODULE.equals(internalName1)) {
-                return -1;
-            }
-            else if (XMLTags.CHECKER_MODULE.equals(internalName2)
-                    || XMLTags.TREEWALKER_MODULE.equals(internalName2)
-                    || XMLTags.FILECONTENTSHOLDER_MODULE.equals(internalName2)) {
-                return 1;
-            }
-            else {
-                return 0;
-            }
-        }
+      if (XMLTags.CHECKER_MODULE.equals(internalName1)
+              || XMLTags.TREEWALKER_MODULE.equals(internalName1)
+              || XMLTags.FILECONTENTSHOLDER_MODULE.equals(internalName1)) {
+        return -1;
+      } else if (XMLTags.CHECKER_MODULE.equals(internalName2)
+              || XMLTags.TREEWALKER_MODULE.equals(internalName2)
+              || XMLTags.FILECONTENTSHOLDER_MODULE.equals(internalName2)) {
+        return 1;
+      } else {
+        return 0;
+      }
     }
+  }
 }

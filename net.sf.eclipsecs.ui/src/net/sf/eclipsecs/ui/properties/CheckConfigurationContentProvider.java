@@ -38,45 +38,47 @@ import org.eclipse.jface.viewers.Viewer;
  */
 class CheckConfigurationContentProvider implements IStructuredContentProvider {
 
-    //
-    // methods
-    //
+  //
+  // methods
+  //
 
-    /**
-     * {@inheritDoc}
-     */
-    public Object[] getElements(Object inputElement) {
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public Object[] getElements(Object inputElement) {
 
-        List<ICheckConfiguration> configurations = new ArrayList<ICheckConfiguration>();
+    List<ICheckConfiguration> configurations = new ArrayList<ICheckConfiguration>();
 
-        if (inputElement != null && inputElement instanceof ProjectConfigurationWorkingCopy) {
-            ICheckConfiguration[] localConfigs = ((ProjectConfigurationWorkingCopy) inputElement)
-                    .getLocalCheckConfigWorkingSet().getWorkingCopies();
+    if (inputElement != null && inputElement instanceof ProjectConfigurationWorkingCopy) {
+      ICheckConfiguration[] localConfigs = ((ProjectConfigurationWorkingCopy) inputElement)
+              .getLocalCheckConfigWorkingSet().getWorkingCopies();
 
-            ICheckConfiguration[] globalConfigs = ((ProjectConfigurationWorkingCopy) inputElement)
-                    .getGlobalCheckConfigWorkingSet().getWorkingCopies();
+      ICheckConfiguration[] globalConfigs = ((ProjectConfigurationWorkingCopy) inputElement)
+              .getGlobalCheckConfigWorkingSet().getWorkingCopies();
 
-            configurations.addAll(Arrays.asList(localConfigs));
-            configurations.addAll(Arrays.asList(globalConfigs));
-        }
-        else {
-            configurations.addAll(CheckConfigurationFactory.getCheckConfigurations());
-        }
-
-        return configurations.toArray();
+      configurations.addAll(Arrays.asList(localConfigs));
+      configurations.addAll(Arrays.asList(globalConfigs));
+    } else {
+      configurations.addAll(CheckConfigurationFactory.getCheckConfigurations());
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+    return configurations.toArray();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
     // do nothing.
-    }
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void dispose() {
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void dispose() {
     // do nothing.
-    }
+  }
 }

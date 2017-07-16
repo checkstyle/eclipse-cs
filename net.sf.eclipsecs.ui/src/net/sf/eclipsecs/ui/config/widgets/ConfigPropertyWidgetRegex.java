@@ -58,189 +58,197 @@ import org.eclipse.ui.contentassist.ContentAssistHandler;
  */
 public class ConfigPropertyWidgetRegex extends ConfigPropertyWidgetAbstractBase {
 
-    private Composite mContents;
+  private Composite mContents;
 
-    private Text mTextWidget;
+  private Text mTextWidget;
 
-    private Text mRegexTestWidget;
+  private Text mRegexTestWidget;
 
-    private final String mDefaultMessage = Messages.ConfigPropertyWidgetRegex_msgRegexTestString;
+  private final String mDefaultMessage = Messages.ConfigPropertyWidgetRegex_msgRegexTestString;
 
-    private final Color mRedColor;
+  private final Color mRedColor;
 
-    private final Color mGreenColor;
+  private final Color mGreenColor;
 
-    private Color mTextBgColor;
+  private Color mTextBgColor;
 
-    /**
-     * Creates the widget.
-     * 
-     * @param parent the parent composite
-     * @param prop the property
-     */
-    public ConfigPropertyWidgetRegex(Composite parent, ConfigProperty prop) {
-        super(parent, prop);
-        mGreenColor = new Color(parent.getDisplay(), 219, 235, 204);
-        mRedColor = new Color(parent.getDisplay(), 255, 225, 225);
+  /**
+   * Creates the widget.
+   * 
+   * @param parent
+   *          the parent composite
+   * @param prop
+   *          the property
+   */
+  public ConfigPropertyWidgetRegex(Composite parent, ConfigProperty prop) {
+    super(parent, prop);
+    mGreenColor = new Color(parent.getDisplay(), 219, 235, 204);
+    mRedColor = new Color(parent.getDisplay(), 255, 225, 225);
 
-    }
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected Control getValueWidget(Composite parent) {
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  protected Control getValueWidget(Composite parent) {
 
-        if (mContents == null) {
+    if (mContents == null) {
 
-            mContents = new Composite(parent, SWT.NULL);
-            mContents.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-            GridLayout layout = new GridLayout(2, true);
-            layout.marginWidth = 0;
-            layout.marginHeight = 0;
-            mContents.setLayout(layout);
+      mContents = new Composite(parent, SWT.NULL);
+      mContents.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+      GridLayout layout = new GridLayout(2, true);
+      layout.marginWidth = 0;
+      layout.marginHeight = 0;
+      mContents.setLayout(layout);
 
-            //
-            // Create a text entry field.
-            //
-            mTextWidget = new Text(mContents, SWT.SINGLE | SWT.BORDER);
-            mTextWidget.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-            mTextWidget.addKeyListener(new RegexTestListener());
-            mTextBgColor = mTextWidget.getBackground();
+      //
+      // Create a text entry field.
+      //
+      mTextWidget = new Text(mContents, SWT.SINGLE | SWT.BORDER);
+      mTextWidget.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+      mTextWidget.addKeyListener(new RegexTestListener());
+      mTextBgColor = mTextWidget.getBackground();
 
-            // integrate content assist
-            ContentAssistHandler.createHandlerForText(mTextWidget, createContentAssistant());
+      // integrate content assist
+      ContentAssistHandler.createHandlerForText(mTextWidget, createContentAssistant());
 
-            String initValue = getInitValue();
-            if (initValue != null) {
-                mTextWidget.setText(initValue);
+      String initValue = getInitValue();
+      if (initValue != null) {
+        mTextWidget.setText(initValue);
+      }
+
+      mRegexTestWidget = new Text(mContents, SWT.SINGLE | SWT.BORDER);
+      mRegexTestWidget.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+      mRegexTestWidget.setText(mDefaultMessage);
+      mRegexTestWidget.addKeyListener(new RegexTestListener());
+      mRegexTestWidget.addFocusListener(new FocusListener() {
+
+        @Override
+        public void focusGained(FocusEvent e) {
+          Display.getCurrent().asyncExec(new Runnable() {
+
+            @Override
+            public void run() {
+              if (mRegexTestWidget.getText().equals(mDefaultMessage)) {
+                mRegexTestWidget.selectAll();
+              }
             }
-
-            mRegexTestWidget = new Text(mContents, SWT.SINGLE | SWT.BORDER);
-            mRegexTestWidget.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-            mRegexTestWidget.setText(mDefaultMessage);
-            mRegexTestWidget.addKeyListener(new RegexTestListener());
-            mRegexTestWidget.addFocusListener(new FocusListener() {
-
-                public void focusGained(FocusEvent e) {
-                    Display.getCurrent().asyncExec(new Runnable() {
-
-                        public void run() {
-                            if (mRegexTestWidget.getText().equals(mDefaultMessage)) {
-                                mRegexTestWidget.selectAll();
-                            }
-                        }
-                    });
-                }
-
-                public void focusLost(FocusEvent e) {
-                // NOOP
-                }
-            });
-
+          });
         }
 
-        return mTextWidget;
+        @Override
+        public void focusLost(FocusEvent e) {
+          // NOOP
+        }
+      });
+
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public String getValue() {
-        String result = mTextWidget.getText();
-        if (result == null) {
-            result = ""; //$NON-NLS-1$
-        }
-        return result;
+    return mTextWidget;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String getValue() {
+    String result = mTextWidget.getText();
+    if (result == null) {
+      result = ""; //$NON-NLS-1$
+    }
+    return result;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void restorePropertyDefault() {
+    ConfigPropertyMetadata metadata = getConfigProperty().getMetaData();
+    String defaultValue = metadata.getOverrideDefault() != null ? metadata.getOverrideDefault()
+            : metadata.getDefaultValue();
+    mTextWidget.setText(defaultValue != null ? defaultValue : ""); //$NON-NLS-1$
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void validate() throws CheckstylePluginException {
+    try {
+      //
+      // Compile the text to a regex pattern
+      //
+      Pattern.compile(mTextWidget.getText());
+    } catch (PatternSyntaxException e) {
+      CheckstylePluginException.rethrow(e, e.getLocalizedMessage());
+    }
+  }
+
+  private void testRegex() {
+    if (mDefaultMessage.equals(mRegexTestWidget.getText())) {
+      return;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void restorePropertyDefault() {
-        ConfigPropertyMetadata metadata = getConfigProperty().getMetaData();
-        String defaultValue = metadata.getOverrideDefault() != null ? metadata.getOverrideDefault()
-                : metadata.getDefaultValue();
-        mTextWidget.setText(defaultValue != null ? defaultValue : ""); //$NON-NLS-1$
+    try {
+      Pattern pattern = Pattern.compile(mTextWidget.getText());
+      Matcher matcher = pattern.matcher(mRegexTestWidget.getText());
+      if (matcher.find()) {
+        mRegexTestWidget.setBackground(mGreenColor);
+      } else {
+        mRegexTestWidget.setBackground(mRedColor);
+      }
+
+      mTextWidget.setBackground(mTextBgColor);
+    } catch (PatternSyntaxException e) {
+      mTextWidget.setBackground(mRedColor);
+    }
+  }
+
+  /**
+   * Creates the content assistant.
+   * 
+   * @return the content assistant
+   */
+  private SubjectControlContentAssistant createContentAssistant() {
+
+    final SubjectControlContentAssistant contentAssistant = new SubjectControlContentAssistant();
+
+    contentAssistant
+            .setRestoreCompletionProposalSize(CheckstyleUIPlugin.getDefault().getDialogSettings());
+
+    IContentAssistProcessor processor = new RegExContentAssistProcessor(true);
+    contentAssistant.setContentAssistProcessor(processor, IDocument.DEFAULT_CONTENT_TYPE);
+    contentAssistant.setContextInformationPopupOrientation(IContentAssistant.CONTEXT_INFO_ABOVE);
+    contentAssistant.setInformationControlCreator(new IInformationControlCreator() {
+      /*
+       * @see IInformationControlCreator#createInformationControl(Shell)
+       */
+      @Override
+      public IInformationControl createInformationControl(Shell parent) {
+        return new DefaultInformationControl(parent);
+      }
+    });
+
+    return contentAssistant;
+  }
+
+  /**
+   * Simple key listener to test the regular expression.
+   * 
+   * @author Lars Ködderitzsch
+   */
+  private class RegexTestListener implements KeyListener {
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+      // NOOP
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void validate() throws CheckstylePluginException {
-        try {
-            //
-            // Compile the text to a regex pattern
-            //
-            Pattern.compile(mTextWidget.getText());
-        }
-        catch (PatternSyntaxException e) {
-            CheckstylePluginException.rethrow(e, e.getLocalizedMessage());
-        }
+    @Override
+    public void keyReleased(KeyEvent e) {
+      testRegex();
     }
-
-    private void testRegex() {
-        if (mDefaultMessage.equals(mRegexTestWidget.getText())) {
-            return;
-        }
-
-        try {
-            Pattern pattern = Pattern.compile(mTextWidget.getText());
-            Matcher matcher = pattern.matcher(mRegexTestWidget.getText());
-            if (matcher.find()) {
-                mRegexTestWidget.setBackground(mGreenColor);
-            }
-            else {
-                mRegexTestWidget.setBackground(mRedColor);
-            }
-
-            mTextWidget.setBackground(mTextBgColor);
-        }
-        catch (PatternSyntaxException e) {
-            mTextWidget.setBackground(mRedColor);
-        }
-    }
-
-    /**
-     * Creates the content assistant.
-     * 
-     * @return the content assistant
-     */
-    private SubjectControlContentAssistant createContentAssistant() {
-
-        final SubjectControlContentAssistant contentAssistant = new SubjectControlContentAssistant();
-
-        contentAssistant.setRestoreCompletionProposalSize(CheckstyleUIPlugin.getDefault()
-                .getDialogSettings());
-
-        IContentAssistProcessor processor = new RegExContentAssistProcessor(true);
-        contentAssistant.setContentAssistProcessor(processor, IDocument.DEFAULT_CONTENT_TYPE);
-        contentAssistant
-                .setContextInformationPopupOrientation(IContentAssistant.CONTEXT_INFO_ABOVE);
-        contentAssistant.setInformationControlCreator(new IInformationControlCreator() {
-            /*
-             * @see IInformationControlCreator#createInformationControl(Shell)
-             */
-            public IInformationControl createInformationControl(Shell parent) {
-                return new DefaultInformationControl(parent);
-            }
-        });
-
-        return contentAssistant;
-    }
-
-    /**
-     * Simple key listener to test the regular expression.
-     * 
-     * @author Lars Ködderitzsch
-     */
-    private class RegexTestListener implements KeyListener {
-
-        public void keyPressed(KeyEvent e) {
-        // NOOP
-        }
-
-        public void keyReleased(KeyEvent e) {
-            testRegex();
-        }
-    }
+  }
 }

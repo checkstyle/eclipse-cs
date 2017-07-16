@@ -28,53 +28,50 @@ import net.sf.eclipsecs.core.config.meta.MetadataFactory;
 
 /**
  * Special module logic for the FileContentsHolder module.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public class FileContentsHolderSaveFilter implements ISaveFilter {
 
-    /**
-     * {@inheritDoc}
-     */
-    public void postProcessConfiguredModules(List<Module> configuredModules) {
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void postProcessConfiguredModules(List<Module> configuredModules) {
 
-        // the FileContentsHolder module is needed if it is not configured and
-        // the SuppressionCommentFilter module is configured
-        boolean containsFileContentsHolderModule = false;
-        boolean needsFileContentsHolderModule = false;
-        Module configuredFileContentsHolder = null;
+    // the FileContentsHolder module is needed if it is not configured and
+    // the SuppressionCommentFilter module is configured
+    boolean containsFileContentsHolderModule = false;
+    boolean needsFileContentsHolderModule = false;
+    Module configuredFileContentsHolder = null;
 
-        for (int i = 0, size = configuredModules.size(); i < size; i++) {
+    for (int i = 0, size = configuredModules.size(); i < size; i++) {
 
-            Module module = configuredModules.get(i);
-            String internalName = module.getMetaData().getInternalName();
+      Module module = configuredModules.get(i);
+      String internalName = module.getMetaData().getInternalName();
 
-            if (XMLTags.FILECONTENTSHOLDER_MODULE.equals(internalName)) {
-                containsFileContentsHolderModule = true;
-                configuredFileContentsHolder = module;
-            }
-            else if (XMLTags.SUPRESSIONCOMMENTFILTER_MODULE.equals(internalName)) {
-                needsFileContentsHolderModule = true;
-            }
-            else if (XMLTags.SUPRESSWITHNEARBYCOMMENTFILTER_MODULE.equals(internalName)) {
-                needsFileContentsHolderModule = true;
-            }
+      if (XMLTags.FILECONTENTSHOLDER_MODULE.equals(internalName)) {
+        containsFileContentsHolderModule = true;
+        configuredFileContentsHolder = module;
+      } else if (XMLTags.SUPRESSIONCOMMENTFILTER_MODULE.equals(internalName)) {
+        needsFileContentsHolderModule = true;
+      } else if (XMLTags.SUPRESSWITHNEARBYCOMMENTFILTER_MODULE.equals(internalName)) {
+        needsFileContentsHolderModule = true;
+      }
 
-            if (containsFileContentsHolderModule && needsFileContentsHolderModule) {
-                break;
-            }
-        }
-
-        // add the FileContentsHolder if needed
-        if (!containsFileContentsHolderModule && needsFileContentsHolderModule) {
-            Module fileContentsHolder = new Module(MetadataFactory.getRuleMetadata(XMLTags.FILECONTENTSHOLDER_MODULE),
-                false);
-            configuredModules.add(0, fileContentsHolder);
-        }
-
-        // remove the FileContentsHolder if not needed
-        else if (containsFileContentsHolderModule && !needsFileContentsHolderModule) {
-            configuredModules.remove(configuredFileContentsHolder);
-        }
+      if (containsFileContentsHolderModule && needsFileContentsHolderModule) {
+        break;
+      }
     }
+
+    // add the FileContentsHolder if needed
+    if (!containsFileContentsHolderModule && needsFileContentsHolderModule) {
+      Module fileContentsHolder = new Module(
+              MetadataFactory.getRuleMetadata(XMLTags.FILECONTENTSHOLDER_MODULE), false);
+      configuredModules.add(0, fileContentsHolder);
+    } else if (containsFileContentsHolderModule && !needsFileContentsHolderModule) {
+      // remove the FileContentsHolder if not needed
+      configuredModules.remove(configuredFileContentsHolder);
+    }
+  }
 }

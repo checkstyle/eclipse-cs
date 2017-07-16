@@ -28,49 +28,48 @@ import net.sf.eclipsecs.core.config.meta.MetadataFactory;
 
 /**
  * Special module logic for the TreeWalker module.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public class TreeWalkerModuleSaveFilter implements ISaveFilter {
 
-    /**
-     * {@inheritDoc}
-     */
-    public void postProcessConfiguredModules(List<Module> configuredModules) {
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void postProcessConfiguredModules(List<Module> configuredModules) {
 
-        // the TreeWalker module is needed if it is not configured and modules
-        // are configured that depend on the TreeWalker module
-        boolean containsTreeWalkerModule = false;
-        boolean containsTreeWalkerDependantModule = false;
-        Module configuredTreeWalker = null;
+    // the TreeWalker module is needed if it is not configured and modules
+    // are configured that depend on the TreeWalker module
+    boolean containsTreeWalkerModule = false;
+    boolean containsTreeWalkerDependantModule = false;
+    Module configuredTreeWalker = null;
 
-        for (int i = 0, size = configuredModules.size(); i < size; i++) {
+    for (int i = 0, size = configuredModules.size(); i < size; i++) {
 
-            Module module = configuredModules.get(i);
+      Module module = configuredModules.get(i);
 
-            if (XMLTags.TREEWALKER_MODULE.equals(module.getMetaData().getInternalName())) {
-                containsTreeWalkerModule = true;
-                configuredTreeWalker = module;
-            }
-            if (XMLTags.TREEWALKER_MODULE.equals(module.getMetaData().getParentModule())) {
-                containsTreeWalkerDependantModule = true;
-            }
+      if (XMLTags.TREEWALKER_MODULE.equals(module.getMetaData().getInternalName())) {
+        containsTreeWalkerModule = true;
+        configuredTreeWalker = module;
+      }
+      if (XMLTags.TREEWALKER_MODULE.equals(module.getMetaData().getParentModule())) {
+        containsTreeWalkerDependantModule = true;
+      }
 
-            if (containsTreeWalkerModule && containsTreeWalkerDependantModule) {
-                break;
-            }
-        }
-
-        // add the TreeWalker if needed
-        if (!containsTreeWalkerModule && containsTreeWalkerDependantModule) {
-            Module treeWalker = new Module(MetadataFactory
-                    .getRuleMetadata(XMLTags.TREEWALKER_MODULE), false);
-            configuredModules.add(0, treeWalker);
-        }
-
-        // remove the TreeWalker if not needed
-        else if (containsTreeWalkerModule && !containsTreeWalkerDependantModule) {
-            configuredModules.remove(configuredTreeWalker);
-        }
+      if (containsTreeWalkerModule && containsTreeWalkerDependantModule) {
+        break;
+      }
     }
+
+    // add the TreeWalker if needed
+    if (!containsTreeWalkerModule && containsTreeWalkerDependantModule) {
+      Module treeWalker = new Module(MetadataFactory.getRuleMetadata(XMLTags.TREEWALKER_MODULE),
+              false);
+      configuredModules.add(0, treeWalker);
+    } else if (containsTreeWalkerModule && !containsTreeWalkerDependantModule) {
+      // remove the TreeWalker if not needed
+      configuredModules.remove(configuredTreeWalker);
+    }
+  }
 }

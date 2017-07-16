@@ -28,85 +28,85 @@ import org.eclipse.osgi.util.NLS;
  * @author Lars Ködderitzsch
  */
 public final class Messages extends NLS {
-    // CHECKSTYLE:OFF
+  // CHECKSTYLE:OFF
 
-    private static final String BUNDLE_NAME = "net.sf.eclipsecs.core.messages"; //$NON-NLS-1$
+  private static final String BUNDLE_NAME = "net.sf.eclipsecs.core.messages"; //$NON-NLS-1$
 
-    static {
-        // initialize resource bundle
-        NLS.initializeMessages(BUNDLE_NAME, Messages.class);
-    }
+  static {
+    // initialize resource bundle
+    NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+  }
 
-    private Messages() {
-    }
+  private Messages() {
+  }
 
-    public static String Auditor_msgCheckingConfig;
+  public static String Auditor_msgCheckingConfig;
 
-    public static String Auditor_msgCheckingFile;
+  public static String Auditor_msgCheckingFile;
 
-    public static String Auditor_txtUnknownModule;
+  public static String Auditor_txtUnknownModule;
 
-    public static String Auditor_msgMsgCheckstyleInternalError;
+  public static String Auditor_msgMsgCheckstyleInternalError;
 
-    public static String AuditorJob_msgBuildProject;
+  public static String AuditorJob_msgBuildProject;
 
-    public static String BuildProjectJob_msgBuildAllProjects;
+  public static String BuildProjectJob_msgBuildAllProjects;
 
-    public static String BuildProjectJob_msgBuildProject;
+  public static String BuildProjectJob_msgBuildProject;
 
-    public static String CheckstyleBuilder_msgWrongBuilderOrder;
+  public static String CheckstyleBuilder_msgWrongBuilderOrder;
 
-    public static String ConfigPropertyMetadata_txtNoDescription;
+  public static String ConfigPropertyMetadata_txtNoDescription;
 
-    public static String ConfigureDeconfigureNatureJob_msgTaksAddingNature;
+  public static String ConfigureDeconfigureNatureJob_msgTaksAddingNature;
 
-    public static String RunCheckstyleOnFilesJob_title;
+  public static String RunCheckstyleOnFilesJob_title;
 
-    public static String SimpleFileSetsEditor_nameAllFileset;
+  public static String SimpleFileSetsEditor_nameAllFileset;
 
-    public static String ProjectConfigurationType_msgFileNotFound;
+  public static String ProjectConfigurationType_msgFileNotFound;
 
-    public static String errorEmptyPattern;
+  public static String errorEmptyPattern;
 
-    public static String errorUnknownFileFormat;
+  public static String errorUnknownFileFormat;
 
-    public static String errorWritingCheckConfigurations;
+  public static String errorWritingCheckConfigurations;
 
-    public static String errorNoRootModule;
+  public static String errorNoRootModule;
 
-    public static String errorMoreThanOneRootModule;
+  public static String errorMoreThanOneRootModule;
 
-    public static String errorLoadingConfigFile;
+  public static String errorLoadingConfigFile;
 
-    public static String errorWritingConfigFile;
+  public static String errorWritingConfigFile;
 
-    public static String msgErrorLoadingCheckstyleDTD;
+  public static String msgErrorLoadingCheckstyleDTD;
 
-    public static String errorLocationEmpty;
+  public static String errorLocationEmpty;
 
-    public static String errorResolveConfigLocation;
+  public static String errorResolveConfigLocation;
 
-    public static String errorConfigNameEmpty;
+  public static String errorConfigNameEmpty;
 
-    public static String errorConfigNameInUse;
+  public static String errorConfigNameInUse;
 
-    public static String errorUnknownClasspathEntry;
+  public static String errorUnknownClasspathEntry;
 
-    public static String errorNoCheckConfig;
+  public static String errorNoCheckConfig;
 
-    public static String CheckstyleLog_msgStatusPrefix;
+  public static String CheckstyleLog_msgStatusPrefix;
 
-    public static String errorFilesetWithoutCheckConfig;
+  public static String errorFilesetWithoutCheckConfig;
 
-    public static String CheckstyleBuilder_msgErrorUnknown;
+  public static String CheckstyleBuilder_msgErrorUnknown;
 
-    public static String RemoteConfigurationType_errorFileNotFound;
+  public static String RemoteConfigurationType_errorFileNotFound;
 
-    public static String RemoteConfigurationType_errorUnknownHost;
+  public static String RemoteConfigurationType_errorUnknownHost;
 
-    public static String RemoteConfigurationType_msgRemoteCachingFailed;
+  public static String RemoteConfigurationType_msgRemoteCachingFailed;
 
-    public static String RemoteConfigurationType_msgUnAuthorized;
+  public static String RemoteConfigurationType_msgUnAuthorized;
 
-    // CHECKSTYLE:ON
+  // CHECKSTYLE:ON
 }

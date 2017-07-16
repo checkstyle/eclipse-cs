@@ -43,52 +43,48 @@ import org.eclipse.core.runtime.Status;
  */
 public class TransformFormatterRulesJob extends WorkspaceJob {
 
-    /**
-     * Job for transforming formatter-rules to checkstyle-settings.
-     */
-    public TransformFormatterRulesJob() {
-        super("transformFormatter");
-    }
+  /**
+   * Job for transforming formatter-rules to checkstyle-settings.
+   */
+  public TransformFormatterRulesJob() {
+    super("transformFormatter");
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public IStatus runInWorkspace(final IProgressMonitor arg0)
-        throws CoreException {
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public IStatus runInWorkspace(final IProgressMonitor arg0) throws CoreException {
 
-        // TODO this way of loading formatter profiles is very dubious, to say
-        // the least, refer to FormatterConfigWriter for a better API
-        final String workspace = ResourcesPlugin.getWorkspace().getRoot()
-            .getLocation().toString();
+    // TODO this way of loading formatter profiles is very dubious, to say
+    // the least, refer to FormatterConfigWriter for a better API
+    final String workspace = ResourcesPlugin.getWorkspace().getRoot().getLocation().toString();
 
-        final String configLocation = workspace
+    final String configLocation = workspace
             + "/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.core.prefs";
 
-        FormatterConfigParser parser = null;
+    FormatterConfigParser parser = null;
 
-        try {
-            parser = new FormatterConfigParser(configLocation);
-        }
-        catch (final FileNotFoundException e) {
-            return Status.CANCEL_STATUS;
-        }
-        final FormatterConfiguration rules = parser.parseRules();
-
-        if (rules == null) {
-            return Status.CANCEL_STATUS;
-        }
-
-        try {
-            FormatterTransformer transformer = new FormatterTransformer(rules);
-            transformer.transformRules(workspace + "/test-checkstyle.xml");
-        }
-        catch (CheckstylePluginException e) {
-            Status status = new Status(IStatus.ERROR,
-                CheckstylePlugin.PLUGIN_ID, IStatus.ERROR, e.getMessage(), e);
-            throw new CoreException(status);
-        }
-
-        return Status.OK_STATUS;
+    try {
+      parser = new FormatterConfigParser(configLocation);
+    } catch (final FileNotFoundException e) {
+      return Status.CANCEL_STATUS;
     }
+    final FormatterConfiguration rules = parser.parseRules();
+
+    if (rules == null) {
+      return Status.CANCEL_STATUS;
+    }
+
+    try {
+      FormatterTransformer transformer = new FormatterTransformer(rules);
+      transformer.transformRules(workspace + "/test-checkstyle.xml");
+    } catch (CheckstylePluginException e) {
+      Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR,
+              e.getMessage(), e);
+      throw new CoreException(status);
+    }
+
+    return Status.OK_STATUS;
+  }
 }

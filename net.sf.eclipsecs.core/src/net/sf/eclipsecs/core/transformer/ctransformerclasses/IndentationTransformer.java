@@ -20,8 +20,8 @@
 
 package net.sf.eclipsecs.core.transformer.ctransformerclasses;
 
-import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 import net.sf.eclipsecs.core.transformer.CTransformationClass;
+import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 
 /**
  * Wrapperclass for converting the checkstyle-rule IdentationWrap to appropriate
@@ -30,31 +30,28 @@ import net.sf.eclipsecs.core.transformer.CTransformationClass;
  * @author Lukas Frena
  */
 public class IndentationTransformer extends CTransformationClass {
-    @Override
-    public FormatterConfiguration transformRule() {
-        String val = getAttribute("basicOffset");
-        if (val == null) {
-            val = "4";
-        }
-        // TODO attributes braceAdjustment caseIndent
-        userFormatterSetting("use_tabs_only_for_leading_indentations", "false");
-        userFormatterSetting("tabulation.char", "space");
-        userFormatterSetting("indentation.size", val);
-        userFormatterSetting("tabulation.size", val);
-
-        val = getAttribute("caseIndent");
-        if (val == null) {
-            val = "4";
-        }
-
-        if (val.equals("4")) {
-            userFormatterSetting("indent_switchstatements_compare_to_switch",
-                "true");
-        }
-        else if (val.equals("0")) {
-            userFormatterSetting("indent_switchstatements_compare_to_switch",
-                "false");
-        }
-        return getFormatterSetting();
+  @Override
+  public FormatterConfiguration transformRule() {
+    String val = getAttribute("basicOffset");
+    if (val == null) {
+      val = "4";
     }
+    // TODO attributes braceAdjustment caseIndent
+    userFormatterSetting("use_tabs_only_for_leading_indentations", "false");
+    userFormatterSetting("tabulation.char", "space");
+    userFormatterSetting("indentation.size", val);
+    userFormatterSetting("tabulation.size", val);
+
+    val = getAttribute("caseIndent");
+    if (val == null) {
+      val = "4";
+    }
+
+    if (val.equals("4")) {
+      userFormatterSetting("indent_switchstatements_compare_to_switch", "true");
+    } else if (val.equals("0")) {
+      userFormatterSetting("indent_switchstatements_compare_to_switch", "false");
+    }
+    return getFormatterSetting();
+  }
 }

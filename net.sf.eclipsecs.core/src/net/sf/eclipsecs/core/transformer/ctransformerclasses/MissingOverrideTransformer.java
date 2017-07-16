@@ -20,20 +20,20 @@
 
 package net.sf.eclipsecs.core.transformer.ctransformerclasses;
 
-import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 import net.sf.eclipsecs.core.transformer.CTransformationClass;
+import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 
 /**
- * Wrapperclass for converting the checkstyle-rule MissingOverride to
- * appropriate eclipse-formatter-rules.
+ * Wrapperclass for converting the checkstyle-rule MissingOverride to appropriate
+ * eclipse-formatter-rules.
  * 
  * @author Lukas Frena
  */
 public class MissingOverrideTransformer extends CTransformationClass {
-    @Override
-    public FormatterConfiguration transformRule() {
-        useCleanupSetting("add_missing_annotations", "true");
-        useCleanupSetting("add_missing_override_annotations", "true");
-        return getFormatterSetting();
-    }
+  @Override
+  public FormatterConfiguration transformRule() {
+    useCleanupSetting("add_missing_annotations", "true");
+    useCleanupSetting("add_missing_override_annotations", "true");
+    return getFormatterSetting();
+  }
 }

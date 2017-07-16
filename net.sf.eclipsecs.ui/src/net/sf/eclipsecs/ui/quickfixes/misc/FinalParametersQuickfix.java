@@ -26,8 +26,8 @@ import net.sf.eclipsecs.ui.quickfixes.Messages;
 
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.Modifier;
-import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jdt.core.dom.Modifier.ModifierKeyword;
+import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.swt.graphics.Image;
 
@@ -40,46 +40,49 @@ import org.eclipse.swt.graphics.Image;
  */
 public class FinalParametersQuickfix extends AbstractASTResolution {
 
-    /**
-     * {@inheritDoc}
-     */
-    protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
-            final int markerStartOffset) {
-        return new ASTVisitor() {
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
+          final int markerStartOffset) {
+    return new ASTVisitor() {
 
-            public boolean visit(SingleVariableDeclaration node) {
-                if (containsPosition(node, markerStartOffset)
-                        && !Modifier.isFinal(node.getModifiers())) {
-                    if (!Modifier.isFinal(node.getModifiers())) {
-                        Modifier finalModifier = node.getAST().newModifier(
-                                ModifierKeyword.FINAL_KEYWORD);
-                        node.modifiers().add(finalModifier);
-                    }
-                }
-                return true;
-            }
-        };
-    }
+      @Override
+      public boolean visit(SingleVariableDeclaration node) {
+        if (containsPosition(node, markerStartOffset) && !Modifier.isFinal(node.getModifiers())) {
+          if (!Modifier.isFinal(node.getModifiers())) {
+            Modifier finalModifier = node.getAST().newModifier(ModifierKeyword.FINAL_KEYWORD);
+            node.modifiers().add(finalModifier);
+          }
+        }
+        return true;
+      }
+    };
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    public String getDescription() {
-        return Messages.FinalParametersQuickfix_description;
-    }
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String getDescription() {
+    return Messages.FinalParametersQuickfix_description;
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    public String getLabel() {
-        return Messages.FinalParametersQuickfix_label;
-    }
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String getLabel() {
+    return Messages.FinalParametersQuickfix_label;
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    public Image getImage() {
-        return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.CORRECTION_ADD);
-    }
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public Image getImage() {
+    return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.CORRECTION_ADD);
+  }
 
 }

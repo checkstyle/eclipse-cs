@@ -38,64 +38,62 @@ import org.eclipse.osgi.util.NLS;
  */
 public class BuildProjectJob extends Job {
 
-    /** the project to build. */
-    private IProject[] mProjects;
+  /** the project to build. */
+  private IProject[] mProjects;
 
-    /** the build kind. */
-    private int mKind;
+  /** the build kind. */
+  private int mKind;
 
-    /**
-     * Creates an operation which builds a project.
-     *
-     * @param project
-     *            the project to build
-     * @param buildKind
-     *            the kind of build to do
-     */
-    public BuildProjectJob(IProject project, int buildKind) {
-        super(NLS.bind(Messages.BuildProjectJob_msgBuildProject, project.getName()));
-        mProjects = new IProject[] { project };
-        mKind = buildKind;
+  /**
+   * Creates an operation which builds a project.
+   *
+   * @param project
+   *          the project to build
+   * @param buildKind
+   *          the kind of build to do
+   */
+  public BuildProjectJob(IProject project, int buildKind) {
+    super(NLS.bind(Messages.BuildProjectJob_msgBuildProject, project.getName()));
+    mProjects = new IProject[] { project };
+    mKind = buildKind;
+  }
+
+  /**
+   * Creates an operation which builds a set of project.
+   *
+   * @param projects
+   *          the projects to build
+   * @param buildKind
+   *          the kind of build to do
+   */
+  public BuildProjectJob(IProject[] projects, int buildKind) {
+    super(Messages.BuildProjectJob_msgBuildAllProjects);
+
+    mProjects = projects;
+    mKind = buildKind;
+  }
+
+  @Override
+  public IStatus run(IProgressMonitor monitor) {
+
+    IStatus status = null;
+
+    try {
+
+      for (int i = 0; i < mProjects.length; i++) {
+
+        // build only if open and checkstyle active for the project
+        if (mProjects[i].isOpen() && mProjects[i].hasNature(CheckstyleNature.NATURE_ID)) {
+          mProjects[i].build(mKind, monitor);
+        }
+      }
+      status = Status.OK_STATUS;
+    } catch (CoreException e) {
+      status = e.getStatus();
+    } finally {
+      monitor.done();
     }
 
-    /**
-     * Creates an operation which builds a set of project.
-     *
-     * @param projects
-     *            the projects to build
-     * @param buildKind
-     *            the kind of build to do
-     */
-    public BuildProjectJob(IProject[] projects, int buildKind) {
-        super(Messages.BuildProjectJob_msgBuildAllProjects);
-
-        mProjects = projects;
-        mKind = buildKind;
-    }
-
-    @Override
-    public IStatus run(IProgressMonitor monitor) {
-
-        IStatus status = null;
-
-        try {
-
-            for (int i = 0; i < mProjects.length; i++) {
-
-                // build only if open and checkstyle active for the project
-                if (mProjects[i].isOpen() && mProjects[i].hasNature(CheckstyleNature.NATURE_ID)) {
-                    mProjects[i].build(mKind, monitor);
-                }
-            }
-            status = Status.OK_STATUS;
-        }
-        catch (CoreException e) {
-            status = e.getStatus();
-        }
-        finally {
-            monitor.done();
-        }
-
-        return status;
-    }
+    return status;
+  }
 }
