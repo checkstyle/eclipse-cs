@@ -335,8 +335,6 @@ public class CheckstylePropertyPage extends PropertyPage {
    */
   private Control createFilterArea(Composite container) {
 
-    final FormData fd = new FormData();
-
     // group composite containing the filter settings
     Group filterArea = new Group(container, SWT.NULL);
     filterArea.setText(Messages.CheckstylePropertyPage_titleFilterGroup);
@@ -346,6 +344,7 @@ public class CheckstylePropertyPage extends PropertyPage {
     this.mFilterList = CheckboxTableViewer.newCheckList(filterArea, SWT.BORDER);
     this.mBtnEditFilter = new Button(filterArea, SWT.PUSH);
 
+    FormData fd = new FormData();
     fd.left = new FormAttachment(0, 3);
     fd.top = new FormAttachment(0, 3);
     fd.right = new FormAttachment(this.mBtnEditFilter, -3, SWT.LEFT);
