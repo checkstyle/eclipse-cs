@@ -129,6 +129,17 @@
             <property-metadata name="maxPublic" datatype="Integer" default-value="100">
                 <description>%MethodCount.maxPublic</description>
             </property-metadata>
+            <property-metadata name="tokens" datatype="MultiCheck"
+                default-value="CLASS_DEF, ENUM_CONSTANT_DEF, ENUM_DEF, INTERFACE_DEF, ANNOTATION_DEF">
+                <description>%MethodCount.tokens</description>
+                <enumeration>
+                    <property-value-option value="CLASS_DEF" />
+                    <property-value-option value="ENUM_CONSTANT_DEF" />
+                    <property-value-option value="ENUM_DEF" />
+                    <property-value-option value="INTERFACE_DEF" />
+                    <property-value-option value="ANNOTATION_DEF" />
+                </enumeration>
+            </property-metadata>
             <message-key key="too.many.privateMethods" />
             <message-key key="too.many.packageMethods" />
             <message-key key="too.many.protectedMethods" />

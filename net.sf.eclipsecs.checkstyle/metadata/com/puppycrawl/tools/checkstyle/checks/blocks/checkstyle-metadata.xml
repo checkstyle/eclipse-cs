@@ -20,12 +20,12 @@
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.blocks.EmptyBlockCheck"/>
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.EmptyBlockCheck"/>
             <description>%EmptyBlock.desc</description>
-            <property-metadata name="option" datatype="SingleSelect" default-value="stmt">
+            <property-metadata name="option" datatype="SingleSelect" default-value="STATEMENT">
                 <description>%EmptyBlock.option</description>
                 <enumeration option-provider="com.puppycrawl.tools.checkstyle.checks.blocks.BlockOption"/>
             </property-metadata>
             <property-metadata name="tokens" datatype="MultiCheck"
-                default-value="LITERAL_WHILE,LITERAL_TRY,LITERAL_CATCH,LITERAL_FINALLY,LITERAL_DO,LITERAL_IF,LITERAL_ELSE,LITERAL_FOR,INSTANCE_INIT,STATIC_INIT,LITERAL_SWITCH">
+                default-value="LITERAL_WHILE, LITERAL_TRY, LITERAL_FINALLY, LITERAL_DO, LITERAL_IF, LITERAL_ELSE, LITERAL_FOR, INSTANCE_INIT, STATIC_INIT, LITERAL_SWITCH, LITERAL_SYNCHRONIZED">
                 <description>%EmptyBlock.tokens</description>
                 <enumeration>
                     <property-value-option value="LITERAL_WHILE"/>
@@ -39,9 +39,13 @@
                     <property-value-option value="INSTANCE_INIT"/>
                     <property-value-option value="STATIC_INIT"/>
                     <property-value-option value="LITERAL_SWITCH"/>
+                    <property-value-option value="LITERAL_SYNCHRONIZED"/>
+                    <property-value-option value="LITERAL_CASE"/>
+                    <property-value-option value="LITERAL_DEFAULT"/>
+                    <property-value-option value="ARRAY_INIT"/>
                 </enumeration>
             </property-metadata>
-            <message-key key="block.noStmt"/>
+            <message-key key="block.noStatement"/>
             <message-key key="block.empty"/>
         </rule-metadata>
 
@@ -145,6 +149,7 @@
                     <property-value-option value="LITERAL_DO"/>
                     <property-value-option value="STATIC_INIT"/>
                     <property-value-option value="INSTANCE_INIT"/>
+                    <property-value-option value="LAMBDA"/>
                 </enumeration>
             </property-metadata>
             <property-metadata name="shouldStartLine" datatype="Boolean" default-value="true">

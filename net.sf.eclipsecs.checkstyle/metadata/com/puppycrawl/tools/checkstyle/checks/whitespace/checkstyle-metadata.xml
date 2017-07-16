@@ -60,6 +60,7 @@
                     <property-value-option value="ARRAY_DECLARATOR" />
                     <property-value-option value="INDEX_OP" />
                     <property-value-option value="LITERAL_SYNCHRONIZED" />
+                    <property-value-option value="METHOD_REF" />
                 </enumeration>
             </property-metadata>
             <message-key key="ws.followed" />
@@ -83,6 +84,7 @@
                     <property-value-option value="GENERIC_START" />
                     <property-value-option value="GENERIC_END" />
                     <property-value-option value="ELLIPSIS" />
+                    <property-value-option value="METHOD_REF" />
                 </enumeration>
             </property-metadata>
             <message-key key="ws.preceded" />
@@ -248,7 +250,8 @@
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.whitespace.WhitespaceAfterCheck" />
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.WhitespaceAfterCheck" />
             <description>%WhitespaceAfter.desc</description>
-            <property-metadata name="tokens" datatype="MultiCheck" default-value="COMMA,SEMI,TYPECAST,LITERAL_IF,LITERAL_ELSE,LITERAL_WHILE,LITERAL_DO,LITERAL_FOR,DO_WHILE">
+            <property-metadata name="tokens" datatype="MultiCheck"
+                default-value="COMMA,SEMI,TYPECAST,LITERAL_IF,LITERAL_ELSE,LITERAL_WHILE,LITERAL_DO,LITERAL_FOR,DO_WHILE">
                 <description>%WhitespaceAfter.tokens</description>
                 <enumeration>
                     <property-value-option value="COMMA" />
@@ -405,6 +408,7 @@
                     <property-value-option value="RPAREN" />
                     <property-value-option value="ARRAY_DECLARATOR" />
                     <property-value-option value="RBRACK" />
+                    <property-value-option value="METHOD_REF" />
                 </enumeration>
             </property-metadata>
             <message-key key="line.previous" />

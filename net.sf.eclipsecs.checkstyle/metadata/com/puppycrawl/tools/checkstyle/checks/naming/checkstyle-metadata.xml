@@ -72,11 +72,12 @@
             <property-metadata name="allowOneCharVarInForLoop" datatype="Boolean" default-value="false">
                 <description>%LocalVariableName.allowOneCharVarInForLoop</description>
             </property-metadata>
-            <property-metadata name="tokens" datatype="MultiCheck" default-value="VARIABLE_DEF,PARAMETER_DEF">
+            <property-metadata name="tokens" datatype="MultiCheck" default-value="VARIABLE_DEF,PARAMETER_DEF,RESOURCE">
                 <description>%LocalVariableName.tokens</description>
                 <enumeration>
                     <property-value-option value="VARIABLE_DEF"/>
                     <property-value-option value="PARAMETER_DEF"/>
+                    <property-value-option value="RESOURCE"/>
                 </enumeration>
             </property-metadata>
             <message-key key="name.invalidPattern"/>
