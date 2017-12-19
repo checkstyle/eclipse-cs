@@ -58,7 +58,7 @@ import org.eclipse.osgi.util.NLS;
 
 /**
  * Project builder for Checkstyle plug-in.
- * 
+ *
  * @author David Schneider
  * @author Lars Ködderitzsch
  */
@@ -69,7 +69,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
 
   /**
    * Runs the Checkstyle builder on a project.
-   * 
+   *
    * @param project
    *          Project to be built.
    */
@@ -82,7 +82,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
 
   /**
    * Run the Checkstyle builder on all open projects in the workspace.
-   * 
+   *
    * @throws CheckstylePluginException
    *           Error during the build.
    */
@@ -95,7 +95,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
 
   /**
    * Builds all checkstyle enabled projects that are open from the given collection of projects.
-   * 
+   *
    * @param projects
    *          the projects to build
    * @throws CheckstylePluginException
@@ -105,7 +105,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
           throws CheckstylePluginException {
 
     // Build only open projects with Checkstyle enabled
-    List<IProject> checkstyleProjects = new ArrayList<IProject>();
+    List<IProject> checkstyleProjects = new ArrayList<>();
 
     for (IProject project : projects) {
 
@@ -179,7 +179,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
       // remove all existing Checkstyle markers
       project.deleteMarkers(CheckstyleMarker.MARKER_ID, false, IResource.DEPTH_INFINITE);
 
-      Map<String, Object> markerAttributes = new HashMap<String, Object>();
+      Map<String, Object> markerAttributes = new HashMap<>();
       markerAttributes.put(IMarker.PRIORITY, new Integer(IMarker.PRIORITY_HIGH));
       markerAttributes.put(IMarker.SEVERITY, new Integer(IMarker.SEVERITY_ERROR));
       markerAttributes.put(IMarker.MESSAGE,
@@ -197,9 +197,14 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
     return new IProject[] { project };
   }
 
+  @Override
+  protected void clean(IProgressMonitor monitor) throws CoreException {
+    getProject().deleteMarkers(CheckstyleMarker.MARKER_ID, false, IResource.DEPTH_INFINITE);
+  }
+
   /**
    * Builds the selected resources.
-   * 
+   *
    * @param resources
    *          the resourcesto build
    * @param configuration
@@ -240,7 +245,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
       //
       List<FileSet> fileSets = configuration.getFileSets();
 
-      Map<ICheckConfiguration, Auditor> audits = new HashMap<ICheckConfiguration, Auditor>();
+      Map<ICheckConfiguration, Auditor> audits = new HashMap<>();
 
       for (FileSet fileSet : fileSets) {
 
@@ -310,7 +315,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
 
   /**
    * Get the files for the build by analyzing the resource delta.
-   * 
+   *
    * @param delta
    *          the delta of changes
    * @param filters
@@ -322,7 +327,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
   private Collection<IResource> getResources(final IResourceDelta delta, final IFilter[] filters)
           throws CoreException {
 
-    List<IResource> resources = new ArrayList<IResource>();
+    List<IResource> resources = new ArrayList<>();
 
     IResourceDelta[] affectedChildren = delta.getAffectedChildren();
 
@@ -364,7 +369,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
 
   /**
    * Get all files to build from a given container.
-   * 
+   *
    * @param container
    *          the container
    * @param filters
@@ -376,7 +381,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
   private Collection<IResource> getResources(final IContainer container, final IFilter[] filters)
           throws CoreException {
 
-    List<IResource> resources = new ArrayList<IResource>();
+    List<IResource> resources = new ArrayList<>();
 
     IResource[] children = container.members();
 
