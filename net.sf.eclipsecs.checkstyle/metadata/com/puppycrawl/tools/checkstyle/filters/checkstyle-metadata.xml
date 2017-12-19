@@ -32,7 +32,7 @@
             </property-metadata>
         </rule-metadata>
 
-        <rule-metadata name="%SuppressionCommentFilter.name" internal-name="SuppressionCommentFilter" parent="Checker"
+        <rule-metadata name="%SuppressionCommentFilter.name" internal-name="SuppressionCommentFilter" parent="TreeWalker"
             hasSeverity="false">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.filters.SuppressionCommentFilter"/>
             <description>%SuppressionCommentFilter.desc</description>
@@ -56,7 +56,7 @@
             </property-metadata>
         </rule-metadata>
         
-        <rule-metadata name="%SuppressWithNearbyCommentFilter.name" internal-name="SuppressWithNearbyCommentFilter" parent="Checker"
+        <rule-metadata name="%SuppressWithNearbyCommentFilter.name" internal-name="SuppressWithNearbyCommentFilter" parent="TreeWalker"
             hasSeverity="false">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.filters.SuppressWithNearbyCommentFilter"/>
             <description>%SuppressWithNearbyCommentFilter.desc</description>

@@ -115,7 +115,6 @@
     <extension id="checkstyle.SaveFilters" point="net.sf.eclipsecs.core.saveFilters">
 
         <saveFilter class="net.sf.eclipsecs.core.config.savefilter.CheckerModuleSaveFilter"/>
-        <saveFilter class="net.sf.eclipsecs.core.config.savefilter.FileContentsHolderSaveFilter"/>
         <saveFilter class="net.sf.eclipsecs.core.config.savefilter.SuppressWarningsHolderSaveFilter"/>
         <saveFilter class="net.sf.eclipsecs.core.config.savefilter.TreeWalkerModuleSaveFilter"/>
         <saveFilter class="net.sf.eclipsecs.core.config.savefilter.SortingSaveFilter"/>

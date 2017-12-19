@@ -45,10 +45,11 @@
                 <description>%NoWhitespaceAfter.allowLineBreaks</description>
             </property-metadata>
             <property-metadata name="tokens" datatype="MultiCheck"
-                default-value="ARRAY_INIT,INC,DEC,UNARY_MINUS,UNARY_PLUS,BNOT,LNOT,DOT,ARRAY_DECLARATOR,INDEX_OP">
+                default-value="ARRAY_INIT,AT,INC,DEC,UNARY_MINUS,UNARY_PLUS,BNOT,LNOT,DOT,ARRAY_DECLARATOR,INDEX_OP">
                 <description>%NoWhitespaceAfter.tokens</description>
                 <enumeration>
                     <property-value-option value="ARRAY_INIT" />
+                    <property-value-option value="AT" />
                     <property-value-option value="INC" />
                     <property-value-option value="DEC" />
                     <property-value-option value="UNARY_MINUS" />
@@ -330,6 +331,7 @@
                     <property-value-option value="WILDCARD_TYPE" />
                     <property-value-option value="GENERIC_START" />
                     <property-value-option value="GENERIC_END" />
+                    <property-value-option value="ELLIPSIS" />
                 </enumeration>
             </property-metadata>
             <property-metadata name="allowEmptyConstructors" datatype="Boolean" default-value="false">

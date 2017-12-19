@@ -69,9 +69,6 @@
                 <description>%LeftCurly.option</description>
                 <enumeration option-provider="com.puppycrawl.tools.checkstyle.checks.blocks.LeftCurlyOption"/>
             </property-metadata>
-            <property-metadata name="maxLineLength" datatype="Integer" default-value="80">
-                <description>%LeftCurly.maxLineLength</description>
-            </property-metadata>
             <property-metadata name="tokens" datatype="MultiCheck"
                 default-value="INTERFACE_DEF,CLASS_DEF,ANNOTATION_DEF,ENUM_DEF,CTOR_DEF,METHOD_DEF,ENUM_CONSTANT_DEF,LITERAL_WHILE,LITERAL_TRY,LITERAL_CATCH,LITERAL_FINALLY,LITERAL_SYNCHRONIZED,LITERAL_SWITCH,LITERAL_DO,LITERAL_IF,LITERAL_ELSE,LITERAL_FOR">
                 <description>%LeftCurly.tokens</description>

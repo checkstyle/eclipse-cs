@@ -52,11 +52,6 @@
    -->
     <rule-group-metadata name="Internal" priority="1600" hidden="true">
 
-        <rule-metadata name="%FileContentsHolder.name" internal-name="FileContentsHolder"
-            parent="TreeWalker" hidden="true" deletable="false" singleton="true">
-            <alternative-name
-                internal-name="com.puppycrawl.tools.checkstyle.checks.FileContentsHolder"/>
-        </rule-metadata>
         <rule-metadata name="%SuppressWarningsHolder.name" internal-name="SuppressWarningsHolder"
             parent="TreeWalker" hidden="true" deletable="false" singleton="true">
             <alternative-name

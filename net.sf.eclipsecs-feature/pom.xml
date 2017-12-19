@@ -15,7 +15,6 @@
             <plugin>
                 <groupId>org.eclipse.tycho.extras</groupId>
                 <artifactId>tycho-source-feature-plugin</artifactId>
-                <version>${tycho-extras-version}</version>
                 <configuration>
                     <excludes>
                         <!-- These are bundles and feature that do not have a corresponding source version; NOT the ones 

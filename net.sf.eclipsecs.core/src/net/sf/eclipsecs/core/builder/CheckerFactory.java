@@ -25,6 +25,10 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.io.Closeables;
 import com.puppycrawl.tools.checkstyle.Checker;
 import com.puppycrawl.tools.checkstyle.ConfigurationLoader;
+import com.puppycrawl.tools.checkstyle.ConfigurationLoader.IgnoredModulesOptions;
+import com.puppycrawl.tools.checkstyle.PackageNamesLoader;
+import com.puppycrawl.tools.checkstyle.PackageObjectFactory;
+import com.puppycrawl.tools.checkstyle.PackageObjectFactory.ModuleLoadOption;
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.puppycrawl.tools.checkstyle.api.Configuration;
@@ -33,6 +37,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import net.sf.eclipsecs.core.CheckstylePlugin;
@@ -268,11 +273,15 @@ public final class CheckerFactory {
 
     // load configuration
     final Configuration configuration = ConfigurationLoader.loadConfiguration(input, propResolver,
-            true);
+            IgnoredModulesOptions.OMIT);
+
+    ClassLoader moduleClassLoader = CheckstylePlugin.getDefault().getAddonExtensionClassLoader();
+    Set<String> packageNames = PackageNamesLoader.getPackageNames(moduleClassLoader);
 
     // create and configure checker
     Checker checker = new Checker();
-    checker.setModuleClassLoader(CheckstylePlugin.getDefault().getAddonExtensionClassLoader());
+    checker.setModuleFactory(new PackageObjectFactory(packageNames, moduleClassLoader,
+            ModuleLoadOption.TRY_IN_ALL_REGISTERED_PACKAGES));
     try {
       checker.setCharset(project.getDefaultCharset());
     } catch (UnsupportedEncodingException e) {

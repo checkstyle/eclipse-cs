@@ -29,7 +29,7 @@ import net.sf.eclipsecs.core.config.XMLTags;
 
 /**
  * Save filter that sorts modules in a certain order.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public class SortingSaveFilter implements ISaveFilter {
@@ -47,7 +47,7 @@ public class SortingSaveFilter implements ISaveFilter {
   /**
    * Comparator to sort modules so that Checker and TreeWalker come first. This is done because of a
    * bug in SuppressionCommentFilter.
-   * 
+   *
    * @author Lars Ködderitzsch
    */
   private static class ModuleComparator implements Comparator<Module> {
@@ -62,12 +62,10 @@ public class SortingSaveFilter implements ISaveFilter {
       String internalName2 = o2.getMetaData().getInternalName();
 
       if (XMLTags.CHECKER_MODULE.equals(internalName1)
-              || XMLTags.TREEWALKER_MODULE.equals(internalName1)
-              || XMLTags.FILECONTENTSHOLDER_MODULE.equals(internalName1)) {
+              || XMLTags.TREEWALKER_MODULE.equals(internalName1)) {
         return -1;
       } else if (XMLTags.CHECKER_MODULE.equals(internalName2)
-              || XMLTags.TREEWALKER_MODULE.equals(internalName2)
-              || XMLTags.FILECONTENTSHOLDER_MODULE.equals(internalName2)) {
+              || XMLTags.TREEWALKER_MODULE.equals(internalName2)) {
         return 1;
       } else {
         return 0;

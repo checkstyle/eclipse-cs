@@ -492,12 +492,13 @@
         <rule-metadata name="%UnnecessaryParentheses.name" internal-name="UnnecessaryParentheses" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.UnnecessaryParenthesesCheck" />
             <description>%UnnecessaryParentheses.desc</description>
+            <message-key key="unnecessary.paren.ident" />
             <message-key key="unnecessary.paren.assign" />
             <message-key key="unnecessary.paren.expr" />
-            <message-key key="unnecessary.paren.ident" />
             <message-key key="unnecessary.paren.literal" />
-            <message-key key="unnecessary.paren.return" />
             <message-key key="unnecessary.paren.string" />
+            <message-key key="unnecessary.paren.return" />
+            <message-key key="unnecessary.paren.lambda" />
         </rule-metadata>
 
         <rule-metadata name="%OneStatementPerLine.name" internal-name="OneStatementPerLine" parent="TreeWalker">

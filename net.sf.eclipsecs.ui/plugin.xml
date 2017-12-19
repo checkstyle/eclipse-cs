@@ -294,6 +294,7 @@
     </extension>
     <extension
         point="org.eclipse.ui.commands">
+        <category id="net.sf.eclipsecs.ui" name="Checkstyle"/>
         <command
             categoryId="org.eclipse.jdt.ui.category.source"
             description="%FixCheckstyleMarkersAction.tooltip"
@@ -301,7 +302,7 @@
             name="%FixCheckstyleMarkersAction.label"
             defaultHandler="net.sf.eclipsecs.ui.quickfixes.FixCheckstyleMarkersHandler"/>
         <command
-            categoryId="net.sf.eclipsecs"
+            categoryId="net.sf.eclipsecs.ui"
             description="%PurgeCaches.tooltip"
             id="CheckstylePlugin.PurgeCaches"
             name="%PurgeCaches.label"

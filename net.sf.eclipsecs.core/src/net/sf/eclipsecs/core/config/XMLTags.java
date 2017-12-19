@@ -149,9 +149,6 @@ public final class XMLTags {
   /** Constant for the name of the TreeWalker module. */
   public static final String TREEWALKER_MODULE = "TreeWalker"; //$NON-NLS-1$
 
-  /** Constant for the name of the FileContentsHolder module. */
-  public static final String FILECONTENTSHOLDER_MODULE = "FileContentsHolder"; //$NON-NLS-1$
-
   /** Constant for the name of the SuppressionCommentFiler module. */
   public static final String SUPRESSIONCOMMENTFILTER_MODULE = "SuppressionCommentFilter"; //$NON-NLS-1$
 
