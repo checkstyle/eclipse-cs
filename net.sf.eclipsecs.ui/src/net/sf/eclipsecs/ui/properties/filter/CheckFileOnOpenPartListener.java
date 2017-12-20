@@ -66,11 +66,10 @@ import org.eclipse.ui.internal.IWorkbenchConstants;
 import org.eclipse.ui.part.FileEditorInput;
 
 /**
- * PartListener implementation that listenes for opening editor parts and runs
- * Checkstyle on the opened file if the UnOpenedFileFilter is active.
+ * PartListener implementation that listens for opening editor parts and runs Checkstyle on the
+ * opened file if the UnOpenedFileFilter is active.
  *
- * @see https://sourceforge.net/tracker/index.php?func=detail&aid=1647245&group_id
- *      =80344&atid=559497).
+ * @see https://sourceforge.net/p/eclipse-cs/feature-requests/93/
  * @author Lars Ködderitzsch
  */
 public class CheckFileOnOpenPartListener implements IPartListener2 {
@@ -108,7 +107,7 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
     @Override
     public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
 
-      List<IFile> filesToCheck = new ArrayList<IFile>();
+      List<IFile> filesToCheck = new ArrayList<>();
 
       for (IWorkbenchPartReference partRef : mParts) {
 
@@ -215,8 +214,7 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
    *
    * @param partRef
    *          the workbench part in question
-   * @return the editors file or <code>null</code> if the workbench part is no
-   *         file based editor
+   * @return the editors file or <code>null</code> if the workbench part is no file based editor
    */
   private IFile getEditorFile(IWorkbenchPartReference partRef) {
 
@@ -359,13 +357,12 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
   }
 
   /**
-   * Checks if the given file is affected by the UnOpenedFilesFilter and needs
-   * to be handled on editor open/close.
+   * Checks if the given file is affected by the UnOpenedFilesFilter and needs to be handled on
+   * editor open/close.
    *
    * @param file
    *          the file to check
-   * @return <code>true</code> if the file is affected, <code>false</code>
-   *         otherwise
+   * @return <code>true</code> if the file is affected, <code>false</code> otherwise
    */
   private boolean isFileAffected(IFile file) {
 
