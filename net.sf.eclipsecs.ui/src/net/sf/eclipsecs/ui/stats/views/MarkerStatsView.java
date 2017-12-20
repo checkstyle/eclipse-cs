@@ -23,6 +23,7 @@ package net.sf.eclipsecs.ui.stats.views;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Objects;
 
 import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
@@ -362,11 +363,6 @@ public class MarkerStatsView extends AbstractStatsView {
     }
   }
 
-  /**
-   * See method below.
-   *
-   * @see net.sf.eclipsecs.stats.views.AbstractStatsView#makeActions()
-   */
   @Override
   protected void makeActions() {
     // Action used to display the pie chart
@@ -546,9 +542,6 @@ public class MarkerStatsView extends AbstractStatsView {
   private class MasterContentProvider implements IStructuredContentProvider {
     private Object[] mCurrentMarkerStats;
 
-    /**
-     * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
-     */
     @Override
     public Object[] getElements(Object inputElement) {
       if (mCurrentMarkerStats == null) {
@@ -560,18 +553,11 @@ public class MarkerStatsView extends AbstractStatsView {
       return mCurrentMarkerStats;
     }
 
-    /**
-     * @see org.eclipse.jface.viewers.IContentProvider#dispose()
-     */
     @Override
     public void dispose() {
       mCurrentMarkerStats = null;
     }
 
-    /**
-     * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(Viewer,
-     *      Object, Object)
-     */
     @Override
     public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
       mCurrentMarkerStats = null;
@@ -586,9 +572,6 @@ public class MarkerStatsView extends AbstractStatsView {
   private class DetailContentProvider implements IStructuredContentProvider {
     private Object[] mCurrentDetails;
 
-    /**
-     * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
-     */
     @Override
     public Object[] getElements(Object inputElement) {
       if (mCurrentDetails == null) {
@@ -608,18 +591,11 @@ public class MarkerStatsView extends AbstractStatsView {
       return mCurrentDetails != null ? mCurrentDetails : new Object[0];
     }
 
-    /**
-     * @see org.eclipse.jface.viewers.IContentProvider#dispose()
-     */
     @Override
     public void dispose() {
       mCurrentDetails = null;
     }
 
-    /**
-     * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(Viewer,
-     *      Object, Object)
-     */
     @Override
     public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
       mCurrentDetails = null;
@@ -634,10 +610,7 @@ public class MarkerStatsView extends AbstractStatsView {
    */
   private class MasterViewMultiProvider extends LabelProvider
           implements ITableLabelProvider, ITableComparableProvider, ITableSettingsProvider {
-    /**
-     * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnText(java.lang.Object,
-     *      int)
-     */
+
     @Override
     public String getColumnText(Object obj, int index) {
       MarkerStat stat = (MarkerStat) obj;
@@ -659,10 +632,6 @@ public class MarkerStatsView extends AbstractStatsView {
       return text;
     }
 
-    /**
-     * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnImage(java.lang.Object,
-     *      int)
-     */
     @Override
     public Image getColumnImage(Object obj, int index) {
       Image image = null;
@@ -729,10 +698,7 @@ public class MarkerStatsView extends AbstractStatsView {
    */
   private class DetailViewMultiProvider extends LabelProvider
           implements ITableLabelProvider, ITableComparableProvider, ITableSettingsProvider {
-    /**
-     * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnText(java.lang.Object,
-     *      int)
-     */
+
     @Override
     public String getColumnText(Object obj, int index) {
       IMarker marker = (IMarker) obj;
@@ -747,12 +713,11 @@ public class MarkerStatsView extends AbstractStatsView {
             text = marker.getResource().getParent().getFullPath().toString();
             break;
           case 3:
-            text = marker.getAttribute(IMarker.LINE_NUMBER).toString();
+            text = Objects.toString(marker.getAttribute(IMarker.LINE_NUMBER), "");
             break;
           case 4:
-            text = marker.getAttribute(IMarker.MESSAGE).toString();
+            text = Objects.toString(marker.getAttribute(IMarker.MESSAGE), "");
             break;
-
           default:
             text = ""; //$NON-NLS-1$
             break;
@@ -766,10 +731,6 @@ public class MarkerStatsView extends AbstractStatsView {
       return text;
     }
 
-    /**
-     * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnImage(java.lang.Object,
-     *      int)
-     */
     @Override
     public Image getColumnImage(Object obj, int index) {
       Image image = null;
@@ -809,9 +770,8 @@ public class MarkerStatsView extends AbstractStatsView {
           comparable = new Integer(marker.getAttribute(IMarker.LINE_NUMBER, Integer.MAX_VALUE));
           break;
         case 4:
-          comparable = marker.getAttribute(IMarker.MESSAGE, "").toString();
+          comparable = marker.getAttribute(IMarker.MESSAGE, "");
           break;
-
         default:
           comparable = ""; //$NON-NLS-1$
           break;
