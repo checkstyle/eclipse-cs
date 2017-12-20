@@ -89,7 +89,7 @@
                         </dependency>
                     </dependencies>
                     <configuration>
-                        <timestampProvider>jgit</timestampProvider>
+                        <!-- <timestampProvider>jgit</timestampProvider> -->
                         <jgit.ignore>
                             pom.xml
                         </jgit.ignore>
@@ -104,11 +104,11 @@
                     <artifactId>tycho-p2-plugin</artifactId>
                     <version>${tycho-version}</version>
                     <configuration>
-<!--                         <baselineRepositories> -->
-<!--                             <repository> -->
-<!--                                 <url>git://git.code.sf.net/p/eclipse-cs/git</url> -->
-<!--                             </repository> -->
-<!--                         </baselineRepositories> -->
+                        <!-- <baselineRepositories> -->
+                        <!-- <repository> -->
+                        <!-- <url>git://git.code.sf.net/p/eclipse-cs/git</url> -->
+                        <!-- </repository> -->
+                        <!-- </baselineRepositories> -->
                     </configuration>
                     <executions>
                         <execution>
