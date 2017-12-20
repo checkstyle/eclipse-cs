@@ -22,23 +22,31 @@ package net.sf.eclipsecs.ui.actions;
 
 import net.sf.eclipsecs.core.builder.CheckerFactory;
 
+import org.eclipse.core.commands.AbstractHandler;
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 
 /**
- * Simple handle which clears the CheckerFactory caches in order to force reload
- * of supplementary Checkstyle configuration files (suppressions, import control
- * files etc.).
+ * Simple handle which clears the CheckerFactory caches in order to force reload of supplementary
+ * Checkstyle configuration files (suppressions, import control files etc.).
  *
  * @author Lars Ködderitzsch
  */
-public class PurgeCachesAction implements IWorkbenchWindowActionDelegate {
+public class PurgeCachesAction extends AbstractHandler implements IWorkbenchWindowActionDelegate {
 
   @Override
   public void run(IAction action) {
     CheckerFactory.cleanup();
+  }
+
+  @Override
+  public Object execute(ExecutionEvent event) throws ExecutionException {
+    CheckerFactory.cleanup();
+    return null;
   }
 
   @Override
@@ -49,7 +57,4 @@ public class PurgeCachesAction implements IWorkbenchWindowActionDelegate {
   public void init(IWorkbenchWindow window) {
   }
 
-  @Override
-  public void dispose() {
-  }
 }
