@@ -2,23 +2,23 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Checkstyle Core Library
 Bundle-SymbolicName: net.sf.eclipsecs.checkstyle
-Bundle-Version: 8.5.0.qualifier
+Bundle-Version: 8.5.1.qualifier
 Bundle-Vendor: http://eclipse-cs.sf.net/
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: .,
- antlr;version="8.5.0";
+ antlr;version="8.5.1";
   uses:="antlr.collections.impl,
    antlr.collections,
    antlr.ASdebug,
    antlr.debug",
  antlr.actions.cpp,
  antlr.actions.csharp,
- antlr.collections;version="8.5.0";uses:="antlr",
- com.google.common.base;version="8.5.0",
- com.google.common.cache;version="8.5.0",
- com.google.common.collect;version="8.5.0",
- com.google.common.io;version="8.5.0",
+ antlr.collections;version="8.5.1";uses:="antlr",
+ com.google.common.base;version="8.5.1",
+ com.google.common.cache;version="8.5.1",
+ com.google.common.collect;version="8.5.1",
+ com.google.common.io;version="8.5.1",
  com.puppycrawl.tools.checkstyle,
  com.puppycrawl.tools.checkstyle.api;
   uses:="org.xml.sax.helpers,
@@ -46,6 +46,6 @@ Export-Package: .,
  com.puppycrawl.tools.checkstyle.filefilters,
  com.puppycrawl.tools.checkstyle.filters,
  com.puppycrawl.tools.checkstyle.utils,
- org.apache.commons.beanutils;version="8.5.0"
+ org.apache.commons.beanutils;version="8.5.1"
 Bundle-ClassPath: .,
  checkstyle-8.5-all.jar
