@@ -208,12 +208,13 @@
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.javadoc.NonEmptyAtclauseDescriptionCheck" />
             <description>%NonEmptyAtclauseDescription.desc</description>
             <property-metadata name="tokens" datatype="MultiCheck"
-                default-value="PARAM_LITERAL,RETURN_LITERAL,THROWS_LITERAL,DEPRECATED_LITERAL">
+                default-value="PARAM_LITERAL,RETURN_LITERAL,THROWS_LITERAL,EXCEPTION_LITERAL,DEPRECATED_LITERAL">
                 <description>%NonEmptyAtclauseDescription.tokens</description>
                 <enumeration>
                     <property-value-option value="PARAM_LITERAL" />
                     <property-value-option value="RETURN_LITERAL" />
                     <property-value-option value="THROWS_LITERAL" />
+                    <property-value-option value="EXCEPTION_LITERAL" />
                     <property-value-option value="DEPRECATED_LITERAL" />
                 </enumeration>
             </property-metadata>

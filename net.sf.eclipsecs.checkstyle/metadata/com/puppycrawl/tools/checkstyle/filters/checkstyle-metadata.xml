@@ -30,6 +30,9 @@
             <property-metadata name="file" datatype="File">
                 <description>%SuppressionFilter.file</description>
             </property-metadata>
+            <property-metadata name="optional" datatype="Boolean" default-value="false">
+                <description>%SuppressionFilter.optional</description>
+            </property-metadata>
         </rule-metadata>
 
         <rule-metadata name="%SuppressionCommentFilter.name" internal-name="SuppressionCommentFilter" parent="TreeWalker"
@@ -77,6 +80,24 @@
             </property-metadata>
             <property-metadata name="checkC" datatype="Boolean" default-value="true">
                 <description>%SuppressWithNearbyCommentFilter.checkC</description>
+            </property-metadata>
+        </rule-metadata>
+        
+        <rule-metadata name="%SuppressWithPlainTextCommentFilter.name" internal-name="SuppressWithPlainTextCommentFilter" parent="Checker"
+            hasSeverity="false">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.filters.SuppressWithPlainTextCommentFilter"/>
+            <description>%SuppressWithPlainTextCommentFilter.desc</description>
+            <property-metadata name="offCommentFormat" datatype="Regex" default-value="// CHECKSTYLE:OFF">
+                <description>%SuppressWithPlainTextCommentFilter.offCommentFormat</description>
+            </property-metadata>
+            <property-metadata name="onCommentFormat" datatype="Regex" default-value="// CHECKSTYLE:ON">
+                <description>%SuppressWithPlainTextCommentFilter.onCommentFormat</description>
+            </property-metadata>
+            <property-metadata name="checkFormat" datatype="Regex" default-value=".*">
+                <description>%SuppressWithPlainTextCommentFilter.checkFormat</description>
+            </property-metadata>
+            <property-metadata name="messageFormat" datatype="Regex">
+                <description>%SuppressWithPlainTextCommentFilter.messageFormat</description>
             </property-metadata>
         </rule-metadata>
 

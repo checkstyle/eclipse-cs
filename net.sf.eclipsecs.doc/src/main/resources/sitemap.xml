@@ -4,77 +4,77 @@
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
   <url>
     <loc>http://eclipse-cs.sourceforge.net/</loc>
-    <lastmod>2015-07-25T20:00:00+00:00</lastmod>
+    <lastmod>${timestamp}</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>http://eclipse-cs.sourceforge.net/#!/releasenotes</loc>
-    <lastmod>2015-07-25T20:00:00+00:00</lastmod>
+    <lastmod>${timestamp}</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>http://eclipse-cs.sourceforge.net/#!/install</loc>
-    <lastmod>2015-07-25T20:00:00+00:00</lastmod>
+    <lastmod>${timestamp}</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>http://eclipse-cs.sourceforge.net/#!/project-setup</loc>
-    <lastmod>2015-07-25T20:00:00+00:00</lastmod>
+    <lastmod>${timestamp}</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>http://eclipse-cs.sourceforge.net/#!/custom-config</loc>
-    <lastmod>2015-07-25T20:00:00+00:00</lastmod>
+    <lastmod>${timestamp}</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>http://eclipse-cs.sourceforge.net/#!/filters</loc>
-    <lastmod>2015-07-25T20:00:00+00:00</lastmod>
+    <lastmod>${timestamp}</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>http://eclipse-cs.sourceforge.net/#!/configtypes</loc>
-    <lastmod>2015-07-25T20:00:00+00:00</lastmod>
+    <lastmod>${timestamp}</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>http://eclipse-cs.sourceforge.net/#!/properties</loc>
-    <lastmod>2015-07-25T20:00:00+00:00</lastmod>
+    <lastmod>${timestamp}</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>http://eclipse-cs.sourceforge.net/#!/filesets</loc>
-    <lastmod>2015-07-25T20:00:00+00:00</lastmod>
+    <lastmod>${timestamp}</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>http://eclipse-cs.sourceforge.net/#!/preferences</loc>
-    <lastmod>2015-07-25T20:00:00+00:00</lastmod>
+    <lastmod>${timestamp}</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>http://eclipse-cs.sourceforge.net/#!/extensions</loc>
-    <lastmod>2015-07-25T20:00:00+00:00</lastmod>
+    <lastmod>${timestamp}</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>http://eclipse-cs.sourceforge.net/#!/custom-checks</loc>
-    <lastmod>2015-07-25T20:00:00+00:00</lastmod>
+    <lastmod>${timestamp}</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>http://eclipse-cs.sourceforge.net/#!/builtin-config</loc>
-    <lastmod>2015-07-25T20:00:00+00:00</lastmod>
+    <lastmod>${timestamp}</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>http://eclipse-cs.sourceforge.net/#!/custom-filters</loc>
-    <lastmod>2015-07-25T20:00:00+00:00</lastmod>
+    <lastmod>${timestamp}</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>http://eclipse-cs.sourceforge.net/#!/faq</loc>
-    <lastmod>2015-07-25T20:00:00+00:00</lastmod>
+    <lastmod>${timestamp}</lastmod>
     <changefreq>weekly</changefreq>
   </url>
 </urlset>
