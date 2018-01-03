@@ -1,0 +1,15 @@
+language: java
+sudo: false
+
+cache:
+  apt: true
+  directories:
+    - ~/.m2
+
+branches:
+  only:
+    - master
+
+install:
+  -
+
