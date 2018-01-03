@@ -9,6 +9,9 @@
     <artifactId>net.sf.eclipsecs.doc</artifactId>
     <packaging>eclipse-plugin</packaging>
     <name>eclipse-cs Documentation Plugin</name>
+    <properties>
+        <timestamp>${maven.build.timestamp}</timestamp>
+    </properties>
     <build>
         <plugins>
             <plugin>
@@ -34,8 +37,9 @@
                 </configuration>
                 <executions>
                     <execution>
+                        <!-- Copies documentation for use as website -->
                         <id>website</id>
-                        <phase>process-resources</phase>
+                        <phase>prepare-package</phase>
                         <goals>
                             <goal>copy-resources</goal>
                         </goals>
@@ -47,17 +51,19 @@
                                     <!-- Copy update-site files with filtering to replace version/timestamp -->
                                     <includes>
                                         <include>update/**</include>
+                                        <include>sitemap.xml</include>
                                     </includes>
                                     <filtering>true</filtering>
                                 </resource>
                                 <resource>
                                     <directory>src/main/resources</directory>
-                                    Copy all the rest except update site files (see above)
+                                    <!-- Copy all the rest except update site files (see above) -->
                                     <includes>
                                         <include>**/*</include>
                                     </includes>
                                     <excludes>
                                         <exclude>update/**</exclude>
+                                        <exclude>sitemap.xml</exclude>
                                     </excludes>
                                 </resource>
                             </resources>
@@ -65,8 +71,9 @@
                     </execution>
 
                     <execution>
+                        <!-- Copies documentation for use as Eclipse help content -->
                         <id>docs</id>
-                        <phase>process-resources</phase>
+                        <phase>prepare-package</phase>
                         <goals>
                             <goal>copy-resources</goal>
                         </goals>
@@ -75,12 +82,16 @@
                             <resources>
                                 <resource>
                                     <directory>src/main/resources</directory>
-                                    Copy all except *.html (xslt-transformed) and update site files (not needed)
+                                    <!-- Copy all the rest except website only resources -->
                                     <includes>
                                         <include>**/*</include>
                                     </includes>
                                     <excludes>
                                         <exclude>update/**</exclude>
+                                        <exclude>index.php</exclude>
+                                        <exclude>sitemap.xml</exclude>
+                                        <exclude>robots.txt</exclude>
+                                        <exclude>.htaccess</exclude>
                                     </excludes>
                                 </resource>
                             </resources>
@@ -89,5 +100,36 @@
                 </executions>
             </plugin>
         </plugins>
+
+        <pluginManagement>
+            <plugins>
+                <!-- Exclude the "copy-resources" goal from m2e execution, as it interferes with resource filtering 
+                (i.e. ${buildQualifier} in update site resources is not properly expanded).-->
+                <plugin>
+                    <groupId>org.eclipse.m2e</groupId>
+                    <artifactId>lifecycle-mapping</artifactId>
+                    <version>1.0.0</version>
+                    <configuration>
+                        <lifecycleMappingMetadata>
+                            <pluginExecutions>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>org.apache.maven.plugins</groupId>
+                                        <artifactId>maven-resources-plugin</artifactId>
+                                        <versionRange>[1.0.0,)</versionRange>
+                                        <goals>
+                                            <goal>copy-resources</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore />
+                                    </action>
+                                </pluginExecution>
+                            </pluginExecutions>
+                        </lifecycleMappingMetadata>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 </project>

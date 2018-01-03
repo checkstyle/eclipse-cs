@@ -48,4 +48,4 @@ Export-Package: .,
  com.puppycrawl.tools.checkstyle.utils,
  org.apache.commons.beanutils;version="8.5.1"
 Bundle-ClassPath: .,
- checkstyle-8.5-all.jar
+ checkstyle-8.7-all.jar
