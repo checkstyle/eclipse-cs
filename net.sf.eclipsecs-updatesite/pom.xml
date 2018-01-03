@@ -4,7 +4,6 @@
         <artifactId>net.sf.eclipsecs.parent</artifactId>
         <groupId>net.sf.eclipsecs</groupId>
         <version>8.5.1-SNAPSHOT</version>
-        <relativePath>../net.sf.eclipsecs.parent</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>net.sf.eclipsecs-updatesite</artifactId>

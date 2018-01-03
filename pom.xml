@@ -8,15 +8,14 @@
     <name>net.sf.eclipsecs.parent</name>
 
     <modules>
-
-        <module>../net.sf.eclipsecs.branding</module>
-        <module>../net.sf.eclipsecs.checkstyle</module>
-        <module>../net.sf.eclipsecs.core</module>
-        <module>../net.sf.eclipsecs.doc</module>
-        <module>../net.sf.eclipsecs.sample</module>
-        <module>../net.sf.eclipsecs.ui</module>
-        <module>../net.sf.eclipsecs-feature</module>
-        <module>../net.sf.eclipsecs-updatesite</module>
+        <module>net.sf.eclipsecs.branding</module>
+        <module>net.sf.eclipsecs.checkstyle</module>
+        <module>net.sf.eclipsecs.core</module>
+        <module>net.sf.eclipsecs.doc</module>
+        <module>net.sf.eclipsecs.sample</module>
+        <module>net.sf.eclipsecs.ui</module>
+        <module>net.sf.eclipsecs-feature</module>
+        <module>net.sf.eclipsecs-updatesite</module>
     </modules>
 
     <properties>
