@@ -21,13 +21,28 @@
     <properties>
         <tycho-version>1.0.0</tycho-version>
         <tycho-extras-version>1.0.0</tycho-extras-version>
-        <tycho.scmUrl>scm:git://git.code.sf.net/p/eclipse-cs/git</tycho.scmUrl>
+        <tycho.scmUrl>scm:git:git://github.com:checkstyle/eclipse-cs.git</tycho.scmUrl>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <scm>
-        <connection>scm:git://git.code.sf.net/p/eclipse-cs/git</connection>
+        <connection>scm:git:git://github.com:checkstyle/eclipse-cs.git</connection>
+        <developerConnection>scm:git:git@github.com:checkstyle/eclipse-cs.git</developerConnection>
     </scm>
+
+    <issueManagement>
+        <url>https://github.com/checkstyle/eclipse-cs/issues</url>
+        <system>GitHub Issues</system>
+    </issueManagement>
+
+    <licenses>
+        <license>
+            <name>GNU Lesser General Public License version 2.1</name>
+            <url>https://opensource.org/licenses/LGPL-2.1</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
     <build>
         <finalName>${project.artifactId}_${unqualifiedVersion}.${buildQualifier}</finalName>
         <plugins>
