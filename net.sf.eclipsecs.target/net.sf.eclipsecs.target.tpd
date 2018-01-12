@@ -1,0 +1,7 @@
+target "Eclipse Checkstyle"
+with source configurePhase
+
+location "http://download.eclipse.org/releases/indigo/" {
+	org.eclipse.jdt.feature.group lazy
+	org.eclipse.sdk.ide lazy
+}
