@@ -602,7 +602,7 @@ public class CheckstyleMarkerFilter implements Cloneable {
     List result = new ArrayList(elements.length);
 
     for (int idx = 0; idx < elements.length; idx++) {
-      IResource next = elements[idx].getAdapter(IResource.class);
+      IResource next = (IResource) elements[idx].getAdapter(IResource.class);
 
       if (next != null) {
         result.add(next);

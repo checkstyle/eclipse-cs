@@ -5,9 +5,10 @@
     <artifactId>net.sf.eclipsecs.parent</artifactId>
     <version>8.5.1-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>net.sf.eclipsecs.parent</name>
+    <name>eclipse-cs Maven Parent</name>
 
     <modules>
+        <module>net.sf.eclipsecs.target</module>
         <module>net.sf.eclipsecs.branding</module>
         <module>net.sf.eclipsecs.checkstyle</module>
         <module>net.sf.eclipsecs.core</module>
@@ -57,6 +58,13 @@
                 <artifactId>target-platform-configuration</artifactId>
                 <version>${tycho-version}</version>
                 <configuration>
+                    <target>
+                        <artifact>
+                            <groupId>net.sf.eclipsecs</groupId>
+                            <artifactId>net.sf.eclipsecs.target</artifactId>
+                            <version>8.5.1-SNAPSHOT</version>
+                        </artifact>
+                    </target>
                     <resolver>p2</resolver>
                     <environments>
                         <environment>
@@ -163,12 +171,4 @@
             </plugins>
         </pluginManagement>
     </build>
-
-    <repositories>
-        <repository>
-            <id>neon</id>
-            <layout>p2</layout>
-            <url>http://download.eclipse.org/releases/oxygen/</url>
-        </repository>
-    </repositories>
 </project>

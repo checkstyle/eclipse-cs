@@ -77,7 +77,7 @@ public class FixCheckstyleMarkersAction implements IObjectActionDelegate {
 
     Object element = selection.getFirstElement();
 
-    IFile file = ((IAdaptable) element).getAdapter(IFile.class);
+    IFile file = (IFile) ((IAdaptable) element).getAdapter(IFile.class);
     if (file != null) {
 
       // call the fixing job
