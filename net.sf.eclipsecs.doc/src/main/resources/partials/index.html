@@ -22,7 +22,7 @@
                             <sup>2</sup>
                         </a>
                         <a class="btn btn-default btn-outline-inverse btn-lg" target="_blank"
-                            href="https://sourceforge.net/p/eclipse-cs/git/ci/master/tree/" title="Browse/clone code at SourceForge">
+                            href="https://github.com/checkstyle/eclipse-cs" title="Browse/clone code at Github">
                             <i class="fa fa-code">
                             </i>
                             Code
@@ -48,9 +48,6 @@
                         </a>
                     </div>
                     <div class="panel-footer" style="padding: 10px;">
-                        <a data-flattr-button="" class="FlattrButton" style="display:none;" rev="flattr;button:compact;"
-                            href="http://eclipse-cs.sourceforge.net/">
-                        </a>
                         <iframe src="https://www.openhub.net/p/6568/widgets/project_thin_badge.html" scrolling="no"
                             marginHeight="0" marginWidth="0" style="height: 22px; width: 145px; border: none;">
                         </iframe>
@@ -60,8 +57,7 @@
         </div>
     </div>
 
-    <div data-google-ad="">
-    </div>
+    <!--div data-google-ad=""/> -->
 
     <div class="container">
         <div class="row">
@@ -223,21 +219,16 @@
                 <h2>Build it yourself</h2>
                 <p>
                     Git repository URL:
-                    <code>git://git.code.sf.net/p/eclipse-cs/git</code>
+                    <code>https://github.com/checkstyle/eclipse-cs.git</code>
                 </p>
-                <p>Clone the git repository (or create a fork @Sourceforge) and import all projects into your Eclipse
+                <p>Clone the git repository (or create a fork @Github) and import all projects into your Eclipse
                     workspace.
                 </p>
                 <p>
                     To build an update site bundle package you will require Apache Maven (3.2.x should do fine).
                     <br />
-                    Open
-                    a command line in project
-                    <code>net.sf.eclipsecs.parent</code>
-                    and invoke
-                    <code>mvn clean
-                        install
-                    </code>
+                    Open a command line in project root directory and run
+                    <code>mvn clean package</code>
                     .
                     <br />
                     <br />
