@@ -57,4 +57,5 @@ cleanup.use_this_for_non_static_method_access_only_if_necessary=true
 cleanup_profile=_eclipse-cs net.sf.eclipsecs.ui
 cleanup_settings_version=2
 eclipse.preferences.version=1
+formatter_profile=_Checkstyle
 formatter_settings_version=13
