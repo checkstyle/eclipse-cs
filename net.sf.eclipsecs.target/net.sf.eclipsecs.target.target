@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/mbarbero/fr.obeo.releng.targetplatform -->
-<target name="Eclipse Checkstyle" sequenceNumber="1515779813">
+<target name="Eclipse Checkstyle" sequenceNumber="1515838239">
   <locations>
     <location includeMode="slicer" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="true" type="InstallableUnit">
       <unit id="org.eclipse.jdt.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.sdk.ide" version="0.0.0"/>
-      <repository location="http://download.eclipse.org/releases/indigo/"/>
+      <unit id="org.eclipse.emf.feature.group" version="0.0.0"/>
+      <repository location="http://download.eclipse.org/releases/juno/"/>
     </location>
   </locations>
 </target>

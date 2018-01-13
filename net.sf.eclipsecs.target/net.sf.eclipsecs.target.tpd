@@ -1,7 +1,10 @@
 target "Eclipse Checkstyle"
 with source configurePhase
 
-location "http://download.eclipse.org/releases/indigo/" {
+location "http://download.eclipse.org/releases/juno/" {
 	org.eclipse.jdt.feature.group lazy
 	org.eclipse.sdk.ide lazy
+
+	// e4.ui has dependencies to EMF, those are not actually needed by eclipse-cs itself
+	org.eclipse.emf.feature.group lazy
 }
