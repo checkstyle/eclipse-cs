@@ -18,7 +18,7 @@
                     <execution>
                         <phase>prepare-package</phase>
                         <configuration>
-                            <tasks>
+                            <target>
                                 <delete dir="${project.build.directory}/checkstyle-src-unpack" />
                                 <delete dir="${project.build.directory}/checkstyle-src" />
                                 <first id="cssrc">
@@ -36,7 +36,7 @@
                                     </fileset>
                                     <cutdirsmapper dirs="4" />
                                 </copy>
-                            </tasks>
+                            </target>
                         </configuration>
                         <goals>
                             <goal>run</goal>
