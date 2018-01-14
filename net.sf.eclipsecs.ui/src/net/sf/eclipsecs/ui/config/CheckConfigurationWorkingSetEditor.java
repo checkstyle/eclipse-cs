@@ -49,6 +49,7 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
@@ -234,7 +235,10 @@ public class CheckConfigurationWorkingSetEditor {
       fd.bottom = new FormAttachment(100);
       mUsageView.getControl().setLayoutData(fd);
     }
-
+    
+    // enforce update of button enabled state
+    mController.selectionChanged(new SelectionChangedEvent(mViewer, new StructuredSelection()));
+    
     return configComposite;
   }
 
@@ -434,7 +438,8 @@ public class CheckConfigurationWorkingSetEditor {
       if (event.getSource() == mViewer && event.getSelection() instanceof IStructuredSelection) {
         CheckConfigurationWorkingCopy config = (CheckConfigurationWorkingCopy) ((IStructuredSelection) event
                 .getSelection()).getFirstElement();
-        if (config != null) {
+        boolean configSelected = config != null;
+        if (configSelected) {
           mConfigurationDescription
                   .setText(config.getDescription() != null ? config.getDescription() : ""); //$NON-NLS-1$
 
@@ -452,6 +457,12 @@ public class CheckConfigurationWorkingSetEditor {
             mUsageView.setInput(new ArrayList<IProject>());
           }
         }
+        mEditButton.setEnabled(configSelected);
+        mConfigureButton.setEnabled(configSelected);
+        mCopyButton.setEnabled(configSelected);
+        mRemoveButton.setEnabled(configSelected && config.isEditable());
+        mDefaultButton.setEnabled(configSelected);
+        mExportButton.setEnabled(configSelected);
       }
     }
   }
