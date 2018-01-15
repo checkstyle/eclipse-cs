@@ -90,6 +90,7 @@
                                         <exclude>update/**</exclude>
                                         <exclude>sitemap.xml</exclude>
                                         <exclude>robots.txt</exclude>
+                                        <exclude>google*.html</exclude>
                                     </excludes>
                                 </resource>
                             </resources>
