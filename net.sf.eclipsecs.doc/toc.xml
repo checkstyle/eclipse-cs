@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?NLS TYPE="org.eclipse.help.toc"?>
 
-<toc label="Checkstyle Plug-in" topic="docs/main.html">
+<toc label="Checkstyle Plug-in" topic="docs/index.html">
     <topic label="Getting Started">
         <topic label="Setting up a project" href="docs/main.html#!/project-setup"/>
         <topic label="Creating a checkstyle configuration" href="docs/main.html#!/custom-config"/>

@@ -1,0 +1,163 @@
+<div>
+    <p>Don't be fooled by the small version number increment (didn't want to get out of line with the version number of
+        the underlying Checkstyle engine), actually there have been quite some fixes and new features added since
+        4.3.0.</p>
+    <ul>
+        <li>
+            <p>Tested as working with the latest Eclipse 3.3 Milestone (M7)</p>
+        </li>
+        <li>
+            <p>More on Quickfixes</p>
+            <p>If you liked the 'Apply Checkstyly fixes' action introduced with the previous release you are probably
+                happy to hear that this release adds a key-binding to invoke the action in the Java Editor without mouse
+                wiggling. The default key sequence is Ctrl+Alt+C (or corresponding on Mac).<br/>
+                <br/>
+                <img alt="key-binding for the 'Apply Checkstyle fixes'"
+                    src="partials/releases/4.3.1/quickfixes_keybinding.jpg"/>
+            </p>
+            <p> Additionaly new quickfixes were implemented for the following Checkstyle checks: </p>
+            <ul>
+                <li>AvoidNestedBlocks</li>
+            </ul>
+            <br/>
+        </li>
+        <li>
+            <p>Filters</p>
+            <p>A new implementation of the FileInSyncFilter provides general support for Team API compliant team
+                providers.<br/> Using this filter only files with an outgoing change are going to be checked by
+                Checkstyle.<br/> Note that since filter will only be working in Eclipse 3.2.0 and greater.<br/><br/>
+                <img alt="New FileInSyncFilter" src="partials/releases/4.3.1/fileinsyncfilter.jpg"/></p>
+            <p>The usefulness of the OpenFilesFilter, which when applied will only check files that are opened in the
+                editor, was greatly enhanced by a new feature that automatically checks a file once when it is
+                opened.<br/>In reverse if a file is closed the checkstyle markers for this file are removed.<br/>Try it
+                out, especially with a large workspace using this filter will greatly enhances the Checkstyle experience.<br/><br/>
+                <img alt="OpenFilesFilter" src="partials/releases/4.3.1/openfilesfilter.jpg"/></p>
+        </li>
+        <li>
+            <p>Configuration editor improvements</p>
+            <p>On top of the module tree a filter text widget has been added.<br/>The contents of the module tree are
+                filtered to these modules where the filter text appears in either the module name or
+                description.<br/>Note that there is nothing sophisticated behind this filtering, it is just based on
+                plain String comparison.<br/><br/>
+                <img alt="Filtered Module tree" src="partials/releases/4.3.1/treefiltering.jpg"/></p>
+            <p> Whereever a regular expression can be provided to customize a Checkstyle modules behaviour there is now
+                right next to it a text field where you can input a test string to see if the regular expression matches.<br/><br/>
+                <img alt="Regex testing" src="partials/releases/4.3.1/regextesting.jpg"/>
+                <img alt="Regex testing" src="partials/releases/4.3.1/regextesting2.jpg"/></p>
+        </li>
+        <li>
+            <p>Bulk configuration of projects</p>
+            <p>A new context menu action in the Package Explorer/Navigator allows you to bulk configure multiple
+                projects for Checkstyle at once. This is especially useful if your workspace contains many
+                projects.<br/>To do this you need to properly set up one project the regular way (Project
+                Properties->Checkstyle and so on).<br/>After this is done you can select all the other projects in your
+                workspace and invoke the 'Configure project(s) from blueprint' action.<br/>In the dialog which will now
+                appear you can select the project, which will serve as blueprint for the configuration of the other
+                selected projects.<br/>In this case the blueprint will be the one project you configured in step one.<br/><br/>
+                <img alt="Bulk project configuration" src="partials/releases/4.3.1/bulkconfiguration.jpg"/></p>
+            <p>Note that this process does <b>not</b> enable Checkstyle on the affected projects.<br/>To deal with this
+                another two new actions have been added to deal with activating/deactivation of Checkstyle for multiple
+                projects.</p>
+        </li>
+        <li>
+            <p>Run Checkstyle on demand on selected files</p>
+            <p>For those who don't want to have the plugin constantly inspecting their code we added a new feature to
+                run Checkstyle on demand on the files selected in the Package Explorer/Navigator.<br/>A second action
+                can be used to remove the Checkstyle markers from the selected files.<br/><br/><img
+                    alt="Run Checkstyle on demand" src="partials/releases/4.3.1/ondemand.jpg"/></p>
+        </li>
+        <li>
+            <p>Authentication credentials for secured remote Checkstyle configurations must now be provided in the
+                Remote Configurations properties.<br/>The authentication dialog popping up in previous versions is gone
+                for good.<br/><br/>
+                <img alt="New input location for authentication credentials"
+                    src="partials/releases/4.3.1/credentials.jpg"/></p>
+        </li>
+    </ul>
+    <h3>Bugfixes</h3>
+    <ul>
+        <li>
+            <a
+                href="https://sourceforge.net/tracker/index.php?func=detail&amp;aid=1647602&amp;group_id=80344&amp;atid=559494"
+                >1647602 Overanxious logging to error log</a>
+        </li>
+        <li>
+            <a
+                href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1670284&amp;group_id=80344&amp;atid=559494"
+                >1670284 ModifierOrderQuickfix chokes on annotated methods</a>
+        </li>
+        <li>
+            <a
+                href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1683036&amp;group_id=80344&amp;atid=559494"
+                >1683036 Creating Project rel. configuration can be awkward</a>
+        </li>
+        <li>
+            <a
+                href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1694580&amp;group_id=80344&amp;atid=559494"
+                >1694580 Various minor bugs when creating external/project rel. confi</a>
+        </li>
+        <li>
+            <a
+                href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1706627&amp;group_id=80344&amp;atid=559494"
+                >1706627 spelling error</a>
+        </li>
+        <li>
+            <a
+                href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1708138&amp;group_id=80344&amp;atid=559494"
+                >1708138 Outdated plugin metadata for RightCurly check</a>
+        </li>
+        <li>
+            <a
+                href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1691850&amp;group_id=80344&amp;atid=559494"
+                >1691850 Remote authentication dialog goes crazy with SpringIDE</a>
+        </li>
+        <li>
+            <a
+                href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1708711&amp;group_id=80344&amp;atid=559494"
+                >1708711 Http config retrieval retries on permission denied</a>
+        </li>
+    </ul>
+    <h3>Features</h3>
+    <ul>
+        <li>
+            <a
+                href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1671903&amp;group_id=80344&amp;atid=559497"
+                >1671903 Offer a way to test given regexp in the naming conventions</a>
+        </li>
+        <li>
+            <a
+                href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1699557&amp;group_id=80344&amp;atid=559497"
+                >1699557 Add keybinding for Apply Checkstyle fixes action</a>
+        </li>
+        <li>
+            <a
+                href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1647245&amp;group_id=80344&amp;atid=559497"
+                >1647245 Check a file when it opens and a filter is active</a>
+        </li>
+        <li>
+            <a
+                href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1704850&amp;group_id=80344&amp;atid=559497"
+                >1704850 Improve FilesInSyncFilter to work with other team providers</a>
+        </li>
+        <li>
+            <a
+                href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1656624&amp;group_id=80344&amp;atid=559497"
+                >1656624 Add a search engine</a>
+        </li>
+        <li>
+            <a
+                href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1607724&amp;group_id=80344&amp;atid=559497"
+                >1607724 Implement quickfix for AvoidNestedBlocks</a>
+        </li>
+        <li>
+            <a
+                href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1680397&amp;group_id=80344&amp;atid=559497"
+                >1680397 Bulk enabling for several projects in one step</a>
+        </li>
+        <li>
+            <a
+                href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=759933&amp;group_id=80344&amp;atid=559497"
+                >759933 Ability to run CheckStyle on demand for selected files</a>
+        </li>
+    </ul>
+</div>

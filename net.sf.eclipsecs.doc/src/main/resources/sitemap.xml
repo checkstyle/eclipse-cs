@@ -3,77 +3,77 @@
   xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
   <url>
-    <loc>http://eclipse-cs.sourceforge.net/</loc>
+    <loc>https://checkstyle.github.io/eclipse-cs/</loc>
     <lastmod>${timestamp}</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>http://eclipse-cs.sourceforge.net/#!/releasenotes</loc>
+    <loc>https://checkstyle.github.io/eclipse-cs/#!/releasenotes</loc>
     <lastmod>${timestamp}</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>http://eclipse-cs.sourceforge.net/#!/install</loc>
+    <loc>https://checkstyle.github.io/eclipse-cs/#!/install</loc>
     <lastmod>${timestamp}</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>http://eclipse-cs.sourceforge.net/#!/project-setup</loc>
+    <loc>https://checkstyle.github.io/eclipse-cs/#!/project-setup</loc>
     <lastmod>${timestamp}</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>http://eclipse-cs.sourceforge.net/#!/custom-config</loc>
+    <loc>https://checkstyle.github.io/eclipse-cs/#!/custom-config</loc>
     <lastmod>${timestamp}</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>http://eclipse-cs.sourceforge.net/#!/filters</loc>
+    <loc>https://checkstyle.github.io/eclipse-cs/#!/filters</loc>
     <lastmod>${timestamp}</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>http://eclipse-cs.sourceforge.net/#!/configtypes</loc>
+    <loc>https://checkstyle.github.io/eclipse-cs/#!/configtypes</loc>
     <lastmod>${timestamp}</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>http://eclipse-cs.sourceforge.net/#!/properties</loc>
+    <loc>https://checkstyle.github.io/eclipse-cs/#!/properties</loc>
     <lastmod>${timestamp}</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>http://eclipse-cs.sourceforge.net/#!/filesets</loc>
+    <loc>https://checkstyle.github.io/eclipse-cs/#!/filesets</loc>
     <lastmod>${timestamp}</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>http://eclipse-cs.sourceforge.net/#!/preferences</loc>
+    <loc>https://checkstyle.github.io/eclipse-cs/#!/preferences</loc>
     <lastmod>${timestamp}</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>http://eclipse-cs.sourceforge.net/#!/extensions</loc>
+    <loc>https://checkstyle.github.io/eclipse-cs/#!/extensions</loc>
     <lastmod>${timestamp}</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>http://eclipse-cs.sourceforge.net/#!/custom-checks</loc>
+    <loc>https://checkstyle.github.io/eclipse-cs/#!/custom-checks</loc>
     <lastmod>${timestamp}</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>http://eclipse-cs.sourceforge.net/#!/builtin-config</loc>
+    <loc>https://checkstyle.github.io/eclipse-cs/#!/builtin-config</loc>
     <lastmod>${timestamp}</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>http://eclipse-cs.sourceforge.net/#!/custom-filters</loc>
+    <loc>https://checkstyle.github.io/eclipse-cs/#!/custom-filters</loc>
     <lastmod>${timestamp}</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>http://eclipse-cs.sourceforge.net/#!/faq</loc>
+    <loc>https://checkstyle.github.io/eclipse-cs/#!/faq</loc>
     <lastmod>${timestamp}</lastmod>
     <changefreq>weekly</changefreq>
   </url>

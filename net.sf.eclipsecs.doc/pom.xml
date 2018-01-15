@@ -44,7 +44,7 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${project.build.directory}/website</outputDirectory>
+                            <outputDirectory>${project.basedir}/../docs</outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>src/main/resources</directory>
@@ -88,10 +88,8 @@
                                     </includes>
                                     <excludes>
                                         <exclude>update/**</exclude>
-                                        <exclude>index.php</exclude>
                                         <exclude>sitemap.xml</exclude>
                                         <exclude>robots.txt</exclude>
-                                        <exclude>.htaccess</exclude>
                                     </excludes>
                                 </resource>
                             </resources>
