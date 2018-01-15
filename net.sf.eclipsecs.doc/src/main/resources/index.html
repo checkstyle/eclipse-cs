@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" data-ng-app="eclipse-cs">
+  <head>
+    <meta charset="utf-8" />
+    <title>Eclipse Checkstyle Plugin</title>
+    <meta name="description" content="Checkstyle integration into the Eclipse IDE. Coding standards made easy." />
+    <meta name="keywords"
+      content="checkstyle, eclipse, eclipse plugin, eclipse-cs, code style, code analysis, coding standards, java, software quality" />
+    <meta name="author" content="Lars Ködderitzsch" />
+    <meta name="fragment" content="!" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- stylesheets -->
+    <link href="3rd-party/bootstrap-3.2.0/css/bootstrap-spacelab.min.css" rel="stylesheet" data-semver="3.2.0"
+      data-require="bootstrap-css" />
+    <link href="3rd-party/font-awesome-4.2.0/css/font-awesome.min.css" rel="stylesheet" data-semver="4.2.0" />
+    <link rel="stylesheet" href="css/style.css" />
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="3rd-party/html5shim/html5.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+      <header class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <a id="gh-banner" href="https://github.com/checkstyle/eclipse-cs"><img src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse"
+            data-ng-init="navCollapsed = true" data-ng-click="navCollapsed = !navCollapsed">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#!/">Eclipse Checkstyle Plugin</a>
+        </div>
+        <div class="navbar-collapse collapse navbar-responsive-collapse" data-ng-class="{'in':!navCollapsed}">
+          <ul class="nav navbar-nav">
+            <li><a href="#!/releasenotes">What's new</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Getting started <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="#!/install">How to install</a></li>
+                <li><a href="#!/project-setup">Project setup</a></li>
+                <li><a href="#!/custom-config">Custom Checkstyle configurations</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Advanced configuration <b class="caret"
+                ></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="#!/filters">Plugin filters</a></li>
+                <li><a href="#!/configtypes">Configuration types</a></li>
+                <li><a href="#!/properties">Expanding property placeholders</a></li>
+                <li><a href="#!/filesets">Using filesets</a></li>
+                <li><a href="#!/preferences">Advanced preferences</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Plugin extensions <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="#!/extensions">Building an extension plugin</a></li>
+                <li><a href="#!/custom-checks">Custom Checkstyle modules</a></li>
+                <li><a href="#!/builtin-config">Custom built-in Checkstyle configurations</a></li>
+                <li><a href="#!/custom-filters">Custom plugin filters</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Huh? Get help <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="#!/faq">FAQ</a></li>
+                <li class="divider"></li>
+                <li><a target="_blank" href="https://github.com/checkstyle/eclipse-cs/issues">File a bug/feature request <i
+                      class="fa fa-external-link"></i></a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </header>
+      <div id="main" role="main" data-ng-view=""> </div>
+    </div>
+    <!--  javascript -->
+    <!-- script src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> -->
+    <script src="3rd-party/angular-1.2.26/angular.min.js" data-semver="1.2.26" data-require="angular.js@1.2.x"></script>
+    <script src="3rd-party/angular-1.2.26/angular-animate.min.js" data-semver="1.2.26" data-require="angular.js@1.2.x"></script>
+    <script src="3rd-party/angular-1.2.26/angular-route.min.js" data-semver="1.2.26" data-require="angular.js@1.2.x"></script>
+    <script src="3rd-party/angular-bootstrap/ui-bootstrap-tpls-0.11.2.min.js" data-semver="0.11.2" data-require="angular.js@1.2.x"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>

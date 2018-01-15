@@ -1,0 +1,34 @@
+<div>
+    <p> Upgrade to the recently release Checkstyle 5.6. <br/> Note that Checkstyle 5.6 removes the Double Checked
+        Locking check module, so existing Checkstyle configurations must be adapted. <br/>
+        <br/> Other changes: <br/> The plugins internal handling of extension plugins has been changed to not rely on
+        buddy-classloading anymore. Immediate action from extension providers is not required since the old way of
+        intergration still works. However, certain usecases (providing custom quickfixes) only work with the new way of
+        setup. <br/> Please check out the updated docs <a href="#!/custom-checks">here</a> . The sample extension project
+        in CVS has been updated as well. <br/>
+        <br/> I have given the plugin a short spin on the "new" Juno release of Eclipse (4.2), which seemed to work fine
+        so far. </p>
+    <h3>Bugfixes</h3>
+    <ul>
+        <li>
+            <a
+                href="https://sourceforge.net/tracker/index.php?func=detail&amp;aid=3539827&amp;group_id=80344&amp;atid=559494"
+                > 3539827 Quickfix NullPointerException</a>
+        </li>
+        <li>
+            <a
+                href="https://sourceforge.net/tracker/index.php?func=detail&amp;aid=3522695&amp;group_id=80344&amp;atid=559494"
+                > 3522695 Starting up hangs when many files previously opened</a>
+        </li>
+        <li>
+            <a
+                href="https://sourceforge.net/tracker/index.php?func=detail&amp;aid=3473365&amp;group_id=80344&amp;atid=559494"
+                > 3473365 NullPointerException by jumping to duplicated code</a>
+        </li>
+        <li>
+            <a
+                href="https://sourceforge.net/tracker/index.php?func=detail&amp;aid=3473365&amp;group_id=80344&amp;atid=559494"
+                > 3459169 NPE in ConfigurationReader.getAdditionalConfigData()</a>
+        </li>
+    </ul>
+</div>

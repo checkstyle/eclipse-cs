@@ -1,0 +1,73 @@
+<div>
+    <p>This version is just the usual slew of bugfixes and some minor feature.<br/>It contains an important fix for
+        Eclipse 3.2 and less, regarding the early plugin startup.</p>
+    <p>To Rational Application Developer (RAD) 6/7 users: Please be aware of a new <a href="../../rad_usage.html"
+            >documentation page</a> regarding crashing issues when the Eclipse Checkstyle Plugin is used with RAD.</p>
+    <p>On a sidenote nominations for the SourceForge.net 2007 Community Choice Awards is now open. The projects with
+        most nominations in each category will become the finalists during a voting period.<br/>You can nominate the
+        Eclipse Checkstyle plugin <a
+            href="https://sourceforge.net/awards/cca/nomination.php?group_id=80344&amp;from=https%3A%2F%2Fsourceforge.net%2Fprojects%2Feclipse-cs%2F"
+            >here</a>. The best fitting category would be "Best Tool or Utility for Developers".<br/><br/><a
+            href="https://sourceforge.net/awards/cca/nomination.php?group_id=80344&amp;from=https%3A%2F%2Fsourceforge.net%2Fprojects%2Feclipse-cs%2F"
+        > </a></p>
+    <ul>
+        <li>
+            <p>Tested as working with the latest Eclipse 3.3 RC3</p>
+        </li>
+        <li>
+            <p>Configuration editor support for Checkstyles id property</p>
+            <p>When using the SuppressionFilter the id property can be used to distinguish different instances of the
+                same Checkstyle module. The Configuration editor now supports mananging the id property.<br/>
+                <br/>
+                <img alt="id property support" src="partials/releases/4.3.2/idproperty.jpg"/>
+            </p>
+        </li>
+        <li>
+            <p>Support for custom violation messages</p>
+            <p>In some cases (e.g. 'Name 'part' must match pattern '^m[A-Z][a-zA-Z0-9]*$'.') it is desirable to have a
+                more fitting message presented to developers (e.g. 'Member names must start with a lowercase
+                'm'').<br/>The Configuration editor now supports defining a custom message for each Checkstyle
+                module.<br/>Note that if you have multiple instances of the same module in your configuration and want
+                to have each of these modules different custom messages you are required to use the id property (see
+                above) to distinguish the module instances.<br/>
+                <img alt="Custom message support" src="partials/releases/4.3.2/custommessage.jpg"/></p>
+        </li>
+        <li>
+            <p>Enhanced Violations Chart View</p>
+            <p>The Violations Chart View was beefed up a bit by adding a details view to drill down into the violations
+                category.<br/>Just double-click on a pie slice to drill down.<br/><img alt="Drill-Down-Chart"
+                    src="partials/releases/4.3.2/drilldownchart.jpg"/></p>
+        </li>
+    </ul>
+    <h3>Bugfixes</h3>
+    <ul>
+        <li>
+            <a
+                href="https://sourceforge.net/tracker/index.php?func=detail&amp;aid=1725103&amp;group_id=80344&amp;atid=559494"
+                >1725103 Early plugin startup not working in Eclipse 3.2</a>
+        </li>
+        <li>
+            <a
+                href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1725141&amp;group_id=80344&amp;atid=559494"
+                >1725141 Bug with manually checking an unconfigured project</a>
+        </li>
+        <li>
+            <a
+                href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1728240&amp;group_id=80344&amp;atid=559494"
+                >1728240 Caching issue with configuration files that use properties</a>
+        </li>
+    </ul>
+    <h3>Features</h3>
+    <ul>
+        <li>
+            <a
+                href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1722326&amp;group_id=80344&amp;atid=559497"
+                >1722326 Add support for the id property of each Checkstyle module</a>
+        </li>
+        <li>
+            <a
+                href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1719095&amp;group_id=80344&amp;atid=559497"
+                >1719095 Add possibility to show a customized description</a>
+        </li>
+    </ul>
+</div>
