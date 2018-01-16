@@ -18,7 +18,7 @@
    </license>
 
    <url>
-      <update label="%updateSiteName" url="http://eclipse-cs.sf.net/update"/>
+      <update label="%updateSiteName" url="https://checkstyle.github.io/eclipse-cs/update/"/>
    </url>
 
    <requires>
