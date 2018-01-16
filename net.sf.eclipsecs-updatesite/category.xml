@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <description name="Eclipse Checkstyle Plugin" url="http://eclipse-cs.sourceforge.net/update">
+   <description name="Eclipse Checkstyle Plugin" url="https://checkstyle.github.io/eclipse-cs/update/">
       Eclipse Checkstyle Plugin Update Site
    </description>
    <feature url="features/net.sf.eclipsecs_8.7.0.qualifier.jar" id="net.sf.eclipsecs" version="8.7.0.qualifier">
@@ -18,4 +18,5 @@
             projects that want to enforce a coding standard.
       </description>
    </category-def>
+   <repository-reference location="https://sevntu-checkstyle.github.com/sevntu.checkstyle/update-site/" enabled="false" />
 </site>
