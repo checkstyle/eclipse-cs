@@ -635,13 +635,8 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
         }
       }
 
-      StringBuffer buf = new StringBuffer();
-      buf.append("<html><body style=\"margin: 3px; font-size: 11px; ");
-      buf.append("font-family: verdana, 'trebuchet MS', helvetica, sans-serif;\">");
-      buf.append(description != null ? description
-              : Messages.CheckConfigurationConfigureDialog_txtNoDescription);
-      buf.append("</body></html>");
-      mBrowserDescription.setText(buf.toString());
+      String buf = getDescriptionHtml(description);
+      mBrowserDescription.setText(buf);
     }
 
     /**
@@ -1118,4 +1113,20 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
       return hasAtLeastOneMatchingChild;
     }
   }
+  
+  /**
+   * Convert a module description to HTML for use with a browser component.
+   * @param description module description
+   * @return HTML converted description
+   */
+  public static String getDescriptionHtml(String description) {
+    StringBuffer buf = new StringBuffer();
+    buf.append("<html><body style=\"margin: 3px; font-size: 11px; ");
+    buf.append("font-family: verdana, 'trebuchet MS', helvetica, sans-serif;\">");
+    buf.append(description != null ? description
+            : Messages.CheckConfigurationConfigureDialog_txtNoDescription);
+    buf.append("</body></html>");
+    return buf.toString();
+  }
+  
 }

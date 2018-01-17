@@ -30,7 +30,7 @@ import net.sf.eclipsecs.core.config.meta.MetadataFactory;
 import net.sf.eclipsecs.core.config.meta.RuleMetadata;
 
 /**
- * Object representing a module from a checkstyle configuration. Can be augumented with meta data.
+ * Object representing a module from a checkstyle configuration. Can be augmented with meta data.
  * 
  * @author Lars Ködderitzsch
  */

@@ -487,5 +487,12 @@ public final class Messages extends NLS {
 
   public static String CheckstylePreferenceTransfer_name;
 
+  public static String MarkerPropertyPage_Issue;
+  
+  public static String MarkerPropertyPage_Module;
+
+  public static String MarkerPropertyPage_Group;
+
+  public static String MarkerPropertyPage_Description;
   // CHECKSTYLE:ON
 }

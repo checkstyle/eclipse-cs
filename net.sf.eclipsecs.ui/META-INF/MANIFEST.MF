@@ -6,7 +6,8 @@ Bundle-Version: 8.7.0.qualifier
 Bundle-Vendor: http://eclipse-cs.sf.net/
 Bundle-Activator: net.sf.eclipsecs.ui.CheckstyleUIPlugin
 Bundle-ActivationPolicy: lazy
-Require-Bundle: net.sf.eclipsecs.core
+Require-Bundle: net.sf.eclipsecs.core,
+ org.eclipse.core.expressions
 Bundle-ClassPath: .,
  lib/jfreechart-1.0.14.jar,
  lib/jfreechart-1.0.14-swt.jar,
@@ -53,6 +54,7 @@ Import-Package: org.eclipse.core.commands,
  org.eclipse.ui.dialogs,
  org.eclipse.ui.ide,
  org.eclipse.ui.internal,
+ org.eclipse.ui.internal.ide,
  org.eclipse.ui.model,
  org.eclipse.ui.part,
  org.eclipse.ui.plugin,
