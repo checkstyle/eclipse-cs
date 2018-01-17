@@ -107,6 +107,21 @@
                 name="open"
                 value="true"/>
         </page>
+        <page
+              adaptable="true"
+              class="net.sf.eclipsecs.ui.properties.marker.MarkerPropertyPage"
+              id="net.sf.eclipsecs.properties.MarkerPropertyPage"
+              name="%CheckstylePropertiesPage.name"
+              nameFilter="*"
+              objectClass="org.eclipse.core.resources.IMarker">
+           <enabledWhen>
+              <adapt
+                    type="org.eclipse.core.resources.IMarker">
+                 <test
+                       property="net.sf.eclipsecs.isCheckstyleMarker">
+                 </test>
+              </adapt></enabledWhen>
+        </page>
     </extension>
 
     <!--
@@ -458,5 +473,15 @@
                     tooltip="%PurgeCaches.tooltip" mode="FORCE_TEXT">
                 </action>
           </actionSet>
+    </extension>
+    <extension
+          point="org.eclipse.core.expressions.propertyTesters">
+       <propertyTester
+             class="net.sf.eclipsecs.ui.properties.marker.CheckstyleMarkerPropertyTester"
+             id="net.sf.eclipsecs.MarkerPropertyTester"
+             namespace="net.sf.eclipsecs"
+             properties="isCheckstyleMarker"
+             type="org.eclipse.core.resources.IMarker">
+       </propertyTester>
     </extension>
 </plugin>

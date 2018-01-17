@@ -220,7 +220,7 @@ public class CheckstylePropertyPage extends PropertyPage {
       container.setLayout(new FormLayout());
       container.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-      // create the checkbox to enable/diable the simple configuration
+      // create the checkbox to enable/disable the simple configuration
       this.mChkSimpleConfig = new Button(container, SWT.CHECK);
       this.mChkSimpleConfig.setText(Messages.CheckstylePropertyPage_btnUseSimpleConfig);
       this.mChkSimpleConfig.addSelectionListener(this.mPageController);
@@ -232,7 +232,7 @@ public class CheckstylePropertyPage extends PropertyPage {
       fd.right = new FormAttachment(100, -3);
       this.mChkSimpleConfig.setLayoutData(fd);
 
-      // create the checkbox to enabel/disable checkstyle
+      // create the checkbox to enable/disable checkstyle
       this.mChkEnable = new Button(container, SWT.CHECK);
       this.mChkEnable.setText(Messages.CheckstylePropertyPage_btnActivateCheckstyle);
       this.mChkEnable.addSelectionListener(this.mPageController);
@@ -244,7 +244,7 @@ public class CheckstylePropertyPage extends PropertyPage {
       fd.right = new FormAttachment(this.mChkSimpleConfig, 3, SWT.LEFT);
       this.mChkEnable.setLayoutData(fd);
 
-      // create the checkbox for formatter synching
+      // create the checkbox for formatter syncing
       this.mChkSyncFormatter = new Button(container, SWT.CHECK);
       this.mChkSyncFormatter.setText(Messages.CheckstylePropertyPage_btnSyncFormatter);
       this.mChkSyncFormatter.addSelectionListener(this.mPageController);
