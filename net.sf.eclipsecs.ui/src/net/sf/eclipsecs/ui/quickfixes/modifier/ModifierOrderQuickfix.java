@@ -26,6 +26,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
 import net.sf.eclipsecs.ui.quickfixes.AbstractASTResolution;
@@ -44,16 +45,15 @@ import org.eclipse.jface.text.IRegion;
 import org.eclipse.swt.graphics.Image;
 
 /**
- * Quickfix implementation that orders modifiers into the suggested order by the
- * JLS.
+ * Quickfix implementation that orders modifiers into the suggested order by the JLS.
  *
  * @author Lars Ködderitzsch
  */
 public class ModifierOrderQuickfix extends AbstractASTResolution {
 
   /**
-   * List containing modifier keywords in the order proposed by Java Language
-   * specification, sections 8.1.1, 8.3.1 and 8.4.3.
+   * List containing modifier keywords in the order proposed by Java Language specification,
+   * sections 8.1.1, 8.3.1 and 8.4.3.
    */
   private static final List MODIFIER_ORDER = Arrays
           .asList(new Object[] { ModifierKeyword.PUBLIC_KEYWORD, ModifierKeyword.PROTECTED_KEYWORD,
@@ -63,35 +63,30 @@ public class ModifierOrderQuickfix extends AbstractASTResolution {
               ModifierKeyword.SYNCHRONIZED_KEYWORD, ModifierKeyword.NATIVE_KEYWORD,
               ModifierKeyword.STRICTFP_KEYWORD,
               "default", /*
-                          * issue 371: can't use this yet since were still
-                          * supporting non-Java8-enabled eclipse versions
-                          * ModifierKeyword.DEFAULT_KEYWORD,
+                          * issue 371: can't use this yet since were still supporting
+                          * non-Java8-enabled eclipse versions ModifierKeyword.DEFAULT_KEYWORD,
                           */ });
 
-  /** The length of the javadoc comment declaration. */
-  private static final int JAVADOC_COMMENT_LENGTH = 6;
-
   /**
-   * Reorders the given list of <code>Modifier</code> nodes into their suggested
-   * order by the JLS.
+   * Reorders the given list of <code>Modifier</code> nodes into their suggested order by the JLS.
    *
    * @param modifiers
    *          the list of modifiers to reorder
    * @return the reordered list of modifiers
    */
-  public static List reOrderModifiers(List modifiers) {
+  public static List<ASTNode> reOrderModifiers(List<ASTNode> modifiers) {
 
-    List copies = new ArrayList();
-    Iterator it = modifiers.iterator();
+    List<ASTNode> copies = new ArrayList<>();
+    Iterator<ASTNode> it = modifiers.iterator();
     while (it.hasNext()) {
-      ASTNode mod = (ASTNode) it.next();
+      ASTNode mod = it.next();
       copies.add(ASTNode.copySubtree(mod.getAST(), mod));
     }
 
     // oder modifiers to correct order
-    Collections.sort(copies, new Comparator() {
+    Collections.sort(copies, new Comparator<ASTNode>() {
       @Override
-      public int compare(Object arg0, Object arg1) {
+      public int compare(ASTNode arg0, ASTNode arg1) {
         if (!(arg0 instanceof Modifier) || !(arg1 instanceof Modifier)) {
           return 0;
         }
@@ -139,14 +134,19 @@ public class ModifierOrderQuickfix extends AbstractASTResolution {
       }
 
       private boolean visitBodyDecl(BodyDeclaration node) {
-
-        // recalculate start position because optional javadoc is mixed
-        // into the original start position
-        int pos = node.getStartPosition() + (node.getJavadoc() != null
-                ? node.getJavadoc().getLength() + JAVADOC_COMMENT_LENGTH
-                : 0);
-        if (containsPosition(lineInfo, pos)) {
-          List reorderedModifiers = reOrderModifiers(node.modifiers());
+        @SuppressWarnings("unchecked")
+        List<Modifier> modifiers = (List<Modifier>) node.modifiers().stream()
+                .filter(Modifier.class::isInstance).map(Modifier.class::cast)
+                .collect(Collectors.toList());
+        if (modifiers == null || modifiers.isEmpty()) {
+          return true;
+        }
+        // find the range from first to last modifier. marker must be in between
+        int minPos = modifiers.stream().mapToInt(Modifier::getStartPosition).min().getAsInt();
+        int maxPos = modifiers.stream().mapToInt(Modifier::getStartPosition).max().getAsInt();
+        
+        if (minPos <= markerStartOffset && markerStartOffset <= maxPos) {
+          List<ASTNode> reorderedModifiers = reOrderModifiers(node.modifiers());
           node.modifiers().clear();
           node.modifiers().addAll(reorderedModifiers);
         }
