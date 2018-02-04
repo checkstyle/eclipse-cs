@@ -4,77 +4,77 @@
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
   <url>
     <loc>https://checkstyle.github.io/eclipse-cs/</loc>
-    <lastmod>2018-01-15T15:06:23Z</lastmod>
+    <lastmod>2018-02-04T12:30:26Z</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://checkstyle.github.io/eclipse-cs/#!/releasenotes</loc>
-    <lastmod>2018-01-15T15:06:23Z</lastmod>
+    <lastmod>2018-02-04T12:30:26Z</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://checkstyle.github.io/eclipse-cs/#!/install</loc>
-    <lastmod>2018-01-15T15:06:23Z</lastmod>
+    <lastmod>2018-02-04T12:30:26Z</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://checkstyle.github.io/eclipse-cs/#!/project-setup</loc>
-    <lastmod>2018-01-15T15:06:23Z</lastmod>
+    <lastmod>2018-02-04T12:30:26Z</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://checkstyle.github.io/eclipse-cs/#!/custom-config</loc>
-    <lastmod>2018-01-15T15:06:23Z</lastmod>
+    <lastmod>2018-02-04T12:30:26Z</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://checkstyle.github.io/eclipse-cs/#!/filters</loc>
-    <lastmod>2018-01-15T15:06:23Z</lastmod>
+    <lastmod>2018-02-04T12:30:26Z</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://checkstyle.github.io/eclipse-cs/#!/configtypes</loc>
-    <lastmod>2018-01-15T15:06:23Z</lastmod>
+    <lastmod>2018-02-04T12:30:26Z</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://checkstyle.github.io/eclipse-cs/#!/properties</loc>
-    <lastmod>2018-01-15T15:06:23Z</lastmod>
+    <lastmod>2018-02-04T12:30:26Z</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://checkstyle.github.io/eclipse-cs/#!/filesets</loc>
-    <lastmod>2018-01-15T15:06:23Z</lastmod>
+    <lastmod>2018-02-04T12:30:26Z</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://checkstyle.github.io/eclipse-cs/#!/preferences</loc>
-    <lastmod>2018-01-15T15:06:23Z</lastmod>
+    <lastmod>2018-02-04T12:30:26Z</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://checkstyle.github.io/eclipse-cs/#!/extensions</loc>
-    <lastmod>2018-01-15T15:06:23Z</lastmod>
+    <lastmod>2018-02-04T12:30:26Z</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://checkstyle.github.io/eclipse-cs/#!/custom-checks</loc>
-    <lastmod>2018-01-15T15:06:23Z</lastmod>
+    <lastmod>2018-02-04T12:30:26Z</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://checkstyle.github.io/eclipse-cs/#!/builtin-config</loc>
-    <lastmod>2018-01-15T15:06:23Z</lastmod>
+    <lastmod>2018-02-04T12:30:26Z</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://checkstyle.github.io/eclipse-cs/#!/custom-filters</loc>
-    <lastmod>2018-01-15T15:06:23Z</lastmod>
+    <lastmod>2018-02-04T12:30:26Z</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://checkstyle.github.io/eclipse-cs/#!/faq</loc>
-    <lastmod>2018-01-15T15:06:23Z</lastmod>
+    <lastmod>2018-02-04T12:30:26Z</lastmod>
     <changefreq>weekly</changefreq>
   </url>
 </urlset>
