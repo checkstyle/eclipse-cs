@@ -49,6 +49,7 @@ public class AvoidNestedBlocksQuickfix extends AbstractASTResolution {
 
     return new ASTVisitor() {
 
+      @SuppressWarnings("unchecked")
       @Override
       public boolean visit(Block node) {
 
@@ -56,7 +57,7 @@ public class AvoidNestedBlocksQuickfix extends AbstractASTResolution {
 
           if (node.getParent() instanceof Block) {
 
-            List statements = ((Block) node.getParent()).statements();
+            List<?> statements = ((Block) node.getParent()).statements();
             int index = statements.indexOf(node);
 
             statements.remove(node);
@@ -64,7 +65,7 @@ public class AvoidNestedBlocksQuickfix extends AbstractASTResolution {
 
           } else if (node.getParent() instanceof SwitchStatement) {
 
-            List statements = ((SwitchStatement) node.getParent()).statements();
+            List<?> statements = ((SwitchStatement) node.getParent()).statements();
             int index = statements.indexOf(node);
 
             statements.remove(node);

@@ -56,6 +56,7 @@ public class StringLiteralEqualityQuickfix extends AbstractASTResolution {
 
     return new ASTVisitor() {
 
+      @SuppressWarnings("unchecked")
       @Override
       public boolean visit(InfixExpression node) {
 
@@ -117,7 +118,7 @@ public class StringLiteralEqualityQuickfix extends AbstractASTResolution {
                     + property.substring(1);
             String setterMethodName = "set" + capitalizedProperty;
 
-            Class testClass = node.getClass();
+            Class<?> testClass = node.getClass();
 
             while (testClass != null) {
 
@@ -134,7 +135,8 @@ public class StringLiteralEqualityQuickfix extends AbstractASTResolution {
           } else if (node.getLocationInParent().isChildListProperty()) {
             Method listMethod = node.getParent().getClass()
                     .getMethod(node.getLocationInParent().getId(), (Class<?>[]) null);
-            List list = (List) listMethod.invoke(node.getParent(), (Object[]) null);
+            @SuppressWarnings("unchecked")
+            List<ASTNode> list = (List<ASTNode>) listMethod.invoke(node.getParent(), (Object[]) null);
             list.set(list.indexOf(node), replacementNode);
           }
         } catch (InvocationTargetException e) {

@@ -39,5 +39,5 @@ public interface ITableComparableProvider {
    *          the table column index
    * @return the comparable value for this columns
    */
-  Comparable getComparableValue(Object element, int col);
+  Comparable<?> getComparableValue(Object element, int col);
 }

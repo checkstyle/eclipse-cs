@@ -555,8 +555,9 @@ public final class MetadataFactory {
               property.getPropertyEnumeration().addAll(provider.getOptions());
             } else if (Enum.class.isAssignableFrom(providerClass)) {
 
+              @SuppressWarnings("rawtypes")
               EnumSet<?> values = EnumSet.allOf((Class<Enum>) providerClass);
-              for (Enum e : values) {
+              for (Enum<?> e : values) {
                 property.getPropertyEnumeration().add(e.name().toLowerCase());
               }
             }

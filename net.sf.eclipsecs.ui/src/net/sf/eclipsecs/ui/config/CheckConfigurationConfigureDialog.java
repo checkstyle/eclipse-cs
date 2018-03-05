@@ -675,7 +675,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
         boolean openOnAdd = CheckstyleUIPluginPrefs
                 .getBoolean(CheckstyleUIPluginPrefs.PREF_OPEN_MODULE_EDITOR);
 
-        Iterator it = ((IStructuredSelection) selection).iterator();
+        Iterator<?> it = ((IStructuredSelection) selection).iterator();
         while (it.hasNext()) {
           Object selectedElement = it.next();
           if (selectedElement instanceof RuleGroupMetadata) {
@@ -736,6 +736,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
                 Messages.CheckConfigurationConfigureDialog_titleRemoveModules,
                 Messages.CheckConfigurationConfigureDialog_msgRemoveModules)) {
 
+          @SuppressWarnings("unchecked")
           Iterator<Module> it = ((IStructuredSelection) selection).iterator();
           while (it.hasNext()) {
             Module m = it.next();
@@ -806,7 +807,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
     public Object[] getElements(Object inputElement) {
       Object[] ruleGroups = null;
       if (inputElement instanceof List) {
-        ruleGroups = ((List) inputElement).toArray();
+        ruleGroups = ((List<?>) inputElement).toArray();
       }
       return ruleGroups;
     }
@@ -993,7 +994,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
      * {@inheritDoc}
      */
     @Override
-    public Comparable getComparableValue(Object element, int col) {
+    public Comparable<?> getComparableValue(Object element, int col) {
       if (element instanceof Module && col == 0) {
         return Severity.ignore.equals(((Module) element).getSeverity()) ? new Integer(0)
                 : new Integer(1);

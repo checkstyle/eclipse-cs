@@ -48,6 +48,7 @@ public class FinalParametersQuickfix extends AbstractASTResolution {
           final int markerStartOffset) {
     return new ASTVisitor() {
 
+      @SuppressWarnings("unchecked")
       @Override
       public boolean visit(SingleVariableDeclaration node) {
         if (containsPosition(node, markerStartOffset) && !Modifier.isFinal(node.getModifiers())) {

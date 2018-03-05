@@ -117,7 +117,7 @@ public class CheckstyleMarkerFilter implements Cloneable {
   private boolean mFilterByRegex;
 
   /** List of regular expressions used to filter messages. */
-  private List mFilterRegex;
+  private List<String> mFilterRegex;
 
   //
   // methods
@@ -134,7 +134,7 @@ public class CheckstyleMarkerFilter implements Cloneable {
    */
   public IMarker[] findMarkers(IProgressMonitor mon) throws CoreException {
 
-    List unfiltered = Collections.EMPTY_LIST;
+    List<IMarker> unfiltered = Collections.emptyList();
 
     if (!isEnabled()) {
       unfiltered = findCheckstyleMarkers(
@@ -174,10 +174,10 @@ public class CheckstyleMarkerFilter implements Cloneable {
     }
 
     if (unfiltered == null) {
-      unfiltered = Collections.EMPTY_LIST;
+      unfiltered = Collections.emptyList();
     }
 
-    return (IMarker[]) unfiltered.toArray(new IMarker[unfiltered.size()]);
+    return unfiltered.toArray(new IMarker[unfiltered.size()]);
   }
 
   /**
@@ -220,7 +220,7 @@ public class CheckstyleMarkerFilter implements Cloneable {
   /**
    * Returns the selected resource.
    *
-   * @return the selected resource(s) withing the workbench.
+   * @return the selected resource(s) within the workbench.
    */
   public IResource[] getFocusResource() {
     return mFocusResources;
@@ -230,7 +230,7 @@ public class CheckstyleMarkerFilter implements Cloneable {
    * Sets the focused resources.
    *
    * @param resources
-   *          the focuse resources
+   *          the focused resources
    */
   public void setFocusResource(IResource[] resources) {
     mFocusResources = resources;
@@ -338,7 +338,7 @@ public class CheckstyleMarkerFilter implements Cloneable {
    *
    * @return the regular expressions
    */
-  public List getFilterRegex() {
+  public List<String> getFilterRegex() {
     return mFilterRegex;
   }
 
@@ -348,12 +348,12 @@ public class CheckstyleMarkerFilter implements Cloneable {
    * @param filterRegex
    *          the list of regular expression to filter by
    */
-  public void setFilterRegex(List filterRegex) {
+  public void setFilterRegex(List<String> filterRegex) {
     mFilterRegex = filterRegex;
   }
 
   /**
-   * Restors the state of the filter from the given dialog settings.
+   * Restores the state of the filter from the given dialog settings.
    *
    * @param dialogSettings
    *          the dialog settings
@@ -438,7 +438,7 @@ public class CheckstyleMarkerFilter implements Cloneable {
 
       if (mFilterRegex != null) {
         settings.put(TAG_REGULAR_EXPRESSIONS,
-                (String[]) mFilterRegex.toArray(new String[mFilterRegex.size()]));
+                mFilterRegex.toArray(new String[mFilterRegex.size()]));
       }
     }
   }
@@ -453,7 +453,7 @@ public class CheckstyleMarkerFilter implements Cloneable {
     mSelectBySeverity = DEFAULT_SELECT_BY_SEVERITY;
     mSeverity = DEFAULT_SEVERITY;
     mFilterByRegex = false;
-    mFilterRegex = new ArrayList();
+    mFilterRegex = new ArrayList<>();
   }
 
   /**
@@ -467,17 +467,17 @@ public class CheckstyleMarkerFilter implements Cloneable {
    *          the progress monitor
    * @throws CoreException
    */
-  private List findCheckstyleMarkers(IResource[] resources, int depth, IProgressMonitor mon)
+  private List<IMarker> findCheckstyleMarkers(IResource[] resources, int depth, IProgressMonitor mon)
           throws CoreException {
     if (resources == null) {
-      return Collections.EMPTY_LIST;
+      return Collections.emptyList();
     }
 
-    List resultList = new ArrayList(resources.length * 2);
+    List<IMarker> resultList = new ArrayList<IMarker>(resources.length * 2);
 
     for (int i = 0, size = resources.length; i < size; i++) {
       if (resources[i].isAccessible()) {
-        Collection markers = Arrays
+        Collection<IMarker> markers = Arrays
                 .asList(resources[i].findMarkers(CheckstyleMarker.MARKER_ID, true, depth));
 
         resultList.addAll(markers);
@@ -488,7 +488,7 @@ public class CheckstyleMarkerFilter implements Cloneable {
       // further filter the markers by severity
       int size = resultList.size();
       for (int i = size - 1; i >= 0; i--) {
-        IMarker marker = (IMarker) resultList.get(i);
+        IMarker marker = resultList.get(i);
         if (!selectBySeverity(marker)) {
           resultList.remove(i);
         }
@@ -499,7 +499,7 @@ public class CheckstyleMarkerFilter implements Cloneable {
       // further filter the markers by regular expressions
       int size = resultList.size();
       for (int i = size - 1; i >= 0; i--) {
-        IMarker marker = (IMarker) resultList.get(i);
+        IMarker marker = resultList.get(i);
         if (!selectByRegex(marker)) {
           resultList.remove(i);
         }
@@ -545,7 +545,7 @@ public class CheckstyleMarkerFilter implements Cloneable {
       int size = mFilterRegex != null ? mFilterRegex.size() : 0;
       for (int i = 0; i < size; i++) {
 
-        String regex = (String) mFilterRegex.get(i);
+        String regex = mFilterRegex.get(i);
 
         String message = item.getAttribute(IMarker.MESSAGE, null);
 
@@ -566,8 +566,8 @@ public class CheckstyleMarkerFilter implements Cloneable {
    * @return the array of projects for the given resources
    */
   private static IProject[] getProjects(IResource[] resources) {
-    Collection projects = getProjectsAsCollection(resources);
-    return (IProject[]) projects.toArray(new IProject[projects.size()]);
+    Collection<IProject> projects = getProjectsAsCollection(resources);
+    return projects.toArray(new IProject[projects.size()]);
   }
 
   /**
@@ -577,8 +577,8 @@ public class CheckstyleMarkerFilter implements Cloneable {
    *          the resources
    * @return the collection of projects for the given resources
    */
-  public static Collection getProjectsAsCollection(IResource[] resources) {
-    HashSet projects = new HashSet();
+  public static Collection<IProject> getProjectsAsCollection(IResource[] resources) {
+    HashSet<IProject> projects = new HashSet<IProject>();
 
     for (int idx = 0, size = resources != null ? resources.length : 0; idx < size; idx++) {
       projects.add(resources[idx].getProject());
@@ -599,9 +599,10 @@ public class CheckstyleMarkerFilter implements Cloneable {
     }
 
     IAdaptable[] elements = workingSet.getElements();
-    List result = new ArrayList(elements.length);
+    List<IResource> result = new ArrayList<IResource>(elements.length);
 
     for (int idx = 0; idx < elements.length; idx++) {
+      @SuppressWarnings("cast")
       IResource next = (IResource) elements[idx].getAdapter(IResource.class);
 
       if (next != null) {
@@ -609,7 +610,7 @@ public class CheckstyleMarkerFilter implements Cloneable {
       }
     }
 
-    return (IResource[]) result.toArray(new IResource[result.size()]);
+    return result.toArray(new IResource[result.size()]);
   }
 
   /**

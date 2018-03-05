@@ -49,6 +49,7 @@ public class FinalLocalVariableQuickfix extends AbstractASTResolution {
           final int markerStartOffset) {
     return new ASTVisitor() {
 
+      @SuppressWarnings("unchecked")
       @Override
       public boolean visit(SingleVariableDeclaration node) {
         if (containsPosition(node, markerStartOffset) && !Modifier.isFinal(node.getModifiers())) {
@@ -60,6 +61,7 @@ public class FinalLocalVariableQuickfix extends AbstractASTResolution {
         return true;
       }
 
+      @SuppressWarnings("unchecked")
       @Override
       public boolean visit(VariableDeclarationStatement node) {
         if (containsPosition(node, markerStartOffset) && !Modifier.isFinal(node.getModifiers())) {

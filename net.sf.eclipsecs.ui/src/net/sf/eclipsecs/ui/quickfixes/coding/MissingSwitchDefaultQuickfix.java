@@ -47,6 +47,7 @@ public class MissingSwitchDefaultQuickfix extends AbstractASTResolution {
 
     return new ASTVisitor() {
 
+      @SuppressWarnings("unchecked")
       @Override
       public boolean visit(SwitchStatement node) {
         if (containsPosition(lineInfo, node.getStartPosition())) {

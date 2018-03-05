@@ -55,7 +55,7 @@ public class ModifierOrderQuickfix extends AbstractASTResolution {
    * List containing modifier keywords in the order proposed by Java Language specification,
    * sections 8.1.1, 8.3.1 and 8.4.3.
    */
-  private static final List MODIFIER_ORDER = Arrays
+  private static final List<Object> MODIFIER_ORDER = Arrays
           .asList(new Object[] { ModifierKeyword.PUBLIC_KEYWORD, ModifierKeyword.PROTECTED_KEYWORD,
               ModifierKeyword.PRIVATE_KEYWORD, ModifierKeyword.ABSTRACT_KEYWORD,
               ModifierKeyword.STATIC_KEYWORD, ModifierKeyword.FINAL_KEYWORD,
@@ -133,8 +133,8 @@ public class ModifierOrderQuickfix extends AbstractASTResolution {
         return visitBodyDecl(node);
       }
 
+      @SuppressWarnings("unchecked")
       private boolean visitBodyDecl(BodyDeclaration node) {
-        @SuppressWarnings("unchecked")
         List<Modifier> modifiers = (List<Modifier>) node.modifiers().stream()
                 .filter(Modifier.class::isInstance).map(Modifier.class::cast)
                 .collect(Collectors.toList());
@@ -146,7 +146,7 @@ public class ModifierOrderQuickfix extends AbstractASTResolution {
         int maxPos = modifiers.stream().mapToInt(Modifier::getStartPosition).max().getAsInt();
         
         if (minPos <= markerStartOffset && markerStartOffset <= maxPos) {
-          List<ASTNode> reorderedModifiers = reOrderModifiers(node.modifiers());
+          List<?> reorderedModifiers = reOrderModifiers(node.modifiers());
           node.modifiers().clear();
           node.modifiers().addAll(reorderedModifiers);
         }

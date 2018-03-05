@@ -51,6 +51,7 @@ public class DefaultComesLastQuickfix extends AbstractASTResolution {
 
     return new ASTVisitor() {
 
+      @SuppressWarnings("unchecked")
       @Override
       public boolean visit(SwitchCase node) {
 
@@ -59,7 +60,7 @@ public class DefaultComesLastQuickfix extends AbstractASTResolution {
           if (node.isDefault() && !isLastSwitchCase(node)) {
             SwitchStatement switchStatement = (SwitchStatement) node.getParent();
 
-            List defaultCaseStatements = new ArrayList();
+            List<ASTNode> defaultCaseStatements = new ArrayList<>();
             defaultCaseStatements.add(node);
 
             // collect all statements belonging to the default case

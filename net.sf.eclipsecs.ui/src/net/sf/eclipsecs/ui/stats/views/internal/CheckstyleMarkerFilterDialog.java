@@ -120,7 +120,7 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
   private PageController mController = new PageController();
 
   /** The regular expressions to filter by. */
-  private List mRegularExpressions;
+  private List<String> mRegularExpressions;
 
   //
   // constructors
@@ -446,7 +446,7 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
           initWorkingSetLabel();
         }
       } else if (mBtnEditRegex == e.widget) {
-        List regex = new ArrayList(mRegularExpressions);
+        List<String> regex = new ArrayList<>(mRegularExpressions);
         RegexDialog dialog = new RegexDialog(getShell(), regex);
         if (Window.OK == dialog.open()) {
           mRegularExpressions = regex;
@@ -505,7 +505,7 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
 
     private Text mRegexText;
 
-    private List mFileTypesList;
+    private List<String> mFileTypesList;
 
     /**
      * Creates a file matching pattern editor dialog.
@@ -515,7 +515,7 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
      * @param pattern
      *          the pattern
      */
-    public RegexDialog(Shell parentShell, List fileTypes) {
+    public RegexDialog(Shell parentShell, List<String> fileTypes) {
       super(parentShell);
       mFileTypesList = fileTypes;
     }

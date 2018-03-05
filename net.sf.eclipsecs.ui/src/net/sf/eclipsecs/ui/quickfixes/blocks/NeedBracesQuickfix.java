@@ -133,6 +133,7 @@ public class NeedBracesQuickfix extends AbstractASTResolution {
         }
       }
 
+      @SuppressWarnings("unchecked")
       private Block createBracifiedCopy(AST ast, Statement body) {
         Block block = ast.newBlock();
         block.statements().add(ASTNode.copySubtree(block.getAST(), body));

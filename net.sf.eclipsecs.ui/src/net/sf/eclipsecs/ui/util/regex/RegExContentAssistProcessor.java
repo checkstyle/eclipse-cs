@@ -50,12 +50,12 @@ public final class RegExContentAssistProcessor
     /**
      * The high-priority proposals.
      */
-    private final ArrayList fPriorityProposals;
+    private final ArrayList<CompletionProposal> fPriorityProposals;
 
     /**
      * The low-priority proposals.
      */
-    private final ArrayList fProposals;
+    private final ArrayList<CompletionProposal> fProposals;
 
     /**
      * <code>true</code> iff <code>fExpression</code> ends with an open escape.
@@ -74,8 +74,8 @@ public final class RegExContentAssistProcessor
             int documentOffset) {
       fExpression = contentAssistSubjectControl.getDocument().get();
       fDocumentOffset = documentOffset;
-      fPriorityProposals = new ArrayList();
-      fProposals = new ArrayList();
+      fPriorityProposals = new ArrayList<>();
+      fProposals = new ArrayList<>();
 
       boolean isEscape = false;
       esc: for (int i = documentOffset - 1; i >= 0; i--) {
@@ -296,7 +296,7 @@ public final class RegExContentAssistProcessor
       }
 
       fPriorityProposals.addAll(fProposals);
-      return (ICompletionProposal[]) fPriorityProposals
+      return fPriorityProposals
               .toArray(new ICompletionProposal[fProposals.size()]);
     }
 
@@ -316,7 +316,7 @@ public final class RegExContentAssistProcessor
         addProposal("\n", RegExMessages.displayString_nl, RegExMessages.additionalInfo_nl); //$NON-NLS-1$
         addProposal("\r", RegExMessages.displayString_cr, RegExMessages.additionalInfo_cr); //$NON-NLS-1$
       }
-      return (ICompletionProposal[]) fProposals.toArray(new ICompletionProposal[fProposals.size()]);
+      return fProposals.toArray(new ICompletionProposal[fProposals.size()]);
     }
 
     /**
