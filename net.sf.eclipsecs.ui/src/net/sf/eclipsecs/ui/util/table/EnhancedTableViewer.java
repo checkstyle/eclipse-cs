@@ -359,6 +359,7 @@ public class EnhancedTableViewer extends TableViewer {
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public int compare(Viewer viewer, Object e1, Object e2) {
       Comparable c1 = mComparableProvider.getComparableValue(e1, mSortedColumnIndex);

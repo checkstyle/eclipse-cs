@@ -53,6 +53,7 @@ public class FinalClassQuickfix extends AbstractASTResolution {
           final int markerStartOffset) {
     return new ASTVisitor() {
 
+      @SuppressWarnings("unchecked")
       @Override
       public boolean visit(TypeDeclaration node) {
         // recalculate start position because optional javadoc is mixed
@@ -68,7 +69,7 @@ public class FinalClassQuickfix extends AbstractASTResolution {
             node.modifiers().add(finalModifier);
 
             // reorder modifiers into their correct order
-            List reorderedModifiers = ModifierOrderQuickfix.reOrderModifiers(node.modifiers());
+            List<?> reorderedModifiers = ModifierOrderQuickfix.reOrderModifiers(node.modifiers());
             node.modifiers().clear();
             node.modifiers().addAll(reorderedModifiers);
           }

@@ -60,6 +60,7 @@ public class RedundantModifierQuickfix extends AbstractASTResolution {
 
     return new ASTVisitor() {
 
+      @SuppressWarnings("unchecked")
       @Override
       public boolean visit(MethodDeclaration node) {
 
@@ -83,6 +84,7 @@ public class RedundantModifierQuickfix extends AbstractASTResolution {
         return true;
       }
 
+      @SuppressWarnings("unchecked")
       @Override
       public boolean visit(FieldDeclaration node) {
         // recalculate start position because optional javadoc is mixed
@@ -112,6 +114,7 @@ public class RedundantModifierQuickfix extends AbstractASTResolution {
         return true;
       }
 
+      @SuppressWarnings("unchecked")
       @Override
       public boolean visit(AnnotationTypeMemberDeclaration node) {
 

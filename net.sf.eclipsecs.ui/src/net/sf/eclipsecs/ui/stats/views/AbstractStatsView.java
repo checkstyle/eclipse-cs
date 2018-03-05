@@ -36,6 +36,7 @@ import net.sf.eclipsecs.ui.stats.views.internal.CheckstyleMarkerFilterDialog;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarkerDelta;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
@@ -219,6 +220,7 @@ public abstract class AbstractStatsView extends ViewPart {
    */
   protected final void refresh() {
 
+    @SuppressWarnings("cast")
     final IWorkbenchSiteProgressService service = (IWorkbenchSiteProgressService) getSite()
             .getAdapter(IWorkbenchSiteProgressService.class);
 
@@ -296,7 +298,7 @@ public abstract class AbstractStatsView extends ViewPart {
    */
   private void focusSelectionChanged(IWorkbenchPart part, ISelection selection) {
 
-    List resources = new ArrayList();
+    List<IResource> resources = new ArrayList<IResource>();
     if (part instanceof IEditorPart) {
       IEditorPart editor = (IEditorPart) part;
       IFile file = getFile(editor.getEditorInput());
@@ -305,7 +307,7 @@ public abstract class AbstractStatsView extends ViewPart {
       }
     } else {
       if (selection instanceof IStructuredSelection) {
-        for (Iterator iterator = ((IStructuredSelection) selection).iterator(); iterator
+        for (Iterator<?> iterator = ((IStructuredSelection) selection).iterator(); iterator
                 .hasNext();) {
           Object object = iterator.next();
           if (object instanceof IWorkingSet) {
@@ -334,7 +336,8 @@ public abstract class AbstractStatsView extends ViewPart {
     }
   }
 
-  private void considerAdaptable(IAdaptable adaptable, Collection resources) {
+  @SuppressWarnings("cast")
+  private void considerAdaptable(IAdaptable adaptable, Collection<IResource> resources) {
 
     IResource resource = (IResource) adaptable.getAdapter(IResource.class);
 
@@ -403,8 +406,8 @@ public abstract class AbstractStatsView extends ViewPart {
       return false;
     }
     if (onResource == CheckstyleMarkerFilter.ON_ANY_RESOURCE_OF_SAME_PROJECT) {
-      Collection oldProjects = CheckstyleMarkerFilter.getProjectsAsCollection(oldResources);
-      Collection newProjects = CheckstyleMarkerFilter.getProjectsAsCollection(newResources);
+      Collection<IProject> oldProjects = CheckstyleMarkerFilter.getProjectsAsCollection(oldResources);
+      Collection<IProject> newProjects = CheckstyleMarkerFilter.getProjectsAsCollection(newResources);
 
       if (oldProjects.size() == newProjects.size()) {
         return !newProjects.containsAll(oldProjects);

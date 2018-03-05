@@ -47,6 +47,7 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
   /**
    * List of check state listeners (element type: <code>ICheckStateListener</code>).
    */
+  @SuppressWarnings("rawtypes")
   private final ListenerList checkStateListeners = new ListenerList();
 
   /**
@@ -141,6 +142,7 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
   /*
    * (non-Javadoc) Method declared on ICheckable.
    */
+  @SuppressWarnings("unchecked")
   @Override
   public void addCheckStateListener(ICheckStateListener listener) {
     checkStateListeners.add(listener);
@@ -216,7 +218,7 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
    */
   public Object[] getCheckedElements() {
     TableItem[] children = getTable().getItems();
-    ArrayList v = new ArrayList(children.length);
+    ArrayList<Object> v = new ArrayList<>(children.length);
     for (int i = 0; i < children.length; i++) {
       TableItem item = children[i];
       if (item.getChecked()) {
@@ -253,7 +255,7 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
    */
   public Object[] getGrayedElements() {
     TableItem[] children = getTable().getItems();
-    List v = new ArrayList(children.length);
+    List<Object> v = new ArrayList<>(children.length);
     for (int i = 0; i < children.length; i++) {
       TableItem item = children[i];
       if (item.getGrayed()) {
@@ -485,7 +487,7 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
       }
     }
 
-    private static final class EmptyEnumerator implements Enumeration {
+    private static final class EmptyEnumerator implements Enumeration<Object> {
       @Override
       public boolean hasMoreElements() {
         return false;
@@ -497,7 +499,7 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
       }
     }
 
-    private class HashEnumerator implements Enumeration {
+    private class HashEnumerator implements Enumeration<Object> {
       boolean key;
 
       int start;
@@ -652,7 +654,7 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
      *
      * @return an Enumeration of the values of this Hashtable
      */
-    public Enumeration elements() {
+    public Enumeration<?> elements() {
       if (elementCount == 0) {
         return emptyEnumerator;
       }
@@ -716,7 +718,7 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
      *
      * @return an Enumeration of the keys of this Hashtable
      */
-    public Enumeration keys() {
+    public Enumeration<Object> keys() {
       if (elementCount == 0) {
         return emptyEnumerator;
       }

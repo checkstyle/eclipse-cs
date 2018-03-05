@@ -27,6 +27,7 @@ import net.sf.eclipsecs.ui.quickfixes.AbstractASTResolution;
 import net.sf.eclipsecs.ui.quickfixes.Messages;
 import net.sf.eclipsecs.ui.quickfixes.modifier.ModifierOrderQuickfix;
 
+import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.Modifier;
@@ -53,6 +54,7 @@ public class DesignForExtensionQuickfix extends AbstractASTResolution {
           final int markerStartOffset) {
     return new ASTVisitor() {
 
+      @SuppressWarnings("unchecked")
       @Override
       public boolean visit(MethodDeclaration node) {
         // recalculate start position because optional javadoc is mixed
@@ -68,7 +70,7 @@ public class DesignForExtensionQuickfix extends AbstractASTResolution {
             node.modifiers().add(finalModifier);
 
             // reorder modifiers into their correct order
-            List reorderedModifiers = ModifierOrderQuickfix.reOrderModifiers(node.modifiers());
+            List<ASTNode> reorderedModifiers = ModifierOrderQuickfix.reOrderModifiers(node.modifiers());
             node.modifiers().clear();
             node.modifiers().addAll(reorderedModifiers);
           }

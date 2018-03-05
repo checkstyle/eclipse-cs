@@ -31,7 +31,7 @@ import org.eclipse.ui.texteditor.MarkerUtilities;
  * 
  * @author Fabrice BELLINGARD
  */
-public class MarkerStat implements Comparable {
+public class MarkerStat implements Comparable<MarkerStat> {
 
   /**
    * Identifiant du marqueur : dans notre cas, il s'agit du message du marqueur
@@ -42,7 +42,7 @@ public class MarkerStat implements Comparable {
   /**
    * List of the markers of this categories.
    */
-  private Collection mMarkers;
+  private Collection<IMarker> mMarkers;
 
   /**
    * The maximum severity for this marker group.
@@ -59,7 +59,7 @@ public class MarkerStat implements Comparable {
   public MarkerStat(String identifiant) {
     super();
     this.mIdentifiant = identifiant;
-    mMarkers = new ArrayList();
+    mMarkers = new ArrayList<>();
   }
 
   /**
@@ -83,12 +83,8 @@ public class MarkerStat implements Comparable {
    * @see java.lang.Comparable#compareTo(java.lang.Object)
    */
   @Override
-  public int compareTo(Object o) {
-    if (o instanceof MarkerStat) {
-      MarkerStat stat = (MarkerStat) o;
-      return mIdentifiant.compareTo(stat.getIdentifiant());
-    }
-    return 0;
+  public int compareTo(MarkerStat stat) {
+    return mIdentifiant.compareTo(stat.getIdentifiant());
   }
 
   /**
@@ -96,7 +92,7 @@ public class MarkerStat implements Comparable {
    * 
    * @return a collection of IMarker
    */
-  public Collection getMarkers() {
+  public Collection<IMarker> getMarkers() {
     return mMarkers;
   }
 

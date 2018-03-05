@@ -72,8 +72,8 @@ public class GraphPieDataset extends AbstractDataset implements PieDataset {
    */
   public void setStats(Stats stats) {
 
-    Collection markerStatCollection = stats != null ? stats.getMarkerStats()
-            : Collections.EMPTY_LIST;
+    Collection<MarkerStat> markerStatCollection = stats != null ? stats.getMarkerStats()
+            : Collections.emptyList();
     mData = new DefaultKeyedValues();
 
     // markers que l'on comptera dans une catégorie "Autres" car ils
@@ -81,8 +81,8 @@ public class GraphPieDataset extends AbstractDataset implements PieDataset {
     int leftCount = 0;
     float mCount = new Float(stats.getMarkerCount()).floatValue();
     // et on remplit
-    for (Iterator iter = markerStatCollection.iterator(); iter.hasNext();) {
-      MarkerStat markerStat = (MarkerStat) iter.next();
+    for (Iterator<MarkerStat> iter = markerStatCollection.iterator(); iter.hasNext();) {
+      MarkerStat markerStat = iter.next();
 
       // on calcule le %
       float percentage = CENT * markerStat.getCount() / mCount;
@@ -150,8 +150,9 @@ public class GraphPieDataset extends AbstractDataset implements PieDataset {
    *
    * @return the categories in the dataset.
    */
+  @SuppressWarnings("unchecked")
   @Override
-  public List getKeys() {
+  public List<?> getKeys() {
     return Collections.unmodifiableList(this.mData.getKeys());
   }
 
@@ -164,9 +165,9 @@ public class GraphPieDataset extends AbstractDataset implements PieDataset {
    * @return the category.
    */
   @Override
-  public Comparable getKey(final int item) {
+  public Comparable<?> getKey(final int item) {
 
-    Comparable result = null;
+    Comparable<?> result = null;
     if (getItemCount() > item) {
       result = this.mData.getKey(item);
     }
@@ -182,6 +183,7 @@ public class GraphPieDataset extends AbstractDataset implements PieDataset {
    *
    * @return the key index.
    */
+  @SuppressWarnings("rawtypes")
   @Override
   public int getIndex(final Comparable key) {
 
@@ -216,6 +218,7 @@ public class GraphPieDataset extends AbstractDataset implements PieDataset {
    *
    * @return the value (possibly <code>null</code>).
    */
+  @SuppressWarnings("rawtypes")
   @Override
   public Number getValue(final Comparable key) {
 
@@ -237,7 +240,7 @@ public class GraphPieDataset extends AbstractDataset implements PieDataset {
    * @param value
    *          the value.
    */
-  public void setValue(final Comparable key, final Number value) {
+  public void setValue(final Comparable<?> key, final Number value) {
 
     this.mData.setValue(key, value);
     fireDatasetChanged();
@@ -252,7 +255,7 @@ public class GraphPieDataset extends AbstractDataset implements PieDataset {
    * @param value
    *          the value.
    */
-  public void setValue(final Comparable key, final double value) {
+  public void setValue(final Comparable<?> key, final double value) {
     setValue(key, new Double(value));
   }
 }

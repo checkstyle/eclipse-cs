@@ -31,7 +31,7 @@ import java.util.Collection;
 public class Stats {
 
   /** Liste des différentes erreurs. */
-  private Collection mMarkerStats;
+  private Collection<MarkerStat> mMarkerStats;
 
   /**
    * Nombre de marqueurs scannés.
@@ -51,7 +51,7 @@ public class Stats {
    * @param markerCountWhole
    *          the number of all checkstyle markers in the workspace
    */
-  public Stats(Collection markerStats, int markerCount, int markerCountWhole) {
+  public Stats(Collection<MarkerStat> markerStats, int markerCount, int markerCountWhole) {
     super();
     this.mMarkerStats = markerStats;
     this.mMarkerCount = markerCount;
@@ -63,7 +63,7 @@ public class Stats {
    * 
    * @return Returns the markerStats.
    */
-  public Collection getMarkerStats() {
+  public Collection<MarkerStat> getMarkerStats() {
     return mMarkerStats;
   }
 

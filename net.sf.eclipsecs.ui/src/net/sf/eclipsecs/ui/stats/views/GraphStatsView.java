@@ -322,7 +322,7 @@ public class GraphStatsView extends AbstractStatsView {
     hookDoubleClickAction(mShowErrorAction, detailViewer);
 
     // and to the context menu too
-    ArrayList actionList = new ArrayList(1);
+    ArrayList<Object> actionList = new ArrayList<>(3);
     actionList.add(mDrillBackAction);
     actionList.add(mShowErrorAction);
     actionList.add(new Separator());
@@ -484,13 +484,13 @@ public class GraphStatsView extends AbstractStatsView {
    * @param actions
    *          a collection of IAction objets
    */
-  private void hookContextMenu(final Collection actions, StructuredViewer viewer) {
+  private void hookContextMenu(final Collection<Object> actions, StructuredViewer viewer) {
     MenuManager menuMgr = new MenuManager();
     menuMgr.setRemoveAllWhenShown(true);
     menuMgr.addMenuListener(new IMenuListener() {
       @Override
       public void menuAboutToShow(IMenuManager manager) {
-        for (Iterator iter = actions.iterator(); iter.hasNext();) {
+        for (Iterator<Object> iter = actions.iterator(); iter.hasNext();) {
           Object item = iter.next();
           if (item instanceof IContributionItem) {
             manager.add((IContributionItem) item);
@@ -612,10 +612,10 @@ public class GraphStatsView extends AbstractStatsView {
       if (mCurrentDetails == null) {
         // find the marker statistics for the current category
         Stats currentStats = (Stats) inputElement;
-        Collection markerStats = currentStats.getMarkerStats();
-        Iterator it = markerStats.iterator();
+        Collection<MarkerStat> markerStats = currentStats.getMarkerStats();
+        Iterator<MarkerStat> it = markerStats.iterator();
         while (it.hasNext()) {
-          MarkerStat markerStat = (MarkerStat) it.next();
+          MarkerStat markerStat = it.next();
           if (markerStat.getIdentifiant().equals(mCurrentDetailCategory)) {
             mCurrentDetails = markerStat.getMarkers().toArray();
             break;
@@ -714,9 +714,9 @@ public class GraphStatsView extends AbstractStatsView {
     }
 
     @Override
-    public Comparable getComparableValue(Object element, int colIndex) {
+    public Comparable<?> getComparableValue(Object element, int colIndex) {
       IMarker marker = (IMarker) element;
-      Comparable comparable = null;
+      Comparable<?> comparable = null;
 
       switch (colIndex) {
         case 0:

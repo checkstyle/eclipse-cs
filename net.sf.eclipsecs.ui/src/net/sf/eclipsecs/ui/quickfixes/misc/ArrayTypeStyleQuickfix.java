@@ -64,7 +64,7 @@ public class ArrayTypeStyleQuickfix extends AbstractASTResolution {
 
             int dimensions = 0;
 
-            List fragments = node.fragments();
+            List<?> fragments = node.fragments();
             for (int i = 0, size = fragments.size(); i < size; i++) {
               VariableDeclaration decl = (VariableDeclaration) fragments.get(i);
               if (decl.getExtraDimensions() > dimensions) {
@@ -82,7 +82,7 @@ public class ArrayTypeStyleQuickfix extends AbstractASTResolution {
 
             int dimensions = ((ArrayType) node.getType()).getDimensions();
 
-            List fragments = node.fragments();
+            List<?> fragments = node.fragments();
             for (int i = 0, size = fragments.size(); i < size; i++) {
               VariableDeclaration decl = (VariableDeclaration) fragments.get(i);
               decl.setExtraDimensions(dimensions);
@@ -127,7 +127,7 @@ public class ArrayTypeStyleQuickfix extends AbstractASTResolution {
 
             int dimensions = 0;
 
-            List fragments = node.fragments();
+            List<?> fragments = node.fragments();
             for (int i = 0, size = fragments.size(); i < size; i++) {
               VariableDeclaration decl = (VariableDeclaration) fragments.get(i);
               if (decl.getExtraDimensions() > dimensions) {
@@ -144,7 +144,7 @@ public class ArrayTypeStyleQuickfix extends AbstractASTResolution {
 
             int dimensions = ((ArrayType) node.getType()).getDimensions();
 
-            List fragments = node.fragments();
+            List<?> fragments = node.fragments();
             for (int i = 0, size = fragments.size(); i < size; i++) {
               VariableDeclaration decl = (VariableDeclaration) fragments.get(i);
               decl.setExtraDimensions(dimensions);
@@ -166,9 +166,9 @@ public class ArrayTypeStyleQuickfix extends AbstractASTResolution {
         return decl.getExtraDimensions() > 0;
       }
 
-      private boolean isCStyle(List fragments) {
+      private boolean isCStyle(List<?> fragments) {
 
-        Iterator it = fragments.iterator();
+        Iterator<?> it = fragments.iterator();
         while (it.hasNext()) {
           VariableDeclaration decl = (VariableDeclaration) it.next();
           if (isCStyle(decl)) {
