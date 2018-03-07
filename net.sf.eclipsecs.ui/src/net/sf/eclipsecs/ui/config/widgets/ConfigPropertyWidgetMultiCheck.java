@@ -92,7 +92,8 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
               .getBoolean(CheckstyleUIPluginPrefs.PREF_TRANSLATE_TOKENS);
       mSortTokens = CheckstyleUIPluginPrefs.getBoolean(CheckstyleUIPluginPrefs.PREF_SORT_TOKENS);
 
-      IEclipsePreferences instanceScope = new InstanceScope().getNode(CheckstyleUIPlugin.PLUGIN_ID);
+      IEclipsePreferences instanceScope = InstanceScope.INSTANCE
+              .getNode(CheckstyleUIPlugin.PLUGIN_ID);
       instanceScope.addPreferenceChangeListener(this);
 
       mTable = CheckboxTableViewer.newCheckList(parent, SWT.V_SCROLL | SWT.BORDER);
@@ -113,7 +114,8 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
 
         @Override
         public void widgetDisposed(DisposeEvent e) {
-          IEclipsePreferences prefStore = new InstanceScope().getNode(CheckstyleUIPlugin.PLUGIN_ID);
+          IEclipsePreferences prefStore = InstanceScope.INSTANCE
+                  .getNode(CheckstyleUIPlugin.PLUGIN_ID);
           prefStore.removePreferenceChangeListener(ConfigPropertyWidgetMultiCheck.this);
         }
       });
