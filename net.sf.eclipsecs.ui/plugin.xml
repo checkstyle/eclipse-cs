@@ -17,7 +17,7 @@
     <!-- defines the extension point to contribute the ui part of check configuration types -->
     <extension-point
         id="configtypesui"
-        name="Configuration type editors"
+        name="Checkstyle configuration type editors"
         schema="schema/configtypesui.exsd"/>
 
     <!-- Filter editors for filters allowing user input -->

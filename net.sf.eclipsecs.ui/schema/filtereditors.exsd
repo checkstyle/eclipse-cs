@@ -1,16 +1,21 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="net.sf.eclipsecs.ui">
+<schema targetNamespace="net.sf.eclipsecs.ui" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
-      <appInfo>
-         <meta.schema plugin="net.sf.eclipsecs.ui" id="filtereditors" name="filtereditors"/>
-      </appInfo>
+      <appinfo>
+         <meta.schema plugin="net.sf.eclipsecs.ui" id="filtereditors" name="Checkstyle filter editors"/>
+      </appinfo>
       <documentation>
-         This extension point can be used to provide specific filter sets.
+         This extension point can be used to provide filter editors.
       </documentation>
    </annotation>
 
    <element name="extension">
+      <annotation>
+         <appinfo>
+            <meta.element />
+         </appinfo>
+      </annotation>
       <complexType>
          <sequence>
             <element ref="filtereditor" minOccurs="1" maxOccurs="unbounded"/>
@@ -60,7 +65,7 @@ The id is used to identify the specific filter set.
             <annotation>
                <documentation>
                   The fully qualified class name of the filter implementation.
-The filter class must implement &lt;link&gt;net.sf.eclipsecs.ui.properties.filter.IFilterEditor&lt;/link&gt;.
+The filter class must implement &lt;code&gt;net.sf.eclipsecs.ui.properties.filter.IFilterEditor&lt;/code&gt;.
                </documentation>
             </annotation>
          </attribute>
@@ -68,48 +73,16 @@ The filter class must implement &lt;link&gt;net.sf.eclipsecs.ui.properties.filte
    </element>
 
    <annotation>
-      <appInfo>
+      <appinfo>
          <meta.section type="since"/>
-      </appInfo>
+      </appinfo>
       <documentation>
          4.0.0
       </documentation>
    </annotation>
 
-   <annotation>
-      <appInfo>
-         <meta.section type="examples"/>
-      </appInfo>
-      <documentation>
-         [Enter extension point usage example here.]
-      </documentation>
-   </annotation>
 
-   <annotation>
-      <appInfo>
-         <meta.section type="apiInfo"/>
-      </appInfo>
-      <documentation>
-         [Enter API information here.]
-      </documentation>
-   </annotation>
 
-   <annotation>
-      <appInfo>
-         <meta.section type="implementation"/>
-      </appInfo>
-      <documentation>
-         [Enter information about supplied implementation of this extension point.]
-      </documentation>
-   </annotation>
 
-   <annotation>
-      <appInfo>
-         <meta.section type="copyright"/>
-      </appInfo>
-      <documentation>
-         
-      </documentation>
-   </annotation>
 
 </schema>
