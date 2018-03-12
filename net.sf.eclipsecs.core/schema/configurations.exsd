@@ -2,9 +2,9 @@
 <!-- Schema file written by PDE -->
 <schema targetNamespace="net.sf.eclipsecs.core" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
-      <appInfo>
-         <meta.schema plugin="net.sf.eclipsecs.core" id="filters" name="filters"/>
-      </appInfo>
+      <appinfo>
+         <meta.schema plugin="net.sf.eclipsecs.core" id="configurations" name="Checkstyle configurations"/>
+      </appinfo>
       <documentation>
          This extension point can be used to provide specific filter sets.
       </documentation>
@@ -12,9 +12,9 @@
 
    <element name="extension">
       <annotation>
-         <appInfo>
+         <appinfo>
             <meta.element />
-         </appInfo>
+         </appinfo>
       </annotation>
       <complexType>
          <sequence>
@@ -23,7 +23,7 @@
          <attribute name="point" type="string" use="required">
             <annotation>
                <documentation>
-                  The extension point id this contribution shall apply to
+                  The extension point id this contribution shall apply to.
                </documentation>
             </annotation>
          </attribute>
@@ -67,9 +67,9 @@ The id is used to identify the specific filter set.
                <documentation>
                   A description of the check configuration.
                </documentation>
-               <appInfo>
+               <appinfo>
                   <meta.attribute translatable="true"/>
-               </appInfo>
+               </appinfo>
             </annotation>
          </attribute>
          <attribute name="location" type="string" use="required">
@@ -93,7 +93,7 @@ The all-time default configuration &quot;Sun Checks&quot; is defined with defaul
    <element name="property">
       <annotation>
          <documentation>
-            Defines a resolvable property for the builtin-configuration. This is useful for having mutliple builtin configurations share a common checkstyle configuration file - with the exception of them having a few parametrizable differences (e.g. max line length 80 vs. 100).
+            Defines a resolvable property for the builtin-configuration. This is useful for having multiple builtin configurations share a common checkstyle configuration file - with the exception of them having a few parametrizable differences (e.g. max line length 80 vs. 100).
          </documentation>
       </annotation>
       <complexType>
@@ -115,40 +115,16 @@ The all-time default configuration &quot;Sun Checks&quot; is defined with defaul
    </element>
 
    <annotation>
-      <appInfo>
+      <appinfo>
          <meta.section type="since"/>
-      </appInfo>
+      </appinfo>
       <documentation>
          4.0.0
       </documentation>
    </annotation>
 
-   <annotation>
-      <appInfo>
-         <meta.section type="examples"/>
-      </appInfo>
-      <documentation>
-         [Enter extension point usage example here.]
-      </documentation>
-   </annotation>
 
-   <annotation>
-      <appInfo>
-         <meta.section type="apiInfo"/>
-      </appInfo>
-      <documentation>
-         [Enter API information here.]
-      </documentation>
-   </annotation>
 
-   <annotation>
-      <appInfo>
-         <meta.section type="implementation"/>
-      </appInfo>
-      <documentation>
-         [Enter information about supplied implementation of this extension point.]
-      </documentation>
-   </annotation>
 
 
 </schema>

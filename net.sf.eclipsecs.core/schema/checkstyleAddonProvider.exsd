@@ -1,58 +1,26 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="net.sf.eclipsecs.core">
+<schema targetNamespace="net.sf.eclipsecs.core" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
-      <appInfo>
-         <meta.schema plugin="net.sf.eclipsecs.core" id="checkstyleAddonProvider" name="checkstyleAddonProvider"/>
-      </appInfo>
+      <appinfo>
+         <meta.schema plugin="net.sf.eclipsecs.core" id="checkstyleAddonProvider" name="Checkstyle Addon provider"/>
+      </appinfo>
       <documentation>
          Use this extension point to declare a plugin providing Checkstyle addon modules (e.g. custom checks) and optionally appropriate metadata for the eclipse-cs plugin.
       </documentation>
    </annotation>
 
    <annotation>
-      <appInfo>
+      <appinfo>
          <meta.section type="since"/>
-      </appInfo>
+      </appinfo>
       <documentation>
          5.6.0
       </documentation>
    </annotation>
 
-   <annotation>
-      <appInfo>
-         <meta.section type="examples"/>
-      </appInfo>
-      <documentation>
-         [Enter extension point usage example here.]
-      </documentation>
-   </annotation>
 
-   <annotation>
-      <appInfo>
-         <meta.section type="apiInfo"/>
-      </appInfo>
-      <documentation>
-         [Enter API information here.]
-      </documentation>
-   </annotation>
 
-   <annotation>
-      <appInfo>
-         <meta.section type="implementation"/>
-      </appInfo>
-      <documentation>
-         [Enter information about supplied implementation of this extension point.]
-      </documentation>
-   </annotation>
 
-   <annotation>
-      <appInfo>
-         <meta.section type="copyright"/>
-      </appInfo>
-      <documentation>
-         
-      </documentation>
-   </annotation>
 
 </schema>
