@@ -40,4 +40,5 @@ Import-Package: org.eclipse.core.filebuffers,
  org.eclipse.team.core.synchronize;resolution:=optional,
  org.osgi.framework,
  org.osgi.service.prefs
+Automatic-Module-Name: net.sf.eclipsecs.core
 

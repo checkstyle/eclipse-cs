@@ -15,4 +15,5 @@ Import-Package: org.eclipse.core.resources,
  org.eclipse.jface.text,
  org.eclipse.swt.graphics,
  org.eclipse.ui
+Automatic-Module-Name: net.sf.eclipsecs.sample
 
