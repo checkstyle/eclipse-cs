@@ -64,4 +64,5 @@ Import-Package: org.eclipse.core.commands,
  org.eclipse.ui.views.markers,
  org.osgi.framework,
  org.osgi.service.prefs
+Automatic-Module-Name: net.sf.eclipsecs.ui
 
