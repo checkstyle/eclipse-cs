@@ -216,7 +216,7 @@ public final class ConfigurationWriter {
       metaEl.addAttribute(XMLTags.VALUE_TAG, module.getLastEnabledSeverity().name());
     }
 
-    // write child modules recursivly
+    // write child modules recursively
     for (Module child : childs) {
       writeModule(child, moduleEl, severity, remainingModules);
     }
