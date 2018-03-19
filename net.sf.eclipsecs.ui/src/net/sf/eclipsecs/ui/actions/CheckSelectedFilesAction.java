@@ -88,7 +88,7 @@ public class CheckSelectedFilesAction implements IObjectActionDelegate {
   }
 
   /**
-   * Recursivly add all files contained in the given resource collection to the
+   * Recursively add all files contained in the given resource collection to the
    * second list.
    * 
    * @param resources

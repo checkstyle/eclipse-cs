@@ -97,7 +97,7 @@ public class NeedBracesQuickfix extends AbstractASTResolution {
       }
 
       /**
-       * Helper method to recursivly bracify a if-statement.
+       * Helper method to recursively bracify a if-statement.
        *
        * @param ifStatement
        *          the if statement

@@ -97,7 +97,7 @@ public class PackageFilterEditor implements IFilterEditor {
     if (Window.OK == retCode) {
       this.mFilterData = this.getFilterDataFromDialog();
 
-      if (!mDialog.isRecursivlyExcludeSubTree()) {
+      if (!mDialog.isRecursivelyExcludeSubTree()) {
         mFilterData.add(PackageFilter.RECURSE_OFF_MARKER);
       }
     }
@@ -178,7 +178,7 @@ public class PackageFilterEditor implements IFilterEditor {
 
       this.mDialog.setInitialSelections(selectedElements.toArray());
       this.mDialog.setExpandedElements(expandedElements.toArray());
-      this.mDialog.setRecursivlyExcludeSubTree(recurse);
+      this.mDialog.setRecursivelyExcludeSubTree(recurse);
     }
   }
 
@@ -352,7 +352,7 @@ public class PackageFilterEditor implements IFilterEditor {
 
     private Object[] mExpandedElements;
 
-    private boolean mRecursivlyExcludeSubPackages = true;
+    private boolean mRecursivelyExcludeSubPackages = true;
 
     /**
      * Constructs an instance of <code>ElementTreeSelectionDialog</code>.
@@ -420,23 +420,23 @@ public class PackageFilterEditor implements IFilterEditor {
     }
 
     /**
-     * Sets if subtree should be recursivly excluded. Default is true.
+     * Sets if subtree should be recursively excluded. Default is true.
      *
-     * @param recursivlyExcludeSubTree
+     * @param recursivelyExcludeSubTree
      *          the recursive checking state
      */
-    public void setRecursivlyExcludeSubTree(boolean recursivlyExcludeSubTree) {
+    public void setRecursivelyExcludeSubTree(boolean recursivelyExcludeSubTree) {
 
-      mRecursivlyExcludeSubPackages = recursivlyExcludeSubTree;
+      mRecursivelyExcludeSubPackages = recursivelyExcludeSubTree;
     }
 
     /**
-     * Returns if the subtrees should be recursivly excluded.
+     * Returns if the subtrees should be recursively excluded.
      *
      * @return <code>true</code> if subtrees should be excluded
      */
-    protected boolean isRecursivlyExcludeSubTree() {
-      return mRecursivlyExcludeSubPackages;
+    protected boolean isRecursivelyExcludeSubTree() {
+      return mRecursivelyExcludeSubPackages;
     }
 
     /*
@@ -468,7 +468,7 @@ public class PackageFilterEditor implements IFilterEditor {
 
       List<Object> checked = Arrays.asList(mViewer.getCheckedElements());
 
-      if (!mRecursivlyExcludeSubPackages) {
+      if (!mRecursivelyExcludeSubPackages) {
         setResult(checked);
       } else {
 
@@ -493,18 +493,18 @@ public class PackageFilterEditor implements IFilterEditor {
       composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
       mBtnRecurseSubPackages = new Button(composite, SWT.CHECK);
-      mBtnRecurseSubPackages.setText("Recursivly exclude sub-packages");
+      mBtnRecurseSubPackages.setText("Recursively exclude sub-packages");
       GridData gd = new GridData();
       gd.horizontalAlignment = GridData.BEGINNING;
       gd.horizontalIndent = 5;
       mBtnRecurseSubPackages.setLayoutData(gd);
 
-      mBtnRecurseSubPackages.setSelection(mRecursivlyExcludeSubPackages);
+      mBtnRecurseSubPackages.setSelection(mRecursivelyExcludeSubPackages);
       mBtnRecurseSubPackages.addSelectionListener(new SelectionListener() {
 
         @Override
         public void widgetSelected(SelectionEvent e) {
-          mRecursivlyExcludeSubPackages = mBtnRecurseSubPackages.getSelection();
+          mRecursivelyExcludeSubPackages = mBtnRecurseSubPackages.getSelection();
           adaptRecurseBehaviour();
         }
 
@@ -565,9 +565,9 @@ public class PackageFilterEditor implements IFilterEditor {
 
           IContainer element = (IContainer) event.getElement();
 
-          if (isRecursivlyExcludeSubTree() && !isGrayed(element)) {
+          if (isRecursivelyExcludeSubTree() && !isGrayed(element)) {
             setSubElementsGrayedChecked(element, event.getChecked());
-          } else if (isRecursivlyExcludeSubTree() && isGrayed(element)) {
+          } else if (isRecursivelyExcludeSubTree() && isGrayed(element)) {
             mViewer.setGrayChecked(element, true);
           }
         }
@@ -591,7 +591,7 @@ public class PackageFilterEditor implements IFilterEditor {
 
     private void adaptRecurseBehaviour() {
 
-      if (isRecursivlyExcludeSubTree()) {
+      if (isRecursivelyExcludeSubTree()) {
 
         Object[] checked = mViewer.getCheckedElements();
         for (Object element : checked) {

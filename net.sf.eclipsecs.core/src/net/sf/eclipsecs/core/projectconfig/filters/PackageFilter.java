@@ -31,7 +31,7 @@ import org.eclipse.core.runtime.Path;
 
 /**
  * filters resources that lie within excluded packages. This filter is used for the checkstyle audit
- * funtion of this plugin.
+ * function of this plugin.
  *
  * @author Lars Ködderitzsch
  */
@@ -39,7 +39,7 @@ public class PackageFilter extends AbstractFilter {
 
   /**
    * Marker string in the filter data, if present the subpackes of a filtered package are not
-   * recursivly excluded, but only the filtered package itself.
+   * recursively excluded, but only the filtered package itself.
    */
   public static final String RECURSE_OFF_MARKER = "<recurse=false>";
 
