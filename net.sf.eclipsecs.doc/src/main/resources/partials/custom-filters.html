@@ -15,8 +15,7 @@
     </p>
     <p>Example:</p>
     <p>Using the <code>net.sf.eclipsecs.core.filters</code> extension point in your <code>plugin.xml</code></p>
-    <pre><code>
-&lt;extension
+    <pre><code>&lt;extension
     id="checkstyle.CheckstyleFilters"
     point="net.sf.eclipsecs.core.filters"&gt;
     &lt;filter
@@ -24,8 +23,7 @@
         internal-name="SampleFilter"
         description="Sample Filter"
         class="net.sf.eclipsecs.sample.filter.SampleFilter"/&gt;
-&lt;/extension&gt;
-        </code></pre>
+&lt;/extension&gt;</code></pre>
     <p>The filter implementation class must implement the
             <code>net.sf.eclipsecs.core.projectconfig.filters.IFilter</code> interface.<br/> To make life a bit easier
         for you there is the <code>net.sf.eclipsecs.core.projectconfig.filters.AbstractFilter</code> class which
