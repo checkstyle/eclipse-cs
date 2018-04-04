@@ -129,6 +129,26 @@ The filter class must implement &lt;code&gt;net.sf.eclipsecs.core.filters.IFilte
       </documentation>
    </annotation>
 
+   <annotation>
+      <appinfo>
+         <meta.section type="examples"/>
+      </appinfo>
+      <documentation>
+         The following is an example of using the &lt;samp&gt;filters&lt;/samp&gt; extension point.
+
+&lt;pre&gt;
+&lt;extension
+    id=&quot;checkstyle.CheckstyleFilters&quot;
+    point=&quot;net.sf.eclipsecs.core.filters&quot;&gt;
+    &lt;filter
+        name=&quot;Sample Filter&quot;
+        internal-name=&quot;SampleFilter&quot;
+        description=&quot;Sample Filter&quot;
+        class=&quot;net.sf.eclipsecs.sample.filter.SampleFilter&quot;/&gt;
+&lt;/extension&gt;
+&lt;/pre&gt;
+      </documentation>
+   </annotation>
 
 
 

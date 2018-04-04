@@ -123,6 +123,27 @@ The all-time default configuration &quot;Sun Checks&quot; is defined with defaul
       </documentation>
    </annotation>
 
+   <annotation>
+      <appinfo>
+         <meta.section type="examples"/>
+      </appinfo>
+      <documentation>
+         The following is an example of using the &lt;samp&gt;configurations&lt;/samp&gt; extension point.
+
+&lt;pre&gt;
+&lt;extension
+    id=&quot;checkstyle.CheckConfiguration&quot;
+    point=&quot;net.sf.eclipsecs.core.configurations&quot;&gt;
+    &lt;check-configuration
+        name=&quot;Sample Builtin Checks&quot;
+        location=&quot;sample_checks.xml&quot;
+        description=&quot;Sample Built-in configuration&quot;&gt;
+        &lt;property name=&quot;maxLineLength&quot; value=&quot;50&quot;/&gt;
+     &lt;/check-configuration&gt;
+&lt;/extension&gt;
+&lt;/pre&gt;
+      </documentation>
+   </annotation>
 
 
 
