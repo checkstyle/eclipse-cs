@@ -21,7 +21,7 @@
                                 <delete dir="${project.build.directory}/checkstyle-src-unpack" />
                                 <delete dir="${project.build.directory}/checkstyle-src" />
                                 <first id="cssrc">
-                                    <fileset dir="." includes="checkstyle-*-src.zip" />
+                                    <fileset dir="." includes="checkstyle-checkstyle-*.zip" />
                                 </first>
                                 <unzip src="${toString:cssrc}" dest="${project.build.directory}/checkstyle-src-unpack">
                                     <patternset>
