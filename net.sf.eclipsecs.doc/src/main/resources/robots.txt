@@ -1,1 +1,1 @@
-Sitemap: https://checkstyle.github.io/eclipse-cs/sitemap.xml
+Sitemap: http://checkstyle.github.io/eclipse-cs/sitemap.xml
