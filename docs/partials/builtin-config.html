@@ -14,8 +14,7 @@
     <p>
         <b>Example:</b>
     </p>
-    <pre><code>
-&lt;extension
+    <pre><code>&lt;extension
     id="checkstyle.CheckConfiguration"
     point="net.sf.eclipsecs.core.configurations"&gt;
     &lt;check-configuration
@@ -24,13 +23,11 @@
         description="Sample Built-in configuration"&gt;
         &lt;property name="maxLineLength" value="50"/&gt;
      &lt;/check-configuration&gt;
-&lt;/extension&gt;
-        </code></pre>
+&lt;/extension&gt;</code></pre>
     <p>
         <b>Example 2 - custom built-in config to become the default configuration (highest default-weight wins):</b>
     </p>
-    <pre><code>
-&lt;extension
+    <pre><code>&lt;extension
     id="checkstyle.CheckConfiguration"
     point="net.sf.eclipsecs.core.configurations"&gt;
     &lt;check-configuration
@@ -40,6 +37,5 @@
         default-weight="10"&gt;
         &lt;property name="maxLineLength" value="50"/&gt;
      &lt;/check-configuration&gt;
-&lt;/extension&gt;
-        </code></pre>
+&lt;/extension&gt;</code></pre>
 </div>
