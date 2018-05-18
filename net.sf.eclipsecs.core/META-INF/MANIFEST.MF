@@ -8,7 +8,7 @@ Bundle-ClassPath: .,
  lib/dom4j-1.6.1.jar
 Bundle-Activator: net.sf.eclipsecs.core.CheckstylePlugin
 Bundle-ActivationPolicy: lazy
-Bundle-Vendor: http://eclipse-cs.sf.net/
+Bundle-Vendor: Eclipse Checkstyle Plugin Development Team
 Require-Bundle: net.sf.eclipsecs.checkstyle;visibility:=reexport
 Eclipse-BuddyPolicy: registered
 Bundle-Localization: core
