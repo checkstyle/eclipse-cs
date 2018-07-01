@@ -15,7 +15,7 @@ public final class A {
         </result>
     </testcase>
     <testcase>
-        <input fix-line="1">
+        <input fix-line="1" position="4">
 public class A {
     static final public void foo(int a, int b) {
     }
@@ -29,7 +29,7 @@ public class A {
         </result>
     </testcase>
     <testcase>
-        <input fix-line="1">
+        <input fix-line="1" position="4">
 public class A {
     static final public int i = 0;
 }
@@ -41,7 +41,7 @@ public class A {
         </result>
     </testcase>
     <testcase>
-        <input fix-line="1">
+        <input fix-line="2" position="4">
 public class A {
     @Override
     static final public void foo(int a, int b) {
@@ -50,7 +50,8 @@ public class A {
         </input>
         <result>
 public class A {
-    @Override public static final void foo(int a, int b) {
+    @Override
+    public static final void foo(int a, int b) {
     }
 }
         </result>

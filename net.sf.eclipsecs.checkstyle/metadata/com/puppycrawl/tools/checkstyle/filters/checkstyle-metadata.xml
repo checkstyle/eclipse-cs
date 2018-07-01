@@ -18,7 +18,7 @@
                     <property-value-option value="ignore"/>
                 </enumeration>
             </property-metadata>
-            <property-metadata name="acceptOnMatch " datatype="Boolean" default-value="true">
+            <property-metadata name="acceptOnMatch" datatype="Boolean" default-value="true">
                 <description>%SeverityMatchFilter.acceptOnMatch</description>
             </property-metadata>
         </rule-metadata>
@@ -107,12 +107,15 @@
             <description>%SuppressWarningsFilter.desc</description>
         </rule-metadata>
 
-        <rule-metadata name="%BeforeExecutionExclusionFileFilter.name" internal-name="BeforeExecutionExclusionFileFilter" parent="Checker"
+        <rule-metadata name="%SuppressionXpathFilter.name" internal-name="SuppressionXpathFilter" parent="TreeWalker"
             hasSeverity="false">
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.filefilters.BeforeExecutionExclusionFileFilter"/>
-            <description>%BeforeExecutionExclusionFileFilter.desc</description>
-            <property-metadata name="fileNamePattern" datatype="Regex">
-                <description>%BeforeExecutionExclusionFileFilter.fileNamePattern</description>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.filters.SuppressionXpathFilter"/>
+            <description>%SuppressionXpathFilter.desc</description>
+            <property-metadata name="file" datatype="File">
+                <description>%SuppressionXpathFilter.file</description>
+            </property-metadata>
+            <property-metadata name="optional" datatype="Boolean" default-value="true">
+                <description>%SuppressionXpathFilter.optional</description>
             </property-metadata>
         </rule-metadata>
     </rule-group-metadata>

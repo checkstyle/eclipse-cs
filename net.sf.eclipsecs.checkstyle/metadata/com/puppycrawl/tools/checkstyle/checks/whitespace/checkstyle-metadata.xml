@@ -27,7 +27,6 @@
 
         <rule-metadata name="%EmptyForIteratorPad.name" internal-name="EmptyForIteratorPad" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.whitespace.EmptyForIteratorPadCheck" />
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.EmptyForIteratorPadCheck" />
             <description>%EmptyForIteratorPad.desc</description>
             <property-metadata name="option" datatype="SingleSelect" default-value="nospace">
                 <description>%EmptyForIteratorPad.option</description>
@@ -39,7 +38,6 @@
 
         <rule-metadata name="%NoWhitespaceAfter.name" internal-name="NoWhitespaceAfter" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.whitespace.NoWhitespaceAfterCheck" />
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.NoWhitespaceAfterCheck" />
             <description>%NoWhitespaceAfter.desc</description>
             <property-metadata name="allowLineBreaks" datatype="Boolean" default-value="true">
                 <description>%NoWhitespaceAfter.allowLineBreaks</description>
@@ -69,7 +67,6 @@
 
         <rule-metadata name="%NoWhitespaceBefore.name" internal-name="NoWhitespaceBefore" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.whitespace.NoWhitespaceBeforeCheck" />
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.NoWhitespaceBeforeCheck" />
             <description>%NoWhitespaceBefore.desc</description>
             <property-metadata name="allowLineBreaks" datatype="Boolean" default-value="false">
                 <description>%NoWhitespaceBefore.allowLineBreaks</description>
@@ -93,7 +90,6 @@
 
         <rule-metadata name="%OperatorWrap.name" internal-name="OperatorWrap" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.whitespace.OperatorWrapCheck" />
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.OperatorWrapCheck" />
             <description>%OperatorWrap.desc</description>
             <property-metadata name="option" datatype="SingleSelect" default-value="nl">
                 <description>%OperatorWrap.option</description>
@@ -174,22 +170,23 @@
 
         <rule-metadata name="%ParenPad.name" internal-name="ParenPad" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.whitespace.ParenPadCheck" />
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.ParenPadCheck" />
             <description>%ParenPad.desc</description>
             <property-metadata name="option" datatype="SingleSelect" default-value="nospace">
                 <description>%ParenPad.option</description>
                 <enumeration option-provider="com.puppycrawl.tools.checkstyle.checks.whitespace.PadOption" />
             </property-metadata>
             <property-metadata name="tokens" datatype="MultiCheck"
-                default-value="ANNOTATION,ANNOTATION_FIELD_DEF,CTOR_DEF,CTOR_CALL,ENUM_CONSTANT_DEF,EXPR,LITERAL_CATCH,LITERAL_DO,LITERAL_FOR,LITERAL_IF,LITERAL_NEW,LITERAL_SWITCH,LITERAL_SYNCHRONIZED,LITERAL_WHILE,METHOD_CALL,METHOD_DEF,RESOURCE_SPECIFICATION,SUPER_CTOR_CALL,QUESTION">
+                default-value="ANNOTATION,ANNOTATION_FIELD_DEF,CTOR_CALL,CTOR_DEF,DOT,ENUM_CONSTANT_DEF,EXPR,LITERAL_CATCH,LITERAL_DO,LITERAL_FOR,LITERAL_IF,LITERAL_NEW,LITERAL_SWITCH,LITERAL_SYNCHRONIZED,LITERAL_WHILE,METHOD_CALL,METHOD_DEF,QUESTION,RESOURCE_SPECIFICATION,SUPER_CTOR_CALL,LAMBDA">
                 <description>%ParenPad.tokens</description>
                 <enumeration>
                     <property-value-option value="ANNOTATION" />
                     <property-value-option value="ANNOTATION_FIELD_DEF" />
                     <property-value-option value="CTOR_DEF" />
                     <property-value-option value="CTOR_CALL" />
+                    <property-value-option value="DOT" />
                     <property-value-option value="ENUM_CONSTANT_DEF" />
                     <property-value-option value="EXPR" />
+                    <property-value-option value="LAMBDA" />
                     <property-value-option value="LITERAL_CATCH" />
                     <property-value-option value="LITERAL_DO" />
                     <property-value-option value="LITERAL_FOR" />
@@ -218,13 +215,6 @@
                 <description>%TypecastParenPad.option</description>
                 <enumeration option-provider="com.puppycrawl.tools.checkstyle.checks.whitespace.PadOption" />
             </property-metadata>
-            <property-metadata name="tokens" datatype="MultiCheck" default-value="TYPECAST,RPAREN">
-                <description>%TypecastParenPad.tokens</description>
-                <enumeration>
-                    <property-value-option value="RPAREN" />
-                    <property-value-option value="TYPECAST" />
-                </enumeration>
-            </property-metadata>
             <message-key key="ws.followed" />
             <message-key key="ws.notFollowed" />
             <message-key key="ws.preceded" />
@@ -233,9 +223,6 @@
 
         <rule-metadata name="%FileTabCharacter.name" internal-name="FileTabCharacter" parent="Checker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.whitespace.FileTabCharacterCheck" />
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.whitespace.TabCharacterCheck" />
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.TabCharacterCheck" />
-            <alternative-name internal-name="TabCharacter" />
             <description>%FileTabCharacter.desc</description>
             <property-metadata name="eachLine" datatype="Boolean" default-value="false">
                 <description>%FileTabCharacter.eachLine</description>
@@ -249,7 +236,6 @@
 
         <rule-metadata name="%WhitespaceAfter.name" internal-name="WhitespaceAfter" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.whitespace.WhitespaceAfterCheck" />
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.WhitespaceAfterCheck" />
             <description>%WhitespaceAfter.desc</description>
             <property-metadata name="tokens" datatype="MultiCheck"
                 default-value="COMMA,SEMI,TYPECAST,LITERAL_IF,LITERAL_ELSE,LITERAL_WHILE,LITERAL_DO,LITERAL_FOR,DO_WHILE">
@@ -267,14 +253,14 @@
                 </enumeration>
             </property-metadata>
             <message-key key="ws.notFollowed" />
+            <message-key key="ws.typeCast" />
         </rule-metadata>
 
         <rule-metadata name="%WhitespaceAround.name" internal-name="WhitespaceAround" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.whitespace.WhitespaceAroundCheck" />
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.WhitespaceAroundCheck" />
             <description>%WhitespaceAround.desc</description>
             <property-metadata name="tokens" datatype="MultiCheck"
-                default-value="ASSIGN,BAND,BAND_ASSIGN,BOR,BOR_ASSIGN,BSR,BSR_ASSIGN,BXOR,BXOR_ASSIGN,COLON,DIV,DIV_ASSIGN,DO_WHILE,EQUAL,GE,GT,LAMBDA,LAND,LCURLY,LE,LITERAL_ASSERT,LITERAL_CATCH,LITERAL_DO,LITERAL_ELSE,LITERAL_FINALLY,LITERAL_FOR,LITERAL_IF,LITERAL_RETURN,LITERAL_SWITCH,LITERAL_SYNCHRONIZED,LITERAL_TRY,LITERAL_WHILE,LOR,LT,MINUS,MINUS_ASSIGN,MOD,MOD_ASSIGN,NOT_EQUAL,PLUS,PLUS_ASSIGN,QUESTION,RCURLY,SL,SLIST,SL_ASSIGN,SR,SR_ASSIGN,STAR,STAR_ASSIGN,LITERAL_ASSERT,TYPE_EXTENSION_AND">
+                default-value="ASSIGN,BAND,BAND_ASSIGN,BOR,BOR_ASSIGN,BSR,BSR_ASSIGN,BXOR,BXOR_ASSIGN,COLON,DIV,DIV_ASSIGN,DO_WHILE,EQUAL,GE,GT,LAMBDA,LAND,LCURLY,LE,LITERAL_CATCH,LITERAL_DO,LITERAL_ELSE,LITERAL_FINALLY,LITERAL_FOR,LITERAL_IF,LITERAL_RETURN,LITERAL_SWITCH,LITERAL_SYNCHRONIZED,LITERAL_TRY,LITERAL_WHILE,LOR,LT,MINUS,MINUS_ASSIGN,MOD,MOD_ASSIGN,NOT_EQUAL,PLUS,PLUS_ASSIGN,QUESTION,RCURLY,SL,SLIST,SL_ASSIGN,SR,SR_ASSIGN,STAR,STAR_ASSIGN,LITERAL_ASSERT,TYPE_EXTENSION_AND">
                 <description>%WhitespaceAround.tokens</description>
                 <enumeration>
                     <property-value-option value="ASSIGN" />
@@ -306,6 +292,7 @@
                     <property-value-option value="LITERAL_FOR" />
                     <property-value-option value="LITERAL_IF" />
                     <property-value-option value="LITERAL_RETURN" />
+                    <property-value-option value="LITERAL_SWITCH" />
                     <property-value-option value="LITERAL_SYNCHRONIZED" />
                     <property-value-option value="LITERAL_TRY" />
                     <property-value-option value="LITERAL_WHILE" />
@@ -363,7 +350,7 @@
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.whitespace.EmptyLineSeparatorCheck" />
             <description>%EmptyLineSeparator.desc</description>
             <property-metadata name="tokens" datatype="MultiCheck"
-                default-value="PACKAGE_DEF,IMPORT,CLASS_DEF,ENUM_DEF,INTERFACE_DEF,CTOR_DEF,METHOD_DEF,STATIC_INIT,INSTANCE_INIT,VARIABLE_DEF">
+                default-value="PACKAGE_DEF,IMPORT,CLASS_DEF,INTERFACE_DEF,ENUM_DEF,STATIC_INIT,INSTANCE_INIT,METHOD_DEF,CTOR_DEF,VARIABLE_DEF">
                 <description>%EmptyLineSeparator.tokens</description>
                 <enumeration>
                     <property-value-option value="PACKAGE_DEF" />
@@ -389,6 +376,9 @@
                 <description>%EmptyLineSeparator.allowMultipleEmptyLinesInsideClassMembers</description>
             </property-metadata>
             <message-key key="empty.line.separator" />
+            <message-key key="empty.line.separator.multiple.lines" />
+            <message-key key="empty.line.separator.multiple.lines.after" />
+            <message-key key="empty.line.separator.multiple.lines.inside" />
         </rule-metadata>
 
         <rule-metadata name="%SeparatorWrap.name" internal-name="SeparatorWrap" parent="TreeWalker">
@@ -424,6 +414,25 @@
                 <description>%SingleSpaceSeparator.validateComments</description>
             </property-metadata>
             <message-key key="single.space.separator" />
+        </rule-metadata>
+
+        <rule-metadata name="%NoLineWrap.name" internal-name="NoLineWrap" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.whitespace.NoLineWrapCheck" />
+            <description>%NoLineWrap.desc</description>
+            <property-metadata name="tokens" datatype="MultiCheck" default-value="PACKAGE_DEF,IMPORT,STATIC_IMPORT">
+                <description>%NoLineWrap.tokens</description>
+                <enumeration>
+                    <property-value-option value="IMPORT" />
+                    <property-value-option value="STATIC_IMPORT" />
+                    <property-value-option value="PACKAGE_DEF" />
+                    <property-value-option value="CLASS_DEF" />
+                    <property-value-option value="METHOD_DEF" />
+                    <property-value-option value="CTOR_DEF" />
+                    <property-value-option value="ENUM_DEF" />
+                    <property-value-option value="INTERFACE_DEF" />
+                </enumeration>
+            </property-metadata>
+            <message-key key="no.line.wrap" />
         </rule-metadata>
     </rule-group-metadata>
 

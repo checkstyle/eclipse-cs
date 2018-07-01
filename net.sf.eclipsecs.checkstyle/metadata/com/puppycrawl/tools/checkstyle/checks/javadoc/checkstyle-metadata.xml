@@ -8,6 +8,9 @@
         <rule-metadata name="%JavadocPackage.name" internal-name="JavadocPackage" parent="Checker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocPackageCheck" />
             <description>%JavadocPackage.desc</description>
+            <property-metadata name="fileExtensions" datatype="String">
+                <description>%JavadocPackage.fileExtensions</description>
+            </property-metadata>
             <property-metadata name="allowLegacy" datatype="Boolean" default-value="false">
                 <description>%JavadocPackage.allowLegacy</description>
             </property-metadata>
@@ -17,7 +20,6 @@
 
         <rule-metadata name="%JavadocMethod.name" internal-name="JavadocMethod" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocMethodCheck" />
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.JavadocMethodCheck" />
             <description>%JavadocMethod.desc</description>
             <property-metadata name="minLineCount" datatype="Integer" default-value="-1">
                 <description>%JavadocMethod.minLineCount</description>
@@ -64,11 +66,12 @@
                 override-default-value="true">
                 <description>%JavadocMethod.suppressLoadErrors</description>
             </property-metadata>
-            <property-metadata name="tokens" datatype="MultiCheck" default-value="METHOD_DEF,CTOR_DEF">
+            <property-metadata name="tokens" datatype="MultiCheck" default-value="METHOD_DEF,CTOR_DEF,ANNOTATION_FIELD_DEF">
                 <description>%JavadocMethod.tokens</description>
                 <enumeration>
                     <property-value-option value="METHOD_DEF" />
                     <property-value-option value="CTOR_DEF" />
+                    <property-value-option value="ANNOTATION_FIELD_DEF" />
                 </enumeration>
             </property-metadata>
             <property-metadata name="ignoreMethodNamesRegex" datatype="Regex">
@@ -108,27 +111,31 @@
                 <description>%JavadocStyle.checkHtml</description>
             </property-metadata>
             <property-metadata name="tokens" datatype="MultiCheck"
-                default-value="INTERFACE_DEF,CLASS_DEF,METHOD_DEF,CTOR_DEF,VARIABLE_DEF">
+                default-value="ANNOTATION_DEF,ANNOTATION_FIELD_DEF,CLASS_DEF,CTOR_DEF,ENUM_CONSTANT_DEF,ENUM_DEF,INTERFACE_DEF,METHOD_DEF,PACKAGE_DEF,VARIABLE_DEF">
                 <description>%JavadocStyle.tokens</description>
                 <enumeration>
-                    <property-value-option value="INTERFACE_DEF" />
+                    <property-value-option value="ANNOTATION_DEF" />
+                    <property-value-option value="ANNOTATION_FIELD_DEF" />
                     <property-value-option value="CLASS_DEF" />
-                    <property-value-option value="METHOD_DEF" />
                     <property-value-option value="CTOR_DEF" />
+                    <property-value-option value="ENUM_CONSTANT_DEF" />
+                    <property-value-option value="ENUM_DEF" />
+                    <property-value-option value="INTERFACE_DEF" />
+                    <property-value-option value="METHOD_DEF" />
+                    <property-value-option value="PACKAGE_DEF" />
                     <property-value-option value="VARIABLE_DEF" />
                 </enumeration>
             </property-metadata>
             <message-key key="javadoc.missing" />
-            <message-key key="javadoc.noperiod" />
+            <message-key key="javadoc.noPeriod" />
             <message-key key="javadoc.empty" />
             <message-key key="javadoc.incompleteTag" />
-            <message-key key="javadoc.extrahtml" />
-            <message-key key="javadoc.unclosedhtml" />
+            <message-key key="javadoc.extraHtml" />
+            <message-key key="javadoc.unclosedHtml" />
         </rule-metadata>
 
         <rule-metadata name="%JavadocType.name" internal-name="JavadocType" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocTypeCheck" />
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.JavadocTypeCheck" />
             <description>%JavadocType.desc</description>
             <property-metadata name="excludeScope" datatype="SingleSelect" default-value="nothing">
                 <description>%JavadocType.excludeScope</description>
@@ -147,11 +154,16 @@
             <property-metadata name="allowUnknownTags" datatype="Boolean" default-value="false">
                 <description>%JavadocType.allowUnknownTags</description>
             </property-metadata>
-            <property-metadata name="tokens" datatype="MultiCheck" default-value="CLASS_DEF,INTERFACE_DEF">
+            <property-metadata name="allowMissingParamTags" datatype="Boolean" default-value="false">
+                <description>%JavadocType.allowMissingParamTags</description>
+            </property-metadata>
+            <property-metadata name="tokens" datatype="MultiCheck" default-value="INTERFACE_DEF,CLASS_DEF,ENUM_DEF,ANNOTATION_DEF">
                 <description>%JavadocType.tokens</description>
                 <enumeration>
-                    <property-value-option value="CLASS_DEF" />
                     <property-value-option value="INTERFACE_DEF" />
+                    <property-value-option value="ENUM_DEF" />
+                    <property-value-option value="CLASS_DEF" />
+                    <property-value-option value="ANNOTATION_DEF" />
                 </enumeration>
             </property-metadata>
 
@@ -160,11 +172,11 @@
             <message-key key="type.missingTag" />
             <message-key key="javadoc.unusedTag" />
             <message-key key="javadoc.unusedTagGeneral" />
+            <message-key key="javadoc.unknownTag" />
         </rule-metadata>
 
         <rule-metadata name="%JavadocVariable.name" internal-name="JavadocVariable" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocVariableCheck" />
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.JavadocVariableCheck" />
             <description>%JavadocVariable.desc</description>
             <property-metadata name="excludeScope" datatype="SingleSelect" default-value="nothing">
                 <description>%JavadocVariable.excludeScope</description>
@@ -176,6 +188,13 @@
             </property-metadata>
             <property-metadata name="ignoreNamePattern" datatype="Regex">
                 <description>%JavadocVariable.ignoreNamePattern</description>
+            </property-metadata>
+            <property-metadata name="tokens" datatype="MultiCheck"
+                default-value="ENUM_CONSTANT_DEF">
+                <description>%JavadocVariable.tokens</description>
+                <enumeration>
+                    <property-value-option value="ENUM_CONSTANT_DEF"/>
+                </enumeration>
             </property-metadata>
             <message-key key="javadoc.missing" />
         </rule-metadata>
@@ -198,6 +217,20 @@
                     <property-value-option value="ignore" />
                 </enumeration>
             </property-metadata>
+            <property-metadata name="tokens" datatype="MultiCheck"
+                default-value="INTERFACE_DEF,CLASS_DEF,ENUM_DEF,ANNOTATION_DEF">
+                <description>%WriteTag.tokens</description>
+                <enumeration>
+                    <property-value-option value="INTERFACE_DEF"/>
+                    <property-value-option value="CLASS_DEF"/>
+                    <property-value-option value="ENUM_CONSTANT_DEF"/>
+                    <property-value-option value="ENUM_DEF"/>
+                    <property-value-option value="ANNOTATION_DEF"/>
+                    <property-value-option value="ANNOTATION_FIELD_DEF"/>
+                    <property-value-option value="METHOD_DEF"/>
+                    <property-value-option value="CTOR_DEF"/>
+                </enumeration>
+            </property-metadata>
             <message-key key="type.missingTag" />
             <message-key key="type.tagFormat" />
             <message-key key="javadoc.writeTag" />
@@ -207,21 +240,24 @@
             parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.javadoc.NonEmptyAtclauseDescriptionCheck" />
             <description>%NonEmptyAtclauseDescription.desc</description>
-            <property-metadata name="tokens" datatype="MultiCheck"
-                default-value="PARAM_LITERAL,RETURN_LITERAL,THROWS_LITERAL,EXCEPTION_LITERAL,DEPRECATED_LITERAL">
-                <description>%NonEmptyAtclauseDescription.tokens</description>
+            <property-metadata name="violateExecutionOnNonTightHtml" datatype="Boolean" default-value="false">
+                <description>%NonEmptyAtclauseDescription.violateExecutionOnNonTightHtml</description>
+            </property-metadata>
+            <property-metadata name="javadocTokens" datatype="MultiCheck"
+                default-value="PARAM_LITERAL, RETURN_LITERAL, THROWS_LITERAL, EXCEPTION_LITERAL, DEPRECATED_LITERAL">
+                <description>%NonEmptyAtclauseDescription.javadocTokens</description>
                 <enumeration>
-                    <property-value-option value="PARAM_LITERAL" />
-                    <property-value-option value="RETURN_LITERAL" />
-                    <property-value-option value="THROWS_LITERAL" />
-                    <property-value-option value="EXCEPTION_LITERAL" />
-                    <property-value-option value="DEPRECATED_LITERAL" />
+                    <property-value-option value="PARAM_LITERAL"/>
+                    <property-value-option value="RETURN_LITERAL"/>
+                    <property-value-option value="THROWS_LITERAL"/>
+                    <property-value-option value="EXCEPTION_LITERAL"/>
+                    <property-value-option value="DEPRECATED_LITERAL"/>
                 </enumeration>
             </property-metadata>
-            <property-metadata name="violateExecutionOnNonTightHtml" datatype="Boolean" default-value="false">
-                <description>%AbstractJavadocCheck.violateExecutionOnNonTightHtml</description>
-            </property-metadata>
             <message-key key="non.empty.atclause" />
+            <message-key key="javadoc.missed.html.close" />
+            <message-key key="javadoc.parse.rule.error" />
+            <message-key key="javadoc.wrong.singleton.html.tag" />
         </rule-metadata>
 
         <rule-metadata name="%JavadocTagContinuationIndentation.name" internal-name="JavadocTagContinuationIndentation"
@@ -232,9 +268,12 @@
                 <description>%JavadocTagContinuationIndentation.offset</description>
             </property-metadata>
             <property-metadata name="violateExecutionOnNonTightHtml" datatype="Boolean" default-value="false">
-                <description>%AbstractJavadocCheck.violateExecutionOnNonTightHtml</description>
+                <description>%JavadocTagContinuationIndentation.violateExecutionOnNonTightHtml</description>
             </property-metadata>
             <message-key key="tag.continuation.indent" />
+            <message-key key="javadoc.missed.html.close" />
+            <message-key key="javadoc.parse.rule.error" />
+            <message-key key="javadoc.wrong.singleton.html.tag" />
         </rule-metadata>
 
         <rule-metadata name="%SummaryJavadoc.name" internal-name="SummaryJavadoc" parent="TreeWalker">
@@ -247,10 +286,14 @@
                 <description>%SummaryJavadoc.period</description>
             </property-metadata>
             <property-metadata name="violateExecutionOnNonTightHtml" datatype="Boolean" default-value="false">
-                <description>%AbstractJavadocCheck.violateExecutionOnNonTightHtml</description>
+                <description>%SummaryJavadoc.violateExecutionOnNonTightHtml</description>
             </property-metadata>
             <message-key key="summary.first.sentence" />
             <message-key key="summary.javaDoc" />
+            <message-key key="summary.javaDoc.missing" />
+            <message-key key="javadoc.missed.html.close" />
+            <message-key key="javadoc.parse.rule.error" />
+            <message-key key="javadoc.wrong.singleton.html.tag" />
         </rule-metadata>
 
         <rule-metadata name="%AtclauseOrder.name" internal-name="AtclauseOrder" parent="TreeWalker">
@@ -273,20 +316,30 @@
                 <description>%AtclauseOrder.tagOrder</description>
             </property-metadata>
             <property-metadata name="violateExecutionOnNonTightHtml" datatype="Boolean" default-value="false">
-                <description>%AbstractJavadocCheck.violateExecutionOnNonTightHtml</description>
+                <description>%AtclauseOrder.violateExecutionOnNonTightHtml</description>
             </property-metadata>
             <message-key key="at.clause.order" />
+            <message-key key="javadoc.missed.html.close" />
+            <message-key key="javadoc.parse.rule.error" />
+            <message-key key="javadoc.wrong.singleton.html.tag" />
         </rule-metadata>
 
         <rule-metadata name="%JavadocParagraph.name" internal-name="JavadocParagraph" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocParagraphCheck" />
             <description>%JavadocParagraph.desc</description>
+            <property-metadata name="allowNewlineParagraph" datatype="Boolean" default-value="true">
+                <description>%JavadocParagraph.allowNewlineParagraph</description>
+            </property-metadata>
             <property-metadata name="violateExecutionOnNonTightHtml" datatype="Boolean" default-value="false">
-                <description>%AbstractJavadocCheck.violateExecutionOnNonTightHtml</description>
+                <description>%JavadocParagraph.violateExecutionOnNonTightHtml</description>
             </property-metadata>
             <message-key key="javadoc.paragraph.tag.after" />
             <message-key key="javadoc.paragraph.redundant.paragraph" />
             <message-key key="javadoc.paragraph.line.before" />
+            <message-key key="javadoc.paragraph.misplaced.tag" />
+            <message-key key="javadoc.missed.html.close" />
+            <message-key key="javadoc.parse.rule.error" />
+            <message-key key="javadoc.wrong.singleton.html.tag" />
         </rule-metadata>
 
         <rule-metadata name="%SingleLineJavadoc.name" internal-name="SingleLineJavadoc" parent="TreeWalker">
@@ -299,9 +352,12 @@
                 <description>%SingleLineJavadoc.ignoreInlineTags</description>
             </property-metadata>
             <property-metadata name="violateExecutionOnNonTightHtml" datatype="Boolean" default-value="false">
-                <description>%AbstractJavadocCheck.violateExecutionOnNonTightHtml</description>
+                <description>%SingleLineJavadoc.violateExecutionOnNonTightHtml</description>
             </property-metadata>
             <message-key key="singleline.javadoc" />
+            <message-key key="javadoc.missed.html.close" />
+            <message-key key="javadoc.parse.rule.error" />
+            <message-key key="javadoc.wrong.singleton.html.tag" />
         </rule-metadata>
 
     </rule-group-metadata>

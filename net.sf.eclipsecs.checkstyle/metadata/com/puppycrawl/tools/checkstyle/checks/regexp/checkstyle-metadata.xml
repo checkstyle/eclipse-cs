@@ -6,7 +6,7 @@
     <rule-group-metadata name="%Regexp.group" priority="650">
 
         <rule-metadata name="%Regexp.name" internal-name="Regexp" parent="TreeWalker">
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.RegexpCheck"/>
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.regexp.RegexpCheck"/>
             <description>%Regexp.desc</description>
             <property-metadata name="format" datatype="Regex" default-value="$^">
                 <description>%Regexp.format</description>
@@ -21,7 +21,7 @@
                 <description>%Regexp.duplicateLimit</description>
             </property-metadata>
             <property-metadata name="errorLimit" datatype="Integer" default-value="100">
-                <description>%Regexp.errorLimit </description>
+                <description>%Regexp.errorLimit</description>
             </property-metadata>
             <property-metadata name="ignoreComments" datatype="Boolean" default-value="false">
                 <description>%Regexp.ignoreComments</description>
@@ -52,6 +52,10 @@
             <property-metadata name="fileExtensions" datatype="String">
                 <description>%RegexpMultiline.fileExtensions</description>
             </property-metadata>
+            <message-key key="regexp.StackOverflowError"/>
+            <message-key key="regexp.empty"/>
+            <message-key key="regexp.exceeded"/>
+            <message-key key="regexp.minimum"/>
         </rule-metadata>
 
         <rule-metadata name="%RegexpOnFilename.name" internal-name="RegexpOnFilename" parent="Checker">
@@ -97,6 +101,8 @@
             <property-metadata name="fileExtensions" datatype="String">
                 <description>%RegexpSingleline.fileExtensions</description>
             </property-metadata>
+            <message-key key="regexp.exceeded"/>
+            <message-key key="regexp.minimum"/>
         </rule-metadata>
 
         <rule-metadata name="%RegexpSinglelineJava.name" internal-name="RegexpSinglelineJava" parent="TreeWalker">
@@ -120,6 +126,8 @@
             <property-metadata name="ignoreComments" datatype="Boolean" default-value="false">
                 <description>%RegexpSinglelineJava.ignoreComments</description>
             </property-metadata>
+            <message-key key="regexp.exceeded"/>
+            <message-key key="regexp.minimum"/>
         </rule-metadata>
 
     </rule-group-metadata>

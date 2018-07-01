@@ -74,6 +74,21 @@
                 default-value="false">
                 <description>%CyclomaticComplexity.switchBlockAsSingleDecisionPoint</description>
             </property-metadata>
+            <property-metadata name="tokens" datatype="MultiCheck" default-value="LITERAL_WHILE,LITERAL_DO,LITERAL_FOR,LITERAL_IF,LITERAL_SWITCH,LITERAL_CASE,LITERAL_CATCH,QUESTION,LAND,LOR">
+                <description>%CyclomaticComplexity.tokens</description>
+                <enumeration>
+                    <property-value-option value="LITERAL_WHILE" />
+                    <property-value-option value="LITERAL_DO" />
+                    <property-value-option value="LITERAL_FOR" />
+                    <property-value-option value="LITERAL_IF" />
+                    <property-value-option value="LITERAL_SWITCH" />
+                    <property-value-option value="LITERAL_CASE" />
+                    <property-value-option value="LITERAL_CATCH" />
+                    <property-value-option value="QUESTION" />
+                    <property-value-option value="LAND" />
+                    <property-value-option value="LOR" />
+                </enumeration>
+            </property-metadata>
             <message-key key="cyclomaticComplexity" />
         </rule-metadata>
 
