@@ -7,7 +7,6 @@
 
         <rule-metadata name="%ModifierOrder.name" internal-name="ModifierOrder" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.modifier.ModifierOrderCheck"/>
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.ModifierOrderCheck"/>
             <description>%ModifierOrder.desc</description>
             <quickfix classname="net.sf.eclipsecs.ui.quickfixes.modifier.ModifierOrderQuickfix"/>
             <message-key key="mod.order"/>
@@ -16,16 +15,19 @@
 
         <rule-metadata name="%RedundantModifier.name" internal-name="RedundantModifier" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.modifier.RedundantModifierCheck"/>
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.RedundantModifierCheck"/>
             <description>%RedundantModifier.desc</description>
             <property-metadata name="tokens" datatype="MultiCheck"
-                default-value="METHOD_DEF,VARIABLE_DEF,ANNOTATION_FIELD_DEF,INTERFACE_DEF">
+                default-value="METHOD_DEF,VARIABLE_DEF,ANNOTATION_FIELD_DEF,INTERFACE_DEF,CTOR_DEF,CLASS_DEF,ENUM_DEF,RESOURCE">
                 <description>%RedundantModifier.tokens</description>
                 <enumeration>
                     <property-value-option value="METHOD_DEF"/>
                     <property-value-option value="VARIABLE_DEF"/>
                     <property-value-option value="ANNOTATION_FIELD_DEF"/>
                     <property-value-option value="INTERFACE_DEF"/>
+                    <property-value-option value="CTOR_DEF"/>
+                    <property-value-option value="CLASS_DEF"/>
+                    <property-value-option value="ENUM_DEF"/>
+                    <property-value-option value="RESOURCE"/>
                 </enumeration>
             </property-metadata>
             <quickfix classname="net.sf.eclipsecs.ui.quickfixes.modifier.RedundantModifierQuickfix"/>

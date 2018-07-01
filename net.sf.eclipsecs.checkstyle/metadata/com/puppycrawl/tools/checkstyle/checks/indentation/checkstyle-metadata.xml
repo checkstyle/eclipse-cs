@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE checkstyle-metadata PUBLIC
+"-//eclipse-cs//DTD Check Metadata 1.1//EN"
+"http://eclipse-cs.sourceforge.net/dtds/checkstyle-metadata_1_1.dtd">
+<checkstyle-metadata>
+    <rule-group-metadata name="%Indentation.group" priority="500">
+
+        <rule-metadata name="%Indentation.name" internal-name="Indentation" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.indentation.IndentationCheck" />
+            <description>%Indentation.desc</description>
+            <property-metadata name="arrayInitIndent" datatype="Integer" default-value="4">
+                <description>%Indentation.arrayInitIndent</description>
+            </property-metadata>
+            <property-metadata name="basicOffset" datatype="Integer" default-value="4">
+                <description>%Indentation.basicOffset</description>
+            </property-metadata>
+            <property-metadata name="braceAdjustment" datatype="Integer" default-value="0">
+                <description>%Indentation.braceAdjustment</description>
+            </property-metadata>
+            <property-metadata name="caseIndent" datatype="Integer" default-value="4">
+                <description>%Indentation.caseIndent</description>
+            </property-metadata>
+            <property-metadata name="forceStrictCondition" datatype="Boolean" default-value="false">
+                <description>%Indentation.forceStrictCondition</description>
+            </property-metadata>
+            <property-metadata name="lineWrappingIndentation" datatype="Integer" default-value="4">
+                <description>%Indentation.lineWrappingIndentation</description>
+            </property-metadata>
+            <property-metadata name="throwsIndent" datatype="Integer" default-value="4">
+                <description>%Indentation.throwsIndent</description>
+            </property-metadata>
+            <message-key key="indentation.child.error" />
+            <message-key key="indentation.child.error.multi" />
+            <message-key key="indentation.error" />
+            <message-key key="indentation.error.multi" />
+        </rule-metadata>
+
+        <rule-metadata name="%CommentsIndentation.name" internal-name="CommentsIndentation" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.indentation.CommentsIndentationCheck" />
+            <description>%CommentsIndentation.desc</description>
+            <property-metadata name="tokens" datatype="MultiCheck"
+                default-value="SINGLE_LINE_COMMENT,BLOCK_COMMENT_BEGIN">
+                <description>%CommentsIndentation.tokens</description>
+                <enumeration>
+                    <property-value-option value="SINGLE_LINE_COMMENT"/>
+                    <property-value-option value="BLOCK_COMMENT_BEGIN"/>
+                </enumeration>
+            </property-metadata>
+            <message-key key="comments.indentation.block" />
+            <message-key key="comments.indentation.single" />
+        </rule-metadata>
+
+    </rule-group-metadata>
+</checkstyle-metadata>

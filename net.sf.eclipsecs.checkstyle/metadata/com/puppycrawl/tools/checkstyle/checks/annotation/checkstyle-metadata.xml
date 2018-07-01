@@ -43,6 +43,9 @@
         <rule-metadata name="%MissingDeprecated.name" internal-name="MissingDeprecated" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.annotation.MissingDeprecatedCheck" />
             <description>%MissingDeprecated.desc</description>
+            <property-metadata name="skipNoJavadoc" datatype="Boolean" default-value="false">
+                <description>%MissingDeprecated.skipNoJavadoc</description>
+            </property-metadata>
             <message-key key="annotation.missing.deprecated" />
             <message-key key="javadoc.duplicateTag" />
             <message-key key="javadoc.missing" />
@@ -51,7 +54,7 @@
         <rule-metadata name="%MissingOverride.name" internal-name="MissingOverride" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.annotation.MissingOverrideCheck" />
             <description>%MissingOverride.desc</description>
-            <property-metadata name="javaFiveCompatibility " datatype="Boolean" default-value="false">
+            <property-metadata name="javaFiveCompatibility" datatype="Boolean" default-value="false">
                 <description>%MissingOverride.javaFiveCompatibility</description>
             </property-metadata>
             <message-key key="tag.not.valid.on" />
@@ -102,6 +105,15 @@
                     <property-value-option value="METHOD_DEF" />
                     <property-value-option value="CTOR_DEF" />
                     <property-value-option value="VARIABLE_DEF" />
+                    <property-value-option value="TYPECAST" />
+                    <property-value-option value="DOT" />
+                    <property-value-option value="TYPE_ARGUMENT" />
+                    <property-value-option value="ANNOTATION_DEF" />
+                    <property-value-option value="ANNOTATION_FIELD_DEF" />
+                    <property-value-option value="LITERAL_NEW" />
+                    <property-value-option value="LITERAL_THROWS" />
+                    <property-value-option value="PARAMETER_DEF" />
+                    <property-value-option value="IMPLEMENTS_CLAUSE" />
                 </enumeration>
             </property-metadata>
             <property-metadata name="allowSamelineSingleParameterlessAnnotation" datatype="Boolean"

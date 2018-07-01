@@ -7,7 +7,6 @@
 
         <rule-metadata name="%Header.name" internal-name="Header" parent="Checker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.header.HeaderCheck"/>
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.HeaderCheck"/>
             <description>%Header.desc</description>
             <property-metadata name="headerFile" datatype="File">
                 <description>%Header.headerFile</description>
@@ -30,7 +29,6 @@
 
         <rule-metadata name="%RegexpHeader.name" internal-name="RegexpHeader" parent="Checker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.header.RegexpHeaderCheck"/>
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.RegexpHeaderCheck"/>
             <description>%RegexpHeader.desc</description>
             <property-metadata name="headerFile" datatype="File">
                 <description>%RegexpHeader.headerFile</description>

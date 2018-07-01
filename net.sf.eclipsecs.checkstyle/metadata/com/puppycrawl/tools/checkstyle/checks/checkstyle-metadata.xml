@@ -18,10 +18,6 @@
         <rule-metadata name="%DescendantToken.name" internal-name="DescendantToken" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.DescendantTokenCheck"/>
             <description>%DescendantToken.desc</description>
-            <property-metadata name="tokens" datatype="MultiCheck">
-                <description>%DescendantToken.tokens</description>
-                <enumeration option-provider="net.sf.eclipsecs.core.config.meta.AllTokensProvider"/>
-            </property-metadata>
             <property-metadata name="limitedTokens" datatype="MultiCheck">
                 <description>%DescendantToken.limitedTokens</description>
                 <enumeration option-provider="net.sf.eclipsecs.core.config.meta.AllTokensProvider"> </enumeration>
@@ -49,6 +45,8 @@
             </property-metadata>
             <message-key key="descendant.token.sum.min"/>
             <message-key key="descendant.token.sum.max"/>
+            <message-key key="descendant.token.min"/>
+            <message-key key="descendant.token.max"/>
         </rule-metadata>
 
         <rule-metadata name="%FinalParameters.name" internal-name="FinalParameters" parent="TreeWalker">
@@ -60,6 +58,7 @@
                     <property-value-option value="METHOD_DEF"/>
                     <property-value-option value="CTOR_DEF"/>
                     <property-value-option value="LITERAL_CATCH"/>
+                    <property-value-option value="FOR_EACH_CLAUSE" />
                 </enumeration>
             </property-metadata>
             <property-metadata name="ignorePrimitiveTypes" datatype="Boolean" default-value="false">
@@ -69,55 +68,11 @@
             <message-key key="final.parameter"/>
         </rule-metadata>
 
-        <rule-metadata name="%Indentation.name" internal-name="Indentation" parent="TreeWalker">
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.indentation.IndentationCheck"/>
-            <description>%Indentation.desc</description>
-            <property-metadata name="basicOffset" datatype="Integer" default-value="4">
-                <description>%Indentation.basicOffset</description>
-            </property-metadata>
-            <property-metadata name="braceAdjustment" datatype="Integer" default-value="0">
-                <description>%Indentation.braceAdjustment</description>
-            </property-metadata>
-            <property-metadata name="caseIndent" datatype="Integer" default-value="4">
-                <description>%Indentation.caseIndent</description>
-            </property-metadata>
-            <property-metadata name="throwsIndent" datatype="Integer" default-value="4">
-                <description>%Indentation.throwsIndent</description>
-            </property-metadata>
-            <property-metadata name="arrayInitIndent" datatype="Integer" default-value="4">
-                <description>%Indentation.arrayInitIndent</description>
-            </property-metadata>
-            <property-metadata name="lineWrappingIndentation" datatype="Integer" default-value="4">
-                <description>%Indentation.lineWrappingIndentation</description>
-            </property-metadata>
-            <property-metadata name="forceStrictCondition" datatype="Boolean" default-value="false">
-                <description>%Indentation.forceStrictCondition</description>
-            </property-metadata>
-            <message-key key="indentation.error"/>
-            <message-key key="indentation.child.error"/>
-        </rule-metadata>
-
-        <rule-metadata name="%CommentsIndentation.name" internal-name="CommentsIndentation" parent="TreeWalker">
-            <alternative-name
-                internal-name="com.puppycrawl.tools.checkstyle.checks.indentation.CommentsIndentationCheck"/>
-            <description>%CommentsIndentation.desc</description>
-            <property-metadata name="tokens" datatype="MultiCheck"
-                default-value="SINGLE_LINE_COMMENT,BLOCK_COMMENT_BEGIN">
-                <description>%CommentsIndentation.tokens</description>
-                <enumeration>
-                    <property-value-option value="SINGLE_LINE_COMMENT"/>
-                    <property-value-option value="BLOCK_COMMENT_BEGIN"/>
-                </enumeration>
-            </property-metadata>
-            <message-key key="comments.indentation.single"/>
-            <message-key key="comments.indentation.block"/>
-        </rule-metadata>
-
         <rule-metadata name="%NewlineAtEndOfFile.name" internal-name="NewlineAtEndOfFile" parent="Checker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.NewlineAtEndOfFileCheck"/>
             <description>%NewlineAtEndOfFile.desc</description>
             <property-metadata name="lineSeparator" datatype="SingleSelect" default-value="system">
-                <description>%NewlineAtEndOfFile.lineSeperator</description>
+                <description>%NewlineAtEndOfFile.lineSeparator</description>
                 <enumeration>
                     <property-value-option value="system"/>
                     <property-value-option value="crlf"/>
@@ -154,9 +109,8 @@
             <property-metadata name="requiredTranslations" datatype="String" default-value="">
                 <description>%Translation.requiredTranslations</description>
             </property-metadata>
-            <message-key key="general.fileNotFound"/>
-            <message-key key="general.exception"/>
             <message-key key="translation.missingKey"/>
+            <message-key key="translation.missingTranslationFile"/>
         </rule-metadata>
 
         <rule-metadata name="%TrailingComment.name" internal-name="TrailingComment" parent="TreeWalker">
@@ -221,6 +175,16 @@
             </property-metadata>
             <message-key key="properties.duplicate.property"/>
             <message-key key="unable.open.cause"/>
+        </rule-metadata>
+
+        <rule-metadata name="%SuppressWarningsHolder.name" internal-name="SuppressWarningsHolder"
+            parent="TreeWalker" hidden="true" deletable="false" singleton="true">
+            <property-metadata name="aliasList" datatype="String" default-value="">
+                <description>%SuppressWarningsHolder.aliasList</description>
+            </property-metadata>
+            <alternative-name
+                internal-name="com.puppycrawl.tools.checkstyle.checks.SuppressWarningsHolder"/>
+            <message-key key="suppress.warnings.invalid.target"/>
         </rule-metadata>
     </rule-group-metadata>
 </checkstyle-metadata>

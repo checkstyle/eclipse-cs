@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE checkstyle-metadata PUBLIC
+"-//eclipse-cs//DTD Check Metadata 1.1//EN"
+"http://eclipse-cs.sourceforge.net/dtds/checkstyle-metadata_1_1.dtd">
+<checkstyle-metadata>
+    <rule-group-metadata name="%FileFilters.group" priority="1700">
+
+        <rule-metadata name="%BeforeExecutionExclusionFileFilter.name" internal-name="BeforeExecutionExclusionFileFilter"
+            parent="Checker" hasSeverity="false">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.filefilters.BeforeExecutionExclusionFileFilter" />
+            <description>%BeforeExecutionExclusionFileFilter.desc</description>
+            <property-metadata name="fileNamePattern" datatype="Regex">
+                <description>%BeforeExecutionExclusionFileFilter.fileNamePattern</description>
+            </property-metadata>
+        </rule-metadata>
+
+    </rule-group-metadata>
+</checkstyle-metadata>

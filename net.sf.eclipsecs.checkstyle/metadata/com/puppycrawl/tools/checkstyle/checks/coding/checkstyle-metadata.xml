@@ -8,7 +8,6 @@
         <rule-metadata name="%AvoidInlineConditionals.name" internal-name="AvoidInlineConditionals"
             parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.AvoidInlineConditionalsCheck" />
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.AvoidInlineConditionalsCheck" />
             <description>%AvoidInlineConditionals.desc</description>
             <message-key key="inline.conditional.avoid" />
         </rule-metadata>
@@ -27,6 +26,7 @@
             </property-metadata>
             <quickfix classname="net.sf.eclipsecs.ui.quickfixes.coding.DefaultComesLastQuickfix" />
             <message-key key="default.comes.last" />
+            <message-key key="default.comes.last.in.casegroup" />
         </rule-metadata>
 
         <rule-metadata name="%DeclarationOrder.name" internal-name="DeclarationOrder" parent="TreeWalker">
@@ -39,7 +39,6 @@
                 <description>%DeclarationOrder.ignoreModifiers</description>
             </property-metadata>
             <message-key key="declaration.order.constructor" />
-            <message-key key="declaration.order.method" />
             <message-key key="declaration.order.static" />
             <message-key key="declaration.order.instance" />
             <message-key key="declaration.order.access" />
@@ -47,7 +46,6 @@
 
         <rule-metadata name="%EmptyStatement.name" internal-name="EmptyStatement" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.EmptyStatementCheck" />
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.EmptyStatementCheck" />
             <description>%EmptyStatement.desc</description>
             <quickfix classname="net.sf.eclipsecs.ui.quickfixes.coding.EmptyStatementQuickfix" />
             <message-key key="empty.statement" />
@@ -60,13 +58,14 @@
                 <description>%EqualsAvoidNull.ignoreEqualsIgnoreCase</description>
             </property-metadata>
             <message-key key="equals.avoid.null" />
+            <message-key key="equalsIgnoreCase.avoid.null" />
         </rule-metadata>
 
         <rule-metadata name="%EqualsHashCode.name" internal-name="EqualsHashCode" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.EqualsHashCodeCheck" />
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.EqualsHashCodeCheck" />
             <description>%EqualsHashCode.desc</description>
             <message-key key="equals.noHashCode" />
+            <message-key key="equals.noEquals" />
         </rule-metadata>
 
         <rule-metadata name="%ExplicitInitialization.name" internal-name="ExplicitInitialization" parent="TreeWalker">
@@ -112,13 +111,13 @@
 
         <rule-metadata name="%HiddenField.name" internal-name="HiddenField" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.HiddenFieldCheck" />
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.HiddenFieldCheck" />
             <description>%HiddenField.desc</description>
-            <property-metadata name="tokens" datatype="MultiCheck" default-value="PARAMETER_DEF,VARIABLE_DEF">
+            <property-metadata name="tokens" datatype="MultiCheck" default-value="VARIABLE_DEF,PARAMETER_DEF,LAMBDA">
                 <description>%HiddenField.tokens</description>
                 <enumeration>
                     <property-value-option value="PARAMETER_DEF" />
                     <property-value-option value="VARIABLE_DEF" />
+                    <property-value-option value="LAMBDA"/>
                 </enumeration>
             </property-metadata>
             <property-metadata name="ignoreFormat" datatype="Regex">
@@ -141,10 +140,16 @@
 
         <rule-metadata name="%IllegalInstantiation.name" internal-name="IllegalInstantiation" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.IllegalInstantiationCheck" />
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.IllegalInstantiationCheck" />
             <description>%IllegalInstantiation.desc</description>
             <property-metadata name="classes" datatype="String">
                 <description>%IllegalInstantiation.classes</description>
+            </property-metadata>
+            <property-metadata name="tokens" datatype="MultiCheck"
+                default-value="CLASS_DEF">
+                <description>%IllegalInstantiation.tokens</description>
+                <enumeration>
+                    <property-value-option value="CLASS_DEF"/>
+                </enumeration>
             </property-metadata>
             <message-key key="instantiation.avoid" />
         </rule-metadata>
@@ -178,7 +183,7 @@
         <rule-metadata name="%IllegalToken.name" internal-name="IllegalToken" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.IllegalTokenCheck" />
             <description>%IllegalToken.desc</description>
-            <property-metadata name="tokens" datatype="MultiCheck" default-value="LITERAL_SWITCH,POST_INC,POST_DEC">
+            <property-metadata name="tokens" datatype="MultiCheck" default-value="LABELED_STAT">
                 <description>%IllegalToken.tokens</description>
                 <enumeration option-provider="net.sf.eclipsecs.core.config.meta.AllTokensProvider" />
             </property-metadata>
@@ -190,7 +195,16 @@
             <description>%IllegalTokenText.desc</description>
             <property-metadata name="tokens" datatype="MultiCheck">
                 <description>%IllegalTokenText.tokens</description>
-                <enumeration option-provider="net.sf.eclipsecs.core.config.meta.AllTokensProvider" />
+                <enumeration>
+                    <property-value-option value="NUM_DOUBLE"/>
+                    <property-value-option value="NUM_FLOAT"/>
+                    <property-value-option value="NUM_INT"/>
+                    <property-value-option value="NUM_LONG"/>
+                    <property-value-option value="IDENT"/>
+                    <property-value-option value="COMMENT_CONTENT"/>
+                    <property-value-option value="STRING_LITERAL"/>
+                    <property-value-option value="CHAR_LITERAL"/>
+                </enumeration>
             </property-metadata>
             <property-metadata name="format" datatype="Regex" default-value="^$">
                 <description>%IllegalTokenText.format</description>
@@ -207,7 +221,10 @@
         <rule-metadata name="%IllegalType.name" internal-name="IllegalType" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.IllegalTypeCheck" />
             <description>%IllegalType.desc</description>
-            <property-metadata name="tokens" datatype="MultiCheck" default-value="PARAMETER_DEF,VARIABLE_DEF,METHOD_DEF">
+            <property-metadata name="validateAbstractClassNames" datatype="Boolean" default-value="true">
+                <description>%IllegalType.validateAbstractClassNames</description>
+            </property-metadata>
+            <property-metadata name="tokens" datatype="MultiCheck" default-value="VARIABLE_DEF,PARAMETER_DEF,METHOD_DEF">
                 <description>%IllegalType.tokens</description>
                 <enumeration>
                     <property-value-option value="METHOD_DEF" />
@@ -251,43 +268,12 @@
 
         <rule-metadata name="%InnerAssignment.name" internal-name="InnerAssignment" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.InnerAssignmentCheck" />
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.InnerAssignmentCheck" />
             <description>%InnerAssignment.desc</description>
-            <property-metadata name="tokens" datatype="MultiCheck"
-                default-value="ASSIGN,BAND_ASSIGN,BOR_ASSIGN,BSR_ASSIGN,BXOR_ASSIGN,DIV_ASSIGN,MINUS_ASSIGN,MOD_ASSIGN,PLUS_ASSIGN,SL_ASSIGN,SR_ASSIGN,STAR_ASSIGN">
-                <description>%InnerAssignment.tokens</description>
-                <enumeration>
-                    <property-value-option value="ASSIGN" />
-                    <property-value-option value="BAND_ASSIGN" />
-                    <property-value-option value="BOR_ASSIGN" />
-                    <property-value-option value="BSR_ASSIGN" />
-                    <property-value-option value="BXOR_ASSIGN" />
-                    <property-value-option value="DIV_ASSIGN" />
-                    <property-value-option value="MINUS_ASSIGN" />
-                    <property-value-option value="MOD_ASSIGN" />
-                    <property-value-option value="PLUS_ASSIGN" />
-                    <property-value-option value="SL_ASSIGN" />
-                    <property-value-option value="SR_ASSIGN" />
-                    <property-value-option value="STAR_ASSIGN" />
-                </enumeration>
-            </property-metadata>
             <message-key key="assignment.inner.avoid" />
-        </rule-metadata>
-
-        <rule-metadata name="%JUnitTestCase.name" internal-name="JUnitTestCase" parent="TreeWalker">
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.JUnitTestCaseCheck" />
-            <description>%JUnitTestCase.desc</description>
-            <message-key key="junit.method.name" />
-            <message-key key="junit.method.public.and.static" />
-            <message-key key="junit.method.return.type" />
-            <message-key key="junit.method.protected.or.public" />
-            <message-key key="junit.method.static" />
-            <message-key key="junit.method.parameters" />
         </rule-metadata>
 
         <rule-metadata name="%MagicNumber.name" internal-name="MagicNumber" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck" />
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.MagicNumberCheck" />
             <description>%MagicNumber.desc</description>
             <property-metadata name="tokens" datatype="MultiCheck" default-value="NUM_DOUBLE,NUM_FLOAT,NUM_INT,NUM_LONG">
                 <description>%MagicNumber.tokens</description>
@@ -326,7 +312,6 @@
 
         <rule-metadata name="%MissingSwitchDefault.name" internal-name="MissingSwitchDefault" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.MissingSwitchDefaultCheck" />
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.MissingSwitchDefaultCheck" />
             <description>%MissingSwitchDefault.desc</description>
             <quickfix classname="net.sf.eclipsecs.ui.quickfixes.coding.MissingSwitchDefaultQuickfix" />
             <message-key key="missing.switch.default" />
@@ -339,6 +324,7 @@
             <property-metadata name="skipEnhancedForLoopVariable" datatype="Boolean" default-value="false">
                 <description>%ModifiedControlVariable.skipEnhancedForLoopVariable</description>
             </property-metadata>
+            <message-key key="modified.control.variable" />
         </rule-metadata>
 
         <rule-metadata name="%MultipleStringLiterals.name" internal-name="MultipleStringLiterals" parent="TreeWalker">
@@ -407,7 +393,11 @@
         <rule-metadata name="%PackageDeclaration.name" internal-name="PackageDeclaration" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.PackageDeclarationCheck" />
             <description>%PackageDeclaration.desc</description>
+            <property-metadata name="matchDirectoryStructure" datatype="Boolean" default-value="true">
+                <description>%PackageDeclaration.matchDirectoryStructure</description>
+            </property-metadata>
             <message-key key="missing.package.declaration" />
+            <message-key key="mismatch.package.directory" />
         </rule-metadata>
 
         <rule-metadata name="%ParameterAssignment.name" internal-name="ParameterAssignment" parent="TreeWalker">
@@ -445,23 +435,31 @@
             <property-metadata name="format" datatype="Regex" default-value="^equals$ (empty)">
                 <description>%ReturnCount.format</description>
             </property-metadata>
+            <property-metadata name="tokens" datatype="MultiCheck"
+                default-value="CTOR_DEF,METHOD_DEF,LAMBDA">
+                <description>%ReturnCount.tokens</description>
+                <enumeration>
+                    <property-value-option value="CTOR_DEF"/>
+                    <property-value-option value="METHOD_DEF"/>
+                    <property-value-option value="LAMBDA"/>
+                </enumeration>
+            </property-metadata>
             <message-key key="return.count" />
+            <message-key key="return.countVoid" />
         </rule-metadata>
 
         <rule-metadata name="%SimplifyBooleanExpression.name" internal-name="SimplifyBooleanExpression"
             parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.SimplifyBooleanExpressionCheck" />
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.SimplifyBooleanExpressionCheck" />
             <description>%SimplifyBooleanExpression.desc</description>
             <message-key key="simplify.expression" />
         </rule-metadata>
 
         <rule-metadata name="%SimplifyBooleanReturn.name" internal-name="SimplifyBooleanReturn" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.SimplifyBooleanReturnCheck" />
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.SimplifyBooleanReturnCheck" />
             <description>%SimplifyBooleanReturn.desc</description>
             <quickfix classname="net.sf.eclipsecs.ui.quickfixes.coding.SimplifyBooleanReturnQuickfix" />
-            <message-key key="simplify.boolreturn" />
+            <message-key key="simplify.boolReturn" />
         </rule-metadata>
 
         <rule-metadata name="%StringLiteralEquality.name" internal-name="StringLiteralEquality" parent="TreeWalker">
@@ -492,6 +490,35 @@
         <rule-metadata name="%UnnecessaryParentheses.name" internal-name="UnnecessaryParentheses" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.UnnecessaryParenthesesCheck" />
             <description>%UnnecessaryParentheses.desc</description>
+            <property-metadata name="tokens" datatype="MultiCheck"
+                default-value="EXPR,IDENT,NUM_DOUBLE,NUM_FLOAT,NUM_INT,NUM_LONG,STRING_LITERAL,LITERAL_NULL,LITERAL_FALSE,LITERAL_TRUE,ASSIGN,BAND_ASSIGN,BOR_ASSIGN,BSR_ASSIGN,BXOR_ASSIGN,DIV_ASSIGN,MINUS_ASSIGN,MOD_ASSIGN,PLUS_ASSIGN,SL_ASSIGN,SR_ASSIGN,STAR_ASSIGN,LAMBDA">
+                <description>%UnnecessaryParentheses.tokens</description>
+                <enumeration>
+                    <property-value-option value="EXPR"/>
+                    <property-value-option value="IDENT"/>
+                    <property-value-option value="NUM_DOUBLE"/>
+                    <property-value-option value="NUM_FLOAT"/>
+                    <property-value-option value="NUM_INT"/>
+                    <property-value-option value="NUM_LONG"/>
+                    <property-value-option value="STRING_LITERAL"/>
+                    <property-value-option value="LITERAL_NULL"/>
+                    <property-value-option value="LITERAL_FALSE"/>
+                    <property-value-option value="LITERAL_TRUE"/>
+                    <property-value-option value="ASSIGN"/>
+                    <property-value-option value="BAND_ASSIGN"/>
+                    <property-value-option value="BOR_ASSIGN"/>
+                    <property-value-option value="BSR_ASSIGN"/>
+                    <property-value-option value="BXOR_ASSIGN"/>
+                    <property-value-option value="DIV_ASSIGN"/>
+                    <property-value-option value="MINUS_ASSIGN"/>
+                    <property-value-option value="MOD_ASSIGN"/>
+                    <property-value-option value="PLUS_ASSIGN"/>
+                    <property-value-option value="SL_ASSIGN"/>
+                    <property-value-option value="SR_ASSIGN"/>
+                    <property-value-option value="STAR_ASSIGN"/>
+                    <property-value-option value="LAMBDA"/>
+                </enumeration>
+            </property-metadata>
             <message-key key="unnecessary.paren.ident" />
             <message-key key="unnecessary.paren.assign" />
             <message-key key="unnecessary.paren.expr" />

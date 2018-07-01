@@ -7,7 +7,6 @@
 
         <rule-metadata name="%AvoidStarImport.name" internal-name="AvoidStarImport" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.imports.AvoidStarImportCheck" />
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.AvoidStarImportCheck" />
             <description>%AvoidStarImport.desc</description>
             <property-metadata name="excludes" datatype="String">
                 <description>%AvoidStarImport.excludes</description>
@@ -32,7 +31,6 @@
 
         <rule-metadata name="%IllegalImport.name" internal-name="IllegalImport" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.imports.IllegalImportCheck" />
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.IllegalImportCheck" />
             <description>%IllegalImport.desc</description>
             <property-metadata name="illegalPkgs" datatype="String" default-value="sun">
                 <description>%IllegalImport.illegalPkgs</description>
@@ -75,13 +73,24 @@
                 default-value="false">
                 <description>%ImportOrder.sortStaticImportsAlphabetically</description>
             </property-metadata>
+            <property-metadata name="useContainerOrderingForStatic" datatype="Boolean"
+                default-value="false">
+                <description>%ImportOrder.useContainerOrderingForStatic</description>
+            </property-metadata>
+            <property-metadata name="tokens" datatype="MultiCheck"
+                default-value="STATIC_IMPORT">
+                <description>%ImportOrder.tokens</description>
+                <enumeration>
+                    <property-value-option value="STATIC_IMPORT"/>
+                </enumeration>
+            </property-metadata>
             <message-key key="import.ordering" />
             <message-key key="import.separation" />
+            <message-key key="import.groups.separated.internally" />
         </rule-metadata>
 
         <rule-metadata name="%RedundantImport.name" internal-name="RedundantImport" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.imports.RedundantImportCheck" />
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.RedundantImportCheck" />
             <description>%RedundantImport.desc</description>
             <message-key key="import.lang" />
             <message-key key="import.same" />
@@ -90,7 +99,6 @@
 
         <rule-metadata name="%UnusedImports.name" internal-name="UnusedImports" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.imports.UnusedImportsCheck" />
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.UnusedImportsCheck" />
             <description>%UnusedImports.desc</description>
             <property-metadata name="processJavadoc" datatype="Boolean" default-value="true">
                 <description>%UnusedImports.processJavadoc</description>
@@ -127,11 +135,8 @@
             <property-metadata name="specialImportsRegExp" datatype="Regex" default-value="^$">
                 <description>%CustomImportOrder.specialImportsRegExp</description>
             </property-metadata>
-            <property-metadata name="samePackageMatchingDepth" datatype="Integer" default-value="2">
-                <description>%CustomImportOrder.samePackageMatchingDepth</description>
-            </property-metadata>
-            <property-metadata name="separateLineBetweenGroup" datatype="Boolean" default-value="true">
-                <description>%CustomImportOrder.separateLineBetweenGroup</description>
+            <property-metadata name="separateLineBetweenGroups" datatype="Boolean" default-value="true">
+                <description>%CustomImportOrder.separateLineBetweenGroups</description>
             </property-metadata>
             <property-metadata name="sortImportsInGroupAlphabetically" datatype="String">
                 <description>%CustomImportOrder.sortImportsInGroupAlphabetically</description>

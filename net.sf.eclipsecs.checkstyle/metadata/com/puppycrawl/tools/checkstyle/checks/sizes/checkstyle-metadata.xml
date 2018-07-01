@@ -35,7 +35,6 @@
 
         <rule-metadata name="%FileLength.name" internal-name="FileLength" parent="Checker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.sizes.FileLengthCheck" />
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.FileLengthCheck" />
             <description>%FileLength.desc</description>
             <property-metadata name="max" datatype="Integer" default-value="2000">
                 <description>%FileLength.max</description>
@@ -48,7 +47,6 @@
 
         <rule-metadata name="%LineLength.name" internal-name="LineLength" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.sizes.LineLengthCheck" />
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.LineLengthCheck" />
             <description>%LineLength.desc</description>
             <property-metadata name="ignorePattern" datatype="Regex" default-value="^$">
                 <description>%LineLength.ignorePattern</description>
@@ -56,15 +54,11 @@
             <property-metadata name="max" datatype="Integer" default-value="80">
                 <description>%LineLength.max</description>
             </property-metadata>
-            <property-metadata name="tabWidth" datatype="Integer" default-value="8">
-                <description>%LineLength.tabWidth</description>
-            </property-metadata>
             <message-key key="maxLineLen" />
         </rule-metadata>
 
         <rule-metadata name="%MethodLength.name" internal-name="MethodLength" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.sizes.MethodLengthCheck" />
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.MethodLengthCheck" />
             <description>%MethodLength.desc</description>
             <property-metadata name="max" datatype="Integer" default-value="150">
                 <description>%MethodLength.max</description>
@@ -84,7 +78,6 @@
 
         <rule-metadata name="%ParameterNumber.name" internal-name="ParameterNumber" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.sizes.ParameterNumberCheck" />
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.ParameterNumberCheck" />
             <description>%ParameterNumber.desc</description>
             <property-metadata name="max" datatype="Integer" default-value="7">
                 <description>%ParameterNumber.max</description>
@@ -130,7 +123,7 @@
                 <description>%MethodCount.maxPublic</description>
             </property-metadata>
             <property-metadata name="tokens" datatype="MultiCheck"
-                default-value="CLASS_DEF, ENUM_CONSTANT_DEF, ENUM_DEF, INTERFACE_DEF, ANNOTATION_DEF">
+                default-value="CLASS_DEF,ENUM_CONSTANT_DEF,ENUM_DEF,INTERFACE_DEF,ANNOTATION_DEF">
                 <description>%MethodCount.tokens</description>
                 <enumeration>
                     <property-value-option value="CLASS_DEF" />

@@ -8,6 +8,9 @@
         <rule-metadata name="%Checker.name" internal-name="Checker" parent="Root" singleton="true" default-severity="warning">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.Checker"/>
             <description>%Checker.desc</description>
+            <property-metadata name="cacheFile" datatype="File">
+                <description>%Checker.cacheFile</description>
+            </property-metadata>
             <property-metadata name="basedir" datatype="String">
                 <description>%Checker.basedir</description>
             </property-metadata>
@@ -26,36 +29,18 @@
             <property-metadata name="haltOnException" datatype="Boolean" default-value="true">
                 <description>%Checker.haltOnException</description>
             </property-metadata>
-            <message-key key="general.fileNotFound"/>
-            <message-key key="general.exception"/>
         </rule-metadata>
 
         <rule-metadata name="%TreeWalker.name" internal-name="TreeWalker" parent="Checker"
             singleton="true">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.TreeWalker"/>
             <description>%TreeWalker.desc</description>
-            <property-metadata name="cacheFile" datatype="File">
-                <description>%TreeWalker.cacheFile</description>
-            </property-metadata>
             <property-metadata name="tabWidth" datatype="Integer" default-value="8">
                 <description>%TreeWalker.tabWidth</description>
             </property-metadata>
             <property-metadata name="fileExtensions" datatype="String" default-value="java">
                 <description>%TreeWalker.fileExtensions</description>
             </property-metadata>
-            <message-key key="general.exception"/>
-        </rule-metadata>
-    </rule-group-metadata>
-
-    <!--
-        Contains module metadata for internal elements that can not be removed or added to a check config.
-   -->
-    <rule-group-metadata name="Internal" priority="1600" hidden="true">
-
-        <rule-metadata name="%SuppressWarningsHolder.name" internal-name="SuppressWarningsHolder"
-            parent="TreeWalker" hidden="true" deletable="false" singleton="true">
-            <alternative-name
-                internal-name="com.puppycrawl.tools.checkstyle.checks.SuppressWarningsHolder"/>
         </rule-metadata>
     </rule-group-metadata>
 </checkstyle-metadata>

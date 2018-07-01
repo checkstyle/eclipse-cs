@@ -7,7 +7,6 @@
 
         <rule-metadata name="%DesignForExtension.name" internal-name="DesignForExtension" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.design.DesignForExtensionCheck" />
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.DesignForExtensionCheck" />
             <description>%DesignForExtension.desc</description>
             <property-metadata name="ignoredAnnotations" datatype="String"
                 default-value="Test,Before,After,BeforeClass,AfterClass">
@@ -19,7 +18,6 @@
 
         <rule-metadata name="%FinalClass.name" internal-name="FinalClass" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.design.FinalClassCheck" />
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.FinalClassCheck" />
             <description>%FinalClass.desc</description>
             <quickfix classname="net.sf.eclipsecs.ui.quickfixes.design.FinalClassQuickfix" />
             <message-key key="final.class" />
@@ -34,14 +32,12 @@
         <rule-metadata name="%HideUtilityClassConstructor.name" internal-name="HideUtilityClassConstructor"
             parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.design.HideUtilityClassConstructorCheck" />
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.HideUtilityClassConstructorCheck" />
             <description>%HideUtilityClassConstructor.desc</description>
             <message-key key="hide.utility.class" />
         </rule-metadata>
 
         <rule-metadata name="%InterfaceIsType.name" internal-name="InterfaceIsType" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.design.InterfaceIsTypeCheck" />
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.InterfaceIsTypeCheck" />
             <description>%InterfaceIsType.desc</description>
             <property-metadata name="allowMarkerInterfaces" datatype="Boolean" default-value="true">
                 <description>%InterfaceIsType.allowMarkerInterfaces</description>
@@ -52,7 +48,10 @@
         <rule-metadata name="%MutableException.name" internal-name="MutableException" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.design.MutableExceptionCheck" />
             <description>%MutableException.desc</description>
-            <property-metadata name="format" datatype="Regex" default-value="^.*Exception$|^.*Error$">
+            <property-metadata name="extendedClassNameFormat" datatype="Regex" default-value="^.*Exception$|^.*Error$|^.*Throwable$">
+                <description>%MutableException.extendedClassNameFormat</description>
+            </property-metadata>
+            <property-metadata name="format" datatype="Regex" default-value="^.*Exception$|^.*Error$|^.*Throwable$">
                 <description>%MutableException.format</description>
             </property-metadata>
             <message-key key="mutable.exception" />
@@ -72,7 +71,6 @@
 
         <rule-metadata name="%VisibilityModifier.name" internal-name="VisibilityModifier" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.design.VisibilityModifierCheck" />
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.VisibilityModifierCheck" />
             <description>%VisibilityModifier.desc</description>
             <property-metadata name="packageAllowed" datatype="Boolean" default-value="false">
                 <description>%VisibilityModifier.packageAllowed</description>
