@@ -3,7 +3,7 @@ package net.sf.eclipsecs.checkstyle;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
-import com.puppycrawl.tools.checkstyle.utils.ModuleReflectionUtils;
+import com.puppycrawl.tools.checkstyle.utils.ModuleReflectionUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -105,10 +105,10 @@ public class ChecksTest {
       final Node parentAttribute = attributes.getNamedItem("parent");
       final String parentValue;
 
-      if (ModuleReflectionUtils.isCheckstyleTreeWalkerCheck(module)
-              || ModuleReflectionUtils.isTreeWalkerFilterModule(module)) {
+      if (ModuleReflectionUtil.isCheckstyleTreeWalkerCheck(module)
+              || ModuleReflectionUtil.isTreeWalkerFilterModule(module)) {
         parentValue = "TreeWalker";
-      } else if (ModuleReflectionUtils.isRootModule(module)) {
+      } else if (ModuleReflectionUtil.isRootModule(module)) {
         parentValue = "Root";
       } else {
         parentValue = "Checker";
