@@ -8,9 +8,9 @@ import com.puppycrawl.tools.checkstyle.checks.javadoc.AbstractJavadocCheck;
 import com.puppycrawl.tools.checkstyle.checks.regexp.RegexpMultilineCheck;
 import com.puppycrawl.tools.checkstyle.checks.regexp.RegexpSinglelineCheck;
 import com.puppycrawl.tools.checkstyle.checks.regexp.RegexpSinglelineJavaCheck;
-import com.puppycrawl.tools.checkstyle.utils.JavadocUtils;
-import com.puppycrawl.tools.checkstyle.utils.ModuleReflectionUtils;
-import com.puppycrawl.tools.checkstyle.utils.TokenUtils;
+import com.puppycrawl.tools.checkstyle.utils.JavadocUtil;
+import com.puppycrawl.tools.checkstyle.utils.ModuleReflectionUtil;
+import com.puppycrawl.tools.checkstyle.utils.TokenUtil;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
@@ -44,7 +44,7 @@ public final class CheckUtil {
 
   public static Set<Class<?>> getCheckstyleModules() throws Exception {
     final ClassLoader loader = Thread.currentThread().getContextClassLoader();
-    return ModuleReflectionUtils.getCheckstyleModules(PackageNamesLoader.getPackageNames(loader),
+    return ModuleReflectionUtil.getCheckstyleModules(PackageNamesLoader.getPackageNames(loader),
             loader);
   }
 
@@ -188,7 +188,7 @@ public final class CheckUtil {
 
   public static String getTokenText(int[] tokens, int... subtractions) {
     String tokenText = null;
-    if (subtractions.length == 0 && Arrays.equals(tokens, TokenUtils.getAllTokenIds())) {
+    if (subtractions.length == 0 && Arrays.equals(tokens, TokenUtil.getAllTokenIds())) {
       tokenText = "TokenTypes";
     } else {
 
@@ -196,7 +196,7 @@ public final class CheckUtil {
 
       tokenText = Arrays.stream(tokens)
               .filter(token -> Arrays.binarySearch(subtractions, token) < 0)
-              .mapToObj(TokenUtils::getTokenName).collect(Collectors.joining(","));
+              .mapToObj(TokenUtil::getTokenName).collect(Collectors.joining(","));
     }
     return tokenText.length() == 0 ? null : tokenText;
   }
@@ -207,7 +207,7 @@ public final class CheckUtil {
 
     String tokenText = Arrays.stream(tokens)
             .filter(token -> Arrays.binarySearch(subtractions, token) < 0)
-            .mapToObj(JavadocUtils::getTokenName).collect(Collectors.joining(","));
+            .mapToObj(JavadocUtil::getTokenName).collect(Collectors.joining(","));
 
     if (tokenText.length() == 0) {
       tokenText = "empty";

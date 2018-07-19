@@ -269,6 +269,15 @@
             </property-metadata>
             <message-key key="name.invalidPattern"/>
         </rule-metadata>
+
+        <rule-metadata name="%LambdaParameterName.name" internal-name="LambdaParameterName" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.naming.LambdaParameterNameCheck"/>
+            <description>%LambdaParameterName.desc</description>
+            <property-metadata name="format" datatype="Regex" default-value="^[a-z][a-zA-Z0-9]*$">
+                <description>%LambdaParameterName.format</description>
+            </property-metadata>
+            <message-key key="name.invalidPattern"/>
+        </rule-metadata>
     </rule-group-metadata>
 
 </checkstyle-metadata>
