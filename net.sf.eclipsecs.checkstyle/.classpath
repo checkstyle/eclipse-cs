@@ -8,7 +8,7 @@
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="metadata/"/>
     <classpathentry kind="src" path="test"/>
-	<classpathentry exported="true" kind="lib" path="checkstyle-8.10-all.jar" sourcepath="checkstyle-checkstyle-8.10.zip"/>
+	<classpathentry exported="true" kind="lib" path="checkstyle-8.10.1-all.jar" sourcepath="checkstyle-checkstyle-8.10.1.zip"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
