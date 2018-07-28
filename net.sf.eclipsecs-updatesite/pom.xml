@@ -3,7 +3,7 @@
     <parent>
         <artifactId>net.sf.eclipsecs.parent</artifactId>
         <groupId>net.sf.eclipsecs</groupId>
-        <version>8.10.1-SNAPSHOT</version>
+        <version>8.11.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>net.sf.eclipsecs-updatesite</artifactId>
@@ -15,27 +15,6 @@
             <id>bintray</id>
             <build>
                 <plugins>
-                    <plugin>
-                        <artifactId>maven-antrun-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <phase>deploy</phase>
-                                <configuration>
-                                    <target>
-                                        <copy todir="${project.build.directory}/archive/">
-                                            <fileset dir="${project.build.directory}">
-                                                <include name="net.sf.eclipsecs-updatesite_*.zip" />
-                                            </fileset>
-                                        </copy>
-                                    </target>
-                                </configuration>
-                                <goals>
-                                    <goal>run</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-
                     <!-- Enable alternative deployer. -->
                     <plugin>
                         <groupId>com.carrotgarden.maven</groupId>
@@ -44,7 +23,6 @@
                             <skip>false</skip>
                             <subject>eclipse-cs</subject>
                             <repository>eclipse-cs</repository>
-
                             <!-- Put Bintray credentials in settings.xml. -->
                             <serverId>bintray</serverId>
                         </configuration>
@@ -60,6 +38,8 @@
                                     <bintrayVersion>${unqualifiedVersion}</bintrayVersion>
                                     <sourceFolder>${project.build.directory}/repository/</sourceFolder>
                                     <targetFolder>${unqualifiedVersion}</targetFolder>
+                                    <performCleanup>true</performCleanup>
+                                    <cleanupRegex>^\Q${unqualifiedVersion}\E.*$</cleanupRegex>
                                 </configuration>
                             </execution>
                             <execution>
@@ -71,8 +51,11 @@
                                 <configuration>
                                     <bintrayPackage>update-site-archive</bintrayPackage>
                                     <bintrayVersion>${unqualifiedVersion}</bintrayVersion>
-                                    <sourceFolder>${project.build.directory}/archive/</sourceFolder>
+                                    <sourceFolder>${project.build.directory}/</sourceFolder>
+                                    <uploadRegex>.*\Qnet.sf.eclipsecs-updatesite_\E.*\.zip</uploadRegex>
                                     <targetFolder>update-site-archive</targetFolder>
+                                    <performCleanup>true</performCleanup>
+                                    <cleanupRegex>^.*\Qnet.sf.eclipsecs-updatesite_${unqualifiedVersion}\E.*\.zip$</cleanupRegex>
                                 </configuration>
                             </execution>
                         </executions>
