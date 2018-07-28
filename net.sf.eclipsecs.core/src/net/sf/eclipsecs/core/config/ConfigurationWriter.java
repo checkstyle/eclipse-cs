@@ -89,7 +89,7 @@ public final class ConfigurationWriter {
       SaveFilters.process(modules);
 
       Document doc = DocumentHelper.createDocument();
-      doc.addDocType(XMLTags.MODULE_TAG, "-//Puppy Crawl//DTD Check Configuration 1.3//EN",
+      doc.addDocType(XMLTags.MODULE_TAG, "-//Checkstyle//DTD Check Configuration 1.3//EN",
               "https://checkstyle.org/dtds/configuration_1_3.dtd");
 
       String lineSeperator = System.getProperty("line.separator"); //$NON-NLS-1$
