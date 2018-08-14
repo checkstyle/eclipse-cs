@@ -66,8 +66,14 @@
             <property-metadata name="separated" datatype="Boolean" default-value="false">
                 <description>%ImportOrder.separated</description>
             </property-metadata>
+            <property-metadata name="separatedStaticGroups" datatype="Boolean" default-value="false">
+                <description>%ImportOrder.separatedStaticGroups</description>
+            </property-metadata>
             <property-metadata name="caseSensitive" datatype="Boolean" default-value="true">
                 <description>%ImportOrder.caseSensitive</description>
+            </property-metadata>
+            <property-metadata name="staticGroups" datatype="String">
+                <description>%ImportOrder.staticGroups</description>
             </property-metadata>
             <property-metadata name="sortStaticImportsAlphabetically" datatype="Boolean"
                 default-value="false">

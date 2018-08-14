@@ -350,11 +350,12 @@
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.whitespace.EmptyLineSeparatorCheck" />
             <description>%EmptyLineSeparator.desc</description>
             <property-metadata name="tokens" datatype="MultiCheck"
-                default-value="PACKAGE_DEF,IMPORT,CLASS_DEF,INTERFACE_DEF,ENUM_DEF,STATIC_INIT,INSTANCE_INIT,METHOD_DEF,CTOR_DEF,VARIABLE_DEF">
+                default-value="PACKAGE_DEF,IMPORT,STATIC_IMPORT,CLASS_DEF,INTERFACE_DEF,ENUM_DEF,STATIC_INIT,INSTANCE_INIT,METHOD_DEF,CTOR_DEF,VARIABLE_DEF">
                 <description>%EmptyLineSeparator.tokens</description>
                 <enumeration>
                     <property-value-option value="PACKAGE_DEF" />
                     <property-value-option value="IMPORT" />
+                    <property-value-option value="STATIC_IMPORT" />
                     <property-value-option value="CLASS_DEF" />
                     <property-value-option value="ENUM_DEF" />
                     <property-value-option value="INTERFACE_DEF" />
