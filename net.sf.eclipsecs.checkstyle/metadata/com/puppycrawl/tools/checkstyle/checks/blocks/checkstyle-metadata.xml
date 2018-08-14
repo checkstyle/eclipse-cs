@@ -70,27 +70,29 @@
                 <description>%LeftCurly.ignoreEnums</description>
             </property-metadata>
             <property-metadata name="tokens" datatype="MultiCheck"
-                default-value="INTERFACE_DEF,CLASS_DEF,ANNOTATION_DEF,ENUM_DEF,CTOR_DEF,METHOD_DEF,ENUM_CONSTANT_DEF,LITERAL_WHILE,LITERAL_TRY,LITERAL_CATCH,LITERAL_FINALLY,LITERAL_SYNCHRONIZED,LITERAL_SWITCH,LITERAL_DO,LITERAL_IF,LITERAL_ELSE,LITERAL_FOR,STATIC_INIT,OBJBLOCK,LAMBDA">
+                default-value="ANNOTATION_DEF,CLASS_DEF,CTOR_DEF,ENUM_CONSTANT_DEF,ENUM_DEF,INTERFACE_DEF,LAMBDA,LITERAL_CASE,LITERAL_CATCH,LITERAL_DEFAULT,LITERAL_DO,LITERAL_ELSE,LITERAL_FINALLY,LITERAL_FOR,LITERAL_IF,LITERAL_SWITCH,LITERAL_SYNCHRONIZED,LITERAL_TRY,LITERAL_WHILE,METHOD_DEF,OBJBLOCK,STATIC_INIT">
                 <description>%LeftCurly.tokens</description>
                 <enumeration>
-                    <property-value-option value="INTERFACE_DEF"/>
-                    <property-value-option value="CLASS_DEF"/>
                     <property-value-option value="ANNOTATION_DEF"/>
-                    <property-value-option value="ENUM_DEF"/>
+                    <property-value-option value="CLASS_DEF"/>
                     <property-value-option value="CTOR_DEF"/>
-                    <property-value-option value="METHOD_DEF"/>
                     <property-value-option value="ENUM_CONSTANT_DEF"/>
+                    <property-value-option value="ENUM_DEF"/>
+                    <property-value-option value="INTERFACE_DEF"/>
                     <property-value-option value="LAMBDA"/>
-                    <property-value-option value="LITERAL_WHILE"/>
-                    <property-value-option value="LITERAL_TRY"/>
+                    <property-value-option value="LITERAL_CASE"/>
                     <property-value-option value="LITERAL_CATCH"/>
-                    <property-value-option value="LITERAL_FINALLY"/>
-                    <property-value-option value="LITERAL_SYNCHRONIZED"/>
-                    <property-value-option value="LITERAL_SWITCH"/>
+                    <property-value-option value="LITERAL_DEFAULT"/>
                     <property-value-option value="LITERAL_DO"/>
-                    <property-value-option value="LITERAL_IF"/>
                     <property-value-option value="LITERAL_ELSE"/>
+                    <property-value-option value="LITERAL_FINALLY"/>
                     <property-value-option value="LITERAL_FOR"/>
+                    <property-value-option value="LITERAL_IF"/>
+                    <property-value-option value="LITERAL_SWITCH"/>
+                    <property-value-option value="LITERAL_SYNCHRONIZED"/>
+                    <property-value-option value="LITERAL_TRY"/>
+                    <property-value-option value="LITERAL_WHILE"/>
+                    <property-value-option value="METHOD_DEF"/>
                     <property-value-option value="OBJBLOCK"/>
                     <property-value-option value="STATIC_INIT"/>
                 </enumeration>
