@@ -54,6 +54,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.osgi.util.NLS;
 
 /**
@@ -206,7 +207,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
    * Builds the selected resources.
    *
    * @param resources
-   *          the resourcesto build
+   *          the resources to build
    * @param configuration
    *          the project configuration
    * @param monitor
@@ -415,4 +416,8 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
     return resources;
   }
 
+  @Override
+  public ISchedulingRule getRule(int kind, Map<String, String> args) {
+    return getProject();
+  }
 }
