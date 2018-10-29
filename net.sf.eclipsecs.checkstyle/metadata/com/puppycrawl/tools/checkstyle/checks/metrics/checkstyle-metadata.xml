@@ -33,7 +33,7 @@
                 <description>%ClassDataAbstractionCoupling.max</description>
             </property-metadata>
             <property-metadata name="excludedClasses" datatype="String"
-                default-value="boolean, byte, char, double, float, int, long, short, void, Boolean, Byte, Character, Double, Float, Integer, Long, Short, Void, Object, Class, String, StringBuffer, StringBuilder, ArrayIndexOutOfBoundsException, Exception, RuntimeException, IllegalArgumentException, IllegalStateException, IndexOutOfBoundsException, NullPointerException, Throwable, SecurityException, UnsupportedOperationException, List, ArrayList, Deque, Queue, LinkedList, Set, HashSet, SortedSet, TreeSet, Map, HashMap, SortedMap, TreeMap">
+                default-value="boolean, byte, char, double, float, int, long, short, void, Boolean, Byte, Character, Double, Float, Integer, Long, Short, Void, Object, Class, String, StringBuffer, StringBuilder, ArrayIndexOutOfBoundsException, Exception, RuntimeException, IllegalArgumentException, IllegalStateException, IndexOutOfBoundsException, NullPointerException, Throwable, SecurityException, UnsupportedOperationException, List, ArrayList, Deque, Queue, LinkedList, Set, HashSet, SortedSet, TreeSet, Map, HashMap, SortedMap, TreeMap, Override, Deprecated, SafeVarargs, SuppressWarnings, FunctionalInterface">
                 <description>%ClassDataAbstractionCoupling.excludedClasses</description>
             </property-metadata>
             <property-metadata name="excludeClassesRegexps" datatype="Regex" default-value="^$">
@@ -52,7 +52,7 @@
                 <description>%ClassFanOutComplexity.max</description>
             </property-metadata>
             <property-metadata name="excludedClasses" datatype="String"
-                default-value="boolean, byte, char, double, float, int, long, short, void, Boolean, Byte, Character, Double, Float, Integer, Long, Short, Void, Object, Class, String, StringBuffer, StringBuilder, ArrayIndexOutOfBoundsException, Exception, RuntimeException, IllegalArgumentException, IllegalStateException, IndexOutOfBoundsException, NullPointerException, Throwable, SecurityException, UnsupportedOperationException, List, ArrayList, Deque, Queue, LinkedList, Set, HashSet, SortedSet, TreeSet, Map, HashMap, SortedMap, TreeMap">
+                default-value="boolean, byte, char, double, float, int, long, short, void, Boolean, Byte, Character, Double, Float, Integer, Long, Short, Void, Object, Class, String, StringBuffer, StringBuilder, ArrayIndexOutOfBoundsException, Exception, RuntimeException, IllegalArgumentException, IllegalStateException, IndexOutOfBoundsException, NullPointerException, Throwable, SecurityException, UnsupportedOperationException, List, ArrayList, Deque, Queue, LinkedList, Set, HashSet, SortedSet, TreeSet, Map, HashMap, SortedMap, TreeMap, Override, Deprecated, SafeVarargs, SuppressWarnings, FunctionalInterface">
                 <description>%ClassFanOutComplexity.excludedClasses</description>
             </property-metadata>
             <property-metadata name="excludeClassesRegexps" datatype="Regex" default-value="^$">
