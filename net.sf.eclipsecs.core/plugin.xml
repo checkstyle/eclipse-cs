@@ -107,6 +107,9 @@
 
         <filter name="%FilesInSyncFilter.label" internal-name="FilesInSync" description="%FilesInSyncFilter.description"
             class="net.sf.eclipsecs.core.projectconfig.filters.FilesInSyncFilter"/>
+
+        <filter name="%FilesOlderThanOneDayFilter.label" internal-name="FilesOlderThanOneDay" description="%FilesOlderThanOneDayFilter.description"
+            class="net.sf.eclipsecs.core.projectconfig.filters.FilesOlderThanOneDayFilter"/>
     </extension>
 
     <!--
