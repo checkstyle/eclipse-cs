@@ -32,7 +32,7 @@ import net.sf.eclipsecs.core.config.Severity;
  */
 public class RuleMetadata {
 
-  /** The diplay name of the module. */
+  /** The display name of the module. */
   private final String mName;
 
   /** The internal name of the module. */

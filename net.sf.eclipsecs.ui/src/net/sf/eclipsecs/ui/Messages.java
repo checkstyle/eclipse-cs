@@ -491,6 +491,8 @@ public final class Messages extends NLS {
   
   public static String MarkerPropertyPage_Module;
 
+  public static String MarkerPropertyPage_SuppressionHint;
+
   public static String MarkerPropertyPage_Group;
 
   public static String MarkerPropertyPage_Description;
