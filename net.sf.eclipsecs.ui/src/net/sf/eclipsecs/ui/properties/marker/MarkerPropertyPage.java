@@ -3,11 +3,13 @@ package net.sf.eclipsecs.ui.properties.marker;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
@@ -63,7 +65,22 @@ public class MarkerPropertyPage extends PropertyPage {
       new Label(composite, SWT.NONE).setImage(
               CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.MODULE_ICON));
       new Label(composite, SWT.NONE).setText(Messages.MarkerPropertyPage_Module);
-      new Label(composite, SWT.NONE).setText(metaData.getRuleName());
+
+      RowLayout rowLayout = new RowLayout(SWT.HORIZONTAL);
+      rowLayout.marginLeft = 0;
+      rowLayout.marginTop = 0;
+      rowLayout.marginBottom = 0;
+      rowLayout.marginRight = 0;
+      Composite nameComposite = new Composite(composite, SWT.NONE);
+      nameComposite.setLayout(rowLayout);
+      
+      new Label(nameComposite, SWT.NONE).setText(metaData.getRuleName());
+
+      Label helpIcon = new Label(nameComposite, SWT.NONE);
+      helpIcon.setImage(
+              CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.HELP_ICON));
+      helpIcon.setToolTipText(NLS.bind(Messages.MarkerPropertyPage_SuppressionHint, 
+              metaData.getInternalName()));
 
       Label descriptionLabel = new Label(composite, SWT.NONE);
       descriptionLabel.setText(Messages.MarkerPropertyPage_Description);
