@@ -41,7 +41,7 @@ import org.dom4j.io.SAXReader;
 import org.xml.sax.InputSource;
 
 /**
- * Utitlity class to read a checkstyle configuration and transform to the plugins module objects.
+ * Utility class to read a checkstyle configuration and transform to the plugins module objects.
  *
  * @author Lars Ködderitzsch
  */
@@ -55,22 +55,68 @@ public final class ConfigurationReader {
   //
 
   /** Map containing the public - internal DTD mapping. */
-  private static final Map<String, String> PUBLIC2INTERNAL_DTD_MAP = new HashMap<>();
+  private static final Map<String, String> PUBLIC2INTERNAL_DTD_MAP;
+
+  /** The public ID for version 1_0 of the configuration dtd. */
+  private static final String DTD_PUBLIC_ID_1_0 =
+      "-//Puppy Crawl//DTD Check Configuration 1.0//EN";
+
+  /** The new public ID for version 1_0 of the configuration dtd. */
+  private static final String DTD_PUBLIC_CS_ID_1_0 =
+      "-//Checkstyle//DTD Checkstyle Configuration 1.0//EN";
+
+  /** The resource for version 1_0 of the configuration dtd. */
+  private static final String DTD_CONFIGURATION_NAME_1_0 =
+      "com/puppycrawl/tools/checkstyle/configuration_1_0.dtd";
+
+  /** The public ID for version 1_1 of the configuration dtd. */
+  private static final String DTD_PUBLIC_ID_1_1 =
+      "-//Puppy Crawl//DTD Check Configuration 1.1//EN";
+
+  /** The new public ID for version 1_1 of the configuration dtd. */
+  private static final String DTD_PUBLIC_CS_ID_1_1 =
+      "-//Checkstyle//DTD Checkstyle Configuration 1.1//EN";
+
+  /** The resource for version 1_1 of the configuration dtd. */
+  private static final String DTD_CONFIGURATION_NAME_1_1 =
+      "com/puppycrawl/tools/checkstyle/configuration_1_1.dtd";
+
+  /** The public ID for version 1_2 of the configuration dtd. */
+  private static final String DTD_PUBLIC_ID_1_2 =
+      "-//Puppy Crawl//DTD Check Configuration 1.2//EN";
+
+  /** The new public ID for version 1_2 of the configuration dtd. */
+  private static final String DTD_PUBLIC_CS_ID_1_2 =
+      "-//Checkstyle//DTD Checkstyle Configuration 1.2//EN";
+
+  /** The resource for version 1_2 of the configuration dtd. */
+  private static final String DTD_CONFIGURATION_NAME_1_2 =
+      "com/puppycrawl/tools/checkstyle/configuration_1_2.dtd";
+
+  /** The public ID for version 1_3 of the configuration dtd. */
+  private static final String DTD_PUBLIC_ID_1_3 =
+      "-//Puppy Crawl//DTD Check Configuration 1.3//EN";
+
+  /** The new public ID for version 1_3 of the configuration dtd. */
+  private static final String DTD_PUBLIC_CS_ID_1_3 =
+      "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN";
+
+  /** The resource for version 1_3 of the configuration dtd. */
+  private static final String DTD_CONFIGURATION_NAME_1_3 =
+      "com/puppycrawl/tools/checkstyle/configuration_1_3.dtd";
 
   static {
-
-    PUBLIC2INTERNAL_DTD_MAP.put("-//Puppy Crawl//DTD Check Configuration 1.0//EN", //$NON-NLS-1$
-            "com/puppycrawl/tools/checkstyle/configuration_1_0.dtd"); //$NON-NLS-1$
-    PUBLIC2INTERNAL_DTD_MAP.put("-//Puppy Crawl//DTD Check Configuration 1.1//EN", //$NON-NLS-1$
-            "com/puppycrawl/tools/checkstyle/configuration_1_1.dtd"); //$NON-NLS-1$
-    PUBLIC2INTERNAL_DTD_MAP.put("-//Puppy Crawl//DTD Check Configuration 1.2//EN", //$NON-NLS-1$
-            "com/puppycrawl/tools/checkstyle/configuration_1_2.dtd"); //$NON-NLS-1$
-    PUBLIC2INTERNAL_DTD_MAP.put("-//Puppy Crawl//DTD Check Configuration 1.3//EN", //$NON-NLS-1$
-            "com/puppycrawl/tools/checkstyle/configuration_1_3.dtd"); //$NON-NLS-1$
-    PUBLIC2INTERNAL_DTD_MAP.put("-//Puppy Crawl//DTD Check Configuration 1.3//EN", //$NON-NLS-1$
-            "com/puppycrawl/tools/checkstyle/configuration_1_3.dtd"); //$NON-NLS-1$
-    PUBLIC2INTERNAL_DTD_MAP.put("-//Checkstyle//DTD Check Configuration 1.3//EN", //$NON-NLS-1$
-            "com/puppycrawl/tools/checkstyle/configuration_1_3.dtd"); //$NON-NLS-1$
+    final Map<String, String> map = new HashMap<>();
+    map.put(DTD_PUBLIC_ID_1_0, DTD_CONFIGURATION_NAME_1_0);
+    map.put(DTD_PUBLIC_ID_1_1, DTD_CONFIGURATION_NAME_1_1);
+    map.put(DTD_PUBLIC_ID_1_2, DTD_CONFIGURATION_NAME_1_2);
+    map.put(DTD_PUBLIC_ID_1_3, DTD_CONFIGURATION_NAME_1_3);
+    map.put(DTD_PUBLIC_CS_ID_1_0, DTD_CONFIGURATION_NAME_1_0);
+    map.put(DTD_PUBLIC_CS_ID_1_1, DTD_CONFIGURATION_NAME_1_1);
+    map.put(DTD_PUBLIC_CS_ID_1_2, DTD_CONFIGURATION_NAME_1_2);
+    map.put(DTD_PUBLIC_CS_ID_1_3, DTD_CONFIGURATION_NAME_1_3);
+    
+    PUBLIC2INTERNAL_DTD_MAP = map;
   }
 
   /** Hidden default constructor to prevent instantiation. */
@@ -79,7 +125,7 @@ public final class ConfigurationReader {
   }
 
   /**
-   * Reads the checkstyle configuration from the given stream an returs a list of all modules within
+   * Reads the checkstyle configuration from the given stream and returns a list of all modules within
    * this configuration.
    *
    * @param in
