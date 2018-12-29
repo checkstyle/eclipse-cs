@@ -20,7 +20,9 @@
 
 package net.sf.eclipsecs.ui.preferences;
 
+import java.net.URL;
 import java.util.Collection;
+import java.util.Enumeration;
 
 import net.sf.eclipsecs.core.CheckstylePluginPrefs;
 import net.sf.eclipsecs.core.builder.CheckerFactory;
@@ -36,6 +38,7 @@ import net.sf.eclipsecs.ui.config.CheckConfigurationWorkingSetEditor;
 import net.sf.eclipsecs.ui.util.SWTUtil;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialogWithToggle;
 import org.eclipse.jface.preference.PreferencePage;
@@ -57,7 +60,10 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.osgi.framework.Bundle;
 import org.osgi.service.prefs.BackingStoreException;
+
+import com.puppycrawl.tools.checkstyle.Main;
 
 /**
  * This class represents a preference page that is contributed to the Preferences dialog. By
@@ -102,10 +108,15 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
    */
   public CheckstylePreferencePage() {
     super();
+    setDescription(NLS.bind(Messages.CheckstylePreferencePage_version, getCheckstyleVersion()));
     setPreferenceStore(CheckstyleUIPlugin.getDefault().getPreferenceStore());
 
     mWorkingSet = CheckConfigurationFactory.newWorkingSet();
     initializeDefaults();
+  }
+
+  private String getCheckstyleVersion() {
+    return Main.class.getPackage().getImplementationVersion();
   }
 
   /**
