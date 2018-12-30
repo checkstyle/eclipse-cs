@@ -124,7 +124,7 @@ public class CheckstyleConfigurationFile {
    * Returns the resolved URL of the Checkstyle configuration file. Clients are expected to
    * <b>not</b> use this to access the underlying Checkstyle configuration file
    * 
-   * @return the resolved URL.
+   * @return the resolved URL
    */
   public URL getResolvedConfigFileURL() {
     return mResolvedConfigFileURL;
