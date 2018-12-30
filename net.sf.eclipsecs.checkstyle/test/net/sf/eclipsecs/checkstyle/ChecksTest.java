@@ -51,7 +51,7 @@ public class ChecksTest {
 
   private static void validateEclipseCsMetaXmlFile(File file, String packge,
           Set<Class<?>> packgeModules) throws Exception {
-    Assert.assertTrue("'checkstyle-metadata.xml' must exist in eclipsecs in inside " + packge,
+    Assert.assertTrue("'checkstyle-metadata.xml' must exist in eclipsecs inside " + packge,
             file.exists());
 
     final String input = new String(Files.readAllBytes(file.toPath()), UTF_8);
