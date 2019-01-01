@@ -484,6 +484,10 @@ public class CheckstyleMarkerFilter implements Cloneable {
         resultList.addAll(markers);
       }
     }
+    
+    if (!mEnabled) {
+      return resultList;
+    }
 
     if (mSelectBySeverity) {
       // further filter the markers by severity
