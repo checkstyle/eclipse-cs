@@ -466,6 +466,7 @@ public class CheckstyleMarkerFilter implements Cloneable {
    * @param mon
    *          the progress monitor
    * @throws CoreException
+   *           if the resource does not exist or the project is not open
    */
   private List<IMarker> findCheckstyleMarkers(IResource[] resources, int depth, IProgressMonitor mon)
           throws CoreException {
@@ -482,6 +483,10 @@ public class CheckstyleMarkerFilter implements Cloneable {
 
         resultList.addAll(markers);
       }
+    }
+    
+    if (!mEnabled) {
+      return resultList;
     }
 
     if (mSelectBySeverity) {

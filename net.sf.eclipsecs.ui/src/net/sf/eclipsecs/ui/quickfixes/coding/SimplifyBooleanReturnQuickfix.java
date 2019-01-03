@@ -52,7 +52,6 @@ import org.eclipse.swt.graphics.Image;
 /**
  * Quickfix implementation which simplifies a boolean if/return statement. It transforms an if
  * statement like
- *
  * <pre>
  * if (condition) {
  *   return true;
@@ -60,9 +59,7 @@ import org.eclipse.swt.graphics.Image;
  *   return false;
  * }
  * </pre>
- *
  * into a return statement like
- *
  * <pre>
  * return condition;
  * </pre>
@@ -72,7 +69,7 @@ import org.eclipse.swt.graphics.Image;
 public class SimplifyBooleanReturnQuickfix extends AbstractASTResolution {
 
   /**
-   * If the condition is of one of these expression types, the parantheses are not necessary when
+   * If the condition is of one of these expression types, the parentheses are not necessary when
    * negated. I.e the replacement can be written as <code>!condition</code> instead of
    * <code>!(condition)</code>.
    */

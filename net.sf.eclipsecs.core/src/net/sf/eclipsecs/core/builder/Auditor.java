@@ -416,10 +416,8 @@ public class Auditor {
      *          the audit error
      * @param markerAttributes
      *          the marker attributes
-     * @throws CoreException
      */
-    private void calculateMarkerOffset(AuditEvent error, Map<String, Object> markerAttributes)
-            throws CoreException {
+    private void calculateMarkerOffset(AuditEvent error, Map<String, Object> markerAttributes) {
 
       // lazy create the document for the current file
       if (mDocument == null) {
