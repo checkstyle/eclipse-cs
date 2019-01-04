@@ -89,7 +89,7 @@ public class ProjectConfiguration implements Cloneable, IProjectConfiguration {
 
     // build list of filters
     List<IFilter> standardFilters = Arrays.asList(PluginFilters.getConfiguredFilters());
-    mFilters = new ArrayList<IFilter>(standardFilters);
+    mFilters = new ArrayList<>(standardFilters);
 
     if (filters != null) {
       // merge with filters configured for the project
@@ -173,19 +173,19 @@ public class ProjectConfiguration implements Cloneable, IProjectConfiguration {
     ProjectConfiguration clone = null;
     try {
       clone = (ProjectConfiguration) super.clone();
-      clone.mFileSets = new LinkedList<FileSet>();
+      clone.mFileSets = new LinkedList<>();
       clone.mUseSimpleConfig = mUseSimpleConfig;
       clone.mSyncFormatter = mSyncFormatter;
 
       // clone file sets
-      List<FileSet> clonedFileSets = new ArrayList<FileSet>();
+      List<FileSet> clonedFileSets = new ArrayList<>();
       for (FileSet fileSet : getFileSets()) {
         clonedFileSets.add(fileSet.clone());
       }
       clone.mFileSets = clonedFileSets;
 
       // clone filters
-      List<IFilter> clonedFilters = new ArrayList<IFilter>();
+      List<IFilter> clonedFilters = new ArrayList<>();
       for (IFilter filter : getFilters()) {
         clonedFilters.add(filter.clone());
       }

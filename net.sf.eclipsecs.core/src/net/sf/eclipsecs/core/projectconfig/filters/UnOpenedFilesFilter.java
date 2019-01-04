@@ -32,7 +32,7 @@ import org.eclipse.core.resources.IFile;
  */
 public class UnOpenedFilesFilter extends AbstractFilter {
 
-  private static List<IFile> sOpenedFiles = new ArrayList<IFile>();
+  private static List<IFile> sOpenedFiles = new ArrayList<>();
 
   /**
    * Registers a opened file.

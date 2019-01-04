@@ -72,8 +72,8 @@ public final class ConfigurationTypesUI {
    */
   static {
 
-    CONFIGURATION_TYPE_EDITORS = new HashMap<String, Class<? extends ICheckConfigurationEditor>>();
-    CONFIGATION_TYPE_ICONS = new HashMap<String, String>();
+    CONFIGURATION_TYPE_EDITORS = new HashMap<>();
+    CONFIGATION_TYPE_ICONS = new HashMap<>();
 
     IExtensionRegistry pluginRegistry = Platform.getExtensionRegistry();
 

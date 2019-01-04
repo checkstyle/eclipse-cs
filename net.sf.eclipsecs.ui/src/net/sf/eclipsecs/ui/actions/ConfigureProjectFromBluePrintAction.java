@@ -89,7 +89,7 @@ public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegat
   public void run(IAction action) {
 
     IProject[] projects = CheckstyleUIPlugin.getWorkspace().getRoot().getProjects();
-    List<IProject> filteredProjects = new ArrayList<IProject>();
+    List<IProject> filteredProjects = new ArrayList<>();
     for (int i = 0; i < projects.length; i++) {
       filteredProjects.add(projects[i]);
     }

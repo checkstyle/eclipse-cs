@@ -43,7 +43,7 @@ public class PackageFilter extends AbstractFilter {
    */
   public static final String RECURSE_OFF_MARKER = "<recurse=false>";
 
-  private List<String> mData = new ArrayList<String>();
+  private List<String> mData = new ArrayList<>();
 
   private boolean mExcludeSubPackages = true;
 
@@ -97,7 +97,7 @@ public class PackageFilter extends AbstractFilter {
   @Override
   public void setFilterData(List<String> filterData) {
     if (filterData == null) {
-      mData = new ArrayList<String>();
+      mData = new ArrayList<>();
     }
 
     mData = filterData;

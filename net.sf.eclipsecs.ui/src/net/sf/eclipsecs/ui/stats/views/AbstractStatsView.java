@@ -298,7 +298,7 @@ public abstract class AbstractStatsView extends ViewPart {
    */
   private void focusSelectionChanged(IWorkbenchPart part, ISelection selection) {
 
-    List<IResource> resources = new ArrayList<IResource>();
+    List<IResource> resources = new ArrayList<>();
     if (part instanceof IEditorPart) {
       IEditorPart editor = (IEditorPart) part;
       IFile file = getFile(editor.getEditorInput());

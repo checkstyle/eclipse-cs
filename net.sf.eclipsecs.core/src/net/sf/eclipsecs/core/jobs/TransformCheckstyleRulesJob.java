@@ -79,7 +79,7 @@ public class TransformCheckstyleRulesJob extends WorkspaceJob {
     try {
       final IProjectConfiguration conf = ProjectConfigurationFactory.getConfiguration(mProject);
 
-      final List<Configuration> rules = new ArrayList<Configuration>();
+      final List<Configuration> rules = new ArrayList<>();
 
       // collect rules from all configured filesets
       for (FileSet fs : conf.getFileSets()) {

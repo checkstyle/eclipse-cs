@@ -78,7 +78,7 @@ public final class PluginFilters {
     IConfigurationElement[] elements = pluginRegistry
             .getConfigurationElementsFor(FILTER_EXTENSION_POINT);
 
-    List<IFilter> filters = new ArrayList<IFilter>();
+    List<IFilter> filters = new ArrayList<>();
 
     for (int i = 0; i < elements.length; i++) {
 
@@ -98,7 +98,7 @@ public final class PluginFilters {
         filter.setEnabled(defaultState);
 
         // Load initial filter data
-        List<String> data = new ArrayList<String>();
+        List<String> data = new ArrayList<>();
         IConfigurationElement[] dataTags = elements[i].getChildren(TAG_DATA);
         int size = dataTags != null ? dataTags.length : 0;
         for (int j = 0; j < size; j++) {

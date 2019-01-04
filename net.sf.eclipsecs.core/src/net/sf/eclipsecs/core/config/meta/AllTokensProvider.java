@@ -35,7 +35,7 @@ import java.util.List;
 public class AllTokensProvider implements IOptionProvider {
 
   /** the list of options. */
-  private static List<String> sAllOptions = new ArrayList<String>();
+  private static List<String> sAllOptions = new ArrayList<>();
 
   /** Static initializer. Builds the option list. */
   static {

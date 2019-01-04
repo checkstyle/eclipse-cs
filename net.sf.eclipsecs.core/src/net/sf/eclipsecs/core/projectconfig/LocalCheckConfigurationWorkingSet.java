@@ -62,8 +62,8 @@ public class LocalCheckConfigurationWorkingSet implements ICheckConfigurationWor
           List<ICheckConfiguration> checkConfigs) {
 
     mProjectConfig = projectConfig;
-    mWorkingCopies = new ArrayList<CheckConfigurationWorkingCopy>();
-    mDeletedConfigurations = new ArrayList<CheckConfigurationWorkingCopy>();
+    mWorkingCopies = new ArrayList<>();
+    mDeletedConfigurations = new ArrayList<>();
 
     for (ICheckConfiguration cfg : checkConfigs) {
       CheckConfigurationWorkingCopy workingCopy = new CheckConfigurationWorkingCopy(cfg, this);
@@ -177,7 +177,7 @@ public class LocalCheckConfigurationWorkingSet implements ICheckConfigurationWor
    */
   @Override
   public Collection<IProject> getAffectedProjects() {
-    Set<IProject> projects = new HashSet<IProject>();
+    Set<IProject> projects = new HashSet<>();
 
     CheckConfigurationWorkingCopy[] workingCopies = this.getWorkingCopies();
     for (int i = 0; i < workingCopies.length; i++) {
