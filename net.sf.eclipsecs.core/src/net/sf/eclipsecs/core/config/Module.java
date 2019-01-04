@@ -47,7 +47,7 @@ public class Module implements Cloneable {
   private RuleMetadata mMetaData;
 
   /** the properties of the modules. */
-  private List<ConfigProperty> mProperties = new ArrayList<ConfigProperty>();
+  private List<ConfigProperty> mProperties = new ArrayList<>();
 
   /** the comment of the module. */
   private String mComment;
@@ -56,7 +56,7 @@ public class Module implements Cloneable {
   private String mId;
 
   /** the custom messages for this module. */
-  private final Map<String, String> mCustomMessages = new HashMap<String, String>();
+  private final Map<String, String> mCustomMessages = new HashMap<>();
 
   /** the severity level. */
   private Severity mSeverityLevel = Severity.inherit;
@@ -65,7 +65,7 @@ public class Module implements Cloneable {
   private Severity mLastEnabledSeverity;
 
   /** map containing unknown custom metadata of the module. */
-  private final Map<String, String> mCustomMetaData = new HashMap<String, String>();
+  private final Map<String, String> mCustomMetaData = new HashMap<>();
 
   //
   // constructors
@@ -303,7 +303,7 @@ public class Module implements Cloneable {
   public Module clone() {
     try {
       Module clone = (Module) super.clone();
-      clone.mProperties = new ArrayList<ConfigProperty>();
+      clone.mProperties = new ArrayList<>();
 
       for (ConfigProperty prop : mProperties) {
         clone.getProperties().add(prop.clone());

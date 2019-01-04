@@ -123,7 +123,7 @@ public class CheckConfigurationTester {
             "project_loc"); //$NON-NLS-1$
 
     /** The list of unresolved properties. */
-    private List<ResolvableProperty> mUnresolvedProperties = new ArrayList<ResolvableProperty>();
+    private List<ResolvableProperty> mUnresolvedProperties = new ArrayList<>();
 
     /**
      * {@inheritDoc}

@@ -89,7 +89,7 @@ public abstract class CheckstyleUIPluginImages {
   public static final ImageDescriptor REFRESH_ICON;
 
   /** Image cache. */
-  private static final Map<ImageDescriptor, Image> CACHED_IMAGES = new HashMap<ImageDescriptor, Image>();
+  private static final Map<ImageDescriptor, Image> CACHED_IMAGES = new HashMap<>();
 
   static {
 

@@ -47,7 +47,7 @@ public class CheckstyleMarkerResolutionGenerator implements IMarkerResolutionGen
   @Override
   public IMarkerResolution[] getResolutions(IMarker marker) {
 
-    Collection<ICheckstyleMarkerResolution> fixes = new ArrayList<ICheckstyleMarkerResolution>();
+    Collection<ICheckstyleMarkerResolution> fixes = new ArrayList<>();
 
     // get all fixes that apply to this marker instance
     String moduleName = marker.getAttribute(CheckstyleMarker.MODULE_NAME, null);
@@ -95,7 +95,7 @@ public class CheckstyleMarkerResolutionGenerator implements IMarkerResolutionGen
 
   private List<ICheckstyleMarkerResolution> getInstantiatedQuickfixes(RuleMetadata ruleMetadata) {
 
-    List<ICheckstyleMarkerResolution> fixes = new ArrayList<ICheckstyleMarkerResolution>();
+    List<ICheckstyleMarkerResolution> fixes = new ArrayList<>();
 
     try {
 

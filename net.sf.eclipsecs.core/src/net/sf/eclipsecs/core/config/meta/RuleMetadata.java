@@ -57,7 +57,7 @@ public class RuleMetadata {
   private final Severity mDefaultSeverityLevel;
 
   /** The list of property metadata. */
-  private final List<ConfigPropertyMetadata> mConfigPropMetadata = new LinkedList<ConfigPropertyMetadata>();
+  private final List<ConfigPropertyMetadata> mConfigPropMetadata = new LinkedList<>();
 
   /** The group. */
   private final RuleGroupMetadata mGroup;
@@ -106,9 +106,9 @@ public class RuleMetadata {
     mHasSeverity = hasSeverity;
     mIsDeletable = deletable;
     mGroup = group;
-    mAlternativeNames = new ArrayList<String>();
-    mQuickfixes = new ArrayList<String>();
-    mMessageKeys = new ArrayList<String>();
+    mAlternativeNames = new ArrayList<>();
+    mQuickfixes = new ArrayList<>();
+    mMessageKeys = new ArrayList<>();
     mIsSingleton = isSingleton;
   }
 

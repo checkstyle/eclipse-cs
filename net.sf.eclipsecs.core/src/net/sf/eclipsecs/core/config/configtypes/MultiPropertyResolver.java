@@ -39,7 +39,7 @@ import org.eclipse.core.resources.IProject;
 public class MultiPropertyResolver implements PropertyResolver, IContextAware {
 
   /** The list of PropertyResolvers. */
-  private List<PropertyResolver> mChildResolver = new ArrayList<PropertyResolver>();
+  private List<PropertyResolver> mChildResolver = new ArrayList<>();
 
   /**
    * Adds a PropertyResolver to this aggregation property resolver.

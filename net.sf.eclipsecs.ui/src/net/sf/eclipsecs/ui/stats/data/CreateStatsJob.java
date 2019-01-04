@@ -98,7 +98,7 @@ public class CreateStatsJob extends Job {
 
       IMarker[] markers = mFilter.findMarkers(monitor);
 
-      Map<String, MarkerStat> markerStats = new HashMap<String, MarkerStat>();
+      Map<String, MarkerStat> markerStats = new HashMap<>();
 
       for (int i = 0, size = markers.length; i < size; i++) {
 

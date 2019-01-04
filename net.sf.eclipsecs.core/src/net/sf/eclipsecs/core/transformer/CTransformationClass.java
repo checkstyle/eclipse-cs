@@ -37,7 +37,7 @@ public abstract class CTransformationClass {
   private final FormatterConfiguration mFormatterSetting = new FormatterConfiguration();
 
   /** The map of attributes of this rule. */
-  private final Map<String, String> mAttributes = new HashMap<String, String>();
+  private final Map<String, String> mAttributes = new HashMap<>();
 
   /**
    * Method for transforming the checkstyle-rule this class is associated to. Every

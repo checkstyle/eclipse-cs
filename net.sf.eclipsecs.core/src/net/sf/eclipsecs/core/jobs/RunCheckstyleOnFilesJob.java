@@ -61,7 +61,7 @@ public class RunCheckstyleOnFilesJob extends WorkspaceJob implements IScheduling
    */
   public RunCheckstyleOnFilesJob(final List<IFile> files) {
     super(Messages.RunCheckstyleOnFilesJob_title);
-    mFilesToCheck = new ArrayList<IFile>(files);
+    mFilesToCheck = new ArrayList<>(files);
 
     setRule(this);
   }
@@ -74,7 +74,7 @@ public class RunCheckstyleOnFilesJob extends WorkspaceJob implements IScheduling
    */
   public RunCheckstyleOnFilesJob(final IFile file) {
     super(Messages.RunCheckstyleOnFilesJob_title);
-    mFilesToCheck = new ArrayList<IFile>();
+    mFilesToCheck = new ArrayList<>();
     mFilesToCheck.add(file);
 
     setRule(this);
@@ -129,7 +129,7 @@ public class RunCheckstyleOnFilesJob extends WorkspaceJob implements IScheduling
 
   private Map<IProject, List<IFile>> getFilesSortedToProject(final List<IFile> filesToCheck) {
 
-    Map<IProject, List<IFile>> projectFilesMap = new HashMap<IProject, List<IFile>>();
+    Map<IProject, List<IFile>> projectFilesMap = new HashMap<>();
 
     for (int i = 0, size = filesToCheck.size(); i < size; i++) {
 
@@ -139,7 +139,7 @@ public class RunCheckstyleOnFilesJob extends WorkspaceJob implements IScheduling
       List<IFile> projectFiles = projectFilesMap.get(project);
       if (projectFiles == null) {
 
-        projectFiles = new ArrayList<IFile>();
+        projectFiles = new ArrayList<>();
         projectFilesMap.put(project, projectFiles);
       }
       projectFiles.add(file);

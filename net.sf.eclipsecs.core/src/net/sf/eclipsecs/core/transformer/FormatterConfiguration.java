@@ -32,10 +32,10 @@ import java.util.Map;
  */
 public class FormatterConfiguration {
   /** Map containing all eclipse editor-settings. */
-  private final Map<String, String> mCleanupSettings = new HashMap<String, String>();
+  private final Map<String, String> mCleanupSettings = new HashMap<>();
 
   /** Map containing all eclipse formatter-settings. */
-  private final Map<String, String> mFormatterSettings = new HashMap<String, String>();
+  private final Map<String, String> mFormatterSettings = new HashMap<>();
 
   /**
    * Creates new instance of class FormatterConfiguration.

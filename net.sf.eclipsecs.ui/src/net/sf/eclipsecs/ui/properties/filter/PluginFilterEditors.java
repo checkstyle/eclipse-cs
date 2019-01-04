@@ -56,7 +56,7 @@ public final class PluginFilterEditors {
    */
   static {
 
-    sFilterEditorClasses = new HashMap<String, Class<? extends IFilterEditor>>();
+    sFilterEditorClasses = new HashMap<>();
 
     IExtensionRegistry pluginRegistry = Platform.getExtensionRegistry();
 

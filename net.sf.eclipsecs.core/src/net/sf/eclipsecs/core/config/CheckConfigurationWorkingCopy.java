@@ -73,10 +73,10 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
   private String mEditedDescription;
 
   /** The list of resolvable properties. */
-  private List<ResolvableProperty> mProperties = new ArrayList<ResolvableProperty>();
+  private List<ResolvableProperty> mProperties = new ArrayList<>();
 
   /** The map of additional data for this configuration. */
-  private Map<String, String> mAdditionalData = new HashMap<String, String>();
+  private Map<String, String> mAdditionalData = new HashMap<>();
 
   /** flags if the configuration is dirty. */
   private boolean mHasConfigChanged;
@@ -375,10 +375,10 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
     try {
       clone = (CheckConfigurationWorkingCopy) super.clone();
 
-      clone.mAdditionalData = new HashMap<String, String>();
+      clone.mAdditionalData = new HashMap<>();
       clone.mAdditionalData.putAll(this.mAdditionalData);
 
-      clone.mProperties = new ArrayList<ResolvableProperty>();
+      clone.mProperties = new ArrayList<>();
 
       for (ResolvableProperty prop : mProperties) {
         clone.mProperties.add(prop.clone());

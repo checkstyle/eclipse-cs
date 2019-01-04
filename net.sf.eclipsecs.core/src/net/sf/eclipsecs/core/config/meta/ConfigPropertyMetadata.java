@@ -46,7 +46,7 @@ public class ConfigPropertyMetadata {
   private String mDescription;
 
   /** The list of possible property values. */
-  private List<String> mEnumeration = new ArrayList<String>();
+  private List<String> mEnumeration = new ArrayList<>();
 
   /**
    * Creates the property metadata.
