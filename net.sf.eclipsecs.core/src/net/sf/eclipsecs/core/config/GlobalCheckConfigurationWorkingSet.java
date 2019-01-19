@@ -82,8 +82,8 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
   GlobalCheckConfigurationWorkingSet(List<ICheckConfiguration> checkConfigs,
           ICheckConfiguration defaultConfig, ICheckConfiguration defaultBuiltInCheckConfiguration) {
 
-    mWorkingCopies = new ArrayList<CheckConfigurationWorkingCopy>();
-    mDeletedConfigurations = new ArrayList<CheckConfigurationWorkingCopy>();
+    mWorkingCopies = new ArrayList<>();
+    mDeletedConfigurations = new ArrayList<>();
     mDefaultBuiltInCheckConfig = defaultBuiltInCheckConfiguration;
 
     for (ICheckConfiguration cfg : checkConfigs) {
@@ -211,7 +211,7 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
   @Override
   public Collection<IProject> getAffectedProjects() throws CheckstylePluginException {
 
-    Set<IProject> projects = new HashSet<IProject>();
+    Set<IProject> projects = new HashSet<>();
 
     CheckConfigurationWorkingCopy[] workingCopies = this.getWorkingCopies();
     for (int i = 0; i < workingCopies.length; i++) {

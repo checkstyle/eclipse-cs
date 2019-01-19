@@ -58,7 +58,7 @@ public final class SaveFilters {
     IConfigurationElement[] elements = pluginRegistry
             .getConfigurationElementsFor(FILTER_EXTENSION_POINT);
 
-    List<ISaveFilter> filters = new ArrayList<ISaveFilter>();
+    List<ISaveFilter> filters = new ArrayList<>();
 
     for (int i = 0; i < elements.length; i++) {
 

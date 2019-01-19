@@ -466,6 +466,7 @@ public class CheckstyleMarkerFilter implements Cloneable {
    * @param mon
    *          the progress monitor
    * @throws CoreException
+   *           if the resource does not exist or the project is not open
    */
   private List<IMarker> findCheckstyleMarkers(IResource[] resources, int depth, IProgressMonitor mon)
           throws CoreException {
@@ -473,7 +474,7 @@ public class CheckstyleMarkerFilter implements Cloneable {
       return Collections.emptyList();
     }
 
-    List<IMarker> resultList = new ArrayList<IMarker>(resources.length * 2);
+    List<IMarker> resultList = new ArrayList<>(resources.length * 2);
 
     for (int i = 0, size = resources.length; i < size; i++) {
       if (resources[i].isAccessible()) {
@@ -482,6 +483,10 @@ public class CheckstyleMarkerFilter implements Cloneable {
 
         resultList.addAll(markers);
       }
+    }
+    
+    if (!mEnabled) {
+      return resultList;
     }
 
     if (mSelectBySeverity) {
@@ -578,7 +583,7 @@ public class CheckstyleMarkerFilter implements Cloneable {
    * @return the collection of projects for the given resources
    */
   public static Collection<IProject> getProjectsAsCollection(IResource[] resources) {
-    HashSet<IProject> projects = new HashSet<IProject>();
+    HashSet<IProject> projects = new HashSet<>();
 
     for (int idx = 0, size = resources != null ? resources.length : 0; idx < size; idx++) {
       projects.add(resources[idx].getProject());
@@ -599,7 +604,7 @@ public class CheckstyleMarkerFilter implements Cloneable {
     }
 
     IAdaptable[] elements = workingSet.getElements();
-    List<IResource> result = new ArrayList<IResource>(elements.length);
+    List<IResource> result = new ArrayList<>(elements.length);
 
     for (int idx = 0; idx < elements.length; idx++) {
       @SuppressWarnings("cast")

@@ -21,7 +21,6 @@
 package net.sf.eclipsecs.ui.preferences;
 
 import java.util.Collection;
-
 import net.sf.eclipsecs.core.CheckstylePluginPrefs;
 import net.sf.eclipsecs.core.builder.CheckerFactory;
 import net.sf.eclipsecs.core.builder.CheckstyleBuilder;
@@ -58,6 +57,8 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.osgi.service.prefs.BackingStoreException;
+
+import com.puppycrawl.tools.checkstyle.Main;
 
 /**
  * This class represents a preference page that is contributed to the Preferences dialog. By
@@ -102,10 +103,15 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
    */
   public CheckstylePreferencePage() {
     super();
+    setDescription(NLS.bind(Messages.CheckstylePreferencePage_version, getCheckstyleVersion()));
     setPreferenceStore(CheckstyleUIPlugin.getDefault().getPreferenceStore());
 
     mWorkingSet = CheckConfigurationFactory.newWorkingSet();
     initializeDefaults();
+  }
+
+  private String getCheckstyleVersion() {
+    return Main.class.getPackage().getImplementationVersion();
   }
 
   /**

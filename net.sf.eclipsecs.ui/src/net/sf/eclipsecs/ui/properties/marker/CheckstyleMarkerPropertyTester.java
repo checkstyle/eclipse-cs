@@ -23,7 +23,7 @@ public class CheckstyleMarkerPropertyTester extends PropertyTester {
     } catch (CoreException e) {
       CheckstyleLog.log(e);
     }
-    
+
     return false;
   }
 

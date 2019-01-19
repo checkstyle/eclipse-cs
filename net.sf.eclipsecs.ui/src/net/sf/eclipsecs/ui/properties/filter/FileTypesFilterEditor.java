@@ -87,7 +87,7 @@ public class FileTypesFilterEditor implements IFilterEditor {
    */
   @Override
   public void setFilterData(List<String> filterData) {
-    this.mFilterData = new ArrayList<String>(filterData);
+    this.mFilterData = new ArrayList<>(filterData);
   }
 
   /**

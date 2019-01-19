@@ -197,6 +197,7 @@ public abstract class ConfigurationType implements IConfigurationType {
    * @throws IOException
    *           error creating the property resolver
    * @throws URISyntaxException
+   *           if configuration file URL cannot be resolved
    */
   protected PropertyResolver getPropertyResolver(ICheckConfiguration config,
           CheckstyleConfigurationFile configFile) throws IOException, URISyntaxException {

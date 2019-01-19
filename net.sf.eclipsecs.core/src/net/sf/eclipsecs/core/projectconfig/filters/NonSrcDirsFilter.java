@@ -83,7 +83,7 @@ public class NonSrcDirsFilter extends AbstractFilter {
    */
   private List<IPath> getSourceDirPaths(IProject project) {
 
-    List<IPath> sourceDirs = new ArrayList<IPath>();
+    List<IPath> sourceDirs = new ArrayList<>();
 
     try {
       if (project.hasNature(JavaCore.NATURE_ID)) {

@@ -104,7 +104,7 @@ public class FormatterConfigWriter {
       List<Profile> profiles = profilesStore.readProfiles(instanceScope);
 
       if (profiles == null) {
-        profiles = new ArrayList<Profile>();
+        profiles = new ArrayList<>();
       }
       profiles.addAll(CleanUpPreferenceUtil.getBuiltInProfiles());
 
@@ -167,7 +167,7 @@ public class FormatterConfigWriter {
       List<Profile> profiles = profilesStore.readProfiles(instanceScope);
 
       if (profiles == null) {
-        profiles = new ArrayList<Profile>();
+        profiles = new ArrayList<>();
       }
 
       ProfileManager manager = new FormatterProfileManager(profiles, scope, access, versioner);

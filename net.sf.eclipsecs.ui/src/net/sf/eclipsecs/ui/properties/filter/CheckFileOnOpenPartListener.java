@@ -69,7 +69,7 @@ import org.eclipse.ui.part.FileEditorInput;
  * PartListener implementation that listens for opening editor parts and runs Checkstyle on the
  * opened file if the UnOpenedFileFilter is active.
  *
- * @see https://sourceforge.net/p/eclipse-cs/feature-requests/93/
+ * @see <a href="https://sourceforge.net/p/eclipse-cs/feature-requests/93/">feature request</a>
  * @author Lars Ködderitzsch
  */
 public class CheckFileOnOpenPartListener implements IPartListener2 {

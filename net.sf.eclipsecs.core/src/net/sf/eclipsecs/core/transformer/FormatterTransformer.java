@@ -43,7 +43,7 @@ public class FormatterTransformer {
   /**
    * The list with all TransformationClass-instances loaded in method loadTransformationClasses().
    */
-  private final List<FTransformationClass> mTransformationClasses = new ArrayList<FTransformationClass>();
+  private final List<FTransformationClass> mTransformationClasses = new ArrayList<>();
 
   /**
    * Creates a new instance of class CheckstyleTransformer.
@@ -56,7 +56,7 @@ public class FormatterTransformer {
   public FormatterTransformer(final FormatterConfiguration rules) throws CheckstylePluginException {
     mFormatterSetting = rules;
 
-    final List<String> classnames = new ArrayList<String>();
+    final List<String> classnames = new ArrayList<>();
     final Iterator<String> it = mFormatterSetting.getFormatterSettings().keySet().iterator();
     String help;
     String[] tokens;

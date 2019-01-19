@@ -74,7 +74,7 @@ public class CheckSelectedFilesAction implements IObjectActionDelegate {
   @SuppressWarnings("unchecked")
   public void run(IAction action) {
 
-    List<IFile> filesToCheck = new ArrayList<IFile>();
+    List<IFile> filesToCheck = new ArrayList<>();
 
     try {
       addFileResources(mSelection.toList(), filesToCheck);

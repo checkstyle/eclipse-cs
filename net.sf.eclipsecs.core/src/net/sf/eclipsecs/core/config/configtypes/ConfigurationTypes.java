@@ -71,7 +71,7 @@ public final class ConfigurationTypes {
    */
   static {
 
-    CONFIGURATION_TYPES = new LinkedHashMap<String, IConfigurationType>();
+    CONFIGURATION_TYPES = new LinkedHashMap<>();
 
     IExtensionRegistry pluginRegistry = Platform.getExtensionRegistry();
 
@@ -116,7 +116,7 @@ public final class ConfigurationTypes {
    * @return the configuration types.
    */
   public static IConfigurationType[] getCreatableConfigTypes() {
-    List<IConfigurationType> creatableTypes = new ArrayList<IConfigurationType>();
+    List<IConfigurationType> creatableTypes = new ArrayList<>();
 
     for (IConfigurationType type : CONFIGURATION_TYPES.values()) {
       if (type.isCreatable()) {
@@ -135,7 +135,7 @@ public final class ConfigurationTypes {
    */
   public static IConfigurationType[] getConfigurableConfigTypes() {
 
-    List<IConfigurationType> configurableTypes = new ArrayList<IConfigurationType>();
+    List<IConfigurationType> configurableTypes = new ArrayList<>();
     configurableTypes.addAll(Arrays.asList(getCreatableConfigTypes()));
 
     IConfigurationType remoteType = getByInternalName("remote"); //$NON-NLS-1$

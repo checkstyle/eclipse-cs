@@ -49,7 +49,7 @@ public class CheckstyleTransformer {
   /**
    * The list with all TransformationClass-instances loaded in method loadTransformationClasses().
    */
-  private final List<CTransformationClass> mTransformationClasses = new ArrayList<CTransformationClass>();
+  private final List<CTransformationClass> mTransformationClasses = new ArrayList<>();
 
   /**
    * Creates a new instance of class CheckstyleTransformer.
@@ -66,7 +66,7 @@ public class CheckstyleTransformer {
     mProject = project;
     mRules = ruleList;
 
-    final List<String> classnames = new ArrayList<String>();
+    final List<String> classnames = new ArrayList<>();
     final Iterator<Configuration> it = mRules.iterator();
 
     while (it.hasNext()) {

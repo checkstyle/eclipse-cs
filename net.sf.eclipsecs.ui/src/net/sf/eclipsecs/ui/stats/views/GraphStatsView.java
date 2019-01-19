@@ -81,6 +81,7 @@ import org.jfree.chart.ChartMouseEvent;
 import org.jfree.chart.ChartMouseListener;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.entity.PieSectionEntity;
+import org.jfree.chart.labels.StandardPieToolTipGenerator;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.experimental.chart.swt.ChartComposite;
 import org.jfree.ui.RectangleInsets;
@@ -381,8 +382,6 @@ public class GraphStatsView extends AbstractStatsView {
       }
     };
     mShowAllCategoriesAction.setToolTipText(Messages.GraphStatsView_displayAllCategories);
-    mShowAllCategoriesAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages()
-            .getImageDescriptor(ISharedImages.IMG_OBJ_ELEMENT));
     mShowAllCategoriesAction.setChecked(CheckstyleUIPluginPrefs
             .getBoolean(CheckstyleUIPluginPrefs.PREF_STATS_SHOW_ALL_CATEGORIES));
 
@@ -564,7 +563,8 @@ public class GraphStatsView extends AbstractStatsView {
     pieplot3d.setLabelShadowPaint(null);
     pieplot3d.setLabelBackgroundPaint(Color.WHITE);
     pieplot3d.setBackgroundPaint(Color.WHITE);
-
+    // avoid showing the percentage as an absolute number in the tooltip
+    pieplot3d.setToolTipGenerator(new StandardPieToolTipGenerator("{0}: {2}"));
     pieplot3d.setInteriorGap(0.02);
     pieplot3d.setMaximumLabelWidth(0.20);
 

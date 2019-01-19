@@ -48,7 +48,7 @@ class CheckConfigurationContentProvider implements IStructuredContentProvider {
   @Override
   public Object[] getElements(Object inputElement) {
 
-    List<ICheckConfiguration> configurations = new ArrayList<ICheckConfiguration>();
+    List<ICheckConfiguration> configurations = new ArrayList<>();
 
     if (inputElement != null && inputElement instanceof ProjectConfigurationWorkingCopy) {
       ICheckConfiguration[] localConfigs = ((ProjectConfigurationWorkingCopy) inputElement)
