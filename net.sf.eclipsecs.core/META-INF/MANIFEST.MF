@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Bundle-Name: Checkstyle Plug-in
+Bundle-Name: Eclipse Checkstyle
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: net.sf.eclipsecs.core;singleton:=true
 Bundle-Version: 8.12.0.qualifier
@@ -8,7 +8,7 @@ Bundle-ClassPath: .,
  lib/dom4j-1.6.1.jar
 Bundle-Activator: net.sf.eclipsecs.core.CheckstylePlugin
 Bundle-ActivationPolicy: lazy
-Bundle-Vendor: Eclipse Checkstyle Plugin Development Team
+Bundle-Vendor: Eclipse Checkstyle Project
 Require-Bundle: net.sf.eclipsecs.checkstyle;visibility:=reexport
 Eclipse-BuddyPolicy: registered
 Bundle-Localization: core
