@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Checkstyle Core Library
+Bundle-Name: Checkstyle Library
 Bundle-SymbolicName: net.sf.eclipsecs.checkstyle
 Bundle-Version: 8.12.0.qualifier
-Bundle-Vendor: Eclipse Checkstyle Plugin Development Team
+Bundle-Vendor: Eclipse Checkstyle Project
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: .,
