@@ -157,6 +157,9 @@
             <property-metadata name="allowMissingParamTags" datatype="Boolean" default-value="false">
                 <description>%JavadocType.allowMissingParamTags</description>
             </property-metadata>
+            <property-metadata name="allowedAnnotations" datatype="String" default-value="Generated">
+                <description>%JavadocType.allowedAnnotations</description>
+            </property-metadata>
             <property-metadata name="tokens" datatype="MultiCheck" default-value="INTERFACE_DEF,CLASS_DEF,ENUM_DEF,ANNOTATION_DEF">
                 <description>%JavadocType.tokens</description>
                 <enumeration>
