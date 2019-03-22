@@ -153,7 +153,6 @@
                     <property-value-option value="LITERAL_DO"/>
                     <property-value-option value="STATIC_INIT"/>
                     <property-value-option value="INSTANCE_INIT"/>
-                    <property-value-option value="LAMBDA"/>
                 </enumeration>
             </property-metadata>
             <property-metadata name="shouldStartLine" datatype="Boolean" default-value="true">
