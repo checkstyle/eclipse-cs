@@ -224,10 +224,13 @@
             <property-metadata name="validateAbstractClassNames" datatype="Boolean" default-value="true">
                 <description>%IllegalType.validateAbstractClassNames</description>
             </property-metadata>
-            <property-metadata name="tokens" datatype="MultiCheck" default-value="VARIABLE_DEF,PARAMETER_DEF,METHOD_DEF">
+            <property-metadata name="tokens" datatype="MultiCheck" default-value="ANNOTATION_FIELD_DEF,METHOD_CALL,METHOD_DEF,METHOD_REF,PARAMETER_DEF,VARIABLE_DEF">
                 <description>%IllegalType.tokens</description>
                 <enumeration>
+                    <property-value-option value="ANNOTATION_FIELD_DEF" />
+                    <property-value-option value="METHOD_CALL" />
                     <property-value-option value="METHOD_DEF" />
+                    <property-value-option value="METHOD_REF" />
                     <property-value-option value="PARAMETER_DEF" />
                     <property-value-option value="VARIABLE_DEF" />
                 </enumeration>
