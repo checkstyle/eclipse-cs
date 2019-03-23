@@ -60,6 +60,18 @@
             </property-metadata>
             <message-key key="interface.implied.modifier"/>
         </rule-metadata>
+        
+        <rule-metadata name="%ClassMemberImpliedModifier.name" internal-name="ClassMemberImpliedModifier" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.modifier.ClassMemberImpliedModifierCheck"/>
+            <description>%ClassMemberImpliedModifier.desc</description>
+            <property-metadata name="violateImpliedStaticOnNestedEnum" datatype="Boolean" default-value="true">
+                <description>%ClassMemberImpliedModifier.violateImpliedStaticOnNestedEnum</description>
+            </property-metadata>
+            <property-metadata name="violateImpliedStaticOnNestedInterface" datatype="Boolean" default-value="true">
+                <description>%ClassMemberImpliedModifier.violateImpliedStaticOnNestedInterface</description>
+            </property-metadata>
+            <message-key key="class.implied.modifier"/>
+        </rule-metadata>
     </rule-group-metadata>
 
 </checkstyle-metadata>
