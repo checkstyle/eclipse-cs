@@ -1,5 +1,10 @@
 [
   {
+    "version": "Release 8.17.0",
+    "template": "partials/releases/8.17.0/release_notes.html",
+    "open": true
+  },
+  {
     "version": "Release 8.16.0",
     "template": "partials/releases/8.16.0/release_notes.html",
     "open": true
@@ -16,8 +21,7 @@
   },
   {
     "version": "Release 8.13.0",
-    "template": "partials/releases/8.13.0/release_notes.html",
-    "open": true
+    "template": "partials/releases/8.13.0/release_notes.html"
   },
   {
     "version": "Release 8.12.0",
