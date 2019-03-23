@@ -105,15 +105,9 @@
                     <property-value-option value="METHOD_DEF" />
                     <property-value-option value="CTOR_DEF" />
                     <property-value-option value="VARIABLE_DEF" />
-                    <property-value-option value="TYPECAST" />
-                    <property-value-option value="DOT" />
-                    <property-value-option value="TYPE_ARGUMENT" />
                     <property-value-option value="ANNOTATION_DEF" />
                     <property-value-option value="ANNOTATION_FIELD_DEF" />
-                    <property-value-option value="LITERAL_NEW" />
-                    <property-value-option value="LITERAL_THROWS" />
                     <property-value-option value="PARAMETER_DEF" />
-                    <property-value-option value="IMPLEMENTS_CLAUSE" />
                 </enumeration>
             </property-metadata>
             <property-metadata name="allowSamelineSingleParameterlessAnnotation" datatype="Boolean"
