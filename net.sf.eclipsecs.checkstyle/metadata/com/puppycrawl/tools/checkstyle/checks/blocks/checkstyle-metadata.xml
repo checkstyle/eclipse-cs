@@ -155,12 +155,8 @@
                     <property-value-option value="INSTANCE_INIT"/>
                 </enumeration>
             </property-metadata>
-            <property-metadata name="shouldStartLine" datatype="Boolean" default-value="true">
-                <description>%RightCurly.shouldStartLine</description>
-            </property-metadata>
             <message-key key="line.alone"/>
             <message-key key="line.same"/>
-            <message-key key="line.new"/>
             <message-key key="line.break.before"/>
         </rule-metadata>
 
