@@ -247,8 +247,8 @@
             <property-metadata name="ignoredMethodNames" datatype="String" default-value="getInitialContext, getEnvironment">
                 <description>%IllegalType.ignoredMethodNames</description>
             </property-metadata>
-            <property-metadata name="format" datatype="Regex" default-value="^(.*[\.])?Abstract.*$">
-                <description>%IllegalType.format</description>
+            <property-metadata name="illegalAbstractClassNameFormat" datatype="Regex" default-value="^(.*[\.])?Abstract.*$">
+                <description>%IllegalType.illegalAbstractClassNameFormat</description>
             </property-metadata>
             <property-metadata name="memberModifiers" datatype="MultiCheck">
                 <description>%IllegalType.memberModifiers</description>

@@ -118,6 +118,27 @@
                 <description>%SuppressionXpathFilter.optional</description>
             </property-metadata>
         </rule-metadata>
+
+        <rule-metadata name="%SuppressionXpathSingleFilter.name" internal-name="SuppressionXpathSingleFilter" parent="TreeWalker"
+            hasSeverity="false">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.filters.SuppressionXpathSingleFilter"/>
+            <description>%SuppressionXpathSingleFilter.desc</description>
+            <property-metadata name="files" datatype="Regex">
+                <description>%SuppressionXpathSingleFilter.files</description>
+            </property-metadata>
+            <property-metadata name="checks" datatype="Regex">
+                <description>%SuppressionXpathSingleFilter.checks</description>
+            </property-metadata>
+            <property-metadata name="message" datatype="Regex">
+                <description>%SuppressionXpathSingleFilter.message</description>
+            </property-metadata>
+            <property-metadata name="id" datatype="String">
+                <description>%SuppressionXpathSingleFilter.id</description>
+            </property-metadata>
+            <property-metadata name="query" datatype="String">
+                <description>%SuppressionXpathSingleFilter.query</description>
+            </property-metadata>
+        </rule-metadata>
     </rule-group-metadata>
 
 </checkstyle-metadata>
