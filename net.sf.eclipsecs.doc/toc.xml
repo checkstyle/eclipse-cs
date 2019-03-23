@@ -3,23 +3,23 @@
 
 <toc label="Checkstyle Plug-in" topic="docs/index.html">
     <topic label="Getting Started">
-        <topic label="Setting up a project" href="docs/main.html#!/project-setup"/>
-        <topic label="Creating a checkstyle configuration" href="docs/main.html#!/custom-config"/>
+        <topic label="Setting up a project" href="docs/index.html#!/project-setup"/>
+        <topic label="Creating a checkstyle configuration" href="docs/index.html#!/custom-config"/>
     </topic>
     <topic label="Advanced topics">
-        <topic label="Configuring File Sets" href="docs/main.html#!/filesets"/>
-        <topic label="Using the plug-in filters" href="docs/main.html#!/filters"/>
-        <topic label="Configuration types" href="docs/main.html#!/configtypes"/>
-        <topic label="Expanding properties" href="docs/main.html#!/properties"/>
-        <topic label="Advanced Preferences" href="docs/main.html#!/preferences"/>
+        <topic label="Configuring File Sets" href="docs/index.html#!/filesets"/>
+        <topic label="Using the plug-in filters" href="docs/index.html#!/filters"/>
+        <topic label="Configuration types" href="docs/index.html#!/configtypes"/>
+        <topic label="Expanding properties" href="docs/index.html#!/properties"/>
+        <topic label="Advanced Preferences" href="docs/index.html#!/preferences"/>
     </topic>
     <topic label="Extending the Checkstyle Plug-in">
-        <topic label="Building an extension plugin" href="docs/main.html#!/extensions"/>
-        <topic label="Custom Checkstyle modules" href="docs/main.html#!/custom-checks"/>
-        <topic label="Providing a built-in configuration" href="docs/main.html#!/builtin-config"/>
-        <topic label="Custom plug-in filters" href="docs/main.html#!/custom-filters"/>
+        <topic label="Building an extension plugin" href="docs/index.html#!/extensions"/>
+        <topic label="Custom Checkstyle modules" href="docs/index.html#!/custom-checks"/>
+        <topic label="Providing a built-in configuration" href="docs/index.html#!/builtin-config"/>
+        <topic label="Custom plug-in filters" href="docs/index.html#!/custom-filters"/>
     </topic>
-    <topic label="Release notes" href="docs/main.html#!/releasenotes"/>
-    <topic label="FAQ" href="docs/main.html#!/faq"/>
+    <topic label="Release notes" href="docs/index.html#!/releasenotes"/>
+    <topic label="FAQ" href="docs/index.html#!/faq"/>
     <topic label="Checkstyle documentation" href="http://checkstyle.sourceforge.net/"/>
 </toc>
