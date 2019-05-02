@@ -9,9 +9,9 @@ Bundle-ActivationPolicy: lazy
 Require-Bundle: net.sf.eclipsecs.core,
  org.eclipse.core.expressions
 Bundle-ClassPath: .,
- lib/jfreechart-1.0.14.jar,
- lib/jfreechart-1.0.14-swt.jar,
- lib/jcommon-1.0.16.jar
+ lib/jfreechart-1.0.19.jar,
+ lib/jfreechart-1.0.19-swt.jar,
+ lib/jcommon-1.0.23.jar
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Localization: plugin
 Export-Package: net.sf.eclipsecs.ui,
