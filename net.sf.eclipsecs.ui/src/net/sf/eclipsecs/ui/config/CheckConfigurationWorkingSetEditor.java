@@ -235,10 +235,10 @@ public class CheckConfigurationWorkingSetEditor {
       fd.bottom = new FormAttachment(100);
       mUsageView.getControl().setLayoutData(fd);
     }
-    
+
     // enforce update of button enabled state
     mController.selectionChanged(new SelectionChangedEvent(mViewer, new StructuredSelection()));
-    
+
     return configComposite;
   }
 
@@ -481,6 +481,7 @@ public class CheckConfigurationWorkingSetEditor {
 
       mViewer.setInput(mWorkingSet.getWorkingCopies());
       mViewer.refresh(true);
+      mViewer.setSelection(new StructuredSelection(newConfig));
     }
   }
 
