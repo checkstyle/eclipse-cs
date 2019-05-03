@@ -30,14 +30,14 @@ import org.eclipse.swt.widgets.Shell;
 
 /**
  * Interface for the check configuration type specific location editor.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public interface ICheckConfigurationEditor {
 
   /**
    * Initializes the configuration editor with its properties.
-   * 
+   *
    * @param checkConfiguration
    *          the working copy
    * @param dialog
@@ -49,7 +49,7 @@ public interface ICheckConfigurationEditor {
   /**
    * Create the editor control. This method is always called after the
    * initialize method.
-   * 
+   *
    * @param parent
    *          the parent composite
    * @param shell
@@ -60,10 +60,10 @@ public interface ICheckConfigurationEditor {
 
   /**
    * Returns the edited working copy.
-   * 
+   *
    * @return the edited working copy
    * @throws CheckstylePluginException
-   *           an validation error occured when setting the editor data to the
+   *           a validation error occurred when setting the editor data to the
    *           working copy
    */
   CheckConfigurationWorkingCopy getEditedWorkingCopy() throws CheckstylePluginException;

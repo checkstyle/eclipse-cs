@@ -37,7 +37,7 @@ import org.eclipse.swt.widgets.Text;
 /**
  * Implementation of a location editor with only a not editable text field. This
  * is used to just show the location.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public class BuiltInConfigurationEditor implements ICheckConfigurationEditor {
@@ -93,6 +93,7 @@ public class BuiltInConfigurationEditor implements ICheckConfigurationEditor {
     mConfigName.setEditable(false);
     gd = new GridData(GridData.FILL_HORIZONTAL);
     mConfigName.setLayoutData(gd);
+    mConfigName.setFocus();
 
     Label lblConfigLocation = new Label(contents, SWT.NULL);
     lblConfigLocation.setText(Messages.CheckConfigurationPropertiesDialog_lblLocation);
