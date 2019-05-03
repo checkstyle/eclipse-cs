@@ -38,20 +38,20 @@ public class ChecksTest {
       Assert.assertTrue("folder " + p + " must exist in eclipsecs",
               new File(getEclipseCsPath(p, "")).exists());
 
-      final Set<Class<?>> packgeModules = CheckUtil.getModulesInPackage(modules, p);
+      final Set<Class<?>> packageModules = CheckUtil.getModulesInPackage(modules, p);
 
       validateEclipseCsMetaXmlFile(new File(getEclipseCsPath(p, "/checkstyle-metadata.xml")), p,
-              new HashSet<>(packgeModules));
+              new HashSet<>(packageModules));
 
       validateEclipseCsMetaPropFile(
               new File(getEclipseCsPath(p, "/checkstyle-metadata.properties")), p,
-              new HashSet<>(packgeModules));
+              new HashSet<>(packageModules));
     }
   }
 
   private static void validateEclipseCsMetaXmlFile(File file, String packge,
-          Set<Class<?>> packgeModules) throws Exception {
-    Assert.assertTrue("'checkstyle-metadata.xml' must exist in eclipsecs in inside " + packge,
+          Set<Class<?>> packageModules) throws Exception {
+    Assert.assertTrue("'checkstyle-metadata.xml' must exist in eclipsecs inside " + packge,
             file.exists());
 
     final String input = new String(Files.readAllBytes(file.toPath()), UTF_8);
@@ -66,16 +66,16 @@ public class ChecksTest {
       final Node ruleGroup = ruleGroups.item(position);
       final Set<Node> children = XmlUtil.getChildrenElements(ruleGroup);
 
-      validateEclipseCsMetaXmlFileRules(packge, packgeModules, children);
+      validateEclipseCsMetaXmlFileRules(packge, packageModules, children);
     }
 
-    for (Class<?> module : packgeModules) {
+    for (Class<?> module : packageModules) {
       Assert.fail("Module not found in " + packge + " checkstyle-metadata.xml: "
               + module.getCanonicalName());
     }
   }
 
-  private static void validateEclipseCsMetaXmlFileRules(String packge, Set<Class<?>> packgeModules,
+  private static void validateEclipseCsMetaXmlFileRules(String packge, Set<Class<?>> packageModules,
           Set<Node> rules) throws Exception {
     for (Node rule : rules) {
       final NamedNodeMap attributes = rule.getAttributes();
@@ -87,8 +87,8 @@ public class ChecksTest {
       final String internalName = internalNameNode.getTextContent();
       final String classpath = packge + "." + internalName;
 
-      final Class<?> module = findModule(packgeModules, classpath);
-      packgeModules.remove(module);
+      final Class<?> module = findModule(packageModules, classpath);
+      packageModules.remove(module);
 
       Assert.assertNotNull(
               "Unknown class found in " + packge + " checkstyle-metadata.xml: " + internalName,
@@ -330,9 +330,9 @@ public class ChecksTest {
   }
 
   private static void validateEclipseCsMetaPropFile(File file, String packge,
-          Set<Class<?>> packgeModules) throws Exception {
+          Set<Class<?>> packageModules) throws Exception {
     Assert.assertTrue(
-            "'checkstyle-metadata.properties' must exist in eclipsecs in inside " + packge,
+            "'checkstyle-metadata.properties' must exist in eclipsecs inside " + packge,
             file.exists());
 
     final Properties prop = new Properties();
@@ -340,7 +340,7 @@ public class ChecksTest {
 
     final Set<Object> properties = new HashSet<>(Collections.list(prop.keys()));
 
-    for (Class<?> module : packgeModules) {
+    for (Class<?> module : packageModules) {
       final String moduleName = CheckUtil.getSimpleCheckstyleModuleName(module);
 
       Assert.assertTrue(moduleName + " requires a name in eclipsecs properties " + packge,

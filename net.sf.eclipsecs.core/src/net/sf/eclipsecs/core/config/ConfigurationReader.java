@@ -115,7 +115,7 @@ public final class ConfigurationReader {
     map.put(DTD_PUBLIC_CS_ID_1_1, DTD_CONFIGURATION_NAME_1_1);
     map.put(DTD_PUBLIC_CS_ID_1_2, DTD_CONFIGURATION_NAME_1_2);
     map.put(DTD_PUBLIC_CS_ID_1_3, DTD_CONFIGURATION_NAME_1_3);
-    
+
     PUBLIC2INTERNAL_DTD_MAP = map;
   }
 
@@ -172,17 +172,17 @@ public final class ConfigurationReader {
     for (final Module module : modules) {
 
       if ((module.getMetaData() != null)
-              && module.getMetaData().getInternalName().equals(XMLTags.TREEWALKER_MODULE)) {
+              && (XMLTags.TREEWALKER_MODULE.equals(module.getMetaData().getInternalName())
+                      || XMLTags.CHECKER_MODULE.equals(module.getMetaData().getInternalName()))) {
 
         final ConfigProperty prop = module.getProperty("tabWidth"); //$NON-NLS-1$
-
-        String tabWidthProp = null;
-
-        if (prop != null) {
-          tabWidthProp = prop.getValue();
+        if (prop == null) {
+          continue;
         }
 
-        if (tabWidthProp == null && prop != null && prop.getMetaData() != null) {
+        String tabWidthProp = prop.getValue();
+
+        if (tabWidthProp == null && prop.getMetaData() != null) {
           tabWidthProp = prop.getMetaData().getDefaultValue();
         }
 
