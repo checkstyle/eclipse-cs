@@ -139,6 +139,7 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
     mConfigName = new Text(contents, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
     gd = new GridData(GridData.FILL_HORIZONTAL);
     mConfigName.setLayoutData(gd);
+    mConfigName.setFocus();
 
     Label lblConfigLocation = new Label(contents, SWT.NULL);
     lblConfigLocation.setText(Messages.CheckConfigurationPropertiesDialog_lblLocation);
