@@ -2,7 +2,7 @@
     <!-- <div data-google-ad=""/> -->
 
     <h1>Restrict Checkstyle validation using project filters</h1>
-    <p>The Eclipse Checkstyle Pluin contains a filter facility to exclude certain files from Checkstyle. <br/> Knowing
+    <p>The Eclipse Checkstyle Plugin contains a filter facility to exclude certain files from Checkstyle. <br/> Knowing
         that the plug-in allows you to configure file sets you might ask why there are also filters. <br/> This feature
         seems to be quite redundant to file sets.</p>
     <p>Lets think about this some more. <br/> File set let you configure patterns that determine if a file gets included
@@ -51,7 +51,7 @@
                     useful for big projects, as checking all files might lead to unacceptable build times or resource
                     consumption.<br/>If this filter is enabled a project file which is opened in the editor is
                     automatically checked upon opening, pointing out the problems in this file. Likewise when the file
-                    is closed the assiciated problem markers are cleared from the Problems view.</td>
+                    is closed the associated problem markers are cleared from the Problems view.</td>
             </tr>
             <tr>
                 <td>Files from packages</td>
@@ -69,10 +69,15 @@
                             <i class="fa fa-external-link"> </i></a> (aka <em>Leave the campground cleaner than you
                         found it.</em>) within your development team.</td>
             </tr>
+            <tr>
+                <td>Files older than one day</td>
+                <td>Excludes all files with a modified/created timestamp older than one day. This allows you to focus
+                    on files that changed recently, and to easily ignore issues that exist already since a long time.</td>
+            </tr>
         </tbody>
     </table>
 
-    <p>The Eclipse Checkstyle Plugin provides an extension point for customer filters which can be used to implement
+    <p>The Eclipse Checkstyle Plugin provides an extension point for custom filters which can be used to implement
         your own filter. Read <a href="#!/custom-filters">here</a> for more info about <a href="#!/custom-filters"
             >extending the plugin with filters</a> .</p>
 </div>
