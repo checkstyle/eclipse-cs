@@ -1094,9 +1094,12 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
 
       Pattern matchPattern = Pattern.compile(Pattern.quote(filterText), Pattern.CASE_INSENSITIVE);
 
-      boolean passes = matchPattern.matcher(element.getRuleName()).find()
-              || matchPattern.matcher(element.getInternalName()).find()
-              || matchPattern.matcher(element.getDescription()).find();
+      String ruleName = element.getRuleName();
+      String internalName = element.getInternalName();
+      String description = element.getDescription();
+      boolean passes = (ruleName != null && matchPattern.matcher(ruleName).find())
+              || (internalName != null && matchPattern.matcher(internalName).find())
+              || (description != null && matchPattern.matcher(description).find());
 
       return passes;
     }
@@ -1114,7 +1117,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
       return hasAtLeastOneMatchingChild;
     }
   }
-  
+
   /**
    * Convert a module description to HTML for use with a browser component.
    * @param description module description
@@ -1129,5 +1132,5 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
     buf.append("</body></html>");
     return buf.toString();
   }
-  
+
 }
