@@ -96,11 +96,13 @@
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.annotation.AnnotationLocationCheck" />
             <description>%AnnotationLocation.desc</description>
             <property-metadata name="tokens" datatype="MultiCheck"
-                default-value="CLASS_DEF,INTERFACE_DEF,ENUM_DEF,METHOD_DEF,CTOR_DEF,VARIABLE_DEF">
+                default-value="CLASS_DEF,INTERFACE_DEF,PACKAGE_DEF,ENUM_CONSTANT_DEF,ENUM_DEF,METHOD_DEF,CTOR_DEF,VARIABLE_DEF">
                 <description>%AnnotationLocation.tokens</description>
                 <enumeration>
                     <property-value-option value="CLASS_DEF" />
                     <property-value-option value="INTERFACE_DEF" />
+                    <property-value-option value="PACKAGE_DEF" />
+                    <property-value-option value="ENUM_CONSTANT_DEF" />
                     <property-value-option value="ENUM_DEF" />
                     <property-value-option value="METHOD_DEF" />
                     <property-value-option value="CTOR_DEF" />
