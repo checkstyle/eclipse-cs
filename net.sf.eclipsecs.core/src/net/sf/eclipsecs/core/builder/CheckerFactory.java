@@ -42,8 +42,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import net.sf.eclipsecs.core.CheckstylePlugin;
 import net.sf.eclipsecs.core.config.CheckstyleConfigurationFile;
-import net.sf.eclipsecs.core.config.ConfigurationReader;
-import net.sf.eclipsecs.core.config.ConfigurationReader.AdditionalConfigData;
 import net.sf.eclipsecs.core.config.ICheckConfiguration;
 import net.sf.eclipsecs.core.config.configtypes.IContextAware;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
@@ -65,9 +63,6 @@ public final class CheckerFactory {
   /** Map containing the modification times of configs. */
   private static Map<String, Long> sModifiedMap;
 
-  /** Map containing additional data about the check configurations. */
-  private static Map<String, AdditionalConfigData> sAdditionalDataMap;
-
   /** the shared classloader for the checkers. */
   private static ProjectClassLoader sSharedClassLoader;
 
@@ -79,7 +74,6 @@ public final class CheckerFactory {
     sCheckerMap = CacheBuilder.newBuilder().softValues().build();
 
     sModifiedMap = new ConcurrentHashMap<>();
-    sAdditionalDataMap = new ConcurrentHashMap<>();
 
     sSharedClassLoader = new ProjectClassLoader();
   }
@@ -145,42 +139,6 @@ public final class CheckerFactory {
   }
 
   /**
-   * Determines the additional data for a given configuration file.
-   *
-   * @param config
-   *          the check configuration
-   * @param project
-   *          the project to create the checker for
-   * @return the checker for the given configuration file
-   * @throws CheckstylePluginException
-   *           the configuration could not be read
-   */
-  public static ConfigurationReader.AdditionalConfigData getAdditionalData(
-          ICheckConfiguration config, IProject project) throws CheckstylePluginException {
-
-    String cacheKey = getCacheKey(config, project);
-
-    AdditionalConfigData additionalData = sAdditionalDataMap.get(cacheKey);
-
-    // no cache hit - create the additional data
-    if (additionalData == null) {
-      CheckstyleConfigurationFile configFileData = config.getCheckstyleConfiguration();
-
-      InputSource in = null;
-      try {
-        in = configFileData.getCheckConfigFileInputSource();
-        additionalData = ConfigurationReader.getAdditionalConfigData(in);
-      } finally {
-        Closeables.closeQuietly(in.getByteStream());
-      }
-
-      sAdditionalDataMap.put(cacheKey, additionalData);
-    }
-
-    return additionalData;
-  }
-
-  /**
    * Returns the shared classloader which is used by all checkers created by this factory.
    *
    * @return the shared classloader
@@ -195,7 +153,6 @@ public final class CheckerFactory {
   public static void cleanup() {
     sCheckerMap.invalidateAll();
     sModifiedMap.clear();
-    sAdditionalDataMap.clear();
   }
 
   /**
@@ -247,7 +204,6 @@ public final class CheckerFactory {
         checker = null;
         sCheckerMap.invalidate(cacheKey);
         sModifiedMap.remove(cacheKey);
-        sAdditionalDataMap.remove(cacheKey);
       }
     }
     return checker;

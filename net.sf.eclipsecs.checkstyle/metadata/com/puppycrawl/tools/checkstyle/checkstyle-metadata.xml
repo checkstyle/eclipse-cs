@@ -29,15 +29,15 @@
             <property-metadata name="haltOnException" datatype="Boolean" default-value="true">
                 <description>%Checker.haltOnException</description>
             </property-metadata>
+            <property-metadata name="tabWidth" datatype="Integer" default-value="8">
+                <description>%Checker.tabWidth</description>
+            </property-metadata>
         </rule-metadata>
 
         <rule-metadata name="%TreeWalker.name" internal-name="TreeWalker" parent="Checker"
             singleton="true">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.TreeWalker"/>
             <description>%TreeWalker.desc</description>
-            <property-metadata name="tabWidth" datatype="Integer" default-value="8">
-                <description>%TreeWalker.tabWidth</description>
-            </property-metadata>
             <property-metadata name="fileExtensions" datatype="String" default-value="java">
                 <description>%TreeWalker.fileExtensions</description>
             </property-metadata>

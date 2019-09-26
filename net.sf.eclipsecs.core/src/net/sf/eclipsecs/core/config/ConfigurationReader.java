@@ -115,7 +115,7 @@ public final class ConfigurationReader {
     map.put(DTD_PUBLIC_CS_ID_1_1, DTD_CONFIGURATION_NAME_1_1);
     map.put(DTD_PUBLIC_CS_ID_1_2, DTD_CONFIGURATION_NAME_1_2);
     map.put(DTD_PUBLIC_CS_ID_1_3, DTD_CONFIGURATION_NAME_1_3);
-    
+
     PUBLIC2INTERNAL_DTD_MAP = map;
   }
 
@@ -149,54 +149,6 @@ public final class ConfigurationReader {
     }
 
     return rules != null ? rules : new ArrayList<>();
-  }
-
-  /**
-   * Gets additional data about the Checkstyle configuration. This data is used by the plugin for
-   * special purposes, like determining the correct offset of a checkstyle violation.
-   *
-   * @param in
-   *          the input stream
-   * @return the additional configuration data
-   * @throws CheckstylePluginException
-   *           error while reading the configuration
-   */
-
-  public static AdditionalConfigData getAdditionalConfigData(InputSource in)
-          throws CheckstylePluginException {
-
-    final List<Module> modules = read(in);
-
-    int tabWidth = 8;
-
-    for (final Module module : modules) {
-
-      if ((module.getMetaData() != null)
-              && module.getMetaData().getInternalName().equals(XMLTags.TREEWALKER_MODULE)) {
-
-        final ConfigProperty prop = module.getProperty("tabWidth"); //$NON-NLS-1$
-
-        String tabWidthProp = null;
-
-        if (prop != null) {
-          tabWidthProp = prop.getValue();
-        }
-
-        if (tabWidthProp == null && prop != null && prop.getMetaData() != null) {
-          tabWidthProp = prop.getMetaData().getDefaultValue();
-        }
-
-        try {
-          tabWidth = Integer.parseInt(tabWidthProp);
-        } catch (final Exception e) {
-          // ignore
-        }
-
-        break;
-      }
-    }
-
-    return new AdditionalConfigData(tabWidth);
   }
 
   private static List<Module> getModules(final Document document) {
@@ -308,35 +260,6 @@ public final class ConfigurationReader {
       } else {
         module.getCustomMetaData().put(name, value);
       }
-    }
-  }
-
-  /**
-   * Holds additional data about the Checkstyle configuration file, for special uses.
-   *
-   * @author Lars Ködderitzsch
-   */
-  public static class AdditionalConfigData {
-
-    private final int mTabWidth;
-
-    /**
-     * Creates the object.
-     *
-     * @param tabWidth
-     *          the tab width setting of the Checkstyle configuration
-     */
-    public AdditionalConfigData(final int tabWidth) {
-      mTabWidth = tabWidth;
-    }
-
-    /**
-     * The tab width of the check configuration.
-     *
-     * @return the tab width setting
-     */
-    public int getTabWidth() {
-      return mTabWidth;
     }
   }
 }
