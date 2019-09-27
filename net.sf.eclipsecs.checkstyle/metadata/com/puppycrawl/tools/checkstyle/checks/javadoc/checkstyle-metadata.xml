@@ -391,11 +391,13 @@
             <property-metadata name="allowedAnnotations" datatype="String" default-value="Override">
                 <description>%MissingJavadocMethod.allowedAnnotations</description>
             </property-metadata>
-            <property-metadata name="scope" datatype="Scope" default-value="public">
+            <property-metadata name="scope" datatype="SingleSelect" default-value="public">
                 <description>%MissingJavadocMethod.scope</description>
+                <enumeration option-provider="com.puppycrawl.tools.checkstyle.api.Scope" />
             </property-metadata>
-            <property-metadata name="excludeScope" datatype="Scope">
+            <property-metadata name="excludeScope" datatype="SingleSelect" default-value="nothing">
                 <description>%MissingJavadocMethod.excludeScope</description>
+                <enumeration option-provider="com.puppycrawl.tools.checkstyle.api.Scope" />
             </property-metadata>
             <property-metadata name="allowMissingPropertyJavadoc" datatype="Boolean" default-value="false">
                 <description>%MissingJavadocMethod.allowMissingPropertyJavadoc</description>
@@ -424,11 +426,13 @@
         <rule-metadata name="%MissingJavadocType.name" internal-name="MissingJavadocType" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.javadoc.MissingJavadocTypeCheck" />
             <description>%MissingJavadocType.desc</description>
-            <property-metadata name="scope" datatype="Scope" default-value="public">
+            <property-metadata name="scope" datatype="SingleSelect" default-value="public">
                 <description>%MissingJavadocType.scope</description>
+                <enumeration option-provider="com.puppycrawl.tools.checkstyle.api.Scope" />
             </property-metadata>
-            <property-metadata name="excludeScope" datatype="Scope">
+            <property-metadata name="excludeScope" datatype="SingleSelect" default-value="nothing">
                 <description>%MissingJavadocType.excludeScope</description>
+                <enumeration option-provider="com.puppycrawl.tools.checkstyle.api.Scope" />
             </property-metadata>
             <property-metadata name="skipAnnotations" datatype="String" default-value="Generated">
                 <description>%MissingJavadocType.skipAnnotations</description>
