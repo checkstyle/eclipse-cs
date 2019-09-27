@@ -77,7 +77,6 @@
             <property-metadata name="ignoreMethodNamesRegex" datatype="Regex">
                 <description>%JavadocMethod.ignoreMethodNamesRegex</description>
             </property-metadata>
-            <message-key key="javadoc.missing" />
             <message-key key="javadoc.classInfo" />
             <message-key key="javadoc.unusedTagGeneral" />
             <message-key key="javadoc.invalidInheritDoc" />
@@ -170,7 +169,6 @@
                 </enumeration>
             </property-metadata>
 
-            <message-key key="javadoc.missing" />
             <message-key key="type.tagFormat" />
             <message-key key="type.missingTag" />
             <message-key key="javadoc.unusedTag" />
@@ -361,6 +359,91 @@
             <message-key key="javadoc.missed.html.close" />
             <message-key key="javadoc.parse.rule.error" />
             <message-key key="javadoc.wrong.singleton.html.tag" />
+        </rule-metadata>
+
+        <rule-metadata name="%InvalidJavadocPosition.name" internal-name="InvalidJavadocPosition" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.javadoc.InvalidJavadocPositionCheck" />
+            <description>%InvalidJavadocPosition.desc</description>
+            <message-key key="invalid.position" />
+        </rule-metadata>
+
+        <rule-metadata name="%JavadocBlockTagLocation.name" internal-name="JavadocBlockTagLocation" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocBlockTagLocationCheck" />
+            <description>%JavadocBlockTagLocation.desc</description>
+            <property-metadata name="tags" datatype="String" default-value="author, deprecated, exception, hidden, param, provides, return, see, serial, serialData, serialField, since, throws, uses, version">
+                <description>%JavadocBlockTagLocation.tags</description>
+            </property-metadata>
+            <property-metadata name="violateExecutionOnNonTightHtml" datatype="Boolean" default-value="false">
+                <description>%JavadocBlockTagLocation.violateExecutionOnNonTightHtml</description>
+            </property-metadata>
+            <message-key key="javadoc.blockTagLocation" />
+            <message-key key="javadoc.missed.html.close" />
+            <message-key key="javadoc.parse.rule.error" />
+            <message-key key="javadoc.wrong.singleton.html.tag" />
+        </rule-metadata>
+
+        <rule-metadata name="%MissingJavadocMethod.name" internal-name="MissingJavadocMethod" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.javadoc.MissingJavadocMethodCheck" />
+            <description>%MissingJavadocMethod.desc</description>
+            <property-metadata name="minLineCount" datatype="Integer" default-value="-1">
+                <description>%MissingJavadocMethod.minLineCount</description>
+            </property-metadata>
+            <property-metadata name="allowedAnnotations" datatype="String" default-value="Override">
+                <description>%MissingJavadocMethod.allowedAnnotations</description>
+            </property-metadata>
+            <property-metadata name="scope" datatype="Scope" default-value="public">
+                <description>%MissingJavadocMethod.scope</description>
+            </property-metadata>
+            <property-metadata name="excludeScope" datatype="Scope">
+                <description>%MissingJavadocMethod.excludeScope</description>
+            </property-metadata>
+            <property-metadata name="allowMissingPropertyJavadoc" datatype="Boolean" default-value="false">
+                <description>%MissingJavadocMethod.allowMissingPropertyJavadoc</description>
+            </property-metadata>
+            <property-metadata name="ignoreMethodNamesRegex" datatype="Regex">
+                <description>%MissingJavadocMethod.ignoreMethodNamesRegex</description>
+            </property-metadata>
+            <property-metadata name="tokens" datatype="MultiCheck"
+                default-value="METHOD_DEF,CTOR_DEF,ANNOTATION_FIELD_DEF">
+                <description>%MissingJavadocMethod.tokens</description>
+                <enumeration>
+                    <property-value-option value="METHOD_DEF" />
+                    <property-value-option value="CTOR_DEF" />
+                    <property-value-option value="ANNOTATION_FIELD_DEF" />
+                </enumeration>
+            </property-metadata>
+            <message-key key="javadoc.missing" />
+       </rule-metadata>
+
+        <rule-metadata name="%MissingJavadocPackage.name" internal-name="MissingJavadocPackage" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.javadoc.MissingJavadocPackageCheck" />
+            <description>%MissingJavadocPackage.desc</description>
+            <message-key key="package.javadoc.missing" />
+        </rule-metadata>
+
+        <rule-metadata name="%MissingJavadocType.name" internal-name="MissingJavadocType" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.javadoc.MissingJavadocTypeCheck" />
+            <description>%MissingJavadocType.desc</description>
+            <property-metadata name="scope" datatype="Scope" default-value="public">
+                <description>%MissingJavadocType.scope</description>
+            </property-metadata>
+            <property-metadata name="excludeScope" datatype="Scope">
+                <description>%MissingJavadocType.excludeScope</description>
+            </property-metadata>
+            <property-metadata name="skipAnnotations" datatype="String" default-value="Generated">
+                <description>%MissingJavadocType.skipAnnotations</description>
+            </property-metadata>
+            <property-metadata name="tokens" datatype="MultiCheck"
+                default-value="INTERFACE_DEF,CLASS_DEF,ENUM_DEF,ANNOTATION_DEF">
+                <description>%MissingJavadocType.tokens</description>
+                <enumeration>
+                    <property-value-option value="INTERFACE_DEF" />
+                    <property-value-option value="CLASS_DEF" />
+                    <property-value-option value="ENUM_DEF" />
+                    <property-value-option value="ANNOTATION_DEF" />
+                </enumeration>
+            </property-metadata>
+            <message-key key="javadoc.missing" />
         </rule-metadata>
 
     </rule-group-metadata>

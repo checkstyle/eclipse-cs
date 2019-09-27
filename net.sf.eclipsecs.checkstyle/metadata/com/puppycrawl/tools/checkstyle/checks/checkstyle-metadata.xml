@@ -186,5 +186,15 @@
                 internal-name="com.puppycrawl.tools.checkstyle.checks.SuppressWarningsHolder"/>
             <message-key key="suppress.warnings.invalid.target"/>
         </rule-metadata>
+
+        <rule-metadata name="%OrderedProperties.name" internal-name="OrderedProperties" parent="Checker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.OrderedPropertiesCheck"/>
+            <description>%OrderedProperties.desc</description>
+            <property-metadata name="fileExtensions" datatype="String" default-value="properties">
+                <description>%OrderedProperties.fileExtensions</description>
+            </property-metadata>
+            <message-key key="properties.notSorted.property"/>
+            <message-key key="unable.open.cause"/>
+        </rule-metadata>
     </rule-group-metadata>
 </checkstyle-metadata>

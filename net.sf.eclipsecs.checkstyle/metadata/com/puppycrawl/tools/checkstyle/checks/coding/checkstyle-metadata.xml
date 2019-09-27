@@ -5,6 +5,12 @@
 <checkstyle-metadata>
     <rule-group-metadata name="%Coding.group" priority="900">
 
+        <rule-metadata name="%ArrayTrailingComma.name" internal-name="ArrayTrailingComma" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.ArrayTrailingCommaCheck" />
+            <description>%ArrayTrailingComma.desc</description>
+            <message-key key="array.trailing.comma" />
+        </rule-metadata>
+
         <rule-metadata name="%AvoidInlineConditionals.name" internal-name="AvoidInlineConditionals"
             parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.AvoidInlineConditionalsCheck" />
@@ -16,17 +22,6 @@
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.CovariantEqualsCheck" />
             <description>%CovariantEquals.desc</description>
             <message-key key="covariant.equals" />
-        </rule-metadata>
-
-        <rule-metadata name="%DefaultComesLast.name" internal-name="DefaultComesLast" parent="TreeWalker">
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.DefaultComesLastCheck" />
-            <description>%DefaultComesLast.desc</description>
-            <property-metadata name="skipIfLastAndSharedWithCase" datatype="Boolean" default-value="false">
-                <description>%DefaultComesLast.skipIfLastAndSharedWithCase</description>
-            </property-metadata>
-            <quickfix classname="net.sf.eclipsecs.ui.quickfixes.coding.DefaultComesLastQuickfix" />
-            <message-key key="default.comes.last" />
-            <message-key key="default.comes.last.in.casegroup" />
         </rule-metadata>
 
         <rule-metadata name="%DeclarationOrder.name" internal-name="DeclarationOrder" parent="TreeWalker">
@@ -42,6 +37,17 @@
             <message-key key="declaration.order.static" />
             <message-key key="declaration.order.instance" />
             <message-key key="declaration.order.access" />
+        </rule-metadata>
+
+        <rule-metadata name="%DefaultComesLast.name" internal-name="DefaultComesLast" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.DefaultComesLastCheck" />
+            <description>%DefaultComesLast.desc</description>
+            <property-metadata name="skipIfLastAndSharedWithCase" datatype="Boolean" default-value="false">
+                <description>%DefaultComesLast.skipIfLastAndSharedWithCase</description>
+            </property-metadata>
+            <quickfix classname="net.sf.eclipsecs.ui.quickfixes.coding.DefaultComesLastQuickfix" />
+            <message-key key="default.comes.last" />
+            <message-key key="default.comes.last.in.casegroup" />
         </rule-metadata>
 
         <rule-metadata name="%EmptyStatement.name" internal-name="EmptyStatement" parent="TreeWalker">
@@ -138,6 +144,16 @@
             <message-key key="hidden.field" />
         </rule-metadata>
 
+        <rule-metadata name="%IllegalCatch.name" internal-name="IllegalCatch" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.IllegalCatchCheck" />
+            <description>%IllegalCatch.desc</description>
+            <property-metadata name="illegalClassNames" datatype="String"
+                default-value="java.lang.Exception, java.lang.Throwable, java.lang.RuntimeException">
+                <description>%IllegalCatch.illegalClassNames</description>
+            </property-metadata>
+            <message-key key="illegal.catch" />
+        </rule-metadata>
+
         <rule-metadata name="%IllegalInstantiation.name" internal-name="IllegalInstantiation" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.IllegalInstantiationCheck" />
             <description>%IllegalInstantiation.desc</description>
@@ -152,16 +168,6 @@
                 </enumeration>
             </property-metadata>
             <message-key key="instantiation.avoid" />
-        </rule-metadata>
-
-        <rule-metadata name="%IllegalCatch.name" internal-name="IllegalCatch" parent="TreeWalker">
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.IllegalCatchCheck" />
-            <description>%IllegalCatch.desc</description>
-            <property-metadata name="illegalClassNames" datatype="String"
-                default-value="java.lang.Exception, java.lang.Throwable, java.lang.RuntimeException">
-                <description>%IllegalCatch.illegalClassNames</description>
-            </property-metadata>
-            <message-key key="illegal.catch" />
         </rule-metadata>
 
         <rule-metadata name="%IllegalThrows.name" internal-name="IllegalThrows" parent="TreeWalker">
@@ -301,6 +307,9 @@
             <property-metadata name="ignoreFieldDeclaration" datatype="Boolean" default-value="false">
                 <description>%MagicNumber.ignoreFieldDeclaration</description>
             </property-metadata>
+            <property-metadata name="ignoreAnnotationElementDefaults" datatype="Boolean" default-value="true">
+                <description>%MagicNumber.ignoreAnnotationElementDefaults</description>
+            </property-metadata>
             <property-metadata name="constantWaiverParentToken" datatype="MultiCheck"
                 default-value="ASSIGN,ARRAY_INIT,EXPR,UNARY_PLUS,UNARY_MINUS,TYPECAST,ELIST,STAR,DIV,PLUS,MINUS,LITERAL_NEW,METHOD_CALL">
                 <description>%MagicNumber.constantWaiverParentToken</description>
@@ -395,6 +404,22 @@
             <message-key key="avoid.finalizer.method" />
         </rule-metadata>
 
+        <rule-metadata name="%OneStatementPerLine.name" internal-name="OneStatementPerLine" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.OneStatementPerLineCheck" />
+            <description>%OneStatementPerLine.desc</description>
+            <property-metadata name="treatTryResourcesAsStatement" datatype="Boolean" default-value="false">
+                <description>%OneStatementPerLine.treatTryResourcesAsStatement</description>
+            </property-metadata>
+            <message-key key="multiple.statements.line" />
+        </rule-metadata>
+
+        <rule-metadata name="%OverloadMethodsDeclarationOrder.name" internal-name="OverloadMethodsDeclarationOrder"
+            parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.OverloadMethodsDeclarationOrderCheck" />
+            <description>%OverloadMethodsDeclarationOrder.desc</description>
+            <message-key key="overload.methods.declaration" />
+        </rule-metadata>
+
         <rule-metadata name="%PackageDeclaration.name" internal-name="PackageDeclaration" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.PackageDeclarationCheck" />
             <description>%PackageDeclaration.desc</description>
@@ -486,12 +511,6 @@
             <message-key key="missing.super.call" />
         </rule-metadata>
 
-        <rule-metadata name="%ArrayTrailingComma.name" internal-name="ArrayTrailingComma" parent="TreeWalker">
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.ArrayTrailingCommaCheck" />
-            <description>%ArrayTrailingComma.desc</description>
-            <message-key key="array.trailing.comma" />
-        </rule-metadata>
-
         <rule-metadata name="%UnnecessaryParentheses.name" internal-name="UnnecessaryParentheses" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.UnnecessaryParenthesesCheck" />
             <description>%UnnecessaryParentheses.desc</description>
@@ -533,10 +552,42 @@
             <message-key key="unnecessary.paren.lambda" />
         </rule-metadata>
 
-        <rule-metadata name="%OneStatementPerLine.name" internal-name="OneStatementPerLine" parent="TreeWalker">
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.OneStatementPerLineCheck" />
-            <description>%OneStatementPerLine.desc</description>
-            <message-key key="multiple.statements.line" />
+        <rule-metadata name="%UnnecessarySemicolonAfterTypeMemberDeclaration.name" internal-name="UnnecessarySemicolonAfterTypeMemberDeclaration" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.UnnecessarySemicolonAfterTypeMemberDeclarationCheck" />
+            <description>%UnnecessarySemicolonAfterTypeMemberDeclaration.desc</description>
+            <property-metadata name="tokens" datatype="MultiCheck"
+                default-value="CLASS_DEF,INTERFACE_DEF,ENUM_DEF,ANNOTATION_DEF,VARIABLE_DEF,ANNOTATION_FIELD_DEF,STATIC_INIT,INSTANCE_INIT,CTOR_DEF,METHOD_DEF,ENUM_CONSTANT_DEF">
+                <description>%UnnecessarySemicolonAfterTypeMemberDeclaration.tokens</description>
+                <enumeration>
+                    <property-value-option value="CLASS_DEF"/>
+                    <property-value-option value="INTERFACE_DEF"/>
+                    <property-value-option value="ENUM_DEF"/>
+                    <property-value-option value="ANNOTATION_DEF"/>
+                    <property-value-option value="VARIABLE_DEF"/>
+                    <property-value-option value="ANNOTATION_FIELD_DEF"/>
+                    <property-value-option value="STATIC_INIT"/>
+                    <property-value-option value="INSTANCE_INIT"/>
+                    <property-value-option value="CTOR_DEF"/>
+                    <property-value-option value="METHOD_DEF"/>
+                    <property-value-option value="ENUM_CONSTANT_DEF"/>
+                </enumeration>
+            </property-metadata>
+            <message-key key="unnecessary.semicolon" />
+        </rule-metadata>
+
+        <rule-metadata name="%UnnecessarySemicolonInEnumeration.name" internal-name="UnnecessarySemicolonInEnumeration" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.UnnecessarySemicolonInEnumerationCheck" />
+            <description>%UnnecessarySemicolonInEnumeration.desc</description>
+            <message-key key="unnecessary.semicolon" />
+        </rule-metadata>
+
+        <rule-metadata name="%UnnecessarySemicolonInTryWithResources.name" internal-name="UnnecessarySemicolonInTryWithResources" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.UnnecessarySemicolonInTryWithResourcesCheck" />
+            <description>%UnnecessarySemicolonInTryWithResources.desc</description>
+            <property-metadata name="allowWhenNoBraceAfterSemicolon" datatype="Boolean" default-value="true">
+                <description>%UnnecessarySemicolonInTryWithResources.allowWhenNoBraceAfterSemicolon</description>
+            </property-metadata>
+            <message-key key="unnecessary.semicolon" />
         </rule-metadata>
 
         <rule-metadata name="%VariableDeclarationUsageDistance.name" internal-name="VariableDeclarationUsageDistance"
@@ -557,13 +608,6 @@
             </property-metadata>
             <message-key key="variable.declaration.usage.distance" />
             <message-key key="variable.declaration.usage.distance.extend" />
-        </rule-metadata>
-
-        <rule-metadata name="%OverloadMethodsDeclarationOrder.name" internal-name="OverloadMethodsDeclarationOrder"
-            parent="TreeWalker">
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.OverloadMethodsDeclarationOrderCheck" />
-            <description>%OverloadMethodsDeclarationOrder.desc</description>
-            <message-key key="overload.methods.declaration" />
         </rule-metadata>
 
     </rule-group-metadata>

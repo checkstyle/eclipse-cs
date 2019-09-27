@@ -51,6 +51,9 @@
             <property-metadata name="messageFormat" datatype="Regex">
                 <description>%SuppressionCommentFilter.messageFormat</description>
             </property-metadata>
+            <property-metadata name="idFormat" datatype="Regex">
+                <description>%SuppressionCommentFilter.idFormat</description>
+            </property-metadata>
             <property-metadata name="checkCPP" datatype="Boolean" default-value="true">
                 <description>%SuppressionCommentFilter.checkCPP</description>
             </property-metadata>
@@ -71,6 +74,9 @@
             </property-metadata>
             <property-metadata name="messageFormat" datatype="Regex">
                 <description>%SuppressWithNearbyCommentFilter.messageFormat</description>
+            </property-metadata>
+            <property-metadata name="idFormat" datatype="Regex">
+                <description>%SuppressWithNearbyCommentFilter.idFormat</description>
             </property-metadata>
             <property-metadata name="influenceFormat" datatype="Regex" default-value="0">
                 <description>%SuppressWithNearbyCommentFilter.influenceFormat</description>
@@ -98,6 +104,9 @@
             </property-metadata>
             <property-metadata name="messageFormat" datatype="Regex">
                 <description>%SuppressWithPlainTextCommentFilter.messageFormat</description>
+            </property-metadata>
+            <property-metadata name="idFormat" datatype="Regex">
+                <description>%SuppressWithPlainTextCommentFilter.idFormat</description>
             </property-metadata>
         </rule-metadata>
 
@@ -137,6 +146,30 @@
             </property-metadata>
             <property-metadata name="query" datatype="String">
                 <description>%SuppressionXpathSingleFilter.query</description>
+            </property-metadata>
+        </rule-metadata>
+
+        <rule-metadata name="%SuppressionSingleFilter.name" internal-name="SuppressionSingleFilter" parent="Checker"
+            hasSeverity="false">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.filters.SuppressionSingleFilter"/>
+            <description>%SuppressionSingleFilter.desc</description>
+            <property-metadata name="files" datatype="Regex">
+                <description>%SuppressionSingleFilter.files</description>
+            </property-metadata>
+            <property-metadata name="checks" datatype="Regex">
+                <description>%SuppressionSingleFilter.checks</description>
+            </property-metadata>
+            <property-metadata name="message" datatype="Regex">
+                <description>%SuppressionSingleFilter.message</description>
+            </property-metadata>
+            <property-metadata name="id" datatype="String">
+                <description>%SuppressionSingleFilter.id</description>
+            </property-metadata>
+            <property-metadata name="lines" datatype="String">
+                <description>%SuppressionSingleFilter.lines</description>
+            </property-metadata>
+            <property-metadata name="columns" datatype="String">
+                <description>%SuppressionSingleFilter.columns</description>
             </property-metadata>
         </rule-metadata>
     </rule-group-metadata>

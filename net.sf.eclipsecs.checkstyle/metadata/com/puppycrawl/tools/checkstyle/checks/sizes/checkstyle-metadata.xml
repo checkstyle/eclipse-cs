@@ -45,9 +45,12 @@
             <message-key key="maxLen.file" />
         </rule-metadata>
 
-        <rule-metadata name="%LineLength.name" internal-name="LineLength" parent="TreeWalker">
+        <rule-metadata name="%LineLength.name" internal-name="LineLength" parent="Checker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.sizes.LineLengthCheck" />
             <description>%LineLength.desc</description>
+            <property-metadata name="fileExtensions" datatype="String">
+                <description>%LineLength.fileExtensions</description>
+            </property-metadata>
             <property-metadata name="ignorePattern" datatype="Regex" default-value="^$">
                 <description>%LineLength.ignorePattern</description>
             </property-metadata>
