@@ -115,7 +115,7 @@ public final class ConfigurationReader {
     map.put(DTD_PUBLIC_CS_ID_1_1, DTD_CONFIGURATION_NAME_1_1);
     map.put(DTD_PUBLIC_CS_ID_1_2, DTD_CONFIGURATION_NAME_1_2);
     map.put(DTD_PUBLIC_CS_ID_1_3, DTD_CONFIGURATION_NAME_1_3);
-    
+
     PUBLIC2INTERNAL_DTD_MAP = map;
   }
 
@@ -262,7 +262,11 @@ public final class ConfigurationReader {
       } else if (module.getMetaData() != null) {
 
         final ConfigProperty property = module.getProperty(name);
-        if (property != null) {
+        if (property == null) {
+          final ConfigProperty newProperty = new ConfigProperty(name, value);
+          newProperty.setPropertyReference(isPropertyRef);
+          module.getProperties().add(newProperty);
+        } else {
           property.setValue(value);
           property.setPropertyReference(isPropertyRef);
         }
