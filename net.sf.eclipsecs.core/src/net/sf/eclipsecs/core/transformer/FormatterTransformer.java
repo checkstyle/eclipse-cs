@@ -20,6 +20,7 @@
 
 package net.sf.eclipsecs.core.transformer;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -98,7 +99,7 @@ public class FormatterTransformer {
                 .loadClass(name);
 
         final FTransformationClass transObj = (FTransformationClass) transformationClass
-                .newInstance();
+                .getConstructor().newInstance();
 
         transObj.setValue(mFormatterSetting.getFormatterSettings().get(rule));
 
@@ -109,6 +110,14 @@ public class FormatterTransformer {
       } catch (final InstantiationException e) {
         CheckstylePluginException.rethrow(e);
       } catch (final IllegalAccessException e) {
+        CheckstylePluginException.rethrow(e);
+      } catch (IllegalArgumentException e) {
+        CheckstylePluginException.rethrow(e);
+      } catch (InvocationTargetException e) {
+        CheckstylePluginException.rethrow(e);
+      } catch (NoSuchMethodException e) {
+        CheckstylePluginException.rethrow(e);
+      } catch (SecurityException e) {
         CheckstylePluginException.rethrow(e);
       }
     }

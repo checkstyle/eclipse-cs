@@ -97,7 +97,7 @@ public class ModifierOrderQuickfix extends AbstractASTResolution {
         int modifierIndex1 = MODIFIER_ORDER.indexOf(m1.getKeyword());
         int modifierIndex2 = MODIFIER_ORDER.indexOf(m2.getKeyword());
 
-        return new Integer(modifierIndex1).compareTo(new Integer(modifierIndex2));
+        return Integer.valueOf(modifierIndex1).compareTo(Integer.valueOf(modifierIndex2));
       }
     });
 
@@ -144,7 +144,7 @@ public class ModifierOrderQuickfix extends AbstractASTResolution {
         // find the range from first to last modifier. marker must be in between
         int minPos = modifiers.stream().mapToInt(Modifier::getStartPosition).min().getAsInt();
         int maxPos = modifiers.stream().mapToInt(Modifier::getStartPosition).max().getAsInt();
-        
+
         if (minPos <= markerStartOffset && markerStartOffset <= maxPos) {
           List<?> reorderedModifiers = reOrderModifiers(node.modifiers());
           node.modifiers().clear();

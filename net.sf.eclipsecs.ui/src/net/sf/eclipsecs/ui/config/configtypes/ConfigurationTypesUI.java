@@ -20,6 +20,7 @@
 
 package net.sf.eclipsecs.ui.config.configtypes;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,7 +40,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 /**
  * Register for the configuration types ui thats use the
  * <i>net.sf.eclipsecs.ui.configtypesui </i> extension point.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public final class ConfigurationTypesUI {
@@ -106,7 +107,7 @@ public final class ConfigurationTypesUI {
 
   /**
    * Creates the editor for a given configuration type.
-   * 
+   *
    * @param configType
    *          the configuration type
    * @return the editor
@@ -122,13 +123,21 @@ public final class ConfigurationTypesUI {
     if (editorClass != null) {
 
       try {
-        ICheckConfigurationEditor editor = editorClass.newInstance();
+        ICheckConfigurationEditor editor = editorClass.getConstructor().newInstance();
         return editor;
       } catch (InstantiationException e) {
         CheckstylePluginException.rethrow(e);
       } catch (IllegalAccessException e) {
         CheckstylePluginException.rethrow(e);
       } catch (ClassCastException e) {
+        CheckstylePluginException.rethrow(e);
+      } catch (IllegalArgumentException e) {
+        CheckstylePluginException.rethrow(e);
+      } catch (InvocationTargetException e) {
+        CheckstylePluginException.rethrow(e);
+      } catch (NoSuchMethodException e) {
+        CheckstylePluginException.rethrow(e);
+      } catch (SecurityException e) {
         CheckstylePluginException.rethrow(e);
       }
     }
@@ -138,7 +147,7 @@ public final class ConfigurationTypesUI {
 
   /**
    * Return an image for the given configuration type.
-   * 
+   *
    * @param configType
    *          the configuration type
    * @return the image representing the configuration type or <code>null</code>

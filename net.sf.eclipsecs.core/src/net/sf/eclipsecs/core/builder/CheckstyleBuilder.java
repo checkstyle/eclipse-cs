@@ -181,14 +181,14 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
       project.deleteMarkers(CheckstyleMarker.MARKER_ID, false, IResource.DEPTH_INFINITE);
 
       Map<String, Object> markerAttributes = new HashMap<>();
-      markerAttributes.put(IMarker.PRIORITY, new Integer(IMarker.PRIORITY_HIGH));
-      markerAttributes.put(IMarker.SEVERITY, new Integer(IMarker.SEVERITY_ERROR));
+      markerAttributes.put(IMarker.PRIORITY, Integer.valueOf(IMarker.PRIORITY_HIGH));
+      markerAttributes.put(IMarker.SEVERITY, Integer.valueOf(IMarker.SEVERITY_ERROR));
       markerAttributes.put(IMarker.MESSAGE,
               NLS.bind(Messages.CheckstyleBuilder_msgWrongBuilderOrder, project.getName()));
 
       // enables own category under Java Problem Type
       // setting for Problems view (RFE 1530366)
-      markerAttributes.put("categoryId", new Integer(999)); //$NON-NLS-1$
+      markerAttributes.put("categoryId", Integer.valueOf(999)); //$NON-NLS-1$
 
       // create a marker for the actual resource
       IMarker marker = project.createMarker(CheckstyleMarker.MARKER_ID);

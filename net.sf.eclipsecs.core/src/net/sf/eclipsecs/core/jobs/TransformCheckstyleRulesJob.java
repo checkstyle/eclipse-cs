@@ -23,6 +23,7 @@ package net.sf.eclipsecs.core.jobs;
 import com.google.common.io.Closeables;
 import com.puppycrawl.tools.checkstyle.ConfigurationLoader;
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
+import com.puppycrawl.tools.checkstyle.ConfigurationLoader.IgnoredModulesOptions;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.puppycrawl.tools.checkstyle.api.Configuration;
 
@@ -100,7 +101,8 @@ public class TransformCheckstyleRulesJob extends WorkspaceJob {
         try {
           in = configFile.getCheckConfigFileInputSource();
 
-          Configuration configuration = ConfigurationLoader.loadConfiguration(in, resolver, true);
+          Configuration configuration = ConfigurationLoader.loadConfiguration(in, resolver,
+                  IgnoredModulesOptions.OMIT);
 
           // flatten the nested configuration tree into a list
           recurseConfiguration(configuration, rules);

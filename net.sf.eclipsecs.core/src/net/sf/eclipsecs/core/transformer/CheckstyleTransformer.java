@@ -22,6 +22,7 @@ package net.sf.eclipsecs.core.transformer;
 
 import com.puppycrawl.tools.checkstyle.api.Configuration;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -100,7 +101,7 @@ public class CheckstyleTransformer {
         transformationClass = CheckstylePlugin.getDefault().getAddonExtensionClassLoader()
                 .loadClass(name);
         final CTransformationClass transObj = (CTransformationClass) transformationClass
-                .newInstance();
+                .getConstructor().newInstance();
         transObj.setRule(rule);
         mTransformationClasses.add(transObj);
         // Logger.writeln("using " + name + " to transform rule \""
@@ -110,6 +111,14 @@ public class CheckstyleTransformer {
       } catch (final InstantiationException e) {
         CheckstylePluginException.rethrow(e);
       } catch (final IllegalAccessException e) {
+        CheckstylePluginException.rethrow(e);
+      } catch (IllegalArgumentException e) {
+        CheckstylePluginException.rethrow(e);
+      } catch (InvocationTargetException e) {
+        CheckstylePluginException.rethrow(e);
+      } catch (NoSuchMethodException e) {
+        CheckstylePluginException.rethrow(e);
+      } catch (SecurityException e) {
         CheckstylePluginException.rethrow(e);
       }
     }

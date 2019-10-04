@@ -475,9 +475,9 @@ public class MarkerStatsView extends AbstractStatsView {
       Stats stats = getStats();
       if (stats != null) {
         String text = NLS.bind(Messages.MarkerStatsView_lblOverviewMessage,
-                new Object[] { new Integer(stats.getMarkerCount()),
-                    new Integer(stats.getMarkerStats().size()),
-                    new Integer(stats.getMarkerCountAll()) });
+                new Object[] { Integer.valueOf(stats.getMarkerCount()),
+                    Integer.valueOf(stats.getMarkerStats().size()),
+                    Integer.valueOf(stats.getMarkerCountAll()) });
         mDescLabel.setText(text);
       } else {
         mDescLabel.setText("");
@@ -485,7 +485,7 @@ public class MarkerStatsView extends AbstractStatsView {
     } else {
 
       String text = NLS.bind(Messages.MarkerStatsView_lblDetailMessage, new Object[] {
-          mCurrentDetailCategory, new Integer(mDetailViewer.getTable().getItemCount()) });
+          mCurrentDetailCategory, Integer.valueOf(mDetailViewer.getTable().getItemCount()) });
       mDescLabel.setText(text);
     }
   }
@@ -659,13 +659,13 @@ public class MarkerStatsView extends AbstractStatsView {
 
       switch (colIndex) {
         case 0:
-          comparable = new Integer(stat.getMaxSeverity() * -1);
+          comparable = Integer.valueOf(stat.getMaxSeverity() * -1);
           break;
         case 1:
           comparable = stat.getIdentifiant();
           break;
         case 2:
-          comparable = new Integer(stat.getCount());
+          comparable = Integer.valueOf(stat.getCount());
           break;
 
         default:
@@ -758,7 +758,8 @@ public class MarkerStatsView extends AbstractStatsView {
 
       switch (colIndex) {
         case 0:
-          comparable = new Integer(marker.getAttribute(IMarker.SEVERITY, Integer.MAX_VALUE) * -1);
+          comparable = Integer.valueOf(marker.getAttribute(IMarker.SEVERITY, Integer.MAX_VALUE)
+                  * -1);
           break;
         case 1:
           comparable = marker.getResource().getName();
@@ -767,7 +768,7 @@ public class MarkerStatsView extends AbstractStatsView {
           comparable = marker.getResource().getParent().getFullPath().toString();
           break;
         case 3:
-          comparable = new Integer(marker.getAttribute(IMarker.LINE_NUMBER, Integer.MAX_VALUE));
+          comparable = Integer.valueOf(marker.getAttribute(IMarker.LINE_NUMBER, Integer.MAX_VALUE));
           break;
         case 4:
           comparable = marker.getAttribute(IMarker.MESSAGE, "");

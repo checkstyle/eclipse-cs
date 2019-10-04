@@ -136,7 +136,7 @@ public final class CheckerFactory {
       }
 
       // store checker in cache
-      Long modified = new Long(configFileData.getModificationStamp());
+      Long modified = Long.valueOf(configFileData.getModificationStamp());
       sCheckerMap.put(cacheKey, checker);
       sModifiedMap.put(cacheKey, modified);
     }
@@ -240,7 +240,7 @@ public final class CheckerFactory {
 
       // compare modification times of the configs
       Long oldTime = sModifiedMap.get(cacheKey);
-      Long newTime = new Long(modificationStamp);
+      Long newTime = Long.valueOf(modificationStamp);
 
       // no match - remove checker from cache
       if (oldTime == null || oldTime.compareTo(newTime) != 0) {

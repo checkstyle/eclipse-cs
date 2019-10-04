@@ -22,6 +22,7 @@ package net.sf.eclipsecs.core.config;
 
 import com.google.common.io.Closeables;
 import com.puppycrawl.tools.checkstyle.ConfigurationLoader;
+import com.puppycrawl.tools.checkstyle.ConfigurationLoader.IgnoredModulesOptions;
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 
@@ -96,7 +97,7 @@ public class CheckConfigurationTester {
     InputSource in = null;
     try {
       in = configFile.getCheckConfigFileInputSource();
-      ConfigurationLoader.loadConfiguration(in, resolver, false);
+      ConfigurationLoader.loadConfiguration(in, resolver, IgnoredModulesOptions.EXECUTE);
     } catch (CheckstyleException e) {
       CheckstylePluginException.rethrow(e);
     } finally {

@@ -20,6 +20,7 @@
 
 package net.sf.eclipsecs.ui.properties.filter;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,7 +35,7 @@ import org.eclipse.core.runtime.Platform;
 /**
  * Register for the filter editors thats use the
  * <i>net.sf.eclipsecs.ui.filtereditors </i> extension point.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public final class PluginFilterEditors {
@@ -84,7 +85,7 @@ public final class PluginFilterEditors {
 
   /**
    * Determines if a given filter has an editor.
-   * 
+   *
    * @param filter
    *          the filter
    * @return <code>true</code> if the filter has an editor, <code>false</code>
@@ -96,7 +97,7 @@ public final class PluginFilterEditors {
 
   /**
    * Creates the filter editor for a given filter.
-   * 
+   *
    * @param filter
    *          the filter
    * @return the filter editor
@@ -110,13 +111,21 @@ public final class PluginFilterEditors {
     if (editorClass != null) {
 
       try {
-        IFilterEditor editor = editorClass.newInstance();
+        IFilterEditor editor = editorClass.getConstructor().newInstance();
         return editor;
       } catch (InstantiationException e) {
         CheckstylePluginException.rethrow(e);
       } catch (IllegalAccessException e) {
         CheckstylePluginException.rethrow(e);
       } catch (ClassCastException e) {
+        CheckstylePluginException.rethrow(e);
+      } catch (IllegalArgumentException e) {
+        CheckstylePluginException.rethrow(e);
+      } catch (InvocationTargetException e) {
+        CheckstylePluginException.rethrow(e);
+      } catch (NoSuchMethodException e) {
+        CheckstylePluginException.rethrow(e);
+      } catch (SecurityException e) {
         CheckstylePluginException.rethrow(e);
       }
     }

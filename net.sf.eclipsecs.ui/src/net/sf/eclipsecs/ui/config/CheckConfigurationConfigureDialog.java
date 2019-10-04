@@ -996,8 +996,8 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
     @Override
     public Comparable<?> getComparableValue(Object element, int col) {
       if (element instanceof Module && col == 0) {
-        return Severity.ignore.equals(((Module) element).getSeverity()) ? new Integer(0)
-                : new Integer(1);
+        return Severity.ignore.equals(((Module) element).getSeverity()) ? Integer.valueOf(0)
+                : Integer.valueOf(1);
       }
 
       return getColumnText(element, col);

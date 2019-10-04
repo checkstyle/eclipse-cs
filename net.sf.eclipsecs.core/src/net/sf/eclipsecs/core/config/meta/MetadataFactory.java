@@ -170,7 +170,7 @@ public final class MetadataFactory {
       Class<?> checkClass = CheckstylePlugin.getDefault().getAddonExtensionClassLoader()
               .loadClass(module.getName());
 
-      Object moduleInstance = checkClass.newInstance();
+      Object moduleInstance = checkClass.getConstructor().newInstance();
 
       if (moduleInstance instanceof AbstractFileSetCheck) {
         parent = XMLTags.CHECKER_MODULE;
@@ -551,7 +551,8 @@ public final class MetadataFactory {
 
             if (IOptionProvider.class.isAssignableFrom(providerClass)) {
 
-              IOptionProvider provider = (IOptionProvider) providerClass.newInstance();
+              IOptionProvider provider = (IOptionProvider) providerClass.getConstructor()
+                      .newInstance();
               property.getPropertyEnumeration().addAll(provider.getOptions());
             } else if (Enum.class.isAssignableFrom(providerClass)) {
 

@@ -20,6 +20,7 @@
 
 package net.sf.eclipsecs.ui.quickfixes;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -36,7 +37,7 @@ import org.eclipse.ui.IMarkerResolutionGenerator2;
 
 /**
  * Profides marker resolutions (quickfixes) for Checkstyle markers.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public class CheckstyleMarkerResolutionGenerator implements IMarkerResolutionGenerator2 {
@@ -104,7 +105,8 @@ public class CheckstyleMarkerResolutionGenerator implements IMarkerResolutionGen
         Class<?> quickfixClass = CheckstyleUIPlugin.getDefault().getQuickfixExtensionClassLoader()
                 .loadClass(quickfixClassName);
 
-        ICheckstyleMarkerResolution fix = (ICheckstyleMarkerResolution) quickfixClass.newInstance();
+        ICheckstyleMarkerResolution fix = (ICheckstyleMarkerResolution) quickfixClass
+                .getConstructor().newInstance();
         fix.setRuleMetaData(ruleMetadata);
         fixes.add(fix);
       }
@@ -113,6 +115,14 @@ public class CheckstyleMarkerResolutionGenerator implements IMarkerResolutionGen
     } catch (ClassNotFoundException e) {
       CheckstyleLog.log(e);
     } catch (IllegalAccessException e) {
+      CheckstyleLog.log(e);
+    } catch (IllegalArgumentException e) {
+      CheckstyleLog.log(e);
+    } catch (InvocationTargetException e) {
+      CheckstyleLog.log(e);
+    } catch (NoSuchMethodException e) {
+      CheckstyleLog.log(e);
+    } catch (SecurityException e) {
       CheckstyleLog.log(e);
     }
     return fixes;

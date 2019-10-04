@@ -581,9 +581,9 @@ public class GraphStatsView extends AbstractStatsView {
       Stats stats = getStats();
       if (stats != null) {
         String text = NLS.bind(Messages.GraphStatsView_lblViewMessage,
-                new Object[] { new Integer(stats.getMarkerCount()),
-                    new Integer(stats.getMarkerStats().size()),
-                    new Integer(stats.getMarkerCountAll()) });
+                new Object[] { Integer.valueOf(stats.getMarkerCount()),
+                    Integer.valueOf(stats.getMarkerStats().size()),
+                    Integer.valueOf(stats.getMarkerCountAll()) });
         mLabelDesc.setText(text);
       } else {
         mLabelDesc.setText("");
@@ -591,7 +591,7 @@ public class GraphStatsView extends AbstractStatsView {
     } else {
 
       String text = NLS.bind(Messages.MarkerStatsView_lblDetailMessage, new Object[] {
-          mCurrentDetailCategory, new Integer(mDetailViewer.getTable().getItemCount()) });
+          mCurrentDetailCategory, Integer.valueOf(mDetailViewer.getTable().getItemCount()) });
       mLabelDesc.setText(text);
     }
   }
@@ -720,7 +720,8 @@ public class GraphStatsView extends AbstractStatsView {
 
       switch (colIndex) {
         case 0:
-          comparable = new Integer(marker.getAttribute(IMarker.SEVERITY, Integer.MAX_VALUE) * -1);
+          comparable = Integer.valueOf(marker.getAttribute(IMarker.SEVERITY, Integer.MAX_VALUE)
+                  * -1);
           break;
         case 1:
           comparable = marker.getResource().getName();
@@ -729,7 +730,7 @@ public class GraphStatsView extends AbstractStatsView {
           comparable = marker.getResource().getParent().getFullPath().toString();
           break;
         case 3:
-          comparable = new Integer(marker.getAttribute(IMarker.LINE_NUMBER, Integer.MAX_VALUE));
+          comparable = Integer.valueOf(marker.getAttribute(IMarker.LINE_NUMBER, Integer.MAX_VALUE));
           break;
         case 4:
           comparable = marker.getAttribute(IMarker.MESSAGE, "").toString();
