@@ -533,6 +533,21 @@
             <message-key key="unnecessary.paren.lambda" />
         </rule-metadata>
 
+        <rule-metadata name="%UnnecessarySemicolonInEnumeration.name" internal-name="UnnecessarySemicolonInEnumeration" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.UnnecessarySemicolonInEnumerationCheck" />
+            <description>%UnnecessarySemicolonInEnumeration.desc</description>
+            <message-key key="unnecessary.semicolon" />
+        </rule-metadata>
+
+        <rule-metadata name="%UnnecessarySemicolonInTryWithResources.name" internal-name="UnnecessarySemicolonInTryWithResources" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.UnnecessarySemicolonInTryWithResourcesCheck" />
+            <description>%UnnecessarySemicolonInTryWithResources.desc</description>
+            <property-metadata name="allowWhenNoBraceAfterSemicolon" datatype="Boolean" default-value="true">
+                <description>%UnnecessarySemicolonInTryWithResources.allowWhenNoBraceAfterSemicolon</description>
+            </property-metadata>
+            <message-key key="unnecessary.semicolon" />
+        </rule-metadata>
+
         <rule-metadata name="%OneStatementPerLine.name" internal-name="OneStatementPerLine" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.OneStatementPerLineCheck" />
             <description>%OneStatementPerLine.desc</description>
