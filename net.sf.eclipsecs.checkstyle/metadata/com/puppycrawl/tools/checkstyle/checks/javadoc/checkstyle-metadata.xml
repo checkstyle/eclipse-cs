@@ -234,6 +234,12 @@
             <message-key key="javadoc.missing" />
         </rule-metadata>
 
+        <rule-metadata name="%MissingJavadocPackage.name" internal-name="MissingJavadocPackage" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.javadoc.MissingJavadocPackageCheck" />
+            <description>%MissingJavadocPackage.desc</description>
+            <message-key key="package.javadoc.missing" />
+        </rule-metadata>
+
         <rule-metadata name="%MissingJavadocType.name" internal-name="MissingJavadocType" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.javadoc.MissingJavadocTypeCheck" />
             <description>%MissingJavadocType.desc</description>

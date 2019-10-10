@@ -88,6 +88,16 @@
             <message-key key="unable.open"/>
         </rule-metadata>
 
+        <rule-metadata name="%OrderedProperties.name" internal-name="OrderedProperties" parent="Checker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.OrderedPropertiesCheck"/>
+            <description>%OrderedProperties.desc</description>
+            <property-metadata name="fileExtensions" datatype="String" default-value="properties">
+                <description>%OrderedProperties.fileExtensions</description>
+            </property-metadata>
+            <message-key key="properties.notSorted.property"/>
+            <message-key key="unable.open.cause"/>
+        </rule-metadata>
+
         <rule-metadata name="%TodoComment.name" internal-name="TodoComment" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.TodoCommentCheck"/>
             <description>%TodoComment.desc</description>
