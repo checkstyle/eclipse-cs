@@ -109,7 +109,6 @@
                     <property-value-option value="VARIABLE_DEF" />
                     <property-value-option value="ANNOTATION_DEF" />
                     <property-value-option value="ANNOTATION_FIELD_DEF" />
-                    <property-value-option value="PARAMETER_DEF" />
                 </enumeration>
             </property-metadata>
             <property-metadata name="allowSamelineSingleParameterlessAnnotation" datatype="Boolean"
