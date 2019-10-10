@@ -392,6 +392,12 @@
             <message-key key="javadoc.wrong.singleton.html.tag" />
         </rule-metadata>
 
+        <rule-metadata name="%InvalidJavadocPosition.name" internal-name="InvalidJavadocPosition" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.javadoc.InvalidJavadocPositionCheck" />
+            <description>%InvalidJavadocPosition.desc</description>
+            <message-key key="invalid.position" />
+        </rule-metadata>
+
         <rule-metadata name="%JavadocParagraph.name" internal-name="JavadocParagraph" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocParagraphCheck" />
             <description>%JavadocParagraph.desc</description>
