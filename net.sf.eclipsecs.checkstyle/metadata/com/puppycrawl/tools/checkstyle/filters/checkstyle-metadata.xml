@@ -107,6 +107,30 @@
             <description>%SuppressWarningsFilter.desc</description>
         </rule-metadata>
 
+        <rule-metadata name="%SuppressionSingleFilter.name" internal-name="SuppressionSingleFilter" parent="Checker"
+            hasSeverity="false">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.filters.SuppressionSingleFilter"/>
+            <description>%SuppressionSingleFilter.desc</description>
+            <property-metadata name="files" datatype="Regex">
+                <description>%SuppressionSingleFilter.files</description>
+            </property-metadata>
+            <property-metadata name="checks" datatype="Regex">
+                <description>%SuppressionSingleFilter.checks</description>
+            </property-metadata>
+            <property-metadata name="message" datatype="Regex">
+                <description>%SuppressionSingleFilter.message</description>
+            </property-metadata>
+            <property-metadata name="id" datatype="String">
+                <description>%SuppressionSingleFilter.id</description>
+            </property-metadata>
+            <property-metadata name="lines" datatype="String">
+                <description>%SuppressionSingleFilter.lines</description>
+            </property-metadata>
+            <property-metadata name="columns" datatype="String">
+                <description>%SuppressionSingleFilter.columns</description>
+            </property-metadata>
+        </rule-metadata>
+
         <rule-metadata name="%SuppressionXpathFilter.name" internal-name="SuppressionXpathFilter" parent="TreeWalker"
             hasSeverity="false">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.filters.SuppressionXpathFilter"/>

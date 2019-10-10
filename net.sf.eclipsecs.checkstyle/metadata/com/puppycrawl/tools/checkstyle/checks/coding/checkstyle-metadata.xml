@@ -298,6 +298,9 @@
             <property-metadata name="ignoreAnnotation" datatype="Boolean" default-value="false">
                 <description>%MagicNumber.ignoreAnnotation</description>
             </property-metadata>
+            <property-metadata name="ignoreAnnotationElementDefaults" datatype="Boolean" default-value="true">
+                <description>%MagicNumber.ignoreAnnotationElementDefaults</description>
+            </property-metadata>
             <property-metadata name="ignoreFieldDeclaration" datatype="Boolean" default-value="false">
                 <description>%MagicNumber.ignoreFieldDeclaration</description>
             </property-metadata>
@@ -551,6 +554,9 @@
         <rule-metadata name="%OneStatementPerLine.name" internal-name="OneStatementPerLine" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.OneStatementPerLineCheck" />
             <description>%OneStatementPerLine.desc</description>
+            <property-metadata name="treatTryResourcesAsStatement" datatype="Boolean" default-value="false">
+                <description>%OneStatementPerLine.treatTryResourcesAsStatement</description>
+            </property-metadata>
             <message-key key="multiple.statements.line" />
         </rule-metadata>
 
