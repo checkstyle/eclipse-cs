@@ -77,7 +77,6 @@
             <property-metadata name="ignoreMethodNamesRegex" datatype="Regex">
                 <description>%JavadocMethod.ignoreMethodNamesRegex</description>
             </property-metadata>
-            <message-key key="javadoc.missing" />
             <message-key key="javadoc.classInfo" />
             <message-key key="javadoc.unusedTagGeneral" />
             <message-key key="javadoc.invalidInheritDoc" />
@@ -196,6 +195,40 @@
                 <description>%JavadocVariable.tokens</description>
                 <enumeration>
                     <property-value-option value="ENUM_CONSTANT_DEF"/>
+                </enumeration>
+            </property-metadata>
+            <message-key key="javadoc.missing" />
+        </rule-metadata>
+
+        <rule-metadata name="%MissingJavadocMethod.name" internal-name="MissingJavadocMethod" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.javadoc.MissingJavadocMethodCheck" />
+            <description>%MissingJavadocMethod.desc</description>
+            <property-metadata name="minLineCount" datatype="Integer" default-value="-1">
+                <description>%MissingJavadocMethod.minLineCount</description>
+            </property-metadata>
+            <property-metadata name="allowedAnnotations" datatype="String">
+                <description>%MissingJavadocMethod.allowedAnnotations</description>
+            </property-metadata>
+            <property-metadata name="scope" datatype="SingleSelect" default-value="private">
+                <description>%MissingJavadocMethod.scope</description>
+                <enumeration option-provider="com.puppycrawl.tools.checkstyle.api.Scope" />
+            </property-metadata>
+            <property-metadata name="excludeScope" datatype="SingleSelect" default-value="nothing">
+                <description>%MissingJavadocMethod.excludeScope</description>
+                <enumeration option-provider="com.puppycrawl.tools.checkstyle.api.Scope" />
+            </property-metadata>
+            <property-metadata name="allowMissingPropertyJavadoc" datatype="Boolean" default-value="false">
+                <description>%MissingJavadocMethod.allowMissingPropertyJavadoc</description>
+            </property-metadata>
+            <property-metadata name="ignoreMethodNamesRegex" datatype="Regex">
+                <description>%MissingJavadocMethod.ignoreMethodNamesRegex</description>
+            </property-metadata>
+            <property-metadata name="tokens" datatype="MultiCheck" default-value="METHOD_DEF,CTOR_DEF,ANNOTATION_FIELD_DEF">
+                <description>%MissingJavadocMethod.tokens</description>
+                <enumeration>
+                    <property-value-option value="METHOD_DEF" />
+                    <property-value-option value="CTOR_DEF" />
+                    <property-value-option value="ANNOTATION_FIELD_DEF" />
                 </enumeration>
             </property-metadata>
             <message-key key="javadoc.missing" />
