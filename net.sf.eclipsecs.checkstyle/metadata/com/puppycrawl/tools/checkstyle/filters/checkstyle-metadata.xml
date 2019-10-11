@@ -51,6 +51,9 @@
             <property-metadata name="messageFormat" datatype="Regex">
                 <description>%SuppressionCommentFilter.messageFormat</description>
             </property-metadata>
+            <property-metadata name="idFormat" datatype="Regex">
+                <description>%SuppressionCommentFilter.idFormat</description>
+            </property-metadata>
             <property-metadata name="checkCPP" datatype="Boolean" default-value="true">
                 <description>%SuppressionCommentFilter.checkCPP</description>
             </property-metadata>
@@ -71,6 +74,9 @@
             </property-metadata>
             <property-metadata name="messageFormat" datatype="Regex">
                 <description>%SuppressWithNearbyCommentFilter.messageFormat</description>
+            </property-metadata>
+            <property-metadata name="idFormat" datatype="Regex">
+                <description>%SuppressWithNearbyCommentFilter.idFormat</description>
             </property-metadata>
             <property-metadata name="influenceFormat" datatype="Regex" default-value="0">
                 <description>%SuppressWithNearbyCommentFilter.influenceFormat</description>
@@ -98,6 +104,9 @@
             </property-metadata>
             <property-metadata name="messageFormat" datatype="Regex">
                 <description>%SuppressWithPlainTextCommentFilter.messageFormat</description>
+            </property-metadata>
+            <property-metadata name="idFormat" datatype="Regex">
+                <description>%SuppressWithPlainTextCommentFilter.idFormat</description>
             </property-metadata>
         </rule-metadata>
 
