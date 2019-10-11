@@ -49,6 +49,9 @@
             <property-metadata name="maximum" datatype="Integer" default-value="0">
                 <description>%RegexpMultiline.maximum</description>
             </property-metadata>
+            <property-metadata name="matchAcrossLines" datatype="Boolean" default-value="false">
+                <description>%RegexpMultiline.matchAcrossLines</description>
+            </property-metadata>
             <property-metadata name="fileExtensions" datatype="String">
                 <description>%RegexpMultiline.fileExtensions</description>
             </property-metadata>

@@ -21,9 +21,6 @@
         <rule-metadata name="%JavadocMethod.name" internal-name="JavadocMethod" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocMethodCheck" />
             <description>%JavadocMethod.desc</description>
-            <property-metadata name="minLineCount" datatype="Integer" default-value="-1">
-                <description>%JavadocMethod.minLineCount</description>
-            </property-metadata>
             <property-metadata name="allowedAnnotations" datatype="String">
                 <description>%JavadocMethod.allowedAnnotations</description>
             </property-metadata>
@@ -53,12 +50,6 @@
             <property-metadata name="allowMissingReturnTag" datatype="Boolean" default-value="false">
                 <description>%JavadocMethod.allowMissingReturnTag</description>
             </property-metadata>
-            <property-metadata name="allowMissingJavadoc" datatype="Boolean" default-value="false">
-                <description>%JavadocMethod.allowMissingJavadoc</description>
-            </property-metadata>
-            <property-metadata name="allowMissingPropertyJavadoc" datatype="Boolean" default-value="false">
-                <description>%JavadocMethod.allowMissingPropertyJavadoc</description>
-            </property-metadata>
             <property-metadata name="logLoadErrors" datatype="Boolean" default-value="true">
                 <description>%JavadocMethod.logLoadErrors</description>
             </property-metadata>
@@ -73,9 +64,6 @@
                     <property-value-option value="CTOR_DEF" />
                     <property-value-option value="ANNOTATION_FIELD_DEF" />
                 </enumeration>
-            </property-metadata>
-            <property-metadata name="ignoreMethodNamesRegex" datatype="Regex">
-                <description>%JavadocMethod.ignoreMethodNamesRegex</description>
             </property-metadata>
             <message-key key="javadoc.classInfo" />
             <message-key key="javadoc.unusedTagGeneral" />
