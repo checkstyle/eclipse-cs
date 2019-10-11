@@ -536,6 +536,29 @@
             <message-key key="unnecessary.paren.lambda" />
         </rule-metadata>
 
+        <rule-metadata name="%UnnecessarySemicolonAfterTypeMemberDeclaration.name" internal-name="UnnecessarySemicolonAfterTypeMemberDeclaration" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.UnnecessarySemicolonAfterTypeMemberDeclarationCheck" />
+            <description>%UnnecessarySemicolonAfterTypeMemberDeclaration.desc</description> 
+            <property-metadata name="tokens" datatype="MultiCheck"
+                default-value="CLASS_DEF,INTERFACE_DEF,ENUM_DEF,ANNOTATION_DEF,VARIABLE_DEF,ANNOTATION_FIELD_DEF,STATIC_INIT,INSTANCE_INIT,CTOR_DEF,METHOD_DEF,ENUM_CONSTANT_DEF">
+                <description>%UnnecessarySemicolonAfterTypeMemberDeclaration.tokens</description>
+                <enumeration>
+                    <property-value-option value="CLASS_DEF"/>
+                    <property-value-option value="INTERFACE_DEF"/>
+                    <property-value-option value="ENUM_DEF"/>
+                    <property-value-option value="ANNOTATION_DEF"/>
+                    <property-value-option value="VARIABLE_DEF"/>
+                    <property-value-option value="ANNOTATION_FIELD_DEF"/>
+                    <property-value-option value="STATIC_INIT"/>
+                    <property-value-option value="INSTANCE_INIT"/>
+                    <property-value-option value="CTOR_DEF"/>
+                    <property-value-option value="METHOD_DEF"/>
+                    <property-value-option value="ENUM_CONSTANT_DEF"/>
+                </enumeration>
+            </property-metadata>
+            <message-key key="unnecessary.semicolon" />
+        </rule-metadata>
+        
         <rule-metadata name="%UnnecessarySemicolonInEnumeration.name" internal-name="UnnecessarySemicolonInEnumeration" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.UnnecessarySemicolonInEnumerationCheck" />
             <description>%UnnecessarySemicolonInEnumeration.desc</description>

@@ -43,12 +43,14 @@
         <rule-metadata name="%MissingDeprecated.name" internal-name="MissingDeprecated" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.annotation.MissingDeprecatedCheck" />
             <description>%MissingDeprecated.desc</description>
-            <property-metadata name="skipNoJavadoc" datatype="Boolean" default-value="false">
-                <description>%MissingDeprecated.skipNoJavadoc</description>
+            <property-metadata name="violateExecutionOnNonTightHtml" datatype="Boolean" default-value="false">
+                <description>%MissingDeprecated.violateExecutionOnNonTightHtml</description>
             </property-metadata>
             <message-key key="annotation.missing.deprecated" />
             <message-key key="javadoc.duplicateTag" />
-            <message-key key="javadoc.missing" />
+            <message-key key="javadoc.missed.html.close" />
+            <message-key key="javadoc.parse.rule.error" />
+            <message-key key="javadoc.wrong.singleton.html.tag" />
         </rule-metadata>
 
         <rule-metadata name="%MissingOverride.name" internal-name="MissingOverride" parent="TreeWalker">
