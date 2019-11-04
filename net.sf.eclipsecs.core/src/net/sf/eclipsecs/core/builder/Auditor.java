@@ -36,7 +36,6 @@ import java.util.Set;
 
 import net.sf.eclipsecs.core.CheckstylePluginPrefs;
 import net.sf.eclipsecs.core.Messages;
-import net.sf.eclipsecs.core.config.ConfigurationReader;
 import net.sf.eclipsecs.core.config.ICheckConfiguration;
 import net.sf.eclipsecs.core.config.Module;
 import net.sf.eclipsecs.core.config.meta.MetadataFactory;
@@ -140,12 +139,8 @@ public class Auditor {
       // create checker
       checker = CheckerFactory.createChecker(mCheckConfiguration, project);
 
-      // get the additional data
-      ConfigurationReader.AdditionalConfigData additionalData = CheckerFactory
-              .getAdditionalData(mCheckConfiguration, project);
-
       // create and add listener
-      listener = new CheckstyleAuditListener(project, additionalData);
+      listener = new CheckstyleAuditListener(project);
       checker.addListener(listener);
 
       // reconfigure the shared classloader for the current
@@ -244,9 +239,6 @@ public class Auditor {
    */
   private class CheckstyleAuditListener implements AuditListener {
 
-    /** Additional data about the Checkstyle configuration. */
-    private final ConfigurationReader.AdditionalConfigData mAdditionalConfigData;
-
     /** the project. */
     private final IProject mProject;
 
@@ -276,11 +268,8 @@ public class Auditor {
      */
     private Set<IPath> mConnectedFileBufferPaths = new HashSet<>();
 
-    public CheckstyleAuditListener(IProject project,
-            ConfigurationReader.AdditionalConfigData additionalData) {
+    public CheckstyleAuditListener(IProject project) {
       mProject = project;
-
-      mAdditionalConfigData = additionalData;
 
       // init the marker limitation
       mLimitMarkers = CheckstylePluginPrefs
@@ -435,11 +424,9 @@ public class Auditor {
           int lineOffset = lineInformation.getOffset();
           int lineLength = lineInformation.getLength();
 
-          String lineData = mDocument.get(lineOffset, lineLength);
-
           // annotate from the error column until the end of
           // the line
-          int offset = getOffsetFromColumn(lineData, error.getColumn());
+          int offset = error.getLocalizedMessage().getColumnCharIndex();
 
           markerAttributes.put(IMarker.CHAR_START, Integer.valueOf(lineOffset + offset));
           markerAttributes.put(IMarker.CHAR_END, Integer.valueOf(lineOffset + lineLength));
@@ -492,36 +479,6 @@ public class Auditor {
       } catch (CoreException e) {
         CheckstyleLog.log(e);
       }
-    }
-
-    /**
-     * Calculates the offset for the given column within this line. This is done to get a correct
-     * offset if tab characters are used within this line.
-     *
-     * @param line
-     *          the line as string
-     * @param column
-     *          the column
-     * @return the true offset of this column within the line
-     */
-    private int getOffsetFromColumn(String line, int column) {
-
-      int calculatedColumn = 0;
-
-      int lineLength = line.length();
-      for (int i = 0; i < lineLength; i++) {
-        char c = line.charAt(i);
-        if (c == '\t') {
-          calculatedColumn += mAdditionalConfigData.getTabWidth();
-        } else {
-          calculatedColumn++;
-        }
-
-        if (calculatedColumn >= column) {
-          return i;
-        }
-      }
-      return lineLength;
     }
 
     private int getSeverityValue(SeverityLevel severity) {
