@@ -21,11 +21,11 @@
   },
   {
     "version": "Release 8.16.0",
-    "template": "partials/releases/8.16.0/release_notes.html",
+    "template": "partials/releases/8.16.0/release_notes.html"
   },
   {
     "version": "Release 8.15.0",
-    "template": "partials/releases/8.15.0/release_notes.html",
+    "template": "partials/releases/8.15.0/release_notes.html"
   },
   {
     "version": "Release 8.14.0",
