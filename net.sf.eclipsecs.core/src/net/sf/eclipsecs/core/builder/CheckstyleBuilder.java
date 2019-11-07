@@ -55,6 +55,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
+import org.eclipse.jdt.core.IJavaModelMarker;
 import org.eclipse.osgi.util.NLS;
 
 /**
@@ -279,10 +280,18 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
 
             // if file set includes file add to the audit
             if (fileSet.includesFile(file)) {
-              audit.addFile(file);
+              boolean hasCompileErrors = IMarker.SEVERITY_ERROR == file.findMaxProblemSeverity(
+                      IJavaModelMarker.JAVA_MODEL_PROBLEM_MARKER, true, IResource.DEPTH_ZERO);
 
               // remove markers on this file
               file.deleteMarkers(CheckstyleMarker.MARKER_ID, false, IResource.DEPTH_ZERO);
+
+              // avoid checkstyle parser errors being shown
+              if (hasCompileErrors) {
+                continue;
+              }
+
+              audit.addFile(file);
 
               // remove markers from package to prevent
               // packagehtml messages from accumulatin
