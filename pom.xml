@@ -251,7 +251,7 @@
                             <configuration>
                                 <rules>
                                     <requireMavenVersion>
-                                        <version>3.0</version>
+                                        <version>3.6.2</version>
                                     </requireMavenVersion>
                                     <requireReleaseDeps/>
                                 </rules>
