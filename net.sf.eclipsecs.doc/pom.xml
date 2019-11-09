@@ -78,7 +78,7 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${basedir}/docs</outputDirectory>
+                            <outputDirectory>${project.basedir}/../docs</outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>src/main/resources</directory>
