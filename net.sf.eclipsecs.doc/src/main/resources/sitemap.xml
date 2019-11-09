@@ -2,6 +2,14 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+  <!--
+    The sitemap is used by the search indexers (google etc) to discover subpages
+    and check whether they have changed and need reindexing.
+    Since the eclipse-cs website are not static webpages but dynamically rendered in the browser
+    the indexers need a bit of help.
+    So effectively if you remove timestamps or keep them static,
+    indexers would think content hasn't changed.
+  -->
   <url>
     <loc>https://checkstyle.org/eclipse-cs/</loc>
     <lastmod>${timestamp}</lastmod>
