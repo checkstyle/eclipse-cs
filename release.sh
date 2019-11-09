@@ -56,7 +56,10 @@ sed -i "/\[/r /tmp/add-to-release.json" net.sf.eclipsecs.doc/src/main/resources/
 # deploy is manual till it tested
 exit 0;
 
-echo "Deploy binaries to bintray"
+echo "package binaries, this will also update the website content in project root docs"
+mvn clean package
+
+echo "Build and Deploy binaries only to bintray"
 mvn deploy -Pbintray
 
 echo "Commit/Push local changes to Git master branch,"
