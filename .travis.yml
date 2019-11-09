@@ -5,11 +5,30 @@ cache:
   apt: true
   directories:
     - ~/.m2
-    
+
 branches:
   only:
     - master
 
 install:
-  -
+  - ""
 
+matrix:
+  fast_finish: true
+  include:
+    - jdk: openjdk8
+      env:
+        - DESC="install (openjdk8)"
+        - CMD="mvn install && git diff"
+
+    - jdk: openjdk11
+      env:
+        - DESC="install (openjdk11)"
+        - CMD="mvn install && git diff"
+
+script:
+  - |
+     echo "eval of CMD is starting";
+     echo "CMD=$CMD";
+     eval $CMD;
+     echo "eval of CMD is completed";
