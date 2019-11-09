@@ -53,9 +53,6 @@ cat <<EOT > /tmp/add-to-release.json
 EOT
 sed -i "/\[/r /tmp/add-to-release.json" net.sf.eclipsecs.doc/src/main/resources/releases.json
 
-# deploy is manual till it tested
-exit 0;
-
 echo "package binaries, this will also update the website content in project root docs"
 mvn clean package
 
