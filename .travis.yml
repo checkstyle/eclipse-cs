@@ -26,6 +26,11 @@ matrix:
         - DESC="install (openjdk11)"
         - CMD="mvn install && git diff"
 
+    - jdk: openjdk12
+      env:
+        - DESC="install (openjdk12)"
+        - CMD="mvn install && git diff"
+
 script:
   - |
      echo "eval of CMD is starting";
