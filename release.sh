@@ -57,6 +57,7 @@ echo "Build and Deploy binaries only to bintray"
 mvn deploy -Pbintray
 
 echo "update the website content in project root 'docs' folder"
+echo "FYI: Github is setup to show content of master:HEAD '/doc' folder"
 echo "further commit/push will publish website changes"
 cd net.sf.eclipsecs.doc
 mvn clean package
