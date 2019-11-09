@@ -29,7 +29,7 @@ Clone the git repository (or create a fork) and import all projects into your Ec
 
 Open a command line in project root directory and run `mvn clean package`. 
 
-Find the installable bundle in net.sf.eclipsecs-updatesite/target.
+Find the installable bundle update site archive `net.sf.eclipsecs-updatesite/target/net.sf.eclipsecs-updatesite_X.X.X.YYYYmmDDHHMM.zip`.
 
 [travis]:https://travis-ci.org/checkstyle/eclipse-cs
 [travis img]:https://travis-ci.org/checkstyle/eclipse-cs.svg?branch=master
