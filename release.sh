@@ -53,14 +53,16 @@ cat <<EOT > /tmp/add-to-release.json
 EOT
 sed -i "/\[/r /tmp/add-to-release.json" net.sf.eclipsecs.doc/src/main/resources/releases.json
 
-echo "package binaries, this will also update the website content in project root docs"
-mvn clean package
-
 echo "Build and Deploy binaries only to bintray"
 mvn deploy -Pbintray
 
-echo "Commit/Push local changes to Git master branch,"
-echo "this will also publish the project website (docs folder)"
+echo "update the website content in project root 'docs' folder"
+echo "further commit/push will publish website changes"
+cd net.sf.eclipsecs.doc
+mvn clean package
+cd -
+
+echo "Commit/Push local changes to Git master branch"
 git add .
 git commit -m "config: release ${RELEASE}"
 git push origin master
@@ -68,3 +70,5 @@ git push origin master
 echo "Create release tag on latest commit, push tag to origin"
 git tag $RELEASE
 git push origin --tags
+
+echo "Release is done."
