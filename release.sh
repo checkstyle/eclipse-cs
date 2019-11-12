@@ -36,7 +36,7 @@ mkdir net.sf.eclipsecs.doc/src/main/resources/partials/releases/${RELEASE}
 cp -r net.sf.eclipsecs.doc/src/main/templates/release_notes.html \
   net.sf.eclipsecs.doc/src/main/resources/partials/releases/${RELEASE}
 git log --pretty=oneline --abbrev-commit $(git rev-list --tags --max-count=1)..HEAD \
-    | grep -vE "minor|doc|config|maven-release-plugin" \
+    | grep -vE "minor|doc|infra|config|maven-release-plugin" \
     | sed 's/^....... //' \
     | sed 's/^/        <li>/g' \
     | sed 's/$/<\/li>/g' > /tmp/release-notes-content.txt
