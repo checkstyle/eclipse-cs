@@ -5,11 +5,14 @@ echo "Make sure you prepared your PC for automative deployment"
 echo "Release process: https://github.com/checkstyle/eclipse-cs/wiki/How-to-release"
 
 RELEASE=$1
+FUTURE_RELEASE=$2
 PREV_RELEASE=$(xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 \
            -t -m pom:project -v pom:version pom.xml | sed "s/-SNAPSHOT//")
+TOKEN_FILE=~/.m2/token-checkstyle.txt
 
 echo "PREVIOUS RELEASE version:"$PREV_RELEASE
 echo "RELEASE version:"$RELEASE
+echo "FUTURE_RELEASE version:"$FUTURE_RELEASE
 
 if [[ -z $RELEASE ]]; then
   echo "Please provide version as argument."
@@ -17,6 +20,14 @@ if [[ -z $RELEASE ]]; then
 fi
 if [[ -z $PREV_RELEASE ]]; then
   echo "Problem to calculate previous release version."
+  exit 1
+fi
+if [[ -z $FUTURE_RELEASE ]]; then
+  echo "Problem to calculate future release version."
+  exit 1
+fi
+if [[ ! -f $TOKEN_FILE ]]; then
+  echo "Problem to calculate future release version."
   exit 1
 fi
 
@@ -71,5 +82,31 @@ git push origin master
 echo "Create release tag on latest commit, push tag to origin"
 git tag $RELEASE
 git push origin --tags
+
+echo "Get token value"
+TKN=$(cat $TOKEN_FILE)
+
+echo "Create release based on tag"
+curl -i -H "Authorization: token $TKN" \
+  -d "{ \"tag_name\": \"$RELEASE\", \
+        \"body\": \"https://checkstyle.org/eclipse-cs/#"\!"/releasenotes/\", \
+        \"draft\": false,   \"prerelease\": false }" \
+  -X POST https://api.github.com/repos/checkstyle/eclipse-cs/releases
+
+echo "Close previous milestone"
+MILESTONE_ID=$(curl -s \
+                -X GET https://api.github.com/repos/checkstyle/eclipse-cs/milestones?state=open \
+                | jq ".[0] | .number")
+curl -i -H "Authorization: token $TKN" \
+  -d "{ \"state\": \"closed\" }" \
+  -X PATCH https://api.github.com/repos/checkstyle/eclipse-cs/milestones/$MILESTONE_ID
+
+echo "Create new milestone"
+curl -i -H "Authorization: token $TKN" \
+  -d "{ \"title\": \"$FUTURE_RELEASE\", \
+        \"state\": \"open\", \
+        \"description\": \"\" \
+        }" \
+  -X POST https://api.github.com/repos/checkstyle/eclipse-cs/milestones
 
 echo "Release is done."
