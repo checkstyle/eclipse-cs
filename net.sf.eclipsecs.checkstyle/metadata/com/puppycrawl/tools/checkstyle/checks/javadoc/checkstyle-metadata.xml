@@ -400,6 +400,16 @@
             <message-key key="javadoc.parse.rule.error" />
             <message-key key="javadoc.wrong.singleton.html.tag" />
         </rule-metadata>
+		
+        <rule-metadata name="%JavadocContentLocation.name" internal-name="JavadocContentLocation" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocContentLocationCheck" />
+            <description>%JavadocContentLocation.desc</description>
+            <property-metadata name="location" datatype="String" default-value="second_line">
+                <description>%JavadocContentLocation.location</description>
+            </property-metadata>
+            <message-key key="javadoc.content.first.line" />
+            <message-key key="javadoc.content.second.line" />
+        </rule-metadata>
 
         <rule-metadata name="%JavadocParagraph.name" internal-name="JavadocParagraph" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocParagraphCheck" />
