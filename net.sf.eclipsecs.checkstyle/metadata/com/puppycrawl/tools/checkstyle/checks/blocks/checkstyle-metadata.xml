@@ -153,6 +153,7 @@
                     <property-value-option value="LITERAL_DO"/>
                     <property-value-option value="STATIC_INIT"/>
                     <property-value-option value="INSTANCE_INIT"/>
+                    <property-value-option value="ANNOTATION_DEF"/>
                 </enumeration>
             </property-metadata>
             <message-key key="line.alone"/>
