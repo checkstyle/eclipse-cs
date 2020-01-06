@@ -386,6 +386,12 @@
             <message-key key="nested.try.depth" />
         </rule-metadata>
 
+        <rule-metadata name="%NoArrayTrailingComma.name" internal-name="NoArrayTrailingComma" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.NoArrayTrailingCommaCheck" />
+            <description>%NoArrayTrailingComma.desc</description>
+            <message-key key="no.array.trailing.comma" />
+        </rule-metadata>
+
         <rule-metadata name="%NoClone.name" internal-name="NoClone" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.NoCloneCheck" />
             <description>%NoClone.desc</description>

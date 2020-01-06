@@ -35,27 +35,11 @@
                 <description>%JavadocMethod.excludeScope</description>
                 <enumeration option-provider="com.puppycrawl.tools.checkstyle.api.Scope" />
             </property-metadata>
-            <property-metadata name="allowUndeclaredRTE" datatype="Boolean" default-value="false">
-                <description>%JavadocMethod.allowUndeclaredRTE</description>
-            </property-metadata>
-            <property-metadata name="allowThrowsTagsForSubclasses" datatype="Boolean" default-value="false">
-                <description>%JavadocMethod.allowThrowsTagsForSubclasses</description>
-            </property-metadata>
             <property-metadata name="allowMissingParamTags" datatype="Boolean" default-value="false">
                 <description>%JavadocMethod.allowMissingParamTags</description>
             </property-metadata>
-            <property-metadata name="allowMissingThrowsTags" datatype="Boolean" default-value="false">
-                <description>%JavadocMethod.allowMissingThrowsTags</description>
-            </property-metadata>
             <property-metadata name="allowMissingReturnTag" datatype="Boolean" default-value="false">
                 <description>%JavadocMethod.allowMissingReturnTag</description>
-            </property-metadata>
-            <property-metadata name="logLoadErrors" datatype="Boolean" default-value="true">
-                <description>%JavadocMethod.logLoadErrors</description>
-            </property-metadata>
-            <property-metadata name="suppressLoadErrors" datatype="Boolean" default-value="false"
-                override-default-value="true">
-                <description>%JavadocMethod.suppressLoadErrors</description>
             </property-metadata>
             <property-metadata name="tokens" datatype="MultiCheck" default-value="METHOD_DEF,CTOR_DEF,ANNOTATION_FIELD_DEF">
                 <description>%JavadocMethod.tokens</description>

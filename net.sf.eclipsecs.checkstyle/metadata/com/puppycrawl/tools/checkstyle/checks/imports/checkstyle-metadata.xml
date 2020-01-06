@@ -147,11 +147,12 @@
             <property-metadata name="sortImportsInGroupAlphabetically" datatype="String">
                 <description>%CustomImportOrder.sortImportsInGroupAlphabetically</description>
             </property-metadata>
-            <message-key key="custom.import.order.line.separator" />
-            <message-key key="custom.import.order.lex" />
-            <message-key key="custom.import.order.nonGroup.import" />
-            <message-key key="custom.import.order.nonGroup.expected" />
             <message-key key="custom.import.order" />
+            <message-key key="custom.import.order.lex" />
+            <message-key key="custom.import.order.line.separator" />
+            <message-key key="custom.import.order.nonGroup.expected" />
+            <message-key key="custom.import.order.nonGroup.import" />
+            <message-key key="custom.import.order.separated.internally" />
         </rule-metadata>
     </rule-group-metadata>
 
