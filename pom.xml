@@ -20,8 +20,8 @@
     </modules>
 
     <properties>
-        <tycho-version>1.4.0</tycho-version>
-        <tycho-extras-version>1.4.0</tycho-extras-version>
+        <tycho-version>1.5.1</tycho-version>
+        <tycho-extras-version>1.5.1</tycho-extras-version>
         <tycho.scmUrl>scm:git:git://github.com:checkstyle/eclipse-cs.git</tycho.scmUrl>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
