@@ -12,6 +12,13 @@
             <message-key key="inline.conditional.avoid" />
         </rule-metadata>
 
+        <rule-metadata name="%AvoidNoArgumentSuperConstructorCall.name" internal-name="AvoidNoArgumentSuperConstructorCall"
+            parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.AvoidNoArgumentSuperConstructorCallCheck" />
+            <description>%AvoidNoArgumentSuperConstructorCall.desc</description>
+            <message-key key="super.constructor.call" />
+        </rule-metadata>
+
         <rule-metadata name="%CovariantEquals.name" internal-name="CovariantEquals" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.CovariantEqualsCheck" />
             <description>%CovariantEquals.desc</description>
@@ -84,7 +91,7 @@
             <property-metadata name="checkLastCaseGroup" datatype="Boolean" default-value="false">
                 <description>%FallThrough.checkLastCaseGroup</description>
             </property-metadata>
-            <property-metadata name="reliefPattern" datatype="Regex" default-value="fallthru|falls? ?through">
+            <property-metadata name="reliefPattern" datatype="Regex" default-value="falls?[ -]?thr(u|ough)">
                 <description>%FallThrough.reliefPattern</description>
             </property-metadata>
             <message-key key="fall.through" />
@@ -396,6 +403,12 @@
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.NoCloneCheck" />
             <description>%NoClone.desc</description>
             <message-key key="avoid.clone.method" />
+        </rule-metadata>
+
+        <rule-metadata name="%NoEnumTrailingComma.name" internal-name="NoEnumTrailingComma" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.NoEnumTrailingCommaCheck" />
+            <description>%NoEnumTrailingComma.desc</description>
+            <message-key key="no.enum.trailing.comma" />
         </rule-metadata>
 
         <rule-metadata name="%NoFinalizer.name" internal-name="NoFinalizer" parent="TreeWalker">
