@@ -24,6 +24,9 @@
                             <includes>
                                 <include>**/*</include>
                             </includes>
+                            <excludes>
+                                <exclude>.gitignore</exclude>
+                            </excludes>
                         </fileset>
                     </filesets>
                 </configuration>
