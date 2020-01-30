@@ -33,7 +33,7 @@ matrix:
 
 script:
   - |
-     echo "eval of CMD is starting";
-     echo "CMD=$CMD";
-     eval $CMD;
-     echo "eval of CMD is completed";
+    echo "eval of CMD is starting";
+    echo "CMD=$CMD";
+    eval $CMD;
+    echo "eval of CMD is completed";
