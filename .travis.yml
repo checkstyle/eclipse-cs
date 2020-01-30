@@ -10,6 +10,11 @@ branches:
   only:
     - master
 
+addons:
+  apt:
+    packages:
+      - xmlstarlet
+
 install:
   - ""
 
@@ -33,6 +38,14 @@ matrix:
 
 script:
   - |
+    MVN_SETTINGS=${TRAVIS_HOME}/.m2/settings.xml
+    if [[ -f ${MVN_SETTINGS} ]]; then
+      if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
+        sed -i'' -e "/<mirrors>/,/<\/mirrors>/ d" $MVN_SETTINGS
+      else
+        xmlstarlet ed --inplace -d "//mirrors" $MVN_SETTINGS
+      fi
+    fi
     echo "eval of CMD is starting";
     echo "CMD=$CMD";
     eval $CMD;
