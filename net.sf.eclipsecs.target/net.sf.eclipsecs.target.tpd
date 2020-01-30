@@ -1,4 +1,5 @@
-// install http://mbarbero.github.io/fr.obeo.releng.targetplatform/p2/ to use this target definition
+// Install http://download.eclipse.org/cbi/tpd/3.0.0-SNAPSHOT/ to use this target definition.
+// Read https://github.com/eclipse-cbi/targetplatform-dsl for more details.
 target "Eclipse Checkstyle"
 with source configurePhase
 
