@@ -5,6 +5,13 @@
 <checkstyle-metadata>
     <rule-group-metadata name="%Coding.group" priority="900">
 
+        <rule-metadata name="%AvoidDoubleBraceInitialization.name" internal-name="AvoidDoubleBraceInitialization"
+            parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.AvoidDoubleBraceInitializationCheck" />
+            <description>%AvoidDoubleBraceInitialization.desc</description>
+            <message-key key="avoid.double.brace.init" />
+        </rule-metadata>
+
         <rule-metadata name="%AvoidInlineConditionals.name" internal-name="AvoidInlineConditionals"
             parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.AvoidInlineConditionalsCheck" />

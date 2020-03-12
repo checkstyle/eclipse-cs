@@ -86,6 +86,7 @@
             </property-metadata>
             <message-key key="noNewlineAtEOF"/>
             <message-key key="unable.open"/>
+            <message-key key="wrong.line.end"/>
         </rule-metadata>
 
         <rule-metadata name="%OrderedProperties.name" internal-name="OrderedProperties" parent="Checker">
