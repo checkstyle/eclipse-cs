@@ -63,10 +63,7 @@ public final class CheckerFactory {
   /** Map containing the modification times of configs. */
   private static Map<String, Long> sModifiedMap;
 
-  /** the shared classloader for the checkers. */
-  private static ProjectClassLoader sSharedClassLoader;
-
-  /**
+  /*
    * Initialize the cache.
    */
   static {
@@ -74,8 +71,6 @@ public final class CheckerFactory {
     sCheckerMap = CacheBuilder.newBuilder().softValues().build();
 
     sModifiedMap = new ConcurrentHashMap<>();
-
-    sSharedClassLoader = new ProjectClassLoader();
   }
 
   /**
@@ -136,15 +131,6 @@ public final class CheckerFactory {
     }
 
     return checker;
-  }
-
-  /**
-   * Returns the shared classloader which is used by all checkers created by this factory.
-   *
-   * @return the shared classloader
-   */
-  public static ProjectClassLoader getSharedClassLoader() {
-    return sSharedClassLoader;
   }
 
   /**
@@ -250,7 +236,6 @@ public final class CheckerFactory {
     Locale platformLocale = CheckstylePlugin.getPlatformLocale();
     checker.setLocaleLanguage(platformLocale.getLanguage());
     checker.setLocaleCountry(platformLocale.getCountry());
-    checker.setClassLoader(sSharedClassLoader);
 
     checker.configure(configuration);
 

@@ -562,6 +562,21 @@
             <message-key key="unnecessary.paren.lambda" />
         </rule-metadata>
 
+        <rule-metadata name="%UnnecessarySemicolonAfterOuterTypeDeclaration.name" internal-name="UnnecessarySemicolonAfterOuterTypeDeclaration" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.UnnecessarySemicolonAfterOuterTypeDeclarationCheck" />
+            <description>%UnnecessarySemicolonAfterOuterTypeDeclaration.desc</description> 
+            <property-metadata name="tokens" datatype="MultiCheck" default-value="CLASS_DEF,INTERFACE_DEF,ENUM_DEF,ANNOTATION_DEF">
+                <description>%UnnecessarySemicolonAfterOuterTypeDeclaration.tokens</description>
+                <enumeration>
+                    <property-value-option value="CLASS_DEF"/>
+                    <property-value-option value="INTERFACE_DEF"/>
+                    <property-value-option value="ENUM_DEF"/>
+                    <property-value-option value="ANNOTATION_DEF"/>
+                </enumeration>
+            </property-metadata>
+            <message-key key="unnecessary.semicolon" />
+        </rule-metadata>
+
         <rule-metadata name="%UnnecessarySemicolonAfterTypeMemberDeclaration.name" internal-name="UnnecessarySemicolonAfterTypeMemberDeclaration" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.UnnecessarySemicolonAfterTypeMemberDeclarationCheck" />
             <description>%UnnecessarySemicolonAfterTypeMemberDeclaration.desc</description> 

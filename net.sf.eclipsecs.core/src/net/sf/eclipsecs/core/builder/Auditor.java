@@ -55,7 +55,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
@@ -143,12 +142,6 @@ public class Auditor {
       listener = new CheckstyleAuditListener(project);
       checker.addListener(listener);
 
-      // reconfigure the shared classloader for the current
-      // project
-      if (project.hasNature(JavaCore.NATURE_ID)) {
-        CheckerFactory.getSharedClassLoader().intializeWithProject(project);
-      }
-
       // run the files through the checker
       checker.process(filesToAudit);
 
@@ -158,8 +151,6 @@ public class Auditor {
       } else {
         handleCheckstyleFailure(project, e);
       }
-    } catch (CoreException e) {
-      CheckstylePluginException.rethrow(e);
     } catch (RuntimeException e) {
       if (listener != null) {
         listener.cleanup();
