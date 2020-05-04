@@ -240,6 +240,9 @@
             <property-metadata name="ignoreStatic" datatype="Boolean" default-value="true">
                 <description>%AbbreviationAsWordInName.ignoreStatic</description>
             </property-metadata>
+            <property-metadata name="ignoreStaticFinal" datatype="Boolean" default-value="true">
+                <description>%AbbreviationAsWordInName.ignoreStaticFinal</description>
+            </property-metadata>
             <property-metadata name="ignoreOverriddenMethods" datatype="Boolean" default-value="true">
                 <description>%AbbreviationAsWordInName.ignoreOverriddenMethods</description>
             </property-metadata>
