@@ -71,7 +71,7 @@
             <property-metadata name="allowLineBreaks" datatype="Boolean" default-value="false">
                 <description>%NoWhitespaceBefore.allowLineBreaks</description>
             </property-metadata>
-            <property-metadata name="tokens" datatype="MultiCheck" default-value="COMMA,SEMI,POST_INC,POST_DEC,ELLIPSIS">
+            <property-metadata name="tokens" datatype="MultiCheck" default-value="COMMA,SEMI,POST_INC,POST_DEC,ELLIPSIS,LABELED_STAT">
                 <description>%NoWhitespaceBefore.tokens</description>
                 <enumeration>
                     <property-value-option value="COMMA" />
@@ -83,6 +83,7 @@
                     <property-value-option value="GENERIC_END" />
                     <property-value-option value="ELLIPSIS" />
                     <property-value-option value="METHOD_REF" />
+                    <property-value-option value="LABELED_STAT" />
                 </enumeration>
             </property-metadata>
             <message-key key="ws.preceded" />

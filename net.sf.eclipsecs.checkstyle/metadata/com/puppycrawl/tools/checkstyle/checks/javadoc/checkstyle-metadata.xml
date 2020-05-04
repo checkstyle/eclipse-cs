@@ -58,6 +58,18 @@
             <message-key key="javadoc.return.expected" />
         </rule-metadata>
 
+        <rule-metadata name="%JavadocMissingWhitespaceAfterAsterisk.name" internal-name="JavadocMissingWhitespaceAfterAsterisk" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocMissingWhitespaceAfterAsteriskCheck" />
+            <description>%JavadocMissingWhitespaceAfterAsterisk.desc</description>
+            <property-metadata name="violateExecutionOnNonTightHtml" datatype="Boolean" default-value="false">
+                <description>%JavadocMissingWhitespaceAfterAsterisk.violateExecutionOnNonTightHtml</description>
+            </property-metadata>
+            <message-key key="javadoc.missed.html.close" />
+            <message-key key="javadoc.missing.whitespace" />
+            <message-key key="javadoc.parse.rule.error" />
+            <message-key key="javadoc.wrong.singleton.html.tag" />
+        </rule-metadata>
+
         <rule-metadata name="%JavadocStyle.name" internal-name="JavadocStyle" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocStyleCheck" />
             <description>%JavadocStyle.desc</description>

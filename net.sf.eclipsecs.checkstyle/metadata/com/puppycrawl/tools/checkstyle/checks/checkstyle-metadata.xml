@@ -195,7 +195,6 @@
             </property-metadata>
             <alternative-name
                 internal-name="com.puppycrawl.tools.checkstyle.checks.SuppressWarningsHolder"/>
-            <message-key key="suppress.warnings.invalid.target"/>
         </rule-metadata>
     </rule-group-metadata>
 </checkstyle-metadata>
