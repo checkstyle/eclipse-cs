@@ -79,7 +79,7 @@ public class GraphPieDataset extends AbstractDataset implements PieDataset {
     // markers que l'on comptera dans une catégorie "Autres" car ils
     // représentent trop peu de %
     int leftCount = 0;
-    float mCount = new Float(stats.getMarkerCount()).floatValue();
+    float mCount = stats.getMarkerCount();
     // et on remplit
     for (Iterator<MarkerStat> iter = markerStatCollection.iterator(); iter.hasNext();) {
       MarkerStat markerStat = iter.next();
@@ -256,6 +256,6 @@ public class GraphPieDataset extends AbstractDataset implements PieDataset {
    *          the value.
    */
   public void setValue(final Comparable<?> key, final double value) {
-    setValue(key, new Double(value));
+    setValue(key, Double.valueOf(value));
   }
 }

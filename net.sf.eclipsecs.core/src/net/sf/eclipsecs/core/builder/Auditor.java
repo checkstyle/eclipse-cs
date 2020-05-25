@@ -176,7 +176,7 @@ public class Auditor {
       project.deleteMarkers(CheckstyleMarker.MARKER_ID, false, IResource.DEPTH_ZERO);
 
       Map<String, Object> attrs = new HashMap<>();
-      attrs.put(IMarker.PRIORITY, new Integer(IMarker.PRIORITY_NORMAL));
+      attrs.put(IMarker.PRIORITY, Integer.valueOf(IMarker.PRIORITY_NORMAL));
       attrs.put(IMarker.SEVERITY, Integer.valueOf(IMarker.SEVERITY_ERROR));
       attrs.put(IMarker.MESSAGE, NLS.bind(Messages.Auditor_msgMsgCheckstyleInternalError, null));
 
@@ -325,8 +325,8 @@ public class Auditor {
             mMarkerAttributes.put(CheckstyleMarker.MODULE_NAME, metaData.getInternalName());
             mMarkerAttributes.put(CheckstyleMarker.MESSAGE_KEY,
                     error.getLocalizedMessage().getKey());
-            mMarkerAttributes.put(IMarker.PRIORITY, new Integer(IMarker.PRIORITY_NORMAL));
-            mMarkerAttributes.put(IMarker.SEVERITY, new Integer(getSeverityValue(severity)));
+            mMarkerAttributes.put(IMarker.PRIORITY, Integer.valueOf(IMarker.PRIORITY_NORMAL));
+            mMarkerAttributes.put(IMarker.SEVERITY, Integer.valueOf(getSeverityValue(severity)));
             mMarkerAttributes.put(IMarker.LINE_NUMBER, Integer.valueOf(error.getLine()));
             mMarkerAttributes.put(IMarker.MESSAGE, getMessage(error));
 
@@ -335,7 +335,7 @@ public class Auditor {
 
             // enables own category under Java Problem Type
             // setting for Problems view (RFE 1530366)
-            mMarkerAttributes.put("categoryId", new Integer(999)); //$NON-NLS-1$
+            mMarkerAttributes.put("categoryId", Integer.valueOf(999)); //$NON-NLS-1$
 
             // create a marker for the actual resource
             IMarker marker = mResource.createMarker(CheckstyleMarker.MARKER_ID);
