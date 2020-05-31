@@ -518,6 +518,9 @@
         <rule-metadata name="%ArrayTrailingComma.name" internal-name="ArrayTrailingComma" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.coding.ArrayTrailingCommaCheck" />
             <description>%ArrayTrailingComma.desc</description>
+            <property-metadata name="alwaysDemandTrailingComma" datatype="Boolean" default-value="false">
+                <description>%ArrayTrailingComma.alwaysDemandTrailingComma</description>
+            </property-metadata>
             <message-key key="array.trailing.comma" />
         </rule-metadata>
 
