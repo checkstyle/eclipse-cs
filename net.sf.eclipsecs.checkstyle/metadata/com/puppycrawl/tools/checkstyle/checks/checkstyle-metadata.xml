@@ -196,5 +196,12 @@
             <alternative-name
                 internal-name="com.puppycrawl.tools.checkstyle.checks.SuppressWarningsHolder"/>
         </rule-metadata>
+
+        <rule-metadata name="%NoCodeInFile.name" internal-name="NoCodeInFile" parent="TreeWalker">
+            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.NoCodeInFileCheck"/>
+            <description>%NoCodeInFile.desc</description>
+            <message-key key="nocode.in.file"/>
+        </rule-metadata>
+
     </rule-group-metadata>
 </checkstyle-metadata>
