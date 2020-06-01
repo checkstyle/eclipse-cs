@@ -399,7 +399,6 @@ public final class MetadataFactory {
     }
   }
 
-  @SuppressWarnings("unchecked")
   private static void parseMetadata(InputStream metadataStream, ResourceBundle metadataBundle)
           throws DocumentException, CheckstylePluginException {
 
@@ -441,7 +440,6 @@ public final class MetadataFactory {
     }
   }
 
-  @SuppressWarnings("unchecked")
   private static void processModules(Element groupElement, RuleGroupMetadata groupMetadata,
           ResourceBundle metadataBundle) throws CheckstylePluginException {
 
@@ -484,7 +482,7 @@ public final class MetadataFactory {
       processProperties(moduleEl, module, metadataBundle);
 
       // process alternative names
-      for (Element altNameEl : (List<Element>) moduleEl.elements(XMLTags.ALTERNATIVE_NAME_TAG)) {
+      for (Element altNameEl : moduleEl.elements(XMLTags.ALTERNATIVE_NAME_TAG)) {
 
         String alternativeName = altNameEl.attributeValue(XMLTags.INTERNAL_NAME_TAG);
 
@@ -494,14 +492,14 @@ public final class MetadataFactory {
       }
 
       // process quickfixes
-      for (Element quickfixEl : (List<Element>) moduleEl.elements(XMLTags.QUCKFIX_TAG)) {
+      for (Element quickfixEl : moduleEl.elements(XMLTags.QUCKFIX_TAG)) {
 
         String quickfixClassName = quickfixEl.attributeValue(XMLTags.CLASSNAME_TAG);
         module.addQuickfix(quickfixClassName);
       }
 
       // process message keys
-      for (Element quickfixEl : (List<Element>) moduleEl.elements(XMLTags.MESSAGEKEY_TAG)) {
+      for (Element quickfixEl : moduleEl.elements(XMLTags.MESSAGEKEY_TAG)) {
 
         String messageKey = quickfixEl.attributeValue(XMLTags.KEY_TAG);
         module.addMessageKey(messageKey);
@@ -568,7 +566,7 @@ public final class MetadataFactory {
         }
 
         // get explicit enumeration option values
-        for (Element optionEl : (List<Element>) enumEl
+        for (Element optionEl : enumEl
                 .elements(XMLTags.PROPERTY_VALUE_OPTIONS_TAG)) {
           property.getPropertyEnumeration().add(optionEl.attributeValue(XMLTags.VALUE_TAG));
         }

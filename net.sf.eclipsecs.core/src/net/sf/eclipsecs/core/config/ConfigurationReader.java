@@ -191,7 +191,6 @@ public final class ConfigurationReader {
 
   private static void addProperties(final Element moduleEl, final Module module) {
 
-    @SuppressWarnings("unchecked")
     final List<Element> propertyEls = moduleEl.elements(XMLTags.PROPERTY_TAG);
 
     for (final Element propertyEl : propertyEls) {
@@ -231,7 +230,6 @@ public final class ConfigurationReader {
 
   private static void addMessages(final Element moduleEl, final Module module) {
 
-    @SuppressWarnings("unchecked")
     final List<Element> messageEls = moduleEl.elements(XMLTags.MESSAGE_TAG);
 
     for (final Element messageEl : messageEls) {
@@ -245,7 +243,6 @@ public final class ConfigurationReader {
 
   private static void addMetadata(final Element moduleEl, final Module module) {
 
-    @SuppressWarnings("unchecked")
     final List<Element> metaEls = moduleEl.elements(XMLTags.METADATA_TAG);
 
     for (final Element metaEl : metaEls) {
