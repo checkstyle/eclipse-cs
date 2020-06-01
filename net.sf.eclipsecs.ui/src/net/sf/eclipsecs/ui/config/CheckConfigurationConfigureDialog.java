@@ -546,19 +546,23 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
      */
     @Override
     public void modifyText(ModifyEvent e) {
+      mTreeViewer.getControl().setRedraw(false);
+      try {
+        if (!mDefaultFilterText.equals(mTxtTreeFilter.getText())
+                && !Strings.isNullOrEmpty(mTxtTreeFilter.getText())) {
 
-      if (!mDefaultFilterText.equals(mTxtTreeFilter.getText())
-              && !Strings.isNullOrEmpty(mTxtTreeFilter.getText())) {
+          if (!Arrays.asList(mTableViewer.getFilters()).contains(mTreeFilter)) {
+            mTreeViewer.addFilter(mTreeFilter);
+          }
 
-        if (!Arrays.asList(mTableViewer.getFilters()).contains(mTreeFilter)) {
-          mTreeViewer.addFilter(mTreeFilter);
+          mTreeViewer.refresh();
+          mTreeViewer.expandAll();
+        } else {
+          mTreeViewer.removeFilter(mTreeFilter);
+          mTreeViewer.refresh();
         }
-
-        mTreeViewer.refresh();
-        mTreeViewer.expandAll();
-      } else {
-        mTreeViewer.removeFilter(mTreeFilter);
-        mTreeViewer.refresh();
+      } finally {
+        mTreeViewer.getControl().setRedraw(true);
       }
     }
 
