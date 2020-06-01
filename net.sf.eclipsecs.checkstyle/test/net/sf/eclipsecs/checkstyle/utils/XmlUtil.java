@@ -1,12 +1,13 @@
 package net.sf.eclipsecs.checkstyle.utils;
 
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.junit.Assert;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.EntityResolver;
@@ -42,7 +43,7 @@ public final class XmlUtil {
 
       rawXml = builder.parse(new InputSource(new StringReader(code)));
     } catch (IOException | SAXException ex) {
-      Assert.fail(fileName + " has invalid xml (" + ex.getMessage() + "): " + unserializedSource);
+      fail(fileName + " has invalid xml (" + ex.getMessage() + "): " + unserializedSource);
     }
 
     return rawXml;

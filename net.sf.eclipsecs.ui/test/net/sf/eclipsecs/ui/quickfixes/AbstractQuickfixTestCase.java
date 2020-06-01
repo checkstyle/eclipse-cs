@@ -2,6 +2,9 @@ package net.sf.eclipsecs.ui.quickfixes;
 
 import com.google.common.base.Strings;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,22 +19,20 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.formatter.DefaultCodeFormatterConstants;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.text.edits.TextEdit;
-import org.junit.Assert;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import junit.framework.TestCase;
 
-public abstract class AbstractQuickfixTestCase extends TestCase {
+public abstract class AbstractQuickfixTestCase {
 
   protected void testQuickfix(final String testDataXml, final AbstractASTResolution quickfix)
           throws Exception {
     InputStream stream = getClass().getResourceAsStream(testDataXml);
-    assertNotNull("Cannot find resource " + testDataXml + " in package "
-            + getClass().getPackage().getName(), stream);
+    assertNotNull(stream, "Cannot find resource " + testDataXml + " in package "
+            + getClass().getPackage().getName());
     try {
       System.out.println(
               "Test quickfix " + quickfix.getClass() + " with input file `" + testDataXml + "`");
@@ -73,7 +74,7 @@ public abstract class AbstractQuickfixTestCase extends TestCase {
       TextEdit edit = compUnit.rewrite(doc, options);
       edit.apply(doc);
 
-      Assert.assertEquals(testdata[i].result, doc.get());
+      assertEquals(testdata[i].result, doc.get());
     }
 
   }
