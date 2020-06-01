@@ -202,7 +202,6 @@ public final class ProjectConfigurationFactory {
             syncFormatter);
   }
 
-  @SuppressWarnings("unchecked")
   private static List<ICheckConfiguration> getLocalCheckConfigs(Element root, IProject project) {
 
     List<ICheckConfiguration> configurations = new ArrayList<>();
@@ -255,7 +254,6 @@ public final class ProjectConfigurationFactory {
     return configurations;
   }
 
-  @SuppressWarnings("unchecked")
   private static List<FileSet> getFileSets(Element root,
           List<ICheckConfiguration> localCheckConfigs) throws CheckstylePluginException {
 
@@ -305,7 +303,6 @@ public final class ProjectConfigurationFactory {
     return fileSets;
   }
 
-  @SuppressWarnings("unchecked")
   private static List<IFilter> getFilters(Element root) {
 
     List<IFilter> filters = new ArrayList<>();

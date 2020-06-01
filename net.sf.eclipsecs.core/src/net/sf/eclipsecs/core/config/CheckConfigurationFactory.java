@@ -397,7 +397,6 @@ public final class CheckConfigurationFactory {
    *          the root element of the plugins central configuration file
    * @return the global check configurations configured therein
    */
-  @SuppressWarnings("unchecked")
   private static List<ICheckConfiguration> getGlobalCheckConfigurations(Element root) {
 
     List<ICheckConfiguration> configs = new ArrayList<>();
