@@ -36,15 +36,18 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.MissingResourceException;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 import java.util.ResourceBundle.Control;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.regex.Pattern;
 
 import net.sf.eclipsecs.core.CheckstylePlugin;
 import net.sf.eclipsecs.core.config.ConfigProperty;
@@ -54,11 +57,16 @@ import net.sf.eclipsecs.core.config.XMLTags;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 import net.sf.eclipsecs.core.util.XMLUtil;
-
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+import org.example.ModuleDetails;
+import org.example.ModulePropertyDetails;
+import org.example.XMLMetaReader;
+import org.reflections.Reflections;
+import org.reflections.scanners.ResourcesScanner;
+import org.yaml.snakeyaml.Yaml;
 
 /**
  * This class is the factory for all Checkstyle rule metadata.
@@ -67,6 +75,10 @@ public final class MetadataFactory {
 
   /** Map containing the public - internal DTD mapping. */
   private static final Map<String, String> PUBLIC2INTERNAL_DTD_MAP = new HashMap<>();
+
+  /** Pattern for eclipse extension configuration files. */
+  private static final Pattern ECLIPSE_EXTENSION_CONFIG_FILE
+      = Pattern.compile(".*eclipse-metadata.*\\.yml");
 
   /** Metadata for the rule groups. */
   private static Map<String, RuleGroupMetadata> sRuleGroupMetadata;
@@ -78,6 +90,32 @@ public final class MetadataFactory {
    * Mapping for all rules, keyed by alternative rule names (full qualified, old full qualified).
    */
   private static Map<String, RuleMetadata> sAlternativeNamesMap;
+
+  /**
+   * Mapping for all module property datatype acquired from checkstyle metadata
+   *  to the internal property impletation.
+   */
+  private static Map<String, ConfigPropertyType> sPropertyTypeMap;
+
+  /**
+   * Mapping of all module package name to the internal module names.
+   */
+  private static Map<String, String> sPackageToGroupNameMap;
+
+  /**
+   * Repository of all the the checkstyle metadata, with their name as key.
+   */
+  private static Map<String, ModuleDetails> sModuleDetailsRepo;
+
+  /**
+   * Set containing all the packages in the classloader.
+   */
+  private static Set<String> sPackageNameSet;
+
+  /**
+   * Mapping of third party extension package name to rule group name.
+   */
+  private static Map<String, Map<String, String>> sThirdPartyRuleGroupMap;
 
   /** Name of the rules metadata XML file. */
   private static final String METADATA_FILENAME = "checkstyle-metadata.xml"; //$NON-NLS-1$
@@ -98,6 +136,33 @@ public final class MetadataFactory {
             "/com/puppycrawl/tools/checkstyle/checkstyle-metadata_1_1.dtd"); //$NON-NLS-1$
 
     refresh();
+  }
+
+  /*
+   * Fetch third party checks extension metadata from YML files.
+   */
+  private static void loadThirdPartyModuleExtensionMetadata() {
+    Set<String> eclipseMetaDataFiles = new HashSet<>();
+
+    for (String packageName : sPackageNameSet) {
+      String topMostPackageName = packageName.split("\\.")[0];
+      Reflections reflections = new Reflections(topMostPackageName, new ResourcesScanner());
+      eclipseMetaDataFiles.addAll(reflections.getResources(ECLIPSE_EXTENSION_CONFIG_FILE));
+    }
+    eclipseMetaDataFiles.forEach(file -> loadThirdPartyData(file));
+  }
+
+  private static void loadThirdPartyData(String metadataFile) {
+    InputStream inputStream = CheckstylePlugin.getDefault().getAddonExtensionClassLoader()
+             .getResourceAsStream(metadataFile);
+    Map<String, List<Map<String, Object>>> objects = new Yaml().load(inputStream);
+    for (Map<String, Object> obj : objects.get("ruleGroups")) {
+      Map<String, String> ruleGroupData = new HashMap<>();
+      ruleGroupData.put("name", (String) obj.get("name"));
+      ruleGroupData.put("description", (String) obj.get("description"));
+      ruleGroupData.put("priority", Integer.toString((Integer) obj.get("priority")));
+      sThirdPartyRuleGroupMap.put((String) obj.get("package"), ruleGroupData);
+    }
   }
 
   /**
@@ -153,6 +218,176 @@ public final class MetadataFactory {
     }
 
     return metadata;
+  }
+
+  /**
+   * Create metadata for modules not present in the previously eclipse provided metadata.
+   * Work in progress.
+   *
+   * @param moduleDetails module details fetched from checkstyle metadata
+   * @return ruleMetadata for the module
+   */
+  public static RuleMetadata createRuleMetadata(ModuleDetails moduleDetails) {
+    RuleGroupMetadata group;
+    String moduleClassName = moduleDetails.getFullQualifiedName();
+    // standard checkstyle module
+    if (moduleClassName.startsWith("com.puppycrawl.tools.checkstyle")) {
+      final String[] packageTokens = moduleDetails.getFullQualifiedName().split("\\.");
+      group = getRuleGroupMetadata(sPackageToGroupNameMap
+              .get(packageTokens[packageTokens.length - 2]));
+    }
+    // third party extension modules
+    else {
+      String lookupKey = findLookupKey(moduleClassName);
+      String ruleGroupName = sThirdPartyRuleGroupMap.get(lookupKey).get("name");
+      group = getRuleGroupMetadata(ruleGroupName);
+      // if the group of the new check hasn't been formed yet
+      // and put into the sRuleGroupMetadata map
+      if (group == null) {
+        final String ruleDescription = sThirdPartyRuleGroupMap.get(lookupKey).get("description");
+        final int rulePriority = Integer.parseInt(sThirdPartyRuleGroupMap.get(lookupKey)
+                .get("priority"));
+        group = new RuleGroupMetadata(ruleGroupName, ruleDescription, false, rulePriority);
+        sRuleGroupMetadata.put(ruleGroupName, group);
+      }
+    }
+
+    RuleMetadata ruleMeta = new RuleMetadata(moduleDetails.getName(), moduleDetails.getName(),
+            moduleDetails.getParent(), MetadataFactory.getDefaultSeverity(),
+            false, true, true, false, group);
+    ruleMeta.setDescription(moduleDetails.getDescription());
+    moduleDetails.getProperties().forEach(modulePropertyDetails -> ruleMeta.getPropertyMetadata()
+            .add(createPropertyConfig(moduleDetails, modulePropertyDetails)));
+
+    return ruleMeta;
+  }
+
+  /**
+   * Generate all prefix strings from the packageName and find which is a valid key in
+   * {@code sThirdPartyRuleGroupMap}.
+   */
+  private static String findLookupKey(String packageName) {
+    final String[] packageTokens = packageName.split("\\.");
+    List<String> prefixList = new ArrayList<>();
+    String lookupKey = packageTokens[0];
+    prefixList.add(lookupKey);
+    for (int i = 1; i < packageTokens.length; i++) {
+      lookupKey += "." + packageTokens[i];
+      prefixList.add(lookupKey);
+    }
+
+    String result = null;
+    Collections.reverse(prefixList);
+    for (String candidate : prefixList) {
+      if (sThirdPartyRuleGroupMap.containsKey(candidate)) {
+        result = candidate;
+        break;
+      }
+    }
+    return result;
+  }
+
+  /**
+   * Update the existing eclipse files based metadata with checkstyle files metadata, updating
+   * only those fields which are provided by checkstyle.
+   *
+   * @param ruleMetadata module rule metadata by eclipse
+   * @param moduleDetails module metadata by checkstyle
+   * @return updated rule metadata
+   */
+  public static RuleMetadata updateRuleMetadata(RuleMetadata ruleMetadata,
+          ModuleDetails moduleDetails) {
+    RuleMetadata modifiedRuleMetadata = new RuleMetadata(
+            ruleMetadata.getRuleName(), moduleDetails.getFullQualifiedName(),
+            moduleDetails.getParent(), ruleMetadata.getDefaultSeverityLevel(),
+            ruleMetadata.isHidden(), ruleMetadata.hasSeverity(),
+            ruleMetadata.isDeletable(), ruleMetadata.isSingleton(), ruleMetadata.getGroup());
+    modifiedRuleMetadata.setDescription(moduleDetails.getDescription());
+    for (ConfigPropertyMetadata configPropertyMetadata : ruleMetadata.getPropertyMetadata()) {
+      ModulePropertyDetails modulePropertyDetails =
+              moduleDetails.getModulePropertyByKey(configPropertyMetadata.getName());
+      modifiedRuleMetadata.getPropertyMetadata()
+          .add(createPropertyConfig(moduleDetails, modulePropertyDetails));
+    }
+
+    return modifiedRuleMetadata;
+
+  }
+
+  /**
+   * Create module property config data based on current/default data,
+   * which are overridden partially with all the metadata fetched from checkstyle.
+   *
+   * @param moduleDetails checkstyle metadata of the parent module of the property
+   * @param modulePropertyDetails checkstyle metadata of the property
+   * @return ConfigPropertyMetadata of the module property
+   */
+  public static ConfigPropertyMetadata createPropertyConfig(ModuleDetails moduleDetails,
+          ModulePropertyDetails modulePropertyDetails) {
+    ConfigPropertyType dataType = null;
+    // if the data type ends with option, the result is singleselect enum value
+    // if the property validationType is tokenSet, the result is multicheck
+    // everything else is String/String[] depth depending on the presence of "[]"
+    if (sPropertyTypeMap.get(modulePropertyDetails.getType()) != null) {
+      if (modulePropertyDetails.getValidationType() != null) {
+        if (modulePropertyDetails.getValidationType().equals("java.util.regex.Pattern")) {
+          dataType = ConfigPropertyType.Regex;
+        } else if (modulePropertyDetails.getValidationType().equals("tokenSet")) {
+          dataType = ConfigPropertyType.MultiCheck;
+        }
+      } else {
+        dataType = sPropertyTypeMap.get(modulePropertyDetails.getType());
+      }
+    } else {
+      if (modulePropertyDetails.getType().endsWith("Option")) {
+        dataType = ConfigPropertyType.SingleSelect;
+      } else {
+        if (modulePropertyDetails.getType().endsWith("[]")) {
+          dataType = ConfigPropertyType.StringArray;
+        } else {
+          dataType = ConfigPropertyType.String;
+        }
+      }
+    }
+    ConfigPropertyMetadata modifiedConfigPropertyMetadata = new ConfigPropertyMetadata(dataType,
+            modulePropertyDetails.getName(), modulePropertyDetails.getDefaultValue(), null);
+    modifiedConfigPropertyMetadata.setDescription(modulePropertyDetails.getDescription());
+
+    if (dataType == ConfigPropertyType.SingleSelect) {
+      List<String> resultList = getEnumValues(modulePropertyDetails.getType());
+      resultList.forEach(val -> modifiedConfigPropertyMetadata.getPropertyEnumeration().add(val));
+    } else if (dataType == ConfigPropertyType.MultiCheck) {
+      String result = CheckUtil.getModifiableTokens(moduleDetails.getName());
+      for (String val : result.split(",")) {
+        modifiedConfigPropertyMetadata.getPropertyEnumeration().add(val);
+      }
+    }
+    return modifiedConfigPropertyMetadata;
+
+  }
+
+  /**
+   * Get all values from the fully qualified enum name.
+   *
+   * @param className enum name
+   * @return list of values of enum
+   */
+  public static List<String> getEnumValues(String className) {
+    List<String> resultList = new ArrayList<>();
+    Class<?> providerClass = null;
+    try {
+      providerClass = CheckstylePlugin.getDefault().getAddonExtensionClassLoader()
+              .loadClass(className);
+      @SuppressWarnings({ "rawtypes", "unchecked" })
+      EnumSet<?> values = EnumSet.allOf((Class<Enum>) providerClass);
+      for (Enum<?> value : values) {
+        resultList.add(value.name().toLowerCase());
+      }
+    } catch (ClassNotFoundException exc) {
+      CheckstyleLog.log(exc, "Class " + className + " not found.");
+    }
+
+    return resultList;
   }
 
   /**
@@ -316,6 +551,11 @@ public final class MetadataFactory {
     sRuleGroupMetadata = new TreeMap<>();
     sRuleMetadata = new HashMap<>();
     sAlternativeNamesMap = new HashMap<>();
+    sPropertyTypeMap = new HashMap<>();
+    sPackageToGroupNameMap = new HashMap<>();
+    sModuleDetailsRepo = new HashMap<>();
+    sThirdPartyRuleGroupMap = new HashMap<>();
+    sPackageNameSet = new HashSet<>();
     try {
       doInitialization();
     } catch (CheckstylePluginException e) {
@@ -330,9 +570,15 @@ public final class MetadataFactory {
    *           error loading the meta data file
    */
   private static void doInitialization() throws CheckstylePluginException {
+    createPropertyTypeMapping();
+    createPackageToGroupNameMapping();
 
     ClassLoader classLoader = CheckstylePlugin.getDefault().getAddonExtensionClassLoader();
     Collection<String> potentialMetadataFiles = getAllPotentialMetadataFiles(classLoader);
+
+    loadThirdPartyModuleExtensionMetadata();
+    createMetadataMap();
+
     for (String metadataFile : potentialMetadataFiles) {
 
       try (InputStream metadataStream = classLoader.getResourceAsStream(metadataFile)) {
@@ -346,6 +592,72 @@ public final class MetadataFactory {
         CheckstyleLog.log(e, "Could not read metadata " + metadataFile); //$NON-NLS-1$
       }
     }
+
+    loadRuleMetadata();
+  }
+
+  /**
+   * Create repository of Module Details from checkstyle metadata and third party extension checks metadata.
+   */
+  public static void createMetadataMap() {
+    new XMLMetaReader()
+        .readAllModulesIncludingThirdPartyIfAny(
+            sPackageNameSet.toArray(new String[sPackageNameSet.size()]))
+        .forEach(moduleDetail -> sModuleDetailsRepo.put(moduleDetail.getName(), moduleDetail));
+  }
+
+  /**
+   * Creates new RuleMetadata which are absent in the eclipse-cs metadata package.
+   */
+  public static void loadRuleMetadata() {
+    if (sModuleDetailsRepo.size() != sRuleMetadata.size()) {
+      for (Entry<String, ModuleDetails> entry : sModuleDetailsRepo.entrySet()) {
+        if (!sRuleMetadata.containsKey(entry.getKey())) {
+          ModuleDetails moduleDetails = entry.getValue();
+          RuleMetadata createdRuleMetadata = createRuleMetadata(moduleDetails);
+          sRuleMetadata.put(moduleDetails.getName(), createdRuleMetadata);
+          sRuleGroupMetadata.get(createdRuleMetadata.getGroup().getGroupName())
+                 .getRuleMetadata().add(createdRuleMetadata);
+        }
+      }
+    }
+  }
+
+  /**
+   * Create mapping between {@code ModulePropertyDetails} datatype and {@code ConfigPropertyType}.
+   */
+  private static void createPropertyTypeMapping() {
+    sPropertyTypeMap.put("java.lang.String", ConfigPropertyType.String);
+    sPropertyTypeMap.put("java.lang.String[]", ConfigPropertyType.StringArray);
+    sPropertyTypeMap.put("boolean", ConfigPropertyType.Boolean);
+    sPropertyTypeMap.put("int", ConfigPropertyType.Integer);
+    sPropertyTypeMap.put("java.util.regex.Pattern", ConfigPropertyType.Regex);
+    sPropertyTypeMap.put("java.util.regex.Pattern[]", ConfigPropertyType.StringArray);
+    sPropertyTypeMap.put("File", ConfigPropertyType.File);
+  }
+
+  /**
+   * Create a mapping between checkstyle package names and {@code RuleGroupMetadata} group names.
+   */
+  private static void createPackageToGroupNameMapping() {
+    sPackageToGroupNameMap.put("annotation", "Annotations");
+    sPackageToGroupNameMap.put("checks", "Miscellaneous");
+    sPackageToGroupNameMap.put("checkstyle", "Other");
+    sPackageToGroupNameMap.put("blocks", "Blocks");
+    sPackageToGroupNameMap.put("coding", "Coding Problems");
+    sPackageToGroupNameMap.put("design", "Class Design");
+    sPackageToGroupNameMap.put("header", "Headers");
+    sPackageToGroupNameMap.put("imports", "Imports");
+    sPackageToGroupNameMap.put("indentation", "Indentation");
+    sPackageToGroupNameMap.put("javadoc", "Javadoc Comments");
+    sPackageToGroupNameMap.put("metrics", "Metrics");
+    sPackageToGroupNameMap.put("modifier", "Modifier Order");
+    sPackageToGroupNameMap.put("naming", "Naming Conventions");
+    sPackageToGroupNameMap.put("regexp", "Regexp");
+    sPackageToGroupNameMap.put("sizes", "Size Violations");
+    sPackageToGroupNameMap.put("whitespace", "Whitespace");
+    sPackageToGroupNameMap.put("filters", "Filters");
+    sPackageToGroupNameMap.put("filefilters", "File Filters");
   }
 
   /**
@@ -367,6 +679,7 @@ public final class MetadataFactory {
     } catch (CheckstyleException e) {
       CheckstylePluginException.rethrow(e);
     }
+    sPackageNameSet.addAll(packages);
 
     for (String packageName : packages) {
       String metaFileLocation = packageName.replace('.', '/');
@@ -468,7 +781,6 @@ public final class MetadataFactory {
       // create rule metadata
       RuleMetadata module = new RuleMetadata(name, internalName, parentName, severity, hidden,
               hasSeverity, deletable, isSingleton, groupMetadata);
-      groupMetadata.getRuleMetadata().add(module);
 
       // register internal name
       sRuleMetadata.put(internalName, module);
@@ -504,6 +816,16 @@ public final class MetadataFactory {
         String messageKey = quickfixEl.attributeValue(XMLTags.KEY_TAG);
         module.addMessageKey(messageKey);
       }
+
+      // Update the metadata with module details from checkstyle
+      if (sModuleDetailsRepo.containsKey(internalName)) {
+        if (internalName.contains("Check")) {
+          internalName = internalName.substring(0, internalName.indexOf("Check"));
+        }
+        module = updateRuleMetadata(module, sModuleDetailsRepo.get(internalName));
+      }
+
+      groupMetadata.getRuleMetadata().add(module);
     }
   }
 

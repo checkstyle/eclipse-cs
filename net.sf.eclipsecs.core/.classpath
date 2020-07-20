@@ -4,5 +4,8 @@
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry exported="true" kind="lib" path="lib/dom4j-2.1.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/metadata-gen-1.0-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/reflections-0.9.10.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/snakeyaml-1.26.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
