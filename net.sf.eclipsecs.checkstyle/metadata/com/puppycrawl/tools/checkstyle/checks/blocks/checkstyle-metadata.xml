@@ -155,6 +155,7 @@
                     <property-value-option value="INSTANCE_INIT"/>
                     <property-value-option value="ANNOTATION_DEF"/>
                     <property-value-option value="ENUM_DEF"/>
+                    <property-value-option value="INTERFACE_DEF"/>
                 </enumeration>
             </property-metadata>
             <message-key key="line.alone"/>
