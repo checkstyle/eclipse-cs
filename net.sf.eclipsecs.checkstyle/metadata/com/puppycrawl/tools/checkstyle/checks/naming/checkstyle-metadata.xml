@@ -166,7 +166,7 @@
             </property-metadata>
             <property-metadata name="accessModifiers" datatype="SingleSelect" default-value="PUBLIC,PROTECTED,PACKAGE,PRIVATE">
                 <description>%ParameterName.accessModifiers</description>
-                <enumeration option-provider="com.puppycrawl.tools.checkstyle.checks.naming.AccessModifier"/>
+                <enumeration option-provider="com.puppycrawl.tools.checkstyle.checks.naming.AccessModifierOption"/>
             </property-metadata>
             <message-key key="name.invalidPattern"/>
         </rule-metadata>
@@ -247,7 +247,7 @@
                 <description>%AbbreviationAsWordInName.ignoreOverriddenMethods</description>
             </property-metadata>
             <property-metadata name="tokens" datatype="MultiCheck"
-                default-value="CLASS_DEF,INTERFACE_DEF,ENUM_DEF,ANNOTATION_DEF,ANNOTATION_FIELD_DEF,PARAMETER_DEF,VARIABLE_DEF,METHOD_DEF">
+                default-value="CLASS_DEF,INTERFACE_DEF,ENUM_DEF,ANNOTATION_DEF,ANNOTATION_FIELD_DEF,PARAMETER_DEF,VARIABLE_DEF,METHOD_DEF,PATTERN_VARIABLE_DEF">
                 <description>%AbbreviationAsWordInName.tokens</description>
                 <enumeration>
                     <property-value-option value="CLASS_DEF"/>
@@ -259,6 +259,7 @@
                     <property-value-option value="PARAMETER_DEF"/>
                     <property-value-option value="VARIABLE_DEF"/>
                     <property-value-option value="METHOD_DEF"/>
+                    <property-value-option value="PATTERN_VARIABLE_DEF" />
                 </enumeration>
             </property-metadata>
             <message-key key="abbreviation.as.word"/>
