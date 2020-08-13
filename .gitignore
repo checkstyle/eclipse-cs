@@ -1,2 +1,4 @@
 */bin/
 */target/
+metadata-gen/
+net.sf.eclipsecs.core/lib/metadata-gen-1.0-SNAPSHOT.jar
