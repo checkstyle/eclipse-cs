@@ -23,6 +23,13 @@
         <tycho-version>1.6.0</tycho-version>
         <tycho.scmUrl>scm:git:git://github.com:checkstyle/eclipse-cs.git</tycho.scmUrl>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <checkstyle.version>8.35</checkstyle.version>
+        <maven.checkstyle.plugin.version>3.1.1</maven.checkstyle.plugin.version>
+        <maven.sevntu.checkstyle.plugin.version>1.37.1</maven.sevntu.checkstyle.plugin.version>
+        <!-- it should be a version of checkstyle that is compatible/compiled with sevntu -->
+        <maven.sevntu.checkstyle.plugin.checkstyle.version>
+            8.35
+        </maven.sevntu.checkstyle.plugin.checkstyle.version>
     </properties>
 
     <scm>
@@ -112,6 +119,62 @@
                         </environment>
                     </environments>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>${maven.checkstyle.plugin.version}</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.puppycrawl.tools</groupId>
+                        <artifactId>checkstyle</artifactId>
+                        <version>${maven.sevntu.checkstyle.plugin.checkstyle.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>com.github.sevntu-checkstyle</groupId>
+                        <artifactId>sevntu-checks</artifactId>
+                        <version>${maven.sevntu.checkstyle.plugin.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>com.github.checkstyle</groupId>
+                        <artifactId>patch-filter</artifactId>
+                        <version>1.0-SNAPSHOT</version>
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <id>checkstyle-check</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <configLocation>config/checkstyle_checks.xml</configLocation>
+                            <failOnViolation>true</failOnViolation>
+                            <headerLocation>I just need to put here smth to let it not use default - LICENSE.txt</headerLocation>
+                            <propertiesLocation>config/checkstyle.properties</propertiesLocation>
+                            <includeTestResources>false</includeTestResources>
+                            <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>sevntu-checkstyle-check</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <configLocation>config/checkstyle_sevntu_checks.xml</configLocation>
+                            <failOnViolation>true</failOnViolation>
+                            <includeResources>false</includeResources>
+                            <includeTestResources>false</includeTestResources>
+                            <logViolationsToConsole>true</logViolationsToConsole>
+                            <maxAllowedViolations>0</maxAllowedViolations>
+                            <violationSeverity>error</violationSeverity>
+                            <propertyExpansion>project.basedir=${project.basedir}</propertyExpansion>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
 

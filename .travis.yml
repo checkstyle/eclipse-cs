@@ -27,19 +27,19 @@ matrix:
     - jdk: openjdk8
       env:
         - DESC="install (openjdk8)"
-        - CMD="./build-metafile-gen.sh && mvn install && git diff"
+        - CMD="./build-metafile-gen.sh && ./build-patch-filter.sh && mvn install && git diff"
 
     # JDK 11 (Long Term Support version)
     - jdk: openjdk11
       env:
         - DESC="install (openjdk11)"
-        - CMD="./build-metafile-gen.sh && mvn install && git diff"
+        - CMD="./build-metafile-gen.sh && ./build-patch-filter.sh && mvn install && git diff"
 
     # JDK 13 (most recent Java version)
     - jdk: openjdk13
       env:
         - DESC="install (openjdk13)"
-        - CMD="./build-metafile-gen.sh && mvn install && git diff"
+        - CMD="./build-metafile-gen.sh && ./build-patch-filter.sh && mvn install && git diff"
 
 script:
   - |

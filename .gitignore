@@ -6,3 +6,6 @@ net.sf.eclipsecs.core/lib/metadata-gen-1.0-SNAPSHOT.jar
 *.iml
 *.prefs
 .checkstyle
+net.sf.eclipsecs.core/lib/patch-filter-1.0-SNAPSHOT.jar
+target/
+patch-filters/
