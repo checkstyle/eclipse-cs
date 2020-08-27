@@ -23,6 +23,9 @@ package net.sf.eclipsecs.core.config.meta;
 import com.puppycrawl.tools.checkstyle.PackageNamesLoader;
 import com.puppycrawl.tools.checkstyle.api.AbstractFileSetCheck;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
+import com.puppycrawl.tools.checkstyle.meta.ModuleDetails;
+import com.puppycrawl.tools.checkstyle.meta.ModulePropertyDetails;
+import com.puppycrawl.tools.checkstyle.meta.XmlMetaReader;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -61,9 +64,6 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
-import org.example.ModuleDetails;
-import org.example.ModulePropertyDetails;
-import org.example.XMLMetaReader;
 import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
 import org.yaml.snakeyaml.Yaml;
@@ -79,6 +79,12 @@ public final class MetadataFactory {
   /** Pattern for eclipse extension configuration files. */
   private static final Pattern ECLIPSE_EXTENSION_CONFIG_FILE
       = Pattern.compile(".*eclipse-metadata.*\\.yml");
+
+  /** Pattern for dot. */
+  private static final String DOT_PATTERN = "\\.";
+
+  /** Other rule group name. */
+  private static final String OTHER_GROUP_NAME = "Other";
 
   /** Metadata for the rule groups. */
   private static Map<String, RuleGroupMetadata> sRuleGroupMetadata;
@@ -145,7 +151,7 @@ public final class MetadataFactory {
     Set<String> eclipseMetaDataFiles = new HashSet<>();
 
     for (String packageName : sPackageNameSet) {
-      String topMostPackageName = packageName.split("\\.")[0];
+      final String topMostPackageName = packageName.split(DOT_PATTERN)[0];
       Reflections reflections = new Reflections(topMostPackageName, new ResourcesScanner());
       eclipseMetaDataFiles.addAll(reflections.getResources(ECLIPSE_EXTENSION_CONFIG_FILE));
     }
@@ -232,7 +238,7 @@ public final class MetadataFactory {
     String moduleClassName = moduleDetails.getFullQualifiedName();
     // standard checkstyle module
     if (moduleClassName.startsWith("com.puppycrawl.tools.checkstyle")) {
-      final String[] packageTokens = moduleDetails.getFullQualifiedName().split("\\.");
+      final String[] packageTokens = moduleDetails.getFullQualifiedName().split(DOT_PATTERN);
       group = getRuleGroupMetadata(sPackageToGroupNameMap
               .get(packageTokens[packageTokens.length - 2]));
     }
@@ -251,9 +257,9 @@ public final class MetadataFactory {
         sRuleGroupMetadata.put(ruleGroupName, group);
       }
     }
-
+    final String[] packageTokens = moduleDetails.getParent().split(DOT_PATTERN);
     RuleMetadata ruleMeta = new RuleMetadata(moduleDetails.getName(), moduleDetails.getName(),
-            moduleDetails.getParent(), MetadataFactory.getDefaultSeverity(),
+            packageTokens[packageTokens.length - 1], MetadataFactory.getDefaultSeverity(),
             false, true, true, false, group);
     ruleMeta.setDescription(moduleDetails.getDescription());
     moduleDetails.getProperties().forEach(modulePropertyDetails -> ruleMeta.getPropertyMetadata()
@@ -267,7 +273,7 @@ public final class MetadataFactory {
    * {@code sThirdPartyRuleGroupMap}.
    */
   private static String findLookupKey(String packageName) {
-    final String[] packageTokens = packageName.split("\\.");
+    final String[] packageTokens = packageName.split(DOT_PATTERN);
     List<String> prefixList = new ArrayList<>();
     String lookupKey = packageTokens[0];
     prefixList.add(lookupKey);
@@ -285,33 +291,6 @@ public final class MetadataFactory {
       }
     }
     return result;
-  }
-
-  /**
-   * Update the existing eclipse files based metadata with checkstyle files metadata, updating
-   * only those fields which are provided by checkstyle.
-   *
-   * @param ruleMetadata module rule metadata by eclipse
-   * @param moduleDetails module metadata by checkstyle
-   * @return updated rule metadata
-   */
-  public static RuleMetadata updateRuleMetadata(RuleMetadata ruleMetadata,
-          ModuleDetails moduleDetails) {
-    RuleMetadata modifiedRuleMetadata = new RuleMetadata(
-            ruleMetadata.getRuleName(), moduleDetails.getFullQualifiedName(),
-            moduleDetails.getParent(), ruleMetadata.getDefaultSeverityLevel(),
-            ruleMetadata.isHidden(), ruleMetadata.hasSeverity(),
-            ruleMetadata.isDeletable(), ruleMetadata.isSingleton(), ruleMetadata.getGroup());
-    modifiedRuleMetadata.setDescription(moduleDetails.getDescription());
-    for (ConfigPropertyMetadata configPropertyMetadata : ruleMetadata.getPropertyMetadata()) {
-      ModulePropertyDetails modulePropertyDetails =
-              moduleDetails.getModulePropertyByKey(configPropertyMetadata.getName());
-      modifiedRuleMetadata.getPropertyMetadata()
-          .add(createPropertyConfig(moduleDetails, modulePropertyDetails));
-    }
-
-    return modifiedRuleMetadata;
-
   }
 
   /**
@@ -600,26 +579,21 @@ public final class MetadataFactory {
    * Create repository of Module Details from checkstyle metadata and third party extension checks metadata.
    */
   public static void createMetadataMap() {
-    new XMLMetaReader()
-        .readAllModulesIncludingThirdPartyIfAny(
-            sPackageNameSet.toArray(new String[sPackageNameSet.size()]))
+    XmlMetaReader.readAllModulesIncludingThirdPartyIfAny(
+        sPackageNameSet.toArray(new String[sPackageNameSet.size()]))
         .forEach(moduleDetail -> sModuleDetailsRepo.put(moduleDetail.getName(), moduleDetail));
   }
 
   /**
-   * Creates new RuleMetadata which are absent in the eclipse-cs metadata package.
+   * Creates RuleMetadata.
    */
   public static void loadRuleMetadata() {
-    if (sModuleDetailsRepo.size() != sRuleMetadata.size()) {
-      for (Entry<String, ModuleDetails> entry : sModuleDetailsRepo.entrySet()) {
-        if (!sRuleMetadata.containsKey(entry.getKey())) {
-          ModuleDetails moduleDetails = entry.getValue();
-          RuleMetadata createdRuleMetadata = createRuleMetadata(moduleDetails);
-          sRuleMetadata.put(moduleDetails.getName(), createdRuleMetadata);
-          sRuleGroupMetadata.get(createdRuleMetadata.getGroup().getGroupName())
-                 .getRuleMetadata().add(createdRuleMetadata);
-        }
-      }
+    for (Entry<String, ModuleDetails> entry : sModuleDetailsRepo.entrySet()) {
+      final ModuleDetails moduleDetails = entry.getValue();
+      final RuleMetadata createdRuleMetadata = createRuleMetadata(moduleDetails);
+      sRuleMetadata.put(moduleDetails.getName(), createdRuleMetadata);
+      sRuleGroupMetadata.get(createdRuleMetadata.getGroup().getGroupName())
+         .getRuleMetadata().add(createdRuleMetadata);
     }
   }
 
@@ -642,7 +616,7 @@ public final class MetadataFactory {
   private static void createPackageToGroupNameMapping() {
     sPackageToGroupNameMap.put("annotation", "Annotations");
     sPackageToGroupNameMap.put("checks", "Miscellaneous");
-    sPackageToGroupNameMap.put("checkstyle", "Other");
+    sPackageToGroupNameMap.put("checkstyle", OTHER_GROUP_NAME);
     sPackageToGroupNameMap.put("blocks", "Blocks");
     sPackageToGroupNameMap.put("coding", "Coding Problems");
     sPackageToGroupNameMap.put("design", "Class Design");
@@ -651,7 +625,7 @@ public final class MetadataFactory {
     sPackageToGroupNameMap.put("indentation", "Indentation");
     sPackageToGroupNameMap.put("javadoc", "Javadoc Comments");
     sPackageToGroupNameMap.put("metrics", "Metrics");
-    sPackageToGroupNameMap.put("modifier", "Modifier Order");
+    sPackageToGroupNameMap.put("modifier", "Modifiers");
     sPackageToGroupNameMap.put("naming", "Naming Conventions");
     sPackageToGroupNameMap.put("regexp", "Regexp");
     sPackageToGroupNameMap.put("sizes", "Size Violations");
@@ -749,7 +723,9 @@ public final class MetadataFactory {
       }
 
       // process the modules
-      processModules(groupEl, group, metadataBundle);
+      if (OTHER_GROUP_NAME.equals(groupName)) {
+        processModules(groupEl, group, metadataBundle);
+      }
     }
   }
 
@@ -815,14 +791,6 @@ public final class MetadataFactory {
 
         String messageKey = quickfixEl.attributeValue(XMLTags.KEY_TAG);
         module.addMessageKey(messageKey);
-      }
-
-      // Update the metadata with module details from checkstyle
-      if (sModuleDetailsRepo.containsKey(internalName)) {
-        if (internalName.contains("Check")) {
-          internalName = internalName.substring(0, internalName.indexOf("Check"));
-        }
-        module = updateRuleMetadata(module, sModuleDetailsRepo.get(internalName));
       }
 
       groupMetadata.getRuleMetadata().add(module);
