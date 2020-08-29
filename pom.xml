@@ -136,9 +136,9 @@
                         <version>${maven.sevntu.checkstyle.plugin.version}</version>
                     </dependency>
                     <dependency>
-                        <groupId>com.github.checkstyle</groupId>
-                        <artifactId>patch-filter</artifactId>
-                        <version>1.0-SNAPSHOT</version>
+                        <groupId>com.puppycrawl.tools</groupId>
+                        <artifactId>patch-filters</artifactId>
+                        <version>1.0.0</version>
                     </dependency>
                 </dependencies>
                 <executions>
