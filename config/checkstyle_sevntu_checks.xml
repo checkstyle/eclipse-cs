@@ -13,13 +13,13 @@
   </module>
 
   <module name="com.puppycrawl.tools.checkstyle.filters.SuppressionPatchFilter">
-    <property name="file" value="target/show.patch"/>
+    <property name="file" value="show.patch"/>
     <property name="strategy" value="patchedline" />
   </module>
 
   <module name="TreeWalker">
     <module name="com.puppycrawl.tools.checkstyle.filters.SuppressionJavaPatchFilter">
-      <property name="file" value="target/show.patch"/>
+      <property name="file" value="show.patch"/>
       <property name="strategy" value="patchedline" />
     </module>
 
