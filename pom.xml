@@ -121,6 +121,28 @@
                 </configuration>
             </plugin>
             <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                      <phase>verify</phase>
+                      <goals>
+                        <goal>exec</goal>
+                      </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <executable>git</executable>
+                    <arguments>
+                      <argument>diff</argument>
+                      <argument>HEAD~1</argument>
+                      <argument>HEAD</argument>
+                    </arguments>
+                    <outputFile>${maven.multiModuleProjectDirectory}/show.patch</outputFile>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <version>${maven.checkstyle.plugin.version}</version>
