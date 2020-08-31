@@ -287,7 +287,6 @@
             <property name="tokens" value="LITERAL_WHILE"/>
             <property name="tokens" value="LITERAL_ELSE"/>
             <property name="tokens" value="LITERAL_FINALLY"/>
-            <property name="tokens" value="LITERAL_IF"/>
             <property name="tokens" value="LITERAL_CATCH"/>
             <property name="tokens" value="ANNOTATION_DEF"/>
             <property name="tokens" value="ENUM_DEF"/>
@@ -297,6 +296,7 @@
         <module name="RightCurly">
             <property name="tokens" value="LITERAL_DO"/>
             <property name="tokens" value="LITERAL_TRY"/>
+            <property name="tokens" value="LITERAL_IF"/>
             <property name="option" value="same"/>
         </module>
 
