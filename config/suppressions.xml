@@ -5,4 +5,19 @@
     "http://www.puppycrawl.com/dtds/suppressions_1_1.dtd">
 
 <suppressions>
+    <!-- conflict with header -->
+    <suppress id="commentStartWithSpace"
+             files=".*"
+             lines="1,19"/>
+    <!-- temporal suppression due to leak -->
+    <suppress checks="JavadocVariable"
+             files="XmlProfileWriter.java"
+             />
+    <suppress checks="MissingJavadocMethod"
+             files="XmlProfileWriter.java"
+             />
+    <!-- no need for non library projects -->
+    <suppress id="JavadocPackage"
+             files=".*"
+             />
 </suppressions>
