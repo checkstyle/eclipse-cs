@@ -524,7 +524,7 @@ public class Auditor {
       if (metaData == null) {
         return Messages.Auditor_txtUnknownModule;
       }
-      return metaData.getRuleName();
+      return metaData.getInternalName();
     }
   }
 }
