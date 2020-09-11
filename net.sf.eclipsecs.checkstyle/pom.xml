@@ -9,43 +9,34 @@
     <artifactId>net.sf.eclipsecs.checkstyle</artifactId>
     <packaging>eclipse-plugin</packaging>
     <name>Checkstyle Core Library Plugin</name>
-    
+
     <properties>
         <checkstyle.version>8.35</checkstyle.version>
+        <!-- -Dcheckstyle.downloadFile=checkstyle-8.36.zip -->
+        <checkstyle.downloadFile>checkstyle-${checkstyle.version}.zip</checkstyle.downloadFile>
+        <checkstyle.srcUrl>https://github.com/checkstyle/checkstyle/archive/${checkstyle.downloadFile}</checkstyle.srcUrl>
     </properties>
+    <dependencies>
+        <dependency>
+            <groupId>com.puppycrawl.tools</groupId>
+            <artifactId>checkstyle</artifactId>
+            <version>${checkstyle.version}</version>
+        </dependency>
+    </dependencies>
     <build>
         <plugins>
-            <plugin>
-                <groupId>com.googlecode.maven-download-plugin</groupId>
-                <artifactId>download-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>download-checkstyle-src</id>
-                        <phase>initialize</phase>
-                        <goals>
-                            <goal>wget</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>.</outputDirectory>
-                            <url>https://github.com/checkstyle/checkstyle/archive/checkstyle-${checkstyle.version}.zip</url>
-                            <outputFileName>checkstyle-checkstyle-${checkstyle.version}.zip</outputFileName>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>        
             <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
                 <executions>
                     <execution>
                         <phase>prepare-package</phase>
+                        <id>unpack-checkstyle-src</id>
                         <configuration>
                             <target>
                                 <delete dir="${project.build.directory}/checkstyle-src-unpack" />
                                 <delete dir="${project.build.directory}/checkstyle-src" />
-                                <first id="cssrc">
-                                    <fileset dir="." includes="checkstyle-checkstyle-*.zip" />
-                                </first>
-                                <unzip src="${toString:cssrc}" dest="${project.build.directory}/checkstyle-src-unpack">
+                                <unzip src="${basedir}/checkstyle-${checkstyle.downloadFile}"
+                                    dest="${project.build.directory}/checkstyle-src-unpack">
                                     <patternset>
                                         <include name="**/src/main/java/**" />
                                         <include name="**/src/main/resources/**" />
@@ -87,4 +78,122 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>download-checkstyle-src</id>
+            <activation>
+                <file>
+                    <missing>${basedir}/checkstyle-checkstyle-8.35.zip</missing><!-- change this when checkstyle.version changed -->
+                </file>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.googlecode.maven-download-plugin</groupId>
+                        <artifactId>download-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>download-checkstyle-src</id>
+                                <phase>initialize</phase>
+                                <goals>
+                                    <goal>wget</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>.</outputDirectory>
+                                    <url>${checkstyle.srcUrl}</url>
+                                    <outputFileName>checkstyle-${checkstyle.downloadFile}</outputFileName>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>pack-fat-checkstyle</id>
+            <activation>
+                <file>
+                    <missing>${basedir}/checkstyle-all-8.35.jar</missing><!-- change this when checkstyle.version changed -->
+                </file>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <version>3.1.2</version>
+                        <executions>
+                            <execution>
+                                <id>unpack</id>
+                                <phase>initialize</phase>
+                                <goals>
+                                    <goal>unpack</goal>
+                                </goals>
+                                <configuration>
+                                    <artifactItems>
+                                        <artifactItem>
+                                            <groupId>com.puppycrawl.tools</groupId>
+                                            <artifactId>checkstyle</artifactId>
+                                            <version>${checkstyle.version}</version>
+                                            <outputDirectory>${project.build.directory}</outputDirectory>
+                                            <includes>META-INF/MANIFEST.MF</includes>
+                                        </artifactItem>
+                                    </artifactItems>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <version>3.3.0</version>
+                        <configuration>
+                            <descriptorRefs>
+                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                            </descriptorRefs>
+                            <outputDirectory>${basedir}</outputDirectory>
+                            <finalName>checkstyle-all-${checkstyle.version}</finalName>
+                            <appendAssemblyId>false</appendAssemblyId>
+                            <formats>
+                                <format>jar</format>
+                            </formats>
+                            <overrideGroupName>com.puppycrawl.tools</overrideGroupName>
+                            <archive>
+                                <manifestFile>${project.build.directory}/META-INF/MANIFEST.MF</manifestFile>
+                            </archive>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>make-assembly</id>
+                                <phase>initialize</phase>
+                                <goals>
+                                    <goal>single</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>generate-sources</phase>
+                                <id>copy-heckstyle-all-jar</id>
+                                <configuration>
+                                    <target>
+                                        <delete file="${basedir}/checkstyle-all.jar" failonerror="false" />
+                                        <copy file="${basedir}/checkstyle-all-${checkstyle.version}.jar"
+                                            tofile="${basedir}/checkstyle-all.jar" overwrite="true" />
+                                    </target>
+                                </configuration>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
