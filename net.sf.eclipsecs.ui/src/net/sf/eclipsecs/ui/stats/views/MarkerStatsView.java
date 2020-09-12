@@ -20,11 +20,14 @@
 
 package net.sf.eclipsecs.ui.stats.views;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Objects;
 
+import net.sf.eclipsecs.core.builder.CheckstyleMarker;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
 import net.sf.eclipsecs.ui.stats.Messages;
@@ -36,6 +39,7 @@ import net.sf.eclipsecs.ui.util.table.ITableComparableProvider;
 import net.sf.eclipsecs.ui.util.table.ITableSettingsProvider;
 
 import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IContributionItem;
@@ -122,6 +126,9 @@ public class MarkerStatsView extends AbstractStatsView {
 
   /** Opens the editor and shows the error in the code. */
   private Action mShowErrorAction;
+
+  /** Opens the rule link in browser. */
+  private Action openUrlAction;
 
   /** The current violation category to show in details view. */
   private String mCurrentDetailCategory;
@@ -238,6 +245,7 @@ public class MarkerStatsView extends AbstractStatsView {
     // and to the context menu too
     ArrayList<Object> actionList = new ArrayList<>(3);
     actionList.add(mDrillDownAction);
+    actionList.add(openUrlAction);
     actionList.add(new Separator());
     actionList.add(mChartAction);
     hookContextMenu(actionList, masterViewer);
@@ -307,6 +315,7 @@ public class MarkerStatsView extends AbstractStatsView {
     ArrayList<Object> actionList = new ArrayList<>(1);
     actionList.add(mDrillBackAction);
     actionList.add(mShowErrorAction);
+    actionList.add(openUrlAction);
     actionList.add(new Separator());
     actionList.add(mChartAction);
     hookContextMenu(actionList, detailViewer);
@@ -331,6 +340,7 @@ public class MarkerStatsView extends AbstractStatsView {
     tbm.add(new Separator());
     tbm.add(mDrillBackAction);
     tbm.add(mDrillDownAction);
+    tbm.add(openUrlAction);
     tbm.add(new FiltersAction(this));
   }
 
@@ -444,6 +454,38 @@ public class MarkerStatsView extends AbstractStatsView {
     mShowErrorAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages()
             .getImageDescriptor(IDE.SharedImages.IMG_OPEN_MARKER));
 
+    openUrlAction = createOpenLinkAction();
+  }
+
+  private Action createOpenLinkAction() {
+    final Action openLinkAction = new Action() {
+      @Override
+      public void run() {
+        final Object selectedItem = getSelectedItem();
+        final String rule = getRuleKeyword(selectedItem);
+        openRuleLink(rule);
+      }
+    };
+    openLinkAction.setText(Messages.MarkerStatsView_openRuleLink);
+    openLinkAction.setToolTipText(Messages.MarkerStatsView_openRuleLinkTooptip);
+    final ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
+    openLinkAction.setImageDescriptor(sharedImages
+            .getImageDescriptor(ISharedImages.IMG_LCL_LINKTO_HELP));
+    return openLinkAction;
+  }
+
+  private static String getRule(final IMarker marker) {
+    String internalName = null;
+    try {
+      internalName = (String) marker.getAttribute(CheckstyleMarker.MODULE_NAME);
+      if (internalName == null) {
+        final String message = Objects.toString(marker.getAttribute(IMarker.MESSAGE), "");
+        internalName = RuleLinkHelper.getRuleFromMessage(message);
+      }
+    } catch (CoreException ex) {
+      CheckstyleLog.log(ex);
+    }
+    return internalName;
   }
 
   /**
@@ -451,8 +493,11 @@ public class MarkerStatsView extends AbstractStatsView {
    */
   private void updateActions() {
     mDrillBackAction.setEnabled(mIsDrilledDown);
-    mDrillDownAction.setEnabled(!mIsDrilledDown && !mMasterViewer.getSelection().isEmpty());
-    mShowErrorAction.setEnabled(mIsDrilledDown && !mDetailViewer.getSelection().isEmpty());
+    final boolean masterEnable = !mIsDrilledDown && !mMasterViewer.getSelection().isEmpty();
+    mDrillDownAction.setEnabled(masterEnable);
+    final boolean detailEnabled = mIsDrilledDown && !mDetailViewer.getSelection().isEmpty();
+    mShowErrorAction.setEnabled(detailEnabled);
+    openUrlAction.setEnabled(masterEnable || detailEnabled);
   }
 
   private void drillBack() {
@@ -793,5 +838,46 @@ public class MarkerStatsView extends AbstractStatsView {
 
       return settings;
     }
+  }
+
+  private String getRuleKeyword(final Object selectedItem) {
+    String rule = null;
+    if (selectedItem instanceof MarkerStat) {
+      final MarkerStat markerStat = (MarkerStat) selectedItem;
+      final Collection<IMarker> markers = markerStat.getMarkers();
+      if (markers.size() > 0) {
+        rule = getRule(markers.iterator().next());
+      }
+    } else if (selectedItem instanceof IMarker) {
+      final IMarker marker = (IMarker) selectedItem;
+      rule = getRule(marker);
+    }
+    return rule;
+  }
+
+  private void openRuleLink(final String rule) {
+    final String ruleUrl = RuleLinkHelper.getInstance().getRuleUrl(rule);
+    if (ruleUrl != null) {
+      try {
+        final URL url = new URL(ruleUrl);
+        PlatformUI.getWorkbench().getBrowserSupport().getExternalBrowser().openURL(url);
+      } catch (MalformedURLException ex) {
+        CheckstyleLog.log(ex, Messages.MarkerStatsView_unableToShowMarker);
+      } catch (PartInitException ex) {
+        CheckstyleLog.log(ex, Messages.MarkerStatsView_unableToShowMarker);
+      }
+    }
+  }
+
+  private Object getSelectedItem() {
+    final IStructuredSelection selection;
+    if (mIsDrilledDown) {
+      selection = (IStructuredSelection) mDetailViewer.getSelection();
+    }
+    else {
+      selection = (IStructuredSelection) mMasterViewer.getSelection();
+    }
+    final Object selectedItem = selection.getFirstElement();
+    return selectedItem;
   }
 }

@@ -7,7 +7,8 @@ Bundle-Vendor: Eclipse Checkstyle Project
 Bundle-Activator: net.sf.eclipsecs.ui.CheckstyleUIPlugin
 Bundle-ActivationPolicy: lazy
 Require-Bundle: net.sf.eclipsecs.core,
- org.eclipse.core.expressions
+ org.eclipse.core.expressions,
+ org.eclipse.ui.browser
 Bundle-ClassPath: .,
  lib/jfreechart-1.0.19.jar,
  lib/jfreechart-1.0.19-swt.jar,
