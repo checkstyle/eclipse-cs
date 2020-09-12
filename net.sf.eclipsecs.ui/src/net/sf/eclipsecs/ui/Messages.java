@@ -174,6 +174,10 @@ public final class Messages extends NLS {
 
   public static String CheckstylePreferencePage_txtSuggestRebuild;
 
+  public static String CheckstylePreferencePage_lblLocaleLanguage;
+
+  public static String CheckstylePreferencePage_lblLocaleLanguages;
+
   public static String CheckstylePreferencePage_version;
 
   public static String CheckstylePropertyPage_btnActivateCheckstyle;
@@ -490,7 +494,7 @@ public final class Messages extends NLS {
   public static String CheckstylePreferenceTransfer_name;
 
   public static String MarkerPropertyPage_Issue;
-  
+
   public static String MarkerPropertyPage_Module;
 
   public static String MarkerPropertyPage_SuppressionHint;
