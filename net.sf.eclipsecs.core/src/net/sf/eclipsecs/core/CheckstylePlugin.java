@@ -45,6 +45,11 @@ public class CheckstylePlugin extends Plugin {
   /** Extension point id for Checkstyle addon providers. */
   private static final String ADDON_PROVIDER_EXT_PT_ID = PLUGIN_ID + ".checkstyleAddonProvider"; //$NON-NLS-1$
 
+  /**
+   *  Platform Locale.
+   */
+  private static Locale platformLocale;
+
   /** The shared instance. */
   private static CheckstylePlugin sPlugin;
 
@@ -103,15 +108,20 @@ public class CheckstylePlugin extends Plugin {
    * @return the platform locale
    */
   public static Locale getPlatformLocale() {
+    if (platformLocale == null) {
+      final String language = Platform.getNL();
+      final String[] parts = language.split("_");
+      if (parts.length > 0) {
+        platformLocale = new Locale(parts[0]);
+      } else {
+        platformLocale = Locale.getDefault();
+      }
+    }
+    return platformLocale;
+  }
 
-    String nl = Platform.getNL();
-    String[] parts = nl.split("_"); //$NON-NLS-1$
-
-    String language = parts.length > 0 ? parts[0] : ""; //$NON-NLS-1$
-    String country = parts.length > 1 ? parts[1] : ""; //$NON-NLS-1$
-    String variant = parts.length > 2 ? parts[2] : ""; //$NON-NLS-1$
-
-    return new Locale(language, country, variant);
+  public static void setPlatformLocale(final Locale locale) {
+    platformLocale = locale;
   }
 
   /**
