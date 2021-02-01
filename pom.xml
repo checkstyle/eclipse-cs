@@ -23,7 +23,6 @@
         <tycho-version>1.6.0</tycho-version>
         <tycho.scmUrl>scm:git:git://github.com:checkstyle/eclipse-cs.git</tycho.scmUrl>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <checkstyle.version>8.35</checkstyle.version>
         <maven.checkstyle.plugin.version>3.1.1</maven.checkstyle.plugin.version>
         <maven.sevntu.checkstyle.plugin.version>1.37.1</maven.sevntu.checkstyle.plugin.version>
         <!-- it should be a version of checkstyle that is compatible/compiled with sevntu -->
