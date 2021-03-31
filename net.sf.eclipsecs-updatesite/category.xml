@@ -3,10 +3,10 @@
    <description name="Eclipse Checkstyle Plugin" url="http://eclipse-cs.sourceforge.net/update">
       Eclipse Checkstyle Plugin Update Site
    </description>
-   <feature url="features/net.sf.eclipsecs_8.36.1.qualifier.jar" id="net.sf.eclipsecs" version="8.36.1.qualifier">
+   <feature url="features/net.sf.eclipsecs_8.36.2.qualifier.jar" id="net.sf.eclipsecs" version="8.36.2.qualifier">
       <category name="Checkstyle"/>
    </feature>
-   <feature url="features/net.sf.eclipsecs.source_8.36.1.qualifier.jar" id="net.sf.eclipsecs.source" version="8.36.1.qualifier">
+   <feature url="features/net.sf.eclipsecs.source_8.36.2.qualifier.jar" id="net.sf.eclipsecs.source" version="8.36.2.qualifier">
       <category name="Checkstyle"/>
    </feature>
    <category-def name="Checkstyle" label="Checkstyle">
