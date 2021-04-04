@@ -4,18 +4,6 @@
 "http://eclipse-cs.sourceforge.net/dtds/checkstyle-metadata_1_1.dtd">
 <checkstyle-metadata>
     <rule-group-metadata name="%Design.group" priority="1000">
-
-        <rule-metadata name="%DesignForExtension.name" internal-name="DesignForExtension" parent="TreeWalker">
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.design.DesignForExtensionCheck" />
-            <description>%DesignForExtension.desc</description>
-            <property-metadata name="ignoredAnnotations" datatype="String"
-                default-value="Test,Before,After,BeforeClass,AfterClass">
-                <description>%DesignForExtension.ignoredAnnotations</description>
-            </property-metadata>
-            <quickfix classname="net.sf.eclipsecs.ui.quickfixes.design.DesignForExtensionQuickfix" />
-            <message-key key="design.forExtension" />
-        </rule-metadata>
-
         <rule-metadata name="%FinalClass.name" internal-name="FinalClass" parent="TreeWalker">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.checks.design.FinalClassCheck" />
             <description>%FinalClass.desc</description>
