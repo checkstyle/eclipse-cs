@@ -85,7 +85,6 @@ public class ChecksTest {
         "com.puppycrawl.tools.checkstyle.checks.metrics.CyclomaticComplexityCheck",
         "com.puppycrawl.tools.checkstyle.checks.coding.DeclarationOrderCheck",
         "com.puppycrawl.tools.checkstyle.checks.coding.DefaultComesLastCheck",
-        "com.puppycrawl.tools.checkstyle.checks.design.DesignForExtensionCheck",
         "com.puppycrawl.tools.checkstyle.checks.blocks.EmptyBlockCheck",
         "com.puppycrawl.tools.checkstyle.checks.whitespace.EmptyForInitializerPadCheck",
         "com.puppycrawl.tools.checkstyle.checks.whitespace.EmptyForIteratorPadCheck",
