@@ -20,14 +20,14 @@
 
 package net.sf.eclipsecs.ui.config.configtypes;
 
-import com.google.common.base.Strings;
-
 import java.net.MalformedURLException;
-import java.net.PasswordAuthentication;
 import java.net.URL;
+
+import com.google.common.base.Strings;
 
 import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
 import net.sf.eclipsecs.core.config.configtypes.RemoteConfigurationType;
+import net.sf.eclipsecs.core.config.configtypes.RemoteConfigurationType.RemoteConfigAuthenticator;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
 import net.sf.eclipsecs.ui.Messages;
@@ -193,11 +193,11 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
     if (mWorkingCopy.getLocation() != null) {
       try {
 
-        PasswordAuthentication auth = RemoteConfigurationType.RemoteConfigAuthenticator
-                .getPasswordAuthentication(mWorkingCopy.getResolvedConfigurationFileURL());
+        final RemoteConfigAuthenticator auth = RemoteConfigAuthenticator
+                .create(mWorkingCopy.getResolvedConfigurationFileURL());
 
         if (auth != null) {
-          mUserName.setText(auth.getUserName());
+          mUserName.setText(auth.getUsername());
           mPassword.setText(new String(auth.getPassword()));
         }
       } catch (CheckstylePluginException e) {
