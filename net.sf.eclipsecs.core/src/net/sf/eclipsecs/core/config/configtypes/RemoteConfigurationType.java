@@ -29,16 +29,14 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Field;
-import java.net.Authenticator;
 import java.net.HttpURLConnection;
-import java.net.PasswordAuthentication;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -78,6 +76,9 @@ public class RemoteConfigurationType extends ConfigurationType {
   /** Key to access the password. */
   public static final String KEY_PASSWORD = "password"; //$NON-NLS-1$
 
+  /** Key to access the max redirect networking property. */
+  public static final String KEY_MAX_REDIRECTS = "http.maxRedirects";
+
   private static Set<String> sFailedWith401URLs = new HashSet<>();
 
   /**
@@ -92,83 +93,85 @@ public class RemoteConfigurationType extends ConfigurationType {
 
     CheckstyleConfigurationFile data = new CheckstyleConfigurationFile();
 
-    synchronized (Authenticator.class) {
+    final String currentRedirects = System.getProperty(KEY_MAX_REDIRECTS);
 
-      String currentRedirects = System.getProperty("http.maxRedirects"); //$NON-NLS-1$
+    try {
 
-      Authenticator oldAuthenticator = RemoteConfigAuthenticator.getDefault();
+      // resolve the true configuration file URL
+      data.setResolvedConfigFileURL(resolveLocation(checkConfiguration));
+
+      boolean originalFileSuccess = false;
+      byte[] configurationFileData = null;
+
       try {
 
-        // resolve the true configuration file URL
-        data.setResolvedConfigFileURL(resolveLocation(checkConfiguration));
+        System.setProperty(KEY_MAX_REDIRECTS, "3");
 
-        Authenticator.setDefault(new RemoteConfigAuthenticator(data.getResolvedConfigFileURL()));
+        final URLConnection connection = data.getResolvedConfigFileURL().openConnection();
 
-        boolean originalFileSuccess = false;
-        byte[] configurationFileData = null;
-
-        try {
-
-          System.setProperty("http.maxRedirects", "3"); //$NON-NLS-1$ //$NON-NLS-2$
-
-          URLConnection connection = data.getResolvedConfigFileURL().openConnection();
-
-          // get the configuration file data
-          configurationFileData = getBytesFromURLConnection(connection);
-
-          // get last modification timestamp
-          data.setModificationStamp(connection.getLastModified());
-
-          originalFileSuccess = true;
-        } catch (IOException e) {
-          if (useCacheFile) {
-            configurationFileData = getBytesFromCacheFile(checkConfiguration);
-          } else {
-            throw e;
-          }
+        final RemoteConfigAuthenticator auth = RemoteConfigAuthenticator.create(
+                data.getResolvedConfigFileURL());
+        if (auth != null) {
+          connection.setRequestProperty("Authorization", auth.basicAuthHeaderValue);
         }
 
-        data.setCheckConfigFileBytes(configurationFileData);
+        // get the configuration file data
+        configurationFileData = getBytesFromURLConnection(connection);
 
-        // get the properties bundle
-        byte[] additionalPropertiesBytes = null;
-        if (originalFileSuccess) {
-          additionalPropertiesBytes = getAdditionPropertiesBundleBytes(
-                  data.getResolvedConfigFileURL());
-        } else if (useCacheFile) {
-          additionalPropertiesBytes = getBytesFromCacheBundleFile(checkConfiguration);
-        }
+        // get last modification timestamp
+        data.setModificationStamp(connection.getLastModified());
 
-        data.setAdditionalPropertyBundleBytes(additionalPropertiesBytes);
-
-        // get the property resolver
-        PropertyResolver resolver = getPropertyResolver(checkConfiguration, data);
-        data.setPropertyResolver(resolver);
-
-        // write to cache file
-        if (originalFileSuccess && useCacheFile) {
-          writeToCacheFile(checkConfiguration, configurationFileData, additionalPropertiesBytes);
-        }
-
-      } catch (UnknownHostException e) {
-        CheckstylePluginException.rethrow(e,
-                NLS.bind(Messages.RemoteConfigurationType_errorUnknownHost, e.getMessage()));
-      } catch (FileNotFoundException e) {
-        CheckstylePluginException.rethrow(e,
-                NLS.bind(Messages.RemoteConfigurationType_errorFileNotFound, e.getMessage()));
-      } catch (IOException | URISyntaxException e) {
-        CheckstylePluginException.rethrow(e);
-      } finally {
-        Authenticator.setDefault(oldAuthenticator);
-
-        if (currentRedirects != null) {
-          System.setProperty("http.maxRedirects", currentRedirects); //$NON-NLS-1$
+        originalFileSuccess = true;
+      } catch (IOException exception) {
+        if (useCacheFile) {
+          configurationFileData = getBytesFromCacheFile(checkConfiguration);
         } else {
-          System.getProperties().remove("http.maxRedirects"); //$NON-NLS-1$
+          throw exception;
         }
       }
 
+      data.setCheckConfigFileBytes(configurationFileData);
+
+      // get the properties bundle
+      byte[] additionalPropertiesBytes = null;
+      if (originalFileSuccess) {
+        additionalPropertiesBytes = getAdditionPropertiesBundleBytes(
+                data.getResolvedConfigFileURL());
+      } else if (useCacheFile) {
+        additionalPropertiesBytes = getBytesFromCacheBundleFile(checkConfiguration);
+      }
+
+      data.setAdditionalPropertyBundleBytes(additionalPropertiesBytes);
+
+      // get the property resolver
+      final PropertyResolver resolver = getPropertyResolver(checkConfiguration, data);
+      data.setPropertyResolver(resolver);
+
+      // write to cache file
+      if (originalFileSuccess && useCacheFile) {
+        writeToCacheFile(checkConfiguration, configurationFileData, additionalPropertiesBytes);
+      }
+
     }
+    catch (UnknownHostException exception) {
+      CheckstylePluginException.rethrow(exception,
+              NLS.bind(Messages.RemoteConfigurationType_errorUnknownHost, exception.getMessage()));
+    }
+    catch (FileNotFoundException exception) {
+      CheckstylePluginException.rethrow(exception,
+              NLS.bind(Messages.RemoteConfigurationType_errorFileNotFound, exception.getMessage()));
+    }
+    catch (IOException | URISyntaxException exception) {
+      CheckstylePluginException.rethrow(exception);
+    }
+    finally {
+      if (currentRedirects != null) {
+        System.setProperty(KEY_MAX_REDIRECTS, currentRedirects);
+      } else {
+        System.getProperties().remove(KEY_MAX_REDIRECTS);
+      }
+    }
+
     return data;
   }
 
@@ -342,48 +345,61 @@ public class RemoteConfigurationType extends ConfigurationType {
    *
    * @author Lars Ködderitzsch
    */
-  public static class RemoteConfigAuthenticator extends Authenticator {
-
-    /** The check configuration URL. */
-    private final URL mResolvedCheckConfigurationURL;
+  public static final class RemoteConfigAuthenticator {
 
     /**
-     * Creates the authenticator.
-     *
-     * @param resolvedCheckConfigurationURL
-     *          the check configuration URL
+     * Username for HTTP Basic Auth.
      */
-    public RemoteConfigAuthenticator(URL resolvedCheckConfigurationURL) {
-      mResolvedCheckConfigurationURL = resolvedCheckConfigurationURL;
+    private final String username;
+    /**
+     * Password for HTTP Basic Auth.
+     */
+    private final String password;
+    /**
+     * Basic Auth Header Value.
+     */
+    private final String basicAuthHeaderValue;
+
+    /**
+     * Creates a new RemoteConfigAuthenticator instance.
+     * @param username Username for HTTP Basic Auth
+     * @param password Password for HTTP Basic Auth
+     * @param basicAuthHeaderValue Basic Auth Header Value
+     */
+    private RemoteConfigAuthenticator(String username, String password,
+            String basicAuthHeaderValue) {
+      this.username = username;
+      this.password = password;
+      this.basicAuthHeaderValue = basicAuthHeaderValue;
     }
 
     /**
-     * Hacked together a piece of code to get the current default authenticator. Can't believe the
-     * API is that bad...
+     * Returns the stored authentication for the given check configuration URL.
      *
-     * @return the current Authenticator
+     * @param resolvedCheckConfigurationUrl
+     *          the configuration URL
+     * @return the authentication object or <code>null</code> if none is stored
      */
-    public static Authenticator getDefault() {
-
-      Authenticator currentDefault = null;
-
+    public static RemoteConfigAuthenticator create(URL resolvedCheckConfigurationUrl) {
+      RemoteConfigAuthenticator auth = null;
       try {
+        final ISecurePreferences prefs = SecurePreferencesFactory.getDefault()
+                .node(getSecureStoragePath(resolvedCheckConfigurationUrl));
 
-        // Hack to get the current authenticator
-        Field[] fields = Authenticator.class.getDeclaredFields();
-        for (int i = 0; i < fields.length; i++) {
-          if (Authenticator.class.equals(fields[i].getType())) {
-            fields[i].setAccessible(true);
-            currentDefault = (Authenticator) fields[i].get(Authenticator.class);
-            break;
-          }
+        final String userName = prefs.get(KEY_USERNAME, null);
+        final String password = prefs.get(KEY_PASSWORD, null);
+
+        if (userName != null && password != null) {
+          final String unencodedHeader = userName + ":" + password;
+          final String basicAuthHeaderValue = "Basic " + Base64.getEncoder().encodeToString(
+                  unencodedHeader.getBytes());
+          auth = new RemoteConfigAuthenticator(userName, password, basicAuthHeaderValue);
         }
-      } catch (IllegalArgumentException e) {
-        CheckstyleLog.log(e);
-      } catch (IllegalAccessException e) {
-        CheckstyleLog.log(e);
+      } catch (CheckstylePluginException | StorageException exception) {
+        CheckstyleLog.log(exception);
       }
-      return currentDefault;
+
+      return auth;
     }
 
     /**
@@ -414,43 +430,6 @@ public class RemoteConfigurationType extends ConfigurationType {
       } catch (StorageException e) {
         CheckstyleLog.log(e);
       }
-    }
-
-    @Override
-    protected PasswordAuthentication getPasswordAuthentication() {
-      return getPasswordAuthentication(mResolvedCheckConfigurationURL);
-    }
-
-    /**
-     * Returns the stored authentication for the given check configuration URL.
-     *
-     * @param resolvedCheckConfigurationURL
-     *          the configuration URL
-     * @return the authentication object or <code>null</code> if none is stored
-     */
-    public static PasswordAuthentication getPasswordAuthentication(
-            URL resolvedCheckConfigurationURL) {
-
-      PasswordAuthentication auth = null;
-
-      try {
-
-        ISecurePreferences prefs = SecurePreferencesFactory.getDefault()
-                .node(getSecureStoragePath(resolvedCheckConfigurationURL));
-
-        String userName = prefs.get(KEY_USERNAME, null);
-        String password = prefs.get(KEY_PASSWORD, null);
-
-        if (userName != null && password != null) {
-          auth = new PasswordAuthentication(userName, password.toCharArray());
-        }
-      } catch (CheckstylePluginException e) {
-        CheckstyleLog.log(e);
-      } catch (StorageException e) {
-        CheckstyleLog.log(e);
-      }
-
-      return auth;
     }
 
     /**
@@ -498,5 +477,14 @@ public class RemoteConfigurationType extends ConfigurationType {
       }
       return "eclipse-cs/" + urlHash;
     }
+
+    public String getUsername() {
+      return username;
+    }
+
+    public String getPassword() {
+      return password;
+    }
+
   }
 }
