@@ -86,6 +86,8 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
 
   private Button mLimitCheckstyleMarkers;
 
+  private Combo mLanguageIf;
+
   private Text mTxtMarkerLimit;
 
   private Button mBackgroundFullBuild;
@@ -175,6 +177,23 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
     GridLayout gridLayout = new GridLayout();
     gridLayout.numColumns = 1;
     generalComposite.setLayout(gridLayout);
+
+    final Composite langComposite = new Composite(generalComposite, SWT.NULL);
+    gridLayout = new GridLayout(3, false);
+    gridLayout.marginHeight = 0;
+    gridLayout.marginWidth = 0;
+    langComposite.setLayout(gridLayout);
+    langComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+    final Label lblLanguage = new Label(langComposite, SWT.NULL);
+    lblLanguage.setText(Messages.CheckstylePreferencePage_lblLocaleLanguage);
+    mLanguageIf = new Combo(langComposite, SWT.READ_ONLY);
+    mLanguageIf.setItems(Messages.CheckstylePreferencePage_lblLocaleLanguages.split("[, ;]+"));
+    final String lang = CheckstylePluginPrefs.getString(CheckstylePluginPrefs.PREF_LOCALE_LANGUAGE);
+    final int selectedLang = mLanguageIf.indexOf(lang == null || lang.isEmpty() ? "default" : lang);
+    if (selectedLang != -1) {
+      mLanguageIf.select(selectedLang);
+    }
 
     //
     // Create a combo with the rebuild options
@@ -299,7 +318,6 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
     mBackgroundFullBuild.setText(Messages.CheckstylePreferencePage_txtBackgroundFullBuild0);
     mBackgroundFullBuild.setSelection(
             CheckstylePluginPrefs.getBoolean(CheckstylePluginPrefs.PREF_BACKGROUND_FULL_BUILD));
-
     return generalComposite;
   }
 
@@ -349,6 +367,9 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
       // Save the check configurations.
       //
       mWorkingSet.store();
+
+      CheckstylePluginPrefs.setString(CheckstylePluginPrefs.PREF_LOCALE_LANGUAGE,
+              mLanguageIf.getItem(mLanguageIf.getSelectionIndex()));
 
       //
       // Save the general preferences.
