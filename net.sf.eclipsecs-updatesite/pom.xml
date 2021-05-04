@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>net.sf.eclipsecs.parent</artifactId>
@@ -10,52 +11,185 @@
     <packaging>eclipse-repository</packaging>
     <name>eclipse-cs Update Site</name>
 
+    <properties>
+        <github-update-repo>git@github.com:Calixte/eclipse-cs-update-site.git</github-update-repo>
+        <github-local-clone>${project.build.directory}/checkout</github-local-clone>
+        <releases-directory>${github-local-clone}/releases</releases-directory>
+        <current-release-directory>${releases-directory}/${qualifiedVersion}</current-release-directory>
+        <site.label>Eclipse Checkstyle Plugin Update Site</site.label>
+    </properties>
+
     <profiles>
         <profile>
-            <id>bintray</id>
+            <id>release-composite</id>
             <build>
                 <plugins>
-                    <!-- Enable alternative deployer. -->
                     <plugin>
-                        <groupId>com.carrotgarden.maven</groupId>
-                        <artifactId>bintray-maven-plugin</artifactId>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>build-helper-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>parse-version</id>
+                                <goals>
+                                    <goal>parse-version</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
                         <configuration>
-                            <skip>false</skip>
-                            <subject>eclipse-cs</subject>
-                            <repository>eclipse-cs</repository>
-                            <!-- Put Bintray credentials in settings.xml. -->
-                            <serverId>bintray</serverId>
+                            <executable>git</executable>
                         </configuration>
                         <executions>
                             <execution>
-                                <id>upload-update-site</id>
-                                <phase>deploy</phase>
+                                <id>git-clone</id>
+                                <phase>prepare-package</phase>
                                 <goals>
-                                    <goal>upload</goal>
+                                    <goal>exec</goal>
                                 </goals>
                                 <configuration>
-                                    <bintrayPackage>update-site</bintrayPackage>
-                                    <bintrayVersion>${unqualifiedVersion}</bintrayVersion>
-                                    <sourceFolder>${project.build.directory}/repository/</sourceFolder>
-                                    <targetFolder>${unqualifiedVersion}</targetFolder>
-                                    <performCleanup>true</performCleanup>
-                                    <cleanupRegex>^\Q${unqualifiedVersion}\E.*$</cleanupRegex>
+                                    <arguments>
+                                        <argument>clone</argument>
+                                        <argument>--depth=1</argument>
+                                        <argument>-b</argument>
+                                        <argument>main</argument>
+                                        <argument>${github-update-repo}</argument>
+                                        <argument>${github-local-clone}</argument>
+                                    </arguments>
                                 </configuration>
                             </execution>
                             <execution>
-                                <id>upload-update-site-archive</id>
-                                <phase>deploy</phase>
+                                <id>git-add</id>
+                                <phase>verify</phase>
                                 <goals>
-                                    <goal>upload</goal>
+                                    <goal>exec</goal>
                                 </goals>
                                 <configuration>
-                                    <bintrayPackage>update-site-archive</bintrayPackage>
-                                    <bintrayVersion>${unqualifiedVersion}</bintrayVersion>
-                                    <sourceFolder>${project.build.directory}/</sourceFolder>
-                                    <uploadRegex>.*\Qnet.sf.eclipsecs-updatesite_\E.*\.zip</uploadRegex>
-                                    <targetFolder>update-site-archive</targetFolder>
-                                    <performCleanup>true</performCleanup>
-                                    <cleanupRegex>^.*\Qnet.sf.eclipsecs-updatesite_${unqualifiedVersion}\E.*\.zip$</cleanupRegex>
+                                    <arguments>
+                                        <argument>-C</argument>
+                                        <argument>${github-local-clone}</argument>
+                                        <argument>add</argument>
+                                        <argument>-A</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>git-commit</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>
+                                        <argument>-C</argument>
+                                        <argument>${github-local-clone}</argument>
+                                        <argument>commit</argument>
+                                        <argument>-m</argument>
+                                        <argument>Release ${qualifiedVersion}</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>git-push</id>
+                                <phase>deploy</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>
+                                        <argument>-C</argument>
+                                        <argument>${github-local-clone}</argument>
+                                        <argument>push</argument>
+                                        <argument>origin</argument>
+                                        <argument>main</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>copy-repository</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${current-release-directory}</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>${project.build.directory}/repository</directory>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.eclipse.tycho.extras</groupId>
+                        <artifactId>tycho-eclipserun-plugin</artifactId>
+                        <version>${tycho-version}</version>
+                        <configuration>
+                            <repositories>
+                                <repository>
+                                    <id>juno</id>
+                                    <layout>p2</layout>
+                                    <url>https://download.eclipse.org/releases/juno</url>
+                                </repository>
+                            </repositories>
+                            <dependencies>
+                                <dependency>
+                                    <artifactId>org.eclipse.ant.core</artifactId>
+                                    <type>eclipse-plugin</type>
+                                </dependency>
+                                <dependency>
+                                    <artifactId>org.apache.ant</artifactId>
+                                    <type>eclipse-plugin</type>
+                                </dependency>
+                                <dependency>
+                                    <artifactId>org.eclipse.equinox.p2.repository.tools</artifactId>
+                                    <type>eclipse-plugin</type>
+                                </dependency>
+                                <dependency>
+                                    <artifactId>org.eclipse.equinox.p2.core.feature</artifactId>
+                                    <type>eclipse-feature</type>
+                                </dependency>
+                                <dependency>
+                                    <artifactId>org.eclipse.equinox.p2.extras.feature</artifactId>
+                                    <type>eclipse-feature</type>
+                                </dependency>
+                                <dependency>
+                                    <artifactId>org.eclipse.equinox.ds</artifactId>
+                                    <type>eclipse-plugin</type>
+                                </dependency>
+                            </dependencies>
+                        </configuration>
+                        <executions>
+                            <!-- add our new child repository -->
+                            <execution>
+                                <id>add-p2-composite-repository</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>eclipse-run</goal>
+                                </goals>
+                                <configuration>
+                                    <applicationsArgs>
+                                        <args>-application</args>
+                                        <args>org.eclipse.ant.core.antRunner</args>
+                                        <args>-buildfile</args>
+                                        <args>packaging-p2composite.ant</args>
+                                        <args>p2.composite.add</args>
+                                        <args>-Dsite.label="${site.label}"</args>
+                                        <args>-Dcomposite.base.dir=${github-local-clone}</args>
+                                        <args>-DunqualifiedVersion=${unqualifiedVersion}</args>
+                                        <args>-DbuildQualifier=${buildQualifier}</args>
+                                        <args>-DparsedVersion.majorVersion=${parsedVersion.majorVersion}</args>
+                                        <args>-DparsedVersion.minorVersion=${parsedVersion.minorVersion}</args>
+                                    </applicationsArgs>
                                 </configuration>
                             </execution>
                         </executions>
