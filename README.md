@@ -11,10 +11,7 @@ check for coding style and possible error prone code constructs.
 You can install the plugin by dragging and dropping the following link into your eclipse:
 [Install ](http://marketplace.eclipse.org/marketplace-client-intro?mpc_install=150)
 
-If you want to install manually, you can find the binaries here:
-https://bintray.com/eclipse-cs/eclipse-cs/update-site-archive
-
-Older versions can be installed using the specific update site for that version, for instance https://dl.bintray.com/eclipse-cs/eclipse-cs/8.17.0/
+Older versions can be installed using the specific update site for that version, for instance https://checkstyle.org/eclipse-cs-update-site/8.41.0/
 
 ### What does it do?
 With the Checkstyle Eclipse Plugin your code is constantly inspected for coding standard deviations. Within the Eclipse workbench you are immediately notified of problems via the Eclipse Problems View and source code annotations similar to compiler errors or warnings. 
