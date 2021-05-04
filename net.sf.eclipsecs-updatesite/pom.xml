@@ -12,7 +12,7 @@
     <name>eclipse-cs Update Site</name>
 
     <properties>
-        <github-update-repo>git@github.com:Calixte/eclipse-cs-update-site.git</github-update-repo>
+        <github-update-repo>git@github.com:checkstyle/eclipse-cs-update-site.git</github-update-repo>
         <github-local-clone>${project.build.directory}/checkout</github-local-clone>
         <releases-directory>${github-local-clone}/releases</releases-directory>
         <current-release-directory>${releases-directory}/${qualifiedVersion}</current-release-directory>
