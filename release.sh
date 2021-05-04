@@ -64,8 +64,8 @@ cat <<EOT > /tmp/add-to-release.json
 EOT
 sed -i "/\[/r /tmp/add-to-release.json" net.sf.eclipsecs.doc/src/main/resources/releases.json
 
-echo "Build and Deploy binaries only to bintray"
-mvn deploy -Pbintray
+echo "Build and Deploy binaries"
+mvn deploy -P release-composite
 
 echo "update the website content in project root 'docs' folder"
 echo "FYI: Github is setup to show content of master:HEAD '/doc' folder"
