@@ -1,5 +1,10 @@
 [
   {
+    "version": "Release 8.41.1",
+    "template": "partials/releases/8.41.1/release_notes.html",
+    "open": true
+  },
+  {
     "version": "Release 8.41.0",
     "template": "partials/releases/8.41.0/release_notes.html",
     "open": true
