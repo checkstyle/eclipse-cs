@@ -324,7 +324,7 @@ public class Auditor {
 
             mMarkerAttributes.put(CheckstyleMarker.MODULE_NAME, metaData.getInternalName());
             mMarkerAttributes.put(CheckstyleMarker.MESSAGE_KEY,
-                    error.getLocalizedMessage().getKey());
+                    error.getViolation().getKey());
             mMarkerAttributes.put(IMarker.PRIORITY, Integer.valueOf(IMarker.PRIORITY_NORMAL));
             mMarkerAttributes.put(IMarker.SEVERITY, Integer.valueOf(getSeverityValue(severity)));
             mMarkerAttributes.put(IMarker.LINE_NUMBER, Integer.valueOf(error.getLine()));
@@ -417,7 +417,7 @@ public class Auditor {
 
           // annotate from the error column until the end of
           // the line
-          int offset = error.getLocalizedMessage().getColumnCharIndex();
+          final int offset = error.getViolation().getColumnCharIndex();
 
           markerAttributes.put(IMarker.CHAR_START, Integer.valueOf(lineOffset + offset));
           markerAttributes.put(IMarker.CHAR_END, Integer.valueOf(lineOffset + lineLength));
