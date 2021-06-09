@@ -183,7 +183,6 @@ public class ChecksTest {
         "com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocParagraphCheck",
         "com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocTagContinuationIndentationCheck",
         "com.puppycrawl.tools.checkstyle.checks.javadoc.SingleLineJavadocCheck",
-        "com.puppycrawl.tools.checkstyle.checks.javadoc.SummaryJavadocCheck",
         "com.puppycrawl.tools.checkstyle.checks.blocks.EmptyCatchBlockCheck",
         "com.puppycrawl.tools.checkstyle.checks.imports.ImportControlCheck",
         "com.puppycrawl.tools.checkstyle.checks.indentation.CommentsIndentationCheck",
