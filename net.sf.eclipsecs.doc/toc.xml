@@ -21,5 +21,5 @@
     </topic>
     <topic label="Release notes" href="docs/index.html#!/releasenotes"/>
     <topic label="FAQ" href="docs/index.html#!/faq"/>
-    <topic label="Checkstyle documentation" href="http://checkstyle.sourceforge.net/"/>
+    <topic label="Checkstyle documentation" href="https://checkstyle.org/"/>
 </toc>
