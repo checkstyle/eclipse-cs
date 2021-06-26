@@ -24,7 +24,7 @@ import org.eclipse.osgi.util.NLS;
 
 /**
  * Class used for i18n.
- * 
+ *
  * @author Fabrice BELLINGARD
  */
 public final class Messages extends NLS {
@@ -55,6 +55,10 @@ public final class Messages extends NLS {
   public static String MarkerStatsView_displayError;
 
   public static String MarkerStatsView_displayErrorTooltip;
+
+  public static String MarkerStatsView_openRuleLink;
+
+  public static String MarkerStatsView_openRuleLinkTooptip;
 
   public static String StatsViewUtils_checkstyleErrorsCount;
 
