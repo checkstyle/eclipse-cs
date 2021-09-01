@@ -723,9 +723,7 @@ public final class MetadataFactory {
       }
 
       // process the modules
-      if (OTHER_GROUP_NAME.equals(groupName)) {
-        processModules(groupEl, group, metadataBundle);
-      }
+      processModules(groupEl, group, metadataBundle);
     }
   }
 
