@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -59,25 +58,6 @@ public final class XmlUtil {
     }
 
     return result;
-  }
-
-  public static Node findElementByTag(Set<Node> nodes, String tag) {
-    Node result = null;
-
-    for (Node child : nodes) {
-      if (tag.equals(child.getNodeName())) {
-        result = child;
-        break;
-      }
-    }
-
-    return result;
-  }
-
-  public static Set<Node> findElementsByTag(Set<Node> nodes, String tag) {
-
-    return nodes.stream().filter(node -> tag.equals(node.getNodeName()))
-            .collect(Collectors.toSet());
   }
 
 }
