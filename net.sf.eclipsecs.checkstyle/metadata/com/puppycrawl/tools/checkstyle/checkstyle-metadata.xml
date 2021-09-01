@@ -4,43 +4,5 @@
 "http://eclipse-cs.sourceforge.net/dtds/checkstyle-metadata_1_1.dtd">
 <checkstyle-metadata>
     <rule-group-metadata name="%Other.group" priority="1500">
-
-        <rule-metadata name="%Checker.name" internal-name="Checker" parent="Root" singleton="true" default-severity="warning">
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.Checker"/>
-            <description>%Checker.desc</description>
-            <property-metadata name="cacheFile" datatype="File">
-                <description>%Checker.cacheFile</description>
-            </property-metadata>
-            <property-metadata name="basedir" datatype="String">
-                <description>%Checker.basedir</description>
-            </property-metadata>
-            <property-metadata name="localeCountry" datatype="String">
-                <description>%Checker.localeCountry</description>
-            </property-metadata>
-            <property-metadata name="localeLanguage" datatype="String">
-                <description>%Checker.localeLanguage</description>
-            </property-metadata>
-            <property-metadata name="charset" datatype="String">
-                <description>%Checker.charset</description>
-            </property-metadata>
-            <property-metadata name="fileExtensions" datatype="String">
-                <description>%Checker.fileExtensions</description>
-            </property-metadata>
-            <property-metadata name="haltOnException" datatype="Boolean" default-value="true">
-                <description>%Checker.haltOnException</description>
-            </property-metadata>
-            <property-metadata name="tabWidth" datatype="Integer" default-value="8">
-                <description>%Checker.tabWidth</description>
-            </property-metadata>
-        </rule-metadata>
-
-        <rule-metadata name="%TreeWalker.name" internal-name="TreeWalker" parent="Checker"
-            singleton="true">
-            <alternative-name internal-name="com.puppycrawl.tools.checkstyle.TreeWalker"/>
-            <description>%TreeWalker.desc</description>
-            <property-metadata name="fileExtensions" datatype="String" default-value="java">
-                <description>%TreeWalker.fileExtensions</description>
-            </property-metadata>
-        </rule-metadata>
     </rule-group-metadata>
 </checkstyle-metadata>
