@@ -1,3 +1,8 @@
+version: ~> 1.0
+dist: focal
+# this arch is required as is for Partner Queue Solution - DO NOT MODIFY
+arch: ppc64le
+
 language: java
 sudo: false
 
@@ -37,6 +42,7 @@ matrix:
 
     # JDK 13 (most recent Java version)
     - jdk: openjdk13
+      arch: amd64
       env:
         - DESC="install (openjdk13)"
         - CMD="mvn install && git diff"
