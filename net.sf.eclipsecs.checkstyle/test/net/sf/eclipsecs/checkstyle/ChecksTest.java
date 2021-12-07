@@ -21,10 +21,19 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.puppycrawl.tools.checkstyle.Checker;
+import com.puppycrawl.tools.checkstyle.TreeWalker;
+
 public class ChecksTest {
+
   @Test
   public void testMetadataFiles() throws Exception {
     final Set<Class<?>> modules = CheckUtil.getCheckstyleModules();
+
+    // don't test root modules
+    modules.remove(Checker.class);
+    modules.remove(TreeWalker.class);
+
     final Set<String> packages = CheckUtil.getPackages(modules);
 
     assertTrue(modules.size() > 0, "no modules");
