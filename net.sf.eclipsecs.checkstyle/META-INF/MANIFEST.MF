@@ -7,12 +7,6 @@ Bundle-Vendor: Eclipse Checkstyle Project
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: .,
- antlr;version="8.45.1";
-  uses:="antlr.collections.impl,
-   antlr.collections,
-   antlr.ASdebug,
-   antlr.debug",
- antlr.collections;version="8.45.1";uses:=antlr,
  com.google.common.base;version="8.45.1",
  com.google.common.cache;version="8.45.1",
  com.google.common.collect;version="8.45.1",
@@ -20,8 +14,6 @@ Export-Package: .,
  com.puppycrawl.tools.checkstyle,
  com.puppycrawl.tools.checkstyle.api;
   uses:="org.xml.sax.helpers,
-   antlr,
-   antlr.collections,
    org.xml.sax,
    com.google.common.collect,
    com.puppycrawl.tools.checkstyle.grammars",
@@ -46,5 +38,5 @@ Export-Package: .,
  com.puppycrawl.tools.checkstyle.utils,
  org.apache.commons.beanutils;version="8.45.1"
 Bundle-ClassPath: .,
- checkstyle-8.45.1-all.jar
+ checkstyle-9.0-all.jar
 Automatic-Module-Name: net.sf.eclipsecs.checkstyle
