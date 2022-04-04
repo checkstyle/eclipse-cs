@@ -38,5 +38,5 @@ Export-Package: .,
  com.puppycrawl.tools.checkstyle.utils,
  org.apache.commons.beanutils;version="9.2.0"
 Bundle-ClassPath: .,
- checkstyle-9.2-all.jar
+ checkstyle-9.2.1-all.jar
 Automatic-Module-Name: net.sf.eclipsecs.checkstyle
