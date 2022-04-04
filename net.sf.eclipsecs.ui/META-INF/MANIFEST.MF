@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Eclipse Checkstyle UI
 Bundle-SymbolicName: net.sf.eclipsecs.ui;singleton:=true
-Bundle-Version: 9.2.0.qualifier
+Bundle-Version: 9.2.1.qualifier
 Bundle-Vendor: Eclipse Checkstyle Project
 Bundle-Activator: net.sf.eclipsecs.ui.CheckstyleUIPlugin
 Bundle-ActivationPolicy: lazy
