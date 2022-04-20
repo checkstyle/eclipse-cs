@@ -28,13 +28,7 @@ install:
 matrix:
   fast_finish: true
   include:
-    # JDK 8 (minimal supported Java version of eclipse-cs)
-    - jdk: openjdk8
-      env:
-        - DESC="install (openjdk8)"
-        - CMD="mvn install && git diff"
-
-    # JDK 11 (Long Term Support version)
+    # JDK 11 (minimal supported Java version of eclipse-cs)
     - jdk: openjdk11
       env:
         - DESC="install (openjdk11)"

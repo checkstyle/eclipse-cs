@@ -2,7 +2,7 @@
 // Read https://github.com/eclipse-cbi/targetplatform-dsl for more details.
 target "Eclipse Checkstyle"
 with source configurePhase
-environment JavaSE-1.8
+environment JavaSE-11
 
 // use the latest version of Juno only, to avoid downloading all children of the Juno composite update site
 location "https://download.eclipse.org/releases/juno/201303010900/" {
