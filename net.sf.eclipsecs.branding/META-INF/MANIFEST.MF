@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Eclipse Checkstyle
 Bundle-SymbolicName: net.sf.eclipsecs.branding
-Bundle-Version: 9.3.0.qualifier
+Bundle-Version: 10.0.0.qualifier
 Bundle-Vendor: Eclipse Checkstyle Project
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Automatic-Module-Name: net.sf.eclipsecs.branding
