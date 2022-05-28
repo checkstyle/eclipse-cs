@@ -220,8 +220,7 @@ public abstract class AbstractStatsView extends ViewPart {
    */
   protected final void refresh() {
 
-    @SuppressWarnings("cast")
-    final IWorkbenchSiteProgressService service = (IWorkbenchSiteProgressService) getSite()
+    final IWorkbenchSiteProgressService service = getSite()
             .getAdapter(IWorkbenchSiteProgressService.class);
 
     // rebuild statistics data
@@ -336,13 +335,12 @@ public abstract class AbstractStatsView extends ViewPart {
     }
   }
 
-  @SuppressWarnings("cast")
   private void considerAdaptable(IAdaptable adaptable, Collection<IResource> resources) {
 
-    IResource resource = (IResource) adaptable.getAdapter(IResource.class);
+    IResource resource = adaptable.getAdapter(IResource.class);
 
     if (resource == null) {
-      resource = (IResource) adaptable.getAdapter(IFile.class);
+      resource = adaptable.getAdapter(IFile.class);
     }
 
     if (resource != null) {

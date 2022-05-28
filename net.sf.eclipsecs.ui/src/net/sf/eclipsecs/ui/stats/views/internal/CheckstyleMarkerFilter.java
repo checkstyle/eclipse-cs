@@ -484,7 +484,7 @@ public class CheckstyleMarkerFilter implements Cloneable {
         resultList.addAll(markers);
       }
     }
-    
+
     if (!mEnabled) {
       return resultList;
     }
@@ -607,8 +607,7 @@ public class CheckstyleMarkerFilter implements Cloneable {
     List<IResource> result = new ArrayList<>(elements.length);
 
     for (int idx = 0; idx < elements.length; idx++) {
-      @SuppressWarnings("cast")
-      IResource next = (IResource) elements[idx].getAdapter(IResource.class);
+      IResource next = elements[idx].getAdapter(IResource.class);
 
       if (next != null) {
         result.add(next);
