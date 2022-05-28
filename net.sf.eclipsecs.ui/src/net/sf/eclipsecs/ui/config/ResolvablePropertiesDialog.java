@@ -425,7 +425,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
 
         if (!unresolvedProps.isEmpty()) {
 
-          StringBuffer buf = new StringBuffer();
+          StringBuilder buf = new StringBuilder();
           it = unresolvedProps.iterator();
           while (it.hasNext()) {
             buf.append("\t${").append(it.next().getPropertyName()).append("}\n");

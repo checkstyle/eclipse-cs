@@ -499,7 +499,7 @@ public class Auditor {
 
       final String message = error.getMessage();
 
-      StringBuffer prefix = new StringBuffer();
+      StringBuilder prefix = new StringBuilder();
       if (mAddRuleName) {
         prefix.append(getRuleName(error));
       }
@@ -510,7 +510,7 @@ public class Auditor {
         prefix.append(error.getModuleId());
       }
 
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       if (prefix.length() > 0) {
         buf.append(prefix).append(": "); //$NON-NLS-1$
       }

@@ -129,7 +129,7 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
    */
   @Override
   public String getValue() {
-    StringBuffer buffer = new StringBuffer(""); //$NON-NLS-1$
+    StringBuilder buffer = new StringBuilder(""); //$NON-NLS-1$
 
     Object[] checkedElements = mTable.getCheckedElements();
 

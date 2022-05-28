@@ -398,7 +398,7 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
    */
   private void initRegexLabel() {
 
-    StringBuffer buf = new StringBuffer();
+    StringBuilder buf = new StringBuilder();
 
     int size = mRegularExpressions != null ? mRegularExpressions.size() : 0;
     for (int i = 0; i < size; i++) {
