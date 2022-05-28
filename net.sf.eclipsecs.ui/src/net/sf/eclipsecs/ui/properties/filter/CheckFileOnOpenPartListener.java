@@ -230,7 +230,7 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
 
     IEditorInput input = null;
 
-    if (part != null && part instanceof IEditorPart) {
+    if (part instanceof IEditorPart) {
 
       IEditorPart editor = (IEditorPart) part;
       input = editor.getEditorInput();

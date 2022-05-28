@@ -50,7 +50,7 @@ class CheckConfigurationContentProvider implements IStructuredContentProvider {
 
     List<ICheckConfiguration> configurations = new ArrayList<>();
 
-    if (inputElement != null && inputElement instanceof ProjectConfigurationWorkingCopy) {
+    if (inputElement instanceof ProjectConfigurationWorkingCopy) {
       ICheckConfiguration[] localConfigs = ((ProjectConfigurationWorkingCopy) inputElement)
               .getLocalCheckConfigWorkingSet().getWorkingCopies();
 
