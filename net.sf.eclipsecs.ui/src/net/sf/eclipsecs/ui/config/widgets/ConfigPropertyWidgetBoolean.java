@@ -60,7 +60,7 @@ public class ConfigPropertyWidgetBoolean extends ConfigPropertyWidgetAbstractBas
       mCheckbox.setLayoutData(new GridData());
 
       String initValue = getInitValue();
-      mCheckbox.setSelection(Boolean.valueOf(initValue).booleanValue());
+      mCheckbox.setSelection(Boolean.parseBoolean(initValue));
 
     }
     return mCheckbox;
@@ -76,6 +76,6 @@ public class ConfigPropertyWidgetBoolean extends ConfigPropertyWidgetAbstractBas
     ConfigPropertyMetadata metadata = getConfigProperty().getMetaData();
     String defaultValue = metadata.getOverrideDefault() != null ? metadata.getOverrideDefault()
             : metadata.getDefaultValue();
-    mCheckbox.setSelection(Boolean.valueOf(defaultValue).booleanValue());
+    mCheckbox.setSelection(Boolean.parseBoolean(defaultValue));
   }
 }

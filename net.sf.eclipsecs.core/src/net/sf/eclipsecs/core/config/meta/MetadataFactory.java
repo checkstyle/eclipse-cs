@@ -714,7 +714,7 @@ public final class MetadataFactory {
 
       if (group == null) {
 
-        boolean hidden = Boolean.valueOf(groupEl.attributeValue(XMLTags.HIDDEN_TAG)).booleanValue();
+        boolean hidden = Boolean.parseBoolean(groupEl.attributeValue(XMLTags.HIDDEN_TAG));
         int priority = 0;
         try {
           priority = Integer.parseInt(groupEl.attributeValue(XMLTags.PRIORITY_TAG));
@@ -751,11 +751,10 @@ public final class MetadataFactory {
       String parentName = moduleEl.attributeValue(XMLTags.PARENT_TAG) != null
               ? moduleEl.attributeValue(XMLTags.PARENT_TAG).trim()
               : null;
-      boolean hidden = Boolean.valueOf(moduleEl.attributeValue(XMLTags.HIDDEN_TAG)).booleanValue();
+      boolean hidden = Boolean.parseBoolean(moduleEl.attributeValue(XMLTags.HIDDEN_TAG));
       boolean hasSeverity = !"false".equals(moduleEl.attributeValue(XMLTags.HAS_SEVERITY_TAG));
       boolean deletable = !"false".equals(moduleEl.attributeValue(XMLTags.DELETABLE_TAG)); //$NON-NLS-1$
-      boolean isSingleton = Boolean.valueOf(moduleEl.attributeValue(XMLTags.IS_SINGLETON_TAG))
-              .booleanValue();
+      boolean isSingleton = Boolean.parseBoolean(moduleEl.attributeValue(XMLTags.IS_SINGLETON_TAG));
 
       // create rule metadata
       RuleMetadata module = new RuleMetadata(name, internalName, parentName, severity, hidden,

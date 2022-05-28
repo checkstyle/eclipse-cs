@@ -366,7 +366,7 @@ public class CheckstyleMarkerFilter implements Cloneable {
 
       String setting = settings.get(TAG_ENABLED);
       if (setting != null) {
-        mEnabled = Boolean.valueOf(setting).booleanValue();
+        mEnabled = Boolean.parseBoolean(setting);
       }
 
       setting = settings.get(TAG_ON_RESOURCE);
@@ -386,7 +386,7 @@ public class CheckstyleMarkerFilter implements Cloneable {
 
       setting = settings.get(TAG_SELECT_BY_SEVERITY);
       if (setting != null) {
-        mSelectBySeverity = Boolean.valueOf(setting).booleanValue();
+        mSelectBySeverity = Boolean.parseBoolean(setting);
       }
 
       setting = settings.get(TAG_SEVERITY);
@@ -400,7 +400,7 @@ public class CheckstyleMarkerFilter implements Cloneable {
 
       setting = settings.get(TAG_SELECT_BY_REGEX);
       if (setting != null) {
-        mFilterByRegex = Boolean.valueOf(setting).booleanValue();
+        mFilterByRegex = Boolean.parseBoolean(setting);
       }
 
       String[] regex = settings.getArray(TAG_REGULAR_EXPRESSIONS);

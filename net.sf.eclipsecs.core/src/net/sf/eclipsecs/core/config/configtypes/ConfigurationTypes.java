@@ -86,12 +86,9 @@ public final class ConfigurationTypes {
         String internalName = elements[i].getAttribute(ATTR_INTERNAL_NAME);
 
         String definingPluginId = elements[i].getDeclaringExtension().getNamespaceIdentifier();
-        boolean isCreatable = Boolean.valueOf(elements[i].getAttribute(ATTR_CREATABLE))
-                .booleanValue();
-        boolean isEditable = Boolean.valueOf(elements[i].getAttribute(ATTR_EDITABLE))
-                .booleanValue();
-        boolean isConfigurable = Boolean.valueOf(elements[i].getAttribute(ATTR_CONFIGURABLE))
-                .booleanValue();
+        boolean isCreatable = Boolean.parseBoolean(elements[i].getAttribute(ATTR_CREATABLE));
+        boolean isEditable = Boolean.parseBoolean(elements[i].getAttribute(ATTR_EDITABLE));
+        boolean isConfigurable = Boolean.parseBoolean(elements[i].getAttribute(ATTR_CONFIGURABLE));
 
         IConfigurationType configType = (IConfigurationType) elements[i]
                 .createExecutableExtension(ATTR_CLASS);

@@ -186,9 +186,7 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
       mDescription.setText(mWorkingCopy.getDescription());
     }
 
-    mChkCacheConfig.setSelection(Boolean
-            .valueOf(mWorkingCopy.getAdditionalData().get(RemoteConfigurationType.KEY_CACHE_CONFIG))
-            .booleanValue());
+    mChkCacheConfig.setSelection(Boolean.parseBoolean(mWorkingCopy.getAdditionalData().get(RemoteConfigurationType.KEY_CACHE_CONFIG)));
 
     if (mWorkingCopy.getLocation() != null) {
       try {
