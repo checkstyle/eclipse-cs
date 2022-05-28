@@ -22,7 +22,7 @@
    </url>
 
    <requires>
-      <import plugin="org.eclipse.core.runtime" version="3.7.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.core.runtime" version="3.19.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.resources"/>
       <import plugin="org.eclipse.jdt.core"/>
       <import plugin="org.eclipse.team.core"/>
@@ -34,7 +34,7 @@
       <import plugin="org.eclipse.ui.ide"/>
       <import plugin="org.eclipse.ui.workbench.texteditor"/>
    </requires>
-   
+
    <plugin
          id="net.sf.eclipsecs.branding"
          download-size="0"
