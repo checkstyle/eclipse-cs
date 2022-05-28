@@ -224,9 +224,7 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
       List<IProject> usingProjects = ProjectConfigurationFactory
               .getProjectsUsingConfig(workingCopies[i]);
 
-      for (IProject proj : usingProjects) {
-        projects.add(proj);
-      }
+      projects.addAll(usingProjects);
     }
 
     return projects;
