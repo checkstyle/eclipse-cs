@@ -846,7 +846,7 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
         return "{}"; //$NON-NLS-1$
       }
 
-      StringBuffer buffer = new StringBuffer();
+      StringBuilder buffer = new StringBuilder();
       buffer.append('{');
       for (int i = elementData.length; --i >= 0;) {
         HashMapEntry entry = elementData[i];

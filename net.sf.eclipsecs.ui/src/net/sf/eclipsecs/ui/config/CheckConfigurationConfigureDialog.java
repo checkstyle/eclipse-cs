@@ -1128,7 +1128,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
    * @return HTML converted description
    */
   public static String getDescriptionHtml(String description) {
-    StringBuffer buf = new StringBuffer();
+    StringBuilder buf = new StringBuilder();
     buf.append("<html><body style=\"margin: 3px; font-size: 11px; ");
     buf.append("font-family: verdana, 'trebuchet MS', helvetica, sans-serif;\">");
     buf.append(description != null ? description

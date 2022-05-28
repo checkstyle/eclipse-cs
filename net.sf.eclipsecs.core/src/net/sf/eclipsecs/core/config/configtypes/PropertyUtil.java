@@ -87,7 +87,7 @@ public final class PropertyUtil {
     final List<String> propertyRefs = new ArrayList<>();
     parsePropertyString(aValue, fragments, propertyRefs);
 
-    final StringBuffer sb = new StringBuffer();
+    final StringBuilder sb = new StringBuilder();
     final Iterator<String> i = fragments.iterator();
     final Iterator<String> j = propertyRefs.iterator();
     while (i.hasNext()) {

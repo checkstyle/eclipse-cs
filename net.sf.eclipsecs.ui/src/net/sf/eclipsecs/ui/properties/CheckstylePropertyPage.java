@@ -354,7 +354,7 @@ public class CheckstylePropertyPage extends PropertyPage {
       @Override
       public String getText(Object element) {
 
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
 
         if (element instanceof IFilter) {
 

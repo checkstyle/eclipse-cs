@@ -121,7 +121,7 @@ public class PackageFilter extends AbstractFilter {
   @Override
   public String getPresentableFilterData() {
 
-    StringBuffer buf = new StringBuffer();
+    StringBuilder buf = new StringBuilder();
 
     int size = mData != null ? mData.size() : 0;
     for (int i = 0; i < size; i++) {
