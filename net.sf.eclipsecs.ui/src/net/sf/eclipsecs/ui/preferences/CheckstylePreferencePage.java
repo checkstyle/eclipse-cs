@@ -447,10 +447,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
                   NLS.bind(Messages.errorFailedRebuild, e.getMessage()), e, true);
         }
       }
-    } catch (CheckstylePluginException e) {
-      CheckstyleUIPlugin.errorDialog(getShell(),
-              NLS.bind(Messages.errorFailedSavePreferences, e.getLocalizedMessage()), e, true);
-    } catch (BackingStoreException e) {
+    } catch (CheckstylePluginException | BackingStoreException e) {
       CheckstyleUIPlugin.errorDialog(getShell(),
               NLS.bind(Messages.errorFailedSavePreferences, e.getLocalizedMessage()), e, true);
     }

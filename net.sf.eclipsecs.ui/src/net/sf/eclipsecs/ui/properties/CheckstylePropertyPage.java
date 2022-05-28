@@ -174,9 +174,7 @@ public class CheckstylePropertyPage extends PropertyPage {
       mProjectConfig = new ProjectConfigurationWorkingCopy(projectConfig);
 
       mCheckstyleInitiallyActivated = project.hasNature(CheckstyleNature.NATURE_ID);
-    } catch (CoreException e) {
-      handleConfigFileError(e, project);
-    } catch (CheckstylePluginException e) {
+    } catch (CoreException | CheckstylePluginException e) {
       handleConfigFileError(e, project);
     }
   }

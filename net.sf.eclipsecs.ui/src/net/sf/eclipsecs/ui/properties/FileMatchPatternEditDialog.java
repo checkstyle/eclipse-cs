@@ -145,10 +145,7 @@ public class FileMatchPatternEditDialog extends TitleAreaDialog {
       }
 
       mPattern.setIsIncludePattern(mIncludeButton.getSelection());
-    } catch (PatternSyntaxException e) {
-      this.setErrorMessage(e.getLocalizedMessage());
-      return;
-    } catch (CheckstylePluginException e) {
+    } catch (PatternSyntaxException | CheckstylePluginException e) {
       this.setErrorMessage(e.getLocalizedMessage());
       return;
     }

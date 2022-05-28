@@ -425,9 +425,7 @@ public class RemoteConfigurationType extends ConfigurationType {
         prefs.put(KEY_PASSWORD, password, true);
 
         sFailedWith401URLs.remove(resolvedCheckConfigurationURL.toString());
-      } catch (CheckstylePluginException e) {
-        CheckstyleLog.log(e);
-      } catch (StorageException e) {
+      } catch (CheckstylePluginException | StorageException e) {
         CheckstyleLog.log(e);
       }
     }
@@ -470,9 +468,7 @@ public class RemoteConfigurationType extends ConfigurationType {
 
         urlHash = urlHash.replace('/', '_');
         urlHash = urlHash.replace('\\', '_');
-      } catch (NoSuchAlgorithmException e) {
-        CheckstylePluginException.rethrow(e);
-      } catch (UnsupportedEncodingException e) {
+      } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
         CheckstylePluginException.rethrow(e);
       }
       return "eclipse-cs/" + urlHash;

@@ -32,11 +32,10 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.core.JavaModelException;
 
 /**
  * Implementation of a filter that filters all ressources that are not within a source directory.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public class NonSrcDirsFilter extends AbstractFilter {
@@ -76,7 +75,7 @@ public class NonSrcDirsFilter extends AbstractFilter {
 
   /**
    * Gets all source paths of a project.
-   * 
+   *
    * @param project
    *          the project
    * @return the list of source paths
@@ -95,8 +94,6 @@ public class NonSrcDirsFilter extends AbstractFilter {
           }
         }
       }
-    } catch (JavaModelException e) {
-      CheckstyleLog.log(e);
     } catch (CoreException e) {
       CheckstyleLog.log(e);
     }

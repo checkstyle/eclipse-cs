@@ -117,11 +117,7 @@ public class TransformCheckstyleRulesJob extends WorkspaceJob {
 
       final CheckstyleTransformer transformer = new CheckstyleTransformer(mProject, rules);
       transformer.transformRules();
-    } catch (CheckstyleException e) {
-      Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR,
-              e.getMessage(), e);
-      throw new CoreException(status);
-    } catch (CheckstylePluginException e) {
+    } catch (CheckstyleException | CheckstylePluginException e) {
       Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR,
               e.getMessage(), e);
       throw new CoreException(status);
