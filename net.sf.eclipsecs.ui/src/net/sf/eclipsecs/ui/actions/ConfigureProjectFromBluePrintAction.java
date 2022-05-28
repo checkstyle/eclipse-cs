@@ -120,7 +120,7 @@ public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegat
    * 
    * @author Lars Ködderitzsch
    */
-  private class BulkConfigureJob extends WorkspaceJob {
+  private static class BulkConfigureJob extends WorkspaceJob {
 
     private final IProject mBlueprint;
 

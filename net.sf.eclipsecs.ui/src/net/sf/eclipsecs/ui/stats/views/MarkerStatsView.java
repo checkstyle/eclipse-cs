@@ -539,7 +539,7 @@ public class MarkerStatsView extends AbstractStatsView {
    *
    * @author Lars Ködderitzsch
    */
-  private class MasterContentProvider implements IStructuredContentProvider {
+  private static class MasterContentProvider implements IStructuredContentProvider {
     private Object[] mCurrentMarkerStats;
 
     @Override

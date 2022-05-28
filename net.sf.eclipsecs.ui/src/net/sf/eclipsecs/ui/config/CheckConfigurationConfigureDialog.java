@@ -802,7 +802,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
    *
    * @author Lars Ködderitzsch
    */
-  private class MetaDataContentProvider implements ITreeContentProvider {
+  private static class MetaDataContentProvider implements ITreeContentProvider {
 
     /**
      * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
@@ -951,7 +951,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
    *
    * @author Lars Ködderitzsch
    */
-  private class ModuleLabelProvider extends LabelProvider
+  private static class ModuleLabelProvider extends LabelProvider
           implements ITableLabelProvider, ITableComparableProvider, ITableSettingsProvider {
 
     /**
@@ -1030,7 +1030,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
    *
    * @author Lars Ködderitzsch
    */
-  private class RuleGroupModuleFilter extends ViewerFilter {
+  private static class RuleGroupModuleFilter extends ViewerFilter {
 
     /** the current rule group. */
     private RuleGroupMetadata mCurrentGroup;
