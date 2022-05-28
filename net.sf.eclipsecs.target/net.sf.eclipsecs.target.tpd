@@ -4,22 +4,22 @@ target "Eclipse Checkstyle"
 with source configurePhase
 environment JavaSE-11
 
-location "https://download.eclipse.org/releases/2019-06/201906191000/" {
-	org.eclipse.jdt.feature.group lazy
-	org.eclipse.sdk.ide lazy
+location "https://download.eclipse.org/releases/2020-09/202009161000/" {
+	org.eclipse.jdt.feature.group
+	org.eclipse.sdk.ide
 
 	// e4.ui has dependencies to EMF, those are not actually needed by eclipse-cs itself
-	org.eclipse.emf.feature.group lazy
+	org.eclipse.emf.feature.group
 }
 
-// latest release of JUnit 5 from Eclipse Orbit
-location "https://download.eclipse.org/tools/orbit/downloads/drops/R20200529191137/repository" {
-	org.junit.jupiter.api lazy
-	org.junit.jupiter.engine lazy
-	org.junit.jupiter.params lazy
-	org.junit.platform.commons lazy
-	org.junit.platform.engine lazy
-	org.junit.platform.launcher lazy
-	org.junit.platform.runner lazy
-	org.junit.platform.suite.api lazy
+// matching release of JUnit 5 from Eclipse Orbit
+location "https://download.eclipse.org/tools/orbit/downloads/drops/R20200831200620/repository" {
+	org.junit.jupiter.api
+	org.junit.jupiter.engine
+	org.junit.jupiter.params
+	org.junit.platform.commons
+	org.junit.platform.engine
+	org.junit.platform.launcher
+	org.junit.platform.runner
+	org.junit.platform.suite.api
 }
