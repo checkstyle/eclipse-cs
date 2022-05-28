@@ -200,11 +200,7 @@ public abstract class AbstractASTResolution extends WorkbenchMarkerResolution
       if (mAutoCommit) {
         textFileBuffer.commit(monitor, false);
       }
-    } catch (CoreException e) {
-      CheckstyleLog.log(e, Messages.AbstractASTResolution_msgErrorQuickfix);
-    } catch (MalformedTreeException e) {
-      CheckstyleLog.log(e, Messages.AbstractASTResolution_msgErrorQuickfix);
-    } catch (BadLocationException e) {
+    } catch (CoreException | MalformedTreeException | BadLocationException e) {
       CheckstyleLog.log(e, Messages.AbstractASTResolution_msgErrorQuickfix);
     } finally {
 

@@ -112,11 +112,7 @@ public final class PluginFilterEditors {
       try {
         IFilterEditor editor = editorClass.newInstance();
         return editor;
-      } catch (InstantiationException e) {
-        CheckstylePluginException.rethrow(e);
-      } catch (IllegalAccessException e) {
-        CheckstylePluginException.rethrow(e);
-      } catch (ClassCastException e) {
+      } catch (InstantiationException | IllegalAccessException | ClassCastException e) {
         CheckstylePluginException.rethrow(e);
       }
     }

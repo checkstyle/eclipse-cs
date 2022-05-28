@@ -226,9 +226,7 @@ public final class CheckerFactory {
             ModuleLoadOption.TRY_IN_ALL_REGISTERED_PACKAGES));
     try {
       checker.setCharset(project.getDefaultCharset());
-    } catch (UnsupportedEncodingException e) {
-      CheckstylePluginException.rethrow(e);
-    } catch (CoreException e) {
+    } catch (UnsupportedEncodingException | CoreException e) {
       CheckstylePluginException.rethrow(e);
     }
 

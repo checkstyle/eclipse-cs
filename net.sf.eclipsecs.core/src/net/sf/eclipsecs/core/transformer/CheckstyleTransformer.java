@@ -107,9 +107,7 @@ public class CheckstyleTransformer {
         // + rule.getName() + "\"");
       } catch (final ClassNotFoundException e) {
         // NOOP there is just no appropriate transformer class
-      } catch (final InstantiationException e) {
-        CheckstylePluginException.rethrow(e);
-      } catch (final IllegalAccessException e) {
+      } catch (final InstantiationException | IllegalAccessException e) {
         CheckstylePluginException.rethrow(e);
       }
     }

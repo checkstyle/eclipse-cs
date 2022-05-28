@@ -319,13 +319,7 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
           CheckstyleLog.log(e1);
         }
       }
-    } catch (NoSuchMethodException e1) {
-      CheckstyleLog.log(e1);
-    } catch (SecurityException e1) {
-      CheckstyleLog.log(e1);
-    } catch (IllegalAccessException e1) {
-      CheckstyleLog.log(e1);
-    } catch (InvocationTargetException e1) {
+    } catch (NoSuchMethodException | SecurityException | IllegalAccessException | InvocationTargetException e1) {
       CheckstyleLog.log(e1);
     }
 
@@ -344,13 +338,7 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
 
       IMemento memento = (IMemento) getMementoMethod.invoke(e, (Object[]) null);
       return memento;
-    } catch (NoSuchMethodException e1) {
-      CheckstyleLog.log(e1);
-    } catch (SecurityException e1) {
-      CheckstyleLog.log(e1);
-    } catch (IllegalAccessException e1) {
-      CheckstyleLog.log(e1);
-    } catch (InvocationTargetException e1) {
+    } catch (NoSuchMethodException | SecurityException | IllegalAccessException | InvocationTargetException e1) {
       CheckstyleLog.log(e1);
     }
     return null;
@@ -394,11 +382,7 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
 
         affected = unOpenedFilesFilterActive && !filtered;
       }
-    } catch (CoreException e) {
-      // should never happen, since editor cannot be open
-      // when project isn't
-      CheckstyleLog.log(e);
-    } catch (CheckstylePluginException e) {
+    } catch (CoreException | CheckstylePluginException e) {
       CheckstyleLog.log(e);
     }
 

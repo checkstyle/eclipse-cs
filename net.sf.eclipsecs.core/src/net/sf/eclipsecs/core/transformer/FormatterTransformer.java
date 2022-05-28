@@ -106,9 +106,7 @@ public class FormatterTransformer {
 
       } catch (final ClassNotFoundException e) {
         // NOOP no appropriate transformer class present
-      } catch (final InstantiationException e) {
-        CheckstylePluginException.rethrow(e);
-      } catch (final IllegalAccessException e) {
+      } catch (final InstantiationException | IllegalAccessException e) {
         CheckstylePluginException.rethrow(e);
       }
     }

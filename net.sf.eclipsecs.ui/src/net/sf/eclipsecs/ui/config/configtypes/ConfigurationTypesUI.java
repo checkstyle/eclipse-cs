@@ -124,11 +124,7 @@ public final class ConfigurationTypesUI {
       try {
         ICheckConfigurationEditor editor = editorClass.newInstance();
         return editor;
-      } catch (InstantiationException e) {
-        CheckstylePluginException.rethrow(e);
-      } catch (IllegalAccessException e) {
-        CheckstylePluginException.rethrow(e);
-      } catch (ClassCastException e) {
+      } catch (InstantiationException | IllegalAccessException | ClassCastException e) {
         CheckstylePluginException.rethrow(e);
       }
     }

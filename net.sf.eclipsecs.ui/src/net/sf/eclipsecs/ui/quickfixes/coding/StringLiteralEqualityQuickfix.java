@@ -139,11 +139,7 @@ public class StringLiteralEqualityQuickfix extends AbstractASTResolution {
             List<ASTNode> list = (List<ASTNode>) listMethod.invoke(node.getParent(), (Object[]) null);
             list.set(list.indexOf(node), replacementNode);
           }
-        } catch (InvocationTargetException e) {
-          CheckstyleLog.log(e);
-        } catch (IllegalAccessException e) {
-          CheckstyleLog.log(e);
-        } catch (NoSuchMethodException e) {
+        } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
           CheckstyleLog.log(e);
         }
       }

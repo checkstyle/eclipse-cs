@@ -262,9 +262,7 @@ public final class CheckConfigurationFactory {
           return FileVisitResult.CONTINUE;
         }
       });
-    } catch (IllegalStateException e) {
-      CheckstylePluginException.rethrow(e);
-    } catch (IOException e) {
+    } catch (IllegalStateException | IOException e) {
       CheckstylePluginException.rethrow(e);
     }
   }
