@@ -21,6 +21,7 @@
 package net.sf.eclipsecs.ui;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Locale;
 
@@ -101,9 +102,7 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
             for (IWorkbenchPage page : pages) {
 
               IEditorReference[] editorRefs = page.getEditorReferences();
-              for (IEditorReference ref : editorRefs) {
-                parts.add(ref);
-              }
+              Collections.addAll(parts, editorRefs);
             }
 
             mPartListener.partsOpened(parts);

@@ -344,9 +344,7 @@ public final class MetadataFactory {
       resultList.forEach(val -> modifiedConfigPropertyMetadata.getPropertyEnumeration().add(val));
     } else if (dataType == ConfigPropertyType.MultiCheck) {
       String result = CheckUtil.getModifiableTokens(moduleDetails.getName());
-      for (String val : result.split(",")) {
-        modifiedConfigPropertyMetadata.getPropertyEnumeration().add(val);
-      }
+      Collections.addAll(modifiedConfigPropertyMetadata.getPropertyEnumeration(), result.split(","));
     }
     return modifiedConfigPropertyMetadata;
 

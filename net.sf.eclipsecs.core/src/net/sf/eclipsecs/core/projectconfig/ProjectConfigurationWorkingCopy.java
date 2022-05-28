@@ -24,6 +24,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -245,9 +246,7 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
   public List<ICheckConfiguration> getLocalCheckConfigurations() {
 
     List<ICheckConfiguration> l = new ArrayList<>();
-    for (ICheckConfiguration c : mLocalConfigWorkingSet.getWorkingCopies()) {
-      l.add(c);
-    }
+    Collections.addAll(l, mLocalConfigWorkingSet.getWorkingCopies());
 
     return l;
   }

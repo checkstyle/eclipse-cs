@@ -22,6 +22,7 @@ package net.sf.eclipsecs.ui.actions;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
@@ -90,9 +91,7 @@ public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegat
 
     IProject[] projects = CheckstyleUIPlugin.getWorkspace().getRoot().getProjects();
     List<IProject> filteredProjects = new ArrayList<>();
-    for (int i = 0; i < projects.length; i++) {
-      filteredProjects.add(projects[i]);
-    }
+    Collections.addAll(filteredProjects, projects);
 
     filteredProjects.removeAll(mSelectedProjects);
 
