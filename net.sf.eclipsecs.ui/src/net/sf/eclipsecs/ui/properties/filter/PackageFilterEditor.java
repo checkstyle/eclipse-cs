@@ -206,7 +206,7 @@ public class PackageFilterEditor implements IFilterEditor {
    *
    * @author Lars Ködderitzsch
    */
-  private class SourceFolderContentProvider implements ITreeContentProvider {
+  private static class SourceFolderContentProvider implements ITreeContentProvider {
 
     /**
      * @see org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.Object)

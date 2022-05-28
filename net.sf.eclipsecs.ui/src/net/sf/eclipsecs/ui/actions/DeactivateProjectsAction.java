@@ -81,7 +81,7 @@ public class DeactivateProjectsAction implements IObjectActionDelegate {
    * 
    * @author Lars Ködderitzsch
    */
-  private class BulkCheckstyleActivateJob extends WorkspaceJob {
+  private static class BulkCheckstyleActivateJob extends WorkspaceJob {
 
     private Collection<IProject> mProjectsToDeactivate;
 

@@ -84,7 +84,7 @@ public class ClearSelectedFilesAction implements IObjectActionDelegate {
    * 
    * @author Lars Ködderitzsch
    */
-  private class ClearMarkersJob extends WorkspaceJob {
+  private static class ClearMarkersJob extends WorkspaceJob {
 
     private Collection<IResource> mResourcesToClear;
 
