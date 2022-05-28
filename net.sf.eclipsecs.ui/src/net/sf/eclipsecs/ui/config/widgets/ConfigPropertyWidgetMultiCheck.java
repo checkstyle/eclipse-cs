@@ -186,11 +186,11 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
   @Override
   public void preferenceChange(PreferenceChangeEvent event) {
     if (CheckstyleUIPluginPrefs.PREF_TRANSLATE_TOKENS.equals(event.getKey())) {
-      mTranslateTokens = Boolean.valueOf((String) event.getNewValue()).booleanValue();
+      mTranslateTokens = Boolean.parseBoolean((String) event.getNewValue());
       mTable.refresh(true);
     }
     if (CheckstyleUIPluginPrefs.PREF_SORT_TOKENS.equals(event.getKey())) {
-      mSortTokens = Boolean.valueOf((String) event.getNewValue()).booleanValue();
+      mSortTokens = Boolean.parseBoolean((String) event.getNewValue());
       installSorter(mSortTokens);
     }
   }

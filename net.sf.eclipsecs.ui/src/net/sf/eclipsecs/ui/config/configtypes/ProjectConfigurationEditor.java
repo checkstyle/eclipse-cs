@@ -234,9 +234,7 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
       mDescription.setText(mWorkingCopy.getDescription());
     }
 
-    mChkProtectConfig.setSelection(Boolean.valueOf(
-            mWorkingCopy.getAdditionalData().get(ExternalFileConfigurationType.KEY_PROTECT_CONFIG))
-            .booleanValue());
+    mChkProtectConfig.setSelection(Boolean.parseBoolean(mWorkingCopy.getAdditionalData().get(ExternalFileConfigurationType.KEY_PROTECT_CONFIG)));
 
     return contents;
   }

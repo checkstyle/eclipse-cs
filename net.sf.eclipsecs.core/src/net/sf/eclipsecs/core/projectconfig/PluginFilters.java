@@ -87,13 +87,12 @@ public final class PluginFilters {
         String name = elements[i].getAttribute(ATTR_NAME);
         String internalName = elements[i].getAttribute(ATTR_INTERNAL_NAME);
         String desc = elements[i].getAttribute(ATTR_DESCRIPTION);
-        boolean readOnly = Boolean.valueOf(elements[i].getAttribute(ATTR_READONLY)).booleanValue();
+        boolean readOnly = Boolean.parseBoolean(elements[i].getAttribute(ATTR_READONLY));
 
         IFilter filter = (IFilter) elements[i].createExecutableExtension(ATTR_CLASS);
         filter.initialize(name, internalName, desc, readOnly);
 
-        boolean defaultState = Boolean.valueOf(elements[i].getAttribute(ATTR_SELECTED))
-                .booleanValue();
+        boolean defaultState = Boolean.parseBoolean(elements[i].getAttribute(ATTR_SELECTED));
 
         filter.setEnabled(defaultState);
 

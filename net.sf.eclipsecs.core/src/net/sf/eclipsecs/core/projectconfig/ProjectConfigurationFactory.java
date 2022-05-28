@@ -189,10 +189,8 @@ public final class ProjectConfigurationFactory {
       throw new CheckstylePluginException(NLS.bind(Messages.errorUnknownFileFormat, version));
     }
 
-    boolean useSimpleConfig = Boolean.valueOf(root.attributeValue(XMLTags.SIMPLE_CONFIG_TAG))
-            .booleanValue();
-    boolean syncFormatter = Boolean.valueOf(root.attributeValue(XMLTags.SYNC_FORMATTER_TAG))
-            .booleanValue();
+    boolean useSimpleConfig = Boolean.parseBoolean(root.attributeValue(XMLTags.SIMPLE_CONFIG_TAG));
+    boolean syncFormatter = Boolean.parseBoolean(root.attributeValue(XMLTags.SYNC_FORMATTER_TAG));
 
     List<ICheckConfiguration> checkConfigs = getLocalCheckConfigs(root, project);
     List<FileSet> fileSets = getFileSets(root, checkConfigs);
@@ -262,12 +260,12 @@ public final class ProjectConfigurationFactory {
     List<Element> fileSetElements = root.elements(XMLTags.FILESET_TAG);
     for (Element fileSetEl : fileSetElements) {
 
-      boolean local = Boolean.valueOf(fileSetEl.attributeValue(XMLTags.LOCAL_TAG)).booleanValue();
+      boolean local = Boolean.parseBoolean(fileSetEl.attributeValue(XMLTags.LOCAL_TAG));
 
       FileSet fileSet = new FileSet();
       fileSet.setName(fileSetEl.attributeValue(XMLTags.NAME_TAG));
       fileSet.setEnabled(
-              Boolean.valueOf(fileSetEl.attributeValue(XMLTags.ENABLED_TAG)).booleanValue());
+              Boolean.parseBoolean(fileSetEl.attributeValue(XMLTags.ENABLED_TAG)));
 
       // find the referenced check configuration
       ICheckConfiguration checkConfig = null;
@@ -291,8 +289,7 @@ public final class ProjectConfigurationFactory {
       for (Element patternEl : patternElements) {
         FileMatchPattern pattern = new FileMatchPattern(
                 patternEl.attributeValue(XMLTags.MATCH_PATTERN_TAG));
-        pattern.setIsIncludePattern(Boolean
-                .valueOf(patternEl.attributeValue(XMLTags.INCLUDE_PATTERN_TAG)).booleanValue());
+        pattern.setIsIncludePattern(Boolean.parseBoolean(patternEl.attributeValue(XMLTags.INCLUDE_PATTERN_TAG)));
         patterns.add(pattern);
       }
       fileSet.setFileMatchPatterns(patterns);
@@ -315,7 +312,7 @@ public final class ProjectConfigurationFactory {
       // guard against unknown/retired filters
       if (filter != null) {
         filter.setEnabled(
-                Boolean.valueOf(filterEl.attributeValue(XMLTags.ENABLED_TAG)).booleanValue());
+                Boolean.parseBoolean(filterEl.attributeValue(XMLTags.ENABLED_TAG)));
 
         // get the filter data
         List<String> filterData = new ArrayList<>();

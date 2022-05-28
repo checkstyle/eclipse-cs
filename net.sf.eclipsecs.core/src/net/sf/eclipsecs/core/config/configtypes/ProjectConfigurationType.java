@@ -63,8 +63,7 @@ public class ProjectConfigurationType extends ConfigurationType {
   public boolean isConfigurable(ICheckConfiguration checkConfiguration) {
     boolean isConfigurable = true;
 
-    boolean isProtected = Boolean
-            .valueOf(checkConfiguration.getAdditionalData().get(KEY_PROTECT_CONFIG)).booleanValue();
+    boolean isProtected = Boolean.parseBoolean(checkConfiguration.getAdditionalData().get(KEY_PROTECT_CONFIG));
     isConfigurable = !isProtected;
 
     if (!isProtected) {

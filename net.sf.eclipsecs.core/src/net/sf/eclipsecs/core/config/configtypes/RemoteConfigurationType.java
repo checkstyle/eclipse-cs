@@ -88,8 +88,7 @@ public class RemoteConfigurationType extends ConfigurationType {
   public CheckstyleConfigurationFile getCheckstyleConfiguration(
           ICheckConfiguration checkConfiguration) throws CheckstylePluginException {
 
-    boolean useCacheFile = Boolean
-            .valueOf(checkConfiguration.getAdditionalData().get(KEY_CACHE_CONFIG)).booleanValue();
+    boolean useCacheFile = Boolean.parseBoolean(checkConfiguration.getAdditionalData().get(KEY_CACHE_CONFIG));
 
     CheckstyleConfigurationFile data = new CheckstyleConfigurationFile();
 
@@ -195,8 +194,7 @@ public class RemoteConfigurationType extends ConfigurationType {
     RemoteConfigAuthenticator
             .removeCachedAuthInfo(checkConfiguration.getResolvedConfigurationFileURL());
 
-    boolean useCacheFile = Boolean
-            .valueOf(checkConfiguration.getAdditionalData().get(KEY_CACHE_CONFIG)).booleanValue();
+    boolean useCacheFile = Boolean.parseBoolean(checkConfiguration.getAdditionalData().get(KEY_CACHE_CONFIG));
 
     if (useCacheFile) {
       // remove the cached configuration file from the workspace metadata
