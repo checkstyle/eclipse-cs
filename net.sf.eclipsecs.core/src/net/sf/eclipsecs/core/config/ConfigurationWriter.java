@@ -92,7 +92,7 @@ public final class ConfigurationWriter {
       doc.addDocType(XMLTags.MODULE_TAG, "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN",
               "https://checkstyle.org/dtds/configuration_1_3.dtd");
 
-      String lineSeperator = System.getProperty("line.separator"); //$NON-NLS-1$
+      String lineSeperator = System.lineSeparator();
 
       String comment = lineSeperator
               + "    This configuration file was written by the eclipse-cs plugin configuration editor" //$NON-NLS-1$
