@@ -15,11 +15,13 @@ public class MethodLimitQuickfix extends AbstractASTResolution {
   /**
    * {@inheritDoc}
    */
+  @Override
   protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
       final int markerStartOffset) {
 
     return new ASTVisitor() {
 
+      @Override
       @SuppressWarnings("unchecked")
       public boolean visit(MethodDeclaration node) {
 
@@ -43,6 +45,7 @@ public class MethodLimitQuickfix extends AbstractASTResolution {
   /**
    * {@inheritDoc}
    */
+  @Override
   public String getDescription() {
     return "Sample MethodLimit Quickfix";
   }
@@ -50,6 +53,7 @@ public class MethodLimitQuickfix extends AbstractASTResolution {
   /**
    * {@inheritDoc}
    */
+  @Override
   public String getLabel() {
     return "Sample MethodLimit Quickfix";
   }
@@ -57,6 +61,7 @@ public class MethodLimitQuickfix extends AbstractASTResolution {
   /**
    * {@inheritDoc}
    */
+  @Override
   public Image getImage() {
     return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.CORRECTION_CHANGE);
   }
