@@ -370,12 +370,13 @@
                     class="org.eclipse.core.resources.IProject"/>
             </action>
             <action
-                label="%ConfigureProjectFromBluePrintAction.label"
-                class="net.sf.eclipsecs.ui.actions.ConfigureProjectFromBluePrintAction"
-                enablesFor="+"
-                menubarPath="Checkstyle.menu/xbatch"
-                tooltip="%ConfigureProjectFromBluePrintAction.tooltip"
-                id="net.sf.eclipsecs.ConfigureProjectFromBluePrintAction">
+                  class="net.sf.eclipsecs.ui.actions.ConfigureProjectFromBluePrintAction"
+                  enablesFor="+"
+                  icon="platform:/plugin/org.eclipse.ui.ide.application/icons/full/elcl16/configs.png"
+                  id="net.sf.eclipsecs.ConfigureProjectFromBluePrintAction"
+                  label="%ConfigureProjectFromBluePrintAction.label"
+                  menubarPath="Checkstyle.menu/xbatch"
+                  tooltip="%ConfigureProjectFromBluePrintAction.tooltip">
                 <selection
                     class="org.eclipse.core.resources.IProject"/>
             </action>
@@ -397,7 +398,7 @@
                     name="xbatch"/>
             </menu>
             <!--
-            Activate this menu-point for Transformingaction from Formatter-Profile to Checkstyle-Setting
+            Activate this menu-point for Transforming action from Formatter Profile to Checkstyle Setting
             <action
                 label="%FormatterTransformingAction.label"
                 class="net.sf.eclipsecs.ui.actions.FormatterTransformingAction"
@@ -444,19 +445,21 @@
             -->
 
             <action
-                label="%ClearSelectedFilesAction.label"
-                class="net.sf.eclipsecs.ui.actions.ClearSelectedFilesAction"
-                enablesFor="+"
-                menubarPath="Checkstyle.menu/ondemand"
-                tooltip="%ClearSelectedFilesAction.tooltip"
-                id="net.sf.eclipsecs.actions.ClearSelectedFilesAction"/>
+                  class="net.sf.eclipsecs.ui.actions.ClearSelectedFilesAction"
+                  enablesFor="+"
+                  icon="platform:/plugin/org.eclipse.ui/icons/full/elcl16/removeall.png"
+                  id="net.sf.eclipsecs.actions.ClearSelectedFilesAction"
+                  label="%ClearSelectedFilesAction.label"
+                  menubarPath="Checkstyle.menu/ondemand"
+                  tooltip="%ClearSelectedFilesAction.tooltip"/>
             <action
-                label="%CheckSelectedFilesAction.label"
-                class="net.sf.eclipsecs.ui.actions.CheckSelectedFilesAction"
-                enablesFor="+"
-                menubarPath="Checkstyle.menu/ondemand"
-                tooltip="%CheckSelectedFilesAction.tooltip"
-                id="net.sf.eclipsecs.ui.actions.CheckSelectedFilesAction"/>
+                  class="net.sf.eclipsecs.ui.actions.CheckSelectedFilesAction"
+                  enablesFor="+"
+                  icon="icons/checkstyle_command.png"
+                  id="net.sf.eclipsecs.ui.actions.CheckSelectedFilesAction"
+                  label="%CheckSelectedFilesAction.label"
+                  menubarPath="Checkstyle.menu/ondemand"
+                  tooltip="%CheckSelectedFilesAction.tooltip"/>
         </objectContribution>
     </extension>
     
@@ -483,5 +486,12 @@
              properties="isCheckstyleMarker"
              type="org.eclipse.core.resources.IMarker">
        </propertyTester>
+    </extension>
+    <extension
+          point="org.eclipse.ui.commandImages">
+       <image
+             commandId="CheckstylePlugin.PurgeCaches"
+             icon="platform:/plugin/org.eclipse.ui/icons/full/etool16/clear.png">
+       </image>
     </extension>
 </plugin>
