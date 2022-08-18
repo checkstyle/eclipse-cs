@@ -7,11 +7,20 @@ check for coding style and possible error prone code constructs.
 
 [Checkstyle](https://github.com/checkstyle/checkstyle) is an Open Source development tool to help you ensure that your Java code adheres to a set of coding standards. Checkstyle does this by inspecting your Java source code and pointing out items that deviate from a defined set of coding rules.
 
-### Install and download
-You can install the plugin by dragging and dropping the following link into your eclipse:
-[Install ](http://marketplace.eclipse.org/marketplace-client-intro?mpc_install=150)
+### Install
+You can install the latest version of the plugin from the Eclipse Marketplace.
+- Go to Help->Eclipse Marketplace...
+- Search for "Checkstyle" or "Checkstyle Plug-in". Look for the eclipse-cs plugin.
+- Click "Install".
 
-Older versions can be installed using the specific update site for that version, for instance https://checkstyle.org/eclipse-cs-update-site/8.41.0/
+If you need to install an older version:
+- Go to Help->Install New Software...
+- If Eclipse does not yet know about the Checkstyle repository, you need to add it. Click "Add..." to add a new repository.
+  - Name: Checkstyle
+  - Location: https://checkstyle.org/eclipse-cs-update-site/
+- Make sure that the Checkstyle repository has been selected from the dropdown.
+- Make sure that "Show only the latest versions of available software" is unchecked.
+- You should now see the available versions of the Checkstyle plugin from which you can select and install.
 
 ### What does it do?
 With the Checkstyle Eclipse Plugin your code is constantly inspected for coding standard deviations. Within the Eclipse workbench you are immediately notified of problems via the Eclipse Problems View and source code annotations similar to compiler errors or warnings. 
