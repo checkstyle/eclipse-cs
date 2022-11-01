@@ -4,6 +4,3 @@
 # target folders of eclipse and maven
 target
 bin
-
-# set the 'docs' folder as derived
-docs
