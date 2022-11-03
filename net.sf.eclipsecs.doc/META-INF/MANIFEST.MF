@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Eclipse Checkstyle Documentation
 Bundle-SymbolicName: net.sf.eclipsecs.doc;singleton:=true
-Bundle-Version: 10.3.1.qualifier
+Bundle-Version: 10.3.2.qualifier
 Bundle-Vendor: Eclipse Checkstyle Project
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Automatic-Module-Name: net.sf.eclipsecs.doc
