@@ -1,12 +1,11 @@
-*/bin/
-*/target/
+bin/
+target/
 metadata-gen/
 net.sf.eclipsecs.core/lib/metadata-gen-1.0-SNAPSHOT.jar
 .idea/
 *.iml
 *.prefs
-.checkstyle
-target/
 show.patch
 *.DS_Store
 net.sf.eclipsecs-updatesite/workspace
+*.zip
