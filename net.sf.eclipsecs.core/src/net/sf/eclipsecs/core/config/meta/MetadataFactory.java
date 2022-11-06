@@ -73,6 +73,11 @@ import org.yaml.snakeyaml.Yaml;
  */
 public final class MetadataFactory {
 
+  /**
+   * metadata type or validation type for regular expressions
+   */
+  private static final String TYPE_ID_PATTERN = "java.util.regex.Pattern";
+
   /** Map containing the public - internal DTD mapping. */
   private static final Map<String, String> PUBLIC2INTERNAL_DTD_MAP = new HashMap<>();
 
@@ -304,24 +309,26 @@ public final class MetadataFactory {
   public static ConfigPropertyMetadata createPropertyConfig(ModuleDetails moduleDetails,
           ModulePropertyDetails modulePropertyDetails) {
     ConfigPropertyType dataType = null;
+    String propertyType = modulePropertyDetails.getType();
     // if the data type ends with option, the result is singleselect enum value
     // if the property validationType is tokenSet, the result is multicheck
     // everything else is String/String[] depth depending on the presence of "[]"
-    if (sPropertyTypeMap.get(modulePropertyDetails.getType()) != null) {
-      if (modulePropertyDetails.getValidationType() != null) {
-        if (modulePropertyDetails.getValidationType().equals("java.util.regex.Pattern")) {
+    if (sPropertyTypeMap.get(propertyType) != null) {
+      String validationType = modulePropertyDetails.getValidationType();
+      if (validationType != null) {
+        if (validationType.equals(TYPE_ID_PATTERN)) {
           dataType = ConfigPropertyType.Regex;
-        } else if (modulePropertyDetails.getValidationType().equals("tokenSet")) {
+        } else if (validationType.equals("tokenSet") || validationType.equals("tokenTypesSet")) {
           dataType = ConfigPropertyType.MultiCheck;
         }
       } else {
-        dataType = sPropertyTypeMap.get(modulePropertyDetails.getType());
+        dataType = sPropertyTypeMap.get(propertyType);
       }
     } else {
-      if (modulePropertyDetails.getType().endsWith("Option")) {
+      if (propertyType.endsWith("Option")) {
         dataType = ConfigPropertyType.SingleSelect;
       } else {
-        if (modulePropertyDetails.getType().endsWith("[]")) {
+        if (propertyType.endsWith("[]")) {
           dataType = ConfigPropertyType.StringArray;
         } else {
           dataType = ConfigPropertyType.String;
@@ -333,7 +340,7 @@ public final class MetadataFactory {
     modifiedConfigPropertyMetadata.setDescription(modulePropertyDetails.getDescription());
 
     if (dataType == ConfigPropertyType.SingleSelect) {
-      List<String> resultList = getEnumValues(modulePropertyDetails.getType());
+      List<String> resultList = getEnumValues(propertyType);
       resultList.forEach(val -> modifiedConfigPropertyMetadata.getPropertyEnumeration().add(val));
     } else if (dataType == ConfigPropertyType.MultiCheck) {
       String result = CheckUtil.getModifiableTokens(moduleDetails.getName());
@@ -605,7 +612,7 @@ public final class MetadataFactory {
     sPropertyTypeMap.put("java.lang.String[]", ConfigPropertyType.StringArray);
     sPropertyTypeMap.put("boolean", ConfigPropertyType.Boolean);
     sPropertyTypeMap.put("int", ConfigPropertyType.Integer);
-    sPropertyTypeMap.put("java.util.regex.Pattern", ConfigPropertyType.Regex);
+    sPropertyTypeMap.put(TYPE_ID_PATTERN, ConfigPropertyType.Regex);
     sPropertyTypeMap.put("java.util.regex.Pattern[]", ConfigPropertyType.StringArray);
     sPropertyTypeMap.put("File", ConfigPropertyType.File);
   }
