@@ -471,7 +471,7 @@
                     id="net.sf.eclipsecs.action.purgecaches"
                     class="net.sf.eclipsecs.ui.actions.PurgeCachesAction"
                     toolbarPath="Normal/ZCheckstyle"
-                    icon="icons/refresh.gif"
+                    icon="platform:/plugin/org.eclipse.search/icons/full/elcl16/refresh.png"
                     label="%PurgeCaches.label"
                     tooltip="%PurgeCaches.tooltip" mode="FORCE_TEXT">
                 </action>
