@@ -24,12 +24,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ResourceLocator;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
  * Manages and caches images for the plugin.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public abstract class CheckstyleUIPluginImages {
@@ -101,8 +104,8 @@ public abstract class CheckstyleUIPluginImages {
             "icons/checkstyle_warning.gif"); //$NON-NLS-1$
     MARKER_INFO = AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
             "icons/checkstyle_info.gif"); //$NON-NLS-1$
-    HELP_ICON = AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
-            "icons/help.gif"); //$NON-NLS-1$
+    HELP_ICON = PlatformUI.getWorkbench().getSharedImages()
+            .getImageDescriptor(ISharedImages.IMG_LCL_LINKTO_HELP);
     CORRECTION_ADD = AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
             "icons/add_correction.gif"); //$NON-NLS-1$
     CORRECTION_CHANGE = AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
@@ -112,8 +115,9 @@ public abstract class CheckstyleUIPluginImages {
     TICK_ICON = AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
             "icons/tick.gif"); //$NON-NLS-1$
 
-    FILTER_ICON = AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
-            "icons/filter_16.gif"); //$NON-NLS-1$
+    FILTER_ICON = ResourceLocator.imageDescriptorFromBundle("org.eclipse.ui.ide",
+            "platform:/plugin/org.eclipse.ui.ide/icons/full/elcl16/filter_ps.png")
+            .orElse(MARKER_ERROR);
     LIST_VIEW_ICON = AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
             "icons/listingView.gif"); //$NON-NLS-1$
     GRAPH_VIEW_ICON = AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
@@ -129,9 +133,9 @@ public abstract class CheckstyleUIPluginImages {
             "icons/module.gif"); //$NON-NLS-1$
     MODULE_TICKED_ICON = AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
             "icons/module_used.gif"); //$NON-NLS-1$
-
-    REFRESH_ICON = AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
-            "icons/refresh.gif"); //$NON-NLS-1$
+    REFRESH_ICON = ResourceLocator.imageDescriptorFromBundle("org.eclipse.search",
+            "platform:/plugin/org.eclipse.search/icons/full/elcl16/refresh.png")
+            .orElse(MARKER_ERROR);
   }
 
   /**
@@ -143,7 +147,7 @@ public abstract class CheckstyleUIPluginImages {
 
   /**
    * Gets an image from a given descriptor.
-   * 
+   *
    * @param descriptor
    *          the descriptor
    * @return the image
