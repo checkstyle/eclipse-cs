@@ -34,11 +34,11 @@ matrix:
         - DESC="install (openjdk11)"
         - CMD="mvn install && git diff"
 
-    # JDK 13 (most recent Java version)
-    - jdk: openjdk13
+    # JDK 17 (most recent Java version)
+    - jdk: openjdk17
       arch: amd64
       env:
-        - DESC="install (openjdk13)"
+        - DESC="install (openjdk17)"
         - CMD="mvn install && git diff"
 
 script:
