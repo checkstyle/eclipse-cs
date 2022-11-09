@@ -97,7 +97,7 @@ public class FormatterTransformer {
         transformationClass = CheckstylePlugin.getDefault().getAddonExtensionClassLoader()
                 .loadClass(name);
 
-        final FTransformationClass transObj = (FTransformationClass) transformationClass
+        final FTransformationClass transObj = (FTransformationClass) transformationClass.getDeclaredConstructor()
                 .newInstance();
 
         transObj.setValue(mFormatterSetting.getFormatterSettings().get(rule));
@@ -106,7 +106,7 @@ public class FormatterTransformer {
 
       } catch (final ClassNotFoundException e) {
         // NOOP no appropriate transformer class present
-      } catch (final InstantiationException | IllegalAccessException e) {
+      } catch (final ReflectiveOperationException e) {
         CheckstylePluginException.rethrow(e);
       }
     }

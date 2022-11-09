@@ -43,6 +43,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -81,7 +82,7 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
             QUICKFIX_PROVIDER_EXT_PT_ID);
 
     // add listeners for the Check-On-Open support
-    final IWorkbench workbench = getWorkbench();
+    final IWorkbench workbench = PlatformUI.getWorkbench();
     workbench.getDisplay().asyncExec(new Runnable() {
       @Override
       public void run() {

@@ -99,7 +99,7 @@ public class CheckstyleTransformer {
       try {
         transformationClass = CheckstylePlugin.getDefault().getAddonExtensionClassLoader()
                 .loadClass(name);
-        final CTransformationClass transObj = (CTransformationClass) transformationClass
+        final CTransformationClass transObj = (CTransformationClass) transformationClass.getDeclaredConstructor()
                 .newInstance();
         transObj.setRule(rule);
         mTransformationClasses.add(transObj);
@@ -107,7 +107,7 @@ public class CheckstyleTransformer {
         // + rule.getName() + "\"");
       } catch (final ClassNotFoundException e) {
         // NOOP there is just no appropriate transformer class
-      } catch (final InstantiationException | IllegalAccessException e) {
+      } catch (final ReflectiveOperationException e) {
         CheckstylePluginException.rethrow(e);
       }
     }
