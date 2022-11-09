@@ -34,7 +34,7 @@ import org.eclipse.core.runtime.Platform;
 /**
  * Register for the filter editors thats use the
  * <i>net.sf.eclipsecs.ui.filtereditors </i> extension point.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public final class PluginFilterEditors {
@@ -84,7 +84,7 @@ public final class PluginFilterEditors {
 
   /**
    * Determines if a given filter has an editor.
-   * 
+   *
    * @param filter
    *          the filter
    * @return <code>true</code> if the filter has an editor, <code>false</code>
@@ -96,7 +96,7 @@ public final class PluginFilterEditors {
 
   /**
    * Creates the filter editor for a given filter.
-   * 
+   *
    * @param filter
    *          the filter
    * @return the filter editor
@@ -110,9 +110,9 @@ public final class PluginFilterEditors {
     if (editorClass != null) {
 
       try {
-        IFilterEditor editor = editorClass.newInstance();
+        IFilterEditor editor = editorClass.getDeclaredConstructor().newInstance();
         return editor;
-      } catch (InstantiationException | IllegalAccessException | ClassCastException e) {
+      } catch (ClassCastException | ReflectiveOperationException | SecurityException e) {
         CheckstylePluginException.rethrow(e);
       }
     }

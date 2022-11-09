@@ -28,8 +28,6 @@ import java.util.HashSet;
 import java.util.List;
 
 import net.sf.eclipsecs.core.builder.CheckstyleMarker;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
-
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -39,6 +37,7 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.ui.IWorkingSet;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * Filter class for Checkstyle markers. This filter is used by the Checkstyle statistics views.
@@ -380,7 +379,7 @@ public class CheckstyleMarkerFilter implements Cloneable {
 
       setting = settings.get(TAG_WORKING_SET);
       if (setting != null) {
-        setWorkingSet(CheckstyleUIPlugin.getDefault().getWorkbench().getWorkingSetManager()
+        setWorkingSet(PlatformUI.getWorkbench().getWorkingSetManager()
                 .getWorkingSet(setting));
       }
 

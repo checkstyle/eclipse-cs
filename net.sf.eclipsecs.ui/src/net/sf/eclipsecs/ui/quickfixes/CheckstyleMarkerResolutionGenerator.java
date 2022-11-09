@@ -36,7 +36,7 @@ import org.eclipse.ui.IMarkerResolutionGenerator2;
 
 /**
  * Profides marker resolutions (quickfixes) for Checkstyle markers.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public class CheckstyleMarkerResolutionGenerator implements IMarkerResolutionGenerator2 {
@@ -104,11 +104,11 @@ public class CheckstyleMarkerResolutionGenerator implements IMarkerResolutionGen
         Class<?> quickfixClass = CheckstyleUIPlugin.getDefault().getQuickfixExtensionClassLoader()
                 .loadClass(quickfixClassName);
 
-        ICheckstyleMarkerResolution fix = (ICheckstyleMarkerResolution) quickfixClass.newInstance();
+        ICheckstyleMarkerResolution fix = (ICheckstyleMarkerResolution) quickfixClass.getDeclaredConstructor().newInstance();
         fix.setRuleMetaData(ruleMetadata);
         fixes.add(fix);
       }
-    } catch (InstantiationException | ClassNotFoundException | IllegalAccessException e) {
+    } catch (ReflectiveOperationException | IllegalArgumentException | SecurityException e) {
       CheckstyleLog.log(e);
     }
     return fixes;
