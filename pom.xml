@@ -24,9 +24,11 @@
         <tycho.scmUrl>scm:git:git://github.com:checkstyle/eclipse-cs.git</tycho.scmUrl>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.checkstyle.plugin.version>3.2.0</maven.checkstyle.plugin.version>
-        <maven.sevntu.checkstyle.plugin.version>1.42.0</maven.sevntu.checkstyle.plugin.version>
-        <!-- it should be a version of checkstyle that is compatible/compiled with sevntu -->
+        <!-- sevntu and patch-filters need to use a compatible/compiled version with checkstyle -->
         <maven.sevntu.checkstyle.plugin.checkstyle.version>10.0</maven.sevntu.checkstyle.plugin.checkstyle.version>
+        <maven.sevntu.checkstyle.plugin.version>1.42.0</maven.sevntu.checkstyle.plugin.version>
+        <maven.patch.filters.plugin.version>1.2.0</maven.patch.filters.plugin.version>
+        <!-- see above -->
     </properties>
 
     <scm>
@@ -152,7 +154,7 @@
                     <dependency>
                         <groupId>com.puppycrawl.tools</groupId>
                         <artifactId>patch-filters</artifactId>
-                        <version>1.1.0</version>
+                        <version>${maven.patch.filters.plugin.version}</version>
                     </dependency>
                 </dependencies>
                 <executions>
