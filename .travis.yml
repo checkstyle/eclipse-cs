@@ -2,48 +2,47 @@ version: ~> 1.0
 dist: focal
 # this arch is required as is for Partner Queue Solution - DO NOT MODIFY
 arch: ppc64le
-
 language: java
-sudo: false
 
 cache:
-  apt: true
   directories:
     - ~/.m2
-
-branches:
-  only:
-    - master
 
 addons:
   apt:
     packages:
       - xmlstarlet
+      - maven
 
-install:
-  - ""
+branches:
+  only:
+    - master
+
+install: true
+
 
 # JDKs used in builds must be supported by Tycho.
 # Check https://wiki.eclipse.org/Tycho/Release_Notes to find supported versions.
-matrix:
+jobs:
   fast_finish: true
   include:
     # JDK 11 (minimal supported Java version of eclipse-cs)
     - jdk: openjdk11
       env:
         - DESC="install (openjdk11)"
-        - CMD="mvn install && git diff"
+        - CMD="mvn -e install"
 
     # JDK 17 (most recent Java LTS version)
     - jdk: openjdk17
       arch: amd64
       env:
         - DESC="install (openjdk17)"
-        - CMD="mvn install && git diff"
+        - CMD="mvn -e install"
 
 script:
   - ./.ci/travis.sh init-m2-repo
-  - echo "eval of CMD is starting";
-  - echo "CMD=$CMD";
-  - eval $CMD;
-  - echo "eval of CMD is completed";
+  - ./.ci/travis.sh run-command "$CMD"
+  - ./.ci/validation.sh git-diff
+  - sleep 5s
+
+after_success:
