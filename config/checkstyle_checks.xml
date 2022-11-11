@@ -202,6 +202,15 @@
             <property name="ignoreSetter" value="true"/>
             <property name="setterCanReturnItsClass" value="true"/>
         </module>
+        <module name="IllegalInstantiation">
+            <property name="classes"
+                      value="org.xml.sax.SAXException, org.xml.sax.SAXParseException,
+                         org.apache.commons.beanutils.ConversionException,
+                         org.antlr.v4.runtime.misc.ParseCancellationException,
+                         antlr.RecognitionException, antlr.TokenStreamException,
+                         antlr.TokenStreamRecognitionException, antlr.ANTLRException,
+                         java.lang.StringBuffer"/>
+        </module>
         <module name="IllegalThrows"/>
         <module name="IllegalTokenText">
             <property name="tokens" value="STRING_LITERAL"/>
