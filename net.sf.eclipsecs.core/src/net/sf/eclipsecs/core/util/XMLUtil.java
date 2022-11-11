@@ -45,7 +45,7 @@ public final class XMLUtil {
 
   /**
    * Creates a pretty printed representation of the document as a byte array.
-   * 
+   *
    * @param document
    *          the document
    * @return the document as a byte array (UTF-8)
@@ -66,7 +66,7 @@ public final class XMLUtil {
 
   /**
    * Entity resolver which handles mapping public DTDs to internal DTD resource.
-   * 
+   *
    * @author Lars Ködderitzsch
    */
   public static class InternalDtdEntityResolver implements EntityResolver {
@@ -75,7 +75,7 @@ public final class XMLUtil {
 
     /**
      * Creates the entity resolver using a mapping of public DTD name to internal DTD resource.
-     * 
+     *
      * @param public2InternalDtdMap
      *          the public2internal DTD mapping
      */
@@ -95,6 +95,7 @@ public final class XMLUtil {
 
         final InputStream dtdIS = getClass().getClassLoader().getResourceAsStream(dtdResourceName);
         if (dtdIS == null) {
+          // -@cs[IllegalInstantiation] SAXException is in the overridden method signature
           throw new SAXException("Unable to load internal dtd " + dtdResourceName); //$NON-NLS-1$
         }
         return new InputSource(dtdIS);
