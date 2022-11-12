@@ -1,6 +1,6 @@
 // Install https://download.eclipse.org/cbi/tpd/3.0.0-SNAPSHOT/ to use this target definition.
 // Read https://github.com/eclipse-cbi/targetplatform-dsl for more details.
-target "Eclipse Checkstyle"
+target "Eclipse Checkstyle (Eclipse Plugins)"
 with source configurePhase
 environment JavaSE-11
 
