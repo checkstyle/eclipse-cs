@@ -64,7 +64,7 @@ import org.eclipse.swt.widgets.Shell;
 /**
  * Dialog to show/edit the properties (name, location, description) of a check
  * configuration. Also used to create new check configurations.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
@@ -96,7 +96,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
 
   /**
    * Creates the properties dialog for check configurations.
-   * 
+   *
    * @param parent
    *          the parent shell
    * @param checkConfig
@@ -108,6 +108,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
   public CheckConfigurationPropertiesDialog(Shell parent, CheckConfigurationWorkingCopy checkConfig,
           ICheckConfigurationWorkingSet workingSet) {
     super(parent);
+    setHelpAvailable(false);
     mWorkingSet = workingSet;
     mCheckConfig = checkConfig;
   }
@@ -118,7 +119,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
 
   /**
    * Returns the working set this dialog is operating on.
-   * 
+   *
    * @return the check configuration working set
    */
   public ICheckConfigurationWorkingSet getCheckConfigurationWorkingSet() {
@@ -127,7 +128,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
 
   /**
    * Sets the template for a new check configuration.
-   * 
+   *
    * @param template
    *          the template configuration
    */
@@ -137,7 +138,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
 
   /**
    * Get the check configuration from the editor.
-   * 
+   *
    * @return the check configuration
    */
   public CheckConfigurationWorkingCopy getCheckConfiguration() {
@@ -155,7 +156,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
 
   /**
    * Creates the dialogs main contents.
-   * 
+   *
    * @param parent
    *          the parent composite
    */
@@ -359,7 +360,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
 
   /**
    * Creates the configuration type specific location editor.
-   * 
+   *
    * @param configType
    *          the configuration type
    */
@@ -438,7 +439,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
 
   /**
    * Creates a non conflicting name out of a name proposal.
-   * 
+   *
    * @param config
    *          the working copy to set the name on
    * @param checkConfigName

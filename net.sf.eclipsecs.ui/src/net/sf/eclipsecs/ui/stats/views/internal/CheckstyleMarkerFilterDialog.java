@@ -137,6 +137,7 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
   public CheckstyleMarkerFilterDialog(Shell shell, CheckstyleMarkerFilter filter) {
 
     super(shell);
+    setHelpAvailable(false);
     mFilter = filter;
   }
 

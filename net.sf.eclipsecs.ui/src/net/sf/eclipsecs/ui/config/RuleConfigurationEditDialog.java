@@ -109,6 +109,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
   RuleConfigurationEditDialog(Shell parent, Module rule, boolean readonly, String title) {
     super(parent);
     setShellStyle(getShellStyle() | SWT.RESIZE);
+    setHelpAvailable(false);
     mRule = rule;
     mReadonly = readonly;
     mTitle = title;

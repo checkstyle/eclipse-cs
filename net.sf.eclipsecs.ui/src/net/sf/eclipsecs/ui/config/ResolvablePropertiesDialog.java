@@ -118,6 +118,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
   public ResolvablePropertiesDialog(Shell parent, CheckConfigurationWorkingCopy checkConfig) {
     super(parent);
     setShellStyle(getShellStyle() | SWT.RESIZE | SWT.MAX);
+    setHelpAvailable(false);
     mCheckConfig = checkConfig;
   }
 

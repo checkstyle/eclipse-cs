@@ -133,6 +133,7 @@ public class FileSetEditDialog extends TitleAreaDialog {
           CheckstylePropertyPage propsPage) throws CheckstylePluginException {
     super(parent);
     setShellStyle(getShellStyle() | SWT.RESIZE);
+    setHelpAvailable(false);
     mProject = project;
     mFileSet = fileSet;
     mPropertyPage = propsPage;

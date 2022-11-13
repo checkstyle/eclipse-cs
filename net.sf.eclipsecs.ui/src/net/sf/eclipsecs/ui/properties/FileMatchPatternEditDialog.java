@@ -51,7 +51,7 @@ import org.eclipse.ui.contentassist.ContentAssistHandler;
 
 /**
  * Dialog to edit file match patterns.
- * 
+ *
  * @author David Schneider
  * @author Lars Ködderitzsch
  */
@@ -65,7 +65,7 @@ public class FileMatchPatternEditDialog extends TitleAreaDialog {
 
   /**
    * Creates a file matching pattern editor dialog.
-   * 
+   *
    * @param parentShell
    *          the parent shell
    * @param pattern
@@ -73,12 +73,13 @@ public class FileMatchPatternEditDialog extends TitleAreaDialog {
    */
   public FileMatchPatternEditDialog(Shell parentShell, FileMatchPattern pattern) {
     super(parentShell);
+    setHelpAvailable(false);
     mPattern = pattern;
   }
 
   /**
    * Returns the pattern edited by this dialog.
-   * 
+   *
    * @return the pattern
    */
   public FileMatchPattern getPattern() {
@@ -165,7 +166,7 @@ public class FileMatchPatternEditDialog extends TitleAreaDialog {
 
   /**
    * Creates the content assistant.
-   * 
+   *
    * @return the content assistant
    */
   private SubjectControlContentAssistant createContentAssistant() {
