@@ -2,7 +2,6 @@ package net.sf.eclipsecs.ui.properties.marker;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
@@ -13,9 +12,9 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PropertyPage;
-import org.eclipse.ui.internal.ide.IDEInternalWorkbenchImages;
-
 import net.sf.eclipsecs.core.builder.CheckstyleMarker;
 import net.sf.eclipsecs.core.config.meta.MetadataFactory;
 import net.sf.eclipsecs.core.config.meta.RuleMetadata;
@@ -28,7 +27,7 @@ import net.sf.eclipsecs.ui.config.CheckConfigurationConfigureDialog;
  * Property page for checkstyle markers.
  */
 public class MarkerPropertyPage extends PropertyPage {
-  
+
   private IMarker getIssue() {
     return (IMarker) getElement();
   }
@@ -36,7 +35,7 @@ public class MarkerPropertyPage extends PropertyPage {
   @Override
   protected Control createContents(Composite parent) {
     noDefaultAndApplyButton();
-    
+
     final Composite composite = new Composite(parent, SWT.NULL);
 
     composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
@@ -45,7 +44,7 @@ public class MarkerPropertyPage extends PropertyPage {
     layout.marginHeight = 0;
     layout.marginWidth = 0;
     composite.setLayout(layout);
-    
+
     try {
       new Label(composite, SWT.NONE).setImage(
               getSeverityImage(getIssue().getAttribute(IMarker.SEVERITY, -1)));
@@ -73,13 +72,13 @@ public class MarkerPropertyPage extends PropertyPage {
       rowLayout.marginRight = 0;
       Composite nameComposite = new Composite(composite, SWT.NONE);
       nameComposite.setLayout(rowLayout);
-      
+
       new Label(nameComposite, SWT.NONE).setText(metaData.getRuleName());
 
       Label helpIcon = new Label(nameComposite, SWT.NONE);
       helpIcon.setImage(
               CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.HELP_ICON));
-      helpIcon.setToolTipText(NLS.bind(Messages.MarkerPropertyPage_SuppressionHint, 
+      helpIcon.setToolTipText(NLS.bind(Messages.MarkerPropertyPage_SuppressionHint,
               metaData.getInternalName()));
 
       Label descriptionLabel = new Label(composite, SWT.NONE);
@@ -88,7 +87,7 @@ public class MarkerPropertyPage extends PropertyPage {
       gridData.horizontalSpan = 3;
       gridData.verticalIndent = 20;
       descriptionLabel.setLayoutData(gridData);
-      
+
       gridData = new GridData(GridData.FILL_BOTH);
       gridData.heightHint = 100;
       gridData.horizontalSpan = 3;
@@ -109,30 +108,17 @@ public class MarkerPropertyPage extends PropertyPage {
    * @return Image or <code>null</code>
    */
   public static Image getSeverityImage(int severity) {
-
-    if (severity == IMarker.SEVERITY_ERROR) {
-      return getIdeImage(IDEInternalWorkbenchImages.IMG_OBJS_ERROR_PATH);
+    ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
+    switch (severity) {
+      case IMarker.SEVERITY_ERROR:
+        return sharedImages.getImage(ISharedImages.IMG_OBJS_ERROR_TSK);
+      case IMarker.SEVERITY_WARNING:
+        return sharedImages.getImage(ISharedImages.IMG_OBJS_WARN_TSK);
+      case IMarker.SEVERITY_INFO:
+        return sharedImages.getImage(ISharedImages.IMG_OBJS_INFO_TSK);
+      default:
+        return null;
     }
-    if (severity == IMarker.SEVERITY_WARNING) {
-      return getIdeImage(IDEInternalWorkbenchImages.IMG_OBJS_WARNING_PATH);
-    }
-    if (severity == IMarker.SEVERITY_INFO) {
-      return getIdeImage(IDEInternalWorkbenchImages.IMG_OBJS_INFO_PATH);
-    }
-
-    return null;
   }
-
-  /**
-   * Get the IDE image at path.
-   *
-   * @param constantName image descriptor name
-   * @return Image
-   */
-  private static Image getIdeImage(String constantName) {
-    return JFaceResources.getResources().createImageWithDefault(
-        IDEInternalWorkbenchImages.getImageDescriptor(constantName));
-  }
-
 
 }

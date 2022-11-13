@@ -237,7 +237,6 @@ public abstract class ConfigurationType implements IConfigurationType {
   }
 
   @Override
-  @SuppressWarnings("unused")
   public void notifyCheckConfigRemoved(ICheckConfiguration checkConfiguration)
           throws CheckstylePluginException {
     // standard is that nothing happens

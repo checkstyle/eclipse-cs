@@ -20,7 +20,6 @@ import org.eclipse.jface.contentassist.SubjectControlContextInformationValidator
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
-import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.jface.text.contentassist.IContextInformationValidator;
 
@@ -30,7 +29,7 @@ import org.eclipse.jface.text.contentassist.IContextInformationValidator;
  * @since 3.0
  */
 public final class RegExContentAssistProcessor
-        implements IContentAssistProcessor, ISubjectControlContentAssistProcessor {
+        implements ISubjectControlContentAssistProcessor {
 
   /**
    * Proposal computer.
