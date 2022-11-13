@@ -157,6 +157,7 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
    *          style bits
    * @return a new table control
    */
+  @SuppressWarnings("unused") // TableColumn is added to table via constructor
   protected static Table createTable(Composite parent, int style) {
     Table table = new Table(parent, SWT.CHECK | style);
 
@@ -291,8 +292,8 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
   protected void preservingSelection(Runnable updateCode) {
 
     TableItem[] children = getTable().getItems();
-    CustomHashtable checked = newHashtable(children.length * 2 + 1);
-    CustomHashtable grayed = newHashtable(children.length * 2 + 1);
+    CustomHashtable checked = newCustomHashtable(children.length * 2 + 1);
+    CustomHashtable grayed = newCustomHashtable(children.length * 2 + 1);
 
     for (int i = 0; i < children.length; i++) {
       TableItem item = children[i];
@@ -386,7 +387,7 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
    */
   public void setCheckedElements(Object[] elements) {
     assertElementsNotNull(elements);
-    CustomHashtable set = newHashtable(elements.length * 2 + 1);
+    CustomHashtable set = newCustomHashtable(elements.length * 2 + 1);
     for (int i = 0; i < elements.length; ++i) {
       set.put(elements[i], elements[i]);
     }
@@ -439,7 +440,7 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
    */
   public void setGrayedElements(Object[] elements) {
     assertElementsNotNull(elements);
-    CustomHashtable set = newHashtable(elements.length * 2 + 1);
+    CustomHashtable set = newCustomHashtable(elements.length * 2 + 1);
     for (int i = 0; i < elements.length; ++i) {
       set.put(elements[i], elements[i]);
     }
@@ -465,7 +466,7 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
    * @return a new hashtable
    * @since 3.0
    */
-  CustomHashtable newHashtable(int capacity) {
+  CustomHashtable newCustomHashtable(int capacity) {
     return new CustomHashtable(capacity, getComparer());
   }
 

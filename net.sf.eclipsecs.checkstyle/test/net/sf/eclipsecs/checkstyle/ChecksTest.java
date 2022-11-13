@@ -42,19 +42,17 @@ public class ChecksTest {
       assertTrue(new File(getEclipseCsPath(p, "")).exists(), "folder " + p + " must exist in eclipsecs");
 
       final Set<Class<?>> packgeModules = CheckUtil.getModulesInPackage(modules, p);
+      assertTrue(packgeModules.size() > 0, "package must have modules");
 
-      validateEclipseCsMetaXmlFile(new File(getEclipseCsPath(p, "/checkstyle-metadata.xml")), p,
-              new HashSet<>(packgeModules));
+      validateEclipseCsMetaXmlFile(new File(getEclipseCsPath(p, "/checkstyle-metadata.xml")), p);
 
       validateEclipseCsMetaPropFile(
-              new File(getEclipseCsPath(p, "/checkstyle-metadata.properties")), p,
-              new HashSet<>(packgeModules));
+              new File(getEclipseCsPath(p, "/checkstyle-metadata.properties")), p);
     }
   }
 
-  private static void validateEclipseCsMetaXmlFile(File file, String packge,
-          Set<Class<?>> packgeModules) throws Exception {
-    assertTrue(file.exists(), "'checkstyle-metadata.xml' must exist in eclipsecs in inside " + packge);
+  private static void validateEclipseCsMetaXmlFile(File file, String packge) throws Exception {
+    assertTrue(file.exists(), "'checkstyle-metadata.xml' must exist in eclipsecs inside " + packge);
 
     final String input = new String(Files.readAllBytes(file.toPath()), UTF_8);
     final Document document = XmlUtil.getRawXml(file.getAbsolutePath(), input, input);
@@ -71,9 +69,8 @@ public class ChecksTest {
     }
   }
 
-  private static void validateEclipseCsMetaPropFile(File file, String packge,
-          Set<Class<?>> packgeModules) throws Exception {
-    assertTrue(file.exists(), "'checkstyle-metadata.properties' must exist in eclipsecs in inside " + packge);
+  private static void validateEclipseCsMetaPropFile(File file, String packge) throws Exception {
+    assertTrue(file.exists(), "'checkstyle-metadata.properties' must exist in eclipsecs inside " + packge);
 
     final Properties prop = new Properties();
     prop.load(new FileInputStream(file));

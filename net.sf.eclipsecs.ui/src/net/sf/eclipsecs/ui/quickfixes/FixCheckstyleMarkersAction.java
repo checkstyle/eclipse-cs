@@ -40,9 +40,6 @@ public class FixCheckstyleMarkersAction implements IObjectActionDelegate {
   /** the selection that occured in the workspace. */
   private ISelection mSelection;
 
-  /** the active workbench part. */
-  private IWorkbenchPart mWorkBenchPart;
-
   /**
    * {@inheritDoc}
    */
@@ -56,7 +53,7 @@ public class FixCheckstyleMarkersAction implements IObjectActionDelegate {
    */
   @Override
   public void setActivePart(IAction action, IWorkbenchPart targetPart) {
-    mWorkBenchPart = targetPart;
+    // empty
   }
 
   /**

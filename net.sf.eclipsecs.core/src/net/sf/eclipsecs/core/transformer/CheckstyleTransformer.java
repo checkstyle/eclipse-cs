@@ -117,6 +117,7 @@ public class CheckstyleTransformer {
    * Method for starting transforming. Converts all checkstyle-rules to a new
    * eclipse-formatter-profile.
    */
+  @SuppressWarnings("unused") // FormatterConfigWriter used via side effect on its arguments
   public void transformRules() {
     loadRuleConfigurations();
     new FormatterConfigWriter(mProject, mFormatterSetting);
