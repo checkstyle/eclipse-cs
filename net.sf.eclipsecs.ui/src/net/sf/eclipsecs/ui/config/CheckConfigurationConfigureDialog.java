@@ -65,6 +65,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
 import org.eclipse.osgi.util.NLS;
@@ -261,7 +262,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
 
     Group knownModules = new Group(parent, SWT.NULL);
     knownModules.setLayout(new GridLayout());
-    knownModules.setText(Messages.CheckConfigurationConfigureDialog_lblKnownModules);
+    knownModules.setText(Messages.CheckConfigurationConfigureDialog_lblAvailableModules);
 
     mTxtTreeFilter = new Text(knownModules, SWT.SINGLE | SWT.BORDER);
     mTxtTreeFilter.setText(mDefaultFilterText);
@@ -294,6 +295,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
     mTreeViewer.getControl().setLayoutData(new GridData(GridData.FILL_BOTH));
     mTreeViewer.setContentProvider(new MetaDataContentProvider());
     mTreeViewer.setLabelProvider(new MetaDataLabelProvider());
+    mTreeViewer.setComparator(new ViewerComparator());
     mTreeViewer.addSelectionChangedListener(mController);
     mTreeViewer.addDoubleClickListener(mController);
     mTreeViewer.getTree().addKeyListener(mController);
