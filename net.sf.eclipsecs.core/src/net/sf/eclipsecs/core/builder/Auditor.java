@@ -75,7 +75,7 @@ public class Auditor {
   private IProgressMonitor mMonitor;
 
   /** Map containing the file resources to audit. */
-  private final Map<String, IFile> mFiles = new HashMap<>();
+  private final Map<String, IFile> mFiles = new HashMap<>(); // CustomDeclarationOrder is raised here when the patch-filter is removed from checkstyle_sevntu_checks.xml
 
   /** Add the check rule name to the message. */
   private boolean mAddRuleName = false;
