@@ -66,6 +66,7 @@ public class ResolvablePropertyEditDialog extends TitleAreaDialog {
    */
   ResolvablePropertyEditDialog(Shell parent, ResolvableProperty prop) {
     super(parent);
+    setHelpAvailable(false);
     setShellStyle(getShellStyle() | SWT.RESIZE);
     mProperty = prop;
   }

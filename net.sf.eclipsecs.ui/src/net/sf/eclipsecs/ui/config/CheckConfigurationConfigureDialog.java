@@ -166,6 +166,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
           CheckConfigurationWorkingCopy config) {
     super(parentShell);
     setShellStyle(getShellStyle() | SWT.RESIZE | SWT.MAX);
+    setHelpAvailable(false);
     mConfiguration = config;
   }
 
