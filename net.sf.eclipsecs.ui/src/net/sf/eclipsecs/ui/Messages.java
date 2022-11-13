@@ -62,7 +62,7 @@ public final class Messages extends NLS {
 
   public static String CheckConfigurationConfigureDialog_lblDescription;
 
-  public static String CheckConfigurationConfigureDialog_lblKnownModules;
+  public static String CheckConfigurationConfigureDialog_lblAvailableModules;
 
   public static String CheckConfigurationConfigureDialog_msgEditConfig;
 
