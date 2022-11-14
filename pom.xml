@@ -36,7 +36,7 @@
         <maven-site-plugin-version>3.12.1</maven-site-plugin-version>
         <maven-surefire-plugin-version>3.2.5</maven-surefire-plugin-version>
         <maven-version>3.6.3</maven-version>
-        <tycho-version>2.7.5</tycho-version>
+        <tycho-version>4.0.5</tycho-version>
         <versions-maven-plugin-version>2.16.2</versions-maven-plugin-version>
 
         <!-- sevntu and patch-filters need to use a compatible/compiled version with checkstyle -->
@@ -49,6 +49,7 @@
 
         <!-- ignore all versions with non numerical parts during versions:display-plugin-updates -->
         <maven.version.ignore>.*[a-zA-Z]+.*</maven.version.ignore>
+        <maven.compiler.release>11</maven.compiler.release>
     </properties>
 
     <scm>
@@ -117,7 +118,6 @@
                         see https://github.com/eclipse-tycho/tycho/issues/1660 -->
                         <file>${maven.multiModuleProjectDirectory}/net.sf.eclipsecs.target/net.sf.eclipsecs.target.target</file>
                     </target>
-                    <resolver>p2</resolver>
                     <environments>
                         <environment>
                             <os>win32</os>
@@ -218,6 +218,11 @@
                 </plugin>
                 <plugin>
                     <groupId>org.eclipse.tycho</groupId>
+                    <artifactId>tycho-bnd-plugin</artifactId>
+                    <version>${tycho-version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.eclipse.tycho</groupId>
                     <artifactId>tycho-compiler-plugin</artifactId>
                     <version>${tycho-version}</version>
                 </plugin>
@@ -255,7 +260,7 @@
                     <dependencies>
                         <!-- generate timestamps from last git change of any file in this module -->
                         <dependency>
-                            <groupId>org.eclipse.tycho.extras</groupId>
+                            <groupId>org.eclipse.tycho</groupId>
                             <artifactId>tycho-buildtimestamp-jgit</artifactId>
                             <version>${tycho-version}</version>
                         </dependency>
@@ -371,10 +376,6 @@
                             </goals>
                         </execution>
                     </executions>
-                    <configuration>
-                        <source>11</source>
-                        <target>11</target>
-                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
