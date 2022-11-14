@@ -25,11 +25,13 @@ jobs:
         path: ~/.m2/repository
         key: maven-cache-${{ hashFiles('**/pom.xml') }}
 
-    - name: Set up JDK ${{ matrix.jdk }}
+    - name: Set up JDKs
       uses: actions/setup-java@387ac29b308b003ca37ba93a6cab5eb57c8f5f93 # v4.0.0
       with:
         distribution: temurin
-        java-version: ${{ matrix.jdk }}
+        java-version: |
+          11
+          17
 
     - name: Build with Maven
       run: ./mvnw --errors --no-transfer-progress install
@@ -40,6 +42,6 @@ jobs:
     - name: Publish Test Results
       uses: EnricoMi/publish-unit-test-result-action@4e121453199042300b654ee3b4b52720bc645dc6 # v2.13.0
       # we only want to attach test results one time, not for every matrix combination
-      if: startsWith(matrix.platform, 'ubuntu') && (matrix.jdk == 17)
+      if: startsWith(matrix.platform, 'ubuntu') && (matrix.jdk == 11)
       with:
         files: '**/target/surefire-reports/*.xml'

@@ -21,16 +21,23 @@ location "https://download.eclipse.org/releases/2021-06/202106161001/" {
 	org.eclipse.ui.trace
 }
 
-// matching release of JUnit 5 from Eclipse Orbit
-location "https://download.eclipse.org/tools/orbit/downloads/drops/R20210602031627/repository" {
-	org.junit.jupiter.api
-	org.junit.jupiter.engine
-	org.junit.jupiter.params
-	org.junit.platform.commons
-	org.junit.platform.engine
-	org.junit.platform.launcher
-	org.junit.platform.runner
-	org.junit.platform.suite.api
+// You must use 2022-06 or newer as Eclipse IDE to run the unit tests.
+// With that version Eclipse started consuming many libraries directly from Maven instead of re-bundling them in Eclipse Orbit.
+// Unfortunately the JUnit runtime support (the connection between test engine and IDE/Tycho) therefore had a breaking change
+// in the JUnit bundle names, therefore old IDEs can't run the tests anymore.
+location "https://download.eclipse.org/releases/2022-09/202209141001/" {
+	junit-jupiter-api
+	junit-jupiter-engine
+	junit-jupiter-migrationsupport
+	junit-jupiter-params
+	junit-platform-commons
+	junit-platform-engine
+	junit-platform-launcher
+	junit-platform-runner
+	junit-platform-suite-api
+	junit-platform-suite-commons
+	junit-vintage-engine
+	org.apiguardian.api
 }
 
 // If the following part has errors and no syntax highlighting, then please use Help>About>Installation>Installed Software>Target Platform DSL>Uninstall.
