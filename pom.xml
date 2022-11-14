@@ -233,6 +233,15 @@
                     <version>${tycho-version}</version>
                     <executions>
                         <execution>
+                            <!-- this execution is bound via default lifecycle bindings of the tycho-p2-plugin -->
+                            <id>default-p2-metadata-default</id>
+                            <configuration>
+                                <!-- disable the default metadata generation since that conflicts with source feature generation -->
+                                <attachP2Metadata>false</attachP2Metadata>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <!-- explicitly attach metadata later via this custom execution -->
                             <id>attach-p2-metadata</id>
                             <phase>package</phase>
                             <goals>
