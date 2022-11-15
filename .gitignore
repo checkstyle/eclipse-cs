@@ -6,3 +6,9 @@ show.patch
 *.DS_Store
 net.sf.eclipsecs-updatesite/workspace
 *.zip
+
+# Tycho generates multiple files during the build.
+# They are excluded from the timestamp calculation by default, but still can confuse developers in the staging view.
+.tycho-consumer-pom.xml
+.polyglot.*
+pom.tycho
