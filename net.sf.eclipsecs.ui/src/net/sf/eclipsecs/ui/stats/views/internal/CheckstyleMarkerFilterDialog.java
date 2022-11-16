@@ -267,7 +267,7 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
     // init the controls
     updateUIFromFilter();
 
-    this.setTitleImage(CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.PLUGIN_LOGO));
+    this.setTitleImage(CheckstyleUIPluginImages.PLUGIN_LOGO.getImage());
     this.setTitle(Messages.CheckstyleMarkerFilterDialog_title);
     this.setMessage(Messages.CheckstyleMarkerFilterDialog_titleMessage);
 

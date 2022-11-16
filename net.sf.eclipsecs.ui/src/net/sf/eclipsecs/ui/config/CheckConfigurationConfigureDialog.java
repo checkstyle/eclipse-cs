@@ -464,7 +464,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
     }
 
     // set the logo
-    this.setTitleImage(CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.PLUGIN_LOGO));
+    this.setTitleImage(CheckstyleUIPluginImages.PLUGIN_LOGO.getImage());
 
     mAddButton.setEnabled(mConfigurable);
     mRemoveButton.setEnabled(mConfigurable);
@@ -908,14 +908,13 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
 
       if (element instanceof RuleGroupMetadata) {
         image = isGroupUsed((RuleGroupMetadata) element)
-                ? CheckstyleUIPluginImages
-                        .getImage(CheckstyleUIPluginImages.MODULEGROUP_TICKED_ICON)
-                : CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.MODULEGROUP_ICON);
+                ? CheckstyleUIPluginImages.MODULEGROUP_TICKED_ICON.getImage()
+                : CheckstyleUIPluginImages.MODULEGROUP_ICON.getImage();
       } else if (element instanceof RuleMetadata) {
 
         image = isMetadataUsed((RuleMetadata) element)
-                ? CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.MODULE_TICKED_ICON)
-                : CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.MODULE_ICON);
+                ? CheckstyleUIPluginImages.MODULE_TICKED_ICON.getImage()
+                : CheckstyleUIPluginImages.MODULE_ICON.getImage();
       }
       return image;
     }

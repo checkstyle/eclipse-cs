@@ -35,7 +35,7 @@ import org.eclipse.swt.graphics.Image;
 
 /**
  * Quickfix implementation that removes nested blocks.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public class AvoidNestedBlocksQuickfix extends AbstractASTResolution {
@@ -98,6 +98,6 @@ public class AvoidNestedBlocksQuickfix extends AbstractASTResolution {
    */
   @Override
   public Image getImage() {
-    return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.CORRECTION_REMOVE);
+    return CheckstyleUIPluginImages.CORRECTION_REMOVE.getImage();
   }
 }

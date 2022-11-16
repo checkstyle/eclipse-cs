@@ -354,7 +354,7 @@ public class FileSetEditDialog extends TitleAreaDialog {
     // init the check configuration combo
     mComboViewer.setInput(mPropertyPage.getProjectConfigurationWorkingCopy());
 
-    this.setTitleImage(CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.PLUGIN_LOGO));
+    this.setTitleImage(CheckstyleUIPluginImages.PLUGIN_LOGO.getImage());
     this.setMessage(Messages.FileSetEditDialog_message);
 
     if (mIsCreatingNewFileset) {

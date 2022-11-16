@@ -164,7 +164,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
   protected Control createDialogArea(Composite parent) {
 
     // set the logo
-    this.setTitleImage(CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.PLUGIN_LOGO));
+    this.setTitleImage(CheckstyleUIPluginImages.PLUGIN_LOGO.getImage());
 
     Composite composite = (Composite) super.createDialogArea(parent);
 

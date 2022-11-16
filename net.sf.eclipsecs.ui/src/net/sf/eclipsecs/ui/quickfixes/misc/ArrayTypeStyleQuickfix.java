@@ -41,7 +41,7 @@ import org.eclipse.swt.graphics.Image;
 /**
  * Quickfix implementation which moves the array declaration (C-style to
  * Java-style and reverse).
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public class ArrayTypeStyleQuickfix extends AbstractASTResolution {
@@ -208,7 +208,7 @@ public class ArrayTypeStyleQuickfix extends AbstractASTResolution {
    */
   @Override
   public Image getImage() {
-    return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.CORRECTION_CHANGE);
+    return CheckstyleUIPluginImages.CORRECTION_CHANGE.getImage();
   }
 
 }

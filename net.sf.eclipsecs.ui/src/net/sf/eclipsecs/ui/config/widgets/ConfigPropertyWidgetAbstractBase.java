@@ -71,7 +71,7 @@ public abstract class ConfigPropertyWidgetAbstractBase implements IConfigPropert
     gd = new GridData();
     gd.verticalAlignment = SWT.BEGINNING;
     lblPropertyInfo.setLayoutData(gd);
-    lblPropertyInfo.setImage(CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.HELP_ICON));
+    lblPropertyInfo.setImage(CheckstyleUIPluginImages.HELP_ICON.getImage());
     lblPropertyInfo.setToolTipText(mProp.getMetaData().getDescription());
     SWTUtil.addTooltipOnPressSupport(lblPropertyInfo);
   }
@@ -86,7 +86,7 @@ public abstract class ConfigPropertyWidgetAbstractBase implements IConfigPropert
 
   /**
    * Returns the widget containing the values.
-   * 
+   *
    * @return the widget containing the value
    */
   protected abstract Control getValueWidget(Composite parent);

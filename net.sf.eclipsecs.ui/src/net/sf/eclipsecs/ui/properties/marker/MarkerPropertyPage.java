@@ -54,7 +54,7 @@ public class MarkerPropertyPage extends PropertyPage {
       labelMessage.setText(message);
 
       new Label(composite, SWT.NONE).setImage(
-              CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.MODULEGROUP_ICON));
+              CheckstyleUIPluginImages.MODULEGROUP_ICON.getImage());
       new Label(composite, SWT.NONE).setText(Messages.MarkerPropertyPage_Group);
 
       String moduleName = (String) getIssue().getAttribute(CheckstyleMarker.MODULE_NAME);
@@ -62,7 +62,7 @@ public class MarkerPropertyPage extends PropertyPage {
       new Label(composite, SWT.NONE).setText(metaData.getGroup().getGroupName());
 
       new Label(composite, SWT.NONE).setImage(
-              CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.MODULE_ICON));
+              CheckstyleUIPluginImages.MODULE_ICON.getImage());
       new Label(composite, SWT.NONE).setText(Messages.MarkerPropertyPage_Module);
 
       RowLayout rowLayout = new RowLayout(SWT.HORIZONTAL);
@@ -76,8 +76,7 @@ public class MarkerPropertyPage extends PropertyPage {
       new Label(nameComposite, SWT.NONE).setText(metaData.getRuleName());
 
       Label helpIcon = new Label(nameComposite, SWT.NONE);
-      helpIcon.setImage(
-              CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.HELP_ICON));
+      helpIcon.setImage(CheckstyleUIPluginImages.HELP_ICON.getImage());
       helpIcon.setToolTipText(NLS.bind(Messages.MarkerPropertyPage_SuppressionHint,
               metaData.getInternalName()));
 

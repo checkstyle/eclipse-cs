@@ -182,7 +182,7 @@ public class SimplifyBooleanReturnQuickfix extends AbstractASTResolution {
    */
   @Override
   public Image getImage() {
-    return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.CORRECTION_CHANGE);
+    return CheckstyleUIPluginImages.CORRECTION_CHANGE.getImage();
   }
 
 }

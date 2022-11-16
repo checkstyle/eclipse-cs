@@ -34,7 +34,7 @@ import org.eclipse.swt.graphics.Image;
 /**
  * Quickfix implementation that removes an empty statement (unneccessary
  * semicolon).
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public class EmptyStatementQuickfix extends AbstractASTResolution {
@@ -86,7 +86,7 @@ public class EmptyStatementQuickfix extends AbstractASTResolution {
    */
   @Override
   public Image getImage() {
-    return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.CORRECTION_REMOVE);
+    return CheckstyleUIPluginImages.CORRECTION_REMOVE.getImage();
   }
 
 }

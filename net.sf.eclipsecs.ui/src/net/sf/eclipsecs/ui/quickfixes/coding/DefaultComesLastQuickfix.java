@@ -37,7 +37,7 @@ import org.eclipse.swt.graphics.Image;
 /**
  * Quickfix implementation that moves the default case of a switch statement to
  * the last position.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public class DefaultComesLastQuickfix extends AbstractASTResolution {
@@ -122,6 +122,6 @@ public class DefaultComesLastQuickfix extends AbstractASTResolution {
    */
   @Override
   public Image getImage() {
-    return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.CORRECTION_CHANGE);
+    return CheckstyleUIPluginImages.CORRECTION_CHANGE.getImage();
   }
 }

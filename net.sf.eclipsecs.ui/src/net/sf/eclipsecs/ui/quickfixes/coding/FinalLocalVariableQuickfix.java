@@ -35,7 +35,7 @@ import org.eclipse.swt.graphics.Image;
 /**
  * Quickfix implementation which adds final modifiers to parameters in method
  * declarations.
- * 
+ *
  * @author Levon Saldamli
  * @author Lars Ködderitzsch
  */
@@ -96,7 +96,7 @@ public class FinalLocalVariableQuickfix extends AbstractASTResolution {
    */
   @Override
   public Image getImage() {
-    return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.CORRECTION_ADD);
+    return CheckstyleUIPluginImages.CORRECTION_ADD.getImage();
   }
 
 }
