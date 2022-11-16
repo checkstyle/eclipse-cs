@@ -163,7 +163,7 @@ public class RequireThisQuickfix extends AbstractASTResolution {
    */
   @Override
   public Image getImage() {
-    return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.CORRECTION_ADD);
+    return CheckstyleUIPluginImages.CORRECTION_ADD.getImage();
   }
 
 }

@@ -692,7 +692,7 @@ public class CheckConfigurationWorkingSetEditor {
           if (mWorkingSet instanceof GlobalCheckConfigurationWorkingSet) {
 
             if (((GlobalCheckConfigurationWorkingSet) mWorkingSet).getDefaultCheckConfig() == cfg) {
-              image = CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.TICK_ICON);
+              image = CheckstyleUIPluginImages.TICK_ICON.getImage();
             }
           }
           break;

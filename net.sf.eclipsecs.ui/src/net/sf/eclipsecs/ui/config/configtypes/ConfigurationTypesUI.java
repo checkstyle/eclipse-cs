@@ -27,12 +27,12 @@ import net.sf.eclipsecs.core.config.configtypes.IConfigurationType;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
-import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
-
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ImageRegistry;
+import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
@@ -65,7 +65,7 @@ public final class ConfigurationTypesUI {
   private static final Map<String, Class<? extends ICheckConfigurationEditor>> CONFIGURATION_TYPE_EDITORS;
 
   /** Map of icon paths for the configuration types. */
-  private static final Map<String, String> CONFIGATION_TYPE_ICONS;
+  private static final Map<String, String> CONFIGURATION_TYPE_ICONS;
 
   /**
    * Initialize the configured to the filter extension point.
@@ -73,7 +73,7 @@ public final class ConfigurationTypesUI {
   static {
 
     CONFIGURATION_TYPE_EDITORS = new HashMap<>();
-    CONFIGATION_TYPE_ICONS = new HashMap<>();
+    CONFIGURATION_TYPE_ICONS = new HashMap<>();
 
     IExtensionRegistry pluginRegistry = Platform.getExtensionRegistry();
 
@@ -92,7 +92,7 @@ public final class ConfigurationTypesUI {
         String iconPath = elements[i].getAttribute(ATTR_ICON);
 
         CONFIGURATION_TYPE_EDITORS.put(internalName, editor.getClass());
-        CONFIGATION_TYPE_ICONS.put(internalName, iconPath);
+        CONFIGURATION_TYPE_ICONS.put(internalName, iconPath);
       } catch (Exception e) {
         CheckstyleLog.log(e);
       }
@@ -142,12 +142,18 @@ public final class ConfigurationTypesUI {
    */
   public static Image getConfigurationTypeImage(IConfigurationType configType) {
 
-    String iconPath = CONFIGATION_TYPE_ICONS.get(configType.getInternalName());
+    String iconPath = CONFIGURATION_TYPE_ICONS.get(configType.getInternalName());
 
     if (iconPath != null) {
-      ImageDescriptor descriptor = AbstractUIPlugin
-              .imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID, iconPath);
-      return CheckstyleUIPluginImages.getImage(descriptor);
+      ImageRegistry imageRegistry = JFaceResources.getImageRegistry();
+      Image image = imageRegistry.get(iconPath);
+      if (image == null) {
+        ImageDescriptor descriptor = AbstractUIPlugin
+                .imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID, iconPath);
+        imageRegistry.put(iconPath, descriptor);
+        image = imageRegistry.get(iconPath);
+      }
+      return image;
     }
     return null;
   }

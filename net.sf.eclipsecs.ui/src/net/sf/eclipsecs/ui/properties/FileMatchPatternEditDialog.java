@@ -118,7 +118,7 @@ public class FileMatchPatternEditDialog extends TitleAreaDialog {
       mIncludeButton.setSelection(true);
     }
 
-    this.setTitleImage(CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.PLUGIN_LOGO));
+    this.setTitleImage(CheckstyleUIPluginImages.PLUGIN_LOGO.getImage());
     this.setTitle(Messages.FileMatchPatternEditDialog_title);
     this.setMessage(Messages.FileMatchPatternEditDialog_message);
 

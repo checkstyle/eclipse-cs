@@ -29,7 +29,7 @@ import org.eclipse.ui.texteditor.IAnnotationImageProvider;
 
 /**
  * Image provider for Checkstyle markers.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public class CheckstyleMarkerImageProvider implements IAnnotationImageProvider {
@@ -41,11 +41,11 @@ public class CheckstyleMarkerImageProvider implements IAnnotationImageProvider {
   public Image getManagedImage(Annotation annotation) {
     String type = annotation.getType();
     if (CheckstyleMarker.ERROR_TYPE.equals(type)) {
-      return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.MARKER_ERROR);
+      return CheckstyleUIPluginImages.MARKER_ERROR.getImage();
     } else if (CheckstyleMarker.WARNING_TYPE.equals(type)) {
-      return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.MARKER_WARNING);
+      return CheckstyleUIPluginImages.MARKER_WARNING.getImage();
     } else if (CheckstyleMarker.INFO_TYPE.equals(type)) {
-      return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.MARKER_INFO);
+      return CheckstyleUIPluginImages.MARKER_INFO.getImage();
     }
 
     return null;

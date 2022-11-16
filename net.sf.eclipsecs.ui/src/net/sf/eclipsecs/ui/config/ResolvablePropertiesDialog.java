@@ -157,7 +157,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
   protected Control createDialogArea(Composite parent) {
 
     // set the logo
-    this.setTitleImage(CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.PLUGIN_LOGO));
+    this.setTitleImage(CheckstyleUIPluginImages.PLUGIN_LOGO.getImage());
     this.setTitle(Messages.ResolvablePropertiesDialog_titleMessageArea);
     this.setMessage(Messages.ResolvablePropertiesDialog_msgAdditionalProperties);
 

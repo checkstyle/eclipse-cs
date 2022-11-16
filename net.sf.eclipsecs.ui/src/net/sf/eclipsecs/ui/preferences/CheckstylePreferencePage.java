@@ -201,7 +201,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
 
     mPurgeCacheButton = new Button(rebuildComposite, SWT.FLAT);
     mPurgeCacheButton
-            .setImage(CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.REFRESH_ICON));
+            .setImage(CheckstyleUIPluginImages.REFRESH_ICON.getImage());
     mPurgeCacheButton.setToolTipText(Messages.CheckstylePreferencePage_btnRefreshCheckerCache);
     mPurgeCacheButton.addSelectionListener(mController);
     GridData gd = new GridData();
@@ -234,7 +234,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
             CheckstylePluginPrefs.getBoolean(CheckstylePluginPrefs.PREF_INCLUDE_RULE_NAMES));
 
     Label lblRebuildNote = new Label(includeRuleNamesComposite, SWT.NULL);
-    lblRebuildNote.setImage(CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.HELP_ICON));
+    lblRebuildNote.setImage(CheckstyleUIPluginImages.HELP_ICON.getImage());
     lblRebuildNote.setToolTipText(Messages.CheckstylePreferencePage_txtSuggestRebuild);
     SWTUtil.addTooltipOnPressSupport(lblRebuildNote);
 
@@ -253,7 +253,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
             CheckstylePluginPrefs.getBoolean(CheckstylePluginPrefs.PREF_INCLUDE_MODULE_IDS));
 
     lblRebuildNote = new Label(includeModuleIdComposite, SWT.NULL);
-    lblRebuildNote.setImage(CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.HELP_ICON));
+    lblRebuildNote.setImage(CheckstyleUIPluginImages.HELP_ICON.getImage());
     lblRebuildNote.setToolTipText(Messages.CheckstylePreferencePage_txtSuggestRebuild);
     SWTUtil.addTooltipOnPressSupport(lblRebuildNote);
 
@@ -282,7 +282,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
     mTxtMarkerLimit.setLayoutData(gd);
 
     lblRebuildNote = new Label(limitMarkersComposite, SWT.NULL);
-    lblRebuildNote.setImage(CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.HELP_ICON));
+    lblRebuildNote.setImage(CheckstyleUIPluginImages.HELP_ICON.getImage());
     lblRebuildNote.setToolTipText(Messages.CheckstylePreferencePage_txtSuggestRebuild);
     SWTUtil.addTooltipOnPressSupport(lblRebuildNote);
 

@@ -380,7 +380,7 @@ public class MarkerStatsView extends AbstractStatsView {
     };
     mChartAction.setText(Messages.MarkerStatsView_displayChart);
     mChartAction.setToolTipText(Messages.MarkerStatsView_displayChartTooltip);
-    mChartAction.setImageDescriptor(CheckstyleUIPluginImages.GRAPH_VIEW_ICON);
+    mChartAction.setImageDescriptor(CheckstyleUIPluginImages.GRAPH_VIEW_ICON.getImageDescriptor());
 
     // action used to display the detail of a specific error type
     mDrillDownAction = new Action() {

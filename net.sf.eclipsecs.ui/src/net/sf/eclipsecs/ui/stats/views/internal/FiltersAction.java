@@ -28,7 +28,7 @@ import org.eclipse.jface.action.Action;
 
 /**
  * Action implementation for the filters action.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public class FiltersAction extends Action {
@@ -46,13 +46,13 @@ public class FiltersAction extends Action {
 
   /**
    * Creates the action.
-   * 
+   *
    * @param view
    *          the stats view
    */
   public FiltersAction(AbstractStatsView view) {
     super(Messages.FiltersAction_text);
-    setImageDescriptor(CheckstyleUIPluginImages.FILTER_ICON);
+    setImageDescriptor(CheckstyleUIPluginImages.FILTER_ICON.getImageDescriptor());
     setToolTipText(Messages.FiltersAction_tooltip);
     this.mStatsView = view;
     setEnabled(true);

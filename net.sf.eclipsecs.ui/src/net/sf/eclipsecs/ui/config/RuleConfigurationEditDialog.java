@@ -392,7 +392,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
     }
 
     // set the logo
-    this.setTitleImage(CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.PLUGIN_LOGO));
+    this.setTitleImage(CheckstyleUIPluginImages.PLUGIN_LOGO.getImage());
 
   }
 

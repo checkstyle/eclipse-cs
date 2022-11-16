@@ -119,7 +119,7 @@ public class ExplicitInitializationQuickfix extends AbstractASTResolution {
    */
   @Override
   public Image getImage() {
-    return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.CORRECTION_REMOVE);
+    return CheckstyleUIPluginImages.CORRECTION_REMOVE.getImage();
   }
 
 }

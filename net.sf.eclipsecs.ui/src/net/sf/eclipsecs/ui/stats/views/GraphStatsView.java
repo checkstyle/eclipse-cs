@@ -354,7 +354,7 @@ public class GraphStatsView extends AbstractStatsView {
     };
     mListingAction.setText(Messages.GraphStatsView_displayListing);
     mListingAction.setToolTipText(Messages.GraphStatsView_displayListing);
-    mListingAction.setImageDescriptor(CheckstyleUIPluginImages.LIST_VIEW_ICON);
+    mListingAction.setImageDescriptor(CheckstyleUIPluginImages.LIST_VIEW_ICON.getImageDescriptor());
 
     mShowAllCategoriesAction = new Action(Messages.GraphStatsView_displayAllCategories,
             IAction.AS_CHECK_BOX) {

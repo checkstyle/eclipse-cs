@@ -43,7 +43,7 @@ import org.eclipse.swt.graphics.Image;
 
 /**
  * Quickfix implementation that removes redundant modifiers.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public class RedundantModifierQuickfix extends AbstractASTResolution {
@@ -178,7 +178,7 @@ public class RedundantModifierQuickfix extends AbstractASTResolution {
    */
   @Override
   public Image getImage() {
-    return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.CORRECTION_REMOVE);
+    return CheckstyleUIPluginImages.CORRECTION_REMOVE.getImage();
   }
 
 }

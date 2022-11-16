@@ -33,7 +33,7 @@ import org.eclipse.swt.graphics.Image;
 /**
  * Quickfix implementation that add a missing default statement to a switch
  * case.
- * 
+ *
  * @author Levon Saldamli
  */
 public class MissingSwitchDefaultQuickfix extends AbstractASTResolution {
@@ -82,6 +82,6 @@ public class MissingSwitchDefaultQuickfix extends AbstractASTResolution {
    */
   @Override
   public Image getImage() {
-    return CheckstyleUIPluginImages.getImage(CheckstyleUIPluginImages.CORRECTION_ADD);
+    return CheckstyleUIPluginImages.CORRECTION_ADD.getImage();
   }
 }
