@@ -24,8 +24,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.checkstyle.plugin.version>3.2.0</maven.checkstyle.plugin.version>
         <!-- sevntu and patch-filters need to use a compatible/compiled version with checkstyle -->
-        <maven.sevntu.checkstyle.plugin.checkstyle.version>10.0</maven.sevntu.checkstyle.plugin.checkstyle.version>
-        <maven.sevntu.checkstyle.plugin.version>1.42.0</maven.sevntu.checkstyle.plugin.version>
+        <maven.sevntu.checkstyle.plugin.checkstyle.version>10.4</maven.sevntu.checkstyle.plugin.checkstyle.version>
+        <maven.sevntu.checkstyle.plugin.version>1.43.0</maven.sevntu.checkstyle.plugin.version>
         <maven.patch.filters.plugin.version>1.4.0</maven.patch.filters.plugin.version>
         <!-- see above -->
     </properties>
