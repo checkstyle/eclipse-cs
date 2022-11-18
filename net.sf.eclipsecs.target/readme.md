@@ -34,7 +34,7 @@ That's why the target platform is split over 2 files.
 The root target platform contains only the Maven coordinates and can be edited manually.
 It also includes a nested target file, which is generated from the target platform DSL.
 While that structure may look confusing at first glance, it simplifies the actual editing a lot,
-because you either only edit Maven coordinates or entries in the `.tpd`file.
+because you either only edit Maven coordinates or entries in the `.tpd` file.
 
 ### Eclipse plugins
 
