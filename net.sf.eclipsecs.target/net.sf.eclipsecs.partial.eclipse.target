@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl -->
-<target name="Eclipse Checkstyle (Eclipse Plugins)" sequenceNumber="1668583180">
+<target name="Eclipse Checkstyle (Eclipse Plugins)" sequenceNumber="1668888724">
   <locations>
     <location includeMode="slicer" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="true" type="InstallableUnit">
       <unit id="org.eclipse.jdt.feature.group" version="3.18.500.v20200902-1800"/>
       <unit id="org.eclipse.sdk.ide" version="4.17.0.I20200902-1800"/>
       <unit id="org.eclipse.emf.feature.group" version="2.23.0.v20200822-0801"/>
+      <unit id="org.eclipse.ecf" version="3.9.100.v20200611-2221"/>
+      <unit id="org.eclipse.ecf.filetransfer" version="5.1.100.v20200611-2221"/>
+      <unit id="org.eclipse.ecf.identity" version="3.9.400.v20200611-2221"/>
+      <unit id="org.eclipse.ecf.provider.filetransfer" version="3.2.600.v20200611-2221"/>
       <repository location="https://download.eclipse.org/releases/2020-09/202009161000/"/>
     </location>
     <location includeMode="slicer" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="true" type="InstallableUnit">

@@ -8,10 +8,6 @@ Bundle-Activator: net.sf.eclipsecs.ui.CheckstyleUIPlugin
 Bundle-ActivationPolicy: lazy
 Require-Bundle: net.sf.eclipsecs.core,
  org.eclipse.core.expressions
-Bundle-ClassPath: .,
- lib/jfreechart-1.0.19.jar,
- lib/jfreechart-1.0.19-swt.jar,
- lib/jcommon-1.0.23.jar
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-Localization: plugin
 Export-Package: net.sf.eclipsecs.ui,
@@ -62,6 +58,16 @@ Import-Package: org.eclipse.core.commands,
  org.eclipse.ui.progress,
  org.eclipse.ui.texteditor,
  org.eclipse.ui.views.markers,
+ org.jfree.chart;version="1.0.19",
+ org.jfree.chart.entity;version="1.0.19",
+ org.jfree.chart.labels;version="1.0.19",
+ org.jfree.chart.plot;version="1.0.19",
+ org.jfree.chart.swt;version="1.0.0",
+ org.jfree.data;version="1.0.19",
+ org.jfree.data.general;version="1.0.19",
+ org.jfree.swt;version="1.1.0",
+ org.jfree.ui;version="1.0.23",
+ org.jfree.util;version="1.0.23",
  org.osgi.framework,
  org.osgi.service.prefs
 Automatic-Module-Name: net.sf.eclipsecs.ui

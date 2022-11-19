@@ -83,7 +83,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.entity.PieSectionEntity;
 import org.jfree.chart.labels.StandardPieToolTipGenerator;
 import org.jfree.chart.plot.PiePlot;
-import org.jfree.experimental.chart.swt.ChartComposite;
+import org.jfree.chart.swt.ChartComposite;
 import org.jfree.ui.RectangleInsets;
 import org.jfree.util.Rotation;
 import org.osgi.service.prefs.BackingStoreException;
