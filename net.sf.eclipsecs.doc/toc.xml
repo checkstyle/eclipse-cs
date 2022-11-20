@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?NLS TYPE="org.eclipse.help.toc"?>
 
-<toc label="Checkstyle Plug-in" topic="docs/index.html">
+<toc label="Eclipse Checkstyle" topic="docs/index.html">
     <topic label="Getting Started">
         <topic label="Setting up a project" href="docs/index.html#!/project-setup"/>
         <topic label="Creating a checkstyle configuration" href="docs/index.html#!/custom-config"/>
@@ -13,7 +13,7 @@
         <topic label="Expanding properties" href="docs/index.html#!/properties"/>
         <topic label="Advanced Preferences" href="docs/index.html#!/preferences"/>
     </topic>
-    <topic label="Extending the Checkstyle Plug-in">
+    <topic label="Extending Eclipse Checkstyle">
         <topic label="Building an extension plugin" href="docs/index.html#!/extensions"/>
         <topic label="Custom Checkstyle modules" href="docs/index.html#!/custom-checks"/>
         <topic label="Providing a built-in configuration" href="docs/index.html#!/builtin-config"/>
