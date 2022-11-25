@@ -21,6 +21,7 @@
 package net.sf.eclipsecs.ui.config.widgets;
 
 import net.sf.eclipsecs.core.config.ConfigProperty;
+import net.sf.eclipsecs.core.config.XMLTags;
 import net.sf.eclipsecs.core.config.meta.ConfigPropertyMetadata;
 
 import org.eclipse.swt.SWT;
@@ -34,6 +35,8 @@ import org.eclipse.swt.widgets.Text;
  */
 public class ConfigPropertyWidgetString extends ConfigPropertyWidgetAbstractBase {
 
+  private static final String APOSTROPHE_PLAIN = "'";
+  private static final String APOSTROPHE_ESCAPED = "''";
   private Text mTextWidget;
 
   /**
@@ -61,7 +64,7 @@ public class ConfigPropertyWidgetString extends ConfigPropertyWidgetAbstractBase
 
       String initValue = getInitValue();
       if (initValue != null) {
-        mTextWidget.setText(initValue);
+        mTextWidget.setText(unescape(initValue));
       }
     }
 
@@ -74,7 +77,22 @@ public class ConfigPropertyWidgetString extends ConfigPropertyWidgetAbstractBase
     if (result == null) {
       result = ""; //$NON-NLS-1$
     }
-    return result;
+    return escape(result);
+  }
+
+  private String unescape(String text) {
+    // custom messages use MessageFormat, single quote is escaped as 2 single quotes there
+    if (XMLTags.MESSAGE_TAG.equals(getConfigProperty().getName())) {
+      return text.replace(APOSTROPHE_ESCAPED, APOSTROPHE_PLAIN);
+    }
+    return text;
+  }
+
+  private String escape(String text) {
+    if (XMLTags.MESSAGE_TAG.equals(getConfigProperty().getName())) {
+      return text.replace(APOSTROPHE_PLAIN, APOSTROPHE_ESCAPED);
+    }
+    return text;
   }
 
   @Override

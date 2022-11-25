@@ -100,7 +100,7 @@ public abstract class ConfigPropertyWidgetAbstractBase implements IConfigPropert
   protected String getInitValue() {
     //
     // Figure out an initial value for the property. This will be,
-    // in order of precidents:
+    // in order of precedence:
     //
     // 1) the existing value
     // 2) a default value overriding the checkstyle default
