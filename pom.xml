@@ -87,7 +87,9 @@
                 <version>${tycho-version}</version>
                 <configuration>
                     <target>
-                        <file>${basedir}/../net.sf.eclipsecs.target/net.sf.eclipsecs.target.target</file>
+                        <!-- Replace multi module dir by basedir after Tycho 3.0+ can be used.
+                        see https://github.com/eclipse-tycho/tycho/issues/1660 -->
+                        <file>${maven.multiModuleProjectDirectory}/net.sf.eclipsecs.target/net.sf.eclipsecs.target.target</file>
                     </target>
                     <resolver>p2</resolver>
                     <environments>
