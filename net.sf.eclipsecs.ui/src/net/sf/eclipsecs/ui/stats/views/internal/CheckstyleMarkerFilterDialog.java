@@ -25,21 +25,13 @@ import java.util.List;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
 import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
 import net.sf.eclipsecs.ui.stats.Messages;
-import net.sf.eclipsecs.ui.util.regex.RegExContentAssistProcessor;
+import net.sf.eclipsecs.ui.util.regex.RegexCompletionProposalFactory;
 
-import org.eclipse.jface.contentassist.SubjectControlContentAssistant;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
-import org.eclipse.jface.text.DefaultInformationControl;
-import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.IInformationControl;
-import org.eclipse.jface.text.IInformationControlCreator;
-import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
-import org.eclipse.jface.text.contentassist.IContentAssistant;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -60,7 +52,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkingSet;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.contentassist.ContentAssistHandler;
 import org.eclipse.ui.dialogs.IWorkingSetSelectionDialog;
 
 /**
@@ -618,7 +609,7 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
       });
 
       // integrate content assist
-      ContentAssistHandler.createHandlerForText(mRegexText, createContentAssistant());
+      RegexCompletionProposalFactory.createForText(mRegexText);
 
       this.setTitle(Messages.CheckstyleMarkerFilterDialog_titleRegexEditor);
       this.setMessage(Messages.CheckstyleMarkerFilterDialog_msgEditRegex);
@@ -641,35 +632,6 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
     protected void configureShell(Shell shell) {
       super.configureShell(shell);
       shell.setText(Messages.CheckstyleMarkerFilterDialog_titleRegexEditor);
-    }
-
-    /**
-     * Creates the content assistant.
-     *
-     * @return the content assistant
-     */
-    private SubjectControlContentAssistant createContentAssistant() {
-
-      final SubjectControlContentAssistant contentAssistant = new SubjectControlContentAssistant();
-
-      contentAssistant.setRestoreCompletionProposalSize(
-              CheckstyleUIPlugin.getDefault().getDialogSettings());
-
-      IContentAssistProcessor processor = new RegExContentAssistProcessor(true);
-      contentAssistant.setContentAssistProcessor(processor, IDocument.DEFAULT_CONTENT_TYPE);
-      contentAssistant.setContextInformationPopupOrientation(IContentAssistant.CONTEXT_INFO_ABOVE);
-      contentAssistant.setInformationControlCreator(new IInformationControlCreator() {
-        /*
-         * @see org.eclipse.jface.text.IInformationControlCreator# createInformationControl(
-         * org.eclipse.swt.widgets.Shell)
-         */
-        @Override
-        public IInformationControl createInformationControl(Shell parent) {
-          return new DefaultInformationControl(parent);
-        }
-      });
-
-      return contentAssistant;
     }
   }
 }

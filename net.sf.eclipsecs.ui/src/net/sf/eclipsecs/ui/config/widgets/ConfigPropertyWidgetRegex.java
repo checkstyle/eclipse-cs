@@ -27,17 +27,9 @@ import java.util.regex.PatternSyntaxException;
 import net.sf.eclipsecs.core.config.ConfigProperty;
 import net.sf.eclipsecs.core.config.meta.ConfigPropertyMetadata;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
 import net.sf.eclipsecs.ui.Messages;
-import net.sf.eclipsecs.ui.util.regex.RegExContentAssistProcessor;
+import net.sf.eclipsecs.ui.util.regex.RegexCompletionProposalFactory;
 
-import org.eclipse.jface.contentassist.SubjectControlContentAssistant;
-import org.eclipse.jface.text.DefaultInformationControl;
-import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.IInformationControl;
-import org.eclipse.jface.text.IInformationControlCreator;
-import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
-import org.eclipse.jface.text.contentassist.IContentAssistant;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
@@ -49,9 +41,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.contentassist.ContentAssistHandler;
 
 /**
  * A string property configuration widget.
@@ -74,7 +64,7 @@ public class ConfigPropertyWidgetRegex extends ConfigPropertyWidgetAbstractBase 
 
   /**
    * Creates the widget.
-   * 
+   *
    * @param parent
    *          the parent composite
    * @param prop
@@ -110,8 +100,8 @@ public class ConfigPropertyWidgetRegex extends ConfigPropertyWidgetAbstractBase 
       mTextWidget.addKeyListener(new RegexTestListener());
       mTextBgColor = mTextWidget.getBackground();
 
-      // integrate content assist
-      ContentAssistHandler.createHandlerForText(mTextWidget, createContentAssistant());
+      // content assist
+      RegexCompletionProposalFactory.createForText(mTextWidget);
 
       String initValue = getInitValue();
       if (initValue != null) {
@@ -207,36 +197,8 @@ public class ConfigPropertyWidgetRegex extends ConfigPropertyWidgetAbstractBase 
   }
 
   /**
-   * Creates the content assistant.
-   * 
-   * @return the content assistant
-   */
-  private SubjectControlContentAssistant createContentAssistant() {
-
-    final SubjectControlContentAssistant contentAssistant = new SubjectControlContentAssistant();
-
-    contentAssistant
-            .setRestoreCompletionProposalSize(CheckstyleUIPlugin.getDefault().getDialogSettings());
-
-    IContentAssistProcessor processor = new RegExContentAssistProcessor(true);
-    contentAssistant.setContentAssistProcessor(processor, IDocument.DEFAULT_CONTENT_TYPE);
-    contentAssistant.setContextInformationPopupOrientation(IContentAssistant.CONTEXT_INFO_ABOVE);
-    contentAssistant.setInformationControlCreator(new IInformationControlCreator() {
-      /*
-       * @see IInformationControlCreator#createInformationControl(Shell)
-       */
-      @Override
-      public IInformationControl createInformationControl(Shell parent) {
-        return new DefaultInformationControl(parent);
-      }
-    });
-
-    return contentAssistant;
-  }
-
-  /**
    * Simple key listener to test the regular expression.
-   * 
+   *
    * @author Lars Ködderitzsch
    */
   private class RegexTestListener implements KeyListener {
