@@ -53,8 +53,6 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
@@ -62,7 +60,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
@@ -230,33 +227,9 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
       final String standardMessage = MetadataFactory.getStandardMessage(msgKey,
               mRule.getMetaData().getInternalName());
 
-      // msgText.setMessage(standardMessage); //a nice solution, sadly only for
-      // Eclipse 3.3+
-
-      // alternative for above
       if (standardMessage != null) {
-        msgText.setText(standardMessage);
+        msgText.setMessage(standardMessage);
       }
-      msgText.addFocusListener(new FocusListener() {
-
-        @Override
-        public void focusGained(FocusEvent e) {
-          Display.getCurrent().asyncExec(new Runnable() {
-
-            @Override
-            public void run() {
-              if (msgText.getText().equals(standardMessage)) {
-                msgText.selectAll();
-              }
-            }
-          });
-        }
-
-        @Override
-        public void focusLost(FocusEvent e) {
-          // NOOP
-        }
-      });
 
       String message = mRule.getCustomMessages().get(msgKey);
       if (Strings.emptyToNull(message) != null) {

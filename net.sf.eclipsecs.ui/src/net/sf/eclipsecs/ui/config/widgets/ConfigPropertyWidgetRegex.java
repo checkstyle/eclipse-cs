@@ -31,8 +31,6 @@ import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.util.regex.RegexCompletionProposalFactory;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.graphics.Color;
@@ -40,7 +38,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 
 /**
@@ -110,28 +107,8 @@ public class ConfigPropertyWidgetRegex extends ConfigPropertyWidgetAbstractBase 
 
       mRegexTestWidget = new Text(mContents, SWT.SINGLE | SWT.BORDER);
       mRegexTestWidget.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-      mRegexTestWidget.setText(mDefaultMessage);
+      mRegexTestWidget.setMessage(mDefaultMessage);
       mRegexTestWidget.addKeyListener(new RegexTestListener());
-      mRegexTestWidget.addFocusListener(new FocusListener() {
-
-        @Override
-        public void focusGained(FocusEvent e) {
-          Display.getCurrent().asyncExec(new Runnable() {
-
-            @Override
-            public void run() {
-              if (mRegexTestWidget.getText().equals(mDefaultMessage)) {
-                mRegexTestWidget.selectAll();
-              }
-            }
-          });
-        }
-
-        @Override
-        public void focusLost(FocusEvent e) {
-          // NOOP
-        }
-      });
 
     }
 
@@ -177,10 +154,6 @@ public class ConfigPropertyWidgetRegex extends ConfigPropertyWidgetAbstractBase 
   }
 
   private void testRegex() {
-    if (mDefaultMessage.equals(mRegexTestWidget.getText())) {
-      return;
-    }
-
     try {
       Pattern pattern = Pattern.compile(mTextWidget.getText());
       Matcher matcher = pattern.matcher(mRegexTestWidget.getText());

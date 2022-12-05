@@ -72,8 +72,6 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.custom.SashForm;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.ModifyEvent;
@@ -266,30 +264,10 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
     knownModules.setText(Messages.CheckConfigurationConfigureDialog_lblAvailableModules);
 
     mTxtTreeFilter = new Text(knownModules, SWT.SINGLE | SWT.BORDER);
-    mTxtTreeFilter.setText(mDefaultFilterText);
+    mTxtTreeFilter.setMessage(mDefaultFilterText);
     mTxtTreeFilter.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
     mTxtTreeFilter.addModifyListener(mController);
     mTxtTreeFilter.addKeyListener(mController);
-
-    // select all of the default text on focus gain
-    mTxtTreeFilter.addFocusListener(new FocusListener() {
-      @Override
-      public void focusGained(FocusEvent e) {
-        if (mDefaultFilterText.equals(mTxtTreeFilter.getText())) {
-          getShell().getDisplay().asyncExec(new Runnable() {
-
-            @Override
-            public void run() {
-              mTxtTreeFilter.selectAll();
-            }
-          });
-        }
-      }
-
-      @Override
-      public void focusLost(FocusEvent e) {
-      }
-    });
 
     mTreeViewer = new TreeViewer(knownModules,
             SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
@@ -551,8 +529,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
     public void modifyText(ModifyEvent e) {
       mTreeViewer.getControl().setRedraw(false);
       try {
-        if (!mDefaultFilterText.equals(mTxtTreeFilter.getText())
-                && !Strings.isNullOrEmpty(mTxtTreeFilter.getText())) {
+        if (!Strings.isNullOrEmpty(mTxtTreeFilter.getText())) {
 
           if (!Arrays.asList(mTableViewer.getFilters()).contains(mTreeFilter)) {
             mTreeViewer.addFilter(mTreeFilter);
