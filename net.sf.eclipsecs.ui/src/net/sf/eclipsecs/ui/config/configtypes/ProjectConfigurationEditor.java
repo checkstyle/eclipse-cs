@@ -167,6 +167,7 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
       public void widgetSelected(SelectionEvent e) {
         ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(shell,
                 new WorkbenchLabelProvider(), new WorkbenchContentProvider());
+        dialog.setHelpAvailable(false);
         dialog.setTitle(Messages.ProjectConfigurationLocationEditor_titleSelectConfigFile);
         dialog.setMessage(Messages.ProjectConfigurationLocationEditor_msgSelectConfigFile);
         dialog.setBlockOnOpen(true);
