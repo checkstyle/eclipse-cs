@@ -367,6 +367,7 @@ public class PackageFilterEditor implements IFilterEditor {
     public CheckedTreeSelectionDialog(Shell parent, ILabelProvider labelProvider,
             ITreeContentProvider contentProvider) {
       super(parent);
+      setHelpAvailable(false);
       mLabelProvider = labelProvider;
       mContentProvider = contentProvider;
       setResult(new ArrayList<>(0));

@@ -53,7 +53,7 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
 /**
  * Action to configure one ore more projects at once by using another project as
  * blueprint.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegate {
@@ -96,6 +96,7 @@ public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegat
     filteredProjects.removeAll(mSelectedProjects);
 
     ListDialog dialog = new ListDialog(mPart.getSite().getShell());
+    dialog.setHelpAvailable(false);
     dialog.setInput(filteredProjects);
     dialog.setContentProvider(new ArrayContentProvider());
     dialog.setLabelProvider(new WorkbenchLabelProvider());
@@ -117,7 +118,7 @@ public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegat
   /**
    * Job implementation that configures several projects from a blueprint
    * project.
-   * 
+   *
    * @author Lars Ködderitzsch
    */
   private static class BulkConfigureJob extends WorkspaceJob {
