@@ -461,7 +461,14 @@ public class CheckConfigurationWorkingSetEditor {
         mConfigureButton.setEnabled(configSelected);
         mCopyButton.setEnabled(configSelected);
         mRemoveButton.setEnabled(configSelected && config.isEditable());
-        mDefaultButton.setEnabled(configSelected);
+
+        CheckConfigurationWorkingCopy defaultConfig = null;
+        if (mWorkingSet instanceof GlobalCheckConfigurationWorkingSet) {
+          defaultConfig = ((GlobalCheckConfigurationWorkingSet) mWorkingSet)
+                  .getDefaultCheckConfig();
+        }
+
+        mDefaultButton.setEnabled(configSelected && !config.equals(defaultConfig));
         mExportButton.setEnabled(configSelected);
       }
     }
