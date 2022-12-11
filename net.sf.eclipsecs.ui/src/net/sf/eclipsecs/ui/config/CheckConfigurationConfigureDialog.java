@@ -22,6 +22,7 @@ package net.sf.eclipsecs.ui.config;
 
 import com.google.common.base.Strings;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -45,8 +46,10 @@ import net.sf.eclipsecs.ui.util.table.EnhancedCheckBoxTableViewer;
 import net.sf.eclipsecs.ui.util.table.ITableComparableProvider;
 import net.sf.eclipsecs.ui.util.table.ITableSettingsProvider;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
@@ -423,12 +426,14 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
   private void initialize() {
 
     mConfigurable = mConfiguration.isConfigurable();
-
     try {
-      mModules = mConfiguration.getModules();
-    } catch (CheckstylePluginException e) {
-      mModules = new ArrayList<>();
-      CheckstyleUIPlugin.errorDialog(getShell(), e, true);
+      new ProgressMonitorDialog(getShell()).run(true, false, monitor -> {
+        // this takes quite long the first time due to class loading etc. of Checkstyle
+        monitor.beginTask("Loading Checkstyle metadata", IProgressMonitor.UNKNOWN);
+        loadModules();
+      });
+    } catch (InvocationTargetException | InterruptedException ex) {
+      CheckstyleLog.log(ex);
     }
     mTableViewer.setInput(mModules);
 
@@ -453,6 +458,15 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
     if (!checkGroups.isEmpty()) {
       ISelection initialSelection = new StructuredSelection(checkGroups.get(0));
       mTreeViewer.setSelection(initialSelection);
+    }
+  }
+
+  private void loadModules() {
+    try {
+      mModules = mConfiguration.getModules();
+    } catch (CheckstylePluginException e) {
+      mModules = new ArrayList<>();
+      CheckstyleUIPlugin.errorDialog(getShell(), e, true);
     }
   }
 
