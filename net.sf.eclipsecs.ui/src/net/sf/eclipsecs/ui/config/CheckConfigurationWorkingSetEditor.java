@@ -356,6 +356,9 @@ public class CheckConfigurationWorkingSetEditor {
       formData.right = new FormAttachment(100);
       mDefaultButton.setLayoutData(formData);
     }
+    else {
+      mDefaultButton.setVisible(false);
+    }
 
     mExportButton = new Button(rightButtons, SWT.PUSH);
     mExportButton.setText(Messages.CheckstylePreferencePage_btnExport);
