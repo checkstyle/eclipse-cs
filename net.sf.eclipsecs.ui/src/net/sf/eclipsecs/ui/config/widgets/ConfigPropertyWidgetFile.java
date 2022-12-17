@@ -85,8 +85,8 @@ public class ConfigPropertyWidgetFile extends ConfigPropertyWidgetAbstractBase {
       mContents.setLayout(layout);
 
       mTextWidget = new Text(mContents, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
-      GridData gd = new GridData(GridData.FILL_HORIZONTAL);
-      mTextWidget.setLayoutData(gd);
+      GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+      mTextWidget.setLayoutData(gridData);
 
       // integrate content assist
       ContentAssistHandler.createHandlerForText(mTextWidget, createContentAssistant());

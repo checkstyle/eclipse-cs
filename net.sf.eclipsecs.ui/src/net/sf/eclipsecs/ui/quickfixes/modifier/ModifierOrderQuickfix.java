@@ -77,9 +77,9 @@ public class ModifierOrderQuickfix extends AbstractASTResolution {
   public static List<ASTNode> reOrderModifiers(List<ASTNode> modifiers) {
 
     List<ASTNode> copies = new ArrayList<>();
-    Iterator<ASTNode> it = modifiers.iterator();
-    while (it.hasNext()) {
-      ASTNode mod = it.next();
+    Iterator<ASTNode> iter = modifiers.iterator();
+    while (iter.hasNext()) {
+      ASTNode mod = iter.next();
       copies.add(ASTNode.copySubtree(mod.getAST(), mod));
     }
 
@@ -91,11 +91,11 @@ public class ModifierOrderQuickfix extends AbstractASTResolution {
           return 0;
         }
 
-        Modifier m1 = (Modifier) arg0;
-        Modifier m2 = (Modifier) arg1;
+        Modifier modifier1 = (Modifier) arg0;
+        Modifier modifier2 = (Modifier) arg1;
 
-        int modifierIndex1 = MODIFIER_ORDER.indexOf(m1.getKeyword());
-        int modifierIndex2 = MODIFIER_ORDER.indexOf(m2.getKeyword());
+        int modifierIndex1 = MODIFIER_ORDER.indexOf(modifier1.getKeyword());
+        int modifierIndex2 = MODIFIER_ORDER.indexOf(modifier2.getKeyword());
 
         return Integer.valueOf(modifierIndex1).compareTo(Integer.valueOf(modifierIndex2));
       }

@@ -75,25 +75,25 @@ public class ExtensionClassLoader extends ClassLoader {
   @Override
   public Class<?> loadClass(String name) throws ClassNotFoundException {
 
-    Class<?> cl = null;
+    Class<?> clazz = null;
 
     for (Bundle bundle : mBundles) {
 
       try {
-        cl = bundle.loadClass(name);
-        if (cl != null) {
+        clazz = bundle.loadClass(name);
+        if (clazz != null) {
           break;
         }
-      } catch (ClassNotFoundException e) {
+      } catch (ClassNotFoundException ex) {
         // try next
       }
     }
 
-    if (cl == null) {
+    if (clazz == null) {
       throw new ClassNotFoundException(name);
     }
 
-    return cl;
+    return clazz;
   }
 
   @Override

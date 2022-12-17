@@ -257,7 +257,7 @@ public class RemoteConfigurationType extends ConfigurationType {
       URLConnection connection = configURL.openConnection();
 
       return getBytesFromURLConnection(connection);
-    } catch (IOException e) {
+    } catch (IOException ex) {
       // we won't load the bundle then
       // disabled logging bug #1647602
       // CheckstyleLog.log(ioe);
@@ -276,8 +276,8 @@ public class RemoteConfigurationType extends ConfigurationType {
 
     try {
       Files.write(configFileBytes, cacheFile);
-    } catch (IOException e) {
-      CheckstyleLog.log(e, NLS.bind(Messages.RemoteConfigurationType_msgRemoteCachingFailed,
+    } catch (IOException ex) {
+      CheckstyleLog.log(ex, NLS.bind(Messages.RemoteConfigurationType_msgRemoteCachingFailed,
               checkConfig.getName(), checkConfig.getLocation()));
     }
 
@@ -292,7 +292,7 @@ public class RemoteConfigurationType extends ConfigurationType {
 
       try {
         Files.write(bundleBytes, propsCacheFile);
-      } catch (IOException e) {
+      } catch (IOException ex) {
         // ignore this since there simply might be no properties file
       }
     }
@@ -317,8 +317,8 @@ public class RemoteConfigurationType extends ConfigurationType {
         if (httpConn.getResponseCode() == HttpURLConnection.HTTP_UNAUTHORIZED) {
           try {
             RemoteConfigAuthenticator.removeCachedAuthInfo(connection.getURL());
-          } catch (CheckstylePluginException e) {
-            CheckstyleLog.log(e);
+          } catch (CheckstylePluginException ex) {
+            CheckstyleLog.log(ex);
           }
 
           // add to 401ed URLs
@@ -423,8 +423,8 @@ public class RemoteConfigurationType extends ConfigurationType {
         prefs.put(KEY_PASSWORD, password, true);
 
         sFailedWith401URLs.remove(resolvedCheckConfigurationURL.toString());
-      } catch (CheckstylePluginException | StorageException e) {
-        CheckstyleLog.log(e);
+      } catch (CheckstylePluginException | StorageException ex) {
+        CheckstyleLog.log(ex);
       }
     }
 
@@ -460,14 +460,14 @@ public class RemoteConfigurationType extends ConfigurationType {
 
       try {
 
-        MessageDigest d = MessageDigest.getInstance("MD5");
-        byte[] hash = d.digest(resolvedCheckConfigurationURL.toExternalForm().getBytes("UTF-8"));
+        MessageDigest digest = MessageDigest.getInstance("MD5");
+        byte[] hash = digest.digest(resolvedCheckConfigurationURL.toExternalForm().getBytes("UTF-8"));
         urlHash = EncodingUtils.encodeBase64(hash);
 
         urlHash = urlHash.replace('/', '_');
         urlHash = urlHash.replace('\\', '_');
-      } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
-        CheckstylePluginException.rethrow(e);
+      } catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+        CheckstylePluginException.rethrow(ex);
       }
       return "eclipse-cs/" + urlHash;
     }

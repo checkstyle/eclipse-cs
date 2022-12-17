@@ -62,7 +62,7 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
   /** The shared instance. */
   private static CheckstyleUIPlugin sPlugin;
 
-  private static Boolean sIsE3;
+  private static Boolean isEclipse3;
 
   private ClassLoader mQuickfixExtensionClassLoader;
 
@@ -134,7 +134,7 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
    */
   public static boolean isE3() {
 
-    if (sIsE3 == null) {
+    if (isEclipse3 == null) {
 
       // previous checking on the platform product version has not been
       // reliable, since there are e4
@@ -144,13 +144,13 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
 
         // instead now check for the presence of a known e4 class
         Class.forName("org.eclipse.e4.ui.model.application.MApplicationElement");
-        sIsE3 = false;
-      } catch (ClassNotFoundException e) {
-        sIsE3 = true;
+        isEclipse3 = false;
+      } catch (ClassNotFoundException ex) {
+        isEclipse3 = true;
       }
     }
 
-    return sIsE3;
+    return isEclipse3;
   }
 
   /**
@@ -178,8 +178,8 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
    */
   public static Locale getPlatformLocale() {
 
-    String nl = Platform.getNL();
-    String[] parts = nl.split("_"); //$NON-NLS-1$
+    String locale = Platform.getNL();
+    String[] parts = locale.split("_"); //$NON-NLS-1$
 
     String language = parts.length > 0 ? parts[0] : ""; //$NON-NLS-1$
     String country = parts.length > 1 ? parts[1] : ""; //$NON-NLS-1$
@@ -195,21 +195,21 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
    *          the shell
    * @param message
    *          the exception message
-   * @param t
+   * @param throwable
    *          the exception
    * @param log
    *          <code>true</code> if the exception should be logged
    */
-  public static void errorDialog(Shell shell, String message, Throwable t, boolean log) {
+  public static void errorDialog(Shell shell, String message, Throwable throwable, boolean log) {
 
     Status status = new Status(IStatus.ERROR, CheckstyleUIPlugin.PLUGIN_ID, IStatus.OK,
-            message != null ? message : "", t); //$NON-NLS-1$
+            message != null ? message : "", throwable); //$NON-NLS-1$
 
     String msg = NLS.bind(Messages.errorDialogMainMessage, message);
     ErrorDialog.openError(shell, Messages.CheckstyleLog_titleInternalError, msg, status);
 
     if (log) {
-      CheckstyleLog.log(t);
+      CheckstyleLog.log(throwable);
     }
   }
 
@@ -218,13 +218,13 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
    *
    * @param shell
    *          the shell
-   * @param t
+   * @param throwable
    *          the exception
    * @param log
    *          <code>true</code> if the exception should be logged
    */
-  public static void errorDialog(Shell shell, Throwable t, boolean log) {
-    errorDialog(shell, t.getLocalizedMessage(), t, log);
+  public static void errorDialog(Shell shell, Throwable throwable, boolean log) {
+    errorDialog(shell, throwable.getLocalizedMessage(), throwable, log);
   }
 
   /**
@@ -234,12 +234,12 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
    *          the shell
    * @param message
    *          the exception message
-   * @param t
+   * @param throwable
    *          the exception
    */
-  public static void warningDialog(Shell shell, String message, Throwable t) {
+  public static void warningDialog(Shell shell, String message, Throwable throwable) {
     Status status = new Status(IStatus.WARNING, CheckstyleUIPlugin.PLUGIN_ID, IStatus.OK,
-            t.getLocalizedMessage(), t);
+            throwable.getLocalizedMessage(), throwable);
 
     ErrorDialog.openError(shell, Messages.CheckstyleLog_titleWarning, message, status);
   }

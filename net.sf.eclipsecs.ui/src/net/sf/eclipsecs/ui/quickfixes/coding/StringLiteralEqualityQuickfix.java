@@ -127,7 +127,7 @@ public class StringLiteralEqualityQuickfix extends AbstractASTResolution {
                         testClass);
                 setterMethod.invoke(node.getParent(), replacementNode);
                 break;
-              } catch (NoSuchMethodException e) {
+              } catch (NoSuchMethodException ex) {
                 testClass = testClass.getSuperclass();
               }
             }
@@ -139,8 +139,8 @@ public class StringLiteralEqualityQuickfix extends AbstractASTResolution {
             List<ASTNode> list = (List<ASTNode>) listMethod.invoke(node.getParent(), (Object[]) null);
             list.set(list.indexOf(node), replacementNode);
           }
-        } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
-          CheckstyleLog.log(e);
+        } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException ex) {
+          CheckstyleLog.log(ex);
         }
       }
     };

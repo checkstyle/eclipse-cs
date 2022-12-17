@@ -103,8 +103,8 @@ public abstract class ConfigurationType implements IConfigurationType {
 
     try {
       url = resolveLocation(checkConfiguration);
-    } catch (IOException e) {
-      CheckstylePluginException.rethrow(e);
+    } catch (IOException ex) {
+      CheckstylePluginException.rethrow(ex);
     }
     return url;
   }
@@ -139,8 +139,8 @@ public abstract class ConfigurationType implements IConfigurationType {
       PropertyResolver resolver = getPropertyResolver(checkConfiguration, data);
       data.setPropertyResolver(resolver);
 
-    } catch (IOException | URISyntaxException e) {
-      CheckstylePluginException.rethrow(e);
+    } catch (IOException | URISyntaxException ex) {
+      CheckstylePluginException.rethrow(ex);
     }
 
     return data;
@@ -179,7 +179,7 @@ public abstract class ConfigurationType implements IConfigurationType {
       URLConnection connection = propertyFileURL.openConnection();
 
       return getBytesFromURLConnection(connection);
-    } catch (IOException e) {
+    } catch (IOException ex) {
       // we won't load the bundle then
       // disabled logging bug #1647602
       // CheckstyleLog.log(ioe);
@@ -205,9 +205,9 @@ public abstract class ConfigurationType implements IConfigurationType {
     MultiPropertyResolver multiResolver = new MultiPropertyResolver();
     multiResolver.addPropertyResolver(new ResolvablePropertyResolver(config));
 
-    File f = URIUtil.toFile(configFile.getResolvedConfigFileURL().toURI());
-    if (f != null) {
-      multiResolver.addPropertyResolver(new StandardPropertyResolver(f.toString()));
+    File file = URIUtil.toFile(configFile.getResolvedConfigFileURL().toURI());
+    if (file != null) {
+      multiResolver.addPropertyResolver(new StandardPropertyResolver(file.toString()));
     } else {
       multiResolver.addPropertyResolver(
               new StandardPropertyResolver(configFile.getResolvedConfigFileURL().toString()));

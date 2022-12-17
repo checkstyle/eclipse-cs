@@ -51,13 +51,13 @@ public class PackageFilter extends AbstractFilter {
    * {@inheritDoc}
    */
   @Override
-  public boolean accept(Object element) {
+  public boolean accept(Object object) {
 
     boolean goesThrough = true;
 
-    if (element instanceof IResource) {
+    if (object instanceof IResource) {
 
-      IResource resource = (IResource) element;
+      IResource resource = (IResource) object;
 
       IContainer folder = null;
 
@@ -72,13 +72,13 @@ public class PackageFilter extends AbstractFilter {
       int size = mData != null ? mData.size() : 0;
       for (int i = 0; i < size; i++) {
 
-        String el = mData.get(i);
+        String element = mData.get(i);
 
-        if (RECURSE_OFF_MARKER.equals(el)) {
+        if (RECURSE_OFF_MARKER.equals(element)) {
           continue;
         }
 
-        IPath filteredPath = new Path(el);
+        IPath filteredPath = new Path(element);
         if (mExcludeSubPackages && filteredPath.isPrefixOf(projRelativPath)) {
           goesThrough = false;
           break;

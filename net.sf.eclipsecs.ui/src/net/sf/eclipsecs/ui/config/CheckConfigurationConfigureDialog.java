@@ -192,10 +192,10 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
     contents.setLayout(new GridLayout());
 
     SashForm sashForm = new SashForm(contents, SWT.NULL);
-    GridData gd = new GridData(GridData.FILL_BOTH);
-    gd.widthHint = 700;
-    gd.heightHint = 400;
-    sashForm.setLayoutData(gd);
+    GridData gridData = new GridData(GridData.FILL_BOTH);
+    gridData.widthHint = 700;
+    gridData.heightHint = 400;
+    sashForm.setLayoutData(gridData);
     sashForm.setLayout(new GridLayout());
 
     Control treeControl = createTreeViewer(sashForm);
@@ -211,9 +211,9 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
     lblDescription.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
     mBrowserDescription = new Browser(contents, SWT.BORDER);
-    gd = new GridData(GridData.FILL_BOTH);
-    gd.heightHint = 100;
-    mBrowserDescription.setLayoutData(gd);
+    gridData = new GridData(GridData.FILL_BOTH);
+    gridData.heightHint = 100;
+    mBrowserDescription.setLayoutData(gridData);
 
     // initialize the data
     initialize();
@@ -253,8 +253,8 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
       if (mConfigurable && mIsDirty) {
         mConfiguration.setModules(mModules);
       }
-    } catch (CheckstylePluginException e) {
-      CheckstyleUIPlugin.errorDialog(getShell(), e, true);
+    } catch (CheckstylePluginException ex) {
+      CheckstyleUIPlugin.errorDialog(getShell(), ex, true);
     }
 
     super.okPressed();
@@ -299,9 +299,9 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
 
     mAddButton = new Button(knownModules, SWT.PUSH);
     mAddButton.setText((Messages.CheckConfigurationConfigureDialog_btnAdd));
-    GridData gd = new GridData();
-    gd.horizontalAlignment = GridData.END;
-    mAddButton.setLayoutData(gd);
+    GridData gridData = new GridData();
+    gridData.horizontalAlignment = GridData.END;
+    mAddButton.setLayoutData(gridData);
     mAddButton.addSelectionListener(mController);
 
     return knownModules;
@@ -385,10 +385,10 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
 
     mBtnOpenModuleOnAdd = new Button(composite, SWT.CHECK);
     mBtnOpenModuleOnAdd.setText(Messages.CheckConfigurationConfigureDialog_btnOpenModuleOnAdd);
-    GridData gd = new GridData();
-    gd.horizontalAlignment = GridData.BEGINNING;
-    gd.horizontalIndent = 5;
-    mBtnOpenModuleOnAdd.setLayoutData(gd);
+    GridData gridData = new GridData();
+    gridData.horizontalAlignment = GridData.BEGINNING;
+    gridData.horizontalIndent = 5;
+    mBtnOpenModuleOnAdd.setLayoutData(gridData);
 
     // Init the translate tokens preference
     mBtnOpenModuleOnAdd.setSelection(
@@ -396,13 +396,13 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
     mBtnOpenModuleOnAdd.addSelectionListener(new SelectionListener() {
 
       @Override
-      public void widgetSelected(SelectionEvent e) {
+      public void widgetSelected(SelectionEvent event) {
         // store translation preference
         try {
           CheckstyleUIPluginPrefs.setBoolean(CheckstyleUIPluginPrefs.PREF_OPEN_MODULE_EDITOR,
-                  ((Button) e.widget).getSelection());
-        } catch (BackingStoreException e1) {
-          CheckstyleLog.log(e1);
+                  ((Button) event.widget).getSelection());
+        } catch (BackingStoreException ex) {
+          CheckstyleLog.log(ex);
         }
       }
 
@@ -413,9 +413,9 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
     });
 
     Control buttonBar = super.createButtonBar(composite);
-    gd = new GridData(GridData.FILL_HORIZONTAL);
-    gd.horizontalAlignment = GridData.END;
-    buttonBar.setLayoutData(gd);
+    gridData = new GridData(GridData.FILL_HORIZONTAL);
+    gridData.horizontalAlignment = GridData.END;
+    buttonBar.setLayoutData(gridData);
 
     return composite;
   }
@@ -464,9 +464,9 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
   private void loadModules() {
     try {
       mModules = mConfiguration.getModules();
-    } catch (CheckstylePluginException e) {
+    } catch (CheckstylePluginException ex) {
       mModules = new ArrayList<>();
-      CheckstyleUIPlugin.errorDialog(getShell(), e, true);
+      CheckstyleUIPlugin.errorDialog(getShell(), ex, true);
     }
   }
 
@@ -645,16 +645,16 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
      */
     private void openModule(ISelection selection) {
 
-      Module m = (Module) ((IStructuredSelection) selection).getFirstElement();
-      if (m != null) {
+      Module module = (Module) ((IStructuredSelection) selection).getFirstElement();
+      if (module != null) {
 
-        Module workingCopy = m.clone();
+        Module workingCopy = module.clone();
 
         RuleConfigurationEditDialog dialog = new RuleConfigurationEditDialog(getShell(),
                 workingCopy, !mConfigurable,
                 Messages.CheckConfigurationConfigureDialog_titleModuleConfigEditor);
         if (Window.OK == dialog.open() && mConfigurable) {
-          mModules.set(mModules.indexOf(m), workingCopy);
+          mModules.set(mModules.indexOf(module), workingCopy);
           mIsDirty = true;
           mTableViewer.refresh(true);
           refreshTableViewerState();
@@ -673,9 +673,9 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
         boolean openOnAdd = CheckstyleUIPluginPrefs
                 .getBoolean(CheckstyleUIPluginPrefs.PREF_OPEN_MODULE_EDITOR);
 
-        Iterator<?> it = ((IStructuredSelection) selection).iterator();
-        while (it.hasNext()) {
-          Object selectedElement = it.next();
+        Iterator<?> iter = ((IStructuredSelection) selection).iterator();
+        while (iter.hasNext()) {
+          Object selectedElement = iter.next();
           if (selectedElement instanceof RuleGroupMetadata) {
             // if group is selected add all modules from this group
             List<RuleMetadata> rules = ((RuleGroupMetadata) selectedElement).getRuleMetadata();
@@ -735,11 +735,11 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
                 Messages.CheckConfigurationConfigureDialog_msgRemoveModules)) {
 
           @SuppressWarnings("unchecked")
-          Iterator<Module> it = ((IStructuredSelection) selection).iterator();
-          while (it.hasNext()) {
-            Module m = it.next();
-            if (m.getMetaData().isDeletable()) {
-              mModules.remove(m);
+          Iterator<Module> iter = ((IStructuredSelection) selection).iterator();
+          while (iter.hasNext()) {
+            Module module = iter.next();
+            if (module.getMetaData().isDeletable()) {
+              mModules.remove(module);
               mIsDirty = true;
               mTableViewer.refresh(true);
               refreshTableViewerState();

@@ -168,9 +168,9 @@ public class ArrayTypeStyleQuickfix extends AbstractASTResolution {
 
       private boolean isCStyle(List<?> fragments) {
 
-        Iterator<?> it = fragments.iterator();
-        while (it.hasNext()) {
-          VariableDeclaration decl = (VariableDeclaration) it.next();
+        Iterator<?> iter = fragments.iterator();
+        while (iter.hasNext()) {
+          VariableDeclaration decl = (VariableDeclaration) iter.next();
           if (isCStyle(decl)) {
             return true;
           }

@@ -118,12 +118,12 @@ public final class CheckerFactory {
         ((IContextAware) resolver).setProjectContext(project);
       }
 
-      InputSource in = null;
+      InputSource input = null;
       try {
-        in = configFileData.getCheckConfigFileInputSource();
-        checker = createCheckerInternal(in, resolver, project);
+        input = configFileData.getCheckConfigFileInputSource();
+        checker = createCheckerInternal(input, resolver, project);
       } finally {
-        Closeables.closeQuietly(in.getByteStream());
+        Closeables.closeQuietly(input.getByteStream());
       }
 
       // store checker in cache
@@ -230,8 +230,8 @@ public final class CheckerFactory {
             ModuleLoadOption.TRY_IN_ALL_REGISTERED_PACKAGES));
     try {
       checker.setCharset(project.getDefaultCharset());
-    } catch (UnsupportedEncodingException | CoreException e) {
-      CheckstylePluginException.rethrow(e);
+    } catch (UnsupportedEncodingException | CoreException ex) {
+      CheckstylePluginException.rethrow(ex);
     }
 
     setLocale(checker, getLocale());

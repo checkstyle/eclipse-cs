@@ -179,7 +179,7 @@ public class FileSet implements Cloneable {
       clone.mFileMatchPatterns = clonedPatterns;
 
       return clone;
-    } catch (CloneNotSupportedException e) {
+    } catch (CloneNotSupportedException ex) {
       throw new InternalError(); // should never happen
     }
   }

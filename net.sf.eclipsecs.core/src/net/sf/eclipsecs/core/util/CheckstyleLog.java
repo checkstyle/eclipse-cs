@@ -33,37 +33,37 @@ import org.eclipse.osgi.util.NLS;
  */
 public final class CheckstyleLog {
 
-  private static ILog sLog;
+  private static ILog log;
 
   private CheckstyleLog() {
   }
 
   static {
-    sLog = CheckstylePlugin.getDefault().getLog();
+    log = CheckstylePlugin.getDefault().getLog();
   }
 
   /**
    * Logs the exceptions.
    * 
-   * @param t
+   * @param error
    *          the exception to log
    */
-  public static void log(Throwable t) {
-    log(t, t.getLocalizedMessage());
+  public static void log(Throwable error) {
+    log(error, error.getLocalizedMessage());
   }
 
   /**
    * Logs the exception, describing it with the given message.
    * 
-   * @param t
+   * @param throwable
    *          the exception to log
    * @param message
    *          the message
    */
-  public static void log(Throwable t, String message) {
+  public static void log(Throwable throwable, String message) {
     Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.OK,
-            NLS.bind(Messages.CheckstyleLog_msgStatusPrefix, message), t);
-    sLog.log(status);
+            NLS.bind(Messages.CheckstyleLog_msgStatusPrefix, message), throwable);
+    log.log(status);
   }
 
 }

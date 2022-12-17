@@ -104,10 +104,10 @@ public class FormatterTransformer {
 
         mTransformationClasses.add(transObj);
 
-      } catch (final ClassNotFoundException e) {
+      } catch (final ClassNotFoundException ex) {
         // NOOP no appropriate transformer class present
-      } catch (final ReflectiveOperationException e) {
-        CheckstylePluginException.rethrow(e);
+      } catch (final ReflectiveOperationException ex) {
+        CheckstylePluginException.rethrow(ex);
       }
     }
   }

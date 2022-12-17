@@ -243,12 +243,12 @@ public class EnhancedTableViewer extends TableViewer {
     }
     try {
       mSortedColumnIndex = settings.getInt(TAG_COLUMN_INDEX);
-    } catch (NumberFormatException e) {
+    } catch (NumberFormatException ex) {
       mSortedColumnIndex = 0;
     }
     try {
       mSortDirection = settings.getInt(TAG_SORT_DIRECTION);
-    } catch (NumberFormatException e) {
+    } catch (NumberFormatException ex) {
       mSortDirection = DIRECTION_FORWARD;
     }
 
@@ -263,7 +263,7 @@ public class EnhancedTableViewer extends TableViewer {
         int width = settings.getInt(TAG_COLUMN_WIDTH + i);
         columns[i].setWidth(width);
         layout.addColumnData(new ColumnPixelData(width));
-      } catch (NumberFormatException e) {
+      } catch (NumberFormatException ex) {
         // probably a new column
         allColumnsHaveStoredData = false;
       }
@@ -279,7 +279,7 @@ public class EnhancedTableViewer extends TableViewer {
     // restore the selection
     try {
       this.getTable().select(settings.getInt(TAG_CURRENT_SELECTION));
-    } catch (NumberFormatException e) {
+    } catch (NumberFormatException ex) {
       // NOOP
     }
 
@@ -361,17 +361,17 @@ public class EnhancedTableViewer extends TableViewer {
      */
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
-    public int compare(Viewer viewer, Object e1, Object e2) {
-      Comparable c1 = mComparableProvider.getComparableValue(e1, mSortedColumnIndex);
-      Comparable c2 = mComparableProvider.getComparableValue(e2, mSortedColumnIndex);
+    public int compare(Viewer viewer, Object left, Object right) {
+      Comparable compLeft = mComparableProvider.getComparableValue(left, mSortedColumnIndex);
+      Comparable compRight = mComparableProvider.getComparableValue(right, mSortedColumnIndex);
 
       int compareResult = 0;
 
       // support for string collation
-      if (c1 instanceof String && c2 instanceof String) {
-        compareResult = COLLATOR.compare(c1, c2);
+      if (compLeft instanceof String && compRight instanceof String) {
+        compareResult = COLLATOR.compare(compLeft, compRight);
       } else {
-        compareResult = c1.compareTo(c2);
+        compareResult = compLeft.compareTo(compRight);
       }
 
       // take sort direction into account

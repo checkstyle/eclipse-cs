@@ -20,8 +20,8 @@ public class CheckstyleMarkerPropertyTester extends PropertyTester {
     IMarker marker = (IMarker) receiver;
     try {
       return CheckstyleMarker.MARKER_ID.equals(marker.getType());
-    } catch (CoreException e) {
-      CheckstyleLog.log(e);
+    } catch (CoreException ex) {
+      CheckstyleLog.log(ex);
     }
 
     return false;

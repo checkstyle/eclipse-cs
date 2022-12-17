@@ -59,9 +59,9 @@ public abstract class CTransformationClass {
     for (final String att : attrs) {
       try {
         mAttributes.put(att, rule.getAttribute(att));
-      } catch (CheckstyleException e) {
+      } catch (CheckstyleException ex) {
         // shouldn't happen since we only use existing attribute names
-        throw new RuntimeException(e);
+        throw new RuntimeException(ex);
       }
     }
   }

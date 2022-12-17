@@ -58,19 +58,19 @@ public abstract class ConfigPropertyWidgetAbstractBase implements IConfigPropert
     //
     Label label = new Label(mParent, SWT.NULL);
     label.setText(mProp.getName() + ":"); //$NON-NLS-1$
-    GridData gd = new GridData();
-    gd.verticalAlignment = SWT.BEGINNING;
-    label.setLayoutData(gd);
+    GridData gridData = new GridData();
+    gridData.verticalAlignment = SWT.BEGINNING;
+    label.setLayoutData(gridData);
 
     mValueWidget = getValueWidget(mParent);
-    gd = (GridData) mValueWidget.getLayoutData();
+    gridData = (GridData) mValueWidget.getLayoutData();
     mValueWidget.setToolTipText(mProp.getMetaData().getDescription());
 
     // provide a label that shows a tooltip with the property description
     Label lblPropertyInfo = new Label(mParent, SWT.NULL);
-    gd = new GridData();
-    gd.verticalAlignment = SWT.BEGINNING;
-    lblPropertyInfo.setLayoutData(gd);
+    gridData = new GridData();
+    gridData.verticalAlignment = SWT.BEGINNING;
+    lblPropertyInfo.setLayoutData(gridData);
     lblPropertyInfo.setImage(CheckstyleUIPluginImages.HELP_ICON.getImage());
     lblPropertyInfo.setToolTipText(mProp.getMetaData().getDescription());
     SWTUtil.addTooltipOnPressSupport(lblPropertyInfo);

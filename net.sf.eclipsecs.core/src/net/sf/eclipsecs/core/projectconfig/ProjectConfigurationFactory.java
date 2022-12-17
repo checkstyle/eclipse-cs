@@ -134,8 +134,8 @@ public final class ProjectConfigurationFactory {
             CheckConfigurationFactory.getDefaultCheckConfiguration());
     try {
       standardFileSet.getFileMatchPatterns().add(new FileMatchPattern(".*"));
-    } catch (CheckstylePluginException e) {
-      throw new RuntimeException(e);
+    } catch (CheckstylePluginException ex) {
+      throw new RuntimeException(ex);
     }
 
     List<FileSet> fileSets = Arrays.asList(standardFileSet);
@@ -169,18 +169,18 @@ public final class ProjectConfigurationFactory {
 
     try (InputStream inStream = file.getContents(true)) {
       configuration = getProjectConfiguration(inStream, project);
-    } catch (DocumentException | CoreException | IOException e) {
-      CheckstylePluginException.rethrow(e);
+    } catch (DocumentException | CoreException | IOException ex) {
+      CheckstylePluginException.rethrow(ex);
     }
 
     return configuration;
   }
 
-  private static IProjectConfiguration getProjectConfiguration(InputStream in, IProject project)
+  private static IProjectConfiguration getProjectConfiguration(InputStream input, IProject project)
           throws DocumentException, CheckstylePluginException {
 
     SAXReader reader = new SAXReader();
-    Document document = reader.read(in);
+    Document document = reader.read(input);
 
     Element root = document.getRootElement();
 

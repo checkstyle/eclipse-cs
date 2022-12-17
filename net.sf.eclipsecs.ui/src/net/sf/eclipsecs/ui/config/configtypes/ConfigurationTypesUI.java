@@ -93,8 +93,8 @@ public final class ConfigurationTypesUI {
 
         CONFIGURATION_TYPE_EDITORS.put(internalName, editor.getClass());
         CONFIGURATION_TYPE_ICONS.put(internalName, iconPath);
-      } catch (Exception e) {
-        CheckstyleLog.log(e);
+      } catch (Exception ex) {
+        CheckstyleLog.log(ex);
       }
     }
   }
@@ -124,8 +124,8 @@ public final class ConfigurationTypesUI {
       try {
         ICheckConfigurationEditor editor = editorClass.getDeclaredConstructor().newInstance();
         return editor;
-      } catch (ClassCastException | ReflectiveOperationException e) {
-        CheckstylePluginException.rethrow(e);
+      } catch (ClassCastException | ReflectiveOperationException ex) {
+        CheckstylePluginException.rethrow(ex);
       }
     }
 

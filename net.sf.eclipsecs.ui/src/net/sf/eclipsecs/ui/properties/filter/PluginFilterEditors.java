@@ -71,8 +71,8 @@ public final class PluginFilterEditors {
 
         IFilterEditor editor = (IFilterEditor) elements[i].createExecutableExtension(ATTR_CLASS);
         sFilterEditorClasses.put(filter, editor.getClass());
-      } catch (Exception e) {
-        CheckstyleLog.log(e);
+      } catch (Exception ex) {
+        CheckstyleLog.log(ex);
       }
     }
   }
@@ -112,8 +112,8 @@ public final class PluginFilterEditors {
       try {
         IFilterEditor editor = editorClass.getDeclaredConstructor().newInstance();
         return editor;
-      } catch (ClassCastException | ReflectiveOperationException | SecurityException e) {
-        CheckstylePluginException.rethrow(e);
+      } catch (ClassCastException | ReflectiveOperationException | SecurityException ex) {
+        CheckstylePluginException.rethrow(ex);
       }
     }
 

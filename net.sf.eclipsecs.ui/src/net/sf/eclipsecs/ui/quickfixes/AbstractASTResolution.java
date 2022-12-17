@@ -94,8 +94,8 @@ public abstract class AbstractASTResolution extends WorkbenchMarkerResolution
       return CheckstyleMarker.MARKER_ID.equals(marker.getType())
               && (mMetaData.getInternalName().equals(moduleName)
                       || mMetaData.getAlternativeNames().contains(moduleName));
-    } catch (CoreException e) {
-      throw new IllegalStateException(e);
+    } catch (CoreException ex) {
+      throw new IllegalStateException(ex);
     }
   }
 
@@ -200,15 +200,15 @@ public abstract class AbstractASTResolution extends WorkbenchMarkerResolution
       if (mAutoCommit) {
         textFileBuffer.commit(monitor, false);
       }
-    } catch (CoreException | MalformedTreeException | BadLocationException e) {
-      CheckstyleLog.log(e, Messages.AbstractASTResolution_msgErrorQuickfix);
+    } catch (CoreException | MalformedTreeException | BadLocationException ex) {
+      CheckstyleLog.log(ex, Messages.AbstractASTResolution_msgErrorQuickfix);
     } finally {
 
       if (bufferManager != null) {
         try {
           bufferManager.disconnect(path, null);
-        } catch (CoreException e) {
-          CheckstyleLog.log(e, "Error processing quickfix"); //$NON-NLS-1$
+        } catch (CoreException ex) {
+          CheckstyleLog.log(ex, "Error processing quickfix"); //$NON-NLS-1$
         }
       }
     }
@@ -319,9 +319,9 @@ public abstract class AbstractASTResolution extends WorkbenchMarkerResolution
 
   private MarkerAnnotation getMarkerAnnotation(IAnnotationModel annotationModel, IMarker marker) {
 
-    Iterator<Annotation> it = annotationModel.getAnnotationIterator();
-    while (it.hasNext()) {
-      Annotation tmp = it.next();
+    Iterator<Annotation> iter = annotationModel.getAnnotationIterator();
+    while (iter.hasNext()) {
+      Annotation tmp = iter.next();
 
       if (tmp instanceof MarkerAnnotation) {
 

@@ -151,14 +151,14 @@ public class PackageFilterEditor implements IFilterEditor {
       int size = mFilterData != null ? mFilterData.size() : 0;
       for (int i = 0; i < size; i++) {
 
-        String el = mFilterData.get(i);
+        String element = mFilterData.get(i);
 
-        if (PackageFilter.RECURSE_OFF_MARKER.equals(el)) {
+        if (PackageFilter.RECURSE_OFF_MARKER.equals(element)) {
           recurse = false;
           continue;
         }
 
-        IPath path = new Path(el);
+        IPath path = new Path(element);
 
         IResource selElement = this.mInputProject.findMember(path);
         if (selElement != null) {
@@ -259,9 +259,9 @@ public class PackageFilterEditor implements IFilterEditor {
               }
             }
           }
-        } catch (JavaModelException e) {
-          CheckstyleLog.log(e);
-        } catch (CoreException e) {
+        } catch (JavaModelException ex) {
+          CheckstyleLog.log(ex);
+        } catch (CoreException ex) {
           // this should never happen because we call
           // #isAccessible before invoking #members
         }
@@ -279,7 +279,7 @@ public class PackageFilterEditor implements IFilterEditor {
               children.add(members[i]);
             }
           }
-        } catch (CoreException e) {
+        } catch (CoreException ex) {
           // this should never happen because we call
           // #isAccessible before invoking #members
         }
@@ -495,10 +495,10 @@ public class PackageFilterEditor implements IFilterEditor {
 
       mBtnRecurseSubPackages = new Button(composite, SWT.CHECK);
       mBtnRecurseSubPackages.setText("Recursively exclude sub-packages");
-      GridData gd = new GridData();
-      gd.horizontalAlignment = GridData.BEGINNING;
-      gd.horizontalIndent = 5;
-      mBtnRecurseSubPackages.setLayoutData(gd);
+      GridData gridData = new GridData();
+      gridData.horizontalAlignment = GridData.BEGINNING;
+      gridData.horizontalIndent = 5;
+      mBtnRecurseSubPackages.setLayoutData(gridData);
 
       mBtnRecurseSubPackages.setSelection(mRecursivelyExcludeSubPackages);
       mBtnRecurseSubPackages.addSelectionListener(new SelectionListener() {
@@ -516,9 +516,9 @@ public class PackageFilterEditor implements IFilterEditor {
       });
 
       Control buttonBar = super.createButtonBar(composite);
-      gd = new GridData(GridData.FILL_HORIZONTAL);
-      gd.horizontalAlignment = GridData.END;
-      buttonBar.setLayoutData(gd);
+      gridData = new GridData(GridData.FILL_HORIZONTAL);
+      gridData.horizontalAlignment = GridData.END;
+      buttonBar.setLayoutData(gridData);
 
       return composite;
     }
@@ -626,8 +626,8 @@ public class PackageFilterEditor implements IFilterEditor {
             return true;
           }
         });
-      } catch (CoreException e) {
-        CheckstyleUIPlugin.errorDialog(getShell(), e, true);
+      } catch (CoreException ex) {
+        CheckstyleUIPlugin.errorDialog(getShell(), ex, true);
       }
 
       for (IContainer grayedChild : subContainers) {

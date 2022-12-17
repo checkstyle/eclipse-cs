@@ -372,7 +372,7 @@ public class CheckstyleMarkerFilter implements Cloneable {
       if (setting != null) {
         try {
           mOnResource = Integer.parseInt(setting);
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException ex) {
           // ignore and use default value
         }
       }
@@ -392,7 +392,7 @@ public class CheckstyleMarkerFilter implements Cloneable {
       if (setting != null) {
         try {
           mSeverity = Integer.parseInt(setting);
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException ex) {
           // ignore and use default value
         }
       }
@@ -625,7 +625,7 @@ public class CheckstyleMarkerFilter implements Cloneable {
   public Object clone() {
     try {
       return super.clone();
-    } catch (CloneNotSupportedException e) {
+    } catch (CloneNotSupportedException ex) {
       throw new InternalError(); // this should never happen
     }
   }

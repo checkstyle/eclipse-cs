@@ -67,7 +67,7 @@ public class TransformFormatterRulesJob extends WorkspaceJob {
 
     try {
       parser = new FormatterConfigParser(configLocation);
-    } catch (final FileNotFoundException e) {
+    } catch (final FileNotFoundException ex) {
       return Status.CANCEL_STATUS;
     }
     final FormatterConfiguration rules = parser.parseRules();
@@ -79,9 +79,9 @@ public class TransformFormatterRulesJob extends WorkspaceJob {
     try {
       FormatterTransformer transformer = new FormatterTransformer(rules);
       transformer.transformRules(workspace + "/test-checkstyle.xml");
-    } catch (CheckstylePluginException e) {
+    } catch (CheckstylePluginException ex) {
       Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR,
-              e.getMessage(), e);
+              ex.getMessage(), ex);
       throw new CoreException(status);
     }
 

@@ -53,8 +53,8 @@ public class EmptyStatementQuickfix extends AbstractASTResolution {
 
           // early exit if the statement is mandatory, e.g. only
           // statement in a for-statement without block
-          StructuralPropertyDescriptor p = node.getLocationInParent();
-          if (p.isChildProperty() && ((ChildPropertyDescriptor) p).isMandatory()) {
+          StructuralPropertyDescriptor desc = node.getLocationInParent();
+          if (desc.isChildProperty() && ((ChildPropertyDescriptor) desc).isMandatory()) {
             return false;
           }
 

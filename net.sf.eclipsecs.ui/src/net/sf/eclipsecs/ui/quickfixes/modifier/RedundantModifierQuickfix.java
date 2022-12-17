@@ -141,15 +141,15 @@ public class RedundantModifierQuickfix extends AbstractASTResolution {
       private void deleteRedundantModifiers(List<ASTNode> modifiers,
               List<ModifierKeyword> redundantModifierKeywords) {
 
-        Iterator<ASTNode> it = modifiers.iterator();
+        Iterator<ASTNode> iter = modifiers.iterator();
 
-        while (it.hasNext()) {
-          ASTNode node = it.next();
+        while (iter.hasNext()) {
+          ASTNode node = iter.next();
 
           if (node instanceof Modifier) {
             Modifier modifier = (Modifier) node;
             if (redundantModifierKeywords.contains(modifier.getKeyword())) {
-              it.remove();
+              iter.remove();
             }
           }
         }

@@ -82,8 +82,8 @@ public class CheckSelectedFilesAction implements IObjectActionDelegate {
       RunCheckstyleOnFilesJob job = new RunCheckstyleOnFilesJob(filesToCheck);
       job.setRule(job);
       job.schedule();
-    } catch (CoreException e) {
-      CheckstyleUIPlugin.errorDialog(mPart.getSite().getShell(), e, true);
+    } catch (CoreException ex) {
+      CheckstyleUIPlugin.errorDialog(mPart.getSite().getShell(), ex, true);
     }
   }
 

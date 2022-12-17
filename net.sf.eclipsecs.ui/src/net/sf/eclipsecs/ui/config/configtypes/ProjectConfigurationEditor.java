@@ -133,18 +133,18 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
 
     Label lblConfigName = new Label(contents, SWT.NULL);
     lblConfigName.setText(Messages.CheckConfigurationPropertiesDialog_lblName);
-    GridData gd = new GridData();
-    lblConfigName.setLayoutData(gd);
+    GridData gridData = new GridData();
+    lblConfigName.setLayoutData(gridData);
 
     mConfigName = new Text(contents, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
-    gd = new GridData(GridData.FILL_HORIZONTAL);
-    mConfigName.setLayoutData(gd);
+    gridData = new GridData(GridData.FILL_HORIZONTAL);
+    mConfigName.setLayoutData(gridData);
     mConfigName.setFocus();
 
     Label lblConfigLocation = new Label(contents, SWT.NULL);
     lblConfigLocation.setText(Messages.CheckConfigurationPropertiesDialog_lblLocation);
-    gd = new GridData();
-    lblConfigLocation.setLayoutData(gd);
+    gridData = new GridData();
+    lblConfigLocation.setLayoutData(gridData);
 
     Composite locationComposite = new Composite(contents, SWT.NULL);
     locationComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -154,8 +154,8 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
     locationComposite.setLayout(layout);
 
     mLocation = new Text(locationComposite, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
-    gd = new GridData(GridData.FILL_HORIZONTAL);
-    mLocation.setLayoutData(gd);
+    gridData = new GridData(GridData.FILL_HORIZONTAL);
+    mLocation.setLayoutData(gridData);
 
     mBtnBrowse = new Button(locationComposite, SWT.PUSH);
     mBtnBrowse.setText(Messages.ProjectConfigurationLocationEditor_btnBrowse);
@@ -199,31 +199,31 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
 
     Label lblDescription = new Label(contents, SWT.NULL);
     lblDescription.setText(Messages.CheckConfigurationPropertiesDialog_lblDescription);
-    gd = new GridData();
-    gd.horizontalSpan = 2;
-    lblDescription.setLayoutData(gd);
+    gridData = new GridData();
+    gridData.horizontalSpan = 2;
+    lblDescription.setLayoutData(gridData);
 
     mDescription = new Text(contents, SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.BORDER | SWT.VERTICAL);
-    gd = new GridData(GridData.FILL_BOTH);
-    gd.horizontalSpan = 2;
-    gd.widthHint = 300;
-    gd.heightHint = 100;
-    gd.grabExcessHorizontalSpace = true;
-    gd.grabExcessVerticalSpace = true;
-    mDescription.setLayoutData(gd);
+    gridData = new GridData(GridData.FILL_BOTH);
+    gridData.horizontalSpan = 2;
+    gridData.widthHint = 300;
+    gridData.heightHint = 100;
+    gridData.grabExcessHorizontalSpace = true;
+    gridData.grabExcessVerticalSpace = true;
+    mDescription.setLayoutData(gridData);
 
     Group advancedGroup = new Group(contents, SWT.NULL);
     advancedGroup.setText(Messages.RemoteConfigurationEditor_titleAdvancedOptions);
-    gd = new GridData(GridData.FILL_HORIZONTAL);
-    gd.horizontalSpan = 2;
-    advancedGroup.setLayoutData(gd);
+    gridData = new GridData(GridData.FILL_HORIZONTAL);
+    gridData.horizontalSpan = 2;
+    advancedGroup.setLayoutData(gridData);
     advancedGroup.setLayout(new GridLayout(2, false));
 
     mChkProtectConfig = new Button(advancedGroup, SWT.CHECK);
     mChkProtectConfig.setText(Messages.ProjectConfigurationEditor_chkProtectConfigFile);
-    gd = new GridData(GridData.FILL_HORIZONTAL);
-    gd.horizontalSpan = 2;
-    mChkProtectConfig.setLayoutData(gd);
+    gridData = new GridData(GridData.FILL_HORIZONTAL);
+    gridData.horizontalSpan = 2;
+    mChkProtectConfig.setLayoutData(gridData);
 
     if (mWorkingCopy.getName() != null) {
       mConfigName.setText(mWorkingCopy.getName());
@@ -253,23 +253,23 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
 
     try {
       mWorkingCopy.setLocation(mLocation.getText());
-    } catch (CheckstylePluginException e) {
+    } catch (CheckstylePluginException ex) {
       String location = mLocation.getText();
 
       if (Strings.emptyToNull(location) == null) {
-        throw e;
+        throw ex;
       }
 
-      ICheckConfigurationWorkingSet ws = mCheckConfigDialog.getCheckConfigurationWorkingSet();
+      ICheckConfigurationWorkingSet workingSet = mCheckConfigDialog.getCheckConfigurationWorkingSet();
       IPath tmp = new Path(location);
       boolean isFirstPartProject = ResourcesPlugin.getWorkspace().getRoot()
               .getProject(tmp.segment(0)).exists();
 
-      if (ws instanceof LocalCheckConfigurationWorkingSet && !isFirstPartProject) {
-        location = ((LocalCheckConfigurationWorkingSet) ws).getProject().getFullPath()
+      if (workingSet instanceof LocalCheckConfigurationWorkingSet && !isFirstPartProject) {
+        location = ((LocalCheckConfigurationWorkingSet) workingSet).getProject().getFullPath()
                 .append(location).toString();
         mLocation.setText(location);
-      } else if (ws instanceof GlobalCheckConfigurationWorkingSet && !isFirstPartProject) {
+      } else if (workingSet instanceof GlobalCheckConfigurationWorkingSet && !isFirstPartProject) {
         throw new CheckstylePluginException(NLS
                 .bind(Messages.ProjectConfigurationEditor_msgNoProjectInWorkspace, tmp.segment(0)));
       }
@@ -277,7 +277,7 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
       if (ensureFileExists(location)) {
         mWorkingCopy.setLocation(mLocation.getText());
       } else {
-        throw e;
+        throw ex;
       }
     }
 
@@ -299,8 +299,8 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
     IFile file = null;
     try {
       file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(location));
-    } catch (IllegalArgumentException e) {
-      CheckstylePluginException.rethrow(e);
+    } catch (IllegalArgumentException ex) {
+      CheckstylePluginException.rethrow(ex);
     }
 
     if (!file.exists() && file.getLocation() != null) {
@@ -319,8 +319,8 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
 
           ConfigurationWriter.writeNewConfiguration(out, mWorkingCopy);
           file.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
-        } catch (CoreException | IOException e) {
-          CheckstylePluginException.rethrow(e);
+        } catch (CoreException | IOException ex) {
+          CheckstylePluginException.rethrow(ex);
         }
 
         return true;

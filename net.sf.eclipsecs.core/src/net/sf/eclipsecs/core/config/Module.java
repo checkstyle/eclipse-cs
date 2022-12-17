@@ -31,7 +31,7 @@ import net.sf.eclipsecs.core.config.meta.RuleMetadata;
 
 /**
  * Object representing a module from a checkstyle configuration. Can be augmented with meta data.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public class Module implements Cloneable {
@@ -53,7 +53,7 @@ public class Module implements Cloneable {
   private String mComment;
 
   /** the id of the module. */
-  private String mId;
+  private String id;
 
   /** the custom messages for this module. */
   private final Map<String, String> mCustomMessages = new HashMap<>();
@@ -73,7 +73,7 @@ public class Module implements Cloneable {
 
   /**
    * Creates a module with the according meta data.
-   * 
+   *
    * @param metaData
    *          the meta data
    * @param withDefaults
@@ -106,7 +106,7 @@ public class Module implements Cloneable {
 
   /**
    * Create a module without meta data.
-   * 
+   *
    * @param name
    *          the name of the module
    */
@@ -116,7 +116,7 @@ public class Module implements Cloneable {
 
   /**
    * Returns the name of the module.
-   * 
+   *
    * @return the name of the module
    */
   public String getName() {
@@ -125,26 +125,26 @@ public class Module implements Cloneable {
 
   /**
    * Returns the unique id of the module.
-   * 
+   *
    * @return the id
    */
   public String getId() {
-    return mId;
+    return id;
   }
 
   /**
    * Sets the unique id of the module.
-   * 
+   *
    * @param id
    *          the id to set
    */
   public void setId(String id) {
-    mId = id;
+    this.id = id;
   }
 
   /**
-   * Returns the custom messagess to display instead of Checkstyle's default message.
-   * 
+   * Returns the custom messages to display instead of Checkstyle's default message.
+   *
    * @return the customMessage
    */
   public Map<String, String> getCustomMessages() {
@@ -153,7 +153,7 @@ public class Module implements Cloneable {
 
   /**
    * Returns the meta data associated with the module.
-   * 
+   *
    * @return the meta data of the module
    */
   public RuleMetadata getMetaData() {
@@ -162,7 +162,7 @@ public class Module implements Cloneable {
 
   /**
    * Sets the meta data of the module.
-   * 
+   *
    * @param metaData
    *          the meta data
    */
@@ -172,7 +172,7 @@ public class Module implements Cloneable {
 
   /**
    * Returns all properties of this module.
-   * 
+   *
    * @return the properties
    */
   public List<ConfigProperty> getProperties() {
@@ -181,7 +181,7 @@ public class Module implements Cloneable {
 
   /**
    * Returns the property data for a given property name.
-   * 
+   *
    * @param property
    *          the property name
    * @return the coresponding property or <code>null</code>
@@ -204,7 +204,7 @@ public class Module implements Cloneable {
 
   /**
    * Returns the user comment for this module.
-   * 
+   *
    * @return the comment
    */
   public String getComment() {
@@ -213,7 +213,7 @@ public class Module implements Cloneable {
 
   /**
    * Sets the user comment for this module.
-   * 
+   *
    * @param comment
    *          the comment
    */
@@ -223,7 +223,7 @@ public class Module implements Cloneable {
 
   /**
    * Returns the severity level of this module.
-   * 
+   *
    * @return the severity level
    */
   public Severity getSeverity() {
@@ -237,7 +237,7 @@ public class Module implements Cloneable {
 
   /**
    * Returns the last severity level before the module was set to ignore.
-   * 
+   *
    * @return the last severity level
    */
   public Severity getLastEnabledSeverity() {
@@ -247,7 +247,7 @@ public class Module implements Cloneable {
   /**
    * Sets the last enabled severity. This is used to restore the original severity setting after the
    * module has been set to ignore.
-   * 
+   *
    * @param severity
    *          the severity
    */
@@ -257,7 +257,7 @@ public class Module implements Cloneable {
 
   /**
    * Sets the severity level.
-   * 
+   *
    * @param severityLevel
    *          the severity level to set
    */
@@ -289,7 +289,7 @@ public class Module implements Cloneable {
 
   /**
    * Return the map containing custom metadata for the module.
-   * 
+   *
    * @return the custom metadata
    */
   public Map<String, String> getCustomMetaData() {
@@ -310,7 +310,7 @@ public class Module implements Cloneable {
       }
 
       return clone;
-    } catch (CloneNotSupportedException e) {
+    } catch (CloneNotSupportedException ex) {
       throw new InternalError(); // should not happen
     }
   }

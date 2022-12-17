@@ -103,7 +103,7 @@ public class ResolvableProperty implements Cloneable {
     try {
       ResolvableProperty clone = (ResolvableProperty) super.clone();
       return clone;
-    } catch (CloneNotSupportedException e) {
+    } catch (CloneNotSupportedException ex) {
       throw new InternalError(); // should never happen
     }
   }

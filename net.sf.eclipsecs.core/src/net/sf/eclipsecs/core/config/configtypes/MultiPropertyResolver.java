@@ -84,8 +84,8 @@ public class MultiPropertyResolver implements PropertyResolver, IContextAware {
       while (PropertyUtil.hasUnresolvedProperties(value)) {
         value = PropertyUtil.replaceProperties(value, this);
       }
-    } catch (CheckstyleException e) {
-      throw new RuntimeException(e);
+    } catch (CheckstyleException ex) {
+      throw new RuntimeException(ex);
     }
 
     return value;

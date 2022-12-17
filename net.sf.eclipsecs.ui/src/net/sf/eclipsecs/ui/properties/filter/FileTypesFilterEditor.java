@@ -149,18 +149,18 @@ public class FileTypesFilterEditor implements IFilterEditor {
       layout.marginHeight = 0;
       layout.marginWidth = 0;
       main.setLayout(layout);
-      GridData gd = new GridData(GridData.FILL_BOTH);
-      main.setLayoutData(gd);
+      GridData gridData = new GridData(GridData.FILL_BOTH);
+      main.setLayoutData(gridData);
 
       mFileTypeText = new Text(main, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
-      gd = new GridData(GridData.FILL_HORIZONTAL);
-      mFileTypeText.setLayoutData(gd);
+      gridData = new GridData(GridData.FILL_HORIZONTAL);
+      mFileTypeText.setLayoutData(gridData);
 
       mAddButton = new Button(main, SWT.PUSH);
       mAddButton.setText(Messages.FileTypesFilterEditor_btnAdd);
-      gd = new GridData(GridData.FILL_HORIZONTAL);
-      gd.verticalAlignment = SWT.TOP;
-      mAddButton.setLayoutData(gd);
+      gridData = new GridData(GridData.FILL_HORIZONTAL);
+      gridData.verticalAlignment = SWT.TOP;
+      mAddButton.setLayoutData(gridData);
       mAddButton.addSelectionListener(new SelectionListener() {
 
         @Override
@@ -183,17 +183,17 @@ public class FileTypesFilterEditor implements IFilterEditor {
       mListViewer.setLabelProvider(new LabelProvider());
       mListViewer.setContentProvider(new ArrayContentProvider());
       mListViewer.setInput(mFileTypesList);
-      gd = new GridData(GridData.FILL_BOTH);
-      gd.heightHint = 100;
-      gd.widthHint = 150;
-      gd.grabExcessVerticalSpace = true;
-      mListViewer.getControl().setLayoutData(gd);
+      gridData = new GridData(GridData.FILL_BOTH);
+      gridData.heightHint = 100;
+      gridData.widthHint = 150;
+      gridData.grabExcessVerticalSpace = true;
+      mListViewer.getControl().setLayoutData(gridData);
 
       mRemoveButton = new Button(main, SWT.PUSH);
       mRemoveButton.setText(Messages.FileTypesFilterEditor_btnRemove);
-      gd = new GridData(GridData.FILL_HORIZONTAL);
-      gd.verticalAlignment = SWT.TOP;
-      mRemoveButton.setLayoutData(gd);
+      gridData = new GridData(GridData.FILL_HORIZONTAL);
+      gridData.verticalAlignment = SWT.TOP;
+      mRemoveButton.setLayoutData(gridData);
       mRemoveButton.addSelectionListener(new SelectionListener() {
 
         @Override

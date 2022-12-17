@@ -81,10 +81,10 @@ public class EclipseLogHandler extends Handler {
     String message = record.getMessage();
 
     // get throwable
-    Throwable t = record.getThrown();
+    Throwable thrown = record.getThrown();
 
     Status status = new Status(severity, mPluginID, IStatus.OK,
-            NLS.bind(Messages.CheckstyleLog_msgStatusPrefix, message), t);
+            NLS.bind(Messages.CheckstyleLog_msgStatusPrefix, message), thrown);
     mPluginLog.log(status);
   }
 

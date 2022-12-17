@@ -115,8 +115,8 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
         if (project.exists() && project.isOpen() && project.hasNature(CheckstyleNature.NATURE_ID)) {
           checkstyleProjects.add(project);
         }
-      } catch (CoreException e) {
-        CheckstylePluginException.rethrow(e);
+      } catch (CoreException ex) {
+        CheckstylePluginException.rethrow(ex);
       }
     }
 
@@ -149,11 +149,11 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
       IProjectConfiguration config = null;
       try {
         config = ProjectConfigurationFactory.getConfiguration(project);
-      } catch (CheckstylePluginException e) {
+      } catch (CheckstylePluginException ex) {
         Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR,
-                e.getMessage() != null ? e.getMessage()
+                ex.getMessage() != null ? ex.getMessage()
                         : Messages.CheckstyleBuilder_msgErrorUnknown,
-                e);
+                ex);
         throw new CoreException(status);
       }
 
@@ -310,15 +310,15 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
 
         if (backgroundFullBuild && kind == FULL_BUILD) {
 
-          AuditorJob j = new AuditorJob(project, audit);
-          j.schedule();
+          AuditorJob job = new AuditorJob(project, audit);
+          job.schedule();
         } else {
           audit.runAudit(project, monitor);
         }
       }
-    } catch (CheckstylePluginException e) {
+    } catch (CheckstylePluginException ex) {
       Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR,
-              e.getLocalizedMessage(), e);
+              ex.getLocalizedMessage(), ex);
       throw new CoreException(status);
     }
   }

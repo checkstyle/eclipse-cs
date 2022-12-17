@@ -145,17 +145,17 @@ public class Auditor {
       // run the files through the checker
       checker.process(filesToAudit);
 
-    } catch (CheckstyleException e) {
-      if (e.getCause() instanceof OperationCanceledException) {
+    } catch (CheckstyleException ex) {
+      if (ex.getCause() instanceof OperationCanceledException) {
         // user requested cancellation, keep silent
       } else {
-        handleCheckstyleFailure(project, e);
+        handleCheckstyleFailure(project, ex);
       }
-    } catch (RuntimeException e) {
+    } catch (RuntimeException ex) {
       if (listener != null) {
         listener.cleanup();
       }
-      throw e;
+      throw ex;
     } finally {
       monitor.done();
 
@@ -166,11 +166,11 @@ public class Auditor {
     }
   }
 
-  private void handleCheckstyleFailure(IProject project, CheckstyleException e)
+  private void handleCheckstyleFailure(IProject project, CheckstyleException error)
           throws CheckstylePluginException {
     try {
 
-      CheckstyleLog.log(e);
+      CheckstyleLog.log(error);
 
       // remove pre-existing project level marker
       project.deleteMarkers(CheckstyleMarker.MARKER_ID, false, IResource.DEPTH_ZERO);
@@ -182,8 +182,8 @@ public class Auditor {
 
       IMarker projectMarker = project.createMarker(CheckstyleMarker.MARKER_ID);
       projectMarker.setAttributes(attrs);
-    } catch (CoreException ce) {
-      CheckstylePluginException.rethrow(e);
+    } catch (CoreException nested) {
+      CheckstylePluginException.rethrow(error);
     }
   }
 
@@ -348,8 +348,8 @@ public class Auditor {
             mMarkerAttributes.clear();
           }
         }
-      } catch (CoreException e) {
-        CheckstyleLog.log(e);
+      } catch (CoreException ex) {
+        CheckstyleLog.log(ex);
       }
     }
 
@@ -421,7 +421,7 @@ public class Auditor {
 
           markerAttributes.put(IMarker.CHAR_START, Integer.valueOf(lineOffset + offset));
           markerAttributes.put(IMarker.CHAR_END, Integer.valueOf(lineOffset + lineLength));
-        } catch (BadLocationException e) {
+        } catch (BadLocationException ex) {
           // seems to happen quite often so its no use to log since we
           // can't do anything about it
           // CheckstyleLog.log(e);
@@ -443,8 +443,8 @@ public class Auditor {
 
         mConnectedFileBufferPaths.add(path);
         document = mFileBufferManager.getTextFileBuffer(path).getDocument();
-      } catch (CoreException e) {
-        CheckstyleLog.log(e);
+      } catch (CoreException ex) {
+        CheckstyleLog.log(ex);
       }
       return document;
     }
@@ -467,8 +467,8 @@ public class Auditor {
           mFileBufferManager.disconnect(path, new NullProgressMonitor());
           mConnectedFileBufferPaths.remove(path);
         }
-      } catch (CoreException e) {
-        CheckstyleLog.log(e);
+      } catch (CoreException ex) {
+        CheckstyleLog.log(ex);
       }
     }
 

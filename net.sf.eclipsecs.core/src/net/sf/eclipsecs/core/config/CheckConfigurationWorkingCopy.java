@@ -178,10 +178,10 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
 
         // test if configuration file exists
         getCheckstyleConfiguration();
-      } catch (Exception e) {
+      } catch (Exception ex) {
         mEditedLocation = oldLocation;
-        CheckstylePluginException.rethrow(e,
-                NLS.bind(Messages.errorResolveConfigLocation, location, e.getLocalizedMessage()));
+        CheckstylePluginException.rethrow(ex,
+                NLS.bind(Messages.errorResolveConfigLocation, location, ex.getLocalizedMessage()));
       }
     }
   }
@@ -233,13 +233,13 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
   public List<Module> getModules() throws CheckstylePluginException {
     List<Module> result = null;
 
-    InputSource in = null;
+    InputSource input = null;
 
     try {
-      in = getCheckstyleConfiguration().getCheckConfigFileInputSource();
-      result = ConfigurationReader.read(in);
+      input = getCheckstyleConfiguration().getCheckConfigFileInputSource();
+      result = ConfigurationReader.read(input);
     } finally {
-      Closeables.closeQuietly(in.getByteStream());
+      Closeables.closeQuietly(input.getByteStream());
     }
 
     return result;
@@ -274,7 +274,7 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
       for (int i = 0; i < files.length; i++) {
         try {
           files[i].refreshLocal(IResource.DEPTH_ZERO, new NullProgressMonitor());
-        } catch (CoreException e) {
+        } catch (CoreException ex) {
           // NOOP - just ignore
         }
       }
@@ -283,8 +283,8 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
 
       // throw away the cached Checkstyle configurations
       CheckConfigurationFactory.refresh();
-    } catch (IOException | URISyntaxException e) {
-      CheckstylePluginException.rethrow(e);
+    } catch (IOException | URISyntaxException ex) {
+      CheckstylePluginException.rethrow(ex);
     }
   }
 
@@ -383,7 +383,7 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
       for (ResolvableProperty prop : mProperties) {
         clone.mProperties.add(prop.clone());
       }
-    } catch (CloneNotSupportedException e) {
+    } catch (CloneNotSupportedException ex) {
       throw new InternalError(); // this should never happen
     }
     return clone;

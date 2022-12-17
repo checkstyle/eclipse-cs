@@ -190,7 +190,7 @@ public class ProjectConfiguration implements Cloneable, IProjectConfiguration {
         clonedFilters.add(filter.clone());
       }
       clone.mFilters = clonedFilters;
-    } catch (CloneNotSupportedException e) {
+    } catch (CloneNotSupportedException ex) {
       throw new InternalError(); // should never happen
     }
 

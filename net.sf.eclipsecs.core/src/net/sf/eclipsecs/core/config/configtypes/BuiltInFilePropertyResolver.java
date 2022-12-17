@@ -78,8 +78,8 @@ public class BuiltInFilePropertyResolver implements PropertyResolver {
         URL fileURL = FileLocator.toFileURL(bundleLocatedURL);
 
         value = URIUtil.toFile(fileURL.toURI()).getAbsolutePath();
-      } catch (IOException | URISyntaxException e) {
-        throw new RuntimeException(e.getMessage(), e);
+      } catch (IOException | URISyntaxException ex) {
+        throw new RuntimeException(ex.getMessage(), ex);
       }
     }
 

@@ -87,15 +87,15 @@ public class NonSrcDirsFilter extends AbstractFilter {
     try {
       if (project.hasNature(JavaCore.NATURE_ID)) {
         IJavaProject javaProject = JavaCore.create(project);
-        IClasspathEntry[] cp = javaProject.getResolvedClasspath(true);
-        for (int i = 0; i < cp.length; i++) {
-          if (cp[i].getEntryKind() == IClasspathEntry.CPE_SOURCE) {
-            sourceDirs.add(cp[i].getPath());
+        IClasspathEntry[] entry = javaProject.getResolvedClasspath(true);
+        for (int i = 0; i < entry.length; i++) {
+          if (entry[i].getEntryKind() == IClasspathEntry.CPE_SOURCE) {
+            sourceDirs.add(entry[i].getPath());
           }
         }
       }
-    } catch (CoreException e) {
-      CheckstyleLog.log(e);
+    } catch (CoreException ex) {
+      CheckstyleLog.log(ex);
     }
 
     return sourceDirs;

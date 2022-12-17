@@ -83,9 +83,9 @@ public class TransformCheckstyleRulesJob extends WorkspaceJob {
       final List<Configuration> rules = new ArrayList<>();
 
       // collect rules from all configured filesets
-      for (FileSet fs : conf.getFileSets()) {
+      for (FileSet fileSet : conf.getFileSets()) {
 
-        ICheckConfiguration checkConfig = fs.getCheckConfig();
+        ICheckConfiguration checkConfig = fileSet.getCheckConfig();
 
         CheckstyleConfigurationFile configFile = checkConfig.getCheckstyleConfiguration();
 
@@ -97,17 +97,17 @@ public class TransformCheckstyleRulesJob extends WorkspaceJob {
           ((IContextAware) resolver).setProjectContext(mProject);
         }
 
-        InputSource in = null;
+        InputSource input = null;
         try {
-          in = configFile.getCheckConfigFileInputSource();
+          input = configFile.getCheckConfigFileInputSource();
 
-          Configuration configuration = ConfigurationLoader.loadConfiguration(in, resolver,
+          Configuration configuration = ConfigurationLoader.loadConfiguration(input, resolver,
                   IgnoredModulesOptions.OMIT);
 
           // flatten the nested configuration tree into a list
           recurseConfiguration(configuration, rules);
         } finally {
-          Closeables.closeQuietly(in.getByteStream());
+          Closeables.closeQuietly(input.getByteStream());
         }
       }
 
@@ -117,9 +117,9 @@ public class TransformCheckstyleRulesJob extends WorkspaceJob {
 
       final CheckstyleTransformer transformer = new CheckstyleTransformer(mProject, rules);
       transformer.transformRules();
-    } catch (CheckstyleException | CheckstylePluginException e) {
+    } catch (CheckstyleException | CheckstylePluginException ex) {
       Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR,
-              e.getMessage(), e);
+              ex.getMessage(), ex);
       throw new CoreException(status);
     }
 

@@ -94,8 +94,8 @@ public class MarkerPropertyPage extends PropertyPage {
       browserDescription.setLayoutData(gridData);
       browserDescription.setText(
               CheckConfigurationConfigureDialog.getDescriptionHtml(metaData.getDescription()));
-    } catch (CoreException e) {
-      CheckstyleLog.log(e);
+    } catch (CoreException ex) {
+      CheckstyleLog.log(ex);
     }
     return composite;
   }

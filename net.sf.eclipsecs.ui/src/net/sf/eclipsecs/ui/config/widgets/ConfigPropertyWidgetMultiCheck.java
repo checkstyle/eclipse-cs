@@ -105,9 +105,9 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
       mTable.setInput(mTokens);
       mTable.setCheckedElements(getInitialValues().toArray());
 
-      GridData gd = new GridData(GridData.FILL_BOTH);
-      gd.heightHint = 150;
-      mTable.getControl().setLayoutData(gd);
+      GridData gridData = new GridData(GridData.FILL_BOTH);
+      gridData.heightHint = 150;
+      mTable.getControl().setLayoutData(gridData);
 
       // deregister the listener on widget dipose
       mTable.getControl().addDisposeListener(new DisposeListener() {
@@ -213,7 +213,7 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
       } else {
         try {
           translation = TOKEN_BUNDLE.getString((String) element);
-        } catch (MissingResourceException e) {
+        } catch (MissingResourceException ex) {
           translation = "" + element; //$NON-NLS-1$
         }
       }

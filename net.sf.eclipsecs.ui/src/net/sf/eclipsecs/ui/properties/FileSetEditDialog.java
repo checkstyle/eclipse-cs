@@ -171,10 +171,10 @@ public class FileSetEditDialog extends TitleAreaDialog {
     commonArea.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
     SashForm sashForm = new SashForm(dialog, SWT.VERTICAL);
-    GridData gd = new GridData(GridData.FILL_BOTH);
-    gd.widthHint = 500;
-    gd.heightHint = 400;
-    sashForm.setLayoutData(gd);
+    GridData gridData = new GridData(GridData.FILL_BOTH);
+    gridData.widthHint = 500;
+    gridData.heightHint = 400;
+    sashForm.setLayoutData(gridData);
     sashForm.setLayout(new GridLayout());
 
     Control patternArea = createFileMatchPatternPart(sashForm);
@@ -238,24 +238,24 @@ public class FileSetEditDialog extends TitleAreaDialog {
     composite.setLayout(new FormLayout());
 
     final Composite buttons = new Composite(composite, SWT.NULL);
-    FormData fd = new FormData();
-    fd.top = new FormAttachment(0, 3);
-    fd.right = new FormAttachment(100, -3);
-    fd.bottom = new FormAttachment(100, -3);
+    FormData formData = new FormData();
+    formData.top = new FormAttachment(0, 3);
+    formData.right = new FormAttachment(100, -3);
+    formData.bottom = new FormAttachment(100, -3);
 
-    buttons.setLayoutData(fd);
+    buttons.setLayoutData(formData);
     GridLayout layout = new GridLayout();
     layout.marginHeight = 0;
     layout.marginWidth = 0;
     buttons.setLayout(layout);
 
     final Table table = new Table(composite, SWT.CHECK | SWT.BORDER | SWT.FULL_SELECTION);
-    fd = new FormData();
-    fd.left = new FormAttachment(0, 3);
-    fd.top = new FormAttachment(0, 3);
-    fd.right = new FormAttachment(buttons, -3, SWT.LEFT);
-    fd.bottom = new FormAttachment(100, -3);
-    table.setLayoutData(fd);
+    formData = new FormData();
+    formData.left = new FormAttachment(0, 3);
+    formData.top = new FormAttachment(0, 3);
+    formData.right = new FormAttachment(buttons, -3, SWT.LEFT);
+    formData.bottom = new FormAttachment(100, -3);
+    table.setLayoutData(formData);
 
     TableLayout tableLayout = new TableLayout();
     table.setLayout(tableLayout);
@@ -385,8 +385,8 @@ public class FileSetEditDialog extends TitleAreaDialog {
 
         try {
           mProjectFiles = getFiles(mProject);
-        } catch (CoreException e) {
-          CheckstyleLog.log(e);
+        } catch (CoreException ex) {
+          CheckstyleLog.log(ex);
         }
 
         // init the test area

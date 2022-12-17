@@ -133,8 +133,8 @@ public final class SWTUtil {
       label.addMouseTrackListener(this);
       Point size = tip.computeSize(SWT.DEFAULT, SWT.DEFAULT);
       Rectangle rect = theControl.getBounds();
-      Point pt = theControl.getParent().toDisplay(rect.x, rect.y);
-      tip.setBounds(pt.x, pt.y, size.x, size.y);
+      Point point = theControl.getParent().toDisplay(rect.x, rect.y);
+      tip.setBounds(point.x, point.y, size.x, size.y);
       tip.setVisible(true);
     }
 
@@ -301,7 +301,7 @@ public final class SWTUtil {
     }
 
     @Override
-    public void shellActivated(ShellEvent e) {
+    public void shellActivated(ShellEvent event) {
       // do only on initial activation (aka when the dialog is opened)
       if (!mInitialyActivated) {
 
@@ -313,10 +313,10 @@ public final class SWTUtil {
                   (Class<?>) null);
           getInitialSizeMethod.setAccessible(true);
           initialSize = (Point) getInitialSizeMethod.invoke(mDialog, (Object) null);
-        } catch (Exception e1) {
+        } catch (Exception ex) {
           initialSize = new Point(0, 0);
         }
-        Shell shell = (Shell) e.getSource();
+        Shell shell = (Shell) event.getSource();
 
         // this is only supported in Eclipse 3.1 and greater
         // shell.setMinimumSize(initialSize);
