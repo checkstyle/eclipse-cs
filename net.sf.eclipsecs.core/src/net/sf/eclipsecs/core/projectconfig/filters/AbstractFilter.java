@@ -144,14 +144,14 @@ public abstract class AbstractFilter implements IFilter {
   @Override
   public IFilter clone() {
 
-    IFilter o = null;
+    IFilter object = null;
     try {
-      o = (IFilter) super.clone();
+      object = (IFilter) super.clone();
     } catch (CloneNotSupportedException cnse) {
       // this shouldn't happen, since we are Cloneable
       throw new InternalError();
     }
-    return o;
+    return object;
   }
 
   /**

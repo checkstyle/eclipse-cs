@@ -48,9 +48,9 @@ public class CheckstyleSettingsTransfer extends SettingsTransfer {
 
     try {
       CheckConfigurationFactory.transferInternalConfiguration(newWorkspaceRoot);
-    } catch (CheckstylePluginException e) {
+    } catch (CheckstylePluginException ex) {
       return new Status(IStatus.ERROR, CheckstyleUIPlugin.PLUGIN_ID,
-              "Checkstyle settings transfer failed", e);
+              "Checkstyle settings transfer failed", ex);
     }
 
     return Status.OK_STATUS;

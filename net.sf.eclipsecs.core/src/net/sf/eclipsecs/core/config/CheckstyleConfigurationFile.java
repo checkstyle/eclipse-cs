@@ -62,10 +62,10 @@ public class CheckstyleConfigurationFile {
    */
   public InputSource getCheckConfigFileInputSource() {
 
-    InputSource in = new InputSource(getCheckConfigFileStream());
-    in.setSystemId(getResolvedConfigFileURL().toString());
+    InputSource input = new InputSource(getCheckConfigFileStream());
+    input.setSystemId(getResolvedConfigFileURL().toString());
 
-    return in;
+    return input;
   }
 
   /**

@@ -345,8 +345,8 @@ public class GraphStatsView extends AbstractStatsView {
       public void run() {
         try {
           getSite().getWorkbenchWindow().getActivePage().showView(MarkerStatsView.VIEW_ID);
-        } catch (PartInitException e) {
-          CheckstyleLog.log(e, NLS.bind(Messages.GraphStatsView_unableToOpenListingView,
+        } catch (PartInitException ex) {
+          CheckstyleLog.log(ex, NLS.bind(Messages.GraphStatsView_unableToOpenListingView,
                   MarkerStatsView.VIEW_ID));
           // TODO : mettre message d'erreur à l'utilisateur
         }
@@ -372,8 +372,8 @@ public class GraphStatsView extends AbstractStatsView {
                 CheckstyleUIPluginPrefs.setBoolean(
                         CheckstyleUIPluginPrefs.PREF_STATS_SHOW_ALL_CATEGORIES,
                         mShowAllCategoriesAction.isChecked());
-              } catch (BackingStoreException e1) {
-                CheckstyleLog.log(e1);
+              } catch (BackingStoreException ex) {
+                CheckstyleLog.log(ex);
               }
               refresh();
             }
@@ -408,8 +408,8 @@ public class GraphStatsView extends AbstractStatsView {
           IMarker marker = (IMarker) selection.getFirstElement();
           try {
             IDE.openEditor(getSite().getPage(), marker);
-          } catch (PartInitException e) {
-            CheckstyleLog.log(e, Messages.MarkerStatsView_unableToShowMarker);
+          } catch (PartInitException ex) {
+            CheckstyleLog.log(ex, Messages.MarkerStatsView_unableToShowMarker);
             // TODO : Open information dialog to notify the user
           }
         }
@@ -613,9 +613,9 @@ public class GraphStatsView extends AbstractStatsView {
         // find the marker statistics for the current category
         Stats currentStats = (Stats) inputElement;
         Collection<MarkerStat> markerStats = currentStats.getMarkerStats();
-        Iterator<MarkerStat> it = markerStats.iterator();
-        while (it.hasNext()) {
-          MarkerStat markerStat = it.next();
+        Iterator<MarkerStat> iter = markerStats.iterator();
+        while (iter.hasNext()) {
+          MarkerStat markerStat = iter.next();
           if (markerStat.getIdentifiant().equals(mCurrentDetailCategory)) {
             mCurrentDetails = markerStat.getMarkers().toArray();
             break;
@@ -680,10 +680,10 @@ public class GraphStatsView extends AbstractStatsView {
             text = ""; //$NON-NLS-1$
             break;
         }
-      } catch (Exception e) {
+      } catch (Exception ex) {
         // Can't do anything: let's put a default value
         text = Messages.MarkerStatsView_unknownProblem;
-        CheckstyleLog.log(e);
+        CheckstyleLog.log(ex);
       }
 
       return text;

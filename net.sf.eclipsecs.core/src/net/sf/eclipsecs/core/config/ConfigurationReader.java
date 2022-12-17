@@ -128,20 +128,20 @@ public final class ConfigurationReader {
    * Reads the checkstyle configuration from the given stream and returns a list of all modules within
    * this configuration.
    *
-   * @param in
+   * @param input
    *          the stream the configuration is loaded from
    * @return the list of modules
    * @throws CheckstylePluginException
    *           error while reading the configuration
    */
-  public static List<Module> read(InputSource in) throws CheckstylePluginException {
+  public static List<Module> read(InputSource input) throws CheckstylePluginException {
 
     List<Module> rules = null;
     try {
 
       final SAXReader reader = new SAXReader();
       reader.setEntityResolver(new XMLUtil.InternalDtdEntityResolver(PUBLIC2INTERNAL_DTD_MAP));
-      final Document document = reader.read(in);
+      final Document document = reader.read(input);
 
       rules = getModules(document);
     } catch (final DocumentException ex) {
@@ -205,7 +205,7 @@ public final class ConfigurationReader {
               && module.getMetaData().hasSeverity()) {
         try {
           module.setSeverity(Severity.valueOf(value));
-        } catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException ex) {
           module.setSeverity(Severity.inherit);
         }
       } else if (name.equals(XMLTags.ID_TAG)) {

@@ -106,8 +106,8 @@ public final class PluginFilters {
         filter.setFilterData(data);
 
         filters.add(filter);
-      } catch (Exception e) {
-        CheckstyleLog.log(e);
+      } catch (Exception ex) {
+        CheckstyleLog.log(ex);
       }
     }
 

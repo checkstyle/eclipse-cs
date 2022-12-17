@@ -88,8 +88,8 @@ public class BuildProjectJob extends Job {
         }
       }
       status = Status.OK_STATUS;
-    } catch (CoreException e) {
-      status = e.getStatus();
+    } catch (CoreException ex) {
+      status = ex.getStatus();
     } finally {
       monitor.done();
     }

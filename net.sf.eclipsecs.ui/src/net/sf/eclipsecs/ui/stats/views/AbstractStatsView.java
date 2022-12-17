@@ -365,9 +365,9 @@ public abstract class AbstractStatsView extends ViewPart {
     // adapter mechanism instead.
     // See Bug 87288 [IDE] [EditorMgmt] Should avoid explicit checks for
     // [I]FileEditorInput
-    Object o = editorInput.getAdapter(IFile.class);
-    if (o instanceof IFile) {
-      return (IFile) o;
+    Object adapted = editorInput.getAdapter(IFile.class);
+    if (adapted instanceof IFile) {
+      return (IFile) adapted;
     }
     return null;
   }

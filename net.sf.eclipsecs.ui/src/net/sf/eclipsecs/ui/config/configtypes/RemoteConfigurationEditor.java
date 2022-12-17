@@ -103,78 +103,78 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
 
     Label lblConfigName = new Label(contents, SWT.NULL);
     lblConfigName.setText(Messages.CheckConfigurationPropertiesDialog_lblName);
-    GridData gd = new GridData();
-    lblConfigName.setLayoutData(gd);
+    GridData gridData = new GridData();
+    lblConfigName.setLayoutData(gridData);
 
     mConfigName = new Text(contents, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
-    gd = new GridData(GridData.FILL_HORIZONTAL);
-    mConfigName.setLayoutData(gd);
+    gridData = new GridData(GridData.FILL_HORIZONTAL);
+    mConfigName.setLayoutData(gridData);
     mConfigName.setFocus();
 
     Label lblConfigLocation = new Label(contents, SWT.NULL);
     lblConfigLocation.setText(Messages.CheckConfigurationPropertiesDialog_lblLocation);
-    gd = new GridData();
-    gd.verticalAlignment = GridData.VERTICAL_ALIGN_BEGINNING;
-    lblConfigLocation.setLayoutData(gd);
+    gridData = new GridData();
+    gridData.verticalAlignment = GridData.VERTICAL_ALIGN_BEGINNING;
+    lblConfigLocation.setLayoutData(gridData);
 
     mLocation = new Text(contents, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
-    gd = new GridData(GridData.FILL_HORIZONTAL);
-    mLocation.setLayoutData(gd);
+    gridData = new GridData(GridData.FILL_HORIZONTAL);
+    mLocation.setLayoutData(gridData);
 
     Label lblDescription = new Label(contents, SWT.NULL);
     lblDescription.setText(Messages.CheckConfigurationPropertiesDialog_lblDescription);
-    gd = new GridData();
-    gd.horizontalSpan = 2;
-    lblDescription.setLayoutData(gd);
+    gridData = new GridData();
+    gridData.horizontalSpan = 2;
+    lblDescription.setLayoutData(gridData);
 
     mDescription = new Text(contents, SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.BORDER | SWT.VERTICAL);
-    gd = new GridData(GridData.FILL_BOTH);
-    gd.horizontalSpan = 2;
-    gd.widthHint = 300;
-    gd.heightHint = 100;
-    gd.grabExcessHorizontalSpace = true;
-    gd.grabExcessVerticalSpace = true;
-    mDescription.setLayoutData(gd);
+    gridData = new GridData(GridData.FILL_BOTH);
+    gridData.horizontalSpan = 2;
+    gridData.widthHint = 300;
+    gridData.heightHint = 100;
+    gridData.grabExcessHorizontalSpace = true;
+    gridData.grabExcessVerticalSpace = true;
+    mDescription.setLayoutData(gridData);
 
     Group credentialsGroup = new Group(contents, SWT.NULL);
     credentialsGroup.setText(Messages.RemoteConfigurationEditor_titleCredentialsGroup);
-    gd = new GridData(GridData.FILL_HORIZONTAL);
-    gd.horizontalSpan = 2;
-    credentialsGroup.setLayoutData(gd);
+    gridData = new GridData(GridData.FILL_HORIZONTAL);
+    gridData.horizontalSpan = 2;
+    credentialsGroup.setLayoutData(gridData);
     credentialsGroup.setLayout(new GridLayout(2, false));
 
     Label lblUserName = new Label(credentialsGroup, SWT.NULL);
     lblUserName.setText(Messages.RemoteConfigurationEditor_lblUserName);
-    gd = new GridData();
-    lblUserName.setLayoutData(gd);
+    gridData = new GridData();
+    lblUserName.setLayoutData(gridData);
 
     mUserName = new Text(credentialsGroup, SWT.SINGLE | SWT.BORDER);
-    gd = new GridData();
-    gd.widthHint = 100;
-    mUserName.setLayoutData(gd);
+    gridData = new GridData();
+    gridData.widthHint = 100;
+    mUserName.setLayoutData(gridData);
 
     Label lblPassword = new Label(credentialsGroup, SWT.NULL);
     lblPassword.setText(Messages.RemoteConfigurationEditor_lblPassword);
-    gd = new GridData();
-    lblPassword.setLayoutData(gd);
+    gridData = new GridData();
+    lblPassword.setLayoutData(gridData);
 
     mPassword = new Text(credentialsGroup, SWT.SINGLE | SWT.BORDER | SWT.PASSWORD);
-    gd = new GridData();
-    gd.widthHint = 100;
-    mPassword.setLayoutData(gd);
+    gridData = new GridData();
+    gridData.widthHint = 100;
+    mPassword.setLayoutData(gridData);
 
     Group advancedGroup = new Group(contents, SWT.NULL);
     advancedGroup.setText(Messages.RemoteConfigurationEditor_titleAdvancedOptions);
-    gd = new GridData(GridData.FILL_HORIZONTAL);
-    gd.horizontalSpan = 2;
-    advancedGroup.setLayoutData(gd);
+    gridData = new GridData(GridData.FILL_HORIZONTAL);
+    gridData.horizontalSpan = 2;
+    advancedGroup.setLayoutData(gridData);
     advancedGroup.setLayout(new GridLayout(2, false));
 
     mChkCacheConfig = new Button(advancedGroup, SWT.CHECK);
     mChkCacheConfig.setText(Messages.RemoteConfigurationEditor_btnCacheRemoteConfig);
-    gd = new GridData(GridData.FILL_HORIZONTAL);
-    gd.horizontalSpan = 2;
-    mChkCacheConfig.setLayoutData(gd);
+    gridData = new GridData(GridData.FILL_HORIZONTAL);
+    gridData.horizontalSpan = 2;
+    mChkCacheConfig.setLayoutData(gridData);
 
     if (mWorkingCopy.getName() != null) {
       mConfigName.setText(mWorkingCopy.getName());
@@ -198,8 +198,8 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
           mUserName.setText(auth.getUsername());
           mPassword.setText(new String(auth.getPassword()));
         }
-      } catch (CheckstylePluginException e) {
-        CheckstyleUIPlugin.errorDialog(shell, e, true);
+      } catch (CheckstylePluginException ex) {
+        CheckstyleUIPlugin.errorDialog(shell, ex, true);
       }
     }
 
@@ -234,8 +234,8 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
         RemoteConfigurationType.RemoteConfigAuthenticator
                 .removeCachedAuthInfo(new URL(mLocation.getText()));
       }
-    } catch (MalformedURLException e) {
-      CheckstylePluginException.rethrow(e);
+    } catch (MalformedURLException ex) {
+      CheckstylePluginException.rethrow(ex);
     }
 
     mWorkingCopy.setName(mConfigName.getText());

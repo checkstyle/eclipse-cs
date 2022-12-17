@@ -96,8 +96,8 @@ public final class ConfigurationTypes {
                 isConfigurable);
 
         CONFIGURATION_TYPES.put(internalName, configType);
-      } catch (Exception e) {
-        CheckstyleLog.log(e);
+      } catch (Exception ex) {
+        CheckstyleLog.log(ex);
       }
     }
   }

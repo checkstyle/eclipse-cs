@@ -53,30 +53,30 @@ public class CheckstylePluginException extends Exception {
   /**
    * Wraps an exception into a CheckstylePluginException.
    *
-   * @param t
+   * @param throwable
    *          the exception
    * @param message
    *          an additional exception message
    * @throws CheckstylePluginException
    *           the wrapped exception
    */
-  public static void rethrow(Throwable t, String message) throws CheckstylePluginException {
-    if (t instanceof CheckstylePluginException) {
-      throw (CheckstylePluginException) t;
+  public static void rethrow(Throwable throwable, String message) throws CheckstylePluginException {
+    if (throwable instanceof CheckstylePluginException) {
+      throw (CheckstylePluginException) throwable;
     } else {
-      throw new CheckstylePluginException(message, t);
+      throw new CheckstylePluginException(message, throwable);
     }
   }
 
   /**
    * Wraps an exception into a CheckstylePluginException.
    *
-   * @param t
+   * @param throwable
    *          the exception
    * @throws CheckstylePluginException
    *           the wrapped exception
    */
-  public static void rethrow(Throwable t) throws CheckstylePluginException {
-    rethrow(t, t.getMessage());
+  public static void rethrow(Throwable throwable) throws CheckstylePluginException {
+    rethrow(throwable, throwable.getMessage());
   }
 }

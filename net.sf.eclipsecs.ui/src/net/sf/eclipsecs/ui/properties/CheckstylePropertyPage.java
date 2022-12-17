@@ -174,23 +174,23 @@ public class CheckstylePropertyPage extends PropertyPage {
       mProjectConfig = new ProjectConfigurationWorkingCopy(projectConfig);
 
       mCheckstyleInitiallyActivated = project.hasNature(CheckstyleNature.NATURE_ID);
-    } catch (CoreException | CheckstylePluginException e) {
-      handleConfigFileError(e, project);
+    } catch (CoreException | CheckstylePluginException ex) {
+      handleConfigFileError(ex, project);
     }
   }
 
-  private void handleConfigFileError(Exception e, IProject project) {
+  private void handleConfigFileError(Exception error, IProject project) {
 
-    CheckstyleLog.log(e, Messages.errorOpeningPropertiesPage);
-    CheckstyleUIPlugin.warningDialog(null, Messages.errorOpeningPropertiesPage, e);
+    CheckstyleLog.log(error, Messages.errorOpeningPropertiesPage);
+    CheckstyleUIPlugin.warningDialog(null, Messages.errorOpeningPropertiesPage, error);
 
     IProjectConfiguration projectConfig = ProjectConfigurationFactory
             .createDefaultProjectConfiguration(project);
     mProjectConfig = new ProjectConfigurationWorkingCopy(projectConfig);
     try {
       mCheckstyleInitiallyActivated = project.hasNature(CheckstyleNature.NATURE_ID);
-    } catch (CoreException e1) {
-      CheckstyleUIPlugin.errorDialog(null, e1.getMessage(), e1, true);
+    } catch (CoreException nested) {
+      CheckstyleUIPlugin.errorDialog(null, nested.getMessage(), nested, true);
     }
   }
 
@@ -224,11 +224,11 @@ public class CheckstylePropertyPage extends PropertyPage {
       this.mChkSimpleConfig.addSelectionListener(this.mPageController);
       this.mChkSimpleConfig.setSelection(mProjectConfig.isUseSimpleConfig());
 
-      FormData fd = new FormData();
+      FormData formData = new FormData();
       // fd.left = new FormAttachment(this.mChkEnable, 0, SWT.RIGHT);
-      fd.top = new FormAttachment(0, 3);
-      fd.right = new FormAttachment(100, -3);
-      this.mChkSimpleConfig.setLayoutData(fd);
+      formData.top = new FormAttachment(0, 3);
+      formData.right = new FormAttachment(100, -3);
+      this.mChkSimpleConfig.setLayoutData(formData);
 
       // create the checkbox to enable/disable checkstyle
       this.mChkEnable = new Button(container, SWT.CHECK);
@@ -236,11 +236,11 @@ public class CheckstylePropertyPage extends PropertyPage {
       this.mChkEnable.addSelectionListener(this.mPageController);
       this.mChkEnable.setSelection(mCheckstyleInitiallyActivated);
 
-      fd = new FormData();
-      fd.left = new FormAttachment(0, 3);
-      fd.top = new FormAttachment(0, 3);
-      fd.right = new FormAttachment(this.mChkSimpleConfig, 3, SWT.LEFT);
-      this.mChkEnable.setLayoutData(fd);
+      formData = new FormData();
+      formData.left = new FormAttachment(0, 3);
+      formData.top = new FormAttachment(0, 3);
+      formData.right = new FormAttachment(this.mChkSimpleConfig, 3, SWT.LEFT);
+      this.mChkEnable.setLayoutData(formData);
 
       // create the checkbox for formatter syncing
       this.mChkSyncFormatter = new Button(container, SWT.CHECK);
@@ -248,30 +248,30 @@ public class CheckstylePropertyPage extends PropertyPage {
       this.mChkSyncFormatter.addSelectionListener(this.mPageController);
       this.mChkSyncFormatter.setSelection(mProjectConfig.isSyncFormatter());
 
-      fd = new FormData();
-      fd.left = new FormAttachment(0, 3);
-      fd.top = new FormAttachment(this.mChkEnable, 3, SWT.BOTTOM);
-      this.mChkSyncFormatter.setLayoutData(fd);
+      formData = new FormData();
+      formData.left = new FormAttachment(0, 3);
+      formData.top = new FormAttachment(this.mChkEnable, 3, SWT.BOTTOM);
+      this.mChkSyncFormatter.setLayoutData(formData);
 
       // create the configuration area
       mFileSetsContainer = new Composite(container, SWT.NULL);
       final Control configArea = createFileSetsArea(mFileSetsContainer);
-      fd = new FormData();
-      fd.left = new FormAttachment(0, 3);
-      fd.top = new FormAttachment(this.mChkSyncFormatter, 6, SWT.BOTTOM);
-      fd.right = new FormAttachment(100, -3);
-      fd.bottom = new FormAttachment(45);
-      configArea.setLayoutData(fd);
+      formData = new FormData();
+      formData.left = new FormAttachment(0, 3);
+      formData.top = new FormAttachment(this.mChkSyncFormatter, 6, SWT.BOTTOM);
+      formData.right = new FormAttachment(100, -3);
+      formData.bottom = new FormAttachment(45);
+      configArea.setLayoutData(formData);
 
       // create the filter area
       final Control filterArea = createFilterArea(container);
-      fd = new FormData();
-      fd.left = new FormAttachment(0, 3);
-      fd.top = new FormAttachment(configArea, 3, SWT.BOTTOM);
-      fd.right = new FormAttachment(100, -3);
-      fd.bottom = new FormAttachment(100, -3);
-      fd.width = 500;
-      filterArea.setLayoutData(fd);
+      formData = new FormData();
+      formData.left = new FormAttachment(0, 3);
+      formData.top = new FormAttachment(configArea, 3, SWT.BOTTOM);
+      formData.right = new FormAttachment(100, -3);
+      formData.bottom = new FormAttachment(100, -3);
+      formData.width = 500;
+      filterArea.setLayoutData(formData);
 
       // create the local configurations area
       Control localConfigArea = createLocalConfigArea(mMainTab);
@@ -284,8 +284,8 @@ public class CheckstylePropertyPage extends PropertyPage {
       localItem.setControl(localConfigArea);
       localItem.setText(Messages.CheckstylePropertyPage_tabCheckConfigs);
 
-    } catch (CheckstylePluginException e) {
-      CheckstyleUIPlugin.errorDialog(getShell(), Messages.errorOpeningPropertiesPage, e, true);
+    } catch (CheckstylePluginException ex) {
+      CheckstyleUIPlugin.errorDialog(getShell(), Messages.errorOpeningPropertiesPage, ex, true);
     }
 
     return container;
@@ -315,12 +315,12 @@ public class CheckstylePropertyPage extends PropertyPage {
     final Control editor = mFileSetsEditor.createContents(mFileSetsContainer);
 
     fileSetsContainer.setLayout(new FormLayout());
-    FormData fd = new FormData();
-    fd.left = new FormAttachment(0);
-    fd.top = new FormAttachment(0);
-    fd.right = new FormAttachment(100);
-    fd.bottom = new FormAttachment(100);
-    editor.setLayoutData(fd);
+    FormData formData = new FormData();
+    formData.left = new FormAttachment(0);
+    formData.top = new FormAttachment(0);
+    formData.right = new FormAttachment(100);
+    formData.bottom = new FormAttachment(100);
+    editor.setLayoutData(formData);
 
     return fileSetsContainer;
   }
@@ -342,12 +342,12 @@ public class CheckstylePropertyPage extends PropertyPage {
     this.mFilterList = CheckboxTableViewer.newCheckList(filterArea, SWT.BORDER);
     this.mBtnEditFilter = new Button(filterArea, SWT.PUSH);
 
-    FormData fd = new FormData();
-    fd.left = new FormAttachment(0, 3);
-    fd.top = new FormAttachment(0, 3);
-    fd.right = new FormAttachment(this.mBtnEditFilter, -3, SWT.LEFT);
-    fd.bottom = new FormAttachment(60, -3);
-    this.mFilterList.getTable().setLayoutData(fd);
+    FormData formData = new FormData();
+    formData.left = new FormAttachment(0, 3);
+    formData.top = new FormAttachment(0, 3);
+    formData.right = new FormAttachment(this.mBtnEditFilter, -3, SWT.LEFT);
+    formData.bottom = new FormAttachment(60, -3);
+    this.mFilterList.getTable().setLayoutData(formData);
 
     this.mFilterList.setLabelProvider(new LabelProvider() {
 
@@ -379,28 +379,28 @@ public class CheckstylePropertyPage extends PropertyPage {
     this.mBtnEditFilter.setText(Messages.CheckstylePropertyPage_btnChangeFilter);
     this.mBtnEditFilter.addSelectionListener(this.mPageController);
 
-    fd = new FormData();
-    fd.top = new FormAttachment(0, 3);
-    fd.right = new FormAttachment(100, -3);
-    this.mBtnEditFilter.setLayoutData(fd);
+    formData = new FormData();
+    formData.top = new FormAttachment(0, 3);
+    formData.right = new FormAttachment(100, -3);
+    this.mBtnEditFilter.setLayoutData(formData);
 
     // Description
     Label lblDesc = new Label(filterArea, SWT.LEFT);
     lblDesc.setText(Messages.CheckstylePropertyPage_lblDescription);
-    fd = new FormData();
-    fd.left = new FormAttachment(0, 3);
-    fd.top = new FormAttachment(this.mFilterList.getTable(), 3, SWT.BOTTOM);
-    fd.right = new FormAttachment(100, -3);
-    lblDesc.setLayoutData(fd);
+    formData = new FormData();
+    formData.left = new FormAttachment(0, 3);
+    formData.top = new FormAttachment(this.mFilterList.getTable(), 3, SWT.BOTTOM);
+    formData.right = new FormAttachment(100, -3);
+    lblDesc.setLayoutData(formData);
 
     this.mTxtFilterDescription = new Text(filterArea,
             SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.READ_ONLY | SWT.BORDER | SWT.VERTICAL);
-    fd = new FormData();
-    fd.left = new FormAttachment(0, 3);
-    fd.top = new FormAttachment(lblDesc, 3, SWT.BOTTOM);
-    fd.right = new FormAttachment(100, -3);
-    fd.bottom = new FormAttachment(100, -3);
-    this.mTxtFilterDescription.setLayoutData(fd);
+    formData = new FormData();
+    formData.left = new FormAttachment(0, 3);
+    formData.top = new FormAttachment(lblDesc, 3, SWT.BOTTOM);
+    formData.right = new FormAttachment(100, -3);
+    formData.bottom = new FormAttachment(100, -3);
+    this.mTxtFilterDescription.setLayoutData(formData);
 
     // intialize filter list
     List<IFilter> filterDefs = mProjectConfig.getFilters();
@@ -431,9 +431,9 @@ public class CheckstylePropertyPage extends PropertyPage {
 
     Label lblHint = new Label(noteAndEditor, SWT.WRAP);
     lblHint.setText(Messages.CheckstylePropertyPage_msgLocalConfigs);
-    GridData gd = new GridData(GridData.FILL_HORIZONTAL);
-    gd.widthHint = 200;
-    lblHint.setLayoutData(gd);
+    GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+    gridData.widthHint = 200;
+    lblHint.setLayoutData(gridData);
 
     mWorkingSetEditor = new CheckConfigurationWorkingSetEditor(
             mProjectConfig.getLocalCheckConfigWorkingSet(), false);
@@ -457,7 +457,7 @@ public class CheckstylePropertyPage extends PropertyPage {
         if (checkConfig != null) {
           try {
             checkConfig.getCheckstyleConfiguration();
-          } catch (CheckstylePluginException e) {
+          } catch (CheckstylePluginException ex) {
             setErrorMessage(NLS.bind(Messages.errorCannotResolveCheckLocation,
                     checkConfig.getLocation(), checkConfig.getName()));
             return false;
@@ -534,8 +534,8 @@ public class CheckstylePropertyPage extends PropertyPage {
           rebuildOperation.schedule();
         }
       }
-    } catch (CheckstylePluginException e) {
-      CheckstyleUIPlugin.errorDialog(getShell(), e, true);
+    } catch (CheckstylePluginException ex) {
+      CheckstyleUIPlugin.errorDialog(getShell(), ex, true);
     }
     return true;
   }

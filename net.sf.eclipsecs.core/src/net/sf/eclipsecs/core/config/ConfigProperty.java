@@ -157,7 +157,7 @@ public class ConfigProperty implements Comparable<ConfigProperty>, Cloneable {
     try {
       ConfigProperty clone = (ConfigProperty) super.clone();
       return clone;
-    } catch (CloneNotSupportedException e) {
+    } catch (CloneNotSupportedException ex) {
       throw new InternalError(); // Should not happen
     }
   }

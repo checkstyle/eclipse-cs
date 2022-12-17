@@ -169,29 +169,29 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
 
     mRadioOnAnyResource = new Button(onResourceGroup, SWT.RADIO);
     mRadioOnAnyResource.setText(Messages.CheckstyleMarkerFilterDialog_btnOnAnyResource);
-    GridData gd = new GridData();
-    gd.horizontalSpan = 3;
-    mRadioOnAnyResource.setLayoutData(gd);
+    GridData gridData = new GridData();
+    gridData.horizontalSpan = 3;
+    mRadioOnAnyResource.setLayoutData(gridData);
 
     mRadioAnyResourceInSameProject = new Button(onResourceGroup, SWT.RADIO);
     mRadioAnyResourceInSameProject
             .setText(Messages.CheckstyleMarkerFilterDialog_btnOnAnyResourceInSameProject);
-    gd = new GridData();
-    gd.horizontalSpan = 3;
-    mRadioAnyResourceInSameProject.setLayoutData(gd);
+    gridData = new GridData();
+    gridData.horizontalSpan = 3;
+    mRadioAnyResourceInSameProject.setLayoutData(gridData);
 
     mRadioSelectedResource = new Button(onResourceGroup, SWT.RADIO);
     mRadioSelectedResource.setText(Messages.CheckstyleMarkerFilterDialog_btnOnSelectedResource);
-    gd = new GridData();
-    gd.horizontalSpan = 3;
-    mRadioSelectedResource.setLayoutData(gd);
+    gridData = new GridData();
+    gridData.horizontalSpan = 3;
+    mRadioSelectedResource.setLayoutData(gridData);
 
     mRadioSelectedResourceAndChildren = new Button(onResourceGroup, SWT.RADIO);
     mRadioSelectedResourceAndChildren
             .setText(Messages.CheckstyleMarkerFilterDialog_btnOnSelectedResourceAndChilds);
-    gd = new GridData();
-    gd.horizontalSpan = 3;
-    mRadioSelectedResourceAndChildren.setLayoutData(gd);
+    gridData = new GridData();
+    gridData.horizontalSpan = 3;
+    mRadioSelectedResourceAndChildren.setLayoutData(gridData);
 
     mRadioSelectedWorkingSet = new Button(onResourceGroup, SWT.RADIO);
     mRadioSelectedWorkingSet.setText(Messages.CheckstyleMarkerFilterDialog_btnOnWorkingSet);
@@ -203,19 +203,19 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
 
     mBtnWorkingSet = new Button(onResourceGroup, SWT.PUSH);
     mBtnWorkingSet.setText(Messages.CheckstyleMarkerFilterDialog_btnSelect);
-    gd = new GridData();
-    gd.horizontalSpan = 1;
-    gd.verticalSpan = 2;
-    mBtnWorkingSet.setLayoutData(gd);
+    gridData = new GridData();
+    gridData.horizontalSpan = 1;
+    gridData.verticalSpan = 2;
+    mBtnWorkingSet.setLayoutData(gridData);
     mBtnWorkingSet.addSelectionListener(mController);
 
     Composite severityGroup = new Composite(onResourceGroup, SWT.NULL);
     GridLayout layout = new GridLayout(4, false);
     layout.marginWidth = 0;
     severityGroup.setLayout(layout);
-    gd = new GridData(GridData.FILL_HORIZONTAL);
-    gd.horizontalSpan = 3;
-    severityGroup.setLayoutData(gd);
+    gridData = new GridData(GridData.FILL_HORIZONTAL);
+    gridData.horizontalSpan = 3;
+    severityGroup.setLayoutData(gridData);
 
     mChkSeverityEnabled = new Button(severityGroup, SWT.CHECK);
     mChkSeverityEnabled.setText(Messages.CheckstyleMarkerFilterDialog_btnMarkerSeverity);
@@ -238,17 +238,17 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
     mGrpRegex.setText(Messages.CheckstyleMarkerFilterDialog_lblExcludeMarkers);
     layout = new GridLayout(3, false);
     mGrpRegex.setLayout(layout);
-    gd = new GridData(GridData.FILL_HORIZONTAL);
-    mGrpRegex.setLayoutData(gd);
+    gridData = new GridData(GridData.FILL_HORIZONTAL);
+    mGrpRegex.setLayoutData(gridData);
 
     mChkSelectByRegex = new Button(mGrpRegex, SWT.CHECK);
     mChkSelectByRegex.setText(Messages.CheckstyleMarkerFilterDialog_lblRegex);
     mChkSelectByRegex.setLayoutData(new GridData());
 
     mLblRegexFilter = new Label(mGrpRegex, SWT.NULL);
-    gd = new GridData(GridData.FILL_HORIZONTAL);
-    gd.widthHint = 100;
-    mLblRegexFilter.setLayoutData(gd);
+    gridData = new GridData(GridData.FILL_HORIZONTAL);
+    gridData.widthHint = 100;
+    mLblRegexFilter.setLayoutData(gridData);
 
     mBtnEditRegex = new Button(mGrpRegex, SWT.PUSH);
     mBtnEditRegex.setText(Messages.CheckstyleMarkerFilterDialog_btnEdit);
@@ -522,8 +522,8 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
       Composite main = new Composite(composite, SWT.NONE);
       GridLayout layout = new GridLayout(2, false);
       main.setLayout(layout);
-      GridData gd = new GridData(GridData.FILL_BOTH);
-      main.setLayoutData(gd);
+      GridData gridData = new GridData(GridData.FILL_BOTH);
+      main.setLayoutData(gridData);
 
       final Composite controls = new Composite(main, SWT.NONE);
       layout = new GridLayout(1, false);
@@ -540,15 +540,15 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
       buttons.setLayoutData(new GridData(GridData.FILL_VERTICAL));
 
       mRegexText = new Text(controls, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
-      gd = new GridData(GridData.FILL_HORIZONTAL);
-      gd.grabExcessHorizontalSpace = true;
-      mRegexText.setLayoutData(gd);
+      gridData = new GridData(GridData.FILL_HORIZONTAL);
+      gridData.grabExcessHorizontalSpace = true;
+      mRegexText.setLayoutData(gridData);
 
       mAddButton = new Button(buttons, SWT.PUSH);
       mAddButton.setText(Messages.CheckstyleMarkerFilterDialog_btnAdd);
-      gd = new GridData(GridData.FILL_HORIZONTAL);
-      gd.verticalAlignment = SWT.TOP;
-      mAddButton.setLayoutData(gd);
+      gridData = new GridData(GridData.FILL_HORIZONTAL);
+      gridData.verticalAlignment = SWT.TOP;
+      mAddButton.setLayoutData(gridData);
       mAddButton.addSelectionListener(new SelectionListener() {
 
         @Override
@@ -582,17 +582,17 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
       mListViewer.setLabelProvider(new LabelProvider());
       mListViewer.setContentProvider(new ArrayContentProvider());
       mListViewer.setInput(mFileTypesList);
-      gd = new GridData(GridData.FILL_BOTH);
-      gd.heightHint = 100;
-      gd.widthHint = 150;
-      gd.grabExcessHorizontalSpace = true;
-      mListViewer.getControl().setLayoutData(gd);
+      gridData = new GridData(GridData.FILL_BOTH);
+      gridData.heightHint = 100;
+      gridData.widthHint = 150;
+      gridData.grabExcessHorizontalSpace = true;
+      mListViewer.getControl().setLayoutData(gridData);
 
       mRemoveButton = new Button(buttons, SWT.PUSH);
       mRemoveButton.setText(Messages.CheckstyleMarkerFilterDialog_btnRemove);
-      gd = new GridData(GridData.FILL_HORIZONTAL);
-      gd.verticalAlignment = SWT.TOP;
-      mRemoveButton.setLayoutData(gd);
+      gridData = new GridData(GridData.FILL_HORIZONTAL);
+      gridData.verticalAlignment = SWT.TOP;
+      mRemoveButton.setLayoutData(gridData);
       mRemoveButton.addSelectionListener(new SelectionListener() {
 
         @Override

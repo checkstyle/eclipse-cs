@@ -141,22 +141,22 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
     // Create the general section of the screen.
     //
     final Composite generalComposite = createGeneralContents(parentComposite);
-    FormData fd = new FormData();
-    fd.left = new FormAttachment(0);
-    fd.top = new FormAttachment(0);
-    fd.right = new FormAttachment(100);
-    generalComposite.setLayoutData(fd);
+    FormData formData = new FormData();
+    formData.left = new FormAttachment(0);
+    formData.top = new FormAttachment(0);
+    formData.right = new FormAttachment(100);
+    generalComposite.setLayoutData(formData);
 
     //
     // Create the check configuration section of the screen.
     //
     final Composite configComposite = createCheckConfigContents(parentComposite);
-    fd = new FormData();
-    fd.left = new FormAttachment(0);
-    fd.top = new FormAttachment(generalComposite, 3, SWT.BOTTOM);
-    fd.right = new FormAttachment(100);
-    fd.bottom = new FormAttachment(100);
-    configComposite.setLayoutData(fd);
+    formData = new FormData();
+    formData.left = new FormAttachment(0);
+    formData.top = new FormAttachment(generalComposite, 3, SWT.BOTTOM);
+    formData.right = new FormAttachment(100);
+    formData.bottom = new FormAttachment(100);
+    configComposite.setLayoutData(formData);
 
     return parentComposite;
   }
@@ -223,12 +223,12 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
             .setImage(CheckstyleUIPluginImages.REFRESH_ICON.getImage());
     mPurgeCacheButton.setToolTipText(Messages.CheckstylePreferencePage_btnRefreshCheckerCache);
     mPurgeCacheButton.addSelectionListener(mController);
-    GridData gd = new GridData();
-    gd.horizontalAlignment = GridData.END;
-    gd.grabExcessHorizontalSpace = true;
-    gd.heightHint = 20;
-    gd.widthHint = 20;
-    mPurgeCacheButton.setLayoutData(gd);
+    GridData gridData = new GridData();
+    gridData.horizontalAlignment = GridData.END;
+    gridData.grabExcessHorizontalSpace = true;
+    gridData.heightHint = 20;
+    gridData.widthHint = 20;
+    mPurgeCacheButton.setLayoutData(gridData);
 
     //
     // Create the "Fileset warning" check box.
@@ -296,9 +296,9 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
 
     mTxtMarkerLimit.setText(Integer.toString(
             CheckstylePluginPrefs.getInt(CheckstylePluginPrefs.PREF_MARKER_AMOUNT_LIMIT)));
-    gd = new GridData();
-    gd.widthHint = 30;
-    mTxtMarkerLimit.setLayoutData(gd);
+    gridData = new GridData();
+    gridData.widthHint = 30;
+    mTxtMarkerLimit.setLayoutData(gridData);
 
     lblRebuildNote = new Label(limitMarkersComposite, SWT.NULL);
     lblRebuildNote.setImage(CheckstyleUIPluginImages.HELP_ICON.getImage());
@@ -338,12 +338,12 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
 
     mWorkingSetEditor = new CheckConfigurationWorkingSetEditor(mWorkingSet, true);
     final Control editorControl = mWorkingSetEditor.createContents(configComposite);
-    FormData fd = new FormData();
-    fd.left = new FormAttachment(0, 3);
-    fd.top = new FormAttachment(0, 3);
-    fd.right = new FormAttachment(100, -3);
-    fd.bottom = new FormAttachment(100, -3);
-    editorControl.setLayoutData(fd);
+    FormData formData = new FormData();
+    formData.left = new FormAttachment(0, 3);
+    formData.top = new FormAttachment(0, 3);
+    formData.right = new FormAttachment(100, -3);
+    formData.bottom = new FormAttachment(100, -3);
+    editorControl.setLayoutData(formData);
 
     return configComposite;
   }
@@ -463,14 +463,14 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
             CheckstyleBuilder.buildProjects(projectsToBuild);
           }
 
-        } catch (CheckstylePluginException e) {
+        } catch (CheckstylePluginException ex) {
           CheckstyleUIPlugin.errorDialog(getShell(),
-                  NLS.bind(Messages.errorFailedRebuild, e.getMessage()), e, true);
+                  NLS.bind(Messages.errorFailedRebuild, ex.getMessage()), ex, true);
         }
       }
-    } catch (CheckstylePluginException | BackingStoreException e) {
+    } catch (CheckstylePluginException | BackingStoreException ex) {
       CheckstyleUIPlugin.errorDialog(getShell(),
-              NLS.bind(Messages.errorFailedSavePreferences, e.getLocalizedMessage()), e, true);
+              NLS.bind(Messages.errorFailedSavePreferences, ex.getLocalizedMessage()), ex, true);
     }
 
     return true;

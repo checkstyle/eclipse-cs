@@ -70,13 +70,13 @@ public class ExplicitInitializationQuickfix extends AbstractASTResolution {
       in.close();
       final String snippet = new String(buffer, resource.getCharset());
       mFieldName = snippet.substring(0, snippet.indexOf('=')).trim();
-    } catch (final CoreException | IOException | IndexOutOfBoundsException | ClassCastException | NullPointerException e) {
-      handleRetrieveFieldNameException(e);
+    } catch (final CoreException | IOException | IndexOutOfBoundsException | ClassCastException | NullPointerException ex) {
+      handleRetrieveFieldNameException(ex);
     }
   }
 
-  private void handleRetrieveFieldNameException(final Exception e) {
-    CheckstyleLog.log(e, Messages.ExplicitInitializationQuickfix_errorMessageFieldName);
+  private void handleRetrieveFieldNameException(final Exception error) {
+    CheckstyleLog.log(error, Messages.ExplicitInitializationQuickfix_errorMessageFieldName);
   }
 
   /**

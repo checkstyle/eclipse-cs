@@ -74,8 +74,8 @@ public class ProjectConfigurationType extends ConfigurationType {
 
         File file = URIUtil.toFile(checkConfiguration.getResolvedConfigurationFileURL().toURI());
         isConfigurable = file != null && file.canWrite();
-      } catch (CheckstylePluginException | URISyntaxException e) {
-        CheckstyleLog.log(e);
+      } catch (CheckstylePluginException | URISyntaxException ex) {
+        CheckstyleLog.log(ex);
         isConfigurable = false;
       }
     }

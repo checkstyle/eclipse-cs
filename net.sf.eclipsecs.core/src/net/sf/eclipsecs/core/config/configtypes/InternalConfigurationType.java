@@ -79,8 +79,8 @@ public class InternalConfigurationType extends ConfigurationType {
         if (configFile != null) {
           configFile.delete();
         }
-      } catch (URISyntaxException e) {
-        CheckstylePluginException.rethrow(e);
+      } catch (URISyntaxException ex) {
+        CheckstylePluginException.rethrow(ex);
       }
     }
   }

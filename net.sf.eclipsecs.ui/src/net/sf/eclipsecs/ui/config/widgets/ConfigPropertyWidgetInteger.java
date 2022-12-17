@@ -107,8 +107,8 @@ public class ConfigPropertyWidgetInteger extends ConfigPropertyWidgetAbstractBas
       // Parse the value to see if an exception gets thrown.
       //
       Integer.parseInt(mTextWidget.getText());
-    } catch (NumberFormatException e) {
-      CheckstylePluginException.rethrow(e, e.getLocalizedMessage());
+    } catch (NumberFormatException ex) {
+      CheckstylePluginException.rethrow(ex, ex.getLocalizedMessage());
     }
   }
 }

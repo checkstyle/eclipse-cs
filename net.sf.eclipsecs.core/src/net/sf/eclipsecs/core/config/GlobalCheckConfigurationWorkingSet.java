@@ -168,8 +168,8 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
 
         mDeletedConfigurations.add(checkConfig);
       }
-    } catch (CheckstylePluginException e) {
-      CheckstyleLog.log(e);
+    } catch (CheckstylePluginException ex) {
+      CheckstyleLog.log(ex);
     }
     return !used;
   }
@@ -317,8 +317,8 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
       // prevents corrupted files in case of error
       byte[] data = XMLUtil.toByteArray(doc);
       Files.write(data, configFile);
-    } catch (IOException e) {
-      CheckstylePluginException.rethrow(e, Messages.errorWritingConfigFile);
+    } catch (IOException ex) {
+      CheckstylePluginException.rethrow(ex, Messages.errorWritingConfigFile);
     }
   }
 
@@ -326,7 +326,7 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
    * Notifies the check configurations that have been deleted.
    *
    * @throws CheckstylePluginException
-   *           an exception while notifiing for deletion
+   *           an exception while notifying for deletion
    */
   private void notifyDeletedCheckConfigs() throws CheckstylePluginException {
 

@@ -94,14 +94,14 @@ public class CheckConfigurationTester {
       resolver = multiResolver;
     }
 
-    InputSource in = null;
+    InputSource input = null;
     try {
-      in = configFile.getCheckConfigFileInputSource();
-      ConfigurationLoader.loadConfiguration(in, resolver, IgnoredModulesOptions.EXECUTE);
-    } catch (CheckstyleException e) {
-      CheckstylePluginException.rethrow(e);
+      input = configFile.getCheckConfigFileInputSource();
+      ConfigurationLoader.loadConfiguration(input, resolver, IgnoredModulesOptions.EXECUTE);
+    } catch (CheckstyleException ex) {
+      CheckstylePluginException.rethrow(ex);
     } finally {
-      Closeables.closeQuietly(in.getByteStream());
+      Closeables.closeQuietly(input.getByteStream());
     }
 
     return collector.getUnresolvedProperties();

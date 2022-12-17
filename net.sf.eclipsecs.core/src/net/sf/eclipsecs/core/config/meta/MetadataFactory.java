@@ -396,7 +396,7 @@ public final class MetadataFactory {
       } else {
         parent = XMLTags.TREEWALKER_MODULE;
       }
-    } catch (Exception e) {
+    } catch (Exception ex) {
       // Ok we tried... default to TreeWalker
       parent = XMLTags.TREEWALKER_MODULE;
     }
@@ -478,7 +478,7 @@ public final class MetadataFactory {
 
         String message = resourceBundle.getString(messageKey);
         return message;
-      } catch (MissingResourceException e) {
+      } catch (MissingResourceException ex) {
         // let's continue to check the other alternative names
       }
     }
@@ -542,8 +542,8 @@ public final class MetadataFactory {
     sPackageNameSet = new HashSet<>();
     try {
       doInitialization();
-    } catch (CheckstylePluginException e) {
-      CheckstyleLog.log(e);
+    } catch (CheckstylePluginException ex) {
+      CheckstyleLog.log(ex);
     }
   }
 
@@ -572,8 +572,8 @@ public final class MetadataFactory {
           ResourceBundle metadataBundle = getMetadataI18NBundle(metadataFile, classLoader);
           parseMetadata(metadataStream, metadataBundle);
         }
-      } catch (DocumentException | IOException e) {
-        CheckstyleLog.log(e, "Could not read metadata " + metadataFile); //$NON-NLS-1$
+      } catch (DocumentException | IOException ex) {
+        CheckstyleLog.log(ex, "Could not read metadata " + metadataFile); //$NON-NLS-1$
       }
     }
 
@@ -655,8 +655,8 @@ public final class MetadataFactory {
     Set<String> packages = null;
     try {
       packages = PackageNamesLoader.getPackageNames(classLoader);
-    } catch (CheckstyleException e) {
-      CheckstylePluginException.rethrow(e);
+    } catch (CheckstyleException ex) {
+      CheckstylePluginException.rethrow(ex);
     }
     sPackageNameSet.addAll(packages);
 
@@ -686,7 +686,7 @@ public final class MetadataFactory {
     String bundle = metadataFile.substring(0, metadataFile.length() - 4).replace('/', '.');
     try {
       return ResourceBundle.getBundle(bundle, CheckstylePlugin.getPlatformLocale(), classLoader);
-    } catch (MissingResourceException e) {
+    } catch (MissingResourceException ex) {
       return null;
     }
   }
@@ -718,8 +718,8 @@ public final class MetadataFactory {
         int priority = 0;
         try {
           priority = Integer.parseInt(groupEl.attributeValue(XMLTags.PRIORITY_TAG));
-        } catch (Exception e) {
-          CheckstyleLog.log(e);
+        } catch (Exception ex) {
+          CheckstyleLog.log(ex);
           priority = Integer.MAX_VALUE;
         }
 
@@ -851,8 +851,8 @@ public final class MetadataFactory {
                 property.getPropertyEnumeration().add(e.name().toLowerCase());
               }
             }
-          } catch (ReflectiveOperationException e) {
-            CheckstylePluginException.rethrow(e);
+          } catch (ReflectiveOperationException ex) {
+            CheckstylePluginException.rethrow(ex);
           }
 
         }
@@ -872,7 +872,7 @@ public final class MetadataFactory {
             && localizationCandidate.startsWith("%")) {
       try {
         return metadataBundle.getString(localizationCandidate.substring(1));
-      } catch (MissingResourceException e) {
+      } catch (MissingResourceException ex) {
         return localizationCandidate;
       }
     }

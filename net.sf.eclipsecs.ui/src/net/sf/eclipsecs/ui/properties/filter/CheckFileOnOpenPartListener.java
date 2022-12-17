@@ -159,8 +159,8 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
     if (editorFile != null && isFileAffected(editorFile)) {
       try {
         editorFile.deleteMarkers(CheckstyleMarker.MARKER_ID, true, IResource.DEPTH_INFINITE);
-      } catch (CoreException e) {
-        CheckstyleLog.log(e);
+      } catch (CoreException ex) {
+        CheckstyleLog.log(ex);
       }
     }
   }
@@ -253,13 +253,13 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
     return file;
   }
 
-  private IEditorInput getRestoredInput(IEditorReference e) {
+  private IEditorInput getRestoredInput(IEditorReference editorRef) {
 
     IMemento editorMem = null;
     if (CheckstyleUIPlugin.isE3()) {
-      editorMem = getMementoE3(e);
+      editorMem = getMementoE3(editorRef);
     } else {
-      editorMem = getMementoE4(e);
+      editorMem = getMementoE4(editorRef);
     }
 
     if (editorMem == null) {
@@ -291,7 +291,7 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
     return (IEditorInput) input;
   }
 
-  private IMemento getMementoE4(IEditorReference e) {
+  private IMemento getMementoE4(IEditorReference editorRef) {
 
     try {
 
@@ -300,10 +300,10 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
       // e.getModel();
       // Map<String, String> state = model.getPersistedState()
 
-      Method getModelMethod = e.getClass().getMethod("getModel", new Class<?>[0]);
+      Method getModelMethod = editorRef.getClass().getMethod("getModel", new Class<?>[0]);
       getModelMethod.setAccessible(true);
 
-      Object model = getModelMethod.invoke(e, (Object[]) null);
+      Object model = getModelMethod.invoke(editorRef, (Object[]) null);
 
       Method getPersistedStateMethod = model.getClass().getMethod("getPersistedState",
               new Class<?>[0]);
@@ -319,31 +319,31 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
 
         try {
           return XMLMemento.createReadRoot(new StringReader(memento));
-        } catch (WorkbenchException e1) {
-          CheckstyleLog.log(e1);
+        } catch (WorkbenchException ex) {
+          CheckstyleLog.log(ex);
         }
       }
-    } catch (NoSuchMethodException | SecurityException | IllegalAccessException | InvocationTargetException e1) {
-      CheckstyleLog.log(e1);
+    } catch (NoSuchMethodException | SecurityException | IllegalAccessException | InvocationTargetException ex) {
+      CheckstyleLog.log(ex);
     }
 
     return null;
 
   }
 
-  private IMemento getMementoE3(IEditorReference e) {
+  private IMemento getMementoE3(IEditorReference editorRef) {
 
     try {
 
       // the direct method vanished from E4 EditorReference class
       // in order to build on E4 we need to do this the dirty way via reflection
-      Method getMementoMethod = e.getClass().getMethod("getMemento", new Class<?>[0]);
+      Method getMementoMethod = editorRef.getClass().getMethod("getMemento", new Class<?>[0]);
       getMementoMethod.setAccessible(true);
 
-      IMemento memento = (IMemento) getMementoMethod.invoke(e, (Object[]) null);
+      IMemento memento = (IMemento) getMementoMethod.invoke(editorRef, (Object[]) null);
       return memento;
-    } catch (NoSuchMethodException | SecurityException | IllegalAccessException | InvocationTargetException e1) {
-      CheckstyleLog.log(e1);
+    } catch (NoSuchMethodException | SecurityException | IllegalAccessException | InvocationTargetException ex) {
+      CheckstyleLog.log(ex);
     }
     return null;
   }
@@ -386,8 +386,8 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
 
         affected = unOpenedFilesFilterActive && !filtered;
       }
-    } catch (CoreException | CheckstylePluginException e) {
-      CheckstyleLog.log(e);
+    } catch (CoreException | CheckstylePluginException ex) {
+      CheckstyleLog.log(ex);
     }
 
     return affected;

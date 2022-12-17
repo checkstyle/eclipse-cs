@@ -165,8 +165,8 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
 
     Composite contents = new Composite(composite, SWT.NULL);
     contents.setLayout(new GridLayout(2, false));
-    GridData fd = new GridData(GridData.FILL_BOTH);
-    contents.setLayoutData(fd);
+    GridData data = new GridData(GridData.FILL_BOTH);
+    contents.setLayoutData(data);
 
     Table table = new Table(contents, SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION);
     table.setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -201,9 +201,9 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
     layout.marginHeight = 0;
     layout.marginWidth = 0;
     buttonBar.setLayout(layout);
-    GridData gd = new GridData();
-    gd.verticalAlignment = GridData.BEGINNING;
-    buttonBar.setLayoutData(gd);
+    GridData gridData = new GridData();
+    gridData.verticalAlignment = GridData.BEGINNING;
+    buttonBar.setLayoutData(gridData);
 
     mBtnAdd = new Button(buttonBar, SWT.PUSH);
     mBtnAdd.setText(Messages.ResolvablePropertiesDialog_btnAdd);
@@ -238,16 +238,16 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
 
     mBtnFind = new Button(composite, SWT.PUSH);
     mBtnFind.setText(Messages.ResolvablePropertiesDialog_btnFind);
-    GridData gd = new GridData();
-    gd.horizontalAlignment = GridData.BEGINNING;
-    gd.horizontalIndent = 5;
-    mBtnFind.setLayoutData(gd);
+    GridData gridData = new GridData();
+    gridData.horizontalAlignment = GridData.BEGINNING;
+    gridData.horizontalIndent = 5;
+    mBtnFind.setLayoutData(gridData);
     mBtnFind.addSelectionListener(mController);
 
     Control buttonBar = super.createButtonBar(composite);
-    gd = new GridData(GridData.FILL_HORIZONTAL);
-    gd.horizontalAlignment = GridData.END;
-    buttonBar.setLayoutData(gd);
+    gridData = new GridData(GridData.FILL_HORIZONTAL);
+    gridData.horizontalAlignment = GridData.END;
+    buttonBar.setLayoutData(gridData);
 
     return composite;
   }
@@ -409,16 +409,16 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
         List<ResolvableProperty> unresolvedProps = tester.getUnresolvedProperties();
 
         // filter props already in the dialogs list
-        Iterator<ResolvableProperty> it = unresolvedProps.iterator();
-        while (it.hasNext()) {
+        Iterator<ResolvableProperty> iter = unresolvedProps.iterator();
+        while (iter.hasNext()) {
 
-          ResolvableProperty prop = it.next();
+          ResolvableProperty prop = iter.next();
 
           Iterator<ResolvableProperty> it2 = mResolvableProperties.iterator();
           while (it2.hasNext()) {
 
             if (prop.getPropertyName().equals(it2.next().getPropertyName())) {
-              it.remove(); // remove the current entry
+              iter.remove(); // remove the current entry
               break;
             }
           }
@@ -427,9 +427,9 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
         if (!unresolvedProps.isEmpty()) {
 
           StringBuilder buf = new StringBuilder();
-          it = unresolvedProps.iterator();
-          while (it.hasNext()) {
-            buf.append("\t${").append(it.next().getPropertyName()).append("}\n");
+          iter = unresolvedProps.iterator();
+          while (iter.hasNext()) {
+            buf.append("\t${").append(iter.next().getPropertyName()).append("}\n");
           }
 
           boolean confirm = MessageDialog.openQuestion(getShell(),
@@ -444,8 +444,8 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
                   Messages.ResolvablePropertiesDialog_titleNoUnresolvedProps,
                   Messages.ResolvablePropertiesDialog_msgNoUnresolvedProps);
         }
-      } catch (CheckstylePluginException e) {
-        CheckstyleUIPlugin.errorDialog(getShell(), e, true);
+      } catch (CheckstylePluginException ex) {
+        CheckstyleUIPlugin.errorDialog(getShell(), ex, true);
       }
     }
 

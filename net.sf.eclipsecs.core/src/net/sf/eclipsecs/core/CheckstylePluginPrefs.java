@@ -86,8 +86,8 @@ public class CheckstylePluginPrefs extends AbstractPreferenceInitializer {
 
     try {
       prefs.flush();
-    } catch (BackingStoreException e) {
-      CheckstyleLog.log(e);
+    } catch (BackingStoreException ex) {
+      CheckstyleLog.log(ex);
     }
   }
 

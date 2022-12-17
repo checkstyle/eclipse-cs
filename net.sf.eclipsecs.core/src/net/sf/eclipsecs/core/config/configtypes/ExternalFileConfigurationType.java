@@ -69,8 +69,8 @@ public class ExternalFileConfigurationType extends ConfigurationType {
       while (PropertyUtil.hasUnresolvedProperties(newLocation)) {
         newLocation = PropertyUtil.replaceProperties(newLocation, DYNAMIC_LOC_RESOLVER);
       }
-    } catch (CheckstyleException e) {
-      CheckstylePluginException.rethrow(e);
+    } catch (CheckstyleException ex) {
+      CheckstylePluginException.rethrow(ex);
     }
     return newLocation;
   }
@@ -86,9 +86,9 @@ public class ExternalFileConfigurationType extends ConfigurationType {
     // support dynamic locations for external configurations
     try {
       location = resolveDynamicLocation(location);
-    } catch (CheckstylePluginException e) {
-      CheckstyleLog.log(e);
-      throw new IOException(e.getMessage());
+    } catch (CheckstylePluginException ex) {
+      CheckstyleLog.log(ex);
+      throw new IOException(ex.getMessage());
     }
 
     return new File(location).toURI().toURL();
@@ -114,8 +114,8 @@ public class ExternalFileConfigurationType extends ConfigurationType {
 
         // support dynamic locations for external configurations
         location = resolveDynamicLocation(location);
-      } catch (CheckstylePluginException e) {
-        CheckstyleLog.log(e);
+      } catch (CheckstylePluginException ex) {
+        CheckstyleLog.log(ex);
         isConfigurable = false;
       }
 

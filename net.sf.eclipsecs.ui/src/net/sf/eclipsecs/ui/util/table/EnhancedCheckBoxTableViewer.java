@@ -219,14 +219,14 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
    */
   public Object[] getCheckedElements() {
     TableItem[] children = getTable().getItems();
-    ArrayList<Object> v = new ArrayList<>(children.length);
+    ArrayList<Object> checked = new ArrayList<>(children.length);
     for (int i = 0; i < children.length; i++) {
       TableItem item = children[i];
       if (item.getChecked()) {
-        v.add(item.getData());
+        checked.add(item.getData());
       }
     }
-    return v.toArray();
+    return checked.toArray();
   }
 
   /**
@@ -256,14 +256,14 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
    */
   public Object[] getGrayedElements() {
     TableItem[] children = getTable().getItems();
-    List<Object> v = new ArrayList<>(children.length);
+    List<Object> grayed = new ArrayList<>(children.length);
     for (int i = 0; i < children.length; i++) {
       TableItem item = children[i];
       if (item.getGrayed()) {
-        v.add(item.getData());
+        grayed.add(item.getData());
       }
     }
-    return v.toArray();
+    return grayed.toArray();
   }
 
   /*
@@ -551,7 +551,7 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
 
     private final transient IElementComparer comparer;
 
-    private static final EmptyEnumerator emptyEnumerator = new EmptyEnumerator();
+    private static final EmptyEnumerator EMPTY_ENUMERATOR = new EmptyEnumerator();
 
     /**
      * The default capacity used when not specified in the constructor.
@@ -657,7 +657,7 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
      */
     public Enumeration<?> elements() {
       if (elementCount == 0) {
-        return emptyEnumerator;
+        return EMPTY_ENUMERATOR;
       }
       return new HashEnumerator(false);
     }
@@ -706,11 +706,11 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
     /**
      * Compares two keys for equality.
      */
-    private boolean keyEquals(Object a, Object b) {
+    private boolean keyEquals(Object left, Object right) {
       if (comparer == null) {
-        return a.equals(b);
+        return left.equals(right);
       }
-      return comparer.equals(a, b);
+      return comparer.equals(left, right);
     }
 
     /**
@@ -721,7 +721,7 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
      */
     public Enumeration<Object> keys() {
       if (elementCount == 0) {
-        return emptyEnumerator;
+        return EMPTY_ENUMERATOR;
       }
       return new HashEnumerator(true);
     }

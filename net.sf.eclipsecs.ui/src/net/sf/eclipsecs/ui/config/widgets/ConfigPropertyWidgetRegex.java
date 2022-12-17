@@ -148,8 +148,8 @@ public class ConfigPropertyWidgetRegex extends ConfigPropertyWidgetAbstractBase 
       // Compile the text to a regex pattern
       //
       Pattern.compile(mTextWidget.getText());
-    } catch (PatternSyntaxException e) {
-      CheckstylePluginException.rethrow(e, e.getLocalizedMessage());
+    } catch (PatternSyntaxException ex) {
+      CheckstylePluginException.rethrow(ex, ex.getLocalizedMessage());
     }
   }
 
@@ -164,7 +164,7 @@ public class ConfigPropertyWidgetRegex extends ConfigPropertyWidgetAbstractBase 
       }
 
       mTextWidget.setBackground(mTextBgColor);
-    } catch (PatternSyntaxException e) {
+    } catch (PatternSyntaxException ex) {
       mTextWidget.setBackground(mRedColor);
     }
   }

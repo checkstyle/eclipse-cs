@@ -170,30 +170,30 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
 
     Composite contents = new Composite(composite, SWT.NULL);
     contents.setLayout(new GridLayout(2, false));
-    GridData fd = new GridData(GridData.FILL_BOTH);
-    contents.setLayoutData(fd);
+    GridData gridData = new GridData(GridData.FILL_BOTH);
+    contents.setLayoutData(gridData);
 
     Label lblConfigType = new Label(contents, SWT.NULL);
     lblConfigType.setText(Messages.CheckConfigurationPropertiesDialog_lblConfigType);
-    fd = new GridData();
+    gridData = new GridData();
 
     // this is a weird hack to find the longest label
     // this is done to have a nice ordered appearance of the this label
     // and the labels below
     // this is very difficult to do, because they belong to different
     // layouts
-    GC gc = new GC(lblConfigType);
-    int nameSize = gc.textExtent(Messages.CheckConfigurationPropertiesDialog_lblName).x;
-    int locationsSize = gc.textExtent(Messages.CheckConfigurationPropertiesDialog_lblLocation).x;
+    GC graphics = new GC(lblConfigType);
+    int nameSize = graphics.textExtent(Messages.CheckConfigurationPropertiesDialog_lblName).x;
+    int locationsSize = graphics.textExtent(Messages.CheckConfigurationPropertiesDialog_lblLocation).x;
     int max = Math.max(nameSize, locationsSize);
-    gc.dispose();
+    graphics.dispose();
 
-    fd.widthHint = max;
-    lblConfigType.setLayoutData(fd);
+    gridData.widthHint = max;
+    lblConfigType.setLayoutData(gridData);
 
     mConfigType = new ComboViewer(contents);
-    fd = new GridData();
-    mConfigType.getCombo().setLayoutData(fd);
+    gridData = new GridData();
+    mConfigType.getCombo().setLayoutData(gridData);
     mConfigType.setContentProvider(new ArrayContentProvider());
     mConfigType.setLabelProvider(new LabelProvider() {
       /**
@@ -231,7 +231,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
             mCheckConfig = mWorkingSet.newWorkingCopy(type);
             try {
               mCheckConfig.setName(oldName);
-            } catch (CheckstylePluginException e) {
+            } catch (CheckstylePluginException ex) {
               // NOOP
             }
             mCheckConfig.setDescription(oldDescr);
@@ -247,9 +247,9 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
     layout.marginWidth = 0;
     layout.marginHeight = 0;
     mEditorPlaceHolder.setLayout(layout);
-    fd = new GridData(GridData.FILL_HORIZONTAL);
-    fd.horizontalSpan = 2;
-    mEditorPlaceHolder.setLayoutData(fd);
+    gridData = new GridData(GridData.FILL_HORIZONTAL);
+    gridData.horizontalSpan = 2;
+    mEditorPlaceHolder.setLayoutData(gridData);
 
     return composite;
   }
@@ -269,10 +269,10 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
 
     mBtnProperties = new Button(composite, SWT.PUSH);
     mBtnProperties.setText(Messages.CheckConfigurationPropertiesDialog_btnAdditionalProps);
-    GridData gd = new GridData();
-    gd.horizontalAlignment = GridData.BEGINNING;
-    gd.horizontalIndent = 5;
-    mBtnProperties.setLayoutData(gd);
+    GridData gridData = new GridData();
+    gridData.horizontalAlignment = GridData.BEGINNING;
+    gridData.horizontalIndent = 5;
+    mBtnProperties.setLayoutData(gridData);
 
     mBtnProperties.addSelectionListener(new SelectionListener() {
 
@@ -297,9 +297,9 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
     });
 
     Control buttonBar = super.createButtonBar(composite);
-    gd = new GridData(GridData.FILL_HORIZONTAL);
-    gd.horizontalAlignment = GridData.END;
-    buttonBar.setLayoutData(gd);
+    gridData = new GridData(GridData.FILL_HORIZONTAL);
+    gridData.horizontalAlignment = GridData.END;
+    buttonBar.setLayoutData(gridData);
 
     return composite;
   }
@@ -352,9 +352,9 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
       } else {
         super.okPressed();
       }
-    } catch (CheckstylePluginException e) {
-      CheckstyleLog.log(e);
-      this.setErrorMessage(e.getLocalizedMessage());
+    } catch (CheckstylePluginException ex) {
+      CheckstyleLog.log(ex);
+      this.setErrorMessage(ex.getLocalizedMessage());
     }
   }
 
@@ -453,7 +453,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
       try {
         config.setName(uniqueName);
         break;
-      } catch (CheckstylePluginException e) {
+      } catch (CheckstylePluginException ex) {
         uniqueName = checkConfigName + " (" + counter + ")"; //$NON-NLS-1$ //$NON-NLS-2$
         counter++;
       }

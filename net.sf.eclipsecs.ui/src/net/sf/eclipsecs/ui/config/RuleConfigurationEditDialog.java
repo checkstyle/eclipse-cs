@@ -164,9 +164,9 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
     Group properties = new Group(generalSettings, SWT.NULL);
     properties.setLayout(new GridLayout(3, false));
     properties.setText(Messages.RuleConfigurationEditDialog_lblProperties);
-    GridData gd = new GridData(GridData.FILL_BOTH);
-    gd.horizontalSpan = 2;
-    properties.setLayoutData(gd);
+    GridData gridData = new GridData(GridData.FILL_BOTH);
+    gridData.horizontalSpan = 2;
+    properties.setLayoutData(gridData);
 
     createConfigPropertyEntries(properties);
 
@@ -202,9 +202,9 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
     Group messagesGroup = new Group(advancedSettings, SWT.NULL);
     messagesGroup.setText(Messages.RuleConfigurationEditDialog_titleCustMsg);
     messagesGroup.setLayout(new GridLayout(2, false));
-    GridData d = new GridData(GridData.FILL_HORIZONTAL);
-    d.horizontalSpan = 2;
-    messagesGroup.setLayoutData(d);
+    GridData data = new GridData(GridData.FILL_HORIZONTAL);
+    data.horizontalSpan = 2;
+    messagesGroup.setLayoutData(data);
 
     mCustomMessages = new HashMap<>();
 
@@ -255,10 +255,10 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
 
     mBtnTranslate = new Button(composite, SWT.CHECK);
     mBtnTranslate.setText(Messages.RuleConfigurationEditDialog_btnTranslateTokens);
-    GridData gd = new GridData();
-    gd.horizontalAlignment = GridData.BEGINNING;
-    gd.horizontalIndent = 5;
-    mBtnTranslate.setLayoutData(gd);
+    GridData gridData = new GridData();
+    gridData.horizontalAlignment = GridData.BEGINNING;
+    gridData.horizontalIndent = 5;
+    mBtnTranslate.setLayoutData(gridData);
 
     // Init the translate tokens preference
     mBtnTranslate.setSelection(
@@ -266,28 +266,28 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
     mBtnTranslate.addSelectionListener(new SelectionListener() {
 
       @Override
-      public void widgetSelected(SelectionEvent e) {
+      public void widgetSelected(SelectionEvent event) {
         // store translation preference
         try {
           CheckstyleUIPluginPrefs.setBoolean(CheckstyleUIPluginPrefs.PREF_TRANSLATE_TOKENS,
-                  ((Button) e.widget).getSelection());
-        } catch (BackingStoreException e1) {
-          CheckstyleLog.log(e1);
+                  ((Button) event.widget).getSelection());
+        } catch (BackingStoreException ex) {
+          CheckstyleLog.log(ex);
         }
       }
 
       @Override
-      public void widgetDefaultSelected(SelectionEvent e) {
+      public void widgetDefaultSelected(SelectionEvent event) {
         // NOOP
       }
     });
 
     mBtnSort = new Button(composite, SWT.CHECK);
     mBtnSort.setText(Messages.RuleConfigurationEditDialog_btnSortTokens);
-    gd = new GridData();
-    gd.horizontalAlignment = GridData.BEGINNING;
-    gd.horizontalIndent = 5;
-    mBtnSort.setLayoutData(gd);
+    gridData = new GridData();
+    gridData.horizontalAlignment = GridData.BEGINNING;
+    gridData.horizontalIndent = 5;
+    mBtnSort.setLayoutData(gridData);
 
     // Init the sort tokens preference
     mBtnSort.setSelection(
@@ -295,14 +295,14 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
     mBtnSort.addSelectionListener(new SelectionListener() {
 
       @Override
-      public void widgetSelected(SelectionEvent e) {
+      public void widgetSelected(SelectionEvent event) {
 
         // store translation preference
         try {
           CheckstyleUIPluginPrefs.setBoolean(CheckstyleUIPluginPrefs.PREF_SORT_TOKENS,
-                  ((Button) e.widget).getSelection());
-        } catch (BackingStoreException e1) {
-          CheckstyleLog.log(e1);
+                  ((Button) event.widget).getSelection());
+        } catch (BackingStoreException ex) {
+          CheckstyleLog.log(ex);
         }
       }
 
@@ -313,9 +313,9 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
     });
 
     Control buttonBar = super.createButtonBar(composite);
-    gd = new GridData(GridData.FILL_HORIZONTAL);
-    gd.horizontalAlignment = GridData.END;
-    buttonBar.setLayoutData(gd);
+    gridData = new GridData(GridData.FILL_HORIZONTAL);
+    gridData.horizontalAlignment = GridData.END;
+    buttonBar.setLayoutData(gridData);
 
     return composite;
   }
@@ -409,8 +409,8 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
     try {
       severity = (Severity) ((IStructuredSelection) mSeverityCombo.getSelection())
               .getFirstElement();
-    } catch (IllegalArgumentException e) {
-      CheckstyleLog.log(e);
+    } catch (IllegalArgumentException ex) {
+      CheckstyleLog.log(ex);
     }
 
     // Get the comment.
@@ -451,7 +451,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
 
         try {
           widget.validate();
-        } catch (CheckstylePluginException e) {
+        } catch (CheckstylePluginException ex) {
           String message = NLS.bind(Messages.RuleConfigurationEditDialog_msgInvalidPropertyValue,
                   property.getMetaData().getName());
           this.setErrorMessage(message);

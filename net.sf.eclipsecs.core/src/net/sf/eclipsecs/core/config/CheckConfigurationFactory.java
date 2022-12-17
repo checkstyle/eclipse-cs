@@ -162,8 +162,8 @@ public final class CheckConfigurationFactory {
       loadBuiltinConfigurations();
       loadFromPersistence();
 
-    } catch (CheckstylePluginException e) {
-      CheckstyleLog.log(e);
+    } catch (CheckstylePluginException ex) {
+      CheckstyleLog.log(ex);
     }
   }
 
@@ -195,8 +195,8 @@ public final class CheckConfigurationFactory {
       }
 
       exportConfiguration(targetFile, source);
-    } catch (URISyntaxException e) {
-      CheckstylePluginException.rethrow(e);
+    } catch (URISyntaxException ex) {
+      CheckstylePluginException.rethrow(ex);
     }
   }
 
@@ -218,8 +218,8 @@ public final class CheckConfigurationFactory {
 
       // Just copy the checkstyle configuration
       ByteStreams.copy(in, out);
-    } catch (Exception e) {
-      CheckstylePluginException.rethrow(e);
+    } catch (Exception ex) {
+      CheckstylePluginException.rethrow(ex);
     }
 
   }
@@ -262,8 +262,8 @@ public final class CheckConfigurationFactory {
           return FileVisitResult.CONTINUE;
         }
       });
-    } catch (IllegalStateException | IOException e) {
-      CheckstylePluginException.rethrow(e);
+    } catch (IllegalStateException | IOException ex) {
+      CheckstylePluginException.rethrow(ex);
     }
   }
 
@@ -326,8 +326,8 @@ public final class CheckConfigurationFactory {
           sDefaultCheckConfig = config;
         }
       }
-    } catch (IOException | DocumentException e) {
-      CheckstylePluginException.rethrow(e, Messages.errorLoadingConfigFile);
+    } catch (IOException | DocumentException ex) {
+      CheckstylePluginException.rethrow(ex, Messages.errorLoadingConfigFile);
     }
   }
 

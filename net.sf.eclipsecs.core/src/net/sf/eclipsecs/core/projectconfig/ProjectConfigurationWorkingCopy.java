@@ -245,10 +245,10 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
   @Override
   public List<ICheckConfiguration> getLocalCheckConfigurations() {
 
-    List<ICheckConfiguration> l = new ArrayList<>();
-    Collections.addAll(l, mLocalConfigWorkingSet.getWorkingCopies());
+    List<ICheckConfiguration> list = new ArrayList<>();
+    Collections.addAll(list, mLocalConfigWorkingSet.getWorkingCopies());
 
-    return l;
+    return list;
   }
 
   @Override
@@ -308,7 +308,7 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
         clonedFilters.add(filter.clone());
       }
       clone.mFilters = clonedFilters;
-    } catch (CloneNotSupportedException e) {
+    } catch (CloneNotSupportedException ex) {
       throw new InternalError();
     }
 
@@ -367,9 +367,9 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
       }
 
       config.getLocalCheckConfigWorkingSet().store();
-    } catch (Exception e) {
-      CheckstylePluginException.rethrow(e,
-              NLS.bind(Messages.errorWritingCheckConfigurations, e.getLocalizedMessage()));
+    } catch (Exception ex) {
+      CheckstylePluginException.rethrow(ex,
+              NLS.bind(Messages.errorWritingCheckConfigurations, ex.getLocalizedMessage()));
     }
   }
 

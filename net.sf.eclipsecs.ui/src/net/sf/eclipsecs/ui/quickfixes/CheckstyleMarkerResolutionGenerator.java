@@ -108,8 +108,8 @@ public class CheckstyleMarkerResolutionGenerator implements IMarkerResolutionGen
         fix.setRuleMetaData(ruleMetadata);
         fixes.add(fix);
       }
-    } catch (ReflectiveOperationException | IllegalArgumentException | SecurityException e) {
-      CheckstyleLog.log(e);
+    } catch (ReflectiveOperationException | IllegalArgumentException | SecurityException ex) {
+      CheckstyleLog.log(ex);
     }
     return fixes;
   }

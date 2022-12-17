@@ -76,8 +76,8 @@ public class FilesInSyncFilter extends AbstractFilter {
         int kind = synchInfo.getKind();
         hasChanges = (SyncInfo.getDirection(kind) & SyncInfo.OUTGOING) == SyncInfo.OUTGOING;
       }
-    } catch (TeamException e) {
-      CheckstyleLog.log(e);
+    } catch (TeamException ex) {
+      CheckstyleLog.log(ex);
     }
     return hasChanges;
   }

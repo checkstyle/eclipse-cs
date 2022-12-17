@@ -111,45 +111,45 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor {
 
     Label lblConfigName = new Label(contents, SWT.NULL);
     lblConfigName.setText(Messages.CheckConfigurationPropertiesDialog_lblName);
-    GridData gd = new GridData();
-    lblConfigName.setLayoutData(gd);
+    GridData gridData = new GridData();
+    lblConfigName.setLayoutData(gridData);
 
     mConfigName = new Text(contents, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
-    gd = new GridData(GridData.FILL_HORIZONTAL);
-    mConfigName.setLayoutData(gd);
+    gridData = new GridData(GridData.FILL_HORIZONTAL);
+    mConfigName.setLayoutData(gridData);
 
     Label lblConfigLocation = new Label(contents, SWT.NULL);
     lblConfigLocation.setText(Messages.CheckConfigurationPropertiesDialog_lblLocation);
-    gd = new GridData();
-    gd.verticalAlignment = GridData.VERTICAL_ALIGN_BEGINNING;
-    lblConfigLocation.setLayoutData(gd);
+    gridData = new GridData();
+    gridData.verticalAlignment = GridData.VERTICAL_ALIGN_BEGINNING;
+    lblConfigLocation.setLayoutData(gridData);
 
     mLocation = new Text(contents, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
     mLocation.setEditable(false);
-    gd = new GridData(GridData.FILL_HORIZONTAL);
-    mLocation.setLayoutData(gd);
+    gridData = new GridData(GridData.FILL_HORIZONTAL);
+    mLocation.setLayoutData(gridData);
 
     Label lblDescription = new Label(contents, SWT.NULL);
     lblDescription.setText(Messages.CheckConfigurationPropertiesDialog_lblDescription);
-    gd = new GridData();
-    gd.horizontalSpan = 2;
-    lblDescription.setLayoutData(gd);
+    gridData = new GridData();
+    gridData.horizontalSpan = 2;
+    lblDescription.setLayoutData(gridData);
 
     mDescription = new Text(contents, SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.BORDER | SWT.VERTICAL);
-    gd = new GridData(GridData.FILL_BOTH);
-    gd.horizontalSpan = 2;
-    gd.widthHint = 300;
-    gd.heightHint = 100;
-    gd.grabExcessHorizontalSpace = true;
-    gd.grabExcessVerticalSpace = true;
-    mDescription.setLayoutData(gd);
+    gridData = new GridData(GridData.FILL_BOTH);
+    gridData.horizontalSpan = 2;
+    gridData.widthHint = 300;
+    gridData.heightHint = 100;
+    gridData.grabExcessHorizontalSpace = true;
+    gridData.grabExcessVerticalSpace = true;
+    mDescription.setLayoutData(gridData);
 
     mBtnImport = new Button(contents, SWT.PUSH);
     mBtnImport.setText(Messages.InternalConfigurationEditor_btnImport);
-    gd = new GridData();
-    gd.horizontalSpan = 2;
-    gd.horizontalAlignment = GridData.END;
-    mBtnImport.setLayoutData(gd);
+    gridData = new GridData();
+    gridData.horizontalSpan = 2;
+    gridData.horizontalAlignment = GridData.END;
+    mBtnImport.setLayoutData(gridData);
 
     mBtnImport.addSelectionListener(new SelectionListener() {
 
@@ -205,11 +205,11 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor {
       String location = "internal_config_" + System.currentTimeMillis() + ".xml"; //$NON-NLS-1$ //$NON-NLS-2$
       try {
         mWorkingCopy.setLocation(location);
-      } catch (CheckstylePluginException e) {
+      } catch (CheckstylePluginException ex) {
         if (Strings.emptyToNull(location) != null && ensureFileExists(location)) {
           mWorkingCopy.setLocation(location);
         } else {
-          throw e;
+          throw ex;
         }
       }
     }
