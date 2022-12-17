@@ -105,6 +105,18 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
   }
 
   /**
+   * Creates a table viewer on the given table control. The <code>SWT.CHECK</code> style bit must be
+   * set on the given table control. The viewer has no input, no content provider, a default label
+   * provider, no sorter, and no filters.
+   *
+   * @param table
+   *          the table control
+   */
+  public EnhancedCheckBoxTableViewer(Table table) {
+    super(table);
+  }
+
+  /**
    * Creates a table viewer on a newly-created table control under the given parent. The table
    * control is created using the given SWT style bits, plus the <code>SWT.CHECK</code> style bit.
    * The table shows its contents in a single column, with no header. The viewer has no input, no
@@ -125,18 +137,6 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
   public static EnhancedCheckBoxTableViewer newCheckList(Composite parent, int style) {
     Table table = new Table(parent, SWT.CHECK | style);
     return new EnhancedCheckBoxTableViewer(table);
-  }
-
-  /**
-   * Creates a table viewer on the given table control. The <code>SWT.CHECK</code> style bit must be
-   * set on the given table control. The viewer has no input, no content provider, a default label
-   * provider, no sorter, and no filters.
-   *
-   * @param table
-   *          the table control
-   */
-  public EnhancedCheckBoxTableViewer(Table table) {
-    super(table);
   }
 
   /*
@@ -473,90 +473,25 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
   static final class CustomHashtable {
 
     /**
-     * HashMapEntry is an internal class which is used to hold the entries of a Hashtable.
+     * The default capacity used when not specified in the constructor.
      */
-    private static class HashMapEntry {
+    public static final int DEFAULT_CAPACITY = 13;
 
-      Object key;
-      Object value;
-
-      HashMapEntry next;
-
-      HashMapEntry(Object theKey, Object theValue) {
-        key = theKey;
-        value = theValue;
-      }
-    }
-
-    private static final class EmptyEnumerator implements Enumeration<Object> {
-      @Override
-      public boolean hasMoreElements() {
-        return false;
-      }
-
-      @Override
-      public Object nextElement() {
-        throw new NoSuchElementException();
-      }
-    }
-
-    private class HashEnumerator implements Enumeration<Object> {
-      boolean key;
-
-      int start;
-
-      HashMapEntry entry;
-
-      HashEnumerator(boolean isKey) {
-        key = isKey;
-        start = firstSlot;
-      }
-
-      @Override
-      public boolean hasMoreElements() {
-        if (entry != null) {
-          return true;
-        }
-        while (start <= lastSlot) {
-          if (elementData[start++] != null) {
-            entry = elementData[start - 1];
-            return true;
-          }
-        }
-        return false;
-      }
-
-      @Override
-      public Object nextElement() {
-        if (hasMoreElements()) {
-          Object result = key ? entry.key : entry.value;
-          entry = entry.next;
-          return result;
-        }
-        throw new NoSuchElementException();
-      }
-    }
+    private static final EmptyEnumerator EMPTY_ENUMERATOR = new EmptyEnumerator();
 
     transient int elementCount;
 
     transient HashMapEntry[] elementData;
 
-    private float loadFactor;
-
-    private int threshold;
-
     transient int firstSlot = 0;
 
     transient int lastSlot = -1;
 
+    private float loadFactor;
+
+    private int threshold;
+
     private final transient IElementComparer comparer;
-
-    private static final EmptyEnumerator EMPTY_ENUMERATOR = new EmptyEnumerator();
-
-    /**
-     * The default capacity used when not specified in the constructor.
-     */
-    public static final int DEFAULT_CAPACITY = 13;
 
     /**
      * Constructs a new Hashtable using the default capacity and load factor.
@@ -866,6 +801,72 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
       buffer.append('}');
       return buffer.toString();
     }
+
+    /**
+     * HashMapEntry is an internal class which is used to hold the entries of a Hashtable.
+     */
+    private static class HashMapEntry {
+
+      Object key;
+      Object value;
+
+      HashMapEntry next;
+
+      HashMapEntry(Object theKey, Object theValue) {
+        key = theKey;
+        value = theValue;
+      }
+    }
+
+    private static final class EmptyEnumerator implements Enumeration<Object> {
+      @Override
+      public boolean hasMoreElements() {
+        return false;
+      }
+
+      @Override
+      public Object nextElement() {
+        throw new NoSuchElementException();
+      }
+    }
+
+    private class HashEnumerator implements Enumeration<Object> {
+      boolean key;
+
+      int start;
+
+      HashMapEntry entry;
+
+      HashEnumerator(boolean isKey) {
+        key = isKey;
+        start = firstSlot;
+      }
+
+      @Override
+      public boolean hasMoreElements() {
+        if (entry != null) {
+          return true;
+        }
+        while (start <= lastSlot) {
+          if (elementData[start++] != null) {
+            entry = elementData[start - 1];
+            return true;
+          }
+        }
+        return false;
+      }
+
+      @Override
+      public Object nextElement() {
+        if (hasMoreElements()) {
+          Object result = key ? entry.key : entry.value;
+          entry = entry.next;
+          return result;
+        }
+        throw new NoSuchElementException();
+      }
+    }
+
   }
 
   // CHECKSTYLE:ON

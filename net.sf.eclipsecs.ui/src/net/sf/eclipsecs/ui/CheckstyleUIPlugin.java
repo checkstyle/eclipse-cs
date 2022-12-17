@@ -66,6 +66,31 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
 
   private ClassLoader mQuickfixExtensionClassLoader;
 
+  private final CheckFileOnOpenPartListener mPartListener = new CheckFileOnOpenPartListener();
+
+  private final IWindowListener mWindowListener = new IWindowListener() {
+
+    @Override
+    public void windowOpened(IWorkbenchWindow window) {
+      window.getPartService().addPartListener(mPartListener);
+    }
+
+    @Override
+    public void windowActivated(IWorkbenchWindow window) {
+    }
+
+    @Override
+    public void windowClosed(IWorkbenchWindow window) {
+      window.getPartService().removePartListener(mPartListener);
+
+    }
+
+    @Override
+    public void windowDeactivated(IWorkbenchWindow window) {
+    }
+
+  };
+
   /**
    * The constructor.
    */
@@ -253,28 +278,4 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
     return mQuickfixExtensionClassLoader;
   }
 
-  private final CheckFileOnOpenPartListener mPartListener = new CheckFileOnOpenPartListener();
-
-  private final IWindowListener mWindowListener = new IWindowListener() {
-
-    @Override
-    public void windowOpened(IWorkbenchWindow window) {
-      window.getPartService().addPartListener(mPartListener);
-    }
-
-    @Override
-    public void windowActivated(IWorkbenchWindow window) {
-    }
-
-    @Override
-    public void windowClosed(IWorkbenchWindow window) {
-      window.getPartService().removePartListener(mPartListener);
-
-    }
-
-    @Override
-    public void windowDeactivated(IWorkbenchWindow window) {
-    }
-
-  };
 }

@@ -27,10 +27,6 @@ import net.sf.eclipsecs.core.CheckstylePlugin;
  */
 public final class XMLTags {
 
-  private XMLTags() {
-    // NOOP
-  }
-
   //
   // common tags
   //
@@ -224,5 +220,9 @@ public final class XMLTags {
 
   /** default weight of a builtin configuration. */
   public static final String DEFAULT_WEIGHT = "default-weight"; //$NON-NLS-1$
+
+  private XMLTags() {
+    // NOOP
+  }
 
 }

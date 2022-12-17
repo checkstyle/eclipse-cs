@@ -486,49 +486,6 @@ public final class MetadataFactory {
   }
 
   /**
-   * Custom ResourceBundle.Control implementation which allows explicitly read the properties files
-   * as UTF-8.
-   *
-   * @author <a href="mailto:nesterenko-aleksey@list.ru">Aleksey Nesterenko</a>
-   */
-  private static class UTF8Control extends Control {
-    @Override
-    public ResourceBundle newBundle(String aBaseName, Locale aLocale, String aFormat,
-            ClassLoader aLoader, boolean aReload) throws IOException {
-      // The below is a copy of the default implementation.
-      final String bundleName = toBundleName(aBaseName, aLocale);
-      final String resourceName = toResourceName(bundleName, "properties");
-      ResourceBundle bundle = null;
-      InputStream stream = null;
-      if (aReload) {
-        final URL url = aLoader.getResource(resourceName);
-        if (url != null) {
-          final URLConnection connection = url.openConnection();
-          if (connection != null) {
-            connection.setUseCaches(false);
-            stream = connection.getInputStream();
-          }
-        }
-      } else {
-        stream = aLoader.getResourceAsStream(resourceName);
-      }
-      if (stream != null) {
-        Reader streamReader = null;
-        try {
-          streamReader = new InputStreamReader(stream, "UTF-8");
-          // Only this line is changed to make it to read properties files as
-          // UTF-8.
-          bundle = new PropertyResourceBundle(streamReader);
-        } finally {
-          streamReader.close();
-          stream.close();
-        }
-      }
-      return bundle;
-    }
-  }
-
-  /**
    * Refreshes the metadata.
    */
   public static synchronized void refresh() {
@@ -878,4 +835,48 @@ public final class MetadataFactory {
     }
     return localizationCandidate;
   }
+
+  /**
+   * Custom ResourceBundle.Control implementation which allows explicitly read the properties files
+   * as UTF-8.
+   *
+   * @author <a href="mailto:nesterenko-aleksey@list.ru">Aleksey Nesterenko</a>
+   */
+  private static class UTF8Control extends Control {
+    @Override
+    public ResourceBundle newBundle(String aBaseName, Locale aLocale, String aFormat,
+            ClassLoader aLoader, boolean aReload) throws IOException {
+      // The below is a copy of the default implementation.
+      final String bundleName = toBundleName(aBaseName, aLocale);
+      final String resourceName = toResourceName(bundleName, "properties");
+      ResourceBundle bundle = null;
+      InputStream stream = null;
+      if (aReload) {
+        final URL url = aLoader.getResource(resourceName);
+        if (url != null) {
+          final URLConnection connection = url.openConnection();
+          if (connection != null) {
+            connection.setUseCaches(false);
+            stream = connection.getInputStream();
+          }
+        }
+      } else {
+        stream = aLoader.getResourceAsStream(resourceName);
+      }
+      if (stream != null) {
+        Reader streamReader = null;
+        try {
+          streamReader = new InputStreamReader(stream, "UTF-8");
+          // Only this line is changed to make it to read properties files as
+          // UTF-8.
+          bundle = new PropertyResourceBundle(streamReader);
+        } finally {
+          streamReader.close();
+          stream.close();
+        }
+      }
+      return bundle;
+    }
+  }
+
 }

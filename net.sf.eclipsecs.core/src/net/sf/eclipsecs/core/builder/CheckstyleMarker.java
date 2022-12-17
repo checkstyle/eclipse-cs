@@ -26,11 +26,6 @@ import net.sf.eclipsecs.core.CheckstylePlugin;
  * Represents the Checkstyle file marker.
  */
 public final class CheckstyleMarker {
-
-  private CheckstyleMarker() {
-    // NOOP
-  }
-
   /** ID for the CheckstyleMarker. */
   public static final String MARKER_ID = CheckstylePlugin.PLUGIN_ID + ".CheckstyleMarker"; //$NON-NLS-1$
 
@@ -49,4 +44,7 @@ public final class CheckstyleMarker {
   /** Constant for the info marker type. */
   public static final String INFO_TYPE = CheckstylePlugin.PLUGIN_ID + ".info"; //$NON-NLS-1$
 
+  private CheckstyleMarker() {
+    // NOOP
+  }
 }

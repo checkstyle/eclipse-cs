@@ -64,6 +64,16 @@ public class GraphPieDataset extends AbstractDataset implements PieDataset {
    */
   private boolean mShowAllCategories;
 
+  /** Storage for the data. */
+  private DefaultKeyedValues mData;
+
+  /**
+   * Constructs a new dataset, initially empty.
+   */
+  public GraphPieDataset() {
+    this.mData = new DefaultKeyedValues();
+  }
+
   /**
    * Remplit le Dataset avec les valeurs de la collection de MarkerStat.
    *
@@ -124,16 +134,6 @@ public class GraphPieDataset extends AbstractDataset implements PieDataset {
   }
 
   // ---------------- RAJOUT : fin ----------------
-
-  /** Storage for the data. */
-  private DefaultKeyedValues mData;
-
-  /**
-   * Constructs a new dataset, initially empty.
-   */
-  public GraphPieDataset() {
-    this.mData = new DefaultKeyedValues();
-  }
 
   /**
    * Returns the number of items in the dataset.

@@ -49,6 +49,21 @@ public class CheckstyleMarkerFilter implements Cloneable {
   //
   // constants
   //
+  public static final int ON_ANY_RESOURCE = 0;
+
+  public static final int ON_SELECTED_RESOURCE_ONLY = 1;
+
+  public static final int ON_SELECTED_RESOURCE_AND_CHILDREN = 2;
+
+  public static final int ON_ANY_RESOURCE_OF_SAME_PROJECT = 3;
+
+  public static final int ON_WORKING_SET = 4;
+
+  public static final int SEVERITY_ERROR = 1 << 2;
+
+  public static final int SEVERITY_WARNING = 1 << 1;
+
+  public static final int SEVERITY_INFO = 1 << 0;
 
   private static final String TAG_DIALOG_SECTION = "filter"; //$NON-NLS-1$
 
@@ -66,23 +81,7 @@ public class CheckstyleMarkerFilter implements Cloneable {
 
   private static final String TAG_REGULAR_EXPRESSIONS = "regularExpressions"; //$NON-NLS-1$
 
-  public static final int ON_ANY_RESOURCE = 0;
-
-  public static final int ON_SELECTED_RESOURCE_ONLY = 1;
-
-  public static final int ON_SELECTED_RESOURCE_AND_CHILDREN = 2;
-
-  public static final int ON_ANY_RESOURCE_OF_SAME_PROJECT = 3;
-
-  public static final int ON_WORKING_SET = 4;
-
   private static final int DEFAULT_SEVERITY = 0;
-
-  public static final int SEVERITY_ERROR = 1 << 2;
-
-  public static final int SEVERITY_WARNING = 1 << 1;
-
-  public static final int SEVERITY_INFO = 1 << 0;
 
   private static final int DEFAULT_ON_RESOURCE = ON_ANY_RESOURCE;
 
