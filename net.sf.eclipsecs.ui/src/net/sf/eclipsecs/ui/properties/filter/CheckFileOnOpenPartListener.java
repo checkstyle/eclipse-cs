@@ -89,54 +89,6 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
     new PartsOpenedJob(parts).schedule();
   }
 
-  private class PartsOpenedJob extends WorkspaceJob implements ISchedulingRule {
-
-    private Collection<IWorkbenchPartReference> mParts;
-
-    public PartsOpenedJob(Collection<IWorkbenchPartReference> parts) {
-      super(Messages.RunCheckstyleOnFilesJob_title);
-      this.mParts = parts;
-    }
-
-    @Override
-    public boolean contains(ISchedulingRule rule) {
-      return false;
-    }
-
-    @Override
-    public boolean isConflicting(ISchedulingRule rule) {
-      return false;
-    }
-
-    @Override
-    public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
-
-      List<IFile> filesToCheck = new ArrayList<>();
-
-      for (IWorkbenchPartReference partRef : mParts) {
-
-        IFile editorFile = getEditorFile(partRef);
-        if (editorFile != null) {
-          UnOpenedFilesFilter.addOpenedFile(editorFile);
-        }
-
-        // check if the opened part is a editor
-        // and the editors file need to be checked
-        if (editorFile != null && isFileAffected(editorFile)) {
-          filesToCheck.add(editorFile);
-        }
-      }
-
-      RunCheckstyleOnFilesJob job = new RunCheckstyleOnFilesJob(filesToCheck);
-      job.schedule();
-
-      return Status.OK_STATUS;
-    }
-  }
-
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void partOpened(IWorkbenchPartReference partRef) {
 
@@ -392,4 +344,50 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
 
     return affected;
   }
+
+  private class PartsOpenedJob extends WorkspaceJob implements ISchedulingRule {
+
+    private Collection<IWorkbenchPartReference> mParts;
+
+    public PartsOpenedJob(Collection<IWorkbenchPartReference> parts) {
+      super(Messages.RunCheckstyleOnFilesJob_title);
+      this.mParts = parts;
+    }
+
+    @Override
+    public boolean contains(ISchedulingRule rule) {
+      return false;
+    }
+
+    @Override
+    public boolean isConflicting(ISchedulingRule rule) {
+      return false;
+    }
+
+    @Override
+    public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
+
+      List<IFile> filesToCheck = new ArrayList<>();
+
+      for (IWorkbenchPartReference partRef : mParts) {
+
+        IFile editorFile = getEditorFile(partRef);
+        if (editorFile != null) {
+          UnOpenedFilesFilter.addOpenedFile(editorFile);
+        }
+
+        // check if the opened part is a editor
+        // and the editors file need to be checked
+        if (editorFile != null && isFileAffected(editorFile)) {
+          filesToCheck.add(editorFile);
+        }
+      }
+
+      RunCheckstyleOnFilesJob job = new RunCheckstyleOnFilesJob(filesToCheck);
+      job.schedule();
+
+      return Status.OK_STATUS;
+    }
+  }
+
 }

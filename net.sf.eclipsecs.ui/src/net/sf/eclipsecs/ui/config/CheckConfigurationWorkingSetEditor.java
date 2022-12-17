@@ -377,104 +377,6 @@ public class CheckConfigurationWorkingSetEditor {
   }
 
   /**
-   * Controller for this page.
-   *
-   * @author Lars Ködderitzsch
-   */
-  private class PageController
-          implements SelectionListener, IDoubleClickListener, ISelectionChangedListener {
-
-    /**
-     * @see SelectionListener#widgetSelected(org.eclipse.swt.events.SelectionEvent)
-     */
-    @Override
-    public void widgetSelected(SelectionEvent e) {
-
-      if (mAddButton == e.widget) {
-        addCheckConfig();
-      } else if (mEditButton == e.widget
-              && mViewer.getSelection() instanceof IStructuredSelection) {
-        editCheckConfig();
-      } else if (mConfigureButton == e.widget
-              && mViewer.getSelection() instanceof IStructuredSelection) {
-        configureCheckConfig();
-      } else if (mCopyButton == e.widget
-              && mViewer.getSelection() instanceof IStructuredSelection) {
-        copyCheckConfig();
-      } else if (mRemoveButton == e.widget
-              && mViewer.getSelection() instanceof IStructuredSelection) {
-        removeCheckConfig();
-      } else if (mDefaultButton == e.widget
-              && mViewer.getSelection() instanceof IStructuredSelection) {
-        setDefaultCheckConfig();
-      } else if (mExportButton == e.widget
-              && mViewer.getSelection() instanceof IStructuredSelection) {
-        exportCheckstyleCheckConfig();
-      }
-    }
-
-    /**
-     * @see sSelectionListener#widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent)
-     */
-    @Override
-    public void widgetDefaultSelected(SelectionEvent e) {
-      // NOOP
-    }
-
-    /**
-     * @see IDoubleClickListener#doubleClick(org.eclipse.jface.viewers.DoubleClickEvent)
-     */
-    @Override
-    public void doubleClick(DoubleClickEvent event) {
-      configureCheckConfig();
-    }
-
-    /**
-     * @see ISelectionChangedListener#selectionChanged(
-     *      org.eclipse.jface.viewers.SelectionChangedEvent)
-     */
-    @Override
-    public void selectionChanged(SelectionChangedEvent event) {
-      if (event.getSource() == mViewer && event.getSelection() instanceof IStructuredSelection) {
-        CheckConfigurationWorkingCopy config = (CheckConfigurationWorkingCopy) ((IStructuredSelection) event
-                .getSelection()).getFirstElement();
-        boolean configSelected = config != null;
-        if (configSelected) {
-          mConfigurationDescription
-                  .setText(config.getDescription() != null ? config.getDescription() : ""); //$NON-NLS-1$
-
-          if (mIsShowUsage) {
-            try {
-              mUsageView.setInput(ProjectConfigurationFactory
-                      .getProjectsUsingConfig(config.getSourceCheckConfiguration()));
-            } catch (CheckstylePluginException ex) {
-              CheckstyleLog.log(ex);
-            }
-          }
-        } else {
-          mConfigurationDescription.setText(""); //$NON-NLS-1$
-          if (mIsShowUsage) {
-            mUsageView.setInput(new ArrayList<IProject>());
-          }
-        }
-        mEditButton.setEnabled(configSelected);
-        mConfigureButton.setEnabled(configSelected);
-        mCopyButton.setEnabled(configSelected);
-        mRemoveButton.setEnabled(configSelected && config.isEditable());
-
-        CheckConfigurationWorkingCopy defaultConfig = null;
-        if (mWorkingSet instanceof GlobalCheckConfigurationWorkingSet) {
-          defaultConfig = ((GlobalCheckConfigurationWorkingSet) mWorkingSet)
-                  .getDefaultCheckConfig();
-        }
-
-        mDefaultButton.setEnabled(configSelected && !config.equals(defaultConfig));
-        mExportButton.setEnabled(configSelected);
-      }
-    }
-  }
-
-  /**
    * Create a new Check configuration.
    */
   private void addCheckConfig() {
@@ -734,4 +636,91 @@ public class CheckConfigurationWorkingSetEditor {
       return settings;
     }
   }
+
+  /**
+   * Controller for this page.
+   *
+   * @author Lars Ködderitzsch
+   */
+  private class PageController
+          implements SelectionListener, IDoubleClickListener, ISelectionChangedListener {
+
+    @Override
+    public void widgetSelected(SelectionEvent e) {
+
+      if (mAddButton == e.widget) {
+        addCheckConfig();
+      } else if (mEditButton == e.widget
+              && mViewer.getSelection() instanceof IStructuredSelection) {
+        editCheckConfig();
+      } else if (mConfigureButton == e.widget
+              && mViewer.getSelection() instanceof IStructuredSelection) {
+        configureCheckConfig();
+      } else if (mCopyButton == e.widget
+              && mViewer.getSelection() instanceof IStructuredSelection) {
+        copyCheckConfig();
+      } else if (mRemoveButton == e.widget
+              && mViewer.getSelection() instanceof IStructuredSelection) {
+        removeCheckConfig();
+      } else if (mDefaultButton == e.widget
+              && mViewer.getSelection() instanceof IStructuredSelection) {
+        setDefaultCheckConfig();
+      } else if (mExportButton == e.widget
+              && mViewer.getSelection() instanceof IStructuredSelection) {
+        exportCheckstyleCheckConfig();
+      }
+    }
+
+    @Override
+    public void widgetDefaultSelected(SelectionEvent e) {
+      // NOOP
+    }
+
+    @Override
+    public void doubleClick(DoubleClickEvent event) {
+      configureCheckConfig();
+    }
+
+    @Override
+    public void selectionChanged(SelectionChangedEvent event) {
+      if (event.getSource() == mViewer && event.getSelection() instanceof IStructuredSelection) {
+        CheckConfigurationWorkingCopy config = (CheckConfigurationWorkingCopy) ((IStructuredSelection) event
+                .getSelection()).getFirstElement();
+        boolean configSelected = config != null;
+        if (configSelected) {
+          mConfigurationDescription
+                  .setText(config.getDescription() != null ? config.getDescription() : ""); //$NON-NLS-1$
+
+          if (mIsShowUsage) {
+            try {
+              mUsageView.setInput(ProjectConfigurationFactory
+                      .getProjectsUsingConfig(config.getSourceCheckConfiguration()));
+            } catch (CheckstylePluginException ex) {
+              CheckstyleLog.log(ex);
+            }
+          }
+        } else {
+          mConfigurationDescription.setText(""); //$NON-NLS-1$
+          if (mIsShowUsage) {
+            mUsageView.setInput(new ArrayList<IProject>());
+          }
+        }
+        mEditButton.setEnabled(configSelected);
+        mConfigureButton.setEnabled(configSelected);
+        mCopyButton.setEnabled(configSelected);
+        mRemoveButton.setEnabled(configSelected && config.isEditable());
+
+        CheckConfigurationWorkingCopy defaultConfig = null;
+        if (mWorkingSet instanceof GlobalCheckConfigurationWorkingSet) {
+          defaultConfig = ((GlobalCheckConfigurationWorkingSet) mWorkingSet)
+                  .getDefaultCheckConfig();
+        }
+
+        mDefaultButton.setEnabled(configSelected && !config.equals(defaultConfig));
+        mExportButton.setEnabled(configSelected);
+      }
+    }
+  }
+
+
 }

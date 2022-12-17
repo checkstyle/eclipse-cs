@@ -25,9 +25,20 @@ package net.sf.eclipsecs.core.projectconfig;
  */
 public final class XMLTags {
 
-  private XMLTags() {
-    // NOOP
-  }
+  /** common description tag. */
+  public static final String DESCRIPTION_TAG = "description"; //$NON-NLS-1$
+
+  /** location tag. */
+  public static final String LOCATION_TAG = "location"; //$NON-NLS-1$
+
+  /** check configuration type tag. */
+  public static final String TYPE_TAG = "type"; //$NON-NLS-1$
+
+  /** additional data tag. */
+  public static final String ADDITIONAL_DATA_TAG = "additional-data"; //$NON-NLS-1$
+
+  /** tag for a resolvable property. */
+  public static final String PROPERTY_TAG = "property"; //$NON-NLS-1$
 
   static final String FILESET_CONFIG_TAG = "fileset-config"; //$NON-NLS-1$
 
@@ -61,19 +72,8 @@ public final class XMLTags {
 
   static final String SYNC_FORMATTER_TAG = "sync-formatter"; //$NON-NLS-1$
 
-  /** common description tag. */
-  public static final String DESCRIPTION_TAG = "description"; //$NON-NLS-1$
-
-  /** location tag. */
-  public static final String LOCATION_TAG = "location"; //$NON-NLS-1$
-
-  /** check configuration type tag. */
-  public static final String TYPE_TAG = "type"; //$NON-NLS-1$
-
-  /** additional data tag. */
-  public static final String ADDITIONAL_DATA_TAG = "additional-data"; //$NON-NLS-1$
-
-  /** tag for a resolvable property. */
-  public static final String PROPERTY_TAG = "property"; //$NON-NLS-1$
+  private XMLTags() {
+    // NOOP
+  }
 
 }
