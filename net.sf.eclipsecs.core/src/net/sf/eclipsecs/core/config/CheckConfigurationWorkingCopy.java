@@ -385,7 +385,7 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
       }
     } catch (CloneNotSupportedException ex) {
       // this should never happen
-      throw new InternalError();
+      throw new InternalError(ex);
     }
     return clone;
   }

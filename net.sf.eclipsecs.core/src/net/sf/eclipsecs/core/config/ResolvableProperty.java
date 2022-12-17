@@ -105,7 +105,7 @@ public class ResolvableProperty implements Cloneable {
       return clone;
     } catch (CloneNotSupportedException ex) {
       // should never happen
-      throw new InternalError();
+      throw new InternalError(ex);
     }
   }
 

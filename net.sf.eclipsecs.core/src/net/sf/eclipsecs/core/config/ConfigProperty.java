@@ -153,7 +153,7 @@ public class ConfigProperty implements Comparable<ConfigProperty>, Cloneable {
       return clone;
     } catch (CloneNotSupportedException ex) {
       // Should not happen
-      throw new InternalError();
+      throw new InternalError(ex);
     }
   }
 }
