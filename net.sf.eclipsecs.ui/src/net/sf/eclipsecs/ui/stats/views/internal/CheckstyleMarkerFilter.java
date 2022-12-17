@@ -620,7 +620,8 @@ public class CheckstyleMarkerFilter implements Cloneable {
     try {
       return super.clone();
     } catch (CloneNotSupportedException ex) {
-      throw new InternalError(); // this should never happen
+      // this should never happen
+      throw new InternalError();
     }
   }
 }

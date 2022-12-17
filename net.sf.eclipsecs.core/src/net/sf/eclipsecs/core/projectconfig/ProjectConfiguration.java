@@ -191,7 +191,8 @@ public class ProjectConfiguration implements Cloneable, IProjectConfiguration {
       }
       clone.mFilters = clonedFilters;
     } catch (CloneNotSupportedException ex) {
-      throw new InternalError(); // should never happen
+      // should never happen
+      throw new InternalError();
     }
 
     return clone;

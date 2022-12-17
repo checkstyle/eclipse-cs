@@ -78,7 +78,8 @@ public class FileMatchPattern implements Cloneable {
       mRegexPattern = Pattern.compile(pattern);
       mPatternString = pattern;
     } catch (PatternSyntaxException ex) {
-      CheckstylePluginException.rethrow(ex); // wrap the exception
+      // wrap the exception
+      CheckstylePluginException.rethrow(ex);
     }
   }
 
@@ -127,7 +128,8 @@ public class FileMatchPattern implements Cloneable {
     try {
       return (FileMatchPattern) super.clone();
     } catch (CloneNotSupportedException ex) {
-      throw new InternalError(); // should never happen
+      // should never happen
+      throw new InternalError();
     }
   }
 

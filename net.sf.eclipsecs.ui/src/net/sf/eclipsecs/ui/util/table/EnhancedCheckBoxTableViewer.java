@@ -157,7 +157,8 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
    *          style bits
    * @return a new table control
    */
-  @SuppressWarnings("unused") // TableColumn is added to table via constructor
+  // TableColumn is added to table via constructor
+  @SuppressWarnings("unused")
   protected static Table createTable(Composite parent, int style) {
     Table table = new Table(parent, SWT.CHECK | style);
 
@@ -272,8 +273,8 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
   @Override
   public void handleSelect(SelectionEvent event) {
     if (event.detail == SWT.CHECK) {
-      super.handleSelect(event); // this will change the current
-      // selection
+      super.handleSelect(event);
+      // this will change the current selection
 
       TableItem item = (TableItem) event.item;
       Object data = item.getData();
@@ -695,7 +696,8 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
           return null;
         }
         Object result = entry.value;
-        entry.key = key; // important to avoid hanging onto keys that
+        entry.key = key;
+        // important to avoid hanging onto keys that
         // are equal but "old" -- see bug 30607
         entry.value = value;
         return result;

@@ -384,7 +384,8 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
         clone.mProperties.add(prop.clone());
       }
     } catch (CloneNotSupportedException ex) {
-      throw new InternalError(); // this should never happen
+      // this should never happen
+      throw new InternalError();
     }
     return clone;
   }

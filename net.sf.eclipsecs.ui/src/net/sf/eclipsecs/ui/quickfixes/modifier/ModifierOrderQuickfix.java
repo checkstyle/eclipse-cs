@@ -61,11 +61,8 @@ public class ModifierOrderQuickfix extends AbstractASTResolution {
               ModifierKeyword.STATIC_KEYWORD, ModifierKeyword.FINAL_KEYWORD,
               ModifierKeyword.TRANSIENT_KEYWORD, ModifierKeyword.VOLATILE_KEYWORD,
               ModifierKeyword.SYNCHRONIZED_KEYWORD, ModifierKeyword.NATIVE_KEYWORD,
-              ModifierKeyword.STRICTFP_KEYWORD,
-              "default", /*
-                          * issue 371: can't use this yet since were still supporting
-                          * non-Java8-enabled eclipse versions ModifierKeyword.DEFAULT_KEYWORD,
-                          */ });
+              ModifierKeyword.STRICTFP_KEYWORD, ModifierKeyword.DEFAULT_KEYWORD,
+             });
 
   /**
    * Reorders the given list of <code>Modifier</code> nodes into their suggested order by the JLS.
