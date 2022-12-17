@@ -47,9 +47,6 @@ import org.eclipse.swt.graphics.Image;
  */
 public class StringLiteralEqualityQuickfix extends AbstractASTResolution {
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
           final int markerStartPosition) {
@@ -146,25 +143,16 @@ public class StringLiteralEqualityQuickfix extends AbstractASTResolution {
     };
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public String getDescription() {
     return Messages.StringLiteralEqualityQuickfix_description;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public String getLabel() {
     return Messages.StringLiteralEqualityQuickfix_label;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public Image getImage() {
     return CheckstyleUIPluginImages.CORRECTION_CHANGE.getImage();

@@ -12,9 +12,6 @@ import org.eclipse.swt.graphics.Image;
 
 public class MethodLimitQuickfix extends AbstractASTResolution {
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
       final int markerStartOffset) {
@@ -42,25 +39,16 @@ public class MethodLimitQuickfix extends AbstractASTResolution {
     };
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public String getDescription() {
     return "Sample MethodLimit Quickfix";
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public String getLabel() {
     return "Sample MethodLimit Quickfix";
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public Image getImage() {
     return CheckstyleUIPluginImages.CORRECTION_CHANGE.getImage();

@@ -34,9 +34,6 @@ import net.sf.eclipsecs.core.config.XMLTags;
  */
 public class SortingSaveFilter implements ISaveFilter {
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void postProcessConfiguredModules(List<Module> configuredModules) {
     // Sort modules because of
@@ -52,9 +49,6 @@ public class SortingSaveFilter implements ISaveFilter {
    */
   private static class ModuleComparator implements Comparator<Module> {
 
-    /**
-     * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
-     */
     @Override
     public int compare(Module o1, Module o2) {
 

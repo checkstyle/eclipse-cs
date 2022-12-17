@@ -71,9 +71,6 @@ public class TransformCheckstyleRulesJob extends WorkspaceJob {
     this.mProject = project;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public IStatus runInWorkspace(final IProgressMonitor arg0) throws CoreException {
 

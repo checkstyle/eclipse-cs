@@ -34,9 +34,6 @@ import org.eclipse.ui.texteditor.IAnnotationImageProvider;
  */
 public class CheckstyleMarkerImageProvider implements IAnnotationImageProvider {
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public Image getManagedImage(Annotation annotation) {
     String type = annotation.getType();
@@ -51,17 +48,11 @@ public class CheckstyleMarkerImageProvider implements IAnnotationImageProvider {
     return null;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public String getImageDescriptorId(Annotation annotation) {
     return null;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public ImageDescriptor getImageDescriptor(String imageDescritporId) {
     return null;

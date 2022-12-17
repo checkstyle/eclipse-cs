@@ -46,9 +46,6 @@ public class NonSrcDirsFilter extends AbstractFilter {
   /** the list of source paths of the current project. */
   private List<IPath> mCurrentSourcePaths;
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public boolean accept(Object element) {
 

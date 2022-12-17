@@ -29,7 +29,6 @@ import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
 import net.sf.eclipsecs.ui.stats.Messages;
 import net.sf.eclipsecs.ui.util.regex.RegexCompletionProposalFactory;
 
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -145,9 +144,6 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
     return mFilter;
   }
 
-  /**
-   * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
-   */
   @Override
   protected Control createDialogArea(Composite parent) {
 
@@ -265,9 +261,6 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
     return composite;
   }
 
-  /**
-   * @see org.eclipse.jface.dialogs.Dialog#createButtonsForButtonBar(Composite)
-   */
   @Override
   protected void createButtonsForButtonBar(Composite parent) {
 
@@ -280,18 +273,12 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
     createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
   }
 
-  /**
-   * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
-   */
   @Override
   protected void configureShell(Shell shell) {
     super.configureShell(shell);
     shell.setText(Messages.CheckstyleMarkerFilterDialog_btnShellTitle);
   }
 
-  /**
-   * @see org.eclipse.jface.dialogs.Dialog#okPressed()
-   */
   @Override
   protected void okPressed() {
     updateFilterFromUI();
@@ -512,9 +499,6 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
       mFileTypesList = fileTypes;
     }
 
-    /**
-     * @see Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
-     */
     @Override
     protected Control createDialogArea(Composite parent) {
       Composite composite = (Composite) super.createDialogArea(parent);
@@ -617,9 +601,6 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
       return main;
     }
 
-    /**
-     * @see org.eclipse.jface.dialogs.Dialog#okPressed()
-     */
     @Override
     protected void okPressed() {
       super.okPressed();

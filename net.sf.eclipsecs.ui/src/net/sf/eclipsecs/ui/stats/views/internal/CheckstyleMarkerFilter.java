@@ -615,11 +615,6 @@ public class CheckstyleMarkerFilter implements Cloneable {
     return result.toArray(new IResource[result.size()]);
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @see java.lang.Object#clone()
-   */
   @Override
   public Object clone() {
     try {

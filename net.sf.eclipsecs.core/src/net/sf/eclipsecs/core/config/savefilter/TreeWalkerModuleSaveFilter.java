@@ -33,9 +33,6 @@ import net.sf.eclipsecs.core.config.meta.MetadataFactory;
  */
 public class TreeWalkerModuleSaveFilter implements ISaveFilter {
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void postProcessConfiguredModules(List<Module> configuredModules) {
 

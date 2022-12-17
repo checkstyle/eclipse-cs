@@ -131,9 +131,6 @@ public class FileMatchPattern implements Cloneable {
     }
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public boolean equals(Object obj) {
     if (obj == null || !(obj instanceof FileMatchPattern)) {
@@ -148,17 +145,11 @@ public class FileMatchPattern implements Cloneable {
             && Objects.equals(mPatternString, rhs.mPatternString);
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public int hashCode() {
     return Objects.hash(mIsIncludePattern, mPatternString);
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public String toString() {
     return MoreObjects.toStringHelper(this).add("patternString", mPatternString)

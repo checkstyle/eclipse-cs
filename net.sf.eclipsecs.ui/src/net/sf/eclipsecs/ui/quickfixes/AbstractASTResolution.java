@@ -75,17 +75,11 @@ public abstract class AbstractASTResolution extends WorkbenchMarkerResolution
 
   private RuleMetadata mMetaData;
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void setRuleMetaData(RuleMetadata metadata) {
     this.mMetaData = metadata;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public boolean canFix(IMarker marker) {
 
@@ -99,17 +93,11 @@ public abstract class AbstractASTResolution extends WorkbenchMarkerResolution
     }
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void setAutoCommitChanges(boolean autoCommit) {
     mAutoCommit = autoCommit;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public Image getImage() {
     // default implementation returns no image
@@ -131,9 +119,6 @@ public abstract class AbstractASTResolution extends WorkbenchMarkerResolution
     return candidates.toArray(new IMarker[candidates.size()]);
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void run(IMarker marker) {
 

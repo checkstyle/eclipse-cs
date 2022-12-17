@@ -48,17 +48,11 @@ public class CheckSelectedFilesAction implements IObjectActionDelegate {
 
   private IStructuredSelection mSelection;
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void setActivePart(IAction action, IWorkbenchPart targetPart) {
     mPart = targetPart;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void selectionChanged(IAction action, ISelection selection) {
 
@@ -67,9 +61,6 @@ public class CheckSelectedFilesAction implements IObjectActionDelegate {
     }
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   @SuppressWarnings("unchecked")
   public void run(IAction action) {

@@ -66,9 +66,6 @@ public class ConfigureDeconfigureNatureJob extends WorkspaceJob {
     mNatureId = natureId;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
 

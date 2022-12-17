@@ -71,9 +71,6 @@ public class ResolvablePropertyEditDialog extends TitleAreaDialog {
     mProperty = prop;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   protected Control createDialogArea(Composite parent) {
 
@@ -103,9 +100,6 @@ public class ResolvablePropertyEditDialog extends TitleAreaDialog {
     return composite;
   }
 
-  /**
-   * @see org.eclipse.jface.dialogs.Dialog#create()
-   */
   @Override
   public void create() {
     super.create();
@@ -113,9 +107,6 @@ public class ResolvablePropertyEditDialog extends TitleAreaDialog {
             ResolvablePropertyEditDialog.class.getName());
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   protected void okPressed() {
 
@@ -137,9 +128,6 @@ public class ResolvablePropertyEditDialog extends TitleAreaDialog {
     super.okPressed();
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   protected void configureShell(Shell shell) {
     super.configureShell(shell);
@@ -162,9 +150,6 @@ public class ResolvablePropertyEditDialog extends TitleAreaDialog {
     contentAssistant.setContentAssistProcessor(processor, IDocument.DEFAULT_CONTENT_TYPE);
     contentAssistant.setContextInformationPopupOrientation(IContentAssistant.CONTEXT_INFO_ABOVE);
     contentAssistant.setInformationControlCreator(new IInformationControlCreator() {
-      /*
-       * @see IInformationControlCreator#createInformationControl(Shell)
-       */
       @Override
       public IInformationControl createInformationControl(Shell parent) {
         return new DefaultInformationControl(parent);

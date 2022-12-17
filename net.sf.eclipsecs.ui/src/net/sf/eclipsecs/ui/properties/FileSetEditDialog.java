@@ -155,9 +155,6 @@ public class FileSetEditDialog extends TitleAreaDialog {
     return mFileSet;
   }
 
-  /**
-   * @see org.eclipse.swt.widgets.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
-   */
   @Override
   protected Control createDialogArea(Composite parent) {
 
@@ -311,9 +308,6 @@ public class FileSetEditDialog extends TitleAreaDialog {
 
       private final WorkbenchLabelProvider mDelegate = new WorkbenchLabelProvider();
 
-      /**
-       * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
-       */
       @Override
       public String getText(Object element) {
         String text = ""; //$NON-NLS-1$
@@ -323,9 +317,6 @@ public class FileSetEditDialog extends TitleAreaDialog {
         return text;
       }
 
-      /**
-       * @see org.eclipse.jface.viewers.LabelProvider#getImage(java.lang.Object)
-       */
       @Override
       public Image getImage(Object element) {
         return mDelegate.getImage(element);
@@ -404,9 +395,6 @@ public class FileSetEditDialog extends TitleAreaDialog {
                 "" + mProjectFiles.size() })); //$NON-NLS-1$
   }
 
-  /**
-   * @see org.eclipse.jface.window.Window#create()
-   */
   @Override
   public void create() {
     super.create();
@@ -424,9 +412,6 @@ public class FileSetEditDialog extends TitleAreaDialog {
     shell.setText(Messages.FileSetEditDialog_titleFilesetEditor);
   }
 
-  /**
-   * @see org.eclipse.jface.dialogs.Dialog#okPressed()
-   */
   @Override
   protected void okPressed() {
     //
@@ -591,9 +576,6 @@ public class FileSetEditDialog extends TitleAreaDialog {
   private class Controller implements SelectionListener, IDoubleClickListener, ICheckStateListener,
           ISelectionChangedListener {
 
-    /**
-     * @see SelectionListener#widgetSelected(org.eclipse.swt.events.SelectionEvent)
-     */
     @Override
     public void widgetSelected(SelectionEvent e) {
       if (e.widget == mAddButton) {
@@ -637,17 +619,11 @@ public class FileSetEditDialog extends TitleAreaDialog {
       }
     }
 
-    /**
-     * @see SelectionListener#widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent)
-     */
     @Override
     public void widgetDefaultSelected(SelectionEvent e) {
       // NOOP
     }
 
-    /**
-     * @see IDoubleClickListener#doubleClick(org.eclipse.jface.viewers.DoubleClickEvent)
-     */
     @Override
     public void doubleClick(DoubleClickEvent event) {
       editFileMatchPattern();

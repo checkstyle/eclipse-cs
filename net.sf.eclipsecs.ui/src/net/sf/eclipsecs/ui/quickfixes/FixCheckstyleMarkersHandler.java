@@ -41,9 +41,6 @@ import org.eclipse.ui.texteditor.ITextEditor;
  */
 public class FixCheckstyleMarkersHandler extends AbstractHandler {
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public Object execute(ExecutionEvent arg0) throws ExecutionException {
 

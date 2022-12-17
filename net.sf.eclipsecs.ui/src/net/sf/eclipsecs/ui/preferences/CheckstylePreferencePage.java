@@ -122,9 +122,6 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
   private void initializeDefaults() {
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public Control createContents(Composite ancestor) {
 
@@ -348,16 +345,10 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
     return configComposite;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void init(IWorkbench workbench) {
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public boolean performOk() {
 
@@ -483,9 +474,6 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
    */
   private class PageController extends SelectionAdapter {
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void widgetSelected(SelectionEvent e) {
       if (mPurgeCacheButton == e.widget) {

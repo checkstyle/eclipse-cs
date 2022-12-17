@@ -80,25 +80,16 @@ public class RunCheckstyleOnFilesJob extends WorkspaceJob implements IScheduling
     setRule(this);
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public boolean contains(ISchedulingRule arg0) {
     return arg0 instanceof RunCheckstyleOnFilesJob;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public boolean isConflicting(ISchedulingRule arg0) {
     return arg0 instanceof RunCheckstyleOnFilesJob || arg0 instanceof AuditorJob;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public final IStatus runInWorkspace(final IProgressMonitor monitor) throws CoreException {
 

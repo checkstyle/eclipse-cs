@@ -112,9 +112,6 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
     mTitle = title;
   }
 
-  /**
-   * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
-   */
   @Override
   protected Control createDialogArea(Composite parent) {
     Composite composite = (Composite) super.createDialogArea(parent);
@@ -151,9 +148,6 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
     mSeverityCombo = new ComboViewer(generalSettings);
     mSeverityCombo.setContentProvider(new ArrayContentProvider());
     mSeverityCombo.setLabelProvider(new LabelProvider() {
-      /**
-       * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
-       */
       @Override
       public String getText(Object element) {
         return ((Severity) element).name();
@@ -369,9 +363,6 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
 
   }
 
-  /**
-   * @see org.eclipse.jface.dialogs.Dialog#buttonPressed(int)
-   */
   @Override
   protected void buttonPressed(int buttonId) {
     if (IDialogConstants.BACK_ID == buttonId) {
@@ -495,9 +486,6 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
     }
   }
 
-  /**
-   * @see org.eclipse.jface.window.Window#create()
-   */
   @Override
   public void create() {
     super.create();

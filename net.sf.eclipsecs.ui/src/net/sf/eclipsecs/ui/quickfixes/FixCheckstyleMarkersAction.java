@@ -40,25 +40,16 @@ public class FixCheckstyleMarkersAction implements IObjectActionDelegate {
   /** the selection that occured in the workspace. */
   private ISelection mSelection;
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void selectionChanged(IAction action, ISelection selection) {
     mSelection = selection;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void setActivePart(IAction action, IWorkbenchPart targetPart) {
     // empty
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void run(IAction action) {
 

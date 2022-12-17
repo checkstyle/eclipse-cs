@@ -135,9 +135,6 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
     return mCheckConfig;
   }
 
-  /**
-   * @see org.eclipse.jface.dialogs.Dialog#create()
-   */
   @Override
   public void create() {
     super.create();
@@ -223,9 +220,6 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
     return composite;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   protected Control createButtonBar(Composite parent) {
 
@@ -252,9 +246,6 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
     return composite;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   protected void configureShell(Shell newShell) {
 
@@ -262,17 +253,11 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
     newShell.setText(Messages.ResolvablePropertiesDialog_titleDialog);
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   protected Point getInitialSize() {
     return new Point(650, 500);
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   protected void okPressed() {
 
@@ -344,9 +329,6 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
       }
     }
 
-    /**
-     * @see org.eclipse.swt.events.KeyListener#keyReleased(org.eclipse.swt.events.KeyEvent)
-     */
     @Override
     public void keyReleased(KeyEvent e) {
       if (e.widget == mTableViewer.getTable()) {
@@ -460,9 +442,6 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
   private class PropertiesLabelProvider extends LabelProvider
           implements ITableLabelProvider, ITableComparableProvider, ITableSettingsProvider {
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getColumnText(Object element, int columnIndex) {
       String result = element.toString();
@@ -478,25 +457,16 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
       return result;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Image getColumnImage(Object element, int columnIndex) {
       return columnIndex == 0 ? getImage(element) : null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Comparable<String> getComparableValue(Object element, int col) {
       return getColumnText(element, col);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public IDialogSettings getTableSettings() {
       String concreteViewId = ResolvablePropertiesDialog.class.getName();

@@ -47,9 +47,6 @@ public abstract class ConfigPropertyWidgetAbstractBase implements IConfigPropert
     mProp = prop;
   }
 
-  /**
-   * @see net.sf.eclipsecs.ui.config.widgets.IConfigPropertyWidget#initialize()
-   */
   @Override
   public void initialize() {
 
@@ -76,9 +73,6 @@ public abstract class ConfigPropertyWidgetAbstractBase implements IConfigPropert
     SWTUtil.addTooltipOnPressSupport(lblPropertyInfo);
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void setEnabled(boolean enabled) {
     mValueWidget.setEnabled(enabled);
@@ -124,17 +118,11 @@ public abstract class ConfigPropertyWidgetAbstractBase implements IConfigPropert
     return initValue;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public ConfigProperty getConfigProperty() {
     return mProp;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void validate() throws CheckstylePluginException {
     // Nothing to to for most properties

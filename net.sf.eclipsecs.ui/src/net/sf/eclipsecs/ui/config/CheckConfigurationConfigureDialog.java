@@ -221,9 +221,6 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
     return contents;
   }
 
-  /**
-   * @see org.eclipse.jface.window.Window#create()
-   */
   @Override
   public void create() {
     super.create();
@@ -232,18 +229,12 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
             CheckConfigurationConfigureDialog.class.getName());
   }
 
-  /**
-   * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
-   */
   @Override
   protected void configureShell(Shell newShell) {
     super.configureShell(newShell);
     newShell.setText(Messages.CheckConfigurationConfigureDialog_titleCheckConfigurationDialog);
   }
 
-  /**
-   * @see org.eclipse.jface.dialogs.Dialog#okPressed()
-   */
   @Override
   protected void okPressed() {
 
@@ -493,9 +484,6 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
   private class PageController implements ISelectionChangedListener, ICheckStateListener,
           IDoubleClickListener, SelectionListener, KeyListener, ModifyListener {
 
-    /**
-     * @see IDoubleClickListener#doubleClick(org.eclipse.jface.viewers.DoubleClickEvent)
-     */
     @Override
     public void doubleClick(DoubleClickEvent event) {
       if (event.getViewer() == mTableViewer) {
@@ -512,9 +500,6 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
       }
     }
 
-    /**
-     * @see SelectionListener#widgetSelected(org.eclipse.swt.events.SelectionEvent)
-     */
     @Override
     public void widgetSelected(SelectionEvent e) {
 
@@ -527,9 +512,6 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
       }
     }
 
-    /**
-     * @see org.eclipse.swt.events.KeyListener#keyReleased(org.eclipse.swt.events.KeyEvent)
-     */
     @Override
     public void keyReleased(KeyEvent e) {
       if (e.widget == mTableViewer.getTable()) {
@@ -551,9 +533,6 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
       }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void modifyText(ModifyEvent e) {
       mTreeViewer.getControl().setRedraw(false);
@@ -575,9 +554,6 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
       }
     }
 
-    /**
-     * @see SelectionListener#widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent)
-     */
     @Override
     public void widgetDefaultSelected(SelectionEvent e) {
       // NOOP
@@ -813,9 +789,6 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
    */
   private static class MetaDataContentProvider implements ITreeContentProvider {
 
-    /**
-     * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
-     */
     @Override
     public Object[] getElements(Object inputElement) {
       Object[] ruleGroups = null;
@@ -825,9 +798,6 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
       return ruleGroups;
     }
 
-    /**
-     * @see org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.Object)
-     */
     @Override
     public Object[] getChildren(Object parentElement) {
       Object[] children = null;
@@ -840,9 +810,6 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
       return children;
     }
 
-    /**
-     * @see org.eclipse.jface.viewers.ITreeContentProvider#getParent(java.lang.Object)
-     */
     @Override
     public Object getParent(Object element) {
       Object parent = null;
@@ -852,9 +819,6 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
       return parent;
     }
 
-    /**
-     * @see org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java.lang.Object)
-     */
     @Override
     public boolean hasChildren(Object element) {
       boolean hasChildren = false;
@@ -867,17 +831,11 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
       return hasChildren;
     }
 
-    /**
-     * @see org.eclipse.jface.viewers.IContentProvider#dispose()
-     */
     @Override
     public void dispose() {
       // NOOP
     }
 
-    /**
-     * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(Viewer, Object, Object)
-     */
     @Override
     public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
       // NOOP
@@ -891,9 +849,6 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
    */
   private class MetaDataLabelProvider extends LabelProvider {
 
-    /**
-     * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
-     */
     @Override
     public String getText(Object element) {
       String text = null;
@@ -905,9 +860,6 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
       return text;
     }
 
-    /**
-     * @see org.eclipse.jface.viewers.LabelProvider#getImage(java.lang.Object)
-     */
     @Override
     public Image getImage(Object element) {
       Image image = null;
@@ -962,17 +914,11 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
   private static class ModuleLabelProvider extends LabelProvider
           implements ITableLabelProvider, ITableComparableProvider, ITableSettingsProvider {
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Image getColumnImage(Object element, int columnIndex) {
       return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getColumnText(Object element, int columnIndex) {
       String text = null;
@@ -1002,9 +948,6 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
       return text;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Comparable<?> getComparableValue(Object element, int col) {
       if (element instanceof Module && col == 0) {
@@ -1015,9 +958,6 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
       return getColumnText(element, col);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public IDialogSettings getTableSettings() {
       String concreteViewId = CheckConfigurationConfigureDialog.class.getName();
@@ -1052,10 +992,6 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
       mCurrentGroup = groupMetaData;
     }
 
-    /**
-     * @see org.eclipse.jface.viewers.ViewerFilter#select(org.eclipse.jface.viewers.Viewer,
-     *      java.lang.Object, java.lang.Object)
-     */
     @Override
     public boolean select(Viewer viewer, Object parentElement, Object element) {
       boolean result = false;

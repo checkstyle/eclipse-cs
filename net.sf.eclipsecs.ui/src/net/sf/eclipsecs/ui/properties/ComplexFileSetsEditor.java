@@ -89,26 +89,17 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
     mProject = (IProject) propsPage.getElement();
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void setFileSets(List<FileSet> fileSets) {
     mFileSets = fileSets;
 
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public List<FileSet> getFileSets() {
     return mFileSets;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public Control createContents(Composite parent) throws CheckstylePluginException {
 
@@ -213,9 +204,6 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
     return composite;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void refresh() {
     // NOOP

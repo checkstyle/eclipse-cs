@@ -356,9 +356,6 @@ public class EnhancedTableViewer extends TableViewer {
    */
   private class TableSorter extends ViewerComparator {
 
-    /**
-     * {@inheritDoc}
-     */
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public int compare(Viewer viewer, Object left, Object right) {

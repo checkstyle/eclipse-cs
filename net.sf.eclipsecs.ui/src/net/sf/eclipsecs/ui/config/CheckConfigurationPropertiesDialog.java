@@ -145,9 +145,6 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
     return mCheckConfig;
   }
 
-  /**
-   * @see org.eclipse.jface.dialogs.Dialog#create()
-   */
   @Override
   public void create() {
     super.create();
@@ -196,27 +193,17 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
     mConfigType.getCombo().setLayoutData(gridData);
     mConfigType.setContentProvider(new ArrayContentProvider());
     mConfigType.setLabelProvider(new LabelProvider() {
-      /**
-       * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
-       */
       @Override
       public String getText(Object element) {
         return ((IConfigurationType) element).getName();
       }
 
-      /**
-       * @see org.eclipse.jface.viewers.LabelProvider#getImage(java.lang.Object)
-       */
       @Override
       public Image getImage(Object element) {
         return ConfigurationTypesUI.getConfigurationTypeImage((IConfigurationType) element);
       }
     });
     mConfigType.addSelectionChangedListener(new ISelectionChangedListener() {
-      /**
-       * @see ISelectionChangedListener#selectionChanged(
-       *      org.eclipse.jface.viewers.SelectionChangedEvent)
-       */
       @Override
       public void selectionChanged(SelectionChangedEvent event) {
         if (event.getSelection() instanceof IStructuredSelection) {
@@ -254,9 +241,6 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
     return composite;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   protected Control createButtonBar(Composite parent) {
 
@@ -304,9 +288,6 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
     return composite;
   }
 
-  /**
-   * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
-   */
   @Override
   protected void configureShell(Shell newShell) {
 
@@ -314,9 +295,6 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
     newShell.setText(Messages.CheckConfigurationPropertiesDialog_titleCheckProperties);
   }
 
-  /**
-   * @see org.eclipse.jface.dialogs.Dialog#okPressed()
-   */
   @Override
   protected void okPressed() {
     try {

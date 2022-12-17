@@ -153,11 +153,6 @@ public class GraphStatsView extends AbstractStatsView {
   // methods
   //
 
-  /**
-   * {@inheritDoc}
-   *
-   * @see org.eclipse.ui.IWorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
-   */
   @Override
   public void createPartControl(Composite parent) {
 
@@ -332,11 +327,6 @@ public class GraphStatsView extends AbstractStatsView {
     return detailViewer;
   }
 
-  /**
-   * See method below.
-   *
-   * @see net.sf.eclipsecs.stats.views.AbstractStatsView#makeActions()
-   */
   @Override
   protected void makeActions() {
 
@@ -422,9 +412,6 @@ public class GraphStatsView extends AbstractStatsView {
 
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   protected void initMenu(IMenuManager menu) {
     menu.add(new FiltersAction(this));
@@ -432,9 +419,6 @@ public class GraphStatsView extends AbstractStatsView {
     menu.add(mShowAllCategoriesAction);
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   protected void initToolBar(IToolBarManager tbm) {
     tbm.add(mListingAction);
@@ -506,17 +490,11 @@ public class GraphStatsView extends AbstractStatsView {
     getSite().registerContextMenu(menuMgr, viewer);
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   protected String getViewId() {
     return VIEW_ID;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   protected void handleStatsRebuilt() {
     if (!mMasterComposite.isDisposed()) {
@@ -604,9 +582,6 @@ public class GraphStatsView extends AbstractStatsView {
   private class DetailContentProvider implements IStructuredContentProvider {
     private Object[] mCurrentDetails;
 
-    /**
-     * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
-     */
     @Override
     public Object[] getElements(Object inputElement) {
       if (mCurrentDetails == null) {
@@ -626,18 +601,11 @@ public class GraphStatsView extends AbstractStatsView {
       return mCurrentDetails != null ? mCurrentDetails : new Object[0];
     }
 
-    /**
-     * @see org.eclipse.jface.viewers.IContentProvider#dispose()
-     */
     @Override
     public void dispose() {
       mCurrentDetails = null;
     }
 
-    /**
-     * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(Viewer,
-     *      Object, Object)
-     */
     @Override
     public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
       mCurrentDetails = null;
@@ -652,10 +620,6 @@ public class GraphStatsView extends AbstractStatsView {
    */
   private class DetailViewMultiProvider extends LabelProvider
           implements ITableLabelProvider, ITableComparableProvider, ITableSettingsProvider {
-    /**
-     * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnText(java.lang.Object,
-     *      int)
-     */
     @Override
     public String getColumnText(Object obj, int index) {
       IMarker marker = (IMarker) obj;
@@ -689,10 +653,6 @@ public class GraphStatsView extends AbstractStatsView {
       return text;
     }
 
-    /**
-     * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnImage(java.lang.Object,
-     *      int)
-     */
     @Override
     public Image getColumnImage(Object obj, int index) {
       Image image = null;

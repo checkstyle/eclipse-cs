@@ -150,9 +150,6 @@ public class CheckstylePropertyPage extends PropertyPage {
     return mProjectConfig;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void setElement(IAdaptable element) {
     super.setElement(element);
@@ -194,9 +191,6 @@ public class CheckstylePropertyPage extends PropertyPage {
     }
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public Control createContents(Composite parent) {
 
@@ -443,9 +437,6 @@ public class CheckstylePropertyPage extends PropertyPage {
     return noteAndEditor;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public boolean isValid() {
 
@@ -582,8 +573,6 @@ public class CheckstylePropertyPage extends PropertyPage {
               /**
                * Overwritten because we don't want to store which button the user pressed but the
                * state of the toggle.
-               *
-               * @see MessageDialogWithToggle#buttonPressed(int)
                */
               @Override
               protected void buttonPressed(int buttonId) {

@@ -111,9 +111,6 @@ public final class SWTUtil {
   private static final class TooltipOnPressListener extends MouseAdapter
           implements MouseTrackListener {
 
-    /**
-     * @see org.eclipse.swt.events.MouseListener#mouseDown(org.eclipse.swt.events.MouseEvent)
-     */
     @Override
     public void mouseDown(MouseEvent e) {
       Control theControl = (Control) e.widget;
@@ -138,9 +135,6 @@ public final class SWTUtil {
       tip.setVisible(true);
     }
 
-    /**
-     * @see org.eclipse.swt.events.MouseTrackListener#mouseExit(org.eclipse.swt.events.MouseEvent)
-     */
     @Override
     public void mouseExit(MouseEvent e) {
       // dispose the tooltip shell
@@ -149,17 +143,11 @@ public final class SWTUtil {
       shell.dispose();
     }
 
-    /**
-     * @see org.eclipse.swt.events.MouseTrackListener#mouseEnter(org.eclipse.swt.events.MouseEvent)
-     */
     @Override
     public void mouseEnter(MouseEvent e) {
       // NOOP
     }
 
-    /**
-     * @see org.eclipse.swt.events.MouseTrackListener#mouseHover(org.eclipse.swt.events.MouseEvent)
-     */
     @Override
     public void mouseHover(MouseEvent e) {
       // NOOP
@@ -173,9 +161,6 @@ public final class SWTUtil {
    */
   private static final class OnlyDigitsVerifyListener implements VerifyListener {
 
-    /**
-     * @see org.eclipse.swt.events.VerifyListener#verifyText(org.eclipse.swt.events.VerifyEvent)
-     */
     @Override
     public void verifyText(VerifyEvent e) {
 
@@ -359,9 +344,6 @@ public final class SWTUtil {
       }
     }
 
-    /**
-     * @see DisposeListener#widgetDisposed(org.eclipse.swt.events.DisposeEvent)
-     */
     @Override
     public void widgetDisposed(DisposeEvent e) {
       // store the dialog size and location to the settings

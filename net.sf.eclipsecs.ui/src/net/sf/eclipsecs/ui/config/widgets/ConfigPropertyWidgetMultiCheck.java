@@ -80,9 +80,6 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
     mTokens = new ArrayList<>(prop.getMetaData().getPropertyEnumeration());
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   protected Control getValueWidget(Composite parent) {
 
@@ -124,9 +121,6 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
     return mTable.getControl();
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public String getValue() {
     StringBuilder buffer = new StringBuilder(""); //$NON-NLS-1$
@@ -202,9 +196,6 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
    */
   private class TokenLabelProvider extends LabelProvider {
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getText(Object element) {
       String translation = null;

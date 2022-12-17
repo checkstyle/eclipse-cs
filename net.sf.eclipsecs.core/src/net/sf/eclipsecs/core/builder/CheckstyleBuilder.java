@@ -128,9 +128,6 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
     buildJob.schedule();
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   protected final IProject[] build(final int kind, @SuppressWarnings("rawtypes") final Map args,
           final IProgressMonitor monitor) throws CoreException {

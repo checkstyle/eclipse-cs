@@ -79,18 +79,12 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
   // methods
   //
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void initialize(CheckConfigurationWorkingCopy checkConfiguration,
           CheckConfigurationPropertiesDialog dialog) {
     mWorkingCopy = checkConfiguration;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public Control createEditorControl(Composite parent, final Shell shell) {
 
@@ -206,9 +200,6 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
     return contents;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public CheckConfigurationWorkingCopy getEditedWorkingCopy() throws CheckstylePluginException {
 

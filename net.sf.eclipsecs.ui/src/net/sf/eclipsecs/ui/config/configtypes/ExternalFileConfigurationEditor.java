@@ -87,18 +87,12 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
   // methods
   //
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void initialize(CheckConfigurationWorkingCopy checkConfiguration,
           CheckConfigurationPropertiesDialog dialog) {
     mWorkingCopy = checkConfiguration;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public Control createEditorControl(Composite parent, final Shell shell) {
 
@@ -202,9 +196,6 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
     return contents;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public CheckConfigurationWorkingCopy getEditedWorkingCopy() throws CheckstylePluginException {
 

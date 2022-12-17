@@ -77,9 +77,6 @@ public class PackageFilterEditor implements IFilterEditor {
   /** the filter data. */
   private List<String> mFilterData;
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public int openEditor(Shell parent) {
 
@@ -105,25 +102,16 @@ public class PackageFilterEditor implements IFilterEditor {
     return retCode;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void setInputProject(IProject input) {
     this.mInputProject = input;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void setFilterData(List<String> filterData) {
     this.mFilterData = filterData;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public List<String> getFilterData() {
     return this.mFilterData;
@@ -208,9 +196,6 @@ public class PackageFilterEditor implements IFilterEditor {
    */
   private static class SourceFolderContentProvider implements ITreeContentProvider {
 
-    /**
-     * @see org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.Object)
-     */
     @Override
     public Object[] getChildren(Object parentElement) {
       List<IResource> children = null;
@@ -287,41 +272,26 @@ public class PackageFilterEditor implements IFilterEditor {
       return children;
     }
 
-    /**
-     * @see org.eclipse.jface.viewers.ITreeContentProvider#getParent(java.lang.Object)
-     */
     @Override
     public Object getParent(Object element) {
       return element instanceof IResource ? ((IResource) element).getParent() : null;
     }
 
-    /**
-     * @see org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java.lang.Object)
-     */
     @Override
     public boolean hasChildren(Object element) {
       return getChildren(element).length > 0;
     }
 
-    /**
-     * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
-     */
     @Override
     public Object[] getElements(Object inputElement) {
       return getChildren(inputElement);
     }
 
-    /**
-     * @see org.eclipse.jface.viewers.IContentProvider#dispose()
-     */
     @Override
     public void dispose() {
       // NOOP
     }
 
-    /**
-     * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(Viewer, Object, Object)
-     */
     @Override
     public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
       // NOOP
@@ -440,11 +410,6 @@ public class PackageFilterEditor implements IFilterEditor {
       return mRecursivelyExcludeSubPackages;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.jface.window.Window#open()
-     */
     @Override
     public int open() {
       mIsEmpty = evaluateIfTreeEmpty(mInput);
@@ -461,9 +426,6 @@ public class PackageFilterEditor implements IFilterEditor {
       super.cancelPressed();
     }
 
-    /*
-     * @see SelectionStatusDialog#computeResult()
-     */
     @Override
     protected void computeResult() {
 
@@ -523,11 +485,6 @@ public class PackageFilterEditor implements IFilterEditor {
       return composite;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets .Composite)
-     */
     @Override
     protected Control createDialogArea(Composite parent) {
       Composite composite = (Composite) super.createDialogArea(parent);

@@ -77,9 +77,6 @@ public class FileMatchPatternEditDialog extends TitleAreaDialog {
     return mPattern;
   }
 
-  /**
-   * @see TitleAreaDialog#createDialogArea(org.eclipse.swt.widgets.Composite)
-   */
   @Override
   protected Control createDialogArea(Composite parent) {
     Composite composite = (Composite) super.createDialogArea(parent);
@@ -116,9 +113,6 @@ public class FileMatchPatternEditDialog extends TitleAreaDialog {
     return dialog;
   }
 
-  /**
-   * @see org.eclipse.jface.dialogs.Dialog#okPressed()
-   */
   @Override
   protected void okPressed() {
 

@@ -62,17 +62,11 @@ public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegat
 
   private Collection<IProject> mSelectedProjects;
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void setActivePart(IAction action, IWorkbenchPart targetPart) {
     mPart = targetPart;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   @SuppressWarnings("unchecked")
   public void selectionChanged(IAction action, ISelection selection) {
@@ -83,9 +77,6 @@ public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegat
     }
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void run(IAction action) {
 
@@ -133,9 +124,6 @@ public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegat
       this.mProjectsToConfigure = projectsToConfigure;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public IStatus runInWorkspace(IProgressMonitor monitor) {
 

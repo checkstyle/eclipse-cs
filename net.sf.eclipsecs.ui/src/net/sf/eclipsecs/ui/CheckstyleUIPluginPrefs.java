@@ -87,9 +87,6 @@ public class CheckstyleUIPluginPrefs extends AbstractPreferenceInitializer {
    */
   public static final String PREF_STATS_SHOW_ALL_CATEGORIES = "show_all_categories"; //$NON-NLS-1$
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void initializeDefaultPreferences() {
 

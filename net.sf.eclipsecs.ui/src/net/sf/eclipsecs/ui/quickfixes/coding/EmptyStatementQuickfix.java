@@ -39,9 +39,6 @@ import org.eclipse.swt.graphics.Image;
  */
 public class EmptyStatementQuickfix extends AbstractASTResolution {
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
           final int markerStartPosition) {
@@ -65,25 +62,16 @@ public class EmptyStatementQuickfix extends AbstractASTResolution {
     };
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public String getDescription() {
     return Messages.EmptyStatementQuickfix_description;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public String getLabel() {
     return Messages.EmptyStatementQuickfix_label;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public Image getImage() {
     return CheckstyleUIPluginImages.CORRECTION_REMOVE.getImage();

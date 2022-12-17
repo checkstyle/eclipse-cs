@@ -71,41 +71,26 @@ public class LocalCheckConfigurationWorkingSet implements ICheckConfigurationWor
     }
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public CheckConfigurationWorkingCopy newWorkingCopy(ICheckConfiguration checkConfig) {
     return new CheckConfigurationWorkingCopy(checkConfig, this);
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public CheckConfigurationWorkingCopy newWorkingCopy(IConfigurationType configType) {
     return new CheckConfigurationWorkingCopy(configType, this, false);
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public CheckConfigurationWorkingCopy[] getWorkingCopies() {
     return mWorkingCopies.toArray(new CheckConfigurationWorkingCopy[mWorkingCopies.size()]);
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void addCheckConfiguration(CheckConfigurationWorkingCopy checkConfig) {
     mWorkingCopies.add(checkConfig);
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public boolean removeCheckConfiguration(CheckConfigurationWorkingCopy checkConfig) {
 
@@ -119,17 +104,11 @@ public class LocalCheckConfigurationWorkingSet implements ICheckConfigurationWor
     return !inUse;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void store() throws CheckstylePluginException {
     notifyDeletedCheckConfigs();
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public boolean isDirty() {
     if (mDeletedConfigurations.size() > 0) {
@@ -147,9 +126,6 @@ public class LocalCheckConfigurationWorkingSet implements ICheckConfigurationWor
     return dirty;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public boolean isNameCollision(CheckConfigurationWorkingCopy configuration) {
 
@@ -172,9 +148,6 @@ public class LocalCheckConfigurationWorkingSet implements ICheckConfigurationWor
     return mProjectConfig.getProject();
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public Collection<IProject> getAffectedProjects() {
     Set<IProject> projects = new HashSet<>();

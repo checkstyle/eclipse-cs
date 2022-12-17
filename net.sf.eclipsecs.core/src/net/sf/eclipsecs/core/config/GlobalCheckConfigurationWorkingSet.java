@@ -97,33 +97,21 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
     }
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public CheckConfigurationWorkingCopy newWorkingCopy(ICheckConfiguration checkConfig) {
     return new CheckConfigurationWorkingCopy(checkConfig, this);
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public CheckConfigurationWorkingCopy newWorkingCopy(IConfigurationType configType) {
     return new CheckConfigurationWorkingCopy(configType, this, true);
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public CheckConfigurationWorkingCopy[] getWorkingCopies() {
     return mWorkingCopies.toArray(new CheckConfigurationWorkingCopy[mWorkingCopies.size()]);
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void addCheckConfiguration(CheckConfigurationWorkingCopy checkConfig) {
     mWorkingCopies.add(checkConfig);
@@ -148,9 +136,6 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
     this.mDefaultCheckConfig = defaultCheckConfig;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public boolean removeCheckConfiguration(CheckConfigurationWorkingCopy checkConfig) {
     boolean used = true;
@@ -174,9 +159,6 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
     return !used;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void store() throws CheckstylePluginException {
     updateProjectConfigurations();
@@ -185,9 +167,6 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
     CheckConfigurationFactory.refresh();
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public boolean isDirty() {
     if (mDeletedConfigurations.size() > 0) {
@@ -205,9 +184,6 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
     return dirty;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public Collection<IProject> getAffectedProjects() throws CheckstylePluginException {
 
@@ -230,9 +206,6 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
     return projects;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public boolean isNameCollision(CheckConfigurationWorkingCopy configuration) {
 

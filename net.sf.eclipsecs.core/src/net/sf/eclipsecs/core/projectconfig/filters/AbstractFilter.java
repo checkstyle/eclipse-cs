@@ -47,9 +47,6 @@ public abstract class AbstractFilter implements IFilter {
   /** flags, if the filter is readonly. */
   private boolean mReadonly;
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void initialize(String name, String internalName, String desc, boolean readonly) {
 
@@ -89,58 +86,37 @@ public abstract class AbstractFilter implements IFilter {
     return this.mFilterDescription;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public boolean isEnabled() {
     return mSelected;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void setEnabled(boolean selected) {
     mSelected = selected;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public boolean isReadonly() {
     return mReadonly;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public List<String> getFilterData() {
     // NOOP
     return null;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void setFilterData(List<String> filterData) {
     // NOOP
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public String getPresentableFilterData() {
     return null;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public IFilter clone() {
 
@@ -154,9 +130,6 @@ public abstract class AbstractFilter implements IFilter {
     return object;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public boolean equals(Object o) {
     if (o == null || !(o instanceof AbstractFilter)) {
@@ -173,17 +146,11 @@ public abstract class AbstractFilter implements IFilter {
             && Objects.equals(mSelected, rhs.mSelected) && Objects.equals(mReadonly, rhs.mReadonly);
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public int hashCode() {
     return Objects.hash(mFilterName, mInternalName, mFilterDescription, mSelected, mReadonly);
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public String toString() {
     return MoreObjects.toStringHelper(this).add("filterName", mFilterName)

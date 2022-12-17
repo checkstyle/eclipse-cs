@@ -36,9 +36,6 @@ import org.eclipse.team.core.synchronize.SyncInfo;
  */
 public class FilesInSyncFilter extends AbstractFilter {
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public boolean accept(Object element) {
     boolean passes = true;

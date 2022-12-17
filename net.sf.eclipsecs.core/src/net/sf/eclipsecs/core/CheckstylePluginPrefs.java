@@ -71,9 +71,6 @@ public class CheckstylePluginPrefs extends AbstractPreferenceInitializer {
    */
   public static final String PREF_LOCALE_LANGUAGE = "checkstyle_rule_language";
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void initializeDefaultPreferences() {
 

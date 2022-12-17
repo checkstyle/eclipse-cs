@@ -296,9 +296,6 @@ public class Module implements Cloneable {
     return mCustomMetaData;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public Module clone() {
     try {

@@ -54,9 +54,6 @@ public class UnOpenedFilesFilter extends AbstractFilter {
     sOpenedFiles.remove(file);
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public boolean accept(Object element) {
 
