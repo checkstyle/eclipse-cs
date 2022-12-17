@@ -180,7 +180,8 @@ public class FileSet implements Cloneable {
 
       return clone;
     } catch (CloneNotSupportedException ex) {
-      throw new InternalError(); // should never happen
+      // should never happen
+      throw new InternalError();
     }
   }
 

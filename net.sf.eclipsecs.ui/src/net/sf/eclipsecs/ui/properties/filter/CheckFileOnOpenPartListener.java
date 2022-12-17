@@ -158,7 +158,8 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
     }
 
     IFile file = null;
-    IWorkbenchPart part = partRef.getPart(false); // fix for 3522695
+    IWorkbenchPart part = partRef.getPart(false);
+    // fix for 3522695
     // do *NOT* restore the part here to prevent startup issues with large
     // number of opened files
     // instead use a different path the rip the input file reference

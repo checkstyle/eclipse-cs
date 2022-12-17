@@ -118,7 +118,8 @@ public class FormatterTransformer {
    * @param path
    *          The path where the checkstyle-xml file gets generated.
    */
-  @SuppressWarnings("unused") // CheckstyleFileWriter acts on its own parameters
+  // CheckstyleFileWriter acts on its own parameters
+  @SuppressWarnings("unused")
   public void transformRules(final String path) {
     loadRuleConfigurations();
     new CheckstyleFileWriter(mCheckstyleSetting, path);

@@ -41,7 +41,7 @@ public class ConfigProperty implements Comparable<ConfigProperty>, Cloneable {
 
   /**
    * Constructor.
-   * 
+   *
    * @param metaData
    *          the property meta data
    */
@@ -54,7 +54,7 @@ public class ConfigProperty implements Comparable<ConfigProperty>, Cloneable {
 
   /**
    * Constructor.
-   * 
+   *
    * @param name
    *          Property name.
    * @param value
@@ -67,7 +67,7 @@ public class ConfigProperty implements Comparable<ConfigProperty>, Cloneable {
 
   /**
    * Get the property's name.
-   * 
+   *
    * @return The name
    */
   public String getName() {
@@ -76,7 +76,7 @@ public class ConfigProperty implements Comparable<ConfigProperty>, Cloneable {
 
   /**
    * Set the property's name.
-   * 
+   *
    * @param name
    *          The new name.
    */
@@ -86,7 +86,7 @@ public class ConfigProperty implements Comparable<ConfigProperty>, Cloneable {
 
   /**
    * Returns the value.
-   * 
+   *
    * @return String
    */
   public String getValue() {
@@ -95,7 +95,7 @@ public class ConfigProperty implements Comparable<ConfigProperty>, Cloneable {
 
   /**
    * Sets the value.
-   * 
+   *
    * @param value
    *          The value to set
    */
@@ -105,7 +105,7 @@ public class ConfigProperty implements Comparable<ConfigProperty>, Cloneable {
 
   /**
    * Returns the meta data for this property.
-   * 
+   *
    * @return the meta data
    */
   public ConfigPropertyMetadata getMetaData() {
@@ -114,7 +114,7 @@ public class ConfigProperty implements Comparable<ConfigProperty>, Cloneable {
 
   /**
    * Sets the meta data for this property.
-   * 
+   *
    * @param metaData
    *          the meta data
    */
@@ -124,7 +124,7 @@ public class ConfigProperty implements Comparable<ConfigProperty>, Cloneable {
 
   /**
    * Returns if the property value is/contains a ${}-style property reference.
-   * 
+   *
    * @return <code>true</code> if the value is a property reference, <code>false</code> otherwise
    */
   public boolean isPropertyReference() {
@@ -133,7 +133,7 @@ public class ConfigProperty implements Comparable<ConfigProperty>, Cloneable {
 
   /**
    * Sets if the property value is/contains a ${}-style property reference.
-   * 
+   *
    * @param propertyReference
    *          <code>true</code> if the value is a property reference, <code>false</code> otherwise
    */
@@ -152,7 +152,8 @@ public class ConfigProperty implements Comparable<ConfigProperty>, Cloneable {
       ConfigProperty clone = (ConfigProperty) super.clone();
       return clone;
     } catch (CloneNotSupportedException ex) {
-      throw new InternalError(); // Should not happen
+      // Should not happen
+      throw new InternalError();
     }
   }
 }

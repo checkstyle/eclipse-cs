@@ -308,7 +308,8 @@ public class Module implements Cloneable {
 
       return clone;
     } catch (CloneNotSupportedException ex) {
-      throw new InternalError(); // should not happen
+      // should not happen
+      throw new InternalError();
     }
   }
 }

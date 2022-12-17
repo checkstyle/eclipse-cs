@@ -53,7 +53,8 @@ public class MissingSwitchDefaultQuickfix extends AbstractASTResolution {
           node.statements().add(defNode);
           node.statements().add(node.getAST().newBreakStatement());
         }
-        return true; // also visit children
+        // also visit children
+        return true;
       }
     };
   }

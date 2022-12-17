@@ -400,7 +400,8 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
           while (it2.hasNext()) {
 
             if (prop.getPropertyName().equals(it2.next().getPropertyName())) {
-              iter.remove(); // remove the current entry
+              // remove the current entry
+              iter.remove();
               break;
             }
           }

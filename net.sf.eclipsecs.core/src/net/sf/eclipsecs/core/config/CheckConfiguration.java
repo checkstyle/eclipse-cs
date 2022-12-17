@@ -159,7 +159,8 @@ public class CheckConfiguration implements ICheckConfiguration {
 
     if ((mCheckstyleConfigurationFile == null) || (currentTime > mExpirationTime)) {
       mCheckstyleConfigurationFile = getType().getCheckstyleConfiguration(this);
-      mExpirationTime = currentTime + 1000 * 60 * 60; // 1 hour
+      // 1 hour
+      mExpirationTime = currentTime + 1000 * 60 * 60;
     }
 
     return mCheckstyleConfigurationFile;
