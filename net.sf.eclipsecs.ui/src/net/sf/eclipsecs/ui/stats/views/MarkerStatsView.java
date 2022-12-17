@@ -133,9 +133,6 @@ public class MarkerStatsView extends AbstractStatsView {
   // methods
   //
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void createPartControl(Composite parent) {
     super.createPartControl(parent);
@@ -177,9 +174,6 @@ public class MarkerStatsView extends AbstractStatsView {
     // initFromSettings();
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void setFocus() {
     super.setFocus();
@@ -314,17 +308,11 @@ public class MarkerStatsView extends AbstractStatsView {
     return detailViewer;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   protected void initMenu(IMenuManager menu) {
     menu.add(new FiltersAction(this));
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   protected void initToolBar(IToolBarManager tbm) {
     tbm.add(mChartAction);
@@ -334,17 +322,11 @@ public class MarkerStatsView extends AbstractStatsView {
     tbm.add(new FiltersAction(this));
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   protected String getViewId() {
     return VIEW_ID;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   protected void handleStatsRebuilt() {
 

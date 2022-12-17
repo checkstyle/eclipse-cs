@@ -48,9 +48,6 @@ public class ExplicitInitializationQuickfix extends AbstractASTResolution {
 
   private String mFieldName = Messages.ExplicitInitializationQuickfix_unknownFieldName;
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public boolean canFix(final IMarker marker) {
     retrieveFieldName(marker);
@@ -79,9 +76,6 @@ public class ExplicitInitializationQuickfix extends AbstractASTResolution {
     CheckstyleLog.log(error, Messages.ExplicitInitializationQuickfix_errorMessageFieldName);
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
           final int markerStartOffset) {
@@ -98,25 +92,16 @@ public class ExplicitInitializationQuickfix extends AbstractASTResolution {
     };
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public String getDescription() {
     return NLS.bind(Messages.ExplicitInitializationQuickfix_description, mFieldName);
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public String getLabel() {
     return NLS.bind(Messages.ExplicitInitializationQuickfix_label, mFieldName);
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public Image getImage() {
     return CheckstyleUIPluginImages.CORRECTION_REMOVE.getImage();

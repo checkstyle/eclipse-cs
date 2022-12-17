@@ -42,9 +42,6 @@ class CheckConfigurationContentProvider implements IStructuredContentProvider {
   // methods
   //
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public Object[] getElements(Object inputElement) {
 
@@ -66,17 +63,11 @@ class CheckConfigurationContentProvider implements IStructuredContentProvider {
     return configurations.toArray();
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
     // do nothing.
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void dispose() {
     // do nothing.

@@ -39,17 +39,11 @@ public class CheckstyleTransformingAction implements IObjectActionDelegate {
   /** Selection in workspace. */
   private ISelection mSelection;
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void setActivePart(final IAction arg0, final IWorkbenchPart arg1) {
     // TODO Auto-generated method stub
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void run(final IAction arg0) {
     final TransformCheckstyleRulesJob job = new TransformCheckstyleRulesJob(
@@ -57,9 +51,6 @@ public class CheckstyleTransformingAction implements IObjectActionDelegate {
     job.schedule();
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void selectionChanged(final IAction arg0, final ISelection arg1) {
     mSelection = arg1;

@@ -37,9 +37,6 @@ import org.eclipse.swt.graphics.Image;
  */
 public class UpperEllQuickfix extends AbstractASTResolution {
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
           final int markerStartOffset) {
@@ -60,25 +57,16 @@ public class UpperEllQuickfix extends AbstractASTResolution {
     };
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public String getDescription() {
     return Messages.UpperEllQuickfix_description;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public String getLabel() {
     return Messages.UpperEllQuickfix_label;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public Image getImage() {
     return CheckstyleUIPluginImages.CORRECTION_CHANGE.getImage();

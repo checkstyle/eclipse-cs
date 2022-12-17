@@ -141,17 +141,11 @@ public class ConfigProperty implements Comparable<ConfigProperty>, Cloneable {
     this.mPropertyReference = propertyReference;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public int compareTo(ConfigProperty obj) {
     return this.mName.compareTo(obj.mName);
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public ConfigProperty clone() {
     try {

@@ -31,9 +31,6 @@ import org.eclipse.ui.IStartup;
  */
 public class CheckstylePluginStartup implements IStartup {
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void earlyStartup() {
     // NOOP

@@ -32,9 +32,6 @@ import org.eclipse.swt.graphics.Image;
  */
 public class CheckConfigurationLabelProvider extends LabelProvider {
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public String getText(Object element) {
     String text = super.getText(element);
@@ -49,9 +46,6 @@ public class CheckConfigurationLabelProvider extends LabelProvider {
     return text;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public Image getImage(Object element) {
     Image image = null;

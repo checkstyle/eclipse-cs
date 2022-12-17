@@ -99,11 +99,6 @@ public abstract class AbstractStatsView extends ViewPart {
   // methods
   //
 
-  /**
-   * {@inheritDoc}
-   *
-   * @see org.eclipse.ui.IWorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
-   */
   @Override
   public void createPartControl(Composite parent) {
 
@@ -139,17 +134,11 @@ public abstract class AbstractStatsView extends ViewPart {
     initActionBars(getViewSite().getActionBars());
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void setFocus() {
 
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void dispose() {
     // IMPORTANT: Deregister listeners

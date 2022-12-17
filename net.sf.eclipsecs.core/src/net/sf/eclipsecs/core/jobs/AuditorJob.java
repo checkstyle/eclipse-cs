@@ -61,17 +61,11 @@ public class AuditorJob extends WorkspaceJob implements ISchedulingRule {
     this.mAuditor = auditor;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public boolean contains(ISchedulingRule arg0) {
     return arg0 instanceof AuditorJob;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public boolean isConflicting(ISchedulingRule arg0) {
     return arg0 instanceof AuditorJob || arg0 instanceof RunCheckstyleOnFilesJob;

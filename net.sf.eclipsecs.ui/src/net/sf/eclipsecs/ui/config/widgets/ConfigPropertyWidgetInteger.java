@@ -50,9 +50,6 @@ public class ConfigPropertyWidgetInteger extends ConfigPropertyWidgetAbstractBas
     super(parent, prop);
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   protected Control getValueWidget(Composite parent) {
 
@@ -74,9 +71,6 @@ public class ConfigPropertyWidgetInteger extends ConfigPropertyWidgetAbstractBas
     return mTextWidget;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public String getValue() {
     String result = mTextWidget.getText();
@@ -86,9 +80,6 @@ public class ConfigPropertyWidgetInteger extends ConfigPropertyWidgetAbstractBas
     return result;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void restorePropertyDefault() {
     ConfigPropertyMetadata metadata = getConfigProperty().getMetaData();
@@ -97,9 +88,6 @@ public class ConfigPropertyWidgetInteger extends ConfigPropertyWidgetAbstractBas
     mTextWidget.setText(defaultValue != null ? defaultValue : new String());
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void validate() throws CheckstylePluginException {
     try {

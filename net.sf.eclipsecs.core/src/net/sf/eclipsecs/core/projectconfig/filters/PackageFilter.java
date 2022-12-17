@@ -47,9 +47,6 @@ public class PackageFilter extends AbstractFilter {
 
   private boolean mExcludeSubPackages = true;
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public boolean accept(Object object) {
 
@@ -91,9 +88,6 @@ public class PackageFilter extends AbstractFilter {
     return goesThrough;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void setFilterData(List<String> filterData) {
     if (filterData == null) {
@@ -107,17 +101,11 @@ public class PackageFilter extends AbstractFilter {
     }
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public List<String> getFilterData() {
     return mData;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public String getPresentableFilterData() {
 
@@ -135,9 +123,6 @@ public class PackageFilter extends AbstractFilter {
     return buf.toString();
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public boolean equals(Object o) {
 
@@ -152,9 +137,6 @@ public class PackageFilter extends AbstractFilter {
     return super.equals(o) && Objects.equals(mData, rhs.mData);
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public int hashCode() {
     return Objects.hash(super.hashCode(), mData);

@@ -50,9 +50,6 @@ public class TransformFormatterRulesJob extends WorkspaceJob {
     super("transformFormatter");
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public IStatus runInWorkspace(final IProgressMonitor arg0) throws CoreException {
 

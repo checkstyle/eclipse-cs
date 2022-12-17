@@ -41,9 +41,6 @@ import org.eclipse.ui.IMarkerResolutionGenerator2;
  */
 public class CheckstyleMarkerResolutionGenerator implements IMarkerResolutionGenerator2 {
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public IMarkerResolution[] getResolutions(IMarker marker) {
 
@@ -65,9 +62,6 @@ public class CheckstyleMarkerResolutionGenerator implements IMarkerResolutionGen
     return fixes.toArray(new ICheckstyleMarkerResolution[fixes.size()]);
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public boolean hasResolutions(IMarker marker) {
 

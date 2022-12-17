@@ -59,9 +59,6 @@ public class EclipseLogHandler extends Handler {
     mPluginID = loggingPlugin.getBundle().getSymbolicName();
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void publish(LogRecord record) {
 
@@ -88,17 +85,11 @@ public class EclipseLogHandler extends Handler {
     mPluginLog.log(status);
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void close() {
     // NOOP
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void flush() {
     // NOOP

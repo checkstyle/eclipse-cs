@@ -43,9 +43,6 @@ import org.eclipse.swt.graphics.Image;
  */
 public class NeedBracesQuickfix extends AbstractASTResolution {
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
           final int markerStartOffset) {
@@ -142,25 +139,16 @@ public class NeedBracesQuickfix extends AbstractASTResolution {
     };
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public String getDescription() {
     return Messages.NeedBracesQuickfix_description;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public String getLabel() {
     return Messages.NeedBracesQuickfix_label;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public Image getImage() {
     return CheckstyleUIPluginImages.CORRECTION_ADD.getImage();

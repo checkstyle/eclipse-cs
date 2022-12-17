@@ -59,7 +59,7 @@ public class ConfigPropertyWidgetFile extends ConfigPropertyWidgetAbstractBase {
 
   /**
    * Creates the widget.
-   * 
+   *
    * @param parent
    *          the parent composite
    * @param prop
@@ -69,9 +69,6 @@ public class ConfigPropertyWidgetFile extends ConfigPropertyWidgetAbstractBase {
     super(parent, prop);
   }
 
-  /**
-   * @see ConfigPropertyWidgetAbstractBase#getValueWidget(org.eclipse.swt.widgets.Composite)
-   */
   @Override
   protected Control getValueWidget(Composite parent) {
 
@@ -123,9 +120,6 @@ public class ConfigPropertyWidgetFile extends ConfigPropertyWidgetAbstractBase {
     return mContents;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public String getValue() {
     String result = mTextWidget.getText();
@@ -135,18 +129,12 @@ public class ConfigPropertyWidgetFile extends ConfigPropertyWidgetAbstractBase {
     return result;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void setEnabled(boolean enabled) {
     mTextWidget.setEnabled(enabled);
     mBtnBrowse.setEnabled(enabled);
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void restorePropertyDefault() {
     ConfigPropertyMetadata metadata = getConfigProperty().getMetaData();
@@ -157,7 +145,7 @@ public class ConfigPropertyWidgetFile extends ConfigPropertyWidgetAbstractBase {
 
   /**
    * Creates the content assistant.
-   * 
+   *
    * @return the content assistant
    */
   private SubjectControlContentAssistant createContentAssistant() {
@@ -171,9 +159,6 @@ public class ConfigPropertyWidgetFile extends ConfigPropertyWidgetAbstractBase {
     contentAssistant.setContentAssistProcessor(processor, IDocument.DEFAULT_CONTENT_TYPE);
     contentAssistant.setContextInformationPopupOrientation(IContentAssistant.CONTEXT_INFO_ABOVE);
     contentAssistant.setInformationControlCreator(new IInformationControlCreator() {
-      /*
-       * @see IInformationControlCreator#createInformationControl(Shell)
-       */
       @Override
       public IInformationControl createInformationControl(Shell parent) {
         return new DefaultInformationControl(parent);

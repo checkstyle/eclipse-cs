@@ -29,9 +29,6 @@ import org.eclipse.core.resources.IResource;
  */
 public class DerivedFilesFilter extends AbstractFilter {
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public boolean accept(Object element) {
 

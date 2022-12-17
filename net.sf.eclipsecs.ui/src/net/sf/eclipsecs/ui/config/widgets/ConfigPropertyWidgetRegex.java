@@ -74,9 +74,6 @@ public class ConfigPropertyWidgetRegex extends ConfigPropertyWidgetAbstractBase 
 
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   protected Control getValueWidget(Composite parent) {
 
@@ -115,9 +112,6 @@ public class ConfigPropertyWidgetRegex extends ConfigPropertyWidgetAbstractBase 
     return mTextWidget;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public String getValue() {
     String result = mTextWidget.getText();
@@ -127,9 +121,6 @@ public class ConfigPropertyWidgetRegex extends ConfigPropertyWidgetAbstractBase 
     return result;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void restorePropertyDefault() {
     ConfigPropertyMetadata metadata = getConfigProperty().getMetaData();
@@ -138,9 +129,6 @@ public class ConfigPropertyWidgetRegex extends ConfigPropertyWidgetAbstractBase 
     mTextWidget.setText(defaultValue != null ? defaultValue : ""); //$NON-NLS-1$
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void validate() throws CheckstylePluginException {
     try {

@@ -55,9 +55,6 @@ public class BuiltInFilePropertyResolver implements PropertyResolver {
     mBuiltInConfigLocation = builtInConfigLocation;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public String resolve(String property) {
 

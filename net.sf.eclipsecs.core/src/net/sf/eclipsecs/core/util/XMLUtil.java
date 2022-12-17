@@ -83,9 +83,6 @@ public final class XMLUtil {
       mPublic2InternalDtdMap = public2InternalDtdMap;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public InputSource resolveEntity(String publicId, String systemId) throws SAXException {
 

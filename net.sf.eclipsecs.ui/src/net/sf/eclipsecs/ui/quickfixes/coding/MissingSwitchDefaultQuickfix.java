@@ -38,9 +38,6 @@ import org.eclipse.swt.graphics.Image;
  */
 public class MissingSwitchDefaultQuickfix extends AbstractASTResolution {
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
           final int markerStartOffset) {
@@ -61,25 +58,16 @@ public class MissingSwitchDefaultQuickfix extends AbstractASTResolution {
     };
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public String getDescription() {
     return Messages.MissingSwitchDefaultQuickfix_description;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public String getLabel() {
     return Messages.MissingSwitchDefaultQuickfix_label;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public Image getImage() {
     return CheckstyleUIPluginImages.CORRECTION_ADD.getImage();

@@ -30,9 +30,6 @@ import org.eclipse.jface.viewers.ViewerComparator;
  */
 public class CheckConfigurationViewerSorter extends ViewerComparator {
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public int compare(Viewer viewer, Object e1, Object e2) {
     int result = 0;

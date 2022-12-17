@@ -78,9 +78,6 @@ public class SimplifyBooleanReturnQuickfix extends AbstractASTResolution {
                   QualifiedName.class, SimpleName.class, ParenthesizedExpression.class,
                   SuperFieldAccess.class, SuperMethodInvocation.class, ThisExpression.class);
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
           final int markerStartOffset) {
@@ -161,25 +158,16 @@ public class SimplifyBooleanReturnQuickfix extends AbstractASTResolution {
     };
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public String getDescription() {
     return Messages.SimplifyBooleanReturnQuickfix_description;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public String getLabel() {
     return Messages.SimplifyBooleanReturnQuickfix_label;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public Image getImage() {
     return CheckstyleUIPluginImages.CORRECTION_CHANGE.getImage();

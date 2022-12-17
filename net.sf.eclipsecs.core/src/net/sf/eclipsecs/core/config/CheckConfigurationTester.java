@@ -126,9 +126,6 @@ public class CheckConfigurationTester {
     /** The list of unresolved properties. */
     private List<ResolvableProperty> mUnresolvedProperties = new ArrayList<>();
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String resolve(String aName) {
 

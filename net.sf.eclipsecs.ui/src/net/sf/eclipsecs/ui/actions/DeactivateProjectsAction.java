@@ -47,16 +47,10 @@ public class DeactivateProjectsAction implements IObjectActionDelegate {
 
   private Collection<IProject> mSelectedProjects;
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void setActivePart(IAction action, IWorkbenchPart targetPart) {
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   @SuppressWarnings("unchecked")
   public void selectionChanged(IAction action, ISelection selection) {
@@ -67,9 +61,6 @@ public class DeactivateProjectsAction implements IObjectActionDelegate {
     }
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void run(IAction action) {
     BulkCheckstyleActivateJob job = new BulkCheckstyleActivateJob(mSelectedProjects);
@@ -90,9 +81,6 @@ public class DeactivateProjectsAction implements IObjectActionDelegate {
       this.mProjectsToDeactivate = projectsToDeactivate;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
 

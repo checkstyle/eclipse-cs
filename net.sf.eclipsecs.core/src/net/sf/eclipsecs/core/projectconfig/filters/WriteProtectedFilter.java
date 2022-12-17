@@ -30,9 +30,6 @@ import org.eclipse.core.resources.ResourceAttributes;
  */
 public class WriteProtectedFilter extends AbstractFilter {
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public boolean accept(Object element) {
 

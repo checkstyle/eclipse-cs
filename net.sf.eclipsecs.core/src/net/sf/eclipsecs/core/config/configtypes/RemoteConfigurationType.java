@@ -81,9 +81,6 @@ public class RemoteConfigurationType extends ConfigurationType {
 
   private static Set<String> sFailedWith401URLs = new HashSet<>();
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public CheckstyleConfigurationFile getCheckstyleConfiguration(
           ICheckConfiguration checkConfiguration) throws CheckstylePluginException {
@@ -174,17 +171,11 @@ public class RemoteConfigurationType extends ConfigurationType {
     return data;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   protected URL resolveLocation(ICheckConfiguration checkConfiguration) throws IOException {
     return new URL(checkConfiguration.getLocation());
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void notifyCheckConfigRemoved(ICheckConfiguration checkConfiguration)
           throws CheckstylePluginException {

@@ -45,7 +45,7 @@ import org.eclipse.swt.widgets.Text;
 
 /**
  * Editor dialog for the package filter.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public class FileTypesFilterEditor implements IFilterEditor {
@@ -56,9 +56,6 @@ public class FileTypesFilterEditor implements IFilterEditor {
   /** the filter data. */
   private List<String> mFilterData;
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public int openEditor(Shell parent) {
     this.mDialog = new FileTypesDialog(parent, mFilterData);
@@ -74,25 +71,16 @@ public class FileTypesFilterEditor implements IFilterEditor {
     return retCode;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void setInputProject(IProject input) {
     // NOOP
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void setFilterData(List<String> filterData) {
     this.mFilterData = new ArrayList<>(filterData);
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public List<String> getFilterData() {
     return this.mFilterData;
@@ -100,7 +88,7 @@ public class FileTypesFilterEditor implements IFilterEditor {
 
   /**
    * Helper method to extract the edited data from the dialog.
-   * 
+   *
    * @return the filter data
    */
   private List<String> getFilterDataFromDialog() {
@@ -109,7 +97,7 @@ public class FileTypesFilterEditor implements IFilterEditor {
 
   /**
    * Dialog to edit file types to check.
-   * 
+   *
    * @author Lars Ködderitzsch
    */
   private class FileTypesDialog extends Dialog {
@@ -126,7 +114,7 @@ public class FileTypesFilterEditor implements IFilterEditor {
 
     /**
      * Creates a file matching pattern editor dialog.
-     * 
+     *
      * @param parentShell
      *          the parent shell
      * @param pattern
@@ -137,9 +125,6 @@ public class FileTypesFilterEditor implements IFilterEditor {
       mFileTypesList = fileTypes;
     }
 
-    /**
-     * @see Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
-     */
     @Override
     protected Control createDialogArea(Composite parent) {
       Composite composite = (Composite) super.createDialogArea(parent);
@@ -211,9 +196,6 @@ public class FileTypesFilterEditor implements IFilterEditor {
       return main;
     }
 
-    /**
-     * @see org.eclipse.jface.dialogs.Dialog#okPressed()
-     */
     @Override
     protected void okPressed() {
       super.okPressed();

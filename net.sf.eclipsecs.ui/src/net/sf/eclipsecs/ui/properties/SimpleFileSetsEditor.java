@@ -89,9 +89,6 @@ public class SimpleFileSetsEditor implements IFileSetsEditor {
     mPropertyPage = propsPage;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void setFileSets(List<FileSet> fileSets) throws CheckstylePluginException {
     mFileSets = fileSets;
@@ -116,17 +113,11 @@ public class SimpleFileSetsEditor implements IFileSetsEditor {
     mFileSets.add(mDefaultFileSet);
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public List<FileSet> getFileSets() {
     return mFileSets;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public Control createContents(Composite parent) throws CheckstylePluginException {
 
@@ -186,9 +177,6 @@ public class SimpleFileSetsEditor implements IFileSetsEditor {
     return configArea;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void refresh() {
     mComboViewer.refresh();
@@ -201,9 +189,6 @@ public class SimpleFileSetsEditor implements IFileSetsEditor {
    */
   private class Controller implements SelectionListener, ISelectionChangedListener {
 
-    /**
-     * @see SelectionListener#widgetSelected(org.eclipse.swt.events.SelectionEvent)
-     */
     @Override
     public void widgetSelected(SelectionEvent e) {
       if (mBtnManageConfigs == e.widget) {

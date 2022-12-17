@@ -75,9 +75,6 @@ public class ExternalFileConfigurationType extends ConfigurationType {
     return newLocation;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   protected URL resolveLocation(ICheckConfiguration checkConfiguration) throws IOException {
 
@@ -95,9 +92,6 @@ public class ExternalFileConfigurationType extends ConfigurationType {
 
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public boolean isConfigurable(ICheckConfiguration checkConfiguration) {
 

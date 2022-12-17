@@ -63,9 +63,6 @@ public class CheckstylePlugin extends Plugin {
     sPlugin = this;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void start(BundleContext context) throws Exception {
     super.start(context);

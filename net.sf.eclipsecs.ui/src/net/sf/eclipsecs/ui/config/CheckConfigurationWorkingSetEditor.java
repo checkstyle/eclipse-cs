@@ -132,9 +132,6 @@ public class CheckConfigurationWorkingSetEditor {
   // methods
   //
 
-  /**
-   * {@inheritDoc}
-   */
   public Control createContents(Composite ancestor) {
 
     //
@@ -562,9 +559,6 @@ public class CheckConfigurationWorkingSetEditor {
   private class ConfigurationLabelProvider extends CheckConfigurationLabelProvider
           implements ITableLabelProvider, ITableComparableProvider, ITableSettingsProvider {
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getColumnText(Object element, int columnIndex) {
       String result = element.toString();
@@ -586,9 +580,6 @@ public class CheckConfigurationWorkingSetEditor {
       return result;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Image getColumnImage(Object element, int columnIndex) {
       Image image = null;
@@ -611,17 +602,11 @@ public class CheckConfigurationWorkingSetEditor {
       return image;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Comparable<String> getComparableValue(Object element, int col) {
       return getColumnText(element, col);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public IDialogSettings getTableSettings() {
       String concreteViewId = mWorkingSet.getClass().getName();

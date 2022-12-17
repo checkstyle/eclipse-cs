@@ -49,9 +49,6 @@ public class CheckstyleNature implements IProjectNature {
   /** The project. */
   private IProject mProject;
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void configure() throws CoreException {
 
@@ -94,9 +91,6 @@ public class CheckstyleNature implements IProjectNature {
     }
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void deconfigure() throws CoreException {
 
@@ -126,17 +120,11 @@ public class CheckstyleNature implements IProjectNature {
 
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public IProject getProject() {
     return mProject;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void setProject(IProject project) {
     mProject = project;

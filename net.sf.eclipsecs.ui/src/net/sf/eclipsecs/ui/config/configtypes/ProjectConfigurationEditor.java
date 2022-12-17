@@ -108,9 +108,6 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
   // methods
   //
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void initialize(CheckConfigurationWorkingCopy checkConfiguration,
           CheckConfigurationPropertiesDialog dialog) {
@@ -118,9 +115,6 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
     mCheckConfigDialog = dialog;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public Control createEditorControl(Composite parent, final Shell shell) {
 
@@ -240,9 +234,6 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
     return contents;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public CheckConfigurationWorkingCopy getEditedWorkingCopy() throws CheckstylePluginException {
     mWorkingCopy.setName(mConfigName.getText());

@@ -53,9 +53,6 @@ public class FixCheckstyleMarkersJob extends UIJob {
     this.mFile = file;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public IStatus runInUIThread(IProgressMonitor monitor) {
 

@@ -95,9 +95,6 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
     partsOpened(Collections.singleton(partRef));
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void partClosed(IWorkbenchPartReference partRef) {
 
@@ -117,49 +114,31 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
     }
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void partActivated(IWorkbenchPartReference partRef) {
     // NOOP
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void partBroughtToTop(IWorkbenchPartReference partRef) {
     // NOOP
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void partDeactivated(IWorkbenchPartReference partRef) {
     // NOOP
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void partHidden(IWorkbenchPartReference partRef) {
     // NOOP
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void partInputChanged(IWorkbenchPartReference partRef) {
     // NOOP
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void partVisible(IWorkbenchPartReference partRef) {
     // NOOP

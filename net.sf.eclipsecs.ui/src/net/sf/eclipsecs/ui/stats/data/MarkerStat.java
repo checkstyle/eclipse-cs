@@ -28,7 +28,7 @@ import org.eclipse.ui.texteditor.MarkerUtilities;
 
 /**
  * Objet qui donne des statistiques sur les marqueurs.
- * 
+ *
  * @author Fabrice BELLINGARD
  */
 public class MarkerStat implements Comparable<MarkerStat> {
@@ -52,7 +52,7 @@ public class MarkerStat implements Comparable<MarkerStat> {
   /**
    * Crée un MarkerStat pour un marqueur Checkstyle correspondant à
    * l'identifiant passé en paramètre.
-   * 
+   *
    * @param identifiant
    *          : le message du marqueur Checkstyle
    */
@@ -64,7 +64,7 @@ public class MarkerStat implements Comparable<MarkerStat> {
 
   /**
    * Reference the marker as one fo this category.
-   * 
+   *
    * @param marker
    *          : the marker to add to this category
    */
@@ -77,11 +77,6 @@ public class MarkerStat implements Comparable<MarkerStat> {
     }
   }
 
-  /**
-   * {@inheritDoc}
-   * 
-   * @see java.lang.Comparable#compareTo(java.lang.Object)
-   */
   @Override
   public int compareTo(MarkerStat stat) {
     return mIdentifiant.compareTo(stat.getIdentifiant());
@@ -89,7 +84,7 @@ public class MarkerStat implements Comparable<MarkerStat> {
 
   /**
    * Returns the list of markers for this category.
-   * 
+   *
    * @return a collection of IMarker
    */
   public Collection<IMarker> getMarkers() {
@@ -98,7 +93,7 @@ public class MarkerStat implements Comparable<MarkerStat> {
 
   /**
    * Retourne le nombre d 'occurence.
-   * 
+   *
    * @return Returns the count.
    */
   public int getCount() {
@@ -107,7 +102,7 @@ public class MarkerStat implements Comparable<MarkerStat> {
 
   /**
    * Returns the maximum severity level occurring in this group.
-   * 
+   *
    * @return the maximum severity level
    */
   public int getMaxSeverity() {
@@ -116,7 +111,7 @@ public class MarkerStat implements Comparable<MarkerStat> {
 
   /**
    * Retourne l'identifiant (i.e. le message Checkstyle) de ce MarkerStat.
-   * 
+   *
    * @return Returns the identifiant.
    */
   public String getIdentifiant() {

@@ -40,9 +40,6 @@ public class UncommentedMainQuickfix extends AbstractASTResolution {
   /** The length of the javadoc comment declaration. */
   private static final int JAVADOC_COMMENT_LENGTH = 6;
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
           final int markerStartOffset) {
@@ -64,25 +61,16 @@ public class UncommentedMainQuickfix extends AbstractASTResolution {
     };
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public String getDescription() {
     return Messages.UncommentedMainQuickfix_description;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public String getLabel() {
     return Messages.UncommentedMainQuickfix_label;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public Image getImage() {
     return CheckstyleUIPluginImages.CORRECTION_REMOVE.getImage();
