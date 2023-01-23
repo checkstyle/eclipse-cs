@@ -85,7 +85,7 @@ public class ExternalFileConfigurationType extends ConfigurationType {
       location = resolveDynamicLocation(location);
     } catch (CheckstylePluginException ex) {
       CheckstyleLog.log(ex);
-      throw new IOException(ex.getMessage());
+      throw new IOException(ex);
     }
 
     return new File(location).toURI().toURL();

@@ -80,7 +80,7 @@ public class CheckstyleFileWriter {
    * @param outStream
    *          BufferedWriter to xml-file.
    */
-  private void writeModules(final HashMap<String, HashMap<String, String>> modules,
+  private static void writeModules(final HashMap<String, HashMap<String, String>> modules,
           final OutputStream outStream) throws IOException {
 
     final Iterator<String> modit = modules.keySet().iterator();
@@ -104,7 +104,7 @@ public class CheckstyleFileWriter {
    * @param properties
    *          A HashMap containing all properties.
    */
-  private void writeProperty(final HashMap<String, String> properties, final OutputStream outStream)
+  private static void writeProperty(final HashMap<String, String> properties, final OutputStream outStream)
           throws IOException {
     final Iterator<String> propit = properties.keySet().iterator();
     String prop;
