@@ -256,11 +256,11 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
       boolean isFirstPartProject = ResourcesPlugin.getWorkspace().getRoot()
               .getProject(tmp.segment(0)).exists();
 
-      if (workingSet instanceof LocalCheckConfigurationWorkingSet && !isFirstPartProject) {
+      if (!isFirstPartProject && workingSet instanceof LocalCheckConfigurationWorkingSet) {
         location = ((LocalCheckConfigurationWorkingSet) workingSet).getProject().getFullPath()
                 .append(location).toString();
         mLocation.setText(location);
-      } else if (workingSet instanceof GlobalCheckConfigurationWorkingSet && !isFirstPartProject) {
+      } else if (!isFirstPartProject && workingSet instanceof GlobalCheckConfigurationWorkingSet) {
         throw new CheckstylePluginException(NLS
                 .bind(Messages.ProjectConfigurationEditor_msgNoProjectInWorkspace, tmp.segment(0)));
       }
