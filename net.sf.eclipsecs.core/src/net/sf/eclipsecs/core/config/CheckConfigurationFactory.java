@@ -322,7 +322,7 @@ public final class CheckConfigurationFactory {
       sConfigurations.addAll(getGlobalCheckConfigurations(root));
 
       for (ICheckConfiguration config : sConfigurations) {
-        if (config.getName().equals(defaultConfigName) && config != sDefaultBuiltInConfig) {
+        if (config != sDefaultBuiltInConfig && config.getName().equals(defaultConfigName)) {
           sDefaultCheckConfig = config;
         }
       }

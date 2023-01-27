@@ -74,10 +74,10 @@ public class StandardPropertyResolver implements PropertyResolver, IContextAware
     String value = null;
     if (WORKSPACE_LOC.equals(property)) {
       value = ResourcesPlugin.getWorkspace().getRoot().getLocation().toString();
-    } else if ((PROJECT_LOC.equals(property) || BASEDIR_LOC.equals(property)) && mProject != null) {
+    } else if (mProject != null && (PROJECT_LOC.equals(property) || BASEDIR_LOC.equals(property))) {
       value = mProject.getLocation().toString();
-    } else if ((SAMEDIR_LOC.equals(property) || CONFIG_LOC.equals(property))
-            && mConfigLocation != null) {
+    } else if (mConfigLocation != null
+            && (SAMEDIR_LOC.equals(property) || CONFIG_LOC.equals(property))) {
       String configLocWOBackslashes = mConfigLocation.replace('\\', '/');
 
       int lastSlash = configLocWOBackslashes.lastIndexOf("/"); //$NON-NLS-1$

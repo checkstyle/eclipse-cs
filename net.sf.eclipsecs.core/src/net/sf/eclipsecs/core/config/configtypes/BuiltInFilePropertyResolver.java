@@ -60,8 +60,8 @@ public class BuiltInFilePropertyResolver implements PropertyResolver {
 
     String value = null;
 
-    if ((SAMEDIR_LOC.equals(property) || CONFIG_LOC.equals(property))
-            && mBuiltInConfigLocation != null) {
+    if (mBuiltInConfigLocation != null
+            && (SAMEDIR_LOC.equals(property) || CONFIG_LOC.equals(property))) {
 
       int lastSlash = mBuiltInConfigLocation.lastIndexOf("/"); //$NON-NLS-1$
       if (lastSlash > -1) {
