@@ -302,7 +302,8 @@ public abstract class AbstractASTResolution extends WorkbenchMarkerResolution
     return null;
   }
 
-  private MarkerAnnotation getMarkerAnnotation(IAnnotationModel annotationModel, IMarker marker) {
+  private static MarkerAnnotation getMarkerAnnotation(IAnnotationModel annotationModel,
+          IMarker marker) {
 
     Iterator<Annotation> iter = annotationModel.getAnnotationIterator();
     while (iter.hasNext()) {
