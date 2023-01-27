@@ -57,7 +57,6 @@ public class MarkerStat implements Comparable<MarkerStat> {
    *          : le message du marqueur Checkstyle
    */
   public MarkerStat(String identifiant) {
-    super();
     this.mIdentifiant = identifiant;
     mMarkers = new ArrayList<>();
   }

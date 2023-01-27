@@ -25,7 +25,7 @@ import java.util.Collection;
 /**
  * Classe qui véhicule les statistiques Checkstyle. Elle contient notamment la
  * liste des différentes erreurs avec leur comptage.
- * 
+ *
  * @author Fabrice BELLINGARD
  */
 public class Stats {
@@ -43,7 +43,7 @@ public class Stats {
 
   /**
    * Constructeur.
-   * 
+   *
    * @param markerStats
    *          la liste des MarkerStats
    * @param markerCount
@@ -52,7 +52,6 @@ public class Stats {
    *          the number of all checkstyle markers in the workspace
    */
   public Stats(Collection<MarkerStat> markerStats, int markerCount, int markerCountWhole) {
-    super();
     this.mMarkerStats = markerStats;
     this.mMarkerCount = markerCount;
     this.mMarkerCountWhole = markerCountWhole;
@@ -60,7 +59,7 @@ public class Stats {
 
   /**
    * Returns the markerStats.
-   * 
+   *
    * @return Returns the markerStats.
    */
   public Collection<MarkerStat> getMarkerStats() {
@@ -69,7 +68,7 @@ public class Stats {
 
   /**
    * Returns the markerCount.
-   * 
+   *
    * @return Returns the markerCount.
    */
   public int getMarkerCount() {
@@ -78,7 +77,7 @@ public class Stats {
 
   /**
    * Returns the number of all Checkstyle markers in the workspace.
-   * 
+   *
    * @return the number of all Checkstyle markers
    */
   public int getMarkerCountAll() {

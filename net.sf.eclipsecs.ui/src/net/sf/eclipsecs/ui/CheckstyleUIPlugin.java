@@ -95,7 +95,6 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
    * The constructor.
    */
   public CheckstyleUIPlugin() {
-    super();
     sPlugin = this;
   }
 
