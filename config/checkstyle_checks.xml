@@ -67,10 +67,18 @@
 
     <!-- Miscellaneous -->
     <module name="NewlineAtEndOfFile"/>
+    <module name="Translation">
+        <property name="requiredTranslations" value="de, es, fi, fr, ja, pt, ru, tr, zh"/>
+    </module>
     <module name="UniqueProperties"/>
+    <module name="OrderedProperties" />
 
     <!-- Regexp -->
     <module name="RegexpMultiline">
+        <property name="id" value="regexpMultilineDefault"/>
+    </module>
+    <module name="RegexpMultiline">
+        <property name="id" value="noEmptyFile"/>
         <property name="format" value="^\s*$" />
         <property name="matchAcrossLines" value="true" />
         <property name="message" value="Empty file is not allowed" />
@@ -81,6 +89,7 @@
      See https://github.com/checkstyle/checkstyle/issues/7340 for details.
     -->
     <module name="RegexpSingleline">
+        <property name="id" value="noRelativeLinks"/>
         <property name="format" value="href=&quot;(?!\/|https?:\/\/).*?\.dtd&quot;"/>
         <property name="fileExtensions" value="xml, vm"/>
         <property name="message"
@@ -105,8 +114,11 @@
         <property name="message"
                   value="Package comment marker should not be used if other visibility is defined"/>
     </module>
-    <module name="RegexpOnFilename" />
     <module name="RegexpOnFilename">
+        <property name="id" value="regexpOnFilenameWithSpace"/>
+    </module>
+    <module name="RegexpOnFilename">
+        <property name="id" value="javaFileLocation"/>
         <property name="folderPattern" value="[\\/]src[\\/]\w+[\\/]java[\\/]"/>
         <property name="fileNamePattern" value="\.java$"/>
         <property name="match" value="false"/>
@@ -114,6 +126,7 @@
                  value="Only java files should be located in the ''src/*/java'' folders."/>
     </module>
     <module name="RegexpOnFilename">
+        <property name="id" value="xmlFileLocation"/>
         <property name="folderPattern" value="[\\/]src[\\/]xdocs[\\/]"/>
         <property name="fileNamePattern" value="\.(xml)|(vm)$"/>
         <property name="match" value="false"/>
@@ -121,6 +134,7 @@
                  value="All files in the ''src/xdocs'' folder should have the ''xml'' or ''vm'' extension."/>
     </module>
     <module name="RegexpOnFilename">
+        <property name="id" value="testFileLocation"/>
         <property name="folderPattern" value="[\\/]src[\\/]it[\\/]java[\\/]"/>
         <property name="fileNamePattern" value="^((\w+Test)|(\w+TestSupport)|(Abstract\w+))\.java$"/>
         <property name="match" value="false"/>
@@ -169,6 +183,8 @@
             <property name="tokens" value="PARAMETER_DEF"/>
             <property name="tokens" value="IMPLEMENTS_CLAUSE"/>
             <property name="tokens" value="ANNOTATION_FIELD_DEF"/>
+            <property name="tokens" value="RECORD_DEF"/>
+            <property name="tokens" value="COMPACT_CTOR_DEF"/>
         </module>
         <module name="AnnotationUseStyle"/>
         <module name="MissingDeprecated"/>
@@ -181,6 +197,7 @@
         </module>
         <module name="EmptyCatchBlock"/>
         <module name="LeftCurly"/>
+        <module name="NeedBraces"/>
         <!-- modified -->
         <module name="HideUtilityClassConstructor"/>
         <module name="InterfaceIsType"/>
@@ -213,6 +230,12 @@
                          java.lang.StringBuffer"/>
         </module>
         <module name="IllegalThrows"/>
+        <module name="IllegalToken">
+            <property name="tokens" value="LABELED_STAT"/>
+            <property name="tokens" value="LITERAL_NATIVE"/>
+            <property name="tokens" value="LITERAL_VOLATILE"/>
+            <property name="tokens" value="LITERAL_ASSERT"/>
+        </module>
         <module name="IllegalTokenText">
             <property name="tokens" value="STRING_LITERAL"/>
             <property name="format" value="^(US-ASCII|ISO-8859-1|UTF-8|UTF-16BE|UTF-16LE|UTF-16)$"/>
@@ -257,6 +280,10 @@
         <module name="StringLiteralEquality"/>
         <module name="SuperClone"/>
         <module name="SuperFinalize"/>
+        <module name="UnnecessarySemicolonAfterOuterTypeDeclaration"/>
+        <module name="UnnecessarySemicolonAfterTypeMemberDeclaration"/>
+        <module name="UnnecessarySemicolonInEnumeration"/>
+        <module name="UnusedLocalVariable"/>
         <module name="VariableDeclarationUsageDistance"/>
 
         <!-- Filters -->
@@ -329,10 +356,16 @@
         <module name="ImportControl">
             <property name="id" value="ImportControlTest"/>
             <property name="file" value="${checkstyle.importcontroltest.file}"/>
-            <property name="path" value="^.*[\\/]src[\\/]test[\\/].*$"/>
+            <property name="path" value="^.*[\\/]src[\\/](test|it)[\\/].*$"/>
         </module>
         <module name="UnusedImports"/>
 
+        <!-- Javadoc Comments -->
+        <module name="JavadocMissingLeadingAsterisk"/>
+        <module name="JavadocStyle">
+            <property name="scope" value="public"/>
+        </module>
+        <module name="SingleLineJavadoc"/>
         <!-- Misc -->
         <module name="ArrayTypeStyle"/>
         <module name="AvoidEscapedUnicodeCharacters">
@@ -367,20 +400,41 @@
 
         <!-- Naming Conventions -->
         <module name="ClassTypeParameterName"/>
+        <module name="RecordTypeParameterName"/>
+        <module name="RecordComponentName"/>
         <module name="InterfaceTypeParameterName"/>
         <module name="LocalFinalVariableName"/>
+        <module name="MemberName">
+            <property name="format" value="^(id)|([a-z][a-z0-9][a-zA-Z0-9]+)$"/>
+        </module>
         <module name="MethodName"/>
         <module name="MethodTypeParameterName"/>
         <module name="PackageName"/>
+        <module name="ParameterName">
+            <property name="format" value="^(id)|([a-z][a-z0-9][a-zA-Z0-9]+)$"/>
+            <property name="ignoreOverridden" value="true"/>
+        </module>
         <module name="LambdaParameterName">
             <property name="format" value="^(id)|([a-z][a-z0-9][a-zA-Z0-9]+)$"/>
         </module>
+        <module name="PatternVariableName"/>
 
         <!-- Regexp -->
+        <module name="Regexp">
+            <property name="id" value="regexpDefault"/>
+        </module>
         <module name="RegexpSinglelineJava">
+            <property name="id" value="regexpSingleLineDefault"/>
+        </module>
+        <module name="RegexpSinglelineJava">
+            <property name="id" value="checkASCII"/>
             <property name="format" value="[^\p{ASCII}]"/>
             <property name="ignoreComments" value="true"/>
         </module>
+
+    <!-- Size Violations -->
+        <module name="LambdaBodyLength"/>
+        <module name="RecordComponentNumber"/>
 
         <!-- Whitespace -->
         <module name="EmptyForInitializerPad"/>
@@ -393,6 +447,7 @@
         <module name="MethodParamPad"/>
         <module name="NoLineWrap"/>
         <module name="NoWhitespaceBefore"/>
+        <module name="NoWhitespaceBeforeCaseDefaultColon"/>
         <module name="NoWhitespaceBefore">
             <property name="tokens" value="DOT"/>
             <property name="tokens" value="METHOD_REF"/>
