@@ -644,7 +644,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
         RuleConfigurationEditDialog dialog = new RuleConfigurationEditDialog(getShell(),
                 workingCopy, !mConfigurable,
                 Messages.CheckConfigurationConfigureDialog_titleModuleConfigEditor);
-        if (Window.OK == dialog.open() && mConfigurable) {
+        if (mConfigurable && Window.OK == dialog.open()) {
           mModules.set(mModules.indexOf(module), workingCopy);
           mIsDirty = true;
           mTableViewer.refresh(true);
@@ -690,7 +690,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
               RuleConfigurationEditDialog dialog = new RuleConfigurationEditDialog(getShell(),
                       workingCopy, !mConfigurable,
                       Messages.CheckConfigurationConfigureDialog_titleNewModule);
-              if (Window.OK == dialog.open() && mConfigurable) {
+              if (mConfigurable && Window.OK == dialog.open()) {
                 mModules.add(workingCopy);
                 mIsDirty = true;
                 mTableViewer.refresh(true);
@@ -719,7 +719,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
      */
     private void removeModule(ISelection selection) {
 
-      if (!selection.isEmpty() && mConfigurable) {
+      if (mConfigurable && !selection.isEmpty()) {
 
         if (MessageDialog.openConfirm(getShell(),
                 Messages.CheckConfigurationConfigureDialog_titleRemoveModules,
@@ -950,7 +950,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
 
     @Override
     public Comparable<?> getComparableValue(Object element, int col) {
-      if (element instanceof Module && col == 0) {
+      if (col == 0 && element instanceof Module) {
         return Severity.ignore.equals(((Module) element).getSeverity()) ? Integer.valueOf(0)
                 : Integer.valueOf(1);
       }

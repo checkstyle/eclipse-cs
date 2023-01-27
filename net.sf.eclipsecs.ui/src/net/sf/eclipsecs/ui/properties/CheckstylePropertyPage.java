@@ -500,12 +500,12 @@ public class CheckstylePropertyPage extends PropertyPage {
         String promptRebuildPref = CheckstyleUIPluginPrefs
                 .getString(CheckstyleUIPluginPrefs.PREF_ASK_BEFORE_REBUILD);
 
-        boolean doRebuild = MessageDialogWithToggle.ALWAYS.equals(promptRebuildPref) && needRebuild;
+        boolean doRebuild = needRebuild && MessageDialogWithToggle.ALWAYS.equals(promptRebuildPref);
 
         //
         // Prompt for rebuild
         //
-        if (MessageDialogWithToggle.PROMPT.equals(promptRebuildPref) && needRebuild) {
+        if (needRebuild && MessageDialogWithToggle.PROMPT.equals(promptRebuildPref)) {
           MessageDialogWithToggle dialog = MessageDialogWithToggle.openYesNoQuestion(getShell(),
                   Messages.CheckstylePropertyPage_titleRebuild,
                   Messages.CheckstylePropertyPage_msgRebuild,
@@ -564,7 +564,7 @@ public class CheckstylePropertyPage extends PropertyPage {
 
           boolean showWarning = CheckstyleUIPluginPrefs
                   .getBoolean(CheckstyleUIPluginPrefs.PREF_FILESET_WARNING);
-          if (mProjectConfig.isUseSimpleConfig() && showWarning) {
+          if (showWarning && mProjectConfig.isUseSimpleConfig()) {
             MessageDialogWithToggle dialog = new MessageDialogWithToggle(getShell(),
                     Messages.CheckstylePropertyPage_titleWarnFilesets, null,
                     Messages.CheckstylePropertyPage_msgWarnFilesets, MessageDialog.WARNING,

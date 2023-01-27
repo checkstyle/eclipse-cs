@@ -252,9 +252,10 @@ public abstract class ConfigurationType implements IConfigurationType {
       return true;
     }
     ConfigurationType rhs = (ConfigurationType) obj;
-    return Objects.equals(mName, rhs.mName) && Objects.equals(mInternalName, rhs.mInternalName)
-            && mIsCreatable == rhs.mIsCreatable && mIsEditable == rhs.mIsEditable
-            && mIsConfigurable == rhs.mIsConfigurable;
+    return mIsCreatable == rhs.mIsCreatable && mIsEditable == rhs.mIsEditable
+            && mIsConfigurable == rhs.mIsConfigurable
+            && Objects.equals(mName, rhs.mName)
+            && Objects.equals(mInternalName, rhs.mInternalName);
   }
 
   @Override

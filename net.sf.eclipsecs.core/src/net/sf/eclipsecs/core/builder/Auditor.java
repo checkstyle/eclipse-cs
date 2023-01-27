@@ -118,7 +118,7 @@ public class Auditor {
     // System.out.println("----> Auditing: " + mFiles.size());
 
     // skip if there are no files to check
-    if (mFiles.isEmpty() || project == null) {
+    if (project == null || mFiles.isEmpty()) {
       return;
     }
 
@@ -312,7 +312,7 @@ public class Auditor {
 
           SeverityLevel severity = error.getSeverityLevel();
 
-          if (!severity.equals(SeverityLevel.IGNORE) && mResource != null) {
+          if (mResource != null && !severity.equals(SeverityLevel.IGNORE)) {
 
             RuleMetadata metaData = MetadataFactory.getRuleMetadata(error.getSourceName());
 
