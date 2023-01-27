@@ -104,7 +104,6 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
    * Constructor.
    */
   public CheckstylePreferencePage() {
-    super();
     setDescription(NLS.bind(Messages.CheckstylePreferencePage_version, getCheckstyleVersion()));
     setPreferenceStore(CheckstyleUIPlugin.getDefault().getPreferenceStore());
 

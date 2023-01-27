@@ -59,7 +59,6 @@ public class CheckstylePlugin extends Plugin {
    * The constructor.
    */
   public CheckstylePlugin() {
-    super();
     sPlugin = this;
   }
 
