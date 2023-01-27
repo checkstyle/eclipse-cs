@@ -27,7 +27,7 @@ import org.eclipse.core.resources.IFile;
 
 /**
  * Filter that excludes all files that are not opened in an eclipse editor.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public class UnOpenedFilesFilter extends AbstractFilter {
@@ -36,7 +36,7 @@ public class UnOpenedFilesFilter extends AbstractFilter {
 
   /**
    * Registers a opened file.
-   * 
+   *
    * @param file
    *          the file
    */
@@ -46,7 +46,7 @@ public class UnOpenedFilesFilter extends AbstractFilter {
 
   /**
    * Deregisters the opened file.
-   * 
+   *
    * @param file
    *          the file
    */

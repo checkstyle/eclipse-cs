@@ -50,7 +50,7 @@ public class ConfigPropertyMetadata {
 
   /**
    * Creates the property metadata.
-   * 
+   *
    * @param type
    *          the property type
    * @param name
@@ -71,7 +71,7 @@ public class ConfigPropertyMetadata {
 
   /**
    * Get the property's datatype.
-   * 
+   *
    * @return The datatype
    */
   public ConfigPropertyType getDatatype() {
@@ -80,7 +80,7 @@ public class ConfigPropertyMetadata {
 
   /**
    * Get the property's name.
-   * 
+   *
    * @return The name
    */
   public String getName() {
@@ -89,7 +89,7 @@ public class ConfigPropertyMetadata {
 
   /**
    * Get the property's description.
-   * 
+   *
    * @return The description
    */
   public String getDescription() {
@@ -98,7 +98,7 @@ public class ConfigPropertyMetadata {
 
   /**
    * Sets the description of this property.
-   * 
+   *
    * @param description
    *          the description
    */
@@ -108,7 +108,7 @@ public class ConfigPropertyMetadata {
 
   /**
    * Get the default value.
-   * 
+   *
    * @return The default value
    */
   public String getDefaultValue() {
@@ -117,7 +117,7 @@ public class ConfigPropertyMetadata {
 
   /**
    * Returns a default value differing from the Checkstye default for this property.
-   * 
+   *
    * @return The differing checkstyle default value.
    */
   public String getOverrideDefault() {
@@ -126,7 +126,7 @@ public class ConfigPropertyMetadata {
 
   /**
    * Get the enumeration of allowable values.
-   * 
+   *
    * @return Enumeration of values
    */
   public List<String> getPropertyEnumeration() {
@@ -135,7 +135,7 @@ public class ConfigPropertyMetadata {
 
   /**
    * Returns the hidden.
-   * 
+   *
    * @return boolean
    */
   public boolean isHidden() {

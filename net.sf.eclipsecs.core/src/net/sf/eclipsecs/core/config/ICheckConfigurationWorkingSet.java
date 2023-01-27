@@ -29,7 +29,7 @@ import org.eclipse.core.resources.IProject;
 
 /**
  * Interface for implementations that provide editing services for a group of check configuration.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public interface ICheckConfigurationWorkingSet {
@@ -38,7 +38,7 @@ public interface ICheckConfigurationWorkingSet {
    * Creates a new working copy for an existing check configuration. The working copy is associated
    * with this working set albeit the new working copy is not added to the working sets list of
    * workin copies.
-   * 
+   *
    * @param checkConfig
    *          the check configuration to create the working copy for
    * @return the working copy
@@ -49,7 +49,7 @@ public interface ICheckConfigurationWorkingSet {
    * Creates a new working copy with a given configuration type. The working copy is associated with
    * this working set albeit the new working copy is not added to the working sets list of workin
    * copies.
-   * 
+   *
    * @param configType
    *          the desired configuration type of the new working copy
    * @return the working copy
@@ -58,7 +58,7 @@ public interface ICheckConfigurationWorkingSet {
 
   /**
    * Returns the working copies that belong to this working set.
-   * 
+   *
    * @return the working copies
    */
   CheckConfigurationWorkingCopy[] getWorkingCopies();
@@ -66,7 +66,7 @@ public interface ICheckConfigurationWorkingSet {
   /**
    * Checks if the name of a check configuration (in form of a working copy) clashes with an
    * existing configuration. Names of check configurations must be unique within the working copy.
-   * 
+   *
    * @param configuration
    *          the working copy to check
    * @return <code>true</code> if there is a collision, <code>false</code> otherwise
@@ -75,7 +75,7 @@ public interface ICheckConfigurationWorkingSet {
 
   /**
    * Adds a working copy to the working set.
-   * 
+   *
    * @param checkConfig
    *          the working copy to add
    */
@@ -84,7 +84,7 @@ public interface ICheckConfigurationWorkingSet {
   /**
    * Removes a working copy from the working set. Returns <code>true</code> if the configuration
    * could be removed, <code>false</code> if it could not be removed because it is being used.
-   * 
+   *
    * @param checkConfig
    *          the working copy to remove
    * @return <code>true</code> if the configuration was removed, <code>false</code> if it is being
@@ -94,7 +94,7 @@ public interface ICheckConfigurationWorkingSet {
 
   /**
    * Stores the working set (it configurations) to persistence.
-   * 
+   *
    * @throws CheckstylePluginException
    *           when storing of the configurations failed
    */
@@ -102,14 +102,14 @@ public interface ICheckConfigurationWorkingSet {
 
   /**
    * Determines if the working set changed.
-   * 
+   *
    * @return <code>true</code> if the working set changed, <code>false</code> otherwise
    */
   boolean isDirty();
 
   /**
    * Returns a collection of projects affected by the changes of the working set.
-   * 
+   *
    * @return the collection of affected projects
    * @throws CheckstylePluginException
    *           unexprected error

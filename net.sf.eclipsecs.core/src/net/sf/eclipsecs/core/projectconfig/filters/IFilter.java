@@ -24,14 +24,14 @@ import java.util.List;
 
 /**
  * Interface for a filter.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public interface IFilter extends Cloneable {
 
   /**
    * Initializes this filter with common attributes.
-   * 
+   *
    * @param name
    *          the name of the filter
    * @param internalName
@@ -45,42 +45,42 @@ public interface IFilter extends Cloneable {
 
   /**
    * Gets the displayable name of the filter.
-   * 
+   *
    * @return the filter name
    */
   String getName();
 
   /**
    * Gets the internal name of the filter.
-   * 
+   *
    * @return the internal name
    */
   String getInternalName();
 
   /**
    * Gets the description of the filter.
-   * 
+   *
    * @return the description
    */
   String getDescription();
 
   /**
    * Returns if the filter is readonly.
-   * 
+   *
    * @return true - if the filter is readonly
    */
   boolean isReadonly();
 
   /**
    * Returns if the filter is selected.
-   * 
+   *
    * @return true - if the filter is selected
    */
   boolean isEnabled();
 
   /**
    * Sets the filter as selected.
-   * 
+   *
    * @param selected
    *          true - if the filter is selected
    */
@@ -88,14 +88,14 @@ public interface IFilter extends Cloneable {
 
   /**
    * Returns the data of this filter.
-   * 
+   *
    * @return the filter data
    */
   List<String> getFilterData();
 
   /**
    * Sets the filter data for this filter.
-   * 
+   *
    * @param filterData
    *          the filter data
    */
@@ -103,21 +103,21 @@ public interface IFilter extends Cloneable {
 
   /**
    * Returns a presentable form of the filter data of editable filters.
-   * 
+   *
    * @return Presentable filter data
    */
   String getPresentableFilterData();
 
   /**
    * A clone of this filter.
-   * 
+   *
    * @return the clone
    */
   IFilter clone();
 
   /**
    * Determines wheter an object passes this filter.
-   * 
+   *
    * @param element
    *          the element to check
    * @return true - the element passes the filter
