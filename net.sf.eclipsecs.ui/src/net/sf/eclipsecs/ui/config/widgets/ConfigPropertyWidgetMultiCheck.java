@@ -199,14 +199,14 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
     @Override
     public String getText(Object element) {
       String translation = null;
-      if (!mTranslateTokens) {
-        translation = "" + element; //$NON-NLS-1$
-      } else {
+      if (mTranslateTokens) {
         try {
           translation = TOKEN_BUNDLE.getString((String) element);
         } catch (MissingResourceException ex) {
           translation = "" + element; //$NON-NLS-1$
         }
+      } else {
+        translation = "" + element; //$NON-NLS-1$
       }
       return translation;
     }

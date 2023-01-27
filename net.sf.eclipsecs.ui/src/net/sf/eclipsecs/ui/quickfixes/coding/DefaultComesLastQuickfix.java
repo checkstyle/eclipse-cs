@@ -65,10 +65,10 @@ public class DefaultComesLastQuickfix extends AbstractASTResolution {
             for (int i = defaultStatementIndex + 1; i < switchStatement.statements().size(); i++) {
               ASTNode tmpNode = (ASTNode) switchStatement.statements().get(i);
 
-              if (!(tmpNode instanceof SwitchCase)) {
-                defaultCaseStatements.add(tmpNode);
-              } else {
+              if (tmpNode instanceof SwitchCase) {
                 break;
+              } else {
+                defaultCaseStatements.add(tmpNode);
               }
             }
 
