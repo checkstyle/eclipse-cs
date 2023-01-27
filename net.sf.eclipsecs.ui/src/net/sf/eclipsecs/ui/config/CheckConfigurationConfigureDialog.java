@@ -289,7 +289,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
     });
 
     mAddButton = new Button(knownModules, SWT.PUSH);
-    mAddButton.setText((Messages.CheckConfigurationConfigureDialog_btnAdd));
+    mAddButton.setText(Messages.CheckConfigurationConfigureDialog_btnAdd);
     GridData gridData = new GridData();
     gridData.horizontalAlignment = GridData.END;
     mAddButton.setLayoutData(gridData);
@@ -352,12 +352,12 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
     buttons.setLayoutData(new GridData());
 
     mRemoveButton = new Button(buttons, SWT.PUSH);
-    mRemoveButton.setText((Messages.CheckConfigurationConfigureDialog_btnRemove));
+    mRemoveButton.setText(Messages.CheckConfigurationConfigureDialog_btnRemove);
     mRemoveButton.setLayoutData(new GridData());
     mRemoveButton.addSelectionListener(mController);
 
     mEditButton = new Button(buttons, SWT.PUSH);
-    mEditButton.setText((Messages.CheckConfigurationConfigureDialog_btnOpen));
+    mEditButton.setText(Messages.CheckConfigurationConfigureDialog_btnOpen);
     mEditButton.setLayoutData(new GridData());
     mEditButton.addSelectionListener(mController);
 

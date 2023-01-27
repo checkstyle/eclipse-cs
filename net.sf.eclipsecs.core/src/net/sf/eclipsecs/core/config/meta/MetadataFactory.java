@@ -191,7 +191,7 @@ public final class MetadataFactory {
         int prio1 = arg0.getPriority();
         int prio2 = arg1.getPriority();
 
-        return (prio1 < prio2 ? -1 : (prio1 == prio2 ? 0 : 1));
+        return prio1 < prio2 ? -1 : (prio1 == prio2 ? 0 : 1);
       }
     });
 

@@ -47,7 +47,7 @@ public class CheckstyleTransformingAction implements IObjectActionDelegate {
   @Override
   public void run(final IAction arg0) {
     final TransformCheckstyleRulesJob job = new TransformCheckstyleRulesJob(
-            ((IProject) ((IStructuredSelection) mSelection).getFirstElement()));
+            (IProject) ((IStructuredSelection) mSelection).getFirstElement());
     job.schedule();
   }
 

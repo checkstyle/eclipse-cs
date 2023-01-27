@@ -111,7 +111,7 @@ public final class ProjectConfigurationFactory {
 
     IWorkspace workspace = ResourcesPlugin.getWorkspace();
     IProject[] projects = workspace.getRoot().getProjects();
-    for (int i = 0; (i < projects.length); i++) {
+    for (int i = 0; i < projects.length; i++) {
       if (ProjectConfigurationFactory.getConfiguration(projects[i]).isConfigInUse(checkConfig)) {
         result.add(projects[i]);
       }
