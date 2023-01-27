@@ -628,10 +628,10 @@ public class CheckstylePropertyPage extends PropertyPage {
       Object element = event.getElement();
       if (element instanceof IFilter) {
         IFilter filter = (IFilter) element;
-        if (!filter.isReadonly()) {
-          filter.setEnabled(event.getChecked());
-        } else {
+        if (filter.isReadonly()) {
           event.getCheckable().setChecked(event.getElement(), true);
+        } else {
+          filter.setEnabled(event.getChecked());
         }
       }
     }

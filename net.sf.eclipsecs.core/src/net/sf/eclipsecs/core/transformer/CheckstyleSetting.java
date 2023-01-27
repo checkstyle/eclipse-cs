@@ -92,23 +92,23 @@ public class CheckstyleSetting {
     String module;
     while (modit.hasNext()) {
       module = modit.next();
-      if (!mCheckerModules.keySet().contains(module)) {
-        mCheckerModules.put(module, setting.getmCheckerModules().get(module));
-      } else {
+      if (mCheckerModules.keySet().contains(module)) {
         final Iterator<String> propit = setting.getmCheckerModules().get(module).keySet()
                 .iterator();
         String property;
         while (propit.hasNext()) {
           property = propit.next();
-          if (!mCheckerModules.get(module).containsKey(property)) {
-            mCheckerModules.get(module).put(property,
-                    setting.getmCheckerModules().get(module).get(property));
-          } else {
+          if (mCheckerModules.get(module).containsKey(property)) {
             if (!mCheckerModules.get(module).get(property)
                     .equals(setting.getmCheckerModules().get(module).get(property))) {
             }
+          } else {
+            mCheckerModules.get(module).put(property,
+                    setting.getmCheckerModules().get(module).get(property));
           }
         }
+      } else {
+        mCheckerModules.put(module, setting.getmCheckerModules().get(module));
       }
     }
 
@@ -116,23 +116,23 @@ public class CheckstyleSetting {
     modit = setting.getmTreeWalkerModules().keySet().iterator();
     while (modit.hasNext()) {
       module = modit.next();
-      if (!mTreeWalkerModules.keySet().contains(module)) {
-        mTreeWalkerModules.put(module, setting.getmTreeWalkerModules().get(module));
-      } else {
+      if (mTreeWalkerModules.keySet().contains(module)) {
         final Iterator<String> propit = setting.getmTreeWalkerModules().get(module).keySet()
                 .iterator();
         String property;
         while (propit.hasNext()) {
           property = propit.next();
-          if (!mTreeWalkerModules.get(module).containsKey(property)) {
-            mTreeWalkerModules.get(module).put(property,
-                    setting.getmTreeWalkerModules().get(module).get(property));
-          } else {
+          if (mTreeWalkerModules.get(module).containsKey(property)) {
             if (!mTreeWalkerModules.get(module).get(property)
                     .equals(setting.getmTreeWalkerModules().get(module).get(property))) {
             }
+          } else {
+            mTreeWalkerModules.get(module).put(property,
+                    setting.getmTreeWalkerModules().get(module).get(property));
           }
         }
+      } else {
+        mTreeWalkerModules.put(module, setting.getmTreeWalkerModules().get(module));
       }
     }
   }

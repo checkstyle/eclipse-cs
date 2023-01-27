@@ -330,10 +330,10 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
 
     this.setTitle(
             NLS.bind(Messages.RuleConfigurationEditDialog_titleRuleConfigEditor, mRule.getName()));
-    if (!mReadonly) {
-      this.setMessage(Messages.RuleConfigurationEditDialog_msgEditRuleConfig);
-    } else {
+    if (mReadonly) {
       this.setMessage(Messages.RuleConfigurationEditDialog_msgReadonlyModule);
+    } else {
+      this.setMessage(Messages.RuleConfigurationEditDialog_msgEditRuleConfig);
     }
 
     String comment = mRule.getComment();

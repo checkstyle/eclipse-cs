@@ -431,16 +431,15 @@ public class PackageFilterEditor implements IFilterEditor {
 
       List<Object> checked = Arrays.asList(mViewer.getCheckedElements());
 
-      if (!mRecursivelyExcludeSubPackages) {
-        setResult(checked);
-      } else {
-
+      if (mRecursivelyExcludeSubPackages) {
         List<Object> grayed = Arrays.asList(mViewer.getGrayedElements());
 
         List<Object> pureChecked = new ArrayList<>(checked);
         pureChecked.removeAll(grayed);
 
         setResult(pureChecked);
+      } else {
+        setResult(checked);
       }
 
     }

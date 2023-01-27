@@ -352,11 +352,7 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
       // create or overwrite the .checkstyle file
       IProject project = config.getProject();
       IFile file = project.getFile(ProjectConfigurationFactory.PROJECT_CONFIGURATION_FILE);
-      if (!file.exists()) {
-        file.create(pipeIn, true, null);
-        file.refreshLocal(IResource.DEPTH_INFINITE, null);
-      } else {
-
+      if (file.exists()) {
         if (file.isReadOnly()) {
           ResourceAttributes attrs = ResourceAttributes.fromFile(file.getFullPath().toFile());
           attrs.setReadOnly(true);
@@ -364,6 +360,9 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
         }
 
         file.setContents(pipeIn, true, true, null);
+      } else {
+        file.create(pipeIn, true, null);
+        file.refreshLocal(IResource.DEPTH_INFINITE, null);
       }
 
       config.getLocalCheckConfigWorkingSet().store();

@@ -134,12 +134,7 @@ public class CheckstyleMarkerFilter implements Cloneable {
 
     List<IMarker> unfiltered = Collections.emptyList();
 
-    if (!isEnabled()) {
-      unfiltered = findCheckstyleMarkers(
-              new IResource[] { ResourcesPlugin.getWorkspace().getRoot() },
-              IResource.DEPTH_INFINITE, mon);
-    } else {
-
+    if (isEnabled()) {
       switch (getOnResource()) {
         case ON_ANY_RESOURCE: {
           unfiltered = findCheckstyleMarkers(
@@ -169,6 +164,10 @@ public class CheckstyleMarkerFilter implements Cloneable {
           break;
         }
       }
+    } else {
+      unfiltered = findCheckstyleMarkers(
+              new IResource[] { ResourcesPlugin.getWorkspace().getRoot() },
+              IResource.DEPTH_INFINITE, mon);
     }
 
     if (unfiltered == null) {
