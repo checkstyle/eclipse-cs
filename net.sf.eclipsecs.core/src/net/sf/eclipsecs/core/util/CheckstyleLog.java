@@ -44,7 +44,7 @@ public final class CheckstyleLog {
 
   /**
    * Logs the exceptions.
-   * 
+   *
    * @param error
    *          the exception to log
    */
@@ -54,7 +54,7 @@ public final class CheckstyleLog {
 
   /**
    * Logs the exception, describing it with the given message.
-   * 
+   *
    * @param throwable
    *          the exception to log
    * @param message

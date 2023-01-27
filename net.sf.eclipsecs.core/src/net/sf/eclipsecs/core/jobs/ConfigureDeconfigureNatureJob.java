@@ -38,7 +38,7 @@ import org.eclipse.osgi.util.NLS;
  * This operation configures or deconfigures a project with a given nature. If the project is
  * already configured with this nature, the nature will be deconfigured. Otherwise if the project is
  * not configured with this nature, the nature will be configured for this project
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public class ConfigureDeconfigureNatureJob extends WorkspaceJob {
@@ -54,7 +54,7 @@ public class ConfigureDeconfigureNatureJob extends WorkspaceJob {
 
   /**
    * Construktor for this operation.
-   * 
+   *
    * @param project
    *          the project to be configured/deconfiured
    * @param natureId
@@ -89,7 +89,7 @@ public class ConfigureDeconfigureNatureJob extends WorkspaceJob {
 
   /**
    * Helper method to enable the given nature for the project.
-   * 
+   *
    * @throws CoreException
    *           an error while setting the nature occured
    */
@@ -112,7 +112,7 @@ public class ConfigureDeconfigureNatureJob extends WorkspaceJob {
 
   /**
    * Helper method to disable the given nature for the project.
-   * 
+   *
    * @throws CoreException
    *           an error while removing the nature occured
    */

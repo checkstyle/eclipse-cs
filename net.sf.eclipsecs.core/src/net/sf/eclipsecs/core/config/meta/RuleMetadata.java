@@ -75,7 +75,7 @@ public class RuleMetadata {
 
   /**
    * Creates a rule metadata.
-   * 
+   *
    * @param ruleName
    *          the name of the rule
    * @param internalName
@@ -114,7 +114,7 @@ public class RuleMetadata {
 
   /**
    * Adds an alternative name for this rule.
-   * 
+   *
    * @param alternativeName
    *          an alternative name for this rule
    */
@@ -124,7 +124,7 @@ public class RuleMetadata {
 
   /**
    * Returns the list of alternative names.
-   * 
+   *
    * @return a collection of String
    */
   public Collection<String> getAlternativeNames() {
@@ -133,7 +133,7 @@ public class RuleMetadata {
 
   /**
    * Adds a quickfixfor this rule.
-   * 
+   *
    * @param quickfixClassName
    *          the fully qualified classname of the quickfix
    */
@@ -143,7 +143,7 @@ public class RuleMetadata {
 
   /**
    * Returns the list quickfixes for this module.
-   * 
+   *
    * @return a collection of quickfix class names
    */
   public Collection<String> getQuickfixClassNames() {
@@ -152,7 +152,7 @@ public class RuleMetadata {
 
   /**
    * Adds a message key to this module metadata.
-   * 
+   *
    * @param messageKey
    *          the message key to add
    */
@@ -162,7 +162,7 @@ public class RuleMetadata {
 
   /**
    * Returns the collection of message keys used by this module.
-   * 
+   *
    * @return the list of message keys
    */
   public Collection<String> getMessageKeys() {
@@ -171,7 +171,7 @@ public class RuleMetadata {
 
   /**
    * Returns the default severity level.
-   * 
+   *
    * @return The severity level.
    */
   public Severity getDefaultSeverityLevel() {
@@ -180,7 +180,7 @@ public class RuleMetadata {
 
   /**
    * Returns the rule's description.
-   * 
+   *
    * @return Rule description
    */
   public String getDescription() {
@@ -189,7 +189,7 @@ public class RuleMetadata {
 
   /**
    * Set the description for the rule.
-   * 
+   *
    * @param description
    *          the description
    */
@@ -199,7 +199,7 @@ public class RuleMetadata {
 
   /**
    * Returns the rule's name.
-   * 
+   *
    * @return String
    */
   public String getRuleName() {
@@ -209,7 +209,7 @@ public class RuleMetadata {
   /**
    * Returns the internal name of the module. The internal name is the name of the module inside the
    * checkstyle configuration file.
-   * 
+   *
    * @return the internal module name
    */
   public String getInternalName() {
@@ -218,7 +218,7 @@ public class RuleMetadata {
 
   /**
    * Determine if the module is to be hidden from the users sight.
-   * 
+   *
    * @return <code>true</code> if the module is hidden
    */
   public boolean isHidden() {
@@ -227,7 +227,7 @@ public class RuleMetadata {
 
   /**
    * Determine if the module has a severity to configure.
-   * 
+   *
    * @return <code>true</code> if the module has a severity
    */
   public boolean hasSeverity() {
@@ -236,7 +236,7 @@ public class RuleMetadata {
 
   /**
    * Determine if the module can be removed from the configuration.
-   * 
+   *
    * @return <code>true</code> if the module can be removed
    */
   public boolean isDeletable() {
@@ -245,7 +245,7 @@ public class RuleMetadata {
 
   /**
    * Determine if the module is a singleton inside a checkstyle configuration.
-   * 
+   *
    * @return <code>true</code> if the module is a singleton
    */
   public boolean isSingleton() {
@@ -254,7 +254,7 @@ public class RuleMetadata {
 
   /**
    * Gets the name of the parent module.
-   * 
+   *
    * @return the parent module
    */
   public String getParentModule() {
@@ -263,7 +263,7 @@ public class RuleMetadata {
 
   /**
    * Returns the configuration property metadata.
-   * 
+   *
    * @return A list of <code>ConfigPropertyMetadata</code> objects.
    */
   public List<ConfigPropertyMetadata> getPropertyMetadata() {
@@ -272,7 +272,7 @@ public class RuleMetadata {
 
   /**
    * Returns the property meta data for a given property name.
-   * 
+   *
    * @param property
    *          the property name
    * @return the coresponding property meta data or <code>null</code>
@@ -296,7 +296,7 @@ public class RuleMetadata {
 
   /**
    * Returns the group this rule belongs to.
-   * 
+   *
    * @return the group
    */
   public RuleGroupMetadata getGroup() {

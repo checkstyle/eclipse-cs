@@ -29,7 +29,7 @@ import java.util.List;
 /**
  * Class that provides all known tokens from the checkstyle java grammar. This is used for modules
  * that allow all tokens as options - which is very tedious to maintain in the metadata.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public class AllTokensProvider implements IOptionProvider {
@@ -54,7 +54,7 @@ public class AllTokensProvider implements IOptionProvider {
 
   /**
    * Returns all options.
-   * 
+   *
    * @return the options
    */
   @Override

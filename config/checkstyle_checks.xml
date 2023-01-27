@@ -66,6 +66,7 @@
     </module>
 
     <!-- Miscellaneous -->
+    <module name="NewlineAtEndOfFile"/>
     <module name="UniqueProperties"/>
 
     <!-- Regexp -->

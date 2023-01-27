@@ -28,7 +28,7 @@ import net.sf.eclipsecs.core.config.meta.MetadataFactory;
 
 /**
  * Special module logic for the Checker module.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public class CheckerModuleSaveFilter implements ISaveFilter {
