@@ -423,7 +423,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
    * @param checkConfigName
    *          the name proposal
    */
-  private void setUniqueName(CheckConfigurationWorkingCopy config, String checkConfigName) {
+  private static void setUniqueName(CheckConfigurationWorkingCopy config, String checkConfigName) {
     String uniqueName = checkConfigName;
 
     int counter = 2;

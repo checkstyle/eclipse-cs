@@ -119,7 +119,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
   /**
    * Sets the default values of the preferences.
    */
-  private void initializeDefaults() {
+  private static void initializeDefaults() {
   }
 
   @Override

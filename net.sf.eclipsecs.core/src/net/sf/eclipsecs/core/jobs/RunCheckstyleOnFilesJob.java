@@ -46,7 +46,7 @@ import org.eclipse.core.runtime.jobs.ISchedulingRule;
 
 /**
  * Job that invokes Checkstyle on a list of workspace files.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public class RunCheckstyleOnFilesJob extends WorkspaceJob implements ISchedulingRule {
@@ -55,7 +55,7 @@ public class RunCheckstyleOnFilesJob extends WorkspaceJob implements IScheduling
 
   /**
    * Creates the job for a list of <code>IFile</code> objects.
-   * 
+   *
    * @param files
    *          the files to check
    */
@@ -68,7 +68,7 @@ public class RunCheckstyleOnFilesJob extends WorkspaceJob implements IScheduling
 
   /**
    * Creates the job for a single file.
-   * 
+   *
    * @param file
    *          the file to check
    */
@@ -118,7 +118,8 @@ public class RunCheckstyleOnFilesJob extends WorkspaceJob implements IScheduling
     return Status.OK_STATUS;
   }
 
-  private Map<IProject, List<IFile>> getFilesSortedToProject(final List<IFile> filesToCheck) {
+  private static Map<IProject, List<IFile>> getFilesSortedToProject(
+          final List<IFile> filesToCheck) {
 
     Map<IProject, List<IFile>> projectFilesMap = new HashMap<>();
 
@@ -139,7 +140,7 @@ public class RunCheckstyleOnFilesJob extends WorkspaceJob implements IScheduling
     return projectFilesMap;
   }
 
-  private void filter(final List<IFile> files, final IProjectConfiguration projectConfig) {
+  private static void filter(final List<IFile> files, final IProjectConfiguration projectConfig) {
 
     List<IFilter> filters = projectConfig.getFilters();
     for (IFilter filter : filters) {
