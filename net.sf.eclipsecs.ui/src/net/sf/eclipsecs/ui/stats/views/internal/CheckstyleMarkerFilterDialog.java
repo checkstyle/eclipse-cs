@@ -368,7 +368,7 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
     if (mSelectedWorkingSet == null) {
       mLblSelectedWorkingSet.setText(Messages.CheckstyleMarkerFilterDialog_msgNoWorkingSetSelected);
     } else {
-      mLblSelectedWorkingSet.setText((mSelectedWorkingSet.getName()));
+      mLblSelectedWorkingSet.setText(mSelectedWorkingSet.getName());
     }
   }
 
