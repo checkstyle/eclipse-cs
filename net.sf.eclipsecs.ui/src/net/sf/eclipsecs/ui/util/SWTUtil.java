@@ -167,7 +167,7 @@ public final class SWTUtil {
       boolean doit = true;
 
       // only let digits pass (and del, backspace)
-      if (!(e.character == SWT.DEL || e.character == SWT.BS || Character.isDigit(e.character))) {
+      if (e.character != SWT.DEL && e.character != SWT.BS && !Character.isDigit(e.character)) {
         doit = false;
       }
 
