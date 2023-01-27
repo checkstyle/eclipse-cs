@@ -606,7 +606,7 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
      * @return the value associated with the specified key, null if the specified key does not exist
      */
     public Object get(Object key) {
-      int index = (hashCode(key) & 0x7FFFFFFF) % elementData.length;
+      int index = (hashCode(key) & 0x7F_FFF_FFF) % elementData.length;
       HashMapEntry entry = elementData[index];
       while (entry != null) {
         if (keyEquals(key, entry.key)) {
@@ -618,7 +618,7 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
     }
 
     private HashMapEntry getEntry(Object key) {
-      int index = (hashCode(key) & 0x7FFFFFFF) % elementData.length;
+      int index = (hashCode(key) & 0x7F_FFF_FFF) % elementData.length;
       HashMapEntry entry = elementData[index];
       while (entry != null) {
         if (keyEquals(key, entry.key)) {
@@ -674,7 +674,7 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
      */
     public Object put(Object key, Object value) {
       if (key != null && value != null) {
-        int index = (hashCode(key) & 0x7FFFFFFF) % elementData.length;
+        int index = (hashCode(key) & 0x7F_FFF_FFF) % elementData.length;
         HashMapEntry entry = elementData[index];
         while (entry != null && !keyEquals(key, entry.key)) {
           entry = entry.next;
@@ -682,7 +682,7 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
         if (entry == null) {
           if (++elementCount > threshold) {
             rehash();
-            index = (hashCode(key) & 0x7FFFFFFF) % elementData.length;
+            index = (hashCode(key) & 0x7F_FFF_FFF) % elementData.length;
           }
           if (index < firstSlot) {
             firstSlot = index;
@@ -720,7 +720,7 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
       for (int i = elementData.length; --i >= 0;) {
         HashMapEntry entry = elementData[i];
         while (entry != null) {
-          int index = (hashCode(entry.key) & 0x7FFFFFFF) % length;
+          int index = (hashCode(entry.key) & 0x7F_FFF_FFF) % length;
           if (index < firstSlot) {
             firstSlot = index;
           }
@@ -746,7 +746,7 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
      */
     public Object remove(Object key) {
       HashMapEntry last = null;
-      int index = (hashCode(key) & 0x7FFFFFFF) % elementData.length;
+      int index = (hashCode(key) & 0x7F_FFF_FFF) % elementData.length;
       HashMapEntry entry = elementData[index];
       while (entry != null && !keyEquals(key, entry.key)) {
         last = entry;
