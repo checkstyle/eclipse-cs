@@ -41,9 +41,6 @@ public class RuleMetadata {
   /** The internal name of the parent module. */
   private final String mParent;
 
-  /** The description of the module. */
-  private String mDescription;
-
   /** Determines if the module is hidden. */
   private final boolean mIsHidden;
 
@@ -72,6 +69,9 @@ public class RuleMetadata {
 
   /** Determines if the module is a singleton. */
   private final boolean mIsSingleton;
+
+  /** The description of the module. */
+  private String mDescription;
 
   /**
    * Creates a rule metadata.

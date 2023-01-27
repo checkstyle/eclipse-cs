@@ -45,17 +45,17 @@ import org.eclipse.swt.widgets.Text;
  */
 public class ConfigPropertyWidgetRegex extends ConfigPropertyWidgetAbstractBase {
 
-  private Composite mContents;
-
-  private Text mTextWidget;
-
-  private Text mRegexTestWidget;
-
   private final String mDefaultMessage = Messages.ConfigPropertyWidgetRegex_msgRegexTestString;
 
   private final Color mRedColor;
 
   private final Color mGreenColor;
+
+  private Composite mContents;
+
+  private Text mTextWidget;
+
+  private Text mRegexTestWidget;
 
   private Color mTextBgColor;
 

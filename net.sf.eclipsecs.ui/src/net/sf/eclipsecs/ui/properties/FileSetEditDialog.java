@@ -94,6 +94,10 @@ public class FileSetEditDialog extends TitleAreaDialog {
 
   private final IProject mProject;
 
+  private final Controller mController = new Controller();
+
+  private final CheckstylePropertyPage mPropertyPage;
+
   private Text mFileSetNameText;
 
   private ComboViewer mComboViewer;
@@ -116,15 +120,11 @@ public class FileSetEditDialog extends TitleAreaDialog {
 
   private Button mDownButton;
 
-  private final Controller mController = new Controller();
-
   private FileSet mFileSet;
 
   private List<IFile> mProjectFiles;
 
   private boolean mIsCreatingNewFileset;
-
-  private final CheckstylePropertyPage mPropertyPage;
 
   /**
    * Constructor for SamplePropertyPage.

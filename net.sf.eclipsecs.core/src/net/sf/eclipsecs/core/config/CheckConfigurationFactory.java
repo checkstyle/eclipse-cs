@@ -72,6 +72,7 @@ public final class CheckConfigurationFactory {
   /** Name of the actual config file version. */
   private static final String VERSION_5_0_0 = "5.0.0"; //$NON-NLS-1$
 
+  // -@cs[CustomDeclarationOrder] until sevntu.checkstyle/issues/415
   /** The current file version. */
   protected static final String CURRENT_CONFIG_FILE_FORMAT_VERSION = VERSION_5_0_0;
 
@@ -94,6 +95,16 @@ public final class CheckConfigurationFactory {
   }
 
   private CheckConfigurationFactory() {
+  }
+
+  /**
+   * Creates a new working set from the existing configurations.
+   *
+   * @return a new configuration working set
+   */
+  public static ICheckConfigurationWorkingSet newWorkingSet() {
+    return new GlobalCheckConfigurationWorkingSet(sConfigurations, getDefaultCheckConfiguration(),
+            sDefaultBuiltInConfig);
   }
 
   /**
@@ -139,16 +150,6 @@ public final class CheckConfigurationFactory {
     } else {
       return null;
     }
-  }
-
-  /**
-   * Creates a new working set from the existing configurations.
-   *
-   * @return a new configuration working set
-   */
-  public static ICheckConfigurationWorkingSet newWorkingSet() {
-    return new GlobalCheckConfigurationWorkingSet(sConfigurations, getDefaultCheckConfiguration(),
-            sDefaultBuiltInConfig);
   }
 
   /**

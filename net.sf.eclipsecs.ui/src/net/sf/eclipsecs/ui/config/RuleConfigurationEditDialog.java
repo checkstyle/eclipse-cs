@@ -75,6 +75,8 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
 
   private final Module mRule;
 
+  private final String mTitle;
+
   private TabFolder mMainTab;
 
   private Text mCommentText;
@@ -92,8 +94,6 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
   private Map<String, Text> mCustomMessages;
 
   private boolean mReadonly = false;
-
-  private final String mTitle;
 
   /**
    * Constructor.

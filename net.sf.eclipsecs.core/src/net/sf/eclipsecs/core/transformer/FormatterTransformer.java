@@ -34,9 +34,6 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
  * @author Lukas Frena
  */
 public class FormatterTransformer {
-  /** An object containing all settings for the eclipse-formatter. */
-  private FormatterConfiguration mFormatterSetting = new FormatterConfiguration();
-
   /** An object containing all settings for the checkstyle-file. */
   private final CheckstyleSetting mCheckstyleSetting = new CheckstyleSetting();
 
@@ -44,6 +41,9 @@ public class FormatterTransformer {
    * The list with all TransformationClass-instances loaded in method loadTransformationClasses().
    */
   private final List<FTransformationClass> mTransformationClasses = new ArrayList<>();
+
+  /** An object containing all settings for the eclipse-formatter. */
+  private FormatterConfiguration mFormatterSetting = new FormatterConfiguration();
 
   /**
    * Creates a new instance of class CheckstyleTransformer.

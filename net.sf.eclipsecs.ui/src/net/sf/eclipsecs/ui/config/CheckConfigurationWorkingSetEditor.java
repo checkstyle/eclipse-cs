@@ -84,6 +84,12 @@ public class CheckConfigurationWorkingSetEditor {
   // attributes
   //
 
+  private final PageController mController = new PageController();
+
+  private final ICheckConfigurationWorkingSet mWorkingSet;
+
+  private final boolean mIsShowUsage;
+
   private EnhancedTableViewer mViewer;
 
   private Button mAddButton;
@@ -103,12 +109,6 @@ public class CheckConfigurationWorkingSetEditor {
   private Text mConfigurationDescription;
 
   private StructuredViewer mUsageView;
-
-  private final PageController mController = new PageController();
-
-  private final ICheckConfigurationWorkingSet mWorkingSet;
-
-  private final boolean mIsShowUsage;
 
   //
   // constructors

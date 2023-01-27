@@ -47,6 +47,19 @@ public abstract class ConfigPropertyWidgetAbstractBase implements IConfigPropert
     mProp = prop;
   }
 
+  /**
+   * Returns the widget containing the values.
+   *
+   * @return the widget containing the value
+   */
+  protected abstract Control getValueWidget(Composite parent);
+
+  /**
+   * @return The property's value.
+   */
+  @Override
+  public abstract String getValue();
+
   @Override
   public void initialize() {
 
@@ -77,19 +90,6 @@ public abstract class ConfigPropertyWidgetAbstractBase implements IConfigPropert
   public void setEnabled(boolean enabled) {
     mValueWidget.setEnabled(enabled);
   }
-
-  /**
-   * Returns the widget containing the values.
-   *
-   * @return the widget containing the value
-   */
-  protected abstract Control getValueWidget(Composite parent);
-
-  /**
-   * @return The property's value.
-   */
-  @Override
-  public abstract String getValue();
 
   protected String getInitValue() {
     //

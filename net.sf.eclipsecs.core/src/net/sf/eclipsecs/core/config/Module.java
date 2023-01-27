@@ -40,6 +40,12 @@ public class Module implements Cloneable {
   // attributes
   //
 
+  /** the custom messages for this module. */
+  private final Map<String, String> mCustomMessages = new HashMap<>();
+
+  /** map containing unknown custom metadata of the module. */
+  private final Map<String, String> mCustomMetaData = new HashMap<>();
+
   /** the name of the module. */
   private String mName;
 
@@ -55,17 +61,11 @@ public class Module implements Cloneable {
   /** the id of the module. */
   private String id;
 
-  /** the custom messages for this module. */
-  private final Map<String, String> mCustomMessages = new HashMap<>();
-
   /** the severity level. */
   private Severity mSeverityLevel = Severity.inherit;
 
   /** the last severity level before setting to ignored. */
   private Severity mLastEnabledSeverity;
-
-  /** map containing unknown custom metadata of the module. */
-  private final Map<String, String> mCustomMetaData = new HashMap<>();
 
   //
   // constructors
