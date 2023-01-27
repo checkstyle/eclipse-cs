@@ -100,7 +100,7 @@ public class ConfigPropertyWidgetFile extends ConfigPropertyWidgetAbstractBase {
           fileDialog.setFileName(mTextWidget.getText());
 
           String file = fileDialog.open();
-          if (null != file) {
+          if (file != null) {
             mTextWidget.setText(file);
           }
         }

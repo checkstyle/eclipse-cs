@@ -142,7 +142,7 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
         fileDialog.setFileName(mLocation.getText());
 
         String file = fileDialog.open();
-        if (null != file) {
+        if (file != null) {
           mLocation.setText(file);
         }
       }

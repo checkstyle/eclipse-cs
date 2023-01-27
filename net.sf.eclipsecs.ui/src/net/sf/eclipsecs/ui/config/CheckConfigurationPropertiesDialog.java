@@ -317,14 +317,14 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
                 0);
         int result = dialog.open();
 
-        if (0 == result) {
+        if (result == 0) {
           ResolvablePropertiesDialog propsDialog = new ResolvablePropertiesDialog(getShell(),
                   mCheckConfig);
           propsDialog.open();
           return;
-        } else if (1 == result) {
+        } else if (result == 1) {
           super.okPressed();
-        } else if (2 == result) {
+        } else if (result == 2) {
           return;
         }
       } else {
