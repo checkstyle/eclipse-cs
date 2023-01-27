@@ -68,7 +68,7 @@ public final class CheckUtil {
 
     private static String getTokens(Function<Integer, String> function, List<Integer> modifiableTokens) {
       return modifiableTokens.stream()
-            .map(tokenInteger -> function.apply(tokenInteger))
+            .map(function::apply)
             .collect(Collectors.joining(","));
     }
 }

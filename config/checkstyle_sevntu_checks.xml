@@ -189,6 +189,9 @@
     <module name="UniformEnumConstantNameCheck" />
     <module name="ForbidAnnotationElementValueCheck" />
     <module name="com.github.sevntu.checkstyle.checks.design.HideUtilityClassConstructorCheck"/>
+    <module name="com.github.sevntu.checkstyle.checks.coding.PreferMethodReferenceCheck">
+      <property name="detectForExpression" value="true" />
+    </module>
     <module name="AvoidModifiersForTypesCheck">
       <property name="forbiddenClassesRegexpProtected" value="Logger"/>
       <property name="forbiddenClassesRegexpPublic" value="Logger"/>
@@ -207,7 +210,7 @@
     </module>
     <module name="MoveVariableInsideIfCheck" />
     <module name="RequireFailForTryCatchInJunit" />
-    <!-- we are not ready to activate this Check, too much violations
+    <!-- we are not ready to activate this Check, too many violations
        and it requires bunch of refactoring -->
     <module name="com.github.sevntu.checkstyle.checks.coding.Jsr305AnnotationsCheck">
       <property name="severity" value="ignore"/>
