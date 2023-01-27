@@ -47,11 +47,11 @@ public class StandardPropertyResolver implements PropertyResolver, IContextAware
   /** constant for the config_loc variable. */
   private static final String CONFIG_LOC = "config_loc"; //$NON-NLS-1$
 
-  /** the context project. */
-  private IProject mProject;
-
   /** the location of the configuration file. */
   private final String mConfigLocation;
+
+  /** the context project. */
+  private IProject mProject;
 
   /**
    * Creates the BuiltInPropertyResolver.

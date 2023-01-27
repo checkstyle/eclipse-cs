@@ -91,6 +91,9 @@ public final class MetadataFactory {
   /** Other rule group name. */
   private static final String OTHER_GROUP_NAME = "Other";
 
+  /** Name of the rules metadata XML file. */
+  private static final String METADATA_FILENAME = "checkstyle-metadata.xml"; //$NON-NLS-1$
+
   /** Metadata for the rule groups. */
   private static Map<String, RuleGroupMetadata> sRuleGroupMetadata;
 
@@ -128,9 +131,6 @@ public final class MetadataFactory {
    */
   private static Map<String, Map<String, String>> sThirdPartyRuleGroupMap;
 
-  /** Name of the rules metadata XML file. */
-  private static final String METADATA_FILENAME = "checkstyle-metadata.xml"; //$NON-NLS-1$
-
   /**
    * Private constructor to prevent instantiation.
    */
@@ -147,6 +147,154 @@ public final class MetadataFactory {
             "/com/puppycrawl/tools/checkstyle/checkstyle-metadata_1_1.dtd"); //$NON-NLS-1$
 
     refresh();
+  }
+
+  /**
+   * Create metadata for modules not present in the previously eclipse provided metadata.
+   * Work in progress.
+   *
+   * @param moduleDetails module details fetched from checkstyle metadata
+   * @return ruleMetadata for the module
+   */
+  public static RuleMetadata createRuleMetadata(ModuleDetails moduleDetails) {
+    RuleGroupMetadata group;
+    String moduleClassName = moduleDetails.getFullQualifiedName();
+    // standard checkstyle module
+    if (moduleClassName.startsWith("com.puppycrawl.tools.checkstyle")) {
+      final String[] packageTokens = moduleDetails.getFullQualifiedName().split(DOT_PATTERN);
+      group = getRuleGroupMetadata(sPackageToGroupNameMap
+              .get(packageTokens[packageTokens.length - 2]));
+    }
+    // third party extension modules
+    else {
+      String lookupKey = findLookupKey(moduleClassName);
+      String ruleGroupName = sThirdPartyRuleGroupMap.get(lookupKey).get("name");
+      group = getRuleGroupMetadata(ruleGroupName);
+      // if the group of the new check hasn't been formed yet
+      // and put into the sRuleGroupMetadata map
+      if (group == null) {
+        final String ruleDescription = sThirdPartyRuleGroupMap.get(lookupKey).get("description");
+        final int rulePriority = Integer.parseInt(sThirdPartyRuleGroupMap.get(lookupKey)
+                .get("priority"));
+        group = new RuleGroupMetadata(ruleGroupName, ruleDescription, false, rulePriority);
+        sRuleGroupMetadata.put(ruleGroupName, group);
+      }
+    }
+    final String[] packageTokens = moduleDetails.getParent().split(DOT_PATTERN);
+    RuleMetadata ruleMeta = new RuleMetadata(moduleDetails.getName(), moduleDetails.getName(),
+            packageTokens[packageTokens.length - 1], MetadataFactory.getDefaultSeverity(),
+            false, true, true, false, group);
+    ruleMeta.setDescription(moduleDetails.getDescription());
+    moduleDetails.getProperties().forEach(modulePropertyDetails -> ruleMeta.getPropertyMetadata()
+            .add(createPropertyConfig(moduleDetails, modulePropertyDetails)));
+
+    return ruleMeta;
+  }
+
+  /**
+   * Create module property config data based on current/default data,
+   * which are overridden partially with all the metadata fetched from checkstyle.
+   *
+   * @param moduleDetails checkstyle metadata of the parent module of the property
+   * @param modulePropertyDetails checkstyle metadata of the property
+   * @return ConfigPropertyMetadata of the module property
+   */
+  public static ConfigPropertyMetadata createPropertyConfig(ModuleDetails moduleDetails,
+          ModulePropertyDetails modulePropertyDetails) {
+    ConfigPropertyType dataType = null;
+    String propertyType = modulePropertyDetails.getType();
+    // if the data type ends with option, the result is singleselect enum value
+    // if the property validationType is tokenSet, the result is multicheck
+    // everything else is String/String[] depth depending on the presence of "[]"
+    if (sPropertyTypeMap.get(propertyType) != null) {
+      String validationType = modulePropertyDetails.getValidationType();
+      if (validationType != null) {
+        if (validationType.equals(TYPE_ID_PATTERN)) {
+          dataType = ConfigPropertyType.Regex;
+        } else if (validationType.equals("tokenSet") || validationType.equals("tokenTypesSet")) {
+          dataType = ConfigPropertyType.MultiCheck;
+        }
+      } else {
+        dataType = sPropertyTypeMap.get(propertyType);
+      }
+    } else {
+      if (propertyType.endsWith("Option")) {
+        dataType = ConfigPropertyType.SingleSelect;
+      } else {
+        if (propertyType.endsWith("[]")) {
+          dataType = ConfigPropertyType.StringArray;
+        } else {
+          dataType = ConfigPropertyType.String;
+        }
+      }
+    }
+    ConfigPropertyMetadata modifiedConfigPropertyMetadata = new ConfigPropertyMetadata(dataType,
+            modulePropertyDetails.getName(), modulePropertyDetails.getDefaultValue(), null);
+    modifiedConfigPropertyMetadata.setDescription(modulePropertyDetails.getDescription());
+
+    if (dataType == ConfigPropertyType.SingleSelect) {
+      List<String> resultList = getEnumValues(propertyType);
+      resultList.forEach(modifiedConfigPropertyMetadata.getPropertyEnumeration()::add);
+    } else if (dataType == ConfigPropertyType.MultiCheck) {
+      String result = CheckUtil.getModifiableTokens(moduleDetails.getName());
+      Collections.addAll(modifiedConfigPropertyMetadata.getPropertyEnumeration(), result.split(","));
+    }
+    return modifiedConfigPropertyMetadata;
+
+  }
+
+  /**
+   * Creates a set of generic metadata for a module that has no metadata delivered with the plugin.
+   *
+   * @param module
+   *          the module
+   * @return the generic metadata built
+   */
+  public static RuleMetadata createGenericMetadata(Module module) {
+
+    String parent = null;
+    try {
+
+      Class<?> checkClass = CheckstylePlugin.getDefault().getAddonExtensionClassLoader()
+              .loadClass(module.getName());
+
+      Object moduleInstance = checkClass.getDeclaredConstructor().newInstance();
+
+      if (moduleInstance instanceof AbstractFileSetCheck) {
+        parent = XMLTags.CHECKER_MODULE;
+      } else {
+        parent = XMLTags.TREEWALKER_MODULE;
+      }
+    } catch (Exception ex) {
+      // Ok we tried... default to TreeWalker
+      parent = XMLTags.TREEWALKER_MODULE;
+    }
+
+    RuleGroupMetadata otherGroup = getRuleGroupMetadata(XMLTags.OTHER_GROUP);
+    RuleMetadata ruleMeta = new RuleMetadata(module.getName(), module.getName(), parent,
+            MetadataFactory.getDefaultSeverity(), false, true, true, false, otherGroup);
+    module.setMetaData(ruleMeta);
+    sRuleMetadata.put(ruleMeta.getInternalName(), ruleMeta);
+
+    List<ConfigProperty> properties = module.getProperties();
+    int size = properties != null ? properties.size() : 0;
+    for (int i = 0; i < size; i++) {
+
+      ConfigProperty property = properties.get(i);
+      ConfigPropertyMetadata meta = new ConfigPropertyMetadata(ConfigPropertyType.String,
+              property.getName(), null, null);
+      property.setMetaData(meta);
+    }
+    return ruleMeta;
+  }
+
+  /**
+   * Create repository of Module Details from checkstyle metadata and third party extension checks metadata.
+   */
+  public static void createMetadataMap() {
+    XmlMetaReader.readAllModulesIncludingThirdPartyIfAny(
+        sPackageNameSet.toArray(new String[sPackageNameSet.size()]))
+        .forEach(moduleDetail -> sModuleDetailsRepo.put(moduleDetail.getName(), moduleDetail));
   }
 
   /*
@@ -232,48 +380,6 @@ public final class MetadataFactory {
   }
 
   /**
-   * Create metadata for modules not present in the previously eclipse provided metadata.
-   * Work in progress.
-   *
-   * @param moduleDetails module details fetched from checkstyle metadata
-   * @return ruleMetadata for the module
-   */
-  public static RuleMetadata createRuleMetadata(ModuleDetails moduleDetails) {
-    RuleGroupMetadata group;
-    String moduleClassName = moduleDetails.getFullQualifiedName();
-    // standard checkstyle module
-    if (moduleClassName.startsWith("com.puppycrawl.tools.checkstyle")) {
-      final String[] packageTokens = moduleDetails.getFullQualifiedName().split(DOT_PATTERN);
-      group = getRuleGroupMetadata(sPackageToGroupNameMap
-              .get(packageTokens[packageTokens.length - 2]));
-    }
-    // third party extension modules
-    else {
-      String lookupKey = findLookupKey(moduleClassName);
-      String ruleGroupName = sThirdPartyRuleGroupMap.get(lookupKey).get("name");
-      group = getRuleGroupMetadata(ruleGroupName);
-      // if the group of the new check hasn't been formed yet
-      // and put into the sRuleGroupMetadata map
-      if (group == null) {
-        final String ruleDescription = sThirdPartyRuleGroupMap.get(lookupKey).get("description");
-        final int rulePriority = Integer.parseInt(sThirdPartyRuleGroupMap.get(lookupKey)
-                .get("priority"));
-        group = new RuleGroupMetadata(ruleGroupName, ruleDescription, false, rulePriority);
-        sRuleGroupMetadata.put(ruleGroupName, group);
-      }
-    }
-    final String[] packageTokens = moduleDetails.getParent().split(DOT_PATTERN);
-    RuleMetadata ruleMeta = new RuleMetadata(moduleDetails.getName(), moduleDetails.getName(),
-            packageTokens[packageTokens.length - 1], MetadataFactory.getDefaultSeverity(),
-            false, true, true, false, group);
-    ruleMeta.setDescription(moduleDetails.getDescription());
-    moduleDetails.getProperties().forEach(modulePropertyDetails -> ruleMeta.getPropertyMetadata()
-            .add(createPropertyConfig(moduleDetails, modulePropertyDetails)));
-
-    return ruleMeta;
-  }
-
-  /**
    * Generate all prefix strings from the packageName and find which is a valid key in
    * {@code sThirdPartyRuleGroupMap}.
    */
@@ -299,58 +405,6 @@ public final class MetadataFactory {
   }
 
   /**
-   * Create module property config data based on current/default data,
-   * which are overridden partially with all the metadata fetched from checkstyle.
-   *
-   * @param moduleDetails checkstyle metadata of the parent module of the property
-   * @param modulePropertyDetails checkstyle metadata of the property
-   * @return ConfigPropertyMetadata of the module property
-   */
-  public static ConfigPropertyMetadata createPropertyConfig(ModuleDetails moduleDetails,
-          ModulePropertyDetails modulePropertyDetails) {
-    ConfigPropertyType dataType = null;
-    String propertyType = modulePropertyDetails.getType();
-    // if the data type ends with option, the result is singleselect enum value
-    // if the property validationType is tokenSet, the result is multicheck
-    // everything else is String/String[] depth depending on the presence of "[]"
-    if (sPropertyTypeMap.get(propertyType) != null) {
-      String validationType = modulePropertyDetails.getValidationType();
-      if (validationType != null) {
-        if (validationType.equals(TYPE_ID_PATTERN)) {
-          dataType = ConfigPropertyType.Regex;
-        } else if (validationType.equals("tokenSet") || validationType.equals("tokenTypesSet")) {
-          dataType = ConfigPropertyType.MultiCheck;
-        }
-      } else {
-        dataType = sPropertyTypeMap.get(propertyType);
-      }
-    } else {
-      if (propertyType.endsWith("Option")) {
-        dataType = ConfigPropertyType.SingleSelect;
-      } else {
-        if (propertyType.endsWith("[]")) {
-          dataType = ConfigPropertyType.StringArray;
-        } else {
-          dataType = ConfigPropertyType.String;
-        }
-      }
-    }
-    ConfigPropertyMetadata modifiedConfigPropertyMetadata = new ConfigPropertyMetadata(dataType,
-            modulePropertyDetails.getName(), modulePropertyDetails.getDefaultValue(), null);
-    modifiedConfigPropertyMetadata.setDescription(modulePropertyDetails.getDescription());
-
-    if (dataType == ConfigPropertyType.SingleSelect) {
-      List<String> resultList = getEnumValues(propertyType);
-      resultList.forEach(modifiedConfigPropertyMetadata.getPropertyEnumeration()::add);
-    } else if (dataType == ConfigPropertyType.MultiCheck) {
-      String result = CheckUtil.getModifiableTokens(moduleDetails.getName());
-      Collections.addAll(modifiedConfigPropertyMetadata.getPropertyEnumeration(), result.split(","));
-    }
-    return modifiedConfigPropertyMetadata;
-
-  }
-
-  /**
    * Get all values from the fully qualified enum name.
    *
    * @param className enum name
@@ -372,51 +426,6 @@ public final class MetadataFactory {
     }
 
     return resultList;
-  }
-
-  /**
-   * Creates a set of generic metadata for a module that has no metadata delivered with the plugin.
-   *
-   * @param module
-   *          the module
-   * @return the generic metadata built
-   */
-  public static RuleMetadata createGenericMetadata(Module module) {
-
-    String parent = null;
-    try {
-
-      Class<?> checkClass = CheckstylePlugin.getDefault().getAddonExtensionClassLoader()
-              .loadClass(module.getName());
-
-      Object moduleInstance = checkClass.getDeclaredConstructor().newInstance();
-
-      if (moduleInstance instanceof AbstractFileSetCheck) {
-        parent = XMLTags.CHECKER_MODULE;
-      } else {
-        parent = XMLTags.TREEWALKER_MODULE;
-      }
-    } catch (Exception ex) {
-      // Ok we tried... default to TreeWalker
-      parent = XMLTags.TREEWALKER_MODULE;
-    }
-
-    RuleGroupMetadata otherGroup = getRuleGroupMetadata(XMLTags.OTHER_GROUP);
-    RuleMetadata ruleMeta = new RuleMetadata(module.getName(), module.getName(), parent,
-            MetadataFactory.getDefaultSeverity(), false, true, true, false, otherGroup);
-    module.setMetaData(ruleMeta);
-    sRuleMetadata.put(ruleMeta.getInternalName(), ruleMeta);
-
-    List<ConfigProperty> properties = module.getProperties();
-    int size = properties != null ? properties.size() : 0;
-    for (int i = 0; i < size; i++) {
-
-      ConfigProperty property = properties.get(i);
-      ConfigPropertyMetadata meta = new ConfigPropertyMetadata(ConfigPropertyType.String,
-              property.getName(), null, null);
-      property.setMetaData(meta);
-    }
-    return ruleMeta;
   }
 
   /**
@@ -535,15 +544,6 @@ public final class MetadataFactory {
     }
 
     loadRuleMetadata();
-  }
-
-  /**
-   * Create repository of Module Details from checkstyle metadata and third party extension checks metadata.
-   */
-  public static void createMetadataMap() {
-    XmlMetaReader.readAllModulesIncludingThirdPartyIfAny(
-        sPackageNameSet.toArray(new String[sPackageNameSet.size()]))
-        .forEach(moduleDetail -> sModuleDetailsRepo.put(moduleDetail.getName(), moduleDetail));
   }
 
   /**

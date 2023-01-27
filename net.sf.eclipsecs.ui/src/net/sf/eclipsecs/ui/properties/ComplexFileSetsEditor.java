@@ -64,6 +64,8 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
 
   private final IProject mProject;
 
+  private final CheckstylePropertyPage mPropertyPage;
+
   private Composite mComposite;
 
   private CheckboxTableViewer mViewer;
@@ -75,8 +77,6 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
   private Button mRemoveButton;
 
   private List<FileSet> mFileSets;
-
-  private final CheckstylePropertyPage mPropertyPage;
 
   /**
    * Creates the ComplexFileSetsEditor.

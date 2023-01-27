@@ -75,6 +75,20 @@ public abstract class AbstractASTResolution extends WorkbenchMarkerResolution
 
   private RuleMetadata mMetaData;
 
+  /**
+   * Template method to be implemented by concrete quickfix implementations. These must provide
+   * their fixing modification through an AST visitor, more specifically by doing the neccessary
+   * modifications directly on the visited AST nodes. The AST itself will recored modification.
+   *
+   * @param lineInfo
+   *          the IRegion for the line containing the marker to fix
+   * @param markerStartOffset
+   *          the actual offset where the problem marker starts
+   * @return the modifying AST visitor
+   */
+  protected abstract ASTVisitor handleGetCorrectingASTVisitor(IRegion lineInfo,
+          int markerStartOffset);
+
   @Override
   public void setRuleMetaData(RuleMetadata metadata) {
     this.mMetaData = metadata;
@@ -198,20 +212,6 @@ public abstract class AbstractASTResolution extends WorkbenchMarkerResolution
       }
     }
   }
-
-  /**
-   * Template method to be implemented by concrete quickfix implementations. These must provide
-   * their fixing modification through an AST visitor, more specifically by doing the neccessary
-   * modifications directly on the visited AST nodes. The AST itself will recored modification.
-   *
-   * @param lineInfo
-   *          the IRegion for the line containing the marker to fix
-   * @param markerStartOffset
-   *          the actual offset where the problem marker starts
-   * @return the modifying AST visitor
-   */
-  protected abstract ASTVisitor handleGetCorrectingASTVisitor(IRegion lineInfo,
-          int markerStartOffset);
 
   /**
    * Determines if the given position lies within the boundaries of the ASTNode.

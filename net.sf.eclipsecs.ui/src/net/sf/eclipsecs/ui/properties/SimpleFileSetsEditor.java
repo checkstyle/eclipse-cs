@@ -62,6 +62,8 @@ import org.eclipse.swt.widgets.Text;
  */
 public class SimpleFileSetsEditor implements IFileSetsEditor {
 
+  private final CheckstylePropertyPage mPropertyPage;
+
   /** viewer to display the known checkstyle configurations. */
   private ComboViewer mComboViewer;
 
@@ -76,8 +78,6 @@ public class SimpleFileSetsEditor implements IFileSetsEditor {
   private FileSet mDefaultFileSet;
 
   private Controller mController;
-
-  private final CheckstylePropertyPage mPropertyPage;
 
   /**
    * Creates the SimpleFileSetsEditor.

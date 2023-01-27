@@ -68,6 +68,37 @@ public final class ProjectConfigurationFactory {
   }
 
   /**
+   * Creates a default project configuration for the given projects, using the default globbal check
+   * configuration.
+   *
+   * @param project
+   *          the project
+   * @return the default project configuration
+   */
+  public static IProjectConfiguration createDefaultProjectConfiguration(IProject project) {
+
+    FileSet standardFileSet = new FileSet(Messages.SimpleFileSetsEditor_nameAllFileset,
+            CheckConfigurationFactory.getDefaultCheckConfiguration());
+    try {
+      standardFileSet.getFileMatchPatterns().add(new FileMatchPattern(".*"));
+    } catch (CheckstylePluginException ex) {
+      throw new RuntimeException(ex);
+    }
+
+    List<FileSet> fileSets = Arrays.asList(standardFileSet);
+
+    IFilter[] filters = PluginFilters.getConfiguredFilters();
+    List<IFilter> defaultFilters = new ArrayList<>();
+    for (IFilter filter : filters) {
+      if (filter.isEnabled()) {
+        defaultFilters.add(filter);
+      }
+    }
+
+    return new ProjectConfiguration(project, null, fileSets, defaultFilters, true, false);
+  }
+
+  /**
    * Get the <code>ProjectConfiguration</code> object for the specified project.
    *
    * @param project
@@ -118,37 +149,6 @@ public final class ProjectConfigurationFactory {
     }
 
     return result;
-  }
-
-  /**
-   * Creates a default project configuration for the given projects, using the default globbal check
-   * configuration.
-   *
-   * @param project
-   *          the project
-   * @return the default project configuration
-   */
-  public static IProjectConfiguration createDefaultProjectConfiguration(IProject project) {
-
-    FileSet standardFileSet = new FileSet(Messages.SimpleFileSetsEditor_nameAllFileset,
-            CheckConfigurationFactory.getDefaultCheckConfiguration());
-    try {
-      standardFileSet.getFileMatchPatterns().add(new FileMatchPattern(".*"));
-    } catch (CheckstylePluginException ex) {
-      throw new RuntimeException(ex);
-    }
-
-    List<FileSet> fileSets = Arrays.asList(standardFileSet);
-
-    IFilter[] filters = PluginFilters.getConfiguredFilters();
-    List<IFilter> defaultFilters = new ArrayList<>();
-    for (IFilter filter : filters) {
-      if (filter.isEnabled()) {
-        defaultFilters.add(filter);
-      }
-    }
-
-    return new ProjectConfiguration(project, null, fileSets, defaultFilters, true, false);
   }
 
   /**

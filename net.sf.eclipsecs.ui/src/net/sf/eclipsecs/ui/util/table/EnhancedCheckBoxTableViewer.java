@@ -480,6 +480,12 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
 
     private static final EmptyEnumerator EMPTY_ENUMERATOR = new EmptyEnumerator();
 
+    private final transient IElementComparer comparer;
+
+    private float loadFactor;
+
+    private int threshold;
+
     transient int elementCount;
 
     transient HashMapEntry[] elementData;
@@ -487,12 +493,6 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
     transient int firstSlot = 0;
 
     transient int lastSlot = -1;
-
-    private float loadFactor;
-
-    private int threshold;
-
-    private final transient IElementComparer comparer;
 
     /**
      * Constructs a new Hashtable using the default capacity and load factor.

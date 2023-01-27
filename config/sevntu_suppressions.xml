@@ -15,9 +15,6 @@
     <suppress checks="LineLengthExtended"
              files=".*"
              />
-    <suppress checks="CustomDeclarationOrder"
-             files=".*"
-             />
     <suppress checks="ConstructorWithoutParams"
              files=".*"
              />

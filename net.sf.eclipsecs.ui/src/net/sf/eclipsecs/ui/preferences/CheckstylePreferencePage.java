@@ -74,6 +74,10 @@ import com.puppycrawl.tools.checkstyle.Main;
  */
 public class CheckstylePreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 
+  private final PageController mController = new PageController();
+
+  private final ICheckConfigurationWorkingSet mWorkingSet;
+
   private Combo mRebuildIfNeeded;
 
   private Button mPurgeCacheButton;
@@ -94,11 +98,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
 
   private CheckConfigurationWorkingSetEditor mWorkingSetEditor;
 
-  private final PageController mController = new PageController();
-
   private boolean mRebuildAll = false;
-
-  private final ICheckConfigurationWorkingSet mWorkingSet;
 
   /**
    * Constructor.

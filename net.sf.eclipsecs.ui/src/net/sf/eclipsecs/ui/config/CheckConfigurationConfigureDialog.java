@@ -105,6 +105,18 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
   /** The current check configuration. */
   private final CheckConfigurationWorkingCopy mConfiguration;
 
+  /** Filter for the table viewer to show only element of the selected group. */
+  private final RuleGroupModuleFilter mGroupFilter = new RuleGroupModuleFilter();
+
+  /** Controller for this Dialog. */
+  private final PageController mController = new PageController();
+
+  /** The default text for the filter text field. */
+  private final String mDefaultFilterText = Messages.CheckConfigurationConfigureDialog_defaultFilterText;
+
+  /** The tree filter. */
+  private final TreeFilter mTreeFilter = new TreeFilter();
+
   /** Flags if the Check configuration can be modified. */
   private boolean mConfigurable;
 
@@ -134,23 +146,11 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
   /** Checkbox handling if the module editor is opened on add action. */
   private Button mBtnOpenModuleOnAdd;
 
-  /** Filter for the table viewer to show only element of the selected group. */
-  private final RuleGroupModuleFilter mGroupFilter = new RuleGroupModuleFilter();
-
-  /** Controller for this Dialog. */
-  private final PageController mController = new PageController();
-
   /** the list of modules. */
   private List<Module> mModules;
 
   /** Flags if the check configuration was changed. */
   private boolean mIsDirty;
-
-  /** The default text for the filter text field. */
-  private final String mDefaultFilterText = Messages.CheckConfigurationConfigureDialog_defaultFilterText;
-
-  /** The tree filter. */
-  private final TreeFilter mTreeFilter = new TreeFilter();
 
   //
   // constructors

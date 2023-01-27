@@ -99,6 +99,31 @@ public abstract class AbstractStatsView extends ViewPart {
   // methods
   //
 
+  protected abstract void initMenu(IMenuManager menu);
+
+  protected abstract void initToolBar(IToolBarManager tbm);
+
+  /**
+   * Returns the view id of the concrete view. This is used to make separate filter settings (stored
+   * in dialog settings) for different concrete views possible.
+   *
+   * @return the view id
+   */
+  protected abstract String getViewId();
+
+  /**
+   * Callback for subclasses to refresh the content of their controls, since the statistics data has
+   * been updated. <br/>
+   * Note that the subclass should check if their controls have been disposed, since this method is
+   * called by a job that might run even if the view has been closed.
+   */
+  protected abstract void handleStatsRebuilt();
+
+  /**
+   * Create the viewer actions.
+   */
+  protected abstract void makeActions();
+
   @Override
   public void createPartControl(Composite parent) {
 
@@ -176,10 +201,6 @@ public abstract class AbstractStatsView extends ViewPart {
     initToolBar(actionBars.getToolBarManager());
   }
 
-  protected abstract void initMenu(IMenuManager menu);
-
-  protected abstract void initToolBar(IToolBarManager tbm);
-
   /**
    * Returns the filter of this view.
    *
@@ -254,27 +275,6 @@ public abstract class AbstractStatsView extends ViewPart {
 
     return settings;
   }
-
-  /**
-   * Returns the view id of the concrete view. This is used to make separate filter settings (stored
-   * in dialog settings) for different concrete views possible.
-   *
-   * @return the view id
-   */
-  protected abstract String getViewId();
-
-  /**
-   * Callback for subclasses to refresh the content of their controls, since the statistics data has
-   * been updated. <br/>
-   * Note that the subclass should check if their controls have been disposed, since this method is
-   * called by a job that might run even if the view has been closed.
-   */
-  protected abstract void handleStatsRebuilt();
-
-  /**
-   * Create the viewer actions.
-   */
-  protected abstract void makeActions();
 
   /**
    * Invoked on selection changes within the workspace.

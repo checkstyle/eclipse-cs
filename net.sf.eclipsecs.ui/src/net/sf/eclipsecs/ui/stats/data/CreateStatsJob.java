@@ -57,11 +57,11 @@ public class CreateStatsJob extends Job {
   /** The filter to analyze. */
   private final CheckstyleMarkerFilter mFilter;
 
-  /** The statistics data object. */
-  private Stats mStats;
-
   /** The job family this job belongs to. */
   private final String mFamily;
+
+  /** The statistics data object. */
+  private Stats mStats;
 
   /**
    * Creates the job.

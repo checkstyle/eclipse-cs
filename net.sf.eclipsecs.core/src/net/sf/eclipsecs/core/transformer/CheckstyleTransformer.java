@@ -44,12 +44,12 @@ public class CheckstyleTransformer {
   /** The list of checkstyle-rules delivered in the constructor. */
   private final List<Configuration> mRules;
 
-  private IProject mProject;
-
   /**
    * The list with all TransformationClass-instances loaded in method loadTransformationClasses().
    */
   private final List<CTransformationClass> mTransformationClasses = new ArrayList<>();
+
+  private IProject mProject;
 
   /**
    * Creates a new instance of class CheckstyleTransformer.

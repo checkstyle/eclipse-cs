@@ -304,11 +304,11 @@ public class PackageFilterEditor implements IFilterEditor {
    * @since 2.0
    */
   public class CheckedTreeSelectionDialog extends SelectionStatusDialog {
-    private CheckboxTreeViewer mViewer;
-
     private final ILabelProvider mLabelProvider;
 
     private final ITreeContentProvider mContentProvider;
+
+    private CheckboxTreeViewer mViewer;
 
     private Button mBtnRecurseSubPackages;
 

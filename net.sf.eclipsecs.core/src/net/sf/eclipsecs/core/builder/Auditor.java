@@ -71,20 +71,20 @@ public class Auditor {
   /** The check configuration the auditor uses. */
   private final ICheckConfiguration mCheckConfiguration;
 
-  /** The progress monitor. */
-  private IProgressMonitor mMonitor;
-
   /** Map containing the file resources to audit. */
   private final Map<String, IFile> mFiles = new HashMap<>();
+
+  /** Reference to the file buffer manager. */
+  private final ITextFileBufferManager mFileBufferManager = FileBuffers.getTextFileBufferManager();
+
+  /** The progress monitor. */
+  private IProgressMonitor mMonitor;
 
   /** Add the check rule name to the message. */
   private boolean mAddRuleName = false;
 
   /** Add the check module id to the message. */
   private boolean mAddModuleId = false;
-
-  /** Reference to the file buffer manager. */
-  private final ITextFileBufferManager mFileBufferManager = FileBuffers.getTextFileBufferManager();
 
   /**
    * Creates an auditor.
@@ -233,15 +233,6 @@ public class Auditor {
     /** the project. */
     private final IProject mProject;
 
-    /** The file currently being checked. */
-    private IResource mResource;
-
-    /** Document model of the current file. */
-    private IDocument mDocument;
-
-    /** internal counter used to time to actualisation of the monitor. */
-    private int mMonitorCounter;
-
     /** map containing the marker data. */
     private final Map<String, Object> mMarkerAttributes = new HashMap<>();
 
@@ -250,6 +241,15 @@ public class Auditor {
 
     /** the max amount of markers per resource. */
     private final int mMarkerLimit;
+
+    /** The file currently being checked. */
+    private IResource mResource;
+
+    /** Document model of the current file. */
+    private IDocument mDocument;
+
+    /** internal counter used to time to actualisation of the monitor. */
+    private int mMonitorCounter;
 
     /** the count of markers generated for the current resource. */
     private int mMarkerCount;

@@ -61,6 +61,18 @@ public abstract class ConfigurationType implements IConfigurationType {
   /** Flag if configuration file is configurable. */
   private boolean mIsConfigurable;
 
+  /**
+   * Returns the URL of the checkstyle configuration file. Implementors are not expected to open any
+   * connection to the URL.
+   *
+   * @param checkConfiguration
+   *          the actual check configuration
+   * @return the URL of the checkstyle configuration file
+   * @throws IOException
+   *           error while resolving the url
+   */
+  protected abstract URL resolveLocation(ICheckConfiguration checkConfiguration) throws IOException;
+
   @Override
   public void initialize(String name, String internalName, String definingPluginId,
           boolean creatable, boolean editable, boolean configurable) {
@@ -145,18 +157,6 @@ public abstract class ConfigurationType implements IConfigurationType {
 
     return data;
   }
-
-  /**
-   * Returns the URL of the checkstyle configuration file. Implementors are not expected to open any
-   * connection to the URL.
-   *
-   * @param checkConfiguration
-   *          the actual check configuration
-   * @return the URL of the checkstyle configuration file
-   * @throws IOException
-   *           error while resolving the url
-   */
-  protected abstract URL resolveLocation(ICheckConfiguration checkConfiguration) throws IOException;
 
   protected byte[] getAdditionPropertiesBundleBytes(URL checkConfigURL) {
 

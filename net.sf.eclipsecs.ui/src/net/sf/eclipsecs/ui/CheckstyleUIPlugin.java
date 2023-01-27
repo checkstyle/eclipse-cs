@@ -64,8 +64,6 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
 
   private static Boolean isEclipse3;
 
-  private ClassLoader mQuickfixExtensionClassLoader;
-
   private final CheckFileOnOpenPartListener mPartListener = new CheckFileOnOpenPartListener();
 
   private final IWindowListener mWindowListener = new IWindowListener() {
@@ -90,6 +88,8 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
     }
 
   };
+
+  private ClassLoader mQuickfixExtensionClassLoader;
 
   /**
    * The constructor.
