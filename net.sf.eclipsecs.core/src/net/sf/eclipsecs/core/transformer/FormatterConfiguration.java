@@ -27,7 +27,7 @@ import java.util.Map;
 
 /**
  * Class containing all configurations for a eclipse-formatter-profile.
- * 
+ *
  * @author Lukas Frena
  */
 public class FormatterConfiguration {
@@ -38,14 +38,8 @@ public class FormatterConfiguration {
   private final Map<String, String> mFormatterSettings = new HashMap<>();
 
   /**
-   * Creates new instance of class FormatterConfiguration.
-   */
-  public FormatterConfiguration() {
-  }
-
-  /**
    * Method for adding a new global setting.
-   * 
+   *
    * @param setting
    *          The global setting.
    * @param val
@@ -57,7 +51,7 @@ public class FormatterConfiguration {
 
   /**
    * Method for adding a new local setting.
-   * 
+   *
    * @param setting
    *          The local setting.
    * @param val
@@ -69,7 +63,7 @@ public class FormatterConfiguration {
 
   /**
    * Method for returning the stored global Settings.
-   * 
+   *
    * @return Returns the global settings.
    */
   public Map<String, String> getCleanupSettings() {
@@ -78,7 +72,7 @@ public class FormatterConfiguration {
 
   /**
    * Method for returning the stored local Settings.
-   * 
+   *
    * @return Returns the local settings.
    */
   public Map<String, String> getFormatterSettings() {
@@ -87,7 +81,7 @@ public class FormatterConfiguration {
 
   /**
    * Method for adding new configuration parameters.
-   * 
+   *
    * @param settings
    *          A eclipse-formatter-configuration.
    */
