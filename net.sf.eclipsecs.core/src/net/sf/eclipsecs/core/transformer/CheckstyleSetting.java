@@ -37,12 +37,6 @@ public class CheckstyleSetting {
   private final HashMap<String, HashMap<String, String>> mTreeWalkerModules = new HashMap<>();
 
   /**
-   * Creates new instance of class CheckstyleSetting.
-   */
-  public CheckstyleSetting() {
-  }
-
-  /**
    * Method for adding a new treewalker-module.
    *
    * @param name
