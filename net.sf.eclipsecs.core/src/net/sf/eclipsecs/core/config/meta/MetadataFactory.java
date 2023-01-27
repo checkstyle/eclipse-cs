@@ -160,7 +160,7 @@ public final class MetadataFactory {
       Reflections reflections = new Reflections(topMostPackageName, new ResourcesScanner());
       eclipseMetaDataFiles.addAll(reflections.getResources(ECLIPSE_EXTENSION_CONFIG_FILE));
     }
-    eclipseMetaDataFiles.forEach(file -> loadThirdPartyData(file));
+    eclipseMetaDataFiles.forEach(MetadataFactory::loadThirdPartyData);
   }
 
   private static void loadThirdPartyData(String metadataFile) {
@@ -341,7 +341,7 @@ public final class MetadataFactory {
 
     if (dataType == ConfigPropertyType.SingleSelect) {
       List<String> resultList = getEnumValues(propertyType);
-      resultList.forEach(val -> modifiedConfigPropertyMetadata.getPropertyEnumeration().add(val));
+      resultList.forEach(modifiedConfigPropertyMetadata.getPropertyEnumeration()::add);
     } else if (dataType == ConfigPropertyType.MultiCheck) {
       String result = CheckUtil.getModifiableTokens(moduleDetails.getName());
       Collections.addAll(modifiedConfigPropertyMetadata.getPropertyEnumeration(), result.split(","));
