@@ -82,8 +82,6 @@
       <property name="proposeEntrySetUsage" value="true"/>
     </module>
 
-    <!-- Might cause problems related to issue:
-    https://github.com/sevntu-checkstyle/sevntu.checkstyle/issues/352 -->
     <module name="AvoidConstantAsFirstOperandInConditionCheck">
       <property name="targetConstantTypes"
                value="LITERAL_NULL,LITERAL_TRUE,LITERAL_FALSE,
