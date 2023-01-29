@@ -37,5 +37,5 @@ Open a command line in project root directory and run `mvn clean package`.
 
 Find the installable bundle update site archive `net.sf.eclipsecs-updatesite/target/net.sf.eclipsecs-updatesite_X.X.X.YYYYmmDDHHMM.zip`.
 
-[travis]:https://travis-ci.org/checkstyle/eclipse-cs
-[travis img]:https://travis-ci.org/checkstyle/eclipse-cs.svg?branch=master
+[travis]:https://travis-ci.com/github/checkstyle/eclipse-cs/builds
+[travis img]:https://api.travis-ci.com/checkstyle/eclipse-cs.svg
