@@ -166,8 +166,9 @@
                             <failOnViolation>true</failOnViolation>
                             <headerLocation>I just need to put here smth to let it not use default - LICENSE.txt</headerLocation>
                             <propertiesLocation>config/checkstyle.properties</propertiesLocation>
-                            <includes>**\/*.java,**\/*.properties</includes>
-                            <includeTestResources>false</includeTestResources>
+                            <includes>**\/*</includes>
+                            <includeResources>true</includeResources>
+                            <includeTestResources>true</includeTestResources>
                             <includeTestSourceDirectory>true</includeTestSourceDirectory>
                         </configuration>
                     </execution>
@@ -180,9 +181,10 @@
                         <configuration>
                             <configLocation>config/checkstyle_sevntu_checks.xml</configLocation>
                             <failOnViolation>true</failOnViolation>
-                            <includes>**\/*.java,**\/*.properties</includes>
-                            <includeResources>false</includeResources>
-                            <includeTestResources>false</includeTestResources>
+                            <includes>**\/*</includes>
+                            <includeResources>true</includeResources>
+                            <includeTestResources>true</includeTestResources>
+                            <includeTestSourceDirectory>true</includeTestSourceDirectory>
                             <logViolationsToConsole>true</logViolationsToConsole>
                             <maxAllowedViolations>0</maxAllowedViolations>
                             <violationSeverity>error</violationSeverity>
