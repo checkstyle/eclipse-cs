@@ -34,7 +34,6 @@ jobs:
 
     # JDK 17 (most recent Java LTS version)
     - jdk: openjdk17
-      arch: amd64
       env:
         - DESC="install (openjdk17)"
         - CMD="mvn --errors --no-transfer-progress install"
