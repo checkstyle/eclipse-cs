@@ -40,7 +40,7 @@ public class ConfigPropertyWidgetInteger extends ConfigPropertyWidgetAbstractBas
 
   /**
    * Creates the widget.
-   * 
+   *
    * @param parent
    *          the parent composite
    * @param prop

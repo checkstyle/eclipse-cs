@@ -37,7 +37,7 @@ public final class ConfigPropertyWidgetFactory {
 
   /**
    * Creates a property widget for the given property.
-   * 
+   *
    * @param parent
    *          the parent component
    * @param prop

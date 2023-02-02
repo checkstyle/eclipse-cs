@@ -26,7 +26,7 @@ import org.eclipse.ui.IStartup;
  * Class to add support for early plugin startup. Due to a bug in Eclipse 3.2
  * startup behaviour a non-PluginActivator class is required to implement
  * IStartup.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public class CheckstylePluginStartup implements IStartup {

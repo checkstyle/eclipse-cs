@@ -36,7 +36,7 @@ import org.eclipse.osgi.util.NLS;
  * Logging-Handler implementation for the java.util.logging API to allow using the logging API to
  * log events that get directly passed into the internal eclipse logging.<br/>
  * This class act as bridge from java.util.logging to eclipse logging.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public class EclipseLogHandler extends Handler {
@@ -50,7 +50,7 @@ public class EclipseLogHandler extends Handler {
   /**
    * Creates an handler that passes java.util.logging messages to the eclipse log of a certain
    * plugin.
-   * 
+   *
    * @param loggingPlugin
    *          the plugin for which should be logged
    */

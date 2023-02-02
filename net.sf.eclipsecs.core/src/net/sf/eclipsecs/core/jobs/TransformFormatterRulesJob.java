@@ -37,9 +37,9 @@ import org.eclipse.core.runtime.Status;
 
 /**
  * Job who starts transforming the formatter-rules to checkstyle-settings.
- * 
+ *
  * @author Lukas Frena
- * 
+ *
  */
 public class TransformFormatterRulesJob extends WorkspaceJob {
 

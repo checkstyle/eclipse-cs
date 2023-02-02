@@ -27,14 +27,14 @@ import org.eclipse.swt.widgets.Shell;
 
 /**
  * Interface for a filter editor.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public interface IFilterEditor {
 
   /**
    * Opens the filter editor dialog (blocking).
-   * 
+   *
    * @param parent
    *          the parent shell
    * @return the returncode
@@ -43,7 +43,7 @@ public interface IFilterEditor {
 
   /**
    * Sets the input for this filter editor.
-   * 
+   *
    * @param input
    *          the input
    */
@@ -51,7 +51,7 @@ public interface IFilterEditor {
 
   /**
    * Sets the actual filter data for the editor.
-   * 
+   *
    * @param filterData
    *          the actual filter data
    */
@@ -59,7 +59,7 @@ public interface IFilterEditor {
 
   /**
    * Gets the filter data from the editor.
-   * 
+   *
    * @return the edited filter data
    */
   List<String> getFilterData();

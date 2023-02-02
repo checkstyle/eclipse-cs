@@ -29,7 +29,7 @@ import org.eclipse.ui.IWorkbenchPart;
 
 /**
  * Action to start transforming checkstyle-rules to formatter-rules.
- * 
+ *
  * @author lakiluk
  */
 public class FormatterTransformingAction implements IObjectActionDelegate {

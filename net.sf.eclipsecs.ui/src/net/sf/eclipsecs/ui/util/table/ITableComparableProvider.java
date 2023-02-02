@@ -25,14 +25,14 @@ package net.sf.eclipsecs.ui.util.table;
  * for the single table columns. This works very similar like
  * ITableLabelProvider except that other comparable objects than Strings can be
  * returned.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public interface ITableComparableProvider {
 
   /**
    * Returns the comparable for a given table column.
-   * 
+   *
    * @param element
    *          the row object
    * @param col

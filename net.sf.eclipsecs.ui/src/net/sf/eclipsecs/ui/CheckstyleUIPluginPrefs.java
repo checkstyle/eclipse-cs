@@ -33,7 +33,7 @@ import org.osgi.service.prefs.BackingStoreException;
 
 /**
  * Initialize the plugin preferences.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public class CheckstyleUIPluginPrefs extends AbstractPreferenceInitializer {
@@ -109,7 +109,7 @@ public class CheckstyleUIPluginPrefs extends AbstractPreferenceInitializer {
 
   /**
    * Returns a string preference for the given preference id.
-   * 
+   *
    * @param prefId
    *          the preference id
    * @return the string result
@@ -122,7 +122,7 @@ public class CheckstyleUIPluginPrefs extends AbstractPreferenceInitializer {
 
   /**
    * Returns a boolean preference for the given preference id.
-   * 
+   *
    * @param prefId
    *          the preference id
    * @return the boolean result
@@ -135,7 +135,7 @@ public class CheckstyleUIPluginPrefs extends AbstractPreferenceInitializer {
 
   /**
    * Returns an integer preference for the given preference id.
-   * 
+   *
    * @param prefId
    *          the preference id
    * @return the integer result
@@ -148,7 +148,7 @@ public class CheckstyleUIPluginPrefs extends AbstractPreferenceInitializer {
 
   /**
    * Set a string preference for the given preference id.
-   * 
+   *
    * @param prefId
    *          the preference id
    * @param value
@@ -166,7 +166,7 @@ public class CheckstyleUIPluginPrefs extends AbstractPreferenceInitializer {
 
   /**
    * Set a boolean preference for the given preference id.
-   * 
+   *
    * @param prefId
    *          the preference id
    * @param value
@@ -184,7 +184,7 @@ public class CheckstyleUIPluginPrefs extends AbstractPreferenceInitializer {
 
   /**
    * Set a int preference for the given preference id.
-   * 
+   *
    * @param prefId
    *          the preference id
    * @param value

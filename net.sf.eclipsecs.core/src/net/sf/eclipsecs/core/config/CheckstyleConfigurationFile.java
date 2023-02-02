@@ -30,7 +30,7 @@ import org.xml.sax.InputSource;
 /**
  * Simple object containing all sort of data of a Checkstyle configuration. This is done to not
  * access the Checkstyle configuration file too many times to get small bits of information.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public class CheckstyleConfigurationFile {
@@ -47,7 +47,7 @@ public class CheckstyleConfigurationFile {
 
   /**
    * Returns an input stream containing the contents of the Checkstyle configuration file.
-   * 
+   *
    * @return the input stream containing the Checkstyle configuration file
    */
   public ByteArrayInputStream getCheckConfigFileStream() {
@@ -57,7 +57,7 @@ public class CheckstyleConfigurationFile {
   /**
    * Returns a SAX input source of the Checkstyle configuration file. The resolved URL of the
    * configuration file will be set as SystemId to allow for parser resolution of relative entities.
-   * 
+   *
    * @return a SAX input source of the
    */
   public InputSource getCheckConfigFileInputSource() {
@@ -70,7 +70,7 @@ public class CheckstyleConfigurationFile {
 
   /**
    * Sets the content of the Checkstyle configuration file as a byte array.
-   * 
+   *
    * @param checkConfigFileBytes
    *          the Checkstyle configuration file contents
    */
@@ -80,7 +80,7 @@ public class CheckstyleConfigurationFile {
 
   /**
    * Returns an <code>ByteArrayInputStream</code> of the addional property bundle.
-   * 
+   *
    * @return the stream containing the bundle data
    */
   public ByteArrayInputStream getAdditionalPropertiesBundleStream() {
@@ -93,7 +93,7 @@ public class CheckstyleConfigurationFile {
   /**
    * Sets the content of an addtional property bundle which contains values for property references
    * in the Checkstyle configuration file.
-   * 
+   *
    * @param additionalPropertyBundleBytes
    *          the content of the additional property bundle
    */
@@ -103,7 +103,7 @@ public class CheckstyleConfigurationFile {
 
   /**
    * Returns the modification timestamp or 0 if none can be determined.
-   * 
+   *
    * @return the modification timestamp of the Checkstyle configuration file
    */
   public long getModificationStamp() {
@@ -112,7 +112,7 @@ public class CheckstyleConfigurationFile {
 
   /**
    * Sets the modification timestamp of the Checkstyle configuration file.
-   * 
+   *
    * @param modificationStamp
    *          the modification timestamp
    */
@@ -123,7 +123,7 @@ public class CheckstyleConfigurationFile {
   /**
    * Returns the resolved URL of the Checkstyle configuration file. Clients are expected to
    * <b>not</b> use this to access the underlying Checkstyle configuration file
-   * 
+   *
    * @return the resolved URL
    */
   public URL getResolvedConfigFileURL() {
@@ -132,7 +132,7 @@ public class CheckstyleConfigurationFile {
 
   /**
    * Sets the resolved URL of the Checkstyle configuration file.
-   * 
+   *
    * @param resolvedConfigFileURL
    *          the resolved URL
    */
@@ -142,7 +142,7 @@ public class CheckstyleConfigurationFile {
 
   /**
    * Returns the property resolver or <code>null</code> if none has been set.
-   * 
+   *
    * @return the property resolver
    */
   public PropertyResolver getPropertyResolver() {
@@ -151,7 +151,7 @@ public class CheckstyleConfigurationFile {
 
   /**
    * Sets the property resolver for this Checkstyle configuration.
-   * 
+   *
    * @param propertyResolver
    *          the property resolver
    */

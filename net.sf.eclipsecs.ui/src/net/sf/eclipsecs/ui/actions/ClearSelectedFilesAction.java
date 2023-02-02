@@ -40,7 +40,7 @@ import org.eclipse.ui.IWorkbenchPart;
 
 /**
  * Action to diable Checkstyle on one ore more projects.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public class ClearSelectedFilesAction implements IObjectActionDelegate {
@@ -72,7 +72,7 @@ public class ClearSelectedFilesAction implements IObjectActionDelegate {
 
   /**
    * Activates Checkstyle on a collection of projects.
-   * 
+   *
    * @author Lars Ködderitzsch
    */
   private static class ClearMarkersJob extends WorkspaceJob {

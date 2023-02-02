@@ -31,13 +31,13 @@ import org.eclipse.swt.widgets.Control;
 /**
  * Interface for the part of the checkstyle plugin properties page that
  * configures file sets for the project.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public interface IFileSetsEditor {
   /**
    * Creates the contents of the file set editor.
-   * 
+   *
    * @param parent
    *          the parent component
    * @return the control
@@ -48,7 +48,7 @@ public interface IFileSetsEditor {
 
   /**
    * Set the file sets for the editor.
-   * 
+   *
    * @param fileSets
    *          the list of file sets
    * @throws CheckstylePluginException
@@ -58,7 +58,7 @@ public interface IFileSetsEditor {
 
   /**
    * Returns the file sets.
-   * 
+   *
    * @return the list of file sets
    */
   List<FileSet> getFileSets();

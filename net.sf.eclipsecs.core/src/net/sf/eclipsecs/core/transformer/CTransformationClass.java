@@ -29,7 +29,7 @@ import java.util.Map;
 /**
  * Abstract class which all transformationclasses have to implement. These classes handle how to
  * react on a checkstyle-rule.
- * 
+ *
  * @author Lukas Frena
  */
 public abstract class CTransformationClass {
@@ -43,14 +43,14 @@ public abstract class CTransformationClass {
    * Method for transforming the checkstyle-rule this class is associated to. Every
    * transformationclass has to implement this method. Should return the field formatterSetting
    * after adding rules to it.
-   * 
+   *
    * @return The eclipse-formatter-configuration this rule needs.
    */
   public abstract FormatterConfiguration transformRule();
 
   /**
    * Method for setting the field attributes.
-   * 
+   *
    * @param rule
    *          The checkstyle-rule associated to this class.
    */
@@ -68,7 +68,7 @@ public abstract class CTransformationClass {
 
   /**
    * Method for reading the value of an attribute.
-   * 
+   *
    * @param attribute
    *          The name of the attribute.
    * @return The value of the attribute.
@@ -79,7 +79,7 @@ public abstract class CTransformationClass {
 
   /**
    * Method for defining which eclipse-formatter-rules should be used for transforming.
-   * 
+   *
    * @param rule
    *          A eclipse-formatter-rule.
    * @param val
@@ -91,7 +91,7 @@ public abstract class CTransformationClass {
 
   /**
    * Method for defining which eclipse-editor-rules should be used for transforming.
-   * 
+   *
    * @param rule
    *          A eclipse-editor-rule.
    * @param val
@@ -103,7 +103,7 @@ public abstract class CTransformationClass {
 
   /**
    * Getter to return the current formatter-settings.
-   * 
+   *
    * @return The formatter-settings.
    */
   public FormatterConfiguration getFormatterSetting() {
