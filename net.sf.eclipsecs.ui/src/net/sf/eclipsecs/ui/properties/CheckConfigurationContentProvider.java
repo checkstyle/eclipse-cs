@@ -33,7 +33,7 @@ import org.eclipse.jface.viewers.Viewer;
 
 /**
  * Content provider implementation that provides check configurations.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 class CheckConfigurationContentProvider implements IStructuredContentProvider {

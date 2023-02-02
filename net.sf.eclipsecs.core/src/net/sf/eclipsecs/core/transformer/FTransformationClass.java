@@ -25,7 +25,7 @@ import java.util.HashMap;
 /**
  * Abstract class which all transformationclasses have to implement. These classes handle how to
  * react on a formatter-setting.
- * 
+ *
  * @author Lukas Frena
  */
 public abstract class FTransformationClass {
@@ -39,14 +39,14 @@ public abstract class FTransformationClass {
    * Method for transforming the checkstyle-rule this class is associated to. Every
    * transformationclass has to implement this method. Should return the field formatterSetting
    * after adding rules to it.
-   * 
+   *
    * @return The eclipse-formatter-configuration this rule needs.
    */
   public abstract CheckstyleSetting transformRule();
 
   /**
    * Method for setting the field mValue.
-   * 
+   *
    * @param setting
    *          The formatter-setting associated to this class.
    * @param value
@@ -58,7 +58,7 @@ public abstract class FTransformationClass {
 
   /**
    * Method for reading the value the setting.
-   * 
+   *
    * @return The value of the setting.
    */
   public final String getValue() {
@@ -67,7 +67,7 @@ public abstract class FTransformationClass {
 
   /**
    * Method for defining which checkstyle-rules should be used for transforming.
-   * 
+   *
    * @param name
    *          The name of the checkstyle treewalker-module.
    * @param properties
@@ -81,7 +81,7 @@ public abstract class FTransformationClass {
 
   /**
    * Method for defining which checkstyle-rules should be used for transforming.
-   * 
+   *
    * @param name
    *          The name of the checkstyle treewalker-module.
    * @param properties
@@ -94,7 +94,7 @@ public abstract class FTransformationClass {
 
   /**
    * Getter to return the current checkstyle-settings.
-   * 
+   *
    * @return The formatter-settings.
    */
   public CheckstyleSetting getCheckstyleSetting() {

@@ -40,7 +40,7 @@ import org.eclipse.ui.IWorkbenchPart;
 
 /**
  * Action to enable Checkstyle on one ore more projects.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public class ActivateProjectsAction implements IObjectActionDelegate {
@@ -69,7 +69,7 @@ public class ActivateProjectsAction implements IObjectActionDelegate {
 
   /**
    * Activates Checkstyle on a collection of projects.
-   * 
+   *
    * @author Lars Ködderitzsch
    */
   private static class BulkCheckstyleActivateJob extends WorkspaceJob {

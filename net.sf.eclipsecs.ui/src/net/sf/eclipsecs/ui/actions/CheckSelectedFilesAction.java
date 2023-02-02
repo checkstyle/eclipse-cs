@@ -39,7 +39,7 @@ import org.eclipse.ui.IWorkbenchPart;
 
 /**
  * Action to diable Checkstyle on one ore more projects.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public class CheckSelectedFilesAction implements IObjectActionDelegate {
@@ -81,7 +81,7 @@ public class CheckSelectedFilesAction implements IObjectActionDelegate {
   /**
    * Recursively add all files contained in the given resource collection to the
    * second list.
-   * 
+   *
    * @param resources
    *          list of resource
    * @param files

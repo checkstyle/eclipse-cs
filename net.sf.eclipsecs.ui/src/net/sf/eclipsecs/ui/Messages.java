@@ -25,7 +25,7 @@ import org.eclipse.osgi.util.NLS;
 /**
  * Class providing messages for the checkstyle plugin. Uses the eclipse new nls
  * mechanism.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public final class Messages extends NLS {

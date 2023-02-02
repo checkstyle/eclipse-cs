@@ -28,7 +28,7 @@ import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 /**
  * Wrapperclass for converting the checkstyle-rule NoWhitespaceAfter to appropriate
  * eclipse-formatter-rules.
- * 
+ *
  * @author Lukas Frena
  */
 public class NoWhitespaceAfterTransformer extends CTransformationClass {

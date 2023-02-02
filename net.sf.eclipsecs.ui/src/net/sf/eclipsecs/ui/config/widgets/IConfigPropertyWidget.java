@@ -35,21 +35,21 @@ public interface IConfigPropertyWidget {
 
   /**
    * Returns the stringified value of the widget.
-   * 
+   *
    * @return the value as string
    */
   String getValue();
 
   /**
    * Returns the property the widget operates on.
-   * 
+   *
    * @return the property
    */
   ConfigProperty getConfigProperty();
 
   /**
    * Enables/disables the widget.
-   * 
+   *
    * @param enabled
    *          <code>true</code> if the widget should be enabled,
    *          <code>false</code> otherwise
@@ -64,7 +64,7 @@ public interface IConfigPropertyWidget {
   /**
    * Validates the widgets data. A CheckstylePluginException with an appropriate
    * message is thrown if the data is invalid.
-   * 
+   *
    * @throws CheckstylePluginException
    *           thrown if the data is invalid
    */

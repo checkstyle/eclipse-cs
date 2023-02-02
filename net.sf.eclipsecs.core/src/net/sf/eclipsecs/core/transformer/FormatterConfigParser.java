@@ -27,7 +27,7 @@ import java.io.IOException;
 
 /**
  * Class for parsing a eclipse-formatter-configuration-file for formatter-settings.
- * 
+ *
  * @author Lukas Frena
  */
 public class FormatterConfigParser {
@@ -39,7 +39,7 @@ public class FormatterConfigParser {
 
   /**
    * Creates a new Instance of Class FormatterConfigParser.
-   * 
+   *
    * @param configLocation
    *          The configuration-file of eclipse formatter.
    * @throws FileNotFoundException
@@ -53,7 +53,7 @@ public class FormatterConfigParser {
 
   /**
    * Method for starting parsing for formatter-rules.
-   * 
+   *
    * @return The FormatterConfiguration of formatter-rules found.
    */
   public FormatterConfiguration parseRules() {

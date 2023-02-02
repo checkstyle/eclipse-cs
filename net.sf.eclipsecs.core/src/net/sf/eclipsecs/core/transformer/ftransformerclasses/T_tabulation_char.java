@@ -26,7 +26,7 @@ import net.sf.eclipsecs.core.transformer.FTransformationClass;
 /**
  * Transformerclass for converting the formatter-setting tabulation.char to appropriate
  * checkstyle-modules.
- * 
+ *
  * @author Lukas Frena
  */
 public class T_tabulation_char extends FTransformationClass {

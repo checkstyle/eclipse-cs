@@ -37,7 +37,7 @@ import org.eclipse.osgi.util.NLS;
 /**
  * Job to de-couple an audit. Used for the "Run Checkstyle in background on full build"
  * functionality.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public class AuditorJob extends WorkspaceJob implements ISchedulingRule {
@@ -48,7 +48,7 @@ public class AuditorJob extends WorkspaceJob implements ISchedulingRule {
 
   /**
    * Creates an operation which runs a pre-configured auditor.
-   * 
+   *
    * @param project
    *          the project to build
    * @param auditor

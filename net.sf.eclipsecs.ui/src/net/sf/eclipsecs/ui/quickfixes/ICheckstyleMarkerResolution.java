@@ -27,14 +27,14 @@ import org.eclipse.ui.IMarkerResolution2;
 
 /**
  * Interface for a quickfix implementation for checkstyle markers.
- * 
+ *
  * @author Lars Ködderitzsch
  */
 public interface ICheckstyleMarkerResolution extends IMarkerResolution2 {
 
   /**
    * Checks if this quickfix can actually fix the marker occurrance.
-   * 
+   *
    * @param marker
    *          the marker to potentially be fixed.
    * @return <code>true</code> if this quickfix can fix the marker,
@@ -44,7 +44,7 @@ public interface ICheckstyleMarkerResolution extends IMarkerResolution2 {
 
   /**
    * Sets if the quickfix automatically commits the changes (saves the file).
-   * 
+   *
    * @param autoCommit
    *          <code>true</code> if changes are automatically committed
    */
@@ -53,7 +53,7 @@ public interface ICheckstyleMarkerResolution extends IMarkerResolution2 {
   /**
    * Sets the metadata for the checkstyle rule to which this quickfix
    * implementation applies.
-   * 
+   *
    * @param metadata
    *          the checkstyle rule metadata
    */

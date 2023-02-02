@@ -26,7 +26,7 @@ import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 /**
  * Wrapperclass for converting the checkstyle-rule MissingDeprecated to appropriate
  * eclipse-formatter-rules.
- * 
+ *
  * @author Lukas Frena
  */
 public class MissingDeprecatedTransformer extends CTransformationClass {
