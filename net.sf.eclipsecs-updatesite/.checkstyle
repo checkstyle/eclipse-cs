@@ -4,8 +4,8 @@
   <local-check-config name="Eclipse CS configuration" location="/eclipse-cs/config/checkstyle_checks.xml" type="project" description="Shared configuration for all Eclipse CS plugins.">
     <property name="checkstyle.cache.file" value="target/checkstyle-cache"/>
     <property name="checkstyle.suppressions.file" value="${config_loc}/suppressions.xml"/>
-    <property name="checkstyle.header.file" value="${config_loc}/java.header"/>
     <property name="checkstyle.regexp.header.file" value="${config_loc}/java_regexp.header"/>
+    <property name="checkstyle.regexp.old.header.file" value="${config_loc}/java_regexp_old.header"/>
     <property name="checkstyle.suppressions-xpath.file" value="${config_loc}/suppressions.xml"/>
     <property name="checkstyle.importcontrol.file" value="${config_loc}/import-control.xml"/>
     <property name="checkstyle.importcontroltest.file" value="${config_loc}/import-control-test.xml"/>
