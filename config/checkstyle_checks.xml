@@ -65,6 +65,18 @@
         <property name="onCommentFormat" value="CSON\: .*"/>
     </module>
 
+    <!-- Headers -->
+    <module name="RegexpHeader">
+        <property name="id" value="regexpHeader"/>
+        <property name="headerFile" value="${checkstyle.regexp.header.file}"/>
+        <property name="fileExtensions" value="java, g4"/>
+    </module>
+    <module name="RegexpHeader">
+        <property name="id" value="oldRegexpHeader"/>
+        <property name="headerFile" value="${checkstyle.regexp.old.header.file}"/>
+        <property name="fileExtensions" value="java, g4"/>
+    </module>
+
     <!-- Miscellaneous -->
     <module name="NewlineAtEndOfFile"/>
     <module name="Translation"/>
