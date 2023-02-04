@@ -205,6 +205,7 @@
         </module>
         <module name="AnnotationUseStyle"/>
         <module name="MissingDeprecated"/>
+        <module name="MissingOverride"/>
         <module name="PackageAnnotation"/>
         <module name="SuppressWarningsHolder"/>
 
@@ -217,6 +218,7 @@
         <module name="NeedBraces"/>
         <!-- modified -->
         <module name="HideUtilityClassConstructor"/>
+        <module name="InnerTypeLast"/>
         <module name="InterfaceIsType"/>
         <module name="MutableException"/>
         <module name="OneTopLevelClass"/>
@@ -227,6 +229,7 @@
         <!-- Coding -->
         <module name="ArrayTrailingComma"/>
         <module name="AvoidDoubleBraceInitialization"/>
+        <module name="AvoidNoArgumentSuperConstructorCall"/>
         <module name="CovariantEquals"/>
         <module name="DefaultComesLast"/>
         <module name="EmptyStatement"/>
@@ -242,8 +245,6 @@
                       value="org.xml.sax.SAXException, org.xml.sax.SAXParseException,
                          org.apache.commons.beanutils.ConversionException,
                          org.antlr.v4.runtime.misc.ParseCancellationException,
-                         antlr.RecognitionException, antlr.TokenStreamException,
-                         antlr.TokenStreamRecognitionException, antlr.ANTLRException,
                          java.lang.StringBuffer"/>
         </module>
         <module name="IllegalThrows"/>
@@ -375,13 +376,25 @@
             <property name="file" value="${checkstyle.importcontroltest.file}"/>
             <property name="path" value="^.*[\\/]src[\\/](test|it)[\\/].*$"/>
         </module>
+        <module name="RedundantImport"/>
         <module name="UnusedImports"/>
 
         <!-- Javadoc Comments -->
+        <module name="JavadocBlockTagLocation">
+            <!-- default tags -->
+            <property name="tags" value="author, deprecated, exception, hidden, param, provides"/>
+            <property name="tags" value="return, see, serial, serialData, serialField, since, throws"/>
+            <property name="tags" value="uses, version"/>
+            <!-- additional tags used in the project -->
+            <property name="tags" value="noinspection"/>
+        </module>
+        <module name="JavadocContentLocation"/>
         <module name="JavadocMissingLeadingAsterisk"/>
+        <module name="JavadocMissingWhitespaceAfterAsterisk"/>
         <module name="JavadocStyle">
             <property name="scope" value="public"/>
         </module>
+        <module name="JavadocTagContinuationIndentation"/>
         <module name="SingleLineJavadoc"/>
         <!-- Misc -->
         <module name="ArrayTypeStyle"/>
@@ -419,6 +432,7 @@
         <module name="ClassTypeParameterName"/>
         <module name="RecordTypeParameterName"/>
         <module name="RecordComponentName"/>
+        <module name="ConstantName"/>
         <module name="InterfaceTypeParameterName"/>
         <module name="LocalFinalVariableName"/>
         <module name="MemberName">
@@ -433,6 +447,9 @@
         </module>
         <module name="LambdaParameterName">
             <property name="format" value="^(id)|([a-z][a-z0-9][a-zA-Z0-9]+)$"/>
+        </module>
+        <module name="CatchParameterName">
+            <property name="format" value="^(ex|[a-z][a-z][a-zA-Z]+)$"/>
         </module>
         <module name="PatternVariableName"/>
 
@@ -451,6 +468,7 @@
 
     <!-- Size Violations -->
         <module name="LambdaBodyLength"/>
+        <module name="OuterTypeNumber"/>
         <module name="RecordComponentNumber"/>
 
         <!-- Whitespace -->
@@ -469,6 +487,33 @@
             <property name="tokens" value="DOT"/>
             <property name="tokens" value="METHOD_REF"/>
             <property name="allowLineBreaks" value="true"/>
+        </module>
+        <module name="OperatorWrap">
+            <property name="tokens" value="QUESTION"/>
+            <property name="tokens" value="COLON"/>
+            <property name="tokens" value="EQUAL"/>
+            <property name="tokens" value="NOT_EQUAL"/>
+            <property name="tokens" value="DIV"/>
+            <property name="tokens" value="PLUS"/>
+            <property name="tokens" value="MINUS"/>
+            <property name="tokens" value="STAR"/>
+            <property name="tokens" value="MOD"/>
+            <property name="tokens" value="SR"/>
+            <property name="tokens" value="BSR"/>
+            <property name="tokens" value="GE"/>
+            <property name="tokens" value="GT"/>
+            <property name="tokens" value="SL"/>
+            <property name="tokens" value="LE"/>
+            <property name="tokens" value="LT"/>
+            <property name="tokens" value="BXOR"/>
+            <property name="tokens" value="BOR"/>
+            <property name="tokens" value="LOR"/>
+            <property name="tokens" value="BAND"/>
+            <property name="tokens" value="LAND"/>
+            <property name="tokens" value="TYPE_EXTENSION_AND"/>
+            <property name="tokens" value="LITERAL_INSTANCEOF"/>
+            <property name="tokens" value="METHOD_REF"/>
+            <property name="option" value="nl"/>
         </module>
         <module name="ParenPad"/>
         <module name="SeparatorWrap">
