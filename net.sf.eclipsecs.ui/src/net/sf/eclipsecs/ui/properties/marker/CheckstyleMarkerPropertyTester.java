@@ -19,7 +19,12 @@ public class CheckstyleMarkerPropertyTester extends PropertyTester {
     }
     IMarker marker = (IMarker) receiver;
     try {
-      return CheckstyleMarker.MARKER_ID.equals(marker.getType());
+      if (!CheckstyleMarker.MARKER_ID.equals(marker.getType())) {
+        return false;
+      }
+      // avoid property page for markers that show runtime errors instead of violations
+      Object module = marker.getAttribute(CheckstyleMarker.MODULE_NAME);
+      return module instanceof String && !((String) module).isBlank();
     } catch (CoreException ex) {
       CheckstyleLog.log(ex);
     }
