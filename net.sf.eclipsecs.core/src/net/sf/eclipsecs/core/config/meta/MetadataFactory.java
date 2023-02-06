@@ -156,7 +156,7 @@ public final class MetadataFactory {
    * @param moduleDetails module details fetched from checkstyle metadata
    * @return ruleMetadata for the module
    */
-  public static RuleMetadata createRuleMetadata(ModuleDetails moduleDetails) {
+  private static RuleMetadata createRuleMetadata(ModuleDetails moduleDetails) {
     RuleGroupMetadata group;
     String moduleClassName = moduleDetails.getFullQualifiedName();
     // standard checkstyle module
@@ -199,7 +199,7 @@ public final class MetadataFactory {
    * @param modulePropertyDetails checkstyle metadata of the property
    * @return ConfigPropertyMetadata of the module property
    */
-  public static ConfigPropertyMetadata createPropertyConfig(ModuleDetails moduleDetails,
+  private static ConfigPropertyMetadata createPropertyConfig(ModuleDetails moduleDetails,
           ModulePropertyDetails modulePropertyDetails) {
     ConfigPropertyType dataType = null;
     String propertyType = modulePropertyDetails.getType();
@@ -291,7 +291,7 @@ public final class MetadataFactory {
   /**
    * Create repository of Module Details from checkstyle metadata and third party extension checks metadata.
    */
-  public static void createMetadataMap() {
+  private static void createMetadataMap() {
     XmlMetaReader.readAllModulesIncludingThirdPartyIfAny(
         sPackageNameSet.toArray(new String[sPackageNameSet.size()]))
         .forEach(moduleDetail -> sModuleDetailsRepo.put(moduleDetail.getName(), moduleDetail));
@@ -353,7 +353,7 @@ public final class MetadataFactory {
    *          the group name
    * @return the RuleGroupMetadata object or <code>null</code>
    */
-  public static RuleGroupMetadata getRuleGroupMetadata(String name) {
+  private static RuleGroupMetadata getRuleGroupMetadata(String name) {
     return sRuleGroupMetadata.get(name);
   }
 
@@ -410,7 +410,7 @@ public final class MetadataFactory {
    * @param className enum name
    * @return list of values of enum
    */
-  public static List<String> getEnumValues(String className) {
+  private static List<String> getEnumValues(String className) {
     List<String> resultList = new ArrayList<>();
     Class<?> providerClass = null;
     try {
@@ -461,7 +461,7 @@ public final class MetadataFactory {
    *          the module metadata
    * @return Checkstyles standard message for this module and key
    */
-  public static String getStandardMessage(String messageKey, RuleMetadata rule) {
+  private static String getStandardMessage(String messageKey, RuleMetadata rule) {
 
     // for some unknown reason there is no metadata or key
     if (messageKey == null || rule == null) {
@@ -497,7 +497,7 @@ public final class MetadataFactory {
   /**
    * Refreshes the metadata.
    */
-  public static synchronized void refresh() {
+  private static synchronized void refresh() {
     sRuleGroupMetadata = new TreeMap<>();
     sRuleMetadata = new HashMap<>();
     sAlternativeNamesMap = new HashMap<>();
@@ -549,7 +549,7 @@ public final class MetadataFactory {
   /**
    * Creates RuleMetadata.
    */
-  public static void loadRuleMetadata() {
+  private static void loadRuleMetadata() {
     for (Entry<String, ModuleDetails> entry : sModuleDetailsRepo.entrySet()) {
       final ModuleDetails moduleDetails = entry.getValue();
       final RuleMetadata createdRuleMetadata = createRuleMetadata(moduleDetails);
