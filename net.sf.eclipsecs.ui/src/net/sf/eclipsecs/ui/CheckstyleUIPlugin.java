@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Locale;
 
+import net.sf.eclipsecs.core.jobs.AbstractCheckJob;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.core.util.ExtensionClassLoader;
 import net.sf.eclipsecs.ui.properties.filter.CheckFileOnOpenPartListener;
@@ -45,6 +46,7 @@ import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.eclipse.ui.progress.IProgressService;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -140,9 +142,19 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
         }
 
         workbench.addWindowListener(mWindowListener);
+        registerProgressIcon();
       }
     });
 
+  }
+
+  protected void registerProgressIcon() {
+    IProgressService service = PlatformUI.getWorkbench().getProgressService();
+    if (service == null) {
+      return;
+    }
+    service.registerIconForFamily(CheckstyleUIPluginImages.CHECKSTYLE_ICON.getImageDescriptor(),
+            AbstractCheckJob.CHECKSTYLE_JOB_FAMILY);
   }
 
   @Override

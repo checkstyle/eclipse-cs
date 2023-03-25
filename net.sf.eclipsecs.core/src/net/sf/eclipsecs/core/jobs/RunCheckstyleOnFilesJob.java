@@ -37,7 +37,6 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
-import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -49,7 +48,7 @@ import org.eclipse.core.runtime.jobs.ISchedulingRule;
  *
  * @author Lars Ködderitzsch
  */
-public class RunCheckstyleOnFilesJob extends WorkspaceJob implements ISchedulingRule {
+public class RunCheckstyleOnFilesJob extends AbstractCheckJob {
 
   private List<IFile> mFilesToCheck;
 
@@ -83,11 +82,6 @@ public class RunCheckstyleOnFilesJob extends WorkspaceJob implements IScheduling
   @Override
   public boolean contains(ISchedulingRule arg0) {
     return arg0 instanceof RunCheckstyleOnFilesJob;
-  }
-
-  @Override
-  public boolean isConflicting(ISchedulingRule arg0) {
-    return arg0 instanceof RunCheckstyleOnFilesJob || arg0 instanceof AuditorJob;
   }
 
   @Override
