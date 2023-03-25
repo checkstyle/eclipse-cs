@@ -93,7 +93,10 @@ public enum CheckstyleUIPluginImages {
   /** Image descriptor for the refresh icon. */
   REFRESH_ICON(() -> ResourceLocator.imageDescriptorFromBundle("org.eclipse.search",
           "platform:/plugin/org.eclipse.search/icons/full/elcl16/refresh.png")
-          .orElse(MARKER_ERROR.getImageDescriptor()));
+          .orElse(MARKER_ERROR.getImageDescriptor())),
+  /** Image descriptor for the checkstyle project icon. */
+  CHECKSTYLE_ICON(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
+          "icons/checkstyle_command.png"));
 
   /**
    * lazy creation factory
