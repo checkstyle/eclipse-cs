@@ -22,12 +22,14 @@
         <tycho-version>2.7.5</tycho-version>
         <tycho.scmUrl>scm:git:git://github.com:checkstyle/eclipse-cs.git</tycho.scmUrl>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.checkstyle.plugin.version>3.2.0</maven.checkstyle.plugin.version>
+        <maven.checkstyle.plugin.version>3.2.1</maven.checkstyle.plugin.version>
         <!-- sevntu and patch-filters need to use a compatible/compiled version with checkstyle -->
         <maven.sevntu.checkstyle.plugin.checkstyle.version>10.4</maven.sevntu.checkstyle.plugin.checkstyle.version>
         <maven.sevntu.checkstyle.plugin.version>1.44.1</maven.sevntu.checkstyle.plugin.version>
         <maven.patch.filters.plugin.version>1.4.0</maven.patch.filters.plugin.version>
         <!-- see above -->
+        <!-- ignore all versions with non numerical parts during versions:display-plugin-updates -->
+        <maven.version.ignore>.*[a-zA-Z]+.*</maven.version.ignore>
     </properties>
 
     <scm>
@@ -52,13 +54,13 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>5.8.2</version>
+            <version>5.9.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.8.2</version>
+            <version>5.9.2</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -75,6 +77,10 @@
             </testResource>
         </testResources>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+            </plugin>
             <plugin>
                 <groupId>org.eclipse.tycho</groupId>
                 <artifactId>tycho-maven-plugin</artifactId>
@@ -114,7 +120,6 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
-                <version>3.0.0</version>
                 <executions>
                     <execution>
                       <phase>verify</phase>
@@ -301,6 +306,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-deploy-plugin</artifactId>
+                    <version>3.1.1</version>
                     <configuration>
                         <skip>true</skip>
                     </configuration>
@@ -334,7 +340,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-enforcer-plugin</artifactId>
-                    <version>3.0.0-M3</version>
+                    <version>3.2.1</version>
                     <executions>
                         <execution>
                             <id>enforce-maven</id>
@@ -346,11 +352,33 @@
                                     <requireMavenVersion>
                                         <version>3.6.3</version>
                                     </requireMavenVersion>
-                                    <requireReleaseDeps/>
+                                    <requireReleaseDeps>
+                                        <excludes>
+                                            <exclude>net.sf.eclipsecs:*</exclude>
+                                        </excludes>
+                                    </requireReleaseDeps>
                                 </rules>
                             </configuration>
                         </execution>
                     </executions>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>3.3.1</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>3.2.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>exec-maven-plugin</artifactId>
+                    <version>3.1.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <version>3.3.0</version>
                 </plugin>
                 <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
                 <plugin>
@@ -393,7 +421,7 @@
                                         <artifactId>maven-antrun-plugin</artifactId>
                                         <versionRange>[1.0,)</versionRange>
                                         <goals>
-                                            <goal>clean</goal>
+                                            <goal>run</goal>
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
