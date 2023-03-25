@@ -211,11 +211,13 @@
                     <artifactId>tycho-packaging-plugin</artifactId>
                     <version>${tycho-version}</version>
                     <dependencies>
+                        <!-- generate timestamps from last git change of any file in this module -->
                         <dependency>
                             <groupId>org.eclipse.tycho.extras</groupId>
                             <artifactId>tycho-buildtimestamp-jgit</artifactId>
                             <version>${tycho-version}</version>
                         </dependency>
+                        <!-- automatically add a source references header to the manifest -->
                         <dependency>
                             <groupId>org.eclipse.tycho.extras</groupId>
                             <artifactId>tycho-sourceref-jgit</artifactId>
@@ -223,10 +225,7 @@
                         </dependency>
                     </dependencies>
                     <configuration>
-                        <!-- <timestampProvider>jgit</timestampProvider> -->
-                        <jgit.ignore>
-                            pom.xml
-                        </jgit.ignore>
+                        <timestampProvider>jgit</timestampProvider>
                         <jgit.dirtyWorkingTree>ignore</jgit.dirtyWorkingTree>
                         <sourceReferences>
                             <generate>true</generate>
