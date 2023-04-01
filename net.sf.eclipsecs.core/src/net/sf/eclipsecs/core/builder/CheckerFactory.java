@@ -34,8 +34,12 @@ import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.puppycrawl.tools.checkstyle.api.Configuration;
 import com.puppycrawl.tools.checkstyle.LocalizedMessage;
 
+import java.io.File;
+import java.io.FilenameFilter;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -58,6 +62,8 @@ import org.xml.sax.InputSource;
  * @author Lars Ködderitzsch
  */
 public final class CheckerFactory {
+
+  private static final String CHECKSTYLE_CACHEFILE_EXTENSION = ".checkstyle.cache";
 
   /** Map containing the configured checkers. */
   private static Cache<String, Checker> sCheckerMap;
@@ -103,11 +109,6 @@ public final class CheckerFactory {
     CheckstyleConfigurationFile configFileData = config.getCheckstyleConfiguration();
     Checker checker = tryCheckerCache(cacheKey, configFileData.getModificationStamp());
 
-    // clear Checkstyle internal caches upon checker reuse
-    if (checker != null) {
-      checker.clearCache();
-    }
-
     // no cache hit
     if (checker == null) {
       PropertyResolver resolver = configFileData.getPropertyResolver();
@@ -143,6 +144,7 @@ public final class CheckerFactory {
   public static void cleanup() {
     sCheckerMap.invalidateAll();
     sModifiedMap.clear();
+    deleteCacheFiles();
   }
 
   /**
@@ -243,6 +245,12 @@ public final class CheckerFactory {
     // https://sourceforge.net/tracker/?func=detail&aid=2880044&group_id=80344&atid=559497
     checker.setBasedir(null);
 
+    try {
+      checker.setCacheFile(project.getLocation().toFile() + File.separator + CHECKSTYLE_CACHEFILE_EXTENSION);
+    } catch (IOException ex) {
+      CheckstylePluginException.rethrow(ex);
+    }
+
     return checker;
   }
 
@@ -278,5 +286,22 @@ public final class CheckerFactory {
       lang = null;
     }
     return lang;
+  }
+
+  public static String getCacheFileLocation(final IProject project) {
+    return CheckstylePlugin.getDefault().getStateLocation().append(project.getName()).append(CHECKSTYLE_CACHEFILE_EXTENSION).toOSString();
+  }
+
+  public static void deleteCacheFiles() {
+    File dir = CheckstylePlugin.getDefault().getStateLocation().toFile();
+    File [] files = dir.listFiles(new FilenameFilter() {
+        @Override
+        public boolean accept(File dir, String name) {
+            return name.endsWith(CHECKSTYLE_CACHEFILE_EXTENSION);
+        }
+    });
+    if (files != null) {
+        Arrays.stream(files).forEach(File::delete);
+    }
   }
 }
