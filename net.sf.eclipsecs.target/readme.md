@@ -70,6 +70,14 @@ Meanwhile Eclipse PDE and Tycho can also use Maven libraries directly in the tar
 Those libraries are contained in `net.sf.eclipsecs.partial.maven.target`.
 You can open that with a text editor and edit the Maven coordinates like in a `pom.xml`.
 
+### Eclipse license entry
+
+Unfortunately there is a [bug in Eclipse PDE when resolving target files](https://github.com/eclipse-pde/eclipse.pde/issues/558) that contain only nested target files.
+The issue leads to logging a (harmless) exception in the console when launching Eclipse-CS from the IDE.
+This is only relevant for Eclipse-CS developers, not Eclipse-CS users.
+The workaround is to simply add another (not nested) target location in the first position.
+Therefore this target contains a reference to the Eclipse license feature in the target platform.
+That license feature is not used anywhere.
 
 ## Committing changes
 
