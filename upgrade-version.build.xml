@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Instructions for upgrading a checkstyle version
+===============================================
+
+* change the "fromVersion" and "toVersion" properties in this file.
+* Select the *.launch file next to this script and run it via context menu > Run As.
+* The script replaces all version numbers, deletes outdated files, and downloads the release jar.
+* Use Project > Clean with all projects to trigger a full rebuild.
+
+There should be no errors or warnings in the problems view afterwards.
+Apply all necessary manual code changes now.
+
+-->
+<project name="upgrade-version" default="upgrade-version">
+	<description>upgrade all version numbers</description>
+
+	<target name="upgrade-version" description="upgrade version numbers and dependent files">
+		<property name="fromVersion" value="10.5.0"/>
+		<property name="toVersion" value="10.6.0"/>
+
+		<!-- delete all outdated files, independent of their current version -->
+		<delete>
+			<fileset dir="${basedir}" includes="**/checkstyle-*-all.jar"/>
+			<fileset dir="${basedir}" includes="**/checkstyle-checkstyle-*.zip"/>
+		</delete>
+
+		<!-- replace version number in checkstyle library -->
+		<replace dir="${basedir}/net.sf.eclipsecs.checkstyle" token="${fromVersion}" value="${toVersion}">
+			<include name="**/.classpath"/>
+			<include name="**/build.properties"/>
+			<include name="**/category.xml"/>
+			<include name="**/feature.xml"/>
+			<include name="**/MANIFEST.MF"/>
+			<include name="**/pom.xml"/>
+		</replace>
+		<!-- restore parent version in POM and bundle version in manifest -->
+		<replace dir="${basedir}/net.sf.eclipsecs.checkstyle" token="&lt;version&gt;${toVersion}" value="&lt;version&gt;${fromVersion}">
+			<include name="**/pom.xml"/>
+		</replace>
+		<replace dir="${basedir}/net.sf.eclipsecs.checkstyle" token="Bundle-Version: ${toVersion}" value="Bundle-Version: ${fromVersion}">
+			<include name="**/MANIFEST.MF"/>
+		</replace>
+		<!-- replace dependencies from core to library -->
+		<replace dir="${basedir}/net.sf.eclipsecs.core" token="checkstyle-${fromVersion}" value="checkstyle-${toVersion}">
+			<include name="**/.classpath"/>
+			<include name="**/build.properties"/>
+			<include name="**/MANIFEST.MF"/>
+		</replace>
+
+		<!-- download new version -->
+		<get src="https://github.com/checkstyle/checkstyle/releases/download/checkstyle-${toVersion}/checkstyle-${toVersion}-all.jar"
+		     dest="${basedir}/net.sf.eclipsecs.checkstyle/checkstyle-${toVersion}-all.jar"/>
+		<copy file="${basedir}/net.sf.eclipsecs.checkstyle/checkstyle-${toVersion}-all.jar"
+		     tofile="${basedir}/net.sf.eclipsecs.core/lib/checkstyle-${toVersion}-all.jar"/>
+	</target>
+
+</project>
