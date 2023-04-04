@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-echo "Make sure you prepared your PC for automative deployment"
+echo "Make sure you prepared your PC for automated deployment"
 echo "Release process: https://github.com/checkstyle/eclipse-cs/wiki/How-to-release"
 
 RELEASE=$1
@@ -27,7 +27,7 @@ if [[ -z $FUTURE_RELEASE ]]; then
   exit 1
 fi
 if [[ ! -f $TOKEN_FILE ]]; then
-  echo "Problem to calculate future release version."
+  echo "Missing token."
   exit 1
 fi
 
