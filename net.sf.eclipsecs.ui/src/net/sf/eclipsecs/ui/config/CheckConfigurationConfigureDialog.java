@@ -657,39 +657,46 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
      *
      * @param selection
      *          the selection
+     * @return whether configuration was successful
      */
-    private void newModule(ISelection selection) {
-      if (mConfigurable) {
-        boolean openOnAdd = CheckstyleUIPluginPrefs
-                .getBoolean(CheckstyleUIPluginPrefs.PREF_OPEN_MODULE_EDITOR);
+    private boolean newModule(ISelection selection) {
+      if (!mConfigurable) {
+        return true;
+      }
+      boolean openOnAdd = CheckstyleUIPluginPrefs
+              .getBoolean(CheckstyleUIPluginPrefs.PREF_OPEN_MODULE_EDITOR);
 
-        Iterator<?> iter = ((IStructuredSelection) selection).iterator();
-        while (iter.hasNext()) {
-          Object selectedElement = iter.next();
-          if (selectedElement instanceof RuleGroupMetadata) {
-            // if group is selected add all modules from this group
-            List<RuleMetadata> rules = ((RuleGroupMetadata) selectedElement).getRuleMetadata();
+      Iterator<?> iter = ((IStructuredSelection) selection).iterator();
+      while (iter.hasNext()) {
+        Object selectedElement = iter.next();
+        if (selectedElement instanceof RuleGroupMetadata) {
+          // if group is selected add all modules from this group
+          List<RuleMetadata> rules = ((RuleGroupMetadata) selectedElement).getRuleMetadata();
 
-            IStructuredSelection allRulesOfGroupSelection = new StructuredSelection(rules);
-            newModule(allRulesOfGroupSelection);
-          } else if (selectedElement instanceof RuleMetadata) {
+          IStructuredSelection allRulesOfGroupSelection = new StructuredSelection(rules);
+          if (!newModule(allRulesOfGroupSelection)) {
+            return false;
+          }
+        } else if (selectedElement instanceof RuleMetadata) {
 
-            RuleMetadata metadata = (RuleMetadata) selectedElement;
+          RuleMetadata metadata = (RuleMetadata) selectedElement;
 
-            // check if the module is a singleton and already
-            // configured
-            if (metadata.isSingleton() && isAlreadyConfigured(metadata)) {
-              return;
-            }
+          // check if the module is a singleton and already
+          // configured
+          if (metadata.isSingleton() && isAlreadyConfigured(metadata)) {
+            return true;
+          }
 
-            Module workingCopy = new Module(metadata, false);
+          Module workingCopy = new Module(metadata, false);
 
-            if (openOnAdd) {
+          if (openOnAdd) {
 
-              RuleConfigurationEditDialog dialog = new RuleConfigurationEditDialog(getShell(),
-                      workingCopy, !mConfigurable,
-                      Messages.CheckConfigurationConfigureDialog_titleNewModule);
-              if (mConfigurable && Window.OK == dialog.open()) {
+            RuleConfigurationEditDialog dialog = new RuleConfigurationEditDialog(getShell(),
+                    workingCopy, !mConfigurable,
+                    Messages.CheckConfigurationConfigureDialog_titleNewModule);
+            if (mConfigurable) {
+              int dialogResult = dialog.open();
+              if (Window.OK == dialogResult) {
                 mModules.add(workingCopy);
                 mIsDirty = true;
                 mTableViewer.refresh(true);
@@ -697,17 +704,21 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
                 mTreeViewer.refresh();
                 mTreeViewer.getTree().forceFocus();
               }
-            } else {
-              mModules.add(workingCopy);
-              mIsDirty = true;
-              mTableViewer.refresh(true);
-              refreshTableViewerState();
-              mTreeViewer.refresh();
+              if (Window.CANCEL == dialogResult) {
+                // stop showing more dialogs and also don't add any further rules
+                return false;
+              }
             }
+          } else {
+            mModules.add(workingCopy);
+            mIsDirty = true;
+            mTableViewer.refresh(true);
+            refreshTableViewerState();
+            mTreeViewer.refresh();
           }
         }
       }
-
+      return true;
     }
 
     /**
