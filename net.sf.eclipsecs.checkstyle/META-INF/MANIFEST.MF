@@ -7,10 +7,6 @@ Bundle-Vendor: Eclipse Checkstyle Project
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: .,
- com.google.common.base;version="10.5.0",
- com.google.common.cache;version="10.5.0",
- com.google.common.collect;version="10.5.0",
- com.google.common.io;version="10.5.0",
  com.puppycrawl.tools.checkstyle,
  com.puppycrawl.tools.checkstyle.api;
   uses:="org.xml.sax.helpers,
@@ -35,8 +31,7 @@ Export-Package: .,
  com.puppycrawl.tools.checkstyle.checks.whitespace,
  com.puppycrawl.tools.checkstyle.filefilters,
  com.puppycrawl.tools.checkstyle.filters,
- com.puppycrawl.tools.checkstyle.utils,
- org.apache.commons.beanutils;version="10.5.0"
+ com.puppycrawl.tools.checkstyle.utils
 Bundle-ClassPath: .,
  checkstyle-10.5.0-all.jar
 Automatic-Module-Name: net.sf.eclipsecs.checkstyle

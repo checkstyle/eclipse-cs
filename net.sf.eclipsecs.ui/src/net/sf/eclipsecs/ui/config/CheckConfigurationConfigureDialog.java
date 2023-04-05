@@ -20,8 +20,6 @@
 
 package net.sf.eclipsecs.ui.config;
 
-import com.google.common.base.Strings;
-
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,6 +44,7 @@ import net.sf.eclipsecs.ui.util.table.EnhancedCheckBoxTableViewer;
 import net.sf.eclipsecs.ui.util.table.ITableComparableProvider;
 import net.sf.eclipsecs.ui.util.table.ITableSettingsProvider;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -537,7 +536,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
     public void modifyText(ModifyEvent e) {
       mTreeViewer.getControl().setRedraw(false);
       try {
-        if (!Strings.isNullOrEmpty(mTxtTreeFilter.getText())) {
+        if (StringUtils.isNotBlank(mTxtTreeFilter.getText())) {
 
           if (!Arrays.asList(mTableViewer.getFilters()).contains(mTreeFilter)) {
             mTreeViewer.addFilter(mTreeFilter);
