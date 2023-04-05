@@ -20,8 +20,6 @@
 
 package net.sf.eclipsecs.ui.config;
 
-import com.google.common.base.Strings;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -38,6 +36,7 @@ import net.sf.eclipsecs.ui.util.table.EnhancedTableViewer;
 import net.sf.eclipsecs.ui.util.table.ITableComparableProvider;
 import net.sf.eclipsecs.ui.util.table.ITableSettingsProvider;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
@@ -265,7 +264,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
     // OK'ing
     for (ResolvableProperty prop : mResolvableProperties) {
 
-      if (Strings.emptyToNull(prop.getValue()) == null) {
+      if (StringUtils.isBlank(prop.getValue())) {
         this.setErrorMessage(NLS.bind(Messages.ResolvablePropertiesDialog_msgMissingPropertyValue,
                 prop.getPropertyName()));
         return;

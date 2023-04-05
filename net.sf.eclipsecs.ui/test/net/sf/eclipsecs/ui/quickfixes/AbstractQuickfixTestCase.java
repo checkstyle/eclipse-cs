@@ -1,7 +1,5 @@
 package net.sf.eclipsecs.ui.quickfixes;
 
-import com.google.common.base.Strings;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -11,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.AST;
@@ -96,7 +95,7 @@ public abstract class AbstractQuickfixTestCase {
       int line = Integer.parseInt(input.getAttribute("fix-line"));
 
       int position = 0;
-      if (!Strings.isNullOrEmpty(input.getAttribute("position"))) {
+      if (StringUtils.isNotBlank(input.getAttribute("position"))) {
         position = Integer.parseInt(input.getAttribute("position"));
       }
 

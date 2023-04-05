@@ -20,8 +20,6 @@
 
 package net.sf.eclipsecs.ui.config.configtypes;
 
-import com.google.common.base.Strings;
-
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -35,6 +33,7 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
 import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.config.CheckConfigurationPropertiesDialog;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -209,7 +208,7 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
     } catch (CheckstylePluginException ex) {
       String location = mLocation.getText();
 
-      if (Strings.emptyToNull(location) != null && ensureFileExists(location)) {
+      if (StringUtils.isNotBlank(location) && ensureFileExists(location)) {
         mWorkingCopy.setLocation(mLocation.getText());
       } else {
         throw ex;

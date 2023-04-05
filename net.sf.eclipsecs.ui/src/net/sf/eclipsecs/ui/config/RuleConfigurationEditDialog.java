@@ -20,8 +20,6 @@
 
 package net.sf.eclipsecs.ui.config;
 
-import com.google.common.base.Strings;
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -43,6 +41,7 @@ import net.sf.eclipsecs.ui.config.widgets.ConfigPropertyWidgetFactory;
 import net.sf.eclipsecs.ui.config.widgets.IConfigPropertyWidget;
 import net.sf.eclipsecs.ui.util.SWTUtil;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
@@ -226,7 +225,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
       }
 
       String message = mRule.getCustomMessages().get(msgKey);
-      if (Strings.emptyToNull(message) != null) {
+      if (StringUtils.isNotBlank(message)) {
         msgText.setText(message);
       }
       msgText.setEnabled(!mReadonly);
@@ -405,10 +404,10 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
     }
 
     // Get the comment.
-    final  String comment = Strings.emptyToNull(mCommentText.getText());
+    final  String comment = StringUtils.trimToNull(mCommentText.getText());
 
     // Get the id
-    final String id = Strings.emptyToNull(mIdText.getText());
+    final String id = StringUtils.trimToNull(mIdText.getText());
 
     // Get the custom message
     for (Map.Entry<String, Text> entry : mCustomMessages.entrySet()) {
@@ -421,7 +420,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
         standardMessage = ""; //$NON-NLS-1$
       }
 
-      String message = Strings.emptyToNull(entry.getValue().getText());
+      String message = StringUtils.trimToNull(entry.getValue().getText());
       if (message != null && !message.equals(standardMessage)) {
         mRule.getCustomMessages().put(msgKey, message);
       } else {

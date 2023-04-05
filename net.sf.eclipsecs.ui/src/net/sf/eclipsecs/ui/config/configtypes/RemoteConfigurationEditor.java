@@ -23,8 +23,6 @@ package net.sf.eclipsecs.ui.config.configtypes;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import com.google.common.base.Strings;
-
 import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
 import net.sf.eclipsecs.core.config.configtypes.RemoteConfigurationType;
 import net.sf.eclipsecs.core.config.configtypes.RemoteConfigurationType.RemoteConfigAuthenticator;
@@ -33,6 +31,7 @@ import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
 import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.config.CheckConfigurationPropertiesDialog;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -217,8 +216,8 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
 
     // store credentials if necessary
     try {
-      if (Strings.emptyToNull(mUserName.getText()) != null
-              || Strings.emptyToNull(mPassword.getText()) != null) {
+      if (StringUtils.isNotBlank(mUserName.getText())
+              || StringUtils.isNotBlank(mPassword.getText())) {
         RemoteConfigurationType.RemoteConfigAuthenticator.storeCredentials(
                 new URL(mLocation.getText()), mUserName.getText(), mPassword.getText());
       } else {

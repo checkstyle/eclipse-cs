@@ -20,8 +20,6 @@
 
 package net.sf.eclipsecs.ui.config.configtypes;
 
-import com.google.common.base.Strings;
-
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -38,6 +36,7 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
 import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.config.CheckConfigurationPropertiesDialog;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -247,7 +246,7 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
     } catch (CheckstylePluginException ex) {
       String location = mLocation.getText();
 
-      if (Strings.emptyToNull(location) == null) {
+      if (StringUtils.isBlank(location)) {
         throw ex;
       }
 

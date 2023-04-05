@@ -20,13 +20,12 @@
 
 package net.sf.eclipsecs.ui.config;
 
-import com.google.common.base.Strings;
-
 import net.sf.eclipsecs.core.config.ResolvableProperty;
 import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
 import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.util.SWTUtil;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jface.contentassist.SubjectControlContentAssistant;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.text.DefaultInformationControl;
@@ -110,11 +109,11 @@ public class ResolvablePropertyEditDialog extends TitleAreaDialog {
   @Override
   protected void okPressed() {
 
-    if (Strings.emptyToNull(mTxtName.getText()) == null) {
+    if (StringUtils.isBlank(mTxtName.getText())) {
       this.setErrorMessage(Messages.ResolvablePropertyEditDialog_msgMissingName);
       return;
     }
-    if (Strings.emptyToNull(mTxtValue.getText()) == null) {
+    if (StringUtils.isBlank(mTxtValue.getText())) {
       this.setErrorMessage(Messages.ResolvablePropertyEditDialog_msgMissingValue);
       return;
     }
