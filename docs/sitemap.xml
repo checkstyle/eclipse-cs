@@ -4,85 +4,88 @@
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
   <!--
     The sitemap is used by the search indexers (google etc) to discover subpages
-    and check whether they have changed and need reindexing.
-    Since the eclipse-cs website are not static webpages but dynamically rendered in the browser
-    the indexers need a bit of help.
-    So effectively if you remove timestamps or keep them static,
-    indexers would think content hasn't changed.
+    and check whether they have changed and need reindexing. The indexers need a
+    bit of help because the eclipse-cs website doesn't contain static webpages,
+    but is dynamically rendered in the browser instead.
+    So effectively if you remove timestamps or keep them static, indexers would
+    think content hasn't changed.
+
+    The doctimestamp variable is replaced during maven resource-copy in the docs
+    project, and takes the last git timestamp of any change in the docs project.
   -->
   <url>
     <loc>https://checkstyle.org/eclipse-cs/</loc>
-    <lastmod>2023-04-08T00:49:40Z</lastmod>
+    <lastmod>2023-04-08</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://checkstyle.org/eclipse-cs/#!/releasenotes</loc>
-    <lastmod>2023-04-08T00:49:40Z</lastmod>
+    <lastmod>2023-04-08</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://checkstyle.org/eclipse-cs/#!/install</loc>
-    <lastmod>2023-04-08T00:49:40Z</lastmod>
+    <lastmod>2023-04-08</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://checkstyle.org/eclipse-cs/#!/project-setup</loc>
-    <lastmod>2023-04-08T00:49:40Z</lastmod>
+    <lastmod>2023-04-08</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://checkstyle.org/eclipse-cs/#!/custom-config</loc>
-    <lastmod>2023-04-08T00:49:40Z</lastmod>
+    <lastmod>2023-04-08</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://checkstyle.org/eclipse-cs/#!/filters</loc>
-    <lastmod>2023-04-08T00:49:40Z</lastmod>
+    <lastmod>2023-04-08</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://checkstyle.org/eclipse-cs/#!/configtypes</loc>
-    <lastmod>2023-04-08T00:49:40Z</lastmod>
+    <lastmod>2023-04-08</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://checkstyle.org/eclipse-cs/#!/properties</loc>
-    <lastmod>2023-04-08T00:49:40Z</lastmod>
+    <lastmod>2023-04-08</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://checkstyle.org/eclipse-cs/#!/filesets</loc>
-    <lastmod>2023-04-08T00:49:40Z</lastmod>
+    <lastmod>2023-04-08</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://checkstyle.org/eclipse-cs/#!/preferences</loc>
-    <lastmod>2023-04-08T00:49:40Z</lastmod>
+    <lastmod>2023-04-08</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://checkstyle.org/eclipse-cs/#!/extensions</loc>
-    <lastmod>2023-04-08T00:49:40Z</lastmod>
+    <lastmod>2023-04-08</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://checkstyle.org/eclipse-cs/#!/custom-checks</loc>
-    <lastmod>2023-04-08T00:49:40Z</lastmod>
+    <lastmod>2023-04-08</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://checkstyle.org/eclipse-cs/#!/builtin-config</loc>
-    <lastmod>2023-04-08T00:49:40Z</lastmod>
+    <lastmod>2023-04-08</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://checkstyle.org/eclipse-cs/#!/custom-filters</loc>
-    <lastmod>2023-04-08T00:49:40Z</lastmod>
+    <lastmod>2023-04-08</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://checkstyle.org/eclipse-cs/#!/faq</loc>
-    <lastmod>2023-04-08T00:49:40Z</lastmod>
+    <lastmod>2023-04-08</lastmod>
     <changefreq>weekly</changefreq>
   </url>
 </urlset>

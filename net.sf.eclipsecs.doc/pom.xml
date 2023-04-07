@@ -9,11 +9,31 @@
     <artifactId>net.sf.eclipsecs.doc</artifactId>
     <packaging>eclipse-plugin</packaging>
     <name>eclipse-cs Documentation Plugin</name>
-    <properties>
-        <timestamp>${maven.build.timestamp}</timestamp>
-    </properties>
     <build>
         <plugins>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>calculate-website-timestamp</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <exec outputproperty="doctimestamp" executable="git">
+                                    <arg value="log"/>
+                                    <arg value="-1"/>
+                                    <arg value="--pretty=format:%cs"/>
+                                    <arg value="."/>
+                                </exec>
+                            </target>
+                            <exportAntProperties>true</exportAntProperties>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <artifactId>maven-clean-plugin</artifactId>
                 <version>3.2.0</version>
@@ -60,7 +80,7 @@
                                 </resource>
                                 <resource>
                                     <directory>src/main/resources</directory>
-                                    <!-- Copy all the rest except update site files (see above) -->
+                                    <!-- Copy remaining except update site files (see above) -->
                                     <includes>
                                         <include>**/*</include>
                                     </includes>
