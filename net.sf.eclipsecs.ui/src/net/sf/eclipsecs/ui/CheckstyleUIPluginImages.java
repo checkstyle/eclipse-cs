@@ -24,6 +24,8 @@ import java.util.function.Supplier;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ResourceLocator;
+import org.eclipse.jface.viewers.DecorationOverlayIcon;
+import org.eclipse.jface.viewers.IDecoration;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
@@ -78,18 +80,19 @@ public enum CheckstyleUIPluginImages {
   EXPORT_REPORT_ICON(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
           "icons/exportReport.gif")),
 
+  CHECKED_OVERLAY(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
+          "icons/ovr/checked.png")),
+  /** Image descriptor for the ticked module group icon. */
   /** Image descriptor for the module group icon. */
   MODULEGROUP_ICON(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
           "icons/modulegroup.gif")),
   /** Image descriptor for the ticked module group icon. */
-  MODULEGROUP_TICKED_ICON(() -> AbstractUIPlugin
-          .imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID, "icons/modulegroup_used.gif")),
+  MODULEGROUP_TICKED_ICON(() -> new DecorationOverlayIcon(MODULEGROUP_ICON.getImageDescriptor(), CHECKED_OVERLAY.getImageDescriptor(), IDecoration.TOP_LEFT)),
   /** Image descriptor for the module icon. */
   MODULE_ICON(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
           "icons/module.gif")),
   /** Image descriptor for the ticked module icon. */
-  MODULE_TICKED_ICON(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
-          "icons/module_used.gif")),
+  MODULE_TICKED_ICON(() -> new DecorationOverlayIcon(MODULE_ICON.getImageDescriptor(), CHECKED_OVERLAY.getImageDescriptor(), IDecoration.TOP_LEFT)),
   /** Image descriptor for the refresh icon. */
   REFRESH_ICON(() -> ResourceLocator.imageDescriptorFromBundle("org.eclipse.search",
           "platform:/plugin/org.eclipse.search/icons/full/elcl16/refresh.png")
