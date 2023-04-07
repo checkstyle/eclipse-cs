@@ -20,23 +20,14 @@
 
 package net.sf.eclipsecs.ui.preferences;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Collection;
-import net.sf.eclipsecs.core.CheckstylePluginPrefs;
-import net.sf.eclipsecs.core.builder.CheckerFactory;
-import net.sf.eclipsecs.core.builder.CheckstyleBuilder;
-import net.sf.eclipsecs.core.config.CheckConfigurationFactory;
-import net.sf.eclipsecs.core.config.ICheckConfigurationWorkingSet;
-import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
-import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
-import net.sf.eclipsecs.ui.CheckstyleUIPluginPrefs;
-import net.sf.eclipsecs.ui.Messages;
-import net.sf.eclipsecs.ui.config.CheckConfigurationWorkingSetEditor;
-import net.sf.eclipsecs.ui.util.SWTUtil;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialogWithToggle;
+import org.eclipse.jface.layout.RowLayoutFactory;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
@@ -51,14 +42,33 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.browser.IWebBrowser;
 import org.osgi.service.prefs.BackingStoreException;
 
 import com.puppycrawl.tools.checkstyle.Main;
+
+import net.sf.eclipsecs.core.CheckstylePluginPrefs;
+import net.sf.eclipsecs.core.builder.CheckerFactory;
+import net.sf.eclipsecs.core.builder.CheckstyleBuilder;
+import net.sf.eclipsecs.core.config.CheckConfigurationFactory;
+import net.sf.eclipsecs.core.config.ICheckConfigurationWorkingSet;
+import net.sf.eclipsecs.core.util.CheckstyleLog;
+import net.sf.eclipsecs.core.util.CheckstylePluginException;
+import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
+import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
+import net.sf.eclipsecs.ui.CheckstyleUIPluginPrefs;
+import net.sf.eclipsecs.ui.Messages;
+import net.sf.eclipsecs.ui.config.CheckConfigurationWorkingSetEditor;
+import net.sf.eclipsecs.ui.util.SWTUtil;
 
 /**
  * This class represents a preference page that is contributed to the Preferences dialog. By
@@ -104,30 +114,26 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
    * Constructor.
    */
   public CheckstylePreferencePage() {
-    setDescription(NLS.bind(Messages.CheckstylePreferencePage_version, getCheckstyleVersion()));
     setPreferenceStore(CheckstyleUIPlugin.getDefault().getPreferenceStore());
 
     mWorkingSet = CheckConfigurationFactory.newWorkingSet();
-    initializeDefaults();
+    noDefaultAndApplyButton();
   }
 
   private String getCheckstyleVersion() {
     return Main.class.getPackage().getImplementationVersion();
   }
 
-  /**
-   * Sets the default values of the preferences.
-   */
-  private static void initializeDefaults() {
-  }
-
   @Override
   public Control createContents(Composite ancestor) {
-
-    noDefaultAndApplyButton();
+    // the description with hyperlinks at the top
+    Composite oneRowComposite = new Composite(ancestor, SWT.NULL);
+    var oneRowLayout = RowLayoutFactory.fillDefaults().extendedMargins(0, 0, 0, 5).type(SWT.VERTICAL).create();
+    oneRowComposite.setLayout(oneRowLayout);
+    createTitleWithLink(oneRowComposite);
 
     //
-    // Build the top level composite with one colume.
+    // Build the top level composite with one column.
     //
     Composite parentComposite = new Composite(ancestor, SWT.NULL);
     FormLayout layout = new FormLayout();
@@ -155,6 +161,27 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
     configComposite.setLayoutData(formData);
 
     return parentComposite;
+  }
+
+  private void createTitleWithLink(Composite parent) {
+    Link link = new Link(parent, SWT.NONE);
+    var text = NLS.bind(Messages.CheckstylePreferencePage_version, "<a>" + getCheckstyleVersion() + "</a>");
+    text = text.replace("Checkstyle", "<a>Checkstyle</a>");
+    link.setText(text);
+    link.addListener(SWT.Selection, this::linkClicked);
+  }
+
+  private void linkClicked(Event event) {
+    String url = "https://checkstyle.org";
+    if (Character.isDigit(event.text.charAt(0))) {
+      url = url + "/releasenotes.html#Release_" + getCheckstyleVersion();
+    }
+    try {
+      final IWebBrowser browser = PlatformUI.getWorkbench().getBrowserSupport().createBrowser(null);
+      browser.openURL(new URL(url));
+    } catch (PartInitException | MalformedURLException ex) {
+      CheckstyleLog.log(ex);
+    }
   }
 
   /**
