@@ -67,13 +67,6 @@ sed -i "/\[/r /tmp/add-to-release.json" net.sf.eclipsecs.doc/src/main/resources/
 echo "Build and Deploy binaries"
 mvn deploy -P release-composite
 
-echo "update the website content in project root 'docs' folder"
-echo "FYI: Github is setup to show content of master:HEAD '/doc' folder"
-echo "further commit/push will publish website changes"
-cd net.sf.eclipsecs.doc
-mvn clean package
-cd -
-
 echo "Commit/Push local changes to Git master branch"
 git add .
 git commit -m "config: release ${RELEASE}"
