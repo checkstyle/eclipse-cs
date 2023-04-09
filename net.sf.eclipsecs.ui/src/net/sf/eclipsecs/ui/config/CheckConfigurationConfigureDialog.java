@@ -39,6 +39,7 @@ import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
 import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
 import net.sf.eclipsecs.ui.CheckstyleUIPluginPrefs;
 import net.sf.eclipsecs.ui.Messages;
+import net.sf.eclipsecs.ui.util.InternalBrowser;
 import net.sf.eclipsecs.ui.util.SWTUtil;
 import net.sf.eclipsecs.ui.util.table.EnhancedCheckBoxTableViewer;
 import net.sf.eclipsecs.ui.util.table.ITableComparableProvider;
@@ -73,6 +74,8 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
+import org.eclipse.swt.browser.LocationAdapter;
+import org.eclipse.swt.browser.LocationEvent;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
@@ -213,6 +216,17 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
     gridData = new GridData(GridData.FILL_BOTH);
     gridData.heightHint = 100;
     mBrowserDescription.setLayoutData(gridData);
+    mBrowserDescription.addLocationListener(new LocationAdapter() {
+      @Override
+      public void changing(LocationEvent event) {
+        String url = event.location;
+        if (url == null || !url.startsWith("http")) {
+          return;
+        }
+        InternalBrowser.openLinkInExternalBrowser(url);
+        event.doit = false;
+      }
+    });
 
     // initialize the data
     initialize();

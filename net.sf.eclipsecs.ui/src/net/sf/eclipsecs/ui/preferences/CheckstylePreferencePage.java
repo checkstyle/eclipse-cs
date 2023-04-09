@@ -20,8 +20,6 @@
 
 package net.sf.eclipsecs.ui.preferences;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Collection;
 
 import org.eclipse.core.resources.IProject;
@@ -49,9 +47,6 @@ import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.browser.IWebBrowser;
 import org.osgi.service.prefs.BackingStoreException;
 
 import com.puppycrawl.tools.checkstyle.Main;
@@ -61,13 +56,13 @@ import net.sf.eclipsecs.core.builder.CheckerFactory;
 import net.sf.eclipsecs.core.builder.CheckstyleBuilder;
 import net.sf.eclipsecs.core.config.CheckConfigurationFactory;
 import net.sf.eclipsecs.core.config.ICheckConfigurationWorkingSet;
-import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
 import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
 import net.sf.eclipsecs.ui.CheckstyleUIPluginPrefs;
 import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.config.CheckConfigurationWorkingSetEditor;
+import net.sf.eclipsecs.ui.util.InternalBrowser;
 import net.sf.eclipsecs.ui.util.SWTUtil;
 
 /**
@@ -176,12 +171,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
     if (Character.isDigit(event.text.charAt(0))) {
       url = url + "/releasenotes.html#Release_" + getCheckstyleVersion();
     }
-    try {
-      final IWebBrowser browser = PlatformUI.getWorkbench().getBrowserSupport().createBrowser(null);
-      browser.openURL(new URL(url));
-    } catch (PartInitException | MalformedURLException ex) {
-      CheckstyleLog.log(ex);
-    }
+    InternalBrowser.openLinkInExternalBrowser(url);
   }
 
   /**
