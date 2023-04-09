@@ -176,8 +176,6 @@ public final class Messages extends NLS {
 
   public static String CheckstylePreferencePage_lblLocaleLanguage;
 
-  public static String CheckstylePreferencePage_lblLocaleLanguages;
-
   public static String CheckstylePreferencePage_version;
 
   public static String CheckstylePropertyPage_btnActivateCheckstyle;
