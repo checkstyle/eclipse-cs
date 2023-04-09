@@ -3,9 +3,11 @@
 Instructions for upgrading a checkstyle version
 ===============================================
 
+* Uncheck Project > Build Automatically
 * change the "fromVersion" and "toVersion" properties in this file.
 * Select the *.launch file next to this script and run it via context menu > Run As.
 * The script replaces all version numbers, deletes outdated files, and downloads the release jar.
+* Check Project > Build Automatically
 * Use Project > Clean with all projects to trigger a full rebuild.
 
 There should be no errors or warnings in the problems view afterwards.
@@ -16,8 +18,8 @@ Apply all necessary manual code changes now.
 	<description>upgrade all version numbers</description>
 
 	<target name="upgrade-version" description="upgrade version numbers and dependent files">
-		<property name="fromVersion" value="10.5.0"/>
-		<property name="toVersion" value="10.6.0"/>
+		<property name="fromVersion" value="10.6.0"/>
+		<property name="toVersion" value="10.7.0"/>
 
 		<!-- delete all outdated files, independent of their current version -->
 		<delete>
