@@ -104,6 +104,8 @@ import org.osgi.service.prefs.BackingStoreException;
  */
 public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
 
+  private static final Pattern PATTERN_INLINE_CODE = Pattern.compile(Pattern.quote("{@code ") + "([^}]*?)" + Pattern.quote("}"));
+
   /** The current check configuration. */
   private final CheckConfigurationWorkingCopy mConfiguration;
 
@@ -483,10 +485,14 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
     StringBuilder buf = new StringBuilder();
     buf.append("<html><body style=\"margin: 3px; font-size: 11px; ");
     buf.append("font-family: verdana, 'trebuchet MS', helvetica, sans-serif;\">");
-    buf.append(description != null ? description
+    buf.append(description != null ? convertInlineCodeTags(description)
             : Messages.CheckConfigurationConfigureDialog_txtNoDescription);
     buf.append("</body></html>");
     return buf.toString();
+  }
+
+  private static String convertInlineCodeTags(String html) {
+    return PATTERN_INLINE_CODE.matcher(html).replaceAll("<code>$1</code>");
   }
 
   /**
