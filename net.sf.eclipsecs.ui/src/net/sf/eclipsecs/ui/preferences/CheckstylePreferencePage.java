@@ -20,7 +20,12 @@
 
 package net.sf.eclipsecs.ui.preferences;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -78,6 +83,15 @@ import net.sf.eclipsecs.ui.util.SWTUtil;
  * </p>
  */
 public class CheckstylePreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
+
+  private static final String DEFAULT_LANGUAGE = "default";
+
+  private static final List<String> SUPPORTED_LANGUAGES = Stream.concat(
+          Stream.of(DEFAULT_LANGUAGE),
+          Arrays.stream("de,en,es,fi,fr,ja,pt,tr,zh"
+          .split(","))
+          .sorted())
+          .collect(Collectors.toList());
 
   private final PageController mController = new PageController();
 
@@ -201,9 +215,15 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
     final Label lblLanguage = new Label(langComposite, SWT.NULL);
     lblLanguage.setText(Messages.CheckstylePreferencePage_lblLocaleLanguage);
     mLanguageIf = new Combo(langComposite, SWT.READ_ONLY);
-    mLanguageIf.setItems(Messages.CheckstylePreferencePage_lblLocaleLanguages.split("[, ;]+"));
+    mLanguageIf.setItems(SUPPORTED_LANGUAGES.stream().map(code -> {
+      if (code == DEFAULT_LANGUAGE) {
+        return code;
+      }
+      var loc = Locale.forLanguageTag(code);
+      return code + " - " + loc.getDisplayLanguage(loc);
+    }).toArray(String[]::new));
     final String lang = CheckstylePluginPrefs.getString(CheckstylePluginPrefs.PREF_LOCALE_LANGUAGE);
-    final int selectedLang = mLanguageIf.indexOf(lang == null || lang.isEmpty() ? "default" : lang);
+    final int selectedLang = SUPPORTED_LANGUAGES.indexOf(lang == null || lang.isEmpty() ? DEFAULT_LANGUAGE : lang);
     if (selectedLang != -1) {
       mLanguageIf.select(selectedLang);
     }
@@ -376,7 +396,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
       mWorkingSet.store();
 
       CheckstylePluginPrefs.setString(CheckstylePluginPrefs.PREF_LOCALE_LANGUAGE,
-              mLanguageIf.getItem(mLanguageIf.getSelectionIndex()));
+              SUPPORTED_LANGUAGES.get(mLanguageIf.getSelectionIndex()));
 
       //
       // Save the general preferences.
