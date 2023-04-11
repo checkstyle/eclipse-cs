@@ -110,6 +110,7 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor {
     mConfigName = new Text(contents, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
     gridData = new GridData(GridData.FILL_HORIZONTAL);
     mConfigName.setLayoutData(gridData);
+    mConfigName.setFocus();
 
     Label lblConfigLocation = new Label(contents, SWT.NULL);
     lblConfigLocation.setText(Messages.CheckConfigurationPropertiesDialog_lblLocation);
