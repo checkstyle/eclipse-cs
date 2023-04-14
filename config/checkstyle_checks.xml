@@ -159,6 +159,12 @@
                  value="All files in the ''src/it/java'' folder
                       should be named ''*Test.java'' or ''Abstract*.java''."/>
     </module>
+    <module name="RegexpSingleline">
+        <property name="id" value="oldFsfAddress"/>
+        <property name="format" value="\Q59 Temple Place\E"/>
+        <property name="message"
+                  value="The address of the FSF in licenses shall be ''51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA''."/>
+    </module>
 
     <!-- Size Violations -->
     <module name="FileLength">
