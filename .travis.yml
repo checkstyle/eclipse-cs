@@ -30,13 +30,13 @@ jobs:
     - jdk: openjdk11
       env:
         - DESC="install (openjdk11)"
-        - CMD="mvn --errors --no-transfer-progress install"
+        - CMD="./mvnw --errors --no-transfer-progress install"
 
     # JDK 17 (most recent Java LTS version)
     - jdk: openjdk17
       env:
         - DESC="install (openjdk17)"
-        - CMD="mvn --errors --no-transfer-progress install"
+        - CMD="./mvnw --errors --no-transfer-progress install"
 
 script:
   - ./.ci/travis.sh init-m2-repo

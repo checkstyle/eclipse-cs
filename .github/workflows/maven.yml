@@ -28,7 +28,7 @@ jobs:
         java-version: 11
 
     - name: Build with Maven
-      run: mvn --errors --no-transfer-progress install
+      run: ./mvnw --errors --no-transfer-progress install
 
     - name: Difference Check
       run: ./.ci/validation.sh git-diff

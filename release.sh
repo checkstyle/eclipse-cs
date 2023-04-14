@@ -32,7 +32,7 @@ if [[ ! -f $TOKEN_FILE ]]; then
 fi
 
 echo "Update the plugin/project versions to the new target version."
-mvn tycho-versions:set-version -DnewVersion="${RELEASE}-SNAPSHOT"
+./mvnw tycho-versions:set-version -DnewVersion="${RELEASE}-SNAPSHOT"
 
 echo "Update net.sf.eclipsecs.doc/src/main/resources/partials/index.html"
 echo " to reflect new release version and potentially the upgraded Checkstyle core version"
@@ -65,7 +65,7 @@ EOT
 sed -i "/\[/r /tmp/add-to-release.json" net.sf.eclipsecs.doc/src/main/resources/releases.json
 
 echo "Build and Deploy binaries"
-mvn deploy -P release-composite
+./mvnw deploy -P release-composite
 
 echo "Commit/Push local changes to Git master branch"
 git add .
