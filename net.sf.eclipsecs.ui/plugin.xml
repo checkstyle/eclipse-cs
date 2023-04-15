@@ -5,19 +5,19 @@
     <!-- defines the extension point to contribute custom quickfixes. -->
     <extension-point
         id="checkstyleQuickfixProvider"
-        name="Checkstyle Quickfix provider"
+        name="%extension-point.quickfix-provider.name"
         schema="schema/checkstyleQuickfixProvider.exsd"/>
 
     <!-- defines the extension point to contribute custom filter editors for plugin filters -->
     <extension-point
         id="filtereditors"
-        name="Checkstyle filter editors"
+        name="%extension-point.filter-editor.name"
         schema="schema/filtereditors.exsd"/>
 
     <!-- defines the extension point to contribute the ui part of check configuration types -->
     <extension-point
         id="configtypesui"
-        name="Checkstyle configuration type editors"
+        name="%extension-point.config-types-ui.name"
         schema="schema/configtypesui.exsd"/>
 
     <!-- Filter editors for filters allowing user input -->
@@ -160,7 +160,7 @@
             annotationType="net.sf.eclipsecs.error"
             annotationImageProvider="net.sf.eclipsecs.ui.CheckstyleMarkerImageProvider"
             presentationLayer="5"
-            label="Checkstyle error"
+            label="%annotation.error.label"
             verticalRulerPreferenceKey="net.sf.eclipsecs.error.verticalruler"
             verticalRulerPreferenceValue="true"
             overviewRulerPreferenceKey="net.sf.eclipsecs.error.overviewruler"
@@ -184,7 +184,7 @@
             annotationType="net.sf.eclipsecs.warning"
             annotationImageProvider="net.sf.eclipsecs.ui.CheckstyleMarkerImageProvider"
             presentationLayer="4"
-            label="Checkstyle warning"
+            label="%annotation.warning.label"
             verticalRulerPreferenceKey="net.sf.eclipsecs.warning.verticalruler"
             verticalRulerPreferenceValue="true"
             overviewRulerPreferenceKey="net.sf.eclipsecs.warning.overviewruler"
@@ -208,7 +208,7 @@
             annotationType="net.sf.eclipsecs.info"
             annotationImageProvider="net.sf.eclipsecs.ui.CheckstyleMarkerImageProvider"
             presentationLayer="3"
-            label="Checkstyle info"
+            label="%annotation.info.label"
             verticalRulerPreferenceKey="net.sf.eclipsecs.info.verticalruler"
             verticalRulerPreferenceValue="true"
             overviewRulerPreferenceKey="net.sf.eclipsecs.info.overviewruler"
@@ -233,7 +233,7 @@
     <extension
         point="org.eclipse.ui.views">
         <category
-            name="Checkstyle"
+            name="%views.category.name"
             id="net.sf.eclipsecs.category"/>
         <view
             name="%MarkerStatsView.name"
@@ -309,7 +309,7 @@
     </extension>
     <extension
         point="org.eclipse.ui.commands">
-        <category id="net.sf.eclipsecs.ui" name="Checkstyle"/>
+        <category id="net.sf.eclipsecs.ui" name="%commands.category.name"/>
         <command
             categoryId="org.eclipse.jdt.ui.category.source"
             description="%FixCheckstyleMarkersAction.tooltip"
@@ -412,7 +412,7 @@
                 class="net.sf.eclipsecs.ui.actions.CheckstyleTransformingAction"
                 enablesFor="+"
                 menubarPath="Checkstyle.menu/ondemand"
-                tooltip="%CheckstyleTransformingTooltip.tooltip"
+                tooltip="%CheckstyleTransformingAction.tooltip"
                 id="net.sf.eclipsecs.actions.CheckstyleTransformingAction"/>
         </objectContribution>
 
@@ -462,12 +462,12 @@
                   tooltip="%CheckSelectedFilesAction.tooltip"/>
         </objectContribution>
     </extension>
-    
+
     <extension
           point="org.eclipse.ui.actionSets" >
           <actionSet
-                id="net.sf.eclipsecs.ui.actionSet" visible="false" label="Checkstyle">
-                <action 
+                id="net.sf.eclipsecs.ui.actionSet" visible="false" label="%actionSet.label">
+                <action
                     id="net.sf.eclipsecs.action.purgecaches"
                     class="net.sf.eclipsecs.ui.actions.PurgeCachesAction"
                     toolbarPath="Normal/ZCheckstyle"

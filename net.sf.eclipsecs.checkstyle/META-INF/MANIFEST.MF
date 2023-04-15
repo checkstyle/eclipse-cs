@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Checkstyle Library
+Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: net.sf.eclipsecs.checkstyle
 Bundle-Version: 10.6.0.qualifier
-Bundle-Vendor: Eclipse Checkstyle Project
+Bundle-Vendor: %Bundle-Vendor
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: .,

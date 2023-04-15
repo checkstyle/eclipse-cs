@@ -6,37 +6,37 @@
     <extension
           point="net.sf.eclipsecs.core.checkstyleAddonProvider">
     </extension>
-    
+
     <!-- This plugin provides custom quickfixes for Checkstyle problems. -->
     <extension
           point="net.sf.eclipsecs.ui.checkstyleQuickfixProvider">
     </extension>
 
-    <!-- 
+    <!--
         Sample builtin check configuration
     -->
     <extension
         id="checkstyle.CheckConfiguration"
         point="net.sf.eclipsecs.core.configurations">
         <check-configuration
-            name="Sample Builtin Checks"
+            name="%check-configuration.name"
             location="sample_checks.xml"
-            description="Sample Built-in configuration"
+            description="%check-configuration.description"
             default-weight="2">
             <property name="maxLineLength" value="50"/>
         </check-configuration>
     </extension>
 
-    <!-- 
+    <!--
         Sample checkstyle plugin filter
     -->
     <extension
         id="checkstyle.CheckstyleFilters"
         point="net.sf.eclipsecs.core.filters">
         <filter
-            name="Sample Filter"
+            name="%filter.name"
             internal-name="SampleFilter"
-            description="Sample Filter (doing nothing)"
+            description="%filter.description"
             class="net.sf.eclipsecs.sample.filter.SampleFilter"/>
     </extension>
 </plugin>

@@ -3,20 +3,20 @@
 <plugin>
 
     <!-- defines the extension point to contribute Checkstyle addons. -->
-    <extension-point id="checkstyleAddonProvider" name="Checkstyle Addon provider"
+    <extension-point id="checkstyleAddonProvider" name="%extension-point.addon-provider.name"
         schema="schema/checkstyleAddonProvider.exsd"/>
 
     <!-- defines the extension point to contribute custom configuration type. -->
-    <extension-point id="configurationtypes" name="Checkstyle configuration types" schema="schema/configtypes.exsd"/>
+    <extension-point id="configurationtypes" name="%extension-point.configuration-types.name" schema="schema/configtypes.exsd"/>
 
     <!-- defines the extension point to contribute default checkstyle configurations to the checkstyle plugin -->
-    <extension-point id="configurations" name="Checkstyle configurations" schema="schema/configurations.exsd"/>
+    <extension-point id="configurations" name="%extension-point.configurations.name" schema="schema/configurations.exsd"/>
 
     <!-- defines the extension point to contribute custom filters to the checkstyle plugin -->
-    <extension-point id="filters" name="Checkstyle filters" schema="schema/filters.exsd"/>
+    <extension-point id="filters" name="%extension-point.filters.name" schema="schema/filters.exsd"/>
 
     <!-- defines the extension point to contribute custom configuration save filters -->
-    <extension-point id="saveFilters" name="Checkstyle configuration save filters" schema="schema/saveFilters.exsd"/>
+    <extension-point id="saveFilters" name="%extension-point.save-filters.name" schema="schema/saveFilters.exsd"/>
 
     <extension id="CheckstyleBuilder" name="%CheckstyleBuilder.name" point="org.eclipse.core.resources.builders">
         <builder>
