@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Eclipse Checkstyle UI
+Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: net.sf.eclipsecs.ui;singleton:=true
 Bundle-Version: 10.6.0.qualifier
-Bundle-Vendor: Eclipse Checkstyle Project
+Bundle-Vendor: %Bundle-Vendor
 Bundle-Activator: net.sf.eclipsecs.ui.CheckstyleUIPlugin
 Bundle-ActivationPolicy: lazy
 Require-Bundle: net.sf.eclipsecs.core,
@@ -11,7 +11,6 @@ Require-Bundle: net.sf.eclipsecs.core,
  org.eclipse.ui.workbench,
  org.eclipse.jface
 Bundle-RequiredExecutionEnvironment: JavaSE-11
-Bundle-Localization: plugin
 Export-Package: net.sf.eclipsecs.ui,
  net.sf.eclipsecs.ui.properties.filter,
  net.sf.eclipsecs.ui.quickfixes

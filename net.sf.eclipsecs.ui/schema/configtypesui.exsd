@@ -39,6 +39,9 @@
                <documentation>
                   The human readable name of this extension.
                </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
             </annotation>
          </attribute>
       </complexType>

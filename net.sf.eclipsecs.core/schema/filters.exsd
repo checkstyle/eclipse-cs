@@ -40,6 +40,9 @@ The id is used to identify the specific filter set.
                <documentation>
                   The human readable name of this extension.
                </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
             </annotation>
          </attribute>
       </complexType>
@@ -75,6 +78,9 @@ The filter class must implement &lt;code&gt;net.sf.eclipsecs.core.filters.IFilte
                <documentation>
                   The human readable name of this filter.
                </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
             </annotation>
          </attribute>
          <attribute name="selected" type="string" use="default" value="false">
