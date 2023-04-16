@@ -20,10 +20,25 @@
 
 package net.sf.eclipsecs.ui.actions;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.resources.WorkspaceJob;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.window.Window;
+import org.eclipse.ui.IObjectActionDelegate;
+import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.dialogs.ElementListSelectionDialog;
+import org.eclipse.ui.model.WorkbenchLabelProvider;
 
 import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
 import net.sf.eclipsecs.core.config.ICheckConfiguration;
@@ -34,21 +49,6 @@ import net.sf.eclipsecs.core.projectconfig.ProjectConfigurationWorkingCopy;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
 import net.sf.eclipsecs.ui.Messages;
-
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.WorkspaceJob;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.window.Window;
-import org.eclipse.ui.IObjectActionDelegate;
-import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.dialogs.ListDialog;
-import org.eclipse.ui.model.WorkbenchLabelProvider;
 
 /**
  * Action to configure one ore more projects at once by using another project as
@@ -79,18 +79,17 @@ public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegat
 
   @Override
   public void run(IAction action) {
-
-    IProject[] projects = CheckstyleUIPlugin.getWorkspace().getRoot().getProjects();
-    List<IProject> filteredProjects = new ArrayList<>();
-    Collections.addAll(filteredProjects, projects);
+    List<IProject> filteredProjects = Arrays
+            .stream(ResourcesPlugin.getWorkspace().getRoot().getProjects())
+            .filter(IProject::isAccessible)
+            .collect(Collectors.toList());
 
     filteredProjects.removeAll(mSelectedProjects);
 
-    ListDialog dialog = new ListDialog(mPart.getSite().getShell());
+    ElementListSelectionDialog dialog = new ElementListSelectionDialog(mPart.getSite().getShell(),
+            new WorkbenchLabelProvider());
+    dialog.setElements(filteredProjects.toArray(new IProject[0]));
     dialog.setHelpAvailable(false);
-    dialog.setInput(filteredProjects);
-    dialog.setContentProvider(new ArrayContentProvider());
-    dialog.setLabelProvider(new WorkbenchLabelProvider());
     dialog.setMessage(Messages.ConfigureProjectFromBluePrintAction_msgSelectBlueprintProject);
     dialog.setTitle(Messages.ConfigureProjectFromBluePrintAction_titleSelectBlueprintProject);
     if (Window.OK == dialog.open()) {
