@@ -72,12 +72,15 @@
         <transfer
               id="net.sf.eclipsecs.ui.transfer"
               name="%CheckstylePreferenceTransfer.name"
-              icon="icons/checkstyle_error.gif">
+              icon="icons/checkstyle_command.png">
            <mapping
                  scope="instance" >
                  <entry node="net.sf.eclipsecs.core"/>
                  <entry node="net.sf.eclipsecs.ui"/>
            </mapping>
+           <description>
+              %CheckstylePreferenceTransfer.description
+           </description>
         </transfer>
         <settingsTransfer
             id="net.sf.eclipsecs.settings"
