@@ -4,7 +4,7 @@ target "Eclipse Checkstyle"
 with source configurePhase
 environment JavaSE-11
 
-location "https://download.eclipse.org/releases/2020-09/202009161000/" {
+location "https://download.eclipse.org/releases/2021-06/202106161001/" {
 	org.eclipse.jdt.feature.group
 	org.eclipse.sdk.ide
 
@@ -18,7 +18,7 @@ location "https://download.eclipse.org/releases/2020-09/202009161000/" {
 }
 
 // matching release of JUnit 5 from Eclipse Orbit
-location "https://download.eclipse.org/tools/orbit/downloads/drops/R20200831200620/repository" {
+location "https://download.eclipse.org/tools/orbit/downloads/drops/R20210602031627/repository" {
 	org.junit.jupiter.api
 	org.junit.jupiter.engine
 	org.junit.jupiter.params
