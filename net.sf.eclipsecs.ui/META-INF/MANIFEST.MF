@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: net.sf.eclipsecs.ui;singleton:=true
-Bundle-Version: 10.6.0.qualifier
+Bundle-Version: 10.7.0.qualifier
 Bundle-Vendor: %Bundle-Vendor
 Bundle-Activator: net.sf.eclipsecs.ui.CheckstyleUIPlugin
 Bundle-ActivationPolicy: lazy
