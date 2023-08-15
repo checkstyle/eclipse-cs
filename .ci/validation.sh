@@ -7,9 +7,9 @@ git-diff)
   printf "Changes to only docs/sitemap.xml:\n"
   git diff docs/sitemap.xml
 
-  # file below is always modified on a run and updated with the current date
+  # folder below is always modified on a run and updated with the current date
   # such a change is ignored and must be verified manually instead
-  git checkout HEAD -- docs/sitemap.xml
+  git checkout HEAD -- docs
 
   if [ "$(git status | grep 'Changes not staged\|Untracked files')" ]; then
     printf "Please clean up.\nGit status output:\n"
