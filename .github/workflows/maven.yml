@@ -9,6 +9,7 @@ jobs:
     strategy:
       matrix:
         platform: [ubuntu-latest, macos-latest, windows-latest]
+        jdk: [11, 17]
     runs-on: ${{ matrix.platform }}
     steps:
     - uses: actions/checkout@v3
@@ -21,11 +22,11 @@ jobs:
         path: ~/.m2/repository
         key: maven-cache-${{ hashFiles('**/pom.xml') }}
 
-    - name: Set up JDK 11
+    - name: Set up JDK ${{ matrix.jdk }}
       uses: actions/setup-java@v3
       with:
         distribution: temurin
-        java-version: 11
+        java-version: ${{ matrix.jdk }}
 
     - name: Build with Maven
       run: ./mvnw --errors --no-transfer-progress install
