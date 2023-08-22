@@ -1,5 +1,3 @@
-[![][travis img]][travis]
-
 # eclipse-cs
 The Eclipse Checkstyle plug-in integrates the Checkstyle Java code auditor into the Eclipse IDE.
 The plug-in provides real-time feedback to the user about violations of rules that
@@ -36,6 +34,3 @@ Clone the git repository (or create a fork) and import all projects into your Ec
 Open a command line in project root directory and run `./mvnw clean package`.
 
 Find the installable bundle update site archive `net.sf.eclipsecs-updatesite/target/net.sf.eclipsecs-updatesite_X.X.X.YYYYmmDDHHMM.zip`.
-
-[travis]:https://travis-ci.com/github/checkstyle/eclipse-cs/builds
-[travis img]:https://api.travis-ci.com/checkstyle/eclipse-cs.svg
