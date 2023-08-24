@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.sf.eclipsecs</groupId>
     <artifactId>net.sf.eclipsecs.parent</artifactId>
-    <version>10.9.2-SNAPSHOT</version>
+    <version>10.9.3-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>eclipse-cs Maven Parent</name>
 
