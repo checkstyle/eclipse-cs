@@ -54,27 +54,37 @@ public final class ConfigPropertyWidgetFactory {
 
     if (prop.isPropertyReference()) {
       widget = new ConfigPropertyWidgetString(parent, prop);
-    } else if (type.equals(ConfigPropertyType.String)) {
-      widget = new ConfigPropertyWidgetString(parent, prop);
-    } else if (type.equals(ConfigPropertyType.StringArray)) {
-      widget = new ConfigPropertyWidgetString(parent, prop);
-    } else if (type.equals(ConfigPropertyType.Integer)) {
-      widget = new ConfigPropertyWidgetInteger(parent, prop);
-    } else if (type.equals(ConfigPropertyType.SingleSelect)) {
-      widget = new ConfigPropertyWidgetSingleSelect(parent, prop);
-    } else if (type.equals(ConfigPropertyType.Boolean)) {
-      widget = new ConfigPropertyWidgetBoolean(parent, prop);
-    } else if (type.equals(ConfigPropertyType.MultiCheck)) {
-      widget = new ConfigPropertyWidgetMultiCheck(parent, prop);
-    } else if (type.equals(ConfigPropertyType.Hidden)) {
-      widget = new ConfigPropertyWidgetHidden(parent, prop);
-    } else if (type.equals(ConfigPropertyType.File)) {
-      widget = new ConfigPropertyWidgetFile(parent, prop);
-    } else if (type.equals(ConfigPropertyType.Regex)) {
-      widget = new ConfigPropertyWidgetRegex(parent, prop);
+    } else {
+      widget = getWidgetForConfigPropertyType(parent, prop, type);
     }
 
     widget.initialize();
     return widget;
+  }
+
+  private static IConfigPropertyWidget getWidgetForConfigPropertyType(Composite parent,
+          ConfigProperty prop, ConfigPropertyType type) {
+    switch (type) {
+    case String:
+      return new ConfigPropertyWidgetString(parent, prop);
+    case StringArray:
+      return new ConfigPropertyWidgetStringArray(parent, prop);
+    case Integer:
+      return new ConfigPropertyWidgetInteger(parent, prop);
+    case SingleSelect:
+      return new ConfigPropertyWidgetSingleSelect(parent, prop);
+    case Boolean:
+      return new ConfigPropertyWidgetBoolean(parent, prop);
+    case MultiCheck:
+      return new ConfigPropertyWidgetMultiCheck(parent, prop);
+    case Hidden:
+      return new ConfigPropertyWidgetHidden(parent, prop);
+    case File:
+      return new ConfigPropertyWidgetFile(parent, prop);
+    case Regex:
+      return new ConfigPropertyWidgetRegex(parent, prop);
+    default:
+      return new ConfigPropertyWidgetString(parent, prop);
+    }
   }
 }

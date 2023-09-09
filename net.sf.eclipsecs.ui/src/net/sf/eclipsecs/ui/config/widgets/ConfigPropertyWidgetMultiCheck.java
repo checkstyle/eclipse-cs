@@ -22,12 +22,14 @@ package net.sf.eclipsecs.ui.config.widgets;
 
 import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.MissingResourceException;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 import java.util.StringTokenizer;
+import java.util.stream.Collectors;
 
 import net.sf.eclipsecs.core.config.ConfigProperty;
 import net.sf.eclipsecs.core.config.meta.ConfigPropertyMetadata;
@@ -123,18 +125,9 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
 
   @Override
   public String getValue() {
-    StringBuilder buffer = new StringBuilder(""); //$NON-NLS-1$
-
-    Object[] checkedElements = mTable.getCheckedElements();
-
-    for (int i = 0; i < checkedElements.length; i++) {
-
-      if (i > 0) {
-        buffer.append(","); //$NON-NLS-1$
-      }
-      buffer.append(checkedElements[i]);
-    }
-    return buffer.toString();
+    return Arrays.stream(mTable.getCheckedElements())
+            .map(Object::toString)
+            .collect(Collectors.joining(", "));
   }
 
   private List<String> getInitialValues() {
