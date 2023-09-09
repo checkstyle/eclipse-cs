@@ -21,6 +21,7 @@
 package net.sf.eclipsecs.core.jobs;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -72,11 +73,7 @@ public class RunCheckstyleOnFilesJob extends AbstractCheckJob {
    *          the file to check
    */
   public RunCheckstyleOnFilesJob(final IFile file) {
-    super(Messages.RunCheckstyleOnFilesJob_title);
-    mFilesToCheck = new ArrayList<>();
-    mFilesToCheck.add(file);
-
-    setRule(this);
+    this(Collections.singletonList(file));
   }
 
   @Override
