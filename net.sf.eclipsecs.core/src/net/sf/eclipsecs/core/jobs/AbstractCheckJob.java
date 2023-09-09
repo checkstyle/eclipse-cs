@@ -39,7 +39,7 @@ public abstract class AbstractCheckJob extends WorkspaceJob implements IScheduli
 
   @Override
   public final boolean isConflicting(ISchedulingRule rule) {
-    return rule instanceof AuditorJob || rule instanceof RunCheckstyleOnFilesJob;
+    return rule instanceof AbstractCheckJob;
   }
 
   @Override

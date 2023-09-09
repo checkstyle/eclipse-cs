@@ -31,6 +31,7 @@ import java.util.Map;
 
 import net.sf.eclipsecs.core.Messages;
 import net.sf.eclipsecs.core.builder.CheckstyleMarker;
+import net.sf.eclipsecs.core.jobs.AbstractCheckJob;
 import net.sf.eclipsecs.core.jobs.RunCheckstyleOnFilesJob;
 import net.sf.eclipsecs.core.nature.CheckstyleNature;
 import net.sf.eclipsecs.core.projectconfig.IProjectConfiguration;
@@ -44,12 +45,12 @@ import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
@@ -325,12 +326,12 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
     return affected;
   }
 
-  private class PartsOpenedJob extends WorkspaceJob implements ISchedulingRule {
+  private class PartsOpenedJob extends AbstractCheckJob {
 
     private Collection<IWorkbenchPartReference> mParts;
 
     public PartsOpenedJob(Collection<IWorkbenchPartReference> parts) {
-      super(Messages.RunCheckstyleOnFilesJob_title);
+      super(Messages.PartsOpenedJob_title);
       this.mParts = parts;
     }
 
@@ -340,17 +341,12 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
     }
 
     @Override
-    public boolean isConflicting(ISchedulingRule rule) {
-      return false;
-    }
-
-    @Override
     public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
-
+      SubMonitor subMonitor = SubMonitor.convert(monitor, mParts.size());
       List<IFile> filesToCheck = new ArrayList<>();
 
       for (IWorkbenchPartReference partRef : mParts) {
-
+        subMonitor.worked(1);
         IFile editorFile = getEditorFile(partRef);
         if (editorFile != null) {
           UnOpenedFilesFilter.addOpenedFile(editorFile);

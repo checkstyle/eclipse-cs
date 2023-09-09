@@ -108,5 +108,7 @@ public final class Messages extends NLS {
 
   public static String RemoteConfigurationType_msgUnAuthorized;
 
+  public static String PartsOpenedJob_title;
+
   // CHECKSTYLE:ON
 }
