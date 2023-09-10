@@ -110,5 +110,9 @@ public final class Messages extends NLS {
 
   public static String PartsOpenedJob_title;
 
+  public static String TransformCheckstyleRulesJob_name;
+
+  public static String TransformFormatterRulesJob_name;
+
   // CHECKSTYLE:ON
 }
