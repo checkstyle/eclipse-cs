@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.sf.eclipsecs.core.CheckstylePlugin;
+import net.sf.eclipsecs.core.Messages;
 import net.sf.eclipsecs.core.config.CheckstyleConfigurationFile;
 import net.sf.eclipsecs.core.config.ICheckConfiguration;
 import net.sf.eclipsecs.core.config.configtypes.IContextAware;
@@ -46,6 +47,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubMonitor;
 import org.xml.sax.InputSource;
 
 /**
@@ -66,14 +68,15 @@ public class TransformCheckstyleRulesJob extends WorkspaceJob {
    *          The current selected project in the workspace.
    */
   public TransformCheckstyleRulesJob(final IProject project) {
-    super("transformCheckstyle");
+    super(Messages.TransformCheckstyleRulesJob_name);
 
     this.mProject = project;
   }
 
   @Override
-  public IStatus runInWorkspace(final IProgressMonitor arg0) throws CoreException {
-
+  public IStatus runInWorkspace(final IProgressMonitor monitor) throws CoreException {
+    SubMonitor subMonitor = SubMonitor.convert(monitor);
+    subMonitor.setWorkRemaining(IProgressMonitor.UNKNOWN);
     try {
       final IProjectConfiguration conf = ProjectConfigurationFactory.getConfiguration(mProject);
 
@@ -135,4 +138,10 @@ public class TransformCheckstyleRulesJob extends WorkspaceJob {
       }
     }
   }
+
+  @Override
+  public boolean belongsTo(Object family) {
+    return AbstractCheckJob.CHECKSTYLE_JOB_FAMILY.equals(family) || super.belongsTo(family);
+  }
+
 }

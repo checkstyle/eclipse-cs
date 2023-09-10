@@ -23,6 +23,7 @@ package net.sf.eclipsecs.core.jobs;
 import java.io.FileNotFoundException;
 
 import net.sf.eclipsecs.core.CheckstylePlugin;
+import net.sf.eclipsecs.core.Messages;
 import net.sf.eclipsecs.core.transformer.FormatterConfigParser;
 import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 import net.sf.eclipsecs.core.transformer.FormatterTransformer;
@@ -34,6 +35,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubMonitor;
 
 /**
  * Job who starts transforming the formatter-rules to checkstyle-settings.
@@ -47,18 +49,20 @@ public class TransformFormatterRulesJob extends WorkspaceJob {
    * Job for transforming formatter-rules to checkstyle-settings.
    */
   public TransformFormatterRulesJob() {
-    super("transformFormatter");
+    super(Messages.TransformFormatterRulesJob_name);
   }
 
   @Override
-  public IStatus runInWorkspace(final IProgressMonitor arg0) throws CoreException {
+  public IStatus runInWorkspace(final IProgressMonitor monitor) throws CoreException {
+    SubMonitor subMonitor = SubMonitor.convert(monitor);
+    subMonitor.setWorkRemaining(IProgressMonitor.UNKNOWN);
 
     // TODO this way of loading formatter profiles is very dubious, to say
     // the least, refer to FormatterConfigWriter for a better API
     final String workspace = ResourcesPlugin.getWorkspace().getRoot().getLocation().toString();
 
     final String configLocation = workspace
-            + "/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.core.prefs";
+            + "/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.core.prefs"; //$NON-NLS-1$
 
     FormatterConfigParser parser = null;
 
@@ -75,7 +79,7 @@ public class TransformFormatterRulesJob extends WorkspaceJob {
 
     try {
       FormatterTransformer transformer = new FormatterTransformer(rules);
-      transformer.transformRules(workspace + "/test-checkstyle.xml");
+      transformer.transformRules(workspace + "/test-checkstyle.xml"); //$NON-NLS-1$
     } catch (CheckstylePluginException ex) {
       Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR,
               ex.getMessage(), ex);
@@ -84,4 +88,10 @@ public class TransformFormatterRulesJob extends WorkspaceJob {
 
     return Status.OK_STATUS;
   }
+
+  @Override
+  public boolean belongsTo(Object family) {
+    return AbstractCheckJob.CHECKSTYLE_JOB_FAMILY.equals(family) || super.belongsTo(family);
+  }
+
 }
