@@ -31,8 +31,8 @@
             filter="FilesFromPackage"/>
     </extension>
 
-	<!-- Configuration type editors -->
-	<extension
+    <!-- Configuration type editors -->
+    <extension
         point="net.sf.eclipsecs.ui.configtypesui">
         <configtypeui
             configtypename="builtin"
@@ -54,7 +54,7 @@
             configtypename="project"
             editorclass="net.sf.eclipsecs.ui.config.configtypes.ProjectConfigurationEditor"
             icon="icons/configtype_project.gif"/>
-	</extension>
+    </extension>
 
     <extension
         point="org.eclipse.ui.startup">
@@ -128,8 +128,8 @@
     </extension>
 
     <!--
-	Provide marker resolutions
-	-->
+    Provide marker resolutions
+    -->
     <extension
         point="org.eclipse.ui.ide.markerResolution">
         <markerResolutionGenerator
@@ -463,6 +463,51 @@
                   label="%CheckSelectedFilesAction.label"
                   menubarPath="Checkstyle.menu/ondemand"
                   tooltip="%CheckSelectedFilesAction.tooltip"/>
+        </objectContribution>
+
+        <objectContribution adaptable="true"
+            id="checkstyle.addNature"
+            objectClass="org.eclipse.core.resources.IProject">
+            <action class="net.sf.eclipsecs.ui.actions.ActivateProjectsAction"
+                enablesFor="+"
+                icon="icons/checkstyle_command.png"
+                id="checkstyle.addNature.action"
+                label="%addnature.label"
+                menubarPath="org.eclipse.ui.projectConfigure/additions"
+                style="push">
+            </action>
+            <visibility>
+                <and>
+                    <objectState name="open" value="true"/>
+                    <objectState name="projectNature"
+                        value="org.eclipse.jdt.core.javanature">
+                    </objectState>
+                    <not>
+                        <objectState name="projectNature"
+                            value="net.sf.eclipsecs.core.CheckstyleNature">
+                        </objectState>
+                    </not>
+                </and>
+            </visibility>
+        </objectContribution>
+        <objectContribution adaptable="true"
+            id="checkstyle.removeNature"
+            objectClass="org.eclipse.core.resources.IProject">
+            <action class="net.sf.eclipsecs.ui.actions.DeactivateProjectsAction"
+                enablesFor="1"
+                id="checkstyle.removeNature.action"
+                label="%removenature.label"
+                menubarPath="org.eclipse.ui.projectConfigure/additions"
+                style="push">
+            </action>
+            <visibility>
+                <and>
+                    <objectState name="open" value="true"/>
+                    <objectState name="projectNature"
+                        value="net.sf.eclipsecs.core.CheckstyleNature">
+                    </objectState>
+                </and>
+            </visibility>
         </objectContribution>
     </extension>
 
