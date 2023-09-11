@@ -139,7 +139,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
   /** Button to remove a module. */
   private Button mRemoveButton;
 
-  /** Button to remove a module. */
+  /** Button to edit a module. */
   private Button mEditButton;
 
   /** Group containing the table viewer. */
@@ -663,7 +663,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
         RuleConfigurationEditDialog dialog = new RuleConfigurationEditDialog(getShell(),
                 workingCopy, !mConfigurable,
                 Messages.CheckConfigurationConfigureDialog_titleModuleConfigEditor);
-        if (mConfigurable && Window.OK == dialog.open()) {
+        if (Window.OK == dialog.open() && mConfigurable) {
           mModules.set(mModules.indexOf(module), workingCopy);
           mIsDirty = true;
           mTableViewer.refresh(true);
