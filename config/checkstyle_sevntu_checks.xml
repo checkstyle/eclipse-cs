@@ -182,7 +182,13 @@
                    ### InnerInterface(.*)
                    ### InnerClass(.*)"/>
     </module>
-    <module name="LogicConditionNeedOptimizationCheck"/>
+    <module name="LogicConditionNeedOptimizationCheck">
+      <!-- This rule is wrong. You cannot optimize "return executeEmergencyBrake() && someCondition"
+      to "return someCondition && executeEmergencyBrake()". The short circuit evaluation of boolean
+      expressions will lead to the method not being called, even if it has a wanted side effect
+      (something that changes global state). -->
+      <property name="severity" value="ignore"/>
+    </module>
     <module name="AvoidConditionInversionCheck"/>
     <module name="SingleBreakOrContinueCheck"/>
     <module name="NumericLiteralNeedsUnderscoreCheck"/>
