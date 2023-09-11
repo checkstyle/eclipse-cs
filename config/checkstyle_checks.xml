@@ -100,6 +100,24 @@
         <property name="maximum" value="0"/>
         <property name="message" value="Trailing whitespace is not allowed"/>
     </module>
+    <module name="RegexpSingleline">
+        <property name="id" value="cannot"/>
+        <property name="format" value="can\s+not"/>
+        <property name="message" value="Prefer &quot;cannot&quot; over &quot;can not&quot;."/>
+        <property name="fileExtensions" value="html, properties"/>
+    </module>
+    <module name="RegexpSingleline">
+        <property name="id" value="badLineBreak"/>
+        <property name="format" value="\Q\n \E"/>
+        <property name="message" value="Don&quot;t have a blank after line breaks in properties. That leads to the second line being indented in dialogs."/>
+        <property name="fileExtensions" value="properties"/>
+    </module>
+    <module name="RegexpSingleline">
+        <property name="id" value="ellipsis"/>
+        <property name="format" value="\Q ...\E"/>
+        <property name="message" value="Append the ellipsis directly to the previous word, with no blank in between."/>
+        <property name="fileExtensions" value="html, properties"/>
+    </module>
     <!--
      Links to .dtd files should start with "/", "http://" or "https://",
      otherwise they will be broken after archiving the documentation.
@@ -189,7 +207,7 @@
             <property name="allowSamelineSingleParameterlessAnnotation" value="false"/>
         </module>
         <module name="AnnotationOnSameLine">
-            <!-- we can not use it as it conflicts with AnnotationLocation -->
+            <!-- we cannot use it as it conflicts with AnnotationLocation -->
             <property name="severity" value="ignore"/>
             <property name="tokens" value="METHOD_DEF"/>
             <property name="tokens" value="CTOR_DEF"/>
