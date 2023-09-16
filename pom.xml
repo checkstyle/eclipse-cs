@@ -66,6 +66,7 @@
     </dependencies>
 
     <build>
+        <defaultGoal>verify</defaultGoal>
         <finalName>${project.artifactId}_${unqualifiedVersion}.${buildQualifier}</finalName>
         <testSourceDirectory>test</testSourceDirectory>
         <testResources>
