@@ -353,6 +353,8 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
     mTableViewer.setContentProvider(new ArrayContentProvider());
     mTableViewer.addFilter(mGroupFilter);
     mTableViewer.installEnhancements();
+    // by default the table viewer sorts on column 0, but we want to sort by the module label
+    mTableViewer.setSortedColumnIndex(1);
 
     mTableViewer.addDoubleClickListener(mController);
     mTableViewer.addSelectionChangedListener(mController);
