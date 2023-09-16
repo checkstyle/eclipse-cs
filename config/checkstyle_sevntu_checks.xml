@@ -147,7 +147,11 @@
     <module name="MultipleStringLiteralsExtended">
       <property name="highlightAllDuplicates" value="true"/>
     </module>
-    <module name="SimpleAccessorNameNotation"/>
+    <module name="SimpleAccessorNameNotation">
+      <!-- This check fails on all kinds of totally valid setter names.
+      Also its documentation is absolutely not understandable, therefore anybody running into this issue is doomed to not be able to continue. -->
+      <property name="severity" value="ignore"/>
+    </module>
     <module name="ForbidWildcardAsReturnType"/>
     <module name="CustomDeclarationOrder">
       <property name="customDeclarationOrder"
