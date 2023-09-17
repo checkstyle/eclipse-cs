@@ -27,7 +27,6 @@ import java.util.Locale;
 
 import net.sf.eclipsecs.core.jobs.AbstractCheckJob;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
-import net.sf.eclipsecs.core.util.ExtensionClassLoader;
 import net.sf.eclipsecs.ui.properties.filter.CheckFileOnOpenPartListener;
 
 import org.eclipse.core.resources.IWorkspace;
@@ -56,10 +55,6 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
 
   /** Identifier of the plug-in. */
   public static final String PLUGIN_ID = "net.sf.eclipsecs.ui"; //$NON-NLS-1$
-
-  /** Extension point id for Checkstyle quickfix providers. */
-  public static final String QUICKFIX_PROVIDER_EXT_PT_ID = PLUGIN_ID
-          + ".checkstyleQuickfixProvider"; //$NON-NLS-1$
 
   /** The shared instance. */
   private static CheckstyleUIPlugin sPlugin;
@@ -91,8 +86,6 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
 
   };
 
-  private ClassLoader mQuickfixExtensionClassLoader;
-
   /**
    * The constructor.
    */
@@ -103,9 +96,6 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
   @Override
   public void start(BundleContext context) throws Exception {
     super.start(context);
-
-    mQuickfixExtensionClassLoader = new ExtensionClassLoader(context.getBundle(),
-            QUICKFIX_PROVIDER_EXT_PT_ID);
 
     // add listeners for the Check-On-Open support
     final IWorkbench workbench = PlatformUI.getWorkbench();
@@ -278,15 +268,6 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
             throwable.getLocalizedMessage(), throwable);
 
     ErrorDialog.openError(shell, Messages.CheckstyleLog_titleWarning, message, status);
-  }
-
-  /**
-   * Returns the classloader containing quickfix extensions.
-   *
-   * @return the classloader containing all registered quickfix extensions.
-   */
-  public ClassLoader getQuickfixExtensionClassLoader() {
-    return mQuickfixExtensionClassLoader;
   }
 
 }

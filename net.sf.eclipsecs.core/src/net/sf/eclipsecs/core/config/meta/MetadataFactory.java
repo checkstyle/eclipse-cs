@@ -738,13 +738,6 @@ public final class MetadataFactory {
         module.addAlternativeName(alternativeName);
       }
 
-      // process quickfixes
-      for (Element quickfixEl : moduleEl.elements(XMLTags.QUCKFIX_TAG)) {
-
-        String quickfixClassName = quickfixEl.attributeValue(XMLTags.CLASSNAME_TAG);
-        module.addQuickfix(quickfixClassName);
-      }
-
       // process message keys
       for (Element quickfixEl : moduleEl.elements(XMLTags.MESSAGEKEY_TAG)) {
 

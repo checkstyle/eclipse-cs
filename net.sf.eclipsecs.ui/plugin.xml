@@ -2,12 +2,6 @@
 <?eclipse version="3.4"?>
 <plugin>
 
-    <!-- defines the extension point to contribute custom quickfixes. -->
-    <extension-point
-        id="checkstyleQuickfixProvider"
-        name="%extension-point.quickfix-provider.name"
-        schema="schema/checkstyleQuickfixProvider.exsd"/>
-
     <!-- defines the extension point to contribute custom filter editors for plugin filters -->
     <extension-point
         id="filtereditors"
@@ -19,6 +13,12 @@
         id="configtypesui"
         name="%extension-point.config-types-ui.name"
         schema="schema/configtypesui.exsd"/>
+
+    <!-- defines the extension point to contribute custom quickfixes. -->
+    <extension-point
+        id="quickfix"
+        name="%extension-point.name"
+        schema="schema/quickfix.exsd"/>
 
     <!-- Filter editors for filters allowing user input -->
     <extension
@@ -541,5 +541,80 @@
              commandId="CheckstylePlugin.PurgeCaches"
              icon="platform:/plugin/org.eclipse.ui/icons/full/etool16/clear.png">
        </image>
+    </extension>
+    <extension
+          point="net.sf.eclipsecs.ui.quickfix">
+       <quickfix
+             module="ArrayTypeStyleCheck"
+             class="net.sf.eclipsecs.ui.quickfixes.misc.ArrayTypeStyleQuickfix">
+       </quickfix>
+       <quickfix
+             module="AvoidNestedBlocksCheck"
+             class="net.sf.eclipsecs.ui.quickfixes.blocks.AvoidNestedBlocksQuickfix">
+       </quickfix>
+       <quickfix
+             module="DefaultComesLastCheck"
+             class="net.sf.eclipsecs.ui.quickfixes.coding.DefaultComesLastQuickfix">
+       </quickfix>
+       <quickfix
+             module="DesignForExtensionCheck"
+             class="net.sf.eclipsecs.ui.quickfixes.design.DesignForExtensionQuickfix">
+       </quickfix>
+       <quickfix
+             module="EmptyStatementCheck"
+             class="net.sf.eclipsecs.ui.quickfixes.coding.EmptyStatementQuickfix">
+       </quickfix>
+       <quickfix
+             module="ExplicitInitializationCheck"
+             class="net.sf.eclipsecs.ui.quickfixes.coding.ExplicitInitializationQuickfix">
+       </quickfix>
+       <quickfix
+             module="FinalClassCheck"
+             class="net.sf.eclipsecs.ui.quickfixes.design.FinalClassQuickfix">
+       </quickfix>
+       <quickfix
+             module="FinalLocalVariableCheck"
+             class="net.sf.eclipsecs.ui.quickfixes.coding.FinalLocalVariableQuickfix">
+       </quickfix>
+       <quickfix
+             module="FinalParametersCheck"
+             class="net.sf.eclipsecs.ui.quickfixes.misc.FinalParametersQuickfix">
+       </quickfix>
+       <quickfix
+             module="MissingSwitchDefaultCheck"
+             class="net.sf.eclipsecs.ui.quickfixes.coding.MissingSwitchDefaultQuickfix">
+       </quickfix>
+       <quickfix
+             module="ModifierOrderCheck"
+             class="net.sf.eclipsecs.ui.quickfixes.modifier.ModifierOrderQuickfix">
+       </quickfix>
+       <quickfix
+             module="NeedBracesCheck"
+             class="net.sf.eclipsecs.ui.quickfixes.blocks.NeedBracesQuickfix">
+       </quickfix>
+       <quickfix
+             module="RedundantModifierCheck"
+             class="net.sf.eclipsecs.ui.quickfixes.modifier.RedundantModifierQuickfix">
+       </quickfix>
+       <quickfix
+             module="RequireThisCheck"
+             class="net.sf.eclipsecs.ui.quickfixes.coding.RequireThisQuickfix">
+       </quickfix>
+       <quickfix
+             module="SimplifyBooleanReturnCheck"
+             class="net.sf.eclipsecs.ui.quickfixes.coding.SimplifyBooleanReturnQuickfix">
+       </quickfix>
+       <quickfix
+             module="StringLiteralEqualityCheck"
+             class="net.sf.eclipsecs.ui.quickfixes.coding.StringLiteralEqualityQuickfix">
+       </quickfix>
+       <quickfix
+             module="UncommentedMainCheck"
+             class="net.sf.eclipsecs.ui.quickfixes.misc.UncommentedMainQuickfix">
+       </quickfix>
+       <quickfix
+             module="UpperEllCheck"
+             class="net.sf.eclipsecs.ui.quickfixes.misc.UpperEllQuickfix">
+       </quickfix>
     </extension>
 </plugin>

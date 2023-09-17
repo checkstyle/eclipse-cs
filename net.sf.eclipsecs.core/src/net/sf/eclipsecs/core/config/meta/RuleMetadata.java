@@ -62,9 +62,6 @@ public class RuleMetadata {
   /** Alternative names, including the name of the Checkstyle checker class. */
   private final Collection<String> mAlternativeNames;
 
-  /** Collection fo quick fixes for this module. */
-  private final Collection<String> mQuickfixes;
-
   private final Collection<String> mMessageKeys;
 
   /** Determines if the module is a singleton. */
@@ -107,7 +104,6 @@ public class RuleMetadata {
     mIsDeletable = deletable;
     mGroup = group;
     mAlternativeNames = new ArrayList<>();
-    mQuickfixes = new ArrayList<>();
     mMessageKeys = new ArrayList<>();
     mIsSingleton = isSingleton;
   }
@@ -129,25 +125,6 @@ public class RuleMetadata {
    */
   public Collection<String> getAlternativeNames() {
     return mAlternativeNames;
-  }
-
-  /**
-   * Adds a quickfixfor this rule.
-   *
-   * @param quickfixClassName
-   *          the fully qualified classname of the quickfix
-   */
-  public void addQuickfix(String quickfixClassName) {
-    mQuickfixes.add(quickfixClassName);
-  }
-
-  /**
-   * Returns the list quickfixes for this module.
-   *
-   * @return a collection of quickfix class names
-   */
-  public Collection<String> getQuickfixClassNames() {
-    return mQuickfixes;
   }
 
   /**

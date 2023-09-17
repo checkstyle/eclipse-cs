@@ -1,0 +1,99 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="net.sf.eclipsecs.ui" xmlns="http://www.w3.org/2001/XMLSchema">
+<annotation>
+      <appinfo>
+         <meta.schema plugin="net.sf.eclipsecs.ui" id="quickfix" name="Checkstyle violation quickfix"/>
+      </appinfo>
+      <documentation>
+         Use this extension point to register quickfix classes for specific Checkstyle violations.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <annotation>
+         <appinfo>
+            <meta.element />
+         </appinfo>
+      </annotation>
+      <complexType>
+         <sequence minOccurs="1" maxOccurs="unbounded">
+            <element ref="quickfix"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="quickfix">
+      <complexType>
+         <attribute name="module" type="string" use="required">
+            <annotation>
+               <documentation>
+                  fully qualified name of the Checkstyle module that this quickfix can fix
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Class implementing net.sf.eclipsecs.ui.quickfixes.ICheckstyleMarkerResolution
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn=":net.sf.eclipsecs.ui.quickfixes.ICheckstyleMarkerResolution"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="since"/>
+      </appinfo>
+      <documentation>
+         10.9.3
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="examples"/>
+      </appinfo>
+      <documentation>
+         The following is an example for registering a quickfix.
+
+    &lt;extension point=&quot;net.sf.eclipsecs.ui.quickfix&quot;&gt;
+       &lt;quickfix
+             module=&quot;com.puppycrawl.tools.checkstyle.checks.blocks.NeedBracesCheck&quot;
+             class=&quot;net.sf.eclipsecs.ui.quickfixes.blocks.NeedBracesQuickfix&quot;&gt;&lt;/quickfix&gt;
+    &lt;/extension&gt;
+      </documentation>
+   </annotation>
+
+
+
+
+</schema>
