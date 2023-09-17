@@ -20,22 +20,15 @@
 
 package net.sf.eclipsecs.ui.quickfixes;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import net.sf.eclipsecs.core.builder.CheckstyleMarker;
-import net.sf.eclipsecs.core.config.meta.MetadataFactory;
-import net.sf.eclipsecs.core.config.meta.RuleMetadata;
-import net.sf.eclipsecs.core.util.CheckstyleLog;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
-
 import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.ui.IMarkerResolution;
 import org.eclipse.ui.IMarkerResolutionGenerator2;
 
+import net.sf.eclipsecs.core.builder.CheckstyleMarker;
+
 /**
- * Profides marker resolutions (quickfixes) for Checkstyle markers.
+ * Provides marker resolutions (quickfixes) for Checkstyle markers.
  *
  * @author Lars Ködderitzsch
  */
@@ -43,68 +36,31 @@ public class CheckstyleMarkerResolutionGenerator implements IMarkerResolutionGen
 
   @Override
   public IMarkerResolution[] getResolutions(IMarker marker) {
-
-    Collection<ICheckstyleMarkerResolution> fixes = new ArrayList<>();
-
-    // get all fixes that apply to this marker instance
-    String moduleName = marker.getAttribute(CheckstyleMarker.MODULE_NAME, null);
-
-    RuleMetadata metadata = MetadataFactory.getRuleMetadata(moduleName);
-    List<ICheckstyleMarkerResolution> potentialFixes = getInstantiatedQuickfixes(metadata);
-
-    for (ICheckstyleMarkerResolution fix : potentialFixes) {
-
-      if (fix.canFix(marker)) {
-        fixes.add(fix);
-      }
-    }
-
-    return fixes.toArray(new ICheckstyleMarkerResolution[fixes.size()]);
+    return CheckstyleQuickfixes.getInstance().getQuickfixes().stream()
+            .filter(fix -> fix.canFix(marker))
+            .toArray(IMarkerResolution[]::new);
   }
 
   @Override
   public boolean hasResolutions(IMarker marker) {
-
-    boolean hasAtLeastOneFix = false;
-
-    // check if there is at least one fix that really applies to the module
-    String moduleName = marker.getAttribute(CheckstyleMarker.MODULE_NAME, null);
-
-    RuleMetadata metadata = MetadataFactory.getRuleMetadata(moduleName);
-
-    if (metadata != null) {
-
-      List<ICheckstyleMarkerResolution> fixes = getInstantiatedQuickfixes(metadata);
-
-      for (ICheckstyleMarkerResolution fix : fixes) {
-
-        if (fix.canFix(marker)) {
-          hasAtLeastOneFix = true;
-          break;
-        }
-      }
+    if (!isCheckstyleMarker(marker)) {
+      return false;
     }
-    return hasAtLeastOneFix;
+    return CheckstyleQuickfixes.getInstance().getQuickfixes().stream()
+            .anyMatch(fix -> fix.canFix(marker));
   }
 
-  private List<ICheckstyleMarkerResolution> getInstantiatedQuickfixes(RuleMetadata ruleMetadata) {
-
-    List<ICheckstyleMarkerResolution> fixes = new ArrayList<>();
-
+  /**
+   * @param marker
+   * @return {@code true} if this is a checkstyle marker
+   */
+  private boolean isCheckstyleMarker(IMarker marker) {
     try {
-
-      for (String quickfixClassName : ruleMetadata.getQuickfixClassNames()) {
-
-        Class<?> quickfixClass = CheckstyleUIPlugin.getDefault().getQuickfixExtensionClassLoader()
-                .loadClass(quickfixClassName);
-
-        ICheckstyleMarkerResolution fix = (ICheckstyleMarkerResolution) quickfixClass.getDeclaredConstructor().newInstance();
-        fix.setRuleMetaData(ruleMetadata);
-        fixes.add(fix);
-      }
-    } catch (ReflectiveOperationException | IllegalArgumentException | SecurityException ex) {
-      CheckstyleLog.log(ex);
+      return CheckstyleMarker.MARKER_ID.equals(marker.getType());
+    } catch (CoreException ex) {
+      return false;
     }
-    return fixes;
   }
+
+
 }

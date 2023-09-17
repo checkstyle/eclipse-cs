@@ -7,11 +7,6 @@
           point="net.sf.eclipsecs.core.checkstyleAddonProvider">
     </extension>
 
-    <!-- This plugin provides custom quickfixes for Checkstyle problems. -->
-    <extension
-          point="net.sf.eclipsecs.ui.checkstyleQuickfixProvider">
-    </extension>
-
     <!--
         Sample builtin check configuration
     -->
@@ -38,5 +33,12 @@
             internal-name="SampleFilter"
             description="%filter.description"
             class="net.sf.eclipsecs.sample.filter.SampleFilter"/>
+    </extension>
+
+    <extension
+          point="net.sf.eclipsecs.ui.quickfix">
+       <quickfix
+             module="MethodLimit"
+             class="net.sf.eclipsecs.sample.checks.MethodLimitQuickfix"></quickfix>
     </extension>
 </plugin>

@@ -76,12 +76,12 @@ public class AvoidNestedBlocksQuickfix extends AbstractASTResolution {
 
   @Override
   public String getDescription() {
-    return Messages.AvoidNextedBlocksQuickfix_description;
+    return Messages.AvoidNestedBlocksQuickfix_description;
   }
 
   @Override
   public String getLabel() {
-    return Messages.AvoidNextedBlocksQuickfix_label;
+    return Messages.AvoidNestedBlocksQuickfix_label;
   }
 
   @Override

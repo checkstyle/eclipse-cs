@@ -104,9 +104,9 @@ public class Messages extends NLS {
 
   public static String StringLiteralEqualityQuickfix_label;
 
-  public static String AvoidNextedBlocksQuickfix_description;
+  public static String AvoidNestedBlocksQuickfix_description;
 
-  public static String AvoidNextedBlocksQuickfix_label;
+  public static String AvoidNestedBlocksQuickfix_label;
 
   public static String NeedBracesQuickfix_description;
 

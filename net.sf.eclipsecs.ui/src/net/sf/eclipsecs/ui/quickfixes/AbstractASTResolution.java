@@ -20,16 +20,14 @@
 
 package net.sf.eclipsecs.ui.quickfixes;
 
-import java.util.HashSet;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
-
 import net.sf.eclipsecs.core.builder.CheckstyleMarker;
-import net.sf.eclipsecs.core.config.meta.RuleMetadata;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.ui.Messages;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.filebuffers.FileBuffers;
 import org.eclipse.core.filebuffers.ITextFileBuffer;
 import org.eclipse.core.filebuffers.ITextFileBufferManager;
@@ -71,14 +69,12 @@ import org.eclipse.ui.views.markers.WorkbenchMarkerResolution;
 public abstract class AbstractASTResolution extends WorkbenchMarkerResolution
         implements ICheckstyleMarkerResolution {
 
-  private boolean mAutoCommit;
-
-  private RuleMetadata mMetaData;
+  private String module;
 
   /**
    * Template method to be implemented by concrete quickfix implementations. These must provide
-   * their fixing modification through an AST visitor, more specifically by doing the neccessary
-   * modifications directly on the visited AST nodes. The AST itself will recored modification.
+   * their fixing modification through an AST visitor, more specifically by doing the necessary
+   * modifications directly on the visited AST nodes. The AST itself will record modification.
    *
    * @param lineInfo
    *          the IRegion for the line containing the marker to fix
@@ -90,26 +86,21 @@ public abstract class AbstractASTResolution extends WorkbenchMarkerResolution
           int markerStartOffset);
 
   @Override
-  public void setRuleMetaData(RuleMetadata metadata) {
-    this.mMetaData = metadata;
-  }
-
-  @Override
   public boolean canFix(IMarker marker) {
-
-    String moduleName = marker.getAttribute(CheckstyleMarker.MODULE_NAME, null);
     try {
-      return CheckstyleMarker.MARKER_ID.equals(marker.getType())
-              && (mMetaData.getInternalName().equals(moduleName)
-                      || mMetaData.getAlternativeNames().contains(moduleName));
+      if (!CheckstyleMarker.MARKER_ID.equals(marker.getType())) {
+        return false;
+      }
+      String markerModule = marker.getAttribute(CheckstyleMarker.MODULE_NAME, StringUtils.EMPTY);
+      if (module.equals(markerModule)) {
+        return true;
+      }
+      var shortName = StringUtils.substringAfterLast(markerModule, '.');
+      return module.equals(shortName);
     } catch (CoreException ex) {
-      throw new IllegalStateException(ex);
+      // ignore
     }
-  }
-
-  @Override
-  public void setAutoCommitChanges(boolean autoCommit) {
-    mAutoCommit = autoCommit;
+    return false;
   }
 
   @Override
@@ -120,17 +111,9 @@ public abstract class AbstractASTResolution extends WorkbenchMarkerResolution
 
   @Override
   public IMarker[] findOtherMarkers(IMarker[] markers) {
-
-    Set<IMarker> candidates = new HashSet<>();
-
-    for (IMarker m : markers) {
-
-      if (canFix(m)) {
-        candidates.add(m);
-      }
-    }
-
-    return candidates.toArray(new IMarker[candidates.size()]);
+    return Arrays.stream(markers)
+            .filter(this::canFix)
+            .toArray(IMarker[]::new);
   }
 
   @Override
@@ -192,11 +175,12 @@ public abstract class AbstractASTResolution extends WorkbenchMarkerResolution
       ast.accept(handleGetCorrectingASTVisitor(lineInfo, markerStart));
 
       // rewrite all recorded changes to the document
+      var wasDirtyBefore = textFileBuffer.isDirty();
       TextEdit edit = ast.rewrite(document, compilationUnit.getJavaProject().getOptions(true));
       edit.apply(document);
 
       // commit changes to underlying file
-      if (mAutoCommit) {
+      if (!wasDirtyBefore) {
         textFileBuffer.commit(monitor, false);
       }
     } catch (CoreException | MalformedTreeException | BadLocationException ex) {
@@ -211,6 +195,11 @@ public abstract class AbstractASTResolution extends WorkbenchMarkerResolution
         }
       }
     }
+  }
+
+  @Override
+  public void setModule(String module) {
+    this.module = module;
   }
 
   /**
