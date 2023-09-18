@@ -1,4 +1,9 @@
 eclipse.preferences.version=1
 formatter_profile=_Checkstyle
 formatter_settings_version=23
+org.eclipse.jdt.ui.exception.name=ex
+org.eclipse.jdt.ui.gettersetter.use.is=true
+org.eclipse.jdt.ui.javadoc=true
+org.eclipse.jdt.ui.keywordthis=false
+org.eclipse.jdt.ui.overrideannotation=true
 org.eclipse.jdt.ui.text.custom_code_templates=
