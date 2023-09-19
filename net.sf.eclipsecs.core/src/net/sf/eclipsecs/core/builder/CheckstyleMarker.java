@@ -20,6 +20,9 @@
 
 package net.sf.eclipsecs.core.builder;
 
+import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.runtime.CoreException;
+
 import net.sf.eclipsecs.core.CheckstylePlugin;
 
 /**
@@ -45,6 +48,15 @@ public final class CheckstyleMarker {
   public static final String INFO_TYPE = CheckstylePlugin.PLUGIN_ID + ".info"; //$NON-NLS-1$
 
   private CheckstyleMarker() {
-    // NOOP
+    // utility class
+  }
+
+  public static boolean isCheckstyleMarker(IMarker marker) {
+    try {
+      return CheckstyleMarker.MARKER_ID.equals(marker.getType());
+    } catch (CoreException ex) {
+      // ignore
+    }
+    return false;
   }
 }

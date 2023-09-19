@@ -610,5 +610,18 @@
              module="UpperEllCheck"
              class="net.sf.eclipsecs.ui.quickfixes.misc.UpperEllQuickfix">
        </quickfix>
+   </extension>
+   <extension
+          point="org.eclipse.ui.ide.markerHelp">
+       <markerHelp
+             helpContextProvider="net.sf.eclipsecs.ui.quickfixes.MarkerHelpContextProvider"
+             markerType="net.sf.eclipsecs.core.CheckstyleMarker"
+             matchChildren="false"></markerHelp>
+    </extension>
+    <extension
+          point="org.eclipse.help.contexts">
+       <contextProvider
+             class="net.sf.eclipsecs.ui.quickfixes.MarkerHelpContextProvider">
+       </contextProvider>
     </extension>
 </plugin>

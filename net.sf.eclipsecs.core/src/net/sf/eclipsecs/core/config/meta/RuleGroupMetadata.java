@@ -28,6 +28,11 @@ import java.util.List;
  */
 public class RuleGroupMetadata {
 
+  /**
+   * group id, used for online help URL calculation
+   */
+  private final String mGroupId;
+
   /** The name of the group. */
   private String mGroupName;
 
@@ -43,7 +48,8 @@ public class RuleGroupMetadata {
   /** The list of modules belonging to the group. */
   private List<RuleMetadata> mRuleMetadata = new LinkedList<>();
 
-  RuleGroupMetadata(String groupName, String groupDesc, boolean hidden, int priority) {
+  RuleGroupMetadata(String groupId, String groupName, String groupDesc, boolean hidden, int priority) {
+    mGroupId = groupId;
     mGroupName = groupName;
     mDescription = groupDesc;
     mIsHidden = hidden;
@@ -93,5 +99,12 @@ public class RuleGroupMetadata {
    */
   public final List<RuleMetadata> getRuleMetadata() {
     return mRuleMetadata;
+  }
+
+  /**
+   * @return the group id
+   */
+  public String getGroupId() {
+    return mGroupId;
   }
 }
