@@ -9,7 +9,8 @@ Bundle-ActivationPolicy: lazy
 Require-Bundle: net.sf.eclipsecs.core,
  org.eclipse.core.expressions,
  org.eclipse.ui.workbench,
- org.eclipse.jface
+ org.eclipse.jface,
+ org.eclipse.help;bundle-version="3.9.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: net.sf.eclipsecs.ui,
  net.sf.eclipsecs.ui.properties.filter,

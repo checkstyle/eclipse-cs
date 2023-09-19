@@ -176,7 +176,7 @@ public final class MetadataFactory {
         final String ruleDescription = sThirdPartyRuleGroupMap.get(lookupKey).get("description");
         final int rulePriority = Integer.parseInt(sThirdPartyRuleGroupMap.get(lookupKey)
                 .get("priority"));
-        group = new RuleGroupMetadata(ruleGroupName, ruleDescription, false, rulePriority);
+        group = new RuleGroupMetadata(ruleGroupName, ruleGroupName, ruleDescription, false, rulePriority);
         sRuleGroupMetadata.put(ruleGroupName, group);
       }
     }
@@ -534,9 +534,8 @@ public final class MetadataFactory {
       try (InputStream metadataStream = classLoader.getResourceAsStream(metadataFile)) {
 
         if (metadataStream != null) {
-
           ResourceBundle metadataBundle = getMetadataI18NBundle(metadataFile, classLoader);
-          parseMetadata(metadataStream, metadataBundle);
+          parseMetadata(metadataStream, metadataBundle, groupId(metadataFile));
         }
       } catch (DocumentException | IOException ex) {
         CheckstyleLog.log(ex, "Could not read metadata " + metadataFile); //$NON-NLS-1$
@@ -544,6 +543,19 @@ public final class MetadataFactory {
     }
 
     loadRuleMetadata();
+  }
+
+  /**
+   * @param metadataFile
+   * @return
+   */
+  private static String groupId(String metadataFile) {
+    var start = metadataFile.indexOf("checks/") + 7;
+    var end = metadataFile.lastIndexOf("/");
+    if (start >= end) {
+      return "";
+    }
+    return metadataFile.substring(start, end);
   }
 
   /**
@@ -648,7 +660,7 @@ public final class MetadataFactory {
     }
   }
 
-  private static void parseMetadata(InputStream metadataStream, ResourceBundle metadataBundle)
+  private static void parseMetadata(InputStream metadataStream, ResourceBundle metadataBundle, String groupId)
           throws DocumentException, CheckstylePluginException {
 
     SAXReader reader = new SAXReader();
@@ -660,7 +672,7 @@ public final class MetadataFactory {
 
     for (Element groupEl : groupElements) {
 
-      String groupName = groupEl.attributeValue(XMLTags.NAME_TAG).trim();
+      var groupName = groupEl.attributeValue(XMLTags.NAME_TAG).trim();
       groupName = localize(groupName, metadataBundle);
 
       // process description
@@ -680,7 +692,7 @@ public final class MetadataFactory {
           priority = Integer.MAX_VALUE;
         }
 
-        group = new RuleGroupMetadata(groupName, groupDesc, hidden, priority);
+        group = new RuleGroupMetadata(groupId, groupName, groupDesc, hidden, priority);
         sRuleGroupMetadata.put(groupName, group);
       }
 
