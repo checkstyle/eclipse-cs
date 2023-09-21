@@ -15,6 +15,10 @@ location "https://download.eclipse.org/releases/2021-06/202106161001/" {
 	org.eclipse.ecf.filetransfer
 	org.eclipse.ecf.identity
 	org.eclipse.ecf.provider.filetransfer
+
+	// additional support plugins which are useful during development, but will not be part of the product
+	org.eclipse.tools.layout.spy
+	org.eclipse.ui.trace
 }
 
 // matching release of JUnit 5 from Eclipse Orbit

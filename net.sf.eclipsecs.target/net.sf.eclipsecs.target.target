@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl -->
-<target name="Eclipse Checkstyle" sequenceNumber="1685003741">
+<target name="Eclipse Checkstyle" sequenceNumber="1695316836">
   <locations>
     <location includeMode="slicer" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="true" type="InstallableUnit">
       <unit id="org.eclipse.jdt.feature.group" version="3.18.800.v20210611-1600"/>
@@ -11,6 +11,8 @@
       <unit id="org.eclipse.ecf.filetransfer" version="5.1.102.v20210409-2301"/>
       <unit id="org.eclipse.ecf.identity" version="3.9.402.v20210409-2301"/>
       <unit id="org.eclipse.ecf.provider.filetransfer" version="3.2.601.v20201025-0700"/>
+      <unit id="org.eclipse.tools.layout.spy" version="1.1.0.v20210110-1247"/>
+      <unit id="org.eclipse.ui.trace" version="1.2.0.v20210110-1242"/>
       <repository location="https://download.eclipse.org/releases/2021-06/202106161001/"/>
     </location>
     <location includeMode="slicer" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="true" type="InstallableUnit">
