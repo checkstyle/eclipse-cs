@@ -206,7 +206,7 @@ public class MarkerStatsView extends AbstractStatsView {
     idCol.setText(Messages.MarkerStatsView_kindOfErrorColumn);
     idCol.setWidth(400);
 
-    TableColumn countCol = new TableColumn(table, SWT.CENTER, 2);
+    TableColumn countCol = new TableColumn(table, SWT.RIGHT, 2);
     countCol.setText(Messages.MarkerStatsView_numberOfErrorsColumn);
     countCol.pack();
 
@@ -270,7 +270,7 @@ public class MarkerStatsView extends AbstractStatsView {
     folderCol.setText(Messages.MarkerStatsView_folderColumn);
     folderCol.setWidth(300);
 
-    TableColumn countCol = new TableColumn(table, SWT.CENTER, 3);
+    TableColumn countCol = new TableColumn(table, SWT.RIGHT, 3);
     countCol.setText(Messages.MarkerStatsView_lineColumn);
     countCol.pack();
 
