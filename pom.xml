@@ -19,15 +19,33 @@
     </modules>
 
     <properties>
+        <build-helper-maven-plugin-version>3.3.0</build-helper-maven-plugin-version>
+        <download-maven-plugin-version>1.6.8</download-maven-plugin-version>
+        <exec-maven-plugin-version>3.1.0</exec-maven-plugin-version>
+        <junit-jupiter-version>5.9.2</junit-jupiter-version>
+        <maven-antrun-plugin-version>3.1.0</maven-antrun-plugin-version>
+        <maven-checkstyle-plugin-version>3.2.1</maven-checkstyle-plugin-version>
+        <maven-clean-plugin-version>3.2.0</maven-clean-plugin-version>
+        <maven-compiler-plugin-version>3.10.1</maven-compiler-plugin-version>
+        <maven-deploy-plugin-version>3.1.1</maven-deploy-plugin-version>
+        <maven-enforcer-plugin-version>3.2.1</maven-enforcer-plugin-version>
+        <maven-failsafe-plugin-version>2.22.2</maven-failsafe-plugin-version>
+        <maven-install-plugin-version>3.1.0</maven-install-plugin-version>
+        <maven-resources-plugin-version>3.3.1</maven-resources-plugin-version>
+        <maven-site-plugin-version>3.12.0</maven-site-plugin-version>
+        <maven-surefire-plugin-version>2.22.2</maven-surefire-plugin-version>
+        <maven-version>3.6.3</maven-version>
         <tycho-version>2.7.5</tycho-version>
+        <versions-maven-plugin-version>2.15.0</versions-maven-plugin-version>
+
+        <!-- sevntu and patch-filters need to use a compatible/compiled version with checkstyle -->
+        <sevntu-checkstyle-plugin-checkstyle-version>10.4</sevntu-checkstyle-plugin-checkstyle-version>
+        <sevntu-checkstyle-plugin-version>1.44.1</sevntu-checkstyle-plugin-version>
+        <patch-filters-plugin-version>1.4.0</patch-filters-plugin-version>
+
         <tycho.scmUrl>scm:git:git://github.com:checkstyle/eclipse-cs.git</tycho.scmUrl>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.checkstyle.plugin.version>3.2.1</maven.checkstyle.plugin.version>
-        <!-- sevntu and patch-filters need to use a compatible/compiled version with checkstyle -->
-        <maven.sevntu.checkstyle.plugin.checkstyle.version>10.4</maven.sevntu.checkstyle.plugin.checkstyle.version>
-        <maven.sevntu.checkstyle.plugin.version>1.44.1</maven.sevntu.checkstyle.plugin.version>
-        <maven.patch.filters.plugin.version>1.4.0</maven.patch.filters.plugin.version>
-        <!-- see above -->
+
         <!-- ignore all versions with non numerical parts during versions:display-plugin-updates -->
         <maven.version.ignore>.*[a-zA-Z]+.*</maven.version.ignore>
     </properties>
@@ -54,13 +72,13 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>5.9.2</version>
+            <version>${junit-jupiter-version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.9.2</version>
+            <version>${junit-jupiter-version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -142,22 +160,22 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>${maven.checkstyle.plugin.version}</version>
+                <version>${maven-checkstyle-plugin-version}</version>
                 <dependencies>
                     <dependency>
                         <groupId>com.puppycrawl.tools</groupId>
                         <artifactId>checkstyle</artifactId>
-                        <version>${maven.sevntu.checkstyle.plugin.checkstyle.version}</version>
+                        <version>${sevntu-checkstyle-plugin-checkstyle-version}</version>
                     </dependency>
                     <dependency>
                         <groupId>com.github.sevntu-checkstyle</groupId>
                         <artifactId>sevntu-checks</artifactId>
-                        <version>${maven.sevntu.checkstyle.plugin.version}</version>
+                        <version>${sevntu-checkstyle-plugin-version}</version>
                     </dependency>
                     <dependency>
                         <groupId>com.puppycrawl.tools</groupId>
                         <artifactId>patch-filters</artifactId>
-                        <version>${maven.patch.filters.plugin.version}</version>
+                        <version>${patch-filters-plugin-version}</version>
                     </dependency>
                 </dependencies>
                 <executions>
@@ -205,24 +223,24 @@
             <plugins>
                 <plugin>
                     <artifactId>maven-antrun-plugin</artifactId>
-                    <version>3.1.0</version>
+                    <version>${maven-antrun-plugin-version}</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-failsafe-plugin</artifactId>
-                    <version>2.22.2</version>
+                    <version>${maven-failsafe-plugin-version}</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-install-plugin</artifactId>
-                    <version>3.1.0</version>
+                    <version>${maven-install-plugin-version}</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-site-plugin</artifactId>
-                    <version>3.12.0</version>
+                    <version>${maven-site-plugin-version}</version>
                 </plugin>
                 <plugin>
                     <groupId>com.googlecode.maven-download-plugin</groupId>
                     <artifactId>download-maven-plugin</artifactId>
-                    <version>1.6.8</version>
+                    <version>${download-maven-plugin-version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.eclipse.tycho</groupId>
@@ -351,14 +369,14 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-deploy-plugin</artifactId>
-                    <version>3.1.1</version>
+                    <version>${maven-deploy-plugin-version}</version>
                     <configuration>
                         <skip>true</skip>
                     </configuration>
                 </plugin>
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.22.2</version>
+                    <version>${maven-surefire-plugin-version}</version>
                     <configuration>
                         <includes>
                             <include>**/*Test.java</include>
@@ -367,7 +385,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.10.1</version>
+                    <version>${maven-compiler-plugin-version}</version>
                     <executions>
                         <execution>
                             <id>compiletests</id>
@@ -385,7 +403,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-enforcer-plugin</artifactId>
-                    <version>3.2.1</version>
+                    <version>${maven-enforcer-plugin-version}</version>
                     <executions>
                         <execution>
                             <id>enforce-maven</id>
@@ -397,7 +415,7 @@
                                     <banDuplicatePomDependencyVersions/>
                                     <requireExplicitDependencyScope/>
                                     <requireMavenVersion>
-                                        <version>3.6.3</version>
+                                        <version>${maven-version}</version>
                                     </requireMavenVersion>
                                     <requirePluginVersions/>
                                     <requireReleaseDeps>
@@ -412,21 +430,21 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-resources-plugin</artifactId>
-                    <version>3.3.1</version>
+                    <version>${maven-resources-plugin-version}</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-clean-plugin</artifactId>
-                    <version>3.2.0</version>
+                    <version>${maven-clean-plugin-version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>exec-maven-plugin</artifactId>
-                    <version>3.1.0</version>
+                    <version>${exec-maven-plugin-version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>build-helper-maven-plugin</artifactId>
-                    <version>3.3.0</version>
+                    <version>${build-helper-maven-plugin-version}</version>
                 </plugin>
                 <!-- This plugin's configuration is used to silence Eclipse M2E warnings for
                 Maven goals that cannot be mapped to the Eclipse build lifecycle.
@@ -500,7 +518,7 @@
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>versions-maven-plugin</artifactId>
-                    <version>2.15.0</version>
+                    <version>${versions-maven-plugin-version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
