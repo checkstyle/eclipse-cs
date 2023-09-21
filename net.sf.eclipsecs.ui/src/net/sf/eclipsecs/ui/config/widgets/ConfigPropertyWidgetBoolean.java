@@ -68,7 +68,7 @@ public class ConfigPropertyWidgetBoolean extends ConfigPropertyWidgetAbstractBas
 
   @Override
   public String getValue() {
-    return "" + mCheckbox.getSelection(); //$NON-NLS-1$
+    return Boolean.toString(mCheckbox.getSelection());
   }
 
   @Override

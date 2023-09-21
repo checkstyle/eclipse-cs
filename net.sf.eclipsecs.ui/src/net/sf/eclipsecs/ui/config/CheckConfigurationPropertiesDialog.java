@@ -309,7 +309,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
         MessageDialog dialog = new MessageDialog(getShell(),
                 Messages.CheckConfigurationPropertiesDialog_titleUnresolvedProps, null,
                 NLS.bind(Messages.CheckConfigurationPropertiesDialog_msgUnresolvedProps,
-                        "" + unresolvedProps.size()), //$NON-NLS-1$
+                        Integer.toString(unresolvedProps.size())),
                 MessageDialog.WARNING,
                 new String[] { Messages.CheckConfigurationPropertiesDialog_btnEditProps,
                     Messages.CheckConfigurationPropertiesDialog_btnContinue,

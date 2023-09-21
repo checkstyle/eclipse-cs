@@ -391,8 +391,8 @@ public class FileSetEditDialog extends TitleAreaDialog {
   private void updateMatchView() {
     mMatchesViewer.refresh();
     mMatchGroup.setText(NLS.bind(Messages.FileSetEditDialog_titleTestResult,
-            new String[] { mProject.getName(), "" + mMatchesViewer.getTable().getItemCount(), //$NON-NLS-1$
-                "" + mProjectFiles.size() })); //$NON-NLS-1$
+            new String[] { mProject.getName(), Integer.toString(mMatchesViewer.getTable().getItemCount()),
+                Integer.toString(mProjectFiles.size()) }));
   }
 
   @Override

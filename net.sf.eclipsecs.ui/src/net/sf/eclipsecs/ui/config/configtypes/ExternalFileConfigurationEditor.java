@@ -201,7 +201,7 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
     mWorkingCopy.setName(mConfigName.getText());
     mWorkingCopy.setDescription(mDescription.getText());
     mWorkingCopy.getAdditionalData().put(ExternalFileConfigurationType.KEY_PROTECT_CONFIG,
-            "" + mChkProtectConfig.getSelection()); //$NON-NLS-1$
+            Boolean.toString(mChkProtectConfig.getSelection()));
 
     try {
       mWorkingCopy.setLocation(mLocation.getText());
