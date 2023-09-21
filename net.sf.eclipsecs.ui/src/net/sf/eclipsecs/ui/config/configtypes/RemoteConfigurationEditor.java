@@ -233,7 +233,7 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
     mWorkingCopy.setDescription(mDescription.getText());
 
     mWorkingCopy.getAdditionalData().put(RemoteConfigurationType.KEY_CACHE_CONFIG,
-            "" + mChkCacheConfig.getSelection()); //$NON-NLS-1$
+            Boolean.toString(mChkCacheConfig.getSelection()));
 
     return mWorkingCopy;
   }

@@ -196,10 +196,10 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
         try {
           translation = TOKEN_BUNDLE.getString((String) element);
         } catch (MissingResourceException ex) {
-          translation = "" + element; //$NON-NLS-1$
+          translation = element.toString();
         }
       } else {
-        translation = "" + element; //$NON-NLS-1$
+        translation = element.toString();
       }
       return translation;
     }

@@ -603,7 +603,7 @@ public class MarkerStatsView extends AbstractStatsView {
           text = stat.getIdentifiant();
           break;
         case 2:
-          text = stat.getCount() + ""; //$NON-NLS-1$
+          text = Integer.toString(stat.getCount());
           break;
 
         default:
