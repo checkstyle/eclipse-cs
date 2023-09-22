@@ -39,7 +39,7 @@
         <versions-maven-plugin-version>2.16.1</versions-maven-plugin-version>
 
         <!-- sevntu and patch-filters need to use a compatible/compiled version with checkstyle -->
-        <sevntu-checkstyle-plugin-checkstyle-version>10.4</sevntu-checkstyle-plugin-checkstyle-version>
+        <sevntu-checkstyle-plugin-checkstyle-version>10.12.3</sevntu-checkstyle-plugin-checkstyle-version>
         <sevntu-checkstyle-plugin-version>1.44.1</sevntu-checkstyle-plugin-version>
         <patch-filters-plugin-version>1.4.0</patch-filters-plugin-version>
 
