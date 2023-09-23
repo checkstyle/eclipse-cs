@@ -6,7 +6,7 @@ public class A {
     public boolean foo() {
         if (true) {
             return true;
-        } else { 
+        } else {
             return false;
         }
     }

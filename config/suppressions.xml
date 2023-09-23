@@ -234,8 +234,4 @@
     <suppress id="JavadocPackage"
              files=".*"
              />
-    <!-- exclude test code, see also /net.sf.eclipsecs.ui/.checkstyle -->
-    <suppress checks=".*"
-             files="test[/\\].*"
-             />
 </suppressions>

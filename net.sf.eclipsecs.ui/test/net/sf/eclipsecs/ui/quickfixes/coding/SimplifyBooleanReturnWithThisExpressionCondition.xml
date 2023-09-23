@@ -6,7 +6,7 @@ public class Boolean {
     public boolean foo() {
         if (Boolean.this) {
             return true;
-        } else { 
+        } else {
             return false;
         }
     }
@@ -26,7 +26,7 @@ public class Boolean {
     public boolean foo() {
         if (Boolean.this) {
             return false;
-        } else { 
+        } else {
             return true;
         }
     }

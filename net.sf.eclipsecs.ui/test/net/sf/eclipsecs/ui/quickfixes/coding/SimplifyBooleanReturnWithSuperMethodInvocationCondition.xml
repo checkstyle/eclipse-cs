@@ -6,7 +6,7 @@ public class A extends B {
     public boolean foo() {
         if (super.bar()) {
             return true;
-        } else { 
+        } else {
             return false;
         }
     }

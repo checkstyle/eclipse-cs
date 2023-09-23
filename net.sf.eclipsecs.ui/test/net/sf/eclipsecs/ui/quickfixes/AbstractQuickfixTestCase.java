@@ -1,3 +1,23 @@
+//============================================================================
+//
+// Copyright (C) 2003-2023 the original author or authors.
+//
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+//
+//============================================================================
+
 package net.sf.eclipsecs.ui.quickfixes;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -8,6 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -33,9 +54,6 @@ public abstract class AbstractQuickfixTestCase {
     assertNotNull(stream, "Cannot find resource " + testDataXml + " in package "
             + getClass().getPackage().getName());
     try {
-      System.out.println(
-              "Test quickfix " + quickfix.getClass() + " with input file `" + testDataXml + "`");
-
       testQuickfix(stream, quickfix);
     } finally {
       stream.close();
@@ -57,9 +75,6 @@ public abstract class AbstractQuickfixTestCase {
 
       int markerStartOffset = region.getOffset() + testdata[i].position;
 
-      System.out.println("Invoke quickfix " + quickfix.getClass() + " with markerStartOffset="
-              + markerStartOffset);
-
       compUnit.accept(quickfix.handleGetCorrectingASTVisitor(region, markerStartOffset));
 
       Map<String, String> options = new HashMap<>();
@@ -73,7 +88,7 @@ public abstract class AbstractQuickfixTestCase {
       TextEdit edit = compUnit.rewrite(doc, options);
       edit.apply(doc);
 
-      assertEquals(testdata[i].result, doc.get());
+      assertEquals(testdata[i].result, doc.get().lines().map(String::stripTrailing).collect(Collectors.joining("\n")));
     }
 
   }
@@ -89,26 +104,23 @@ public abstract class AbstractQuickfixTestCase {
 
     NodeList nl = doc.getElementsByTagName("testcase");
     for (int i = 0, size = nl.getLength(); i < size; i++) {
+      QuickfixTestData td = new QuickfixTestData();
       Element testCase = (Element) nl.item(i);
 
       Element input = (Element) testCase.getElementsByTagName("input").item(0);
-      int line = Integer.parseInt(input.getAttribute("fix-line"));
+      td.line = Integer.parseInt(input.getAttribute("fix-line"));
 
-      int position = 0;
       if (StringUtils.isNotBlank(input.getAttribute("position"))) {
-        position = Integer.parseInt(input.getAttribute("position"));
+        td.position = Integer.parseInt(input.getAttribute("position"));
+      }
+      else {
+        td.position = 0;
       }
 
       Element result = (Element) testCase.getElementsByTagName("result").item(0);
 
-      String inputString = input.getFirstChild().getNodeValue().trim();
-      String resultString = result.getFirstChild().getNodeValue().trim();
-
-      QuickfixTestData td = new QuickfixTestData();
-      td.input = inputString;
-      td.result = resultString;
-      td.line = line;
-      td.position = position;
+      td.input = input.getFirstChild().getNodeValue().trim();
+      td.result = result.getFirstChild().getNodeValue().trim();
 
       testdata.add(td);
     }
