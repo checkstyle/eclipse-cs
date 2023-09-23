@@ -35,27 +35,36 @@ location "https://download.eclipse.org/tools/orbit/downloads/drops/R202106020316
 
 // If the following part has errors and no syntax highlighting, then please use Help>About>Installation>Installed Software>Target Platform DSL>Uninstall.
 // After restarting please install the current version from the URL in line 1.
-maven MavenDependencies
+maven ApacheCommons
 	scope=compile
 	dependencyDepth=none
 	missingManifest=generate
 	includeSources
 {
 	dependency {
-		groupId="org.dom4j"
-		artifactId="dom4j"
-		version="2.1.3"
+		groupId="org.apache.commons"
+		artifactId="commons-lang3"
+		version="3.12.0"
 	}
+}
+maven AssertJ
+	scope=compile
+	dependencyDepth=direct
+	missingManifest=generate
+	includeSources
+{
 	dependency {
-		groupId="org.javassist"
-		artifactId="javassist"
-		version="3.29.2-GA"
+		groupId="org.assertj"
+		artifactId="assertj-core"
+		version="3.24.2"
 	}
-	dependency {
-		groupId="org.yaml"
-		artifactId="snakeyaml"
-		version="1.33"
-	}
+}
+maven JFreeCharts
+	scope=compile
+	dependencyDepth=none
+	missingManifest=generate
+	includeSources
+{
 	dependency {
 		groupId="org.jfree"
 		artifactId="jcommon"
@@ -76,9 +85,40 @@ maven MavenDependencies
 		artifactId="swtgraphics2d"
 		version="1.1.0"
 	}
+}
+maven DOM4J
+	scope=compile
+	dependencyDepth=none
+	missingManifest=generate
+	includeSources
+{
 	dependency {
-		groupId="org.apache.commons"
-		artifactId="commons-lang3"
-		version="3.12.0"
+		groupId="org.dom4j"
+		artifactId="dom4j"
+		version="2.1.3"
+	}
+}
+maven Javassist
+	scope=compile
+	dependencyDepth=none
+	missingManifest=generate
+	includeSources
+{
+	dependency {
+		groupId="org.javassist"
+		artifactId="javassist"
+		version="3.29.2-GA"
+	}
+}
+maven SnakeYaml
+	scope=compile
+	dependencyDepth=none
+	missingManifest=generate
+	includeSources
+{
+	dependency {
+		groupId="org.yaml"
+		artifactId="snakeyaml"
+		version="1.33"
 	}
 }

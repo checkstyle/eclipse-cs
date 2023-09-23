@@ -389,7 +389,12 @@
         <!-- Imports -->
         <module name="AvoidStarImport"/>
         <module name="AvoidStaticImport"/>
-        <module name="IllegalImport"/>
+        <module name="IllegalImport">
+            <property name="illegalClasses"
+                      value="org.junit.jupiter.api.Assertions"/>
+            <message key="import.illegal"
+                     value="Use org.assertj.core.api.Assertions instead."/>
+        </module>
         <module name="ImportControl">
             <property name="id" value="ImportControlMain"/>
             <property name="file" value="${checkstyle.importcontrol.file}"/>

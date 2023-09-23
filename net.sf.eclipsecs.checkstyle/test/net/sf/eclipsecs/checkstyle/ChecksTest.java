@@ -21,8 +21,7 @@
 package net.sf.eclipsecs.checkstyle;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -56,13 +55,13 @@ public class ChecksTest {
 
     final Set<String> packages = CheckUtil.getPackages(modules);
 
-    assertTrue(modules.size() > 0, "no modules");
+    assertThat(modules).as("modules").isNotEmpty();
 
     for (String p : packages) {
-      assertTrue(new File(getEclipseCsPath(p, "")).exists(), "folder " + p + " must exist in eclipsecs");
+      assertThat(new File(getEclipseCsPath(p, ""))).exists();
 
       final Set<Class<?>> packgeModules = CheckUtil.getModulesInPackage(modules, p);
-      assertTrue(packgeModules.size() > 0, "package must have modules");
+      assertThat(packgeModules).as("package modules").isNotEmpty();
 
       validateEclipseCsMetaXmlFile(new File(getEclipseCsPath(p, "/checkstyle-metadata.xml")), p);
 
@@ -72,36 +71,48 @@ public class ChecksTest {
   }
 
   private static void validateEclipseCsMetaXmlFile(File file, String packge) throws Exception {
-    assertTrue(file.exists(), "'checkstyle-metadata.xml' must exist in eclipsecs inside " + packge);
+    assertThat(file)
+            .withFailMessage(
+                    () -> "'checkstyle-metadata.xml' must exist in eclipsecs inside " + packge)
+            .exists();
 
     final String input = new String(Files.readAllBytes(file.toPath()), UTF_8);
     final Document document = XmlUtil.getRawXml(file.getAbsolutePath(), input, input);
 
     final NodeList ruleGroups = document.getElementsByTagName("rule-group-metadata");
 
-    assertEquals(1, ruleGroups.getLength(), packge + " checkstyle-metadata.xml must contain only one rule group");
+    assertThat(ruleGroups.getLength())
+            .withFailMessage(
+                    () -> packge + " checkstyle-metadata.xml must contain only one rule group")
+            .isEqualTo(1);
 
     for (int position = 0; position < ruleGroups.getLength(); position++) {
       final Node ruleGroup = ruleGroups.item(position);
       final Set<Node> children = XmlUtil.getChildrenElements(ruleGroup);
 
-      assertEquals(0, children.size(), packge + " checkstyle-metadata.xml must contain no rules");
+      assertThat(children)
+              .withFailMessage(() -> packge + " checkstyle-metadata.xml must contain no rules")
+              .isEmpty();
     }
   }
 
   private static void validateEclipseCsMetaPropFile(File file, String packge) throws Exception {
-    assertTrue(file.exists(), "'checkstyle-metadata.properties' must exist in eclipsecs inside " + packge);
+    assertThat(file).withFailMessage(
+            () -> "'checkstyle-metadata.properties' must exist in eclipsecs inside " + packge)
+            .exists();
 
     final Properties prop = new Properties();
     prop.load(new FileInputStream(file));
 
     final Set<Object> properties = new HashSet<>(Collections.list(prop.keys()));
 
-    assertEquals(1, properties.size(),
-            packge + " checkstyle-metadata.properties must contain only the rule group name");
+    assertThat(properties).withFailMessage(
+            () -> packge + " checkstyle-metadata.properties must contain only the rule group name")
+            .hasSize(1);
 
-    assertTrue(properties.iterator().next().toString().endsWith(".group"),
-            packge + " checkstyle-metadata.properties must contain only the rule group name");
+    assertThat(properties.iterator().next().toString()).withFailMessage(
+            () -> packge + " checkstyle-metadata.properties must contain only the rule group name")
+            .endsWith(".group");
   }
 
   private static String getEclipseCsPath(String packageName, String fileName) throws IOException {

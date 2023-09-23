@@ -20,8 +20,7 @@
 
 package net.sf.eclipsecs.ui.quickfixes;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -50,13 +49,10 @@ public abstract class AbstractQuickfixTestCase {
 
   protected void testQuickfix(final String testDataXml, final AbstractASTResolution quickfix)
           throws Exception {
-    InputStream stream = getClass().getResourceAsStream(testDataXml);
-    assertNotNull(stream, "Cannot find resource " + testDataXml + " in package "
-            + getClass().getPackage().getName());
-    try {
+    try (InputStream stream = getClass().getResourceAsStream(testDataXml)) {
+      assertThat(stream).withFailMessage(() -> "Cannot find resource " + testDataXml + " in package "
+            + getClass().getPackage().getName()).isNotNull();
       testQuickfix(stream, quickfix);
-    } finally {
-      stream.close();
     }
   }
 
@@ -88,7 +84,8 @@ public abstract class AbstractQuickfixTestCase {
       TextEdit edit = compUnit.rewrite(doc, options);
       edit.apply(doc);
 
-      assertEquals(testdata[i].result, doc.get().lines().map(String::stripTrailing).collect(Collectors.joining("\n")));
+      String trailingSpaceRemoved = doc.get().lines().map(String::stripTrailing).collect(Collectors.joining("\n"));
+      assertThat(trailingSpaceRemoved).isEqualTo(testdata[i].result);
     }
 
   }
