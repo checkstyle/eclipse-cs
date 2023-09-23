@@ -33,3 +33,11 @@ jobs:
 
     - name: Difference Check
       run: ./.ci/validation.sh git-diff
+
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v2
+      # we only want to attach test results one time, not for every matrix combination
+      if: startsWith(matrix.platform, 'ubuntu') && (matrix.jdk == 17)
+      with:
+        files: '**/target/surefire-reports/*.xml'
+
