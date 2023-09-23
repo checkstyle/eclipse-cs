@@ -3,7 +3,13 @@
 version: 2
 updates:
   - package-ecosystem: maven
-    directory: "/"
+    directory: /
     schedule:
-      interval: "weekly"
-    open-pull-requests-limit: 10
+      interval: weekly
+    ignore:
+      - dependency-name: com.puppycrawl.tools:checkstyle
+        # we need to update the main Checkstyle dependency manually
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
