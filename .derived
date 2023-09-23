@@ -1,6 +1,18 @@
 # AutoDeriv plugin configuration.
 # To make this work, you need to install the plugin from https://nodj.github.io/AutoDeriv/
 
-# target folders of eclipse and maven
+# target folders of Eclipse and Maven
 target
 bin
+
+# The nested Maven modules are all shown as folders of this project, leading to duplicate search results etc.
+# Set them derived in this project only (doesn't have any effect on the Eclipse projects for the same Maven modules).
+net.sf.eclipsecs.branding
+net.sf.eclipsecs.checkstyle
+net.sf.eclipsecs.core
+net.sf.eclipsecs.doc
+net.sf.eclipsecs.sample
+net.sf.eclipsecs.target
+net.sf.eclipsecs.ui
+net.sf.eclipsecs-feature
+net.sf.eclipsecs-updatesite
