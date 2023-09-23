@@ -7,7 +7,7 @@ public class A {
     public boolean foo() {
         if ((a | b)) {
             return true;
-        } else { 
+        } else {
             return false;
         }
     }

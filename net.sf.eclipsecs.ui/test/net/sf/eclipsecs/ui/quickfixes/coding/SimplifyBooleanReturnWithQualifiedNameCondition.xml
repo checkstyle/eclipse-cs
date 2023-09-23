@@ -6,7 +6,7 @@ public class A {
     public boolean foo() {
         if (B.b) {
             return true;
-        } else { 
+        } else {
             return false;
         }
     }
@@ -32,7 +32,7 @@ public class A {
     public boolean foo() {
         if (B.b) {
             return false;
-        } else { 
+        } else {
             return true;
         }
     }

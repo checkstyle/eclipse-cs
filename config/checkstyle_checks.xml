@@ -347,36 +347,36 @@
             <property name="checks" value="IllegalCatch"/>
         </module>
         <module name="SuppressionXpathSingleFilter">
-            <property name="files" value=".*[\\/]src[\\/]test[\\/]"/>
+            <property name="files" value=".*[\\/]test[\\/]"/>
             <property name="checks" value="EmptyBlock"/>
         </module>
         <module name="SuppressionXpathSingleFilter">
-            <property name="files" value=".*[\\/]src[\\/](test|it)[\\/]"/>
+            <property name="files" value=".*[\\/](test|it)[\\/]"/>
             <property name="checks" value="JavadocVariable"/>
         </module>
         <module name="SuppressionXpathSingleFilter">
-            <property name="files" value=".*[\\/]src[\\/](test|it)[\\/]"/>
+            <property name="files" value=".*[\\/](test|it)[\\/]"/>
             <property name="checks" value="JavadocType"/>
         </module>
         <module name="SuppressionXpathSingleFilter">
-            <property name="files" value=".*[\\/]src[\\/](test|it)[\\/]"/>
+            <property name="files" value=".*[\\/](test|it)[\\/]"/>
             <property name="checks" value="MagicNumber"/>
         </module>
         <module name="SuppressionXpathSingleFilter">
-            <property name="files" value=".*[\\/]src[\\/](test|it)[\\/]"/>
+            <property name="files" value=".*[\\/](test|it)[\\/]"/>
             <property name="checks" value="AvoidStaticImport"/>
         </module>
         <module name="SuppressionXpathSingleFilter">
-            <property name="files" value=".*[\\/]src[\\/](test|it)[\\/]"/>
+            <property name="files" value=".*[\\/](test|it)[\\/]"/>
             <property name="checks" value="WriteTag"/>
         </module>
         <module name="SuppressionXpathSingleFilter">
-            <property name="files" value=".*[\\/]src[\\/](test|it)[\\/]"/>
+            <property name="files" value=".*[\\/](test|it)[\\/]"/>
             <property name="checks" value="MethodCount"/>
         </module>
         <!-- Fixing these cases will decrease code readability -->
         <module name="SuppressionXpathSingleFilter">
-            <property name="files" value=".*[\\/]src[\\/](test|it)[\\/]"/>
+            <property name="files" value=".*[\\/](test|it)[\\/]"/>
             <property name="checks" value="MultipleStringLiterals"/>
         </module>
         <module name="SuppressWithNearbyCommentFilter">
