@@ -1,0 +1,271 @@
+---
+type: specs.openrewrite.org/v1beta/style
+name: net.sf.eclipsecs.style
+styleConfigs:
+  - org.openrewrite.java.style.ImportLayoutStyle:
+      classCountToUseStarImport: 999
+      nameCountToUseStarImport: 999
+      layout:
+        - import java.*
+        - <blank line>
+        - import javax.*
+        - <blank line>
+        - import org.*
+        - <blank line>
+        - import com.*
+        - <blank line>
+        - import all other imports
+        - <blank line>
+        - import static all other imports
+  - org.openrewrite.java.style.TabsAndIndentsStyle:
+      useTabCharacter: false
+      tabSize: 2
+      indentSize: 2
+      continuationIndent: 2
+      indentsRelativeToExpressionStart: false
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: net.sf.eclipsecs.recipe
+recipeList:
+  - org.openrewrite.java.format.EmptyNewlineAtEndOfFile
+  - org.openrewrite.java.format.NormalizeTabsOrSpaces
+  - org.openrewrite.java.format.PadEmptyForLoopComponents
+  - org.openrewrite.java.format.RemoveTrailingWhitespace
+# - org.openrewrite.java.format.SingleLineComments, doesn't fit our copyright header comments
+  - org.openrewrite.java.format.TypecastParenPad
+  - org.openrewrite.apache.commons.codec.ApacheBase64ToJavaBase64
+  - org.openrewrite.apache.commons.io.ApacheCommonsFileUtilsRecipes
+  - org.openrewrite.apache.commons.io.ApacheFileUtilsToJavaFiles
+  - org.openrewrite.apache.commons.io.ApacheIOUtilsUseExplicitCharset
+  - org.openrewrite.apache.commons.io.RelocateApacheCommonsIo
+  - org.openrewrite.apache.commons.io.UseStandardCharsets
+  - org.openrewrite.apache.commons.io.UseSystemLineSeparator
+  - org.openrewrite.apache.commons.lang.ApacheCommonsStringUtilsRecipes
+  - org.openrewrite.java.migrate.concurrent.JavaConcurrentAPIs
+  - org.openrewrite.java.migrate.io.ReplaceFileInOrOutputStreamFinalizeWithClose
+  - org.openrewrite.java.migrate.Java8toJava11
+  - org.openrewrite.java.migrate.javax.AddInjectDependencies
+# - org.openrewrite.java.migrate.javax.AddJaxbDependencies, unwanted
+# - org.openrewrite.java.migrate.javax.AddJaxbRuntime, unwanted
+# - org.openrewrite.java.migrate.javax.AddJaxwsDependencies, unwanted
+# - org.openrewrite.java.migrate.javax.AddJaxwsRuntime, unwanted
+  - org.openrewrite.java.migrate.javax.AddScopeToInjectedClass
+  - org.openrewrite.java.migrate.javax.JavaxLangModelUtil
+  - org.openrewrite.java.migrate.javax.JavaxManagementMonitorAPIs
+  - org.openrewrite.java.migrate.javax.JavaxXmlStreamAPIs
+  - org.openrewrite.java.migrate.javax.MigrateAbstractAnnotationValueVisitor6To9
+  - org.openrewrite.java.migrate.javax.MigrateAbstractElementVisitor6To9
+  - org.openrewrite.java.migrate.javax.MigrateAbstractTypeVisitor6To9
+  - org.openrewrite.java.migrate.javax.MigrateCounterMonitorSetThresholdToSetInitThreshold
+  - org.openrewrite.java.migrate.javax.MigrateElementKindVisitor6To9
+  - org.openrewrite.java.migrate.javax.MigrateElementScanner6To9
+  - org.openrewrite.java.migrate.javax.MigrateSimpleAnnotationValueVisitor6To9
+  - org.openrewrite.java.migrate.javax.MigrateSimpleElementVisitor6To9
+  - org.openrewrite.java.migrate.javax.MigrateSimpleTypeVisitor6To9
+  - org.openrewrite.java.migrate.javax.MigrateTypeKindVisitor6To9
+  - org.openrewrite.java.migrate.javax.MigrateXMLEventFactoryNewInstanceToNewFactory
+  - org.openrewrite.java.migrate.javax.MigrateXMLInputFactoryNewInstanceToNewFactory
+  - org.openrewrite.java.migrate.javax.MigrateXMLOutputFactoryNewInstanceToNewFactory
+  - org.openrewrite.java.migrate.lang.JavaLangAPIs
+  - org.openrewrite.java.migrate.lang.MigrateCharacterIsJavaLetterOrDigitToIsJavaIdentifierPart
+  - org.openrewrite.java.migrate.lang.MigrateCharacterIsJavaLetterToIsJavaIdentifierStart
+  - org.openrewrite.java.migrate.lang.MigrateCharacterIsSpaceToIsWhitespace
+  - org.openrewrite.java.migrate.lang.MigrateClassLoaderDefineClass
+  - org.openrewrite.java.migrate.lang.MigrateClassNewInstanceToGetDeclaredConstructorNewInstance
+  - org.openrewrite.java.migrate.lang.MigrateRuntimeVersionMajorToFeature
+  - org.openrewrite.java.migrate.lang.MigrateRuntimeVersionMinorToInterim
+  - org.openrewrite.java.migrate.lang.MigrateRuntimeVersionSecurityToUpdate
+  - org.openrewrite.java.migrate.lang.MigrateSecurityManagerMulticast
+# - org.openrewrite.java.migrate.lang.StringFormatted, Java 17
+  - org.openrewrite.java.migrate.lang.StringRulesRecipes
+  - org.openrewrite.java.migrate.lang.UseStringIsEmptyRecipe
+  - org.openrewrite.java.migrate.net.JavaNetAPIs
+  - org.openrewrite.java.migrate.net.MigrateHttpURLConnectionHttpServerErrorToHttpInternalError
+  - org.openrewrite.java.migrate.net.MigrateMulticastSocketGetTTLToGetTimeToLive
+  - org.openrewrite.java.migrate.net.MigrateMulticastSocketSetTTLToSetTimeToLive
+  - org.openrewrite.java.migrate.net.MigrateURLDecoderDecode
+  - org.openrewrite.java.migrate.net.MigrateURLEncoderEncode
+  - org.openrewrite.java.migrate.UseJavaUtilBase64
+  - org.openrewrite.java.migrate.util.JavaUtilAPIs
+  - org.openrewrite.java.migrate.util.MigrateCollectionsSingletonList
+  - org.openrewrite.java.migrate.util.MigrateCollectionsSingletonMap
+  - org.openrewrite.java.migrate.util.MigrateCollectionsSingletonSet
+  - org.openrewrite.java.migrate.util.MigrateCollectionsUnmodifiableList
+  - org.openrewrite.java.migrate.util.MigrateCollectionsUnmodifiableSet
+  - org.openrewrite.java.migrate.util.OptionalNotEmptyToIsPresent
+  - org.openrewrite.java.migrate.util.OptionalNotPresentToIsEmpty
+  - org.openrewrite.java.migrate.util.RemoveFinalizerFromZip
+  - org.openrewrite.java.migrate.util.UseEnumSetOf
+  - org.openrewrite.java.migrate.util.UseLocaleOf
+  - org.openrewrite.java.migrate.util.UseMapOf
+  - org.openrewrite.java.security.FindTextDirectionChanges
+# - org.openrewrite.java.security.JavaSecurityBestPractices, contains XmlParserXXEVulnerability with bug
+# - org.openrewrite.java.security.OwaspTopTen, contains XmlParserXXEVulnerability with bug
+  - org.openrewrite.java.security.PartialPathTraversalVulnerability
+  - org.openrewrite.java.security.secrets.FindGitHubSecrets
+  - org.openrewrite.java.security.secrets.FindPasswordInUrlSecrets
+  - org.openrewrite.java.security.secrets.FindSshSecrets
+  - org.openrewrite.java.security.SecureTempFileCreation
+  - org.openrewrite.java.security.UseFilesCreateTempDirectory
+# - org.openrewrite.java.security.XmlParserXXEVulnerability, doesn't recognize that we use a factory for the same
+  - org.openrewrite.java.security.ZipSlip
+  - org.openrewrite.java.ShortenFullyQualifiedTypeReferences
+# - org.openrewrite.java.testing.assertj.Assertj, contains JUnitToAssertJ, which does unwanted changes
+  - org.openrewrite.java.testing.assertj.JUnitAssertArrayEqualsToAssertThat
+  - org.openrewrite.java.testing.assertj.JUnitAssertEqualsToAssertThat
+  - org.openrewrite.java.testing.assertj.JUnitAssertFalseToAssertThat
+  - org.openrewrite.java.testing.assertj.JUnitAssertNotEqualsToAssertThat
+  - org.openrewrite.java.testing.assertj.JUnitAssertNotNullToAssertThat
+  - org.openrewrite.java.testing.assertj.JUnitAssertNullToAssertThat
+  - org.openrewrite.java.testing.assertj.JUnitAssertSameToAssertThat
+  - org.openrewrite.java.testing.assertj.JUnitAssertThrowsToAssertExceptionType
+  - org.openrewrite.java.testing.assertj.JUnitAssertTrueToAssertThat
+  - org.openrewrite.java.testing.assertj.JUnitFailToAssertJFail
+# - org.openrewrite.java.testing.assertj.JUnitToAssertj, adds POM dependencies unconditionally
+  - org.openrewrite.java.testing.assertj.SimplifyChainedAssertJAssertion
+  - org.openrewrite.java.testing.assertj.SimplifyChainedAssertJAssertions
+  - org.openrewrite.java.testing.assertj.StaticImports
+# - org.openrewrite.java.testing.cleanup.BestPractices, contains TestsShouldIncludeAssertions
+  - org.openrewrite.java.testing.cleanup.RemoveTestPrefix
+# - org.openrewrite.java.testing.cleanup.TestsShouldIncludeAssertions, unwanted as our assertion methods are not recognized
+  - org.openrewrite.java.testing.cleanup.TestsShouldNotBePublic
+  - org.openrewrite.java.testing.junit5.LifecycleNonPrivate
+  - org.openrewrite.java.testing.junit5.TempDirNonFinal
+  - org.openrewrite.maven.cleanup.DependencyManagementDependencyRequiresVersion
+  - org.openrewrite.maven.RemoveDuplicateDependencies
+  - org.openrewrite.maven.RemoveRedundantDependencyVersions
+  - org.openrewrite.staticanalysis.AddSerialVersionUidToSerializable
+  - org.openrewrite.staticanalysis.AtomicPrimitiveEqualsUsesGet
+  - org.openrewrite.staticanalysis.AvoidBoxedBooleanExpressions
+  - org.openrewrite.staticanalysis.BigDecimalRoundingConstantsToEnums
+  - org.openrewrite.staticanalysis.BooleanChecksNotInverted
+  - org.openrewrite.staticanalysis.CaseInsensitiveComparisonsDoNotChangeCase
+  - org.openrewrite.staticanalysis.CatchClauseOnlyRethrows
+  - org.openrewrite.staticanalysis.ChainStringBuilderAppendCalls
+# - org.openrewrite.staticanalysis.CodeCleanup, contains unwanted formatting recipe
+  - org.openrewrite.staticanalysis.CombineSemanticallyEqualCatchBlocks
+  - org.openrewrite.staticanalysis.CommonDeclarationSiteTypeVariances # needs manual cleanup
+# - org.openrewrite.staticanalysis.CommonStaticAnalysis, contains FinalizePrivateFields with bug
+  - org.openrewrite.staticanalysis.CompareEnumsWithEqualityOperator
+  - org.openrewrite.staticanalysis.ControlFlowIndentation
+  - org.openrewrite.staticanalysis.CovariantEquals
+  - org.openrewrite.staticanalysis.DefaultComesLast
+  - org.openrewrite.staticanalysis.EmptyBlock
+  - org.openrewrite.staticanalysis.EqualsAvoidsNull
+  - org.openrewrite.staticanalysis.EqualsToContentEquals
+  - org.openrewrite.staticanalysis.ExplicitCharsetOnStringGetBytes
+  - org.openrewrite.staticanalysis.ExplicitInitialization
+  - org.openrewrite.staticanalysis.ExplicitLambdaArgumentTypes
+  - org.openrewrite.staticanalysis.ExternalizableHasNoArgsConstructor
+  - org.openrewrite.staticanalysis.FallThrough
+  - org.openrewrite.staticanalysis.FinalClass
+# - org.openrewrite.staticanalysis.FinalizeLocalVariables, unwanted
+# - org.openrewrite.staticanalysis.FinalizeMethodArguments, unwanted
+# - org.openrewrite.staticanalysis.FinalizePrivateFields, TODO: needs naming changes
+  - org.openrewrite.staticanalysis.FixStringFormatExpressions
+  - org.openrewrite.staticanalysis.ForLoopControlVariablePostfixOperators
+  - org.openrewrite.staticanalysis.ForLoopIncrementInUpdate
+  - org.openrewrite.staticanalysis.HiddenField
+  - org.openrewrite.staticanalysis.HideUtilityClassConstructor
+  - org.openrewrite.staticanalysis.IndexOfChecksShouldUseAStartPosition
+  - org.openrewrite.staticanalysis.IndexOfReplaceableByContains
+  - org.openrewrite.staticanalysis.IndexOfShouldNotCompareGreaterThanZero
+  - org.openrewrite.staticanalysis.InlineVariable
+# - org.openrewrite.staticanalysis.InstanceOfPatternMatch, Java 17
+  - org.openrewrite.staticanalysis.IsEmptyCallOnCollections
+  - org.openrewrite.staticanalysis.JavaApiBestPractices
+  - org.openrewrite.staticanalysis.LambdaBlockToExpression
+  - org.openrewrite.staticanalysis.LowercasePackage
+  - org.openrewrite.staticanalysis.MethodNameCasing
+  - org.openrewrite.staticanalysis.MinimumSwitchCases
+# - org.openrewrite.staticanalysis.MissingOverrideAnnotation, https://github.com/openrewrite/rewrite-static-analysis/issues/178
+  - org.openrewrite.staticanalysis.ModifierOrder
+  - org.openrewrite.staticanalysis.MultipleVariableDeclarations
+  - org.openrewrite.staticanalysis.NeedBraces
+  - org.openrewrite.staticanalysis.NestedEnumsAreNotStatic
+  - org.openrewrite.staticanalysis.NewStringBuilderBufferWithCharArgument
+  - org.openrewrite.staticanalysis.NoDoubleBraceInitialization
+  - org.openrewrite.staticanalysis.NoEmptyCollectionWithRawType
+  - org.openrewrite.staticanalysis.NoEqualityInForCondition
+# - org.openrewrite.staticanalysis.NoFinalizedLocalVariables, unwanted
+  - org.openrewrite.staticanalysis.NoFinalizer
+  - org.openrewrite.staticanalysis.NoPrimitiveWrappersForToStringOrCompareTo
+  - org.openrewrite.staticanalysis.NoRedundantJumpStatements
+  - org.openrewrite.staticanalysis.NoToStringOnStringType
+  - org.openrewrite.staticanalysis.NoValueOfOnStringType
+  - org.openrewrite.staticanalysis.ObjectFinalizeCallsSuper
+  - org.openrewrite.staticanalysis.OperatorWrap
+  - org.openrewrite.staticanalysis.PrimitiveWrapperClassConstructorToValueOf
+  - org.openrewrite.staticanalysis.RedundantFileCreation
+# - org.openrewrite.staticanalysis.ReferentialEqualityToObjectEquals, unwanted
+  - org.openrewrite.staticanalysis.RemoveCallsToObjectFinalize
+  - org.openrewrite.staticanalysis.RemoveCallsToSystemGc
+  - org.openrewrite.staticanalysis.RemoveEmptyJavaDocParameters
+  - org.openrewrite.staticanalysis.RemoveExtraSemicolons
+  - org.openrewrite.staticanalysis.RemoveHashCodeCallsFromArrayInstances
+# - org.openrewrite.staticanalysis.RemoveInstanceOfPatternMatch, unwanted
+  - org.openrewrite.staticanalysis.RemoveJavaDocAuthorTag
+  - org.openrewrite.staticanalysis.RemoveRedundantTypeCast
+  - org.openrewrite.staticanalysis.RemoveSystemOutPrintln
+  - org.openrewrite.staticanalysis.RemoveToStringCallsFromArrayInstances
+  - org.openrewrite.staticanalysis.RemoveUnneededAssertion
+  - org.openrewrite.staticanalysis.RemoveUnneededBlock
+  - org.openrewrite.staticanalysis.RemoveUnusedLocalVariables
+  - org.openrewrite.staticanalysis.RemoveUnusedPrivateFields
+  - org.openrewrite.staticanalysis.RemoveUnusedPrivateMethods
+  - org.openrewrite.staticanalysis.RenameExceptionInEmptyCatch
+  - org.openrewrite.staticanalysis.RenameLocalVariablesToCamelCase
+  - org.openrewrite.staticanalysis.RenameMethodsNamedHashcodeEqualOrToString
+  - org.openrewrite.staticanalysis.RenamePrivateFieldsToCamelCase
+  - org.openrewrite.staticanalysis.ReplaceApacheCommonsLang3ValidateNotNullWithObjectsRequireNonNull
+  - org.openrewrite.staticanalysis.ReplaceDeprecatedRuntimeExecMethods
+  - org.openrewrite.staticanalysis.ReplaceDuplicateStringLiterals
+  - org.openrewrite.staticanalysis.ReplaceLambdaWithMethodReference
+  - org.openrewrite.staticanalysis.ReplaceOptionalIsPresentWithIfPresent
+  - org.openrewrite.staticanalysis.ReplaceRedundantFormatWithPrintf
+  - org.openrewrite.staticanalysis.ReplaceStackWithDeque
+  - org.openrewrite.staticanalysis.ReplaceStreamToListWithCollect
+  - org.openrewrite.staticanalysis.ReplaceStringBuilderWithString
+  - org.openrewrite.staticanalysis.ReplaceTextBlockWithString
+  - org.openrewrite.staticanalysis.ReplaceThreadRunWithThreadStart
+  - org.openrewrite.staticanalysis.ReplaceValidateNotNullHavingSingleArgWithObjectsRequireNonNull
+  - org.openrewrite.staticanalysis.ReplaceValidateNotNullHavingVarargsWithObjectsRequireNonNull
+  - org.openrewrite.staticanalysis.ReplaceWeekYearWithYear
+  - org.openrewrite.staticanalysis.SimplifyBooleanExpression
+  - org.openrewrite.staticanalysis.SimplifyBooleanReturn
+  - org.openrewrite.staticanalysis.SimplifyCompoundStatement
+  - org.openrewrite.staticanalysis.SimplifyConsecutiveAssignments
+  - org.openrewrite.staticanalysis.SimplifyConstantIfBranchExecution
+  - org.openrewrite.staticanalysis.SimplifyDurationCreationUnits
+  - org.openrewrite.staticanalysis.SortedSetStreamToLinkedHashSet
+  - org.openrewrite.staticanalysis.StaticMethodNotFinal
+  - org.openrewrite.staticanalysis.StringLiteralEquality
+  - org.openrewrite.staticanalysis.TernaryOperatorsShouldNotBeNested
+  - org.openrewrite.staticanalysis.TypecastParenPad
+# - org.openrewrite.staticanalysis.UnnecessaryCatch, bug
+  - org.openrewrite.staticanalysis.UnnecessaryCloseInTryWithResources
+  - org.openrewrite.staticanalysis.UnnecessaryExplicitTypeArguments
+  - org.openrewrite.staticanalysis.UnnecessaryParentheses
+  - org.openrewrite.staticanalysis.UnnecessaryPrimitiveAnnotations
+# - org.openrewrite.staticanalysis.UnnecessaryThrows, bug
+  - org.openrewrite.staticanalysis.UnwrapRepeatableAnnotations
+  - org.openrewrite.staticanalysis.UpperCaseLiteralSuffixes
+# - org.openrewrite.staticanalysis.UseAsBuilder, unwanted
+  - org.openrewrite.staticanalysis.UseCollectionInterfaces
+  - org.openrewrite.staticanalysis.UseDiamondOperator
+  - org.openrewrite.staticanalysis.UseForEachRemoveInsteadOfSetRemoveAll
+  - org.openrewrite.staticanalysis.UseJavaStyleArrayDeclarations
+  - org.openrewrite.staticanalysis.UseLambdaForFunctionalInterface
+  - org.openrewrite.staticanalysis.UseListSort
+  - org.openrewrite.staticanalysis.UseMapContainsKey
+  - org.openrewrite.staticanalysis.UseObjectNotifyAll
+  - org.openrewrite.staticanalysis.UseStandardCharset
+  - org.openrewrite.staticanalysis.UseStringReplace
+  - org.openrewrite.staticanalysis.UseSystemLineSeparator
+  - org.openrewrite.staticanalysis.WhileInsteadOfFor
+  - org.openrewrite.staticanalysis.WriteOctalValuesAsDecimal
+  - org.openrewrite.xml.RemoveTrailingWhitespace
+  - org.openrewrite.xml.security.AddOwaspDateBoundSuppressions
+  - org.openrewrite.xml.security.IsOwaspSuppressionsFile
+  - org.openrewrite.xml.security.RemoveOwaspSuppressions
+# - org.openrewrite.xml.security.UpdateOwaspSuppressionDate, unwanted

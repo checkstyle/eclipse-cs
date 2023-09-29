@@ -30,14 +30,12 @@
         <maven-antrun-plugin-version>3.1.0</maven-antrun-plugin-version>
         <maven-checkstyle-plugin-version>3.6.0</maven-checkstyle-plugin-version>
         <maven-clean-plugin-version>3.4.0</maven-clean-plugin-version>
-        <maven-compiler-plugin-version>3.13.0</maven-compiler-plugin-version>
         <maven-deploy-plugin-version>3.1.3</maven-deploy-plugin-version>
         <maven-enforcer-plugin-version>3.5.0</maven-enforcer-plugin-version>
         <maven-failsafe-plugin-version>3.5.2</maven-failsafe-plugin-version>
         <maven-install-plugin-version>3.1.3</maven-install-plugin-version>
         <maven-resources-plugin-version>3.3.1</maven-resources-plugin-version>
         <maven-site-plugin-version>3.21.0</maven-site-plugin-version>
-        <maven-surefire-plugin-version>3.5.2</maven-surefire-plugin-version>
         <maven-version>3.9.0</maven-version>
         <tycho-version>4.0.10</tycho-version>
         <versions-maven-plugin-version>2.18.0</versions-maven-plugin-version>
@@ -393,29 +391,12 @@
                     </configuration>
                 </plugin>
                 <plugin>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <version>${maven-surefire-plugin-version}</version>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>${maven-compiler-plugin-version}</version>
-                    <executions>
-                        <execution>
-                            <id>compiletests</id>
-                            <phase>test-compile</phase>
-                            <goals>
-                                <goal>testCompile</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-                <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-enforcer-plugin</artifactId>
                     <version>${maven-enforcer-plugin-version}</version>
                     <executions>
                         <execution>
-                            <id>enforce-maven</id>
+                            <id>enforce</id>
                             <goals>
                                 <goal>enforce</goal>
                             </goals>
@@ -537,7 +518,268 @@
                     <artifactId>versions-maven-plugin</artifactId>
                     <version>${versions-maven-plugin-version}</version>
                 </plugin>
+                <!-- automated mass refactorings -->
+                <plugin>
+                    <groupId>org.openrewrite.maven</groupId>
+                    <artifactId>rewrite-maven-plugin</artifactId>
+                    <version>6.0.4</version>
+                    <configuration>
+                        <activeRecipes>
+                            <recipe>net.sf.eclipsecs.recipe</recipe>
+                        </activeRecipes>
+                        <activeStyles>
+                            <style>net.sf.eclipsecs.style</style>
+                        </activeStyles>
+                        <configLocation>${maven.multiModuleProjectDirectory}/rewrite/rewrite.yml</configLocation>
+                        <exclusions>
+                            <exclusion>**/target/**</exclusion>
+                            <exclusion>**/bin/**</exclusion>
+                            <exclusion>**/*.groovy</exclusion>
+                            <exclusion>**/*.jar</exclusion>
+                            <exclusion>**/*.properties</exclusion>
+                            <exclusion>**/*.zip</exclusion>
+                        </exclusions>
+                        <failOnInvalidActiveRecipes>true</failOnInvalidActiveRecipes>
+                        <sizeThresholdMb>1</sizeThresholdMb>
+                    </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.openrewrite.recipe</groupId>
+                            <artifactId>rewrite-apache</artifactId>
+                            <version>2.0.0</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>org.openrewrite.recipe</groupId>
+                            <artifactId>rewrite-java-security</artifactId>
+                            <version>3.0.0</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>org.openrewrite.recipe</groupId>
+                            <artifactId>rewrite-migrate-java</artifactId>
+                            <version>3.0.1</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>org.openrewrite.recipe</groupId>
+                            <artifactId>rewrite-static-analysis</artifactId>
+                            <version>2.0.2</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>org.openrewrite.recipe</groupId>
+                            <artifactId>rewrite-testing-frameworks</artifactId>
+                            <version>3.0.0</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
             </plugins>
         </pluginManagement>
     </build>
+    <profiles>
+        <profile>
+            <!-- disable all other goals when running OpenRewrite, since that gives a tremendous speedup -->
+            <id>rewrite</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                               <id>create-sevntu-patch</id>
+                               <phase>none</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>calculate-website-timestamp</id>
+                                <phase>none</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-checkstyle-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>checkstyle-check</id>
+                                <phase>none</phase>
+                            </execution>
+                            <execution>
+                                <id>sevntu-checkstyle-check</id>
+                                <phase>none</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+	                <plugin>
+	                    <groupId>org.apache.maven.plugins</groupId>
+	                    <artifactId>maven-enforcer-plugin</artifactId>
+	                    <version>${maven-enforcer-plugin-version}</version>
+	                    <executions>
+	                        <execution>
+	                            <id>enforce</id>
+	                            <phase>none</phase>
+	                        </execution>
+	                    </executions>
+	                </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>default-verify</id>
+                                <phase>none</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>default-resources</id>
+                                <phase>none</phase>
+                            </execution>
+                            <execution>
+                                <id>default-testResources</id>
+                                <phase>none</phase>
+                            </execution>
+                            <execution>
+                                <id>docs</id>
+                                <phase>none</phase>
+                            </execution>
+                            <execution>
+                                <id>website</id>
+                                <phase>none</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.eclipse.tycho</groupId>
+                        <artifactId>tycho-compiler-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>compiletests</id>
+                                <phase>none</phase>
+                            </execution>
+                            <execution>
+                                <id>default-compile</id>
+                                <phase>none</phase>
+                            </execution>
+                            <execution>
+                                <id>default-testCompile</id>
+                                <phase>none</phase>
+                            </execution>
+                            <execution>
+                                <id>default-validate-classpath</id>
+                                <phase>none</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.eclipse.tycho</groupId>
+                        <artifactId>tycho-packaging-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>default-build-qualifier</id>
+                                <phase>none</phase>
+                            </execution>
+                            <execution>
+                                <id>default-build-qualifier-aggregator</id>
+                                <phase>none</phase>
+                            </execution>
+                            <execution>
+                                <id>default-package-feature</id>
+                                <phase>none</phase>
+                            </execution>
+                            <execution>
+                                <id>default-package-plugin</id>
+                                <phase>none</phase>
+                            </execution>
+                            <execution>
+                                <id>default-update-consumer-pom</id>
+                                <phase>none</phase>
+                            </execution>
+                            <execution>
+                                <id>default-validate-id</id>
+                                <phase>none</phase>
+                            </execution>
+                            <execution>
+                                <id>default-validate-version</id>
+                                <phase>none</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.eclipse.tycho</groupId>
+                        <artifactId>target-platform-configuration</artifactId>
+                        <executions>
+                            <execution>
+                                <id>default-target-platform</id>
+                                <phase>none</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.eclipse.tycho</groupId>
+                        <artifactId>tycho-p2-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>attach-p2-metadata</id>
+                                <phase>none</phase>
+                            </execution>
+                            <execution>
+                                <id>default-p2-metadata-default</id>
+                                <phase>none</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.eclipse.tycho</groupId>
+                        <artifactId>tycho-p2-repository-plugin</artifactId>
+                        <executions>
+                            <execution>
+                               <id>attach-p2-metadata</id>
+                               <phase>none</phase>
+                            </execution>
+                            <execution>
+                               <id>default-assemble-repository</id>
+                               <phase>none</phase>
+                            </execution>
+                            <execution>
+                               <id>default-archive-repository</id>
+                               <phase>none</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.eclipse.tycho</groupId>
+                        <artifactId>tycho-source-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>feature-source</id>
+                                <phase>none</phase>
+                            </execution>
+                            <execution>
+                                <id>plugin-source</id>
+                                <phase>none</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.eclipse.tycho</groupId>
+                        <artifactId>tycho-surefire-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>default-integration-test</id>
+                                <phase>none</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
