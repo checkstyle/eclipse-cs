@@ -11,6 +11,9 @@ jobs:
         platform: [ubuntu-latest, macos-latest, windows-latest]
         jdk: [11, 17]
     runs-on: ${{ matrix.platform }}
+    permissions:
+      checks: write
+      pull-requests: write
     steps:
     - uses: actions/checkout@v3
       with:
@@ -40,4 +43,3 @@ jobs:
       if: startsWith(matrix.platform, 'ubuntu') && (matrix.jdk == 17)
       with:
         files: '**/target/surefire-reports/*.xml'
-
