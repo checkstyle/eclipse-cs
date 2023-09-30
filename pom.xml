@@ -160,26 +160,7 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>${maven-checkstyle-plugin-version}</version>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.puppycrawl.tools</groupId>
-                        <artifactId>checkstyle</artifactId>
-                        <version>${sevntu-checkstyle-plugin-checkstyle-version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>com.github.sevntu-checkstyle</groupId>
-                        <artifactId>sevntu-checks</artifactId>
-                        <version>${sevntu-checkstyle-plugin-version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>com.puppycrawl.tools</groupId>
-                        <artifactId>patch-filters</artifactId>
-                        <version>${patch-filters-plugin-version}</version>
-                    </dependency>
-                </dependencies>
                 <executions>
                     <execution>
                         <id>checkstyle-check</id>
@@ -189,13 +170,7 @@
                         </goals>
                         <configuration>
                             <configLocation>config/checkstyle_checks.xml</configLocation>
-                            <failOnViolation>true</failOnViolation>
-                            <headerLocation>I just need to put here smth to let it not use default - LICENSE.txt</headerLocation>
                             <propertiesLocation>config/checkstyle.properties</propertiesLocation>
-                            <includes>**\/*</includes>
-                            <includeResources>true</includeResources>
-                            <includeTestResources>true</includeTestResources>
-                            <includeTestSourceDirectory>true</includeTestSourceDirectory>
                         </configuration>
                     </execution>
                     <execution>
@@ -206,14 +181,6 @@
                         </goals>
                         <configuration>
                             <configLocation>config/checkstyle_sevntu_checks.xml</configLocation>
-                            <failOnViolation>true</failOnViolation>
-                            <includes>**\/*</includes>
-                            <includeResources>true</includeResources>
-                            <includeTestResources>true</includeTestResources>
-                            <includeTestSourceDirectory>true</includeTestSourceDirectory>
-                            <logViolationsToConsole>true</logViolationsToConsole>
-                            <maxAllowedViolations>0</maxAllowedViolations>
-                            <violationSeverity>error</violationSeverity>
                             <propertyExpansion>project.basedir=${project.basedir}</propertyExpansion>
                         </configuration>
                     </execution>
@@ -226,6 +193,33 @@
                 <plugin>
                     <artifactId>maven-antrun-plugin</artifactId>
                     <version>${maven-antrun-plugin-version}</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>${maven-checkstyle-plugin-version}</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>com.puppycrawl.tools</groupId>
+                            <artifactId>checkstyle</artifactId>
+                            <version>${sevntu-checkstyle-plugin-checkstyle-version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>com.github.sevntu-checkstyle</groupId>
+                            <artifactId>sevntu-checks</artifactId>
+                            <version>${sevntu-checkstyle-plugin-version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>com.puppycrawl.tools</groupId>
+                            <artifactId>patch-filters</artifactId>
+                            <version>${patch-filters-plugin-version}</version>
+                        </dependency>
+                    </dependencies>
+                    <configuration>
+                        <includeResources>true</includeResources>
+                        <includes>**\/*</includes>
+                        <includeTestResources>true</includeTestResources>
+                        <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <artifactId>maven-failsafe-plugin</artifactId>
