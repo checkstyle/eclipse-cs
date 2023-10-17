@@ -15,12 +15,15 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
+permissions:  # added using https://github.com/step-security/secure-repo
+  contents: read
+
 jobs:
   actionlint:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
 
       - name: Check workflow files
-        uses: docker://rhysd/actionlint:latest
+        uses: docker://rhysd/actionlint:latest@sha256:2eb91a78b5a19140be099c7b4262d298c2567f2a9f27e10ed2a4323c5bcface8
