@@ -9,6 +9,8 @@ updates:
     ignore:
       - dependency-name: com.puppycrawl.tools:checkstyle
         # we need to update the main Checkstyle dependency manually
+      - dependency-name: org.junit.jupiter:*
+        # the supported range of JUnit depends on the version of Tycho used during the build
   - package-ecosystem: github-actions
     directory: /
     schedule:
