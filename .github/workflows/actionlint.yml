@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
 
       - name: Check workflow files
-        uses: docker://rhysd/actionlint:latest
+        uses: docker://rhysd/actionlint:latest@sha256:2eb91a78b5a19140be099c7b4262d298c2567f2a9f27e10ed2a4323c5bcface8
