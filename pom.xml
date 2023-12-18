@@ -26,7 +26,7 @@
         <!-- Maven JUnit version must fit the JUnit version used in the target platform, otherwise Surefire may produce exceptions -->
         <junit-jupiter-version>5.7.2</junit-jupiter-version>
         <maven-antrun-plugin-version>3.1.0</maven-antrun-plugin-version>
-        <maven-checkstyle-plugin-version>3.3.0</maven-checkstyle-plugin-version>
+        <maven-checkstyle-plugin-version>3.3.1</maven-checkstyle-plugin-version>
         <maven-clean-plugin-version>3.3.2</maven-clean-plugin-version>
         <maven-compiler-plugin-version>3.11.0</maven-compiler-plugin-version>
         <maven-deploy-plugin-version>3.1.1</maven-deploy-plugin-version>
