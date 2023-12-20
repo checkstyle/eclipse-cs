@@ -48,7 +48,7 @@
                      java.util.Vector, java.util.Stack,com.google.collect.Iterables,
                      com.google.common.primitives.Ints,com.google.common.base.String,
                      com.google.common.base.Function,com.google.common.base.Supplier,
-                     com.google.common.base.Charsets,com.google.common.base.MoreObjects,
+                     com.google.common.base.Charsets,
                      com.google.common.base.Optional,com.google.common.base.Equivalence,
                      com.google.common.base.Preconditions,com.google.common.base.Predicate,
                      com.google.common.io.CharSource,com.google.common.annotations.Beta,
@@ -117,7 +117,7 @@
                     com\.google\.collect\.Iterables|com\.google\.common\.annotations\.Beta|
                     com\.google\.common\.base\.Predicate|com\.google\.common\.base\.String|
                     com\.google\.common\.base\.Function|com\.google\.common\.base\.Supplier|
-                    com\.google\.common\.base\.Charsets|com\.google\.common\.base\.MoreObjects|
+                    com\.google\.common\.base\.Charsets|
                     com\.google\.common\.base\.Equivalence|com\.google\.common\.base\.Preconditions|
                     com\.google\.common\.base\.Optional|com\.google\.common\.io\.CharSource|
                     com\.google\.common\.primitives.*|com\.google\.common\.collect\.Sets|

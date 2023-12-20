@@ -30,6 +30,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
+import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
@@ -44,7 +45,6 @@ import org.eclipse.equinox.security.storage.StorageException;
 import org.eclipse.osgi.util.NLS;
 
 import com.google.common.io.ByteStreams;
-import com.google.common.io.Files;
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
 
 import net.sf.eclipsecs.core.CheckstylePlugin;
@@ -266,7 +266,7 @@ public class RemoteConfigurationType extends ConfigurationType {
     File cacheFile = cacheFilePath.toFile();
 
     try {
-      Files.write(configFileBytes, cacheFile);
+      Files.write(cacheFile.toPath(), configFileBytes);
     } catch (IOException ex) {
       CheckstyleLog.log(ex, NLS.bind(Messages.RemoteConfigurationType_msgRemoteCachingFailed,
               checkConfig.getName(), checkConfig.getLocation()));
@@ -282,7 +282,7 @@ public class RemoteConfigurationType extends ConfigurationType {
       File propsCacheFile = propsCacheFilePath.toFile();
 
       try {
-        Files.write(bundleBytes, propsCacheFile);
+        Files.write(propsCacheFile.toPath(), bundleBytes);
       } catch (IOException ex) {
         // ignore this since there simply might be no properties file
       }
