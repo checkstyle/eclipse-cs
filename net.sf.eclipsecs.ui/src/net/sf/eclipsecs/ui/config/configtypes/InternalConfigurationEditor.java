@@ -26,17 +26,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import net.sf.eclipsecs.core.config.CheckConfiguration;
-import net.sf.eclipsecs.core.config.CheckConfigurationFactory;
-import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
-import net.sf.eclipsecs.core.config.ConfigurationWriter;
-import net.sf.eclipsecs.core.config.ICheckConfiguration;
-import net.sf.eclipsecs.core.config.configtypes.ExternalFileConfigurationType;
-import net.sf.eclipsecs.core.config.configtypes.InternalConfigurationType;
-import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.ui.Messages;
-import net.sf.eclipsecs.ui.config.CheckConfigurationPropertiesDialog;
-
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -50,6 +39,17 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+
+import net.sf.eclipsecs.core.config.CheckConfiguration;
+import net.sf.eclipsecs.core.config.CheckConfigurationFactory;
+import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
+import net.sf.eclipsecs.core.config.ConfigurationWriter;
+import net.sf.eclipsecs.core.config.ICheckConfiguration;
+import net.sf.eclipsecs.core.config.configtypes.ExternalFileConfigurationType;
+import net.sf.eclipsecs.core.config.configtypes.InternalConfigurationType;
+import net.sf.eclipsecs.core.util.CheckstylePluginException;
+import net.sf.eclipsecs.ui.Messages;
+import net.sf.eclipsecs.ui.config.CheckConfigurationPropertiesDialog;
 
 /**
  * Implementation of a location editor to input a remote location. Contains just

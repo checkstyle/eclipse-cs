@@ -23,12 +23,6 @@ package net.sf.eclipsecs.ui.properties;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-import net.sf.eclipsecs.core.projectconfig.FileMatchPattern;
-import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
-import net.sf.eclipsecs.ui.Messages;
-import net.sf.eclipsecs.ui.util.regex.RegexCompletionProposalFactory;
-
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -39,6 +33,12 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+
+import net.sf.eclipsecs.core.projectconfig.FileMatchPattern;
+import net.sf.eclipsecs.core.util.CheckstylePluginException;
+import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
+import net.sf.eclipsecs.ui.Messages;
+import net.sf.eclipsecs.ui.util.regex.RegexCompletionProposalFactory;
 
 /**
  * Dialog to edit file match patterns.

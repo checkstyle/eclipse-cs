@@ -23,13 +23,13 @@ package net.sf.eclipsecs.ui.properties.filter;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.sf.eclipsecs.core.projectconfig.filters.IFilter;
-import net.sf.eclipsecs.core.util.CheckstyleLog;
-import net.sf.eclipsecs.core.util.CheckstylePluginException;
-
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
+
+import net.sf.eclipsecs.core.projectconfig.filters.IFilter;
+import net.sf.eclipsecs.core.util.CheckstyleLog;
+import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
 /**
  * Register for the filter editors thats use the

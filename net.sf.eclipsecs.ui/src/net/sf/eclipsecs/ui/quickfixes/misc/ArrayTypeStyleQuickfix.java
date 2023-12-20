@@ -23,10 +23,6 @@ package net.sf.eclipsecs.ui.quickfixes.misc;
 import java.util.Iterator;
 import java.util.List;
 
-import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
-import net.sf.eclipsecs.ui.quickfixes.AbstractASTResolution;
-import net.sf.eclipsecs.ui.quickfixes.Messages;
-
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.ArrayType;
@@ -37,6 +33,10 @@ import org.eclipse.jdt.core.dom.VariableDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.swt.graphics.Image;
+
+import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
+import net.sf.eclipsecs.ui.quickfixes.AbstractASTResolution;
+import net.sf.eclipsecs.ui.quickfixes.Messages;
 
 /**
  * Quickfix implementation which moves the array declaration (C-style to

@@ -20,16 +20,16 @@
 
 package net.sf.eclipsecs.core.transformer;
 
-import com.puppycrawl.tools.checkstyle.api.Configuration;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.core.resources.IProject;
+
+import com.puppycrawl.tools.checkstyle.api.Configuration;
+
 import net.sf.eclipsecs.core.CheckstylePlugin;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
-
-import org.eclipse.core.resources.IProject;
 
 /**
  * The Class for transforming the checkstyle-rules into eclipse-formatter-settings. A new

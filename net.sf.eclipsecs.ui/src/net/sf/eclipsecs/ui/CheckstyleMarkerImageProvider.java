@@ -20,12 +20,12 @@
 
 package net.sf.eclipsecs.ui;
 
-import net.sf.eclipsecs.core.builder.CheckstyleMarker;
-
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.texteditor.IAnnotationImageProvider;
+
+import net.sf.eclipsecs.core.builder.CheckstyleMarker;
 
 /**
  * Image provider for Checkstyle markers.

@@ -27,19 +27,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.sf.eclipsecs.core.CheckstylePlugin;
-import net.sf.eclipsecs.core.CheckstylePluginPrefs;
-import net.sf.eclipsecs.core.Messages;
-import net.sf.eclipsecs.core.config.ICheckConfiguration;
-import net.sf.eclipsecs.core.jobs.AuditorJob;
-import net.sf.eclipsecs.core.jobs.BuildProjectJob;
-import net.sf.eclipsecs.core.nature.CheckstyleNature;
-import net.sf.eclipsecs.core.projectconfig.FileSet;
-import net.sf.eclipsecs.core.projectconfig.IProjectConfiguration;
-import net.sf.eclipsecs.core.projectconfig.ProjectConfigurationFactory;
-import net.sf.eclipsecs.core.projectconfig.filters.IFilter;
-import net.sf.eclipsecs.core.util.CheckstylePluginException;
-
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
@@ -57,6 +44,19 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.jdt.core.IJavaModelMarker;
 import org.eclipse.osgi.util.NLS;
+
+import net.sf.eclipsecs.core.CheckstylePlugin;
+import net.sf.eclipsecs.core.CheckstylePluginPrefs;
+import net.sf.eclipsecs.core.Messages;
+import net.sf.eclipsecs.core.config.ICheckConfiguration;
+import net.sf.eclipsecs.core.jobs.AuditorJob;
+import net.sf.eclipsecs.core.jobs.BuildProjectJob;
+import net.sf.eclipsecs.core.nature.CheckstyleNature;
+import net.sf.eclipsecs.core.projectconfig.FileSet;
+import net.sf.eclipsecs.core.projectconfig.IProjectConfiguration;
+import net.sf.eclipsecs.core.projectconfig.ProjectConfigurationFactory;
+import net.sf.eclipsecs.core.projectconfig.filters.IFilter;
+import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
 /**
  * Project builder for Checkstyle plug-in.

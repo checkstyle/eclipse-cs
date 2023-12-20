@@ -23,8 +23,6 @@ package net.sf.eclipsecs.ui.config;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sf.eclipsecs.ui.Messages;
-
 import org.eclipse.jface.contentassist.IContentAssistSubjectControl;
 import org.eclipse.jface.contentassist.ISubjectControlContentAssistProcessor;
 import org.eclipse.jface.contentassist.SubjectControlContextInformationValidator;
@@ -33,6 +31,8 @@ import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.jface.text.contentassist.IContextInformationValidator;
+
+import net.sf.eclipsecs.ui.Messages;
 
 /**
  * Provides content assist for builtin properties.

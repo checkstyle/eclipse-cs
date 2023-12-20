@@ -20,8 +20,6 @@
 
 package net.sf.eclipsecs.ui;
 
-import net.sf.eclipsecs.core.util.CheckstyleLog;
-
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.core.runtime.preferences.DefaultScope;
@@ -30,6 +28,8 @@ import org.eclipse.core.runtime.preferences.IPreferencesService;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.dialogs.MessageDialogWithToggle;
 import org.osgi.service.prefs.BackingStoreException;
+
+import net.sf.eclipsecs.core.util.CheckstyleLog;
 
 /**
  * Initialize the plugin preferences.

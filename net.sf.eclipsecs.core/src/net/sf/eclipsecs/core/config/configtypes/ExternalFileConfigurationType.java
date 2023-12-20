@@ -20,12 +20,12 @@
 
 package net.sf.eclipsecs.core.config.configtypes;
 
-import com.puppycrawl.tools.checkstyle.PropertyResolver;
-import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+
+import com.puppycrawl.tools.checkstyle.PropertyResolver;
+import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 
 import net.sf.eclipsecs.core.config.ICheckConfiguration;
 import net.sf.eclipsecs.core.util.CheckstyleLog;

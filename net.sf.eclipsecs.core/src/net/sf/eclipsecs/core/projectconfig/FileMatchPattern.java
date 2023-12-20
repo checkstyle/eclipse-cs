@@ -20,12 +20,12 @@
 
 package net.sf.eclipsecs.core.projectconfig;
 
-import com.google.common.base.MoreObjects;
-
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
+
+import com.google.common.base.MoreObjects;
 
 import net.sf.eclipsecs.core.Messages;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;

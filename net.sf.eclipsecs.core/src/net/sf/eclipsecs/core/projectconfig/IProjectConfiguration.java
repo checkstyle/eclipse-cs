@@ -22,10 +22,10 @@ package net.sf.eclipsecs.core.projectconfig;
 
 import java.util.List;
 
+import org.eclipse.core.resources.IProject;
+
 import net.sf.eclipsecs.core.config.ICheckConfiguration;
 import net.sf.eclipsecs.core.projectconfig.filters.IFilter;
-
-import org.eclipse.core.resources.IProject;
 
 /**
  * The public interface of a project configuration.

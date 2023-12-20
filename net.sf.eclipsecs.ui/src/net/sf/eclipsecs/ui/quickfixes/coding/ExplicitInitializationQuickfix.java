@@ -24,11 +24,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 
-import net.sf.eclipsecs.core.util.CheckstyleLog;
-import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
-import net.sf.eclipsecs.ui.quickfixes.AbstractASTResolution;
-import net.sf.eclipsecs.ui.quickfixes.Messages;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.CoreException;
@@ -37,6 +32,11 @@ import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.graphics.Image;
+
+import net.sf.eclipsecs.core.util.CheckstyleLog;
+import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
+import net.sf.eclipsecs.ui.quickfixes.AbstractASTResolution;
+import net.sf.eclipsecs.ui.quickfixes.Messages;
 
 /**
  * Quickfix implementation which removes the explicit default initialization of

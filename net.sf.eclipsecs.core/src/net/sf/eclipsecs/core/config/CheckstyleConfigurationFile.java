@@ -20,12 +20,12 @@
 
 package net.sf.eclipsecs.core.config;
 
-import com.puppycrawl.tools.checkstyle.PropertyResolver;
-
 import java.io.ByteArrayInputStream;
 import java.net.URL;
 
 import org.xml.sax.InputSource;
+
+import com.puppycrawl.tools.checkstyle.PropertyResolver;
 
 /**
  * Simple object containing all sort of data of a Checkstyle configuration. This is done to not

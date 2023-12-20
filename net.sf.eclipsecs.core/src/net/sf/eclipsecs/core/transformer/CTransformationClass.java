@@ -20,11 +20,11 @@
 
 package net.sf.eclipsecs.core.transformer;
 
-import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
-import com.puppycrawl.tools.checkstyle.api.Configuration;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
+import com.puppycrawl.tools.checkstyle.api.Configuration;
 
 /**
  * Abstract class which all transformationclasses have to implement. These classes handle how to

@@ -20,11 +20,6 @@
 
 package net.sf.eclipsecs.ui.config;
 
-import net.sf.eclipsecs.core.config.ResolvableProperty;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
-import net.sf.eclipsecs.ui.Messages;
-import net.sf.eclipsecs.ui.util.SWTUtil;
-
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jface.contentassist.SubjectControlContentAssistant;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
@@ -43,6 +38,11 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.contentassist.ContentAssistHandler;
+
+import net.sf.eclipsecs.core.config.ResolvableProperty;
+import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
+import net.sf.eclipsecs.ui.Messages;
+import net.sf.eclipsecs.ui.util.SWTUtil;
 
 /**
  * Property page.

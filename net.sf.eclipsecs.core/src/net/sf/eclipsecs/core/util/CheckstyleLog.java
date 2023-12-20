@@ -20,13 +20,13 @@
 
 package net.sf.eclipsecs.core.util;
 
-import net.sf.eclipsecs.core.CheckstylePlugin;
-import net.sf.eclipsecs.core.Messages;
-
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.osgi.util.NLS;
+
+import net.sf.eclipsecs.core.CheckstylePlugin;
+import net.sf.eclipsecs.core.Messages;
 
 /**
  * Logging utility for the Checkstyle plug-in.

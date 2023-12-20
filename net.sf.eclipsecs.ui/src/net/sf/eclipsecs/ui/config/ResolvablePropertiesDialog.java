@@ -24,18 +24,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import net.sf.eclipsecs.core.config.CheckConfigurationTester;
-import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
-import net.sf.eclipsecs.core.config.ResolvableProperty;
-import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
-import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
-import net.sf.eclipsecs.ui.Messages;
-import net.sf.eclipsecs.ui.util.SWTUtil;
-import net.sf.eclipsecs.ui.util.table.EnhancedTableViewer;
-import net.sf.eclipsecs.ui.util.table.ITableComparableProvider;
-import net.sf.eclipsecs.ui.util.table.ITableSettingsProvider;
-
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -65,6 +53,18 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+
+import net.sf.eclipsecs.core.config.CheckConfigurationTester;
+import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
+import net.sf.eclipsecs.core.config.ResolvableProperty;
+import net.sf.eclipsecs.core.util.CheckstylePluginException;
+import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
+import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
+import net.sf.eclipsecs.ui.Messages;
+import net.sf.eclipsecs.ui.util.SWTUtil;
+import net.sf.eclipsecs.ui.util.table.EnhancedTableViewer;
+import net.sf.eclipsecs.ui.util.table.ITableComparableProvider;
+import net.sf.eclipsecs.ui.util.table.ITableSettingsProvider;
 
 /**
  * Dialog to show/edit the properties (name, location, description) of a check

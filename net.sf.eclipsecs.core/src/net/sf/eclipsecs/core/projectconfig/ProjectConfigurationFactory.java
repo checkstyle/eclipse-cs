@@ -28,17 +28,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.sf.eclipsecs.core.Messages;
-import net.sf.eclipsecs.core.config.CheckConfiguration;
-import net.sf.eclipsecs.core.config.CheckConfigurationFactory;
-import net.sf.eclipsecs.core.config.ICheckConfiguration;
-import net.sf.eclipsecs.core.config.ResolvableProperty;
-import net.sf.eclipsecs.core.config.configtypes.ConfigurationTypes;
-import net.sf.eclipsecs.core.config.configtypes.IConfigurationType;
-import net.sf.eclipsecs.core.config.configtypes.ProjectConfigurationType;
-import net.sf.eclipsecs.core.projectconfig.filters.IFilter;
-import net.sf.eclipsecs.core.util.CheckstylePluginException;
-
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -50,6 +39,17 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.osgi.util.NLS;
+
+import net.sf.eclipsecs.core.Messages;
+import net.sf.eclipsecs.core.config.CheckConfiguration;
+import net.sf.eclipsecs.core.config.CheckConfigurationFactory;
+import net.sf.eclipsecs.core.config.ICheckConfiguration;
+import net.sf.eclipsecs.core.config.ResolvableProperty;
+import net.sf.eclipsecs.core.config.configtypes.ConfigurationTypes;
+import net.sf.eclipsecs.core.config.configtypes.IConfigurationType;
+import net.sf.eclipsecs.core.config.configtypes.ProjectConfigurationType;
+import net.sf.eclipsecs.core.projectconfig.filters.IFilter;
+import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
 /**
  * Used to manage the life cycle of FileSet objects.

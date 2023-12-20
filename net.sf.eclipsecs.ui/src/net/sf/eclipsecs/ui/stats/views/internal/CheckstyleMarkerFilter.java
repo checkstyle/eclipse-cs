@@ -27,7 +27,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
-import net.sf.eclipsecs.core.builder.CheckstyleMarker;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -38,6 +37,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.ui.IWorkingSet;
 import org.eclipse.ui.PlatformUI;
+
+import net.sf.eclipsecs.core.builder.CheckstyleMarker;
 
 /**
  * Filter class for Checkstyle markers. This filter is used by the Checkstyle statistics views.

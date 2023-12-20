@@ -27,20 +27,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import net.sf.eclipsecs.core.config.ConfigProperty;
-import net.sf.eclipsecs.core.config.Module;
-import net.sf.eclipsecs.core.config.Severity;
-import net.sf.eclipsecs.core.config.meta.MetadataFactory;
-import net.sf.eclipsecs.core.util.CheckstyleLog;
-import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
-import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
-import net.sf.eclipsecs.ui.CheckstyleUIPluginPrefs;
-import net.sf.eclipsecs.ui.Messages;
-import net.sf.eclipsecs.ui.config.widgets.ConfigPropertyWidgetFactory;
-import net.sf.eclipsecs.ui.config.widgets.IConfigPropertyWidget;
-import net.sf.eclipsecs.ui.util.SWTUtil;
-
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -66,6 +52,20 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
 import org.osgi.service.prefs.BackingStoreException;
+
+import net.sf.eclipsecs.core.config.ConfigProperty;
+import net.sf.eclipsecs.core.config.Module;
+import net.sf.eclipsecs.core.config.Severity;
+import net.sf.eclipsecs.core.config.meta.MetadataFactory;
+import net.sf.eclipsecs.core.util.CheckstyleLog;
+import net.sf.eclipsecs.core.util.CheckstylePluginException;
+import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
+import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
+import net.sf.eclipsecs.ui.CheckstyleUIPluginPrefs;
+import net.sf.eclipsecs.ui.Messages;
+import net.sf.eclipsecs.ui.config.widgets.ConfigPropertyWidgetFactory;
+import net.sf.eclipsecs.ui.config.widgets.IConfigPropertyWidget;
+import net.sf.eclipsecs.ui.util.SWTUtil;
 
 /**
  * Edit dialog for property values.

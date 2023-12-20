@@ -20,20 +20,6 @@
 
 package net.sf.eclipsecs.core.builder;
 
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
-import com.google.common.io.Closeables;
-import com.puppycrawl.tools.checkstyle.Checker;
-import com.puppycrawl.tools.checkstyle.ConfigurationLoader;
-import com.puppycrawl.tools.checkstyle.ConfigurationLoader.IgnoredModulesOptions;
-import com.puppycrawl.tools.checkstyle.PackageNamesLoader;
-import com.puppycrawl.tools.checkstyle.PackageObjectFactory;
-import com.puppycrawl.tools.checkstyle.PackageObjectFactory.ModuleLoadOption;
-import com.puppycrawl.tools.checkstyle.PropertyResolver;
-import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
-import com.puppycrawl.tools.checkstyle.api.Configuration;
-import com.puppycrawl.tools.checkstyle.LocalizedMessage;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.Locale;
@@ -41,16 +27,30 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
+import org.xml.sax.InputSource;
+
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.io.Closeables;
+import com.puppycrawl.tools.checkstyle.Checker;
+import com.puppycrawl.tools.checkstyle.ConfigurationLoader;
+import com.puppycrawl.tools.checkstyle.ConfigurationLoader.IgnoredModulesOptions;
+import com.puppycrawl.tools.checkstyle.LocalizedMessage;
+import com.puppycrawl.tools.checkstyle.PackageNamesLoader;
+import com.puppycrawl.tools.checkstyle.PackageObjectFactory;
+import com.puppycrawl.tools.checkstyle.PackageObjectFactory.ModuleLoadOption;
+import com.puppycrawl.tools.checkstyle.PropertyResolver;
+import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
+import com.puppycrawl.tools.checkstyle.api.Configuration;
+
 import net.sf.eclipsecs.core.CheckstylePlugin;
 import net.sf.eclipsecs.core.CheckstylePluginPrefs;
 import net.sf.eclipsecs.core.config.CheckstyleConfigurationFile;
 import net.sf.eclipsecs.core.config.ICheckConfiguration;
 import net.sf.eclipsecs.core.config.configtypes.IContextAware;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
-
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.CoreException;
-import org.xml.sax.InputSource;
 
 /**
  * Factory class to create (and cache) checker objects.

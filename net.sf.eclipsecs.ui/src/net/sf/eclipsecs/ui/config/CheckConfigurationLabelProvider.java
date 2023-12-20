@@ -20,12 +20,12 @@
 
 package net.sf.eclipsecs.ui.config;
 
+import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.swt.graphics.Image;
+
 import net.sf.eclipsecs.core.config.ICheckConfiguration;
 import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.config.configtypes.ConfigurationTypesUI;
-
-import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.swt.graphics.Image;
 
 /**
  * Provides the labels for the audit configuration list display.

@@ -31,11 +31,6 @@ import java.util.ResourceBundle;
 import java.util.StringTokenizer;
 import java.util.stream.Collectors;
 
-import net.sf.eclipsecs.core.config.ConfigProperty;
-import net.sf.eclipsecs.core.config.meta.ConfigPropertyMetadata;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
-import net.sf.eclipsecs.ui.CheckstyleUIPluginPrefs;
-
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences.IPreferenceChangeListener;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences.PreferenceChangeEvent;
@@ -50,6 +45,11 @@ import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+
+import net.sf.eclipsecs.core.config.ConfigProperty;
+import net.sf.eclipsecs.core.config.meta.ConfigPropertyMetadata;
+import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
+import net.sf.eclipsecs.ui.CheckstyleUIPluginPrefs;
 
 /**
  * Configuration widget for selecting multiple values with check boxes.

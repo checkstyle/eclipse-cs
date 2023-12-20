@@ -20,12 +20,6 @@
 
 package net.sf.eclipsecs.ui.config.widgets;
 
-import net.sf.eclipsecs.core.config.ConfigProperty;
-import net.sf.eclipsecs.core.config.meta.ConfigPropertyMetadata;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
-import net.sf.eclipsecs.ui.Messages;
-import net.sf.eclipsecs.ui.config.PropertiesContentAssistProcessor;
-
 import org.eclipse.jface.contentassist.SubjectControlContentAssistant;
 import org.eclipse.jface.text.DefaultInformationControl;
 import org.eclipse.jface.text.IDocument;
@@ -45,6 +39,12 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.contentassist.ContentAssistHandler;
+
+import net.sf.eclipsecs.core.config.ConfigProperty;
+import net.sf.eclipsecs.core.config.meta.ConfigPropertyMetadata;
+import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
+import net.sf.eclipsecs.ui.Messages;
+import net.sf.eclipsecs.ui.config.PropertiesContentAssistProcessor;
 
 /**
  * A string property configuration widget.

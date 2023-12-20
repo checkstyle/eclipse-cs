@@ -20,9 +20,6 @@
 
 package net.sf.eclipsecs.core.config.configtypes;
 
-import com.google.common.io.ByteStreams;
-import com.puppycrawl.tools.checkstyle.PropertyResolver;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,11 +30,14 @@ import java.util.Objects;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
+import org.eclipse.core.runtime.URIUtil;
+
+import com.google.common.io.ByteStreams;
+import com.puppycrawl.tools.checkstyle.PropertyResolver;
+
 import net.sf.eclipsecs.core.config.CheckstyleConfigurationFile;
 import net.sf.eclipsecs.core.config.ICheckConfiguration;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
-
-import org.eclipse.core.runtime.URIUtil;
 
 /**
  * Base implementation of <code>IConfigurationType</code>.

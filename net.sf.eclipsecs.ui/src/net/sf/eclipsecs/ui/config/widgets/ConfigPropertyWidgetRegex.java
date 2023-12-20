@@ -24,12 +24,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-import net.sf.eclipsecs.core.config.ConfigProperty;
-import net.sf.eclipsecs.core.config.meta.ConfigPropertyMetadata;
-import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.ui.Messages;
-import net.sf.eclipsecs.ui.util.regex.RegexCompletionProposalFactory;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
@@ -39,6 +33,12 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
+
+import net.sf.eclipsecs.core.config.ConfigProperty;
+import net.sf.eclipsecs.core.config.meta.ConfigPropertyMetadata;
+import net.sf.eclipsecs.core.util.CheckstylePluginException;
+import net.sf.eclipsecs.ui.Messages;
+import net.sf.eclipsecs.ui.util.regex.RegexCompletionProposalFactory;
 
 /**
  * A string property configuration widget.

@@ -20,11 +20,11 @@
 
 package net.sf.eclipsecs.ui.config.widgets;
 
-import net.sf.eclipsecs.core.config.ConfigProperty;
-import net.sf.eclipsecs.core.config.meta.ConfigPropertyType;
-
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
+
+import net.sf.eclipsecs.core.config.ConfigProperty;
+import net.sf.eclipsecs.core.config.meta.ConfigPropertyType;
 
 /**
  * Create <code>ConfigPropertyWidget</code> instances based on provided

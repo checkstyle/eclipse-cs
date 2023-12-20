@@ -20,12 +20,6 @@
 
 package net.sf.eclipsecs.core.builder;
 
-import com.puppycrawl.tools.checkstyle.Checker;
-import com.puppycrawl.tools.checkstyle.api.AuditEvent;
-import com.puppycrawl.tools.checkstyle.api.AuditListener;
-import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
-import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,15 +27,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import net.sf.eclipsecs.core.CheckstylePluginPrefs;
-import net.sf.eclipsecs.core.Messages;
-import net.sf.eclipsecs.core.config.ICheckConfiguration;
-import net.sf.eclipsecs.core.config.Module;
-import net.sf.eclipsecs.core.config.meta.MetadataFactory;
-import net.sf.eclipsecs.core.config.meta.RuleMetadata;
-import net.sf.eclipsecs.core.util.CheckstyleLog;
-import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
 import org.eclipse.core.filebuffers.FileBuffers;
 import org.eclipse.core.filebuffers.ITextFileBufferManager;
@@ -59,6 +44,21 @@ import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.osgi.util.NLS;
+
+import com.puppycrawl.tools.checkstyle.Checker;
+import com.puppycrawl.tools.checkstyle.api.AuditEvent;
+import com.puppycrawl.tools.checkstyle.api.AuditListener;
+import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
+import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
+
+import net.sf.eclipsecs.core.CheckstylePluginPrefs;
+import net.sf.eclipsecs.core.Messages;
+import net.sf.eclipsecs.core.config.ICheckConfiguration;
+import net.sf.eclipsecs.core.config.Module;
+import net.sf.eclipsecs.core.config.meta.MetadataFactory;
+import net.sf.eclipsecs.core.config.meta.RuleMetadata;
+import net.sf.eclipsecs.core.util.CheckstyleLog;
+import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
 /**
  * Performs checking on Java source code.

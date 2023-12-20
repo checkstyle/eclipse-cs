@@ -20,15 +20,15 @@
 
 package net.sf.eclipsecs.sample.checks;
 
-import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
-import net.sf.eclipsecs.ui.quickfixes.AbstractASTResolution;
-
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.Javadoc;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.TagElement;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.swt.graphics.Image;
+
+import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
+import net.sf.eclipsecs.ui.quickfixes.AbstractASTResolution;
 
 public class MethodLimitQuickfix extends AbstractASTResolution {
 

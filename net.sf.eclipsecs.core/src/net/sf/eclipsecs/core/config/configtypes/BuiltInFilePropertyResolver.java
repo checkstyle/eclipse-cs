@@ -20,14 +20,14 @@
 
 package net.sf.eclipsecs.core.config.configtypes;
 
-import com.puppycrawl.tools.checkstyle.PropertyResolver;
-
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.URIUtil;
+
+import com.puppycrawl.tools.checkstyle.PropertyResolver;
 
 /**
  * Adds support for additional checkstyle config files (header, suppressions etc.) to be delivered

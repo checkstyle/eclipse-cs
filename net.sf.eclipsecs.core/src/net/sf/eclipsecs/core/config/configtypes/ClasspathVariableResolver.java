@@ -20,10 +20,10 @@
 
 package net.sf.eclipsecs.core.config.configtypes;
 
-import com.puppycrawl.tools.checkstyle.PropertyResolver;
-
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.JavaCore;
+
+import com.puppycrawl.tools.checkstyle.PropertyResolver;
 
 /**
  * Property resolver that tries to resolve values from classpath variables.

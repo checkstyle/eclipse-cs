@@ -20,8 +20,6 @@
 
 package net.sf.eclipsecs.core.config;
 
-import com.google.common.base.Strings;
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -29,15 +27,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import net.sf.eclipsecs.core.Messages;
-import net.sf.eclipsecs.core.config.savefilter.SaveFilters;
-import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.core.util.XMLUtil;
-
 import org.dom4j.Branch;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
+
+import com.google.common.base.Strings;
+
+import net.sf.eclipsecs.core.Messages;
+import net.sf.eclipsecs.core.config.savefilter.SaveFilters;
+import net.sf.eclipsecs.core.util.CheckstylePluginException;
+import net.sf.eclipsecs.core.util.XMLUtil;
 
 /**
  * Writes the modules of a checkstyle configuration to an output stream.

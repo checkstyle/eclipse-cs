@@ -20,8 +20,6 @@
 
 package net.sf.eclipsecs.core.projectconfig;
 
-import com.google.common.base.MoreObjects;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -29,11 +27,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
+import org.eclipse.core.resources.IProject;
+
+import com.google.common.base.MoreObjects;
+
 import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
 import net.sf.eclipsecs.core.config.ICheckConfiguration;
 import net.sf.eclipsecs.core.projectconfig.filters.IFilter;
-
-import org.eclipse.core.resources.IProject;
 
 /**
  * Represents the configuration for a project. Contains the file sets configured for the project

@@ -20,11 +20,11 @@
 
 package net.sf.eclipsecs.checkstyle.utils;
 
-import com.puppycrawl.tools.checkstyle.PackageNamesLoader;
-import com.puppycrawl.tools.checkstyle.utils.ModuleReflectionUtil;
-
 import java.util.HashSet;
 import java.util.Set;
+
+import com.puppycrawl.tools.checkstyle.PackageNamesLoader;
+import com.puppycrawl.tools.checkstyle.utils.ModuleReflectionUtil;
 
 public final class CheckUtil {
   private CheckUtil() {

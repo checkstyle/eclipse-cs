@@ -23,8 +23,6 @@ package net.sf.eclipsecs.core.jobs;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sf.eclipsecs.core.Messages;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.WorkspaceJob;
@@ -33,6 +31,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.osgi.util.NLS;
+
+import net.sf.eclipsecs.core.Messages;
 
 /**
  * This operation configures or deconfigures a project with a given nature. If the project is

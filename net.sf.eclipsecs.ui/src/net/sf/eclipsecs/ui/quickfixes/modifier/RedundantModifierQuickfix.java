@@ -25,10 +25,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
-import net.sf.eclipsecs.ui.quickfixes.AbstractASTResolution;
-import net.sf.eclipsecs.ui.quickfixes.Messages;
-
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.AnnotationTypeDeclaration;
@@ -40,6 +36,10 @@ import org.eclipse.jdt.core.dom.Modifier.ModifierKeyword;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.swt.graphics.Image;
+
+import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
+import net.sf.eclipsecs.ui.quickfixes.AbstractASTResolution;
+import net.sf.eclipsecs.ui.quickfixes.Messages;
 
 /**
  * Quickfix implementation that removes redundant modifiers.

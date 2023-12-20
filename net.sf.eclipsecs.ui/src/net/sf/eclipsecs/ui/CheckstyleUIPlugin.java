@@ -25,10 +25,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Locale;
 
-import net.sf.eclipsecs.core.jobs.AbstractCheckJob;
-import net.sf.eclipsecs.core.util.CheckstyleLog;
-import net.sf.eclipsecs.ui.properties.filter.CheckFileOnOpenPartListener;
-
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
@@ -47,6 +43,10 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.progress.IProgressService;
 import org.osgi.framework.BundleContext;
+
+import net.sf.eclipsecs.core.jobs.AbstractCheckJob;
+import net.sf.eclipsecs.core.util.CheckstyleLog;
+import net.sf.eclipsecs.ui.properties.filter.CheckFileOnOpenPartListener;
 
 /**
  * The main plugin class to be used in the desktop.

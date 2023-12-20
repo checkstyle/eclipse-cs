@@ -22,10 +22,6 @@ package net.sf.eclipsecs.ui.actions;
 
 import java.util.Collection;
 
-import net.sf.eclipsecs.core.jobs.ConfigureDeconfigureNatureJob;
-import net.sf.eclipsecs.core.nature.CheckstyleNature;
-import net.sf.eclipsecs.ui.Messages;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
@@ -37,6 +33,10 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
+
+import net.sf.eclipsecs.core.jobs.ConfigureDeconfigureNatureJob;
+import net.sf.eclipsecs.core.nature.CheckstyleNature;
+import net.sf.eclipsecs.ui.Messages;
 
 /**
  * Action to diable Checkstyle on one ore more projects.

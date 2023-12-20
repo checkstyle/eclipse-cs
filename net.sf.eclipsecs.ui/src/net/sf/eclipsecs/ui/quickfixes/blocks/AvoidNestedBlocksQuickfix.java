@@ -22,16 +22,16 @@ package net.sf.eclipsecs.ui.quickfixes.blocks;
 
 import java.util.List;
 
-import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
-import net.sf.eclipsecs.ui.quickfixes.AbstractASTResolution;
-import net.sf.eclipsecs.ui.quickfixes.Messages;
-
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.Block;
 import org.eclipse.jdt.core.dom.SwitchStatement;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.swt.graphics.Image;
+
+import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
+import net.sf.eclipsecs.ui.quickfixes.AbstractASTResolution;
+import net.sf.eclipsecs.ui.quickfixes.Messages;
 
 /**
  * Quickfix implementation that removes nested blocks.

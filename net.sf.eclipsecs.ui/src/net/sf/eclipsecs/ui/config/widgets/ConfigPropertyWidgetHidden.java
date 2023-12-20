@@ -20,10 +20,10 @@
 
 package net.sf.eclipsecs.ui.config.widgets;
 
-import net.sf.eclipsecs.core.config.ConfigProperty;
-
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+
+import net.sf.eclipsecs.core.config.ConfigProperty;
 
 /**
  * Non-configuration property.

@@ -24,15 +24,15 @@ import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import net.sf.eclipsecs.core.util.CheckstyleLog;
-import net.sf.eclipsecs.core.util.EclipseLogHandler;
-import net.sf.eclipsecs.core.util.ExtensionClassLoader;
-
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
+
+import net.sf.eclipsecs.core.util.CheckstyleLog;
+import net.sf.eclipsecs.core.util.EclipseLogHandler;
+import net.sf.eclipsecs.core.util.ExtensionClassLoader;
 
 /**
  * The main plugin class to be used in the desktop.

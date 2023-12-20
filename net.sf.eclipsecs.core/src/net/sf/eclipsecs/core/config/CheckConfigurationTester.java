@@ -20,22 +20,22 @@
 
 package net.sf.eclipsecs.core.config;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.eclipse.core.resources.IProject;
+import org.xml.sax.InputSource;
+
 import com.google.common.io.Closeables;
 import com.puppycrawl.tools.checkstyle.ConfigurationLoader;
 import com.puppycrawl.tools.checkstyle.ConfigurationLoader.IgnoredModulesOptions;
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import net.sf.eclipsecs.core.config.configtypes.IContextAware;
 import net.sf.eclipsecs.core.config.configtypes.MultiPropertyResolver;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
-
-import org.eclipse.core.resources.IProject;
-import org.xml.sax.InputSource;
 
 /**
  * This class is used to test check configurations for obvious problems such as:

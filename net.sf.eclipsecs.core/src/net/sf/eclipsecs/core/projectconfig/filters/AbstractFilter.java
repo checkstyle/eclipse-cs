@@ -20,10 +20,10 @@
 
 package net.sf.eclipsecs.core.projectconfig.filters;
 
-import com.google.common.base.MoreObjects;
-
 import java.util.List;
 import java.util.Objects;
+
+import com.google.common.base.MoreObjects;
 
 /**
  * Base implementation of a filter.

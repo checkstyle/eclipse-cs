@@ -23,21 +23,6 @@ package net.sf.eclipsecs.ui.config;
 import java.io.File;
 import java.util.ArrayList;
 
-import net.sf.eclipsecs.core.config.CheckConfigurationFactory;
-import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
-import net.sf.eclipsecs.core.config.GlobalCheckConfigurationWorkingSet;
-import net.sf.eclipsecs.core.config.ICheckConfiguration;
-import net.sf.eclipsecs.core.config.ICheckConfigurationWorkingSet;
-import net.sf.eclipsecs.core.projectconfig.ProjectConfigurationFactory;
-import net.sf.eclipsecs.core.util.CheckstyleLog;
-import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
-import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
-import net.sf.eclipsecs.ui.Messages;
-import net.sf.eclipsecs.ui.util.table.EnhancedTableViewer;
-import net.sf.eclipsecs.ui.util.table.ITableComparableProvider;
-import net.sf.eclipsecs.ui.util.table.ITableSettingsProvider;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -72,6 +57,21 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
+
+import net.sf.eclipsecs.core.config.CheckConfigurationFactory;
+import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
+import net.sf.eclipsecs.core.config.GlobalCheckConfigurationWorkingSet;
+import net.sf.eclipsecs.core.config.ICheckConfiguration;
+import net.sf.eclipsecs.core.config.ICheckConfigurationWorkingSet;
+import net.sf.eclipsecs.core.projectconfig.ProjectConfigurationFactory;
+import net.sf.eclipsecs.core.util.CheckstyleLog;
+import net.sf.eclipsecs.core.util.CheckstylePluginException;
+import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
+import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
+import net.sf.eclipsecs.ui.Messages;
+import net.sf.eclipsecs.ui.util.table.EnhancedTableViewer;
+import net.sf.eclipsecs.ui.util.table.ITableComparableProvider;
+import net.sf.eclipsecs.ui.util.table.ITableSettingsProvider;
 
 /**
  * This class provides the editor GUI for a check configuration working set.

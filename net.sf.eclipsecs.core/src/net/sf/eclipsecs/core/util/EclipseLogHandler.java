@@ -24,13 +24,13 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
-import net.sf.eclipsecs.core.Messages;
-
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.osgi.util.NLS;
+
+import net.sf.eclipsecs.core.Messages;
 
 /**
  * Logging-Handler implementation for the java.util.logging API to allow using the logging API to

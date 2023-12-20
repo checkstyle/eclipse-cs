@@ -20,12 +20,12 @@
 
 package net.sf.eclipsecs.ui.config.widgets;
 
-import net.sf.eclipsecs.core.config.ConfigProperty;
-
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
 import org.eclipse.swt.widgets.Composite;
+
+import net.sf.eclipsecs.core.config.ConfigProperty;
 
 /**
  * Property configuration widget for string arrays.
