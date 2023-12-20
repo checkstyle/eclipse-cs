@@ -25,15 +25,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Objects;
 
-import net.sf.eclipsecs.core.util.CheckstyleLog;
-import net.sf.eclipsecs.ui.stats.Messages;
-import net.sf.eclipsecs.ui.stats.data.MarkerStat;
-import net.sf.eclipsecs.ui.stats.data.Stats;
-import net.sf.eclipsecs.ui.stats.views.internal.FiltersAction;
-import net.sf.eclipsecs.ui.util.table.EnhancedTableViewer;
-import net.sf.eclipsecs.ui.util.table.ITableComparableProvider;
-import net.sf.eclipsecs.ui.util.table.ITableSettingsProvider;
-
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
@@ -71,6 +62,15 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.texteditor.MarkerUtilities;
+
+import net.sf.eclipsecs.core.util.CheckstyleLog;
+import net.sf.eclipsecs.ui.stats.Messages;
+import net.sf.eclipsecs.ui.stats.data.MarkerStat;
+import net.sf.eclipsecs.ui.stats.data.Stats;
+import net.sf.eclipsecs.ui.stats.views.internal.FiltersAction;
+import net.sf.eclipsecs.ui.util.table.EnhancedTableViewer;
+import net.sf.eclipsecs.ui.util.table.ITableComparableProvider;
+import net.sf.eclipsecs.ui.util.table.ITableSettingsProvider;
 
 /**
  * View that displays statistics about checkstyle markers.

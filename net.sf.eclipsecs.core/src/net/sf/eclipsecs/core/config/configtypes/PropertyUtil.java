@@ -20,12 +20,12 @@
 
 package net.sf.eclipsecs.core.config.configtypes;
 
-import com.puppycrawl.tools.checkstyle.PropertyResolver;
-import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import com.puppycrawl.tools.checkstyle.PropertyResolver;
+import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 
 /**
  * Utility class for handling strings that contain properties using the very common ${propertyName}

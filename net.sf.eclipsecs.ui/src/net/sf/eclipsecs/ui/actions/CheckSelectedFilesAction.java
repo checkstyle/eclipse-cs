@@ -24,9 +24,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import net.sf.eclipsecs.core.jobs.RunCheckstyleOnFilesJob;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
-
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -36,6 +33,9 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
+
+import net.sf.eclipsecs.core.jobs.RunCheckstyleOnFilesJob;
+import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
 
 /**
  * Action to diable Checkstyle on one ore more projects.

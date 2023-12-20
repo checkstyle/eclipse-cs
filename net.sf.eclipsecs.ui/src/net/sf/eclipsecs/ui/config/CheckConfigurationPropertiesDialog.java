@@ -22,21 +22,6 @@ package net.sf.eclipsecs.ui.config;
 
 import java.util.List;
 
-import net.sf.eclipsecs.core.config.CheckConfigurationTester;
-import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
-import net.sf.eclipsecs.core.config.ICheckConfiguration;
-import net.sf.eclipsecs.core.config.ICheckConfigurationWorkingSet;
-import net.sf.eclipsecs.core.config.ResolvableProperty;
-import net.sf.eclipsecs.core.config.configtypes.ConfigurationTypes;
-import net.sf.eclipsecs.core.config.configtypes.IConfigurationType;
-import net.sf.eclipsecs.core.util.CheckstyleLog;
-import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
-import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
-import net.sf.eclipsecs.ui.Messages;
-import net.sf.eclipsecs.ui.config.configtypes.ConfigurationTypesUI;
-import net.sf.eclipsecs.ui.config.configtypes.ICheckConfigurationEditor;
-
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -60,6 +45,21 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+
+import net.sf.eclipsecs.core.config.CheckConfigurationTester;
+import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
+import net.sf.eclipsecs.core.config.ICheckConfiguration;
+import net.sf.eclipsecs.core.config.ICheckConfigurationWorkingSet;
+import net.sf.eclipsecs.core.config.ResolvableProperty;
+import net.sf.eclipsecs.core.config.configtypes.ConfigurationTypes;
+import net.sf.eclipsecs.core.config.configtypes.IConfigurationType;
+import net.sf.eclipsecs.core.util.CheckstyleLog;
+import net.sf.eclipsecs.core.util.CheckstylePluginException;
+import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
+import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
+import net.sf.eclipsecs.ui.Messages;
+import net.sf.eclipsecs.ui.config.configtypes.ConfigurationTypesUI;
+import net.sf.eclipsecs.ui.config.configtypes.ICheckConfigurationEditor;
 
 /**
  * Dialog to show/edit the properties (name, location, description) of a check

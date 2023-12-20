@@ -37,10 +37,10 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import net.sf.eclipsecs.core.util.CheckstyleLog;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import net.sf.eclipsecs.core.util.CheckstyleLog;
 
 /**
  * Utility class to write eclipse formatter/cleanup profile XML files.

@@ -20,9 +20,9 @@
 
 package net.sf.eclipsecs.core.config;
 
-import com.google.common.base.MoreObjects;
-
 import java.util.Objects;
+
+import com.google.common.base.MoreObjects;
 
 /**
  * Represents a configuration property who's value must be resolved.

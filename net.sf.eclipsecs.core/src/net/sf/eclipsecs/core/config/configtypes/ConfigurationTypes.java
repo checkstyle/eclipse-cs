@@ -26,12 +26,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.sf.eclipsecs.core.CheckstylePlugin;
-import net.sf.eclipsecs.core.util.CheckstyleLog;
-
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
+
+import net.sf.eclipsecs.core.CheckstylePlugin;
+import net.sf.eclipsecs.core.util.CheckstyleLog;
 
 /**
  * Register for the configuration types thats use the <i>net.sf.eclipsecs.core.configurationtypes

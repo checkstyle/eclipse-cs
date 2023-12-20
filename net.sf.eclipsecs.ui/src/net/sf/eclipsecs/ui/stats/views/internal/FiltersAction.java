@@ -20,11 +20,11 @@
 
 package net.sf.eclipsecs.ui.stats.views.internal;
 
+import org.eclipse.jface.action.Action;
+
 import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
 import net.sf.eclipsecs.ui.stats.Messages;
 import net.sf.eclipsecs.ui.stats.views.AbstractStatsView;
-
-import org.eclipse.jface.action.Action;
 
 /**
  * Action implementation for the filters action.

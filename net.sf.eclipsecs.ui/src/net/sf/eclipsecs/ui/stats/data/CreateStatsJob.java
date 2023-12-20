@@ -25,13 +25,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
-import net.sf.eclipsecs.core.builder.CheckstyleMarker;
-import net.sf.eclipsecs.core.config.meta.MetadataFactory;
-import net.sf.eclipsecs.core.util.CheckstyleLog;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
-import net.sf.eclipsecs.ui.stats.Messages;
-import net.sf.eclipsecs.ui.stats.views.internal.CheckstyleMarkerFilter;
-
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -40,6 +33,13 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+
+import net.sf.eclipsecs.core.builder.CheckstyleMarker;
+import net.sf.eclipsecs.core.config.meta.MetadataFactory;
+import net.sf.eclipsecs.core.util.CheckstyleLog;
+import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
+import net.sf.eclipsecs.ui.stats.Messages;
+import net.sf.eclipsecs.ui.stats.views.internal.CheckstyleMarkerFilter;
 
 /**
  * Job implementation that builds the data objects for the statistic views.

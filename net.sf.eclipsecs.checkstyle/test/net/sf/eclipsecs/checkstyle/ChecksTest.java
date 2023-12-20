@@ -32,9 +32,6 @@ import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
 
-import net.sf.eclipsecs.checkstyle.utils.CheckUtil;
-import net.sf.eclipsecs.checkstyle.utils.XmlUtil;
-
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -42,6 +39,9 @@ import org.w3c.dom.NodeList;
 
 import com.puppycrawl.tools.checkstyle.Checker;
 import com.puppycrawl.tools.checkstyle.TreeWalker;
+
+import net.sf.eclipsecs.checkstyle.utils.CheckUtil;
+import net.sf.eclipsecs.checkstyle.utils.XmlUtil;
 
 public class ChecksTest {
 

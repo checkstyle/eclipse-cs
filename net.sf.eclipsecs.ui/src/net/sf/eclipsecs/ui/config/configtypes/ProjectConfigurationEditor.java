@@ -26,16 +26,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
-import net.sf.eclipsecs.core.config.ConfigurationWriter;
-import net.sf.eclipsecs.core.config.GlobalCheckConfigurationWorkingSet;
-import net.sf.eclipsecs.core.config.ICheckConfigurationWorkingSet;
-import net.sf.eclipsecs.core.config.configtypes.ExternalFileConfigurationType;
-import net.sf.eclipsecs.core.projectconfig.LocalCheckConfigurationWorkingSet;
-import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.ui.Messages;
-import net.sf.eclipsecs.ui.config.CheckConfigurationPropertiesDialog;
-
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -66,6 +56,16 @@ import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 import org.eclipse.ui.dialogs.ISelectionStatusValidator;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
+
+import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
+import net.sf.eclipsecs.core.config.ConfigurationWriter;
+import net.sf.eclipsecs.core.config.GlobalCheckConfigurationWorkingSet;
+import net.sf.eclipsecs.core.config.ICheckConfigurationWorkingSet;
+import net.sf.eclipsecs.core.config.configtypes.ExternalFileConfigurationType;
+import net.sf.eclipsecs.core.projectconfig.LocalCheckConfigurationWorkingSet;
+import net.sf.eclipsecs.core.util.CheckstylePluginException;
+import net.sf.eclipsecs.ui.Messages;
+import net.sf.eclipsecs.ui.config.CheckConfigurationPropertiesDialog;
 
 /**
  * Implementation of a file based location editor. Contains a text field with

@@ -20,10 +20,10 @@
 
 package net.sf.eclipsecs.core.config.configtypes;
 
-import com.puppycrawl.tools.checkstyle.PropertyResolver;
-
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+
+import com.puppycrawl.tools.checkstyle.PropertyResolver;
 
 /**
  * Property resolver that resolves properties from a resource bundle.

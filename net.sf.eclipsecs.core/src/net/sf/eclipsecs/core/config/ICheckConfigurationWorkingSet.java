@@ -22,10 +22,10 @@ package net.sf.eclipsecs.core.config;
 
 import java.util.Collection;
 
+import org.eclipse.core.resources.IProject;
+
 import net.sf.eclipsecs.core.config.configtypes.IConfigurationType;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
-
-import org.eclipse.core.resources.IProject;
 
 /**
  * Interface for implementations that provide editing services for a group of check configuration.

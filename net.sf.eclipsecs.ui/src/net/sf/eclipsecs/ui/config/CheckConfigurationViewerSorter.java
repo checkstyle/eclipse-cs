@@ -20,10 +20,10 @@
 
 package net.sf.eclipsecs.ui.config;
 
-import net.sf.eclipsecs.core.config.ICheckConfiguration;
-
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
+
+import net.sf.eclipsecs.core.config.ICheckConfiguration;
 
 /**
  * Sorts CheckConfiguration objects into their display order.

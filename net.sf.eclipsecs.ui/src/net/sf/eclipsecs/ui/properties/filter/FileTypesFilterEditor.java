@@ -23,8 +23,6 @@ package net.sf.eclipsecs.ui.properties.filter;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sf.eclipsecs.ui.Messages;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -42,6 +40,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+
+import net.sf.eclipsecs.ui.Messages;
 
 /**
  * Editor dialog for the package filter.

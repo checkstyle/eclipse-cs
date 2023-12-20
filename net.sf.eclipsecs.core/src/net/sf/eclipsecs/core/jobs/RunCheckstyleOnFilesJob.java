@@ -27,14 +27,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import net.sf.eclipsecs.core.CheckstylePlugin;
-import net.sf.eclipsecs.core.Messages;
-import net.sf.eclipsecs.core.builder.CheckstyleBuilder;
-import net.sf.eclipsecs.core.projectconfig.IProjectConfiguration;
-import net.sf.eclipsecs.core.projectconfig.ProjectConfigurationFactory;
-import net.sf.eclipsecs.core.projectconfig.filters.IFilter;
-import net.sf.eclipsecs.core.util.CheckstylePluginException;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
@@ -43,6 +35,14 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
+
+import net.sf.eclipsecs.core.CheckstylePlugin;
+import net.sf.eclipsecs.core.Messages;
+import net.sf.eclipsecs.core.builder.CheckstyleBuilder;
+import net.sf.eclipsecs.core.projectconfig.IProjectConfiguration;
+import net.sf.eclipsecs.core.projectconfig.ProjectConfigurationFactory;
+import net.sf.eclipsecs.core.projectconfig.filters.IFilter;
+import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
 /**
  * Job that invokes Checkstyle on a list of workspace files.

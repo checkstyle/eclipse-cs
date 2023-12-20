@@ -23,10 +23,6 @@ package net.sf.eclipsecs.core.nature;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sf.eclipsecs.core.CheckstylePlugin;
-import net.sf.eclipsecs.core.builder.CheckstyleBuilder;
-import net.sf.eclipsecs.core.builder.CheckstyleMarker;
-
 import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -37,6 +33,10 @@ import org.eclipse.core.resources.ResourceAttributes;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.JavaCore;
+
+import net.sf.eclipsecs.core.CheckstylePlugin;
+import net.sf.eclipsecs.core.builder.CheckstyleBuilder;
+import net.sf.eclipsecs.core.builder.CheckstyleMarker;
 
 /**
  * Checkstyle project nature.

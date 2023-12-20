@@ -23,9 +23,6 @@ package net.sf.eclipsecs.ui.quickfixes;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import net.sf.eclipsecs.core.builder.CheckstyleMarker;
-import net.sf.eclipsecs.core.util.CheckstyleLog;
-import net.sf.eclipsecs.ui.Messages;
 
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.filebuffers.FileBuffers;
@@ -59,6 +56,10 @@ import org.eclipse.text.edits.MalformedTreeException;
 import org.eclipse.text.edits.TextEdit;
 import org.eclipse.ui.texteditor.MarkerAnnotation;
 import org.eclipse.ui.views.markers.WorkbenchMarkerResolution;
+
+import net.sf.eclipsecs.core.builder.CheckstyleMarker;
+import net.sf.eclipsecs.core.util.CheckstyleLog;
+import net.sf.eclipsecs.ui.Messages;
 
 /**
  * Abstract base class for marker resolutions using AST rewrite techniques.

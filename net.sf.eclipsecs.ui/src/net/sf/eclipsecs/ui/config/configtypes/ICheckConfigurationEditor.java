@@ -20,13 +20,13 @@
 
 package net.sf.eclipsecs.ui.config.configtypes;
 
-import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
-import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.ui.config.CheckConfigurationPropertiesDialog;
-
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
+
+import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
+import net.sf.eclipsecs.core.util.CheckstylePluginException;
+import net.sf.eclipsecs.ui.config.CheckConfigurationPropertiesDialog;
 
 /**
  * Interface for the check configuration type specific location editor.

@@ -20,8 +20,6 @@
 
 package net.sf.eclipsecs.core;
 
-import net.sf.eclipsecs.core.util.CheckstyleLog;
-
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.core.runtime.preferences.DefaultScope;
@@ -29,6 +27,8 @@ import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IPreferencesService;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.osgi.service.prefs.BackingStoreException;
+
+import net.sf.eclipsecs.core.util.CheckstyleLog;
 
 /**
  * Class for handling preferences of the <code>net.sf.eclipsecs.core</code> plugin.

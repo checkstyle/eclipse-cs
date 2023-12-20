@@ -26,11 +26,11 @@ import java.util.Map;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
-import net.sf.eclipsecs.core.util.CheckstyleLog;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+
+import net.sf.eclipsecs.core.util.CheckstyleLog;
 
 /**
  * Class for writing a new eclipse-configuration-file. Gets used by class Transformer. Two

@@ -22,13 +22,6 @@ package net.sf.eclipsecs.core.jobs;
 
 import java.io.FileNotFoundException;
 
-import net.sf.eclipsecs.core.CheckstylePlugin;
-import net.sf.eclipsecs.core.Messages;
-import net.sf.eclipsecs.core.transformer.FormatterConfigParser;
-import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
-import net.sf.eclipsecs.core.transformer.FormatterTransformer;
-import net.sf.eclipsecs.core.util.CheckstylePluginException;
-
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
@@ -36,6 +29,13 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
+
+import net.sf.eclipsecs.core.CheckstylePlugin;
+import net.sf.eclipsecs.core.Messages;
+import net.sf.eclipsecs.core.transformer.FormatterConfigParser;
+import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
+import net.sf.eclipsecs.core.transformer.FormatterTransformer;
+import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
 /**
  * Job who starts transforming the formatter-rules to checkstyle-settings.

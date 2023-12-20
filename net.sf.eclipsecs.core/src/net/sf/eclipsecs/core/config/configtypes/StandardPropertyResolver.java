@@ -20,10 +20,10 @@
 
 package net.sf.eclipsecs.core.config.configtypes;
 
-import com.puppycrawl.tools.checkstyle.PropertyResolver;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
+
+import com.puppycrawl.tools.checkstyle.PropertyResolver;
 
 /**
  * Property resolver that resolves some eclipse standard variables.

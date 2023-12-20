@@ -20,14 +20,14 @@
 
 package net.sf.eclipsecs.ui.actions;
 
-import net.sf.eclipsecs.core.jobs.TransformCheckstyleRulesJob;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
+
+import net.sf.eclipsecs.core.jobs.TransformCheckstyleRulesJob;
 
 /**
  * Action to start transforming checkstyle-rules to formatter-rules.

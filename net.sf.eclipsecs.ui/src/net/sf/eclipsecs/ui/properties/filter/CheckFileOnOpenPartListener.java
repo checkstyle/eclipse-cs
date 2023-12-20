@@ -29,19 +29,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import net.sf.eclipsecs.core.Messages;
-import net.sf.eclipsecs.core.builder.CheckstyleMarker;
-import net.sf.eclipsecs.core.jobs.AbstractCheckJob;
-import net.sf.eclipsecs.core.jobs.RunCheckstyleOnFilesJob;
-import net.sf.eclipsecs.core.nature.CheckstyleNature;
-import net.sf.eclipsecs.core.projectconfig.IProjectConfiguration;
-import net.sf.eclipsecs.core.projectconfig.ProjectConfigurationFactory;
-import net.sf.eclipsecs.core.projectconfig.filters.IFilter;
-import net.sf.eclipsecs.core.projectconfig.filters.UnOpenedFilesFilter;
-import net.sf.eclipsecs.core.util.CheckstyleLog;
-import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -65,6 +52,19 @@ import org.eclipse.ui.WorkbenchException;
 import org.eclipse.ui.XMLMemento;
 import org.eclipse.ui.internal.IWorkbenchConstants;
 import org.eclipse.ui.part.FileEditorInput;
+
+import net.sf.eclipsecs.core.Messages;
+import net.sf.eclipsecs.core.builder.CheckstyleMarker;
+import net.sf.eclipsecs.core.jobs.AbstractCheckJob;
+import net.sf.eclipsecs.core.jobs.RunCheckstyleOnFilesJob;
+import net.sf.eclipsecs.core.nature.CheckstyleNature;
+import net.sf.eclipsecs.core.projectconfig.IProjectConfiguration;
+import net.sf.eclipsecs.core.projectconfig.ProjectConfigurationFactory;
+import net.sf.eclipsecs.core.projectconfig.filters.IFilter;
+import net.sf.eclipsecs.core.projectconfig.filters.UnOpenedFilesFilter;
+import net.sf.eclipsecs.core.util.CheckstyleLog;
+import net.sf.eclipsecs.core.util.CheckstylePluginException;
+import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
 
 /**
  * PartListener implementation that listens for opening editor parts and runs Checkstyle on the

@@ -25,12 +25,12 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.URIUtil;
+
 import net.sf.eclipsecs.core.CheckstylePlugin;
 import net.sf.eclipsecs.core.config.ICheckConfiguration;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
-
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.URIUtil;
 
 /**
  * Implementation of the configuration type for a internal check configuration, that is located

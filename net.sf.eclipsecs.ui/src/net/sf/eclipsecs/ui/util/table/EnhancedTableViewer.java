@@ -22,8 +22,6 @@ package net.sf.eclipsecs.ui.util.table;
 
 import java.text.Collator;
 
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
-
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.viewers.ColumnPixelData;
 import org.eclipse.jface.viewers.TableLayout;
@@ -37,6 +35,8 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+
+import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
 
 /**
  * This subclass of <code>TableViewer</code> adds easier sorting support and

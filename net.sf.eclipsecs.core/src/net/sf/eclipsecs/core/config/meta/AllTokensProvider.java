@@ -20,11 +20,11 @@
 
 package net.sf.eclipsecs.core.config.meta;
 
-import com.puppycrawl.tools.checkstyle.api.TokenTypes;
-
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
 /**
  * Class that provides all known tokens from the checkstyle java grammar. This is used for modules

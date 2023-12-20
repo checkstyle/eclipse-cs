@@ -30,6 +30,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourceAttributes;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.osgi.util.NLS;
+
 import net.sf.eclipsecs.core.Messages;
 import net.sf.eclipsecs.core.config.CheckConfigurationFactory;
 import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
@@ -41,17 +52,6 @@ import net.sf.eclipsecs.core.config.configtypes.ProjectConfigurationType;
 import net.sf.eclipsecs.core.projectconfig.filters.IFilter;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 import net.sf.eclipsecs.core.util.XMLUtil;
-
-import org.dom4j.Document;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.ResourceAttributes;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.osgi.util.NLS;
 
 /**
  * A modifiable project configuration implementation.

@@ -20,17 +20,17 @@
 
 package net.sf.eclipsecs.core.config.configtypes;
 
-import com.puppycrawl.tools.checkstyle.PropertyResolver;
-
 import java.net.URL;
-
-import net.sf.eclipsecs.core.config.CheckstyleConfigurationFile;
-import net.sf.eclipsecs.core.config.ICheckConfiguration;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
+
+import com.puppycrawl.tools.checkstyle.PropertyResolver;
+
+import net.sf.eclipsecs.core.config.CheckstyleConfigurationFile;
+import net.sf.eclipsecs.core.config.ICheckConfiguration;
 
 /**
  * Implementation of the configuration type for a built in check configuration, that is located

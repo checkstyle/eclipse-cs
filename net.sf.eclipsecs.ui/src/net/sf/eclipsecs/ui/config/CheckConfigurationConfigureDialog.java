@@ -27,24 +27,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
-import net.sf.eclipsecs.core.config.Module;
-import net.sf.eclipsecs.core.config.Severity;
-import net.sf.eclipsecs.core.config.meta.MetadataFactory;
-import net.sf.eclipsecs.core.config.meta.RuleGroupMetadata;
-import net.sf.eclipsecs.core.config.meta.RuleMetadata;
-import net.sf.eclipsecs.core.util.CheckstyleLog;
-import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
-import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
-import net.sf.eclipsecs.ui.CheckstyleUIPluginPrefs;
-import net.sf.eclipsecs.ui.Messages;
-import net.sf.eclipsecs.ui.util.InternalBrowser;
-import net.sf.eclipsecs.ui.util.SWTUtil;
-import net.sf.eclipsecs.ui.util.table.EnhancedCheckBoxTableViewer;
-import net.sf.eclipsecs.ui.util.table.ITableComparableProvider;
-import net.sf.eclipsecs.ui.util.table.ITableSettingsProvider;
-
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.IDialogSettings;
@@ -96,6 +78,24 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.osgi.service.prefs.BackingStoreException;
+
+import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
+import net.sf.eclipsecs.core.config.Module;
+import net.sf.eclipsecs.core.config.Severity;
+import net.sf.eclipsecs.core.config.meta.MetadataFactory;
+import net.sf.eclipsecs.core.config.meta.RuleGroupMetadata;
+import net.sf.eclipsecs.core.config.meta.RuleMetadata;
+import net.sf.eclipsecs.core.util.CheckstyleLog;
+import net.sf.eclipsecs.core.util.CheckstylePluginException;
+import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
+import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
+import net.sf.eclipsecs.ui.CheckstyleUIPluginPrefs;
+import net.sf.eclipsecs.ui.Messages;
+import net.sf.eclipsecs.ui.util.InternalBrowser;
+import net.sf.eclipsecs.ui.util.SWTUtil;
+import net.sf.eclipsecs.ui.util.table.EnhancedCheckBoxTableViewer;
+import net.sf.eclipsecs.ui.util.table.ITableComparableProvider;
+import net.sf.eclipsecs.ui.util.table.ITableSettingsProvider;
 
 /**
  * Enhanced checkstyle configuration editor.

@@ -23,20 +23,6 @@ package net.sf.eclipsecs.ui.properties;
 import java.util.LinkedList;
 import java.util.List;
 
-import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
-import net.sf.eclipsecs.core.config.ICheckConfiguration;
-import net.sf.eclipsecs.core.projectconfig.FileMatchPattern;
-import net.sf.eclipsecs.core.projectconfig.FileSet;
-import net.sf.eclipsecs.core.util.CheckstyleLog;
-import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
-import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
-import net.sf.eclipsecs.ui.Messages;
-import net.sf.eclipsecs.ui.config.CheckConfigurationConfigureDialog;
-import net.sf.eclipsecs.ui.config.CheckConfigurationLabelProvider;
-import net.sf.eclipsecs.ui.config.CheckConfigurationViewerSorter;
-import net.sf.eclipsecs.ui.util.SWTUtil;
-
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -84,6 +70,20 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
+
+import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
+import net.sf.eclipsecs.core.config.ICheckConfiguration;
+import net.sf.eclipsecs.core.projectconfig.FileMatchPattern;
+import net.sf.eclipsecs.core.projectconfig.FileSet;
+import net.sf.eclipsecs.core.util.CheckstyleLog;
+import net.sf.eclipsecs.core.util.CheckstylePluginException;
+import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
+import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
+import net.sf.eclipsecs.ui.Messages;
+import net.sf.eclipsecs.ui.config.CheckConfigurationConfigureDialog;
+import net.sf.eclipsecs.ui.config.CheckConfigurationLabelProvider;
+import net.sf.eclipsecs.ui.config.CheckConfigurationViewerSorter;
+import net.sf.eclipsecs.ui.util.SWTUtil;
 
 /**
  * Property page.

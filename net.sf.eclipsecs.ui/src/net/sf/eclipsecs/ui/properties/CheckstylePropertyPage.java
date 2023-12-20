@@ -22,25 +22,6 @@ package net.sf.eclipsecs.ui.properties;
 
 import java.util.List;
 
-import net.sf.eclipsecs.core.config.ICheckConfiguration;
-import net.sf.eclipsecs.core.jobs.BuildProjectJob;
-import net.sf.eclipsecs.core.jobs.ConfigureDeconfigureNatureJob;
-import net.sf.eclipsecs.core.jobs.TransformCheckstyleRulesJob;
-import net.sf.eclipsecs.core.nature.CheckstyleNature;
-import net.sf.eclipsecs.core.projectconfig.FileSet;
-import net.sf.eclipsecs.core.projectconfig.IProjectConfiguration;
-import net.sf.eclipsecs.core.projectconfig.ProjectConfigurationFactory;
-import net.sf.eclipsecs.core.projectconfig.ProjectConfigurationWorkingCopy;
-import net.sf.eclipsecs.core.projectconfig.filters.IFilter;
-import net.sf.eclipsecs.core.util.CheckstyleLog;
-import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
-import net.sf.eclipsecs.ui.CheckstyleUIPluginPrefs;
-import net.sf.eclipsecs.ui.Messages;
-import net.sf.eclipsecs.ui.config.CheckConfigurationWorkingSetEditor;
-import net.sf.eclipsecs.ui.properties.filter.IFilterEditor;
-import net.sf.eclipsecs.ui.properties.filter.PluginFilterEditors;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
@@ -80,6 +61,25 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.PropertyPage;
+
+import net.sf.eclipsecs.core.config.ICheckConfiguration;
+import net.sf.eclipsecs.core.jobs.BuildProjectJob;
+import net.sf.eclipsecs.core.jobs.ConfigureDeconfigureNatureJob;
+import net.sf.eclipsecs.core.jobs.TransformCheckstyleRulesJob;
+import net.sf.eclipsecs.core.nature.CheckstyleNature;
+import net.sf.eclipsecs.core.projectconfig.FileSet;
+import net.sf.eclipsecs.core.projectconfig.IProjectConfiguration;
+import net.sf.eclipsecs.core.projectconfig.ProjectConfigurationFactory;
+import net.sf.eclipsecs.core.projectconfig.ProjectConfigurationWorkingCopy;
+import net.sf.eclipsecs.core.projectconfig.filters.IFilter;
+import net.sf.eclipsecs.core.util.CheckstyleLog;
+import net.sf.eclipsecs.core.util.CheckstylePluginException;
+import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
+import net.sf.eclipsecs.ui.CheckstyleUIPluginPrefs;
+import net.sf.eclipsecs.ui.Messages;
+import net.sf.eclipsecs.ui.config.CheckConfigurationWorkingSetEditor;
+import net.sf.eclipsecs.ui.properties.filter.IFilterEditor;
+import net.sf.eclipsecs.ui.properties.filter.PluginFilterEditors;
 
 /**
  * Property page for projects to enable checkstyle audit.

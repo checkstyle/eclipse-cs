@@ -20,15 +20,15 @@
 
 package net.sf.eclipsecs.ui.preferences;
 
-import net.sf.eclipsecs.core.config.CheckConfigurationFactory;
-import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
-import net.sf.eclipsecs.ui.Messages;
-
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.preferences.SettingsTransfer;
+
+import net.sf.eclipsecs.core.config.CheckConfigurationFactory;
+import net.sf.eclipsecs.core.util.CheckstylePluginException;
+import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
+import net.sf.eclipsecs.ui.Messages;
 
 /**
  * Support for transferring internal eclipse-cs workspace settings to another

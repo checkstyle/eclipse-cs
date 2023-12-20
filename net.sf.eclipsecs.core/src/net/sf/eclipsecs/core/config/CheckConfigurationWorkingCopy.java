@@ -20,9 +20,6 @@
 
 package net.sf.eclipsecs.core.config;
 
-import com.google.common.io.Closeables;
-import com.google.common.io.Files;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -34,11 +31,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import net.sf.eclipsecs.core.CheckstylePlugin;
-import net.sf.eclipsecs.core.Messages;
-import net.sf.eclipsecs.core.config.configtypes.IConfigurationType;
-import net.sf.eclipsecs.core.util.CheckstylePluginException;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
@@ -48,6 +40,14 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.URIUtil;
 import org.eclipse.osgi.util.NLS;
 import org.xml.sax.InputSource;
+
+import com.google.common.io.Closeables;
+import com.google.common.io.Files;
+
+import net.sf.eclipsecs.core.CheckstylePlugin;
+import net.sf.eclipsecs.core.Messages;
+import net.sf.eclipsecs.core.config.configtypes.IConfigurationType;
+import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
 /**
  * This class acts as wrapper around check configurations to add editing aspects. Check

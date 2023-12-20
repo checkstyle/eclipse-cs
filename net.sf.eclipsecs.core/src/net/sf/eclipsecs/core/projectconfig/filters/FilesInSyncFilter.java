@@ -20,14 +20,14 @@
 
 package net.sf.eclipsecs.core.projectconfig.filters;
 
-import net.sf.eclipsecs.core.util.CheckstyleLog;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.team.core.RepositoryProvider;
 import org.eclipse.team.core.TeamException;
 import org.eclipse.team.core.subscribers.Subscriber;
 import org.eclipse.team.core.synchronize.SyncInfo;
+
+import net.sf.eclipsecs.core.util.CheckstyleLog;
 
 /**
  * Filters all files that are in sync with the source repository.

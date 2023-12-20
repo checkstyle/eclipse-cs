@@ -26,14 +26,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import net.sf.eclipsecs.core.builder.CheckstyleMarker;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
-import net.sf.eclipsecs.ui.stats.Messages;
-import net.sf.eclipsecs.ui.stats.data.CreateStatsJob;
-import net.sf.eclipsecs.ui.stats.data.Stats;
-import net.sf.eclipsecs.ui.stats.views.internal.CheckstyleMarkerFilter;
-import net.sf.eclipsecs.ui.stats.views.internal.CheckstyleMarkerFilterDialog;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarkerDelta;
 import org.eclipse.core.resources.IProject;
@@ -64,6 +56,14 @@ import org.eclipse.ui.IWorkingSet;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.progress.IWorkbenchSiteProgressService;
 import org.eclipse.ui.progress.WorkbenchJob;
+
+import net.sf.eclipsecs.core.builder.CheckstyleMarker;
+import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
+import net.sf.eclipsecs.ui.stats.Messages;
+import net.sf.eclipsecs.ui.stats.data.CreateStatsJob;
+import net.sf.eclipsecs.ui.stats.data.Stats;
+import net.sf.eclipsecs.ui.stats.views.internal.CheckstyleMarkerFilter;
+import net.sf.eclipsecs.ui.stats.views.internal.CheckstyleMarkerFilterDialog;
 
 /**
  * Abstract view that gathers common behaviour for the stats views.

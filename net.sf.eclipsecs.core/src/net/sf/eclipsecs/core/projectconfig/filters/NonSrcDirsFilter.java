@@ -23,8 +23,6 @@ package net.sf.eclipsecs.core.projectconfig.filters;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sf.eclipsecs.core.util.CheckstyleLog;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
@@ -32,6 +30,8 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
+
+import net.sf.eclipsecs.core.util.CheckstyleLog;
 
 /**
  * Implementation of a filter that filters all ressources that are not within a source directory.

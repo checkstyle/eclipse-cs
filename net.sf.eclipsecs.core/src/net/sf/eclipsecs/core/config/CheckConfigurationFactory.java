@@ -20,8 +20,6 @@
 
 package net.sf.eclipsecs.core.config;
 
-import com.google.common.io.ByteStreams;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -43,14 +41,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import net.sf.eclipsecs.core.CheckstylePlugin;
-import net.sf.eclipsecs.core.Messages;
-import net.sf.eclipsecs.core.config.configtypes.BuiltInConfigurationType;
-import net.sf.eclipsecs.core.config.configtypes.ConfigurationTypes;
-import net.sf.eclipsecs.core.config.configtypes.IConfigurationType;
-import net.sf.eclipsecs.core.util.CheckstyleLog;
-import net.sf.eclipsecs.core.util.CheckstylePluginException;
-
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -60,6 +50,16 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.URIUtil;
+
+import com.google.common.io.ByteStreams;
+
+import net.sf.eclipsecs.core.CheckstylePlugin;
+import net.sf.eclipsecs.core.Messages;
+import net.sf.eclipsecs.core.config.configtypes.BuiltInConfigurationType;
+import net.sf.eclipsecs.core.config.configtypes.ConfigurationTypes;
+import net.sf.eclipsecs.core.config.configtypes.IConfigurationType;
+import net.sf.eclipsecs.core.util.CheckstyleLog;
+import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
 /**
  * Used to manage the life cycle of <code>CheckConfiguration</code> objects.

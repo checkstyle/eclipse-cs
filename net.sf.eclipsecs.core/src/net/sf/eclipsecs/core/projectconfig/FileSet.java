@@ -20,15 +20,15 @@
 
 package net.sf.eclipsecs.core.projectconfig;
 
-import com.google.common.base.MoreObjects;
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
-import net.sf.eclipsecs.core.config.ICheckConfiguration;
-
 import org.eclipse.core.resources.IFile;
+
+import com.google.common.base.MoreObjects;
+
+import net.sf.eclipsecs.core.config.ICheckConfiguration;
 
 /**
  * A File Set is a collection of files audited with a common set of audit rules.

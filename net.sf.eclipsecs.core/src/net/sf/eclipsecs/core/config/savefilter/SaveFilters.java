@@ -23,13 +23,13 @@ package net.sf.eclipsecs.core.config.savefilter;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sf.eclipsecs.core.CheckstylePlugin;
-import net.sf.eclipsecs.core.config.Module;
-import net.sf.eclipsecs.core.util.CheckstyleLog;
-
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
+
+import net.sf.eclipsecs.core.CheckstylePlugin;
+import net.sf.eclipsecs.core.config.Module;
+import net.sf.eclipsecs.core.util.CheckstyleLog;
 
 /**
  * Register for the filters thats use the <i>net.sf.eclipsecs.core.checkstyleFilter </i> extension

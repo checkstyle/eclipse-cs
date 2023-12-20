@@ -20,18 +20,11 @@
 
 package net.sf.eclipsecs.core.config;
 
-import com.google.common.base.Strings;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
-
-import net.sf.eclipsecs.core.config.meta.MetadataFactory;
-import net.sf.eclipsecs.core.config.meta.RuleMetadata;
-import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.core.util.XMLUtil;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -39,6 +32,13 @@ import org.dom4j.Element;
 import org.dom4j.VisitorSupport;
 import org.dom4j.io.SAXReader;
 import org.xml.sax.InputSource;
+
+import com.google.common.base.Strings;
+
+import net.sf.eclipsecs.core.config.meta.MetadataFactory;
+import net.sf.eclipsecs.core.config.meta.RuleMetadata;
+import net.sf.eclipsecs.core.util.CheckstylePluginException;
+import net.sf.eclipsecs.core.util.XMLUtil;
 
 /**
  * Utility class to read a checkstyle configuration and transform to the plugins module objects.

@@ -20,10 +20,6 @@
 
 package net.sf.eclipsecs.core.config.configtypes;
 
-import com.google.common.io.ByteStreams;
-import com.google.common.io.Files;
-import com.puppycrawl.tools.checkstyle.PropertyResolver;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -40,19 +36,23 @@ import java.util.Base64;
 import java.util.HashSet;
 import java.util.Set;
 
-import net.sf.eclipsecs.core.CheckstylePlugin;
-import net.sf.eclipsecs.core.Messages;
-import net.sf.eclipsecs.core.config.CheckstyleConfigurationFile;
-import net.sf.eclipsecs.core.config.ICheckConfiguration;
-import net.sf.eclipsecs.core.util.CheckstyleLog;
-import net.sf.eclipsecs.core.util.CheckstylePluginException;
-
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.equinox.security.storage.EncodingUtils;
 import org.eclipse.equinox.security.storage.ISecurePreferences;
 import org.eclipse.equinox.security.storage.SecurePreferencesFactory;
 import org.eclipse.equinox.security.storage.StorageException;
 import org.eclipse.osgi.util.NLS;
+
+import com.google.common.io.ByteStreams;
+import com.google.common.io.Files;
+import com.puppycrawl.tools.checkstyle.PropertyResolver;
+
+import net.sf.eclipsecs.core.CheckstylePlugin;
+import net.sf.eclipsecs.core.Messages;
+import net.sf.eclipsecs.core.config.CheckstyleConfigurationFile;
+import net.sf.eclipsecs.core.config.ICheckConfiguration;
+import net.sf.eclipsecs.core.util.CheckstyleLog;
+import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
 /**
  * Implementation of a check configuration that uses an exteral checkstyle configuration file.
