@@ -9,40 +9,28 @@
     <artifactId>net.sf.eclipsecs.checkstyle</artifactId>
     <packaging>eclipse-plugin</packaging>
     <name>Checkstyle Core Library Plugin</name>
-    
+
     <properties>
         <checkstyle.version>10.10.0</checkstyle.version>
     </properties>
     <build>
         <plugins>
             <plugin>
-                <groupId>com.googlecode.maven-download-plugin</groupId>
-                <artifactId>download-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>download-checkstyle-src</id>
-                        <phase>initialize</phase>
-                        <goals>
-                            <goal>wget</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>.</outputDirectory>
-                            <url>https://github.com/checkstyle/checkstyle/archive/checkstyle-${checkstyle.version}.zip</url>
-                            <outputFileName>checkstyle-checkstyle-${checkstyle.version}.zip</outputFileName>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>        
-            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
                 <executions>
                     <execution>
-                        <phase>prepare-package</phase>
+                        <id>repackage-checkstyle-source</id>
+                        <phase>generate-sources</phase>
                         <configuration>
                             <target>
+                                <get src="https://github.com/checkstyle/checkstyle/archive/checkstyle-${checkstyle.version}.zip"
+                                     dest="${basedir}/checkstyle-${checkstyle.version}.zip"
+                                     verbose="false"
+                                     usetimestamp="true"/>
                                 <delete dir="${project.build.directory}/checkstyle-src-unpack" />
                                 <delete dir="${project.build.directory}/checkstyle-src" />
-                                <unzip src="checkstyle-checkstyle-${checkstyle.version}.zip" dest="${project.build.directory}/checkstyle-src-unpack">
+                                <unzip src="checkstyle-${checkstyle.version}.zip" dest="${project.build.directory}/checkstyle-src-unpack">
                                     <patternset>
                                         <include name="**/src/main/java/**" />
                                         <include name="**/src/main/resources/**" />
