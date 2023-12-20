@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -42,7 +43,6 @@ import org.eclipse.osgi.util.NLS;
 import org.xml.sax.InputSource;
 
 import com.google.common.io.Closeables;
-import com.google.common.io.Files;
 
 import net.sf.eclipsecs.core.CheckstylePlugin;
 import net.sf.eclipsecs.core.Messages;
@@ -264,7 +264,7 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
 
       // all went ok, write to the file
       File configFile = URIUtil.toFile(getResolvedConfigurationFileURL().toURI());
-      Files.write(byteOut.toByteArray(), configFile);
+      Files.write(configFile.toPath(), byteOut.toByteArray());
 
       // refresh the files if within the workspace
       // Bug 1251194 - Resource out of sync after performing changes to

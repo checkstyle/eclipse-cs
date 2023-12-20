@@ -22,6 +22,7 @@ package net.sf.eclipsecs.core.config;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -34,8 +35,6 @@ import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
-
-import com.google.common.io.Files;
 
 import net.sf.eclipsecs.core.CheckstylePlugin;
 import net.sf.eclipsecs.core.Messages;
@@ -289,7 +288,7 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
       // write to the file after the document creation was successful
       // prevents corrupted files in case of error
       byte[] data = XMLUtil.toByteArray(doc);
-      Files.write(data, configFile);
+      Files.write(configFile.toPath(), data);
     } catch (IOException ex) {
       CheckstylePluginException.rethrow(ex, Messages.errorWritingConfigFile);
     }
