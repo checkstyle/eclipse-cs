@@ -55,13 +55,15 @@ public enum CheckstyleUIPluginImages {
           .getImageDescriptor(ISharedImages.IMG_LCL_LINKTO_HELP)),
   /** Image descriptor for the add correction icon. */
   CORRECTION_ADD(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
-          "icons/add_correction.gif")),
+          "icons/add_correction.png")),
+  CORRECTION_ADD_BRACES(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
+          "icons/correction_cast.png")),
   /** Image descriptor for the change correction icon. */
   CORRECTION_CHANGE(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
-          "icons/correction_change.gif")),
+          "icons/correction_change.png")),
   /** Image descriptor for the remove correction icon. */
   CORRECTION_REMOVE(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
-          "icons/remove_correction.gif")),
+          "icons/remove_correction.png")),
   /** Image descriptor for the tick icon. */
   TICK_ICON(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
           "icons/tick.gif")),

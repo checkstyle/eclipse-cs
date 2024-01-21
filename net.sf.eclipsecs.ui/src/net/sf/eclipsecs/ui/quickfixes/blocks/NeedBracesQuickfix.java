@@ -151,6 +151,6 @@ public class NeedBracesQuickfix extends AbstractASTResolution {
 
   @Override
   public Image getImage() {
-    return CheckstyleUIPluginImages.CORRECTION_ADD.getImage();
+    return CheckstyleUIPluginImages.CORRECTION_ADD_BRACES.getImage();
   }
 }
