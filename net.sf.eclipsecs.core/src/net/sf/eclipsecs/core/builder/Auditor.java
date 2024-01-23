@@ -162,7 +162,21 @@ public class Auditor {
       // Cleanup listener and filter
       if (checker != null) {
         checker.removeListener(listener);
+        persistCacheFile(checker);
       }
+    }
+  }
+
+  private void persistCacheFile(Checker checker) throws CheckstylePluginException {
+    try {
+      // TODO use new API in checkstyle core once it might be available
+      var field = checker.getClass().getDeclaredField("cacheFile");
+      field.setAccessible(true);
+      var cacheFile = field.get(checker);
+      var persistMethod = cacheFile.getClass().getDeclaredMethod("persist");
+      persistMethod.invoke(cacheFile);
+    } catch (ReflectiveOperationException | SecurityException | IllegalArgumentException ex) {
+      CheckstylePluginException.rethrow(ex);
     }
   }
 
