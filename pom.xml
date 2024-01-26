@@ -390,6 +390,9 @@
                                 <rules>
                                     <banDuplicatePomDependencyVersions/>
                                     <requireExplicitDependencyScope/>
+                                    <requireJavaVersion>
+                                        <version>[11,18)</version>
+                                    </requireJavaVersion>
                                     <requireMavenVersion>
                                         <version>${maven-version}</version>
                                     </requireMavenVersion>
