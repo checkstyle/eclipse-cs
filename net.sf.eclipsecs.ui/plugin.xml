@@ -244,12 +244,6 @@
             category="net.sf.eclipsecs.category"
             class="net.sf.eclipsecs.ui.stats.views.MarkerStatsView"
             id="net.sf.eclipsecs.ui.stats.views.MarkerStatsView"/>
-        <view
-            name="%GraphStatsView.name"
-            icon="icons/graphView.gif"
-            category="net.sf.eclipsecs.category"
-            class="net.sf.eclipsecs.ui.stats.views.GraphStatsView"
-            id="net.sf.eclipsecs.ui.stats.views.GraphStatsView"/>
     </extension>
 
     <extension

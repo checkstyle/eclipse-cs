@@ -66,51 +66,19 @@ public final class Messages extends NLS {
 
   public static String StatsViewUtils_projectElement;
 
-  public static String GraphPieDataset_otherCategories;
-
   public static String MarkerStatsView_unknownProblem;
 
   public static String MarkerStatsView_kindOfErrorColumn;
 
   public static String MarkerStatsView_numberOfErrorsColumn;
 
-  public static String MarkerStatsView_unableToOpenGraph;
-
-  public static String MarkerStatsView_displayChart;
-
-  public static String MarkerStatsView_displayChartTooltip;
-
   public static String MarkerStatsView_chooseFileToExport;
 
-  public static String MarkerStatsView_exportErrorsAsReport;
-
-  public static String MarkerStatsView_exportErrorsAsReportTooltip;
-
   public static String MarkerStatsView_reportGenerationFailed;
-
-  public static String MarkerStatsView_exportGraphAsImage;
-
-  public static String MarkerStatsView_exportGraphAsImageTooltip;
-
-  public static String MarkerStatsView_graphExportFailed;
 
   public static String MarkerStatsView_showDetails;
 
   public static String MarkerStatsView_showDetailsTooltip;
-
-  public static String GraphStatsView_errorsRepartition;
-
-  public static String GraphStatsView_noDataToDisplay;
-
-  public static String GraphStatsView_javadocNotDisplayed;
-
-  public static String GraphStatsView_unableToOpenListingView;
-
-  public static String GraphStatsView_displayListing;
-
-  public static String GraphStatsView_displayJavadocErrors;
-
-  public static String GraphStatsView_displayAllCategories;
 
   public static String CreateStatsJob_msgAnalyzeMarkers;
 
@@ -157,8 +125,6 @@ public final class Messages extends NLS {
   public static String CheckstyleMarkerFilterDialog_btnShellTitle;
 
   public static String CheckstyleMarkerFilterDialog_msgNoWorkingSetSelected;
-
-  public static String GraphStatsView_lblViewMessage;
 
   public static String MarkerStatsView_folderColumn;
 

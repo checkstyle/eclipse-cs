@@ -209,8 +209,6 @@
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]stats[/\\]data[/\\]MarkerStat.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]stats[/\\]data[/\\]Stats.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]stats[/\\]views[/\\]AbstractStatsView.java" />
-    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]stats[/\\]views[/\\]GraphPieDataset.java" />
-    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]stats[/\\]views[/\\]GraphStatsView.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]stats[/\\]views[/\\]MarkerStatsView.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]stats[/\\]views[/\\]internal[/\\]CheckstyleMarkerFilter.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]stats[/\\]views[/\\]internal[/\\]CheckstyleMarkerFilterDialog.java" />

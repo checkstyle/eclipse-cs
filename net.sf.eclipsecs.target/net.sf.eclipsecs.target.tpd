@@ -59,33 +59,6 @@ maven AssertJ
 		version="3.24.2"
 	}
 }
-maven JFreeCharts
-	scope=compile
-	dependencyDepth=none
-	missingManifest=generate
-	includeSources
-{
-	dependency {
-		groupId="org.jfree"
-		artifactId="jcommon"
-		version="1.0.23"
-	}
-	dependency {
-		groupId="org.jfree"
-		artifactId="jfreechart"
-		version="1.0.19"
-	}
-	dependency {
-		groupId="org.jfree"
-		artifactId="jfreechart-swt"
-		version="1.0"
-	}
-	dependency {
-		groupId="org.jfree"
-		artifactId="swtgraphics2d"
-		version="1.1.0"
-	}
-}
 maven DOM4J
 	scope=compile
 	dependencyDepth=none
