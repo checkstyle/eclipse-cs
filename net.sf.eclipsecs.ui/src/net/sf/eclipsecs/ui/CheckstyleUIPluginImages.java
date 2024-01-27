@@ -75,12 +75,6 @@ public enum CheckstyleUIPluginImages {
   /** Image descriptor for the Checkstyle violation view icon. */
   LIST_VIEW_ICON(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
           "icons/listingView.gif")),
-  /** Image descriptor for the graph view icon. */
-  GRAPH_VIEW_ICON(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
-          "icons/graphView.gif")),
-  /** Image descriptor for the graph view icon. */
-  EXPORT_REPORT_ICON(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
-          "icons/exportReport.gif")),
 
   CHECKED_OVERLAY(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
           "icons/ovr/checked.png")),

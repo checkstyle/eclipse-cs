@@ -26,7 +26,6 @@ import java.util.Iterator;
 import java.util.Objects;
 
 import net.sf.eclipsecs.core.util.CheckstyleLog;
-import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
 import net.sf.eclipsecs.ui.stats.Messages;
 import net.sf.eclipsecs.ui.stats.data.MarkerStat;
 import net.sf.eclipsecs.ui.stats.data.Stats;
@@ -110,9 +109,6 @@ public class MarkerStatsView extends AbstractStatsView {
 
   /** The detail viewer. */
   private EnhancedTableViewer mDetailViewer;
-
-  /** Action to show the charts view. */
-  private Action mChartAction;
 
   /** The action to show the detail view. */
   private Action mDrillDownAction;
@@ -232,8 +228,6 @@ public class MarkerStatsView extends AbstractStatsView {
     // and to the context menu too
     ArrayList<Object> actionList = new ArrayList<>(3);
     actionList.add(mDrillDownAction);
-    actionList.add(new Separator());
-    actionList.add(mChartAction);
     hookContextMenu(actionList, masterViewer);
 
     return masterViewer;
@@ -301,8 +295,6 @@ public class MarkerStatsView extends AbstractStatsView {
     ArrayList<Object> actionList = new ArrayList<>(1);
     actionList.add(mDrillBackAction);
     actionList.add(mShowErrorAction);
-    actionList.add(new Separator());
-    actionList.add(mChartAction);
     hookContextMenu(actionList, detailViewer);
 
     return detailViewer;
@@ -315,8 +307,6 @@ public class MarkerStatsView extends AbstractStatsView {
 
   @Override
   protected void initToolBar(IToolBarManager tbm) {
-    tbm.add(mChartAction);
-    tbm.add(new Separator());
     tbm.add(mDrillBackAction);
     tbm.add(mDrillDownAction);
     tbm.add(new FiltersAction(this));
@@ -347,23 +337,6 @@ public class MarkerStatsView extends AbstractStatsView {
 
   @Override
   protected void makeActions() {
-    // Action used to display the pie chart
-    mChartAction = new Action() {
-      @Override
-      public void run() {
-        try {
-          getSite().getWorkbenchWindow().getActivePage().showView(GraphStatsView.VIEW_ID);
-        } catch (PartInitException ex) {
-          CheckstyleLog.log(ex,
-                  NLS.bind(Messages.MarkerStatsView_unableToOpenGraph, GraphStatsView.VIEW_ID));
-          // TODO : Open information dialog to notify the user
-        }
-      }
-    };
-    mChartAction.setText(Messages.MarkerStatsView_displayChart);
-    mChartAction.setToolTipText(Messages.MarkerStatsView_displayChartTooltip);
-    mChartAction.setImageDescriptor(CheckstyleUIPluginImages.GRAPH_VIEW_ICON.getImageDescriptor());
-
     // action used to display the detail of a specific error type
     mDrillDownAction = new Action() {
       @Override
