@@ -15,122 +15,77 @@
   -->
   <url>
     <loc>https://checkstyle.org/eclipse-cs/</loc>
-    <lastmod>gpg: Signature faite le Mer 24 jan 12:41:59 2024 CET
-gpg:                avec la clef RSA D184AA0FFB72F433FA27DAF9BF8ECB1BD750323D
-gpg: Bonne signature de « Calixte Bonsart <calixte@bonsart.fr> » [ultime]
-2024-01-24</lastmod>
+    <lastmod>2024-01-25</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://checkstyle.org/eclipse-cs/#!/releasenotes</loc>
-    <lastmod>gpg: Signature faite le Mer 24 jan 12:41:59 2024 CET
-gpg:                avec la clef RSA D184AA0FFB72F433FA27DAF9BF8ECB1BD750323D
-gpg: Bonne signature de « Calixte Bonsart <calixte@bonsart.fr> » [ultime]
-2024-01-24</lastmod>
+    <lastmod>2024-01-25</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://checkstyle.org/eclipse-cs/#!/install</loc>
-    <lastmod>gpg: Signature faite le Mer 24 jan 12:41:59 2024 CET
-gpg:                avec la clef RSA D184AA0FFB72F433FA27DAF9BF8ECB1BD750323D
-gpg: Bonne signature de « Calixte Bonsart <calixte@bonsart.fr> » [ultime]
-2024-01-24</lastmod>
+    <lastmod>2024-01-25</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://checkstyle.org/eclipse-cs/#!/project-setup</loc>
-    <lastmod>gpg: Signature faite le Mer 24 jan 12:41:59 2024 CET
-gpg:                avec la clef RSA D184AA0FFB72F433FA27DAF9BF8ECB1BD750323D
-gpg: Bonne signature de « Calixte Bonsart <calixte@bonsart.fr> » [ultime]
-2024-01-24</lastmod>
+    <lastmod>2024-01-25</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://checkstyle.org/eclipse-cs/#!/custom-config</loc>
-    <lastmod>gpg: Signature faite le Mer 24 jan 12:41:59 2024 CET
-gpg:                avec la clef RSA D184AA0FFB72F433FA27DAF9BF8ECB1BD750323D
-gpg: Bonne signature de « Calixte Bonsart <calixte@bonsart.fr> » [ultime]
-2024-01-24</lastmod>
+    <lastmod>2024-01-25</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://checkstyle.org/eclipse-cs/#!/filters</loc>
-    <lastmod>gpg: Signature faite le Mer 24 jan 12:41:59 2024 CET
-gpg:                avec la clef RSA D184AA0FFB72F433FA27DAF9BF8ECB1BD750323D
-gpg: Bonne signature de « Calixte Bonsart <calixte@bonsart.fr> » [ultime]
-2024-01-24</lastmod>
+    <lastmod>2024-01-25</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://checkstyle.org/eclipse-cs/#!/configtypes</loc>
-    <lastmod>gpg: Signature faite le Mer 24 jan 12:41:59 2024 CET
-gpg:                avec la clef RSA D184AA0FFB72F433FA27DAF9BF8ECB1BD750323D
-gpg: Bonne signature de « Calixte Bonsart <calixte@bonsart.fr> » [ultime]
-2024-01-24</lastmod>
+    <lastmod>2024-01-25</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://checkstyle.org/eclipse-cs/#!/properties</loc>
-    <lastmod>gpg: Signature faite le Mer 24 jan 12:41:59 2024 CET
-gpg:                avec la clef RSA D184AA0FFB72F433FA27DAF9BF8ECB1BD750323D
-gpg: Bonne signature de « Calixte Bonsart <calixte@bonsart.fr> » [ultime]
-2024-01-24</lastmod>
+    <lastmod>2024-01-25</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://checkstyle.org/eclipse-cs/#!/filesets</loc>
-    <lastmod>gpg: Signature faite le Mer 24 jan 12:41:59 2024 CET
-gpg:                avec la clef RSA D184AA0FFB72F433FA27DAF9BF8ECB1BD750323D
-gpg: Bonne signature de « Calixte Bonsart <calixte@bonsart.fr> » [ultime]
-2024-01-24</lastmod>
+    <lastmod>2024-01-25</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://checkstyle.org/eclipse-cs/#!/preferences</loc>
-    <lastmod>gpg: Signature faite le Mer 24 jan 12:41:59 2024 CET
-gpg:                avec la clef RSA D184AA0FFB72F433FA27DAF9BF8ECB1BD750323D
-gpg: Bonne signature de « Calixte Bonsart <calixte@bonsart.fr> » [ultime]
-2024-01-24</lastmod>
+    <lastmod>2024-01-25</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://checkstyle.org/eclipse-cs/#!/extensions</loc>
-    <lastmod>gpg: Signature faite le Mer 24 jan 12:41:59 2024 CET
-gpg:                avec la clef RSA D184AA0FFB72F433FA27DAF9BF8ECB1BD750323D
-gpg: Bonne signature de « Calixte Bonsart <calixte@bonsart.fr> » [ultime]
-2024-01-24</lastmod>
+    <lastmod>2024-01-25</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://checkstyle.org/eclipse-cs/#!/custom-checks</loc>
-    <lastmod>gpg: Signature faite le Mer 24 jan 12:41:59 2024 CET
-gpg:                avec la clef RSA D184AA0FFB72F433FA27DAF9BF8ECB1BD750323D
-gpg: Bonne signature de « Calixte Bonsart <calixte@bonsart.fr> » [ultime]
-2024-01-24</lastmod>
+    <lastmod>2024-01-25</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://checkstyle.org/eclipse-cs/#!/builtin-config</loc>
-    <lastmod>gpg: Signature faite le Mer 24 jan 12:41:59 2024 CET
-gpg:                avec la clef RSA D184AA0FFB72F433FA27DAF9BF8ECB1BD750323D
-gpg: Bonne signature de « Calixte Bonsart <calixte@bonsart.fr> » [ultime]
-2024-01-24</lastmod>
+    <lastmod>2024-01-25</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://checkstyle.org/eclipse-cs/#!/custom-filters</loc>
-    <lastmod>gpg: Signature faite le Mer 24 jan 12:41:59 2024 CET
-gpg:                avec la clef RSA D184AA0FFB72F433FA27DAF9BF8ECB1BD750323D
-gpg: Bonne signature de « Calixte Bonsart <calixte@bonsart.fr> » [ultime]
-2024-01-24</lastmod>
+    <lastmod>2024-01-25</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://checkstyle.org/eclipse-cs/#!/faq</loc>
-    <lastmod>gpg: Signature faite le Mer 24 jan 12:41:59 2024 CET
-gpg:                avec la clef RSA D184AA0FFB72F433FA27DAF9BF8ECB1BD750323D
-gpg: Bonne signature de « Calixte Bonsart <calixte@bonsart.fr> » [ultime]
-2024-01-24</lastmod>
+    <lastmod>2024-01-25</lastmod>
     <changefreq>weekly</changefreq>
   </url>
 </urlset>
