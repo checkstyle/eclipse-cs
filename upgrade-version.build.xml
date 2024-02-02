@@ -18,8 +18,8 @@ Apply all necessary manual code changes now.
 	<description>upgrade all version numbers</description>
 
 	<target name="upgrade-version" description="upgrade version numbers and dependent files">
-		<property name="fromVersion" value="10.12.4"/>
-		<property name="toVersion" value="10.12.5"/>
+		<property name="fromVersion" value="10.12.5"/>
+		<property name="toVersion" value="10.12.6"/>
 
 		<!-- delete all outdated files, independent of their current version -->
 		<delete>
