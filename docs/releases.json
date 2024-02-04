@@ -1,5 +1,10 @@
 [
   {
+    "version": "Release 10.12.7",
+    "template": "partials/releases/10.12.7/release_notes.html",
+    "open": true
+  },
+  {
     "version": "Release 10.12.6",
     "template": "partials/releases/10.12.6/release_notes.html",
     "open": true
@@ -66,203 +71,253 @@
   },
   {
     "version": "Release 10.8.1",
-    "template": "partials/releases/10.8.1/release_notes.html"
+    "template": "partials/releases/10.8.1/release_notes.html",
+    "open": true
   },
   {
     "version": "Release 10.8.0",
-    "template": "partials/releases/10.8.0/release_notes.html"
+    "template": "partials/releases/10.8.0/release_notes.html",
+    "open": true
   },
   {
     "version": "Release 10.7.0",
-    "template": "partials/releases/10.7.0/release_notes.html"
+    "template": "partials/releases/10.7.0/release_notes.html",
+    "open": true
   },
   {
     "version": "Release 10.6.0",
-    "template": "partials/releases/10.6.0/release_notes.html"
+    "template": "partials/releases/10.6.0/release_notes.html",
+    "open": true
   },
   {
     "version": "Release 10.5.0",
-    "template": "partials/releases/10.5.0/release_notes.html"
+    "template": "partials/releases/10.5.0/release_notes.html",
+    "open": true
   },
   {
     "version": "Release 10.4.0",
-    "template": "partials/releases/10.4.0/release_notes.html"
+    "template": "partials/releases/10.4.0/release_notes.html",
+    "open": true
   },
   {
     "version": "Release 10.3.4",
-    "template": "partials/releases/10.3.4/release_notes.html"
+    "template": "partials/releases/10.3.4/release_notes.html",
+    "open": true
   },
   {
     "version": "Release 10.3.3",
-    "template": "partials/releases/10.3.3/release_notes.html"
+    "template": "partials/releases/10.3.3/release_notes.html",
+    "open": true
   },
   {
     "version": "Release 10.3.2",
-    "template": "partials/releases/10.3.2/release_notes.html"
+    "template": "partials/releases/10.3.2/release_notes.html",
+    "open": true
   },
   {
     "version": "Release 10.3.1",
-    "template": "partials/releases/10.3.1/release_notes.html"
+    "template": "partials/releases/10.3.1/release_notes.html",
+    "open": true
   },
   {
     "version": "Release 10.3.0",
-    "template": "partials/releases/10.3.0/release_notes.html"
+    "template": "partials/releases/10.3.0/release_notes.html",
+    "open": true
   },
   {
     "version": "Release 10.2.0",
-    "template": "partials/releases/10.2.0/release_notes.html"
+    "template": "partials/releases/10.2.0/release_notes.html",
+    "open": true
   },
   {
     "version": "Release 10.1.0",
-    "template": "partials/releases/10.1.0/release_notes.html"
+    "template": "partials/releases/10.1.0/release_notes.html",
+    "open": true
   },
   {
     "version": "Release 10.0.0",
-    "template": "partials/releases/10.0.0/release_notes.html"
+    "template": "partials/releases/10.0.0/release_notes.html",
+    "open": true
   },
   {
     "version": "Release 9.3.0",
-    "template": "partials/releases/9.3.0/release_notes.html"
+    "template": "partials/releases/9.3.0/release_notes.html",
+    "open": true
   },
   {
     "version": "Release 9.2.1",
-    "template": "partials/releases/9.2.1/release_notes.html"
+    "template": "partials/releases/9.2.1/release_notes.html",
+    "open": true
   },
   {
     "version": "Release 9.2.0",
-    "template": "partials/releases/9.2.0/release_notes.html"
+    "template": "partials/releases/9.2.0/release_notes.html",
+    "open": true
   },
   {
     "version": "Release 9.1.0",
-    "template": "partials/releases/9.1.0/release_notes.html"
+    "template": "partials/releases/9.1.0/release_notes.html",
+    "open": true
   },
   {
     "version": "Release 9.0.1",
-    "template": "partials/releases/9.0.1/release_notes.html"
+    "template": "partials/releases/9.0.1/release_notes.html",
+    "open": true
   },
   {
     "version": "Release 9.0.0",
-    "template": "partials/releases/9.0.0/release_notes.html"
+    "template": "partials/releases/9.0.0/release_notes.html",
+    "open": true
   },
   {
     "version": "Release 8.45.1",
-    "template": "partials/releases/8.45.1/release_notes.html"
+    "template": "partials/releases/8.45.1/release_notes.html",
+    "open": true
   },
   {
     "version": "Release 8.45.0",
-    "template": "partials/releases/8.45.0/release_notes.html"
+    "template": "partials/releases/8.45.0/release_notes.html",
+    "open": true
   },
   {
     "version": "Release 8.44.0",
-    "template": "partials/releases/8.44.0/release_notes.html"
+    "template": "partials/releases/8.44.0/release_notes.html",
+    "open": true
   },
   {
     "version": "Release 8.43.0",
-    "template": "partials/releases/8.43.0/release_notes.html"
+    "template": "partials/releases/8.43.0/release_notes.html",
+    "open": true
   },
   {
     "version": "Release 8.42.0",
-    "template": "partials/releases/8.42.0/release_notes.html"
+    "template": "partials/releases/8.42.0/release_notes.html",
+    "open": true
   },
   {
     "version": "Release 8.41.1",
-    "template": "partials/releases/8.41.1/release_notes.html"
+    "template": "partials/releases/8.41.1/release_notes.html",
+    "open": true
   },
   {
     "version": "Release 8.41.0",
-    "template": "partials/releases/8.41.0/release_notes.html"
+    "template": "partials/releases/8.41.0/release_notes.html",
+    "open": true
   },
   {
     "version": "Release 8.40.0",
-    "template": "partials/releases/8.40.0/release_notes.html"
+    "template": "partials/releases/8.40.0/release_notes.html",
+    "open": true
   },
   {
     "version": "Release 8.39.0",
-    "template": "partials/releases/8.39.0/release_notes.html"
+    "template": "partials/releases/8.39.0/release_notes.html",
+    "open": true
   },
   {
     "version": "Release 8.38.0",
-    "template": "partials/releases/8.38.0/release_notes.html"
+    "template": "partials/releases/8.38.0/release_notes.html",
+    "open": true
   },
   {
     "version": "Release 8.37.0",
-    "template": "partials/releases/8.37.0/release_notes.html"
+    "template": "partials/releases/8.37.0/release_notes.html",
+    "open": true
   },
   {
     "version": "Release 8.36.2",
-    "template": "partials/releases/8.36.2/release_notes.html"
+    "template": "partials/releases/8.36.2/release_notes.html",
+    "open": true
   },
   {
     "version": "Release 8.36.1",
-    "template": "partials/releases/8.36.1/release_notes.html"
+    "template": "partials/releases/8.36.1/release_notes.html",
+    "open": true
   },
   {
     "version": "Release 8.35.0",
-    "template": "partials/releases/8.35.0/release_notes.html"
+    "template": "partials/releases/8.35.0/release_notes.html",
+    "open": true
   },
   {
     "version": "Release 8.34.0",
-    "template": "partials/releases/8.34.0/release_notes.html"
+    "template": "partials/releases/8.34.0/release_notes.html",
+    "open": true
   },
   {
     "version": "Release 8.33.0",
-    "template": "partials/releases/8.33.0/release_notes.html"
+    "template": "partials/releases/8.33.0/release_notes.html",
+    "open": true
   },
   {
     "version": "Release 8.32.0",
-    "template": "partials/releases/8.32.0/release_notes.html"
+    "template": "partials/releases/8.32.0/release_notes.html",
+    "open": true
   },
   {
     "version": "Release 8.31.0",
-    "template": "partials/releases/8.31.0/release_notes.html"
+    "template": "partials/releases/8.31.0/release_notes.html",
+    "open": true
   },
   {
     "version": "Release 8.30.0",
-    "template": "partials/releases/8.30.0/release_notes.html"
+    "template": "partials/releases/8.30.0/release_notes.html",
+    "open": true
   },
   {
     "version": "Release 8.29.0",
-    "template": "partials/releases/8.29.0/release_notes.html"
+    "template": "partials/releases/8.29.0/release_notes.html",
+    "open": true
   },
   {
     "version": "Release 8.28.0",
-    "template": "partials/releases/8.28.0/release_notes.html"
+    "template": "partials/releases/8.28.0/release_notes.html",
+    "open": true
   },
   {
     "version": "Release 8.27.0",
-    "template": "partials/releases/8.27.0/release_notes.html"
+    "template": "partials/releases/8.27.0/release_notes.html",
+    "open": true
   },
   {
     "version": "Release 8.26.0",
-    "template": "partials/releases/8.26.0/release_notes.html"
+    "template": "partials/releases/8.26.0/release_notes.html",
+    "open": true
   },
   {
     "version": "Release 8.25.0",
-    "template": "partials/releases/8.25.0/release_notes.html"
+    "template": "partials/releases/8.25.0/release_notes.html",
+    "open": true
   },
   {
     "version": "Release 8.24.0",
-    "template": "partials/releases/8.24.0/release_notes.html"
+    "template": "partials/releases/8.24.0/release_notes.html",
+    "open": true
   },
   {
     "version": "Release 8.23.0",
-    "template": "partials/releases/8.23.0/release_notes.html"
+    "template": "partials/releases/8.23.0/release_notes.html",
+    "open": true
   },
   {
     "version": "Release 8.22.0",
-    "template": "partials/releases/8.22.0/release_notes.html"
+    "template": "partials/releases/8.22.0/release_notes.html",
+    "open": true
   },
   {
     "version": "Release 8.21.0",
-    "template": "partials/releases/8.21.0/release_notes.html"
+    "template": "partials/releases/8.21.0/release_notes.html",
+    "open": true
   },
   {
     "version": "Release 8.20.0",
-    "template": "partials/releases/8.20.0/release_notes.html"
+    "template": "partials/releases/8.20.0/release_notes.html",
+    "open": true
   },
   {
     "version": "Release 8.19.0",
-    "template": "partials/releases/8.19.0/release_notes.html"
+    "template": "partials/releases/8.19.0/release_notes.html",
+    "open": true
   },
   {
     "version": "Release 8.18.0",
@@ -303,7 +358,7 @@
   {
     "version": "Release 8.10.0",
     "template": "partials/releases/8.10.0/release_notes.html"
-  },
+  }, 
   {
     "version": "Release 8.8.0",
     "template": "partials/releases/8.8.0/release_notes.html"
@@ -311,11 +366,11 @@
   {
     "version": "Release 8.7.0",
     "template": "partials/releases/8.7.0/release_notes.html"
-  },
+  }, 
   {
     "version": "Release 8.5.1",
     "template": "partials/releases/8.5.1/release_notes.html"
-  },
+  }, 
   {
     "version": "Release 8.5.0",
     "template": "partials/releases/8.5.0/release_notes.html"
