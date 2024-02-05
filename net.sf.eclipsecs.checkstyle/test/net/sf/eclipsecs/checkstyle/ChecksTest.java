@@ -47,7 +47,7 @@ public class ChecksTest {
 
   @Test
   public void testMetadataFiles() throws Exception {
-    final Set<Class<?>> modules = CheckUtil.getCheckstyleModules();
+    final Set<Class<?>> modules = new HashSet<>(CheckUtil.getCheckstyleModules());
 
     // don't test root modules
     modules.remove(Checker.class);
