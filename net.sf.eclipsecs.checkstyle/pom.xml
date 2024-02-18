@@ -24,6 +24,10 @@
                         <phase>generate-sources</phase>
                         <configuration>
                             <target>
+                                <!-- delete all the outdated ZIPs before downloading the current -->
+                                <delete>
+                                    <fileset dir="${basedir}" includes="checkstyle-*.zip" excludes="checkstyle-${checkstyle.version}.zip"/>
+                                </delete>
                                 <get src="https://github.com/checkstyle/checkstyle/archive/checkstyle-${checkstyle.version}.zip"
                                      dest="${basedir}/checkstyle-${checkstyle.version}.zip"
                                      verbose="false"
