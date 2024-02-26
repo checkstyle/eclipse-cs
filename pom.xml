@@ -20,7 +20,7 @@
 
     <properties>
         <build-helper-maven-plugin-version>3.5.0</build-helper-maven-plugin-version>
-        <exec-maven-plugin-version>3.1.1</exec-maven-plugin-version>
+        <exec-maven-plugin-version>3.2.0</exec-maven-plugin-version>
 
         <!-- Maven JUnit version must fit the JUnit version used in the target platform, otherwise Surefire may produce exceptions -->
         <junit-jupiter-version>5.7.2</junit-jupiter-version>
