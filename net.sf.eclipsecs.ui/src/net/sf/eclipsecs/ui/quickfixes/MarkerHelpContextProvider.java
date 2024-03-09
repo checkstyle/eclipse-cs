@@ -99,7 +99,7 @@ public class MarkerHelpContextProvider extends AbstractContextProvider
     }
     var group = metadata.getGroup().getGroupId().toLowerCase();
     // some web pages are different to the packages in Checkstyle
-    if ("indentation".equals(group)) {
+    if ("indentation".equals(group) || StringUtils.isEmpty(group)) {
       group = "misc";
     }
     var file = moduleName.toLowerCase();
