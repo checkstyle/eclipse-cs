@@ -9,7 +9,7 @@ jobs:
     strategy:
       matrix:
         platform: [ubuntu-latest, macos-latest, windows-latest]
-        jdk: [11, 17]
+        jdk: [11, 17, 21]
     runs-on: ${{ matrix.platform }}
     permissions:
       checks: write
@@ -29,8 +29,9 @@ jobs:
       uses: actions/setup-java@9704b39bf258b59bc04b50fa2dd55e9ed76b47a8 # v4.1.0
       with:
         distribution: temurin
+        # have Java 17 for Tycho last, as it will be in JAVA_HOME that way
         java-version: |
-          11
+          ${{ matrix.jdk }}
           17
 
     - name: Build with Maven
