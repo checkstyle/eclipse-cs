@@ -1,7 +1,7 @@
 ## What's this?
 
 The `.target` file describes the minimum Eclipse environment that eclipse-cs runs in.
-Right now that is 2021-06.
+Right now that is 2022-09.
 
 
 ## Preconditions for development
