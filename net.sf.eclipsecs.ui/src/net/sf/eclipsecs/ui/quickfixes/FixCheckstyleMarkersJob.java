@@ -65,8 +65,7 @@ public class FixCheckstyleMarkersJob extends UIJob {
 
       for (int i = 0; i < markers.length; i++) {
 
-        ICheckstyleMarkerResolution[] resolutions = (ICheckstyleMarkerResolution[]) generator
-                .getResolutions(markers[i]);
+        var resolutions = generator.getResolutions(markers[i]);
 
         if (resolutions.length > 0) {
           // only run the first fix for this marker
