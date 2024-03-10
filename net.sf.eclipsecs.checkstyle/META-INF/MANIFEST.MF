@@ -5,7 +5,7 @@ Bundle-SymbolicName: net.sf.eclipsecs.checkstyle
 Bundle-Version: 10.14.1.qualifier
 Bundle-Vendor: %Bundle-Vendor
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Export-Package: .,
  com.puppycrawl.tools.checkstyle,
  com.puppycrawl.tools.checkstyle.api;

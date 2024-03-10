@@ -11,7 +11,7 @@ Require-Bundle: net.sf.eclipsecs.core,
  org.eclipse.ui.workbench,
  org.eclipse.jface,
  org.eclipse.help;bundle-version="3.9.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Export-Package: net.sf.eclipsecs.ui,
  net.sf.eclipsecs.ui.properties.filter,
  net.sf.eclipsecs.ui.quickfixes

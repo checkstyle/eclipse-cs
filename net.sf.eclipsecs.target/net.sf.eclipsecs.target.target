@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl -->
-<target name="Eclipse Checkstyle" sequenceNumber="1707931034">
+<target name="Eclipse Checkstyle" sequenceNumber="1710065411">
   <locations>
     <location includeMode="slicer" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="true" type="InstallableUnit">
-      <unit id="org.eclipse.jdt.feature.group" version="3.18.800.v20210611-1600"/>
-      <unit id="org.eclipse.sdk.ide" version="4.20.0.I20210611-1600"/>
-      <unit id="org.eclipse.emf.feature.group" version="2.26.0.v20210506-1425"/>
-      <unit id="org.eclipse.ecf" version="3.9.102.v20210409-2301"/>
+      <unit id="org.eclipse.jdt.feature.group" version="3.18.1300.v20220831-1800"/>
+      <unit id="org.eclipse.sdk.ide" version="4.25.0.I20220831-1800"/>
+      <unit id="org.eclipse.e4.tools.emf.ui" version="4.7.300.v20220420-0901"/>
+      <unit id="org.eclipse.e4.tools.services" version="4.9.0.v20210427-1802"/>
+      <unit id="org.eclipse.e4.ui.progress" version="0.3.500.v20220717-1456"/>
+      <unit id="org.eclipse.ecf" version="3.10.0.v20210925-0032"/>
       <unit id="org.eclipse.ecf.filetransfer" version="5.1.102.v20210409-2301"/>
       <unit id="org.eclipse.ecf.identity" version="3.9.402.v20210409-2301"/>
-      <unit id="org.eclipse.ecf.provider.filetransfer" version="3.2.601.v20201025-0700"/>
-      <unit id="org.eclipse.tools.layout.spy" version="1.1.0.v20210110-1247"/>
-      <unit id="org.eclipse.ui.trace" version="1.2.0.v20210110-1242"/>
-      <repository location="https://download.eclipse.org/releases/2021-06/202106161001/"/>
-    </location>
-    <location includeMode="slicer" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="true" type="InstallableUnit">
+      <unit id="org.eclipse.ecf.provider.filetransfer" version="3.2.800.v20220215-0126"/>
+      <unit id="org.eclipse.emf.feature.group" version="2.31.0.v20220817-1401"/>
+      <unit id="org.sat4j.core" version="2.3.6.v20201214"/>
+      <unit id="org.sat4j.pb" version="2.3.6.v20201214"/>
+      <unit id="org.apache.commons.io" version="2.8.0.v20210415-0900"/>
       <unit id="junit-jupiter-api" version="5.9.0"/>
       <unit id="junit-jupiter-engine" version="5.9.0"/>
       <unit id="junit-jupiter-migrationsupport" version="5.9.0"/>
@@ -30,12 +31,17 @@
       <unit id="org.apiguardian.api" version="1.1.2"/>
       <repository location="https://download.eclipse.org/releases/2022-09/202209141001/"/>
     </location>
+    <location includeMode="slicer" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="true" type="InstallableUnit">
+      <unit id="org.objectweb.asm" version="9.3.0.v20220409-0157"/>
+      <unit id="org.objectweb.asm.tree" version="9.3.0.v20220409-0157"/>
+      <repository location="https://download.eclipse.org/tools/orbit/downloads/drops/R20220830213456/repository"/>
+    </location>
     <location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven" label="SnakeYaml">
     <dependencies>
     	<dependency>
     		<groupId>org.yaml</groupId>
     		<artifactId>snakeyaml</artifactId>
-    		<version>1.33</version>
+    		<version>2.2</version>
     		<type>jar</type>
     	</dependency>
     </dependencies>
@@ -55,7 +61,7 @@
     	<dependency>
     		<groupId>org.dom4j</groupId>
     		<artifactId>dom4j</artifactId>
-    		<version>2.1.3</version>
+    		<version>2.1.4</version>
     		<type>jar</type>
     	</dependency>
     </dependencies>
@@ -65,7 +71,7 @@
     	<dependency>
     		<groupId>org.assertj</groupId>
     		<artifactId>assertj-core</artifactId>
-    		<version>3.24.2</version>
+    		<version>3.25.1</version>
     		<type>jar</type>
     	</dependency>
     </dependencies>
@@ -75,11 +81,11 @@
     	<dependency>
     		<groupId>org.apache.commons</groupId>
     		<artifactId>commons-lang3</artifactId>
-    		<version>3.12.0</version>
+    		<version>3.14.0</version>
     		<type>jar</type>
     	</dependency>
     </dependencies>
     </location>
   </locations>
-  <targetJRE path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-11"/>
+  <targetJRE path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-17"/>
 </target>

@@ -9,7 +9,7 @@ jobs:
     strategy:
       matrix:
         platform: [ubuntu-latest, macos-latest, windows-latest]
-        jdk: [11, 17, 21]
+        jdk: [17, 21]
     runs-on: ${{ matrix.platform }}
     permissions:
       checks: write
@@ -43,6 +43,6 @@ jobs:
     - name: Publish Test Results
       uses: EnricoMi/publish-unit-test-result-action@f355d34d53ad4e7f506f699478db2dd71da9de5f # v2.15.1
       # we only want to attach test results one time, not for every matrix combination
-      if: startsWith(matrix.platform, 'ubuntu') && (matrix.jdk == 11)
+      if: startsWith(matrix.platform, 'ubuntu') && (matrix.jdk == 17)
       with:
         files: '**/target/surefire-reports/*.xml'
