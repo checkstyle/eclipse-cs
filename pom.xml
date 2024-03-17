@@ -35,7 +35,7 @@
         <maven-resources-plugin-version>3.3.1</maven-resources-plugin-version>
         <maven-site-plugin-version>3.12.1</maven-site-plugin-version>
         <maven-surefire-plugin-version>3.2.5</maven-surefire-plugin-version>
-        <maven-version>3.6.3</maven-version>
+        <maven-version>3.9.0</maven-version>
         <tycho-version>4.0.6</tycho-version>
         <versions-maven-plugin-version>2.16.2</versions-maven-plugin-version>
 
@@ -239,7 +239,7 @@
                     </executions>
                 </plugin>
                 <plugin>
-                    <groupId>org.eclipse.tycho.extras</groupId>
+                    <groupId>org.eclipse.tycho</groupId>
                     <artifactId>tycho-eclipserun-plugin</artifactId>
                     <version>${tycho-version}</version>
                 </plugin>
