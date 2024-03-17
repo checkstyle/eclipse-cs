@@ -72,8 +72,6 @@ public class StringLiteralEqualityQuickfix extends AbstractASTResolution {
             return true;
           }
 
-          Expression replacementNode = null;
-
           MethodInvocation equalsInvocation = node.getAST().newMethodInvocation();
           equalsInvocation.setName(node.getAST().newSimpleName("equals")); //$NON-NLS-1$
           equalsInvocation.setExpression((Expression) ASTNode.copySubtree(node.getAST(), literal));
@@ -81,6 +79,7 @@ public class StringLiteralEqualityQuickfix extends AbstractASTResolution {
 
           // if the string was compared with != create a not
           // expression
+          final Expression replacementNode;
           if (node.getOperator().equals(InfixExpression.Operator.NOT_EQUALS)) {
             PrefixExpression prefixExpression = node.getAST().newPrefixExpression();
             prefixExpression.setOperator(PrefixExpression.Operator.NOT);
