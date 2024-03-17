@@ -66,7 +66,7 @@ public final class ConfigurationWriter {
 
     // write an empty list of modules
     // mandatory modules are added automatically
-    write(out, new ArrayList<Module>(), checkConfig);
+    write(out, new ArrayList<>(), checkConfig);
   }
 
   /**
@@ -141,8 +141,6 @@ public final class ConfigurationWriter {
   private static void writeModule(Module module, Branch parent, Severity parentSeverity,
           List<Module> remainingModules) {
 
-    Severity severity = parentSeverity;
-
     // remove this module from the list of modules to write
     remainingModules.remove(module);
 
@@ -161,6 +159,7 @@ public final class ConfigurationWriter {
     }
 
     // Write severity only if it differs from the parents severity
+    Severity severity = parentSeverity;
     if (module.getSeverity() != null && !Severity.inherit.equals(module.getSeverity())) {
 
       Element propertyEl = moduleEl.addElement(XMLTags.PROPERTY_TAG);

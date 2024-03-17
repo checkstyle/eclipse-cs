@@ -488,8 +488,11 @@ public class PackageFilterEditor implements IFilterEditor {
     protected Control createDialogArea(Composite parent) {
       Composite composite = (Composite) super.createDialogArea(parent);
       Label messageLabel = createMessageArea(composite);
-      CheckboxTreeViewer treeViewer = createTreeViewer(composite);
+      if (mIsEmpty) {
+        messageLabel.setEnabled(false);
+      }
 
+      CheckboxTreeViewer treeViewer = createTreeViewer(composite);
       GridData data = new GridData(GridData.FILL_BOTH);
       data.widthHint = convertWidthInCharsToPixels(mWidth);
       data.heightHint = convertHeightInCharsToPixels(mHeight);
@@ -497,7 +500,6 @@ public class PackageFilterEditor implements IFilterEditor {
       treeWidget.setLayoutData(data);
       treeWidget.setFont(parent.getFont());
       if (mIsEmpty) {
-        messageLabel.setEnabled(false);
         treeWidget.setEnabled(false);
       }
       return composite;
