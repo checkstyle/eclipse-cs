@@ -33,10 +33,10 @@ import com.google.common.base.MoreObjects;
 public class ResolvableProperty implements Cloneable {
 
   /** The name of the property. */
-  private String mPropertyName;
+  private String propertyName;
 
   /** The property value. */
-  private String mValue;
+  private String value;
 
   /**
    * Creates a resolvable property.
@@ -47,38 +47,38 @@ public class ResolvableProperty implements Cloneable {
    *          the value of the property
    */
   public ResolvableProperty(String propertyName, String value) {
-    setPropertyName(propertyName);
-    setValue(value);
+    this.propertyName = propertyName;
+    this.value = value;
   }
 
   /**
    * @return The value of the property.
    */
   public String getValue() {
-    return mValue;
+    return value;
   }
 
   /**
    * @return The property's name.
    */
   public String getPropertyName() {
-    return mPropertyName;
+    return propertyName;
   }
 
   /**
-   * @param string
+   * @param value
    *          Value for the property.
    */
-  public void setValue(String string) {
-    mValue = string;
+  public void setValue(String value) {
+    this.value = value;
   }
 
   /**
-   * @param string
+   * @param propertyName
    *          The property's name.
    */
-  public void setPropertyName(String string) {
-    mPropertyName = string;
+  public void setPropertyName(String propertyName) {
+    this.propertyName = propertyName;
   }
 
   @Override
@@ -90,12 +90,12 @@ public class ResolvableProperty implements Cloneable {
       return true;
     }
     ResolvableProperty rhs = (ResolvableProperty) obj;
-    return Objects.equals(mPropertyName, rhs.mPropertyName) && Objects.equals(mValue, rhs.mValue);
+    return Objects.equals(propertyName, rhs.propertyName) && Objects.equals(value, rhs.value);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(mPropertyName, mValue);
+    return Objects.hash(propertyName, value);
   }
 
   @Override
@@ -111,7 +111,7 @@ public class ResolvableProperty implements Cloneable {
 
   @Override
   public String toString() {
-    return MoreObjects.toStringHelper(this).add("propertyName", mPropertyName).add("value", mValue)
+    return MoreObjects.toStringHelper(this).add("propertyName", propertyName).add("value", value)
             .toString();
   }
 }

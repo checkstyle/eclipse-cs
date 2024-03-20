@@ -35,13 +35,13 @@ import net.sf.eclipsecs.core.config.ICheckConfiguration;
  */
 public class FileSet implements Cloneable {
 
-  private String mName;
+  private String name;
 
-  private ICheckConfiguration mCheckConfig;
+  private ICheckConfiguration checkConfig;
 
-  private boolean mEnabled = true;
+  private boolean enabled = true;
 
-  private List<FileMatchPattern> mFileMatchPatterns = new LinkedList<>();
+  private List<FileMatchPattern> fileMatchPatterns = new LinkedList<>();
 
   /**
    * Default constructor.
@@ -60,8 +60,8 @@ public class FileSet implements Cloneable {
    *          <code>FileSet</code>.
    */
   public FileSet(String name, ICheckConfiguration checkConfig) {
-    setName(name);
-    setCheckConfig(checkConfig);
+    this.name = name;
+    this.checkConfig = checkConfig;
   }
 
   /**
@@ -70,17 +70,17 @@ public class FileSet implements Cloneable {
    * @return List
    */
   public List<FileMatchPattern> getFileMatchPatterns() {
-    return mFileMatchPatterns;
+    return fileMatchPatterns;
   }
 
   /**
    * Set the list of <code>FileMatchPattern</code> objects.
    *
-   * @param list
+   * @param fileMatchPatterns
    *          The new list of pattern objects.
    */
-  public void setFileMatchPatterns(List<FileMatchPattern> list) {
-    mFileMatchPatterns = list;
+  public void setFileMatchPatterns(List<FileMatchPattern> fileMatchPatterns) {
+    this.fileMatchPatterns = fileMatchPatterns;
   }
 
   /**
@@ -89,7 +89,7 @@ public class FileSet implements Cloneable {
    * @return The check configuration used to audit files in the file set.
    */
   public ICheckConfiguration getCheckConfig() {
-    return mCheckConfig;
+    return checkConfig;
   }
 
   /**
@@ -99,7 +99,7 @@ public class FileSet implements Cloneable {
    *          the check configuration
    */
   public void setCheckConfig(ICheckConfiguration checkConfig) {
-    mCheckConfig = checkConfig;
+    this.checkConfig = checkConfig;
   }
 
   /**
@@ -108,7 +108,7 @@ public class FileSet implements Cloneable {
    * @return String
    */
   public String getName() {
-    return mName;
+    return name;
   }
 
   /**
@@ -118,7 +118,7 @@ public class FileSet implements Cloneable {
    *          The name to set
    */
   public void setName(String name) {
-    mName = name;
+    this.name = name;
   }
 
   /**
@@ -127,7 +127,7 @@ public class FileSet implements Cloneable {
    * @return boolean
    */
   public boolean isEnabled() {
-    return mEnabled;
+    return enabled;
   }
 
   /**
@@ -137,7 +137,7 @@ public class FileSet implements Cloneable {
    *          The enabled to set
    */
   public void setEnabled(boolean enabled) {
-    mEnabled = enabled;
+    this.enabled = enabled;
   }
 
   /**
@@ -152,7 +152,7 @@ public class FileSet implements Cloneable {
     boolean result = false;
     String filePath = file.getProjectRelativePath().toString();
 
-    for (FileMatchPattern pattern : mFileMatchPatterns) {
+    for (FileMatchPattern pattern : fileMatchPatterns) {
       boolean matches = pattern.isMatch(filePath);
       if (matches) {
         if (pattern.isIncludePattern()) {
@@ -173,10 +173,10 @@ public class FileSet implements Cloneable {
 
       // clone filesets
       List<FileMatchPattern> clonedPatterns = new LinkedList<>();
-      for (FileMatchPattern pattern : mFileMatchPatterns) {
+      for (FileMatchPattern pattern : fileMatchPatterns) {
         clonedPatterns.add(pattern.clone());
       }
-      clone.mFileMatchPatterns = clonedPatterns;
+      clone.fileMatchPatterns = clonedPatterns;
 
       return clone;
     } catch (CloneNotSupportedException ex) {
@@ -195,20 +195,20 @@ public class FileSet implements Cloneable {
       return true;
     }
     FileSet rhs = (FileSet) obj;
-    return mEnabled == rhs.mEnabled && Objects.equals(mName, rhs.mName)
-            && Objects.equals(mFileMatchPatterns, rhs.mFileMatchPatterns)
-            && Objects.equals(mCheckConfig, rhs.mCheckConfig);
+    return enabled == rhs.enabled && Objects.equals(name, rhs.name)
+            && Objects.equals(fileMatchPatterns, rhs.fileMatchPatterns)
+            && Objects.equals(checkConfig, rhs.checkConfig);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(mEnabled, mName, mCheckConfig, mFileMatchPatterns, mCheckConfig);
+    return Objects.hash(enabled, name, checkConfig, fileMatchPatterns, checkConfig);
   }
 
   @Override
   public String toString() {
-    return MoreObjects.toStringHelper(this).add("enabled", mEnabled).add("name", mName)
-            .add("fileMatchPatterns", mFileMatchPatterns).add("checkConfig", mCheckConfig)
+    return MoreObjects.toStringHelper(this).add("enabled", enabled).add("name", name)
+            .add("fileMatchPatterns", fileMatchPatterns).add("checkConfig", checkConfig)
             .toString();
   }
 }

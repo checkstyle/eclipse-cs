@@ -35,11 +35,11 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
  */
 public class FileMatchPattern implements Cloneable {
 
-  private boolean mIsIncludePattern = true;
+  private boolean isIncludePattern = true;
 
-  private Pattern mRegexPattern;
+  private Pattern regexPattern;
 
-  private String mPatternString;
+  private String patternString;
 
   /**
    * Construct a new <code>FileMatchPattern</code>.
@@ -59,7 +59,7 @@ public class FileMatchPattern implements Cloneable {
    * @return String
    */
   public String getMatchPattern() {
-    return mRegexPattern.pattern();
+    return regexPattern.pattern();
   }
 
   /**
@@ -70,13 +70,13 @@ public class FileMatchPattern implements Cloneable {
    * @throws CheckstylePluginException
    *           Error during processing
    */
-  public void setMatchPattern(String pattern) throws CheckstylePluginException {
+  public final void setMatchPattern(String pattern) throws CheckstylePluginException {
     if ((pattern == null) || (pattern.trim().length() == 0)) {
       throw new CheckstylePluginException(Messages.errorEmptyPattern);
     }
     try {
-      mRegexPattern = Pattern.compile(pattern);
-      mPatternString = pattern;
+      regexPattern = Pattern.compile(pattern);
+      patternString = pattern;
     } catch (PatternSyntaxException ex) {
       // wrap the exception
       CheckstylePluginException.rethrow(ex);
@@ -93,7 +93,7 @@ public class FileMatchPattern implements Cloneable {
   public boolean isMatch(String fileName) {
     boolean result = false;
 
-    Matcher matcher = mRegexPattern.matcher(fileName);
+    Matcher matcher = regexPattern.matcher(fileName);
     result = matcher.find();
 
     return result;
@@ -105,7 +105,7 @@ public class FileMatchPattern implements Cloneable {
    * @return boolean
    */
   public boolean isIncludePattern() {
-    return mIsIncludePattern;
+    return isIncludePattern;
   }
 
   /**
@@ -115,7 +115,7 @@ public class FileMatchPattern implements Cloneable {
    *          The isIncludePattern to set
    */
   public void setIsIncludePattern(boolean isIncludePattern) {
-    mIsIncludePattern = isIncludePattern;
+    this.isIncludePattern = isIncludePattern;
   }
 
   /**
@@ -143,18 +143,18 @@ public class FileMatchPattern implements Cloneable {
     }
 
     FileMatchPattern rhs = (FileMatchPattern) obj;
-    return Objects.equals(mIsIncludePattern, rhs.mIsIncludePattern)
-            && Objects.equals(mPatternString, rhs.mPatternString);
+    return Objects.equals(isIncludePattern, rhs.isIncludePattern)
+            && Objects.equals(patternString, rhs.patternString);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(mIsIncludePattern, mPatternString);
+    return Objects.hash(isIncludePattern, patternString);
   }
 
   @Override
   public String toString() {
-    return MoreObjects.toStringHelper(this).add("patternString", mPatternString)
-            .add("isIncludePattern", mIsIncludePattern).toString();
+    return MoreObjects.toStringHelper(this).add("patternString", patternString)
+            .add("isIncludePattern", isIncludePattern).toString();
   }
 }
