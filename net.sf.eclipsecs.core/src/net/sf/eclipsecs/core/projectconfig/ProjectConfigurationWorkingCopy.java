@@ -61,25 +61,25 @@ import net.sf.eclipsecs.core.util.XMLUtil;
 public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfiguration {
 
   /** The original, unmodified project configuration. */
-  private final IProjectConfiguration mProjectConfig;
+  private final IProjectConfiguration projectConfig;
 
   /** The local check configurations. */
-  private final ICheckConfigurationWorkingSet mLocalConfigWorkingSet;
+  private final ICheckConfigurationWorkingSet localConfigWorkingSet;
 
   /** The global check configurations. */
-  private final ICheckConfigurationWorkingSet mGlobalConfigWorkingSet;
+  private final ICheckConfigurationWorkingSet globalConfigWorkingSet;
 
   /** the file sets. */
-  private List<FileSet> mFileSets = new LinkedList<>();
+  private List<FileSet> fileSets = new LinkedList<>();
 
   /** the filters. */
-  private List<IFilter> mFilters = new LinkedList<>();
+  private List<IFilter> filters = new LinkedList<>();
 
   /** Flags if the simple file set editor should be used. */
-  private boolean mUseSimpleConfig;
+  private boolean useSimpleConfig;
 
   /** if the formatter synching feature is enabled. */
-  private boolean mSyncFormatter;
+  private boolean syncFormatter;
 
   /**
    * Creates a working copy of a given project configuration.
@@ -88,40 +88,39 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
    *          the project configuration
    */
   public ProjectConfigurationWorkingCopy(IProjectConfiguration projectConfig) {
+    this.projectConfig = projectConfig;
 
-    mProjectConfig = projectConfig;
-
-    mLocalConfigWorkingSet = new LocalCheckConfigurationWorkingSet(this,
+    localConfigWorkingSet = new LocalCheckConfigurationWorkingSet(this,
             projectConfig.getLocalCheckConfigurations());
-    mGlobalConfigWorkingSet = CheckConfigurationFactory.newWorkingSet();
+    globalConfigWorkingSet = CheckConfigurationFactory.newWorkingSet();
 
     // clone file sets of the original config
 
     for (FileSet fileSet : projectConfig.getFileSets()) {
-      mFileSets.add(fileSet.clone());
+      fileSets.add(fileSet.clone());
     }
 
     // build list of filters
     List<IFilter> standardFilters = Arrays.asList(PluginFilters.getConfiguredFilters());
-    mFilters = new ArrayList<>(standardFilters);
+    filters = new ArrayList<>(standardFilters);
 
     // merge with filters configured for the project
     List<IFilter> configuredFilters = projectConfig.getFilters();
-    for (int i = 0, size = mFilters.size(); i < size; i++) {
+    for (int i = 0, size = filters.size(); i < size; i++) {
 
-      IFilter standardFilter = mFilters.get(i);
+      IFilter standardFilter = filters.get(i);
 
       for (int j = 0, size2 = configuredFilters.size(); j < size2; j++) {
         IFilter configuredFilter = configuredFilters.get(j);
 
         if (standardFilter.getInternalName().equals(configuredFilter.getInternalName())) {
-          mFilters.set(i, configuredFilter.clone());
+          filters.set(i, configuredFilter.clone());
         }
       }
     }
 
-    mUseSimpleConfig = projectConfig.isUseSimpleConfig();
-    mSyncFormatter = projectConfig.isSyncFormatter();
+    useSimpleConfig = projectConfig.isUseSimpleConfig();
+    syncFormatter = projectConfig.isSyncFormatter();
   }
 
   /**
@@ -130,7 +129,7 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
    * @return the local configurations working set
    */
   public ICheckConfigurationWorkingSet getLocalCheckConfigWorkingSet() {
-    return mLocalConfigWorkingSet;
+    return localConfigWorkingSet;
   }
 
   /**
@@ -139,7 +138,7 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
    * @return the local configurations working set
    */
   public ICheckConfigurationWorkingSet getGlobalCheckConfigWorkingSet() {
-    return mGlobalConfigWorkingSet;
+    return globalConfigWorkingSet;
   }
 
   /**
@@ -152,7 +151,7 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
    */
   public ICheckConfiguration getLocalCheckConfigByName(String name) {
     ICheckConfiguration config = null;
-    ICheckConfiguration[] configs = mLocalConfigWorkingSet.getWorkingCopies();
+    ICheckConfiguration[] configs = localConfigWorkingSet.getWorkingCopies();
     for (int i = 0; i < configs.length; i++) {
       if (configs[i].getName().equals(name)) {
         config = configs[i];
@@ -173,7 +172,7 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
    */
   public ICheckConfiguration getGlobalCheckConfigByName(String name) {
     ICheckConfiguration config = null;
-    ICheckConfiguration[] configs = mGlobalConfigWorkingSet.getWorkingCopies();
+    ICheckConfiguration[] configs = globalConfigWorkingSet.getWorkingCopies();
     for (int i = 0; i < configs.length; i++) {
       if (configs[i].getName().equals(name)) {
         config = configs[i];
@@ -191,7 +190,7 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
    *          true if the project uses the simple fileset configuration
    */
   public void setUseSimpleConfig(boolean useSimpleConfig) {
-    mUseSimpleConfig = useSimpleConfig;
+    this.useSimpleConfig = useSimpleConfig;
   }
 
   /**
@@ -201,7 +200,7 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
    *          true if the projects formatter settings should be synced with the Checkstyle config
    */
   public void setSyncFormatter(boolean syncFormatter) {
-    mSyncFormatter = syncFormatter;
+    this.syncFormatter = syncFormatter;
   }
 
   /**
@@ -210,7 +209,7 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
    * @return <code>true</code> if changed
    */
   public boolean isDirty() {
-    return !this.equals(mProjectConfig) || mLocalConfigWorkingSet.isDirty();
+    return !this.equals(projectConfig) || localConfigWorkingSet.isDirty();
   }
 
   /**
@@ -222,9 +221,9 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
    *           an unexpected exception occurred
    */
   public boolean isRebuildNeeded() throws CheckstylePluginException {
-    return !this.equals(mProjectConfig)
-            || mLocalConfigWorkingSet.getAffectedProjects().contains(getProject())
-            || mGlobalConfigWorkingSet.getAffectedProjects().contains(getProject());
+    return !this.equals(projectConfig)
+            || localConfigWorkingSet.getAffectedProjects().contains(getProject())
+            || globalConfigWorkingSet.getAffectedProjects().contains(getProject());
   }
 
   /**
@@ -239,36 +238,36 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
 
   @Override
   public IProject getProject() {
-    return mProjectConfig.getProject();
+    return projectConfig.getProject();
   }
 
   @Override
   public List<ICheckConfiguration> getLocalCheckConfigurations() {
 
     List<ICheckConfiguration> list = new ArrayList<>();
-    Collections.addAll(list, mLocalConfigWorkingSet.getWorkingCopies());
+    Collections.addAll(list, localConfigWorkingSet.getWorkingCopies());
 
     return list;
   }
 
   @Override
   public List<FileSet> getFileSets() {
-    return mFileSets;
+    return fileSets;
   }
 
   @Override
   public List<IFilter> getFilters() {
-    return mFilters;
+    return filters;
   }
 
   @Override
   public boolean isUseSimpleConfig() {
-    return mUseSimpleConfig;
+    return useSimpleConfig;
   }
 
   @Override
   public boolean isSyncFormatter() {
-    return mSyncFormatter;
+    return syncFormatter;
   }
 
   @Override
@@ -293,21 +292,21 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
     ProjectConfigurationWorkingCopy clone = null;
     try {
       clone = (ProjectConfigurationWorkingCopy) super.clone();
-      clone.mFileSets = new LinkedList<>();
+      clone.fileSets = new LinkedList<>();
       clone.setUseSimpleConfig(this.isUseSimpleConfig());
       clone.setSyncFormatter(this.isSyncFormatter());
 
       // clone file sets
-      for (FileSet fileSet : getFileSets()) {
+      for (FileSet fileSet : fileSets) {
         clone.getFileSets().add(fileSet.clone());
       }
 
       // clone filters
       List<IFilter> clonedFilters = new ArrayList<>();
-      for (IFilter filter : getFilters()) {
+      for (IFilter filter : filters) {
         clonedFilters.add(filter.clone());
       }
-      clone.mFilters = clonedFilters;
+      clone.filters = clonedFilters;
     } catch (CloneNotSupportedException ex) {
       throw new InternalError();
     }
@@ -334,7 +333,7 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
 
   @Override
   public int hashCode() {
-    return Objects.hash(mProjectConfig, mUseSimpleConfig, mFileSets, mFilters);
+    return Objects.hash(projectConfig, useSimpleConfig, fileSets, filters);
   }
 
   /**
@@ -428,7 +427,7 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
     // RFE 1420212
     String location = checkConfig.getLocation();
     if (checkConfig.getType() instanceof ProjectConfigurationType) {
-      IProject project = mProjectConfig.getProject();
+      IProject project = projectConfig.getProject();
       IWorkspaceRoot root = project.getWorkspace().getRoot();
       IFile configFile = root.getFile(new Path(location));
       IProject configFileProject = configFile.getProject();

@@ -28,16 +28,16 @@ import net.sf.eclipsecs.core.config.meta.ConfigPropertyMetadata;
 public class ConfigProperty implements Comparable<ConfigProperty>, Cloneable {
 
   /** The name of the property. */
-  private String mName;
+  private String name;
 
   /** The value of the property. */
-  private String mValue;
+  private String value;
 
   /** The meta data of the property. */
-  private ConfigPropertyMetadata mMetaData;
+  private ConfigPropertyMetadata metaData;
 
   /** Signals that the property value is actually a ${}-like reference. */
-  private boolean mPropertyReference;
+  private boolean propertyReference;
 
   /**
    * Constructor.
@@ -46,10 +46,9 @@ public class ConfigProperty implements Comparable<ConfigProperty>, Cloneable {
    *          the property meta data
    */
   public ConfigProperty(ConfigPropertyMetadata metaData) {
-
     this(metaData.getName(), metaData.getOverrideDefault() != null ? metaData.getOverrideDefault()
             : metaData.getDefaultValue());
-    setMetaData(metaData);
+    this.metaData = metaData;
   }
 
   /**
@@ -61,8 +60,8 @@ public class ConfigProperty implements Comparable<ConfigProperty>, Cloneable {
    *          Property value.
    */
   public ConfigProperty(String name, String value) {
-    setName(name);
-    setValue(value);
+    this.name = name;
+    this.value = value;
   }
 
   /**
@@ -71,7 +70,7 @@ public class ConfigProperty implements Comparable<ConfigProperty>, Cloneable {
    * @return The name
    */
   public String getName() {
-    return mName;
+    return name;
   }
 
   /**
@@ -81,7 +80,7 @@ public class ConfigProperty implements Comparable<ConfigProperty>, Cloneable {
    *          The new name.
    */
   public void setName(String name) {
-    mName = name;
+    this.name = name;
   }
 
   /**
@@ -90,7 +89,7 @@ public class ConfigProperty implements Comparable<ConfigProperty>, Cloneable {
    * @return String
    */
   public String getValue() {
-    return mValue;
+    return value;
   }
 
   /**
@@ -100,7 +99,7 @@ public class ConfigProperty implements Comparable<ConfigProperty>, Cloneable {
    *          The value to set
    */
   public void setValue(String value) {
-    mValue = value;
+    this.value = value;
   }
 
   /**
@@ -109,7 +108,7 @@ public class ConfigProperty implements Comparable<ConfigProperty>, Cloneable {
    * @return the meta data
    */
   public ConfigPropertyMetadata getMetaData() {
-    return mMetaData;
+    return metaData;
   }
 
   /**
@@ -119,7 +118,7 @@ public class ConfigProperty implements Comparable<ConfigProperty>, Cloneable {
    *          the meta data
    */
   public void setMetaData(ConfigPropertyMetadata metaData) {
-    mMetaData = metaData;
+    this.metaData = metaData;
   }
 
   /**
@@ -128,7 +127,7 @@ public class ConfigProperty implements Comparable<ConfigProperty>, Cloneable {
    * @return <code>true</code> if the value is a property reference, <code>false</code> otherwise
    */
   public boolean isPropertyReference() {
-    return mPropertyReference;
+    return propertyReference;
   }
 
   /**
@@ -138,12 +137,12 @@ public class ConfigProperty implements Comparable<ConfigProperty>, Cloneable {
    *          <code>true</code> if the value is a property reference, <code>false</code> otherwise
    */
   public void setPropertyReference(boolean propertyReference) {
-    this.mPropertyReference = propertyReference;
+    this.propertyReference = propertyReference;
   }
 
   @Override
   public int compareTo(ConfigProperty obj) {
-    return this.mName.compareTo(obj.mName);
+    return this.name.compareTo(obj.name);
   }
 
   @Override

@@ -44,22 +44,22 @@ import net.sf.eclipsecs.core.projectconfig.filters.IFilter;
 public class ProjectConfiguration implements Cloneable, IProjectConfiguration {
 
   /** The project. */
-  private IProject mProject;
+  private IProject project;
 
   /** The local check configurations. */
-  private List<ICheckConfiguration> mLocalCheckConfigs;
+  private List<ICheckConfiguration> localCheckConfigs;
 
   /** the file sets. */
-  private List<FileSet> mFileSets;
+  private List<FileSet> fileSets;
 
   /** the filters. */
-  private List<IFilter> mFilters;
+  private List<IFilter> filters;
 
   /** Flags if the simple file set editor should be used. */
-  private boolean mUseSimpleConfig = true;
+  private boolean useSimpleConfig = true;
 
   /** if formatter synching is enabled. */
-  private boolean mSyncFormatter;
+  private boolean syncFormatter;
 
   /**
    * Default constructor.
@@ -81,66 +81,66 @@ public class ProjectConfiguration implements Cloneable, IProjectConfiguration {
   public ProjectConfiguration(IProject project, List<ICheckConfiguration> localConfigs,
           List<FileSet> fileSets, List<IFilter> filters, boolean useSimpleConfig,
           boolean synchFormatter) {
-    mProject = project;
-    mLocalCheckConfigs = localConfigs != null ? Collections.unmodifiableList(localConfigs)
+    this.project = project;
+    localCheckConfigs = localConfigs != null ? Collections.unmodifiableList(localConfigs)
             : Collections.unmodifiableList(new ArrayList<ICheckConfiguration>());
-    mFileSets = fileSets != null ? Collections.unmodifiableList(fileSets)
+    this.fileSets = fileSets != null ? Collections.unmodifiableList(fileSets)
             : Collections.unmodifiableList(new ArrayList<FileSet>());
 
     // build list of filters
     List<IFilter> standardFilters = Arrays.asList(PluginFilters.getConfiguredFilters());
-    mFilters = new ArrayList<>(standardFilters);
+    this.filters = new ArrayList<>(standardFilters);
 
     if (filters != null) {
       // merge with filters configured for the project
-      for (int i = 0, size = mFilters.size(); i < size; i++) {
+      for (int i = 0, size = this.filters.size(); i < size; i++) {
 
-        IFilter standardFilter = mFilters.get(i);
+        IFilter standardFilter = this.filters.get(i);
 
         for (int j = 0, size2 = filters.size(); j < size2; j++) {
           IFilter configuredFilter = filters.get(j);
 
           if (standardFilter.getInternalName().equals(configuredFilter.getInternalName())) {
-            mFilters.set(i, configuredFilter);
+            this.filters.set(i, configuredFilter);
           }
         }
       }
     }
 
-    mFilters = Collections.unmodifiableList(mFilters);
+    this.filters = Collections.unmodifiableList(this.filters);
 
-    mUseSimpleConfig = useSimpleConfig;
-    mSyncFormatter = synchFormatter;
+    this.useSimpleConfig = useSimpleConfig;
+    this.syncFormatter = synchFormatter;
   }
 
   @Override
   public IProject getProject() {
-    return mProject;
+    return project;
   }
 
   @Override
   public List<ICheckConfiguration> getLocalCheckConfigurations() {
-    return mLocalCheckConfigs;
+    return localCheckConfigs;
   }
 
   @Override
   public List<FileSet> getFileSets() {
-    return mFileSets;
+    return fileSets;
   }
 
   @Override
   public List<IFilter> getFilters() {
-    return mFilters;
+    return filters;
   }
 
   @Override
   public boolean isUseSimpleConfig() {
-    return mUseSimpleConfig;
+    return useSimpleConfig;
   }
 
   @Override
   public boolean isSyncFormatter() {
-    return mSyncFormatter;
+    return syncFormatter;
   }
 
   /**
@@ -173,23 +173,23 @@ public class ProjectConfiguration implements Cloneable, IProjectConfiguration {
     ProjectConfiguration clone = null;
     try {
       clone = (ProjectConfiguration) super.clone();
-      clone.mFileSets = new LinkedList<>();
-      clone.mUseSimpleConfig = mUseSimpleConfig;
-      clone.mSyncFormatter = mSyncFormatter;
+      clone.fileSets = new LinkedList<>();
+      clone.useSimpleConfig = useSimpleConfig;
+      clone.syncFormatter = syncFormatter;
 
       // clone file sets
       List<FileSet> clonedFileSets = new ArrayList<>();
-      for (FileSet fileSet : getFileSets()) {
+      for (FileSet fileSet : fileSets) {
         clonedFileSets.add(fileSet.clone());
       }
-      clone.mFileSets = clonedFileSets;
+      clone.fileSets = clonedFileSets;
 
       // clone filters
       List<IFilter> clonedFilters = new ArrayList<>();
-      for (IFilter filter : getFilters()) {
+      for (IFilter filter : filters) {
         clonedFilters.add(filter.clone());
       }
-      clone.mFilters = clonedFilters;
+      clone.filters = clonedFilters;
     } catch (CloneNotSupportedException ex) {
       // should never happen
       throw new InternalError(ex);
@@ -209,24 +209,24 @@ public class ProjectConfiguration implements Cloneable, IProjectConfiguration {
     }
     ProjectConfiguration rhs = (ProjectConfiguration) obj;
 
-    return Objects.equals(mProject, rhs.mProject)
-            && Objects.equals(mLocalCheckConfigs, rhs.mLocalCheckConfigs)
-            && Objects.equals(mUseSimpleConfig, rhs.mUseSimpleConfig)
-            && Objects.equals(mSyncFormatter, rhs.mSyncFormatter)
-            && Objects.equals(mFileSets, rhs.mFileSets) && Objects.equals(mFilters, rhs.mFilters);
+    return Objects.equals(project, rhs.project)
+            && Objects.equals(localCheckConfigs, rhs.localCheckConfigs)
+            && Objects.equals(useSimpleConfig, rhs.useSimpleConfig)
+            && Objects.equals(syncFormatter, rhs.syncFormatter)
+            && Objects.equals(fileSets, rhs.fileSets) && Objects.equals(filters, rhs.filters);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(mProject, mLocalCheckConfigs, mUseSimpleConfig, mSyncFormatter, mFileSets,
-            mFilters);
+    return Objects.hash(project, localCheckConfigs, useSimpleConfig, syncFormatter, fileSets,
+            filters);
   }
 
   @Override
   public String toString() {
-    return MoreObjects.toStringHelper(this).add("project", mProject)
-            .add("localCheckConfigs", mLocalCheckConfigs).add("useSimpleConfig", mUseSimpleConfig)
-            .add("syncFormatter", mSyncFormatter).add("fileSets", mFileSets)
-            .add("filters", mFilters).toString();
+    return MoreObjects.toStringHelper(this).add("project", project)
+            .add("localCheckConfigs", localCheckConfigs).add("useSimpleConfig", useSimpleConfig)
+            .add("syncFormatter", syncFormatter).add("fileSets", fileSets)
+            .add("filters", filters).toString();
   }
 }
