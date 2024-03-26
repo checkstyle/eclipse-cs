@@ -131,7 +131,7 @@
                     </plugin>
                     <plugin>
                         <groupId>org.eclipse.tycho</groupId>
-                        <artifactId>tycho-eclipserun-plugin</artifactId>
+                        <artifactId>tycho-eclipse-plugin</artifactId>
                         <configuration>
                             <repositories>
                                 <repository>
