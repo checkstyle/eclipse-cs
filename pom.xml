@@ -20,10 +20,12 @@
 
     <properties>
         <build-helper-maven-plugin-version>3.5.0</build-helper-maven-plugin-version>
+        <download-maven-plugin-version>1.8.1</download-maven-plugin-version>
         <exec-maven-plugin-version>3.2.0</exec-maven-plugin-version>
 
-        <!-- Maven JUnit version must fit the JUnit version used in the target platform, otherwise Surefire may produce exceptions -->
-        <junit-jupiter-version>5.9.0</junit-jupiter-version>
+        <!-- Maven JUnit version should fit the JUnit version used in the target platform, otherwise Surefire may produce exceptions.
+        You can try to use newer versions here, but that requires manual testing. -->
+        <junit-jupiter-version>5.10.2</junit-jupiter-version>
         <maven-antrun-plugin-version>3.1.0</maven-antrun-plugin-version>
         <maven-checkstyle-plugin-version>3.3.1</maven-checkstyle-plugin-version>
         <maven-clean-plugin-version>3.3.2</maven-clean-plugin-version>
@@ -36,7 +38,7 @@
         <maven-site-plugin-version>3.12.1</maven-site-plugin-version>
         <maven-surefire-plugin-version>3.2.5</maven-surefire-plugin-version>
         <maven-version>3.9.0</maven-version>
-        <tycho-version>4.0.6</tycho-version>
+        <tycho-version>4.0.7</tycho-version>
         <versions-maven-plugin-version>2.16.2</versions-maven-plugin-version>
 
         <!-- sevntu and patch-filters need to use a compatible/compiled version with checkstyle -->
