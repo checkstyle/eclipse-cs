@@ -1,4 +1,4 @@
-// Install https://download.eclipse.org/cbi/updates/tpd/nightly/latest to use this target definition.
+// Install https://download.eclipse.org/cbi/updates/tpd/release/latest to use this target definition.
 // Read https://github.com/eclipse-cbi/targetplatform-dsl for more details.
 target "Eclipse Checkstyle"
 with source configurePhase
