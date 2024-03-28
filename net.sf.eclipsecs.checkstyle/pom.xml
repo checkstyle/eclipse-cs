@@ -16,59 +16,6 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>repackage-checkstyle-source</id>
-                        <phase>generate-sources</phase>
-                        <configuration>
-                            <target>
-                                <!-- delete all the outdated ZIPs before downloading the current -->
-                                <delete>
-                                    <fileset dir="${basedir}" includes="checkstyle-*.zip" excludes="checkstyle-${checkstyle.version}.zip"/>
-                                </delete>
-                                <get src="https://github.com/checkstyle/checkstyle/archive/checkstyle-${checkstyle.version}.zip"
-                                     dest="${basedir}/checkstyle-${checkstyle.version}.zip"
-                                     verbose="false"
-                                     usetimestamp="true"/>
-                                <delete dir="${project.build.directory}/checkstyle-src-unpack" />
-                                <delete dir="${project.build.directory}/checkstyle-src" />
-                                <unzip src="checkstyle-${checkstyle.version}.zip" dest="${project.build.directory}/checkstyle-src-unpack">
-                                    <patternset>
-                                        <include name="**/src/main/java/**" />
-                                        <include name="**/src/main/resources/**" />
-                                    </patternset>
-                                </unzip>
-                                <copy todir="${project.build.directory}/checkstyle-src">
-                                    <fileset dir="${project.build.directory}/checkstyle-src-unpack">
-                                        <include name="**/*" />
-                                    </fileset>
-                                    <cutdirsmapper dirs="4" />
-                                </copy>
-                            </target>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.eclipse.tycho</groupId>
-                <artifactId>tycho-source-plugin</artifactId>
-                <configuration>
-                    <additionalFileSets>
-                        <fileSet>
-                            <directory>${project.build.directory}/checkstyle-src/</directory>
-                            <includes>
-                                <include>**/*</include>
-                            </includes>
-                        </fileSet>
-                    </additionalFileSets>
-                </configuration>
-            </plugin>
-            <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
             </plugin>
             <plugin>
