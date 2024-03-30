@@ -45,6 +45,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -186,10 +187,19 @@ public final class MetadataFactory {
             packageTokens[packageTokens.length - 1], MetadataFactory.getDefaultSeverity(),
             false, true, true, false, group);
     ruleMeta.setDescription(moduleDetails.getDescription());
+
+    var altName = moduleDetails.getFullQualifiedName();
+    registerAlternative(altName, ruleMeta);
+
     moduleDetails.getProperties().forEach(modulePropertyDetails -> ruleMeta.getPropertyMetadata()
             .add(createPropertyConfig(moduleDetails, modulePropertyDetails)));
 
     return ruleMeta;
+  }
+
+  private static void registerAlternative(String alternativeName, RuleMetadata ruleMetadata) {
+    ruleMetadata.addAlternativeName(alternativeName);
+    sAlternativeNamesMap.put(alternativeName, ruleMetadata);
   }
 
   /**
@@ -551,12 +561,9 @@ public final class MetadataFactory {
    * @return
    */
   private static String groupId(String metadataFile) {
-    var start = metadataFile.indexOf("checks/") + 7;
-    var end = metadataFile.lastIndexOf("/");
-    if (start >= end) {
-      return "";
-    }
-    return metadataFile.substring(start, end);
+    String res = StringUtils.substringBetween(metadataFile, "/checks/", "/");
+    res = StringUtils.defaultString(res, metadataFile);
+    return res;
   }
 
   /**
@@ -745,10 +752,7 @@ public final class MetadataFactory {
       for (Element altNameEl : moduleEl.elements(XMLTags.ALTERNATIVE_NAME_TAG)) {
 
         String alternativeName = altNameEl.attributeValue(XMLTags.INTERNAL_NAME_TAG);
-
-        // register alternative name
-        sAlternativeNamesMap.put(alternativeName, module);
-        module.addAlternativeName(alternativeName);
+        registerAlternative(alternativeName, module);
       }
 
       // process message keys
