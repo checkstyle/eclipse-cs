@@ -45,6 +45,11 @@ location "https://download.eclipse.org/tools/orbit/downloads/drops/R202208302134
 	org.objectweb.asm.tree
 }
 
+// include sevntu plugin, so we can test it easily when launching a debug runtime
+location "https://sevntu-checkstyle.github.io/sevntu.checkstyle/update-site/" {
+	com.github.sevntu.checkstyle.checks.feature.feature.group
+}
+
 // If the following part has errors and no syntax highlighting, then please use Help>About>Installation>Installed Software>Target Platform DSL>Uninstall.
 // After restarting please install the current version from the URL in line 1.
 maven ApacheCommons

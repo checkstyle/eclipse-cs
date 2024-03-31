@@ -402,6 +402,12 @@
             <message key="import.illegal"
                      value="Use io.github.classgraph.ClassGraph instead."/>
         </module>
+        <module name="IllegalImport">
+            <property name="illegalPkgs"
+                      value="com.github.sevntu"/>
+            <message key="import.illegal"
+                     value="The sevntu plugin is only available for debugging. Don''t reference it anywhere in our code."/>
+        </module>
         <module name="ImportControl">
             <property name="id" value="ImportControlMain"/>
             <property name="file" value="${checkstyle.importcontrol.file}"/>

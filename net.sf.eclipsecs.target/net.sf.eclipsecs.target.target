@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl -->
-<target name="Eclipse Checkstyle" sequenceNumber="1711958226">
+<target name="Eclipse Checkstyle" sequenceNumber="1711962228">
   <locations>
     <location includeMode="slicer" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="true" type="InstallableUnit">
       <unit id="org.eclipse.jdt.feature.group" version="3.18.1300.v20220831-1800"/>
@@ -35,6 +35,10 @@
       <unit id="org.objectweb.asm" version="9.3.0.v20220409-0157"/>
       <unit id="org.objectweb.asm.tree" version="9.3.0.v20220409-0157"/>
       <repository location="https://download.eclipse.org/tools/orbit/downloads/drops/R20220830213456/repository"/>
+    </location>
+    <location includeMode="slicer" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="true" type="InstallableUnit">
+      <unit id="com.github.sevntu.checkstyle.checks.feature.feature.group" version="1.44.1"/>
+      <repository location="https://sevntu-checkstyle.github.io/sevntu.checkstyle/update-site/"/>
     </location>
     <location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven" label="SnakeYaml">
       <dependencies>
