@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl -->
-<target name="Eclipse Checkstyle" sequenceNumber="1710065411">
+<target name="Eclipse Checkstyle" sequenceNumber="1711958226">
   <locations>
     <location includeMode="slicer" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="true" type="InstallableUnit">
       <unit id="org.eclipse.jdt.feature.group" version="3.18.1300.v20220831-1800"/>
@@ -37,54 +37,64 @@
       <repository location="https://download.eclipse.org/tools/orbit/downloads/drops/R20220830213456/repository"/>
     </location>
     <location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven" label="SnakeYaml">
-    <dependencies>
-    	<dependency>
-    		<groupId>org.yaml</groupId>
-    		<artifactId>snakeyaml</artifactId>
-    		<version>2.2</version>
-    		<type>jar</type>
-    	</dependency>
-    </dependencies>
+      <dependencies>
+        <dependency>
+          <groupId>org.yaml</groupId>
+          <artifactId>snakeyaml</artifactId>
+          <version>2.2</version>
+          <type>jar</type>
+        </dependency>
+      </dependencies>
     </location>
     <location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven" label="Javassist">
-    <dependencies>
-    	<dependency>
-    		<groupId>org.javassist</groupId>
-    		<artifactId>javassist</artifactId>
-    		<version>3.29.2-GA</version>
-    		<type>jar</type>
-    	</dependency>
-    </dependencies>
+      <dependencies>
+        <dependency>
+          <groupId>org.javassist</groupId>
+          <artifactId>javassist</artifactId>
+          <version>3.29.2-GA</version>
+          <type>jar</type>
+        </dependency>
+      </dependencies>
     </location>
     <location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven" label="DOM4J">
-    <dependencies>
-    	<dependency>
-    		<groupId>org.dom4j</groupId>
-    		<artifactId>dom4j</artifactId>
-    		<version>2.1.4</version>
-    		<type>jar</type>
-    	</dependency>
-    </dependencies>
+      <dependencies>
+        <dependency>
+          <groupId>org.dom4j</groupId>
+          <artifactId>dom4j</artifactId>
+          <version>2.1.4</version>
+          <type>jar</type>
+        </dependency>
+      </dependencies>
+    </location>
+    <location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven" label="Classgraph">
+      <dependencies>
+        <dependency>
+          <groupId>io.github.classgraph</groupId>
+          <artifactId>classgraph</artifactId>
+          <version>4.8.168</version>
+          <type>jar</type>
+        </dependency>
+      </dependencies>
     </location>
     <location includeDependencyDepth="direct" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven" label="AssertJ">
-    <dependencies>
-    	<dependency>
-    		<groupId>org.assertj</groupId>
-    		<artifactId>assertj-core</artifactId>
-    		<version>3.25.1</version>
-    		<type>jar</type>
-    	</dependency>
-    </dependencies>
+      <dependencies>
+        <dependency>
+          <groupId>org.assertj</groupId>
+          <artifactId>assertj-core</artifactId>
+          <version>3.25.1</version>
+          <type>jar</type>
+        </dependency>
+      </dependencies>
     </location>
     <location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven" label="ApacheCommons">
-    <dependencies>
-    	<dependency>
-    		<groupId>org.apache.commons</groupId>
-    		<artifactId>commons-lang3</artifactId>
-    		<version>3.14.0</version>
-    		<type>jar</type>
-    	</dependency>
-    </dependencies>
+      <dependencies>
+        <dependency>
+          <groupId>org.apache.commons</groupId>
+          <artifactId>commons-lang3</artifactId>
+          <version>3.14.0</version>
+          <type>jar</type>
+        </dependency>
+      </dependencies>
     </location>
   </locations>
   <targetJRE path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-17"/>
