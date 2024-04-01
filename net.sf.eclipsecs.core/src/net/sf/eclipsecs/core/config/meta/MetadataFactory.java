@@ -26,6 +26,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -43,14 +44,12 @@ import java.util.ResourceBundle;
 import java.util.ResourceBundle.Control;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
-import org.reflections.Reflections;
-import org.reflections.scanners.ResourcesScanner;
 import org.yaml.snakeyaml.Yaml;
 
 import com.puppycrawl.tools.checkstyle.PackageNamesLoader;
@@ -60,6 +59,9 @@ import com.puppycrawl.tools.checkstyle.meta.ModuleDetails;
 import com.puppycrawl.tools.checkstyle.meta.ModulePropertyDetails;
 import com.puppycrawl.tools.checkstyle.meta.XmlMetaReader;
 
+import io.github.classgraph.ClassGraph;
+import io.github.classgraph.Resource;
+import io.github.classgraph.ScanResult;
 import net.sf.eclipsecs.core.CheckstylePlugin;
 import net.sf.eclipsecs.core.config.ConfigProperty;
 import net.sf.eclipsecs.core.config.Module;
@@ -82,9 +84,8 @@ public final class MetadataFactory {
   /** Map containing the public - internal DTD mapping. */
   private static final Map<String, String> PUBLIC2INTERNAL_DTD_MAP = new HashMap<>();
 
-  /** Pattern for eclipse extension configuration files. */
-  private static final Pattern ECLIPSE_EXTENSION_CONFIG_FILE
-      = Pattern.compile(".*eclipse-metadata.*\\.yml");
+  /** eclipse extension configuration file name. */
+  private static final String ECLIPSE_EXTENSION_CONFIG_FILE = "eclipse-metadata.yml";
 
   /** Pattern for dot. */
   private static final String DOT_PATTERN = "\\.";
@@ -298,24 +299,45 @@ public final class MetadataFactory {
         .forEach(moduleDetail -> sModuleDetailsRepo.put(moduleDetail.getName(), moduleDetail));
   }
 
-  /*
+  /**
    * Fetch third party checks extension metadata from YML files.
+   *
+   * @implNote The class graph scanner is configured to use all known packages, but only to the
+   *           second package element. That seems to be a good compromise between scanning far too
+   *           many classes and potentially missing a YML file when using the packages of the
+   *           registered check classes only.
    */
   private static void loadThirdPartyModuleExtensionMetadata() {
+    var rootPackages = sPackageNameSet.stream()
+            .map(pack -> {
+              int secondDot = StringUtils.ordinalIndexOf(pack, ".", 2);
+              if (secondDot < 0) {
+                return pack;
+              }
+              return pack.substring(0, secondDot);
+            })
+            .distinct()
+            .toArray(String[]::new);
     Set<String> eclipseMetaDataFiles = new HashSet<>();
 
-    for (String packageName : sPackageNameSet) {
-      final String topMostPackageName = packageName.split(DOT_PATTERN)[0];
-      Reflections reflections = new Reflections(topMostPackageName, new ResourcesScanner());
-      eclipseMetaDataFiles.addAll(reflections.getResources(ECLIPSE_EXTENSION_CONFIG_FILE));
+    try (ScanResult scanResult = new ClassGraph()
+            .acceptPackages(rootPackages)
+            .scan()) {
+      try {
+        scanResult.getResourcesWithLeafName(ECLIPSE_EXTENSION_CONFIG_FILE)
+                .forEachInputStreamThrowingIOException((Resource res, InputStream inputStream) -> {
+                  eclipseMetaDataFiles
+                          .add(new String(inputStream.readAllBytes(), StandardCharsets.UTF_8));
+                });
+      } catch (IOException ex) {
+        CheckstyleLog.log(ex, "Cannot read metadata YML");
+      }
     }
     eclipseMetaDataFiles.forEach(MetadataFactory::loadThirdPartyData);
   }
 
-  private static void loadThirdPartyData(String metadataFile) {
-    InputStream inputStream = CheckstylePlugin.getDefault().getAddonExtensionClassLoader()
-             .getResourceAsStream(metadataFile);
-    Map<String, List<Map<String, Object>>> objects = new Yaml().load(inputStream);
+  private static void loadThirdPartyData(String metadataContent) {
+    Map<String, List<Map<String, Object>>> objects = new Yaml().load(metadataContent);
     for (Map<String, Object> obj : objects.get("ruleGroups")) {
       Map<String, String> ruleGroupData = new HashMap<>();
       ruleGroupData.put("name", (String) obj.get("name"));

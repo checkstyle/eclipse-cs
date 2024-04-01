@@ -396,6 +396,12 @@
             <message key="import.illegal"
                      value="Use org.assertj.core.api.Assertions instead."/>
         </module>
+        <module name="IllegalImport">
+            <property name="illegalPkgs"
+                      value="org.reflections"/>
+            <message key="import.illegal"
+                     value="Use io.github.classgraph.ClassGraph instead."/>
+        </module>
         <module name="ImportControl">
             <property name="id" value="ImportControlMain"/>
             <property name="file" value="${checkstyle.importcontrol.file}"/>

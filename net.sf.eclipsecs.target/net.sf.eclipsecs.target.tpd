@@ -71,6 +71,18 @@ maven AssertJ
 		version="3.25.1"
 	}
 }
+maven Classgraph
+	scope=compile
+	dependencyDepth=none
+	missingManifest=generate
+	includeSources
+{
+	dependency {
+		groupId="io.github.classgraph"
+		artifactId="classgraph"
+		version="4.8.168"
+	}
+}
 maven DOM4J
 	scope=compile
 	dependencyDepth=none
