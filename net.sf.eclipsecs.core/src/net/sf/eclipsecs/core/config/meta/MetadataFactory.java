@@ -303,9 +303,11 @@ public final class MetadataFactory {
    * Create repository of Module Details from checkstyle metadata and third party extension checks metadata.
    */
   private static void createMetadataMap() {
-    XmlMetaReader.readAllModulesIncludingThirdPartyIfAny(
-        sPackageNameSet.toArray(new String[sPackageNameSet.size()]))
-        .forEach(moduleDetail -> sModuleDetailsRepo.put(moduleDetail.getName(), moduleDetail));
+    List<ModuleDetails> moduleDetails = XmlMetaReader.readAllModulesIncludingThirdPartyIfAny(sPackageNameSet.toArray(new String[0]));
+    if (moduleDetails.isEmpty()) {
+      CheckstyleLog.log(null, "Cannot read module details");
+    }
+    moduleDetails.forEach(moduleDetail -> sModuleDetailsRepo.put(moduleDetail.getName(), moduleDetail));
   }
 
   /**
