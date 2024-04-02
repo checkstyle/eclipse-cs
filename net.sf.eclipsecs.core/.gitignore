@@ -1,2 +1,0 @@
-# only the eclipsecs.checkstyle project shall contain a copy of the checkstyle jar
-**/checkstyle*.jar
