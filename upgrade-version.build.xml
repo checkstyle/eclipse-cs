@@ -52,7 +52,9 @@ Apply all necessary manual code changes now.
 
 		<!-- download new version -->
 		<get src="https://github.com/checkstyle/checkstyle/releases/download/checkstyle-${toVersion}/checkstyle-${toVersion}-all.jar"
-			dest="${basedir}/net.sf.eclipsecs.checkstyle/checkstyle-${toVersion}-all.jar"/>
+		     dest="${basedir}/net.sf.eclipsecs.checkstyle/checkstyle-${toVersion}-all.jar"/>
+		<copy file="${basedir}/net.sf.eclipsecs.checkstyle/checkstyle-${toVersion}-all.jar"
+		     tofile="${basedir}/net.sf.eclipsecs.core/lib/checkstyle-${toVersion}-all.jar"/>
 	</target>
 
 </project>
