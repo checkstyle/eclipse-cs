@@ -220,6 +220,13 @@
                     <groupId>org.eclipse.tycho</groupId>
                     <artifactId>tycho-bnd-plugin</artifactId>
                     <version>${tycho-version}</version>
+                    <executions>
+                        <execution>
+                            <id>default-process</id>
+                            <!-- disable goal execution which is bound to default lifecycle -->
+                            <phase>none</phase>
+                        </execution>
+                    </executions>
                 </plugin>
                 <plugin>
                     <groupId>org.eclipse.tycho</groupId>
@@ -324,6 +331,7 @@
                             <!-- These are bundles and feature that do not have a corresponding source version; NOT the ones
                                 that we do not want source versions -->
                             <plugin id="net.sf.eclipsecs.branding" />
+                            <plugin id="net.sf.eclipsecs.checkstyle" />
                             <plugin id="net.sf.eclipsecs.doc" />
                         </excludes>
                     </configuration>
@@ -403,6 +411,11 @@
                                             <exclude>net.sf.eclipsecs:*</exclude>
                                         </excludes>
                                     </requireReleaseDeps>
+                                    <requireSameVersions>
+                                        <plugins>
+                                            <plugin>org.eclipse.tycho:*</plugin>
+                                        </plugins>
+                                    </requireSameVersions>
                                 </rules>
                             </configuration>
                         </execution>
