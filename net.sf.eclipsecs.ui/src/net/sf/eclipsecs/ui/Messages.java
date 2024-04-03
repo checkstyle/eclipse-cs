@@ -500,5 +500,7 @@ public final class Messages extends NLS {
   public static String MarkerPropertyPage_Group;
 
   public static String MarkerPropertyPage_Description;
+
+  public static String MarkerPropertyPage_Id;
   // CHECKSTYLE:ON
 }

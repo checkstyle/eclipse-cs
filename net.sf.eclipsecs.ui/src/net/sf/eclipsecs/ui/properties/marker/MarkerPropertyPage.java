@@ -20,6 +20,7 @@
 
 package net.sf.eclipsecs.ui.properties.marker;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.swt.SWT;
@@ -66,47 +67,75 @@ public class MarkerPropertyPage extends PropertyPage {
     composite.setLayout(layout);
 
     try {
-      new Label(composite, SWT.NONE).setImage(
-              getSeverityImage(getIssue().getAttribute(IMarker.SEVERITY, -1)));
-      new Label(composite, SWT.NONE).setText(Messages.MarkerPropertyPage_Issue);
-      String message = (String) getIssue().getAttribute(IMarker.MESSAGE);
-      Text labelMessage = new Text(composite, SWT.WRAP | SWT.READ_ONLY);
-      labelMessage.setText(message);
-
-      new Label(composite, SWT.NONE).setImage(
-              CheckstyleUIPluginImages.MODULEGROUP_ICON.getImage());
-      new Label(composite, SWT.NONE).setText(Messages.MarkerPropertyPage_Group);
-
-      String moduleName = (String) getIssue().getAttribute(CheckstyleMarker.MODULE_NAME);
-      RuleMetadata metaData = MetadataFactory.getRuleMetadata(moduleName);
-      Text labelGroupName = new Text(composite, SWT.WRAP | SWT.READ_ONLY);
-      labelGroupName.setText(metaData.getGroup().getGroupName());
-
-      new Label(composite, SWT.NONE).setImage(
-              CheckstyleUIPluginImages.MODULE_ICON.getImage());
-      new Label(composite, SWT.NONE).setText(Messages.MarkerPropertyPage_Module);
-
-      Text labelRuleName = new Text(composite, SWT.WRAP | SWT.READ_ONLY);
-      labelRuleName.setText(metaData.getRuleName());
-
-      Label descriptionLabel = new Label(composite, SWT.NONE);
-      descriptionLabel.setText(Messages.MarkerPropertyPage_Description);
-      GridData gridData = new GridData();
-      gridData.horizontalSpan = 3;
-      gridData.verticalIndent = 20;
-      descriptionLabel.setLayoutData(gridData);
-
-      gridData = new GridData(GridData.FILL_BOTH);
-      gridData.heightHint = 100;
-      gridData.horizontalSpan = 3;
-      Browser browserDescription = new Browser(composite, SWT.BORDER);
-      browserDescription.setLayoutData(gridData);
-      browserDescription.setText(
-              CheckConfigurationConfigureDialog.getDescriptionHtml(metaData.getDescription()));
+      createSeverityText(composite);
+      RuleMetadata metaData = createGroupText(composite);
+      createRuleText(composite, metaData);
+      createIdText(composite);
+      createDescriptionText(composite, metaData);
     } catch (CoreException ex) {
       CheckstyleLog.log(ex);
     }
     return composite;
+  }
+
+  private void createSeverityText(final Composite composite) throws CoreException {
+    new Label(composite, SWT.NONE).setImage(
+            getSeverityImage(getIssue().getAttribute(IMarker.SEVERITY, -1)));
+    new Label(composite, SWT.NONE).setText(Messages.MarkerPropertyPage_Issue);
+    String message = (String) getIssue().getAttribute(IMarker.MESSAGE);
+    Text labelMessage = new Text(composite, SWT.WRAP | SWT.READ_ONLY);
+    labelMessage.setText(message);
+  }
+
+  private RuleMetadata createGroupText(final Composite composite) throws CoreException {
+    new Label(composite, SWT.NONE).setImage(
+            CheckstyleUIPluginImages.MODULEGROUP_ICON.getImage());
+    new Label(composite, SWT.NONE).setText(Messages.MarkerPropertyPage_Group);
+
+    String moduleName = (String) getIssue().getAttribute(CheckstyleMarker.MODULE_NAME);
+    RuleMetadata metaData = MetadataFactory.getRuleMetadata(moduleName);
+    Text labelGroupName = new Text(composite, SWT.WRAP | SWT.READ_ONLY);
+    labelGroupName.setText(metaData.getGroup().getGroupName());
+    return metaData;
+  }
+
+  private void createRuleText(final Composite composite, RuleMetadata metaData) {
+    new Label(composite, SWT.NONE).setImage(
+            CheckstyleUIPluginImages.MODULE_ICON.getImage());
+    new Label(composite, SWT.NONE).setText(Messages.MarkerPropertyPage_Module);
+
+    Text labelRuleName = new Text(composite, SWT.WRAP | SWT.READ_ONLY);
+    labelRuleName.setText(metaData.getRuleName());
+  }
+
+  private void createIdText(final Composite composite) {
+    var id = getIssue().getAttribute(CheckstyleMarker.MODULE_ID, null);
+    if (StringUtils.isEmpty(id)) {
+      return;
+    }
+    new Label(composite, SWT.NONE).setImage(
+            PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJS_INFO_TSK));
+    new Label(composite, SWT.NONE).setText(Messages.MarkerPropertyPage_Id);
+
+    Text labelId = new Text(composite, SWT.WRAP | SWT.READ_ONLY);
+    labelId.setText(id);
+  }
+
+  private void createDescriptionText(final Composite composite, RuleMetadata metaData) {
+    Label descriptionLabel = new Label(composite, SWT.NONE);
+    descriptionLabel.setText(Messages.MarkerPropertyPage_Description);
+    GridData gridData = new GridData();
+    gridData.horizontalSpan = 3;
+    gridData.verticalIndent = 20;
+    descriptionLabel.setLayoutData(gridData);
+
+    gridData = new GridData(GridData.FILL_BOTH);
+    gridData.heightHint = 100;
+    gridData.horizontalSpan = 3;
+    Browser browserDescription = new Browser(composite, SWT.BORDER);
+    browserDescription.setLayoutData(gridData);
+    browserDescription.setText(
+            CheckConfigurationConfigureDialog.getDescriptionHtml(metaData.getDescription()));
   }
 
   /**
