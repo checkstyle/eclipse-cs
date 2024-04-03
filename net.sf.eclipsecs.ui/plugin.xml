@@ -539,75 +539,75 @@
     <extension
           point="net.sf.eclipsecs.ui.quickfix">
        <quickfix
-             module="ArrayTypeStyleCheck"
+             module="ArrayTypeStyle"
              class="net.sf.eclipsecs.ui.quickfixes.misc.ArrayTypeStyleQuickfix">
        </quickfix>
        <quickfix
-             module="AvoidNestedBlocksCheck"
+             module="AvoidNestedBlocks"
              class="net.sf.eclipsecs.ui.quickfixes.blocks.AvoidNestedBlocksQuickfix">
        </quickfix>
        <quickfix
-             module="DefaultComesLastCheck"
+             module="DefaultComesLast"
              class="net.sf.eclipsecs.ui.quickfixes.coding.DefaultComesLastQuickfix">
        </quickfix>
        <quickfix
-             module="DesignForExtensionCheck"
+             module="DesignForExtension"
              class="net.sf.eclipsecs.ui.quickfixes.design.DesignForExtensionQuickfix">
        </quickfix>
        <quickfix
-             module="EmptyStatementCheck"
+             module="EmptyStatement"
              class="net.sf.eclipsecs.ui.quickfixes.coding.EmptyStatementQuickfix">
        </quickfix>
        <quickfix
-             module="ExplicitInitializationCheck"
+             module="ExplicitInitialization"
              class="net.sf.eclipsecs.ui.quickfixes.coding.ExplicitInitializationQuickfix">
        </quickfix>
        <quickfix
-             module="FinalClassCheck"
+             module="FinalClass"
              class="net.sf.eclipsecs.ui.quickfixes.design.FinalClassQuickfix">
        </quickfix>
        <quickfix
-             module="FinalLocalVariableCheck"
+             module="FinalLocalVariable"
              class="net.sf.eclipsecs.ui.quickfixes.coding.FinalLocalVariableQuickfix">
        </quickfix>
        <quickfix
-             module="FinalParametersCheck"
+             module="FinalParameters"
              class="net.sf.eclipsecs.ui.quickfixes.misc.FinalParametersQuickfix">
        </quickfix>
        <quickfix
-             module="MissingSwitchDefaultCheck"
+             module="MissingSwitchDefault"
              class="net.sf.eclipsecs.ui.quickfixes.coding.MissingSwitchDefaultQuickfix">
        </quickfix>
        <quickfix
-             module="ModifierOrderCheck"
+             module="ModifierOrder"
              class="net.sf.eclipsecs.ui.quickfixes.modifier.ModifierOrderQuickfix">
        </quickfix>
        <quickfix
-             module="NeedBracesCheck"
+             module="NeedBraces"
              class="net.sf.eclipsecs.ui.quickfixes.blocks.NeedBracesQuickfix">
        </quickfix>
        <quickfix
-             module="RedundantModifierCheck"
+             module="RedundantModifier"
              class="net.sf.eclipsecs.ui.quickfixes.modifier.RedundantModifierQuickfix">
        </quickfix>
        <quickfix
-             module="RequireThisCheck"
+             module="RequireThis"
              class="net.sf.eclipsecs.ui.quickfixes.coding.RequireThisQuickfix">
        </quickfix>
        <quickfix
-             module="SimplifyBooleanReturnCheck"
+             module="SimplifyBooleanReturn"
              class="net.sf.eclipsecs.ui.quickfixes.coding.SimplifyBooleanReturnQuickfix">
        </quickfix>
        <quickfix
-             module="StringLiteralEqualityCheck"
+             module="StringLiteralEquality"
              class="net.sf.eclipsecs.ui.quickfixes.coding.StringLiteralEqualityQuickfix">
        </quickfix>
        <quickfix
-             module="UncommentedMainCheck"
+             module="UncommentedMain"
              class="net.sf.eclipsecs.ui.quickfixes.misc.UncommentedMainQuickfix">
        </quickfix>
        <quickfix
-             module="UpperEllCheck"
+             module="UpperEll"
              class="net.sf.eclipsecs.ui.quickfixes.misc.UpperEllQuickfix">
        </quickfix>
    </extension>
