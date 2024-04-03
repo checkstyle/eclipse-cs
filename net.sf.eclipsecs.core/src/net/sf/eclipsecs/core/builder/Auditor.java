@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.codehaus.plexus.util.StringUtils;
 import org.eclipse.core.filebuffers.FileBuffers;
 import org.eclipse.core.filebuffers.ITextFileBufferManager;
 import org.eclipse.core.resources.IFile;
@@ -325,6 +326,10 @@ public class Auditor {
             mMarkerAttributes.put(CheckstyleMarker.MODULE_NAME, metaData.getInternalName());
             mMarkerAttributes.put(CheckstyleMarker.MESSAGE_KEY,
                     error.getViolation().getKey());
+            String moduleId = error.getModuleId();
+            if (StringUtils.isNotBlank(moduleId)) {
+              mMarkerAttributes.put(CheckstyleMarker.MODULE_ID, moduleId);
+            }
             mMarkerAttributes.put(IMarker.PRIORITY, Integer.valueOf(IMarker.PRIORITY_NORMAL));
             mMarkerAttributes.put(IMarker.SEVERITY, Integer.valueOf(getSeverityValue(severity)));
             mMarkerAttributes.put(IMarker.LINE_NUMBER, Integer.valueOf(error.getLine()));
