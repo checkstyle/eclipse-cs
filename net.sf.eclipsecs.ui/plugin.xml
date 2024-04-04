@@ -308,7 +308,13 @@
         point="org.eclipse.ui.commands">
         <category id="net.sf.eclipsecs.ui" name="%commands.category.name"/>
         <command
-            categoryId="org.eclipse.jdt.ui.category.source"
+            categoryId="net.sf.eclipsecs.ui"
+            description="%CheckSelectedFilesAction.tooltip"
+            id="CheckstylePlugin.CheckSelectedFiles"
+            name="%CheckSelectedFilesAction.label"
+            defaultHandler="net.sf.eclipsecs.ui.actions.CheckSelectedFilesAction"/>
+        <command
+            categoryId="net.sf.eclipsecs.ui"
             description="%FixCheckstyleMarkersAction.tooltip"
             id="CheckstylePlugin.ApplyCheckstyleFixes"
             name="%FixCheckstyleMarkersAction.label"
@@ -326,7 +332,8 @@
             sequence="M1+M3+C"
             commandId="CheckstylePlugin.ApplyCheckstyleFixes"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            contextId="org.eclipse.jdt.ui.javaEditorScope"/>></extension>
+            contextId="org.eclipse.jdt.ui.javaEditorScope"/>
+    </extension>
 
     <!-- Popupmenu action for the 'Configure Project(s) from blueprint...' action -->
     <extension
@@ -534,6 +541,10 @@
        <image
              commandId="CheckstylePlugin.PurgeCaches"
              icon="platform:/plugin/org.eclipse.ui/icons/full/etool16/clear.png">
+       </image>
+       <image
+             commandId="CheckstylePlugin.CheckSelectedFiles"
+             icon="icons/checkstyle_command.png">
        </image>
     </extension>
     <extension
