@@ -73,7 +73,7 @@ maven AssertJ
 	dependency {
 		groupId="org.assertj"
 		artifactId="assertj-core"
-		version="3.25.1"
+		version="3.26.0"
 	}
 }
 maven Classgraph
@@ -85,7 +85,7 @@ maven Classgraph
 	dependency {
 		groupId="io.github.classgraph"
 		artifactId="classgraph"
-		version="4.8.168"
+		version="4.8.172"
 	}
 }
 maven DOM4J
