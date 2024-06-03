@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl -->
-<target name="Eclipse Checkstyle" sequenceNumber="1711962228">
+<target name="Eclipse Checkstyle" sequenceNumber="1717393787">
   <locations>
     <location includeMode="slicer" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="true" type="InstallableUnit">
       <unit id="org.eclipse.jdt.feature.group" version="3.18.1300.v20220831-1800"/>
@@ -75,7 +75,7 @@
         <dependency>
           <groupId>io.github.classgraph</groupId>
           <artifactId>classgraph</artifactId>
-          <version>4.8.168</version>
+          <version>4.8.172</version>
           <type>jar</type>
         </dependency>
       </dependencies>
@@ -85,7 +85,7 @@
         <dependency>
           <groupId>org.assertj</groupId>
           <artifactId>assertj-core</artifactId>
-          <version>3.25.1</version>
+          <version>3.26.0</version>
           <type>jar</type>
         </dependency>
       </dependencies>

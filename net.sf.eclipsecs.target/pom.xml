@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>net.sf.eclipsecs.parent</artifactId>
+        <groupId>net.sf.eclipsecs</groupId>
+        <version>10.14.2-SNAPSHOT</version>
+    </parent>
+    <artifactId>net.sf.eclipsecs.target</artifactId>
+    <packaging>pom</packaging>
+
+    <profiles>
+        <profile>
+            <id>update-check-for-target-maven-artifacts</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <!-- scan target files and add maven artifacts as dependencies to this pom -->
+                    <plugin>
+                        <groupId>org.codehaus.gmaven</groupId>
+                        <artifactId>groovy-maven-plugin</artifactId>
+                        <version>2.1.1</version>
+                        <executions>
+                            <execution>
+                                <id>add-dependencies-from-m2e-target</id>
+                                <phase>initialize</phase>
+                                <goals>
+                                    <goal>execute</goal>
+                                </goals>
+                                <configuration>
+                                    <source>${project.basedir}/target_platform_maven_updates.groovy</source>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!-- this execution should be in a later phase than the groovy execution which adds artificial dependencies -->
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>versions-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>dependency-updates</id>
+                                <goals>
+                                    <goal>display-dependency-updates</goal>
+                                </goals>
+                                <phase>generate-resources</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-checkstyle-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>checkstyle-check</id>
+                                <phase>none</phase>
+                            </execution>
+                            <execution>
+                                <id>sevntu-checkstyle-check</id>
+                                <phase>none</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+</project>
