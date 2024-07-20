@@ -22,6 +22,8 @@ package net.sf.eclipsecs.core.projectconfig.filters;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.team.core.RepositoryProvider;
 import org.eclipse.team.core.TeamException;
 import org.eclipse.team.core.subscribers.Subscriber;
@@ -38,44 +40,40 @@ public class FilesInSyncFilter extends AbstractFilter {
 
   @Override
   public boolean accept(Object element) {
-    boolean passes = true;
-
-    if (element instanceof IFile) {
-
-      IFile file = (IFile) element;
-      IProject project = file.getProject();
-
-      if (RepositoryProvider.isShared(project)) {
-
-        RepositoryProvider provider = RepositoryProvider.getProvider(project);
-
-        if (provider != null) {
-
-          Subscriber subscriber = provider.getSubscriber();
-
-          if (subscriber != null) {
-            passes = hasChanges(file, subscriber);
-          }
-        }
-      }
+    if (!(element instanceof IFile)) {
+      return true;
     }
-    return passes;
+
+    IFile file = (IFile) element;
+    IProject project = file.getProject();
+    if (!RepositoryProvider.isShared(project)) {
+      return true;
+    }
+
+    RepositoryProvider provider = RepositoryProvider.getProvider(project);
+    if (provider == null) {
+      return true;
+    }
+
+    Subscriber subscriber = provider.getSubscriber();
+    if (subscriber == null) {
+      return true;
+    }
+    return hasChanges(file, subscriber);
   }
 
   private boolean hasChanges(IFile file, Subscriber subscriber) {
-
-    boolean hasChanges = false;
-
     try {
+      subscriber.refresh(new IResource[] { file }, IResource.DEPTH_ZERO, new NullProgressMonitor());
       SyncInfo synchInfo = subscriber.getSyncInfo(file);
 
       if (synchInfo != null) {
         int kind = synchInfo.getKind();
-        hasChanges = (SyncInfo.getDirection(kind) & SyncInfo.OUTGOING) == SyncInfo.OUTGOING;
+        return (SyncInfo.getDirection(kind) & SyncInfo.OUTGOING) == SyncInfo.OUTGOING;
       }
     } catch (TeamException ex) {
       CheckstyleLog.log(ex);
     }
-    return hasChanges;
+    return false;
   }
 }

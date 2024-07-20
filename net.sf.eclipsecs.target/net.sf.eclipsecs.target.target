@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl -->
-<target name="Eclipse Checkstyle" sequenceNumber="1717393787">
+<target name="Eclipse Checkstyle" sequenceNumber="1721491250">
   <locations>
     <location includeMode="slicer" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="true" type="InstallableUnit">
       <unit id="org.eclipse.jdt.feature.group" version="3.18.1300.v20220831-1800"/>
@@ -40,6 +40,22 @@
       <unit id="com.github.sevntu.checkstyle.checks.feature.feature.group" version="1.44.1"/>
       <repository location="https://sevntu-checkstyle.github.io/sevntu.checkstyle/update-site/"/>
     </location>
+    <location includeMode="slicer" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="true" type="InstallableUnit">
+      <unit id="org.eclipse.egit.feature.group" version="6.5.0.202303070854-r"/>
+      <unit id="org.eclipse.jgit.feature.group" version="6.5.0.202303070854-r"/>
+      <unit id="org.eclipse.jgit.gpg.bc.feature.group" version="6.5.0.202303070854-r"/>
+      <unit id="org.eclipse.jgit.ssh.apache.feature.group" version="6.5.0.202303070854-r"/>
+      <unit id="org.eclipse.jgit.http.apache.feature.group" version="6.5.0.202303070854-r"/>
+      <unit id="org.apache.commons.codec" version="1.14.0.v20221112-0806"/>
+      <unit id="org.apache.commons.compress" version="1.22.0.v20221207-1049"/>
+      <unit id="org.apache.httpcomponents.httpclient" version="4.5.14.v20221207-1049"/>
+      <unit id="org.apache.httpcomponents.httpcore" version="4.4.16.v20221207-1049"/>
+      <unit id="org.apache.sshd.osgi" version="2.9.2.v20221117-1942"/>
+      <unit id="org.apache.sshd.sftp" version="2.9.2.v20221117-1942"/>
+      <unit id="javaewah" version="1.1.13.v20211029-0839"/>
+      <unit id="net.i2p.crypto.eddsa" version="0.3.0.v20220506-1020"/>
+      <repository location="https://download.eclipse.org/egit/updates-6.5"/>
+    </location>
     <location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven" label="SnakeYaml">
       <dependencies>
         <dependency>
@@ -75,7 +91,7 @@
         <dependency>
           <groupId>io.github.classgraph</groupId>
           <artifactId>classgraph</artifactId>
-          <version>4.8.172</version>
+          <version>4.8.174</version>
           <type>jar</type>
         </dependency>
       </dependencies>
@@ -85,7 +101,7 @@
         <dependency>
           <groupId>org.assertj</groupId>
           <artifactId>assertj-core</artifactId>
-          <version>3.26.0</version>
+          <version>3.26.3</version>
           <type>jar</type>
         </dependency>
       </dependencies>
@@ -95,7 +111,7 @@
         <dependency>
           <groupId>org.apache.commons</groupId>
           <artifactId>commons-lang3</artifactId>
-          <version>3.14.0</version>
+          <version>3.15.0</version>
           <type>jar</type>
         </dependency>
       </dependencies>
