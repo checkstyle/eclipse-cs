@@ -50,6 +50,24 @@ location "https://sevntu-checkstyle.github.io/sevntu.checkstyle/update-site/" {
 	com.github.sevntu.checkstyle.checks.feature.feature.group
 }
 
+location "https://download.eclipse.org/egit/updates-6.5" {
+	// for testing the SCM filter
+	// have to use an old version of egit, as most recent requires a more recent eclipse core version
+	org.eclipse.egit.feature.group
+	org.eclipse.jgit.feature.group
+	org.eclipse.jgit.gpg.bc.feature.group
+	org.eclipse.jgit.ssh.apache.feature.group
+	org.eclipse.jgit.http.apache.feature.group
+	org.apache.commons.codec
+	org.apache.commons.compress
+	org.apache.httpcomponents.httpclient
+	org.apache.httpcomponents.httpcore
+	org.apache.sshd.osgi
+	org.apache.sshd.sftp
+	javaewah
+	net.i2p.crypto.eddsa
+}
+
 // If the following part has errors and no syntax highlighting, then please use Help>About>Installation>Installed Software>Target Platform DSL>Uninstall.
 // After restarting please install the current version from the URL in line 1.
 maven ApacheCommons
@@ -61,7 +79,7 @@ maven ApacheCommons
 	dependency {
 		groupId="org.apache.commons"
 		artifactId="commons-lang3"
-		version="3.14.0"
+		version="3.15.0"
 	}
 }
 maven AssertJ
@@ -73,7 +91,7 @@ maven AssertJ
 	dependency {
 		groupId="org.assertj"
 		artifactId="assertj-core"
-		version="3.26.0"
+		version="3.26.3"
 	}
 }
 maven Classgraph
@@ -85,7 +103,7 @@ maven Classgraph
 	dependency {
 		groupId="io.github.classgraph"
 		artifactId="classgraph"
-		version="4.8.172"
+		version="4.8.174"
 	}
 }
 maven DOM4J

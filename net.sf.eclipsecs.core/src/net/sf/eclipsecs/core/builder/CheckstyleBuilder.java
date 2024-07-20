@@ -364,6 +364,9 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
           // add to the resources to check
           resources.add(child);
         }
+        else {
+          child.deleteMarkers(CheckstyleMarker.MARKER_ID, true, IResource.DEPTH_ZERO);
+        }
 
         // recurse over containers
         if (child instanceof IContainer) {
