@@ -56,11 +56,6 @@
             icon="icons/configtype_project.gif"/>
     </extension>
 
-    <extension
-        point="org.eclipse.ui.startup">
-        <startup
-            class="net.sf.eclipsecs.ui.CheckstylePluginStartup"/>
-    </extension>
 
     <extension
         point="org.eclipse.core.runtime.preferences">
