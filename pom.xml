@@ -27,7 +27,7 @@
         You can try to use newer versions here, but that requires manual testing. -->
         <junit-jupiter-version>5.10.2</junit-jupiter-version>
         <maven-antrun-plugin-version>3.1.0</maven-antrun-plugin-version>
-        <maven-checkstyle-plugin-version>3.4.0</maven-checkstyle-plugin-version>
+        <maven-checkstyle-plugin-version>3.5.0</maven-checkstyle-plugin-version>
         <maven-clean-plugin-version>3.4.0</maven-clean-plugin-version>
         <maven-compiler-plugin-version>3.13.0</maven-compiler-plugin-version>
         <maven-deploy-plugin-version>3.1.2</maven-deploy-plugin-version>
