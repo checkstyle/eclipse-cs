@@ -54,7 +54,7 @@ public final class PropertyUtil {
   public static boolean hasUnresolvedProperties(String value) throws CheckstyleException {
     if (value != null) {
       List<String> props = new ArrayList<>();
-      parsePropertyString(value, new ArrayList<String>(), props);
+      parsePropertyString(value, new ArrayList<>(), props);
       return !props.isEmpty();
     } else {
       return false;
@@ -146,9 +146,7 @@ public final class PropertyUtil {
       } else if (aValue.charAt(pos + 1) != '{') {
         // peek ahead to see if the next char is a property or not
         // not a property: insert the char as a literal
-        /*
-         * fragments.addElement(value.substring(pos + 1, pos + 2)); prev = pos + 2;
-         */
+        // fragments.addElement(value.substring(pos + 1, pos + 2)); prev = pos + 2;
         if (aValue.charAt(pos + 1) == '$') {
           // backwards compatibility two $ map to one mode
           aFragments.add("$"); //$NON-NLS-1$
