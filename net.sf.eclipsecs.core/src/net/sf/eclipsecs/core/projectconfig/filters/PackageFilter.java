@@ -49,15 +49,8 @@ public class PackageFilter extends AbstractFilter {
 
   @Override
   public boolean accept(Object object) {
-
-    boolean goesThrough = true;
-
-    if (object instanceof IResource) {
-
-      IResource resource = (IResource) object;
-
-      IContainer folder = null;
-
+    if (object instanceof IResource resource) {
+      IContainer folder;
       if (resource instanceof IContainer) {
         folder = (IContainer) resource;
       } else {
@@ -68,7 +61,6 @@ public class PackageFilter extends AbstractFilter {
 
       int size = mData != null ? mData.size() : 0;
       for (int i = 0; i < size; i++) {
-
         String element = mData.get(i);
 
         if (RECURSE_OFF_MARKER.equals(element)) {
@@ -76,16 +68,13 @@ public class PackageFilter extends AbstractFilter {
         }
 
         IPath filteredPath = new Path(element);
-        if (mExcludeSubPackages && filteredPath.isPrefixOf(projRelativPath)) {
-          goesThrough = false;
-          break;
-        } else if (!mExcludeSubPackages && filteredPath.equals(projRelativPath)) {
-          goesThrough = false;
-          break;
+        if (mExcludeSubPackages && filteredPath.isPrefixOf(projRelativPath)
+                || !mExcludeSubPackages && filteredPath.equals(projRelativPath)) {
+          return false;
         }
       }
     }
-    return goesThrough;
+    return true;
   }
 
   @Override
