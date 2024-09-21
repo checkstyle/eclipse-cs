@@ -8,6 +8,7 @@
     <name>eclipse-cs Maven Parent</name>
 
     <modules>
+        <module>net.sf.eclipsecs.target</module>
         <module>net.sf.eclipsecs.branding</module>
         <module>net.sf.eclipsecs.checkstyle</module>
         <module>net.sf.eclipsecs.core</module>
@@ -25,7 +26,7 @@
 
         <!-- Maven JUnit version should fit the JUnit version used in the target platform, otherwise Surefire may produce exceptions.
         You can try to use newer versions here, but that requires manual testing. -->
-        <junit-jupiter-version>5.10.2</junit-jupiter-version>
+        <junit-jupiter-version>5.11.0</junit-jupiter-version>
         <maven-antrun-plugin-version>3.1.0</maven-antrun-plugin-version>
         <maven-checkstyle-plugin-version>3.5.0</maven-checkstyle-plugin-version>
         <maven-clean-plugin-version>3.4.0</maven-clean-plugin-version>
@@ -38,7 +39,7 @@
         <maven-site-plugin-version>3.20.0</maven-site-plugin-version>
         <maven-surefire-plugin-version>3.5.0</maven-surefire-plugin-version>
         <maven-version>3.9.0</maven-version>
-        <tycho-version>4.0.8</tycho-version>
+        <tycho-version>4.0.9</tycho-version>
         <versions-maven-plugin-version>2.17.1</versions-maven-plugin-version>
 
         <!-- sevntu and patch-filters need to use a compatible/compiled version with checkstyle -->
