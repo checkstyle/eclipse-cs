@@ -79,7 +79,7 @@ maven ApacheCommons
 	dependency {
 		groupId="org.apache.commons"
 		artifactId="commons-lang3"
-		version="3.15.0"
+		version="3.17.0"
 	}
 }
 maven AssertJ
@@ -103,7 +103,7 @@ maven Classgraph
 	dependency {
 		groupId="io.github.classgraph"
 		artifactId="classgraph"
-		version="4.8.174"
+		version="4.8.176"
 	}
 }
 maven DOM4J
@@ -139,6 +139,6 @@ maven SnakeYaml
 	dependency {
 		groupId="org.yaml"
 		artifactId="snakeyaml"
-		version="2.2"
+		version="2.3"
 	}
 }
