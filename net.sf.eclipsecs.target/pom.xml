@@ -8,6 +8,7 @@
     </parent>
     <artifactId>net.sf.eclipsecs.target</artifactId>
     <packaging>pom</packaging>
+    <name>eclipse-cs Target Platform</name>
 
     <profiles>
         <profile>
