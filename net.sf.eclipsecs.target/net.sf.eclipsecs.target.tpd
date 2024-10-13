@@ -23,6 +23,8 @@ location "https://download.eclipse.org/releases/2022-09/202209141001/" {
 	org.sat4j.core
 	org.sat4j.pb
 	org.apache.commons.io
+	org.objectweb.asm
+	org.objectweb.asm.tree
 
 	// test dependencies used by the JUnit IDE integration
 	junit-jupiter-api
@@ -37,12 +39,6 @@ location "https://download.eclipse.org/releases/2022-09/202209141001/" {
 	junit-platform-suite-commons
 	junit-vintage-engine
 	org.apiguardian.api
-}
-
-// Eclipse Orbit repository for third party dependencies matching the above 2022-09 release
-location "https://download.eclipse.org/tools/orbit/downloads/drops/R20220830213456/repository" {
-	org.objectweb.asm
-	org.objectweb.asm.tree
 }
 
 // include sevntu plugin, so we can test it easily when launching a debug runtime
@@ -103,7 +99,7 @@ maven Classgraph
 	dependency {
 		groupId="io.github.classgraph"
 		artifactId="classgraph"
-		version="4.8.176"
+		version="4.8.177"
 	}
 }
 maven DOM4J
