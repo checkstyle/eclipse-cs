@@ -21,7 +21,7 @@
 
     <properties>
         <build-helper-maven-plugin-version>3.6.0</build-helper-maven-plugin-version>
-        <download-maven-plugin-version>1.10.0</download-maven-plugin-version>
+        <download-maven-plugin-version>1.11.0</download-maven-plugin-version>
         <exec-maven-plugin-version>3.4.1</exec-maven-plugin-version>
 
         <!-- Maven JUnit version should fit the JUnit version used in the target platform, otherwise Surefire may produce exceptions.
