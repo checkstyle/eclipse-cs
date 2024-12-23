@@ -139,6 +139,29 @@
                 </configuration>
             </plugin>
             <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>create-git-patch-file</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <executable>git</executable>
+                    <arguments>
+                        <argument>diff</argument>
+                        <argument>HEAD~1</argument>
+                        <argument>HEAD</argument>
+                    </arguments>
+                    <outputFile>${maven.multiModuleProjectDirectory}/show.patch</outputFile>
+                </configuration>
+                <inherited>false</inherited>
+            </plugin>
+            <plugin>
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <executions>
                     <execution>
@@ -517,44 +540,4 @@
             </plugins>
         </pluginManagement>
     </build>
-    <profiles>
-        <profile>
-            <id>git-patch</id>
-            <!-- This POM is both parent and reactor, therefore all plugins in the build section will be executed for all modules.
-            By checking for the existence of the README, we limit the execution of this profile to the parent only, thereby creating the patch only once.
-            TODO: In the long run, we should probably split parent and reactor into 2 POM files instead. -->
-            <activation>
-                <file>
-                    <exists>README.md</exists>
-                </file>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>create-git-patch-file</id>
-                                <!-- must be earlier than the phase we bind the checkstyle goal to -->
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>exec</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <executable>git</executable>
-                            <arguments>
-                                <argument>diff</argument>
-                                <argument>HEAD~1</argument>
-                                <argument>HEAD</argument>
-                            </arguments>
-                            <outputFile>${maven.multiModuleProjectDirectory}/show.patch</outputFile>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 </project>
