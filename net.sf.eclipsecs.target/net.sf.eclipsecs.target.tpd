@@ -22,7 +22,7 @@ location "https://download.eclipse.org/releases/2022-09/202209141001/" {
 	org.eclipse.emf.feature.group // e4.ui -> EMF
 	org.sat4j.core
 	org.sat4j.pb
-	org.apache.commons.io
+	org.apache.commons.commons-io
 	org.objectweb.asm
 	org.objectweb.asm.tree
 
@@ -87,7 +87,7 @@ maven AssertJ
 	dependency {
 		groupId="org.assertj"
 		artifactId="assertj-core"
-		version="3.26.3"
+		version="3.27.0"
 	}
 }
 maven Classgraph
@@ -99,7 +99,7 @@ maven Classgraph
 	dependency {
 		groupId="io.github.classgraph"
 		artifactId="classgraph"
-		version="4.8.177"
+		version="4.8.179"
 	}
 }
 maven DOM4J

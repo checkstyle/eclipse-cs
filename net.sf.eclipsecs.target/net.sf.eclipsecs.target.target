@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl -->
-<target name="Eclipse Checkstyle" sequenceNumber="1728798967">
+<target name="Eclipse Checkstyle" sequenceNumber="1735410879">
   <locations>
     <location includeMode="slicer" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="true" type="InstallableUnit">
       <unit id="org.eclipse.jdt.feature.group" version="3.18.1300.v20220831-1800"/>
@@ -16,7 +16,7 @@
       <unit id="org.eclipse.emf.feature.group" version="2.31.0.v20220817-1401"/>
       <unit id="org.sat4j.core" version="2.3.6.v20201214"/>
       <unit id="org.sat4j.pb" version="2.3.6.v20201214"/>
-      <unit id="org.apache.commons.io" version="2.8.0.v20210415-0900"/>
+      <unit id="org.apache.commons.commons-io" version="2.11.0"/>
       <unit id="org.objectweb.asm" version="9.3.0.v20220409-0157"/>
       <unit id="org.objectweb.asm.tree" version="9.3.0.v20220409-0157"/>
       <unit id="junit-jupiter-api" version="5.9.0"/>
@@ -88,7 +88,7 @@
         <dependency>
           <groupId>io.github.classgraph</groupId>
           <artifactId>classgraph</artifactId>
-          <version>4.8.177</version>
+          <version>4.8.179</version>
           <type>jar</type>
         </dependency>
       </dependencies>
@@ -98,7 +98,7 @@
         <dependency>
           <groupId>org.assertj</groupId>
           <artifactId>assertj-core</artifactId>
-          <version>3.26.3</version>
+          <version>3.27.0</version>
           <type>jar</type>
         </dependency>
       </dependencies>
