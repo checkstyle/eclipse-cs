@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-Name: %Bundle-Name
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: net.sf.eclipsecs.core;singleton:=true
-Bundle-Version: 10.20.2.qualifier
+Bundle-Version: 10.21.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-ClassPath: .,
  lib/checkstyle-10.21.0-all.jar
