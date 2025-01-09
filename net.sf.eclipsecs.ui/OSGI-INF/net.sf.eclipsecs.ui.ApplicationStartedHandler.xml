@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="net.sf.eclipsecs.ui.ApplicationStartedHandler">
+   <property name="event.topics" value="org/eclipse/e4/ui/LifeCycle/appStartupComplete"/>
+   <service>
+      <provide interface="org.osgi.service.event.EventHandler"/>
+   </service>
+   <implementation class="net.sf.eclipsecs.ui.ApplicationStartedHandler"/>
+</scr:component>

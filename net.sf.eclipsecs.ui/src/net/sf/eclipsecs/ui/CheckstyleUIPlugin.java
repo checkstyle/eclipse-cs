@@ -20,9 +20,6 @@
 
 package net.sf.eclipsecs.ui;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Locale;
 
 import org.eclipse.core.resources.IWorkspace;
@@ -33,20 +30,10 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.IEditorReference;
-import org.eclipse.ui.IWindowListener;
-import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchPartReference;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.eclipse.ui.progress.IProgressService;
 import org.osgi.framework.BundleContext;
 
-import net.sf.eclipsecs.core.jobs.AbstractCheckJob;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
-import net.sf.eclipsecs.ui.properties.filter.CheckFileOnOpenPartListener;
 
 /**
  * The main plugin class to be used in the desktop.
@@ -61,31 +48,6 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
 
   private static Boolean isEclipse3;
 
-  private final CheckFileOnOpenPartListener mPartListener = new CheckFileOnOpenPartListener();
-
-  private final IWindowListener mWindowListener = new IWindowListener() {
-
-    @Override
-    public void windowOpened(IWorkbenchWindow window) {
-      window.getPartService().addPartListener(mPartListener);
-    }
-
-    @Override
-    public void windowActivated(IWorkbenchWindow window) {
-    }
-
-    @Override
-    public void windowClosed(IWorkbenchWindow window) {
-      window.getPartService().removePartListener(mPartListener);
-
-    }
-
-    @Override
-    public void windowDeactivated(IWorkbenchWindow window) {
-    }
-
-  };
-
   /**
    * The constructor.
    */
@@ -94,62 +56,7 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
   }
 
   @Override
-  public void start(BundleContext context) throws Exception {
-    super.start(context);
-
-    // add listeners for the Check-On-Open support
-    final IWorkbench workbench = PlatformUI.getWorkbench();
-    workbench.getDisplay().asyncExec(new Runnable() {
-      @Override
-      public void run() {
-
-        IWorkbenchWindow[] windows = workbench.getWorkbenchWindows();
-
-        for (IWorkbenchWindow window : windows) {
-
-          if (window != null) {
-
-            // collect open editors and have then run against Checkstyle if
-            // appropriate
-            Collection<IWorkbenchPartReference> parts = new HashSet<>();
-
-            // add already opened files to the filter
-            // bugfix for 2923044
-            IWorkbenchPage[] pages = window.getPages();
-            for (IWorkbenchPage page : pages) {
-
-              IEditorReference[] editorRefs = page.getEditorReferences();
-              Collections.addAll(parts, editorRefs);
-            }
-
-            mPartListener.partsOpened(parts);
-
-            // remove listener first for safety, we don't want
-            // register the same listener twice accidently
-            window.getPartService().removePartListener(mPartListener);
-            window.getPartService().addPartListener(mPartListener);
-          }
-        }
-
-        workbench.addWindowListener(mWindowListener);
-        registerProgressIcon();
-      }
-    });
-
-  }
-
-  protected void registerProgressIcon() {
-    IProgressService service = PlatformUI.getWorkbench().getProgressService();
-    if (service == null) {
-      return;
-    }
-    service.registerIconForFamily(CheckstyleUIPluginImages.CHECKSTYLE_ICON.getImageDescriptor(),
-            AbstractCheckJob.CHECKSTYLE_JOB_FAMILY);
-  }
-
-  @Override
   public void stop(BundleContext context) throws Exception {
-
     // free cached images
     CheckstyleUIPluginImages.clearCachedImages();
     super.stop(context);
