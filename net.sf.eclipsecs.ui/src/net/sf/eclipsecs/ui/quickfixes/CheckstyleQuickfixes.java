@@ -38,7 +38,7 @@ import net.sf.eclipsecs.core.util.CheckstyleLog;
  * @implNote Cached over the runtime of the application. Will not react to plugins loaded
  *           dynamically.
  */
-public class CheckstyleQuickfixes {
+public final class CheckstyleQuickfixes {
 
   /**
    * ID of the quickfix extension point
