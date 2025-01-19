@@ -147,9 +147,8 @@ public final class CheckConfigurationFactory {
       return sDefaultBuiltInConfig;
     } else if (!sConfigurations.isEmpty()) {
       return sConfigurations.get(0);
-    } else {
-      return null;
     }
+    return null;
   }
 
   /**
