@@ -110,7 +110,7 @@ public class LocalCheckConfigurationWorkingSet implements ICheckConfigurationWor
 
   @Override
   public boolean isDirty() {
-    if (mDeletedConfigurations.size() > 0) {
+    if (!mDeletedConfigurations.isEmpty()) {
       return true;
     }
 

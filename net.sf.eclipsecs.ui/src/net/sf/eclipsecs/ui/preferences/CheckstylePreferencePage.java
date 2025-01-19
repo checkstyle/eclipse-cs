@@ -460,13 +460,13 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
               .getString(CheckstyleUIPluginPrefs.PREF_ASK_BEFORE_REBUILD);
 
       boolean rebuild = MessageDialogWithToggle.ALWAYS.equals(promptRebuildPref)
-              && (needRebuildAllProjects || projectsToBuild.size() > 0);
+              && (needRebuildAllProjects || !projectsToBuild.isEmpty());
 
       //
       // Prompt for rebuild
       //
       if (MessageDialogWithToggle.PROMPT.equals(promptRebuildPref)
-              && (needRebuildAllProjects || projectsToBuild.size() > 0)) {
+              && (needRebuildAllProjects || !projectsToBuild.isEmpty())) {
 
         MessageDialogWithToggle dialog = MessageDialogWithToggle.openYesNoQuestion(getShell(),
                 Messages.CheckstylePreferencePage_titleRebuild,

@@ -109,7 +109,7 @@ public final class ConfigurationWriter {
       // find the root module (Checker)
       // the root module is the only module that has no parent
       List<Module> rootModules = getChildModules(null, modules);
-      if (rootModules.size() < 1) {
+      if (rootModules.isEmpty()) {
         throw new CheckstylePluginException(Messages.errorNoRootModule);
       }
 
