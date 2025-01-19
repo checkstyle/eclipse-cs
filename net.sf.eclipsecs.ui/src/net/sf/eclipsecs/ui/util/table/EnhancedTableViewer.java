@@ -204,7 +204,6 @@ public class EnhancedTableViewer extends TableViewer {
 
   /**
    * Set the sort column. By default the column 0 is used.
-   * @param sortedColumnIndex
    */
   public void setSortedColumnIndex(int sortedColumnIndex) {
     mSortedColumnIndex = sortedColumnIndex;

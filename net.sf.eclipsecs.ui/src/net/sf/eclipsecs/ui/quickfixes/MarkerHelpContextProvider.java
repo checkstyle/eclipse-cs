@@ -137,9 +137,6 @@ public class MarkerHelpContextProvider extends AbstractContextProvider
   private static final class CheckstyleHelpContext implements IContext {
     private final String moduleName;
 
-    /**
-     * @param moduleName
-     */
     private CheckstyleHelpContext(String moduleName) {
       this.moduleName = moduleName;
     }

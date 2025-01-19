@@ -48,7 +48,6 @@ public class ConfigPropertyWidgetStringArray extends ConfigPropertyWidgetString 
 
   /**
    * normalize array properties to be separated by a comma and a blank for better readability of the plain config file
-   * @param text
    * @return text with normalized separators
    */
   private String normalizeSeparator(String text) {

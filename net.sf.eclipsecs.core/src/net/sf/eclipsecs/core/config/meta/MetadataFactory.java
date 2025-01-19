@@ -578,10 +578,6 @@ public final class MetadataFactory {
     loadRuleMetadata();
   }
 
-  /**
-   * @param metadataFile
-   * @return
-   */
   private static String groupId(String metadataFile) {
     String res = StringUtils.substringBetween(metadataFile, "/checks/", "/");
     res = StringUtils.defaultString(res, metadataFile);

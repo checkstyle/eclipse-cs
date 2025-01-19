@@ -50,7 +50,6 @@ public class CheckstyleMarkerResolutionGenerator implements IMarkerResolutionGen
   }
 
   /**
-   * @param marker
    * @return {@code true} if this is a checkstyle marker
    */
   private boolean isCheckstyleMarker(IMarker marker) {
