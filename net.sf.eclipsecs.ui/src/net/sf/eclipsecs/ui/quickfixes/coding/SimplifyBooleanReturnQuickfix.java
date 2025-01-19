@@ -133,7 +133,7 @@ public class SimplifyBooleanReturnQuickfix extends AbstractASTResolution {
           // the return statement might be wrapped in a block statement
           @SuppressWarnings("unchecked")
           final List<Statement> statements = ((Block) node).statements();
-          if (statements.size() > 0) {
+          if (!statements.isEmpty()) {
             return isReturnStatementTrue(statements.get(0));
           }
         }

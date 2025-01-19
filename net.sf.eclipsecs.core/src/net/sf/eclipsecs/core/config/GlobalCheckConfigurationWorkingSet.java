@@ -167,7 +167,7 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
 
   @Override
   public boolean isDirty() {
-    if (mDeletedConfigurations.size() > 0) {
+    if (!mDeletedConfigurations.isEmpty()) {
       return true;
     }
 

@@ -93,7 +93,7 @@ public class SimpleFileSetsEditor implements IFileSetsEditor {
     mFileSets = fileSets;
 
     ICheckConfiguration config = null;
-    if (mFileSets.size() > 0) {
+    if (!mFileSets.isEmpty()) {
       config = (mFileSets.get(0)).getCheckConfig();
     }
 

@@ -123,7 +123,7 @@ public final class ProjectConfigurationFactory {
    */
   public static boolean isCheckConfigInUse(ICheckConfiguration checkConfig)
           throws CheckstylePluginException {
-    return getProjectsUsingConfig(checkConfig).size() > 0;
+    return !getProjectsUsingConfig(checkConfig).isEmpty();
   }
 
   /**
