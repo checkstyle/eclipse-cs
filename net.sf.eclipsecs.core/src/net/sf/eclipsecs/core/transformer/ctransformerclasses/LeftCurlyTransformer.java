@@ -45,33 +45,33 @@ public class LeftCurlyTransformer extends CTransformationClass {
     if (option == null) {
       option = "eol";
     }
-    if (option.equals("eol")) {
+    if ("eol".equals(option)) {
       option = "end_of_line";
-    } else if (option.equals("nl") || option.equals("nlow")) {
+    } else if ("nl".equals(option) || "nlow".equals(option)) {
       option = "next_line";
     }
 
     while (token.hasMoreTokens()) {
       tok = token.nextToken();
-      if (tok.equals("CLASS_DEF")) {
+      if ("CLASS_DEF".equals(tok)) {
         userFormatterSetting("brace_position_for_anonymous_type_declaration", option);
         userFormatterSetting("brace_position_for_enum_constant", option);
         userFormatterSetting("brace_position_for_enum_declaration", option);
         userFormatterSetting("brace_position_for_type_declaration", option);
         userFormatterSetting("brace_position_for_annotation_type_declaration", option);
-      } else if (tok.equals("INTERFACE_DEF")) {
+      } else if ("INTERFACE_DEF".equals(tok)) {
         userFormatterSetting("brace_position_for_annotation_type_declaration", option);
         userFormatterSetting("brace_position_for_type_declaration", option);
-      } else if (tok.equals("CTOR_DEF")) {
+      } else if ("CTOR_DEF".equals(tok)) {
         userFormatterSetting("brace_position_for_constructor_declaration", option);
-      } else if (tok.equals("METHOD_DEF")) {
+      } else if ("METHOD_DEF".equals(tok)) {
         userFormatterSetting("brace_position_for_method_declaration", option);
-      } else if (tok.equals("LITERAL_DO") || tok.equals("LITERAL_ELSE") || tok.equals("LITERAL_FOR")
-              || tok.equals("LITERAL_IF") || tok.equals("LITERAL_WHILE")
-              || tok.equals("LITERAL_CATCH") || tok.equals("LITERAL_FINALLY")
-              || tok.equals("LITERAL_TRY")) {
+      } else if ("LITERAL_DO".equals(tok) || "LITERAL_ELSE".equals(tok) || "LITERAL_FOR".equals(tok)
+              || "LITERAL_IF".equals(tok) || "LITERAL_WHILE".equals(tok)
+              || "LITERAL_CATCH".equals(tok) || "LITERAL_FINALLY".equals(tok)
+              || "LITERAL_TRY".equals(tok)) {
         userFormatterSetting("brace_position_for_block", option);
-      } else if (tok.equals("LITERAL_SWITCH")) {
+      } else if ("LITERAL_SWITCH".equals(tok)) {
         userFormatterSetting("brace_position_for_switch", option);
       }
     }

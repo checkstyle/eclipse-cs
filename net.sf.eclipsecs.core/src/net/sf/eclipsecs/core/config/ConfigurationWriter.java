@@ -239,7 +239,7 @@ public final class ConfigurationWriter {
       String childParent = tmp.getMetaData().getParentModule();
 
       // only the checker module has no parent
-      if (parentInternalName == null && childParent.equals("Root")) {
+      if (parentInternalName == null && "Root".equals(childParent)) {
         childModules.add(tmp);
       } else if (childParent.equals(parentInternalName)) {
         childModules.add(tmp);
