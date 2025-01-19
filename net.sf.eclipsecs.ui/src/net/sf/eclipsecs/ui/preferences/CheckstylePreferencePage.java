@@ -113,7 +113,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
 
   private CheckConfigurationWorkingSetEditor mWorkingSetEditor;
 
-  private boolean mRebuildAll = false;
+  private boolean mRebuildAll;
 
   /**
    * Constructor.

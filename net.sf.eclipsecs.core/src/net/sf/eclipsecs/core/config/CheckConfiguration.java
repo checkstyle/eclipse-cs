@@ -63,7 +63,7 @@ public class CheckConfiguration implements ICheckConfiguration {
   private CheckstyleConfigurationFile mCheckstyleConfigurationFile;
 
   /** Time stamp when the cached configuration file data expires. */
-  private long mExpirationTime = 0;
+  private long mExpirationTime;
 
   /**
    * Creates a check configuration instance.

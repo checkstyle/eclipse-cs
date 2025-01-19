@@ -237,7 +237,7 @@ public final class SWTUtil {
     private String mDialogKey;
 
     /** flag that indicates if the dialog was already initally activated. */
-    private boolean mInitialyActivated = false;
+    private boolean mInitialyActivated;
 
     //
     // constructors

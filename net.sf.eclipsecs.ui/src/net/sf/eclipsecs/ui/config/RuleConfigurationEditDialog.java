@@ -92,7 +92,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
 
   private Map<String, Text> mCustomMessages;
 
-  private boolean mReadonly = false;
+  private boolean mReadonly;
 
   /**
    * Constructor.
