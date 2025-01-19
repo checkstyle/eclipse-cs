@@ -27,47 +27,47 @@ import net.sf.eclipsecs.ui.quickfixes.AbstractQuickfixTestCase;
 public class RequireThisTest extends AbstractQuickfixTestCase {
 
   @Test
-  public void testRequireThisFieldAccessAssignmentLHS() throws Exception {
+  public void requireThisFieldAccessAssignmentLHS() throws Exception {
     testQuickfix("RequireThisFieldAccessAssignmentLHS.xml", new RequireThisQuickfix());
   }
 
   @Test
-  public void testRequireThisFieldAccessAssignmentRHS() throws Exception {
+  public void requireThisFieldAccessAssignmentRHS() throws Exception {
     testQuickfix("RequireThisFieldAccessAssignmentRHS.xml", new RequireThisQuickfix());
   }
 
   @Test
-  public void testRequireThisFieldAccessArrayInitializer() throws Exception {
+  public void requireThisFieldAccessArrayInitializer() throws Exception {
     testQuickfix("RequireThisFieldAccessArrayInitializer.xml", new RequireThisQuickfix());
   }
 
   @Test
-  public void testRequireThisFieldAccessInnerClass() throws Exception {
+  public void requireThisFieldAccessInnerClass() throws Exception {
     testQuickfix("RequireThisFieldAccessInnerClass.xml", new RequireThisQuickfix());
   }
 
   @Test
-  public void testRequireThisMethodInvocation() throws Exception {
+  public void requireThisMethodInvocation() throws Exception {
     testQuickfix("RequireThisMethodInvocation.xml", new RequireThisQuickfix());
   }
 
   @Test
-  public void testRequireThisMethodInvocationWithParam() throws Exception {
+  public void requireThisMethodInvocationWithParam() throws Exception {
     testQuickfix("RequireThisMethodInvocationWithParam.xml", new RequireThisQuickfix());
   }
 
   @Test
-  public void testRequireThisMethodInvocationAssignmentRHS() throws Exception {
+  public void requireThisMethodInvocationAssignmentRHS() throws Exception {
     testQuickfix("RequireThisMethodInvocationAssignmentRHS.xml", new RequireThisQuickfix());
   }
 
   @Test
-  public void testRequireThisMethodInvocationArrayInitializer() throws Exception {
+  public void requireThisMethodInvocationArrayInitializer() throws Exception {
     testQuickfix("RequireThisMethodInvocationArrayInitializer.xml", new RequireThisQuickfix());
   }
 
   @Test
-  public void testRequireThisMethodInvocationInnerClass() throws Exception {
+  public void requireThisMethodInvocationInnerClass() throws Exception {
     testQuickfix("RequireThisMethodInvocationInnerClass.xml", new RequireThisQuickfix());
   }
 

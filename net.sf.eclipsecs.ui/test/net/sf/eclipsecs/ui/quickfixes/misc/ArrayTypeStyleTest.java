@@ -27,17 +27,17 @@ import net.sf.eclipsecs.ui.quickfixes.AbstractQuickfixTestCase;
 public class ArrayTypeStyleTest extends AbstractQuickfixTestCase {
 
   @Test
-  public void testArrayTypeStyleField() throws Exception {
+  public void arrayTypeStyleField() throws Exception {
     testQuickfix("ArrayTypeStyleInputField.xml", new ArrayTypeStyleQuickfix());
   }
 
   @Test
-  public void testArrayTypeStyleMethodParam() throws Exception {
+  public void arrayTypeStyleMethodParam() throws Exception {
     testQuickfix("ArrayTypeStyleInputMethodParam.xml", new ArrayTypeStyleQuickfix());
   }
 
   @Test
-  public void testArrayTypeStyleVariable() throws Exception {
+  public void arrayTypeStyleVariable() throws Exception {
     testQuickfix("ArrayTypeStyleInputVariable.xml", new ArrayTypeStyleQuickfix());
   }
 }

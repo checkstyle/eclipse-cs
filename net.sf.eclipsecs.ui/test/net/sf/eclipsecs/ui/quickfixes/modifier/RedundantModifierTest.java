@@ -27,7 +27,7 @@ import net.sf.eclipsecs.ui.quickfixes.AbstractQuickfixTestCase;
 public class RedundantModifierTest extends AbstractQuickfixTestCase {
 
   @Test
-  public void testRedundantModifier() throws Exception {
+  public void redundantModifier() throws Exception {
     testQuickfix("RedundantModifierInput.xml", new RedundantModifierQuickfix());
   }
 }
