@@ -200,14 +200,14 @@ public final class ConfigurationReader {
       final boolean isPropertyRef = (value != null)
               && PROPERTY_REF_PATTERN.matcher(value).matches();
 
-      if (name.equals(XMLTags.SEVERITY_TAG) && (module.getMetaData() != null)
+      if (XMLTags.SEVERITY_TAG.equals(name) && (module.getMetaData() != null)
               && module.getMetaData().hasSeverity()) {
         try {
           module.setSeverity(Severity.valueOf(value));
         } catch (final IllegalArgumentException ex) {
           module.setSeverity(Severity.inherit);
         }
-      } else if (name.equals(XMLTags.ID_TAG)) {
+      } else if (XMLTags.ID_TAG.equals(name)) {
         module.setId(Strings.emptyToNull(value));
       } else if (module.getMetaData() != null) {
 

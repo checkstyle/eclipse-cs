@@ -41,7 +41,7 @@ public class ParenPadTransformer extends CTransformationClass {
     if (option == null) {
       option = "nospace";
     }
-    if (option.equals("nospace")) {
+    if ("nospace".equals(option)) {
       option = "do not insert";
     } else {
       option = "insert";
@@ -51,7 +51,7 @@ public class ParenPadTransformer extends CTransformationClass {
     String token;
     while (tokens.hasMoreTokens()) {
       token = tokens.nextToken();
-      if (token.equals("LPAREN")) {
+      if ("LPAREN".equals(token)) {
         userFormatterSetting("insert_space_after_opening_paren_in_parenthesized_expression",
                 option);
         userFormatterSetting("insert_space_after_opening_paren_in_while", option);
@@ -65,7 +65,7 @@ public class ParenPadTransformer extends CTransformationClass {
         userFormatterSetting("insert_space_after_opening_paren_in_constructor_declaration", option);
         userFormatterSetting("insert_space_after_opening_paren_in_enum_constant", option);
         userFormatterSetting("insert_space_after_opening_paren_in_method_declaration", option);
-      } else if (token.equals("RPAREN")) {
+      } else if ("RPAREN".equals(token)) {
         userFormatterSetting("insert_space_before_closing_paren_in_parenthesized_expression",
                 option);
         userFormatterSetting("insert_space_before_closing_paren_in_while", option);
@@ -80,8 +80,8 @@ public class ParenPadTransformer extends CTransformationClass {
                 option);
         userFormatterSetting("insert_space_before_closing_paren_in_enum_constant", option);
         userFormatterSetting("insert_space_before_closing_paren_in_annotation", option);
-      } else if (token.equals("CTOR_CALL") || token.equals("METHOD_CALL")
-              || token.equals("SUPER_CTOR_CALL")) {
+      } else if ("CTOR_CALL".equals(token) || "METHOD_CALL".equals(token)
+              || "SUPER_CTOR_CALL".equals(token)) {
         userFormatterSetting("insert_space_before_closing_paren_in_method_invocation", option);
         userFormatterSetting("insert_space_after_opening_paren_in_method_invocation", option);
       }

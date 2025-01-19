@@ -44,7 +44,7 @@ public class WhitespaceAfterTransformer extends CTransformationClass {
 
     while (token.hasMoreTokens()) {
       tok = token.nextToken();
-      if (tok.equals("COMMA")) {
+      if ("COMMA".equals(tok)) {
         userFormatterSetting("insert_space_after_comma_in_annotation", "insert");
         userFormatterSetting("insert_space_after_comma_in_type_arguments", "insert");
         userFormatterSetting("insert_space_after_comma_in_type_parameters", "insert");
@@ -67,7 +67,7 @@ public class WhitespaceAfterTransformer extends CTransformationClass {
         userFormatterSetting("insert_space_after_comma_in_parameterized_type_reference", "insert");
         userFormatterSetting("insert_space_after_comma_in_method_invocation_arguments", "insert");
         userFormatterSetting("insert_space_after_comma_in_multiple_local_declarations", "insert");
-      } else if (tok.equals("TYPECAST")) {
+      } else if ("TYPECAST".equals(tok)) {
         userFormatterSetting("insert_space_after_closing_paren_in_cast", "insert");
       }
     }

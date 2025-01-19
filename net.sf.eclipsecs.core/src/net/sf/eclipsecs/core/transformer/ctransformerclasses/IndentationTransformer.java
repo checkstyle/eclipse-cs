@@ -46,9 +46,9 @@ public class IndentationTransformer extends CTransformationClass {
       val = "4";
     }
 
-    if (val.equals("4")) {
+    if ("4".equals(val)) {
       userFormatterSetting("indent_switchstatements_compare_to_switch", "true");
-    } else if (val.equals("0")) {
+    } else if ("0".equals(val)) {
       userFormatterSetting("indent_switchstatements_compare_to_switch", "false");
     }
     return getFormatterSetting();

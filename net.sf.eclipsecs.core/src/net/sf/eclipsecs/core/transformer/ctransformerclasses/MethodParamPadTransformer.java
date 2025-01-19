@@ -43,13 +43,13 @@ public class MethodParamPadTransformer extends CTransformationClass {
     String token;
     while (args.hasMoreTokens()) {
       token = args.nextToken();
-      if (token.equals("CTOR_DEF")) {
+      if ("CTOR_DEF".equals(token)) {
         userFormatterSetting("insert_space_before_opening_paren_in_constructor_declaration",
                 "do not insert");
-      } else if (token.equals("METHOD_CALL") || token.equals("SUPER_CTOR_CALL")) {
+      } else if ("METHOD_CALL".equals(token) || "SUPER_CTOR_CALL".equals(token)) {
         userFormatterSetting("insert_space_before_opening_paren_in_method_invocation",
                 "do not insert");
-      } else if (token.equals("METHOD_DEF")) {
+      } else if ("METHOD_DEF".equals(token)) {
         userFormatterSetting("insert_space_before_opening_paren_in_method_declaration",
                 "do not insert");
       }

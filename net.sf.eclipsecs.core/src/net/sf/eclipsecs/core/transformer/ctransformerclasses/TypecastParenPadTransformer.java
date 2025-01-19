@@ -36,7 +36,7 @@ public class TypecastParenPadTransformer extends CTransformationClass {
     if (option == null) {
       option = "nospace";
     }
-    if (option.equals("space")) {
+    if ("space".equals(option)) {
       option = "insert";
     } else {
       option = "do not insert";

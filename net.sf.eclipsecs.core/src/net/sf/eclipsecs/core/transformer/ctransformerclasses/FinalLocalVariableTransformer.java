@@ -42,10 +42,10 @@ public class FinalLocalVariableTransformer extends CTransformationClass {
     String token;
     while (args.hasMoreTokens()) {
       token = args.nextToken();
-      if (token.equals("VARIABLE_DEF")) {
+      if ("VARIABLE_DEF".equals(token)) {
         useCleanupSetting("make_local_variable_final", "true");
         useCleanupSetting("make_private_fields_final", "true");
-      } else if (token.equals("PARAMETER_DEF")) {
+      } else if ("PARAMETER_DEF".equals(token)) {
         useCleanupSetting("make_parameters_final", "true");
       }
     }

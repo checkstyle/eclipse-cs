@@ -44,12 +44,12 @@ public class NoWhitespaceAfterTransformer extends CTransformationClass {
     // TODO tokens DOT ARRAY_INIT
     while (args.hasMoreTokens()) {
       token = args.nextToken();
-      if (token.equals("DEC") || token.equals("INC")) {
+      if ("DEC".equals(token) || "INC".equals(token)) {
         userFormatterSetting("insert_space_after_prefix_operator", "do not insert");
-      } else if (token.equals("UNARY_MINUS") || token.equals("LNOT") || token.equals("UNARY_PLUS")
-              || token.equals("BNOT")) {
+      } else if ("UNARY_MINUS".equals(token) || "LNOT".equals(token) || "UNARY_PLUS".equals(token)
+              || "BNOT".equals(token)) {
         userFormatterSetting("insert_space_after_unary_operator", "do not insert");
-      } else if (token.equals("TYPECAST")) {
+      } else if ("TYPECAST".equals(token)) {
         userFormatterSetting("insert_space_after_closing_paren_in_cast", "do not insert");
       }
     }

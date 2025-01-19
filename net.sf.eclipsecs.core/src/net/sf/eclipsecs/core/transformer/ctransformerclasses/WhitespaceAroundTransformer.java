@@ -49,29 +49,29 @@ public class WhitespaceAroundTransformer extends CTransformationClass {
 
     while (token.hasMoreTokens()) {
       tok = token.nextToken();
-      if (tok.equals("ASSIGN") || tok.equals("BAND_ASSIGN") || tok.equals("BOR_ASSIGN")
-              || tok.equals("BSR_ASSIGN") || tok.equals("BXOR_ASSIGN") || tok.equals("DIV_ASSIGN")
-              || tok.equals("MINUS_ASSIGN") || tok.equals("MOD_ASSIGN") || tok.equals("PLUS_ASSIGN")
-              || tok.equals("SL_ASSIGN") || tok.equals("SR_ASSIGN") || tok.equals("STAR_ASSIGN")) {
+      if ("ASSIGN".equals(tok) || "BAND_ASSIGN".equals(tok) || "BOR_ASSIGN".equals(tok)
+              || "BSR_ASSIGN".equals(tok) || "BXOR_ASSIGN".equals(tok) || "DIV_ASSIGN".equals(tok)
+              || "MINUS_ASSIGN".equals(tok) || "MOD_ASSIGN".equals(tok) || "PLUS_ASSIGN".equals(tok)
+              || "SL_ASSIGN".equals(tok) || "SR_ASSIGN".equals(tok) || "STAR_ASSIGN".equals(tok)) {
         userFormatterSetting("insert_space_after_assignment_operator", "insert");
         userFormatterSetting("insert_space_before_assignment_operator", "insert");
-      } else if ((tok.equals("BAND") || tok.equals("BOR") || tok.equals("BSR") || tok.equals("BXOR")
-              || tok.equals("DIV") || tok.equals("EQUAL") || tok.equals("GE") || tok.equals("GT")
-              || tok.equals("LAND") || tok.equals("LE") || tok.equals("LOR") || tok.equals("LT")
-              || tok.equals("MINUS") || tok.equals("MOD") || tok.equals("NOT_EQUAL")
-              || tok.equals("PLUS") || tok.equals("SL") || tok.equals("SR")
-              || tok.equals("STAR"))) {
+      } else if (("BAND".equals(tok) || "BOR".equals(tok) || "BSR".equals(tok) || "BXOR".equals(tok)
+              || "DIV".equals(tok) || "EQUAL".equals(tok) || "GE".equals(tok) || "GT".equals(tok)
+              || "LAND".equals(tok) || "LE".equals(tok) || "LOR".equals(tok) || "LT".equals(tok)
+              || "MINUS".equals(tok) || "MOD".equals(tok) || "NOT_EQUAL".equals(tok)
+              || "PLUS".equals(tok) || "SL".equals(tok) || "SR".equals(tok)
+              || "STAR".equals(tok))) {
         userFormatterSetting("insert_space_after_binary_operator", "insert");
         userFormatterSetting("insert_space_before_binary_operator", "insert");
-      } else if (tok.equals("COLON")) {
+      } else if ("COLON".equals(tok)) {
         userFormatterSetting("insert_space_before_colon_in_for", "insert");
         userFormatterSetting("insert_space_after_colon_in_for", "insert");
         userFormatterSetting("insert_space_before_colon_in_conditional", "insert");
         userFormatterSetting("insert_space_after_colon_in_conditional", "insert");
-      } else if (tok.equals("QUESTION")) {
+      } else if ("QUESTION".equals(tok)) {
         userFormatterSetting("insert_space_after_question_in_conditional", "insert");
         userFormatterSetting("insert_space_before_question_in_conditional", "insert");
-      } else if (tok.equals("LCURLY")) {
+      } else if ("LCURLY".equals(tok)) {
         userFormatterSetting("insert_space_before_opening_brace_in_type_declaration", "insert");
         userFormatterSetting("insert_space_after_opening_brace_in_array_initializer", "insert");
         userFormatterSetting("insert_space_before_opening_brace_in_annotation_type_declaration",
@@ -86,20 +86,20 @@ public class WhitespaceAroundTransformer extends CTransformationClass {
         userFormatterSetting("insert_space_before_opening_brace_in_anonymous_type_declaration",
                 "insert");
         userFormatterSetting("insert_space_before_opening_brace_in_array_initializer", "insert");
-      } else if (tok.equals("RCURLY")) {
+      } else if ("RCURLY".equals(tok)) {
         userFormatterSetting("insert_space_after_closing_brace_in_block", "insert");
         userFormatterSetting("insert_space_before_closing_brace_in_array_initializer", "insert");
-      } else if (tok.equals("LITERAL_CATCH")) {
+      } else if ("LITERAL_CATCH".equals(tok)) {
         userFormatterSetting("insert_space_before_opening_paren_in_catch", "insert");
-      } else if (tok.equals("LITERAL_FOR")) {
+      } else if ("LITERAL_FOR".equals(tok)) {
         userFormatterSetting("insert_space_before_opening_paren_in_for", "insert");
-      } else if (tok.equals("LITERAL_IF")) {
+      } else if ("LITERAL_IF".equals(tok)) {
         userFormatterSetting("insert_space_before_opening_paren_in_if", "insert");
-      } else if (tok.equals("LITERAL_RETURN")) {
+      } else if ("LITERAL_RETURN".equals(tok)) {
         userFormatterSetting("insert_space_before_parenthesized_expression_in_return", "insert");
-      } else if (tok.equals("LITERAL_SYNCHRONIZED")) {
+      } else if ("LITERAL_SYNCHRONIZED".equals(tok)) {
         userFormatterSetting("insert_space_before_opening_paren_in_synchronized", "insert");
-      } else if (tok.equals("LITERAL_WHILE")) {
+      } else if ("LITERAL_WHILE".equals(tok)) {
         userFormatterSetting("insert_space_before_opening_paren_in_while", "insert");
       }
     }

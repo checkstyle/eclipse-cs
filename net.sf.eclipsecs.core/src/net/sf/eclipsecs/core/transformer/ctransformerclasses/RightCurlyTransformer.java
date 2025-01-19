@@ -46,7 +46,7 @@ public class RightCurlyTransformer extends CTransformationClass {
     if (option == null) {
       option = "same";
     }
-    if (option.equals("same")) {
+    if ("same".equals(option)) {
       option = "do not insert";
     } else {
       option = "insert";
@@ -54,11 +54,11 @@ public class RightCurlyTransformer extends CTransformationClass {
 
     while (token.hasMoreTokens()) {
       tok = token.nextToken();
-      if (tok.equals("LITERAL_CATCH")) {
+      if ("LITERAL_CATCH".equals(tok)) {
         userFormatterSetting("insert_new_line_before_catch_in_try_statement", option);
-      } else if (tok.equals("LITERAL_FINALLY")) {
+      } else if ("LITERAL_FINALLY".equals(tok)) {
         userFormatterSetting("insert_new_line_before_finally_in_try_statement", option);
-      } else if (tok.equals("LITERAL_ELSE")) {
+      } else if ("LITERAL_ELSE".equals(tok)) {
         userFormatterSetting("insert_new_line_before_else_in_if_statement", option);
       }
     }

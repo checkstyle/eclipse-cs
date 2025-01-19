@@ -220,9 +220,9 @@ public final class MetadataFactory {
     if (sPropertyTypeMap.get(propertyType) != null) {
       String validationType = modulePropertyDetails.getValidationType();
       if (validationType != null) {
-        if (validationType.equals(TYPE_ID_PATTERN)) {
+        if (TYPE_ID_PATTERN.equals(validationType)) {
           dataType = ConfigPropertyType.Regex;
-        } else if (validationType.equals("tokenSet") || validationType.equals("tokenTypesSet")) {
+        } else if ("tokenSet".equals(validationType) || "tokenTypesSet".equals(validationType)) {
           dataType = ConfigPropertyType.MultiCheck;
         }
       } else {
