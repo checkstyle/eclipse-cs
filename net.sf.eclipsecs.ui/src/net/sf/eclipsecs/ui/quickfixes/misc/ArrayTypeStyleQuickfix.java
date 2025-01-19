@@ -176,9 +176,7 @@ public class ArrayTypeStyleQuickfix extends AbstractASTResolution {
 
       private ArrayType createArrayType(Type componentType, int dimensions) {
         Type type = (Type) ASTNode.copySubtree(componentType.getAST(), componentType);
-        ArrayType arrayType = componentType.getAST().newArrayType(type, dimensions);
-
-        return arrayType;
+        return componentType.getAST().newArrayType(type, dimensions);
       }
     };
   }

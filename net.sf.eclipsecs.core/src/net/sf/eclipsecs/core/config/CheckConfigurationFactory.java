@@ -282,8 +282,7 @@ public final class CheckConfigurationFactory {
     currentStateLocation = currentStateLocation.removeFirstSegments(segmentsToRemove);
 
     // Now add to the target workspace root
-    IPath targetStateLocation = newWorkspaceRoot.append(currentStateLocation);
-    return targetStateLocation;
+    return newWorkspaceRoot.append(currentStateLocation);
 
   }
 
@@ -335,8 +334,7 @@ public final class CheckConfigurationFactory {
   private static File getInternalConfigurationFile() {
     IPath configPath = CheckstylePlugin.getDefault().getStateLocation();
     configPath = configPath.append(CHECKSTYLE_CONFIG_FILE);
-    File configFile = configPath.toFile();
-    return configFile;
+    return configPath.toFile();
   }
 
   /**

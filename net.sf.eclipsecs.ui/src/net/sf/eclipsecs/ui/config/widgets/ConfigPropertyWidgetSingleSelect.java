@@ -82,8 +82,7 @@ public class ConfigPropertyWidgetSingleSelect extends ConfigPropertyWidgetAbstra
 
   @Override
   public String getValue() {
-    String result = mComboItem.getItem(mComboItem.getSelectionIndex());
-    return result;
+    return mComboItem.getItem(mComboItem.getSelectionIndex());
   }
 
   @Override

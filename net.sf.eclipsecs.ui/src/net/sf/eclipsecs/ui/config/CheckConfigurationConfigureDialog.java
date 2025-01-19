@@ -1070,11 +1070,9 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
       String ruleName = element.getRuleName();
       String internalName = element.getInternalName();
       String description = element.getDescription();
-      boolean passes = (ruleName != null && matchPattern.matcher(ruleName).find())
+      return (ruleName != null && matchPattern.matcher(ruleName).find())
               || (internalName != null && matchPattern.matcher(internalName).find())
               || (description != null && matchPattern.matcher(description).find());
-
-      return passes;
     }
 
     private boolean selectGroup(RuleGroupMetadata group, String filterText) {

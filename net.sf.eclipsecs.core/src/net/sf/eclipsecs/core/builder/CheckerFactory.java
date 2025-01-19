@@ -162,9 +162,7 @@ public final class CheckerFactory {
     URL configLocation = configFileData.getResolvedConfigFileURL();
     String checkConfigName = config.getName() + "#" + (config.isGlobal() ? "Global" : "Local");
 
-    String cacheKey = project.getName() + "#" + configLocation + "#" + checkConfigName;
-
-    return cacheKey;
+    return project.getName() + "#" + configLocation + "#" + checkConfigName;
   }
 
   /**

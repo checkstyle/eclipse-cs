@@ -272,8 +272,7 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
       Method getMementoMethod = editorRef.getClass().getMethod("getMemento", new Class<?>[0]);
       getMementoMethod.setAccessible(true);
 
-      IMemento memento = (IMemento) getMementoMethod.invoke(editorRef, (Object[]) null);
-      return memento;
+      return (IMemento) getMementoMethod.invoke(editorRef, (Object[]) null);
     } catch (NoSuchMethodException | SecurityException | IllegalAccessException | InvocationTargetException ex) {
       CheckstyleLog.log(ex);
     }
