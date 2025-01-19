@@ -27,32 +27,32 @@ import net.sf.eclipsecs.ui.quickfixes.AbstractQuickfixTestCase;
 public class NeedBracesTest extends AbstractQuickfixTestCase {
 
   @Test
-  public void testNeedBracesIf() throws Exception {
+  public void needBracesIf() throws Exception {
     testQuickfix("NeedBracesInputIf.xml", new NeedBracesQuickfix());
   }
 
   @Test
-  public void testNeedBracesElse() throws Exception {
+  public void needBracesElse() throws Exception {
     testQuickfix("NeedBracesInputElse.xml", new NeedBracesQuickfix());
   }
 
   @Test
-  public void testNeedBracesElseIf() throws Exception {
+  public void needBracesElseIf() throws Exception {
     testQuickfix("NeedBracesInputElseIf.xml", new NeedBracesQuickfix());
   }
 
   @Test
-  public void testNeedBracesFor() throws Exception {
+  public void needBracesFor() throws Exception {
     testQuickfix("NeedBracesInputFor.xml", new NeedBracesQuickfix());
   }
 
   @Test
-  public void testNeedBracesWhile() throws Exception {
+  public void needBracesWhile() throws Exception {
     testQuickfix("NeedBracesInputWhile.xml", new NeedBracesQuickfix());
   }
 
   @Test
-  public void testNeedBracesDoWhile() throws Exception {
+  public void needBracesDoWhile() throws Exception {
     testQuickfix("NeedBracesInputDoWhile.xml", new NeedBracesQuickfix());
   }
 }

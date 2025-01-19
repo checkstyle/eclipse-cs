@@ -46,7 +46,7 @@ import net.sf.eclipsecs.checkstyle.utils.XmlUtil;
 public class ChecksTest {
 
   @Test
-  public void testMetadataFiles() throws Exception {
+  public void metadataFiles() throws Exception {
     final Set<Class<?>> modules = new HashSet<>(CheckUtil.getCheckstyleModules());
 
     // don't test root modules
