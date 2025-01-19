@@ -24,35 +24,35 @@ import org.junit.jupiter.api.Test;
 
 import net.sf.eclipsecs.ui.quickfixes.AbstractQuickfixTestCase;
 
-public class NeedBracesTest extends AbstractQuickfixTestCase {
+class NeedBracesTest extends AbstractQuickfixTestCase {
 
   @Test
-  public void needBracesIf() throws Exception {
+  void needBracesIf() throws Exception {
     testQuickfix("NeedBracesInputIf.xml", new NeedBracesQuickfix());
   }
 
   @Test
-  public void needBracesElse() throws Exception {
+  void needBracesElse() throws Exception {
     testQuickfix("NeedBracesInputElse.xml", new NeedBracesQuickfix());
   }
 
   @Test
-  public void needBracesElseIf() throws Exception {
+  void needBracesElseIf() throws Exception {
     testQuickfix("NeedBracesInputElseIf.xml", new NeedBracesQuickfix());
   }
 
   @Test
-  public void needBracesFor() throws Exception {
+  void needBracesFor() throws Exception {
     testQuickfix("NeedBracesInputFor.xml", new NeedBracesQuickfix());
   }
 
   @Test
-  public void needBracesWhile() throws Exception {
+  void needBracesWhile() throws Exception {
     testQuickfix("NeedBracesInputWhile.xml", new NeedBracesQuickfix());
   }
 
   @Test
-  public void needBracesDoWhile() throws Exception {
+  void needBracesDoWhile() throws Exception {
     testQuickfix("NeedBracesInputDoWhile.xml", new NeedBracesQuickfix());
   }
 }

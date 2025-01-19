@@ -24,10 +24,10 @@ import org.junit.jupiter.api.Test;
 
 import net.sf.eclipsecs.ui.quickfixes.AbstractQuickfixTestCase;
 
-public class DesignForExtensionTest extends AbstractQuickfixTestCase {
+class DesignForExtensionTest extends AbstractQuickfixTestCase {
 
   @Test
-  public void designForExtension() throws Exception {
+  void designForExtension() throws Exception {
     testQuickfix("DesignForExtensionInput.xml", new DesignForExtensionQuickfix());
   }
 }

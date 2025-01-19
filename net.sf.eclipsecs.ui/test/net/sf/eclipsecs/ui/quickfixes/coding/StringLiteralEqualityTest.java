@@ -24,10 +24,10 @@ import org.junit.jupiter.api.Test;
 
 import net.sf.eclipsecs.ui.quickfixes.AbstractQuickfixTestCase;
 
-public class StringLiteralEqualityTest extends AbstractQuickfixTestCase {
+class StringLiteralEqualityTest extends AbstractQuickfixTestCase {
 
   @Test
-  public void stringLiteralEquality() throws Exception {
+  void stringLiteralEquality() throws Exception {
     testQuickfix("StringLiteralEqualityInput.xml", new StringLiteralEqualityQuickfix());
   }
 }

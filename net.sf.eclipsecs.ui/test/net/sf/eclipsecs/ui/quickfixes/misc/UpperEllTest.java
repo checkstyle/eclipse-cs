@@ -24,10 +24,10 @@ import org.junit.jupiter.api.Test;
 
 import net.sf.eclipsecs.ui.quickfixes.AbstractQuickfixTestCase;
 
-public class UpperEllTest extends AbstractQuickfixTestCase {
+class UpperEllTest extends AbstractQuickfixTestCase {
 
   @Test
-  public void upperEll() throws Exception {
+  void upperEll() throws Exception {
     testQuickfix("UpperEllInput.xml", new UpperEllQuickfix());
   }
 }

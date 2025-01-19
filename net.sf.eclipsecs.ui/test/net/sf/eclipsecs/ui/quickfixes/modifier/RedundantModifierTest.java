@@ -24,10 +24,10 @@ import org.junit.jupiter.api.Test;
 
 import net.sf.eclipsecs.ui.quickfixes.AbstractQuickfixTestCase;
 
-public class RedundantModifierTest extends AbstractQuickfixTestCase {
+class RedundantModifierTest extends AbstractQuickfixTestCase {
 
   @Test
-  public void redundantModifier() throws Exception {
+  void redundantModifier() throws Exception {
     testQuickfix("RedundantModifierInput.xml", new RedundantModifierQuickfix());
   }
 }

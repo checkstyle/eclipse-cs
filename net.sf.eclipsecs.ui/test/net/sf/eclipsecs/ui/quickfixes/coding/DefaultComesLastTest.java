@@ -24,15 +24,15 @@ import org.junit.jupiter.api.Test;
 
 import net.sf.eclipsecs.ui.quickfixes.AbstractQuickfixTestCase;
 
-public class DefaultComesLastTest extends AbstractQuickfixTestCase {
+class DefaultComesLastTest extends AbstractQuickfixTestCase {
 
   @Test
-  public void defaultComesLast() throws Exception {
+  void defaultComesLast() throws Exception {
     testQuickfix("DefaultComesLastInput.xml", new DefaultComesLastQuickfix());
   }
 
   @Test
-  public void defaultComesLastInner() throws Exception {
+  void defaultComesLastInner() throws Exception {
     testQuickfix("DefaultComesLastInputInner.xml", new DefaultComesLastQuickfix());
   }
 }

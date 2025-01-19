@@ -24,15 +24,15 @@ import org.junit.jupiter.api.Test;
 
 import net.sf.eclipsecs.ui.quickfixes.AbstractQuickfixTestCase;
 
-public class MissingSwitchDefaultTest extends AbstractQuickfixTestCase {
+class MissingSwitchDefaultTest extends AbstractQuickfixTestCase {
 
   @Test
-  public void missingSwitchDefault() throws Exception {
+  void missingSwitchDefault() throws Exception {
     testQuickfix("MissingSwitchDefaultInput.xml", new MissingSwitchDefaultQuickfix());
   }
 
   @Test
-  public void missingSwitchDefaultInner() throws Exception {
+  void missingSwitchDefaultInner() throws Exception {
     testQuickfix("MissingSwitchDefaultInputInner.xml", new MissingSwitchDefaultQuickfix());
   }
 }

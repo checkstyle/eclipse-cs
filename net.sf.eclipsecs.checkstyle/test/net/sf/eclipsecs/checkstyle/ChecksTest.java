@@ -43,10 +43,10 @@ import com.puppycrawl.tools.checkstyle.TreeWalker;
 import net.sf.eclipsecs.checkstyle.utils.CheckUtil;
 import net.sf.eclipsecs.checkstyle.utils.XmlUtil;
 
-public class ChecksTest {
+class ChecksTest {
 
   @Test
-  public void metadataFiles() throws Exception {
+  void metadataFiles() throws Exception {
     final Set<Class<?>> modules = new HashSet<>(CheckUtil.getCheckstyleModules());
 
     // don't test root modules

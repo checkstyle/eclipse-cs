@@ -24,10 +24,10 @@ import org.junit.jupiter.api.Test;
 
 import net.sf.eclipsecs.ui.quickfixes.AbstractQuickfixTestCase;
 
-public class ModifierOrderTest extends AbstractQuickfixTestCase {
+class ModifierOrderTest extends AbstractQuickfixTestCase {
 
   @Test
-  public void modifierOrder() throws Exception {
+  void modifierOrder() throws Exception {
     testQuickfix("ModifierOrderInput.xml", new ModifierOrderQuickfix());
   }
 }
