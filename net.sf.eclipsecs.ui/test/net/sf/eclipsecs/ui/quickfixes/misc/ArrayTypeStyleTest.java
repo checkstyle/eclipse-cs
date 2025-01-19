@@ -24,20 +24,20 @@ import org.junit.jupiter.api.Test;
 
 import net.sf.eclipsecs.ui.quickfixes.AbstractQuickfixTestCase;
 
-public class ArrayTypeStyleTest extends AbstractQuickfixTestCase {
+class ArrayTypeStyleTest extends AbstractQuickfixTestCase {
 
   @Test
-  public void arrayTypeStyleField() throws Exception {
+  void arrayTypeStyleField() throws Exception {
     testQuickfix("ArrayTypeStyleInputField.xml", new ArrayTypeStyleQuickfix());
   }
 
   @Test
-  public void arrayTypeStyleMethodParam() throws Exception {
+  void arrayTypeStyleMethodParam() throws Exception {
     testQuickfix("ArrayTypeStyleInputMethodParam.xml", new ArrayTypeStyleQuickfix());
   }
 
   @Test
-  public void arrayTypeStyleVariable() throws Exception {
+  void arrayTypeStyleVariable() throws Exception {
     testQuickfix("ArrayTypeStyleInputVariable.xml", new ArrayTypeStyleQuickfix());
   }
 }

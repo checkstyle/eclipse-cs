@@ -24,10 +24,10 @@ import org.junit.jupiter.api.Test;
 
 import net.sf.eclipsecs.ui.quickfixes.AbstractQuickfixTestCase;
 
-public class ExplicitInitializationTest extends AbstractQuickfixTestCase {
+class ExplicitInitializationTest extends AbstractQuickfixTestCase {
 
   @Test
-  public void explicitInitialization() throws Exception {
+  void explicitInitialization() throws Exception {
     testQuickfix("ExplicitInitialization.xml", new ExplicitInitializationQuickfix());
   }
 

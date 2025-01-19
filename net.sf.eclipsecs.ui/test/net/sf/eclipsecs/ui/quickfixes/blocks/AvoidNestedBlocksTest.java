@@ -24,10 +24,10 @@ import org.junit.jupiter.api.Test;
 
 import net.sf.eclipsecs.ui.quickfixes.AbstractQuickfixTestCase;
 
-public class AvoidNestedBlocksTest extends AbstractQuickfixTestCase {
+class AvoidNestedBlocksTest extends AbstractQuickfixTestCase {
 
   @Test
-  public void avoidNestedBlocks() throws Exception {
+  void avoidNestedBlocks() throws Exception {
     testQuickfix("AvoidNestedBlocksInput.xml", new AvoidNestedBlocksQuickfix());
   }
 }

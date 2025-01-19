@@ -24,10 +24,10 @@ import org.junit.jupiter.api.Test;
 
 import net.sf.eclipsecs.ui.quickfixes.AbstractQuickfixTestCase;
 
-public class FinalParametersTest extends AbstractQuickfixTestCase {
+class FinalParametersTest extends AbstractQuickfixTestCase {
 
   @Test
-  public void finalParameters() throws Exception {
+  void finalParameters() throws Exception {
     testQuickfix("FinalParametersInput.xml", new FinalParametersQuickfix());
   }
 }

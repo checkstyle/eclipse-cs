@@ -24,15 +24,15 @@ import org.junit.jupiter.api.Test;
 
 import net.sf.eclipsecs.ui.quickfixes.AbstractQuickfixTestCase;
 
-public class EmptyStatementTest extends AbstractQuickfixTestCase {
+class EmptyStatementTest extends AbstractQuickfixTestCase {
 
   @Test
-  public void emptyStatement() throws Exception {
+  void emptyStatement() throws Exception {
     testQuickfix("EmptyStatementInput.xml", new EmptyStatementQuickfix());
   }
 
   @Test
-  public void emptyStatementNeg() throws Exception {
+  void emptyStatementNeg() throws Exception {
     testQuickfix("EmptyStatementInputNeg.xml", new EmptyStatementQuickfix());
   }
 }
