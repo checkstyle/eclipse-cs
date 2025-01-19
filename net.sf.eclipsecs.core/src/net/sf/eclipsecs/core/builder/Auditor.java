@@ -82,10 +82,10 @@ public class Auditor {
   private IProgressMonitor mMonitor;
 
   /** Add the check rule name to the message. */
-  private boolean mAddRuleName = false;
+  private boolean mAddRuleName;
 
   /** Add the check module id to the message. */
-  private boolean mAddModuleId = false;
+  private boolean mAddModuleId;
 
   /**
    * Creates an auditor.

@@ -490,7 +490,7 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
 
     transient HashMapEntry[] elementData;
 
-    transient int firstSlot = 0;
+    transient int firstSlot;
 
     transient int lastSlot = -1;
 
