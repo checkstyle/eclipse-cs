@@ -100,7 +100,6 @@ import net.sf.eclipsecs.ui.util.table.ITableSettingsProvider;
 /**
  * Enhanced checkstyle configuration editor.
  *
- * @author Lars Ködderitzsch
  */
 public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
 
@@ -500,7 +499,6 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
   /**
    * Controller for this page.
    *
-   * @author Lars Ködderitzsch
    */
   private class PageController implements ISelectionChangedListener, ICheckStateListener,
           IDoubleClickListener, SelectionListener, KeyListener, ModifyListener {
@@ -817,7 +815,6 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
   /**
    * TreeContentProvider that provides the structure of the rule metadata.
    *
-   * @author Lars Ködderitzsch
    */
   private static class MetaDataContentProvider implements ITreeContentProvider {
 
@@ -877,7 +874,6 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
   /**
    * Label-provider for meta data information.
    *
-   * @author Lars Ködderitzsch
    */
   private class MetaDataLabelProvider extends LabelProvider {
 
@@ -941,7 +937,6 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
   /**
    * Label provider for the table showing the configured modules.
    *
-   * @author Lars Ködderitzsch
    */
   private static class ModuleLabelProvider extends LabelProvider
           implements ITableLabelProvider, ITableComparableProvider, ITableSettingsProvider {
@@ -1008,7 +1003,6 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
   /**
    * Viewer filter that includes all modules that belong to the currently selected group.
    *
-   * @author Lars Ködderitzsch
    */
   private static class RuleGroupModuleFilter extends ViewerFilter {
 
@@ -1051,7 +1045,6 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
    * Filter implementation that filters the module tree with respect of a filter text field to input
    * a search word.
    *
-   * @author Lars Ködderitzsch
    */
   private class TreeFilter extends ViewerFilter {
 

@@ -43,7 +43,6 @@ import net.sf.eclipsecs.core.builder.CheckstyleMarker;
 /**
  * Filter class for Checkstyle markers. This filter is used by the Checkstyle statistics views.
  *
- * @author Lars Ködderitzsch
  */
 public class CheckstyleMarkerFilter implements Cloneable {
 

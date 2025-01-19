@@ -33,7 +33,6 @@ import net.sf.eclipsecs.core.util.CheckstyleLog;
 /**
  * Class for handling preferences of the <code>net.sf.eclipsecs.core</code> plugin.
  *
- * @author Lars Ködderitzsch
  */
 public class CheckstylePluginPrefs extends AbstractPreferenceInitializer {
 

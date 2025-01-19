@@ -873,7 +873,6 @@ public final class MetadataFactory {
    * Custom ResourceBundle.Control implementation which allows explicitly read the properties files
    * as UTF-8.
    *
-   * @author <a href="mailto:nesterenko-aleksey@list.ru">Aleksey Nesterenko</a>
    */
   private static class UTF8Control extends Control {
     @Override

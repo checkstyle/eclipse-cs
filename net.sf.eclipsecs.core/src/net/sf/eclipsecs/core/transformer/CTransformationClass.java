@@ -30,7 +30,6 @@ import com.puppycrawl.tools.checkstyle.api.Configuration;
  * Abstract class which all transformationclasses have to implement. These classes handle how to
  * react on a checkstyle-rule.
  *
- * @author Lukas Frena
  */
 public abstract class CTransformationClass {
   /** The eclipse-configuration for this rule. */

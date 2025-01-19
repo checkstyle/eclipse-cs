@@ -29,7 +29,6 @@ import net.sf.eclipsecs.core.transformer.FTransformationClass;
  * Transformerclass for converting the formatter-setting
  * "insert.space.before.opening.paren.in.method.invocation" to appropriate checkstyle-modules.
  *
- * @author Lukas Frena
  */
 public class T_insert_space_before_opening_paren_in_method_invocation extends FTransformationClass {
   @Override

@@ -68,8 +68,6 @@ import net.sf.eclipsecs.ui.stats.views.internal.CheckstyleMarkerFilterDialog;
 /**
  * Abstract view that gathers common behaviour for the stats views.
  *
- * @author Fabrice BELLINGARD
- * @author Lars Ködderitzsch
  */
 public abstract class AbstractStatsView extends ViewPart {
 

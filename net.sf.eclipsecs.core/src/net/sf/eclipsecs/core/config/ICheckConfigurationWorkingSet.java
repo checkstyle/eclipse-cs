@@ -30,7 +30,6 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
 /**
  * Interface for implementations that provide editing services for a group of check configuration.
  *
- * @author Lars Ködderitzsch
  */
 public interface ICheckConfigurationWorkingSet {
 

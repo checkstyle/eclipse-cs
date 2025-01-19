@@ -41,7 +41,6 @@ import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
  * Register for the configuration types ui thats use the
  * <i>net.sf.eclipsecs.ui.configtypesui </i> extension point.
  *
- * @author Lars Ködderitzsch
  */
 public final class ConfigurationTypesUI {
 

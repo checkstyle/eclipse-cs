@@ -37,7 +37,6 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
  * Job to de-couple an audit. Used for the "Run Checkstyle in background on full build"
  * functionality.
  *
- * @author Lars Ködderitzsch
  */
 public class AuditorJob extends AbstractCheckJob {
 

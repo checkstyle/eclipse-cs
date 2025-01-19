@@ -25,7 +25,6 @@ import com.puppycrawl.tools.checkstyle.PropertyResolver;
 /**
  * Property resolver implementation that resolves system properties.
  *
- * @author Lars Ködderitzsch
  */
 public class SystemPropertyResolver implements PropertyResolver {
 

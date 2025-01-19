@@ -56,7 +56,6 @@ import net.sf.eclipsecs.ui.util.regex.RegexCompletionProposalFactory;
 /**
  * Dialog to edit the marker filter.
  *
- * @author Lars Ködderitzsch
  */
 public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
 
@@ -397,7 +396,6 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
   /**
    * The controller for this dialog.
    *
-   * @author Lars Ködderitzsch
    */
   private class PageController implements SelectionListener {
 
@@ -472,7 +470,6 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
   /**
    * Dialog to edit regular expressions to filter by.
    *
-   * @author Lars Ködderitzsch
    */
   private class RegexDialog extends TitleAreaDialog {
 

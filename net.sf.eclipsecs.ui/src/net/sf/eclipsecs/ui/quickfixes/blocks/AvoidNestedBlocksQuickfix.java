@@ -36,7 +36,6 @@ import net.sf.eclipsecs.ui.quickfixes.Messages;
 /**
  * Quickfix implementation that removes nested blocks.
  *
- * @author Lars Ködderitzsch
  */
 public class AvoidNestedBlocksQuickfix extends AbstractASTResolution {
 

@@ -53,7 +53,6 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
  * This class acts as wrapper around check configurations to add editing aspects. Check
  * configurations by themself are not editable.
  *
- * @author Lars Ködderitzsch
  */
 public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Cloneable {
 

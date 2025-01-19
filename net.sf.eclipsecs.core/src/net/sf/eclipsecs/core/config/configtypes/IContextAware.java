@@ -25,7 +25,6 @@ import org.eclipse.core.resources.IProject;
 /**
  * Interface for plugin property resolvers.
  *
- * @author Lars Ködderitzsch
  */
 public interface IContextAware {
 

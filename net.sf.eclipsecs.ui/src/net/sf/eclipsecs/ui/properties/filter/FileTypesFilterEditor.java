@@ -46,7 +46,6 @@ import net.sf.eclipsecs.ui.Messages;
 /**
  * Editor dialog for the package filter.
  *
- * @author Lars Ködderitzsch
  */
 public class FileTypesFilterEditor implements IFilterEditor {
 
@@ -98,7 +97,6 @@ public class FileTypesFilterEditor implements IFilterEditor {
   /**
    * Dialog to edit file types to check.
    *
-   * @author Lars Ködderitzsch
    */
   private class FileTypesDialog extends Dialog {
 

@@ -64,7 +64,6 @@ import net.sf.eclipsecs.ui.Messages;
 /**
  * Editor dialog for the package filter.
  *
- * @author Lars Ködderitzsch
  */
 public class PackageFilterEditor implements IFilterEditor {
 
@@ -192,7 +191,6 @@ public class PackageFilterEditor implements IFilterEditor {
   /**
    * Content provider that provides the source folders of a project and their container members.
    *
-   * @author Lars Ködderitzsch
    */
   private static class SourceFolderContentProvider implements ITreeContentProvider {
 

@@ -42,7 +42,6 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
 /**
  * Base implementation of <code>IConfigurationType</code>.
  *
- * @author Lars Ködderitzsch
  */
 public abstract class ConfigurationType implements IConfigurationType {
 

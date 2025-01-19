@@ -27,7 +27,6 @@ import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
  * Wrapperclass for converting the checkstyle-rule LineLength to appropriate
  * eclipse-formatter-rules.
  *
- * @author Lukas Frena
  */
 public class LineLengthTransformer extends CTransformationClass {
   @Override

@@ -42,7 +42,6 @@ import net.sf.eclipsecs.ui.quickfixes.Messages;
  * Quickfix implementation which moves the array declaration (C-style to
  * Java-style and reverse).
  *
- * @author Lars Ködderitzsch
  */
 public class ArrayTypeStyleQuickfix extends AbstractASTResolution {
 

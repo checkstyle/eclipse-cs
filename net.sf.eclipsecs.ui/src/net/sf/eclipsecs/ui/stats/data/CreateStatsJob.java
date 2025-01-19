@@ -44,7 +44,6 @@ import net.sf.eclipsecs.ui.stats.views.internal.CheckstyleMarkerFilter;
 /**
  * Job implementation that builds the data objects for the statistic views.
  *
- * @author Lars Ködderitzsch
  */
 public class CreateStatsJob extends Job {
 

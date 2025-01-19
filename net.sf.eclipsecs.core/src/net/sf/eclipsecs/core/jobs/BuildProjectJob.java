@@ -34,7 +34,6 @@ import net.sf.eclipsecs.core.nature.CheckstyleNature;
 /**
  * Operation which builds a project.
  *
- * @author Lars Ködderitzsch
  */
 public class BuildProjectJob extends Job {
 

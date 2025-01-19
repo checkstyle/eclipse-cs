@@ -34,7 +34,6 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
 /**
  * Implementation of a check configuration that uses an exteral checkstyle configuration file.
  *
- * @author Lars Ködderitzsch
  */
 public class ExternalFileConfigurationType extends ConfigurationType {
 

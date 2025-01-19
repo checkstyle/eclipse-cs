@@ -37,7 +37,6 @@ import org.eclipse.ui.texteditor.ITextEditor;
  * Command handler to enable key-binding support for the "Apply Checkstyle
  * fixes" action.
  *
- * @author Lars Ködderitzsch
  */
 public class FixCheckstyleMarkersHandler extends AbstractHandler {
 

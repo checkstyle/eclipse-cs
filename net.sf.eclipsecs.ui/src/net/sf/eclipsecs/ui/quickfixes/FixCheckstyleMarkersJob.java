@@ -36,7 +36,6 @@ import net.sf.eclipsecs.ui.Messages;
 /**
  * Job implementation that tries to fix all Checkstyle markers in a file.
  *
- * @author Lars Ködderitzsch
  */
 public class FixCheckstyleMarkersJob extends UIJob {
 

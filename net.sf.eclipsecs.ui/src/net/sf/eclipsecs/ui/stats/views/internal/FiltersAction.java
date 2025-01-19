@@ -29,7 +29,6 @@ import net.sf.eclipsecs.ui.stats.views.AbstractStatsView;
 /**
  * Action implementation for the filters action.
  *
- * @author Lars Ködderitzsch
  */
 public class FiltersAction extends Action {
 

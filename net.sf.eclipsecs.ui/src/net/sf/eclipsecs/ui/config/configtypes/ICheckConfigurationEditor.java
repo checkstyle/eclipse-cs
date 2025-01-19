@@ -31,7 +31,6 @@ import net.sf.eclipsecs.ui.config.CheckConfigurationPropertiesDialog;
 /**
  * Interface for the check configuration type specific location editor.
  *
- * @author Lars Ködderitzsch
  */
 public interface ICheckConfigurationEditor {
 

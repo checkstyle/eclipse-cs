@@ -34,7 +34,6 @@ import net.sf.eclipsecs.core.util.CheckstyleLog;
  * Register for the filters thats use the <i>net.sf.eclipsecs.core.checkstyleFilter </i> extension
  * point. Checkstyle filters can be enabled per project.
  *
- * @author Lars Ködderitzsch
  */
 public final class PluginFilters {
 

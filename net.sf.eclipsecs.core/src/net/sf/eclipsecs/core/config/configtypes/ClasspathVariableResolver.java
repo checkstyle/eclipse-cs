@@ -28,7 +28,6 @@ import com.puppycrawl.tools.checkstyle.PropertyResolver;
 /**
  * Property resolver that tries to resolve values from classpath variables.
  *
- * @author Lars Ködderitzsch
  */
 public class ClasspathVariableResolver implements PropertyResolver {
 

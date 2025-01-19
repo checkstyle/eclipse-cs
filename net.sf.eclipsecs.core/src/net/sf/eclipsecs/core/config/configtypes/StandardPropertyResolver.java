@@ -28,7 +28,6 @@ import com.puppycrawl.tools.checkstyle.PropertyResolver;
 /**
  * Property resolver that resolves some eclipse standard variables.
  *
- * @author Lars Ködderitzsch
  */
 public class StandardPropertyResolver implements PropertyResolver, IContextAware {
 

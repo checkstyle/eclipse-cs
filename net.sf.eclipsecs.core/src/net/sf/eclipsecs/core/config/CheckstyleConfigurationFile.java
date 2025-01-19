@@ -31,7 +31,6 @@ import com.puppycrawl.tools.checkstyle.PropertyResolver;
  * Simple object containing all sort of data of a Checkstyle configuration. This is done to not
  * access the Checkstyle configuration file too many times to get small bits of information.
  *
- * @author Lars Ködderitzsch
  */
 public class CheckstyleConfigurationFile {
 

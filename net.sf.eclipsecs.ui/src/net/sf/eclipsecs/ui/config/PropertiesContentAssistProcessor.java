@@ -37,7 +37,6 @@ import net.sf.eclipsecs.ui.Messages;
 /**
  * Provides content assist for builtin properties.
  *
- * @author Lars Ködderitzsch
  */
 public class PropertiesContentAssistProcessor
         implements ISubjectControlContentAssistProcessor {

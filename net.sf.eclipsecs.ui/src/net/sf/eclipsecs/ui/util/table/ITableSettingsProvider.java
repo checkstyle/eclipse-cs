@@ -26,7 +26,6 @@ import org.eclipse.jface.dialogs.IDialogSettings;
  * Interface for implementations that provide settings where the
  * <code>EnhancedTableViewer</code> can store its current state.
  *
- * @author Lars Ködderitzsch
  */
 public interface ITableSettingsProvider {
 

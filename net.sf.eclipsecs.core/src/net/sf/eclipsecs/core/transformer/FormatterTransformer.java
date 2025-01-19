@@ -31,7 +31,6 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
  * The Class for transforming the formatter-settings to Checkstyle-rules. A new checkstyle-xml file
  * gets generated.
  *
- * @author Lukas Frena
  */
 public class FormatterTransformer {
   /** An object containing all settings for the checkstyle-file. */

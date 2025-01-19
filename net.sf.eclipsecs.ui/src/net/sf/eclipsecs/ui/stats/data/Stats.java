@@ -26,7 +26,6 @@ import java.util.Collection;
  * Classe qui véhicule les statistiques Checkstyle. Elle contient notamment la
  * liste des différentes erreurs avec leur comptage.
  *
- * @author Fabrice BELLINGARD
  */
 public class Stats {
 

@@ -36,7 +36,6 @@ import net.sf.eclipsecs.core.util.CheckstyleLog;
 /**
  * Implementation of a filter that filters all ressources that are not within a source directory.
  *
- * @author Lars Ködderitzsch
  */
 public class NonSrcDirsFilter extends AbstractFilter {
 

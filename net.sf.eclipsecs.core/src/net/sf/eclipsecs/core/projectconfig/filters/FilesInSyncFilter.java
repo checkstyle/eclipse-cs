@@ -34,7 +34,6 @@ import net.sf.eclipsecs.core.util.CheckstyleLog;
 /**
  * Filters all files that are in sync with the source repository.
  *
- * @author Lars Ködderitzsch
  */
 public class FilesInSyncFilter extends AbstractFilter {
 

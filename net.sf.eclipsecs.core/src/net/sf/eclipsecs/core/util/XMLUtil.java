@@ -67,7 +67,6 @@ public final class XMLUtil {
   /**
    * Entity resolver which handles mapping public DTDs to internal DTD resource.
    *
-   * @author Lars Ködderitzsch
    */
   public static class InternalDtdEntityResolver implements EntityResolver {
 

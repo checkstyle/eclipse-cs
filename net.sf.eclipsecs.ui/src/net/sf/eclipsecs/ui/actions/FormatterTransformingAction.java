@@ -30,7 +30,6 @@ import net.sf.eclipsecs.core.jobs.TransformFormatterRulesJob;
 /**
  * Action to start transforming checkstyle-rules to formatter-rules.
  *
- * @author lakiluk
  */
 public class FormatterTransformingAction implements IObjectActionDelegate {
 

@@ -50,7 +50,6 @@ import org.eclipse.swt.widgets.Text;
 /**
  * Some widely used helper funktionality regarding SWT shortcomings.
  *
- * @author Lars Ködderitzsch
  */
 public final class SWTUtil {
 
@@ -106,7 +105,6 @@ public final class SWTUtil {
   /**
    * Listener that adds tooltip-on-press support.
    *
-   * @author Lars Ködderitzsch
    */
   private static final class TooltipOnPressListener extends MouseAdapter
           implements MouseTrackListener {
@@ -157,7 +155,6 @@ public final class SWTUtil {
   /**
    * Verifier that allows only digits to be input.
    *
-   * @author Lars Ködderitzsch
    */
   private static final class OnlyDigitsVerifyListener implements VerifyListener {
 
@@ -191,7 +188,6 @@ public final class SWTUtil {
   /**
    * Listener that adds resize support ((re)storing of size and location information).
    *
-   * @author Lars Ködderitzsch
    */
   private static final class ShellResizeSupportListener extends ShellAdapter
           implements ControlListener, DisposeListener {

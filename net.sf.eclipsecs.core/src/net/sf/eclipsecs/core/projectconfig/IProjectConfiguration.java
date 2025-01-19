@@ -30,7 +30,6 @@ import net.sf.eclipsecs.core.projectconfig.filters.IFilter;
 /**
  * The public interface of a project configuration.
  *
- * @author Lars Ködderitzsch
  */
 public interface IProjectConfiguration {
 

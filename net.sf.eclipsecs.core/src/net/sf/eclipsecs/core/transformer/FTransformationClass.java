@@ -26,7 +26,6 @@ import java.util.HashMap;
  * Abstract class which all transformationclasses have to implement. These classes handle how to
  * react on a formatter-setting.
  *
- * @author Lukas Frena
  */
 public abstract class FTransformationClass {
   /** The checkstyle-configuration for this rule. */

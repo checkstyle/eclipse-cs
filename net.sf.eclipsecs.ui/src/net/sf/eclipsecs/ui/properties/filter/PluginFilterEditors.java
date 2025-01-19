@@ -35,7 +35,6 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
  * Register for the filter editors thats use the
  * <i>net.sf.eclipsecs.ui.filtereditors </i> extension point.
  *
- * @author Lars Ködderitzsch
  */
 public final class PluginFilterEditors {
 

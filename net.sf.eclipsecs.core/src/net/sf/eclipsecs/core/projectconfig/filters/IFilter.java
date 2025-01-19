@@ -25,7 +25,6 @@ import java.util.List;
 /**
  * Interface for a filter.
  *
- * @author Lars Ködderitzsch
  */
 public interface IFilter extends Cloneable {
 

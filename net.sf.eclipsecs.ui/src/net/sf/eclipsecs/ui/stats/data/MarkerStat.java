@@ -29,7 +29,6 @@ import org.eclipse.ui.texteditor.MarkerUtilities;
 /**
  * Objet qui donne des statistiques sur les marqueurs.
  *
- * @author Fabrice BELLINGARD
  */
 public class MarkerStat implements Comparable<MarkerStat> {
 

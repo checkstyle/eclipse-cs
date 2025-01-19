@@ -64,7 +64,6 @@ import net.sf.eclipsecs.ui.quickfixes.Messages;
  * return condition;
  * </pre>
  *
- * @author Philip Graf
  */
 public class SimplifyBooleanReturnQuickfix extends AbstractASTResolution {
 

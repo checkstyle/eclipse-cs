@@ -30,7 +30,6 @@ import net.sf.eclipsecs.core.builder.CheckstyleMarker;
 /**
  * Provides marker resolutions (quickfixes) for Checkstyle markers.
  *
- * @author Lars Ködderitzsch
  */
 public class CheckstyleMarkerResolutionGenerator implements IMarkerResolutionGenerator2 {
 

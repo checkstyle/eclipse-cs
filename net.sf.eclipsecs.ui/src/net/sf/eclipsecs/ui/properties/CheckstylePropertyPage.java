@@ -84,7 +84,6 @@ import net.sf.eclipsecs.ui.properties.filter.PluginFilterEditors;
 /**
  * Property page for projects to enable checkstyle audit.
  *
- * @author Lars Ködderitzsch
  */
 public class CheckstylePropertyPage extends PropertyPage {
 
@@ -535,7 +534,6 @@ public class CheckstylePropertyPage extends PropertyPage {
    * This class works as controller for the page. It listenes for events to occur and handles the
    * pages context.
    *
-   * @author Lars Ködderitzsch
    */
   private class PageController extends SelectionAdapter
           implements ISelectionChangedListener, ICheckStateListener, IDoubleClickListener {

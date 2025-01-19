@@ -33,7 +33,6 @@ import com.puppycrawl.tools.checkstyle.PropertyResolver;
  * Adds support for additional checkstyle config files (header, suppressions etc.) to be delivered
  * with a builtin configuration.
  *
- * @author Lars Ködderitzsch
  */
 public class BuiltInFilePropertyResolver implements PropertyResolver {
 

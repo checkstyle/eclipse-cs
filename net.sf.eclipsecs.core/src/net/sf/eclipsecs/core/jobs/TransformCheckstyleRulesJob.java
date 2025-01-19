@@ -53,7 +53,6 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
 /**
  * Job which starts transforming the checkstyle-rules to eclipse-formatter-settings.
  *
- * @author Lukas Frena
  *
  */
 public class TransformCheckstyleRulesJob extends WorkspaceJob {

@@ -37,7 +37,6 @@ import net.sf.eclipsecs.core.util.CheckstyleLog;
  * Register for the configuration types thats use the <i>net.sf.eclipsecs.core.configurationtypes
  * </i> extension point.
  *
- * @author Lars Ködderitzsch
  */
 public final class ConfigurationTypes {
 

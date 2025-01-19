@@ -34,7 +34,6 @@ import net.sf.eclipsecs.core.util.CheckstyleLog;
 /**
  * Initialize the plugin preferences.
  *
- * @author Lars Ködderitzsch
  */
 public class CheckstyleUIPluginPrefs extends AbstractPreferenceInitializer {
 

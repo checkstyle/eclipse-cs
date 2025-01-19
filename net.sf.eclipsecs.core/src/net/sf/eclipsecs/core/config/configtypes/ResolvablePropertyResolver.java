@@ -30,7 +30,6 @@ import net.sf.eclipsecs.core.config.ResolvableProperty;
 /**
  * Resolves properties set up with the check configuration.
  *
- * @author Lars Ködderitzsch
  */
 public class ResolvablePropertyResolver implements PropertyResolver {
 

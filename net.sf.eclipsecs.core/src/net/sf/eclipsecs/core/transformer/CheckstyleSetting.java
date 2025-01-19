@@ -26,7 +26,6 @@ import java.util.Iterator;
 /**
  * Class for storing all settings of a checkstyle-configuration file.
  *
- * @author Lukas Frena
  *
  */
 public class CheckstyleSetting {

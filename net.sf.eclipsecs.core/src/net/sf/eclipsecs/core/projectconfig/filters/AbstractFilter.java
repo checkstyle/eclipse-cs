@@ -28,7 +28,6 @@ import com.google.common.base.MoreObjects;
 /**
  * Base implementation of a filter.
  *
- * @author Lars Ködderitzsch
  */
 public abstract class AbstractFilter implements IFilter {
 

@@ -39,7 +39,6 @@ import net.sf.eclipsecs.ui.quickfixes.Messages;
 /**
  * Quickfix implementation that adds braces to if/for/while/do statements.
  *
- * @author Lars Ködderitzsch
  */
 public class NeedBracesQuickfix extends AbstractASTResolution {
 

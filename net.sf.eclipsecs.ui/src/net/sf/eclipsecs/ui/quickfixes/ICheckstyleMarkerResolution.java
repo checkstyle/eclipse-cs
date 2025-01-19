@@ -26,7 +26,6 @@ import org.eclipse.ui.IMarkerResolution2;
 /**
  * Interface for a quickfix implementation for checkstyle markers.
  *
- * @author Lars Ködderitzsch
  */
 public interface ICheckstyleMarkerResolution extends IMarkerResolution2 {
 

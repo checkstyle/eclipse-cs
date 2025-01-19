@@ -28,7 +28,6 @@ import com.puppycrawl.tools.checkstyle.PropertyResolver;
 /**
  * Property resolver that resolves properties from a resource bundle.
  *
- * @author Lars Ködderitzsch
  */
 class ResourceBundlePropertyResolver implements PropertyResolver {
 

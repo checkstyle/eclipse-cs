@@ -28,7 +28,6 @@ import java.util.Map;
 /**
  * Class containing all configurations for a eclipse-formatter-profile.
  *
- * @author Lukas Frena
  */
 public class FormatterConfiguration {
   /** Map containing all eclipse editor-settings. */

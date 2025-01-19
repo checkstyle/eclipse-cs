@@ -571,7 +571,6 @@ public class FileSetEditDialog extends TitleAreaDialog {
   /**
    * Controller of this dialog.
    *
-   * @author Lars Ködderitzsch
    */
   private class Controller implements SelectionListener, IDoubleClickListener, ICheckStateListener,
           ISelectionChangedListener {

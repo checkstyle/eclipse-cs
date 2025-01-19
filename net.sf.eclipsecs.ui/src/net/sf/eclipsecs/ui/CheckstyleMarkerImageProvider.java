@@ -30,7 +30,6 @@ import net.sf.eclipsecs.core.builder.CheckstyleMarker;
 /**
  * Image provider for Checkstyle markers.
  *
- * @author Lars Ködderitzsch
  */
 public class CheckstyleMarkerImageProvider implements IAnnotationImageProvider {
 

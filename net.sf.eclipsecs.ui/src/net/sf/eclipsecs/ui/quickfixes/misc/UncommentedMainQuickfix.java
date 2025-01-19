@@ -33,7 +33,6 @@ import net.sf.eclipsecs.ui.quickfixes.Messages;
  * Quickfix implementation which removes uncommented main methods (debugging leftovers) from the
  * code.
  *
- * @author Lars Ködderitzsch
  */
 public class UncommentedMainQuickfix extends AbstractASTResolution {
 

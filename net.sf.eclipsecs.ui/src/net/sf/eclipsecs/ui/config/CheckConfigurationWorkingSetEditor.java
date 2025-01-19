@@ -76,7 +76,6 @@ import net.sf.eclipsecs.ui.util.table.ITableSettingsProvider;
 /**
  * This class provides the editor GUI for a check configuration working set.
  *
- * @author Lars Ködderitzsch
  */
 public class CheckConfigurationWorkingSetEditor {
 
@@ -557,7 +556,6 @@ public class CheckConfigurationWorkingSetEditor {
    * Label provider for the check configuration table. Implements also support for table sorting and
    * storing of the table settings.
    *
-   * @author Lars Ködderitzsch
    */
   private class ConfigurationLabelProvider extends CheckConfigurationLabelProvider
           implements ITableLabelProvider, ITableComparableProvider, ITableSettingsProvider {
@@ -628,7 +626,6 @@ public class CheckConfigurationWorkingSetEditor {
   /**
    * Controller for this page.
    *
-   * @author Lars Ködderitzsch
    */
   private class PageController
           implements SelectionListener, IDoubleClickListener, ISelectionChangedListener {

@@ -27,8 +27,6 @@ import com.google.common.base.MoreObjects;
 /**
  * Represents a configuration property who's value must be resolved.
  *
- * @author David Schneider
- * @author Lars Ködderitzsch
  */
 public class ResolvableProperty implements Cloneable {
 

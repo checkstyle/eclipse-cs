@@ -34,7 +34,6 @@ import net.sf.eclipsecs.ui.quickfixes.Messages;
  * Quickfix implementation that add a missing default statement to a switch
  * case.
  *
- * @author Levon Saldamli
  */
 public class MissingSwitchDefaultQuickfix extends AbstractASTResolution {
 

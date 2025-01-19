@@ -35,7 +35,6 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
  * Base implementation of a check configuration. Leaves the specific tasks to the concrete
  * subclasses.
  *
- * @author Lars Ködderitzsch
  */
 public class CheckConfiguration implements ICheckConfiguration {
 
