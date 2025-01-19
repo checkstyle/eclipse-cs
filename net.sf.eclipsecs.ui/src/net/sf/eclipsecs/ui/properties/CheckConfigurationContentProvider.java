@@ -34,7 +34,6 @@ import net.sf.eclipsecs.core.projectconfig.ProjectConfigurationWorkingCopy;
 /**
  * Content provider implementation that provides check configurations.
  *
- * @author Lars Ködderitzsch
  */
 class CheckConfigurationContentProvider implements IStructuredContentProvider {
 

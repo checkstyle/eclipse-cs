@@ -35,7 +35,6 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
  * The Class for transforming the checkstyle-rules into eclipse-formatter-settings. A new
  * formatter-profile gets created.
  *
- * @author Lukas Frena
  */
 public class CheckstyleTransformer {
   /** An object containing all settings for the eclipse-formatter. */

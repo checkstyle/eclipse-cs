@@ -29,7 +29,6 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
 /**
  * Interface for a configuration type.
  *
- * @author Lars Ködderitzsch
  */
 public interface IConfigurationType {
 

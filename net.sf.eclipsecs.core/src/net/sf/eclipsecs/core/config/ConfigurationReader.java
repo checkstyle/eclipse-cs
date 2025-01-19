@@ -43,7 +43,6 @@ import net.sf.eclipsecs.core.util.XMLUtil;
 /**
  * Utility class to read a checkstyle configuration and transform to the plugins module objects.
  *
- * @author Lars Ködderitzsch
  */
 public final class ConfigurationReader {
 

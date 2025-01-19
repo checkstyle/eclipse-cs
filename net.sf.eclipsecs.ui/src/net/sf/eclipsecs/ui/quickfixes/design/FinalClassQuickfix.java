@@ -37,8 +37,6 @@ import net.sf.eclipsecs.ui.quickfixes.modifier.ModifierOrderQuickfix;
 /**
  * Quickfix implementation which adds the final modifiers a method declaration.
  *
- * @author Levon Saldamli
- * @author Lars Ködderitzsch
  */
 public class FinalClassQuickfix extends AbstractASTResolution {
 

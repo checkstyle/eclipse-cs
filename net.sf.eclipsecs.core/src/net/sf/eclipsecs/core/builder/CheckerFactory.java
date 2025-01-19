@@ -55,7 +55,6 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
 /**
  * Factory class to create (and cache) checker objects.
  *
- * @author Lars Ködderitzsch
  */
 public final class CheckerFactory {
 

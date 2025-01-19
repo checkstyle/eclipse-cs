@@ -39,7 +39,6 @@ import net.sf.eclipsecs.core.projectconfig.filters.IFilter;
  * Represents the configuration for a project. Contains the file sets configured for the project
  * plus the additional filters.
  *
- * @author Lars Ködderitzsch
  */
 public class ProjectConfiguration implements Cloneable, IProjectConfiguration {
 

@@ -37,7 +37,6 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
 /**
  * Working set implementation that manages local configurations configured for the project.
  *
- * @author Lars Ködderitzsch
  */
 public class LocalCheckConfigurationWorkingSet implements ICheckConfigurationWorkingSet {
 

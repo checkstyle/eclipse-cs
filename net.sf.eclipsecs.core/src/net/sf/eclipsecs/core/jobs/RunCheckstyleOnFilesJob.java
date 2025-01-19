@@ -47,7 +47,6 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
 /**
  * Job that invokes Checkstyle on a list of workspace files.
  *
- * @author Lars Ködderitzsch
  */
 public class RunCheckstyleOnFilesJob extends AbstractCheckJob {
 

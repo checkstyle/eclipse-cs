@@ -65,7 +65,6 @@ import net.sf.eclipsecs.ui.config.configtypes.ICheckConfigurationEditor;
  * Dialog to show/edit the properties (name, location, description) of a check
  * configuration. Also used to create new check configurations.
  *
- * @author Lars Ködderitzsch
  */
 public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
 

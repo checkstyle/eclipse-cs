@@ -42,7 +42,6 @@ import net.sf.eclipsecs.ui.quickfixes.Messages;
  * Quickfix implementation which removes the explicit default initialization of
  * a class or object member.
  *
- * @author Philip Graf
  */
 public class ExplicitInitializationQuickfix extends AbstractASTResolution {
 

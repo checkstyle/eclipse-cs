@@ -29,7 +29,6 @@ import net.sf.eclipsecs.core.config.meta.MetadataFactory;
 /**
  * Special module logic for the TreeWalker module.
  *
- * @author Lars Ködderitzsch
  */
 public class TreeWalkerModuleSaveFilter implements ISaveFilter {
 

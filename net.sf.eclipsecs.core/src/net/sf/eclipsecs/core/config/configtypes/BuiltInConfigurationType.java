@@ -36,7 +36,6 @@ import net.sf.eclipsecs.core.config.ICheckConfiguration;
  * Implementation of the configuration type for a built in check configuration, that is located
  * inside the plugin.
  *
- * @author Lars Ködderitzsch
  */
 public class BuiltInConfigurationType extends ConfigurationType {
 

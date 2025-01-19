@@ -34,7 +34,6 @@ import net.sf.eclipsecs.core.builder.CheckerFactory;
  * Simple handle which clears the CheckerFactory caches in order to force reload of supplementary
  * Checkstyle configuration files (suppressions, import control files etc.).
  *
- * @author Lars Ködderitzsch
  */
 public class PurgeCachesAction extends AbstractHandler implements IWorkbenchWindowActionDelegate {
 

@@ -32,7 +32,6 @@ import net.sf.eclipsecs.core.config.meta.RuleMetadata;
 /**
  * Object representing a module from a checkstyle configuration. Can be augmented with meta data.
  *
- * @author Lars Ködderitzsch
  */
 public class Module implements Cloneable {
 

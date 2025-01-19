@@ -47,7 +47,6 @@ import net.sf.eclipsecs.ui.config.CheckConfigurationPropertiesDialog;
  * Implementation of a location editor to input a remote location. Contains just
  * a text field to input the URL.
  *
- * @author Lars Ködderitzsch
  */
 public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
 

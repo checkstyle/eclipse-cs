@@ -32,7 +32,6 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
  * Interface for the part of the checkstyle plugin properties page that
  * configures file sets for the project.
  *
- * @author Lars Ködderitzsch
  */
 public interface IFileSetsEditor {
   /**

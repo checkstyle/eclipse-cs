@@ -34,7 +34,6 @@ import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
  * child resolvers are asked to resolve the properties in the order they are added. This
  * PropertyResolver adds the property chaining feature, to allow properties within properties.
  *
- * @author Lars Ködderitzsch
  */
 public class MultiPropertyResolver implements PropertyResolver, IContextAware {
 

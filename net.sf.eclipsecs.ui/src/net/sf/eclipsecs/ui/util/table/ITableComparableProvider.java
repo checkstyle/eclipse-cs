@@ -26,7 +26,6 @@ package net.sf.eclipsecs.ui.util.table;
  * ITableLabelProvider except that other comparable objects than Strings can be
  * returned.
  *
- * @author Lars Ködderitzsch
  */
 public interface ITableComparableProvider {
 

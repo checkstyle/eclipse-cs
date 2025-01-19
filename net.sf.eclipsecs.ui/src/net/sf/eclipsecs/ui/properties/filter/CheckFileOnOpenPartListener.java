@@ -71,7 +71,6 @@ import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
  * opened file if the UnOpenedFileFilter is active.
  *
  * @see <a href="https://sourceforge.net/p/eclipse-cs/feature-requests/93/">feature request</a>
- * @author Lars Ködderitzsch
  * @implNote To avoid the restricted access, we would need to copy 2 constants of
  *           {@link IWorkbenchConstants}. However, by referencing those we can verify their
  *           existence more easily by simply switching the target platform to a current version.

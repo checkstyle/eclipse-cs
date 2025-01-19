@@ -42,7 +42,6 @@ import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
  * This subclass of <code>TableViewer</code> adds easier sorting support and
  * support for storing table settings (column width, sorter state).
  *
- * @author Lars Ködderitzsch
  */
 public class EnhancedTableViewer extends TableViewer {
   //
@@ -312,7 +311,6 @@ public class EnhancedTableViewer extends TableViewer {
   /**
    * Listener for header clicks and resize events.
    *
-   * @author Lars Ködderitzsch
    */
   private class TableListener implements SelectionListener, ControlListener {
 
@@ -360,7 +358,6 @@ public class EnhancedTableViewer extends TableViewer {
    * Sorter implementation that uses the values provided by the comparable
    * provider to sort the table.
    *
-   * @author Lars Ködderitzsch
    */
   private class TableSorter extends ViewerComparator {
 

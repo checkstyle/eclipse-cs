@@ -29,7 +29,6 @@ import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
  * Wrapperclass for converting the checkstyle-rule FinalLocalVariableWrap to appropriate
  * eclipse-formatter-rules.
  *
- * @author Lukas Frena
  */
 public class FinalLocalVariableTransformer extends CTransformationClass {
   @Override

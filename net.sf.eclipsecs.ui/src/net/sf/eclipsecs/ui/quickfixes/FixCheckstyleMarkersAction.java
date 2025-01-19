@@ -33,7 +33,6 @@ import org.eclipse.ui.IWorkbenchPart;
  * This action tries to run all quickfixes for markers on a selected compilation
  * unit.
  *
- * @author Lars Ködderitzsch
  */
 public class FixCheckstyleMarkersAction implements IObjectActionDelegate {
 

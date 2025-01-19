@@ -502,7 +502,6 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
   /**
    * Controller for this page.
    *
-   * @author Lars Ködderitzsch
    */
   private class PageController extends SelectionAdapter {
 

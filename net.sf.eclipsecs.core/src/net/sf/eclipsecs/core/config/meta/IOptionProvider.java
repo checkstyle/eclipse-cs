@@ -27,7 +27,6 @@ import java.util.List;
  * which would be too difficult to handle in metadata. For instance this is true for module metadata
  * that need all token types as options.
  *
- * @author Lars Ködderitzsch
  */
 public interface IOptionProvider {
 

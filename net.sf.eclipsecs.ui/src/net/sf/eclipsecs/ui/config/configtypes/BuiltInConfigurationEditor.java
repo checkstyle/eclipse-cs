@@ -38,7 +38,6 @@ import net.sf.eclipsecs.ui.config.CheckConfigurationPropertiesDialog;
  * Implementation of a location editor with only a not editable text field. This
  * is used to just show the location.
  *
- * @author Lars Ködderitzsch
  */
 public class BuiltInConfigurationEditor implements ICheckConfigurationEditor {
 

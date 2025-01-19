@@ -26,7 +26,6 @@ import org.eclipse.core.resources.ResourceAttributes;
 /**
  * Implementation of a filter that filters all ressources that are write protected.
  *
- * @author Lars Ködderitzsch
  */
 public class WriteProtectedFilter extends AbstractFilter {
 

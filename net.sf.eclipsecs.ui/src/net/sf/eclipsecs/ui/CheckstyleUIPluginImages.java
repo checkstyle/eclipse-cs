@@ -34,7 +34,6 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 /**
  * Manages and caches images for the plugin.
  *
- * @author Lars Ködderitzsch
  */
 public enum CheckstyleUIPluginImages {
 

@@ -47,7 +47,6 @@ import net.sf.eclipsecs.ui.quickfixes.Messages;
 /**
  * Quickfix implementation that orders modifiers into the suggested order by the JLS.
  *
- * @author Lars Ködderitzsch
  */
 public class ModifierOrderQuickfix extends AbstractASTResolution {
 

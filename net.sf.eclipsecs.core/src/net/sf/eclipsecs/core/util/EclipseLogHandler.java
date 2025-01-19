@@ -37,7 +37,6 @@ import net.sf.eclipsecs.core.Messages;
  * log events that get directly passed into the internal eclipse logging.<br/>
  * This class act as bridge from java.util.logging to eclipse logging.
  *
- * @author Lars Ködderitzsch
  */
 public class EclipseLogHandler extends Handler {
 

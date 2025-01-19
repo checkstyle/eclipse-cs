@@ -226,8 +226,6 @@ public class Auditor {
    * Implementation of the audit listener. This listener creates markers on the file resources if
    * checkstyle messages are reported.
    *
-   * @author David Schneider
-   * @author Lars Ködderitzsch
    */
   private class CheckstyleAuditListener implements AuditListener {
 

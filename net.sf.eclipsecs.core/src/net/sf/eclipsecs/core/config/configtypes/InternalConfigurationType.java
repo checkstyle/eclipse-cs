@@ -36,7 +36,6 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
  * Implementation of the configuration type for a internal check configuration, that is located
  * inside the plugin.
  *
- * @author Lars Ködderitzsch
  */
 public class InternalConfigurationType extends ConfigurationType {
 

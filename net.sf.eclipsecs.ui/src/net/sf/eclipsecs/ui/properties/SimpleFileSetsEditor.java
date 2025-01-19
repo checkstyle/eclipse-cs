@@ -58,7 +58,6 @@ import net.sf.eclipsecs.ui.config.CheckConfigurationViewerSorter;
  * Simple file sets editor producing only one file set that contains all files. Only the check
  * configuration can be chosen.
  *
- * @author Lars Ködderitzsch
  */
 public class SimpleFileSetsEditor implements IFileSetsEditor {
 
@@ -185,7 +184,6 @@ public class SimpleFileSetsEditor implements IFileSetsEditor {
   /**
    * Controller for this file set editor.
    *
-   * @author Lars Ködderitzsch
    */
   private class Controller implements SelectionListener, ISelectionChangedListener {
 

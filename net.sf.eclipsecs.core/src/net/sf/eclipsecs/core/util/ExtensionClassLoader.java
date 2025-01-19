@@ -37,7 +37,6 @@ import org.osgi.framework.Bundle;
  * Classloader implementation which can load classes and resources from bundles implementing a
  * specific extension point.
  *
- * @author Lars Ködderitzsch
  */
 public class ExtensionClassLoader extends ClassLoader {
 

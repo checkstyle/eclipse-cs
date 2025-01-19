@@ -61,8 +61,6 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
 /**
  * Project builder for Checkstyle plug-in.
  *
- * @author David Schneider
- * @author Lars Ködderitzsch
  */
 public class CheckstyleBuilder extends IncrementalProjectBuilder {
 

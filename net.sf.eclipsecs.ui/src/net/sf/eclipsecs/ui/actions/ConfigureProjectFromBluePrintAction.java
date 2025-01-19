@@ -54,7 +54,6 @@ import net.sf.eclipsecs.ui.Messages;
  * Action to configure one ore more projects at once by using another project as
  * blueprint.
  *
- * @author Lars Ködderitzsch
  */
 public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegate {
 
@@ -109,7 +108,6 @@ public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegat
    * Job implementation that configures several projects from a blueprint
    * project.
    *
-   * @author Lars Ködderitzsch
    */
   private static class BulkConfigureJob extends WorkspaceJob {
 

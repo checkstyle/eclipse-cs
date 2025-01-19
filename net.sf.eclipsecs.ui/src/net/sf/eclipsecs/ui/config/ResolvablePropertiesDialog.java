@@ -70,7 +70,6 @@ import net.sf.eclipsecs.ui.util.table.ITableSettingsProvider;
  * Dialog to show/edit the properties (name, location, description) of a check
  * configuration. Also used to create new check configurations.
  *
- * @author Lars Ködderitzsch
  */
 public class ResolvablePropertiesDialog extends TitleAreaDialog {
 
@@ -293,7 +292,6 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
   /**
    * Controller for this dialog.
    *
-   * @author Lars Ködderitzsch
    */
   private class Controller implements SelectionListener, IDoubleClickListener, KeyListener {
 
@@ -437,7 +435,6 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
    * Label provider for the check configuration table. Implements also support
    * for table sorting and storing of the table settings.
    *
-   * @author Lars Ködderitzsch
    */
   private class PropertiesLabelProvider extends LabelProvider
           implements ITableLabelProvider, ITableComparableProvider, ITableSettingsProvider {

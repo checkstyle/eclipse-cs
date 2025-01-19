@@ -35,7 +35,6 @@ import net.sf.eclipsecs.ui.quickfixes.Messages;
  * Quickfix implementation that removes an empty statement (unneccessary
  * semicolon).
  *
- * @author Lars Ködderitzsch
  */
 public class EmptyStatementQuickfix extends AbstractASTResolution {
 

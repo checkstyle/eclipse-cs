@@ -36,8 +36,6 @@ import net.sf.eclipsecs.ui.quickfixes.Messages;
  * Quickfix implementation which adds final modifiers to parameters in method
  * declarations.
  *
- * @author Levon Saldamli
- * @author Lars Ködderitzsch
  */
 public class FinalLocalVariableQuickfix extends AbstractASTResolution {
 

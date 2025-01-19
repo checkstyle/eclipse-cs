@@ -43,7 +43,6 @@ import net.sf.eclipsecs.ui.quickfixes.Messages;
  * Quickfix implementation that replaces a string literal comparison using == or
  * != with a proper equals() comparison.
  *
- * @author Lars Ködderitzsch
  */
 public class StringLiteralEqualityQuickfix extends AbstractASTResolution {
 

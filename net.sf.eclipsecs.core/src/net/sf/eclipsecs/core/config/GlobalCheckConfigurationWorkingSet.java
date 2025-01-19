@@ -52,7 +52,6 @@ import net.sf.eclipsecs.core.util.XMLUtil;
  * Working set implementation that manages global configurations configured for the Eclipse
  * workspace.
  *
- * @author Lars Ködderitzsch
  */
 public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWorkingSet {
 

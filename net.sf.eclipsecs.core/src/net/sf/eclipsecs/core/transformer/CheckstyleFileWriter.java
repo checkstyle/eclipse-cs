@@ -31,7 +31,6 @@ import net.sf.eclipsecs.core.util.CheckstyleLog;
 /**
  * Class for writing the checkstyle configuration to a xml-file.
  *
- * @author Lukas Frena
  *
  */
 public class CheckstyleFileWriter {

@@ -27,7 +27,6 @@ import net.sf.eclipsecs.core.config.Module;
 /**
  * Interface to implement special module logic.
  *
- * @author Lars Ködderitzsch
  */
 public interface ISaveFilter {
 

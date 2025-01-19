@@ -31,7 +31,6 @@ import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
  * Utility class for handling strings that contain properties using the very common ${propertyName}
  * pattern. The code originally comes from the ANT project.
  *
- * @author Lars Ködderitzsch
  */
 public final class PropertyUtil {
 

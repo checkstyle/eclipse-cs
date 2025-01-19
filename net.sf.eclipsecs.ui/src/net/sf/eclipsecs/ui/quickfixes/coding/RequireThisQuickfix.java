@@ -45,7 +45,6 @@ import net.sf.eclipsecs.ui.quickfixes.Messages;
  * Quickfix implementation which adds the <code>this</code> qualifier to a field
  * access or method invocation.
  *
- * @author Philip Graf
  */
 public class RequireThisQuickfix extends AbstractASTResolution {
 

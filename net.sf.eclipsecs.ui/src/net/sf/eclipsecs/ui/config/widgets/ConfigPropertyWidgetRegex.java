@@ -160,7 +160,6 @@ public class ConfigPropertyWidgetRegex extends ConfigPropertyWidgetAbstractBase 
   /**
    * Simple key listener to test the regular expression.
    *
-   * @author Lars Ködderitzsch
    */
   private class RegexTestListener implements KeyListener {
 

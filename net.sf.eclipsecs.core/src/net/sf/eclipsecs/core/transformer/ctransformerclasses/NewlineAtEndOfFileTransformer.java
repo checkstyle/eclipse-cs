@@ -26,7 +26,6 @@ import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 /**
  * Transforms the "New Line At End Of File" checkstyle rule to the respective formatter setting.
  *
- * @author Lukas Frena
  */
 public class NewlineAtEndOfFileTransformer extends CTransformationClass {
 

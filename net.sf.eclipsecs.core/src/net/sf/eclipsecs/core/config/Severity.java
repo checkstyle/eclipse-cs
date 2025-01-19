@@ -24,7 +24,6 @@ package net.sf.eclipsecs.core.config;
  * Enumeration for Checkstyle's severity levels. The intent is to decouple highler level funtions
  * (UI) from dealing with Checkstyle code API.
  *
- * @author Lars Ködderitzsch
  */
 public enum Severity {
 

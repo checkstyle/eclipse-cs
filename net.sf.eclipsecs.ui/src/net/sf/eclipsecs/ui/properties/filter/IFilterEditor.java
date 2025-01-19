@@ -28,7 +28,6 @@ import org.eclipse.swt.widgets.Shell;
 /**
  * Interface for a filter editor.
  *
- * @author Lars Ködderitzsch
  */
 public interface IFilterEditor {
 

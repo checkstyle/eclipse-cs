@@ -28,7 +28,6 @@ import java.io.IOException;
 /**
  * Class for parsing a eclipse-formatter-configuration-file for formatter-settings.
  *
- * @author Lukas Frena
  */
 public class FormatterConfigParser {
   /** A FormatterConfiguration with all rules that will be found. */

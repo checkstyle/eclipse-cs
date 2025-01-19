@@ -39,7 +39,6 @@ import net.sf.eclipsecs.core.Messages;
  * already configured with this nature, the nature will be deconfigured. Otherwise if the project is
  * not configured with this nature, the nature will be configured for this project
  *
- * @author Lars Ködderitzsch
  */
 public class ConfigureDeconfigureNatureJob extends WorkspaceJob {
 

@@ -38,7 +38,6 @@ import net.sf.eclipsecs.ui.quickfixes.Messages;
  * Quickfix implementation that moves the default case of a switch statement to
  * the last position.
  *
- * @author Lars Ködderitzsch
  */
 public class DefaultComesLastQuickfix extends AbstractASTResolution {
 

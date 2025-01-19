@@ -43,8 +43,6 @@ import net.sf.eclipsecs.ui.util.regex.RegexCompletionProposalFactory;
 /**
  * Dialog to edit file match patterns.
  *
- * @author David Schneider
- * @author Lars Ködderitzsch
  */
 public class FileMatchPatternEditDialog extends TitleAreaDialog {
 

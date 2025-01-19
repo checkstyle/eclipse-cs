@@ -56,7 +56,6 @@ import net.sf.eclipsecs.core.util.XMLUtil;
 /**
  * A modifiable project configuration implementation.
  *
- * @author Lars Ködderitzsch
  */
 public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfiguration {
 

@@ -53,7 +53,6 @@ import net.sf.eclipsecs.ui.config.CheckConfigurationPropertiesDialog;
  * Implementation of a file based location editor. Contains a text field with
  * the config file path and a 'Browse...' button opening a file dialog.
  *
- * @author Lars Ködderitzsch
  */
 public class ExternalFileConfigurationEditor implements ICheckConfigurationEditor {
 

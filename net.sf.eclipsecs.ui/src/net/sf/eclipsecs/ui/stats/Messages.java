@@ -25,7 +25,6 @@ import org.eclipse.osgi.util.NLS;
 /**
  * Class used for i18n.
  *
- * @author Fabrice BELLINGARD
  */
 public final class Messages extends NLS {
   // CHECKSTYLE:OFF

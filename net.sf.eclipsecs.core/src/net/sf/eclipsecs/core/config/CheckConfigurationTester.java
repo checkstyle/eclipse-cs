@@ -45,7 +45,6 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
  * </ul>
  * .
  *
- * @author Lars Ködderitzsch
  */
 public class CheckConfigurationTester {
 
@@ -112,7 +111,6 @@ public class CheckConfigurationTester {
    * not being resolved by a given other property resolver. This is used to find unresolved
    * properties after all other property reolvers have been asked.
    *
-   * @author Lars Ködderitzsch
    */
   private static class MissingPropertyCollector implements PropertyResolver {
 

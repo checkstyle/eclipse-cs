@@ -47,7 +47,6 @@ import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
 /**
  * Action to run Checkstyle on one ore more projects.
  *
- * @author Lars Ködderitzsch
  */
 public class CheckSelectedFilesAction extends AbstractHandler implements IObjectActionDelegate {
 

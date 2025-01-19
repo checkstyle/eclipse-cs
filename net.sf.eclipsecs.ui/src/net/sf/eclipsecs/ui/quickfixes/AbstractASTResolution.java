@@ -64,8 +64,6 @@ import net.sf.eclipsecs.ui.Messages;
 /**
  * Abstract base class for marker resolutions using AST rewrite techniques.
  *
- * @author Lars Ködderitzsch
- * @author Philip Graf
  */
 public abstract class AbstractASTResolution extends WorkbenchMarkerResolution
         implements ICheckstyleMarkerResolution {

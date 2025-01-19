@@ -36,9 +36,6 @@ import net.sf.eclipsecs.core.util.CheckstyleLog;
  * Class for writing a new eclipse-configuration-file. Gets used by class Transformer. Two
  * eclipse-formatter-profile files gets written to the project root.
  *
- * @author Alexandros Karypidis
- * @author Lukas Frena
- * @author Lars Ködderitzsch
  */
 public class FormatterConfigWriter {
 

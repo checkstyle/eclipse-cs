@@ -34,7 +34,6 @@ import net.sf.eclipsecs.ui.Messages;
  * Support for transferring internal eclipse-cs workspace settings to another
  * workspace.
  *
- * @author Lars Ködderitzsch
  */
 public class CheckstyleSettingsTransfer extends SettingsTransfer {
 

@@ -42,7 +42,6 @@ import net.sf.eclipsecs.core.util.XMLUtil;
 /**
  * Writes the modules of a checkstyle configuration to an output stream.
  *
- * @author Lars Ködderitzsch
  */
 public final class ConfigurationWriter {
 

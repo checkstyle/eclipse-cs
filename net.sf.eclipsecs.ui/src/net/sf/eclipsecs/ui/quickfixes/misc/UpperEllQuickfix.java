@@ -33,7 +33,6 @@ import net.sf.eclipsecs.ui.quickfixes.Messages;
  * Quickfix implementation which changes lowercase 'l' occurrances in long
  * literals into uppercase 'L' to enchance readability.
  *
- * @author Lars Ködderitzsch
  */
 public class UpperEllQuickfix extends AbstractASTResolution {
 

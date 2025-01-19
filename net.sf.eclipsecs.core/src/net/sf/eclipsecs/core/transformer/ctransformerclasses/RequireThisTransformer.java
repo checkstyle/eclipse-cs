@@ -27,7 +27,6 @@ import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
  * Wrapperclass for converting the checkstyle-rule RequireThis to appropriate
  * eclipse-formatter-rules.
  *
- * @author Lukas Frena
  */
 public class RequireThisTransformer extends CTransformationClass {
   @Override

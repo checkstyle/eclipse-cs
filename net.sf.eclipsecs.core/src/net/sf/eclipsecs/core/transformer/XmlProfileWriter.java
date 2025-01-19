@@ -45,7 +45,6 @@ import net.sf.eclipsecs.core.util.CheckstyleLog;
 /**
  * Utility class to write eclipse formatter/cleanup profile XML files.
  *
- * @author Alexandros Karypidis
  *
  */
 public final class XmlProfileWriter {

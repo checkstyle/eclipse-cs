@@ -185,7 +185,6 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
   /**
    * Label provider to translate checkstyle tokens into readable form.
    *
-   * @author Lars Ködderitzsch
    */
   private class TokenLabelProvider extends LabelProvider {
 
