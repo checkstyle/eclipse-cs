@@ -122,8 +122,7 @@ public final class ConfigurationTypesUI {
     if (editorClass != null) {
 
       try {
-        ICheckConfigurationEditor editor = editorClass.getDeclaredConstructor().newInstance();
-        return editor;
+        return editorClass.getDeclaredConstructor().newInstance();
       } catch (ClassCastException | ReflectiveOperationException ex) {
         CheckstylePluginException.rethrow(ex);
       }

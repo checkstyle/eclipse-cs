@@ -109,8 +109,7 @@ public final class PluginFilterEditors {
     if (editorClass != null) {
 
       try {
-        IFilterEditor editor = editorClass.getDeclaredConstructor().newInstance();
-        return editor;
+        return editorClass.getDeclaredConstructor().newInstance();
       } catch (ClassCastException | ReflectiveOperationException | SecurityException ex) {
         CheckstylePluginException.rethrow(ex);
       }

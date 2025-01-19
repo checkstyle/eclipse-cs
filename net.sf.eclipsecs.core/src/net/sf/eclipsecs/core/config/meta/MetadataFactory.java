@@ -519,8 +519,7 @@ public final class MetadataFactory {
                 CheckstylePlugin.getPlatformLocale(), CheckstylePlugin.class.getClassLoader(),
                 new UTF8Control());
 
-        String message = resourceBundle.getString(messageKey);
-        return message;
+        return resourceBundle.getString(messageKey);
       } catch (MissingResourceException ex) {
         // let's continue to check the other alternative names
       }

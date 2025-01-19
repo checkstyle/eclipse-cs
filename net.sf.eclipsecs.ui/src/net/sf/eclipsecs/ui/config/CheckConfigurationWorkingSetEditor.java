@@ -136,8 +136,7 @@ public class CheckConfigurationWorkingSetEditor {
     //
     // Create the check configuration section of the screen.
     //
-    Composite configComposite = createCheckConfigContents(ancestor);
-    return configComposite;
+    return createCheckConfigContents(ancestor);
   }
 
   /**

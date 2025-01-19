@@ -99,8 +99,7 @@ public class ResolvableProperty implements Cloneable {
   @Override
   public ResolvableProperty clone() {
     try {
-      ResolvableProperty clone = (ResolvableProperty) super.clone();
-      return clone;
+      return (ResolvableProperty) super.clone();
     } catch (CloneNotSupportedException ex) {
       // should never happen
       throw new InternalError(ex);
