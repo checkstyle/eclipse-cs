@@ -139,7 +139,7 @@ public class ConfigPropertyMetadata {
    * @return boolean
    */
   public boolean isHidden() {
-    return ConfigPropertyType.Hidden.equals(mDatatype);
+    return ConfigPropertyType.Hidden == mDatatype;
   }
 
 }
