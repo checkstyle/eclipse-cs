@@ -9,6 +9,7 @@ environment JavaSE-17
 location "https://download.eclipse.org/releases/2022-09/202209141001/" {
 	org.eclipse.jdt.feature.group
 	org.eclipse.sdk.ide
+	org.osgi.service.component.annotations
 
 	// the following are not actually needed by eclipse-cs itself, but required to avoid
 	// unresolved dependencies of platform bundles contained in the above features
