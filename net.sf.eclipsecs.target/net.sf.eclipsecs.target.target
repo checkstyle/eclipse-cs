@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl -->
-<target name="Eclipse Checkstyle" sequenceNumber="1735410879">
+<target name="Eclipse Checkstyle" sequenceNumber="1741029769">
   <locations>
     <location includeMode="slicer" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="true" type="InstallableUnit">
       <unit id="org.eclipse.jdt.feature.group" version="3.18.1300.v20220831-1800"/>
       <unit id="org.eclipse.sdk.ide" version="4.25.0.I20220831-1800"/>
+      <unit id="org.osgi.service.component.annotations" version="1.5.0.202109301733"/>
       <unit id="org.eclipse.e4.tools.emf.ui" version="4.7.300.v20220420-0901"/>
       <unit id="org.eclipse.e4.tools.services" version="4.9.0.v20210427-1802"/>
       <unit id="org.eclipse.e4.ui.progress" version="0.3.500.v20220717-1456"/>
