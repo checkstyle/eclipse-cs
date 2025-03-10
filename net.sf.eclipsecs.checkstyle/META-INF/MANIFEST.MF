@@ -33,5 +33,5 @@ Export-Package: .,
  com.puppycrawl.tools.checkstyle.filters,
  com.puppycrawl.tools.checkstyle.utils
 Bundle-ClassPath: .,
- checkstyle-10.21.1-all.jar
+ checkstyle-10.21.2-all.jar
 Automatic-Module-Name: net.sf.eclipsecs.checkstyle

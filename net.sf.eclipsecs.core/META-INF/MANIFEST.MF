@@ -5,7 +5,7 @@ Bundle-SymbolicName: net.sf.eclipsecs.core;singleton:=true
 Bundle-Version: 10.21.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-ClassPath: .,
- lib/checkstyle-10.21.1-all.jar
+ lib/checkstyle-10.21.2-all.jar
 Bundle-Activator: net.sf.eclipsecs.core.CheckstylePlugin
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %Bundle-Vendor
