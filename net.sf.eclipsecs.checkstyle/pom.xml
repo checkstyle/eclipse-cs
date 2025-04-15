@@ -11,7 +11,7 @@
     <name>Checkstyle Core Library Plugin</name>
 
     <properties>
-        <checkstyle.version>10.21.1</checkstyle.version>
+        <checkstyle.version>10.21.2</checkstyle.version>
     </properties>
     <build>
         <plugins>

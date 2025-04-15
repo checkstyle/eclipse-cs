@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry exported="true" kind="lib" path="checkstyle-10.21.1-all.jar" sourcepath="checkstyle-checkstyle-10.21.1.zip"/>
+	<classpathentry exported="true" kind="lib" path="checkstyle-10.21.2-all.jar" sourcepath="checkstyle-checkstyle-10.21.2.zip"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-17">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
