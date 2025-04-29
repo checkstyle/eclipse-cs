@@ -2,6 +2,6 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: net.sf.eclipsecs.branding
-Bundle-Version: 10.21.3.qualifier
+Bundle-Version: 10.21.4.qualifier
 Bundle-Vendor: %Bundle-Vendor
 Automatic-Module-Name: net.sf.eclipsecs.branding
