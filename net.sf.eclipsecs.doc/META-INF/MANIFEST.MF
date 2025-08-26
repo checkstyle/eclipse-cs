@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: net.sf.eclipsecs.doc;singleton:=true
-Bundle-Version: 10.25.1.qualifier
+Bundle-Version: 10.26.0.qualifier
 Require-Bundle: org.eclipse.help;bundle-version="3.9.0"
 Bundle-Vendor: %Bundle-Vendor
 Automatic-Module-Name: net.sf.eclipsecs.doc
