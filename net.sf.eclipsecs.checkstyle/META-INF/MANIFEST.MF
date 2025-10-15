@@ -7,6 +7,9 @@ Bundle-Vendor: %Bundle-Vendor
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Export-Package: .,
+ com.google.common.base,
+ com.google.common.cache,
+ com.google.common.io,
  com.puppycrawl.tools.checkstyle,
  com.puppycrawl.tools.checkstyle.api;
   uses:="org.xml.sax.helpers,
@@ -31,7 +34,11 @@ Export-Package: .,
  com.puppycrawl.tools.checkstyle.checks.whitespace,
  com.puppycrawl.tools.checkstyle.filefilters,
  com.puppycrawl.tools.checkstyle.filters,
- com.puppycrawl.tools.checkstyle.utils
+ com.puppycrawl.tools.checkstyle.meta,
+ com.puppycrawl.tools.checkstyle.utils,
+ org.apache.commons.lang3,
+ org.codehaus.plexus.util
+Require-Bundle: org.eclipse.core.runtime
 Bundle-ClassPath: .,
  checkstyle-11.1.0-all.jar
 Automatic-Module-Name: net.sf.eclipsecs.checkstyle
