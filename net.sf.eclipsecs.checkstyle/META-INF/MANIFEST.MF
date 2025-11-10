@@ -40,5 +40,5 @@ Export-Package: .,
  org.codehaus.plexus.util
 Require-Bundle: org.eclipse.core.runtime
 Bundle-ClassPath: .,
- checkstyle-11.1.0-all.jar
+ checkstyle-12.0.0-all.jar
 Automatic-Module-Name: net.sf.eclipsecs.checkstyle
