@@ -379,6 +379,8 @@
                     <configuration>
                         <!-- make the update site self-contained by including all transitive dependencies -->
                         <includeAllDependencies>true</includeAllDependencies>
+                        <filterProvided>true</filterProvided>
+                        <addIUTargetRepositoryReferences>true</addIUTargetRepositoryReferences>
                     </configuration>
                 </plugin>
                 <!-- Disable default deployer. -->
