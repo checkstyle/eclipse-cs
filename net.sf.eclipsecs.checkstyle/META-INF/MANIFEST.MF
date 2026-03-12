@@ -38,7 +38,8 @@ Export-Package: .,
  com.puppycrawl.tools.checkstyle.utils,
  org.apache.commons.lang3,
  org.codehaus.plexus.util
-Require-Bundle: org.eclipse.core.runtime
+Require-Bundle: org.eclipse.core.runtime,
+ org.slf4j.api
 Bundle-ClassPath: .,
- checkstyle-12.1.0-all.jar
+ checkstyle-12.1.1-all.jar
 Automatic-Module-Name: net.sf.eclipsecs.checkstyle
