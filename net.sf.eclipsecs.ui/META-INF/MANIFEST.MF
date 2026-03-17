@@ -13,7 +13,7 @@ Require-Bundle: net.sf.eclipsecs.core,
  org.eclipse.help;bundle-version="3.9.0",
  org.eclipse.e4.ui.workbench;bundle-version="1.13.200"
 Service-Component: OSGI-INF/net.sf.eclipsecs.ui.ApplicationStartedHandler.xml
-Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Export-Package: net.sf.eclipsecs.ui,
  net.sf.eclipsecs.ui.properties.filter,
  net.sf.eclipsecs.ui.quickfixes

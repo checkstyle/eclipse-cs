@@ -5,7 +5,7 @@ Bundle-SymbolicName: net.sf.eclipsecs.checkstyle
 Bundle-Version: 12.3.1.qualifier
 Bundle-Vendor: %Bundle-Vendor
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Export-Package: .,
  com.google.common.base,
  com.google.common.cache,
@@ -40,5 +40,5 @@ Export-Package: .,
  org.codehaus.plexus.util
 Require-Bundle: org.eclipse.core.runtime
 Bundle-ClassPath: .,
- checkstyle-12.3.1-all.jar
+ checkstyle-13.0.0-all.jar
 Automatic-Module-Name: net.sf.eclipsecs.checkstyle
