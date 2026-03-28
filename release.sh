@@ -38,8 +38,6 @@ echo "Update net.sf.eclipsecs.doc/src/main/resources/partials/index.html"
 echo " to reflect new release version and potentially the upgraded Checkstyle core version"
 sed -i "s/Latest release ${PREV_RELEASE}/Latest release ${RELEASE}/" \
   net.sf.eclipsecs.doc/src/main/resources/partials/index.html
-sed -i "s/based on Checkstyle ${PREV_RELEASE%.*}/based on Checkstyle ${RELEASE%.*}/" \
-  net.sf.eclipsecs.doc/src/main/resources/partials/index.html
 
 echo "Create a new release notes partial page under"
 echo " net.sf.eclipsecs.doc/src/main/resources/partials/releases/ and fill it accordingly"

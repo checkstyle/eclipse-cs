@@ -4,7 +4,7 @@
 		<property name="full.version" value="${unqualifiedVersion}.${buildQualifier}" />
 
 		<property name="updates.suffix" value=".x"/>
-		<property name="main.site.composite.name" value="${site.label} All Versions" />
+		<property name="main.site.composite.name" value="${site.label} Versions 13+" />
 		<property name="child1.site.composite.name"
 			value="${site.label} ${parsedVersion.majorVersion}${updates.suffix}" />
 		<property name="child2.site.composite.name"
