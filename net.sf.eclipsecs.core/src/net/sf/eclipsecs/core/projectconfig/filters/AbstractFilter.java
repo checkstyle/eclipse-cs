@@ -118,15 +118,12 @@ public abstract class AbstractFilter implements IFilter {
 
   @Override
   public IFilter clone() {
-
-    IFilter object = null;
     try {
-      object = (IFilter) super.clone();
+      return (IFilter) super.clone();
     } catch (CloneNotSupportedException cnse) {
       // this shouldn't happen, since we are Cloneable
-      throw new InternalError();
+      throw new IllegalStateException(cnse);
     }
-    return object;
   }
 
   @Override
