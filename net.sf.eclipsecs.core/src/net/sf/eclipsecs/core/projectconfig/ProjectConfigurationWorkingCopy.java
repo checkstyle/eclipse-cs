@@ -288,27 +288,27 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
 
   @Override
   public Object clone() {
-    ProjectConfigurationWorkingCopy clone = null;
+    ProjectConfigurationWorkingCopy clone;
     try {
       clone = (ProjectConfigurationWorkingCopy) super.clone();
-      clone.fileSets = new LinkedList<>();
-      clone.setUseSimpleConfig(this.isUseSimpleConfig());
-      clone.setSyncFormatter(this.isSyncFormatter());
-
-      // clone file sets
-      for (FileSet fileSet : fileSets) {
-        clone.getFileSets().add(fileSet.clone());
-      }
-
-      // clone filters
-      List<IFilter> clonedFilters = new ArrayList<>();
-      for (IFilter filter : filters) {
-        clonedFilters.add(filter.clone());
-      }
-      clone.filters = clonedFilters;
     } catch (CloneNotSupportedException ex) {
-      throw new InternalError();
+      throw new IllegalStateException(ex);
     }
+    clone.fileSets = new LinkedList<>();
+    clone.setUseSimpleConfig(this.isUseSimpleConfig());
+    clone.setSyncFormatter(this.isSyncFormatter());
+
+    // clone file sets
+    for (FileSet fileSet : fileSets) {
+      clone.getFileSets().add(fileSet.clone());
+    }
+
+    // clone filters
+    List<IFilter> clonedFilters = new ArrayList<>();
+    for (IFilter filter : filters) {
+      clonedFilters.add(filter.clone());
+    }
+    clone.filters = clonedFilters;
 
     return clone;
   }
