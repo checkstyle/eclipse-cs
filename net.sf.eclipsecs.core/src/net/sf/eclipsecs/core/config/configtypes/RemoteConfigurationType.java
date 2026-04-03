@@ -35,6 +35,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IPath;
@@ -128,7 +129,7 @@ public class RemoteConfigurationType extends ConfigurationType {
       data.setCheckConfigFileBytes(configurationFileData);
 
       // get the properties bundle
-      byte[] additionalPropertiesBytes = null;
+      Optional<byte[]> additionalPropertiesBytes = Optional.empty();
       if (originalFileSuccess) {
         additionalPropertiesBytes = getAdditionPropertiesBundleBytes(
                 data.getResolvedConfigFileURL());
@@ -136,7 +137,7 @@ public class RemoteConfigurationType extends ConfigurationType {
         additionalPropertiesBytes = getBytesFromCacheBundleFile(checkConfiguration);
       }
 
-      data.setAdditionalPropertyBundleBytes(additionalPropertiesBytes);
+      additionalPropertiesBytes.ifPresent(data::setAdditionalPropertyBundleBytes);
 
       // get the property resolver
       final PropertyResolver resolver = getPropertyResolver(checkConfiguration, data);
@@ -144,7 +145,8 @@ public class RemoteConfigurationType extends ConfigurationType {
 
       // write to cache file
       if (originalFileSuccess && useCacheFile) {
-        writeToCacheFile(checkConfiguration, configurationFileData, additionalPropertiesBytes);
+        writeToCacheFile(checkConfiguration, configurationFileData,
+                additionalPropertiesBytes.orElse(null));
       }
 
     }
@@ -229,13 +231,12 @@ public class RemoteConfigurationType extends ConfigurationType {
    * @throws IOException
    *           error getting the stream (file does not exist)
    */
-  private byte[] getBytesFromCacheBundleFile(ICheckConfiguration checkConfig) {
-
+  private Optional<byte[]> getBytesFromCacheBundleFile(ICheckConfiguration checkConfig) {
     String cacheFileLocation = checkConfig.getAdditionalData().get(KEY_CACHE_PROPS_FILE_LOCATION);
 
     // bug 1748626
     if (cacheFileLocation == null) {
-      return null;
+      return Optional.empty();
     }
 
     try {
@@ -246,13 +247,13 @@ public class RemoteConfigurationType extends ConfigurationType {
       URL configURL = cacheFile.toURI().toURL();
       URLConnection connection = configURL.openConnection();
 
-      return getBytesFromURLConnection(connection);
+      return Optional.of(getBytesFromURLConnection(connection));
     } catch (IOException ex) {
       // we won't load the bundle then
       // disabled logging bug #1647602
       // CheckstyleLog.log(ioe);
     }
-    return null;
+    return Optional.empty();
   }
 
   private void writeToCacheFile(ICheckConfiguration checkConfig, byte[] configFileBytes,
@@ -290,9 +291,6 @@ public class RemoteConfigurationType extends ConfigurationType {
 
   @Override
   protected byte[] getBytesFromURLConnection(URLConnection connection) throws IOException {
-
-    byte[] configurationFileData = null;
-
     // set timeouts - bug 2941010
     connection.setConnectTimeout(10000);
     connection.setReadTimeout(10000);
@@ -322,10 +320,8 @@ public class RemoteConfigurationType extends ConfigurationType {
     }
 
     try (InputStream in = connection.getInputStream()) {
-      configurationFileData = ByteStreams.toByteArray(in);
+      return ByteStreams.toByteArray(in);
     }
-
-    return configurationFileData;
   }
 
   /**

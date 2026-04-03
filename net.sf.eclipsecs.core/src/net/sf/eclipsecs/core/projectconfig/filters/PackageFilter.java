@@ -78,10 +78,6 @@ public class PackageFilter extends AbstractFilter {
 
   @Override
   public void setFilterData(List<String> filterData) {
-    if (filterData == null) {
-      mData = new ArrayList<>();
-    }
-
     mData = filterData;
 
     if (mData.contains(RECURSE_OFF_MARKER)) {

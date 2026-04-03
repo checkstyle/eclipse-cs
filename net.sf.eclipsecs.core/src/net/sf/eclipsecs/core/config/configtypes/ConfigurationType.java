@@ -27,6 +27,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
@@ -142,9 +143,8 @@ public abstract class ConfigurationType implements IConfigurationType {
       data.setCheckConfigFileBytes(configurationFileData);
 
       // get the properties bundle
-      byte[] additionalPropertiesBytes = getAdditionPropertiesBundleBytes(
-              data.getResolvedConfigFileURL());
-      data.setAdditionalPropertyBundleBytes(additionalPropertiesBytes);
+      getAdditionPropertiesBundleBytes(data.getResolvedConfigFileURL())
+              .ifPresent(data::setAdditionalPropertyBundleBytes);
 
       // get the property resolver
       PropertyResolver resolver = getPropertyResolver(checkConfiguration, data);
@@ -157,7 +157,7 @@ public abstract class ConfigurationType implements IConfigurationType {
     return data;
   }
 
-  protected byte[] getAdditionPropertiesBundleBytes(URL checkConfigURL) {
+  protected Optional<byte[]> getAdditionPropertiesBundleBytes(URL checkConfigURL) {
 
     String location = checkConfigURL.toString();
 
@@ -173,17 +173,16 @@ public abstract class ConfigurationType implements IConfigurationType {
     propsLocation = propsLocation + ".properties"; //$NON-NLS-1$
 
     try {
-
       URL propertyFileURL = new URL(propsLocation);
       URLConnection connection = propertyFileURL.openConnection();
 
-      return getBytesFromURLConnection(connection);
+      return Optional.of(getBytesFromURLConnection(connection));
     } catch (IOException ex) {
       // we won't load the bundle then
       // disabled logging bug #1647602
       // CheckstyleLog.log(ioe);
     }
-    return null;
+    return Optional.empty();
   }
 
   /**
@@ -225,14 +224,9 @@ public abstract class ConfigurationType implements IConfigurationType {
   }
 
   protected byte[] getBytesFromURLConnection(URLConnection connection) throws IOException {
-
-    byte[] configurationFileData = null;
-
     try (InputStream in = connection.getInputStream()) {
-      configurationFileData = ByteStreams.toByteArray(in);
+      return ByteStreams.toByteArray(in);
     }
-
-    return configurationFileData;
   }
 
   @Override

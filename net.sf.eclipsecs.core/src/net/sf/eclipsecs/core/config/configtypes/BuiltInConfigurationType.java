@@ -21,6 +21,7 @@
 package net.sf.eclipsecs.core.config.configtypes;
 
 import java.net.URL;
+import java.util.Optional;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
@@ -63,10 +64,10 @@ public class BuiltInConfigurationType extends ConfigurationType {
   }
 
   @Override
-  protected byte[] getAdditionPropertiesBundleBytes(URL checkConfigURL) {
-    // just returns null since additional property file is not needed nor
+  protected Optional<byte[]> getAdditionPropertiesBundleBytes(URL checkConfigURL) {
+    // just returns empty since additional property file is not needed nor
     // supported
-    return null;
+    return Optional.empty();
   }
 
   @Override

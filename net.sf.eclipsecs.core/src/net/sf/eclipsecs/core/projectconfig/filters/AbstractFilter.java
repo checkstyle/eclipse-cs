@@ -20,6 +20,7 @@
 
 package net.sf.eclipsecs.core.projectconfig.filters;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -103,7 +104,7 @@ public abstract class AbstractFilter implements IFilter {
   @Override
   public List<String> getFilterData() {
     // NOOP
-    return null;
+    return Collections.emptyList();
   }
 
   @Override
