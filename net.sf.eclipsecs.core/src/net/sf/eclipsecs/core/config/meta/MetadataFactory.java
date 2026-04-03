@@ -152,6 +152,51 @@ public final class MetadataFactory {
   }
 
   /**
+   * Creates a set of generic metadata for a module that has no metadata delivered with the plugin.
+   *
+   * @param module
+   *          the module
+   * @return the generic metadata built
+   */
+  public static RuleMetadata createGenericMetadata(Module module) {
+
+    String parent = null;
+    try {
+
+      Class<?> checkClass = CheckstylePlugin.getDefault().getAddonExtensionClassLoader()
+              .loadClass(module.getName());
+
+      Object moduleInstance = checkClass.getDeclaredConstructor().newInstance();
+
+      if (moduleInstance instanceof AbstractFileSetCheck) {
+        parent = XMLTags.CHECKER_MODULE;
+      } else {
+        parent = XMLTags.TREEWALKER_MODULE;
+      }
+    } catch (Exception ex) {
+      // Ok we tried... default to TreeWalker
+      parent = XMLTags.TREEWALKER_MODULE;
+    }
+
+    RuleGroupMetadata otherGroup = getRuleGroupMetadata(XMLTags.OTHER_GROUP);
+    RuleMetadata ruleMeta = new RuleMetadata(module.getName(), module.getName(), parent,
+            MetadataFactory.getDefaultSeverity(), false, true, true, false, otherGroup);
+    module.setMetaData(ruleMeta);
+    sRuleMetadata.put(ruleMeta.getInternalName(), ruleMeta);
+
+    List<ConfigProperty> properties = module.getProperties();
+    int size = properties != null ? properties.size() : 0;
+    for (int i = 0; i < size; i++) {
+
+      ConfigProperty property = properties.get(i);
+      ConfigPropertyMetadata meta = new ConfigPropertyMetadata(ConfigPropertyType.String,
+              property.getName(), null, null);
+      property.setMetaData(meta);
+    }
+    return ruleMeta;
+  }
+
+  /**
    * Create metadata for modules not present in the previously eclipse provided metadata.
    * Work in progress.
    *
@@ -252,51 +297,6 @@ public final class MetadataFactory {
     }
     return modifiedConfigPropertyMetadata;
 
-  }
-
-  /**
-   * Creates a set of generic metadata for a module that has no metadata delivered with the plugin.
-   *
-   * @param module
-   *          the module
-   * @return the generic metadata built
-   */
-  public static RuleMetadata createGenericMetadata(Module module) {
-
-    String parent = null;
-    try {
-
-      Class<?> checkClass = CheckstylePlugin.getDefault().getAddonExtensionClassLoader()
-              .loadClass(module.getName());
-
-      Object moduleInstance = checkClass.getDeclaredConstructor().newInstance();
-
-      if (moduleInstance instanceof AbstractFileSetCheck) {
-        parent = XMLTags.CHECKER_MODULE;
-      } else {
-        parent = XMLTags.TREEWALKER_MODULE;
-      }
-    } catch (Exception ex) {
-      // Ok we tried... default to TreeWalker
-      parent = XMLTags.TREEWALKER_MODULE;
-    }
-
-    RuleGroupMetadata otherGroup = getRuleGroupMetadata(XMLTags.OTHER_GROUP);
-    RuleMetadata ruleMeta = new RuleMetadata(module.getName(), module.getName(), parent,
-            MetadataFactory.getDefaultSeverity(), false, true, true, false, otherGroup);
-    module.setMetaData(ruleMeta);
-    sRuleMetadata.put(ruleMeta.getInternalName(), ruleMeta);
-
-    List<ConfigProperty> properties = module.getProperties();
-    int size = properties != null ? properties.size() : 0;
-    for (int i = 0; i < size; i++) {
-
-      ConfigProperty property = properties.get(i);
-      ConfigPropertyMetadata meta = new ConfigPropertyMetadata(ConfigPropertyType.String,
-              property.getName(), null, null);
-      property.setMetaData(meta);
-    }
-    return ruleMeta;
   }
 
   /**
