@@ -149,7 +149,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
     mSeverityCombo.setLabelProvider(new LabelProvider() {
       @Override
       public String getText(Object element) {
-        return ((Severity) element).name();
+        return ((Severity) element).toXmlValue();
       }
     });
     mSeverityCombo.getControl().setLayoutData(new GridData());

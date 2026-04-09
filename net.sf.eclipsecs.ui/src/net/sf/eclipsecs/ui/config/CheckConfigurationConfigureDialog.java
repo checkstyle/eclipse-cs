@@ -597,7 +597,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
             module.setSeverity(module.getMetaData().getDefaultSeverityLevel());
           }
         } else {
-          module.setSeverity(Severity.ignore);
+          module.setSeverity(Severity.IGNORE);
         }
         mIsDirty = true;
         mTableViewer.refresh(module, true);
@@ -781,12 +781,12 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
       for (int i = 0; i < size; i++) {
         Module module = mModules.get(i);
         if (mConfigurable) {
-          mTableViewer.setChecked(module, !Severity.ignore.equals(module.getSeverity())
+          mTableViewer.setChecked(module, !Severity.IGNORE.equals(module.getSeverity())
                   || !module.getMetaData().hasSeverity());
         } else {
-          mTableViewer.setChecked(module, !Severity.ignore.equals(module.getSeverity())
+          mTableViewer.setChecked(module, !Severity.IGNORE.equals(module.getSeverity())
                   || !module.getMetaData().hasSeverity());
-          mTableViewer.setGrayed(module, !Severity.ignore.equals(module.getSeverity()));
+          mTableViewer.setGrayed(module, !Severity.IGNORE.equals(module.getSeverity()));
         }
       }
     }
@@ -962,7 +962,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
             text = module.getName() != null ? module.getName() : "";
             break;
           case 2:
-            text = module.getSeverity() != null ? module.getSeverity().name() : "";
+            text = module.getSeverity() != null ? module.getSeverity().toXmlValue() : "";
             break;
           case 3:
             text = module.getComment() != null ? module.getComment() : "";
@@ -978,7 +978,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
     @Override
     public Comparable<?> getComparableValue(Object element, int col) {
       if (col == 0 && element instanceof Module) {
-        return Severity.ignore.equals(((Module) element).getSeverity()) ? Integer.valueOf(0)
+        return Severity.IGNORE.equals(((Module) element).getSeverity()) ? Integer.valueOf(0)
                 : Integer.valueOf(1);
       }
 

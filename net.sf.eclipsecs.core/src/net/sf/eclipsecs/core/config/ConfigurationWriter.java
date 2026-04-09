@@ -159,11 +159,11 @@ public final class ConfigurationWriter {
 
     // Write severity only if it differs from the parents severity
     Severity severity = parentSeverity;
-    if (module.getSeverity() != null && Severity.inherit != module.getSeverity()) {
+    if (module.getSeverity() != null && Severity.INHERIT != module.getSeverity()) {
 
       Element propertyEl = moduleEl.addElement(XMLTags.PROPERTY_TAG);
       propertyEl.addAttribute(XMLTags.NAME_TAG, XMLTags.SEVERITY_TAG);
-      propertyEl.addAttribute(XMLTags.VALUE_TAG, module.getSeverity().name());
+      propertyEl.addAttribute(XMLTags.VALUE_TAG, module.getSeverity().toXmlValue());
 
       // set the parent severity for child modules
       severity = module.getSeverity();
@@ -211,7 +211,7 @@ public final class ConfigurationWriter {
 
       Element metaEl = moduleEl.addElement(XMLTags.METADATA_TAG);
       metaEl.addAttribute(XMLTags.NAME_TAG, XMLTags.LAST_ENABLED_SEVERITY_ID);
-      metaEl.addAttribute(XMLTags.VALUE_TAG, module.getLastEnabledSeverity().name());
+      metaEl.addAttribute(XMLTags.VALUE_TAG, module.getLastEnabledSeverity().toXmlValue());
     }
 
     // write child modules recursively
