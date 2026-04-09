@@ -28,17 +28,38 @@ package net.sf.eclipsecs.core.config;
 public enum Severity {
 
   /** Unspecified severity level, inherited from parent module. */
-  inherit,
+  INHERIT,
 
   /** Severity level 'ignore'. */
-  ignore,
+  IGNORE,
 
   /** Severity level 'info'. */
-  info,
+  INFO,
 
   /** Severity level 'warning'. */
-  warning,
+  WARNING,
 
   /** Severity level 'error'. */
-  error
+  ERROR;
+
+  public static Severity fromXmlValue(String xmlValue) {
+    return switch (xmlValue) {
+      case "inherit" -> INHERIT;
+      case "ignore" -> IGNORE;
+      case "info" -> INFO;
+      case "warning" -> WARNING;
+      case "error" -> ERROR;
+      default -> throw new IllegalArgumentException("Unexpected value: " + xmlValue);
+    };
+  }
+
+  public String toXmlValue() {
+    return switch (this) {
+      case INHERIT -> "inherit";
+      case IGNORE -> "ignore";
+      case INFO -> "info";
+      case WARNING -> "warning";
+      case ERROR -> "error";
+    };
+  }
 }

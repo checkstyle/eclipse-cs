@@ -203,9 +203,9 @@ public final class ConfigurationReader {
       if (XMLTags.SEVERITY_TAG.equals(name) && (module.getMetaData() != null)
               && module.getMetaData().hasSeverity()) {
         try {
-          module.setSeverity(Severity.valueOf(value));
+          module.setSeverity(Severity.fromXmlValue(value));
         } catch (final IllegalArgumentException ex) {
-          module.setSeverity(Severity.inherit);
+          module.setSeverity(Severity.INHERIT);
         }
       } else if (XMLTags.ID_TAG.equals(name)) {
         module.setId(Strings.emptyToNull(value));
@@ -252,7 +252,7 @@ public final class ConfigurationReader {
       if (XMLTags.COMMENT_ID.equals(name)) {
         module.setComment(value);
       } else if (XMLTags.LAST_ENABLED_SEVERITY_ID.equals(name)) {
-        module.setLastEnabledSeverity(Severity.valueOf(value));
+        module.setLastEnabledSeverity(Severity.fromXmlValue(value));
       } else {
         module.getCustomMetaData().put(name, value);
       }

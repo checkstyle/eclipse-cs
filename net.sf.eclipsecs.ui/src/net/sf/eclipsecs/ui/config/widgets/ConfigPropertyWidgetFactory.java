@@ -65,23 +65,23 @@ public final class ConfigPropertyWidgetFactory {
   private static IConfigPropertyWidget getWidgetForConfigPropertyType(Composite parent,
           ConfigProperty prop, ConfigPropertyType type) {
     switch (type) {
-    case String:
+    case STRING:
       return new ConfigPropertyWidgetString(parent, prop);
-    case StringArray:
+    case STRING_ARRAY:
       return new ConfigPropertyWidgetStringArray(parent, prop);
-    case Integer:
+    case INTEGER:
       return new ConfigPropertyWidgetInteger(parent, prop);
-    case SingleSelect:
+    case SINGLE_SELECT:
       return new ConfigPropertyWidgetSingleSelect(parent, prop);
-    case Boolean:
+    case BOOLEAN:
       return new ConfigPropertyWidgetBoolean(parent, prop);
-    case MultiCheck:
+    case MULTI_CHECK:
       return new ConfigPropertyWidgetMultiCheck(parent, prop);
-    case Hidden:
+    case HIDDEN:
       return new ConfigPropertyWidgetHidden(parent, prop);
-    case File:
+    case FILE:
       return new ConfigPropertyWidgetFile(parent, prop);
-    case Regex:
+    case REGEX:
       return new ConfigPropertyWidgetRegex(parent, prop);
     default:
       return new ConfigPropertyWidgetString(parent, prop);
