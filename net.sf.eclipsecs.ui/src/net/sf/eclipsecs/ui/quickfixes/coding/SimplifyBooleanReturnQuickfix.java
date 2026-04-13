@@ -23,6 +23,7 @@ package net.sf.eclipsecs.ui.quickfixes.coding;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTVisitor;
@@ -86,9 +87,9 @@ public class SimplifyBooleanReturnQuickfix extends AbstractASTResolution {
       public boolean visit(final IfStatement node) {
         if (containsPosition(node, markerStartOffset)) {
 
-          final Boolean isThenStatementTrue = isReturnStatementTrue(node.getThenStatement());
+          final Optional<Boolean> isThenStatementTrue = isReturnStatementTrue(node.getThenStatement());
 
-          if (isThenStatementTrue == null) {
+          if (isThenStatementTrue.isEmpty()) {
             // the AST structure of the if statement is not as expected
             return true;
           }
@@ -97,7 +98,7 @@ public class SimplifyBooleanReturnQuickfix extends AbstractASTResolution {
           final boolean isNotCondition = condition != node.getExpression();
 
           final ReturnStatement replacement;
-          if (isThenStatementTrue ^ isNotCondition) {
+          if (isThenStatementTrue.get() ^ isNotCondition) {
             // create replacement: return condition;
             replacement = node.getAST().newReturnStatement();
             replacement.setExpression(copy(condition));
@@ -123,21 +124,21 @@ public class SimplifyBooleanReturnQuickfix extends AbstractASTResolution {
         return true;
       }
 
-      private Boolean isReturnStatementTrue(final Statement node) {
-        if (node instanceof ReturnStatement) {
-          final Expression expression = ((ReturnStatement) node).getExpression();
-          if (expression instanceof BooleanLiteral) {
-            return ((BooleanLiteral) expression).booleanValue();
+      private Optional<Boolean> isReturnStatementTrue(final Statement node) {
+        if (node instanceof ReturnStatement returnStatement) {
+          final Expression expression = returnStatement.getExpression();
+          if (expression instanceof BooleanLiteral booleanLiteral) {
+            return Optional.of(booleanLiteral.booleanValue());
           }
-        } else if (node instanceof Block) {
+        } else if (node instanceof Block block) {
           // the return statement might be wrapped in a block statement
           @SuppressWarnings("unchecked")
-          final List<Statement> statements = ((Block) node).statements();
+          final List<Statement> statements = block.statements();
           if (!statements.isEmpty()) {
             return isReturnStatementTrue(statements.get(0));
           }
         }
-        return null;
+        return Optional.empty();
       }
 
       private Expression removeNotFromCondition(final Expression condition) {

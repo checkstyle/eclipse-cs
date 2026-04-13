@@ -47,23 +47,23 @@ public class PropertiesContentAssistProcessor
 
   @Override
   public IContextInformation[] computeContextInformation(ITextViewer viewer, int offset) {
-    return null;
+    return new IContextInformation[0];
   }
 
   @Override
   public IContextInformation[] computeContextInformation(
           IContentAssistSubjectControl contentAssistSubjectControl, int documentOffset) {
-    return null;
+    return new IContextInformation[0];
   }
 
   @Override
   public char[] getCompletionProposalAutoActivationCharacters() {
-    return null;
+    return new char[0];
   }
 
   @Override
   public char[] getContextInformationAutoActivationCharacters() {
-    return null;
+    return new char[0];
   }
 
   @Override
@@ -78,7 +78,7 @@ public class PropertiesContentAssistProcessor
 
   @Override
   public ICompletionProposal[] computeCompletionProposals(ITextViewer viewer, int offset) {
-    return null;
+    return new ICompletionProposal[0];
   }
 
   @Override
