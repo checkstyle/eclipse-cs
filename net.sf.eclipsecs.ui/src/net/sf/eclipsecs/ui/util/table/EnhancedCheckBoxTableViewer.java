@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.ListenerList;
@@ -586,19 +587,6 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
     }
 
     /**
-     * Answers an Enumeration on the values of this Hashtable. The results of the Enumeration may be
-     * affected if the contents of this Hashtable are modified.
-     *
-     * @return an Enumeration of the values of this Hashtable
-     */
-    public Enumeration<?> elements() {
-      if (elementCount == 0) {
-        return EMPTY_ENUMERATOR;
-      }
-      return new HashEnumerator(false);
-    }
-
-    /**
      * Answers the value associated with the specified key in this Hashtable.
      *
      * @param key
@@ -673,36 +661,35 @@ public class EnhancedCheckBoxTableViewer extends EnhancedTableViewer implements 
      * @return the old value associated with the specified key, null if the key did not exist
      */
     public Object put(Object key, Object value) {
-      if (key != null && value != null) {
-        int index = (hashCode(key) & 0x7F_FFF_FFF) % elementData.length;
-        HashMapEntry entry = elementData[index];
-        while (entry != null && !keyEquals(key, entry.key)) {
-          entry = entry.next;
-        }
-        if (entry == null) {
-          if (++elementCount > threshold) {
-            rehash();
-            index = (hashCode(key) & 0x7F_FFF_FFF) % elementData.length;
-          }
-          if (index < firstSlot) {
-            firstSlot = index;
-          }
-          if (index > lastSlot) {
-            lastSlot = index;
-          }
-          entry = new HashMapEntry(key, value);
-          entry.next = elementData[index];
-          elementData[index] = entry;
-          return null;
-        }
-        Object result = entry.value;
-        entry.key = key;
-        // important to avoid hanging onto keys that
-        // are equal but "old" -- see bug 30607
-        entry.value = value;
-        return result;
+      Objects.requireNonNull(key);
+      Objects.requireNonNull(value);
+      int index = (hashCode(key) & 0x7F_FFF_FFF) % elementData.length;
+      HashMapEntry entry = elementData[index];
+      while (entry != null && !keyEquals(key, entry.key)) {
+        entry = entry.next;
       }
-      throw new NullPointerException();
+      if (entry == null) {
+        if (++elementCount > threshold) {
+          rehash();
+          index = (hashCode(key) & 0x7F_FFF_FFF) % elementData.length;
+        }
+        if (index < firstSlot) {
+          firstSlot = index;
+        }
+        if (index > lastSlot) {
+          lastSlot = index;
+        }
+        entry = new HashMapEntry(key, value);
+        entry.next = elementData[index];
+        elementData[index] = entry;
+        return null;
+      }
+      Object result = entry.value;
+      entry.key = key;
+      // important to avoid hanging onto keys that
+      // are equal but "old" -- see bug 30607
+      entry.value = value;
+      return result;
     }
 
     /**

@@ -260,7 +260,7 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
         mLocation.setText(location);
       } else if (!isFirstPartProject && workingSet instanceof GlobalCheckConfigurationWorkingSet) {
         throw new CheckstylePluginException(NLS
-                .bind(Messages.ProjectConfigurationEditor_msgNoProjectInWorkspace, tmp.segment(0)));
+                .bind(Messages.ProjectConfigurationEditor_msgNoProjectInWorkspace, tmp.segment(0)), ex);
       }
 
       if (ensureFileExists(location)) {

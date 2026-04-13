@@ -46,7 +46,7 @@ public class CheckstylePluginException extends Exception {
    * @param cause
    *          the causing exception
    */
-  private CheckstylePluginException(String msg, Throwable cause) {
+  public CheckstylePluginException(String msg, Throwable cause) {
     super(msg, cause);
   }
 
