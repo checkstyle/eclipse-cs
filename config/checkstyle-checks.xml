@@ -48,11 +48,12 @@
     <!-- Tone down the checking for test code -->
     <module name="SuppressionSingleFilter">
         <property name="checks" value="JavadocPackage"/>
-        <property name="files" value=".*[\\/]src[\\/](test|it)[\\/]"/>
+        <property name="files" value=".*[\\/]src[\\/](test|it|xdocs-examples)[\\/]"/>
     </module>
     <module name="SuppressionSingleFilter">
         <property name="checks" value="JavadocMethod"/>
-        <property name="files" value=".*[\\/]src[\\/](test|it)[\\/].*(?&lt;!Support)\.java"/>
+        <property name="files"
+            value=".*[\\/]src[\\/](test|it|xdocs-examples)[\\/].*(?&lt;!Support)\.java"/>
     </module>
     <module name="SuppressWarningsFilter"/>
     <module name="SuppressWithPlainTextCommentFilter">
@@ -64,12 +65,28 @@
         <property name="offCommentFormat" value="CSOFF\: .*"/>
         <property name="onCommentFormat" value="CSON\: .*"/>
     </module>
+    <module name="SuppressWithNearbyTextFilter">
+        <property name="nearbyTextPattern" value='name=\"message\"'/>
+        <property name="lineRange" value="1"/>
+        <property name="idPattern" value="lineLengthXml"/>
+    </module>
+    <module name="SuppressWithNearbyTextFilter">
+        <property name="nearbyTextPattern" value="violation above 'Trailing whitespace'"/>
+        <property name="lineRange" value="-1"/>
+        <property name="checkPattern" value="RegexpSingleline"/>
+    </module>
+    <module name="SuppressWithNearbyTextFilter">
+        <property name="nearbyTextPattern"
+            value="Consider using special escape sequence instead of octal value or Unicode escaped value."/>
+        <property name="lineRange" value="-2"/>
+        <property name="idPattern" value="lineLengthXml"/>
+    </module>
 
     <!-- Headers -->
     <module name="RegexpHeader">
         <property name="id" value="regexpHeader"/>
-        <property name="headerFile" value="${checkstyle.regexp.header.file}"/>
         <property name="fileExtensions" value="java, g4"/>
+        <property name="headerFile" value="${checkstyle.regexp.header.file}"/>
     </module>
     <module name="RegexpHeader">
         <property name="id" value="oldRegexpHeader"/>
@@ -80,12 +97,24 @@
     <!-- Miscellaneous -->
     <module name="NewlineAtEndOfFile"/>
     <module name="Translation"/>
+    <module name="LineEnding"/>
     <module name="UniqueProperties"/>
     <module name="OrderedProperties" />
 
     <!-- Regexp -->
     <module name="RegexpMultiline">
         <property name="id" value="regexpMultilineDefault"/>
+    </module>
+    <module name="RegexpMultiline">
+        <property name="id" value="noWindowsLineDelimiter"/>
+        <property name="format" value="(\r\n|\r)"/>
+        <property name="message" value="Line has Windows line delimiter."/>
+    </module>
+    <module name="RegexpMultiline">
+        <property name="id" value="noIndentationConfigExamples"/>
+        <property name="format" value="&lt;source&gt;\r?\n\s+"/>
+        <property name="fileExtensions" value="xml"/>
+        <property name="message" value="Content of source tag should not be Indented"/>
     </module>
     <module name="RegexpMultiline">
         <property name="id" value="noEmptyFile"/>
@@ -99,6 +128,19 @@
         <property name="minimum" value="0"/>
         <property name="maximum" value="0"/>
         <property name="message" value="Trailing whitespace is not allowed"/>
+    </module>
+    <module name="RegexpSingleline">
+        <property name="id" value="assertThatShouldBeOnSeparateLine"/>
+        <property name="format" value="assertWithMessage\(.*\).that\("/>
+        <property name="fileExtensions" value="java"/>
+        <property name="message"
+                    value="Truth''s ''that'' method call should be on separate line"/>
+    </module>
+    <module name="RegexpSingleline">
+        <property name="id" value="lineLengthGrammar"/>
+        <property name="format" value="^(?!(.*http|import)).{101,}$"/>
+        <property name="fileExtensions" value="g, g4"/>
+        <property name="message" value="Line should not be longer than 100 symbols"/>
     </module>
     <module name="RegexpSingleline">
         <property name="id" value="cannot"/>
@@ -162,11 +204,11 @@
     </module>
     <module name="RegexpOnFilename">
         <property name="id" value="xmlFileLocation"/>
-        <property name="folderPattern" value="[\\/]src[\\/]xdocs[\\/]"/>
+        <property name="folderPattern" value="[\\/]src[\\/]site[\\/]xdocs[\\/]"/>
         <property name="fileNamePattern" value="\.(xml)|(vm)$"/>
         <property name="match" value="false"/>
-        <message key="regexp.filepath.mismatch"
-                 value="All files in the ''src/xdocs'' folder should have the ''xml'' or ''vm'' extension."/>
+        <message key="regexp.filename.mismatch"
+                 value="All files in the ''xdoc'' folder should have the ''xml'' or ''vm'' extension."/>
     </module>
     <module name="RegexpOnFilename">
         <property name="id" value="testFileLocation"/>
@@ -196,6 +238,13 @@
 
     <module name="TreeWalker">
         <property name="tabWidth" value="4"/>
+        <module name="MatchXpath">
+            <property name="id" value="MatchXpathForbidTryCatchFail"/>
+            <property name="query" value="//METHOD_CALL[./IDENT[@text='assertWithMessage']
+        and (./following-sibling::IDENT[@text='fail'])]"/>
+            <message key="matchxpath.match"
+                     value="Exceptions should be validated by `getExpectedThrowable`."/>
+        </module>
 
         <!-- Annotations -->
         <module name="AnnotationLocation">
@@ -230,6 +279,7 @@
         <module name="AnnotationUseStyle"/>
         <module name="MissingDeprecated"/>
         <module name="MissingOverride"/>
+        <module name="MissingOverrideOnRecordAccessor"/>
         <module name="PackageAnnotation"/>
         <module name="SuppressWarningsHolder"/>
 
@@ -316,6 +366,7 @@
         <module name="OverloadMethodsDeclarationOrder"/>
         <module name="PackageDeclaration"/>
         <module name="ParameterAssignment"/>
+        <module name="PatternVariableAssignment"/>
         <module name="RequireThis"/>
         <module name="SimplifyBooleanExpression"/>
         <module name="SimplifyBooleanReturn"/>
@@ -327,7 +378,14 @@
         <module name="UnnecessarySemicolonInEnumeration"/>
         <module name="UnnecessarySemicolonInTryWithResources"/>
         <module name="UnusedLocalVariable"/>
+        <module name="UnusedCatchParameterShouldBeUnnamed">
+            <property name="severity" value="ignore"/>
+        </module>
+        <module name="UnusedLambdaParameterShouldBeUnnamed">
+            <property name="severity" value="ignore"/>
+        </module>
         <module name="VariableDeclarationUsageDistance"/>
+        <module name="WhenShouldBeUsed"/>
 
         <!-- Filters -->
         <module name="SuppressionCommentFilter">
@@ -438,6 +496,7 @@
         </module>
         <module name="JavadocTagContinuationIndentation"/>
         <module name="SingleLineJavadoc"/>
+
         <!-- Misc -->
         <module name="ArrayTypeStyle"/>
         <module name="AvoidEscapedUnicodeCharacters">
@@ -458,6 +517,10 @@
             <property name="excludedClasses" value="\.(Main|JavadocPropertiesGenerator)$"/>
         </module>
         <module name="UpperEll"/>
+        <module name="TextBlockGoogleStyleFormatting"/>
+        <module name="UnnecessaryNullCheckWithInstanceOf"/>
+        <module name="HexLiteralCase"/>
+        <module name="NumericalPrefixesInfixesSuffixesCharacterCase"/>
 
         <!-- Modifiers -->
         <module name="ClassMemberImpliedModifier">
@@ -510,6 +573,9 @@
 
     <!-- Size Violations -->
         <module name="LambdaBodyLength"/>
+        <module name="MethodCount">
+            <property name="maxTotal" value="34"/>
+        </module>
         <module name="OuterTypeNumber"/>
         <module name="RecordComponentNumber"/>
 
@@ -557,6 +623,21 @@
             <property name="tokens" value="METHOD_REF"/>
             <property name="option" value="nl"/>
         </module>
+        <module name="OperatorWrap">
+            <property name="tokens" value="ASSIGN"/>
+            <property name="tokens" value="DIV_ASSIGN"/>
+            <property name="tokens" value="PLUS_ASSIGN"/>
+            <property name="tokens" value="MINUS_ASSIGN"/>
+            <property name="tokens" value="STAR_ASSIGN"/>
+            <property name="tokens" value="MOD_ASSIGN"/>
+            <property name="tokens" value="SR_ASSIGN"/>
+            <property name="tokens" value="BSR_ASSIGN"/>
+            <property name="tokens" value="SL_ASSIGN"/>
+            <property name="tokens" value="BXOR_ASSIGN"/>
+            <property name="tokens" value="BOR_ASSIGN"/>
+            <property name="tokens" value="BAND_ASSIGN"/>
+            <property name="option" value="eol"/>
+        </module>
         <module name="ParenPad"/>
         <module name="SeparatorWrap">
             <property name="tokens" value="DOT"/>
@@ -573,7 +654,13 @@
             <property name="option" value="EOL"/>
         </module>
         <module name="TypecastParenPad"/>
-        <module name="WhitespaceAfter"/>
+        <module name="WhitespaceAfter">
+            <property name="tokens"
+               value="COMMA, SEMI, TYPECAST, LITERAL_IF, LITERAL_ELSE, LITERAL_RETURN,
+                    LITERAL_WHILE, LITERAL_DO, LITERAL_FOR, LITERAL_FINALLY, DO_WHILE, ELLIPSIS,
+                    LITERAL_SWITCH, LITERAL_SYNCHRONIZED, LITERAL_TRY, LITERAL_CATCH, LAMBDA,
+                    LITERAL_YIELD, LITERAL_CASE, LITERAL_WHEN, ANNOTATIONS"/>
+        </module>
         <module name="WhitespaceAround"/>
 
     </module>
