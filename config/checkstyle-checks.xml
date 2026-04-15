@@ -576,6 +576,7 @@
         <module name="MethodCount">
             <property name="maxTotal" value="34"/>
         </module>
+        <module name="MethodLength"/>
         <module name="OuterTypeNumber"/>
         <module name="RecordComponentNumber"/>
 
