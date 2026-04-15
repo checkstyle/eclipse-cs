@@ -281,10 +281,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
     mIncludeRuleNamesButton.setSelection(
             CheckstylePluginPrefs.getBoolean(CheckstylePluginPrefs.PREF_INCLUDE_RULE_NAMES));
 
-    Label lblRebuildNote = new Label(includeRuleNamesComposite, SWT.NULL);
-    lblRebuildNote.setImage(CheckstyleUIPluginImages.HELP_ICON.getImage());
-    lblRebuildNote.setToolTipText(Messages.CheckstylePreferencePage_txtSuggestRebuild);
-    SWTUtil.addTooltipOnPressSupport(lblRebuildNote);
+    addRebuildNoteLabel(includeRuleNamesComposite);
 
     //
     // Create the "Include rule name" check box.
@@ -300,10 +297,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
     mIncludeModuleIdButton.setSelection(
             CheckstylePluginPrefs.getBoolean(CheckstylePluginPrefs.PREF_INCLUDE_MODULE_IDS));
 
-    lblRebuildNote = new Label(includeModuleIdComposite, SWT.NULL);
-    lblRebuildNote.setImage(CheckstyleUIPluginImages.HELP_ICON.getImage());
-    lblRebuildNote.setToolTipText(Messages.CheckstylePreferencePage_txtSuggestRebuild);
-    SWTUtil.addTooltipOnPressSupport(lblRebuildNote);
+    addRebuildNoteLabel(includeModuleIdComposite);
 
     //
     // Create the "limit markers" check box and text field combination
@@ -329,10 +323,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
     gridData.widthHint = 30;
     mTxtMarkerLimit.setLayoutData(gridData);
 
-    lblRebuildNote = new Label(limitMarkersComposite, SWT.NULL);
-    lblRebuildNote.setImage(CheckstyleUIPluginImages.HELP_ICON.getImage());
-    lblRebuildNote.setToolTipText(Messages.CheckstylePreferencePage_txtSuggestRebuild);
-    SWTUtil.addTooltipOnPressSupport(lblRebuildNote);
+    addRebuildNoteLabel(limitMarkersComposite);
 
     //
     // Create the "Run Checkstyle in background on full builds" check box.
@@ -348,6 +339,13 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
     mBackgroundFullBuild.setSelection(
             CheckstylePluginPrefs.getBoolean(CheckstylePluginPrefs.PREF_BACKGROUND_FULL_BUILD));
     return generalComposite;
+  }
+
+  private void addRebuildNoteLabel(Composite parent) {
+    Label lblRebuildNote = new Label(parent, SWT.NULL);
+    lblRebuildNote.setImage(CheckstyleUIPluginImages.HELP_ICON.getImage());
+    lblRebuildNote.setToolTipText(Messages.CheckstylePreferencePage_txtSuggestRebuild);
+    SWTUtil.addTooltipOnPressSupport(lblRebuildNote);
   }
 
   /**
