@@ -557,6 +557,7 @@
             <property name="format" value="^(ex|[a-z][a-z][a-zA-Z]+)$"/>
         </module>
         <module name="PatternVariableName"/>
+        <module name="IllegalIdentifierName"/>
 
         <!-- Regexp -->
         <module name="Regexp">
