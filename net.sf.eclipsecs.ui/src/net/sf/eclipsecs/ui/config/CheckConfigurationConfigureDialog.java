@@ -296,7 +296,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
         if (element instanceof RuleGroupMetadata) {
           passes = !((RuleGroupMetadata) element).isHidden();
         } else if (element instanceof RuleMetadata) {
-          passes = !((RuleMetadata) element).isHidden();
+          passes = !((RuleMetadata) element).hidden();
         }
         return passes;
       }
@@ -594,7 +594,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
           if (lastEnabled != null) {
             module.setSeverity(lastEnabled);
           } else {
-            module.setSeverity(module.getMetaData().getDefaultSeverityLevel());
+            module.setSeverity(module.getMetaData().defaultSeverity());
           }
         } else {
           module.setSeverity(Severity.IGNORE);
@@ -628,18 +628,18 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
 
         RuleMetadata rule = (RuleMetadata) element;
 
-        description = rule.getDescription();
-        mGroupFilter.setCurrentGroup(rule.getGroup());
+        description = rule.identity().description();
+        mGroupFilter.setCurrentGroup(rule.identity().group());
         mConfiguredModulesGroup
                 .setText(NLS.bind(Messages.CheckConfigurationConfigureDialog_lblConfiguredModules,
-                        rule.getGroup().getGroupName()));
+                        rule.identity().group().getGroupName()));
         mTableViewer.refresh();
         refreshTableViewerState();
 
       } else if (element instanceof Module) {
         RuleMetadata meta = ((Module) element).getMetaData();
         if (meta != null) {
-          description = meta.getDescription();
+          description = meta.identity().description();
         }
       }
 
@@ -759,7 +759,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
           Iterator<Module> iter = ((IStructuredSelection) selection).iterator();
           while (iter.hasNext()) {
             Module module = iter.next();
-            if (module.getMetaData().isDeletable()) {
+            if (module.getMetaData().deletable()) {
               mModules.remove(module);
               mIsDirty = true;
               mTableViewer.refresh(true);
@@ -795,13 +795,13 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
      * Checks if a certain module is already contained in the configuration.
      */
     private boolean isAlreadyConfigured(RuleMetadata metadata) {
-      String internalName = metadata.getInternalName();
+      String internalName = metadata.identity().internalName();
       boolean containsModule = false;
       for (int i = 0, size = mModules.size(); i < size; i++) {
 
         Module module = mModules.get(i);
 
-        if (internalName.equals(module.getMetaData().getInternalName())) {
+        if (internalName.equals(module.getMetaData().identity().internalName())) {
           containsModule = true;
           break;
         }
@@ -843,7 +843,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
     public Object getParent(Object element) {
       Object parent = null;
       if (element instanceof RuleMetadata) {
-        parent = ((RuleMetadata) element).getGroup();
+        parent = ((RuleMetadata) element).identity().group();
       }
       return parent;
     }
@@ -883,7 +883,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
       if (element instanceof RuleGroupMetadata) {
         text = ((RuleGroupMetadata) element).getGroupName();
       } else if (element instanceof RuleMetadata) {
-        text = ((RuleMetadata) element).getRuleName();
+        text = ((RuleMetadata) element).identity().ruleName();
       }
       return text;
     }
@@ -1029,9 +1029,9 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
         return true;
       }
 
-      RuleGroupMetadata moduleGroup = metaData.getGroup();
+      RuleGroupMetadata moduleGroup = metaData.identity().group();
 
-      if (mCurrentGroup == null || metaData.isHidden()) {
+      if (mCurrentGroup == null || metaData.hidden()) {
         result = false;
       } else if (mCurrentGroup == moduleGroup) {
         result = true;
@@ -1067,9 +1067,9 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
 
       Pattern matchPattern = Pattern.compile(Pattern.quote(filterText), Pattern.CASE_INSENSITIVE);
 
-      String ruleName = element.getRuleName();
-      String internalName = element.getInternalName();
-      String description = element.getDescription();
+      String ruleName = element.identity().ruleName();
+      String internalName = element.identity().internalName();
+      String description = element.identity().description();
       return (ruleName != null && matchPattern.matcher(ruleName).find())
               || (internalName != null && matchPattern.matcher(internalName).find())
               || (description != null && matchPattern.matcher(description).find());

@@ -319,7 +319,7 @@ public class Auditor {
               metaData = MetadataFactory.createGenericMetadata(module);
             }
 
-            mMarkerAttributes.put(CheckstyleMarker.MODULE_NAME, metaData.getInternalName());
+            mMarkerAttributes.put(CheckstyleMarker.MODULE_NAME, metaData.identity().internalName());
             mMarkerAttributes.put(CheckstyleMarker.MESSAGE_KEY,
                     error.getViolation().getKey());
             String moduleId = error.getModuleId();
@@ -494,7 +494,7 @@ public class Auditor {
       if (moduleId == null) {
         RuleMetadata metaData = MetadataFactory.getRuleMetadata(error.getSourceName());
         if (metaData != null) {
-          moduleId = metaData.getInternalName();
+          moduleId = metaData.identity().internalName();
         }
       }
 
@@ -525,7 +525,7 @@ public class Auditor {
       if (metaData == null) {
         return Messages.Auditor_txtUnknownModule;
       }
-      return metaData.getInternalName();
+      return metaData.identity().internalName();
     }
   }
 }

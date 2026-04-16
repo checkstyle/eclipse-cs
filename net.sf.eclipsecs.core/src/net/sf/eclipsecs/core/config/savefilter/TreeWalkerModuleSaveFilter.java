@@ -45,11 +45,11 @@ public class TreeWalkerModuleSaveFilter implements ISaveFilter {
 
       Module module = configuredModules.get(i);
 
-      if (XMLTags.TREEWALKER_MODULE.equals(module.getMetaData().getInternalName())) {
+      if (XMLTags.TREEWALKER_MODULE.equals(module.getMetaData().identity().internalName())) {
         containsTreeWalkerModule = true;
         configuredTreeWalker = module;
       }
-      if (XMLTags.TREEWALKER_MODULE.equals(module.getMetaData().getParentModule())) {
+      if (XMLTags.TREEWALKER_MODULE.equals(module.getMetaData().identity().parent())) {
         containsTreeWalkerDependantModule = true;
       }
 

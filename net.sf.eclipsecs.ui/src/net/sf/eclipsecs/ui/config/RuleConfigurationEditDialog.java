@@ -204,7 +204,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
     // take keys from metadata as well as predefined from the
     // configuration. This way we don't lose keys not defined in metadata.
     Set<String> msgKeys = new TreeSet<>();
-    msgKeys.addAll(mRule.getMetaData().getMessageKeys());
+    msgKeys.addAll(mRule.getMetaData().messageKeys());
     msgKeys.addAll(mRule.getCustomMessages().keySet());
 
     for (String msgKey : msgKeys) {
@@ -218,7 +218,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
       msgText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
       final String standardMessage = MetadataFactory.getStandardMessage(msgKey,
-              mRule.getMetaData().getInternalName());
+              mRule.getMetaData().identity().internalName());
 
       if (standardMessage != null) {
         msgText.setMessage(standardMessage);
@@ -372,7 +372,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
 
         if (mRule.getMetaData().hasSeverity()) {
           mSeverityCombo.setSelection(
-                  new StructuredSelection(mRule.getMetaData().getDefaultSeverityLevel()));
+                  new StructuredSelection(mRule.getMetaData().defaultSeverity()));
           mCommentText.setText(new String());
         }
 
@@ -415,7 +415,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
       String msgKey = entry.getKey();
 
       String standardMessage = MetadataFactory.getStandardMessage(msgKey,
-              mRule.getMetaData().getInternalName());
+              mRule.getMetaData().identity().internalName());
       if (standardMessage == null) {
         standardMessage = ""; //$NON-NLS-1$
       }
@@ -493,7 +493,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
     // stored separately
     SWTUtil.addResizeSupport(this, CheckstyleUIPlugin.getDefault().getDialogSettings(),
             RuleConfigurationEditDialog.class.getName() + "#" //$NON-NLS-1$
-                    + mRule.getMetaData().getInternalName());
+                    + mRule.getMetaData().identity().internalName());
   }
 
   /**

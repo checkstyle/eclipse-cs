@@ -44,7 +44,7 @@ public class SuppressWarningsHolderSaveFilter implements ISaveFilter {
     for (int i = 0, size = configuredModules.size(); i < size; i++) {
 
       Module module = configuredModules.get(i);
-      String internalName = module.getMetaData().getInternalName();
+      String internalName = module.getMetaData().identity().internalName();
 
       if (XMLTags.SUPPRESSWARNINGSHOLDER_MODULE.equals(internalName)) {
         containsSuppressWarningsHolderModule = true;

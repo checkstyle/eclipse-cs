@@ -50,8 +50,8 @@ public class SortingSaveFilter implements ISaveFilter {
     @Override
     public int compare(Module o1, Module o2) {
 
-      String internalName1 = o1.getMetaData().getInternalName();
-      String internalName2 = o2.getMetaData().getInternalName();
+      String internalName1 = o1.getMetaData().identity().internalName();
+      String internalName2 = o2.getMetaData().identity().internalName();
 
       if (XMLTags.CHECKER_MODULE.equals(internalName1)
               || XMLTags.TREEWALKER_MODULE.equals(internalName1)) {

@@ -97,7 +97,7 @@ public class MarkerHelpContextProvider extends AbstractContextProvider
     if (metadata == null) {
       return null;
     }
-    var group = metadata.getGroup().getGroupId().toLowerCase();
+    var group = metadata.identity().group().getGroupId().toLowerCase();
     // some web pages are different to the packages in Checkstyle
     if ("indentation".equals(group) || StringUtils.isEmpty(group)) {
       group = "misc";

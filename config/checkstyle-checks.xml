@@ -578,6 +578,7 @@
         </module>
         <module name="MethodLength"/>
         <module name="OuterTypeNumber"/>
+        <module name="ParameterNumber"/>
         <module name="RecordComponentNumber"/>
 
         <!-- Whitespace -->
