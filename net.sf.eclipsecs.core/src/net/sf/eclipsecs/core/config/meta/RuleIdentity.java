@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2003-2023  David Schneider, Lars Ködderitzsch
+// Copyright (C) 2003-2023 the original author or authors.
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -22,13 +22,7 @@ package net.sf.eclipsecs.core.config.meta;
 
 import java.util.List;
 
-import net.sf.eclipsecs.core.config.Severity;
-
-/**
- * This class contains the metadata that describes a check rule.
- */
-public record RuleMetadata(RuleIdentity identity, Severity defaultSeverity, boolean hidden,
-        boolean hasSeverity, boolean deletable, boolean isSingleton, List<String> messageKeys,
-        List<ConfigPropertyMetadata> configPropMetadata) {
+public record RuleIdentity(String ruleName, String internalName, String parent, RuleGroupMetadata group,
+        String description, List<String> alternativeNames) {
 
 }

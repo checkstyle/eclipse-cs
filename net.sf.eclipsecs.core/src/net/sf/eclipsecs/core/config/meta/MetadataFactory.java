@@ -179,10 +179,13 @@ public final class MetadataFactory {
     }
 
     RuleGroupMetadata otherGroup = getRuleGroupMetadata(XMLTags.OTHER_GROUP);
-    RuleMetadata ruleMeta = new RuleMetadata(module.getName(), module.getName(), parent,
-            MetadataFactory.getDefaultSeverity(), false, true, true, false, otherGroup);
+    RuleMetadata ruleMeta = new RuleMetadata(
+            new RuleIdentity(module.getName(), module.getName(), parent, otherGroup, null,
+                    Collections.emptyList()),
+            MetadataFactory.getDefaultSeverity(), false, true, true, false, Collections.emptyList(),
+            Collections.emptyList());
     module.setMetaData(ruleMeta);
-    sRuleMetadata.put(ruleMeta.getInternalName(), ruleMeta);
+    sRuleMetadata.put(ruleMeta.identity().internalName(), ruleMeta);
 
     List<ConfigProperty> properties = module.getProperties();
     int size = properties != null ? properties.size() : 0;
@@ -228,23 +231,25 @@ public final class MetadataFactory {
       }
     }
     final String[] packageTokens = moduleDetails.getParent().split(DOT_PATTERN);
-    RuleMetadata ruleMeta = new RuleMetadata(moduleDetails.getName(), moduleDetails.getName(),
-            packageTokens[packageTokens.length - 1], MetadataFactory.getDefaultSeverity(),
-            false, true, true, false, group);
-    ruleMeta.setDescription(moduleDetails.getDescription());
+    List<String> alternativeNames = List.of(moduleDetails.getFullQualifiedName());
+    List<ConfigPropertyMetadata> properties = moduleDetails.getProperties().stream()
+            .map(modulePropertyDetails -> createPropertyConfig(moduleDetails, modulePropertyDetails))
+            .toList();
+    RuleMetadata ruleMeta = new RuleMetadata(
+            new RuleIdentity(moduleDetails.getName(), moduleDetails.getName(),
+                    packageTokens[packageTokens.length - 1], group, moduleDetails.getDescription(),
+                    alternativeNames),
+            MetadataFactory.getDefaultSeverity(), false, true, true, false, Collections.emptyList(),
+            properties);
 
-    var altName = moduleDetails.getFullQualifiedName();
-    registerAlternative(altName, ruleMeta);
-
-    moduleDetails.getProperties().forEach(modulePropertyDetails -> ruleMeta.getPropertyMetadata()
-            .add(createPropertyConfig(moduleDetails, modulePropertyDetails)));
+    registerAlternativeNames(ruleMeta);
 
     return ruleMeta;
   }
 
-  private static void registerAlternative(String alternativeName, RuleMetadata ruleMetadata) {
-    ruleMetadata.addAlternativeName(alternativeName);
-    sAlternativeNamesMap.put(alternativeName, ruleMetadata);
+  private static void registerAlternativeNames(RuleMetadata ruleMetadata) {
+    ruleMetadata.identity().alternativeNames()
+            .forEach(alternativeName -> sAlternativeNamesMap.put(alternativeName, ruleMetadata));
   }
 
   /**
@@ -503,8 +508,8 @@ public final class MetadataFactory {
     }
 
     List<String> namesToCheck = new ArrayList<>();
-    namesToCheck.add(rule.getInternalName());
-    namesToCheck.addAll(rule.getAlternativeNames());
+    namesToCheck.add(rule.identity().internalName());
+    namesToCheck.addAll(rule.identity().alternativeNames());
 
     for (String moduleClass : namesToCheck) {
       try {
@@ -592,7 +597,7 @@ public final class MetadataFactory {
       final ModuleDetails moduleDetails = entry.getValue();
       final RuleMetadata createdRuleMetadata = createRuleMetadata(moduleDetails);
       sRuleMetadata.put(moduleDetails.getName(), createdRuleMetadata);
-      sRuleGroupMetadata.get(createdRuleMetadata.getGroup().getGroupName())
+      sRuleGroupMetadata.get(createdRuleMetadata.identity().group().getGroupName())
          .getRuleMetadata().add(createdRuleMetadata);
     }
   }
@@ -751,42 +756,42 @@ public final class MetadataFactory {
       boolean deletable = !"false".equals(moduleEl.attributeValue(XMLTags.DELETABLE_TAG)); //$NON-NLS-1$
       boolean isSingleton = Boolean.parseBoolean(moduleEl.attributeValue(XMLTags.IS_SINGLETON_TAG));
 
-      // create rule metadata
-      RuleMetadata module = new RuleMetadata(name, internalName, parentName, severity, hidden,
-              hasSeverity, deletable, isSingleton, groupMetadata);
-
-      // register internal name
-      sRuleMetadata.put(internalName, module);
-
       // process description
       String description = moduleEl.elementTextTrim(XMLTags.DESCRIPTION_TAG);
       description = localize(description, metadataBundle);
-      module.setDescription(description);
-
-      // process properties
-      processProperties(moduleEl, module, metadataBundle);
 
       // process alternative names
-      for (Element altNameEl : moduleEl.elements(XMLTags.ALTERNATIVE_NAME_TAG)) {
-
-        String alternativeName = altNameEl.attributeValue(XMLTags.INTERNAL_NAME_TAG);
-        registerAlternative(alternativeName, module);
-      }
+      List<String> alternativeNames = moduleEl.elements(XMLTags.ALTERNATIVE_NAME_TAG).stream()
+              .map(altNameEl -> altNameEl.attributeValue(XMLTags.INTERNAL_NAME_TAG))
+              .toList();
 
       // process message keys
-      for (Element quickfixEl : moduleEl.elements(XMLTags.MESSAGEKEY_TAG)) {
+      List<String> messageKeys = moduleEl.elements(XMLTags.MESSAGEKEY_TAG).stream()
+              .map(quickfixEl -> quickfixEl.attributeValue(XMLTags.KEY_TAG))
+              .toList();
 
-        String messageKey = quickfixEl.attributeValue(XMLTags.KEY_TAG);
-        module.addMessageKey(messageKey);
-      }
+      // process properties
+      List<ConfigPropertyMetadata> properties = processProperties(moduleEl, metadataBundle);
+
+      // create rule metadata
+      RuleMetadata module = new RuleMetadata(
+              new RuleIdentity(name, internalName, parentName, groupMetadata, description,
+                      alternativeNames),
+              severity, hidden, hasSeverity, deletable, isSingleton, messageKeys, properties);
+
+      registerAlternativeNames(module);
+
+      // register internal name
+      sRuleMetadata.put(internalName, module);
 
       groupMetadata.getRuleMetadata().add(module);
     }
   }
 
   @SuppressWarnings("unchecked")
-  private static void processProperties(Element moduleElement, RuleMetadata moduleMetadata,
+  private static List<ConfigPropertyMetadata> processProperties(Element moduleElement,
           ResourceBundle metadataBundle) throws CheckstylePluginException {
+    List<ConfigPropertyMetadata> properties = new ArrayList<>();
 
     List<Element> propertyElements = moduleElement.elements(XMLTags.PROPERTY_METADATA_TAG);
     for (Element propertyEl : propertyElements) {
@@ -807,7 +812,7 @@ public final class MetadataFactory {
       ConfigPropertyMetadata property = new ConfigPropertyMetadata(type, name, defaultValue,
               overrideDefaultValue);
 
-      moduleMetadata.getPropertyMetadata().add(property);
+      properties.add(property);
 
       // get description
       String description = propertyEl.elementTextTrim(XMLTags.DESCRIPTION_TAG);
@@ -849,6 +854,7 @@ public final class MetadataFactory {
         }
       }
     }
+    return properties;
   }
 
   private static String localize(String localizationCandidate, ResourceBundle metadataBundle) {

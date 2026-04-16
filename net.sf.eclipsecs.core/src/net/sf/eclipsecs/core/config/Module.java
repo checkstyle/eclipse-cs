@@ -84,7 +84,7 @@ public class Module implements Cloneable {
     if (metaData != null) {
 
       // create the properties according to the meta data
-      List<ConfigPropertyMetadata> propMetas = metaData.getPropertyMetadata();
+      List<ConfigPropertyMetadata> propMetas = metaData.configPropMetadata();
       int size = propMetas != null ? propMetas.size() : 0;
       for (int i = 0; i < size; i++) {
 
@@ -97,8 +97,8 @@ public class Module implements Cloneable {
         }
       }
 
-      if (metaData.getDefaultSeverityLevel() != null) {
-        mSeverityLevel = metaData.getDefaultSeverityLevel();
+      if (metaData.defaultSeverity() != null) {
+        mSeverityLevel = metaData.defaultSeverity();
       }
     }
   }
@@ -119,7 +119,7 @@ public class Module implements Cloneable {
    * @return the name of the module
    */
   public String getName() {
-    return mMetaData != null ? mMetaData.getRuleName() : mName;
+    return mMetaData != null ? mMetaData.identity().ruleName() : mName;
   }
 
   /**
@@ -228,7 +228,7 @@ public class Module implements Cloneable {
   public Severity getSeverity() {
     if (mMetaData != null && mMetaData.hasSeverity()) {
 
-      return mSeverityLevel != null ? mSeverityLevel : getMetaData().getDefaultSeverityLevel();
+      return mSeverityLevel != null ? mSeverityLevel : getMetaData().defaultSeverity();
     } else {
       return null;
     }
@@ -265,7 +265,7 @@ public class Module implements Cloneable {
     Severity defaultLevel = null;
 
     if (mMetaData != null && mMetaData.hasSeverity()) {
-      defaultLevel = getMetaData().getDefaultSeverityLevel();
+      defaultLevel = getMetaData().defaultSeverity();
     } else if (mMetaData == null) {
       defaultLevel = MetadataFactory.getDefaultSeverity();
     }

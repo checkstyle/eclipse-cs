@@ -38,7 +38,7 @@ import org.eclipse.ui.dialogs.PropertyPage;
 
 import net.sf.eclipsecs.core.builder.CheckstyleMarker;
 import net.sf.eclipsecs.core.config.meta.MetadataFactory;
-import net.sf.eclipsecs.core.config.meta.RuleMetadata;
+import net.sf.eclipsecs.core.config.meta.RuleIdentity;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
 import net.sf.eclipsecs.ui.Messages;
@@ -68,10 +68,10 @@ public class MarkerPropertyPage extends PropertyPage {
 
     try {
       createSeverityText(composite);
-      RuleMetadata metaData = createGroupText(composite);
-      createRuleText(composite, metaData);
+      RuleIdentity ruleIdentity = createGroupText(composite);
+      createRuleText(composite, ruleIdentity);
       createIdText(composite);
-      createDescriptionText(composite, metaData);
+      createDescriptionText(composite, ruleIdentity);
     } catch (CoreException ex) {
       CheckstyleLog.log(ex);
     }
@@ -87,25 +87,25 @@ public class MarkerPropertyPage extends PropertyPage {
     labelMessage.setText(message);
   }
 
-  private RuleMetadata createGroupText(final Composite composite) throws CoreException {
+  private RuleIdentity createGroupText(final Composite composite) throws CoreException {
     new Label(composite, SWT.NONE).setImage(
             CheckstyleUIPluginImages.MODULEGROUP_ICON.getImage());
     new Label(composite, SWT.NONE).setText(Messages.MarkerPropertyPage_Group);
 
     String moduleName = (String) getIssue().getAttribute(CheckstyleMarker.MODULE_NAME);
-    RuleMetadata metaData = MetadataFactory.getRuleMetadata(moduleName);
+    RuleIdentity ruleIdentity = MetadataFactory.getRuleMetadata(moduleName).identity();
     Text labelGroupName = new Text(composite, SWT.WRAP | SWT.READ_ONLY);
-    labelGroupName.setText(metaData.getGroup().getGroupName());
-    return metaData;
+    labelGroupName.setText(ruleIdentity.group().getGroupName());
+    return ruleIdentity;
   }
 
-  private void createRuleText(final Composite composite, RuleMetadata metaData) {
+  private void createRuleText(final Composite composite, RuleIdentity ruleIdentity) {
     new Label(composite, SWT.NONE).setImage(
             CheckstyleUIPluginImages.MODULE_ICON.getImage());
     new Label(composite, SWT.NONE).setText(Messages.MarkerPropertyPage_Module);
 
     Text labelRuleName = new Text(composite, SWT.WRAP | SWT.READ_ONLY);
-    labelRuleName.setText(metaData.getRuleName());
+    labelRuleName.setText(ruleIdentity.ruleName());
   }
 
   private void createIdText(final Composite composite) {
@@ -121,7 +121,7 @@ public class MarkerPropertyPage extends PropertyPage {
     labelId.setText(id);
   }
 
-  private void createDescriptionText(final Composite composite, RuleMetadata metaData) {
+  private void createDescriptionText(final Composite composite, RuleIdentity ruleIdentity) {
     Label descriptionLabel = new Label(composite, SWT.NONE);
     descriptionLabel.setText(Messages.MarkerPropertyPage_Description);
     GridData gridData = new GridData();
@@ -134,8 +134,8 @@ public class MarkerPropertyPage extends PropertyPage {
     gridData.horizontalSpan = 3;
     Browser browserDescription = new Browser(composite, SWT.BORDER);
     browserDescription.setLayoutData(gridData);
-    browserDescription.setText(
-            CheckConfigurationConfigureDialog.getDescriptionHtml(metaData.getDescription()));
+    browserDescription.setText(CheckConfigurationConfigureDialog
+            .getDescriptionHtml(ruleIdentity.description()));
   }
 
   /**

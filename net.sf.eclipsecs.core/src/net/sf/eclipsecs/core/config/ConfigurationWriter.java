@@ -147,7 +147,7 @@ public final class ConfigurationWriter {
 
     // Start the module
     Element moduleEl = parent.addElement(XMLTags.MODULE_TAG);
-    moduleEl.addAttribute(XMLTags.NAME_TAG, module.getMetaData().getInternalName());
+    moduleEl.addAttribute(XMLTags.NAME_TAG, module.getMetaData().identity().internalName());
 
     // Write comment
     if (Strings.emptyToNull(module.getComment()) != null) {
@@ -235,8 +235,8 @@ public final class ConfigurationWriter {
 
     for (Module tmp : remainingModules) {
 
-      String parentInternalName = module != null ? module.getMetaData().getInternalName() : null;
-      String childParent = tmp.getMetaData().getParentModule();
+      String parentInternalName = module != null ? module.getMetaData().identity().internalName() : null;
+      String childParent = tmp.getMetaData().identity().parent();
 
       // only the checker module has no parent
       if (parentInternalName == null && "Root".equals(childParent)) {
