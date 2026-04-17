@@ -97,14 +97,8 @@ public class CheckstyleSetting {
         String property;
         while (propit.hasNext()) {
           property = propit.next();
-          if (mCheckerModules.get(module).containsKey(property)) {
-            if (!mCheckerModules.get(module).get(property)
-                    .equals(setting.getmCheckerModules().get(module).get(property))) {
-            }
-          } else {
-            mCheckerModules.get(module).put(property,
-                    setting.getmCheckerModules().get(module).get(property));
-          }
+          mCheckerModules.get(module)
+            .putIfAbsent(property, setting.getmCheckerModules().get(module).get(property));
         }
       } else {
         mCheckerModules.put(module, setting.getmCheckerModules().get(module));
@@ -121,14 +115,8 @@ public class CheckstyleSetting {
         String property;
         while (propit.hasNext()) {
           property = propit.next();
-          if (mTreeWalkerModules.get(module).containsKey(property)) {
-            if (!mTreeWalkerModules.get(module).get(property)
-                    .equals(setting.getmTreeWalkerModules().get(module).get(property))) {
-            }
-          } else {
-            mTreeWalkerModules.get(module).put(property,
-                    setting.getmTreeWalkerModules().get(module).get(property));
-          }
+          mTreeWalkerModules.get(module)
+            .putIfAbsent(property, setting.getmTreeWalkerModules().get(module).get(property));
         }
       } else {
         mTreeWalkerModules.put(module, setting.getmTreeWalkerModules().get(module));
