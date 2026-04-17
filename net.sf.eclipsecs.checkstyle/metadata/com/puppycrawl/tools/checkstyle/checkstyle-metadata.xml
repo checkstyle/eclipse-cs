@@ -5,7 +5,8 @@
 <checkstyle-metadata>
     <rule-group-metadata name="%Other.group" priority="1500">
 
-        <rule-metadata name="%Checker.name" internal-name="Checker" parent="Root" singleton="true" default-severity="warning">
+        <rule-metadata name="%Checker.name" internal-name="Checker" parent="Root" singleton="true"
+            default-severity="warning">
             <alternative-name internal-name="com.puppycrawl.tools.checkstyle.Checker"/>
             <description>%Checker.desc</description>
             <property-metadata name="cacheFile" datatype="File">

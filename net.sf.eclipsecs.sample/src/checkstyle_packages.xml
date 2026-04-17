@@ -4,11 +4,11 @@
     "-//Checkstyle//DTD Package Names Configuration 1.0//EN"
     "https://checkstyle.org/dtds/packages_1_0.dtd">
 
+<!--
+  Define here the Java packages where your custom Checkstyle module classes (checks, filters) are.
+  See https://checkstyle.org/config.html#Packages for more info.
+  -->
 <checkstyle-packages>
-    <!--
-      Define the Java packages where your custom Checkstyle module classes (checks, filters) reside here.
-      See https://checkstyle.org/config.html#Packages for more info.
-      -->
     <package name="net.sf.eclipsecs.sample.checks">
         <package name="dummysubpackage"/>
     </package>
