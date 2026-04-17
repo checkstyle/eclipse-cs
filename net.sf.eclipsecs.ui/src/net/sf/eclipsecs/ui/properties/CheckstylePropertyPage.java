@@ -32,21 +32,16 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.MessageDialogWithToggle;
 import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
-import org.eclipse.jface.viewers.DoubleClickEvent;
-import org.eclipse.jface.viewers.ICheckStateListener;
-import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.window.Window;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -91,20 +86,11 @@ public class CheckstylePropertyPage extends PropertyPage {
   // controls
   //
 
-  /** The tab folder. */
-  private TabFolder mMainTab = null;
-
   /** button to enable checkstyle for the project. */
   private Button mChkEnable;
 
   /** button to enable/disable the simple configuration. */
   private Button mChkSimpleConfig;
-
-  /**
-   * button to enable/disable synchronizing the checkstyle configuration with the formatter
-   * configuration.
-   */
-  private Button mChkSyncFormatter;
 
   /** the container holding the file sets editor. */
   private Composite mFileSetsContainer;
@@ -112,27 +98,12 @@ public class CheckstylePropertyPage extends PropertyPage {
   /** the editor for the file sets. */
   private IFileSetsEditor mFileSetsEditor;
 
-  /** viewer to display the known checkstyle filters. */
-  private CheckboxTableViewer mFilterList;
-
-  /** button to open a filter editor. */
-  private Button mBtnEditFilter;
-
-  /** used to display the filter description. */
-  private Text mTxtFilterDescription;
-
   //
   // other members
   //
 
-  /** controller of this page. */
-  private PageController mPageController;
-
   /** the actual working data for this form. */
   private ProjectConfigurationWorkingCopy mProjectConfig;
-
-  /** the local configurations working set editor. */
-  private CheckConfigurationWorkingSetEditor mWorkingSetEditor;
 
   private boolean mCheckstyleInitiallyActivated;
 
@@ -196,25 +167,25 @@ public class CheckstylePropertyPage extends PropertyPage {
     Composite container = null;
 
     try {
-
-      this.mPageController = new PageController();
-
       // suppress default- & apply-buttons
       noDefaultAndApplyButton();
 
-      mMainTab = new TabFolder(parent, SWT.TOP);
-      mMainTab.setLayoutData(new GridData(GridData.FILL_BOTH));
-      mMainTab.addSelectionListener(mPageController);
+      TabFolder mainTab = new TabFolder(parent, SWT.TOP);
+      mainTab.setLayoutData(new GridData(GridData.FILL_BOTH));
+      mainTab.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
+        mFileSetsEditor.refresh();
+        getContainer().updateButtons();
+      }));
 
       // create the main container
-      container = new Composite(mMainTab, SWT.NULL);
+      container = new Composite(mainTab, SWT.NULL);
       container.setLayout(new FormLayout());
       container.setLayoutData(new GridData(GridData.FILL_BOTH));
 
       // create the checkbox to enable/disable the simple configuration
       this.mChkSimpleConfig = new Button(container, SWT.CHECK);
       this.mChkSimpleConfig.setText(Messages.CheckstylePropertyPage_btnUseSimpleConfig);
-      this.mChkSimpleConfig.addSelectionListener(this.mPageController);
+      this.mChkSimpleConfig.addSelectionListener(new ChkSimpleConfigController());
       this.mChkSimpleConfig.setSelection(mProjectConfig.isUseSimpleConfig());
 
       FormData formData = new FormData();
@@ -226,7 +197,6 @@ public class CheckstylePropertyPage extends PropertyPage {
       // create the checkbox to enable/disable checkstyle
       this.mChkEnable = new Button(container, SWT.CHECK);
       this.mChkEnable.setText(Messages.CheckstylePropertyPage_btnActivateCheckstyle);
-      this.mChkEnable.addSelectionListener(this.mPageController);
       this.mChkEnable.setSelection(mCheckstyleInitiallyActivated);
 
       formData = new FormData();
@@ -236,22 +206,24 @@ public class CheckstylePropertyPage extends PropertyPage {
       this.mChkEnable.setLayoutData(formData);
 
       // create the checkbox for formatter syncing
-      this.mChkSyncFormatter = new Button(container, SWT.CHECK);
-      this.mChkSyncFormatter.setText(Messages.CheckstylePropertyPage_btnSyncFormatter);
-      this.mChkSyncFormatter.addSelectionListener(this.mPageController);
-      this.mChkSyncFormatter.setSelection(mProjectConfig.isSyncFormatter());
+      Button mChkSyncFormatter = new Button(container, SWT.CHECK);
+      mChkSyncFormatter.setText(Messages.CheckstylePropertyPage_btnSyncFormatter);
+      mChkSyncFormatter.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
+        mProjectConfig.setSyncFormatter(mChkSyncFormatter.getSelection());
+      }));
+      mChkSyncFormatter.setSelection(mProjectConfig.isSyncFormatter());
 
       formData = new FormData();
       formData.left = new FormAttachment(0, 3);
       formData.top = new FormAttachment(this.mChkEnable, 3, SWT.BOTTOM);
-      this.mChkSyncFormatter.setLayoutData(formData);
+      mChkSyncFormatter.setLayoutData(formData);
 
       // create the configuration area
       mFileSetsContainer = new Composite(container, SWT.NULL);
       final Control configArea = createFileSetsArea(mFileSetsContainer);
       formData = new FormData();
       formData.left = new FormAttachment(0, 3);
-      formData.top = new FormAttachment(this.mChkSyncFormatter, 6, SWT.BOTTOM);
+      formData.top = new FormAttachment(mChkSyncFormatter, 6, SWT.BOTTOM);
       formData.right = new FormAttachment(100, -3);
       formData.bottom = new FormAttachment(45);
       configArea.setLayoutData(formData);
@@ -267,13 +239,13 @@ public class CheckstylePropertyPage extends PropertyPage {
       filterArea.setLayoutData(formData);
 
       // create the local configurations area
-      Control localConfigArea = createLocalConfigArea(mMainTab);
+      Control localConfigArea = createLocalConfigArea(mainTab);
 
-      TabItem mainItem = new TabItem(mMainTab, SWT.NULL);
+      TabItem mainItem = new TabItem(mainTab, SWT.NULL);
       mainItem.setControl(container);
       mainItem.setText(Messages.CheckstylePropertyPage_tabMain);
 
-      TabItem localItem = new TabItem(mMainTab, SWT.NULL);
+      TabItem localItem = new TabItem(mainTab, SWT.NULL);
       localItem.setControl(localConfigArea);
       localItem.setText(Messages.CheckstylePropertyPage_tabCheckConfigs);
 
@@ -332,17 +304,40 @@ public class CheckstylePropertyPage extends PropertyPage {
 
     filterArea.setLayout(new FormLayout());
 
-    this.mFilterList = CheckboxTableViewer.newCheckList(filterArea, SWT.BORDER);
-    this.mBtnEditFilter = new Button(filterArea, SWT.PUSH);
+    Button btnEditFilter = new Button(filterArea, SWT.PUSH);
 
     FormData formData = new FormData();
     formData.left = new FormAttachment(0, 3);
     formData.top = new FormAttachment(0, 3);
-    formData.right = new FormAttachment(this.mBtnEditFilter, -3, SWT.LEFT);
+    formData.right = new FormAttachment(btnEditFilter, -3, SWT.LEFT);
     formData.bottom = new FormAttachment(60, -3);
-    this.mFilterList.getTable().setLayoutData(formData);
+    CheckboxTableViewer filterList = CheckboxTableViewer.newCheckList(filterArea, SWT.BORDER);
+    filterList.getTable().setLayoutData(formData);
 
-    this.mFilterList.setLabelProvider(new LabelProvider() {
+    formData = new FormData();
+    formData.top = new FormAttachment(0, 3);
+    formData.right = new FormAttachment(100, -3);
+    btnEditFilter.setLayoutData(formData);
+
+    // Description
+    Label lblDesc = new Label(filterArea, SWT.LEFT);
+    lblDesc.setText(Messages.CheckstylePropertyPage_lblDescription);
+    formData = new FormData();
+    formData.left = new FormAttachment(0, 3);
+    formData.top = new FormAttachment(filterList.getTable(), 3, SWT.BOTTOM);
+    formData.right = new FormAttachment(100, -3);
+    lblDesc.setLayoutData(formData);
+
+    formData = new FormData();
+    formData.left = new FormAttachment(0, 3);
+    formData.top = new FormAttachment(lblDesc, 3, SWT.BOTTOM);
+    formData.right = new FormAttachment(100, -3);
+    formData.bottom = new FormAttachment(100, -3);
+    Text txtFilterDescription = new Text(filterArea,
+            SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.READ_ONLY | SWT.BORDER | SWT.VERTICAL);
+    txtFilterDescription.setLayoutData(formData);
+
+    filterList.setLabelProvider(new LabelProvider() {
 
       @Override
       public String getText(Object element) {
@@ -364,54 +359,51 @@ public class CheckstylePropertyPage extends PropertyPage {
         return buf.toString();
       }
     });
-    this.mFilterList.setContentProvider(new ArrayContentProvider());
-    this.mFilterList.addSelectionChangedListener(this.mPageController);
-    this.mFilterList.addDoubleClickListener(this.mPageController);
-    this.mFilterList.addCheckStateListener(this.mPageController);
+    filterList.setContentProvider(new ArrayContentProvider());
+    filterList.addSelectionChangedListener(event -> {
+      if (event.getSelection() instanceof IStructuredSelection selection) {
+        if (selection.getFirstElement() instanceof IFilter filterDef) {
+          txtFilterDescription.setText(filterDef.getDescription());
+          // activate edit button
+          btnEditFilter.setEnabled(PluginFilterEditors.hasEditor(filterDef));
+        }
+      }
+    });
+    filterList.addDoubleClickListener(event -> openFilterEditor(event.getSelection(), filterList));
+    filterList.addCheckStateListener(event -> {
+      if (event.getElement() instanceof IFilter filter) {
+        if (filter.isReadonly()) {
+          event.getCheckable().setChecked(event.getElement(), true);
+        } else {
+          filter.setEnabled(event.getChecked());
+        }
+      }
+    });
 
-    this.mBtnEditFilter.setText(Messages.CheckstylePropertyPage_btnChangeFilter);
-    this.mBtnEditFilter.addSelectionListener(this.mPageController);
-
-    formData = new FormData();
-    formData.top = new FormAttachment(0, 3);
-    formData.right = new FormAttachment(100, -3);
-    this.mBtnEditFilter.setLayoutData(formData);
-
-    // Description
-    Label lblDesc = new Label(filterArea, SWT.LEFT);
-    lblDesc.setText(Messages.CheckstylePropertyPage_lblDescription);
-    formData = new FormData();
-    formData.left = new FormAttachment(0, 3);
-    formData.top = new FormAttachment(this.mFilterList.getTable(), 3, SWT.BOTTOM);
-    formData.right = new FormAttachment(100, -3);
-    lblDesc.setLayoutData(formData);
-
-    this.mTxtFilterDescription = new Text(filterArea,
-            SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.READ_ONLY | SWT.BORDER | SWT.VERTICAL);
-    formData = new FormData();
-    formData.left = new FormAttachment(0, 3);
-    formData.top = new FormAttachment(lblDesc, 3, SWT.BOTTOM);
-    formData.right = new FormAttachment(100, -3);
-    formData.bottom = new FormAttachment(100, -3);
-    this.mTxtFilterDescription.setLayoutData(formData);
+    btnEditFilter.setText(Messages.CheckstylePropertyPage_btnChangeFilter);
+    btnEditFilter.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
+      ISelection selection = filterList.getSelection();
+      openFilterEditor(selection, filterList);
+      getContainer().updateButtons();
+    }));
 
     // intialize filter list
     List<IFilter> filterDefs = mProjectConfig.getFilters();
-    this.mFilterList.setInput(filterDefs);
+    filterList.setInput(filterDefs);
 
     // set the checked state
     for (int i = 0; i < filterDefs.size(); i++) {
       IFilter filter = filterDefs.get(i);
-      this.mFilterList.setChecked(filter, filter.isEnabled());
+      filterList.setChecked(filter, filter.isEnabled());
     }
 
     // set the readonly state
     for (int i = 0; i < filterDefs.size(); i++) {
       IFilter filter = filterDefs.get(i);
-      this.mFilterList.setGrayed(filter, filter.isReadonly());
+      filterList.setGrayed(filter, filter.isReadonly());
     }
 
-    this.mBtnEditFilter.setEnabled(false);
+    btnEditFilter.setEnabled(false);
 
     return filterArea;
   }
@@ -428,9 +420,9 @@ public class CheckstylePropertyPage extends PropertyPage {
     gridData.widthHint = 200;
     lblHint.setLayoutData(gridData);
 
-    mWorkingSetEditor = new CheckConfigurationWorkingSetEditor(
+    CheckConfigurationWorkingSetEditor workingSetEditor = new CheckConfigurationWorkingSetEditor(
             mProjectConfig.getLocalCheckConfigWorkingSet(), false);
-    Control editorControl = mWorkingSetEditor.createContents(noteAndEditor);
+    Control editorControl = workingSetEditor.createContents(noteAndEditor);
     editorControl.setLayoutData(new GridData(GridData.FILL_BOTH));
 
     return noteAndEditor;
@@ -531,151 +523,81 @@ public class CheckstylePropertyPage extends PropertyPage {
   }
 
   /**
-   * This class works as controller for the page. It listenes for events to occur and handles the
-   * pages context.
+   * Open the filter editor on a given selection of the list.
    *
+   * @param selection
+   *          the selection
    */
-  private class PageController extends SelectionAdapter
-          implements ISelectionChangedListener, ICheckStateListener, IDoubleClickListener {
+  private void openFilterEditor(ISelection selection, CheckboxTableViewer filterList) {
+    if (selection instanceof IStructuredSelection) {
+      Object selectedElement = ((IStructuredSelection) selection).getFirstElement();
 
-    @Override
-    public void widgetSelected(SelectionEvent e) {
+      if (selectedElement instanceof IFilter) {
 
-      Object source = e.getSource();
-      // edit filter
-      if (source == mBtnEditFilter) {
-
-        ISelection selection = mFilterList.getSelection();
-        openFilterEditor(selection);
-        getContainer().updateButtons();
-      }
-      if (source == mMainTab) {
-        mFileSetsEditor.refresh();
-        getContainer().updateButtons();
-
-      } else if (source == mChkSyncFormatter) {
-        mProjectConfig.setSyncFormatter(mChkSyncFormatter.getSelection());
-      } else if (source == mChkSimpleConfig) {
         try {
 
-          mProjectConfig.setUseSimpleConfig(mChkSimpleConfig.getSelection());
+          IFilter aFilterDef = (IFilter) selectedElement;
 
-          boolean showWarning = CheckstyleUIPluginPrefs
-                  .getBoolean(CheckstyleUIPluginPrefs.PREF_FILESET_WARNING);
-          if (showWarning && mProjectConfig.isUseSimpleConfig()) {
-            MessageDialogWithToggle dialog = new MessageDialogWithToggle(getShell(),
-                    Messages.CheckstylePropertyPage_titleWarnFilesets, null,
-                    Messages.CheckstylePropertyPage_msgWarnFilesets, MessageDialog.WARNING,
-                    new String[] { IDialogConstants.OK_LABEL }, 0,
-                    Messages.CheckstylePropertyPage_mgsWarnFileSetNagOption, showWarning) {
-              /**
-               * Overwritten because we don't want to store which button the user pressed but the
-               * state of the toggle.
-               */
-              @Override
-              protected void buttonPressed(int buttonId) {
-                getPrefStore().setValue(getPrefKey(), getToggleState());
-                setReturnCode(buttonId);
-                close();
-              }
-
-            };
-            dialog.setPrefStore(CheckstyleUIPlugin.getDefault().getPreferenceStore());
-            dialog.setPrefKey(CheckstyleUIPluginPrefs.PREF_FILESET_WARNING);
-            dialog.open();
-
+          if (!PluginFilterEditors.hasEditor(aFilterDef)) {
+            return;
           }
 
-          createFileSetsArea(mFileSetsContainer);
-          mFileSetsContainer.redraw();
-          mFileSetsContainer.update();
-          mFileSetsContainer.layout();
+          IFilterEditor editableFilter = PluginFilterEditors.getNewEditor(aFilterDef);
+          editableFilter.setInputProject(mProjectConfig.getProject());
+          editableFilter.setFilterData(aFilterDef.getFilterData());
+
+          if (Window.OK == editableFilter.openEditor(getShell())) {
+
+            aFilterDef.setFilterData(editableFilter.getFilterData());
+            filterList.refresh();
+          }
         } catch (CheckstylePluginException ex) {
-          CheckstyleUIPlugin.errorDialog(getShell(), Messages.errorChangingFilesetEditor, ex, true);
-        }
-      }
-
-    }
-
-    @Override
-    public void selectionChanged(SelectionChangedEvent event) {
-
-      Object source = event.getSource();
-      if (source == mFilterList) {
-
-        ISelection selection = event.getSelection();
-        if (selection instanceof IStructuredSelection) {
-          Object selectedElement = ((IStructuredSelection) selection).getFirstElement();
-
-          if (selectedElement instanceof IFilter) {
-
-            IFilter filterDef = (IFilter) selectedElement;
-
-            mTxtFilterDescription.setText(filterDef.getDescription());
-
-            // activate edit button
-            mBtnEditFilter.setEnabled(PluginFilterEditors.hasEditor(filterDef));
-          }
-        }
-      }
-    }
-
-    @Override
-    public void checkStateChanged(CheckStateChangedEvent event) {
-
-      Object element = event.getElement();
-      if (element instanceof IFilter) {
-        IFilter filter = (IFilter) element;
-        if (filter.isReadonly()) {
-          event.getCheckable().setChecked(event.getElement(), true);
-        } else {
-          filter.setEnabled(event.getChecked());
-        }
-      }
-    }
-
-    @Override
-    public void doubleClick(DoubleClickEvent event) {
-
-      openFilterEditor(event.getSelection());
-    }
-
-    /**
-     * Open the filter editor on a given selection of the list.
-     *
-     * @param selection
-     *          the selection
-     */
-    private void openFilterEditor(ISelection selection) {
-
-      if (selection instanceof IStructuredSelection) {
-        Object selectedElement = ((IStructuredSelection) selection).getFirstElement();
-
-        if (selectedElement instanceof IFilter) {
-
-          try {
-
-            IFilter aFilterDef = (IFilter) selectedElement;
-
-            if (!PluginFilterEditors.hasEditor(aFilterDef)) {
-              return;
-            }
-
-            IFilterEditor editableFilter = PluginFilterEditors.getNewEditor(aFilterDef);
-            editableFilter.setInputProject(mProjectConfig.getProject());
-            editableFilter.setFilterData(aFilterDef.getFilterData());
-
-            if (Window.OK == editableFilter.openEditor(getShell())) {
-
-              aFilterDef.setFilterData(editableFilter.getFilterData());
-              mFilterList.refresh();
-            }
-          } catch (CheckstylePluginException ex) {
-            CheckstyleUIPlugin.errorDialog(getShell(), ex, true);
-          }
+          CheckstyleUIPlugin.errorDialog(getShell(), ex, true);
         }
       }
     }
   }
 
+  private class ChkSimpleConfigController extends SelectionAdapter {
+
+    @Override
+    public void widgetSelected(SelectionEvent e) {
+      try {
+        mProjectConfig.setUseSimpleConfig(mChkSimpleConfig.getSelection());
+
+        boolean showWarning = CheckstyleUIPluginPrefs
+                .getBoolean(CheckstyleUIPluginPrefs.PREF_FILESET_WARNING);
+        if (showWarning && mProjectConfig.isUseSimpleConfig()) {
+          MessageDialogWithToggle dialog = new MessageDialogWithToggle(getShell(),
+                  Messages.CheckstylePropertyPage_titleWarnFilesets, null,
+                  Messages.CheckstylePropertyPage_msgWarnFilesets, MessageDialog.WARNING,
+                  new String[] { IDialogConstants.OK_LABEL }, 0,
+                  Messages.CheckstylePropertyPage_mgsWarnFileSetNagOption, showWarning) {
+            /**
+             * Overwritten because we don't want to store which button the user pressed but the
+             * state of the toggle.
+             */
+            @Override
+            protected void buttonPressed(int buttonId) {
+              getPrefStore().setValue(getPrefKey(), getToggleState());
+              setReturnCode(buttonId);
+              close();
+            }
+
+          };
+          dialog.setPrefStore(CheckstyleUIPlugin.getDefault().getPreferenceStore());
+          dialog.setPrefKey(CheckstyleUIPluginPrefs.PREF_FILESET_WARNING);
+          dialog.open();
+
+        }
+
+        createFileSetsArea(mFileSetsContainer);
+        mFileSetsContainer.redraw();
+        mFileSetsContainer.update();
+        mFileSetsContainer.layout();
+      } catch (CheckstylePluginException ex) {
+        CheckstyleUIPlugin.errorDialog(getShell(), Messages.errorChangingFilesetEditor, ex, true);
+      }
+    }
+  }
 }

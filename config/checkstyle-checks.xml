@@ -308,6 +308,7 @@
         <module name="DefaultComesLast"/>
         <module name="EmptyStatement"/>
         <module name="EqualsHashCode"/>
+        <module name="ExplicitInitialization"/>
         <module name="FallThrough"/>
         <module name="HiddenField">
             <property name="ignoreConstructorParameter" value="true"/>
