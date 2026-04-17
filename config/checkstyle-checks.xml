@@ -117,6 +117,12 @@
         <property name="message" value="Content of source tag should not be Indented"/>
     </module>
     <module name="RegexpMultiline">
+        <property name="id" value="noConsecutiveLines"/>
+        <property name="format" value="\r?\n[\t ]*\r?\n[\t ]*\r?\n"/>
+        <property name="fileExtensions" value="java,xml,properties"/>
+        <property name="message" value="Unnecessary consecutive lines"/>
+    </module>
+    <module name="RegexpMultiline">
         <property name="id" value="noEmptyFile"/>
         <property name="format" value="^\s*$" />
         <property name="matchAcrossLines" value="true" />
