@@ -23,7 +23,6 @@ package net.sf.eclipsecs.ui.config;
 import java.io.File;
 import java.util.ArrayList;
 
-import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -686,7 +685,7 @@ public class CheckConfigurationWorkingSetEditor {
         } else {
           mConfigurationDescription.setText(""); //$NON-NLS-1$
           if (mIsShowUsage) {
-            mUsageView.setInput(new ArrayList<IProject>());
+            mUsageView.setInput(new ArrayList<>());
           }
         }
         mEditButton.setEnabled(configSelected);
@@ -705,6 +704,4 @@ public class CheckConfigurationWorkingSetEditor {
       }
     }
   }
-
-
 }
