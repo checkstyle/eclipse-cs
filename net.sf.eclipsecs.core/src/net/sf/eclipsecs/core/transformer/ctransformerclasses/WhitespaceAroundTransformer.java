@@ -20,6 +20,8 @@
 
 package net.sf.eclipsecs.core.transformer.ctransformerclasses;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import net.sf.eclipsecs.core.transformer.CTransformationClass;
@@ -45,63 +47,52 @@ public class WhitespaceAroundTransformer extends CTransformationClass {
               + "PLUS_ASSIGN, QUESTION, RCURLY, SL, SLIST, SL_ASSIGN, SR, SR_ASSIGN, STAR, STAR_ASSIGN";
     }
     final StringTokenizer token = new StringTokenizer(tokens, ", ");
-    String tok;
 
     while (token.hasMoreTokens()) {
-      tok = token.nextToken();
-      if ("ASSIGN".equals(tok) || "BAND_ASSIGN".equals(tok) || "BOR_ASSIGN".equals(tok)
-              || "BSR_ASSIGN".equals(tok) || "BXOR_ASSIGN".equals(tok) || "DIV_ASSIGN".equals(tok)
-              || "MINUS_ASSIGN".equals(tok) || "MOD_ASSIGN".equals(tok) || "PLUS_ASSIGN".equals(tok)
-              || "SL_ASSIGN".equals(tok) || "SR_ASSIGN".equals(tok) || "STAR_ASSIGN".equals(tok)) {
-        userFormatterSetting("insert_space_after_assignment_operator", "insert");
-        userFormatterSetting("insert_space_before_assignment_operator", "insert");
-      } else if (("BAND".equals(tok) || "BOR".equals(tok) || "BSR".equals(tok) || "BXOR".equals(tok)
-              || "DIV".equals(tok) || "EQUAL".equals(tok) || "GE".equals(tok) || "GT".equals(tok)
-              || "LAND".equals(tok) || "LE".equals(tok) || "LOR".equals(tok) || "LT".equals(tok)
-              || "MINUS".equals(tok) || "MOD".equals(tok) || "NOT_EQUAL".equals(tok)
-              || "PLUS".equals(tok) || "SL".equals(tok) || "SR".equals(tok)
-              || "STAR".equals(tok))) {
-        userFormatterSetting("insert_space_after_binary_operator", "insert");
-        userFormatterSetting("insert_space_before_binary_operator", "insert");
-      } else if ("COLON".equals(tok)) {
-        userFormatterSetting("insert_space_before_colon_in_for", "insert");
-        userFormatterSetting("insert_space_after_colon_in_for", "insert");
-        userFormatterSetting("insert_space_before_colon_in_conditional", "insert");
-        userFormatterSetting("insert_space_after_colon_in_conditional", "insert");
-      } else if ("QUESTION".equals(tok)) {
-        userFormatterSetting("insert_space_after_question_in_conditional", "insert");
-        userFormatterSetting("insert_space_before_question_in_conditional", "insert");
-      } else if ("LCURLY".equals(tok)) {
-        userFormatterSetting("insert_space_before_opening_brace_in_type_declaration", "insert");
-        userFormatterSetting("insert_space_after_opening_brace_in_array_initializer", "insert");
-        userFormatterSetting("insert_space_before_opening_brace_in_annotation_type_declaration",
-                "insert");
-        userFormatterSetting("insert_space_before_opening_brace_in_block", "insert");
-        userFormatterSetting("insert_space_before_opening_brace_in_method_declaration", "insert");
-        userFormatterSetting("insert_space_before_opening_brace_in_enum_declaration", "insert");
-        userFormatterSetting("insert_space_before_opening_brace_in_constructor_declaration",
-                "insert");
-        userFormatterSetting("insert_space_before_opening_brace_in_enum_constant", "insert");
-        userFormatterSetting("insert_space_before_opening_brace_in_switch", "insert");
-        userFormatterSetting("insert_space_before_opening_brace_in_anonymous_type_declaration",
-                "insert");
-        userFormatterSetting("insert_space_before_opening_brace_in_array_initializer", "insert");
-      } else if ("RCURLY".equals(tok)) {
-        userFormatterSetting("insert_space_after_closing_brace_in_block", "insert");
-        userFormatterSetting("insert_space_before_closing_brace_in_array_initializer", "insert");
-      } else if ("LITERAL_CATCH".equals(tok)) {
-        userFormatterSetting("insert_space_before_opening_paren_in_catch", "insert");
-      } else if ("LITERAL_FOR".equals(tok)) {
-        userFormatterSetting("insert_space_before_opening_paren_in_for", "insert");
-      } else if ("LITERAL_IF".equals(tok)) {
-        userFormatterSetting("insert_space_before_opening_paren_in_if", "insert");
-      } else if ("LITERAL_RETURN".equals(tok)) {
-        userFormatterSetting("insert_space_before_parenthesized_expression_in_return", "insert");
-      } else if ("LITERAL_SYNCHRONIZED".equals(tok)) {
-        userFormatterSetting("insert_space_before_opening_paren_in_synchronized", "insert");
-      } else if ("LITERAL_WHILE".equals(tok)) {
-        userFormatterSetting("insert_space_before_opening_paren_in_while", "insert");
-      }
+      List<String> settings = switch (token.nextToken()) {
+        case "ASSIGN", "BAND_ASSIGN", "BOR_ASSIGN", "BSR_ASSIGN",
+             "BXOR_ASSIGN", "DIV_ASSIGN", "MINUS_ASSIGN", "MOD_ASSIGN",
+             "PLUS_ASSIGN", "SL_ASSIGN", "SR_ASSIGN", "STAR_ASSIGN" -> List.of(
+                "insert_space_after_assignment_operator",
+                "insert_space_before_assignment_operator");
+        case "BAND", "BOR", "BSR", "BXOR", "DIV", "EQUAL",
+             "GE", "GT", "LAND", "LE", "LOR", "LT", "MINUS",
+             "MOD", "NOT_EQUAL", "PLUS", "SL", "SR", "STAR" -> List.of(
+                "insert_space_after_binary_operator",
+                "insert_space_before_binary_operator");
+        case "COLON" -> List.of(
+                "insert_space_before_colon_in_for",
+                "insert_space_after_colon_in_for",
+                "insert_space_before_colon_in_conditional",
+                "insert_space_after_colon_in_conditional");
+        case "QUESTION" -> List.of(
+                "insert_space_before_question_in_conditional",
+                "insert_space_after_question_in_conditional");
+        case "LCURLY" -> List.of(
+                "insert_space_before_opening_brace_in_type_declaration",
+                "insert_space_after_opening_brace_in_array_initializer",
+                "insert_space_before_opening_brace_in_annotation_type_declaration",
+                "insert_space_before_opening_brace_in_block",
+                "insert_space_before_opening_brace_in_method_declaration",
+                "insert_space_before_opening_brace_in_enum_declaration",
+                "insert_space_before_opening_brace_in_constructor_declaration",
+                "insert_space_before_opening_brace_in_enum_constant",
+                "insert_space_before_opening_brace_in_switch",
+                "insert_space_before_opening_brace_in_anonymous_type_declaration",
+                "insert_space_before_opening_brace_in_array_initializer");
+        case "RCURLY" -> List.of(
+                "insert_space_after_closing_brace_in_block",
+                "insert_space_before_closing_brace_in_array_initializer");
+        case "LITERAL_CATCH" -> List.of("insert_space_before_opening_paren_in_catch");
+        case "LITERAL_FOR" -> List.of("insert_space_before_opening_paren_in_for");
+        case "LITERAL_IF" -> List.of("insert_space_before_opening_paren_in_if");
+        case "LITERAL_RETURN" -> List.of("insert_space_before_parenthesized_expression_in_return");
+        case "LITERAL_SYNCHRONIZED" -> List.of(
+                "insert_space_before_opening_paren_in_synchronized");
+        case "LITERAL_WHILE" -> List.of("insert_space_before_opening_paren_in_while");
+        default -> Collections.emptyList();
+      };
+      settings.forEach(setting -> userFormatterSetting(setting, "insert"));
     }
     return getFormatterSetting();
   }

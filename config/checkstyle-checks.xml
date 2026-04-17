@@ -580,6 +580,11 @@
         <module name="JavadocTagContinuationIndentation"/>
         <module name="SingleLineJavadoc"/>
 
+        <!-- Metrics -->
+        <module name="BooleanExpressionComplexity">
+            <property name="max" value="7"/>
+        </module>
+
         <!-- Misc -->
         <module name="ArrayTypeStyle"/>
         <module name="AvoidEscapedUnicodeCharacters">
