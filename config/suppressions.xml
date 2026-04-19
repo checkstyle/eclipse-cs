@@ -116,8 +116,8 @@
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]transformer[/\\]ctransformerclasses[/\\]UnusedImportsTransformer.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]transformer[/\\]ctransformerclasses[/\\]WhitespaceAfterTransformer.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]transformer[/\\]ctransformerclasses[/\\]WhitespaceAroundTransformer.java" />
-    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]transformer[/\\]ftransformerclasses[/\\]T_insert_space_before_opening_paren_in_method_invocation.java" />
-    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]transformer[/\\]ftransformerclasses[/\\]T_tabulation_char.java" />
+    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]transformer[/\\]ftransformerclasses[/\\]MethodInvocationParenTransformer.java" />
+    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]transformer[/\\]ftransformerclasses[/\\]TabulationCharTransformer.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]util[/\\]CheckstyleLog.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]util[/\\]CheckstylePluginException.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]util[/\\]EclipseLogHandler.java" />

@@ -20,22 +20,20 @@
 
 package net.sf.eclipsecs.core.transformer.ftransformerclasses;
 
-import java.util.HashMap;
-
 import net.sf.eclipsecs.core.transformer.CheckstyleSetting;
 import net.sf.eclipsecs.core.transformer.FTransformationClass;
+import net.sf.eclipsecs.core.transformer.FormatterKey;
 
 /**
- * Transformerclass for converting the formatter-setting
- * "insert.space.before.opening.paren.in.method.invocation" to appropriate checkstyle-modules.
+ * Transformerclass for converting the formatter-setting tabulation.char to appropriate
+ * checkstyle-modules.
  *
  */
-public class T_insert_space_before_opening_paren_in_method_invocation extends FTransformationClass {
+@FormatterKey("tabulation.char")
+public class TabulationCharTransformer extends FTransformationClass {
   @Override
   public CheckstyleSetting transformRule() {
-    final HashMap<String, String> properties = new HashMap<>();
-    properties.put("tokens", "METHOD_CALL");
-    useTreeWalkerModule("MethodParamPad", properties);
+    useCheckerModule("FileTabCharacter", null);
     return getCheckstyleSetting();
   }
 }
