@@ -644,6 +644,7 @@
         <module name="CatchParameterName">
             <property name="format" value="^(ex|[a-z][a-z][a-zA-Z]+)$"/>
         </module>
+        <module name="TypeName"/>
         <module name="PatternVariableName"/>
         <module name="IllegalIdentifierName"/>
 

@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2003-2023  Lukas Frena
+// Copyright (C) 2003-2023 the original author or authors.
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -18,20 +18,23 @@
 //
 //============================================================================
 
-package net.sf.eclipsecs.core.transformer.ftransformerclasses;
+package net.sf.eclipsecs.core.transformer;
 
-import net.sf.eclipsecs.core.transformer.CheckstyleSetting;
-import net.sf.eclipsecs.core.transformer.FTransformationClass;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Transformerclass for converting the formatter-setting tabulation.char to appropriate
- * checkstyle-modules.
- *
+ * Annotation to map an Eclipse Formatter setting key to a transformer class.
  */
-public class T_tabulation_char extends FTransformationClass {
-  @Override
-  public CheckstyleSetting transformRule() {
-    useCheckerModule("FileTabCharacter", null);
-    return getCheckstyleSetting();
-  }
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface FormatterKey {
+  /**
+   * The Eclipse Formatter setting key.
+   *
+   * @return the key
+   */
+  String value();
 }
