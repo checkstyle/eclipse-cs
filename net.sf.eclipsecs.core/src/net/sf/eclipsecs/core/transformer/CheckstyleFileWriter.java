@@ -37,6 +37,7 @@ public class CheckstyleFileWriter {
 
   /** An object containing all settings for the checkstyle-file. */
   private final CheckstyleSetting mCheckstyleSetting;
+  private final String file;
 
   /**
    * Creates new instance of class CheckstyleFileWriter.
@@ -48,7 +49,10 @@ public class CheckstyleFileWriter {
    */
   public CheckstyleFileWriter(final CheckstyleSetting setting, final String file) {
     mCheckstyleSetting = setting;
+    this.file = file;
+  }
 
+  public void writeXmlFile() {
     try (FileOutputStream fw = new FileOutputStream(file)) {
       writeXMLFile(fw);
     } catch (final IOException ex) {

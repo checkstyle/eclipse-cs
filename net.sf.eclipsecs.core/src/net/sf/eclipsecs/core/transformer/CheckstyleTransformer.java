@@ -117,10 +117,9 @@ public class CheckstyleTransformer {
    * eclipse-formatter-profile.
    */
   // FormatterConfigWriter used via side effect on its arguments
-  @SuppressWarnings("unused")
   public void transformRules() {
     loadRuleConfigurations();
-    new FormatterConfigWriter(mProject, mFormatterSetting);
+    new FormatterConfigWriter(mProject, mFormatterSetting).writeSettings();
   }
 
   /**

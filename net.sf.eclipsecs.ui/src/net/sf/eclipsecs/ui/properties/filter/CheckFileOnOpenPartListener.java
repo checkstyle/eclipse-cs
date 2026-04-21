@@ -20,37 +20,23 @@
 
 package net.sf.eclipsecs.ui.properties.filter;
 
-import java.io.StringReader;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
-import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorReference;
-import org.eclipse.ui.IElementFactory;
-import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IPartListener2;
-import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchPartReference;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.WorkbenchException;
-import org.eclipse.ui.XMLMemento;
-import org.eclipse.ui.internal.IWorkbenchConstants;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.FileEditorInput;
 
 import net.sf.eclipsecs.core.Messages;
@@ -64,18 +50,13 @@ import net.sf.eclipsecs.core.projectconfig.filters.IFilter;
 import net.sf.eclipsecs.core.projectconfig.filters.UnOpenedFilesFilter;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
 
 /**
  * PartListener implementation that listens for opening editor parts and runs Checkstyle on the
  * opened file if the UnOpenedFileFilter is active.
  *
  * @see <a href="https://sourceforge.net/p/eclipse-cs/feature-requests/93/">feature request</a>
- * @implNote To avoid the restricted access, we would need to copy 2 constants of
- *           {@link IWorkbenchConstants}. However, by referencing those we can verify their
- *           existence more easily by simply switching the target platform to a current version.
  */
-@SuppressWarnings("restriction")
 public class CheckFileOnOpenPartListener implements IPartListener2 {
 
   /**
@@ -152,129 +133,13 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
    * @return the editors file or <code>null</code> if the workbench part is no file based editor
    */
   private IFile getEditorFile(IWorkbenchPartReference partRef) {
-
-    if (!(partRef instanceof IEditorReference)) {
-      return null;
-    }
-
-    IFile file = null;
-    IWorkbenchPart part = partRef.getPart(false);
-    // fix for 3522695
-    // do *NOT* restore the part here to prevent startup issues with large
-    // number of opened files
-    // instead use a different path the rip the input file reference
-
-    IEditorInput input = null;
-
-    if (part instanceof IEditorPart) {
-
-      IEditorPart editor = (IEditorPart) part;
-      input = editor.getEditorInput();
-    } else {
-
-      // fix for 3522695 - rip input file from editor ref without initializing
-      // the actual part
-      IEditorReference editRef = (IEditorReference) partRef;
-      input = getRestoredInput(editRef);
-    }
-
-    if (input instanceof FileEditorInput) {
-      file = ((FileEditorInput) input).getFile();
-    }
-
-    return file;
-  }
-
-  private IEditorInput getRestoredInput(IEditorReference editorRef) {
-
-    IMemento editorMem = null;
-    if (CheckstyleUIPlugin.isE3()) {
-      editorMem = getMementoE3(editorRef);
-    } else {
-      editorMem = getMementoE4(editorRef);
-    }
-
-    if (editorMem == null) {
-      return null;
-    }
-    IMemento inputMem = editorMem.getChild(IWorkbenchConstants.TAG_INPUT);
-    String factoryID = null;
-    if (inputMem != null) {
-      factoryID = inputMem.getString(IWorkbenchConstants.TAG_FACTORY_ID);
-    }
-    if (factoryID == null) {
-      return null;
-    }
-    IAdaptable input = null;
-
-    IElementFactory factory = PlatformUI.getWorkbench().getElementFactory(factoryID);
-    if (factory == null) {
-      return null;
-    }
-
-    input = factory.createElement(inputMem);
-    if (input == null) {
-      return null;
-    }
-
-    if (!(input instanceof IEditorInput)) {
-      return null;
-    }
-    return (IEditorInput) input;
-  }
-
-  private IMemento getMementoE4(IEditorReference editorRef) {
-
     try {
-
-      // can't use this as long as were still supporting E3
-      // org.eclipse.e4.ui.model.application.MApplicationElement model =
-      // e.getModel();
-      // Map<String, String> state = model.getPersistedState()
-
-      Method getModelMethod = editorRef.getClass().getMethod("getModel", new Class<?>[0]);
-      getModelMethod.setAccessible(true);
-
-      Object model = getModelMethod.invoke(editorRef, (Object[]) null);
-
-      Method getPersistedStateMethod = model.getClass().getMethod("getPersistedState",
-              new Class<?>[0]);
-      getPersistedStateMethod.setAccessible(true);
-
-      @SuppressWarnings("unchecked")
-      Map<String, String> state = (Map<String, String>) getPersistedStateMethod.invoke(model,
-              (Object[]) null);
-
-      String memento = state.get("memento");
-
-      if (memento != null) {
-
-        try {
-          return XMLMemento.createReadRoot(new StringReader(memento));
-        } catch (WorkbenchException ex) {
-          CheckstyleLog.log(ex);
-        }
+      if (partRef instanceof IEditorReference editorRef
+              && editorRef.getEditorInput() instanceof FileEditorInput input) {
+        return input.getFile();
       }
-    } catch (NoSuchMethodException | SecurityException | IllegalAccessException | InvocationTargetException ex) {
-      CheckstyleLog.log(ex);
-    }
-
-    return null;
-
-  }
-
-  private IMemento getMementoE3(IEditorReference editorRef) {
-
-    try {
-
-      // the direct method vanished from E4 EditorReference class
-      // in order to build on E4 we need to do this the dirty way via reflection
-      Method getMementoMethod = editorRef.getClass().getMethod("getMemento", new Class<?>[0]);
-      getMementoMethod.setAccessible(true);
-
-      return (IMemento) getMementoMethod.invoke(editorRef, (Object[]) null);
-    } catch (NoSuchMethodException | SecurityException | IllegalAccessException | InvocationTargetException ex) {
-      CheckstyleLog.log(ex);
+    } catch (PartInitException ex) {
+      throw new RuntimeException(ex);
     }
     return null;
   }

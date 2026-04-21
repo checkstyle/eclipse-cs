@@ -58,14 +58,13 @@ public class FormatterTransformer {
    * @throws CheckstylePluginException
    */
   // CheckstyleFileWriter acts on its own parameters
-  @SuppressWarnings("unused")
   public void transformRules(final String path, Map<String, String> formatterSettings)
           throws CheckstylePluginException {
     CheckstyleSetting checkstyleSetting = new CheckstyleSetting();
     loadTransformationClasses(formatterSettings).stream()
         .map(AbstractFTransformationClass::transformRule)
         .forEach(checkstyleSetting::addSetting);
-    new CheckstyleFileWriter(checkstyleSetting, path);
+    new CheckstyleFileWriter(checkstyleSetting, path).writeXmlFile();
   }
 
   /**
