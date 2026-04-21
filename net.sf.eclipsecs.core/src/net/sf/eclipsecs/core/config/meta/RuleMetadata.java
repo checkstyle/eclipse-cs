@@ -26,6 +26,23 @@ import net.sf.eclipsecs.core.config.Severity;
 
 /**
  * This class contains the metadata that describes a check rule.
+ *
+ * @param identity
+ *          the identity of the rule (name, internal name, etc.)
+ * @param defaultSeverity
+ *          the default severity level
+ * @param hidden
+ *          <code>true</code> if the rule should be hidden from the user
+ * @param hasSeverity
+ *          <code>true</code> if the rule has a severity level
+ * @param deletable
+ *          <code>true</code> if the rule is deletable
+ * @param isSingleton
+ *          <code>true</code> if the rule is a singleton
+ * @param messageKeys
+ *          the message keys supported by the rule
+ * @param configPropMetadata
+ *          the property metadata for the rule
  */
 public record RuleMetadata(RuleIdentity identity, Severity defaultSeverity, boolean hidden,
         boolean hasSeverity, boolean deletable, boolean isSingleton, List<String> messageKeys,
