@@ -34,7 +34,7 @@ import net.sf.eclipsecs.ui.util.SWTUtil;
 /**
  * Base class for all configuration property input widget classes.
  */
-public abstract class ConfigPropertyWidgetAbstractBase implements IConfigPropertyWidget {
+public abstract class AbstractConfigPropertyWidget implements IConfigPropertyWidget {
 
   private ConfigProperty mProp;
 
@@ -42,7 +42,7 @@ public abstract class ConfigPropertyWidgetAbstractBase implements IConfigPropert
 
   private Composite mParent;
 
-  protected ConfigPropertyWidgetAbstractBase(Composite parent, ConfigProperty prop) {
+  protected AbstractConfigPropertyWidget(Composite parent, ConfigProperty prop) {
     mParent = parent;
     mProp = prop;
   }

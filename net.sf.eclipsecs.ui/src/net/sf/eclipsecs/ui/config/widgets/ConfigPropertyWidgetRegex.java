@@ -43,7 +43,7 @@ import net.sf.eclipsecs.ui.util.regex.RegexCompletionProposalFactory;
 /**
  * A string property configuration widget.
  */
-public class ConfigPropertyWidgetRegex extends ConfigPropertyWidgetAbstractBase {
+public class ConfigPropertyWidgetRegex extends AbstractConfigPropertyWidget {
 
   private final String mDefaultMessage = Messages.ConfigPropertyWidgetRegex_msgRegexTestString;
 

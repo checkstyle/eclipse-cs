@@ -33,7 +33,7 @@ import net.sf.eclipsecs.core.config.meta.ConfigPropertyMetadata;
 /**
  * A string property configuration widget.
  */
-public class ConfigPropertyWidgetString extends ConfigPropertyWidgetAbstractBase {
+public class ConfigPropertyWidgetString extends AbstractConfigPropertyWidget {
 
   private static final String APOSTROPHE_PLAIN = "'";
   private static final String APOSTROPHE_ESCAPED = "''";

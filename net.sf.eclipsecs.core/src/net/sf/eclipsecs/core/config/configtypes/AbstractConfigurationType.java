@@ -44,7 +44,7 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
  * Base implementation of <code>IConfigurationType</code>.
  *
  */
-public abstract class ConfigurationType implements IConfigurationType {
+public abstract class AbstractConfigurationType implements IConfigurationType {
 
   /** The name. */
   private String mName;
@@ -238,13 +238,13 @@ public abstract class ConfigurationType implements IConfigurationType {
   @Override
   public boolean equals(Object obj) {
 
-    if (obj == null || !(obj instanceof ConfigurationType)) {
+    if (obj == null || !(obj instanceof AbstractConfigurationType)) {
       return false;
     }
     if (this == obj) {
       return true;
     }
-    ConfigurationType rhs = (ConfigurationType) obj;
+    AbstractConfigurationType rhs = (AbstractConfigurationType) obj;
     return mIsCreatable == rhs.mIsCreatable && mIsEditable == rhs.mIsEditable
             && mIsConfigurable == rhs.mIsConfigurable
             && Objects.equals(mName, rhs.mName)

@@ -20,7 +20,7 @@
 
 package net.sf.eclipsecs.core.transformer.ctransformerclasses;
 
-import net.sf.eclipsecs.core.transformer.CTransformationClass;
+import net.sf.eclipsecs.core.transformer.AbstractCTransformationClass;
 import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 
 /**
@@ -28,7 +28,7 @@ import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
  * eclipse-formatter-rules.
  *
  */
-public class RequireThisTransformer extends CTransformationClass {
+public class RequireThisTransformer extends AbstractCTransformationClass {
   @Override
   public FormatterConfiguration transformRule() {
     useCleanupSetting("always_use_this_for_non_static_field_access", "true");

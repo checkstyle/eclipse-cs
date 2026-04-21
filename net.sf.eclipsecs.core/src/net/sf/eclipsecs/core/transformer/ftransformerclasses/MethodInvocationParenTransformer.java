@@ -23,7 +23,7 @@ package net.sf.eclipsecs.core.transformer.ftransformerclasses;
 import java.util.HashMap;
 
 import net.sf.eclipsecs.core.transformer.CheckstyleSetting;
-import net.sf.eclipsecs.core.transformer.FTransformationClass;
+import net.sf.eclipsecs.core.transformer.AbstractFTransformationClass;
 import net.sf.eclipsecs.core.transformer.FormatterKey;
 
 /**
@@ -32,7 +32,7 @@ import net.sf.eclipsecs.core.transformer.FormatterKey;
  *
  */
 @FormatterKey("insert_space_before_opening_paren_in_method_invocation")
-public class MethodInvocationParenTransformer extends FTransformationClass {
+public class MethodInvocationParenTransformer extends AbstractFTransformationClass {
   @Override
   public CheckstyleSetting transformRule() {
     final HashMap<String, String> properties = new HashMap<>();

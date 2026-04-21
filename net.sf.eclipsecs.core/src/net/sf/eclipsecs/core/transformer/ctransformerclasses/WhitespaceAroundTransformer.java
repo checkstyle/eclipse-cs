@@ -24,7 +24,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import net.sf.eclipsecs.core.transformer.CTransformationClass;
+import net.sf.eclipsecs.core.transformer.AbstractCTransformationClass;
 import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 
 /**
@@ -32,7 +32,7 @@ import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
  * eclipse-formatter-rules.
  *
  */
-public class WhitespaceAroundTransformer extends CTransformationClass {
+public class WhitespaceAroundTransformer extends AbstractCTransformationClass {
 
   @Override
   public FormatterConfiguration transformRule() {

@@ -20,14 +20,14 @@
 
 package net.sf.eclipsecs.core.transformer.ctransformerclasses;
 
-import net.sf.eclipsecs.core.transformer.CTransformationClass;
+import net.sf.eclipsecs.core.transformer.AbstractCTransformationClass;
 import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 
 /**
  * Transforms the "New Line At End Of File" checkstyle rule to the respective formatter setting.
  *
  */
-public class NewlineAtEndOfFileTransformer extends CTransformationClass {
+public class NewlineAtEndOfFileTransformer extends AbstractCTransformationClass {
 
   @Override
   public FormatterConfiguration transformRule() {

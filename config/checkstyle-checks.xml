@@ -640,6 +640,7 @@
         <module name="ModifierOrder"/>
 
         <!-- Naming Conventions -->
+        <module name="AbstractClassName"/>
         <module name="ClassTypeParameterName"/>
         <module name="RecordTypeParameterName"/>
         <module name="RecordComponentName"/>

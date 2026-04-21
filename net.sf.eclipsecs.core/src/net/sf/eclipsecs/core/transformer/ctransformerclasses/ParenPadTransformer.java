@@ -22,14 +22,14 @@ package net.sf.eclipsecs.core.transformer.ctransformerclasses;
 
 import java.util.StringTokenizer;
 
-import net.sf.eclipsecs.core.transformer.CTransformationClass;
+import net.sf.eclipsecs.core.transformer.AbstractCTransformationClass;
 import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 
 /**
  * Wrapperclass for converting the checkstyle-rule ParenPad to appropriate eclipse-formatter-rules.
  *
  */
-public class ParenPadTransformer extends CTransformationClass {
+public class ParenPadTransformer extends AbstractCTransformationClass {
 
   @Override
   public FormatterConfiguration transformRule() {

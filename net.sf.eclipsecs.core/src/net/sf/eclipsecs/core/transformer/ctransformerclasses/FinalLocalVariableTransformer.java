@@ -22,7 +22,7 @@ package net.sf.eclipsecs.core.transformer.ctransformerclasses;
 
 import java.util.StringTokenizer;
 
-import net.sf.eclipsecs.core.transformer.CTransformationClass;
+import net.sf.eclipsecs.core.transformer.AbstractCTransformationClass;
 import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 
 /**
@@ -30,7 +30,7 @@ import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
  * eclipse-formatter-rules.
  *
  */
-public class FinalLocalVariableTransformer extends CTransformationClass {
+public class FinalLocalVariableTransformer extends AbstractCTransformationClass {
   @Override
   public FormatterConfiguration transformRule() {
     String val = getAttribute("tokens");

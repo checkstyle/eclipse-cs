@@ -54,7 +54,7 @@ import net.sf.eclipsecs.ui.CheckstyleUIPluginPrefs;
 /**
  * Configuration widget for selecting multiple values with check boxes.
  */
-public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstractBase
+public class ConfigPropertyWidgetMultiCheck extends AbstractConfigPropertyWidget
         implements IPreferenceChangeListener {
 
   /** Resource bundle containing the token translations. */
