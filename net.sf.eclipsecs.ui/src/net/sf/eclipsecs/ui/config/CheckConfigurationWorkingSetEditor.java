@@ -76,7 +76,7 @@ import net.sf.eclipsecs.ui.util.table.TableViewerEnhancer;
  * This class provides the editor GUI for a check configuration working set.
  *
  */
-public class CheckConfigurationWorkingSetEditor {
+public final class CheckConfigurationWorkingSetEditor {
 
   //
   // attributes

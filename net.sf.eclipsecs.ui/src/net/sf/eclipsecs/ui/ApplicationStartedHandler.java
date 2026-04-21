@@ -45,7 +45,7 @@ import org.eclipse.ui.progress.IProgressService;
  * Event handler being called when the eclipse application has started.
  */
 @Component(property = EventConstants.EVENT_TOPIC + "=" + UIEvents.UILifeCycle.APP_STARTUP_COMPLETE)
-public class ApplicationStartedHandler implements EventHandler {
+public final class ApplicationStartedHandler implements EventHandler {
 
   private final CheckFileOnOpenPartListener mPartListener = new CheckFileOnOpenPartListener();
 

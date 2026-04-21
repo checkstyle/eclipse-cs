@@ -33,7 +33,7 @@ import net.sf.eclipsecs.core.util.CheckstyleLog;
  *
  *
  */
-public class CheckstyleFileWriter {
+public final class CheckstyleFileWriter {
 
   /** An object containing all settings for the checkstyle-file. */
   private final CheckstyleSetting mCheckstyleSetting;

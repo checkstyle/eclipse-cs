@@ -331,7 +331,14 @@
         <module name="EmptyCatchBlock"/>
         <module name="LeftCurly"/>
         <module name="NeedBraces"/>
-        <!-- modified -->
+
+        <!-- Class Design -->
+        <module name="DesignForExtension">
+            <property name="ignoredAnnotations"
+                value="Override, Test, Before, After, BeforeClass, AfterClass"/>
+            <property name="ignoredAnnotations"
+                value="BeforeAll, AfterAll, BeforeEach, AfterEach"/>
+        </module>
         <module name="HideUtilityClassConstructor"/>
         <module name="InnerTypeLast"/>
         <module name="InterfaceIsType"/>

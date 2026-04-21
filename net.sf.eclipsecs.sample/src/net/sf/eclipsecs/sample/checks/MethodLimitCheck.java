@@ -24,7 +24,7 @@ import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
-public class MethodLimitCheck extends AbstractCheck {
+public final class MethodLimitCheck extends AbstractCheck {
 
   private int max = 30;
 
