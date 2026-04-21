@@ -38,7 +38,7 @@ import net.sf.eclipsecs.core.config.ICheckConfiguration;
  * inside the plugin.
  *
  */
-public class BuiltInConfigurationType extends ConfigurationType {
+public class BuiltInConfigurationType extends AbstractConfigurationType {
 
   /**
    * constant for the contributor key. It stores the id of the plugin which contributes the built in

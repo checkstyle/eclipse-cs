@@ -20,7 +20,7 @@
 
 package net.sf.eclipsecs.core.transformer.ctransformerclasses;
 
-import net.sf.eclipsecs.core.transformer.CTransformationClass;
+import net.sf.eclipsecs.core.transformer.AbstractCTransformationClass;
 import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 
 /**
@@ -28,7 +28,7 @@ import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
  * eclipse-formatter-rules.
  *
  */
-public class GenericWhitespaceTransformer extends CTransformationClass {
+public class GenericWhitespaceTransformer extends AbstractCTransformationClass {
   @Override
   public FormatterConfiguration transformRule() {
     userFormatterSetting("insert_space_before_question_in_wildcard", "do not insert");

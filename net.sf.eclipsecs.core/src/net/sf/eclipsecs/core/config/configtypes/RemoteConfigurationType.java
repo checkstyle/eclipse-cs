@@ -59,7 +59,7 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
  * Implementation of a check configuration that uses an exteral checkstyle configuration file.
  *
  */
-public class RemoteConfigurationType extends ConfigurationType {
+public class RemoteConfigurationType extends AbstractConfigurationType {
 
   /** Key to access the information if the configuration should be cached. */
   public static final String KEY_CACHE_CONFIG = "cache-file"; //$NON-NLS-1$

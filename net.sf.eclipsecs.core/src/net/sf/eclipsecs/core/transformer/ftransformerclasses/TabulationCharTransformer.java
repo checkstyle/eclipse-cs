@@ -21,7 +21,7 @@
 package net.sf.eclipsecs.core.transformer.ftransformerclasses;
 
 import net.sf.eclipsecs.core.transformer.CheckstyleSetting;
-import net.sf.eclipsecs.core.transformer.FTransformationClass;
+import net.sf.eclipsecs.core.transformer.AbstractFTransformationClass;
 import net.sf.eclipsecs.core.transformer.FormatterKey;
 
 /**
@@ -30,7 +30,7 @@ import net.sf.eclipsecs.core.transformer.FormatterKey;
  *
  */
 @FormatterKey("tabulation.char")
-public class TabulationCharTransformer extends FTransformationClass {
+public class TabulationCharTransformer extends AbstractFTransformationClass {
   @Override
   public CheckstyleSetting transformRule() {
     useCheckerModule("FileTabCharacter", null);

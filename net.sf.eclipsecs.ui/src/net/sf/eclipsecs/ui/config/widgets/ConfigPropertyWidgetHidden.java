@@ -28,7 +28,7 @@ import net.sf.eclipsecs.core.config.ConfigProperty;
 /**
  * Non-configuration property.
  */
-public class ConfigPropertyWidgetHidden extends ConfigPropertyWidgetAbstractBase {
+public class ConfigPropertyWidgetHidden extends AbstractConfigPropertyWidget {
 
   private String mValue = ""; //$NON-NLS-1$
 

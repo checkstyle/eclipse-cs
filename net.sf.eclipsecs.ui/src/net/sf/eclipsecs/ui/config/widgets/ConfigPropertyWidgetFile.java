@@ -49,7 +49,7 @@ import net.sf.eclipsecs.ui.config.PropertiesContentAssistProcessor;
 /**
  * A string property configuration widget.
  */
-public class ConfigPropertyWidgetFile extends ConfigPropertyWidgetAbstractBase {
+public class ConfigPropertyWidgetFile extends AbstractConfigPropertyWidget {
 
   private Composite mContents;
 

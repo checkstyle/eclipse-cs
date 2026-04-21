@@ -34,7 +34,7 @@ import net.sf.eclipsecs.ui.util.SWTUtil;
 /**
  * A string property configuration widget.
  */
-public class ConfigPropertyWidgetInteger extends ConfigPropertyWidgetAbstractBase {
+public class ConfigPropertyWidgetInteger extends AbstractConfigPropertyWidget {
 
   private Text mTextWidget;
 
