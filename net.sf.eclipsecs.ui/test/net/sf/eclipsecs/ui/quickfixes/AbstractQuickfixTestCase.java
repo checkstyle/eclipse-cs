@@ -47,7 +47,7 @@ import org.w3c.dom.NodeList;
 
 public abstract class AbstractQuickfixTestCase {
 
-  protected void testQuickfix(final String testDataXml, final AbstractASTResolution quickfix)
+  protected final void testQuickfix(final String testDataXml, final AbstractASTResolution quickfix)
           throws Exception {
     try (InputStream stream = getClass().getResourceAsStream(testDataXml)) {
       assertThat(stream).withFailMessage(() -> "Cannot find resource " + testDataXml + " in package "
@@ -56,7 +56,7 @@ public abstract class AbstractQuickfixTestCase {
     }
   }
 
-  protected void testQuickfix(InputStream testdataStream, AbstractASTResolution quickfix)
+  private void testQuickfix(InputStream testdataStream, AbstractASTResolution quickfix)
           throws Exception {
     QuickfixTestData[] testdata = getTestData(testdataStream);
 

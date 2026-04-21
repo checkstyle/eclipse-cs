@@ -157,6 +157,19 @@ public abstract class AbstractConfigurationType implements IConfigurationType {
     return data;
   }
 
+  /**
+   * Retrieves the bytes of an additional properties bundle associated with the Checkstyle
+   * configuration.
+   * <p>
+   * This method attempts to find a <code>.properties</code> file with the same base name as the
+   * provided configuration URL.
+   * </p>
+   *
+   * @param checkConfigURL
+   *          the URL of the Checkstyle configuration file
+   * @return an optional containing the bytes of the properties bundle, or empty if it cannot be
+   *         loaded
+   */
   protected Optional<byte[]> getAdditionPropertiesBundleBytes(URL checkConfigURL) {
 
     String location = checkConfigURL.toString();
@@ -189,8 +202,10 @@ public abstract class AbstractConfigurationType implements IConfigurationType {
    * Gets the property resolver for this configuration type used to expand property values within
    * the checkstyle configuration.
    *
-   * @param checkConfiguration
+   * @param config
    *          the actual check configuration
+   * @param configFile
+   *          the checkstyle configuration file
    * @return the property resolver
    * @throws IOException
    *           error creating the property resolver
@@ -223,6 +238,15 @@ public abstract class AbstractConfigurationType implements IConfigurationType {
     return multiResolver;
   }
 
+  /**
+   * Reads and returns all bytes from the provided <code>URLConnection</code>.
+   *
+   * @param connection
+   *          the connection to read from
+   * @return the byte array containing the data from the connection
+   * @throws IOException
+   *           if an I/O error occurs while reading from the connection
+   */
   protected byte[] getBytesFromURLConnection(URLConnection connection) throws IOException {
     try (InputStream in = connection.getInputStream()) {
       return ByteStreams.toByteArray(in);

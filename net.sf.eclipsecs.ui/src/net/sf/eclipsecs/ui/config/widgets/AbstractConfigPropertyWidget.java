@@ -91,16 +91,15 @@ public abstract class AbstractConfigPropertyWidget implements IConfigPropertyWid
     mValueWidget.setEnabled(enabled);
   }
 
+  /**
+  * Figure out an initial value for the property. This will be,
+  * in order of precedence:
+  * 1) the existing value
+  * 2) a default value overriding the checkstyle default
+  * 3) the checkstyle default value, if specified
+  * 4) blank
+  */
   protected String getInitValue() {
-    //
-    // Figure out an initial value for the property. This will be,
-    // in order of precedence:
-    //
-    // 1) the existing value
-    // 2) a default value overriding the checkstyle default
-    // 3) the checkstyle default value, if specified
-    // 4) blank
-    //
     String initValue = null;
     if (mProp != null) {
       initValue = mProp.getValue();
