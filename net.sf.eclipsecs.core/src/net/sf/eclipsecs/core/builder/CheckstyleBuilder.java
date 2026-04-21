@@ -220,10 +220,6 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
   public final <T extends IResource> void handleBuildSelection(final Collection<T> resources,
           final IProjectConfiguration configuration, final IProgressMonitor monitor,
           final IProject project, final int kind) throws CoreException {
-
-    // System.out.println(new java.util.Date() + " kind: " + kind + " files:
-    // " + resources.size());
-
     // on full build remove all previous checkstyle markers
     if (kind == IncrementalProjectBuilder.FULL_BUILD) {
       project.deleteMarkers(CheckstyleMarker.MARKER_ID, false, IResource.DEPTH_INFINITE);
@@ -232,68 +228,56 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
     boolean backgroundFullBuild = CheckstylePluginPrefs
             .getBoolean(CheckstylePluginPrefs.PREF_BACKGROUND_FULL_BUILD);
 
+    List<FileSet> enabledFileSets = configuration.getFileSets().stream()
+            .filter(FileSet::isEnabled)
+            .toList();
+
+    List<IFile> files = resources.stream()
+            .filter(resource -> resource instanceof IFile)
+            .map(resource -> (IFile) resource)
+            .toList();
+
+    //
+    // Build a set of auditors from the file sets of this project
+    // configuration.
+    // File sets that share the same check configuration merge into
+    // one Auditor.
+    //
+    Map<ICheckConfiguration, Auditor> audits = new HashMap<>();
+
     try {
-
-      //
-      // Build a set of auditors from the file sets of this project
-      // configuration.
-      // File sets that share the same check configuration merge into
-      // one Auditor.
-      //
-      List<FileSet> fileSets = configuration.getFileSets();
-
-      Map<ICheckConfiguration, Auditor> audits = new HashMap<>();
-
-      for (FileSet fileSet : fileSets) {
-
-        // skip not enabled filesets
-        if (!fileSet.isEnabled()) {
-          continue;
-        }
-
+      for (FileSet fileSet : enabledFileSets) {
         ICheckConfiguration checkConfig = fileSet.getCheckConfig();
         if (checkConfig == null) {
           throw new CheckstylePluginException(
                   NLS.bind(Messages.errorNoCheckConfig, project.getName()));
         }
 
-        // get an already created audit from the map
-        Auditor audit = audits.get(checkConfig);
-
-        // create the audit with the file sets check configuration
-        if (audit == null) {
-
-          audit = new Auditor(checkConfig);
-          audits.put(checkConfig, audit);
-        }
+        Auditor audit = audits.computeIfAbsent(checkConfig, Auditor::new);
 
         // check which files belong to the file set
-        for (IResource resource : resources) {
+        List<IFile> filesInFileset = files.stream()
+            .filter(fileSet::includesFile)
+            .toList();
 
-          if (resource instanceof IFile) {
-            IFile file = (IFile) resource;
+        for (IFile file : filesInFileset) {
+          boolean hasCompileErrors = IMarker.SEVERITY_ERROR == file.findMaxProblemSeverity(
+                    IJavaModelMarker.JAVA_MODEL_PROBLEM_MARKER, true, IResource.DEPTH_ZERO);
 
-            // if file set includes file add to the audit
-            if (fileSet.includesFile(file)) {
-              boolean hasCompileErrors = IMarker.SEVERITY_ERROR == file.findMaxProblemSeverity(
-                      IJavaModelMarker.JAVA_MODEL_PROBLEM_MARKER, true, IResource.DEPTH_ZERO);
+          // remove markers on this file
+          file.deleteMarkers(CheckstyleMarker.MARKER_ID, false, IResource.DEPTH_ZERO);
 
-              // remove markers on this file
-              file.deleteMarkers(CheckstyleMarker.MARKER_ID, false, IResource.DEPTH_ZERO);
-
-              // avoid checkstyle parser errors being shown
-              if (hasCompileErrors) {
-                continue;
-              }
-
-              audit.addFile(file);
-
-              // remove markers from package to prevent
-              // packagehtml messages from accumulatin
-              file.getParent().deleteMarkers(CheckstyleMarker.MARKER_ID, false,
-                      IResource.DEPTH_ZERO);
-            }
+          // avoid checkstyle parser errors being shown
+          if (hasCompileErrors) {
+            continue;
           }
+
+          audit.addFile(file);
+
+          // remove markers from package to prevent
+          // packagehtml messages from accumulatin
+          file.getParent().deleteMarkers(CheckstyleMarker.MARKER_ID, false,
+                  IResource.DEPTH_ZERO);
         }
       }
 

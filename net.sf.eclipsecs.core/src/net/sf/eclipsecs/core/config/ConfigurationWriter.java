@@ -117,11 +117,32 @@ public final class ConfigurationWriter {
         throw new CheckstylePluginException(Messages.errorMoreThanOneRootModule);
       }
 
-      writeModule(rootModules.get(0), doc, null, modules);
+      writeModules(rootModules.get(0), doc, null, modules);
 
       out.write(XMLUtil.toByteArray(doc));
     } catch (IOException ex) {
       CheckstylePluginException.rethrow(ex);
+    }
+  }
+
+  private static void writeModules(Module module, Branch parent, Severity parentSeverity,
+          List<Module> remainingModules) {
+    Element moduleEl = writeModule(module, parent);
+
+    Severity severity = parentSeverity;
+    if (module.getSeverity() != null && Severity.INHERIT != module.getSeverity()) {
+      // set the parent severity for child modules
+      severity = module.getSeverity();
+    }
+
+    // remove this module from the list of modules to write
+    remainingModules.remove(module);
+
+    final List<Module> childs = getChildModules(module, remainingModules);
+
+    // write child modules recursively
+    for (Module child : childs) {
+      writeModules(child, moduleEl, severity, remainingModules);
     }
   }
 
@@ -132,19 +153,8 @@ public final class ConfigurationWriter {
    *          the module to write
    * @param parent
    *          the parent element
-   * @param parentSeverity
-   *          the severity of the parent module
-   * @param remainingModules
-   *          the list of remaining (possibly child) modules
    */
-  private static void writeModule(Module module, Branch parent, Severity parentSeverity,
-          List<Module> remainingModules) {
-
-    // remove this module from the list of modules to write
-    remainingModules.remove(module);
-
-    final List<Module> childs = getChildModules(module, remainingModules);
-
+  private static Element writeModule(Module module, Branch parent) {
     // Start the module
     Element moduleEl = parent.addElement(XMLTags.MODULE_TAG);
     moduleEl.addAttribute(XMLTags.NAME_TAG, module.getMetaData().identity().internalName());
@@ -158,15 +168,11 @@ public final class ConfigurationWriter {
     }
 
     // Write severity only if it differs from the parents severity
-    Severity severity = parentSeverity;
     if (module.getSeverity() != null && Severity.INHERIT != module.getSeverity()) {
 
       Element propertyEl = moduleEl.addElement(XMLTags.PROPERTY_TAG);
       propertyEl.addAttribute(XMLTags.NAME_TAG, XMLTags.SEVERITY_TAG);
       propertyEl.addAttribute(XMLTags.VALUE_TAG, module.getSeverity().toXmlValue());
-
-      // set the parent severity for child modules
-      severity = module.getSeverity();
     }
 
     // write module id
@@ -178,17 +184,16 @@ public final class ConfigurationWriter {
     }
 
     // write properties of the module
-    for (ConfigProperty property : module.getProperties()) {
-
-      // write property only if it differs from the default value
-      String value = Strings.emptyToNull(property.getValue());
-      if (value != null && !Objects.equals(value, property.getMetaData().getDefaultValue())) {
-
-        Element propertyEl = moduleEl.addElement(XMLTags.PROPERTY_TAG);
-        propertyEl.addAttribute(XMLTags.NAME_TAG, property.getMetaData().getName());
-        propertyEl.addAttribute(XMLTags.VALUE_TAG, property.getValue());
-      }
-    }
+    module.getProperties().stream()
+        .filter(property -> property.getValue() != null)
+        .filter(property -> !property.getValue().isEmpty())
+        .filter(property -> !Objects.equals(property.getValue(),
+                property.getMetaData().getDefaultValue()))
+        .forEach(property -> {
+          Element propertyEl = moduleEl.addElement(XMLTags.PROPERTY_TAG);
+          propertyEl.addAttribute(XMLTags.NAME_TAG, property.getMetaData().getName());
+          propertyEl.addAttribute(XMLTags.VALUE_TAG, property.getValue());
+        });
 
     // write custom messages
     for (Map.Entry<String, String> entry : module.getCustomMessages().entrySet()) {
@@ -214,10 +219,7 @@ public final class ConfigurationWriter {
       metaEl.addAttribute(XMLTags.VALUE_TAG, module.getLastEnabledSeverity().toXmlValue());
     }
 
-    // write child modules recursively
-    for (Module child : childs) {
-      writeModule(child, moduleEl, severity, remainingModules);
-    }
+    return moduleEl;
   }
 
   /**

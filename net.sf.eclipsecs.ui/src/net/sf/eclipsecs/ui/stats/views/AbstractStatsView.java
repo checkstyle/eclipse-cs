@@ -381,10 +381,10 @@ public abstract class AbstractStatsView extends ViewPart {
             || onResource == CheckstyleMarkerFilter.ON_WORKING_SET) {
       return false;
     }
-    if (newResources == null || newResources.length < 1) {
+    if (newResources.length == 0) {
       return false;
     }
-    if (oldResources == null || oldResources.length < 1) {
+    if (oldResources == null || oldResources.length == 0) {
       return true;
     }
     if (Arrays.equals(oldResources, newResources)) {
@@ -394,10 +394,7 @@ public abstract class AbstractStatsView extends ViewPart {
       Collection<IProject> oldProjects = CheckstyleMarkerFilter.getProjectsAsCollection(oldResources);
       Collection<IProject> newProjects = CheckstyleMarkerFilter.getProjectsAsCollection(newResources);
 
-      if (oldProjects.size() == newProjects.size()) {
-        return !newProjects.containsAll(oldProjects);
-      }
-      return true;
+      return oldProjects.size() != newProjects.size() || !newProjects.containsAll(oldProjects);
     }
 
     return true;
