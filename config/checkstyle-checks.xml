@@ -612,6 +612,7 @@
         <module name="BooleanExpressionComplexity">
             <property name="max" value="7"/>
         </module>
+        <module name="NPathComplexity"/>
 
         <!-- Misc -->
         <module name="ArrayTypeStyle"/>

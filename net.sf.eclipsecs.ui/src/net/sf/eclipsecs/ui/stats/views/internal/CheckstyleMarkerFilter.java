@@ -26,6 +26,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
@@ -359,52 +360,49 @@ public class CheckstyleMarkerFilter implements Cloneable {
     resetState();
     IDialogSettings settings = dialogSettings.getSection(TAG_DIALOG_SECTION);
 
-    if (settings != null) {
+    if (settings == null) {
+      return;
+    }
 
-      String setting = settings.get(TAG_ENABLED);
-      if (setting != null) {
-        mEnabled = Boolean.parseBoolean(setting);
-      }
+    findBooleanSetting(settings, TAG_ENABLED)
+        .ifPresent(setting -> mEnabled = setting);
+    findBooleanSetting(settings, TAG_SELECT_BY_SEVERITY)
+        .ifPresent(setting -> mSelectBySeverity = setting);
+    findBooleanSetting(settings, TAG_SELECT_BY_REGEX)
+        .ifPresent(setting -> mFilterByRegex = setting);
 
-      setting = settings.get(TAG_ON_RESOURCE);
-      if (setting != null) {
-        try {
-          mOnResource = Integer.parseInt(setting);
-        } catch (NumberFormatException ex) {
-          // ignore and use default value
-        }
-      }
-
-      setting = settings.get(TAG_WORKING_SET);
-      if (setting != null) {
-        setWorkingSet(PlatformUI.getWorkbench().getWorkingSetManager()
-                .getWorkingSet(setting));
-      }
-
-      setting = settings.get(TAG_SELECT_BY_SEVERITY);
-      if (setting != null) {
-        mSelectBySeverity = Boolean.parseBoolean(setting);
-      }
-
-      setting = settings.get(TAG_SEVERITY);
-      if (setting != null) {
-        try {
-          mSeverity = Integer.parseInt(setting);
-        } catch (NumberFormatException ex) {
-          // ignore and use default value
-        }
-      }
-
-      setting = settings.get(TAG_SELECT_BY_REGEX);
-      if (setting != null) {
-        mFilterByRegex = Boolean.parseBoolean(setting);
-      }
-
-      String[] regex = settings.getArray(TAG_REGULAR_EXPRESSIONS);
-      if (regex != null) {
-        mFilterRegex = Arrays.asList(regex);
+    String setting = settings.get(TAG_ON_RESOURCE);
+    if (setting != null) {
+      try {
+        mOnResource = Integer.parseInt(setting);
+      } catch (NumberFormatException ex) {
+        // ignore and use default value
       }
     }
+
+    setting = settings.get(TAG_WORKING_SET);
+    if (setting != null) {
+      setWorkingSet(PlatformUI.getWorkbench().getWorkingSetManager()
+              .getWorkingSet(setting));
+    }
+    setting = settings.get(TAG_SEVERITY);
+    if (setting != null) {
+      try {
+        mSeverity = Integer.parseInt(setting);
+      } catch (NumberFormatException ex) {
+        // ignore and use default value
+      }
+    }
+
+    String[] regex = settings.getArray(TAG_REGULAR_EXPRESSIONS);
+    if (regex != null) {
+      mFilterRegex = Arrays.asList(regex);
+    }
+  }
+
+  private static Optional<Boolean> findBooleanSetting(IDialogSettings dialogSettings,
+          String key) {
+    return Optional.ofNullable(dialogSettings.get(key)).map(Boolean::parseBoolean);
   }
 
   /**

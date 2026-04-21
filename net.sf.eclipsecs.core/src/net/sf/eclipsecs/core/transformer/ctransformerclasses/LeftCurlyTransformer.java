@@ -39,20 +39,16 @@ public class LeftCurlyTransformer extends AbstractCTransformationClass {
               + "LITERAL_FINALLY, LITERAL_FOR, LITERAL_IF, LITERAL_SYNCHRONIZED, LITERAL_TRY, LITERAL_WHILE";
     }
     final StringTokenizer token = new StringTokenizer(tokens, ", ");
-    String tok;
 
     String option = getAttribute("option");
-    if (option == null) {
-      option = "eol";
-    }
-    if ("eol".equals(option)) {
+    if (option == null || "eol".equals(option)) {
       option = "end_of_line";
     } else if ("nl".equals(option) || "nlow".equals(option)) {
       option = "next_line";
     }
 
     while (token.hasMoreTokens()) {
-      tok = token.nextToken();
+      String tok = token.nextToken();
       if ("CLASS_DEF".equals(tok)) {
         userFormatterSetting("brace_position_for_anonymous_type_declaration", option);
         userFormatterSetting("brace_position_for_enum_constant", option);
