@@ -214,12 +214,8 @@
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]stats[/\\]views[/\\]internal[/\\]CheckstyleMarkerFilterDialog.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]stats[/\\]views[/\\]internal[/\\]FiltersAction.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]util[/\\]SWTUtil.java" />
-    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]util[/\\]table[/\\]EnhancedTableViewer.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]util[/\\]table[/\\]ITableComparableProvider.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]util[/\\]table[/\\]ITableSettingsProvider.java" />
-    <!-- IBM Header -->
-    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]util[/\\]table[/\\]EnhancedCheckBoxTableViewer.java" />
-    <suppress id="oldRegexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]util[/\\]table[/\\]EnhancedCheckBoxTableViewer.java" />
 
     <!-- temporal suppression due to leak -->
     <suppress checks="JavadocVariable"

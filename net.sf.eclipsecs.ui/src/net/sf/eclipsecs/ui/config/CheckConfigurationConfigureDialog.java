@@ -35,6 +35,7 @@ import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
+import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.ICheckStateListener;
@@ -93,9 +94,9 @@ import net.sf.eclipsecs.ui.CheckstyleUIPluginPrefs;
 import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.util.InternalBrowser;
 import net.sf.eclipsecs.ui.util.SWTUtil;
-import net.sf.eclipsecs.ui.util.table.EnhancedCheckBoxTableViewer;
 import net.sf.eclipsecs.ui.util.table.ITableComparableProvider;
 import net.sf.eclipsecs.ui.util.table.ITableSettingsProvider;
+import net.sf.eclipsecs.ui.util.table.TableViewerEnhancer;
 
 /**
  * Enhanced checkstyle configuration editor.
@@ -133,7 +134,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
   private Button mAddButton;
 
   /** The table viewer showing the configured modules. */
-  private EnhancedCheckBoxTableViewer mTableViewer;
+  private CheckboxTableViewer mTableViewer;
 
   /** Button to remove a module. */
   private Button mRemoveButton;
@@ -344,21 +345,21 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
     column4.setText(Messages.CheckConfigurationConfigureDialog_colComment);
     tableLayout.addColumnData(new ColumnWeightData(35));
 
-    mTableViewer = new EnhancedCheckBoxTableViewer(table);
+    // by default the table viewer sorts on column 0, but we want to sort by the module label
+    table.setSortColumn(column2);
+
+    mTableViewer = new CheckboxTableViewer(table);
     ModuleLabelProvider multiProvider = new ModuleLabelProvider();
     mTableViewer.setLabelProvider(multiProvider);
-    mTableViewer.setTableComparableProvider(multiProvider);
-    mTableViewer.setTableSettingsProvider(multiProvider);
     mTableViewer.setContentProvider(new ArrayContentProvider());
     mTableViewer.addFilter(mGroupFilter);
-    mTableViewer.installEnhancements();
-    // by default the table viewer sorts on column 0, but we want to sort by the module label
-    mTableViewer.setSortedColumnIndex(1);
 
     mTableViewer.addDoubleClickListener(mController);
     mTableViewer.addSelectionChangedListener(mController);
     mTableViewer.addCheckStateListener(mController);
     mTableViewer.getTable().addKeyListener(mController);
+
+    TableViewerEnhancer.enhance(mTableViewer, multiProvider);
 
     Composite buttons = new Composite(mConfiguredModulesGroup, SWT.NULL);
     GridLayout layout = new GridLayout(2, true);

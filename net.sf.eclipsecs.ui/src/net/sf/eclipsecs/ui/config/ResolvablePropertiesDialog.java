@@ -36,6 +36,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableLayout;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.window.Window;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
@@ -62,9 +63,9 @@ import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
 import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
 import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.util.SWTUtil;
-import net.sf.eclipsecs.ui.util.table.EnhancedTableViewer;
 import net.sf.eclipsecs.ui.util.table.ITableComparableProvider;
 import net.sf.eclipsecs.ui.util.table.ITableSettingsProvider;
+import net.sf.eclipsecs.ui.util.table.TableViewerEnhancer;
 
 /**
  * Dialog to show/edit the properties (name, location, description) of a check
@@ -78,7 +79,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
   //
 
   /** The properties table. */
-  private EnhancedTableViewer mTableViewer;
+  private TableViewer mTableViewer;
 
   /** Button to add a new property. */
   private Button mBtnAdd;
@@ -180,16 +181,13 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
     column2.setText(Messages.ResolvablePropertiesDialog_colValue);
     tableLayout.addColumnData(new ColumnWeightData(50));
 
-    mTableViewer = new EnhancedTableViewer(table);
+    mTableViewer = new TableViewer(table);
     PropertiesLabelProvider multiProvider = new PropertiesLabelProvider();
     mTableViewer.setLabelProvider(multiProvider);
-    mTableViewer.setTableComparableProvider(multiProvider);
-    mTableViewer.setTableSettingsProvider(multiProvider);
-    mTableViewer.installEnhancements();
-
     mTableViewer.setContentProvider(new ArrayContentProvider());
     mTableViewer.addDoubleClickListener(mController);
     mTableViewer.getTable().addKeyListener(mController);
+    TableViewerEnhancer.enhance(mTableViewer, multiProvider);
 
     Composite buttonBar = new Composite(contents, SWT.NULL);
     GridLayout layout = new GridLayout(1, false);
