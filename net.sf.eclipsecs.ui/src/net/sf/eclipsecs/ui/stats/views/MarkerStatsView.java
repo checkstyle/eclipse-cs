@@ -44,6 +44,7 @@ import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredViewer;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
@@ -68,9 +69,9 @@ import net.sf.eclipsecs.ui.stats.Messages;
 import net.sf.eclipsecs.ui.stats.data.MarkerStat;
 import net.sf.eclipsecs.ui.stats.data.Stats;
 import net.sf.eclipsecs.ui.stats.views.internal.FiltersAction;
-import net.sf.eclipsecs.ui.util.table.EnhancedTableViewer;
 import net.sf.eclipsecs.ui.util.table.ITableComparableProvider;
 import net.sf.eclipsecs.ui.util.table.ITableSettingsProvider;
+import net.sf.eclipsecs.ui.util.table.TableViewerEnhancer;
 
 /**
  * View that displays statistics about checkstyle markers.
@@ -105,10 +106,10 @@ public class MarkerStatsView extends AbstractStatsView {
   private StackLayout mStackLayout;
 
   /** The master viewer. */
-  private EnhancedTableViewer mMasterViewer;
+  private TableViewer mMasterViewer;
 
   /** The detail viewer. */
-  private EnhancedTableViewer mDetailViewer;
+  private TableViewer mDetailViewer;
 
   /** The action to show the detail view. */
   private Action mDrillDownAction;
@@ -183,8 +184,8 @@ public class MarkerStatsView extends AbstractStatsView {
    *          the parent composite
    * @return the master table viewer
    */
-  private EnhancedTableViewer createMasterView(Composite parent) {
-    EnhancedTableViewer masterViewer = new EnhancedTableViewer(parent,
+  private TableViewer createMasterView(Composite parent) {
+    TableViewer masterViewer = new TableViewer(parent,
             SWT.H_SCROLL | SWT.V_SCROLL | SWT.SINGLE | SWT.FULL_SELECTION);
     GridData gridData = new GridData(GridData.FILL_BOTH);
     masterViewer.getControl().setLayoutData(gridData);
@@ -210,9 +211,7 @@ public class MarkerStatsView extends AbstractStatsView {
     masterViewer.setContentProvider(new MasterContentProvider());
     MasterViewMultiProvider multiProvider = new MasterViewMultiProvider();
     masterViewer.setLabelProvider(multiProvider);
-    masterViewer.setTableComparableProvider(multiProvider);
-    masterViewer.setTableSettingsProvider(multiProvider);
-    masterViewer.installEnhancements();
+    TableViewerEnhancer.enhance(masterViewer, multiProvider);
 
     // add selection listener to maintain action state
     masterViewer.addSelectionChangedListener(new ISelectionChangedListener() {
@@ -240,9 +239,9 @@ public class MarkerStatsView extends AbstractStatsView {
    *          the parent composite
    * @return the detail table viewer
    */
-  private EnhancedTableViewer createDetailView(Composite parent) {
+  private TableViewer createDetailView(Composite parent) {
     // le tableau
-    EnhancedTableViewer detailViewer = new EnhancedTableViewer(parent,
+    TableViewer detailViewer = new TableViewer(parent,
             SWT.H_SCROLL | SWT.V_SCROLL | SWT.SINGLE | SWT.FULL_SELECTION);
     GridData gridData = new GridData(GridData.FILL_BOTH);
     detailViewer.getControl().setLayoutData(gridData);
@@ -276,9 +275,7 @@ public class MarkerStatsView extends AbstractStatsView {
     detailViewer.setContentProvider(new DetailContentProvider());
     DetailViewMultiProvider multiProvider = new DetailViewMultiProvider();
     detailViewer.setLabelProvider(multiProvider);
-    detailViewer.setTableComparableProvider(multiProvider);
-    detailViewer.setTableSettingsProvider(multiProvider);
-    detailViewer.installEnhancements();
+    TableViewerEnhancer.enhance(detailViewer, multiProvider);
 
     // add selection listener to maintain action state
     detailViewer.addSelectionChangedListener(new ISelectionChangedListener() {

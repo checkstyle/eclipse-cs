@@ -402,6 +402,24 @@
                value="Avoid using deprecated method 'DetailAst.branchContains()'."/>
         </module>
         <module name="MatchXpath">
+            <property name="id" value="blockCommentStartWithSpace"/>
+            <property name="query"
+                    value="//BLOCK_COMMENT_BEGIN[./COMMENT_CONTENT[matches(@text, '\\n+ *\*[^\\n ]\S')
+                           or matches(@text, '^[^\* \\n]') or matches(@text, '\\r+ *\*[^\\r ]\S')
+                           or matches(@text, '^[^\* \\r]') or matches(@text, '\\r\\n+ *\*[^\\r\\n ]\S')
+                           or matches(@text, '^[^\* \\r\\n]') and not(starts-with(@text, '*'))]]"/>
+            <message key="matchxpath.match"
+                   value="Block comment text should start with space after asterisk."/>
+        </module>
+        <module name="MatchXpath">
+            <property name="id" value="deprecatedWithoutSince"/>
+            <property name="query"
+                   value="//ANNOTATION[./IDENT[@text='Deprecated']
+                          and not(./ANNOTATION_MEMBER_VALUE_PAIR/IDENT[@text='since'])]"/>
+            <message key="matchxpath.match"
+                 value="@Deprecated annotation should contain 'since' property."/>
+        </module>
+        <module name="MatchXpath">
             <property name="query" value="//COMMENT_CONTENT[contains(@text, '@noinspection')
                       and not(contains(@text, '@noinspectionreason'))]"/>
             <message key="matchxpath.match"

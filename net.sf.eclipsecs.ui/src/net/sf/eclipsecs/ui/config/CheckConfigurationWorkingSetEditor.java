@@ -68,9 +68,9 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
 import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
 import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
 import net.sf.eclipsecs.ui.Messages;
-import net.sf.eclipsecs.ui.util.table.EnhancedTableViewer;
 import net.sf.eclipsecs.ui.util.table.ITableComparableProvider;
 import net.sf.eclipsecs.ui.util.table.ITableSettingsProvider;
+import net.sf.eclipsecs.ui.util.table.TableViewerEnhancer;
 
 /**
  * This class provides the editor GUI for a check configuration working set.
@@ -88,7 +88,7 @@ public class CheckConfigurationWorkingSetEditor {
 
   private final boolean mIsShowUsage;
 
-  private EnhancedTableViewer mViewer;
+  private TableViewer mViewer;
 
   private Button mAddButton;
 
@@ -270,17 +270,14 @@ public class CheckConfigurationWorkingSetEditor {
       tableLayout.addColumnData(new ColumnWeightData(12));
     }
 
-    mViewer = new EnhancedTableViewer(table);
     ConfigurationLabelProvider multiProvider = new ConfigurationLabelProvider();
+    mViewer = new TableViewer(table);
     mViewer.setLabelProvider(multiProvider);
-    mViewer.setTableComparableProvider(multiProvider);
-    mViewer.setTableSettingsProvider(multiProvider);
-    mViewer.installEnhancements();
-
     mViewer.setContentProvider(new ArrayContentProvider());
     mViewer.setInput(mWorkingSet.getWorkingCopies());
     mViewer.addDoubleClickListener(mController);
     mViewer.addSelectionChangedListener(mController);
+    TableViewerEnhancer.enhance(mViewer, multiProvider);
 
     return table;
   }
