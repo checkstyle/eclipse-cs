@@ -46,8 +46,6 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
   /** The shared instance. */
   private static CheckstyleUIPlugin sPlugin;
 
-  private static Boolean isEclipse3;
-
   /**
    * The constructor.
    */
@@ -60,30 +58,6 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
     // free cached images
     CheckstyleUIPluginImages.clearCachedImages();
     super.stop(context);
-  }
-
-  /**
-   * @return <code>true</code> if we're running on an Eclipse 3 platform.
-   */
-  public static boolean isE3() {
-
-    if (isEclipse3 == null) {
-
-      // previous checking on the platform product version has not been
-      // reliable, since there are e4
-      // based
-      // products with a 3 as major version (e.g. Spring Tools Suite).
-      try {
-
-        // instead now check for the presence of a known e4 class
-        Class.forName("org.eclipse.e4.ui.model.application.MApplicationElement");
-        isEclipse3 = false;
-      } catch (ClassNotFoundException ex) {
-        isEclipse3 = true;
-      }
-    }
-
-    return isEclipse3;
   }
 
   /**

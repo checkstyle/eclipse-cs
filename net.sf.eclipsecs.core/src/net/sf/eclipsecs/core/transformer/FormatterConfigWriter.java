@@ -57,14 +57,12 @@ public class FormatterConfigWriter {
   public FormatterConfigWriter(IProject project, final FormatterConfiguration settings) {
     mConfiguration = settings;
     mProject = project;
-
-    writeSettings();
   }
 
   /**
    * Method for persisting all settings to files.
    */
-  private void writeSettings() {
+  public void writeSettings() {
     writeCleanupSettings(mConfiguration.getCleanupSettings());
     writeFormatterSettings(mConfiguration.getFormatterSettings());
   }
