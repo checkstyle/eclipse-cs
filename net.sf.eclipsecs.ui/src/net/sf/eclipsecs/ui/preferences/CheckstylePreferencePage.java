@@ -302,7 +302,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
     //
     // Create the "limit markers" check box and text field combination
     //
-    final  Composite limitMarkersComposite = new Composite(generalComposite, SWT.NULL);
+    final Composite limitMarkersComposite = new Composite(generalComposite, SWT.NULL);
     gridLayout = new GridLayout(3, false);
     gridLayout.marginHeight = 0;
     gridLayout.marginWidth = 0;

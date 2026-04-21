@@ -404,7 +404,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
     }
 
     // Get the comment.
-    final  String comment = StringUtils.trimToNull(mCommentText.getText());
+    final String comment = StringUtils.trimToNull(mCommentText.getText());
 
     // Get the id
     final String id = StringUtils.trimToNull(mIdText.getText());
