@@ -28,7 +28,6 @@ import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarkerDelta;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
@@ -43,6 +42,7 @@ import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.dialogs.IDialogSettings;
+import org.eclipse.jface.text.TextSelection;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
@@ -79,7 +79,7 @@ public abstract class AbstractStatsView extends ViewPart {
   private Composite mMainComposite;
 
   /** The filter for this stats view. */
-  private CheckstyleMarkerFilter mFilter;
+  private CheckstyleMarkerFilter filter;
 
   /** The focused resources. */
   private IResource[] mFocusedResources;
@@ -124,6 +124,7 @@ public abstract class AbstractStatsView extends ViewPart {
 
   @Override
   public void createPartControl(Composite parent) {
+    filter = CheckstyleMarkerFilter.restoreState(getDialogSettings(), new IResource[0]);
 
     mMainComposite = parent;
 
@@ -136,7 +137,12 @@ public abstract class AbstractStatsView extends ViewPart {
     };
 
     getSite().getPage().addSelectionListener(mFocusListener);
-    focusSelectionChanged(getSite().getPage().getActivePart(), getSite().getPage().getSelection());
+    ISelection selection = getSite().getPage().getSelection();
+    if (selection == null || selection instanceof TextSelection) {
+      focusSelectionChanged(getSite().getPage().getActiveEditor(), null);
+    } else {
+      focusSelectionChanged(null, selection);
+    }
 
     // create and register the listener for resource changes
     mResourceListener = new IResourceChangeListener() {
@@ -177,13 +183,12 @@ public abstract class AbstractStatsView extends ViewPart {
   public final void openFiltersDialog() {
 
     CheckstyleMarkerFilterDialog dialog = new CheckstyleMarkerFilterDialog(
-            mMainComposite.getShell(), (CheckstyleMarkerFilter) getFilter().clone());
+            mMainComposite.getShell(), filter);
 
     if (dialog.open() == Window.OK) {
-      CheckstyleMarkerFilter filter = dialog.getFilter();
+      filter = dialog.getFilter();
       filter.saveState(getDialogSettings());
 
-      mFilter = filter;
       refresh();
     }
   }
@@ -197,20 +202,6 @@ public abstract class AbstractStatsView extends ViewPart {
   protected void initActionBars(IActionBars actionBars) {
     initMenu(actionBars.getMenuManager());
     initToolBar(actionBars.getToolBarManager());
-  }
-
-  /**
-   * Returns the filter of this view.
-   *
-   * @return the filter
-   */
-  protected final CheckstyleMarkerFilter getFilter() {
-    if (mFilter == null) {
-      mFilter = new CheckstyleMarkerFilter();
-      mFilter.restoreState(getDialogSettings());
-    }
-
-    return mFilter;
   }
 
   /**
@@ -232,7 +223,7 @@ public abstract class AbstractStatsView extends ViewPart {
             .getAdapter(IWorkbenchSiteProgressService.class);
 
     // rebuild statistics data
-    CreateStatsJob job = new CreateStatsJob(getFilter(), getViewId());
+    CreateStatsJob job = new CreateStatsJob(filter, getViewId());
     job.setPriority(Job.DECORATE);
     job.setRule(ResourcesPlugin.getWorkspace().getRoot());
     job.addJobChangeListener(new JobChangeAdapter() {
@@ -317,7 +308,7 @@ public abstract class AbstractStatsView extends ViewPart {
     boolean updateNeeded = updateNeeded(mFocusedResources, focusedResources);
     if (updateNeeded) {
       mFocusedResources = focusedResources;
-      getFilter().setFocusResource(focusedResources);
+      filter = filter.withFocusResources(focusedResources);
       refresh();
     }
   }
@@ -371,12 +362,11 @@ public abstract class AbstractStatsView extends ViewPart {
    */
   private boolean updateNeeded(IResource[] oldResources, IResource[] newResources) {
     // determine if an update if refiltering is required
-    CheckstyleMarkerFilter filter = getFilter();
-    if (!filter.isEnabled()) {
+    if (!filter.enabled()) {
       return false;
     }
 
-    int onResource = filter.getOnResource();
+    int onResource = filter.onResource();
     if (onResource == CheckstyleMarkerFilter.ON_ANY_RESOURCE
             || onResource == CheckstyleMarkerFilter.ON_WORKING_SET) {
       return false;
@@ -391,10 +381,8 @@ public abstract class AbstractStatsView extends ViewPart {
       return false;
     }
     if (onResource == CheckstyleMarkerFilter.ON_ANY_RESOURCE_OF_SAME_PROJECT) {
-      Collection<IProject> oldProjects = CheckstyleMarkerFilter.getProjectsAsCollection(oldResources);
-      Collection<IProject> newProjects = CheckstyleMarkerFilter.getProjectsAsCollection(newResources);
-
-      return oldProjects.size() != newProjects.size() || !newProjects.containsAll(oldProjects);
+      return CheckstyleMarkerFilter.getProjects(oldResources)
+              .equals(CheckstyleMarkerFilter.getProjects(newResources));
     }
 
     return true;

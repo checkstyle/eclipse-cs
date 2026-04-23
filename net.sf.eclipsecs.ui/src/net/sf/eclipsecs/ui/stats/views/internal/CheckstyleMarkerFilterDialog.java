@@ -289,33 +289,33 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
    */
   private void updateUIFromFilter() {
 
-    mChkFilterEnabled.setSelection(mFilter.isEnabled());
+    mChkFilterEnabled.setSelection(mFilter.enabled());
 
     mRadioOnAnyResource
-            .setSelection(mFilter.getOnResource() == CheckstyleMarkerFilter.ON_ANY_RESOURCE);
+            .setSelection(mFilter.onResource() == CheckstyleMarkerFilter.ON_ANY_RESOURCE);
     mRadioAnyResourceInSameProject.setSelection(
-            mFilter.getOnResource() == CheckstyleMarkerFilter.ON_ANY_RESOURCE_OF_SAME_PROJECT);
+            mFilter.onResource() == CheckstyleMarkerFilter.ON_ANY_RESOURCE_OF_SAME_PROJECT);
     mRadioSelectedResource.setSelection(
-            mFilter.getOnResource() == CheckstyleMarkerFilter.ON_SELECTED_RESOURCE_ONLY);
+            mFilter.onResource() == CheckstyleMarkerFilter.ON_SELECTED_RESOURCE_ONLY);
     mRadioSelectedResourceAndChildren.setSelection(
-            mFilter.getOnResource() == CheckstyleMarkerFilter.ON_SELECTED_RESOURCE_AND_CHILDREN);
+            mFilter.onResource() == CheckstyleMarkerFilter.ON_SELECTED_RESOURCE_AND_CHILDREN);
     mRadioSelectedWorkingSet
-            .setSelection(mFilter.getOnResource() == CheckstyleMarkerFilter.ON_WORKING_SET);
+            .setSelection(mFilter.onResource() == CheckstyleMarkerFilter.ON_WORKING_SET);
 
-    mSelectedWorkingSet = mFilter.getWorkingSet();
+    mSelectedWorkingSet = mFilter.workingSet();
     initWorkingSetLabel();
 
-    mChkSeverityEnabled.setSelection(mFilter.getSelectBySeverity());
+    mChkSeverityEnabled.setSelection(mFilter.selectBySeverity());
 
     mChkSeverityError
-            .setSelection((mFilter.getSeverity() & CheckstyleMarkerFilter.SEVERITY_ERROR) > 0);
+            .setSelection((mFilter.severity() & CheckstyleMarkerFilter.SEVERITY_ERROR) > 0);
     mChkSeverityWarning
-            .setSelection((mFilter.getSeverity() & CheckstyleMarkerFilter.SEVERITY_WARNING) > 0);
+            .setSelection((mFilter.severity() & CheckstyleMarkerFilter.SEVERITY_WARNING) > 0);
     mChkSeverityInfo
-            .setSelection((mFilter.getSeverity() & CheckstyleMarkerFilter.SEVERITY_INFO) > 0);
+            .setSelection((mFilter.severity() & CheckstyleMarkerFilter.SEVERITY_INFO) > 0);
 
-    mChkSelectByRegex.setSelection(mFilter.isFilterByRegex());
-    mRegularExpressions = mFilter.getFilterRegex();
+    mChkSelectByRegex.setSelection(mFilter.filterByRegex());
+    mRegularExpressions = mFilter.filterRegex();
     initRegexLabel();
 
     mController.updateControlState();
@@ -325,24 +325,19 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
    * Updates the filter data from the ui controls.
    */
   private void updateFilterFromUI() {
-
-    mFilter.setEnabled(mChkFilterEnabled.getSelection());
-
+    int onResource;
     if (mRadioSelectedResource.getSelection()) {
-      mFilter.setOnResource(CheckstyleMarkerFilter.ON_SELECTED_RESOURCE_ONLY);
+      onResource = CheckstyleMarkerFilter.ON_SELECTED_RESOURCE_ONLY;
     } else if (mRadioSelectedResourceAndChildren.getSelection()) {
-      mFilter.setOnResource(CheckstyleMarkerFilter.ON_SELECTED_RESOURCE_AND_CHILDREN);
+      onResource = CheckstyleMarkerFilter.ON_SELECTED_RESOURCE_AND_CHILDREN;
     } else if (mRadioAnyResourceInSameProject.getSelection()) {
-      mFilter.setOnResource(CheckstyleMarkerFilter.ON_ANY_RESOURCE_OF_SAME_PROJECT);
+      onResource = CheckstyleMarkerFilter.ON_ANY_RESOURCE_OF_SAME_PROJECT;
     } else if (mRadioSelectedWorkingSet.getSelection()) {
-      mFilter.setOnResource(CheckstyleMarkerFilter.ON_WORKING_SET);
+      onResource = CheckstyleMarkerFilter.ON_WORKING_SET;
     } else {
-      mFilter.setOnResource(CheckstyleMarkerFilter.ON_ANY_RESOURCE);
+      onResource = CheckstyleMarkerFilter.ON_ANY_RESOURCE;
     }
 
-    mFilter.setWorkingSet(mSelectedWorkingSet);
-
-    mFilter.setSelectBySeverity(mChkSeverityEnabled.getSelection());
     int severity = 0;
     if (mChkSeverityError.getSelection()) {
       severity = severity | CheckstyleMarkerFilter.SEVERITY_ERROR;
@@ -353,10 +348,10 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
     if (mChkSeverityInfo.getSelection()) {
       severity = severity | CheckstyleMarkerFilter.SEVERITY_INFO;
     }
-    mFilter.setSeverity(severity);
 
-    mFilter.setFilterByRegex(mChkSelectByRegex.getSelection());
-    mFilter.setFilterRegex(mRegularExpressions);
+    mFilter = new CheckstyleMarkerFilter(mChkFilterEnabled.getSelection(), onResource,
+            mSelectedWorkingSet, mChkSeverityEnabled.getSelection(), severity,
+            mChkSelectByRegex.getSelection(), mRegularExpressions, mFilter.focusResources());
   }
 
   /**
@@ -404,7 +399,7 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
       if (e.widget == mChkFilterEnabled || e.widget == mChkSeverityEnabled) {
         updateControlState();
       } else if (mBtnDefault == e.widget) {
-        mFilter.resetState();
+        mFilter = CheckstyleMarkerFilter.resetState(mFilter.focusResources());
         updateUIFromFilter();
       } else if (mBtnWorkingSet == e.widget) {
         IWorkingSetSelectionDialog dialog = PlatformUI.getWorkbench().getWorkingSetManager()
