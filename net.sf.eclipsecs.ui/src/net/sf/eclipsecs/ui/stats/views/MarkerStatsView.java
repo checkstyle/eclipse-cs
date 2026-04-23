@@ -566,22 +566,11 @@ public class MarkerStatsView extends AbstractStatsView {
     @Override
     public String getColumnText(Object obj, int index) {
       MarkerStat stat = (MarkerStat) obj;
-      String text = null;
-
-      switch (index) {
-        case 1:
-          text = stat.getIdentifiant();
-          break;
-        case 2:
-          text = Integer.toString(stat.getCount());
-          break;
-
-        default:
-          text = ""; //$NON-NLS-1$
-          break;
-      }
-
-      return text;
+      return switch (index) {
+        case 1 -> stat.getIdentifiant();
+        case 2 -> Integer.toString(stat.getCount());
+        default -> "";
+      };
     }
 
     @Override
@@ -607,25 +596,12 @@ public class MarkerStatsView extends AbstractStatsView {
     @Override
     public Comparable<?> getComparableValue(Object element, int colIndex) {
       MarkerStat stat = (MarkerStat) element;
-      Comparable<?> comparable = null;
-
-      switch (colIndex) {
-        case 0:
-          comparable = Integer.valueOf(stat.getMaxSeverity() * -1);
-          break;
-        case 1:
-          comparable = stat.getIdentifiant();
-          break;
-        case 2:
-          comparable = Integer.valueOf(stat.getCount());
-          break;
-
-        default:
-          comparable = ""; //$NON-NLS-1$
-          break;
-      }
-
-      return comparable;
+      return switch (colIndex) {
+        case 0 -> Integer.valueOf(stat.getMaxSeverity() * -1);
+        case 1 -> stat.getIdentifiant();
+        case 2 -> Integer.valueOf(stat.getCount());
+        default -> "";
+      };
     }
 
     @Override
@@ -654,33 +630,19 @@ public class MarkerStatsView extends AbstractStatsView {
     @Override
     public String getColumnText(Object obj, int index) {
       IMarker marker = (IMarker) obj;
-      String text = null;
-
       try {
-        switch (index) {
-          case 1:
-            text = marker.getResource().getName();
-            break;
-          case 2:
-            text = marker.getResource().getParent().getFullPath().toString();
-            break;
-          case 3:
-            text = Objects.toString(marker.getAttribute(IMarker.LINE_NUMBER), "");
-            break;
-          case 4:
-            text = Objects.toString(marker.getAttribute(IMarker.MESSAGE), "");
-            break;
-          default:
-            text = ""; //$NON-NLS-1$
-            break;
-        }
+        return switch (index) {
+          case 1 -> marker.getResource().getName();
+          case 2 -> marker.getResource().getParent().getFullPath().toString();
+          case 3 -> Objects.toString(marker.getAttribute(IMarker.LINE_NUMBER), "");
+          case 4 -> Objects.toString(marker.getAttribute(IMarker.MESSAGE), "");
+          default -> "";
+        };
       } catch (Exception ex) {
         // Can't do anything: let's put a default value
-        text = Messages.MarkerStatsView_unknownProblem;
         CheckstyleLog.log(ex);
+        return Messages.MarkerStatsView_unknownProblem;
       }
-
-      return text;
     }
 
     @Override
@@ -706,30 +668,14 @@ public class MarkerStatsView extends AbstractStatsView {
     @Override
     public Comparable<?> getComparableValue(Object element, int colIndex) {
       IMarker marker = (IMarker) element;
-      Comparable<?> comparable = null;
-
-      switch (colIndex) {
-        case 0:
-          comparable = Integer.valueOf(marker.getAttribute(IMarker.SEVERITY, Integer.MAX_VALUE) * -1);
-          break;
-        case 1:
-          comparable = marker.getResource().getName();
-          break;
-        case 2:
-          comparable = marker.getResource().getParent().getFullPath().toString();
-          break;
-        case 3:
-          comparable = Integer.valueOf(marker.getAttribute(IMarker.LINE_NUMBER, Integer.MAX_VALUE));
-          break;
-        case 4:
-          comparable = marker.getAttribute(IMarker.MESSAGE, "");
-          break;
-        default:
-          comparable = ""; //$NON-NLS-1$
-          break;
-      }
-
-      return comparable;
+      return switch (colIndex) {
+        case 0 -> Integer.valueOf(marker.getAttribute(IMarker.SEVERITY, Integer.MAX_VALUE) * -1);
+        case 1 -> marker.getResource().getName();
+        case 2 -> marker.getResource().getParent().getFullPath().toString();
+        case 3 -> Integer.valueOf(marker.getAttribute(IMarker.LINE_NUMBER, Integer.MAX_VALUE));
+        case 4 -> marker.getAttribute(IMarker.MESSAGE, "");
+        default -> "";
+      };
     }
 
     @Override

@@ -64,27 +64,17 @@ public final class ConfigPropertyWidgetFactory {
 
   private static IConfigPropertyWidget getWidgetForConfigPropertyType(Composite parent,
           ConfigProperty prop, ConfigPropertyType type) {
-    switch (type) {
-    case STRING:
-      return new ConfigPropertyWidgetString(parent, prop);
-    case STRING_ARRAY:
-      return new ConfigPropertyWidgetStringArray(parent, prop);
-    case INTEGER:
-      return new ConfigPropertyWidgetInteger(parent, prop);
-    case SINGLE_SELECT:
-      return new ConfigPropertyWidgetSingleSelect(parent, prop);
-    case BOOLEAN:
-      return new ConfigPropertyWidgetBoolean(parent, prop);
-    case MULTI_CHECK:
-      return new ConfigPropertyWidgetMultiCheck(parent, prop);
-    case HIDDEN:
-      return new ConfigPropertyWidgetHidden(parent, prop);
-    case FILE:
-      return new ConfigPropertyWidgetFile(parent, prop);
-    case REGEX:
-      return new ConfigPropertyWidgetRegex(parent, prop);
-    default:
-      return new ConfigPropertyWidgetString(parent, prop);
-    }
+    return switch (type) {
+      case STRING -> new ConfigPropertyWidgetString(parent, prop);
+      case STRING_ARRAY -> new ConfigPropertyWidgetStringArray(parent, prop);
+      case INTEGER -> new ConfigPropertyWidgetInteger(parent, prop);
+      case SINGLE_SELECT -> new ConfigPropertyWidgetSingleSelect(parent, prop);
+      case BOOLEAN -> new ConfigPropertyWidgetBoolean(parent, prop);
+      case MULTI_CHECK -> new ConfigPropertyWidgetMultiCheck(parent, prop);
+      case HIDDEN -> new ConfigPropertyWidgetHidden(parent, prop);
+      case FILE -> new ConfigPropertyWidgetFile(parent, prop);
+      case REGEX -> new ConfigPropertyWidgetRegex(parent, prop);
+      default -> new ConfigPropertyWidgetString(parent, prop);
+    };
   }
 }
