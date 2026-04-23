@@ -949,31 +949,16 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
 
     @Override
     public String getColumnText(Object element, int columnIndex) {
-      String text = null;
-
-      if (element instanceof Module) {
-
-        Module module = (Module) element;
-        switch (columnIndex) {
-
-          case 0:
-            text = "";
-            break;
-          case 1:
-            text = module.getName() != null ? module.getName() : "";
-            break;
-          case 2:
-            text = module.getSeverity() != null ? module.getSeverity().toXmlValue() : "";
-            break;
-          case 3:
-            text = module.getComment() != null ? module.getComment() : "";
-            break;
-          default:
-            text = "";
-            break;
-        }
+      if (element instanceof Module module) {
+        return switch (columnIndex) {
+          case 0 -> "";
+          case 1 -> module.getName() != null ? module.getName() : "";
+          case 2 -> module.getSeverity() != null ? module.getSeverity().toXmlValue() : "";
+          case 3 -> module.getComment() != null ? module.getComment() : "";
+          default -> "";
+        };
       }
-      return text;
+      return null;
     }
 
     @Override

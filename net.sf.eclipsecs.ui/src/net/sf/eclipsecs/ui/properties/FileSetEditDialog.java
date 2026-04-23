@@ -654,23 +654,14 @@ public class FileSetEditDialog extends TitleAreaDialog {
 
     @Override
     public String getColumnText(Object element, int columnIndex) {
-      String result = element.toString();
-      if (element instanceof FileMatchPattern) {
-        FileMatchPattern pattern = (FileMatchPattern) element;
-        switch (columnIndex) {
-          case 0:
-            result = new String();
-            break;
-
-          case 1:
-            result = pattern.getMatchPattern();
-            break;
-
-          default:
-            break;
-        }
+      if (element instanceof FileMatchPattern pattern) {
+        return switch (columnIndex) {
+          case 0 -> new String();
+          case 1 -> pattern.getMatchPattern();
+          default -> element.toString();
+        };
       }
-      return result;
+      return element.toString();
     }
 
     @Override

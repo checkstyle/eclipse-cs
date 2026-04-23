@@ -509,6 +509,7 @@
         <module name="UnnecessarySemicolonInEnumeration"/>
         <module name="UnnecessarySemicolonInTryWithResources"/>
         <module name="UnusedLocalVariable"/>
+        <module name="UseEnhancedSwitch"/>
         <module name="UnusedCatchParameterShouldBeUnnamed">
             <property name="severity" value="ignore"/>
         </module>

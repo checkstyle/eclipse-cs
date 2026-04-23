@@ -578,24 +578,18 @@ public final class CheckConfigurationWorkingSetEditor {
 
     @Override
     public Image getColumnImage(Object element, int columnIndex) {
-      Image image = null;
-      switch (columnIndex) {
-        case 0:
-          image = getImage(element);
-          break;
-        case 3:
+      return switch (columnIndex) {
+        case 0 -> getImage(element);
+        case 3 -> {
           ICheckConfiguration cfg = (ICheckConfiguration) element;
-          if (mWorkingSet instanceof GlobalCheckConfigurationWorkingSet) {
-
-            if (((GlobalCheckConfigurationWorkingSet) mWorkingSet).getDefaultCheckConfig() == cfg) {
-              image = CheckstyleUIPluginImages.TICK_ICON.getImage();
-            }
+          if (mWorkingSet instanceof GlobalCheckConfigurationWorkingSet workingSet
+                  && workingSet.getDefaultCheckConfig() == cfg) {
+            yield CheckstyleUIPluginImages.TICK_ICON.getImage();
           }
-          break;
-        default:
-          break;
-      }
-      return image;
+          yield null;
+        }
+        default -> null;
+      };
     }
 
     @Override

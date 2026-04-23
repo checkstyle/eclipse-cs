@@ -306,30 +306,17 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
 
     @Override
     public String getColumnText(Object element, int columnIndex) {
-      String result = element.toString();
-      if (element instanceof FileSet) {
-        FileSet fileSet = (FileSet) element;
-        switch (columnIndex) {
-          case 0:
-            result = new String();
-            break;
-
-          case 1:
-            result = fileSet.getName();
-            break;
-
-          case 2:
-            result = fileSet.getCheckConfig() != null
-                    ? mCheckConfigLabelProvider.getText(fileSet.getCheckConfig())
-                    : ""; //$NON-NLS-1$
-            break;
-
-          default:
-            break;
-        }
-
+      if (element instanceof FileSet fileSet) {
+        return switch (columnIndex) {
+          case 0 -> new String();
+          case 1 -> fileSet.getName();
+          case 2 -> fileSet.getCheckConfig() != null
+                  ? mCheckConfigLabelProvider.getText(fileSet.getCheckConfig())
+                  : "";
+          default -> element.toString();
+        };
       }
-      return result;
+      return element.toString();
     }
 
     @Override

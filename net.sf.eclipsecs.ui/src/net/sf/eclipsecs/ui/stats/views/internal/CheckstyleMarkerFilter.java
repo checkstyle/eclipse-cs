@@ -129,46 +129,28 @@ public record CheckstyleMarkerFilter(boolean enabled, int onResource, IWorkingSe
    */
   public IMarker[] findMarkers(IProgressMonitor mon) throws CoreException {
 
-    List<IMarker> unfiltered = Collections.emptyList();
+    List<IMarker> unfiltered;
 
     if (enabled) {
-      switch (onResource) {
-        case ON_ANY_RESOURCE: {
-          unfiltered = findCheckstyleMarkers(
-                  new IResource[] { ResourcesPlugin.getWorkspace().getRoot() },
-                  IResource.DEPTH_INFINITE, mon);
-          break;
-        }
-        case ON_SELECTED_RESOURCE_ONLY: {
-          unfiltered = findCheckstyleMarkers(focusResources, IResource.DEPTH_ZERO, mon);
-          break;
-        }
-        case ON_SELECTED_RESOURCE_AND_CHILDREN: {
-          unfiltered = findCheckstyleMarkers(focusResources, IResource.DEPTH_INFINITE, mon);
-          break;
-        }
-        case ON_ANY_RESOURCE_OF_SAME_PROJECT: {
-          unfiltered = findCheckstyleMarkers(getProjects(focusResources).toArray(new IResource[0]),
-                  IResource.DEPTH_INFINITE, mon);
-          break;
-        }
-        case ON_WORKING_SET: {
-          unfiltered = findCheckstyleMarkers(getResourcesInWorkingSet(workingSet),
-                  IResource.DEPTH_INFINITE, mon);
-          break;
-        }
-        default: {
-          break;
-        }
-      }
+      unfiltered = switch (onResource) {
+        case ON_ANY_RESOURCE -> findCheckstyleMarkers(
+                new IResource[] { ResourcesPlugin.getWorkspace().getRoot() },
+                IResource.DEPTH_INFINITE, mon);
+        case ON_SELECTED_RESOURCE_ONLY -> findCheckstyleMarkers(focusResources,
+                IResource.DEPTH_ZERO, mon);
+        case ON_SELECTED_RESOURCE_AND_CHILDREN -> findCheckstyleMarkers(focusResources,
+                IResource.DEPTH_INFINITE, mon);
+        case ON_ANY_RESOURCE_OF_SAME_PROJECT -> findCheckstyleMarkers(
+                getProjects(focusResources).toArray(new IResource[0]), IResource.DEPTH_INFINITE,
+                mon);
+        case ON_WORKING_SET -> findCheckstyleMarkers(getResourcesInWorkingSet(workingSet),
+                IResource.DEPTH_INFINITE, mon);
+        default -> Collections.emptyList();
+      };
     } else {
       unfiltered = findCheckstyleMarkers(
               new IResource[] { ResourcesPlugin.getWorkspace().getRoot() },
               IResource.DEPTH_INFINITE, mon);
-    }
-
-    if (unfiltered == null) {
-      unfiltered = Collections.emptyList();
     }
 
     return unfiltered.toArray(new IMarker[unfiltered.size()]);

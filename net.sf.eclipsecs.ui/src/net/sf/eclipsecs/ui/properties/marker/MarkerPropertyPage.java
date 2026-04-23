@@ -146,16 +146,12 @@ public class MarkerPropertyPage extends PropertyPage {
    */
   public static Image getSeverityImage(int severity) {
     ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
-    switch (severity) {
-      case IMarker.SEVERITY_ERROR:
-        return sharedImages.getImage(ISharedImages.IMG_OBJS_ERROR_TSK);
-      case IMarker.SEVERITY_WARNING:
-        return sharedImages.getImage(ISharedImages.IMG_OBJS_WARN_TSK);
-      case IMarker.SEVERITY_INFO:
-        return sharedImages.getImage(ISharedImages.IMG_OBJS_INFO_TSK);
-      default:
-        return null;
-    }
+    return switch (severity) {
+      case IMarker.SEVERITY_ERROR -> sharedImages.getImage(ISharedImages.IMG_OBJS_ERROR_TSK);
+      case IMarker.SEVERITY_WARNING -> sharedImages.getImage(ISharedImages.IMG_OBJS_WARN_TSK);
+      case IMarker.SEVERITY_INFO -> sharedImages.getImage(ISharedImages.IMG_OBJS_INFO_TSK);
+      default -> null;
+    };
   }
 
 }
