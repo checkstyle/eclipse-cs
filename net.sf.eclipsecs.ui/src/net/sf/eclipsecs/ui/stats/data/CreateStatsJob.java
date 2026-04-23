@@ -72,7 +72,7 @@ public class CreateStatsJob extends Job {
    */
   public CreateStatsJob(CheckstyleMarkerFilter filter, String family) {
     super(Messages.CreateStatsJob_msgAnalyzeMarkers);
-    mFilter = (CheckstyleMarkerFilter) filter.clone();
+    mFilter = filter;
     mFamily = family;
   }
 

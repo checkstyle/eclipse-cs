@@ -109,9 +109,6 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
   /** The current check configuration. */
   private final CheckConfigurationWorkingCopy mConfiguration;
 
-  /** Filter for the table viewer to show only element of the selected group. */
-  private final RuleGroupModuleFilter mGroupFilter = new RuleGroupModuleFilter();
-
   /** Controller for this Dialog. */
   private final PageController mController = new PageController();
 
@@ -120,6 +117,9 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
 
   /** The tree filter. */
   private final TreeFilter mTreeFilter = new TreeFilter();
+
+  /** the current rule group. */
+  private RuleGroupMetadata mCurrentGroup;
 
   /** Flags if the Check configuration can be modified. */
   private boolean mConfigurable;
@@ -352,7 +352,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
     ModuleLabelProvider multiProvider = new ModuleLabelProvider();
     mTableViewer.setLabelProvider(multiProvider);
     mTableViewer.setContentProvider(new ArrayContentProvider());
-    mTableViewer.addFilter(mGroupFilter);
+    mTableViewer.addFilter(new RuleGroupModuleFilter());
 
     mTableViewer.addDoubleClickListener(mController);
     mTableViewer.addSelectionChangedListener(mController);
@@ -618,7 +618,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
 
         RuleGroupMetadata group = (RuleGroupMetadata) element;
         description = group.getDescription();
-        mGroupFilter.setCurrentGroup(group);
+        mCurrentGroup = group;
         mConfiguredModulesGroup
                 .setText(NLS.bind(Messages.CheckConfigurationConfigureDialog_lblConfiguredModules,
                         group.getGroupName()));
@@ -630,7 +630,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
         RuleMetadata rule = (RuleMetadata) element;
 
         description = rule.identity().description();
-        mGroupFilter.setCurrentGroup(rule.identity().group());
+        mCurrentGroup = rule.identity().group();
         mConfiguredModulesGroup
                 .setText(NLS.bind(Messages.CheckConfigurationConfigureDialog_lblConfiguredModules,
                         rule.identity().group().getGroupName()));
@@ -1005,19 +1005,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
    * Viewer filter that includes all modules that belong to the currently selected group.
    *
    */
-  private static class RuleGroupModuleFilter extends ViewerFilter {
-
-    /** the current rule group. */
-    private RuleGroupMetadata mCurrentGroup;
-
-    /**
-     * Sets the current rule group.
-     *
-     * @param groupMetaData the group metadata
-     */
-    public void setCurrentGroup(RuleGroupMetadata groupMetaData) {
-      mCurrentGroup = groupMetaData;
-    }
+  private class RuleGroupModuleFilter extends ViewerFilter {
 
     @Override
     public boolean select(Viewer viewer, Object parentElement, Object element) {
