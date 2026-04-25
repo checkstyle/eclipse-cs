@@ -63,7 +63,7 @@ public class TransformFormatterRulesJob extends WorkspaceJob {
     final String configLocation = workspace
             + "/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.core.prefs"; //$NON-NLS-1$
 
-    FormatterConfigParser parser = null;
+    FormatterConfigParser parser;
 
     try {
       parser = new FormatterConfigParser(configLocation);
@@ -77,8 +77,8 @@ public class TransformFormatterRulesJob extends WorkspaceJob {
     }
 
     try {
-      FormatterTransformer transformer = new FormatterTransformer(rules);
-      transformer.transformRules(workspace + "/test-checkstyle.xml"); //$NON-NLS-1$
+      FormatterTransformer transformer = new FormatterTransformer();
+      transformer.transformRules(workspace + "/test-checkstyle.xml", rules.getFormatterSettings()); //$NON-NLS-1$
     } catch (CheckstylePluginException ex) {
       Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR,
               ex.getMessage(), ex);
