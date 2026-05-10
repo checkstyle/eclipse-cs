@@ -20,8 +20,6 @@
 
 package net.sf.eclipsecs.ui.config;
 
-import java.util.List;
-
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -33,10 +31,8 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -50,7 +46,6 @@ import net.sf.eclipsecs.core.config.CheckConfigurationTester;
 import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
 import net.sf.eclipsecs.core.config.ICheckConfiguration;
 import net.sf.eclipsecs.core.config.ICheckConfigurationWorkingSet;
-import net.sf.eclipsecs.core.config.ResolvableProperty;
 import net.sf.eclipsecs.core.config.configtypes.ConfigurationTypes;
 import net.sf.eclipsecs.core.config.configtypes.IConfigurationType;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
@@ -191,17 +186,9 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
     gridData = new GridData();
     mConfigType.getCombo().setLayoutData(gridData);
     mConfigType.setContentProvider(new ArrayContentProvider());
-    mConfigType.setLabelProvider(new LabelProvider() {
-      @Override
-      public String getText(Object element) {
-        return ((IConfigurationType) element).getName();
-      }
-
-      @Override
-      public Image getImage(Object element) {
-        return ConfigurationTypesUI.getConfigurationTypeImage((IConfigurationType) element);
-      }
-    });
+    mConfigType.setLabelProvider(LabelProvider.createTextImageProvider(
+            element -> ((IConfigurationType) element).getName(),
+            element -> ConfigurationTypesUI.getConfigurationTypeImage((IConfigurationType) element)));
     mConfigType.addSelectionChangedListener(new ISelectionChangedListener() {
       @Override
       public void selectionChanged(SelectionChangedEvent event) {
@@ -257,27 +244,16 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
     gridData.horizontalIndent = 5;
     mBtnProperties.setLayoutData(gridData);
 
-    mBtnProperties.addSelectionListener(new SelectionListener() {
-
-      @Override
-      public void widgetSelected(SelectionEvent e) {
-
-        try {
-          mConfigurationEditor.getEditedWorkingCopy();
-
-          ResolvablePropertiesDialog dialog = new ResolvablePropertiesDialog(getShell(),
-                  mCheckConfig);
-          dialog.open();
-        } catch (CheckstylePluginException ex) {
-          setErrorMessage(ex.getLocalizedMessage());
-        }
+    mBtnProperties.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
+      try {
+        mConfigurationEditor.getEditedWorkingCopy();
+        ResolvablePropertiesDialog dialog = new ResolvablePropertiesDialog(getShell(),
+                mCheckConfig);
+        dialog.open();
+      } catch (CheckstylePluginException ex) {
+        setErrorMessage(ex.getLocalizedMessage());
       }
-
-      @Override
-      public void widgetDefaultSelected(SelectionEvent e) {
-        // NOOP
-      }
-    });
+    }));
 
     Control buttonBar = super.createButtonBar(composite);
     gridData = new GridData(GridData.FILL_HORIZONTAL);
@@ -301,14 +277,14 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
       mCheckConfig = mConfigurationEditor.getEditedWorkingCopy();
 
       CheckConfigurationTester tester = new CheckConfigurationTester(mCheckConfig);
-      List<ResolvableProperty> unresolvedProps = tester.getUnresolvedProperties();
+      int numUnresolvedProps = tester.getUnresolvedProperties().size();
 
-      if (!unresolvedProps.isEmpty()) {
+      if (numUnresolvedProps > 0) {
 
         MessageDialog dialog = new MessageDialog(getShell(),
                 Messages.CheckConfigurationPropertiesDialog_titleUnresolvedProps, null,
                 NLS.bind(Messages.CheckConfigurationPropertiesDialog_msgUnresolvedProps,
-                        Integer.toString(unresolvedProps.size())),
+                        Integer.toString(numUnresolvedProps)),
                 MessageDialog.WARNING,
                 new String[] { Messages.CheckConfigurationPropertiesDialog_btnEditProps,
                     Messages.CheckConfigurationPropertiesDialog_btnContinue,

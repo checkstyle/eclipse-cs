@@ -22,7 +22,6 @@ package net.sf.eclipsecs.ui.properties;
 
 import java.util.List;
 
-import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -41,6 +40,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
@@ -61,7 +61,8 @@ import net.sf.eclipsecs.ui.config.CheckConfigurationViewerSorter;
  */
 public class SimpleFileSetsEditor implements IFileSetsEditor {
 
-  private final CheckstylePropertyPage mPropertyPage;
+  private final PropertyPageContext propertyPageContext;
+  private final Shell shell;
 
   /** viewer to display the known checkstyle configurations. */
   private ComboViewer mComboViewer;
@@ -84,8 +85,9 @@ public class SimpleFileSetsEditor implements IFileSetsEditor {
    * @param propsPage
    *          the property page
    */
-  public SimpleFileSetsEditor(CheckstylePropertyPage propsPage) {
-    mPropertyPage = propsPage;
+  public SimpleFileSetsEditor(Shell shell, PropertyPageContext propertyPageContext) {
+    this.shell = shell;
+    this.propertyPageContext = propertyPageContext;
   }
 
   @Override
@@ -98,9 +100,8 @@ public class SimpleFileSetsEditor implements IFileSetsEditor {
     }
 
     if (config == null) {
-      CheckConfigurationWorkingCopy[] allConfigs = mPropertyPage
-              .getProjectConfigurationWorkingCopy().getGlobalCheckConfigWorkingSet()
-              .getWorkingCopies();
+      CheckConfigurationWorkingCopy[] allConfigs = propertyPageContext.configuration()
+              .getGlobalCheckConfigWorkingSet().getWorkingCopies();
       if (allConfigs.length > 0) {
         config = allConfigs[0];
       }
@@ -168,7 +169,7 @@ public class SimpleFileSetsEditor implements IFileSetsEditor {
     this.mTxtConfigDescription.setLayoutData(formData);
 
     // init the check configuration combo
-    mComboViewer.setInput(mPropertyPage.getProjectConfigurationWorkingCopy());
+    mComboViewer.setInput(propertyPageContext.configuration());
     if (mDefaultFileSet.getCheckConfig() != null) {
       mComboViewer.setSelection(new StructuredSelection(mDefaultFileSet.getCheckConfig()));
     }
@@ -193,8 +194,6 @@ public class SimpleFileSetsEditor implements IFileSetsEditor {
         ICheckConfiguration config = mDefaultFileSet.getCheckConfig();
 
         if (config != null) {
-          IProject project = (IProject) mPropertyPage.getElement();
-
           try {
             config.getCheckstyleConfiguration();
 
@@ -205,9 +204,9 @@ public class SimpleFileSetsEditor implements IFileSetsEditor {
             dialog.setBlockOnOpen(true);
             dialog.open();
           } catch (CheckstylePluginException ex) {
-            CheckstyleUIPlugin.warningDialog(mPropertyPage.getShell(),
+            CheckstyleUIPlugin.warningDialog(shell,
                     NLS.bind(Messages.CheckstylePreferencePage_msgProjectRelativeConfigNoFound,
-                            project, config.getLocation()),
+                            propertyPageContext.project(), config.getLocation()),
                     ex);
           }
         }
@@ -232,7 +231,7 @@ public class SimpleFileSetsEditor implements IFileSetsEditor {
         mComboViewer.setSelection(new StructuredSelection(mComboViewer.getElementAt(0)));
       }
 
-      mPropertyPage.getContainer().updateButtons();
+      propertyPageContext.updateButtons();
     }
   }
 }

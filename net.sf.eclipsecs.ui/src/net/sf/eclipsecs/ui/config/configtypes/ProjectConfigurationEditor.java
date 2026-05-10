@@ -32,15 +32,11 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.window.Window;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -51,12 +47,6 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
-import org.eclipse.ui.dialogs.ISelectionStatusValidator;
-import org.eclipse.ui.model.WorkbenchContentProvider;
-import org.eclipse.ui.model.WorkbenchLabelProvider;
-
 import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
 import net.sf.eclipsecs.core.config.ConfigurationWriter;
 import net.sf.eclipsecs.core.config.GlobalCheckConfigurationWorkingSet;
@@ -153,41 +143,8 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
     mBtnBrowse.setText(Messages.ProjectConfigurationLocationEditor_btnBrowse);
     mBtnBrowse.setLayoutData(new GridData());
 
-    mBtnBrowse.addSelectionListener(new SelectionListener() {
-
-      @Override
-      public void widgetSelected(SelectionEvent e) {
-        ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(shell,
-                new WorkbenchLabelProvider(), new WorkbenchContentProvider());
-        dialog.setHelpAvailable(false);
-        dialog.setTitle(Messages.ProjectConfigurationLocationEditor_titleSelectConfigFile);
-        dialog.setMessage(Messages.ProjectConfigurationLocationEditor_msgSelectConfigFile);
-        dialog.setBlockOnOpen(true);
-        dialog.setAllowMultiple(false);
-        dialog.setInput(ResourcesPlugin.getWorkspace().getRoot());
-        dialog.setValidator(new ISelectionStatusValidator() {
-          @Override
-          public IStatus validate(Object[] selection) {
-            if (selection.length == 1 && selection[0] instanceof IFile) {
-              return new Status(IStatus.OK, PlatformUI.PLUGIN_ID, IStatus.ERROR, new String(),
-                      null);
-            }
-            return new Status(IStatus.ERROR, PlatformUI.PLUGIN_ID, IStatus.ERROR, new String(),
-                    null);
-          }
-        });
-        if (Window.OK == dialog.open()) {
-          Object[] result = dialog.getResult();
-          IFile checkFile = (IFile) result[0];
-          mLocation.setText(checkFile.getFullPath().toString());
-        }
-      }
-
-      @Override
-      public void widgetDefaultSelected(SelectionEvent e) {
-        // NOOP
-      }
-    });
+    mBtnBrowse.addSelectionListener(SelectionListener.widgetSelectedAdapter(
+            event -> WorkspaceFileSelector.select(shell).ifPresent(mLocation::setText)));
 
     Label lblDescription = new Label(contents, SWT.NULL);
     lblDescription.setText(Messages.CheckConfigurationPropertiesDialog_lblDescription);

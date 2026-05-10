@@ -21,45 +21,19 @@
 package net.sf.eclipsecs.ui.quickfixes;
 
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.eclipse.core.filebuffers.FileBuffers;
-import org.eclipse.core.filebuffers.ITextFileBuffer;
-import org.eclipse.core.filebuffers.ITextFileBufferManager;
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jdt.core.IJavaElement;
-import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
-import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.ASTVisitor;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.StructuralPropertyDescriptor;
-import org.eclipse.jdt.ui.JavaUI;
-import org.eclipse.jface.text.BadLocationException;
-import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
-import org.eclipse.jface.text.Position;
-import org.eclipse.jface.text.source.Annotation;
-import org.eclipse.jface.text.source.IAnnotationModel;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.text.edits.MalformedTreeException;
-import org.eclipse.text.edits.TextEdit;
-import org.eclipse.ui.texteditor.MarkerAnnotation;
 import org.eclipse.ui.views.markers.WorkbenchMarkerResolution;
 
 import net.sf.eclipsecs.core.builder.CheckstyleMarker;
-import net.sf.eclipsecs.core.util.CheckstyleLog;
-import net.sf.eclipsecs.ui.Messages;
 
 /**
  * Abstract base class for marker resolutions using AST rewrite techniques.
@@ -90,7 +64,7 @@ public abstract class AbstractASTResolution extends WorkbenchMarkerResolution
       if (!CheckstyleMarker.MARKER_ID.equals(marker.getType())) {
         return false;
       }
-      String markerModule = marker.getAttribute(CheckstyleMarker.MODULE_NAME, StringUtils.EMPTY);
+      String markerModule = marker.getAttribute(CheckstyleMarker.MODULE_NAME, "");
       if (module.equals(markerModule)) {
         return true;
       }
@@ -117,83 +91,7 @@ public abstract class AbstractASTResolution extends WorkbenchMarkerResolution
 
   @Override
   public void run(IMarker marker) {
-
-    IResource resource = marker.getResource();
-
-    if (!(resource instanceof IFile)) {
-      return;
-    }
-
-    ICompilationUnit compilationUnit = getCompilationUnit(marker);
-
-    if (compilationUnit == null) {
-      return;
-    }
-
-    ITextFileBufferManager bufferManager = null;
-
-    IPath path = compilationUnit.getPath();
-
-    try {
-
-      final IProgressMonitor monitor = new NullProgressMonitor();
-
-      // open the file the editor
-      JavaUI.openInEditor(compilationUnit);
-
-      // reimplemented according to this article
-      // http://www.eclipse.org/articles/Article-JavaCodeManipulation_AST/index.html
-      bufferManager = FileBuffers.getTextFileBufferManager();
-      bufferManager.connect(path, null);
-
-      ITextFileBuffer textFileBuffer = bufferManager.getTextFileBuffer(path);
-
-      IDocument document = textFileBuffer.getDocument();
-      IAnnotationModel annotationModel = textFileBuffer.getAnnotationModel();
-
-      MarkerAnnotation annotation = getMarkerAnnotation(annotationModel, marker);
-
-      // if the annotation is null it means that is was probably deleted
-      // by a previous quickfix
-      if (annotation == null) {
-        return;
-      }
-
-      Position pos = annotationModel.getPosition(annotation);
-
-      final IRegion lineInfo = document.getLineInformationOfOffset(pos.getOffset());
-      final int markerStart = pos.getOffset();
-
-      ASTParser astParser = ASTParser.newParser(AST.JLS3);
-      astParser.setKind(ASTParser.K_COMPILATION_UNIT);
-      astParser.setSource(compilationUnit);
-
-      CompilationUnit ast = (CompilationUnit) astParser.createAST(monitor);
-      ast.recordModifications();
-
-      ast.accept(handleGetCorrectingASTVisitor(lineInfo, markerStart));
-
-      // rewrite all recorded changes to the document
-      var wasDirtyBefore = textFileBuffer.isDirty();
-      TextEdit edit = ast.rewrite(document, compilationUnit.getJavaProject().getOptions(true));
-      edit.apply(document);
-
-      // commit changes to underlying file
-      if (!wasDirtyBefore) {
-        textFileBuffer.commit(monitor, false);
-      }
-    } catch (CoreException | MalformedTreeException | BadLocationException ex) {
-      CheckstyleLog.log(ex, Messages.AbstractASTResolution_msgErrorQuickfix);
-    } finally {
-
-      if (bufferManager != null) {
-        try {
-          bufferManager.disconnect(path, null);
-        } catch (CoreException ex) {
-          CheckstyleLog.log(ex, "Error processing quickfix"); //$NON-NLS-1$
-        }
-      }
-    }
+    AstQuickfixExecutor.run(marker, this::handleGetCorrectingASTVisitor);
   }
 
   @Override
@@ -260,7 +158,7 @@ public abstract class AbstractASTResolution extends WorkbenchMarkerResolution
    *          The replacement node.
    * @return <code>true</code> if the node was successfully replaced.
    */
-  protected boolean replace(final ASTNode node, final ASTNode replacement) {
+  protected static boolean replace(final ASTNode node, final ASTNode replacement) {
     final ASTNode parent = node.getParent();
     final StructuralPropertyDescriptor descriptor = node.getLocationInParent();
     if (descriptor != null) {
@@ -279,33 +177,4 @@ public abstract class AbstractASTResolution extends WorkbenchMarkerResolution
     return false;
   }
 
-  private ICompilationUnit getCompilationUnit(IMarker marker) {
-    IResource res = marker.getResource();
-    if (res instanceof IFile && res.isAccessible()) {
-      IJavaElement element = JavaCore.create((IFile) res);
-      if (element instanceof ICompilationUnit) {
-        return (ICompilationUnit) element;
-      }
-    }
-    return null;
-  }
-
-  private static MarkerAnnotation getMarkerAnnotation(IAnnotationModel annotationModel,
-          IMarker marker) {
-
-    Iterator<Annotation> iter = annotationModel.getAnnotationIterator();
-    while (iter.hasNext()) {
-      Annotation tmp = iter.next();
-
-      if (tmp instanceof MarkerAnnotation) {
-
-        IMarker theMarker = ((MarkerAnnotation) tmp).getMarker();
-
-        if (theMarker.equals(marker)) {
-          return (MarkerAnnotation) tmp;
-        }
-      }
-    }
-    return null;
-  }
 }

@@ -31,13 +31,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.MissingResourceException;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
@@ -46,17 +44,13 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import org.apache.commons.lang3.StringUtils;
-import org.dom4j.Document;
 import org.dom4j.DocumentException;
-import org.dom4j.Element;
-import org.dom4j.io.SAXReader;
 import org.yaml.snakeyaml.Yaml;
 
 import com.puppycrawl.tools.checkstyle.PackageNamesLoader;
 import com.puppycrawl.tools.checkstyle.api.AbstractFileSetCheck;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.puppycrawl.tools.checkstyle.meta.ModuleDetails;
-import com.puppycrawl.tools.checkstyle.meta.ModulePropertyDetails;
 import com.puppycrawl.tools.checkstyle.meta.XmlMetaReader;
 
 import io.github.classgraph.ClassGraph;
@@ -69,29 +63,14 @@ import net.sf.eclipsecs.core.config.Severity;
 import net.sf.eclipsecs.core.config.XMLTags;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.core.util.XMLUtil;
 
 /**
  * This class is the factory for all Checkstyle rule metadata.
  */
 public final class MetadataFactory {
 
-  /**
-   * metadata type or validation type for regular expressions
-   */
-  private static final String TYPE_ID_PATTERN = "java.util.regex.Pattern";
-
-  /** Map containing the public - internal DTD mapping. */
-  private static final Map<String, String> PUBLIC2INTERNAL_DTD_MAP = new HashMap<>();
-
   /** eclipse extension configuration file name. */
   private static final String ECLIPSE_EXTENSION_CONFIG_FILE = "eclipse-metadata.yml";
-
-  /** Pattern for dot. */
-  private static final String DOT_PATTERN = "\\.";
-
-  /** Other rule group name. */
-  private static final String OTHER_GROUP_NAME = "Other";
 
   /** Name of the rules metadata XML file. */
   private static final String METADATA_FILENAME = "checkstyle-metadata.xml"; //$NON-NLS-1$
@@ -106,17 +85,6 @@ public final class MetadataFactory {
    * Mapping for all rules, keyed by alternative rule names (full qualified, old full qualified).
    */
   private static Map<String, RuleMetadata> sAlternativeNamesMap;
-
-  /**
-   * Mapping for all module property datatype acquired from checkstyle metadata
-   *  to the internal property impletation.
-   */
-  private static Map<String, ConfigPropertyType> sPropertyTypeMap;
-
-  /**
-   * Mapping of all module package name to the internal module names.
-   */
-  private static Map<String, String> sPackageToGroupNameMap;
 
   /**
    * Repository of all the the checkstyle metadata, with their name as key.
@@ -143,11 +111,6 @@ public final class MetadataFactory {
    * Static initializer.
    */
   static {
-    PUBLIC2INTERNAL_DTD_MAP.put("-//eclipse-cs//DTD Check Metadata 1.0//EN", //$NON-NLS-1$
-            "/com/puppycrawl/tools/checkstyle/checkstyle-metadata_1_0.dtd"); //$NON-NLS-1$
-    PUBLIC2INTERNAL_DTD_MAP.put("-//eclipse-cs//DTD Check Metadata 1.1//EN", //$NON-NLS-1$
-            "/com/puppycrawl/tools/checkstyle/checkstyle-metadata_1_1.dtd"); //$NON-NLS-1$
-
     refresh();
   }
 
@@ -199,109 +162,9 @@ public final class MetadataFactory {
     return ruleMeta;
   }
 
-  /**
-   * Create metadata for modules not present in the previously eclipse provided metadata.
-   * Work in progress.
-   *
-   * @param moduleDetails module details fetched from checkstyle metadata
-   * @return ruleMetadata for the module
-   */
-  private static RuleMetadata createRuleMetadata(ModuleDetails moduleDetails) {
-    RuleGroupMetadata group;
-    String moduleClassName = moduleDetails.getFullQualifiedName();
-    // standard checkstyle module
-    if (moduleClassName.startsWith("com.puppycrawl.tools.checkstyle")) {
-      final String[] packageTokens = moduleDetails.getFullQualifiedName().split(DOT_PATTERN);
-      group = getRuleGroupMetadata(sPackageToGroupNameMap
-              .get(packageTokens[packageTokens.length - 2]));
-    }
-    // third party extension modules
-    else {
-      String lookupKey = findLookupKey(moduleClassName);
-      String ruleGroupName = sThirdPartyRuleGroupMap.get(lookupKey).get("name");
-      group = getRuleGroupMetadata(ruleGroupName);
-      // if the group of the new check hasn't been formed yet
-      // and put into the sRuleGroupMetadata map
-      if (group == null) {
-        final String ruleDescription = sThirdPartyRuleGroupMap.get(lookupKey).get("description");
-        final int rulePriority = Integer.parseInt(sThirdPartyRuleGroupMap.get(lookupKey)
-                .get("priority"));
-        group = new RuleGroupMetadata(ruleGroupName, ruleGroupName, ruleDescription, false, rulePriority);
-        sRuleGroupMetadata.put(ruleGroupName, group);
-      }
-    }
-    final String[] packageTokens = moduleDetails.getParent().split(DOT_PATTERN);
-    List<String> alternativeNames = List.of(moduleDetails.getFullQualifiedName());
-    List<ConfigPropertyMetadata> properties = moduleDetails.getProperties().stream()
-            .map(modulePropertyDetails -> createPropertyConfig(moduleDetails, modulePropertyDetails))
-            .toList();
-    RuleMetadata ruleMeta = new RuleMetadata(
-            new RuleIdentity(moduleDetails.getName(), moduleDetails.getName(),
-                    packageTokens[packageTokens.length - 1], group, moduleDetails.getDescription(),
-                    alternativeNames),
-            MetadataFactory.getDefaultSeverity(), false, true, true, false, Collections.emptyList(),
-            properties);
-
-    registerAlternativeNames(ruleMeta);
-
-    return ruleMeta;
-  }
-
   private static void registerAlternativeNames(RuleMetadata ruleMetadata) {
     ruleMetadata.identity().alternativeNames()
             .forEach(alternativeName -> sAlternativeNamesMap.put(alternativeName, ruleMetadata));
-  }
-
-  /**
-   * Create module property config data based on current/default data,
-   * which are overridden partially with all the metadata fetched from checkstyle.
-   *
-   * @param moduleDetails checkstyle metadata of the parent module of the property
-   * @param modulePropertyDetails checkstyle metadata of the property
-   * @return ConfigPropertyMetadata of the module property
-   */
-  private static ConfigPropertyMetadata createPropertyConfig(ModuleDetails moduleDetails,
-          ModulePropertyDetails modulePropertyDetails) {
-    ConfigPropertyType dataType = null;
-    String propertyType = modulePropertyDetails.getType();
-    // if the data type ends with option, the result is singleselect enum value
-    // if the property validationType is tokenSet, the result is multicheck
-    // everything else is String/String[] depth depending on the presence of "[]"
-    if (sPropertyTypeMap.get(propertyType) != null) {
-      String validationType = modulePropertyDetails.getValidationType();
-      if (validationType != null) {
-        if (TYPE_ID_PATTERN.equals(validationType)) {
-          dataType = ConfigPropertyType.REGEX;
-        } else if ("tokenSet".equals(validationType) || "tokenTypesSet".equals(validationType)) {
-          dataType = ConfigPropertyType.MULTI_CHECK;
-        }
-      } else {
-        dataType = sPropertyTypeMap.get(propertyType);
-      }
-    } else {
-      if (propertyType.endsWith("Option")) {
-        dataType = ConfigPropertyType.SINGLE_SELECT;
-      } else {
-        if (propertyType.endsWith("[]")) {
-          dataType = ConfigPropertyType.STRING_ARRAY;
-        } else {
-          dataType = ConfigPropertyType.STRING;
-        }
-      }
-    }
-    ConfigPropertyMetadata modifiedConfigPropertyMetadata = new ConfigPropertyMetadata(dataType,
-            modulePropertyDetails.getName(), modulePropertyDetails.getDefaultValue(), null);
-    modifiedConfigPropertyMetadata.setDescription(modulePropertyDetails.getDescription());
-
-    if (dataType == ConfigPropertyType.SINGLE_SELECT) {
-      List<String> resultList = getEnumValues(propertyType);
-      resultList.forEach(modifiedConfigPropertyMetadata.getPropertyEnumeration()::add);
-    } else if (dataType == ConfigPropertyType.MULTI_CHECK) {
-      String result = CheckUtil.getModifiableTokens(moduleDetails.getName());
-      Collections.addAll(modifiedConfigPropertyMetadata.getPropertyEnumeration(), result.split(","));
-    }
-    return modifiedConfigPropertyMetadata;
-
   }
 
   /**
@@ -419,55 +282,6 @@ public final class MetadataFactory {
   }
 
   /**
-   * Generate all prefix strings from the packageName and find which is a valid key in
-   * {@code sThirdPartyRuleGroupMap}.
-   */
-  private static String findLookupKey(String packageName) {
-    final String[] packageTokens = packageName.split(DOT_PATTERN);
-    List<String> prefixList = new ArrayList<>();
-    String lookupKey = packageTokens[0];
-    prefixList.add(lookupKey);
-    for (int i = 1; i < packageTokens.length; i++) {
-      lookupKey += "." + packageTokens[i];
-      prefixList.add(lookupKey);
-    }
-
-    String result = null;
-    Collections.reverse(prefixList);
-    for (String candidate : prefixList) {
-      if (sThirdPartyRuleGroupMap.containsKey(candidate)) {
-        result = candidate;
-        break;
-      }
-    }
-    return result;
-  }
-
-  /**
-   * Get all values from the fully qualified enum name.
-   *
-   * @param className enum name
-   * @return list of values of enum
-   */
-  private static List<String> getEnumValues(String className) {
-    List<String> resultList = new ArrayList<>();
-    Class<?> providerClass = null;
-    try {
-      providerClass = CheckstylePlugin.getDefault().getAddonExtensionClassLoader()
-              .loadClass(className);
-      @SuppressWarnings({ "rawtypes", "unchecked" })
-      EnumSet<?> values = EnumSet.allOf((Class<Enum>) providerClass);
-      for (Enum<?> value : values) {
-        resultList.add(value.name().toLowerCase());
-      }
-    } catch (ClassNotFoundException exc) {
-      CheckstyleLog.log(exc, "Class " + className + " not found.");
-    }
-
-    return resultList;
-  }
-
-  /**
    * Returns the default severity level.
    *
    * @return the default severity.
@@ -539,8 +353,6 @@ public final class MetadataFactory {
     sRuleGroupMetadata = new TreeMap<>();
     sRuleMetadata = new HashMap<>();
     sAlternativeNamesMap = new HashMap<>();
-    sPropertyTypeMap = new HashMap<>();
-    sPackageToGroupNameMap = new HashMap<>();
     sModuleDetailsRepo = new HashMap<>();
     sThirdPartyRuleGroupMap = new HashMap<>();
     sPackageNameSet = new HashSet<>();
@@ -558,9 +370,6 @@ public final class MetadataFactory {
    *           error loading the meta data file
    */
   private static void doInitialization() throws CheckstylePluginException {
-    createPropertyTypeMapping();
-    createPackageToGroupNameMapping();
-
     ClassLoader classLoader = CheckstylePlugin.getDefault().getAddonExtensionClassLoader();
     Collection<String> potentialMetadataFiles = getAllPotentialMetadataFiles(classLoader);
 
@@ -593,50 +402,12 @@ public final class MetadataFactory {
    * Creates RuleMetadata.
    */
   private static void loadRuleMetadata() {
-    for (Entry<String, ModuleDetails> entry : sModuleDetailsRepo.entrySet()) {
-      final ModuleDetails moduleDetails = entry.getValue();
-      final RuleMetadata createdRuleMetadata = createRuleMetadata(moduleDetails);
-      sRuleMetadata.put(moduleDetails.getName(), createdRuleMetadata);
-      sRuleGroupMetadata.get(createdRuleMetadata.identity().group().getGroupName())
-         .getRuleMetadata().add(createdRuleMetadata);
+    List<RuleMetadata> rules = new CheckstyleMetadataAdapter().loadRuleMetadata(sRuleGroupMetadata,
+            sModuleDetailsRepo.values(), sThirdPartyRuleGroupMap);
+    for (RuleMetadata module : rules) {
+      sRuleMetadata.put(module.identity().internalName(), module);
+      registerAlternativeNames(module);
     }
-  }
-
-  /**
-   * Create mapping between {@code ModulePropertyDetails} datatype and {@code ConfigPropertyType}.
-   */
-  private static void createPropertyTypeMapping() {
-    sPropertyTypeMap.put("java.lang.String", ConfigPropertyType.STRING);
-    sPropertyTypeMap.put("java.lang.String[]", ConfigPropertyType.STRING_ARRAY);
-    sPropertyTypeMap.put("boolean", ConfigPropertyType.BOOLEAN);
-    sPropertyTypeMap.put("int", ConfigPropertyType.INTEGER);
-    sPropertyTypeMap.put(TYPE_ID_PATTERN, ConfigPropertyType.REGEX);
-    sPropertyTypeMap.put("java.util.regex.Pattern[]", ConfigPropertyType.STRING_ARRAY);
-    sPropertyTypeMap.put("File", ConfigPropertyType.FILE);
-  }
-
-  /**
-   * Create a mapping between checkstyle package names and {@code RuleGroupMetadata} group names.
-   */
-  private static void createPackageToGroupNameMapping() {
-    sPackageToGroupNameMap.put("annotation", "Annotations");
-    sPackageToGroupNameMap.put("checks", "Miscellaneous");
-    sPackageToGroupNameMap.put("checkstyle", OTHER_GROUP_NAME);
-    sPackageToGroupNameMap.put("blocks", "Blocks");
-    sPackageToGroupNameMap.put("coding", "Coding Problems");
-    sPackageToGroupNameMap.put("design", "Class Design");
-    sPackageToGroupNameMap.put("header", "Headers");
-    sPackageToGroupNameMap.put("imports", "Imports");
-    sPackageToGroupNameMap.put("indentation", "Indentation");
-    sPackageToGroupNameMap.put("javadoc", "Javadoc Comments");
-    sPackageToGroupNameMap.put("metrics", "Metrics");
-    sPackageToGroupNameMap.put("modifier", "Modifiers");
-    sPackageToGroupNameMap.put("naming", "Naming Conventions");
-    sPackageToGroupNameMap.put("regexp", "Regexp");
-    sPackageToGroupNameMap.put("sizes", "Size Violations");
-    sPackageToGroupNameMap.put("whitespace", "Whitespace");
-    sPackageToGroupNameMap.put("filters", "Filters");
-    sPackageToGroupNameMap.put("filefilters", "File Filters");
   }
 
   /**
@@ -693,181 +464,19 @@ public final class MetadataFactory {
 
   private static void parseMetadata(InputStream metadataStream, ResourceBundle metadataBundle, String groupId)
           throws DocumentException, CheckstylePluginException {
-
-    SAXReader reader = new SAXReader();
-    reader.setEntityResolver(new XMLUtil.InternalDtdEntityResolver(PUBLIC2INTERNAL_DTD_MAP));
-    Document document = reader.read(metadataStream);
-
-    List<Element> groupElements = document.getRootElement()
-            .elements(XMLTags.RULE_GROUP_METADATA_TAG);
-
-    for (Element groupEl : groupElements) {
-
-      var groupName = groupEl.attributeValue(XMLTags.NAME_TAG).trim();
-      groupName = localize(groupName, metadataBundle);
-
-      // process description
-      String groupDesc = groupEl.elementTextTrim(XMLTags.DESCRIPTION_TAG);
-      groupDesc = localize(groupDesc, metadataBundle);
-
-      RuleGroupMetadata group = getRuleGroupMetadata(groupName);
-
-      if (group == null) {
-
-        boolean hidden = Boolean.parseBoolean(groupEl.attributeValue(XMLTags.HIDDEN_TAG));
-        int priority = 0;
-        try {
-          priority = Integer.parseInt(groupEl.attributeValue(XMLTags.PRIORITY_TAG));
-        } catch (Exception ex) {
-          CheckstyleLog.log(ex);
-          priority = Integer.MAX_VALUE;
-        }
-
-        group = new RuleGroupMetadata(groupId, groupName, groupDesc, hidden, priority);
-        sRuleGroupMetadata.put(groupName, group);
-      }
-
-      // process the modules
-      processModules(groupEl, group, metadataBundle);
-    }
-  }
-
-  private static void processModules(Element groupElement, RuleGroupMetadata groupMetadata,
-          ResourceBundle metadataBundle) throws CheckstylePluginException {
-
-    List<Element> moduleElements = groupElement.elements(XMLTags.RULE_METADATA_TAG);
-    for (Element moduleEl : moduleElements) {
-
-      // default severity
-      String defaultSeverity = moduleEl.attributeValue(XMLTags.DEFAULT_SEVERITY_TAG);
-      Severity severity = defaultSeverity == null || defaultSeverity.trim().length() == 0
-              ? getDefaultSeverity()
-              : Severity.fromXmlValue(defaultSeverity);
-
-      String name = moduleEl.attributeValue(XMLTags.NAME_TAG).trim();
-      name = localize(name, metadataBundle);
-      String internalName = moduleEl.attributeValue(XMLTags.INTERNAL_NAME_TAG).trim();
-
-      String parentName = moduleEl.attributeValue(XMLTags.PARENT_TAG) != null
-              ? moduleEl.attributeValue(XMLTags.PARENT_TAG).trim()
-              : null;
-      boolean hidden = Boolean.parseBoolean(moduleEl.attributeValue(XMLTags.HIDDEN_TAG));
-      boolean hasSeverity = !"false".equals(moduleEl.attributeValue(XMLTags.HAS_SEVERITY_TAG));
-      boolean deletable = !"false".equals(moduleEl.attributeValue(XMLTags.DELETABLE_TAG)); //$NON-NLS-1$
-      boolean isSingleton = Boolean.parseBoolean(moduleEl.attributeValue(XMLTags.IS_SINGLETON_TAG));
-
-      // process description
-      String description = moduleEl.elementTextTrim(XMLTags.DESCRIPTION_TAG);
-      description = localize(description, metadataBundle);
-
-      // process alternative names
-      List<String> alternativeNames = moduleEl.elements(XMLTags.ALTERNATIVE_NAME_TAG).stream()
-              .map(altNameEl -> altNameEl.attributeValue(XMLTags.INTERNAL_NAME_TAG))
-              .toList();
-
-      // process message keys
-      List<String> messageKeys = moduleEl.elements(XMLTags.MESSAGEKEY_TAG).stream()
-              .map(quickfixEl -> quickfixEl.attributeValue(XMLTags.KEY_TAG))
-              .toList();
-
-      // process properties
-      List<ConfigPropertyMetadata> properties = processProperties(moduleEl, metadataBundle);
-
-      // create rule metadata
-      RuleMetadata module = new RuleMetadata(
-              new RuleIdentity(name, internalName, parentName, groupMetadata, description,
-                      alternativeNames),
-              severity, hidden, hasSeverity, deletable, isSingleton, messageKeys, properties);
-
-      registerAlternativeNames(module);
-
-      // register internal name
-      sRuleMetadata.put(internalName, module);
-
-      groupMetadata.getRuleMetadata().add(module);
-    }
-  }
-
-  @SuppressWarnings("unchecked")
-  private static List<ConfigPropertyMetadata> processProperties(Element moduleElement,
-          ResourceBundle metadataBundle) throws CheckstylePluginException {
-    List<ConfigPropertyMetadata> properties = new ArrayList<>();
-
-    List<Element> propertyElements = moduleElement.elements(XMLTags.PROPERTY_METADATA_TAG);
-    for (Element propertyEl : propertyElements) {
-
-      ConfigPropertyType type = ConfigPropertyType
-              .fromXmlValue(propertyEl.attributeValue(XMLTags.DATATYPE_TAG));
-
-      String name = propertyEl.attributeValue(XMLTags.NAME_TAG).trim();
-      String defaultValue = propertyEl.attributeValue(XMLTags.DEFAULT_VALUE_TAG);
-      if (defaultValue != null) {
-        defaultValue = defaultValue.trim();
-      }
-      String overrideDefaultValue = propertyEl.attributeValue(XMLTags.DEFAULT_VALUE_OVERRIDE_TAG);
-      if (overrideDefaultValue != null) {
-        overrideDefaultValue = overrideDefaultValue.trim();
-      }
-
-      ConfigPropertyMetadata property = new ConfigPropertyMetadata(type, name, defaultValue,
-              overrideDefaultValue);
-
-      properties.add(property);
-
-      // get description
-      String description = propertyEl.elementTextTrim(XMLTags.DESCRIPTION_TAG);
-      description = localize(description, metadataBundle);
-      property.setDescription(description);
-
-      // get property enumeration values
-      Element enumEl = propertyEl.element(XMLTags.ENUMERATION_TAG);
-      if (enumEl != null) {
-        String optionProvider = enumEl.attributeValue(XMLTags.OPTION_PROVIDER);
-        if (optionProvider != null) {
-
-          try {
-            Class<?> providerClass = CheckstylePlugin.getDefault().getAddonExtensionClassLoader()
-                    .loadClass(optionProvider);
-
-            if (IOptionProvider.class.isAssignableFrom(providerClass)) {
-
-              IOptionProvider provider = (IOptionProvider) providerClass.getDeclaredConstructor().newInstance();
-              property.getPropertyEnumeration().addAll(provider.getOptions());
-            } else if (Enum.class.isAssignableFrom(providerClass)) {
-
-              @SuppressWarnings("rawtypes")
-              EnumSet<?> values = EnumSet.allOf((Class<Enum>) providerClass);
-              for (Enum<?> e : values) {
-                property.getPropertyEnumeration().add(e.name().toLowerCase());
-              }
-            }
-          } catch (ReflectiveOperationException ex) {
-            CheckstylePluginException.rethrow(ex);
-          }
-
-        }
-
-        // get explicit enumeration option values
-        for (Element optionEl : enumEl
-                .elements(XMLTags.PROPERTY_VALUE_OPTIONS_TAG)) {
-          property.getPropertyEnumeration().add(optionEl.attributeValue(XMLTags.VALUE_TAG));
-        }
+    Collection<RuleGroupMetadata> groups = MetadataXmlReader.parseMetadata(metadataStream,
+            metadataBundle, groupId);
+    groups.forEach(
+            group -> sRuleGroupMetadata.merge(group.getGroupName(), group, (groupA, groupB) -> {
+              groupA.getRuleMetadata().addAll(groupB.getRuleMetadata());
+              return groupA;
+            }));
+    for (RuleGroupMetadata group : groups) {
+      for (RuleMetadata module : group.getRuleMetadata()) {
+        sRuleMetadata.put(module.identity().internalName(), module);
+        registerAlternativeNames(module);
       }
     }
-    return properties;
-  }
-
-  private static String localize(String localizationCandidate, ResourceBundle metadataBundle) {
-
-    if (metadataBundle != null && localizationCandidate != null
-            && localizationCandidate.startsWith("%")) {
-      try {
-        return metadataBundle.getString(localizationCandidate.substring(1));
-      } catch (MissingResourceException ex) {
-        return localizationCandidate;
-      }
-    }
-    return localizationCandidate;
   }
 
   /**

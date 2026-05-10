@@ -38,7 +38,6 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -102,7 +101,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
    * @param rule
    *          Rule being edited.
    */
-  RuleConfigurationEditDialog(Shell parent, Module rule, boolean readonly, String title) {
+  public RuleConfigurationEditDialog(Shell parent, Module rule, boolean readonly, String title) {
     super(parent);
     setShellStyle(getShellStyle() | SWT.RESIZE);
     setHelpAvailable(false);
@@ -256,24 +255,15 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
     // Init the translate tokens preference
     mBtnTranslate.setSelection(
             CheckstyleUIPluginPrefs.getBoolean(CheckstyleUIPluginPrefs.PREF_TRANSLATE_TOKENS));
-    mBtnTranslate.addSelectionListener(new SelectionListener() {
-
-      @Override
-      public void widgetSelected(SelectionEvent event) {
-        // store translation preference
-        try {
-          CheckstyleUIPluginPrefs.setBoolean(CheckstyleUIPluginPrefs.PREF_TRANSLATE_TOKENS,
-                  ((Button) event.widget).getSelection());
-        } catch (BackingStoreException ex) {
-          CheckstyleLog.log(ex);
-        }
+    mBtnTranslate.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
+      // store translation preference
+      try {
+        CheckstyleUIPluginPrefs.setBoolean(CheckstyleUIPluginPrefs.PREF_TRANSLATE_TOKENS,
+                ((Button) event.widget).getSelection());
+      } catch (BackingStoreException ex) {
+        CheckstyleLog.log(ex);
       }
-
-      @Override
-      public void widgetDefaultSelected(SelectionEvent event) {
-        // NOOP
-      }
-    });
+    }));
 
     mBtnSort = new Button(composite, SWT.CHECK);
     mBtnSort.setText(Messages.RuleConfigurationEditDialog_btnSortTokens);
@@ -285,25 +275,15 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
     // Init the sort tokens preference
     mBtnSort.setSelection(
             CheckstyleUIPluginPrefs.getBoolean(CheckstyleUIPluginPrefs.PREF_SORT_TOKENS));
-    mBtnSort.addSelectionListener(new SelectionListener() {
-
-      @Override
-      public void widgetSelected(SelectionEvent event) {
-
-        // store translation preference
-        try {
-          CheckstyleUIPluginPrefs.setBoolean(CheckstyleUIPluginPrefs.PREF_SORT_TOKENS,
-                  ((Button) event.widget).getSelection());
-        } catch (BackingStoreException ex) {
-          CheckstyleLog.log(ex);
-        }
+    mBtnSort.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
+      // store translation preference
+      try {
+        CheckstyleUIPluginPrefs.setBoolean(CheckstyleUIPluginPrefs.PREF_SORT_TOKENS,
+                ((Button) event.widget).getSelection());
+      } catch (BackingStoreException ex) {
+        CheckstyleLog.log(ex);
       }
-
-      @Override
-      public void widgetDefaultSelected(SelectionEvent e) {
-        // NOOP
-      }
-    });
+    }));
 
     Control buttonBar = super.createButtonBar(composite);
     gridData = new GridData(GridData.FILL_HORIZONTAL);

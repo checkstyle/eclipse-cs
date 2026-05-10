@@ -24,41 +24,37 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IContributionItem;
-import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.IDialogSettings;
-import org.eclipse.jface.viewers.DoubleClickEvent;
-import org.eclipse.jface.viewers.IDoubleClickListener;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.StructuredViewer;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchActionConstants;
+import org.eclipse.ui.IWorkbenchPartSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
@@ -106,10 +102,10 @@ public class MarkerStatsView extends AbstractStatsView {
   private StackLayout mStackLayout;
 
   /** The master viewer. */
-  private TableViewer mMasterViewer;
+  private MainTableViewer mMasterViewer;
 
   /** The detail viewer. */
-  private TableViewer mDetailViewer;
+  private DetailTableViewer mDetailViewer;
 
   /** The action to show the detail view. */
   private Action mDrillDownAction;
@@ -119,9 +115,6 @@ public class MarkerStatsView extends AbstractStatsView {
 
   /** Opens the editor and shows the error in the code. */
   private Action mShowErrorAction;
-
-  /** The current violation category to show in details view. */
-  private String mCurrentDetailCategory;
 
   /** The state if the view is currently drilled down to details. */
   private boolean mIsDrilledDown;
@@ -156,12 +149,14 @@ public class MarkerStatsView extends AbstractStatsView {
     mMainSection.setLayoutData(new GridData(GridData.FILL_BOTH));
 
     // create the master viewer
-    mMasterViewer = createMasterView(mMainSection);
+    mMasterViewer = new MainTableViewer(mMainSection, SWT.NONE, getSite(), getDialogSettings(),
+            this::updateActions, mDrillDownAction);
 
     // create the detail viewer
-    mDetailViewer = createDetailView(mMainSection);
+    mDetailViewer = new DetailTableViewer(mMainSection, SWT.NONE, getSite(), getDialogSettings(),
+            this::updateActions, mDrillBackAction, mShowErrorAction);
 
-    mStackLayout.topControl = mMasterViewer.getTable();
+    mStackLayout.topControl = mMasterViewer;
 
     updateActions();
 
@@ -175,126 +170,6 @@ public class MarkerStatsView extends AbstractStatsView {
   public void setFocus() {
     super.setFocus();
     mStackLayout.topControl.setFocus();
-  }
-
-  /**
-   * Creates the table viewer for the master view.
-   *
-   * @param parent
-   *          the parent composite
-   * @return the master table viewer
-   */
-  private TableViewer createMasterView(Composite parent) {
-    TableViewer masterViewer = new TableViewer(parent,
-            SWT.H_SCROLL | SWT.V_SCROLL | SWT.SINGLE | SWT.FULL_SELECTION);
-    GridData gridData = new GridData(GridData.FILL_BOTH);
-    masterViewer.getControl().setLayoutData(gridData);
-
-    // setup the table columns
-    Table table = masterViewer.getTable();
-    table.setLinesVisible(true);
-    table.setHeaderVisible(true);
-
-    TableColumn severityCol = new TableColumn(table, SWT.CENTER, 0);
-    severityCol.setWidth(20);
-    severityCol.setResizable(false);
-
-    TableColumn idCol = new TableColumn(table, SWT.LEFT, 1);
-    idCol.setText(Messages.MarkerStatsView_kindOfErrorColumn);
-    idCol.setWidth(400);
-
-    TableColumn countCol = new TableColumn(table, SWT.RIGHT, 2);
-    countCol.setText(Messages.MarkerStatsView_numberOfErrorsColumn);
-    countCol.pack();
-
-    // set the providers
-    masterViewer.setContentProvider(new MasterContentProvider());
-    MasterViewMultiProvider multiProvider = new MasterViewMultiProvider();
-    masterViewer.setLabelProvider(multiProvider);
-    TableViewerEnhancer.enhance(masterViewer, multiProvider);
-
-    // add selection listener to maintain action state
-    masterViewer.addSelectionChangedListener(new ISelectionChangedListener() {
-      @Override
-      public void selectionChanged(SelectionChangedEvent event) {
-        updateActions();
-      }
-    });
-
-    // hooks the action to double click
-    hookDoubleClickAction(mDrillDownAction, masterViewer);
-
-    // and to the context menu too
-    ArrayList<Object> actionList = new ArrayList<>(3);
-    actionList.add(mDrillDownAction);
-    hookContextMenu(actionList, masterViewer);
-
-    return masterViewer;
-  }
-
-  /**
-   * Creates the table viewer for the detail view.
-   *
-   * @param parent
-   *          the parent composite
-   * @return the detail table viewer
-   */
-  private TableViewer createDetailView(Composite parent) {
-    // le tableau
-    TableViewer detailViewer = new TableViewer(parent,
-            SWT.H_SCROLL | SWT.V_SCROLL | SWT.SINGLE | SWT.FULL_SELECTION);
-    GridData gridData = new GridData(GridData.FILL_BOTH);
-    detailViewer.getControl().setLayoutData(gridData);
-
-    // setup the table columns
-    Table table = detailViewer.getTable();
-    table.setLinesVisible(true);
-    table.setHeaderVisible(true);
-
-    TableColumn severityCol = new TableColumn(table, SWT.CENTER, 0);
-    severityCol.setWidth(20);
-    severityCol.setResizable(false);
-
-    TableColumn idCol = new TableColumn(table, SWT.LEFT, 1);
-    idCol.setText(Messages.MarkerStatsView_fileColumn);
-    idCol.setWidth(150);
-
-    TableColumn folderCol = new TableColumn(table, SWT.LEFT, 2);
-    folderCol.setText(Messages.MarkerStatsView_folderColumn);
-    folderCol.setWidth(300);
-
-    TableColumn countCol = new TableColumn(table, SWT.RIGHT, 3);
-    countCol.setText(Messages.MarkerStatsView_lineColumn);
-    countCol.pack();
-
-    TableColumn messageCol = new TableColumn(table, SWT.LEFT, 4);
-    messageCol.setText(Messages.MarkerStatsView_messageColumn);
-    messageCol.setWidth(300);
-
-    // set the providers
-    detailViewer.setContentProvider(new DetailContentProvider());
-    DetailViewMultiProvider multiProvider = new DetailViewMultiProvider();
-    detailViewer.setLabelProvider(multiProvider);
-    TableViewerEnhancer.enhance(detailViewer, multiProvider);
-
-    // add selection listener to maintain action state
-    detailViewer.addSelectionChangedListener(new ISelectionChangedListener() {
-      @Override
-      public void selectionChanged(SelectionChangedEvent event) {
-        updateActions();
-      }
-    });
-
-    // hooks the action to double click
-    hookDoubleClickAction(mShowErrorAction, detailViewer);
-
-    // and to the context menu too
-    ArrayList<Object> actionList = new ArrayList<>(1);
-    actionList.add(mDrillBackAction);
-    actionList.add(mShowErrorAction);
-    hookContextMenu(actionList, detailViewer);
-
-    return detailViewer;
   }
 
   @Override
@@ -319,8 +194,8 @@ public class MarkerStatsView extends AbstractStatsView {
 
     if (mMasterViewer != null && !mMasterViewer.getTable().isDisposed()) {
 
-      mMasterViewer.setInput(getStats());
-      mDetailViewer.setInput(getStats());
+      mMasterViewer.setStats(getStats());
+      mDetailViewer.setStats(getStats());
 
       if (mIsDrilledDown && mDetailViewer.getTable().getItemCount() == 0) {
         drillBack();
@@ -338,19 +213,16 @@ public class MarkerStatsView extends AbstractStatsView {
     mDrillDownAction = new Action() {
       @Override
       public void run() {
-        IStructuredSelection selection = (IStructuredSelection) mMasterViewer.getSelection();
-        if (selection.getFirstElement() instanceof MarkerStat) {
-          MarkerStat markerStat = (MarkerStat) selection.getFirstElement();
-
+        mMasterViewer.getSelection().ifPresent(markerStat -> {
           mIsDrilledDown = true;
-          mCurrentDetailCategory = markerStat.getIdentifiant();
-          mStackLayout.topControl = mDetailViewer.getTable();
+          mDetailViewer.setCurrentDetailCategory(markerStat.getIdentifiant());
+          mStackLayout.topControl = mDetailViewer;
           mMainSection.layout();
-          mDetailViewer.setInput(mDetailViewer.getInput());
+          mDetailViewer.refresh();
 
           updateActions();
           updateLabel();
-        }
+        });
       }
     };
     mDrillDownAction.setText(Messages.MarkerStatsView_showDetails);
@@ -379,16 +251,14 @@ public class MarkerStatsView extends AbstractStatsView {
     mShowErrorAction = new Action() {
       @Override
       public void run() {
-        IStructuredSelection selection = (IStructuredSelection) mDetailViewer.getSelection();
-        if (selection.getFirstElement() instanceof IMarker) {
-          IMarker marker = (IMarker) selection.getFirstElement();
+        mDetailViewer.getSelection().ifPresent(marker -> {
           try {
             IDE.openEditor(getSite().getPage(), marker);
           } catch (PartInitException ex) {
             CheckstyleLog.log(ex, Messages.MarkerStatsView_unableToShowMarker);
             // TODO : Open information dialog to notify the user
           }
-        }
+        });
       }
     };
     mShowErrorAction.setText(Messages.MarkerStatsView_displayError);
@@ -409,8 +279,8 @@ public class MarkerStatsView extends AbstractStatsView {
 
   private void drillBack() {
     mIsDrilledDown = false;
-    mCurrentDetailCategory = null;
-    mStackLayout.topControl = mMasterViewer.getTable();
+    mDetailViewer.setCurrentDetailCategory(null);
+    mStackLayout.topControl = mMasterViewer;
     mMainSection.layout();
     mMasterViewer.refresh();
 
@@ -436,8 +306,9 @@ public class MarkerStatsView extends AbstractStatsView {
       }
     } else {
 
-      String text = NLS.bind(Messages.MarkerStatsView_lblDetailMessage, new Object[] {
-          mCurrentDetailCategory, Integer.valueOf(mDetailViewer.getTable().getItemCount()) });
+      String text = NLS.bind(Messages.MarkerStatsView_lblDetailMessage,
+              new Object[] { mDetailViewer.getCurrentDetailCategory(),
+                  Integer.valueOf(mDetailViewer.getTable().getItemCount()) });
       mDescLabel.setText(text);
     }
   }
@@ -447,43 +318,187 @@ public class MarkerStatsView extends AbstractStatsView {
    *
    * @param actions
    *          a collection of IAction objets
+   * @param site
    */
-  private void hookContextMenu(final Collection<Object> actions, StructuredViewer viewer) {
+  private static void hookContextMenu(final Collection<Object> actions, TableViewer viewer,
+          IWorkbenchPartSite site) {
     MenuManager menuMgr = new MenuManager();
     menuMgr.setRemoveAllWhenShown(true);
-    menuMgr.addMenuListener(new IMenuListener() {
-      @Override
-      public void menuAboutToShow(IMenuManager manager) {
-        for (Iterator<Object> iter = actions.iterator(); iter.hasNext();) {
-          Object item = iter.next();
-          if (item instanceof IContributionItem) {
-            manager.add((IContributionItem) item);
-          } else if (item instanceof IAction) {
-            manager.add((IAction) item);
-          }
+    menuMgr.addMenuListener(manager -> {
+      for (Object item : actions) {
+        if (item instanceof IContributionItem) {
+          manager.add((IContributionItem) item);
+        } else if (item instanceof IAction) {
+          manager.add((IAction) item);
         }
-        manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
       }
+      manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
     });
-    Menu menu = menuMgr.createContextMenu(viewer.getControl());
-    viewer.getControl().setMenu(menu);
-
-    getSite().registerContextMenu(menuMgr, viewer);
+    viewer.getControl().setMenu(menuMgr.createContextMenu(viewer.getControl()));
+    site.registerContextMenu(menuMgr, viewer);
   }
 
-  /**
-   * Specifies which action will be run when double clicking on the viewer.
-   *
-   * @param action
-   *          the IAction to add
-   */
-  private void hookDoubleClickAction(final IAction action, StructuredViewer viewer) {
-    viewer.addDoubleClickListener(new IDoubleClickListener() {
-      @Override
-      public void doubleClick(DoubleClickEvent event) {
-        action.run();
+  private abstract static class AbstractStatTableViewer<T> extends Composite {
+
+    private final Class<T> selectionClass;
+
+    private AbstractStatTableViewer(Composite parent, int style, Class<T> selectionClass) {
+      super(parent, style);
+      this.selectionClass = selectionClass;
+
+      setLayout(new FillLayout());
+    }
+
+    protected abstract TableViewer getTableViewer();
+
+    public Table getTable() {
+      return getTableViewer().getTable();
+    }
+
+    public void setStats(Stats stats) {
+      getTableViewer().setInput(stats);
+    }
+
+    public Optional<T> getSelection() {
+      if (getTableViewer().getSelection() instanceof StructuredSelection selection
+              && selectionClass.isInstance(selection.getFirstElement())) {
+        return Optional.of(selectionClass.cast(selection.getFirstElement()));
       }
-    });
+      return Optional.empty();
+    }
+
+    public void refresh() {
+      getTableViewer().refresh();
+    }
+
+  }
+
+  private static class MainTableViewer extends AbstractStatTableViewer<MarkerStat> {
+
+    private final TableViewer tableViewer;
+
+    private MainTableViewer(Composite parent, int style, IWorkbenchPartSite site,
+            IDialogSettings mainSettings, Runnable updateActions, IAction drillDownAction) {
+      super(parent, style, MarkerStat.class);
+      tableViewer = new TableViewer(
+              this,
+              SWT.H_SCROLL | SWT.V_SCROLL | SWT.SINGLE | SWT.FULL_SELECTION);
+      GridData gridData = new GridData(GridData.FILL_BOTH);
+      tableViewer.getControl().setLayoutData(gridData);
+
+      // setup the table columns
+      Table table = tableViewer.getTable();
+      table.setLinesVisible(true);
+      table.setHeaderVisible(true);
+
+      TableColumn severityCol = new TableColumn(table, SWT.CENTER, 0);
+      severityCol.setWidth(20);
+      severityCol.setResizable(false);
+
+      TableColumn idCol = new TableColumn(table, SWT.LEFT, 1);
+      idCol.setText(Messages.MarkerStatsView_kindOfErrorColumn);
+      idCol.setWidth(400);
+
+      TableColumn countCol = new TableColumn(table, SWT.RIGHT, 2);
+      countCol.setText(Messages.MarkerStatsView_numberOfErrorsColumn);
+      countCol.pack();
+
+      // set the providers
+      tableViewer.setContentProvider(new MasterContentProvider());
+      MasterViewMultiProvider multiProvider = new MasterViewMultiProvider(mainSettings);
+      tableViewer.setLabelProvider(multiProvider);
+      TableViewerEnhancer.enhance(tableViewer, multiProvider);
+
+      // add selection listener to maintain action state
+      tableViewer.addSelectionChangedListener(event -> updateActions.run());
+
+      // hooks the action to double click
+      tableViewer.addDoubleClickListener(event -> drillDownAction.run());
+
+      // and to the context menu too
+      ArrayList<Object> actionList = new ArrayList<>(3);
+      actionList.add(drillDownAction);
+      hookContextMenu(actionList, tableViewer, site);
+    }
+
+    @Override
+    protected TableViewer getTableViewer() {
+      return tableViewer;
+    }
+
+  }
+
+  private static class DetailTableViewer extends AbstractStatTableViewer<IMarker> {
+
+    private final TableViewer tableViewer;
+    private final DetailContentProvider contentProvider;
+
+    private DetailTableViewer(Composite parent, int style, IWorkbenchPartSite site,
+            IDialogSettings mainSettings, Runnable updateActions, IAction drillBackAction,
+            IAction showErrorAction) {
+      super(parent, style, IMarker.class);
+      this.tableViewer = new TableViewer(this,
+              SWT.H_SCROLL | SWT.V_SCROLL | SWT.SINGLE | SWT.FULL_SELECTION);
+      GridData gridData = new GridData(GridData.FILL_BOTH);
+      tableViewer.getControl().setLayoutData(gridData);
+
+      Table table = tableViewer.getTable();
+      table.setLinesVisible(true);
+      table.setHeaderVisible(true);
+
+      TableColumn severityCol = new TableColumn(table, SWT.CENTER, 0);
+      severityCol.setWidth(20);
+      severityCol.setResizable(false);
+
+      TableColumn idCol = new TableColumn(table, SWT.LEFT, 1);
+      idCol.setText(Messages.MarkerStatsView_fileColumn);
+      idCol.setWidth(150);
+
+      TableColumn folderCol = new TableColumn(table, SWT.LEFT, 2);
+      folderCol.setText(Messages.MarkerStatsView_folderColumn);
+      folderCol.setWidth(300);
+
+      TableColumn countCol = new TableColumn(table, SWT.RIGHT, 3);
+      countCol.setText(Messages.MarkerStatsView_lineColumn);
+      countCol.pack();
+
+      TableColumn messageCol = new TableColumn(table, SWT.LEFT, 4);
+      messageCol.setText(Messages.MarkerStatsView_messageColumn);
+      messageCol.setWidth(300);
+
+      this.contentProvider = new DetailContentProvider();
+
+      // set the providers
+      tableViewer.setContentProvider(contentProvider);
+      DetailViewMultiProvider multiProvider = new DetailViewMultiProvider(mainSettings);
+      tableViewer.setLabelProvider(multiProvider);
+      TableViewerEnhancer.enhance(tableViewer, multiProvider);
+
+      // add selection listener to maintain action state
+      tableViewer.addSelectionChangedListener(event -> updateActions.run());
+
+      // hooks the action to double click
+      tableViewer.addDoubleClickListener(event -> showErrorAction.run());
+
+      // and to the context menu too
+      ArrayList<Object> actionList = new ArrayList<>(1);
+      actionList.add(drillBackAction);
+      actionList.add(showErrorAction);
+      hookContextMenu(actionList, tableViewer, site);
+    }
+
+    public String getCurrentDetailCategory() {
+      return this.contentProvider.getCurrentDetailCategory();
+    }
+
+    private void setCurrentDetailCategory(String currentDetailCategory) {
+      this.contentProvider.setCurrentDetailCategory(currentDetailCategory);
+    }
+
+    @Override
+    protected TableViewer getTableViewer() {
+      return tableViewer;
+    }
   }
 
   /**
@@ -521,8 +536,14 @@ public class MarkerStatsView extends AbstractStatsView {
    *
    * @author Lars Ködderitzsch
    */
-  private class DetailContentProvider implements IStructuredContentProvider {
+  private static class DetailContentProvider implements IStructuredContentProvider {
+
     private Object[] mCurrentDetails;
+    private String currentDetailCategory;
+
+    private DetailContentProvider() {
+
+    }
 
     @Override
     public Object[] getElements(Object inputElement) {
@@ -533,7 +554,7 @@ public class MarkerStatsView extends AbstractStatsView {
         Iterator<MarkerStat> iter = markerStats.iterator();
         while (iter.hasNext()) {
           MarkerStat markerStat = iter.next();
-          if (markerStat.getIdentifiant().equals(mCurrentDetailCategory)) {
+          if (markerStat.getIdentifiant().equals(currentDetailCategory)) {
             mCurrentDetails = markerStat.getMarkers().toArray();
             break;
           }
@@ -553,6 +574,14 @@ public class MarkerStatsView extends AbstractStatsView {
       mCurrentDetails = null;
     }
 
+    public String getCurrentDetailCategory() {
+      return currentDetailCategory;
+    }
+
+    public void setCurrentDetailCategory(String currentDetailCategory) {
+      this.currentDetailCategory = currentDetailCategory;
+    }
+
   }
 
   /**
@@ -560,8 +589,14 @@ public class MarkerStatsView extends AbstractStatsView {
    *
    * @author Lars Ködderitzsch
    */
-  private class MasterViewMultiProvider extends LabelProvider
+  private static class MasterViewMultiProvider extends LabelProvider
           implements ITableLabelProvider, ITableComparableProvider, ITableSettingsProvider {
+
+    private final IDialogSettings mainSettings;
+
+    private MasterViewMultiProvider(IDialogSettings mainSettings) {
+      this.mainSettings = mainSettings;
+    }
 
     @Override
     public String getColumnText(Object obj, int index) {
@@ -606,15 +641,10 @@ public class MarkerStatsView extends AbstractStatsView {
 
     @Override
     public IDialogSettings getTableSettings() {
-
-      IDialogSettings mainSettings = getDialogSettings();
-
       IDialogSettings settings = mainSettings.getSection(TAG_SECTION_MASTER);
-
       if (settings == null) {
         settings = mainSettings.addNewSection(TAG_SECTION_MASTER);
       }
-
       return settings;
     }
   }
@@ -624,8 +654,14 @@ public class MarkerStatsView extends AbstractStatsView {
    *
    * @author Lars Ködderitzsch
    */
-  private class DetailViewMultiProvider extends LabelProvider
+  private static class DetailViewMultiProvider extends LabelProvider
           implements ITableLabelProvider, ITableComparableProvider, ITableSettingsProvider {
+
+    private final IDialogSettings mainSettings;
+
+    private DetailViewMultiProvider(IDialogSettings mainSettings) {
+      this.mainSettings = mainSettings;
+    }
 
     @Override
     public String getColumnText(Object obj, int index) {
@@ -680,9 +716,6 @@ public class MarkerStatsView extends AbstractStatsView {
 
     @Override
     public IDialogSettings getTableSettings() {
-
-      IDialogSettings mainSettings = getDialogSettings();
-
       IDialogSettings settings = mainSettings.getSection(TAG_SECTION_DETAIL);
 
       if (settings == null) {

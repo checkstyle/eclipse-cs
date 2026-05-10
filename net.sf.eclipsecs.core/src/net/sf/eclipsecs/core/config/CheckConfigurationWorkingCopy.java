@@ -54,7 +54,7 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
  * configurations by themself are not editable.
  *
  */
-public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Cloneable {
+public class CheckConfigurationWorkingCopy extends AbstractCheckConfiguration implements Cloneable {
 
   /** The source check configuration of the working copy. */
   private final ICheckConfiguration mCheckConfiguration;

@@ -63,7 +63,7 @@ public abstract class AbstractQuickfixTestCase {
     for (int i = 0; i < testdata.length; i++) {
 
       org.eclipse.jface.text.Document doc = new org.eclipse.jface.text.Document(testdata[i].input);
-      ASTParser parser = ASTParser.newParser(AST.JLS3);
+      ASTParser parser = ASTParser.newParser(AST.getJLSLatest());
       parser.setSource(doc.get().toCharArray());
       CompilationUnit compUnit = (CompilationUnit) parser.createAST(new NullProgressMonitor());
       compUnit.recordModifications();

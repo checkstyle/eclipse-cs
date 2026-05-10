@@ -21,14 +21,10 @@
 package net.sf.eclipsecs.core.config;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URISyntaxException;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -39,8 +35,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -49,10 +43,6 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.URIUtil;
-
-import com.google.common.io.ByteStreams;
-
 import net.sf.eclipsecs.core.CheckstylePlugin;
 import net.sf.eclipsecs.core.Messages;
 import net.sf.eclipsecs.core.config.configtypes.BuiltInConfigurationType;
@@ -165,63 +155,6 @@ public final class CheckConfigurationFactory {
     } catch (CheckstylePluginException ex) {
       CheckstyleLog.log(ex);
     }
-  }
-
-  /**
-   * Copy the checkstyle configuration of a check configuration into another configuration.
-   *
-   * @param source
-   *          the source check configuration
-   * @param target
-   *          the target check configuartion
-   * @throws CheckstylePluginException
-   *           Error copying the configuration
-   */
-  public static void copyConfiguration(ICheckConfiguration source, ICheckConfiguration target)
-          throws CheckstylePluginException {
-
-    try {
-
-      // use the export function ;-)
-      File targetFile;
-
-      targetFile = URIUtil.toFile(target.getResolvedConfigurationFileURL().toURI());
-
-      File sourceFile = URIUtil.toFile(source.getResolvedConfigurationFileURL().toURI());
-
-      // copying from a file to the same file will destroy it.
-      if (Objects.equals(targetFile, sourceFile)) {
-        return;
-      }
-
-      exportConfiguration(targetFile, source);
-    } catch (URISyntaxException ex) {
-      CheckstylePluginException.rethrow(ex);
-    }
-  }
-
-  /**
-   * Write check configurations to an external file in standard Checkstyle format.
-   *
-   * @param file
-   *          File to write too.
-   * @param config
-   *          List of check configurations to write out.
-   * @throws CheckstylePluginException
-   *           Error during export.
-   */
-  public static void exportConfiguration(File file, ICheckConfiguration config)
-          throws CheckstylePluginException {
-
-    try (InputStream in = config.getCheckstyleConfiguration().getCheckConfigFileStream();
-            OutputStream out = new BufferedOutputStream(new FileOutputStream(file))) {
-
-      // Just copy the checkstyle configuration
-      ByteStreams.copy(in, out);
-    } catch (Exception ex) {
-      CheckstylePluginException.rethrow(ex);
-    }
-
   }
 
   /**

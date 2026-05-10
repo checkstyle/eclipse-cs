@@ -34,27 +34,21 @@ public class CheckConfigurationLabelProvider extends LabelProvider {
 
   @Override
   public String getText(Object element) {
-    String text = super.getText(element);
-    if (element instanceof ICheckConfiguration) {
-      ICheckConfiguration checkConfig = (ICheckConfiguration) element;
-
-      text = checkConfig.getName() + " " //$NON-NLS-1$
+    if (element instanceof ICheckConfiguration checkConfig) {
+      return checkConfig.getName() + " " //$NON-NLS-1$
               + (checkConfig.isGlobal() ? Messages.CheckConfigurationLabelProvider_suffixGlobal
                       : Messages.CheckConfigurationLabelProvider_suffixLocal);
     }
 
-    return text;
+    return super.getText(element);
   }
 
   @Override
   public Image getImage(Object element) {
-    Image image = null;
-    if (element instanceof ICheckConfiguration) {
-      image = ConfigurationTypesUI
-              .getConfigurationTypeImage(((ICheckConfiguration) element).getType());
+    if (element instanceof ICheckConfiguration checkConfig) {
+      return ConfigurationTypesUI.getConfigurationTypeImage(checkConfig.getType());
     }
-
-    return image;
+    return null;
   }
 
 }

@@ -36,7 +36,7 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
  * subclasses.
  *
  */
-public class CheckConfiguration implements ICheckConfiguration {
+public class CheckConfiguration extends AbstractCheckConfiguration {
 
   /** the displayable name of the configuration. */
   private final String mName;
