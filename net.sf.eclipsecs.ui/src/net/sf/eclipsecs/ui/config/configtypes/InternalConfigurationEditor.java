@@ -41,7 +41,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import net.sf.eclipsecs.core.config.CheckConfiguration;
-import net.sf.eclipsecs.core.config.CheckConfigurationFactory;
 import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
 import net.sf.eclipsecs.core.config.ConfigurationWriter;
 import net.sf.eclipsecs.core.config.ICheckConfiguration;
@@ -160,7 +159,7 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor {
             ICheckConfiguration tmpSourceConfig = new CheckConfiguration("dummy", //$NON-NLS-1$
                     configFileString, null, new ExternalFileConfigurationType(), true, null, null);
 
-            CheckConfigurationFactory.copyConfiguration(tmpSourceConfig, targetConfig);
+            tmpSourceConfig.copyConfiguration(targetConfig);
           }
         } catch (CheckstylePluginException ex) {
           mDialog.setErrorMessage(ex.getLocalizedMessage());

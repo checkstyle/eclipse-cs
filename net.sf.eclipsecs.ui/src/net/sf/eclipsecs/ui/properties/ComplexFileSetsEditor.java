@@ -22,7 +22,6 @@ package net.sf.eclipsecs.ui.properties;
 
 import java.util.List;
 
-import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
@@ -45,9 +44,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
@@ -62,9 +59,7 @@ import net.sf.eclipsecs.ui.config.CheckConfigurationLabelProvider;
  */
 public class ComplexFileSetsEditor implements IFileSetsEditor {
 
-  private final IProject mProject;
-
-  private final CheckstylePropertyPage mPropertyPage;
+  private final PropertyPageContext propertyPageContext;
 
   private Composite mComposite;
 
@@ -84,9 +79,8 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
    * @param propsPage
    *          the property page
    */
-  public ComplexFileSetsEditor(CheckstylePropertyPage propsPage) {
-    mPropertyPage = propsPage;
-    mProject = (IProject) propsPage.getElement();
+  public ComplexFileSetsEditor(PropertyPageContext propertyPageContext) {
+    this.propertyPageContext = propertyPageContext;
   }
 
   @Override
@@ -178,28 +172,13 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
     buttons.setLayout(layout);
 
     mAddButton = createPushButton(buttons, Messages.ComplexFileSetsEditor_btnAdd);
-    mAddButton.addListener(SWT.Selection, new Listener() {
-      @Override
-      public void handleEvent(Event evt) {
-        addFileSet();
-      }
-    });
+    mAddButton.addListener(SWT.Selection, event -> addFileSet());
 
     mEditButton = createPushButton(buttons, Messages.ComplexFileSetsEditor_btnEdit);
-    mEditButton.addListener(SWT.Selection, new Listener() {
-      @Override
-      public void handleEvent(Event evt) {
-        editFileSet();
-      }
-    });
+    mEditButton.addListener(SWT.Selection, event -> editFileSet());
 
     mRemoveButton = createPushButton(buttons, Messages.ComplexFileSetsEditor_btnRemove);
-    mRemoveButton.addListener(SWT.Selection, new Listener() {
-      @Override
-      public void handleEvent(Event evt) {
-        removeFileSet();
-      }
-    });
+    mRemoveButton.addListener(SWT.Selection, event -> removeFileSet());
 
     return composite;
   }
@@ -229,15 +208,14 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
 
   private void addFileSet() {
     try {
-      FileSetEditDialog dialog = new FileSetEditDialog(mComposite.getShell(), null, mProject,
-              mPropertyPage);
+      FileSetEditDialog dialog = new FileSetEditDialog(mComposite.getShell(), null, propertyPageContext);
       if (Window.OK == dialog.open()) {
         FileSet fileSet = dialog.getFileSet();
         mFileSets.add(fileSet);
         mViewer.refresh();
         mViewer.setChecked(fileSet, fileSet.isEnabled());
 
-        mPropertyPage.getContainer().updateButtons();
+        propertyPageContext.updateButtons();
       }
     } catch (CheckstylePluginException ex) {
       CheckstyleUIPlugin.errorDialog(mComposite.getShell(),
@@ -258,7 +236,7 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
     try {
 
       FileSetEditDialog dialog = new FileSetEditDialog(mComposite.getShell(), fileSet.clone(),
-              mProject, mPropertyPage);
+              propertyPageContext);
       if (Window.OK == dialog.open()) {
         FileSet newFileSet = dialog.getFileSet();
         mFileSets.remove(fileSet);
@@ -266,7 +244,7 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
         mViewer.refresh();
         mViewer.setChecked(newFileSet, newFileSet.isEnabled());
 
-        mPropertyPage.getContainer().updateButtons();
+        propertyPageContext.updateButtons();
       }
     } catch (CheckstylePluginException ex) {
       CheckstyleUIPlugin.errorDialog(mComposite.getShell(),
@@ -286,7 +264,7 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
 
     mFileSets.remove(fileSet);
     mViewer.refresh();
-    mPropertyPage.getContainer().updateButtons();
+    propertyPageContext.updateButtons();
   }
 
   private void changeEnabledState(CheckStateChangedEvent event) {

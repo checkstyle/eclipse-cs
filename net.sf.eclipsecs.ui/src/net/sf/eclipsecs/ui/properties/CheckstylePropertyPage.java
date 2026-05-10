@@ -24,24 +24,17 @@ import java.util.List;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IncrementalProjectBuilder;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.MessageDialogWithToggle;
-import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.CheckboxTableViewer;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.window.Window;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -50,31 +43,24 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.PropertyPage;
 
 import net.sf.eclipsecs.core.config.ICheckConfiguration;
-import net.sf.eclipsecs.core.jobs.BuildProjectJob;
-import net.sf.eclipsecs.core.jobs.ConfigureDeconfigureNatureJob;
-import net.sf.eclipsecs.core.jobs.TransformCheckstyleRulesJob;
+import net.sf.eclipsecs.core.config.ICheckConfigurationWorkingSet;
 import net.sf.eclipsecs.core.nature.CheckstyleNature;
 import net.sf.eclipsecs.core.projectconfig.FileSet;
 import net.sf.eclipsecs.core.projectconfig.IProjectConfiguration;
 import net.sf.eclipsecs.core.projectconfig.ProjectConfigurationFactory;
 import net.sf.eclipsecs.core.projectconfig.ProjectConfigurationWorkingCopy;
-import net.sf.eclipsecs.core.projectconfig.filters.IFilter;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
 import net.sf.eclipsecs.ui.CheckstyleUIPluginPrefs;
 import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.config.CheckConfigurationWorkingSetEditor;
-import net.sf.eclipsecs.ui.properties.filter.IFilterEditor;
-import net.sf.eclipsecs.ui.properties.filter.PluginFilterEditors;
 
 /**
  * Property page for projects to enable checkstyle audit.
@@ -229,7 +215,8 @@ public class CheckstylePropertyPage extends PropertyPage {
       configArea.setLayoutData(formData);
 
       // create the filter area
-      final Control filterArea = createFilterArea(container);
+      final Control filterArea = new FilterSettings(container, SWT.NONE,
+              mProjectConfig.getProject(), mProjectConfig.getFilters(), getContainer()::updateButtons);
       formData = new FormData();
       formData.left = new FormAttachment(0, 3);
       formData.top = new FormAttachment(configArea, 3, SWT.BOTTOM);
@@ -239,7 +226,8 @@ public class CheckstylePropertyPage extends PropertyPage {
       filterArea.setLayoutData(formData);
 
       // create the local configurations area
-      Control localConfigArea = createLocalConfigArea(mainTab);
+      Control localConfigArea = new LocalConfig(mainTab, SWT.NONE,
+              mProjectConfig.getLocalCheckConfigWorkingSet());
 
       TabItem mainItem = new TabItem(mainTab, SWT.NULL);
       mainItem.setControl(container);
@@ -269,12 +257,10 @@ public class CheckstylePropertyPage extends PropertyPage {
       controls[i].dispose();
     }
 
-    if (mProjectConfig.isUseSimpleConfig()) {
-      mFileSetsEditor = new SimpleFileSetsEditor(this);
-    } else {
-      mFileSetsEditor = new ComplexFileSetsEditor(this);
-    }
-
+    PropertyPageContext propertyPageContext = new PropertyPageContext((IProject) getElement(),
+            getProjectConfigurationWorkingCopy(), getContainer()::updateButtons);
+    mFileSetsEditor = FileSetsEditorFactory.createEditor(getShell(), propertyPageContext,
+            mProjectConfig.isUseSimpleConfig());
     mFileSetsEditor.setFileSets(mProjectConfig.getFileSets());
 
     final Control editor = mFileSetsEditor.createContents(mFileSetsContainer);
@@ -288,144 +274,6 @@ public class CheckstylePropertyPage extends PropertyPage {
     editor.setLayoutData(formData);
 
     return fileSetsContainer;
-  }
-
-  /**
-   * Creates the filter area.
-   *
-   * @param container
-   *          the container to add the filter area
-   */
-  private Control createFilterArea(Composite container) {
-
-    // group composite containing the filter settings
-    Group filterArea = new Group(container, SWT.NULL);
-    filterArea.setText(Messages.CheckstylePropertyPage_titleFilterGroup);
-
-    filterArea.setLayout(new FormLayout());
-
-    Button btnEditFilter = new Button(filterArea, SWT.PUSH);
-
-    FormData formData = new FormData();
-    formData.left = new FormAttachment(0, 3);
-    formData.top = new FormAttachment(0, 3);
-    formData.right = new FormAttachment(btnEditFilter, -3, SWT.LEFT);
-    formData.bottom = new FormAttachment(60, -3);
-    CheckboxTableViewer filterList = CheckboxTableViewer.newCheckList(filterArea, SWT.BORDER);
-    filterList.getTable().setLayoutData(formData);
-
-    formData = new FormData();
-    formData.top = new FormAttachment(0, 3);
-    formData.right = new FormAttachment(100, -3);
-    btnEditFilter.setLayoutData(formData);
-
-    // Description
-    Label lblDesc = new Label(filterArea, SWT.LEFT);
-    lblDesc.setText(Messages.CheckstylePropertyPage_lblDescription);
-    formData = new FormData();
-    formData.left = new FormAttachment(0, 3);
-    formData.top = new FormAttachment(filterList.getTable(), 3, SWT.BOTTOM);
-    formData.right = new FormAttachment(100, -3);
-    lblDesc.setLayoutData(formData);
-
-    formData = new FormData();
-    formData.left = new FormAttachment(0, 3);
-    formData.top = new FormAttachment(lblDesc, 3, SWT.BOTTOM);
-    formData.right = new FormAttachment(100, -3);
-    formData.bottom = new FormAttachment(100, -3);
-    Text txtFilterDescription = new Text(filterArea,
-            SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.READ_ONLY | SWT.BORDER | SWT.VERTICAL);
-    txtFilterDescription.setLayoutData(formData);
-
-    filterList.setLabelProvider(new LabelProvider() {
-
-      @Override
-      public String getText(Object element) {
-
-        StringBuilder buf = new StringBuilder();
-
-        if (element instanceof IFilter) {
-
-          IFilter filter = (IFilter) element;
-
-          buf.append(filter.getName());
-          if (filter.getPresentableFilterData() != null) {
-            buf.append(": ").append(filter.getPresentableFilterData()); //$NON-NLS-1$
-          }
-        } else {
-          buf.append(super.getText(element));
-        }
-
-        return buf.toString();
-      }
-    });
-    filterList.setContentProvider(new ArrayContentProvider());
-    filterList.addSelectionChangedListener(event -> {
-      if (event.getSelection() instanceof IStructuredSelection selection) {
-        if (selection.getFirstElement() instanceof IFilter filterDef) {
-          txtFilterDescription.setText(filterDef.getDescription());
-          // activate edit button
-          btnEditFilter.setEnabled(PluginFilterEditors.hasEditor(filterDef));
-        }
-      }
-    });
-    filterList.addDoubleClickListener(event -> openFilterEditor(event.getSelection(), filterList));
-    filterList.addCheckStateListener(event -> {
-      if (event.getElement() instanceof IFilter filter) {
-        if (filter.isReadonly()) {
-          event.getCheckable().setChecked(event.getElement(), true);
-        } else {
-          filter.setEnabled(event.getChecked());
-        }
-      }
-    });
-
-    btnEditFilter.setText(Messages.CheckstylePropertyPage_btnChangeFilter);
-    btnEditFilter.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
-      ISelection selection = filterList.getSelection();
-      openFilterEditor(selection, filterList);
-      getContainer().updateButtons();
-    }));
-
-    // intialize filter list
-    List<IFilter> filterDefs = mProjectConfig.getFilters();
-    filterList.setInput(filterDefs);
-
-    // set the checked state
-    for (int i = 0; i < filterDefs.size(); i++) {
-      IFilter filter = filterDefs.get(i);
-      filterList.setChecked(filter, filter.isEnabled());
-    }
-
-    // set the readonly state
-    for (int i = 0; i < filterDefs.size(); i++) {
-      IFilter filter = filterDefs.get(i);
-      filterList.setGrayed(filter, filter.isReadonly());
-    }
-
-    btnEditFilter.setEnabled(false);
-
-    return filterArea;
-  }
-
-  private Control createLocalConfigArea(Composite parent) {
-
-    Composite noteAndEditor = new Composite(parent, SWT.NULL);
-    noteAndEditor.setLayout(new GridLayout(1, false));
-    noteAndEditor.setLayoutData(new GridData(GridData.FILL_BOTH));
-
-    Label lblHint = new Label(noteAndEditor, SWT.WRAP);
-    lblHint.setText(Messages.CheckstylePropertyPage_msgLocalConfigs);
-    GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
-    gridData.widthHint = 200;
-    lblHint.setLayoutData(gridData);
-
-    CheckConfigurationWorkingSetEditor workingSetEditor = new CheckConfigurationWorkingSetEditor(
-            mProjectConfig.getLocalCheckConfigWorkingSet(), false);
-    Control editorControl = workingSetEditor.createContents(noteAndEditor);
-    editorControl.setLayoutData(new GridData(GridData.FILL_BOTH));
-
-    return noteAndEditor;
   }
 
   @Override
@@ -454,108 +302,32 @@ public class CheckstylePropertyPage extends PropertyPage {
 
   @Override
   public boolean performOk() {
-
-    try {
-
-      IProject project = mProjectConfig.getProject();
-
-      // save the edited project configuration
-      if (mProjectConfig.isDirty()) {
-        mProjectConfig.store();
-      }
-
-      boolean checkstyleEnabled = mChkEnable.getSelection();
-      boolean needRebuild = mProjectConfig.isRebuildNeeded();
-
-      // check if checkstyle nature has to be configured/deconfigured
-      if (checkstyleEnabled != mCheckstyleInitiallyActivated) {
-
-        ConfigureDeconfigureNatureJob configOperation = new ConfigureDeconfigureNatureJob(project,
-                CheckstyleNature.NATURE_ID);
-        configOperation.setRule(ResourcesPlugin.getWorkspace().getRoot());
-        configOperation.schedule();
-
-        needRebuild = needRebuild || !mCheckstyleInitiallyActivated;
-      }
-
-      if (checkstyleEnabled && mProjectConfig.isSyncFormatter()) {
-
-        TransformCheckstyleRulesJob transFormJob = new TransformCheckstyleRulesJob(project);
-        transFormJob.schedule();
-      }
-
-      // if a rebuild is advised, check/prompt if the rebuild should
-      // really be done.
-      if (checkstyleEnabled && needRebuild) {
-
-        String promptRebuildPref = CheckstyleUIPluginPrefs
-                .getString(CheckstyleUIPluginPrefs.PREF_ASK_BEFORE_REBUILD);
-
-        boolean doRebuild = needRebuild && MessageDialogWithToggle.ALWAYS.equals(promptRebuildPref);
-
-        //
-        // Prompt for rebuild
-        //
-        if (needRebuild && MessageDialogWithToggle.PROMPT.equals(promptRebuildPref)) {
-          MessageDialogWithToggle dialog = MessageDialogWithToggle.openYesNoQuestion(getShell(),
-                  Messages.CheckstylePropertyPage_titleRebuild,
-                  Messages.CheckstylePropertyPage_msgRebuild,
-                  Messages.CheckstylePropertyPage_nagRebuild, false,
-                  CheckstyleUIPlugin.getDefault().getPreferenceStore(),
-                  CheckstyleUIPluginPrefs.PREF_ASK_BEFORE_REBUILD);
-
-          doRebuild = dialog.getReturnCode() == IDialogConstants.YES_ID;
-        }
-
-        // check if a rebuild is necessary
-        if (checkstyleEnabled && doRebuild) {
-
-          BuildProjectJob rebuildOperation = new BuildProjectJob(project,
-                  IncrementalProjectBuilder.FULL_BUILD);
-          rebuildOperation.setRule(ResourcesPlugin.getWorkspace().getRoot());
-          rebuildOperation.schedule();
-        }
-      }
-    } catch (CheckstylePluginException ex) {
-      CheckstyleUIPlugin.errorDialog(getShell(), ex, true);
-    }
-    return true;
+    return CheckstylePropertyApplyOperation.apply(getShell(), mProjectConfig,
+            mChkEnable.getSelection(), mCheckstyleInitiallyActivated);
   }
 
-  /**
-   * Open the filter editor on a given selection of the list.
-   *
-   * @param selection
-   *          the selection
-   */
-  private void openFilterEditor(ISelection selection, CheckboxTableViewer filterList) {
-    if (selection instanceof IStructuredSelection) {
-      Object selectedElement = ((IStructuredSelection) selection).getFirstElement();
+  private static class LocalConfig extends Composite {
 
-      if (selectedElement instanceof IFilter) {
+    private LocalConfig(Composite parent, int style, ICheckConfigurationWorkingSet workingSet) {
+      super(parent, style);
+      setLayout(new FillLayout());
 
-        try {
+      Composite noteAndEditor = new Composite(this, SWT.NULL);
+      noteAndEditor.setLayout(new GridLayout(1, false));
+      noteAndEditor.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-          IFilter aFilterDef = (IFilter) selectedElement;
+      Label lblHint = new Label(noteAndEditor, SWT.WRAP);
+      lblHint.setText(Messages.CheckstylePropertyPage_msgLocalConfigs);
+      GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+      gridData.widthHint = 200;
+      lblHint.setLayoutData(gridData);
 
-          if (!PluginFilterEditors.hasEditor(aFilterDef)) {
-            return;
-          }
-
-          IFilterEditor editableFilter = PluginFilterEditors.getNewEditor(aFilterDef);
-          editableFilter.setInputProject(mProjectConfig.getProject());
-          editableFilter.setFilterData(aFilterDef.getFilterData());
-
-          if (Window.OK == editableFilter.openEditor(getShell())) {
-
-            aFilterDef.setFilterData(editableFilter.getFilterData());
-            filterList.refresh();
-          }
-        } catch (CheckstylePluginException ex) {
-          CheckstyleUIPlugin.errorDialog(getShell(), ex, true);
-        }
-      }
+      CheckConfigurationWorkingSetEditor workingSetEditor = new CheckConfigurationWorkingSetEditor(
+              workingSet, false);
+      Control editorControl = workingSetEditor.createContents(noteAndEditor);
+      editorControl.setLayoutData(new GridData(GridData.FILL_BOTH));
     }
+
   }
 
   private class ChkSimpleConfigController extends SelectionAdapter {

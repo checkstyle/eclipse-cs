@@ -20,6 +20,7 @@
 
 package net.sf.eclipsecs.core.config;
 
+import java.io.File;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
@@ -118,4 +119,24 @@ public interface ICheckConfiguration {
    *           exception while getting the Checkstyle configuration file data
    */
   CheckstyleConfigurationFile getCheckstyleConfiguration() throws CheckstylePluginException;
+
+  /**
+   * Write check configurations to an external file in standard Checkstyle format.
+   *
+   * @param file
+   *          File to write too.
+   * @throws CheckstylePluginException
+   *           Error during export.
+   */
+  void exportConfiguration(File file) throws CheckstylePluginException;
+
+  /**
+   * Copy the checkstyle configuration of a check configuration into another configuration.
+   *
+   * @param target
+   *          the target check configuartion
+   * @throws CheckstylePluginException
+   *           Error copying the configuration
+   */
+  void copyConfiguration(ICheckConfiguration target) throws CheckstylePluginException;
 }

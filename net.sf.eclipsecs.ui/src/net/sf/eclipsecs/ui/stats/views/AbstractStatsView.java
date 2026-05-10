@@ -20,39 +20,27 @@
 
 package net.sf.eclipsecs.ui.stats.views;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IMarkerDelta;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.IJobChangeEvent;
+import org.eclipse.core.runtime.jobs.IJobChangeListener;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.text.TextSelection;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IActionBars;
-import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.IWorkingSet;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.progress.IWorkbenchSiteProgressService;
 import org.eclipse.ui.progress.WorkbenchJob;
@@ -74,9 +62,6 @@ public abstract class AbstractStatsView extends ViewPart {
   //
   // attributes
   //
-
-  /** the main composite. */
-  private Composite mMainComposite;
 
   /** The filter for this stats view. */
   private CheckstyleMarkerFilter filter;
@@ -126,15 +111,8 @@ public abstract class AbstractStatsView extends ViewPart {
   public void createPartControl(Composite parent) {
     filter = CheckstyleMarkerFilter.restoreState(getDialogSettings(), new IResource[0]);
 
-    mMainComposite = parent;
-
     // create and register the workspace focus listener
-    mFocusListener = new ISelectionListener() {
-      @Override
-      public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-        AbstractStatsView.this.focusSelectionChanged(part, selection);
-      }
-    };
+    mFocusListener = AbstractStatsView.this::focusSelectionChanged;
 
     getSite().getPage().addSelectionListener(mFocusListener);
     ISelection selection = getSite().getPage().getSelection();
@@ -145,15 +123,10 @@ public abstract class AbstractStatsView extends ViewPart {
     }
 
     // create and register the listener for resource changes
-    mResourceListener = new IResourceChangeListener() {
-      @Override
-      public void resourceChanged(IResourceChangeEvent event) {
-
-        IMarkerDelta[] markerDeltas = event.findMarkerDeltas(CheckstyleMarker.MARKER_ID, true);
-
-        if (markerDeltas.length > 0) {
-          refresh();
-        }
+    mResourceListener = event -> {
+      int numMarkerDeltas = event.findMarkerDeltas(CheckstyleMarker.MARKER_ID, true).length;
+      if (numMarkerDeltas > 0) {
+        refresh();
       }
     };
 
@@ -181,9 +154,8 @@ public abstract class AbstractStatsView extends ViewPart {
    * Opens the filters dialog for the specific stats view.
    */
   public final void openFiltersDialog() {
-
     CheckstyleMarkerFilterDialog dialog = new CheckstyleMarkerFilterDialog(
-            mMainComposite.getShell(), filter);
+            getSite().getShell(), filter);
 
     if (dialog.open() == Window.OK) {
       filter = dialog.getFilter();
@@ -199,7 +171,7 @@ public abstract class AbstractStatsView extends ViewPart {
    * @param actionBars
    *          the action bars
    */
-  protected void initActionBars(IActionBars actionBars) {
+  private void initActionBars(IActionBars actionBars) {
     initMenu(actionBars.getMenuManager());
     initToolBar(actionBars.getToolBarManager());
   }
@@ -218,31 +190,30 @@ public abstract class AbstractStatsView extends ViewPart {
    * in a background job, and may not take effect immediately.
    */
   protected final void refresh() {
-
     final IWorkbenchSiteProgressService service = getSite()
             .getAdapter(IWorkbenchSiteProgressService.class);
+
+    WorkbenchJob uiJob = new WorkbenchJob(Messages.AbstractStatsView_msgRefreshStats) {
+      {
+        setPriority(Job.DECORATE);
+        setSystem(true);
+      }
+
+      @Override
+      public IStatus runInUIThread(IProgressMonitor monitor) {
+        handleStatsRebuilt();
+        return Status.OK_STATUS;
+      }
+    };
 
     // rebuild statistics data
     CreateStatsJob job = new CreateStatsJob(filter, getViewId());
     job.setPriority(Job.DECORATE);
     job.setRule(ResourcesPlugin.getWorkspace().getRoot());
-    job.addJobChangeListener(new JobChangeAdapter() {
-      @Override
-      public void done(IJobChangeEvent event) {
-        mStats = ((CreateStatsJob) event.getJob()).getStats();
-        Job uiJob = new WorkbenchJob(Messages.AbstractStatsView_msgRefreshStats) {
-
-          @Override
-          public IStatus runInUIThread(IProgressMonitor monitor) {
-            handleStatsRebuilt();
-            return Status.OK_STATUS;
-          }
-        };
-        uiJob.setPriority(Job.DECORATE);
-        uiJob.setSystem(true);
-        uiJob.schedule();
-      }
-    });
+    job.addJobChangeListener(IJobChangeListener.onDone(event -> {
+      mStats = ((CreateStatsJob) event.getJob()).getStats();
+      uiJob.schedule();
+    }));
     service.schedule(job, 0, true);
   }
 
@@ -274,32 +245,7 @@ public abstract class AbstractStatsView extends ViewPart {
    *          the selection
    */
   private void focusSelectionChanged(IWorkbenchPart part, ISelection selection) {
-
-    List<IResource> resources = new ArrayList<>();
-    if (part instanceof IEditorPart) {
-      IEditorPart editor = (IEditorPart) part;
-      IFile file = getFile(editor.getEditorInput());
-      if (file != null) {
-        resources.add(file);
-      }
-    } else {
-      if (selection instanceof IStructuredSelection) {
-        for (Iterator<?> iterator = ((IStructuredSelection) selection).iterator(); iterator
-                .hasNext();) {
-          Object object = iterator.next();
-          if (object instanceof IWorkingSet) {
-
-            IWorkingSet workingSet = (IWorkingSet) object;
-            IAdaptable[] elements = workingSet.getElements();
-            for (int i = 0; i < elements.length; i++) {
-              considerAdaptable(elements[i], resources);
-            }
-          } else if (object instanceof IAdaptable) {
-            considerAdaptable((IAdaptable) object, resources);
-          }
-        }
-      }
-    }
+    List<IResource> resources = SelectionTool.resolveSelection(part, selection);
 
     IResource[] focusedResources = new IResource[resources.size()];
     resources.toArray(focusedResources);
@@ -311,43 +257,6 @@ public abstract class AbstractStatsView extends ViewPart {
       filter = filter.withFocusResources(focusedResources);
       refresh();
     }
-  }
-
-  private void considerAdaptable(IAdaptable adaptable, Collection<IResource> resources) {
-
-    IResource resource = adaptable.getAdapter(IResource.class);
-
-    if (resource == null) {
-      resource = adaptable.getAdapter(IFile.class);
-    }
-
-    if (resource != null) {
-      resources.add(resource);
-    }
-  }
-
-  /**
-   * *** * Copied from ResourceUtil.getFile() since ResourceUtil is only available since Eclipse 3.1
-   * *** Returns the file corresponding to the given editor input, or <code>null</code> if there is
-   * no applicable file. Returns <code>null</code> if the given editor input is <code>null</code>.
-   *
-   * @param editorInput
-   *          the editor input, or <code>null</code>
-   * @return the file corresponding to the editor input, or <code>null</code>
-   */
-  public static IFile getFile(IEditorInput editorInput) {
-    if (editorInput == null) {
-      return null;
-    }
-    // Note: do not treat IFileEditorInput as a special case. Use the
-    // adapter mechanism instead.
-    // See Bug 87288 [IDE] [EditorMgmt] Should avoid explicit checks for
-    // [I]FileEditorInput
-    Object adapted = editorInput.getAdapter(IFile.class);
-    if (adapted instanceof IFile) {
-      return (IFile) adapted;
-    }
-    return null;
   }
 
   /**
