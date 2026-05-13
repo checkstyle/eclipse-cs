@@ -657,6 +657,9 @@
                            SuppressWarnings, FunctionalInterface, NoSuchMethodException,
                            InvocationTargetException, IllegalAccessException"/>
         </module>
+        <module name="CyclomaticComplexity">
+            <property name="switchBlockAsSingleDecisionPoint" value="true"/>
+        </module>
         <module name="NPathComplexity"/>
 
         <!-- Misc -->

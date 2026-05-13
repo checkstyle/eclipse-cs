@@ -153,9 +153,6 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
    * @return <code>true</code> if the file is affected, <code>false</code> otherwise
    */
   private boolean isFileAffected(IFile file) {
-
-    boolean affected = false;
-
     IProject project = file.getProject();
 
     try {
@@ -169,24 +166,22 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
         boolean filtered = false;
         List<IFilter> filters = config.getFilters();
         for (IFilter filter : filters) {
-
-          if (filter instanceof UnOpenedFilesFilter && ((UnOpenedFilesFilter) filter).isEnabled()) {
-            unOpenedFilesFilterActive = true;
-          }
-
-          // check if the file would be filtered out
-          if (filter.isEnabled() && !(filter instanceof UnOpenedFilesFilter)) {
-            filtered = filtered || !filter.accept(file);
+          if (filter.isEnabled()) {
+            if (filter instanceof UnOpenedFilesFilter) {
+              unOpenedFilesFilterActive = true;
+            } else {
+              filtered = filtered || !filter.accept(file);
+            }
           }
         }
 
-        affected = unOpenedFilesFilterActive && !filtered;
+        return unOpenedFilesFilterActive && !filtered;
       }
     } catch (CoreException | CheckstylePluginException ex) {
       CheckstyleLog.log(ex);
     }
 
-    return affected;
+    return false;
   }
 
   private class PartsOpenedJob extends AbstractCheckJob {
