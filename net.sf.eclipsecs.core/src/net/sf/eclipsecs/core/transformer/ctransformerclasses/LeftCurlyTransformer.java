@@ -20,6 +20,8 @@
 
 package net.sf.eclipsecs.core.transformer.ctransformerclasses;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import net.sf.eclipsecs.core.transformer.AbstractCTransformationClass;
@@ -40,36 +42,31 @@ public class LeftCurlyTransformer extends AbstractCTransformationClass {
     }
     final StringTokenizer token = new StringTokenizer(tokens, ", ");
 
-    String option = getAttribute("option");
-    if (option == null || "eol".equals(option)) {
-      option = "end_of_line";
-    } else if ("nl".equals(option) || "nlow".equals(option)) {
-      option = "next_line";
-    }
+    String option = switch (getAttribute("option")) {
+      case null -> "end_of_line";
+      case "eol" -> "end_of_line";
+      case "nl", "nlow" -> "next_line";
+      case String s -> s;
+    };
 
     while (token.hasMoreTokens()) {
-      String tok = token.nextToken();
-      if ("CLASS_DEF".equals(tok)) {
-        userFormatterSetting("brace_position_for_anonymous_type_declaration", option);
-        userFormatterSetting("brace_position_for_enum_constant", option);
-        userFormatterSetting("brace_position_for_enum_declaration", option);
-        userFormatterSetting("brace_position_for_type_declaration", option);
-        userFormatterSetting("brace_position_for_annotation_type_declaration", option);
-      } else if ("INTERFACE_DEF".equals(tok)) {
-        userFormatterSetting("brace_position_for_annotation_type_declaration", option);
-        userFormatterSetting("brace_position_for_type_declaration", option);
-      } else if ("CTOR_DEF".equals(tok)) {
-        userFormatterSetting("brace_position_for_constructor_declaration", option);
-      } else if ("METHOD_DEF".equals(tok)) {
-        userFormatterSetting("brace_position_for_method_declaration", option);
-      } else if ("LITERAL_DO".equals(tok) || "LITERAL_ELSE".equals(tok) || "LITERAL_FOR".equals(tok)
-              || "LITERAL_IF".equals(tok) || "LITERAL_WHILE".equals(tok)
-              || "LITERAL_CATCH".equals(tok) || "LITERAL_FINALLY".equals(tok)
-              || "LITERAL_TRY".equals(tok)) {
-        userFormatterSetting("brace_position_for_block", option);
-      } else if ("LITERAL_SWITCH".equals(tok)) {
-        userFormatterSetting("brace_position_for_switch", option);
-      }
+      List<String> settings = switch (token.nextToken()) {
+        case "CLASS_DEF" -> List.of("brace_position_for_anonymous_type_declaration",
+                "brace_position_for_enum_constant",
+                "brace_position_for_enum_declaration",
+                "brace_position_for_type_declaration",
+                "brace_position_for_annotation_type_declaration");
+        case "INTERFACE_DEF" -> List.of(
+                "brace_position_for_annotation_type_declaration",
+                "brace_position_for_type_declaration");
+        case "CTOR_DEF" -> List.of("brace_position_for_constructor_declaration");
+        case "METHOD_DEF" -> List.of("brace_position_for_method_declaration");
+        case "LITERAL_DO", "LITERAL_ELSE", "LITERAL_FOR", "LITERAL_IF", "LITERAL_WHILE", "LITERAL_CATCH",
+             "LITERAL_FINALLY", "LITERAL_TRY" -> List.of("brace_position_for_block");
+        case "LITERAL_SWITCH" -> List.of("brace_position_for_switch");
+        default -> Collections.emptyList();
+      };
+      settings.forEach(setting -> userFormatterSetting(setting, option));
     }
     return getFormatterSetting();
   }

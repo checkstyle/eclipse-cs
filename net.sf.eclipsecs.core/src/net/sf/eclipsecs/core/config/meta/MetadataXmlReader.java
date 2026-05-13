@@ -220,10 +220,9 @@ public class MetadataXmlReader {
         }
 
         // get explicit enumeration option values
-        for (Element optionEl : enumEl
-                .elements(XMLTags.PROPERTY_VALUE_OPTIONS_TAG)) {
-          property.getPropertyEnumeration().add(optionEl.attributeValue(XMLTags.VALUE_TAG));
-        }
+        enumEl.elements(XMLTags.PROPERTY_VALUE_OPTIONS_TAG).stream()
+                .map(optionEl -> optionEl.attributeValue(XMLTags.VALUE_TAG))
+                .forEach(property.getPropertyEnumeration()::add);
       }
     }
     return properties;
