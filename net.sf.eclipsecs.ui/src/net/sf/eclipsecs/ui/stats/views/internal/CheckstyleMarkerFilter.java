@@ -22,13 +22,12 @@ package net.sf.eclipsecs.ui.stats.views.internal;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-
+import java.util.stream.Stream;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -272,50 +271,29 @@ public record CheckstyleMarkerFilter(boolean enabled, int onResource, IWorkingSe
    * @throws CoreException
    *           if the resource does not exist or the project is not open
    */
-  private List<IMarker> findCheckstyleMarkers(IResource[] resources, int depth, IProgressMonitor mon)
-          throws CoreException {
+  private List<IMarker> findCheckstyleMarkers(IResource[] resources, int depth,
+          IProgressMonitor mon) throws CoreException {
     if (resources == null) {
       return Collections.emptyList();
     }
-
-    List<IMarker> resultList = new ArrayList<>(resources.length * 2);
-
-    for (int i = 0, size = resources.length; i < size; i++) {
-      if (resources[i].isAccessible()) {
-        Collection<IMarker> markers = Arrays
-                .asList(resources[i].findMarkers(CheckstyleMarker.MARKER_ID, true, depth));
-
-        resultList.addAll(markers);
+    List<IMarker> markers = new ArrayList<>();
+    for (IResource resource : resources) {
+      if (resource.isAccessible()) {
+        markers.addAll(Arrays.asList(resource.findMarkers(CheckstyleMarker.MARKER_ID, true, depth)));
       }
     }
-
     if (!enabled) {
-      return resultList;
+      return markers;
     }
-
+    Stream<IMarker> filteredMarkers = markers.stream();
     if (selectBySeverity) {
-      // further filter the markers by severity
-      int size = resultList.size();
-      for (int i = size - 1; i >= 0; i--) {
-        IMarker marker = resultList.get(i);
-        if (!doSelectBySeverity(marker)) {
-          resultList.remove(i);
-        }
-      }
+      filteredMarkers = filteredMarkers.filter(this::doSelectBySeverity);
     }
-
     if (filterByRegex) {
-      // further filter the markers by regular expressions
-      int size = resultList.size();
-      for (int i = size - 1; i >= 0; i--) {
-        IMarker marker = resultList.get(i);
-        if (!selectByRegex(marker)) {
-          resultList.remove(i);
-        }
-      }
+      filteredMarkers = filteredMarkers.filter(this::selectByRegex);
     }
 
-    return resultList;
+    return filteredMarkers.toList();
   }
 
   /**

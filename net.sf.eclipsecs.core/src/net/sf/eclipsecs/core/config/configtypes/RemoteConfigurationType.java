@@ -37,7 +37,6 @@ import java.util.Base64;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
-
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.equinox.security.storage.EncodingUtils;
 import org.eclipse.equinox.security.storage.ISecurePreferences;
@@ -100,7 +99,6 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
       byte[] configurationFileData = null;
 
       try {
-
         System.setProperty(KEY_MAX_REDIRECTS, "3");
 
         final URLConnection connection = data.getResolvedConfigFileURL().openConnection();
@@ -128,15 +126,8 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
 
       data.setCheckConfigFileBytes(configurationFileData);
 
-      // get the properties bundle
-      Optional<byte[]> additionalPropertiesBytes = Optional.empty();
-      if (originalFileSuccess) {
-        additionalPropertiesBytes = getAdditionPropertiesBundleBytes(
-                data.getResolvedConfigFileURL());
-      } else if (useCacheFile) {
-        additionalPropertiesBytes = getBytesFromCacheBundleFile(checkConfiguration);
-      }
-
+      Optional<byte[]> additionalPropertiesBytes = getPropertiesBundle(originalFileSuccess,
+              useCacheFile, data, checkConfiguration);
       additionalPropertiesBytes.ifPresent(data::setAdditionalPropertyBundleBytes);
 
       // get the property resolver
@@ -170,6 +161,17 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
     }
 
     return data;
+  }
+
+  private Optional<byte[]> getPropertiesBundle(boolean originalFileSuccess, boolean useCacheFile,
+          CheckstyleConfigurationFile data, ICheckConfiguration checkConfiguration) {
+    if (originalFileSuccess) {
+      return getAdditionPropertiesBundleBytes(data.getResolvedConfigFileURL());
+    }
+    if (useCacheFile) {
+      return getBytesFromCacheBundleFile(checkConfiguration);
+    }
+    return Optional.empty();
   }
 
   @Override

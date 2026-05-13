@@ -381,9 +381,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
 
   @Override
   public boolean performOk() {
-
     try {
-
       //
       // Save the check configurations.
       //
@@ -408,35 +406,27 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
       //
       // Include rule names preference.
       //
-      boolean includeRuleNamesNow = mIncludeRuleNamesButton.getSelection();
-      boolean includeRuleNamesOriginal = CheckstylePluginPrefs
-              .getBoolean(CheckstylePluginPrefs.PREF_INCLUDE_RULE_NAMES);
-      CheckstylePluginPrefs.setBoolean(CheckstylePluginPrefs.PREF_INCLUDE_RULE_NAMES,
-              includeRuleNamesNow);
+      boolean includeRuleNamesHasChanged = updateBooleanPreference(mIncludeRuleNamesButton,
+              CheckstylePluginPrefs.PREF_INCLUDE_RULE_NAMES);
 
       //
       // Include module id preference.
       //
-      boolean includeModuleIdNow = mIncludeModuleIdButton.getSelection();
-      boolean includeModuleIdOriginal = CheckstylePluginPrefs
-              .getBoolean(CheckstylePluginPrefs.PREF_INCLUDE_MODULE_IDS);
-      CheckstylePluginPrefs.setBoolean(CheckstylePluginPrefs.PREF_INCLUDE_MODULE_IDS,
-              includeModuleIdNow);
+      boolean includeModuleIdHasChanged = updateBooleanPreference(mIncludeModuleIdButton,
+              CheckstylePluginPrefs.PREF_INCLUDE_MODULE_IDS);
 
       //
       // Limit markers preference
       //
 
-      boolean limitMarkersNow = mLimitCheckstyleMarkers.getSelection();
-      boolean limitMarkersOriginal = CheckstylePluginPrefs
-              .getBoolean(CheckstylePluginPrefs.PREF_LIMIT_MARKERS_PER_RESOURCE);
-      CheckstylePluginPrefs.setBoolean(CheckstylePluginPrefs.PREF_LIMIT_MARKERS_PER_RESOURCE,
-              limitMarkersNow);
+      boolean limitMarkersHasChanged = updateBooleanPreference(mLimitCheckstyleMarkers,
+              CheckstylePluginPrefs.PREF_LIMIT_MARKERS_PER_RESOURCE);
 
       int markerLimitNow = Integer.parseInt(mTxtMarkerLimit.getText());
       int markerLimitOriginal = CheckstylePluginPrefs
               .getInt(CheckstylePluginPrefs.PREF_MARKER_AMOUNT_LIMIT);
       CheckstylePluginPrefs.setInt(CheckstylePluginPrefs.PREF_MARKER_AMOUNT_LIMIT, markerLimitNow);
+      boolean markerLimitHasChanged = markerLimitNow != markerLimitOriginal;
 
       //
       // Include background build preference.
@@ -446,47 +436,45 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
               runInBackgroundNow);
 
       // See if all projects need rebuild
-      boolean needRebuildAllProjects = (includeRuleNamesNow != includeRuleNamesOriginal)
-              || (includeModuleIdNow != includeModuleIdOriginal)
-              || (limitMarkersNow != limitMarkersOriginal)
-              || (markerLimitNow != markerLimitOriginal) || mRebuildAll;
+      boolean needRebuildAllProjects = needRebuildAllProjects(includeRuleNamesHasChanged,
+              includeModuleIdHasChanged, limitMarkersHasChanged, markerLimitHasChanged);
 
       // Get projects that need rebuild considering the changes
       Collection<IProject> projectsToBuild = mWorkingSet.getAffectedProjects();
 
-      String promptRebuildPref = CheckstyleUIPluginPrefs
-              .getString(CheckstyleUIPluginPrefs.PREF_ASK_BEFORE_REBUILD);
+      if (needRebuildAllProjects || !projectsToBuild.isEmpty()) {
+        String promptRebuildPref = CheckstyleUIPluginPrefs
+                .getString(CheckstyleUIPluginPrefs.PREF_ASK_BEFORE_REBUILD);
 
-      boolean rebuild = MessageDialogWithToggle.ALWAYS.equals(promptRebuildPref)
-              && (needRebuildAllProjects || !projectsToBuild.isEmpty());
+        boolean rebuild = MessageDialogWithToggle.ALWAYS.equals(promptRebuildPref);
 
-      //
-      // Prompt for rebuild
-      //
-      if (MessageDialogWithToggle.PROMPT.equals(promptRebuildPref)
-              && (needRebuildAllProjects || !projectsToBuild.isEmpty())) {
+        //
+        // Prompt for rebuild
+        //
+        if (MessageDialogWithToggle.PROMPT.equals(promptRebuildPref)) {
 
-        MessageDialogWithToggle dialog = MessageDialogWithToggle.openYesNoQuestion(getShell(),
-                Messages.CheckstylePreferencePage_titleRebuild,
-                Messages.CheckstylePreferencePage_msgRebuild,
-                Messages.CheckstylePreferencePage_nagRebuild, false,
-                CheckstyleUIPlugin.getDefault().getPreferenceStore(),
-                CheckstyleUIPluginPrefs.PREF_ASK_BEFORE_REBUILD);
+          MessageDialogWithToggle dialog = MessageDialogWithToggle.openYesNoQuestion(getShell(),
+                  Messages.CheckstylePreferencePage_titleRebuild,
+                  Messages.CheckstylePreferencePage_msgRebuild,
+                  Messages.CheckstylePreferencePage_nagRebuild, false,
+                  CheckstyleUIPlugin.getDefault().getPreferenceStore(),
+                  CheckstyleUIPluginPrefs.PREF_ASK_BEFORE_REBUILD);
 
-        rebuild = dialog.getReturnCode() == IDialogConstants.YES_ID;
-      }
+          rebuild = dialog.getReturnCode() == IDialogConstants.YES_ID;
+        }
 
-      if (rebuild) {
-        try {
-          if (needRebuildAllProjects) {
-            CheckstyleBuilder.buildAllProjects();
-          } else {
-            CheckstyleBuilder.buildProjects(projectsToBuild);
+        if (rebuild) {
+          try {
+            if (needRebuildAllProjects) {
+              CheckstyleBuilder.buildAllProjects();
+            } else {
+              CheckstyleBuilder.buildProjects(projectsToBuild);
+            }
+
+          } catch (CheckstylePluginException ex) {
+            CheckstyleUIPlugin.errorDialog(getShell(),
+                    NLS.bind(Messages.errorFailedRebuild, ex.getMessage()), ex, true);
           }
-
-        } catch (CheckstylePluginException ex) {
-          CheckstyleUIPlugin.errorDialog(getShell(),
-                  NLS.bind(Messages.errorFailedRebuild, ex.getMessage()), ex, true);
         }
       }
     } catch (CheckstylePluginException | BackingStoreException ex) {
@@ -495,6 +483,21 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
     }
 
     return true;
+  }
+
+  private static final boolean updateBooleanPreference(Button button, String preference)
+          throws BackingStoreException {
+    boolean now = button.getSelection();
+    boolean original = CheckstylePluginPrefs.getBoolean(preference);
+    CheckstylePluginPrefs.setBoolean(preference, now);
+    return now != original;
+  }
+
+  private boolean needRebuildAllProjects(boolean includeRuleNamesHasChanged,
+          boolean includeModuleIdHasChanged, boolean limitMarkersHasChanged,
+          boolean markerLimitHasChanged) {
+    return includeRuleNamesHasChanged || includeModuleIdHasChanged || limitMarkersHasChanged
+            || markerLimitHasChanged || mRebuildAll;
   }
 
   /**

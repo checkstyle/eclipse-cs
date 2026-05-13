@@ -154,7 +154,8 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
 
     mChkFilterEnabled = new Button(dialog, SWT.CHECK);
     mChkFilterEnabled.setText(Messages.CheckstyleMarkerFilterDialog_btnEnabled);
-    mChkFilterEnabled.addSelectionListener(mController);
+    mChkFilterEnabled.addSelectionListener(
+            SelectionListener.widgetSelectedAdapter(event -> updateControlState()));
 
     Group onResourceGroup = new Group(dialog, SWT.NULL);
     onResourceGroup.setText(Messages.CheckstyleMarkerFilterDialog_groupResourceSetting);
@@ -215,7 +216,8 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
     mChkSeverityEnabled = new Button(severityGroup, SWT.CHECK);
     mChkSeverityEnabled.setText(Messages.CheckstyleMarkerFilterDialog_btnMarkerSeverity);
     mChkSeverityEnabled.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-    mChkSeverityEnabled.addSelectionListener(mController);
+    mChkSeverityEnabled.addSelectionListener(
+            SelectionListener.widgetSelectedAdapter(event -> updateControlState()));
 
     mChkSeverityError = new Button(severityGroup, SWT.CHECK);
     mChkSeverityError.setText(Messages.CheckstyleMarkerFilterDialog_btnSeverityError);
@@ -318,7 +320,7 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
     mRegularExpressions = mFilter.filterRegex();
     initRegexLabel();
 
-    mController.updateControlState();
+    updateControlState();
   }
 
   /**
@@ -389,6 +391,35 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
   }
 
   /**
+   * updates the enablement state of the controls.
+   */
+  private void updateControlState() {
+
+    mFilterComposite.setEnabled(mChkFilterEnabled.getSelection());
+    mRadioOnAnyResource.setEnabled(mChkFilterEnabled.getSelection());
+    mRadioAnyResourceInSameProject.setEnabled(mChkFilterEnabled.getSelection());
+    mRadioSelectedResource.setEnabled(mChkFilterEnabled.getSelection());
+    mRadioSelectedResourceAndChildren.setEnabled(mChkFilterEnabled.getSelection());
+    mRadioSelectedWorkingSet.setEnabled(mChkFilterEnabled.getSelection());
+    mLblSelectedWorkingSet.setEnabled(mChkFilterEnabled.getSelection());
+    mBtnWorkingSet
+            .setEnabled(mChkFilterEnabled.getSelection() && mChkFilterEnabled.getSelection());
+    mChkSeverityEnabled.setEnabled(mChkFilterEnabled.getSelection());
+
+    mChkSeverityError
+            .setEnabled(mChkFilterEnabled.getSelection() && mChkSeverityEnabled.getSelection());
+    mChkSeverityWarning
+            .setEnabled(mChkFilterEnabled.getSelection() && mChkSeverityEnabled.getSelection());
+    mChkSeverityInfo
+            .setEnabled(mChkFilterEnabled.getSelection() && mChkSeverityEnabled.getSelection());
+
+    mGrpRegex.setEnabled(mChkFilterEnabled.getSelection());
+    mChkSelectByRegex.setEnabled(mChkFilterEnabled.getSelection());
+    mLblRegexFilter.setEnabled(mChkFilterEnabled.getSelection());
+    mBtnEditRegex.setEnabled(mChkFilterEnabled.getSelection());
+  }
+
+  /**
    * The controller for this dialog.
    *
    */
@@ -396,9 +427,7 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
 
     @Override
     public void widgetSelected(SelectionEvent e) {
-      if (e.widget == mChkFilterEnabled || e.widget == mChkSeverityEnabled) {
-        updateControlState();
-      } else if (mBtnDefault == e.widget) {
+      if (mBtnDefault == e.widget) {
         mFilter = CheckstyleMarkerFilter.resetState(mFilter.focusResources());
         updateUIFromFilter();
       } else if (mBtnWorkingSet == e.widget) {
@@ -430,35 +459,6 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
     @Override
     public void widgetDefaultSelected(SelectionEvent e) {
       // NOOP
-    }
-
-    /**
-     * updates the enablement state of the controls.
-     */
-    private void updateControlState() {
-
-      mFilterComposite.setEnabled(mChkFilterEnabled.getSelection());
-      mRadioOnAnyResource.setEnabled(mChkFilterEnabled.getSelection());
-      mRadioAnyResourceInSameProject.setEnabled(mChkFilterEnabled.getSelection());
-      mRadioSelectedResource.setEnabled(mChkFilterEnabled.getSelection());
-      mRadioSelectedResourceAndChildren.setEnabled(mChkFilterEnabled.getSelection());
-      mRadioSelectedWorkingSet.setEnabled(mChkFilterEnabled.getSelection());
-      mLblSelectedWorkingSet.setEnabled(mChkFilterEnabled.getSelection());
-      mBtnWorkingSet
-              .setEnabled(mChkFilterEnabled.getSelection() && mChkFilterEnabled.getSelection());
-      mChkSeverityEnabled.setEnabled(mChkFilterEnabled.getSelection());
-
-      mChkSeverityError
-              .setEnabled(mChkFilterEnabled.getSelection() && mChkSeverityEnabled.getSelection());
-      mChkSeverityWarning
-              .setEnabled(mChkFilterEnabled.getSelection() && mChkSeverityEnabled.getSelection());
-      mChkSeverityInfo
-              .setEnabled(mChkFilterEnabled.getSelection() && mChkSeverityEnabled.getSelection());
-
-      mGrpRegex.setEnabled(mChkFilterEnabled.getSelection());
-      mChkSelectByRegex.setEnabled(mChkFilterEnabled.getSelection());
-      mLblRegexFilter.setEnabled(mChkFilterEnabled.getSelection());
-      mBtnEditRegex.setEnabled(mChkFilterEnabled.getSelection());
     }
   }
 

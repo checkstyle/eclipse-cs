@@ -215,38 +215,28 @@ public class PackageFilterEditor implements IFilterEditor {
 
     private List<IResource> handleProject(IProject project) {
       List<IResource> children = new ArrayList<>();
-
       if (project.isAccessible()) {
-
-        try {
-
-          IJavaProject javaProject = JavaCore.create(project);
-          if (javaProject.exists()) {
-
+        IJavaProject javaProject = JavaCore.create(project);
+        if (javaProject.exists()) {
+          try {
             IPackageFragmentRoot[] packageRoots = javaProject.getAllPackageFragmentRoots();
-
-            for (int i = 0, size = packageRoots.length; i < size; i++) {
-
+            for (IPackageFragmentRoot packageRoot : packageRoots) {
               // special case - project itself is package root
-              if (project.equals(packageRoots[i].getResource())) {
-
-                IResource[] members = project.members();
-                for (int j = 0; j < members.length; j++) {
-                  if (members[j].getType() != IResource.FILE) {
-                    children.add(members[j]);
-                  }
-                }
-              } else if (!packageRoots[i].isArchive()
-                      && packageRoots[i].getParent().equals(javaProject)) {
-                children.add(packageRoots[i].getResource());
+              if (project.equals(packageRoot.getResource())) {
+                Arrays.stream(project.members())
+                        .filter(member -> member.getType() != IResource.FILE)
+                        .forEach(children::add);
+              } else if (!packageRoot.isArchive() && packageRoot.getParent().equals(javaProject)) {
+                children.add(packageRoot.getResource());
               }
             }
+
+          } catch (JavaModelException ex) {
+            CheckstyleLog.log(ex);
+          } catch (CoreException ex) {
+            // this should never happen because we call
+            // #isAccessible before invoking #members
           }
-        } catch (JavaModelException ex) {
-          CheckstyleLog.log(ex);
-        } catch (CoreException ex) {
-          // this should never happen because we call
-          // #isAccessible before invoking #members
         }
       }
       return children;
