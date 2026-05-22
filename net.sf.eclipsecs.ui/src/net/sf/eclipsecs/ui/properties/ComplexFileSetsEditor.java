@@ -95,7 +95,7 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
   }
 
   @Override
-  public Control createContents(Composite parent) throws CheckstylePluginException {
+  public Control createContents(Composite parent) {
 
     mComposite = parent;
 

@@ -20,13 +20,7 @@
 
 package net.sf.eclipsecs.ui.preferences;
 
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
-import java.util.Locale;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialogWithToggle;
@@ -34,22 +28,14 @@ import org.eclipse.jface.layout.RowLayoutFactory;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.osgi.service.prefs.BackingStoreException;
@@ -57,18 +43,15 @@ import org.osgi.service.prefs.BackingStoreException;
 import com.puppycrawl.tools.checkstyle.Main;
 
 import net.sf.eclipsecs.core.CheckstylePluginPrefs;
-import net.sf.eclipsecs.core.builder.CheckerFactory;
 import net.sf.eclipsecs.core.builder.CheckstyleBuilder;
 import net.sf.eclipsecs.core.config.CheckConfigurationFactory;
 import net.sf.eclipsecs.core.config.ICheckConfigurationWorkingSet;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
-import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
 import net.sf.eclipsecs.ui.CheckstyleUIPluginPrefs;
 import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.config.CheckConfigurationWorkingSetEditor;
 import net.sf.eclipsecs.ui.util.InternalBrowser;
-import net.sf.eclipsecs.ui.util.SWTUtil;
 
 /**
  * This class represents a preference page that is contributed to the Preferences dialog.
@@ -80,39 +63,8 @@ import net.sf.eclipsecs.ui.util.SWTUtil;
  */
 public class CheckstylePreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 
-  private static final String DEFAULT_LANGUAGE = "default";
-
-  private static final List<String> SUPPORTED_LANGUAGES = Stream.concat(
-          Stream.of(DEFAULT_LANGUAGE),
-          Arrays.stream("de,en,es,fi,fr,ja,pt,tr,zh"
-          .split(","))
-          .sorted())
-          .collect(Collectors.toList());
-
-  private final PageController mController = new PageController();
-
   private final ICheckConfigurationWorkingSet mWorkingSet;
-
-  private Combo mRebuildIfNeeded;
-
-  private Button mPurgeCacheButton;
-
-  private Button mWarnBeforeLosingFilesets;
-
-  private Button mIncludeRuleNamesButton;
-
-  private Button mIncludeModuleIdButton;
-
-  private Button mLimitCheckstyleMarkers;
-
-  private Combo mLanguageIf;
-
-  private Text mTxtMarkerLimit;
-
-  private Button mBackgroundFullBuild;
-
-  private CheckConfigurationWorkingSetEditor mWorkingSetEditor;
-
+  private CheckstylePreferencePageGeneralSettings generalSettings;
   private boolean mRebuildAll;
 
   /**
@@ -147,12 +99,12 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
     //
     // Create the general section of the screen.
     //
-    final Composite generalComposite = createGeneralContents(parentComposite);
+    this.generalSettings = new CheckstylePreferencePageGeneralSettings(parentComposite, SWT.NONE, () -> mRebuildAll = true);
     FormData formData = new FormData();
     formData.left = new FormAttachment(0);
     formData.top = new FormAttachment(0);
     formData.right = new FormAttachment(100);
-    generalComposite.setLayoutData(formData);
+    generalSettings.setLayoutData(formData);
 
     //
     // Create the check configuration section of the screen.
@@ -160,7 +112,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
     final Composite configComposite = createCheckConfigContents(parentComposite);
     formData = new FormData();
     formData.left = new FormAttachment(0);
-    formData.top = new FormAttachment(generalComposite, 3, SWT.BOTTOM);
+    formData.top = new FormAttachment(generalSettings, 3, SWT.BOTTOM);
     formData.right = new FormAttachment(100);
     formData.bottom = new FormAttachment(100);
     configComposite.setLayoutData(formData);
@@ -185,170 +137,6 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
   }
 
   /**
-   * Create the area with the general preference settings.
-   *
-   * @param parent
-   *          the parent composite
-   * @return the general area
-   */
-  private Composite createGeneralContents(Composite parent) {
-    //
-    // Build the composite for the general settings.
-    //
-    Group generalComposite = new Group(parent, SWT.NULL);
-    generalComposite.setText(Messages.CheckstylePreferencePage_lblGeneralSettings);
-    GridLayout gridLayout = new GridLayout();
-    gridLayout.numColumns = 1;
-    generalComposite.setLayout(gridLayout);
-
-    final Composite langComposite = new Composite(generalComposite, SWT.NULL);
-    gridLayout = new GridLayout(3, false);
-    gridLayout.marginHeight = 0;
-    gridLayout.marginWidth = 0;
-    langComposite.setLayout(gridLayout);
-    langComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-    final Label lblLanguage = new Label(langComposite, SWT.NULL);
-    lblLanguage.setText(Messages.CheckstylePreferencePage_lblLocaleLanguage);
-    mLanguageIf = new Combo(langComposite, SWT.READ_ONLY);
-    mLanguageIf.setItems(SUPPORTED_LANGUAGES.stream().map(code -> {
-      if (code == DEFAULT_LANGUAGE) {
-        return code;
-      }
-      var loc = Locale.forLanguageTag(code);
-      return code + " - " + loc.getDisplayLanguage(loc);
-    }).toArray(String[]::new));
-    final String lang = CheckstylePluginPrefs.getString(CheckstylePluginPrefs.PREF_LOCALE_LANGUAGE);
-    final int selectedLang = SUPPORTED_LANGUAGES.indexOf(lang == null || lang.isEmpty() ? DEFAULT_LANGUAGE : lang);
-    if (selectedLang != -1) {
-      mLanguageIf.select(selectedLang);
-    }
-
-    //
-    // Create a combo with the rebuild options
-    //
-    final Composite rebuildComposite = new Composite(generalComposite, SWT.NULL);
-    gridLayout = new GridLayout(3, false);
-    gridLayout.marginHeight = 0;
-    gridLayout.marginWidth = 0;
-    rebuildComposite.setLayout(gridLayout);
-    rebuildComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-    Label lblRebuild = new Label(rebuildComposite, SWT.NULL);
-    lblRebuild.setText(Messages.CheckstylePreferencePage_lblRebuild);
-
-    mRebuildIfNeeded = new Combo(rebuildComposite, SWT.READ_ONLY);
-    mRebuildIfNeeded.setItems(new String[] { MessageDialogWithToggle.PROMPT,
-        MessageDialogWithToggle.ALWAYS, MessageDialogWithToggle.NEVER });
-    mRebuildIfNeeded.select(mRebuildIfNeeded.indexOf(
-            CheckstyleUIPluginPrefs.getString(CheckstyleUIPluginPrefs.PREF_ASK_BEFORE_REBUILD)));
-
-    //
-    // Create button to purge the checker cache
-    //
-
-    mPurgeCacheButton = new Button(rebuildComposite, SWT.FLAT);
-    mPurgeCacheButton
-            .setImage(CheckstyleUIPluginImages.REFRESH_ICON.getImage());
-    mPurgeCacheButton.setToolTipText(Messages.CheckstylePreferencePage_btnRefreshCheckerCache);
-    mPurgeCacheButton.addSelectionListener(mController);
-    GridData gridData = new GridData();
-    gridData.horizontalAlignment = GridData.END;
-    gridData.grabExcessHorizontalSpace = true;
-    gridData.heightHint = 20;
-    gridData.widthHint = 20;
-    mPurgeCacheButton.setLayoutData(gridData);
-
-    //
-    // Create the "Fileset warning" check box.
-    //
-    mWarnBeforeLosingFilesets = new Button(generalComposite, SWT.CHECK);
-    mWarnBeforeLosingFilesets.setText(Messages.CheckstylePreferencePage_lblWarnFilesets);
-    mWarnBeforeLosingFilesets.setSelection(
-            CheckstyleUIPluginPrefs.getBoolean(CheckstyleUIPluginPrefs.PREF_FILESET_WARNING));
-
-    //
-    // Create the "Include rule name" check box.
-    //
-    final Composite includeRuleNamesComposite = new Composite(generalComposite, SWT.NULL);
-    gridLayout = new GridLayout(2, false);
-    gridLayout.marginHeight = 0;
-    gridLayout.marginWidth = 0;
-    includeRuleNamesComposite.setLayout(gridLayout);
-
-    mIncludeRuleNamesButton = new Button(includeRuleNamesComposite, SWT.CHECK);
-    mIncludeRuleNamesButton.setText(Messages.CheckstylePreferencePage_lblIncludeRulenames);
-    mIncludeRuleNamesButton.setSelection(
-            CheckstylePluginPrefs.getBoolean(CheckstylePluginPrefs.PREF_INCLUDE_RULE_NAMES));
-
-    addRebuildNoteLabel(includeRuleNamesComposite);
-
-    //
-    // Create the "Include rule name" check box.
-    //
-    final Composite includeModuleIdComposite = new Composite(generalComposite, SWT.NULL);
-    gridLayout = new GridLayout(2, false);
-    gridLayout.marginHeight = 0;
-    gridLayout.marginWidth = 0;
-    includeModuleIdComposite.setLayout(gridLayout);
-
-    mIncludeModuleIdButton = new Button(includeModuleIdComposite, SWT.CHECK);
-    mIncludeModuleIdButton.setText(Messages.CheckstylePreferencePage_lblIncludeModuleIds);
-    mIncludeModuleIdButton.setSelection(
-            CheckstylePluginPrefs.getBoolean(CheckstylePluginPrefs.PREF_INCLUDE_MODULE_IDS));
-
-    addRebuildNoteLabel(includeModuleIdComposite);
-
-    //
-    // Create the "limit markers" check box and text field combination
-    //
-    final Composite limitMarkersComposite = new Composite(generalComposite, SWT.NULL);
-    gridLayout = new GridLayout(3, false);
-    gridLayout.marginHeight = 0;
-    gridLayout.marginWidth = 0;
-    limitMarkersComposite.setLayout(gridLayout);
-
-    mLimitCheckstyleMarkers = new Button(limitMarkersComposite, SWT.CHECK);
-    mLimitCheckstyleMarkers.setText(Messages.CheckstylePreferencePage_lblLimitMarker);
-    mLimitCheckstyleMarkers.setSelection(CheckstylePluginPrefs
-            .getBoolean(CheckstylePluginPrefs.PREF_LIMIT_MARKERS_PER_RESOURCE));
-
-    mTxtMarkerLimit = new Text(limitMarkersComposite, SWT.SINGLE | SWT.BORDER);
-    mTxtMarkerLimit.setTextLimit(5);
-    SWTUtil.addOnlyDigitInputSupport(mTxtMarkerLimit);
-
-    mTxtMarkerLimit.setText(Integer.toString(
-            CheckstylePluginPrefs.getInt(CheckstylePluginPrefs.PREF_MARKER_AMOUNT_LIMIT)));
-    gridData = new GridData();
-    gridData.widthHint = 30;
-    mTxtMarkerLimit.setLayoutData(gridData);
-
-    addRebuildNoteLabel(limitMarkersComposite);
-
-    //
-    // Create the "Run Checkstyle in background on full builds" check box.
-    //
-    final Composite backgroundFullBuildComposite = new Composite(generalComposite, SWT.NULL);
-    gridLayout = new GridLayout(2, false);
-    gridLayout.marginHeight = 0;
-    gridLayout.marginWidth = 0;
-    backgroundFullBuildComposite.setLayout(gridLayout);
-
-    mBackgroundFullBuild = new Button(backgroundFullBuildComposite, SWT.CHECK);
-    mBackgroundFullBuild.setText(Messages.CheckstylePreferencePage_txtBackgroundFullBuild0);
-    mBackgroundFullBuild.setSelection(
-            CheckstylePluginPrefs.getBoolean(CheckstylePluginPrefs.PREF_BACKGROUND_FULL_BUILD));
-    return generalComposite;
-  }
-
-  private void addRebuildNoteLabel(Composite parent) {
-    Label lblRebuildNote = new Label(parent, SWT.NULL);
-    lblRebuildNote.setImage(CheckstyleUIPluginImages.HELP_ICON.getImage());
-    lblRebuildNote.setToolTipText(Messages.CheckstylePreferencePage_txtSuggestRebuild);
-    SWTUtil.addTooltipOnPressSupport(lblRebuildNote);
-  }
-
-  /**
    * Creates the content regarding the management of check configurations.
    *
    * @param parent
@@ -363,7 +151,8 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
     configComposite.setText(Messages.CheckstylePreferencePage_titleCheckConfigs);
     configComposite.setLayout(new FormLayout());
 
-    mWorkingSetEditor = new CheckConfigurationWorkingSetEditor(mWorkingSet, true);
+    CheckConfigurationWorkingSetEditor mWorkingSetEditor = new CheckConfigurationWorkingSetEditor(
+            mWorkingSet, true);
     final Control editorControl = mWorkingSetEditor.createContents(configComposite);
     FormData formData = new FormData();
     formData.left = new FormAttachment(0, 3);
@@ -388,41 +177,43 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
       mWorkingSet.store();
 
       CheckstylePluginPrefs.setString(CheckstylePluginPrefs.PREF_LOCALE_LANGUAGE,
-              SUPPORTED_LANGUAGES.get(mLanguageIf.getSelectionIndex()));
+              generalSettings.getLanguageIf());
 
       //
       // Save the general preferences.
       //
       CheckstyleUIPluginPrefs.setString(CheckstyleUIPluginPrefs.PREF_ASK_BEFORE_REBUILD,
-              mRebuildIfNeeded.getItem(mRebuildIfNeeded.getSelectionIndex()));
+              generalSettings.getRebuildIfNeeded());
 
       //
       // fileset warning preference
       //
-      boolean warnFileSetsNow = mWarnBeforeLosingFilesets.getSelection();
+      boolean warnFileSetsNow = generalSettings.getWarnBeforeLosingFilesets();
       CheckstyleUIPluginPrefs.setBoolean(CheckstyleUIPluginPrefs.PREF_FILESET_WARNING,
               warnFileSetsNow);
 
       //
       // Include rule names preference.
       //
-      boolean includeRuleNamesHasChanged = updateBooleanPreference(mIncludeRuleNamesButton,
-              CheckstylePluginPrefs.PREF_INCLUDE_RULE_NAMES);
+      boolean includeRuleNamesHasChanged = updateBooleanPreference(
+              generalSettings.getIncludeRuleNames(), CheckstylePluginPrefs.PREF_INCLUDE_RULE_NAMES);
 
       //
       // Include module id preference.
       //
-      boolean includeModuleIdHasChanged = updateBooleanPreference(mIncludeModuleIdButton,
+      boolean includeModuleIdHasChanged = updateBooleanPreference(
+              generalSettings.getIncludeModuleIdButton(),
               CheckstylePluginPrefs.PREF_INCLUDE_MODULE_IDS);
 
       //
       // Limit markers preference
       //
 
-      boolean limitMarkersHasChanged = updateBooleanPreference(mLimitCheckstyleMarkers,
+      boolean limitMarkersHasChanged = updateBooleanPreference(
+              generalSettings.getLimitCheckstyleMarkers(),
               CheckstylePluginPrefs.PREF_LIMIT_MARKERS_PER_RESOURCE);
 
-      int markerLimitNow = Integer.parseInt(mTxtMarkerLimit.getText());
+      int markerLimitNow = Integer.parseInt(generalSettings.getTxtMarkerLimit());
       int markerLimitOriginal = CheckstylePluginPrefs
               .getInt(CheckstylePluginPrefs.PREF_MARKER_AMOUNT_LIMIT);
       CheckstylePluginPrefs.setInt(CheckstylePluginPrefs.PREF_MARKER_AMOUNT_LIMIT, markerLimitNow);
@@ -431,7 +222,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
       //
       // Include background build preference.
       //
-      boolean runInBackgroundNow = mBackgroundFullBuild.getSelection();
+      boolean runInBackgroundNow = generalSettings.getBackgroundFullBuild();
       CheckstylePluginPrefs.setBoolean(CheckstylePluginPrefs.PREF_BACKGROUND_FULL_BUILD,
               runInBackgroundNow);
 
@@ -485,12 +276,11 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
     return true;
   }
 
-  private static final boolean updateBooleanPreference(Button button, String preference)
+  private static final boolean updateBooleanPreference(boolean selection, String preference)
           throws BackingStoreException {
-    boolean now = button.getSelection();
     boolean original = CheckstylePluginPrefs.getBoolean(preference);
-    CheckstylePluginPrefs.setBoolean(preference, now);
-    return now != original;
+    CheckstylePluginPrefs.setBoolean(preference, selection);
+    return selection != original;
   }
 
   private boolean needRebuildAllProjects(boolean includeRuleNamesHasChanged,
@@ -498,20 +288,5 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
           boolean markerLimitHasChanged) {
     return includeRuleNamesHasChanged || includeModuleIdHasChanged || limitMarkersHasChanged
             || markerLimitHasChanged || mRebuildAll;
-  }
-
-  /**
-   * Controller for this page.
-   *
-   */
-  private class PageController extends SelectionAdapter {
-
-    @Override
-    public void widgetSelected(SelectionEvent e) {
-      if (mPurgeCacheButton == e.widget) {
-        CheckerFactory.cleanup();
-        mRebuildAll = true;
-      }
-    }
   }
 }

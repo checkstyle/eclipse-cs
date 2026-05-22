@@ -110,30 +110,36 @@ public final class CheckConfigurationWorkingSetEditor {
 
     boolean useDefaultColumn = mWorkingSet instanceof GlobalCheckConfigurationWorkingSet;
 
-    ButtonBarActions buttonBarActions = new ButtonBarActions(this::addCheckConfig,
-            this::editCheckConfig, this::configureCheckConfig, this::copyCheckConfig,
-            this::removeCheckConfig, this::setDefaultCheckConfig,
-            this::exportCheckstyleCheckConfig);
-    this.buttonBar = new ButtonBar(configComposite, SWT.NULL, useDefaultColumn, buttonBarActions);
+    this.buttonBar = new ButtonBar(configComposite, SWT.NULL, useDefaultColumn,
+            new ButtonBarActions(this::addCheckConfig, this::editCheckConfig,
+                    this::configureCheckConfig, this::copyCheckConfig, this::removeCheckConfig,
+                    this::setDefaultCheckConfig, this::exportCheckstyleCheckConfig));
     FormData formData = new FormData();
     formData.top = new FormAttachment(0);
     formData.right = new FormAttachment(100);
     formData.bottom = new FormAttachment(100);
     buttonBar.setLayoutData(formData);
 
-    Composite tableAndDesc = new Composite(configComposite, SWT.NULL);
+    createTableAndDesc(configComposite, useDefaultColumn);
+    // enforce update of button enabled state
+    handleSelectionChanged(null);
+
+    return configComposite;
+  }
+
+  private void createTableAndDesc(Composite parent, boolean useDefaultColumn) {
+    Composite tableAndDesc = new Composite(parent, SWT.NULL);
     tableAndDesc.setLayout(new FormLayout());
-    formData = new FormData();
+    FormData formData = new FormData();
     formData.left = new FormAttachment(0);
     formData.top = new FormAttachment(0);
     formData.right = new FormAttachment(buttonBar, -3, SWT.LEFT);
     formData.bottom = new FormAttachment(100, 0);
     tableAndDesc.setLayoutData(formData);
 
-    final ConfigurationLabelProvider multiProvider = new ConfigurationLabelProvider(mWorkingSet);
     this.configTable = new ConfigTable(tableAndDesc, SWT.NULL, useDefaultColumn,
-            mWorkingSet.getWorkingCopies(), multiProvider, this::configureCheckConfig,
-            this::handleSelectionChanged);
+            mWorkingSet.getWorkingCopies(), new ConfigurationLabelProvider(mWorkingSet),
+            this::configureCheckConfig, this::handleSelectionChanged);
     formData = new FormData();
     formData.left = new FormAttachment(0);
     formData.top = new FormAttachment(0);
@@ -168,39 +174,38 @@ public final class CheckConfigurationWorkingSetEditor {
     mConfigurationDescription.setLayoutData(formData);
 
     if (mIsShowUsage) {
-      Composite usageArea = new Composite(tableAndDesc, SWT.NULL);
-      usageArea.setLayout(new FormLayout());
-      formData = new FormData();
-      formData.left = new FormAttachment(60, 0);
-      formData.top = new FormAttachment(this.configTable, 3);
-      formData.right = new FormAttachment(100);
-      formData.bottom = new FormAttachment(100);
-      usageArea.setLayoutData(formData);
-
-      Label lblUsage = new Label(usageArea, SWT.NULL);
-      lblUsage.setText(Messages.CheckstylePreferencePage_lblProjectUsage);
-      formData = new FormData();
-      formData.left = new FormAttachment(0);
-      formData.top = new FormAttachment(0);
-      formData.right = new FormAttachment(100);
-      lblUsage.setLayoutData(formData);
-
-      mUsageView = new TableViewer(usageArea);
-      mUsageView.getControl().setBackground(usageArea.getBackground());
-      mUsageView.setContentProvider(new ArrayContentProvider());
-      mUsageView.setLabelProvider(new WorkbenchLabelProvider());
-      formData = new FormData();
-      formData.left = new FormAttachment(0);
-      formData.top = new FormAttachment(lblUsage);
-      formData.right = new FormAttachment(100);
-      formData.bottom = new FormAttachment(100);
-      mUsageView.getControl().setLayoutData(formData);
+      createUsageArea(tableAndDesc);
     }
+  }
 
-    // enforce update of button enabled state
-    handleSelectionChanged(null);
+  private void createUsageArea(Composite parent) {
+    Composite usageArea = new Composite(parent, SWT.NULL);
+    usageArea.setLayout(new FormLayout());
+    FormData formData = new FormData();
+    formData.left = new FormAttachment(60, 0);
+    formData.top = new FormAttachment(this.configTable, 3);
+    formData.right = new FormAttachment(100);
+    formData.bottom = new FormAttachment(100);
+    usageArea.setLayoutData(formData);
 
-    return configComposite;
+    Label lblUsage = new Label(usageArea, SWT.NULL);
+    lblUsage.setText(Messages.CheckstylePreferencePage_lblProjectUsage);
+    formData = new FormData();
+    formData.left = new FormAttachment(0);
+    formData.top = new FormAttachment(0);
+    formData.right = new FormAttachment(100);
+    lblUsage.setLayoutData(formData);
+
+    mUsageView = new TableViewer(usageArea);
+    mUsageView.getControl().setBackground(usageArea.getBackground());
+    mUsageView.setContentProvider(new ArrayContentProvider());
+    mUsageView.setLabelProvider(new WorkbenchLabelProvider());
+    formData = new FormData();
+    formData.left = new FormAttachment(0);
+    formData.top = new FormAttachment(lblUsage);
+    formData.right = new FormAttachment(100);
+    formData.bottom = new FormAttachment(100);
+    mUsageView.getControl().setLayoutData(formData);
   }
 
   /**
@@ -490,50 +495,40 @@ public final class CheckConfigurationWorkingSetEditor {
 
       setLayout(new FormLayout());
 
-      Button mAddButton = new Button(this, SWT.PUSH);
-      mAddButton.setText(Messages.CheckstylePreferencePage_btnNew);
-      mAddButton.addSelectionListener(SelectionListener
-              .widgetSelectedAdapter(event -> actions.addCheckConfig.accept(getShell())));
       FormData formData = new FormData();
       formData.left = new FormAttachment(0);
       formData.top = new FormAttachment(0);
       formData.right = new FormAttachment(100);
+      Button mAddButton = createButton(this, Messages.CheckstylePreferencePage_btnNew,
+              actions.addCheckConfig);
       mAddButton.setLayoutData(formData);
 
-      mEditButton = new Button(this, SWT.PUSH);
-      mEditButton.setText(Messages.CheckstylePreferencePage_btnProperties);
-      mEditButton.addSelectionListener(SelectionListener
-              .widgetSelectedAdapter(event -> actions.editCheckConfig.accept(getShell())));
+      mEditButton = createButton(this, Messages.CheckstylePreferencePage_btnProperties,
+              actions.editCheckConfig);
       formData = new FormData();
       formData.left = new FormAttachment(0);
       formData.top = new FormAttachment(mAddButton, 3, SWT.BOTTOM);
       formData.right = new FormAttachment(100);
       mEditButton.setLayoutData(formData);
 
-      mConfigureButton = new Button(this, SWT.PUSH);
-      mConfigureButton.setText(Messages.CheckstylePreferencePage_btnConfigure);
-      mConfigureButton.addSelectionListener(SelectionListener
-              .widgetSelectedAdapter(event -> actions.configureCheckConfig.accept(getShell())));
+      mConfigureButton = createButton(this, Messages.CheckstylePreferencePage_btnConfigure,
+              actions.configureCheckConfig);
       formData = new FormData();
       formData.left = new FormAttachment(0);
       formData.top = new FormAttachment(mEditButton, 3, SWT.BOTTOM);
       formData.right = new FormAttachment(100);
       mConfigureButton.setLayoutData(formData);
 
-      mCopyButton = new Button(this, SWT.PUSH);
-      mCopyButton.setText(Messages.CheckstylePreferencePage_btnCopy);
-      mCopyButton.addSelectionListener(SelectionListener
-              .widgetSelectedAdapter(event -> actions.copyCheckConfig.accept(getShell())));
+      mCopyButton = createButton(this, Messages.CheckstylePreferencePage_btnCopy,
+              actions.copyCheckConfig);
       formData = new FormData();
       formData.left = new FormAttachment(0);
       formData.top = new FormAttachment(mConfigureButton, 3, SWT.BOTTOM);
       formData.right = new FormAttachment(100);
       mCopyButton.setLayoutData(formData);
 
-      mRemoveButton = new Button(this, SWT.PUSH);
-      mRemoveButton.setText(Messages.CheckstylePreferencePage_btnRemove);
-      mRemoveButton.addSelectionListener(SelectionListener
-              .widgetSelectedAdapter(event -> actions.removeCheckConfig.accept(getShell())));
+      mRemoveButton = createButton(this, Messages.CheckstylePreferencePage_btnRemove,
+              actions.removeCheckConfig);
       formData = new FormData();
       formData.left = new FormAttachment(0);
       formData.top = new FormAttachment(mCopyButton, 3, SWT.BOTTOM);
@@ -541,12 +536,9 @@ public final class CheckConfigurationWorkingSetEditor {
       mRemoveButton.setLayoutData(formData);
 
       if (useDefaultButton) {
-        mDefaultButton = new Button(this, SWT.PUSH);
-        mDefaultButton.setText(Messages.CheckstylePreferencePage_btnDefault);
-        mDefaultButton.addSelectionListener(SelectionListener
-                .widgetSelectedAdapter(event -> actions.setDefaultCheckConfig.run()));
+        mDefaultButton = createButton(this, Messages.CheckstylePreferencePage_btnDefault,
+                event -> actions.setDefaultCheckConfig.run());
         mDefaultButton.setToolTipText(Messages.CheckstylePreferencePage_txtDefault);
-
         formData = new FormData();
         formData.left = new FormAttachment(0);
         formData.top = new FormAttachment(mRemoveButton, 3, SWT.BOTTOM);
@@ -556,15 +548,21 @@ public final class CheckConfigurationWorkingSetEditor {
         mDefaultButton = null;
       }
 
-      mExportButton = new Button(this, SWT.PUSH);
-      mExportButton.setText(Messages.CheckstylePreferencePage_btnExport);
-      mExportButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(
-              event -> actions.exportCheckstyleCheckConfig.accept(getShell())));
+      mExportButton = createButton(this, Messages.CheckstylePreferencePage_btnExport,
+              actions.exportCheckstyleCheckConfig);
       formData = new FormData();
       formData.left = new FormAttachment(0);
       formData.right = new FormAttachment(100);
       formData.bottom = new FormAttachment(100);
       mExportButton.setLayoutData(formData);
+    }
+
+    private Button createButton(Composite parent, String text, Consumer<Shell> action) {
+      Button button = new Button(parent, SWT.PUSH);
+      button.setText(text);
+      button.addSelectionListener(SelectionListener.widgetSelectedAdapter(
+              event -> action.accept(getShell())));
+      return button;
     }
 
     private void setSelectionState(boolean configSelected, boolean configEditable,

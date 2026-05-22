@@ -25,10 +25,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
+import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -92,7 +93,6 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor {
 
   @Override
   public Control createEditorControl(Composite parent, final Shell shell) {
-
     Composite contents = new Composite(parent, SWT.NULL);
     contents.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
     GridLayout layout = new GridLayout(2, false);
@@ -102,17 +102,15 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor {
 
     Label lblConfigName = new Label(contents, SWT.NULL);
     lblConfigName.setText(Messages.CheckConfigurationPropertiesDialog_lblName);
-    GridData gridData = new GridData();
-    lblConfigName.setLayoutData(gridData);
+    lblConfigName.setLayoutData(new GridData());
 
     mConfigName = new Text(contents, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
-    gridData = new GridData(GridData.FILL_HORIZONTAL);
-    mConfigName.setLayoutData(gridData);
+    mConfigName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
     mConfigName.setFocus();
 
     Label lblConfigLocation = new Label(contents, SWT.NULL);
     lblConfigLocation.setText(Messages.CheckConfigurationPropertiesDialog_lblLocation);
-    gridData = new GridData();
+    GridData gridData = new GridData();
     gridData.verticalAlignment = GridData.VERTICAL_ALIGN_BEGINNING;
     lblConfigLocation.setLayoutData(gridData);
 
@@ -138,39 +136,19 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor {
 
     mBtnImport = new Button(contents, SWT.PUSH);
     mBtnImport.setText(Messages.InternalConfigurationEditor_btnImport);
-    gridData = new GridData();
-    gridData.horizontalSpan = 2;
-    gridData.horizontalAlignment = GridData.END;
-    mBtnImport.setLayoutData(gridData);
+    GridDataFactory.swtDefaults().span(2, 1).align(GridData.END, GridData.CENTER).applyTo(mBtnImport);
 
-    mBtnImport.addSelectionListener(new SelectionListener() {
-
-      @Override
-      public void widgetSelected(SelectionEvent e) {
-        try {
-          ICheckConfiguration targetConfig = getEditedWorkingCopy();
-
-          FileDialog fileDialog = new FileDialog(mConfigName.getShell());
-          fileDialog.setText(Messages.InternalConfigurationEditor_titleImportDialog);
-          fileDialog.setFilterExtensions(new String[] { "*.xml", "*.*" }); //$NON-NLS-1$ //$NON-NLS-2$
-
-          String configFileString = fileDialog.open();
-          if (configFileString != null && new File(configFileString).exists()) {
-            ICheckConfiguration tmpSourceConfig = new CheckConfiguration("dummy", //$NON-NLS-1$
-                    configFileString, null, new ExternalFileConfigurationType(), true, null, null);
-
-            tmpSourceConfig.copyConfiguration(targetConfig);
-          }
-        } catch (CheckstylePluginException ex) {
-          mDialog.setErrorMessage(ex.getLocalizedMessage());
-        }
-      }
-
-      @Override
-      public void widgetDefaultSelected(SelectionEvent e) {
-        // NOOP
-      }
-    });
+    mBtnImport.addSelectionListener(SelectionListener.widgetSelectedAdapter(
+            event -> promptImportConfigFile(mConfigName.getShell()).ifPresent(configFileString -> {
+              ICheckConfiguration tmpSourceConfig = new CheckConfiguration("dummy",
+                      configFileString, null, new ExternalFileConfigurationType(), true, null,
+                      null);
+              try {
+                tmpSourceConfig.copyConfiguration(getEditedWorkingCopy());
+              } catch (CheckstylePluginException ex) {
+                mDialog.setErrorMessage(ex.getLocalizedMessage());
+              }
+            })));
 
     if (mWorkingCopy.getName() != null) {
       mConfigName.setText(mWorkingCopy.getName());
@@ -183,6 +161,17 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor {
     }
 
     return contents;
+  }
+
+  private static Optional<String> promptImportConfigFile(Shell shell) {
+    FileDialog fileDialog = new FileDialog(shell);
+    fileDialog.setText(Messages.InternalConfigurationEditor_titleImportDialog);
+    fileDialog.setFilterExtensions(new String[] { "*.xml", "*.*" });
+    String configFileString = fileDialog.open();
+    if (configFileString != null && new File(configFileString).exists()) {
+      return Optional.of(configFileString);
+    }
+    return Optional.empty();
   }
 
   @Override

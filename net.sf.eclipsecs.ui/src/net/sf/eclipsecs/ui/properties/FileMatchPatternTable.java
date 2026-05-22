@@ -23,6 +23,7 @@ package net.sf.eclipsecs.ui.properties;
 import java.util.List;
 import java.util.function.Consumer;
 
+import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.ColumnWeightData;
@@ -38,7 +39,6 @@ import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
@@ -67,10 +67,7 @@ public final class FileMatchPatternTable extends Composite {
     formData.bottom = new FormAttachment(100, -3);
 
     buttons.setLayoutData(formData);
-    GridLayout layout = new GridLayout();
-    layout.marginHeight = 0;
-    layout.marginWidth = 0;
-    buttons.setLayout(layout);
+    GridLayoutFactory.swtDefaults().margins(0, 0).applyTo(buttons);
 
     final Table table = new Table(composite, SWT.CHECK | SWT.BORDER | SWT.FULL_SELECTION);
     formData = new FormData();
@@ -105,8 +102,7 @@ public final class FileMatchPatternTable extends Composite {
       callbacks.updateMatchView.run();
     });
     mPatternViewer.addCheckStateListener(event -> {
-      if (event.getElement() instanceof FileMatchPattern) {
-        FileMatchPattern pattern = (FileMatchPattern) event.getElement();
+      if (event.getElement() instanceof FileMatchPattern pattern) {
         pattern.setIsIncludePattern(event.getChecked());
         mPatternViewer.refresh();
         callbacks.updateMatchView.run();
@@ -117,43 +113,24 @@ public final class FileMatchPatternTable extends Composite {
     // Build the buttons.
     //
 
-    Button mAddButton = createPushButton(buttons, Messages.FileSetEditDialog_btnAdd);
-    mAddButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
-      callbacks.addFileMatchPattern.run();
-      callbacks.updateMatchView.run();
-    }));
+    createPushButton(buttons, Messages.FileSetEditDialog_btnAdd,
+            callbacks.addFileMatchPattern);
+    createPushButton(buttons, Messages.FileSetEditDialog_btnEdit,
+            toRunnable(callbacks.editFileMatchPattern));
+    createPushButton(buttons, Messages.FileSetEditDialog_btnRemove,
+            toRunnable(callbacks.removeFileMatchPattern));
+    createPushButton(buttons, Messages.FileSetEditDialog_btnUp,
+            toRunnable(callbacks.upFileMatchPattern));
+    createPushButton(buttons, Messages.FileSetEditDialog_btnDown,
+            toRunnable(callbacks.downFileMatchPattern));
+  }
 
-    Button mEditButton = createPushButton(buttons, Messages.FileSetEditDialog_btnEdit);
-    mEditButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
+  private Runnable toRunnable(Consumer<FileMatchPattern> callback) {
+    return () -> {
       FileMatchPattern pattern = (FileMatchPattern) mPatternViewer.getStructuredSelection()
               .getFirstElement();
-      callbacks.editFileMatchPattern.accept(pattern);
-      callbacks.updateMatchView.run();
-    }));
-
-    Button mRemoveButton = createPushButton(buttons, Messages.FileSetEditDialog_btnRemove);
-    mRemoveButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
-      FileMatchPattern pattern = (FileMatchPattern) mPatternViewer.getStructuredSelection()
-              .getFirstElement();
-      callbacks.removeFileMatchPattern.accept(pattern);
-      callbacks.updateMatchView.run();
-    }));
-
-    Button mUpButton = createPushButton(buttons, Messages.FileSetEditDialog_btnUp);
-    mUpButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
-      FileMatchPattern pattern = (FileMatchPattern) mPatternViewer.getStructuredSelection()
-              .getFirstElement();
-      callbacks.upFileMatchPattern.accept(pattern);
-      callbacks.updateMatchView.run();
-    }));
-
-    Button mDownButton = createPushButton(buttons, Messages.FileSetEditDialog_btnDown);
-    mDownButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
-      FileMatchPattern pattern = (FileMatchPattern) mPatternViewer.getStructuredSelection()
-              .getFirstElement();
-      callbacks.downFileMatchPattern.accept(pattern);
-      callbacks.updateMatchView.run();
-    }));
+      callback.accept(pattern);
+    };
   }
 
   public void refresh() {
@@ -177,12 +154,14 @@ public final class FileMatchPatternTable extends Composite {
    *          the label for the new button
    * @return the newly-created button
    */
-  private static Button createPushButton(Composite parent, String label) {
+  private static Button createPushButton(Composite parent, String label, Runnable selectionListener) {
     Button button = new Button(parent, SWT.PUSH);
     button.setText(label);
     GridData data = new GridData();
     data.horizontalAlignment = GridData.FILL;
     button.setLayoutData(data);
+    button.addSelectionListener(
+            SelectionListener.widgetSelectedAdapter(event -> selectionListener.run()));
     return button;
   }
 

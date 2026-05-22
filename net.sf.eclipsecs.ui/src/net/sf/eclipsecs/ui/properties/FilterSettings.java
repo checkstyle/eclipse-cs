@@ -25,6 +25,7 @@ import java.util.List;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
+import org.eclipse.jface.viewers.ICheckStateProvider;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -50,29 +51,24 @@ import net.sf.eclipsecs.ui.properties.filter.PluginFilterEditors;
 
 public class FilterSettings extends Composite {
 
-  private final IProject project;
-
   public FilterSettings(Composite parent, int style, IProject project, List<IFilter> filters,
           Runnable markDirty) {
     super(parent, style);
-    this.project = project;
-
     setLayout(new FillLayout());
 
-    // group composite containing the filter settings
-    Group filterArea = new Group(this, SWT.NULL);
-    filterArea.setText(Messages.CheckstylePropertyPage_titleFilterGroup);
+    Group group = new Group(this, style);
 
-    filterArea.setLayout(new FormLayout());
+    group.setText(Messages.CheckstylePropertyPage_titleFilterGroup);
+    group.setLayout(new FormLayout());
 
-    Button btnEditFilter = new Button(filterArea, SWT.PUSH);
+    Button btnEditFilter = new Button(group, SWT.PUSH);
 
     FormData formData = new FormData();
     formData.left = new FormAttachment(0, 3);
     formData.top = new FormAttachment(0, 3);
     formData.right = new FormAttachment(btnEditFilter, -3, SWT.LEFT);
     formData.bottom = new FormAttachment(60, -3);
-    CheckboxTableViewer filterList = CheckboxTableViewer.newCheckList(filterArea, SWT.BORDER);
+    CheckboxTableViewer filterList = createFilterList(group, project);
     filterList.getTable().setLayoutData(formData);
 
     formData = new FormData();
@@ -81,7 +77,7 @@ public class FilterSettings extends Composite {
     btnEditFilter.setLayoutData(formData);
 
     // Description
-    Label lblDesc = new Label(filterArea, SWT.LEFT);
+    Label lblDesc = new Label(group, SWT.LEFT);
     lblDesc.setText(Messages.CheckstylePropertyPage_lblDescription);
     formData = new FormData();
     formData.left = new FormAttachment(0, 3);
@@ -94,43 +90,36 @@ public class FilterSettings extends Composite {
     formData.top = new FormAttachment(lblDesc, 3, SWT.BOTTOM);
     formData.right = new FormAttachment(100, -3);
     formData.bottom = new FormAttachment(100, -3);
-    Text txtFilterDescription = new Text(filterArea,
+    Text txtFilterDescription = new Text(group,
             SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.READ_ONLY | SWT.BORDER | SWT.VERTICAL);
     txtFilterDescription.setLayoutData(formData);
 
-    filterList.setLabelProvider(new LabelProvider() {
-
-      @Override
-      public String getText(Object element) {
-
-        StringBuilder buf = new StringBuilder();
-
-        if (element instanceof IFilter) {
-
-          IFilter filter = (IFilter) element;
-
-          buf.append(filter.getName());
-          if (filter.getPresentableFilterData() != null) {
-            buf.append(": ").append(filter.getPresentableFilterData()); //$NON-NLS-1$
-          }
-        } else {
-          buf.append(super.getText(element));
-        }
-
-        return buf.toString();
-      }
-    });
-    filterList.setContentProvider(new ArrayContentProvider());
     filterList.addSelectionChangedListener(event -> {
-      if (event.getSelection() instanceof IStructuredSelection selection) {
-        if (selection.getFirstElement() instanceof IFilter filterDef) {
-          txtFilterDescription.setText(filterDef.getDescription());
-          // activate edit button
-          btnEditFilter.setEnabled(PluginFilterEditors.hasEditor(filterDef));
-        }
+      if (event.getStructuredSelection().getFirstElement() instanceof IFilter filterDef) {
+        txtFilterDescription.setText(filterDef.getDescription());
+        // activate edit button
+        btnEditFilter.setEnabled(PluginFilterEditors.hasEditor(filterDef));
       }
     });
-    filterList.addDoubleClickListener(event -> openFilterEditor(event.getSelection(), filterList));
+
+    btnEditFilter.setText(Messages.CheckstylePropertyPage_btnChangeFilter);
+    btnEditFilter.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
+      openFilterEditor(filterList.getSelection(), filterList, project);
+      markDirty.run();
+    }));
+
+    // intialize filter list
+    filterList.setInput(filters);
+
+    btnEditFilter.setEnabled(false);
+  }
+
+  private CheckboxTableViewer createFilterList(Group group, IProject project) {
+    CheckboxTableViewer filterList = CheckboxTableViewer.newCheckList(group, SWT.BORDER);
+    filterList.setLabelProvider(new FilterListLabelProvider());
+    filterList.setContentProvider(new ArrayContentProvider());
+    filterList.setCheckStateProvider(new FilterListCheckStateProvider());
+    filterList.addDoubleClickListener(event -> openFilterEditor(event.getSelection(), filterList, project));
     filterList.addCheckStateListener(event -> {
       if (event.getElement() instanceof IFilter filter) {
         if (filter.isReadonly()) {
@@ -140,31 +129,7 @@ public class FilterSettings extends Composite {
         }
       }
     });
-
-    btnEditFilter.setText(Messages.CheckstylePropertyPage_btnChangeFilter);
-    btnEditFilter.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
-      ISelection selection = filterList.getSelection();
-      openFilterEditor(selection, filterList);
-      markDirty.run();
-    }));
-
-    // intialize filter list
-    List<IFilter> filterDefs = filters;
-    filterList.setInput(filterDefs);
-
-    // set the checked state
-    for (int i = 0; i < filterDefs.size(); i++) {
-      IFilter filter = filterDefs.get(i);
-      filterList.setChecked(filter, filter.isEnabled());
-    }
-
-    // set the readonly state
-    for (int i = 0; i < filterDefs.size(); i++) {
-      IFilter filter = filterDefs.get(i);
-      filterList.setGrayed(filter, filter.isReadonly());
-    }
-
-    btnEditFilter.setEnabled(false);
+    return filterList;
   }
 
   /**
@@ -173,7 +138,7 @@ public class FilterSettings extends Composite {
    * @param selection
    *          the selection
    */
-  private void openFilterEditor(ISelection selection, CheckboxTableViewer filterList) {
+  private void openFilterEditor(ISelection selection, CheckboxTableViewer filterList, IProject project) {
     if (selection instanceof IStructuredSelection) {
       Object selectedElement = ((IStructuredSelection) selection).getFirstElement();
 
@@ -201,5 +166,35 @@ public class FilterSettings extends Composite {
         }
       }
     }
+  }
+
+  private static class FilterListLabelProvider extends LabelProvider {
+    @Override
+    public String getText(Object element) {
+      StringBuilder buf = new StringBuilder();
+      if (element instanceof IFilter filter) {
+        buf.append(filter.getName());
+        if (filter.getPresentableFilterData() != null) {
+          buf.append(": ").append(filter.getPresentableFilterData());
+        }
+      } else {
+        buf.append(super.getText(element));
+      }
+      return buf.toString();
+    }
+  }
+
+  private static class FilterListCheckStateProvider implements ICheckStateProvider {
+
+    @Override
+    public boolean isChecked(Object element) {
+      return ((IFilter) element).isEnabled();
+    }
+
+    @Override
+    public boolean isGrayed(Object element) {
+      return ((IFilter) element).isReadonly();
+    }
+
   }
 }
