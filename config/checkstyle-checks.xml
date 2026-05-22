@@ -123,6 +123,13 @@
         <property name="message" value="Unnecessary consecutive lines"/>
     </module>
     <module name="RegexpMultiline">
+        <property name="id" value="commentFirstSentenceMultiline"/>
+        <property name="format" value="/\*\*\W+\* +\p{javaLowerCase}"/>
+        <property name="fileExtensions" value="java"/>
+        <property name="message"
+                  value="First sentence in a comment should start with a capital letter"/>
+    </module>
+    <module name="RegexpMultiline">
         <property name="id" value="noEmptyFile"/>
         <property name="format" value="^\s*$" />
         <property name="matchAcrossLines" value="true" />

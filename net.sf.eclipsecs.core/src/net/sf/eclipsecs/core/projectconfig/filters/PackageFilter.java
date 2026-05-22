@@ -30,7 +30,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 
 /**
- * filters resources that lie within excluded packages. This filter is used for the checkstyle audit
+ * Filters resources that lie within excluded packages. This filter is used for the checkstyle audit
  * function of this plugin.
  *
  */

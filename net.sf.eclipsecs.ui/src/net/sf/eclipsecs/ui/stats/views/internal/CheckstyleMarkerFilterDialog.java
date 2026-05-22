@@ -371,7 +371,7 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
   }
 
   /**
-   * updates the enablement state of the controls.
+   * Updates the enablement state of the controls.
    */
   private void updateControlState() {
 

@@ -29,7 +29,7 @@ import java.util.List;
 public class RuleGroupMetadata {
 
   /**
-   * group id, used for online help URL calculation
+   * Group id, used for online help URL calculation
    */
   private final String mGroupId;
 

@@ -45,11 +45,11 @@ public final class CheckstyleQuickfixes {
    */
   private static final String QUICKFIX_EXTENSION_POINT = "net.sf.eclipsecs.ui.quickfix";
   /**
-   * attribute under which the fully qualified class name of the quick fix is registered
+   * Attribute under which the fully qualified class name of the quick fix is registered
    */
   private static final String EXTENSION_CLASS_ATTRIBUTE = "class";
   /**
-   * attribute under which the module id is registered
+   * Attribute under which the module id is registered
    */
   private static final String EXTENSION_MODULE_ATTRIBUTE = "module";
 
@@ -104,7 +104,7 @@ public final class CheckstyleQuickfixes {
   }
 
   /**
-   * initialization-on-demand-holder
+   * Initialization-on-demand-holder
    */
   private static class LazyHolder {
     static final CheckstyleQuickfixes INSTANCE = new CheckstyleQuickfixes();
