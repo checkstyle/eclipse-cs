@@ -252,7 +252,7 @@ public class Auditor {
     private int mMarkerCount;
 
     /**
-     * keep track which file paths have been connected with the BufferManager.
+     * Keep track which file paths have been connected with the BufferManager.
      */
     private Set<IPath> mConnectedFileBufferPaths = new HashSet<>();
 

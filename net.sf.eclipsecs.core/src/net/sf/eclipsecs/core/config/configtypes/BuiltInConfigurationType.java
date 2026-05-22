@@ -41,7 +41,7 @@ import net.sf.eclipsecs.core.config.ICheckConfiguration;
 public class BuiltInConfigurationType extends AbstractConfigurationType {
 
   /**
-   * constant for the contributor key. It stores the id of the plugin which contributes the built in
+   * Constant for the contributor key. It stores the id of the plugin which contributes the built in
    * configuration, so that the file can be retrieved properly.
    */
   public static final String CONTRIBUTOR_KEY = "contributor";

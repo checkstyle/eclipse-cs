@@ -37,7 +37,7 @@ import net.sf.eclipsecs.core.util.CheckstyleLog;
 public class CheckstyleMetadataAdapter {
 
   /**
-   * metadata type or validation type for regular expressions
+   * Metadata type or validation type for regular expressions
    */
   private static final String TYPE_ID_PATTERN = "java.util.regex.Pattern";
   /** Pattern for dot. */

@@ -38,11 +38,11 @@ public class MarkerHelpContextProvider extends AbstractContextProvider
         implements IMarkerHelpContextProvider {
 
   /**
-   * package of the regexp checks
+   * Package of the regexp checks
    */
   private static final String REGEXP_PACKAGE = "com.puppycrawl.tools.checkstyle.checks.regexp.";
   /**
-   * suffix of all standard check implementations
+   * Suffix of all standard check implementations
    */
   private static final String CHECK_SUFFIX = "Check";
   /**

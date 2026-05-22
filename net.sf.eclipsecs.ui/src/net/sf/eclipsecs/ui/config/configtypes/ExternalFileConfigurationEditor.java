@@ -78,7 +78,7 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
   private Text mDescription;
 
   /**
-   * check box to set if the configuration file is not editable by the
+   * Check box to set if the configuration file is not editable by the
    * configuration editor.
    */
   private Button mChkProtectConfig;
