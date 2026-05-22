@@ -91,7 +91,7 @@ public class SimpleFileSetsEditor implements IFileSetsEditor {
   }
 
   @Override
-  public void setFileSets(List<FileSet> fileSets) throws CheckstylePluginException {
+  public void setFileSets(List<FileSet> fileSets) {
     mFileSets = fileSets;
 
     ICheckConfiguration config = null;
@@ -108,7 +108,11 @@ public class SimpleFileSetsEditor implements IFileSetsEditor {
     }
 
     mDefaultFileSet = new FileSet(Messages.SimpleFileSetsEditor_nameAllFileset, config);
-    mDefaultFileSet.getFileMatchPatterns().add(new FileMatchPattern(".")); //$NON-NLS-1$
+    try {
+      mDefaultFileSet.getFileMatchPatterns().add(new FileMatchPattern("."));
+    } catch (CheckstylePluginException ex) {
+      // impossible
+    }
     mFileSets.clear();
     mFileSets.add(mDefaultFileSet);
   }
@@ -119,7 +123,7 @@ public class SimpleFileSetsEditor implements IFileSetsEditor {
   }
 
   @Override
-  public Control createContents(Composite parent) throws CheckstylePluginException {
+  public Control createContents(Composite parent) {
 
     mController = new Controller();
 

@@ -28,6 +28,8 @@ import java.io.OutputStream;
 
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -93,44 +95,33 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
 
   @Override
   public Control createEditorControl(Composite parent, final Shell shell) {
-
     Composite contents = new Composite(parent, SWT.NULL);
     contents.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-    GridLayout layout = new GridLayout(2, false);
-    layout.marginWidth = 0;
-    layout.marginHeight = 0;
-    contents.setLayout(layout);
+    GridLayoutFactory gridLayoutFactory = GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(false).margins(0, 0);
+    gridLayoutFactory.applyTo(contents);
 
     Label lblConfigName = new Label(contents, SWT.NULL);
     lblConfigName.setText(Messages.CheckConfigurationPropertiesDialog_lblName);
-    GridData gridData = new GridData();
-    lblConfigName.setLayoutData(gridData);
+    lblConfigName.setLayoutData(new GridData());
 
     mConfigName = new Text(contents, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
-    gridData = new GridData(GridData.FILL_HORIZONTAL);
-    mConfigName.setLayoutData(gridData);
+    mConfigName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
     mConfigName.setFocus();
 
     Label lblConfigLocation = new Label(contents, SWT.NULL);
     lblConfigLocation.setText(Messages.CheckConfigurationPropertiesDialog_lblLocation);
-    gridData = new GridData();
-    lblConfigLocation.setLayoutData(gridData);
+    lblConfigLocation.setLayoutData(new GridData());
 
     Composite locationComposite = new Composite(contents, SWT.NULL);
     locationComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-    layout = new GridLayout(2, false);
-    layout.marginWidth = 0;
-    layout.marginHeight = 0;
-    locationComposite.setLayout(layout);
+    gridLayoutFactory.applyTo(locationComposite);
 
     mLocation = new Text(locationComposite, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
-    gridData = new GridData(GridData.FILL_HORIZONTAL);
-    mLocation.setLayoutData(gridData);
+    mLocation.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
     mBtnBrowse = new Button(locationComposite, SWT.PUSH);
     mBtnBrowse.setText(Messages.FileConfigurationLocationEditor_btnBrowse);
-    gridData = new GridData();
-    mBtnBrowse.setLayoutData(gridData);
+    mBtnBrowse.setLayoutData(new GridData());
 
     mBtnBrowse.addSelectionListener(new SelectionListener() {
 
@@ -153,31 +144,19 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
 
     Label lblDescription = new Label(contents, SWT.NULL);
     lblDescription.setText(Messages.CheckConfigurationPropertiesDialog_lblDescription);
-    gridData = new GridData();
-    gridData.horizontalSpan = 2;
-    lblDescription.setLayoutData(gridData);
+    GridDataFactory.swtDefaults().span(2, 1).applyTo(lblDescription);
 
     mDescription = new Text(contents, SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.BORDER | SWT.VERTICAL);
-    gridData = new GridData(GridData.FILL_BOTH);
-    gridData.horizontalSpan = 2;
-    gridData.widthHint = 300;
-    gridData.heightHint = 100;
-    gridData.grabExcessHorizontalSpace = true;
-    gridData.grabExcessVerticalSpace = true;
-    mDescription.setLayoutData(gridData);
+    GridDataFactory.create(GridData.FILL_BOTH).span(2, 1).hint(300, 100).grab(true, true).applyTo(mDescription);
 
     Group advancedGroup = new Group(contents, SWT.NULL);
     advancedGroup.setText(Messages.RemoteConfigurationEditor_titleAdvancedOptions);
-    gridData = new GridData(GridData.FILL_HORIZONTAL);
-    gridData.horizontalSpan = 2;
-    advancedGroup.setLayoutData(gridData);
+    GridDataFactory.create(GridData.FILL_HORIZONTAL).span(2, 1).applyTo(advancedGroup);
     advancedGroup.setLayout(new GridLayout(2, false));
 
     mChkProtectConfig = new Button(advancedGroup, SWT.CHECK);
     mChkProtectConfig.setText(Messages.ExternalFileConfigurationEditor_btnProtectConfigFile);
-    gridData = new GridData(GridData.FILL_HORIZONTAL);
-    gridData.horizontalSpan = 2;
-    mChkProtectConfig.setLayoutData(gridData);
+    GridDataFactory.create(GridData.FILL_HORIZONTAL).span(2, 1).applyTo(mChkProtectConfig);
 
     if (mWorkingCopy.getName() != null) {
       mConfigName.setText(mWorkingCopy.getName());

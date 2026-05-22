@@ -230,6 +230,7 @@ public final class FileSetEditDialog extends TitleAreaDialog {
       fileMatchPatternTable.refresh();
       fileMatchPatternTable.setChecked(pattern, pattern.isIncludePattern());
     }
+    updateMatchView();
   }
 
   private void editFileMatchPattern(FileMatchPattern pattern) {
@@ -250,6 +251,7 @@ public final class FileSetEditDialog extends TitleAreaDialog {
       fileMatchPatternTable.refresh();
       fileMatchPatternTable.setChecked(editedPattern, editedPattern.isIncludePattern());
     }
+    updateMatchView();
   }
 
   private void removeFileMatchPattern(FileMatchPattern pattern) {
@@ -262,6 +264,7 @@ public final class FileSetEditDialog extends TitleAreaDialog {
 
     mFileSet.getFileMatchPatterns().remove(pattern);
     fileMatchPatternTable.refresh();
+    updateMatchView();
   }
 
   private void upFileMatchPattern(FileMatchPattern pattern) {
@@ -278,6 +281,7 @@ public final class FileSetEditDialog extends TitleAreaDialog {
       mFileSet.getFileMatchPatterns().add(index - 1, pattern);
       fileMatchPatternTable.refresh();
     }
+    updateMatchView();
   }
 
   private void downFileMatchPattern(FileMatchPattern pattern) {
@@ -299,6 +303,7 @@ public final class FileSetEditDialog extends TitleAreaDialog {
 
       fileMatchPatternTable.refresh();
     }
+    updateMatchView();
   }
 
   private void configureFileSetConfig() {

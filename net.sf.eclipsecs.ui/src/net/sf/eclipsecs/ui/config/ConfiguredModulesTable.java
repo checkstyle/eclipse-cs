@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import org.eclipse.jface.dialogs.IDialogSettings;
+import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.ColumnWeightData;
@@ -75,36 +76,7 @@ public final class ConfiguredModulesTable extends Composite {
     configuredModulesGroup.setLayout(new GridLayout());
     configuredModulesGroup.setText("\0");
 
-    Table table = new Table(configuredModulesGroup,
-            SWT.CHECK | SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION);
-    table.setLayoutData(new GridData(GridData.FILL_BOTH));
-    table.setHeaderVisible(true);
-    table.setLinesVisible(true);
-
-    TableLayout tableLayout = new TableLayout();
-    table.setLayout(tableLayout);
-
-    TableColumn column1 = new TableColumn(table, SWT.NONE);
-    column1.setAlignment(SWT.CENTER);
-    column1.setText(Messages.CheckConfigurationConfigureDialog_colEnabled);
-    tableLayout.addColumnData(new ColumnWeightData(15));
-
-    TableColumn column2 = new TableColumn(table, SWT.NONE);
-    column2.setText(Messages.CheckConfigurationConfigureDialog_colModule);
-    tableLayout.addColumnData(new ColumnWeightData(30));
-
-    TableColumn column3 = new TableColumn(table, SWT.NONE);
-    column3.setText(Messages.CheckConfigurationConfigureDialog_colSeverity);
-    tableLayout.addColumnData(new ColumnWeightData(20));
-
-    TableColumn column4 = new TableColumn(table, SWT.NONE);
-    column4.setText(Messages.CheckConfigurationConfigureDialog_colComment);
-    tableLayout.addColumnData(new ColumnWeightData(35));
-
-    // by default the table viewer sorts on column 0, but we want to sort by the module label
-    table.setSortColumn(column2);
-
-    this.tableViewer = new CheckboxTableViewer(table);
+    this.tableViewer = new CheckboxTableViewer(createTable(configuredModulesGroup));
     ModuleLabelProvider multiProvider = new ModuleLabelProvider();
     tableViewer.setLabelProvider(multiProvider);
     tableViewer.setContentProvider(ArrayContentProvider.getInstance());
@@ -133,29 +105,14 @@ public final class ConfiguredModulesTable extends Composite {
       }));
     }
 
-    tableViewer.setCheckStateProvider(new ICheckStateProvider() {
-
-      @Override
-      public boolean isGrayed(Object element) {
-        return !configurable;
-      }
-
-      @Override
-      public boolean isChecked(Object element) {
-        Module module = (Module) element;
-        return !Severity.IGNORE.equals(module.getSeverity()) || !module.getMetaData().hasSeverity();
-      }
-    });
+    tableViewer.setCheckStateProvider(new TableCheckStateProvider(configurable));
 
     tableViewer.setInput(modules);
 
     TableViewerEnhancer.enhance(tableViewer, multiProvider);
 
     Composite buttons = new Composite(configuredModulesGroup, SWT.NONE);
-    GridLayout layout = new GridLayout(2, true);
-    layout.marginHeight = 0;
-    layout.marginWidth = 0;
-    buttons.setLayout(layout);
+    GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(true).margins(0, 0).applyTo(buttons);
     buttons.setLayoutData(new GridData());
 
     Button mRemoveButton = new Button(buttons, SWT.PUSH);
@@ -176,6 +133,38 @@ public final class ConfiguredModulesTable extends Composite {
     mEditButton.addSelectionListener(
             SelectionListener.widgetSelectedAdapter(event -> callbacks.openModule
                     .accept((Module) tableViewer.getStructuredSelection().getFirstElement())));
+  }
+
+  private static Table createTable(Composite parent) {
+    Table table = new Table(parent, SWT.CHECK | SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION);
+    table.setLayoutData(new GridData(GridData.FILL_BOTH));
+    table.setHeaderVisible(true);
+    table.setLinesVisible(true);
+
+    TableLayout tableLayout = new TableLayout();
+    table.setLayout(tableLayout);
+
+    TableColumn column1 = new TableColumn(table, SWT.NONE);
+    column1.setAlignment(SWT.CENTER);
+    column1.setText(Messages.CheckConfigurationConfigureDialog_colEnabled);
+    tableLayout.addColumnData(new ColumnWeightData(15));
+
+    TableColumn column2 = new TableColumn(table, SWT.NONE);
+    column2.setText(Messages.CheckConfigurationConfigureDialog_colModule);
+    tableLayout.addColumnData(new ColumnWeightData(30));
+
+    TableColumn column3 = new TableColumn(table, SWT.NONE);
+    column3.setText(Messages.CheckConfigurationConfigureDialog_colSeverity);
+    tableLayout.addColumnData(new ColumnWeightData(20));
+
+    TableColumn column4 = new TableColumn(table, SWT.NONE);
+    column4.setText(Messages.CheckConfigurationConfigureDialog_colComment);
+    tableLayout.addColumnData(new ColumnWeightData(35));
+
+    // by default the table viewer sorts on column 0, but we want to sort by the module label
+    table.setSortColumn(column2);
+
+    return table;
   }
 
   public void refresh() {
@@ -265,6 +254,26 @@ public final class ConfiguredModulesTable extends Composite {
       }
 
       return settings;
+    }
+  }
+
+  private static class TableCheckStateProvider implements ICheckStateProvider {
+
+    private final boolean configurable;
+
+    private TableCheckStateProvider(boolean configurable) {
+      this.configurable = configurable;
+    }
+
+    @Override
+    public boolean isGrayed(Object element) {
+      return !configurable;
+    }
+
+    @Override
+    public boolean isChecked(Object element) {
+      Module module = (Module) element;
+      return !Severity.IGNORE.equals(module.getSeverity()) || !module.getMetaData().hasSeverity();
     }
   }
 }

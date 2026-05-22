@@ -26,7 +26,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import net.sf.eclipsecs.core.projectconfig.FileSet;
-import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
 /**
  * Interface for the part of the checkstyle plugin properties page that
@@ -40,20 +39,16 @@ public interface IFileSetsEditor {
    * @param parent
    *          the parent component
    * @return the control
-   * @throws CheckstylePluginException
-   *           error while creating and initializing the control
    */
-  Control createContents(Composite parent) throws CheckstylePluginException;
+  Control createContents(Composite parent);
 
   /**
    * Set the file sets for the editor.
    *
    * @param fileSets
    *          the list of file sets
-   * @throws CheckstylePluginException
-   *           an unexpected exception occurred
    */
-  void setFileSets(List<FileSet> fileSets) throws CheckstylePluginException;
+  void setFileSets(List<FileSet> fileSets);
 
   /**
    * Returns the file sets.
