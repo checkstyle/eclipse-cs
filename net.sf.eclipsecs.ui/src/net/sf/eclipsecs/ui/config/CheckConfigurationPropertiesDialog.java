@@ -278,9 +278,11 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
                 NLS.bind(Messages.CheckConfigurationPropertiesDialog_msgUnresolvedProps,
                         Integer.toString(numUnresolvedProps)),
                 MessageDialog.WARNING,
-                new String[] { Messages.CheckConfigurationPropertiesDialog_btnEditProps,
+                new String[] {
+                    Messages.CheckConfigurationPropertiesDialog_btnEditProps,
                     Messages.CheckConfigurationPropertiesDialog_btnContinue,
-                    Messages.CheckConfigurationPropertiesDialog_btnCancel },
+                    Messages.CheckConfigurationPropertiesDialog_btnCancel,
+                },
                 0);
         int result = dialog.open();
 
@@ -374,7 +376,9 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
       this.setMessage(Messages.CheckConfigurationPropertiesDialog_msgEditCheckConfig);
 
       mConfigType.getCombo().setEnabled(false);
-      mConfigType.setInput(new IConfigurationType[] { mCheckConfig.getType() });
+      mConfigType.setInput(new IConfigurationType[] {
+          mCheckConfig.getType(),
+      });
 
       // type of existing configs cannot be changed
       mConfigType.setSelection(new StructuredSelection(mCheckConfig.getType()), true);

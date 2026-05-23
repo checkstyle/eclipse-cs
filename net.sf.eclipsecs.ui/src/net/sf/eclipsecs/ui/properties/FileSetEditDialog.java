@@ -121,7 +121,10 @@ public final class FileSetEditDialog extends TitleAreaDialog {
     this.matchArea = new FileSetEditDialogMatchedFilesPreview(sashForm, SWT.NONE, mFileSet);
     matchArea.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-    sashForm.setWeights(new int[] { 50, 50 });
+    sashForm.setWeights(new int[] {
+        50,
+        50,
+    });
 
     // init the data
     initializeControls();
@@ -175,8 +178,11 @@ public final class FileSetEditDialog extends TitleAreaDialog {
   private void updateMatchView() {
     matchArea.refresh();
     matchArea.setText(itemCount -> NLS.bind(Messages.FileSetEditDialog_titleTestResult,
-            new String[] { propertyPageContext.project().getName(), Integer.toString(itemCount),
-                Integer.toString(mProjectFiles.size()) }));
+            new String[] {
+                propertyPageContext.project().getName(),
+                Integer.toString(itemCount),
+                Integer.toString(mProjectFiles.size()),
+            }));
   }
 
   @Override

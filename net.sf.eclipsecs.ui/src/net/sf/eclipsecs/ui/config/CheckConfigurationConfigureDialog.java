@@ -166,7 +166,10 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
                     mBrowserDescription::setText, this::checkStateChanged));
     configuredModulesTable.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-    sashForm.setWeights(new int[] { 30, 70 });
+    sashForm.setWeights(new int[] {
+        30,
+        70,
+    });
 
     // initialize the data
     initialize();

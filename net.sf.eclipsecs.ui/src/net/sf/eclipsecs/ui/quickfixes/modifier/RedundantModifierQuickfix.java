@@ -91,12 +91,10 @@ public class RedundantModifierQuickfix extends AbstractASTResolution {
         if (node.getParent() instanceof TypeDeclaration) {
           TypeDeclaration type = (TypeDeclaration) node.getParent();
           if (type.isInterface()) {
-            redundantKeyWords = Arrays
-                    .asList(new ModifierKeyword[] { ModifierKeyword.PUBLIC_KEYWORD,
-                        ModifierKeyword.ABSTRACT_KEYWORD, ModifierKeyword.FINAL_KEYWORD });
+            redundantKeyWords = List.of(ModifierKeyword.PUBLIC_KEYWORD,
+                    ModifierKeyword.ABSTRACT_KEYWORD, ModifierKeyword.FINAL_KEYWORD);
           } else if (Modifier.isFinal(type.getModifiers())) {
-            redundantKeyWords = Arrays
-                    .asList(new ModifierKeyword[] { ModifierKeyword.FINAL_KEYWORD });
+            redundantKeyWords = List.of(ModifierKeyword.FINAL_KEYWORD);
           }
         }
 

@@ -89,8 +89,11 @@ public final class CheckstylePreferencePageGeneralSettings extends Composite {
     lblRebuild.setText(Messages.CheckstylePreferencePage_lblRebuild);
 
     mRebuildIfNeeded = new Combo(rebuildComposite, SWT.READ_ONLY);
-    mRebuildIfNeeded.setItems(new String[] { MessageDialogWithToggle.PROMPT,
-        MessageDialogWithToggle.ALWAYS, MessageDialogWithToggle.NEVER });
+    mRebuildIfNeeded.setItems(new String[] {
+        MessageDialogWithToggle.PROMPT,
+        MessageDialogWithToggle.ALWAYS,
+        MessageDialogWithToggle.NEVER,
+    });
     mRebuildIfNeeded.select(mRebuildIfNeeded.indexOf(
             CheckstyleUIPluginPrefs.getString(CheckstyleUIPluginPrefs.PREF_ASK_BEFORE_REBUILD)));
 

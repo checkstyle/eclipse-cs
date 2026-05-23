@@ -30,7 +30,10 @@ public final class MethodLimitCheck extends AbstractCheck {
 
   @Override
   public int[] getAcceptableTokens() {
-    return new int[] { TokenTypes.CLASS_DEF, TokenTypes.INTERFACE_DEF };
+    return new int[] {
+        TokenTypes.CLASS_DEF,
+        TokenTypes.INTERFACE_DEF,
+    };
   }
 
   @Override
@@ -40,7 +43,10 @@ public final class MethodLimitCheck extends AbstractCheck {
 
   @Override
   public int[] getDefaultTokens() {
-    return new int[] { TokenTypes.CLASS_DEF, TokenTypes.INTERFACE_DEF };
+    return new int[] {
+        TokenTypes.CLASS_DEF,
+        TokenTypes.INTERFACE_DEF,
+    };
   }
 
   public void setMax(int limit) {

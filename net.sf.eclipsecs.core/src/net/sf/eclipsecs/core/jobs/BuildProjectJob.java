@@ -53,7 +53,9 @@ public class BuildProjectJob extends Job {
    */
   public BuildProjectJob(IProject project, int buildKind) {
     super(NLS.bind(Messages.BuildProjectJob_msgBuildProject, project.getName()));
-    mProjects = new IProject[] { project };
+    mProjects = new IProject[] {
+        project,
+    };
     mKind = buildKind;
   }
 

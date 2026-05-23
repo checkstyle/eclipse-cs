@@ -166,7 +166,10 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor {
   private static Optional<String> promptImportConfigFile(Shell shell) {
     FileDialog fileDialog = new FileDialog(shell);
     fileDialog.setText(Messages.InternalConfigurationEditor_titleImportDialog);
-    fileDialog.setFilterExtensions(new String[] { "*.xml", "*.*" });
+    fileDialog.setFilterExtensions(new String[] {
+        "*.xml",
+        "*.*",
+    });
     String configFileString = fileDialog.open();
     if (configFileString != null && new File(configFileString).exists()) {
       return Optional.of(configFileString);

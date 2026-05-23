@@ -191,7 +191,9 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
       marker.setAttributes(markerAttributes);
     }
 
-    return new IProject[] { project };
+    return new IProject[] {
+        project,
+    };
   }
 
   @Override
