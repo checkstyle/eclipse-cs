@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.dom4j.Document;
@@ -329,28 +328,8 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
         continue;
       }
 
-      Element configEl = root.addElement(XMLTags.CHECK_CONFIG_TAG);
-      configEl.addAttribute(XMLTags.NAME_TAG, config.getName());
-      configEl.addAttribute(XMLTags.LOCATION_TAG, config.getLocation());
-      configEl.addAttribute(XMLTags.TYPE_TAG, config.getType().getInternalName());
-      if (config.getDescription() != null) {
-        configEl.addAttribute(XMLTags.DESCRIPTION_TAG, config.getDescription());
-      }
-
-      // Write resolvable properties
-      for (ResolvableProperty prop : config.getResolvableProperties()) {
-
-        Element propEl = configEl.addElement(XMLTags.PROPERTY_TAG);
-        propEl.addAttribute(XMLTags.NAME_TAG, prop.getPropertyName());
-        propEl.addAttribute(XMLTags.VALUE_TAG, prop.getValue());
-      }
-
-      for (Map.Entry<String, String> entry : config.getAdditionalData().entrySet()) {
-
-        Element addEl = configEl.addElement(XMLTags.ADDITIONAL_DATA_TAG);
-        addEl.addAttribute(XMLTags.NAME_TAG, entry.getKey());
-        addEl.addAttribute(XMLTags.VALUE_TAG, entry.getValue());
-      }
+      CheckConfigurationXmlWriter.writeCheckConfiguration(root, config, config.getLocation(),
+              XMLTags.CHECK_CONFIG_TAG);
     }
     return doc;
   }

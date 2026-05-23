@@ -24,16 +24,29 @@ import net.sf.eclipsecs.core.transformer.AbstractCTransformationClass;
 import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 
 /**
- * Wrapperclass for converting the checkstyle-rule FinalParameters to appropriate
+ * Wrapper class for converting the checkstyle-rule FinalParameters to appropriate
  * eclipse-formatter-rules.
  *
  */
 public class FinalParametersTransformer extends AbstractCTransformationClass {
   @Override
   public FormatterConfiguration transformRule() {
-    // TODO tokens
+    String tokens = getAttribute("tokens");
+    if (tokens == null) {
+      tokens = "METHOD_DEF, CTOR_DEF";
+    }
+
+    for (String token : tokens.split("\\s*,\\s*")) {
+      switch (token) {
+        case "METHOD_DEF", "CTOR_DEF" -> useCleanupSetting("make_parameters_final", "true");
+        case "LITERAL_CATCH", "FOR_EACH_CLAUSE", "PATTERN_VARIABLE_DEF" ->
+          useCleanupSetting("make_local_variable_final", "true");
+        default -> {
+          // nothing to transform
+        }
+      }
+    }
     useCleanupSetting("make_variable_declarations_final", "true");
-    useCleanupSetting("make_parameters_final", "true");
     return getFormatterSetting();
   }
 }

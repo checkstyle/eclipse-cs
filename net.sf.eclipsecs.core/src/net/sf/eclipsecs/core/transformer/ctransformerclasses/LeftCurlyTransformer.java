@@ -22,25 +22,22 @@ package net.sf.eclipsecs.core.transformer.ctransformerclasses;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.StringTokenizer;
 
 import net.sf.eclipsecs.core.transformer.AbstractCTransformationClass;
 import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 
 /**
- * Wrapperclass for converting the checkstyle-rule LeftCurly to appropriate eclipse-formatter-rules.
+ * Wrapper class for converting the checkstyle-rule LeftCurly to appropriate eclipse-formatter-rules.
  *
  */
 public class LeftCurlyTransformer extends AbstractCTransformationClass {
   @Override
   public FormatterConfiguration transformRule() {
-    // TODO token LITERAL_SYNCHRONIZED
     String tokens = getAttribute("tokens");
     if (tokens == null) {
       tokens = "CLASS_DEF, CTOR_DEF, INTERFACE_DEF, METHOD_DEF, LITERAL_CATCH, LITERAL_DO, LITERAL_ELSE, "
               + "LITERAL_FINALLY, LITERAL_FOR, LITERAL_IF, LITERAL_SYNCHRONIZED, LITERAL_TRY, LITERAL_WHILE";
     }
-    final StringTokenizer token = new StringTokenizer(tokens, ", ");
 
     String option = switch (getAttribute("option")) {
       case null -> "end_of_line";
@@ -49,8 +46,8 @@ public class LeftCurlyTransformer extends AbstractCTransformationClass {
       case String s -> s;
     };
 
-    while (token.hasMoreTokens()) {
-      List<String> settings = switch (token.nextToken()) {
+    for (String token : tokens.split("\\s*,\\s*")) {
+      List<String> settings = switch (token) {
         case "CLASS_DEF" -> List.of("brace_position_for_anonymous_type_declaration",
                 "brace_position_for_enum_constant",
                 "brace_position_for_enum_declaration",
@@ -62,7 +59,7 @@ public class LeftCurlyTransformer extends AbstractCTransformationClass {
         case "CTOR_DEF" -> List.of("brace_position_for_constructor_declaration");
         case "METHOD_DEF" -> List.of("brace_position_for_method_declaration");
         case "LITERAL_DO", "LITERAL_ELSE", "LITERAL_FOR", "LITERAL_IF", "LITERAL_WHILE", "LITERAL_CATCH",
-             "LITERAL_FINALLY", "LITERAL_TRY" -> List.of("brace_position_for_block");
+             "LITERAL_FINALLY", "LITERAL_TRY", "LITERAL_SYNCHRONIZED" -> List.of("brace_position_for_block");
         case "LITERAL_SWITCH" -> List.of("brace_position_for_switch");
         default -> Collections.emptyList();
       };

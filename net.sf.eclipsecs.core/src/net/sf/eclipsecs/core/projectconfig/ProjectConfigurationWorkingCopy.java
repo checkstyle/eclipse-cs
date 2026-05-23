@@ -27,7 +27,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 import org.dom4j.Document;
@@ -44,9 +43,9 @@ import org.eclipse.osgi.util.NLS;
 import net.sf.eclipsecs.core.Messages;
 import net.sf.eclipsecs.core.config.CheckConfigurationFactory;
 import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
+import net.sf.eclipsecs.core.config.CheckConfigurationXmlWriter;
 import net.sf.eclipsecs.core.config.ICheckConfiguration;
 import net.sf.eclipsecs.core.config.ICheckConfigurationWorkingSet;
-import net.sf.eclipsecs.core.config.ResolvableProperty;
 import net.sf.eclipsecs.core.config.configtypes.BuiltInConfigurationType;
 import net.sf.eclipsecs.core.config.configtypes.ProjectConfigurationType;
 import net.sf.eclipsecs.core.projectconfig.filters.IFilter;
@@ -414,9 +413,6 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
    */
   private void writeLocalConfiguration(ICheckConfiguration checkConfig, Element docRoot) {
 
-    // TODO refactor to avoid code duplication with
-    // GlobalCheckConfigurationWorkingSet
-
     // don't store built-in configurations to persistence or local
     // configurations
     if (checkConfig.getType() instanceof BuiltInConfigurationType || checkConfig.isGlobal()) {
@@ -438,29 +434,8 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
       }
     }
 
-    Element configEl = docRoot.addElement(XMLTags.CHECK_CONFIG_TAG);
-    configEl.addAttribute(XMLTags.NAME_TAG, checkConfig.getName());
-    configEl.addAttribute(XMLTags.LOCATION_TAG, location);
-    configEl.addAttribute(XMLTags.TYPE_TAG, checkConfig.getType().getInternalName());
-    if (checkConfig.getDescription() != null) {
-      configEl.addAttribute(XMLTags.DESCRIPTION_TAG, checkConfig.getDescription());
-    }
-
-    // Write resolvable properties
-    for (ResolvableProperty prop : checkConfig.getResolvableProperties()) {
-
-      Element propEl = configEl.addElement(XMLTags.PROPERTY_TAG);
-      propEl.addAttribute(XMLTags.NAME_TAG, prop.getPropertyName());
-      propEl.addAttribute(XMLTags.VALUE_TAG, prop.getValue());
-    }
-
-    // Write additional data
-    for (Map.Entry<String, String> entry : checkConfig.getAdditionalData().entrySet()) {
-
-      Element addEl = configEl.addElement(XMLTags.ADDITIONAL_DATA_TAG);
-      addEl.addAttribute(XMLTags.NAME_TAG, entry.getKey());
-      addEl.addAttribute(XMLTags.VALUE_TAG, entry.getValue());
-    }
+    CheckConfigurationXmlWriter.writeCheckConfiguration(docRoot, checkConfig, location,
+            XMLTags.CHECK_CONFIG_TAG);
   }
 
   /**

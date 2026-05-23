@@ -20,9 +20,10 @@
 
 package net.sf.eclipsecs.core.jobs;
 
-import java.io.FileNotFoundException;
+import java.util.Map;
+import java.util.stream.Collectors;
 
-import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -32,10 +33,11 @@ import org.eclipse.core.runtime.SubMonitor;
 
 import net.sf.eclipsecs.core.CheckstylePlugin;
 import net.sf.eclipsecs.core.Messages;
-import net.sf.eclipsecs.core.transformer.FormatterConfigParser;
-import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 import net.sf.eclipsecs.core.transformer.FormatterTransformer;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
+
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaCore;
 
 /**
  * Job who starts transforming the formatter-rules to checkstyle-settings.
@@ -44,11 +46,19 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
  */
 public class TransformFormatterRulesJob extends WorkspaceJob {
 
+  /** Selected project in workspace. */
+  private final IProject mProject;
+
   /**
    * Job for transforming formatter-rules to checkstyle-settings.
+   *
+   * @param project
+   *          The current selected project in the workspace.
    */
-  public TransformFormatterRulesJob() {
+  public TransformFormatterRulesJob(final IProject project) {
     super(Messages.TransformFormatterRulesJob_name);
+
+    this.mProject = project;
   }
 
   @Override
@@ -56,29 +66,24 @@ public class TransformFormatterRulesJob extends WorkspaceJob {
     SubMonitor subMonitor = SubMonitor.convert(monitor);
     subMonitor.setWorkRemaining(IProgressMonitor.UNKNOWN);
 
-    // TODO this way of loading formatter profiles is very dubious, to say
-    // the least, refer to FormatterConfigWriter for a better API
-    final String workspace = ResourcesPlugin.getWorkspace().getRoot().getLocation().toString();
-
-    final String configLocation = workspace
-            + "/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.core.prefs"; //$NON-NLS-1$
-
-    FormatterConfigParser parser;
-
-    try {
-      parser = new FormatterConfigParser(configLocation);
-    } catch (final FileNotFoundException ex) {
+    IJavaProject javaProject = JavaCore.create(mProject);
+    if (javaProject == null) {
       return Status.CANCEL_STATUS;
     }
-    final FormatterConfiguration rules = parser.parseRules();
 
-    if (rules == null) {
+    final String projectPath = mProject.getLocation().toString();
+
+    Map<String, String> formatterSettings = javaProject.getOptions(true).entrySet().stream()
+            .filter(entry -> entry.getKey().startsWith("org.eclipse.jdt.core.formatter."))
+            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+    if (formatterSettings.isEmpty()) {
       return Status.CANCEL_STATUS;
     }
 
     try {
       FormatterTransformer transformer = new FormatterTransformer();
-      transformer.transformRules(workspace + "/test-checkstyle.xml", rules.getFormatterSettings()); //$NON-NLS-1$
+      transformer.transformRules(projectPath + "/test-checkstyle.xml", formatterSettings);
     } catch (CheckstylePluginException ex) {
       Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR,
               ex.getMessage(), ex);

@@ -153,8 +153,6 @@ public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegat
             }
           }
 
-          // TODO consider copying internal configurations
-
           // add local configurations from blueprint
           for (ICheckConfiguration localConfig : bluePrintLocalConfigs) {
             CheckConfigurationWorkingCopy newCopy = checkConfigsWorkingSet.newWorkingCopy(localConfig);

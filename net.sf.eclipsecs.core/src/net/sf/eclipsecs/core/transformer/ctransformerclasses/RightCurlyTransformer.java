@@ -20,13 +20,13 @@
 
 package net.sf.eclipsecs.core.transformer.ctransformerclasses;
 
-import java.util.StringTokenizer;
+import java.util.List;
 
 import net.sf.eclipsecs.core.transformer.AbstractCTransformationClass;
 import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 
 /**
- * Wrapperclass for converting the checkstyle-rule RightCurly to appropriate
+ * Wrapper class for converting the checkstyle-rule RightCurly to appropriate
  * eclipse-formatter-rules.
  *
  */
@@ -34,33 +34,30 @@ public class RightCurlyTransformer extends AbstractCTransformationClass {
 
   @Override
   public FormatterConfiguration transformRule() {
-    // TODO token LITERAL_TRY/IF
     String tokens = getAttribute("tokens");
     if (tokens == null) {
       tokens = "LITERAL_TRY, LITERAL_CATCH, LITERAL_FINALLY, LITERAL_IF, LITERAL_ELSE";
     }
-    final StringTokenizer token = new StringTokenizer(tokens, ", ");
-    String tok;
 
     String option = getAttribute("option");
     if (option == null) {
       option = "same";
     }
-    if ("same".equals(option)) {
-      option = "do not insert";
-    } else {
-      option = "insert";
-    }
+    String value = switch (option) {
+      case "same" -> "do not insert";
+      default -> "insert";
+    };
 
-    while (token.hasMoreTokens()) {
-      tok = token.nextToken();
-      if ("LITERAL_CATCH".equals(tok)) {
-        userFormatterSetting("insert_new_line_before_catch_in_try_statement", option);
-      } else if ("LITERAL_FINALLY".equals(tok)) {
-        userFormatterSetting("insert_new_line_before_finally_in_try_statement", option);
-      } else if ("LITERAL_ELSE".equals(tok)) {
-        userFormatterSetting("insert_new_line_before_else_in_if_statement", option);
-      }
+    for (String token : tokens.split("\\s*,\\s*")) {
+      List<String> settings = switch (token) {
+        case "LITERAL_TRY" -> List.of("insert_new_line_before_catch_in_try_statement",
+                "insert_new_line_before_finally_in_try_statement");
+        case "LITERAL_CATCH" -> List.of("insert_new_line_before_finally_in_try_statement");
+        case "LITERAL_IF" -> List.of("insert_new_line_before_else_in_if_statement");
+        case "LITERAL_DO" -> List.of("insert_new_line_before_while_in_do_statement");
+        default -> List.of();
+      };
+      settings.forEach(setting -> userFormatterSetting(setting, value));
     }
     return getFormatterSetting();
   }

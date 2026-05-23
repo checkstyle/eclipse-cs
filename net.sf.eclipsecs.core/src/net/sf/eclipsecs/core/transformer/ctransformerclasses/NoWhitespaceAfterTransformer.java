@@ -20,13 +20,13 @@
 
 package net.sf.eclipsecs.core.transformer.ctransformerclasses;
 
-import java.util.StringTokenizer;
+import java.util.List;
 
 import net.sf.eclipsecs.core.transformer.AbstractCTransformationClass;
 import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 
 /**
- * Wrapperclass for converting the checkstyle-rule NoWhitespaceAfter to appropriate
+ * Wrapper class for converting the checkstyle-rule NoWhitespaceAfter to appropriate
  * eclipse-formatter-rules.
  *
  */
@@ -36,22 +36,26 @@ public class NoWhitespaceAfterTransformer extends AbstractCTransformationClass {
   public FormatterConfiguration transformRule() {
     String val = getAttribute("tokens");
     if (val == null) {
-      val = "ARRAY_INIT, BNOT, DEC, DOT, INC, LNOT, UNARY_MINUS, UNARY_PLUS";
+      val = "ARRAY_INIT, AT, INC, DEC, UNARY_MINUS, UNARY_PLUS, BNOT, LNOT, DOT, "
+              + "ARRAY_DECLARATOR, INDEX_OP";
     }
 
-    final StringTokenizer args = new StringTokenizer(val, ", ");
-    String token;
-    // TODO tokens DOT ARRAY_INIT
-    while (args.hasMoreTokens()) {
-      token = args.nextToken();
-      if ("DEC".equals(token) || "INC".equals(token)) {
-        userFormatterSetting("insert_space_after_prefix_operator", "do not insert");
-      } else if ("UNARY_MINUS".equals(token) || "LNOT".equals(token) || "UNARY_PLUS".equals(token)
-              || "BNOT".equals(token)) {
-        userFormatterSetting("insert_space_after_unary_operator", "do not insert");
-      } else if ("TYPECAST".equals(token)) {
-        userFormatterSetting("insert_space_after_closing_paren_in_cast", "do not insert");
-      }
+    for (String token : val.split("\\s*,\\s*")) {
+      List<String> settings = switch (token) {
+        case "INC", "DEC" -> List.of("insert_space_after_prefix_operator");
+        case "UNARY_MINUS", "UNARY_PLUS", "BNOT", "LNOT" -> List
+                .of("insert_space_after_unary_operator");
+        case "TYPECAST" -> List.of("insert_space_after_closing_paren_in_cast");
+        case "ARRAY_INIT" -> List.of("insert_space_after_opening_brace_in_array_initializer");
+        case "AT" -> List.of("insert_space_after_at_in_annotation",
+                "insert_space_after_at_in_annotation_type_declaration");
+        case "ARRAY_DECLARATOR" -> List
+                .of("insert_space_before_opening_bracket_in_array_type_reference");
+        case "INDEX_OP" -> List.of("insert_space_before_opening_bracket_in_array_reference");
+        case "LITERAL_SYNCHRONIZED" -> List.of("insert_space_before_opening_paren_in_synchronized");
+        default -> List.of();
+      };
+      settings.forEach(setting -> userFormatterSetting(setting, "do not insert"));
     }
     return getFormatterSetting();
   }
