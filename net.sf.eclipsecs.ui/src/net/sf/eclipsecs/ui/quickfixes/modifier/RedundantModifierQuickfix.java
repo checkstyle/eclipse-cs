@@ -53,104 +53,7 @@ public class RedundantModifierQuickfix extends AbstractASTResolution {
   @Override
   protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
           final int markerStartOffset) {
-
-    return new ASTVisitor() {
-
-      @SuppressWarnings("unchecked")
-      @Override
-      public boolean visit(MethodDeclaration node) {
-
-        if (containsPosition(node, markerStartOffset)) {
-          List<ModifierKeyword> redundantKeyWords = Collections.emptyList();
-
-          if (node.getParent() instanceof TypeDeclaration) {
-            TypeDeclaration type = (TypeDeclaration) node.getParent();
-            if (type.isInterface()) {
-              redundantKeyWords = Arrays
-                      .asList(new ModifierKeyword[] { ModifierKeyword.PUBLIC_KEYWORD,
-                          ModifierKeyword.ABSTRACT_KEYWORD, ModifierKeyword.FINAL_KEYWORD });
-            } else if (Modifier.isFinal(type.getModifiers())) {
-              redundantKeyWords = Arrays
-                      .asList(new ModifierKeyword[] { ModifierKeyword.FINAL_KEYWORD });
-            }
-          }
-
-          deleteRedundantModifiers(node.modifiers(), redundantKeyWords);
-        }
-        return true;
-      }
-
-      @SuppressWarnings("unchecked")
-      @Override
-      public boolean visit(FieldDeclaration node) {
-        // recalculate start position because optional javadoc is mixed
-        // into the original start position
-        int pos = node.getStartPosition() + (node.getJavadoc() != null
-                ? node.getJavadoc().getLength() + JAVADOC_COMMENT_LENGTH
-                : 0);
-        if (containsPosition(lineInfo, pos)) {
-          List<ModifierKeyword> redundantKeyWords = Collections.emptyList();
-
-          if (node.getParent() instanceof TypeDeclaration) {
-            TypeDeclaration type = (TypeDeclaration) node.getParent();
-            if (type.isInterface()) {
-              redundantKeyWords = Arrays.asList(new ModifierKeyword[] {
-                  ModifierKeyword.PUBLIC_KEYWORD, ModifierKeyword.ABSTRACT_KEYWORD,
-                  ModifierKeyword.FINAL_KEYWORD, ModifierKeyword.STATIC_KEYWORD });
-            }
-          } else if (node.getParent() instanceof AnnotationTypeDeclaration) {
-
-            redundantKeyWords = Arrays.asList(new ModifierKeyword[] {
-                ModifierKeyword.PUBLIC_KEYWORD, ModifierKeyword.ABSTRACT_KEYWORD,
-                ModifierKeyword.FINAL_KEYWORD, ModifierKeyword.STATIC_KEYWORD });
-          }
-
-          deleteRedundantModifiers(node.modifiers(), redundantKeyWords);
-        }
-        return true;
-      }
-
-      @SuppressWarnings("unchecked")
-      @Override
-      public boolean visit(AnnotationTypeMemberDeclaration node) {
-
-        // recalculate start position because optional javadoc is mixed
-        // into the original start position
-        int pos = node.getStartPosition() + (node.getJavadoc() != null
-                ? node.getJavadoc().getLength() + JAVADOC_COMMENT_LENGTH
-                : 0);
-        if (containsPosition(lineInfo, pos)) {
-
-          if (node.getParent() instanceof AnnotationTypeDeclaration) {
-
-            List<ModifierKeyword> redundantKeyWords = Arrays.asList(new ModifierKeyword[] {
-                ModifierKeyword.PUBLIC_KEYWORD, ModifierKeyword.ABSTRACT_KEYWORD,
-                ModifierKeyword.FINAL_KEYWORD, ModifierKeyword.STATIC_KEYWORD });
-
-            deleteRedundantModifiers(node.modifiers(), redundantKeyWords);
-          }
-
-        }
-        return true;
-      }
-
-      private void deleteRedundantModifiers(List<ASTNode> modifiers,
-              List<ModifierKeyword> redundantModifierKeywords) {
-
-        Iterator<ASTNode> iter = modifiers.iterator();
-
-        while (iter.hasNext()) {
-          ASTNode node = iter.next();
-
-          if (node instanceof Modifier) {
-            Modifier modifier = (Modifier) node;
-            if (redundantModifierKeywords.contains(modifier.getKeyword())) {
-              iter.remove();
-            }
-          }
-        }
-      }
-    };
+    return new RedundantModifierQuickfixAstVisitor(lineInfo, markerStartOffset);
   }
 
   @Override
@@ -166,6 +69,112 @@ public class RedundantModifierQuickfix extends AbstractASTResolution {
   @Override
   public Image getImage() {
     return CheckstyleUIPluginImages.CORRECTION_REMOVE.getImage();
+  }
+
+  private final class RedundantModifierQuickfixAstVisitor extends ASTVisitor {
+
+    private final IRegion lineInfo;
+    private final int markerStartOffset;
+
+    private RedundantModifierQuickfixAstVisitor(IRegion lineInfo, int markerStartOffset) {
+      this.lineInfo = lineInfo;
+      this.markerStartOffset = markerStartOffset;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public boolean visit(MethodDeclaration node) {
+
+      if (containsPosition(node, markerStartOffset)) {
+        List<ModifierKeyword> redundantKeyWords = Collections.emptyList();
+
+        if (node.getParent() instanceof TypeDeclaration) {
+          TypeDeclaration type = (TypeDeclaration) node.getParent();
+          if (type.isInterface()) {
+            redundantKeyWords = Arrays
+                    .asList(new ModifierKeyword[] { ModifierKeyword.PUBLIC_KEYWORD,
+                        ModifierKeyword.ABSTRACT_KEYWORD, ModifierKeyword.FINAL_KEYWORD });
+          } else if (Modifier.isFinal(type.getModifiers())) {
+            redundantKeyWords = Arrays
+                    .asList(new ModifierKeyword[] { ModifierKeyword.FINAL_KEYWORD });
+          }
+        }
+
+        deleteRedundantModifiers(node.modifiers(), redundantKeyWords);
+      }
+      return true;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public boolean visit(FieldDeclaration node) {
+      // recalculate start position because optional javadoc is mixed
+      // into the original start position
+      int pos = node.getStartPosition() + (node.getJavadoc() != null
+              ? node.getJavadoc().getLength() + JAVADOC_COMMENT_LENGTH
+              : 0);
+      if (containsPosition(lineInfo, pos)) {
+        List<ModifierKeyword> redundantKeyWords = Collections.emptyList();
+
+        if (node.getParent() instanceof TypeDeclaration) {
+          TypeDeclaration type = (TypeDeclaration) node.getParent();
+          if (type.isInterface()) {
+            redundantKeyWords = Arrays.asList(new ModifierKeyword[] {
+                ModifierKeyword.PUBLIC_KEYWORD, ModifierKeyword.ABSTRACT_KEYWORD,
+                ModifierKeyword.FINAL_KEYWORD, ModifierKeyword.STATIC_KEYWORD });
+          }
+        } else if (node.getParent() instanceof AnnotationTypeDeclaration) {
+
+          redundantKeyWords = Arrays.asList(new ModifierKeyword[] {
+              ModifierKeyword.PUBLIC_KEYWORD, ModifierKeyword.ABSTRACT_KEYWORD,
+              ModifierKeyword.FINAL_KEYWORD, ModifierKeyword.STATIC_KEYWORD });
+        }
+
+        deleteRedundantModifiers(node.modifiers(), redundantKeyWords);
+      }
+      return true;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public boolean visit(AnnotationTypeMemberDeclaration node) {
+
+      // recalculate start position because optional javadoc is mixed
+      // into the original start position
+      int pos = node.getStartPosition() + (node.getJavadoc() != null
+              ? node.getJavadoc().getLength() + JAVADOC_COMMENT_LENGTH
+              : 0);
+      if (containsPosition(lineInfo, pos)) {
+
+        if (node.getParent() instanceof AnnotationTypeDeclaration) {
+
+          List<ModifierKeyword> redundantKeyWords = Arrays.asList(new ModifierKeyword[] {
+              ModifierKeyword.PUBLIC_KEYWORD, ModifierKeyword.ABSTRACT_KEYWORD,
+              ModifierKeyword.FINAL_KEYWORD, ModifierKeyword.STATIC_KEYWORD });
+
+          deleteRedundantModifiers(node.modifiers(), redundantKeyWords);
+        }
+
+      }
+      return true;
+    }
+
+    private void deleteRedundantModifiers(List<ASTNode> modifiers,
+            List<ModifierKeyword> redundantModifierKeywords) {
+
+      Iterator<ASTNode> iter = modifiers.iterator();
+
+      while (iter.hasNext()) {
+        ASTNode node = iter.next();
+
+        if (node instanceof Modifier) {
+          Modifier modifier = (Modifier) node;
+          if (redundantModifierKeywords.contains(modifier.getKeyword())) {
+            iter.remove();
+          }
+        }
+      }
+    }
   }
 
 }

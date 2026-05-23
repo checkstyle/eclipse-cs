@@ -45,97 +45,7 @@ public class NeedBracesQuickfix extends AbstractASTResolution {
   @Override
   protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
           final int markerStartOffset) {
-
-    return new ASTVisitor() {
-      @Override
-      public boolean visit(IfStatement node) {
-
-        int nodePos = node.getStartPosition();
-        int nodeEnd = nodePos + node.getLength();
-        if ((nodePos >= lineInfo.getOffset()
-                && nodePos <= (lineInfo.getOffset() + lineInfo.getLength()))
-                || (nodePos <= lineInfo.getOffset()
-                        && nodeEnd >= lineInfo.getOffset() + lineInfo.getLength())) {
-          bracifyIfStatement(node);
-        }
-
-        return true;
-      }
-
-      @Override
-      public boolean visit(ForStatement node) {
-        if (containsPosition(lineInfo, node.getStartPosition())) {
-          Block block = createBracifiedCopy(node.getAST(), node.getBody());
-          node.setBody(block);
-        }
-
-        return true;
-      }
-
-      @Override
-      public boolean visit(DoStatement node) {
-        if (containsPosition(lineInfo, node.getStartPosition())) {
-          Block block = createBracifiedCopy(node.getAST(), node.getBody());
-          node.setBody(block);
-        }
-
-        return true;
-      }
-
-      @Override
-      public boolean visit(WhileStatement node) {
-        if (containsPosition(lineInfo, node.getStartPosition())) {
-          Block block = createBracifiedCopy(node.getAST(), node.getBody());
-          node.setBody(block);
-        }
-
-        return true;
-      }
-
-      /**
-       * Helper method to recursively bracify a if-statement.
-       *
-       * @param ifStatement
-       *          the if statement
-       */
-      private void bracifyIfStatement(IfStatement ifStatement) {
-
-        // change the then statement to a block if necessary
-        if (!(ifStatement.getThenStatement() instanceof Block)) {
-          if (ifStatement.getThenStatement() instanceof IfStatement) {
-            bracifyIfStatement((IfStatement) ifStatement.getThenStatement());
-          }
-          Block block = createBracifiedCopy(ifStatement.getAST(), ifStatement.getThenStatement());
-          ifStatement.setThenStatement(block);
-        }
-
-        // check the else statement if it is a block
-        Statement elseStatement = ifStatement.getElseStatement();
-        if (elseStatement != null && !(elseStatement instanceof Block)) {
-
-          // in case the else statement is an further if statement
-          // (else if)
-          // do the recursion
-          if (elseStatement instanceof IfStatement) {
-            bracifyIfStatement((IfStatement) elseStatement);
-          } else {
-            // change the else statement to a block
-            // Block block = ifStatement.getAST().newBlock();
-            // block.statements().add(ASTNode.copySubtree(block.getAST(),
-            // elseStatement));
-            Block block = createBracifiedCopy(ifStatement.getAST(), ifStatement.getElseStatement());
-            ifStatement.setElseStatement(block);
-          }
-        }
-      }
-
-      @SuppressWarnings("unchecked")
-      private Block createBracifiedCopy(AST ast, Statement body) {
-        Block block = ast.newBlock();
-        block.statements().add(ASTNode.copySubtree(block.getAST(), body));
-        return block;
-      }
-    };
+    return new NeedBracesQuickfixAstVisitor(lineInfo);
   }
 
   @Override
@@ -151,5 +61,103 @@ public class NeedBracesQuickfix extends AbstractASTResolution {
   @Override
   public Image getImage() {
     return CheckstyleUIPluginImages.CORRECTION_ADD_BRACES.getImage();
+  }
+
+  private class NeedBracesQuickfixAstVisitor extends ASTVisitor {
+
+    private final IRegion lineInfo;
+
+    private NeedBracesQuickfixAstVisitor(IRegion lineInfo) {
+      this.lineInfo = lineInfo;
+    }
+
+    @Override
+    public boolean visit(IfStatement node) {
+
+      int nodePos = node.getStartPosition();
+      int nodeEnd = nodePos + node.getLength();
+      if ((nodePos >= lineInfo.getOffset()
+              && nodePos <= (lineInfo.getOffset() + lineInfo.getLength()))
+              || (nodePos <= lineInfo.getOffset()
+                      && nodeEnd >= lineInfo.getOffset() + lineInfo.getLength())) {
+        bracifyIfStatement(node);
+      }
+
+      return true;
+    }
+
+    @Override
+    public boolean visit(ForStatement node) {
+      if (containsPosition(lineInfo, node.getStartPosition())) {
+        Block block = createBracifiedCopy(node.getAST(), node.getBody());
+        node.setBody(block);
+      }
+
+      return true;
+    }
+
+    @Override
+    public boolean visit(DoStatement node) {
+      if (containsPosition(lineInfo, node.getStartPosition())) {
+        Block block = createBracifiedCopy(node.getAST(), node.getBody());
+        node.setBody(block);
+      }
+
+      return true;
+    }
+
+    @Override
+    public boolean visit(WhileStatement node) {
+      if (containsPosition(lineInfo, node.getStartPosition())) {
+        Block block = createBracifiedCopy(node.getAST(), node.getBody());
+        node.setBody(block);
+      }
+
+      return true;
+    }
+
+    /**
+     * Helper method to recursively bracify a if-statement.
+     *
+     * @param ifStatement
+     *          the if statement
+     */
+    private void bracifyIfStatement(IfStatement ifStatement) {
+
+      // change the then statement to a block if necessary
+      if (!(ifStatement.getThenStatement() instanceof Block)) {
+        if (ifStatement.getThenStatement() instanceof IfStatement) {
+          bracifyIfStatement((IfStatement) ifStatement.getThenStatement());
+        }
+        Block block = createBracifiedCopy(ifStatement.getAST(), ifStatement.getThenStatement());
+        ifStatement.setThenStatement(block);
+      }
+
+      // check the else statement if it is a block
+      Statement elseStatement = ifStatement.getElseStatement();
+      if (elseStatement != null && !(elseStatement instanceof Block)) {
+
+        // in case the else statement is an further if statement
+        // (else if)
+        // do the recursion
+        if (elseStatement instanceof IfStatement) {
+          bracifyIfStatement((IfStatement) elseStatement);
+        } else {
+          // change the else statement to a block
+          // Block block = ifStatement.getAST().newBlock();
+          // block.statements().add(ASTNode.copySubtree(block.getAST(),
+          // elseStatement));
+          Block block = createBracifiedCopy(ifStatement.getAST(), ifStatement.getElseStatement());
+          ifStatement.setElseStatement(block);
+        }
+      }
+    }
+
+    @SuppressWarnings("unchecked")
+    private Block createBracifiedCopy(AST ast, Statement body) {
+      Block block = ast.newBlock();
+      block.statements().add(ASTNode.copySubtree(block.getAST(), body));
+      return block;
+    }
   }
 }
