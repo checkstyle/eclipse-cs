@@ -296,9 +296,11 @@ public class MarkerStatsView extends AbstractStatsView {
       Stats stats = getStats();
       if (stats != null) {
         String text = NLS.bind(Messages.MarkerStatsView_lblOverviewMessage,
-                new Object[] { Integer.valueOf(stats.getMarkerCount()),
+                new Object[] {
+                    Integer.valueOf(stats.getMarkerCount()),
                     Integer.valueOf(stats.getMarkerStats().size()),
-                    Integer.valueOf(stats.getMarkerCountAll()) });
+                    Integer.valueOf(stats.getMarkerCountAll()),
+                });
         mDescLabel.setText(text);
       } else {
         mDescLabel.setText("");
@@ -306,8 +308,10 @@ public class MarkerStatsView extends AbstractStatsView {
     } else {
 
       String text = NLS.bind(Messages.MarkerStatsView_lblDetailMessage,
-              new Object[] { mDetailViewer.getCurrentDetailCategory(),
-                  Integer.valueOf(mDetailViewer.getTable().getItemCount()) });
+              new Object[] {
+                  mDetailViewer.getCurrentDetailCategory(),
+                  Integer.valueOf(mDetailViewer.getTable().getItemCount()),
+              });
       mDescLabel.setText(text);
     }
   }

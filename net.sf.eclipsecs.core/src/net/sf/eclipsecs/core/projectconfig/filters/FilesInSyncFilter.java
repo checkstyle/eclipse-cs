@@ -63,7 +63,9 @@ public class FilesInSyncFilter extends AbstractFilter {
 
   private boolean hasChanges(IFile file, Subscriber subscriber) {
     try {
-      subscriber.refresh(new IResource[] { file }, IResource.DEPTH_ZERO, new NullProgressMonitor());
+      subscriber.refresh(new IResource[] {
+          file,
+      }, IResource.DEPTH_ZERO, new NullProgressMonitor());
       SyncInfo synchInfo = subscriber.getSyncInfo(file);
 
       if (synchInfo != null) {

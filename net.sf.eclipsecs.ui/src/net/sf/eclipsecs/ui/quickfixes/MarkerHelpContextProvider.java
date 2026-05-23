@@ -84,7 +84,9 @@ public class MarkerHelpContextProvider extends AbstractContextProvider
 
   @Override
   public String[] getPlugins() {
-    return new String[] { "net.sf.eclipsecs.ui" };
+    return new String[] {
+        "net.sf.eclipsecs.ui",
+    };
   }
 
   /**
@@ -144,7 +146,9 @@ public class MarkerHelpContextProvider extends AbstractContextProvider
     @Override
     public IHelpResource[] getRelatedTopics() {
       IHelpResource helpResource = new CheckstyleHelpTopic(moduleName);
-      return new IHelpResource[] { helpResource };
+      return new IHelpResource[] {
+          helpResource,
+      };
     }
 
     @Override

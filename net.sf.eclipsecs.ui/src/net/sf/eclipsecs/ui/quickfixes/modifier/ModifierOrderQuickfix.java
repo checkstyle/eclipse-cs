@@ -21,7 +21,6 @@
 package net.sf.eclipsecs.ui.quickfixes.modifier;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -54,14 +53,13 @@ public class ModifierOrderQuickfix extends AbstractASTResolution {
    * List containing modifier keywords in the order proposed by Java Language specification,
    * sections 8.1.1, 8.3.1 and 8.4.3.
    */
-  private static final List<Object> MODIFIER_ORDER = Arrays
-          .asList(new Object[] { ModifierKeyword.PUBLIC_KEYWORD, ModifierKeyword.PROTECTED_KEYWORD,
-              ModifierKeyword.PRIVATE_KEYWORD, ModifierKeyword.ABSTRACT_KEYWORD,
-              ModifierKeyword.STATIC_KEYWORD, ModifierKeyword.FINAL_KEYWORD,
-              ModifierKeyword.TRANSIENT_KEYWORD, ModifierKeyword.VOLATILE_KEYWORD,
-              ModifierKeyword.SYNCHRONIZED_KEYWORD, ModifierKeyword.NATIVE_KEYWORD,
-              ModifierKeyword.STRICTFP_KEYWORD, ModifierKeyword.DEFAULT_KEYWORD,
-             });
+  private static final List<Object> MODIFIER_ORDER = List.of(ModifierKeyword.PUBLIC_KEYWORD,
+          ModifierKeyword.PROTECTED_KEYWORD, ModifierKeyword.PRIVATE_KEYWORD,
+          ModifierKeyword.ABSTRACT_KEYWORD, ModifierKeyword.STATIC_KEYWORD,
+          ModifierKeyword.FINAL_KEYWORD, ModifierKeyword.TRANSIENT_KEYWORD,
+          ModifierKeyword.VOLATILE_KEYWORD, ModifierKeyword.SYNCHRONIZED_KEYWORD,
+          ModifierKeyword.NATIVE_KEYWORD, ModifierKeyword.STRICTFP_KEYWORD,
+          ModifierKeyword.DEFAULT_KEYWORD);
 
   /**
    * Reorders the given list of <code>Modifier</code> nodes into their suggested order by the JLS.

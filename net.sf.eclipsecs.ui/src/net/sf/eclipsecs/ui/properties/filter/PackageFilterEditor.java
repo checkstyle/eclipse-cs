@@ -342,7 +342,9 @@ public class PackageFilterEditor implements IFilterEditor {
      *          the initial selection.
      */
     public void setInitialSelection(Object selection) {
-      setInitialSelections(new Object[] { selection });
+      setInitialSelections(new Object[] {
+          selection,
+      });
     }
 
     /**

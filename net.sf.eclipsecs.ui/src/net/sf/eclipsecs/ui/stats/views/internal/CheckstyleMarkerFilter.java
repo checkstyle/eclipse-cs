@@ -133,7 +133,9 @@ public record CheckstyleMarkerFilter(boolean enabled, int onResource, IWorkingSe
     if (enabled) {
       unfiltered = switch (onResource) {
         case ON_ANY_RESOURCE -> findCheckstyleMarkers(
-                new IResource[] { ResourcesPlugin.getWorkspace().getRoot() },
+                new IResource[] {
+                    ResourcesPlugin.getWorkspace().getRoot(),
+                },
                 IResource.DEPTH_INFINITE, mon);
         case ON_SELECTED_RESOURCE_ONLY -> findCheckstyleMarkers(focusResources,
                 IResource.DEPTH_ZERO, mon);
@@ -148,7 +150,9 @@ public record CheckstyleMarkerFilter(boolean enabled, int onResource, IWorkingSe
       };
     } else {
       unfiltered = findCheckstyleMarkers(
-              new IResource[] { ResourcesPlugin.getWorkspace().getRoot() },
+              new IResource[] {
+                  ResourcesPlugin.getWorkspace().getRoot(),
+              },
               IResource.DEPTH_INFINITE, mon);
     }
 

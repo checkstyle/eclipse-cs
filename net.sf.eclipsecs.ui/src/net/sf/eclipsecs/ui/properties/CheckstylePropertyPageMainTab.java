@@ -164,7 +164,9 @@ public final class CheckstylePropertyPageMainTab extends Composite {
         MessageDialogWithToggle dialog = new MessageDialogWithToggle(getShell(),
                 Messages.CheckstylePropertyPage_titleWarnFilesets, null,
                 Messages.CheckstylePropertyPage_msgWarnFilesets, MessageDialog.WARNING,
-                new String[] { IDialogConstants.OK_LABEL }, 0,
+                new String[] {
+                    IDialogConstants.OK_LABEL,
+                }, 0,
                 Messages.CheckstylePropertyPage_mgsWarnFileSetNagOption, showWarning) {
           /**
            * Overwritten because we don't want to store which button the user pressed but the

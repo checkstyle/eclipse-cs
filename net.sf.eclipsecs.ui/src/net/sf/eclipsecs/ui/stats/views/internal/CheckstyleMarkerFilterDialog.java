@@ -415,7 +415,9 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
                 .createWorkingSetSelectionDialog(getShell(), false);
 
         if (mSelectedWorkingSet != null) {
-          dialog.setSelection(new IWorkingSet[] { mSelectedWorkingSet });
+          dialog.setSelection(new IWorkingSet[] {
+              mSelectedWorkingSet,
+          });
         }
         if (dialog.open() == Window.OK) {
           IWorkingSet[] result = dialog.getSelection();
