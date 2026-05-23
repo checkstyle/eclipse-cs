@@ -20,19 +20,11 @@
 
 package net.sf.eclipsecs.ui;
 
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.event.EventConstants;
-import org.osgi.service.event.EventHandler;
-
-import net.sf.eclipsecs.core.jobs.AbstractCheckJob;
-import net.sf.eclipsecs.ui.properties.filter.CheckFileOnOpenPartListener;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
+import java.util.Arrays;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.eclipse.e4.ui.workbench.UIEvents;
-import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IWindowListener;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
@@ -40,6 +32,12 @@ import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.progress.IProgressService;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.event.EventConstants;
+import org.osgi.service.event.EventHandler;
+
+import net.sf.eclipsecs.core.jobs.AbstractCheckJob;
+import net.sf.eclipsecs.ui.properties.filter.CheckFileOnOpenPartListener;
 
 /**
  * Event handler being called when the eclipse application has started.
@@ -50,7 +48,6 @@ public final class ApplicationStartedHandler implements EventHandler {
   private final CheckFileOnOpenPartListener mPartListener = new CheckFileOnOpenPartListener();
 
   private final IWindowListener mWindowListener = new IWindowListener() {
-
     @Override
     public void windowOpened(IWorkbenchWindow window) {
       window.getPartService().addPartListener(mPartListener);
@@ -63,13 +60,11 @@ public final class ApplicationStartedHandler implements EventHandler {
     @Override
     public void windowClosed(IWorkbenchWindow window) {
       window.getPartService().removePartListener(mPartListener);
-
     }
 
     @Override
     public void windowDeactivated(IWorkbenchWindow window) {
     }
-
   };
 
   @Override
@@ -87,35 +82,20 @@ public final class ApplicationStartedHandler implements EventHandler {
     workbench.getDisplay().asyncExec(new Runnable() {
       @Override
       public void run() {
-
-        IWorkbenchWindow[] windows = workbench.getWorkbenchWindows();
-
-        for (IWorkbenchWindow window : windows) {
-
+        for (IWorkbenchWindow window : workbench.getWorkbenchWindows()) {
           if (window != null) {
-
-            // collect open editors and have then run against Checkstyle if
-            // appropriate
-            Collection<IWorkbenchPartReference> parts = new HashSet<>();
-
-            // add already opened files to the filter
-            // bugfix for 2923044
-            IWorkbenchPage[] pages = window.getPages();
-            for (IWorkbenchPage page : pages) {
-
-              IEditorReference[] editorRefs = page.getEditorReferences();
-              Collections.addAll(parts, editorRefs);
-            }
-
+            // collect open editors and have then run against Checkstyle if appropriate
+            // add already opened files to the filter - bugfix for 2923044
+            Set<IWorkbenchPartReference> parts = Arrays.stream(window.getPages())
+                .map(IWorkbenchPage::getEditorReferences)
+                .flatMap(Arrays::stream)
+                .collect(Collectors.toSet());
             mPartListener.partsOpened(parts);
-
-            // remove listener first for safety, we don't want
-            // register the same listener twice accidently
+            // remove listener first for safety, we don't want to register the same listener twice accidently
             window.getPartService().removePartListener(mPartListener);
             window.getPartService().addPartListener(mPartListener);
           }
         }
-
         workbench.addWindowListener(mWindowListener);
       }
     });

@@ -20,7 +20,11 @@
 
 package net.sf.eclipsecs.ui.quickfixes.coding;
 
+import java.util.List;
+
+import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
+import org.eclipse.jdt.core.dom.IExtendedModifier;
 import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.Modifier.ModifierKeyword;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
@@ -43,27 +47,21 @@ public class FinalLocalVariableQuickfix extends AbstractASTResolution {
   protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
           final int markerStartOffset) {
     return new ASTVisitor() {
-
       @SuppressWarnings("unchecked")
       @Override
       public boolean visit(SingleVariableDeclaration node) {
-        if (containsPosition(node, markerStartOffset) && !Modifier.isFinal(node.getModifiers())) {
-          if (!Modifier.isFinal(node.getModifiers())) {
-            Modifier finalModifier = node.getAST().newModifier(ModifierKeyword.FINAL_KEYWORD);
-            node.modifiers().add(finalModifier);
-          }
-        }
-        return true;
+        return visit(node, node.getModifiers(), node.modifiers());
       }
 
       @SuppressWarnings("unchecked")
       @Override
       public boolean visit(VariableDeclarationStatement node) {
-        if (containsPosition(node, markerStartOffset) && !Modifier.isFinal(node.getModifiers())) {
-          if (!Modifier.isFinal(node.getModifiers())) {
-            Modifier finalModifier = node.getAST().newModifier(ModifierKeyword.FINAL_KEYWORD);
-            node.modifiers().add(finalModifier);
-          }
+        return visit(node, node.getModifiers(), node.modifiers());
+      }
+
+      private boolean visit(ASTNode node, int bitModifiers, List<IExtendedModifier> modifiers) {
+        if (containsPosition(node, markerStartOffset) && !Modifier.isFinal(bitModifiers)) {
+          modifiers.add(node.getAST().newModifier(ModifierKeyword.FINAL_KEYWORD));
         }
         return true;
       }

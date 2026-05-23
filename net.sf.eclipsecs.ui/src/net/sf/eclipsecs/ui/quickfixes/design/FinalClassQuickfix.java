@@ -47,7 +47,6 @@ public class FinalClassQuickfix extends AbstractASTResolution {
   protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
           final int markerStartOffset) {
     return new ASTVisitor() {
-
       @SuppressWarnings("unchecked")
       @Override
       public boolean visit(TypeDeclaration node) {
@@ -56,18 +55,13 @@ public class FinalClassQuickfix extends AbstractASTResolution {
         int pos = node.getStartPosition() + (node.getJavadoc() != null
                 ? node.getJavadoc().getLength() + JAVADOC_COMMENT_LENGTH
                 : 0);
-        if (containsPosition(lineInfo, pos)) {
-
-          if (!Modifier.isFinal(node.getModifiers())) {
-
-            Modifier finalModifier = node.getAST().newModifier(ModifierKeyword.FINAL_KEYWORD);
-            node.modifiers().add(finalModifier);
-
-            // reorder modifiers into their correct order
-            List<?> reorderedModifiers = ModifierOrderQuickfix.reOrderModifiers(node.modifiers());
-            node.modifiers().clear();
-            node.modifiers().addAll(reorderedModifiers);
-          }
+        if (containsPosition(lineInfo, pos) && !Modifier.isFinal(node.getModifiers())) {
+          Modifier finalModifier = node.getAST().newModifier(ModifierKeyword.FINAL_KEYWORD);
+          node.modifiers().add(finalModifier);
+          // reorder modifiers into their correct order
+          List<?> reorderedModifiers = ModifierOrderQuickfix.reOrderModifiers(node.modifiers());
+          node.modifiers().clear();
+          node.modifiers().addAll(reorderedModifiers);
         }
         return true;
       }

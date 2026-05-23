@@ -46,55 +46,56 @@ public class DefaultComesLastQuickfix extends AbstractASTResolution {
           final int markerStartOffset) {
 
     return new ASTVisitor() {
-
-      @SuppressWarnings("unchecked")
       @Override
       public boolean visit(SwitchCase node) {
-
         if (containsPosition(lineInfo, node.getStartPosition())) {
-
-          if (node.isDefault() && !isLastSwitchCase(node)) {
-            SwitchStatement switchStatement = (SwitchStatement) node.getParent();
-
-            List<ASTNode> defaultCaseStatements = new ArrayList<>();
-            defaultCaseStatements.add(node);
-
-            // collect all statements belonging to the default case
-            int defaultStatementIndex = switchStatement.statements().indexOf(node);
-            for (int i = defaultStatementIndex + 1; i < switchStatement.statements().size(); i++) {
-              ASTNode tmpNode = (ASTNode) switchStatement.statements().get(i);
-
-              if (tmpNode instanceof SwitchCase) {
-                break;
-              } else {
-                defaultCaseStatements.add(tmpNode);
-              }
-            }
-
-            // move the statements to the end of the statement list
-            switchStatement.statements().removeAll(defaultCaseStatements);
-            switchStatement.statements().addAll(defaultCaseStatements);
-          }
-        }
-        return true;
-      }
-
-      private boolean isLastSwitchCase(SwitchCase switchCase) {
-
-        SwitchStatement switchStatement = (SwitchStatement) switchCase.getParent();
-
-        // collect all statements belonging to the default case
-        int defaultStatementIndex = switchStatement.statements().indexOf(switchCase);
-        for (int i = defaultStatementIndex + 1; i < switchStatement.statements().size(); i++) {
-          ASTNode tmpNode = (ASTNode) switchStatement.statements().get(i);
-
-          if (tmpNode instanceof SwitchCase) {
-            return false;
-          }
+          visitSwitchCase(node);
         }
         return true;
       }
     };
+  }
+
+  @SuppressWarnings("unchecked")
+  private static void visitSwitchCase(SwitchCase node) {
+    if (node.isDefault() && !isLastSwitchCase(node)) {
+      SwitchStatement switchStatement = (SwitchStatement) node.getParent();
+
+      List<ASTNode> defaultCaseStatements = new ArrayList<>();
+      defaultCaseStatements.add(node);
+
+      // collect all statements belonging to the default case
+      int defaultStatementIndex = switchStatement.statements().indexOf(node);
+      for (int i = defaultStatementIndex + 1; i < switchStatement.statements().size(); i++) {
+        ASTNode tmpNode = (ASTNode) switchStatement.statements().get(i);
+
+        if (tmpNode instanceof SwitchCase) {
+          break;
+        } else {
+          defaultCaseStatements.add(tmpNode);
+        }
+      }
+
+      // move the statements to the end of the statement list
+      switchStatement.statements().removeAll(defaultCaseStatements);
+      switchStatement.statements().addAll(defaultCaseStatements);
+    }
+  }
+
+  private static boolean isLastSwitchCase(SwitchCase switchCase) {
+
+    SwitchStatement switchStatement = (SwitchStatement) switchCase.getParent();
+
+    // collect all statements belonging to the default case
+    int defaultStatementIndex = switchStatement.statements().indexOf(switchCase);
+    for (int i = defaultStatementIndex + 1; i < switchStatement.statements().size(); i++) {
+      ASTNode tmpNode = (ASTNode) switchStatement.statements().get(i);
+
+      if (tmpNode instanceof SwitchCase) {
+        return false;
+      }
+    }
+    return true;
   }
 
   @Override

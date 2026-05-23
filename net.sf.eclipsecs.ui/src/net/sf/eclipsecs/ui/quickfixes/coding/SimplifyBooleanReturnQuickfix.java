@@ -82,80 +82,80 @@ public class SimplifyBooleanReturnQuickfix extends AbstractASTResolution {
   protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
           final int markerStartOffset) {
     return new ASTVisitor() {
-
       @Override
       public boolean visit(final IfStatement node) {
         if (containsPosition(node, markerStartOffset)) {
-
-          final Optional<Boolean> isThenStatementTrue = isReturnStatementTrue(node.getThenStatement());
-
-          if (isThenStatementTrue.isEmpty()) {
-            // the AST structure of the if statement is not as expected
-            return true;
-          }
-
-          final Expression condition = removeNotFromCondition(node.getExpression());
-          final boolean isNotCondition = condition != node.getExpression();
-
-          final ReturnStatement replacement;
-          if (isThenStatementTrue.get() ^ isNotCondition) {
-            // create replacement: return condition;
-            replacement = node.getAST().newReturnStatement();
-            replacement.setExpression(copy(condition));
-
-          } else {
-            // create replacement: return !(condition);
-            final AST ast = node.getAST();
-            replacement = ast.newReturnStatement();
-            final PrefixExpression not = ast.newPrefixExpression();
-            not.setOperator(Operator.NOT);
-            if (omitParantheses(condition)) {
-              not.setOperand(copy(condition));
-            } else {
-              final ParenthesizedExpression parentheses = ast.newParenthesizedExpression();
-              parentheses.setExpression(copy(condition));
-              not.setOperand(parentheses);
-            }
-            replacement.setExpression(not);
-          }
-          replace(node, replacement);
-
+          computeReplacement(node).ifPresent(replacement -> replace(node, replacement));
         }
         return true;
       }
-
-      private Optional<Boolean> isReturnStatementTrue(final Statement node) {
-        if (node instanceof ReturnStatement returnStatement) {
-          final Expression expression = returnStatement.getExpression();
-          if (expression instanceof BooleanLiteral booleanLiteral) {
-            return Optional.of(booleanLiteral.booleanValue());
-          }
-        } else if (node instanceof Block block) {
-          // the return statement might be wrapped in a block statement
-          @SuppressWarnings("unchecked")
-          final List<Statement> statements = block.statements();
-          if (!statements.isEmpty()) {
-            return isReturnStatementTrue(statements.get(0));
-          }
-        }
-        return Optional.empty();
-      }
-
-      private Expression removeNotFromCondition(final Expression condition) {
-        if (condition instanceof PrefixExpression) {
-          final PrefixExpression prefix = (PrefixExpression) condition;
-          if (PrefixExpression.Operator.NOT.equals(prefix.getOperator())) {
-            return prefix.getOperand();
-          }
-        }
-        return condition;
-      }
-
-      private boolean omitParantheses(final Expression condition) {
-        return OMIT_PARANETHESES_CLASSES.contains(condition.getClass());
-      }
-
     };
+  }
+
+  private Optional<ReturnStatement> computeReplacement(final IfStatement node) {
+    final Optional<Boolean> isThenStatementTrue = isReturnStatementTrue(node.getThenStatement());
+
+    if (isThenStatementTrue.isEmpty()) {
+      // the AST structure of the if statement is not as expected
+      return Optional.empty();
+    }
+
+    final Expression condition = removeNotFromCondition(node.getExpression());
+    final boolean isNotCondition = condition != node.getExpression();
+
+    final ReturnStatement replacement;
+    if (isThenStatementTrue.get() ^ isNotCondition) {
+      // create replacement: return condition;
+      replacement = node.getAST().newReturnStatement();
+      replacement.setExpression(copy(condition));
+
+    } else {
+      // create replacement: return !(condition);
+      final AST ast = node.getAST();
+      replacement = ast.newReturnStatement();
+      final PrefixExpression not = ast.newPrefixExpression();
+      not.setOperator(Operator.NOT);
+      if (omitParantheses(condition)) {
+        not.setOperand(copy(condition));
+      } else {
+        final ParenthesizedExpression parentheses = ast.newParenthesizedExpression();
+        parentheses.setExpression(copy(condition));
+        not.setOperand(parentheses);
+      }
+      replacement.setExpression(not);
+    }
+    return Optional.of(replacement);
+  }
+
+  private static Optional<Boolean> isReturnStatementTrue(final Statement node) {
+    if (node instanceof ReturnStatement returnStatement) {
+      final Expression expression = returnStatement.getExpression();
+      if (expression instanceof BooleanLiteral booleanLiteral) {
+        return Optional.of(booleanLiteral.booleanValue());
+      }
+    } else if (node instanceof Block block) {
+      // the return statement might be wrapped in a block statement
+      @SuppressWarnings("unchecked")
+      final List<Statement> statements = block.statements();
+      if (!statements.isEmpty()) {
+        return isReturnStatementTrue(statements.get(0));
+      }
+    }
+    return Optional.empty();
+  }
+
+  private static Expression removeNotFromCondition(final Expression condition) {
+    if (condition instanceof PrefixExpression) {
+      final PrefixExpression prefix = (PrefixExpression) condition;
+      if (PrefixExpression.Operator.NOT.equals(prefix.getOperator())) {
+        return prefix.getOperand();
+      }
+    }
+    return condition;
+  }
+
+  private static boolean omitParantheses(final Expression condition) {
+    return OMIT_PARANETHESES_CLASSES.contains(condition.getClass());
   }
 
   @Override

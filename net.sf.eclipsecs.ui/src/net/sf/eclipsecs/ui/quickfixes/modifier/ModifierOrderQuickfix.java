@@ -103,49 +103,7 @@ public class ModifierOrderQuickfix extends AbstractASTResolution {
   @Override
   protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
           final int markerStartOffset) {
-
-    return new ASTVisitor() {
-
-      @Override
-      public boolean visit(TypeDeclaration node) {
-        return visitBodyDecl(node);
-      }
-
-      @Override
-      public boolean visit(MethodDeclaration node) {
-        return visitBodyDecl(node);
-      }
-
-      @Override
-      public boolean visit(FieldDeclaration node) {
-        return visitBodyDecl(node);
-      }
-
-      @Override
-      public boolean visit(AnnotationTypeMemberDeclaration node) {
-        return visitBodyDecl(node);
-      }
-
-      @SuppressWarnings("unchecked")
-      private boolean visitBodyDecl(BodyDeclaration node) {
-        List<Modifier> modifiers = (List<Modifier>) node.modifiers().stream()
-                .filter(Modifier.class::isInstance).map(Modifier.class::cast)
-                .collect(Collectors.toList());
-        if (modifiers == null || modifiers.isEmpty()) {
-          return true;
-        }
-        // find the range from first to last modifier. marker must be in between
-        int minPos = modifiers.stream().mapToInt(Modifier::getStartPosition).min().getAsInt();
-        int maxPos = modifiers.stream().mapToInt(Modifier::getStartPosition).max().getAsInt();
-
-        if (minPos <= markerStartOffset && markerStartOffset <= maxPos) {
-          List<?> reorderedModifiers = reOrderModifiers(node.modifiers());
-          node.modifiers().clear();
-          node.modifiers().addAll(reorderedModifiers);
-        }
-        return true;
-      }
-    };
+    return new ModifierOrderQuickfixAstVisitor(markerStartOffset);
   }
 
   @Override
@@ -161,6 +119,54 @@ public class ModifierOrderQuickfix extends AbstractASTResolution {
   @Override
   public Image getImage() {
     return CheckstyleUIPluginImages.CORRECTION_CHANGE.getImage();
+  }
+
+  private static class ModifierOrderQuickfixAstVisitor extends ASTVisitor {
+    private final int markerStartOffset;
+
+    private ModifierOrderQuickfixAstVisitor(int markerStartOffset) {
+      this.markerStartOffset = markerStartOffset;
+    }
+
+    @Override
+    public boolean visit(TypeDeclaration node) {
+      return visitBodyDecl(node);
+    }
+
+    @Override
+    public boolean visit(MethodDeclaration node) {
+      return visitBodyDecl(node);
+    }
+
+    @Override
+    public boolean visit(FieldDeclaration node) {
+      return visitBodyDecl(node);
+    }
+
+    @Override
+    public boolean visit(AnnotationTypeMemberDeclaration node) {
+      return visitBodyDecl(node);
+    }
+
+    @SuppressWarnings("unchecked")
+    private boolean visitBodyDecl(BodyDeclaration node) {
+      List<Modifier> modifiers = (List<Modifier>) node.modifiers().stream()
+              .filter(Modifier.class::isInstance).map(Modifier.class::cast)
+              .collect(Collectors.toList());
+      if (modifiers == null || modifiers.isEmpty()) {
+        return true;
+      }
+      // find the range from first to last modifier. marker must be in between
+      int minPos = modifiers.stream().mapToInt(Modifier::getStartPosition).min().getAsInt();
+      int maxPos = modifiers.stream().mapToInt(Modifier::getStartPosition).max().getAsInt();
+
+      if (minPos <= markerStartOffset && markerStartOffset <= maxPos) {
+        List<?> reorderedModifiers = reOrderModifiers(node.modifiers());
+        node.modifiers().clear();
+        node.modifiers().addAll(reorderedModifiers);
+      }
+      return true;
+    }
   }
 
 }

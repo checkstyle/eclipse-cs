@@ -25,7 +25,6 @@ import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -192,26 +191,19 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
     mConfigType.addSelectionChangedListener(new ISelectionChangedListener() {
       @Override
       public void selectionChanged(SelectionChangedEvent event) {
-        if (event.getSelection() instanceof IStructuredSelection) {
-          IConfigurationType type = (IConfigurationType) ((IStructuredSelection) event
-                  .getSelection()).getFirstElement();
-
-          if (mConfigType.getCombo().isEnabled()) {
-
-            String oldName = mCheckConfig.getName();
-            String oldDescr = mCheckConfig.getDescription();
-
-            mCheckConfig = mWorkingSet.newWorkingCopy(type);
-            try {
-              mCheckConfig.setName(oldName);
-            } catch (CheckstylePluginException ex) {
-              // NOOP
-            }
-            mCheckConfig.setDescription(oldDescr);
+        IConfigurationType type = (IConfigurationType) event.getStructuredSelection().getFirstElement();
+        if (mConfigType.getCombo().isEnabled()) {
+          String oldName = mCheckConfig.getName();
+          String oldDescr = mCheckConfig.getDescription();
+          mCheckConfig = mWorkingSet.newWorkingCopy(type);
+          try {
+            mCheckConfig.setName(oldName);
+          } catch (CheckstylePluginException ex) {
+            // NOOP
           }
-
-          createConfigurationEditor(mCheckConfig);
+          mCheckConfig.setDescription(oldDescr);
         }
+        createConfigurationEditor(mCheckConfig);
       }
     });
 

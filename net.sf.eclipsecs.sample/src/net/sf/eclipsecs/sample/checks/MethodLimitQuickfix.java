@@ -41,7 +41,6 @@ public class MethodLimitQuickfix extends AbstractASTResolution {
       @Override
       @SuppressWarnings("unchecked")
       public boolean visit(MethodDeclaration node) {
-
         Javadoc doc = node.getJavadoc();
 
         if (doc == null) {

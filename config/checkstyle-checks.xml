@@ -750,7 +750,8 @@
             <property name="ignoreComments" value="true"/>
         </module>
 
-    <!-- Size Violations -->
+        <!-- Size Violations -->
+        <module name="AnonInnerLength"/>
         <module name="LambdaBodyLength"/>
         <module name="MethodCount">
             <property name="maxTotal" value="34"/>
