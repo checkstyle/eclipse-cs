@@ -20,10 +20,11 @@
 
 package net.sf.eclipsecs.ui.actions;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.ui.IObjectActionDelegate;
-import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.ui.IActionDelegate;
 
 import net.sf.eclipsecs.core.jobs.TransformFormatterRulesJob;
 
@@ -31,24 +32,22 @@ import net.sf.eclipsecs.core.jobs.TransformFormatterRulesJob;
  * Action to start transforming checkstyle-rules to formatter-rules.
  *
  */
-public class FormatterTransformingAction implements IObjectActionDelegate {
+public class FormatterTransformingAction implements IActionDelegate {
 
-  @Override
-  public void setActivePart(final IAction arg0, final IWorkbenchPart arg1) {
-    // TODO Auto-generated method stub
-
-  }
+  private IProject project;
 
   @Override
   public void run(final IAction arg0) {
-    final TransformFormatterRulesJob job = new TransformFormatterRulesJob();
+    final TransformFormatterRulesJob job = new TransformFormatterRulesJob(project);
     job.schedule();
   }
 
   @Override
-  public void selectionChanged(final IAction arg0, final ISelection arg1) {
-    // TODO Auto-generated method stub
-
+  public void selectionChanged(final IAction action, final ISelection selection) {
+    if (selection instanceof IStructuredSelection structuredSelection
+            && structuredSelection.getFirstElement() instanceof IProject selectedProject) {
+      this.project = selectedProject;
+    }
   }
 
 }

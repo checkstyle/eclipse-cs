@@ -217,6 +217,9 @@
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]util[/\\]table[/\\]ITableComparableProvider.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]util[/\\]table[/\\]ITableSettingsProvider.java" />
 
+    <!-- code is copied from ant -->
+    <suppress checks="TodoComment" files="PropertyUtil.java"/> 
+
     <!-- temporal suppression due to leak -->
     <suppress checks="JavadocVariable"
              files="XmlProfileWriter.java"

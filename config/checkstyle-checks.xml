@@ -686,6 +686,9 @@
             <property name="severity" value="ignore"/>
         </module>
         <module name="OuterTypeFilename"/>
+        <module name="TodoComment">
+            <property name="format" value="(TODO)|(FIXME)" />
+        </module>
         <module name="UncommentedMain">
             <property name="excludedClasses" value="\.(Main|JavadocPropertiesGenerator)$"/>
         </module>

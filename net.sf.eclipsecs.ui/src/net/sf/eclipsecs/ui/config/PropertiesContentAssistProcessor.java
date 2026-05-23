@@ -92,8 +92,6 @@ public class PropertiesContentAssistProcessor
     String configLoc = "${config_loc}"; //$NON-NLS-1$
     String samedir = "${samedir}"; //$NON-NLS-1$
 
-    // TODO translate the descriptions
-
     proposals.add(new CompletionProposal(basedir, documentOffset, 0, basedir.length(), null,
             basedir, null, Messages.PropertiesContentAssistProcessor_basedir));
     proposals.add(new CompletionProposal(projectLoc, documentOffset, 0, projectLoc.length(), null,

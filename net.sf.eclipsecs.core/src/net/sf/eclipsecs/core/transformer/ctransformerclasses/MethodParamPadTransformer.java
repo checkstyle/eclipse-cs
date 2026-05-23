@@ -20,38 +20,47 @@
 
 package net.sf.eclipsecs.core.transformer.ctransformerclasses;
 
-import java.util.StringTokenizer;
-
 import net.sf.eclipsecs.core.transformer.AbstractCTransformationClass;
 import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 
 /**
- * Wrapperclass for converting the checkstyle-rule MethodParamPad to appropriate
+ * Wrapper class for converting the checkstyle-rule MethodParamPad to appropriate
  * eclipse-formatter-rules.
  *
  */
 public class MethodParamPadTransformer extends AbstractCTransformationClass {
   @Override
   public FormatterConfiguration transformRule() {
+    String option = getAttribute("option");
+    if (option == null) {
+      option = "nospace";
+    }
+    String space = switch (option) {
+      case "space" -> "insert";
+      default -> "do not insert";
+    };
+
     String val = getAttribute("tokens");
     if (val == null) {
-      val = "CTOR_DEF, LITERAL_NEW, METHOD_CALL, METHOD_DEF, SUPER_CTOR_CALL";
+      val = "CTOR_DEF, CTOR_CALL, LITERAL_NEW, METHOD_CALL, METHOD_DEF, SUPER_CTOR_CALL, "
+              + "ENUM_CONSTANT_DEF, RECORD_DEF, RECORD_PATTERN_DEF";
     }
 
-    // TODO tokens LITERAL_NEW
-    final StringTokenizer args = new StringTokenizer(val, ", ");
-    String token;
-    while (args.hasMoreTokens()) {
-      token = args.nextToken();
-      if ("CTOR_DEF".equals(token)) {
-        userFormatterSetting("insert_space_before_opening_paren_in_constructor_declaration",
-                "do not insert");
-      } else if ("METHOD_CALL".equals(token) || "SUPER_CTOR_CALL".equals(token)) {
-        userFormatterSetting("insert_space_before_opening_paren_in_method_invocation",
-                "do not insert");
-      } else if ("METHOD_DEF".equals(token)) {
-        userFormatterSetting("insert_space_before_opening_paren_in_method_declaration",
-                "do not insert");
+    for (String token : val.split("\\s*,\\s*")) {
+      switch (token) {
+        case "CTOR_DEF" -> userFormatterSetting(
+                "insert_space_before_opening_paren_in_constructor_declaration", space);
+        case "METHOD_CALL", "SUPER_CTOR_CALL", "CTOR_CALL", "LITERAL_NEW" -> userFormatterSetting(
+                "insert_space_before_opening_paren_in_method_invocation", space);
+        case "METHOD_DEF" -> userFormatterSetting(
+                "insert_space_before_opening_paren_in_method_declaration", space);
+        case "ENUM_CONSTANT_DEF" -> userFormatterSetting(
+                "insert_space_before_opening_paren_in_enum_constant", space);
+        case "RECORD_DEF" -> userFormatterSetting(
+                "insert_space_before_opening_paren_in_record_declaration", space);
+        default -> {
+          // nothing to transform
+        }
       }
     }
     return getFormatterSetting();

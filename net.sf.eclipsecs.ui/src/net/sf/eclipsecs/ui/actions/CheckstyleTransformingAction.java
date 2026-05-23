@@ -24,8 +24,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.ui.IObjectActionDelegate;
-import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.IActionDelegate;
 
 import net.sf.eclipsecs.core.jobs.TransformCheckstyleRulesJob;
 
@@ -33,15 +32,10 @@ import net.sf.eclipsecs.core.jobs.TransformCheckstyleRulesJob;
  * Action to start transforming checkstyle-rules to formatter-rules.
  *
  */
-public class CheckstyleTransformingAction implements IObjectActionDelegate {
+public class CheckstyleTransformingAction implements IActionDelegate {
 
   /** Selection in workspace. */
   private ISelection mSelection;
-
-  @Override
-  public void setActivePart(final IAction arg0, final IWorkbenchPart arg1) {
-    // TODO Auto-generated method stub
-  }
 
   @Override
   public void run(final IAction arg0) {

@@ -24,33 +24,46 @@ import net.sf.eclipsecs.core.transformer.AbstractCTransformationClass;
 import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 
 /**
- * Wrapperclass for converting the checkstyle-rule IdentationWrap to appropriate
+ * Wrapper class for converting the checkstyle-rule Indentation to appropriate
  * eclipse-formatter-rules.
  *
  */
 public class IndentationTransformer extends AbstractCTransformationClass {
   @Override
   public FormatterConfiguration transformRule() {
-    String val = getAttribute("basicOffset");
-    if (val == null) {
-      val = "4";
+    // basicOffset -> indentation.size, tabulation.size
+    String basicOffset = getAttribute("basicOffset");
+    if (basicOffset == null) {
+      basicOffset = "4";
     }
-    // TODO attributes braceAdjustment caseIndent
     userFormatterSetting("use_tabs_only_for_leading_indentations", "false");
     userFormatterSetting("tabulation.char", "space");
-    userFormatterSetting("indentation.size", val);
-    userFormatterSetting("tabulation.size", val);
+    userFormatterSetting("indentation.size", basicOffset);
+    userFormatterSetting("tabulation.size", basicOffset);
 
-    val = getAttribute("caseIndent");
-    if (val == null) {
-      val = "4";
+    // caseIndent -> indent_switchstatements_compare_to_switch
+    // (non-zero means cases are indented relative to the switch)
+    String caseIndent = getAttribute("caseIndent");
+    if (caseIndent == null) {
+      caseIndent = "4";
     }
+    userFormatterSetting("indent_switchstatements_compare_to_switch",
+            "0".equals(caseIndent) ? "false" : "true");
 
-    if ("4".equals(val)) {
-      userFormatterSetting("indent_switchstatements_compare_to_switch", "true");
-    } else if ("0".equals(val)) {
-      userFormatterSetting("indent_switchstatements_compare_to_switch", "false");
+    // lineWrappingIndentation -> continuation_indentation
+    String lineWrappingIndentation = getAttribute("lineWrappingIndentation");
+    if (lineWrappingIndentation == null) {
+      lineWrappingIndentation = "4";
     }
+    userFormatterSetting("continuation_indentation", lineWrappingIndentation);
+
+    // arrayInitIndent -> continuation_indentation_for_array_initializer
+    String arrayInitIndent = getAttribute("arrayInitIndent");
+    if (arrayInitIndent == null) {
+      arrayInitIndent = "4";
+    }
+    userFormatterSetting("continuation_indentation_for_array_initializer", arrayInitIndent);
+
     return getFormatterSetting();
   }
 }

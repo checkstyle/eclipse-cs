@@ -20,13 +20,13 @@
 
 package net.sf.eclipsecs.core.transformer.ctransformerclasses;
 
-import java.util.StringTokenizer;
+import java.util.List;
 
 import net.sf.eclipsecs.core.transformer.AbstractCTransformationClass;
 import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 
 /**
- * Wrapperclass for converting the checkstyle-rule WhitespaceAfter to appropriate
+ * Wrapper class for converting the checkstyle-rule WhitespaceAfter to appropriate
  * eclipse-formatter-rules.
  *
  */
@@ -34,42 +34,57 @@ public class WhitespaceAfterTransformer extends AbstractCTransformationClass {
 
   @Override
   public FormatterConfiguration transformRule() {
-    // TODO token SEMI
     String tokens = getAttribute("tokens");
     if (tokens == null) {
-      tokens = "COMMA, SEMI, TYPECAST";
+      tokens = "COMMA, DO_WHILE, ELLIPSIS, LAMBDA, LITERAL_CATCH, LITERAL_DO, LITERAL_ELSE, "
+              + "LITERAL_FINALLY, LITERAL_FOR, LITERAL_IF, LITERAL_RETURN, LITERAL_SWITCH, "
+              + "LITERAL_SYNCHRONIZED, LITERAL_TRY, LITERAL_WHEN, LITERAL_WHILE, "
+              + "LITERAL_YIELD, SEMI, TYPECAST";
     }
-    final StringTokenizer token = new StringTokenizer(tokens, ", ");
-    String tok;
 
-    while (token.hasMoreTokens()) {
-      tok = token.nextToken();
-      if ("COMMA".equals(tok)) {
-        userFormatterSetting("insert_space_after_comma_in_annotation", "insert");
-        userFormatterSetting("insert_space_after_comma_in_type_arguments", "insert");
-        userFormatterSetting("insert_space_after_comma_in_type_parameters", "insert");
-        userFormatterSetting("insert_space_after_comma_in_enum_constant_arguments", "insert");
-        userFormatterSetting("insert_space_after_comma_in_enum_declarations", "insert");
-        userFormatterSetting("insert_space_after_comma_in_constructor_declaration_parameters",
-                "insert");
-        userFormatterSetting("insert_space_after_comma_in_method_declaration_throws", "insert");
-        userFormatterSetting("insert_space_after_comma_in_for_increments", "insert");
-        userFormatterSetting("insert_space_after_comma_in_explicitconstructorcall_arguments",
-                "insert");
-        userFormatterSetting("insert_space_after_comma_in_superinterfaces", "insert");
-        userFormatterSetting("insert_space_after_comma_in_method_declaration_parameters", "insert");
-        userFormatterSetting("insert_space_after_comma_in_for_inits", "insert");
-        userFormatterSetting("insert_space_after_comma_in_array_initializer", "insert");
-        userFormatterSetting("insert_space_after_comma_in_allocation_expression", "insert");
-        userFormatterSetting("insert_space_after_comma_in_constructor_declaration_throws",
-                "insert");
-        userFormatterSetting("insert_space_after_comma_in_multiple_field_declarations", "insert");
-        userFormatterSetting("insert_space_after_comma_in_parameterized_type_reference", "insert");
-        userFormatterSetting("insert_space_after_comma_in_method_invocation_arguments", "insert");
-        userFormatterSetting("insert_space_after_comma_in_multiple_local_declarations", "insert");
-      } else if ("TYPECAST".equals(tok)) {
-        userFormatterSetting("insert_space_after_closing_paren_in_cast", "insert");
-      }
+    for (String token : tokens.split("\\s*,\\s*")) {
+      List<String> settings = switch (token) {
+        case "COMMA" -> List.of("insert_space_after_comma_in_allocation_expression",
+                "insert_space_after_comma_in_annotation",
+                "insert_space_after_comma_in_array_initializer",
+                "insert_space_after_comma_in_constructor_declaration_parameters",
+                "insert_space_after_comma_in_constructor_declaration_throws",
+                "insert_space_after_comma_in_enum_constant_arguments",
+                "insert_space_after_comma_in_enum_declarations",
+                "insert_space_after_comma_in_explicitconstructorcall_arguments",
+                "insert_space_after_comma_in_for_increments",
+                "insert_space_after_comma_in_for_inits",
+                "insert_space_after_comma_in_method_declaration_parameters",
+                "insert_space_after_comma_in_method_declaration_throws",
+                "insert_space_after_comma_in_method_invocation_arguments",
+                "insert_space_after_comma_in_multiple_field_declarations",
+                "insert_space_after_comma_in_multiple_local_declarations",
+                "insert_space_after_comma_in_parameterized_type_reference",
+                "insert_space_after_comma_in_permitted_types",
+                "insert_space_after_comma_in_record_components",
+                "insert_space_after_comma_in_superinterfaces",
+                "insert_space_after_comma_in_switch_case_expressions",
+                "insert_space_after_comma_in_type_arguments",
+                "insert_space_after_comma_in_type_parameters");
+        case "SEMI" -> List.of("insert_space_after_semicolon_in_for",
+                "insert_space_after_semicolon_in_try_resources");
+        case "TYPECAST" -> List.of("insert_space_after_closing_paren_in_cast");
+        case "LITERAL_IF" -> List.of("insert_space_before_opening_paren_in_if");
+        case "LITERAL_FOR" -> List.of("insert_space_before_opening_paren_in_for");
+        case "LITERAL_WHILE", "DO_WHILE" ->
+          List.of("insert_space_before_opening_paren_in_while");
+        case "LITERAL_CATCH" -> List.of("insert_space_before_opening_paren_in_catch");
+        case "LITERAL_SWITCH" -> List.of("insert_space_before_opening_paren_in_switch");
+        case "LITERAL_SYNCHRONIZED" ->
+          List.of("insert_space_before_opening_paren_in_synchronized");
+        case "LITERAL_TRY" -> List.of("insert_space_before_opening_paren_in_try");
+        case "LITERAL_RETURN" ->
+          List.of("insert_space_before_parenthesized_expression_in_return");
+        case "LAMBDA" -> List.of("insert_space_after_lambda_arrow");
+        case "ELLIPSIS" -> List.of("insert_space_after_ellipsis");
+        default -> List.of();
+      };
+      settings.forEach(setting -> userFormatterSetting(setting, "insert"));
     }
     return getFormatterSetting();
   }
