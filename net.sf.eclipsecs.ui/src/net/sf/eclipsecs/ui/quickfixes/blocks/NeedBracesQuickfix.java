@@ -76,10 +76,10 @@ public class NeedBracesQuickfix extends AbstractASTResolution {
 
       int nodePos = node.getStartPosition();
       int nodeEnd = nodePos + node.getLength();
-      if ((nodePos >= lineInfo.getOffset()
-              && nodePos <= (lineInfo.getOffset() + lineInfo.getLength()))
-              || (nodePos <= lineInfo.getOffset()
-                      && nodeEnd >= lineInfo.getOffset() + lineInfo.getLength())) {
+      if (nodePos >= lineInfo.getOffset()
+              && nodePos <= (lineInfo.getOffset() + lineInfo.getLength())
+              || nodePos <= lineInfo.getOffset()
+                      && nodeEnd >= lineInfo.getOffset() + lineInfo.getLength()) {
         bracifyIfStatement(node);
       }
 

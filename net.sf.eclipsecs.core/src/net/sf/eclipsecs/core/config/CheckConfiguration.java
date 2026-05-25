@@ -156,7 +156,7 @@ public class CheckConfiguration extends AbstractCheckConfiguration {
   public CheckstyleConfigurationFile getCheckstyleConfiguration() throws CheckstylePluginException {
     final long currentTime = System.currentTimeMillis();
 
-    if ((mCheckstyleConfigurationFile == null) || (currentTime > mExpirationTime)) {
+    if (mCheckstyleConfigurationFile == null || currentTime > mExpirationTime) {
       mCheckstyleConfigurationFile = getType().getCheckstyleConfiguration(this);
       // 1 hour
       mExpirationTime = currentTime + 1000 * 60 * 60;
@@ -167,7 +167,7 @@ public class CheckConfiguration extends AbstractCheckConfiguration {
 
   @Override
   public boolean equals(final Object obj) {
-    if ((obj == null) || !(obj instanceof ICheckConfiguration)) {
+    if (obj == null || !(obj instanceof ICheckConfiguration)) {
       return false;
     }
     if (this == obj) {
