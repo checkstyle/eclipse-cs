@@ -208,7 +208,7 @@ public final class FileSetEditDialog extends TitleAreaDialog {
     // Get the FileSet name.
     //
     String name = commonArea.getText();
-    if ((name == null) || (name.trim().length() <= 0)) {
+    if (name == null || name.trim().length() <= 0) {
       this.setErrorMessage(Messages.FileSetEditDialog_msgNoFilesetName);
       return;
     }
@@ -299,7 +299,7 @@ public final class FileSetEditDialog extends TitleAreaDialog {
     }
 
     int index = mFileSet.getFileMatchPatterns().indexOf(pattern);
-    if ((index >= 0) && (index < mFileSet.getFileMatchPatterns().size() - 1)) {
+    if (index >= 0 && index < mFileSet.getFileMatchPatterns().size() - 1) {
       mFileSet.getFileMatchPatterns().remove(pattern);
       if (index < mFileSet.getFileMatchPatterns().size() - 1) {
         mFileSet.getFileMatchPatterns().add(index + 1, pattern);

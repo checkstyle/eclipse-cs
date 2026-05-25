@@ -331,7 +331,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
 
       // check if a resource has changed
       int deltaKind = childDelta.getKind();
-      if ((deltaKind == IResourceDelta.ADDED) || (deltaKind == IResourceDelta.CHANGED)) {
+      if (deltaKind == IResourceDelta.ADDED || deltaKind == IResourceDelta.CHANGED) {
 
         IResource child = childDelta.getResource();
 

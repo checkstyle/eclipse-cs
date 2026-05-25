@@ -295,7 +295,7 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
     public int compare(Viewer viewer, Object e1, Object e2) {
       int result = 0;
 
-      if ((e1 instanceof FileSet) && (e2 instanceof FileSet)) {
+      if (e1 instanceof FileSet && e2 instanceof FileSet) {
         FileSet fileSet1 = (FileSet) e1;
         FileSet fileSet2 = (FileSet) e2;
 

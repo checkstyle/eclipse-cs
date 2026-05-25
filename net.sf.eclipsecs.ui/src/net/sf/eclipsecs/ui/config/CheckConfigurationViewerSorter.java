@@ -34,7 +34,7 @@ public class CheckConfigurationViewerSorter extends ViewerComparator {
   public int compare(Viewer viewer, Object e1, Object e2) {
     int result = 0;
 
-    if ((e1 instanceof ICheckConfiguration) && (e2 instanceof ICheckConfiguration)) {
+    if (e1 instanceof ICheckConfiguration && e2 instanceof ICheckConfiguration) {
       ICheckConfiguration cfg1 = (ICheckConfiguration) e1;
       ICheckConfiguration cfg2 = (ICheckConfiguration) e2;
 

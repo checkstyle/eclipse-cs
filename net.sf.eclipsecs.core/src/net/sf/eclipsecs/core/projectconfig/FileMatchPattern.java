@@ -71,7 +71,7 @@ public class FileMatchPattern implements Cloneable {
    *           Error during processing
    */
   public final void setMatchPattern(String pattern) throws CheckstylePluginException {
-    if ((pattern == null) || (pattern.trim().length() == 0)) {
+    if (pattern == null || pattern.trim().length() == 0) {
       throw new CheckstylePluginException(Messages.errorEmptyPattern);
     }
     try {

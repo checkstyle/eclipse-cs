@@ -184,10 +184,10 @@ public final class ConfigurationReader {
       final String name = propertyEl.attributeValue(XMLTags.NAME_TAG);
       final String value = propertyEl.attributeValue(XMLTags.VALUE_TAG);
 
-      final boolean isPropertyRef = (value != null)
+      final boolean isPropertyRef = value != null
               && PROPERTY_REF_PATTERN.matcher(value).matches();
 
-      if (XMLTags.SEVERITY_TAG.equals(name) && (module.getMetaData() != null)
+      if (XMLTags.SEVERITY_TAG.equals(name) && module.getMetaData() != null
               && module.getMetaData().hasSeverity()) {
         try {
           module.setSeverity(Severity.fromXmlValue(value));

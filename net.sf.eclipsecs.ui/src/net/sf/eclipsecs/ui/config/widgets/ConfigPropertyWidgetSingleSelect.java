@@ -67,7 +67,7 @@ public class ConfigPropertyWidgetSingleSelect extends AbstractConfigPropertyWidg
       for (int i = 0; iter.hasNext(); i++) {
         String value = iter.next();
         valueLabels[i] = value;
-        if ((initValue != null) && (initValue.equals(value))) {
+        if (initValue != null && initValue.equals(value)) {
           initialIndex = i;
         }
       }

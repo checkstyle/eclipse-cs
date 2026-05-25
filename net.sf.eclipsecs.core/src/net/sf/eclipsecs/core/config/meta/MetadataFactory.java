@@ -232,19 +232,8 @@ public final class MetadataFactory {
    * @return List of <code>RuleGroupMetadata</code> objects.
    */
   public static List<RuleGroupMetadata> getRuleGroupMetadata() {
-
     List<RuleGroupMetadata> groups = new ArrayList<>(sRuleGroupMetadata.values());
-    Collections.sort(groups, new Comparator<RuleGroupMetadata>() {
-
-      @Override
-      public int compare(RuleGroupMetadata arg0, RuleGroupMetadata arg1) {
-        int prio1 = arg0.getPriority();
-        int prio2 = arg1.getPriority();
-
-        return prio1 < prio2 ? -1 : (prio1 == prio2 ? 0 : 1);
-      }
-    });
-
+    groups.sort(Comparator.comparingInt(RuleGroupMetadata::getPriority));
     return groups;
   }
 

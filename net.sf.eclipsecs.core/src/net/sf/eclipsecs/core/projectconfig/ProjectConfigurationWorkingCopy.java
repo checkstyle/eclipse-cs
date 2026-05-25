@@ -275,9 +275,9 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
 
     for (FileSet fileSet : getFileSets()) {
       ICheckConfiguration checkConfig = fileSet.getCheckConfig();
-      if (configuration.equals(checkConfig) || (checkConfig instanceof CheckConfigurationWorkingCopy
+      if (configuration.equals(checkConfig) || checkConfig instanceof CheckConfigurationWorkingCopy
               && configuration.equals(((CheckConfigurationWorkingCopy) checkConfig)
-                      .getSourceCheckConfiguration()))) {
+                      .getSourceCheckConfiguration())) {
         result = true;
         break;
       }
