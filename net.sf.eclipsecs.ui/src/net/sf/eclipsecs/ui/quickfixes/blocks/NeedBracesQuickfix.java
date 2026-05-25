@@ -63,7 +63,7 @@ public class NeedBracesQuickfix extends AbstractASTResolution {
     return CheckstyleUIPluginImages.CORRECTION_ADD_BRACES.getImage();
   }
 
-  private class NeedBracesQuickfixAstVisitor extends ASTVisitor {
+  private final class NeedBracesQuickfixAstVisitor extends ASTVisitor {
 
     private final IRegion lineInfo;
 

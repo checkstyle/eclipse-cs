@@ -124,7 +124,7 @@ public abstract class AbstractQuickfixTestCase {
     return testdata.toArray(new QuickfixTestData[testdata.size()]);
   }
 
-  private class QuickfixTestData {
+  private final class QuickfixTestData {
     String input;
 
     String result;

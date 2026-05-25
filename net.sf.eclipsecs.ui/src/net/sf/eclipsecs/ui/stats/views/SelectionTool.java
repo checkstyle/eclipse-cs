@@ -35,7 +35,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkingSet;
 import org.eclipse.ui.ide.ResourceUtil;
 
-public class SelectionTool {
+public final class SelectionTool {
 
   private SelectionTool() {
 

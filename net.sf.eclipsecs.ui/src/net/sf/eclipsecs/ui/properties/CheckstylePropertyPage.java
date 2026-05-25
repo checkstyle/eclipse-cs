@@ -173,7 +173,7 @@ public class CheckstylePropertyPage extends PropertyPage {
             mainTab.isCheckstyleEnabled(), mCheckstyleInitiallyActivated);
   }
 
-  private static class LocalConfig extends Composite {
+  private static final class LocalConfig extends Composite {
 
     private LocalConfig(Composite parent, int style, ICheckConfigurationWorkingSet workingSet) {
       super(parent, style);

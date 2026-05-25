@@ -41,7 +41,7 @@ import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 import net.sf.eclipsecs.core.util.XMLUtil;
 
-public class MetadataXmlReader {
+public final class MetadataXmlReader {
 
   /** Map containing the public - internal DTD mapping. */
   private static final Map<String, String> PUBLIC2INTERNAL_DTD_MAP = Map.of(

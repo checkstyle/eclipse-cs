@@ -165,7 +165,7 @@ class AvailableModulesViewer extends Composite {
    * a search word.
    *
    */
-  private static class ModulePatternFilter extends PatternFilter {
+  private static final class ModulePatternFilter extends PatternFilter {
 
     private ModulePatternFilter() {
       setIncludeLeadingWildcard(true);

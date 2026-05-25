@@ -66,7 +66,7 @@ public class ArrayTypeStyleQuickfix extends AbstractASTResolution {
     return CheckstyleUIPluginImages.CORRECTION_CHANGE.getImage();
   }
 
-  private class ArrayTypeStyleQuickfixAstVisitor extends ASTVisitor {
+  private final class ArrayTypeStyleQuickfixAstVisitor extends ASTVisitor {
     private final int markerStartOffset;
 
     private ArrayTypeStyleQuickfixAstVisitor(int markerStartOffset) {
