@@ -77,40 +77,7 @@ public final class CheckstylePreferencePageGeneralSettings extends Composite {
     group.setLayout(new GridLayout());
 
     languageIf = createLanguageSetting(group);
-
-    //
-    // Create a combo with the rebuild options
-    //
-    final Composite rebuildComposite = new Composite(group, SWT.NULL);
-    GridLayoutFactory.swtDefaults().numColumns(3).margins(0, 0).applyTo(rebuildComposite);
-    rebuildComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-    Label lblRebuild = new Label(rebuildComposite, SWT.NULL);
-    lblRebuild.setText(Messages.CheckstylePreferencePage_lblRebuild);
-
-    mRebuildIfNeeded = new Combo(rebuildComposite, SWT.READ_ONLY);
-    mRebuildIfNeeded.setItems(new String[] {
-        MessageDialogWithToggle.PROMPT,
-        MessageDialogWithToggle.ALWAYS,
-        MessageDialogWithToggle.NEVER,
-    });
-    mRebuildIfNeeded.select(mRebuildIfNeeded.indexOf(
-            CheckstyleUIPluginPrefs.getString(CheckstyleUIPluginPrefs.PREF_ASK_BEFORE_REBUILD)));
-
-    //
-    // Create button to purge the checker cache
-    //
-
-    Button mPurgeCacheButton = new Button(rebuildComposite, SWT.FLAT);
-    mPurgeCacheButton
-            .setImage(CheckstyleUIPluginImages.REFRESH_ICON.getImage());
-    mPurgeCacheButton.setToolTipText(Messages.CheckstylePreferencePage_btnRefreshCheckerCache);
-    mPurgeCacheButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
-      CheckerFactory.cleanup();
-      setRebuildAll.run();
-    }));
-    GridDataFactory.swtDefaults().align(GridData.END, GridData.CENTER).grab(true, false)
-            .hint(20, 20).applyTo(mPurgeCacheButton);
+    mRebuildIfNeeded = createRebuildSection(group, setRebuildAll);
 
     //
     // Create the "Fileset warning" check box.
@@ -122,26 +89,16 @@ public final class CheckstylePreferencePageGeneralSettings extends Composite {
     //
     // Create the "Include rule name" check box.
     //
-    final Composite includeRuleNamesComposite = new Composite(group, SWT.NULL);
-    GridLayoutFactory.swtDefaults().numColumns(2).margins(0, 0).applyTo(includeRuleNamesComposite);
-
-    mIncludeRuleNamesButton = makeButton(includeRuleNamesComposite, SWT.CHECK,
+    mIncludeRuleNamesButton = makeCheckboxWithRebuildNoteLabel(group,
             Messages.CheckstylePreferencePage_lblIncludeRulenames,
             CheckstylePluginPrefs.getBoolean(CheckstylePluginPrefs.PREF_INCLUDE_RULE_NAMES));
-
-    addRebuildNoteLabel(includeRuleNamesComposite);
 
     //
     // Create the "Include rule name" check box.
     //
-    final Composite includeModuleIdComposite = new Composite(group, SWT.NULL);
-    GridLayoutFactory.swtDefaults().numColumns(2).margins(0, 0).applyTo(includeModuleIdComposite);
-
-    mIncludeModuleIdButton = makeButton(includeModuleIdComposite, SWT.CHECK,
+    mIncludeModuleIdButton = makeCheckboxWithRebuildNoteLabel(group,
             Messages.CheckstylePreferencePage_lblIncludeModuleIds,
             CheckstylePluginPrefs.getBoolean(CheckstylePluginPrefs.PREF_INCLUDE_MODULE_IDS));
-
-    addRebuildNoteLabel(includeModuleIdComposite);
 
     //
     // Create the "limit markers" check box and text field combination
@@ -174,6 +131,41 @@ public final class CheckstylePreferencePageGeneralSettings extends Composite {
             CheckstylePluginPrefs.getBoolean(CheckstylePluginPrefs.PREF_BACKGROUND_FULL_BUILD));
   }
 
+  private static Combo createRebuildSection(Group group, Runnable setRebuildAll) {
+    final Composite rebuildComposite = new Composite(group, SWT.NULL);
+    GridLayoutFactory.swtDefaults().numColumns(3).margins(0, 0).applyTo(rebuildComposite);
+    rebuildComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+    Label lblRebuild = new Label(rebuildComposite, SWT.NULL);
+    lblRebuild.setText(Messages.CheckstylePreferencePage_lblRebuild);
+
+    Combo mRebuildIfNeeded = new Combo(rebuildComposite, SWT.READ_ONLY);
+    mRebuildIfNeeded.setItems(new String[] {
+        MessageDialogWithToggle.PROMPT,
+        MessageDialogWithToggle.ALWAYS,
+        MessageDialogWithToggle.NEVER,
+    });
+    mRebuildIfNeeded.select(mRebuildIfNeeded.indexOf(
+            CheckstyleUIPluginPrefs.getString(CheckstyleUIPluginPrefs.PREF_ASK_BEFORE_REBUILD)));
+
+    //
+    // Create button to purge the checker cache
+    //
+
+    Button mPurgeCacheButton = new Button(rebuildComposite, SWT.FLAT);
+    mPurgeCacheButton
+            .setImage(CheckstyleUIPluginImages.REFRESH_ICON.getImage());
+    mPurgeCacheButton.setToolTipText(Messages.CheckstylePreferencePage_btnRefreshCheckerCache);
+    mPurgeCacheButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
+      CheckerFactory.cleanup();
+      setRebuildAll.run();
+    }));
+    GridDataFactory.swtDefaults().align(GridData.END, GridData.CENTER).grab(true, false)
+            .hint(20, 20).applyTo(mPurgeCacheButton);
+
+    return mRebuildIfNeeded;
+  }
+
   private static Combo createLanguageSetting(Group group) {
     Composite langComposite = new Composite(group, SWT.NULL);
     GridLayoutFactory.swtDefaults().numColumns(3).margins(0, 0).applyTo(langComposite);
@@ -189,6 +181,15 @@ public final class CheckstylePreferencePageGeneralSettings extends Composite {
       languageIf.select(selectedLang);
     }
     return languageIf;
+  }
+
+  private static Button makeCheckboxWithRebuildNoteLabel(Group group, String text,
+          boolean selection) {
+    Composite composite = new Composite(group, SWT.NULL);
+    GridLayoutFactory.swtDefaults().numColumns(2).margins(0, 0).applyTo(composite);
+    Button button = makeButton(composite, SWT.CHECK, text, selection);
+    addRebuildNoteLabel(composite);
+    return button;
   }
 
   private static Button makeButton(Composite parent, int style, String text, boolean selection) {

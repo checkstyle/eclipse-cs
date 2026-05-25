@@ -45,8 +45,6 @@ import org.eclipse.equinox.security.storage.StorageException;
 import org.eclipse.osgi.util.NLS;
 
 import com.google.common.io.ByteStreams;
-import com.puppycrawl.tools.checkstyle.PropertyResolver;
-
 import net.sf.eclipsecs.core.CheckstylePlugin;
 import net.sf.eclipsecs.core.Messages;
 import net.sf.eclipsecs.core.config.CheckstyleConfigurationFile;
@@ -131,8 +129,7 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
       additionalPropertiesBytes.ifPresent(data::setAdditionalPropertyBundleBytes);
 
       // get the property resolver
-      final PropertyResolver resolver = getPropertyResolver(checkConfiguration, data);
-      data.setPropertyResolver(resolver);
+      data.setPropertyResolver(getPropertyResolver(checkConfiguration, data));
 
       // write to cache file
       if (originalFileSuccess && useCacheFile) {

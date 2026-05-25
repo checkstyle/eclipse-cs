@@ -31,6 +31,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
+import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -170,33 +172,17 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
   }
 
   private Composite createAdvancedSection() {
-
     Composite advancedSettings = new Composite(mMainTab, SWT.NULL);
     advancedSettings.setLayoutData(new GridData(GridData.FILL_BOTH));
-    GridLayout layout = new GridLayout(2, false);
-    advancedSettings.setLayout(layout);
+    GridLayoutFactory.swtDefaults().numColumns(2).applyTo(advancedSettings);
 
-    // Build comment
-    Label commentLabel = new Label(advancedSettings, SWT.NULL);
-    commentLabel.setText(Messages.RuleConfigurationEditDialog_lblComment);
-    commentLabel.setLayoutData(new GridData());
-
-    mCommentText = new Text(advancedSettings, SWT.SINGLE | SWT.BORDER);
-    mCommentText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-    Label idLabel = new Label(advancedSettings, SWT.NULL);
-    idLabel.setText(Messages.RuleConfigurationEditDialog_lblId);
-    idLabel.setLayoutData(new GridData());
-
-    mIdText = new Text(advancedSettings, SWT.SINGLE | SWT.BORDER);
-    mIdText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+    mCommentText = createLabeledText(advancedSettings, Messages.RuleConfigurationEditDialog_lblComment);
+    mIdText = createLabeledText(advancedSettings, Messages.RuleConfigurationEditDialog_lblId);
 
     Group messagesGroup = new Group(advancedSettings, SWT.NULL);
     messagesGroup.setText(Messages.RuleConfigurationEditDialog_titleCustMsg);
     messagesGroup.setLayout(new GridLayout(2, false));
-    GridData data = new GridData(GridData.FILL_HORIZONTAL);
-    data.horizontalSpan = 2;
-    messagesGroup.setLayoutData(data);
+    GridDataFactory.create(GridData.FILL_HORIZONTAL).span(2, 1).applyTo(messagesGroup);
 
     mCustomMessages = new HashMap<>();
 
@@ -207,14 +193,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
     msgKeys.addAll(mRule.getCustomMessages().keySet());
 
     for (String msgKey : msgKeys) {
-
-      Label msgLabel = new Label(messagesGroup, SWT.NULL);
-      msgLabel.setText(msgKey);
-      msgLabel.setLayoutData(new GridData());
-
-      final Text msgText = new Text(messagesGroup, SWT.SINGLE | SWT.BORDER);
-      // |SWT.SEARCH see below
-      msgText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+      final Text msgText = createLabeledText(messagesGroup, msgKey);
 
       final String standardMessage = MetadataFactory.getStandardMessage(msgKey,
               mRule.getMetaData().identity().internalName());
@@ -233,6 +212,15 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
     }
 
     return advancedSettings;
+  }
+
+  private static Text createLabeledText(Composite parent, String label) {
+    Label commentLabel = new Label(parent, SWT.NULL);
+    commentLabel.setText(label);
+    commentLabel.setLayoutData(new GridData());
+    Text text = new Text(parent, SWT.SINGLE | SWT.BORDER);
+    text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+    return text;
   }
 
   @Override

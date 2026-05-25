@@ -69,27 +69,13 @@ public final class FileMatchPatternTable extends Composite {
     buttons.setLayoutData(formData);
     GridLayoutFactory.swtDefaults().margins(0, 0).applyTo(buttons);
 
-    final Table table = new Table(composite, SWT.CHECK | SWT.BORDER | SWT.FULL_SELECTION);
     formData = new FormData();
     formData.left = new FormAttachment(0, 3);
     formData.top = new FormAttachment(0, 3);
     formData.right = new FormAttachment(buttons, -3, SWT.LEFT);
     formData.bottom = new FormAttachment(100, -3);
+    Table table = createTable(composite);
     table.setLayoutData(formData);
-
-    TableLayout tableLayout = new TableLayout();
-    table.setLayout(tableLayout);
-    table.setHeaderVisible(true);
-    table.setLinesVisible(true);
-
-    TableColumn column1 = new TableColumn(table, SWT.NONE);
-    column1.setText(Messages.FileSetEditDialog_colInclude);
-
-    tableLayout.addColumnData(new ColumnWeightData(11));
-
-    TableColumn column2 = new TableColumn(table, SWT.NONE);
-    column2.setText(Messages.FileSetEditDialog_colRegex);
-    tableLayout.addColumnData(new ColumnWeightData(89));
 
     this.mPatternViewer = new CheckboxTableViewer(table);
 
@@ -123,6 +109,25 @@ public final class FileMatchPatternTable extends Composite {
             toRunnable(callbacks.upFileMatchPattern));
     createPushButton(buttons, Messages.FileSetEditDialog_btnDown,
             toRunnable(callbacks.downFileMatchPattern));
+  }
+
+  private Table createTable(Composite parent) {
+    Table table = new Table(parent, SWT.CHECK | SWT.BORDER | SWT.FULL_SELECTION);
+    table.setHeaderVisible(true);
+    table.setLinesVisible(true);
+
+    TableLayout tableLayout = new TableLayout();
+    table.setLayout(tableLayout);
+
+    TableColumn column1 = new TableColumn(table, SWT.NONE);
+    column1.setText(Messages.FileSetEditDialog_colInclude);
+    tableLayout.addColumnData(new ColumnWeightData(11));
+
+    TableColumn column2 = new TableColumn(table, SWT.NONE);
+    column2.setText(Messages.FileSetEditDialog_colRegex);
+    tableLayout.addColumnData(new ColumnWeightData(89));
+
+    return table;
   }
 
   private Runnable toRunnable(Consumer<FileMatchPattern> callback) {

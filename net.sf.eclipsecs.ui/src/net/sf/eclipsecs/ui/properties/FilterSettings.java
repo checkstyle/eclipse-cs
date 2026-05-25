@@ -21,6 +21,7 @@
 package net.sf.eclipsecs.ui.properties;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -63,36 +64,36 @@ public class FilterSettings extends Composite {
 
     Button btnEditFilter = new Button(group, SWT.PUSH);
 
-    FormData formData = new FormData();
-    formData.left = new FormAttachment(0, 3);
-    formData.top = new FormAttachment(0, 3);
-    formData.right = new FormAttachment(btnEditFilter, -3, SWT.LEFT);
-    formData.bottom = new FormAttachment(60, -3);
     CheckboxTableViewer filterList = createFilterList(group, project);
-    filterList.getTable().setLayoutData(formData);
+    filterList.getTable().setLayoutData(formData(formData -> {
+      formData.left = new FormAttachment(0, 3);
+      formData.top = new FormAttachment(0, 3);
+      formData.right = new FormAttachment(btnEditFilter, -3, SWT.LEFT);
+      formData.bottom = new FormAttachment(60, -3);
+    }));
 
-    formData = new FormData();
-    formData.top = new FormAttachment(0, 3);
-    formData.right = new FormAttachment(100, -3);
-    btnEditFilter.setLayoutData(formData);
+    btnEditFilter.setLayoutData(formData(formData -> {
+      formData.top = new FormAttachment(0, 3);
+      formData.right = new FormAttachment(100, -3);
+    }));
 
     // Description
     Label lblDesc = new Label(group, SWT.LEFT);
     lblDesc.setText(Messages.CheckstylePropertyPage_lblDescription);
-    formData = new FormData();
-    formData.left = new FormAttachment(0, 3);
-    formData.top = new FormAttachment(filterList.getTable(), 3, SWT.BOTTOM);
-    formData.right = new FormAttachment(100, -3);
-    lblDesc.setLayoutData(formData);
+    lblDesc.setLayoutData(formData(formData -> {
+      formData.left = new FormAttachment(0, 3);
+      formData.top = new FormAttachment(filterList.getTable(), 3, SWT.BOTTOM);
+      formData.right = new FormAttachment(100, -3);
+    }));
 
-    formData = new FormData();
-    formData.left = new FormAttachment(0, 3);
-    formData.top = new FormAttachment(lblDesc, 3, SWT.BOTTOM);
-    formData.right = new FormAttachment(100, -3);
-    formData.bottom = new FormAttachment(100, -3);
     Text txtFilterDescription = new Text(group,
             SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.READ_ONLY | SWT.BORDER | SWT.VERTICAL);
-    txtFilterDescription.setLayoutData(formData);
+    txtFilterDescription.setLayoutData(formData(formData -> {
+      formData.left = new FormAttachment(0, 3);
+      formData.top = new FormAttachment(lblDesc, 3, SWT.BOTTOM);
+      formData.right = new FormAttachment(100, -3);
+      formData.bottom = new FormAttachment(100, -3);
+    }));
 
     filterList.addSelectionChangedListener(event -> {
       if (event.getStructuredSelection().getFirstElement() instanceof IFilter filterDef) {
@@ -112,6 +113,12 @@ public class FilterSettings extends Composite {
     filterList.setInput(filters);
 
     btnEditFilter.setEnabled(false);
+  }
+
+  private static FormData formData(Consumer<FormData> custom) {
+    FormData formData = new FormData();
+    custom.accept(formData);
+    return formData;
   }
 
   private CheckboxTableViewer createFilterList(Group group, IProject project) {

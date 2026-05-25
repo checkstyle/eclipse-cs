@@ -20,9 +20,10 @@
 
 package net.sf.eclipsecs.ui.config.configtypes;
 
+import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
@@ -69,51 +70,34 @@ public class BuiltInConfigurationEditor implements ICheckConfigurationEditor {
 
   @Override
   public Control createEditorControl(Composite parent, final Shell shell) {
-
     Composite contents = new Composite(parent, SWT.NULL);
     contents.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-    GridLayout layout = new GridLayout(2, false);
-    layout.marginWidth = 0;
-    layout.marginHeight = 0;
-    contents.setLayout(layout);
+    GridLayoutFactory.swtDefaults().numColumns(2).margins(0, 0).applyTo(contents);
 
     Label lblConfigName = new Label(contents, SWT.NULL);
     lblConfigName.setText(Messages.CheckConfigurationPropertiesDialog_lblName);
-    GridData gridData = new GridData();
-    lblConfigName.setLayoutData(gridData);
+    lblConfigName.setLayoutData(new GridData());
 
     mConfigName = new Text(contents, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
     mConfigName.setEditable(false);
-    gridData = new GridData(GridData.FILL_HORIZONTAL);
-    mConfigName.setLayoutData(gridData);
+    mConfigName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
     mConfigName.setFocus();
 
     Label lblConfigLocation = new Label(contents, SWT.NULL);
     lblConfigLocation.setText(Messages.CheckConfigurationPropertiesDialog_lblLocation);
-    gridData = new GridData();
-    gridData.verticalAlignment = GridData.VERTICAL_ALIGN_BEGINNING;
-    lblConfigLocation.setLayoutData(gridData);
+    GridDataFactory.swtDefaults().align(SWT.BEGINNING, SWT.BEGINNING).applyTo(lblConfigLocation);
 
     mLocation = new Text(contents, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
-    gridData = new GridData(GridData.FILL_HORIZONTAL);
-    mLocation.setLayoutData(gridData);
+    mLocation.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
     mLocation.setEditable(false);
 
     Label lblDescription = new Label(contents, SWT.NULL);
     lblDescription.setText(Messages.CheckConfigurationPropertiesDialog_lblDescription);
-    gridData = new GridData();
-    gridData.horizontalSpan = 2;
-    lblDescription.setLayoutData(gridData);
+    GridDataFactory.swtDefaults().span(2, 1).applyTo(lblDescription);
 
     mDescription = new Text(contents, SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.BORDER | SWT.VERTICAL);
     mDescription.setEditable(false);
-    gridData = new GridData(GridData.FILL_BOTH);
-    gridData.horizontalSpan = 2;
-    gridData.widthHint = 300;
-    gridData.heightHint = 100;
-    gridData.grabExcessHorizontalSpace = true;
-    gridData.grabExcessVerticalSpace = true;
-    mDescription.setLayoutData(gridData);
+    GridDataFactory.create(GridData.FILL_BOTH).span(2, 1).hint(300, 100).grab(true, true).applyTo(mDescription);
 
     if (mWorkingCopy.getName() != null) {
       mConfigName.setText(mWorkingCopy.getName());

@@ -35,8 +35,8 @@ import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.jface.window.Window;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -49,7 +49,6 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkingSet;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.IWorkingSetSelectionDialog;
-
 import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
 import net.sf.eclipsecs.ui.stats.Messages;
 import net.sf.eclipsecs.ui.util.regex.RegexCompletionProposalFactory;
@@ -64,31 +63,9 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
   // attributes
   //
 
+  private ResourceFilterGroup resourceFilterGroup;
+
   private Button mChkFilterEnabled;
-
-  private Button mRadioOnAnyResource;
-
-  private Button mRadioAnyResourceInSameProject;
-
-  private Button mRadioSelectedResource;
-
-  private Button mRadioSelectedResourceAndChildren;
-
-  private Button mRadioSelectedWorkingSet;
-
-  private Label mLblSelectedWorkingSet;
-
-  private Button mBtnWorkingSet;
-
-  private Button mChkSeverityEnabled;
-
-  private Button mChkSeverityError;
-
-  private Button mChkSeverityWarning;
-
-  private Button mChkSeverityInfo;
-
-  private Group mFilterComposite;
 
   private Group mGrpRegex;
 
@@ -105,9 +82,6 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
 
   /** the selected working set. */
   private IWorkingSet mSelectedWorkingSet;
-
-  /** The controller of this dialog. */
-  private PageController mController = new PageController();
 
   /** The regular expressions to filter by. */
   private List<String> mRegularExpressions;
@@ -157,58 +131,9 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
     mChkFilterEnabled.addSelectionListener(
             SelectionListener.widgetSelectedAdapter(event -> updateControlState()));
 
-    mFilterComposite = new Group(dialog, SWT.NULL);
-    mFilterComposite.setText(Messages.CheckstyleMarkerFilterDialog_groupResourceSetting);
-    mFilterComposite.setLayout(new GridLayout(3, false));
-    mFilterComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-    mRadioOnAnyResource = createButton(mFilterComposite, SWT.RADIO,
-            Messages.CheckstyleMarkerFilterDialog_btnOnAnyResource,
-            GridDataFactory.swtDefaults().span(3, 1));
-
-    mRadioAnyResourceInSameProject = createButton(mFilterComposite, SWT.RADIO,
-            Messages.CheckstyleMarkerFilterDialog_btnOnAnyResourceInSameProject,
-            GridDataFactory.swtDefaults().span(3, 1));
-
-    mRadioSelectedResource = createButton(mFilterComposite, SWT.RADIO,
-            Messages.CheckstyleMarkerFilterDialog_btnOnSelectedResource,
-            GridDataFactory.swtDefaults().span(3, 1));
-
-    mRadioSelectedResourceAndChildren = new Button(mFilterComposite, SWT.RADIO);
-    mRadioSelectedResourceAndChildren
-            .setText(Messages.CheckstyleMarkerFilterDialog_btnOnSelectedResourceAndChilds);
-    GridDataFactory.swtDefaults().span(3, 1).applyTo(mRadioSelectedResourceAndChildren);
-
-    mRadioSelectedWorkingSet = createButton(mFilterComposite, SWT.RADIO,
-            Messages.CheckstyleMarkerFilterDialog_btnOnWorkingSet, GridDataFactory.swtDefaults());
-
-    mLblSelectedWorkingSet = new Label(mFilterComposite, SWT.NULL);
-    mLblSelectedWorkingSet.setLayoutData(
-            new GridData(GridData.FILL_HORIZONTAL | GridData.HORIZONTAL_ALIGN_BEGINNING));
-
-    mBtnWorkingSet = createButton(mFilterComposite, SWT.PUSH,
-            Messages.CheckstyleMarkerFilterDialog_btnSelect,
-            GridDataFactory.swtDefaults().span(1, 2));
-    mBtnWorkingSet.addSelectionListener(mController);
-
-    Composite severityGroup = new Composite(mFilterComposite, SWT.NULL);
-    GridLayoutFactory.swtDefaults().numColumns(4).margins(0, 5).applyTo(severityGroup);
-    GridDataFactory.create(GridData.FILL_HORIZONTAL).span(3, 1).applyTo(severityGroup);
-
-    mChkSeverityEnabled = createButton(severityGroup, SWT.CHECK,
-            Messages.CheckstyleMarkerFilterDialog_btnMarkerSeverity,
-            GridDataFactory.create(GridData.FILL_HORIZONTAL));
-    mChkSeverityEnabled.addSelectionListener(
-            SelectionListener.widgetSelectedAdapter(event -> updateControlState()));
-
-    mChkSeverityError = createButton(severityGroup, SWT.CHECK,
-            Messages.CheckstyleMarkerFilterDialog_btnSeverityError, GridDataFactory.swtDefaults());
-
-    mChkSeverityWarning = createButton(severityGroup, SWT.CHECK,
-            Messages.CheckstyleMarkerFilterDialog_btnSeverityWarning, GridDataFactory.swtDefaults());
-
-    mChkSeverityInfo = createButton(severityGroup, SWT.CHECK,
-            Messages.CheckstyleMarkerFilterDialog_btnSeverityInfo, GridDataFactory.swtDefaults());
+    resourceFilterGroup = new ResourceFilterGroup(dialog, SWT.NONE, this::updateControlState,
+            this::selectWorkingSet);
+    GridDataFactory.fillDefaults().applyTo(resourceFilterGroup);
 
     mGrpRegex = new Group(dialog, SWT.NULL);
     mGrpRegex.setText(Messages.CheckstyleMarkerFilterDialog_lblExcludeMarkers);
@@ -223,7 +148,14 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
 
     mBtnEditRegex = createButton(mGrpRegex, SWT.PUSH, Messages.CheckstyleMarkerFilterDialog_btnEdit,
             GridDataFactory.swtDefaults());
-    mBtnEditRegex.addSelectionListener(mController);
+    mBtnEditRegex.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
+      List<String> regex = new ArrayList<>(mRegularExpressions);
+      RegexDialog regexDialog = new RegexDialog(getShell(), regex);
+      if (Window.OK == regexDialog.open()) {
+        mRegularExpressions = regex;
+        initRegexLabel();
+      }
+    }));
 
     // init the controls
     updateUIFromFilter();
@@ -244,10 +176,12 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
 
   @Override
   protected void createButtonsForButtonBar(Composite parent) {
-
     mBtnDefault = createButton(parent, IDialogConstants.BACK_ID,
             Messages.CheckstyleMarkerFilterDialog_btnRestoreDefault, false);
-    mBtnDefault.addSelectionListener(mController);
+    mBtnDefault.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
+      mFilter = CheckstyleMarkerFilter.resetState(mFilter.focusResources());
+      updateUIFromFilter();
+    }));
 
     // create OK and Cancel buttons by default
     createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true);
@@ -270,31 +204,13 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
    * Updates the ui controls from the filter data.
    */
   private void updateUIFromFilter() {
-
     mChkFilterEnabled.setSelection(mFilter.enabled());
 
-    mRadioOnAnyResource
-            .setSelection(mFilter.onResource() == CheckstyleMarkerFilter.ON_ANY_RESOURCE);
-    mRadioAnyResourceInSameProject.setSelection(
-            mFilter.onResource() == CheckstyleMarkerFilter.ON_ANY_RESOURCE_OF_SAME_PROJECT);
-    mRadioSelectedResource.setSelection(
-            mFilter.onResource() == CheckstyleMarkerFilter.ON_SELECTED_RESOURCE_ONLY);
-    mRadioSelectedResourceAndChildren.setSelection(
-            mFilter.onResource() == CheckstyleMarkerFilter.ON_SELECTED_RESOURCE_AND_CHILDREN);
-    mRadioSelectedWorkingSet
-            .setSelection(mFilter.onResource() == CheckstyleMarkerFilter.ON_WORKING_SET);
+    resourceFilterGroup.setFromFilter(mFilter.onResource(), mFilter.selectBySeverity(),
+            mFilter.severity());
 
     mSelectedWorkingSet = mFilter.workingSet();
     initWorkingSetLabel();
-
-    mChkSeverityEnabled.setSelection(mFilter.selectBySeverity());
-
-    mChkSeverityError
-            .setSelection((mFilter.severity() & CheckstyleMarkerFilter.SEVERITY_ERROR) > 0);
-    mChkSeverityWarning
-            .setSelection((mFilter.severity() & CheckstyleMarkerFilter.SEVERITY_WARNING) > 0);
-    mChkSeverityInfo
-            .setSelection((mFilter.severity() & CheckstyleMarkerFilter.SEVERITY_INFO) > 0);
 
     mChkSelectByRegex.setSelection(mFilter.filterByRegex());
     mRegularExpressions = mFilter.filterRegex();
@@ -307,32 +223,9 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
    * Updates the filter data from the ui controls.
    */
   private void updateFilterFromUI() {
-    int onResource;
-    if (mRadioSelectedResource.getSelection()) {
-      onResource = CheckstyleMarkerFilter.ON_SELECTED_RESOURCE_ONLY;
-    } else if (mRadioSelectedResourceAndChildren.getSelection()) {
-      onResource = CheckstyleMarkerFilter.ON_SELECTED_RESOURCE_AND_CHILDREN;
-    } else if (mRadioAnyResourceInSameProject.getSelection()) {
-      onResource = CheckstyleMarkerFilter.ON_ANY_RESOURCE_OF_SAME_PROJECT;
-    } else if (mRadioSelectedWorkingSet.getSelection()) {
-      onResource = CheckstyleMarkerFilter.ON_WORKING_SET;
-    } else {
-      onResource = CheckstyleMarkerFilter.ON_ANY_RESOURCE;
-    }
-
-    int severity = 0;
-    if (mChkSeverityError.getSelection()) {
-      severity = severity | CheckstyleMarkerFilter.SEVERITY_ERROR;
-    }
-    if (mChkSeverityWarning.getSelection()) {
-      severity = severity | CheckstyleMarkerFilter.SEVERITY_WARNING;
-    }
-    if (mChkSeverityInfo.getSelection()) {
-      severity = severity | CheckstyleMarkerFilter.SEVERITY_INFO;
-    }
-
-    mFilter = new CheckstyleMarkerFilter(mChkFilterEnabled.getSelection(), onResource,
-            mSelectedWorkingSet, mChkSeverityEnabled.getSelection(), severity,
+    mFilter = new CheckstyleMarkerFilter(mChkFilterEnabled.getSelection(),
+            resourceFilterGroup.getOnResource(), mSelectedWorkingSet,
+            resourceFilterGroup.getSelectBySeverity(), resourceFilterGroup.getSeverity(),
             mChkSelectByRegex.getSelection(), mRegularExpressions, mFilter.focusResources());
   }
 
@@ -340,11 +233,11 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
    * Initializes the label for the selected working set.
    */
   private void initWorkingSetLabel() {
-
     if (mSelectedWorkingSet == null) {
-      mLblSelectedWorkingSet.setText(Messages.CheckstyleMarkerFilterDialog_msgNoWorkingSetSelected);
+      resourceFilterGroup
+              .setWorkingSetLabel(Messages.CheckstyleMarkerFilterDialog_msgNoWorkingSetSelected);
     } else {
-      mLblSelectedWorkingSet.setText(mSelectedWorkingSet.getName());
+      resourceFilterGroup.setWorkingSetLabel(mSelectedWorkingSet.getName());
     }
   }
 
@@ -374,81 +267,185 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
    * Updates the enablement state of the controls.
    */
   private void updateControlState() {
-
-    mFilterComposite.setEnabled(mChkFilterEnabled.getSelection());
-    mRadioOnAnyResource.setEnabled(mChkFilterEnabled.getSelection());
-    mRadioAnyResourceInSameProject.setEnabled(mChkFilterEnabled.getSelection());
-    mRadioSelectedResource.setEnabled(mChkFilterEnabled.getSelection());
-    mRadioSelectedResourceAndChildren.setEnabled(mChkFilterEnabled.getSelection());
-    mRadioSelectedWorkingSet.setEnabled(mChkFilterEnabled.getSelection());
-    mLblSelectedWorkingSet.setEnabled(mChkFilterEnabled.getSelection());
-    mBtnWorkingSet
-            .setEnabled(mChkFilterEnabled.getSelection() && mChkFilterEnabled.getSelection());
-    mChkSeverityEnabled.setEnabled(mChkFilterEnabled.getSelection());
-
-    mChkSeverityError
-            .setEnabled(mChkFilterEnabled.getSelection() && mChkSeverityEnabled.getSelection());
-    mChkSeverityWarning
-            .setEnabled(mChkFilterEnabled.getSelection() && mChkSeverityEnabled.getSelection());
-    mChkSeverityInfo
-            .setEnabled(mChkFilterEnabled.getSelection() && mChkSeverityEnabled.getSelection());
-
+    resourceFilterGroup.propagateEnabled(mChkFilterEnabled.getSelection());
     mGrpRegex.setEnabled(mChkFilterEnabled.getSelection());
     mChkSelectByRegex.setEnabled(mChkFilterEnabled.getSelection());
     mLblRegexFilter.setEnabled(mChkFilterEnabled.getSelection());
     mBtnEditRegex.setEnabled(mChkFilterEnabled.getSelection());
   }
 
-  /**
-   * The controller for this dialog.
-   *
-   */
-  private class PageController implements SelectionListener {
+  private void selectWorkingSet() {
+    IWorkingSetSelectionDialog dialog = PlatformUI.getWorkbench().getWorkingSetManager()
+            .createWorkingSetSelectionDialog(getShell(), false);
 
-    @Override
-    public void widgetSelected(SelectionEvent e) {
-      if (mBtnDefault == e.widget) {
-        mFilter = CheckstyleMarkerFilter.resetState(mFilter.focusResources());
-        updateUIFromFilter();
-      } else if (mBtnWorkingSet == e.widget) {
-        IWorkingSetSelectionDialog dialog = PlatformUI.getWorkbench().getWorkingSetManager()
-                .createWorkingSetSelectionDialog(getShell(), false);
-
-        if (mSelectedWorkingSet != null) {
-          dialog.setSelection(new IWorkingSet[] {
-              mSelectedWorkingSet,
-          });
-        }
-        if (dialog.open() == Window.OK) {
-          IWorkingSet[] result = dialog.getSelection();
-          if (result != null && result.length > 0) {
-            mSelectedWorkingSet = result[0];
-          } else {
-            mSelectedWorkingSet = null;
-          }
-          initWorkingSetLabel();
-        }
-      } else if (mBtnEditRegex == e.widget) {
-        List<String> regex = new ArrayList<>(mRegularExpressions);
-        RegexDialog dialog = new RegexDialog(getShell(), regex);
-        if (Window.OK == dialog.open()) {
-          mRegularExpressions = regex;
-          initRegexLabel();
-        }
+    if (mSelectedWorkingSet != null) {
+      dialog.setSelection(new IWorkingSet[] {
+          mSelectedWorkingSet,
+      });
+    }
+    if (dialog.open() == Window.OK) {
+      IWorkingSet[] result = dialog.getSelection();
+      if (result != null && result.length > 0) {
+        mSelectedWorkingSet = result[0];
+      } else {
+        mSelectedWorkingSet = null;
       }
+      initWorkingSetLabel();
+    }
+  }
+
+  private static class ResourceFilterGroup extends Composite {
+
+    private final Group mFilterComposite;
+    private final Button mRadioOnAnyResource;
+    private final Button mRadioAnyResourceInSameProject;
+    private final Button mRadioSelectedResource;
+    private final Button mRadioSelectedResourceAndChildren;
+    private final Button mRadioSelectedWorkingSet;
+    private final Label mLblSelectedWorkingSet;
+    private final Button mBtnWorkingSet;
+    private final Button mChkSeverityEnabled;
+    private final Button mChkSeverityError;
+    private final Button mChkSeverityWarning;
+    private final Button mChkSeverityInfo;
+
+    public ResourceFilterGroup(Composite parent, int style, Runnable updateControlState, Runnable selectWorkingSet) {
+      super(parent, style);
+      setLayout(new FillLayout());
+
+      mFilterComposite = new Group(this, SWT.NULL);
+      mFilterComposite.setText(Messages.CheckstyleMarkerFilterDialog_groupResourceSetting);
+      mFilterComposite.setLayout(new GridLayout(3, false));
+      mFilterComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+      mRadioOnAnyResource = createButton(mFilterComposite, SWT.RADIO,
+              Messages.CheckstyleMarkerFilterDialog_btnOnAnyResource,
+              GridDataFactory.swtDefaults().span(3, 1));
+
+      mRadioAnyResourceInSameProject = createButton(mFilterComposite, SWT.RADIO,
+              Messages.CheckstyleMarkerFilterDialog_btnOnAnyResourceInSameProject,
+              GridDataFactory.swtDefaults().span(3, 1));
+
+      mRadioSelectedResource = createButton(mFilterComposite, SWT.RADIO,
+              Messages.CheckstyleMarkerFilterDialog_btnOnSelectedResource,
+              GridDataFactory.swtDefaults().span(3, 1));
+
+      mRadioSelectedResourceAndChildren = new Button(mFilterComposite, SWT.RADIO);
+      mRadioSelectedResourceAndChildren
+              .setText(Messages.CheckstyleMarkerFilterDialog_btnOnSelectedResourceAndChilds);
+      GridDataFactory.swtDefaults().span(3, 1).applyTo(mRadioSelectedResourceAndChildren);
+
+      mRadioSelectedWorkingSet = createButton(mFilterComposite, SWT.RADIO,
+              Messages.CheckstyleMarkerFilterDialog_btnOnWorkingSet, GridDataFactory.swtDefaults());
+
+      mLblSelectedWorkingSet = new Label(mFilterComposite, SWT.NULL);
+      mLblSelectedWorkingSet.setLayoutData(
+              new GridData(GridData.FILL_HORIZONTAL | GridData.HORIZONTAL_ALIGN_BEGINNING));
+
+      mBtnWorkingSet = createButton(mFilterComposite, SWT.PUSH,
+              Messages.CheckstyleMarkerFilterDialog_btnSelect,
+              GridDataFactory.swtDefaults().span(1, 2));
+      mBtnWorkingSet.addSelectionListener(
+              SelectionListener.widgetSelectedAdapter(event -> selectWorkingSet.run()));
+
+      Composite severityGroup = new Composite(mFilterComposite, SWT.NULL);
+      GridLayoutFactory.swtDefaults().numColumns(4).margins(0, 5).applyTo(severityGroup);
+      GridDataFactory.create(GridData.FILL_HORIZONTAL).span(3, 1).applyTo(severityGroup);
+
+      mChkSeverityEnabled = createButton(severityGroup, SWT.CHECK,
+              Messages.CheckstyleMarkerFilterDialog_btnMarkerSeverity,
+              GridDataFactory.create(GridData.FILL_HORIZONTAL));
+      mChkSeverityEnabled.addSelectionListener(
+              SelectionListener.widgetSelectedAdapter(event -> updateControlState.run()));
+
+      mChkSeverityError = createButton(severityGroup, SWT.CHECK,
+              Messages.CheckstyleMarkerFilterDialog_btnSeverityError, GridDataFactory.swtDefaults());
+
+      mChkSeverityWarning = createButton(severityGroup, SWT.CHECK,
+              Messages.CheckstyleMarkerFilterDialog_btnSeverityWarning, GridDataFactory.swtDefaults());
+
+      mChkSeverityInfo = createButton(severityGroup, SWT.CHECK,
+              Messages.CheckstyleMarkerFilterDialog_btnSeverityInfo, GridDataFactory.swtDefaults());
     }
 
-    @Override
-    public void widgetDefaultSelected(SelectionEvent e) {
-      // NOOP
+    public void setFromFilter(int onResource, boolean selectBySeverity, int severity) {
+      mRadioOnAnyResource.setSelection(onResource == CheckstyleMarkerFilter.ON_ANY_RESOURCE);
+      mRadioAnyResourceInSameProject
+              .setSelection(onResource == CheckstyleMarkerFilter.ON_ANY_RESOURCE_OF_SAME_PROJECT);
+      mRadioSelectedResource
+              .setSelection(onResource == CheckstyleMarkerFilter.ON_SELECTED_RESOURCE_ONLY);
+      mRadioSelectedResourceAndChildren
+              .setSelection(onResource == CheckstyleMarkerFilter.ON_SELECTED_RESOURCE_AND_CHILDREN);
+      mRadioSelectedWorkingSet.setSelection(onResource == CheckstyleMarkerFilter.ON_WORKING_SET);
+
+      mChkSeverityEnabled.setSelection(selectBySeverity);
+
+      mChkSeverityError.setSelection((severity & CheckstyleMarkerFilter.SEVERITY_ERROR) > 0);
+      mChkSeverityWarning.setSelection((severity & CheckstyleMarkerFilter.SEVERITY_WARNING) > 0);
+      mChkSeverityInfo.setSelection((severity & CheckstyleMarkerFilter.SEVERITY_INFO) > 0);
     }
+
+    public void propagateEnabled(boolean enabled) {
+      mFilterComposite.setEnabled(enabled);
+      mRadioOnAnyResource.setEnabled(enabled);
+      mRadioAnyResourceInSameProject.setEnabled(enabled);
+      mRadioSelectedResource.setEnabled(enabled);
+      mRadioSelectedResourceAndChildren.setEnabled(enabled);
+      mRadioSelectedWorkingSet.setEnabled(enabled);
+      mLblSelectedWorkingSet.setEnabled(enabled);
+      mBtnWorkingSet.setEnabled(enabled);
+      mChkSeverityEnabled.setEnabled(enabled);
+
+      mChkSeverityError.setEnabled(enabled && mChkSeverityEnabled.getSelection());
+      mChkSeverityWarning.setEnabled(enabled && mChkSeverityEnabled.getSelection());
+      mChkSeverityInfo.setEnabled(enabled && mChkSeverityEnabled.getSelection());
+    }
+
+    public void setWorkingSetLabel(String text) {
+      mLblSelectedWorkingSet.setText(text);
+    }
+
+    public int getOnResource() {
+      if (mRadioSelectedResource.getSelection()) {
+        return CheckstyleMarkerFilter.ON_SELECTED_RESOURCE_ONLY;
+      }
+      if (mRadioSelectedResourceAndChildren.getSelection()) {
+        return CheckstyleMarkerFilter.ON_SELECTED_RESOURCE_AND_CHILDREN;
+      }
+      if (mRadioAnyResourceInSameProject.getSelection()) {
+        return CheckstyleMarkerFilter.ON_ANY_RESOURCE_OF_SAME_PROJECT;
+      }
+      if (mRadioSelectedWorkingSet.getSelection()) {
+        return CheckstyleMarkerFilter.ON_WORKING_SET;
+      }
+      return CheckstyleMarkerFilter.ON_ANY_RESOURCE;
+    }
+
+    public int getSeverity() {
+      int severity = 0;
+      if (mChkSeverityError.getSelection()) {
+        severity = severity | CheckstyleMarkerFilter.SEVERITY_ERROR;
+      }
+      if (mChkSeverityWarning.getSelection()) {
+        severity = severity | CheckstyleMarkerFilter.SEVERITY_WARNING;
+      }
+      if (mChkSeverityInfo.getSelection()) {
+        severity = severity | CheckstyleMarkerFilter.SEVERITY_INFO;
+      }
+      return severity;
+    }
+
+    public boolean getSelectBySeverity() {
+      return mChkSeverityEnabled.getSelection();
+    }
+
   }
 
   /**
    * Dialog to edit regular expressions to filter by.
    *
    */
-  private class RegexDialog extends TitleAreaDialog {
+  private static class RegexDialog extends TitleAreaDialog {
 
     private ListViewer mListViewer;
 

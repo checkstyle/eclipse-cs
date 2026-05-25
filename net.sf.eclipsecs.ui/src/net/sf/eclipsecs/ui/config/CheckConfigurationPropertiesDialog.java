@@ -160,12 +160,11 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
 
     Composite contents = new Composite(composite, SWT.NULL);
     contents.setLayout(new GridLayout(2, false));
-    GridData gridData = new GridData(GridData.FILL_BOTH);
-    contents.setLayoutData(gridData);
+    contents.setLayoutData(new GridData(GridData.FILL_BOTH));
 
     Label lblConfigType = new Label(contents, SWT.NULL);
     lblConfigType.setText(Messages.CheckConfigurationPropertiesDialog_lblConfigType);
-    gridData = new GridData();
+    GridData gridData = new GridData();
 
     // this is a weird hack to find the longest label
     // this is done to have a nice ordered appearance of the this label

@@ -23,6 +23,7 @@ package net.sf.eclipsecs.ui.stats.views;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -484,10 +485,7 @@ public class MarkerStatsView extends AbstractStatsView {
       tableViewer.addDoubleClickListener(event -> showErrorAction.run());
 
       // and to the context menu too
-      ArrayList<Object> actionList = new ArrayList<>(1);
-      actionList.add(drillBackAction);
-      actionList.add(showErrorAction);
-      hookContextMenu(actionList, tableViewer, site);
+      hookContextMenu(List.of(drillBackAction, showErrorAction), tableViewer, site);
     }
 
     public String getCurrentDetailCategory() {

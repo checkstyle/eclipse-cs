@@ -25,6 +25,7 @@ import java.util.List;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -34,7 +35,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -128,10 +128,7 @@ public class FileTypesFilterEditor implements IFilterEditor {
       Composite composite = (Composite) super.createDialogArea(parent);
 
       Composite main = new Composite(composite, SWT.NONE);
-      GridLayout layout = new GridLayout(2, false);
-      layout.marginHeight = 0;
-      layout.marginWidth = 0;
-      main.setLayout(layout);
+      GridLayoutFactory.swtDefaults().numColumns(2).margins(0, 0).applyTo(main);
       GridData gridData = new GridData(GridData.FILL_BOTH);
       main.setLayoutData(gridData);
 

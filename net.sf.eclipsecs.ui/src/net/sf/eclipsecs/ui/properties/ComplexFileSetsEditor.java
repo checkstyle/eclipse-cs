@@ -22,13 +22,11 @@ package net.sf.eclipsecs.ui.properties;
 
 import java.util.List;
 
+import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.ColumnWeightData;
-import org.eclipse.jface.viewers.DoubleClickEvent;
-import org.eclipse.jface.viewers.ICheckStateListener;
-import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -40,7 +38,6 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -96,23 +93,55 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
 
   @Override
   public Control createContents(Composite parent) {
-
     mComposite = parent;
 
     Group composite = new Group(parent, SWT.NONE);
     composite.setText(Messages.ComplexFileSetsEditor_titleAdvancedFilesetEditor);
 
-    GridLayout layout = new GridLayout();
-    layout.numColumns = 2;
-    composite.setLayout(layout);
+    GridLayoutFactory.swtDefaults().numColumns(2).applyTo(composite);
 
     //
     // Create the table of file sets.
     //
-    Table table = new Table(composite, SWT.CHECK | SWT.BORDER | SWT.FULL_SELECTION);
+    mViewer = new CheckboxTableViewer(createTable(composite));
+    mViewer.setLabelProvider(new FileSetLabelProvider());
+    mViewer.setContentProvider(new ArrayContentProvider());
+    mViewer.setComparator(new FileSetViewerSorter());
+    mViewer.setInput(mFileSets);
 
-    GridData data = new GridData(GridData.FILL_BOTH);
-    table.setLayoutData(data);
+    //
+    // Set checked state
+    //
+    for (FileSet fileSet : mFileSets) {
+      mViewer.setChecked(fileSet, fileSet.isEnabled());
+    }
+
+    mViewer.addDoubleClickListener(event -> editFileSet());
+    mViewer.addCheckStateListener(this::changeEnabledState);
+
+    //
+    // Build the buttons.
+    //
+    Composite buttons = new Composite(composite, SWT.NULL);
+    buttons.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
+    GridLayoutFactory.swtDefaults().margins(0, 0).applyTo(buttons);
+
+    mAddButton = createPushButton(buttons, Messages.ComplexFileSetsEditor_btnAdd);
+    mAddButton.addListener(SWT.Selection, event -> addFileSet());
+
+    mEditButton = createPushButton(buttons, Messages.ComplexFileSetsEditor_btnEdit);
+    mEditButton.addListener(SWT.Selection, event -> editFileSet());
+
+    mRemoveButton = createPushButton(buttons, Messages.ComplexFileSetsEditor_btnRemove);
+    mRemoveButton.addListener(SWT.Selection, event -> removeFileSet());
+
+    return composite;
+  }
+
+  private static Table createTable(Composite parent) {
+    Table table = new Table(parent, SWT.CHECK | SWT.BORDER | SWT.FULL_SELECTION);
+
+    table.setLayoutData(new GridData(GridData.FILL_BOTH));
 
     table.setHeaderVisible(true);
     table.setLinesVisible(true);
@@ -134,53 +163,7 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
     tableLayout.addColumnData(new ColumnWeightData(40));
     tableLayout.addColumnData(new ColumnWeightData(40));
 
-    mViewer = new CheckboxTableViewer(table);
-    mViewer.setLabelProvider(new FileSetLabelProvider());
-    mViewer.setContentProvider(new ArrayContentProvider());
-    mViewer.setComparator(new FileSetViewerSorter());
-    mViewer.setInput(mFileSets);
-
-    //
-    // Set checked state
-    //
-    for (FileSet fileSet : mFileSets) {
-      mViewer.setChecked(fileSet, fileSet.isEnabled());
-    }
-
-    mViewer.addDoubleClickListener(new IDoubleClickListener() {
-      @Override
-      public void doubleClick(DoubleClickEvent e) {
-        editFileSet();
-      }
-    });
-
-    mViewer.addCheckStateListener(new ICheckStateListener() {
-      @Override
-      public void checkStateChanged(CheckStateChangedEvent event) {
-        changeEnabledState(event);
-      }
-    });
-
-    //
-    // Build the buttons.
-    //
-    Composite buttons = new Composite(composite, SWT.NULL);
-    buttons.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
-    layout = new GridLayout();
-    layout.marginHeight = 0;
-    layout.marginWidth = 0;
-    buttons.setLayout(layout);
-
-    mAddButton = createPushButton(buttons, Messages.ComplexFileSetsEditor_btnAdd);
-    mAddButton.addListener(SWT.Selection, event -> addFileSet());
-
-    mEditButton = createPushButton(buttons, Messages.ComplexFileSetsEditor_btnEdit);
-    mEditButton.addListener(SWT.Selection, event -> editFileSet());
-
-    mRemoveButton = createPushButton(buttons, Messages.ComplexFileSetsEditor_btnRemove);
-    mRemoveButton.addListener(SWT.Selection, event -> removeFileSet());
-
-    return composite;
+    return table;
   }
 
   @Override

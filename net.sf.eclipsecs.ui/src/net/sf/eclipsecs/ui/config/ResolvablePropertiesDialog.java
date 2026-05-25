@@ -28,6 +28,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
+import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -54,7 +56,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-
 import net.sf.eclipsecs.core.config.CheckConfigurationTester;
 import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
 import net.sf.eclipsecs.core.config.ResolvableProperty;
@@ -161,10 +162,31 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
 
     Composite contents = new Composite(composite, SWT.NULL);
     contents.setLayout(new GridLayout(2, false));
-    GridData data = new GridData(GridData.FILL_BOTH);
-    contents.setLayoutData(data);
+    contents.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-    Table table = new Table(contents, SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION);
+    Table table = createTable(contents);
+
+    mTableViewer = new TableViewer(table);
+    PropertiesLabelProvider multiProvider = new PropertiesLabelProvider();
+    mTableViewer.setLabelProvider(multiProvider);
+    mTableViewer.setContentProvider(new ArrayContentProvider());
+    mTableViewer.addDoubleClickListener(mController);
+    mTableViewer.getTable().addKeyListener(mController);
+    TableViewerEnhancer.enhance(mTableViewer, multiProvider);
+
+    Composite buttonBar = new Composite(contents, SWT.NULL);
+    GridLayoutFactory.swtDefaults().margins(0, 0).applyTo(buttonBar);
+    GridDataFactory.swtDefaults().align(GridData.BEGINNING, GridData.BEGINNING).applyTo(buttonBar);
+
+    mBtnAdd = createButton(buttonBar, Messages.ResolvablePropertiesDialog_btnAdd, mController);
+    mBtnEdit = createButton(buttonBar, Messages.ResolvablePropertiesDialog_btnEdit, mController);
+    mBtnRemove = createButton(buttonBar, Messages.ResolvablePropertiesDialog_btnRemove, mController);
+
+    return composite;
+  }
+
+  private static Table createTable(Composite parent) {
+    Table table = new Table(parent, SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION);
     table.setLayoutData(new GridData(GridData.FILL_BOTH));
 
     table.setHeaderVisible(true);
@@ -181,39 +203,15 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
     column2.setText(Messages.ResolvablePropertiesDialog_colValue);
     tableLayout.addColumnData(new ColumnWeightData(50));
 
-    mTableViewer = new TableViewer(table);
-    PropertiesLabelProvider multiProvider = new PropertiesLabelProvider();
-    mTableViewer.setLabelProvider(multiProvider);
-    mTableViewer.setContentProvider(new ArrayContentProvider());
-    mTableViewer.addDoubleClickListener(mController);
-    mTableViewer.getTable().addKeyListener(mController);
-    TableViewerEnhancer.enhance(mTableViewer, multiProvider);
+    return table;
+  }
 
-    Composite buttonBar = new Composite(contents, SWT.NULL);
-    GridLayout layout = new GridLayout(1, false);
-    layout.marginHeight = 0;
-    layout.marginWidth = 0;
-    buttonBar.setLayout(layout);
-    GridData gridData = new GridData();
-    gridData.verticalAlignment = GridData.BEGINNING;
-    buttonBar.setLayoutData(gridData);
-
-    mBtnAdd = new Button(buttonBar, SWT.PUSH);
-    mBtnAdd.setText(Messages.ResolvablePropertiesDialog_btnAdd);
-    mBtnAdd.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-    mBtnAdd.addSelectionListener(mController);
-
-    mBtnEdit = new Button(buttonBar, SWT.PUSH);
-    mBtnEdit.setText(Messages.ResolvablePropertiesDialog_btnEdit);
-    mBtnEdit.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-    mBtnEdit.addSelectionListener(mController);
-
-    mBtnRemove = new Button(buttonBar, SWT.PUSH);
-    mBtnRemove.setText(Messages.ResolvablePropertiesDialog_btnRemove);
-    mBtnRemove.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-    mBtnRemove.addSelectionListener(mController);
-
-    return composite;
+  private static Button createButton(Composite parent, String text, SelectionListener selectionListener) {
+    Button button = new Button(parent, SWT.PUSH);
+    button.setText(text);
+    button.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+    button.addSelectionListener(selectionListener);
+    return button;
   }
 
   @Override

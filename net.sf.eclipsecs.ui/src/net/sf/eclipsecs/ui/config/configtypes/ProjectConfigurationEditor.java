@@ -36,6 +36,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionListener;
@@ -72,6 +73,8 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
   /** the working copy this editor edits. */
   private CheckConfigurationWorkingCopy mWorkingCopy;
 
+  private Shell shell;
+
   /** the parent dialog element. */
   private CheckConfigurationPropertiesDialog mCheckConfigDialog;
 
@@ -80,9 +83,6 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
 
   /** text field containing the location. */
   private Text mLocation;
-
-  /** browse button. */
-  private Button mBtnBrowse;
 
   /** the text containing the description. */
   private Text mDescription;
@@ -105,14 +105,11 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
   }
 
   @Override
-  public Control createEditorControl(Composite parent, final Shell shell) {
-
+  public Control createEditorControl(Composite parent, final Shell parentShell) {
+    this.shell = parentShell;
     Composite contents = new Composite(parent, SWT.NULL);
     contents.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-    GridLayout layout = new GridLayout(2, false);
-    layout.marginWidth = 0;
-    layout.marginHeight = 0;
-    contents.setLayout(layout);
+    GridLayoutFactory.swtDefaults().numColumns(2).margins(0, 0).applyTo(contents);
 
     Label lblConfigName = new Label(contents, SWT.NULL);
     lblConfigName.setText(Messages.CheckConfigurationPropertiesDialog_lblName);
@@ -122,26 +119,7 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
     mConfigName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
     mConfigName.setFocus();
 
-    Label lblConfigLocation = new Label(contents, SWT.NULL);
-    lblConfigLocation.setText(Messages.CheckConfigurationPropertiesDialog_lblLocation);
-    lblConfigLocation.setLayoutData(new GridData());
-
-    Composite locationComposite = new Composite(contents, SWT.NULL);
-    locationComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-    layout = new GridLayout(2, false);
-    layout.marginWidth = 0;
-    layout.marginHeight = 0;
-    locationComposite.setLayout(layout);
-
-    mLocation = new Text(locationComposite, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
-    mLocation.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-    mBtnBrowse = new Button(locationComposite, SWT.PUSH);
-    mBtnBrowse.setText(Messages.ProjectConfigurationLocationEditor_btnBrowse);
-    mBtnBrowse.setLayoutData(new GridData());
-
-    mBtnBrowse.addSelectionListener(SelectionListener.widgetSelectedAdapter(
-            event -> WorkspaceFileSelector.select(shell).ifPresent(mLocation::setText)));
+    mLocation = createLocationSection(contents, parentShell);
 
     Label lblDescription = new Label(contents, SWT.NULL);
     lblDescription.setText(Messages.CheckConfigurationPropertiesDialog_lblDescription);
@@ -158,9 +136,7 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
 
     mChkProtectConfig = new Button(advancedGroup, SWT.CHECK);
     mChkProtectConfig.setText(Messages.ProjectConfigurationEditor_chkProtectConfigFile);
-    GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
-    gridData.horizontalSpan = 2;
-    mChkProtectConfig.setLayoutData(gridData);
+    GridDataFactory.create(GridData.FILL_HORIZONTAL).span(2, 1).applyTo(mChkProtectConfig);
 
     if (mWorkingCopy.getName() != null) {
       mConfigName.setText(mWorkingCopy.getName());
@@ -172,9 +148,32 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
       mDescription.setText(mWorkingCopy.getDescription());
     }
 
-    mChkProtectConfig.setSelection(Boolean.parseBoolean(mWorkingCopy.getAdditionalData().get(ExternalFileConfigurationType.KEY_PROTECT_CONFIG)));
+    mChkProtectConfig.setSelection(Boolean.parseBoolean(mWorkingCopy.getAdditionalData()
+            .get(ExternalFileConfigurationType.KEY_PROTECT_CONFIG)));
 
     return contents;
+  }
+
+  private static Text createLocationSection(Composite parent, Shell shell) {
+    Label lblConfigLocation = new Label(parent, SWT.NULL);
+    lblConfigLocation.setText(Messages.CheckConfigurationPropertiesDialog_lblLocation);
+    lblConfigLocation.setLayoutData(new GridData());
+
+    Composite locationComposite = new Composite(parent, SWT.NULL);
+    locationComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+    GridLayoutFactory.swtDefaults().numColumns(2).margins(0, 0).applyTo(locationComposite);
+
+    Text location = new Text(locationComposite, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
+    location.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+    Button mBtnBrowse = new Button(locationComposite, SWT.PUSH);
+    mBtnBrowse.setText(Messages.ProjectConfigurationLocationEditor_btnBrowse);
+    mBtnBrowse.setLayoutData(new GridData());
+
+    mBtnBrowse.addSelectionListener(SelectionListener.widgetSelectedAdapter(
+            event -> WorkspaceFileSelector.select(shell).ifPresent(location::setText)));
+
+    return location;
   }
 
   @Override
@@ -238,7 +237,7 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
     }
 
     if (!file.exists() && file.getLocation() != null) {
-      boolean confirm = MessageDialog.openQuestion(mBtnBrowse.getShell(),
+      boolean confirm = MessageDialog.openQuestion(shell,
               Messages.ExternalFileConfigurationEditor_titleFileDoesNotExist,
               Messages.ExternalFileConfigurationEditor_msgFileDoesNotExist);
       if (confirm) {
