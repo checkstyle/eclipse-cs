@@ -21,6 +21,7 @@
 package net.sf.eclipsecs.ui.properties;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -135,10 +136,10 @@ public class SimpleFileSetsEditor implements IFileSetsEditor {
     this.mBtnManageConfigs = new Button(configArea, SWT.PUSH);
     this.mBtnManageConfigs.setText(Messages.SimpleFileSetsEditor_btnManageConfigs);
     this.mBtnManageConfigs.addSelectionListener(mController);
-    FormData formData = new FormData();
-    formData.top = new FormAttachment(0, 3);
-    formData.right = new FormAttachment(100, -3);
-    this.mBtnManageConfigs.setLayoutData(formData);
+    this.mBtnManageConfigs.setLayoutData(formData(formData -> {
+      formData.top = new FormAttachment(0, 3);
+      formData.right = new FormAttachment(100, -3);
+    }));
 
     mComboViewer = new ComboViewer(configArea);
     mComboViewer.getCombo().setVisibleItemCount(10);
@@ -147,30 +148,29 @@ public class SimpleFileSetsEditor implements IFileSetsEditor {
     mComboViewer.setComparator(new CheckConfigurationViewerSorter());
     mComboViewer.getControl().setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
     mComboViewer.addSelectionChangedListener(mController);
-    formData = new FormData();
-    formData.left = new FormAttachment(0, 3);
-    formData.top = new FormAttachment(0, 3);
-    formData.right = new FormAttachment(mBtnManageConfigs, -3, SWT.LEFT);
-    // fd.right = new FormAttachment(100, -3);
-    mComboViewer.getCombo().setLayoutData(formData);
+    mComboViewer.getCombo().setLayoutData(formData(formData -> {
+      formData.left = new FormAttachment(0, 3);
+      formData.top = new FormAttachment(0, 3);
+      formData.right = new FormAttachment(mBtnManageConfigs, -3, SWT.LEFT);
+    }));
 
     // Description
     Label lblConfigDesc = new Label(configArea, SWT.LEFT);
     lblConfigDesc.setText(Messages.SimpleFileSetsEditor_lblDescription);
-    formData = new FormData();
-    formData.left = new FormAttachment(0, 3);
-    formData.top = new FormAttachment(mComboViewer.getCombo(), 3, SWT.BOTTOM);
-    formData.right = new FormAttachment(100, -3);
-    lblConfigDesc.setLayoutData(formData);
+    lblConfigDesc.setLayoutData(formData(formData -> {
+      formData.left = new FormAttachment(0, 3);
+      formData.top = new FormAttachment(mComboViewer.getCombo(), 3, SWT.BOTTOM);
+      formData.right = new FormAttachment(100, -3);
+    }));
 
     this.mTxtConfigDescription = new Text(configArea,
             SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.READ_ONLY | SWT.BORDER | SWT.VERTICAL);
-    formData = new FormData();
-    formData.left = new FormAttachment(0, 3);
-    formData.top = new FormAttachment(lblConfigDesc, 0, SWT.BOTTOM);
-    formData.right = new FormAttachment(100, -3);
-    formData.bottom = new FormAttachment(100, -3);
-    this.mTxtConfigDescription.setLayoutData(formData);
+    this.mTxtConfigDescription.setLayoutData(formData(formData -> {
+      formData.left = new FormAttachment(0, 3);
+      formData.top = new FormAttachment(lblConfigDesc, 0, SWT.BOTTOM);
+      formData.right = new FormAttachment(100, -3);
+      formData.bottom = new FormAttachment(100, -3);
+    }));
 
     // init the check configuration combo
     mComboViewer.setInput(propertyPageContext.configuration());
@@ -179,6 +179,12 @@ public class SimpleFileSetsEditor implements IFileSetsEditor {
     }
 
     return configArea;
+  }
+
+  private static FormData formData(Consumer<FormData> custom) {
+    FormData formData = new FormData();
+    custom.accept(formData);
+    return formData;
   }
 
   @Override

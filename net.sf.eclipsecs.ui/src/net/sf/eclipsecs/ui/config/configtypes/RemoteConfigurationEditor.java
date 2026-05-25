@@ -101,7 +101,7 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
 
     Label lblConfigLocation = new Label(contents, SWT.NULL);
     lblConfigLocation.setText(Messages.CheckConfigurationPropertiesDialog_lblLocation);
-    GridDataFactory.swtDefaults().align(SWT.DEFAULT, SWT.BEGINNING).applyTo(lblConfigLocation);
+    GridDataFactory.swtDefaults().align(SWT.BEGINNING, SWT.BEGINNING).applyTo(lblConfigLocation);
 
     mLocation = new Text(contents, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
     mLocation.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -113,7 +113,24 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
     mDescription = new Text(contents, SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.BORDER | SWT.VERTICAL);
     GridDataFactory.create(GridData.FILL_BOTH).span(2, 1).hint(300, 100).grab(true, true).applyTo(mDescription);
 
-    Group credentialsGroup = new Group(contents, SWT.NULL);
+    createCredentialsGroup(contents);
+
+    Group advancedGroup = new Group(contents, SWT.NULL);
+    advancedGroup.setText(Messages.RemoteConfigurationEditor_titleAdvancedOptions);
+    GridDataFactory.create(GridData.FILL_HORIZONTAL).span(2, 1).applyTo(advancedGroup);
+    advancedGroup.setLayout(new GridLayout(2, false));
+
+    mChkCacheConfig = new Button(advancedGroup, SWT.CHECK);
+    mChkCacheConfig.setText(Messages.RemoteConfigurationEditor_btnCacheRemoteConfig);
+    GridDataFactory.create(GridData.FILL_HORIZONTAL).span(2, 1).applyTo(mChkCacheConfig);
+
+    init(shell);
+
+    return contents;
+  }
+
+  private void createCredentialsGroup(Composite parent) {
+    Group credentialsGroup = new Group(parent, SWT.NULL);
     credentialsGroup.setText(Messages.RemoteConfigurationEditor_titleCredentialsGroup);
     GridDataFactory.create(GridData.FILL_HORIZONTAL).span(2, 1).applyTo(credentialsGroup);
     credentialsGroup.setLayout(new GridLayout(2, false));
@@ -131,19 +148,6 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
 
     mPassword = new Text(credentialsGroup, SWT.SINGLE | SWT.BORDER | SWT.PASSWORD);
     GridDataFactory.swtDefaults().hint(100, SWT.DEFAULT).applyTo(mPassword);
-
-    Group advancedGroup = new Group(contents, SWT.NULL);
-    advancedGroup.setText(Messages.RemoteConfigurationEditor_titleAdvancedOptions);
-    GridDataFactory.create(GridData.FILL_HORIZONTAL).span(2, 1).applyTo(advancedGroup);
-    advancedGroup.setLayout(new GridLayout(2, false));
-
-    mChkCacheConfig = new Button(advancedGroup, SWT.CHECK);
-    mChkCacheConfig.setText(Messages.RemoteConfigurationEditor_btnCacheRemoteConfig);
-    GridDataFactory.create(GridData.FILL_HORIZONTAL).span(2, 1).applyTo(mChkCacheConfig);
-
-    init(shell);
-
-    return contents;
   }
 
   private void init(Shell shell) {

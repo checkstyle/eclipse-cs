@@ -20,6 +20,8 @@
 
 package net.sf.eclipsecs.ui.properties;
 
+import java.util.function.Consumer;
+
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.MessageDialogWithToggle;
@@ -62,22 +64,21 @@ public final class CheckstylePropertyPageMainTab extends Composite {
     this.mChkSimpleConfig.addSelectionListener(new ChkSimpleConfigController());
     this.mChkSimpleConfig.setSelection(propertyPageContext.configuration().isUseSimpleConfig());
 
-    FormData formData = new FormData();
-    // fd.left = new FormAttachment(this.mChkEnable, 0, SWT.RIGHT);
-    formData.top = new FormAttachment(0, 3);
-    formData.right = new FormAttachment(100, -3);
-    this.mChkSimpleConfig.setLayoutData(formData);
+    this.mChkSimpleConfig.setLayoutData(formData(formData -> {
+      formData.top = new FormAttachment(0, 3);
+      formData.right = new FormAttachment(100, -3);
+    }));
 
     // create the checkbox to enable/disable checkstyle
     this.mChkEnable = new Button(this, SWT.CHECK);
     this.mChkEnable.setText(Messages.CheckstylePropertyPage_btnActivateCheckstyle);
     this.mChkEnable.setSelection(mCheckstyleInitiallyActivated);
 
-    formData = new FormData();
-    formData.left = new FormAttachment(0, 3);
-    formData.top = new FormAttachment(0, 3);
-    formData.right = new FormAttachment(this.mChkSimpleConfig, 3, SWT.LEFT);
-    this.mChkEnable.setLayoutData(formData);
+    this.mChkEnable.setLayoutData(formData(formData -> {
+      formData.left = new FormAttachment(0, 3);
+      formData.top = new FormAttachment(0, 3);
+      formData.right = new FormAttachment(this.mChkSimpleConfig, 3, SWT.LEFT);
+    }));
 
     // create the checkbox for formatter syncing
     Button mChkSyncFormatter = new Button(this, SWT.CHECK);
@@ -87,32 +88,38 @@ public final class CheckstylePropertyPageMainTab extends Composite {
     }));
     mChkSyncFormatter.setSelection(propertyPageContext.configuration().isSyncFormatter());
 
-    formData = new FormData();
-    formData.left = new FormAttachment(0, 3);
-    formData.top = new FormAttachment(this.mChkEnable, 3, SWT.BOTTOM);
-    mChkSyncFormatter.setLayoutData(formData);
+    mChkSyncFormatter.setLayoutData(formData(formData -> {
+      formData.left = new FormAttachment(0, 3);
+      formData.top = new FormAttachment(this.mChkEnable, 3, SWT.BOTTOM);
+    }));
 
     // create the configuration area
     mFileSetsContainer = new Composite(this, SWT.NULL);
     final Control configArea = createFileSetsArea(mFileSetsContainer);
-    formData = new FormData();
-    formData.left = new FormAttachment(0, 3);
-    formData.top = new FormAttachment(mChkSyncFormatter, 6, SWT.BOTTOM);
-    formData.right = new FormAttachment(100, -3);
-    formData.bottom = new FormAttachment(45);
-    configArea.setLayoutData(formData);
+    configArea.setLayoutData(formData(formData -> {
+      formData.left = new FormAttachment(0, 3);
+      formData.top = new FormAttachment(mChkSyncFormatter, 6, SWT.BOTTOM);
+      formData.right = new FormAttachment(100, -3);
+      formData.bottom = new FormAttachment(45);
+    }));
 
     // create the filter area
     final Control filterArea = new FilterSettings(this, SWT.NONE,
             propertyPageContext.configuration().getProject(),
             propertyPageContext.configuration().getFilters(), propertyPageContext.updateButtons());
-    formData = new FormData();
-    formData.left = new FormAttachment(0, 3);
-    formData.top = new FormAttachment(configArea, 3, SWT.BOTTOM);
-    formData.right = new FormAttachment(100, -3);
-    formData.bottom = new FormAttachment(100, -3);
-    formData.width = 500;
-    filterArea.setLayoutData(formData);
+    filterArea.setLayoutData(formData(formData -> {
+      formData.left = new FormAttachment(0, 3);
+      formData.top = new FormAttachment(configArea, 3, SWT.BOTTOM);
+      formData.right = new FormAttachment(100, -3);
+      formData.bottom = new FormAttachment(100, -3);
+      formData.width = 500;
+    }));
+  }
+
+  private static FormData formData(Consumer<FormData> custom) {
+    FormData formData = new FormData();
+    custom.accept(formData);
+    return formData;
   }
 
   public boolean isCheckstyleEnabled() {

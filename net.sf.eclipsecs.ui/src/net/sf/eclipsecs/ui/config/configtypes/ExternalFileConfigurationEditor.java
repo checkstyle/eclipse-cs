@@ -31,7 +31,6 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -65,14 +64,13 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
   /** the working copy this editor edits. */
   private CheckConfigurationWorkingCopy mWorkingCopy;
 
+  private Shell shell;
+
   /** the text field containing the config name. */
   private Text mConfigName;
 
   /** text field containing the location. */
-  private Text mLocation;
-
-  /** browse button. */
-  private Button mBtnBrowse;
+  private Text location;
 
   /** the text containing the description. */
   private Text mDescription;
@@ -94,11 +92,11 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
   }
 
   @Override
-  public Control createEditorControl(Composite parent, final Shell shell) {
+  public Control createEditorControl(Composite parent, final Shell parentShell) {
+    this.shell = parentShell;
     Composite contents = new Composite(parent, SWT.NULL);
     contents.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-    GridLayoutFactory gridLayoutFactory = GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(false).margins(0, 0);
-    gridLayoutFactory.applyTo(contents);
+    GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(false).margins(0, 0).applyTo(contents);
 
     Label lblConfigName = new Label(contents, SWT.NULL);
     lblConfigName.setText(Messages.CheckConfigurationPropertiesDialog_lblName);
@@ -108,39 +106,7 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
     mConfigName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
     mConfigName.setFocus();
 
-    Label lblConfigLocation = new Label(contents, SWT.NULL);
-    lblConfigLocation.setText(Messages.CheckConfigurationPropertiesDialog_lblLocation);
-    lblConfigLocation.setLayoutData(new GridData());
-
-    Composite locationComposite = new Composite(contents, SWT.NULL);
-    locationComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-    gridLayoutFactory.applyTo(locationComposite);
-
-    mLocation = new Text(locationComposite, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
-    mLocation.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-    mBtnBrowse = new Button(locationComposite, SWT.PUSH);
-    mBtnBrowse.setText(Messages.FileConfigurationLocationEditor_btnBrowse);
-    mBtnBrowse.setLayoutData(new GridData());
-
-    mBtnBrowse.addSelectionListener(new SelectionListener() {
-
-      @Override
-      public void widgetSelected(SelectionEvent e) {
-        FileDialog fileDialog = new FileDialog(shell);
-        fileDialog.setFileName(mLocation.getText());
-
-        String file = fileDialog.open();
-        if (file != null) {
-          mLocation.setText(file);
-        }
-      }
-
-      @Override
-      public void widgetDefaultSelected(SelectionEvent e) {
-        // NOOP
-      }
-    });
+    location = createLocationSection(contents, parentShell);
 
     Label lblDescription = new Label(contents, SWT.NULL);
     lblDescription.setText(Messages.CheckConfigurationPropertiesDialog_lblDescription);
@@ -162,7 +128,7 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
       mConfigName.setText(mWorkingCopy.getName());
     }
     if (mWorkingCopy.getLocation() != null) {
-      mLocation.setText(mWorkingCopy.getLocation());
+      location.setText(mWorkingCopy.getLocation());
     }
     if (mWorkingCopy.getDescription() != null) {
       mDescription.setText(mWorkingCopy.getDescription());
@@ -171,6 +137,35 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
     mChkProtectConfig.setSelection(Boolean.parseBoolean(mWorkingCopy.getAdditionalData().get(ExternalFileConfigurationType.KEY_PROTECT_CONFIG)));
 
     return contents;
+  }
+
+  private static Text createLocationSection(Composite parent, Shell shell) {
+    Label lblConfigLocation = new Label(parent, SWT.NULL);
+    lblConfigLocation.setText(Messages.CheckConfigurationPropertiesDialog_lblLocation);
+    lblConfigLocation.setLayoutData(new GridData());
+
+    Composite locationComposite = new Composite(parent, SWT.NULL);
+    locationComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+    GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(false).margins(0, 0).applyTo(locationComposite);
+
+    Text location = new Text(locationComposite, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
+    location.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+    Button btnBrowse = new Button(locationComposite, SWT.PUSH);
+    btnBrowse.setText(Messages.FileConfigurationLocationEditor_btnBrowse);
+    btnBrowse.setLayoutData(new GridData());
+
+    btnBrowse.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
+      FileDialog fileDialog = new FileDialog(shell);
+      fileDialog.setFileName(location.getText());
+
+      String file = fileDialog.open();
+      if (file != null) {
+        location.setText(file);
+      }
+    }));
+
+    return location;
   }
 
   @Override
@@ -182,12 +177,12 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
             Boolean.toString(mChkProtectConfig.getSelection()));
 
     try {
-      mWorkingCopy.setLocation(mLocation.getText());
+      mWorkingCopy.setLocation(location.getText());
     } catch (CheckstylePluginException ex) {
-      String location = mLocation.getText();
+      String locationText = location.getText();
 
-      if (StringUtils.isNotBlank(location) && ensureFileExists(location)) {
-        mWorkingCopy.setLocation(mLocation.getText());
+      if (StringUtils.isNotBlank(locationText) && ensureFileExists(locationText)) {
+        mWorkingCopy.setLocation(locationText);
       } else {
         throw ex;
       }
@@ -201,19 +196,19 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
    * exists. If that is not the case it prompts the user if an empty
    * configuration file should be created.
    *
-   * @param location
+   * @param locationText
    *          the configuration file location
    * @throws CheckstylePluginException
    *           error when trying to ensure the location file existance
    */
-  private boolean ensureFileExists(String location) throws CheckstylePluginException {
+  private boolean ensureFileExists(String locationText) throws CheckstylePluginException {
 
     // support dynamic location strings
-    String resolvedLocation = ExternalFileConfigurationType.resolveDynamicLocation(location);
+    String resolvedLocation = ExternalFileConfigurationType.resolveDynamicLocation(locationText);
 
     File file = new File(resolvedLocation);
     if (!file.exists()) {
-      boolean confirm = MessageDialog.openQuestion(mBtnBrowse.getShell(),
+      boolean confirm = MessageDialog.openQuestion(shell,
               Messages.ExternalFileConfigurationEditor_titleFileDoesNotExist,
               Messages.ExternalFileConfigurationEditor_msgFileDoesNotExist);
       if (confirm) {

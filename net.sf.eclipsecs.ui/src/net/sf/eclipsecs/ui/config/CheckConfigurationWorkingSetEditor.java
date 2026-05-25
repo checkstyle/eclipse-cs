@@ -127,51 +127,57 @@ public final class CheckConfigurationWorkingSetEditor {
     return configComposite;
   }
 
+  private static FormData formData(Consumer<FormData> custom) {
+    FormData formData = new FormData();
+    custom.accept(formData);
+    return formData;
+  }
+
   private void createTableAndDesc(Composite parent, boolean useDefaultColumn) {
     Composite tableAndDesc = new Composite(parent, SWT.NULL);
     tableAndDesc.setLayout(new FormLayout());
-    FormData formData = new FormData();
-    formData.left = new FormAttachment(0);
-    formData.top = new FormAttachment(0);
-    formData.right = new FormAttachment(buttonBar, -3, SWT.LEFT);
-    formData.bottom = new FormAttachment(100, 0);
-    tableAndDesc.setLayoutData(formData);
+    tableAndDesc.setLayoutData(formData(formData -> {
+      formData.left = new FormAttachment(0);
+      formData.top = new FormAttachment(0);
+      formData.right = new FormAttachment(buttonBar, -3, SWT.LEFT);
+      formData.bottom = new FormAttachment(100, 0);
+    }));
 
     this.configTable = new ConfigTable(tableAndDesc, SWT.NULL, useDefaultColumn,
             mWorkingSet.getWorkingCopies(), new ConfigurationLabelProvider(mWorkingSet),
             this::configureCheckConfig, this::handleSelectionChanged);
-    formData = new FormData();
-    formData.left = new FormAttachment(0);
-    formData.top = new FormAttachment(0);
-    formData.right = new FormAttachment(100);
-    formData.bottom = new FormAttachment(70);
-    this.configTable.setLayoutData(formData);
+    this.configTable.setLayoutData(formData(formData -> {
+      formData.left = new FormAttachment(0);
+      formData.top = new FormAttachment(0);
+      formData.right = new FormAttachment(100);
+      formData.bottom = new FormAttachment(70);
+    }));
 
     Composite descArea = new Composite(tableAndDesc, SWT.NULL);
     descArea.setLayout(new FormLayout());
-    formData = new FormData();
-    formData.left = new FormAttachment(0);
-    formData.top = new FormAttachment(this.configTable, 0);
-    formData.right = new FormAttachment(mIsShowUsage ? 60 : 100);
-    formData.bottom = new FormAttachment(100);
-    descArea.setLayoutData(formData);
+    descArea.setLayoutData(formData(formData -> {
+      formData.left = new FormAttachment(0);
+      formData.top = new FormAttachment(this.configTable, 0);
+      formData.right = new FormAttachment(mIsShowUsage ? 60 : 100);
+      formData.bottom = new FormAttachment(100);
+    }));
 
     Label lblDescription = new Label(descArea, SWT.NULL);
     lblDescription.setText(Messages.CheckstylePreferencePage_lblDescription);
-    formData = new FormData();
-    formData.left = new FormAttachment(0);
-    formData.top = new FormAttachment(3);
-    formData.right = new FormAttachment(100);
-    lblDescription.setLayoutData(formData);
+    lblDescription.setLayoutData(formData(formData -> {
+      formData.left = new FormAttachment(0);
+      formData.top = new FormAttachment(3);
+      formData.right = new FormAttachment(100);
+    }));
 
     mConfigurationDescription = new Text(descArea,
             SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.READ_ONLY | SWT.BORDER | SWT.VERTICAL);
-    formData = new FormData();
-    formData.left = new FormAttachment(0);
-    formData.top = new FormAttachment(lblDescription);
-    formData.right = new FormAttachment(100);
-    formData.bottom = new FormAttachment(100);
-    mConfigurationDescription.setLayoutData(formData);
+    mConfigurationDescription.setLayoutData(formData(formData -> {
+      formData.left = new FormAttachment(0);
+      formData.top = new FormAttachment(lblDescription);
+      formData.right = new FormAttachment(100);
+      formData.bottom = new FormAttachment(100);
+    }));
 
     if (mIsShowUsage) {
       createUsageArea(tableAndDesc);
@@ -495,66 +501,60 @@ public final class CheckConfigurationWorkingSetEditor {
 
       setLayout(new FormLayout());
 
-      FormData formData = new FormData();
-      formData.left = new FormAttachment(0);
-      formData.top = new FormAttachment(0);
-      formData.right = new FormAttachment(100);
       Button mAddButton = createButton(this, Messages.CheckstylePreferencePage_btnNew,
               actions.addCheckConfig);
-      mAddButton.setLayoutData(formData);
+      mAddButton.setLayoutData(formData(formData -> {
+        formData.top = new FormAttachment(0);
+      }));
 
       mEditButton = createButton(this, Messages.CheckstylePreferencePage_btnProperties,
               actions.editCheckConfig);
-      formData = new FormData();
-      formData.left = new FormAttachment(0);
-      formData.top = new FormAttachment(mAddButton, 3, SWT.BOTTOM);
-      formData.right = new FormAttachment(100);
-      mEditButton.setLayoutData(formData);
+      mEditButton.setLayoutData(formData(formData -> {
+        formData.top = new FormAttachment(mAddButton, 3, SWT.BOTTOM);
+      }));
 
       mConfigureButton = createButton(this, Messages.CheckstylePreferencePage_btnConfigure,
               actions.configureCheckConfig);
-      formData = new FormData();
-      formData.left = new FormAttachment(0);
-      formData.top = new FormAttachment(mEditButton, 3, SWT.BOTTOM);
-      formData.right = new FormAttachment(100);
-      mConfigureButton.setLayoutData(formData);
+      mConfigureButton.setLayoutData(formData(formData -> {
+        formData.top = new FormAttachment(mEditButton, 3, SWT.BOTTOM);
+      }));
 
       mCopyButton = createButton(this, Messages.CheckstylePreferencePage_btnCopy,
               actions.copyCheckConfig);
-      formData = new FormData();
-      formData.left = new FormAttachment(0);
-      formData.top = new FormAttachment(mConfigureButton, 3, SWT.BOTTOM);
-      formData.right = new FormAttachment(100);
-      mCopyButton.setLayoutData(formData);
+      mCopyButton.setLayoutData(formData(formData -> {
+        formData.top = new FormAttachment(mConfigureButton, 3, SWT.BOTTOM);
+      }));
 
       mRemoveButton = createButton(this, Messages.CheckstylePreferencePage_btnRemove,
               actions.removeCheckConfig);
-      formData = new FormData();
-      formData.left = new FormAttachment(0);
-      formData.top = new FormAttachment(mCopyButton, 3, SWT.BOTTOM);
-      formData.right = new FormAttachment(100);
-      mRemoveButton.setLayoutData(formData);
+      mRemoveButton.setLayoutData(formData(formData -> {
+        formData.top = new FormAttachment(mCopyButton, 3, SWT.BOTTOM);
+      }));
 
       if (useDefaultButton) {
         mDefaultButton = createButton(this, Messages.CheckstylePreferencePage_btnDefault,
                 event -> actions.setDefaultCheckConfig.run());
         mDefaultButton.setToolTipText(Messages.CheckstylePreferencePage_txtDefault);
-        formData = new FormData();
-        formData.left = new FormAttachment(0);
-        formData.top = new FormAttachment(mRemoveButton, 3, SWT.BOTTOM);
-        formData.right = new FormAttachment(100);
-        mDefaultButton.setLayoutData(formData);
+        mDefaultButton.setLayoutData(formData(formData -> {
+          formData.top = new FormAttachment(mRemoveButton, 3, SWT.BOTTOM);
+        }));
       } else {
         mDefaultButton = null;
       }
 
       mExportButton = createButton(this, Messages.CheckstylePreferencePage_btnExport,
               actions.exportCheckstyleCheckConfig);
-      formData = new FormData();
+      mExportButton.setLayoutData(formData(formData -> {
+        formData.bottom = new FormAttachment(100);
+      }));
+    }
+
+    private static FormData formData(Consumer<FormData> custom) {
+      FormData formData = new FormData();
       formData.left = new FormAttachment(0);
       formData.right = new FormAttachment(100);
-      formData.bottom = new FormAttachment(100);
-      mExportButton.setLayoutData(formData);
+      custom.accept(formData);
+      return formData;
     }
 
     private Button createButton(Composite parent, String text, Consumer<Shell> action) {

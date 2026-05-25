@@ -21,6 +21,7 @@
 package net.sf.eclipsecs.ui.quickfixes;
 
 import java.util.Iterator;
+import java.util.Optional;
 import java.util.function.BiFunction;
 
 import org.eclipse.core.filebuffers.FileBuffers;
@@ -70,7 +71,7 @@ public class AstQuickfixExecutor {
       return;
     }
 
-    ITextFileBufferManager bufferManager = null;
+    ITextFileBufferManager bufferManager = FileBuffers.getTextFileBufferManager();
 
     IPath path = compilationUnit.getPath();
 
@@ -80,26 +81,18 @@ public class AstQuickfixExecutor {
 
       // reimplemented according to this article
       // http://www.eclipse.org/articles/Article-JavaCodeManipulation_AST/index.html
-      bufferManager = FileBuffers.getTextFileBufferManager();
       bufferManager.connect(path, LocationKind.IFILE, null);
 
       ITextFileBuffer textFileBuffer = bufferManager.getTextFileBuffer(path, LocationKind.IFILE);
 
       IDocument document = textFileBuffer.getDocument();
-      IAnnotationModel annotationModel = textFileBuffer.getAnnotationModel();
 
-      MarkerAnnotation annotation = getMarkerAnnotation(annotationModel, marker);
-
-      // if the annotation is null it means that is was probably deleted
-      // by a previous quickfix
-      if (annotation == null) {
+      Optional<Integer> markerStart = getOffset(textFileBuffer, marker);
+      if (markerStart.isEmpty()) {
         return;
       }
 
-      Position pos = annotationModel.getPosition(annotation);
-
-      final IRegion lineInfo = document.getLineInformationOfOffset(pos.getOffset());
-      final int markerStart = pos.getOffset();
+      final IRegion lineInfo = document.getLineInformationOfOffset(markerStart.get());
 
       ASTParser astParser = ASTParser.newParser(AST.getJLSLatest());
       astParser.setKind(ASTParser.K_COMPILATION_UNIT);
@@ -109,7 +102,7 @@ public class AstQuickfixExecutor {
       CompilationUnit ast = (CompilationUnit) astParser.createAST(monitor);
       ast.recordModifications();
 
-      ast.accept(handleGetCorrectingASTVisitor.apply(lineInfo, markerStart));
+      ast.accept(handleGetCorrectingASTVisitor.apply(lineInfo, markerStart.get()));
 
       // rewrite all recorded changes to the document
       var wasDirtyBefore = textFileBuffer.isDirty();
@@ -141,17 +134,24 @@ public class AstQuickfixExecutor {
     return null;
   }
 
-  private static MarkerAnnotation getMarkerAnnotation(IAnnotationModel annotationModel,
+  private static Optional<Integer> getOffset(ITextFileBuffer textFileBuffer, IMarker marker) {
+    IAnnotationModel annotationModel = textFileBuffer.getAnnotationModel();
+    return getMarkerAnnotation(annotationModel, marker)
+        .map(annotationModel::getPosition)
+        .map(Position::getOffset);
+  }
+
+  private static Optional<MarkerAnnotation> getMarkerAnnotation(IAnnotationModel annotationModel,
           IMarker marker) {
     Iterator<Annotation> iter = annotationModel.getAnnotationIterator();
     while (iter.hasNext()) {
       if (iter.next() instanceof MarkerAnnotation markerAnnotation) {
         if (markerAnnotation.getMarker().equals(marker)) {
-          return markerAnnotation;
+          return Optional.of(markerAnnotation);
         }
       }
     }
-    return null;
+    return Optional.empty();
   }
 
 }
