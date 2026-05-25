@@ -22,7 +22,7 @@ package net.sf.eclipsecs.ui.properties;
 
 import org.eclipse.swt.widgets.Shell;
 
-public class FileSetsEditorFactory {
+public final class FileSetsEditorFactory {
 
   private FileSetsEditorFactory() {
 

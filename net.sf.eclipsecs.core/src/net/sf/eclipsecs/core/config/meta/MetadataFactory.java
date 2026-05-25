@@ -484,7 +484,7 @@ public final class MetadataFactory {
    * as UTF-8.
    *
    */
-  private static class UTF8Control extends Control {
+  private static final class UTF8Control extends Control {
     @Override
     public ResourceBundle newBundle(String aBaseName, Locale aLocale, String aFormat,
             ClassLoader aLoader, boolean aReload) throws IOException {

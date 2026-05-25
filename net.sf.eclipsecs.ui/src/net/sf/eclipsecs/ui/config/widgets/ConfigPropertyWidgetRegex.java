@@ -161,7 +161,7 @@ public class ConfigPropertyWidgetRegex extends AbstractConfigPropertyWidget {
    * Simple key listener to test the regular expression.
    *
    */
-  private class RegexTestListener implements KeyListener {
+  private final class RegexTestListener implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {

@@ -192,7 +192,7 @@ public class PackageFilterEditor implements IFilterEditor {
    * Content provider that provides the source folders of a project and their container members.
    *
    */
-  private static class SourceFolderContentProvider implements ITreeContentProvider {
+  private static final class SourceFolderContentProvider implements ITreeContentProvider {
 
     @Override
     public Object[] getChildren(Object parentElement) {

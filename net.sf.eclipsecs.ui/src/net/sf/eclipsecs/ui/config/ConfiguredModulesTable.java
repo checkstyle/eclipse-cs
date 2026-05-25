@@ -193,7 +193,7 @@ public final class ConfiguredModulesTable extends Composite {
    * Viewer filter that includes all modules that belong to the currently selected group.
    *
    */
-  private class RuleGroupModuleFilter extends ViewerFilter {
+  private final class RuleGroupModuleFilter extends ViewerFilter {
 
     @Override
     public boolean select(Viewer viewer, Object parentElement, Object element) {
@@ -210,7 +210,7 @@ public final class ConfiguredModulesTable extends Composite {
    * Label provider for the table showing the configured modules.
    *
    */
-  private static class ModuleLabelProvider extends LabelProvider
+  private static final class ModuleLabelProvider extends LabelProvider
           implements ITableLabelProvider, ITableComparableProvider, ITableSettingsProvider {
 
     @Override
@@ -257,7 +257,7 @@ public final class ConfiguredModulesTable extends Composite {
     }
   }
 
-  private static class TableCheckStateProvider implements ICheckStateProvider {
+  private static final class TableCheckStateProvider implements ICheckStateProvider {
 
     private final boolean configurable;
 

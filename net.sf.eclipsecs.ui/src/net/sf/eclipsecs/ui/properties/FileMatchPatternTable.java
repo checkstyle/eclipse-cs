@@ -181,7 +181,7 @@ public final class FileMatchPatternTable extends Composite {
   /**
    * Provides the labels for the FileSet list display.
    */
-  private static class FileMatchPatternLabelProvider extends LabelProvider
+  private static final class FileMatchPatternLabelProvider extends LabelProvider
           implements ITableLabelProvider {
 
     @Override

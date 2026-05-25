@@ -159,7 +159,7 @@ public final class CheckstylePropertyPageMainTab extends Composite {
     return fileSetsContainer;
   }
 
-  private class ChkSimpleConfigController extends SelectionAdapter {
+  private final class ChkSimpleConfigController extends SelectionAdapter {
 
     @Override
     public void widgetSelected(SelectionEvent e) {

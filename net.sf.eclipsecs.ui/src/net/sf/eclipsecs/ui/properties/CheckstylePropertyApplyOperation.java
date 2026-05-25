@@ -37,7 +37,7 @@ import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
 import net.sf.eclipsecs.ui.CheckstyleUIPluginPrefs;
 import net.sf.eclipsecs.ui.Messages;
 
-public class CheckstylePropertyApplyOperation {
+public final class CheckstylePropertyApplyOperation {
 
   private CheckstylePropertyApplyOperation() {
 

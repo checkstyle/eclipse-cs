@@ -346,6 +346,7 @@
             <property name="ignoredAnnotations"
                 value="BeforeAll, AfterAll, BeforeEach, AfterEach"/>
         </module>
+        <module name="FinalClass"/>
         <module name="HideUtilityClassConstructor"/>
         <module name="InnerTypeLast"/>
         <module name="InterfaceIsType"/>

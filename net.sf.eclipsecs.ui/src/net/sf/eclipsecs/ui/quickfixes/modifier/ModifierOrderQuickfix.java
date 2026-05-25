@@ -119,7 +119,7 @@ public class ModifierOrderQuickfix extends AbstractASTResolution {
     return CheckstyleUIPluginImages.CORRECTION_CHANGE.getImage();
   }
 
-  private static class ModifierOrderQuickfixAstVisitor extends ASTVisitor {
+  private static final class ModifierOrderQuickfixAstVisitor extends ASTVisitor {
     private final int markerStartOffset;
 
     private ModifierOrderQuickfixAstVisitor(int markerStartOffset) {

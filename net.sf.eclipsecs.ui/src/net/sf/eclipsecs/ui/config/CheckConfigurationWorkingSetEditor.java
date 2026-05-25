@@ -411,7 +411,7 @@ public final class CheckConfigurationWorkingSetEditor {
             configDefault);
   }
 
-  private static class ConfigTable extends Composite {
+  private static final class ConfigTable extends Composite {
 
     private final TableViewer tableViewer;
 
@@ -484,7 +484,7 @@ public final class CheckConfigurationWorkingSetEditor {
 
   }
 
-  private static class ButtonBar extends Composite {
+  private static final class ButtonBar extends Composite {
 
     private final boolean useDefaultButton;
     private final Button mEditButton;
@@ -584,7 +584,7 @@ public final class CheckConfigurationWorkingSetEditor {
    * storing of the table settings.
    *
    */
-  private static class ConfigurationLabelProvider extends CheckConfigurationLabelProvider
+  private static final class ConfigurationLabelProvider extends CheckConfigurationLabelProvider
           implements ITableLabelProvider, ITableComparableProvider, ITableSettingsProvider {
 
     private final ICheckConfigurationWorkingSet mWorkingSet;

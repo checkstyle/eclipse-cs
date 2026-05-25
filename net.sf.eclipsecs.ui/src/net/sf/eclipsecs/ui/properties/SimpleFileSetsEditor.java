@@ -196,7 +196,7 @@ public class SimpleFileSetsEditor implements IFileSetsEditor {
    * Controller for this file set editor.
    *
    */
-  private class Controller implements SelectionListener, ISelectionChangedListener {
+  private final class Controller implements SelectionListener, ISelectionChangedListener {
 
     @Override
     public void widgetSelected(SelectionEvent e) {

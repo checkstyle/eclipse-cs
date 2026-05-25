@@ -106,7 +106,7 @@ public final class CheckstyleQuickfixes {
   /**
    * Initialization-on-demand-holder
    */
-  private static class LazyHolder {
+  private static final class LazyHolder {
     static final CheckstyleQuickfixes INSTANCE = new CheckstyleQuickfixes();
   }
 

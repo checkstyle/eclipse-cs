@@ -45,7 +45,7 @@ public class SortingSaveFilter implements ISaveFilter {
    * bug in SuppressionCommentFilter.
    *
    */
-  private static class ModuleComparator implements Comparator<Module> {
+  private static final class ModuleComparator implements Comparator<Module> {
 
     @Override
     public int compare(Module o1, Module o2) {

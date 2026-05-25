@@ -36,7 +36,7 @@ import org.eclipse.swt.widgets.TableColumn;
 
 import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
 
-public class TableViewerEnhancer {
+public final class TableViewerEnhancer {
 
   /** Key for the column index in the TableColumn data. */
   private static final String WIDGET_DATA_COLUMN_INDEX = "index"; //$NON-NLS-1$
@@ -153,7 +153,7 @@ public class TableViewerEnhancer {
     table.setSortDirection(sortDirection == DIRECTION_FORWARD ? SWT.UP : SWT.DOWN);
   }
 
-  private static class TableSorter extends ViewerComparator {
+  private static final class TableSorter extends ViewerComparator {
 
     /** Collator to support natural sorting of strings. */
     private static final Collator COLLATOR = Collator

@@ -35,7 +35,7 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
 
 import net.sf.eclipsecs.ui.Messages;
 
-public class WorkspaceFileSelector {
+public final class WorkspaceFileSelector {
 
   private WorkspaceFileSelector() {
 

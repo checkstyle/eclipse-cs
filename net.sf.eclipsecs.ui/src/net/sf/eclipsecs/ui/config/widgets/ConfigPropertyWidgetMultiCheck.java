@@ -186,7 +186,7 @@ public class ConfigPropertyWidgetMultiCheck extends AbstractConfigPropertyWidget
    * Label provider to translate checkstyle tokens into readable form.
    *
    */
-  private class TokenLabelProvider extends LabelProvider {
+  private final class TokenLabelProvider extends LabelProvider {
 
     @Override
     public String getText(Object element) {

@@ -175,7 +175,7 @@ public class FilterSettings extends Composite {
     }
   }
 
-  private static class FilterListLabelProvider extends LabelProvider {
+  private static final class FilterListLabelProvider extends LabelProvider {
     @Override
     public String getText(Object element) {
       StringBuilder buf = new StringBuilder();
@@ -191,7 +191,7 @@ public class FilterSettings extends Composite {
     }
   }
 
-  private static class FilterListCheckStateProvider implements ICheckStateProvider {
+  private static final class FilterListCheckStateProvider implements ICheckStateProvider {
 
     @Override
     public boolean isChecked(Object element) {

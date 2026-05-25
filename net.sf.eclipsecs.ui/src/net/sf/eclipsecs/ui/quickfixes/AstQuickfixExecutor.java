@@ -53,7 +53,7 @@ import org.eclipse.ui.texteditor.MarkerAnnotation;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.ui.Messages;
 
-public class AstQuickfixExecutor {
+public final class AstQuickfixExecutor {
 
   private AstQuickfixExecutor() {
 

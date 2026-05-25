@@ -112,7 +112,7 @@ public class CheckConfigurationTester {
    * properties after all other property reolvers have been asked.
    *
    */
-  private static class MissingPropertyCollector implements PropertyResolver {
+  private static final class MissingPropertyCollector implements PropertyResolver {
 
     /**
      * Properties that will be ignored, because they can always be resolved when the configuration

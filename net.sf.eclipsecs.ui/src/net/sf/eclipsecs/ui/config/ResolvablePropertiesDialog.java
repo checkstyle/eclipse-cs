@@ -289,7 +289,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
    * Controller for this dialog.
    *
    */
-  private class Controller implements SelectionListener, IDoubleClickListener, KeyListener {
+  private final class Controller implements SelectionListener, IDoubleClickListener, KeyListener {
 
     @Override
     public void widgetSelected(SelectionEvent e) {
@@ -432,7 +432,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
    * for table sorting and storing of the table settings.
    *
    */
-  private class PropertiesLabelProvider extends LabelProvider
+  private final class PropertiesLabelProvider extends LabelProvider
           implements ITableLabelProvider, ITableComparableProvider, ITableSettingsProvider {
 
     @Override

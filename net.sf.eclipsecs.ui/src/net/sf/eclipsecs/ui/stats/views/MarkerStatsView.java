@@ -377,7 +377,7 @@ public class MarkerStatsView extends AbstractStatsView {
 
   }
 
-  private static class MainTableViewer extends AbstractStatTableViewer<MarkerStat> {
+  private static final class MainTableViewer extends AbstractStatTableViewer<MarkerStat> {
 
     private final TableViewer tableViewer;
 
@@ -432,7 +432,7 @@ public class MarkerStatsView extends AbstractStatsView {
 
   }
 
-  private static class DetailTableViewer extends AbstractStatTableViewer<IMarker> {
+  private static final class DetailTableViewer extends AbstractStatTableViewer<IMarker> {
 
     private final TableViewer tableViewer;
     private final DetailContentProvider contentProvider;
@@ -507,7 +507,7 @@ public class MarkerStatsView extends AbstractStatsView {
    *
    * @author Lars Ködderitzsch
    */
-  private static class MasterContentProvider implements IStructuredContentProvider {
+  private static final class MasterContentProvider implements IStructuredContentProvider {
     private Object[] mCurrentMarkerStats;
 
     @Override
@@ -537,7 +537,7 @@ public class MarkerStatsView extends AbstractStatsView {
    *
    * @author Lars Ködderitzsch
    */
-  private static class DetailContentProvider implements IStructuredContentProvider {
+  private static final class DetailContentProvider implements IStructuredContentProvider {
 
     private Object[] mCurrentDetails;
     private String currentDetailCategory;
@@ -590,7 +590,7 @@ public class MarkerStatsView extends AbstractStatsView {
    *
    * @author Lars Ködderitzsch
    */
-  private static class MasterViewMultiProvider extends LabelProvider
+  private static final class MasterViewMultiProvider extends LabelProvider
           implements ITableLabelProvider, ITableComparableProvider, ITableSettingsProvider {
 
     private final IDialogSettings mainSettings;
@@ -655,7 +655,7 @@ public class MarkerStatsView extends AbstractStatsView {
    *
    * @author Lars Ködderitzsch
    */
-  private static class DetailViewMultiProvider extends LabelProvider
+  private static final class DetailViewMultiProvider extends LabelProvider
           implements ITableLabelProvider, ITableComparableProvider, ITableSettingsProvider {
 
     private final IDialogSettings mainSettings;
