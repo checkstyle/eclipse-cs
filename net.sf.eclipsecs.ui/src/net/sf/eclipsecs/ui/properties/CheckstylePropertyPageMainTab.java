@@ -32,7 +32,6 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -56,7 +55,6 @@ public final class CheckstylePropertyPageMainTab extends Composite {
     this.propertyPageContext = propertyPageContext;
 
     setLayout(new FormLayout());
-    setLayoutData(new GridData(GridData.FILL_BOTH));
 
     // create the checkbox to enable/disable the simple configuration
     this.mChkSimpleConfig = new Button(this, SWT.CHECK);

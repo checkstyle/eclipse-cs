@@ -29,15 +29,15 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
+import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.window.Window;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
+
 import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
 import net.sf.eclipsecs.core.projectconfig.FileMatchPattern;
 import net.sf.eclipsecs.core.projectconfig.FileSet;
@@ -47,23 +47,18 @@ import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
 import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
 import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.config.CheckConfigurationConfigureDialog;
-import net.sf.eclipsecs.ui.properties.FileMatchPatternTable.FileMatchPatternTableCallbacks;
+import net.sf.eclipsecs.ui.properties.FileMatchPatternControl.FileMatchPatternControlCallbacks;
+import net.sf.eclipsecs.ui.properties.FileSetEditDialogMatchedFilesPreview.FileSetEditDialogMatchedFilesPreviewFilter;
 import net.sf.eclipsecs.ui.util.SWTUtil;
 
-/**
- * Property page.
- */
 public final class FileSetEditDialog extends TitleAreaDialog {
 
   private static final String DEFAULT_PATTERN = ".java$"; //$NON-NLS-1$
 
   private final PropertyPageContext propertyPageContext;
-  private FileSetEditDialogCommonArea commonArea;
-  private FileMatchPatternTable fileMatchPatternTable;
-  private FileSetEditDialogMatchedFilesPreview matchArea;
   private FileSet mFileSet;
-  private List<IFile> mProjectFiles;
   private boolean mIsCreatingNewFileset;
+  private FileSetEditDialogView dialogView;
 
   /**
    * Constructor for SamplePropertyPage.
@@ -96,35 +91,15 @@ public final class FileSetEditDialog extends TitleAreaDialog {
   @Override
   protected Control createDialogArea(Composite parent) {
     Composite composite = (Composite) super.createDialogArea(parent);
-    composite.setLayoutData(new GridData(GridData.FILL_BOTH));
-    Composite dialog = new Composite(composite, SWT.NONE);
-    dialog.setLayout(new GridLayout(1, false));
-    dialog.setLayoutData(new GridData(GridData.FILL_BOTH));
-
-    this.commonArea = new FileSetEditDialogCommonArea(dialog, SWT.NONE, mFileSet::setCheckConfig,
+    GridDataFactory.create(GridData.FILL_BOTH).applyTo(composite);
+    FileMatchPatternControlCallbacks callbacks = new FileMatchPatternControlCallbacks(
+            this::editFileMatchPattern, this::refreshMatchArea, this::addFileMatchPattern,
+            this::removeFileMatchPattern, this::upFileMatchPattern, this::downFileMatchPattern);
+    dialogView = new FileSetEditDialogView(composite, SWT.NONE, callbacks,
+            new FileSetEditDialogMatchedFilesPreviewFilter(mFileSet),
+            propertyPageContext.project().getName(), mFileSet::setCheckConfig,
             this::configureFileSetConfig);
-    commonArea.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-    SashForm sashForm = new SashForm(dialog, SWT.VERTICAL);
-    GridData gridData = new GridData(GridData.FILL_BOTH);
-    gridData.widthHint = 500;
-    gridData.heightHint = 400;
-    sashForm.setLayoutData(gridData);
-    sashForm.setLayout(new GridLayout());
-
-    this.fileMatchPatternTable = new FileMatchPatternTable(sashForm, SWT.NONE,
-            new FileMatchPatternTableCallbacks(this::editFileMatchPattern, this::updateMatchView,
-                    this::addFileMatchPattern, this::removeFileMatchPattern,
-                    this::upFileMatchPattern, this::downFileMatchPattern));
-    fileMatchPatternTable.setLayoutData(new GridData(GridData.FILL_BOTH));
-
-    this.matchArea = new FileSetEditDialogMatchedFilesPreview(sashForm, SWT.NONE, mFileSet);
-    matchArea.setLayoutData(new GridData(GridData.FILL_BOTH));
-
-    sashForm.setWeights(new int[] {
-        50,
-        50,
-    });
+    GridDataFactory.create(GridData.FILL_BOTH).applyTo(dialogView);
 
     // init the data
     initializeControls();
@@ -138,7 +113,7 @@ public final class FileSetEditDialog extends TitleAreaDialog {
   private void initializeControls() {
 
     // init the check configuration combo
-    commonArea.setInput(propertyPageContext.configuration());
+    dialogView.setProjectConfiguration(propertyPageContext.configuration());
 
     this.setTitleImage(CheckstyleUIPluginImages.PLUGIN_LOGO.getImage());
     this.setMessage(Messages.FileSetEditDialog_message);
@@ -149,40 +124,18 @@ public final class FileSetEditDialog extends TitleAreaDialog {
       this.setTitle(Messages.FileSetEditDialog_titleEdit);
     }
 
-    // intitialize the name
-    commonArea.setText(mFileSet.getName() != null ? mFileSet.getName() : ""); //$NON-NLS-1$
-
-    // init the check configuration combo
-    if (mFileSet.getCheckConfig() != null) {
-      commonArea.setSelection(mFileSet.getCheckConfig());
-    }
-
-    // init the pattern area
-    fileMatchPatternTable.setInput(mFileSet.getFileMatchPatterns());
-    for (FileMatchPattern pattern : mFileSet.getFileMatchPatterns()) {
-      fileMatchPatternTable.setChecked(pattern, pattern.isIncludePattern());
-    }
+    dialogView.setFileSet(mFileSet);
 
     getShell().getDisplay().asyncExec(() -> {
+      List<IFile> mProjectFiles;
       try {
         mProjectFiles = getFiles(propertyPageContext.project());
+        dialogView.setProjectFiles(mProjectFiles); // init the test area
       } catch (CoreException ex) {
         CheckstyleLog.log(ex);
       }
-      matchArea.setInput(mProjectFiles); // init the test area
-      updateMatchView();
     });
 
-  }
-
-  private void updateMatchView() {
-    matchArea.refresh();
-    matchArea.setText(itemCount -> NLS.bind(Messages.FileSetEditDialog_titleTestResult,
-            new String[] {
-                propertyPageContext.project().getName(),
-                Integer.toString(itemCount),
-                Integer.toString(mProjectFiles.size()),
-            }));
   }
 
   @Override
@@ -207,7 +160,7 @@ public final class FileSetEditDialog extends TitleAreaDialog {
     //
     // Get the FileSet name.
     //
-    String name = commonArea.getText();
+    String name = dialogView.getFileSetName();
     if (name == null || name.trim().length() <= 0) {
       this.setErrorMessage(Messages.FileSetEditDialog_msgNoFilesetName);
       return;
@@ -233,10 +186,8 @@ public final class FileSetEditDialog extends TitleAreaDialog {
       FileMatchPattern pattern = dialog.getPattern();
 
       mFileSet.getFileMatchPatterns().add(pattern);
-      fileMatchPatternTable.refresh();
-      fileMatchPatternTable.setChecked(pattern, pattern.isIncludePattern());
+      dialogView.refreshFileMatchPatternTable();
     }
-    updateMatchView();
   }
 
   private void editFileMatchPattern(FileMatchPattern pattern) {
@@ -254,10 +205,8 @@ public final class FileSetEditDialog extends TitleAreaDialog {
       FileMatchPattern editedPattern = dialog.getPattern();
       mFileSet.getFileMatchPatterns().set(mFileSet.getFileMatchPatterns().indexOf(pattern),
               editedPattern);
-      fileMatchPatternTable.refresh();
-      fileMatchPatternTable.setChecked(editedPattern, editedPattern.isIncludePattern());
+      dialogView.refreshFileMatchPatternTable();
     }
-    updateMatchView();
   }
 
   private void removeFileMatchPattern(FileMatchPattern pattern) {
@@ -269,8 +218,7 @@ public final class FileSetEditDialog extends TitleAreaDialog {
     }
 
     mFileSet.getFileMatchPatterns().remove(pattern);
-    fileMatchPatternTable.refresh();
-    updateMatchView();
+    dialogView.refreshFileMatchPatternTable();
   }
 
   private void upFileMatchPattern(FileMatchPattern pattern) {
@@ -285,9 +233,8 @@ public final class FileSetEditDialog extends TitleAreaDialog {
     if (index > 0) {
       mFileSet.getFileMatchPatterns().remove(pattern);
       mFileSet.getFileMatchPatterns().add(index - 1, pattern);
-      fileMatchPatternTable.refresh();
+      dialogView.refreshFileMatchPatternTable();
     }
-    updateMatchView();
   }
 
   private void downFileMatchPattern(FileMatchPattern pattern) {
@@ -307,9 +254,12 @@ public final class FileSetEditDialog extends TitleAreaDialog {
         mFileSet.getFileMatchPatterns().add(pattern);
       }
 
-      fileMatchPatternTable.refresh();
+      dialogView.refreshFileMatchPatternTable();
     }
-    updateMatchView();
+  }
+
+  private void refreshMatchArea() {
+    dialogView.refreshMatchArea();
   }
 
   private void configureFileSetConfig() {

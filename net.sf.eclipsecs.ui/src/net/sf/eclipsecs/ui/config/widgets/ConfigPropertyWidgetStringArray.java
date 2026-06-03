@@ -30,10 +30,14 @@ import net.sf.eclipsecs.core.config.ConfigProperty;
 /**
  * Property configuration widget for string arrays.
  */
-public class ConfigPropertyWidgetStringArray extends ConfigPropertyWidgetString {
+public final class ConfigPropertyWidgetStringArray extends ConfigPropertyWidgetString {
 
-  public ConfigPropertyWidgetStringArray(Composite parent, ConfigProperty prop) {
+  private ConfigPropertyWidgetStringArray(Composite parent, ConfigProperty prop) {
     super(parent, prop);
+  }
+
+  public static ConfigPropertyWidgetStringArray create(Composite parent, ConfigProperty prop) {
+    return new ConfigPropertyWidgetStringArray(parent, prop);
   }
 
   @Override

@@ -22,23 +22,16 @@ package net.sf.eclipsecs.ui.config;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
-import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.ComboViewer;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
 import net.sf.eclipsecs.core.config.CheckConfigurationTester;
@@ -71,17 +64,13 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
   /** the check configuration. */
   private CheckConfigurationWorkingCopy mCheckConfig;
 
-  /** the combo box containing the config type. */
-  private ComboViewer mConfigType;
-
-  /** place holder for the location editor. */
-  private Composite mEditorPlaceHolder;
-
   /** the editor for the configuration location. */
   private ICheckConfigurationEditor mConfigurationEditor;
 
   /** The template configuration for a new config. */
   private ICheckConfiguration mTemplate;
+
+  private CheckConfigurationPropertiesDialogView dialogView;
 
   //
   // constructor
@@ -158,82 +147,37 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
 
     Composite composite = (Composite) super.createDialogArea(parent);
 
-    Composite contents = new Composite(composite, SWT.NULL);
-    contents.setLayout(new GridLayout(2, false));
-    contents.setLayoutData(new GridData(GridData.FILL_BOTH));
-
-    Label lblConfigType = new Label(contents, SWT.NULL);
-    lblConfigType.setText(Messages.CheckConfigurationPropertiesDialog_lblConfigType);
-    GridData gridData = new GridData();
-
-    // this is a weird hack to find the longest label
-    // this is done to have a nice ordered appearance of the this label
-    // and the labels below
-    // this is very difficult to do, because they belong to different
-    // layouts
-    GC graphics = new GC(lblConfigType);
-    int nameSize = graphics.textExtent(Messages.CheckConfigurationPropertiesDialog_lblName).x;
-    int locationsSize = graphics.textExtent(Messages.CheckConfigurationPropertiesDialog_lblLocation).x;
-    int max = Math.max(nameSize, locationsSize);
-    graphics.dispose();
-
-    gridData.widthHint = max;
-    lblConfigType.setLayoutData(gridData);
-
-    mConfigType = new ComboViewer(contents);
-    gridData = new GridData();
-    mConfigType.getCombo().setLayoutData(gridData);
-    mConfigType.setContentProvider(new ArrayContentProvider());
-    mConfigType.setLabelProvider(LabelProvider.createTextImageProvider(
-            element -> ((IConfigurationType) element).getName(),
-            element -> ConfigurationTypesUI.getConfigurationTypeImage((IConfigurationType) element)));
-    mConfigType.addSelectionChangedListener(new ISelectionChangedListener() {
-      @Override
-      public void selectionChanged(SelectionChangedEvent event) {
-        IConfigurationType type = (IConfigurationType) event.getStructuredSelection().getFirstElement();
-        if (mConfigType.getCombo().isEnabled()) {
-          String oldName = mCheckConfig.getName();
-          String oldDescr = mCheckConfig.getDescription();
-          mCheckConfig = mWorkingSet.newWorkingCopy(type);
-          try {
-            mCheckConfig.setName(oldName);
-          } catch (CheckstylePluginException ex) {
-            // NOOP
-          }
-          mCheckConfig.setDescription(oldDescr);
-        }
-        createConfigurationEditor(mCheckConfig);
-      }
-    });
-
-    mEditorPlaceHolder = new Composite(contents, SWT.NULL);
-    GridLayout layout = new GridLayout(1, true);
-    layout.marginWidth = 0;
-    layout.marginHeight = 0;
-    mEditorPlaceHolder.setLayout(layout);
-    gridData = new GridData(GridData.FILL_HORIZONTAL);
-    gridData.horizontalSpan = 2;
-    mEditorPlaceHolder.setLayoutData(gridData);
+    dialogView = new CheckConfigurationPropertiesDialogView(composite, SWT.NULL, this::changeSelectedConfigurationType);
+    GridDataFactory.create(GridData.FILL_BOTH).applyTo(dialogView);
 
     return composite;
+  }
+
+  private void changeSelectedConfigurationType(IConfigurationType type, boolean isComboEnabled) {
+    if (isComboEnabled) {
+      String oldName = mCheckConfig.getName();
+      String oldDescr = mCheckConfig.getDescription();
+      mCheckConfig = mWorkingSet.newWorkingCopy(type);
+      try {
+        mCheckConfig.setName(oldName);
+      } catch (CheckstylePluginException ex) {
+        // NOOP
+      }
+      mCheckConfig.setDescription(oldDescr);
+    }
+    createConfigurationEditor(mCheckConfig);
   }
 
   @Override
   protected Control createButtonBar(Composite parent) {
 
     Composite composite = new Composite(parent, SWT.NONE);
-    GridLayout layout = new GridLayout(3, false);
-    layout.marginHeight = 0;
-    layout.marginWidth = 0;
-    composite.setLayout(layout);
-    composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+    GridLayoutFactory.swtDefaults().numColumns(3).margins(0, 0).applyTo(composite);
+    GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(composite);
 
     mBtnProperties = new Button(composite, SWT.PUSH);
     mBtnProperties.setText(Messages.CheckConfigurationPropertiesDialog_btnAdditionalProps);
-    GridData gridData = new GridData();
-    gridData.horizontalAlignment = GridData.BEGINNING;
-    gridData.horizontalIndent = 5;
-    mBtnProperties.setLayoutData(gridData);
+    GridDataFactory.swtDefaults().align(SWT.BEGINNING, SWT.CENTER).indent(5, 0).applyTo(mBtnProperties);
 
     mBtnProperties.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
       try {
@@ -247,9 +191,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
     }));
 
     Control buttonBar = super.createButtonBar(composite);
-    gridData = new GridData(GridData.FILL_HORIZONTAL);
-    gridData.horizontalAlignment = GridData.END;
-    buttonBar.setLayoutData(gridData);
+    GridDataFactory.create(GridData.FILL_HORIZONTAL).align(SWT.END, SWT.CENTER).applyTo(buttonBar);
 
     return composite;
   }
@@ -267,8 +209,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
       // Check if the configuration is valid
       mCheckConfig = mConfigurationEditor.getEditedWorkingCopy();
 
-      CheckConfigurationTester tester = new CheckConfigurationTester(mCheckConfig);
-      int numUnresolvedProps = tester.getUnresolvedProperties().size();
+      int numUnresolvedProps = CheckConfigurationTester.getUnresolvedProperties(mCheckConfig).size();
 
       if (numUnresolvedProps > 0) {
 
@@ -316,17 +257,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
       mConfigurationEditor = ConfigurationTypesUI.getNewEditor(config.getType());
       mConfigurationEditor.initialize(config, this);
 
-      // remove old editor
-      Control[] controls = mEditorPlaceHolder.getChildren();
-      for (int i = 0; i < controls.length; i++) {
-        controls[i].dispose();
-      }
-
-      mConfigurationEditor.createEditorControl(mEditorPlaceHolder, getShell());
-
-      mEditorPlaceHolder.redraw();
-      mEditorPlaceHolder.update();
-      mEditorPlaceHolder.layout();
+      dialogView.bindEditor(mConfigurationEditor);
 
       Point initialSize = this.getInitialSize();
       getShell().setSize(initialSize);
@@ -341,10 +272,9 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
    * Initialize the dialogs controls with the data.
    */
   private void initialize() {
-
+    IConfigurationType[] types;
     if (mCheckConfig == null) {
-
-      IConfigurationType[] types = mTemplate != null
+      types = mTemplate != null
               ? ConfigurationTypes.getConfigurableConfigTypes()
               : ConfigurationTypes.getCreatableConfigTypes();
 
@@ -365,24 +295,16 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
         this.setTitle(Messages.CheckConfigurationPropertiesDialog_titleCheckConfig);
         this.setMessage(Messages.CheckConfigurationPropertiesDialog_msgCreateNewCheckConfig);
       }
-
-      mConfigType.setInput(types);
-      mConfigType.setSelection(new StructuredSelection(types[0]), true);
-
-      createConfigurationEditor(mCheckConfig);
     } else {
       this.setTitle(Messages.CheckConfigurationPropertiesDialog_titleCheckConfig);
       this.setMessage(Messages.CheckConfigurationPropertiesDialog_msgEditCheckConfig);
-
-      mConfigType.getCombo().setEnabled(false);
-      mConfigType.setInput(new IConfigurationType[] {
+      dialogView.disable();
+      types = new IConfigurationType[] {
           mCheckConfig.getType(),
-      });
-
-      // type of existing configs cannot be changed
-      mConfigType.setSelection(new StructuredSelection(mCheckConfig.getType()), true);
-      createConfigurationEditor(mCheckConfig);
+      };
     }
+    dialogView.initConfigType(types);
+    createConfigurationEditor(mCheckConfig);
   }
 
   /**

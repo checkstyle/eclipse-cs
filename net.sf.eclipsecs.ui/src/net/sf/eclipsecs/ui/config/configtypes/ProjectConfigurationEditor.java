@@ -21,10 +21,10 @@
 package net.sf.eclipsecs.ui.config.configtypes;
 
 import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.resources.IFile;
@@ -32,8 +32,6 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
@@ -41,7 +39,6 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -108,15 +105,15 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
   public Control createEditorControl(Composite parent, final Shell parentShell) {
     this.shell = parentShell;
     Composite contents = new Composite(parent, SWT.NULL);
-    contents.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+    GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(contents);
     GridLayoutFactory.swtDefaults().numColumns(2).margins(0, 0).applyTo(contents);
 
     Label lblConfigName = new Label(contents, SWT.NULL);
     lblConfigName.setText(Messages.CheckConfigurationPropertiesDialog_lblName);
-    lblConfigName.setLayoutData(new GridData());
+    GridDataFactory.swtDefaults().applyTo(lblConfigName);
 
     mConfigName = new Text(contents, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
-    mConfigName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+    GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(mConfigName);
     mConfigName.setFocus();
 
     mLocation = createLocationSection(contents, parentShell);
@@ -132,7 +129,7 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
     Group advancedGroup = new Group(contents, SWT.NULL);
     advancedGroup.setText(Messages.RemoteConfigurationEditor_titleAdvancedOptions);
     GridDataFactory.create(GridData.FILL_HORIZONTAL).span(2, 1).applyTo(advancedGroup);
-    advancedGroup.setLayout(new GridLayout(2, false));
+    GridLayoutFactory.swtDefaults().numColumns(2).applyTo(advancedGroup);
 
     mChkProtectConfig = new Button(advancedGroup, SWT.CHECK);
     mChkProtectConfig.setText(Messages.ProjectConfigurationEditor_chkProtectConfigFile);
@@ -157,18 +154,18 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
   private static Text createLocationSection(Composite parent, Shell shell) {
     Label lblConfigLocation = new Label(parent, SWT.NULL);
     lblConfigLocation.setText(Messages.CheckConfigurationPropertiesDialog_lblLocation);
-    lblConfigLocation.setLayoutData(new GridData());
+    GridDataFactory.swtDefaults().applyTo(lblConfigLocation);
 
     Composite locationComposite = new Composite(parent, SWT.NULL);
-    locationComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+    GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(locationComposite);
     GridLayoutFactory.swtDefaults().numColumns(2).margins(0, 0).applyTo(locationComposite);
 
     Text location = new Text(locationComposite, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
-    location.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+    GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(location);
 
     Button mBtnBrowse = new Button(locationComposite, SWT.PUSH);
     mBtnBrowse.setText(Messages.ProjectConfigurationLocationEditor_btnBrowse);
-    mBtnBrowse.setLayoutData(new GridData());
+    GridDataFactory.swtDefaults().applyTo(mBtnBrowse);
 
     mBtnBrowse.addSelectionListener(SelectionListener.widgetSelectedAdapter(
             event -> WorkspaceFileSelector.select(shell).ifPresent(location::setText)));
@@ -194,7 +191,7 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
       }
 
       ICheckConfigurationWorkingSet workingSet = mCheckConfigDialog.getCheckConfigurationWorkingSet();
-      IPath tmp = new Path(location);
+      IPath tmp = IPath.fromOSString(location);
       boolean isFirstPartProject = ResourcesPlugin.getWorkspace().getRoot()
               .getProject(tmp.segment(0)).exists();
 
@@ -231,7 +228,7 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
 
     IFile file = null;
     try {
-      file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(location));
+      file = ResourcesPlugin.getWorkspace().getRoot().getFile(IPath.fromOSString(location));
     } catch (IllegalArgumentException ex) {
       CheckstylePluginException.rethrow(ex);
     }
@@ -241,17 +238,15 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
               Messages.ExternalFileConfigurationEditor_titleFileDoesNotExist,
               Messages.ExternalFileConfigurationEditor_msgFileDoesNotExist);
       if (confirm) {
-
-        File trueFile = file.getLocation().toFile();
-
-        if (trueFile.getParentFile() != null) {
-          trueFile.getParentFile().mkdirs();
-        }
-
-        try (OutputStream out = new BufferedOutputStream(new FileOutputStream(trueFile))) {
-
-          ConfigurationWriter.writeNewConfiguration(out, mWorkingCopy);
-          file.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+        Path trueFile = file.getLocation().toPath();
+        try {
+          if (trueFile.getParent() != null) {
+            Files.createDirectories(trueFile.getParent());
+          }
+          try (OutputStream out = new BufferedOutputStream(Files.newOutputStream(trueFile))) {
+            ConfigurationWriter.writeNewConfiguration(out, mWorkingCopy);
+            file.refreshLocal(IResource.DEPTH_INFINITE, null);
+          }
         } catch (CoreException | IOException ex) {
           CheckstylePluginException.rethrow(ex);
         }

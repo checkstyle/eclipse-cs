@@ -21,19 +21,18 @@
 package net.sf.eclipsecs.ui.properties;
 
 import java.util.List;
-import java.util.function.Function;
-
 import org.eclipse.core.resources.IFile;
+import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
@@ -46,16 +45,23 @@ public final class FileSetEditDialogMatchedFilesPreview extends Composite {
   private final TableViewer matchesViewer;
   private final Group matchGroup;
 
-  public FileSetEditDialogMatchedFilesPreview(Composite parent, int style, FileSet fileSet) {
+  private final String projectName;
+
+  private int totalFileCount;
+
+  public FileSetEditDialogMatchedFilesPreview(Composite parent, int style,
+          ViewerFilter viewerFilter, String projectName) {
     super(parent, style);
     setLayout(new FillLayout());
 
+    this.projectName = projectName;
+
     this.matchGroup = new Group(this, SWT.NONE);
-    matchGroup.setLayout(new GridLayout(1, false));
+    GridLayoutFactory.swtDefaults().applyTo(matchGroup);
     matchGroup.setText(Messages.FileSetEditDialog_msgBuildTestResults);
 
     this.matchesViewer = new TableViewer(matchGroup);
-    matchesViewer.setContentProvider(new ArrayContentProvider());
+    matchesViewer.setContentProvider(ArrayContentProvider.getInstance());
     matchesViewer.setLabelProvider(new LabelProvider() {
 
       private final WorkbenchLabelProvider mDelegate = new WorkbenchLabelProvider();
@@ -74,25 +80,37 @@ public final class FileSetEditDialogMatchedFilesPreview extends Composite {
         return mDelegate.getImage(element);
       }
     });
-    matchesViewer.addFilter(new ViewerFilter() {
-
-      @Override
-      public boolean select(Viewer viewer, Object parentElement, Object element) {
-        return element instanceof IFile file && fileSet.includesFile(file);
-      }
-    });
+    matchesViewer.addFilter(viewerFilter);
     matchesViewer.getControl().setLayoutData(new GridData(GridData.FILL_BOTH));
   }
 
   public void refresh() {
     matchesViewer.refresh();
+    matchGroup.setText(NLS.bind(Messages.FileSetEditDialog_titleTestResult,
+            new String[] {
+                projectName,
+                Integer.toString(matchesViewer.getTable().getItemCount()),
+                Integer.toString(totalFileCount),
+            }));
   }
 
   public void setInput(List<IFile> projectFiles) {
     matchesViewer.setInput(projectFiles);
+    totalFileCount = projectFiles.size();
   }
 
-  public void setText(Function<Integer, String> text) {
-    matchGroup.setText(text.apply(matchesViewer.getTable().getItemCount()));
+  public static class FileSetEditDialogMatchedFilesPreviewFilter extends ViewerFilter {
+
+    private final FileSet fileSet;
+
+    public FileSetEditDialogMatchedFilesPreviewFilter(FileSet fileSet) {
+      this.fileSet = fileSet;
+    }
+
+    @Override
+    public boolean select(Viewer viewer, Object parentElement, Object element) {
+      return element instanceof IFile file && fileSet.includesFile(file);
+    }
+
   }
 }

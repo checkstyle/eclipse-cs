@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Path;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.URIUtil;
@@ -46,21 +47,15 @@ public class InternalConfigurationType extends AbstractConfigurationType {
    *          the location
    * @return the resolved location in the workspace
    */
-  public static String resolveLocationInWorkspace(String location) {
-
+  public static Path resolveLocationInWorkspace(String location) {
     IPath configPath = CheckstylePlugin.getDefault().getStateLocation();
     configPath = configPath.append(location);
-    return configPath.toString();
+    return configPath.toPath();
   }
 
   @Override
   protected URL resolveLocation(ICheckConfiguration checkConfiguration) throws IOException {
-    String location = checkConfiguration.getLocation();
-
-    // resolve the location in the workspace
-    location = resolveLocationInWorkspace(location);
-
-    return new File(location).toURI().toURL();
+    return resolveLocationInWorkspace(checkConfiguration.getLocation()).toUri().toURL();
   }
 
   @Override

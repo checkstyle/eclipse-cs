@@ -35,9 +35,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTreeViewer;
-import org.eclipse.jface.viewers.ICheckStateListener;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
@@ -508,17 +506,13 @@ public class PackageFilterEditor implements IFilterEditor {
       mViewer.setContentProvider(mContentProvider);
       mViewer.setLabelProvider(mLabelProvider);
 
-      mViewer.addCheckStateListener(new ICheckStateListener() {
-        @Override
-        public void checkStateChanged(CheckStateChangedEvent event) {
+      mViewer.addCheckStateListener(event -> {
+        IContainer element = (IContainer) event.getElement();
 
-          IContainer element = (IContainer) event.getElement();
-
-          if (isRecursivelyExcludeSubTree() && !isGrayed(element)) {
-            setSubElementsGrayedChecked(element, event.getChecked());
-          } else if (isRecursivelyExcludeSubTree() && isGrayed(element)) {
-            mViewer.setGrayChecked(element, true);
-          }
+        if (isRecursivelyExcludeSubTree() && !isGrayed(element)) {
+          setSubElementsGrayedChecked(element, event.getChecked());
+        } else if (isRecursivelyExcludeSubTree() && isGrayed(element)) {
+          mViewer.setGrayChecked(element, true);
         }
       });
 

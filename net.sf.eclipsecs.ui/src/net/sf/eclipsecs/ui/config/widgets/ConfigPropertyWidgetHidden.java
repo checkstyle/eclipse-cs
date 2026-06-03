@@ -28,7 +28,7 @@ import net.sf.eclipsecs.core.config.ConfigProperty;
 /**
  * Non-configuration property.
  */
-public class ConfigPropertyWidgetHidden extends AbstractConfigPropertyWidget {
+public final class ConfigPropertyWidgetHidden extends AbstractConfigPropertyWidget {
 
   private String mValue = ""; //$NON-NLS-1$
 
@@ -40,8 +40,12 @@ public class ConfigPropertyWidgetHidden extends AbstractConfigPropertyWidget {
    * @param prop
    *          the property
    */
-  public ConfigPropertyWidgetHidden(Composite parent, ConfigProperty prop) {
+  private ConfigPropertyWidgetHidden(Composite parent, ConfigProperty prop) {
     super(parent, prop);
+  }
+
+  public static ConfigPropertyWidgetHidden create(Composite parent, ConfigProperty prop) {
+    return new ConfigPropertyWidgetHidden(parent, prop);
   }
 
   @Override

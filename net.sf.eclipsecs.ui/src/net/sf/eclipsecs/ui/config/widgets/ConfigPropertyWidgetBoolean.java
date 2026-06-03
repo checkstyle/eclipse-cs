@@ -32,7 +32,7 @@ import net.sf.eclipsecs.core.config.meta.ConfigPropertyMetadata;
 /**
  * Boolean configuration widget.
  */
-public class ConfigPropertyWidgetBoolean extends AbstractConfigPropertyWidget {
+public final class ConfigPropertyWidgetBoolean extends AbstractConfigPropertyWidget {
 
   private Button mCheckbox;
 
@@ -44,8 +44,12 @@ public class ConfigPropertyWidgetBoolean extends AbstractConfigPropertyWidget {
    * @param prop
    *          the property
    */
-  public ConfigPropertyWidgetBoolean(Composite parent, ConfigProperty prop) {
+  private ConfigPropertyWidgetBoolean(Composite parent, ConfigProperty prop) {
     super(parent, prop);
+  }
+
+  public static ConfigPropertyWidgetBoolean create(Composite parent, ConfigProperty prop) {
+    return new ConfigPropertyWidgetBoolean(parent, prop);
   }
 
   @Override

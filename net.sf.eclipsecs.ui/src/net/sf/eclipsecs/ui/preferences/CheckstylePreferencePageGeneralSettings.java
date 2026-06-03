@@ -29,7 +29,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -74,7 +73,7 @@ public final class CheckstylePreferencePageGeneralSettings extends Composite {
     Group group = new Group(this, style);
 
     group.setText(Messages.CheckstylePreferencePage_lblGeneralSettings);
-    group.setLayout(new GridLayout());
+    GridLayoutFactory.swtDefaults().applyTo(group);
 
     languageIf = createLanguageSetting(group);
     mRebuildIfNeeded = createRebuildSection(group, setRebuildAll);
@@ -134,7 +133,7 @@ public final class CheckstylePreferencePageGeneralSettings extends Composite {
   private static Combo createRebuildSection(Group group, Runnable setRebuildAll) {
     final Composite rebuildComposite = new Composite(group, SWT.NULL);
     GridLayoutFactory.swtDefaults().numColumns(3).margins(0, 0).applyTo(rebuildComposite);
-    rebuildComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+    GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(rebuildComposite);
 
     Label lblRebuild = new Label(rebuildComposite, SWT.NULL);
     lblRebuild.setText(Messages.CheckstylePreferencePage_lblRebuild);
@@ -169,7 +168,7 @@ public final class CheckstylePreferencePageGeneralSettings extends Composite {
   private static Combo createLanguageSetting(Group group) {
     Composite langComposite = new Composite(group, SWT.NULL);
     GridLayoutFactory.swtDefaults().numColumns(3).margins(0, 0).applyTo(langComposite);
-    langComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+    GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(langComposite);
 
     final Label lblLanguage = new Label(langComposite, SWT.NULL);
     lblLanguage.setText(Messages.CheckstylePreferencePage_lblLocaleLanguage);

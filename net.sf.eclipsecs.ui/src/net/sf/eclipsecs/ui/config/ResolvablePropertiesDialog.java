@@ -30,32 +30,20 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
-import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.ColumnWeightData;
-import org.eclipse.jface.viewers.DoubleClickEvent;
-import org.eclipse.jface.viewers.IDoubleClickListener;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.TableLayout;
-import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.window.Window;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.KeyListener;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
+
 import net.sf.eclipsecs.core.config.CheckConfigurationTester;
 import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
 import net.sf.eclipsecs.core.config.ResolvableProperty;
@@ -66,7 +54,6 @@ import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.util.SWTUtil;
 import net.sf.eclipsecs.ui.util.table.ITableComparableProvider;
 import net.sf.eclipsecs.ui.util.table.ITableSettingsProvider;
-import net.sf.eclipsecs.ui.util.table.TableViewerEnhancer;
 
 /**
  * Dialog to show/edit the properties (name, location, description) of a check
@@ -79,29 +66,13 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
   // attributes
   //
 
-  /** The properties table. */
-  private TableViewer mTableViewer;
-
-  /** Button to add a new property. */
-  private Button mBtnAdd;
-
-  /** Button to edit an existing property. */
-  private Button mBtnEdit;
-
-  /** Button to remove properties. */
-  private Button mBtnRemove;
-
-  /** Button to find unresolved properties. */
-  private Button mBtnFind;
-
-  /** The controller for this dialog. */
-  private Controller mController = new Controller();
-
   /** the check configuration. */
   private CheckConfigurationWorkingCopy mCheckConfig;
 
   /** The list of properties. */
   private List<ResolvableProperty> mResolvableProperties;
+
+  private ResolvablePropertiesDialogView dialogView;
 
   //
   // constructor
@@ -152,7 +123,6 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
    */
   @Override
   protected Control createDialogArea(Composite parent) {
-
     // set the logo
     this.setTitleImage(CheckstyleUIPluginImages.PLUGIN_LOGO.getImage());
     this.setTitle(Messages.ResolvablePropertiesDialog_titleMessageArea);
@@ -160,82 +130,26 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
 
     Composite composite = (Composite) super.createDialogArea(parent);
 
-    Composite contents = new Composite(composite, SWT.NULL);
-    contents.setLayout(new GridLayout(2, false));
-    contents.setLayoutData(new GridData(GridData.FILL_BOTH));
-
-    Table table = createTable(contents);
-
-    mTableViewer = new TableViewer(table);
-    PropertiesLabelProvider multiProvider = new PropertiesLabelProvider();
-    mTableViewer.setLabelProvider(multiProvider);
-    mTableViewer.setContentProvider(new ArrayContentProvider());
-    mTableViewer.addDoubleClickListener(mController);
-    mTableViewer.getTable().addKeyListener(mController);
-    TableViewerEnhancer.enhance(mTableViewer, multiProvider);
-
-    Composite buttonBar = new Composite(contents, SWT.NULL);
-    GridLayoutFactory.swtDefaults().margins(0, 0).applyTo(buttonBar);
-    GridDataFactory.swtDefaults().align(GridData.BEGINNING, GridData.BEGINNING).applyTo(buttonBar);
-
-    mBtnAdd = createButton(buttonBar, Messages.ResolvablePropertiesDialog_btnAdd, mController);
-    mBtnEdit = createButton(buttonBar, Messages.ResolvablePropertiesDialog_btnEdit, mController);
-    mBtnRemove = createButton(buttonBar, Messages.ResolvablePropertiesDialog_btnRemove, mController);
+    this.dialogView = new ResolvablePropertiesDialogView(composite, SWT.NULL,
+            this::openPropertyItemEditor, this::removePropertyItems);
+    GridDataFactory.create(GridData.FILL_BOTH).applyTo(dialogView);
 
     return composite;
   }
 
-  private static Table createTable(Composite parent) {
-    Table table = new Table(parent, SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION);
-    table.setLayoutData(new GridData(GridData.FILL_BOTH));
-
-    table.setHeaderVisible(true);
-    table.setLinesVisible(true);
-
-    TableLayout tableLayout = new TableLayout();
-    table.setLayout(tableLayout);
-
-    TableColumn column1 = new TableColumn(table, SWT.NULL);
-    column1.setText(Messages.ResolvablePropertiesDialog_colName);
-    tableLayout.addColumnData(new ColumnWeightData(50));
-
-    TableColumn column2 = new TableColumn(table, SWT.NULL);
-    column2.setText(Messages.ResolvablePropertiesDialog_colValue);
-    tableLayout.addColumnData(new ColumnWeightData(50));
-
-    return table;
-  }
-
-  private static Button createButton(Composite parent, String text, SelectionListener selectionListener) {
-    Button button = new Button(parent, SWT.PUSH);
-    button.setText(text);
-    button.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-    button.addSelectionListener(selectionListener);
-    return button;
-  }
-
   @Override
   protected Control createButtonBar(Composite parent) {
-
     Composite composite = new Composite(parent, SWT.NONE);
-    GridLayout layout = new GridLayout(3, false);
-    layout.marginHeight = 0;
-    layout.marginWidth = 0;
-    composite.setLayout(layout);
-    composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+    GridLayoutFactory.swtDefaults().numColumns(3).margins(0, 0).applyTo(composite);
+    GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(composite);
 
-    mBtnFind = new Button(composite, SWT.PUSH);
+    Button mBtnFind = new Button(composite, SWT.PUSH);
     mBtnFind.setText(Messages.ResolvablePropertiesDialog_btnFind);
-    GridData gridData = new GridData();
-    gridData.horizontalAlignment = GridData.BEGINNING;
-    gridData.horizontalIndent = 5;
-    mBtnFind.setLayoutData(gridData);
-    mBtnFind.addSelectionListener(mController);
+    GridDataFactory.swtDefaults().align(SWT.BEGINNING, SWT.CENTER).indent(5, 0).applyTo(mBtnFind);
+    mBtnFind.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> findPropertyItems()));
 
     Control buttonBar = super.createButtonBar(composite);
-    gridData = new GridData(GridData.FILL_HORIZONTAL);
-    gridData.horizontalAlignment = GridData.END;
-    buttonBar.setLayoutData(gridData);
+    GridDataFactory.create(GridData.FILL_HORIZONTAL).align(SWT.END, SWT.CENTER).applyTo(buttonBar);
 
     return composite;
   }
@@ -281,150 +195,86 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
     for (ResolvableProperty prop : mCheckConfig.getResolvableProperties()) {
       mResolvableProperties.add(prop.clone());
     }
-
-    mTableViewer.setInput(mResolvableProperties);
+    dialogView.setResolvableProperties(mResolvableProperties);
   }
 
-  /**
-   * Controller for this dialog.
-   *
-   */
-  private final class Controller implements SelectionListener, IDoubleClickListener, KeyListener {
+  private void openPropertyItemEditor(ResolvableProperty prop) {
 
-    @Override
-    public void widgetSelected(SelectionEvent e) {
-      if (mBtnAdd == e.widget) {
-        openPropertyItemEditor(null);
-      } else if (mBtnEdit == e.widget && !mTableViewer.getSelection().isEmpty()) {
-        IStructuredSelection selection = (IStructuredSelection) mTableViewer.getSelection();
+    if (prop == null) {
+      ResolvableProperty newProp = new ResolvableProperty(null, null);
 
-        ResolvableProperty prop = (ResolvableProperty) selection.getFirstElement();
-        openPropertyItemEditor(prop);
-      } else if (mBtnRemove == e.widget) {
-        removePropertyItems();
-      } else if (mBtnFind == e.widget) {
-        findPropertyItems();
+      ResolvablePropertyEditDialog dialog = new ResolvablePropertyEditDialog(getShell(), newProp);
+      if (Window.OK == dialog.open()) {
+        mResolvableProperties.add(newProp);
+        dialogView.refresh();
+      }
+    } else {
+      ResolvablePropertyEditDialog dialog = new ResolvablePropertyEditDialog(getShell(), prop);
+      if (Window.OK == dialog.open()) {
+        dialogView.refresh();
       }
     }
+  }
 
-    @Override
-    public void widgetDefaultSelected(SelectionEvent e) {
-      // NOOP
+  private void removePropertyItems(List<ResolvableProperty> resolvableProperties) {
+    boolean confirm = MessageDialog.openQuestion(getShell(),
+            Messages.ResolvablePropertiesDialog_titleRemoveConfirmation,
+            Messages.ResolvablePropertiesDialog_msgRemoveConfirmation);
+    if (confirm) {
+      mResolvableProperties.removeAll(resolvableProperties);
+      dialogView.refresh();
     }
+  }
 
-    @Override
-    public void doubleClick(DoubleClickEvent event) {
-      if (!event.getSelection().isEmpty()) {
-        IStructuredSelection selection = (IStructuredSelection) mTableViewer.getSelection();
+  private void findPropertyItems() {
+    CheckConfigurationWorkingCopy clone = mCheckConfig.clone();
+    clone.getResolvableProperties().clear();
+    clone.getResolvableProperties().addAll(mResolvableProperties);
 
-        ResolvableProperty prop = (ResolvableProperty) selection.getFirstElement();
-        openPropertyItemEditor(prop);
-      }
-    }
+    try {
+      List<ResolvableProperty> unresolvedProps = CheckConfigurationTester
+              .getUnresolvedProperties(clone);
 
-    @Override
-    public void keyReleased(KeyEvent e) {
-      if (e.widget == mTableViewer.getTable()) {
-        if (e.character == SWT.DEL) {
-          removePropertyItems();
+      // filter props already in the dialogs list
+      Iterator<ResolvableProperty> iter = unresolvedProps.iterator();
+      while (iter.hasNext()) {
+
+        ResolvableProperty prop = iter.next();
+
+        Iterator<ResolvableProperty> it2 = mResolvableProperties.iterator();
+        while (it2.hasNext()) {
+
+          if (prop.getPropertyName().equals(it2.next().getPropertyName())) {
+            // remove the current entry
+            iter.remove();
+            break;
+          }
         }
-        if (e.character == ' ') {
-          IStructuredSelection selection = (IStructuredSelection) mTableViewer.getSelection();
-
-          ResolvableProperty prop = (ResolvableProperty) selection.getFirstElement();
-          openPropertyItemEditor(prop);
-        }
       }
-    }
 
-    @Override
-    public void keyPressed(KeyEvent e) {
-      // NOOP
-    }
+      if (!unresolvedProps.isEmpty()) {
 
-    private void openPropertyItemEditor(ResolvableProperty prop) {
+        StringBuilder buf = new StringBuilder();
+        iter = unresolvedProps.iterator();
+        while (iter.hasNext()) {
+          buf.append("\t${").append(iter.next().getPropertyName()).append("}\n");
+        }
 
-      if (prop == null) {
-        ResolvableProperty newProp = new ResolvableProperty(null, null);
-
-        ResolvablePropertyEditDialog dialog = new ResolvablePropertyEditDialog(getShell(), newProp);
-        if (Window.OK == dialog.open()) {
-          mResolvableProperties.add(newProp);
-          mTableViewer.refresh();
+        boolean confirm = MessageDialog.openQuestion(getShell(),
+                Messages.ResolvablePropertiesDialog_titleFoundProperties,
+                NLS.bind(Messages.ResolvablePropertiesDialog_msgFoundProperties, buf));
+        if (confirm) {
+          mResolvableProperties.addAll(unresolvedProps);
+          dialogView.refresh();
         }
       } else {
-        ResolvablePropertyEditDialog dialog = new ResolvablePropertyEditDialog(getShell(), prop);
-        if (Window.OK == dialog.open()) {
-          mTableViewer.refresh();
-        }
+        MessageDialog.openInformation(getShell(),
+                Messages.ResolvablePropertiesDialog_titleNoUnresolvedProps,
+                Messages.ResolvablePropertiesDialog_msgNoUnresolvedProps);
       }
+    } catch (CheckstylePluginException ex) {
+      CheckstyleUIPlugin.errorDialog(getShell(), ex, true);
     }
-
-    private void removePropertyItems() {
-      boolean confirm = MessageDialog.openQuestion(getShell(),
-              Messages.ResolvablePropertiesDialog_titleRemoveConfirmation,
-              Messages.ResolvablePropertiesDialog_msgRemoveConfirmation);
-      if (confirm) {
-
-        IStructuredSelection selection = (IStructuredSelection) mTableViewer.getSelection();
-        mResolvableProperties.removeAll(selection.toList());
-        mTableViewer.refresh();
-      }
-    }
-
-    private void findPropertyItems() {
-
-      CheckConfigurationWorkingCopy clone = mCheckConfig.clone();
-      clone.getResolvableProperties().clear();
-      clone.getResolvableProperties().addAll(mResolvableProperties);
-
-      CheckConfigurationTester tester = new CheckConfigurationTester(clone);
-
-      try {
-        List<ResolvableProperty> unresolvedProps = tester.getUnresolvedProperties();
-
-        // filter props already in the dialogs list
-        Iterator<ResolvableProperty> iter = unresolvedProps.iterator();
-        while (iter.hasNext()) {
-
-          ResolvableProperty prop = iter.next();
-
-          Iterator<ResolvableProperty> it2 = mResolvableProperties.iterator();
-          while (it2.hasNext()) {
-
-            if (prop.getPropertyName().equals(it2.next().getPropertyName())) {
-              // remove the current entry
-              iter.remove();
-              break;
-            }
-          }
-        }
-
-        if (!unresolvedProps.isEmpty()) {
-
-          StringBuilder buf = new StringBuilder();
-          iter = unresolvedProps.iterator();
-          while (iter.hasNext()) {
-            buf.append("\t${").append(iter.next().getPropertyName()).append("}\n");
-          }
-
-          boolean confirm = MessageDialog.openQuestion(getShell(),
-                  Messages.ResolvablePropertiesDialog_titleFoundProperties,
-                  NLS.bind(Messages.ResolvablePropertiesDialog_msgFoundProperties, buf));
-          if (confirm) {
-            mResolvableProperties.addAll(unresolvedProps);
-            mTableViewer.refresh();
-          }
-        } else {
-          MessageDialog.openInformation(getShell(),
-                  Messages.ResolvablePropertiesDialog_titleNoUnresolvedProps,
-                  Messages.ResolvablePropertiesDialog_msgNoUnresolvedProps);
-        }
-      } catch (CheckstylePluginException ex) {
-        CheckstyleUIPlugin.errorDialog(getShell(), ex, true);
-      }
-    }
-
   }
 
   /**
@@ -432,8 +282,14 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
    * for table sorting and storing of the table settings.
    *
    */
-  private final class PropertiesLabelProvider extends LabelProvider
+  public static final class PropertiesLabelProvider extends LabelProvider
           implements ITableLabelProvider, ITableComparableProvider, ITableSettingsProvider {
+
+    public static final PropertiesLabelProvider INSTANCE = new PropertiesLabelProvider();
+
+    private PropertiesLabelProvider() {
+
+    }
 
     @Override
     public String getColumnText(Object element, int columnIndex) {

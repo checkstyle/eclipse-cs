@@ -35,11 +35,13 @@ import net.sf.eclipsecs.core.projectconfig.ProjectConfigurationWorkingCopy;
  * Content provider implementation that provides check configurations.
  *
  */
-class CheckConfigurationContentProvider implements IStructuredContentProvider {
+public final class CheckConfigurationContentProvider implements IStructuredContentProvider {
 
-  //
-  // methods
-  //
+  public static final CheckConfigurationContentProvider INSTANCE = new CheckConfigurationContentProvider();
+
+  private CheckConfigurationContentProvider() {
+
+  }
 
   @Override
   public Object[] getElements(Object inputElement) {

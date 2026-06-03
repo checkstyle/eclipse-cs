@@ -20,9 +20,7 @@
 
 package net.sf.eclipsecs.ui.config.configtypes;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
+import java.net.URI;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
@@ -200,12 +198,12 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
       if (StringUtils.isNotBlank(mUserName.getText())
               || StringUtils.isNotBlank(mPassword.getText())) {
         RemoteConfigurationType.RemoteConfigAuthenticator.storeCredentials(
-                new URL(mLocation.getText()), mUserName.getText(), mPassword.getText());
+                URI.create(mLocation.getText()).toURL(), mUserName.getText(), mPassword.getText());
       } else {
         RemoteConfigurationType.RemoteConfigAuthenticator
-                .removeCachedAuthInfo(new URL(mLocation.getText()));
+                .removeCachedAuthInfo(URI.create(mLocation.getText()).toURL());
       }
-    } catch (MalformedURLException ex) {
+    } catch (Exception ex) {
       CheckstylePluginException.rethrow(ex);
     }
 

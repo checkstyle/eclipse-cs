@@ -54,7 +54,7 @@ import net.sf.eclipsecs.ui.CheckstyleUIPluginPrefs;
 /**
  * Configuration widget for selecting multiple values with check boxes.
  */
-public class ConfigPropertyWidgetMultiCheck extends AbstractConfigPropertyWidget
+public final class ConfigPropertyWidgetMultiCheck extends AbstractConfigPropertyWidget
         implements IPreferenceChangeListener {
 
   /** Resource bundle containing the token translations. */
@@ -77,9 +77,13 @@ public class ConfigPropertyWidgetMultiCheck extends AbstractConfigPropertyWidget
    * @param prop
    *          the property
    */
-  public ConfigPropertyWidgetMultiCheck(Composite parent, ConfigProperty prop) {
+  private ConfigPropertyWidgetMultiCheck(Composite parent, ConfigProperty prop) {
     super(parent, prop);
     mTokens = new ArrayList<>(prop.getMetaData().getPropertyEnumeration());
+  }
+
+  public static ConfigPropertyWidgetMultiCheck create(Composite parent, ConfigProperty prop) {
+    return new ConfigPropertyWidgetMultiCheck(parent, prop);
   }
 
   @Override

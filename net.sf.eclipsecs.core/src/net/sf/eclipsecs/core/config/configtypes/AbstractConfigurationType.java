@@ -20,19 +20,14 @@
 
 package net.sf.eclipsecs.core.config.configtypes;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.PropertyResourceBundle;
-import java.util.ResourceBundle;
-
-import org.eclipse.core.runtime.URIUtil;
-
 import com.google.common.io.ByteStreams;
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
 
@@ -186,7 +181,7 @@ public abstract class AbstractConfigurationType implements IConfigurationType {
     propsLocation = propsLocation + ".properties"; //$NON-NLS-1$
 
     try {
-      URL propertyFileURL = new URL(propsLocation);
+      URL propertyFileURL = URI.create(propsLocation).toURL();
       URLConnection connection = propertyFileURL.openConnection();
 
       return Optional.of(getBytesFromURLConnection(connection));
@@ -214,28 +209,7 @@ public abstract class AbstractConfigurationType implements IConfigurationType {
    */
   protected PropertyResolver getPropertyResolver(ICheckConfiguration config,
           CheckstyleConfigurationFile configFile) throws IOException, URISyntaxException {
-
-    MultiPropertyResolver multiResolver = new MultiPropertyResolver();
-    multiResolver.addPropertyResolver(new ResolvablePropertyResolver(config));
-
-    File file = URIUtil.toFile(configFile.getResolvedConfigFileURL().toURI());
-    if (file != null) {
-      multiResolver.addPropertyResolver(new StandardPropertyResolver(file.toString()));
-    } else {
-      multiResolver.addPropertyResolver(
-              new StandardPropertyResolver(configFile.getResolvedConfigFileURL().toString()));
-    }
-
-    multiResolver.addPropertyResolver(new ClasspathVariableResolver());
-    multiResolver.addPropertyResolver(new SystemPropertyResolver());
-
-    if (configFile.getAdditionalPropertiesBundleStream() != null) {
-      ResourceBundle bundle = new PropertyResourceBundle(
-              configFile.getAdditionalPropertiesBundleStream());
-      multiResolver.addPropertyResolver(new ResourceBundlePropertyResolver(bundle));
-    }
-
-    return multiResolver;
+    return PropertyResolverFactory.getPropertyResolver(config, configFile);
   }
 
   /**

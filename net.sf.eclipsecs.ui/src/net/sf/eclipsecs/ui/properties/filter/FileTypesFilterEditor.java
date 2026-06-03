@@ -161,7 +161,7 @@ public class FileTypesFilterEditor implements IFilterEditor {
 
       mListViewer = new ListViewer(main, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
       mListViewer.setLabelProvider(new LabelProvider());
-      mListViewer.setContentProvider(new ArrayContentProvider());
+      mListViewer.setContentProvider(ArrayContentProvider.getInstance());
       mListViewer.setInput(mFileTypesList);
       gridData = new GridData(GridData.FILL_BOTH);
       gridData.heightHint = 100;

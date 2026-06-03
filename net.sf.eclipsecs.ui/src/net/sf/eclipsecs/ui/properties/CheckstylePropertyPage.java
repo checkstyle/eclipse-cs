@@ -26,6 +26,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionListener;
@@ -127,6 +128,7 @@ public class CheckstylePropertyPage extends PropertyPage {
             new PropertyPageContext((IProject) getElement(), mProjectConfig,
                     getContainer()::updateButtons),
             mCheckstyleInitiallyActivated);
+    GridDataFactory.create(GridData.FILL_BOTH).applyTo(mainTab);
 
     // create the local configurations area
     Control localConfigArea = new LocalConfig(tabFolder, SWT.NONE,
@@ -189,10 +191,9 @@ public class CheckstylePropertyPage extends PropertyPage {
       gridData.widthHint = 200;
       lblHint.setLayoutData(gridData);
 
-      CheckConfigurationWorkingSetEditor workingSetEditor = new CheckConfigurationWorkingSetEditor(
-              workingSet, false);
-      Control editorControl = workingSetEditor.createContents(noteAndEditor);
-      editorControl.setLayoutData(new GridData(GridData.FILL_BOTH));
+      Control workingSetEditor = new CheckConfigurationWorkingSetEditor(noteAndEditor, SWT.NONE,
+              workingSet);
+      workingSetEditor.setLayoutData(new GridData(GridData.FILL_BOTH));
     }
 
   }

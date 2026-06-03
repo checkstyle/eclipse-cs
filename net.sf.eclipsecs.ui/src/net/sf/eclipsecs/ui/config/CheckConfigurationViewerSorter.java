@@ -28,7 +28,13 @@ import net.sf.eclipsecs.core.config.ICheckConfiguration;
 /**
  * Sorts CheckConfiguration objects into their display order.
  */
-public class CheckConfigurationViewerSorter extends ViewerComparator {
+public final class CheckConfigurationViewerSorter extends ViewerComparator {
+
+  public static final CheckConfigurationViewerSorter INSTANCE = new CheckConfigurationViewerSorter();
+
+  private CheckConfigurationViewerSorter() {
+
+  }
 
   @Override
   public int compare(Viewer viewer, Object e1, Object e2) {

@@ -20,6 +20,7 @@
 
 package net.sf.eclipsecs.ui.config.widgets;
 
+import java.util.Map;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
@@ -31,6 +32,17 @@ import net.sf.eclipsecs.core.config.meta.ConfigPropertyType;
  * metadata.
  */
 public final class ConfigPropertyWidgetFactory {
+
+  private static final Map<ConfigPropertyType, ConfigPropertyWidgetBuilder> REGISTRY = Map
+          .of(ConfigPropertyType.STRING, ConfigPropertyWidgetString::create,
+          ConfigPropertyType.STRING_ARRAY, ConfigPropertyWidgetStringArray::create,
+          ConfigPropertyType.INTEGER, ConfigPropertyWidgetInteger::create,
+          ConfigPropertyType.SINGLE_SELECT, ConfigPropertyWidgetSingleSelect::create,
+          ConfigPropertyType.BOOLEAN, ConfigPropertyWidgetBoolean::create,
+          ConfigPropertyType.MULTI_CHECK, ConfigPropertyWidgetMultiCheck::create,
+          ConfigPropertyType.HIDDEN, ConfigPropertyWidgetHidden::create,
+          ConfigPropertyType.FILE, ConfigPropertyWidgetFile::create,
+          ConfigPropertyType.REGEX, ConfigPropertyWidgetRegex::create);
 
   private ConfigPropertyWidgetFactory() {
   }
@@ -53,7 +65,7 @@ public final class ConfigPropertyWidgetFactory {
     ConfigPropertyType type = prop.getMetaData().getDatatype();
 
     if (prop.isPropertyReference()) {
-      widget = new ConfigPropertyWidgetString(parent, prop);
+      widget = ConfigPropertyWidgetString.create(parent, prop);
     } else {
       widget = getWidgetForConfigPropertyType(parent, prop, type);
     }
@@ -64,17 +76,10 @@ public final class ConfigPropertyWidgetFactory {
 
   private static IConfigPropertyWidget getWidgetForConfigPropertyType(Composite parent,
           ConfigProperty prop, ConfigPropertyType type) {
-    return switch (type) {
-      case STRING -> new ConfigPropertyWidgetString(parent, prop);
-      case STRING_ARRAY -> new ConfigPropertyWidgetStringArray(parent, prop);
-      case INTEGER -> new ConfigPropertyWidgetInteger(parent, prop);
-      case SINGLE_SELECT -> new ConfigPropertyWidgetSingleSelect(parent, prop);
-      case BOOLEAN -> new ConfigPropertyWidgetBoolean(parent, prop);
-      case MULTI_CHECK -> new ConfigPropertyWidgetMultiCheck(parent, prop);
-      case HIDDEN -> new ConfigPropertyWidgetHidden(parent, prop);
-      case FILE -> new ConfigPropertyWidgetFile(parent, prop);
-      case REGEX -> new ConfigPropertyWidgetRegex(parent, prop);
-      default -> new ConfigPropertyWidgetString(parent, prop);
-    };
+    return REGISTRY.getOrDefault(type, ConfigPropertyWidgetString::create).create(parent, prop);
+  }
+
+  public interface ConfigPropertyWidgetBuilder {
+    IConfigPropertyWidget create(Composite parent, ConfigProperty prop);
   }
 }
