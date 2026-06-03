@@ -23,6 +23,8 @@ package net.sf.eclipsecs.ui.config;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jface.contentassist.SubjectControlContentAssistant;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
+import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.text.DefaultInformationControl;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IInformationControl;
@@ -31,7 +33,6 @@ import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContentAssistant;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
@@ -78,19 +79,19 @@ public class ResolvablePropertyEditDialog extends TitleAreaDialog {
     this.setMessage(Messages.ResolvablePropertyEditDialog_msgEditProperty);
 
     Composite dialog = new Composite(composite, SWT.NONE);
-    dialog.setLayout(new GridLayout(2, false));
-    dialog.setLayoutData(new GridData(GridData.FILL_BOTH));
+    GridLayoutFactory.swtDefaults().numColumns(2).applyTo(dialog);
+    GridDataFactory.create(GridData.FILL_BOTH).applyTo(dialog);
 
     Label lblName = new Label(dialog, SWT.NULL);
     lblName.setText(Messages.ResolvablePropertyEditDialog_lblName);
     mTxtName = new Text(dialog, SWT.SINGLE | SWT.BORDER);
-    mTxtName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+    GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(mTxtName);
     mTxtName.setText(mProperty.getPropertyName() != null ? mProperty.getPropertyName() : ""); //$NON-NLS-1$
 
     Label lblValue = new Label(dialog, SWT.NULL);
     lblValue.setText(Messages.ResolvablePropertyEditDialog_lblValue);
     mTxtValue = new Text(dialog, SWT.SINGLE | SWT.BORDER);
-    mTxtValue.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+    GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(mTxtValue);
     mTxtValue.setText(mProperty.getValue() != null ? mProperty.getValue() : ""); //$NON-NLS-1$
 
     // integrate content assist

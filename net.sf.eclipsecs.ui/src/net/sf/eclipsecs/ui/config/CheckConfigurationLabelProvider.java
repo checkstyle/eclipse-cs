@@ -32,6 +32,12 @@ import net.sf.eclipsecs.ui.config.configtypes.ConfigurationTypesUI;
  */
 public class CheckConfigurationLabelProvider extends LabelProvider {
 
+  public static final CheckConfigurationLabelProvider INSTANCE = new CheckConfigurationLabelProvider();
+
+  protected CheckConfigurationLabelProvider() {
+
+  }
+
   @Override
   public String getText(Object element) {
     if (element instanceof ICheckConfiguration checkConfig) {

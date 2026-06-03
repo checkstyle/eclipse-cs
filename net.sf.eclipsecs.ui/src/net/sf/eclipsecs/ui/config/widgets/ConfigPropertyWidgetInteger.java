@@ -34,7 +34,7 @@ import net.sf.eclipsecs.ui.util.SWTUtil;
 /**
  * A string property configuration widget.
  */
-public class ConfigPropertyWidgetInteger extends AbstractConfigPropertyWidget {
+public final class ConfigPropertyWidgetInteger extends AbstractConfigPropertyWidget {
 
   private Text mTextWidget;
 
@@ -46,8 +46,12 @@ public class ConfigPropertyWidgetInteger extends AbstractConfigPropertyWidget {
    * @param prop
    *          the property
    */
-  public ConfigPropertyWidgetInteger(Composite parent, ConfigProperty prop) {
+  private ConfigPropertyWidgetInteger(Composite parent, ConfigProperty prop) {
     super(parent, prop);
+  }
+
+  public static ConfigPropertyWidgetInteger create(Composite parent, ConfigProperty prop) {
+    return new ConfigPropertyWidgetInteger(parent, prop);
   }
 
   @Override

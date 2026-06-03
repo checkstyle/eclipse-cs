@@ -21,66 +21,41 @@
 package net.sf.eclipsecs.ui.config;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.function.Consumer;
-
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.ColumnWeightData;
+import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.viewers.ITableLabelProvider;
-import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.viewers.TableLayout;
-import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.window.Window;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.model.WorkbenchLabelProvider;
-
 import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
 import net.sf.eclipsecs.core.config.GlobalCheckConfigurationWorkingSet;
 import net.sf.eclipsecs.core.config.ICheckConfiguration;
 import net.sf.eclipsecs.core.config.ICheckConfigurationWorkingSet;
-import net.sf.eclipsecs.core.projectconfig.ProjectConfigurationFactory;
-import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
 import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
 import net.sf.eclipsecs.ui.Messages;
+import net.sf.eclipsecs.ui.config.CheckConfigurationWorkingSetEditorButtonBar.ButtonBarActions;
 import net.sf.eclipsecs.ui.util.table.ITableComparableProvider;
 import net.sf.eclipsecs.ui.util.table.ITableSettingsProvider;
-import net.sf.eclipsecs.ui.util.table.TableViewerEnhancer;
 
 /**
  * This class provides the editor GUI for a check configuration working set.
  *
  */
-public final class CheckConfigurationWorkingSetEditor {
+public final class CheckConfigurationWorkingSetEditor extends Composite {
 
   //
   // attributes
   //
 
   private final ICheckConfigurationWorkingSet mWorkingSet;
-  private final boolean mIsShowUsage;
-  private ButtonBar buttonBar;
-  private ConfigTable configTable;
-  private Text mConfigurationDescription;
-  private TableViewer mUsageView;
+  private final CheckConfigurationWorkingSetEditorView editorView;
 
   //
   // constructors
@@ -94,131 +69,38 @@ public final class CheckConfigurationWorkingSetEditor {
    * @param showUsage
    *          determines if the usage area should be shown
    */
-  public CheckConfigurationWorkingSetEditor(ICheckConfigurationWorkingSet workingSet,
-          boolean showUsage) {
+  public CheckConfigurationWorkingSetEditor(Composite parent, int style,
+          ICheckConfigurationWorkingSet workingSet) {
+    super(parent, style);
+
     mWorkingSet = workingSet;
-    mIsShowUsage = showUsage;
-  }
 
-  //
-  // methods
-  //
+    GridLayoutFactory.fillDefaults().applyTo(this);
 
-  public Composite createContents(Composite parent) {
-    Composite configComposite = new Composite(parent, SWT.NULL);
-    configComposite.setLayout(new FormLayout());
+    boolean global = mWorkingSet instanceof GlobalCheckConfigurationWorkingSet;
 
-    boolean useDefaultColumn = mWorkingSet instanceof GlobalCheckConfigurationWorkingSet;
-
-    this.buttonBar = new ButtonBar(configComposite, SWT.NULL, useDefaultColumn,
+    editorView = new CheckConfigurationWorkingSetEditorView(this, SWT.NONE, mWorkingSet.getWorkingCopies(), global,
             new ButtonBarActions(this::addCheckConfig, this::editCheckConfig,
                     this::configureCheckConfig, this::copyCheckConfig, this::removeCheckConfig,
-                    this::setDefaultCheckConfig, this::exportCheckstyleCheckConfig));
-    FormData formData = new FormData();
-    formData.top = new FormAttachment(0);
-    formData.right = new FormAttachment(100);
-    formData.bottom = new FormAttachment(100);
-    buttonBar.setLayoutData(formData);
-
-    createTableAndDesc(configComposite, useDefaultColumn);
-    // enforce update of button enabled state
-    handleSelectionChanged(null);
-
-    return configComposite;
+                    this::setDefaultCheckConfig, this::exportCheckstyleCheckConfig),
+            this::isDefaultConfig, new ConfigurationLabelProvider(workingSet));
+    GridDataFactory.fillDefaults().grab(true, true).applyTo(editorView);
   }
 
-  private static FormData formData(Consumer<FormData> custom) {
-    FormData formData = new FormData();
-    custom.accept(formData);
-    return formData;
-  }
-
-  private void createTableAndDesc(Composite parent, boolean useDefaultColumn) {
-    Composite tableAndDesc = new Composite(parent, SWT.NULL);
-    tableAndDesc.setLayout(new FormLayout());
-    tableAndDesc.setLayoutData(formData(formData -> {
-      formData.left = new FormAttachment(0);
-      formData.top = new FormAttachment(0);
-      formData.right = new FormAttachment(buttonBar, -3, SWT.LEFT);
-      formData.bottom = new FormAttachment(100, 0);
-    }));
-
-    this.configTable = new ConfigTable(tableAndDesc, SWT.NULL, useDefaultColumn,
-            mWorkingSet.getWorkingCopies(), new ConfigurationLabelProvider(mWorkingSet),
-            this::configureCheckConfig, this::handleSelectionChanged);
-    this.configTable.setLayoutData(formData(formData -> {
-      formData.left = new FormAttachment(0);
-      formData.top = new FormAttachment(0);
-      formData.right = new FormAttachment(100);
-      formData.bottom = new FormAttachment(70);
-    }));
-
-    Composite descArea = new Composite(tableAndDesc, SWT.NULL);
-    descArea.setLayout(new FormLayout());
-    descArea.setLayoutData(formData(formData -> {
-      formData.left = new FormAttachment(0);
-      formData.top = new FormAttachment(this.configTable, 0);
-      formData.right = new FormAttachment(mIsShowUsage ? 60 : 100);
-      formData.bottom = new FormAttachment(100);
-    }));
-
-    Label lblDescription = new Label(descArea, SWT.NULL);
-    lblDescription.setText(Messages.CheckstylePreferencePage_lblDescription);
-    lblDescription.setLayoutData(formData(formData -> {
-      formData.left = new FormAttachment(0);
-      formData.top = new FormAttachment(3);
-      formData.right = new FormAttachment(100);
-    }));
-
-    mConfigurationDescription = new Text(descArea,
-            SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.READ_ONLY | SWT.BORDER | SWT.VERTICAL);
-    mConfigurationDescription.setLayoutData(formData(formData -> {
-      formData.left = new FormAttachment(0);
-      formData.top = new FormAttachment(lblDescription);
-      formData.right = new FormAttachment(100);
-      formData.bottom = new FormAttachment(100);
-    }));
-
-    if (mIsShowUsage) {
-      createUsageArea(tableAndDesc);
+  private boolean isDefaultConfig(CheckConfigurationWorkingCopy config) {
+    boolean configDefault = false;
+    if (mWorkingSet instanceof GlobalCheckConfigurationWorkingSet globalWorkingSet) {
+      CheckConfigurationWorkingCopy defaultConfig = globalWorkingSet.getDefaultCheckConfig();
+      configDefault = defaultConfig != null && defaultConfig.equals(config);
     }
-  }
-
-  private void createUsageArea(Composite parent) {
-    Composite usageArea = new Composite(parent, SWT.NULL);
-    usageArea.setLayout(new FormLayout());
-    FormData formData = new FormData();
-    formData.left = new FormAttachment(60, 0);
-    formData.top = new FormAttachment(this.configTable, 3);
-    formData.right = new FormAttachment(100);
-    formData.bottom = new FormAttachment(100);
-    usageArea.setLayoutData(formData);
-
-    Label lblUsage = new Label(usageArea, SWT.NULL);
-    lblUsage.setText(Messages.CheckstylePreferencePage_lblProjectUsage);
-    formData = new FormData();
-    formData.left = new FormAttachment(0);
-    formData.top = new FormAttachment(0);
-    formData.right = new FormAttachment(100);
-    lblUsage.setLayoutData(formData);
-
-    mUsageView = new TableViewer(usageArea);
-    mUsageView.getControl().setBackground(usageArea.getBackground());
-    mUsageView.setContentProvider(new ArrayContentProvider());
-    mUsageView.setLabelProvider(new WorkbenchLabelProvider());
-    formData = new FormData();
-    formData.left = new FormAttachment(0);
-    formData.top = new FormAttachment(lblUsage);
-    formData.right = new FormAttachment(100);
-    formData.bottom = new FormAttachment(100);
-    mUsageView.getControl().setLayoutData(formData);
+    return configDefault;
   }
 
   /**
    * Create a new Check configuration.
    */
-  private void addCheckConfig(Shell shell) {
-    CheckConfigurationPropertiesDialog dialog = new CheckConfigurationPropertiesDialog(shell, null,
+  private void addCheckConfig() {
+    CheckConfigurationPropertiesDialog dialog = new CheckConfigurationPropertiesDialog(getShell(), null,
             mWorkingSet);
     dialog.setBlockOnOpen(true);
     if (Window.OK == dialog.open()) {
@@ -226,30 +108,28 @@ public final class CheckConfigurationWorkingSetEditor {
       CheckConfigurationWorkingCopy newConfig = dialog.getCheckConfiguration();
       mWorkingSet.addCheckConfiguration(newConfig);
 
-      configTable.setConfigs(mWorkingSet.getWorkingCopies());
-      configTable.refresh();
-      configTable.setSelection(newConfig);
+      editorView.setConfigs(mWorkingSet.getWorkingCopies());
+      editorView.setSelection(newConfig);
     }
   }
 
   /**
    * Edit the properties of a check configuration.
    */
-  private void editCheckConfig(Shell shell) {
-    CheckConfigurationWorkingCopy config = configTable.getSelection();
-
+  private void editCheckConfig() {
+    CheckConfigurationWorkingCopy config = editorView.getSelectedConfig();
     if (config != null) {
-      CheckConfigurationPropertiesDialog dialog = new CheckConfigurationPropertiesDialog(shell,
+      CheckConfigurationPropertiesDialog dialog = new CheckConfigurationPropertiesDialog(getShell(),
               config, mWorkingSet);
       dialog.setBlockOnOpen(true);
       if (Window.OK == dialog.open()) {
-        configTable.refresh();
+        editorView.refresh();
       }
     }
   }
 
-  private void configureCheckConfig(Shell shell) {
-    CheckConfigurationWorkingCopy config = configTable.getSelection();
+  private void configureCheckConfig() {
+    CheckConfigurationWorkingCopy config = editorView.getSelectedConfig();
 
     if (config != null) {
 
@@ -257,12 +137,12 @@ public final class CheckConfigurationWorkingSetEditor {
         // test if file exists
         config.getCheckstyleConfiguration();
 
-        CheckConfigurationConfigureDialog dialog = new CheckConfigurationConfigureDialog(shell,
+        CheckConfigurationConfigureDialog dialog = new CheckConfigurationConfigureDialog(getShell(),
                 config);
         dialog.setBlockOnOpen(true);
         dialog.open();
       } catch (CheckstylePluginException ex) {
-        CheckstyleUIPlugin.warningDialog(shell, NLS.bind(Messages.errorCannotResolveCheckLocation,
+        CheckstyleUIPlugin.warningDialog(getShell(), NLS.bind(Messages.errorCannotResolveCheckLocation,
                 config.getLocation(), config.getName()), ex);
       }
     }
@@ -271,8 +151,8 @@ public final class CheckConfigurationWorkingSetEditor {
   /**
    * Copy an existing config.
    */
-  private void copyCheckConfig(Shell shell) {
-    ICheckConfiguration sourceConfig = configTable.getSelection();
+  private void copyCheckConfig() {
+    ICheckConfiguration sourceConfig = editorView.getSelectedConfig();
     if (sourceConfig == null) {
       //
       // Nothing is selected.
@@ -283,7 +163,7 @@ public final class CheckConfigurationWorkingSetEditor {
     try {
 
       // Open the properties dialog to change default name and description
-      CheckConfigurationPropertiesDialog dialog = new CheckConfigurationPropertiesDialog(shell,
+      CheckConfigurationPropertiesDialog dialog = new CheckConfigurationPropertiesDialog(getShell(),
               null, mWorkingSet);
       dialog.setTemplateConfiguration(sourceConfig);
 
@@ -297,19 +177,18 @@ public final class CheckConfigurationWorkingSetEditor {
 
         mWorkingSet.addCheckConfiguration(newConfig);
 
-        configTable.setConfigs(mWorkingSet.getWorkingCopies());
-        configTable.refresh();
+        editorView.setConfigs(mWorkingSet.getWorkingCopies());
       }
     } catch (CheckstylePluginException ex) {
-      CheckstyleUIPlugin.errorDialog(shell, ex, true);
+      CheckstyleUIPlugin.errorDialog(getShell(), ex, true);
     }
   }
 
   /**
    * Remove a config.
    */
-  private void removeCheckConfig(Shell shell) {
-    CheckConfigurationWorkingCopy checkConfig = configTable.getSelection();
+  private void removeCheckConfig() {
+    CheckConfigurationWorkingCopy checkConfig = editorView.getSelectedConfig();
     if (checkConfig == null || !checkConfig.isEditable()) {
       //
       // Nothing is selected.
@@ -317,7 +196,7 @@ public final class CheckConfigurationWorkingSetEditor {
       return;
     }
 
-    boolean confirm = MessageDialog.openQuestion(shell,
+    boolean confirm = MessageDialog.openQuestion(getShell(),
             Messages.CheckstylePreferencePage_titleDelete,
             NLS.bind(Messages.CheckstylePreferencePage_msgDelete, checkConfig.getName()));
     if (confirm) {
@@ -328,10 +207,9 @@ public final class CheckConfigurationWorkingSetEditor {
       //
       if (mWorkingSet.removeCheckConfiguration(checkConfig)) {
 
-        configTable.setConfigs(mWorkingSet.getWorkingCopies());
-        configTable.refresh();
+        editorView.setConfigs(mWorkingSet.getWorkingCopies());
       } else {
-        MessageDialog.openInformation(shell, Messages.CheckstylePreferencePage_titleCantDelete,
+        MessageDialog.openInformation(getShell(), Messages.CheckstylePreferencePage_titleCantDelete,
                 NLS.bind(Messages.CheckstylePreferencePage_msgCantDelete, checkConfig.getName()));
         return;
       }
@@ -339,7 +217,7 @@ public final class CheckConfigurationWorkingSetEditor {
   }
 
   private void setDefaultCheckConfig() {
-    CheckConfigurationWorkingCopy checkConfig = configTable.getSelection();
+    CheckConfigurationWorkingCopy checkConfig = editorView.getSelectedConfig();
     if (checkConfig == null) {
       //
       // Nothing is selected.
@@ -351,14 +229,14 @@ public final class CheckConfigurationWorkingSetEditor {
       ((GlobalCheckConfigurationWorkingSet) mWorkingSet).setDefaultCheckConfig(checkConfig);
     }
 
-    configTable.refresh();
+    editorView.refresh();
   }
 
   /**
    * Export a configuration.
    */
-  private void exportCheckstyleCheckConfig(Shell shell) {
-    ICheckConfiguration config = configTable.getSelection();
+  private void exportCheckstyleCheckConfig() {
+    ICheckConfiguration config = editorView.getSelectedConfig();
     if (config == null) {
       //
       // Nothing is selected.
@@ -366,7 +244,7 @@ public final class CheckConfigurationWorkingSetEditor {
       return;
     }
 
-    FileDialog dialog = new FileDialog(shell, SWT.SAVE);
+    FileDialog dialog = new FileDialog(getShell(), SWT.SAVE);
     dialog.setText(Messages.CheckstylePreferencePage_titleExportConfig);
     String path = dialog.open();
     if (path == null) {
@@ -377,206 +255,8 @@ public final class CheckConfigurationWorkingSetEditor {
     try {
       config.exportConfiguration(file);
     } catch (CheckstylePluginException ex) {
-      CheckstyleUIPlugin.errorDialog(shell, Messages.msgErrorFailedExportConfig, ex, true);
+      CheckstyleUIPlugin.errorDialog(getShell(), Messages.msgErrorFailedExportConfig, ex, true);
     }
-  }
-
-  public void handleSelectionChanged(CheckConfigurationWorkingCopy config) {
-    boolean configSelected = config != null;
-    if (configSelected) {
-      mConfigurationDescription
-              .setText(config.getDescription() != null ? config.getDescription() : ""); //$NON-NLS-1$
-
-      if (mIsShowUsage) {
-        try {
-          mUsageView.setInput(ProjectConfigurationFactory
-                  .getProjectsUsingConfig(config.getSourceCheckConfiguration()));
-        } catch (CheckstylePluginException ex) {
-          CheckstyleLog.log(ex);
-        }
-      }
-    } else {
-      mConfigurationDescription.setText(""); //$NON-NLS-1$
-      if (mIsShowUsage) {
-        mUsageView.setInput(new ArrayList<>());
-      }
-    }
-    boolean configDefault = false;
-    if (mWorkingSet instanceof GlobalCheckConfigurationWorkingSet) {
-      CheckConfigurationWorkingCopy defaultConfig = ((GlobalCheckConfigurationWorkingSet) mWorkingSet)
-              .getDefaultCheckConfig();
-      configDefault = defaultConfig != null && defaultConfig.equals(config);
-    }
-    buttonBar.setSelectionState(configSelected, configSelected && config.isEditable(),
-            configDefault);
-  }
-
-  private static final class ConfigTable extends Composite {
-
-    private final TableViewer tableViewer;
-
-    private ConfigTable(Composite parent, int style, boolean useDefaultColumn,
-            CheckConfigurationWorkingCopy[] configs, ConfigurationLabelProvider multiProvider,
-            Consumer<Shell> configureCheckConfig,
-            Consumer<CheckConfigurationWorkingCopy> handleSelectionChanged) {
-      super(parent, style);
-      setLayout(new FillLayout());
-      Table table = new Table(this, SWT.BORDER | SWT.SINGLE | SWT.FULL_SELECTION);
-
-      table.setHeaderVisible(true);
-      table.setLinesVisible(true);
-
-      TableLayout tableLayout = new TableLayout();
-      table.setLayout(tableLayout);
-
-      TableColumn column1 = new TableColumn(table, SWT.NULL);
-      column1.setText(Messages.CheckstylePreferencePage_colCheckConfig);
-      tableLayout.addColumnData(new ColumnWeightData(40));
-
-      TableColumn column2 = new TableColumn(table, SWT.NULL);
-      column2.setText(Messages.CheckstylePreferencePage_colLocation);
-      tableLayout.addColumnData(new ColumnWeightData(30));
-
-      TableColumn column3 = new TableColumn(table, SWT.NULL);
-      column3.setText(Messages.CheckstylePreferencePage_colType);
-      tableLayout.addColumnData(new ColumnWeightData(30));
-
-      if (useDefaultColumn) {
-        TableColumn column4 = new TableColumn(table, SWT.NULL);
-        column4.setText(Messages.CheckstylePreferencePage_colDefault);
-        tableLayout.addColumnData(new ColumnWeightData(12));
-      }
-
-      tableViewer = new TableViewer(table);
-      tableViewer.setLabelProvider(multiProvider);
-      tableViewer.setContentProvider(new ArrayContentProvider());
-      tableViewer.setInput(configs);
-      tableViewer.addDoubleClickListener(event -> configureCheckConfig.accept(getShell()));
-      tableViewer.addSelectionChangedListener(event -> {
-        CheckConfigurationWorkingCopy checkConfig = (CheckConfigurationWorkingCopy) tableViewer
-                .getStructuredSelection().getFirstElement();
-        handleSelectionChanged.accept(checkConfig);
-      });
-      TableViewerEnhancer.enhance(tableViewer, multiProvider);
-    }
-
-    private void refresh() {
-      tableViewer.refresh(true);
-    }
-
-    private CheckConfigurationWorkingCopy getSelection() {
-      return (CheckConfigurationWorkingCopy) tableViewer.getStructuredSelection().getFirstElement();
-    }
-
-    private void setConfigs(CheckConfigurationWorkingCopy[] configs) {
-      this.tableViewer.setInput(configs);
-    }
-
-    private void setSelection(CheckConfigurationWorkingCopy config) {
-      this.tableViewer.setSelection(new StructuredSelection(config));
-    }
-  }
-
-  private record ButtonBarActions(Consumer<Shell> addCheckConfig, Consumer<Shell> editCheckConfig,
-          Consumer<Shell> configureCheckConfig, Consumer<Shell> copyCheckConfig,
-          Consumer<Shell> removeCheckConfig, Runnable setDefaultCheckConfig,
-          Consumer<Shell> exportCheckstyleCheckConfig) {
-
-  }
-
-  private static final class ButtonBar extends Composite {
-
-    private final boolean useDefaultButton;
-    private final Button mEditButton;
-    private final Button mConfigureButton;
-    private final Button mCopyButton;
-    private final Button mRemoveButton;
-    private final Button mDefaultButton;
-    private final Button mExportButton;
-
-    private ButtonBar(Composite parent, int style, boolean useDefaultButton, ButtonBarActions actions) {
-      super(parent, style);
-
-      this.useDefaultButton = useDefaultButton;
-
-      setLayout(new FormLayout());
-
-      Button mAddButton = createButton(this, Messages.CheckstylePreferencePage_btnNew,
-              actions.addCheckConfig);
-      mAddButton.setLayoutData(formData(formData -> {
-        formData.top = new FormAttachment(0);
-      }));
-
-      mEditButton = createButton(this, Messages.CheckstylePreferencePage_btnProperties,
-              actions.editCheckConfig);
-      mEditButton.setLayoutData(formData(formData -> {
-        formData.top = new FormAttachment(mAddButton, 3, SWT.BOTTOM);
-      }));
-
-      mConfigureButton = createButton(this, Messages.CheckstylePreferencePage_btnConfigure,
-              actions.configureCheckConfig);
-      mConfigureButton.setLayoutData(formData(formData -> {
-        formData.top = new FormAttachment(mEditButton, 3, SWT.BOTTOM);
-      }));
-
-      mCopyButton = createButton(this, Messages.CheckstylePreferencePage_btnCopy,
-              actions.copyCheckConfig);
-      mCopyButton.setLayoutData(formData(formData -> {
-        formData.top = new FormAttachment(mConfigureButton, 3, SWT.BOTTOM);
-      }));
-
-      mRemoveButton = createButton(this, Messages.CheckstylePreferencePage_btnRemove,
-              actions.removeCheckConfig);
-      mRemoveButton.setLayoutData(formData(formData -> {
-        formData.top = new FormAttachment(mCopyButton, 3, SWT.BOTTOM);
-      }));
-
-      if (useDefaultButton) {
-        mDefaultButton = createButton(this, Messages.CheckstylePreferencePage_btnDefault,
-                event -> actions.setDefaultCheckConfig.run());
-        mDefaultButton.setToolTipText(Messages.CheckstylePreferencePage_txtDefault);
-        mDefaultButton.setLayoutData(formData(formData -> {
-          formData.top = new FormAttachment(mRemoveButton, 3, SWT.BOTTOM);
-        }));
-      } else {
-        mDefaultButton = null;
-      }
-
-      mExportButton = createButton(this, Messages.CheckstylePreferencePage_btnExport,
-              actions.exportCheckstyleCheckConfig);
-      mExportButton.setLayoutData(formData(formData -> {
-        formData.bottom = new FormAttachment(100);
-      }));
-    }
-
-    private static FormData formData(Consumer<FormData> custom) {
-      FormData formData = new FormData();
-      formData.left = new FormAttachment(0);
-      formData.right = new FormAttachment(100);
-      custom.accept(formData);
-      return formData;
-    }
-
-    private Button createButton(Composite parent, String text, Consumer<Shell> action) {
-      Button button = new Button(parent, SWT.PUSH);
-      button.setText(text);
-      button.addSelectionListener(SelectionListener.widgetSelectedAdapter(
-              event -> action.accept(getShell())));
-      return button;
-    }
-
-    private void setSelectionState(boolean configSelected, boolean configEditable,
-            boolean configDefault) {
-      mEditButton.setEnabled(configSelected);
-      mConfigureButton.setEnabled(configSelected);
-      mCopyButton.setEnabled(configSelected);
-      mExportButton.setEnabled(configSelected);
-      mRemoveButton.setEnabled(configSelected && configEditable);
-      if (useDefaultButton) {
-        mDefaultButton.setEnabled(configSelected && !configDefault);
-      }
-    }
-
   }
 
   /**
@@ -584,7 +264,7 @@ public final class CheckConfigurationWorkingSetEditor {
    * storing of the table settings.
    *
    */
-  private static final class ConfigurationLabelProvider extends CheckConfigurationLabelProvider
+  public static final class ConfigurationLabelProvider extends CheckConfigurationLabelProvider
           implements ITableLabelProvider, ITableComparableProvider, ITableSettingsProvider {
 
     private final ICheckConfigurationWorkingSet mWorkingSet;

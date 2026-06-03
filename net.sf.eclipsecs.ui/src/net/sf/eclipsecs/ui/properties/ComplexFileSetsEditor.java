@@ -22,29 +22,18 @@ package net.sf.eclipsecs.ui.properties;
 
 import java.util.List;
 
-import org.eclipse.jface.layout.GridLayoutFactory;
-import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
-import org.eclipse.jface.viewers.CheckboxTableViewer;
-import org.eclipse.jface.viewers.ColumnWeightData;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.jface.window.Window;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
-
+import org.eclipse.swt.widgets.Shell;
 import net.sf.eclipsecs.core.projectconfig.FileSet;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
@@ -57,17 +46,8 @@ import net.sf.eclipsecs.ui.config.CheckConfigurationLabelProvider;
 public class ComplexFileSetsEditor implements IFileSetsEditor {
 
   private final PropertyPageContext propertyPageContext;
-
-  private Composite mComposite;
-
-  private CheckboxTableViewer mViewer;
-
-  private Button mAddButton;
-
-  private Button mEditButton;
-
-  private Button mRemoveButton;
-
+  private ComplexFileSetsEditorView editorView;
+  private Shell shell;
   private List<FileSet> mFileSets;
 
   /**
@@ -93,77 +73,12 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
 
   @Override
   public Control createContents(Composite parent) {
-    mComposite = parent;
+    this.shell = parent.getShell();
 
-    Group composite = new Group(parent, SWT.NONE);
-    composite.setText(Messages.ComplexFileSetsEditor_titleAdvancedFilesetEditor);
+    editorView = new ComplexFileSetsEditorView(parent, SWT.NONE, this::changeEnabledState,
+            this::editFileSet, this::addFileSet, this::removeFileSet, mFileSets);
 
-    GridLayoutFactory.swtDefaults().numColumns(2).applyTo(composite);
-
-    //
-    // Create the table of file sets.
-    //
-    mViewer = new CheckboxTableViewer(createTable(composite));
-    mViewer.setLabelProvider(new FileSetLabelProvider());
-    mViewer.setContentProvider(new ArrayContentProvider());
-    mViewer.setComparator(new FileSetViewerSorter());
-    mViewer.setInput(mFileSets);
-
-    //
-    // Set checked state
-    //
-    for (FileSet fileSet : mFileSets) {
-      mViewer.setChecked(fileSet, fileSet.isEnabled());
-    }
-
-    mViewer.addDoubleClickListener(event -> editFileSet());
-    mViewer.addCheckStateListener(this::changeEnabledState);
-
-    //
-    // Build the buttons.
-    //
-    Composite buttons = new Composite(composite, SWT.NULL);
-    buttons.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
-    GridLayoutFactory.swtDefaults().margins(0, 0).applyTo(buttons);
-
-    mAddButton = createPushButton(buttons, Messages.ComplexFileSetsEditor_btnAdd);
-    mAddButton.addListener(SWT.Selection, event -> addFileSet());
-
-    mEditButton = createPushButton(buttons, Messages.ComplexFileSetsEditor_btnEdit);
-    mEditButton.addListener(SWT.Selection, event -> editFileSet());
-
-    mRemoveButton = createPushButton(buttons, Messages.ComplexFileSetsEditor_btnRemove);
-    mRemoveButton.addListener(SWT.Selection, event -> removeFileSet());
-
-    return composite;
-  }
-
-  private static Table createTable(Composite parent) {
-    Table table = new Table(parent, SWT.CHECK | SWT.BORDER | SWT.FULL_SELECTION);
-
-    table.setLayoutData(new GridData(GridData.FILL_BOTH));
-
-    table.setHeaderVisible(true);
-    table.setLinesVisible(true);
-
-    TableLayout tableLayout = new TableLayout();
-    table.setLayout(tableLayout);
-
-    TableColumn column1 = new TableColumn(table, SWT.NONE);
-    column1.setText(Messages.ComplexFileSetsEditor_colEnabled);
-    column1.setResizable(false);
-
-    TableColumn column2 = new TableColumn(table, SWT.NONE);
-    column2.setText(Messages.ComplexFileSetsEditor_colFilesetName);
-
-    TableColumn column3 = new TableColumn(table, SWT.NONE);
-    column3.setText(Messages.ComplexFileSetsEditor_colConfiguration);
-
-    tableLayout.addColumnData(new ColumnWeightData(20));
-    tableLayout.addColumnData(new ColumnWeightData(40));
-    tableLayout.addColumnData(new ColumnWeightData(40));
-
-    return table;
+    return editorView;
   }
 
   @Override
@@ -171,44 +86,24 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
     // NOOP
   }
 
-  /**
-   * Utility method that creates a push button instance and sets the default layout data.
-   *
-   * @param parent
-   *          the parent for the new button
-   * @param label
-   *          the label for the new button
-   * @return the newly-created button
-   */
-  private Button createPushButton(Composite parent, String label) {
-    Button button = new Button(parent, SWT.PUSH);
-    button.setText(label);
-    GridData data = new GridData();
-    data.horizontalAlignment = GridData.FILL;
-    button.setLayoutData(data);
-    return button;
-  }
-
   private void addFileSet() {
     try {
-      FileSetEditDialog dialog = new FileSetEditDialog(mComposite.getShell(), null, propertyPageContext);
+      FileSetEditDialog dialog = new FileSetEditDialog(shell, null, propertyPageContext);
       if (Window.OK == dialog.open()) {
         FileSet fileSet = dialog.getFileSet();
         mFileSets.add(fileSet);
-        mViewer.refresh();
-        mViewer.setChecked(fileSet, fileSet.isEnabled());
+        editorView.refresh();
+        editorView.setChecked(fileSet, fileSet.isEnabled());
 
         propertyPageContext.updateButtons();
       }
     } catch (CheckstylePluginException ex) {
-      CheckstyleUIPlugin.errorDialog(mComposite.getShell(),
+      CheckstyleUIPlugin.errorDialog(shell,
               NLS.bind(Messages.errorFailedAddFileset, ex.getMessage()), ex, true);
     }
   }
 
-  private void editFileSet() {
-    IStructuredSelection selection = (IStructuredSelection) mViewer.getSelection();
-    FileSet fileSet = (FileSet) selection.getFirstElement();
+  private void editFileSet(FileSet fileSet) {
     if (fileSet == null) {
       //
       // Nothing is selected.
@@ -218,26 +113,24 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
 
     try {
 
-      FileSetEditDialog dialog = new FileSetEditDialog(mComposite.getShell(), fileSet.clone(),
+      FileSetEditDialog dialog = new FileSetEditDialog(shell, fileSet.clone(),
               propertyPageContext);
       if (Window.OK == dialog.open()) {
         FileSet newFileSet = dialog.getFileSet();
         mFileSets.remove(fileSet);
         mFileSets.add(newFileSet);
-        mViewer.refresh();
-        mViewer.setChecked(newFileSet, newFileSet.isEnabled());
+        editorView.refresh();
+        editorView.setChecked(newFileSet, newFileSet.isEnabled());
 
         propertyPageContext.updateButtons();
       }
     } catch (CheckstylePluginException ex) {
-      CheckstyleUIPlugin.errorDialog(mComposite.getShell(),
+      CheckstyleUIPlugin.errorDialog(shell,
               NLS.bind(Messages.errorFailedEditFileset, ex.getMessage()), ex, true);
     }
   }
 
-  private void removeFileSet() {
-    IStructuredSelection selection = (IStructuredSelection) mViewer.getSelection();
-    FileSet fileSet = (FileSet) selection.getFirstElement();
+  private void removeFileSet(FileSet fileSet) {
     if (fileSet == null) {
       //
       // Nothing is selected.
@@ -246,7 +139,7 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
     }
 
     mFileSets.remove(fileSet);
-    mViewer.refresh();
+    editorView.refresh();
     propertyPageContext.updateButtons();
   }
 
@@ -254,16 +147,20 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
     if (event.getElement() instanceof FileSet) {
       FileSet fileSet = (FileSet) event.getElement();
       fileSet.setEnabled(event.getChecked());
-      mViewer.refresh();
+      editorView.refresh();
     }
   }
 
   /**
    * Provides the labels for the FileSet list display.
    */
-  class FileSetLabelProvider extends LabelProvider implements ITableLabelProvider {
+  public static final class FileSetLabelProvider extends LabelProvider implements ITableLabelProvider {
 
-    private final CheckConfigurationLabelProvider mCheckConfigLabelProvider = new CheckConfigurationLabelProvider();
+    public static final FileSetLabelProvider INSTANCE = new FileSetLabelProvider();
+
+    private FileSetLabelProvider() {
+
+    }
 
     @Override
     public String getColumnText(Object element, int columnIndex) {
@@ -272,7 +169,7 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
           case 0 -> new String();
           case 1 -> fileSet.getName();
           case 2 -> fileSet.getCheckConfig() != null
-                  ? mCheckConfigLabelProvider.getText(fileSet.getCheckConfig())
+                  ? CheckConfigurationLabelProvider.INSTANCE.getText(fileSet.getCheckConfig())
                   : "";
           default -> element.toString();
         };
@@ -289,7 +186,13 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
   /**
    * Sorts CheckConfiguration objects into their display order.
    */
-  public class FileSetViewerSorter extends ViewerComparator {
+  public static final class FileSetViewerSorter extends ViewerComparator {
+
+    public static final FileSetViewerSorter INSTANCE = new FileSetViewerSorter();
+
+    private FileSetViewerSorter() {
+
+    }
 
     @Override
     public int compare(Viewer viewer, Object e1, Object e2) {

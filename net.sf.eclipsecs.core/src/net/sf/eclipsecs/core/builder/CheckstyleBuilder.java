@@ -68,19 +68,6 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
   public static final String BUILDER_ID = CheckstylePlugin.PLUGIN_ID + ".CheckstyleBuilder"; //$NON-NLS-1$
 
   /**
-   * Runs the Checkstyle builder on a project.
-   *
-   * @param project
-   *          Project to be built.
-   */
-  public static void buildProject(final IProject project) {
-    // uses the new Jobs API to run the build in the background
-    BuildProjectJob buildJob = new BuildProjectJob(project, IncrementalProjectBuilder.FULL_BUILD);
-    buildJob.setRule(ResourcesPlugin.getWorkspace().getRoot());
-    buildJob.schedule();
-  }
-
-  /**
    * Run the Checkstyle builder on all open projects in the workspace.
    *
    * @throws CheckstylePluginException
@@ -152,18 +139,16 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
         throw new CoreException(status);
       }
 
-      Collection<IResource> resources = null;
+      Collection<IResource> resources;
 
       // get the delta of the latest changes
       IResourceDelta resourceDelta = getDelta(project);
 
-      IFilter[] filters = config.getFilters().toArray(new IFilter[config.getFilters().size()]);
-
       // find the files for the build
       if (resourceDelta != null) {
-        resources = getResources(resourceDelta, filters);
+        resources = getResources(resourceDelta, config.getFilters());
       } else {
-        resources = getResources(project, filters);
+        resources = getResources(project, config.getFilters());
       }
 
       handleBuildSelection(resources, config, monitor, project, kind);
@@ -318,17 +303,12 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
    * @throws CoreException
    *           an unexpected error occurred
    */
-  private Collection<IResource> getResources(final IResourceDelta delta, final IFilter[] filters)
+  private Collection<IResource> getResources(final IResourceDelta delta, final List<IFilter> filters)
           throws CoreException {
 
     List<IResource> resources = new ArrayList<>();
 
-    IResourceDelta[] affectedChildren = delta.getAffectedChildren();
-
-    for (int i = 0; i < affectedChildren.length; i++) {
-
-      IResourceDelta childDelta = affectedChildren[i];
-
+    for (IResourceDelta childDelta : delta.getAffectedChildren()) {
       // check if a resource has changed
       int deltaKind = childDelta.getKind();
       if (deltaKind == IResourceDelta.ADDED || deltaKind == IResourceDelta.CHANGED) {
@@ -337,9 +317,8 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
 
         // filter resources
         boolean goesThrough = true;
-        for (int j = 0; j < filters.length; j++) {
-
-          if (filters[j].isEnabled() && !filters[j].accept(child)) {
+        for (IFilter filter : filters) {
+          if (filter.isEnabled() && !filter.accept(child)) {
             goesThrough = false;
             break;
           }
@@ -375,23 +354,17 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
    * @throws CoreException
    *           an unexpected error occurred
    */
-  private Collection<IResource> getResources(final IContainer container, final IFilter[] filters)
+  private Collection<IResource> getResources(final IContainer container, final List<IFilter> filters)
           throws CoreException {
 
     List<IResource> resources = new ArrayList<>();
 
-    IResource[] children = container.members();
-
     // loop over children resources
-    for (int i = 0; i < children.length; i++) {
-
-      IResource child = children[i];
-
+    for (IResource child : container.members()) {
       // filter resources
       boolean goesThrough = true;
-      for (int j = 0; j < filters.length; j++) {
-
-        if (filters[j].isEnabled() && !filters[j].accept(child)) {
+      for (IFilter filter : filters) {
+        if (filter.isEnabled() && !filter.accept(child)) {
           goesThrough = false;
           break;
         }

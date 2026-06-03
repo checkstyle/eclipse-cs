@@ -21,29 +21,11 @@
 package net.sf.eclipsecs.ui.properties;
 
 import java.util.List;
-import java.util.function.Consumer;
-
-import org.eclipse.jface.viewers.ComboViewer;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormLayout;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
-
 import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
 import net.sf.eclipsecs.core.config.ICheckConfiguration;
 import net.sf.eclipsecs.core.projectconfig.FileMatchPattern;
@@ -52,8 +34,6 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
 import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
 import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.config.CheckConfigurationConfigureDialog;
-import net.sf.eclipsecs.ui.config.CheckConfigurationLabelProvider;
-import net.sf.eclipsecs.ui.config.CheckConfigurationViewerSorter;
 
 /**
  * Simple file sets editor producing only one file set that contains all files. Only the check
@@ -65,20 +45,11 @@ public class SimpleFileSetsEditor implements IFileSetsEditor {
   private final PropertyPageContext propertyPageContext;
   private final Shell shell;
 
-  /** viewer to display the known checkstyle configurations. */
-  private ComboViewer mComboViewer;
-
-  /** used to display the config description. */
-  private Text mTxtConfigDescription;
-
-  /** button to open the check configuration preferences page. */
-  private Button mBtnManageConfigs;
+  private SimpleFileSetsEditorView editorView;
 
   private List<FileSet> mFileSets;
 
   private FileSet mDefaultFileSet;
-
-  private Controller mController;
 
   /**
    * Creates the SimpleFileSetsEditor.
@@ -125,123 +96,31 @@ public class SimpleFileSetsEditor implements IFileSetsEditor {
 
   @Override
   public Control createContents(Composite parent) {
-
-    mController = new Controller();
-
-    // group composite containing the config settings
-    Group configArea = new Group(parent, SWT.NULL);
-    configArea.setText(Messages.SimpleFileSetsEditor_titleSimpleConfig);
-    configArea.setLayout(new FormLayout());
-
-    this.mBtnManageConfigs = new Button(configArea, SWT.PUSH);
-    this.mBtnManageConfigs.setText(Messages.SimpleFileSetsEditor_btnManageConfigs);
-    this.mBtnManageConfigs.addSelectionListener(mController);
-    this.mBtnManageConfigs.setLayoutData(formData(formData -> {
-      formData.top = new FormAttachment(0, 3);
-      formData.right = new FormAttachment(100, -3);
-    }));
-
-    mComboViewer = new ComboViewer(configArea);
-    mComboViewer.getCombo().setVisibleItemCount(10);
-    mComboViewer.setContentProvider(new CheckConfigurationContentProvider());
-    mComboViewer.setLabelProvider(new CheckConfigurationLabelProvider());
-    mComboViewer.setComparator(new CheckConfigurationViewerSorter());
-    mComboViewer.getControl().setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-    mComboViewer.addSelectionChangedListener(mController);
-    mComboViewer.getCombo().setLayoutData(formData(formData -> {
-      formData.left = new FormAttachment(0, 3);
-      formData.top = new FormAttachment(0, 3);
-      formData.right = new FormAttachment(mBtnManageConfigs, -3, SWT.LEFT);
-    }));
-
-    // Description
-    Label lblConfigDesc = new Label(configArea, SWT.LEFT);
-    lblConfigDesc.setText(Messages.SimpleFileSetsEditor_lblDescription);
-    lblConfigDesc.setLayoutData(formData(formData -> {
-      formData.left = new FormAttachment(0, 3);
-      formData.top = new FormAttachment(mComboViewer.getCombo(), 3, SWT.BOTTOM);
-      formData.right = new FormAttachment(100, -3);
-    }));
-
-    this.mTxtConfigDescription = new Text(configArea,
-            SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.READ_ONLY | SWT.BORDER | SWT.VERTICAL);
-    this.mTxtConfigDescription.setLayoutData(formData(formData -> {
-      formData.left = new FormAttachment(0, 3);
-      formData.top = new FormAttachment(lblConfigDesc, 0, SWT.BOTTOM);
-      formData.right = new FormAttachment(100, -3);
-      formData.bottom = new FormAttachment(100, -3);
-    }));
-
-    // init the check configuration combo
-    mComboViewer.setInput(propertyPageContext.configuration());
-    if (mDefaultFileSet.getCheckConfig() != null) {
-      mComboViewer.setSelection(new StructuredSelection(mDefaultFileSet.getCheckConfig()));
-    }
-
-    return configArea;
+    this.editorView = new SimpleFileSetsEditorView(parent, SWT.NONE, this::manageConfig,
+            mDefaultFileSet, propertyPageContext);
+    return editorView;
   }
 
-  private static FormData formData(Consumer<FormData> custom) {
-    FormData formData = new FormData();
-    custom.accept(formData);
-    return formData;
+  private void manageConfig() {
+    ICheckConfiguration config = mDefaultFileSet.getCheckConfig();
+    if (config != null) {
+      try {
+        config.getCheckstyleConfiguration();
+        CheckConfigurationConfigureDialog dialog = new CheckConfigurationConfigureDialog(shell,
+                (CheckConfigurationWorkingCopy) config);
+        dialog.setBlockOnOpen(true);
+        dialog.open();
+      } catch (CheckstylePluginException ex) {
+        CheckstyleUIPlugin.warningDialog(shell,
+                NLS.bind(Messages.CheckstylePreferencePage_msgProjectRelativeConfigNoFound,
+                        propertyPageContext.project(), config.getLocation()), ex);
+      }
+    }
   }
 
   @Override
   public void refresh() {
-    mComboViewer.refresh();
+    editorView.refresh();
   }
 
-  /**
-   * Controller for this file set editor.
-   *
-   */
-  private final class Controller implements SelectionListener, ISelectionChangedListener {
-
-    @Override
-    public void widgetSelected(SelectionEvent e) {
-      if (mBtnManageConfigs == e.widget) {
-        ICheckConfiguration config = mDefaultFileSet.getCheckConfig();
-
-        if (config != null) {
-          try {
-            config.getCheckstyleConfiguration();
-
-            CheckConfigurationWorkingCopy workingCopy = (CheckConfigurationWorkingCopy) config;
-
-            CheckConfigurationConfigureDialog dialog = new CheckConfigurationConfigureDialog(
-                    mTxtConfigDescription.getShell(), workingCopy);
-            dialog.setBlockOnOpen(true);
-            dialog.open();
-          } catch (CheckstylePluginException ex) {
-            CheckstyleUIPlugin.warningDialog(shell,
-                    NLS.bind(Messages.CheckstylePreferencePage_msgProjectRelativeConfigNoFound,
-                            propertyPageContext.project(), config.getLocation()),
-                    ex);
-          }
-        }
-      }
-    }
-
-    @Override
-    public void widgetDefaultSelected(SelectionEvent e) {
-      // NOOP
-    }
-
-    @Override
-    public void selectionChanged(SelectionChangedEvent event) {
-      IStructuredSelection selection = (IStructuredSelection) event.getSelection();
-      ICheckConfiguration config = (ICheckConfiguration) selection.getFirstElement();
-
-      if (config != null) {
-        mDefaultFileSet.setCheckConfig(config);
-        mTxtConfigDescription
-                .setText(config.getDescription() != null ? config.getDescription() : ""); //$NON-NLS-1$
-      } else {
-        mComboViewer.setSelection(new StructuredSelection(mComboViewer.getElementAt(0)));
-      }
-
-      propertyPageContext.updateButtons();
-    }
-  }
 }

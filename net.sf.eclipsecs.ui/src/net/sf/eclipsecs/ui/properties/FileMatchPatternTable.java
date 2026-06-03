@@ -21,97 +21,71 @@
 package net.sf.eclipsecs.ui.properties;
 
 import java.util.List;
-import java.util.function.Consumer;
 
+import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.ColumnWeightData;
+import org.eclipse.jface.viewers.ICheckStateProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormLayout;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
 import net.sf.eclipsecs.core.projectconfig.FileMatchPattern;
 import net.sf.eclipsecs.ui.Messages;
+import net.sf.eclipsecs.ui.properties.FileMatchPatternControl.FileMatchPatternControlCallbacks;
 
 public final class FileMatchPatternTable extends Composite {
 
   private final CheckboxTableViewer mPatternViewer;
 
-  public FileMatchPatternTable(Composite parent, int style, FileMatchPatternTableCallbacks callbacks) {
+  public FileMatchPatternTable(Composite parent, int style, FileMatchPatternControlCallbacks callbacks) {
     super(parent, style);
-    setLayout(new FillLayout());
+    GridLayoutFactory.fillDefaults().applyTo(this);
 
-    Group composite = new Group(this, SWT.NONE);
-    composite.setText(Messages.FileSetEditDialog_titlePatternsTable);
-    composite.setLayout(new FormLayout());
-
-    final Composite buttons = new Composite(composite, SWT.NULL);
-    FormData formData = new FormData();
-    formData.top = new FormAttachment(0, 3);
-    formData.right = new FormAttachment(100, -3);
-    formData.bottom = new FormAttachment(100, -3);
-
-    buttons.setLayoutData(formData);
-    GridLayoutFactory.swtDefaults().margins(0, 0).applyTo(buttons);
-
-    formData = new FormData();
-    formData.left = new FormAttachment(0, 3);
-    formData.top = new FormAttachment(0, 3);
-    formData.right = new FormAttachment(buttons, -3, SWT.LEFT);
-    formData.bottom = new FormAttachment(100, -3);
-    Table table = createTable(composite);
-    table.setLayoutData(formData);
+    Table table = createTable(this);
+    GridDataFactory.fillDefaults().grab(true, true).applyTo(table);
 
     this.mPatternViewer = new CheckboxTableViewer(table);
 
     mPatternViewer.setLabelProvider(new FileMatchPatternLabelProvider());
-    mPatternViewer.setContentProvider(new ArrayContentProvider());
+    mPatternViewer.setContentProvider(ArrayContentProvider.getInstance());
     mPatternViewer.addDoubleClickListener(event -> {
       FileMatchPattern pattern = (FileMatchPattern) ((IStructuredSelection) event.getSelection())
               .getFirstElement();
-      callbacks.editFileMatchPattern.accept(pattern);
-      callbacks.updateMatchView.run();
+      callbacks.editFileMatchPattern().accept(pattern);
+      callbacks.updateMatchView().run();
     });
     mPatternViewer.addCheckStateListener(event -> {
       if (event.getElement() instanceof FileMatchPattern pattern) {
         pattern.setIsIncludePattern(event.getChecked());
         mPatternViewer.refresh();
-        callbacks.updateMatchView.run();
+        callbacks.updateMatchView().run();
       }
     });
-
-    //
-    // Build the buttons.
-    //
-
-    createPushButton(buttons, Messages.FileSetEditDialog_btnAdd,
-            callbacks.addFileMatchPattern);
-    createPushButton(buttons, Messages.FileSetEditDialog_btnEdit,
-            toRunnable(callbacks.editFileMatchPattern));
-    createPushButton(buttons, Messages.FileSetEditDialog_btnRemove,
-            toRunnable(callbacks.removeFileMatchPattern));
-    createPushButton(buttons, Messages.FileSetEditDialog_btnUp,
-            toRunnable(callbacks.upFileMatchPattern));
-    createPushButton(buttons, Messages.FileSetEditDialog_btnDown,
-            toRunnable(callbacks.downFileMatchPattern));
+    mPatternViewer.setCheckStateProvider(FileMatchPatternTableCheckStateProvider.INSTANCE);
   }
 
-  private Table createTable(Composite parent) {
+  public FileMatchPattern getSelectedPattern() {
+    return (FileMatchPattern) mPatternViewer.getStructuredSelection().getFirstElement();
+  }
+
+  public void refresh() {
+    mPatternViewer.refresh();
+  }
+
+  public void setInput(List<FileMatchPattern> fileMatchPatterns) {
+    mPatternViewer.setInput(fileMatchPatterns);
+  }
+
+  private static Table createTable(Composite parent) {
     Table table = new Table(parent, SWT.CHECK | SWT.BORDER | SWT.FULL_SELECTION);
     table.setHeaderVisible(true);
     table.setLinesVisible(true);
@@ -128,54 +102,6 @@ public final class FileMatchPatternTable extends Composite {
     tableLayout.addColumnData(new ColumnWeightData(89));
 
     return table;
-  }
-
-  private Runnable toRunnable(Consumer<FileMatchPattern> callback) {
-    return () -> {
-      FileMatchPattern pattern = (FileMatchPattern) mPatternViewer.getStructuredSelection()
-              .getFirstElement();
-      callback.accept(pattern);
-    };
-  }
-
-  public void refresh() {
-    mPatternViewer.refresh();
-  }
-
-  public void setChecked(FileMatchPattern pattern, boolean includePattern) {
-    mPatternViewer.setChecked(pattern, includePattern);
-  }
-
-  public void setInput(List<FileMatchPattern> fileMatchPatterns) {
-    mPatternViewer.setInput(fileMatchPatterns);
-  }
-
-  /**
-   * Utility method that creates a push button instance and sets the default layout data.
-   *
-   * @param parent
-   *          the parent for the new button
-   * @param label
-   *          the label for the new button
-   * @return the newly-created button
-   */
-  private static Button createPushButton(Composite parent, String label, Runnable selectionListener) {
-    Button button = new Button(parent, SWT.PUSH);
-    button.setText(label);
-    GridData data = new GridData();
-    data.horizontalAlignment = GridData.FILL;
-    button.setLayoutData(data);
-    button.addSelectionListener(
-            SelectionListener.widgetSelectedAdapter(event -> selectionListener.run()));
-    return button;
-  }
-
-  public record FileMatchPatternTableCallbacks(Consumer<FileMatchPattern> editFileMatchPattern,
-          Runnable updateMatchView, Runnable addFileMatchPattern,
-          Consumer<FileMatchPattern> removeFileMatchPattern,
-          Consumer<FileMatchPattern> upFileMatchPattern,
-          Consumer<FileMatchPattern> downFileMatchPattern) {
-
   }
 
   /**
@@ -201,4 +127,25 @@ public final class FileMatchPatternTable extends Composite {
       return null;
     }
   }
+
+  private static final class FileMatchPatternTableCheckStateProvider implements ICheckStateProvider {
+
+    private static final FileMatchPatternTableCheckStateProvider INSTANCE = new FileMatchPatternTableCheckStateProvider();
+
+    private FileMatchPatternTableCheckStateProvider() {
+
+    }
+
+    @Override
+    public boolean isChecked(Object element) {
+      return ((FileMatchPattern) element).isIncludePattern();
+    }
+
+    @Override
+    public boolean isGrayed(Object element) {
+      return false;
+    }
+
+  }
+
 }

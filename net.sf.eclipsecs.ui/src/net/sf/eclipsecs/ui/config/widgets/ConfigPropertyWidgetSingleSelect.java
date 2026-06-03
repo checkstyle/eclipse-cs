@@ -35,7 +35,7 @@ import net.sf.eclipsecs.core.config.meta.ConfigPropertyMetadata;
 /**
  * Configuration widget that allows for selecting one value from a set of values.
  */
-public class ConfigPropertyWidgetSingleSelect extends AbstractConfigPropertyWidget {
+public final class ConfigPropertyWidgetSingleSelect extends AbstractConfigPropertyWidget {
 
   private Combo mComboItem;
 
@@ -47,8 +47,12 @@ public class ConfigPropertyWidgetSingleSelect extends AbstractConfigPropertyWidg
    * @param prop
    *          the property
    */
-  public ConfigPropertyWidgetSingleSelect(Composite parent, ConfigProperty prop) {
+  private ConfigPropertyWidgetSingleSelect(Composite parent, ConfigProperty prop) {
     super(parent, prop);
+  }
+
+  public static ConfigPropertyWidgetSingleSelect create(Composite parent, ConfigProperty prop) {
+    return new ConfigPropertyWidgetSingleSelect(parent, prop);
   }
 
   @Override

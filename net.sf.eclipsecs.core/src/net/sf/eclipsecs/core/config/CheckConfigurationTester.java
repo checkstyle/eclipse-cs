@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.eclipse.core.resources.IProject;
 import org.xml.sax.InputSource;
 
 import com.google.common.io.Closeables;
@@ -33,7 +32,6 @@ import com.puppycrawl.tools.checkstyle.ConfigurationLoader.IgnoredModulesOptions
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 
-import net.sf.eclipsecs.core.config.configtypes.IContextAware;
 import net.sf.eclipsecs.core.config.configtypes.MultiPropertyResolver;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
@@ -46,21 +44,10 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
  * .
  *
  */
-public class CheckConfigurationTester {
+public final class CheckConfigurationTester {
 
-  /** The check configuration to test. */
-  private ICheckConfiguration mCheckConfiguration;
+  private CheckConfigurationTester() {
 
-  private IProject mContextProject;
-
-  /**
-   * Creates a tester for the given check configuration.
-   *
-   * @param checkConfiguration
-   *          the check configuration to test
-   */
-  public CheckConfigurationTester(ICheckConfiguration checkConfiguration) {
-    mCheckConfiguration = checkConfiguration;
   }
 
   /**
@@ -70,17 +57,12 @@ public class CheckConfigurationTester {
    * @throws CheckstylePluginException
    *           most likely the configuration file could not be found
    */
-  public List<ResolvableProperty> getUnresolvedProperties() throws CheckstylePluginException {
+  public static List<ResolvableProperty> getUnresolvedProperties(ICheckConfiguration checkConfiguration)
+          throws CheckstylePluginException {
 
-    CheckstyleConfigurationFile configFile = mCheckConfiguration.getCheckstyleConfiguration();
+    CheckstyleConfigurationFile configFile = checkConfiguration.getCheckstyleConfiguration();
 
     PropertyResolver resolver = configFile.getPropertyResolver();
-
-    // set the project context if the property resolver needs the
-    // context
-    if (mContextProject != null && resolver instanceof IContextAware) {
-      ((IContextAware) resolver).setProjectContext(mContextProject);
-    }
 
     MissingPropertyCollector collector = new MissingPropertyCollector();
 

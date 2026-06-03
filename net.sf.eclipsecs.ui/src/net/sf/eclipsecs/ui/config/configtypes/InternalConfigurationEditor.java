@@ -22,25 +22,20 @@ package net.sf.eclipsecs.ui.config.configtypes;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jface.layout.GridDataFactory;
-import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
-
 import net.sf.eclipsecs.core.config.CheckConfiguration;
 import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
 import net.sf.eclipsecs.core.config.ConfigurationWriter;
@@ -68,17 +63,7 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor {
   /** the working copy this editor edits. */
   private CheckConfigurationWorkingCopy mWorkingCopy;
 
-  /** the text field containing the config name. */
-  private Text mConfigName;
-
-  /** text field containing the location. */
-  private Text mLocation;
-
-  /** the text containing the description. */
-  private Text mDescription;
-
-  /** button to import an existing configuration. */
-  private Button mBtnImport;
+  private InternalConfigurationEditorView editorView;
 
   //
   // methods
@@ -93,60 +78,34 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor {
 
   @Override
   public Control createEditorControl(Composite parent, final Shell shell) {
-    Composite contents = new Composite(parent, SWT.NULL);
-    contents.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-    GridLayoutFactory.swtDefaults().numColumns(2).margins(0, 0).applyTo(contents);
-
-    Label lblConfigName = new Label(contents, SWT.NULL);
-    lblConfigName.setText(Messages.CheckConfigurationPropertiesDialog_lblName);
-    lblConfigName.setLayoutData(new GridData());
-
-    mConfigName = new Text(contents, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
-    mConfigName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-    mConfigName.setFocus();
-
-    Label lblConfigLocation = new Label(contents, SWT.NULL);
-    lblConfigLocation.setText(Messages.CheckConfigurationPropertiesDialog_lblLocation);
-    GridDataFactory.swtDefaults().align(SWT.BEGINNING, SWT.BEGINNING).applyTo(lblConfigLocation);
-
-    mLocation = new Text(contents, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
-    mLocation.setEditable(false);
-    mLocation.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-    Label lblDescription = new Label(contents, SWT.NULL);
-    lblDescription.setText(Messages.CheckConfigurationPropertiesDialog_lblDescription);
-    GridDataFactory.swtDefaults().span(2, 1).applyTo(lblDescription);
-
-    mDescription = new Text(contents, SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.BORDER | SWT.VERTICAL);
-    GridDataFactory.create(GridData.FILL_BOTH).span(2, 1).hint(300, 100).grab(true, true).applyTo(mDescription);
-
-    mBtnImport = new Button(contents, SWT.PUSH);
-    mBtnImport.setText(Messages.InternalConfigurationEditor_btnImport);
-    GridDataFactory.swtDefaults().span(2, 1).align(GridData.END, GridData.CENTER).applyTo(mBtnImport);
-
-    mBtnImport.addSelectionListener(SelectionListener.widgetSelectedAdapter(
-            event -> promptImportConfigFile(mConfigName.getShell()).ifPresent(configFileString -> {
-              ICheckConfiguration tmpSourceConfig = new CheckConfiguration("dummy",
-                      configFileString, null, new ExternalFileConfigurationType(), true, null,
-                      null);
-              try {
-                tmpSourceConfig.copyConfiguration(getEditedWorkingCopy());
-              } catch (CheckstylePluginException ex) {
-                mDialog.setErrorMessage(ex.getLocalizedMessage());
-              }
-            })));
+    this.editorView = new InternalConfigurationEditorView(parent, SWT.NULL,
+            () -> importConfig(shell));
+    GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(this.editorView);
 
     if (mWorkingCopy.getName() != null) {
-      mConfigName.setText(mWorkingCopy.getName());
+      editorView.setConfigName(mWorkingCopy.getName());
     }
     if (mWorkingCopy.getLocation() != null) {
-      mLocation.setText(mWorkingCopy.getLocation());
+      editorView.setConfigLocation(mWorkingCopy.getLocation());
     }
     if (mWorkingCopy.getDescription() != null) {
-      mDescription.setText(mWorkingCopy.getDescription());
+      editorView.setDescription(mWorkingCopy.getDescription());
     }
 
-    return contents;
+    return editorView;
+  }
+
+  private void importConfig(Shell shell) {
+    promptImportConfigFile(shell).ifPresent(configFileString -> {
+      ICheckConfiguration tmpSourceConfig = new CheckConfiguration("dummy",
+              configFileString, null, new ExternalFileConfigurationType(), true, null,
+              null);
+      try {
+        tmpSourceConfig.copyConfiguration(getEditedWorkingCopy());
+      } catch (CheckstylePluginException ex) {
+        mDialog.setErrorMessage(ex.getLocalizedMessage());
+      }
+    });
   }
 
   private static Optional<String> promptImportConfigFile(Shell shell) {
@@ -165,7 +124,7 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor {
 
   @Override
   public CheckConfigurationWorkingCopy getEditedWorkingCopy() throws CheckstylePluginException {
-    mWorkingCopy.setName(mConfigName.getText());
+    mWorkingCopy.setName(editorView.getConfigName());
 
     if (mWorkingCopy.getLocation() == null) {
 
@@ -180,7 +139,7 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor {
         }
       }
     }
-    mWorkingCopy.setDescription(mDescription.getText());
+    mWorkingCopy.setDescription(editorView.getDescription());
 
     return mWorkingCopy;
   }
@@ -197,19 +156,20 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor {
    */
   private boolean ensureFileExists(String location) throws CheckstylePluginException {
 
-    String resolvedLocation = InternalConfigurationType.resolveLocationInWorkspace(location);
+    Path resolvedLocation = InternalConfigurationType.resolveLocationInWorkspace(location);
 
-    File file = new File(resolvedLocation);
-    if (!file.exists()) {
+    if (!Files.exists(resolvedLocation)) {
 
-      if (file.getParentFile() != null) {
-        file.getParentFile().mkdirs();
-      }
-
-      try (OutputStream out = new BufferedOutputStream(new FileOutputStream(file))) {
-        ConfigurationWriter.writeNewConfiguration(out, mWorkingCopy);
-      } catch (IOException ioe) {
-        CheckstylePluginException.rethrow(ioe);
+      if (resolvedLocation.getParent() != null) {
+        try {
+          Files.createDirectories(resolvedLocation.getParent());
+          try (OutputStream out = new BufferedOutputStream(
+                  Files.newOutputStream(resolvedLocation))) {
+            ConfigurationWriter.writeNewConfiguration(out, mWorkingCopy);
+          }
+        } catch (IOException ex) {
+          CheckstylePluginException.rethrow(ex);
+        }
       }
 
       return true;

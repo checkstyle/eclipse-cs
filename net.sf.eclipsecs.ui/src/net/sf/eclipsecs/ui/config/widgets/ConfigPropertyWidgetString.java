@@ -47,8 +47,12 @@ public class ConfigPropertyWidgetString extends AbstractConfigPropertyWidget {
    * @param prop
    *          the property
    */
-  public ConfigPropertyWidgetString(Composite parent, ConfigProperty prop) {
+  protected ConfigPropertyWidgetString(Composite parent, ConfigProperty prop) {
     super(parent, prop);
+  }
+
+  public static ConfigPropertyWidgetString create(Composite parent, ConfigProperty prop) {
+    return new ConfigPropertyWidgetString(parent, prop);
   }
 
   @Override

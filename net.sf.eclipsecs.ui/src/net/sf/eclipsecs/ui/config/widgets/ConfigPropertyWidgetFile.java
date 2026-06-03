@@ -21,22 +21,19 @@
 package net.sf.eclipsecs.ui.config.widgets;
 
 import org.eclipse.jface.contentassist.SubjectControlContentAssistant;
+import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.text.DefaultInformationControl;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.IInformationControl;
-import org.eclipse.jface.text.IInformationControlCreator;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContentAssistant;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.contentassist.ContentAssistHandler;
 
@@ -49,7 +46,7 @@ import net.sf.eclipsecs.ui.config.PropertiesContentAssistProcessor;
 /**
  * A string property configuration widget.
  */
-public class ConfigPropertyWidgetFile extends AbstractConfigPropertyWidget {
+public final class ConfigPropertyWidgetFile extends AbstractConfigPropertyWidget {
 
   private Composite mContents;
 
@@ -65,51 +62,39 @@ public class ConfigPropertyWidgetFile extends AbstractConfigPropertyWidget {
    * @param prop
    *          the property
    */
-  public ConfigPropertyWidgetFile(Composite parent, ConfigProperty prop) {
+  private ConfigPropertyWidgetFile(Composite parent, ConfigProperty prop) {
     super(parent, prop);
+  }
+
+  public static ConfigPropertyWidgetFile create(Composite parent, ConfigProperty prop) {
+    return new ConfigPropertyWidgetFile(parent, prop);
   }
 
   @Override
   protected Control getValueWidget(Composite parent) {
-
     if (mContents == null) {
-
       mContents = new Composite(parent, SWT.NULL);
-      mContents.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-      GridLayout layout = new GridLayout(2, false);
-      layout.marginWidth = 0;
-      layout.marginHeight = 0;
-      mContents.setLayout(layout);
+      GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(mContents);
+      GridLayoutFactory.swtDefaults().numColumns(2).margins(0, 0).applyTo(mContents);
 
       mTextWidget = new Text(mContents, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
-      GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
-      mTextWidget.setLayoutData(gridData);
+      GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(mTextWidget);
 
       // integrate content assist
       ContentAssistHandler.createHandlerForText(mTextWidget, createContentAssistant());
 
       mBtnBrowse = new Button(mContents, SWT.PUSH);
       mBtnBrowse.setText(Messages.ConfigPropertyWidgetFile_btnBrowse0);
-      mBtnBrowse.setLayoutData(new GridData());
+      GridDataFactory.swtDefaults().applyTo(mBtnBrowse);
 
-      mBtnBrowse.addSelectionListener(new SelectionListener() {
-
-        @Override
-        public void widgetSelected(SelectionEvent e) {
-          FileDialog fileDialog = new FileDialog(mTextWidget.getShell());
-          fileDialog.setFileName(mTextWidget.getText());
-
-          String file = fileDialog.open();
-          if (file != null) {
-            mTextWidget.setText(file);
-          }
+      mBtnBrowse.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
+        FileDialog fileDialog = new FileDialog(mTextWidget.getShell());
+        fileDialog.setFileName(mTextWidget.getText());
+        String file = fileDialog.open();
+        if (file != null) {
+          mTextWidget.setText(file);
         }
-
-        @Override
-        public void widgetDefaultSelected(SelectionEvent e) {
-          // NOOP
-        }
-      });
+      }));
 
       String initValue = getInitValue();
       if (initValue != null) {
@@ -158,12 +143,7 @@ public class ConfigPropertyWidgetFile extends AbstractConfigPropertyWidget {
     IContentAssistProcessor processor = new PropertiesContentAssistProcessor();
     contentAssistant.setContentAssistProcessor(processor, IDocument.DEFAULT_CONTENT_TYPE);
     contentAssistant.setContextInformationPopupOrientation(IContentAssistant.CONTEXT_INFO_ABOVE);
-    contentAssistant.setInformationControlCreator(new IInformationControlCreator() {
-      @Override
-      public IInformationControl createInformationControl(Shell parent) {
-        return new DefaultInformationControl(parent);
-      }
-    });
+    contentAssistant.setInformationControlCreator(DefaultInformationControl::new);
 
     return contentAssistant;
   }

@@ -29,20 +29,11 @@ import java.io.OutputStream;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.layout.GridDataFactory;
-import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.FileDialog;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
-
 import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
 import net.sf.eclipsecs.core.config.ConfigurationWriter;
 import net.sf.eclipsecs.core.config.configtypes.ExternalFileConfigurationType;
@@ -66,20 +57,7 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
 
   private Shell shell;
 
-  /** the text field containing the config name. */
-  private Text mConfigName;
-
-  /** text field containing the location. */
-  private Text location;
-
-  /** the text containing the description. */
-  private Text mDescription;
-
-  /**
-   * Check box to set if the configuration file is not editable by the
-   * configuration editor.
-   */
-  private Button mChkProtectConfig;
+  private ExternalFileConfigurationEditorView editorView;
 
   //
   // methods
@@ -94,92 +72,36 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
   @Override
   public Control createEditorControl(Composite parent, final Shell parentShell) {
     this.shell = parentShell;
-    Composite contents = new Composite(parent, SWT.NULL);
-    contents.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-    GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(false).margins(0, 0).applyTo(contents);
-
-    Label lblConfigName = new Label(contents, SWT.NULL);
-    lblConfigName.setText(Messages.CheckConfigurationPropertiesDialog_lblName);
-    lblConfigName.setLayoutData(new GridData());
-
-    mConfigName = new Text(contents, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
-    mConfigName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-    mConfigName.setFocus();
-
-    location = createLocationSection(contents, parentShell);
-
-    Label lblDescription = new Label(contents, SWT.NULL);
-    lblDescription.setText(Messages.CheckConfigurationPropertiesDialog_lblDescription);
-    GridDataFactory.swtDefaults().span(2, 1).applyTo(lblDescription);
-
-    mDescription = new Text(contents, SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.BORDER | SWT.VERTICAL);
-    GridDataFactory.create(GridData.FILL_BOTH).span(2, 1).hint(300, 100).grab(true, true).applyTo(mDescription);
-
-    Group advancedGroup = new Group(contents, SWT.NULL);
-    advancedGroup.setText(Messages.RemoteConfigurationEditor_titleAdvancedOptions);
-    GridDataFactory.create(GridData.FILL_HORIZONTAL).span(2, 1).applyTo(advancedGroup);
-    advancedGroup.setLayout(new GridLayout(2, false));
-
-    mChkProtectConfig = new Button(advancedGroup, SWT.CHECK);
-    mChkProtectConfig.setText(Messages.ExternalFileConfigurationEditor_btnProtectConfigFile);
-    GridDataFactory.create(GridData.FILL_HORIZONTAL).span(2, 1).applyTo(mChkProtectConfig);
+    this.editorView = new ExternalFileConfigurationEditorView(parent, SWT.NULL);
+    GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(editorView);
 
     if (mWorkingCopy.getName() != null) {
-      mConfigName.setText(mWorkingCopy.getName());
+      editorView.setConfigName(mWorkingCopy.getName());
     }
     if (mWorkingCopy.getLocation() != null) {
-      location.setText(mWorkingCopy.getLocation());
+      editorView.setConfigLocation(mWorkingCopy.getLocation());
     }
     if (mWorkingCopy.getDescription() != null) {
-      mDescription.setText(mWorkingCopy.getDescription());
+      editorView.setDescription(mWorkingCopy.getDescription());
     }
 
-    mChkProtectConfig.setSelection(Boolean.parseBoolean(mWorkingCopy.getAdditionalData().get(ExternalFileConfigurationType.KEY_PROTECT_CONFIG)));
+    editorView.setProtectConfig(Boolean.parseBoolean(mWorkingCopy.getAdditionalData()
+            .get(ExternalFileConfigurationType.KEY_PROTECT_CONFIG)));
 
-    return contents;
-  }
-
-  private static Text createLocationSection(Composite parent, Shell shell) {
-    Label lblConfigLocation = new Label(parent, SWT.NULL);
-    lblConfigLocation.setText(Messages.CheckConfigurationPropertiesDialog_lblLocation);
-    lblConfigLocation.setLayoutData(new GridData());
-
-    Composite locationComposite = new Composite(parent, SWT.NULL);
-    locationComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-    GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(false).margins(0, 0).applyTo(locationComposite);
-
-    Text location = new Text(locationComposite, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
-    location.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-    Button btnBrowse = new Button(locationComposite, SWT.PUSH);
-    btnBrowse.setText(Messages.FileConfigurationLocationEditor_btnBrowse);
-    btnBrowse.setLayoutData(new GridData());
-
-    btnBrowse.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
-      FileDialog fileDialog = new FileDialog(shell);
-      fileDialog.setFileName(location.getText());
-
-      String file = fileDialog.open();
-      if (file != null) {
-        location.setText(file);
-      }
-    }));
-
-    return location;
+    return editorView;
   }
 
   @Override
   public CheckConfigurationWorkingCopy getEditedWorkingCopy() throws CheckstylePluginException {
-
-    mWorkingCopy.setName(mConfigName.getText());
-    mWorkingCopy.setDescription(mDescription.getText());
+    mWorkingCopy.setName(editorView.getConfigName());
+    mWorkingCopy.setDescription(editorView.getDescription());
     mWorkingCopy.getAdditionalData().put(ExternalFileConfigurationType.KEY_PROTECT_CONFIG,
-            Boolean.toString(mChkProtectConfig.getSelection()));
+            Boolean.toString(editorView.getProtectConfig()));
 
     try {
-      mWorkingCopy.setLocation(location.getText());
+      mWorkingCopy.setLocation(editorView.getConfigLocation());
     } catch (CheckstylePluginException ex) {
-      String locationText = location.getText();
+      String locationText = editorView.getConfigLocation();
 
       if (StringUtils.isNotBlank(locationText) && ensureFileExists(locationText)) {
         mWorkingCopy.setLocation(locationText);

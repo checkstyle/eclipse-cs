@@ -23,6 +23,9 @@ package net.sf.eclipsecs.ui.config;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+
+import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
@@ -37,7 +40,6 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
@@ -51,13 +53,14 @@ import net.sf.eclipsecs.core.config.meta.RuleMetadata;
 import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
 import net.sf.eclipsecs.ui.Messages;
 
-class AvailableModulesViewer extends Composite {
+public final class AvailableModulesViewer extends Composite {
 
   private final FilteredTree treeViewer;
   private final Button addButton;
   private final Consumer<List<RuleMetadata>> newModule;
 
-  AvailableModulesViewer(Composite parent, int style, List<Module> modules, boolean configurable,
+  public AvailableModulesViewer(Composite parent, int style,
+          AvailableModulesViewerLabelProvider labelProvider, boolean configurable,
           Consumer<List<RuleMetadata>> newModule, Consumer<Object> selectionChanged) {
     super(parent, style);
     this.newModule = newModule;
@@ -65,15 +68,15 @@ class AvailableModulesViewer extends Composite {
     setLayout(new FillLayout());
 
     Group knownModules = new Group(this, SWT.NULL);
-    knownModules.setLayout(new GridLayout());
+    GridLayoutFactory.swtDefaults().applyTo(knownModules);
     knownModules.setText(Messages.CheckConfigurationConfigureDialog_lblAvailableModules);
 
     this.treeViewer = new FilteredTree(knownModules,
             SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER, new ModulePatternFilter(), true,
             true);
-    treeViewer.getViewer().getControl().setLayoutData(new GridData(GridData.FILL_BOTH));
-    treeViewer.getViewer().setContentProvider(new MetaDataContentProvider());
-    treeViewer.getViewer().setLabelProvider(new MetaDataLabelProvider(modules));
+    GridDataFactory.create(GridData.FILL_BOTH).applyTo(treeViewer.getViewer().getControl());
+    treeViewer.getViewer().setContentProvider(MetaDataContentProvider.INSTANCE);
+    treeViewer.getViewer().setLabelProvider(labelProvider);
     treeViewer.getViewer().setComparator(new ViewerComparator());
     treeViewer.getViewer().addSelectionChangedListener(event -> {
       selectionChanged.accept(event.getStructuredSelection().getFirstElement());
@@ -90,25 +93,11 @@ class AvailableModulesViewer extends Composite {
     });
 
     // filter hidden elements
-    treeViewer.getViewer().addFilter(new ViewerFilter() {
-
-      @Override
-      public boolean select(Viewer viewer, Object parentElement, Object element) {
-        boolean passes = true;
-        if (element instanceof RuleGroupMetadata) {
-          passes = !((RuleGroupMetadata) element).isHidden();
-        } else if (element instanceof RuleMetadata) {
-          passes = !((RuleMetadata) element).hidden();
-        }
-        return passes;
-      }
-    });
+    treeViewer.getViewer().addFilter(AvailableModulesViewerFilter.INSTANCE);
 
     this.addButton = new Button(knownModules, SWT.PUSH);
     addButton.setText(Messages.CheckConfigurationConfigureDialog_btnAdd);
-    GridData gridData = new GridData();
-    gridData.horizontalAlignment = GridData.END;
-    addButton.setLayoutData(gridData);
+    GridDataFactory.swtDefaults().align(SWT.END, SWT.CENTER).applyTo(addButton);
     if (configurable) {
       treeViewer.addKeyListener(KeyListener.keyReleasedAdapter(event -> {
         if (event.keyCode == SWT.ARROW_RIGHT || event.character == ' ') {
@@ -184,7 +173,13 @@ class AvailableModulesViewer extends Composite {
    * TreeContentProvider that provides the structure of the rule metadata.
    *
    */
-  static class MetaDataContentProvider implements ITreeContentProvider {
+  private static final class MetaDataContentProvider implements ITreeContentProvider {
+
+    private static final MetaDataContentProvider INSTANCE = new MetaDataContentProvider();
+
+    private MetaDataContentProvider() {
+
+    }
 
     @Override
     public Object[] getElements(Object inputElement) {
@@ -243,11 +238,11 @@ class AvailableModulesViewer extends Composite {
    * Label-provider for meta data information.
    *
    */
-  private static class MetaDataLabelProvider extends LabelProvider {
+  public static class AvailableModulesViewerLabelProvider extends LabelProvider {
 
     private final List<Module> modules;
 
-    public MetaDataLabelProvider(List<Module> modules) {
+    public AvailableModulesViewerLabelProvider(List<Module> modules) {
       this.modules = modules;
     }
 
@@ -306,5 +301,26 @@ class AvailableModulesViewer extends Composite {
 
       return used;
     }
+  }
+
+  private static final class AvailableModulesViewerFilter extends ViewerFilter {
+
+    private static final AvailableModulesViewerFilter INSTANCE = new AvailableModulesViewerFilter();
+
+    private AvailableModulesViewerFilter() {
+
+    }
+
+    @Override
+    public boolean select(Viewer viewer, Object parentElement, Object element) {
+      boolean passes = true;
+      if (element instanceof RuleGroupMetadata) {
+        passes = !((RuleGroupMetadata) element).isHidden();
+      } else if (element instanceof RuleMetadata) {
+        passes = !((RuleMetadata) element).hidden();
+      }
+      return passes;
+    }
+
   }
 }

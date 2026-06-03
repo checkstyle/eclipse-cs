@@ -43,7 +43,7 @@ import net.sf.eclipsecs.ui.util.regex.RegexCompletionProposalFactory;
 /**
  * A string property configuration widget.
  */
-public class ConfigPropertyWidgetRegex extends AbstractConfigPropertyWidget {
+public final class ConfigPropertyWidgetRegex extends AbstractConfigPropertyWidget {
 
   private final String mDefaultMessage = Messages.ConfigPropertyWidgetRegex_msgRegexTestString;
 
@@ -67,11 +67,15 @@ public class ConfigPropertyWidgetRegex extends AbstractConfigPropertyWidget {
    * @param prop
    *          the property
    */
-  public ConfigPropertyWidgetRegex(Composite parent, ConfigProperty prop) {
+  private ConfigPropertyWidgetRegex(Composite parent, ConfigProperty prop) {
     super(parent, prop);
     mGreenColor = new Color(parent.getDisplay(), 219, 235, 204);
     mRedColor = new Color(parent.getDisplay(), 255, 225, 225);
 
+  }
+
+  public static ConfigPropertyWidgetRegex create(Composite parent, ConfigProperty prop) {
+    return new ConfigPropertyWidgetRegex(parent, prop);
   }
 
   @Override

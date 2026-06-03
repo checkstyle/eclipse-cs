@@ -22,13 +22,14 @@ package net.sf.eclipsecs.ui.properties;
 
 import java.util.function.Consumer;
 
+import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -51,33 +52,27 @@ public final class FileSetEditDialogCommonArea extends Composite {
     setLayout(new FillLayout());
 
     Composite composite = new Composite(this, SWT.NONE);
-    GridLayout layout = new GridLayout(2, false);
-    layout.marginHeight = 0;
-    layout.marginWidth = 0;
-    composite.setLayout(layout);
+    GridLayoutFactory.swtDefaults().numColumns(2).margins(0, 0).applyTo(composite);
 
     Label nameLabel = new Label(composite, SWT.NULL);
     nameLabel.setText(Messages.FileSetEditDialog_lblName);
 
     mFileSetNameText = new Text(composite, SWT.SINGLE | SWT.BORDER);
-    mFileSetNameText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+    GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(mFileSetNameText);
 
     Label lblConfiguration = new Label(composite, SWT.NULL);
     lblConfiguration.setText(Messages.FileSetEditDialog_lblCheckConfig);
 
     final Composite comboComposite = new Composite(composite, SWT.NONE);
-    layout = new GridLayout(2, false);
-    layout.marginHeight = 0;
-    layout.marginWidth = 0;
-    comboComposite.setLayout(layout);
-    comboComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+    GridLayoutFactory.swtDefaults().numColumns(2).margins(0, 0).applyTo(comboComposite);
+    GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(comboComposite);
 
     mComboViewer = new ComboViewer(comboComposite);
     mComboViewer.getCombo().setVisibleItemCount(10);
-    mComboViewer.setContentProvider(new CheckConfigurationContentProvider());
-    mComboViewer.setLabelProvider(new CheckConfigurationLabelProvider());
-    mComboViewer.setComparator(new CheckConfigurationViewerSorter());
-    mComboViewer.getControl().setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+    mComboViewer.setContentProvider(CheckConfigurationContentProvider.INSTANCE);
+    mComboViewer.setLabelProvider(CheckConfigurationLabelProvider.INSTANCE);
+    mComboViewer.setComparator(CheckConfigurationViewerSorter.INSTANCE);
+    GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(mComboViewer.getControl());
     mComboViewer.addSelectionChangedListener(event -> selectionChanged
             .accept((ICheckConfiguration) event.getStructuredSelection().getFirstElement()));
 
@@ -85,7 +80,7 @@ public final class FileSetEditDialogCommonArea extends Composite {
     mConfigureButton.setText(Messages.FileSetEditDialog_btnConfigure);
     mConfigureButton.addSelectionListener(
             SelectionListener.widgetSelectedAdapter(event -> configureFileSetConfig.run()));
-    mConfigureButton.setLayoutData(new GridData());
+    GridDataFactory.swtDefaults().applyTo(mConfigureButton);
   }
 
   public String getText() {
