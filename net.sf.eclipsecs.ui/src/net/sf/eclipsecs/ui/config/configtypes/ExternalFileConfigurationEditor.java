@@ -47,7 +47,7 @@ import net.sf.eclipsecs.ui.config.CheckConfigurationPropertiesDialog;
  * the config file path and a 'Browse...' button opening a file dialog.
  *
  */
-public class ExternalFileConfigurationEditor implements ICheckConfigurationEditor {
+public class ExternalFileConfigurationEditor implements CheckConfigurationEditor {
 
   //
   // attributes

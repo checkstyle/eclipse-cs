@@ -18,47 +18,22 @@
 //
 //============================================================================
 
-package net.sf.eclipsecs.ui.properties;
+package net.sf.eclipsecs.core.config.meta;
 
 import java.util.List;
 
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-
-import net.sf.eclipsecs.core.projectconfig.FileSet;
-
 /**
- * Interface for the part of the checkstyle plugin properties page that
- * configures file sets for the project.
+ * Interface for an option provider. This is used to provide dynamic or massive amount of options
+ * which would be too difficult to handle in metadata. For instance this is true for module metadata
+ * that need all token types as options.
  *
  */
-public interface IFileSetsEditor {
-  /**
-   * Creates the contents of the file set editor.
-   *
-   * @param parent
-   *          the parent component
-   * @return the control
-   */
-  Control createContents(Composite parent);
+public interface OptionProvider {
 
   /**
-   * Set the file sets for the editor.
+   * Returns a list of options.
    *
-   * @param fileSets
-   *          the list of file sets
+   * @return the options
    */
-  void setFileSets(List<FileSet> fileSets);
-
-  /**
-   * Returns the file sets.
-   *
-   * @return the list of file sets
-   */
-  List<FileSet> getFileSets();
-
-  /**
-   * Refreshes the view.
-   */
-  void refresh();
+  List<String> getOptions();
 }

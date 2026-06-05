@@ -27,7 +27,7 @@ import org.eclipse.jdt.core.dom.StructuralPropertyDescriptor;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.swt.graphics.Image;
 
-import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
+import net.sf.eclipsecs.ui.CheckstyleUiPluginImages;
 import net.sf.eclipsecs.ui.quickfixes.AbstractASTResolution;
 import net.sf.eclipsecs.ui.quickfixes.Messages;
 
@@ -70,7 +70,7 @@ public class EmptyStatementQuickfix extends AbstractASTResolution {
 
   @Override
   public Image getImage() {
-    return CheckstyleUIPluginImages.CORRECTION_REMOVE.getImage();
+    return CheckstyleUiPluginImages.CORRECTION_REMOVE.getImage();
   }
 
 }

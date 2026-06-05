@@ -46,7 +46,7 @@ import org.eclipse.ui.progress.IWorkbenchSiteProgressService;
 import org.eclipse.ui.progress.WorkbenchJob;
 
 import net.sf.eclipsecs.core.builder.CheckstyleMarker;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
+import net.sf.eclipsecs.ui.CheckstyleUiPlugin;
 import net.sf.eclipsecs.ui.stats.Messages;
 import net.sf.eclipsecs.ui.stats.data.CreateStatsJob;
 import net.sf.eclipsecs.ui.stats.data.Stats;
@@ -226,7 +226,7 @@ public abstract class AbstractStatsView extends ViewPart {
 
     String concreteViewId = getViewId();
 
-    IDialogSettings workbenchSettings = CheckstyleUIPlugin.getDefault().getDialogSettings();
+    IDialogSettings workbenchSettings = CheckstyleUiPlugin.getDefault().getDialogSettings();
     IDialogSettings settings = workbenchSettings.getSection(concreteViewId);
 
     if (settings == null) {

@@ -23,7 +23,7 @@ package net.sf.eclipsecs.ui.config;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
 
-import net.sf.eclipsecs.core.config.ICheckConfiguration;
+import net.sf.eclipsecs.core.config.CheckConfiguration;
 
 /**
  * Sorts CheckConfiguration objects into their display order.
@@ -40,9 +40,9 @@ public final class CheckConfigurationViewerSorter extends ViewerComparator {
   public int compare(Viewer viewer, Object e1, Object e2) {
     int result = 0;
 
-    if (e1 instanceof ICheckConfiguration && e2 instanceof ICheckConfiguration) {
-      ICheckConfiguration cfg1 = (ICheckConfiguration) e1;
-      ICheckConfiguration cfg2 = (ICheckConfiguration) e2;
+    if (e1 instanceof CheckConfiguration && e2 instanceof CheckConfiguration) {
+      CheckConfiguration cfg1 = (CheckConfiguration) e1;
+      CheckConfiguration cfg2 = (CheckConfiguration) e2;
 
       String string1 = cfg1.getName();
       String string2 = cfg2.getName();

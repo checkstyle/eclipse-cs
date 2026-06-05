@@ -31,7 +31,7 @@ import com.puppycrawl.tools.checkstyle.api.TokenTypes;
  * that allow all tokens as options - which is very tedious to maintain in the metadata.
  *
  */
-public class AllTokensProvider implements IOptionProvider {
+public class AllTokensProvider implements OptionProvider {
 
   /** the list of options. */
   private static List<String> sAllOptions = new ArrayList<>();

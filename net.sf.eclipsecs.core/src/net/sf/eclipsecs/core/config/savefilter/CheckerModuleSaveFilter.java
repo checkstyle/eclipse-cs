@@ -23,14 +23,14 @@ package net.sf.eclipsecs.core.config.savefilter;
 import java.util.List;
 
 import net.sf.eclipsecs.core.config.Module;
-import net.sf.eclipsecs.core.config.XMLTags;
+import net.sf.eclipsecs.core.config.XmlTags;
 import net.sf.eclipsecs.core.config.meta.MetadataFactory;
 
 /**
  * Special module logic for the Checker module.
  *
  */
-public class CheckerModuleSaveFilter implements ISaveFilter {
+public class CheckerModuleSaveFilter implements SaveFilter {
 
   @Override
   public void postProcessConfiguredModules(List<Module> configuredModules) {
@@ -41,7 +41,7 @@ public class CheckerModuleSaveFilter implements ISaveFilter {
 
       Module module = configuredModules.get(i);
 
-      if (XMLTags.CHECKER_MODULE.equals(module.getMetaData().identity().internalName())) {
+      if (XmlTags.CHECKER_MODULE.equals(module.getMetaData().identity().internalName())) {
 
         containsCheckerModule = true;
         break;
@@ -50,7 +50,7 @@ public class CheckerModuleSaveFilter implements ISaveFilter {
 
     // add checker module if it is not contained in the configured modules
     if (!containsCheckerModule) {
-      Module checker = new Module(MetadataFactory.getRuleMetadata(XMLTags.CHECKER_MODULE), false);
+      Module checker = new Module(MetadataFactory.getRuleMetadata(XmlTags.CHECKER_MODULE), false);
       configuredModules.add(0, checker);
     }
   }

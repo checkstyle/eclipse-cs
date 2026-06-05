@@ -34,19 +34,19 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
+import net.sf.eclipsecs.core.config.CheckConfiguration;
 import net.sf.eclipsecs.core.config.CheckConfigurationTester;
 import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
-import net.sf.eclipsecs.core.config.ICheckConfiguration;
-import net.sf.eclipsecs.core.config.ICheckConfigurationWorkingSet;
+import net.sf.eclipsecs.core.config.CheckConfigurationWorkingSet;
+import net.sf.eclipsecs.core.config.configtypes.ConfigurationType;
 import net.sf.eclipsecs.core.config.configtypes.ConfigurationTypes;
-import net.sf.eclipsecs.core.config.configtypes.IConfigurationType;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
-import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
+import net.sf.eclipsecs.ui.CheckstyleUiPlugin;
+import net.sf.eclipsecs.ui.CheckstyleUiPluginImages;
 import net.sf.eclipsecs.ui.Messages;
-import net.sf.eclipsecs.ui.config.configtypes.ConfigurationTypesUI;
-import net.sf.eclipsecs.ui.config.configtypes.ICheckConfigurationEditor;
+import net.sf.eclipsecs.ui.config.configtypes.CheckConfigurationEditor;
+import net.sf.eclipsecs.ui.config.configtypes.ConfigurationTypesUi;
 
 /**
  * Dialog to show/edit the properties (name, location, description) of a check
@@ -59,16 +59,16 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
   private Button mBtnProperties;
 
   /** the working set. */
-  private ICheckConfigurationWorkingSet mWorkingSet;
+  private CheckConfigurationWorkingSet mWorkingSet;
 
   /** the check configuration. */
   private CheckConfigurationWorkingCopy mCheckConfig;
 
   /** the editor for the configuration location. */
-  private ICheckConfigurationEditor mConfigurationEditor;
+  private CheckConfigurationEditor mConfigurationEditor;
 
   /** The template configuration for a new config. */
-  private ICheckConfiguration mTemplate;
+  private CheckConfiguration mTemplate;
 
   private CheckConfigurationPropertiesDialogView dialogView;
 
@@ -88,7 +88,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
    *          the working set the check config is changed in
    */
   public CheckConfigurationPropertiesDialog(Shell parent, CheckConfigurationWorkingCopy checkConfig,
-          ICheckConfigurationWorkingSet workingSet) {
+          CheckConfigurationWorkingSet workingSet) {
     super(parent);
     setHelpAvailable(false);
     mWorkingSet = workingSet;
@@ -104,7 +104,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
    *
    * @return the check configuration working set
    */
-  public ICheckConfigurationWorkingSet getCheckConfigurationWorkingSet() {
+  public CheckConfigurationWorkingSet getCheckConfigurationWorkingSet() {
     return mWorkingSet;
   }
 
@@ -114,7 +114,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
    * @param template
    *          the template configuration
    */
-  public void setTemplateConfiguration(ICheckConfiguration template) {
+  public void setTemplateConfiguration(CheckConfiguration template) {
     this.mTemplate = template;
   }
 
@@ -143,7 +143,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
   protected Control createDialogArea(Composite parent) {
 
     // set the logo
-    this.setTitleImage(CheckstyleUIPluginImages.PLUGIN_LOGO.getImage());
+    this.setTitleImage(CheckstyleUiPluginImages.PLUGIN_LOGO.getImage());
 
     Composite composite = (Composite) super.createDialogArea(parent);
 
@@ -153,7 +153,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
     return composite;
   }
 
-  private void changeSelectedConfigurationType(IConfigurationType type, boolean isComboEnabled) {
+  private void changeSelectedConfigurationType(ConfigurationType type, boolean isComboEnabled) {
     if (isComboEnabled) {
       String oldName = mCheckConfig.getName();
       String oldDescr = mCheckConfig.getDescription();
@@ -251,7 +251,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
   private void createConfigurationEditor(CheckConfigurationWorkingCopy config) {
 
     try {
-      mConfigurationEditor = ConfigurationTypesUI.getNewEditor(config.getType());
+      mConfigurationEditor = ConfigurationTypesUi.getNewEditor(config.getType());
       mConfigurationEditor.initialize(config, this);
 
       dialogView.bindEditor(mConfigurationEditor);
@@ -261,7 +261,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
 
       mBtnProperties.setEnabled(mCheckConfig.getType().isEditable());
     } catch (Exception ex) {
-      CheckstyleUIPlugin.errorDialog(getShell(), ex, true);
+      CheckstyleUiPlugin.errorDialog(getShell(), ex, true);
     }
   }
 
@@ -269,7 +269,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
    * Initialize the dialogs controls with the data.
    */
   private void initialize() {
-    IConfigurationType[] types;
+    ConfigurationType[] types;
     if (mCheckConfig == null) {
       types = mTemplate != null
               ? ConfigurationTypes.getConfigurableConfigTypes()
@@ -296,7 +296,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
       this.setTitle(Messages.CheckConfigurationPropertiesDialog_titleCheckConfig);
       this.setMessage(Messages.CheckConfigurationPropertiesDialog_msgEditCheckConfig);
       dialogView.disable();
-      types = new IConfigurationType[] {
+      types = new ConfigurationType[] {
           mCheckConfig.getType(),
       };
     }

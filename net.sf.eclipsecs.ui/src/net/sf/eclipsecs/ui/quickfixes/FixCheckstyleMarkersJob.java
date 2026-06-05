@@ -30,7 +30,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.progress.UIJob;
 
 import net.sf.eclipsecs.core.builder.CheckstyleMarker;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
+import net.sf.eclipsecs.ui.CheckstyleUiPlugin;
 import net.sf.eclipsecs.ui.Messages;
 
 /**
@@ -72,7 +72,7 @@ public class FixCheckstyleMarkersJob extends UIJob {
       }
       status = Status.OK_STATUS;
     } catch (CoreException ex) {
-      status = new Status(IStatus.ERROR, CheckstyleUIPlugin.PLUGIN_ID, IStatus.OK, ex.getMessage(), ex);
+      status = new Status(IStatus.ERROR, CheckstyleUiPlugin.PLUGIN_ID, IStatus.OK, ex.getMessage(), ex);
     }
 
     return status;

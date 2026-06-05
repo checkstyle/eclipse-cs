@@ -26,7 +26,7 @@ import java.net.URL;
 
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
-import net.sf.eclipsecs.core.config.ICheckConfiguration;
+import net.sf.eclipsecs.core.config.CheckConfiguration;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
@@ -74,7 +74,7 @@ public class ExternalFileConfigurationType extends AbstractConfigurationType {
   }
 
   @Override
-  protected URL resolveLocation(ICheckConfiguration checkConfiguration) throws IOException {
+  protected URL resolveLocation(CheckConfiguration checkConfiguration) throws IOException {
 
     String location = checkConfiguration.getLocation();
 
@@ -91,7 +91,7 @@ public class ExternalFileConfigurationType extends AbstractConfigurationType {
   }
 
   @Override
-  public boolean isConfigurable(ICheckConfiguration checkConfiguration) {
+  public boolean isConfigurable(CheckConfiguration checkConfiguration) {
 
     boolean isConfigurable = true;
 

@@ -36,7 +36,7 @@ import org.eclipse.swt.widgets.Text;
 
 import net.sf.eclipsecs.core.projectconfig.FileMatchPattern;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
+import net.sf.eclipsecs.ui.CheckstyleUiPluginImages;
 import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.util.regex.RegexCompletionProposalFactory;
 
@@ -104,7 +104,7 @@ public class FileMatchPatternEditDialog extends TitleAreaDialog {
       mIncludeButton.setSelection(true);
     }
 
-    this.setTitleImage(CheckstyleUIPluginImages.PLUGIN_LOGO.getImage());
+    this.setTitleImage(CheckstyleUiPluginImages.PLUGIN_LOGO.getImage());
     this.setTitle(Messages.FileMatchPatternEditDialog_title);
     this.setMessage(Messages.FileMatchPatternEditDialog_message);
 

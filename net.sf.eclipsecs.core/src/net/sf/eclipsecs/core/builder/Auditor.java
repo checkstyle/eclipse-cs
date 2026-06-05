@@ -53,7 +53,7 @@ import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
 import net.sf.eclipsecs.core.CheckstylePluginPrefs;
 import net.sf.eclipsecs.core.Messages;
-import net.sf.eclipsecs.core.config.ICheckConfiguration;
+import net.sf.eclipsecs.core.config.CheckConfiguration;
 import net.sf.eclipsecs.core.config.Module;
 import net.sf.eclipsecs.core.config.meta.MetadataFactory;
 import net.sf.eclipsecs.core.config.meta.RuleMetadata;
@@ -69,7 +69,7 @@ public final class Auditor {
   private static final int MONITOR_INTERVAL = 10;
 
   /** The check configuration the auditor uses. */
-  private final ICheckConfiguration mCheckConfiguration;
+  private final CheckConfiguration mCheckConfiguration;
 
   /** Map containing the file resources to audit. */
   private final Map<String, IFile> mFiles = new HashMap<>();
@@ -92,7 +92,7 @@ public final class Auditor {
    * @param checkConfiguration
    *          the check configuraton to use during audit.
    */
-  public Auditor(ICheckConfiguration checkConfiguration) {
+  public Auditor(CheckConfiguration checkConfiguration) {
     mCheckConfiguration = checkConfiguration;
 
     //

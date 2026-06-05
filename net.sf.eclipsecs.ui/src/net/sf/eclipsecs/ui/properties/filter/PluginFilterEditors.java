@@ -27,7 +27,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 
-import net.sf.eclipsecs.core.projectconfig.filters.IFilter;
+import net.sf.eclipsecs.core.projectconfig.filters.AuditFilter;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
@@ -48,7 +48,7 @@ public final class PluginFilterEditors {
   private static final String ATTR_CLASS = "class"; //$NON-NLS-1$
 
   /** the filter prototypes configured to the extension point. */
-  private static Map<String, Class<? extends IFilterEditor>> sFilterEditorClasses;
+  private static Map<String, Class<? extends FilterEditor>> sFilterEditorClasses;
 
   /**
    * Initialize the configured to the filter extension point.
@@ -68,7 +68,7 @@ public final class PluginFilterEditors {
 
         String filter = elements[i].getAttribute(ATTR_FILTER);
 
-        IFilterEditor editor = (IFilterEditor) elements[i].createExecutableExtension(ATTR_CLASS);
+        FilterEditor editor = (FilterEditor) elements[i].createExecutableExtension(ATTR_CLASS);
         sFilterEditorClasses.put(filter, editor.getClass());
       } catch (Exception ex) {
         CheckstyleLog.log(ex);
@@ -89,7 +89,7 @@ public final class PluginFilterEditors {
    * @return <code>true</code> if the filter has an editor, <code>false</code>
    *         otherwise.
    */
-  public static boolean hasEditor(IFilter filter) {
+  public static boolean hasEditor(AuditFilter filter) {
     return sFilterEditorClasses.containsKey(filter.getInternalName());
   }
 
@@ -102,9 +102,9 @@ public final class PluginFilterEditors {
    * @throws CheckstylePluginException
    *           if the filter editor could not be instantiated.
    */
-  public static IFilterEditor getNewEditor(IFilter filter) throws CheckstylePluginException {
-    IFilterEditor editor = null;
-    Class<? extends IFilterEditor> editorClass = sFilterEditorClasses.get(filter.getInternalName());
+  public static FilterEditor getNewEditor(AuditFilter filter) throws CheckstylePluginException {
+    FilterEditor editor = null;
+    Class<? extends FilterEditor> editorClass = sFilterEditorClasses.get(filter.getInternalName());
 
     if (editorClass != null) {
       try {

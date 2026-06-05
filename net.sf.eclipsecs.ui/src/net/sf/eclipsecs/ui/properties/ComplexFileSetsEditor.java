@@ -37,14 +37,14 @@ import org.eclipse.swt.widgets.Shell;
 
 import net.sf.eclipsecs.core.projectconfig.FileSet;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
+import net.sf.eclipsecs.ui.CheckstyleUiPlugin;
 import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.config.CheckConfigurationLabelProvider;
 
 /**
  * Property page.
  */
-public class ComplexFileSetsEditor implements IFileSetsEditor {
+public class ComplexFileSetsEditor implements FileSetsEditor {
 
   private final PropertyPageContext propertyPageContext;
   private ComplexFileSetsEditorView editorView;
@@ -99,7 +99,7 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
         propertyPageContext.updateButtons();
       }
     } catch (CheckstylePluginException ex) {
-      CheckstyleUIPlugin.errorDialog(shell,
+      CheckstyleUiPlugin.errorDialog(shell,
               NLS.bind(Messages.errorFailedAddFileset, ex.getMessage()), ex, true);
     }
   }
@@ -119,7 +119,7 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
           propertyPageContext.updateButtons();
         }
       } catch (CheckstylePluginException ex) {
-        CheckstyleUIPlugin.errorDialog(shell,
+        CheckstyleUiPlugin.errorDialog(shell,
                 NLS.bind(Messages.errorFailedEditFileset, ex.getMessage()), ex, true);
       }
     }

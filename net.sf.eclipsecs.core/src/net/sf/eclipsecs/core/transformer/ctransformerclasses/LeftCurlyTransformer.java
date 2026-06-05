@@ -23,14 +23,14 @@ package net.sf.eclipsecs.core.transformer.ctransformerclasses;
 import java.util.Collections;
 import java.util.List;
 
-import net.sf.eclipsecs.core.transformer.AbstractCTransformationClass;
+import net.sf.eclipsecs.core.transformer.AbstractCheckstyleTransformationClass;
 import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 
 /**
  * Wrapper class for converting the checkstyle-rule LeftCurly to appropriate eclipse-formatter-rules.
  *
  */
-public class LeftCurlyTransformer extends AbstractCTransformationClass {
+public class LeftCurlyTransformer extends AbstractCheckstyleTransformationClass {
   @Override
   public FormatterConfiguration transformRule() {
     String tokens = getAttribute("tokens");

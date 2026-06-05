@@ -42,7 +42,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import net.sf.eclipsecs.core.jobs.RunCheckstyleOnFilesJob;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
+import net.sf.eclipsecs.ui.CheckstyleUiPlugin;
 
 /**
  * Action to run Checkstyle on one ore more projects.
@@ -91,7 +91,7 @@ public class CheckSelectedFilesAction extends AbstractHandler implements IObject
         job.schedule();
       }
     } catch (CoreException ex) {
-      CheckstyleUIPlugin.errorDialog(mPart.getSite().getShell(), ex, true);
+      CheckstyleUiPlugin.errorDialog(mPart.getSite().getShell(), ex, true);
     }
   }
 

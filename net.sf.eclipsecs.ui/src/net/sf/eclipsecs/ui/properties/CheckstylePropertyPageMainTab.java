@@ -36,8 +36,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
-import net.sf.eclipsecs.ui.CheckstyleUIPluginPrefs;
+import net.sf.eclipsecs.ui.CheckstyleUiPlugin;
+import net.sf.eclipsecs.ui.CheckstyleUiPluginPrefs;
 import net.sf.eclipsecs.ui.Messages;
 
 public final class CheckstylePropertyPageMainTab extends Composite {
@@ -47,7 +47,7 @@ public final class CheckstylePropertyPageMainTab extends Composite {
   private final Button mChkEnable;
   private final Composite mFileSetsContainer;
 
-  private IFileSetsEditor mFileSetsEditor;
+  private FileSetsEditor mFileSetsEditor;
 
   public CheckstylePropertyPageMainTab(Composite parent, int style,
           PropertyPageContext propertyPageContext, boolean mCheckstyleInitiallyActivated) {
@@ -163,8 +163,8 @@ public final class CheckstylePropertyPageMainTab extends Composite {
     public void widgetSelected(SelectionEvent e) {
       propertyPageContext.configuration().setUseSimpleConfig(mChkSimpleConfig.getSelection());
 
-      boolean showWarning = CheckstyleUIPluginPrefs
-              .getBoolean(CheckstyleUIPluginPrefs.PREF_FILESET_WARNING);
+      boolean showWarning = CheckstyleUiPluginPrefs
+              .getBoolean(CheckstyleUiPluginPrefs.PREF_FILESET_WARNING);
       if (showWarning && propertyPageContext.configuration().isUseSimpleConfig()) {
         MessageDialogWithToggle dialog = new MessageDialogWithToggle(getShell(),
                 Messages.CheckstylePropertyPage_titleWarnFilesets, null,
@@ -185,8 +185,8 @@ public final class CheckstylePropertyPageMainTab extends Composite {
           }
 
         };
-        dialog.setPrefStore(CheckstyleUIPlugin.getDefault().getPreferenceStore());
-        dialog.setPrefKey(CheckstyleUIPluginPrefs.PREF_FILESET_WARNING);
+        dialog.setPrefStore(CheckstyleUiPlugin.getDefault().getPreferenceStore());
+        dialog.setPrefKey(CheckstyleUiPluginPrefs.PREF_FILESET_WARNING);
         dialog.open();
 
       }

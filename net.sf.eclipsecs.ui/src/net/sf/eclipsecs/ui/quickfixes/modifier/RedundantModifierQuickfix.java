@@ -37,7 +37,7 @@ import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.swt.graphics.Image;
 
-import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
+import net.sf.eclipsecs.ui.CheckstyleUiPluginImages;
 import net.sf.eclipsecs.ui.quickfixes.AbstractASTResolution;
 import net.sf.eclipsecs.ui.quickfixes.Messages;
 
@@ -68,7 +68,7 @@ public class RedundantModifierQuickfix extends AbstractASTResolution {
 
   @Override
   public Image getImage() {
-    return CheckstyleUIPluginImages.CORRECTION_REMOVE.getImage();
+    return CheckstyleUiPluginImages.CORRECTION_REMOVE.getImage();
   }
 
   private final class RedundantModifierQuickfixAstVisitor extends ASTVisitor {

@@ -31,15 +31,15 @@ import java.util.Optional;
 
 import com.google.common.io.ByteStreams;
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
+import net.sf.eclipsecs.core.config.CheckConfiguration;
 import net.sf.eclipsecs.core.config.CheckstyleConfigurationFile;
-import net.sf.eclipsecs.core.config.ICheckConfiguration;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
 /**
- * Base implementation of <code>IConfigurationType</code>.
+ * Base implementation of <code>ConfigurationType</code>.
  *
  */
-public abstract class AbstractConfigurationType implements IConfigurationType {
+public abstract class AbstractConfigurationType implements ConfigurationType {
 
   /** The name. */
   private String mName;
@@ -66,7 +66,7 @@ public abstract class AbstractConfigurationType implements IConfigurationType {
    * @throws IOException
    *           error while resolving the url
    */
-  protected abstract URL resolveLocation(ICheckConfiguration checkConfiguration) throws IOException;
+  protected abstract URL resolveLocation(CheckConfiguration checkConfiguration) throws IOException;
 
   @Override
   public void initialize(String name, String internalName, String definingPluginId,
@@ -99,12 +99,12 @@ public abstract class AbstractConfigurationType implements IConfigurationType {
   }
 
   @Override
-  public boolean isConfigurable(ICheckConfiguration checkConfiguration) {
+  public boolean isConfigurable(CheckConfiguration checkConfiguration) {
     return mIsConfigurable;
   }
 
   @Override
-  public URL getResolvedConfigurationFileURL(ICheckConfiguration checkConfiguration)
+  public URL getResolvedConfigurationFileUrl(CheckConfiguration checkConfiguration)
           throws CheckstylePluginException {
     URL url = null;
 
@@ -118,27 +118,27 @@ public abstract class AbstractConfigurationType implements IConfigurationType {
 
   @Override
   public CheckstyleConfigurationFile getCheckstyleConfiguration(
-          ICheckConfiguration checkConfiguration) throws CheckstylePluginException {
+          CheckConfiguration checkConfiguration) throws CheckstylePluginException {
 
     CheckstyleConfigurationFile data = new CheckstyleConfigurationFile();
 
     try {
 
       // resolve the true configuration file URL
-      data.setResolvedConfigFileURL(resolveLocation(checkConfiguration));
+      data.setResolvedConfigFileUrl(resolveLocation(checkConfiguration));
 
-      URLConnection connection = data.getResolvedConfigFileURL().openConnection();
+      URLConnection connection = data.getResolvedConfigFileUrl().openConnection();
       connection.connect();
 
       // get last modification timestamp
       data.setModificationStamp(connection.getLastModified());
 
       // get the configuration file data
-      byte[] configurationFileData = getBytesFromURLConnection(connection);
+      byte[] configurationFileData = getBytesFromUrlConnection(connection);
       data.setCheckConfigFileBytes(configurationFileData);
 
       // get the properties bundle
-      getAdditionPropertiesBundleBytes(data.getResolvedConfigFileURL())
+      getAdditionPropertiesBundleBytes(data.getResolvedConfigFileUrl())
               .ifPresent(data::setAdditionalPropertyBundleBytes);
 
       // get the property resolver
@@ -160,13 +160,13 @@ public abstract class AbstractConfigurationType implements IConfigurationType {
    * provided configuration URL.
    * </p>
    *
-   * @param checkConfigURL
+   * @param checkConfigUrl
    *          the URL of the Checkstyle configuration file
    * @return an optional containing the bytes of the properties bundle, or empty if it cannot be
    *         loaded
    */
-  protected Optional<byte[]> getAdditionPropertiesBundleBytes(URL checkConfigURL) {
-    String location = checkConfigURL.toString();
+  protected Optional<byte[]> getAdditionPropertiesBundleBytes(URL checkConfigUrl) {
+    String location = checkConfigUrl.toString();
 
     // Strip file extension
     String propsLocation = null;
@@ -181,10 +181,9 @@ public abstract class AbstractConfigurationType implements IConfigurationType {
 
     Optional<byte[]> bytes = Optional.empty();
     try {
-      URL propertyFileURL = URI.create(propsLocation).toURL();
-      URLConnection connection = propertyFileURL.openConnection();
+      URLConnection connection = URI.create(propsLocation).toURL().openConnection();
 
-      bytes = Optional.of(getBytesFromURLConnection(connection));
+      bytes = Optional.of(getBytesFromUrlConnection(connection));
     } catch (IOException ex) {
       // we won't load the bundle then
       // disabled logging bug #1647602
@@ -207,7 +206,7 @@ public abstract class AbstractConfigurationType implements IConfigurationType {
    * @throws URISyntaxException
    *           if configuration file URL cannot be resolved
    */
-  protected PropertyResolver getPropertyResolver(ICheckConfiguration config,
+  protected PropertyResolver getPropertyResolver(CheckConfiguration config,
           CheckstyleConfigurationFile configFile) throws IOException, URISyntaxException {
     return PropertyResolverFactory.getPropertyResolver(config, configFile);
   }
@@ -221,14 +220,14 @@ public abstract class AbstractConfigurationType implements IConfigurationType {
    * @throws IOException
    *           if an I/O error occurs while reading from the connection
    */
-  protected byte[] getBytesFromURLConnection(URLConnection connection) throws IOException {
+  protected byte[] getBytesFromUrlConnection(URLConnection connection) throws IOException {
     try (InputStream in = connection.getInputStream()) {
       return ByteStreams.toByteArray(in);
     }
   }
 
   @Override
-  public void notifyCheckConfigRemoved(ICheckConfiguration checkConfiguration)
+  public void notifyCheckConfigRemoved(CheckConfiguration checkConfiguration)
           throws CheckstylePluginException {
     // standard is that nothing happens
   }

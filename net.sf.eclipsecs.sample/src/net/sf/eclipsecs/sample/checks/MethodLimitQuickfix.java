@@ -27,7 +27,7 @@ import org.eclipse.jdt.core.dom.TagElement;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.swt.graphics.Image;
 
-import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
+import net.sf.eclipsecs.ui.CheckstyleUiPluginImages;
 import net.sf.eclipsecs.ui.quickfixes.AbstractASTResolution;
 
 public class MethodLimitQuickfix extends AbstractASTResolution {
@@ -70,6 +70,6 @@ public class MethodLimitQuickfix extends AbstractASTResolution {
 
   @Override
   public Image getImage() {
-    return CheckstyleUIPluginImages.CORRECTION_CHANGE.getImage();
+    return CheckstyleUiPluginImages.CORRECTION_CHANGE.getImage();
   }
 }

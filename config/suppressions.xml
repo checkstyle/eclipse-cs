@@ -13,7 +13,7 @@
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]builder[/\\]CheckerFactory.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]builder[/\\]CheckstyleBuilder.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]builder[/\\]CheckstyleMarker.java" />
-    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]CheckConfiguration.java" />
+    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]DefaultCheckConfiguration.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]CheckConfigurationFactory.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]CheckConfigurationTester.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]CheckConfigurationWorkingCopy.java" />
@@ -22,20 +22,20 @@
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]ConfigurationReader.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]ConfigurationWriter.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]GlobalCheckConfigurationWorkingSet.java" />
-    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]ICheckConfiguration.java" />
-    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]ICheckConfigurationWorkingSet.java" />
+    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]CheckConfiguration.java" />
+    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]CheckConfigurationWorkingSet.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]Module.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]ResolvableProperty.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]Severity.java" />
-    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]XMLTags.java" />
+    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]XmlTags.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]configtypes[/\\]BuiltInConfigurationType.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]configtypes[/\\]BuiltInFilePropertyResolver.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]configtypes[/\\]ClasspathVariableResolver.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]configtypes[/\\]AbstractConfigurationType.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]configtypes[/\\]ConfigurationTypes.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]configtypes[/\\]ExternalFileConfigurationType.java" />
-    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]configtypes[/\\]IConfigurationType.java" />
-    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]configtypes[/\\]IContextAware.java" />
+    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]configtypes[/\\]ConfigurationType.java" />
+    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]configtypes[/\\]ContextAware.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]configtypes[/\\]InternalConfigurationType.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]configtypes[/\\]MultiPropertyResolver.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]configtypes[/\\]ProjectConfigurationType.java" />
@@ -48,12 +48,12 @@
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]meta[/\\]AllTokensProvider.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]meta[/\\]ConfigPropertyMetadata.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]meta[/\\]ConfigPropertyType.java" />
-    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]meta[/\\]IOptionProvider.java" />
+    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]meta[/\\]OptionProvider.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]meta[/\\]MetadataFactory.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]meta[/\\]RuleGroupMetadata.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]meta[/\\]RuleMetadata.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]savefilter[/\\]CheckerModuleSaveFilter.java" />
-    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]savefilter[/\\]ISaveFilter.java" />
+    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]savefilter[/\\]SaveFilter.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]savefilter[/\\]SaveFilters.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]savefilter[/\\]SortingSaveFilter.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]savefilter[/\\]SuppressWarningsHolderSaveFilter.java" />
@@ -67,26 +67,26 @@
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]nature[/\\]CheckstyleNature.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]projectconfig[/\\]FileMatchPattern.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]projectconfig[/\\]FileSet.java" />
-    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]projectconfig[/\\]IProjectConfiguration.java" />
+    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]projectconfig[/\\]ProjectConfiguration.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]projectconfig[/\\]LocalCheckConfigurationWorkingSet.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]projectconfig[/\\]PluginFilters.java" />
-    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]projectconfig[/\\]ProjectConfiguration.java" />
+    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]projectconfig[/\\]DefaultProjectConfiguration.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]projectconfig[/\\]ProjectConfigurationFactory.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]projectconfig[/\\]ProjectConfigurationWorkingCopy.java" />
-    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]projectconfig[/\\]XMLTags.java" />
+    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]projectconfig[/\\]XmlTags.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]projectconfig[/\\]filters[/\\]AbstractFilter.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]projectconfig[/\\]filters[/\\]DerivedFilesFilter.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]projectconfig[/\\]filters[/\\]FilesInSyncFilter.java" />
-    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]projectconfig[/\\]filters[/\\]IFilter.java" />
+    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]projectconfig[/\\]filters[/\\]AuditFilter.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]projectconfig[/\\]filters[/\\]NonSrcDirsFilter.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]projectconfig[/\\]filters[/\\]PackageFilter.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]projectconfig[/\\]filters[/\\]UnOpenedFilesFilter.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]projectconfig[/\\]filters[/\\]WriteProtectedFilter.java" />
-    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]transformer[/\\]AbstractCTransformationClass.java" />
+    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]transformer[/\\]AbstractCheckstyleTransformationClass.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]transformer[/\\]CheckstyleFileWriter.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]transformer[/\\]CheckstyleSetting.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]transformer[/\\]CheckstyleTransformer.java" />
-    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]transformer[/\\]AbstractFTransformationClass.java" />
+    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]transformer[/\\]AbstractFormatterTransformationClass.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]transformer[/\\]FormatterConfigParser.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]transformer[/\\]FormatterConfigWriter.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]transformer[/\\]FormatterConfiguration.java" />
@@ -122,12 +122,12 @@
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]util[/\\]CheckstylePluginException.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]util[/\\]EclipseLogHandler.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]util[/\\]ExtensionClassLoader.java" />
-    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]util[/\\]XMLUtil.java" />
+    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]util[/\\]XmlUtil.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]CheckstyleMarkerImageProvider.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]CheckstylePluginStartup.java" />
-    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]CheckstyleUIPlugin.java" />
-    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]CheckstyleUIPluginImages.java" />
-    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]CheckstyleUIPluginPrefs.java" />
+    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]CheckstyleUiPlugin.java" />
+    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]CheckstyleUiPluginImages.java" />
+    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]CheckstyleUiPluginPrefs.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]Messages.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]actions[/\\]ActivateProjectsAction.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]actions[/\\]CheckSelectedFilesAction.java" />
@@ -147,9 +147,9 @@
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]config[/\\]ResolvablePropertyEditDialog.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]config[/\\]RuleConfigurationEditDialog.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]config[/\\]configtypes[/\\]BuiltInConfigurationEditor.java" />
-    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]config[/\\]configtypes[/\\]ConfigurationTypesUI.java" />
+    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]config[/\\]configtypes[/\\]ConfigurationTypesUi.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]config[/\\]configtypes[/\\]ExternalFileConfigurationEditor.java" />
-    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]config[/\\]configtypes[/\\]ICheckConfigurationEditor.java" />
+    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]config[/\\]configtypes[/\\]CheckConfigurationEditor.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]config[/\\]configtypes[/\\]InternalConfigurationEditor.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]config[/\\]configtypes[/\\]ProjectConfigurationEditor.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]config[/\\]configtypes[/\\]RemoteConfigurationEditor.java" />
@@ -163,7 +163,7 @@
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]config[/\\]widgets[/\\]ConfigPropertyWidgetRegex.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]config[/\\]widgets[/\\]ConfigPropertyWidgetSingleSelect.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]config[/\\]widgets[/\\]ConfigPropertyWidgetString.java" />
-    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]config[/\\]widgets[/\\]IConfigPropertyWidget.java" />
+    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]config[/\\]widgets[/\\]ConfigPropertyWidget.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]preferences[/\\]CheckstylePreferencePage.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]preferences[/\\]CheckstyleSettingsTransfer.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]properties[/\\]CheckConfigurationContentProvider.java" />
@@ -171,11 +171,11 @@
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]properties[/\\]ComplexFileSetsEditor.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]properties[/\\]FileMatchPatternEditDialog.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]properties[/\\]FileSetEditDialog.java" />
-    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]properties[/\\]IFileSetsEditor.java" />
+    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]properties[/\\]FileSetsEditor.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]properties[/\\]SimpleFileSetsEditor.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]properties[/\\]filter[/\\]CheckFileOnOpenPartListener.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]properties[/\\]filter[/\\]FileTypesFilterEditor.java" />
-    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]properties[/\\]filter[/\\]IFilterEditor.java" />
+    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]properties[/\\]filter[/\\]FilterEditor.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]properties[/\\]filter[/\\]PackageFilterEditor.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]properties[/\\]filter[/\\]PluginFilterEditors.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]quickfixes[/\\]AbstractASTResolution.java" />
@@ -183,7 +183,7 @@
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]quickfixes[/\\]FixCheckstyleMarkersAction.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]quickfixes[/\\]FixCheckstyleMarkersHandler.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]quickfixes[/\\]FixCheckstyleMarkersJob.java" />
-    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]quickfixes[/\\]ICheckstyleMarkerResolution.java" />
+    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]quickfixes[/\\]CheckstyleMarkerResolution.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]quickfixes[/\\]Messages.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]quickfixes[/\\]blocks[/\\]AvoidNestedBlocksQuickfix.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]quickfixes[/\\]blocks[/\\]NeedBracesQuickfix.java" />
@@ -213,9 +213,9 @@
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]stats[/\\]views[/\\]internal[/\\]CheckstyleMarkerFilter.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]stats[/\\]views[/\\]internal[/\\]CheckstyleMarkerFilterDialog.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]stats[/\\]views[/\\]internal[/\\]FiltersAction.java" />
-    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]util[/\\]SWTUtil.java" />
-    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]util[/\\]table[/\\]ITableComparableProvider.java" />
-    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]util[/\\]table[/\\]ITableSettingsProvider.java" />
+    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]util[/\\]SwtUtil.java" />
+    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]util[/\\]table[/\\]TableComparableProvider.java" />
+    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]util[/\\]table[/\\]TableSettingsProvider.java" />
 
     <!-- code is copied from ant -->
     <suppress checks="TodoComment" files="PropertyUtil.java"/> 

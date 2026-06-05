@@ -22,15 +22,15 @@ package net.sf.eclipsecs.core.config.configtypes;
 
 import java.net.URL;
 
+import net.sf.eclipsecs.core.config.CheckConfiguration;
 import net.sf.eclipsecs.core.config.CheckstyleConfigurationFile;
-import net.sf.eclipsecs.core.config.ICheckConfiguration;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
 /**
  * Interface for a configuration type.
  *
  */
-public interface IConfigurationType {
+public interface ConfigurationType {
 
   /**
    * Initializes the configuration type.
@@ -88,7 +88,7 @@ public interface IConfigurationType {
    *          the actual check configuration
    * @return <code>true</code> if the checkstyle configuration can be configured.
    */
-  boolean isConfigurable(ICheckConfiguration checkConfiguration);
+  boolean isConfigurable(CheckConfiguration checkConfiguration);
 
   /**
    * Notifies that a check configuration has been removed.
@@ -98,7 +98,7 @@ public interface IConfigurationType {
    * @throws CheckstylePluginException
    *           error while processing the notification
    */
-  void notifyCheckConfigRemoved(ICheckConfiguration checkConfiguration)
+  void notifyCheckConfigRemoved(CheckConfiguration checkConfiguration)
           throws CheckstylePluginException;
 
   /**
@@ -112,7 +112,7 @@ public interface IConfigurationType {
    * @throws CheckstylePluginException
    *           exception while resolving the URL
    */
-  URL getResolvedConfigurationFileURL(ICheckConfiguration checkConfiguration)
+  URL getResolvedConfigurationFileUrl(CheckConfiguration checkConfiguration)
           throws CheckstylePluginException;
 
   /**
@@ -125,6 +125,6 @@ public interface IConfigurationType {
    * @throws CheckstylePluginException
    *           exception while getting the Checkstyle configuration file data
    */
-  CheckstyleConfigurationFile getCheckstyleConfiguration(ICheckConfiguration checkConfiguration)
+  CheckstyleConfigurationFile getCheckstyleConfiguration(CheckConfiguration checkConfiguration)
           throws CheckstylePluginException;
 }

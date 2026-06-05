@@ -34,7 +34,7 @@ import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.swt.graphics.Image;
 
-import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
+import net.sf.eclipsecs.ui.CheckstyleUiPluginImages;
 import net.sf.eclipsecs.ui.quickfixes.AbstractASTResolution;
 import net.sf.eclipsecs.ui.quickfixes.Messages;
 
@@ -63,7 +63,7 @@ public class ArrayTypeStyleQuickfix extends AbstractASTResolution {
 
   @Override
   public Image getImage() {
-    return CheckstyleUIPluginImages.CORRECTION_CHANGE.getImage();
+    return CheckstyleUiPluginImages.CORRECTION_CHANGE.getImage();
   }
 
   private final class ArrayTypeStyleQuickfixAstVisitor extends ASTVisitor {
@@ -78,7 +78,7 @@ public class ArrayTypeStyleQuickfix extends AbstractASTResolution {
 
       if (containsPosition(node, markerStartOffset)) {
 
-        if (isCStyle(node.fragments())) {
+        if (isCstyle(node.fragments())) {
 
           int dimensions = 0;
 
@@ -118,7 +118,7 @@ public class ArrayTypeStyleQuickfix extends AbstractASTResolution {
     public boolean visit(SingleVariableDeclaration node) {
 
       if (containsPosition(node, markerStartOffset)) {
-        if (isCStyle(node)) {
+        if (isCstyle(node)) {
           // wrap the existing type into an array type
           node.setType(createArrayType(node.getType(), node.getExtraDimensions()));
           node.setExtraDimensions(0);
@@ -141,7 +141,7 @@ public class ArrayTypeStyleQuickfix extends AbstractASTResolution {
 
       if (containsPosition(node, markerStartOffset)) {
 
-        if (isCStyle(node.fragments())) {
+        if (isCstyle(node.fragments())) {
 
           int dimensions = 0;
 
@@ -180,21 +180,21 @@ public class ArrayTypeStyleQuickfix extends AbstractASTResolution {
       return type instanceof ArrayType;
     }
 
-    private boolean isCStyle(VariableDeclaration decl) {
+    private boolean isCstyle(VariableDeclaration decl) {
       return decl.getExtraDimensions() > 0;
     }
 
-    private boolean isCStyle(List<?> fragments) {
-      boolean isCStyle = false;
+    private boolean isCstyle(List<?> fragments) {
+      boolean isCstyle = false;
       Iterator<?> iter = fragments.iterator();
       while (iter.hasNext()) {
         VariableDeclaration decl = (VariableDeclaration) iter.next();
-        if (isCStyle(decl)) {
-          isCStyle = true;
+        if (isCstyle(decl)) {
+          isCstyle = true;
           break;
         }
       }
-      return isCStyle;
+      return isCstyle;
     }
 
     private ArrayType createArrayType(Type componentType, int dimensions) {

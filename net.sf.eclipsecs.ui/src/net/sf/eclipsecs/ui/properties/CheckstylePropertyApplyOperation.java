@@ -33,8 +33,8 @@ import net.sf.eclipsecs.core.jobs.TransformCheckstyleRulesJob;
 import net.sf.eclipsecs.core.nature.CheckstyleNature;
 import net.sf.eclipsecs.core.projectconfig.ProjectConfigurationWorkingCopy;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
-import net.sf.eclipsecs.ui.CheckstyleUIPluginPrefs;
+import net.sf.eclipsecs.ui.CheckstyleUiPlugin;
+import net.sf.eclipsecs.ui.CheckstyleUiPluginPrefs;
 import net.sf.eclipsecs.ui.Messages;
 
 public final class CheckstylePropertyApplyOperation {
@@ -73,8 +73,8 @@ public final class CheckstylePropertyApplyOperation {
         // if a rebuild is advised, check/prompt if the rebuild should
         // really be done.
         if (needRebuild) {
-          String promptRebuildPref = CheckstyleUIPluginPrefs
-                  .getString(CheckstyleUIPluginPrefs.PREF_ASK_BEFORE_REBUILD);
+          String promptRebuildPref = CheckstyleUiPluginPrefs
+                  .getString(CheckstyleUiPluginPrefs.PREF_ASK_BEFORE_REBUILD);
 
           boolean doRebuild = MessageDialogWithToggle.ALWAYS.equals(promptRebuildPref);
 
@@ -86,8 +86,8 @@ public final class CheckstylePropertyApplyOperation {
                     Messages.CheckstylePropertyPage_titleRebuild,
                     Messages.CheckstylePropertyPage_msgRebuild,
                     Messages.CheckstylePropertyPage_nagRebuild, false,
-                    CheckstyleUIPlugin.getDefault().getPreferenceStore(),
-                    CheckstyleUIPluginPrefs.PREF_ASK_BEFORE_REBUILD);
+                    CheckstyleUiPlugin.getDefault().getPreferenceStore(),
+                    CheckstyleUiPluginPrefs.PREF_ASK_BEFORE_REBUILD);
 
             doRebuild = dialog.getReturnCode() == IDialogConstants.YES_ID;
           }
@@ -103,7 +103,7 @@ public final class CheckstylePropertyApplyOperation {
         }
       }
     } catch (CheckstylePluginException ex) {
-      CheckstyleUIPlugin.errorDialog(shell, ex, true);
+      CheckstyleUiPlugin.errorDialog(shell, ex, true);
     }
     return true;
   }

@@ -23,14 +23,14 @@ package net.sf.eclipsecs.core.config.savefilter;
 import java.util.List;
 
 import net.sf.eclipsecs.core.config.Module;
-import net.sf.eclipsecs.core.config.XMLTags;
+import net.sf.eclipsecs.core.config.XmlTags;
 import net.sf.eclipsecs.core.config.meta.MetadataFactory;
 
 /**
  * Special module logic for the TreeWalker module.
  *
  */
-public class TreeWalkerModuleSaveFilter implements ISaveFilter {
+public class TreeWalkerModuleSaveFilter implements SaveFilter {
 
   @Override
   public void postProcessConfiguredModules(List<Module> configuredModules) {
@@ -45,11 +45,11 @@ public class TreeWalkerModuleSaveFilter implements ISaveFilter {
 
       Module module = configuredModules.get(i);
 
-      if (XMLTags.TREEWALKER_MODULE.equals(module.getMetaData().identity().internalName())) {
+      if (XmlTags.TREEWALKER_MODULE.equals(module.getMetaData().identity().internalName())) {
         containsTreeWalkerModule = true;
         configuredTreeWalker = module;
       }
-      if (XMLTags.TREEWALKER_MODULE.equals(module.getMetaData().identity().parent())) {
+      if (XmlTags.TREEWALKER_MODULE.equals(module.getMetaData().identity().parent())) {
         containsTreeWalkerDependantModule = true;
       }
 
@@ -60,7 +60,7 @@ public class TreeWalkerModuleSaveFilter implements ISaveFilter {
 
     // add the TreeWalker if needed
     if (!containsTreeWalkerModule && containsTreeWalkerDependantModule) {
-      Module treeWalker = new Module(MetadataFactory.getRuleMetadata(XMLTags.TREEWALKER_MODULE),
+      Module treeWalker = new Module(MetadataFactory.getRuleMetadata(XmlTags.TREEWALKER_MODULE),
               false);
       configuredModules.add(0, treeWalker);
     } else if (containsTreeWalkerModule && !containsTreeWalkerDependantModule) {

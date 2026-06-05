@@ -20,7 +20,7 @@
 
 package net.sf.eclipsecs.core.transformer.ctransformerclasses;
 
-import net.sf.eclipsecs.core.transformer.AbstractCTransformationClass;
+import net.sf.eclipsecs.core.transformer.AbstractCheckstyleTransformationClass;
 import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 
 /**
@@ -28,7 +28,7 @@ import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
  * eclipse-formatter-rules.
  *
  */
-public class MissingDeprecatedTransformer extends AbstractCTransformationClass {
+public class MissingDeprecatedTransformer extends AbstractCheckstyleTransformationClass {
   @Override
   public FormatterConfiguration transformRule() {
     useCleanupSetting("add_missing_annotations", "true");

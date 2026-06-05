@@ -38,25 +38,25 @@ import net.sf.eclipsecs.core.util.CheckstyleLog;
 /**
  * The main plugin class to be used in the desktop.
  */
-public class CheckstyleUIPlugin extends AbstractUIPlugin {
+public class CheckstyleUiPlugin extends AbstractUIPlugin {
 
   /** Identifier of the plug-in. */
   public static final String PLUGIN_ID = "net.sf.eclipsecs.ui"; //$NON-NLS-1$
 
   /** The shared instance. */
-  private static CheckstyleUIPlugin sPlugin;
+  private static CheckstyleUiPlugin sPlugin;
 
   /**
    * The constructor.
    */
-  public CheckstyleUIPlugin() {
+  public CheckstyleUiPlugin() {
     sPlugin = this;
   }
 
   @Override
   public void stop(BundleContext context) throws Exception {
     // free cached images
-    CheckstyleUIPluginImages.clearCachedImages();
+    CheckstyleUiPluginImages.clearCachedImages();
     super.stop(context);
   }
 
@@ -65,7 +65,7 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
    *
    * @return The shared plug-in instance.
    */
-  public static CheckstyleUIPlugin getDefault() {
+  public static CheckstyleUiPlugin getDefault() {
     return sPlugin;
   }
 
@@ -109,7 +109,7 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
    */
   public static void errorDialog(Shell shell, String message, Throwable throwable, boolean log) {
 
-    Status status = new Status(IStatus.ERROR, CheckstyleUIPlugin.PLUGIN_ID, IStatus.OK,
+    Status status = new Status(IStatus.ERROR, CheckstyleUiPlugin.PLUGIN_ID, IStatus.OK,
             message != null ? message : "", throwable); //$NON-NLS-1$
 
     String msg = NLS.bind(Messages.errorDialogMainMessage, message);
@@ -145,7 +145,7 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
    *          the exception
    */
   public static void warningDialog(Shell shell, String message, Throwable throwable) {
-    Status status = new Status(IStatus.WARNING, CheckstyleUIPlugin.PLUGIN_ID, IStatus.OK,
+    Status status = new Status(IStatus.WARNING, CheckstyleUiPlugin.PLUGIN_ID, IStatus.OK,
             throwable.getLocalizedMessage(), throwable);
 
     ErrorDialog.openError(shell, Messages.CheckstyleLog_titleWarning, message, status);

@@ -43,13 +43,13 @@ import net.sf.eclipsecs.core.projectconfig.FileMatchPattern;
 import net.sf.eclipsecs.core.projectconfig.FileSet;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
-import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
+import net.sf.eclipsecs.ui.CheckstyleUiPlugin;
+import net.sf.eclipsecs.ui.CheckstyleUiPluginImages;
 import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.config.CheckConfigurationConfigureDialog;
 import net.sf.eclipsecs.ui.properties.FileMatchPatternControl.FileMatchPatternControlCallbacks;
 import net.sf.eclipsecs.ui.properties.FileSetEditDialogMatchedFilesPreview.FileSetEditDialogMatchedFilesPreviewFilter;
-import net.sf.eclipsecs.ui.util.SWTUtil;
+import net.sf.eclipsecs.ui.util.SwtUtil;
 
 public final class FileSetEditDialog extends TitleAreaDialog {
 
@@ -115,7 +115,7 @@ public final class FileSetEditDialog extends TitleAreaDialog {
     // init the check configuration combo
     dialogView.setProjectConfiguration(propertyPageContext.configuration());
 
-    this.setTitleImage(CheckstyleUIPluginImages.PLUGIN_LOGO.getImage());
+    this.setTitleImage(CheckstyleUiPluginImages.PLUGIN_LOGO.getImage());
     this.setMessage(Messages.FileSetEditDialog_message);
 
     if (mIsCreatingNewFileset) {
@@ -142,7 +142,7 @@ public final class FileSetEditDialog extends TitleAreaDialog {
   public void create() {
     super.create();
 
-    SWTUtil.addResizeSupport(this, CheckstyleUIPlugin.getDefault().getDialogSettings(),
+    SwtUtil.addResizeSupport(this, CheckstyleUiPlugin.getDefault().getDialogSettings(),
             FileSetEditDialog.class.getName());
   }
 
@@ -251,7 +251,7 @@ public final class FileSetEditDialog extends TitleAreaDialog {
         dialog.open();
 
       } catch (CheckstylePluginException ex) {
-        CheckstyleUIPlugin.warningDialog(getShell(),
+        CheckstyleUiPlugin.warningDialog(getShell(),
                 NLS.bind(Messages.CheckstylePreferencePage_msgProjectRelativeConfigNoFound,
                         propertyPageContext.project(), config.getLocation()),
                 ex);

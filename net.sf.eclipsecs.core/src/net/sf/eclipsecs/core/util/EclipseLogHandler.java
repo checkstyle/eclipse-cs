@@ -41,7 +41,7 @@ import net.sf.eclipsecs.core.Messages;
 public class EclipseLogHandler extends Handler {
 
   /** The plugin Id. */
-  private final String mPluginID;
+  private final String pluginId;
 
   /** The eclipse log to log into. */
   private final ILog mPluginLog;
@@ -55,7 +55,7 @@ public class EclipseLogHandler extends Handler {
    */
   public EclipseLogHandler(Plugin loggingPlugin) {
     mPluginLog = loggingPlugin.getLog();
-    mPluginID = loggingPlugin.getBundle().getSymbolicName();
+    pluginId = loggingPlugin.getBundle().getSymbolicName();
   }
 
   @Override
@@ -79,7 +79,7 @@ public class EclipseLogHandler extends Handler {
     // get throwable
     Throwable thrown = record.getThrown();
 
-    Status status = new Status(severity, mPluginID, IStatus.OK,
+    Status status = new Status(severity, pluginId, IStatus.OK,
             NLS.bind(Messages.CheckstyleLog_msgStatusPrefix, message), thrown);
     mPluginLog.log(status);
   }

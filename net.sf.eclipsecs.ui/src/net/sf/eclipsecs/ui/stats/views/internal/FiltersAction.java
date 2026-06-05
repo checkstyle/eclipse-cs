@@ -22,7 +22,7 @@ package net.sf.eclipsecs.ui.stats.views.internal;
 
 import org.eclipse.jface.action.Action;
 
-import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
+import net.sf.eclipsecs.ui.CheckstyleUiPluginImages;
 import net.sf.eclipsecs.ui.stats.Messages;
 import net.sf.eclipsecs.ui.stats.views.AbstractStatsView;
 
@@ -51,7 +51,7 @@ public class FiltersAction extends Action {
    */
   public FiltersAction(AbstractStatsView view) {
     super(Messages.FiltersAction_text);
-    setImageDescriptor(CheckstyleUIPluginImages.FILTER_ICON.getImageDescriptor());
+    setImageDescriptor(CheckstyleUiPluginImages.FILTER_ICON.getImageDescriptor());
     setToolTipText(Messages.FiltersAction_tooltip);
     this.mStatsView = view;
     setEnabled(true);

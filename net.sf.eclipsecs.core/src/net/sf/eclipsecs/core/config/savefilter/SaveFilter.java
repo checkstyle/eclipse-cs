@@ -18,21 +18,24 @@
 //
 //============================================================================
 
-package net.sf.eclipsecs.core.config.configtypes;
+package net.sf.eclipsecs.core.config.savefilter;
 
-import org.eclipse.core.resources.IProject;
+import java.util.List;
+
+import net.sf.eclipsecs.core.config.Module;
 
 /**
- * Interface for plugin property resolvers.
+ * Interface to implement special module logic.
  *
  */
-public interface IContextAware {
+public interface SaveFilter {
 
   /**
-   * Sets the project context.
+   * Post processes the selection of configurad modules. This can be used to add/remove certain
+   * 'special' modules. Implementations are encouraged to manipulate the list of configured modules.
    *
-   * @param project
-   *          the project context
+   * @param configuredModules
+   *          the configured modules in from this configuration
    */
-  void setProjectContext(IProject project);
+  void postProcessConfiguredModules(List<Module> configuredModules);
 }

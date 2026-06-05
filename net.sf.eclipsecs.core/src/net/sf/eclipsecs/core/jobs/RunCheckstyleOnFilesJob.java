@@ -39,9 +39,9 @@ import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import net.sf.eclipsecs.core.CheckstylePlugin;
 import net.sf.eclipsecs.core.Messages;
 import net.sf.eclipsecs.core.builder.CheckstyleBuilder;
-import net.sf.eclipsecs.core.projectconfig.IProjectConfiguration;
+import net.sf.eclipsecs.core.projectconfig.ProjectConfiguration;
 import net.sf.eclipsecs.core.projectconfig.ProjectConfigurationFactory;
-import net.sf.eclipsecs.core.projectconfig.filters.IFilter;
+import net.sf.eclipsecs.core.projectconfig.filters.AuditFilter;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
 /**
@@ -92,7 +92,7 @@ public class RunCheckstyleOnFilesJob extends AbstractCheckJob {
         IProject project = entry.getKey();
         List<IFile> files = entry.getValue();
 
-        IProjectConfiguration checkConfig = ProjectConfigurationFactory.getConfiguration(project);
+        ProjectConfiguration checkConfig = ProjectConfigurationFactory.getConfiguration(project);
 
         filter(files, checkConfig);
 
@@ -130,10 +130,10 @@ public class RunCheckstyleOnFilesJob extends AbstractCheckJob {
     return projectFilesMap;
   }
 
-  private static void filter(final List<IFile> files, final IProjectConfiguration projectConfig) {
+  private static void filter(final List<IFile> files, final ProjectConfiguration projectConfig) {
 
-    List<IFilter> filters = projectConfig.getFilters();
-    for (IFilter filter : filters) {
+    List<AuditFilter> filters = projectConfig.getFilters();
+    for (AuditFilter filter : filters) {
 
       Iterator<IFile> filesIt = files.iterator();
       while (filesIt.hasNext()) {
