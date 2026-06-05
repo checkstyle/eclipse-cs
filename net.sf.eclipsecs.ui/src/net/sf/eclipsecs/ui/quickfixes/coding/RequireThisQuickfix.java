@@ -74,9 +74,8 @@ public class RequireThisQuickfix extends AbstractASTResolution {
 
   private Expression findFieldReplacement(final SimpleName name, final ASTNode node,
           int typeLevel) {
-
+    Expression replacement = null;
     int level = typeLevel;
-
     final ASTNode parent = node.getParent();
     if (parent instanceof TypeDeclaration) {
       level++;
@@ -86,12 +85,19 @@ public class RequireThisQuickfix extends AbstractASTResolution {
         final List<VariableDeclarationFragment> fragments = fieldDeclaration.fragments();
         for (final VariableDeclarationFragment fragment : fragments) {
           if (name.getFullyQualifiedName().equals(fragment.getName().getFullyQualifiedName())) {
-            return createFieldAccessReplacement(level == 1 ? null : type, name);
+            replacement = createFieldAccessReplacement(level == 1 ? null : type, name);
+            break;
           }
+        }
+        if (replacement != null) {
+          break;
         }
       }
     }
-    return findFieldReplacement(name, parent, level);
+    if (replacement == null) {
+      replacement = findFieldReplacement(name, parent, level);
+    }
+    return replacement;
   }
 
   private FieldAccess createFieldAccessReplacement(final TypeDeclaration type,
@@ -109,9 +115,8 @@ public class RequireThisQuickfix extends AbstractASTResolution {
 
   private Expression findMethodReplacement(final SimpleName name, ASTNode contextNode,
           final MethodInvocation node, int typeLevel) {
-
+    Expression replacement = null;
     int level = typeLevel;
-
     final ASTNode parent = contextNode.getParent();
     if (parent instanceof TypeDeclaration) {
       level++;
@@ -119,11 +124,15 @@ public class RequireThisQuickfix extends AbstractASTResolution {
       for (final MethodDeclaration methodDeclaration : type.getMethods()) {
         if (name.getFullyQualifiedName()
                 .equals(methodDeclaration.getName().getFullyQualifiedName())) {
-          return createMethodInvocationReplacement(level == 1 ? null : type, node);
+          replacement = createMethodInvocationReplacement(level == 1 ? null : type, node);
+          break;
         }
       }
     }
-    return findMethodReplacement(name, parent, node, level);
+    if (replacement == null) {
+      replacement = findMethodReplacement(name, parent, node, level);
+    }
+    return replacement;
   }
 
   private Expression createMethodInvocationReplacement(final TypeDeclaration type,

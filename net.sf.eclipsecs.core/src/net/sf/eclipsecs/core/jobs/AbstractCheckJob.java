@@ -44,11 +44,7 @@ public abstract class AbstractCheckJob extends WorkspaceJob implements IScheduli
 
   @Override
   public boolean belongsTo(Object family) {
-    if (CHECKSTYLE_JOB_FAMILY.equals(family)) {
-      return true;
-    }
-
-    return super.belongsTo(family);
+    return CHECKSTYLE_JOB_FAMILY.equals(family) || super.belongsTo(family);
   }
 
 }

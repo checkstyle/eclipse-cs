@@ -242,9 +242,10 @@ public record MarkerStatsViewDataProviders(MarkerStatsViewMasterDataProviders ma
 
     @Override
     public String getColumnText(Object obj, int index) {
+      String columnText;
       IMarker marker = (IMarker) obj;
       try {
-        return switch (index) {
+        columnText = switch (index) {
           case 1 -> marker.getResource().getName();
           case 2 -> marker.getResource().getParent().getFullPath().toString();
           case 3 -> Objects.toString(marker.getAttribute(IMarker.LINE_NUMBER), "");
@@ -254,8 +255,9 @@ public record MarkerStatsViewDataProviders(MarkerStatsViewMasterDataProviders ma
       } catch (Exception ex) {
         // Can't do anything: let's put a default value
         CheckstyleLog.log(ex);
-        return Messages.MarkerStatsView_unknownProblem;
+        columnText = Messages.MarkerStatsView_unknownProblem;
       }
+      return columnText;
     }
 
     @Override

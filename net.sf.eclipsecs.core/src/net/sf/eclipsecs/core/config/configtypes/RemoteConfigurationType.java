@@ -162,13 +162,14 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
 
   private Optional<byte[]> getPropertiesBundle(boolean originalFileSuccess, boolean useCacheFile,
           CheckstyleConfigurationFile data, ICheckConfiguration checkConfiguration) {
+    Optional<byte[]> bundle = Optional.empty();
     if (originalFileSuccess) {
-      return getAdditionPropertiesBundleBytes(data.getResolvedConfigFileURL());
+      bundle = getAdditionPropertiesBundleBytes(data.getResolvedConfigFileURL());
     }
     if (useCacheFile) {
-      return getBytesFromCacheBundleFile(checkConfiguration);
+      bundle = getBytesFromCacheBundleFile(checkConfiguration);
     }
-    return Optional.empty();
+    return bundle;
   }
 
   @Override
@@ -231,28 +232,27 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
    *           error getting the stream (file does not exist)
    */
   private Optional<byte[]> getBytesFromCacheBundleFile(ICheckConfiguration checkConfig) {
+    Optional<byte[]> bytes = Optional.empty();
     String cacheFileLocation = checkConfig.getAdditionalData().get(KEY_CACHE_PROPS_FILE_LOCATION);
 
     // bug 1748626
-    if (cacheFileLocation == null) {
-      return Optional.empty();
+    if (cacheFileLocation != null) {
+      try {
+        IPath cacheFilePath = CheckstylePlugin.getDefault().getStateLocation();
+        cacheFilePath = cacheFilePath.append(cacheFileLocation);
+        File cacheFile = cacheFilePath.toFile();
+
+        URL configURL = cacheFile.toURI().toURL();
+        URLConnection connection = configURL.openConnection();
+
+        bytes = Optional.of(getBytesFromURLConnection(connection));
+      } catch (IOException ex) {
+        // we won't load the bundle then
+        // disabled logging bug #1647602
+        // CheckstyleLog.log(ioe);
+      }
     }
-
-    try {
-      IPath cacheFilePath = CheckstylePlugin.getDefault().getStateLocation();
-      cacheFilePath = cacheFilePath.append(cacheFileLocation);
-      File cacheFile = cacheFilePath.toFile();
-
-      URL configURL = cacheFile.toURI().toURL();
-      URLConnection connection = configURL.openConnection();
-
-      return Optional.of(getBytesFromURLConnection(connection));
-    } catch (IOException ex) {
-      // we won't load the bundle then
-      // disabled logging bug #1647602
-      // CheckstyleLog.log(ioe);
-    }
-    return Optional.empty();
+    return bytes;
   }
 
   private void writeToCacheFile(ICheckConfiguration checkConfig, byte[] configFileBytes,

@@ -50,11 +50,14 @@ public final class CheckstylePreferencePageGeneralSettings extends Composite {
   private static final List<String> SUPPORTED_LANGUAGES = List.of(DEFAULT_LANGUAGE, "de", "en", "es",
           "fi", "fr", "ja", "pt", "tr", "zh");
   private static final String[] LANGUAGE_ITEMS = SUPPORTED_LANGUAGES.stream().map(code -> {
+    String displayLang;
     if (code == DEFAULT_LANGUAGE) {
-      return code;
+      displayLang = code;
+    } else {
+      var loc = Locale.forLanguageTag(code);
+      displayLang = code + " - " + loc.getDisplayLanguage(loc);
     }
-    var loc = Locale.forLanguageTag(code);
-    return code + " - " + loc.getDisplayLanguage(loc);
+    return displayLang;
   }).toArray(String[]::new);
 
   private final Combo languageIf;

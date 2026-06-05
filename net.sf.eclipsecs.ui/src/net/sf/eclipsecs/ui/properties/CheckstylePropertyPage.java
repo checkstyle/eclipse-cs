@@ -147,7 +147,7 @@ public class CheckstylePropertyPage extends PropertyPage {
 
   @Override
   public boolean isValid() {
-
+    boolean isValid = true;
     if (mProjectConfig != null) {
       // check if all check configurations resolve
       List<FileSet> fileSets = mProjectConfig.getFileSets();
@@ -159,14 +159,17 @@ public class CheckstylePropertyPage extends PropertyPage {
           } catch (CheckstylePluginException ex) {
             setErrorMessage(NLS.bind(Messages.errorCannotResolveCheckLocation,
                     checkConfig.getLocation(), checkConfig.getName()));
-            return false;
+            isValid = false;
+            break;
           }
         }
       }
     }
 
-    setErrorMessage(null);
-    return true;
+    if (isValid) {
+      setErrorMessage(null);
+    }
+    return isValid;
   }
 
   @Override

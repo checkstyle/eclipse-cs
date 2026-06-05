@@ -166,17 +166,16 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
 
   @Override
   public boolean isDirty() {
-    if (!mDeletedConfigurations.isEmpty()) {
-      return true;
-    }
-
     boolean dirty = false;
-    for (CheckConfigurationWorkingCopy workingCopy : mWorkingCopies) {
-      dirty = workingCopy.isDirty();
-
-      if (dirty) {
-        break;
+    if (mDeletedConfigurations.isEmpty()) {
+      for (CheckConfigurationWorkingCopy workingCopy : mWorkingCopies) {
+        dirty = workingCopy.isDirty();
+        if (dirty) {
+          break;
+        }
       }
+    } else {
+      dirty = true;
     }
     return dirty;
   }

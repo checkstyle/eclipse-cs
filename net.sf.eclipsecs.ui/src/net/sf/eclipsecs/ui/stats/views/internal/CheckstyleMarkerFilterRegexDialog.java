@@ -164,13 +164,15 @@ public class CheckstyleMarkerFilterRegexDialog extends TitleAreaDialog {
   }
 
   private boolean checkPatternValidity(String text) {
+    boolean valid;
     try {
       Pattern.compile(text);
-      return true;
+      valid = true;
     } catch (PatternSyntaxException ex) {
       CheckstyleMarkerFilterRegexDialog.this.setErrorMessage(NLS.bind(
               Messages.CheckstyleMarkerFilterDialog_msgInvalidRegex, ex.getLocalizedMessage()));
-      return false;
+      valid = false;
     }
+    return valid;
   }
 }

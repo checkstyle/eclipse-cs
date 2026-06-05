@@ -159,12 +159,13 @@ public final class ConfigurationTypes {
    * @return the configuration type or <code>null</code>
    */
   public static IConfigurationType getByName(String name) {
-
+    IConfigurationType result = null;
     for (IConfigurationType type : CONFIGURATION_TYPES.values()) {
       if (type.getName().equals(name)) {
-        return type;
+        result = type;
+        break;
       }
     }
-    return null;
+    return result;
   }
 }

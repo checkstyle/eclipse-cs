@@ -123,9 +123,8 @@ public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegat
 
     @Override
     public IStatus runInWorkspace(IProgressMonitor monitor) {
-
+      IStatus status;
       try {
-
         IProjectConfiguration bluePrintConfig = ProjectConfigurationFactory
                 .getConfiguration(mBlueprint);
 
@@ -166,12 +165,12 @@ public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegat
 
           workingCopy.store();
         }
+        status = Status.OK_STATUS;
       } catch (CheckstylePluginException ex) {
-        return new Status(IStatus.ERROR, CheckstyleUIPlugin.PLUGIN_ID, IStatus.OK, ex.getMessage(),
+        status = new Status(IStatus.ERROR, CheckstyleUIPlugin.PLUGIN_ID, IStatus.OK, ex.getMessage(),
                 ex);
       }
-
-      return Status.OK_STATUS;
+      return status;
     }
   }
 }

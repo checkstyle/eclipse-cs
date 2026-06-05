@@ -92,15 +92,16 @@ public final class CheckstyleQuickfixes {
   }
 
   private ICheckstyleMarkerResolution toClass(IConfigurationElement element) {
+    ICheckstyleMarkerResolution resolution = null;
     try {
-      var resolution = element.createExecutableExtension(EXTENSION_CLASS_ATTRIBUTE);
-      if (resolution instanceof ICheckstyleMarkerResolution) {
-        return (ICheckstyleMarkerResolution) resolution;
+      var extension = element.createExecutableExtension(EXTENSION_CLASS_ATTRIBUTE);
+      if (extension instanceof ICheckstyleMarkerResolution) {
+        resolution = (ICheckstyleMarkerResolution) extension;
       }
     } catch (CoreException ex) {
       CheckstyleLog.log(ex, "cannot create quickfix for " + element.getAttribute(EXTENSION_CLASS_ATTRIBUTE));
     }
-    return null;
+    return resolution;
   }
 
   /**

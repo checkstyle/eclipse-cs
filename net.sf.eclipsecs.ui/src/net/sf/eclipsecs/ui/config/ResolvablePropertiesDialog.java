@@ -168,21 +168,23 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
 
   @Override
   protected void okPressed() {
-
     // check for properties without value - these must be fixed before
     // OK'ing
+    boolean error = false;
     for (ResolvableProperty prop : mResolvableProperties) {
-
       if (StringUtils.isBlank(prop.getValue())) {
         this.setErrorMessage(NLS.bind(Messages.ResolvablePropertiesDialog_msgMissingPropertyValue,
                 prop.getPropertyName()));
-        return;
+        error = true;
+        break;
       }
     }
 
-    mCheckConfig.getResolvableProperties().clear();
-    mCheckConfig.getResolvableProperties().addAll(mResolvableProperties);
-    super.okPressed();
+    if (!error) {
+      mCheckConfig.getResolvableProperties().clear();
+      mCheckConfig.getResolvableProperties().addAll(mResolvableProperties);
+      super.okPressed();
+    }
   }
 
   /**

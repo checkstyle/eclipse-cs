@@ -185,15 +185,16 @@ public class ArrayTypeStyleQuickfix extends AbstractASTResolution {
     }
 
     private boolean isCStyle(List<?> fragments) {
-
+      boolean isCStyle = false;
       Iterator<?> iter = fragments.iterator();
       while (iter.hasNext()) {
         VariableDeclaration decl = (VariableDeclaration) iter.next();
         if (isCStyle(decl)) {
-          return true;
+          isCStyle = true;
+          break;
         }
       }
-      return false;
+      return isCStyle;
     }
 
     private ArrayType createArrayType(Type componentType, int dimensions) {

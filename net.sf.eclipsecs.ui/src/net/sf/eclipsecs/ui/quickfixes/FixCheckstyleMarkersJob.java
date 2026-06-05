@@ -54,11 +54,9 @@ public class FixCheckstyleMarkersJob extends UIJob {
 
   @Override
   public IStatus runInUIThread(IProgressMonitor monitor) {
-
+    IStatus status;
+    CheckstyleMarkerResolutionGenerator generator = new CheckstyleMarkerResolutionGenerator();
     try {
-
-      CheckstyleMarkerResolutionGenerator generator = new CheckstyleMarkerResolutionGenerator();
-
       IMarker[] markers = mFile.findMarkers(CheckstyleMarker.MARKER_ID, true,
               IResource.DEPTH_INFINITE);
 
@@ -72,10 +70,11 @@ public class FixCheckstyleMarkersJob extends UIJob {
         }
 
       }
+      status = Status.OK_STATUS;
     } catch (CoreException ex) {
-      return new Status(IStatus.ERROR, CheckstyleUIPlugin.PLUGIN_ID, IStatus.OK, ex.getMessage(), ex);
+      status = new Status(IStatus.ERROR, CheckstyleUIPlugin.PLUGIN_ID, IStatus.OK, ex.getMessage(), ex);
     }
 
-    return Status.OK_STATUS;
+    return status;
   }
 }

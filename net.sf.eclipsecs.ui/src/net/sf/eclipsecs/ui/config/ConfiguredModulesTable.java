@@ -161,8 +161,9 @@ public final class ConfiguredModulesTable extends Composite {
 
     @Override
     public String getColumnText(Object element, int columnIndex) {
+      String columnText = null;
       if (element instanceof Module module) {
-        return switch (columnIndex) {
+        columnText = switch (columnIndex) {
           case 0 -> "";
           case 1 -> module.getName() != null ? module.getName() : "";
           case 2 -> module.getSeverity() != null ? module.getSeverity().toXmlValue() : "";
@@ -170,17 +171,19 @@ public final class ConfiguredModulesTable extends Composite {
           default -> "";
         };
       }
-      return null;
+      return columnText;
     }
 
     @Override
     public Comparable<?> getComparableValue(Object element, int col) {
+      Comparable<?> comp;
       if (col == 0 && element instanceof Module) {
-        return Severity.IGNORE.equals(((Module) element).getSeverity()) ? Integer.valueOf(0)
+        comp = Severity.IGNORE.equals(((Module) element).getSeverity()) ? Integer.valueOf(0)
                 : Integer.valueOf(1);
+      } else {
+        comp = getColumnText(element, col);
       }
-
-      return getColumnText(element, col);
+      return comp;
     }
 
     @Override

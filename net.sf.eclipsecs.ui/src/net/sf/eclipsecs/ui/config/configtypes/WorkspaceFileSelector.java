@@ -51,17 +51,21 @@ public final class WorkspaceFileSelector {
     dialog.setAllowMultiple(false);
     dialog.setInput(ResourcesPlugin.getWorkspace().getRoot());
     dialog.setValidator(selection -> {
+      int status;
       if (selection.length == 1 && selection[0] instanceof IFile) {
-        return new Status(IStatus.OK, PlatformUI.PLUGIN_ID, IStatus.ERROR, new String(), null);
+        status = IStatus.OK;
+      } else {
+        status = IStatus.ERROR;
       }
-      return new Status(IStatus.ERROR, PlatformUI.PLUGIN_ID, IStatus.ERROR, new String(), null);
+      return new Status(status, PlatformUI.PLUGIN_ID, IStatus.ERROR, new String(), null);
     });
+    Optional<String> path = Optional.empty();
     if (Window.OK == dialog.open()) {
       Object[] result = dialog.getResult();
       IFile checkFile = (IFile) result[0];
-      return Optional.of(checkFile.getFullPath().toString());
+      path = Optional.of(checkFile.getFullPath().toString());
     }
-    return Optional.empty();
+    return path;
   }
 
 }

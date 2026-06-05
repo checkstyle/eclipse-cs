@@ -230,11 +230,8 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
           ResolvablePropertiesDialog propsDialog = new ResolvablePropertiesDialog(getShell(),
                   mCheckConfig);
           propsDialog.open();
-          return;
         } else if (result == 1) {
           super.okPressed();
-        } else if (result == 2) {
-          return;
         }
       } else {
         super.okPressed();

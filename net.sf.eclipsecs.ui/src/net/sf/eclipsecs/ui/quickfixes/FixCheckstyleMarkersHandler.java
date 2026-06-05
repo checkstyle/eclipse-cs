@@ -59,17 +59,18 @@ public class FixCheckstyleMarkersHandler extends AbstractHandler {
   }
 
   private ITextEditor getActiveEditor() {
+    ITextEditor activeEditor = null;
     IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
     if (window != null) {
       IWorkbenchPage page = window.getActivePage();
       if (page != null) {
         IEditorPart editor = page.getActiveEditor();
         if (editor instanceof ITextEditor) {
-          return (ITextEditor) editor;
+          activeEditor = (ITextEditor) editor;
         }
       }
     }
-    return null;
+    return activeEditor;
   }
 
 }

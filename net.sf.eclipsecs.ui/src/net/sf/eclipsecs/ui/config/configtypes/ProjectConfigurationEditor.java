@@ -225,7 +225,6 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
    *           error when trying to ensure the location file existance
    */
   private boolean ensureFileExists(String location) throws CheckstylePluginException {
-
     IFile file = null;
     try {
       file = ResourcesPlugin.getWorkspace().getRoot().getFile(IPath.fromOSString(location));
@@ -233,6 +232,7 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
       CheckstylePluginException.rethrow(ex);
     }
 
+    boolean exists;
     if (!file.exists() && file.getLocation() != null) {
       boolean confirm = MessageDialog.openQuestion(shell,
               Messages.ExternalFileConfigurationEditor_titleFileDoesNotExist,
@@ -251,11 +251,13 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
           CheckstylePluginException.rethrow(ex);
         }
 
-        return true;
+        exists = true;
+      } else {
+        exists = false;
       }
-      return false;
+    } else {
+      exists = true;
     }
-
-    return true;
+    return exists;
   }
 }

@@ -85,13 +85,11 @@ public class CheckSelectedFilesAction extends AbstractHandler implements IObject
     List<IFile> filesToCheck = new ArrayList<>();
     try {
       addFileResources(List.copyOf(resources), filesToCheck);
-      if (filesToCheck.isEmpty()) {
-        return;
+      if (!filesToCheck.isEmpty()) {
+        RunCheckstyleOnFilesJob job = new RunCheckstyleOnFilesJob(filesToCheck);
+        job.setRule(job);
+        job.schedule();
       }
-
-      RunCheckstyleOnFilesJob job = new RunCheckstyleOnFilesJob(filesToCheck);
-      job.setRule(job);
-      job.schedule();
     } catch (CoreException ex) {
       CheckstyleUIPlugin.errorDialog(mPart.getSite().getShell(), ex, true);
     }

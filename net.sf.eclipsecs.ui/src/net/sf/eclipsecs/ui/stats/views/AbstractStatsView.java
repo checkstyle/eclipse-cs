@@ -270,31 +270,23 @@ public abstract class AbstractStatsView extends ViewPart {
    * @return <code>true</code> if an update of the statistics data is needed
    */
   private boolean updateNeeded(IResource[] oldResources, IResource[] newResources) {
-    // determine if an update if refiltering is required
-    if (!filter.enabled()) {
-      return false;
+    boolean updateNeeded = false;
+    if (filter.enabled()
+            && filter.onResource() != CheckstyleMarkerFilter.ON_ANY_RESOURCE
+            && filter.onResource() != CheckstyleMarkerFilter.ON_WORKING_SET
+            && newResources.length > 0) {
+      if (oldResources == null || oldResources.length == 0) {
+        updateNeeded = true;
+      } else if (!Arrays.equals(oldResources, newResources)) {
+        if (filter.onResource() == CheckstyleMarkerFilter.ON_ANY_RESOURCE_OF_SAME_PROJECT) {
+          updateNeeded = CheckstyleMarkerFilter.getProjects(oldResources)
+                  .equals(CheckstyleMarkerFilter.getProjects(newResources));
+        } else {
+          updateNeeded = true;
+        }
+      }
     }
-
-    int onResource = filter.onResource();
-    if (onResource == CheckstyleMarkerFilter.ON_ANY_RESOURCE
-            || onResource == CheckstyleMarkerFilter.ON_WORKING_SET) {
-      return false;
-    }
-    if (newResources.length == 0) {
-      return false;
-    }
-    if (oldResources == null || oldResources.length == 0) {
-      return true;
-    }
-    if (Arrays.equals(oldResources, newResources)) {
-      return false;
-    }
-    if (onResource == CheckstyleMarkerFilter.ON_ANY_RESOURCE_OF_SAME_PROJECT) {
-      return CheckstyleMarkerFilter.getProjects(oldResources)
-              .equals(CheckstyleMarkerFilter.getProjects(newResources));
-    }
-
-    return true;
+    return updateNeeded;
   }
 
 }

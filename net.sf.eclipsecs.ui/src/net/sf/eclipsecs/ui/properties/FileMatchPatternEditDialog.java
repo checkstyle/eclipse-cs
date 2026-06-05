@@ -113,7 +113,6 @@ public class FileMatchPatternEditDialog extends TitleAreaDialog {
 
   @Override
   protected void okPressed() {
-
     String pattern = mFileMatchPatternText.getText();
 
     try {
@@ -129,12 +128,10 @@ public class FileMatchPatternEditDialog extends TitleAreaDialog {
       }
 
       mPattern.setIsIncludePattern(mIncludeButton.getSelection());
+      super.okPressed();
     } catch (PatternSyntaxException | CheckstylePluginException ex) {
       this.setErrorMessage(ex.getLocalizedMessage());
-      return;
     }
-
-    super.okPressed();
   }
 
   /**

@@ -51,26 +51,15 @@ public class FixCheckstyleMarkersAction implements IObjectActionDelegate {
 
   @Override
   public void run(IAction action) {
-
-    IStructuredSelection selection = null;
-    if (mSelection instanceof IStructuredSelection) {
-      selection = (IStructuredSelection) mSelection;
-    }
-
-    // no valid selection
-    if (selection == null || selection.size() != 1) {
-      return;
-    }
-
-    Object element = selection.getFirstElement();
-
-    IFile file = ((IAdaptable) element).getAdapter(IFile.class);
-    if (file != null) {
-
-      // call the fixing job
-      Job job = new FixCheckstyleMarkersJob(file);
-      job.setUser(true);
-      job.schedule();
+    if (mSelection instanceof IStructuredSelection selection && selection.size() == 1) {
+      Object element = selection.getFirstElement();
+      IFile file = ((IAdaptable) element).getAdapter(IFile.class);
+      if (file != null) {
+        // call the fixing job
+        Job job = new FixCheckstyleMarkersJob(file);
+        job.setUser(true);
+        job.schedule();
+      }
     }
   }
 }

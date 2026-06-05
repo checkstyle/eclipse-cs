@@ -415,27 +415,25 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
 
     // don't store built-in configurations to persistence or local
     // configurations
-    if (checkConfig.getType() instanceof BuiltInConfigurationType || checkConfig.isGlobal()) {
-      return;
-    }
+    if (!(checkConfig.getType() instanceof BuiltInConfigurationType) && !checkConfig.isGlobal()) {
+      // RFE 1420212
+      String location = checkConfig.getLocation();
+      if (checkConfig.getType() instanceof ProjectConfigurationType) {
+        IProject project = projectConfig.getProject();
+        IWorkspaceRoot root = project.getWorkspace().getRoot();
+        IFile configFile = root.getFile(new Path(location));
+        IProject configFileProject = configFile.getProject();
 
-    // RFE 1420212
-    String location = checkConfig.getLocation();
-    if (checkConfig.getType() instanceof ProjectConfigurationType) {
-      IProject project = projectConfig.getProject();
-      IWorkspaceRoot root = project.getWorkspace().getRoot();
-      IFile configFile = root.getFile(new Path(location));
-      IProject configFileProject = configFile.getProject();
-
-      // if the configuration is in *same* project don't store project
-      // path part
-      if (project.equals(configFileProject)) {
-        location = configFile.getProjectRelativePath().toString();
+        // if the configuration is in *same* project don't store project
+        // path part
+        if (project.equals(configFileProject)) {
+          location = configFile.getProjectRelativePath().toString();
+        }
       }
-    }
 
-    CheckConfigurationXmlWriter.writeCheckConfiguration(docRoot, checkConfig, location,
-            XMLTags.CHECK_CONFIG_TAG);
+      CheckConfigurationXmlWriter.writeCheckConfiguration(docRoot, checkConfig, location,
+              XMLTags.CHECK_CONFIG_TAG);
+    }
   }
 
   /**
@@ -487,22 +485,19 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
    *          the root element of the project configuration
    */
   private void writeFilter(IFilter filter, Element docRoot) {
-
     // write only filters that are actually changed
     // (enabled or contain data)
     IFilter prototype = PluginFilters.getByInternalName(filter.getInternalName());
-    if (prototype.equals(filter)) {
-      return;
-    }
+    if (!prototype.equals(filter)) {
+      Element filterEl = docRoot.addElement(XMLTags.FILTER_TAG);
+      filterEl.addAttribute(XMLTags.NAME_TAG, filter.getInternalName());
+      filterEl.addAttribute(XMLTags.ENABLED_TAG, Boolean.toString(filter.isEnabled()));
 
-    Element filterEl = docRoot.addElement(XMLTags.FILTER_TAG);
-    filterEl.addAttribute(XMLTags.NAME_TAG, filter.getInternalName());
-    filterEl.addAttribute(XMLTags.ENABLED_TAG, Boolean.toString(filter.isEnabled()));
-
-    List<String> data = filter.getFilterData();
-    for (String item : data) {
-      Element dataEl = filterEl.addElement(XMLTags.FILTER_DATA_TAG);
-      dataEl.addAttribute(XMLTags.VALUE_TAG, item);
+      List<String> data = filter.getFilterData();
+      for (String item : data) {
+        Element dataEl = filterEl.addElement(XMLTags.FILTER_DATA_TAG);
+        dataEl.addAttribute(XMLTags.VALUE_TAG, item);
+      }
     }
   }
 }

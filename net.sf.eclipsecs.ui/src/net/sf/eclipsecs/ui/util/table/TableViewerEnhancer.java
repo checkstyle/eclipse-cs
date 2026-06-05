@@ -118,11 +118,13 @@ public final class TableViewerEnhancer {
   }
 
   private static int getIntSetting(IDialogSettings tableSettings, String setting, int def) {
+    int value;
     try {
-      return tableSettings.getInt(setting);
+      value = tableSettings.getInt(setting);
     } catch (NumberFormatException ex) {
-      return def;
+      value = def;
     }
+    return value;
   }
 
   /**

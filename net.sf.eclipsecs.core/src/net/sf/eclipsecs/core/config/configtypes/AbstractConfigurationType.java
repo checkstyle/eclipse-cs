@@ -166,7 +166,6 @@ public abstract class AbstractConfigurationType implements IConfigurationType {
    *         loaded
    */
   protected Optional<byte[]> getAdditionPropertiesBundleBytes(URL checkConfigURL) {
-
     String location = checkConfigURL.toString();
 
     // Strip file extension
@@ -180,17 +179,18 @@ public abstract class AbstractConfigurationType implements IConfigurationType {
 
     propsLocation = propsLocation + ".properties"; //$NON-NLS-1$
 
+    Optional<byte[]> bytes = Optional.empty();
     try {
       URL propertyFileURL = URI.create(propsLocation).toURL();
       URLConnection connection = propertyFileURL.openConnection();
 
-      return Optional.of(getBytesFromURLConnection(connection));
+      bytes = Optional.of(getBytesFromURLConnection(connection));
     } catch (IOException ex) {
       // we won't load the bundle then
       // disabled logging bug #1647602
       // CheckstyleLog.log(ioe);
     }
-    return Optional.empty();
+    return bytes;
   }
 
   /**

@@ -263,11 +263,12 @@ public final class MarkerStatsMainView extends Composite {
     }
 
     public Optional<T> getSelection() {
-      if (getTableViewer().getSelection() instanceof StructuredSelection selection
-              && selectionClass.isInstance(selection.getFirstElement())) {
-        return Optional.of(selectionClass.cast(selection.getFirstElement()));
+      Optional<T> selection = Optional.empty();
+      if (getTableViewer().getSelection() instanceof StructuredSelection structuredSelection
+              && selectionClass.isInstance(structuredSelection.getFirstElement())) {
+        selection = Optional.of(selectionClass.cast(structuredSelection.getFirstElement()));
       }
-      return Optional.empty();
+      return selection;
     }
 
     public void refresh() {

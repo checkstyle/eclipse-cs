@@ -226,12 +226,11 @@ public class Module implements Cloneable {
    * @return the severity level
    */
   public Severity getSeverity() {
+    Severity severity = null;
     if (mMetaData != null && mMetaData.hasSeverity()) {
-
-      return mSeverityLevel != null ? mSeverityLevel : getMetaData().defaultSeverity();
-    } else {
-      return null;
+      severity = mSeverityLevel != null ? mSeverityLevel : getMetaData().defaultSeverity();
     }
+    return severity;
   }
 
   /**

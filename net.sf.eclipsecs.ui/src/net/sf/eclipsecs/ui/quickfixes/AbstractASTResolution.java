@@ -60,20 +60,21 @@ public abstract class AbstractASTResolution extends WorkbenchMarkerResolution
 
   @Override
   public boolean canFix(IMarker marker) {
+    boolean canFix = false;
     try {
-      if (!CheckstyleMarker.MARKER_ID.equals(marker.getType())) {
-        return false;
+      if (CheckstyleMarker.MARKER_ID.equals(marker.getType())) {
+        String markerModule = marker.getAttribute(CheckstyleMarker.MODULE_NAME, "");
+        if (module.equals(markerModule)) {
+          canFix = true;
+        } else {
+          var shortName = StringUtils.substringAfterLast(markerModule, '.');
+          canFix = module.equals(shortName);
+        }
       }
-      String markerModule = marker.getAttribute(CheckstyleMarker.MODULE_NAME, "");
-      if (module.equals(markerModule)) {
-        return true;
-      }
-      var shortName = StringUtils.substringAfterLast(markerModule, '.');
-      return module.equals(shortName);
     } catch (CoreException ex) {
       // ignore
     }
-    return false;
+    return canFix;
   }
 
   @Override
@@ -159,22 +160,23 @@ public abstract class AbstractASTResolution extends WorkbenchMarkerResolution
    * @return <code>true</code> if the node was successfully replaced.
    */
   protected static boolean replace(final ASTNode node, final ASTNode replacement) {
+    boolean replaced = false;
     final ASTNode parent = node.getParent();
     final StructuralPropertyDescriptor descriptor = node.getLocationInParent();
     if (descriptor != null) {
       if (descriptor.isChildProperty()) {
         parent.setStructuralProperty(descriptor, replacement);
         node.delete();
-        return true;
+        replaced = true;
       } else if (descriptor.isChildListProperty()) {
         @SuppressWarnings("unchecked")
         final List<ASTNode> children = (List<ASTNode>) parent.getStructuralProperty(descriptor);
         children.set(children.indexOf(node), replacement);
         node.delete();
-        return true;
+        replaced = true;
       }
     }
-    return false;
+    return replaced;
   }
 
 }

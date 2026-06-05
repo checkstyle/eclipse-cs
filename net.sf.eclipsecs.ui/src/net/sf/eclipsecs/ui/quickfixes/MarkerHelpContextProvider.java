@@ -53,11 +53,12 @@ public class MarkerHelpContextProvider extends AbstractContextProvider
 
   @Override
   public String getHelpContextForMarker(IMarker marker) {
+    String helpContext = null;
     String module = getModule(marker);
-    if (!module.endsWith(CHECK_SUFFIX)) {
-      return null;
+    if (module.endsWith(CHECK_SUFFIX)) {
+      helpContext = PLUGIN_PREFIX + StringUtils.removeEnd(StringUtils.substringAfterLast(module, '.'), CHECK_SUFFIX);
     }
-    return PLUGIN_PREFIX + StringUtils.removeEnd(StringUtils.substringAfterLast(module, '.'), CHECK_SUFFIX);
+    return helpContext;
   }
 
   private String getModule(IMarker marker) {
@@ -66,14 +67,8 @@ public class MarkerHelpContextProvider extends AbstractContextProvider
 
   @Override
   public boolean hasHelpContextForMarker(IMarker marker) {
-    if (!CheckstyleMarker.isCheckstyleMarker(marker)) {
-      return false;
-    }
-    if (getModule(marker).startsWith(REGEXP_PACKAGE)) {
-      // regex rules don't provide useful help for understanding and fixing an issue
-      return false;
-    }
-    return true;
+    // regex rules don't provide useful help for understanding and fixing an issue
+    return CheckstyleMarker.isCheckstyleMarker(marker) && !getModule(marker).startsWith(REGEXP_PACKAGE);
   }
 
   @Override
@@ -95,17 +90,18 @@ public class MarkerHelpContextProvider extends AbstractContextProvider
    * @return online help URL
    */
   public static String getOnlineHelp(String moduleName) {
+    String url = null;
     var metadata = MetadataFactory.getRuleMetadata(moduleName);
-    if (metadata == null) {
-      return null;
+    if (metadata != null) {
+      var group = metadata.identity().group().getGroupId().toLowerCase();
+      // some web pages are different to the packages in Checkstyle
+      if ("indentation".equals(group) || StringUtils.isEmpty(group)) {
+        group = "misc";
+      }
+      var file = moduleName.toLowerCase();
+      url = "https://checkstyle.org/checks/" + group + "/" + file + ".html#" + moduleName;
     }
-    var group = metadata.identity().group().getGroupId().toLowerCase();
-    // some web pages are different to the packages in Checkstyle
-    if ("indentation".equals(group) || StringUtils.isEmpty(group)) {
-      group = "misc";
-    }
-    var file = moduleName.toLowerCase();
-    return "https://checkstyle.org/checks/" + group + "/" + file + ".html#" + moduleName;
+    return url;
   }
 
   /**

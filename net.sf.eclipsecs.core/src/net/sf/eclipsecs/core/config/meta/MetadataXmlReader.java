@@ -149,16 +149,16 @@ public final class MetadataXmlReader {
   }
 
   private static String localize(String localizationCandidate, ResourceBundle metadataBundle) {
-
+    String localized = localizationCandidate;
     if (metadataBundle != null && localizationCandidate != null
             && localizationCandidate.startsWith("%")) {
       try {
-        return metadataBundle.getString(localizationCandidate.substring(1));
+        localized = metadataBundle.getString(localizationCandidate.substring(1));
       } catch (MissingResourceException ex) {
-        return localizationCandidate;
+        // no-op
       }
     }
-    return localizationCandidate;
+    return localized;
   }
 
   private static List<ConfigPropertyMetadata> processProperties(Element moduleElement,

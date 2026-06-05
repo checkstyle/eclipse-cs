@@ -55,11 +55,12 @@ public final class CheckstyleMarker {
   }
 
   public static boolean isCheckstyleMarker(IMarker marker) {
+    boolean isCheckstyleMarker;
     try {
-      return CheckstyleMarker.MARKER_ID.equals(marker.getType());
+      isCheckstyleMarker = CheckstyleMarker.MARKER_ID.equals(marker.getType());
     } catch (CoreException ex) {
-      // ignore
+      isCheckstyleMarker = false;
     }
-    return false;
+    return isCheckstyleMarker;
   }
 }

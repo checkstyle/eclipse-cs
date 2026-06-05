@@ -112,14 +112,17 @@ public final class FileMatchPatternTable extends Composite {
 
     @Override
     public String getColumnText(Object element, int columnIndex) {
+      String columnText;
       if (element instanceof FileMatchPattern pattern) {
-        return switch (columnIndex) {
+        columnText = switch (columnIndex) {
           case 0 -> new String();
           case 1 -> pattern.getMatchPattern();
           default -> element.toString();
         };
+      } else {
+        columnText = element.toString();
       }
-      return element.toString();
+      return columnText;
     }
 
     @Override

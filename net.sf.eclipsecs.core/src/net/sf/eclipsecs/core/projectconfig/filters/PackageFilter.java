@@ -48,6 +48,7 @@ public class PackageFilter extends AbstractFilter {
 
   @Override
   public boolean accept(Object object) {
+    boolean accept = true;
     if (object instanceof IResource resource) {
       IContainer folder;
       if (resource instanceof IContainer) {
@@ -62,18 +63,17 @@ public class PackageFilter extends AbstractFilter {
       for (int i = 0; i < size; i++) {
         String element = mData.get(i);
 
-        if (RECURSE_OFF_MARKER.equals(element)) {
-          continue;
-        }
-
-        IPath filteredPath = new Path(element);
-        if (mExcludeSubPackages && filteredPath.isPrefixOf(projRelativPath)
-                || !mExcludeSubPackages && filteredPath.equals(projRelativPath)) {
-          return false;
+        if (!RECURSE_OFF_MARKER.equals(element)) {
+          IPath filteredPath = new Path(element);
+          if (mExcludeSubPackages && filteredPath.isPrefixOf(projRelativPath)
+                  || !mExcludeSubPackages && filteredPath.equals(projRelativPath)) {
+            accept = false;
+            break;
+          }
         }
       }
     }
-    return true;
+    return accept;
   }
 
   @Override

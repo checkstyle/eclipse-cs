@@ -104,43 +104,32 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
   }
 
   private void editFileSet(FileSet fileSet) {
-    if (fileSet == null) {
-      //
-      // Nothing is selected.
-      //
-      return;
-    }
+    if (fileSet != null) {
+      try {
+        FileSetEditDialog dialog = new FileSetEditDialog(shell, fileSet.clone(),
+                propertyPageContext);
+        if (Window.OK == dialog.open()) {
+          FileSet newFileSet = dialog.getFileSet();
+          mFileSets.remove(fileSet);
+          mFileSets.add(newFileSet);
+          editorView.refresh();
+          editorView.setChecked(newFileSet, newFileSet.isEnabled());
 
-    try {
-
-      FileSetEditDialog dialog = new FileSetEditDialog(shell, fileSet.clone(),
-              propertyPageContext);
-      if (Window.OK == dialog.open()) {
-        FileSet newFileSet = dialog.getFileSet();
-        mFileSets.remove(fileSet);
-        mFileSets.add(newFileSet);
-        editorView.refresh();
-        editorView.setChecked(newFileSet, newFileSet.isEnabled());
-
-        propertyPageContext.updateButtons();
+          propertyPageContext.updateButtons();
+        }
+      } catch (CheckstylePluginException ex) {
+        CheckstyleUIPlugin.errorDialog(shell,
+                NLS.bind(Messages.errorFailedEditFileset, ex.getMessage()), ex, true);
       }
-    } catch (CheckstylePluginException ex) {
-      CheckstyleUIPlugin.errorDialog(shell,
-              NLS.bind(Messages.errorFailedEditFileset, ex.getMessage()), ex, true);
     }
   }
 
   private void removeFileSet(FileSet fileSet) {
-    if (fileSet == null) {
-      //
-      // Nothing is selected.
-      //
-      return;
+    if (fileSet != null) {
+      mFileSets.remove(fileSet);
+      editorView.refresh();
+      propertyPageContext.updateButtons();
     }
-
-    mFileSets.remove(fileSet);
-    editorView.refresh();
-    propertyPageContext.updateButtons();
   }
 
   private void changeEnabledState(CheckStateChangedEvent event) {
@@ -164,8 +153,9 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
 
     @Override
     public String getColumnText(Object element, int columnIndex) {
+      String columnText;
       if (element instanceof FileSet fileSet) {
-        return switch (columnIndex) {
+        columnText = switch (columnIndex) {
           case 0 -> new String();
           case 1 -> fileSet.getName();
           case 2 -> fileSet.getCheckConfig() != null
@@ -173,8 +163,10 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
                   : "";
           default -> element.toString();
         };
+      } else {
+        columnText = element.toString();
       }
-      return element.toString();
+      return columnText;
     }
 
     @Override

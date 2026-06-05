@@ -147,19 +147,19 @@ public final class CheckstyleMarkerFilterResourceFilterGroup extends Composite {
   }
 
   public int getOnResource() {
+    int onResource;
     if (mRadioSelectedResource.getSelection()) {
-      return CheckstyleMarkerFilter.ON_SELECTED_RESOURCE_ONLY;
+      onResource = CheckstyleMarkerFilter.ON_SELECTED_RESOURCE_ONLY;
+    } else if (mRadioSelectedResourceAndChildren.getSelection()) {
+      onResource = CheckstyleMarkerFilter.ON_SELECTED_RESOURCE_AND_CHILDREN;
+    } else if (mRadioAnyResourceInSameProject.getSelection()) {
+      onResource = CheckstyleMarkerFilter.ON_ANY_RESOURCE_OF_SAME_PROJECT;
+    } else if (mRadioSelectedWorkingSet.getSelection()) {
+      onResource = CheckstyleMarkerFilter.ON_WORKING_SET;
+    } else {
+      onResource = CheckstyleMarkerFilter.ON_ANY_RESOURCE;
     }
-    if (mRadioSelectedResourceAndChildren.getSelection()) {
-      return CheckstyleMarkerFilter.ON_SELECTED_RESOURCE_AND_CHILDREN;
-    }
-    if (mRadioAnyResourceInSameProject.getSelection()) {
-      return CheckstyleMarkerFilter.ON_ANY_RESOURCE_OF_SAME_PROJECT;
-    }
-    if (mRadioSelectedWorkingSet.getSelection()) {
-      return CheckstyleMarkerFilter.ON_WORKING_SET;
-    }
-    return CheckstyleMarkerFilter.ON_ANY_RESOURCE;
+    return onResource;
   }
 
   public int getSeverity() {

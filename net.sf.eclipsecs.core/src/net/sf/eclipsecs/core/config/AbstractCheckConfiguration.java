@@ -51,11 +51,9 @@ public abstract class AbstractCheckConfiguration implements ICheckConfiguration 
       File sourceFile = URIUtil.toFile(getResolvedConfigurationFileURL().toURI());
 
       // copying from a file to the same file will destroy it.
-      if (Objects.equals(targetFile, sourceFile)) {
-        return;
+      if (!Objects.equals(targetFile, sourceFile)) {
+        exportConfiguration(targetFile);
       }
-
-      exportConfiguration(targetFile);
     } catch (URISyntaxException ex) {
       CheckstylePluginException.rethrow(ex);
     }

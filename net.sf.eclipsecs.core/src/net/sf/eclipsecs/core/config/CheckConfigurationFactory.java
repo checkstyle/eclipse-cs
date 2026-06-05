@@ -105,14 +105,14 @@ public final class CheckConfigurationFactory {
    * @return The requested instance or <code>null</code> if the named instance could not be found.
    */
   public static ICheckConfiguration getByName(String name) {
-
+    ICheckConfiguration result = null;
     for (ICheckConfiguration config : sConfigurations) {
       if (config.getName().equals(name)) {
-        return config;
+        result = config;
+        break;
       }
     }
-
-    return null;
+    return result;
   }
 
   /**
@@ -131,14 +131,17 @@ public final class CheckConfigurationFactory {
    * @return the default check configuration to use with unconfigured projects
    */
   public static ICheckConfiguration getDefaultCheckConfiguration() {
+    ICheckConfiguration defaultConfig;
     if (sDefaultCheckConfig != null) {
-      return sDefaultCheckConfig;
+      defaultConfig = sDefaultCheckConfig;
     } else if (sDefaultBuiltInConfig != null) {
-      return sDefaultBuiltInConfig;
-    } else if (!sConfigurations.isEmpty()) {
-      return sConfigurations.get(0);
+      defaultConfig = sDefaultBuiltInConfig;
+    } else if (sConfigurations.isEmpty()) {
+      defaultConfig = null;
+    } else {
+      defaultConfig = sConfigurations.get(0);
     }
-    return null;
+    return defaultConfig;
   }
 
   /**
@@ -201,65 +204,58 @@ public final class CheckConfigurationFactory {
   }
 
   private static IPath getTargetStateLocation(IPath newWorkspaceRoot) {
-
     IPath currentWorkspaceRoot = Platform.getLocation();
     IPath currentStateLocation = CheckstylePlugin.getDefault().getStateLocation();
 
-    if (currentStateLocation == null) {
-      return null;
+    IPath targetStateLocation = null;
+    if (currentStateLocation != null) {
+      int segmentsToRemove = currentStateLocation.matchingFirstSegments(currentWorkspaceRoot);
+
+      // Strip it down to the extension
+      currentStateLocation = currentStateLocation.removeFirstSegments(segmentsToRemove);
+
+      // Now add to the target workspace root
+      targetStateLocation = newWorkspaceRoot.append(currentStateLocation);
     }
-    int segmentsToRemove = currentStateLocation.matchingFirstSegments(currentWorkspaceRoot);
-
-    // Strip it down to the extension
-    currentStateLocation = currentStateLocation.removeFirstSegments(segmentsToRemove);
-
-    // Now add to the target workspace root
-    return newWorkspaceRoot.append(currentStateLocation);
-
+    return targetStateLocation;
   }
 
   /**
    * Load the check configurations from the persistent state storage.
    */
   private static void loadFromPersistence() throws CheckstylePluginException {
-
     File configFile = getInternalConfigurationFile();
 
     //
     // Make sure the files exists, it might not.
     //
-    if (!configFile.exists()) {
-      return;
-    }
+    if (configFile.exists()) {
+      try (InputStream inStream = new BufferedInputStream(new FileInputStream(configFile))) {
+        SAXReader reader = new SAXReader();
+        Document document = reader.read(inStream);
 
-    try (InputStream inStream = new BufferedInputStream(new FileInputStream(configFile))) {
+        Element root = document.getRootElement();
 
-      SAXReader reader = new SAXReader();
-      Document document = reader.read(inStream);
+        String version = root.attributeValue(XMLTags.VERSION_TAG);
+        if (CURRENT_CONFIG_FILE_FORMAT_VERSION.equals(version)) {
+          String defaultConfigName = root.attributeValue(XMLTags.DEFAULT_CHECK_CONFIG_TAG);
 
-      Element root = document.getRootElement();
+          sConfigurations.addAll(getGlobalCheckConfigurations(root));
 
-      String version = root.attributeValue(XMLTags.VERSION_TAG);
-      if (!CURRENT_CONFIG_FILE_FORMAT_VERSION.equals(version)) {
-
-        // the old (pre 4.0.0) configuration files aren't supported
-        // anymore
-        CheckstyleLog.log(null,
-                "eclipse-cs version 3.x type configuration files are not supported anymore.");
-        return;
-      }
-
-      String defaultConfigName = root.attributeValue(XMLTags.DEFAULT_CHECK_CONFIG_TAG);
-
-      sConfigurations.addAll(getGlobalCheckConfigurations(root));
-
-      for (ICheckConfiguration config : sConfigurations) {
-        if (config != sDefaultBuiltInConfig && config.getName().equals(defaultConfigName)) {
-          sDefaultCheckConfig = config;
+          for (ICheckConfiguration config : sConfigurations) {
+            if (config != sDefaultBuiltInConfig && config.getName().equals(defaultConfigName)) {
+              sDefaultCheckConfig = config;
+            }
+          }
+        } else {
+          // the old (pre 4.0.0) configuration files aren't supported
+          // anymore
+          CheckstyleLog.log(null,
+                  "eclipse-cs version 3.x type configuration files are not supported anymore.");
         }
+      } catch (IOException | DocumentException ex) {
+        CheckstylePluginException.rethrow(ex, Messages.errorLoadingConfigFile);
       }
-    } catch (IOException | DocumentException ex) {
-      CheckstylePluginException.rethrow(ex, Messages.errorLoadingConfigFile);
     }
   }
 

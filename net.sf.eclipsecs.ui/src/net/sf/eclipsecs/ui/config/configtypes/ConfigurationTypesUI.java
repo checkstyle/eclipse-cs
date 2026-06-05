@@ -115,20 +115,19 @@ public final class ConfigurationTypesUI {
    */
   public static ICheckConfigurationEditor getNewEditor(IConfigurationType configType)
           throws CheckstylePluginException {
-
+    ICheckConfigurationEditor editor = null;
     Class<? extends ICheckConfigurationEditor> editorClass = CONFIGURATION_TYPE_EDITORS
             .get(configType.getInternalName());
 
     if (editorClass != null) {
-
       try {
-        return editorClass.getDeclaredConstructor().newInstance();
+        editor = editorClass.getDeclaredConstructor().newInstance();
       } catch (ClassCastException | ReflectiveOperationException ex) {
         CheckstylePluginException.rethrow(ex);
       }
     }
 
-    return null;
+    return editor;
   }
 
   /**
@@ -140,20 +139,18 @@ public final class ConfigurationTypesUI {
    *         if no image is registered
    */
   public static Image getConfigurationTypeImage(IConfigurationType configType) {
-
+    Image image = null;
     String iconPath = CONFIGURATION_TYPE_ICONS.get(configType.getInternalName());
-
     if (iconPath != null) {
       ImageRegistry imageRegistry = JFaceResources.getImageRegistry();
-      Image image = imageRegistry.get(iconPath);
+      image = imageRegistry.get(iconPath);
       if (image == null) {
         ImageDescriptor descriptor = AbstractUIPlugin
                 .imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID, iconPath);
         imageRegistry.put(iconPath, descriptor);
         image = imageRegistry.get(iconPath);
       }
-      return image;
     }
-    return null;
+    return image;
   }
 }

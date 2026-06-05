@@ -133,15 +133,16 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
    * @return the editors file or <code>null</code> if the workbench part is no file based editor
    */
   private IFile getEditorFile(IWorkbenchPartReference partRef) {
+    IFile file = null;
     try {
       if (partRef instanceof IEditorReference editorRef
               && editorRef.getEditorInput() instanceof FileEditorInput input) {
-        return input.getFile();
+        file = input.getFile();
       }
     } catch (PartInitException ex) {
       throw new RuntimeException(ex);
     }
-    return null;
+    return file;
   }
 
   /**
@@ -153,6 +154,7 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
    * @return <code>true</code> if the file is affected, <code>false</code> otherwise
    */
   private boolean isFileAffected(IFile file) {
+    boolean isFileAffected = false;
     IProject project = file.getProject();
 
     try {
@@ -175,13 +177,13 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
           }
         }
 
-        return unOpenedFilesFilterActive && !filtered;
+        isFileAffected = unOpenedFilesFilterActive && !filtered;
       }
     } catch (CoreException | CheckstylePluginException ex) {
       CheckstyleLog.log(ex);
     }
 
-    return false;
+    return isFileAffected;
   }
 
   private class PartsOpenedJob extends AbstractCheckJob {

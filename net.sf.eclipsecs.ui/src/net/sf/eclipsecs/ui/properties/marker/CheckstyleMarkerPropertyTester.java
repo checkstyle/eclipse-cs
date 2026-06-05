@@ -34,22 +34,21 @@ public class CheckstyleMarkerPropertyTester extends PropertyTester {
 
   @Override
   public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
-    if (!(receiver instanceof IMarker)) {
-      return false;
-    }
-    IMarker marker = (IMarker) receiver;
-    try {
-      if (!CheckstyleMarker.MARKER_ID.equals(marker.getType())) {
-        return false;
+    boolean result = false;
+    if (receiver instanceof IMarker) {
+      IMarker marker = (IMarker) receiver;
+      try {
+        if (CheckstyleMarker.MARKER_ID.equals(marker.getType())) {
+          // avoid property page for markers that show runtime errors instead of violations
+          Object module = marker.getAttribute(CheckstyleMarker.MODULE_NAME);
+          result = module instanceof String && !((String) module).isBlank();
+        }
+      } catch (CoreException ex) {
+        CheckstyleLog.log(ex);
       }
-      // avoid property page for markers that show runtime errors instead of violations
-      Object module = marker.getAttribute(CheckstyleMarker.MODULE_NAME);
-      return module instanceof String && !((String) module).isBlank();
-    } catch (CoreException ex) {
-      CheckstyleLog.log(ex);
     }
 
-    return false;
+    return result;
   }
 
 }

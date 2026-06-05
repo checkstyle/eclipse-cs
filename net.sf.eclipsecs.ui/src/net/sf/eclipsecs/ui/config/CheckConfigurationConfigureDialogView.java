@@ -69,11 +69,10 @@ public final class CheckConfigurationConfigureDialogView extends Composite {
     GridDataFactory.create(GridData.FILL_BOTH).hint(SWT.DEFAULT, 100).applyTo(mBrowserDescription);
     mBrowserDescription.addLocationListener(LocationListener.changingAdapter(event -> {
       String url = event.location;
-      if (url == null || !url.startsWith("http")) {
-        return;
+      if (url != null && url.startsWith("http")) {
+        InternalBrowser.openLinkInExternalBrowser(url);
+        event.doit = false;
       }
-      InternalBrowser.openLinkInExternalBrowser(url);
-      event.doit = false;
     }));
 
     this.availableModulesViewer = new AvailableModulesViewer(sashForm, SWT.NULL,

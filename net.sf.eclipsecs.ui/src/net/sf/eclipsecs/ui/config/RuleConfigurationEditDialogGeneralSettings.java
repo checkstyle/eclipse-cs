@@ -100,6 +100,7 @@ public final class RuleConfigurationEditDialogGeneralSettings extends Composite 
   }
 
   public Optional<String> validatePropertyWidgets() {
+    Optional<String> errorMessage = Optional.empty();
     for (IConfigPropertyWidget widget : mConfigPropertyWidgets) {
       ConfigProperty property = widget.getConfigProperty();
       try {
@@ -107,11 +108,12 @@ public final class RuleConfigurationEditDialogGeneralSettings extends Composite 
       } catch (CheckstylePluginException ex) {
         String message = NLS.bind(Messages.RuleConfigurationEditDialog_msgInvalidPropertyValue,
                 property.getMetaData().getName());
-        return Optional.of(message);
+        errorMessage = Optional.of(message);
+        break;
       }
       property.setValue(widget.getValue());
     }
-    return Optional.empty();
+    return errorMessage;
   }
 
 }

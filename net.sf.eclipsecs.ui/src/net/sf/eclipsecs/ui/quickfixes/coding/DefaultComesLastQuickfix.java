@@ -83,7 +83,7 @@ public class DefaultComesLastQuickfix extends AbstractASTResolution {
   }
 
   private static boolean isLastSwitchCase(SwitchCase switchCase) {
-
+    boolean isLastSwitchCase = true;
     SwitchStatement switchStatement = (SwitchStatement) switchCase.getParent();
 
     // collect all statements belonging to the default case
@@ -92,10 +92,11 @@ public class DefaultComesLastQuickfix extends AbstractASTResolution {
       ASTNode tmpNode = (ASTNode) switchStatement.statements().get(i);
 
       if (tmpNode instanceof SwitchCase) {
-        return false;
+        isLastSwitchCase = false;
+        break;
       }
     }
-    return true;
+    return isLastSwitchCase;
   }
 
   @Override

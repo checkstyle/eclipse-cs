@@ -110,15 +110,14 @@ public class MarkerPropertyPage extends PropertyPage {
 
   private void createIdText(final Composite composite) {
     var id = getIssue().getAttribute(CheckstyleMarker.MODULE_ID, null);
-    if (StringUtils.isEmpty(id)) {
-      return;
-    }
-    new Label(composite, SWT.NONE).setImage(
-            PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJS_INFO_TSK));
-    new Label(composite, SWT.NONE).setText(Messages.MarkerPropertyPage_Id);
+    if (!StringUtils.isEmpty(id)) {
+      new Label(composite, SWT.NONE).setImage(PlatformUI.getWorkbench().getSharedImages()
+              .getImage(ISharedImages.IMG_OBJS_INFO_TSK));
+      new Label(composite, SWT.NONE).setText(Messages.MarkerPropertyPage_Id);
 
-    Text labelId = new Text(composite, SWT.WRAP | SWT.READ_ONLY);
-    labelId.setText(id);
+      Text labelId = new Text(composite, SWT.WRAP | SWT.READ_ONLY);
+      labelId.setText(id);
+    }
   }
 
   private void createDescriptionText(final Composite composite, RuleIdentity ruleIdentity) {

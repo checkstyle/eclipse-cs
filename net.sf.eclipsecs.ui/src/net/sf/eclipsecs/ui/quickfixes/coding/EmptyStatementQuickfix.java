@@ -46,15 +46,12 @@ public class EmptyStatementQuickfix extends AbstractASTResolution {
       @Override
       public boolean visit(EmptyStatement node) {
         if (containsPosition(lineInfo, node.getStartPosition())) {
-
           // early exit if the statement is mandatory, e.g. only
           // statement in a for-statement without block
           StructuralPropertyDescriptor desc = node.getLocationInParent();
-          if (desc.isChildProperty() && ((ChildPropertyDescriptor) desc).isMandatory()) {
-            return false;
+          if (!desc.isChildProperty() || !((ChildPropertyDescriptor) desc).isMandatory()) {
+            node.delete();
           }
-
-          node.delete();
         }
         return false;
       }

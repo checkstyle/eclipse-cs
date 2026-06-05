@@ -42,13 +42,14 @@ public final class SelectionTool {
   }
 
   public static List<IResource> resolveSelection(IWorkbenchPart part, ISelection selection) {
+    List<IResource> resources = Collections.emptyList();
     if (part instanceof IEditorPart editor) {
       IFile file = ResourceUtil.getFile(editor.getEditorInput());
       if (file != null) {
-        return List.of(file);
+        resources = List.of(file);
       }
     } else if (selection instanceof IStructuredSelection structuredSelection) {
-      List<IResource> resources = new ArrayList<>();
+      resources = new ArrayList<>();
       for (Object object : structuredSelection) {
         if (object instanceof IWorkingSet workingSet) {
           IAdaptable[] elements = workingSet.getElements();
@@ -59,9 +60,8 @@ public final class SelectionTool {
           considerAdaptable(adaptable).ifPresent(resources::add);
         }
       }
-      return resources;
     }
-    return Collections.emptyList();
+    return resources;
   }
 
   private static Optional<IResource> considerAdaptable(IAdaptable adaptable) {
