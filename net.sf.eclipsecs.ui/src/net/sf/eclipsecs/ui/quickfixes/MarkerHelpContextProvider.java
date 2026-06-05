@@ -22,14 +22,13 @@ package net.sf.eclipsecs.ui.quickfixes;
 
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.resources.IMarker;
+import org.eclipse.help.AbstractContextProvider;
+import org.eclipse.help.IContext;
+import org.eclipse.help.IHelpResource;
 import org.eclipse.ui.IMarkerHelpContextProvider;
 
 import net.sf.eclipsecs.core.builder.CheckstyleMarker;
 import net.sf.eclipsecs.core.config.meta.MetadataFactory;
-
-import org.eclipse.help.AbstractContextProvider;
-import org.eclipse.help.IContext;
-import org.eclipse.help.IHelpResource;
 
 /**
  * Provides context help for checkstyle markers.

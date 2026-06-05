@@ -28,9 +28,9 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.Objects;
 import java.util.Optional;
+
 import com.google.common.io.ByteStreams;
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
-
 import net.sf.eclipsecs.core.config.CheckstyleConfigurationFile;
 import net.sf.eclipsecs.core.config.ICheckConfiguration;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;

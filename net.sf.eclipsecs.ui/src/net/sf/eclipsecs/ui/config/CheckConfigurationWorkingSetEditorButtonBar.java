@@ -29,6 +29,7 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+
 import net.sf.eclipsecs.ui.Messages;
 
 public final class CheckConfigurationWorkingSetEditorButtonBar extends Composite {

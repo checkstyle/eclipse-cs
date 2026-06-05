@@ -34,7 +34,6 @@ import org.dom4j.io.SAXReader;
 import org.xml.sax.InputSource;
 
 import com.google.common.base.Strings;
-
 import net.sf.eclipsecs.core.config.meta.MetadataFactory;
 import net.sf.eclipsecs.core.config.meta.RuleMetadata;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;

@@ -30,7 +30,6 @@ import java.util.Objects;
 import org.eclipse.core.resources.IProject;
 
 import com.google.common.base.MoreObjects;
-
 import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
 import net.sf.eclipsecs.core.config.ICheckConfiguration;
 import net.sf.eclipsecs.core.projectconfig.filters.IFilter;

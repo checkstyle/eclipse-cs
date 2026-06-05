@@ -43,7 +43,6 @@ import org.eclipse.osgi.util.NLS;
 import org.xml.sax.InputSource;
 
 import com.google.common.io.Closeables;
-
 import net.sf.eclipsecs.core.CheckstylePlugin;
 import net.sf.eclipsecs.core.Messages;
 import net.sf.eclipsecs.core.config.configtypes.IConfigurationType;

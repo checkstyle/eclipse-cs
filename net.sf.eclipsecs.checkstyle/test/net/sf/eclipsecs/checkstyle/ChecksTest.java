@@ -39,7 +39,6 @@ import org.w3c.dom.NodeList;
 
 import com.puppycrawl.tools.checkstyle.Checker;
 import com.puppycrawl.tools.checkstyle.TreeWalker;
-
 import net.sf.eclipsecs.checkstyle.utils.CheckUtil;
 import net.sf.eclipsecs.checkstyle.utils.XmlUtil;
 

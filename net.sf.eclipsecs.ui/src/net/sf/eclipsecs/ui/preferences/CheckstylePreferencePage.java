@@ -21,6 +21,7 @@
 package net.sf.eclipsecs.ui.preferences;
 
 import java.util.Collection;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialogWithToggle;

@@ -29,7 +29,6 @@ import java.util.ResourceBundle;
 import org.eclipse.core.runtime.URIUtil;
 
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
-
 import net.sf.eclipsecs.core.config.CheckstyleConfigurationFile;
 import net.sf.eclipsecs.core.config.ICheckConfiguration;
 

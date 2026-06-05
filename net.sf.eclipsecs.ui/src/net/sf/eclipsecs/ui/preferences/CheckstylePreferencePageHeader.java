@@ -28,7 +28,6 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Link;
 
 import com.puppycrawl.tools.checkstyle.Main;
-
 import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.util.InternalBrowser;
 

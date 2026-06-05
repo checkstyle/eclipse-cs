@@ -630,6 +630,13 @@
             <property name="file" value="${checkstyle.importcontroltest.file}"/>
             <property name="path" value="^.*[\\/]src[\\/](test|it)[\\/].*$"/>
         </module>
+        <module name="ImportOrder">
+            <property name="groups" value="/^java\./,javax,org"/>
+            <property name="ordered" value="true"/>
+            <property name="separated" value="true"/>
+            <property name="option" value="top"/>
+            <property name="sortStaticImportsAlphabetically" value="true"/>
+        </module>
         <module name="RedundantImport"/>
         <module name="UnusedImports"/>
 
