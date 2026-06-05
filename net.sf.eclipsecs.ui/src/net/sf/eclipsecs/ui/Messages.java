@@ -28,14 +28,6 @@ import org.eclipse.osgi.util.NLS;
  *
  */
 public final class Messages extends NLS {
-  // CHECKSTYLE:OFF
-
-  private static final String BUNDLE_NAME = "net.sf.eclipsecs.ui.messages"; //$NON-NLS-1$
-
-  static {
-    // initialize resource bundle
-    NLS.initializeMessages(BUNDLE_NAME, Messages.class);
-  }
 
   public static String ActivateProjectsPrintAction_msgActivateSelectedProjects;
 
@@ -387,9 +379,6 @@ public final class Messages extends NLS {
 
   public static String SimpleFileSetsEditor_titleSimpleConfig;
 
-  private Messages() {
-  }
-
   public static String FileSetEditDialog_msgBuildTestResults;
 
   public static String RemoteConfigurationEditor_titleAdvancedOptions;
@@ -501,5 +490,15 @@ public final class Messages extends NLS {
   public static String MarkerPropertyPage_Description;
 
   public static String MarkerPropertyPage_Id;
-  // CHECKSTYLE:ON
+
+  private static final String BUNDLE_NAME = "net.sf.eclipsecs.ui.messages"; //$NON-NLS-1$
+
+  static {
+    // initialize resource bundle
+    NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+  }
+
+  private Messages() {
+  }
+
 }

@@ -27,17 +27,6 @@ import org.eclipse.osgi.util.NLS;
  *
  */
 public final class Messages extends NLS {
-  // CHECKSTYLE:OFF
-
-  private static final String BUNDLE_NAME = "net.sf.eclipsecs.core.messages"; //$NON-NLS-1$
-
-  static {
-    // initialize resource bundle
-    NLS.initializeMessages(BUNDLE_NAME, Messages.class);
-  }
-
-  private Messages() {
-  }
 
   public static String Auditor_msgCheckingConfig;
 
@@ -113,5 +102,14 @@ public final class Messages extends NLS {
 
   public static String TransformFormatterRulesJob_name;
 
-  // CHECKSTYLE:ON
+  private static final String BUNDLE_NAME = "net.sf.eclipsecs.core.messages"; //$NON-NLS-1$
+
+  static {
+    // initialize resource bundle
+    NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+  }
+
+  private Messages() {
+  }
+
 }
