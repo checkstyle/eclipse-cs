@@ -62,7 +62,8 @@ public final class ConfigurationTypesUi {
   private static final String ATTR_ICON = "icon"; //$NON-NLS-1$
 
   /** the configuration types configured to the extension point. */
-  private static final Map<String, Class<? extends CheckConfigurationEditor>> CONFIGURATION_TYPE_EDITORS;
+  private static final Map<String, Class<? extends CheckConfigurationEditor>>
+      CONFIGURATION_TYPE_EDITORS;
 
   /** Map of icon paths for the configuration types. */
   private static final Map<String, String> CONFIGURATION_TYPE_ICONS;

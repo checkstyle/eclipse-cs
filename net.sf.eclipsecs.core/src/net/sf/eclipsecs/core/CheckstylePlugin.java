@@ -43,7 +43,7 @@ public class CheckstylePlugin extends Plugin {
   public static final String PLUGIN_ID = "net.sf.eclipsecs.core"; //$NON-NLS-1$
 
   /** Extension point id for Checkstyle addon providers. */
-  private static final String ADDON_PROVIDER_EXT_PT_ID = PLUGIN_ID + ".checkstyleAddonProvider"; //$NON-NLS-1$
+  private static final String ADDON_PROVIDER_EXT_PT_ID = PLUGIN_ID + ".checkstyleAddonProvider";
 
   /**
    *  Platform Locale.
@@ -70,7 +70,7 @@ public class CheckstylePlugin extends Plugin {
             ADDON_PROVIDER_EXT_PT_ID);
 
     try {
-      Logger checkstyleErrorLog = Logger.getLogger("com.puppycrawl.tools.checkstyle.ExceptionLog"); //$NON-NLS-1$
+      Logger checkstyleErrorLog = Logger.getLogger("com.puppycrawl.tools.checkstyle.ExceptionLog");
 
       checkstyleErrorLog.addHandler(new EclipseLogHandler(this));
       checkstyleErrorLog.setLevel(Level.ALL);

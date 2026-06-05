@@ -33,14 +33,16 @@ import net.sf.eclipsecs.ui.util.InternalBrowser;
 
 public class CheckstylePreferencePageHeader extends Composite {
 
-  private static final String CHECKSTYLE_VERSION = Main.class.getPackage().getImplementationVersion();
+  private static final String CHECKSTYLE_VERSION = Main.class.getPackage()
+          .getImplementationVersion();
 
   public CheckstylePreferencePageHeader(Composite parent, int style) {
     super(parent, style);
     RowLayoutFactory.fillDefaults().applyTo(this);
 
     Link link = new Link(this, SWT.NONE);
-    var text = NLS.bind(Messages.CheckstylePreferencePage_version, "<a>" + CHECKSTYLE_VERSION + "</a>");
+    var text = NLS.bind(Messages.CheckstylePreferencePage_version,
+            "<a>" + CHECKSTYLE_VERSION + "</a>");
     text = text.replace("Checkstyle", "<a>Checkstyle</a>");
     link.setText(text);
     link.addListener(SWT.Selection, this::linkClicked);

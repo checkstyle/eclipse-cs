@@ -167,14 +167,17 @@ public final class MetadataFactory {
   }
 
   /**
-   * Create repository of Module Details from checkstyle metadata and third party extension checks metadata.
+   * Create repository of Module Details from checkstyle metadata and third party extension checks
+   * metadata.
    */
   private static void createMetadataMap() {
-    List<ModuleDetails> moduleDetails = XmlMetaReader.readAllModulesIncludingThirdPartyIfAny(sPackageNameSet.toArray(new String[0]));
+    List<ModuleDetails> moduleDetails = XmlMetaReader
+            .readAllModulesIncludingThirdPartyIfAny(sPackageNameSet.toArray(new String[0]));
     if (moduleDetails.isEmpty()) {
       CheckstyleLog.log(null, "Cannot read module details");
     }
-    moduleDetails.forEach(moduleDetail -> sModuleDetailsRepo.put(moduleDetail.getName(), moduleDetail));
+    moduleDetails
+            .forEach(moduleDetail -> sModuleDetailsRepo.put(moduleDetail.getName(), moduleDetail));
   }
 
   /**
@@ -446,15 +449,16 @@ public final class MetadataFactory {
     ResourceBundle resourceBundle;
     String bundle = metadataFile.substring(0, metadataFile.length() - 4).replace('/', '.');
     try {
-      resourceBundle = ResourceBundle.getBundle(bundle, CheckstylePlugin.getPlatformLocale(), classLoader);
+      resourceBundle = ResourceBundle.getBundle(bundle, CheckstylePlugin.getPlatformLocale(),
+              classLoader);
     } catch (MissingResourceException ex) {
       resourceBundle = null;
     }
     return resourceBundle;
   }
 
-  private static void parseMetadata(InputStream metadataStream, ResourceBundle metadataBundle, String groupId)
-          throws DocumentException, CheckstylePluginException {
+  private static void parseMetadata(InputStream metadataStream, ResourceBundle metadataBundle,
+          String groupId) throws DocumentException, CheckstylePluginException {
     Collection<RuleGroupMetadata> groups = MetadataXmlReader.parseMetadata(metadataStream,
             metadataBundle, groupId);
     groups.forEach(

@@ -76,7 +76,8 @@ public final class CheckstyleQuickfixes {
   private Collection<CheckstyleMarkerResolution> readRegistry() {
     List<CheckstyleMarkerResolution> result = new ArrayList<>();
     IExtensionRegistry registry = Platform.getExtensionRegistry();
-    IConfigurationElement[] elements = registry.getConfigurationElementsFor(QUICKFIX_EXTENSION_POINT);
+    IConfigurationElement[] elements = registry
+            .getConfigurationElementsFor(QUICKFIX_EXTENSION_POINT);
     for (IConfigurationElement element : elements) {
       var module = element.getAttribute(EXTENSION_MODULE_ATTRIBUTE);
       if (StringUtils.isNotBlank(module)) {
@@ -99,7 +100,8 @@ public final class CheckstyleQuickfixes {
         resolution = (CheckstyleMarkerResolution) extension;
       }
     } catch (CoreException ex) {
-      CheckstyleLog.log(ex, "cannot create quickfix for " + element.getAttribute(EXTENSION_CLASS_ATTRIBUTE));
+      CheckstyleLog.log(ex,
+              "cannot create quickfix for " + element.getAttribute(EXTENSION_CLASS_ATTRIBUTE));
     }
     return resolution;
   }

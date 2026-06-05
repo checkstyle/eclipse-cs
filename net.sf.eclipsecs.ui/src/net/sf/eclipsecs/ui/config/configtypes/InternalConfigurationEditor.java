@@ -130,7 +130,7 @@ public class InternalConfigurationEditor implements CheckConfigurationEditor {
 
     if (mWorkingCopy.getLocation() == null) {
 
-      String location = "internal_config_" + System.currentTimeMillis() + ".xml"; //$NON-NLS-1$ //$NON-NLS-2$
+      String location = "internal_config_" + System.currentTimeMillis() + ".xml";
       try {
         mWorkingCopy.setLocation(location);
       } catch (CheckstylePluginException ex) {

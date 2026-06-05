@@ -92,9 +92,8 @@ public final class ConfigurationWriter {
 
       String lineSeperator = System.lineSeparator();
 
-      String comment = lineSeperator
-              + "    This configuration file was written by the eclipse-cs plugin configuration editor" //$NON-NLS-1$
-              + lineSeperator;
+      String comment = lineSeperator + "    This configuration file was written by "
+              + "the eclipse-cs plugin configuration editor" + lineSeperator;
       doc.addComment(comment);
 
       // write out name and description as comment
@@ -231,12 +230,11 @@ public final class ConfigurationWriter {
    * @return the list of child modules
    */
   private static List<Module> getChildModules(Module module, List<Module> remainingModules) {
-
     List<Module> childModules = new ArrayList<>();
 
     for (Module tmp : remainingModules) {
-
-      String parentInternalName = module != null ? module.getMetaData().identity().internalName() : null;
+      String parentInternalName = module != null ? module.getMetaData().identity().internalName()
+              : null;
       String childParent = tmp.getMetaData().identity().parent();
 
       // only the checker module has no parent

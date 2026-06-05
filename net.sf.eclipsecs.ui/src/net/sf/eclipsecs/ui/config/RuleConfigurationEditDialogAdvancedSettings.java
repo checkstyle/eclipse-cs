@@ -47,7 +47,8 @@ public final class RuleConfigurationEditDialogAdvancedSettings extends Composite
   private final Text mIdText;
   private final Map<String, Text> mCustomMessages;
 
-  public RuleConfigurationEditDialogAdvancedSettings(Composite parent, int style, Module rule, boolean readonly) {
+  public RuleConfigurationEditDialogAdvancedSettings(Composite parent, int style, Module rule,
+          boolean readonly) {
     super(parent, style);
 
     GridLayoutFactory.swtDefaults().numColumns(2).applyTo(this);

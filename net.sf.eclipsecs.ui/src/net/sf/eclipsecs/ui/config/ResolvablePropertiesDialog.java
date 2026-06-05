@@ -146,7 +146,8 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
     Button mBtnFind = new Button(composite, SWT.PUSH);
     mBtnFind.setText(Messages.ResolvablePropertiesDialog_btnFind);
     GridDataFactory.swtDefaults().align(SWT.BEGINNING, SWT.CENTER).indent(5, 0).applyTo(mBtnFind);
-    mBtnFind.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> findPropertyItems()));
+    mBtnFind.addSelectionListener(
+            SelectionListener.widgetSelectedAdapter(event -> findPropertyItems()));
 
     Control buttonBar = super.createButtonBar(composite);
     GridDataFactory.create(GridData.FILL_HORIZONTAL).align(SWT.END, SWT.CENTER).applyTo(buttonBar);

@@ -93,7 +93,8 @@ public final class CheckstyleMarkerFilterDialogView extends Composite {
     mBtnEditRegex.setEnabled(mChkFilterEnabled.getSelection());
   }
 
-  public void set(boolean enabled, int onResource, boolean selectBySeverity, int severity, boolean filterByRegex) {
+  public void set(boolean enabled, int onResource, boolean selectBySeverity, int severity,
+          boolean filterByRegex) {
     mChkFilterEnabled.setSelection(enabled);
     resourceFilterGroup.setFromFilter(onResource, selectBySeverity, severity);
     mChkSelectByRegex.setSelection(filterByRegex);

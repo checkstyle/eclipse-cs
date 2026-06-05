@@ -44,7 +44,8 @@ public final class InternalBrowser {
    */
   public static final void openLinkInExternalBrowser(String url) {
     try {
-      final IWebBrowser browser = PlatformUI.getWorkbench().getBrowserSupport().createBrowser(IWorkbenchBrowserSupport.AS_EXTERNAL, null, null, null);
+      final IWebBrowser browser = PlatformUI.getWorkbench().getBrowserSupport()
+              .createBrowser(IWorkbenchBrowserSupport.AS_EXTERNAL, null, null, null);
       browser.openURL(new URL(url));
     } catch (PartInitException | MalformedURLException ex) {
       CheckstyleLog.log(ex);

@@ -60,7 +60,8 @@ public final class CheckConfigurationPropertiesDialogView extends Composite {
     // layouts
     GC graphics = new GC(lblConfigType);
     int nameSize = graphics.textExtent(Messages.CheckConfigurationPropertiesDialog_lblName).x;
-    int locationsSize = graphics.textExtent(Messages.CheckConfigurationPropertiesDialog_lblLocation).x;
+    int locationsSize = graphics
+            .textExtent(Messages.CheckConfigurationPropertiesDialog_lblLocation).x;
     int max = Math.max(nameSize, locationsSize);
     graphics.dispose();
 

@@ -27,16 +27,17 @@ import net.sf.eclipsecs.core.transformer.AbstractCheckstyleTransformationClass;
 import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 
 /**
- * Wrapper class for converting the checkstyle-rule LeftCurly to appropriate eclipse-formatter-rules.
- *
+ * Wrapper class for converting the checkstyle-rule LeftCurly to appropriate
+ * eclipse-formatter-rules.
  */
 public class LeftCurlyTransformer extends AbstractCheckstyleTransformationClass {
   @Override
   public FormatterConfiguration transformRule() {
     String tokens = getAttribute("tokens");
     if (tokens == null) {
-      tokens = "CLASS_DEF, CTOR_DEF, INTERFACE_DEF, METHOD_DEF, LITERAL_CATCH, LITERAL_DO, LITERAL_ELSE, "
-              + "LITERAL_FINALLY, LITERAL_FOR, LITERAL_IF, LITERAL_SYNCHRONIZED, LITERAL_TRY, LITERAL_WHILE";
+      tokens = "CLASS_DEF, CTOR_DEF, INTERFACE_DEF, METHOD_DEF, LITERAL_CATCH, LITERAL_DO, "
+              + "LITERAL_ELSE, LITERAL_FINALLY, LITERAL_FOR, LITERAL_IF, LITERAL_SYNCHRONIZED, "
+              + "LITERAL_TRY, LITERAL_WHILE";
     }
 
     String option = switch (getAttribute("option")) {
@@ -58,8 +59,9 @@ public class LeftCurlyTransformer extends AbstractCheckstyleTransformationClass 
                 "brace_position_for_type_declaration");
         case "CTOR_DEF" -> List.of("brace_position_for_constructor_declaration");
         case "METHOD_DEF" -> List.of("brace_position_for_method_declaration");
-        case "LITERAL_DO", "LITERAL_ELSE", "LITERAL_FOR", "LITERAL_IF", "LITERAL_WHILE", "LITERAL_CATCH",
-             "LITERAL_FINALLY", "LITERAL_TRY", "LITERAL_SYNCHRONIZED" -> List.of("brace_position_for_block");
+        case "LITERAL_DO", "LITERAL_ELSE", "LITERAL_FOR", "LITERAL_IF", "LITERAL_WHILE",
+             "LITERAL_CATCH", "LITERAL_FINALLY", "LITERAL_TRY", "LITERAL_SYNCHRONIZED" -> List.of(
+                     "brace_position_for_block");
         case "LITERAL_SWITCH" -> List.of("brace_position_for_switch");
         default -> Collections.emptyList();
       };

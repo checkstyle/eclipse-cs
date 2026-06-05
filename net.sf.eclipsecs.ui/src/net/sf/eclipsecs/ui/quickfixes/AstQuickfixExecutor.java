@@ -70,7 +70,8 @@ public final class AstQuickfixExecutor {
           JavaUI.openInEditor(compilationUnit);
 
           bufferManager.connect(path, LocationKind.IFILE, null);
-          ITextFileBuffer textFileBuffer = bufferManager.getTextFileBuffer(path, LocationKind.IFILE);
+          ITextFileBuffer textFileBuffer = bufferManager.getTextFileBuffer(path,
+                  LocationKind.IFILE);
           IDocument document = textFileBuffer.getDocument();
 
           Optional<Integer> markerStart = getOffset(textFileBuffer, marker);
@@ -89,7 +90,8 @@ public final class AstQuickfixExecutor {
 
             // rewrite all recorded changes to the document
             var wasDirtyBefore = textFileBuffer.isDirty();
-            ast.rewrite(document, compilationUnit.getJavaProject().getOptions(true)).apply(document);
+            ast.rewrite(document, compilationUnit.getJavaProject().getOptions(true))
+                    .apply(document);
 
             // commit changes to underlying file
             if (!wasDirtyBefore) {

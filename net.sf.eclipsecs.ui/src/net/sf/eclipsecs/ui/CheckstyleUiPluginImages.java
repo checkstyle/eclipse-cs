@@ -55,8 +55,8 @@ public enum CheckstyleUiPluginImages {
   /** Image descriptor for the add correction icon. */
   CORRECTION_ADD(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUiPlugin.PLUGIN_ID,
           "icons/add_correction.png")),
-  CORRECTION_ADD_BRACES(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUiPlugin.PLUGIN_ID,
-          "icons/correction_cast.png")),
+  CORRECTION_ADD_BRACES(() -> AbstractUIPlugin
+          .imageDescriptorFromPlugin(CheckstyleUiPlugin.PLUGIN_ID, "icons/correction_cast.png")),
   /** Image descriptor for the change correction icon. */
   CORRECTION_CHANGE(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUiPlugin.PLUGIN_ID,
           "icons/correction_change.png")),
@@ -82,12 +82,14 @@ public enum CheckstyleUiPluginImages {
   MODULEGROUP_ICON(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUiPlugin.PLUGIN_ID,
           "icons/modulegroup.gif")),
   /** Image descriptor for the ticked module group icon. */
-  MODULEGROUP_TICKED_ICON(() -> new DecorationOverlayIcon(MODULEGROUP_ICON.getImageDescriptor(), CHECKED_OVERLAY.getImageDescriptor(), IDecoration.TOP_LEFT)),
+  MODULEGROUP_TICKED_ICON(() -> new DecorationOverlayIcon(MODULEGROUP_ICON.getImageDescriptor(),
+          CHECKED_OVERLAY.getImageDescriptor(), IDecoration.TOP_LEFT)),
   /** Image descriptor for the module icon. */
   MODULE_ICON(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUiPlugin.PLUGIN_ID,
           "icons/module.gif")),
   /** Image descriptor for the ticked module icon. */
-  MODULE_TICKED_ICON(() -> new DecorationOverlayIcon(MODULE_ICON.getImageDescriptor(), CHECKED_OVERLAY.getImageDescriptor(), IDecoration.TOP_LEFT)),
+  MODULE_TICKED_ICON(() -> new DecorationOverlayIcon(MODULE_ICON.getImageDescriptor(),
+          CHECKED_OVERLAY.getImageDescriptor(), IDecoration.TOP_LEFT)),
   /** Image descriptor for the refresh icon. */
   REFRESH_ICON(() -> ResourceLocator.imageDescriptorFromBundle("org.eclipse.search",
           "platform:/plugin/org.eclipse.search/icons/full/elcl16/refresh.png")

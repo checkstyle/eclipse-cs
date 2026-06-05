@@ -167,7 +167,8 @@ public record CheckstyleMarkerFilter(boolean enabled, int onResource, IWorkingSe
    *          the dialog settings
    * @param focusResource
    */
-  public static CheckstyleMarkerFilter restoreState(IDialogSettings dialogSettings, IResource[] focusResource) {
+  public static CheckstyleMarkerFilter restoreState(IDialogSettings dialogSettings,
+          IResource[] focusResource) {
     IDialogSettings settings = dialogSettings.getSection(TAG_DIALOG_SECTION);
 
     boolean enabled = findSetting(settings, TAG_ENABLED)
@@ -279,7 +280,8 @@ public record CheckstyleMarkerFilter(boolean enabled, int onResource, IWorkingSe
     List<IMarker> markers = new ArrayList<>();
     for (IResource resource : resources) {
       if (resource.isAccessible()) {
-        markers.addAll(Arrays.asList(resource.findMarkers(CheckstyleMarker.MARKER_ID, true, depth)));
+        markers.addAll(
+                Arrays.asList(resource.findMarkers(CheckstyleMarker.MARKER_ID, true, depth)));
       }
     }
     Stream<IMarker> filteredMarkers = markers.stream();

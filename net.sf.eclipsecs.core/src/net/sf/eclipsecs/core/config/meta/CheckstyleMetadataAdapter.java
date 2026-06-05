@@ -84,7 +84,8 @@ public class CheckstyleMetadataAdapter {
           final String ruleDescription = thirdPartyGroups.get(lookupKey).get("description");
           final int rulePriority = Integer.parseInt(thirdPartyGroups.get(lookupKey)
                   .get("priority"));
-          group = new RuleGroupMetadata(ruleGroupName, ruleGroupName, ruleDescription, false, rulePriority);
+          group = new RuleGroupMetadata(ruleGroupName, ruleGroupName, ruleDescription, false,
+                  rulePriority);
           groups.put(ruleGroupName, group);
         }
       }
@@ -106,7 +107,8 @@ public class CheckstyleMetadataAdapter {
     final String[] packageTokens = moduleDetails.getParent().split(DOT_PATTERN);
     List<String> alternativeNames = List.of(moduleDetails.getFullQualifiedName());
     List<ConfigPropertyMetadata> properties = moduleDetails.getProperties().stream()
-            .map(modulePropertyDetails -> createPropertyConfig(moduleDetails, modulePropertyDetails))
+            .map(modulePropertyDetails -> createPropertyConfig(moduleDetails,
+                    modulePropertyDetails))
             .toList();
     RuleMetadata ruleMeta = new RuleMetadata(
             new RuleIdentity(moduleDetails.getName(), moduleDetails.getName(),
@@ -163,7 +165,8 @@ public class CheckstyleMetadataAdapter {
       resultList.forEach(modifiedConfigPropertyMetadata.getPropertyEnumeration()::add);
     } else if (dataType == ConfigPropertyType.MULTI_CHECK) {
       String result = CheckUtil.getModifiableTokens(moduleDetails.getName());
-      Collections.addAll(modifiedConfigPropertyMetadata.getPropertyEnumeration(), result.split(","));
+      Collections.addAll(modifiedConfigPropertyMetadata.getPropertyEnumeration(),
+              result.split(","));
     }
     return modifiedConfigPropertyMetadata;
 
@@ -198,7 +201,8 @@ public class CheckstyleMetadataAdapter {
    * {@code sThirdPartyRuleGroupMap}.
    * @param thirdPartyGroups
    */
-  private static String findLookupKey(Map<String, Map<String, String>> thirdPartyGroups, String packageName) {
+  private static String findLookupKey(Map<String, Map<String, String>> thirdPartyGroups,
+          String packageName) {
     final String[] packageTokens = packageName.split(DOT_PATTERN);
     List<String> prefixList = new ArrayList<>();
     String lookupKey = packageTokens[0];

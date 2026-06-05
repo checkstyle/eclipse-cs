@@ -84,9 +84,9 @@ public final class AvailableModulesViewer extends Composite {
     treeViewer.getViewer().addDoubleClickListener(event -> {
       IStructuredSelection selection = (IStructuredSelection) event.getSelection();
       Object element = selection.getFirstElement();
-
       if (element instanceof RuleGroupMetadata) {
-        treeViewer.getViewer().setExpandedState(element, !treeViewer.getViewer().getExpandedState(element));
+        treeViewer.getViewer().setExpandedState(element,
+                !treeViewer.getViewer().getExpandedState(element));
       } else if (configurable) {
         newModule((IStructuredSelection) event.getSelection());
       }

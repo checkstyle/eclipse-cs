@@ -42,9 +42,9 @@ public final class CheckConfigurationWorkingSetEditorConfigTable extends Composi
 
   private final TableViewer tableViewer;
 
-  public CheckConfigurationWorkingSetEditorConfigTable(Composite parent, int style, boolean useDefaultColumn,
-          CheckConfigurationWorkingCopy[] configs, ConfigurationLabelProvider multiProvider,
-          Runnable configureCheckConfig,
+  public CheckConfigurationWorkingSetEditorConfigTable(Composite parent, int style,
+          boolean useDefaultColumn, CheckConfigurationWorkingCopy[] configs,
+          ConfigurationLabelProvider multiProvider, Runnable configureCheckConfig,
           Consumer<CheckConfigurationWorkingCopy> handleSelectionChanged) {
     super(parent, style);
     setLayout(new FillLayout());

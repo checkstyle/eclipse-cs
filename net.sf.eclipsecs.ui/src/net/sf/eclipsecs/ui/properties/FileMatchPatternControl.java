@@ -38,7 +38,8 @@ public final class FileMatchPatternControl extends Composite {
 
   private final FileMatchPatternTable table;
 
-  public FileMatchPatternControl(Composite parent, int style, FileMatchPatternControlCallbacks callbacks) {
+  public FileMatchPatternControl(Composite parent, int style,
+          FileMatchPatternControlCallbacks callbacks) {
     super(parent, style);
     GridLayoutFactory.fillDefaults().applyTo(this);
 
@@ -89,7 +90,8 @@ public final class FileMatchPatternControl extends Composite {
    *          the label for the new button
    * @return the newly-created button
    */
-  private static Button createPushButton(Composite parent, String label, Runnable selectionListener) {
+  private static Button createPushButton(Composite parent, String label,
+          Runnable selectionListener) {
     Button button = new Button(parent, SWT.PUSH);
     button.setText(label);
     GridDataFactory.swtDefaults().align(SWT.FILL, SWT.CENTER).applyTo(button);

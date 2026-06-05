@@ -82,18 +82,17 @@ public final class ApplicationStartedHandler implements EventHandler {
       @Override
       public void run() {
         for (IWorkbenchWindow window : workbench.getWorkbenchWindows()) {
-          if (window != null) {
-            // collect open editors and have then run against Checkstyle if appropriate
-            // add already opened files to the filter - bugfix for 2923044
-            Set<IWorkbenchPartReference> parts = Arrays.stream(window.getPages())
-                .map(IWorkbenchPage::getEditorReferences)
-                .flatMap(Arrays::stream)
-                .collect(Collectors.toSet());
-            mPartListener.partsOpened(parts);
-            // remove listener first for safety, we don't want to register the same listener twice accidently
-            window.getPartService().removePartListener(mPartListener);
-            window.getPartService().addPartListener(mPartListener);
-          }
+          // collect open editors and have then run against Checkstyle if appropriate
+          // add already opened files to the filter - bugfix for 2923044
+          Set<IWorkbenchPartReference> parts = Arrays.stream(window.getPages())
+              .map(IWorkbenchPage::getEditorReferences)
+              .flatMap(Arrays::stream)
+              .collect(Collectors.toSet());
+          mPartListener.partsOpened(parts);
+          // remove listener first for safety,
+          // we don't want to register the same listener twice accidently
+          window.getPartService().removePartListener(mPartListener);
+          window.getPartService().addPartListener(mPartListener);
         }
         workbench.addWindowListener(mWindowListener);
       }

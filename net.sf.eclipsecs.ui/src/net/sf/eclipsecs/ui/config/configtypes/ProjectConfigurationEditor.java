@@ -191,7 +191,8 @@ public class ProjectConfigurationEditor implements CheckConfigurationEditor {
         throw ex;
       }
 
-      CheckConfigurationWorkingSet workingSet = mCheckConfigDialog.getCheckConfigurationWorkingSet();
+      CheckConfigurationWorkingSet workingSet = mCheckConfigDialog
+              .getCheckConfigurationWorkingSet();
       IPath tmp = IPath.fromOSString(location);
       boolean isFirstPartProject = ResourcesPlugin.getWorkspace().getRoot()
               .getProject(tmp.segment(0)).exists();
@@ -201,8 +202,8 @@ public class ProjectConfigurationEditor implements CheckConfigurationEditor {
                 .append(location).toString();
         mLocation.setText(location);
       } else if (!isFirstPartProject && workingSet instanceof GlobalCheckConfigurationWorkingSet) {
-        throw new CheckstylePluginException(NLS
-                .bind(Messages.ProjectConfigurationEditor_msgNoProjectInWorkspace, tmp.segment(0)), ex);
+        throw new CheckstylePluginException(NLS.bind(
+                Messages.ProjectConfigurationEditor_msgNoProjectInWorkspace, tmp.segment(0)), ex);
       }
 
       if (ensureFileExists(location)) {

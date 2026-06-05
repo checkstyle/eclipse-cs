@@ -110,7 +110,8 @@ public class RemoteConfigurationEditor implements CheckConfigurationEditor {
     GridDataFactory.swtDefaults().span(2, 1).applyTo(lblDescription);
 
     mDescription = new Text(contents, SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.BORDER | SWT.VERTICAL);
-    GridDataFactory.create(GridData.FILL_BOTH).span(2, 1).hint(300, 100).grab(true, true).applyTo(mDescription);
+    GridDataFactory.create(GridData.FILL_BOTH).span(2, 1).hint(300, 100).grab(true, true)
+            .applyTo(mDescription);
 
     createCredentialsGroup(contents);
 

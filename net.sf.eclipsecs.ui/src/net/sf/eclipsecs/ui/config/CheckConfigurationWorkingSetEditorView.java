@@ -123,7 +123,7 @@ public final class CheckConfigurationWorkingSetEditorView extends Composite {
     boolean configSelected = config != null;
     if (configSelected) {
       mConfigurationDescription
-              .setText(config.getDescription() != null ? config.getDescription() : ""); //$NON-NLS-1$
+              .setText(config.getDescription() != null ? config.getDescription() : "");
 
       if (global) {
         try {

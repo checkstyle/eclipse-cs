@@ -30,7 +30,7 @@ import net.sf.eclipsecs.core.CheckstylePlugin;
  */
 public final class CheckstyleMarker {
   /** ID for the CheckstyleMarker. */
-  public static final String MARKER_ID = CheckstylePlugin.PLUGIN_ID + ".CheckstyleMarker"; //$NON-NLS-1$
+  public static final String MARKER_ID = CheckstylePlugin.PLUGIN_ID + ".CheckstyleMarker";
 
   /** Module name key in marker attributes. */
   public static final String MODULE_NAME = "ModuleName"; //$NON-NLS-1$

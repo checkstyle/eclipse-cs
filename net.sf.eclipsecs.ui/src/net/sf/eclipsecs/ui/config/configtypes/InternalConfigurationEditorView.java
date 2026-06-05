@@ -63,11 +63,13 @@ public final class InternalConfigurationEditorView extends Composite {
     GridDataFactory.swtDefaults().span(2, 1).applyTo(lblDescription);
 
     mDescription = new Text(this, SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.BORDER | SWT.VERTICAL);
-    GridDataFactory.create(GridData.FILL_BOTH).span(2, 1).hint(300, 100).grab(true, true).applyTo(mDescription);
+    GridDataFactory.create(GridData.FILL_BOTH).span(2, 1).hint(300, 100).grab(true, true)
+            .applyTo(mDescription);
 
     Button mBtnImport = new Button(this, SWT.PUSH);
     mBtnImport.setText(Messages.InternalConfigurationEditor_btnImport);
-    GridDataFactory.swtDefaults().span(2, 1).align(GridData.END, GridData.CENTER).applyTo(mBtnImport);
+    GridDataFactory.swtDefaults().span(2, 1).align(GridData.END, GridData.CENTER)
+            .applyTo(mBtnImport);
 
     mBtnImport.addSelectionListener(SelectionListener.widgetSelectedAdapter(
             event -> importConfig.run()));

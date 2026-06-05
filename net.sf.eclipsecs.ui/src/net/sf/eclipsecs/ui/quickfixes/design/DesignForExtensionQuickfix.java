@@ -59,7 +59,8 @@ public class DesignForExtensionQuickfix extends AbstractASTResolution {
           Modifier finalModifier = node.getAST().newModifier(ModifierKeyword.FINAL_KEYWORD);
           node.modifiers().add(finalModifier);
           // reorder modifiers into their correct order
-          List<ASTNode> reorderedModifiers = ModifierOrderQuickfix.reOrderModifiers(node.modifiers());
+          List<ASTNode> reorderedModifiers = ModifierOrderQuickfix
+                  .reOrderModifiers(node.modifiers());
           node.modifiers().clear();
           node.modifiers().addAll(reorderedModifiers);
         }

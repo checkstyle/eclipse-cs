@@ -99,8 +99,9 @@ public final class MetadataXmlReader {
     return groups.values();
   }
 
-  private static List<RuleMetadata> processModules(Element groupElement, RuleGroupMetadata groupMetadata,
-          ResourceBundle metadataBundle) throws CheckstylePluginException {
+  private static List<RuleMetadata> processModules(Element groupElement,
+          RuleGroupMetadata groupMetadata, ResourceBundle metadataBundle)
+          throws CheckstylePluginException {
     List<RuleMetadata> modules = new ArrayList<>();
 
     List<Element> moduleElements = groupElement.elements(XmlTags.RULE_METADATA_TAG);
@@ -120,7 +121,7 @@ public final class MetadataXmlReader {
               : null;
       boolean hidden = Boolean.parseBoolean(moduleEl.attributeValue(XmlTags.HIDDEN_TAG));
       boolean hasSeverity = !"false".equals(moduleEl.attributeValue(XmlTags.HAS_SEVERITY_TAG));
-      boolean deletable = !"false".equals(moduleEl.attributeValue(XmlTags.DELETABLE_TAG)); //$NON-NLS-1$
+      boolean deletable = !"false".equals(moduleEl.attributeValue(XmlTags.DELETABLE_TAG));
       boolean isSingleton = Boolean.parseBoolean(moduleEl.attributeValue(XmlTags.IS_SINGLETON_TAG));
 
       // process description
@@ -204,7 +205,8 @@ public final class MetadataXmlReader {
 
             if (OptionProvider.class.isAssignableFrom(providerClass)) {
 
-              OptionProvider provider = (OptionProvider) providerClass.getDeclaredConstructor().newInstance();
+              OptionProvider provider = (OptionProvider) providerClass.getDeclaredConstructor()
+                      .newInstance();
               property.getPropertyEnumeration().addAll(provider.getOptions());
             } else if (Enum.class.isAssignableFrom(providerClass)) {
 

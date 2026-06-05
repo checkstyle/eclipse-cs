@@ -114,7 +114,8 @@ public class CheckConfigurationWorkingCopy extends AbstractCheckConfiguration im
           CheckConfigurationWorkingSet workingSet, boolean global) {
 
     mWorkingSet = workingSet;
-    mCheckConfiguration = new DefaultCheckConfiguration(null, null, null, configType, global, null, null);
+    mCheckConfiguration = new DefaultCheckConfiguration(null, null, null, configType, global, null,
+            null);
   }
 
   /**

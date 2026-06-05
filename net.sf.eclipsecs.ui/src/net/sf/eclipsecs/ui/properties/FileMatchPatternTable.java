@@ -46,7 +46,8 @@ public final class FileMatchPatternTable extends Composite {
 
   private final CheckboxTableViewer mPatternViewer;
 
-  public FileMatchPatternTable(Composite parent, int style, FileMatchPatternControlCallbacks callbacks) {
+  public FileMatchPatternTable(Composite parent, int style,
+          FileMatchPatternControlCallbacks callbacks) {
     super(parent, style);
     GridLayoutFactory.fillDefaults().applyTo(this);
 
@@ -131,9 +132,11 @@ public final class FileMatchPatternTable extends Composite {
     }
   }
 
-  private static final class FileMatchPatternTableCheckStateProvider implements ICheckStateProvider {
+  private static final class FileMatchPatternTableCheckStateProvider
+          implements ICheckStateProvider {
 
-    private static final FileMatchPatternTableCheckStateProvider INSTANCE = new FileMatchPatternTableCheckStateProvider();
+    private static final FileMatchPatternTableCheckStateProvider INSTANCE =
+            new FileMatchPatternTableCheckStateProvider();
 
     private FileMatchPatternTableCheckStateProvider() {
 

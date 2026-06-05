@@ -166,7 +166,8 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
 
     Button mBtnOpenModuleOnAdd = new Button(composite, SWT.CHECK);
     mBtnOpenModuleOnAdd.setText(Messages.CheckConfigurationConfigureDialog_btnOpenModuleOnAdd);
-    GridDataFactory.swtDefaults().align(SWT.BEGINNING, SWT.CENTER).indent(5, 0).applyTo(mBtnOpenModuleOnAdd);
+    GridDataFactory.swtDefaults().align(SWT.BEGINNING, SWT.CENTER).indent(5, 0)
+            .applyTo(mBtnOpenModuleOnAdd);
 
     // Init the translate tokens preference
     mBtnOpenModuleOnAdd.setSelection(

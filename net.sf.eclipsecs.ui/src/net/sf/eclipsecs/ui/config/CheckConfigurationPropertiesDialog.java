@@ -147,7 +147,8 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
 
     Composite composite = (Composite) super.createDialogArea(parent);
 
-    dialogView = new CheckConfigurationPropertiesDialogView(composite, SWT.NULL, this::changeSelectedConfigurationType);
+    dialogView = new CheckConfigurationPropertiesDialogView(composite, SWT.NULL,
+            this::changeSelectedConfigurationType);
     GridDataFactory.create(GridData.FILL_BOTH).applyTo(dialogView);
 
     return composite;
@@ -177,7 +178,8 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
 
     mBtnProperties = new Button(composite, SWT.PUSH);
     mBtnProperties.setText(Messages.CheckConfigurationPropertiesDialog_btnAdditionalProps);
-    GridDataFactory.swtDefaults().align(SWT.BEGINNING, SWT.CENTER).indent(5, 0).applyTo(mBtnProperties);
+    GridDataFactory.swtDefaults().align(SWT.BEGINNING, SWT.CENTER).indent(5, 0)
+            .applyTo(mBtnProperties);
 
     mBtnProperties.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
       try {
@@ -209,7 +211,8 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
       // Check if the configuration is valid
       mCheckConfig = mConfigurationEditor.getEditedWorkingCopy();
 
-      int numUnresolvedProps = CheckConfigurationTester.getUnresolvedProperties(mCheckConfig).size();
+      int numUnresolvedProps = CheckConfigurationTester.getUnresolvedProperties(mCheckConfig)
+              .size();
 
       if (numUnresolvedProps > 0) {
 

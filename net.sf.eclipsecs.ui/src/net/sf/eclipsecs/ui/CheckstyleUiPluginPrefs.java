@@ -72,7 +72,8 @@ public class CheckstyleUiPluginPrefs extends AbstractPreferenceInitializer {
    * Preference name indicating the minimum amount of lines that is used for the
    * checker analysis.
    */
-  public static final String PREF_DUPLICATED_CODE_MIN_LINES = "checker.strictDuplicatedCode.minLines"; //$NON-NLS-1$
+  public static final String PREF_DUPLICATED_CODE_MIN_LINES =
+          "checker.strictDuplicatedCode.minLines";
 
   /**
    * Default value for the minimum amount of lines that is used for the checker
