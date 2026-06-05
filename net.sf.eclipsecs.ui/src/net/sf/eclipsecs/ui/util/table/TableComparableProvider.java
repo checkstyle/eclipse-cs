@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2003-2023  David Schneider, Lars Ködderitzsch
+// Copyright (C) 2003-2023  David Schneider, Lars Ködderitzsch, Fabrice Bellingard
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -18,49 +18,25 @@
 //
 //============================================================================
 
-package net.sf.eclipsecs.ui.properties.filter;
-
-import java.util.List;
-
-import org.eclipse.core.resources.IProject;
-import org.eclipse.swt.widgets.Shell;
+package net.sf.eclipsecs.ui.util.table;
 
 /**
- * Interface for a filter editor.
+ * Interface used by <code>TableSortSupport</code> to provide comparable values
+ * for the single table columns. This works very similar like
+ * ITableLabelProvider except that other comparable objects than Strings can be
+ * returned.
  *
  */
-public interface IFilterEditor {
+public interface TableComparableProvider {
 
   /**
-   * Opens the filter editor dialog (blocking).
+   * Returns the comparable for a given table column.
    *
-   * @param parent
-   *          the parent shell
-   * @return the returncode
+   * @param element
+   *          the row object
+   * @param col
+   *          the table column index
+   * @return the comparable value for this columns
    */
-  int openEditor(Shell parent);
-
-  /**
-   * Sets the input for this filter editor.
-   *
-   * @param input
-   *          the input
-   */
-  void setInputProject(IProject input);
-
-  /**
-   * Sets the actual filter data for the editor.
-   *
-   * @param filterData
-   *          the actual filter data
-   */
-  void setFilterData(List<String> filterData);
-
-  /**
-   * Gets the filter data from the editor.
-   *
-   * @return the edited filter data
-   */
-  List<String> getFilterData();
-
+  Comparable<?> getComparableValue(Object element, int col);
 }

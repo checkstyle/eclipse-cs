@@ -40,16 +40,16 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.ui.dialogs.PropertyPage;
 
-import net.sf.eclipsecs.core.config.ICheckConfiguration;
-import net.sf.eclipsecs.core.config.ICheckConfigurationWorkingSet;
+import net.sf.eclipsecs.core.config.CheckConfiguration;
+import net.sf.eclipsecs.core.config.CheckConfigurationWorkingSet;
 import net.sf.eclipsecs.core.nature.CheckstyleNature;
 import net.sf.eclipsecs.core.projectconfig.FileSet;
-import net.sf.eclipsecs.core.projectconfig.IProjectConfiguration;
+import net.sf.eclipsecs.core.projectconfig.ProjectConfiguration;
 import net.sf.eclipsecs.core.projectconfig.ProjectConfigurationFactory;
 import net.sf.eclipsecs.core.projectconfig.ProjectConfigurationWorkingCopy;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
+import net.sf.eclipsecs.ui.CheckstyleUiPlugin;
 import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.config.CheckConfigurationWorkingSetEditor;
 
@@ -89,7 +89,7 @@ public class CheckstylePropertyPage extends PropertyPage {
     }
 
     try {
-      IProjectConfiguration projectConfig = ProjectConfigurationFactory.getConfiguration(project);
+      ProjectConfiguration projectConfig = ProjectConfigurationFactory.getConfiguration(project);
       mProjectConfig = new ProjectConfigurationWorkingCopy(projectConfig);
 
       mCheckstyleInitiallyActivated = project.hasNature(CheckstyleNature.NATURE_ID);
@@ -101,15 +101,15 @@ public class CheckstylePropertyPage extends PropertyPage {
   private void handleConfigFileError(Exception error, IProject project) {
 
     CheckstyleLog.log(error, Messages.errorOpeningPropertiesPage);
-    CheckstyleUIPlugin.warningDialog(null, Messages.errorOpeningPropertiesPage, error);
+    CheckstyleUiPlugin.warningDialog(null, Messages.errorOpeningPropertiesPage, error);
 
-    IProjectConfiguration projectConfig = ProjectConfigurationFactory
+    ProjectConfiguration projectConfig = ProjectConfigurationFactory
             .createDefaultProjectConfiguration(project);
     mProjectConfig = new ProjectConfigurationWorkingCopy(projectConfig);
     try {
       mCheckstyleInitiallyActivated = project.hasNature(CheckstyleNature.NATURE_ID);
     } catch (CoreException nested) {
-      CheckstyleUIPlugin.errorDialog(null, nested.getMessage(), nested, true);
+      CheckstyleUiPlugin.errorDialog(null, nested.getMessage(), nested, true);
     }
   }
 
@@ -152,7 +152,7 @@ public class CheckstylePropertyPage extends PropertyPage {
       // check if all check configurations resolve
       List<FileSet> fileSets = mProjectConfig.getFileSets();
       for (FileSet fileset : fileSets) {
-        ICheckConfiguration checkConfig = fileset.getCheckConfig();
+        CheckConfiguration checkConfig = fileset.getCheckConfig();
         if (checkConfig != null) {
           try {
             checkConfig.getCheckstyleConfiguration();
@@ -180,7 +180,7 @@ public class CheckstylePropertyPage extends PropertyPage {
 
   private static final class LocalConfig extends Composite {
 
-    private LocalConfig(Composite parent, int style, ICheckConfigurationWorkingSet workingSet) {
+    private LocalConfig(Composite parent, int style, CheckConfigurationWorkingSet workingSet) {
       super(parent, style);
       setLayout(new FillLayout());
 

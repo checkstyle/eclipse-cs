@@ -20,171 +20,123 @@
 
 package net.sf.eclipsecs.core.config;
 
+import java.io.File;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
-import net.sf.eclipsecs.core.config.configtypes.IConfigurationType;
+import net.sf.eclipsecs.core.config.configtypes.ConfigurationType;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
 /**
- * Base implementation of a check configuration. Leaves the specific tasks to the concrete
- * subclasses.
+ * Interface for a check configuration object.
  *
  */
-public class CheckConfiguration extends AbstractCheckConfiguration {
-
-  /** the displayable name of the configuration. */
-  private final String mName;
-
-  /** the location of the checkstyle configuration file. */
-  private final String mLocation;
-
-  /** the description of the configuration. */
-  private final String mDescription;
-
-  /** the configuration type. */
-  private final IConfigurationType mConfigType;
-
-  /** flags if the configuration is global. */
-  private final boolean mIsGlobal;
-
-  /** The list of resolvable properties. */
-  private final List<ResolvableProperty> mProperties;
-
-  /** Map containing additional data for this check configuration. */
-  private Map<String, String> mAdditionalData;
-
-  /** Cached data of the Checkstyle configuration file. */
-  private CheckstyleConfigurationFile mCheckstyleConfigurationFile;
-
-  /** Time stamp when the cached configuration file data expires. */
-  private long mExpirationTime;
+public interface CheckConfiguration {
 
   /**
-   * Creates a check configuration instance.
+   * Returns the displayable name of the configuration.
    *
-   * @param name
-   *          the name of the check configuration
-   * @param location
-   *          the location of the check configuration
-   * @param description
-   *          the description of the check configuration
-   * @param type
-   *          the check configuration type
-   * @param global
-   *          determines if the check configuration is a global configuration
-   * @param properties
-   *          the list of properties configured for this check configuration
-   * @param additionalData
-   *          a map of additional data for this configuration
+   * @return the displayable name of the configuration
    */
-  public CheckConfiguration(final String name, final String location, final String description,
-          final IConfigurationType type, final boolean global,
-          final List<ResolvableProperty> properties, final Map<String, String> additionalData) {
-    mName = name;
-    mLocation = location;
-    mDescription = description;
-    mConfigType = type;
-    mIsGlobal = global;
+  String getName();
 
-    if (additionalData != null) {
-      mAdditionalData = Collections.unmodifiableMap(additionalData);
-    } else {
-      mAdditionalData = Collections.unmodifiableMap(new HashMap<String, String>());
-    }
+  /**
+   * Return a description of the check configuration.
+   *
+   * @return a description.
+   */
+  String getDescription();
 
-    mProperties = properties != null ? Collections.unmodifiableList(properties)
-            : Collections.unmodifiableList(new ArrayList<ResolvableProperty>());
-  }
+  /**
+   * Returns the location of the checkstyle configuration file.
+   *
+   * @return the location of the configuration file
+   */
+  String getLocation();
 
-  @Override
-  public String getName() {
-    return mName;
-  }
+  /**
+   * Return the type of the configuration.
+   *
+   * @return the configuration type
+   */
+  ConfigurationType getType();
 
-  @Override
-  public String getLocation() {
-    return mLocation;
-  }
+  /**
+   * Gets additional data for this configuration.
+   *
+   * @return the additional data in form of a Map
+   */
+  Map<String, String> getAdditionalData();
 
-  @Override
-  public String getDescription() {
-    return mDescription;
-  }
+  /**
+   * Returns the list of properties added to the configuration.
+   *
+   * @return the list of configured properties
+   */
+  List<ResolvableProperty> getResolvableProperties();
 
-  @Override
-  public IConfigurationType getType() {
-    return mConfigType;
-  }
+  /**
+   * Determines if the configuration properties are editable by the user.
+   *
+   * @return <code>true</code>, if the configuration is editable
+   */
+  boolean isEditable();
 
-  @Override
-  public Map<String, String> getAdditionalData() {
-    return mAdditionalData;
-  }
+  /**
+   * Determines if the checkstyle configuration associates with this check configuration can be
+   * configured.
+   *
+   * @return <code>true</code> if the checkstyle configuration can be configured.
+   */
+  boolean isConfigurable();
 
-  @Override
-  public List<ResolvableProperty> getResolvableProperties() {
-    return mProperties;
-  }
+  /**
+   * Returns if the check configuration is a global configuration, configured for the workspace, or
+   * a local configuration for a single project.
+   *
+   * @return <code>true</code> if the check configuration is configured globally
+   */
+  boolean isGlobal();
 
-  @Override
-  public boolean isEditable() {
-    return mConfigType.isEditable();
-  }
+  /**
+   * Returns the resolved location URL of the Checkstyle configuration file configured for this
+   * check configuration. Clients should not try to open an actual stream to the configuration file,
+   * since this is not guaranteed to work.
+   *
+   * @return the Checkstyle configuration file location as URL
+   * @throws CheckstylePluginException
+   *           exception while resolving the URL
+   */
+  URL getResolvedConfigurationFileUrl() throws CheckstylePluginException;
 
-  @Override
-  public boolean isConfigurable() {
-    return mConfigType.isConfigurable(this);
-  }
+  /**
+   * Get all data of the Checkstyle configuration (file data, additional properties...) in one go.
+   * This is done to optimize the number of accesses that must be done on the configuration files.
+   *
+   * @return all Checkstyle configuration file data necessary to create a checker
+   * @throws CheckstylePluginException
+   *           exception while getting the Checkstyle configuration file data
+   */
+  CheckstyleConfigurationFile getCheckstyleConfiguration() throws CheckstylePluginException;
 
-  @Override
-  public boolean isGlobal() {
-    return mIsGlobal;
-  }
+  /**
+   * Write check configurations to an external file in standard Checkstyle format.
+   *
+   * @param file
+   *          File to write too.
+   * @throws CheckstylePluginException
+   *           Error during export.
+   */
+  void exportConfiguration(File file) throws CheckstylePluginException;
 
-  @Override
-  public URL getResolvedConfigurationFileURL() throws CheckstylePluginException {
-    return getType().getResolvedConfigurationFileURL(this);
-  }
-
-  @Override
-  public CheckstyleConfigurationFile getCheckstyleConfiguration() throws CheckstylePluginException {
-    final long currentTime = System.currentTimeMillis();
-
-    if (mCheckstyleConfigurationFile == null || currentTime > mExpirationTime) {
-      mCheckstyleConfigurationFile = getType().getCheckstyleConfiguration(this);
-      // 1 hour
-      mExpirationTime = currentTime + 1000 * 60 * 60;
-    }
-
-    return mCheckstyleConfigurationFile;
-  }
-
-  @Override
-  public boolean equals(final Object obj) {
-    if (obj == null || !(obj instanceof ICheckConfiguration)) {
-      return false;
-    }
-    if (this == obj) {
-      return true;
-    }
-    final ICheckConfiguration rhs = (ICheckConfiguration) obj;
-    return Objects.equals(getName(), rhs.getName())
-            && Objects.equals(getLocation(), rhs.getLocation())
-            && Objects.equals(getDescription(), rhs.getDescription())
-            && Objects.equals(getType(), rhs.getType()) && isGlobal() == rhs.isGlobal()
-            && Objects.equals(getResolvableProperties(), rhs.getResolvableProperties())
-            && Objects.equals(getAdditionalData(), rhs.getAdditionalData());
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(getName(), getLocation(), getDescription(), getType(), isGlobal(),
-            getResolvableProperties(), getAdditionalData());
-  }
+  /**
+   * Copy the checkstyle configuration of a check configuration into another configuration.
+   *
+   * @param target
+   *          the target check configuartion
+   * @throws CheckstylePluginException
+   *           Error copying the configuration
+   */
+  void copyConfiguration(CheckConfiguration target) throws CheckstylePluginException;
 }

@@ -45,7 +45,7 @@ public final class SaveFilters {
   private static final String ATTR_CLASS = "class"; //$NON-NLS-1$
 
   /** the filter prototypes configured to the extension point. */
-  private static final ISaveFilter[] SAVE_FILTERS;
+  private static final SaveFilter[] SAVE_FILTERS;
 
   /**
    * Initialize the configured to the filter extension point.
@@ -57,20 +57,20 @@ public final class SaveFilters {
     IConfigurationElement[] elements = pluginRegistry
             .getConfigurationElementsFor(FILTER_EXTENSION_POINT);
 
-    List<ISaveFilter> filters = new ArrayList<>();
+    List<SaveFilter> filters = new ArrayList<>();
 
     for (int i = 0; i < elements.length; i++) {
 
       try {
 
-        ISaveFilter filter = (ISaveFilter) elements[i].createExecutableExtension(ATTR_CLASS);
+        SaveFilter filter = (SaveFilter) elements[i].createExecutableExtension(ATTR_CLASS);
         filters.add(filter);
       } catch (Exception ex) {
         CheckstyleLog.log(ex);
       }
     }
 
-    SAVE_FILTERS = filters.toArray(new ISaveFilter[filters.size()]);
+    SAVE_FILTERS = filters.toArray(new SaveFilter[filters.size()]);
   }
 
   /** Hidden default constructor. */

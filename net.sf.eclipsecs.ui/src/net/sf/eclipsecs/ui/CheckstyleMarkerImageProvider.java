@@ -38,11 +38,11 @@ public class CheckstyleMarkerImageProvider implements IAnnotationImageProvider {
     Image image = null;
     String type = annotation.getType();
     if (CheckstyleMarker.ERROR_TYPE.equals(type)) {
-      image = CheckstyleUIPluginImages.MARKER_ERROR.getImage();
+      image = CheckstyleUiPluginImages.MARKER_ERROR.getImage();
     } else if (CheckstyleMarker.WARNING_TYPE.equals(type)) {
-      image = CheckstyleUIPluginImages.MARKER_WARNING.getImage();
+      image = CheckstyleUiPluginImages.MARKER_WARNING.getImage();
     } else if (CheckstyleMarker.INFO_TYPE.equals(type)) {
-      image = CheckstyleUIPluginImages.MARKER_INFO.getImage();
+      image = CheckstyleUiPluginImages.MARKER_INFO.getImage();
     }
 
     return image;

@@ -30,7 +30,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.URIUtil;
 
 import net.sf.eclipsecs.core.CheckstylePlugin;
-import net.sf.eclipsecs.core.config.ICheckConfiguration;
+import net.sf.eclipsecs.core.config.CheckConfiguration;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
 /**
@@ -54,21 +54,21 @@ public class InternalConfigurationType extends AbstractConfigurationType {
   }
 
   @Override
-  protected URL resolveLocation(ICheckConfiguration checkConfiguration) throws IOException {
+  protected URL resolveLocation(CheckConfiguration checkConfiguration) throws IOException {
     return resolveLocationInWorkspace(checkConfiguration.getLocation()).toUri().toURL();
   }
 
   @Override
-  public void notifyCheckConfigRemoved(ICheckConfiguration checkConfiguration)
+  public void notifyCheckConfigRemoved(CheckConfiguration checkConfiguration)
           throws CheckstylePluginException {
     super.notifyCheckConfigRemoved(checkConfiguration);
 
     // remove the configuration file from the workspace metadata
-    URL configFileURL = checkConfiguration.getResolvedConfigurationFileURL();
-    if (configFileURL != null) {
+    URL configFileUrl = checkConfiguration.getResolvedConfigurationFileUrl();
+    if (configFileUrl != null) {
 
       try {
-        File configFile = URIUtil.toFile(configFileURL.toURI());
+        File configFile = URIUtil.toFile(configFileUrl.toURI());
 
         if (configFile != null) {
           configFile.delete();

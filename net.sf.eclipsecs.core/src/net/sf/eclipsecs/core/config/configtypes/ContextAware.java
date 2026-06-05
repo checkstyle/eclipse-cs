@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2003-2023  David Schneider, Lars Ködderitzsch, Fabrice Bellingard
+// Copyright (C) 2003-2023  David Schneider, Lars Ködderitzsch
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -18,21 +18,21 @@
 //
 //============================================================================
 
-package net.sf.eclipsecs.ui.util.table;
+package net.sf.eclipsecs.core.config.configtypes;
 
-import org.eclipse.jface.dialogs.IDialogSettings;
+import org.eclipse.core.resources.IProject;
 
 /**
- * Interface for implementations that provide settings where the
- * <code>EnhancedTableViewer</code> can store its current state.
+ * Interface for plugin property resolvers.
  *
  */
-public interface ITableSettingsProvider {
+public interface ContextAware {
 
   /**
-   * Provides a settings instance.
+   * Sets the project context.
    *
-   * @return the settings
+   * @param project
+   *          the project context
    */
-  IDialogSettings getTableSettings();
+  void setProjectContext(IProject project);
 }

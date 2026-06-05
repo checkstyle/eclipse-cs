@@ -27,7 +27,7 @@ import org.eclipse.ui.preferences.SettingsTransfer;
 
 import net.sf.eclipsecs.core.config.CheckConfigurationFactory;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
+import net.sf.eclipsecs.ui.CheckstyleUiPlugin;
 import net.sf.eclipsecs.ui.Messages;
 
 /**
@@ -49,7 +49,7 @@ public class CheckstyleSettingsTransfer extends SettingsTransfer {
       CheckConfigurationFactory.transferInternalConfiguration(newWorkspaceRoot);
       status = Status.OK_STATUS;
     } catch (CheckstylePluginException ex) {
-      status = new Status(IStatus.ERROR, CheckstyleUIPlugin.PLUGIN_ID,
+      status = new Status(IStatus.ERROR, CheckstyleUiPlugin.PLUGIN_ID,
               "Checkstyle settings transfer failed", ex);
     }
     return status;

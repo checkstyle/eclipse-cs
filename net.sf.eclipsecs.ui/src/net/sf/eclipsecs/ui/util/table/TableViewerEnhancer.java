@@ -34,7 +34,7 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
+import net.sf.eclipsecs.ui.CheckstyleUiPlugin;
 
 public final class TableViewerEnhancer {
 
@@ -63,7 +63,7 @@ public final class TableViewerEnhancer {
 
   }
 
-  public static <T extends ITableSettingsProvider & ITableComparableProvider> void enhance(
+  public static <T extends TableSettingsProvider & TableComparableProvider> void enhance(
           TableViewer tableViewer, T config) {
     IDialogSettings tableSettings = config.getTableSettings();
     Table table = tableViewer.getTable();
@@ -159,11 +159,11 @@ public final class TableViewerEnhancer {
 
     /** Collator to support natural sorting of strings. */
     private static final Collator COLLATOR = Collator
-            .getInstance(CheckstyleUIPlugin.getPlatformLocale());
+            .getInstance(CheckstyleUiPlugin.getPlatformLocale());
 
-    private final ITableComparableProvider comparableProvider;
+    private final TableComparableProvider comparableProvider;
 
-    private TableSorter(ITableComparableProvider comparableProvider) {
+    private TableSorter(TableComparableProvider comparableProvider) {
       this.comparableProvider = comparableProvider;
     }
 

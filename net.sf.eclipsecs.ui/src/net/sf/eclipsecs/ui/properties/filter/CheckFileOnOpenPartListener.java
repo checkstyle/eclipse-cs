@@ -45,9 +45,9 @@ import net.sf.eclipsecs.core.builder.CheckstyleMarker;
 import net.sf.eclipsecs.core.jobs.AbstractCheckJob;
 import net.sf.eclipsecs.core.jobs.RunCheckstyleOnFilesJob;
 import net.sf.eclipsecs.core.nature.CheckstyleNature;
-import net.sf.eclipsecs.core.projectconfig.IProjectConfiguration;
+import net.sf.eclipsecs.core.projectconfig.ProjectConfiguration;
 import net.sf.eclipsecs.core.projectconfig.ProjectConfigurationFactory;
-import net.sf.eclipsecs.core.projectconfig.filters.IFilter;
+import net.sf.eclipsecs.core.projectconfig.filters.AuditFilter;
 import net.sf.eclipsecs.core.projectconfig.filters.UnOpenedFilesFilter;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
@@ -162,13 +162,13 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
       // check if checkstyle is enabled on the project
       if (project.isAccessible() && project.hasNature(CheckstyleNature.NATURE_ID)) {
 
-        IProjectConfiguration config = ProjectConfigurationFactory.getConfiguration(project);
+        ProjectConfiguration config = ProjectConfigurationFactory.getConfiguration(project);
 
         // now check if the UnOpenedFilesFilter is active
         boolean unOpenedFilesFilterActive = false;
         boolean filtered = false;
-        List<IFilter> filters = config.getFilters();
-        for (IFilter filter : filters) {
+        List<AuditFilter> filters = config.getFilters();
+        for (AuditFilter filter : filters) {
           if (filter.isEnabled()) {
             if (filter instanceof UnOpenedFilesFilter) {
               unOpenedFilesFilterActive = true;

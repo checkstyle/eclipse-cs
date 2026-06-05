@@ -23,7 +23,7 @@ package net.sf.eclipsecs.core.config.configtypes;
 import java.util.List;
 
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
-import net.sf.eclipsecs.core.config.ICheckConfiguration;
+import net.sf.eclipsecs.core.config.CheckConfiguration;
 import net.sf.eclipsecs.core.config.ResolvableProperty;
 
 /**
@@ -33,7 +33,7 @@ import net.sf.eclipsecs.core.config.ResolvableProperty;
 public class ResolvablePropertyResolver implements PropertyResolver {
 
   /** The check configuration to resolve from. */
-  private ICheckConfiguration mCheckConfiguration;
+  private CheckConfiguration mCheckConfiguration;
 
   /**
    * Creates the resolver for the given check configuration.
@@ -41,7 +41,7 @@ public class ResolvablePropertyResolver implements PropertyResolver {
    * @param checkConfiguration
    *          the check configuration
    */
-  public ResolvablePropertyResolver(ICheckConfiguration checkConfiguration) {
+  public ResolvablePropertyResolver(CheckConfiguration checkConfiguration) {
     mCheckConfiguration = checkConfiguration;
   }
 

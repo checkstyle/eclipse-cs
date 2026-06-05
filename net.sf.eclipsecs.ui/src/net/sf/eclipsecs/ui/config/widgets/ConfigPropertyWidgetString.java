@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 
 import net.sf.eclipsecs.core.config.ConfigProperty;
-import net.sf.eclipsecs.core.config.XMLTags;
+import net.sf.eclipsecs.core.config.XmlTags;
 import net.sf.eclipsecs.core.config.meta.ConfigPropertyMetadata;
 
 /**
@@ -87,7 +87,7 @@ public class ConfigPropertyWidgetString extends AbstractConfigPropertyWidget {
   private String unescape(String text) {
     String escapedText = text;
     // custom messages use MessageFormat, single quote is escaped as 2 single quotes there
-    if (XMLTags.MESSAGE_TAG.equals(getConfigProperty().getName())) {
+    if (XmlTags.MESSAGE_TAG.equals(getConfigProperty().getName())) {
       escapedText = text.replace(APOSTROPHE_ESCAPED, APOSTROPHE_PLAIN);
     }
     return escapedText;
@@ -95,7 +95,7 @@ public class ConfigPropertyWidgetString extends AbstractConfigPropertyWidget {
 
   private String escape(String text) {
     String escapedText = text;
-    if (XMLTags.MESSAGE_TAG.equals(getConfigProperty().getName())) {
+    if (XmlTags.MESSAGE_TAG.equals(getConfigProperty().getName())) {
       escapedText = text.replace(APOSTROPHE_PLAIN, APOSTROPHE_ESCAPED);
     }
     return escapedText;

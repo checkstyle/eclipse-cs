@@ -40,7 +40,7 @@ import net.sf.eclipsecs.core.builder.CheckstyleMarker;
 import net.sf.eclipsecs.core.config.meta.MetadataFactory;
 import net.sf.eclipsecs.core.config.meta.RuleIdentity;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
-import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
+import net.sf.eclipsecs.ui.CheckstyleUiPluginImages;
 import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.config.CheckConfigurationConfigureDialogView;
 
@@ -89,7 +89,7 @@ public class MarkerPropertyPage extends PropertyPage {
 
   private RuleIdentity createGroupText(final Composite composite) throws CoreException {
     new Label(composite, SWT.NONE).setImage(
-            CheckstyleUIPluginImages.MODULEGROUP_ICON.getImage());
+            CheckstyleUiPluginImages.MODULEGROUP_ICON.getImage());
     new Label(composite, SWT.NONE).setText(Messages.MarkerPropertyPage_Group);
 
     String moduleName = (String) getIssue().getAttribute(CheckstyleMarker.MODULE_NAME);
@@ -101,7 +101,7 @@ public class MarkerPropertyPage extends PropertyPage {
 
   private void createRuleText(final Composite composite, RuleIdentity ruleIdentity) {
     new Label(composite, SWT.NONE).setImage(
-            CheckstyleUIPluginImages.MODULE_ICON.getImage());
+            CheckstyleUiPluginImages.MODULE_ICON.getImage());
     new Label(composite, SWT.NONE).setText(Messages.MarkerPropertyPage_Module);
 
     Text labelRuleName = new Text(composite, SWT.WRAP | SWT.READ_ONLY);

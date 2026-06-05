@@ -35,36 +35,36 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * Manages and caches images for the plugin.
  *
  */
-public enum CheckstyleUIPluginImages {
+public enum CheckstyleUiPluginImages {
 
   /** Image descriptor for the plugin logo. */
-  PLUGIN_LOGO(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
+  PLUGIN_LOGO(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUiPlugin.PLUGIN_ID,
           "icons/eclipse-cs-little.png")),
   /** Image descriptor for the error marker. */
-  MARKER_ERROR(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
+  MARKER_ERROR(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUiPlugin.PLUGIN_ID,
           "icons/checkstyle_error.gif")),
   /** Image descriptor for the warning marker. */
-  MARKER_WARNING(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
+  MARKER_WARNING(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUiPlugin.PLUGIN_ID,
           "icons/checkstyle_warning.gif")),
   /** Image descriptor for the info marker. */
-  MARKER_INFO(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
+  MARKER_INFO(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUiPlugin.PLUGIN_ID,
           "icons/checkstyle_info.gif")),
   /** Image descriptor for the help icon. */
   HELP_ICON(() -> PlatformUI.getWorkbench().getSharedImages()
           .getImageDescriptor(ISharedImages.IMG_LCL_LINKTO_HELP)),
   /** Image descriptor for the add correction icon. */
-  CORRECTION_ADD(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
+  CORRECTION_ADD(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUiPlugin.PLUGIN_ID,
           "icons/add_correction.png")),
-  CORRECTION_ADD_BRACES(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
+  CORRECTION_ADD_BRACES(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUiPlugin.PLUGIN_ID,
           "icons/correction_cast.png")),
   /** Image descriptor for the change correction icon. */
-  CORRECTION_CHANGE(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
+  CORRECTION_CHANGE(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUiPlugin.PLUGIN_ID,
           "icons/correction_change.png")),
   /** Image descriptor for the remove correction icon. */
-  CORRECTION_REMOVE(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
+  CORRECTION_REMOVE(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUiPlugin.PLUGIN_ID,
           "icons/remove_correction.png")),
   /** Image descriptor for the tick icon. */
-  TICK_ICON(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
+  TICK_ICON(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUiPlugin.PLUGIN_ID,
           "icons/tick.gif")),
 
   /** Image descriptor for the filter icon. */
@@ -72,19 +72,19 @@ public enum CheckstyleUIPluginImages {
           "platform:/plugin/org.eclipse.ui.ide/icons/full/elcl16/filter_ps.png")
           .orElse(MARKER_ERROR.getImageDescriptor())),
   /** Image descriptor for the Checkstyle violation view icon. */
-  LIST_VIEW_ICON(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
+  LIST_VIEW_ICON(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUiPlugin.PLUGIN_ID,
           "icons/listingView.gif")),
 
-  CHECKED_OVERLAY(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
+  CHECKED_OVERLAY(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUiPlugin.PLUGIN_ID,
           "icons/ovr/checked.png")),
   /** Image descriptor for the ticked module group icon. */
   /** Image descriptor for the module group icon. */
-  MODULEGROUP_ICON(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
+  MODULEGROUP_ICON(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUiPlugin.PLUGIN_ID,
           "icons/modulegroup.gif")),
   /** Image descriptor for the ticked module group icon. */
   MODULEGROUP_TICKED_ICON(() -> new DecorationOverlayIcon(MODULEGROUP_ICON.getImageDescriptor(), CHECKED_OVERLAY.getImageDescriptor(), IDecoration.TOP_LEFT)),
   /** Image descriptor for the module icon. */
-  MODULE_ICON(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
+  MODULE_ICON(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUiPlugin.PLUGIN_ID,
           "icons/module.gif")),
   /** Image descriptor for the ticked module icon. */
   MODULE_TICKED_ICON(() -> new DecorationOverlayIcon(MODULE_ICON.getImageDescriptor(), CHECKED_OVERLAY.getImageDescriptor(), IDecoration.TOP_LEFT)),
@@ -93,7 +93,7 @@ public enum CheckstyleUIPluginImages {
           "platform:/plugin/org.eclipse.search/icons/full/elcl16/refresh.png")
           .orElse(MARKER_ERROR.getImageDescriptor())),
   /** Image descriptor for the checkstyle project icon. */
-  CHECKSTYLE_ICON(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
+  CHECKSTYLE_ICON(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUiPlugin.PLUGIN_ID,
           "icons/checkstyle_command.png"));
 
   /**
@@ -111,7 +111,7 @@ public enum CheckstyleUIPluginImages {
    */
   private Image image;
 
-  private CheckstyleUIPluginImages(Supplier<ImageDescriptor> factory) {
+  private CheckstyleUiPluginImages(Supplier<ImageDescriptor> factory) {
     this.factory = factory;
   }
 
@@ -138,7 +138,7 @@ public enum CheckstyleUIPluginImages {
    * Disposes the cached images.
    */
   public static void clearCachedImages() {
-    for (CheckstyleUIPluginImages value : values()) {
+    for (CheckstyleUiPluginImages value : values()) {
       if (value.image != null) {
         value.image.dispose();
       }

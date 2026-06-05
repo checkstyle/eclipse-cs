@@ -25,7 +25,7 @@ import org.eclipse.jdt.core.dom.NumberLiteral;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.swt.graphics.Image;
 
-import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
+import net.sf.eclipsecs.ui.CheckstyleUiPluginImages;
 import net.sf.eclipsecs.ui.quickfixes.AbstractASTResolution;
 import net.sf.eclipsecs.ui.quickfixes.Messages;
 
@@ -68,7 +68,7 @@ public class UpperEllQuickfix extends AbstractASTResolution {
 
   @Override
   public Image getImage() {
-    return CheckstyleUIPluginImages.CORRECTION_CHANGE.getImage();
+    return CheckstyleUiPluginImages.CORRECTION_CHANGE.getImage();
   }
 
 }

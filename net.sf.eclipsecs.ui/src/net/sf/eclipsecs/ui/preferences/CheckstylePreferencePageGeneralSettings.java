@@ -39,10 +39,10 @@ import org.eclipse.swt.widgets.Text;
 
 import net.sf.eclipsecs.core.CheckstylePluginPrefs;
 import net.sf.eclipsecs.core.builder.CheckerFactory;
-import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
-import net.sf.eclipsecs.ui.CheckstyleUIPluginPrefs;
+import net.sf.eclipsecs.ui.CheckstyleUiPluginImages;
+import net.sf.eclipsecs.ui.CheckstyleUiPluginPrefs;
 import net.sf.eclipsecs.ui.Messages;
-import net.sf.eclipsecs.ui.util.SWTUtil;
+import net.sf.eclipsecs.ui.util.SwtUtil;
 
 public final class CheckstylePreferencePageGeneralSettings extends Composite {
 
@@ -87,7 +87,7 @@ public final class CheckstylePreferencePageGeneralSettings extends Composite {
     //
     mWarnBeforeLosingFilesets = makeButton(group, SWT.CHECK,
             Messages.CheckstylePreferencePage_lblWarnFilesets,
-            CheckstyleUIPluginPrefs.getBoolean(CheckstyleUIPluginPrefs.PREF_FILESET_WARNING));
+            CheckstyleUiPluginPrefs.getBoolean(CheckstyleUiPluginPrefs.PREF_FILESET_WARNING));
 
     //
     // Create the "Include rule name" check box.
@@ -115,7 +115,7 @@ public final class CheckstylePreferencePageGeneralSettings extends Composite {
 
     mTxtMarkerLimit = new Text(limitMarkersComposite, SWT.SINGLE | SWT.BORDER);
     mTxtMarkerLimit.setTextLimit(5);
-    SWTUtil.addOnlyDigitInputSupport(mTxtMarkerLimit);
+    SwtUtil.addOnlyDigitInputSupport(mTxtMarkerLimit);
 
     mTxtMarkerLimit.setText(Integer.toString(
             CheckstylePluginPrefs.getInt(CheckstylePluginPrefs.PREF_MARKER_AMOUNT_LIMIT)));
@@ -149,7 +149,7 @@ public final class CheckstylePreferencePageGeneralSettings extends Composite {
         MessageDialogWithToggle.NEVER,
     });
     mRebuildIfNeeded.select(mRebuildIfNeeded.indexOf(
-            CheckstyleUIPluginPrefs.getString(CheckstyleUIPluginPrefs.PREF_ASK_BEFORE_REBUILD)));
+            CheckstyleUiPluginPrefs.getString(CheckstyleUiPluginPrefs.PREF_ASK_BEFORE_REBUILD)));
 
     //
     // Create button to purge the checker cache
@@ -157,7 +157,7 @@ public final class CheckstylePreferencePageGeneralSettings extends Composite {
 
     Button mPurgeCacheButton = new Button(rebuildComposite, SWT.FLAT);
     mPurgeCacheButton
-            .setImage(CheckstyleUIPluginImages.REFRESH_ICON.getImage());
+            .setImage(CheckstyleUiPluginImages.REFRESH_ICON.getImage());
     mPurgeCacheButton.setToolTipText(Messages.CheckstylePreferencePage_btnRefreshCheckerCache);
     mPurgeCacheButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
       CheckerFactory.cleanup();
@@ -204,9 +204,9 @@ public final class CheckstylePreferencePageGeneralSettings extends Composite {
 
   private static void addRebuildNoteLabel(Composite parent) {
     Label lblRebuildNote = new Label(parent, SWT.NULL);
-    lblRebuildNote.setImage(CheckstyleUIPluginImages.HELP_ICON.getImage());
+    lblRebuildNote.setImage(CheckstyleUiPluginImages.HELP_ICON.getImage());
     lblRebuildNote.setToolTipText(Messages.CheckstylePreferencePage_txtSuggestRebuild);
-    SWTUtil.addTooltipOnPressSupport(lblRebuildNote);
+    SwtUtil.addTooltipOnPressSupport(lblRebuildNote);
   }
 
   public String getLanguageIf() {

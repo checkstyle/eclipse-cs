@@ -22,7 +22,7 @@ package net.sf.eclipsecs.core.transformer.ctransformerclasses;
 
 import java.util.List;
 
-import net.sf.eclipsecs.core.transformer.AbstractCTransformationClass;
+import net.sf.eclipsecs.core.transformer.AbstractCheckstyleTransformationClass;
 import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 
 /**
@@ -30,7 +30,7 @@ import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
  * eclipse-formatter-rules.
  *
  */
-public class RightCurlyTransformer extends AbstractCTransformationClass {
+public class RightCurlyTransformer extends AbstractCheckstyleTransformationClass {
 
   @Override
   public FormatterConfiguration transformRule() {

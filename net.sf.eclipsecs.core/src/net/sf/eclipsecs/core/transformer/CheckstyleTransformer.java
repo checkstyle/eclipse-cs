@@ -45,7 +45,7 @@ public class CheckstyleTransformer {
   /**
    * The list with all TransformationClass-instances loaded in method loadTransformationClasses().
    */
-  private final List<AbstractCTransformationClass> mTransformationClasses = new ArrayList<>();
+  private final List<AbstractCheckstyleTransformationClass> mTransformationClasses = new ArrayList<>();
 
   private IProject mProject;
 
@@ -97,7 +97,7 @@ public class CheckstyleTransformer {
       try {
         transformationClass = CheckstylePlugin.getDefault().getAddonExtensionClassLoader()
                 .loadClass(name);
-        final AbstractCTransformationClass transObj = (AbstractCTransformationClass) transformationClass.getDeclaredConstructor()
+        final AbstractCheckstyleTransformationClass transObj = (AbstractCheckstyleTransformationClass) transformationClass.getDeclaredConstructor()
                 .newInstance();
         transObj.setRule(rule);
         mTransformationClasses.add(transObj);
@@ -127,7 +127,7 @@ public class CheckstyleTransformer {
    */
   private void loadRuleConfigurations() {
     FormatterConfiguration settings;
-    final Iterator<AbstractCTransformationClass> it = mTransformationClasses.iterator();
+    final Iterator<AbstractCheckstyleTransformationClass> it = mTransformationClasses.iterator();
     while (it.hasNext()) {
       settings = it.next().transformRule();
       mFormatterSetting.addConfiguration(settings);

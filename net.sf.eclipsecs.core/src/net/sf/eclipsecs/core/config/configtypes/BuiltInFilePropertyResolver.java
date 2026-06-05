@@ -70,10 +70,10 @@ public class BuiltInFilePropertyResolver implements PropertyResolver {
 
     if (value != null) {
       try {
-        URL bundleLocatedURL = new URL(value);
-        URL fileURL = FileLocator.toFileURL(bundleLocatedURL);
+        URL bundleLocatedUrl = new URL(value);
+        URL fileUrl = FileLocator.toFileURL(bundleLocatedUrl);
 
-        value = URIUtil.toFile(fileURL.toURI()).getAbsolutePath();
+        value = URIUtil.toFile(fileUrl.toURI()).getAbsolutePath();
       } catch (IOException | URISyntaxException ex) {
         throw new RuntimeException(ex.getMessage(), ex);
       }

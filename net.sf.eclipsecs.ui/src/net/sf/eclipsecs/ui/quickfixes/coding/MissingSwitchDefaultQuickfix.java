@@ -26,7 +26,7 @@ import org.eclipse.jdt.core.dom.SwitchStatement;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.swt.graphics.Image;
 
-import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
+import net.sf.eclipsecs.ui.CheckstyleUiPluginImages;
 import net.sf.eclipsecs.ui.quickfixes.AbstractASTResolution;
 import net.sf.eclipsecs.ui.quickfixes.Messages;
 
@@ -70,6 +70,6 @@ public class MissingSwitchDefaultQuickfix extends AbstractASTResolution {
 
   @Override
   public Image getImage() {
-    return CheckstyleUIPluginImages.CORRECTION_ADD.getImage();
+    return CheckstyleUiPluginImages.CORRECTION_ADD.getImage();
   }
 }

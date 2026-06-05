@@ -37,10 +37,10 @@ import org.dom4j.io.SAXReader;
 
 import net.sf.eclipsecs.core.CheckstylePlugin;
 import net.sf.eclipsecs.core.config.Severity;
-import net.sf.eclipsecs.core.config.XMLTags;
+import net.sf.eclipsecs.core.config.XmlTags;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.core.util.XMLUtil;
+import net.sf.eclipsecs.core.util.XmlUtil;
 
 public final class MetadataXmlReader {
 
@@ -61,29 +61,29 @@ public final class MetadataXmlReader {
     Map<String, RuleGroupMetadata> groups = new HashMap<>();
 
     SAXReader reader = new SAXReader();
-    reader.setEntityResolver(new XMLUtil.InternalDtdEntityResolver(PUBLIC2INTERNAL_DTD_MAP));
+    reader.setEntityResolver(new XmlUtil.InternalDtdEntityResolver(PUBLIC2INTERNAL_DTD_MAP));
     Document document = reader.read(metadataStream);
 
     List<Element> groupElements = document.getRootElement()
-            .elements(XMLTags.RULE_GROUP_METADATA_TAG);
+            .elements(XmlTags.RULE_GROUP_METADATA_TAG);
 
     for (Element groupEl : groupElements) {
 
-      var groupName = groupEl.attributeValue(XMLTags.NAME_TAG).trim();
+      var groupName = groupEl.attributeValue(XmlTags.NAME_TAG).trim();
       groupName = MetadataXmlReader.localize(groupName, metadataBundle);
 
       // process description
-      String groupDesc = groupEl.elementTextTrim(XMLTags.DESCRIPTION_TAG);
+      String groupDesc = groupEl.elementTextTrim(XmlTags.DESCRIPTION_TAG);
       groupDesc = MetadataXmlReader.localize(groupDesc, metadataBundle);
 
       RuleGroupMetadata group = groups.get(groupName);
 
       if (group == null) {
 
-        boolean hidden = Boolean.parseBoolean(groupEl.attributeValue(XMLTags.HIDDEN_TAG));
+        boolean hidden = Boolean.parseBoolean(groupEl.attributeValue(XmlTags.HIDDEN_TAG));
         int priority = 0;
         try {
-          priority = Integer.parseInt(groupEl.attributeValue(XMLTags.PRIORITY_TAG));
+          priority = Integer.parseInt(groupEl.attributeValue(XmlTags.PRIORITY_TAG));
         } catch (Exception ex) {
           CheckstyleLog.log(ex);
           priority = Integer.MAX_VALUE;
@@ -103,38 +103,38 @@ public final class MetadataXmlReader {
           ResourceBundle metadataBundle) throws CheckstylePluginException {
     List<RuleMetadata> modules = new ArrayList<>();
 
-    List<Element> moduleElements = groupElement.elements(XMLTags.RULE_METADATA_TAG);
+    List<Element> moduleElements = groupElement.elements(XmlTags.RULE_METADATA_TAG);
     for (Element moduleEl : moduleElements) {
       // default severity
-      String defaultSeverity = moduleEl.attributeValue(XMLTags.DEFAULT_SEVERITY_TAG);
+      String defaultSeverity = moduleEl.attributeValue(XmlTags.DEFAULT_SEVERITY_TAG);
       Severity severity = defaultSeverity == null || defaultSeverity.trim().length() == 0
               ? Severity.INHERIT
               : Severity.fromXmlValue(defaultSeverity);
 
-      String name = moduleEl.attributeValue(XMLTags.NAME_TAG).trim();
+      String name = moduleEl.attributeValue(XmlTags.NAME_TAG).trim();
       name = localize(name, metadataBundle);
-      String internalName = moduleEl.attributeValue(XMLTags.INTERNAL_NAME_TAG).trim();
+      String internalName = moduleEl.attributeValue(XmlTags.INTERNAL_NAME_TAG).trim();
 
-      String parentName = moduleEl.attributeValue(XMLTags.PARENT_TAG) != null
-              ? moduleEl.attributeValue(XMLTags.PARENT_TAG).trim()
+      String parentName = moduleEl.attributeValue(XmlTags.PARENT_TAG) != null
+              ? moduleEl.attributeValue(XmlTags.PARENT_TAG).trim()
               : null;
-      boolean hidden = Boolean.parseBoolean(moduleEl.attributeValue(XMLTags.HIDDEN_TAG));
-      boolean hasSeverity = !"false".equals(moduleEl.attributeValue(XMLTags.HAS_SEVERITY_TAG));
-      boolean deletable = !"false".equals(moduleEl.attributeValue(XMLTags.DELETABLE_TAG)); //$NON-NLS-1$
-      boolean isSingleton = Boolean.parseBoolean(moduleEl.attributeValue(XMLTags.IS_SINGLETON_TAG));
+      boolean hidden = Boolean.parseBoolean(moduleEl.attributeValue(XmlTags.HIDDEN_TAG));
+      boolean hasSeverity = !"false".equals(moduleEl.attributeValue(XmlTags.HAS_SEVERITY_TAG));
+      boolean deletable = !"false".equals(moduleEl.attributeValue(XmlTags.DELETABLE_TAG)); //$NON-NLS-1$
+      boolean isSingleton = Boolean.parseBoolean(moduleEl.attributeValue(XmlTags.IS_SINGLETON_TAG));
 
       // process description
-      String description = moduleEl.elementTextTrim(XMLTags.DESCRIPTION_TAG);
+      String description = moduleEl.elementTextTrim(XmlTags.DESCRIPTION_TAG);
       description = localize(description, metadataBundle);
 
       // process alternative names
-      List<String> alternativeNames = moduleEl.elements(XMLTags.ALTERNATIVE_NAME_TAG).stream()
-              .map(altNameEl -> altNameEl.attributeValue(XMLTags.INTERNAL_NAME_TAG))
+      List<String> alternativeNames = moduleEl.elements(XmlTags.ALTERNATIVE_NAME_TAG).stream()
+              .map(altNameEl -> altNameEl.attributeValue(XmlTags.INTERNAL_NAME_TAG))
               .toList();
 
       // process message keys
-      List<String> messageKeys = moduleEl.elements(XMLTags.MESSAGEKEY_TAG).stream()
-              .map(quickfixEl -> quickfixEl.attributeValue(XMLTags.KEY_TAG))
+      List<String> messageKeys = moduleEl.elements(XmlTags.MESSAGEKEY_TAG).stream()
+              .map(quickfixEl -> quickfixEl.attributeValue(XmlTags.KEY_TAG))
               .toList();
 
       // process properties
@@ -166,18 +166,18 @@ public final class MetadataXmlReader {
           ResourceBundle metadataBundle) throws CheckstylePluginException {
     List<ConfigPropertyMetadata> properties = new ArrayList<>();
 
-    List<Element> propertyElements = moduleElement.elements(XMLTags.PROPERTY_METADATA_TAG);
+    List<Element> propertyElements = moduleElement.elements(XmlTags.PROPERTY_METADATA_TAG);
     for (Element propertyEl : propertyElements) {
 
       ConfigPropertyType type = ConfigPropertyType
-              .fromXmlValue(propertyEl.attributeValue(XMLTags.DATATYPE_TAG));
+              .fromXmlValue(propertyEl.attributeValue(XmlTags.DATATYPE_TAG));
 
-      String name = propertyEl.attributeValue(XMLTags.NAME_TAG).trim();
-      String defaultValue = propertyEl.attributeValue(XMLTags.DEFAULT_VALUE_TAG);
+      String name = propertyEl.attributeValue(XmlTags.NAME_TAG).trim();
+      String defaultValue = propertyEl.attributeValue(XmlTags.DEFAULT_VALUE_TAG);
       if (defaultValue != null) {
         defaultValue = defaultValue.trim();
       }
-      String overrideDefaultValue = propertyEl.attributeValue(XMLTags.DEFAULT_VALUE_OVERRIDE_TAG);
+      String overrideDefaultValue = propertyEl.attributeValue(XmlTags.DEFAULT_VALUE_OVERRIDE_TAG);
       if (overrideDefaultValue != null) {
         overrideDefaultValue = overrideDefaultValue.trim();
       }
@@ -188,23 +188,23 @@ public final class MetadataXmlReader {
       properties.add(property);
 
       // get description
-      String description = propertyEl.elementTextTrim(XMLTags.DESCRIPTION_TAG);
+      String description = propertyEl.elementTextTrim(XmlTags.DESCRIPTION_TAG);
       description = localize(description, metadataBundle);
       property.setDescription(description);
 
       // get property enumeration values
-      Element enumEl = propertyEl.element(XMLTags.ENUMERATION_TAG);
+      Element enumEl = propertyEl.element(XmlTags.ENUMERATION_TAG);
       if (enumEl != null) {
-        String optionProvider = enumEl.attributeValue(XMLTags.OPTION_PROVIDER);
+        String optionProvider = enumEl.attributeValue(XmlTags.OPTION_PROVIDER);
         if (optionProvider != null) {
 
           try {
             Class<?> providerClass = CheckstylePlugin.getDefault().getAddonExtensionClassLoader()
                     .loadClass(optionProvider);
 
-            if (IOptionProvider.class.isAssignableFrom(providerClass)) {
+            if (OptionProvider.class.isAssignableFrom(providerClass)) {
 
-              IOptionProvider provider = (IOptionProvider) providerClass.getDeclaredConstructor().newInstance();
+              OptionProvider provider = (OptionProvider) providerClass.getDeclaredConstructor().newInstance();
               property.getPropertyEnumeration().addAll(provider.getOptions());
             } else if (Enum.class.isAssignableFrom(providerClass)) {
 
@@ -221,8 +221,8 @@ public final class MetadataXmlReader {
         }
 
         // get explicit enumeration option values
-        enumEl.elements(XMLTags.PROPERTY_VALUE_OPTIONS_TAG).stream()
-                .map(optionEl -> optionEl.attributeValue(XMLTags.VALUE_TAG))
+        enumEl.elements(XmlTags.PROPERTY_VALUE_OPTIONS_TAG).stream()
+                .map(optionEl -> optionEl.attributeValue(XmlTags.VALUE_TAG))
                 .forEach(property.getPropertyEnumeration()::add);
       }
     }

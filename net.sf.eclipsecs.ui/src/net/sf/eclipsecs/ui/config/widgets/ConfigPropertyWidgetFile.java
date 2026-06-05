@@ -39,7 +39,7 @@ import org.eclipse.ui.contentassist.ContentAssistHandler;
 
 import net.sf.eclipsecs.core.config.ConfigProperty;
 import net.sf.eclipsecs.core.config.meta.ConfigPropertyMetadata;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
+import net.sf.eclipsecs.ui.CheckstyleUiPlugin;
 import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.config.PropertiesContentAssistProcessor;
 
@@ -138,7 +138,7 @@ public final class ConfigPropertyWidgetFile extends AbstractConfigPropertyWidget
     final SubjectControlContentAssistant contentAssistant = new SubjectControlContentAssistant();
 
     contentAssistant
-            .setRestoreCompletionProposalSize(CheckstyleUIPlugin.getDefault().getDialogSettings());
+            .setRestoreCompletionProposalSize(CheckstyleUiPlugin.getDefault().getDialogSettings());
 
     IContentAssistProcessor processor = new PropertiesContentAssistProcessor();
     contentAssistant.setContentAssistProcessor(processor, IDocument.DEFAULT_CONTENT_TYPE);

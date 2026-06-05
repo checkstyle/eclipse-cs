@@ -22,14 +22,14 @@ package net.sf.eclipsecs.core.transformer.ctransformerclasses;
 
 import java.util.List;
 
-import net.sf.eclipsecs.core.transformer.AbstractCTransformationClass;
+import net.sf.eclipsecs.core.transformer.AbstractCheckstyleTransformationClass;
 import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 
 /**
  * Wrapper class for converting the checkstyle-rule NoWhitespaceBefore to appropriate
  * eclipse-formatter-rules.
  */
-public class NoWhitespaceBeforeTransformer extends AbstractCTransformationClass {
+public class NoWhitespaceBeforeTransformer extends AbstractCheckstyleTransformationClass {
   @Override
   public FormatterConfiguration transformRule() {
     String val = getAttribute("tokens");

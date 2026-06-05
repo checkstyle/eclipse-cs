@@ -40,7 +40,7 @@ import net.sf.eclipsecs.ui.config.CheckConfigurationPropertiesDialog;
  * is used to just show the location.
  *
  */
-public class BuiltInConfigurationEditor implements ICheckConfigurationEditor {
+public class BuiltInConfigurationEditor implements CheckConfigurationEditor {
 
   //
   // attributes

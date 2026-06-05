@@ -28,13 +28,13 @@ import org.eclipse.swt.widgets.Label;
 
 import net.sf.eclipsecs.core.config.ConfigProperty;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
-import net.sf.eclipsecs.ui.util.SWTUtil;
+import net.sf.eclipsecs.ui.CheckstyleUiPluginImages;
+import net.sf.eclipsecs.ui.util.SwtUtil;
 
 /**
  * Base class for all configuration property input widget classes.
  */
-public abstract class AbstractConfigPropertyWidget implements IConfigPropertyWidget {
+public abstract class AbstractConfigPropertyWidget implements ConfigPropertyWidget {
 
   private ConfigProperty mProp;
 
@@ -81,9 +81,9 @@ public abstract class AbstractConfigPropertyWidget implements IConfigPropertyWid
     gridData = new GridData();
     gridData.verticalAlignment = SWT.BEGINNING;
     lblPropertyInfo.setLayoutData(gridData);
-    lblPropertyInfo.setImage(CheckstyleUIPluginImages.HELP_ICON.getImage());
+    lblPropertyInfo.setImage(CheckstyleUiPluginImages.HELP_ICON.getImage());
     lblPropertyInfo.setToolTipText(mProp.getMetaData().getDescription());
-    SWTUtil.addTooltipOnPressSupport(lblPropertyInfo);
+    SwtUtil.addTooltipOnPressSupport(lblPropertyInfo);
   }
 
   @Override

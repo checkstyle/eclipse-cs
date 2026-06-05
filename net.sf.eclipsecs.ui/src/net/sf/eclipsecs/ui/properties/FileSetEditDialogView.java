@@ -31,7 +31,7 @@ import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 
-import net.sf.eclipsecs.core.config.ICheckConfiguration;
+import net.sf.eclipsecs.core.config.CheckConfiguration;
 import net.sf.eclipsecs.core.projectconfig.FileSet;
 import net.sf.eclipsecs.core.projectconfig.ProjectConfigurationWorkingCopy;
 import net.sf.eclipsecs.ui.properties.FileMatchPatternControl.FileMatchPatternControlCallbacks;
@@ -47,7 +47,7 @@ public final class FileSetEditDialogView extends Composite {
           FileMatchPatternControlCallbacks fileMatchPatternTableCallbacks,
           FileSetEditDialogMatchedFilesPreviewFilter previewFilter,
           String projectName,
-          Consumer<ICheckConfiguration> checkConfigSelectionChanged,
+          Consumer<CheckConfiguration> checkConfigSelectionChanged,
           Runnable configureFileSetConfig) {
     super(parent, style);
     GridLayoutFactory.swtDefaults().applyTo(this);

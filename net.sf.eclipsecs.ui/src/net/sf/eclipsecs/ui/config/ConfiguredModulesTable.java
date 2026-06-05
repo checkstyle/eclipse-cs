@@ -44,11 +44,11 @@ import org.eclipse.swt.widgets.TableColumn;
 import net.sf.eclipsecs.core.config.Module;
 import net.sf.eclipsecs.core.config.Severity;
 import net.sf.eclipsecs.core.config.meta.RuleMetadata;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
+import net.sf.eclipsecs.ui.CheckstyleUiPlugin;
 import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.config.ConfiguredModules.ConfiguredModulesCallbacks;
-import net.sf.eclipsecs.ui.util.table.ITableComparableProvider;
-import net.sf.eclipsecs.ui.util.table.ITableSettingsProvider;
+import net.sf.eclipsecs.ui.util.table.TableComparableProvider;
+import net.sf.eclipsecs.ui.util.table.TableSettingsProvider;
 import net.sf.eclipsecs.ui.util.table.TableViewerEnhancer;
 
 public final class ConfiguredModulesTable extends Composite {
@@ -146,7 +146,7 @@ public final class ConfiguredModulesTable extends Composite {
    *
    */
   private static final class ModuleLabelProvider extends LabelProvider
-          implements ITableLabelProvider, ITableComparableProvider, ITableSettingsProvider {
+          implements ITableLabelProvider, TableComparableProvider, TableSettingsProvider {
 
     private static final ModuleLabelProvider INSTANCE = new ModuleLabelProvider();
 
@@ -190,7 +190,7 @@ public final class ConfiguredModulesTable extends Composite {
     public IDialogSettings getTableSettings() {
       String concreteViewId = CheckConfigurationConfigureDialog.class.getName();
 
-      IDialogSettings workbenchSettings = CheckstyleUIPlugin.getDefault().getDialogSettings();
+      IDialogSettings workbenchSettings = CheckstyleUiPlugin.getDefault().getDialogSettings();
       IDialogSettings settings = workbenchSettings.getSection(concreteViewId);
 
       if (settings == null) {

@@ -53,7 +53,7 @@ public final class CheckstyleQuickfixes {
    */
   private static final String EXTENSION_MODULE_ATTRIBUTE = "module";
 
-  private final Collection<ICheckstyleMarkerResolution> quickfixes;
+  private final Collection<CheckstyleMarkerResolution> quickfixes;
 
   private CheckstyleQuickfixes() {
     quickfixes = readRegistry();
@@ -66,15 +66,15 @@ public final class CheckstyleQuickfixes {
   /**
    * @return the quickfixes
    */
-  public Collection<ICheckstyleMarkerResolution> getQuickfixes() {
+  public Collection<CheckstyleMarkerResolution> getQuickfixes() {
     return quickfixes;
   }
 
   /**
    * @return all registered quickfixes
    */
-  private Collection<ICheckstyleMarkerResolution> readRegistry() {
-    List<ICheckstyleMarkerResolution> result = new ArrayList<>();
+  private Collection<CheckstyleMarkerResolution> readRegistry() {
+    List<CheckstyleMarkerResolution> result = new ArrayList<>();
     IExtensionRegistry registry = Platform.getExtensionRegistry();
     IConfigurationElement[] elements = registry.getConfigurationElementsFor(QUICKFIX_EXTENSION_POINT);
     for (IConfigurationElement element : elements) {
@@ -91,12 +91,12 @@ public final class CheckstyleQuickfixes {
     return result;
   }
 
-  private ICheckstyleMarkerResolution toClass(IConfigurationElement element) {
-    ICheckstyleMarkerResolution resolution = null;
+  private CheckstyleMarkerResolution toClass(IConfigurationElement element) {
+    CheckstyleMarkerResolution resolution = null;
     try {
       var extension = element.createExecutableExtension(EXTENSION_CLASS_ATTRIBUTE);
-      if (extension instanceof ICheckstyleMarkerResolution) {
-        resolution = (ICheckstyleMarkerResolution) extension;
+      if (extension instanceof CheckstyleMarkerResolution) {
+        resolution = (CheckstyleMarkerResolution) extension;
       }
     } catch (CoreException ex) {
       CheckstyleLog.log(ex, "cannot create quickfix for " + element.getAttribute(EXTENSION_CLASS_ATTRIBUTE));

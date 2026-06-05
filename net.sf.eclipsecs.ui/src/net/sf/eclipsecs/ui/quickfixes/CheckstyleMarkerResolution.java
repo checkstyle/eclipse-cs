@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2003-2023  David Schneider, Lars Ködderitzsch, Fabrice Bellingard
+// Copyright (C) 2003-2023  David Schneider, Lars Ködderitzsch
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -18,25 +18,30 @@
 //
 //============================================================================
 
-package net.sf.eclipsecs.ui.util.table;
+package net.sf.eclipsecs.ui.quickfixes;
+
+import org.eclipse.core.resources.IMarker;
+import org.eclipse.ui.IMarkerResolution2;
 
 /**
- * Interface used by <code>TableSortSupport</code> to provide comparable values
- * for the single table columns. This works very similar like
- * ITableLabelProvider except that other comparable objects than Strings can be
- * returned.
+ * Interface for a quickfix implementation for checkstyle markers.
  *
  */
-public interface ITableComparableProvider {
+public interface CheckstyleMarkerResolution extends IMarkerResolution2 {
 
   /**
-   * Returns the comparable for a given table column.
+   * Checks if this quickfix can actually fix the marker occurrence.
    *
-   * @param element
-   *          the row object
-   * @param col
-   *          the table column index
-   * @return the comparable value for this columns
+   * @param marker
+   *          the marker to potentially be fixed.
+   * @return <code>true</code> if this quickfix can fix the marker,
+   *         <code>false</code> otherwise.
    */
-  Comparable<?> getComparableValue(Object element, int col);
+  boolean canFix(IMarker marker);
+
+  /**
+   * @param module id of the checkstyle module
+   */
+  void setModule(String module);
+
 }

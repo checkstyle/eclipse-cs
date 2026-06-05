@@ -28,9 +28,9 @@ public final class FileSetsEditorFactory {
 
   }
 
-  public static IFileSetsEditor createEditor(Shell shell, PropertyPageContext propertyPageContext,
+  public static FileSetsEditor createEditor(Shell shell, PropertyPageContext propertyPageContext,
           boolean useSimpleConfig) {
-    IFileSetsEditor editor;
+    FileSetsEditor editor;
     if (useSimpleConfig) {
       editor = new SimpleFileSetsEditor(shell, propertyPageContext);
     } else {

@@ -4,7 +4,7 @@ Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: net.sf.eclipsecs.ui;singleton:=true
 Bundle-Version: 13.6.0.qualifier
 Bundle-Vendor: %Bundle-Vendor
-Bundle-Activator: net.sf.eclipsecs.ui.CheckstyleUIPlugin
+Bundle-Activator: net.sf.eclipsecs.ui.CheckstyleUiPlugin
 Bundle-ActivationPolicy: lazy
 Require-Bundle: net.sf.eclipsecs.core,
  org.eclipse.core.expressions,

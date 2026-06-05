@@ -31,7 +31,7 @@ import com.puppycrawl.tools.checkstyle.api.Configuration;
  * react on a checkstyle-rule.
  *
  */
-public abstract class AbstractCTransformationClass {
+public abstract class AbstractCheckstyleTransformationClass {
   /** The eclipse-configuration for this rule. */
   private final FormatterConfiguration mFormatterSetting = new FormatterConfiguration();
 
