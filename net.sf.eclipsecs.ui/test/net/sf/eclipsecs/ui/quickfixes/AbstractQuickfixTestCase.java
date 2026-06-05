@@ -101,36 +101,28 @@ public abstract class AbstractQuickfixTestCase {
 
     NodeList nl = doc.getElementsByTagName("testcase");
     for (int i = 0, size = nl.getLength(); i < size; i++) {
-      QuickfixTestData td = new QuickfixTestData();
       Element testCase = (Element) nl.item(i);
-
       Element input = (Element) testCase.getElementsByTagName("input").item(0);
-      td.line = Integer.parseInt(input.getAttribute("fix-line"));
 
+      int position;
       if (StringUtils.isNotBlank(input.getAttribute("position"))) {
-        td.position = Integer.parseInt(input.getAttribute("position"));
-      }
-      else {
-        td.position = 0;
+        position = Integer.parseInt(input.getAttribute("position"));
+      } else {
+        position = 0;
       }
 
       Element result = (Element) testCase.getElementsByTagName("result").item(0);
 
-      td.input = input.getFirstChild().getNodeValue().trim();
-      td.result = result.getFirstChild().getNodeValue().trim();
-
-      testdata.add(td);
+      testdata.add(new QuickfixTestData(
+              input.getFirstChild().getNodeValue().trim(),
+              result.getFirstChild().getNodeValue().trim(),
+              Integer.parseInt(input.getAttribute("fix-line")),
+              position));
     }
     return testdata.toArray(new QuickfixTestData[testdata.size()]);
   }
 
-  private final class QuickfixTestData {
-    String input;
+  private record QuickfixTestData(String input, String result, int line, int position) {
 
-    String result;
-
-    int line;
-
-    int position;
   }
 }

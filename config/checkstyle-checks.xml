@@ -355,6 +355,10 @@
         <module name="ThrowsCount">
             <property name="max" value="2"/>
         </module>
+        <module name="VisibilityModifier">
+            <property name="ignoreAnnotationCanonicalNames"
+                    value="org.junit.Rule, org.junit.jupiter.api.io.TempDir"/>
+        </module>
 
         <!-- Coding -->
         <module name="ArrayTrailingComma"/>

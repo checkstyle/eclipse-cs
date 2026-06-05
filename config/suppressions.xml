@@ -220,6 +220,9 @@
     <!-- code is copied from ant -->
     <suppress checks="TodoComment" files="PropertyUtil.java"/> 
     <suppress checks="ReturnCount" files="PropertyUtil.java"/>
+    
+    <!-- NLS -->
+    <suppress files="Messages.java" checks="VisibilityModifier"/>
 
     <!-- temporal suppression due to leak -->
     <suppress checks="JavadocVariable"
