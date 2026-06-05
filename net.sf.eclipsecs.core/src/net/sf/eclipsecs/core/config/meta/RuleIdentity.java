@@ -22,7 +22,7 @@ package net.sf.eclipsecs.core.config.meta;
 
 import java.util.List;
 
-public record RuleIdentity(String ruleName, String internalName, String parent, RuleGroupMetadata group,
-        String description, List<String> alternativeNames) {
+public record RuleIdentity(String ruleName, String internalName, String parent,
+        RuleGroupMetadata group, String description, List<String> alternativeNames) {
 
 }

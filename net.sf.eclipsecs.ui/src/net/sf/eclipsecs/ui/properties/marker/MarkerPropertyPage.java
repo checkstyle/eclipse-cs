@@ -42,7 +42,7 @@ import net.sf.eclipsecs.core.config.meta.RuleIdentity;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.ui.CheckstyleUiPluginImages;
 import net.sf.eclipsecs.ui.Messages;
-import net.sf.eclipsecs.ui.config.CheckConfigurationConfigureDialogView;
+import net.sf.eclipsecs.ui.util.HtmlUtil;
 
 /**
  * Property page for checkstyle markers.
@@ -133,7 +133,7 @@ public class MarkerPropertyPage extends PropertyPage {
     gridData.horizontalSpan = 3;
     Browser browserDescription = new Browser(composite, SWT.BORDER);
     browserDescription.setLayoutData(gridData);
-    browserDescription.setText(CheckConfigurationConfigureDialogView
+    browserDescription.setText(HtmlUtil
             .getDescriptionHtml(ruleIdentity.description()));
   }
 

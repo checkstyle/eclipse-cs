@@ -107,8 +107,8 @@ public final class CheckstyleFileWriter {
    * @param properties
    *          A HashMap containing all properties.
    */
-  private static void writeProperty(final HashMap<String, String> properties, final OutputStream outStream)
-          throws IOException {
+  private static void writeProperty(final HashMap<String, String> properties,
+          final OutputStream outStream) throws IOException {
     final Iterator<String> propit = properties.keySet().iterator();
     String prop;
 

@@ -143,10 +143,11 @@ public final class XmlTags {
   public static final String TREEWALKER_MODULE = "TreeWalker"; //$NON-NLS-1$
 
   /** Constant for the name of the SuppressionCommentFiler module. */
-  public static final String SUPRESSIONCOMMENTFILTER_MODULE = "SuppressionCommentFilter"; //$NON-NLS-1$
+  public static final String SUPRESSIONCOMMENTFILTER_MODULE = "SuppressionCommentFilter";
 
   /** Constant for the name of the SuppressWithNearbyCommentFilter module. */
-  public static final String SUPRESSWITHNEARBYCOMMENTFILTER_MODULE = "SuppressWithNearbyCommentFilter"; //$NON-NLS-1$
+  public static final String SUPRESSWITHNEARBYCOMMENTFILTER_MODULE =
+          "SuppressWithNearbyCommentFilter";
 
   /** Constant for the name of the SuppressWarningsHolder module. */
   public static final String SUPPRESSWARNINGSHOLDER_MODULE = "SuppressWarningsHolder"; //$NON-NLS-1$

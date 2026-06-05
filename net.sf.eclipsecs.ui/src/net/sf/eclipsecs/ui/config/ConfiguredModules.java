@@ -57,8 +57,9 @@ public final class ConfiguredModules extends Composite {
     GridLayoutFactory.fillDefaults().applyTo(configuredModulesGroup);
     configuredModulesGroup.setText("\0");
 
-    this.table = new ConfiguredModulesTable(configuredModulesGroup, SWT.NONE, new RuleGroupModuleFilter(), configurable,
-            new TableCheckStateProvider(configurable), callbacks, modules);
+    this.table = new ConfiguredModulesTable(configuredModulesGroup, SWT.NONE,
+            new RuleGroupModuleFilter(), configurable, new TableCheckStateProvider(configurable),
+            callbacks, modules);
     GridDataFactory.fillDefaults().grab(true, true).applyTo(table);
 
     Runnable removeModule = () -> callbacks.removeModule.accept(table.getSelectedModules());

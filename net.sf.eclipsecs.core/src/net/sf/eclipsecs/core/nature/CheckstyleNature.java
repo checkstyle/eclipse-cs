@@ -44,7 +44,7 @@ import net.sf.eclipsecs.core.builder.CheckstyleMarker;
 public class CheckstyleNature implements IProjectNature {
 
   /** ID for the Checkstyle project nature. */
-  public static final String NATURE_ID = CheckstylePlugin.PLUGIN_ID + ".CheckstyleNature"; //$NON-NLS-1$
+  public static final String NATURE_ID = CheckstylePlugin.PLUGIN_ID + ".CheckstyleNature";
 
   /** The project. */
   private IProject mProject;

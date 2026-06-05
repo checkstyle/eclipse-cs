@@ -55,7 +55,8 @@ public class MarkerHelpContextProvider extends AbstractContextProvider
     String helpContext = null;
     String module = getModule(marker);
     if (module.endsWith(CHECK_SUFFIX)) {
-      helpContext = PLUGIN_PREFIX + StringUtils.removeEnd(StringUtils.substringAfterLast(module, '.'), CHECK_SUFFIX);
+      helpContext = PLUGIN_PREFIX
+              + StringUtils.removeEnd(StringUtils.substringAfterLast(module, '.'), CHECK_SUFFIX);
     }
     return helpContext;
   }
@@ -67,7 +68,8 @@ public class MarkerHelpContextProvider extends AbstractContextProvider
   @Override
   public boolean hasHelpContextForMarker(IMarker marker) {
     // regex rules don't provide useful help for understanding and fixing an issue
-    return CheckstyleMarker.isCheckstyleMarker(marker) && !getModule(marker).startsWith(REGEXP_PACKAGE);
+    return CheckstyleMarker.isCheckstyleMarker(marker)
+            && !getModule(marker).startsWith(REGEXP_PACKAGE);
   }
 
   @Override

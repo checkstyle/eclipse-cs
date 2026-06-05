@@ -87,10 +87,12 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
     TabFolder mMainTab = new TabFolder(composite, SWT.NULL);
     GridDataFactory.create(GridData.FILL_BOTH).applyTo(mMainTab);
 
-    generalSettings = new RuleConfigurationEditDialogGeneralSettings(mMainTab, SWT.NULL, mRule, mReadonly);
+    generalSettings = new RuleConfigurationEditDialogGeneralSettings(mMainTab, SWT.NULL, mRule,
+            mReadonly);
     GridDataFactory.create(GridData.FILL_BOTH).applyTo(generalSettings);
 
-    advancedSettings = new RuleConfigurationEditDialogAdvancedSettings(mMainTab, SWT.NULL, mRule, mReadonly);
+    advancedSettings = new RuleConfigurationEditDialogAdvancedSettings(mMainTab, SWT.NULL, mRule,
+            mReadonly);
     GridDataFactory.create(GridData.FILL_BOTH).applyTo(advancedSettings);
 
     TabItem mainItem = new TabItem(mMainTab, SWT.NULL);

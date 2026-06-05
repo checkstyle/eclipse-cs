@@ -42,8 +42,8 @@ public final class SimpleFileSetsEditorView extends Composite {
 
   private final ComboViewer mComboViewer;
 
-  public SimpleFileSetsEditorView(Composite parent, int style, Runnable manageConfig, FileSet mDefaultFileSet,
-          PropertyPageContext propertyPageContext) {
+  public SimpleFileSetsEditorView(Composite parent, int style, Runnable manageConfig,
+          FileSet mDefaultFileSet, PropertyPageContext propertyPageContext) {
     super(parent, style);
     GridLayoutFactory.fillDefaults().applyTo(this);
 
@@ -61,8 +61,8 @@ public final class SimpleFileSetsEditorView extends Composite {
 
     Button mBtnManageConfigs = new Button(configArea, SWT.PUSH);
     mBtnManageConfigs.setText(Messages.SimpleFileSetsEditor_btnManageConfigs);
-    mBtnManageConfigs
-            .addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> manageConfig.run()));
+    mBtnManageConfigs.addSelectionListener(
+            SelectionListener.widgetSelectedAdapter(event -> manageConfig.run()));
     GridDataFactory.fillDefaults().applyTo(mBtnManageConfigs);
 
     // Description
@@ -76,13 +76,10 @@ public final class SimpleFileSetsEditorView extends Composite {
             .applyTo(mTxtConfigDescription);
 
     mComboViewer.addSelectionChangedListener(event -> {
-      CheckConfiguration config = (CheckConfiguration) event.getStructuredSelection().getFirstElement();
-      if (config != null) {
-        mDefaultFileSet.setCheckConfig(config);
-        mTxtConfigDescription.setText(config.getDescription() != null ? config.getDescription() : "");
-      } else {
-        mComboViewer.setSelection(new StructuredSelection(mComboViewer.getElementAt(0)));
-      }
+      CheckConfiguration config = (CheckConfiguration) event.getStructuredSelection()
+              .getFirstElement();
+      mDefaultFileSet.setCheckConfig(config);
+      mTxtConfigDescription.setText(config.getDescription() != null ? config.getDescription() : "");
       propertyPageContext.updateButtons();
     });
 

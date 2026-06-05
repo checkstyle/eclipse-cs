@@ -61,7 +61,8 @@ public final class ExternalFileConfigurationEditorView extends Composite {
     GridDataFactory.swtDefaults().span(2, 1).applyTo(lblDescription);
 
     mDescription = new Text(this, SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.BORDER | SWT.VERTICAL);
-    GridDataFactory.create(GridData.FILL_BOTH).span(2, 1).hint(300, 100).grab(true, true).applyTo(mDescription);
+    GridDataFactory.create(GridData.FILL_BOTH).span(2, 1).hint(300, 100).grab(true, true)
+            .applyTo(mDescription);
 
     Group advancedGroup = new Group(this, SWT.NULL);
     advancedGroup.setText(Messages.RemoteConfigurationEditor_titleAdvancedOptions);
@@ -112,7 +113,8 @@ public final class ExternalFileConfigurationEditorView extends Composite {
 
     Composite locationComposite = new Composite(parent, SWT.NULL);
     GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(locationComposite);
-    GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(false).margins(0, 0).applyTo(locationComposite);
+    GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(false).margins(0, 0)
+            .applyTo(locationComposite);
 
     Text location = new Text(locationComposite, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
     GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(location);

@@ -23,7 +23,6 @@ package net.sf.eclipsecs.ui.config;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.regex.Pattern;
 
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
@@ -41,11 +40,10 @@ import net.sf.eclipsecs.core.config.meta.RuleMetadata;
 import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.config.AvailableModulesViewer.AvailableModulesViewerLabelProvider;
 import net.sf.eclipsecs.ui.config.ConfiguredModules.ConfiguredModulesCallbacks;
+import net.sf.eclipsecs.ui.util.HtmlUtil;
 import net.sf.eclipsecs.ui.util.InternalBrowser;
 
 public final class CheckConfigurationConfigureDialogView extends Composite {
-
-  private static final Pattern PATTERN_INLINE_CODE = Pattern.compile(Pattern.quote("{@code ") + "([^}]*?)" + Pattern.quote("}"));
 
   private final Browser mBrowserDescription;
   private final AvailableModulesViewer availableModulesViewer;
@@ -120,26 +118,7 @@ public final class CheckConfigurationConfigureDialogView extends Composite {
       description = rule.identity().description();
       configuredModules.setCurrentGroup(rule.identity().group());
     }
-    setBrowserDescription(getDescriptionHtml(description));
-  }
-
-  /**
-   * Convert a module description to HTML for use with a browser component.
-   * @param description module description
-   * @return HTML converted description
-   */
-  public static String getDescriptionHtml(String description) {
-    StringBuilder buf = new StringBuilder();
-    buf.append("<html><body style=\"margin: 3px; font-size: 11px; ");
-    buf.append("font-family: verdana, 'trebuchet MS', helvetica, sans-serif;\">");
-    buf.append(description != null ? convertInlineCodeTags(description)
-            : Messages.CheckConfigurationConfigureDialog_txtNoDescription);
-    buf.append("</body></html>");
-    return buf.toString();
-  }
-
-  private static String convertInlineCodeTags(String html) {
-    return PATTERN_INLINE_CODE.matcher(html).replaceAll("<code>$1</code>");
+    setBrowserDescription(HtmlUtil.getDescriptionHtml(description));
   }
 
   public static final record CheckConfigurationConfigureDialogViewCallbacks(

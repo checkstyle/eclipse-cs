@@ -66,7 +66,7 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
   public static final String KEY_CACHE_FILE_LOCATION = "cache-file-location"; //$NON-NLS-1$
 
   /** Key to access the path of the cached property file. */
-  public static final String KEY_CACHE_PROPS_FILE_LOCATION = "cache-props-file-location"; //$NON-NLS-1$
+  public static final String KEY_CACHE_PROPS_FILE_LOCATION = "cache-props-file-location";
 
   /** Key to access the username. */
   public static final String KEY_USERNAME = "username"; //$NON-NLS-1$
@@ -83,7 +83,8 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
   public CheckstyleConfigurationFile getCheckstyleConfiguration(
           CheckConfiguration checkConfiguration) throws CheckstylePluginException {
 
-    boolean useCacheFile = Boolean.parseBoolean(checkConfiguration.getAdditionalData().get(KEY_CACHE_CONFIG));
+    boolean useCacheFile = Boolean
+            .parseBoolean(checkConfiguration.getAdditionalData().get(KEY_CACHE_CONFIG));
 
     CheckstyleConfigurationFile data = new CheckstyleConfigurationFile();
 
@@ -187,7 +188,8 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
     RemoteConfigAuthenticator
             .removeCachedAuthInfo(checkConfiguration.getResolvedConfigurationFileUrl());
 
-    boolean useCacheFile = Boolean.parseBoolean(checkConfiguration.getAdditionalData().get(KEY_CACHE_CONFIG));
+    boolean useCacheFile = Boolean
+            .parseBoolean(checkConfiguration.getAdditionalData().get(KEY_CACHE_CONFIG));
 
     if (useCacheFile) {
       // remove the cached configuration file from the workspace metadata
@@ -442,9 +444,9 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
       String urlHash = null;
 
       try {
-
         MessageDigest digest = MessageDigest.getInstance("MD5");
-        byte[] hash = digest.digest(resolvedCheckConfigurationUrl.toExternalForm().getBytes("UTF-8"));
+        byte[] hash = digest
+                .digest(resolvedCheckConfigurationUrl.toExternalForm().getBytes("UTF-8"));
         urlHash = EncodingUtils.encodeBase64(hash);
 
         urlHash = urlHash.replace('/', '_');

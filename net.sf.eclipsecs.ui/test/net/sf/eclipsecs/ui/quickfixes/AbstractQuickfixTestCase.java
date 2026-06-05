@@ -50,8 +50,8 @@ public abstract class AbstractQuickfixTestCase {
   protected final void testQuickfix(final String testDataXml, final AbstractASTResolution quickfix)
           throws Exception {
     try (InputStream stream = getClass().getResourceAsStream(testDataXml)) {
-      assertThat(stream).withFailMessage(() -> "Cannot find resource " + testDataXml + " in package "
-            + getClass().getPackage().getName()).isNotNull();
+      assertThat(stream).withFailMessage(() -> "Cannot find resource " + testDataXml
+              + " in package " + getClass().getPackage().getName()).isNotNull();
       testQuickfix(stream, quickfix);
     }
   }
@@ -84,7 +84,9 @@ public abstract class AbstractQuickfixTestCase {
       TextEdit edit = compUnit.rewrite(doc, options);
       edit.apply(doc);
 
-      String trailingSpaceRemoved = doc.get().lines().map(String::stripTrailing).collect(Collectors.joining("\n"));
+      String trailingSpaceRemoved = doc.get().lines()
+              .map(String::stripTrailing)
+              .collect(Collectors.joining("\n"));
       assertThat(trailingSpaceRemoved).isEqualTo(testdata[i].result);
     }
 

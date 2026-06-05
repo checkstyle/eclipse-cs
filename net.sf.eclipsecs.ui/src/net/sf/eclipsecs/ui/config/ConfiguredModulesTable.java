@@ -47,6 +47,7 @@ import net.sf.eclipsecs.core.config.meta.RuleMetadata;
 import net.sf.eclipsecs.ui.CheckstyleUiPlugin;
 import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.config.ConfiguredModules.ConfiguredModulesCallbacks;
+import net.sf.eclipsecs.ui.util.HtmlUtil;
 import net.sf.eclipsecs.ui.util.table.TableComparableProvider;
 import net.sf.eclipsecs.ui.util.table.TableSettingsProvider;
 import net.sf.eclipsecs.ui.util.table.TableViewerEnhancer;
@@ -56,8 +57,8 @@ public final class ConfiguredModulesTable extends Composite {
   private final CheckboxTableViewer tableViewer;
 
   public ConfiguredModulesTable(Composite parent, int style, ViewerFilter ruleGroupModuleFilter,
-          boolean configurable, ICheckStateProvider checkStateProvider, ConfiguredModulesCallbacks callbacks,
-          List<Module> modules) {
+          boolean configurable, ICheckStateProvider checkStateProvider,
+          ConfiguredModulesCallbacks callbacks, List<Module> modules) {
     super(parent, style);
     GridLayoutFactory.fillDefaults().applyTo(this);
 
@@ -76,7 +77,7 @@ public final class ConfiguredModulesTable extends Composite {
           description = meta.identity().description();
         }
       }
-      callbacks.updateDescription().accept(CheckConfigurationConfigureDialogView.getDescriptionHtml(description));
+      callbacks.updateDescription().accept(HtmlUtil.getDescriptionHtml(description));
     });
     tableViewer.addCheckStateListener(event -> {
       if (configurable) {

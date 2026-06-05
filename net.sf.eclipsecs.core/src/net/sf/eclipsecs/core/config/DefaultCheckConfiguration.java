@@ -83,8 +83,8 @@ public class DefaultCheckConfiguration extends AbstractCheckConfiguration {
    * @param additionalData
    *          a map of additional data for this configuration
    */
-  public DefaultCheckConfiguration(final String name, final String location, final String description,
-          final ConfigurationType type, final boolean global,
+  public DefaultCheckConfiguration(final String name, final String location,
+          final String description, final ConfigurationType type, final boolean global,
           final List<ResolvableProperty> properties, final Map<String, String> additionalData) {
     mName = name;
     mLocation = location;

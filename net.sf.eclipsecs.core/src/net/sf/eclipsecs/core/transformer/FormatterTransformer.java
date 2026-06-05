@@ -73,19 +73,20 @@ public class FormatterTransformer {
    * constructor.
    * @return
    */
-  private List<AbstractFormatterTransformationClass> loadTransformationClasses(Map<String, String> formatterSettings)
-          throws CheckstylePluginException {
+  private List<AbstractFormatterTransformationClass> loadTransformationClasses(
+          Map<String, String> formatterSettings) throws CheckstylePluginException {
     List<AbstractFormatterTransformationClass> targetTransformers = new ArrayList<>();
     for (Map.Entry<String, String> entry : formatterSettings.entrySet()) {
       String rule = entry.getKey();
       String value = entry.getValue();
 
-      Class<? extends AbstractFormatterTransformationClass> transformationClass = allTransformers.get(rule);
+      Class<? extends AbstractFormatterTransformationClass> transformationClass = allTransformers
+              .get(rule);
 
       if (transformationClass != null) {
         try {
-          final AbstractFormatterTransformationClass transObj = transformationClass.getDeclaredConstructor()
-                  .newInstance();
+          final AbstractFormatterTransformationClass transObj = transformationClass
+                  .getDeclaredConstructor().newInstance();
 
           transObj.setValue(value);
 
@@ -100,7 +101,8 @@ public class FormatterTransformer {
   }
 
   @SuppressWarnings("unchecked")
-  private static Map<String, Class<? extends AbstractFormatterTransformationClass>> discoverTransformers() {
+  private static Map<String, Class<? extends AbstractFormatterTransformationClass>>
+      discoverTransformers() {
     String formatterKeyAnnotation = FormatterKey.class.getName();
     ClassLoader loader = CheckstylePlugin.getDefault().getAddonExtensionClassLoader();
     try (ScanResult scanResult = new ClassGraph()
@@ -112,7 +114,8 @@ public class FormatterTransformer {
                       classInfo -> "org.eclipse.jdt.core.formatter."
                               + classInfo.getAnnotationInfo(formatterKeyAnnotation)
                                       .getParameterValues().getValue("value"),
-                      classInfo -> (Class<? extends AbstractFormatterTransformationClass>) classInfo.loadClass()));
+                      classInfo -> (Class<? extends AbstractFormatterTransformationClass>) classInfo
+                              .loadClass()));
     }
   }
 }

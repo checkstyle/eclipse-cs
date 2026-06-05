@@ -45,7 +45,8 @@ public final class CheckUtil {
       String result = null;
       if (AbstractJavadocCheck.class.isAssignableFrom(checkResult.getClass())) {
           final AbstractJavadocCheck javadocCheck = (AbstractJavadocCheck) checkResult;
-          final List<Integer> modifiableJavadocTokens = subtractTokens(javadocCheck.getAcceptableJavadocTokens(),
+          final List<Integer> modifiableJavadocTokens = subtractTokens(
+                  javadocCheck.getAcceptableJavadocTokens(),
                   javadocCheck.getRequiredJavadocTokens());
           result = getTokens(JavadocUtil::getTokenName, modifiableJavadocTokens);
       }
@@ -85,7 +86,8 @@ public final class CheckUtil {
               .collect(Collectors.toList());
     }
 
-    private static String getTokens(Function<Integer, String> function, List<Integer> modifiableTokens) {
+    private static String getTokens(Function<Integer, String> function,
+            List<Integer> modifiableTokens) {
       return modifiableTokens.stream()
             .map(function::apply)
             .collect(Collectors.joining(","));

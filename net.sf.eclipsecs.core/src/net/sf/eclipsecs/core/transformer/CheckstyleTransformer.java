@@ -45,7 +45,8 @@ public class CheckstyleTransformer {
   /**
    * The list with all TransformationClass-instances loaded in method loadTransformationClasses().
    */
-  private final List<AbstractCheckstyleTransformationClass> mTransformationClasses = new ArrayList<>();
+  private final List<AbstractCheckstyleTransformationClass> mTransformationClasses =
+          new ArrayList<>();
 
   private IProject mProject;
 
@@ -97,7 +98,8 @@ public class CheckstyleTransformer {
       try {
         transformationClass = CheckstylePlugin.getDefault().getAddonExtensionClassLoader()
                 .loadClass(name);
-        final AbstractCheckstyleTransformationClass transObj = (AbstractCheckstyleTransformationClass) transformationClass.getDeclaredConstructor()
+        final AbstractCheckstyleTransformationClass transObj =
+                (AbstractCheckstyleTransformationClass) transformationClass.getDeclaredConstructor()
                 .newInstance();
         transObj.setRule(rule);
         mTransformationClasses.add(transObj);

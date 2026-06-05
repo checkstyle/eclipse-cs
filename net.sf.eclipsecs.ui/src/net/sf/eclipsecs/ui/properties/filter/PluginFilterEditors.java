@@ -39,7 +39,7 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
 public final class PluginFilterEditors {
 
   /** constant for the extension point id. */
-  private static final String FILTER_EXTENSION_POINT = "net.sf.eclipsecs.ui.filtereditors"; //$NON-NLS-1$
+  private static final String FILTER_EXTENSION_POINT = "net.sf.eclipsecs.ui.filtereditors";
 
   /** constant for the name attribute. */
   private static final String ATTR_FILTER = "filter"; //$NON-NLS-1$

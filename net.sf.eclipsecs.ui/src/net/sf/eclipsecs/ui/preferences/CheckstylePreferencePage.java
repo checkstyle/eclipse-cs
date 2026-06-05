@@ -78,7 +78,8 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
     Control header = new CheckstylePreferencePageHeader(ancestor, SWT.NONE);
     GridDataFactory.fillDefaults().applyTo(header);
 
-    this.generalSettings = new CheckstylePreferencePageGeneralSettings(ancestor, SWT.NONE, () -> mRebuildAll = true);
+    this.generalSettings = new CheckstylePreferencePageGeneralSettings(ancestor, SWT.NONE,
+            () -> mRebuildAll = true);
     GridDataFactory.fillDefaults().applyTo(generalSettings);
 
     final Composite configComposite = createCheckConfigContents(ancestor);

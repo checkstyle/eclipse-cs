@@ -81,7 +81,8 @@ public final class CheckConfigurationWorkingSetEditor extends Composite {
 
     boolean global = mWorkingSet instanceof GlobalCheckConfigurationWorkingSet;
 
-    editorView = new CheckConfigurationWorkingSetEditorView(this, SWT.NONE, mWorkingSet.getWorkingCopies(), global,
+    editorView = new CheckConfigurationWorkingSetEditorView(this, SWT.NONE,
+            mWorkingSet.getWorkingCopies(), global,
             new ButtonBarActions(this::addCheckConfig, this::editCheckConfig,
                     this::configureCheckConfig, this::copyCheckConfig, this::removeCheckConfig,
                     this::setDefaultCheckConfig, this::exportCheckstyleCheckConfig),
@@ -102,8 +103,8 @@ public final class CheckConfigurationWorkingSetEditor extends Composite {
    * Create a new Check configuration.
    */
   private void addCheckConfig() {
-    CheckConfigurationPropertiesDialog dialog = new CheckConfigurationPropertiesDialog(getShell(), null,
-            mWorkingSet);
+    CheckConfigurationPropertiesDialog dialog = new CheckConfigurationPropertiesDialog(getShell(),
+            null, mWorkingSet);
     dialog.setBlockOnOpen(true);
     if (Window.OK == dialog.open()) {
 
@@ -144,8 +145,10 @@ public final class CheckConfigurationWorkingSetEditor extends Composite {
         dialog.setBlockOnOpen(true);
         dialog.open();
       } catch (CheckstylePluginException ex) {
-        CheckstyleUiPlugin.warningDialog(getShell(), NLS.bind(Messages.errorCannotResolveCheckLocation,
-                config.getLocation(), config.getName()), ex);
+        CheckstyleUiPlugin.warningDialog(getShell(),
+                NLS.bind(Messages.errorCannotResolveCheckLocation, config.getLocation(),
+                        config.getName()),
+                ex);
       }
     }
   }
@@ -159,8 +162,8 @@ public final class CheckConfigurationWorkingSetEditor extends Composite {
       try {
 
         // Open the properties dialog to change default name and description
-        CheckConfigurationPropertiesDialog dialog = new CheckConfigurationPropertiesDialog(getShell(),
-                null, mWorkingSet);
+        CheckConfigurationPropertiesDialog dialog = new CheckConfigurationPropertiesDialog(
+                getShell(), null, mWorkingSet);
         dialog.setTemplateConfiguration(sourceConfig);
 
         dialog.setBlockOnOpen(true);
@@ -200,7 +203,8 @@ public final class CheckConfigurationWorkingSetEditor extends Composite {
 
           editorView.setConfigs(mWorkingSet.getWorkingCopies());
         } else {
-          MessageDialog.openInformation(getShell(), Messages.CheckstylePreferencePage_titleCantDelete,
+          MessageDialog.openInformation(getShell(),
+                  Messages.CheckstylePreferencePage_titleCantDelete,
                   NLS.bind(Messages.CheckstylePreferencePage_msgCantDelete, checkConfig.getName()));
         }
       }

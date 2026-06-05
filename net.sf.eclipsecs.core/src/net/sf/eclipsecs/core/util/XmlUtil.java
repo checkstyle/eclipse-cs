@@ -88,7 +88,8 @@ public final class XmlUtil {
       if (mPublic2InternalDtdMap.containsKey(publicId)) {
         final String dtdResourceName = mPublic2InternalDtdMap.get(publicId);
 
-        final InputStream dtdInputStream = getClass().getClassLoader().getResourceAsStream(dtdResourceName);
+        final InputStream dtdInputStream = getClass().getClassLoader()
+                .getResourceAsStream(dtdResourceName);
         if (dtdInputStream == null) {
           // -@cs[IllegalInstantiation] SAXException is in the overridden method signature
           throw new SAXException("Unable to load internal dtd " + dtdResourceName); //$NON-NLS-1$

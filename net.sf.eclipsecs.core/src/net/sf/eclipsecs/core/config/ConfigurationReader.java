@@ -123,8 +123,8 @@ public final class ConfigurationReader {
   }
 
   /**
-   * Reads the checkstyle configuration from the given stream and returns a list of all modules within
-   * this configuration.
+   * Reads the checkstyle configuration from the given stream and returns a list of all modules
+   * within this configuration.
    *
    * @param input
    *          the stream the configuration is loaded from

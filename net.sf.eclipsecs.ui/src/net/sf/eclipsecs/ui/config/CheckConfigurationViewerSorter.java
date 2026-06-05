@@ -30,7 +30,8 @@ import net.sf.eclipsecs.core.config.CheckConfiguration;
  */
 public final class CheckConfigurationViewerSorter extends ViewerComparator {
 
-  public static final CheckConfigurationViewerSorter INSTANCE = new CheckConfigurationViewerSorter();
+  public static final CheckConfigurationViewerSorter INSTANCE =
+          new CheckConfigurationViewerSorter();
 
   private CheckConfigurationViewerSorter() {
 

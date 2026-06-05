@@ -48,7 +48,8 @@ public class RuleGroupMetadata {
   /** The list of modules belonging to the group. */
   private List<RuleMetadata> mRuleMetadata = new LinkedList<>();
 
-  RuleGroupMetadata(String groupId, String groupName, String groupDesc, boolean hidden, int priority) {
+  RuleGroupMetadata(String groupId, String groupName, String groupDesc, boolean hidden,
+          int priority) {
     mGroupId = groupId;
     mGroupName = groupName;
     mDescription = groupDesc;

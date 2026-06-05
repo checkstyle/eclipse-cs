@@ -50,7 +50,8 @@ public final class ComplexFileSetsEditorView extends Composite {
     composite.setText(Messages.ComplexFileSetsEditor_titleAdvancedFilesetEditor);
     GridLayoutFactory.swtDefaults().numColumns(2).applyTo(composite);
 
-    mViewer = new ComplexFileSetsEditorTableView(composite, SWT.NONE, changeEnabledState, editFileSet, mFileSets);
+    mViewer = new ComplexFileSetsEditorTableView(composite, SWT.NONE, changeEnabledState,
+            editFileSet, mFileSets);
     GridDataFactory.fillDefaults().grab(true, true).applyTo(mViewer);
 
     //
@@ -64,10 +65,12 @@ public final class ComplexFileSetsEditorView extends Composite {
     mAddButton.addListener(SWT.Selection, event -> addFileSet.run());
 
     Button mEditButton = createPushButton(buttons, Messages.ComplexFileSetsEditor_btnEdit);
-    mEditButton.addListener(SWT.Selection, event -> editFileSet.accept(mViewer.getSelectedFileSet()));
+    mEditButton.addListener(SWT.Selection,
+            event -> editFileSet.accept(mViewer.getSelectedFileSet()));
 
     Button mRemoveButton = createPushButton(buttons, Messages.ComplexFileSetsEditor_btnRemove);
-    mRemoveButton.addListener(SWT.Selection, event -> removeFileSet.accept(mViewer.getSelectedFileSet()));
+    mRemoveButton.addListener(SWT.Selection,
+            event -> removeFileSet.accept(mViewer.getSelectedFileSet()));
   }
 
   public void refresh() {

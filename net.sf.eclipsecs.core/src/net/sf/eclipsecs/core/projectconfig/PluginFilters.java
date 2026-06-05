@@ -38,7 +38,7 @@ import net.sf.eclipsecs.core.util.CheckstyleLog;
 public final class PluginFilters {
 
   /** constant for the extension point id. */
-  private static final String FILTER_EXTENSION_POINT = "net.sf.eclipsecs.core.filters"; //$NON-NLS-1$
+  private static final String FILTER_EXTENSION_POINT = "net.sf.eclipsecs.core.filters";
 
   /** constant for the name attribute. */
   private static final String ATTR_NAME = "name"; //$NON-NLS-1$

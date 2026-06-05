@@ -103,7 +103,8 @@ public final class CheckstyleMarkerFilterResourceFilterGroup extends Composite {
             Messages.CheckstyleMarkerFilterDialog_btnSeverityError, GridDataFactory.swtDefaults());
 
     mChkSeverityWarning = createButton(severityGroup, SWT.CHECK,
-            Messages.CheckstyleMarkerFilterDialog_btnSeverityWarning, GridDataFactory.swtDefaults());
+            Messages.CheckstyleMarkerFilterDialog_btnSeverityWarning,
+            GridDataFactory.swtDefaults());
 
     mChkSeverityInfo = createButton(severityGroup, SWT.CHECK,
             Messages.CheckstyleMarkerFilterDialog_btnSeverityInfo, GridDataFactory.swtDefaults());
@@ -180,7 +181,8 @@ public final class CheckstyleMarkerFilterResourceFilterGroup extends Composite {
     return mChkSeverityEnabled.getSelection();
   }
 
-  private static Button createButton(Composite parent, int style, String text, GridDataFactory gridDataFactory) {
+  private static Button createButton(Composite parent, int style, String text,
+          GridDataFactory gridDataFactory) {
     Button button = new Button(parent, style);
     button.setText(text);
     gridDataFactory.applyTo(button);

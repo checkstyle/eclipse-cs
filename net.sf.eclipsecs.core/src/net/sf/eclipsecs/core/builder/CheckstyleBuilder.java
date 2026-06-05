@@ -65,7 +65,7 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
 public class CheckstyleBuilder extends IncrementalProjectBuilder {
 
   /** Eclipse extension point ID for the builder. */
-  public static final String BUILDER_ID = CheckstylePlugin.PLUGIN_ID + ".CheckstyleBuilder"; //$NON-NLS-1$
+  public static final String BUILDER_ID = CheckstylePlugin.PLUGIN_ID + ".CheckstyleBuilder";
 
   /**
    * Run the Checkstyle builder on all open projects in the workspace.
@@ -305,8 +305,8 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
    * @throws CoreException
    *           an unexpected error occurred
    */
-  private Collection<IResource> getResources(final IResourceDelta delta, final List<AuditFilter> filters)
-          throws CoreException {
+  private Collection<IResource> getResources(final IResourceDelta delta,
+          final List<AuditFilter> filters) throws CoreException {
 
     List<IResource> resources = new ArrayList<>();
 
@@ -356,8 +356,8 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
    * @throws CoreException
    *           an unexpected error occurred
    */
-  private Collection<IResource> getResources(final IContainer container, final List<AuditFilter> filters)
-          throws CoreException {
+  private Collection<IResource> getResources(final IContainer container,
+          final List<AuditFilter> filters) throws CoreException {
 
     List<IResource> resources = new ArrayList<>();
 

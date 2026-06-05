@@ -144,7 +144,8 @@ public class ComplexFileSetsEditor implements FileSetsEditor {
   /**
    * Provides the labels for the FileSet list display.
    */
-  public static final class FileSetLabelProvider extends LabelProvider implements ITableLabelProvider {
+  public static final class FileSetLabelProvider extends LabelProvider
+          implements ITableLabelProvider {
 
     public static final FileSetLabelProvider INSTANCE = new FileSetLabelProvider();
 

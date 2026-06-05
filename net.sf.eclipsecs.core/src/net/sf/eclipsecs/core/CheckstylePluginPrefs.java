@@ -50,7 +50,7 @@ public class CheckstylePluginPrefs extends AbstractPreferenceInitializer {
    * Preference name indicating if the number of checkstyle warning generated per file should be
    * limited.
    */
-  public static final String PREF_LIMIT_MARKERS_PER_RESOURCE = "limit.markers.per.resource"; //$NON-NLS-1$
+  public static final String PREF_LIMIT_MARKERS_PER_RESOURCE = "limit.markers.per.resource";
 
   /**
    * Preference name for the preference that stores the limit of markers per resource.

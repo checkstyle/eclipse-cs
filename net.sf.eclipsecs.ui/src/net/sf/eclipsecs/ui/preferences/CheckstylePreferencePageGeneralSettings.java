@@ -48,8 +48,8 @@ public final class CheckstylePreferencePageGeneralSettings extends Composite {
 
   private static final String DEFAULT_LANGUAGE = "default";
 
-  private static final List<String> SUPPORTED_LANGUAGES = List.of(DEFAULT_LANGUAGE, "de", "en", "es",
-          "fi", "fr", "ja", "pt", "tr", "zh");
+  private static final List<String> SUPPORTED_LANGUAGES = List.of(DEFAULT_LANGUAGE, "de", "en",
+          "es", "fi", "fr", "ja", "pt", "tr", "zh");
   private static final String[] LANGUAGE_ITEMS = SUPPORTED_LANGUAGES.stream().map(code -> {
     String displayLang;
     if (code == DEFAULT_LANGUAGE) {
@@ -70,7 +70,8 @@ public final class CheckstylePreferencePageGeneralSettings extends Composite {
   private final Text mTxtMarkerLimit;
   private final Button mBackgroundFullBuild;
 
-  public CheckstylePreferencePageGeneralSettings(Composite parent, int style, Runnable setRebuildAll) {
+  public CheckstylePreferencePageGeneralSettings(Composite parent, int style,
+          Runnable setRebuildAll) {
     super(parent, style);
     setLayout(new FillLayout());
 
@@ -127,7 +128,8 @@ public final class CheckstylePreferencePageGeneralSettings extends Composite {
     // Create the "Run Checkstyle in background on full builds" check box.
     //
     final Composite backgroundFullBuildComposite = new Composite(group, SWT.NULL);
-    GridLayoutFactory.swtDefaults().numColumns(2).margins(0, 0).applyTo(backgroundFullBuildComposite);
+    GridLayoutFactory.swtDefaults().numColumns(2).margins(0, 0)
+            .applyTo(backgroundFullBuildComposite);
 
     mBackgroundFullBuild = makeButton(backgroundFullBuildComposite, SWT.CHECK,
             Messages.CheckstylePreferencePage_txtBackgroundFullBuild0,
@@ -179,7 +181,8 @@ public final class CheckstylePreferencePageGeneralSettings extends Composite {
     Combo languageIf = new Combo(langComposite, SWT.READ_ONLY);
     languageIf.setItems(LANGUAGE_ITEMS);
     final String lang = CheckstylePluginPrefs.getString(CheckstylePluginPrefs.PREF_LOCALE_LANGUAGE);
-    final int selectedLang = SUPPORTED_LANGUAGES.indexOf(lang == null || lang.isEmpty() ? DEFAULT_LANGUAGE : lang);
+    final int selectedLang = SUPPORTED_LANGUAGES
+            .indexOf(lang == null || lang.isEmpty() ? DEFAULT_LANGUAGE : lang);
     if (selectedLang != -1) {
       languageIf.select(selectedLang);
     }

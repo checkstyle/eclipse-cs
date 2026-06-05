@@ -101,7 +101,8 @@ public class FilterSettings extends Composite {
     filterList.setLabelProvider(new FilterListLabelProvider());
     filterList.setContentProvider(ArrayContentProvider.getInstance());
     filterList.setCheckStateProvider(new FilterListCheckStateProvider());
-    filterList.addDoubleClickListener(event -> openFilterEditor(event.getSelection(), filterList, project));
+    filterList.addDoubleClickListener(
+            event -> openFilterEditor(event.getSelection(), filterList, project));
     filterList.addCheckStateListener(event -> {
       if (event.getElement() instanceof AuditFilter filter) {
         if (filter.isReadonly()) {
@@ -120,7 +121,8 @@ public class FilterSettings extends Composite {
    * @param selection
    *          the selection
    */
-  private void openFilterEditor(ISelection selection, CheckboxTableViewer filterList, IProject project) {
+  private void openFilterEditor(ISelection selection, CheckboxTableViewer filterList,
+          IProject project) {
     if (selection instanceof IStructuredSelection structuredSelection) {
       if (structuredSelection.getFirstElement() instanceof AuditFilter filterDef) {
         try {

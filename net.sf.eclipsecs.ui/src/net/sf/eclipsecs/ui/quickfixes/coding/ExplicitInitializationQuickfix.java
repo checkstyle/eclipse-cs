@@ -70,7 +70,8 @@ public class ExplicitInitializationQuickfix extends AbstractASTResolution {
       in.close();
       final String snippet = new String(buffer, resource.getCharset());
       mFieldName = snippet.substring(0, snippet.indexOf('=')).trim();
-    } catch (final CoreException | IOException | IndexOutOfBoundsException | ClassCastException | NullPointerException ex) {
+    } catch (final CoreException | IOException | IndexOutOfBoundsException | ClassCastException
+            | NullPointerException ex) {
       handleRetrieveFieldNameException(ex);
     }
   }

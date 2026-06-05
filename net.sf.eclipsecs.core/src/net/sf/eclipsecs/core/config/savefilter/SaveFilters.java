@@ -39,7 +39,7 @@ import net.sf.eclipsecs.core.util.CheckstyleLog;
 public final class SaveFilters {
 
   /** constant for the extension point id. */
-  private static final String FILTER_EXTENSION_POINT = CheckstylePlugin.PLUGIN_ID + ".saveFilters"; //$NON-NLS-1$
+  private static final String FILTER_EXTENSION_POINT = CheckstylePlugin.PLUGIN_ID + ".saveFilters";
 
   /** constant for the class attribute. */
   private static final String ATTR_CLASS = "class"; //$NON-NLS-1$

@@ -195,8 +195,8 @@ public final class ProjectConfigurationFactory {
     List<FileSet> fileSets = getFileSets(root, checkConfigs);
     List<AuditFilter> filters = getFilters(root);
 
-    return new DefaultProjectConfiguration(project, checkConfigs, fileSets, filters, useSimpleConfig,
-            syncFormatter);
+    return new DefaultProjectConfiguration(project, checkConfigs, fileSets, filters,
+            useSimpleConfig, syncFormatter);
   }
 
   private static List<CheckConfiguration> getLocalCheckConfigs(Element root, IProject project) {
@@ -288,7 +288,8 @@ public final class ProjectConfigurationFactory {
       for (Element patternEl : patternElements) {
         FileMatchPattern pattern = new FileMatchPattern(
                 patternEl.attributeValue(XmlTags.MATCH_PATTERN_TAG));
-        pattern.setIsIncludePattern(Boolean.parseBoolean(patternEl.attributeValue(XmlTags.INCLUDE_PATTERN_TAG)));
+        pattern.setIsIncludePattern(
+                Boolean.parseBoolean(patternEl.attributeValue(XmlTags.INCLUDE_PATTERN_TAG)));
         patterns.add(pattern);
       }
       fileSet.setFileMatchPatterns(patterns);
@@ -306,7 +307,8 @@ public final class ProjectConfigurationFactory {
     List<Element> filterElements = root.elements(XmlTags.FILTER_TAG);
     for (Element filterEl : filterElements) {
 
-      AuditFilter filter = PluginFilters.getByInternalName(filterEl.attributeValue(XmlTags.NAME_TAG));
+      AuditFilter filter = PluginFilters
+              .getByInternalName(filterEl.attributeValue(XmlTags.NAME_TAG));
 
       // guard against unknown/retired filters
       if (filter != null) {

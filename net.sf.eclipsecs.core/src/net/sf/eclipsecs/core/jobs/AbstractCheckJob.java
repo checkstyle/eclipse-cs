@@ -24,8 +24,8 @@ import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 
 /**
- * Super class of all jobs that invoke Checkstyle. Avoids concurrent invocations and styles the progress UI.
- *
+ * Super class of all jobs that invoke Checkstyle.
+ * Avoids concurrent invocations and styles the progress UI.
  */
 public abstract class AbstractCheckJob extends WorkspaceJob implements ISchedulingRule {
   /**

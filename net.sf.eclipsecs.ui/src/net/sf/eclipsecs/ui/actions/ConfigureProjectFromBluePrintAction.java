@@ -154,7 +154,8 @@ public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegat
 
           // add local configurations from blueprint
           for (CheckConfiguration localConfig : bluePrintLocalConfigs) {
-            CheckConfigurationWorkingCopy newCopy = checkConfigsWorkingSet.newWorkingCopy(localConfig);
+            CheckConfigurationWorkingCopy newCopy = checkConfigsWorkingSet
+                    .newWorkingCopy(localConfig);
             checkConfigsWorkingSet.addCheckConfiguration(newCopy);
           }
 
@@ -167,8 +168,8 @@ public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegat
         }
         status = Status.OK_STATUS;
       } catch (CheckstylePluginException ex) {
-        status = new Status(IStatus.ERROR, CheckstyleUiPlugin.PLUGIN_ID, IStatus.OK, ex.getMessage(),
-                ex);
+        status = new Status(IStatus.ERROR, CheckstyleUiPlugin.PLUGIN_ID, IStatus.OK,
+                ex.getMessage(), ex);
       }
       return status;
     }

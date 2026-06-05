@@ -189,7 +189,8 @@ public final class FileSetEditDialog extends TitleAreaDialog {
 
   private void editFileMatchPattern(FileMatchPattern pattern) {
     if (pattern != null) {
-      FileMatchPatternEditDialog dialog = new FileMatchPatternEditDialog(getShell(), pattern.clone());
+      FileMatchPatternEditDialog dialog = new FileMatchPatternEditDialog(getShell(),
+              pattern.clone());
 
       if (Window.OK == dialog.open()) {
 
@@ -240,7 +241,8 @@ public final class FileSetEditDialog extends TitleAreaDialog {
   }
 
   private void configureFileSetConfig() {
-    CheckConfigurationWorkingCopy config = (CheckConfigurationWorkingCopy) mFileSet.getCheckConfig();
+    CheckConfigurationWorkingCopy config = (CheckConfigurationWorkingCopy) mFileSet
+            .getCheckConfig();
     if (config != null) {
       try {
         config.getCheckstyleConfiguration();
