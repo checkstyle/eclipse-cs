@@ -30,10 +30,13 @@ public final class FileSetsEditorFactory {
 
   public static IFileSetsEditor createEditor(Shell shell, PropertyPageContext propertyPageContext,
           boolean useSimpleConfig) {
+    IFileSetsEditor editor;
     if (useSimpleConfig) {
-      return new SimpleFileSetsEditor(shell, propertyPageContext);
+      editor = new SimpleFileSetsEditor(shell, propertyPageContext);
+    } else {
+      editor = new ComplexFileSetsEditor(propertyPageContext);
     }
-    return new ComplexFileSetsEditor(propertyPageContext);
+    return editor;
   }
 
 }

@@ -222,45 +222,36 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
    * @return whether configuration was successful
    */
   private void newModule(List<RuleMetadata> rules) {
-    if (!mConfiguration.isConfigurable()) {
-      return;
-    }
-    boolean openOnAdd = CheckstyleUIPluginPrefs
-            .getBoolean(CheckstyleUIPluginPrefs.PREF_OPEN_MODULE_EDITOR);
+    if (mConfiguration.isConfigurable()) {
+      boolean openOnAdd = CheckstyleUIPluginPrefs
+              .getBoolean(CheckstyleUIPluginPrefs.PREF_OPEN_MODULE_EDITOR);
 
-    for (RuleMetadata rule : rules) {
-      // check if the module is a singleton and already
-      // configured
-      if (rule.isSingleton() && isAlreadyConfigured(rule)) {
-        return;
-      }
-
-      Module workingCopy = new Module(rule, false);
-
-      if (openOnAdd) {
-
-        RuleConfigurationEditDialog dialog = new RuleConfigurationEditDialog(getShell(),
-                workingCopy, !mConfiguration.isConfigurable(),
-                Messages.CheckConfigurationConfigureDialog_titleNewModule);
-        if (mConfiguration.isConfigurable()) {
-          int dialogResult = dialog.open();
-          if (Window.OK == dialogResult) {
+      for (RuleMetadata rule : rules) {
+        if (!rule.isSingleton() || !isAlreadyConfigured(rule)) {
+          Module workingCopy = new Module(rule, false);
+          if (openOnAdd) {
+            RuleConfigurationEditDialog dialog = new RuleConfigurationEditDialog(getShell(),
+                    workingCopy, !mConfiguration.isConfigurable(),
+                    Messages.CheckConfigurationConfigureDialog_titleNewModule);
+            int dialogResult = dialog.open();
+            if (Window.OK == dialogResult) {
+              mModules.add(workingCopy);
+              mIsDirty = true;
+              dialogView.refreshConfiguredModules();
+              dialogView.refreshAvailableModules();
+              dialogView.focusAvailableModules();
+            }
+            if (Window.CANCEL == dialogResult) {
+              // stop showing more dialogs and also don't add any further rules
+              break;
+            }
+          } else {
             mModules.add(workingCopy);
             mIsDirty = true;
             dialogView.refreshConfiguredModules();
             dialogView.refreshAvailableModules();
-            dialogView.focusAvailableModules();
-          }
-          if (Window.CANCEL == dialogResult) {
-            // stop showing more dialogs and also don't add any further rules
-            return;
           }
         }
-      } else {
-        mModules.add(workingCopy);
-        mIsDirty = true;
-        dialogView.refreshConfiguredModules();
-        dialogView.refreshAvailableModules();
       }
     }
   }

@@ -103,18 +103,17 @@ public final class PluginFilterEditors {
    *           if the filter editor could not be instantiated.
    */
   public static IFilterEditor getNewEditor(IFilter filter) throws CheckstylePluginException {
-
+    IFilterEditor editor = null;
     Class<? extends IFilterEditor> editorClass = sFilterEditorClasses.get(filter.getInternalName());
 
     if (editorClass != null) {
-
       try {
-        return editorClass.getDeclaredConstructor().newInstance();
+        editor = editorClass.getDeclaredConstructor().newInstance();
       } catch (ClassCastException | ReflectiveOperationException | SecurityException ex) {
         CheckstylePluginException.rethrow(ex);
       }
     }
 
-    return null;
+    return editor;
   }
 }

@@ -180,13 +180,7 @@ public record CheckstyleMarkerFilter(boolean enabled, int onResource, IWorkingSe
             .orElse(false);
 
     int mOnResource = findSetting(settings, TAG_ON_RESOURCE)
-            .flatMap(setting -> {
-              try {
-                return Optional.of(Integer.parseInt(setting));
-              } catch (NumberFormatException ex) {
-                return Optional.empty();
-              }
-            })
+            .flatMap(CheckstyleMarkerFilter::tryParseInt)
             .orElse(DEFAULT_ON_RESOURCE);
 
     IWorkingSet mWorkingSet = findSetting(settings, TAG_WORKING_SET)
@@ -194,13 +188,7 @@ public record CheckstyleMarkerFilter(boolean enabled, int onResource, IWorkingSe
             .orElse(null);
 
     int mSeverity = findSetting(settings, TAG_SEVERITY)
-            .flatMap(setting -> {
-              try {
-                return Optional.of(Integer.parseInt(setting));
-              } catch (NumberFormatException ex) {
-                return Optional.empty();
-              }
-            })
+            .flatMap(CheckstyleMarkerFilter::tryParseInt)
             .orElse(DEFAULT_SEVERITY);
 
     List<String> mFilterRegex;
@@ -213,6 +201,16 @@ public record CheckstyleMarkerFilter(boolean enabled, int onResource, IWorkingSe
 
     return new CheckstyleMarkerFilter(enabled, mOnResource, mWorkingSet, selectBySeverity,
             mSeverity, filterByRegex, mFilterRegex, focusResource);
+  }
+
+  private static Optional<Integer> tryParseInt(String setting) {
+    Optional<Integer> parsed;
+    try {
+      parsed = Optional.of(Integer.parseInt(setting));
+    } catch (NumberFormatException ex) {
+      parsed = Optional.empty();
+    }
+    return parsed;
   }
 
   private static Optional<String> findSetting(IDialogSettings dialogSettings,
@@ -277,26 +275,21 @@ public record CheckstyleMarkerFilter(boolean enabled, int onResource, IWorkingSe
    */
   private List<IMarker> findCheckstyleMarkers(IResource[] resources, int depth,
           IProgressMonitor mon) throws CoreException {
-    if (resources == null) {
-      return Collections.emptyList();
-    }
     List<IMarker> markers = new ArrayList<>();
     for (IResource resource : resources) {
       if (resource.isAccessible()) {
         markers.addAll(Arrays.asList(resource.findMarkers(CheckstyleMarker.MARKER_ID, true, depth)));
       }
     }
-    if (!enabled) {
-      return markers;
-    }
     Stream<IMarker> filteredMarkers = markers.stream();
-    if (selectBySeverity) {
-      filteredMarkers = filteredMarkers.filter(this::doSelectBySeverity);
+    if (enabled) {
+      if (selectBySeverity) {
+        filteredMarkers = filteredMarkers.filter(this::doSelectBySeverity);
+      }
+      if (filterByRegex) {
+        filteredMarkers = filteredMarkers.filter(this::selectByRegex);
+      }
     }
-    if (filterByRegex) {
-      filteredMarkers = filteredMarkers.filter(this::selectByRegex);
-    }
-
     return filteredMarkers.toList();
   }
 
@@ -308,18 +301,22 @@ public record CheckstyleMarkerFilter(boolean enabled, int onResource, IWorkingSe
    * @return <code>true</code> if the marker is selected
    */
   private boolean doSelectBySeverity(IMarker item) {
+    boolean select = true;
     if (selectBySeverity) {
       int markerSeverity = item.getAttribute(IMarker.SEVERITY, -1);
       if (markerSeverity == IMarker.SEVERITY_ERROR) {
-        return (severity & SEVERITY_ERROR) > 0;
+        int flag = severity & SEVERITY_ERROR;
+        select = flag > 0;
       } else if (markerSeverity == IMarker.SEVERITY_WARNING) {
-        return (severity & SEVERITY_WARNING) > 0;
+        int flag = severity & SEVERITY_WARNING;
+        select = flag > 0;
       } else if (markerSeverity == IMarker.SEVERITY_INFO) {
-        return (severity & SEVERITY_INFO) > 0;
+        int flag = severity & SEVERITY_INFO;
+        select = flag > 0;
       }
     }
 
-    return true;
+    return select;
   }
 
   /**
@@ -330,9 +327,8 @@ public record CheckstyleMarkerFilter(boolean enabled, int onResource, IWorkingSe
    * @return <code>true</code> if the marker is selected
    */
   private boolean selectByRegex(IMarker item) {
-
+    boolean select = true;
     if (filterByRegex) {
-
       int size = filterRegex != null ? filterRegex.size() : 0;
       for (int i = 0; i < size; i++) {
 
@@ -341,12 +337,12 @@ public record CheckstyleMarkerFilter(boolean enabled, int onResource, IWorkingSe
         String message = item.getAttribute(IMarker.MESSAGE, null);
 
         if (message != null && message.matches(regex)) {
-          return false;
+          select = false;
+          break;
         }
       }
     }
-    return true;
-
+    return select;
   }
 
   /**
@@ -370,22 +366,24 @@ public record CheckstyleMarkerFilter(boolean enabled, int onResource, IWorkingSe
    * @return the array of resources from the given working set
    */
   private static IResource[] getResourcesInWorkingSet(IWorkingSet workingSet) {
+    IResource[] resources;
     if (workingSet == null) {
-      return new IResource[0];
-    }
+      resources = new IResource[0];
+    } else {
+      IAdaptable[] elements = workingSet.getElements();
+      List<IResource> result = new ArrayList<>(elements.length);
 
-    IAdaptable[] elements = workingSet.getElements();
-    List<IResource> result = new ArrayList<>(elements.length);
+      for (int idx = 0; idx < elements.length; idx++) {
+        IResource next = elements[idx].getAdapter(IResource.class);
 
-    for (int idx = 0; idx < elements.length; idx++) {
-      IResource next = elements[idx].getAdapter(IResource.class);
-
-      if (next != null) {
-        result.add(next);
+        if (next != null) {
+          result.add(next);
+        }
       }
-    }
 
-    return result.toArray(new IResource[result.size()]);
+      resources = result.toArray(new IResource[result.size()]);
+    }
+    return resources;
   }
 
 }

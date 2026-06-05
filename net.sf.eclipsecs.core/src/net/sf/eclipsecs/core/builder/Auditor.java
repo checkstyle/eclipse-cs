@@ -64,7 +64,7 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
 /**
  * Performs checking on Java source code.
  */
-public class Auditor {
+public final class Auditor {
 
   /** The interval for updating the task info. */
   private static final int MONITOR_INTERVAL = 10;
@@ -115,14 +115,6 @@ public class Auditor {
    */
   public void runAudit(IProject project, IProgressMonitor monitor)
           throws CheckstylePluginException {
-
-    // System.out.println("----> Auditing: " + mFiles.size());
-
-    // skip if there are no files to check
-    if (project == null || mFiles.isEmpty()) {
-      return;
-    }
-
     mMonitor = monitor;
 
     Checker checker = null;
@@ -196,6 +188,10 @@ public class Auditor {
    */
   public void addFile(IFile file) {
     mFiles.put(file.getLocation().toString(), file);
+  }
+
+  public boolean hasFiles() {
+    return !mFiles.isEmpty();
   }
 
   /**
@@ -431,33 +427,26 @@ public class Auditor {
     }
 
     private IDocument connectFileBuffer(IResource resource) {
-
-      if (!(resource instanceof IFile)) {
-        return null;
-      }
-
       IDocument document = null;
+      if (resource instanceof IFile) {
+        try {
+          IPath path = resource.getFullPath();
+          mFileBufferManager.connect(path, new NullProgressMonitor());
 
-      try {
-        IPath path = resource.getFullPath();
-        mFileBufferManager.connect(path, new NullProgressMonitor());
-
-        mConnectedFileBufferPaths.add(path);
-        document = mFileBufferManager.getTextFileBuffer(path).getDocument();
-      } catch (CoreException ex) {
-        CheckstyleLog.log(ex);
+          mConnectedFileBufferPaths.add(path);
+          document = mFileBufferManager.getTextFileBuffer(path).getDocument();
+        } catch (CoreException ex) {
+          CheckstyleLog.log(ex);
+        }
       }
       return document;
     }
 
     private void disconnectFileBuffer(IResource resource) {
-
-      if (!(resource instanceof IFile)) {
-        return;
+      if (resource instanceof IFile) {
+        IPath path = resource.getFullPath();
+        disconnectFileBuffer(path);
       }
-
-      IPath path = mResource.getFullPath();
-      disconnectFileBuffer(path);
     }
 
     private void disconnectFileBuffer(IPath path) {
@@ -521,11 +510,14 @@ public class Auditor {
     }
 
     private String getRuleName(AuditEvent error) {
+      String ruleName;
       RuleMetadata metaData = MetadataFactory.getRuleMetadata(error.getSourceName());
       if (metaData == null) {
-        return Messages.Auditor_txtUnknownModule;
+        ruleName = Messages.Auditor_txtUnknownModule;
+      } else {
+        ruleName = metaData.identity().internalName();
       }
-      return metaData.identity().internalName();
+      return ruleName;
     }
   }
 }

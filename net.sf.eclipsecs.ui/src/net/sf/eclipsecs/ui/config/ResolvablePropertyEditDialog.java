@@ -109,23 +109,25 @@ public class ResolvablePropertyEditDialog extends TitleAreaDialog {
 
   @Override
   protected void okPressed() {
-
+    boolean illegalArg = false;
     if (StringUtils.isBlank(mTxtName.getText())) {
       this.setErrorMessage(Messages.ResolvablePropertyEditDialog_msgMissingName);
-      return;
+      illegalArg = true;
     }
     if (StringUtils.isBlank(mTxtValue.getText())) {
       this.setErrorMessage(Messages.ResolvablePropertyEditDialog_msgMissingValue);
-      return;
+      illegalArg = true;
     }
 
-    //
-    // Get the entered value.
-    //
-    mProperty.setPropertyName(mTxtName.getText());
-    mProperty.setValue(mTxtValue.getText());
+    if (!illegalArg) {
+        //
+        // Get the entered value.
+        //
+        mProperty.setPropertyName(mTxtName.getText());
+        mProperty.setValue(mTxtValue.getText());
 
-    super.okPressed();
+        super.okPressed();
+    }
   }
 
   @Override

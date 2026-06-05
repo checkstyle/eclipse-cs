@@ -42,10 +42,7 @@ public class CheckstyleMarkerResolutionGenerator implements IMarkerResolutionGen
 
   @Override
   public boolean hasResolutions(IMarker marker) {
-    if (!isCheckstyleMarker(marker)) {
-      return false;
-    }
-    return CheckstyleQuickfixes.getInstance().getQuickfixes().stream()
+    return isCheckstyleMarker(marker) && CheckstyleQuickfixes.getInstance().getQuickfixes().stream()
             .anyMatch(fix -> fix.canFix(marker));
   }
 
@@ -53,10 +50,12 @@ public class CheckstyleMarkerResolutionGenerator implements IMarkerResolutionGen
    * @return {@code true} if this is a checkstyle marker
    */
   private boolean isCheckstyleMarker(IMarker marker) {
+    boolean isCheckstyleMarker;
     try {
-      return CheckstyleMarker.MARKER_ID.equals(marker.getType());
+      isCheckstyleMarker = CheckstyleMarker.MARKER_ID.equals(marker.getType());
     } catch (CoreException ex) {
-      return false;
+      isCheckstyleMarker = false;
     }
+    return isCheckstyleMarker;
   }
 }

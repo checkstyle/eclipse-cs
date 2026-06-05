@@ -124,17 +124,16 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
    *           error when trying to ensure the location file existance
    */
   private boolean ensureFileExists(String locationText) throws CheckstylePluginException {
-
     // support dynamic location strings
     String resolvedLocation = ExternalFileConfigurationType.resolveDynamicLocation(locationText);
 
+    boolean exists;
     File file = new File(resolvedLocation);
     if (!file.exists()) {
       boolean confirm = MessageDialog.openQuestion(shell,
               Messages.ExternalFileConfigurationEditor_titleFileDoesNotExist,
               Messages.ExternalFileConfigurationEditor_msgFileDoesNotExist);
       if (confirm) {
-
         if (file.getParentFile() != null) {
           file.getParentFile().mkdirs();
         }
@@ -144,11 +143,13 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
         } catch (IOException ioe) {
           CheckstylePluginException.rethrow(ioe);
         }
-        return true;
+        exists = true;
+      } else {
+        exists = false;
       }
-      return false;
+    } else {
+      exists = true;
     }
-
-    return true;
+    return exists;
   }
 }

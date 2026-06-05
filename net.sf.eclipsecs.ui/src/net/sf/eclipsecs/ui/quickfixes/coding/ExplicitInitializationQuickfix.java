@@ -49,11 +49,12 @@ public class ExplicitInitializationQuickfix extends AbstractASTResolution {
 
   @Override
   public boolean canFix(final IMarker marker) {
-    if (!super.canFix(marker)) {
-      return false;
+    boolean fixed = false;
+    if (super.canFix(marker)) {
+      retrieveFieldName(marker);
+      fixed = true;
     }
-    retrieveFieldName(marker);
-    return true;
+    return fixed;
   }
 
   private void retrieveFieldName(final IMarker marker) {

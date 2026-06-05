@@ -84,9 +84,8 @@ public final class XMLUtil {
 
     @Override
     public InputSource resolveEntity(String publicId, String systemId) throws SAXException {
-
+      InputSource inputSource = null;
       if (mPublic2InternalDtdMap.containsKey(publicId)) {
-
         final String dtdResourceName = mPublic2InternalDtdMap.get(publicId);
 
         final InputStream dtdIS = getClass().getClassLoader().getResourceAsStream(dtdResourceName);
@@ -94,9 +93,9 @@ public final class XMLUtil {
           // -@cs[IllegalInstantiation] SAXException is in the overridden method signature
           throw new SAXException("Unable to load internal dtd " + dtdResourceName); //$NON-NLS-1$
         }
-        return new InputSource(dtdIS);
+        inputSource = new InputSource(dtdIS);
       }
-      return null;
+      return inputSource;
     }
   }
 }

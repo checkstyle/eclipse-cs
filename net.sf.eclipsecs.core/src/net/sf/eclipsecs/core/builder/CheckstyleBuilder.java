@@ -223,7 +223,9 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
         if (monitor.isCanceled()) {
           throw new OperationCanceledException();
         }
-
+        if (!audit.hasFiles()) {
+          continue;
+        }
         if (backgroundFullBuild && kind == FULL_BUILD) {
           AuditorJob job = new AuditorJob(project, audit);
           job.schedule();

@@ -115,11 +115,12 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor {
         "*.xml",
         "*.*",
     });
+    Optional<String> configFile = Optional.empty();
     String configFileString = fileDialog.open();
     if (configFileString != null && new File(configFileString).exists()) {
-      return Optional.of(configFileString);
+      configFile = Optional.of(configFileString);
     }
-    return Optional.empty();
+    return configFile;
   }
 
   @Override
@@ -155,11 +156,9 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor {
    *           error when trying to ensure the location file existance
    */
   private boolean ensureFileExists(String location) throws CheckstylePluginException {
-
     Path resolvedLocation = InternalConfigurationType.resolveLocationInWorkspace(location);
 
     if (!Files.exists(resolvedLocation)) {
-
       if (resolvedLocation.getParent() != null) {
         try {
           Files.createDirectories(resolvedLocation.getParent());
@@ -171,8 +170,6 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor {
           CheckstylePluginException.rethrow(ex);
         }
       }
-
-      return true;
     }
 
     return true;

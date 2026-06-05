@@ -55,11 +55,10 @@ public class UnOpenedFilesFilter extends AbstractFilter {
 
   @Override
   public boolean accept(Object element) {
-
+    boolean accept = false;
     if (element instanceof IFile) {
-
-      return sOpenedFiles.contains(element);
+      accept = sOpenedFiles.contains(element);
     }
-    return false;
+    return accept;
   }
 }

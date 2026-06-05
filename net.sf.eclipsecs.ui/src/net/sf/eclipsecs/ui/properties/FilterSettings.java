@@ -120,27 +120,18 @@ public class FilterSettings extends Composite {
    *          the selection
    */
   private void openFilterEditor(ISelection selection, CheckboxTableViewer filterList, IProject project) {
-    if (selection instanceof IStructuredSelection) {
-      Object selectedElement = ((IStructuredSelection) selection).getFirstElement();
-
-      if (selectedElement instanceof IFilter) {
-
+    if (selection instanceof IStructuredSelection structuredSelection) {
+      if (structuredSelection.getFirstElement() instanceof IFilter filterDef) {
         try {
+          if (PluginFilterEditors.hasEditor(filterDef)) {
+            IFilterEditor editableFilter = PluginFilterEditors.getNewEditor(filterDef);
+            editableFilter.setInputProject(project);
+            editableFilter.setFilterData(filterDef.getFilterData());
 
-          IFilter aFilterDef = (IFilter) selectedElement;
-
-          if (!PluginFilterEditors.hasEditor(aFilterDef)) {
-            return;
-          }
-
-          IFilterEditor editableFilter = PluginFilterEditors.getNewEditor(aFilterDef);
-          editableFilter.setInputProject(project);
-          editableFilter.setFilterData(aFilterDef.getFilterData());
-
-          if (Window.OK == editableFilter.openEditor(getShell())) {
-
-            aFilterDef.setFilterData(editableFilter.getFilterData());
-            filterList.refresh();
+            if (Window.OK == editableFilter.openEditor(getShell())) {
+              filterDef.setFilterData(editableFilter.getFilterData());
+              filterList.refresh();
+            }
           }
         } catch (CheckstylePluginException ex) {
           CheckstyleUIPlugin.errorDialog(getShell(), ex, true);

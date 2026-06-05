@@ -69,11 +69,10 @@ public final class ApplicationStartedHandler implements EventHandler {
 
   @Override
   public void handleEvent(org.osgi.service.event.Event event) {
-    if (!UIEvents.UILifeCycle.APP_STARTUP_COMPLETE.equals(event.getTopic())) {
-      return;
+    if (UIEvents.UILifeCycle.APP_STARTUP_COMPLETE.equals(event.getTopic())) {
+      registerListener();
+      registerProgressIcon();
     }
-    registerListener();
-    registerProgressIcon();
   }
 
   private void registerListener() {
@@ -103,11 +102,10 @@ public final class ApplicationStartedHandler implements EventHandler {
 
   protected void registerProgressIcon() {
     IProgressService service = PlatformUI.getWorkbench().getProgressService();
-    if (service == null) {
-      return;
+    if (service != null) {
+      service.registerIconForFamily(CheckstyleUIPluginImages.CHECKSTYLE_ICON.getImageDescriptor(),
+              AbstractCheckJob.CHECKSTYLE_JOB_FAMILY);
     }
-    service.registerIconForFamily(CheckstyleUIPluginImages.CHECKSTYLE_ICON.getImageDescriptor(),
-            AbstractCheckJob.CHECKSTYLE_JOB_FAMILY);
   }
 
 }

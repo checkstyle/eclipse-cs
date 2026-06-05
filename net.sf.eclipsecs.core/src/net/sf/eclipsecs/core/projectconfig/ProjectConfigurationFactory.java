@@ -163,16 +163,15 @@ public final class ProjectConfigurationFactory {
     //
     IFile file = project.getFile(PROJECT_CONFIGURATION_FILE);
     boolean exists = file.exists();
-    if (!exists) {
-      return createDefaultProjectConfiguration(project);
+    if (exists) {
+      try (InputStream inStream = file.getContents(true)) {
+        configuration = getProjectConfiguration(inStream, project);
+      } catch (DocumentException | CoreException | IOException ex) {
+        CheckstylePluginException.rethrow(ex);
+      }
+    } else {
+      configuration = createDefaultProjectConfiguration(project);
     }
-
-    try (InputStream inStream = file.getContents(true)) {
-      configuration = getProjectConfiguration(inStream, project);
-    } catch (DocumentException | CoreException | IOException ex) {
-      CheckstylePluginException.rethrow(ex);
-    }
-
     return configuration;
   }
 

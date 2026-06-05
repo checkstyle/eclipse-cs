@@ -153,34 +153,29 @@ public final class CheckConfigurationWorkingSetEditor extends Composite {
    */
   private void copyCheckConfig() {
     ICheckConfiguration sourceConfig = editorView.getSelectedConfig();
-    if (sourceConfig == null) {
-      //
-      // Nothing is selected.
-      //
-      return;
-    }
+    if (sourceConfig != null) {
+      try {
 
-    try {
+        // Open the properties dialog to change default name and description
+        CheckConfigurationPropertiesDialog dialog = new CheckConfigurationPropertiesDialog(getShell(),
+                null, mWorkingSet);
+        dialog.setTemplateConfiguration(sourceConfig);
 
-      // Open the properties dialog to change default name and description
-      CheckConfigurationPropertiesDialog dialog = new CheckConfigurationPropertiesDialog(getShell(),
-              null, mWorkingSet);
-      dialog.setTemplateConfiguration(sourceConfig);
+        dialog.setBlockOnOpen(true);
+        if (Window.OK == dialog.open()) {
 
-      dialog.setBlockOnOpen(true);
-      if (Window.OK == dialog.open()) {
+          CheckConfigurationWorkingCopy newConfig = dialog.getCheckConfiguration();
 
-        CheckConfigurationWorkingCopy newConfig = dialog.getCheckConfiguration();
+          // Copy the source configuration into the new internal config
+          sourceConfig.copyConfiguration(newConfig);
 
-        // Copy the source configuration into the new internal config
-        sourceConfig.copyConfiguration(newConfig);
+          mWorkingSet.addCheckConfiguration(newConfig);
 
-        mWorkingSet.addCheckConfiguration(newConfig);
-
-        editorView.setConfigs(mWorkingSet.getWorkingCopies());
+          editorView.setConfigs(mWorkingSet.getWorkingCopies());
+        }
+      } catch (CheckstylePluginException ex) {
+        CheckstyleUIPlugin.errorDialog(getShell(), ex, true);
       }
-    } catch (CheckstylePluginException ex) {
-      CheckstyleUIPlugin.errorDialog(getShell(), ex, true);
     }
   }
 
@@ -189,47 +184,36 @@ public final class CheckConfigurationWorkingSetEditor extends Composite {
    */
   private void removeCheckConfig() {
     CheckConfigurationWorkingCopy checkConfig = editorView.getSelectedConfig();
-    if (checkConfig == null || !checkConfig.isEditable()) {
-      //
-      // Nothing is selected.
-      //
-      return;
-    }
+    if (checkConfig != null && checkConfig.isEditable()) {
+      boolean confirm = MessageDialog.openQuestion(getShell(),
+              Messages.CheckstylePreferencePage_titleDelete,
+              NLS.bind(Messages.CheckstylePreferencePage_msgDelete, checkConfig.getName()));
+      if (confirm) {
 
-    boolean confirm = MessageDialog.openQuestion(getShell(),
-            Messages.CheckstylePreferencePage_titleDelete,
-            NLS.bind(Messages.CheckstylePreferencePage_msgDelete, checkConfig.getName()));
-    if (confirm) {
+        //
+        // Make sure the check config is not in use. Don't let it be
+        // deleted if it is.
+        //
+        if (mWorkingSet.removeCheckConfiguration(checkConfig)) {
 
-      //
-      // Make sure the check config is not in use. Don't let it be
-      // deleted if it is.
-      //
-      if (mWorkingSet.removeCheckConfiguration(checkConfig)) {
-
-        editorView.setConfigs(mWorkingSet.getWorkingCopies());
-      } else {
-        MessageDialog.openInformation(getShell(), Messages.CheckstylePreferencePage_titleCantDelete,
-                NLS.bind(Messages.CheckstylePreferencePage_msgCantDelete, checkConfig.getName()));
-        return;
+          editorView.setConfigs(mWorkingSet.getWorkingCopies());
+        } else {
+          MessageDialog.openInformation(getShell(), Messages.CheckstylePreferencePage_titleCantDelete,
+                  NLS.bind(Messages.CheckstylePreferencePage_msgCantDelete, checkConfig.getName()));
+        }
       }
     }
   }
 
   private void setDefaultCheckConfig() {
     CheckConfigurationWorkingCopy checkConfig = editorView.getSelectedConfig();
-    if (checkConfig == null) {
-      //
-      // Nothing is selected.
-      //
-      return;
-    }
+    if (checkConfig != null) {
+      if (mWorkingSet instanceof GlobalCheckConfigurationWorkingSet) {
+        ((GlobalCheckConfigurationWorkingSet) mWorkingSet).setDefaultCheckConfig(checkConfig);
+      }
 
-    if (mWorkingSet instanceof GlobalCheckConfigurationWorkingSet) {
-      ((GlobalCheckConfigurationWorkingSet) mWorkingSet).setDefaultCheckConfig(checkConfig);
+      editorView.refresh();
     }
-
-    editorView.refresh();
   }
 
   /**
@@ -237,25 +221,19 @@ public final class CheckConfigurationWorkingSetEditor extends Composite {
    */
   private void exportCheckstyleCheckConfig() {
     ICheckConfiguration config = editorView.getSelectedConfig();
-    if (config == null) {
-      //
-      // Nothing is selected.
-      //
-      return;
-    }
+    if (config != null) {
+      FileDialog dialog = new FileDialog(getShell(), SWT.SAVE);
+      dialog.setText(Messages.CheckstylePreferencePage_titleExportConfig);
+      String path = dialog.open();
+      if (path != null) {
+        File file = new File(path);
 
-    FileDialog dialog = new FileDialog(getShell(), SWT.SAVE);
-    dialog.setText(Messages.CheckstylePreferencePage_titleExportConfig);
-    String path = dialog.open();
-    if (path == null) {
-      return;
-    }
-    File file = new File(path);
-
-    try {
-      config.exportConfiguration(file);
-    } catch (CheckstylePluginException ex) {
-      CheckstyleUIPlugin.errorDialog(getShell(), Messages.msgErrorFailedExportConfig, ex, true);
+        try {
+          config.exportConfiguration(file);
+        } catch (CheckstylePluginException ex) {
+          CheckstyleUIPlugin.errorDialog(getShell(), Messages.msgErrorFailedExportConfig, ex, true);
+        }
+      }
     }
   }
 

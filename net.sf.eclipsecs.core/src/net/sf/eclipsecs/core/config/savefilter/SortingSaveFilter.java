@@ -49,19 +49,19 @@ public class SortingSaveFilter implements ISaveFilter {
 
     @Override
     public int compare(Module o1, Module o2) {
-
       String internalName1 = o1.getMetaData().identity().internalName();
       String internalName2 = o2.getMetaData().identity().internalName();
-
+      int comp;
       if (XMLTags.CHECKER_MODULE.equals(internalName1)
               || XMLTags.TREEWALKER_MODULE.equals(internalName1)) {
-        return -1;
+        comp = -1;
       } else if (XMLTags.CHECKER_MODULE.equals(internalName2)
               || XMLTags.TREEWALKER_MODULE.equals(internalName2)) {
-        return 1;
+        comp = 1;
       } else {
-        return 0;
+        comp = 0;
       }
+      return comp;
     }
   }
 }

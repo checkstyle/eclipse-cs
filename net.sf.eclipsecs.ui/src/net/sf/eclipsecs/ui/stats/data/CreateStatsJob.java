@@ -90,8 +90,8 @@ public class CreateStatsJob extends Job {
 
   @Override
   protected IStatus run(IProgressMonitor monitor) {
+    IStatus status;
     try {
-
       int wholeAmountOfMarkers = ResourcesPlugin.getWorkspace().getRoot()
               .findMarkers(CheckstyleMarker.MARKER_ID, true, IResource.DEPTH_INFINITE).length;
 
@@ -130,12 +130,13 @@ public class CreateStatsJob extends Job {
       }
 
       mStats = new Stats(markerStats.values(), markers.length, wholeAmountOfMarkers);
+      status = Status.OK_STATUS;
     } catch (CoreException ex) {
-      return new Status(IStatus.ERROR, CheckstyleUIPlugin.PLUGIN_ID, IStatus.OK,
+      status = new Status(IStatus.ERROR, CheckstyleUIPlugin.PLUGIN_ID, IStatus.OK,
               Messages.CreateStatsJob_errorAnalyzingMarkers, ex);
     }
 
-    return Status.OK_STATUS;
+    return status;
   }
 
   /**

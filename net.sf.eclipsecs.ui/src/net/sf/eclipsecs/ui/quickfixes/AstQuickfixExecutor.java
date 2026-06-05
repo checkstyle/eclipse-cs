@@ -61,77 +61,63 @@ public final class AstQuickfixExecutor {
 
   public static final void run(IMarker marker,
           BiFunction<IRegion, Integer, ASTVisitor> handleGetCorrectingASTVisitor) {
-    if (!(marker.getResource() instanceof IFile)) {
-      return;
-    }
-
-    ICompilationUnit compilationUnit = getCompilationUnit(marker);
-
-    if (compilationUnit == null) {
-      return;
-    }
-
-    ITextFileBufferManager bufferManager = FileBuffers.getTextFileBufferManager();
-
-    IPath path = compilationUnit.getPath();
-
-    try {
-      // open the file the editor
-      JavaUI.openInEditor(compilationUnit);
-
-      // reimplemented according to this article
-      // http://www.eclipse.org/articles/Article-JavaCodeManipulation_AST/index.html
-      bufferManager.connect(path, LocationKind.IFILE, null);
-
-      ITextFileBuffer textFileBuffer = bufferManager.getTextFileBuffer(path, LocationKind.IFILE);
-
-      IDocument document = textFileBuffer.getDocument();
-
-      Optional<Integer> markerStart = getOffset(textFileBuffer, marker);
-      if (markerStart.isEmpty()) {
-        return;
-      }
-
-      final IRegion lineInfo = document.getLineInformationOfOffset(markerStart.get());
-
-      ASTParser astParser = ASTParser.newParser(AST.getJLSLatest());
-      astParser.setKind(ASTParser.K_COMPILATION_UNIT);
-      astParser.setSource(compilationUnit);
-
-      final IProgressMonitor monitor = new NullProgressMonitor();
-      CompilationUnit ast = (CompilationUnit) astParser.createAST(monitor);
-      ast.recordModifications();
-
-      ast.accept(handleGetCorrectingASTVisitor.apply(lineInfo, markerStart.get()));
-
-      // rewrite all recorded changes to the document
-      var wasDirtyBefore = textFileBuffer.isDirty();
-      ast.rewrite(document, compilationUnit.getJavaProject().getOptions(true)).apply(document);
-
-      // commit changes to underlying file
-      if (!wasDirtyBefore) {
-        textFileBuffer.commit(monitor, false);
-      }
-    } catch (CoreException | MalformedTreeException | BadLocationException ex) {
-      CheckstyleLog.log(ex, Messages.AbstractASTResolution_msgErrorQuickfix);
-    } finally {
-      if (bufferManager != null) {
+    if (marker.getResource() instanceof IFile) {
+      ICompilationUnit compilationUnit = getCompilationUnit(marker);
+      if (compilationUnit != null) {
+        ITextFileBufferManager bufferManager = FileBuffers.getTextFileBufferManager();
+        IPath path = compilationUnit.getPath();
         try {
-          bufferManager.disconnect(path, LocationKind.IFILE, null);
-        } catch (CoreException ex) {
-          CheckstyleLog.log(ex, "Error processing quickfix"); //$NON-NLS-1$
+          JavaUI.openInEditor(compilationUnit);
+
+          bufferManager.connect(path, LocationKind.IFILE, null);
+          ITextFileBuffer textFileBuffer = bufferManager.getTextFileBuffer(path, LocationKind.IFILE);
+          IDocument document = textFileBuffer.getDocument();
+
+          Optional<Integer> markerStart = getOffset(textFileBuffer, marker);
+          if (!markerStart.isEmpty()) {
+            final IRegion lineInfo = document.getLineInformationOfOffset(markerStart.get());
+
+            ASTParser astParser = ASTParser.newParser(AST.getJLSLatest());
+            astParser.setKind(ASTParser.K_COMPILATION_UNIT);
+            astParser.setSource(compilationUnit);
+
+            final IProgressMonitor monitor = new NullProgressMonitor();
+            CompilationUnit ast = (CompilationUnit) astParser.createAST(monitor);
+            ast.recordModifications();
+
+            ast.accept(handleGetCorrectingASTVisitor.apply(lineInfo, markerStart.get()));
+
+            // rewrite all recorded changes to the document
+            var wasDirtyBefore = textFileBuffer.isDirty();
+            ast.rewrite(document, compilationUnit.getJavaProject().getOptions(true)).apply(document);
+
+            // commit changes to underlying file
+            if (!wasDirtyBefore) {
+              textFileBuffer.commit(monitor, false);
+            }
+          }
+        } catch (CoreException | MalformedTreeException | BadLocationException ex) {
+          CheckstyleLog.log(ex, Messages.AbstractASTResolution_msgErrorQuickfix);
+        } finally {
+          if (bufferManager != null) {
+            try {
+              bufferManager.disconnect(path, LocationKind.IFILE, null);
+            } catch (CoreException ex) {
+              CheckstyleLog.log(ex, "Error processing quickfix"); //$NON-NLS-1$
+            }
+          }
         }
       }
     }
   }
 
   private static ICompilationUnit getCompilationUnit(IMarker marker) {
+    ICompilationUnit compilationUnit = null;
     if (marker.getResource() instanceof IFile file && file.isAccessible()
             && JavaCore.create(file) instanceof ICompilationUnit element) {
-      return element;
-
+      compilationUnit = element;
     }
-    return null;
+    return compilationUnit;
   }
 
   private static Optional<Integer> getOffset(ITextFileBuffer textFileBuffer, IMarker marker) {
@@ -143,15 +129,17 @@ public final class AstQuickfixExecutor {
 
   private static Optional<MarkerAnnotation> getMarkerAnnotation(IAnnotationModel annotationModel,
           IMarker marker) {
+    Optional<MarkerAnnotation> result = Optional.empty();
     Iterator<Annotation> iter = annotationModel.getAnnotationIterator();
     while (iter.hasNext()) {
       if (iter.next() instanceof MarkerAnnotation markerAnnotation) {
         if (markerAnnotation.getMarker().equals(marker)) {
-          return Optional.of(markerAnnotation);
+          result = Optional.of(markerAnnotation);
+          break;
         }
       }
     }
-    return Optional.empty();
+    return result;
   }
 
 }

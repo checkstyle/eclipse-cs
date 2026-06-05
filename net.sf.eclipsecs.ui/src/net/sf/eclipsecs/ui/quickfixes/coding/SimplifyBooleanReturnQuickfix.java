@@ -94,64 +94,65 @@ public class SimplifyBooleanReturnQuickfix extends AbstractASTResolution {
 
   private Optional<ReturnStatement> computeReplacement(final IfStatement node) {
     final Optional<Boolean> isThenStatementTrue = isReturnStatementTrue(node.getThenStatement());
-
+    Optional<ReturnStatement> optionalReplacement;
     if (isThenStatementTrue.isEmpty()) {
       // the AST structure of the if statement is not as expected
-      return Optional.empty();
-    }
-
-    final Expression condition = removeNotFromCondition(node.getExpression());
-    final boolean isNotCondition = condition != node.getExpression();
-
-    final ReturnStatement replacement;
-    if (isThenStatementTrue.get() ^ isNotCondition) {
-      // create replacement: return condition;
-      replacement = node.getAST().newReturnStatement();
-      replacement.setExpression(copy(condition));
-
+      optionalReplacement = Optional.empty();
     } else {
-      // create replacement: return !(condition);
-      final AST ast = node.getAST();
-      replacement = ast.newReturnStatement();
-      final PrefixExpression not = ast.newPrefixExpression();
-      not.setOperator(Operator.NOT);
-      if (omitParantheses(condition)) {
-        not.setOperand(copy(condition));
+      final Expression condition = removeNotFromCondition(node.getExpression());
+      final boolean isNotCondition = condition != node.getExpression();
+
+      final ReturnStatement replacement;
+      if (isThenStatementTrue.get() ^ isNotCondition) {
+        // create replacement: return condition;
+        replacement = node.getAST().newReturnStatement();
+        replacement.setExpression(copy(condition));
+
       } else {
-        final ParenthesizedExpression parentheses = ast.newParenthesizedExpression();
-        parentheses.setExpression(copy(condition));
-        not.setOperand(parentheses);
+        // create replacement: return !(condition);
+        final AST ast = node.getAST();
+        replacement = ast.newReturnStatement();
+        final PrefixExpression not = ast.newPrefixExpression();
+        not.setOperator(Operator.NOT);
+        if (omitParantheses(condition)) {
+          not.setOperand(copy(condition));
+        } else {
+          final ParenthesizedExpression parentheses = ast.newParenthesizedExpression();
+          parentheses.setExpression(copy(condition));
+          not.setOperand(parentheses);
+        }
+        replacement.setExpression(not);
       }
-      replacement.setExpression(not);
+      optionalReplacement = Optional.of(replacement);
     }
-    return Optional.of(replacement);
+    return optionalReplacement;
   }
 
   private static Optional<Boolean> isReturnStatementTrue(final Statement node) {
+    Optional<Boolean> isReturnStatementTrue = Optional.empty();
     if (node instanceof ReturnStatement returnStatement) {
       final Expression expression = returnStatement.getExpression();
       if (expression instanceof BooleanLiteral booleanLiteral) {
-        return Optional.of(booleanLiteral.booleanValue());
+        isReturnStatementTrue = Optional.of(booleanLiteral.booleanValue());
       }
     } else if (node instanceof Block block) {
       // the return statement might be wrapped in a block statement
       @SuppressWarnings("unchecked")
       final List<Statement> statements = block.statements();
       if (!statements.isEmpty()) {
-        return isReturnStatementTrue(statements.get(0));
+        isReturnStatementTrue = isReturnStatementTrue(statements.get(0));
       }
     }
-    return Optional.empty();
+    return isReturnStatementTrue;
   }
 
   private static Expression removeNotFromCondition(final Expression condition) {
-    if (condition instanceof PrefixExpression) {
-      final PrefixExpression prefix = (PrefixExpression) condition;
-      if (PrefixExpression.Operator.NOT.equals(prefix.getOperator())) {
-        return prefix.getOperand();
-      }
+    Expression fixedCondition = condition;
+    if (condition instanceof PrefixExpression prefix
+            && PrefixExpression.Operator.NOT.equals(prefix.getOperator())) {
+      fixedCondition = prefix.getOperand();
     }
-    return condition;
+    return fixedCondition;
   }
 
   private static boolean omitParantheses(final Expression condition) {

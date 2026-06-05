@@ -189,11 +189,14 @@ public final class MetadataFactory {
   private static void loadThirdPartyModuleExtensionMetadata() {
     var rootPackages = sPackageNameSet.stream()
             .map(pack -> {
+              String root;
               int secondDot = StringUtils.ordinalIndexOf(pack, ".", 2);
               if (secondDot < 0) {
-                return pack;
+                root = pack;
+              } else {
+                root = pack.substring(0, secondDot);
               }
-              return pack.substring(0, secondDot);
+              return root;
             })
             .distinct()
             .toArray(String[]::new);
@@ -304,35 +307,33 @@ public final class MetadataFactory {
    * @return Checkstyles standard message for this module and key
    */
   private static String getStandardMessage(String messageKey, RuleMetadata rule) {
+    String message = null;
+    if (messageKey != null && rule != null) {
+      List<String> namesToCheck = new ArrayList<>();
+      namesToCheck.add(rule.identity().internalName());
+      namesToCheck.addAll(rule.identity().alternativeNames());
 
-    // for some unknown reason there is no metadata or key
-    if (messageKey == null || rule == null) {
-      return null;
-    }
+      for (String moduleClass : namesToCheck) {
+        try {
 
-    List<String> namesToCheck = new ArrayList<>();
-    namesToCheck.add(rule.identity().internalName());
-    namesToCheck.addAll(rule.identity().alternativeNames());
+          int endIndex = moduleClass.lastIndexOf('.');
+          String messages = "messages"; //$NON-NLS-1$
+          if (endIndex >= 0) {
+            String packageName = moduleClass.substring(0, endIndex);
+            messages = packageName + "." + messages; //$NON-NLS-1$
+          }
+          ResourceBundle resourceBundle = ResourceBundle.getBundle(messages,
+                  CheckstylePlugin.getPlatformLocale(), CheckstylePlugin.class.getClassLoader(),
+                  new UTF8Control());
 
-    for (String moduleClass : namesToCheck) {
-      try {
-
-        int endIndex = moduleClass.lastIndexOf('.');
-        String messages = "messages"; //$NON-NLS-1$
-        if (endIndex >= 0) {
-          String packageName = moduleClass.substring(0, endIndex);
-          messages = packageName + "." + messages; //$NON-NLS-1$
+          message = resourceBundle.getString(messageKey);
+          break;
+        } catch (MissingResourceException ex) {
+          // let's continue to check the other alternative names
         }
-        ResourceBundle resourceBundle = ResourceBundle.getBundle(messages,
-                CheckstylePlugin.getPlatformLocale(), CheckstylePlugin.class.getClassLoader(),
-                new UTF8Control());
-
-        return resourceBundle.getString(messageKey);
-      } catch (MissingResourceException ex) {
-        // let's continue to check the other alternative names
       }
     }
-    return null;
+    return message;
   }
 
   /**
@@ -443,12 +444,14 @@ public final class MetadataFactory {
    */
   private static ResourceBundle getMetadataI18NBundle(String metadataFile,
           ClassLoader classLoader) {
+    ResourceBundle resourceBundle;
     String bundle = metadataFile.substring(0, metadataFile.length() - 4).replace('/', '.');
     try {
-      return ResourceBundle.getBundle(bundle, CheckstylePlugin.getPlatformLocale(), classLoader);
+      resourceBundle = ResourceBundle.getBundle(bundle, CheckstylePlugin.getPlatformLocale(), classLoader);
     } catch (MissingResourceException ex) {
-      return null;
+      resourceBundle = null;
     }
+    return resourceBundle;
   }
 
   private static void parseMetadata(InputStream metadataStream, ResourceBundle metadataBundle, String groupId)

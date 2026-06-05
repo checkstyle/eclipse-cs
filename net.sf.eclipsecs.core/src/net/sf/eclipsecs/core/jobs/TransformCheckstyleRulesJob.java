@@ -76,6 +76,7 @@ public class TransformCheckstyleRulesJob extends WorkspaceJob {
   public IStatus runInWorkspace(final IProgressMonitor monitor) throws CoreException {
     SubMonitor subMonitor = SubMonitor.convert(monitor);
     subMonitor.setWorkRemaining(IProgressMonitor.UNKNOWN);
+    IStatus status;
     try {
       final IProjectConfiguration conf = ProjectConfigurationFactory.getConfiguration(mProject);
 
@@ -111,18 +112,17 @@ public class TransformCheckstyleRulesJob extends WorkspaceJob {
       }
 
       if (rules.isEmpty()) {
-        return Status.CANCEL_STATUS;
+        status = Status.CANCEL_STATUS;
+      } else {
+        final CheckstyleTransformer transformer = new CheckstyleTransformer(mProject, rules);
+        transformer.transformRules();
+        status = Status.OK_STATUS;
       }
-
-      final CheckstyleTransformer transformer = new CheckstyleTransformer(mProject, rules);
-      transformer.transformRules();
     } catch (CheckstyleException | CheckstylePluginException ex) {
-      Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR,
-              ex.getMessage(), ex);
-      throw new CoreException(status);
+      throw new CoreException(new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR,
+              ex.getMessage(), ex));
     }
-
-    return Status.OK_STATUS;
+    return status;
   }
 
   private static void recurseConfiguration(Configuration module, List<Configuration> flatModules) {

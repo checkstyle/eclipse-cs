@@ -248,20 +248,15 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
     Optional<String> widgetValiationError = generalSettings.validatePropertyWidgets();
     if (widgetValiationError.isPresent()) {
       setErrorMessage(widgetValiationError.get());
-      return;
+    } else {
+      // If we made it this far then all of the user input validated and we
+      // can
+      // update the final rule with the values the user entered.
+      mRule.setSeverity(severity);
+      mRule.setComment(comment);
+      mRule.setId(id);
+      super.okPressed();
     }
-
-    //
-    // If we made it this far then all of the user input validated and we
-    // can
-    // update the final rule with the values the user entered.
-    //
-    mRule.setSeverity(severity);
-    mRule.setComment(comment);
-    mRule.setId(id);
-
-    super.okPressed();
-
   }
 
   @Override

@@ -83,10 +83,11 @@ public class CheckstyleConfigurationFile {
    * @return the stream containing the bundle data
    */
   public ByteArrayInputStream getAdditionalPropertiesBundleStream() {
+    ByteArrayInputStream stream = null;
     if (mAdditionalPropertyBundleBytes != null) {
-      return new ByteArrayInputStream(mAdditionalPropertyBundleBytes);
+      stream = new ByteArrayInputStream(mAdditionalPropertyBundleBytes);
     }
-    return null;
+    return stream;
   }
 
   /**

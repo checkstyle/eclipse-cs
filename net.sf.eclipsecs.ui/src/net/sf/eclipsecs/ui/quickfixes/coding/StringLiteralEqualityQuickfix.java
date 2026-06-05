@@ -66,36 +66,38 @@ public class StringLiteralEqualityQuickfix extends AbstractASTResolution {
 
   @SuppressWarnings("unchecked")
   private static Optional<Expression> computeReplacement(InfixExpression node) {
+    Optional<Expression> replacement = Optional.empty();
+
     StringLiteral literal = null;
     Expression otherOperand = null;
-
     if (node.getLeftOperand() instanceof StringLiteral) {
       literal = (StringLiteral) node.getLeftOperand();
       otherOperand = node.getRightOperand();
     } else if (node.getRightOperand() instanceof StringLiteral) {
       literal = (StringLiteral) node.getRightOperand();
       otherOperand = node.getLeftOperand();
-    } else {
-      return Optional.empty();
     }
 
-    MethodInvocation equalsInvocation = node.getAST().newMethodInvocation();
-    equalsInvocation.setName(node.getAST().newSimpleName("equals")); //$NON-NLS-1$
-    equalsInvocation.setExpression((Expression) ASTNode.copySubtree(node.getAST(), literal));
-    equalsInvocation.arguments().add(ASTNode.copySubtree(node.getAST(), otherOperand));
+    if (literal != null) {
+      MethodInvocation equalsInvocation = node.getAST().newMethodInvocation();
+      equalsInvocation.setName(node.getAST().newSimpleName("equals")); //$NON-NLS-1$
+      equalsInvocation.setExpression((Expression) ASTNode.copySubtree(node.getAST(), literal));
+      equalsInvocation.arguments().add(ASTNode.copySubtree(node.getAST(), otherOperand));
 
-    // if the string was compared with != create a not
-    // expression
-    final Expression replacementNode;
-    if (node.getOperator().equals(InfixExpression.Operator.NOT_EQUALS)) {
-      PrefixExpression prefixExpression = node.getAST().newPrefixExpression();
-      prefixExpression.setOperator(PrefixExpression.Operator.NOT);
-      prefixExpression.setOperand(equalsInvocation);
-      replacementNode = prefixExpression;
-    } else {
-      replacementNode = equalsInvocation;
+      // if the string was compared with != create a not
+      // expression
+      final Expression replacementNode;
+      if (node.getOperator().equals(InfixExpression.Operator.NOT_EQUALS)) {
+        PrefixExpression prefixExpression = node.getAST().newPrefixExpression();
+        prefixExpression.setOperator(PrefixExpression.Operator.NOT);
+        prefixExpression.setOperand(equalsInvocation);
+        replacementNode = prefixExpression;
+      } else {
+        replacementNode = equalsInvocation;
+      }
+      replacement = Optional.of(replacementNode);
     }
-    return Optional.of(replacementNode);
+    return replacement;
   }
 
   /**

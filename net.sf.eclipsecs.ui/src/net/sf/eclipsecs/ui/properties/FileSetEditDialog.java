@@ -163,20 +163,17 @@ public final class FileSetEditDialog extends TitleAreaDialog {
     String name = dialogView.getFileSetName();
     if (name == null || name.trim().length() <= 0) {
       this.setErrorMessage(Messages.FileSetEditDialog_msgNoFilesetName);
-      return;
+    } else {
+      //
+      // Get the CheckConfiguration.
+      //
+      if (mFileSet.getCheckConfig() == null) {
+        this.setErrorMessage(Messages.FileSetEditDialog_noCheckConfigSelected);
+      } else {
+        mFileSet.setName(name);
+        super.okPressed();
+      }
     }
-
-    //
-    // Get the CheckConfiguration.
-    //
-    if (mFileSet.getCheckConfig() == null) {
-      this.setErrorMessage(Messages.FileSetEditDialog_noCheckConfigSelected);
-      return;
-    }
-
-    mFileSet.setName(name);
-
-    super.okPressed();
   }
 
   private void addFileMatchPattern() {
@@ -191,70 +188,50 @@ public final class FileSetEditDialog extends TitleAreaDialog {
   }
 
   private void editFileMatchPattern(FileMatchPattern pattern) {
-    if (pattern == null) {
-      //
-      // Nothing is selected.
-      //
-      return;
-    }
+    if (pattern != null) {
+      FileMatchPatternEditDialog dialog = new FileMatchPatternEditDialog(getShell(), pattern.clone());
 
-    FileMatchPatternEditDialog dialog = new FileMatchPatternEditDialog(getShell(), pattern.clone());
+      if (Window.OK == dialog.open()) {
 
-    if (Window.OK == dialog.open()) {
-
-      FileMatchPattern editedPattern = dialog.getPattern();
-      mFileSet.getFileMatchPatterns().set(mFileSet.getFileMatchPatterns().indexOf(pattern),
-              editedPattern);
-      dialogView.refreshFileMatchPatternTable();
+        FileMatchPattern editedPattern = dialog.getPattern();
+        mFileSet.getFileMatchPatterns().set(mFileSet.getFileMatchPatterns().indexOf(pattern),
+                editedPattern);
+        dialogView.refreshFileMatchPatternTable();
+      }
     }
   }
 
   private void removeFileMatchPattern(FileMatchPattern pattern) {
-    if (pattern == null) {
-      //
-      // Nothing is selected.
-      //
-      return;
+    if (pattern != null) {
+      mFileSet.getFileMatchPatterns().remove(pattern);
+      dialogView.refreshFileMatchPatternTable();
     }
-
-    mFileSet.getFileMatchPatterns().remove(pattern);
-    dialogView.refreshFileMatchPatternTable();
   }
 
   private void upFileMatchPattern(FileMatchPattern pattern) {
-    if (pattern == null) {
-      //
-      // Nothing is selected.
-      //
-      return;
-    }
-
-    int index = mFileSet.getFileMatchPatterns().indexOf(pattern);
-    if (index > 0) {
-      mFileSet.getFileMatchPatterns().remove(pattern);
-      mFileSet.getFileMatchPatterns().add(index - 1, pattern);
-      dialogView.refreshFileMatchPatternTable();
+    if (pattern != null) {
+      int index = mFileSet.getFileMatchPatterns().indexOf(pattern);
+      if (index > 0) {
+        mFileSet.getFileMatchPatterns().remove(pattern);
+        mFileSet.getFileMatchPatterns().add(index - 1, pattern);
+        dialogView.refreshFileMatchPatternTable();
+      }
     }
   }
 
   private void downFileMatchPattern(FileMatchPattern pattern) {
-    if (pattern == null) {
-      //
-      // Nothing is selected.
-      //
-      return;
-    }
+    if (pattern != null) {
+      int index = mFileSet.getFileMatchPatterns().indexOf(pattern);
+      if (index >= 0 && index < mFileSet.getFileMatchPatterns().size() - 1) {
+        mFileSet.getFileMatchPatterns().remove(pattern);
+        if (index < mFileSet.getFileMatchPatterns().size() - 1) {
+          mFileSet.getFileMatchPatterns().add(index + 1, pattern);
+        } else {
+          mFileSet.getFileMatchPatterns().add(pattern);
+        }
 
-    int index = mFileSet.getFileMatchPatterns().indexOf(pattern);
-    if (index >= 0 && index < mFileSet.getFileMatchPatterns().size() - 1) {
-      mFileSet.getFileMatchPatterns().remove(pattern);
-      if (index < mFileSet.getFileMatchPatterns().size() - 1) {
-        mFileSet.getFileMatchPatterns().add(index + 1, pattern);
-      } else {
-        mFileSet.getFileMatchPatterns().add(pattern);
+        dialogView.refreshFileMatchPatternTable();
       }
-
-      dialogView.refreshFileMatchPatternTable();
     }
   }
 

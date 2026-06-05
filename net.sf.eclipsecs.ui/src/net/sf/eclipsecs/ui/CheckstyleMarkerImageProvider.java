@@ -35,16 +35,17 @@ public class CheckstyleMarkerImageProvider implements IAnnotationImageProvider {
 
   @Override
   public Image getManagedImage(Annotation annotation) {
+    Image image = null;
     String type = annotation.getType();
     if (CheckstyleMarker.ERROR_TYPE.equals(type)) {
-      return CheckstyleUIPluginImages.MARKER_ERROR.getImage();
+      image = CheckstyleUIPluginImages.MARKER_ERROR.getImage();
     } else if (CheckstyleMarker.WARNING_TYPE.equals(type)) {
-      return CheckstyleUIPluginImages.MARKER_WARNING.getImage();
+      image = CheckstyleUIPluginImages.MARKER_WARNING.getImage();
     } else if (CheckstyleMarker.INFO_TYPE.equals(type)) {
-      return CheckstyleUIPluginImages.MARKER_INFO.getImage();
+      image = CheckstyleUIPluginImages.MARKER_INFO.getImage();
     }
 
-    return null;
+    return image;
   }
 
   @Override
