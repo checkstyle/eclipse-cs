@@ -21,6 +21,7 @@
 package net.sf.eclipsecs.ui.config;
 
 import java.io.File;
+
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.layout.GridDataFactory;
@@ -32,6 +33,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
+
 import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
 import net.sf.eclipsecs.core.config.GlobalCheckConfigurationWorkingSet;
 import net.sf.eclipsecs.core.config.ICheckConfiguration;

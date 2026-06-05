@@ -23,7 +23,6 @@ package net.sf.eclipsecs.core.config.configtypes;
 import java.util.List;
 
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
-
 import net.sf.eclipsecs.core.config.ICheckConfiguration;
 import net.sf.eclipsecs.core.config.ResolvableProperty;
 

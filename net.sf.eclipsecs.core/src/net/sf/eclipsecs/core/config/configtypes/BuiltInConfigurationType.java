@@ -29,7 +29,6 @@ import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
 
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
-
 import net.sf.eclipsecs.core.config.CheckstyleConfigurationFile;
 import net.sf.eclipsecs.core.config.ICheckConfiguration;
 

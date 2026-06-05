@@ -22,6 +22,7 @@ package net.sf.eclipsecs.ui.preferences;
 
 import java.util.List;
 import java.util.Locale;
+
 import org.eclipse.jface.dialogs.MessageDialogWithToggle;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;

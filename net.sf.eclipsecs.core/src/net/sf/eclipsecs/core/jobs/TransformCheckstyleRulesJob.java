@@ -38,7 +38,6 @@ import com.puppycrawl.tools.checkstyle.ConfigurationLoader.IgnoredModulesOptions
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.puppycrawl.tools.checkstyle.api.Configuration;
-
 import net.sf.eclipsecs.core.CheckstylePlugin;
 import net.sf.eclipsecs.core.Messages;
 import net.sf.eclipsecs.core.config.CheckstyleConfigurationFile;

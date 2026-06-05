@@ -21,11 +21,13 @@
 package net.sf.eclipsecs.ui.properties;
 
 import java.util.List;
+
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
+
 import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
 import net.sf.eclipsecs.core.config.ICheckConfiguration;
 import net.sf.eclipsecs.core.projectconfig.FileMatchPattern;

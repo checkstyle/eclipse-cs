@@ -33,7 +33,6 @@ import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 
 import com.google.common.base.Strings;
-
 import net.sf.eclipsecs.core.Messages;
 import net.sf.eclipsecs.core.config.savefilter.SaveFilters;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;

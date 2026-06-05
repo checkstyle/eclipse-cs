@@ -20,8 +20,8 @@
 
 package net.sf.eclipsecs.core.transformer.ftransformerclasses;
 
-import net.sf.eclipsecs.core.transformer.CheckstyleSetting;
 import net.sf.eclipsecs.core.transformer.AbstractFTransformationClass;
+import net.sf.eclipsecs.core.transformer.CheckstyleSetting;
 import net.sf.eclipsecs.core.transformer.FormatterKey;
 
 /**

@@ -21,6 +21,7 @@
 package net.sf.eclipsecs.ui.config.widgets;
 
 import java.util.Map;
+
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 

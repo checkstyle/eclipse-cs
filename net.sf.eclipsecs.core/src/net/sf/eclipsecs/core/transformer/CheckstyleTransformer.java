@@ -27,7 +27,6 @@ import java.util.List;
 import org.eclipse.core.resources.IProject;
 
 import com.puppycrawl.tools.checkstyle.api.Configuration;
-
 import net.sf.eclipsecs.core.CheckstylePlugin;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 

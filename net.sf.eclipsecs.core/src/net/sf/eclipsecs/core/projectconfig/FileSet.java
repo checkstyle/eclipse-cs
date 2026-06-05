@@ -27,7 +27,6 @@ import java.util.Objects;
 import org.eclipse.core.resources.IFile;
 
 import com.google.common.base.MoreObjects;
-
 import net.sf.eclipsecs.core.config.ICheckConfiguration;
 
 /**

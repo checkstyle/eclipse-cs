@@ -37,6 +37,7 @@ import java.util.Base64;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.equinox.security.storage.EncodingUtils;
 import org.eclipse.equinox.security.storage.ISecurePreferences;

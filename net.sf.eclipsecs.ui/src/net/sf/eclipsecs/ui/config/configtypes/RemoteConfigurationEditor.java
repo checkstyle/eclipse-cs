@@ -21,6 +21,7 @@
 package net.sf.eclipsecs.ui.config.configtypes;
 
 import java.net.URI;
+
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;

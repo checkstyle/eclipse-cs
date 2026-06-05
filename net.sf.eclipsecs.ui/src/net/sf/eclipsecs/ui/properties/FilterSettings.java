@@ -21,6 +21,7 @@
 package net.sf.eclipsecs.ui.properties;
 
 import java.util.List;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;

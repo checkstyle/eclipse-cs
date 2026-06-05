@@ -22,8 +22,8 @@ package net.sf.eclipsecs.core.transformer.ftransformerclasses;
 
 import java.util.HashMap;
 
-import net.sf.eclipsecs.core.transformer.CheckstyleSetting;
 import net.sf.eclipsecs.core.transformer.AbstractFTransformationClass;
+import net.sf.eclipsecs.core.transformer.CheckstyleSetting;
 import net.sf.eclipsecs.core.transformer.FormatterKey;
 
 /**
