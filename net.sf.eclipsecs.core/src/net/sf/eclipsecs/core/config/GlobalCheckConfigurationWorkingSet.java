@@ -75,6 +75,8 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
    *          the list of global check configurations
    * @param defaultConfig
    *          the defaul check configuration
+   * @param defaultBuiltInCheckConfiguration
+   *          the default built-in check configuration
    */
   GlobalCheckConfigurationWorkingSet(List<ICheckConfiguration> checkConfigs,
           ICheckConfiguration defaultConfig, ICheckConfiguration defaultBuiltInCheckConfiguration) {
@@ -218,8 +220,6 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
   /**
    * Updates the project configurations that use the changed check configurations.
    *
-   * @param configurations
-   *          the check configurations
    * @throws CheckstylePluginException
    *           an unexpected exception occurred
    */
@@ -263,6 +263,9 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
 
   /**
    * Store the check configurations to the persistent state storage.
+   *
+   * @throws CheckstylePluginException
+   *           an unexpected exception occurred
    */
   private void storeToPersistence() throws CheckstylePluginException {
 
@@ -306,6 +309,10 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
 
   /**
    * Transforms the check configurations to a document.
+   *
+   * @param configurations the check configurations
+   * @param defaultConfig the default check configuration
+   * @return the document containing the check configurations
    */
   private static Document createCheckConfigurationsDocument(
           List<CheckConfigurationWorkingCopy> configurations, ICheckConfiguration defaultConfig) {

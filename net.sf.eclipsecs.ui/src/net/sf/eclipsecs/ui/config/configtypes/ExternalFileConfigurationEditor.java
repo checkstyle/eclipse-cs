@@ -121,6 +121,7 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
    *
    * @param locationText
    *          the configuration file location
+   * @return whether the file exists or was created
    * @throws CheckstylePluginException
    *           error when trying to ensure the location file existance
    */

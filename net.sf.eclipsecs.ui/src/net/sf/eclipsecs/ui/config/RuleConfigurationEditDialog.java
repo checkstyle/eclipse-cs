@@ -70,6 +70,10 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
    *          Parent shell.
    * @param rule
    *          Rule being edited.
+   * @param readonly
+   *          whether the dialog is read-only
+   * @param title
+   *          the dialog title
    */
   public RuleConfigurationEditDialog(Shell parent, Module rule, boolean readonly, String title) {
     super(parent);

@@ -139,6 +139,8 @@ public abstract class AbstractASTResolution extends WorkbenchMarkerResolution
    * The node's <code>AST</code> and the target <code>AST</code> must support the same API level.
    * </p>
    *
+   * @param <T>
+   *          the AST node type
    * @param node
    *          the node to copy, or <code>null</code> if none
    *

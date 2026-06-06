@@ -129,6 +129,9 @@ public final class TableViewerEnhancer {
 
   /**
    * Saves the sorting state to the dialog settings.
+   *
+   * @param table the table
+   * @param tableSettings the dialog settings
    */
   private static void saveState(Table table, IDialogSettings tableSettings) {
     tableSettings.put(TAG_COLUMN_INDEX, (int) table.getSortColumn().getData("index"));

@@ -88,6 +88,8 @@ public final class FileMatchPatternControl extends Composite {
    *          the parent for the new button
    * @param label
    *          the label for the new button
+   * @param selectionListener
+   *          the selection listener
    * @return the newly-created button
    */
   private static Button createPushButton(Composite parent, String label,

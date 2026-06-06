@@ -336,6 +336,10 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
 
   /**
    * Store the audit configurations to the persistent state storage.
+   *
+   * @param config the project configuration to persist
+   * @throws CheckstylePluginException
+   *           an unexpected exception occurred
    */
   private void storeToPersistence(ProjectConfigurationWorkingCopy config)
           throws CheckstylePluginException {
@@ -374,6 +378,9 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
    *
    * @param config
    *          the configuration
+   * @return the XML document representing the project configuration
+   * @throws CheckstylePluginException
+   *           an unexpected exception occurred
    */
   private Document writeProjectConfig(ProjectConfigurationWorkingCopy config)
           throws CheckstylePluginException {
@@ -445,6 +452,8 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
    *          the project
    * @param docRoot
    *          the root element of the project configuration
+   * @throws CheckstylePluginException
+   *           an unexpected exception occurred
    */
   private void writeFileSet(FileSet fileSet, IProject project, Element docRoot)
           throws CheckstylePluginException {

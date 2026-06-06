@@ -56,8 +56,9 @@ public class SimpleFileSetsEditor implements IFileSetsEditor {
   /**
    * Creates the SimpleFileSetsEditor.
    *
-   * @param propsPage
-   *          the property page
+   * @param shell the shell
+   * @param propertyPageContext
+   *          the property page context
    */
   public SimpleFileSetsEditor(Shell shell, PropertyPageContext propertyPageContext) {
     this.shell = shell;

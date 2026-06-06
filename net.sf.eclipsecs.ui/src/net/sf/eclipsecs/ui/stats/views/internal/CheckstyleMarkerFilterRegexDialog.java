@@ -63,8 +63,8 @@ public class CheckstyleMarkerFilterRegexDialog extends TitleAreaDialog {
    *
    * @param parentShell
    *          the parent shell
-   * @param pattern
-   *          the pattern
+   * @param fileTypes
+   *          the file types
    */
   public CheckstyleMarkerFilterRegexDialog(Shell parentShell, List<String> fileTypes) {
     super(parentShell);

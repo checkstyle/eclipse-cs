@@ -74,6 +74,8 @@ public final class ProjectConfigurationFactory {
    * @param project
    *          the project
    * @return the default project configuration
+   * @throws RuntimeException
+   *           an unexpected runtime exception occurred
    */
   public static IProjectConfiguration createDefaultProjectConfiguration(IProject project) {
 
@@ -153,6 +155,11 @@ public final class ProjectConfigurationFactory {
 
   /**
    * Load the audit configurations from the persistent state storage.
+   *
+   * @param project the project
+   * @return the project configuration
+   * @throws CheckstylePluginException
+   *           an unexpected exception occurred
    */
   private static IProjectConfiguration loadFromPersistence(IProject project)
           throws CheckstylePluginException {

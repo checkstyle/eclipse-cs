@@ -112,7 +112,10 @@ public final class MarkerStatsMainView extends Composite {
    *
    * @param actions
    *          a collection of IAction objets
+   * @param viewer
+   *          the table viewer
    * @param site
+   *          the workbench part site
    */
   private static void hookContextMenu(final Collection<Object> actions, TableViewer viewer,
           IWorkbenchPartSite site) {

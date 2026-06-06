@@ -245,6 +245,13 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
   * configuration.
   * File sets that share the same check configuration merge into
   * one Auditor.
+  *
+  * @param <T> the resource type
+  * @param resources the resources to audit
+  * @param configuration the project configuration
+  * @param project the project
+  * @return the map of check configurations to auditors
+  * @throws CoreException if an error occurs
   */
   private <T extends IResource> Map<ICheckConfiguration, Auditor> resolveAudits(
           Collection<T> resources, IProjectConfiguration configuration,

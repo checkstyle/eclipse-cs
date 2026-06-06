@@ -66,10 +66,10 @@ public final class CheckConfigurationWorkingSetEditor extends Composite {
   /**
    * Creates the configuration working set editor.
    *
+   * @param parent the parent composite
+   * @param style the style bits
    * @param workingSet
    *          the configuration working set to edit
-   * @param showUsage
-   *          determines if the usage area should be shown
    */
   public CheckConfigurationWorkingSetEditor(Composite parent, int style,
           ICheckConfigurationWorkingSet workingSet) {

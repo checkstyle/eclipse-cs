@@ -54,8 +54,8 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
   /**
    * Creates the ComplexFileSetsEditor.
    *
-   * @param propsPage
-   *          the property page
+   * @param propertyPageContext
+   *          the property page context
    */
   public ComplexFileSetsEditor(PropertyPageContext propertyPageContext) {
     this.propertyPageContext = propertyPageContext;

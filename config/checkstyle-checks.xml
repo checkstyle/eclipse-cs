@@ -665,6 +665,9 @@
             <property name="tags" value="noinspection"/>
         </module>
         <module name="JavadocContentLocation"/>
+        <module name="JavadocMethod">
+            <property name="validateThrows" value="true"/>
+        </module>
         <module name="JavadocMissingLeadingAsterisk"/>
         <module name="JavadocMissingWhitespaceAfterAsterisk"/>
         <module name="JavadocStyle">

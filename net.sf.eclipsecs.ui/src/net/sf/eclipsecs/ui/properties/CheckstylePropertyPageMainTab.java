@@ -133,6 +133,7 @@ public final class CheckstylePropertyPageMainTab extends Composite {
    *
    * @param fileSetsContainer
    *          the container to add the file sets area to
+   * @return the created control
    */
   private Control createFileSetsArea(Composite fileSetsContainer) {
     Control[] controls = fileSetsContainer.getChildren();

@@ -71,7 +71,11 @@ public class FormatterTransformer {
    * Loads all transformationclasses that are needed to recognize the formatter-settings. A instance
    * of every loaded class is stored in the field transformationClasses. Gets called by the
    * constructor.
-   * @return
+   *
+   * @param formatterSettings the formatter settings
+   * @return the list of transformation classes
+   * @throws CheckstylePluginException
+   *           an unexpected exception occurred
    */
   private List<AbstractFTransformationClass> loadTransformationClasses(
           Map<String, String> formatterSettings) throws CheckstylePluginException {

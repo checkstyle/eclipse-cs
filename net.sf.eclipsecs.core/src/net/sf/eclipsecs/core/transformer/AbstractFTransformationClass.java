@@ -46,8 +46,6 @@ public abstract class AbstractFTransformationClass {
   /**
    * Method for setting the field mValue.
    *
-   * @param setting
-   *          The formatter-setting associated to this class.
    * @param value
    *          The value of the setting.
    */

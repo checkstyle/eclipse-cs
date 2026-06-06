@@ -50,6 +50,7 @@ public abstract class AbstractConfigPropertyWidget implements IConfigPropertyWid
   /**
    * Returns the widget containing the values.
    *
+   * @param parent the parent composite
    * @return the widget containing the value
    */
   protected abstract Control getValueWidget(Composite parent);
@@ -98,6 +99,8 @@ public abstract class AbstractConfigPropertyWidget implements IConfigPropertyWid
   * 2) a default value overriding the checkstyle default
   * 3) the checkstyle default value, if specified
   * 4) blank
+  *
+  * @return the initial value
   */
   protected String getInitValue() {
     String initValue = null;

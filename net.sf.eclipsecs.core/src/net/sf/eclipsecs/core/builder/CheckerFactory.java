@@ -167,10 +167,10 @@ public final class CheckerFactory {
   /**
    * Tries to reuse an already configured checker for this configuration.
    *
-   * @param config
-   *          the configuration file
    * @param cacheKey
    *          the key for cache access
+   * @param modificationStamp
+   *          the last modification timestamp of the configuration file
    * @return the cached checker or null
    */
   private static Checker tryCheckerCache(String cacheKey, long modificationStamp) {
@@ -200,8 +200,6 @@ public final class CheckerFactory {
    *
    * @param input
    *          the input source for the configuration file
-   * @param configFileUri
-   *          the URI of the configuration file, or <code>null</code> if it could not be determined
    * @param propResolver
    *          a property resolver null
    * @param project
@@ -209,6 +207,8 @@ public final class CheckerFactory {
    * @return the newly created Checker
    * @throws CheckstyleException
    *           an exception during the creation of the checker occured
+   * @throws CheckstylePluginException
+   *           an unexpected exception occurred
    */
   private static Checker createCheckerInternal(InputSource input, PropertyResolver propResolver,
           IProject project) throws CheckstyleException, CheckstylePluginException {

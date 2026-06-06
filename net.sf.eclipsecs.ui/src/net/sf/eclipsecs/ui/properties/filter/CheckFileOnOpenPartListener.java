@@ -132,6 +132,8 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
    * @param partRef
    *          the workbench part in question
    * @return the editors file or <code>null</code> if the workbench part is no file based editor
+   * @throws RuntimeException
+   *           an unexpected runtime exception occurred
    */
   private IFile getEditorFile(IWorkbenchPartReference partRef) {
     IFile file = null;

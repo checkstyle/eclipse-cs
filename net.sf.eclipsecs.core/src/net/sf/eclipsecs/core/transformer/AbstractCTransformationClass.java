@@ -52,6 +52,8 @@ public abstract class AbstractCTransformationClass {
    *
    * @param rule
    *          The checkstyle-rule associated to this class.
+   * @throws RuntimeException
+   *           an unexpected runtime exception occurred
    */
   protected final void setRule(final Configuration rule) {
     final String[] attrs = rule.getAttributeNames();
