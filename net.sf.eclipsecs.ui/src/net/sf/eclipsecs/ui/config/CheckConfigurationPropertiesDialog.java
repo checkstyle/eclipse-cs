@@ -248,8 +248,8 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
   /**
    * Creates the configuration type specific location editor.
    *
-   * @param configType
-   *          the configuration type
+   * @param config
+   *          the configuration working copy
    */
   private void createConfigurationEditor(CheckConfigurationWorkingCopy config) {
 

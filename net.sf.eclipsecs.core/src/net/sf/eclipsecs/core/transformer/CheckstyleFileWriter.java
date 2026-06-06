@@ -65,6 +65,8 @@ public final class CheckstyleFileWriter {
    *
    * @param outStream
    *          BufferedWriter to outputfile.
+   * @throws IOException
+   *           an I/O exception occurred
    */
   private void writeXMLFile(final OutputStream outStream) throws IOException {
     outStream.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n".getBytes("UTF-8"));
@@ -80,8 +82,11 @@ public final class CheckstyleFileWriter {
   /**
    * Method for writing all modules to file.
    *
+   * @param modules the modules to write
    * @param outStream
    *          BufferedWriter to xml-file.
+   * @throws IOException
+   *           an I/O exception occurred
    */
   private static void writeModules(final HashMap<String, HashMap<String, String>> modules,
           final OutputStream outStream) throws IOException {
@@ -106,6 +111,9 @@ public final class CheckstyleFileWriter {
    *
    * @param properties
    *          A HashMap containing all properties.
+   * @param outStream the output stream to write to
+   * @throws IOException
+   *           an I/O exception occurred
    */
   private static void writeProperty(final HashMap<String, String> properties,
           final OutputStream outStream) throws IOException {

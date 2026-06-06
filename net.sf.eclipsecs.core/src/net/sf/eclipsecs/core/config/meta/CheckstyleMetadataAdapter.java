@@ -59,6 +59,11 @@ public class CheckstyleMetadataAdapter {
 
   /**
    * Creates RuleMetadata.
+   *
+   * @param groups the rule group metadata
+   * @param allModuleDetails all module details
+   * @param thirdPartyGroups third party rule groups
+   * @return the list of rule metadata
    */
   public List<RuleMetadata> loadRuleMetadata(
           Map<String, RuleGroupMetadata> groups, Collection<ModuleDetails> allModuleDetails,
@@ -100,6 +105,7 @@ public class CheckstyleMetadataAdapter {
    * Create metadata for modules not present in the previously eclipse provided metadata.
    * Work in progress.
    *
+   * @param group the rule group
    * @param moduleDetails module details fetched from checkstyle metadata
    * @return ruleMetadata for the module
    */
@@ -199,7 +205,10 @@ public class CheckstyleMetadataAdapter {
   /**
    * Generate all prefix strings from the packageName and find which is a valid key in
    * {@code sThirdPartyRuleGroupMap}.
-   * @param thirdPartyGroups
+   *
+   * @param thirdPartyGroups the third party rule groups
+   * @param packageName the package name to lookup
+   * @return the lookup key or null
    */
   private static String findLookupKey(Map<String, Map<String, String>> thirdPartyGroups,
           String packageName) {
@@ -225,6 +234,8 @@ public class CheckstyleMetadataAdapter {
 
   /**
    * Create a mapping between checkstyle package names and {@code RuleGroupMetadata} group names.
+   *
+   * @return the package to group name mapping
    */
   private static Map<String, String> createPackageToGroupNameMapping() {
     Map<String, String> packageToGroupName = new HashMap<>();
@@ -251,7 +262,8 @@ public class CheckstyleMetadataAdapter {
 
   /**
    * Create mapping between {@code ModulePropertyDetails} datatype and {@code ConfigPropertyType}.
-   * @return
+   *
+   * @return the property type mapping
    */
   private static Map<String, ConfigPropertyType> createPropertyTypeMapping() {
     Map<String, ConfigPropertyType> propertyTypes = new HashMap<>();

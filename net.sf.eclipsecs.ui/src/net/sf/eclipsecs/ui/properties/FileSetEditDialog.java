@@ -62,6 +62,11 @@ public final class FileSetEditDialog extends TitleAreaDialog {
 
   /**
    * Constructor for SamplePropertyPage.
+   *
+   * @param parent the parent shell
+   * @param fileSet the file set
+   * @param propertyPageContext the property page context
+   * @throws CheckstylePluginException an unexpected exception occurred
    */
   FileSetEditDialog(Shell parent, FileSet fileSet, PropertyPageContext propertyPageContext)
           throws CheckstylePluginException {

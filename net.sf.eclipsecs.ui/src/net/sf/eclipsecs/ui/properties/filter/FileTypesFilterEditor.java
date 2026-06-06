@@ -115,8 +115,8 @@ public class FileTypesFilterEditor implements IFilterEditor {
      *
      * @param parentShell
      *          the parent shell
-     * @param pattern
-     *          the pattern
+     * @param fileTypes
+     *          the file types
      */
     public FileTypesDialog(Shell parentShell, List<String> fileTypes) {
       super(parentShell);

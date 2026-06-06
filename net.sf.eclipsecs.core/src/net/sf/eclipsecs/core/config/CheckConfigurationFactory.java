@@ -224,6 +224,9 @@ public final class CheckConfigurationFactory {
 
   /**
    * Load the check configurations from the persistent state storage.
+   *
+   * @throws CheckstylePluginException
+   *           an unexpected exception occurred
    */
   private static void loadFromPersistence() throws CheckstylePluginException {
     File configFile = getInternalConfigurationFile();

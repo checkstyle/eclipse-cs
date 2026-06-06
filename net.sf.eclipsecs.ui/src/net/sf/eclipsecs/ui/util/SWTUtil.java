@@ -246,6 +246,8 @@ public final class SWTUtil {
     /**
      * Creates the resize support listener.
      *
+     * @param dialog
+     *          the dialog whose size and position to track
      * @param settings
      *          the dialog settings instance for the plugin
      * @param dialogKey

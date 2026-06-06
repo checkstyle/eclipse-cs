@@ -406,6 +406,7 @@ public final class MetadataFactory {
    * Helper method to get all potential metadata files using the checkstyle_packages.xml as base
    * where to look. It is not guaranteed that the files returned acutally exist.
    *
+   * @param classLoader the class loader to use
    * @return the collection of potential metadata files.
    * @throws CheckstylePluginException
    *           an unexpected exception ocurred
@@ -441,6 +442,7 @@ public final class MetadataFactory {
    *
    * @param metadataFile
    *          the metadata xml file
+   * @param classLoader the class loader to use
    * @return the corresponding ResourceBundle for the metadata file or <code>null</code> if none
    *         exists
    */

@@ -151,6 +151,7 @@ public final class ConfigurationWriter {
    *          the module to write
    * @param parent
    *          the parent element
+   * @return the written module element
    */
   private static Element writeModule(Module module, Branch parent) {
     // Start the module

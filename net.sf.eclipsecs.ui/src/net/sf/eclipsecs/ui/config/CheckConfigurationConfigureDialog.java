@@ -219,9 +219,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
   /**
    * Creates a module editor for the current selection.
    *
-   * @param selection
-   *          the selection
-   * @return whether configuration was successful
+   * @param rules the rules to configure
    */
   private void newModule(List<RuleMetadata> rules) {
     if (mConfiguration.isConfigurable()) {
@@ -260,6 +258,9 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
 
   /**
    * Checks if a certain module is already contained in the configuration.
+   *
+   * @param metadata the rule metadata to check
+   * @return whether the module is already configured
    */
   private boolean isAlreadyConfigured(RuleMetadata metadata) {
     String internalName = metadata.identity().internalName();
@@ -280,8 +281,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
   /**
    * Opens the module editor for the current selection.
    *
-   * @param selection
-   *          the selection
+   * @param module the module to open
    */
   private void openModule(Module module) {
     if (module != null) {
@@ -300,8 +300,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
   /**
    * Creates a module editor for the current selection.
    *
-   * @param selection
-   *          the selection
+   * @param modules the modules to remove
    */
   private void removeModule(List<Module> modules) {
     if (mConfiguration.isConfigurable() && !modules.isEmpty()) {

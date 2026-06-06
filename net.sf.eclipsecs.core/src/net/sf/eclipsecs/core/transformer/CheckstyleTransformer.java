@@ -83,6 +83,8 @@ public class CheckstyleTransformer {
    *
    * @param classnames
    *          A list of names of which classes get loaded.
+   * @throws CheckstylePluginException
+   *           an unexpected exception occurred
    */
   private void loadTransformationClasses(final List<String> classnames)
           throws CheckstylePluginException {

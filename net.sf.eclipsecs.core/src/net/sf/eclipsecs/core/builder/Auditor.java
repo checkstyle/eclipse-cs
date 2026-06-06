@@ -206,6 +206,8 @@ public final class Auditor {
 
   /**
    * Helper method to get an array of java.io.Files. This array gets passed to the checker.
+   *
+   * @return the list of files
    */
   private List<File> getFilesList() {
     List<File> files = new ArrayList<>();

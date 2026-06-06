@@ -120,6 +120,10 @@ public class FilterSettings extends Composite {
    *
    * @param selection
    *          the selection
+   * @param filterList
+   *          the filter list
+   * @param project
+   *          the project
    */
   private void openFilterEditor(ISelection selection, CheckboxTableViewer filterList,
           IProject project) {

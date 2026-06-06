@@ -41,6 +41,8 @@ public final class InternalBrowser {
 
   /**
    * Open a link in an external browser, independent of the Eclipse browser settings.
+   *
+   * @param url the URL to open
    */
   public static final void openLinkInExternalBrowser(String url) {
     try {

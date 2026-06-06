@@ -52,6 +52,7 @@ public final class CheckConfigurationTester {
   /**
    * Tests a configuration if there are unresolved properties.
    *
+   * @param checkConfiguration the check configuration to test
    * @return the list of unresolved properties as ResolvableProperty values.
    * @throws CheckstylePluginException
    *           most likely the configuration file could not be found
